@@ -215,7 +215,7 @@ class TreeAbstract {
     */
     public function getNumKids($item_id)
     {
-        if(!isset($this->tree_num_childs[$item_id])){
+        if (!isset($this->tree_num_childs[$item_id])){
             $this->tree_num_childs[$item_id] = (!empty($this->tree_childs[$item_id]) && is_array($this->tree_childs[$item_id])) ? count($this->tree_childs[$item_id]) : 0;
         }
         return $this->tree_num_childs[$item_id];
@@ -238,7 +238,7 @@ class TreeAbstract {
         if ($num_kids){
             $kids = $this->getKids($item_id);
             $kidskids = array_merge((array)$kidskids, (array)$kids);
-            for ($i = 0; $i < $num_kids; ++$i){
+            for ($i = 0; $i < $num_kids; ++$i) {
                 $this->getKidsKids($kids[$i],true);
             }
         }

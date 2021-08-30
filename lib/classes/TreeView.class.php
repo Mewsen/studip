@@ -204,24 +204,23 @@ class TreeView {
     * @access   public
     * @param    string  $item_id
     */
-    function showTree($item_id = "root"){
-    $items = [];
-    if (!is_array($item_id)){
-        $items[0] = $item_id;
-        $this->start_item_id = $item_id;
-    } else {
-        $items = $item_id;
-    }
-    $num_items = count($items);
-    for ($j = 0; $j < $num_items; ++$j){
-        $this->printLevelOutput($items[$j]);
-        $this->printItemOutput($items[$j]);
+    function showTree($item_id = "root") {
+        $items = [];
+        if (!is_array($item_id)){
+            $items[0] = $item_id;
+            $this->start_item_id = $item_id;
+        } else {
+            $items = $item_id;
+        }
+        $num_items = count($items);
+        for ($j = 0; $j < $num_items; ++$j){
+            $this->printLevelOutput($items[$j]);
+            $this->printItemOutput($items[$j]);
         if ($this->tree->hasKids($items[$j]) && !empty($this->open_ranges[$items[$j]])) {
-            $this->showTree($this->tree->tree_childs[$items[$j]]);
+                $this->showTree($this->tree->tree_childs[$items[$j]]);
+            }
         }
     }
-    return;
-}
 
     /**
     * prints out the lines before an item ("Strichlogik" (c) rstockm)
