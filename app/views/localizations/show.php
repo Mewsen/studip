@@ -3,12 +3,6 @@
 $translations = array(
     // app/controllers/messages.php
     'Wirklich %s Nachrichten löschen?' => _('Wirklich %s Nachrichten löschen?'),
-    ', [\'id\' => $this->user]))
-                        . \' Nachrichten endgültig gelöscht.' => _(', [\'id\' => $this->user]))
-                        . \' Nachrichten endgültig gelöscht.'),
-    ', [\'id\' => $this->user]))
-                        . \' Nachrichten endgütlig gelöscht.' => _(', [\'id\' => $this->user]))
-                        . \' Nachrichten endgütlig gelöscht.'),
 
     // app/views/admin/autoinsert/manual.php
     'Fehler' => _('Fehler'),
@@ -37,6 +31,9 @@ $translations = array(
     'Thema öffnen' => _('Thema öffnen'),
     'Hervorhebung aufheben' => _('Hervorhebung aufheben'),
     'Thema hervorheben' => _('Thema hervorheben'),
+
+    // resources/assets/javascripts/lib/fullcalendar.js
+    'Vorlesungswoche' => _('Vorlesungswoche'),
 
 );
 
