@@ -190,7 +190,7 @@ class Resources_RoomRequestController extends AuthenticatedController
         if (!$this->filter['specific_requests']) {
             $sql .= "OR resource_id IS NULL or resource_id = ''";
         }
-        $sql .= ') ';
+        $sql .= ") ";
         if (!$this->filter['own_requests']) {
             $sql .= " AND resource_requests.user_id <> :current_user_id ";
             $sql_params['current_user_id'] = User::findCurrent()->id;
@@ -379,13 +379,15 @@ class Resources_RoomRequestController extends AuthenticatedController
     protected function getRoomAvailability(Room $room, $time_intervals = [])
     {
         $availability = [];
+
         foreach ($time_intervals as $interval) {
             $begin = new DateTime();
             $end = new DateTime();
             $begin->setTimestamp($interval['begin']);
             $end->setTimestamp($interval['end']);
-            $availability[] = $room->isAvailable($begin, $end);
+            $availability[] = $room->isAvailable($begin, $end, [$interval['booking_id']]);
         }
+
         return $availability;
     }
 
@@ -1240,6 +1242,7 @@ class Resources_RoomRequestController extends AuthenticatedController
             //Get dates grouped by metadates.
             $this->request_time_intervals = $this->request->getGroupedTimeIntervals(true);
         }
+
         $this->request_semester_string = '';
         $request_start_semester = $this->request->getStartSemester();
         $request_end_semester = $this->request->getEndSemester();
@@ -1283,6 +1286,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                         $selected_room,
                         $data['intervals']
                     );
+
                     $metadate_available = true;
                     foreach ($metadate_availability as $available) {
                         if (!$available) {
@@ -1290,7 +1294,17 @@ class Resources_RoomRequestController extends AuthenticatedController
                             break;
                         }
                     }
-                    if ($metadate_available && !$this->selected_rooms) {
+
+                    $all_dates_same_room = true;
+                    // check, if ALL dates are booked for the same room
+                    foreach ($data['intervals'] as $interval) {
+                        if ($interval['booked_room'] != $selected_room->id) {
+                            $all_dates_same_room = false;
+                            break;
+                        }
+                    }
+
+                    if ($all_dates_same_room && $metadate_available && !$this->selected_rooms) {
                         $this->selected_rooms['SeminarCycleDate_' . $metadate_id] = $selected_room->id;
                     }
                     $this->room_availability[$selected_room->id][$metadate_id] = [$metadate_available];
@@ -1475,6 +1489,37 @@ class Resources_RoomRequestController extends AuthenticatedController
                 $this->alternative_rooms = array_merge($this->alternative_rooms, $request_rooms);
             }
         }
+
+        // add all booked rooms as well
+        $booked_rooms = [];
+        foreach($this->request_time_intervals as $key => $data) {
+            foreach ($data['intervals'] as $timeslot) {
+                if (!isset($booked_rooms[$timeslot['booked_room']])) {
+                    $room = Room::find($timeslot['booked_room']);
+                    if ($room) {
+                        $booked_rooms[$timeslot['booked_room']] = $room;
+                    }
+                }
+            }
+        }
+
+        if (!empty($booked_rooms)) {
+            $this->alternative_rooms = array_merge($booked_rooms, $this->alternative_rooms);
+        }
+
+        // deduplicate array
+        $deduplicated = [];
+
+        foreach ($this->alternative_rooms as $room) {
+            if ($room->id != $this->request_resource->id
+                && !isset($deduplicated[$room->id])
+            ) {
+                $deduplicated[$room->id] = $room;
+            }
+        }
+
+        $this->alternative_rooms = $deduplicated;
+
         foreach ($this->alternative_rooms as $room) {
             $this->metadate_available[$room->id] = [];
             $this->room_availability[$room->id] = [];
@@ -1516,8 +1561,11 @@ class Resources_RoomRequestController extends AuthenticatedController
         $force_resolve = Request::submitted('force_resolve');
         $resolve = Request::submitted('resolve') || $force_resolve;
         $this->show_force_resolve_button = false;
+        $save_only = Request::submitted('save_only');
 
-        if ($resolve) {
+        $this->booked_room_infos = [];
+
+        if ($resolve || $save_only) {
             CSRFProtection::verifyUnsafeRequest();
             $this->selected_rooms = array_filter(Request::getArray('selected_rooms'));
             $this->notification_settings = Request::get('notification_settings');
@@ -1534,7 +1582,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                 return;
             }
 
-            if (count($this->selected_rooms) < $this->visible_dates && !$force_resolve) {
+            if (count($this->selected_rooms) < $this->visible_dates && !$force_resolve && !$save_only) {
                 PageLayout::postWarning(
                     _('Es wurden nicht für alle Termine der Anfrage Räume ausgewählt! Soll die Anfrage wirklich aufgelöst werden?')
                 );
@@ -1593,27 +1641,29 @@ class Resources_RoomRequestController extends AuthenticatedController
                         return;
                     }
 
-                    try {
-                        $booking = $room->createBooking(
-                            $this->current_user,
-                            $course_date->id,
-                            [
+                    if ($course_date->room_booking->resource_id != $room_id) {
+                        try {
+                            $booking = $room->createBooking(
+                                $this->current_user,
+                                $course_date->id,
                                 [
-                                    'begin' => $course_date->date,
-                                    'end'   => $course_date->end_time
-                                ]
-                            ],
-                            null,
-                            0,
-                            $course_date->end_time,
-                            $this->request->preparation_time
-                        );
-                        if ($booking instanceof ResourceBooking) {
-                            $bookings[] = $booking;
+                                    [
+                                        'begin' => $course_date->date,
+                                        'end'   => $course_date->end_time
+                                    ]
+                                ],
+                                null,
+                                0,
+                                $course_date->end_time,
+                                $this->request->preparation_time
+                            );
+                            if ($booking instanceof ResourceBooking) {
+                                $bookings[] = $booking;
+                            }
+                        } catch (Exception $e) {
+                            $errors[] = $e->getMessage();
+                            continue;
                         }
-                    } catch (Exception $e) {
-                        $errors[] = $e->getMessage();
-                        continue;
                     }
                 } elseif ($range_data[0] == 'SeminarCycleDate') {
                     //Get the dates of the metadate and create a booking for
@@ -1630,27 +1680,29 @@ class Resources_RoomRequestController extends AuthenticatedController
                     }
                     if ($metadate->dates) {
                         foreach ($metadate->dates as $date) {
-                            try {
-                                $booking = $room->createBooking(
-                                    $this->current_user,
-                                    $date->id,
-                                    [
+                            if ($date->room_booking->resource_id != $room_id) {
+                                try {
+                                    $booking = $room->createBooking(
+                                        $this->current_user,
+                                        $date->id,
                                         [
-                                            'begin' => $date->date,
-                                            'end'   => $date->end_time
-                                        ]
-                                    ],
-                                    null,
-                                    0,
-                                    $course_date->end_time,
-                                    $this->request->preparation_time
-                                );
-                                if ($booking instanceof ResourceBooking) {
-                                    $bookings[] = $booking;
+                                            [
+                                                'begin' => $date->date,
+                                                'end'   => $date->end_time
+                                            ]
+                                        ],
+                                        null,
+                                        0,
+                                        $course_date->end_time,
+                                        $this->request->preparation_time
+                                    );
+                                    if ($booking instanceof ResourceBooking) {
+                                        $bookings[] = $booking;
+                                    }
+                                } catch (Exception $e) {
+                                    $errors[] = $e->getMessage();
+                                    continue;
                                 }
-                            } catch (Exception $e) {
-                                $errors[] = $e->getMessage();
-                                continue;
                             }
                         }
                     }
@@ -1707,8 +1759,9 @@ class Resources_RoomRequestController extends AuthenticatedController
                     _('Es traten Fehler beim Auflösen der Anfrage auf!'),
                     $errors
                 );
-            } else {
+            } else if (!$save_only) {
                 //No errors: We can close the request.
+
                 $success = $this->request->closeRequest(
                     $this->notification_settings == 'creator_and_lecturers',
                     $bookings
@@ -1725,6 +1778,11 @@ class Resources_RoomRequestController extends AuthenticatedController
                     );
                 }
             }
+        }
+
+        if ($save_only) {
+            // redirect to reload all infos and showing the most current ones
+            $this->redirect('resources/room_request/resolve/' . $request_id);
         }
     }
 
