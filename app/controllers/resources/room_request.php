@@ -385,7 +385,7 @@ class Resources_RoomRequestController extends AuthenticatedController
             $end = new DateTime();
             $begin->setTimestamp($interval['begin']);
             $end->setTimestamp($interval['end']);
-            $availability[] = $room->isAvailable($begin, $end, [$interval['booking_id']]);
+            $availability[] = $room->isAvailable($begin, $end, $interval['booking_id'] ? [$interval['booking_id']] : []);
         }
 
         return $availability;
