@@ -151,10 +151,10 @@ export default {
             return this.blocked ? this.block?.relationships['edit-blocker'].data?.id : null;
         },
         blockedByThisUser() {
-            return this.userId === this.blockerId;
+            return this.blocked && this.userId === this.blockerId;
         },
         blockedByAnotherUser() {
-            return this.userId !== this.blockerId;
+            return this.blocked && this.userId !== this.blockerId;
         },
         blockTitle() {
             const type = this.block.attributes['block-type'];
@@ -183,6 +183,9 @@ export default {
             updateContainer: 'updateContainer',
         }),
         async displayFeature(element) {
+            if (this.showEdit && element === 'Edit') {
+                return false;
+            }
             this.showFeatures = false;
             this.showFeedback = false;
             this.showComments = false;
@@ -192,8 +195,20 @@ export default {
             this.showContent = true;
             if (element) {
                 if (element === 'Edit') {
+                    await this.loadContainer(this.block.relationships.container.data.id);
                     if (!this.blocked) {
-                        await this.lockObject({ id: this.block.id, type: 'courseware-blocks' });
+                        try {
+                            await this.lockObject({ id: this.block.id, type: 'courseware-blocks' });
+                        } catch(error) {
+                            if (error.status === 403) {
+                                this.companionInfo({ info: this.$gettext('Dieser Block wird bereits bearbeitet.') });
+                            } else {
+                                console.log(error);
+                            }
+
+                            return false;
+                        }
+
                         if (!this.preview) {
                             this.showContent = false;
                         }
