@@ -93,8 +93,8 @@ class ConsultationMailer
     {
         self::sendMessage(
             $receiver,
-            $booking->slot,
-            sprintf(_('Grund des Termins bei bearbeitet'), $booking->slot->block->range_display),
+            $booking,
+            sprintf(_('Grund des Termins bei %s bearbeitet'), $booking->slot->block->range_display),
             $booking->reason
         );
     }
