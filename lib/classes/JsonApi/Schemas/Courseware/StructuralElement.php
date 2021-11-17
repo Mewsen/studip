@@ -4,6 +4,7 @@ namespace JsonApi\Schemas\Courseware;
 
 use JsonApi\Schemas\SchemaProvider;
 use Neomerx\JsonApi\Document\Link;
+use Neomerx\JsonApi\Schema\Identifier;
 
 class StructuralElement extends SchemaProvider
 {
@@ -50,7 +51,6 @@ class StructuralElement extends SchemaProvider
             'write-approval' => $resource['write_approval']->getIterator(),
             'copy-approval' => $resource['copy_approval']->getIterator(),
             'can-edit' => $resource->canEdit($user),
-            'can-read' => $resource->canRead($user),
 
             'external-relations' => $resource['external_relations']->getIterator(),
             'mkdate' => date('c', $resource['mkdate']),
@@ -73,100 +73,65 @@ class StructuralElement extends SchemaProvider
             return in_array($key, $includeList);
         };
 
-        $relationships[self::REL_CHILDREN] = [
-            self::LINKS => [
-                Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_CHILDREN),
-            ],
-            self::DATA => $resource->children,
-        ];
+        $relationships = $this->addChildrenRelationship(
+            $relationships,
+            $resource,
+            $shouldInclude(self::REL_CHILDREN)
+        );
 
-        $relationships[self::REL_CONTAINERS] = [
-            self::LINKS => [
-                Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_CONTAINERS),
-            ],
-            self::DATA => $resource->containers,
-        ];
+        $relationships = $this->addContainersRelationship(
+            $relationships,
+            $resource,
+            $shouldInclude(self::REL_CONTAINERS)
+        );
 
-        if ($resource->course) {
-            $relationships[self::REL_COURSE] = [
-                self::LINKS => [
-                    Link::RELATED => $this->getSchemaContainer()
-                        ->getSchema($resource->course)
-                        ->getSelfSubLink($resource->course),
-                ],
-                self::DATA => $resource->course,
-            ];
-        }
+        $relationships = $this->addRangeRelationship(
+            $relationships,
+            $resource,
+            $includeList
+        );
 
-        if ($resource->user) {
-            $relationships[self::REL_USER] = [
-                self::LINKS => [
-                    Link::RELATED => $this->getSchemaContainer()
-                        ->getSchema($resource->user)
-                        ->getSelfSubLink($resource->user),
-                ],
-                self::DATA => $resource->user,
-            ];
-        }
+        $relationships = $this->addOwnerRelationship(
+            $relationships,
+            $resource,
+            $shouldInclude(self::REL_OWNER)
+        );
 
-        $relationships[self::REL_OWNER] = $resource['owner_id']
-            ? [
-                self::LINKS => [
-                    Link::RELATED => $this->getSchemaContainer()
-                        ->getSchema($resource->owner)
-                        ->getSelfSubLink($resource->owner),
-                ],
-                self::DATA => $resource->owner,
-            ]
-            : [self::DATA => null];
+        $relationships = $this->addEditorRelationship(
+            $relationships,
+            $resource,
+            $shouldInclude(self::REL_EDITOR)
+        );
 
-        $relationships[self::REL_EDITOR] = $resource['editor_id']
-            ? [
-                self::LINKS => [
-                    Link::RELATED => $this->getSchemaContainer()
-                        ->getSchema($resource->editor)
-                        ->getSelfSubLink($resource->editor),
-                ],
-                self::DATA => $resource->editor,
-            ]
-            : [self::DATA => $resource->editor];
+        $relationships = $this->addEditBlockerRelationship(
+            $relationships,
+            $resource,
+            $shouldInclude(self::REL_EDITBLOCKER)
+        );
 
-        $relationships[self::REL_EDITBLOCKER] = $resource['edit_blocker_id']
-            ? [
-                self::SHOW_SELF => true,
-                self::LINKS => [
-                    Link::RELATED => $this->getSchemaContainer()
-                        ->getSchema($resource->edit_blocker)
-                        ->getSelfSubLink($resource->edit_blocker),
-                ],
-                self::DATA => $resource->edit_blocker,
-            ]
-            : [self::SHOW_SELF => true, self::DATA => null];
-
-        $relationships[self::REL_PARENT] = $resource->parent_id
-            ? [
-                self::LINKS => [
-                    Link::RELATED => $this->getSchemaContainer()
-                        ->getSchema($resource->parent)
-                        ->getSelfSubLink($resource->parent),
-                ],
-
-                self::DATA => $resource->parent,
-            ]
-            : [self::DATA => null];
+        $relationships = $this->addParentRelationship(
+            $relationships,
+            $resource,
+            $shouldInclude(self::REL_PARENT)
+        );
 
         $relationships = $this->addAncestorsRelationship(
             $relationships,
             $resource,
             $shouldInclude(self::REL_ANCESTORS)
         );
+
         $relationships = $this->addDescendantsRelationship(
             $relationships,
             $resource,
             $shouldInclude(self::REL_DESCENDANTS)
         );
 
-        $relationships = $this->addImageRelationship($relationships, $resource, $shouldInclude(self::REL_IMAGE));
+        $relationships = $this->addImageRelationship(
+            $relationships,
+            $resource,
+            $shouldInclude(self::REL_IMAGE)
+        );
 
         return $relationships;
     }
@@ -180,11 +145,57 @@ class StructuralElement extends SchemaProvider
         ];
 
         if ($includeData) {
-            $related = $resource->findAncestors();
+            $user = $this->getDiContainer()->get('studip-current-user');
+            $related = $resource->findAncestors($user);
             $relation[self::DATA] = $related;
         }
 
         $relationships[self::REL_ANCESTORS] = $relation;
+
+        return $relationships;
+    }
+
+    private function addChildrenRelationship(array $relationships, $resource, $includeData)
+    {
+        $relation = [
+            self::LINKS => [
+                Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_CHILDREN),
+            ]
+        ];
+
+        if ($includeData) {
+            $user = $this->getDiContainer()->get('studip-current-user');
+            $relation[self::DATA] = array_filter(
+                $resource->children,
+                function ($child) use ($user) {
+                    return $child->canRead($user);
+                }
+            );
+        }
+
+        $relationships[self::REL_CHILDREN] = $relation;
+
+        return $relationships;
+    }
+
+    private function addContainersRelationship(array $relationships, $resource, $includeData)
+    {
+        $relation = [
+            self::LINKS => [
+                Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_CONTAINERS),
+            ],
+        ];
+
+        if ($includeData) {
+            $relation[self::DATA] = $resource->containers;
+        } else {
+            $sql = 'SELECT id FROM cw_containers WHERE structural_element_id = ?';
+            $containers = \DBManager::get()->fetchAll($sql, [$resource->id], function ($container) {
+                return new Identifier($container['id'], \JsonApi\Schemas\Courseware\Container::TYPE);
+            });
+            $relation[self::DATA] = $containers;
+        }
+        $relationships[self::REL_CONTAINERS] = $relation;
 
         return $relationships;
     }
@@ -198,7 +209,8 @@ class StructuralElement extends SchemaProvider
         ];
 
         if ($includeData) {
-            $related = $resource->findDescendants();
+            $user = $this->getDiContainer()->get('studip-current-user');
+            $related = $resource->findDescendants($user);
             $relation[self::DATA] = $related;
         }
 
@@ -207,20 +219,158 @@ class StructuralElement extends SchemaProvider
         return $relationships;
     }
 
-    private function addImageRelationship(array $relationships, $resource, $includeData)
+    private function addEditBlockerRelationship(array $relationships, $resource, $includeData)
     {
         $relation = [
-            self::DATA => $resource->image ?: null,
+            self::SHOW_SELF => true,
+        ];
+        if ($resource['edit_blocker_id']) {
+            $relation[self::LINKS] = [
+                Link::RELATED => $this->createLinkToUser($resource['edit_blocker_id']),
+            ];
+            $relation[self::DATA] = $includeData ? $resource->edit_blocker : new Identifier($resource['edit_blocker_id'], \JsonApi\Schemas\User::TYPE);
+        } else {
+            $relation[self::DATA] = null;
+        }
+        $relationships[self::REL_EDITBLOCKER] = $relation;
+
+        return $relationships;
+    }
+
+    private function addEditorRelationship(array $relationships, $resource, $includeData)
+    {
+        $relation = [];
+        if ($resource['editor_id']) {
+            $relation[self::LINKS] = [
+                Link::RELATED => $this->createLinkToUser($resource['editor_id']),
+            ];
+            $relation[self::DATA] = $includeData ? $resource->editor : new Identifier($resource['editor_id'], \JsonApi\Schemas\User::TYPE);
+        } else {
+            $relation[self::DATA] = null;
+        }
+        $relationships[self::REL_EDITOR] = $relation;
+
+        return $relationships;
+    }
+
+    private function addImageRelationship(array $relationships, $resource, $includeData)
+    {
+        $image = $resource->image;
+        $relation = [
+            self::DATA => $image ?: null,
         ];
 
-        if ($resource->image) {
+        if ($image) {
             $relation[self::META] = [
-                'download-url' => $resource->image->getFileType()->getDownloadURL(),
+                'download-url' => $resource->getImageUrl(),
             ];
         }
 
         $relationships[self::REL_IMAGE] = $relation;
 
         return $relationships;
+    }
+
+    private function addOwnerRelationship(array $relationships, $resource, $includeData)
+    {
+        $relation = [];
+        if ($resource['owner_id']) {
+            $relation[self::LINKS] = [
+                Link::RELATED => $this->createLinkToUser($resource['owner_id']),
+            ];
+            $relation[self::DATA] = $includeData ? $resource->owner : new Identifier($resource['owner_id'], \JsonApi\Schemas\User::TYPE);
+        } else {
+            $relation[self::DATA] = null;
+        }
+        $relationships[self::REL_OWNER] = $relation;
+
+        return $relationships;
+    }
+
+    private function addParentRelationship(array $relationships, $resource, $includeData)
+    {
+        $relation = [];
+
+        if ($resource['parent_id']) {
+            $relation[self::LINKS] = [
+                Link::RELATED => $this->createLinkToStructuralElement($resource['parent_id']),
+            ];
+            $relation[self::DATA] = $includeData ? $resource->parent : new Identifier($resource['parent_id'], self::TYPE);
+        } else {
+            $relation[self::DATA] = null;
+        }
+        $relationships[self::REL_PARENT] = $relation;
+
+        return $relationships;
+    }
+
+    private function addRangeRelationship(array $relationships, $resource, $includeList)
+    {
+        if ($resource['range_type'] === 'course') {
+            $includeData = in_array(self::REL_COURSE, $includeList);
+            $relationships[self::REL_COURSE] = [
+                self::LINKS => [
+                    Link::RELATED => $this->createLinkToCourse($resource['range_id']),
+                ],
+                self::DATA => $includeData ? $resource->course : new Identifier($resource['range_id'], \JsonApi\Schemas\Course::TYPE),
+            ];
+        } elseif ($resource['range_type'] === 'user') {
+            $includeData = in_array(self::REL_USER, $includeList);
+            $relationships[self::REL_USER] = [
+                self::LINKS => [
+                    Link::RELATED => $this->createLinkToUser($resource['range_id']),
+                ],
+                self::DATA => $includeData ? $resource->user : new Identifier($resource['range_id'], \JsonApi\Schemas\User::TYPE)
+            ];
+        }
+
+        return $relationships;
+    }
+
+    private static $memo = [];
+
+    private function createLinkToCourse($rangeId)
+    {
+        if (isset(self::$memo['course' . $rangeId])) {
+            return self::$memo['course' . $rangeId];
+        }
+
+        $course = \Course::build(['id' => $rangeId], false);
+        $link = $this->getSchemaContainer()
+            ->getSchema($course)
+            ->getSelfSubLink($course);
+        self::$memo['course' . $rangeId] = $link;
+
+        return $link;
+    }
+
+    private function createLinkToStructuralElement($structuralElementId)
+    {
+        if (isset(self::$memo['structuralelement' . $structuralElementId])) {
+            return self::$memo['structuralelement' . $structuralElementId];
+        }
+
+        $structuralElement = \Courseware\StructuralElement::build(['id' => $structuralElementId], false);
+        $link = $this->getSchemaContainer()
+            ->getSchema($structuralElement)
+            ->getSelfSubLink($structuralElement);
+        self::$memo['structuralelement' . $structuralElementId] = $link;
+
+        return $link;
+    }
+
+    private function createLinkToUser($rangeId)
+    {
+        if (isset(self::$memo['user' . $rangeId])) {
+            return self::$memo['user' . $rangeId];
+        }
+
+        $user = \User::build(['id' => $rangeId], false);
+        $link = $this->getSchemaContainer()
+            ->getSchema($user)
+            ->getSelfSubLink($user);
+        self::$memo['user' . $rangeId] = $link;
+
+        return $link;
     }
 }
