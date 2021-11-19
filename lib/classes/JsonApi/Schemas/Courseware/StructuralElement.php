@@ -4,7 +4,6 @@ namespace JsonApi\Schemas\Courseware;
 
 use JsonApi\Schemas\SchemaProvider;
 use Neomerx\JsonApi\Document\Link;
-use Neomerx\JsonApi\Schema\Identifier;
 
 class StructuralElement extends SchemaProvider
 {
@@ -191,7 +190,7 @@ class StructuralElement extends SchemaProvider
         } else {
             $sql = 'SELECT id FROM cw_containers WHERE structural_element_id = ?';
             $containers = \DBManager::get()->fetchAll($sql, [$resource->id], function ($container) {
-                return new Identifier($container['id'], \JsonApi\Schemas\Courseware\Container::TYPE);
+                return \Courseware\Container::build(['id' => $container['id']], false);
             });
             $relation[self::DATA] = $containers;
         }
@@ -228,7 +227,7 @@ class StructuralElement extends SchemaProvider
             $relation[self::LINKS] = [
                 Link::RELATED => $this->createLinkToUser($resource['edit_blocker_id']),
             ];
-            $relation[self::DATA] = $includeData ? $resource->edit_blocker : new Identifier($resource['edit_blocker_id'], \JsonApi\Schemas\User::TYPE);
+            $relation[self::DATA] = $includeData ? $resource->edit_blocker : \User::build(['id' => $resource['edit_blocker_id']], false);
         } else {
             $relation[self::DATA] = null;
         }
@@ -244,7 +243,7 @@ class StructuralElement extends SchemaProvider
             $relation[self::LINKS] = [
                 Link::RELATED => $this->createLinkToUser($resource['editor_id']),
             ];
-            $relation[self::DATA] = $includeData ? $resource->editor : new Identifier($resource['editor_id'], \JsonApi\Schemas\User::TYPE);
+            $relation[self::DATA] = $includeData ? $resource->editor : \User::build(['id' => $resource['editor_id']], false);
         } else {
             $relation[self::DATA] = null;
         }
@@ -278,7 +277,7 @@ class StructuralElement extends SchemaProvider
             $relation[self::LINKS] = [
                 Link::RELATED => $this->createLinkToUser($resource['owner_id']),
             ];
-            $relation[self::DATA] = $includeData ? $resource->owner : new Identifier($resource['owner_id'], \JsonApi\Schemas\User::TYPE);
+            $relation[self::DATA] = $includeData ? $resource->owner :  \User::build(['id' => $resource['owner_id']], false);
         } else {
             $relation[self::DATA] = null;
         }
@@ -295,7 +294,7 @@ class StructuralElement extends SchemaProvider
             $relation[self::LINKS] = [
                 Link::RELATED => $this->createLinkToStructuralElement($resource['parent_id']),
             ];
-            $relation[self::DATA] = $includeData ? $resource->parent : new Identifier($resource['parent_id'], self::TYPE);
+            $relation[self::DATA] = $includeData ? $resource->parent : \Courseware\StructuralElement::build(['id' => $resource['parent_id']], false);
         } else {
             $relation[self::DATA] = null;
         }
@@ -312,7 +311,7 @@ class StructuralElement extends SchemaProvider
                 self::LINKS => [
                     Link::RELATED => $this->createLinkToCourse($resource['range_id']),
                 ],
-                self::DATA => $includeData ? $resource->course : new Identifier($resource['range_id'], \JsonApi\Schemas\Course::TYPE),
+                self::DATA => $includeData ? $resource->course : \Course::build(['id' => $resource['range_id']], false),
             ];
         } elseif ($resource['range_type'] === 'user') {
             $includeData = in_array(self::REL_USER, $includeList);
@@ -320,7 +319,7 @@ class StructuralElement extends SchemaProvider
                 self::LINKS => [
                     Link::RELATED => $this->createLinkToUser($resource['range_id']),
                 ],
-                self::DATA => $includeData ? $resource->user : new Identifier($resource['range_id'], \JsonApi\Schemas\User::TYPE)
+                self::DATA => $includeData ? $resource->user : \Course::build(['id' => $resource['range_id']], false),
             ];
         }
 
