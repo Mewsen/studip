@@ -71,7 +71,9 @@ const mountApp = (STUDIP, createApp, element) => {
         },
     ];
 
-    const base = `${STUDIP.ABSOLUTE_URI_STUDIP}dispatch.php/course/courseware/?cid=${STUDIP.URLHelper.parameters.cid}`;
+    const base = STUDIP.URLHelper.parameters.cid
+        ? STUDIP.URLHelper.getURL('dispatch.php/course/courseware', { cid: STUDIP.URLHelper.parameters.cid }, true)
+        : STUDIP.URLHelper.getURL('dispatch.php/contents/courseware/courseware');
     const router = new VueRouter({
         base,
         routes,
