@@ -88,12 +88,16 @@ class Course extends SchemaProvider
      */
     private function getInstitute(\Course $course, $shouldInclude)
     {
-        return [
-            self::LINKS => [
-                Link::RELATED => new Link('/institutes/'.$course->institut_id),
-            ],
-            self::DATA => $course->home_institut,
-        ];
+        return $course->institut_id
+            ? [
+                self::LINKS => [
+                    Link::RELATED => new Link('/institutes/' . $course->institut_id),
+                ],
+                self::DATA => $course->home_institut,
+            ]
+            : [
+                self::DATA => null,
+            ];
     }
 
     private function getStartSemester(\Course $course)
