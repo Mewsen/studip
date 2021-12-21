@@ -9,6 +9,9 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
+                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
+                    {{ invalidFolderMessageText }}
+                </div>
                 <div v-if="files.length !== 0" class="cw-block-gallery-content" :style="{ 'max-height': currentHeight + 'px' }">
                     <div
                         v-for="(image, index) in files"
@@ -83,11 +86,13 @@
 <script>
 import CoursewareDefaultBlock from './CoursewareDefaultBlock.vue';
 import CoursewareFolderChooser from './CoursewareFolderChooser.vue';
+import { blockFolderValidatorMixin } from './block-folder-validator-mixin.js';
 
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-gallery-block',
+    mixins: [blockFolderValidatorMixin],
     components: {
         CoursewareDefaultBlock,
         CoursewareFolderChooser,
@@ -241,7 +246,8 @@ export default {
         },
     },
     watch: {
-        currentFolderId() {
+        currentFolderId(value) {
+            this.validateFolderAccessibility(value);
             this.getFolderFiles();
         },
         currentAutoplay(value) {

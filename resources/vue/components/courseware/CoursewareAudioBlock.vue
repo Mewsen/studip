@@ -9,6 +9,9 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
+                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
+                    {{ invalidFolderMessageText }}
+                </div>
                 <div v-if="currentTitle !== ''" class="cw-block-title">{{ currentTitle }}</div>
                 <audio
                     :src="currentURL"
@@ -60,7 +63,7 @@
                         <p><translate>Es ist keine Audio-Datei verfügbar</translate></p>
                     </div>
                     <div v-if="showRecorder && canGetMediaDevices" class="cw-audio-playlist-recorder">
-                        <button 
+                        <button
                             v-show="!userRecorderEnabled"
                             class="button"
                             @click="enableRecorder"
@@ -81,21 +84,21 @@
                         >
                             <translate>Aufnahme wiederholen</translate>
                         </button>
-                        <button 
+                        <button
                             v-show="isRecording"
                             class="button"
                             @click="stopRecording"
                         >
                             <translate>Aufnahme beenden</translate>
                         </button>
-                        <button 
+                        <button
                             v-show="newRecording && !isRecording"
                             class="button"
                             @click="resetRecorder"
                         >
                             <translate>Aufnahme löschen</translate>
                         </button>
-                        <button 
+                        <button
                             v-show="newRecording && !isRecording"
                             class="button"
                             @click="storeRecording"
@@ -158,11 +161,13 @@
 import CoursewareDefaultBlock from './CoursewareDefaultBlock.vue';
 import CoursewareFileChooser from './CoursewareFileChooser.vue';
 import CoursewareFolderChooser from './CoursewareFolderChooser.vue';
+import { blockFolderValidatorMixin } from './block-folder-validator-mixin.js';
 
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-audio-block',
+    mixins: [blockFolderValidatorMixin],
     components: {
         CoursewareDefaultBlock,
         CoursewareFileChooser,
@@ -215,7 +220,7 @@ export default {
                 .filter((file) => {
                     if (this.relatedTermOfUse({parent: file, relationship: 'terms-of-use'}).attributes['download-condition'] !== 0) {
                         return false;
-                    } 
+                    }
                     if (! file.attributes['mime-type'].includes('audio')) {
                         return false;
                     }
@@ -578,7 +583,8 @@ export default {
         },
     },
     watch: {
-        currentFolderId() {
+        currentFolderId(value) {
+            this.validateFolderAccessibility(value);
             this.getFolderFiles();
         },
     },

@@ -9,6 +9,9 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
+                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
+                    {{ invalidFolderMessageText }}
+                </div>
                 <img :src="currentUrl" class="cw-image-map-original-img" ref="original_img" @load="buildCanvas" />
                 <canvas class="cw-image-map-canvas" ref="canvas"></canvas>
                 <img
@@ -160,11 +163,13 @@ import CoursewareDefaultBlock from './CoursewareDefaultBlock.vue';
 import CoursewareFileChooser from './CoursewareFileChooser.vue';
 import CoursewareTabs from './CoursewareTabs.vue';
 import CoursewareTab from './CoursewareTab.vue';
+import { blockFolderValidatorMixin } from './block-folder-validator-mixin.js';
 
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-image-map-block',
+    mixins: [blockFolderValidatorMixin],
     components: {
         CoursewareDefaultBlock,
         CoursewareFileChooser,
@@ -250,6 +255,8 @@ export default {
                         { type: 0, file_id: fileRef.id, file_name: fileRef.attributes.name },
                         true
                     ),
+                    folder_id: fileRef?.relationships?.parent && fileRef.relationships.parent.data.type == 'folders' ?
+                        fileRef.relationships.parent.data.id : null
                 });
             }
         },
@@ -376,7 +383,7 @@ export default {
             shapeWidth = shapeWidth || 0;
 
             let newText = [];
-            
+
             if (shapeWidth <= 0) {
                 return [text];
             }
@@ -518,6 +525,13 @@ export default {
             }
             this.currentShapes[index].target_external = url;
         },
+    },
+    watch: {
+        currentFile(value) {
+            if (value?.folder_id) {
+                this.validateFolderAccessibility(value.folder_id);
+            }
+        }
     },
 };
 </script>

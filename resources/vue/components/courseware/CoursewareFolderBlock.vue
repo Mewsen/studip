@@ -9,6 +9,9 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
+                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
+                    {{ invalidFolderMessageText }}
+                </div>
                 <div v-if="currentTitle !== ''" class="cw-block-title">{{ currentTitle }}</div>
                 <ul class="cw-block-folder-list">
                     <li v-for="file in files" :key="file.id" class="cw-block-folder-file-item">
@@ -48,11 +51,13 @@
 <script>
 import CoursewareDefaultBlock from './CoursewareDefaultBlock.vue';
 import CoursewareFolderChooser from './CoursewareFolderChooser.vue';
+import { blockFolderValidatorMixin } from './block-folder-validator-mixin.js';
 
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-folder-block',
+    mixins: [blockFolderValidatorMixin],
     components: {
         CoursewareDefaultBlock,
         CoursewareFolderChooser,
@@ -186,7 +191,8 @@ export default {
         },
     },
     watch: {
-        currentFolderId() {
+        currentFolderId(value) {
+            this.validateFolderAccessibility(value);
             this.getFolderFiles();
         },
     },

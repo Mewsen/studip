@@ -48,21 +48,23 @@ export default {
             let loadedCourseFolders = [];
             let CourseFolders = this.relatedFolders({ parent: this.courseObject, relationship: 'folders' }) ?? [];
             CourseFolders.forEach(folder => {
-                switch (folder.attributes['folder-type']) {
-                    case 'HiddenFolder':
-                        if (folder.attributes['data-content']['download_allowed'] === 1) {
+                if (this.validateParentFolder(folder)) {
+                    switch (folder.attributes['folder-type']) {
+                        case 'HiddenFolder':
+                            if (folder.attributes['data-content']['download_allowed'] === 1) {
+                                loadedCourseFolders.push(folder);
+                            }
+                            break;
+                        case 'HomeworkFolder':
+                            if(this.allowHomeworkFolders) {
+                                loadedCourseFolders.push(folder);
+                            }
+                            break;
+                        default:
                             loadedCourseFolders.push(folder);
-                        }
-                        break;
-                    case 'HomeworkFolder':
-                        if(this.allowHomeworkFolders) {
-                            loadedCourseFolders.push(folder);
-                        }
-                    default:
-                        loadedCourseFolders.push(folder);
+                    }
                 }
             });
-
             return loadedCourseFolders;
         },
         loadedUserFolders() {
@@ -79,7 +81,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            loadRelatedFolders: 'folders/loadRelated' 
+            loadRelatedFolders: 'folders/loadRelated'
         }),
 
         changeSelection() {
@@ -101,6 +103,30 @@ export default {
 
             return this.loadRelatedFolders({ parent, relationship, options });
         },
+
+        validateParentFolder(folder) {
+            let courseFolders = this.relatedFolders({ parent: this.courseObject, relationship: 'folders' }) ?? [];
+            var validation = true;
+            if (courseFolders.length > 0 && folder && folder.relationships && folder.relationships.parent) {
+                var parentId = folder.relationships.parent.data.id;
+                var parent = courseFolders.find(f => f.id == parentId);
+                if (parent) {
+                    validation = this.hiddenParentFolderValidation(parent);
+                }
+            }
+            return validation;
+        },
+
+        hiddenParentFolderValidation(parentFolder) {
+            if (parentFolder.attributes['folder-type'] == 'HiddenFolder') {
+                return false;
+            } else if (parentFolder.relationships && parentFolder.relationships.parent) {
+                // Recursively validating the parents.
+                return this.validateParentFolder(parentFolder);
+            } else {
+                return true;
+            }
+        }
     },
     mounted() {
         this.currentValue = this.value;

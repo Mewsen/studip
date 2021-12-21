@@ -9,8 +9,11 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
+                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
+                    {{ invalidFolderMessageText }}
+                </div>
                 <div class="cw-block-dialog-cards-content">
-                    <button 
+                    <button
                         class="cw-dialogcards-prev cw-dialogcards-navbutton"
                         :class="{'cw-dialogcards-prev-disabled': hasNoPerv}"
                         @click="prevCard"
@@ -66,7 +69,7 @@
                         :name="$gettext('Karte') +  ' ' + (index + 1).toString()"
                         :selected="index === 0"
                         canBeEmpty
-                    > 
+                    >
                         <form class="default" @submit.prevent="">
                             <label>
                                 <translate>Bild Vorderseite</translate>:
@@ -113,12 +116,14 @@ import CoursewareDefaultBlock from './CoursewareDefaultBlock.vue';
 import CoursewareFileChooser from './CoursewareFileChooser.vue';
 import CoursewareTabs from './CoursewareTabs.vue';
 import CoursewareTab from './CoursewareTab.vue';
+import { blockFolderValidatorMixin } from './block-folder-validator-mixin.js';
 
 import { mapActions } from 'vuex';
 import StudipIcon from '../StudipIcon.vue';
 
 export default {
     name: 'courseware-dialog-cards-block',
+    mixins: [blockFolderValidatorMixin],
     components: {
         CoursewareDefaultBlock,
         CoursewareFileChooser,
@@ -260,6 +265,21 @@ export default {
                 }
             });
         },
+    },
+    watch: {
+        currentCards: {
+            handler(value) {
+                value.forEach((card) => {
+                    if (card?.front_file?.folder_id) {
+                        this.validateFolderAccessibility(card.front_file.folder_id);
+                    }
+                    if (card?.back_file?.folder_id) {
+                        this.validateFolderAccessibility(card.back_file.folder_id);
+                    }
+                });
+            },
+            deep: true
+        }
     },
 };
 </script>

@@ -9,6 +9,9 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
+                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
+                    {{ invalidFolderMessageText }}
+                </div>
                 <div v-if="currentTitle !== ''" class="cw-block-title">{{ currentTitle }}</div>
                 <div v-if="currentFile !== null" class="cw-block-download-content">
                     <div v-if="currentInfo !== '' && !userHasDownloaded" class="messagebox messagebox_info">
@@ -71,11 +74,13 @@
 <script>
 import CoursewareDefaultBlock from './CoursewareDefaultBlock.vue';
 import CoursewareFileChooser from './CoursewareFileChooser.vue';
+import { blockFolderValidatorMixin } from './block-folder-validator-mixin.js';
 
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-download-block',
+    mixins: [blockFolderValidatorMixin],
     components: {
         CoursewareDefaultBlock,
         CoursewareFileChooser,
@@ -151,6 +156,8 @@ export default {
                         { type: 0, file_id: fileRef.id, file_name: fileRef.attributes.name },
                         true
                     ),
+                    folder_id: fileRef?.relationships?.parent && fileRef.relationships.parent.data.type == 'folders' ?
+                        fileRef.relationships.parent.data.id : null
                 });
             }
         },
@@ -220,6 +227,13 @@ export default {
                 containerId: this.block.relationships.container.data.id,
             });
         },
+    },
+    watch: {
+        currentFile(value) {
+            if (value?.folder_id) {
+                this.validateFolderAccessibility(value.folder_id);
+            }
+        }
     },
 };
 </script>
