@@ -9,6 +9,9 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
+                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
+                    {{ invalidFolderMessageText }}
+                </div>
                 <TwentyTwenty :before="currentBeforeUrl" :after="currentAfterUrl" />
             </template>
             <template v-if="canEdit" #edit>
@@ -64,9 +67,11 @@ import CoursewareFileChooser from './CoursewareFileChooser.vue';
 import TwentyTwenty from 'vue-twentytwenty';
 import 'vue-twentytwenty/dist/vue-twentytwenty.css';
 import { mapActions } from 'vuex';
+import { blockFolderValidatorMixin } from './block-folder-validator-mixin.js';
 
 export default {
     name: 'courseware-before-after-block',
+    mixins: [blockFolderValidatorMixin],
     components: {
         CoursewareDefaultBlock,
         CoursewareFileChooser,
@@ -227,5 +232,17 @@ export default {
             }
         },
     },
+    watch: {
+        currentBeforeFile(value) {
+            if (value?.relationships?.parent && value.relationships.parent.data.type == 'folders') {
+                this.validateFolderAccessibility(value.relationships.parent.data.id);
+            }
+        },
+        currentAfterFile(value) {
+            if (value?.relationships?.parent && value.relationships.parent.data.type == 'folders') {
+                this.validateFolderAccessibility(value.relationships.parent.data.id);
+            }
+        }
+    }
 };
 </script>

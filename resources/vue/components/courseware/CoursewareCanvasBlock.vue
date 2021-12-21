@@ -9,6 +9,9 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
+                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
+                    {{ invalidFolderMessageText }}
+                </div>
                 <div v-if="currentTitle" class="cw-block-title">
                     {{ currentTitle }}
                 </div>
@@ -146,11 +149,13 @@
 import CoursewareDefaultBlock from './CoursewareDefaultBlock.vue';
 import CoursewareFileChooser from './CoursewareFileChooser.vue';
 import CoursewareFolderChooser from './CoursewareFolderChooser.vue';
+import { blockFolderValidatorMixin } from './block-folder-validator-mixin.js';
 
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-canvas-block',
+    mixins: [blockFolderValidatorMixin],
     components: {
         CoursewareDefaultBlock,
         CoursewareFileChooser,
@@ -594,6 +599,16 @@ export default {
                 });
             }
         },
+    },
+    watch: {
+        currentFile(value) {
+            if (value?.relationships?.parent && value.relationships.parent.data.type == 'folders') {
+                this.validateFolderAccessibility(value.relationships.parent.data.id);
+            }
+        },
+        currentUploadFolderId(value) {
+            this.validateFolderAccessibility(value);
+        }
     },
 };
 </script>

@@ -9,6 +9,9 @@
             @closeEdit="closeEdit"
         >
             <template #content>
+                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
+                    {{ invalidFolderMessageText }}
+                </div>
                 <div
                     class="cw-block-headline-content"
                     :class="[currentStyle, currentHeight === 'half' ? 'half' : 'full']"
@@ -171,9 +174,11 @@ import CoursewareDefaultBlock from './CoursewareDefaultBlock.vue';
 import CoursewareFileChooser from './CoursewareFileChooser.vue';
 import { mapGetters, mapActions } from 'vuex';
 import contentIcons from './content-icons.js';
+import { blockFolderValidatorMixin } from './block-folder-validator-mixin.js';
 
 export default {
     name: 'courseware-headline-block',
+    mixins: [blockFolderValidatorMixin],
     components: {
         CoursewareDefaultBlock,
         CoursewareFileChooser,
@@ -337,6 +342,8 @@ export default {
                         { type: 0, file_id: fileRef.id, file_name: fileRef.attributes.name },
                         true
                     ),
+                    folder_id: fileRef?.relationships?.parent && fileRef.relationships.parent.data.type == 'folders' ?
+                        fileRef.relationships.parent.data.id : null
                 });
             }
         },
@@ -409,6 +416,13 @@ export default {
             let hex = comp.toString(16);
             return hex.length === 1 ? '0' + hex : hex;
         },
+    },
+    watch: {
+        currentBackgroundImage(value) {
+            if (value?.folder_id) {
+                this.validateFolderAccessibility(value.folder_id);
+            }
+        }
     },
 };
 </script>

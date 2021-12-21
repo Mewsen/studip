@@ -9,6 +9,9 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
+                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
+                    {{ invalidFolderMessageText }}
+                </div>
                 <div v-if="currentTitle !== '' && currentURL" class="cw-block-title">{{ currentTitle }}</div>
                 <video
                     v-show="currentURL"
@@ -75,10 +78,12 @@
 <script>
 import CoursewareDefaultBlock from './CoursewareDefaultBlock.vue';
 import CoursewareFileChooser from './CoursewareFileChooser.vue';
+import { blockFolderValidatorMixin } from './block-folder-validator-mixin.js';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-video-block',
+    mixins: [blockFolderValidatorMixin],
     components: {
         CoursewareDefaultBlock,
         CoursewareFileChooser,
@@ -202,6 +207,8 @@ export default {
                         { type: 0, file_id: fileRef.id, file_name: fileRef.attributes.name },
                         true
                     ),
+                    folder_id: fileRef?.relationships?.parent && fileRef.relationships.parent.data.type == 'folders' ?
+                        fileRef.relationships.parent.data.id : null
                 });
             }
         },
@@ -214,6 +221,13 @@ export default {
                 e.preventDefault();
             }
         },
+    },
+    watch: {
+        currentFile(value) {
+            if (value?.folder_id) {
+                this.validateFolderAccessibility(value.folder_id);
+            }
+        }
     },
 };
 </script>

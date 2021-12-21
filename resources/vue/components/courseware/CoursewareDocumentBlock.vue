@@ -9,6 +9,9 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
+                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
+                    {{ invalidFolderMessageText }}
+                </div>
                 <div v-if="hasFile" class="cw-pdf-header cw-block-title">
                     <button class="cw-pdf-button-prev" :class="{ inactive: pageNum - 1 === 0 }" @click="prevPage" />
                     <span class="cw-pdf-title">{{ currentTitle }}</span>
@@ -71,11 +74,13 @@ import CoursewareDefaultBlock from './CoursewareDefaultBlock.vue';
 import CoursewareFileChooser from './CoursewareFileChooser.vue';
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
+import { blockFolderValidatorMixin } from './block-folder-validator-mixin.js';
 
 import { mapActions } from 'vuex';
 
 export default {
     name: 'courseware-document-block',
+    mixins: [blockFolderValidatorMixin],
     components: {
         CoursewareDefaultBlock,
         CoursewareFileChooser,
@@ -137,6 +142,11 @@ export default {
                 this.evaluateBrowseAction();
             }
         },
+        currentFile(value) {
+            if (value?.relationships?.parent && value.relationships.parent.data.type == 'folders') {
+                this.validateFolderAccessibility(value.relationships.parent.data.id);
+            }
+        }
     },
     mounted() {
         this.loadFileRefs(this.block.id).then((response) => {
