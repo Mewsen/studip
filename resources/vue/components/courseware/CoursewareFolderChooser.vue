@@ -106,10 +106,10 @@ export default {
 
         validateParentFolder(folder) {
             let courseFolders = this.relatedFolders({ parent: this.courseObject, relationship: 'folders' }) ?? [];
-            var validation = true;
+            let validation = true;
             if (courseFolders.length > 0 && folder && folder.relationships && folder.relationships.parent) {
-                var parentId = folder.relationships.parent.data.id;
-                var parent = courseFolders.find(f => f.id == parentId);
+                let parentId = folder.relationships.parent.data.id;
+                let parent = courseFolders.find(f => f.id == parentId);
                 if (parent) {
                     validation = this.hiddenParentFolderValidation(parent);
                 }
@@ -120,7 +120,7 @@ export default {
         hiddenParentFolderValidation(parentFolder) {
             if (parentFolder.attributes['folder-type'] == 'HiddenFolder') {
                 return false;
-            } else if (parentFolder.relationships && parentFolder.relationships.parent) {
+            } else if (parentFolder?.relationships?.parent) {
                 // Recursively validating the parents.
                 return this.validateParentFolder(parentFolder);
             } else {

@@ -234,12 +234,12 @@ export default {
     },
     watch: {
         currentBeforeFile(value) {
-            if (value?.relationships?.parent && value.relationships.parent.data.type == 'folders') {
+            if (value?.relationships?.parent?.data.type == 'folders') {
                 this.validateFolderAccessibility(value.relationships.parent.data.id);
             }
         },
         currentAfterFile(value) {
-            if (value?.relationships?.parent && value.relationships.parent.data.type == 'folders') {
+            if (value?.relationships?.parent?.data.type == 'folders') {
                 this.validateFolderAccessibility(value.relationships.parent.data.id);
             }
         }

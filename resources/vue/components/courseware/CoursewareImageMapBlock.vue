@@ -255,7 +255,7 @@ export default {
                         { type: 0, file_id: fileRef.id, file_name: fileRef.attributes.name },
                         true
                     ),
-                    folder_id: fileRef?.relationships?.parent && fileRef.relationships.parent.data.type == 'folders' ?
+                    folder_id: fileRef?.relationships?.parent?.data.type == 'folders' ?
                         fileRef.relationships.parent.data.id : null
                 });
             }

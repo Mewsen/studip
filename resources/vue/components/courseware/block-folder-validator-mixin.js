@@ -19,16 +19,16 @@ export const blockFolderValidatorMixin = {
             loadFolder: 'folders/loadById',
         }),
         async validateFolderAccessibility(folderId) {
-            var valid = false;
+            let valid = false;
             if (folderId) {
                 try {
-                    var id = folderId;
+                    let id = folderId;
                     await this.loadFolder({ id });
-                    var folder = this.folderById({ id });
+                    let folder = this.folderById({ id });
                     if (folder && folder.relationships && folder.relationships.parent) {
-                        var id = folder.relationships.parent.data.id;
+                        let id = folder.relationships.parent.data.id;
                         await this.loadFolder({ id });
-                        var parent = this.folderById({ id });
+                        let parent = this.folderById({ id });
                         if (parent && parent.attributes['folder-type'] == 'HiddenFolder') {
                             valid = false;
                         } else if (parent.relationships && parent.relationships.parent) {
