@@ -9,9 +9,7 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
-                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
-                    {{ invalidFolderMessageText }}
-                </div>
+                <courseware-companion-box v-show="showInvalidFolderMessage" :msgCompanion="invalidFolderMessageText" mood="pointing"/>
                 <div v-if="currentTitle !== ''" class="cw-block-title">{{ currentTitle }}</div>
                 <div v-if="currentFile !== null" class="cw-block-download-content">
                     <div v-if="currentInfo !== '' && !userHasDownloaded" class="messagebox messagebox_info">

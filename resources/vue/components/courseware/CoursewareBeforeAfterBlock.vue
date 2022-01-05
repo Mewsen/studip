@@ -9,9 +9,7 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
-                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
-                    {{ invalidFolderMessageText }}
-                </div>
+                <courseware-companion-box v-show="showInvalidFolderMessage" :msgCompanion="invalidFolderMessageText" mood="pointing"/>
                 <TwentyTwenty :before="currentBeforeUrl" :after="currentAfterUrl" />
             </template>
             <template v-if="canEdit" #edit>

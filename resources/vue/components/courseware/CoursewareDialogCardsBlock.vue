@@ -9,9 +9,7 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
-                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
-                    {{ invalidFolderMessageText }}
-                </div>
+                <courseware-companion-box v-show="showInvalidFolderMessage" :msgCompanion="invalidFolderMessageText" mood="pointing"/>
                 <div class="cw-block-dialog-cards-content">
                     <button
                         class="cw-dialogcards-prev cw-dialogcards-navbutton"

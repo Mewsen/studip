@@ -9,9 +9,7 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
-                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
-                    {{ invalidFolderMessageText }}
-                </div>
+                <courseware-companion-box v-show="showInvalidFolderMessage" :msgCompanion="invalidFolderMessageText" mood="pointing"/>
                 <div v-if="files.length !== 0" class="cw-block-gallery-content" :style="{ 'max-height': currentHeight + 'px' }">
                     <div
                         v-for="(image, index) in files"

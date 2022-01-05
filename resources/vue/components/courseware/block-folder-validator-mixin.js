@@ -1,4 +1,5 @@
 import { mapActions, mapGetters } from 'vuex';
+import CoursewareCompanionBox from './CoursewareCompanionBox.vue';
 
 export const blockFolderValidatorMixin = {
     computed: {
@@ -8,6 +9,9 @@ export const blockFolderValidatorMixin = {
         invalidFolderMessageText() {
             return this.$gettext('Der Zugriff auf ausgewählte Datei(en) könnte gesperrt sein!')
         }
+    },
+    components: {
+        CoursewareCompanionBox,
     },
     data() {
         return {

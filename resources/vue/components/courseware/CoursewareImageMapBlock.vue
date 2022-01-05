@@ -9,9 +9,7 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
-                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
-                    {{ invalidFolderMessageText }}
-                </div>
+                <courseware-companion-box v-show="showInvalidFolderMessage" :msgCompanion="invalidFolderMessageText" mood="pointing"/>
                 <img :src="currentUrl" class="cw-image-map-original-img" ref="original_img" @load="buildCanvas" />
                 <canvas class="cw-image-map-canvas" ref="canvas"></canvas>
                 <img

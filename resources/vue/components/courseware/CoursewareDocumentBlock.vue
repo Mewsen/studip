@@ -9,9 +9,7 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
-                <div v-if="showInvalidFolderMessage" class="messagebox messagebox_error">
-                    {{ invalidFolderMessageText }}
-                </div>
+                <courseware-companion-box v-show="showInvalidFolderMessage" :msgCompanion="invalidFolderMessageText" mood="pointing"/>
                 <div v-if="hasFile" class="cw-pdf-header cw-block-title">
                     <button class="cw-pdf-button-prev" :class="{ inactive: pageNum - 1 === 0 }" @click="prevPage" />
                     <span class="cw-pdf-title">{{ currentTitle }}</span>
