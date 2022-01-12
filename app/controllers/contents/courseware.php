@@ -197,12 +197,12 @@ class Contents_CoursewareController extends AuthenticatedController
         } else {
             $this->all_semesters = false;
         }
-        $params = [
-            'order_by'            => null,
-            'order'               => 'asc',
-            'studygroups_enabled' => Config::get()->MY_COURSES_ENABLE_STUDYGROUPS,
-            'deputies_enabled'    => Config::get()->DEPUTIES_ENABLE,
-        ];
+        usort($this->semesters, function ($a, $b) {
+            if ($a->beginn === $b->beginn) {
+                return 0;
+            }
+            return ($a->beginn > $b->beginn) ? -1 : 1;
+        });
 
         $sem_courses  = MyRealmModel::getPreparedCourses($sem_key, $params);
 
