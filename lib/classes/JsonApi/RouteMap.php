@@ -339,6 +339,18 @@ class RouteMap
         // not a JSON route
         $group->post('/courseware-blocks/{id}/copy', Routes\Courseware\BlocksCopy::class);
 
+        // routes for custom files
+
+        // get all referenced custom files
+        $group->get('/courseware-blocks/{id}/custom-files', Routes\Courseware\CustomFilesList::class);
+
+        // CRUD routes for single custom files
+        $group->get('/courseware-blocks/{id}/custom-files/{file_id}', Routes\Courseware\CustomFilesShow::class);
+        $group->post('/courseware-blocks/{id}/custom-files', Routes\Courseware\CustomFilesCreate::class);
+        $group->patch('/courseware-blocks/{id}/custom-files/{file_id}', Routes\Courseware\CustomFilesUpdateAttributes::class);
+        $group->post('/courseware-blocks/{id}/custom-files/{file_id}', Routes\Courseware\CustomFilesUpdate::class);
+        $group->delete('/courseware-blocks/{id}/custom-files/{file_id}', Routes\Courseware\CustomFilesDelete::class);
+
         $group->get('/courseware-containers/{id}', Routes\Courseware\ContainersShow::class);
         $group->post('/courseware-containers', Routes\Courseware\ContainersCreate::class);
         $group->patch('/courseware-containers/{id}', Routes\Courseware\ContainersUpdate::class);
