@@ -1,0 +1,2 @@
+(self.webpackChunk_studip_core=self.webpackChunk_studip_core||[]).push([[6631],{26631:function(e,r,s){"use strict";s.r(r),s.d(r,{default:function(){return n}});var u=function(){var e=this.$createElement;return(this._self._c||e)("courseware-course-dashboard")};u._withStripped=!0;var o={components:{CoursewareCourseDashboard:s(14624).default}},t=(0,s(51900).Z)(o,u,[],!1,null,null,null);t.options.__file="resources/vue/components/courseware/DashboardApp.vue";var n=t.exports}}]);
+//# sourceMappingURL=6631.chunk.js.map?h=bd740a2742cc44f53dd4

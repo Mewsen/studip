@@ -1,0 +1,2 @@
+(self.webpackChunk_studip_core=self.webpackChunk_studip_core||[]).push([[2778],{32487:function(e,u,s){"use strict";s.r(u);var c=s(69259),t=s.n(c);u.default=t()}}]);
+//# sourceMappingURL=2778.chunk.js.map?h=835f5abcb4e994b96a82
