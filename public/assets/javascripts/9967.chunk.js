@@ -1,2 +1,2 @@
 (self.webpackChunk_studip_core=self.webpackChunk_studip_core||[]).push([[9967],{29967:function(t,e,u){"use strict";u.r(e),u.d(e,{default:function(){return n}});var r=function(){var t=this,e=t.$createElement;return(t._self._c||e)("img",{attrs:{src:t.url,width:t.width}})};r._withStripped=!0;var s={name:"studip-asset-img",props:["width","file"],computed:{url:function(){return"".concat(STUDIP.ASSETS_URL,"images/").concat(this.file)}}},i=(0,u(51900).Z)(s,r,[],!1,null,null,null);i.options.__file="resources/vue/components/StudipAssetImg.vue";var n=i.exports}}]);
-//# sourceMappingURL=9967.chunk.js.map?h=8eb9d28de772c2f453b5
+//# sourceMappingURL=9967.chunk.js.map?h=efa7a35fc62d8e7888a3
