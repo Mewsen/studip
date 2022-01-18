@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://@studip/core/./resources/vue/components/StudipTooltipIcon.vue"],"names":[],"mappings":"AAuCA,8CACI","file":"stylesheets/7544.css?h=c03d379b39439a9be85f","sourcesContent":["\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n.tooltip.tooltip-icon::before {\n    display: none;\n}\n"],"sourceRoot":""}

@@ -10,7 +10,7 @@ return array(
     'ADODB_xmlrpc' => $vendorDir . '/phpxmlrpc/extras/adodb/drivers/adodb-xmlrpc.inc.php',
     'ADORecordSet_soap' => $vendorDir . '/phpxmlrpc/extras/adodb/drivers/adodb-soap.inc.php',
     'ADORecordSet_xmlrpc' => $vendorDir . '/phpxmlrpc/extras/adodb/drivers/adodb-xmlrpc.inc.php',
-    'ADORecordset_empty_I' => $vendorDir . '/phpxmlrpc/extras/adodb/drivers/adodb-xmlrpc.inc.php',
+    'ADORecordset_empty_I' => $vendorDir . '/phpxmlrpc/extras/adodb/drivers/adodb-soap.inc.php',
     'CAS_AuthenticationException' => $vendorDir . '/jasig/phpcas/source/CAS/AuthenticationException.php',
     'CAS_Client' => $vendorDir . '/jasig/phpcas/source/CAS/Client.php',
     'CAS_CookieJar' => $vendorDir . '/jasig/phpcas/source/CAS/CookieJar.php',
