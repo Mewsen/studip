@@ -36,6 +36,7 @@
                         <router-link :to="'/structural_element/' + child.id" :title="child.attributes.title">
                             <div
                                 class="preview-image"
+                                :class="[hasImage(child) ? '' : 'default-image']"
                                 :style="getChildStyle(child)"
                             ></div>
                             <div class="description">
@@ -169,7 +170,10 @@ export default {
             } else {
                 return {};
             }
-        }
+        },
+        hasImage(child) {
+            return child.relationships?.image?.data !== null;
+        },
     },
 };
 </script>
