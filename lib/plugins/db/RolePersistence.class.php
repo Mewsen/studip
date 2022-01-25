@@ -221,7 +221,7 @@ class RolePersistence
         $cache = self::getUserRolesCache();
 
         if (!isset($cache[$user_id])) {
-            $query = "SELECT DISTINCT *
+            $query = "SELECT SQL_CACHE DISTINCT *
                       FROM (
                           SELECT `roleid`, `institut_id`, 1 AS explicit
                           FROM `roles_user`

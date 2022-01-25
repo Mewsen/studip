@@ -51,7 +51,7 @@ class SeminarDB
 
     public static function getSingleDates($seminar_id, $start = 0, $end = 0)
     {
-        $query = "SELECT termine.*, resource_bookings.resource_id, GROUP_CONCAT(DISTINCT trp.user_id) AS related_persons,  GROUP_CONCAT(DISTINCT trg.statusgruppe_id) AS related_groups
+        $query = "SELECT SQL_CACHE termine.*, resource_bookings.resource_id, GROUP_CONCAT(DISTINCT trp.user_id) AS related_persons,  GROUP_CONCAT(DISTINCT trg.statusgruppe_id) AS related_groups
                   FROM termine
                   LEFT JOIN termin_related_persons AS trp ON (termine.termin_id = trp.range_id)
                   LEFT JOIN termin_related_groups AS trg ON (termine.termin_id = trg.termin_id)

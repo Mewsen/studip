@@ -36,7 +36,7 @@ class StartNavigation extends Navigation
             }
             if (Config::get()->VOTE_ENABLE && WidgetHelper::hasWidget($GLOBALS['user']->id, 'Evaluations')) {
                 $threshold = object_get_visit_threshold();
-                $statement = DBManager::get()->prepare("
+                $statement = DBManager::get('studip-slave')->prepare("
                     SELECT COUNT(*)
                     FROM questionnaire_assignments
                         INNER JOIN questionnaires ON (questionnaires.questionnaire_id = questionnaire_assignments.questionnaire_id)
@@ -59,7 +59,7 @@ class StartNavigation extends Navigation
                           LEFT JOIN object_user_visits b ON (b.object_id = d.eval_id AND b.user_id = :user_id AND b.plugin_id = :plugin_id)
                           WHERE a.range_id = 'studip'
                           GROUP BY a.range_id";
-                $statement = DBManager::get()->prepare($query);
+                $statement = DBManager::get('studip-slave')->prepare($query);
                 $statement->bindValue(':user_id', $GLOBALS['user']->id);
                 $statement->bindValue(':threshold', $threshold);
                 $statement->bindValue(':plugin_id', -2);
