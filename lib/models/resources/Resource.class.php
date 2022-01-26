@@ -865,7 +865,8 @@ class Resource extends SimpleORMap implements StudipItem
                 throw new ResourceBookingException(
                     sprintf(
                         _('%1$s: Die Buchung vom %2$s bis %3$s konnte wegen Überlappungen nicht gespeichert werden: %4$s'),
-                        $this->getFullName(),
+                        "<a href='" . URLHelper::getLink('dispatch.php/resources/room_planning/booking_plan/', '') .
+                            $this->id . "'>" . $this->getFullName() . "</a>",
                         $begin->format('d.m.Y H:i'),
                         $end->format('H:i'),
                         $e->getMessage()
@@ -875,7 +876,8 @@ class Resource extends SimpleORMap implements StudipItem
                 throw new ResourceBookingException(
                     sprintf(
                         _('%1$s: Die Buchung vom %2$s bis %3$s konnte wegen Überlappungen nicht gespeichert werden: %4$s'),
-                        $this->getFullName(),
+                        "<a href='" . URLHelper::getLink('dispatch.php/resources/room_planning/booking_plan/', '') .
+                            $this->id . "'>" . $this->getFullName() . "</a>",
                         $begin->format('d.m.Y H:i'),
                         $end->format('d.m.Y H:i'),
                         $e->getMessage()
