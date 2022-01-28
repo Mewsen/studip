@@ -23,13 +23,14 @@ class ConsultationMailer
     /**
      * Sends a consultation information message.
      *
+     * @param  User             $sender  Sender
      * @param  User             $user    Recipient
      * @param  ConsultationSlot $slot    Slot in question
      * @param  string           $subject Subject of the message
      * @param  string           $reason  Reason for a booking or cancelation
      * @param  User             $sender  Sender of the message
      */
-    public static function sendMessage(User $user, ConsultationBooking $booking, $subject, $reason = '')
+    public static function sendMessage(?User $sender, User $user, ConsultationBooking $booking, string $subject, string $reason = '')
     {
         // Don't send message if user doesn't want it
         if (!UserConfig::get($user->id)->CONSULTATION_SEND_MESSAGES) {
@@ -44,7 +45,11 @@ class ConsultationMailer
             'reason' => $reason ?: _('Kein Grund angegeben'),
         ]);
 
-        messaging::sendSystemMessage($user, $subject, $message);
+        if ($sender === null) {
+            messaging::sendSystemMessage($user, $subject, $message);
+        } else {
+            self::getMessaging()->insert_message($message, $user->username, $sender->id, '', '', '', '', $subject);
+        }
 
         restoreLanguage();
     }
@@ -52,12 +57,14 @@ class ConsultationMailer
     /**
      * Send a booking information message to the teacher of the booked slot.
      *
+     * @param  User                $sender  Sender
      * @param  ConsultationBooking $booking The booking
      */
-    public static function sendBookingMessageToTeacher(ConsultationBooking $booking)
+    public static function sendBookingMessageToTeacher(?User $sender, ConsultationBooking $booking)
     {
         foreach ($booking->slot->block->responsible_persons as $user) {
             self::sendMessage(
+                $sender,
                 $user,
                 $booking,
                 sprintf(_('Termin von %s zugesagt'), $booking->user->getFullName()),
@@ -69,11 +76,13 @@ class ConsultationMailer
     /**
      * Send a booking information message to the user of the booked slot.
      *
+     * @param  User                $sender  Sender
      * @param  ConsultationBooking $booking The booking
      */
-    public static function sendBookingMessageToUser(ConsultationBooking $booking)
+    public static function sendBookingMessageToUser(?User $sender, ConsultationBooking $booking)
     {
         self::sendMessage(
+            $sender,
             $booking->user,
             $booking,
             sprintf(_('Termin bei %s zugesagt'), $booking->slot->block->range_display),
@@ -85,13 +94,14 @@ class ConsultationMailer
      * Send an information message about a changed reason to a user of the
      * booked slot.
      *
+     * @param  User                $sender  Sender
      * @param  ConsultationBooking $booking  The booking
      * @param  User                $receiver The receiver of the message
-     * @param  User                $sender   The sender of the message
      */
-    public static function sendReasonMessage(ConsultationBooking $booking, User $receiver)
+    public static function sendReasonMessage(?User $sender, ConsultationBooking $booking, User $receiver)
     {
         self::sendMessage(
+            $sender,
             $receiver,
             $booking,
             sprintf(_('Grund des Termins bei %s bearbeitet'), $booking->slot->block->range_display),
@@ -102,13 +112,15 @@ class ConsultationMailer
     /**
      * Send a cancelation message to the teacher of the booked slot.
      *
+     * @param  User                $sender  Sender
      * @param  ConsultationBooking $booking The booking
      * @param  String              $reason  Reason of the cancelation
      */
-    public static function sendCancelMessageToTeacher(ConsultationBooking $booking, $reason = '')
+    public static function sendCancelMessageToTeacher(?User $sender, ConsultationBooking $booking, ?string $reason = '')
     {
         foreach ($booking->slot->block->responsible_persons as $user) {
             self::sendMessage(
+                $sender,
                 $user,
                 $booking,
                 sprintf(_('Termin von %s abgesagt'), $booking->user->getFullName()),
@@ -120,12 +132,14 @@ class ConsultationMailer
     /**
      * Send a cancelation message to the user of the booked slot.
      *
+     * @param  User                $sender  Sender
      * @param  ConsultationBooking $booking The booking
      * @param  String              $reason  Reason of the cancelation
      */
-    public static function sendCancelMessageToUser(ConsultationBooking $booking, $reason)
+    public static function sendCancelMessageToUser(?User $sender, ConsultationBooking $booking, ?string $reason)
     {
         self::sendMessage(
+            $sender,
             $booking->user,
             $booking,
             sprintf(_('Termin bei %s abgesagt'), $booking->slot->block->range_display),
