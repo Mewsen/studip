@@ -1182,7 +1182,7 @@ msgstr "Friday"
 msgid "Fügt einen Standard-Abschnitt mit einem Text-Block hinzu"
 msgstr "Adds a default section with a text block"
 
-#: resources/assets/javascripts/lib/questionnaire.js:120
+#: resources/assets/javascripts/lib/questionnaire.js:122
 msgid "Füllen Sie noch die rot markierten Stellen korrekt aus."
 msgstr "Fill in the red marked areas correctly."
 
@@ -2124,7 +2124,7 @@ msgstr "Non-allocatable rooms:"
 msgid "Niveau"
 msgstr "Level"
 
-#: resources/assets/javascripts/lib/questionnaire.js:120
+#: resources/assets/javascripts/lib/questionnaire.js:122
 msgid "Noch nicht komplett ausgefüllt."
 msgstr "Not yet filled in completely."
 
