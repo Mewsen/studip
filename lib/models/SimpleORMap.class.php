@@ -241,7 +241,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         }
 
         foreach (['has_many', 'belongs_to', 'has_one', 'has_and_belongs_to_many'] as $type) {
-            if (is_array($config[$type])) {
+            if (isset($config[$type]) && is_array($config[$type])) {
                 foreach (array_keys($config[$type]) as $one) {
                     $config['relations'][$one] = null;
                 }
@@ -310,9 +310,9 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
 
         $config['known_slots'] = array_merge(
             array_keys($config['db_fields']),
-            array_keys($config['alias_fields'] ?: []),
-            array_keys($config['additional_fields'] ?: []),
-            array_keys($config['relations'] ?: [])
+            array_keys($config['alias_fields'] ?? []),
+            array_keys($config['additional_fields'] ?? []),
+            array_keys($config['relations'] ?? [])
         );
 
         foreach (array_map('strtolower', get_class_methods($class)) as $method) {
@@ -339,7 +339,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             static::configure();
         }
 
-        return self::$config[static::class][$key];
+        return self::$config[static::class][$key] ?? null;
     }
 
     /**
@@ -1027,7 +1027,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         if (!$options['class_name']) {
             throw new Exception('Option class_name not set for relation ' . $name);
         }
-        if (!$options['assoc_foreign_key']) {
+        if (!isset($options['assoc_foreign_key']) || !$options['assoc_foreign_key']) {
             if ($type === 'has_many' || $type === 'has_one') {
                 $options['assoc_foreign_key'] = $this->pk[0];
             } else if ($type === 'belongs_to') {
@@ -1062,14 +1062,14 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                 throw new Exception("For relation " . $name . " assoc_foreign_key must be a name of a column");
             }
         }
-        if (!$options['assoc_func']) {
+        if (!isset($options['assoc_func']) || !$options['assoc_func']) {
             if ($type !== 'has_and_belongs_to_many') {
                 $options['assoc_func'] = $options['assoc_foreign_key'] === 'id' ? 'find' : 'findBy' . $options['assoc_foreign_key'];
             } else {
                 $options['assoc_func'] = 'findThru';
             }
         }
-        if (!$options['foreign_key']) {
+        if (!isset($options['foreign_key']) || !$options['foreign_key']) {
             $options['foreign_key'] = 'id';
         }
         if ($options['foreign_key'] instanceof Closure) {
@@ -1758,7 +1758,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         $where_query = null;
         $pk_not_set = [];
         foreach ($this->pk as $key) {
-            $pk = $this->content_db[$key] ?: $this->content[$key];
+            $pk = $this->content_db[$key] ?? $this->content[$key] ?? null;
             if (isset($pk)) {
                 $where_query[] = "`{$this->db_table}`.`{$key}` = "  . DBManager::get()->quote($pk);
             } else {
@@ -2134,7 +2134,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             }
             $params = $options['assoc_func_params_func'];
             if ($options['type'] === 'has_many') {
-                $records = function($record) use ($to_call, $params, $options) {$p = (array)$params($record); return call_user_func_array($to_call, array_merge(count($p) ? $p : [null], [$options['order_by']]));};
+                $records = function($record) use ($to_call, $params, $options) {$p = (array)$params($record); return call_user_func_array($to_call, array_merge(count($p) ? $p : [null], [$options['order_by'] ?? null]));};
                 $this->relations[$relation] = new SimpleORMapCollection($records, $options, $this);
             } elseif ($options['type'] === 'has_and_belongs_to_many') {
                 $records = function($record) use ($to_call, $params, $options) {$p = (array)$params($record); return call_user_func_array($to_call, array_merge(count($p) ? $p : [null], [$options]));};

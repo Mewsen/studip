@@ -568,7 +568,7 @@ class PluginManager
             $plugin = $plugin_class->newInstance();
         }
 
-        return $this->plugin_cache[$class] = $plugin;
+        return $this->plugin_cache[$class] = $plugin ?? null;
     }
 
     /**
@@ -587,7 +587,7 @@ class PluginManager
             $plugin = $this->getCachedPlugin($plugin_info);
         }
 
-        return $plugin;
+        return $plugin ?? null;
     }
 
     /**

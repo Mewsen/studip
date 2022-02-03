@@ -1,5 +1,5 @@
 <?php
-NotificationCenter::postNotification('PageWillRender', $body_id ? : PageLayout::getBodyElementId());
+NotificationCenter::postNotification('PageWillRender', $body_id ?? PageLayout::getBodyElementId());
 $navigation = PageLayout::getTabNavigation();
 $tab_root_path = PageLayout::getTabNavigationPath();
 if ($navigation) {
@@ -98,7 +98,7 @@ $getInstalledLanguages = function () {
     </script>
 </head>
 
-<body id="<?= $body_id ?: PageLayout::getBodyElementId() ?>" <? if (SkipLinks::isEnabled()) echo 'class="enable-skiplinks"'; ?>>
+<body id="<?= $body_id ?? PageLayout::getBodyElementId() ?>" <? if (SkipLinks::isEnabled()) echo 'class="enable-skiplinks"'; ?>>
 <div id="layout_wrapper">
     <? SkipLinks::insertContainer() ?>
     <? SkipLinks::addIndex(_('Hauptinhalt'), 'layout_content', 100, true) ?>
@@ -138,7 +138,7 @@ $getInstalledLanguages = function () {
         <? endif ?>
 
         <? if (PageLayout::isHeaderEnabled() /*&& isset($navigation)*/) : ?>
-            <?= $this->render_partial('tabs', compact('navigation', 'membership')) ?>
+            <?= $this->render_partial('tabs', @compact('navigation', 'membership')) ?>
         <? endif; ?>
         </nav>
     <? endif; ?>
@@ -199,4 +199,4 @@ $getInstalledLanguages = function () {
     </a>
 </body>
 </html>
-<?php NotificationCenter::postNotification('PageDidRender', $body_id ? : PageLayout::getBodyElementId());
+<?php NotificationCenter::postNotification('PageDidRender', $body_id ?? PageLayout::getBodyElementId());

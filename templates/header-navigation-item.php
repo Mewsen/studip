@@ -2,7 +2,7 @@
 $attributes = $nav->getLinkAttributes();
 
 $image_attributes = $nav->getImage()->getAttributes();
-$attributes['title'] = $image_attributes['title'];
+$attributes['title'] = $image_attributes['title'] ?? null;
 
 // Add badge number to link attributes
 if ($nav->getBadgeNumber()) {

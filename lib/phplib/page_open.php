@@ -30,7 +30,7 @@ function page_open($feature) {
             # the perm feature depends on auth and sess
             if (isset($feature["perm"])) {
 
-                if (!is_object($GLOBALS['perm'])) {
+                if (!isset($GLOBALS['perm']) || !is_object($GLOBALS['perm'])) {
                     $GLOBALS['perm'] = new $feature["perm"];
                 }
             }
@@ -38,7 +38,7 @@ function page_open($feature) {
             # the user feature depends on auth and sess
             if (isset($feature["user"])) {
 
-                if (!is_object($GLOBALS['user'])) {
+                if (!isset($GLOBALS['user']) || !is_object($GLOBALS['user'])) {
 
                     $GLOBALS['user'] = new $feature["user"]($GLOBALS['auth']->auth["uid"]);
                 }

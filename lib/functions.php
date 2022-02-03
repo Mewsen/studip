@@ -1007,7 +1007,7 @@ function format_help_url($keyword)
 {
     // all help urls need short language tag (de, en)
     $lang = 'de';
-    if ($_SESSION['_language']) {
+    if (isset($_SESSION['_language'])) {
         [$lang] = explode('_', $_SESSION['_language']);
     }
 
@@ -1428,6 +1428,8 @@ function get_route($route = '')
         $trails = explode('dispatch.php/', $route);
         $dispatcher = new StudipDispatcher();
         $pieces = explode('/', $trails[1]);
+
+        $trail = '';
         foreach ($pieces as $index => $piece) {
             $trail .= ($trail ? '/' : '') . $piece;
             if ($dispatcher->file_exists($trail . '.php')) {

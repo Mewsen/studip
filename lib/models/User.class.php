@@ -535,7 +535,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
             $format = 'full';
         }
 
-        $sql = $GLOBALS['_fullname_sql'][$format];
+        $sql = $GLOBALS['_fullname_sql'][$format] ?? null;
         if (!$sql || $format == 'no_title') {
             return $this->vorname . ' ' . $this->nachname;
         }

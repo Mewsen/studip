@@ -151,9 +151,7 @@ class LinkElement extends WidgetElement implements ArrayAccess
      */
     public function addClass($class)
     {
-        $this->attributes['class'] = $this->attributes['class']
-            ? $this->attributes['class'] . " " . $class
-            : $class;
+        $this->attributes['class'] = trim(($this->attributes['class'] ?? '') . " {$class}");
         return $this;
     }
 

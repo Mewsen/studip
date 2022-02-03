@@ -83,7 +83,7 @@ class SkipLinks
      * @param integer $position the position of the link in the list
      * @param boolean $overwriteable false if position is not overwritable by another link
      */
-    public static function addIndex($name, $id, $position = null, $overwriteable = false)
+    public static function addIndex($name, $id, $position = null, $overwritable = false)
     {
         $url = '#' . $id;
         self::addLink($name, $url, $position, $overwriteable);
@@ -124,7 +124,7 @@ class SkipLinks
         if (isset(self::$position[$link['position']])) {
             return false;
         }
-        if (!$link['overwrite']) {
+        if (!isset($link['overwrite']) || !$link['overwrite']) {
             self::$position[$link['position']] = true;
         }
         return true;

@@ -216,7 +216,7 @@ class Seminar_Perm
     {
 
         $pageperm = $this->permissions[$perm];
-        $userperm = $this->permissions[$this->get_studip_perm($range_id, $user_id)];
+        $userperm = $this->permissions[$this->get_studip_perm($range_id, $user_id)] ?? 0;
 
         return $pageperm <= $userperm;
     }

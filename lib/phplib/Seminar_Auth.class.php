@@ -265,7 +265,9 @@ class Seminar_Auth
         $cfg = Config::GetInstance();
         //check if the user got kicked meanwhile, or if user is locked out
         if ($this->auth['uid'] && !in_array($this->auth['uid'], ['form', 'nobody'])) {
-            $user = $GLOBALS['user']->id == $this->auth['uid'] ? $GLOBALS['user'] : User::find($this->auth['uid']);
+            $user = (isset($GLOBALS['user']) && $GLOBALS['user']->id == $this->auth['uid'])
+                  ? $GLOBALS['user']
+                  : User::find($this->auth['uid']);
             $exp_d = $user->username ? UserConfig::get($user->id)->EXPIRATION_DATE : 0;
             if (!$user->username || $user->locked || ($exp_d > 0 && $exp_d < time())) {
                 $this->unauth();

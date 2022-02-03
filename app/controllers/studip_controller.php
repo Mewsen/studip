@@ -293,7 +293,7 @@ abstract class StudipController extends Trails_Controller
         $to = implode('/', $args);
 
         //preserve fragment
-        [$to, $fragment] = explode('#', $to);
+        [$to, $fragment] = @explode('#', $to);
 
         $url = parent::url_for($to);
 

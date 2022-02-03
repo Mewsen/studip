@@ -120,7 +120,7 @@ class Navigation implements IteratorAggregate
             }
 
             $subnav = $node->getSubNavigation();
-            $node = $subnav[$name];
+            $node = $subnav[$name] ?? null;
 
             if (!isset($node)) {
                 throw new InvalidArgumentException("navigation item '$path' not found");

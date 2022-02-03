@@ -41,7 +41,7 @@
             <li>
             <a
             <? if (is_internal_url($url = $nav->getURL())) : ?>
-                href="<?= URLHelper::getLink($url, $header_template->link_params) ?>"
+                href="<?= URLHelper::getLink($url, $header_template->link_params ?? []) ?>"
             <? else: ?>
                 href="<?= htmlReady($url) ?>" target="_blank" rel="noopener noreferrer"
             <? endif ?>

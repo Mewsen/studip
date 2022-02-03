@@ -65,9 +65,10 @@ class NotificationCenter
                   };
         }
 
-        self::$observers[$event][] =
-            ['predicate' => $predicate ?: NULL,
-                  'observer'  => [$observer, $method]];
+        self::$observers[$event][] = [
+            'predicate' => $predicate ?? NULL,
+            'observer'  => [$observer, $method]
+        ];
     }
 
     /**

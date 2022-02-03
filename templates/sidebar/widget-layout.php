@@ -1,9 +1,9 @@
 <div class="<?= $base_class ?>-widget <? if ($layout_css_classes && is_array($layout_css_classes)) echo htmlReady(implode(' ', $layout_css_classes)); ?>"
-    <? if ($id) printf('id="%s"', htmlReady($id)) ?>
-    <? if ($style) printf('style="%s"', $style) ?>>
+    <? if ($id ?? false) printf('id="%s"', htmlReady($id)) ?>
+    <? if ($style ?? false) printf('style="%s"', $style) ?>>
 <? if ($title): ?>
     <div class="<?= $base_class ?>-widget-header">
-    <? if ($extra): ?>
+    <? if ($extra ?? false): ?>
         <div class="<?= $base_class ?>-widget-extra"><?= $extra ?></div>
     <? endif; ?>
         <?= htmlReady($title) ?>

@@ -55,7 +55,7 @@ foreach ($topFolder->getAdditionalActionButtons() as $button) {
                  :files="files"
                  :folders="folders"
                  :topfolder="topfolder"
-                 enable_table_filter="<?= $enable_table_filter ? 'true' : 'false' ?>"
+                 enable_table_filter="<?= $enable_table_filter ?? false ? 'true' : 'false' ?>"
                  table_title="<?= htmlReady($table_title) ?>"
                  pagination="<?= htmlReady($pagination_html) ?>"
                  :initial_sort="{sortedBy:'chdate',sortDirection:'desc'}"

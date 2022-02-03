@@ -178,12 +178,12 @@ class StudipPDO extends PDO
      * @param mixed     fetch mode parameter (see PDOStatement::setFetchMode)
      * @return object   PDOStatement object
      */
-    public function query($statement, $mode = NULL, $arg1 = NULL, $arg2 = NULL)
+    public function query($statement, $fetch_mode = NULL, ...$fetch_args)
     {
         $this->verify($statement);
 
         if (isset($mode)) {
-            $stmt = parent::query($statement, $mode, $arg1, $arg2);
+            $stmt = parent::query($statement, $mode, ...$fetchArgs);
         } else {
             $stmt = parent::query($statement);
         }
