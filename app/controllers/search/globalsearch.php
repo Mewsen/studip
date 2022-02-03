@@ -116,7 +116,7 @@ class Search_GlobalsearchController extends AuthenticatedController
     private function getSemesters()
     {
         // set the current semester as the initially selected semester
-        if (!$_SESSION['global_search']['selects']) {
+        if (empty($_SESSION['global_search']['selects'])) {
             $current_sem = GlobalSearchModule::getCurrentSemester();
             $_SESSION['global_search']['selects']['semester'] = $current_sem;
         }

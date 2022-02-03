@@ -217,7 +217,7 @@ class SemClass implements ArrayAccess
      */
     public function getModuleMetadata($modulename)
     {
-        return $this->data['modules'][$modulename];
+        return $this->data['modules'][$modulename] ?? false;
     }
 
     /**
@@ -310,8 +310,8 @@ class SemClass implements ArrayAccess
     public function isModuleAllowed($modulename)
     {
         return !isset($this->data['modules'][$modulename])
-            || !$this->data['modules'][$modulename]['sticky']
-            ||  $this->data['modules'][$modulename]['activated'];
+            || empty($this->data['modules'][$modulename]['sticky'])
+            || !empty($this->data['modules'][$modulename]['activated']);
     }
 
     /**
@@ -322,8 +322,8 @@ class SemClass implements ArrayAccess
     public function isModuleMandatory($module)
     {
         return isset($this->data['modules'][$module])
-            && $this->data['modules'][$module]['sticky']
-            && $this->data['modules'][$module]['activated'];
+            && !empty($this->data['modules'][$module]['sticky'])
+            && !empty($this->data['modules'][$module]['activated']);
     }
 
     public function getSemTypes()

@@ -66,9 +66,11 @@ class BreadCrumb
         $newTrail = [];
         $lastElement = false;
         foreach ($trail as $key => $trail_item) {
-            if ($lastElement) break;
+            if ($lastElement) {
+                break;
+            }
             $newTrail[$key] = $trail_item;
-            $lastElement = $key === $id;
+            $lastElement = isset($id) && $key === $id;
         }
         $this->trail = $newTrail;
     }

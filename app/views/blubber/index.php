@@ -1,7 +1,7 @@
 <div class="blubber_panel"
      data-active_thread="<?= htmlReady($thread->getId()) ?>"
      data-thread_data="<?= htmlReady(json_encode($thread_data ?: ['thread_posting' => []])) ?>"
-     data-threads_more_down="<?= htmlReady($threads_more_down) ?>"
+     data-threads_more_down="<?= htmlReady($threads_more_down ?? '') ?>"
      :class="waiting ? 'waiting' : ''">
 
     <div id="blubber_stream_container">

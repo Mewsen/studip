@@ -48,7 +48,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
     }
 
     public static $mention_thread_id = null;
-    protected $last_visit = null;
+    protected $last_visit = [];
 
     /**
      * Pre-Markup rule. Recognizes mentions in blubber as @username or @"Firstname lastname"
@@ -921,9 +921,8 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
             'user_id' => $user_id,
             'html_id' => "blubberthread_".$this->getId()
         ]);
-        $this->last_visit[$user_id] = !$this->last_visit[$user_id]
-            ? object_get_visit($this->getId(), "blubberthread", "last", "", $user_id)
-            : $this->last_visit[$user_id];
+        $this->last_visit[$user_id] = $this->last_visit[$user_id]
+                                   ?? object_get_visit($this->getId(), 'blubberthread', 'last', '', $user_id);
         UserConfig::get($user_id)->store("BLUBBERTHREAD_VISITED_".$this->getId(), time());
     }
 
@@ -955,7 +954,13 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
             }
 
             foreach ($matches[1] as $tag) {
-                $hashtags[mb_strtolower($tag)] += 1;
+                $tag = mb_strtolower($tag);
+
+                if (!isset($hashtags[$tag])) {
+                    $hashtags[$tag] = 0;
+                }
+
+                $hashtags[$tag] += 1;
             }
         }
         asort($hashtags);

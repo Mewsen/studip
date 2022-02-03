@@ -34,7 +34,7 @@ class Search_CoursesController extends AuthenticatedController
             Navigation::activateItem('/search/courses/' . $this->nav_option);
         } else {
             URLHelper::removeLinkParam('option');
-            $level = Request::get('level', $_SESSION['sem_browse_data']['level']);
+            $level = Request::get('level', $_SESSION['sem_browse_data']['level'] ?? null);
             $default_option = SemBrowse::getSearchOptionNavigation('sidebar');
             if (!$level) {
                 PageLayout::setTitle(_($default_option->getTitle()));

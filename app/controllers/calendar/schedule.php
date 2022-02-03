@@ -77,6 +77,7 @@ class Calendar_ScheduleController extends AuthenticatedController
             }
             Navigation::activateItem('/browse/my_courses/schedule');
         } else {
+            $institute_id = null;
             Navigation::activateItem('/calendar/schedule');
         }
 

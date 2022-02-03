@@ -526,10 +526,10 @@ class StudipCoreFormat extends TextFormat
      */
     protected static function markupMedia($markup, $matches)
     {
-        $tag = $matches[1];
-        $params = explode(":",$matches[2]);
-        $url = $matches[3];
-        $whitespace = $matches[4];
+        $tag = $matches[1] ?? null;
+        $params = explode(':', $matches[2] ?? '');
+        $url = $matches[3] ?? null;
+        $whitespace = $matches[4] ?? null;
 
         foreach ($params as $key => $param) {
             if ($param) {
@@ -556,6 +556,8 @@ class StudipCoreFormat extends TextFormat
 
         $url = TransformInternalLinks($url);
         $pu = @parse_url($url);
+        $pu['first_target'] = false;
+        $intern = false;
         if (($pu['scheme'] == 'http' || $pu['scheme'] == 'https')
                 && ($pu['host'] == $_SERVER['HTTP_HOST'] || $pu['host'].':'.$pu['port'] == $_SERVER['HTTP_HOST'])
                 && mb_strpos($pu['path'], $GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP']) === 0) {
@@ -563,8 +565,6 @@ class StudipCoreFormat extends TextFormat
             $checkpath = urldecode(mb_substr($pu['path'], mb_strlen($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'])));
             if (mb_strpos($checkpath, '../') === false) {
                 list($pu['first_target']) = explode('/', $checkpath);
-            } else {
-                $pu['first_target'] = false;
             }
         }
         $LOAD_EXTERNAL_MEDIA = Config::GetInstance()->getValue('LOAD_EXTERNAL_MEDIA');
@@ -598,8 +598,8 @@ class StudipCoreFormat extends TextFormat
             $media = sprintf($format_strings[$tag],
                 $media_url,
                 isset($width) ? "width: ".$width."px;" : "",
-                $title,
-                $title
+                $title ?? '',
+                $title ?? ''
             );
         }
 
@@ -608,14 +608,14 @@ class StudipCoreFormat extends TextFormat
             $media = str_replace('<audio ', '<audio id="' . $random_id . '" onerror="STUDIP.Audio.handle(this);" ', $media);
         }
 
-        if ($link && $tag === "img") {
+        if (isset($link) && $tag === "img") {
             $media = sprintf('<a href="%s"%s>%s</a>',
                 $link,
                 !isLinkIntern($link) ? ' target="_blank" rel="noreferrer noopener"' : "",
                 $media
             );
         }
-        if ($position) {
+        if (isset($position)) {
             $media = '<div style="text-align: '.$position.'">'.$media.'</div>';
         }
         $media .= $whitespace;

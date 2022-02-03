@@ -115,7 +115,7 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
      */
     public function getMetadata($field)
     {
-        return $this->metadata[$field];
+        return $this->metadata[$field] ?? false;
     }
 
     /**

@@ -166,11 +166,11 @@ class Score
         $statements = [];
         foreach (self::getActivityTables() as $table) {
             $statements[] = "SELECT "
-                . ($table['date_column'] ?: 'mkdate')
+                . ($table['date_column'] ?? 'mkdate')
                 . " AS mkdate FROM "
                 . $table['table']
                 . " WHERE "
-                . ($table['user_id_column'] ?: 'user_id')
+                . ($table['user_id_column'] ?? 'user_id')
                 . " = :user "
                 . (!empty($table['where']) ? (' AND ' . $table['where']) : '');
         }

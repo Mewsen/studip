@@ -42,6 +42,8 @@ class StudipRangeTree extends TreeAbstract {
 
     var $sem_dates;
 
+    protected $entries_init_done = false;
+
     /**
     * constructor
     *
@@ -186,9 +188,12 @@ class StudipRangeTree extends TreeAbstract {
     }
 
     function getNumEntries($item_id, $num_entries_from_kids = false){
-        if (!$this->tree_data[$item_id])
+        if (!$this->tree_data[$item_id]) {
             return false;
-        if (!$this->entries_init_done) $this->initEntries();
+        }
+        if (!$this->entries_init_done) {
+            $this->initEntries();
+        }
 
         return parent::getNumEntries($item_id, $num_entries_from_kids);
     }

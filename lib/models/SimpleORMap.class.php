@@ -822,6 +822,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     public static function __callStatic($name, $arguments)
     {
+        $order = '';
         $db_table = static::config('db_table');
         $alias_fields = static::config('alias_fields');
         $db_fields = static::config('db_fields');
@@ -1036,17 +1037,17 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         }
         if ($type === 'has_and_belongs_to_many') {
             $thru_table = $options['thru_table'];
-            if (!$options['thru_key']) {
+            if (!isset($options['thru_key'])) {
                 $options['thru_key'] = $this->pk[0];
             }
-            if (!$options['thru_assoc_key'] || !$options['assoc_foreign_key']) {
+            if (!isset($options['thru_assoc_key']) || !isset($options['assoc_foreign_key'])) {
                 $class = $options['class_name'];
                 $record = new $class();
                 $meta = $record->getTableMetadata();
-                if (!$options['thru_assoc_key'] ) {
+                if (!isset($options['thru_assoc_key'])) {
                     $options['thru_assoc_key'] = $meta['pk'][0];
                 }
-                if (!$options['assoc_foreign_key']) {
+                if (!isset($options['assoc_foreign_key'])) {
                     $options['assoc_foreign_key']= $meta['pk'][0];
                 }
             }
@@ -1818,6 +1819,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         if ($this->applyCallbacks('before_store') === false) {
             return false;
         }
+        $ret = 0;
         if (!$this->isDeleted() && ($this->isDirty() || $this->isNew())) {
             if ($this->isNew()) {
                 if ($this->applyCallbacks('before_create') === false) {
@@ -2142,7 +2144,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             } else {
                 $p = (array)$params($this);
                 $records = call_user_func_array($to_call, count($p) ? $p : [null]);
-                $result = is_array($records) ? $records[0] : $records;
+                $result = is_array($records) ? ($records[0] ?? null) : $records;
                 $this->relations[$relation] = $result;
             }
         }

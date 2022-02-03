@@ -95,12 +95,12 @@ class SQLQuery
             unset($this->settings['where'][$name]);
         } elseif ($parameter === null && $condition !== null) {
             $this->settings['where'][$name] = $name;
-            $this->settings['parameter'] = array_merge((array) $this->settings['parameter'], $condition);
+            $this->settings['parameter'] = array_merge((array) ($this->settings['parameter'] ?? []), $condition);
         } elseif ($condition === null)  {
             $this->settings['where'][md5($name)] = $name;
         } else {
             $this->settings['where'][$name] = $condition;
-            $this->settings['parameter'] = array_merge((array) $this->settings['parameter'], $parameter);
+            $this->settings['parameter'] = array_merge((array) ($this->settings['parameter'] ?? []), $parameter);
         }
         return $this;
     }
@@ -218,7 +218,7 @@ class SQLQuery
             $sql = "SELECT `{$this->settings['table']}`.* ";
         }
 
-        foreach ((array) $this->settings['select'] as $alias => $statement) {
+        foreach ((array) ($this->settings['select'] ?? []) as $alias => $statement) {
             $sql .= $statement ? "{$statement} AS {$alias} " : $alias;
         }
 
@@ -268,25 +268,27 @@ class SQLQuery
     protected function getQuery()
     {
         $sql = "FROM `{$this->settings['table']}` ";
+        if (isset($this->settings['joins']) && is_array($this->settings['joins'])) {
         foreach ($this->settings['joins'] as $alias => $joindata) {
             $table = isset($joindata['table']) ? "{$joindata['table']} AS {$alias}" : $alias;
             $on = isset($joindata['on']) ? " ON ({$joindata['on']})" : '';
-            $sql .= " " . (isset($joindata['join']) ? $joindata['join'] : 'INNER JOIN') . " {$table}{$on} ";
+                $sql .= " " . ($joindata['join'] ?? 'INNER JOIN') . " {$table}{$on} ";
+            }
         }
-        if ($this->settings['where']) {
+        if (isset($this->settings['where'])) {
             $sql .= "WHERE (" . implode(") AND (", $this->settings['where']) . ") ";
         }
-        if ($this->settings['groupby']) {
+        if (isset($this->settings['groupby'])) {
             $sql .= "GROUP BY {$this->settings['groupby']} ";
         }
-        if ($this->settings['having']) {
+        if (isset($this->settings['having'])) {
             $sql .= "HAVING (" . implode(") AND (", $this->settings['having']) . ") ";
         }
 
-        if ($this->settings['order']) {
+        if (isset($this->settings['order'])) {
             $sql .= "ORDER BY {$this->settings['order']} ";
         }
-        if ($this->settings['limit']) {
+        if (isset($this->settings['limit']) && is_array($this->settings['limit'])) {
             $sql .= "LIMIT ". (int) $this->settings['limit'][0] . ", " . (int) $this->settings['limit'][1] . " ";
         }
         return $sql;

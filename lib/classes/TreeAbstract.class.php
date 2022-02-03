@@ -206,7 +206,10 @@ class TreeAbstract {
     */
     public function getKids($item_id)
     {
-        return (is_array($this->tree_childs[$item_id])) ? $this->tree_childs[$item_id] : null;
+        if (!isset($this->tree_childs[$item_id]) || !is_array($this->tree_childs[$item_id])) {
+            return null;
+        }
+        return $this->tree_childs[$item_id];
     }
 
     /**
@@ -219,7 +222,7 @@ class TreeAbstract {
     public function getNumKids($item_id)
     {
         if(!isset($this->tree_num_childs[$item_id])){
-            $this->tree_num_childs[$item_id] = (is_array($this->tree_childs[$item_id])) ? count($this->tree_childs[$item_id]) : 0;
+            $this->tree_num_childs[$item_id] = count($this->getKids($item_id) ?? []);
         }
         return $this->tree_num_childs[$item_id];
     }

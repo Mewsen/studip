@@ -79,9 +79,9 @@ class BlubberFormat extends StudipFormat
             $this->addMarkup(
                 $name,
                 $rule['start'],
-                $rule['end'],
-                $rule['callback'],
-                $rule['before'] ?: null
+                $rule['end'] ?? null,
+                $rule['callback'] ?? null,
+                $rule['before'] ?? null
             );
         }
     }

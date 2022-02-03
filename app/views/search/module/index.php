@@ -13,7 +13,7 @@
 <!-- Trefferset -->
 <table class="default collapsable">
     <caption>
-        <? if ($count) : ?>
+    <? if (isset($count)) : ?>
         <?= sprintf(_('Gefundene Module für <i>%s</i>'), htmlReady($sterm)) ?>
         <span class="actions">
             <? printf(ngettext('%s Modul', '%s Module', $count), $count); ?>

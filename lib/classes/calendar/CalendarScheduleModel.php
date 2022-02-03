@@ -221,13 +221,13 @@ class CalendarScheduleModel
                 $details = $stmt->fetch();
 
                 if ($entry['type'] == 'virtual') {
-                    $entry['color'] = $details['color'] ? $details['color'] : DEFAULT_COLOR_VIRTUAL;
+                    $entry['color'] = ($details && $details['color']) ? $details['color'] : DEFAULT_COLOR_VIRTUAL;
                     $entry['icons'][] = [
                         'image' => 'virtual.png',
                         'title' => _("Dies ist eine vorgemerkte Veranstaltung")
                     ];
                 } else {
-                    $entry['color'] = $details['color'] ?: ($member->gruppe % 9 + 1);
+                    $entry['color'] = ($details && $details['color']) ? $details['color'] : ($member->gruppe % 9 + 1);
                 }
                 $entry['visible'] = $details ? $details['visible'] : 1;
 
@@ -789,7 +789,7 @@ class CalendarScheduleModel
 
         $view = new CalendarWeekView($entries, 'schedule');
 
-        $view->setHeight(40 + (20 * $schedule_settings['zoom']));
+        $view->setHeight(40 + 20 * ($schedule_settings['zoom'] ?? 0));
         $view->setRange($schedule_settings['glb_start_time'], $schedule_settings['glb_end_time']);
         $view->setInsertFunction("function (entry, column, hour, end_hour) {
             STUDIP.Schedule.newEntry(entry, column, hour, end_hour)

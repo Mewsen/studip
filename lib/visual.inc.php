@@ -311,9 +311,9 @@ function isLinkIntern($url) {
         return true;
     }
 
-    return in_array($pum['scheme'], ['https', 'http', NULL], true)
-        && in_array($pum['host'], [$_SERVER['SERVER_NAME'], NULL], true)
-        && in_array($pum['port'], [$_SERVER['SERVER_PORT'], NULL], true)
+    return in_array($pum['scheme'] ?? null, ['https', 'http', null], true)
+        && in_array($pum['host'] ?? null, [$_SERVER['SERVER_NAME'], null], true)
+        && in_array($pum['port'] ?? null, [$_SERVER['SERVER_PORT'], null], true)
         && mb_strpos($pum['path'], $GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP']) === 0;
 }
 

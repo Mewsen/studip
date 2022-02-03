@@ -197,7 +197,7 @@ class Search_StudiengaengeController extends MVVController
             $this->sessSet('selected_semester', $sem);
         }
 
-        $this->with_courses = Request::option('with_courses', ($_SESSION['MVV_SEARCH_SEQUENCE_WITH_COURSES'] ?: null));
+        $this->with_courses = Request::option('with_courses', $_SESSION['MVV_SEARCH_SEQUENCE_WITH_COURSES'] ?? null);
         $_SESSION['MVV_SEARCH_SEQUENCE_WITH_COURSES'] = $this->with_courses;
 
         $studiengangTeil = StudiengangTeil::find($stgteil_id);
@@ -230,7 +230,7 @@ class Search_StudiengaengeController extends MVVController
             } else {
                 $this->active_sem = Semester::find($this->sessGet('selected_semester', Semester::findCurrent()->id));
             }
-            $this->active_sem = $this->semesters[$this->active_sem->id] ? $this->active_sem : null;
+            $this->active_sem = isset($this->semesters[$this->active_sem->id]) ? $this->active_sem : null;
             if (!$this->active_sem && count($this->semesters)) {
                 $active_sem = reset($this->semesters);
                 $this->active_sem = Semester::find($active_sem['semester_id']);

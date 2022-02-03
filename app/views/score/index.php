@@ -51,7 +51,7 @@
             $content = Assets::img('blank.gif', ['width' => 16]) . ' ';
 
             // News
-            if ($news = $person['newscount']) {
+            if ($news = ($person['newscount'] ?? false)) {
                 $tmp = sprintf(ngettext('Eine persönliche Ankündigung', '%s persönliche Ankündigungen', $news), $news);
                 $content .= sprintf(
                     '<a href="%s">%s</a> ',
@@ -63,7 +63,7 @@
             }
 
             // Votes
-            if ($vote = $person['votecount']) {
+            if ($vote = ($person['votecount'] ?? false)) {
                 $tmp = sprintf(ngettext('Eine Umfrage', '%s Umfragen', $vote), $vote);
                 $content .= sprintf(
                     '<a href="%s">%s</a> ',
@@ -75,7 +75,7 @@
             }
 
             // Termine
-            if ($termin = $person['eventcount']) {
+            if ($termin = ($person['eventcount'] ?? false)) {
                 $tmp = sprintf(ngettext('Ein Termin', '%s Termine', $termin), $termin);
                 $content .= sprintf(
                     '<a href="%s">%s</a> ',
