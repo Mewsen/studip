@@ -804,8 +804,8 @@ class MyRealmModel
             $data = $studygroup->toArray($data_fields);
             $data['tools'] = $studygroup->tools;
             $data['sem_class'] = $studygroup->getSemClass();
-            $data['start_semester'] = $studygroup->start_semester?->name;
-            $data['end_semester'] = $studygroup->end_semester?->name;
+            $data['start_semester'] = isset($studygroup->start_semester) ? $studygroup->start_semester->name : '';
+            $data['end_semester'] = isset($studygroup->end_semester) ? $studygroup->end_semester->name : '';
             $data['obj_type'] = 'sem';
             $data['user_status'] = $membership->status;
             $data['gruppe'] = $membership->gruppe;
