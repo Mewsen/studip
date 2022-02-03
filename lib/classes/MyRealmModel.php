@@ -308,8 +308,8 @@ class MyRealmModel
         foreach ($courses as $index => $course) {
             // export object to array for simple handling
             $_course = $course->toArray($param_array);
-            $_course['start_semester'] = $course->start_semester->name;
-            $_course['end_semester']   = $course->end_semester->name;
+            $_course['start_semester'] = $course->start_semester ? $course->start_semester->name : null;
+            $_course['end_semester']   = $course->end_semester ? $course->end_semester->name : null;
             $_course['sem_class']      = $course->getSemClass();
             $_course['obj_type']       = 'sem';
 
@@ -341,7 +341,7 @@ class MyRealmModel
             $_course['user_status']    = $user_status;
             $_course['gruppe']         = !$is_deputy ? @$member_ships[$course->id]['gruppe'] : $deputy->gruppe;
             $_course['sem_number_end'] = $course->isOpenEnded() ? $max_sem_key : Semester::getIndexById($course->end_semester->id);
-            $_course['sem_number']     = Semester::getIndexById($course->start_semester->id);
+            $_course['sem_number']     = $course->start_semester ? Semester::getIndexById($course->start_semester->id) : null;
             $_course['tools']        = $course->tools;
             $_course['name']           = $course->name;
             $_course['temp_name']      = $course->name;
@@ -364,7 +364,7 @@ class MyRealmModel
 
             // add the the course to the correct semester
 
-            if (!$_course['parent_course']) {
+            if (empty($_course['parent_course'])) {
                 if ($course->isOpenEnded()) {
                     if ($current_semester_nr >= $min_sem_key && $current_semester_nr <= $max_sem_key) {
                         $sem_courses[$current_semester_nr][$course->id] = $_course;
@@ -395,7 +395,7 @@ class MyRealmModel
             return null;
         }
 
-        if ($params['main_navigation']) {
+        if (isset($params['main_navigation'])) {
             return $sem_courses;
         }
 

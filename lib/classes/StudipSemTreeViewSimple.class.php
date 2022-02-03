@@ -75,7 +75,7 @@ class StudipSemTreeViewSimple
                         <div class="sem-path">'.
                             '<div class="sem-path-dir">'.
                                 $this->getSemPath($start_id);
-                    echo 
+                    echo
                         '</div>
                         <div class="sem_path_info">
                             <div class="sem_path_title">'.
@@ -143,7 +143,8 @@ class StudipSemTreeViewSimple
                 <td class="table_row_even kids-tree-row" align="left" valign="top">
                     <ul class="semtree">';
         for ($i = 0; $i < $num_kids; ++$i){
-            if ($this->start_item_id != 'root') {
+            $num_entries = 0;
+            if ($this->start_item_id !== 'root') {
             $num_entries = $this->tree->getNumEntries($kids[$i],true);
                 $num_all_entries += $num_entries;
             }

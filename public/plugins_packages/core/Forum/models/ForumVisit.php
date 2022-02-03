@@ -133,7 +133,7 @@ class ForumVisit {
             }
         }
 
-        return $visit[$seminar_id][$GLOBALS['user']->id];
+        return $visit[$seminar_id][$GLOBALS['user']->id] ?? null;
     }
 
     /**
@@ -157,6 +157,6 @@ class ForumVisit {
     static function getVisit($seminar_id)
     {
         $visit = self::getVisitDates($seminar_id);
-        return $visit['visitdate'];
+        return $visit ? $visit['visitdate'] : null;
     }
 }

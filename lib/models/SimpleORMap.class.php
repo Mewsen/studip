@@ -218,7 +218,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         if (isset($config['additional_fields'])) {
             foreach ($config['additional_fields'] as $a_field => $a_config) {
                 if (is_array($a_config) && !(isset($a_config['get']) || isset($a_config['set']))) {
-                    list($relation, $relation_field) = $a_config;
+                    @list($relation, $relation_field) = $a_config;
                     if (!$relation) {
                         list($relation, $relation_field) = explode('_', $a_field);
                     }
@@ -620,7 +620,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         $record = new $class();
         $sql = "SELECT `$db_table`.* FROM `$thru_table`
         INNER JOIN `$db_table` ON `$thru_table`.`$thru_assoc_key` = `$db_table`.`$assoc_foreign_key`
-        WHERE `$thru_table`.`$thru_key` = ? " . $options['order_by'];
+        WHERE `$thru_table`.`$thru_key` = ? " . ($options['order_by'] ?? '');
         $db = DBManager::get();
         $st = $db->prepare($sql);
         $st->execute([$foreign_key_value]);
@@ -834,21 +834,21 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         $field = substr($name, strlen($prefix) + 2);
         switch ($prefix) {
             case 'findone':
-                $order = $arguments[1];
+                $order = $arguments[1] ?? null;
                 $param_arr[0] =& $where;
                 $param_arr[1] = [$where_param];
                 $method = 'findonebysql';
                 break;
             case 'find':
             case 'findmany':
-                $order = $arguments[1];
+                $order = $arguments[1] ?? null;
                 $param_arr[0] =& $where;
                 $param_arr[1] = [$where_param];
                 $method = 'findbysql';
                 break;
             case 'findeach':
             case 'findeachmany':
-                $order = $arguments[2];
+                $order = $arguments[2] ?? null;
                 $param_arr[0] = $arguments[0];
                 $param_arr[1] =& $where;
                 $param_arr[2] = [$arguments[1]];
@@ -1027,7 +1027,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         if (!$options['class_name']) {
             throw new Exception('Option class_name not set for relation ' . $name);
         }
-        if (!isset($options['assoc_foreign_key']) || !$options['assoc_foreign_key']) {
+        if (empty($options['assoc_foreign_key'])) {
             if ($type === 'has_many' || $type === 'has_one') {
                 $options['assoc_foreign_key'] = $this->pk[0];
             } else if ($type === 'belongs_to') {
@@ -1062,14 +1062,14 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                 throw new Exception("For relation " . $name . " assoc_foreign_key must be a name of a column");
             }
         }
-        if (!isset($options['assoc_func']) || !$options['assoc_func']) {
+        if (empty($options['assoc_func'])) {
             if ($type !== 'has_and_belongs_to_many') {
                 $options['assoc_func'] = $options['assoc_foreign_key'] === 'id' ? 'find' : 'findBy' . $options['assoc_foreign_key'];
             } else {
                 $options['assoc_func'] = 'findThru';
             }
         }
-        if (!isset($options['foreign_key']) || !$options['foreign_key']) {
+        if (empty($options['foreign_key'])) {
             $options['foreign_key'] = 'id';
         }
         if ($options['foreign_key'] instanceof Closure) {

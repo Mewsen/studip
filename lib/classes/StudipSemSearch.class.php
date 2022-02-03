@@ -173,6 +173,7 @@ class StudipSemSearch {
     }
 
     function getFormEnd(){
+        $ret = '';
         if ($this->search_sem_class != 'all'){
             $ret = $this->form->getHiddenField('category',$this->search_sem_class);
         }

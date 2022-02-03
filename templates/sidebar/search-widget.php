@@ -1,4 +1,4 @@
-<? if ($reset_search): ?>
+<? if ($reset_search ?? false): ?>
 <div style="text-align: right;">
     <?= $reset_search ?>
 </div>

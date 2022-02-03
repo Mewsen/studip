@@ -72,7 +72,11 @@ class Seminar
             if ($refresh_cache) {
                 self::$seminar_object_pool[$id] = null;
             }
-            if (is_object(self::$seminar_object_pool[$id]) && self::$seminar_object_pool[$id]->getId() == $id) {
+            if (
+                isset(self::$seminar_object_pool[$id])
+                && is_object(self::$seminar_object_pool[$id])
+                && self::$seminar_object_pool[$id]->getId() == $id
+            ) {
                 return self::$seminar_object_pool[$id];
             } else {
                 self::$seminar_object_pool[$id] = new Seminar($id);

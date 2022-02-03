@@ -197,9 +197,9 @@ class QuickSearch
         if (isset($design['width'])) {
             $this->box_width = $design['width'];
         }
-        $this->box_align = $design['align'] ? $design['align'] : "right";
-        $this->search_button_name = $design['search_button_name'];
-        $this->reset_button_name = $design['reset_button_name'];
+        $this->box_align = $design['align'] ?? 'right';
+        $this->search_button_name = $design['search_button_name'] ?? null;
+        $this->reset_button_name = $design['reset_button_name'] ?? null;
         return $this;
     }
 
@@ -354,7 +354,7 @@ class QuickSearch
             $template->set_attribute('withAttributes', $this->withAttributes);
             $template->set_attribute('searchresults', $searchresults);
             $template->set_attribute('name', $this->name);
-            $template->set_attribute('inputClass', $this->inputClass);
+            $template->set_attribute('inputClass', $this->withAttributes['class'] ?? '');
             $template->set_attribute('search_button_name', $this->search_button_name);
             $template->set_attribute('reset_button_name', $this->reset_button_name);
             $template->set_attribute('extendedLayout', $this->hasExtendedLayout());
@@ -363,9 +363,7 @@ class QuickSearch
         } else {
             //Abfrage in der Session speichern:
             $query_id = md5(serialize($this->search));
-            if ($this->specialQuery) {
-                $_SESSION['QuickSearches'][$query_id]['query'] = $this->specialQuery;
-            } elseif ($this->search instanceof SearchType) {
+            if ($this->search instanceof SearchType) {
                 $_SESSION['QuickSearches'][$query_id]['object'] = serialize($this->search);
                 if ($this->search instanceof SearchType) {
                     $_SESSION['QuickSearches'][$query_id]['includePath'] = $this->search->includePath();
@@ -381,13 +379,13 @@ class QuickSearch
             $template->set_attribute('withButton', $this->withButton);
             $template->set_attribute('box_align', $this->box_align);
             $template->set_attribute('box_width', $this->box_width);
-            $template->set_attribute('inputStyle', $this->inputStyle ? $this->inputStyle : "");
+            $template->set_attribute('inputStyle', $this->withAttributes['style'] ?? '');
             $template->set_attribute('beschriftung', $this->beschriftung());
             $template->set_attribute('name', $this->name);
             $template->set_attribute('defaultID', $this->defaultID);
             $template->set_attribute('defaultName', $this->defaultName);
-            $template->set_attribute('inputClass', $this->inputClass);
-            $template->set_attribute('withAttributes', $this->withAttributes ? $this->withAttributes : []);
+            $template->set_attribute('inputClass', $this->withAttributes['class'] ?? '');
+            $template->set_attribute('withAttributes', $this->withAttributes ?: []);
             $template->set_attribute('jsfunction', $this->jsfunction);
             $template->set_attribute('autocomplete_disabled', Config::get()->getValue("AJAX_AUTOCOMPLETE_DISABLED") || $this->autocomplete_disabled);
             $template->set_attribute('count_QS', self::$count_QS);

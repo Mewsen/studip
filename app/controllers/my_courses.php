@@ -723,14 +723,14 @@ class MyCoursesController extends AuthenticatedController
     public function check_course($seminar_content)
     {
 
-        if ($seminar_content['visitdate'] <= $seminar_content['chdate'] || $seminar_content['last_modified'] > 0) {
-            $last_modified = $seminar_content['visitdate'] <= $seminar_content['chdate']
-            && $seminar_content['chdate'] > $seminar_content['last_modified']
-                ? $seminar_content['chdate']
-                : $seminar_content['last_modified'];
-            if ($last_modified) {
+        if ($seminar_content['visitdate'] <= $seminar_content['chdate']) {
                 return true;
-            }
+            // $last_modified = $seminar_content['visitdate'] <= $seminar_content['chdate']
+            //                ? $seminar_content['chdate']
+            //                : $seminar_content['last_modified'];
+            // if ($last_modified) {
+            //     return true;
+            // }
         }
 
         $plugins_navigation = $seminar_content['navigation'];

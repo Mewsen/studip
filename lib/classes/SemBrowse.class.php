@@ -105,7 +105,7 @@ class SemBrowse {
             $this->sem_number = false;
         }
 
-        $sem_status = (is_array($this->sem_browse_data['sem_status'])) ? $this->sem_browse_data['sem_status'] : false;
+        $sem_status = $this->sem_browse_data['sem_status'] ?? false;
 
         if ($this->sem_browse_data['level'] == 'vv') {
             if (!$this->sem_browse_data['start_item_id']){
@@ -373,16 +373,16 @@ class SemBrowse {
         ob_start();
 
         echo "\n" . '<table id="sem_search_level" class="course-search" width="100%">' . "\n";
-        if ($this->sem_browse_data['level'] == 'vv') {
+        if ($this->sem_browse_data['level'] === 'vv') {
             echo "\n" . '<caption class="legend">'._('Studienbereiche').'<caption>';
             echo "\n" . '<tr><td align="center">';
-            $this->sem_tree->show_entries = $this->sem_browse_data['show_entries'];
+            $this->sem_tree->show_entries = $this->sem_browse_data['show_entries'] ?? false;
             $this->sem_tree->showSemTree($start_id);
         }
-        if ($this->sem_browse_data['level'] == 'ev') {
+        if ($this->sem_browse_data['level'] === 'ev') {
             echo "\n" . '<caption class="legend">'._('Einrichtungen').'<caption>';
             echo "\n" . '<tr><td align="center">';
-            $this->range_tree->show_entries = $this->sem_browse_data['show_entries'];
+            $this->range_tree->show_entries = $this->sem_browse_data['show_entries'] ?? false;
             $this->range_tree->showSemRangeTree($start_id);
         }
 
@@ -1248,8 +1248,8 @@ class SemBrowse {
                 $_SESSION['sem_browse_data']['qs_choose']);
 
         // simulate button clicked if semester was changed
-        if (Request::option('search_sem_sem', $_SESSION['sem_browse_data']['default_sem'])
-                != $_SESSION['sem_browse_data']['default_sem']) {
+        if (Request::option('search_sem_sem', $_SESSION['sem_browse_data']['default_sem'] ?? null)
+                != ($_SESSION['sem_browse_data']['default_sem'] ?? null)) {
             $_SESSION['sem_browse_data']['default_sem'] = Request::option('search_sem_sem');
             if ($_SESSION['sem_browse_data']['sset']) {
                 Request::set('search_sem_quick_search_parameter', $_SESSION['sem_browse_data']['sset']);
@@ -1293,15 +1293,15 @@ class SemBrowse {
         }
 
         // set default values
-        if (!$_SESSION['sem_browse_data']['default_sem']) {
-            $_SESSION['sem_browse_data']['default_sem'] =
-                    Semester::getIndexById(self::getDefaultSemester(), false, true)
-                        ?: 'all';
+        if (!isset($_SESSION['sem_browse_data']['default_sem'])) {
+            $_SESSION['sem_browse_data']['default_sem'] = Semester::getIndexById(
+                self::getDefaultSemester(),
+                false,
+                true
+            ) ?: 'all';
         }
-        $_SESSION['sem_browse_data']['show_class'] =
-                $_SESSION['sem_browse_data']['show_class'] ?: 'all';
-        $_SESSION['sem_browse_data']['group_by'] =
-                $_SESSION['sem_browse_data']['group_by'] ?: '0';
+        $_SESSION['sem_browse_data']['show_class'] = $_SESSION['sem_browse_data']['show_class'] ?? 'all';
+        $_SESSION['sem_browse_data']['group_by'] = $_SESSION['sem_browse_data']['group_by'] ?? '0';
     }
 
     /**
@@ -1354,14 +1354,18 @@ class SemBrowse {
         $sidebar = Sidebar::Get();
         $list = new SelectWidget(_('Semester'),
                 $submit_url, 'search_sem_sem');
-        $list->addElement(new SelectElement('all', _('Alle'),
-                ($_SESSION['sem_browse_data']['default_sem']) === 'all'));
+        $list->addElement(new SelectElement(
+            'all',
+            _('Alle'),
+            isset($_SESSION['sem_browse_data']['default_sem']) && $_SESSION['sem_browse_data']['default_sem'] === 'all'
+        ));
         foreach(array_reverse($semesters, true) as $i => $semester_data) {
             $list->addElement(new SelectElement(
                 $i,
                 $semester_data['name'],
-                ($_SESSION['sem_browse_data']['default_sem'] !== 'all'
-                    && intval($_SESSION['sem_browse_data']['default_sem']) === $i)
+                isset($_SESSION['sem_browse_data']['default_sem'])
+                    && $_SESSION['sem_browse_data']['default_sem'] !== 'all'
+                    && intval($_SESSION['sem_browse_data']['default_sem']) === $i
             ));
         }
         $sidebar->addWidget($list, 'filter_semester');
@@ -1435,7 +1439,7 @@ class SemBrowse {
             $search_form_content .= $this->search_obj->getHiddenField('range_choose', $this->range_tree->start_item_id);
 
         $search_form_content .= $this->search_obj->getHiddenField('level', $this->sem_browse_data['level']);
-        $search_form_content .= $this->search_obj->getHiddenField('sem', htmlReady($_SESSION['sem_browse_data']['default_sem']));
+        $search_form_content .= $this->search_obj->getHiddenField('sem', htmlReady($_SESSION['sem_browse_data']['default_sem'] ?? ''));
 
         $search_form_content .= $this->search_obj->getFormEnd();
         return $search_form_content;

@@ -1433,7 +1433,7 @@ function get_route($route = '')
         foreach ($pieces as $index => $piece) {
             $trail .= ($trail ? '/' : '') . $piece;
             if ($dispatcher->file_exists($trail . '.php')) {
-                $route = 'dispatch.php/' . $trail . ($pieces[$index+1] ? '/' . $pieces[$index+1] : '');
+                $route = 'dispatch.php/' . $trail . (isset($pieces[$index+1]) ? '/' . $pieces[$index+1] : '');
             }
         }
     }
@@ -1462,7 +1462,7 @@ function match_route($requested_route, $current_route = '')
         return false;
     }
     // if no parameters given and base routes do match, return true
-    if (!$route_parts[1]) {
+    if (empty($route_parts[1])) {
         return true;
     }
     // extract vars and check if they are set accordingly

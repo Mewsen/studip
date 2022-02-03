@@ -90,7 +90,7 @@ class Search_GlobalsearchController extends AuthenticatedController
             null,
             'seminar_type',
             $this->getSemClasses(),
-            $_SESSION['global_search']['selects']['seminar_type'],
+            $_SESSION['global_search']['selects']['seminar_type'] ?? null,
             ['id' => 'seminar_type_select']
         );
 
@@ -101,7 +101,7 @@ class Search_GlobalsearchController extends AuthenticatedController
             null,
             'institute',
             $this->getInstitutes(),
-            $_SESSION['global_search']['selects']['institute'],
+            $_SESSION['global_search']['selects']['institute'] ?? null,
             ['id' => 'institute_select']
         );
     }

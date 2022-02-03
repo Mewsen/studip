@@ -145,7 +145,7 @@ class Assets
 
         $parts = explode('/', $source);
 
-        $size = $opt['size'];
+        $size = $opt['size'] ?? null;
 
         $opt = Assets::parse_attributes($opt);
 
@@ -156,7 +156,7 @@ class Assets
         }
 
         if (isset($size) && !isset($opt['width'])) {
-            list($opt['width'], $opt['height']) = explode('@', $size, 2);
+            @list($opt['width'], $opt['height']) = explode('@', $size, 2);
             unset($opt['size']);
         }
 
@@ -413,4 +413,3 @@ class Assets
         return $attributes;
     }
 }
-

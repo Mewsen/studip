@@ -196,6 +196,7 @@ class PluginManager
                       WHERE range_id = ?";
             $statement = DBManager::get()->prepare($query);
             $statement->execute([$context]);
+
             $this->plugins_activated_cache[$context] = $statement->fetchGrouped(PDO::FETCH_COLUMN);
         }
         return isset($this->plugins_activated_cache[$context][$id]);
@@ -222,7 +223,7 @@ class PluginManager
             $statement->execute([$userId]);
             $this->plugins_activated_cache[$userId] = $statement->fetchGrouped(PDO::FETCH_COLUMN);
         }
-        $state = $this->plugins_activated_cache[$userId][$pluginId];
+        $state = $this->plugins_activated_cache[$userId][$pluginId] ?? null;
         if ($state === null) {
             $activated = (bool) Config::get()->HOMEPAGEPLUGIN_DEFAULT_ACTIVATION;
         } else {

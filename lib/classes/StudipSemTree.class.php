@@ -37,7 +37,7 @@ class StudipSemTree extends TreeAbstract
         if (isset($args['sem_number']) ){
             $this->sem_number = array_map('intval', $args['sem_number']);
         }
-        if ($args['sem_status']){
+        if (!empty($args['sem_status'])) {
             $this->sem_status = array_map('intval', $args['sem_status']);
         } else {
             foreach ($GLOBALS['SEM_CLASS'] as $key => $value){

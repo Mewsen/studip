@@ -40,7 +40,7 @@
 
         <tbody aria-relevant="additions" aria-live="polite" data-shiftcheck>
             <? if (count($messages) > 0) : ?>
-                <? if ($more || (Request::int("offset") > 0)) : ?>
+                <? if (($more ?? false) || (Request::int("offset") > 0)) : ?>
                 <noscript>
                 <tr>
                     <td colspan="8">
@@ -57,9 +57,9 @@
                 </noscript>
                 <? endif ?>
                 <? foreach ($messages as $message) : ?>
-                <?= $this->render_partial("messages/_message_row.php", compact("message", "received". "settings")) ?>
+                <?= $this->render_partial("messages/_message_row.php", compact("message", "received", "settings")) ?>
                 <? endforeach ?>
-                <? if ($more || (Request::int("offset") > 0)) : ?>
+                <? if (($more ?? false) || (Request::int("offset") > 0)) : ?>
                 <noscript>
                 <tr>
                     <td colspan="7">

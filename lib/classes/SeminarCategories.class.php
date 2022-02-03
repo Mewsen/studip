@@ -32,7 +32,8 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // +---------------------------------------------------------------------------+
 
-class SeminarCategories {
+class SeminarCategories
+{
 
     private static $seminar_categories = [];
 
@@ -45,10 +46,11 @@ class SeminarCategories {
      * @param String $id
      * @return Array
      */
-    public static function Get($id){
-        if(is_null(self::$seminar_categories[$id])){
+    public static function Get($id)
+    {
+        if (!isset(self::$seminar_categories[$id])){
             $cat = new SeminarCategories($id);
-            if($cat->id !== false) {
+            if ($cat->id !== false) {
                 self::$seminar_categories[$id] = $cat;
             } else {
                 self::$seminar_categories[$id] = false;

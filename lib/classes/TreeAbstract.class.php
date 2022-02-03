@@ -78,7 +78,7 @@ class TreeAbstract {
     * @access private
     * @var array    $tree_num_childs
     */
-    var $tree_num_childs = [];
+    private $tree_num_childs = [];
 
     var $index_offset = 0;
 
@@ -94,7 +94,7 @@ class TreeAbstract {
     */
     public static function GetInstance($class_name, $args = null, $invalidate_cache = false)
     {
-        static $tree_instance;
+        static $tree_instance = [];
 
         if ($args){
             $class_hash = $class_name . "_" . md5(serialize($args));
@@ -112,7 +112,7 @@ class TreeAbstract {
         } else {
             $class_hash = $class_name;
         }
-        if (!is_object($tree_instance[$class_hash]) || $invalidate_cache){
+        if (!isset($tree_instance[$class_hash]) || $invalidate_cache){
             $tree_instance[$class_hash] = new $class_name($args);
         }
 
@@ -162,7 +162,13 @@ class TreeAbstract {
         $this->tree_data[$item_id]["priority"] = $priority;
         $this->tree_data[$item_id]["name"] = $name;
         $this->tree_childs[$parent_id][] = $item_id;
-        ++$this->tree_num_childs[$parent_id];
+
+        if (!isset($this->tree_num_childs[$parent_id])) {
+            $this->tree_num_childs[$parent_id] = 1;
+        } else {
+            $this->tree_num_childs[$parent_id] += 1;
+        }
+
         return;
     }
 

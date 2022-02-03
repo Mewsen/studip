@@ -23,6 +23,7 @@
  */
 abstract class SearchType
 {
+     public $extendedLayout = false;
 
     /**
      * title of the search like "search for courses" or just "courses"

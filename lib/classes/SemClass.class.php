@@ -93,7 +93,10 @@ class SemClass implements ArrayAccess
 
         foreach ($slots as $slot => $module) {
             $data[$slot] = $module;
-            $modules[$module] = ['activated' => (int) $INST_MODULES[$type][$slot], 'sticky' => 0];
+            $modules[$module] = [
+                'activated' => (int) !empty($INST_MODULES[$type][$slot]),
+                'sticky'    => 0,
+            ];
         }
         $data['modules'] = json_encode($modules);
 
@@ -306,7 +309,7 @@ class SemClass implements ArrayAccess
      */
     public function isModuleAllowed($modulename)
     {
-        return !$this->data['modules'][$modulename]
+        return !isset($this->data['modules'][$modulename])
             || !$this->data['modules'][$modulename]['sticky']
             ||  $this->data['modules'][$modulename]['activated'];
     }
@@ -318,7 +321,8 @@ class SemClass implements ArrayAccess
      */
     public function isModuleMandatory($module)
     {
-        return $this->data['modules'][$module]['sticky']
+        return isset($this->data['modules'][$module])
+            && $this->data['modules'][$module]['sticky']
             && $this->data['modules'][$module]['activated'];
     }
 

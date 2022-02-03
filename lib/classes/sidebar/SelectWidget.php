@@ -28,6 +28,8 @@ class SelectWidget extends SidebarWidget
         $this->setMultiple($multiple);
 
         $this->template_variables['max_length'] = 30;
+        $this->template_variables['attributes'] = [];
+        $this->template_variables['class']      = '';
     }
 
     /**

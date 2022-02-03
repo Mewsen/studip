@@ -24,7 +24,7 @@ class BrowseNavigation extends Navigation
     {
         global $user, $perm;
 
-        $courselink = false;
+        $courselink = 'dispatch.php/my_courses';
 
         // check if logged in
         if (is_object($user) && $user->id != 'nobody') {
