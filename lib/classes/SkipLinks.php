@@ -101,7 +101,7 @@ class SkipLinks
         }
 
         usort(self::$links, function ($a, $b) {
-            return $a['position'] > $b['position'];
+            return $a['position'] - $b['position'];
         });
 
         $navigation = new Navigation('');

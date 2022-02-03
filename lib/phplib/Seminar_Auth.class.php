@@ -439,7 +439,7 @@ class Seminar_Auth
     {
         global $_language_path;
 
-        if ($GLOBALS['user']->id !== 'nobody') {
+        if (!isset($GLOBALS['user']) || $GLOBALS['user']->id !== 'nobody') {
             $GLOBALS['user'] = new Seminar_User('nobody');
             $GLOBALS['perm'] = new Seminar_Perm();
             $GLOBALS['auth'] = $this;

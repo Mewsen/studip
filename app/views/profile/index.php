@@ -81,13 +81,13 @@
 
 </section>
 
-<?= $news ?>
+<?= $news ?? '' ?>
 
-<?= $dates ?>
+<?= $dates ?? '' ?>
 
-<?= $evaluations ?>
+<?= $evaluations ?? '' ?>
 
-<?= $questionnaires ?>
+<?= $questionnaires ?? '' ?>
 
 <? if (!empty($ausgabe_inhalt)) : ?>
     <? foreach ($ausgabe_inhalt as $key => $inhalt) : ?>
@@ -110,7 +110,7 @@
     <?= $this->render_partial('profile/seminare') ?>
 <? endif ?>
 
-<? if ($show_lit && $lit_list) : ?>
+<? if (!empty($show_lit) && !empty($lit_list)) : ?>
     <article class="studip">
         <header>
             <h1><?= _('Literaturlisten') ?></h1>

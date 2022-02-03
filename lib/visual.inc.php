@@ -544,7 +544,7 @@ function printhead($breite, $left, $link, $open, $new, $icon, $titel, $zusatz,
 }
 
 //Ausgabe des Contents einer aufgeklappten Kopfzeile
-function printcontent ($breite, $write = FALSE, $inhalt, $edit, $printout = TRUE, $addon="", $noTdTag = false) {
+function printcontent ($breite, $write, $inhalt, $edit, $printout = TRUE, $addon="", $noTdTag = false) {
 
     $print = "";
     if ($noTdTag == false)
@@ -679,7 +679,7 @@ function TransformInternalLinks($str){
         }
         $str = $GLOBALS['ABSOLUTE_URI_STUDIP'] . $str;
     }
-    if (is_array($GLOBALS['STUDIP_DOMAINS']) && count($GLOBALS['STUDIP_DOMAINS']) > 1) {
+    if (isset($GLOBALS['STUDIP_DOMAINS']) && is_array($GLOBALS['STUDIP_DOMAINS']) && count($GLOBALS['STUDIP_DOMAINS']) > 1) {
         if (!isset($GLOBALS['TransformInternalLinks_domainData'])){
             $domain_data['domains'] = '';
             foreach ($GLOBALS['STUDIP_DOMAINS'] as $studip_domain) $domain_data['domains'] .= '|' . preg_quote($studip_domain);

@@ -1,4 +1,4 @@
-<?= $question ?>
+<?= $question ?? '' ?>
 <? if ($perm || $news): ?>
 <article class="studip">
     <header>

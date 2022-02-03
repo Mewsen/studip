@@ -179,7 +179,7 @@ if (!Request::isXhr() && $perm->have_perm('root')) {
         $_SESSION['migation-check']['disabled'] = true;
     }
 
-    if (!$_SESSION['migation-check']['disabled']
+    if (empty($_SESSION['migation-check']['disabled'])
         && $_SESSION['migration-check']['count'] > 0
     ) {
         $info = sprintf(

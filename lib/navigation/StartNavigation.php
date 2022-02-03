@@ -31,6 +31,7 @@ class StartNavigation extends Navigation
         parent::initItem();
 
         $news = 0;
+        $vote = 0;
         if (mb_stripos($_SERVER['REQUEST_URI'], "web_migrate.php") === false && is_object($GLOBALS['user']) && $GLOBALS['user']->id != 'nobody') {
             if (WidgetHelper::hasWidget($GLOBALS['user']->id, 'News')) {
                 $news = StudipNews::CountUnread();
@@ -98,13 +99,14 @@ class StartNavigation extends Navigation
     public function initSubNavigation()
     {
         global $perm, $auth;
-        $username = $auth->auth['uname'];
 
         parent::initSubNavigation();
 
         if (!is_object($perm) || !$perm->have_perm('user')) {
             return;
         }
+
+        $username = $auth->auth['uname'];
 
         $sem_create_perm = in_array(Config::get()->SEM_CREATE_PERM, ['root','admin','dozent'])
                          ? Config::get()->SEM_CREATE_PERM

@@ -304,7 +304,7 @@ function get_local_visibility_by_id($user_id, $context, $return_user_perm=false)
     // Valid context given.
     if (isset($data[$context])) {
         // Context may not be hidden per global config setting.
-        if ($NOT_HIDEABLE_FIELDS[$data['perms']][$context]) {
+        if (!empty($NOT_HIDEABLE_FIELDS[$data['perms']][$context])) {
             $result = true;
         } else {
             // Give also user's permission level.

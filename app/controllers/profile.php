@@ -213,10 +213,10 @@ class ProfileController extends AuthenticatedController
         foreach ($category as $cat) {
             $head = $cat->name;
             $body = $cat->content;
-            $vis_text = "";
+            $vis_text = '';
 
             if ($this->user->user_id == $this->current_user->user_id) {
-                $vis_text .= ' (' . Visibility::getStateDescription('kat_' . $cat->kategorie_id) . ')';
+                $vis_text = ' (' . Visibility::getStateDescription('kat_' . $cat->kategorie_id) . ')';
             }
 
             if (Visibility::verify('kat_' . $cat->kategorie_id, $this->current_user->user_id)) {

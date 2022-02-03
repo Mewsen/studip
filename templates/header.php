@@ -13,6 +13,9 @@ if (isset($_COOKIE['navigation-length'])) {
         $_COOKIE['navigation-length']
     );
 }
+
+// Ensure variable is set
+$accesskey_enabled = $accesskey_enabled ?? false;
 ?>
 
 <!-- Leiste unten -->

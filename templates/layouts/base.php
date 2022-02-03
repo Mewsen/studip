@@ -171,7 +171,7 @@ $getInstalledLanguages = function () {
                 <? else: ?>
                     <?= htmlReady( PageLayout::getTitle()) ?>
                 <? endif ?>
-                <?= $public_hint ? '(' . htmlReady($public_hint) . ')' : '' ?>
+                <?= !empty($public_hint) ? '(' . htmlReady($public_hint) . ')' : '' ?>
             </div>
         </div>
 
