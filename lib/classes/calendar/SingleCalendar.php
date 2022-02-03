@@ -361,7 +361,7 @@ class SingleCalendar
 
         $user_id = $user_id ?: $GLOBALS['user']->id;
         $id = $user_id . $this->getRangeId();
-        if ($user_permission[$id]) {
+        if (isset($user_permission[$id])) {
             return $user_permission[$id];
         }
         // own calendar
@@ -948,7 +948,7 @@ class SingleCalendar
                 || ($start >= $cl_start && $start < $cl_end)
                 || ($end > $cl_start && $end <= $cl_end)) {
 
-            if (!$events_created[implode('', (array) $event->getId()) . $start]) {
+            if (!isset($events_created[implode('', (array) $event->getId()) . $start])) {
                 $new_event = clone $event;
                 $new_event->setStart($start);
                 $new_event->setEnd($end);

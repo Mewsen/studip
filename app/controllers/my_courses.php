@@ -122,7 +122,7 @@ class MyCoursesController extends AuthenticatedController
 
                     foreach ($_outer as $course) {
                         $_courses[$course['seminar_id']] = $course;
-                        if ($course['children']) {
+                        if (isset($course['children']) && is_array($course['children'])) {
                             foreach ($course['children'] as $child) {
                                 $_courses[$child['seminar_id']] = $child;
                             }
@@ -954,7 +954,7 @@ class MyCoursesController extends AuthenticatedController
                 $extra_navigation = [
                     'url'   => URLHelper::getURL($adminnavigation->getURL(), ['cid' => $course['seminar_id']]),
                     'icon'  => $adminnavigation->getImage()->getShape(),
-                    'label' => $adminnavigation->getLinkAttributes()['title'] ?: _('Verwaltung'),
+                    'label' => $adminnavigation->getLinkAttributes()['title'] ?? _('Verwaltung'),
                 ];
             }
         }
@@ -994,7 +994,8 @@ class MyCoursesController extends AuthenticatedController
             } else {
                 $attr = $n->getLinkAttributes();
                 if (empty($attr['title']) && $n->getImage()) {
-                    $attr['title'] = (string) $n->getImage()->getAttributes()['title'];
+                    $n_attr = $n->getImage()->getAttributes();
+                    $attr['title'] = (string) ($n_attr['title'] ?? '');
                 }
                 if (empty($attr['title'])) {
                     $attr['title'] = (string) $n->getTitle();

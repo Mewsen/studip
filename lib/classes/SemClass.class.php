@@ -203,7 +203,7 @@ class SemClass implements ArrayAccess
      */
     public function isModuleForbidden($modulename)
     {
-        if ($this->data['studygroup_mode']) {
+        if (!empty($this->data['studygroup_mode'])) {
             return in_array($modulename, self::$studygroup_forbidden_modules);
         } else {
             return strpos($modulename, 'Studygroup') !== false;

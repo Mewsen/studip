@@ -99,8 +99,7 @@ class Seminar_Perm
      */
     public function have_perm($perm, $user_id = false)
     {
-
-        $pageperm = $this->permissions[$perm];
+        $pageperm = $this->permissions[$perm] ?? 0;
         $userperm = $this->permissions[$this->get_perm($user_id)] ?? 0;
 
         return $pageperm <= $userperm;
@@ -214,8 +213,7 @@ class Seminar_Perm
      */
     public function have_studip_perm($perm, $range_id, $user_id = false)
     {
-
-        $pageperm = $this->permissions[$perm];
+        $pageperm = $this->permissions[$perm] ?? 0;
         $userperm = $this->permissions[$this->get_studip_perm($range_id, $user_id)] ?? 0;
 
         return $pageperm <= $userperm;

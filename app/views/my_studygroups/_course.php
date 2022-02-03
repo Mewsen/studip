@@ -7,7 +7,7 @@
         </td>
         <td style="text-align: left">
             <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $group['seminar_id']]) ?>"
-                <?= $group['lastvisitdate'] >= $group['chdate'] ? 'style="color: red;"' : '' ?>>
+                <?= ($group['lastvisitdate'] ?? null) >= $group['chdate'] ? 'style="color: red;"' : '' ?>>
                 <?= htmlReady($group['name']) ?>
             </a>
             <? if ($group['visible'] == 0) : ?>
@@ -51,7 +51,7 @@
                     </a>
                 <? endif ?>
 
-            <? elseif ($group["binding"]) : ?>
+            <? elseif (!empty($group["binding"])) : ?>
                 <a href="<?= URLHelper::getLink('', ['auswahl' => $group['seminar_id'], 'cmd' => 'no_kill']) ?>">
                     <?= Icon::create('door-leave+decline', 'inactive', ['title' => _("Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden.")])->asImg(20) ?>
                 </a>

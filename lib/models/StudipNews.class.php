@@ -618,6 +618,7 @@ class StudipNews extends SimpleORMap implements PrivacyObject
         } else {
             $range_operation = $operation;
         }
+        $permission_ranges = 0;
         foreach ($this->getRanges() as $range_id) {
             if (static::haveRangePermission($range_operation, $range_id, $user_id)) {
                 if ($operation === 'view' || $operation === 'edit' || $operation === 'copy') {

@@ -607,7 +607,7 @@ class PluginManager
             $plugin = $this->getCachedPlugin($plugin_info);
         }
 
-        return $plugin;
+        return $plugin ?? null;
     }
 
     /**

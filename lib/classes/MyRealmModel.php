@@ -171,7 +171,7 @@ class MyRealmModel
 
         $semester_ids      = [];
         for ($i = $min_sem_key; $i <= $max_sem_key; $i++) {
-            if ($sem_data[$i]['semester_id']) {
+            if (isset($sem_data[$i]['semester_id'])) {
                 $semester_ids[] = $sem_data[$i]['semester_id'];
             }
         }
@@ -804,8 +804,8 @@ class MyRealmModel
             $data = $studygroup->toArray($data_fields);
             $data['tools'] = $studygroup->tools;
             $data['sem_class'] = $studygroup->getSemClass();
-            $data['start_semester'] = $studygroup->start_semester->name;
-            $data['end_semester'] = $studygroup->end_semester->name;
+            $data['start_semester'] = $studygroup->start_semester?->name;
+            $data['end_semester'] = $studygroup->end_semester?->name;
             $data['obj_type'] = 'sem';
             $data['user_status'] = $membership->status;
             $data['gruppe'] = $membership->gruppe;
