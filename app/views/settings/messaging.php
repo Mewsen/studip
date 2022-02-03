@@ -30,7 +30,7 @@
         <? if ($GLOBALS['MESSAGING_FORWARD_AS_EMAIL']): ?>
             <label>
                 <input type="checkbox" value="1" name="request_mail_forward" id="request_mail_forward"
-                    <? if ($settings['request_mail_forward'] == 1) echo 'checked'; ?>>
+                    <? if (!empty($settings['request_mail_forward'])) echo 'checked'; ?>>
                 <?= _('Gesendete Nachrichten auch als E-Mail verschicken') ?>
             </label>
         <? endif ?>
@@ -38,14 +38,14 @@
         <? if (Config::get()->SHOW_ADRESSEES_LIMIT): ?>
             <label>
                 <input type="checkbox" value="1" name="show_adressees" id="show_adressees"
-                    <? if ($settings['show_adressees'] == 1) echo 'checked'; ?>>
+                    <? if (!empty($settings['show_adressees'])) echo 'checked'; ?>>
                 <?= _('Adressaten für die Empfänger sichtbar machen') ?>
             </label>
         <? endif ?>
 
         <label>
             <input type="checkbox" value="1" name="logout_markreaded" id="logout_markreaded"
-                <? if ($settings['logout_markreaded'] == 1) echo 'checked'; ?>>
+                <? if (!empty($settings['logout_markreaded'])) echo 'checked'; ?>>
             <?= _('Beim Logout alle Nachrichten als gelesen speichern') ?>
         </label>
 

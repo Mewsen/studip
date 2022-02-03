@@ -323,7 +323,7 @@ class I18NString
         $data = [];
         foreach (array_keys(Config::get()->CONTENT_LANGUAGES) as $lang) {
             if ($lang != self::getDefaultLanguage()) {
-                $data[$lang] = mb_strlen($values[$lang]) ? $values[$lang] : null;
+                $data[$lang] = $values[$lang] ?? null;
             }
         }
         return $data;

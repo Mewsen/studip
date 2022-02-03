@@ -2201,6 +2201,8 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     protected function registerCallback($types, $cb)
     {
+        $reg = 0;
+
         $types = is_array($types) ? $types : words($types);
         foreach ($types as $type) {
             if (isset($this->registered_callbacks[$type])) {

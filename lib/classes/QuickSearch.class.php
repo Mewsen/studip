@@ -88,6 +88,9 @@ class QuickSearch
     private $box_align = "right";//align of the lookingglass in the withButton-box
     private $autocomplete_disabled = false;
     private $search_button_name;
+    private $defaultID = null;
+    private $defaultName = null;
+    private $jsfunction = null;
     private $reset_button_name;
 
     /**
