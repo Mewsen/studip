@@ -67,6 +67,10 @@ class JsonApiExceptionHandler
             $errors->add(new Error(null, null, $httpCode, null, $message, $details));
         }
 
+        if ($httpCode >= 500) {
+            error_log($exception);
+        }
+
         if (sizeof($errors)) {
             $encoder = $this->createEncoder();
             $response = $response
