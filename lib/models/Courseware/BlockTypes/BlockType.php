@@ -302,6 +302,15 @@ abstract class BlockType
      */
     protected function copyFileById(string $fileId, string $rangeId): string
     {
+        if ($this->block->container->structural_element->range_id === $rangeId) {
+            return $fileId;
+        }
+
+        static $file_map = [];
+        if (isset($file_map[$fileId])) {
+            return $file_map[$fileId];
+        }
+
         $user = \User::findCurrent();
         if ($file_ref = \FileRef::find($fileId)) {
             $copiedFile = \FileManager::copyFile(
@@ -326,6 +335,15 @@ abstract class BlockType
      */
     protected function copyFolderById(string $folderId, string $rangeId): string
     {
+        if ($this->block->container->structural_element->range_id === $rangeId) {
+            return $folderId;
+        }
+
+        static $folder_map = [];
+        if (isset($folder_map[$folderId])) {
+            return $folder_map[$folderId];
+        }
+
         $user = \User::findCurrent();
         $destinationFolder = $this->getDestinationFolder($user, $rangeId);
         if ($sourceFolder = \Folder::find($folderId)) {
@@ -335,7 +353,7 @@ abstract class BlockType
                 $user
             );
 
-            return $copiedFolder->id;
+            return $folder_map[$folderId] = $copiedFolder->id;
         }
 
         return '';
