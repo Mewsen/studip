@@ -122,6 +122,56 @@ c o n t e n t s
 .cw-loading-indicator-content {
     margin-top: 76px;
 }
+.cw-content-loading {
+    /* Loading animation from activity feed */
+    .loading-indicator {
+        text-align: center;
+        padding: 1em 0;
+    }
+
+    .loading-indicator span {
+        background-color: #CCCCDD;
+        border-radius: 50%;
+        height: 10px;
+        position: relative;
+        width: 10px;
+        display: inline-block;
+    }
+
+    .loading-indicator span.load-1 {
+        animation: loading-animation-1 1s linear 20;
+    }
+
+    .loading-indicator span.load-2 {
+        animation: loading-animation-2 1s linear 20;
+    }
+
+    .loading-indicator span.load-3 {
+        animation: loading-animation-3 1s linear 20;
+    }
+
+    @keyframes loading-animation-1 {
+      0%   { transform: scale(1); }
+      16%  { transform: scale(1.3); }
+      33%  { transform: scale(1); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes loading-animation-2 {
+      0%   { transform: scale(1); }
+      33%  { transform: scale(1); }
+      49%  { transform: scale(1.3); }
+      65%  { transform: scale(1); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes loading-animation-3 {
+      0%   { transform: scale(1); }
+      66%  { transform: scale(1); }
+      81%  { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+}
 
 /* * * * * * * * * * *
 c o n t e n t s  e n d
@@ -1959,6 +2009,41 @@ d a s h b o a r d
             padding: 1em;
             scrollbar-width: thin;
             scrollbar-color: $base-color $dark-gray-color-5;
+
+            .cw-dashboard-empty-info {
+                margin-top: 10px;
+            }
+        }
+    }
+    &.cw-dashboard-task-view {
+        display: unset;
+        max-width: unset;
+        flex-wrap: unset;
+    }
+    &.cw-dashboard-activity-view {
+        .cw-dashboard-activities {
+            max-height: 760px;
+        }
+
+    }
+}
+
+#course-courseware-dashboard {
+    .action-menu-item a {
+        cursor: pointer;
+    }
+}
+
+.responsive-display {
+    .cw-dashboard {
+        .cw-dashboard-box {
+
+            &.cw-dashboard-box-full {
+                width: 100%
+            }
+            &.cw-dashboard-box-half {
+                width: 100%
+            }
         }
     }
 }
@@ -4181,31 +4266,6 @@ cw tiles
 
 /*
 cw tiles end
-*/
-
-/*
-vSelect
-*/
-.cw-vs-select {
-    max-width: 48em;
-
-    .vs__dropdown-toggle {
-        border: solid thin $content-color-40;
-        border-radius: 0;
-    }
-    .vs__option-with-icon{
-        padding-left: 8px;
-    }
-    .vs__option-color {
-        border: solid thin $content-color-40;
-        padding-left: 20px;
-        height: 20px;
-        margin-right: 4px;
-    }
-}
-
-/*
-vSelect end
 */
 
 /* cw manager copy */

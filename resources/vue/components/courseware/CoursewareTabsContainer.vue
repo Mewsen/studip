@@ -42,7 +42,7 @@
                     </label>
                     <label>
                         <translate>Icon</translate>
-                        <v-select :options="icons" v-model="section.icon" class="cw-vs-select">
+                        <studip-select :options="icons" v-model="section.icon">
                             <template #open-indicator="selectAttributes">
                                 <span v-bind="selectAttributes"><studip-icon shape="arr_1down" size="10"/></span>
                             </template>
@@ -55,7 +55,7 @@
                             <template #option="option">
                                 <studip-icon :shape="option.label"/> <span class="vs__option-with-icon">{{option.label}}</span>
                             </template>
-                        </v-select>
+                        </studip-select>
                     </label>
                     <label
                         class="cw-container-section-delete"

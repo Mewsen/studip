@@ -28,6 +28,24 @@
                         <courseware-block-adder-area :container="container" :section="index" @updateContainerContent="updateContent"/>
                     </li>
                 </ul>
+                <draggable
+                    v-if="sortMode && canEdit"
+                    class="cw-container-list-block-list cw-container-list-sort-mode"
+                    :class="[section.blocks.length === 0 ? 'cw-container-list-sort-mode-empty' : '']"
+                    tag="ul"
+                    v-model="section.blocks"
+                    v-bind="dragOptions"
+                    handle=".cw-sortable-handle"
+                    @start="isDragging = true"
+                    @end="isDragging = false"
+                >
+                    <transition-group type="transition" name="flip-blocks" tag="div">
+                        <li v-for="block in section.blocks" :key="block.id" class="cw-block-item cw-block-item-sortable">
+                            <component :is="component(block)" :block="block" :canEdit="canEdit" :isTeacher="isTeacher" />
+                        </li>
+                    </transition-group>
+
+                </draggable>
             </courseware-collapsible-box>
         </template>
         <template v-slot:containerEditDialog>
@@ -39,7 +57,7 @@
                     </label>
                     <label>
                         <translate>Icon</translate>
-                        <v-select :options="icons" v-model="section.icon" class="cw-vs-select">
+                        <studip-select :options="icons" v-model="section.icon">
                             <template #open-indicator="selectAttributes">
                                 <span v-bind="selectAttributes"><studip-icon shape="arr_1down" size="10"/></span>
                             </template>
@@ -52,7 +70,7 @@
                             <template #option="option">
                                 <studip-icon :shape="option.label"/> <span class="vs__option-with-icon">{{option.label}}</span>
                             </template>
-                        </v-select>
+                        </studip-select>
                     </label>
                     <label
                         class="cw-container-section-delete"
