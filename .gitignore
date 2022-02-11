@@ -1,6 +1,7 @@
 *~
 
 .webpack.*
+composer
 node_modules
 nbproject
 
@@ -16,6 +17,10 @@ data/oer_logos/*
 data/upload_doc/*
 
 public/.htaccess
+public/assets/javascripts/*.js
+public/assets/javascripts/*.js.map
+public/assets/stylesheets/*.css
+public/assets/stylesheets/*.css.map
 public/pictures/banner/*.gif
 public/pictures/banner/*.jpeg
 public/pictures/banner/*.jpg

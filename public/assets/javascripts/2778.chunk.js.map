@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://@studip/core/./resources/assets/javascripts/chunks/chartist.js"],"names":["Chartist"],"mappings":"kJAGA,UAAeA","file":"javascripts/2778.chunk.js?h=835f5abcb4e994b96a82","sourcesContent":["import Chartist from \"chartist\"\nimport \"chartist/dist/chartist.css\"\n\nexport default Chartist\n"],"sourceRoot":""}
