@@ -579,15 +579,15 @@ class SingleCalendar
             if ($consultation_event) {
                 //Check if the slot is empty and delete it, if so.
                 if ($consultation_event->slot) {
-                    if (!empty($consultation_event->slot->bookings)) {
+                    if (empty($consultation_event->slot->events)) {
                         foreach ($consultation_event->slot->bookings as $booking) {
-                            if ($booking->isDeleted()) {
-                                continue;
-                            }
                             $booking->cancel();
                         }
-                        $consultation_event->slot->delete();
-                        return true;
+                        return $consultation_event->slot->delete();
+                    } else {
+                        //There are other users who are connected to the slot.
+                        //Delete only the event for the user.
+                        return $consultation_event->delete();
                     }
                 }
             }
