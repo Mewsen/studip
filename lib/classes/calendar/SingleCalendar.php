@@ -564,7 +564,7 @@ class SingleCalendar
         if (in_array($event->user->perms, ['user', 'autor', 'tutor'])) {
             //Only cancel the consultation event, so that it is available
             //for others.
-            $booking = ConsultationBooking::findOneByStudent_event_id($event->id);
+            $booking = ConsultationBooking::findOneByStudent_event_id($event->event_id);
             if ($booking) {
                 //Delete the event indirectly by cancelling the consultation booking:
                 $booking->cancel();
