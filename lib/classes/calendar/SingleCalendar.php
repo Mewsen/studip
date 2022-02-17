@@ -560,8 +560,22 @@ class SingleCalendar
      */
     protected function deleteEventWithConsultation(CalendarEvent $event) : bool
     {
+        //The permission levels for which the event booking will be cancelled
+        //but not the event itself:
+        $cancel_perm_levels = ['user', 'autor'];
+        $user_is_owner = false;
+
         //Check if a ConsultationEvent instance exists for the event:
-        if (in_array($event->user->perms, ['user', 'autor', 'tutor'])) {
+        $consultation_event = ConsultationEvent::findOneByEvent_id($event->event_id);
+        if (Course::exists($consultation_event->slot->block->range_id)) {
+            //The consultation event belongs to a course.
+            $cancel_perm_levels[] = 'tutor';
+        } else {
+            $user_is_owner = $consultation_event->slot->block->range_id == $GLOBALS['user']->id;
+        }
+        file_put_contents('/home/moritz/tmp.log', strval($consultation_event->slot->block->range_id) . "\n", FILE_APPEND);
+        file_put_contents('/home/moritz/tmp.log', strval($user_is_owner) . "\n", FILE_APPEND);
+        if (in_array($event->user->perms, $cancel_perm_levels) && !$user_is_owner) {
             //Only cancel the consultation event, so that it is available
             //for others.
             $booking = ConsultationBooking::findOneByStudent_event_id($event->event_id);
@@ -587,6 +601,9 @@ class SingleCalendar
                             'event_id' => $consultation_event->event_id
                         ]
                     );
+                    file_put_contents('/home/moritz/tmp.log', User::findCurrent()->username . "\t", FILE_APPEND);
+                    file_put_contents('/home/moritz/tmp.log', strval($other_event_c), FILE_APPEND);
+                    file_put_contents('/home/moritz/tmp.log', "\n\n", FILE_APPEND);
                     if ($other_event_c == 0) {
                         foreach ($consultation_event->slot->bookings as $booking) {
                             $booking->cancel();
