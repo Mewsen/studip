@@ -77,6 +77,16 @@ test-unit: $(CODECEPT)
 
 catalogs: npm $(CATALOGS)
 
+# black = #000000
+# blue = #28497c
+# green = #00962d
+# grey = #6e6e6e
+# red = #cb1800
+# white = #ffffff
+# yellow = #ffad00
+icons:
+	declare -A colorMap=(["black"]="#000000" ["green"]="#00962d" ["grey"]="#6e6e6e" ["red"]="#cb1800" ["white"]="#ffffff" ["yellow"]="#ffad00")
+
 optimize-icons: npm
 	find public/assets/images/icons -type f | xargs -P0 npx svgo -q --config=config/svgo.config.js
 
