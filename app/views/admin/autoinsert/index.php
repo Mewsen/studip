@@ -35,29 +35,40 @@ use Studip\Button, Studip\LinkButton;
                 </select>
             </label>
 
-            <h2>
-                <?= _('Automatisches Eintragen mit Nutzerstatus:') ?>
-            </h2>
-
-            <?php foreach ($userdomains as $domain): ?>
-                <h3>
-                    <?= htmlReady($domain['name']) ?>
-                </h3>
-                <section class="hgroup">
+            <fieldset>
+                <legend>
+                    <?= _('Automatisch eintragen nach...') ?>
+                </legend>
+                <section>
                     <label>
-                        <input type="checkbox" name="rechte[<?= $domain['id'] ?>][]" value="dozent">
-                        <?= _('Dozent') ?>
+                        <input type="radio" name="autoinsert_type" value="domain" checked>
+                        <?= _('Nutzerdomäne') ?>
                     </label>
                     <label>
-                        <input type="checkbox" name="rechte[<?= $domain['id'] ?>][]" value="tutor">
-                        <?= _('Tutor') ?>
+                        <input type="radio" name="autoinsert_type" value="degree">
+                        <?= _('Abschluss') ?>
                     </label>
                     <label>
-                        <input type="checkbox" name="rechte[<?= $domain['id'] ?>][]" value="autor">
-                        <?= _('Autor') ?>
+                        <input type="radio" name="autoinsert_type" value="subject">
+                        <?= _('Studienfach') ?>
+                    </label>
+                    <label>
+                        <input type="radio" name="autoinsert_type" value="semester">
+                        <?= _('Fachsemester') ?>
+                    </label>
+                    <label>
+                        <input type="radio" name="autoinsert_type" value="institute">
+                        <?= _('Einrichtung') ?>
                     </label>
                 </section>
-            <?php endforeach; ?>
+            </fieldset>
+
+            <?= $this->render_partial('admin/autoinsert/_domains') ?>
+            <?= $this->render_partial('admin/autoinsert/_degrees') ?>
+            <?= $this->render_partial('admin/autoinsert/_subjects') ?>
+            <?= $this->render_partial('admin/autoinsert/_semesters') ?>
+            <?= $this->render_partial('admin/autoinsert/_institutes') ?>
+
         </fieldset>
         <footer>
             <?= Studip\Button::create(_('Anlegen'), 'anlegen') ?>

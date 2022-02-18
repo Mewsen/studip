@@ -67,6 +67,9 @@ class Admin_AutoinsertController extends AuthenticatedController
 
         $this->userdomains = $domains;
 
+        $this->degrees = Degree::findBySQL("1 ORDER BY `name`");
+        $this->subjects = Fach::findBySQL("1 ORDER BY `name`");
+
         $links = new ActionsWidget();
         $links->addLink(
             _('Benutzergruppen manuell eintragen'),

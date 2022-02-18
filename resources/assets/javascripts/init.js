@@ -6,6 +6,7 @@ import admin_sem_class from './lib/admin_sem_class.js';
 import Admission from './lib/admission.js';
 import Arbeitsgruppen from './lib/arbeitsgruppen.js';
 import Archive from './lib/archive.js';
+import Autoinsert from './lib/autoinsert.js';
 import Avatar from './lib/avatar.js';
 import BigImageHandler from './lib/big_image_handler.js';
 import Blubber from './lib/blubber.js';
@@ -95,6 +96,7 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     api,
     Arbeitsgruppen,
     Archive,
+    Autoinsert,
     Avatar,
     BigImageHandler,
     Blubber,
