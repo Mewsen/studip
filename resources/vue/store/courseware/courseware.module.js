@@ -20,6 +20,7 @@ const getDefaultState = () => {
         pluginManager: null,
         showCompanionOverlay: false,
         showToolbar: false,
+        selectedToolbarItem: 'contents',
         urlHelper: null,
         userId: null,
         viewMode: 'read',
@@ -88,6 +89,9 @@ const getters = {
     },
     showToolbar(state) {
         return state.showToolbar;
+    },
+    selectedToolbarItem(state) {
+        return state.selectedToolbarItem;
     },
     blockAdder(state) {
         return state.blockAdder;
@@ -635,6 +639,10 @@ export const actions = {
         context.commit('coursewareShowToolbarSet', toolbar);
     },
 
+    coursewareSelectedToolbarItem(context, item) {
+        context.commit('coursewareSelectedToolbarItemSet', item);
+    },
+
     coursewareBlockAdder(context, adder) {
         context.commit('coursewareBlockAdderSet', adder);
     },
@@ -993,6 +1001,10 @@ export const mutations = {
 
     coursewareShowToolbarSet(state, data) {
         state.showToolbar = data;
+    },
+
+    coursewareSelectedToolbarItemSet(state, data) {
+        state.selectedToolbarItem = data;
     },
 
     coursewareBlockAdderSet(state, data) {

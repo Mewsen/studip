@@ -1,7 +1,15 @@
 <template>
     <ul class="widget-list widget-links sidebar-views cw-view-widget">
-        <li :class="{ active: readView }" @click="setReadView"><translate>Lesen</translate></li>
-        <li :class="{ active: editView }" @click="setEditView"><translate>Bearbeiten</translate></li>
+        <li :class="{ active: readView }">
+            <a href="#" @click="setReadView">
+                <translate>Lesen</translate>
+            </a>
+        </li>
+        <li :class="{ active: editView }">
+            <a href="#" @click="setEditView">
+                <translate>Bearbeiten</translate>
+            </a>
+        </li>
     </ul>
 </template>
 
@@ -19,15 +27,18 @@ export default {
         },
     },
     methods: {
-        ...mapActions(
-            ['coursewareBlockAdder']
-        ),
+        ...mapActions({
+            coursewareViewMode: 'coursewareViewMode',
+            coursewareBlockAdder: 'coursewareBlockAdder',
+            setToolbarItem: 'coursewareSelectedToolbarItem',
+        }),
         setReadView() {
-            this.$store.dispatch('coursewareViewMode', 'read');
+            this.coursewareViewMode('read');
+            this.setToolbarItem('contents');
             this.coursewareBlockAdder({});
         },
         setEditView() {
-            this.$store.dispatch('coursewareViewMode', 'edit');
+            this.coursewareViewMode('edit');
         },
     },
 };

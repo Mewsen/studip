@@ -1,27 +1,49 @@
 <template>
     <ul class="widget-list widget-links cw-action-widget" v-if="structuralElement">
-        <li class="cw-action-widget-show-toc" @click="toggleTOC">
-            {{ tocText }}
+        <li class="cw-action-widget-show-toc">
+            <a href="#" @click="toggleTOC">
+                {{ tocText }}
+            </a>
         </li>
-        <li class="cw-action-widget-show-consume-mode" @click="showConsumeMode">
-            <translate>Vollbild einschalten</translate>
+        <li class="cw-action-widget-show-consume-mode">
+            <a href="#" @click="showConsumeMode">
+                <translate>Vollbild einschalten</translate>
+            </a>
         </li>
-        <li v-show="canEdit" class="cw-action-widget-edit" @click="editElement">
-            <translate>Seite bearbeiten</translate>
+        <li v-if="canEdit" class="cw-action-widget-edit">
+            <a href="#" @click="editElement">
+                <translate>Seite bearbeiten</translate>
+            </a>
         </li>
-        <li v-show="canEdit" class="cw-action-widget-add" @click="addElement">
-            <translate>Seite hinzufügen</translate>
+        <li v-if="canEdit" class="cw-action-widget-add">
+            <a href="#" @click="addElement">
+                <translate>Seite hinzufügen</translate>
+            </a>
         </li>
-        <li class="cw-action-widget-info" @click="showElementInfo"><translate>Informationen anzeigen</translate></li>
-        <li class="cw-action-widget-star" @click="createBookmark"><translate>Lesezeichen setzen</translate></li>
-        <li v-show="canEdit" @click="exportElement" class="cw-action-widget-export">
-            <translate>Seite exportieren</translate>
+        <li class="cw-action-widget-info">
+            <a href="#" @click="showElementInfo">
+                <translate>Informationen anzeigen</translate>
+            </a>
         </li>
-        <li v-show="canEdit && oerEnabled" @click="oerElement" class="cw-action-widget-oer">
-            <translate>Seite auf %{oerTitle} veröffentlichen</translate>
+        <li class="cw-action-widget-star">
+            <a href="#" @click="createBookmark">
+                <translate>Lesezeichen setzen</translate>
+            </a>
         </li>
-        <li v-show="!isRoot && canEdit" class="cw-action-widget-trash" @click="deleteElement">
-            <translate>Seite löschen</translate>
+        <li v-if="canEdit" class="cw-action-widget-export">
+            <a href="#" @click="exportElement">
+                <translate>Seite exportieren</translate>
+            </a>
+        </li>
+        <li v-if="canEdit && oerEnabled" class="cw-action-widget-oer">
+            <a href="#" @click="oerElement">
+                <translate>Seite auf %{oerTitle} veröffentlichen</translate>
+            </a>
+        </li>
+        <li v-if="!isRoot && canEdit" class="cw-action-widget-trash">
+            <a href="#" @click="deleteElement">
+                <translate>Seite löschen</translate>
+            </a>
         </li>
     </ul>
 </template>
@@ -44,7 +66,8 @@ export default {
             oerTitle: 'oerTitle',
             userId: 'userId',
             consumeMode: 'consumeMode',
-            showToolbar: 'showToolbar'
+            showToolbar: 'showToolbar',
+            userIsTeacher: 'userIsTeacher',
         }),
         isRoot() {
             if (!this.structuralElement) {
@@ -91,7 +114,8 @@ export default {
             lockObject: 'lockObject',
             setConsumeMode: 'coursewareConsumeMode',
             setViewMode: 'coursewareViewMode',
-            setShowToolbar: 'coursewareShowToolbar'
+            setShowToolbar: 'coursewareShowToolbar',
+            setSelectedToolbarItem: 'coursewareSelectedToolbarItem'
         }),
         async editElement() {
             if (this.blockedByAnotherUser) {
@@ -137,6 +161,7 @@ export default {
         },
         showConsumeMode() {
             this.setViewMode('read');
+            this.setSelectedToolbarItem('contents');
             this.setConsumeMode(true);
         },
     },
