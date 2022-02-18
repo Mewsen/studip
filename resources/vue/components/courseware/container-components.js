@@ -4,6 +4,7 @@ import CoursewareBlockAdderArea from './CoursewareBlockAdderArea.vue';
 // blocks
 import CoursewareAudioBlock from './CoursewareAudioBlock.vue';
 import CoursewareBeforeAfterBlock from './CoursewareBeforeAfterBlock.vue';
+import CoursewareBlubberBlock from './CoursewareBlubberBlock.vue';
 import CoursewareCanvasBlock from './CoursewareCanvasBlock.vue';
 import CoursewareChartBlock from './CoursewareChartBlock.vue';
 import CoursewareCodeBlock from './CoursewareCodeBlock.vue';
@@ -33,6 +34,7 @@ const ContainerComponents = {
     // blocks
     CoursewareAudioBlock,
     CoursewareBeforeAfterBlock,
+    CoursewareBlubberBlock,
     CoursewareCanvasBlock,
     CoursewareChartBlock,
     CoursewareCodeBlock,

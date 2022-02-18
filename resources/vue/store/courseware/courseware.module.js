@@ -1164,6 +1164,100 @@ export const actions = {
     setBookmarkFilter({ commit }, course) {
         commit('setBookmarkFilter', course);
     },
+
+    async loadCourseBlubberThreads({ dispatch, rootGetters }, { cid }) {
+        const parent = {
+            type: 'courses',
+            id: cid
+        };
+        const relationship = 'blubber-threads';
+        const options = {};
+        await dispatch('courses/loadRelated', { parent, relationship, options }, { root: true });
+        const threads = rootGetters['courses/related']({parent, relationship});
+
+        return threads;
+    },
+
+    loadBlubberThread({ dispatch, rootGetters }, { threadId }) {
+        return dispatch(
+            'blubber-threads/loadById',
+            {
+                id: threadId,
+                options: {
+                    include: 'comments',
+                },
+            },
+            { root: true }
+        ).then( async () => {
+            const thread = rootGetters['blubber-threads/byId']({ id: threadId });
+
+            for (let threadComment of thread.relationships.comments.data) {
+                let comment = rootGetters['blubber-comments/byId']({ id: threadComment.id });
+                let commentUserId = comment.relationships.author.data.id;
+                let user = rootGetters['users/byId']({ id: commentUserId });
+
+                if (user === undefined) {
+                    await dispatch('users/loadById', { id: commentUserId });
+                }
+            }
+        });
+    },
+
+    createBlubberThread({ dispatch }, { attributes }) {
+        const blubberThread = {
+            type: 'blubber-threads',
+            attributes: attributes
+        };
+
+        return dispatch('blubber-threads/create', blubberThread, { root: true });
+    },
+
+    async updateBlubberThread({ dispatch }, { content, threadId }) {
+        const blubberThread = {
+            type: 'blubber-threads',
+            attributes: {
+                content: content
+            },
+            id: threadId,
+        };
+        await dispatch('blubber-threads/update', blubberThread, { root: true });
+
+        return dispatch('blubber-threads/loadById', { id: blubberThread.id }, { root: true });
+    },
+
+    async createBlubberComment({ dispatch }, { content, threadId }) {
+        const data = {
+            data: {
+                attributes: {
+                    content: content,
+                }
+            }
+        };
+        const url = `blubber-threads/${threadId}/comments`;
+        await state.httpClient.post(url, data, {});
+
+        return dispatch('loadBlubberThread', { threadId: threadId });
+    },
+
+    async updateBlubberComment({ dispatch }, { content, id }) {
+        const blubberComment = {
+            type: 'blubber-comments',
+            attributes: {
+                content: content
+            },
+            id: id,
+        };
+        await dispatch('blubber-comments/update', blubberComment, { root: true });
+
+        return dispatch('blubber-comments/loadById', { id: blubberComment.id }, { root: true });
+    },
+
+    deleteBlubberComment({ dispatch }, { id }) {
+        const data = {
+            id: id,
+        };
+        dispatch('blubber-comments/delete', data, { root: true });
+    },
 };
 
 /* eslint no-param-reassign: ["error", { "props": false }] */

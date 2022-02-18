@@ -24,29 +24,41 @@ class ThreadsCreate extends JsonApiController
     {
         $json = $this->validate($request);
 
-        if (!Authority::canCreatePrivateBlubberThread($user = $this->getUser($request))) {
-            throw new AuthorizationFailedException();
+        $contextType = self::arrayGet($json, 'data.attributes.context-type', '');
+        if (!in_array($contextType, ['private', 'course'])) {
+            throw new BadRequestException('Only blubber threads of context-type private or course can be created.');
         }
 
-        $contextType = self::arrayGet($json, 'data.attributes.context-type', '');
-        if ('private' !== $contextType) {
-            throw new BadRequestException('Only blubber threads of context-type=private can be created.');
+        if ($contextType === 'private') {
+            if (!Authority::canCreatePrivateBlubberThread($user = $this->getUser($request))) {
+                throw new AuthorizationFailedException();
+            }
+            $contextId = 'global';
+        } else {
+            if (!Authority::canCreateCourseBlubberThread($user = $this->getUser($request))) {
+                throw new AuthorizationFailedException();
+            }
+            $contextId = self::arrayGet($json, 'data.attributes.context-id', '');
         }
+
+        $content = self::arrayGet($json, 'data.attributes.content', '');
 
         $thread = \BlubberThread::create(
             [
-                'context_type' => 'private',
-                'context_id' => 'global',
+                'context_type' => $contextType,
+                'context_id' => $contextId,
                 'user_id' => $user->id,
                 'external_contact' => 0,
                 'display_class' => null,
                 'visible_in_stream' => 1,
                 'commentable' => 1,
-                'content' => '',
+                'content' => $content,
             ]
         );
 
-        \BlubberMention::create(['thread_id' => $thread->id, 'user_id' => $user->id]);
+        if ($contextType === 'private') {
+            \BlubberMention::create(['thread_id' => $thread->id, 'user_id' => $user->id]);
+        }
 
         return $this->getCreatedResponse($thread);
     }

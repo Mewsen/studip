@@ -161,6 +161,8 @@ class RouteMap
         $group->get('/users/{id}/blubber-threads', Routes\Blubber\ThreadsIndex::class)->setArgument('type', 'private');
         $group->get('/blubber-threads', Routes\Blubber\ThreadsIndex::class)->setArgument('type', 'all');
         $group->get('/blubber-threads/{id}', Routes\Blubber\ThreadsShow::class);
+        $group->post('/blubber-threads', Routes\Blubber\ThreadsCreate::class);
+        $group->patch('/blubber-threads/{id}', Routes\Blubber\ThreadsUpdate::class);
 
         // create, read, update and delete BlubberComments
         $group->get('/blubber-threads/{id}/comments', Routes\Blubber\CommentsByThreadIndex::class);

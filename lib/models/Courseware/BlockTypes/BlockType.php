@@ -88,6 +88,7 @@ abstract class BlockType
         $blockTypes = [
             Audio::class,
             BeforeAfter::class,
+            Blubber::class,
             Canvas::class,
             Chart::class,
             Code::class,

@@ -19,6 +19,16 @@ class Authority
         return self::userIsAuthor($user);
     }
 
+    public static function canCreateCourseBlubberThread(User $user)
+    {
+        return self::userIsTeacher($user);
+    }
+
+    public static function canEditCourseBlubberThread(User $user)
+    {
+        return self::userIsTeacher($user);
+    }
+
     public static function canCreateComment(User $user, BlubberThread $resource)
     {
         return self::userIsAuthor($user) && $resource->isCommentable($user->id);
@@ -52,5 +62,14 @@ class Authority
     private static function userIsAuthor(User $user)
     {
         return $GLOBALS['perm']->have_perm('autor', $user->id);
+    }
+
+
+    /**
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    private static function userIsTeacher(User $user)
+    {
+        return $GLOBALS['perm']->have_perm('tutor', $user->id);
     }
 }

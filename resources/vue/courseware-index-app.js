@@ -112,7 +112,9 @@ const mountApp = (STUDIP, createApp, element) => {
                     'semesters',
                     'sem-classes',
                     'sem-types',
-                    'terms-of-use'
+                    'terms-of-use',
+                    'blubber-threads',
+                    'blubber-comments'
                 ],
                 httpClient,
             }),
