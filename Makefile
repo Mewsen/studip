@@ -4,6 +4,13 @@ RESOURCES = $(shell find resources -type f)
 
 PHP_SOURCES = $(shell find app config lib public templates -name '*.php' \( ! -path 'public/plugins_packages/*' -o -path 'public/plugins_packages/core/*' \))
 VUE_SOURCES = $(shell find resources -name '*.js' -o -name '*.vue')
+ICONS_SOURCE = $(shell find public/assets/images/icons/blue -name '*.svg')
+ICONS = $(ICONS_SOURCE:public/assets/images/icons/blue/%=public/assets/images/icons/black/%)
+ICONS += $(ICONS_SOURCE:public/assets/images/icons/blue/%=public/assets/images/icons/green/%)
+ICONS += $(ICONS_SOURCE:public/assets/images/icons/blue/%=public/assets/images/icons/grey/%)
+ICONS += $(ICONS_SOURCE:public/assets/images/icons/blue/%=public/assets/images/icons/red/%)
+ICONS += $(ICONS_SOURCE:public/assets/images/icons/blue/%=public/assets/images/icons/white/%)
+ICONS += $(ICONS_SOURCE:public/assets/images/icons/blue/%=public/assets/images/icons/yellow/%)
 
 # build all needed files
 build: composer webpack-prod
@@ -75,23 +82,31 @@ test-jsonapi: $(CODECEPT)
 test-unit: $(CODECEPT)
 	$(CODECEPT) run unit
 
-catalogs: npm $(CATALOGS)
+# rules for icons
+optimize-icons: npm $(ICONS_SOURCE)
+	@echo $(ICONS_SOURCE) | xargs -P0 npx svgo -q --config=config/svgo.config.js
 
 clean-icons:
 	find public/assets/images/icons -type f -not -path '*blue*' -delete
 
-optimize-icons: npm
-	find public/assets/images/icons/blue -type f | xargs -P0 npx svgo -q --config=config/svgo.config.js
+public/assets/images/icons/black/%.svg: public/assets/images/icons/blue/%.svg
+	@sed 's/#28497c/#000000/' $< >$@
+public/assets/images/icons/red/%.svg: public/assets/images/icons/blue/%.svg
+	@sed 's/#28497c/#cb1800/' $< >$@
+public/assets/images/icons/green/%.svg: public/assets/images/icons/blue/%.svg
+	@sed 's/#28497c/#00962d/' $< >$@
+public/assets/images/icons/grey/%.svg: public/assets/images/icons/blue/%.svg
+	@sed 's/#28497c/#6e6e6e/' $< >$@
+public/assets/images/icons/white/%.svg: public/assets/images/icons/blue/%.svg
+	@sed 's/#28497c/#ffffff/' $< >$@
+public/assets/images/icons/yellow/%.svg: public/assets/images/icons/blue/%.svg
+	@sed 's/#28497c/#ffad00/' $< >$@
 
-icons: optimize-icons
-	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#000000/" {} > {}' | sed 's#icons/blue#icons/black#2' | sh
-	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#00962d/" {} > {}' | sed 's#icons/blue#icons/green#2' | sh
-	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#6e6e6e/" {} > {}' | sed 's#icons/blue#icons/grey#2' | sh
-	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#cb1800/" {} > {}' | sed 's#icons/blue#icons/red#2' | sh
-	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#ffffff/" {} > {}' | sed 's#icons/blue#icons/white#2' | sh
-	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#ffad00/" {} > {}' | sed 's#icons/blue#icons/yellow#2' | sh
+icons: $(ICONS)
 
 # default rules for gettext handling
+catalogs: npm $(CATALOGS)
+
 js-%.pot: $(VUE_SOURCES)
 	npx gettext-extract --attribute v-translate --output $@ $(VUE_SOURCES)
 
