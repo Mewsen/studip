@@ -459,7 +459,7 @@ class Course_TimesroomsController extends AuthenticatedController
         }
 
         $this->displayMessages();
-        $this->redirect($this->url_for('course/timesrooms/index', ['contentbox_open' => $termin->metadate_id]));
+        $this->redirect('course/timesrooms/index', ['contentbox_open' => $termin->metadate_id]);
     }
 
 
@@ -565,7 +565,7 @@ class Course_TimesroomsController extends AuthenticatedController
             if ($termin->metadate_id != '') {
                 $params['contentbox_open'] = $termin->metadate_id;
             }
-            $this->redirect($this->url_for('course/timesrooms/index', $params));
+            $this->redirect('course/timesrooms/index', $params);
         }
     }
 
@@ -580,7 +580,7 @@ class Course_TimesroomsController extends AuthenticatedController
         $_SESSION['_checked_dates'] = Request::optionArray('single_dates');
         if (empty($_SESSION['_checked_dates']) && isset($_SESSION['_checked_dates'])) {
             PageLayout::postError(_('Sie haben keine Termine ausgewählt!'));
-            $this->redirect($this->url_for('course/timesrooms/index', ['contentbox_open' => $cycle_id]));
+            $this->redirect('course/timesrooms/index', ['contentbox_open' => $cycle_id]);
 
             return;
         }
@@ -679,13 +679,11 @@ class Course_TimesroomsController extends AuthenticatedController
 
         $appointment_ids = $_SESSION['_checked_dates'];
         $this->redirect(
-            $this->url_for(
-                'course/room_requests/request_start',
-                [
-                    'range' => 'date-multiple',
-                    'range_ids' => $appointment_ids
-                ]
-            )
+            'course/room_requests/request_start',
+            [
+                'range' => 'date-multiple',
+                'range_ids' => $appointment_ids
+            ]
         );
     }
 
@@ -1263,7 +1261,7 @@ class Course_TimesroomsController extends AuthenticatedController
             }
         }
         $this->displayMessages();
-        $this->redirect($this->url_for('course/timesrooms/index', ['contentbox_open' => $termin->metadate_id]));
+        $this->redirect('course/timesrooms/index', ['contentbox_open' => $termin->metadate_id]);
     }
 
     /**
@@ -1408,8 +1406,7 @@ class Course_TimesroomsController extends AuthenticatedController
 
         if (Request::isXhr()) {
             $url       = call_user_func_array('parent::url_for', $arguments);
-            $url_chunk = Trails_Inflector::underscore(mb_substr(get_class($this), 0, -10));
-            $index_url = $url_chunk . '/index';
+            $index_url = $this->action_url('index');
 
             if (mb_strpos($url, $index_url) !== false) {
                 $this->flash['update-times'] = $this->course->id;
@@ -1449,8 +1446,7 @@ class Course_TimesroomsController extends AuthenticatedController
     public function relocate($to)
     {
         if (Request::int('fromDialog')) {
-            $url = call_user_func_array([$this, 'url_for'], func_get_args());
-            $this->redirect($url);
+            $this->redirect(...func_get_args());
         } else {
             call_user_func_array('parent::relocate', func_get_args());
         }
