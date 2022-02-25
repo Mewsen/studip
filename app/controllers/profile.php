@@ -90,7 +90,8 @@ class ProfileController extends AuthenticatedController
         $this->privadr      = $this->profile->getVisibilityValue('privadr', 'privadr');
         $this->homepage     = $this->profile->getVisibilityValue('Home', 'homepage');
 
-        // skype informations
+        // skype information
+        $this->skype_name = '';
         if (Config::get()->ENABLE_SKYPE_INFO && Visibility::verify('skype_name', $this->current_user->user_id)) {
             $this->skype_name = UserConfig::get($this->current_user->user_id)->SKYPE_NAME;
         }

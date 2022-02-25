@@ -292,13 +292,13 @@ function get_local_visibility_by_id($user_id, $context, $return_user_perm=false)
             }
         }
 
-        if ($homepage_settings) {
+        if (!empty($homepage_settings)) {
             $data[$context] = json_encode($homepage_settings);
         }
     }
 
     if ($data[$context] === null) {
-        $user_perm = $data['perm'];
+        $user_perm = $data['perm'] ?? null;
         $data['perms'] = $user_perm;
 
         $data[$context] = Config::get()->getValue(mb_strtoupper($context) . '_VISIBILITY_DEFAULT');

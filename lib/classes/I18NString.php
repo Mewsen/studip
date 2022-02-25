@@ -172,7 +172,7 @@ class I18NString
      */
     public function translation($lang)
     {
-        return $this->toArray()[$lang];
+        return $this->toArray()[$lang] ?? '';
     }
 
     /**

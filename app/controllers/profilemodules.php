@@ -300,8 +300,8 @@ class ProfileModulesController extends AuthenticatedController
                 'description' => str_replace('\n', ' ', $metadata['descriptionlong'] ?? $metadata['description']),
                 'screenshots' => [],
                 'keywords'    => $metadata['keywords'] ? explode(';', $metadata['keywords']) : [],
-                'homepage'    => $metadata['homepage'],
-                'helplink'    => $metadata['helplink'],
+                'homepage'    => $metadata['homepage'] ?? '',
+                'helplink'    => $metadata['helplink'] ?? '',
             ];
 
             if (isset($metadata['screenshot'])) {

@@ -125,7 +125,7 @@ class I18N
         return $template->render([
             'languages'  => $GLOBALS['CONTENT_LANGUAGES'],
             'base_lang'  => key($GLOBALS['CONTENT_LANGUAGES']),
-            'wysiwyg'    => in_array('wysiwyg', words($attributes['class'])),
+            'wysiwyg'    => !empty($attributes['class']) ? in_array('wysiwyg', words($attributes['class'])) : false,
             'name'       => $this->name,
             'value'      => $this->value,
             'attributes' => $attributes,
