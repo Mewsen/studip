@@ -25,7 +25,7 @@
             /
             <?= sprintf('%.5f sec', microtime(true) - $GLOBALS['STUDIP_STARTUP_TIME']) ?>
         ]
-        <? if ($GLOBALS['DEBUG_ALL_DB_QUERIES']) : ?>
+        <? if (array_key_exists('DEBUG_ALL_DB_QUERIES', $GLOBALS) && $GLOBALS['DEBUG_ALL_DB_QUERIES']) : ?>
             <a href="" onClick="jQuery('#all_db_queries').toggle(); return false;">
                 <?= Icon::create("code", "info_alt")->asImg(16, ['class' => "text-bottom"]) ?>
             </a>
