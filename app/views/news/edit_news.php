@@ -221,6 +221,7 @@
             ]) ?>
         </div>
         <div class="news_area_selected">
+            <? $area_count = 0; ?>
             <? foreach ($area_structure as $area_key => $area_data) : ?>
                 <? if (isset($area_options_selected[$area_key])) : ?>
                     <? $area_count += count($area_options_selected[$area_key]) ?>

@@ -178,6 +178,7 @@ class NewsController extends StudipController
         $this->area_options_selected   = [];
         $this->may_delete              = false;
         $this->route                   = "news/edit_news/{$id}";
+        $this->anker                   = '';
 
         $this->news_isvisible = [
             'news_basic' => true,
@@ -207,7 +208,8 @@ class NewsController extends StudipController
         }
 
         // load news and comment data and check if user has permission to edit
-        $news = new StudipNews($id);
+        $this->comments = [];
+        $news = new StudipNews($id ?? null);
         if (!$news->isNew()) {
             $this->comments = StudipComment::GetCommentsForObject($id);
         }
@@ -250,7 +252,7 @@ class NewsController extends StudipController
             if ($this->assigned){
                 $this->news_isvisible['news_visibility'] = true;
             }
-        } elseif ($id) {
+        } elseif (!empty($id)) {
             // if news id given check for valid id and load ranges
             if ($news->isNew()) {
                 PageLayout::postError(_('Die Ankündigung existiert nicht!'));
@@ -425,6 +427,7 @@ class NewsController extends StudipController
         }
         // prepare to save news
         if (Request::submitted('save_news') && Request::isPost()) {
+            $error = 0;
             CSRFProtection::verifySecurityToken();
             //prepare ranges array for already assigned news_ranges
             foreach($news->getRanges() as $range_id) {
