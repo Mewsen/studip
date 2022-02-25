@@ -43,7 +43,7 @@ class StudipPDO extends PDO
         // method that is executed on every call to the database)
         $this->query_count += 1;
 
-        if ($GLOBALS['DEBUG_ALL_DB_QUERIES']) {
+        if (array_key_exists('DEBUG_ALL_DB_QUERIES', $GLOBALS) && $GLOBALS['DEBUG_ALL_DB_QUERIES']) {
             $trace = debug_backtrace();
 
             $classes = [];
