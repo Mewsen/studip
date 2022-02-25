@@ -26,7 +26,7 @@ class Location extends Resource
 
     protected static function configure($config = [])
     {
-        if (!array_key_exists('additional_fields', $config) || !is_array($config['additional_fields'])) {
+        if (empty($config['additional_fields'])) {
             $config['additional_fields'] = [];
         }
         foreach (self::$required_properties as $property) {

@@ -1,4 +1,4 @@
-<? if (array_key_exists('DEBUG_ALL_DB_QUERIES', $GLOBALS) && $GLOBALS['DEBUG_ALL_DB_QUERIES']) : ?>
+<? if (!empty($GLOBALS['DEBUG_ALL_DB_QUERIES'])) : ?>
     <style>
     #all_db_queries td:first-child {
         border-left: 4px solid transparent;
