@@ -737,19 +737,10 @@ export default {
                     emit: 'editCurrentElement',
                 });
                 menu.push({ id: 2, label: this.$gettext('Seite hinzufügen'), icon: 'add', emit: 'addElement' });
-                menu.push({
-                    id: 5,
-                    label: this.$gettext('Seite exportieren'),
-                    icon: 'export',
-                    emit: 'showExportOptions',
-                });
-            }
-            if (this.canEdit && this.oerEnabled) {
-                menu.push({ id: 6, label: this.textOer.title, icon: 'oer-campus', emit: 'oerCurrentElement' });
             }
             if (!this.isRoot && this.canEdit) {
                 menu.push({
-                    id: 7,
+                    id: 9,
                     label: this.$gettext('Seite löschen'),
                     icon: 'trash',
                     emit: 'deleteCurrentElement',
