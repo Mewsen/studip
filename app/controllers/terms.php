@@ -26,6 +26,8 @@ class TermsController extends AuthenticatedController
 
         $this->compulsory = Config::get()->TERMS_CONFIG['compulsory'];
 
+        $this->denial_message = '';
+
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
             if (Request::submitted('accept')) {
