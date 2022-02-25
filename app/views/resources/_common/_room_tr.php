@@ -52,22 +52,22 @@ if ($room->requestable && $show_autor_actions) {
 <?= $this->render_partial(
     'resources/_common/_resource_tr.php',
     [
-        'checkbox_data' => $checkbox_data,
-        'resource' => $room,
+        'checkbox_data' => $checkbox_data ?? null,
+        'resource' => $room ?? null,
         'booking_plan_link_on_name' => true,
-        'resource_tooltip' => $room_tooltip,
-        'show_global_admin_actions' => $show_global_admin_actions,
-        'show_admin_actions' => $show_admin_actions,
-        'show_tutor_actions' => $show_tutor_actions,
-        'show_autor_actions' => $show_autor_actions,
-        'show_user_actions' => $show_user_actions,
-        'user_has_booking_rights' => $user_has_booking_rights,
+        'resource_tooltip' => $room_tooltip ?? null,
+        'show_global_admin_actions' => $show_global_admin_actions ?? false,
+        'show_admin_actions' => $show_admin_actions ?? false,
+        'show_tutor_actions' => $show_tutor_actions ?? false,
+        'show_autor_actions' => $show_autor_actions ?? false,
+        'show_user_actions' => $show_user_actions ?? false,
+        'user_has_booking_rights' => $user_has_booking_rights ?? false,
         'show_picture' => true,
         'show_full_name' => false,
         'additional_properties' => ['seats'],
         'clipboard_range_type' => 'Room',
         'additional_actions' => (
-            is_array($additional_actions)
+            isset($additional_actions) && is_array($additional_actions)
             ? array_merge(
                 $room_actions,
                 $additional_actions
