@@ -32,10 +32,10 @@ class Building extends Resource
         'number',
         'geo_coordinates'
     ];
-    
+
     protected static function configure($config = [])
     {
-        if (!is_array($config['additional_fields'])) {
+        if (!array_key_exists('additional_fields', $config) || !is_array($config['additional_fields'])) {
             $config['additional_fields'] = [];
         }
         foreach (self::$required_properties as $property) {
@@ -44,19 +44,19 @@ class Building extends Resource
                 'set' => 'setProperty'
             ];
         }
-        
+
         $config['additional_fields']['location']['get'] = 'findLocation';
         $config['additional_fields']['rooms']['get']    = 'findRooms';
-        
+
         $config['additional_fields']['facility_manager'] = [
             'get' => 'getPropertyRelatedObject',
             'set' => 'setPropertyRelatedObject'
         ];
-        
+
         $config['registered_callbacks']['before_store'][] = 'cbValidate';
         parent::configure($config);
     }
-    
+
     /**
      * Returns all buildings which are stored in the database.
      *
@@ -71,7 +71,7 @@ class Building extends Resource
             ORDER BY sort_position DESC, name ASC, mkdate ASC"
         );
     }
-    
+
     public static function getTranslatedClassName($item_count = 1)
     {
         return ngettext(
@@ -80,12 +80,12 @@ class Building extends Resource
             $item_count
         );
     }
-    
+
     public static function getRequiredProperties()
     {
         return self::$required_properties;
     }
-    
+
     /**
      * Finds buildings by a location specified by its ID.
      *
@@ -98,17 +98,17 @@ class Building extends Resource
         if (!$location_id) {
             return [];
         }
-        
+
         $location = Building::find($location_id);
         if (!$location) {
             return [];
         }
-        
+
         //Return all found Building objects below the location:
         return $location->findChildrenByClassName('Building', 0, true);
     }
-    
-    
+
+
     /**
      * Returns the part of the URL for getLink and getURL which will be
      * placed inside the calls to URLHelper::getLink and URLHelper::getURL
@@ -128,13 +128,13 @@ class Building extends Resource
                 _('Zur Erstellung der URL fehlt eine Gebäude-ID!')
             );
         }
-        
+
         //There are some actions which can be handled by the general
         //resource controller:
         if (in_array($action, ['files', 'request', 'lock'])) {
             return parent::buildPathForAction($action, $id);
         }
-        
+
         switch ($action) {
             case 'show':
                 return 'dispatch.php/resources/building/index/' . $id;
@@ -148,7 +148,7 @@ class Building extends Resource
                 return parent::buildPathForAction($action, $id);
         }
     }
-    
+
     /**
      * Returns the appropriate link for the building action that shall be
      * executed on a building.
@@ -173,7 +173,7 @@ class Building extends Resource
             $link_parameters
         );
     }
-    
+
     /**
      * Returns the appropriate URL for the building action that shall be
      * executed on a building.
@@ -197,17 +197,17 @@ class Building extends Resource
             $url_parameters
         );
     }
-    
+
     public function getRequiredPropertyNames()
     {
         return self::$required_properties;
     }
-    
+
     public function __toString()
     {
         return $this->getFullName();
     }
-    
+
     public function cbValidate()
     {
         if (!$this->findParentByClassName('Location')) {
@@ -219,7 +219,7 @@ class Building extends Resource
                 )
             );
         }
-        
+
         if (!is_a($this->category->class_name, get_class($this), true)) {
             //Only resources with the Building category can be handled
             //with this class!
@@ -230,12 +230,12 @@ class Building extends Resource
                 )
             );
         }
-        
+
         return true;
     }
-    
+
     //property and shortcut methods:
-    
+
     /**
      * Returns the full (localised) name of the building.
      *
@@ -248,7 +248,7 @@ class Building extends Resource
             $this->name
         );
     }
-    
+
     /**
      * Returns the path for the building's image.
      * If the building has no image the path for a general
@@ -260,25 +260,25 @@ class Building extends Resource
     {
         return $this->getIcon()->asImagePath();
     }
-    
+
     public function getIcon($role = Icon::ROLE_INFO)
     {
         return Icon::create('home', $role);
     }
-    
+
     public function checkHierarchy()
     {
         //We must check if this building has buildings as children
         //or rooms or buildings as parents. In any of those cases the hierarchy
         //is invalid!
-        
+
         $children = $this->findChildrenByClassName('Building');
         if (count($children) > 0) {
             //At least one child anywhere below this building
             //resource is a building, too.
             return false;
         }
-        
+
         $parents = ResourceManager::getHierarchy($this);
         //We do not need to check this element:
         array_shift($parents);
@@ -289,12 +289,12 @@ class Building extends Resource
                 return false;
             }
         }
-        
+
         //If code execution reaches this point then
         //the hierarchy around this building is valid.
         return true;
     }
-    
+
     /**
      * Returns the link for an action for this building.
      * This is the non-static variant of Building::getLinkForAction.
@@ -314,7 +314,7 @@ class Building extends Resource
             $link_parameters
         );
     }
-    
+
     /**
      * Returns the URL for an action for this building.
      * This is the non-static variant of Building::getURLForAction.
@@ -334,7 +334,7 @@ class Building extends Resource
             $url_parameters
         );
     }
-    
+
     /**
      * Retrieves the rooms which reside inside this building by looking up
      * the child resources of this building.
@@ -345,7 +345,7 @@ class Building extends Resource
     public function findRooms()
     {
         $rooms = parent::findChildrenByClassName('Room', 0, true);
-        
+
         $result = [];
         foreach ($rooms as $room) {
             if ($room instanceof Room) {
@@ -354,7 +354,7 @@ class Building extends Resource
         }
         return $result;
     }
-    
+
     /**
      * Retrieves the location where this building is assigned to by looking up
      * the parent resources of this building.
@@ -370,7 +370,7 @@ class Building extends Resource
         }
         return null;
     }
-    
+
     /**
      * Adds a child resource to this building. The child resource
      * must not be a resource of the class Building or Location.
@@ -395,7 +395,7 @@ class Building extends Resource
         }
         return parent::addChild($resource);
     }
-    
+
     public function createSimpleBooking(
         User $user,
         DateTime $begin,
@@ -408,7 +408,7 @@ class Building extends Resource
     {
         return null;
     }
-    
+
     public function createBookingFromRequest(
         User $user,
         ResourceRequest $request,
@@ -422,8 +422,8 @@ class Building extends Resource
     {
         return null;
     }
-    
-    
+
+
     public function createBooking(
         User $user,
         $range_id = null,
@@ -440,7 +440,7 @@ class Building extends Resource
     {
         return null;
     }
-    
+
     public function createSimpleRequest(
         User $user,
         DateTime $begin,
@@ -451,7 +451,7 @@ class Building extends Resource
     {
         return null;
     }
-    
+
     public function createRequest(
         User $user,
         $date_range_ids = null,
@@ -462,7 +462,7 @@ class Building extends Resource
     {
         return null;
     }
-    
+
     public function createLock(
         User $user,
         DateTime $begin,
@@ -472,7 +472,7 @@ class Building extends Resource
     {
         return null;
     }
-    
+
     public function isAssigned(
         DateTime $begin,
         DateTime $end,
@@ -481,7 +481,7 @@ class Building extends Resource
     {
         return false;
     }
-    
+
     public function isReserved(
         DateTime $begin,
         DateTime $end,
@@ -490,7 +490,7 @@ class Building extends Resource
     {
         return false;
     }
-    
+
     public function isLocked(
         DateTime $begin,
         DateTime $end,
@@ -499,7 +499,7 @@ class Building extends Resource
     {
         return true;
     }
-    
+
     public function isAvailable(
         DateTime $begin,
         DateTime $end,
