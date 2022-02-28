@@ -88,7 +88,7 @@ class ConsultationBooking extends SimpleORMap implements PrivacyObject
         };
 
         $config['registered_callbacks']['after_delete'][] = function (ConsultationBooking $booking) {
-            $booking->slot->updateEvents();
+            $booking->slot->updateEvents(true);
         };
 
         parent::configure($config);

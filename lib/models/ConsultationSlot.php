@@ -190,8 +190,11 @@ class ConsultationSlot extends SimpleORMap
     /**
      * Updates the teacher event that belongs to the slot. This will either be
      * set to be unoccupied, occupied by only one user or by a group of user.
+     *
+     * @param bool $delete_action Whether this method is called from a delete action (true)
+     *     or not (false). Defaults to false.
      */
-    public function updateEvents()
+    public function updateEvents(bool $delete_action = false)
     {
         // If no range is associated, remove the event
         if (!$this->block->range) {
@@ -219,6 +222,9 @@ class ConsultationSlot extends SimpleORMap
             }
         }
 
+        if ($delete_action) {
+            return;
+        }
         // Add events for missing responsible users
         $missing = array_diff($responsible_ids, $this->events->pluck('user_id'));
         foreach ($missing as $user_id) {
