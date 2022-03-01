@@ -290,11 +290,19 @@ $consum_ribbon_width: calc(100% - 58px);
                 list-style: none;
                 padding-left: 0;
 
-                li+li:before {
-                    padding: 0 0.25em;
-                    content: '/';
-                    background-repeat: no-repeat;
-                    background-position: center;
+                &.current-only {
+                    li:not(.cw-ribbon-breadcrumb-item-current) {
+                        display: none;
+                    }
+                }
+
+                &:not(.current-only) {
+                    li+li:before {
+                        padding: 0 0.25em;
+                        content: '/';
+                        background-repeat: no-repeat;
+                        background-position: center;
+                    }
                 }
 
                 .cw-ribbon-breadcrumb-item {
@@ -304,7 +312,9 @@ $consum_ribbon_width: calc(100% - 58px);
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
-                        max-width: 12em;
+                        &.short {
+                            display: none;
+                        }
                     }
 
                     a {

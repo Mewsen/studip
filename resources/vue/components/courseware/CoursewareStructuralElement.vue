@@ -27,7 +27,8 @@
                             >
                                 <span>
                                     <router-link :to="'/structural_element/' + ancestor.id">
-                                        {{ ancestor.attributes.title || "–" }}
+                                        <span class="long">{{ ancestor.attributes.title || "–" }}</span>
+                                        <span class="short">..</span>
                                     </router-link>
                                 </span>
                             </li>
@@ -36,14 +37,6 @@
                                 :title="structuralElement.attributes.title"
                             >
                                 <span>{{ structuralElement.attributes.title || "–" }}</span>
-                            </li>
-                        </template>
-                        <template #breadcrumbFallback>
-                            <li
-                                class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
-                                :title="structuralElement.attributes.title"
-                            >
-                                <span>{{ structuralElement.attributes.title }}</span>
                             </li>
                         </template>
                         <template #menu>
