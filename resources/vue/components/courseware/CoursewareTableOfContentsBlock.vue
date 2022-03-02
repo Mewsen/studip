@@ -45,9 +45,9 @@
                                     <p>{{ child.attributes.payload.description }}</p>
                                 </div>
                                 <footer>
-                                    {{ countChildren }}
+                                    {{ countChildChildren(child)}}
                                     <translate
-                                        :translate-n="countChildren"
+                                        :translate-n="countChildChildren(child)"
                                         translate-plural="Seiten"
                                     >
                                        Seite
@@ -170,6 +170,9 @@ export default {
             } else {
                 return {};
             }
+        },
+        countChildChildren(child) {
+            return this.childrenById(child.id).length;
         },
         hasImage(child) {
             return child.relationships?.image?.data !== null;
