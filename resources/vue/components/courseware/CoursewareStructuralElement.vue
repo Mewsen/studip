@@ -7,7 +7,7 @@
                 v-if="validContext"
             >
                 <div class="cw-structural-element-content" v-if="structuralElement">
-                    <courseware-ribbon :canEdit="canEdit && canAddElements">
+                    <courseware-ribbon :canEdit="canEdit">
                         <template #buttons>
                             <router-link v-if="prevElement" :to="'/structural_element/' + prevElement.id">
                                 <div class="cw-ribbon-button cw-ribbon-button-prev" :title="textRibbon.perv" />
@@ -66,30 +66,27 @@
                         v-if="canVisit"
                         class="cw-container-wrapper"
                         :class="{
-                            'cw-container-wrapper-consume': consumeMode,
-                            'cw-container-wrapper-discuss': discussView,
+                            'cw-container-wrapper-consume': consumeMode
                         }"
                     >
                         <div v-if="structuralElementLoaded" class="cw-companion-box-wrapper">
                             <courseware-empty-element-box
-                                v-if="showEmptyElementBox"
+                                v-if="
+                                (empty && !isRoot && canEdit) ||
+                                (empty && !canEdit) ||
+                                (!noContainers && empty && isRoot && canEdit)
+                            "
                                 :canEdit="canEdit"
                                 :noContainers="noContainers"
                             />
                             <courseware-wellcome-screen v-if="noContainers && isRoot && canEdit" />
                         </div>
-                        <courseware-structural-element-discussion
-                            v-if="!noContainers && discussView"
-                            :structuralElement="structuralElement"
-                            :canEdit="canEdit"
-                        />
                         <component
                             v-for="container in containers"
                             :key="container.id"
                             :is="containerComponent(container)"
                             :container="container"
                             :canEdit="canEdit"
-                            :canAddElements="canAddElements"
                             :isTeacher="userIsTeacher"
                             class="cw-container-item"
                         />

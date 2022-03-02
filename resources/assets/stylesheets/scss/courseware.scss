@@ -1699,7 +1699,7 @@ v i e w  w i d g e t
     .cw-export-widget-export{
         @include background-icon(export, clickable);
     }
-    .cw-action-widget-oer{
+    .cw-export-widget-oer{
         @include background-icon(oer-campus, clickable);
     }
 }
