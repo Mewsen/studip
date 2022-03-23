@@ -141,7 +141,7 @@
                                 <form class="default" @submit.prevent="">
                                     <label>
                                         <translate>Farbe</translate>
-                                        <v-select
+                                        <studip-select
                                             v-model="currentElement.attributes.payload.color"
                                             :options="colors"
                                             :reduce="(color) => color.class"
@@ -164,7 +164,7 @@
                                                 <span class="vs__option-color" :style="{ 'background-color': hex }"></span
                                                 ><span>{{ name }}</span>
                                             </template>
-                                        </v-select>
+                                        </studip-select>
                                     </label>
                                     <label>
                                         <translate>Zweck</translate>
