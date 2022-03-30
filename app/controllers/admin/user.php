@@ -1234,7 +1234,6 @@ class Admin_UserController extends AuthenticatedController
         }
         PageLayout::setTitle(sprintf(_('Datei- und Aktivitätsübersicht für %s'), $this->fullname));
 
-
         $this->queries = $this->getActivities($user_id);
 
         $memberships = DBManager::get()->fetchAll("SELECT seminar_user.*, seminare.Name as course_name
@@ -1252,7 +1251,7 @@ class Admin_UserController extends AuthenticatedController
         $this->sections = [];
 
         foreach ($memberships as $membership) {
-            $semester_name = $membership->course->isOpenEnded() ? _('unbegrenzt') : $membership->course->start_semester->name;
+            $semester_name = $membership->course->isOpenEnded() ? _('unbegrenzt') : (string) $membership->course->start_semester->name;
             if (!Request::get('view') || Request::get('view') === 'files') {
                 // count files for course
 
