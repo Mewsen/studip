@@ -851,8 +851,8 @@ export const actions = {
         let courses = [];
         for (let membership of memberships) {
             if (
-                membership.attributes.permission === 'dozent' &&
-                    state.context.id !== membership.relationships.course.data.id
+                membership.attributes.permission === 'tutor' &&
+                state.context.id !== membership.relationships.course.data.id
             ) {
                 const course = rootGetters['courses/related']({ parent: membership, relationship: 'course' });
                 if (!withCourseware) {
@@ -864,7 +864,10 @@ export const actions = {
                     rangeType: course.type
                 });
                 if (coursewareInstance?.relationships?.root) {
-                    courses.push(course);
+                    if (membership.attributes.permission === 'dozent' ||
+                        coursewareInstance.attributes['editing-permission-level'] === 'tutor') {
+                        courses.push(course);
+                    }
                 }
             }
         }
