@@ -101,12 +101,8 @@ class Oer_EndpointsController extends StudipController
                     $host = new OERHost();
                 }
                 $host['name'] = $host_data['name'];
-                $host['url'] = Request::get("from");
                 $host['public_key'] = $host_data['public_key'];
                 $host['last_updated'] = time();
-                if ($host->isNew()) {
-                    $host['active'] = Config::get()->LERNMARKTPLATZ_ACTIVATE_NEW_HOSTS ? 1 : 0;
-                }
                 $host->store();
             }
         }
