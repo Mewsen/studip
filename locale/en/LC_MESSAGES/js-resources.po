@@ -2515,12 +2515,18 @@ msgid ""
 "Seiten, Abschnitte und Blöcke lassen sich aus einer anderen Veranstaltung und Ihren\n"
 "                            eigenen Inhalten kopieren.\n"
 "                            Hierzu wählen Sie auf der linken Seite unter \"Diese Courseware\" die Schaltfläche\n"
-"                            \"Seite an diese Stelle einfügen\", \"Abschnitt an diese Stelle einfügen\" oder\n"
-"                            \"Block an diese Stelle einfügen\". Wählen Sie dann auf der rechten Seite unter\n"
+"                            \"Seite an dieser Stelle einfügen\", \"Abschnitt an dieser Stelle einfügen\" oder\n"
+"                            \"Block an dieser Stelle einfügen\". Wählen Sie dann auf der rechten Seite unter\n"
 "                            \"Kopieren\" erst die Veranstaltung aus der Sie kopieren möchten oder Ihre eigenen\n"
 "                            Inhalte. Wählen sie dann das Objekt aus, das Sie kopieren möchten. Kopierbare Objekte\n"
 "                            erkennen Sie an den zwei nach links zeigenden gelben Pfeilen."
 msgstr ""
+"Pages, sections and blocks can be copied from another course and from your own contents.\n"
+"                            For that, select the button \"Insert page at this position\", \"Insert section at this position\"\n"
+"                            or \"Insert block at this position\" from the left side in the section \"This Courseware\".\n"
+"                            After that, select the course first from which you want to copy or select your own contents.\n"
+"                            Then, select the object you want to copy. You can recognise objects that can be copied\n"
+"                            by the two yellow arrows that point to the left."
 
 #: resources/vue/components/courseware/CoursewareCourseManager.vue:38
 msgid ""
@@ -2531,16 +2537,27 @@ msgid ""
 "                            Position gebracht werden. Um die neue Sortierung zu speichern, wählen Sie \"Sortieren beenden\".\n"
 "                            Sie können die Änderungen auch rückgängig machen, indem Sie \"Sortieren abbrechen\" wählen."
 msgstr ""
+"Pages, sections and blocks can be sorted.\n"
+"                            For that, select the button \"Sort subpages\", \"Sort sections\" or \"Sort blocks\" from the left side\n"
+"                            in the section \"This Courseware\".\n"
+"                            With the arrows that are displayed at the objects, you can move the objects to the desired position.\n"
+"                            To save the new sorting, select \"Finish sorting\".\n"
+"                            You can also revert the changes by selecting \"Cancel sorting\"."
 
 #: resources/vue/components/courseware/CoursewareCourseManager.vue:48
 msgid ""
 "Seiten, Abschnitte und Blöcke lassen sich verschieben.\n"
 "                            Hierzu wählen Sie auf der linken Seite unter \"Diese Courseware\" die Schaltfläche\n"
-"                            \"Seite an diese Stelle einfügen\", \"Abschnitt an diese Stelle einfügen\" oder\n"
-"                            \"Block an diese Stelle einfügen\". Wählen Sie dann auf der rechten Seite unter\n"
+"                            \"Seite an dieser Stelle einfügen\", \"Abschnitt an dieser Stelle einfügen\" oder\n"
+"                            \"Block an dieser Stelle einfügen\". Wählen Sie dann auf der rechten Seite unter\n"
 "                            \"Verschieben\" das Objekt aus, das Sie verschieben möchten. Verschiebbare Objekte\n"
 "                            erkennen Sie an den zwei nach links zeigenden gelben Pfeilen."
 msgstr ""
+"Pages, sections and blocks can be moved.\n"
+"                            For that, select the button \"Insert page at this position\", \"Insert section at this position\"\n"
+"                            or \"Insert block at this position\" from the left side in the section \"This Courseware\".\n"
+"                            After that, select the that which you want to copy at \"Move\". You can recognise objects\n"
+"                            that can be moved by the two yellow arrows that point to the left."
 
 #: resources/vue/components/courseware/CoursewareVideoBlock.vue:29
 #: resources/vue/components/courseware/CoursewareVideoBlock.vue:22
@@ -2636,7 +2653,7 @@ msgstr ""
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:266
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:24
 msgid "Sie können diese Daten unter \"Seite bearbeiten\" verändern."
-msgstr ""
+msgstr "You can modify this data using \"Edit page\"."
 
 #: resources/assets/javascripts/bootstrap/forms.js:158
 msgid "Sie können nur %u Eintrag auswählen"
@@ -3023,6 +3040,10 @@ msgstr "Publish"
 msgid "veröffentlicht auf"
 msgstr "published at"
 
+#: resources/vue/components/courseware/CoursewareCourseManager.vue:184
+msgid "Verschieben"
+msgstr "Move"
+
 #: resources/vue/mixins/MyCoursesMixin.js:45
 msgid ""
 "Versteckte Veranstaltungen können über die Suchfunktionen nicht gefunden "
@@ -3087,14 +3108,21 @@ msgstr "Preview image"
 #: resources/vue/components/courseware/CoursewareCourseManager.vue:26
 msgid ""
 "Wählen Sie auf der linken Seite \"Diese Courseware\" aus.\n"
-"                            Beim laden der Seite ist dies immer gewählt. Die Überschrift\n"
+"                            Beim Laden der Seite ist dies immer gewählt. Die Überschrift\n"
 "                            gibt an, welche Seite Sie gerade ausgewählt haben. Darunter befinden\n"
 "                            sich die Abschnitte der Seite und innerhalb dieser deren Blöcke.\n"
-"                            Möchten Sie eine Seite, die unterhalb der gewählten liegt bearbeiten,\n"
+"                            Möchten Sie eine Seite, die unterhalb der gewählten liegt, bearbeiten,\n"
 "                            können Sie diese über die Schaltflächen im Bereich \"Unterseiten\" wählen.\n"
-"                            Über der Überschrift wird eine Navigation eingeblendet, mit der Sie beliebig \n"
+"                            Über der Überschrift wird eine Navigation eingeblendet, mit der Sie beliebig\n"
 "                            weit hoch in der Hierarchie springen können."
 msgstr ""
+"Select \"This Courseware\" on the left side.\n"
+"                            This is always selected when loading the page. The heading shows which\n"
+"                            page you have currently selected. Below that are the sections of the page\n"
+"                            and inside of them are their blocks. If you want to modify a page that lies below\n"
+"                            the selected one, you can select it via the button in the area \"Subpages\".\n"
+"                            Above the heading, a navigation is shown that lets you jump up the hierarchy\n"
+"                            as you wish."
 
 #: resources/vue/components/courseware/CoursewareAudioBlock.vue:69
 #: resources/vue/components/courseware/CoursewareAudioBlock.vue:11
