@@ -1,14 +1,14 @@
 <template>
     <ul class="widget-list widget-links sidebar-views cw-view-widget">
         <li :class="{ active: readView }">
-            <a href="#" @click="setReadView">
+            <button @click="setReadView">
                 <translate>Lesen</translate>
-            </a>
+            </button>
         </li>
         <li :class="{ active: editView }">
-            <a href="#" @click="setEditView">
+            <button @click="setEditView">
                 <translate>Bearbeiten</translate>
-            </a>
+            </button>
         </li>
     </ul>
 </template>
