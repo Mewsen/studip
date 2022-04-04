@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-04 09:29+0200\n"
+"POT-Creation-Date: 2022-04-04 12:59+0200\n"
 "PO-Revision-Date: 2021-01-26 11:15+0000\n"
 "Last-Translator: M S <strohm@data-quest.de>, 2022\n"
 "Language-Team: English (https://www.transifex.com/studip/teams/36183/en/)\n"
@@ -14928,7 +14928,7 @@ msgid ""
 msgstr "Password request not possible while logged in."
 
 #: app/controllers/new_password.php:53
-#: lib/classes/UserManagement.class.php:714
+#: lib/classes/UserManagement.class.php:713
 #, php-format
 msgid "[Stud.IP - %s] Passwortänderung angefordert"
 msgstr "[Stud.IP - %s] Requested password change"
@@ -14998,7 +14998,7 @@ msgstr "Change course image"
 msgid "Sie haben keine Berechtigung, das Bild zu ändern."
 msgstr "You are not allowed to change the picture."
 
-#: app/controllers/avatar.php:120 lib/classes/UserManagement.class.php:1199
+#: app/controllers/avatar.php:120 lib/classes/UserManagement.class.php:1197
 msgid "Bild gelöscht."
 msgstr "Picture deleted."
 
@@ -26471,7 +26471,7 @@ msgid "Ich stimme den Nutzungsbedingungen nicht zu"
 msgstr "I do not agree to the terms of use"
 
 #: app/views/admission/rule/validate.php:3
-#: lib/classes/UserManagement.class.php:1019
+#: lib/classes/UserManagement.class.php:1017
 msgid "Fehler:"
 msgstr "Error:"
 
@@ -38410,12 +38410,14 @@ msgid "Sie haben keine Berechtigung Accounts anzulegen."
 msgstr "You do not have the permission to create accounts."
 
 #: lib/classes/UserManagement.class.php:259
-msgid "Sie haben keine Berechtigung <em>>Admin-Accounts</em> anzulegen."
+#: lib/classes/UserManagement.class.php:416
+msgid "Sie haben keine Berechtigung, <em>Admin-Accounts</em> anzulegen."
 msgstr ""
 "You do not have the permission to create an <em>administrator account</em>."
 
 #: lib/classes/UserManagement.class.php:264
-msgid "Sie haben keine Berechtigung <em>Root-Accounts</em> anzulegen."
+#: lib/classes/UserManagement.class.php:421
+msgid "Sie haben keine Berechtigung, <em>Root-Accounts</em> anzulegen."
 msgstr "You do not have the permission to create a <em>root account</em>."
 
 #: lib/classes/UserManagement.class.php:270
@@ -38474,15 +38476,6 @@ msgstr "Preliminary account %s created."
 msgid "Sie haben keine Berechtigung Accounts zu verändern."
 msgstr "You do not have the permission to edit accounts."
 
-#: lib/classes/UserManagement.class.php:416
-msgid "Sie haben keine Berechtigung, <em>Admin-Accounts</em> anzulegen."
-msgstr ""
-"You do not have the permission to create an <em>administrator account</em>."
-
-#: lib/classes/UserManagement.class.php:421
-msgid "Sie haben keine Berechtigung, <em>Root-Accounts</em> anzulegen."
-msgstr "You do not have the permission to create a <em>root account</em>."
-
 #: lib/classes/UserManagement.class.php:427
 msgid "Sie haben keine Berechtigung <em>Admin-Accounts</em> zu verändern."
 msgstr ""
@@ -38532,32 +38525,32 @@ msgid "Benutzer \"%s\" verändert."
 msgstr "User \"%s\" changed."
 
 #: lib/classes/UserManagement.class.php:561
-#: lib/classes/UserManagement.class.php:921
+#: lib/classes/UserManagement.class.php:919
 #, php-format
 msgid "%s Einträge aus Veranstaltungen gelöscht."
 msgstr "%s entries removed from courses."
 
 #: lib/classes/UserManagement.class.php:574
-#: lib/classes/UserManagement.class.php:1089
+#: lib/classes/UserManagement.class.php:1087
 #, php-format
 msgid "%s Einträge aus Wartelisten gelöscht."
 msgstr "%s entries removed from the waiting list."
 
 #: lib/classes/UserManagement.class.php:582
-#: lib/classes/UserManagement.class.php:911
+#: lib/classes/UserManagement.class.php:909
 #, php-format
 msgid "%s Zuordnungen zu Studiengängen gelöscht."
 msgstr "%s allocations to courses of study removed."
 
 #: lib/classes/UserManagement.class.php:586
-#: lib/classes/UserManagement.class.php:1108
+#: lib/classes/UserManagement.class.php:1106
 #, php-format
 msgid "%s Einträge aus den Terminen gelöscht."
 msgstr "%s entries deleted from course dates."
 
 #: lib/classes/UserManagement.class.php:597
 #: lib/classes/UserManagement.class.php:607
-#: lib/classes/UserManagement.class.php:890
+#: lib/classes/UserManagement.class.php:888
 #, php-format
 msgid "%s Einträge aus MitarbeiterInnenlisten gelöscht."
 msgstr "%s entries removed from staff list."
@@ -38612,7 +38605,7 @@ msgstr ""
 "the line named \"location\" or \"URL\".\n"
 "\n"
 
-#: lib/classes/UserManagement.class.php:719
+#: lib/classes/UserManagement.class.php:718
 #, php-format
 msgid ""
 "Dies ist eine Informationsmail des Stud.IP-Systems\n"
@@ -38638,12 +38631,12 @@ msgstr ""
 "Instead, please contact\n"
 "%s"
 
-#: lib/classes/UserManagement.class.php:735
+#: lib/classes/UserManagement.class.php:733
 #, php-format
 msgid "[Stud.IP - %s] Neues Passwort setzen"
 msgstr "[Stud.IP - %s] Set new password"
 
-#: lib/classes/UserManagement.class.php:740
+#: lib/classes/UserManagement.class.php:738
 #, php-format
 msgid ""
 "Dies ist eine Bestätigungsmail des Stud.IP-Systems\n"
@@ -38698,19 +38691,19 @@ msgstr ""
 "In this case, ignore this e-mail. No changes will be made on your account.\n"
 "\n"
 
-#: lib/classes/UserManagement.class.php:785
+#: lib/classes/UserManagement.class.php:783
 msgid "Sie haben keine Berechtigung Accounts zu löschen."
 msgstr "You do not have the permission to delete accounts."
 
-#: lib/classes/UserManagement.class.php:791
+#: lib/classes/UserManagement.class.php:789
 msgid "Sie haben keine Berechtigung <em>Root-Accounts</em> zu löschen."
 msgstr "You do not have the permission to delete <em>root accounts</em>."
 
-#: lib/classes/UserManagement.class.php:795
+#: lib/classes/UserManagement.class.php:793
 msgid "Sie haben keine Berechtigung diesen Admin-Account zu löschen."
 msgstr "You do not have the permission to delete this administrator account."
 
-#: lib/classes/UserManagement.class.php:829
+#: lib/classes/UserManagement.class.php:827
 #, php-format
 msgid ""
 "<em>%s</em> ist Lehrkraft in %s aktiven Veranstaltungen und kann daher nicht"
@@ -38719,89 +38712,89 @@ msgstr ""
 "<em>%s</em> is lecturer in %s active courses and therefore cannot be "
 "deleted."
 
-#: lib/classes/UserManagement.class.php:895
+#: lib/classes/UserManagement.class.php:893
 #, php-format
 msgid "%s Einträge aus Funktionen / Gruppen gelöscht."
 msgstr "%s entries from functions / groups removed."
 
-#: lib/classes/UserManagement.class.php:903
+#: lib/classes/UserManagement.class.php:901
 #, php-format
 msgid "%s Einträge aus den Zugriffsberechtigungen für das Archiv gelöscht."
 msgstr "%s entries deleted from the access permissions of the archive."
 
-#: lib/classes/UserManagement.class.php:928
+#: lib/classes/UserManagement.class.php:926
 #, php-format
 msgid "%u Terminzuordnungen gelöscht."
 msgstr "%u date assignments deleted."
 
-#: lib/classes/UserManagement.class.php:940
+#: lib/classes/UserManagement.class.php:938
 #, php-format
 msgid "%s Einträge in den Vertretungseinstellungen gelöscht."
 msgstr "%s entries deleted from substitution settings."
 
-#: lib/classes/UserManagement.class.php:957
+#: lib/classes/UserManagement.class.php:955
 #, php-format
 msgid "%s Dateien aus Veranstaltungen und Einrichtungen gelöscht."
 msgstr "%s files deleted from courses and institutes."
 
-#: lib/classes/UserManagement.class.php:983
+#: lib/classes/UserManagement.class.php:981
 msgid "Persönlicher Dateibereich gelöscht."
 msgstr "Personal file area deleted."
 
-#: lib/classes/UserManagement.class.php:1004
+#: lib/classes/UserManagement.class.php:1002
 msgid "Benutzername anonymisiert."
 msgstr "Username anonymised."
 
-#: lib/classes/UserManagement.class.php:1022
+#: lib/classes/UserManagement.class.php:1020
 #, php-format
 msgid "Benutzer \"%s\" gelöscht."
 msgstr "User \"%s\" deleted."
 
-#: lib/classes/UserManagement.class.php:1076
+#: lib/classes/UserManagement.class.php:1074
 #, php-format
 msgid "%s Blubber gelöscht."
 msgstr "%s Blubbers deleted."
 
-#: lib/classes/UserManagement.class.php:1095
+#: lib/classes/UserManagement.class.php:1093
 #, php-format
 msgid "%s Einträge aus den Ankündigungen gelöscht."
 msgstr "%s entries deleted from announcements."
 
-#: lib/classes/UserManagement.class.php:1098
+#: lib/classes/UserManagement.class.php:1096
 #, php-format
 msgid "%s Verweise auf Ankündigungen gelöscht."
 msgstr "%s links to announcements removed."
 
-#: lib/classes/UserManagement.class.php:1117
+#: lib/classes/UserManagement.class.php:1115
 #, php-format
 msgid "%s Verknüpfungen mit Gruppenterminkalendern gelöscht."
 msgstr "%s links with group calendars deleted."
 
-#: lib/classes/UserManagement.class.php:1129
+#: lib/classes/UserManagement.class.php:1127
 #, php-format
 msgid "%s Einträge aus Adressbüchern gelöscht."
 msgstr "%s entries removed from address books."
 
-#: lib/classes/UserManagement.class.php:1133
+#: lib/classes/UserManagement.class.php:1131
 #, php-format
 msgid "Adressbuch mit %d Einträgen gelöscht."
 msgstr "Address book with %d entries removed."
 
-#: lib/classes/UserManagement.class.php:1212
+#: lib/classes/UserManagement.class.php:1210
 #, php-format
 msgid "Der verknüpfte Nutzer %s wurde im System %s gelöscht."
 msgstr "The associated user %s has been deleted in system %s."
 
-#: lib/classes/UserManagement.class.php:1274
+#: lib/classes/UserManagement.class.php:1272
 msgid "Das Passwort wurde neu gesetzt."
 msgstr "The password has been reset."
 
-#: lib/classes/UserManagement.class.php:1279
+#: lib/classes/UserManagement.class.php:1277
 #, php-format
 msgid "[Stud.IP - %s] Passwortänderung"
 msgstr "[Stud.IP - %s] password change"
 
-#: lib/classes/UserManagement.class.php:1282
+#: lib/classes/UserManagement.class.php:1280
 #, php-format
 msgid ""
 "Dies ist eine Informationsmail des Stud.IP-Systems\n"
