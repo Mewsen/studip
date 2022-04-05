@@ -13,7 +13,32 @@ namespace Courseware;
  */
 class Instance
 {
-    public static function deleteForRange(\Range $range): void
+    /**
+     * @param \Range $range
+     * @return ?static
+     */
+    public static function existsForRange(\Range $range)
+    {
+        switch ($range->getRangeType()) {
+            case 'course':
+            case 'user':
+                $result = \DBManager::get()->fetchOne(
+                    'SELECT COUNT(*) as count FROM cw_structural_elements WHERE range_id = ? AND range_type = ? AND parent_id IS NULL',
+                    [$range->getRangeId(), $range->getRangeType()]
+                );
+
+                return ((int) $result['count']) == 1;
+
+            default:
+                throw new \InvalidArgumentException('Only ranges of type "user" and "course" are currently supported.');
+        }
+    }
+
+    /**
+     * @param \Range $range
+     * @return ?static
+     */
+    public static function findForRange(\Range $range)
     {
         $root = null;
         switch ($range->getRangeType()) {
@@ -29,10 +54,18 @@ class Instance
 
         // there is no courseware for this course
         if (!$root) {
-            return;
+            return null;
         }
 
-        $instance = new self($root);
+        return new self($root);
+    }
+
+    public static function deleteForRange(\Range $range): void
+    {
+        $instance = self::findForRange($range);
+        if (!$instance) {
+            return;
+        }
 
         $range->getConfiguration()->delete('COURSEWARE_SEQUENTIAL_PROGRESSION');
         $range->getConfiguration()->delete('COURSEWARE_EDITING_PERMISSION');
@@ -54,6 +87,7 @@ class Instance
             \UserConfig::get($config->range_id)->store('COURSEWARE_LAST_ELEMENT', $arr);
         }
 
+        $root = self::getRoot();
         $root->delete();
     }
 
