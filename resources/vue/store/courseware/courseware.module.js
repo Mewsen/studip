@@ -984,15 +984,10 @@ export const actions = {
                     courses.push(course);
                     continue;
                 }
-                const coursewareInstance = await dispatch('loadRemoteCoursewareStructure', {
-                    rangeId: course.id,
-                    rangeType: course.type
-                });
-                if (coursewareInstance?.relationships?.root) {
-                    if (membership.attributes.permission === 'dozent' ||
-                        coursewareInstance.attributes['editing-permission-level'] === 'tutor') {
-                        courses.push(course);
-                    }
+
+                if (course.relationships.courseware) {
+                    course['userPermission'] = membership.attributes.permission;
+                    courses.push(course);
                 }
             }
         }

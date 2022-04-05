@@ -7,25 +7,32 @@
         <div v-else>
             <button class="button" @click="reset"><translate>Quelle auswählen</translate></button>
             <button v-show="!sourceOwn && hasRemoteCid" class="button" @click="selectNewCourse"><translate>Veranstaltung auswählen</translate></button>
-            <div v-if="sourceRemote">
+            <div v-if="sourceRemote && !loadingRemoteCourses">
                 <h2 v-if="!hasRemoteCid"><translate>Veranstaltungen</translate></h2>
                 <ul v-if="!hasRemoteCid && semesterMap.length > 0">
                     <li v-for="semester in semesterMap" :key="semester.id">
-                    <h3>{{semester.attributes.title}}</h3>
-                        <ul>
-                            <li v-for="course in coursesBySemester(semester)" :key="course.id">
-                                <a
-                                    href="#"
-                                    class="cw-manager-copy-selector-course"
-                                    @click="loadRemoteCourseware(course.id)"
-                                >
-                                    <studip-icon :shape="getCourseIcon(course)" />
-                                    {{course.attributes.title}}
-                                </a>
-                            </li>
-                        </ul>
+                        <div v-if="coursesBySemester(semester).length !== 0">
+                            <h3>{{semester.attributes.title}}</h3>
+                            <ul>
+                                <li v-for="course in coursesBySemester(semester)" :key="course.id">
+                                    <a
+                                        href="#"
+                                        class="cw-manager-copy-selector-course"
+                                        @click="loadRemoteCourseware(course.id)"
+                                    >
+                                        <studip-icon :shape="getCourseIcon(course)" />
+                                        {{course.attributes.title}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
+                <courseware-companion-box 
+                    v-if="!hasRemoteCid && semesterMap.length !== 0 && courses.length === 0"
+                    :msgCompanion="$gettext('Es wurden keine Veranstaltung gefunden aus denen Sie Inhalte kopieren dürfen.')"
+                    mood="sad"
+                />
                 <courseware-companion-box 
                     v-if="!hasRemoteCid && semesterMap.length === 0"
                     :msgCompanion="$gettext('Es wurden keine Veranstaltung mit Courseware-Inhalten gefunden.')"
@@ -45,6 +52,11 @@
                     mood="sad"
                 />
             </div>
+            <studip-progress-indicator
+                v-if="sourceRemote && loadingRemoteCourses"
+                class="cw-loading-indicator-content"
+                :description="$gettext('Lade Veranstaltungen mit Courseware-Inhalten...')"
+            />
             <div v-if="sourceOwn">
                 <courseware-manager-element
                     v-if="ownId !== ''"
@@ -65,29 +77,32 @@
 
 <script>
 import CoursewareManagerElement from './CoursewareManagerElement.vue';
-import { mapActions, mapGetters } from 'vuex';
 import CoursewareCompanionBox from './CoursewareCompanionBox.vue';
-
+import StudipProgressIndicator from '../StudipProgressIndicator.vue';
+import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'courseware-manager-copy-selector',
     components:{
         CoursewareManagerElement,
         CoursewareCompanionBox,
+        StudipProgressIndicator,
     },
     props: {},
-    data() {return{
-        source: '',
-        courses: [],
-        remoteCid: '',
-        remoteCoursewareInstance: {},
-        remoteId: '',
-        remoteElement: {},
-        ownCoursewareInstance: {},
-        ownId: '',
-        ownElement: {},
-        semesterMap: [],
-
-    }},
+    data() {
+        return {
+            source: '',
+            courses: [],
+            remoteCid: '',
+            remoteCoursewareInstance: {},
+            remoteId: '',
+            remoteElement: {},
+            ownCoursewareInstance: {},
+            ownId: '',
+            ownElement: {},
+            semesterMap: [],
+            loadingRemoteCourses: false
+        }
+    },
     computed: {
         ...mapGetters({
             userId: 'userId',
@@ -116,6 +131,7 @@ export default {
             loadUsersCourses: 'loadUsersCourses',
             loadStructuralElement: 'loadStructuralElement',
             loadSemester: 'semesters/loadById',
+            loadRemoteCoursewareStructure: 'loadRemoteCoursewareStructure'
         }),
         selectSource(source) {
             this.source = source;
@@ -196,11 +212,36 @@ export default {
         },
         reloadElement() {
             this.$emit("reloadElement");
-        }
+        },
+        async loadCoursewareInstances() {
+            this.loadingRemoteCourses = true;
+            let filteredCourses = [];
+
+            for (let course of this.courses) {
+
+                if (course.userPermission === 'dozent') {
+                    filteredCourses.push(course);
+                    continue;
+                }
+
+                const coursewareInstance = await this.loadRemoteCoursewareStructure({
+                    rangeId: course.id,
+                    rangeType: course.type
+                });
+
+                if (coursewareInstance.attributes['editing-permission-level'] === 'tutor') {
+                    filteredCourses.push(course);
+                }
+            };
+
+            this.loadingRemoteCourses = false;
+            this.courses = filteredCourses;
+        },
     },
     async mounted() {
         this.courses = await this.loadUsersCourses({ userId: this.userId, withCourseware: true });
         this.loadSemesterMap();
+        this.loadCoursewareInstances();
     }
 
 }

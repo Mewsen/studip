@@ -11,6 +11,7 @@ class Course extends SchemaProvider
     const TYPE = 'courses';
 
     const REL_BLUBBER = 'blubber-threads';
+    const REL_COURSEWARE = 'courseware';
     const REL_END_SEMESTER = 'end-semester';
     const REL_EVENTS = 'events';
     const REL_FEEDBACK = 'feedback-elements';
@@ -72,6 +73,7 @@ class Course extends SchemaProvider
         $relationships = $this->getFilesRelationship($relationships, $course);
         $relationships = $this->getForumCategoriesRelationship($relationships, $course, $includeList);
         $relationships = $this->getBlubberRelationship($relationships, $course, $includeList);
+        $relationships = $this->getCoursewareRelationship($relationships, $course, $includeList);
         $relationships = $this->getEventsRelationship($relationships, $course, $includeList);
         $relationships = $this->getFeedbackRelationship($relationships, $course, $includeList);
         $relationships = $this->getMembershipsRelationship($relationships, $course, $includeList);
@@ -183,6 +185,26 @@ class Course extends SchemaProvider
                 Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_BLUBBER),
             ],
         ];
+
+        return $relationships;
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    private function getCoursewareRelationship(
+        array $relationships,
+        \Course $course,
+        $includeData
+    ) {
+        if (\Courseware\Instance::existsForRange($course)) {
+            $relationships[self::REL_COURSEWARE] = [
+                self::RELATIONSHIP_DATA => \Courseware\Instance::findForRange($course),
+                self::RELATIONSHIP_LINKS => [
+                    Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_COURSEWARE),
+                ],
+            ];
+        }
 
         return $relationships;
     }
