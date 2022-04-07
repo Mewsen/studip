@@ -898,6 +898,13 @@ export const actions = {
     },
 
     loadTeacherStatus({ dispatch, rootGetters, state, commit, getters }, userId) {
+        const user = rootGetters['users/byId']({ id: userId });
+
+        if (user.attributes.permission === 'root') {
+            commit('setUserIsTeacher', true);
+            return;
+        }
+
         const membershipId = `${state.context.id}_${userId}`;
 
         return dispatch('course-memberships/loadById', { id: membershipId })
