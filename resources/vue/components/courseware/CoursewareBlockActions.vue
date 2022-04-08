@@ -53,7 +53,12 @@ export default {
         }
         if (this.canEdit) {
             if (!this.deleteOnly) {
-                this.menuItems.push({ id: 1, label: this.$gettext('Block bearbeiten'), icon: 'edit', emit: 'editBlock' });
+                this.menuItems.push({
+                    id: 1,
+                    label: this.$gettext('Block bearbeiten'),
+                    icon: 'edit',
+                    emit: 'editBlock',
+                });
                 this.menuItems.push({
                     id: 2,
                     label: this.block.attributes.visible
@@ -79,7 +84,7 @@ export default {
                 id: 9,
                 label: this.$gettext('Block löschen'), 
                 icon: 'trash',
-                emit: 'deleteBlock' 
+                emit: 'deleteBlock',
             });
         }
 
