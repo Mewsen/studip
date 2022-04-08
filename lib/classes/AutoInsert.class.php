@@ -52,12 +52,13 @@ class AutoInsert
 
     private function loadSettings()
     {
-        $query = "SELECT a.seminar_id, GROUP_CONCAT(a.status,IF(LENGTH(a.domain_id)=0,':keine',CONCAT(':',a.domain_id))) AS domain_status, s.Name, s.Schreibzugriff, s.start_time ";
+        $query = "SELECT a.seminar_id, GROUP_CONCAT(a.status,IF(LENGTH(a.range_id)=0,':keine',CONCAT(':',a.domain_id))) AS range_status, a,range_type, s.Name, s.Schreibzugriff, s.start_time ";
         $query .= "FROM auto_insert_sem a ";
         $query .= "JOIN seminare AS s USING (Seminar_id) ";
         $query .= "GROUP BY s.seminar_id ";
         $query .= "ORDER BY s.Name";
         $statement = DBManager::get()->query($query);
+
         $results   = $statement->fetchAll(PDO::FETCH_ASSOC);
         foreach ($results as $result) {
             if ($result['Schreibzugriff'] < 3) {
@@ -277,19 +278,26 @@ class AutoInsert
             $statement = DBManager::get()->query($query);
             $results   = $statement->fetchAll(PDO::FETCH_COLUMN);
         } else {
-            $query = "SELECT a.seminar_id, GROUP_CONCAT(a.status,IF(LENGTH(a.domain_id)=0,':keine',CONCAT(':',a.domain_id))) AS domain_status, s.Name, s.Schreibzugriff, s.start_time ";
-            $query .= "FROM auto_insert_sem a ";
-            $query .= "JOIN seminare AS s USING (Seminar_id) ";
+            $results = [];
+            foreach (words('degree domain institute semester subject') as $type) {
+                $query = "SELECT a.seminar_id, GROUP_CONCAT(a.status,IF(LENGTH(a.range_id)=0,':keine',CONCAT(':',a.range_id))) AS range_status, s.Name, s.Schreibzugriff, s.start_time ";
+                $query .= "FROM auto_insert_sem a ";
+                $query .= "JOIN seminare AS s USING (Seminar_id) WHERE a.`range_type` = :type ";
 
-            $query .= "GROUP BY s.seminar_id ";
-            $query .= "ORDER BY s.Name";
-            $statement = DBManager::get()->query($query);
-            $results   = $statement->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($results as $index => $result) {
-                $domains = explode(',', $result['domain_status']);
-                foreach ($domains as $domain) {
-                    $array                                  = explode(':', $domain);
-                    $results[$index]['status'][$array[1]][] = $array[0];
+                $query .= "GROUP BY s.seminar_id ";
+                $query .= "ORDER BY s.Name";
+
+                $data = DBManager::get()->fetchAll($query, ['type' => $type]);
+                if (count($data) > 0) {
+                    $results[$type] = [];
+
+                    foreach ($data as $index => $result) {
+                        $entries = explode(',', $result['range_status']);
+                        foreach ($entries as $entry) {
+                            $array = explode(':', $entry);
+                            $results[$type][$index]['status'][$array[1]][] = $array[0];
+                        }
+                    }
                 }
             }
         }
@@ -304,7 +312,7 @@ class AutoInsert
      */
     public static function getSeminar($seminar_id)
     {
-        $query = "SELECT a.seminar_id, GROUP_CONCAT(a.status) AS status, s.Name ";
+        $query = "SELECT a.seminar_id, GROUP_CONCAT(a.status) AS status,a.range_type, s.Name ";
         $query .= "FROM auto_insert_sem a ";
         $query .= "JOIN seminare AS s USING (Seminar_id) ";
         $query .= "WHERE a.seminar_id = ? ";

@@ -53,10 +53,6 @@ use Studip\Button, Studip\LinkButton;
                         <?= _('Studienfach') ?>
                     </label>
                     <label>
-                        <input type="radio" name="autoinsert_type" value="semester">
-                        <?= _('Fachsemester') ?>
-                    </label>
-                    <label>
                         <input type="radio" name="autoinsert_type" value="institute">
                         <?= _('Einrichtung') ?>
                     </label>
@@ -89,28 +85,30 @@ use Studip\Button, Studip\LinkButton;
         </tr>
         </thead>
         <tbody>
-        <? foreach ($auto_sems as $auto_sem): ?>
-            <tr>
-                <td>
-                    <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $auto_sem['seminar_id']]) ?>">
-                        <?= htmlReady($auto_sem['Name']) ?>
-                    </a>
-                </td>
+        <? foreach ($auto_sems as $type => $courses): ?>
+            <? foreach ($courses as $type => $auto_sem): ?>
+                <tr>
+                    <td>
+                        <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $auto_sem['seminar_id']]) ?>">
+                            <?= htmlReady($auto_sem['Name']) ?>
+                        </a>
+                    </td>
 
-                <?= $this->render_partial("admin/autoinsert/_status.php", ['status' => 'dozent', 'auto_sem' => $auto_sem, 'domains' => $userdomains]) ?>
-                <?= $this->render_partial("admin/autoinsert/_status.php", ['status' => 'tutor', 'auto_sem' => $auto_sem, 'domains' => $userdomains]) ?>
-                <?= $this->render_partial("admin/autoinsert/_status.php", ['status' => 'autor', 'auto_sem' => $auto_sem, 'domains' => $userdomains]) ?>
-                <td class="actions">
-                    <a href="<?= $controller->delete($auto_sem['seminar_id'] ) ?>">
-                        <?= Icon::create(
-                            'trash',
-                            Icon::ROLE_CLICKABLE,
-                            ['title' => _('Veranstaltung entfernen'), 'class' => 'text-top']
-                        ) ?>
-                    </a>
-                </td>
-            </tr>
-            <? $i++ ?>
+                    <?= $this->render_partial("admin/autoinsert/_status.php", ['status' => 'dozent', 'auto_sem' => $auto_sem, 'domains' => $userdomains]) ?>
+                    <?= $this->render_partial("admin/autoinsert/_status.php", ['status' => 'tutor', 'auto_sem' => $auto_sem, 'domains' => $userdomains]) ?>
+                    <?= $this->render_partial("admin/autoinsert/_status.php", ['status' => 'autor', 'auto_sem' => $auto_sem, 'domains' => $userdomains]) ?>
+                    <td class="actions">
+                        <a href="<?= $controller->delete($auto_sem['seminar_id'] ) ?>">
+                            <?= Icon::create(
+                                'trash',
+                                Icon::ROLE_CLICKABLE,
+                                ['title' => _('Veranstaltung entfernen'), 'class' => 'text-top']
+                            ) ?>
+                        </a>
+                    </td>
+                </tr>
+                <? $i++ ?>
+            <? endforeach; ?>
         <? endforeach; ?>
         </tbody>
     </table>
