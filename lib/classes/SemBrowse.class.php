@@ -243,7 +243,7 @@ class SemBrowse {
             $query .= ' AND visible = 1';
         }
 
-        $sem_ids = DBManager::get()->fetchAll(PDO::FETCH_COLUMN);
+        $sem_ids = DBManager::get('studip-slave')->fetchAll(PDO::FETCH_COLUMN);
         if (is_array($sem_ids)) {
             $this->sem_browse_data['search_result'] = array_flip($sem_ids);
         }

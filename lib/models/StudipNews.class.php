@@ -106,7 +106,7 @@ class StudipNews extends SimpleORMap implements PrivacyObject
         } else {
             $query .= "ORDER BY prio DESC, date DESC, chdate DESC, topic ASC";
         }
-        $statement = DBManager::get()->prepare($query);
+        $statement = DBManager::get('studip-slave')->prepare($query);
         $statement->execute([$range_id]);
         $ret = $statement->fetchGrouped(PDO::FETCH_ASSOC);
         if (!(isset($GLOBALS['perm']) && $GLOBALS['perm']->have_perm('root'))) {
