@@ -30,7 +30,7 @@
                 </ul>
                 <courseware-companion-box 
                     v-if="!hasRemoteCid && semesterMap.length !== 0 && courses.length === 0"
-                    :msgCompanion="$gettext('Es wurden keine Veranstaltung gefunden aus denen Sie Inhalte kopieren dürfen.')"
+                    :msgCompanion="$gettext('Es wurde keine Veranstaltung gefunden, aus der Sie Inhalte kopieren dürfen.')"
                     mood="sad"
                 />
                 <courseware-companion-box 
