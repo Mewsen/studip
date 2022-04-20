@@ -110,8 +110,10 @@ export default {
         }),
         async initCurrentData() {
             this.currentThreadId = this.block?.attributes?.payload?.thread_id;
-            this.availableThreads = await this.loadCourseBlubberThreads({cid: this.context.id});
-            this.availableThreads = this.availableThreads.filter(thread => thread.attributes.content !== null && thread.attributes.content !== '');
+            if (this.context.type === 'courses') {
+                this.availableThreads = await this.loadCourseBlubberThreads({cid: this.context.id});
+                this.availableThreads = this.availableThreads.filter(thread => thread.attributes.content !== null && thread.attributes.content !== '');
+            }
         },
         setTitle(e) {
             this.currentTitle = e;
