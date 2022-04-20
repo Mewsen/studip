@@ -13,18 +13,18 @@
 # Jakob Diel <jakobdiel@gmail.com>, 2021
 # André Noack <noackorama@googlemail.com>, 2021
 # M B <brueckner@data-quest.de>, 2021
-# Jan-Hendrik Willms <tleilax@gmail.com>, 2022
 # Ron Lucke <lucke@elan-ev.de>, 2022
 # M S <strohm@data-quest.de>, 2022
+# Jan-Hendrik Willms <tleilax@gmail.com>, 2022
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-04 12:59+0200\n"
+"POT-Creation-Date: 2022-04-20 14:20+0200\n"
 "PO-Revision-Date: 2021-01-26 11:15+0000\n"
-"Last-Translator: M S <strohm@data-quest.de>, 2022\n"
+"Last-Translator: Jan-Hendrik Willms <tleilax@gmail.com>, 2022\n"
 "Language-Team: English (https://www.transifex.com/studip/teams/36183/en/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,7 +37,6 @@ msgid "Stud.IP (systemweit)"
 msgstr "Stud.IP (system)"
 
 #: app/controllers/news.php:44 app/controllers/news.php:609
-#: app/controllers/admin/plugin.php:498
 #: app/controllers/search/globalsearch.php:97
 #: app/views/course/basicdata/view.php:59
 #: app/views/admin/role/assign_role.php:100
@@ -1627,7 +1626,7 @@ msgstr "Topic"
 #: app/views/fachabschluss/kategorien/kategorie.php:30
 #: app/views/fachabschluss/faecher/fach.php:21
 #: app/views/files_dashboard/search.php:42
-#: app/views/oer/mymaterial/edit.php:85 app/views/oer/market/details.php:139
+#: app/views/oer/mymaterial/edit.php:85 app/views/oer/market/details.php:141
 #: lib/classes/calendar/SingleCalendar.php:510
 #: lib/classes/calendar/SingleCalendar.php:658
 #: lib/classes/LockRules.class.php:176 lib/archiv.inc.php:185
@@ -1743,7 +1742,7 @@ msgstr "Room description"
 #: app/views/resources/room_group/permissions.php:7
 #: app/views/resources/_common/_room_thead.php:4
 #: app/views/room_management/overview/rooms.php:6
-#: lib/classes/sidebar/RoomSearchWidget.class.php:192
+#: lib/classes/sidebar/RoomSearchWidget.class.php:163
 msgid "Sitzplätze"
 msgstr "Seats"
 
@@ -2635,11 +2634,11 @@ msgid "Es wurde keine passende Veranstaltung gefunden."
 msgstr "No matching course could be found."
 
 #: app/controllers/course/files.php:33 app/controllers/institute/files.php:34
-#: app/controllers/resources/resource.php:1425
+#: app/controllers/resources/resource.php:1424
 #: app/views/course/dates/details.php:64 app/views/resources/room/index.php:51
-#: app/views/resources/location/index.php:45
+#: app/views/resources/location/index.php:47
 #: app/views/resources/resource/index.php:17
-#: app/views/resources/building/index.php:72
+#: app/views/resources/building/index.php:73
 #: lib/classes/globalsearch/GlobalSearchFiles.php:19
 #: lib/navigation/ContentsNavigation.php:74
 #: lib/navigation/FilesNavigation.php:23
@@ -2667,7 +2666,7 @@ msgid "Neuer Ordner"
 msgstr "New folder"
 
 #: app/controllers/course/files.php:82 app/controllers/institute/files.php:75
-#: app/controllers/files.php:114 app/controllers/resources/resource.php:1463
+#: app/controllers/files.php:114 app/controllers/resources/resource.php:1462
 #: app/views/resources/resource/files.php:75 app/views/files/index.php:75
 msgid "Dokument hinzufügen"
 msgstr "Add document"
@@ -3113,7 +3112,7 @@ msgstr "None of the selected dates is in the given period!"
 
 #: app/controllers/course/topics.php:16
 #: app/views/course/dates/details-edit.php:19
-#: app/views/course/details/index.php:294 app/views/oer/market/details.php:75
+#: app/views/course/details/index.php:294 app/views/oer/market/details.php:77
 #: lib/modules/CoreSchedule.class.php:87
 msgid "Themen"
 msgstr "Topics"
@@ -3161,9 +3160,9 @@ msgstr "%s topics copied."
 #: lib/models/Course.class.php:400 lib/models/Course.class.php:756
 #: lib/models/StudipNews.class.php:216 lib/meine_seminare_func.inc.php:163
 #: lib/meine_seminare_func.inc.php:185
-#: lib/extern/modules/ExternModuleTemplateLectures.class.php:448
+#: lib/extern/modules/ExternModuleTemplateLectures.class.php:454
 #: lib/extern/modules/views/ExternSemBrowseTable.class.php:350
-#: lib/extern/modules/views/ExternSemBrowse.class.php:450
+#: lib/extern/modules/views/ExternSemBrowse.class.php:449
 #: lib/extern/modules/ExternModuleTemplateSemBrowse.class.php:798
 #: lib/extern/modules/ExternModuleTemplateSemBrowse.class.php:1418
 #: public/eval_summary_export.php:589 public/admin_sem_tree.php:260
@@ -4318,7 +4317,7 @@ msgstr "The lock rule has been successfully reset!"
 #: app/views/studiengaenge/studiengaenge/index.php:17
 #: app/views/files_dashboard/_search_active_filters.php:24
 #: app/views/oer/mymaterial/edit.php:97
-#: lib/classes/sidebar/RoomSearchWidget.class.php:106
+#: lib/classes/sidebar/RoomSearchWidget.class.php:79
 #: lib/classes/calendar/SingleCalendar.php:513
 #: lib/classes/calendar/SingleCalendar.php:661
 #: lib/elearning/Ilias3ConnectedCMS.class.php:145
@@ -4555,7 +4554,7 @@ msgstr "Basic data management"
 #: app/views/admin/user/_results.php:112 app/views/admin/user/new.php:79
 #: app/views/admin/user/edit.php:168 app/views/admin/user/edit.php:323
 #: app/views/web_migrate/index.php:73 app/views/oer/mymaterial/edit.php:162
-#: app/views/oer/market/details.php:168 lib/functions.php:322
+#: app/views/oer/market/details.php:170 lib/functions.php:322
 #: lib/functions.php:354 lib/user_visible.inc.php:205
 #: lib/calendar/CalendarWriterICalendar.class.php:531
 #: lib/classes/globalsearch/GlobalSearchBlubber.php:120
@@ -5219,18 +5218,18 @@ msgstr "Feedback: %s"
 #: app/views/course/ilias_interface/view_object.php:17
 #: app/views/course/statusgroups/_group.php:102
 #: app/views/course/scm/index.php:16 app/views/course/topics/index.php:86
-#: app/views/file/folder_details.php:26 app/views/resources/room/index.php:100
+#: app/views/file/folder_details.php:26 app/views/resources/room/index.php:102
 #: app/views/resources/_common/_resource_tr.php:196
 #: app/views/resources/booking/index.php:155
-#: app/views/resources/location/index.php:23
+#: app/views/resources/location/index.php:24
 #: app/views/resources/admin/properties.php:42
 #: app/views/resources/admin/categories.php:57
 #: app/views/resources/building/index.php:44
 #: app/views/my_ilias_accounts/view_object.php:7
 #: app/views/admin/datafields/preview.php:14
 #: app/views/questionnaire/evaluate.php:43
-#: app/views/questionnaire/answer.php:47 app/views/oer/market/details.php:60
-#: app/views/oer/market/details.php:319
+#: app/views/questionnaire/answer.php:47 app/views/oer/market/details.php:62
+#: app/views/oer/market/details.php:321
 #: lib/classes/StudipRangeTreeViewAdmin.class.php:537
 #: lib/classes/StudipSemTreeViewAdmin.class.php:509
 #: lib/classes/Interactable.class.php:175
@@ -5310,7 +5309,7 @@ msgstr "Edit"
 #: app/views/tour/admin_conflicts.php:55 app/views/files/_flat_tfoot.php:39
 #: app/views/files/flat.php:37 app/views/files/index.php:61
 #: app/views/help_content/delete.php:16 app/views/help_content/delete.php:18
-#: app/views/oer/market/details.php:62
+#: app/views/oer/market/details.php:64
 #: lib/classes/StudipRangeTreeViewAdmin.class.php:540
 #: lib/classes/StudipSemTreeViewAdmin.class.php:513
 #: lib/elearning/ELearningUtils.class.php:603 lib/wiki.inc.php:1029
@@ -5408,7 +5407,7 @@ msgstr "No room category has been selected!"
 
 #: app/controllers/course/room_requests.php:381
 #: app/controllers/course/room_requests.php:438
-#: app/controllers/resources/room.php:251
+#: app/controllers/resources/room.php:249
 msgid "Die gewählte Raumkategorie wurde nicht gefunden!"
 msgstr "The specified room category could not be found!"
 
@@ -5876,7 +5875,7 @@ msgstr "Include subordinate institutes"
 #: app/views/admin/cronjobs/schedules/edit.php:5
 #: app/views/consultation/admin/create.php:3
 #: app/views/room_management/planning/booking_comments.php:14
-#: lib/classes/sidebar/RoomSearchWidget.class.php:178 lib/dates.inc.php:41
+#: lib/classes/sidebar/RoomSearchWidget.class.php:149 lib/dates.inc.php:41
 #: lib/models/CalendarEvent.class.php:471
 msgid "Montag"
 msgstr "Monday"
@@ -5890,7 +5889,7 @@ msgstr "Monday"
 #: app/views/admin/cronjobs/schedules/edit.php:6
 #: app/views/consultation/admin/create.php:4
 #: app/views/room_management/planning/booking_comments.php:23
-#: lib/classes/sidebar/RoomSearchWidget.class.php:179 lib/dates.inc.php:44
+#: lib/classes/sidebar/RoomSearchWidget.class.php:150 lib/dates.inc.php:44
 #: lib/models/CalendarEvent.class.php:471
 msgid "Dienstag"
 msgstr "Tuesday"
@@ -5904,7 +5903,7 @@ msgstr "Tuesday"
 #: app/views/admin/cronjobs/schedules/edit.php:7
 #: app/views/consultation/admin/create.php:5
 #: app/views/room_management/planning/booking_comments.php:32
-#: lib/classes/sidebar/RoomSearchWidget.class.php:180 lib/dates.inc.php:47
+#: lib/classes/sidebar/RoomSearchWidget.class.php:151 lib/dates.inc.php:47
 #: lib/models/CalendarEvent.class.php:471
 msgid "Mittwoch"
 msgstr "Wednesday"
@@ -5918,7 +5917,7 @@ msgstr "Wednesday"
 #: app/views/admin/cronjobs/schedules/edit.php:8
 #: app/views/consultation/admin/create.php:6
 #: app/views/room_management/planning/booking_comments.php:41
-#: lib/classes/sidebar/RoomSearchWidget.class.php:181 lib/dates.inc.php:50
+#: lib/classes/sidebar/RoomSearchWidget.class.php:152 lib/dates.inc.php:50
 #: lib/models/CalendarEvent.class.php:472
 msgid "Donnerstag"
 msgstr "Thursday"
@@ -5932,7 +5931,7 @@ msgstr "Thursday"
 #: app/views/admin/cronjobs/schedules/edit.php:9
 #: app/views/consultation/admin/create.php:7
 #: app/views/room_management/planning/booking_comments.php:50
-#: lib/classes/sidebar/RoomSearchWidget.class.php:182 lib/dates.inc.php:53
+#: lib/classes/sidebar/RoomSearchWidget.class.php:153 lib/dates.inc.php:53
 #: lib/models/CalendarEvent.class.php:472
 msgid "Freitag"
 msgstr "Friday"
@@ -5946,7 +5945,7 @@ msgstr "Friday"
 #: app/views/admin/cronjobs/schedules/edit.php:10
 #: app/views/consultation/admin/create.php:8
 #: app/views/room_management/planning/booking_comments.php:59
-#: lib/classes/sidebar/RoomSearchWidget.class.php:183 lib/dates.inc.php:56
+#: lib/classes/sidebar/RoomSearchWidget.class.php:154 lib/dates.inc.php:56
 #: lib/models/CalendarEvent.class.php:472
 msgid "Samstag"
 msgstr "Saturday"
@@ -5960,7 +5959,7 @@ msgstr "Saturday"
 #: app/views/admin/cronjobs/schedules/edit.php:11
 #: app/views/consultation/admin/create.php:9
 #: app/views/room_management/planning/booking_comments.php:68
-#: lib/classes/sidebar/RoomSearchWidget.class.php:184 lib/dates.inc.php:38
+#: lib/classes/sidebar/RoomSearchWidget.class.php:155 lib/dates.inc.php:38
 #: lib/models/CalendarEvent.class.php:472
 msgid "Sonntag"
 msgstr "Sunday"
@@ -6054,7 +6053,7 @@ msgstr "Date suggestion on %s from %s %s"
 #: app/views/calendar/group/_tooltip.php:15 lib/dates.inc.php:239
 #: lib/models/CourseDate.class.php:270 lib/models/CourseExDate.class.php:144
 #: lib/raumzeit/SingleDate.class.php:417
-#: lib/extern/modules/ExternModuleTemplatePersondetails.class.php:617
+#: lib/extern/modules/ExternModuleTemplatePersondetails.class.php:619
 msgid "ganztägig"
 msgstr "all-day"
 
@@ -7644,7 +7643,7 @@ msgstr "Configure file areas"
 msgid "%s konfigurieren"
 msgstr "configure %s"
 
-#: app/controllers/files.php:153 app/controllers/resources/resource.php:1472
+#: app/controllers/files.php:153 app/controllers/resources/resource.php:1471
 msgid "Dateien hinzufügen"
 msgstr "Add files"
 
@@ -7774,7 +7773,7 @@ msgstr "Modules"
 #: app/views/studiengaenge/studiengaenge/stgteil_bezeichnungen.php:53
 #: app/views/studiengaenge/versionen/modulteil_semester.php:36
 #: app/views/fachabschluss/abschluesse/abschluss.php:24
-#: lib/classes/sidebar/RoomSearchWidget.class.php:177
+#: lib/classes/sidebar/RoomSearchWidget.class.php:148
 #: lib/models/resources/ResourcePropertyDefinition.class.php:186
 #: templates/sidebar/time-range-filter.php:17
 #: templates/sidebar/room-search-criteria-available-range.php:50
@@ -8278,7 +8277,7 @@ msgstr "Room groups"
 #: app/controllers/resources/room_request.php:504
 #: app/views/resources/room_group/permissions.php:3
 #: app/views/resources/export/select_booking_sources.php:43
-#: app/views/resources/building/index.php:95
+#: app/views/resources/building/index.php:96
 #: lib/navigation/ResourceNavigation.php:107
 #: lib/navigation/SearchNavigation.php:78
 msgid "Räume"
@@ -8809,7 +8808,7 @@ msgid "Es gibt kein aktuelles Semester in dieser Stud.IP-Installation!"
 msgstr "There is no current semester in this Stud.IP installation!"
 
 #: app/controllers/resources/room_planning.php:89
-#: app/controllers/resources/room.php:101
+#: app/controllers/resources/room.php:98
 #: app/controllers/resources/resource.php:195
 #: app/views/resources/room/index.php:83
 #: app/views/resources/room_planning/booking_plan.php:49
@@ -9360,7 +9359,7 @@ msgstr "The selected resource could not be found!"
 #: app/controllers/resources/global_locks.php:86
 #: app/controllers/resources/global_locks.php:173
 #: app/controllers/resources/resource.php:949
-#: app/controllers/resources/resource.php:1348
+#: app/controllers/resources/resource.php:1347
 #: app/controllers/resources/messages.php:133
 #: lib/resources/RoomManager.class.php:719
 #: lib/resources/ResourceManager.class.php:642
@@ -9378,7 +9377,7 @@ msgstr "The start time must not lie after the end time!"
 #: app/views/resources/_common/_room_thead.php:3
 #: app/views/resources/admin/separable_rooms.php:40
 #: app/views/resources/admin/separable_rooms.php:118
-#: lib/classes/sidebar/RoomSearchWidget.class.php:97
+#: lib/classes/sidebar/RoomSearchWidget.class.php:70
 msgid "Raumname"
 msgstr "Room name"
 
@@ -9484,19 +9483,19 @@ msgid "Fehler beim Löschen der Sperrung!"
 msgstr "Error while deleting the lock!"
 
 #: app/controllers/resources/room.php:40
-#: app/controllers/resources/room.php:207
-#: app/controllers/resources/room.php:531
+#: app/controllers/resources/room.php:205
+#: app/controllers/resources/room.php:529
 msgid "Der angegebene Raum wurde nicht gefunden!"
 msgstr "The specified room was not found!"
 
-#: app/controllers/resources/room.php:83 app/views/resources/room/index.php:74
+#: app/controllers/resources/room.php:80 app/views/resources/room/index.php:74
 #: app/views/resources/_common/_room_search_result.php:23
 #: templates/sidebar/room-clipboard-item.php:68
 msgid "Wochenbelegung"
 msgstr "Week booking plan"
 
-#: app/controllers/resources/room.php:91
-#: app/controllers/resources/room.php:109
+#: app/controllers/resources/room.php:88
+#: app/controllers/resources/room.php:106
 #: app/views/resources/room/index.php:78 app/views/resources/room/index.php:87
 #: app/views/resources/_common/_room_search_result.php:29
 #: app/views/resources/_common/_room_search_result.php:43
@@ -9504,84 +9503,84 @@ msgstr "Week booking plan"
 msgid "Semesterbelegung"
 msgstr "Semester booking plan"
 
-#: app/controllers/resources/room.php:120
-#: app/controllers/resources/room.php:506
+#: app/controllers/resources/room.php:117
+#: app/controllers/resources/room.php:504
 #: app/views/consultation/admin/index.php:49
 #: app/views/consultation/admin/ungrouped.php:70
 msgid "Raum bearbeiten"
 msgstr "Edit room"
 
-#: app/controllers/resources/room.php:128
+#: app/controllers/resources/room.php:125
 #: app/controllers/resources/building.php:79
 #: app/controllers/resources/location.php:100
 msgid "Rechte bearbeiten"
 msgstr "Edit permissions"
 
-#: app/controllers/resources/room.php:139
+#: app/controllers/resources/room.php:136
 #: app/views/course/timesrooms/_roomRequestInfo.php:12
 #: app/views/course/timesrooms/_roomRequest.php:27
 msgid "Raumanfragen anzeigen"
 msgstr "Show room requests"
 
-#: app/controllers/resources/room.php:151
-#: app/views/resources/room/index.php:108
+#: app/controllers/resources/room.php:148
+#: app/views/resources/room/index.php:111
 #: app/views/resources/_common/_room_search_result.php:52
 msgid "Raum anfragen"
 msgstr "Request room"
 
-#: app/controllers/resources/room.php:178
-#: app/controllers/resources/room.php:202
-#: app/controllers/resources/room.php:479
+#: app/controllers/resources/room.php:176
+#: app/controllers/resources/room.php:200
+#: app/controllers/resources/room.php:477
 #: app/controllers/room_management/overview.php:347
 msgid "Raum hinzufügen"
 msgstr "Add room"
 
-#: app/controllers/resources/room.php:190
+#: app/controllers/resources/room.php:188
 msgid "Es sind keine Raumkategorien eingerichtet!"
 msgstr "No room categories are set up!"
 
-#: app/controllers/resources/room.php:217
+#: app/controllers/resources/room.php:215
 #: app/controllers/resources/building.php:164
 #: app/controllers/resources/location.php:164
 #, php-format
 msgid "%s: Bearbeiten"
 msgstr "%s: Edit"
 
-#: app/controllers/resources/room.php:219
+#: app/controllers/resources/room.php:217
 #: app/controllers/resources/building.php:408
 #: app/controllers/resources/location.php:166
 #, php-format
 msgid "%s: Löschen"
 msgstr "%s: Delete"
 
-#: app/controllers/resources/room.php:308
+#: app/controllers/resources/room.php:306
 msgid "Der Raum wurde keinem Gebäude zugeordnet!"
 msgstr "The room was not assigned to a building!"
 
-#: app/controllers/resources/room.php:319
+#: app/controllers/resources/room.php:317
 msgid ""
 "Unzureichende Berechtigungen zum Anlegen eines Raumes in der gewählten "
 "Hierarchie!"
 msgstr "Insufficient permissions to create a room in the selected hierarchy!"
 
-#: app/controllers/resources/room.php:329
-#: app/controllers/resources/room.php:495
+#: app/controllers/resources/room.php:327
+#: app/controllers/resources/room.php:493
 msgid "Die gewählte Kategorie ist für Räume nicht geeignet!"
 msgstr "The selected category is not suitable for rooms!"
 
-#: app/controllers/resources/room.php:337
+#: app/controllers/resources/room.php:335
 msgid "Der Name des Raumes ist leer!"
 msgstr "The name of the room is empty!"
 
-#: app/controllers/resources/room.php:344
+#: app/controllers/resources/room.php:342
 msgid "Die Anzahl der Sitzplätze darf nicht negativ sein!"
 msgstr "The amount of seats must not be negative!"
 
-#: app/controllers/resources/room.php:420
+#: app/controllers/resources/room.php:418
 msgid "Der Raum wurde gespeichert!"
 msgstr "The room has been saved!"
 
-#: app/controllers/resources/room.php:427
+#: app/controllers/resources/room.php:425
 #, php-format
 msgid ""
 "Der Raum wurde gespeichert, aber die Eigenschaft %s konnte wegen fehlender "
@@ -9590,7 +9589,7 @@ msgstr ""
 "The room has been saved, but the property %s could not be saved due to "
 "insufficient permissions!"
 
-#: app/controllers/resources/room.php:433
+#: app/controllers/resources/room.php:431
 msgid ""
 "Der Raum wurde gespeichert, aber die folgenden Eigenschaften konnten wegen "
 "fehlender Berechtigungen nicht gespeichert werden:"
@@ -9598,41 +9597,41 @@ msgstr ""
 "The room has been saved, but the following properties could not be saved due"
 " to insufficient permissions:"
 
-#: app/controllers/resources/room.php:439
+#: app/controllers/resources/room.php:437
 msgid "Fehler beim Speichern des Raumes!"
 msgstr "Error while saving the room!"
 
-#: app/controllers/resources/room.php:446
+#: app/controllers/resources/room.php:444
 msgid "Der Raum wurde gelöscht!"
 msgstr "The room has been deleted!"
 
-#: app/controllers/resources/room.php:450
+#: app/controllers/resources/room.php:448
 msgid "Fehler beim Löschen des Raumes!"
 msgstr "Error while deleting the room!"
 
-#: app/controllers/resources/room.php:513
+#: app/controllers/resources/room.php:511
 msgid "Raum löschen"
 msgstr "Delete room"
 
-#: app/controllers/resources/room.php:526
+#: app/controllers/resources/room.php:524
 msgid "Raum zuweisen"
 msgstr "Assign room"
 
-#: app/controllers/resources/room.php:545
+#: app/controllers/resources/room.php:543
 msgid "Die angegebene Raumanfrage wurde nicht gefunden!"
 msgstr "The specified room request could not be found!"
 
-#: app/controllers/resources/room.php:570
+#: app/controllers/resources/room.php:568
 #, php-format
 msgid "Am %1$s zwischen %2$s Uhr und %3$s Uhr"
 msgstr "On %1$s between %2$s and %3$s"
 
-#: app/controllers/resources/room.php:581
+#: app/controllers/resources/room.php:579
 #, php-format
 msgid "Der Raum %1$s wurde zu folgenden Zeiten gebucht:"
 msgstr "The room %1$s has been booked for the following periods:"
 
-#: app/controllers/resources/room.php:589
+#: app/controllers/resources/room.php:587
 #, php-format
 msgid "Fehler beim Buchen des Raumes %1$s!"
 msgstr "Error while booking the room %1$s!"
@@ -10155,8 +10154,8 @@ msgstr "Manage permissions"
 
 #: app/controllers/resources/resource.php:611
 #: app/controllers/resources/resource.php:851
-#: app/controllers/resources/resource.php:1211
-#: app/controllers/resources/resource.php:1414
+#: app/controllers/resources/resource.php:1210
+#: app/controllers/resources/resource.php:1413
 msgid "Diese Aktion kann nur für einzelne Ressourcen verwendet werden!"
 msgstr "This action can only be used for single resources!"
 
@@ -10180,13 +10179,13 @@ msgstr[0] "%d permission has been deleted!"
 msgstr[1] "%d permissions have been deleted!"
 
 #: app/controllers/resources/resource.php:747
-#: app/controllers/resources/resource.php:1127
+#: app/controllers/resources/resource.php:1126
 #, php-format
 msgid "Die globalen Berechtigungen von %s konnten nicht gespeichert werden!"
 msgstr "The global permissions of %s could not be saved!"
 
 #: app/controllers/resources/resource.php:754
-#: app/controllers/resources/resource.php:1134
+#: app/controllers/resources/resource.php:1133
 #, php-format
 msgid ""
 "Die Berechtigungen von %1$s an der Ressource %2$s konnten nicht gespeichert "
@@ -10194,12 +10193,12 @@ msgid ""
 msgstr "The permissions of %1$s for the resource %2$s could not be saved!"
 
 #: app/controllers/resources/resource.php:806
-#: app/controllers/resources/resource.php:1170
+#: app/controllers/resources/resource.php:1169
 msgid "Die folgenden Fehler traten auf beim Speichern der Berechtigungen:"
 msgstr "The following errors occurred while saving the permissions:"
 
 #: app/controllers/resources/resource.php:811
-#: app/controllers/resources/resource.php:1175
+#: app/controllers/resources/resource.php:1174
 #: app/controllers/resources/room_group.php:308
 msgid "Die Berechtigungen wurden gespeichert!"
 msgstr "The permissions have been saved!"
@@ -10234,28 +10233,28 @@ msgstr "Not all permissions could be saved!"
 msgid "Die Änderung der Zeitbereiche der Berechtigungen wurden gespeichert!"
 msgstr "The changes to the time ranges of the permission has been saved!"
 
-#: app/controllers/resources/resource.php:1224
+#: app/controllers/resources/resource.php:1223
 msgid "Es wurde kein passender Buchungstyp angegeben!"
 msgstr "No valid booking type has been specified!"
 
-#: app/controllers/resources/resource.php:1232
+#: app/controllers/resources/resource.php:1231
 #, php-format
 msgid "%s: Reservierung erstellen"
 msgstr "%s: Create reservation"
 
-#: app/controllers/resources/resource.php:1239
+#: app/controllers/resources/resource.php:1238
 #, php-format
 msgid "%s: Sperrbuchung erstellen"
 msgstr "%s: Create lock booking"
 
-#: app/controllers/resources/resource.php:1310
+#: app/controllers/resources/resource.php:1309
 #, php-format
 msgid ""
 "%1$s: Die Sperrbuchung für den Zeitraum von %2$s bis %3$s wurde gespeichert!"
 msgstr ""
 "%1$s: The lock booking for the time range from %2$s to %3$s has been saved!"
 
-#: app/controllers/resources/resource.php:1384
+#: app/controllers/resources/resource.php:1383
 #, php-format
 msgid ""
 "Eine Buchung wurde im Zeitbereich von %1$s, %2$s Uhr bis zum %3$s, %4$s Uhr "
@@ -10269,7 +10268,7 @@ msgstr[1] ""
 "%5$d bookings have been deleted in the time range from %1$s, %2$s to %3$s, "
 "%4$s!"
 
-#: app/controllers/resources/resource.php:1398
+#: app/controllers/resources/resource.php:1397
 #, php-format
 msgid ""
 "Die Buchungen im Zeitbereich von %1$s, %2$s Uhr bis %3$s, %4$s Uhr konnten "
@@ -10278,12 +10277,12 @@ msgstr ""
 "The bookings in the time range from %1$s, %2$s to %3$s, %4$s could not be "
 "deleted!"
 
-#: app/controllers/resources/resource.php:1442
+#: app/controllers/resources/resource.php:1441
 #, php-format
 msgid "Der Dateiordner zur Ressource %1$s konnte nicht gefunden werden!"
 msgstr "The folder for the resource %1$s could not be found!"
 
-#: app/controllers/resources/resource.php:1451
+#: app/controllers/resources/resource.php:1450
 msgid "Sie sind nicht berechtigt, den Inhalt dieses Ordners zu sehen!"
 msgstr "You are not allowed to see the content of this folder!"
 
@@ -11587,10 +11586,8 @@ msgstr "URL"
 #: app/controllers/admin/autoinsert.php:226
 #: app/controllers/search/globalsearch.php:100
 #: app/views/settings/studies/institute.php:18
-#: app/views/module/institute/index.php:5
-#: app/views/admin/plugin/default_activation.php:21
-#: app/views/admin/user/index.php:74 app/views/admin/user/new.php:161
-#: app/views/admin/courses/sidebar.php:17
+#: app/views/module/institute/index.php:5 app/views/admin/user/index.php:74
+#: app/views/admin/user/new.php:161 app/views/admin/courses/sidebar.php:17
 #: app/views/admin/datafields/new.php:113
 #: app/views/admin/datafields/edit.php:150
 #: app/views/public_courses/index.php:38 app/views/questionnaire/assign.php:23
@@ -12072,9 +12069,7 @@ msgstr "Access permissions"
 msgid "Gesperrte Veranstaltungen"
 msgstr "Locked courses"
 
-#: app/controllers/admin/courses.php:1023
-#: app/views/admin/plugin/default_activation.php:41
-#: app/views/admin/plugin/index.php:140
+#: app/controllers/admin/courses.php:1023 app/views/admin/plugin/index.php:131
 #: lib/evaluation/evaluation_admin_overview.lib.php:525
 #: lib/evaluation/evaluation_admin_overview.lib.php:533
 msgid "Einstellungen speichern"
@@ -12471,7 +12466,7 @@ msgstr "Members"
 msgid "Verwaltung von Plugins"
 msgstr "Plug-in management"
 
-#: app/controllers/admin/plugin.php:58 app/controllers/admin/plugin.php:500
+#: app/controllers/admin/plugin.php:58
 msgid "Pluginverwaltung"
 msgstr "Plug-in management"
 
@@ -12555,7 +12550,7 @@ msgstr "Links"
 msgid "Alle Plugins im Plugin-Marktplatz"
 msgstr "All plug-ins in the plug-in market place"
 
-#: app/controllers/admin/plugin.php:334 app/controllers/admin/plugin.php:577
+#: app/controllers/admin/plugin.php:334 app/controllers/admin/plugin.php:531
 msgid "Das Plugin wurde erfolgreich installiert."
 msgstr "Plug-in successfully installed."
 
@@ -12584,48 +12579,28 @@ msgstr "Update installed."
 msgid "Details von %s"
 msgstr "Details of %s"
 
-#: app/controllers/admin/plugin.php:498
-msgid ""
-"Wählen Sie die Einrichtungen, in deren Veranstaltungen das Plugin "
-"automatisch aktiviert sein soll."
-msgstr "Choose institutions for automatic course plug-in activation."
-
-#: app/controllers/admin/plugin.php:526
-msgid "Die Default-Aktivierung wurde ausgeschaltet."
-msgstr "Default activation deactivated."
-
-#: app/controllers/admin/plugin.php:529
-msgid ""
-"Für die ausgewählte Einrichtung wurde das Plugin standardmäßig aktiviert."
-msgid_plural ""
-"Für die ausgewählten Einrichtungen wurde das Plugin standardmäßig aktiviert."
-msgstr[0] ""
-"The plugin has been activated by default for the selected institute."
-msgstr[1] ""
-"The plugin has been activated by default for the selected institutes."
-
-#: app/controllers/admin/plugin.php:551
+#: app/controllers/admin/plugin.php:505
 msgid "Die Migration wurde durchgeführt."
 msgstr "The migration has been carried out."
 
-#: app/controllers/admin/plugin.php:553
+#: app/controllers/admin/plugin.php:507
 msgid "Die Migration konnte nicht durchgeführt werden."
 msgstr "The migration cannot be carried out."
 
-#: app/controllers/admin/plugin.php:608
+#: app/controllers/admin/plugin.php:562
 msgid "Daten gespeichert."
 msgstr "Data saved."
 
-#: app/controllers/admin/plugin.php:610
+#: app/controllers/admin/plugin.php:564
 msgid "Unten können Sie den Security Token jetzt heraus kopieren."
 msgstr "The security token can be copied from the field below."
 
-#: app/controllers/admin/plugin.php:616
+#: app/controllers/admin/plugin.php:570
 #, php-format
 msgid "Automatisches Update für %s"
 msgstr "Automatic update for %s"
 
-#: app/controllers/admin/plugin.php:618 app/views/admin/plugin/index.php:159
+#: app/controllers/admin/plugin.php:572 app/views/admin/plugin/index.php:150
 msgid "Plugin von URL installieren"
 msgstr "Install plug-in from URL"
 
@@ -16113,7 +16088,7 @@ msgid "Meine Räume"
 msgstr "My rooms"
 
 #: app/controllers/room_management/overview.php:362
-#: app/views/resources/location/index.php:68
+#: app/views/resources/location/index.php:70
 #: lib/navigation/ResourceNavigation.php:102
 #: lib/models/resources/Building.class.php:78
 msgid "Gebäude"
@@ -16695,7 +16670,7 @@ msgstr "Access count for %s"
 msgid "Datei ist nicht vorhanden"
 msgstr "File not found"
 
-#: app/controllers/oer/mymaterial.php:268 app/views/oer/market/details.php:312
+#: app/controllers/oer/mymaterial.php:268 app/views/oer/market/details.php:314
 #: app/views/oer/market/index.php:56 app/views/oer/market/search.php:13
 msgid "Eigenes Lernmaterial hochladen"
 msgstr "Upload own learning material"
@@ -17160,7 +17135,6 @@ msgstr "Do you really want to delete the standard substitute?"
 #: app/views/module/module/modul.php:685
 #: app/views/module/module/modulteil.php:465
 #: app/views/admin/configuration/edit_configuration.php:59
-#: app/views/admin/plugin/default_activation.php:41
 #: app/views/admin/lockrules/_form.php:45
 #: app/views/admin/lockrules/_form.php:93
 #: app/views/admin/user/edit_institute.php:62
@@ -17324,7 +17298,7 @@ msgstr "Accept changes"
 #: app/views/admin/cronjobs/logs/index.php:55
 #: app/views/admin/role/assign_role.php:38
 #: app/views/admin/overlapping/selection.php:67
-#: app/views/admin/plugin/index.php:195 app/views/admin/user/index.php:208
+#: app/views/admin/plugin/index.php:186 app/views/admin/user/index.php:208
 #: app/views/shared/filter.php:5 app/views/search/archive/index.php:52
 #: app/views/files_dashboard/_input-group-search.php:17
 #: lib/classes/sidebar/SearchWidget.php:171
@@ -17575,7 +17549,7 @@ msgstr "An administrator has made your ID invisible."
 
 #: app/views/settings/privacy.php:43
 msgid "Sie haben Lehrendenrechte und sind daher immer global sichtbar."
-msgstr "You have lecturer permissions and therefore you are always vibible."
+msgstr "You have lecturer permissions and therefore you are always visible."
 
 #: app/views/settings/privacy.php:45
 msgid "Sie sind immer global sichtbar."
@@ -18269,7 +18243,7 @@ msgstr "Activate WYSIWYG editor"
 #: app/views/admin/licenses/edit.php:43
 #: app/views/admin/course_wizard_steps/edit.php:40
 #: app/views/admin/login_style/newpic.php:30
-#: app/views/admin/holidays/edit.php:32 app/views/admin/plugin/index.php:140
+#: app/views/admin/holidays/edit.php:32 app/views/admin/plugin/index.php:131
 #: app/views/admin/plugin/edit_automaticupdate.php:62
 #: app/views/admin/sem_classes/details.php:232
 #: app/views/admin/user/new.php:209 app/views/admin/user/edit.php:608
@@ -18412,7 +18386,7 @@ msgid "Geschätzter zeitlicher Aufwand"
 msgstr "Estimated time efford"
 
 #: app/views/contents/courseware/create_project.php:64
-#: app/views/oer/mymaterial/edit.php:217 app/views/oer/market/details.php:90
+#: app/views/oer/mymaterial/edit.php:217 app/views/oer/market/details.php:92
 #: app/views/oer/market/_searchform.php:18
 #: app/views/oer/market/_searchform.php:94
 msgid "Niveau"
@@ -19022,11 +18996,11 @@ msgstr "Date type"
 
 #: app/views/course/dates/details.php:83
 #: app/views/resources/resource/files.php:41
-#: app/views/admin/plugin/index.php:121 app/views/admin/plugin/index.php:122
+#: app/views/admin/plugin/index.php:112 app/views/admin/plugin/index.php:113
 #: app/views/profile/public_files.php:31 app/views/files/_flat_tfoot.php:15
 #: app/views/files/flat.php:21 app/views/files/index.php:43
-#: app/views/oer/market/details.php:46 app/views/oer/market/details.php:48
-#: app/views/oer/market/details.php:328 lib/filesystem/StandardFile.php:342
+#: app/views/oer/market/details.php:47 app/views/oer/market/details.php:49
+#: app/views/oer/market/details.php:330 lib/filesystem/StandardFile.php:342
 #: lib/filesystem/LibraryFile.class.php:283
 msgid "Herunterladen"
 msgstr "Download"
@@ -19604,7 +19578,6 @@ msgstr "Name of admission setting"
 #: app/views/resources/booking/delete.php:19
 #: app/views/resources/booking/copy.php:35
 #: app/views/resources/room_request/decline.php:41
-#: app/views/admin/plugin/default_activation.php:43
 #: app/views/shared/log_event/show.php:58
 #: app/views/room_management/planning/copy_bookings.php:148
 #: app/views/room_management/planning/copy_bookings.php:229
@@ -20964,7 +20937,7 @@ msgstr "Open to everyone"
 msgid "Auf Anfrage"
 msgstr "Upon request"
 
-#: app/views/course/studygroup/edit.php:42 app/views/course/plus/index.php:80
+#: app/views/course/studygroup/edit.php:42 app/views/course/plus/index.php:78
 msgid "Unsichtbar"
 msgstr "Invisible"
 
@@ -22454,7 +22427,7 @@ msgstr "No materials for this topic"
 #: app/views/questionnaire/_overview_questionnaire.php:125
 #: app/views/questionnaire/overview.php:31
 #: app/views/questionnaire/_question.php:14
-#: app/views/oer/market/details.php:62 templates/blubber/public_context.php:13
+#: app/views/oer/market/details.php:64 templates/blubber/public_context.php:13
 msgid "Wirklich löschen?"
 msgstr "Really delete?"
 
@@ -22502,22 +22475,22 @@ msgstr "Select topics"
 msgid "Name des Werkzeugs"
 msgstr "Tool name"
 
-#: app/views/course/plus/index.php:19
+#: app/views/course/plus/index.php:20
 #: app/views/admin/sem_classes/details.php:207
 msgid "Inhaltselemente"
 msgstr "Content elements"
 
-#: app/views/course/plus/index.php:80
+#: app/views/course/plus/index.php:77
 #, php-format
 msgid "%s für Studierende"
 msgstr "%s for students"
 
-#: app/views/course/plus/index.php:80
+#: app/views/course/plus/index.php:78
 #: app/views/admin/sem_classes/details.php:150
 msgid "Sichtbar"
 msgstr "Visible"
 
-#: app/views/course/plus/index.php:112 app/views/course/plus/index.php:233
+#: app/views/course/plus/index.php:107 app/views/course/plus/index.php:212
 #: app/views/file/file_details.php:21
 #: app/views/my_ilias_accounts/_ilias_module.php:48
 #: app/views/profile_modules/index.php:74
@@ -22526,19 +22499,32 @@ msgstr "Visible"
 msgid "Keine Beschreibung vorhanden."
 msgstr "No description available."
 
-#: app/views/course/plus/index.php:125
+#: app/views/course/plus/index.php:117
 msgid "Optionen bearbeiten"
 msgstr "Edit options"
 
-#: app/views/course/plus/index.php:132
+#: app/views/course/plus/index.php:124
 msgid "Inhalte löschen"
 msgstr "Delete contents"
 
-#: app/views/course/plus/index.php:240 app/views/profile_modules/index.php:79
+#: app/views/course/plus/index.php:218 app/views/profile_modules/index.php:79
 msgid "Weitere Informationen:"
 msgstr "Further information:"
 
-#: app/views/course/plus/index.php:263 app/views/profile_modules/index.php:100
+#: app/views/course/plus/index.php:226 lib/classes/SemBrowse.class.php:626
+#: lib/classes/SemBrowse.class.php:945 lib/classes/SemBrowse.class.php:985
+#: lib/classes/StudipSemTreeViewAdmin.class.php:646
+#: lib/classes/globalsearch/GlobalSearchCourses.php:148
+#: lib/classes/globalsearch/GlobalSearchCourses.php:211
+#: lib/classes/globalsearch/GlobalSearchMyCourses.php:117
+#: lib/classes/globalsearch/GlobalSearchMyCourses.php:152
+#: lib/extern/modules/ExternModuleTemplateSemBrowse.class.php:1436
+#: templates/dates/seminar_html.php:73 templates/dates/seminar_html.php:84
+#: templates/index_nobody.php:83
+msgid "mehr"
+msgstr "more"
+
+#: app/views/course/plus/index.php:240 app/views/profile_modules/index.php:100
 msgid "An- / Ausschalten"
 msgstr "Enable / disable"
 
@@ -22952,7 +22938,7 @@ msgid "Wählen Sie links im <b>Semesterfilter</b> ein anderes Semester aus"
 msgstr "Select another semester in the <b>semester filter</b> on the left"
 
 #: app/views/calendar/single/_select_category.php:6
-#: lib/classes/sidebar/RoomSearchWidget.class.php:26
+#: lib/classes/sidebar/RoomSearchWidget.class.php:25
 msgid "Alle Kategorien"
 msgstr "All categories"
 
@@ -25016,17 +25002,17 @@ msgid "Beschreibung und Hinweise"
 msgstr "Description and notes"
 
 #: app/views/resources/room/index.php:31
-#: app/views/resources/_common/_room_search_result.php:96
+#: app/views/resources/_common/_room_search_result.php:99
 #, php-format
 msgid "%d Sitzplatz"
 msgid_plural "%d Sitzplätze"
 msgstr[0] "%d seat"
 msgstr[1] "%d seats"
 
-#: app/views/resources/room/index.php:93
-#: app/views/resources/_common/_room_search_result.php:62
+#: app/views/resources/room/index.php:94
+#: app/views/resources/_common/_room_search_result.php:64
 #: app/views/resources/location/index.php:17
-#: app/views/resources/building/index.php:38
+#: app/views/resources/building/index.php:37
 msgid "Zum Lageplan"
 msgstr "Go to map"
 
@@ -25056,7 +25042,7 @@ msgstr "Global booking locks are in place for this room"
 
 #: app/views/resources/room/_add_edit_form.php:41
 #: app/views/room_management/overview/rooms.php:8
-#: lib/classes/sidebar/RoomSearchWidget.class.php:116
+#: lib/classes/sidebar/RoomSearchWidget.class.php:89
 msgid "Raumtyp"
 msgstr "Room type"
 
@@ -25279,7 +25265,7 @@ msgstr "Message from the administration"
 msgid "Raumdetails anzeigen"
 msgstr "Show room details"
 
-#: app/views/resources/_common/_room_search_result.php:70
+#: app/views/resources/_common/_room_search_result.php:73
 msgid "Zur Raumgruppe hinzufügen"
 msgstr "Add to room group"
 
@@ -27090,7 +27076,7 @@ msgstr "- No output -"
 
 #: app/views/admin/cronjobs/schedules/index.php:6
 #: app/views/admin/cronjobs/logs/index.php:6
-#: app/views/admin/plugin/index.php:168
+#: app/views/admin/plugin/index.php:159
 msgid "Darstellung einschränken"
 msgstr "Filter entries"
 
@@ -28214,14 +28200,6 @@ msgstr "%s: Install version %s"
 msgid "Updates installieren"
 msgstr "Install updates"
 
-#: app/views/admin/plugin/default_activation.php:16
-msgid "Standard-Aktivierung in Veranstaltungen"
-msgstr "Default activation in courses"
-
-#: app/views/admin/plugin/default_activation.php:43
-msgid "Zurück zur Plugin-Verwaltung"
-msgstr "Return to plug-in management"
-
 #: app/views/admin/plugin/activation-error-form.php:4
 msgid "Markierte Plugins dennoch deaktivieren"
 msgstr "Deactivate selected plug-ins nevertheless"
@@ -28293,47 +28271,43 @@ msgstr "Automatic updates are set up"
 msgid "Update auf Version %d verfügbar"
 msgstr "Update to version %d is available"
 
-#: app/views/admin/plugin/index.php:96 app/views/admin/plugin/index.php:97
-msgid "In Veranstaltungen aktivieren"
-msgstr "Activate in courses"
-
-#: app/views/admin/plugin/index.php:102 app/views/admin/plugin/index.php:103
+#: app/views/admin/plugin/index.php:95 app/views/admin/plugin/index.php:96
 msgid "Zugriffsrechte bearbeiten"
 msgstr "Edit access permissions"
 
-#: app/views/admin/plugin/index.php:109 app/views/admin/plugin/index.php:112
+#: app/views/admin/plugin/index.php:102 app/views/admin/plugin/index.php:105
 msgid "Automatisches Update verwalten (eingerichtet)"
 msgstr "Manage automatic updates (already set up)"
 
-#: app/views/admin/plugin/index.php:109 app/views/admin/plugin/index.php:113
+#: app/views/admin/plugin/index.php:102 app/views/admin/plugin/index.php:106
 msgid "Automatisches Update verwalten"
 msgstr "Manage automatic updates"
 
-#: app/views/admin/plugin/index.php:128 app/views/admin/plugin/index.php:129
+#: app/views/admin/plugin/index.php:119 app/views/admin/plugin/index.php:120
 msgid "Deinstallieren"
 msgstr "Uninstall"
 
-#: app/views/admin/plugin/index.php:153
+#: app/views/admin/plugin/index.php:144
 msgid "Plugin als ZIP-Datei hochladen"
 msgstr "Upload plug-in as ZIP file"
 
-#: app/views/admin/plugin/index.php:166
+#: app/views/admin/plugin/index.php:157
 msgid "Darstellungseinstellungen"
 msgstr "Display settings"
 
-#: app/views/admin/plugin/index.php:172
+#: app/views/admin/plugin/index.php:163
 msgid "Alle Plugin-Typen anzeigen"
 msgstr "Display all plug-in types"
 
-#: app/views/admin/plugin/index.php:178
+#: app/views/admin/plugin/index.php:169
 msgid "Alle Plugins anzeigen"
 msgstr "Show all plug-ins"
 
-#: app/views/admin/plugin/index.php:183
+#: app/views/admin/plugin/index.php:174
 msgid "Kern-Plugins ausblenden"
 msgstr "Hide core plug-ins"
 
-#: app/views/admin/plugin/index.php:188
+#: app/views/admin/plugin/index.php:179
 msgid "Nur Kern-Plugins anzeigen"
 msgstr "Show only core plug-ins"
 
@@ -34363,17 +34337,17 @@ msgstr "Topics (at least 5 at best)"
 msgid "Thema aus der Liste streichen"
 msgstr "Remove the topic from the list"
 
-#: app/views/oer/mymaterial/edit.php:225 app/views/oer/market/details.php:93
+#: app/views/oer/mymaterial/edit.php:225 app/views/oer/market/details.php:95
 #: app/views/oer/market/_searchform.php:96
 msgid "Leicht"
 msgstr "Easy"
 
-#: app/views/oer/mymaterial/edit.php:226 app/views/oer/market/details.php:94
+#: app/views/oer/mymaterial/edit.php:226 app/views/oer/market/details.php:96
 #: app/views/oer/market/_searchform.php:97
 msgid "Schwer"
 msgstr "Difficult"
 
-#: app/views/oer/mymaterial/edit.php:250 app/views/oer/market/details.php:119
+#: app/views/oer/mymaterial/edit.php:250 app/views/oer/market/details.php:121
 msgid "Lizenz"
 msgstr "License"
 
@@ -34523,66 +34497,66 @@ msgstr ""
 msgid "Verzeichnisstruktur"
 msgstr "Directory structure"
 
-#: app/views/oer/market/details.php:55 app/views/oer/market/details.php:335
+#: app/views/oer/market/details.php:57 app/views/oer/market/details.php:337
 msgid "Zu Veranstaltung hinzufügen"
 msgstr "Add to course"
 
-#: app/views/oer/market/details.php:130
+#: app/views/oer/market/details.php:132
 msgid "Was heißt das?"
 msgstr "What does that mean?"
 
-#: app/views/oer/market/details.php:143
+#: app/views/oer/market/details.php:145
 msgid "Zum Autor"
 msgstr "To the author"
 
-#: app/views/oer/market/details.php:177
+#: app/views/oer/market/details.php:179
 #, php-format
 msgid "Noch keine Beschreibung für den %s vorhanden."
 msgstr "No description available yet for the %s."
 
-#: app/views/oer/market/details.php:179
+#: app/views/oer/market/details.php:181
 msgid "Jetzt eine eingeben."
 msgstr "Enter one now."
 
-#: app/views/oer/market/details.php:199
+#: app/views/oer/market/details.php:201
 msgid "Geben Sie die erste Bewertung ab."
 msgstr "Submit the first review."
 
-#: app/views/oer/market/details.php:199
+#: app/views/oer/market/details.php:201
 msgid "Noch keine Bewertung abgegeben."
 msgstr "No rating given yet."
 
-#: app/views/oer/market/details.php:212
+#: app/views/oer/market/details.php:214
 #, php-format
 msgid "%s von 5 Sternen"
 msgstr "%s out of 5 stars"
 
-#: app/views/oer/market/details.php:275
+#: app/views/oer/market/details.php:277
 msgid "Darauf antworten"
 msgstr "Reply"
 
-#: app/views/oer/market/details.php:283
+#: app/views/oer/market/details.php:285
 #, php-format
 msgid "%s Kommentare dazu"
 msgstr "%s comments to it"
 
-#: app/views/oer/market/details.php:288
+#: app/views/oer/market/details.php:290
 msgid "Dazu einen Kommentar schreiben"
 msgstr "Write a comment to it"
 
-#: app/views/oer/market/details.php:299
+#: app/views/oer/market/details.php:301
 msgid "Review schreiben"
 msgstr "Write review"
 
-#: app/views/oer/market/details.php:344
+#: app/views/oer/market/details.php:346
 msgid "Vollbild aktivieren"
 msgstr "Activate fullscreen"
 
-#: app/views/oer/market/details.php:351
+#: app/views/oer/market/details.php:353
 msgid "Teilen und einbetten"
 msgstr "Share and embed"
 
-#: app/views/oer/market/details.php:359
+#: app/views/oer/market/details.php:361
 msgid "Zugriffszahlen"
 msgstr "Access count"
 
@@ -36408,25 +36382,21 @@ msgstr "Book room group"
 msgid "Berechtigungen für die gesamte Raumgruppe setzen"
 msgstr "Set permissions for the entire room group"
 
-#: lib/classes/sidebar/RoomSearchWidget.class.php:41
-#: lib/classes/sidebar/RoomSearchWidget.class.php:46
+#: lib/classes/sidebar/RoomSearchWidget.class.php:40
+#: lib/classes/sidebar/RoomSearchWidget.class.php:45
 msgid "Alle Raumtypen"
 msgstr "All room types"
 
-#: lib/classes/sidebar/RoomSearchWidget.class.php:54
-msgid "Alle Standorte und Gebäude"
-msgstr "All locations and buildings"
-
-#: lib/classes/sidebar/RoomSearchWidget.class.php:126
-#: lib/classes/sidebar/RoomSearchWidget.class.php:141
+#: lib/classes/sidebar/RoomSearchWidget.class.php:99
+#: lib/classes/sidebar/RoomSearchWidget.class.php:113
 msgid "Standort / Gebäude"
 msgstr "Location / Building"
 
-#: lib/classes/sidebar/RoomSearchWidget.class.php:164
+#: lib/classes/sidebar/RoomSearchWidget.class.php:135
 msgid "Frei in einem Zeitbereich"
 msgstr "Available in a time range"
 
-#: lib/classes/sidebar/RoomSearchWidget.class.php:386
+#: lib/classes/sidebar/RoomSearchWidget.class.php:355
 #, php-format
 msgid ""
 "Für die Eigenschaft %1$s wurde ein ungültiger Bereich angegeben (von %2$s "
@@ -36435,7 +36405,7 @@ msgstr ""
 "An invalid range (from %2$s to %3$s) has been specified for the property "
 "%1$s!"
 
-#: lib/classes/sidebar/RoomSearchWidget.class.php:598
+#: lib/classes/sidebar/RoomSearchWidget.class.php:562
 msgid "Suchkriterien für Räume"
 msgstr "Search criteria for rooms"
 
@@ -36995,19 +36965,6 @@ msgstr "%s courses found %s, grouping: %s"
 #: lib/extern/modules/ExternModuleTemplateSemBrowse.class.php:1428
 msgid "Zutritt auf Anfrage"
 msgstr "Entry upon request, only"
-
-#: lib/classes/SemBrowse.class.php:626 lib/classes/SemBrowse.class.php:945
-#: lib/classes/SemBrowse.class.php:985
-#: lib/classes/StudipSemTreeViewAdmin.class.php:646
-#: lib/classes/globalsearch/GlobalSearchCourses.php:148
-#: lib/classes/globalsearch/GlobalSearchCourses.php:211
-#: lib/classes/globalsearch/GlobalSearchMyCourses.php:117
-#: lib/classes/globalsearch/GlobalSearchMyCourses.php:152
-#: lib/extern/modules/ExternModuleTemplateSemBrowse.class.php:1436
-#: templates/dates/seminar_html.php:73 templates/dates/seminar_html.php:84
-#: templates/index_nobody.php:83
-msgid "mehr"
-msgstr "more"
 
 #: lib/classes/SemBrowse.class.php:913
 #, php-format
@@ -38162,12 +38119,12 @@ msgid "Fehler beim Entpacken des Plugins."
 msgstr "Error while unpacking the plugin."
 
 #: lib/classes/PluginAdministration.php:66
-#: lib/classes/PluginAdministration.php:458
+#: lib/classes/PluginAdministration.php:432
 msgid "Das Manifest des Plugins fehlt."
 msgstr "The plug-in manifest is missing."
 
 #: lib/classes/PluginAdministration.php:79
-#: lib/classes/PluginAdministration.php:470
+#: lib/classes/PluginAdministration.php:444
 msgid "Das Plugin ist mit dieser Stud.IP-Version nicht kompatibel."
 msgstr "The plug-in is not compatible with this Stud.IP version."
 
@@ -38193,7 +38150,7 @@ msgstr "Download of plug-in failed."
 msgid "Das Plugin konnte nicht gefunden werden."
 msgstr "Plug-in not found."
 
-#: lib/classes/PluginAdministration.php:480
+#: lib/classes/PluginAdministration.php:454
 msgid "Das Plugin ist bereits registriert."
 msgstr "The Plug-in is already registered."
 
@@ -39467,11 +39424,11 @@ msgstr "Error while accessing %s"
 msgid "Keine Plugin Meta-Daten gefunden"
 msgstr "No plug-in meta data found"
 
-#: lib/plugins/engine/PluginManager.class.php:437
+#: lib/plugins/engine/PluginManager.class.php:400
 msgid "Plugin implementiert kein gültiges Interface."
 msgstr "Plug-in does not implement any valid interface."
 
-#: lib/plugins/engine/PluginEngine.class.php:23
+#: lib/plugins/engine/PluginEngine.class.php:22
 #: lib/plugins/engine/PluginEngine.class.php:132
 msgid "Es wurde kein Plugin gewählt."
 msgstr "No plug-in selected."
@@ -39682,7 +39639,7 @@ msgid "Mindestens eine Rechtestufe fehlt zum Vergleich!"
 msgstr "At least one permission level is missing for the comparison!"
 
 #: lib/resources/ResourceManager.class.php:1458
-#: lib/models/resources/Resource.class.php:2594
+#: lib/models/resources/Resource.class.php:2602
 #, php-format
 msgid ""
 "Zirkuläre Hierarchie: Die Ressource %1$s ist ein Elternknoten von sich "
@@ -42163,22 +42120,22 @@ msgstr ""
 "%1$s: Error while saving the lock booking for the time range from %2$s to "
 "%3$s!"
 
-#: lib/models/resources/Resource.class.php:1595
-#: lib/models/resources/Resource.class.php:1868
+#: lib/models/resources/Resource.class.php:1603
+#: lib/models/resources/Resource.class.php:1876
 #, php-format
 msgid "Unzureichende Berechtigungen zum Ändern der Ressource %s!"
 msgstr "Insufficient permissions to modify the resource %s!"
 
-#: lib/models/resources/Resource.class.php:1603
+#: lib/models/resources/Resource.class.php:1611
 #, php-format
 msgid "Unzureichende Berechtigungen zum Ändern der Eigenschaft %s!"
 msgstr "Insufficient permissions to modify the property %s!"
 
-#: lib/models/resources/Resource.class.php:1723
+#: lib/models/resources/Resource.class.php:1731
 msgid "Die Eigenschaft wurde nicht gefunden!"
 msgstr "The property could not be found!"
 
-#: lib/models/resources/Resource.class.php:1823
+#: lib/models/resources/Resource.class.php:1831
 msgid ""
 "Eine Ressourceneigenschaft vom Typ 'user' benötigt ein Nutzer-Objekt zur "
 "Wertzuweisung!"
@@ -42186,7 +42143,7 @@ msgstr ""
 "A resource property from the type 'user' requires a user object to assign a "
 "value!"
 
-#: lib/models/resources/Resource.class.php:1830
+#: lib/models/resources/Resource.class.php:1838
 msgid ""
 "Eine Ressourceneigenschaft vom Typ 'institute' benötigt ein Institut-Objekt "
 "zur Wertzuweisung!"
@@ -42194,7 +42151,7 @@ msgstr ""
 "A resource property from the type 'institute' requires an institute object "
 "to assign a value!"
 
-#: lib/models/resources/Resource.class.php:1837
+#: lib/models/resources/Resource.class.php:1845
 msgid ""
 "Eine Ressourceneigenschaft vom Typ 'fileref' benötigt ein FileRef-Objekt zur"
 " Wertzuweisung!"
@@ -42202,17 +42159,17 @@ msgstr ""
 "A resource property from the type 'fileref' requires a FileRef objekt to "
 "assign a value!"
 
-#: lib/models/resources/Resource.class.php:1876
+#: lib/models/resources/Resource.class.php:1884
 #, php-format
 msgid "Unzureichende Berechtigungen zum Löschen der Eigenschaft %s!"
 msgstr "Insufficient permissions to delete the property %s!"
 
-#: lib/models/resources/Resource.class.php:2175
+#: lib/models/resources/Resource.class.php:2183
 #, php-format
 msgid "Ressource %s"
 msgstr "Resource %s"
 
-#: lib/models/resources/Resource.class.php:2707
+#: lib/models/resources/Resource.class.php:2715
 #, php-format
 msgid ""
 "Die Ressource %1$s (Typ %2$s) kann nicht unterhalb der Ressource %3$s (Typ "
@@ -50066,7 +50023,7 @@ msgstr "12345 sample town"
 msgid "Mo. und Do. 12.00 - 13.00"
 msgstr "Mon. and Thu. 12.00 - 13.00"
 
-#: lib/extern/modules/views/ExternSemBrowse.class.php:475
+#: lib/extern/modules/views/ExternSemBrowse.class.php:474
 #, php-format
 msgid "%s Unterveranstaltung"
 msgid_plural "%s Unterveranstaltungen"
