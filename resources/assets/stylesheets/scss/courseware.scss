@@ -4551,70 +4551,65 @@ text block end
 .cw-block-blubber-content {
     border: solid thin $content-color-40;
     border-top: none;
-    padding-top: 10px;
+
+    .cw-blubber-thread {
+        background-color: $white;
+        border: unset;
+        width: unset;
+        max-width: unset;
+        margin-right: 0;
+    }
 
     .cw-blubber-comments {
+        background-color: $dark-gray-color-5;
         padding-left: 0;
+        padding-bottom: 10px;
         max-height: 400px;
         overflow-y: scroll;
         overflow-x: hidden;
         scrollbar-width: thin;
-        scrollbar-color: $base-color #f5f5f5;
+        scrollbar-color: $base-color $content-color-10;
 
-        .cw-talk-bubble {
-            margin: 0 0 10px 28px;
-            float: unset;
-
-            &.cw-talk-bubble-own-post {
-                margin-left: auto;
-                margin-right: 28px;
-            }
-
-            .cw-loading-indicator-blubber-comment {
-                padding-top: 10px;
-            }
-
-            .cw-talk-bubble-talktext {
-                .edit-button {
-                    @include background-icon(edit, clickable, 16);
+        .cw-blubber-comment {
+            .html {
+                .edit {
+                    background-color: $white;
+                    padding: 5px;
+                    textarea {
+                        border-radius: 0;
+                        border: solid thin $base-color-60;
+                        width: calc(100% - 10px);
+                        resize: none;
+                        max-height: 240px;
+                        scrollbar-width: thin;
+                        scrollbar-color: $base-color #f5f5f5;
+                    }
+                    button.accept,
+                    button.cancel {
+                        min-width: unset;
+                        width: unset;
+                        padding: 5px;
+                        margin: 0;
+                        &::before {
+                            margin: unset;
+                        }
+                    }
                 }
-                .delete-button {
-                    @include background-icon(trash, clickable, 16);
-                }
-                .cw-talk-bubble-button {
+            }
+            .time {
+                .cw-blubber-button {
+                    &.edit-button {
+                        @include background-icon(edit, clickable);
+                    }
+                    &.delete-button {
+                        @include background-icon(trash, clickable);
+                    }
                     background-color: transparent;
                     height: 16px;
                     width: 16px;
                     border: none;
                     vertical-align: top;
                     cursor: pointer;
-                }
-                .cw-talk-bubble-talktext-time {
-                    .time {
-                        margin-right: 5px;
-                    }
-                }
-            }
-
-            .cw-talk-bubble-talktext-edit {
-                textarea {
-                    border-radius: 0;
-                    border: solid thin $base-color-60;
-                    width: calc(100% - 10px);
-                    resize: none;
-                    max-height: 240px;
-                    scrollbar-width: thin;
-                    scrollbar-color: $base-color #f5f5f5;
-                }
-                button.accept,
-                button.cancel {
-                    min-width: unset;
-                    width: unset;
-                    padding: 5px;
-                    margin: 0;
-                    &::before {
-                        margin: unset;
-                    }
                 }
             }
         }

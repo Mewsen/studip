@@ -1,57 +1,59 @@
 <template>
-    <div
+    <li
         v-if="commentUser"
-        :class="{ 'cw-talk-bubble-own-post': ownComment }"
-        class="cw-talk-bubble"
+        :class="{ 'cw-blubber-comment-own mine': ownComment, 'theirs': !ownComment }"
+        class="cw-blubber-comment"
     >
-        <div class="cw-talk-bubble-user" v-if="!ownComment">
-            <div class="cw-talk-bubble-avatar">
-                <img :src="userAvatar" />
+        <a 
+            v-show="!ownComment"
+            :href="userUrl"
+            :title="userFormattedName"
+            :style="userAvatarStyle"
+            class="avatar"
+        ></a>
+
+        <div class="content">
+            <a v-if="!ownComment" class="name" :href="userUrl">
+                {{ userFormattedName }}
+            </a>
+            <div class="html">
+                <div v-show="!editActive" class="formatted-content" v-html="content"></div>
+                <div v-show="editActive" class="edit">
+                    <textarea
+                        v-model="currentContent"
+                        ref="commentedit"
+                        @keydown.enter.exact="updateComment"
+                        @keydown.esc="resetComment"
+                    />
+                    <button
+                        class="button accept"
+                        :title="$gettext('Speichern')"
+                        @click="updateComment"
+                    >
+                    </button>
+                    <button
+                        class="button cancel"
+                        :title="$gettext('Abbrechen')"
+                        @click="resetComment"
+                    >
+                    </button>
+                </div>
             </div>
-            <span>{{ userFormattedName }}</span>
         </div>
-        <div v-show="!editActive" class="cw-talk-bubble-talktext">
-            <p>
-                <span>{{ content }}</span>
-            </p>
-            <p class="cw-talk-bubble-talktext-time">
-                <iso-date :date="chdate" class="time"/>
-                <button
-                    v-if="ownComment"
-                    :title="$gettext('Bearbeiten')"
-                    class="cw-talk-bubble-button edit-button"
-                    @click="editComment"
-                >
-                </button>
-                <button
-                    v-if="ownComment || userIsTeacher"
-                    :title="$gettext('Löschen')"
-                    class="cw-talk-bubble-button delete-button"
-                    @click="showDeleteDialog = true"
-                >
-                </button>
-            </p>
-        </div>
-        <div
-            v-show="editActive"
-            class="cw-talk-bubble-talktext cw-talk-bubble-talktext-edit"
-        >
-            <textarea
-                v-model="currentContent"
-                ref="commentedit"
-                @keydown.enter="updateComment"
-                @keydown.esc="resetComment"
-            />
+        <div class="time">
+            <iso-date :date="chdate" class="time"/>
             <button
-                class="button accept"
-                :title="$gettext('Speichern')"
-                @click="updateComment"
+                v-if="ownComment"
+                :title="$gettext('Bearbeiten')"
+                class="cw-blubber-button edit-button"
+                @click="editComment"
             >
             </button>
             <button
-                class="button cancel"
-                :title="$gettext('Abbrechen')"
-                @click="resetComment"
+                v-if="ownComment || userIsTeacher"
+                :title="$gettext('Löschen')"
+                class="cw-blubber-button delete-button"
+                @click="showDeleteDialog = true"
             >
             </button>
         </div>
@@ -64,13 +66,13 @@
             @confirm="deleteComment"
             @close="showDeleteDialog = false"
         ></studip-dialog>
-    </div>
-    <div v-else class="cw-talk-bubble">
+    </li>
+    <li v-else class="cw-talk-bubble">
         <studip-progress-indicator
             class="cw-loading-indicator-blubber-comment"
             :description="$gettext('Lade Beitrag...')"
         />
-    </div>
+    </li>
 </template>
 
 <script>
@@ -105,7 +107,7 @@ export default {
         }),
         comment() {
             let comment = this.blubberCommentsById({ id: this.commentId });
-            if(comment) {
+            if (comment) {
                 return comment;
             }
             return null;
@@ -124,7 +126,18 @@ export default {
         },
         userAvatar() {
             if (this.commentUser) {
-                return this.commentUser.meta.avatar.small;
+                return this.commentUser.meta.avatar.medium;
+            }
+            return '';
+        },
+        userAvatarStyle() {
+            return {
+                backgroundImage: 'url("' + this.userAvatar + '")'
+            }
+        },
+        userUrl() {
+            if (this.commentUser) {
+                return STUDIP.URLHelper.base_url + 'dispatch.php/profile?username=' + this.commentUser.attributes.username;
             }
             return '';
         },
@@ -136,7 +149,7 @@ export default {
         },
         commentUser() {
             let commentUserId = this.comment?.relationships?.author?.data?.id;
-            if(commentUserId) {
+            if (commentUserId) {
                 return this.usersById({ id: commentUserId });
             }
             return null;
@@ -163,14 +176,14 @@ export default {
             });
         },
         async updateComment() {
-            if(this.currentContent === '') {
+            if (this.currentContent === '') {
                 this.companionWarning({
                     info: this.$gettext('Bitte schreiben Sie etwas in das Textfeld.')
                 });
             }
             await this.updateBlubberComment({ 
-                    content: this.currentContent,
-                    id: this.comment.id
+                content: this.currentContent,
+                id: this.comment.id
             });
             this.editActive = false;
         },

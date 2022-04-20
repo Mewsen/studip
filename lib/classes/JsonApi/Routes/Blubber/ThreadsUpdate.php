@@ -16,7 +16,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class ThreadsUpdate extends JsonApiController
 {
     use ValidationTrait;
-        /**
+    /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function __invoke(Request $request, Response $response, $args)
@@ -31,7 +31,8 @@ class ThreadsUpdate extends JsonApiController
             throw new BadRequestException('Only blubber threads of context-type course can be edited.');
         }
 
-        if (!Authority::canEditCourseBlubberThread($this->getUser($request))) {
+        $course = \Course::find($thread['context_id']);
+        if (!Authority::canEditCourseBlubberThread($this->getUser($request), $course)) {
             throw new AuthorizationFailedException();
         }
 

@@ -35,10 +35,11 @@ class ThreadsCreate extends JsonApiController
             }
             $contextId = 'global';
         } else {
-            if (!Authority::canCreateCourseBlubberThread($user = $this->getUser($request))) {
+            $contextId = self::arrayGet($json, 'data.attributes.context-id', '');
+            $course = \Course::find($contextId);
+            if (!Authority::canCreateCourseBlubberThread($user = $this->getUser($request), $course)) {
                 throw new AuthorizationFailedException();
             }
-            $contextId = self::arrayGet($json, 'data.attributes.context-id', '');
         }
 
         $content = self::arrayGet($json, 'data.attributes.content', '');

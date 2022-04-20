@@ -20,7 +20,7 @@
                 </div>
                 <courseware-companion-box
                     v-else
-                    :msgCompanion="$gettext('Es wurde noch kein Blubber-Konversation angelegt.')"
+                    :msgCompanion="$gettext('Es wurde noch keine Blubber-Konversation angelegt.')"
                     mood="unsure"
                 />
             </template>
@@ -43,7 +43,7 @@
                     </label>
                     <label>
                         <translate>Titel</translate>
-                        <input type="text" v-model="currentTitle" />
+                        <input type="text" v-model="currentTitle" required/>
                     </label>
                 </form>
                 <courseware-companion-box
@@ -139,7 +139,7 @@ export default {
                 });
             }
 
-            if (this.currentThreadId !== '' && this.currentTitle === '') {
+            if (this.currentTitle === '') {
                 this.companionWarning({
                     info: this.$gettext('Bitte vergeben Sie einen Titel.')
                 });

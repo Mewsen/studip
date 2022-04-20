@@ -1,8 +1,9 @@
 <template>
-    <div class="cw-blubber-thread">
-        <ul
+    <div class="cw-blubber-thread blubber_thread">
+        <ol
             v-show="!loadingThreads && threadComments.length > 0"
-            class="cw-blubber-comments"
+            class="cw-blubber-comments comments"
+            aria-live="polite"
             ref="commentsRef"
         >
             <courseware-blubber-comment
@@ -12,7 +13,7 @@
                 @delete="loadThread(threadId)"
                 @editing="editingComment"
             />
-        </ul>
+        </ol>
         <courseware-companion-box
             v-show="!loadingThreads && threadComments.length === 0"
             class="cw-blubber-thread-empty"
@@ -85,13 +86,18 @@ export default {
         ...mapActions({
             loadBlubberThread: 'loadBlubberThread',
             createBlubberComment: 'createBlubberComment',
+            companionInfo: 'companionInfo',
         }),
         async createComment() {
-            await this.createBlubberComment({
-                threadId: this.threadId,
-                content: this.newComment
-            });
-            this.newComment = '';
+            if (this.newComment) {
+                await this.createBlubberComment({
+                    threadId: this.threadId,
+                    content: this.newComment
+                });
+                this.newComment = '';
+            } else {
+                this.companionInfo({ info: this.$gettext('Leere Beiträge können nicht erstellt werden.') });
+            }
         },
         scrollDown() {
             this.$nextTick( () => {
