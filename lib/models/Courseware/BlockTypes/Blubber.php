@@ -3,6 +3,7 @@
 namespace Courseware\BlockTypes;
 
 use BlubberThread;
+use Course;
 use Opis\JsonSchema\Schema;
 
 /**
@@ -64,8 +65,10 @@ class Blubber extends BlockType
         $payload = $this->getPayload();
         $threadId = $payload['thread_id'];
 
-        if ( $threadId === '') {
-            return $payload;
+        $course = Course::find($rangeId);
+
+        if ( $threadId === '' || $rangeId === '' || !$course) {
+            return $this->initialPayload();
         }
 
         $remoteBlubberThread = \BlubberThread::find($threadId);
