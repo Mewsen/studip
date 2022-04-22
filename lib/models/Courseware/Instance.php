@@ -87,7 +87,7 @@ class Instance
             \UserConfig::get($config->range_id)->store('COURSEWARE_LAST_ELEMENT', $arr);
         }
 
-        $root = self::getRoot();
+        $root = $instance->getRoot();
         $root->delete();
     }
 
