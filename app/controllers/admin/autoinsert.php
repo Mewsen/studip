@@ -34,7 +34,7 @@ class Admin_AutoinsertController extends AuthenticatedController
      * Maintenance view for the auto insert parameters
      *
      */
-    public function index_action()
+    public function index_action($group = 'by_course')
     {
         // search seminars
         if (Request::submitted('suchen')) {
@@ -53,8 +53,20 @@ class Admin_AutoinsertController extends AuthenticatedController
                 PageLayout::postError(_('Bitte geben Sie einen Suchparameter ein.'));
             }
         }
-        $seminare = AutoInsert::getAllSeminars();
-        $this->auto_sems = $seminare;
+        $entries = AutoInsert::getAllSeminars();
+
+        $this->auto_sems = [];
+        if ($group == 'by_course') {
+            foreach ($entries as $entry) {
+                $this->auto_sems[$entry['seminar_id']][$entry['range_type']][] = $entry;
+            }
+        } else if ($group == 'by_type') {
+        }
+
+        PageLayout::postInfo('<pre>' . print_r($this->auto_sems, 1) . '</pre>');
+
+        $this->range_types = AutoInsert::getRangeTypes();
+        $this->grouping = $group;
 
         $domains = [];
         $domains[] = [
@@ -70,13 +82,24 @@ class Admin_AutoinsertController extends AuthenticatedController
         $this->degrees = Degree::findBySQL("1 ORDER BY `name`");
         $this->subjects = Fach::findBySQL("1 ORDER BY `name`");
 
+        $views  = new ViewsWidget();
+        $views->addLink(
+            _('nach Veranstaltung'),
+            $this->link_for('admin/autoinsert/index/by_course')
+        )->setActive($group == 'by_course');
+        $views->addLink(
+            _('nach Art der Zuordnung'),
+            $this->link_for('admin/autoinsert/index/by_type')
+        )->setActive($group == 'by_type');
+        Sidebar::get()->addWidget($views);
+
         $links = new ActionsWidget();
         $links->addLink(
             _('Benutzergruppen manuell eintragen'),
             $this->manualURL(),
             Icon::create('visibility-visible')
         );
-        Sidebar::Get()->addWidget($links);
+        Sidebar::get()->addWidget($links);
     }
 
     /**
@@ -85,19 +108,61 @@ class Admin_AutoinsertController extends AuthenticatedController
     public function new_action()
     {
         if (Request::submitted('anlegen')) {
+            PageLayout::postInfo('<pre>' . print_r(Request::getInstance(), 1) . '</pre>');
             $sem_id = Request::option('sem_id');
-            $domains = Request::getArray('rechte');
-            if (empty($domains)) {
-                PageLayout::postError(_('Mindestens ein Status sollte selektiert werden!'));
+
+            $entries = Request::getArray('rechte');
+            if (empty($entries)) {
+                PageLayout::postError(_('Mindestens ein Eintrag sollte selektiert werden!'));
             } else {
-                foreach ($domains as $id => $rechte) {
-                    if ($id === 'keine')
-                        $id = '';
-                    if (!AutoInsert::checkSeminar($sem_id, $id)) {
-                        AutoInsert::saveSeminar($sem_id, $rechte, $id);
-                        PageLayout::postSuccess(_('Die Zuordnung wurde erfolgreich gespeichert!'));
-                    } else {
-                        PageLayout::postError(_('Das Seminar wird bereits zu diesem Zweck verwendet!'));
+                foreach ($entries as $type => $assignments) {
+                    switch ($type) {
+                        // Old behaviour: domain assignments
+                        case 'domain':
+                            foreach ($assignments as $id => $rechte) {
+                                if ($id === 'keine')
+                                    $id = '';
+                                if (!AutoInsert::checkSeminar($sem_id, $id)) {
+                                    AutoInsert::saveSeminar($sem_id, $rechte, $id, $type);
+                                    PageLayout::postSuccess(_('Die Zuordnung wurde erfolgreich gespeichert!'));
+                                } else {
+                                    PageLayout::postError(_('Das Seminar wird bereits zu diesem Zweck verwendet!'));
+                                }
+                            }
+                            break;
+                        // Institute assignments with permission level
+                        case 'institute':
+                            foreach ($assignments as $rechte) {
+                                $id = Request::option('institute_id');
+                                if (!AutoInsert::checkSeminar($sem_id, $id, $type)) {
+                                    AutoInsert::saveSeminar($sem_id, $rechte, $id, $type);
+                                    PageLayout::postSuccess(_('Die Zuordnung wurde erfolgreich gespeichert!'));
+                                } else {
+                                    PageLayout::postError(_('Das Seminar wird bereits zu diesem Zweck verwendet!'));
+                                }
+                            }
+                            break;
+                        // Degree and subject assignments
+                        case 'degree':
+                        case 'subject':
+                            foreach ($assignments as $id) {
+                                if (!AutoInsert::checkSeminar($sem_id, $id, $type)) {
+                                    AutoInsert::saveSeminar($sem_id, '', $id, $type);
+                                    PageLayout::postSuccess(_('Die Zuordnung wurde erfolgreich gespeichert!'));
+                                } else {
+                                    PageLayout::postError(_('Das Seminar wird bereits zu diesem Zweck verwendet!'));
+                                }
+                            }
+                            break;
+                        // Semester of study assignments
+                        case 'semester':
+                            if (!AutoInsert::checkSeminar($sem_id, $assignments, $type)) {
+                                AutoInsert::saveSeminar($sem_id, '', $assignments, $type);
+                                PageLayout::postSuccess(_('Die Zuordnung wurde erfolgreich gespeichert!'));
+                            } else {
+                                PageLayout::postError(_('Das Seminar wird bereits zu diesem Zweck verwendet!'));
+                            }
+                            break;
                     }
                 }
             }

@@ -193,17 +193,17 @@ class AutoInsert
      * @param  string $seminar_id Id of the seminar
      * @return bool   Indicating whether the seminar already has an autoinsert record
      */
-    public static function checkSeminar($seminar_id, $domain_id = false)
+    public static function checkSeminar($seminar_id, $range_id = false, $range_type = 'domain')
     {
         $cached = self::getSeminarCache();
 
         if (!isset($cached[$seminar_id])) {
-            $query = "SELECT domain_id, 1
+            $query = "SELECT range_id, 1
                       FROM auto_insert_sem
-                      WHERE seminar_id = ?";
+                      WHERE seminar_id = ? AND range_type = ?";
             $cached[$seminar_id] = DBManager::get()->fetchGroupedPairs(
                 $query,
-                [$seminar_id],
+                [$seminar_id, $range_type],
                 function ($value) {
                     return (bool) $value;
                 }
@@ -222,13 +222,13 @@ class AutoInsert
      *                           containing the status(ses) to enable for
      *                           autoinsertion
      */
-    public static function saveSeminar($seminar_id, $status, $domain_id)
+    public static function saveSeminar($seminar_id, $status, $range_id, $range_type = 'domain')
     {
-        $query     = "INSERT INTO auto_insert_sem (seminar_id, status,domain_id) VALUES (?, ?,?)";
+        $query     = "INSERT INTO auto_insert_sem (seminar_id, status, range_id, range_type) VALUES (?, ?, ?, ?)";
         $statement = DBManager::get()->prepare($query);
 
         foreach ((array)$status as $s) {
-            $statement->execute([$seminar_id, $s, $domain_id]);
+            $statement->execute([$seminar_id, $s, $range_id, $range_type]);
         }
     }
 
@@ -279,26 +279,39 @@ class AutoInsert
             $results   = $statement->fetchAll(PDO::FETCH_COLUMN);
         } else {
             $results = [];
+
             foreach (words('degree domain institute semester subject') as $type) {
-                $query = "SELECT a.seminar_id, GROUP_CONCAT(a.status,IF(LENGTH(a.range_id)=0,':keine',CONCAT(':',a.range_id))) AS range_status, s.Name, s.Schreibzugriff, s.start_time ";
-                $query .= "FROM auto_insert_sem a ";
-                $query .= "JOIN seminare AS s USING (Seminar_id) WHERE a.`range_type` = :type ";
+                $select = "SELECT a.`seminar_id`, s.`Name`, a.`range_type`, a.`range_id`,
+                    GROUP_CONCAT(a.`status`) AS status, s.`Schreibzugriff`, s.`start_time`";
+                $from = " FROM `auto_insert_sem` a ";
+                $join = [
+                    "JOIN `seminare` s ON (s.`Seminar_id` = a.`seminar_id`)"
+                ];
+                $where = " WHERE a.`range_type` = :type ";
+                $order = "GROUP BY a.`range_type`, a.`range_id` ORDER BY s.`start_time` DESC, s.`Name`, range_name";
 
-                $query .= "GROUP BY s.seminar_id ";
-                $query .= "ORDER BY s.Name";
-
-                $data = DBManager::get()->fetchAll($query, ['type' => $type]);
-                if (count($data) > 0) {
-                    $results[$type] = [];
-
-                    foreach ($data as $index => $result) {
-                        $entries = explode(',', $result['range_status']);
-                        foreach ($entries as $entry) {
-                            $array = explode(':', $entry);
-                            $results[$type][$index]['status'][$array[1]][] = $array[0];
-                        }
-                    }
+                switch ($type) {
+                    case 'domain':
+                        $select .= ", IF(LENGTH(`range_id`) = 0, 'keine', a.`range_id`) AS range_name";
+                        break;
+                    case 'institute':
+                        $select .= ", i.`Name` AS range_name ";
+                        $join[] = "JOIN `Institute` i ON (i.`Institut_id` = a.`range_id`)";
+                        break;
+                    case 'degree':
+                        $select .= ", d.`name` AS range_name";
+                        $join[] = "JOIN `abschluss` d ON (d.`abschluss_id` = a.`range_id`)";
+                        break;
+                    case 'subject':
+                        $select .= ", f.`name` AS range_name";
+                        $join[] = "JOIN `fach` f ON (f.`fach_id` = a.`range_id`)";
+                        break;
+                    case 'semester':
+                        $select .= ", a.`range_id` AS range_name";
                 }
+
+                $query = $select.$from.implode(' ', $join).$where.$order;
+                $results += array_merge($results, DBManager::get()->fetchAll($query, ['type' => $type]));
             }
         }
 
@@ -368,5 +381,16 @@ class AutoInsert
             self::$seminar_cache = new StudipCachedArray('AutoInsertSeminars');
         }
         return self::$seminar_cache;
+    }
+
+    public static function getRangeTypes()
+    {
+        return  [
+            'degree' => _('Abschluss'),
+            'domain' => _('Domäne'),
+            'institute' => _('Einrichtung'),
+            'semester' => _('Fachsemester'),
+            'subject' => _('Fach')
+        ];
     }
 }

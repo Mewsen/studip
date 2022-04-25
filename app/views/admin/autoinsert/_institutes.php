@@ -1,22 +1,22 @@
-<section id="autoinsert-institute" class="autoinsert-selection hidden-js">
-    <h2>
+<fieldset id="autoinsert-institute" class="autoinsert-selection hidden-js">
+    <legend>
         <?= _('Automatisches Eintragen mit Einrichtungszugehörigkeit:') ?>
-    </h2>
+    </legend>
 
     <?= Quicksearch::get('institute_id', new StandardSearch('Institut_id'))->withButton() ?>
     <label>
         <?= _('Berechtigung') ?>
     </label>
     <label class="col-2">
-        <input type="checkbox" name="inst_perm[]" value="autor">
+        <input type="checkbox" name="rechte[institute][]" value="autor">
         autor
     </label>
     <label class="col-2">
-        <input type="checkbox" name="inst_perm[]" value="tutor">
+        <input type="checkbox" name="rechte[institute][]" value="tutor">
         tutor
     </label>
     <label class="col-2">
-        <input type="checkbox" name="inst_perm[]" value="dozent">
+        <input type="checkbox" name="rechte[institute][]" value="dozent">
         dozent
     </label>
-</section>
+</fieldset>

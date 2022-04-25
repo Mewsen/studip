@@ -41,19 +41,23 @@ use Studip\Button, Studip\LinkButton;
                 </legend>
                 <section>
                     <label>
-                        <input type="radio" name="autoinsert_type" value="domain" checked>
+                        <input type="checkbox" name="autoinsert_type" value="domain" checked>
                         <?= _('Nutzerdomäne') ?>
                     </label>
                     <label>
-                        <input type="radio" name="autoinsert_type" value="degree">
+                        <input type="checkbox" name="autoinsert_type" value="degree">
                         <?= _('Abschluss') ?>
                     </label>
                     <label>
-                        <input type="radio" name="autoinsert_type" value="subject">
+                        <input type="checkbox" name="autoinsert_type" value="subject">
                         <?= _('Studienfach') ?>
                     </label>
                     <label>
-                        <input type="radio" name="autoinsert_type" value="institute">
+                        <input type="checkbox" name="autoinsert_type" value="semester">
+                        <?= _('Fachsemester') ?>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="autoinsert_type" value="institute">
                         <?= _('Einrichtung') ?>
                     </label>
                 </section>
@@ -76,40 +80,55 @@ use Studip\Button, Studip\LinkButton;
     <table class="default">
         <caption><?= _('Vorhandene Zuordnungen') ?></caption>
         <thead>
-        <tr>
-            <th><?= _('Veranstaltungen') ?></th>
-            <th style="text-align: center;"><?= _('Dozent') ?></th>
-            <th style="text-align: center;"><?= _('Tutor') ?></th>
-            <th style="text-align: center;"><?= _('Autor') ?></th>
-            <th class="actions"><?= _('Aktionen') ?></th>
-        </tr>
+            <tr>
+                <th><?= _('Veranstaltung') ?></th>
+                <th><?= _('Art der Zuordnung') ?></th>
+                <th><?= _('Zugeordnet zu') ?></th>
+                <th><?= _('Berechtigung') ?></th>
+                <th class="actions"><?= _('Aktionen') ?></th>
+            </tr>
         </thead>
         <tbody>
-        <? foreach ($auto_sems as $type => $courses): ?>
-            <? foreach ($courses as $type => $auto_sem): ?>
-                <tr>
-                    <td>
-                        <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $auto_sem['seminar_id']]) ?>">
-                            <?= htmlReady($auto_sem['Name']) ?>
-                        </a>
-                    </td>
+            <? if ($grouping == 'by_course') : ?>
+                <? foreach ($auto_sems as $id => $types): ?>
+                    <? $row = 1; foreach ($types as $courses): ?>
+                        <? $typerow = 1; foreach ($courses as $auto_sem) : ?>
+                            <tr>
+                                <? if ($row == 1) : ?>
+                                    <td rowspan="<?= count($types) + 1 ?>">
+                                        <a href="<?= $controller->link_for('course/overview', ['auswahl' => $auto_sem['seminar_id']]) ?>">
+                                            <?= htmlReady($auto_sem['Name']) ?>
+                                        </a>
+                                    </td>
+                                <? endif ?>
+                                <? if ($typerow == 1) : ?>
+                                    <td rowspan="<?= count($courses) ?>">
+                                        <?= htmlReady($range_types[$auto_sem['range_type']]) ?>
+                                    </td>
+                                    <? endif ?>
+                                <td>
+                                    <?= htmlReady($auto_sem['range_name']) ?>
+                                </td>
+                                <td>
+                                    <?= htmlReady($auto_sem['status'] ?: _('alle')) ?>
+                                </td>
 
-                    <?= $this->render_partial("admin/autoinsert/_status.php", ['status' => 'dozent', 'auto_sem' => $auto_sem, 'domains' => $userdomains]) ?>
-                    <?= $this->render_partial("admin/autoinsert/_status.php", ['status' => 'tutor', 'auto_sem' => $auto_sem, 'domains' => $userdomains]) ?>
-                    <?= $this->render_partial("admin/autoinsert/_status.php", ['status' => 'autor', 'auto_sem' => $auto_sem, 'domains' => $userdomains]) ?>
-                    <td class="actions">
-                        <a href="<?= $controller->delete($auto_sem['seminar_id'] ) ?>">
-                            <?= Icon::create(
-                                'trash',
-                                Icon::ROLE_CLICKABLE,
-                                ['title' => _('Veranstaltung entfernen'), 'class' => 'text-top']
-                            ) ?>
-                        </a>
-                    </td>
-                </tr>
-                <? $i++ ?>
-            <? endforeach; ?>
-        <? endforeach; ?>
+                                <td class="actions">
+                                    <a href="<?= $controller->delete($auto_sem['seminar_id'] ) ?>">
+                                        <?= Icon::create(
+                                            'trash',
+                                            Icon::ROLE_CLICKABLE,
+                                            ['title' => _('Veranstaltung entfernen'), 'class' => 'text-top']
+                                        ) ?>
+                                    </a>
+                                </td>
+                            </tr>
+                            <? $typerow++ ?>
+                        <? endforeach ?>
+                        <? $row++ ?>
+                    <? endforeach ?>
+                <? endforeach ?>
+            <? endif ?>
         </tbody>
     </table>
 <? endif ?>

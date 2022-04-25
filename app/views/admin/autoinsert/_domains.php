@@ -1,25 +1,25 @@
-<section id="autoinsert-domain" class="autoinsert-selection">
-    <h2>
-        <?= _('Automatisches Eintragen mit Nutzerstatus:') ?>
-    </h2>
+<fieldset id="autoinsert-domain" class="autoinsert-selection">
+    <legend>
+        <?= _('Automatisches Eintragen mit Domänenzugehörigkeit:') ?>
+    </legend>
 
     <?php foreach ($userdomains as $domain): ?>
-        <h3>
+        <h2>
             <?= htmlReady($domain['name']) ?>
-        </h3>
+        </h2>
         <section class="hgroup">
             <label>
-                <input type="checkbox" name="rechte[<?= $domain['id'] ?>][]" value="dozent">
+                <input type="checkbox" name="rechte[domain][<?= $domain['id'] ?>][]" value="dozent">
                 <?= _('Dozent') ?>
             </label>
             <label>
-                <input type="checkbox" name="rechte[<?= $domain['id'] ?>][]" value="tutor">
+                <input type="checkbox" name="rechte[domain][<?= $domain['id'] ?>][]" value="tutor">
                 <?= _('Tutor') ?>
             </label>
             <label>
-                <input type="checkbox" name="rechte[<?= $domain['id'] ?>][]" value="autor">
+                <input type="checkbox" name="rechte[domain][<?= $domain['id'] ?>][]" value="autor">
                 <?= _('Autor') ?>
             </label>
         </section>
     <?php endforeach; ?>
-</section>
+</fieldset>
