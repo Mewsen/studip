@@ -5,7 +5,7 @@
             href="#"
             class="cw-manager-element-item"
             :class="[inserter ? 'cw-manager-element-item-inserter' : '']"
-            :title="inserter ? $gettextInterpolate('%{ elementTitle } verschieben', {elementTitle: element.attributes.title}) : element.attributes.title"
+            :title="elementTitle"
             @click="clickItem">
                 {{ element.attributes.title }}
         </a>
@@ -36,6 +36,20 @@ export default {
         type: String,
         canMoveUp: Boolean,
         canMoveDown: Boolean
+    },
+    computed: {
+        elementTitle() {
+            let title = this.element.attributes.title;
+            if (this.inserter) {
+                if (this.type === 'remote' || this.type === 'own') {
+                    title = this.$gettextInterpolate('%{ elementTitle } kopieren', {elementTitle: this.element.attributes.title});
+                } else {
+                    title = this.$gettextInterpolate('%{ elementTitle } verschieben', {elementTitle: this.element.attributes.title});
+                }
+            }
+
+            return title;
+        }
     },
     methods: {
         clickItem() {
