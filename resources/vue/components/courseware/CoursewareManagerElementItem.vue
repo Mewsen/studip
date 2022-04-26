@@ -5,11 +5,11 @@
             href="#"
             class="cw-manager-element-item"
             :class="[inserter ? 'cw-manager-element-item-inserter' : '']"
-            :title="inserter ? $gettextInterpolate('%{ elementTitle } verschieben', {elementTitle: element.attributes.title}) : element.attributes.title"
+            :title="elementTitle"
             @click="clickItem">
                 {{ element.attributes.title }}
         </a>
-        <div 
+        <div
             v-else
             class="cw-manager-element-item cw-manager-element-item-sorting"
         >
@@ -36,6 +36,62 @@ export default {
         type: String,
         canMoveUp: Boolean,
         canMoveDown: Boolean
+    },
+    computed: {
+        ...mapGetters({
+            taskById: 'courseware-tasks/byId',
+            userById: 'users/byId',
+            groupById: 'status-groups/byId',
+        }),
+        isTask() {
+            return this.element.attributes.purpose === 'task';
+        },
+        task() {
+            if (this.element.relationships.task.data) {
+                return this.taskById({
+                    id: this.element.relationships.task.data.id,
+                });
+            }
+
+            return null;
+        },
+        solver() {
+            if (this.task) {
+                const solver = this.task.relationships.solver.data;
+                if (solver.type === 'users') {
+                    return this.userById({ id: solver.id });
+                }
+                if (solver.type === 'status-groups') {
+                    return this.groupById({ id: solver.id });
+                }
+            }
+
+            return null;
+        },
+        solverName() {
+            if (this.solver) {
+                if (this.solver.type === 'users') {
+                    return this.solver.attributes['formatted-name'];
+                }
+                if (this.solver.type === 'status-groups') {
+                    return this.solver.attributes.name;
+                }
+            }
+
+            return '';
+        },
+        elementTitle() {
+            let title = this.element.attributes.title;
+            if (this.inserter) {
+                if (this.type === 'remote' || this.type === 'own') {
+                    title = this.$gettextInterpolate('%{ elementTitle } kopieren', {elementTitle: this.element.attributes.title});
+                } else {
+                    title = this.$gettextInterpolate('%{ elementTitle } verschieben', {elementTitle: this.element.attributes.title});
+                }
+            }
+
+            return title;
+        }
     },
     methods: {
         clickItem() {
