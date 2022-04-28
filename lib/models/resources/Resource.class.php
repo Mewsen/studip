@@ -862,7 +862,7 @@ class Resource extends SimpleORMap implements StudipItem
             $booking->store($force_booking);
         } catch (ResourceBookingOverlapException $e) {
             if ($begin->format('Ymd') == $end->format('Ymd')) {
-                throw new ResourceBookingException(
+                throw new ResourceBookingOverlapException(
                     sprintf(
                         _('%1$s: Die Buchung vom %2$s bis %3$s konnte wegen Überlappungen nicht gespeichert werden: %4$s'),
                         "<a href='" . Resource::getLinkForAction('booking_plan', $this->id) . "'>" . $this->getFullName() . "</a>",
@@ -872,7 +872,7 @@ class Resource extends SimpleORMap implements StudipItem
                     )
                 );
             } else {
-                throw new ResourceBookingException(
+                throw new ResourceBookingOverlapException(
                     sprintf(
                         _('%1$s: Die Buchung vom %2$s bis %3$s konnte wegen Überlappungen nicht gespeichert werden: %4$s'),
                         "<a href='" . Resource::getLinkForAction('booking_plan', $this->id) . "'>" . $this->getFullName() . "</a>",
@@ -2791,8 +2791,8 @@ class Resource extends SimpleORMap implements StudipItem
             $this,
             [
                 [
-                    $begin->getTimestamp(),
-                    $end->getTimestamp()
+                    'begin' => $begin->getTimestamp(),
+                    'end' => $end->getTimestamp()
                 ]
             ],
             [2]

@@ -191,7 +191,6 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 );
             }
         }
-
         $sql_params = [
             'resource_id' => $resource->id
         ];

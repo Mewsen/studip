@@ -488,6 +488,7 @@ class SingleDate
                     $course->id,
                     $GLOBALS['user']->id
                 );
+                $course_link = null;
                 if ($user_has_permissions) {
                     $course_link = URLHelper::getLink(
                         'dispatch.php/course/timesrooms/index',
@@ -495,16 +496,17 @@ class SingleDate
                             'cid' => $course->id
                         ]
                     );
-                    $message .= sprintf(
-                        _('Am %1$s von %2$s bis %3$s Uhr durch Veranstaltung %4$s') . "\n",
+                    $planner_link = $booking->resource->getLinkForAction(
+                        'booking_plan',
+                        $booking->resource->id,
+                        ['defaultDate' => date('Y-m-d', $booking->begin)]
+                    );
+                     $planner_msg = sprintf(
+                        _('<a href="%1$s">%2$s von %3$s bis %4$s</a>'),
+                        $planner_link,
                         date('d.m.Y', $booking->begin),
                         date('H:i', $booking->begin),
-                        date('H:i', $booking->end),
-                        sprintf(
-                            '<a href="%1$s">%2$s</a>',
-                            $course_link,
-                            htmlReady($course->name)
-                        )
+                        date('H:i', $booking->end)
                     );
                 } else {
                     $course_link = URLHelper::getLink(
@@ -513,18 +515,23 @@ class SingleDate
                             'sem_id' => $course->id
                         ]
                     );
-                    $message .= sprintf(
-                        _('Am %1$s von %2$s bis %3$s Uhr durch Veranstaltung %4$s') . "\n",
+                     $planner_msg = sprintf(
+                        _('%1$s von %2$s bis %3$s'),
                         date('d.m.Y', $booking->begin),
                         date('H:i', $booking->begin),
-                        date('H:i', $booking->end),
-                        sprintf(
-                            '<a href="%1$s">%2$s</a>',
-                            $course_link,
-                            htmlReady($course->name)
-                        )
+                        date('H:i', $booking->end)
                     );
                 }
+
+                $message .= sprintf(
+                    _('Am %1$s Uhr durch Veranstaltung %2$s') . "\n",
+                    $planner_msg,
+                    sprintf(
+                        '<a href="%1$s">%2$s</a>',
+                        $course_link,
+                        htmlReady($course->name)
+                    )
+                );
             } else {
                 $message .= sprintf(
                     _('Am %1$s von %2$s bis %3$s Uhr belegt von "%4$s"') . "\n",
@@ -594,23 +601,6 @@ class SingleDate
                 $room->getResourceLocks($begin, $end)
             );
             foreach ($overlapping_bookings as $overlapping_booking) {
-                $course_link = null;
-                if ($overlapping_booking->course) {
-                    $user_is_lecturer = $GLOBALS['perm']->have_studip_perm(
-                        'dozent',
-                        $overlapping_booking->course->id,
-                        $GLOBALS['user']->id
-                    );
-                    if ($user_is_lecturer) {
-                        $course_link = URLHelper::getLink(
-                            'dispatch.php/course/timesrooms/index',
-                            [
-                                'cid' => $overlapping_booking->course->id
-                            ]
-                        );
-                    }
-                }
-
                 $error_message .= $this->getOverlapMessage(
                     $overlapping_booking
                 );
