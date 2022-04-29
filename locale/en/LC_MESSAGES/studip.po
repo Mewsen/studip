@@ -12,6 +12,7 @@
 # M S <strohm@data-quest.de>, 2021
 # Jan-Hendrik Willms <tleilax@gmail.com>, 2021
 # Jan-Hendrik Willms <tleilax+studip@gmail.com>, 2022.
+# Moritz Strohm <strohm@data-quest.de>, 2022.
 #
 # Translators:
 #
@@ -20,8 +21,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 09:46+0200\n"
-"PO-Revision-Date: 2022-04-21 12:26+0000\n"
-"Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
+"PO-Revision-Date: 2022-04-29 12:55+0000\n"
+"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-1/en/>\n"
 "Language: en\n"
@@ -33,7 +34,7 @@ msgstr ""
 
 #: ../public/admin_range_tree.php:46
 msgid "Einrichtungshierarchie bearbeiten"
-msgstr "nEdit institute hierarchy"
+msgstr "Edit institute hierarchy"
 
 #: ../public/register2.php:21 ../public/register1.php:23
 msgid "Registrierung ausgeschaltet"
@@ -221,7 +222,7 @@ msgstr "Switch to display type normal"
 #: ../app/views/calendar/group/_attendees.php:29
 #: ../app/views/questionnaire/overview.php:11
 msgid "Teilnehmende"
-msgstr "Participants "
+msgstr "Participants"
 
 #: ../public/eval_summary.php:520 ../public/eval_summary_export.php:581
 #: ../lib/evaluation/classes/db/EvaluationObjectDB.class.php:57
@@ -526,9 +527,9 @@ msgid ""
 "zugeschickten Aktivierungs Schlüssel im unten stehenden Eingabefeld "
 "eintragen."
 msgstr ""
-"You have changed your e-mail address. In order to activate it, you have to "
-"enter in the input field below the confirmation code which has been sent to "
-"the new e-mail address. "
+"You have changed your e-mail address.\n"
+"    In order to activate it, you have to enter in the input field below the "
+"confirmation code which has been sent to the new e-mail address."
 
 #: ../public/activate_email.php:47
 msgid "Aktivierungs Schlüssel"
@@ -602,7 +603,7 @@ msgstr "Learning module interface management"
 #: ../public/admin_elearning_interface.php:81
 #: ../public/admin_elearning_interface.php:83
 msgid "Bitte wählen Sie ein angebundenes System für die Schnittstelle: "
-msgstr "Please select a coupled system for the interface:"
+msgstr "Please select a coupled system for the interface: "
 
 #: ../public/admin_elearning_interface.php:93
 #: ../public/admin_elearning_interface.php:103
@@ -625,7 +626,7 @@ msgstr "Ok"
 
 #: ../public/admin_elearning_interface.php:104
 msgid "Beim Laden der Schnittstelle sind Fehler aufgetreten. "
-msgstr "An error occurred while loading the interface."
+msgstr "An error occurred while loading the interface. "
 
 #: ../public/admin_elearning_interface.php:108
 msgid "Die Schnittstelle wurde automatisch deaktiviert!"
@@ -1995,7 +1996,7 @@ msgstr "Reader"
 #: ../public/plugins_packages/core/Forum/models/ForumHelpers.php:142
 #, php-format
 msgid "Seit Ihrem letzten Besuch gibt es %s neue Beiträge"
-msgstr "%s new postings since your last login. "
+msgstr "There are %s new postings since your last login."
 
 #: ../public/plugins_packages/core/Forum/models/ForumHelpers.php:147
 #, php-format
@@ -2205,11 +2206,11 @@ msgstr "Overview"
 
 #: ../public/plugins_packages/core/Forum/CoreForum.class.php:57
 msgid "Neue Beiträge"
-msgstr "New postings "
+msgstr "New postings"
 
 #: ../public/plugins_packages/core/Forum/CoreForum.class.php:58
 msgid "Letzte Beiträge"
-msgstr "Latest posting "
+msgstr "Latest postings"
 
 #: ../public/plugins_packages/core/Forum/CoreForum.class.php:59
 msgid "Gemerkte Beiträge"
@@ -2231,13 +2232,13 @@ msgid ""
 "Studierenden per Meinungsaustausch besprochen werden."
 msgstr ""
 "Text-based tool for asynchronous communication. Lecturers may add questions "
-"to topics to start a discussion. "
+"to topics to start a discussion."
 
 #: ../public/plugins_packages/core/Forum/controllers/area.php:20
 #: ../public/plugins_packages/core/Forum/controllers/index.php:472
 #: ../lib/models/CalendarEvent.class.php:656
 msgid "Kein Titel"
-msgstr "No title "
+msgstr "No title"
 
 #: ../public/plugins_packages/core/Forum/controllers/area.php:54
 msgid "Die Änderungen am Bereich wurden gespeichert."
@@ -2375,7 +2376,7 @@ msgstr "You have subscribed to the entire forum!"
 
 #: ../public/plugins_packages/core/Forum/controllers/index.php:810
 msgid "Sie haben diesen Bereich abonniert."
-msgstr "You have subscribed to this area. "
+msgstr "You have subscribed to this area."
 
 #: ../public/plugins_packages/core/Forum/controllers/index.php:811
 msgid "Sie haben dieses Thema abonniert"
@@ -5375,12 +5376,12 @@ msgstr ""
 #: ../lib/models/ConsultationSlot.php:231
 #, php-format
 msgid "Termin mit %s"
-msgstr ""
+msgstr "Date with %s"
 
 #: ../lib/models/ConsultationSlot.php:237
 #, php-format
 msgid "Termin mit %u Personen"
-msgstr ""
+msgstr "Date with %u persons"
 
 #: ../lib/models/ConsultationSlot.php:246
 msgid "Freier Termin"
@@ -5479,7 +5480,7 @@ msgstr "Data fields"
 #: ../lib/models/ConsultationBooking.php:49
 #, php-format
 msgid "Termin bei %s"
-msgstr ""
+msgstr "Date at %s"
 
 #: ../lib/models/ConsultationBooking.php:124
 msgid "Terminbelegungen"
@@ -5783,7 +5784,7 @@ msgstr ""
 #: ../app/views/oer/market/_searchform.php:66
 #: ../app/views/oer/mymaterial/edit.php:109
 msgid "Audio"
-msgstr ""
+msgstr "Audio"
 
 #: ../lib/models/Courseware/BlockTypes/Audio.php:29
 msgid "Spielt eine Audiodatei aus dem Dateibereich oder von einer URL ab."
@@ -5800,15 +5801,15 @@ msgstr ""
 
 #: ../lib/models/Courseware/BlockTypes/IFrame.php:24
 msgid "IFrame"
-msgstr ""
+msgstr "IFrame"
 
 #: ../lib/models/Courseware/BlockTypes/IFrame.php:29
 msgid "Einbetten von einer Website oder Datei."
-msgstr ""
+msgstr "Embedding of a website or file."
 
 #: ../lib/models/Courseware/BlockTypes/Embed.php:24
 msgid "Embed"
-msgstr ""
+msgstr "Embed"
 
 #: ../lib/models/Courseware/BlockTypes/Embed.php:29
 msgid "Bindet externe Inhalte wie Videos, Grafiken oder Musik ein."
@@ -5893,7 +5894,7 @@ msgstr ""
 
 #: ../lib/models/Courseware/BlockTypes/Chart.php:24
 msgid "Diagramm"
-msgstr ""
+msgstr "Diagram"
 
 #: ../lib/models/Courseware/BlockTypes/Chart.php:29
 msgid "Präsentiert Datensätze in einem Diagramm."
@@ -5916,7 +5917,7 @@ msgstr "Ready to download the required files."
 
 #: ../lib/models/Courseware/BlockTypes/DialogCards.php:24
 msgid "Dialog Cards"
-msgstr ""
+msgstr "Dialog cards"
 
 #: ../lib/models/Courseware/BlockTypes/DialogCards.php:29
 msgid ""
@@ -5965,7 +5966,7 @@ msgstr ""
 #: ../app/views/oer/market/_searchform.php:73
 #: ../app/views/oer/mymaterial/edit.php:112
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #: ../lib/models/Courseware/BlockTypes/Video.php:29
 msgid "Spielt ein Video aus dem Dateibereich oder von einer URL ab."
@@ -6010,7 +6011,7 @@ msgstr "New page"
 
 #: ../lib/models/Courseware/ContainerTypes/TabsContainer.php:24
 msgid "Tabs"
-msgstr ""
+msgstr "Tabs"
 
 #: ../lib/models/Courseware/ContainerTypes/TabsContainer.php:29
 msgid ""
@@ -6020,7 +6021,7 @@ msgstr ""
 
 #: ../lib/models/Courseware/ContainerTypes/TabsContainer.php:38
 msgid "neuer Tab"
-msgstr ""
+msgstr "new tab"
 
 #: ../lib/models/Courseware/ContainerTypes/AccordionContainer.php:24
 msgid "Accordion"
@@ -6047,7 +6048,7 @@ msgstr "Width"
 
 #: ../lib/models/Courseware/ContainerTypes/ContainerType.php:238
 msgid "halbe Breite (zentriert)"
-msgstr ""
+msgstr "half width (centered)"
 
 #: ../lib/models/Courseware/ContainerTypes/ContainerType.php:244
 #, fuzzy
@@ -13167,7 +13168,7 @@ msgstr "Further help"
 
 #: ../lib/classes/StudipFileCache.class.php:50
 msgid "Dateisystem"
-msgstr ""
+msgstr "File system"
 
 #: ../lib/classes/StudipFileCache.class.php:247
 #: ../lib/classes/StudipDbCache.class.php:102
@@ -13810,7 +13811,7 @@ msgstr "Non-allocated courses at this level:"
 
 #: ../lib/classes/StudipMemcachedCache.php:35
 msgid "Memcached"
-msgstr ""
+msgstr "Memcached"
 
 #: ../lib/classes/StudipKing.class.php:161
 #, php-format
@@ -14909,7 +14910,7 @@ msgstr "User"
 
 #: ../lib/classes/StudipRedisCache.class.php:22
 msgid "Redis"
-msgstr ""
+msgstr "Redis"
 
 #: ../lib/classes/UserManagement.class.php:222
 msgid "E-Mail-Adresse syntaktisch falsch!"
@@ -19307,7 +19308,7 @@ msgstr ""
 #: ../app/controllers/course/courseware.php:20
 #: ../app/controllers/contents/courseware.php:19
 msgid "Courseware"
-msgstr ""
+msgstr "Courseware"
 
 #: ../lib/modules/CoursewareModule.class.php:113
 #, fuzzy
@@ -21849,7 +21850,7 @@ msgstr "Content terms of use"
 #: ../lib/navigation/AdminNavigation.php:128
 #: ../app/views/admin/licenses/index.php:3
 msgid "Lizenzen"
-msgstr ""
+msgstr "Licenses"
 
 #: ../lib/navigation/AdminNavigation.php:134
 msgid "Werbebanner"
@@ -21921,7 +21922,7 @@ msgstr "Global search"
 #: ../lib/navigation/AdminNavigation.php:195
 #: ../app/controllers/admin/cache.php:29
 msgid "Cache"
-msgstr ""
+msgstr "Cache"
 
 #: ../lib/navigation/AdminNavigation.php:205
 #: ../lib/navigation/AdminNavigation.php:206
@@ -22024,7 +22025,7 @@ msgstr "My bookings"
 #: ../lib/navigation/OERNavigation.php:28
 #: ../lib/navigation/ContentsNavigation.php:46
 msgid "OER Campus"
-msgstr ""
+msgstr "OER Campus"
 
 #: ../lib/navigation/OERNavigation.php:44
 msgid "Meine Materialien"
@@ -25319,8 +25320,8 @@ msgstr "Open all"
 #, php-format
 msgid "(%d Eintrag)"
 msgid_plural "(%d Einträge)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(%d entry)"
+msgstr[1] "(%d entries)"
 
 #: ../templates/contact/legend.php:2
 msgid "Bedienung:"
@@ -26335,7 +26336,7 @@ msgstr "Published"
 #: ../templates/library/library_document_info.php:30
 #: ../app/views/file/add_from_library.php:108
 msgid "Medium"
-msgstr ""
+msgstr "Medium"
 
 #: ../templates/library/library_document_info.php:34
 #: ../app/views/resources/_common/_request_info.php:41
@@ -28260,7 +28261,7 @@ msgstr "Print"
 #: ../app/controllers/resources/category.php:42
 #: ../app/views/resources/admin/categories.php:48
 msgid "Details anzeigen"
-msgstr ""
+msgstr "Show details"
 
 #: ../app/controllers/resources/category.php:100
 #: ../app/controllers/resources/category.php:264
@@ -29573,7 +29574,7 @@ msgstr ""
 
 #: ../app/controllers/resources/booking.php:776
 msgid "Buchung duplizieren"
-msgstr ""
+msgstr "Duplicate booking"
 
 #: ../app/controllers/resources/booking.php:799
 #: ../app/controllers/resources/booking.php:804
@@ -30743,11 +30744,11 @@ msgstr ""
 
 #: ../app/controllers/web_migrate.php:118
 msgid "Offene Migrationen"
-msgstr ""
+msgstr "Open migrations"
 
 #: ../app/controllers/web_migrate.php:122
 msgid "Ausgeführte Migrationen"
-msgstr ""
+msgstr "Applied migrations"
 
 #: ../app/controllers/web_migrate.php:127
 msgid "Aktueller Versionsstand"
@@ -31691,8 +31692,8 @@ msgstr "insert %s"
 #, php-format
 msgid "%s der Einrichtung"
 msgid_plural "%s der Einrichtungen"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s of the institute"
+msgstr[1] "%s of the institutes"
 
 #: ../app/controllers/course/members.php:1645
 #: ../app/controllers/course/members.php:1648
@@ -33707,12 +33708,12 @@ msgstr "No correct option has been selected."
 #: ../app/controllers/course/studygroup.php:622
 #, php-format
 msgid "%s wurde akzeptiert."
-msgstr ""
+msgstr "%s has been accepted."
 
 #: ../app/controllers/course/studygroup.php:628
 #, php-format
 msgid "%s wurde nicht akzeptiert."
-msgstr ""
+msgstr "%s has not been accepted."
 
 #: ../app/controllers/course/studygroup.php:634
 #, php-format
@@ -34837,7 +34838,7 @@ msgstr "Contact was removed."
 #: ../app/controllers/profile.php:501
 #, php-format
 msgid "Profil von %s"
-msgstr ""
+msgstr "Profile of %s"
 
 #: ../app/controllers/files_dashboard/sidebar.php:24
 #: ../app/views/materialien/files/add_dokument.php:40
@@ -35165,15 +35166,15 @@ msgstr "Overlap of courses"
 #, php-format
 msgid "1 Konflikt gefunden (1 ausgeblendet)"
 msgid_plural "%s Konflikte gefunden (%s ausgeblendet)."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "1 conflict found (1 hidden)"
+msgstr[1] "%s conflicts found (%s hidden)"
 
 #: ../app/controllers/admin/overlapping.php:151
 #, php-format
 msgid "1 Konflikt gefunden."
 msgid_plural "%s Konflikte gefunden."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "1 conflict found."
+msgstr[1] "%s conflicts found."
 
 #: ../app/controllers/admin/overlapping.php:158
 msgid "Keine Konflikte gefunden."
@@ -35195,7 +35196,7 @@ msgstr "Statistics"
 
 #: ../app/controllers/admin/cache.php:53
 msgid "Cache leeren"
-msgstr ""
+msgstr "Empty cache"
 
 #: ../app/controllers/admin/cache.php:56
 msgid "Soll der gesamte Inhalt des Caches wirklich gelöscht werden?"
@@ -36451,7 +36452,7 @@ msgstr "Global configuration"
 
 #: ../app/controllers/admin/configuration.php:400
 msgid "Range-Konfiguration"
-msgstr ""
+msgstr "Range configuration"
 
 #: ../app/controllers/admin/configuration.php:404
 msgid "Personenkonfiguration"
@@ -36463,7 +36464,7 @@ msgstr "Course configuration"
 
 #: ../app/controllers/admin/configuration.php:412
 msgid "Einrichtungskonfiguration"
-msgstr ""
+msgstr "Institute configuration"
 
 #: ../app/controllers/admin/configuration.php:420
 #: ../app/views/oer/mymaterial/edit.php:122
@@ -36476,7 +36477,7 @@ msgstr "Display filter"
 
 #: ../app/controllers/admin/configuration.php:438
 msgid "Range suchen"
-msgstr ""
+msgstr "Search range"
 
 #: ../app/controllers/admin/webservice_access.php:31
 msgid "Die Webservices sind in diesem System nicht aktiviert."
@@ -36827,25 +36828,25 @@ msgstr "The parameters have been saved."
 
 #: ../app/controllers/admin/licenses.php:9
 msgid "Lizenzverwaltung"
-msgstr ""
+msgstr "License management"
 
 #: ../app/controllers/admin/licenses.php:21
 #, php-format
 msgid "Lizenz %s bearbeiten"
-msgstr ""
+msgstr "Edit license %s"
 
 #: ../app/controllers/admin/licenses.php:38
 msgid "Lizenz wurde gespeichert."
-msgstr ""
+msgstr "License has been saved."
 
 #: ../app/controllers/admin/licenses.php:48
 msgid "Neue Standardlizenz wurde gesetzt."
-msgstr ""
+msgstr "The new standard license has been set."
 
 #: ../app/controllers/admin/licenses.php:61
 #, php-format
 msgid "Die Lizenz %s wurde gelöscht."
-msgstr ""
+msgstr "The license %s has been deleted."
 
 #: ../app/controllers/admin/lti.php:26
 msgid "Konfiguration der LTI-Tools"
@@ -37960,8 +37961,8 @@ msgstr "File has been edited."
 #, php-format
 msgid "Lizenz auswählen"
 msgid_plural "Lizenz auswählen: %s Dateien"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Select license"
+msgstr[1] "Select license: %s files"
 
 #: ../app/controllers/file.php:1653
 msgid "Die angegebene URL ist ungültig."
@@ -40157,7 +40158,7 @@ msgstr "Person(s)"
 #: ../app/views/consultation/overview/ungrouped.php:37
 #: ../app/views/consultation/admin/ungrouped.php:168
 msgid "%A, %x"
-msgstr ""
+msgstr "%A, %x"
 
 #: ../app/views/consultation/overview/booked.php:3
 msgid "Sie haben aktuell keine Termine gebucht."
@@ -40171,7 +40172,7 @@ msgstr "My reason for the booking"
 #: ../app/views/consultation/slot-bookings.php:31
 #, php-format
 msgid "+%u weitere"
-msgstr ""
+msgstr "+%u more"
 
 #: ../app/views/consultation/admin/book.php:21
 #, php-format
@@ -40257,11 +40258,11 @@ msgstr ""
 
 #: ../app/views/consultation/admin/create.php:160
 msgid "Ja, zwingend erforderlich"
-msgstr ""
+msgstr "Yes, mandatory"
 
 #: ../app/views/consultation/admin/create.php:166
 msgid "Ja, optional"
-msgstr ""
+msgstr "Yes, optional"
 
 #: ../app/views/consultation/admin/create.php:177
 msgid "Bestätigung für folgenden Text einholen"
@@ -40312,7 +40313,7 @@ msgstr "Display print view"
 #: ../app/views/consultation/admin/ungrouped.php:100
 #: ../app/views/consultation/admin/index.php:79
 msgid "Termine entfernen"
-msgstr ""
+msgstr "Remove dates"
 
 #: ../app/views/consultation/admin/ungrouped.php:104
 #: ../app/views/consultation/admin/ungrouped.php:120
@@ -40348,7 +40349,7 @@ msgstr ""
 
 #: ../app/views/consultation/admin/tab.php:6
 msgid "Aktueller Name"
-msgstr ""
+msgstr "Current name"
 
 #: ../app/views/consultation/admin/cancel_slots.php:13
 msgid ""
@@ -40572,8 +40573,8 @@ msgstr "Found modules for <i>%s</i>"
 #, php-format
 msgid "%s Modul"
 msgid_plural "%s Module"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s module"
+msgstr[1] "%s modules"
 
 #: ../app/views/search/module/index.php:32
 msgid "Moduldeskriptor"
@@ -40745,11 +40746,11 @@ msgstr ""
 #: ../app/views/oer/market/review.php:8 ../app/views/oer/market/review.php:9
 #: ../app/views/oer/market/review.php:10
 msgid "Sterne"
-msgstr ""
+msgstr "Stars"
 
 #: ../app/views/oer/market/review.php:6
 msgid "Stern"
-msgstr ""
+msgstr "Star"
 
 #: ../app/views/oer/market/licenseinfo.php:1
 msgid "Wozu die Lizenzen im Lernmarktplatz?"
@@ -40907,13 +40908,13 @@ msgstr ""
 #: ../app/views/oer/market/_searchform.php:100
 #: ../app/views/oer/mymaterial/edit.php:223
 msgid "Niveau"
-msgstr ""
+msgstr "Level"
 
 #: ../app/views/oer/market/details.php:94
 #: ../app/views/oer/market/_searchform.php:102
 #: ../app/views/oer/mymaterial/edit.php:231
 msgid "Kindergarten"
-msgstr ""
+msgstr "Kindergarten"
 
 #: ../app/views/oer/market/details.php:95
 #: ../app/views/oer/market/_searchform.php:103
@@ -40924,7 +40925,7 @@ msgstr ""
 #: ../app/views/oer/market/details.php:120
 #: ../app/views/oer/mymaterial/edit.php:256
 msgid "Lizenz"
-msgstr ""
+msgstr "License"
 
 #: ../app/views/oer/market/details.php:131
 msgid "Was heißt das?"
@@ -40941,11 +40942,11 @@ msgstr ""
 
 #: ../app/views/oer/market/details.php:180
 msgid "Jetzt eine eingeben."
-msgstr ""
+msgstr "Enter one now."
 
 #: ../app/views/oer/market/details.php:210
 msgid "Reviews"
-msgstr ""
+msgstr "Reviews"
 
 #: ../app/views/oer/market/details.php:217
 msgid "Geben Sie die erste Bewertung ab."
@@ -40958,7 +40959,7 @@ msgstr ""
 #: ../app/views/oer/market/details.php:230
 #, php-format
 msgid "%s von 5 Sternen"
-msgstr ""
+msgstr "%s out of 5 stars"
 
 #: ../app/views/oer/market/details.php:293
 msgid "Darauf antworten"
@@ -40975,56 +40976,56 @@ msgstr ""
 
 #: ../app/views/oer/market/details.php:317
 msgid "Review schreiben"
-msgstr ""
+msgstr "Write review"
 
 #: ../app/views/oer/market/details.php:361
 msgid "Vollbild aktivieren"
-msgstr ""
+msgstr "Activate fullscreen"
 
 #: ../app/views/oer/market/details.php:368
 msgid "Teilen und einbetten"
-msgstr ""
+msgstr "Share and embed"
 
 #: ../app/views/oer/market/details.php:376
 msgid "Zugriffszahlen"
-msgstr ""
+msgstr "Access count"
 
 #: ../app/views/oer/market/_searchform.php:5
 msgid "Aktiver Filter der Kategorie"
-msgstr ""
+msgstr "Active filters of the category"
 
 #: ../app/views/oer/market/_searchform.php:10
 msgid "Filter der Kategorie entfernen"
-msgstr ""
+msgstr "Remove filter of the category"
 
 #: ../app/views/oer/market/_searchform.php:17
 msgid "Aktiver Filter für das Niveau"
-msgstr ""
+msgstr "Active filter for the level"
 
 #: ../app/views/oer/market/_searchform.php:25
 msgid "Filter des Niveaus entfernen"
-msgstr ""
+msgstr "Remove filter for the level"
 
 #: ../app/views/oer/market/_searchform.php:39
 msgid "Suchformular zurücksetzen"
-msgstr ""
+msgstr "Reset search form"
 
 #: ../app/views/oer/market/_searchform.php:46
 msgid "Suchfilter einstellen"
-msgstr ""
+msgstr "Set search filters"
 
 #: ../app/views/oer/market/_searchform.php:80
 #: ../app/views/oer/mymaterial/edit.php:115
 msgid "Folien"
-msgstr ""
+msgstr "Slides"
 
 #: ../app/views/oer/market/_searchform.php:93
 msgid "Alles"
-msgstr ""
+msgstr "All"
 
 #: ../app/views/oer/market/_searchform.php:123
 msgid "Wertvolle Lernmaterialien entdecken!"
-msgstr ""
+msgstr "Discover valuable learning materials!"
 
 #: ../app/views/oer/market/_searchform.php:124
 msgid ""
@@ -48002,7 +48003,7 @@ msgstr "An administrator has made your ID invisible."
 
 #: ../app/views/settings/privacy.php:43
 msgid "Sie haben Lehrendenrechte und sind daher immer global sichtbar."
-msgstr "You have lecturer permissions and therefore you are always visible."
+msgstr "You have lecturer permissions and therefore you are always vibible."
 
 #: ../app/views/settings/privacy.php:45
 msgid "Sie sind immer global sichtbar."
