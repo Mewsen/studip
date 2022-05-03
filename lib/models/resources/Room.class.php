@@ -67,7 +67,7 @@ class Room extends Resource
     public function cbAddAdminPermission()
     {
         $current_user = User::findCurrent();
-        if ($current_user) {
+        if ($current_user && $current_user->user_id != 'cli') {
             //The current user is a real user and not nobody or a CLI script.
             //Therefore, we can grant admin permissions to them.
             $permission = new ResourcePermission();
