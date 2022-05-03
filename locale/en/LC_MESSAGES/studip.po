@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 09:46+0200\n"
-"PO-Revision-Date: 2022-05-03 15:45+0000\n"
+"PO-Revision-Date: 2022-05-03 15:55+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-1/en/>\n"
@@ -6190,7 +6190,7 @@ msgstr "Module component descriptor"
 
 #: ../lib/models/OERHost.php:107
 msgid "Kann von dem Server keine Daten bekommen."
-msgstr ""
+msgstr "Cannot get data from the server."
 
 #: ../lib/models/Vote.php:15
 msgid "Auswahlfrage"
@@ -15177,7 +15177,8 @@ msgstr ""
 "You have requested a link to reset the password.\n"
 "This is not possible for the account linked to this mail.\n"
 "\n"
-"Instead, please contact %s"
+"Instead, please contact\n"
+"%s"
 
 #: ../lib/classes/UserManagement.class.php:735
 #, php-format
@@ -19666,7 +19667,7 @@ msgstr ""
 
 #: ../lib/modules/ConsultationModule.class.php:125
 msgid "Terminbuchungen"
-msgstr ""
+msgstr "Date bookings"
 
 #: ../lib/modules/CoreScm.class.php:57
 #, php-format
@@ -27075,7 +27076,7 @@ msgstr ""
 
 #: ../app/controllers/search/studiengaenge.php:350
 msgid "Originalfassung als PDF"
-msgstr ""
+msgstr "Original version as PDF"
 
 #: ../app/controllers/search/studiengaenge.php:353
 #, php-format
@@ -28922,7 +28923,10 @@ msgid_plural ""
 "%5$d Buchungen wurde im Zeitbereich von %1$s, %2$s Uhr bis zum %3$s, %4$s "
 "Uhr gelöscht!"
 msgstr[0] ""
+"A booking has been deleted in the time range from %1$s, %2$s to %3$s, %4$s!"
 msgstr[1] ""
+"%5$d bookings have been deleted in the time range from %1$s, %2$s to %3$s, "
+"%4$s!"
 
 #: ../app/controllers/resources/resource.php:1398
 #, php-format
@@ -29335,7 +29339,7 @@ msgstr "The booking could not be converted into a request!"
 #: ../app/controllers/resources/room_request.php:2262
 #, php-format
 msgid "Es traten Fehler beim Auflösen der Anfrage auf für %s!"
-msgstr ""
+msgstr "Errors occurred while resolving the request for %s!"
 
 #: ../app/controllers/resources/room_request.php:2277
 #, php-format
@@ -31758,7 +31762,7 @@ msgstr "Export waiting list as csv document"
 #: ../app/controllers/course/members.php:1735
 #: ../app/controllers/course/statusgroups.php:298
 msgid "Diese Seite für Studierende verbergen"
-msgstr ""
+msgstr "Hide this page for students"
 
 #: ../app/controllers/course/members.php:1739
 msgid ""
@@ -32441,24 +32445,24 @@ msgstr[1] "%u persons could not be moved into the group %s."
 #, php-format
 msgid "%u Person wurde in die Gruppe %s kopiert."
 msgid_plural "%u Personen wurden in die Gruppe %s kopiert."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u person has been copied into the group %s."
+msgstr[1] "%u persons have been copied into the group %s."
 
 #: ../app/controllers/course/statusgroups.php:1309
 #: ../app/controllers/course/statusgroups.php:1316
 #, php-format
 msgid "%u Person wurde aus der Gruppe %s entfernt."
 msgid_plural "%u Personen wurden aus der Gruppe %s entfernt."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u person has been removed from the group %s."
+msgstr[1] "%u persons have been removed from the group %s."
 
 #: ../app/controllers/course/statusgroups.php:1319
 #: ../app/controllers/course/statusgroups.php:1326
 #, php-format
 msgid "%u Person konnte nicht aus der Gruppe %s entfernt werden."
 msgid_plural "%u Personen konnten nicht aus der Gruppe %s entfernt werden."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u person could not be removed from the group %s."
+msgstr[1] "%u persons could not be removed from the group %s."
 
 #: ../app/controllers/course/statusgroups.php:1353
 msgid "Die folgenden Personen wurden aus der Veranstaltung ausgetragen"
@@ -37700,8 +37704,8 @@ msgstr "Unable to delete."
 #, php-format
 msgid "Es ist eine Veranstaltung zugeordnet."
 msgid_plural "Es sind %u Veranstaltungen zugeordnet."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "A course is assigned."
+msgstr[1] "%u courses are assigned."
 
 #: ../app/controllers/institute/basicdata.php:148
 #, php-format
@@ -38273,7 +38277,7 @@ msgstr "Available"
 #: ../app/controllers/room_management/planning.php:1008
 #, php-format
 msgid "Zu kopierende Buchungen am %s"
-msgstr ""
+msgstr "Bookings to copy on %s"
 
 #: ../app/controllers/room_management/planning.php:1018
 msgid ""
@@ -38639,8 +38643,8 @@ msgstr[1] ""
 #, php-format
 msgid "Die Berechtigungen von einer Person wurde geändert."
 msgid_plural "Die Berechtigungen von %s Personen wurden geändert."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "The permissions of one person have been modified."
+msgstr[1] "The permissions of %s persons have been modified."
 
 #: ../app/controllers/calendar/single.php:476
 msgid "Es wurden keine Berechtigungen geändert."
@@ -38819,8 +38823,8 @@ msgstr "The help text has been saved!"
 #, php-format
 msgid "%u Änderung wurde durchgeführt"
 msgid_plural "%u Änderungen wurden durchgeführt"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u change has been made"
+msgstr[1] "%u changes have been made"
 
 #: ../app/controllers/help_content.php:272
 #: ../app/views/help_content/admin_overview.php:44
@@ -40165,11 +40169,11 @@ msgstr ""
 
 #: ../app/views/consultation/overview/book.php:30
 msgid "Bitte lesen Sie sich den folgenden Hinweis durch:"
-msgstr ""
+msgstr "Please read the following notice:"
 
 #: ../app/views/consultation/overview/book.php:36
 msgid "Ich habe den obigen Hinweis zur Kenntnis genommen"
-msgstr ""
+msgstr "I acknowledge the above notice."
 
 #: ../app/views/consultation/overview/ungrouped.php:3
 #: ../app/views/consultation/overview/index.php:3
@@ -40461,7 +40465,7 @@ msgstr "available"
 
 #: ../app/views/consultation/block-description.php:19
 msgid "öffentlich sichtbar"
-msgstr ""
+msgstr "publicly visible"
 
 #: ../app/views/consultation/block-description.php:20
 msgid "Die Namen der buchenden Person sind sichtbar"
