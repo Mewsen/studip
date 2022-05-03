@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 09:46+0200\n"
-"PO-Revision-Date: 2022-05-03 14:27+0000\n"
+"PO-Revision-Date: 2022-05-03 14:30+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-1/en/>\n"
@@ -3918,7 +3918,7 @@ msgstr "%s wrote a message."
 #: ../lib/models/OERReview.php:40
 #, php-format
 msgid "%1$s hat ein Review zu \"%2$s\" geschrieben."
-msgstr ""
+msgstr "%1$s has written a review for \"%2$s\"."
 
 #: ../lib/models/OERReview.php:43
 #, php-format
