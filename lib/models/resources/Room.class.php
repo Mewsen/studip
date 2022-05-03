@@ -70,11 +70,11 @@ class Room extends Resource
         if ($current_user && $current_user->user_id != 'cli') {
             //The current user is a real user and not nobody or a CLI script.
             //Therefore, we can grant admin permissions to them.
-            $permission = new ResourcePermission();
-            $permission->resource_id = $this->id;
-            $permission->user_id = $current_user->id;
-            $permission->perms = 'admin';
-            $permission->store();
+            ResourcePermission::create([
+                'resource_id' => $this->id,
+                'user_id'     => $current_user->id,
+                'perms'       => 'admin'
+            ]);
         }
     }
 
