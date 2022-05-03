@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-21 09:46+0200\n"
-"PO-Revision-Date: 2022-04-30 16:26+0000\n"
+"PO-Revision-Date: 2022-05-03 14:27+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-1/en/>\n"
@@ -11401,8 +11401,8 @@ msgstr "Mon. and Thu. 12.00 - 13.00"
 #, php-format
 msgid "%s Unterveranstaltung"
 msgid_plural "%s Unterveranstaltungen"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s sub-course"
+msgstr[1] "%s sub-courses"
 
 #: ../lib/extern/modules/views/news_preview.inc.php:29
 #, php-format
@@ -15102,7 +15102,7 @@ msgstr "%s entries removed from staff list."
 #, php-format
 msgid ""
 "[Stud.IP - %s] Es wurde ein Zugang für sie erstellt - Setzen sie ein Passwort"
-msgstr ""
+msgstr "[Stud.IP - %s] An account was created for you - set a password"
 
 #: ../lib/classes/UserManagement.class.php:690
 #, php-format
@@ -15134,7 +15134,7 @@ msgstr ""
 #: ../app/controllers/new_password.php:53
 #, php-format
 msgid "[Stud.IP - %s] Passwortänderung angefordert"
-msgstr ""
+msgstr "[Stud.IP - %s] Password change requested"
 
 #: ../lib/classes/UserManagement.class.php:719
 #, php-format
@@ -15155,7 +15155,7 @@ msgstr ""
 #: ../lib/classes/UserManagement.class.php:735
 #, php-format
 msgid "[Stud.IP - %s] Neues Passwort setzen"
-msgstr ""
+msgstr "[Stud.IP - %s] Set new password"
 
 #: ../lib/classes/UserManagement.class.php:740
 #, php-format
@@ -15300,7 +15300,7 @@ msgstr "The password has been reset."
 #: ../lib/classes/UserManagement.class.php:1279
 #, php-format
 msgid "[Stud.IP - %s] Passwortänderung"
-msgstr ""
+msgstr "[Stud.IP - %s] Password change"
 
 #: ../lib/classes/UserManagement.class.php:1282
 #, php-format
@@ -26080,7 +26080,7 @@ msgstr "To add learning modules select a coupled system:"
 
 #: ../templates/elearning/_my_account_form.php:10
 msgid "Loginname:"
-msgstr "Username: "
+msgstr "Login name:"
 
 #: ../templates/elearning/ilias4_connected_cms_preferences.php:13
 msgid "SOAP-Verbindung:"
@@ -26617,7 +26617,7 @@ msgstr ""
 #: ../app/controllers/consultation/admin.php:405
 #: ../app/controllers/consultation/admin.php:541
 msgid "Der Termin wurde abgesagt."
-msgstr ""
+msgstr "The date has been cancelled."
 
 #: ../app/controllers/consultation/overview.php:121
 #: ../app/controllers/consultation/admin.php:747
@@ -26655,7 +26655,7 @@ msgstr ""
 
 #: ../app/controllers/consultation/admin.php:229
 msgid "Der Block wurde bearbeitet"
-msgstr ""
+msgstr "The block has been modified"
 
 #: ../app/controllers/consultation/admin.php:262
 msgid ""
@@ -26710,7 +26710,7 @@ msgstr "Search user"
 
 #: ../app/controllers/consultation/admin.php:334
 msgid "Ort des Blocks bearbeiten"
-msgstr ""
+msgstr "Edit the location of the block"
 
 #: ../app/controllers/consultation/admin.php:348
 msgid "Der Block wurde gespeichert."
@@ -26757,7 +26757,7 @@ msgstr ""
 #: ../app/controllers/consultation/admin.php:420
 #: ../app/views/consultation/admin/reason.php:5
 msgid "Grund für die Buchung bearbeiten"
-msgstr ""
+msgstr "Edit the reason for the booking"
 
 #: ../app/controllers/consultation/admin.php:431
 msgid "Der Grund für die Buchung wurde bearbeitet."
@@ -26815,7 +26815,7 @@ msgstr "Past dates"
 #: ../app/views/consultation/admin/ungrouped.php:9
 #: ../app/views/consultation/admin/index.php:9
 msgid "Terminblöcke anlegen"
-msgstr ""
+msgstr "Create date blocks"
 
 #: ../app/controllers/consultation/admin.php:721
 #: ../app/views/consultation/admin/tab.php:3
@@ -31425,16 +31425,16 @@ msgstr "%s %s persons have been added."
 #, php-format
 msgid "Es wurde %u neue Person auf der Warteliste hinzugefügt."
 msgid_plural "Es wurden %u neue Personen auf der Warteliste hinzugefügt."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u new person has been added to the waitlist."
+msgstr[1] "%u new persons have been added to the waitlist."
 
 #: ../app/controllers/course/members.php:366
 #, php-format
 msgid "%u Person konnte nicht auf die Warteliste eingetragen werden."
 msgid_plural ""
 "%u neue Personen konnten nicht auf die Warteliste eingetragen werden."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u person could not be added to the waitlist."
+msgstr[1] "%u new persons could not be added to the waitlist."
 
 #: ../app/controllers/course/members.php:427
 #: ../app/controllers/course/basicdata.php:556
@@ -38477,7 +38477,7 @@ msgstr "Day view"
 #: ../app/views/calendar/group/week.php:9
 #: ../app/views/calendar/single/week.php:3
 msgid "Wochenansicht"
-msgstr "Week view "
+msgstr "Week view"
 
 #: ../app/controllers/calendar/group.php:291
 msgid "Monatssicht"
