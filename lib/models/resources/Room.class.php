@@ -53,8 +53,29 @@ class Room extends Resource
         $config['additional_fields']['building']['get']   = 'findBuilding';
         $config['registered_callbacks']['before_store'][] = 'cbValidate';
         $config['registered_callbacks']['after_delete'][] = 'cbDeleteClipboardItems';
+        $config['registered_callbacks']['after_create'][] = 'cbAddAdminPermission';
 
         parent::configure($config);
+    }
+
+
+    /**
+     * Adds admin permissions for the current user.
+     * This method is meant as a callback method that shall be called after a room
+     * has been created.
+     */
+    public function cbAddAdminPermission()
+    {
+        $current_user = User::findCurrent();
+        if ($current_user) {
+            //The current user is a real user and not nobody or a CLI script.
+            //Therefore, we can grant admin permissions to them.
+            $permission = new ResourcePermission();
+            $permission->resource_id = $this->id;
+            $permission->user_id = $current_user->id;
+            $permission->perms = 'admin';
+            $permission->store();
+        }
     }
 
 
