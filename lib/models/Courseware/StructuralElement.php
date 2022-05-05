@@ -739,7 +739,7 @@ SQL;
         return $doc;
     }
 
-    private function getElementPdfExport(string $parent_name = '', bool $with_children, $user)
+    private function getElementPdfExport(string $parent_name, bool $with_children, $user)
     {
         if (!$this->canRead($user)) {
             return '';
