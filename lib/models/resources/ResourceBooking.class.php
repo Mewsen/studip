@@ -849,7 +849,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 $mail_text = $template->render();
 
                 Message::send(
-                    '____%system%____',
+                    User::findCurrent()->id,
                     [$reservation->assigned_user->username],
                     _('Reservierung überbucht'),
                     $mail_text
@@ -871,7 +871,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 $mail_text = $template->render();
 
                 Message::send(
-                    '____%system%____',
+                    User::findCurrent()->id,
                     [$reservation->booking_user->username],
                     _('Reservierung überbucht'),
                     $mail_text
@@ -1866,7 +1866,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
         $mail_text = $template->render();
 
         Message::send(
-            '____%system%____',
+            User::findCurrent()->id,
             [$booking_user->username],
             _('Ihre Buchung wurde gelöscht'),
             $mail_text
