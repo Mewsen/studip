@@ -667,9 +667,17 @@ Dialog.removeHeaderHandler = function (header) {
 };
 
 Dialog.initialize = function() {
+    function checkValidity(element) {
+        const form = element.closest('form');
+        if (form === null) {
+            return true;
+        }
+        return form.checkValidity();
+    }
+
     // Actual dialog handler
     function dialogHandler(event) {
-        if (!event.isDefaultPrevented()) {
+        if (!event.isDefaultPrevented() && checkValidity(event.target)) {
             var target = $(event.target).closest('[data-dialog]');
             var options = target.data().dialog;
             if (Dialog.fromElement(target, parseOptions(options))) {
@@ -679,7 +687,7 @@ Dialog.initialize = function() {
     }
 
     function clickHandler(event) {
-        if (!event.isDefaultPrevented()) {
+        if (!event.isDefaultPrevented() && checkValidity(event.target)) {
             var element = $(event.target).closest(':submit,input[type="image"]');
             var form = element.closest('form');
             var action = element.attr('formaction');
