@@ -15,7 +15,8 @@ class AddOerPostUploadTable extends Migration
                 `user_id` char(32),
                 `reminder_date` int unsigned,
                 `mkdate` int(11) NOT NULL,
-                `chdate` int(11) NOT NULL
+                `chdate` int(11) NOT NULL,
+                PRIMARY KEY (`user_id`, `file_ref_id`)
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC
             ");

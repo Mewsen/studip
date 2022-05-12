@@ -472,7 +472,7 @@ class FileController extends AuthenticatedController
             $oer_share = Request::int('oer_upload');
             if ($oer_share == 1) {
                 // share now
-                $this->share_oer_action($this->file_ref_id);
+                return $this->share_oer_action($this->file_ref_id);
             } else if ($oer_share == 2) {
                 // save and send a reminder to share later
 
@@ -481,9 +481,11 @@ class FileController extends AuthenticatedController
                 $oer_post_upload->user_id = $GLOBALS['user']->id;
                 $oer_post_upload->reminder_date = Semester::findCurrent()->vorles_ende;
                 $oer_post_upload->store();
+                $this->response->add_header('X-Dialog-Close', '1');
+                $this->render_nothing();
 
+                PageLayout::postSuccess(_('Erinnerung wurde gespeichert.'));
             }
-
         }
     }
     /**
@@ -1639,10 +1641,12 @@ class FileController extends AuthenticatedController
                     $file_ref['content_terms_of_use_id'] = Request::option('content_terms_of_use_id');
 
                     // TODO we need the file_ref_id!
-                    if ($file_ref['content_terms_of_use_id'] === 'SELFMADE_NONPUB'
-                        || $file_ref['content_terms_of_use_id'] === 'FREE_LICENSE') {
-                        $this->redirect('file/oer_post_upload/' . $file_ref['id']);
-                        return;
+                    if (Config::get()->OERCAMPUS_ENABLED && Config::get()->OER_ENABLE_SUGGESTIONS) {
+                        if ($file_ref['content_terms_of_use_id'] === 'SELFMADE_NONPUB'
+                            || $file_ref['content_terms_of_use_id'] === 'FREE_LICENSE') {
+                            $this->redirect('file/oer_post_upload/' . $file_ref['id']);
+                            return;
+                        }
                     }
 
                     if ($redirect) {
