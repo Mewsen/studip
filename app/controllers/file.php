@@ -465,11 +465,23 @@ class FileController extends AuthenticatedController
         $this->file_ref_id = $file_ref_id;
         PageLayout::setTitle(_('Datei für OER Campus bereitstellen'));
 
+        $this->semester_vorles_ende = date('d.m.Y',  Semester::findCurrent()->vorles_ende);
+
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
-            $oer_post_upload = Request::int('oer_upload');
-            if ($oer_post_upload == 1) {
+            $oer_share = Request::int('oer_upload');
+            if ($oer_share == 1) {
+                // share now
                 $this->share_oer_action($this->file_ref_id);
+            } else if ($oer_share == 2) {
+                // save and send a reminder to share later
+
+                $oer_post_upload = new OERPostUpload();
+                $oer_post_upload->file_ref_id = $this->file_ref_id;
+                $oer_post_upload->user_id = $GLOBALS['user']->id;
+                $oer_post_upload->reminder_date = Semester::findCurrent()->vorles_ende;
+                $oer_post_upload->store();
+
             }
 
         }
