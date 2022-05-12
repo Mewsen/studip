@@ -465,30 +465,13 @@ class FileController extends AuthenticatedController
         $this->file_ref_id = $file_ref_id;
         PageLayout::setTitle(_('Datei für OER Campus bereitstellen'));
 
-        $this->semester_ende = date('d.m.Y',  Semester::findCurrent()->ende);
-
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
-            $oer_share = Request::int('oer_upload');
-            if ($oer_share === 1) {
-                // share now
-                return $this->share_oer_action($this->file_ref_id);
-            } else if ($oer_share === 2) {
-                // save and send a reminder to share later
-
-                $oer_post_upload = new OERPostUpload();
-                $oer_post_upload->file_ref_id = $this->file_ref_id;
-                $oer_post_upload->user_id = $GLOBALS['user']->id;
-                $oer_post_upload->reminder_date = Semester::findCurrent()->ende;
-                $oer_post_upload->store();
-                $this->response->add_header('X-Dialog-Close', '1');
-                $this->render_nothing();
-
-                PageLayout::postSuccess(_('Erinnerung wurde gespeichert.'));
-            } else {
-                $this->response->add_header('X-Dialog-Close', '1');
-
+            $oer_post_upload = Request::int('oer_upload');
+            if ($oer_post_upload == 1) {
+                $this->share_oer_action($this->file_ref_id);
             }
+
         }
     }
     /**
@@ -1597,7 +1580,6 @@ class FileController extends AuthenticatedController
                         continue;
                     }
 
-                    $file_ref['content_terms_of_use_id'] = Request::option('content_terms_of_use_id');
                     if ($this->show_description_field && $description) {
                         $file_ref['description'] = $description;
                     }
@@ -1642,13 +1624,13 @@ class FileController extends AuthenticatedController
                         }
                     }
 
-                    if (Config::get()->OERCAMPUS_ENABLED
-                        && $GLOBALS['perm']->have_perm('tutor') ) {
-                        if ($file_ref['content_terms_of_use_id'] === 'SELFMADE_NONPUB'
-                            || $file_ref['content_terms_of_use_id'] === 'FREE_LICENSE') {
-                            $this->redirect('file/oer_post_upload/' . $file_ref['id']);
-                            return;
-                        }
+                    $file_ref['content_terms_of_use_id'] = Request::option('content_terms_of_use_id');
+
+                    // TODO we need the file_ref_id!
+                    if ($file_ref['content_terms_of_use_id'] === 'SELFMADE_NONPUB'
+                        || $file_ref['content_terms_of_use_id'] === 'FREE_LICENSE') {
+                        $this->redirect('file/oer_post_upload/' . $file_ref['id']);
+                        return;
                     }
 
                     if ($redirect) {
