@@ -441,7 +441,6 @@ class FileController extends AuthenticatedController
                 $this->errors = array_merge($this->errors, $result);
             }
 
-
             if ($this->errors) {
                 PageLayout::postError(
                     sprintf(
@@ -461,11 +460,26 @@ class FileController extends AuthenticatedController
         $this->content_terms_of_use = $this->file->getTermsOfUse();
     }
 
+    public function oer_post_upload_action($file_ref_id)
+    {
+        $this->file_ref_id = $file_ref_id;
+        PageLayout::setTitle(_('Datei für OER Campus bereitstellen'));
+
+        if (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
+            $oer_post_upload = Request::int('oer_upload');
+            if ($oer_post_upload == 1) {
+                $this->share_oer_action($this->file_ref_id);
+            }
+
+        }
+    }
     /**
      * The action for sharing a file on the oer campus
      */
     public function share_oer_action($file_ref_id)
     {
+;
         $this->file_ref = FileRef::find($file_ref_id);
         $this->file = $this->file_ref->getFileType();
 
@@ -1566,7 +1580,6 @@ class FileController extends AuthenticatedController
                         continue;
                     }
 
-                    $file_ref['content_terms_of_use_id'] = Request::option('content_terms_of_use_id');
                     if ($this->show_description_field && $description) {
                         $file_ref['description'] = $description;
                     }
@@ -1609,6 +1622,15 @@ class FileController extends AuthenticatedController
                             $redirect = $url;
                             break;
                         }
+                    }
+
+                    $file_ref['content_terms_of_use_id'] = Request::option('content_terms_of_use_id');
+
+                    // TODO we need the file_ref_id!
+                    if ($file_ref['content_terms_of_use_id'] === 'SELFMADE_NONPUB'
+                        || $file_ref['content_terms_of_use_id'] === 'FREE_LICENSE') {
+                        $this->redirect('file/oer_post_upload/' . $file_ref['id']);
+                        return;
                     }
 
                     if ($redirect) {
