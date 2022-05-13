@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-20 14:20+0200\n"
-"PO-Revision-Date: 2022-05-11 16:48+0000\n"
+"PO-Revision-Date: 2022-05-13 14:48+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-0/en/>\n"
@@ -18384,7 +18384,7 @@ msgstr "License type"
 
 #: app/views/contents/courseware/create_project.php:57
 msgid "Geschätzter zeitlicher Aufwand"
-msgstr "Estimated time efford"
+msgstr "Estimated time effort"
 
 #: app/views/contents/courseware/create_project.php:64
 #: app/views/oer/mymaterial/edit.php:217 app/views/oer/market/details.php:92
@@ -33925,7 +33925,7 @@ msgstr[1] "%s fields of study"
 
 #: app/views/fachabschluss/faecher/index.php:35
 msgid "Fach löschen"
-msgstr "Delete field of study"
+msgstr "Delete panel"
 
 #: app/views/fachabschluss/faecher/index.php:38
 #, php-format
@@ -36503,37 +36503,37 @@ msgstr "Hide this entry"
 #: lib/classes/calendar/CalendarScheduleModel.php:551 lib/dates.inc.php:41
 #: lib/extern/modules/ExternModuleTemplateSemBrowse.class.php:946
 msgid "Mo"
-msgstr "Mon"
+msgstr "Mon."
 
 #: lib/classes/calendar/CalendarScheduleModel.php:551 lib/dates.inc.php:44
 #: lib/extern/modules/ExternModuleTemplateSemBrowse.class.php:946
 msgid "Di"
-msgstr "Tue"
+msgstr "Tue."
 
 #: lib/classes/calendar/CalendarScheduleModel.php:551 lib/dates.inc.php:47
 #: lib/extern/modules/ExternModuleTemplateSemBrowse.class.php:946
 msgid "Mi"
-msgstr "Wed"
+msgstr "Wed."
 
 #: lib/classes/calendar/CalendarScheduleModel.php:552 lib/dates.inc.php:50
 #: lib/extern/modules/ExternModuleTemplateSemBrowse.class.php:946
 msgid "Do"
-msgstr "Thu"
+msgstr "Thu."
 
 #: lib/classes/calendar/CalendarScheduleModel.php:552 lib/dates.inc.php:53
 #: lib/extern/modules/ExternModuleTemplateSemBrowse.class.php:946
 msgid "Fr"
-msgstr "Fri"
+msgstr "Fri."
 
 #: lib/classes/calendar/CalendarScheduleModel.php:552 lib/dates.inc.php:56
 #: lib/extern/modules/ExternModuleTemplateSemBrowse.class.php:946
 msgid "Sa"
-msgstr "Sat"
+msgstr "Sat."
 
 #: lib/classes/calendar/CalendarScheduleModel.php:552 lib/dates.inc.php:38
 #: lib/extern/modules/ExternModuleTemplateSemBrowse.class.php:946
 msgid "So"
-msgstr "Sun"
+msgstr "Sun."
 
 #: lib/classes/calendar/CalendarScheduleModel.php:564
 msgid "zurück zur Wochenansicht"
