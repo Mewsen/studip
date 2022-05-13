@@ -1428,6 +1428,9 @@ class Resource extends SimpleORMap implements StudipItem
     public function getPropertyObject(string $name)
     {
         if (!$this->propertyExists($name)) {
+            if ($name === 'geo_coordinates') {
+                return null;
+            }
             //A property with the name $name does not exist for this
             //resource object. If it is a defined property
             //we can still try to create it:
@@ -1439,16 +1442,12 @@ class Resource extends SimpleORMap implements StudipItem
                 );
 
                 $property->store();
-
-                if ($name === 'geo_coordinates' && $property->state === '+0.0000000+0.0000000+0.0000000CRSWGS_84/') {
-                    return null;
-                }
                 return $property;
             } else {
                 return null;
             }
         }
-        $property = ResourceProperty::findOneBySql(
+        return ResourceProperty::findOneBySql(
             "INNER JOIN resource_property_definitions rpd
                 ON resource_properties.property_id = rpd.property_id
             WHERE resource_properties.resource_id = :resource_id
@@ -1458,11 +1457,6 @@ class Resource extends SimpleORMap implements StudipItem
                 'name'        => $name
             ]
         );
-
-        if ($name === 'geo_coordinates' && $property->state === '+0.0000000+0.0000000+0.0000000CRSWGS_84/') {
-            return null;
-        }
-        return $property;
     }
 
     /**
