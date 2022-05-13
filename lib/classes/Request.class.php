@@ -267,6 +267,10 @@ class Request implements ArrayAccess, IteratorAggregate
     {
         $value = self::get($param, $default);
 
+        if ($value === '') {
+            $value = $default;
+        }
+
         if (isset($value)) {
             $value = (int) $value;
         }
@@ -285,6 +289,10 @@ class Request implements ArrayAccess, IteratorAggregate
     public static function float($param, $default = NULL)
     {
         $value = self::get($param, $default);
+
+        if ($value === '') {
+            $value = $default;
+        }
 
         if (isset($value)) {
             $value = (float) strtr($value, ',', '.');
