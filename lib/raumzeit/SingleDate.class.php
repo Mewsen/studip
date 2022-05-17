@@ -456,97 +456,6 @@ class SingleDate
         return $room;
     }
 
-
-    /**
-     * This method converts overlap data about an overlapping booking
-     * to a string that can be used to output overlap information to the user.
-     * Only one overlap is converted by this method. For multiple overlaps
-     * this method must be called multiple times.
-     *
-     * @param ResourceBooking $booking The overlapping booking.
-     *
-     * @return string A string representation of the overlap.
-     */
-    protected function getOverlapMessage(ResourceBooking $booking)
-    {
-        $message = '';
-
-        if ($booking->booking_type == '2') {
-            $message .= sprintf(
-                _('Vom %1$s, %2$s Uhr bis zum %3$s, %4$s Uhr (Sperrzeit)') . "\n",
-                date("d.m.Y", $booking->begin),
-                date("H:i", $booking->begin),
-                date("d.m.Y", $booking->end),
-                date("H:i", $booking->end)
-            );
-        } else {
-            $course = Course::find($booking->course_id);
-
-            if ($course) {
-                $user_has_permissions = $GLOBALS['perm']->have_studip_perm(
-                    'dozent',
-                    $course->id,
-                    $GLOBALS['user']->id
-                );
-                $course_link = null;
-                if ($user_has_permissions) {
-                    $course_link = URLHelper::getLink(
-                        'dispatch.php/course/timesrooms/index',
-                        [
-                            'cid' => $course->id
-                        ]
-                    );
-                    $planner_link = $booking->resource->getLinkForAction(
-                        'booking_plan',
-                        $booking->resource->id,
-                        ['defaultDate' => date('Y-m-d', $booking->begin)]
-                    );
-                     $planner_msg = sprintf(
-                        _('<a href="%1$s">%2$s von %3$s bis %4$s</a>'),
-                        $planner_link,
-                        date('d.m.Y', $booking->begin),
-                        date('H:i', $booking->begin),
-                        date('H:i', $booking->end)
-                    );
-                } else {
-                    $course_link = URLHelper::getLink(
-                        'dispatch.php/course/details',
-                        [
-                            'sem_id' => $course->id
-                        ]
-                    );
-                     $planner_msg = sprintf(
-                        _('%1$s von %2$s bis %3$s'),
-                        date('d.m.Y', $booking->begin),
-                        date('H:i', $booking->begin),
-                        date('H:i', $booking->end)
-                    );
-                }
-
-                $message .= sprintf(
-                    _('Am %1$s Uhr durch Veranstaltung %2$s') . "\n",
-                    $planner_msg,
-                    sprintf(
-                        '<a href="%1$s">%2$s</a>',
-                        $course_link,
-                        htmlReady($course->name)
-                    )
-                );
-            } else {
-                $message .= sprintf(
-                    _('Am %1$s von %2$s bis %3$s Uhr belegt von "%4$s"') . "\n",
-                    date("d.m.Y", $booking->begin),
-                    date("H:i", $booking->begin),
-                    date("H:i", $booking->end),
-                    htmlReady($booking->description)
-                );
-            }
-        }
-
-        return $message;
-    }
-
-
     private function insertAssign(Room $room, $preparation_time = 0)
     {
         $begin = new DateTime();
@@ -601,9 +510,7 @@ class SingleDate
                 $room->getResourceLocks($begin, $end)
             );
             foreach ($overlapping_bookings as $overlapping_booking) {
-                $error_message .= $this->getOverlapMessage(
-                    $overlapping_booking
-                );
+                $error_message .= $overlapping_booking->getOverlapMessage();
             }
             $this->messages['error'][] = $error_message;
             return false;
