@@ -23,7 +23,7 @@
         <div v-show="!loadingThreads" class="cw-blubber-thread-add-comment">
             <textarea
                 v-model="newComment"
-                :placeholder="$gettext('Schreiben Sie eine Nachricht...')"
+                :placeholder="$gettext('Schreiben Sie eine Nachricht…')"
                 spellcheck="true"
                 @keydown.enter="createComment"
             ></textarea>
@@ -34,7 +34,7 @@
         <studip-progress-indicator
             v-show="loadingThreads"
             class="cw-loading-indicator-blubber-comment"
-            :description="$gettext('Lade Beiträge...')"
+            :description="$gettext('Lade Beiträge…')"
         />
     </div>
 </template>

@@ -70,7 +70,7 @@
     <li v-else class="cw-talk-bubble">
         <studip-progress-indicator
             class="cw-loading-indicator-blubber-comment"
-            :description="$gettext('Lade Beitrag...')"
+            :description="$gettext('Lade Beitrag…')"
         />
     </li>
 </template>
