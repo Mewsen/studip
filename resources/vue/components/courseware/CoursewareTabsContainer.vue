@@ -243,7 +243,9 @@ export default {
     },
     watch: {
         blocks() {
-            this.initCurrentData();
+            if (!this.showEdit && !this.sortMode) {
+                this.initCurrentData();
+            }
         }
     }
 };
