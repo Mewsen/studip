@@ -252,6 +252,11 @@ abstract class StudipController extends Trails_Controller
     {
         $args = func_get_args();
 
+        // Extract fragment (if any)
+        if (strpos($to, '#') !== false) {
+            list($to, $fragment) = explode('#', $to);
+        }
+
         // Extract parameters (if any)
         $params = [];
         if (is_array(end($args))) {
@@ -265,12 +270,6 @@ abstract class StudipController extends Trails_Controller
             }
             return $arg;
         }, $args);
-
-        // Combine arguments to new $to string
-        $to = implode('/', $args);
-
-        //preserve fragment
-        list($to, $fragment) = explode('#', $to);
 
         // Try to create route if none given
         if (!$to) {
@@ -287,10 +286,10 @@ abstract class StudipController extends Trails_Controller
             $to = $this->controller_path() . $to;
         }
 
-        $url = preg_match('#^(/|\w+://)#', $to)
-             ? $to
-             : call_user_func('parent::url_for', $to);
-        if ($fragment) {
+        $args[0] = $to;
+        $url = parent::url_for(...$args);
+
+        if (isset($fragment)) {
             $url .= '#' . $fragment;
         }
         return URLHelper::getURL($url, $params);
