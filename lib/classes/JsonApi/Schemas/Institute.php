@@ -23,7 +23,7 @@ class Institute extends SchemaProvider
     public function getAttributes($institute)
     {
         return [
-            'name' => $institute['Name'],
+            'name' => (string) $institute['Name'],
             'city' => $institute['Plz'],
             'street' => $institute['Strasse'],
             'phone' => $institute['telefon'],
