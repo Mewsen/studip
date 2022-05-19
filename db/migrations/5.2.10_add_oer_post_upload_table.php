@@ -3,7 +3,7 @@ class AddOerPostUploadTable extends Migration
 {
     public function description()
     {
-        return "Adds table to create oer upload reminders and entry to cronjob schedule and task";
+        return "Adds table to create oer upload reminders";
     }
 
     public function up()
@@ -21,10 +21,13 @@ class AddOerPostUploadTable extends Migration
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC
             ");
 
+        // remind only on reminder date
+        //RemindOerUpload::register()->schedulePeriodic(00,01)->activate();
+
         // Add default cron tasks and schedules
         $new_job = [
             'filename'    => 'lib/cronjobs/remind_oer_upload.class.php',
-            'class'       => RemindOerUpload::class,
+            'class'       => 'RemindOerUpload',
             'priority'    => 'normal',
             'minute'      => '0',
             'hour'        => '1',
@@ -68,10 +71,12 @@ class AddOerPostUploadTable extends Migration
 
     public function down()
     {
-        CronjobTask::deleteBySQL('class = ?', [RemindOerUpload::class]);
-
         $query = "DROP TABLE `oer_post_upload`";
         DBManager::get()->exec($query);
+
+        $query = "DELETE FROM `cronjobs_tasks` WHERE `class` = 'RemindOerUpload'";
+        DBManager::get()->exec($query);
+
     }
 
 }
