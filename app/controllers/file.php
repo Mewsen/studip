@@ -482,7 +482,7 @@ class FileController extends AuthenticatedController
                 $oer_post_upload = new OERPostUpload();
                 $oer_post_upload->file_ref_id = $this->file_ref_id;
                 $oer_post_upload->user_id = $GLOBALS['user']->id;
-                $oer_post_upload->reminder_date = Semester::findCurrent()->vorles_ende;
+                $oer_post_upload->reminder_date = Semester::findCurrent()->ende;
                 $oer_post_upload->store();
                 $this->response->add_header('X-Dialog-Close', '1');
                 $this->render_nothing();
