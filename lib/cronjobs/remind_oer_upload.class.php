@@ -27,6 +27,7 @@ class RemindOerUpload extends CronJob
         // check the reminder date, which now is in past
         $query = "SELECT * FROM `oer_post_upload`
                     WHERE `reminder_date` < UNIX_TIMESTAMP()";
+        $results = DBManager::get()->exec($query);
 
         // TODO fuer jedes Resultat dem ersteller eine nachricht schicken
         // ggf vorher sammeln, eine nachricht pro ersteller
