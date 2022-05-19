@@ -71,12 +71,10 @@ class AddOerPostUploadTable extends Migration
 
     public function down()
     {
+        CronjobTask::deleteBySQL("class = 'RemindOerUpload'");
+
         $query = "DROP TABLE `oer_post_upload`";
         DBManager::get()->exec($query);
-
-        $query = "DELETE FROM `cronjobs_tasks` WHERE `class` = 'RemindOerUpload'";
-        DBManager::get()->exec($query);
-
     }
 
 }
