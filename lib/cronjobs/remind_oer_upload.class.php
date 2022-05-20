@@ -29,46 +29,48 @@ class RemindOerUpload extends CronJob
                     WHERE `reminder_date` < UNIX_TIMESTAMP()";
         $results = DBManager::get()->fetchAll($query);
 
-
-        // TODO fuer jedes Resultat dem ersteller eine nachricht schicken
-        // ggf vorher sammeln, eine nachricht pro ersteller
-        // eintraege entfernen, sonst werden benachrichtigungen mehrmals versandt
-
-        // get file information
+        // get file information from file_ref_id
         foreach ($results as $result) {
             $file_ref = FileRef::find($result['file_ref_id']);
-            $filetype = $file_ref->getFileType();
-            $file_to_suggest = $filetype->convertToStandardFile();
+
+            if (!FileRef::countBySql('id = ?', [$result['file_ref_id']])) {
+                // file might be deleted meanwhile, so do not try to send a reminder for it
+            } else {
+                $filetype = $file_ref->getFileType();
+                $file_to_suggest = $filetype->convertToStandardFile();
+
+                $this->author = $file_ref->owner->username;
+                $this->link_to_share = URLHelper::getURL("dispatch.php/file/share_oer/" . $result['file_ref_id']);
+                $this->linktext = _('Klicken Sie hier, um das Material im OER Campus zu veröffentlichen');
+                $this->formatted_link = '['. $this->linktext .']' . $this->link_to_share;
+
+                $oer_reminder_message = sprintf(_("Sie wollten daran erinnert werden, die folgende Datei im OER Campus zu veröffentlichen:\n\n"
+                    . "Dateiname: %s \n"
+                    . "Beschreibung: %s \n"
+                    . "%s \n\n"),
+                    $file_to_suggest->getFilename(),
+                    $file_to_suggest->getDescription(),
+                    $this->formatted_link
+                );
+
+                $messaging = new messaging();
+
+                $messaging->insert_message(
+                    $oer_reminder_message,
+                    $this->author,
+                    '____%system%____',
+                    '',
+                    Request::option('message_id'),
+                    '',
+                    null,
+                    _('Erinnerung zur Veröffentlichung einer Datei im OER Campus')
+                );
+
+                OERPostUpload::deleteBySQL("file_ref_id = ?", [$result['file_ref_id']]);
+
+            }
 
 
-            $this->author = $file_ref->owner->username;
-            $this->author_fullname = $file_ref->owner->getFullName('no_title');
-            $this->link_to_share = URLHelper::getURL("dispatch.php/file/share_oer/" . $result['file_ref_id']);
-            $this->linktext = _('Klicken Sie hier, um das Material im OER Campus zu veröffentlichen');
-            $this->formatted_link = '['. $this->linktext .']' . $this->link_to_share;
-
-
-            $oer_reminder_message = sprintf(_("Sie wollten daran erinnert werden, die folgende Datei im OER Campus zu veröffentlichen:\n\n"
-            . "Dateiname: %s \n"
-            . "Beschreibung: %s \n"
-            . "%s \n\n"),
-                $file_to_suggest->getFilename(),
-                $file_to_suggest->getDescription(),
-                $this->formatted_link
-            );
-
-            $messaging = new messaging();
-
-            $messaging->insert_message(
-                $oer_reminder_message,
-                $this->author,
-                '____%system%____',
-                '',
-                Request::option('message_id'),
-                '',
-                null,
-                _('Erinnerung zur Veröffentlichung einer Datei im OER Campus')
-            );
 
         }
 
