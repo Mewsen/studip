@@ -8,15 +8,15 @@
         wird Ihnen am Vorlesungsende des Semesters eine Nachricht zugeschickt.') ?></span>
     <fieldset>
         <label>
-            <input type="radio" name="oer_upload" value="0"/>
+            <input type="radio" name="oer_upload" value="0">
             <?= _('Nicht für den OER Campus bereitstellen') ?>
         </label>
         <label>
-            <input type="radio" name="oer_upload" value="1"/>
+            <input type="radio" name="oer_upload" value="1">
             <?= _('Jetzt für den OER Campus bereitstellen') ?>
         </label>
         <label>
-            <input type="radio" name="oer_upload" value="2"/>
+            <input type="radio" name="oer_upload" value="2">
             <?= _('Zu einem späteren Zeitpunkt für den OER Campus bereitstellen') ?>
         </label>
     </fieldset>
