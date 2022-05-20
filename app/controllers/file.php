@@ -473,10 +473,10 @@ class FileController extends AuthenticatedController
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
             $oer_share = Request::int('oer_upload');
-            if ($oer_share == 1) {
+            if ($oer_share === 1) {
                 // share now
                 return $this->share_oer_action($this->file_ref_id);
-            } else if ($oer_share == 2) {
+            } else if ($oer_share === 2) {
                 // save and send a reminder to share later
 
                 $oer_post_upload = new OERPostUpload();
@@ -1635,7 +1635,6 @@ class FileController extends AuthenticatedController
 
                     $file_ref['content_terms_of_use_id'] = Request::option('content_terms_of_use_id');
 
-                    // TODO we need the file_ref_id!
                     if (Config::get()->OERCAMPUS_ENABLED && Config::get()->OER_ENABLE_SUGGESTIONS) {
                         if ($file_ref['content_terms_of_use_id'] === 'SELFMADE_NONPUB'
                             || $file_ref['content_terms_of_use_id'] === 'FREE_LICENSE') {
