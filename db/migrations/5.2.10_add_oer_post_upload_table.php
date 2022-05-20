@@ -3,7 +3,7 @@ class AddOerPostUploadTable extends Migration
 {
     public function description()
     {
-        return "Adds table to create oer upload reminders";
+        return "Adds table to create oer upload reminders and entry to cronjob schedule and task";
     }
 
     public function up()
@@ -20,9 +20,6 @@ class AddOerPostUploadTable extends Migration
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC
             ");
-
-        // remind only on reminder date
-        //RemindOerUpload::register()->schedulePeriodic(00,01)->activate();
 
         // Add default cron tasks and schedules
         $new_job = [
