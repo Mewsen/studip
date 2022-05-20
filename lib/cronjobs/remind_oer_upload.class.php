@@ -70,13 +70,7 @@ class RemindOerUpload extends CronJob
 
             }
 
-
-
         }
-
-
-
-
 
     }
 }
