@@ -24,7 +24,7 @@ class AddOerPostUploadTable extends Migration
         // Add default cron tasks and schedules
         $new_job = [
             'filename'    => 'lib/cronjobs/remind_oer_upload.class.php',
-            'class'       => 'RemindOerUpload',
+            'class'       => RemindOerUpload::class,
             'priority'    => 'normal',
             'minute'      => '0',
             'hour'        => '1',
@@ -68,7 +68,7 @@ class AddOerPostUploadTable extends Migration
 
     public function down()
     {
-        CronjobTask::deleteBySQL("class = 'RemindOerUpload'");
+        CronjobTask::deleteBySQL('class = ?', [RemindOerUpload::class]);
 
         $query = "DROP TABLE `oer_post_upload`";
         DBManager::get()->exec($query);
