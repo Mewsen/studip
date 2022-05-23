@@ -3,11 +3,11 @@
 use Studip\Button, Studip\LinkButton;
 
 ?>
-<? if (isset($flash['delete'])): ?>
+<? if (isset($flash['course'])): ?>
     <?= (string)QuestionBox::create(
         _('Wollen Sie die Zuordnung der Veranstaltung zum automatischen Eintragen wirklich löschen?'),
-        $controller->deleteURL($flash['delete'], ['delete' => 1]),
-        $controller->deleteURL($flash['delete'], ['back' => 1])
+        $controller->deleteURL($flash['course'], $flash['type'], $flash['range'], ['delete' => 1]),
+        $controller->deleteURL($flash['course'], $flash['type'], $flash['range'], ['back' => 1])
     ) ?>
 <? endif; ?>
     <form class="default" action="<?= $controller->index() ?>" method="post">
@@ -91,7 +91,7 @@ use Studip\Button, Studip\LinkButton;
         <tbody>
             <? if ($grouping == 'by_course') : ?>
                 <? foreach ($auto_sems as $id => $types): ?>
-                    <? $row = 1; foreach ($types as $courses): ?>
+                    <? $row = 1; foreach ($types as $type => $courses): ?>
                         <? $typerow = 1; foreach ($courses as $auto_sem) : ?>
                             <tr>
                                 <? if ($row == 1) : ?>
@@ -114,7 +114,7 @@ use Studip\Button, Studip\LinkButton;
                                 </td>
 
                                 <td class="actions">
-                                    <a href="<?= $controller->delete($auto_sem['seminar_id'] ) ?>">
+                                    <a href="<?= $controller->delete($auto_sem['seminar_id'], $type, $auto_sem['range_id']) ?>">
                                         <?= Icon::create(
                                             'trash',
                                             Icon::ROLE_CLICKABLE,

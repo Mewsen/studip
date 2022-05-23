@@ -63,8 +63,6 @@ class Admin_AutoinsertController extends AuthenticatedController
         } else if ($group == 'by_type') {
         }
 
-        PageLayout::postInfo('<pre>' . print_r($this->auto_sems, 1) . '</pre>');
-
         $this->range_types = AutoInsert::getRangeTypes();
         $this->grouping = $group;
 
@@ -108,7 +106,6 @@ class Admin_AutoinsertController extends AuthenticatedController
     public function new_action()
     {
         if (Request::submitted('anlegen')) {
-            PageLayout::postInfo('<pre>' . print_r(Request::getInstance(), 1) . '</pre>');
             $sem_id = Request::option('sem_id');
 
             $entries = Request::getArray('rechte');
@@ -192,14 +189,18 @@ class Admin_AutoinsertController extends AuthenticatedController
      *
      * @param string $seminar_id
      */
-    public function delete_action($seminar_id)
+    public function delete_action($seminar_id, $type, $range_id)
     {
-        if (Request::int('delete') === 1) {
-            if (AutoInsert::deleteSeminar($seminar_id)) {
-                PageLayout::postSuccess(_('Die Zuordnung der Veranstaltung wurde gelöscht!'));
+        if (!Request::get('back')) {
+            if (Request::int('delete') === 1) {
+                if (AutoInsert::deleteSeminar($seminar_id, $type, $range_id)) {
+                    PageLayout::postSuccess(_('Die Zuordnung der Veranstaltung wurde gelöscht!'));
+                }
+            } else {
+                $this->flash['course'] = $seminar_id;
+                $this->flash['type'] = $type;
+                $this->flash['range'] = $range_id;
             }
-        } elseif (!Request::get('back')) {
-            $this->flash['delete'] = $seminar_id;
         }
         $this->redirect('admin/autoinsert');
     }

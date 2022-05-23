@@ -58,6 +58,7 @@ class AutoInsert
         $query .= "GROUP BY s.seminar_id ";
         $query .= "ORDER BY s.Name";
         $statement = DBManager::get()->query($query);
+        $statement = DBManager::get()->query($query);
 
         $results   = $statement->fetchAll(PDO::FETCH_ASSOC);
         foreach ($results as $result) {
@@ -197,21 +198,21 @@ class AutoInsert
     {
         $cached = self::getSeminarCache();
 
-        if (!isset($cached[$seminar_id])) {
-            $query = "SELECT range_id, 1
-                      FROM auto_insert_sem
-                      WHERE seminar_id = ? AND range_type = ?";
-            $cached[$seminar_id] = DBManager::get()->fetchGroupedPairs(
+        if (!isset($cached[$seminar_id][$range_type][$range_id])) {
+            $query = "SELECT `range_id`, 1
+                      FROM `auto_insert_sem`
+                      WHERE `seminar_id` = :course AND `range_type` = :type AND `range_id` = :range";
+            $cached[$seminar_id][$range_type][$range_id] = DBManager::get()->fetchGroupedPairs(
                 $query,
-                [$seminar_id, $range_type],
+                ['course' => $seminar_id, 'type' => $range_type, 'range' => $range_id],
                 function ($value) {
                     return (bool) $value;
                 }
             );
         }
 
-        return array_key_exists($domain_id ?: '', $cached[$seminar_id])
-             ? $cached[$seminar_id][$domain_id ?: '']
+        return array_key_exists($range_id ?: '', $cached[$seminar_id])
+             ? $cached[$seminar_id][$range_id ?: '']
              : false;
     }
 
@@ -255,14 +256,19 @@ class AutoInsert
     /**
      * Removes a seminar from the autoinsertion process.
      * @param string $seminar_id Id of the seminar
+     * @param string $type which type of assignment to delete?
+     * @param string $range_id Id of the range this seminar is assigned to
      */
-    public static function deleteSeminar($seminar_id)
+    public static function deleteSeminar($seminar_id, $type, $range_id)
     {
-        $query     = "DELETE FROM auto_insert_sem WHERE seminar_id = ?";
+        $query     = "DELETE FROM `auto_insert_sem` WHERE `seminar_id` = :course
+            AND `range_type` = :type AND `range_id` = :range";
         $statement = DBManager::get()->prepare($query);
-        $statement->execute([$seminar_id]);
+        $result = $statement->execute(['course' => $seminar_id, 'type' => $type, 'range' => $range_id]);
 
         unset(self::getSeminarCache()[$seminar_id]);
+
+        return $result !== false;
     }
 
     /**
