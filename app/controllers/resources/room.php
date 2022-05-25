@@ -201,6 +201,13 @@ class Resources_RoomController extends AuthenticatedController
         $user            = User::findCurrent();
         $this->mode      = $mode;
         $this->show_form = false;
+        $this->parent_id = '';
+        $this->category_id = '';
+        $this->room = null;
+        $this->booking_plan_is_public = false;
+        $this->sort_position = '0';
+
+
         if ($mode == 'add') {
             PageLayout::setTitle(_('Raum hinzufügen'));
         } elseif ($mode == 'edit' || $mode == 'delete') {

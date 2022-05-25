@@ -21,29 +21,29 @@
             </label>
             <label>
                 <?= _('Name des Raumes') ?>
-                <input type="text" name="name" value="<?= htmlReady($room->name) ?>">
+                <input type="text" name="name" value="<?= htmlReady($room->name ?? '') ?>">
             </label>
             <label>
                 <?= _('Beschreibungstext') ?>
-                <input type="text" name="description" value="<?= htmlReady($room->description) ?>">
+                <input type="text" name="description" value="<?= htmlReady($room->description ?? '') ?>">
             </label>
             <label>
                 <input type="checkbox" name="requestable" value="1"
-                       <?= $room->requestable ? 'checked' : '' ?>>
+                       <?= !empty($room->requestable) ? 'checked' : '' ?>>
                 <?= _('Raum ist wünschbar') ?>
             </label>
             <label>
                 <input type="checkbox" name="lockable" value="1"
-                       <?= $room->lockable ? 'checked' : '' ?>>
+                       <?= !empty($room->lockable) ? 'checked' : '' ?>>
                 <?= _('Globale Buchungssperren gelten für diesen Raum') ?>
             </label>
             <label>
                 <?= _('Raumtyp') ?>
-                <input type="text" name="room_type" value="<?= htmlReady($room_type) ?>">
+                <input type="text" name="room_type" value="<?= htmlReady($room_type ?? '') ?>">
             </label>
             <label>
                 <?= _('Sitzplätze') ?>
-                <input type="number" name="seats" value="<?= htmlReady($seats) ?>">
+                <input type="number" name="seats" value="<?= htmlReady($seats ?? '0') ?>">
             </label>
             <label>
                 <input type="checkbox" name="booking_plan_is_public" value="1"
