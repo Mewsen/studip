@@ -315,7 +315,7 @@ abstract class RouteMap
     // find the requested media type
     private function getRequestMediaType()
     {
-        if ($contentType = $_SERVER['CONTENT_TYPE']) {
+        if ($contentType = ($_SERVER['CONTENT_TYPE'] ?? '')) {
             $contentTypeParts = preg_split('/\s*[;,]\s*/', $contentType);
             return mb_strtolower($contentTypeParts[0]);
         }
@@ -947,6 +947,9 @@ abstract class RouteMap
 
     public function urlf($addr_f, $format_params, $url_params = null)
     {
+        if (!is_array($format_params)) {
+            $format_params = [$format_params];
+        }
         return $this->url(vsprintf($addr_f, $format_params), $url_params);
     }
 
