@@ -1050,6 +1050,8 @@ class RoomManagement_PlanningController extends AuthenticatedController
         }
 
         $selected_clipboard_id = Request::get('clipboard_id', $selected_clipboard_id);
+        $this->standalone = false;
+
         if ($selected_clipboard_id) {
             $_SESSION['selected_clipboard_id'] = $selected_clipboard_id;
         } else {
