@@ -9,15 +9,15 @@
     <fieldset>
         <label>
             <input type="radio" name="oer_upload" value="0">
-            <?= _('Nicht für den OER Campus bereitstellen') ?>
+            <?= _('Nicht für den OER Campus bereitstellen.') ?>
         </label>
         <label>
             <input type="radio" name="oer_upload" value="1">
-            <?= _('Jetzt für den OER Campus bereitstellen') ?>
+            <?= _('Jetzt für den OER Campus bereitstellen.') ?>
         </label>
         <label>
             <input type="radio" name="oer_upload" value="2">
-            <?= _('Zu einem späteren Zeitpunkt für den OER Campus bereitstellen') ?>
+            <?= _('Zu einem späteren Zeitpunkt für den OER Campus bereitstellen.') ?>
         </label>
     </fieldset>
     <footer data-dialog-button>
