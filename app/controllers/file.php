@@ -1638,7 +1638,6 @@ class FileController extends AuthenticatedController
                     }
 
                     if (Config::get()->OERCAMPUS_ENABLED
-                        && Config::get()->OER_ENABLE_SUGGESTIONS
                         && $GLOBALS['perm']->have_perm('tutor') ) {
                         if ($file_ref['content_terms_of_use_id'] === 'SELFMADE_NONPUB'
                             || $file_ref['content_terms_of_use_id'] === 'FREE_LICENSE') {
