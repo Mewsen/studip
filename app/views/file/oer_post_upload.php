@@ -4,8 +4,8 @@
 
     <p><?= _('Die Datei wurde hochgeladen.') ?></p>
     <span><?= _('Wenn Sie möchten, können Sie die hochgeladene Datei für den OER Campus bereitstellen.') ?></span>
-    <span><?= _('Falls Sie die Datei zu einem späteren Zeitpunkt bereitstellen möchten,
-        wird Ihnen am Vorlesungsende des Semesters eine Nachricht zugeschickt.') ?></span>
+    <span><?= sprintf(_('Falls Sie die Datei zu einem späteren Zeitpunkt bereitstellen möchten,
+        wird Ihnen am Ende des Semesters (%s) eine Nachricht zugeschickt.'), $semester_ende) ?></span>
     <fieldset>
         <label>
             <input type="radio" name="oer_upload" value="0">

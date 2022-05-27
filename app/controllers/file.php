@@ -465,7 +465,7 @@ class FileController extends AuthenticatedController
         $this->file_ref_id = $file_ref_id;
         PageLayout::setTitle(_('Datei für OER Campus bereitstellen'));
 
-        $this->semester_vorles_ende = date('d.m.Y',  Semester::findCurrent()->vorles_ende);
+        $this->semester_ende = date('d.m.Y',  Semester::findCurrent()->ende);
 
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
@@ -485,6 +485,9 @@ class FileController extends AuthenticatedController
                 $this->render_nothing();
 
                 PageLayout::postSuccess(_('Erinnerung wurde gespeichert.'));
+            } else {
+                $this->response->add_header('X-Dialog-Close', '1');
+
             }
         }
     }
@@ -1594,6 +1597,7 @@ class FileController extends AuthenticatedController
                         continue;
                     }
 
+                    $file_ref['content_terms_of_use_id'] = Request::option('content_terms_of_use_id');
                     if ($this->show_description_field && $description) {
                         $file_ref['description'] = $description;
                     }
@@ -1637,8 +1641,6 @@ class FileController extends AuthenticatedController
                             break;
                         }
                     }
-
-                    $file_ref['content_terms_of_use_id'] = Request::option('content_terms_of_use_id');
 
                     if (Config::get()->OERCAMPUS_ENABLED && Config::get()->OER_ENABLE_SUGGESTIONS) {
                         if ($file_ref['content_terms_of_use_id'] === 'SELFMADE_NONPUB'
