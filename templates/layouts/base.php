@@ -103,60 +103,64 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
 </head>
 
 <body id="<?= PageLayout::getBodyElementId() ?>" <? if (SkipLinks::isEnabled()) echo 'class="enable-skiplinks"'; ?>>
-<div id="layout_wrapper">
-    <? SkipLinks::insertContainer() ?>
-    <? SkipLinks::addIndex(_('Hauptinhalt'), 'layout_content', 100) ?>
-    <?= PageLayout::getBodyElements() ?>
+    <header>
+        <? SkipLinks::insertContainer() ?>
+        <? SkipLinks::addIndex(_('Hauptinhalt'), 'layout_content', 100) ?>
+        <?= PageLayout::getBodyElements() ?>
 
-    <? include 'lib/include/header.php' ?>
+        <? include 'lib/include/header.php' ?>
 
-    <? $contextable = Context::get() && (
-        (Navigation::hasItem('/course') && Navigation::getItem('/course')->isActive()) ||
-        (Navigation::hasItem('/admin/institute') && Navigation::getItem('/admin/institute')->isActive())); ?>
-    <div id="layout_page" <? if (!($contextable)) echo 'class="contextless"'; ?>>
+        <? $contextable = Context::get() && (
+                (Navigation::hasItem('/course') && Navigation::getItem('/course')->isActive()) ||
+                (Navigation::hasItem('/admin/institute') && Navigation::getItem('/admin/institute')->isActive())); ?>
 
-    <? if (PageLayout::isHeaderEnabled() && Navigation::hasItem('/course') && Navigation::getItem('/course')->isActive() && !empty($_SESSION['seminar_change_view_'.Context::getId()])) : ?>
-        <?= $this->render_partial('change_view', ['changed_status' => $_SESSION['seminar_change_view_'.Context::getId()]]) ?>
-    <? endif ?>
+        <!-- Ende Page -->
+    </header>
 
-    <? if (Context::get() || PageLayout::isHeaderEnabled()): ?>
-        <nav class="secondary-navigation">
-        <? if (is_object($GLOBALS['perm']) && !$GLOBALS['perm']->have_perm('admin') && $contextable) : ?>
-            <? $membership = CourseMember::find([Context::get()->id, $GLOBALS['user']->id]) ?>
-            <? if ($membership) : ?>
-                <a href="<?= URLHelper::getLink('dispatch.php/my_courses/groups') ?>"
-                   data-dialog
-                   class="colorblock gruppe<?= $membership ? $membership['gruppe'] : 1 ?>"></a>
-            <? endif ?>
+    <?= SkipLinks::getHTML() ?>
+
+    <div id="current-page-structure" <? if (!($contextable)) echo 'class="contextless"'; ?>>
+
+        <? if (PageLayout::isHeaderEnabled() && Navigation::hasItem('/course') && Navigation::getItem('/course')->isActive() && $_SESSION['seminar_change_view_'.Context::getId()]) : ?>
+            <?= $this->render_partial('change_view', ['changed_status' => $_SESSION['seminar_change_view_'.Context::getId()]]) ?>
         <? endif ?>
-        <? if ($contextable) : ?>
-            <div id="layout_context_title">
-            <? if (Context::isCourse()) : ?>
-                <?= Icon::create('seminar', Icon::ROLE_INFO)->asImg(20, ['class' => 'context_icon']) ?>
-                <?= htmlReady(Context::get()->getFullname()) ?>
-                <? if ($GLOBALS['user']->config->SHOWSEM_ENABLE && !Context::get()->isStudygroup()): ?>
-                    (<?= htmlReady(Context::get()->getTextualSemester()) ?>)
+
+        <? if (Context::get() || PageLayout::isHeaderEnabled()): ?>
+            <? if (is_object($GLOBALS['perm']) && !$GLOBALS['perm']->have_perm('admin') && $contextable) : ?>
+                <? $membership = CourseMember::find([Context::get()->id, $GLOBALS['user']->id]) ?>
+                <? if ($membership) : ?>
+                    <a href="<?= URLHelper::getLink('dispatch.php/my_courses/groups') ?>"
+                       data-dialog
+                       class="colorblock gruppe<?= $membership ? $membership['gruppe'] : 1 ?>"></a>
                 <? endif ?>
-            <? elseif (Context::isInstitute()) : ?>
-                <?= Icon::create('institute', Icon::ROLE_INFO)->asImg(20, ['class' => 'context_icon']) ?>
-                <?= htmlReady(Context::get()->name) ?>
             <? endif ?>
-            </div>
-        <? endif ?>
+            <? if ($contextable) : ?>
+                <div id="context-title">
+                    <? if (Context::isCourse()) : ?>
+                        <?= Icon::create('seminar', Icon::ROLE_INFO)->asImg(20, ['class' => 'context_icon']) ?>
+                        <?= htmlReady(Context::get()->getFullname()) ?>
+                    <? elseif (Context::isInstitute()) : ?>
+                        <?= Icon::create('institute', Icon::ROLE_INFO)->asImg(20, ['class' => 'context_icon']) ?>
+                        <?= htmlReady(Context::get()->name) ?>
+                    <? endif ?>
+                </div>
+            <? endif ?>
 
-        <? if (PageLayout::isHeaderEnabled() /*&& isset($navigation)*/) : ?>
-            <?= $this->render_partial('tabs', compact('navigation')) ?>
+            <nav id="navigation-level-2" aria-current="page" aria-label="<?= htmlReady(PageLayout::getTitle()) ?>">
+
+                <? if (PageLayout::isHeaderEnabled() /*&& isset($navigation)*/) : ?>
+                    <?= $this->render_partial('tabs', compact('navigation', 'membership')) ?>
+                <? endif; ?>
+            </nav>
         <? endif; ?>
-        </nav>
-    <? endif; ?>
 
         <?
         if (is_object($GLOBALS['user']) && $GLOBALS['user']->id != 'nobody') {
             // only mark course if user is logged in and free access enabled
             $is_public_course = Context::isCourse() && Config::get()->ENABLE_FREE_ACCESS;
             $is_public_institute = Context::isInstitute()
-                                && Config::get()->ENABLE_FREE_ACCESS
-                                && Config::get()->ENABLE_FREE_ACCESS != 'courses_only';
+                && Config::get()->ENABLE_FREE_ACCESS
+                && Config::get()->ENABLE_FREE_ACCESS != 'courses_only';
             if (($is_public_course || $is_public_institute)
                 && Navigation::hasItem('/course')
                 && Navigation::getItem('/course')->isActive())
@@ -171,8 +175,8 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
             }
         }
         ?>
-        <div id="page_title_container" class="hidden-medium-up">
-            <div id="current_page_title">
+        <div id="page-title-container" class="hidden-medium-up">
+            <div id="page-title">
                 <? if (Context::get() && strpos(PageLayout::getTitle(), Context::getHeaderLine() . ' - ') !== FALSE) : ?>
                     <?= htmlReady(str_replace(Context::getHeaderLine() . ' - ' , '', PageLayout::getTitle())) ?>
                 <? else: ?>
@@ -182,30 +186,24 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
             </div>
         </div>
 
-        <div id="layout_container">
+        <aside>
             <?= Sidebar::get()->render() ?>
-            <div id="layout_content">
-                <? if (PageLayout::isFullscreenModeAllowed()): ?>
-                    <button hidden class="fullscreen-toggle unfullscreen" aria-label="<?= _('Vollbildmodus verlassen') ?>" title="<?= _('Vollbildmodus verlassen') ?>">
-                        <?= Icon::create('zoom-out2')->asImg(24) ?>
-                    </button>
-                <? endif; ?>
-                <?= implode(PageLayout::getMessages()) ?>
-                <?= $content_for_layout ?>
-            </div>
-        </div>
-    </div> <? // Closes #layout_page opened in included templates/header.php ?>
+        </aside>
+        <main id="layout_content">
+            <? if (PageLayout::isFullscreenModeAllowed()): ?>
+                <?= $this->render_partial('shared/fullscreen-toggle.php') ?>
+            <? endif; ?>
+            <?= implode(PageLayout::getMessages()) ?>
+            <?= $content_for_layout ?>
+        </main>
+    </div>
 
-    <?= $this->render_partial('footer', ['link_params' => $header_template->link_params]); ?>
-    <!-- Ende Page -->
-    <? /* <div id="layout_push"></div> */ ?>
-</div>
-
-
-    <?= SkipLinks::getHTML() ?>
     <a id="scroll-to-top" class="hide">
         <?= Icon::create('arr_1up', 'info_alt')->asImg(24, ['class' => '']) ?>
     </a>
+
+    <?= $this->render_partial('footer'); ?>
+    <?= SkipLinks::getHTML() ?>
 </body>
 </html>
 <?php NotificationCenter::postNotification('PageDidRender', PageLayout::getBodyElementId());

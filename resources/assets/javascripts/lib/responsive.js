@@ -101,7 +101,7 @@ const Responsive = {
         }).reverse().trigger('change');
 
         var sidebar_avatar_menu = $('<div class="sidebar-widget sidebar-avatar-menu">');
-        var avatar_menu = $('#header_avatar_menu');
+        var avatar_menu = $('#avatar-menu');
         var title = $('.action-menu-title', avatar_menu).text();
         var list = $('<ul class="widget-list widget-links">');
         $('<div class="sidebar-widget-header">').text(title).appendTo(sidebar_avatar_menu);

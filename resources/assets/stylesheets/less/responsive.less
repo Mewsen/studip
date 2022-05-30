@@ -180,15 +180,15 @@
     }
 
     .media-breakpoint-small-down({
-        #header, #flex-header, #barTopFont, #barTopMenu,
+        #header, #navigation-level-1, #site-title, #barTopMenu,
         #barBottomLeft .current_page, #barBottommiddle, #barBottomLeft, #barBottomArrow,
         #tabs, .sidebar-image, #sidebar-navigation:not(.show), #barTopFont, #footer, .sidebar-widget-header,
         .tabs_wrapper .colorblock {
             display: none !important;
         }
 
-        #layout_wrapper #layout_page {
-            .secondary-navigation {
+        #current-page-structure {
+            #navigation-level-2 {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
@@ -197,20 +197,20 @@
                 border-bottom: 1px solid @dark-gray-color-40;
 
                 .colorblock,
-                #layout_context_title,
+                #context-title,
                 .context_icon,
                 .tabs_wrapper {
                     transition: unset;
                 }
 
-                #layout_context_title,
+                #context-title,
                 .tabs_wrapper {
                     background: transparent;
                     border-width: 0;
                     flex: 1;
                 }
 
-                #layout_context_title {
+                #context-title {
                     flex: 1;
 
                     overflow: hidden;
@@ -223,12 +223,13 @@
                     }
                 }
             }
-        }
-        #layout_wrapper #layout_page .tabs_wrapper {
-            justify-content: flex-end;
-            .helpbar-container {
-                top: 0px;
-                right: 6px;
+
+            .tabs_wrapper {
+                justify-content: flex-end;
+                .helpbar-container {
+                    top: 0px;
+                    right: 6px;
+                }
             }
         }
         .responsive-hidden {
@@ -246,13 +247,13 @@
             line-height: 20px;
         }
 
-        #barTopAvatar {
+        #avatar-menu-container {
             position: relative;
             bottom: 0px;
             right: 0px;
             line-height: 20px !important;
 
-            #header_avatar_menu {
+            #avatar-menu {
                 display: none;
             }
 
@@ -261,7 +262,7 @@
             }
         }
 
-        #barBottomContainer {
+        #top-bar {
             box-sizing: border-box;
             height: @header-bar-container-height;
             position: fixed;
@@ -271,7 +272,7 @@
             width: 100%;
         }
 
-        #barBottomright, #barBottomright ul {
+        #header-links, #header-links ul {
             box-sizing: border-box;
             flex: 1;
         }
@@ -321,12 +322,12 @@
             display: block;
         }
 
-        #layout_page {
+        #current-page-structure {
             margin-left: 0;
             margin-right: 0;
         }
 
-        #layout_page, #layout_container, #barBottomContainer, #flex-header, #layout_content {
+        #current-page-structure, #layout_container, #top-bar, #navigation-level-1, #layout_content {
             min-width: inherit !important;
         }
 

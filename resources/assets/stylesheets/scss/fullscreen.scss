@@ -11,12 +11,41 @@ $transition-duration: 300ms;
     cursor: pointer;
     float: right;
     height: 28px;
+
+    @include background-icon(zoom-in2, clickable, 20);
+    background-position: center;
+    background-repeat: no-repeat;
+
+    text-indent: 200%;
+    overflow: hidden;
+
+    clear: both;
+    float: right;
+
+    position: relative;
+    top: 1px;
+    right: 12px;
+
+    cursor: pointer;
+
+    z-index: 100;
+}
+
+#top-bar,
+#navigation-level-1,
+#navigation-level-2 {
+    top: 0px;
+    margin-bottom: 0px;
+}
+#layout_footer {
+    max-height: 40px;
+    overflow: hidden;
 }
 
 html:not(.is-fullscreen-immediately) {
-    #barBottomContainer,
-    #flex-header,
-    .secondary-navigation {
+    #top-bar,
+    #navigation-level-1,
+    #navigation-level-2 {
         transition: top $transition-duration, margin-bottom $transition-duration, opacity $transition-duration;
     }
     #layout-sidebar {
@@ -28,9 +57,9 @@ html:not(.is-fullscreen-immediately) {
 }
 
 html.is-fullscreen {
-    #barBottomContainer,
-    #flex-header,
-    .secondary-navigation {
+    #top-bar,
+    #navigation-level-1,
+    #navigation-level-2 {
         margin-bottom: -70px;
         opacity: 0;
         top: -142px;

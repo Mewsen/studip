@@ -1,31 +1,31 @@
-// TODO: LESSify
+// TODO: SCSSify
 
-@page-margin: 15px;
+$page-margin: 15px;
 
-@sidebar-width: 250px;
-@sidebar-padding: 12px;
-@sidebar-border-width: 1px;
+$sidebar-width: 250px;
+$sidebar-padding: 12px;
+$sidebar-border-width: 1px;
 
-@content-width: 400px;
-@content-margin: 12px;
+$content-width: 400px;
+$content-margin: 12px;
 
-@site-width: (@page-margin * 2 + @sidebar-width + @sidebar-padding * 2 + @sidebar-border-width * 2 + @content-width + @content-margin * 2);
-@page-width: (@sidebar-width + @sidebar-padding * 2 + @sidebar-border-width * 2 + @content-width + @content-margin * 2);
+$site-width: ($page-margin * 2 + $sidebar-width + $sidebar-padding * 2 + $sidebar-border-width * 2 + $content-width + $content-margin * 2);
+$page-width: ($sidebar-width + $sidebar-padding * 2 + $sidebar-border-width * 2 + $content-width + $content-margin * 2);
 
 
 /* --- Layouts -------------------------------------------------------------- */
-#layout_page {
+#current-page-structure {
     border-radius: 0 0 2px 2px;
     box-sizing: border-box;
     clear: both;
-    margin: @page-margin;
+    margin: $page-margin;
     background-color: #fff;
     margin: 0px;
 }
 
 // for old pages without template layout
 #layout_table {
-    background-color: @light-gray-color-60;
+    background-color: $light-gray-color-60;
     border: 20px solid #fff;
     margin: 0;
     padding: 0;
@@ -41,7 +41,7 @@
     padding-top: 15px;
 }
 
-#page_title_container {
+#page-title-container {
     float: left;
     background-color: #fff;
     line-height: 20px;
@@ -50,29 +50,29 @@
     min-height: 45px;
 }
 
-.secondary-navigation {
+#context-title {
+    font-size: 1.1em;
+    height: 30px;
+    padding-left: $page-margin;
+    max-height: 30px;
+    overflow: hidden;
+
+    background: linear-gradient(to bottom, $dark-gray-color-5, $dark-gray-color-10);
+
+    > .context_icon {
+        margin: 7px 1px 0 9px;
+        vertical-align: text-bottom;
+    }
+}
+
+#navigation-level-2 {
     position: relative;
     .colorblock {
         position: absolute;
         top: 0;
         bottom: 0;
         left: 0;
-        width: @page-margin;
-    }
-
-    #layout_context_title {
-        font-size: 1.1em;
-        height: 30px;
-        padding-left: @page-margin;
-        max-height: 30px;
-        overflow: hidden;
-
-        background: linear-gradient(to bottom, @dark-gray-color-5, @dark-gray-color-10);
-
-        > .context_icon {
-            margin: 7px 1px 0 9px;
-            vertical-align: text-bottom;
-        }
+        width: $page-margin;
     }
 
     .tabs_wrapper {
@@ -84,7 +84,7 @@
             width: 0px;
         }
 
-        #layout_context_title {
+        #context-title {
             color: rgba(0, 0, 0, 0);
             height: 0px;
             max-height: 35px;
@@ -100,24 +100,24 @@
         }
     }
 }
-#current_page_title {
+#page-title {
     font-weight: bold;
     font-size: 1.4em;
     position: relative;
     top: 20px;
 }
 
-#layout_page.oversized {
+#current-page-structure.oversized {
     overflow: visible;
 }
 
 
 #layout_content {
     box-sizing: border-box;
-    .scrollbox-horizontal();
-    padding: 0 @content-margin 47px @content-margin;
+    @include scrollbox-horizontal();
+    padding: 0 $content-margin 47px $content-margin;
     vertical-align: top;
-    min-width: @content-width;
+    min-width: $content-width;
 
     .oversized & {
         overflow: visible;
@@ -126,15 +126,15 @@
 
 #layout_sidebar {
     background: inherit;
-    border-left: 1px dashed @brand-color-darker;
-    max-width: @sidebar-width;
-    width: @sidebar-width;
-    min-width: @sidebar-width;
-    padding: @sidebar-padding;
+    border-left: 1px dashed $brand-color-darker;
+    max-width: $sidebar-width;
+    width: $sidebar-width;
+    min-width: $sidebar-width;
+    padding: $sidebar-padding;
 }
 
-#layout_wrapper {
-    .clearfix;
+body {
+    @include clearfix;
     clear: both;
     min-width: 800px; // 800px breite ist minimum
     min-height: 100%;
@@ -145,21 +145,52 @@
 }
 
 #layout_footer {
-    background-color: @base-color;
-    color: @contrast-content-white;
+    background-color: $base-color;
+    color: $contrast-content-white;
     display: flex;
     padding: 2px 0px;
-    min-width: @site-width;
+    flex: 0 1 auto;        // fourth row of flex-main
+    min-width: $site-width;
     width: 100%;
 }
 #footer {
-    flex-grow: 1;
+    flex: 1;
     margin-left: 8px;
     margin-top: 2px;
     line-height: 28px;
 }
 
-#layout_wrapper {                // the main flex, dividing all elements into flexing rows
+#navigation-level-1 {              // first row of flex-main
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: stretch;
+    align-items: stretch;
+    justify-content: flex-start;
+
+    width: 100%;
+    min-width: $site-width;
+
+    flex: 0 1 auto;
+    border-bottom: 1px solid $light-gray-color-40;
+
+    > ul {                   // column 1 of flex-header
+        flex: 1 1 auto;
+    }
+
+    #top-logo {             // column 2 of flex-header
+        flex: 0 1 auto;
+    }
+}
+
+#top-bar {       // second row of flex-main
+    flex: 0 1 auto;
+
+    min-width: $site-width;
+    z-index: 1001; // High enough so it will be above the sidebar
+}
+
+body {                // the main flex, dividing all elements into flexing rows
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -167,28 +198,9 @@
     align-items: stretch;
     justify-content: flex-start;
 
-    min-width: @site-width;
+    min-width: $site-width;
 
-    #flex-header {              // first row of flex-main
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-content: stretch;
-        align-items: stretch;
-        justify-content: space-between;
-
-        width: 100%;
-        min-width: @site-width;
-
-        border-bottom: 1px solid @light-gray-color-40;
-    }
-
-    #barBottomContainer {       // second row of flex-main
-        min-width: @site-width;
-        z-index: 1001; // High enough so it will be above the sidebar
-    }
-
-    #layout_page { // third row of flex-main
+    #current-page-structure { // third row of flex-main
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
@@ -198,20 +210,22 @@
 
         flex-grow: 1;
 
-        min-width: @page-width;
+        min-width: $page-width;
 
         .tabs_wrapper {
             display: flex;
             flex-direction: row;
             align-items: stretch;
             justify-content: space-between;
-            background-color: @dark-gray-color-10;
+            background-color: $dark-gray-color-10;
             font-size: 0.9em;
-            border-bottom: 1px solid @dark-gray-color-40;
+            border-bottom: 1px solid $dark-gray-color-40;
         }
 
         #tabs { // row 1 of layout_page
-            padding-left: @page-margin;
+            width: 100%;
+            flex: 0 1 auto;
+            padding-left: $page-margin;
             transition: margin-left;
             transition-duration: 300ms;
             transition-delay: 500ms;
@@ -226,7 +240,7 @@
             justify-content: flex-start;
 
             flex-grow: 1;
-            min-width: @page-width;
+            min-width: $page-width;
 
             #layout_content {           // column 1 of layout_container
                 flex-grow: 1;

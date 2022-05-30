@@ -37,7 +37,7 @@ Sidebar.setSticky = function(is_sticky) {
     if (is_sticky === undefined || is_sticky) {
         $('#layout-sidebar .sidebar')
             .stick_in_parent({
-                offset_top: $('#barBottomContainer').outerHeight(true) + 15,
+                offset_top: $('#top-bar').outerHeight(true) + 15,
                 inner_scrolling: true
             })
             .on('sticky_kit:stick sticky_kit:unbottom', function() {

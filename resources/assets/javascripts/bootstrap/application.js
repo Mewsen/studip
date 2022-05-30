@@ -287,12 +287,12 @@ STUDIP.domReady(function () {
 // Fix horizontal scroll issue on domready, window load and window resize.
 // This also makes the header and footer sticky regarding horizontal scrolling.
 STUDIP.domReady(function () {
-    var page_margin = ($('#layout_page').outerWidth(true) - $('#layout_page').width()) / 2,
+    var page_margin = ($('#current-page-structure').outerWidth(true) - $('#current-page-structure').width()) / 2,
         content_margin = $('#layout_content').outerWidth(true) - $('#layout_content').innerWidth(),
         sidebar_width = $('#layout-sidebar').outerWidth(true);
 
     function fixScrolling() {
-        $('#layout_page').removeClass('oversized').css({
+        $('#current-page-structure').removeClass('oversized').css({
             minWidth: '',
             marginRight: '',
             paddingRight: ''
@@ -309,7 +309,7 @@ STUDIP.domReady(function () {
                 }
             });
 
-            $('#layout_page').addClass('oversized').css({
+            $('#current-page-structure').addClass('oversized').css({
                 minWidth: sidebar_width + content_margin + max_width + page_margin,
                 marginRight: 0,
                 paddingRight: page_margin
@@ -319,7 +319,7 @@ STUDIP.domReady(function () {
                 var last_left = null;
                 return function (top, left) {
                     if (last_left !== left) {
-                        $('#flex-header,#tabs,#layout_footer,#barBottomContainer').css({
+                        $('#navigation-level-1,#tabs,#layout_footer,#top-bar').css({
                             transform: 'translate3d(' + left + 'px,0,0)'
                         });
                     }

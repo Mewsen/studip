@@ -15,21 +15,21 @@ if (isset($_COOKIE['navigation-length'])) {
 }
 ?>
 
-<!-- Leiste unten -->
-<div id="barBottomContainer">
-    <div id="barBottomLeft">
+<!-- Top bar with site title, quick search and avatar menu -->
+<div id="top-bar" role="banner">
+    <div id="responsive-menu">
         <input type="checkbox" id="barTopMenu-toggle">
         <label for="barTopMenu-toggle">
             <?= _('Menü') ?>
         </label>
         <? // The main menu will be placed here when scrolled, see navigation.less ?>
     </div>
-    <div id="barTopFont">
+    <div id="site-title">
         <?= htmlReady(Config::get()->UNI_NAME_CLEAN) ?>
     </div>
 
     <!-- Dynamische Links ohne Icons -->
-    <div id="barBottomright">
+    <div id="header-links">
         <ul>
 
         <? if (Navigation::hasItem('/links')): ?>
@@ -74,12 +74,12 @@ if (isset($_COOKIE['navigation-length'])) {
             ?>
 
             <!-- User-Avatar -->
-            <li class="header_avatar_container <? if ($active) echo 'active'; ?>" id="barTopAvatar">
+            <li class="header_avatar_container <? if ($active) echo 'active'; ?>" id="avatar-menu-container">
 
             <? if (is_object($GLOBALS['perm']) && PersonalNotifications::isActivated() && $GLOBALS['perm']->have_perm('autor')) : ?>
                 <? $notifications = PersonalNotifications::getMyNotifications() ?>
                 <? $lastvisit = (int)UserConfig::get($GLOBALS['user']->id)->getValue('NOTIFICATIONS_SEEN_LAST_DATE') ?>
-                <div id="notification_container"<?= count($notifications) > 0 ? ' class="hoverable"' : '' ?>>
+                <div id="notification-container"<?= count($notifications) > 0 ? ' class="hoverable"' : '' ?>>
                     <? foreach ($notifications as $notification) {
                         if ($notification['mkdate'] > $lastvisit) {
                             $alert = true;
@@ -109,11 +109,11 @@ if (isset($_COOKIE['navigation-length'])) {
                 <? endif; ?>
                 </div>
             <? else: ?>
-                <div id="notification_container"></div>
+                <div id="notification-container"></div>
             <? endif; ?>
 
             <? if (Navigation::hasItem('/avatar')): ?>
-                <div id="header_avatar_menu">
+                <div id="avatar-menu">
                 <?php
                 $action_menu = ContentGroupMenu::get();
                 $action_menu->addCSSClass('avatar-menu');
@@ -143,17 +143,12 @@ if (isset($_COOKIE['navigation-length'])) {
         </ul>
     </div>
 </div>
-<!-- Ende Header -->
+<!-- end top bar -->
 
-<!-- Start Header -->
-<div id="flex-header">
-    <!--<div id='barTopLogo'>
-        <?= Assets::img('logos/logoneu.jpg', ['alt' => 'Logo Uni Göttingen']) ?>
-    </div>
-     -->
-
-    <? SkipLinks::addIndex(_('Hauptnavigation'), 'barTopMenu', 2); ?>
-    <ul id="barTopMenu" role="navigation" <? if (count($header_nav['hidden']) > 0) echo 'class="overflown"'; ?>>
+<!-- start main navigation -->
+<nav id="navigation-level-1" aria-current="page" aria-label="<?= _('Hauptnavigation') ?>">
+    <? SkipLinks::addIndex(_('Hauptnavigation'), 'navigation-level-1', 2); ?>
+    <ul id="navigation-level-1-items" <? if (count($header_nav['hidden']) > 0) echo 'class="overflown"'; ?>>
     <? foreach ($header_nav['visible'] as $path => $nav): ?>
         <?= $this->render_partial(
             'header-navigation-item.php',
@@ -187,7 +182,7 @@ if (isset($_COOKIE['navigation-length'])) {
     </ul>
 
     <!-- Stud.IP Logo -->
-    <a class="studip-logo" id="barTopStudip" href="http://www.studip.de/" title="Stud.IP Homepage" target="_blank" rel="noopener noreferrer">
+    <a class="studip-logo" id="top-logo" href="http://www.studip.de/" title="Stud.IP Homepage" target="_blank" rel="noopener noreferrer">
         Stud.IP Homepage
     </a>
-</div>
+</nav>
