@@ -11,10 +11,30 @@ class SidebarWidget extends Widget
 {
     protected $additional_attributes = [];
 
-
     public function __construct()
     {
         $this->layout = 'sidebar/widget-layout.php';
+    }
+
+    /**
+     * Sets the ID of the HTML element that represents the widget.
+     *
+     * @param $id The element-ID to be used for the widget.
+     *
+     */
+    public function setId(string $id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * Returns the ID of this widget, if it is set.
+     *
+     * @return string The ID of the widget or an empty string, if it is not set.
+     */
+    public function getId() : string
+    {
+        return $this->id ?? '';
     }
 
     /**
@@ -76,7 +96,6 @@ class SidebarWidget extends Widget
     {
         unset($this->additional_attributes[$key]);
     }
-
 
     /**
      * Renders the widget.
