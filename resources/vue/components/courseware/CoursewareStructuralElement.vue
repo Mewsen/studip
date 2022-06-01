@@ -34,6 +34,7 @@
                                 :title="structuralElement.attributes.title"
                             >
                                 <span>{{ structuralElement.attributes.title || "–" }}</span>
+                                <span v-if="isTask">[ {{ solverName }} ]</span>
                             </li>
                         </template>
                         <template #breadcrumbFallback>
@@ -630,6 +631,7 @@ export default {
             sortMode: 'structuralElementSortMode',
             viewMode: 'viewMode',
             taskById: 'courseware-tasks/byId',
+            userById: 'users/byId',
         }),
 
         currentId() {
@@ -1026,6 +1028,31 @@ export default {
             }
 
             return this.taskById({ id: this.structuralElement.relationships.task.data.id });
+        },
+        solver() {
+            if (this.task) {
+                const solver = this.task.relationships.solver.data;
+                if (solver.type === 'users') {
+                    return this.userById({ id: solver.id });
+                }
+                if (solver.type === 'status-groups') {
+                    return this.groupById({ id: solver.id });
+                }
+            }
+
+            return null;
+        },
+        solverName() {
+            if (this.solver) {
+                if (this.solver.type === 'users') {
+                    return this.solver.attributes['formatted-name'];
+                }
+                if (this.solver.type === 'status-groups') {
+                    return this.solver.attributes.name;
+                }
+            }
+
+            return '';
         },
         canAddElements() {
             if (!this.isTask) {
