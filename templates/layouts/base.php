@@ -114,89 +114,88 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
                 (Navigation::hasItem('/course') && Navigation::getItem('/course')->isActive()) ||
                 (Navigation::hasItem('/admin/institute') && Navigation::getItem('/admin/institute')->isActive())); ?>
 
-        <!-- Ende Page -->
-    </header>
+        <?= SkipLinks::getHTML() ?>
 
-    <?= SkipLinks::getHTML() ?>
+        <div id="current-page-structure" <? if (!($contextable)) echo 'class="contextless"'; ?>>
 
-    <div id="current-page-structure" <? if (!($contextable)) echo 'class="contextless"'; ?>>
-
-        <? if (PageLayout::isHeaderEnabled() && Navigation::hasItem('/course') && Navigation::getItem('/course')->isActive() && $_SESSION['seminar_change_view_'.Context::getId()]) : ?>
-            <?= $this->render_partial('change_view', ['changed_status' => $_SESSION['seminar_change_view_'.Context::getId()]]) ?>
-        <? endif ?>
-
-        <? if (Context::get() || PageLayout::isHeaderEnabled()): ?>
-            <? if (is_object($GLOBALS['perm']) && !$GLOBALS['perm']->have_perm('admin') && $contextable) : ?>
-                <? $membership = CourseMember::find([Context::get()->id, $GLOBALS['user']->id]) ?>
-                <? if ($membership) : ?>
-                    <a href="<?= URLHelper::getLink('dispatch.php/my_courses/groups') ?>"
-                       data-dialog
-                       class="colorblock gruppe<?= $membership ? $membership['gruppe'] : 1 ?>"></a>
-                <? endif ?>
+            <? if (PageLayout::isHeaderEnabled() && Navigation::hasItem('/course') && Navigation::getItem('/course')->isActive() && $_SESSION['seminar_change_view_'.Context::getId()]) : ?>
+                <?= $this->render_partial('change_view', ['changed_status' => $_SESSION['seminar_change_view_'.Context::getId()]]) ?>
             <? endif ?>
-            <? if ($contextable) : ?>
-                <div id="context-title">
-                    <? if (Context::isCourse()) : ?>
-                        <?= Icon::create('seminar', Icon::ROLE_INFO)->asImg(20, ['class' => 'context_icon']) ?>
-                        <?= htmlReady(Context::get()->getFullname()) ?>
-                    <? elseif (Context::isInstitute()) : ?>
-                        <?= Icon::create('institute', Icon::ROLE_INFO)->asImg(20, ['class' => 'context_icon']) ?>
-                        <?= htmlReady(Context::get()->name) ?>
+
+            <? if (Context::get() || PageLayout::isHeaderEnabled()): ?>
+                <? if (is_object($GLOBALS['perm']) && !$GLOBALS['perm']->have_perm('admin') && $contextable) : ?>
+                    <? $membership = CourseMember::find([Context::get()->id, $GLOBALS['user']->id]) ?>
+                    <? if ($membership) : ?>
+                        <a href="<?= URLHelper::getLink('dispatch.php/my_courses/groups') ?>"
+                           data-dialog
+                           class="colorblock gruppe<?= $membership ? $membership['gruppe'] : 1 ?>"></a>
                     <? endif ?>
-                </div>
-            <? endif ?>
+                <? endif ?>
+                <? if ($contextable) : ?>
+                    <div id="context-title">
+                        <? if (Context::isCourse()) : ?>
+                            <?= Icon::create('seminar', Icon::ROLE_INFO)->asImg(20, ['class' => 'context_icon']) ?>
+                            <?= htmlReady(Context::get()->getFullname()) ?>
+                        <? elseif (Context::isInstitute()) : ?>
+                            <?= Icon::create('institute', Icon::ROLE_INFO)->asImg(20, ['class' => 'context_icon']) ?>
+                            <?= htmlReady(Context::get()->name) ?>
+                        <? endif ?>
+                    </div>
+                <? endif ?>
 
-            <nav id="navigation-level-2" aria-current="page" aria-label="<?= htmlReady(PageLayout::getTitle()) ?>">
+                <nav id="navigation-level-2" aria-current="page" aria-label="<?= htmlReady(PageLayout::getTitle()) ?>">
 
-                <? if (PageLayout::isHeaderEnabled() /*&& isset($navigation)*/) : ?>
-                    <?= $this->render_partial('tabs', compact('navigation', 'membership')) ?>
-                <? endif; ?>
-            </nav>
-        <? endif; ?>
+                    <? if (PageLayout::isHeaderEnabled() /*&& isset($navigation)*/) : ?>
+                        <?= $this->render_partial('tabs', compact('navigation', 'membership')) ?>
+                    <? endif; ?>
+                </nav>
+            <? endif; ?>
 
-        <?
-        if (is_object($GLOBALS['user']) && $GLOBALS['user']->id != 'nobody') {
-            // only mark course if user is logged in and free access enabled
-            $is_public_course = Context::isCourse() && Config::get()->ENABLE_FREE_ACCESS;
-            $is_public_institute = Context::isInstitute()
-                && Config::get()->ENABLE_FREE_ACCESS
-                && Config::get()->ENABLE_FREE_ACCESS != 'courses_only';
-            if (($is_public_course || $is_public_institute)
-                && Navigation::hasItem('/course')
-                && Navigation::getItem('/course')->isActive())
-            {
-                // indicate to the template that this course is publicly visible
-                // need to handle institutes separately (always visible)
-                if ($GLOBALS['SessSemName']['class'] == 'inst') {
-                    $header_template->public_hint = _('öffentliche Einrichtung');
-                } else if (Course::findCurrent()->lesezugriff == 0) {
-                    $header_template->public_hint = _('öffentliche Veranstaltung');
+            <?
+            if (is_object($GLOBALS['user']) && $GLOBALS['user']->id != 'nobody') {
+                // only mark course if user is logged in and free access enabled
+                $is_public_course = Context::isCourse() && Config::get()->ENABLE_FREE_ACCESS;
+                $is_public_institute = Context::isInstitute()
+                    && Config::get()->ENABLE_FREE_ACCESS
+                    && Config::get()->ENABLE_FREE_ACCESS != 'courses_only';
+                if (($is_public_course || $is_public_institute)
+                    && Navigation::hasItem('/course')
+                    && Navigation::getItem('/course')->isActive())
+                {
+                    // indicate to the template that this course is publicly visible
+                    // need to handle institutes separately (always visible)
+                    if ($GLOBALS['SessSemName']['class'] == 'inst') {
+                        $header_template->public_hint = _('öffentliche Einrichtung');
+                    } else if (Course::findCurrent()->lesezugriff == 0) {
+                        $header_template->public_hint = _('öffentliche Veranstaltung');
+                    }
                 }
             }
-        }
-        ?>
-        <div id="page-title-container" class="hidden-medium-up">
-            <div id="page-title">
-                <? if (Context::get() && strpos(PageLayout::getTitle(), Context::getHeaderLine() . ' - ') !== FALSE) : ?>
-                    <?= htmlReady(str_replace(Context::getHeaderLine() . ' - ' , '', PageLayout::getTitle())) ?>
-                <? else: ?>
-                    <?= htmlReady( PageLayout::getTitle()) ?>
-                <? endif ?>
-                <?= !empty($public_hint) ? '(' . htmlReady($public_hint) . ')' : '' ?>
+            ?>
+            <div id="page-title-container" class="hidden-medium-up">
+                <div id="page-title">
+                    <? if (Context::get() && strpos(PageLayout::getTitle(), Context::getHeaderLine() . ' - ') !== FALSE) : ?>
+                        <?= htmlReady(str_replace(Context::getHeaderLine() . ' - ' , '', PageLayout::getTitle())) ?>
+                    <? else: ?>
+                        <?= htmlReady( PageLayout::getTitle()) ?>
+                    <? endif ?>
+                    <?= !empty($public_hint) ? '(' . htmlReady($public_hint) . ')' : '' ?>
+                </div>
             </div>
         </div>
+    </header>
 
-        <aside>
-            <?= Sidebar::get()->render() ?>
-        </aside>
-        <main id="layout_content">
-            <? if (PageLayout::isFullscreenModeAllowed()): ?>
-                <?= $this->render_partial('shared/fullscreen-toggle.php') ?>
-            <? endif; ?>
-            <?= implode(PageLayout::getMessages()) ?>
-            <?= $content_for_layout ?>
-        </main>
-    </div>
+    <?= Sidebar::get()->render() ?>
+
+    <!-- Start main page content -->
+    <main id="content">
+        <? if (PageLayout::isFullscreenModeAllowed()): ?>
+            <?= $this->render_partial('shared/fullscreen-toggle.php') ?>
+        <? endif; ?>
+        <?= implode(PageLayout::getMessages()) ?>
+        <?= $content_for_layout ?>
+    </main>
+    <!-- End main content -->
 
     <a id="scroll-to-top" class="hide">
         <?= Icon::create('arr_1up', 'info_alt')->asImg(24, ['class' => '']) ?>

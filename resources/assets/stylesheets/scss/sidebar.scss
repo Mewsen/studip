@@ -1,25 +1,18 @@
 $sidebar-width: 270px;
 
-#layout-sidebar {
+#sidebar {
     background: $white;
-    flex: 0 1 auto;
-    position: relative;
-    left: 0px;
-    margin-right: 5px;
-    margin-left: 15px;
-    text-align: left;
-    min-width: 270px;
-}
-.sidebar {
-    padding-bottom: 7px;
-    width: $sidebar-width;
-    z-index: 2;
-
     border-left: 0;
     display: inline-block;
-    flex: 0 0 auto;
-    margin-bottom: 1em;
+    flex: 0 1 auto;
+    left: 00px;
+    max-width: $sidebar-width;
+    padding: 0 5px 7px 15px;
     position: relative;
+    text-align: left;
+    top: 5px;
+    width: $sidebar-width;
+    z-index: 2;
 
     .sidebar-image {
         width: $sidebar-width;

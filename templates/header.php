@@ -143,9 +143,9 @@ if (isset($_COOKIE['navigation-length'])) {
         </ul>
     </div>
 </div>
-<!-- end top bar -->
+<!-- End top bar -->
 
-<!-- start main navigation -->
+<!-- Main navigation and right-hand logo -->
 <nav id="navigation-level-1" aria-current="page" aria-label="<?= _('Hauptnavigation') ?>">
     <? SkipLinks::addIndex(_('Hauptnavigation'), 'navigation-level-1', 2); ?>
     <ul id="navigation-level-1-items" <? if (count($header_nav['hidden']) > 0) echo 'class="overflown"'; ?>>
@@ -186,3 +186,4 @@ if (isset($_COOKIE['navigation-length'])) {
         Stud.IP Homepage
     </a>
 </nav>
+<!-- End main navigation -->

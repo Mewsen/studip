@@ -3,6 +3,7 @@ body > header {
     box-sizing: border-box;
     padding-top: $bar-bottom-container-height;
 }
+
 #top-bar {
     background-color: $base-color;
     border: 1px $brand-color-darker;
@@ -177,7 +178,6 @@ html {
     display: block;
     width: 130px;
     height: 81px;
-    margin-top: -10px;
 }
 
 #barTopStudip {
@@ -193,10 +193,10 @@ html {
 
 
 #navigation-level-1 {
-    height: $header-height;
     background-color: $dark-gray-color-5;
-
+    height: $header-height;
     position: relative;
+    top:-12px;
     z-index: 3;
 }
 
