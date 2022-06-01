@@ -3,7 +3,6 @@
         'sidebar/clipboard-area.php',
         [
             'clipboards' => $clipboards,
-            'allowed_item_class' => $allowed_item_class,
             'empty_clipboard_string' => _('Ziehen Sie Räume in diesen Bereich um die Raumgruppe zu füllen.'),
             'selected_clipboard_id' => $selected_clipboard_id,
             'draggable_items' => $draggable_items,
