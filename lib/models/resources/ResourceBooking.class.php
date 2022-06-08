@@ -446,13 +446,6 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
             );
         }
 
-        if ((!$this->booking_user_id) || !($this->booking_user instanceof User)) {
-            /*throw new InvalidArgumentException(
-                _('Die buchende Person wurde nicht gesetzt!')
-            );*/
-            $this->booking_user = User::findCurrent();
-        }
-
         if ($this->begin >= $this->end) {
             throw new InvalidArgumentException(
                 _('Der Startzeitpunkt darf nicht hinter dem Endzeitpunkt liegen!')
@@ -472,6 +465,9 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
             }
         }
 
+        // update the booking user
+        $this->booking_user = User::findCurrent();
+    
         //Check if the user has booking rights on the resource.
         //The user must have either permanent permissions or they have to
         //have booking rights by a temporary permission in this moment
