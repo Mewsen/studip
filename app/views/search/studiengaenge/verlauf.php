@@ -69,7 +69,7 @@
                                 <td rowspan="<?= count($modul['modulTeile']) ?>">
                                    <? // Anzeige der alternativen Bezeichnung aus mvv_stgteilabschnitt_modul ?>
                                     <? $abschnitt_modul = StgteilabschnittModul::findOneBySQL('`abschnitt_id` = ? AND `modul_id` = ?', [$abschnitt_id, $modul_id]) ?>
-                                    <a data-dialog title="<?= htmlReady($modul['name']) . ' (' . _('Vollständige Modulbeschreibung') . ')' ?>" href="<?= $controller->link_for('shared/modul/description/' . $modul_id, ['display_language' => ModuleManagementModel::getLanguage()]) ?>">
+                                    <a data-dialog="size=auto" title="<?= htmlReady($modul['name']) . ' (' . _('Vollständige Modulbeschreibung') . ')' ?>" href="<?= $controller->link_for('shared/modul/description/' . $modul_id, ['display_language' => ModuleManagementModel::getLanguage()]) ?>">
                                         <?= Icon::create('log')->asImg(['title' => _('Vollständige Modulbeschreibung')]) ?>
                                     </a>
                                     <? if($modul['veranstaltungen']):?>
@@ -107,8 +107,13 @@
                             </td>
                         <? endif ?>
                             <td>
+<<<<<<< HEAD
                                 <a data-dialog title="<?= htmlReady($modul['name']) . ' (' . _('Vollständige Modulbeschreibung') . ')' ?>" href="<?= $controller->link_for('shared/modul/description/' . $modul_id, ['display_language' => ModuleManagementModel::getLanguage()]) ?>">
                                     <?= Icon::create('log')->asImg(['title' => _('Vollständige Modulbeschreibung')]) ?>
+=======
+                                <a data-dialog="size=auto" title="<?= htmlReady($modul['name']) . ' (' . _('Vollständige Modulbeschreibung') . ')' ?>" href="<?= $controller->link_for('shared/modul/description/' . $modul_id, ['display_language' => ModuleManagementModel::getLanguage()]) ?>">
+                                    <?= Icon::create('log', Icon::ROLE_CLICKABLE, ['title' => _('Vollständige Modulbeschreibung')]) ?>
+>>>>>>> f345a34d0 (use correct dialog size for module description when searching, fixes #1163)
                                 </a>
                             <? if ($modul['veranstaltungen']): ?>
                                 <a data-dialog href="<?= $controller->link_for('shared/modul/overview', $modul_id, $active_sem->getId(), ['display_language' => ModuleManagementModel::getLanguage()])  ?>">
