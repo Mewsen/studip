@@ -286,6 +286,11 @@ abstract class StudipController extends Trails_Controller
             $to = $this->controller_path() . $to;
         }
 
+        // Check for absolute URL
+        if ($this->isURL($to)) {
+            throw new InvalidArgumentException(__METHOD__ . ' cannot be used with absolute URLs');
+        }
+
         $args[0] = $to;
         $url = parent::url_for(...$args);
 
@@ -326,7 +331,11 @@ abstract class StudipController extends Trails_Controller
     {
         $from_dialog = Request::isDialog();
 
-        if (func_num_args() > 1 || $from_dialog) {
+        if (func_num_args() > 1 && $this->isURL($to)) {
+            throw new InvalidArgumentException('Method may not be used with a URL and multiple parameters');
+        }
+
+        if (func_num_args() > 1 || !$this->isURL($to)) {
             $to = call_user_func_array([$this, 'url_for'], func_get_args());
         }
 
@@ -336,6 +345,17 @@ abstract class StudipController extends Trails_Controller
         } else {
             parent::redirect($to);
         }
+    }
+
+    /**
+     * Returns whether the given parameter is a valid url.
+     *
+     * @param string $to
+     * @return bool
+     */
+    private function isURL(string $to): bool
+    {
+        return preg_match('#^(/|\w+://)#', $to);
     }
 
     /**
