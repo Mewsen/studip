@@ -668,6 +668,10 @@ Dialog.removeHeaderHandler = function (header) {
 
 Dialog.initialize = function() {
     function checkValidity(element) {
+        if (element.matches('a')) {
+            return true;
+        }
+
         const form = element.closest('form');
         if (form === null) {
             return true;
