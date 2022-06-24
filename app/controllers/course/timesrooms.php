@@ -671,13 +671,24 @@ class Course_TimesroomsController extends AuthenticatedController
 
 
     /**
-     *
+     * Creates a new room request for the selected dates.
      */
     protected function requestStack($cycle_id)
     {
-        $this->cycle_id = $cycle_id;
+        $appointment_ids = [];
 
-        $appointment_ids = $_SESSION['_checked_dates'];
+        foreach ($_SESSION['_checked_dates'] as $appointment_id) {
+            if (CourseDate::exists($appointment_id)) {
+                $appointment_ids[] = $appointment_id;
+            }
+        }
+
+        if (!$appointment_ids) {
+            PageLayout::postError(_('Es wurden keine gültigen Termin-IDs übergeben!'));
+            $this->relocate('course/timesrooms/index', ['contentbox_open' => $cycle_id]);
+            return;
+        }
+
         $this->redirect(
             'course/room_requests/request_start',
             [
