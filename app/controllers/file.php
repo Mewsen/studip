@@ -1560,6 +1560,7 @@ class FileController extends AuthenticatedController
     {
         $this->re_location = Request::get('re_location');
         $file_ref_ids = Request::getArray('file_refs');
+
         if (!$file_ref_ids) {
             //In case the file ref IDs are not set in the request
             //they may still be set in the flash object of the controller:
@@ -1642,12 +1643,15 @@ class FileController extends AuthenticatedController
                         }
                     }
 
-                    if (Config::get()->OERCAMPUS_ENABLED
-                        && $GLOBALS['perm']->have_perm('tutor') ) {
-                        if ($file_ref['content_terms_of_use_id'] === 'SELFMADE_NONPUB'
-                            || $file_ref['content_terms_of_use_id'] === 'FREE_LICENSE') {
-                            $this->redirect('file/oer_post_upload/' . $file_ref['id']);
-                            return;
+                    if (count($file_ref_ids) < 2 ) {
+                        if (Config::get()->OERCAMPUS_ENABLED
+                            && $GLOBALS['perm']->have_perm('tutor')
+                            && count($file_ref_ids)) {
+                            if ($file_ref['content_terms_of_use_id'] === 'SELFMADE_NONPUB'
+                                || $file_ref['content_terms_of_use_id'] === 'FREE_LICENSE') {
+                                $this->redirect('file/oer_post_upload/' . $file_ref['id']);
+                                return;
+                            }
                         }
                     }
 
