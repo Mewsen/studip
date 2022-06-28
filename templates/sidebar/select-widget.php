@@ -1,8 +1,10 @@
 <form action="<?= URLHelper::getLink($url) ?>" method="<?= $method ?>">
     <?= \SelectWidget::arrayToHiddenInput($params) ?>
     <?= (strtolower($method) == 'post') ?  CSRFProtection::tokenTag() : ''; ?>
+
     <select class="sidebar-selectlist <?= $class ?> <? if ($__is_nested): ?>nested-select<? endif; ?>" <? if ($size) printf('size="%u"', $size); ?> <?= $attributes ? arrayToHtmlAttributes($attributes) : '' ?>
-        name="<?= sprintf('%s%s', htmlReady($name), $multiple ? '[]' : '') ?>" <? if ($multiple) echo 'multiple'; ?>>
+            name="<?= sprintf('%s%s', htmlReady($name), $multiple ? '[]' : '') ?>" <? if ($multiple) echo 'multiple'; ?>
+            aria-label="<?= htmlReady($title) ?>">
 
     <? foreach ($elements as $element): ?>
         <? if ($element instanceof SelectGroupElement && count($element->getElements()) > 0): ?>
