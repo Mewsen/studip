@@ -28,13 +28,14 @@ $headings-color:          #444444;
 
 // Design specific
 $bar-bottom-container-height: 40px;
-$header-height: 67px;
+$header-height: 70px;
 
 //Avatar sizes:
 $avatar-small:  25px;
 $avatar-medium: 100px;
 $avatar-normal: 250px;
 
+$sidebar-border-width: 1px;
 
 :root {
     // The special handling for -- as #{"--"} seems to be neccessary to make

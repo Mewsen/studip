@@ -1,21 +1,14 @@
-$sidebar-width: 270px;
-
 #sidebar {
     background: $white;
     border-left: 0;
     display: inline-block;
-    flex: 0 1 auto;
-    left: 00px;
-    max-width: $sidebar-width;
+    margin-top: 15px;
     padding: 0 5px 7px 15px;
-    position: relative;
     text-align: left;
-    top: 5px;
-    width: $sidebar-width;
     z-index: 2;
 
     .sidebar-image {
-        width: $sidebar-width;
+        width: calc(100% + 2px);
         height: 60px;
         max-height: 60px;
 
@@ -73,6 +66,7 @@ $sidebar-width: 270px;
         background: $white;
         border: 1px solid $content-color-40;
         margin: 15px 0px 0;
+        width: 100%;
     }
     .sidebar-widget-header {
         @include clearfix();

@@ -103,7 +103,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
 </head>
 
 <body id="<?= PageLayout::getBodyElementId() ?>" <? if (SkipLinks::isEnabled()) echo 'class="enable-skiplinks"'; ?>>
-    <header>
+    <header id="main-header">
         <? SkipLinks::insertContainer() ?>
         <? SkipLinks::addIndex(_('Hauptinhalt'), 'layout_content', 100) ?>
         <?= PageLayout::getBodyElements() ?>
@@ -193,7 +193,9 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
             <?= $this->render_partial('shared/fullscreen-toggle.php') ?>
         <? endif; ?>
         <?= implode(PageLayout::getMessages()) ?>
-        <?= $content_for_layout ?>
+        <div id="content-wrapper">
+            <?= $content_for_layout ?>
+        </div>
     </main>
     <!-- End main content -->
 

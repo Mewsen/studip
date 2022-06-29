@@ -38,10 +38,10 @@ html {
     scroll-padding-top: calc($bar-bottom-container-height + 1em);
 }
 
-#layout_footer,
+#main-footer,
 #header-links {
     > ul > li > a {
-        color: $contrast-content-white;
+        color: $white;
         margin: 0 6px;
         text-decoration: none;
         &:hover {
@@ -50,7 +50,7 @@ html {
     }
 }
 
-#layout_footer {
+#main-footer {
     > ul {
         display: flex;
         align-items: center;
@@ -195,8 +195,6 @@ html {
 #navigation-level-1 {
     background-color: $dark-gray-color-5;
     height: $header-height;
-    position: relative;
-    top:-12px;
     z-index: 3;
 }
 

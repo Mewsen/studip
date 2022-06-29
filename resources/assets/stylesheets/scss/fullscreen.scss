@@ -37,7 +37,7 @@ $transition-duration: 300ms;
     top: 0px;
     margin-bottom: 0px;
 }
-#layout_footer {
+#main-footer {
     max-height: 40px;
     overflow: hidden;
 }
@@ -51,7 +51,7 @@ html:not(.is-fullscreen-immediately) {
     #layout-sidebar {
         transition: left $transition-duration, margin-right $transition-duration, opacity $transition-duration;
     }
-    #layout_footer {
+    #main-footer {
         transition: opacity $transition-duration, max-height $transition-duration, padding $transition-duration;
     }
 }
@@ -71,7 +71,7 @@ html.is-fullscreen {
         opacity: 0;
     }
 
-    #layout_footer {
+    #main-footer {
         opacity: 0;
         max-height: 0px;
         padding: 0px;

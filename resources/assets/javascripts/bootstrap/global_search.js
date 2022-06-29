@@ -38,7 +38,7 @@ STUDIP.domReady(() => {
     });
 
     // Close search on click on page.
-    $('#navigation-level-1, #current-page-structure, #layout_footer').on('click', function() {
+    $('#navigation-level-1, #current-page-structure, #main-footer').on('click', function() {
         if (!$('#globalsearch-input').hasClass('hidden-js')) {
             STUDIP.GlobalSearch.toggleSearchBar(false, false);
         }

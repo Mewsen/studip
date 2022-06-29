@@ -319,7 +319,7 @@ STUDIP.domReady(function () {
                 var last_left = null;
                 return function (top, left) {
                     if (last_left !== left) {
-                        $('#navigation-level-1,#tabs,#layout_footer,#top-bar').css({
+                        $('#navigation-level-1,#tabs,#main-footer,#top-bar').css({
                             transform: 'translate3d(' + left + 'px,0,0)'
                         });
                     }
