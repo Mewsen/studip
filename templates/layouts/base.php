@@ -188,12 +188,12 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
     <?= Sidebar::get()->render() ?>
 
     <!-- Start main page content -->
-    <main id="content">
-        <? if (PageLayout::isFullscreenModeAllowed()): ?>
-            <?= $this->render_partial('shared/fullscreen-toggle.php') ?>
-        <? endif; ?>
-        <?= implode(PageLayout::getMessages()) ?>
-        <div id="content-wrapper">
+    <main id="content-wrapper">
+        <div id="content">
+            <? if (PageLayout::isFullscreenModeAllowed()): ?>
+                <?= $this->render_partial('shared/fullscreen-toggle.php') ?>
+            <? endif; ?>
+            <?= implode(PageLayout::getMessages()) ?>
             <?= $content_for_layout ?>
         </div>
     </main>

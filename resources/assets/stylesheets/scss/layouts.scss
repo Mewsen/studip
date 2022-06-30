@@ -124,7 +124,7 @@ body {
     grid-row: 2 / 3;
 }
 
-#content {
+#content-wrapper {
     background-color: $white;
     display: inline-flex;
     grid-column: 2 / 3;
@@ -139,7 +139,7 @@ body {
     }
 }
 
-#content-wrapper {
+#content {
     flex: 1;
 }
 
