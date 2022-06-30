@@ -1817,6 +1817,8 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 return 'daily';
             }
         }
+
+        return '';
     }
 
 
