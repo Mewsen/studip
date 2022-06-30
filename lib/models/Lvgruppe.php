@@ -364,7 +364,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
      */
     public function getTrailParent()
     {
-        return Modul::findCached($this->getTrailParent_id());
+        return Modul::findCached($this->getTrailParentId());
     }
 
     /**
