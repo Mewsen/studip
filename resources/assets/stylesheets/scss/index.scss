@@ -1,0 +1,111 @@
+#background-desktop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+#background-mobile {
+    display: none;
+    z-index: -1;
+}
+
+#loginbox {
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+    margin-left: 50px;
+    margin-top: 50px;
+    padding: 20px;
+    width: 450px;
+
+    header {
+        margin: 10px 0 0 10px;
+
+        h1 {
+            border-bottom: 0;
+        }
+    }
+
+    nav {
+        ul {
+            display: inline-block;
+            list-style-type: none;
+            margin: 0;
+            width: 450px;
+            padding: 0 10px;
+
+            .login_link {
+                display: inline-block;
+                width: 180px;
+                vertical-align: top;
+                padding-right: 25px;
+
+                a {
+                    font-size: 1.5em;
+
+                    p {
+                        font-size: 0.5em;
+                        color: $light-gray-color;
+                    }
+                }
+            }
+        }
+    }
+
+    footer {
+        overflow: auto;
+
+        div#languages {
+            border-top: 1px solid $light-gray-color;
+            font-size: 0.9em;
+            padding: 10px;
+
+            a {
+                padding-right: 10px;
+            }
+        }
+
+        div.login_info {
+            border-top: 1px solid $light-gray-color;
+            font-size: 0.8em;
+            div {
+                text-align: right;
+                float: left;
+                padding: 5px;
+
+                &:last-child {
+                    float:right;
+                }
+            }
+        }
+        & > a {
+            margin-left: 12px;
+        }
+    }
+}
+
+#index,
+#login {
+    .messagebox {
+        margin: 50px 0 -25px 50px;
+        width: 418px;
+    }
+}
+
+@-moz-document url-prefix() {
+    div.index_container {
+        height: calc(100% - 145px);
+    }
+
+    #index,
+    #login {
+        height: calc(100% - 34px);
+
+        #main-footer {
+            position: inherit;
+            top: 0;
+        }
+    }
+}
