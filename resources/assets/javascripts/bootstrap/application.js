@@ -288,8 +288,8 @@ STUDIP.domReady(function () {
 // This also makes the header and footer sticky regarding horizontal scrolling.
 STUDIP.domReady(function () {
     var page_margin = ($('#current-page-structure').outerWidth(true) - $('#current-page-structure').width()) / 2,
-        content_margin = $('#layout_content').outerWidth(true) - $('#layout_content').innerWidth(),
-        sidebar_width = $('#layout-sidebar').outerWidth(true);
+        content_margin = $('#content').outerWidth(true) - $('#content').innerWidth(),
+        sidebar_width = $('#sidebar').outerWidth(true);
 
     function fixScrolling() {
         $('#current-page-structure').removeClass('oversized').css({
@@ -299,10 +299,10 @@ STUDIP.domReady(function () {
         });
 
         var max_width = 0,
-            fix_required = $('html').is(':not(.responsified)') && $('#layout_content').get(0).scrollWidth > $('#layout_content').width();
+            fix_required = $('html').is(':not(.responsified)') && $('#content').get(0).scrollWidth > $('#content').width();
 
         if (fix_required) {
-            $('#layout_content').children().each(function () {
+            $('#content').children().each(function () {
                 var width = $(this).get(0).scrollWidth + ($(this).outerWidth(true) - $(this).innerWidth());
                 if (width > max_width) {
                     max_width = width;
@@ -331,7 +331,7 @@ STUDIP.domReady(function () {
         }
     }
 
-    if ($('.no-touch #layout_content').length > 0) {
+    if ($('.no-touch #content').length > 0) {
         window.matchMedia('screen').addListener(function() {
             // Try to fix now
             fixScrolling();

@@ -12,6 +12,9 @@ const Fullscreen = {
         // transisitions
         $('html').addClass('is-fullscreen').toggleClass('is-fullscreen-immediately', immediate);
 
+        // Move toggle element into viewport
+        $('.fullscreen-toggle').prependTo('#content');
+
         // Attach key handler that allows keypress on escape to leave fullscreen
         $(document).on('keydown.key27', (event) => {
             if (event.key === 'Escape') {
@@ -32,10 +35,10 @@ const Fullscreen = {
 
         (new Promise((resolve, reject) => {
             var timeout = setTimeout(() => {
-                $('#layout-sidebar').off('transitionend');
+                $('#sidebar').off('transitionend');
                 resolve();
             }, 500);
-            $('#layout-sidebar').one('transitionend', () => {
+            $('#sidebar').one('transitionend', () => {
                 clearTimeout(timeout);
                 resolve();
             });

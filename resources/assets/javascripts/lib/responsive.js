@@ -68,17 +68,17 @@ const Responsive = {
 
         Responsive.addMenu();
 
-        if ($('#layout-sidebar > section').length > 0) {
+        if ($('#sidebar > section').length > 0) {
             $('<li id="sidebar-menu">')
                 .on('click', () => Sidebar.open())
                 .appendTo('#barBottomright > ul');
 
             $('<label id="sidebar-shadow-toggle">')
                 .on('click', () => Sidebar.close())
-                .prependTo('#layout-sidebar');
+                .prependTo('#sidebar');
 
             $('#responsive-toggle').on('change', function() {
-                $('#layout-sidebar').removeClass('visible-sidebar');
+                $('#sidebar').removeClass('visible-sidebar');
                 $('#responsive-navigation').toggleClass('visible', this.checked);
             });
         } else {
@@ -122,7 +122,7 @@ const Responsive = {
             .append(list)
             .appendTo(sidebar_avatar_menu);
 
-        $('#layout-sidebar > .sidebar').prepend(sidebar_avatar_menu);
+        $('#sidebar').prepend(sidebar_avatar_menu);
     },
 
     setResponsiveDisplay (state = true) {

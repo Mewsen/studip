@@ -206,9 +206,9 @@ function createSelect2(element) {
             return select_classes;
         },
         allowClear: placeholder !== undefined,
-        minimumResultsForSearch: $(element).closest('.sidebar').length > 0 ? 15 : 10,
+        minimumResultsForSearch: $(element).closest('#sidebar').length > 0 ? 15 : 10,
         placeholder: placeholder,
-        dropdownParent: $(element).closest('.ui-dialog,.sidebar,body'),
+        dropdownParent: $(element).closest('.ui-dialog,#sidebar,body'),
         templateResult: function(data, container) {
             if (data.element) {
                 var option_classes = $(data.element).attr('class'),

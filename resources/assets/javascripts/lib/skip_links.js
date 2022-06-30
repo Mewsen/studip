@@ -103,7 +103,7 @@ const SkipLinks = {
             role: 'main',
             'aria-labelledby': 'main_content_landmark_label'
         });
-        jQuery('#layout_content').attr({
+        jQuery('#content').attr({
             role: 'main',
             'aria-labelledby': 'layout_content_landmark_label'
         });

@@ -105,7 +105,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
 <body id="<?= PageLayout::getBodyElementId() ?>" <? if (SkipLinks::isEnabled()) echo 'class="enable-skiplinks"'; ?>>
     <header id="main-header">
         <? SkipLinks::insertContainer() ?>
-        <? SkipLinks::addIndex(_('Hauptinhalt'), 'layout_content', 100) ?>
+        <? SkipLinks::addIndex(_('Hauptinhalt'), 'content', 100) ?>
         <?= PageLayout::getBodyElements() ?>
 
         <? include 'lib/include/header.php' ?>

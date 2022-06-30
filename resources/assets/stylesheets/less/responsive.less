@@ -174,7 +174,7 @@
 .responsive-display {
     // Hide sidebar from view until .responsified
     &:not(.responsified) {
-        #layout-sidebar {
+        #sidebar {
             display: none;
         }
     }
@@ -344,11 +344,11 @@
             right: 0 !important;
             transition: right 300ms;
         }
-        #layout-sidebar.visible-sidebar #sidebar-shadow-toggle {
+        #sidebar.visible-sidebar #sidebar-shadow-toggle {
             display: initial;
         }
 
-        #layout-sidebar {
+        #sidebar {
             #gradient > .horizontal(@brand-color-light, @brand-color-darker);
             background-clip: content-box;
             transition: right 300ms;
@@ -369,19 +369,14 @@
 
             border-left: @responsive-menu-shadow-width solid @responsive-menu-shadow-color;
 
-            .sidebar {
-                box-sizing: border-box;
+            box-sizing: border-box;
 
-                &:before {
-                    border: 0 !important;
-                }
-
-                top: auto !important;
-                width: @responsive-menu-width !important;
-
-                background: inherit;
-                border: 0;
+            &:before {
+                border: 0 !important;
             }
+
+            background: inherit;
+            border: 0;
 
             .widget-links li.active {
                 &:before, &:after {
