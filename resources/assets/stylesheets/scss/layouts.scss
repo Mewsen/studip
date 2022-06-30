@@ -132,6 +132,7 @@ body {
     justify-content: flex-start;
     margin: 15px 15px 15px 2px;
     padding: 0 $content-margin 47px $content-margin;
+    position: relative;
     vertical-align: top;
 
     .oversized & {
