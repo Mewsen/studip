@@ -19,6 +19,10 @@
             <input type="radio" name="oer_upload" value="2">
             <?= _('Zu einem späteren Zeitpunkt für den OER Campus bereitstellen.') ?>
         </label>
+
+        <input type="hidden"
+               name="redirect_to_files"
+               value="redirect_to_files">
     </fieldset>
     <footer data-dialog-button>
         <?= Studip\Button::create(_("Speichern"))?>
