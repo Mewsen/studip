@@ -1,3 +1,8 @@
+<?php
+if (!$selected_oer_upload) {
+    $selected_oer_upload = 0;
+}
+?>
 <form action="<?= $controller->link_for('file/oer_post_upload/', $file_ref_id)?>"
        method="post" class="default" data-dialog="reload-on-close">
     <?= CSRFProtection::tokenTag() ?>
@@ -7,8 +12,10 @@
     <span><?= sprintf(_('Falls Sie die Datei zu einem späteren Zeitpunkt bereitstellen möchten,
         wird Ihnen am Ende des Semesters (%s) eine Nachricht zugeschickt.'), $semester_ende) ?></span>
     <fieldset class="select_oer_upload">
-        <input type="radio" name="oer_upload" id="oer-upload-1" value="0">
-        <label for="oer_upload-1">
+
+        <input type="radio" name="oer_upload" id="oer-upload-0" value="0"
+            <? if (0 == $selected_oer_upload) echo 'checked'; ?>>
+        <label for="oer_upload-0">
             <div class="icon">
                 <?= Icon::create('decline', Icon::ROLE_CLICKABLE)->asImg(32) ?>
             </div>
@@ -18,16 +25,15 @@
             <?= Icon::create('arr_1down', Icon::ROLE_CLICKABLE)->asImg(24, ['class' => 'arrow']) ?>
             <?= Icon::create('check-circle', Icon::ROLE_CLICKABLE)->asImg(32, ['class' => 'check']) ?>
         </label>
-        <div class="terms_of_use_description">
+        <div class="oer_upload_description">
             <div class="description">
-                <?= formatReady($content_terms_of_use_entry->description ?: _('Keine Beschreibung')) ?>
+                <?= _('Nicht für den OER Campus bereitstellen.') ?>
             </div>
         </div>
-    </fieldset>
 
-    <fieldset class="select_oer_upload">
-    <input type="radio" name="oer_upload" value="1">
-        <label for="oer_upload-2">
+    <input type="radio" name="oer_upload" id="oer-upload-1" value="1"
+        <? if (1 == $selected_oer_upload) echo 'checked'; ?>>
+        <label for="oer_upload-1">
             <div class="icon">
                 <?= Icon::create('accept', Icon::ROLE_CLICKABLE)->asImg(32) ?>
             </div>
@@ -37,15 +43,14 @@
             <?= Icon::create('arr_1down', Icon::ROLE_CLICKABLE)->asImg(24, ['class' => 'arrow']) ?>
             <?= Icon::create('check-circle', Icon::ROLE_CLICKABLE)->asImg(32, ['class' => 'check']) ?>
         </label>
-        <div class="terms_of_use_description">
+        <div class="oer_upload_description">
             <div class="description">
-                <?= formatReady($content_terms_of_use_entry->description ?: _('Keine Beschreibung')) ?>
+                <?= _('Jetzt für den OER Campus bereitstellen.') ?>
             </div>
         </div>
-    </fieldset>
 
-    <fieldset class="select_oer_upload">
-        <input type="radio" name="oer_upload" value="2">
+        <input type="radio" name="oer_upload" id="oer-upload-2" value="2"
+            <? if (2 == $selected_oer_upload) echo 'checked'; ?>>
             <label for=oer_upload-2">
                 <div class="icon">
                     <?= Icon::create('date', Icon::ROLE_CLICKABLE)->asImg(32) ?>
@@ -56,9 +61,9 @@
                 <?= Icon::create('arr_1down', Icon::ROLE_CLICKABLE)->asImg(24, ['class' => 'arrow']) ?>
                 <?= Icon::create('check-circle', Icon::ROLE_CLICKABLE)->asImg(32, ['class' => 'check']) ?>
             </label>
-            <div class="terms_of_use_description">
+            <div class="oer_upload_description">
                 <div class="description">
-                    <?= formatReady($content_terms_of_use_entry->description ?: _('Keine Beschreibung')) ?>
+                    <?= _('Zu einem späteren Zeitpunkt für den OER Campus bereitstellen.') ?>
                 </div>
             </div>
     </fieldset>
