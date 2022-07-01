@@ -13,9 +13,9 @@ if (!$selected_oer_upload) {
         wird Ihnen am Ende des Semesters (%s) eine Nachricht zugeschickt.'), $semester_ende) ?></span>
     <fieldset class="select_oer_upload">
 
-        <input type="radio" name="oer_upload" id="oer-upload-0" value="0"
+        <input type="radio" name="oer_upload" id="oer-upload-no" value="0"
             <? if (0 == $selected_oer_upload) echo 'checked'; ?>>
-        <label for="oer_upload-0">
+        <label for="oer_upload-no">
             <div class="icon">
                 <?= Icon::create('decline', Icon::ROLE_CLICKABLE)->asImg(32) ?>
             </div>
@@ -31,9 +31,9 @@ if (!$selected_oer_upload) {
             </div>
         </div>
 
-    <input type="radio" name="oer_upload" id="oer-upload-1" value="1"
+    <input type="radio" name="oer_upload" id="oer-upload-yes" value="1"
         <? if (1 == $selected_oer_upload) echo 'checked'; ?>>
-        <label for="oer_upload-1">
+        <label for="oer_upload-yes">
             <div class="icon">
                 <?= Icon::create('accept', Icon::ROLE_CLICKABLE)->asImg(32) ?>
             </div>
@@ -49,9 +49,9 @@ if (!$selected_oer_upload) {
             </div>
         </div>
 
-        <input type="radio" name="oer_upload" id="oer-upload-2" value="2"
+        <input type="radio" name="oer_upload" id="oer-upload-later" value="2"
             <? if (2 == $selected_oer_upload) echo 'checked'; ?>>
-            <label for=oer_upload-2">
+            <label for=oer_upload-later">
                 <div class="icon">
                     <?= Icon::create('date', Icon::ROLE_CLICKABLE)->asImg(32) ?>
                 </div>
