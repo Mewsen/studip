@@ -15,7 +15,7 @@ if (!$selected_oer_upload) {
 
         <input type="radio" name="oer_upload" id="oer-upload-no" value="0"
             <? if (0 == $selected_oer_upload) echo 'checked'; ?>>
-        <label for="oer_upload-no">
+        <label for="oer-upload-no">
             <div class="icon">
                 <?= Icon::create('decline', Icon::ROLE_CLICKABLE)->asImg(32) ?>
             </div>
@@ -33,7 +33,7 @@ if (!$selected_oer_upload) {
 
     <input type="radio" name="oer_upload" id="oer-upload-yes" value="1"
         <? if (1 == $selected_oer_upload) echo 'checked'; ?>>
-        <label for="oer_upload-yes">
+        <label for="oer-upload-yes">
             <div class="icon">
                 <?= Icon::create('accept', Icon::ROLE_CLICKABLE)->asImg(32) ?>
             </div>
@@ -51,7 +51,7 @@ if (!$selected_oer_upload) {
 
         <input type="radio" name="oer_upload" id="oer-upload-later" value="2"
             <? if (2 == $selected_oer_upload) echo 'checked'; ?>>
-            <label for=oer_upload-later">
+            <label for="oer-upload-later">
                 <div class="icon">
                     <?= Icon::create('date', Icon::ROLE_CLICKABLE)->asImg(32) ?>
                 </div>
