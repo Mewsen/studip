@@ -499,7 +499,7 @@ class FileController extends AuthenticatedController
     /**
      * The action for sharing a file on the oer campus
      */
-    public function share_oer_action($file_ref_id, $redirect)
+    public function share_oer_action($file_ref_id, $redirect = null)
     {
         $this->redirect = $redirect;
 
