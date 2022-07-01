@@ -6,25 +6,69 @@
     <span><?= _('Wenn Sie möchten, können Sie die hochgeladene Datei für den OER Campus bereitstellen.') ?></span>
     <span><?= sprintf(_('Falls Sie die Datei zu einem späteren Zeitpunkt bereitstellen möchten,
         wird Ihnen am Ende des Semesters (%s) eine Nachricht zugeschickt.'), $semester_ende) ?></span>
-    <fieldset>
-        <label>
-            <input type="radio" name="oer_upload" value="0">
-            <?= _('Nicht für den OER Campus bereitstellen.') ?>
+    <fieldset class="select_oer_upload">
+        <input type="radio" name="oer_upload" id="oer-upload-1" value="0">
+        <label for="oer_upload-1">
+            <div class="icon">
+                <?= Icon::create('decline', Icon::ROLE_CLICKABLE)->asImg(32) ?>
+            </div>
+            <div class="text">
+                <?= _('Nicht für den OER Campus bereitstellen.') ?>
+            </div>
+            <?= Icon::create('arr_1down', Icon::ROLE_CLICKABLE)->asImg(24, ['class' => 'arrow']) ?>
+            <?= Icon::create('check-circle', Icon::ROLE_CLICKABLE)->asImg(32, ['class' => 'check']) ?>
         </label>
-        <label>
-            <input type="radio" name="oer_upload" value="1">
-            <?= _('Jetzt für den OER Campus bereitstellen.') ?>
+        <div class="terms_of_use_description">
+            <div class="description">
+                <?= formatReady($content_terms_of_use_entry->description ?: _('Keine Beschreibung')) ?>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="select_oer_upload">
+    <input type="radio" name="oer_upload" value="1">
+        <label for="oer_upload-2">
+            <div class="icon">
+                <?= Icon::create('accept', Icon::ROLE_CLICKABLE)->asImg(32) ?>
+            </div>
+            <div class="text">
+                <?= _('Jetzt für den OER Campus bereitstellen.') ?>
+            </div>
+            <?= Icon::create('arr_1down', Icon::ROLE_CLICKABLE)->asImg(24, ['class' => 'arrow']) ?>
+            <?= Icon::create('check-circle', Icon::ROLE_CLICKABLE)->asImg(32, ['class' => 'check']) ?>
         </label>
-        <label>
-            <input type="radio" name="oer_upload" value="2">
-            <?= _('Zu einem späteren Zeitpunkt für den OER Campus bereitstellen.') ?>
-        </label>
+        <div class="terms_of_use_description">
+            <div class="description">
+                <?= formatReady($content_terms_of_use_entry->description ?: _('Keine Beschreibung')) ?>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="select_oer_upload">
+        <input type="radio" name="oer_upload" value="2">
+            <label for=oer_upload-2">
+                <div class="icon">
+                    <?= Icon::create('date', Icon::ROLE_CLICKABLE)->asImg(32) ?>
+                </div>
+                <div class="text">
+                    <?= _('Zu einem späteren Zeitpunkt für den OER Campus bereitstellen.') ?>
+                </div>
+                <?= Icon::create('arr_1down', Icon::ROLE_CLICKABLE)->asImg(24, ['class' => 'arrow']) ?>
+                <?= Icon::create('check-circle', Icon::ROLE_CLICKABLE)->asImg(32, ['class' => 'check']) ?>
+            </label>
+            <div class="terms_of_use_description">
+                <div class="description">
+                    <?= formatReady($content_terms_of_use_entry->description ?: _('Keine Beschreibung')) ?>
+                </div>
+            </div>
+    </fieldset>
 
         <input type="hidden"
                name="redirect_to_files"
                value="redirect_to_files">
-    </fieldset>
     <footer data-dialog-button>
-        <?= Studip\Button::create(_("Speichern"))?>
+        <?= Studip\Button::createAccept(_("Speichern"))?>
+        <?= Studip\Button::createCancel(_("Abbrechen"))?>
+
     </footer>
 </form>
