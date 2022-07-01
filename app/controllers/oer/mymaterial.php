@@ -65,7 +65,6 @@ class Oer_MymaterialController extends AuthenticatedController
                 copy($_SESSION['NEW_OER']['tmp_name'], $material->getFilePath());
             }
 
-
             if ($_FILES['image']['tmp_name']) {
                 $material['front_image_content_type'] = $_FILES['image']['type'];
                 move_uploaded_file($_FILES['image']['tmp_name'], $material->getFrontImageFilePath());
@@ -147,12 +146,16 @@ class Oer_MymaterialController extends AuthenticatedController
             unset($_SESSION['NEW_OER']);
 
             PageLayout::postSuccess(_('Lernmaterial erfolgreich gespeichert.'));
-
             if (Request::get('redirect_url')) {
-                $this->redirect(URLHelper::getURL(Request::get('redirect_url'), [
-                    'material_id' => $material->getId(),
-                    'url' => $this->url_for('oer/market/details/' . $material->id)
-                ]));
+                if (Request::get('redirect_url') == 'files') {
+                    $this->redirect(URLHelper::getURL('dispatch.php/course/files/index/'
+                        . Request::get('dir') . '?cid=' . Request::get('cid')));
+                } else {
+                    $this->redirect(URLHelper::getURL(Request::get('redirect_url'), [
+                        'material_id' => $material->getId(),
+                        'url' => $this->url_for('oer/market/details/' . $material->id)
+                    ]));
+                }
             } else {
                 $this->redirect('oer/market/details/' . $material->id);
             }
