@@ -193,11 +193,13 @@ div.file_select_possibilities, .folder_type_select_possibilities {
 
     /* for file/edit view only: */
 
-    input[name=content_terms_of_use_id] {
+    input[name=content_terms_of_use_id],
+    input[name=oer_upload] {
         display: none;
     }
 
-    input[name=content_terms_of_use_id]:checked + label {
+    input[name=content_terms_of_use_id]:checked + label,
+    input[name=oer_upload]:checked + label {
         background-color: @brand-color-darker;
         color: @contrast-content-white;
 
