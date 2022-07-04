@@ -14,12 +14,12 @@ class RemindOerUpload extends CronJob
 
     public static function getName()
     {
-        return _('An OER Campus Upload erinnern');
+        return _('An OER-Campus Upload erinnern');
     }
 
     public static function getDescription()
     {
-        return _('Erinnert den Autor am Ende des Semesters an eine Datei, die in den OER Campus hochgeladen werden soll.');
+        return _('Erinnert den Autor am Ende des Semesters an eine Datei, die in den OER-Campus hochgeladen werden soll.');
     }
 
     public function execute($last_result, $parameters = [])
@@ -41,10 +41,10 @@ class RemindOerUpload extends CronJob
 
                 $this->author = $file_ref->owner->username;
                 $this->link_to_share = URLHelper::getURL("dispatch.php/file/share_oer/" . $result['file_ref_id']);
-                $this->linktext = _('Klicken Sie hier, um das Material im OER Campus zu veröffentlichen.');
+                $this->linktext = _('Klicken Sie hier, um das Material im OER-Campus zu veröffentlichen.');
                 $this->formatted_link = '['. $this->linktext .']' . $this->link_to_share;
 
-                $oer_reminder_message = sprintf(_("Sie wollten daran erinnert werden, die folgende Datei im OER Campus zu veröffentlichen:\n\n"
+                $oer_reminder_message = sprintf(_("Sie wollten daran erinnert werden, die folgende Datei im OER-Campus zu veröffentlichen:\n\n"
                     . "Dateiname: %s \n"
                     . "Beschreibung: %s \n"
                     . "%s \n\n"),
@@ -63,7 +63,7 @@ class RemindOerUpload extends CronJob
                     Request::option('message_id'),
                     '',
                     null,
-                    _('Erinnerung zur Veröffentlichung einer Datei im OER Campus')
+                    _('Erinnerung zur Veröffentlichung einer Datei im OER-Campus')
                 );
 
                 OERPostUpload::deleteBySQL("file_ref_id = ?", [$result['file_ref_id']]);

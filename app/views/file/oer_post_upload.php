@@ -8,7 +8,7 @@ if (!$selected_oer_upload) {
     <?= CSRFProtection::tokenTag() ?>
 
     <p><?= _('Die Datei wurde hochgeladen.') ?></p>
-    <span><?= _('Wenn Sie möchten, können Sie die hochgeladene Datei für den OER Campus bereitstellen.') ?></span>
+    <span><?= _('Wenn Sie möchten, können Sie die hochgeladene Datei für den OER-Campus bereitstellen.') ?></span>
     <span><?= sprintf(_('Falls Sie die Datei zu einem späteren Zeitpunkt bereitstellen möchten,
         wird Ihnen am Ende des Semesters (%s) eine Nachricht zugeschickt.'), $semester_ende) ?></span>
     <fieldset class="select_oer_upload">
@@ -20,14 +20,14 @@ if (!$selected_oer_upload) {
                 <?= Icon::create('decline', Icon::ROLE_CLICKABLE)->asImg(32) ?>
             </div>
             <div class="text">
-                <?= _('Nicht für den OER Campus bereitstellen.') ?>
+                <?= _('Nicht für den OER-Campus bereitstellen.') ?>
             </div>
             <?= Icon::create('arr_1down', Icon::ROLE_CLICKABLE)->asImg(24, ['class' => 'arrow']) ?>
             <?= Icon::create('check-circle', Icon::ROLE_CLICKABLE)->asImg(32, ['class' => 'check']) ?>
         </label>
         <div class="oer_upload_description">
             <div class="description">
-                <?= _('Nicht für den OER Campus bereitstellen.') ?>
+                <?= _('Nicht für den OER-Campus bereitstellen.') ?>
             </div>
         </div>
 
@@ -38,14 +38,14 @@ if (!$selected_oer_upload) {
                 <?= Icon::create('accept', Icon::ROLE_CLICKABLE)->asImg(32) ?>
             </div>
             <div class="text">
-                <?= _('Jetzt für den OER Campus bereitstellen.') ?>
+                <?= _('Jetzt für den OER-Campus bereitstellen.') ?>
             </div>
             <?= Icon::create('arr_1down', Icon::ROLE_CLICKABLE)->asImg(24, ['class' => 'arrow']) ?>
             <?= Icon::create('check-circle', Icon::ROLE_CLICKABLE)->asImg(32, ['class' => 'check']) ?>
         </label>
         <div class="oer_upload_description">
             <div class="description">
-                <?= _('Jetzt für den OER Campus bereitstellen.') ?>
+                <?= _('Jetzt für den OER-Campus bereitstellen.') ?>
             </div>
         </div>
 
@@ -56,14 +56,14 @@ if (!$selected_oer_upload) {
                     <?= Icon::create('date', Icon::ROLE_CLICKABLE)->asImg(32) ?>
                 </div>
                 <div class="text">
-                    <?= _('Zu einem späteren Zeitpunkt für den OER Campus bereitstellen.') ?>
+                    <?= _('Zu einem späteren Zeitpunkt für den OER-Campus bereitstellen.') ?>
                 </div>
                 <?= Icon::create('arr_1down', Icon::ROLE_CLICKABLE)->asImg(24, ['class' => 'arrow']) ?>
                 <?= Icon::create('check-circle', Icon::ROLE_CLICKABLE)->asImg(32, ['class' => 'check']) ?>
             </label>
             <div class="oer_upload_description">
                 <div class="description">
-                    <?= _('Zu einem späteren Zeitpunkt für den OER Campus bereitstellen.') ?>
+                    <?= _('Zu einem späteren Zeitpunkt für den OER-Campus bereitstellen.') ?>
                 </div>
             </div>
     </fieldset>

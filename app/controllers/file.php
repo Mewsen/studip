@@ -575,7 +575,7 @@ class FileController extends AuthenticatedController
                 Request::option('message_id'),
                 '',
                 null,
-                _('Vorschlag zur Veröffentlichung einer Datei im OER Campus')
+                _('Vorschlag zur Veröffentlichung einer Datei im OER-Campus')
             );
             $this->response->add_header('X-Dialog-Close', '1');
             $this->render_nothing();
