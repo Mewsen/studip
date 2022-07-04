@@ -964,7 +964,7 @@ class MessagesController extends AuthenticatedController {
         $this->linktext = _('Klicken Sie hier, um zum vorgeschlagenen Courseware-Material zu gelangen.');
         $this->formatted_link = '['. $this->linktext .']' . $this->link_to_share;
 
-        $oer_suggestion_message = sprintf(_("Ihr Courseware-Material wurde zur Veröffentlichung im OER Campus vorgeschlagen:\n\n"
+        $oer_suggestion_message = sprintf(_("Ihr Courseware-Material wurde zur Veröffentlichung im OER-Campus vorgeschlagen:\n\n"
             . "%s \n\n"
             . "Zusätzliche Info: \n %s"),
             $this->formatted_link, $text);

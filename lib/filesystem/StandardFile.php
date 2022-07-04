@@ -285,7 +285,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
         if ($this->isEditable($GLOBALS['user']->id) && Config::get()->OERCAMPUS_ENABLED) {
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/share_oer/' . $this->fileref->id),
-                _('Im OER Campus veröffentlichen'),
+                _('Im OER-Campus veröffentlichen'),
                 Icon::create('oer-campus'),
                 ['data-dialog' => '1']
             );
@@ -298,7 +298,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
         ) {
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/suggest_oer/' . $this->fileref->id),
-                _('Material für OER Campus vorschlagen'),
+                _('Material für OER-Campus vorschlagen'),
                 Icon::create('oer-campus'),
                 ['data-dialog' => 'reload-on-close;size=750x750']
             );
