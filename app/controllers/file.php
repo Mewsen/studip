@@ -466,7 +466,7 @@ class FileController extends AuthenticatedController
     public function oer_post_upload_action($file_ref_id)
     {
         $this->file_ref_id = $file_ref_id;
-        PageLayout::setTitle(_('Datei für OER Campus bereitstellen'));
+        PageLayout::setTitle(_('Datei für OER-Campus bereitstellen'));
 
         $this->semester_ende = date('d.m.Y',  Semester::findCurrent()->ende);
 
@@ -576,7 +576,7 @@ class FileController extends AuthenticatedController
                 Request::option('message_id'),
                 '',
                 null,
-                _('Vorschlag zur Veröffentlichung einer Datei im OER Campus')
+                _('Vorschlag zur Veröffentlichung einer Datei im OER-Campus')
             );
             $this->response->add_header('X-Dialog-Close', '1');
             $this->render_nothing();
