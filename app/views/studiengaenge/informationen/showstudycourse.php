@@ -1,9 +1,9 @@
 <td colspan="3">
     <table class="default">
         <colgroup>
-            <col width="70%">
-            <col width="29%">
-            <col width="1%">
+            <col style="width: 70%">
+            <col style="width: 29%">
+            <col style="width: 1%">
         </colgroup>
     <? foreach ($studycourses as $key => $course) : ?>
         <? if (($count = UserStudyCourse::countBySql('fach_id = :fach_id AND abschluss_id = :abschluss_id',
