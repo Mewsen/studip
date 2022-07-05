@@ -14,7 +14,8 @@
 
 require_once 'lib/messaging.inc.php';
 
-class ForumBulkMail extends Messaging {
+class ForumBulkMail extends messaging
+{
     var $bulk_mail;
 
     /**
