@@ -439,7 +439,6 @@ class FileController extends AuthenticatedController
                 $this->errors = array_merge($this->errors, $result);
             }
 
-
             if ($this->errors) {
                 PageLayout::postError(
                     sprintf(
@@ -546,8 +545,14 @@ class FileController extends AuthenticatedController
         $this->formatted_link = '['. $this->linktext .']' . $this->link_to_share;
         $additional_text = htmlReady(Request::get('additional_text'));
 
+        // file details and preview, if available
+        $this->is_downloadable = $this->file->isDownloadable(User::findCurrent()->id);
+        $this->file_info_template = $this->file->getInfoTemplate($this->is_downloadable);
+        $folder = $this->file->getFolderType();
+        $this->fullpath = FileManager::getFullPath($folder);
+
         $oer_suggestion_message = sprintf(_("Ihre hochgeladene Datei wurde zur Veröffentlichung im
-            OER Campus vorgeschlagen:\n\n"
+            OER-Campus vorgeschlagen:\n\n"
             . "Dateiname: %s \n"
             . "Beschreibung: %s \n\n"
             . "%s \n\n"
@@ -576,11 +581,8 @@ class FileController extends AuthenticatedController
             );
             $this->response->add_header('X-Dialog-Close', '1');
             $this->render_nothing();
-
-            PageLayout::postSuccess(_('Vorschlag wurde eingereicht.'));
-
+            PageLayout::postSuccess(_('Vorschlag zur Veröffentlichung im OER-Campus wurde eingereicht.'));
         }
-
     }
 
     public function edit_urlfile_action($file_ref_id)
@@ -1570,6 +1572,7 @@ class FileController extends AuthenticatedController
     {
         $this->re_location = Request::get('re_location');
         $file_ref_ids = Request::getArray('file_refs');
+
         if (!$file_ref_ids) {
             //In case the file ref IDs are not set in the request
             //they may still be set in the flash object of the controller:

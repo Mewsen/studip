@@ -2,7 +2,7 @@
       class='default' method='POST' data-dialog="reload-on-close">
     <?= CSRFProtection::tokenTag() ?>
 
-    <p><?= sprintf(_('Das folgende Material wird %s zur Veröffentlichung im OER-Campus vorgeschlagen:'), $author_fullname)?></p>
+    <p><?= sprintf(_('Das folgende Material wird %s zur Veröffentlichung im OER Campus vorgeschlagen:'), $author_fullname)?></p>
     <p><?= htmlReady($file->getFilename())?></p>
     <label for="additional_text">
         <span class="">
