@@ -225,9 +225,7 @@ export default {
     },
     watch: {
         blocks() {
-            if (!this.showEdit && !this.sortMode) {
-                this.initCurrentData();
-            }
+            this.initCurrentData();
         }
     }
 };

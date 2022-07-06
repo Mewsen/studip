@@ -1364,9 +1364,7 @@ export default {
             }
         },
         containers() {
-            if (!this.sortMode) {
-                this.containerList = this.containers;
-            }
+            this.containerList = this.containers;
         },
         consumeMode(newState) {
             this.consumModeTrap = newState;
