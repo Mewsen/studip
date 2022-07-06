@@ -733,10 +733,10 @@ STUDIP.ready(function () {
                     use_session_date = false;
                 }
             }
-            if (node.calendar == undefined) {
-                if (jQuery(node).hasClass('semester-plan')) {
+            if (this.calendar == undefined) {
+                if (jQuery(this).hasClass('semester-plan')) {
                     STUDIP.Fullcalendar.createSemesterCalendarFromNode(
-                        node,
+                        this,
                         {
                             loading: function (isLoading) {
                                 if (!isLoading) {
@@ -773,7 +773,7 @@ STUDIP.ready(function () {
                             config.defaultDate = session_date_string;
                         }
                     }
-                    STUDIP.Fullcalendar.createFromNode(node, config);
+                    STUDIP.Fullcalendar.createFromNode(this, config);
                 }
             }
         });
