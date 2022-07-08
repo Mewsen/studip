@@ -1,6 +1,8 @@
 <?php
 final class AddIndexToCwUserProgressesV50 extends Migration
 {
+    use DatabaseMigrationTrait;
+
     public function description()
     {
         return 'Alter cw_user_progresses table, add index for block_id';
@@ -9,10 +11,7 @@ final class AddIndexToCwUserProgressesV50 extends Migration
     public function up()
     {
         // avoid running this migration twice
-        $query = "SHOW INDEX FROM `cw_user_progresses` WHERE Key_name = 'block_id'";
-        $result = DBManager::get()->query($query);
-
-        if ($result && $result->rowCount() > 0) {
+        if ($this->keyExists('cw_user_progresses', 'block_id')) {
             return;
         }
 
