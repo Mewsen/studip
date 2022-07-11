@@ -27,7 +27,8 @@ if (!$selected_oer_upload) {
         </label>
         <div class="oer_upload_description">
             <div class="description">
-                <?= _('Nicht für den OER-Campus bereitstellen.') ?>
+                <?= _('Ich möchte die hochgeladene Datei jetzt nicht im OER-Campus bereitstellen.
+                Ich habe jedoch später jederzeit die Möglichkeit dazu.') ?>
             </div>
         </div>
 
@@ -45,7 +46,7 @@ if (!$selected_oer_upload) {
         </label>
         <div class="oer_upload_description">
             <div class="description">
-                <?= _('Jetzt für den OER-Campus bereitstellen.') ?>
+                <?= _('Die Datei wird direkt im OER-Campus bereitgestellt. Sie ist dann neben vielen weiteren freien Lernmaterialien an allen Stud.IP-Standorten mit aktiviertem OER-Campus sichtbar.') ?>
             </div>
         </div>
 
@@ -63,7 +64,7 @@ if (!$selected_oer_upload) {
             </label>
             <div class="oer_upload_description">
                 <div class="description">
-                    <?= _('Zu einem späteren Zeitpunkt für den OER-Campus bereitstellen.') ?>
+                    <?= sprintf(_('Ich möchte am Semesterende (%s) daran erinnert werden, diese Datei gegebenenfalls im OER-Campus bereitzustellen.'), $semester_ende) ?>
                 </div>
             </div>
     </fieldset>
