@@ -614,7 +614,7 @@ class Resources_RoomRequestController extends AuthenticatedController
             $element = new SelectElement(
                 $class_id,
                 $class['name'],
-                (!empty($this->filter['course_type']) && $this->filter['course_type'] === (string)$class_id)
+                !empty($this->filter['course_type']) && $this->filter['course_type'] === (string)$class_id
             );
             $list->addElement(
                 $element->setAsHeader(),
@@ -625,7 +625,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                 $element = new SelectElement(
                     $class_id . '_' . $id,
                     $result['name'],
-                    (!empty($this->filter['course_type']) && $this->filter['course_type'] === $class_id . '_' . $id)
+                    !empty($this->filter['course_type']) && $this->filter['course_type'] === $class_id . '_' . $id
                 );
                 $list->addElement(
                     $element->setIndentLevel(1),
@@ -653,7 +653,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                 new SelectElement(
                     $clip->id,
                     $clip->name,
-                    (!empty($this->filter['group']) && $this->filter['group'] == $clip->id)
+                    !empty($this->filter['group']) && $this->filter['group'] == $clip->id
                 ),
                 'clip-' . $clip->id
             );
@@ -677,7 +677,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                 new SelectElement(
                     $room->id,
                     $room->name,
-                    (!empty($this->filter['room_id']) && $room->id == $this->filter['room_id'])
+                    !empty($this->filter['room_id']) && $room->id == $this->filter['room_id']
                 )
             );
         }
@@ -709,12 +709,12 @@ class Resources_RoomRequestController extends AuthenticatedController
         $widget->addRadioButton(
             _('Nur regelmäßige Termine'),
             $this->overviewURL(['request_periods' => 'periodic']),
-            (!empty($this->filter['request_periods']) && $this->filter['request_periods'] == 'periodic')
+            !empty($this->filter['request_periods']) && $this->filter['request_periods'] == 'periodic'
         );
         $widget->addRadioButton(
             _('Nur unregelmäßige Termine'),
             $this->overviewURL(['request_periods' => 'aperiodic']),
-            (!empty($this->filter['request_periods']) && $this->filter['request_periods'] == 'aperiodic')
+            !empty($this->filter['request_periods']) && $this->filter['request_periods'] == 'aperiodic'
         );
         $widget->addElement(new WidgetElement('<br>'));
         $widget->addCheckbox(
@@ -744,8 +744,9 @@ class Resources_RoomRequestController extends AuthenticatedController
                 new SelectElement(
                     $day,
                     strftime('%A', strtotime('this monday +' . ($day - 1) . ' day')),
-                    (!empty($this->filter['dow']) && $this->filter['dow'] == $day)
-                ), 'dow-' . $day
+                    !empty($this->filter['dow']) && $this->filter['dow'] == $day
+                ),
+                'dow-' . $day
             );
         }
         $sidebar->addWidget($dow_selector, 'filter-dow');

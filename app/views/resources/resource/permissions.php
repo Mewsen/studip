@@ -65,7 +65,7 @@
 
     <div data-dialog-button>
         <?= \Studip\Button::create(
-            ($custom_save_button_text ?? _('Speichern')),
+            $custom_save_button_text ?? _('Speichern'),
             'save'
         ) ?>
     </div>
