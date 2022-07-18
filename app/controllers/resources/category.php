@@ -97,44 +97,6 @@ class Resources_CategoryController extends AuthenticatedController
                 return;
             }
 
-            if (!empty($this->category->system)) {
-                //Special validation rules for system categories:
-                if ($this->class_name != $this->category->class_name) {
-                    PageLayout::postError(
-                        _('Der Klassenname darf bei Systemkategorien nicht geändert werden!')
-                    );
-                    return;
-                }
-
-                //Check if one of the system properties has been deleted:
-                $system_properties = ResourcePropertyDefinition::findBySql(
-                    "INNER JOIN resource_category_properties rcp
-                    USING (property_id)
-                    WHERE category_id = :category_id
-                    AND rcp.`system` = '1'",
-                    [
-                        'category_id' => $this->category->id
-                    ]
-                );
-                if ($system_properties) {
-                    $removed_system_property_names = [];
-                    foreach ($system_properties as $property) {
-                        if (!in_array($property->id, array_keys($set_properties))) {
-                            $removed_system_property_names[] = $property->name;
-                        }
-                    }
-
-                    if ($removed_system_property_names) {
-                        asort($removed_system_property_names);
-                        PageLayout::postError(
-                            _('Die folgenden Systemeigenschaften sind zwingend erforderlich und können nicht entfernt werden:'),
-                            $removed_system_property_names
-                        );
-                        return;
-                    }
-                }
-            }
-
             $this->category = null;
             switch ($this->class_name) {
                 case 'Location':
