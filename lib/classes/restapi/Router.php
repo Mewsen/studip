@@ -367,6 +367,7 @@ class Router
         $match_result = $this->matchRoute($uri, $method, $content_renderer);
         $route = $match_result[0];
         $parameters = $match_result[1];
+        $allow_nobody = $match_result[2] ?? false;
         if (!$route) {
             //No route found for the combination of URI and method.
             //We return the allowed methods for the route in the HTTP header:
