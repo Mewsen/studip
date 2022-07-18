@@ -210,6 +210,7 @@ class Resources_RoomController extends AuthenticatedController
 
         if ($mode == 'add') {
             PageLayout::setTitle(_('Raum hinzufügen'));
+            $this->room = new Room();
         } elseif ($mode == 'edit' || $mode == 'delete') {
             $this->room = Room::find($room_id);
             if (!$this->room) {
