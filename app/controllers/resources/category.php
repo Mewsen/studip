@@ -58,22 +58,6 @@ class Resources_CategoryController extends AuthenticatedController
         $this->available_properties = ResourcePropertyDefinition::findBySql(
             'TRUE ORDER BY name ASC'
         );
-        //Load the properties:
-        if (!empty($this->category->property_links)) {
-            foreach ($this->category->property_links as $link) {
-                //We want to make sure that only properties that are
-                //defined are displayed.
-                if ($link->definition) {
-                    $this->previously_set_properties[$link->definition->id] = [
-                        'id' => $link->definition->id,
-                        'name' => $link->definition->__toString(),
-                        'system' => $link->system,
-                        'requestable' => $link->requestable,
-                        'protected' => $link->protected
-                    ];
-                }
-            }
-        }
 
         $this->show_form = true;
 
