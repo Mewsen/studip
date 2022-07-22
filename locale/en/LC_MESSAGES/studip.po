@@ -14,6 +14,7 @@
 # Jan-Hendrik Willms <tleilax+studip@gmail.com>, 2022.
 # Moritz Strohm <strohm@data-quest.de>, 2022.
 # Thomas Hackl <hackl@data-quest.de>, 2022.
+# Ann Yanich <ann@yanich.de>, 2022.
 #
 # Translators:
 #
@@ -22,8 +23,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-06 16:16+0200\n"
-"PO-Revision-Date: 2022-06-24 08:48+0000\n"
-"Last-Translator: Thomas Hackl <hackl@data-quest.de>\n"
+"PO-Revision-Date: 2022-07-22 13:24+0000\n"
+"Last-Translator: Ann Yanich <ann@yanich.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-1/en/>\n"
 "Language: en\n"
@@ -11066,7 +11067,7 @@ msgstr "Data in CV etc. have been changed."
 
 #: app/controllers/settings/settings.php:46
 msgid "Sie dürfen dieses Profil nicht bearbeiten"
-msgstr "You must not edit this profile"
+msgstr "You do not have permission to edit this profile"
 
 #: app/controllers/settings/settings.php:48
 msgid ""
