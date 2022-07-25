@@ -35,7 +35,7 @@ body > header {
 // Fix header covering relevant other areas
 // @see https://gitlab.studip.de/studip/studip/-/issues/1019
 html {
-    scroll-padding-top: calc($bar-bottom-container-height + 1em);
+    scroll-padding-top: calc(#{$bar-bottom-container-height} + 1em);
 }
 
 #main-footer,

@@ -1,50 +1,116 @@
-#background-desktop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-}
+div.index_container {
+    margin: 0 0;
+    top: 111px;
+    bottom: 0px;
+    width: 100%;
+    height: calc(100% - 110px);
 
-#background-mobile {
-    display: none;
-    z-index: -1;
-}
-
-#loginbox {
-    background-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
-    margin-left: 50px;
-    margin-top: 50px;
-    padding: 20px;
-    width: 450px;
-
-    header {
-        margin: 10px 0 0 10px;
-
-        h1 {
-            border-bottom: 0;
-        }
+    ul#tabs {
+        display: none;
     }
 
-    nav {
-        ul {
-            display: inline-block;
-            list-style-type: none;
-            margin: 0;
-            width: 450px;
-            padding: 0 10px;
+    #background-desktop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+    }
 
-            .login_link {
+    #background-mobile {
+        display: none;
+        z-index: -1;
+    }
+
+    div.messagebox {
+        margin-left: 50px;
+        margin-top: 50px;
+        width: 428px;
+    }
+
+    div.index_main {
+        background-color: rgba(255, 255, 255, 0.8);
+        box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+        margin-left: 50px;
+        margin-top: 50px;
+        width: 500px;
+
+        & > div {
+            padding: 20px;
+        }
+
+        form {
+            padding: 20px;
+            padding-bottom: 0;
+        }
+
+        footer {
+            overflow: auto;
+            padding: 20px;
+
+            div#languages {
+                border-top: 1px solid $light-gray-color;
+                font-size: 0.9em;
+                padding: 10px;
+
+                a {
+                    padding-right: 10px;
+                }
+            }
+
+            div#contrast {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                border-top: 1px solid $light-gray-color;
+                font-size: 0.9em;
+                padding: 10px;
+
+                a {
+                    text-decoration: underline;
+                    color: $contrast-blue;
+
+                    &:hover, &:focus {
+                        font-size: 1em;
+                        color: $red;
+                    }
+                }
+            }
+
+            div.login_info {
+                border-top: 1px solid $light-gray-color;
+                font-size: 0.8em;
+                div {
+                    text-align: right;
+                    float: left;
+                    padding: 5px;
+
+                    &:last-child {
+                        float:right;
+                    }
+                }
+            }
+            & > a {
+                margin-left: 12px;
+            }
+        }
+        nav {
+            h1 {
+                border-bottom: 0px;
+            }
+            padding: 10px;
+            margin-left: 20px;
+            margin-top: 20px;
+            display: inline-block;
+            width: 450px;
+            div.login_link {
                 display: inline-block;
                 width: 180px;
                 vertical-align: top;
                 padding-right: 25px;
-
                 a {
                     font-size: 1.5em;
-
                     p {
                         font-size: 0.5em;
                         color: $light-gray-color;
@@ -52,45 +118,14 @@
                 }
             }
         }
-    }
 
-    footer {
-        overflow: auto;
-
-        div#languages {
-            border-top: 1px solid $light-gray-color;
-            font-size: 0.9em;
-            padding: 10px;
-
-            a {
-                padding-right: 10px;
-            }
-        }
-
-        div.login_info {
-            border-top: 1px solid $light-gray-color;
-            font-size: 0.8em;
-            div {
-                text-align: right;
-                float: left;
-                padding: 5px;
-
-                &:last-child {
-                    float:right;
-                }
-            }
-        }
-        & > a {
-            margin-left: 12px;
-        }
     }
 }
 
 #index,
 #login {
     .messagebox {
-        margin: 50px 0 -25px 50px;
-        width: 418px;
+        margin-bottom: -25px;
     }
 }
 

@@ -245,33 +245,36 @@ body {
             transition-delay: 500ms;
         }
 
-    > ul {                   // column 1 of flex-header
-        flex: 1 1 auto;
-    }
+        > ul { // column 1 of flex-header
+            flex: 1 1 auto;
+        }
 
-    #top-logo {
-        flex: 0 1 auto;
-        margin-right: 12px;
-        margin-top: -13px;
-        #layout_container {          // row 3 of layout_page
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            align-content: stretch;
-            align-items: stretch;
-            justify-content: flex-start;
+        #top-logo {
+            flex: 0 1 auto;
+            margin-right: 12px;
+            margin-top: -13px;
 
-            flex-grow: 1;
-            min-width: $page-width;
+            #layout_container { // row 3 of layout_page
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-content: stretch;
+                align-items: stretch;
+                justify-content: flex-start;
 
-            #layout_content {           // column 1 of layout_container
                 flex-grow: 1;
+                min-width: $page-width;
+
+                #layout_content { // column 1 of layout_container
+                    flex-grow: 1;
+                }
             }
         }
     }
 }
 
 @-moz-document url-prefix() {
+
     .flex-container {
         width: 100%;
         box-sizing: border-box;
