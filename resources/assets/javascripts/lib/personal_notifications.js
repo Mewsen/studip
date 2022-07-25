@@ -171,17 +171,17 @@ const PersonalNotifications = {
             PageLayout.title_prefix = '';
         }
         if (count) {
-            $('#notification_container').addClass('hoverable');
+            $('#notification-container').addClass('hoverable');
             if (count > old_count && audio_notification !== false) {
                 audio_notification.play();
             }
         } else {
-            $('#notification_container').removeClass('hoverable');
+            $('#notification-container').removeClass('hoverable');
         }
         if (old_count !== count) {
             $('#notification_marker').text(count);
             updateFavicon(count);
-            $('#notification_container .mark-all-as-read').toggleClass('notification_hidden', count < 2);
+            $('#notification-container .mark-all-as-read').toggleClass('notification_hidden', count < 2);
         }
     },
     isVisited () {

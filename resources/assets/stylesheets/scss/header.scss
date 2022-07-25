@@ -53,9 +53,9 @@ html {
 #main-footer {
     > ul {
         display: flex;
-        align-items: center;
+        flex: 1;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: flex-end;
         list-style-type: none;
         min-height: 30px;
         padding: 0px;
@@ -180,7 +180,7 @@ html {
     height: 81px;
 }
 
-#barTopStudip {
+#top-logo {
     margin-left: 20px;
     margin-right: 12px;
 }

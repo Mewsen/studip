@@ -56,7 +56,7 @@ const Responsive = {
             '<label for="responsive-toggle">'
         );
 
-        $('<li>', { html: wrapper }).prependTo('#barBottomright > ul');
+        $('<li>', { html: wrapper }).prependTo('#header-links > ul');
     },
 
     // Responsifies the layout. Builds the responsive menu from existing
@@ -71,7 +71,7 @@ const Responsive = {
         if ($('#sidebar > section').length > 0) {
             $('<li id="sidebar-menu">')
                 .on('click', () => Sidebar.open())
-                .appendTo('#barBottomright > ul');
+                .appendTo('#header-links > ul');
 
             $('<label id="sidebar-shadow-toggle">')
                 .on('click', () => Sidebar.close())
