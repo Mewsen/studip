@@ -205,7 +205,7 @@ html {
     padding: 0;
     text-indent: -150px;
 
-    @media (prefers-reduced-motion="no-preference") {
+    @media (prefers-reduced-motion = "no-preference") {
         transition: all 500ms;
     }
 }
