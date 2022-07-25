@@ -143,6 +143,17 @@ export default {
             // throw away stale cache
             this.invalidateStructureCache();
         },
+        showSearchResults(newState) {
+            if (newState) {
+                document.querySelector('.courseware-action-widget').classList.add('hideMenus');
+                document.querySelector('.courseware-view-widget').classList.add('hideMenus');
+                document.querySelector('.courseware-export-widget').classList.add('hideMenus');
+            } else {
+                document.querySelector('.courseware-action-widget').classList.remove('hideMenus');
+                document.querySelector('.courseware-view-widget').classList.remove('hideMenus');
+                document.querySelector('.courseware-export-widget').classList.remove('hideMenus');
+            }
+        },
     },
 };
 </script>
