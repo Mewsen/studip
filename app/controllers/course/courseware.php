@@ -110,11 +110,7 @@ class Course_CoursewareController extends AuthenticatedController
     private function setIndexSidebar(): void
     {
         $sidebar = Sidebar::Get();
-        $actions = new TemplateWidget(
-            _('Aktionen'),
-            $this->get_template_factory()->open('course/courseware/action_widget')
-        );
-        $sidebar->addWidget($actions)->addLayoutCSSClass('courseware-action-widget');
+        $sidebar->addWidget(new VueWidget('courseware-action-widget'));
 
         $views = new TemplateWidget(
             _('Suche'),

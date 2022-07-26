@@ -10,7 +10,7 @@
                 @select="selectStructuralElement"
             ></courseware-structural-element>
             <MountingPortal mountTo="#courseware-action-widget" name="sidebar-actions">
-                <courseware-action-widget :structural-element="selected" :canVisit="canVisit"></courseware-action-widget>
+                <courseware-action-widget :structural-element="selected" :canVisit="canVisit" v-if="!showSearchResults"></courseware-action-widget>
             </MountingPortal>
             <MountingPortal mountTo="#courseware-search-widget" name="sidebar-search">
                 <courseware-search-widget></courseware-search-widget>
@@ -145,11 +145,9 @@ export default {
         },
         showSearchResults(newState) {
             if (newState) {
-                document.querySelector('.courseware-action-widget').classList.add('hideMenus');
                 document.querySelector('.courseware-view-widget').classList.add('hideMenus');
                 document.querySelector('.courseware-export-widget').classList.add('hideMenus');
             } else {
-                document.querySelector('.courseware-action-widget').classList.remove('hideMenus');
                 document.querySelector('.courseware-view-widget').classList.remove('hideMenus');
                 document.querySelector('.courseware-export-widget').classList.remove('hideMenus');
             }
