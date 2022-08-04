@@ -371,8 +371,7 @@ $consum_ribbon_width: calc(100% - 58px);
     position: absolute;
     right: -570px;
     top: 15px;
-    height: calc(100% - 32px);
-    max-height: 760px;
+    height: 100%;
     max-width: calc(100% - 28px);
     display: flex;
     flex-flow: row;
@@ -402,6 +401,7 @@ $consum_ribbon_width: calc(100% - 58px);
 
         .cw-ribbon-tool-content-nav {
             position: sticky;
+            height: 100%;
             top: 0;
             background-color: $white;
             margin: 0;
@@ -431,6 +431,7 @@ $consum_ribbon_width: calc(100% - 58px);
 
             >.cw-ribbon-tool-content-tablist {
                 width: 100%;
+                height: 100%;
                 >.cw-tabs-nav {
                     border: none;
                     width: calc(100% - 48px);
@@ -450,9 +451,10 @@ $consum_ribbon_width: calc(100% - 58px);
                     border: none;
                     border-top: solid thin $content-color-40;
                     padding: 0;
+                    height: calc(100% - 58px);
 
                     >.cw-tab {
-                        max-height: 700px;
+                        height: calc(100% - 22px);
                         padding: 14px 8px 8px 8px;
                         position: relative;
                         overflow-y: auto;
@@ -461,6 +463,7 @@ $consum_ribbon_width: calc(100% - 58px);
                         scrollbar-color: $base-color $white;
 
                         &.cw-ribbon-tool-blockadder-tab {
+                            height: 100%;
                             overflow: hidden;
                             padding: 0;
                         }
