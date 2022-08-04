@@ -33,6 +33,7 @@
                         >
                             <courseware-tools-blockadder
                                 id="cw-ribbon-tool-blockadder"
+                                :stickyRibbon="stickyRibbon"
                             />
                         </courseware-tab>
                         <courseware-tab
@@ -80,6 +81,10 @@ export default {
     props: {
         toolsActive: Boolean,
         canEdit: Boolean,
+        stickyRibbon: {
+            type: Boolean,
+            default: false,
+        }
     },
     data() {
         return {
@@ -148,7 +153,7 @@ export default {
         },
         scrollToCurrent() {
             setTimeout(() => {
-                let contents = this.$refs.contents.$el; 
+                let contents = this.$refs.contents.$el;
                 let current = contents.querySelector('.cw-tree-item-link-current');
                 contents.scroll({ top: current.offsetTop - 4, behavior: 'smooth' });
             }, 360);
