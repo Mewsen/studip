@@ -499,6 +499,8 @@ class FileController extends AuthenticatedController
         $filetype = $file_ref->getFileType();
         $this->file = $filetype->convertToStandardFile();
 
+        $this->icon_shape = $this->file->getIcon(Icon::ROLE_INFO)->getShape();
+
         $this->author = $file_ref->owner->username;
         $this->author_fullname = $file_ref->owner->getFullName('no_title');
         $this->link_to_share = URLHelper::getURL("dispatch.php/file/share_oer/" . $file_ref_id);
