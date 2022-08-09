@@ -1252,7 +1252,7 @@ class Resource extends SimpleORMap implements StudipItem
         $internal_comment = ''
     )
     {
-        if (!$this->userHasPermission($user, 'admin')) {
+        if (!$this->userHasPermission($user, 'admin', [$begin, $end])) {
             throw new AccessDeniedException(
                 sprintf(
                     _('%s: Unzureichende Berechtigungen zum Erstellen einer Sperrbuchung!'),
@@ -2300,25 +2300,25 @@ class Resource extends SimpleORMap implements StudipItem
         $perm_string = '';
         $temp_perm   = null;
 
-        if (!$permanent_only) {
-            $begin = time();
-            $end   = $begin;
+        $begin = time();
+        $end   = $begin;
 
-            //If $time range is set and contains two DateTime objects
-            //we can include that in the search for temporary permissions.
-            if ($time_range) {
-                if ($time_range[0] instanceof DateTime) {
-                    $begin = $time_range[0]->getTimestamp();
-                } else {
-                    $begin = $time_range[0];
-                }
-                if ($time_range[1] instanceof DateTime) {
-                    $end = $time_range[1]->getTimestamp();
-                } else {
-                    $end = $time_range[1];
-                }
+        //If $time range is set and contains two DateTime objects
+        //we can include that in the search for temporary permissions.
+        if ($time_range) {
+            if ($time_range[0] instanceof DateTime) {
+                $begin = $time_range[0]->getTimestamp();
+            } else {
+                $begin = $time_range[0];
             }
+            if ($time_range[1] instanceof DateTime) {
+                $end = $time_range[1]->getTimestamp();
+            } else {
+                $end = $time_range[1];
+            }
+        }
 
+        if (!$permanent_only) {
             $temp_perm = ResourceTemporaryPermission::findOneBySql(
                 '(resource_id = :resource_id) AND (user_id = :user_id)
                 AND (begin <= :begin) AND (end >= :end)',
@@ -2375,11 +2375,8 @@ class Resource extends SimpleORMap implements StudipItem
         }
         //Now we must check for global resource locks:
 
-        if ($this->lockable && GlobalResourceLock::currentlyLocked()) {
-            //The resource management system is currently locked.
-            //permission level 'user' for all other permission
-            //levels.
-            if ($perm_string) {
+        if ($perm_string && $time_range && $this->lockable) {
+            if (GlobalResourceLock::isLocked($begin, $end)) {
                 //A permission level exists for the user.
                 //The user gets "user" permissions in case
                 //a global lock is active.
@@ -2435,28 +2432,18 @@ class Resource extends SimpleORMap implements StudipItem
                 return false;
             }
         } elseif ($permission === 'autor') {
-            if ($this->lockable && GlobalResourceLock::currentlyLocked()) {
-                //A global resource lock means no writing actions are permitted.
-                return false;
-            }
             if (in_array($perm_level, ['autor', 'tutor', 'admin'])) {
                 return true;
             } else {
                 return false;
             }
         } elseif ($permission === 'tutor') {
-            if ($this->lockable && GlobalResourceLock::currentlyLocked()) {
-                //A global resource lock means no writing actions are permitted.
-                return false;
-            }
             if (in_array($perm_level, ['tutor', 'admin'])) {
                 return true;
             } else {
                 return false;
             }
         } elseif ($permission === 'admin') {
-            //No check for global resource locks here:
-            //Admins may always do write actions in the resource management.
             if ($perm_level == 'admin') {
                 return true;
             } else {
@@ -2533,22 +2520,14 @@ class Resource extends SimpleORMap implements StudipItem
         $end = null
     )
     {
-        if (!$begin) {
-            $begin = time();
-        }
-        if (!$end) {
-            $end = $begin;
+        if ($begin && $end) {
+            $time_range = [$begin, $end];
+        } else {
+            $time_range = [];
         }
 
         //Check the permissions on this resource and the global permissions:
-        return $this->userHasPermission(
-            $user,
-            'autor',
-            [
-                $begin,
-                $end
-            ]
-        );
+        return $this->userHasPermission($user, 'autor', $time_range);
     }
 
     /**
