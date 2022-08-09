@@ -15,7 +15,9 @@
         ></textarea>
     </label>
 
-    <footer data-dialog-button>
-        <?= Studip\Button::create(_("Material vorschlagen"))?>
-    </footer>
-</form>
+        <footer data-dialog-button>
+            <?= Studip\Button::create(_("Material vorschlagen"))?>
+        </footer>
+    </form>
+</div>
+<?= $this->render_partial('file/file_details.php') ?>
