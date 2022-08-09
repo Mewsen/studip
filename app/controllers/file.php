@@ -1659,6 +1659,12 @@ class FileController extends AuthenticatedController
                             && $GLOBALS['perm']->have_perm('tutor')) {
                             if ($file_ref['content_terms_of_use_id'] === 'SELFMADE_NONPUB'
                                 || $file_ref['content_terms_of_use_id'] === 'FREE_LICENSE') {
+
+                                PageLayout::postSuccess(
+                                    sprintf(
+                                        _('Die Datei %s wurde hochgeladen'),
+                                       $file_ref['name']
+                                    ));
                                 $this->redirect('file/oer_post_upload/' . $file_ref['id']);
                                 return;
                             }

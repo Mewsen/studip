@@ -7,7 +7,6 @@ if (!$selected_oer_upload) {
        method="post" class="default" data-dialog="reload-on-close">
     <?= CSRFProtection::tokenTag() ?>
 
-    <p><?= _('Die Datei wurde hochgeladen.') ?></p>
     <span><?= _('Wenn Sie möchten, können Sie die hochgeladene Datei für den OER-Campus bereitstellen.') ?></span>
     <span><?= sprintf(_('Falls Sie die Datei zu einem späteren Zeitpunkt bereitstellen möchten,
         wird Ihnen am Ende des Semesters (%s) eine Nachricht zugeschickt.'), $semester_ende) ?></span>
