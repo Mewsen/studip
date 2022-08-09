@@ -79,6 +79,13 @@ use Studip\Button, Studip\LinkButton;
 <? if (!empty($auto_sems)) : ?>
     <table class="default">
         <caption><?= _('Vorhandene Zuordnungen') ?></caption>
+        <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col width="20">
+        </colgroup>
         <thead>
             <tr>
                 <th><?= _('Veranstaltung') ?></th>
@@ -90,42 +97,37 @@ use Studip\Button, Studip\LinkButton;
         </thead>
         <tbody>
             <? if ($grouping == 'by_course') : ?>
-                <? foreach ($auto_sems as $id => $types): ?>
-                    <? $row = 1; foreach ($types as $type => $courses): ?>
-                        <? $typerow = 1; foreach ($courses as $auto_sem) : ?>
+                <? $typerow = 1; foreach ($auto_sems as $id => $types): ?>
+                    <? $rangerow = 1; foreach ($types as $type => $courses): ?>
+                        <? foreach ($courses as $auto_sem) : ?>
                             <tr>
-                                <? if ($row == 1) : ?>
+                                <? if ($typerow == 1) : ?>
                                     <td rowspan="<?= count($types) + 1 ?>">
-                                        <a href="<?= $controller->link_for('course/overview', ['auswahl' => $auto_sem['seminar_id']]) ?>">
+                                        <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $auto_sem['seminar_id']]) ?>">
                                             <?= htmlReady($auto_sem['Name']) ?>
                                         </a>
                                     </td>
-                                <? endif ?>
-                                <? if ($typerow == 1) : ?>
-                                    <td rowspan="<?= count($courses) ?>">
-                                        <?= htmlReady($range_types[$auto_sem['range_type']]) ?>
-                                    </td>
-                                    <? endif ?>
+                                <? endif; ?>
+                                <td>
+                                    <?= htmlReady($range_types[$type]) ?>
+                                </td>
                                 <td>
                                     <?= htmlReady($auto_sem['range_name']) ?>
                                 </td>
                                 <td>
-                                    <?= htmlReady($auto_sem['status'] ?: _('alle')) ?>
+                                    <?= htmlReady($auto_sem['status']) ?: '-' ?>
                                 </td>
-
-                                <td class="actions">
+                                <td>
                                     <a href="<?= $controller->delete($auto_sem['seminar_id'], $type, $auto_sem['range_id']) ?>">
                                         <?= Icon::create(
                                             'trash',
                                             Icon::ROLE_CLICKABLE,
-                                            ['title' => _('Veranstaltung entfernen'), 'class' => 'text-top']
+                                            ['title' => _('Zuordnung entfernen'), 'class' => 'text-top']
                                         ) ?>
                                     </a>
                                 </td>
                             </tr>
-                            <? $typerow++ ?>
-                        <? endforeach ?>
-                        <? $row++ ?>
+                        <? $typerow++; endforeach ?>
                     <? endforeach ?>
                 <? endforeach ?>
             <? endif ?>

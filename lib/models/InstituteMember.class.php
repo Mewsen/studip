@@ -85,6 +85,21 @@ class InstituteMember extends SimpleORMap implements PrivacyObject
 
             if ($institute) {
                 $institute->status_groups->removeUser($user_id, true);
+
+                AutoInsert::instance()->saveUser($user_id, $member->inst_perms, 'institute',
+                    $member->institut_id);
+            }
+        };
+
+        $config['registered_callbacks']['after_create'][] = function ($member) {
+            AutoInsert::instance()->saveUser($member->user_id, $member->inst_perms, 'institute',
+                $member->institut_id);
+        };
+
+        $config['registered_callbacks']['before_update'][] = function ($member) {
+            if ($member->isFieldDirty('inst_perms')) {
+                AutoInsert::instance()->saveUser($member->user_id, $member->inst_perms, 'institute',
+                    $member->institut_id);
             }
         };
 

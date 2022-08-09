@@ -45,6 +45,31 @@ class UserStudyCourse extends SimpleORMap implements PrivacyObject
 
         $config['additional_fields']['degree_name'] = [];
         $config['additional_fields']['studycourse_name'] = [];
+
+        $config['registered_callbacks']['after_create'][] = function ($entry) {
+            AutoInsert::instance()->saveUser($entry->user_id, false, 'degree', $entry->abschluss_id);
+            AutoInsert::instance()->saveUser($entry->user_id, false, 'subject', $entry->fach_id);
+            AutoInsert::instance()->saveUser($entry->user_id, false, 'semester', $entry->semester);
+        };
+
+        $config['registered_callbacks']['after_delete'][] = function ($entry) {
+            AutoInsert::instance()->saveUser($entry->user_id, false, 'degree', $entry->abschluss_id);
+            AutoInsert::instance()->saveUser($entry->user_id, false, 'subject', $entry->fach_id);
+            AutoInsert::instance()->saveUser($entry->user_id, false, 'semester', $entry->semester);
+        };
+
+        $config['registered_callbacks']['before_update'][] = function ($entry) {
+            if ($entry->isFieldDirty('abschluss_id')) {
+                AutoInsert::instance()->saveUser($entry->user_id, false, 'degree', $entry->abschluss_id);
+            }
+            if ($entry->isFieldDirty('fach_id')) {
+                AutoInsert::instance()->saveUser($entry->user_id, false, 'subject', $entry->fach_id);
+            }
+            if ($entry->isFieldDirty('semester')) {
+                AutoInsert::instance()->saveUser($entry->user_id, false, 'semester', $entry->semester);
+            }
+        };
+
         parent::configure($config);
     }
 

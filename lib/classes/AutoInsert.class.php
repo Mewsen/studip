@@ -52,26 +52,30 @@ class AutoInsert
 
     private function loadSettings()
     {
-        $query = "SELECT a.seminar_id, GROUP_CONCAT(a.status,IF(LENGTH(a.range_id)=0,':keine',CONCAT(':',a.domain_id))) AS range_status, a,range_type, s.Name, s.Schreibzugriff, s.start_time ";
-        $query .= "FROM auto_insert_sem a ";
-        $query .= "JOIN seminare AS s USING (Seminar_id) ";
-        $query .= "GROUP BY s.seminar_id ";
-        $query .= "ORDER BY s.Name";
-        $statement = DBManager::get()->query($query);
+        $query = "SELECT a.`seminar_id`, GROUP_CONCAT(a.`status`,IF(LENGTH(a.`range_id`)=0,':keine', " .
+            "CONCAT(':',a.`range_id`))) AS range_status, a.`range_type`, s.`Name`, s.`Schreibzugriff`, " .
+            "s.`start_time` ";
+        $query .= "FROM `auto_insert_sem` a ";
+        $query .= "JOIN `seminare` AS s USING (`Seminar_id`) ";
+        $query .= "GROUP BY s.`seminar_id`, a.`range_type` ";
+        $query .= "ORDER BY s.`Name`";
         $statement = DBManager::get()->query($query);
 
         $results   = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         foreach ($results as $result) {
             if ($result['Schreibzugriff'] < 3) {
-                $domains = explode(',', $result['domain_status']);
+                $ranges = explode(',', $result['range_status']);
 
-                foreach ($domains as $domain) {
-                    $array                                       = explode(':', $domain);
+                foreach ($ranges as $range) {
+                    $array                                       = explode(':', $range);
                     $key                                         = $array[1] . '.' . $array[0];
-                    $this->settings[$key][$result['seminar_id']] = ['Seminar_id'     => $result['seminar_id'],
-                                                                    'name'           => $result['Name'],
-                                                                    'Schreibzugriff' => $result['Schreibzugriff'],
-                                                                    'start_time'     => $result['start_time']];
+                    $this->settings[$result['range_type']][$key][$result['seminar_id']] = [
+                        'Seminar_id'     => $result['seminar_id'],
+                        'name'           => $result['Name'],
+                        'Schreibzugriff' => $result['Schreibzugriff'],
+                        'start_time'     => $result['start_time']
+                    ];
                 }
             }
         }
@@ -95,33 +99,66 @@ class AutoInsert
      * @return array 'added' Namen der Seminare in die der User eingetragen wurde
      *                     array 'removed' Namen der Seminare aus denen der User ausgetragen wurde
      */
-    public function saveUser($user_id, $status = false)
+    public function saveUser($user_id, $status = false, $check = 'domain', $range_id = '')
     {
-        $domains = [];
+        $entries = [];
         if (!$status) {
             $status = $GLOBALS['perm']->get_perm($user_id);
         }
-        foreach (UserDomain::getUserDomainsForUser($user_id) as $d) {
-            $domains [] = $d->id; //Domains des Users
+
+        switch ($check) {
+            case 'degree':
+                foreach (UserStudyCourse::findByUser($user_id) as $entry) {
+                    $entries[] = $entry->abschluss_id;
+                }
+                break;
+            case 'domain':
+                foreach (UserDomain::getUserDomainsForUser($user_id) as $d) {
+                    $entries[] = $d->id; //Domains des Users
+                }
+
+                if (count($entries) === 0) {
+                    $entries[] = 'keine';
+                }
+                break;
+            case 'institute':
+                $memberships = InstituteMember::findBySQL(
+                    "`user_id` = :user AND `inst_perms` = :perm",
+                    ['user' => $user_id, 'perm' => $status]
+                );
+
+                $entries = array_map(function ($m) { return $m->institut_id; }, $memberships);
+                break;
+            case 'semester':
+                foreach (UserStudyCourse::findByUser($user_id) as $entry) {
+                    $entries[] = $entry->semester;
+                }
+                break;
+            case 'subject':
+                foreach (UserStudyCourse::findByUser($user_id) as $entry) {
+                    $entries[] = $entry->fach_id;
+                }
+                break;
+
         }
 
-        if (count($domains) === 0) {
-            $domains [] = 'keine';
-        }
+        $entries = array_unique($entries);
+
         $settings     = [];
         $all_seminare = [];
-        foreach ($domains as $domain) {
-
-            $key = $domain . '.' . $status;
-            if (is_array($this->settings[$key])) {
-                $id = key($this->settings[$key]);
-                foreach ($this->settings[$key] as $id => $value) {
-                    $settings[$id] = $value;
+        foreach ($entries as $entry) {
+            $key = $entry . '.' . $status;
+            if (is_array($this->settings[$check][$key])) {
+                foreach ($this->settings[$check][$key] as $id => $value) {
+                    $settings[$check][$id] = $value;
+                    $all_seminare[$id] = $value;
                 }
             }
-            foreach ($this->settings as $key) {
-                foreach ($key as $id => $sem) {
-                    $all_seminare[$id] = $sem;
+        }
+        foreach ($this->settings as $type) {
+            foreach ($type as $range) {
+                foreach ($range as $cid => $course) {
+                    $all_seminare[$cid] = $course;
                 }
             }
         }
@@ -134,8 +171,8 @@ class AutoInsert
                 $seminare_tutor_dozent[$sem['Seminar_id']] = $sem;
             }
         }
-        $toAdd    = array_diff_key($settings, $seminare);
-        $toRemove = array_diff_key($all_seminare, $toAdd, $settings, $seminare_tutor_dozent);
+        $toAdd    = array_diff_key($settings[$check] ?: [], $seminare ?: []) ?: [];
+        $toRemove = array_diff_key($all_seminare ?: [], $toAdd ?: [], $settings[$check] ?: [], $seminare_tutor_dozent ?: []) ?: [];
 
         $added   = [];
         $removed = [];
