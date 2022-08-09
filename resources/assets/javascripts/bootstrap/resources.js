@@ -872,6 +872,7 @@ STUDIP.ready(function () {
             }
         }
     );
+
 });
 
 
