@@ -749,7 +749,7 @@ export default {
 
         textSuggestOer() {
             return {
-                title: this.$gettext('Material für OER-Campus vorschlagen'),
+                title: this.$gettext('Material für OER Campus vorschlagen'),
                 confirm: this.$gettext('Material vorschlagen'),
                 close: this.$gettext('Schließen'),
             };
