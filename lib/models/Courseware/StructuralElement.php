@@ -586,7 +586,7 @@ SQL;
      */
     public function copy(User $user, StructuralElement $parent): StructuralElement
     {
-        $file_ref_id = self::copyImage($user, $parent);
+        $file_ref_id = $this->copyImage($user, $parent);
 
         $element = self::build([
             'parent_id' => $parent->id,
@@ -604,9 +604,9 @@ SQL;
 
         $element->store();
 
-        self::copyContainers($user, $element);
+        $this->copyContainers($user, $element);
 
-        self::copyChildren($user, $element);
+        $this->copyChildren($user, $element);
 
         return $element;
     }
@@ -632,7 +632,7 @@ SQL;
     {
         // merge with target
         if (!$target->image_id) {
-            $target->image_id = self::copyImage($user, $target);
+            $target->image_id = $this->copyImage($user, $target);
         }
 
         if ($target->title === 'neue Seite' || $target->title === 'New page') {
@@ -670,29 +670,24 @@ SQL;
         $target->store();
 
         // add Containers to target
-        self::copyContainers($user, $target);
+        $this->copyContainers($user, $target);
 
         // copy Children
-
-        self::copyChildren($user, $target);
+        $this->copyChildren($user, $target);
 
         return $this;
     }
 
     private function copyContainers(User $user, StructuralElement $newElement): void
     {
-        $containers = \Courseware\Container::findBySQL('structural_element_id = ?', [$this->id]);
-
-        foreach ($containers as $container) {
+        foreach ($this->containers as $container) {
             $container->copy($user, $newElement);
         }
     }
 
     private function copyChildren(User $user, StructuralElement $newElement): void
     {
-        $children = self::findBySQL('parent_id = ?', [$this->id]);
-
-        foreach ($children as $child) {
+        foreach ($this->children as $child) {
             $child->copy($user, $newElement);
         }
     }
