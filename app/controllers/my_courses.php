@@ -885,7 +885,7 @@ class MyCoursesController extends AuthenticatedController
                 _('Neue Veranstaltung anlegen'),
                 URLHelper::getURL('dispatch.php/course/wizard'),
                 Icon::create('seminar+add')
-            );
+            )->asDialog();
         }
 
         $setting_widget->addLink(
@@ -898,7 +898,7 @@ class MyCoursesController extends AuthenticatedController
                 _('Neue Studiengruppe anlegen'),
                 URLHelper::getURL('dispatch.php/course/wizard', ['studygroup' => 1]),
                 Icon::create('studygroup+add')
-            )->asDialog('size=auto');
+            )->asDialog();
         }
 
         $this->setGroupingSelector($group_field);
