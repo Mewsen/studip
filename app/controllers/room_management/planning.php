@@ -21,6 +21,28 @@
  */
 class RoomManagement_PlanningController extends AuthenticatedController
 {
+    public function before_filter(&$action, &$args)
+    {
+        parent::before_filter($action, $args);
+        $this->current_user = User::findCurrent();
+    }
+
+    private function setClipboard($selected_clipboard_id = null)
+    {
+        $this->selected_clipboard_id = Request::get('clipboard_id', $selected_clipboard_id);
+        if ($this->selected_clipboard_id) {
+            $_SESSION['selected_clipboard_id'] = $this->selected_clipboard_id;
+        } else {
+            $this->selected_clipboard_id = $_SESSION['selected_clipboard_id'];
+        }
+        $this->clipboards = Clipboard::getClipboardsForUser($GLOBALS['user']->id);
+
+        if (!$this->selected_clipboard_id && !empty($this->clipboards)) {
+            $this->selected_clipboard_id = $this->clipboards[0]->id;
+            $_SESSION['selected_clipboard_id'] = $this->selected_clipboard_id;
+        }
+    }
+
     public function index_action($selected_clipboard_id = null)
     {
         PageLayout::setTitle(
@@ -30,16 +52,8 @@ class RoomManagement_PlanningController extends AuthenticatedController
         if (Navigation::hasItem('/resources/planning/index')) {
             Navigation::activateItem('/resources/planning/index');
         }
-        $selected_clipboard_id = Request::get('clipboard_id', $selected_clipboard_id);
 
-        $this->no_clipboard = false;
-        $this->no_rooms = false;
-
-        if ($selected_clipboard_id) {
-            $_SESSION['selected_clipboard_id'] = $selected_clipboard_id;
-        } else {
-            $selected_clipboard_id = $_SESSION['selected_clipboard_id'];
-        }
+        $this->setClipboard($selected_clipboard_id);
 
         $this->display_all_requests = Request::get('display_all_requests');
 
@@ -91,27 +105,26 @@ class RoomManagement_PlanningController extends AuthenticatedController
         $dpicker->addElement(new WidgetElement($picker_html));
         $sidebar->addWidget($dpicker);
 
-        $clipboards = Clipboard::getClipboardsForUser($GLOBALS['user']->id);
-        if (!empty($clipboards)) {
+        if (!empty($this->clipboards)) {
             $clipboard_widget = new SelectWidget(
                 _('Individuelle Raumgruppen'),
                 $this->indexURL(),
                 'clipboard_id',
                 'get'
             );
-            foreach ($clipboards as $clipboard) {
+            foreach ($this->clipboards as $clipboard) {
                 $clipboard_widget->addElement(new SelectElement(
                     $clipboard->id,
                     $clipboard->name,
-                    $clipboard->id === $selected_clipboard_id
+                    $clipboard->id === $this->selected_clipboard_id
                 ), "clipboard_id-{$clipboard->id}");
             }
             $sidebar->addWidget($clipboard_widget);
         }
 
         $rooms = [];
-        if ($selected_clipboard_id) {
-            $clipboard = Clipboard::find($selected_clipboard_id);
+        if ($this->selected_clipboard_id) {
+            $clipboard = Clipboard::find($this->selected_clipboard_id);
             $this->clipboard = $clipboard;
             if ($clipboard) {
                 PageLayout::setTitle(
@@ -142,7 +155,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
             ];
         }
 
-        $current_user = User::findCurrent();
+
 
         $room_c = count($rooms);
         $requestable_rooms_c = 0;
@@ -152,13 +165,13 @@ class RoomManagement_PlanningController extends AuthenticatedController
         $this->booking_types = [0, 1, 2];
 
         foreach ($rooms as $room) {
-            if ($room->userHasRequestRights($current_user)) {
+            if ($room->userHasRequestRights($this->current_user)) {
                 $request_rights_c++;
             }
-            if ($room->userHasBookingRights($current_user)) {
+            if ($room->userHasBookingRights($this->current_user)) {
                 $booking_rights_c++;
             }
-            if ($room->userHasPermission($current_user, 'admin')) {
+            if ($room->userHasPermission($this->current_user, 'admin')) {
                 $admin_rights_c++;
             }
             if ($room->requestable) {
@@ -168,7 +181,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
             //Check the permissions for the room:
             //The booking plan must be visible for the user.
             $sufficient_permissions =
-                $room->bookingPlanVisibleForUser($current_user);
+                $room->bookingPlanVisibleForUser($this->current_user);
             if (!$sufficient_permissions) {
                 throw new AccessDeniedException(
                     sprintf(
@@ -270,16 +283,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
             Navigation::activateItem('/resources/planning/semestergroup_plan');
         }
 
-        $selected_clipboard_id = Request::get('clipboard_id', $selected_clipboard_id);
-
-        $this->no_clipboard = false;
-        $this->no_rooms = false;
-
-        if ($selected_clipboard_id) {
-            $_SESSION['selected_clipboard_id'] = $selected_clipboard_id;
-        } else {
-            $selected_clipboard_id = $_SESSION['selected_clipboard_id'];
-        }
+        $this->setClipboard($selected_clipboard_id);
 
         $this->display_all_requests = Request::get('display_all_requests');
 
@@ -312,8 +316,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
         );
         $sidebar->addWidget($actions);
 
-
-        if ($GLOBALS['user']->id && ($GLOBALS['user']->id != 'nobody')) {
+        if ($GLOBALS['user']->id && ($GLOBALS['user']->id !== 'nobody')) {
             $views = new ViewsWidget();
             $views->setTitle(_('Zeitfenster'));
             $views->addLink(
@@ -388,29 +391,27 @@ class RoomManagement_PlanningController extends AuthenticatedController
         );
         $sidebar->addWidget($semester_selector);
 
-        $clipboards = Clipboard::getClipboardsForUser($GLOBALS['user']->id);
-        if (!empty($clipboards)) {
+        if (!empty($this->clipboards)) {
             $clipboard_widget = new SelectWidget(
                 _('Individuelle Raumgruppen'),
                 $this->semester_planURL(),
                 'clipboard_id',
                 'get'
             );
-            foreach ($clipboards as $clipboard) {
+            foreach ($this->clipboards as $clipboard) {
                 $clipboard_widget->addElement(new SelectElement(
                     $clipboard->id,
                     $clipboard->name,
-                    $clipboard->id === $selected_clipboard_id
+                    $clipboard->id === $this->selected_clipboard_id
                 ), "clipboard_id-{$clipboard->id}");
             }
             $sidebar->addWidget($clipboard_widget);
         }
 
         //Check if a clipboard is selected:
-        $selected_clipboard_id = $_SESSION['selected_clipboard_id'];
         $rooms = [];
-        if ($selected_clipboard_id) {
-            $clipboard = Clipboard::find($selected_clipboard_id);
+        if ($this->selected_clipboard_id) {
+            $clipboard = Clipboard::find($this->selected_clipboard_id);
             $this->clipboard = $clipboard;
             if ($clipboard) {
                 PageLayout::setTitle(
@@ -430,30 +431,22 @@ class RoomManagement_PlanningController extends AuthenticatedController
             return;
         }
 
-        //Generate the resources array for the fullcalendar scheduler plugin:
-        $this->scheduler_resources = [];
-        foreach ($room_ids as $room_id) {
-            $room = Room::find($room_id);
-            $this->scheduler_resources[] = [
-                'id' => $room->id,
-                'parent_name' => $room->building->name,
-                'title' => $room->name
-            ];
-        }
-
-        $current_user = User::findCurrent();
-
         $room_c = count($rooms);
         $requestable_rooms_c = 0;
         $booking_rights_c = 0;
         $admin_rights_c = 0;
         $this->booking_types = [0, 1, 2];
-
+        $this->scheduler_resources = [];
         foreach ($rooms as $room) {
-            if ($room->userHasBookingRights($current_user)) {
+            $this->scheduler_resources[] = [
+                'id' => $room->id,
+                'parent_name' => $room->building->name,
+                'title' => $room->name
+            ];
+            if ($room->userHasBookingRights($this->current_user)) {
                 $booking_rights_c++;
             }
-            if ($room->userHasPermission($current_user, 'admin')) {
+            if ($room->userHasPermission($this->current_user, 'admin')) {
                 $admin_rights_c++;
             }
             if ($room->requestable) {
@@ -461,12 +454,11 @@ class RoomManagement_PlanningController extends AuthenticatedController
             }
 
             //Check the permissions for the room:
-            if (!$room->bookingPlanVisibleForUser($current_user)) {
+            if (!$room->bookingPlanVisibleForUser($this->current_user)) {
                 throw new AccessDeniedException();
             }
         }
 
-        $all_rooms_requestable = ($room_c == $requestable_rooms_c);
         $all_rooms_booking_rights = ($room_c == $booking_rights_c);
         $all_rooms_admin = ($room_c == $admin_rights_c);
         if ($all_rooms_admin) {
@@ -486,14 +478,14 @@ class RoomManagement_PlanningController extends AuthenticatedController
                 _('Alle Anfragen anzeigen'),
                 $this->display_all_requests ? 'checked' : '',
                 $this->url_for(
-                    'room_management/planning/semester_plan/' . $_SESSION['selected_clipboard_id'],
+                    'room_management/planning/semester_plan/' . $this->selected_clipboard_id,
                     [
                         'display_all_requests' => '1',
                         'semester_id' => Request::option('semester_id')
                     ]
                 ),
                 $this->url_for(
-                    'room_management/planning/semester_plan/' . $_SESSION['selected_clipboard_id'],
+                    'room_management/planning/semester_plan/' . $this->selected_clipboard_id,
                     [
                         'semester_id' => Request::option('semester_id')
                     ]
@@ -504,9 +496,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
         }
 
         $booking_colour = ColourValue::find('Resources.BookingPlan.Booking.Bg');
-        $simple_booking_exception_colour = ColourValue::find('Resources.BookingPlan.SimpleBookingWithExceptions.Bg');
         $course_booking_colour = ColourValue::find('Resources.BookingPlan.CourseBooking.Bg');
-        $course_booking_with_exceptions_colour = ColourValue::find('Resources.BookingPlan.CourseBookingWithExceptions.Bg');
         $lock_colour = ColourValue::find('Resources.BookingPlan.Lock.Bg');
         $preparation_colour = ColourValue::find('Resources.BookingPlan.PreparationTime.Bg');
         $reservation_colour = ColourValue::find('Resources.BookingPlan.Reservation.Bg');
@@ -558,15 +548,10 @@ class RoomManagement_PlanningController extends AuthenticatedController
         if (Navigation::hasItem('/resources/planning/copy_bookings')) {
             Navigation::activateItem('/resources/planning/copy_bookings');
         }
-
-        //Check if the clipboard is selected:
-        $selected_clipboard_id = $_SESSION['selected_clipboard_id'];
-
-        $user = User::findCurrent();
-
+        $this->setClipboard($clipboard_id);
         $this->clipboard = null;
-        if ($selected_clipboard_id) {
-            $this->clipboard = Clipboard::find($selected_clipboard_id);
+        if ($this->selected_clipboard_id) {
+            $this->clipboard = Clipboard::find($this->selected_clipboard_id);
         } else {
             $this->clipboard = Clipboard::find($clipboard_id);
             if (!$clipboard_id) {
@@ -582,13 +567,11 @@ class RoomManagement_PlanningController extends AuthenticatedController
             );
             return;
         }
-        if ($this->clipboard->user_id != $GLOBALS['user']->id) {
+        if ($this->clipboard->user_id !== $GLOBALS['user']->id) {
             throw new AccessDeniedException();
         }
 
-        PageLayout::setTitle(
-            $this->clipboard->name . ': ' . _('Buchungen kopieren')
-        );
+        PageLayout::setTitle($this->clipboard->name . ': ' . _('Buchungen kopieren'));
 
         //Step 1: Room selection
         $this->step = 1;
@@ -600,7 +583,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
         $this->rooms = [];
         $this->available_room_ids = [];
         foreach ($unfiltered_rooms as $room) {
-            if ($room->userHasPermission($user, 'autor')) {
+            if ($room->userHasPermission($this->current_user, 'autor')) {
                 $this->rooms[] = $room;
                 $this->available_room_ids[] = $room->id;
             }
@@ -704,7 +687,6 @@ class RoomManagement_PlanningController extends AuthenticatedController
 
             $unfiltered_bookings = [];
             foreach ($this->selected_rooms as $room) {
-                $room_bookings = [];
                 if ($this->sem_week_selected) {
                     $selected_week_begin = $this->source_semester->vorles_beginn;
                     if ($this->selected_sem_week > 1) {
@@ -848,7 +830,6 @@ class RoomManagement_PlanningController extends AuthenticatedController
 
             $available_booking_c = 0;
             foreach ($this->selected_bookings as $booking) {
-                $begin_sem_week_number = 0;
                 if ($this->sem_week_selected) {
                     $begin_sem_week_number = $this->selected_sem_week +
                                              $this->source_semester->getSemWeekNumber($booking->begin) - 1;
@@ -868,7 +849,6 @@ class RoomManagement_PlanningController extends AuthenticatedController
                 }
                 $begin_week_day = date('N', $booking->begin);
                 $begin_time = explode(':', date('H:i:s', $booking->begin));
-                $end_time = explode(':', date('H:i:s', $booking->end));
 
                 //Calculate the duration (begin-end-difference):
                 $booking_begin = new DateTime();
@@ -1061,14 +1041,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
             Navigation::activateItem('/resources/planning/booking_comments');
         }
 
-        $selected_clipboard_id = Request::get('clipboard_id', $selected_clipboard_id);
-        $this->standalone = false;
-
-        if ($selected_clipboard_id) {
-            $_SESSION['selected_clipboard_id'] = $selected_clipboard_id;
-        } else {
-            $selected_clipboard_id = $_SESSION['selected_clipboard_id'];
-        }
+        $this->setClipboard($selected_clipboard_id);
 
         //Get the selected date or use the current date, if none specified:
         $this->date = Request::getDateTime('date', 'd.m.Y', null, null, new DateTime());
@@ -1085,9 +1058,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
         $sidebar = Sidebar::get();
 
         //Add the date selection widget:
-        $date_search = new SearchWidget(
-            $this->url_for('room_management/planning/booking_comments')
-        );
+        $date_search = new SearchWidget($this->url_for('room_management/planning/'));
         $date_search->setTitle(_('Datum'));
         $date_search->setMethod('get');
         $date_search->addNeedle(
@@ -1102,23 +1073,19 @@ class RoomManagement_PlanningController extends AuthenticatedController
         $sidebar->addWidget($date_search);
 
         //Add clipboard widget:
-        $clipboards = Clipboard::getClipboardsForUser($GLOBALS['user']->id);
-        if (!empty($clipboards)) {
-            if (!$selected_clipboard_id) {
-                //Select the first clipboard so that the user doesn't have to select one first:
-                $selected_clipboard_id = $clipboards[0]->id;
-            }
+
+        if (!empty($this->clipboards)) {
             $clipboard_widget = new SelectWidget(
                 _('Individuelle Raumgruppen'),
                 $this->booking_commentsURL(),
                 'clipboard_id',
                 'get'
             );
-            foreach ($clipboards as $clipboard) {
+            foreach ($this->clipboards as $clipboard) {
                 $clipboard_widget->addElement(new SelectElement(
                     $clipboard->id,
                     $clipboard->name,
-                    $clipboard->id === $selected_clipboard_id
+                    $clipboard->id === $this->selected_clipboard_id
                 ), "clipboard_id-{$clipboard->id}");
             }
             $sidebar->addWidget($clipboard_widget);
@@ -1126,8 +1093,8 @@ class RoomManagement_PlanningController extends AuthenticatedController
 
         $this->current_user = User::findCurrent();
         $this->room_ids = [];
-        if ($selected_clipboard_id) {
-            $clipboard = Clipboard::find($selected_clipboard_id);
+        if ($this->selected_clipboard_id) {
+            $clipboard = Clipboard::find($this->selected_clipboard_id);
             $this->clipboard = $clipboard;
             if ($clipboard) {
                 PageLayout::setTitle(
@@ -1237,7 +1204,6 @@ class RoomManagement_PlanningController extends AuthenticatedController
             $interval_end = new DateTime();
             $interval_end->setTimestamp($interval->end);
             $begin_weekday = date('N', $interval->begin);
-            $end_weekday = date('N', $interval->end);
 
             if ($interval_begin->format('Ymd') != $interval_end->format('Ymd')) {
                 //The interval is spread over several days.
@@ -1370,10 +1336,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
 
             $template = $factory->open('booking_comments_html_export_frame.php');
 
-            $template->set_attribute(
-                'data',
-                $this->data
-            );
+            $template->set_attribute('data', $this->data);
             $template->set_attribute('date', $this->date);
 
             $html = $template->render();
