@@ -198,7 +198,7 @@ class ConsultationSlot extends SimpleORMap
      */
     public function updateEvent()
     {
-        if ($this->block->range_type !== 'user') {
+        if ($this->isNew() || $this->block->range_type !== 'user') {
             return;
         }
 
