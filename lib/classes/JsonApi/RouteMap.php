@@ -119,7 +119,7 @@ class RouteMap
         $this->addAuthenticatedContactsRoutes($group);
         $this->addAuthenticatedCoursesRoutes($group);
 
-        if (PluginManager::getInstance()->getPlugin('CoursewareModule')) {
+        if (\PluginManager::getInstance()->getPlugin('CoursewareModule')) {
             $this->addAuthenticatedCoursewareRoutes($group);
         }
 
