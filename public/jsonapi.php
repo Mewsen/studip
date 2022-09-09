@@ -24,6 +24,8 @@ URLHelper::setBaseUrl($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP']);
 $appFactory = new AppFactory();
 $app = $appFactory->makeApp();
 
+$app->add(JsonApi\Middlewares\Language::class);
+
 // add routes
 $app->group('/v1', new RouteMap($app));
 
