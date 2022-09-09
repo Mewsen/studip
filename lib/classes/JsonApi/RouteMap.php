@@ -118,7 +118,11 @@ class RouteMap
         $this->addAuthenticatedConsultationRoutes($group);
         $this->addAuthenticatedContactsRoutes($group);
         $this->addAuthenticatedCoursesRoutes($group);
-        $this->addAuthenticatedCoursewareRoutes($group);
+
+        if (PluginManager::getInstance()->getPlugin('CoursewareModule')) {
+            $this->addAuthenticatedCoursewareRoutes($group);
+        }
+
         $this->addAuthenticatedEventsRoutes($group);
         $this->addAuthenticatedFeedbackRoutes($group);
         $this->addAuthenticatedFilesRoutes($group);
