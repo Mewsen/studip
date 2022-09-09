@@ -146,13 +146,8 @@ class RouteMap
         $this->addAuthenticatedContactsRoutes();
         $this->addAuthenticatedCoursesRoutes();
 
-<<<<<<< HEAD
-        if (PluginManager::getInstance()->getPlugin('CoursewareModule')) {
-            $this->addAuthenticatedCoursewareRoutes();
-=======
         if (\PluginManager::getInstance()->getPlugin('CoursewareModule')) {
-            $this->addAuthenticatedCoursewareRoutes($group);
->>>>>>> 4115c7686 (Resolve #1570 "Courseware lädt nicht mehr : 500 Class 'JsonApi\PluginManager' not found")
+            $this->addAuthenticatedCoursewareRoutes();
         }
 
         $this->addAuthenticatedEventsRoutes();
@@ -178,16 +173,7 @@ class RouteMap
         $this->app->get('/semesters', Routes\SemestersIndex::class);
         $this->app->get('/semesters/{id}', Routes\SemestersShow::class);
 
-<<<<<<< HEAD
         $this->app->get('/studip/properties', Routes\Studip\PropertiesIndex::class);
-=======
-        $group->get('/studip/properties', Routes\Studip\PropertiesIndex::class);
-
-        if (\PluginManager::getInstance()->getPlugin('CoursewareModule')) {
-            $group->get('/public/courseware/{link_id}/courseware-structural-elements/{id}', Routes\Courseware\PublicStructuralElementsShow::class);
-            $group->get('/public/courseware/{link_id}/courseware-structural-elements', Routes\Courseware\PublicStructuralElementsIndex::class);
-        }
->>>>>>> 4115c7686 (Resolve #1570 "Courseware lädt nicht mehr : 500 Class 'JsonApi\PluginManager' not found")
     }
 
     private function getAuthenticator()
