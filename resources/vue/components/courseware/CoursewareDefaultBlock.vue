@@ -48,7 +48,7 @@
                 <courseware-block-edit
                     v-if="canEdit && showEdit"
                     :block="block"
-                    @store="$emit('storeEdit')"
+                    @store="prepareStoreEdit"
                     @close="closeEdit"
                 >
                     <template #edit>
@@ -264,7 +264,7 @@ export default {
             let sections = container.attributes.payload.sections;
 
             // lock parent container
-            await this.lockObject({ id: containerId, type: 'courseware-containers' }); 
+            await this.lockObject({ id: containerId, type: 'courseware-containers' });
             // update container information
             for (let i = 0; i < sections.length; i++) {
                 for (let j = 0; j < sections[i].blocks.length; j++) {
@@ -305,6 +305,13 @@ export default {
             await this.loadComments();
             this.$refs.comments.$refs.comments.scrollTo(0, this.$refs.comments.$refs.comments.scrollHeight);
         },
+
+        prepareStoreEdit() {
+            // storeEdit is only emitted when the block is not in deleting process.
+            if (!this.showDeleteDialog) {
+                this.$emit('storeEdit');
+            }
+        }
     },
 };
 </script>
