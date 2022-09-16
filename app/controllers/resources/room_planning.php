@@ -304,7 +304,7 @@ class Resources_RoomPlanningController extends AuthenticatedController
                     'javascript:void(window.print());',
                     Icon::create('print')
                 );
-                if ($this->resource->userHasPermission($this->user)) {
+                if ($this->resource->userHasPermission($current_user)) {
                     if ($this->resource instanceof Room) {
                         $actions->addLink(
                             _('Individuelle Druckansicht'),
