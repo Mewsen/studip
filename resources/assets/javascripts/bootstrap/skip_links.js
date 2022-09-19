@@ -6,3 +6,5 @@ jQuery(document).on('click', function(event) {
         STUDIP.SkipLinks.moveSkipLinkNavigationOut();
     }
 });
+
+jQuery(document).on('focusin', '#skip_link_navigation', STUDIP.SkipLinks.moveSkipLinkNavigationIn);

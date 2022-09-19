@@ -28,7 +28,12 @@ const SkipLinks = {
      * shows the skiplink-navigation window by moving it from the left
      */
     moveSkipLinkNavigationIn: function() {
-        if (SkipLinks.navigationStatus === 0) {
+        //Show the skip link navigation only if it hasn't been shown before or if it
+        //is focused after it has been shown.
+        if (SkipLinks.navigationStatus === 0 ||
+            (SkipLinks.navigationStatus === 2 && jQuery('#skip_link_navigation:focus').length)) {
+            //Make the skip link items focusable:
+            jQuery('#skip_link_navigation li a').attr('tabindex', '0');
             var VpWidth = jQuery(window).width();
             jQuery('#skip_link_navigation li:first a').focus();
             jQuery('#skip_link_navigation').css({ left: VpWidth / 2, opacity: 0 });
@@ -46,6 +51,10 @@ const SkipLinks = {
             jQuery('#skip_link_navigation').animate({ opacity: 0 }, 500, function() {
                 jQuery(this).css('left', '-600px');
             });
+            //Make the skip link items unfocusable:
+            jQuery('#skip_link_navigation li a').attr('tabindex', '-1');
+            //Make the menu focusable:
+            jQuery('#skip_link_navigation').attr('tabindex', '0');
         }
         SkipLinks.navigationStatus = 2;
     },
