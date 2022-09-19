@@ -31,7 +31,7 @@ const SkipLinks = {
         //Show the skip link navigation only if it hasn't been shown before or if it
         //is focused after it has been shown.
         if (SkipLinks.navigationStatus === 0 ||
-            (SkipLinks.navigationStatus === 2 && jQuery('#skip_link_navigation:focus').length)) {
+            SkipLinks.navigationStatus === 2 && jQuery('#skip_link_navigation:focus').length) {
             //Make the skip link items focusable:
             jQuery('#skip_link_navigation li a').attr('tabindex', '0');
             var VpWidth = jQuery(window).width();
