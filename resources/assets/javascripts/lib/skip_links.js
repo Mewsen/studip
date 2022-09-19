@@ -47,12 +47,12 @@ const SkipLinks = {
      */
     moveSkipLinkNavigationOut: function() {
         if (SkipLinks.navigationStatus === 1) {
+            //Make the skip link items unfocusable:
+            jQuery('#skip_link_navigation li a').attr('tabindex', '-1');
             jQuery(SkipLinks.box).hide();
             jQuery('#skip_link_navigation').animate({ opacity: 0 }, 500, function() {
                 jQuery(this).css('left', '-600px');
             });
-            //Make the skip link items unfocusable:
-            jQuery('#skip_link_navigation li a').attr('tabindex', '-1');
             //Make the menu focusable:
             jQuery('#skip_link_navigation').attr('tabindex', '0');
         }
