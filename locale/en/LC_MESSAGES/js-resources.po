@@ -2,10 +2,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2022-05-13 14:48+0000\n"
+"PO-Revision-Date: 2022-09-21 12:20+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
-"stud-ip-5-1-js/en/>\n"
+"stud-ip-5-2-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1099,7 +1099,7 @@ msgstr "FAQ"
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:75
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:17
 msgid "Farbe"
-msgstr "Color"
+msgstr "Colour"
 
 #: resources/vue/mixins/MyCoursesMixin.js:74
 msgid "Farbgruppierung ändern"
