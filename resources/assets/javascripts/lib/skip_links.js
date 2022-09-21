@@ -32,12 +32,14 @@ const SkipLinks = {
         //is focused after it has been shown.
         if (SkipLinks.navigationStatus === 0 ||
             SkipLinks.navigationStatus === 2 && jQuery('#skip_link_navigation:focus').length) {
+            console.debug('make focusable');
+            console.debug(jQuery('#skip_link_navigation li button'));
             //Make the skip link items focusable:
-            jQuery('#skip_link_navigation li a').attr('tabindex', '0');
+            jQuery('#skip_link_navigation li button').attr('tabindex', '0');
             var VpWidth = jQuery(window).width();
-            jQuery('#skip_link_navigation li:first a').focus();
-            jQuery('#skip_link_navigation').css({ left: VpWidth / 2, opacity: 0 });
-            jQuery('#skip_link_navigation').animate({ opacity: 1.0 }, 500);
+            jQuery('#skip_link_navigation li:first button').focus();
+            jQuery('#skip_link_navigation').removeClass('inactive');
+            jQuery('#skip_link_navigation').addClass('active');
             SkipLinks.navigationStatus = 1;
         }
     },
@@ -48,11 +50,12 @@ const SkipLinks = {
     moveSkipLinkNavigationOut: function() {
         if (SkipLinks.navigationStatus === 1) {
             //Make the skip link items unfocusable:
-            jQuery('#skip_link_navigation li a').attr('tabindex', '-1');
+            console.debug('make unfocusable');
+            console.debug(jQuery('#skip_link_navigation li button'));
+            jQuery('#skip_link_navigation li button').attr('tabindex', '-1');
             jQuery(SkipLinks.box).hide();
-            jQuery('#skip_link_navigation').animate({ opacity: 0 }, 500, function() {
-                jQuery(this).css('left', '-600px');
-            });
+            jQuery('#skip_link_navigation').removeClass('active');
+            jQuery('#skip_link_navigation').addClass('inactive');
             //Make the menu focusable:
             jQuery('#skip_link_navigation').attr('tabindex', '0');
         }

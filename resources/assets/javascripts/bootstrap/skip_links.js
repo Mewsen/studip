@@ -1,10 +1,6 @@
 STUDIP.domReady(STUDIP.SkipLinks.initialize);
 
 jQuery(document).on('keyup', STUDIP.SkipLinks.showSkipLinkNavigation);
-jQuery(document).on('click', function(event) {
-    if (!jQuery(event.target).is('#skip_link_navigation a')) {
-        STUDIP.SkipLinks.moveSkipLinkNavigationOut();
-    }
-});
+jQuery(document).on('click', '#skip_link_navigation button', STUDIP.SkipLinks.moveSkipLinkNavigationOut)
 
-jQuery(document).on('focusin', '#skip_link_navigation', STUDIP.SkipLinks.moveSkipLinkNavigationIn);
+jQuery(document).on('focusin', '#skip_link_navigation .hidden', STUDIP.SkipLinks.moveSkipLinkNavigationIn);
