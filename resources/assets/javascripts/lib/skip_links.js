@@ -1,16 +1,4 @@
-// Taken from https://stackoverflow.com/a/42149818
-const isSelectorValid = (dummyElement =>
-    selector => {
-        try {
-            dummyElement.querySelector(selector);
-        } catch {
-            return false;
-        }
-        return true;
-})(document.createDocumentFragment());
-
 const SkipLinks = {
-    activeElement: null,
     navigationStatus: 0,
 
     /**
@@ -75,7 +63,7 @@ const SkipLinks = {
      * and highlights it
      */
     setActiveTarget (id) {
-        var fragment = null;
+        let fragment = '';
         // set active area only if skip links are activated
         if (!document.getElementById('skip_link_navigation')) {
             return false;
@@ -86,28 +74,23 @@ const SkipLinks = {
             fragment = document.location.hash;
         }
 
-        if (fragment.length > 0 && isSelectorValid(fragment) && fragment !== SkipLinks.activeElement && document.querySelector(fragment)) {
+        if (fragment.length > 0 && jQuery(fragment).length > 0) {
             SkipLinks.moveSkipLinkNavigationOut();
             if (jQuery(fragment).is(':focusable')) {
-                jQuery(fragment)
-                    .click()
-                    .focus();
+                jQuery(fragment).click().focus();
             } else {
                 //Set the focus on the first focusable element:
                 jQuery(fragment).find(':focusable').eq(0).focus();
             }
-            SkipLinks.activeElement = fragment;
             return true;
         } else {
-            jQuery('#skip_link_navigation li a')
-                .first()
-                .focus();
+            jQuery('#skip_link_navigation li button').first().focus();
         }
         return false;
     },
 
     insertHeadLines: function() {
-        var target = null;
+        let target = null;
         jQuery('#skip_link_navigation a').each(function() {
             target = jQuery(this);
             if (jQuery(target).is('li,td')) {
