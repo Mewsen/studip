@@ -1,18 +1,3 @@
-@keyframes skip_link_fading {
-    from {
-        opacity: 0;
-        left: 50vw;
-    }
-
-    100% {
-        opacity: 1.0;
-    }
-
-    to {
-        left: -600px;
-    }
-}
-
 /* skiplink-area highlighting -------------------------------------------- */
 #skip_link_navigation {
     background-color: $white;
@@ -23,18 +8,16 @@
     top: 20px;
     z-index: 3000;
 
-    .active {
-        animation-name: skip_link_fading;
-        animation-duration: 500ms;
-        animation-direction: normal;
-        animation-iteration-count: 1;
+    transition: opacity 0.5s linear;
+
+    &.active {
+        opacity: 1.0;
+        left: 50vw;
     }
 
-    .inactive {
-        animation-name: skip_link_fading;
-        animation-duration: 500ms;
-        animation-direction: reverse;
-        animation-iteration-count: 1;
+    &.inactive {
+        opacity: 0;
+        left: -600px;
     }
 
     ul {

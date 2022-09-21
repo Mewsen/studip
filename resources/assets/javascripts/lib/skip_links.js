@@ -32,11 +32,10 @@ const SkipLinks = {
         //is focused after it has been shown.
         if (SkipLinks.navigationStatus === 0 ||
             SkipLinks.navigationStatus === 2 && jQuery('#skip_link_navigation:focus').length) {
-            console.debug('make focusable');
-            console.debug(jQuery('#skip_link_navigation li button'));
+            //Make the menu itself unfocusable:
+            jQuery('#skip_link_navigation').attr('tabindex', '-1');
             //Make the skip link items focusable:
             jQuery('#skip_link_navigation li button').attr('tabindex', '0');
-            var VpWidth = jQuery(window).width();
             jQuery('#skip_link_navigation li:first button').focus();
             jQuery('#skip_link_navigation').removeClass('inactive');
             jQuery('#skip_link_navigation').addClass('active');
@@ -50,10 +49,7 @@ const SkipLinks = {
     moveSkipLinkNavigationOut: function() {
         if (SkipLinks.navigationStatus === 1) {
             //Make the skip link items unfocusable:
-            console.debug('make unfocusable');
-            console.debug(jQuery('#skip_link_navigation li button'));
             jQuery('#skip_link_navigation li button').attr('tabindex', '-1');
-            jQuery(SkipLinks.box).hide();
             jQuery('#skip_link_navigation').removeClass('active');
             jQuery('#skip_link_navigation').addClass('inactive');
             //Make the menu focusable:

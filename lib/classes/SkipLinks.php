@@ -50,7 +50,7 @@ class SkipLinks
             return;
         }
 
-        PageLayout::addBodyElements('<div id="skip_link_navigation" aria-busy="true"></div>');
+        PageLayout::addBodyElements('<div id="skip_link_navigation" class="inactive" aria-busy="true"></div>');
     }
 
     /**
