@@ -13,6 +13,28 @@
                 </li>
                 <li v-if="showEditMode && canEdit"><courseware-block-adder-area :container="container" :section="0" /></li>
             </ul>
+            <draggable
+                v-if="sortMode && canEdit"
+                class="cw-container-list-block-list cw-container-list-sort-mode"
+                tag="ul"
+                v-model="blockList"
+                v-bind="dragOptions"
+                handle=".cw-sortable-handle"
+                @start="isDragging = true"
+                @end="isDragging = false"
+            >
+                <transition-group type="transition" name="flip-blocks">
+                    <li v-for="block in blockList" :key="block.id" class="cw-block-item cw-block-item-sortable">
+                        <component :is="component(block)" :block="block" :canEdit="canEdit" :isTeacher="isTeacher" />
+                    </li>
+                </transition-group>
+
+            </draggable>
+            <div v-if="sortMode && canEdit">
+                <button class="button accept" @click="storeSort"><translate>Sortierung speichern</translate></button>
+                <button class="button cancel"  @click="resetSort"><translate>Sortieren abbrechen</translate></button>
+            </div>
+
         </template>
     </courseware-default-container>
 </template>
@@ -43,7 +65,7 @@ export default {
                 return [];
             }
 
-            return this.container.attributes.payload.sections[0].blocks.map((id) => this.blockById({ id })).filter((a) => a);
+            return this.container.relationships.blocks.data.map(({ id }) => this.blockById({ id })).filter(Boolean);
         },
         showEditMode() {
             return this.$store.getters.viewMode === 'edit';
