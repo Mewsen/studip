@@ -62,6 +62,7 @@
                                 @pdfExport="menuAction('pdfExport')"
                                 @showSuggest="menuAction('showSuggest')"
                                 @linkElement="menuAction('linkElement')"
+                                @removeLock="menuAction('removeLock')"
                             />
                         </template>
                     </courseware-ribbon>
@@ -75,6 +76,17 @@
                         }"
                     >
                         <div v-if="structuralElementLoaded" class="cw-companion-box-wrapper">
+                            <courseware-companion-box 
+                                v-if="blockedByAnotherUser"
+                                :msgCompanion="$gettextInterpolate('Die Einstellungen dieser Seite werden im Moment von %{blockingUserName} bearbeitet', {blockingUserName: blockingUserName})"
+                                mood="pointing"
+                            >
+                                <template #companionActions>
+                                    <button class="button" @click="menuAction('removeLock')">
+                                        {{ textRemoveLock.title }}
+                                    </button>
+                                </template>
+                            </courseware-companion-box>
                             <courseware-empty-element-box
                                 v-if="showEmptyElementBox"
                                 :canEdit="canEdit"
@@ -583,6 +595,15 @@
                         </form>
                     </template>
                 </studip-dialog>
+                <studip-dialog
+                    v-if="showRemoveLockDialog"
+                    :title="textRemoveLock.title"
+                    :question="textRemoveLock.alert"
+                    height="200"
+                    width="450"
+                    @confirm="executeRemoveLock"
+                    @close="showElementRemoveLockDialog(false)"
+                ></studip-dialog>
             </div>
             <div v-else>
                 <courseware-companion-box
@@ -677,6 +698,10 @@ export default {
                 perv: this.$gettext('zurück'),
                 next: this.$gettext('weiter'),
             },
+            textRemoveLock: {
+                title: this.$gettext('Sperre aufheben'),
+                alert: this.$gettext('Möchten Sie die Sperre der Seite wirklich aufheben?'),
+            },
             exportRunning: false,
             exportChildren: false,
             oerExportRunning: false,
@@ -697,7 +722,7 @@ export default {
             publicLink: {
                 passsword: '',
                 'expire-date': ''
-            }
+            },
         };
     },
 
@@ -723,6 +748,7 @@ export default {
             showOerDialog: 'showStructuralElementOerDialog',
             showSuggestOerDialog: 'showSuggestOerDialog',
             showLinkDialog: 'showStructuralElementLinkDialog',
+            showRemoveLockDialog: 'showStructuralElementRemoveLockDialog',
             oerEnabled: 'oerEnabled',
             oerTitle: 'oerTitle',
             licenses: 'licenses',
@@ -733,6 +759,11 @@ export default {
             viewMode: 'viewMode',
             taskById: 'courseware-tasks/byId',
             userById: 'users/byId',
+
+            blocked: 'currentElementBlocked',
+            blockerId: 'currentElementBlockerId',
+            blockedByThisUser: 'currentElementBlockedByThisUser',
+            blockedByAnotherUser: 'currentElementBlockedByAnotherUser',
         }),
 
         currentId() {
@@ -915,25 +946,34 @@ export default {
 
             ];
             if (this.canEdit) {
-                menu.push({
-                    id: 1,
-                    label: this.$gettext('Seite bearbeiten'),
-                    icon: 'edit',
-                    emit: 'editCurrentElement',
-                });
-                menu.push({
-                    id: 2,
-                    label: this.$gettext('Abschnitte sortieren'),
-                    icon: 'arr_1sort',
-                    emit: 'sortContainers',
-                });
-
+                if (!this.blocked) {
+                    menu.push({
+                        id: 1,
+                        label: this.$gettext('Seite bearbeiten'),
+                        icon: 'edit',
+                        emit: 'editCurrentElement',
+                    });
+                    menu.push({
+                        id: 2,
+                        label: this.$gettext('Abschnitte sortieren'),
+                        icon: 'arr_1sort',
+                        emit: 'sortContainers',
+                    });
+                } 
+                if (this.blocked && this.blockedByAnotherUser && this.userIsTeacher) {
+                    menu.push({
+                        id: 1,
+                        label: this.textRemoveLock.title,
+                        icon: 'lock-unlocked',
+                        emit: 'removeLock',
+                    });
+                }
                 menu.push({ id: 3, label: this.$gettext('Seite hinzufügen'), icon: 'add', emit: 'addElement' });
             }
             if (this.context.type === 'users') {
                 menu.push({ id: 6, label: this.$gettext('Öffentlichen Link erzeugen'), icon: 'group', emit: 'linkElement' });
             }
-            if (!this.isRoot && this.canEdit && !this.isTask) {
+            if (!this.isRoot && this.canEdit && !this.isTask && !this.blocked) {
                 menu.push({
                     id: 9,
                     label: this.$gettext('Seite löschen'),
@@ -1104,17 +1144,15 @@ export default {
 
             return '';
         },
-        blocked() {
-            return this.structuralElement?.relationships['edit-blocker'].data !== null;
+        blockingUser() {
+            if (this.blockedByAnotherUser) {
+                return this.userById({id: this.blockerId});
+            }
+
+            return null;
         },
-        blockerId() {
-            return this.blocked ? this.structuralElement?.relationships['edit-blocker'].data?.id : null;
-        },
-        blockedByThisUser() {
-            return this.blocked && this.userId === this.blockerId;
-        },
-        blockedByAnotherUser() {
-            return this.blocked && this.userId !== this.blockerId;
+        blockingUserName() {
+            return this.blockingUser ? this.blockingUser.attributes['formatted-name'] : '';
         },
         discussView() {
             return this.viewMode === 'discuss';
@@ -1244,6 +1282,7 @@ export default {
             unlockObject: 'unlockObject',
             addBookmark: 'addBookmark',
             companionInfo: 'companionInfo',
+            companionWarning: 'companionWarning',
             companionError: 'companionError',
             uploadImageForStructuralElement: 'uploadImageForStructuralElement',
             deleteImageForStructuralElement: 'deleteImageForStructuralElement',
@@ -1256,6 +1295,7 @@ export default {
             showElementDeleteDialog: 'showElementDeleteDialog',
             showElementOerDialog: 'showElementOerDialog',
             showElementLinkDialog: 'showElementLinkDialog',
+            showElementRemoveLockDialog: 'showElementRemoveLockDialog',
             updateShowSuggestOerDialog: 'updateShowSuggestOerDialog',
             updateContainer: 'updateContainer',
             setStructuralElementSortMode: 'setStructuralElementSortMode',
@@ -1263,6 +1303,7 @@ export default {
             loadTask: 'loadTask',
             loadStructuralElement: 'loadStructuralElement',
             createLink: 'createLink',
+            setCurrentElementId: 'coursewareCurrentElement',
         }),
 
         initCurrent() {
@@ -1271,7 +1312,11 @@ export default {
         },
         async menuAction(action) {
             switch (action) {
+                case 'removeLock':
+                    this.displayRemoveLockDialog();
+                    break;
                 case 'editCurrentElement':
+                    await this.loadStructuralElement(this.currentId);
                     if (this.blockedByAnotherUser) {
                         this.companionInfo({ info: this.$gettext('Diese Seite wird bereits bearbeitet.') });
 
@@ -1279,7 +1324,7 @@ export default {
                     }
                     try {
                         await this.lockObject({ id: this.currentId, type: 'courseware-structural-elements' });
-                    } catch (error) {
+                    } catch(error) {
                         if (error.status === 409) {
                             this.companionInfo({ info: this.$gettext('Diese Seite wird bereits bearbeitet.') });
                         } else {
@@ -1288,6 +1333,7 @@ export default {
 
                         return false;
                     }
+                    this.initCurrent();
                     this.showElementEditDialog(true);
                     break;
                 case 'addElement':
@@ -1297,6 +1343,12 @@ export default {
                     this.showElementAddDialog(true);
                     break;
                 case 'deleteCurrentElement':
+                    await this.loadStructuralElement(this.currentId);
+                    if (this.blockedByAnotherUser) {
+                        this.companionInfo({ info: this.$gettextInterpolate('Löschen nicht möglich, da %{blockingUserName} die Seite bearbeitet.', {blockingUserName: this.blockingUserName}) });
+
+                        return false;
+                    }
                     await this.lockObject({ id: this.currentId, type: 'courseware-structural-elements' });
                     this.showElementDeleteDialog(true);
                     break;
@@ -1316,6 +1368,7 @@ export default {
                     this.setBookmark();
                     break;
                 case 'sortContainers':
+                    await this.loadStructuralElement(this.currentId);
                     if (this.blockedByAnotherUser) {
                         this.companionInfo({ info: this.$gettext('Diese Seite wird bereits bearbeitet.') });
 
@@ -1340,7 +1393,11 @@ export default {
             }
         },
         async closeEditDialog() {
-            await this.unlockObject({ id: this.currentId, type: 'courseware-structural-elements' });
+            await this.loadStructuralElement(this.currentElement.id);
+            if (this.blockedByThisUser) {
+                await this.unlockObject({ id: this.currentId, type: 'courseware-structural-elements' });
+                await this.loadStructuralElement(this.currentElement.id);
+            }
             this.showElementEditDialog(false);
             this.initCurrent();
         },
@@ -1362,6 +1419,15 @@ export default {
             this.initCurrent();
         },
         async storeCurrentElement() {
+            await this.loadStructuralElement(this.currentElement.id);
+            if (this.blockedByAnotherUser) {
+                this.companionWarning({ info: this.$gettextInterpolate('Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.', {blockingUserName: this.blockingUserName}) });
+                this.showElementEditDialog(false);
+                return false;
+            }
+            if (!this.blocked) {
+                await this.lockObject({ id: this.currentId, type: 'courseware-structural-elements' });
+            }
             const file = this.$refs?.upload_image?.files[0];
             if (file) {
                 if (file.size > 2097152) {
@@ -1459,10 +1525,19 @@ export default {
         },
 
         async closeDeleteDialog() {
-            await this.unlockObject({ id: this.currentId, type: 'courseware-structural-elements' });
+            await this.loadStructuralElement(this.currentElement.id);
+            if (this.blockedByThisUser) {
+                await this.unlockObject({ id: this.currentId, type: 'courseware-structural-elements' });
+            }
             this.showElementDeleteDialog(false);
         },
-        deleteCurrentElement() {
+        async deleteCurrentElement() {
+            await this.loadStructuralElement(this.currentElement.id);
+            if (this.blockedByAnotherUser) {
+                this.companionWarning({ info: this.$gettextInterpolate('Löschen nicht möglich, da %{blockingUserName} die Bearbeitung übernommen hat.', {blockingUserName: this.blockingUserName}) });
+                this.showElementDeleteDialog(false);
+                return false;
+            }
             let parent_id = this.structuralElement.relationships.parent.data.id;
             this.showElementDeleteDialog(false);
             this.companionInfo({ info: this.$gettext('Lösche Seite und alle darunter liegenden Elemente.') });
@@ -1555,6 +1630,14 @@ export default {
                 'expire-date': ''
             };
             this.showElementLinkDialog(false);
+        },
+        displayRemoveLockDialog() {
+            this.showElementRemoveLockDialog(true);
+        },
+        async executeRemoveLock() {
+            await this.unlockObject({ id: this.currentId, type: 'courseware-structural-elements' });
+            await this.loadStructuralElement(this.currentElement.id);
+            this.showElementRemoveLockDialog(false);
         }
     },
     created() {
@@ -1562,7 +1645,8 @@ export default {
     },
 
     watch: {
-        structuralElement() {
+        async structuralElement() {
+            this.setCurrentElementId(this.structuralElement.id);
             this.initCurrent();
             if (this.isTask) {
                 this.loadTask({
