@@ -53,6 +53,15 @@
             />
         </div>
         <studip-dialog
+            v-if="showEditWarning"
+            :title="textEditWarningTitle"
+            :question="textEditWarningAlert"
+            height="220"
+            width="450"
+            @confirm="displayFeature('Edit', true)"
+            @close="showEditWarning = false"
+        ></studip-dialog>
+        <studip-dialog
             v-if="showDeleteDialog"
             :title="textDeleteTitle"
             :question="textDeleteAlert"
@@ -117,8 +126,11 @@ export default {
             showInfo: false,
             showContent: true,
             showEditModeShortcut: false,
+            showEditWarning: false,
             showDeleteDialog: false,
             currentComments: [],
+            textEditWarningTitle: this.$gettext('Dieser Block wird gerade bearbeitet'),
+            textEditWarningAlert: '',
             textDeleteTitle: this.$gettext('Block unwiderruflich löschen'),
             textDeleteAlert: this.$gettext('Möchten Sie diesen Block wirklich löschen?'),
         };
@@ -153,6 +165,17 @@ export default {
         blockedByAnotherUser() {
             return this.blocked && this.userId !== this.blockerId;
         },
+        blockingUserName() {
+            if (this.blocked) {
+                const user = this.$store.getters["users/related"]({
+                    parent: { type: this.block.type, id: this.block.id },
+                    relationship: "edit-blocker"
+                });
+                return user ? user.attributes['formatted-name'] : this.$gettext('unbekannt');
+            }
+
+            return null;
+        },
         blockTitle() {
             const type = this.block.attributes['block-type'];
 
@@ -181,9 +204,12 @@ export default {
             loadContainer: 'loadContainer',
             updateContainer: 'updateContainer',
         }),
-        async displayFeature(element) {
+        async displayFeature(element, override_lock = false) {
             if (this.showEdit && element === 'Edit') {
                 return false;
+            }
+            if (override_lock && element === 'Edit') {
+                this.showEditWarning = false;
             }
             this.showFeatures = false;
             this.showExportOptions = false;
@@ -193,15 +219,11 @@ export default {
             if (element) {
                 if (element === 'Edit') {
                     await this.loadContainer(this.block.relationships.container.data.id);
-                    if (!this.blocked) {
+                    if (!this.blocked || override_lock) {
                         try {
                             await this.lockObject({ id: this.block.id, type: 'courseware-blocks' });
                         } catch(error) {
-                            if (error.status === 403) {
-                                this.companionInfo({ info: this.$gettext('Dieser Block wird bereits bearbeitet.') });
-                            } else {
-                                console.log(error);
-                            }
+                            console.log(error);
 
                             return false;
                         }
@@ -218,7 +240,9 @@ export default {
                             this['show' + element] = true;
                             this.showFeatures = true;
                         } else {
-                            this.companionInfo({ info: this.$gettext('Dieser Block wird bereits bearbeitet.') });
+                            this.textEditWarningAlert = this.$gettext('Dieser Block wird bereits von %{username} bearbeitet. Möchten Sie den Block trotzdem bearbeiten?');
+                            this.textEditWarningAlert = this.$gettextInterpolate(this.textEditWarningAlert, { username: this.blockingUserName });
+                            this.showEditWarning = true;
                         }
                     }
                 } else {

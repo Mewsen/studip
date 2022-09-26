@@ -36,6 +36,15 @@
             </studip-dialog>
 
             <studip-dialog
+                v-if="showEditWarning"
+                :title="textEditWarningTitle"
+                :question="textEditWarningAlert"
+                height="220"
+                width="450"
+                @confirm="displayEditDialog(true)"
+                @close="showEditWarning = false"
+            ></studip-dialog>
+            <studip-dialog
                 v-if="showDeleteDialog"
                 :title="textDeleteTitle"
                 :question="textDeleteAlert"
@@ -68,7 +77,10 @@ export default {
     data() {
         return {
             showDeleteDialog: false,
+            showEditWarning: false,
             showEditDialog: false,
+            textEditWarningTitle: this.$gettext('Dieser Abschnitt wird gerade bearbeitet'),
+            textEditWarningAlert: '',
             textEditConfirm: this.$gettext('Speichern'),
             textEditClose: this.$gettext('Schließen'),
             textEditTitle: this.$gettext('Abschnitt bearbeiten'),
@@ -98,6 +110,17 @@ export default {
         blockedByAnotherUser() {
             return this.blocked && this.userId !== this.blockerId;
         },
+        blockingUserName() {
+            if (this.blocked) {
+                const user = this.$store.getters["users/related"]({
+                    parent: { type: this.container.type, id: this.container.id },
+                    relationship: "edit-blocker"
+                });
+                return user ? user.attributes['formatted-name'] : this.$gettext('unbekannt');
+            }
+
+            return null;
+        },
     },
     methods: {
         ...mapActions({
@@ -106,20 +129,21 @@ export default {
             unlockObject: 'unlockObject',
             companionInfo: 'companionInfo',
         }),
-        async displayEditDialog() {
-            if (this.blockedByAnotherUser) {
-                this.companionInfo({ info: this.$gettext('Dieser Abschnitt wird bereits bearbeitet.') });
+        async displayEditDialog(override_lock = false) {
+            if (override_lock) {
+                this.showEditWarning = false;
+            }
+            if (this.blockedByAnotherUser && !override_lock) {
+                this.textEditWarningAlert = this.$gettext('Dieser Abschnitt wird bereits von %{username} bearbeitet. Möchten Sie den Abschnitt trotzdem bearbeiten?');
+                this.textEditWarningAlert = this.$gettextInterpolate(this.textEditWarningAlert, { username: this.blockingUserName });
+                this.showEditWarning = true;
 
                 return false;
             }
             try {
                 await this.lockObject({ id: this.container.id, type: 'courseware-containers' });
             } catch(error) {
-                if (error.status === 409) {
-                    this.companionInfo({ info: this.$gettext('Dieser Abschnitt wird bereits bearbeitet.') });
-                } else {
-                    console.log(error);
-                }
+                console.log(error);
 
                 return false;
             }

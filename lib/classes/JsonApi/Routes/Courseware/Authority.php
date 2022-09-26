@@ -58,10 +58,6 @@ class Authority
 
     public static function canUpdateBlock(User $user, Block $resource)
     {
-        if ($resource->isBlocked()) {
-            return $resource->getBlockerUserId() == $user->id;
-        }
-
         return self::canUpdateContainer($user, $resource->container);
     }
 
@@ -72,7 +68,15 @@ class Authority
 
     public static function canUpdateEditBlocker(User $user, $resource)
     {
-        return $resource->edit_blocker_id == '' || $resource->edit_blocker_id === $user->id;
+        if ($resource instanceof Block) {
+            return self::canUpdateBlock($user, $resource);
+        } else if ($resource instanceof Container) {
+            return self::canUpdateContainer($user, $resource);
+        } else if ($resource instanceof StructuralElement) {
+            return self::canUpdateStructuralElement($user, $resource);
+        } else {
+            return false;
+        }
     }
 
     public static function canShowContainer(User $user, Container $resource)
