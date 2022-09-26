@@ -10,12 +10,17 @@
                 <translate>Vollbild einschalten</translate>
             </button>
         </li>
-        <li v-if="canEdit" class="cw-action-widget-edit">
+        <li v-if="canEdit && !blockedByAnotherUser" class="cw-action-widget-edit">
             <button @click="editElement">
                 <translate>Seite bearbeiten</translate>
             </button>
         </li>
-        <li v-if="canEdit" class="cw-action-widget-sort">
+        <li v-if="canEdit && blockedByAnotherUser" class="cw-action-widget-remove-lock">
+            <button @click="removeElementLock">
+                <translate>Sperre aufheben</translate>
+            </button>
+        </li>
+        <li v-if="canEdit && !blockedByAnotherUser" class="cw-action-widget-sort">
             <button @click="sortContainers">
                 <translate>Abschnitte sortieren</translate>
             </button>
@@ -35,7 +40,7 @@
                 <translate>Lesezeichen setzen</translate>
             </button>
         </li>
-        <li v-if="!isRoot && canEdit" class="cw-action-widget-trash">
+        <li v-if="!isRoot && canEdit && !blockedByAnotherUser" class="cw-action-widget-trash">
             <button @click="deleteElement">
                 <translate>Seite löschen</translate>
             </button>
@@ -60,6 +65,11 @@ export default {
             userId: 'userId',
             consumeMode: 'consumeMode',
             showToolbar: 'showToolbar',
+
+            blocked: 'currentElementBlocked',
+            blockerId: 'currentElementBlockerId',
+            blockedByThisUser: 'currentElementBlockedByThisUser',
+            blockedByAnotherUser: 'currentElementBlockedByAnotherUser',
         }),
         isRoot() {
             if (!this.structuralElement) {
@@ -77,18 +87,6 @@ export default {
         currentId() {
             return this.structuralElement?.id;
         },
-        blocked() {
-            return this.structuralElement?.relationships['edit-blocker'].data !== null;
-        },
-        blockerId() {
-            return this.blocked ? this.structuralElement?.relationships['edit-blocker'].data?.id : null;
-        },
-        blockedByThisUser() {
-            return this.blocked && this.userId === this.blockerId;
-        },
-        blockedByAnotherUser() {
-            return this.blocked && this.userId !== this.blockerId;
-        },
         tocText() {
             return this.showToolbar ? this.$gettext('Inhaltsverzeichnis ausblenden') : this.$gettext('Inhaltsverzeichnis anzeigen');
         },
@@ -102,6 +100,7 @@ export default {
             showElementAddDialog: 'showElementAddDialog',
             showElementDeleteDialog: 'showElementDeleteDialog',
             showElementInfoDialog: 'showElementInfoDialog',
+            showElementRemoveLockDialog: 'showElementRemoveLockDialog',
             setStructuralElementSortMode: 'setStructuralElementSortMode',
             companionInfo: 'companionInfo',
             addBookmark: 'addBookmark',
@@ -109,9 +108,11 @@ export default {
             setConsumeMode: 'coursewareConsumeMode',
             setViewMode: 'coursewareViewMode',
             setShowToolbar: 'coursewareShowToolbar',
-            setSelectedToolbarItem: 'coursewareSelectedToolbarItem'
+            setSelectedToolbarItem: 'coursewareSelectedToolbarItem',
+            loadStructuralElement: 'loadStructuralElement',
         }),
         async editElement() {
+            await this.loadStructuralElement(this.currentId);
             if (this.blockedByAnotherUser) {
                 this.companionInfo({ info: this.$gettext('Diese Seite wird bereits bearbeitet.') });
 
@@ -130,10 +131,36 @@ export default {
             }
             this.showElementEditDialog(true);
         },
-        sortContainers() {
+        async removeElementLock() {
+            this.showElementRemoveLockDialog(true);
+        },
+        async sortContainers() {
+            await this.loadStructuralElement(this.currentId);
+            if (this.blockedByAnotherUser) {
+                this.companionInfo({ info: this.$gettext('Diese Seite wird bereits bearbeitet.') });
+
+                return false;
+            }
+            try {
+                await this.lockObject({ id: this.currentId, type: 'courseware-structural-elements' });
+            } catch (error) {
+                if (error.status === 409) {
+                    this.companionInfo({ info: this.$gettext('Diese Seite wird bereits bearbeitet.') });
+                } else {
+                    console.log(error);
+                }
+
+                return false;
+            }
             this.setStructuralElementSortMode(true);
         },
         async deleteElement() {
+            await this.loadStructuralElement(this.currentId);
+            if (this.blockedByAnotherUser) {
+                this.companionInfo({ info: this.$gettextInterpolate('Löschen nicht möglich, da %{blockingUserName} die Seite bearbeitet.', {blockingUserName: this.blockingUserName}) });
+
+                return false;
+            }
             await this.lockObject({ id: this.currentId, type: 'courseware-structural-elements' });
             this.showElementDeleteDialog(true);
         },

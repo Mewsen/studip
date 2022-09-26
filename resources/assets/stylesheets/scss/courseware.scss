@@ -752,6 +752,14 @@ ribbon end
             font-weight: 700;
             line-height: 2em;
             font-size: 1.1em;
+
+            &.cw-default-container-blocker-warning {
+                font-weight: 400;
+            }
+        }
+
+        img {
+            vertical-align: text-bottom;
         }
 
         .cw-container-actions {
@@ -892,6 +900,15 @@ form.cw-container-dialog-edit-form {
         font-weight: 700;
         line-height: 2em;
         font-size: 1.1em;
+
+        &.cw-default-block-invisible-info,
+        &.cw-default-block-blocker-warning {
+            font-weight: 400;
+        }
+    }
+
+    img {
+        vertical-align: text-bottom;
     }
 
     .cw-block-actions {
@@ -1907,6 +1924,9 @@ v i e w  w i d g e t
     }
     .cw-action-widget-trash{
         @include background-icon(trash, clickable);
+    }
+    .cw-action-widget-remove-lock{
+        @include background-icon(lock-unlocked, clickable);
     }
 }
 .cw-export-widget {
