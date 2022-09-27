@@ -9,6 +9,23 @@ class ConsultationModule extends CorePlugin implements StudipModule, SystemPlugi
     {
         parent::__construct();
 
+        // Update consultation events for the course when a member changes
+        foreach (['UserDidEnterCourse', 'UserDidLeaveCourse'] as $event) {
+            NotificationCenter::on($event, function ($event, $course_id) {
+                $course = Course::find($course_id);
+                if ($course) {
+                    ConsultationSlot::findEachBySQL(
+                        function (ConsultationSlot $slot) {
+                            $slot->updateEvent();
+                        },
+                        "JOIN consultation_blocks USING (block_id)
+                         WHERE range_id = ? AND range_type = 'course'",
+                        [$course_id]
+                    );
+                }
+            });
+        }
+
         NotificationCenter::on('UserDidDelete', function ($event, $user) {
             // Delete consultation bookings and slots
             ConsultationBooking::deleteByUser_id($user->id);
