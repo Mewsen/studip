@@ -58,6 +58,22 @@ class Resources_CategoryController extends AuthenticatedController
         $this->available_properties = ResourcePropertyDefinition::findBySql(
             'TRUE ORDER BY name ASC'
         );
+        //Load the properties:
+        if ($this->category->property_links) {
+            foreach ($this->category->property_links as $link) {
+                //We want to make sure that only properties that are
+                //defined are displayed.
+                if ($link->definition) {
+                    $this->previously_set_properties[$link->definition->id] = [
+                        'id' => $link->definition->id,
+                        'name' => $link->definition->__toString(),
+                        'system' => $link->system,
+                        'requestable' => $link->requestable,
+                        'protected' => $link->protected
+                    ];
+                }
+            }
+        }
 
         $this->show_form = true;
 
@@ -95,6 +111,44 @@ class Resources_CategoryController extends AuthenticatedController
                     _('Es wurde keine gültige Ressourcen-Datenklasse ausgewählt!')
                 );
                 return;
+            }
+
+            if ($this->category->system) {
+                //Special validation rules for system categories:
+                if ($this->class_name != $this->category->class_name) {
+                    PageLayout::postError(
+                        _('Der Klassenname darf bei Systemkategorien nicht geändert werden!')
+                    );
+                    return;
+                }
+
+                //Check if one of the system properties has been deleted:
+                $system_properties = ResourcePropertyDefinition::findBySql(
+                    "INNER JOIN resource_category_properties rcp
+                    USING (property_id)
+                    WHERE category_id = :category_id
+                    AND rcp.`system` = '1'",
+                    [
+                        'category_id' => $this->category->id
+                    ]
+                );
+                if ($system_properties) {
+                    $removed_system_property_names = [];
+                    foreach ($system_properties as $property) {
+                        if (!in_array($property->id, array_keys($set_properties))) {
+                            $removed_system_property_names[] = $property->name;
+                        }
+                    }
+
+                    if ($removed_system_property_names) {
+                        asort($removed_system_property_names);
+                        PageLayout::postError(
+                            _('Die folgenden Systemeigenschaften sind zwingend erforderlich und können nicht entfernt werden:'),
+                            $removed_system_property_names
+                        );
+                        return;
+                    }
+                }
             }
 
             $this->category = null;
