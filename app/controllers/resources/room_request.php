@@ -1839,6 +1839,12 @@ class Resources_RoomRequestController extends AuthenticatedController
                                     ];
                                 }
                             }
+                        } catch (ResourceBookingOverlapException $e) {
+                            $errors[] = $this->get_booking_overlap_message(
+                                    $course_date->date, 
+                                    $course_date->end_time,
+                                    $room);
+                            continue;
                         } catch (Exception $e) {
                             $errors[] = $e->getMessage();
                             continue;
@@ -1878,6 +1884,12 @@ class Resources_RoomRequestController extends AuthenticatedController
                                     if ($booking instanceof ResourceBooking) {
                                         $bookings[] = $booking;
                                     }
+                                } catch (ResourceBookingOverlapException $e) {
+                                    $errors[] = $this->get_booking_overlap_message(
+                                        $date->date,
+                                        $date->end_time,
+                                        $room);
+                                    continue;
                                 } catch (Exception $e) {
                                     $errors[] = $e->getMessage();
                                     continue;
@@ -1914,6 +1926,12 @@ class Resources_RoomRequestController extends AuthenticatedController
                         if ($booking instanceof ResourceBooking) {
                             $bookings[] = $booking;
                         }
+                    } catch (ResourceBookingOverlapException $e) {
+                        $errors[] = $this->get_booking_overlap_message(
+                            $this->request->begin,
+                            $this->request->end,
+                            $room);
+                        continue;
                     } catch (Exception $e) {
                         $errors[] = $e->getMessage();
                         continue;
@@ -2449,6 +2467,11 @@ class Resources_RoomRequestController extends AuthenticatedController
                 if ($booking instanceof ResourceBooking) {
                     $bookings[] = $booking;
                 }
+            } catch (ResourceBookingOverlapException $e) {
+                $errors[] = $this->get_booking_overlap_message(
+                    $course_date->date,
+                    $course_date->end_time,
+                    $room);
             } catch (Exception $e) {
                 $errors[] = $e->getMessage();
             }
@@ -2486,6 +2509,12 @@ class Resources_RoomRequestController extends AuthenticatedController
                         if ($booking instanceof ResourceBooking) {
                             $bookings[] = $booking;
                         }
+                    } catch (ResourceBookingOverlapException $e) {
+                        $errors[] = $this->get_booking_overlap_message(
+                            $date->date,
+                            $date->end_time,
+                            $room);
+                        continue;
                     } catch (Exception $e) {
                         $errors[] = $e->getMessage();
                         continue;
@@ -2522,6 +2551,11 @@ class Resources_RoomRequestController extends AuthenticatedController
                 if ($booking instanceof ResourceBooking) {
                     $bookings[] = $booking;
                 }
+            } catch (ResourceBookingOverlapException $e) {
+                $errors[] = $this->get_booking_overlap_message(
+                    $this->request->begin,
+                    $this->request->end,
+                    $room);
             } catch (Exception $e) {
                 $errors[] = $e->getMessage();
             }
@@ -2738,5 +2772,42 @@ class Resources_RoomRequestController extends AuthenticatedController
             ];
             $this->event_color = $request_colour;
         }
+    }
+    
+    /**
+    * Returns a formatted error message about the overlapping bookings with a 
+    * link to the lecture and a link to the planner if the required permissions 
+    * are met.
+    *
+    * @param $begin_time string The timestamp of the beginning of the booking
+    * @param $end_time string The timestamp of the end of the booking
+    * @param $room Resource The room that should be booked
+    *
+    * @return string A formatted error message about overlapping bookings
+    */
+    protected function get_booking_overlap_message($begin_time, $end_time, $room)
+    {
+        $end_time_format = date('d.m.Y', $begin_time) == date('d.m.Y', $end_time) ?
+                           date('H:i', $end_time) :
+                           date('d.m.Y H:i', $end_time);
+        $error_message = sprintf(
+            _('%1$s: Die Buchung vom %2$s bis %3$s konnte wegen Überlappungen nicht gespeichert werden: '),
+                htmlReady($room->getFullName()),
+                date('d.m.Y H:i', $begin_time),
+                $end_time_format
+        );
+        $begin = new DateTime();
+        $begin->setTimestamp($begin_time);
+        $end = new DateTime();
+        $end->setTimestamp($end_time);
+        $overlapping_bookings = array_merge(
+            $room->getResourceBookings($begin, $end),
+            $room->getResourceLocks($begin, $end)
+        );
+        foreach ($overlapping_bookings as $overlapping_booking) {
+            $error_message .= $overlapping_booking->getOverlapMessage();
+            $error_message .= '<br>';
+        }
+        return $error_message;
     }
 }

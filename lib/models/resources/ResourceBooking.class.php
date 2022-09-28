@@ -208,7 +208,6 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 );
             }
         }
-
         $sql_params = [
             'resource_id' => $resource->id
         ];
@@ -1882,5 +1881,94 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
         );
 
         restoreLanguage();
+    }
+    
+    /**
+     * This method converts overlap data about an overlapping booking
+     * to a string that can be used to output overlap information to the user.
+     * Only one overlap is converted by this method. For multiple overlaps
+     * this method must be called multiple times.
+     *
+     * @param ResourceBooking $booking The overlapping booking.
+     *
+     * @return string A string representation of the overlap.
+     */
+    public function getOverlapMessage()
+    {
+        $message = '';
+
+        if ($this->booking_type == '2') {
+            $message .= sprintf(
+                _('Vom %1$s, %2$s Uhr bis zum %3$s, %4$s Uhr (Sperrzeit)') . "\n",
+                date("d.m.Y", $this->begin),
+                date("H:i", $this->begin),
+                date("d.m.Y", $this->end),
+                date("H:i", $this->end)
+            );
+        } else {
+            $course = Course::find($this->course_id);
+
+            if ($course) {
+                $user_has_permissions = $GLOBALS['perm']->have_studip_perm(
+                    'dozent',
+                    $course->id,
+                    $GLOBALS['user']->id
+                );
+                $course_link = null;
+                if ($user_has_permissions) {
+                    $course_link = URLHelper::getLink(
+                        'dispatch.php/course/timesrooms/index',
+                        [
+                            'cid' => $course->id
+                        ]
+                    );
+                    $planner_link = $this->resource->getLinkForAction(
+                        'booking_plan',
+                        $this->resource->id,
+                        ['defaultDate' => date('Y-m-d', $this->begin)]
+                    );
+                     $planner_msg = sprintf(
+                        _('<a href="%1$s">%2$s von %3$s bis %4$s</a>'),
+                        $planner_link,
+                        date('d.m.Y', $this->begin),
+                        date('H:i', $this->begin),
+                        date('H:i', $this->end)
+                    );
+                } else {
+                    $course_link = URLHelper::getLink(
+                        'dispatch.php/course/details',
+                        [
+                            'sem_id' => $course->id
+                        ]
+                    );
+                     $planner_msg = sprintf(
+                        _('%1$s von %2$s bis %3$s'),
+                        date('d.m.Y', $this->begin),
+                        date('H:i', $this->begin),
+                        date('H:i', $this->end)
+                    );
+                }
+
+                $message .= sprintf(
+                    _('Am %1$s Uhr durch Veranstaltung %2$s') . "\n",
+                    $planner_msg,
+                    sprintf(
+                        '<a href="%1$s">%2$s</a>',
+                        $course_link,
+                        htmlReady($course->name)
+                    )
+                );
+            } else {
+                $message .= sprintf(
+                    _('Am %1$s von %2$s bis %3$s Uhr belegt von "%4$s"') . "\n",
+                    date("d.m.Y", $this->begin),
+                    date("H:i", $this->begin),
+                    date("H:i", $this->end),
+                    htmlReady($this->description)
+                );
+            }
+        }
+
+        return $message;
     }
 }
