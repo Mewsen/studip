@@ -379,7 +379,7 @@
                             </tr>
                             <tr>
                                 <td><translate>Zuletzt bearbeitet von</translate>:</td>
-                                <td>{{ editor }}</td>
+                                <td>{{ editorName }}</td>
                             </tr>
                             <tr>
                                 <td><translate>Zuletzt bearbeitet am</translate>:</td>
@@ -900,8 +900,13 @@ export default {
                 relationship: 'editor',
             });
 
-            return editor?.attributes['formatted-name'] ?? '';
+            return editor ?? null;
         },
+
+        editorName() {
+            return this.editor?.attributes['formatted-name'] ?? '?';
+        },
+
         menuItems() {
             let menu = [
                 { id: 4, label: this.$gettext('Informationen anzeigen'), icon: 'info', emit: 'showInfo' },
@@ -1223,10 +1228,10 @@ export default {
                 parent: { type: this.structuralElement.type, id: this.structuralElement.id },
                 relationship: 'owner'
             });
-            return user ? user : null;
+            return user ?? null;
         },
         ownerName() {
-            return this.owner ? this.owner.attributes['formatted-name'] : '?';
+            return this.owner?.attributes['formatted-name'] ?? '?';
         },
     },
 
