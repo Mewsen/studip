@@ -16,14 +16,23 @@ class Language
     public function __invoke(Request $request, ResponseInterface $response, callable $next)
     {
         $language = $this->detectValidLanguageFromRequest($request);
+        $language_before = false;
 
         // Set language if detected
         if ($language) {
+            $language_before = $_SESSION['_language'];
             $_SESSION['_language'] = $language;
             setTempLanguage(false, $language);
         }
 
-        return $next($request, $response);
+        $response = $next($request, $response);
+
+        if ($language) {
+            $_SESSION['_language'] = $language_before;
+            restoreLanguage();
+        }
+
+        return $response;
     }
 
     /**
