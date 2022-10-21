@@ -78,7 +78,7 @@
                         <div v-if="structuralElementLoaded" class="cw-companion-box-wrapper">
                             <courseware-companion-box
                                 v-if="blockedByAnotherUser"
-                                :msgCompanion="$gettextInterpolate('Die Einstellungen dieser Seite werden im Moment von %{blockingUserName} bearbeitet', {blockingUserName: blockingUserName})"
+                                :msgCompanion="$gettextInterpolate($gettext('Die Einstellungen dieser Seite werden im Moment von %{blockingUserName} bearbeitet'), {blockingUserName: blockingUserName})"
                                 mood="pointing"
                             >
                                 <template #companionActions>
@@ -125,7 +125,7 @@
                         />
                         <courseware-companion-box
                             v-if="editView"
-                            :msgCompanion="$gettextInterpolate('Dieser Inhalt ist aus den persönlichen Lerninhalten von %{ ownerName } verlinkt und kann nur dort bearbeitet werden.', { ownerName: ownerName })"
+                            :msgCompanion="$gettextInterpolate($gettext('Dieser Inhalt ist aus den persönlichen Lerninhalten von %{ ownerName } verlinkt und kann nur dort bearbeitet werden.'), { ownerName: ownerName })"
                             mood="pointing"
                         />
                         <component
@@ -773,7 +773,7 @@ export default {
 
         textOer() {
             return {
-                title: this.$gettextInterpolate('Seite auf %{ oerTitle } veröffentlichen', {oerTitle: this.oerTitle}),
+                title: this.$gettextInterpolate(this.$gettext('Seite auf %{ oerTitle } veröffentlichen'), {oerTitle: this.oerTitle}),
                 confirm: this.$gettext('Veröffentlichen'),
                 close: this.$gettext('Schließen'),
             };
@@ -781,7 +781,7 @@ export default {
 
         textSuggestOer() {
             return {
-                title: this.$gettextInterpolate('Material für %{ oerTitle } vorschlagen', {oerTitle: this.oerTitle}),
+                title: this.$gettextInterpolate(this.$gettext('Material für %{ oerTitle } vorschlagen'), {oerTitle: this.oerTitle}),
                 confirm: this.$gettext('Material vorschlagen'),
                 close: this.$gettext('Schließen'),
             };
@@ -797,7 +797,10 @@ export default {
             textDelete.alert = this.$gettext('Möchten Sie die Seite wirklich löschen?');
             if (this.structuralElementLoaded) {
                 textDelete.alert =
-                    this.$gettextInterpolate('Möchten Sie die Seite %{ pageTitle } und alle ihre Unterseiten wirklich löschen?', {pageTitle: this.structuralElement.attributes.title});
+                    this.$gettextInterpolate(
+                        this.$gettext('Möchten Sie die Seite %{ pageTitle } und alle ihre Unterseiten wirklich löschen?'),
+                        {pageTitle: this.structuralElement.attributes.title}
+                    );
             }
 
             return textDelete;
@@ -957,7 +960,7 @@ export default {
             let menu = [
                 { id: 4, label: this.$gettext('Informationen anzeigen'), icon: 'info', emit: 'showInfo' },
                 { id: 5, label: this.$gettext('Lesezeichen setzen'), icon: 'star', emit: 'setBookmark' },
-                { id: 6, label: this.$gettextInterpolate('Material für %{ oerTitle } vorschlagen', {oerTitle: this.oerTitle}), icon: 'oer-campus', emit: 'showSuggest' },
+                { id: 6, label: this.$gettextInterpolate(this.$gettext('Material für %{ oerTitle } vorschlagen'), {oerTitle: this.oerTitle}), icon: 'oer-campus', emit: 'showSuggest' },
 
             ];
             if (this.canEdit) {
@@ -1361,7 +1364,12 @@ export default {
                 case 'deleteCurrentElement':
                     await this.loadStructuralElement(this.currentId);
                     if (this.blockedByAnotherUser) {
-                        this.companionInfo({ info: this.$gettextInterpolate('Löschen nicht möglich, da %{blockingUserName} die Seite bearbeitet.', {blockingUserName: this.blockingUserName}) });
+                        this.companionInfo({
+                            info: this.$gettextInterpolate(
+                                this.$gettext('Löschen nicht möglich, da %{blockingUserName} die Seite bearbeitet.'),
+                                {blockingUserName: this.blockingUserName}
+                            )
+                        });
 
                         return false;
                     }
@@ -1438,7 +1446,12 @@ export default {
         async storeCurrentElement() {
             await this.loadStructuralElement(this.currentElement.id);
             if (this.blockedByAnotherUser) {
-                this.companionWarning({ info: this.$gettextInterpolate('Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.', {blockingUserName: this.blockingUserName}) });
+                this.companionWarning({
+                    info: this.$gettextInterpolate(
+                        this.$gettext('Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.'),
+                        {blockingUserName: this.blockingUserName}
+                    )
+                });
                 this.showElementEditDialog(false);
                 return false;
             }
@@ -1554,7 +1567,12 @@ export default {
         async deleteCurrentElement() {
             await this.loadStructuralElement(this.currentElement.id);
             if (this.blockedByAnotherUser) {
-                this.companionWarning({ info: this.$gettextInterpolate('Löschen nicht möglich, da %{blockingUserName} die Bearbeitung übernommen hat.', {blockingUserName: this.blockingUserName}) });
+                this.companionWarning({
+                    info: this.$gettextInterpolate(
+                        this.$gettext('Löschen nicht möglich, da %{blockingUserName} die Bearbeitung übernommen hat.'),
+                        {blockingUserName: this.blockingUserName}
+                    )
+                });
                 this.showElementDeleteDialog(false);
                 return false;
             }
