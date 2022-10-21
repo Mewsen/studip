@@ -1482,16 +1482,22 @@ export default {
         async createElement() {
             let title = this.newChapterName; // this is the title of the new element
             let parent_id = this.currentId; // new page is descandant as default
+            let writeApproval = this.currentElement.attributes['write-approval'];
+            let readApproval = this.currentElement.attributes['read-approval'];
             if (this.errorEmptyChapterName = title.trim() === '') {
                 return;
             }
             if (this.newChapterParent === 'sibling') {
                 parent_id = this.structuralElement.relationships.parent.data.id;
+                writeApproval = [];
+                readApproval = [];
             }
             this.showElementAddDialog(false);
             await this.createStructuralElement({
                 attributes: {
-                    title,
+                    title: title,
+                    'write-approval':  writeApproval,
+                    'read-approval': readApproval
                 },
                 parentId: parent_id,
                 currentId: this.currentId,
