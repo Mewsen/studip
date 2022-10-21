@@ -17,7 +17,7 @@
                         {{ $gettext('Seite bearbeiten') }}
                     </button>
                 </li>
-                <li v-if="canEdit && blockedByAnotherUser" class="cw-action-widget-remove-lock">
+                <li v-if="canEdit && blockedByAnotherUser && userIsTeacher" class="cw-action-widget-remove-lock">
                     <button @click="removeElementLock">
                         {{ $gettext('Sperre aufheben') }}
                     </button>
@@ -79,6 +79,7 @@ export default {
     computed: {
         ...mapGetters({
             userId: 'userId',
+            userIsTeacher: 'userIsTeacher',
             consumeMode: 'consumeMode',
             showToolbar: 'showToolbar',
             context: 'context',

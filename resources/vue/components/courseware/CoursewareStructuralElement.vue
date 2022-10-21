@@ -76,13 +76,13 @@
                         }"
                     >
                         <div v-if="structuralElementLoaded" class="cw-companion-box-wrapper">
-                            <courseware-companion-box 
+                            <courseware-companion-box
                                 v-if="blockedByAnotherUser"
                                 :msgCompanion="$gettextInterpolate('Die Einstellungen dieser Seite werden im Moment von %{blockingUserName} bearbeitet', {blockingUserName: blockingUserName})"
                                 mood="pointing"
                             >
                                 <template #companionActions>
-                                    <button class="button" @click="menuAction('removeLock')">
+                                    <button v-if="userIsTeacher" class="button" @click="menuAction('removeLock')">
                                         {{ textRemoveLock.title }}
                                     </button>
                                 </template>
@@ -946,7 +946,7 @@ export default {
 
             ];
             if (this.canEdit) {
-                if (!this.blocked) {
+                if (!this.blockedByAnotherUser) {
                     menu.push({
                         id: 1,
                         label: this.$gettext('Seite bearbeiten'),
@@ -959,8 +959,8 @@ export default {
                         icon: 'arr_1sort',
                         emit: 'sortContainers',
                     });
-                } 
-                if (this.blocked && this.blockedByAnotherUser && this.userIsTeacher) {
+                }
+                if (this.blockedByAnotherUser && this.userIsTeacher) {
                     menu.push({
                         id: 1,
                         label: this.textRemoveLock.title,
