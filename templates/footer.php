@@ -36,6 +36,14 @@
 
 <? if (Navigation::hasItem('/footer')) : ?>
     <ul>
+        <li>
+            <? if (is_object($GLOBALS['user']) && $GLOBALS['user']->id !== 'nobody') : ?>
+                <a href="<?= URLHelper::getLink('dispatch.php/u/add', ['from_path' => $_SERVER['REQUEST_URI']]) ?>"
+                   data-dialog="size=default">
+                    <?= _('Kurz-URL') ?>
+                </a>
+            <? endif ?>
+        </li>
     <? foreach (Navigation::getItem('/footer') as $nav): ?>
         <? if ($nav->isVisible()): ?>
             <li>
