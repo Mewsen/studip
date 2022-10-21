@@ -186,7 +186,7 @@ export default {
                 data: formData,
                 headers: { "Content-Type": "multipart/form-data"}
             }).then( () => {
-                this.companionInfo({ info: this.$gettextInterpolate('Die Seite wurde an %{ oerTitle } gesendet.', {oerTitle: this.oerTitle}) });
+                this.companionInfo({ info: this.$gettextInterpolate(this.$gettext('Die Seite wurde an %{ oerTitle } gesendet.'), {oerTitle: this.oerTitle}) });
             }).catch(error => {
                 this.companionError({ info: this.$gettext('Beim Veröffentlichen der Seite ist ein Fehler aufgetreten.') });
                 console.debug(error);
