@@ -15,7 +15,7 @@
                 <translate>Seite bearbeiten</translate>
             </button>
         </li>
-        <li v-if="canEdit && blockedByAnotherUser" class="cw-action-widget-remove-lock">
+        <li v-if="canEdit && blockedByAnotherUser && userIsTeacher" class="cw-action-widget-remove-lock">
             <button @click="removeElementLock">
                 <translate>Sperre aufheben</translate>
             </button>
@@ -63,6 +63,7 @@ export default {
     computed: {
         ...mapGetters({
             userId: 'userId',
+            userIsTeacher: 'userIsTeacher',
             consumeMode: 'consumeMode',
             showToolbar: 'showToolbar',
 
