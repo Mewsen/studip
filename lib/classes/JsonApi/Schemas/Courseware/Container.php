@@ -56,7 +56,7 @@ class Container extends SchemaProvider
 
         $relationships = $this->addBlocksRelationship($relationships, $resource, $shouldInclude(self::REL_BLOCKS));
 
-        $relationships[self::REL_OWNER] = $resource['owner_id']
+        $relationships[self::REL_OWNER] = $resource->owner
             ? [
                 self::LINKS => [
                     Link::RELATED => $this->getSchemaContainer()
@@ -67,7 +67,7 @@ class Container extends SchemaProvider
             ]
             : [self::DATA => $resource->owner];
 
-        $relationships[self::REL_EDITOR] = $resource['editor_id']
+        $relationships[self::REL_EDITOR] = $resource->editor
             ? [
                 self::LINKS => [
                     Link::RELATED => $this->getSchemaContainer()
@@ -78,7 +78,7 @@ class Container extends SchemaProvider
             ]
             : [self::DATA => null];
 
-        $relationships[self::REL_EDITBLOCKER] = $resource['edit_blocker_id']
+        $relationships[self::REL_EDITBLOCKER] = $resource->edit_blocker
             ? [
                 self::SHOW_SELF => true,
                 self::LINKS => [
