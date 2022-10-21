@@ -1,4 +1,4 @@
-import { $gettextInterpolate } from  '../lib/gettext.js';
+import { $gettext, $gettextInterpolate } from  '../lib/gettext.js';
 
 STUDIP.domReady(() => {
     $('del.diffdel').each(function() {
@@ -42,7 +42,10 @@ STUDIP.domReady(() => {
                     senddata,
                     function(data) {
                         if (data) {
-                            var info = $gettextInterpolate('Entfernt von %{user} am %{time}', data);
+                            var info = $gettextInterpolate(
+                                $gettext('Entfernt von %{user} am %{time}'),
+                                data
+                            );
                             del.attr('title', info);
                             $('<del class="difflog"/>').text(` [${info}] `).insertAfter(del);
                         }
@@ -133,7 +136,10 @@ STUDIP.domReady(() => {
                     senddata,
                     function(data) {
                         if (data) {
-                            var info = $gettextInterpolate('Änderung durch %{user} am %{time}', data);
+                            var info = $gettextInterpolate(
+                                $gettext('Änderung durch %{user} am %{time}'),
+                                data
+                            );
                             ins.attr('title', info);
                             $('<ins class="difflog"/>').text(` [${info}] `).insertAfter(ins);
                         }
@@ -162,7 +168,7 @@ STUDIP.domReady(() => {
                     { mvv_field: 'mvv_' + mvv_type, mvv_id: mvv_id, log_action: 'new' },
                     function(data) {
                         if (data) {
-                            var info = $gettextInterpolate('Hinzugefügt von %{user} am %{time}', data);
+                            var info = $gettextInterpolate($gettext('Hinzugefügt von %{user} am %{time}'), data);
                             curtable.attr('title', info);
                             const log = $('<ins class="difflog"/>').text(` [${info}] `);
                             const cell = $('<td/>').append(log);
@@ -193,7 +199,7 @@ STUDIP.domReady(() => {
                     { mvv_field: 'mvv_' + mvv_type, mvv_id: mvv_id, log_action: 'del' },
                     function(data) {
                         if (data) {
-                            var info = $gettextInterpolate('Entfernt von %{user} am %{time}', data);
+                            var info = $gettextInterpolate($gettext('Entfernt von %{user} am %{time}'), data);
                             curtable.attr('title', info);
                             const log = $('<del class="difflog"/>').text(` [${info}] `);
                             const cell = $('<td/>').append(log);

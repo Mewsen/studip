@@ -249,7 +249,7 @@ export default {
                 if (this.userId === this.blockerId) {
                     this.showDeleteDialog = true;
                 } else {
-                    this.companionInfo({ info: 'Dieser Block wird bereits bearbeitet.' });
+                    this.companionInfo({ info: this.$gettext('Dieser Block wird bereits bearbeitet.') });
                 }
             }
         },

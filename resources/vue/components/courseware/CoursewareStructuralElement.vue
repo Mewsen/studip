@@ -570,7 +570,7 @@ export default {
 
         textOer() {
             return {
-                title: this.$gettextInterpolate('Seite auf %{ oerTitle } veröffentlichen', {oerTitle: this.oerTitle}),
+                title: this.$gettextInterpolate(this.$gettext('Seite auf %{ oerTitle } veröffentlichen'), {oerTitle: this.oerTitle}),
                 confirm: this.$gettext('Veröffentlichen'),
                 close: this.$gettext('Schließen'),
             };
@@ -586,7 +586,10 @@ export default {
             textDelete.alert = this.$gettext('Möchten Sie die Seite wirklich löschen?');
             if (this.structuralElementLoaded) {
                 textDelete.alert =
-                    this.$gettextInterpolate('Möchten Sie die Seite %{ pageTitle } und alle ihre Unterseiten wirklich löschen?', {pageTitle: this.structuralElement.attributes.title});
+                    this.$gettextInterpolate(
+                        this.$gettext('Möchten Sie die Seite %{ pageTitle } und alle ihre Unterseiten wirklich löschen?'),
+                        {pageTitle: this.structuralElement.attributes.title}
+                    );
             }
 
             return textDelete;
@@ -1136,8 +1139,10 @@ export default {
             });
             let newElement = this.$store.getters['courseware-structural-elements/lastCreated'];
             this.companionSuccess({
-                info:
-                    this.$gettextInterpolate('Die Seite %{ pageTitle } wurde erfolgreich angelegt.', {pageTitle: newElement.attributes.title})
+                info: this.$gettextInterpolate(
+                    this.$gettext('Die Seite %{ pageTitle } wurde erfolgreich angelegt.'),
+                    {pageTitle: newElement.attributes.title}
+                )
             });
         },
         containerComponent(container) {

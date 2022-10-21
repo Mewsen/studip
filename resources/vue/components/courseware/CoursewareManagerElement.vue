@@ -238,9 +238,15 @@ export default {
             let title = this.elementName;
             if (this.elementInserterActive && this.moveSelfPossible && this.canEdit) {
                 if (this.isRemote || this.isOwn) {
-                    title = this.$gettextInterpolate('%{ elementTitle } kopieren', {elementTitle: this.elementName});
+                    title = this.$gettextInterpolate(
+                        this.$gettext('%{ elementTitle } kopieren'),
+                        {elementTitle: this.elementName}
+                    );
                 } else {
-                    title = this.$gettextInterpolate('%{ elementTitle } verschieben', {elementTitle: this.elementName});
+                    title = this.$gettextInterpolate(
+                        this.$gettext('%{ elementTitle } verschieben'),
+                        {elementTitle: this.elementName}
+                    );
                 }
             }
 
@@ -388,7 +394,10 @@ export default {
                         elementId: element.id,
                         migrate: false
                     }).catch((error) => {
-                        let message = this.$gettextInterpolate('%{ pageTitle } konnte nicht kopiert werden.', {pageTitle: element.attributes.title});
+                        let message = this.$gettextInterpolate(
+                            this.$gettext('%{ pageTitle } konnte nicht kopiert werden.'),
+                            {pageTitle: element.attributes.title}
+                        );
                         this.text.copyProcessFailed.push(message);
                         this.showFailedCopyProcessCompanion();
                     });
@@ -425,7 +434,10 @@ export default {
                         parentId: parentId,
                         container: container,
                     }).catch((error) => {
-                        let message = this.$gettextInterpolate('Abschnitt "%{ containerTitle }" konnte nicht kopiert werden', {containerTitle: container.attributes.title});
+                        let message = this.$gettextInterpolate(
+                            this.$gettext('Abschnitt "%{ containerTitle }" konnte nicht kopiert werden'),
+                            {containerTitle: container.attributes.title}
+                        );
                         this.text.copyProcessFailed.push(message);
                         this.showFailedCopyProcessCompanion();
                     });
@@ -487,7 +499,10 @@ export default {
                         parentId: parentId,
                         block: block,
                     }).catch((error) => {
-                        let message = this.$gettextInterpolate('Block "%{ blockTitle }" konnte nicht kopiert werden', {blockTitle: block.attributes.title});
+                        let message = this.$gettextInterpolate(
+                            this.$gettext('Block "%{ blockTitle }" konnte nicht kopiert werden'),
+                            {blockTitle: block.attributes.title}
+                        );
                         this.text.copyProcessFailed.push(message);
                         this.showFailedCopyProcessCompanion();
                     });
