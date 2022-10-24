@@ -53,6 +53,7 @@ class UController extends AuthenticatedController
 
     public function alias_action($url_id)
     {
+        PageLayout::setTitle(_('Bezeichnung ändern'));
         $short_url = new ShortURL($url_id);
         $this->form = \Studip\Forms\Form::fromSORM(
             $short_url,
@@ -67,5 +68,15 @@ class UController extends AuthenticatedController
             ]
         );
         $this->form->autoStore();
+    }
+
+
+    public function overview_action()
+    {
+        PageLayout::setTitle(_('Meine Kurz-URLs'));
+        if (Navigation::hasItem('/contents/short_urls')) {
+            Navigation::activateItem('/contents/short_urls');
+        }
+        $this->short_urls = ShortURL::findBySql('user_id = :user_id ORDER BY `alias` ASC', ['user_id' => $GLOBALS['user']->id]);
     }
 }
