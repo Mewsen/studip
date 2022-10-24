@@ -38,7 +38,7 @@
     <ul>
         <li>
             <? if (is_object($GLOBALS['user']) && $GLOBALS['user']->id !== 'nobody') : ?>
-                <a href="<?= URLHelper::getLink('dispatch.php/u/add', ['from_path' => $_SERVER['REQUEST_URI']]) ?>"
+                <a href="<?= URLHelper::getLink('dispatch.php/u/add', ['from_path' => Request::path()]) ?>"
                    data-dialog="size=default">
                     <?= _('Kurz-URL') ?>
                 </a>

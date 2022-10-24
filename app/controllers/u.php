@@ -11,7 +11,7 @@ class UController extends AuthenticatedController
      */
     public function r_action($id)
     {
-        $url = ShortURL::find($id);
+        $url = ShortURL::findOneBySql('id = :id OR alias = :id', ['id' => $id]);
         if ($url) {
             $this->redirect($url->url);
         } else {
@@ -23,7 +23,7 @@ class UController extends AuthenticatedController
     public function add_action()
     {
         $short_url = new ShortURL();
-        $short_url->url = Request::get('from_url'); //TODO: Stud.IP-Pfad statt Server-Pfad
+        $short_url->url = Request::get('from_path');
         $short_url->user_id = $GLOBALS['user']->id;
         $this->form = \Studip\Forms\Form::fromSORM(
             $short_url,
