@@ -51,7 +51,6 @@ class UController extends AuthenticatedController
     }
 
 
-
     public function alias_action($url_id)
     {
         $short_url = new ShortURL($url_id);
