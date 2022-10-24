@@ -18,7 +18,8 @@
                         $actions->addLink(
                             $controller->url_for('u/alias/' . $url->id),
                             _('Bezeichnung ändern'),
-                            Icon::create('edit')
+                            Icon::create('edit'),
+                            ['data-dialog' => 'reload-on-close']
                         );
                         $actions->addLink(
                             $controller->url_for('u/delete/' . $url->id),
