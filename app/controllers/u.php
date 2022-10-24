@@ -59,12 +59,9 @@ class UController extends AuthenticatedController
             [
                 'fields' => [
                     'alias' => [
-                        'label' => _('URL-Bezeichnung'),
+                        'label' => _('Bezeichnung'),
                         'type' => 'text',
                         'pattern' => '[a-záæäéèôøöü0-9\-]{4,256}'
-                    ],
-                    'url' => [
-                        'type' => 'hidden'
                     ]
                 ]
             ]
