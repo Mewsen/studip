@@ -38,10 +38,10 @@
     <ul>
         <li>
             <? if (is_object($GLOBALS['user']) && $GLOBALS['user']->id !== 'nobody') : ?>
-                <a href="<?= URLHelper::getLink('dispatch.php/u/add', ['from_path' => Request::path()]) ?>"
-                   data-dialog="size=default">
+                <button data-path="<?= Request::path() ?>" id="short_url_action"
+                        aria-title="<?= _('Kurz-URL auf diese Seite erzeugen') ?>">
                     <?= _('Kurz-URL') ?>
-                </a>
+                </button>
             <? endif ?>
         </li>
     <? foreach (Navigation::getItem('/footer') as $nav): ?>

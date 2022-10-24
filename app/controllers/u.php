@@ -20,11 +20,41 @@ class UController extends AuthenticatedController
     }
 
 
-    public function add_action()
+    public function create_action()
     {
-        $short_url = new ShortURL();
-        $short_url->url = Request::get('from_path');
-        $short_url->user_id = $GLOBALS['user']->id;
+        if (!Request::isPost()) {
+            throw new AccessDeniedException();
+        }
+
+        $user = User::findCurrent();
+        $path = Request::get('path');
+        //Check if the user has already created such a short-URL:
+        $short_url = ShortURL::findOneBySql(
+            'url = :path AND user_id = :user_id',
+            [
+                'path' => $path,
+                'user_id' => $user->id
+            ]
+        );
+        if (!$short_url) {
+            $short_url = new ShortURL();
+            $short_url->url = $path;
+            $short_url->user_id = $user->id;
+            $short_url->store();
+        }
+        $this->render_json(
+            [
+                'full_short_url' => URLHelper::getURL('dispatch.php/u/r/' . $short_url->id),
+                'url_id' => $short_url->id
+            ]
+        );
+    }
+
+
+
+    public function alias_action($url_id)
+    {
+        $short_url = new ShortURL($url_id);
         $this->form = \Studip\Forms\Form::fromSORM(
             $short_url,
             [

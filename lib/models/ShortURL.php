@@ -35,6 +35,7 @@ class ShortURL extends SimpleORMap
             //Generate the alias from the ID.
             $hash_id = new Hashids($GLOBALS['UNI_NAME_CLEAN'], 8);
             $this->alias = $hash_id->encode($this->id);
+            var_dump($this->alias);die();
             if ($this->isDirty()) {
                 $this->store();
             }
