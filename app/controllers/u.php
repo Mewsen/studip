@@ -44,7 +44,7 @@ class UController extends AuthenticatedController
         }
         $this->render_json(
             [
-                'full_short_url' => URLHelper::getURL('dispatch.php/u/r/' . $short_url->id),
+                'full_short_url' => URLHelper::getURL('dispatch.php/u/r/' . $short_url->alias),
                 'url_id' => $short_url->id
             ]
         );

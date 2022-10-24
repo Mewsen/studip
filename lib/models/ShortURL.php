@@ -23,22 +23,18 @@ class ShortURL extends SimpleORMap
             'class_name' => User::class,
             'foreign_key' => 'user_id'
         ];
-        $config['registered_callbacks']['after_store'][] = 'cbGenerateAlias';
+        $config['registered_callbacks']['before_store'][] = 'cbGenerateAlias';
 
         parent::configure($config);
     }
 
 
-    public function cbGenerateAlias()
+    public function cbGenerateAlias(string $event)
     {
         if (!$this->alias) {
             //Generate the alias from the ID.
             $hash_id = new Hashids($GLOBALS['UNI_NAME_CLEAN'], 8);
             $this->alias = $hash_id->encode($this->id);
-            var_dump($this->alias);die();
-            if ($this->isDirty()) {
-                $this->store();
-            }
         }
     }
 }
