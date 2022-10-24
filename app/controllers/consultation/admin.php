@@ -218,13 +218,9 @@ class Consultation_AdminController extends ConsultationController
         $this->relocate('consultation/admin');
     }
 
-    public function note_action($block_id, $slot_id = null, $page = 0)
+    public function note_action($block_id, $slot_id, $page = 0)
     {
-        if ($slot_id) {
-            PageLayout::setTitle(_('Anmerkung zu diesem Termin bearbeiten'));
-        } else {
-            PageLayout::setTitle(_('Anmerkung zu diesem Block bearbeiten'));
-        }
+        PageLayout::setTitle(_('Anmerkung zu diesem Termin bearbeiten'));
 
         $this->block   = $this->loadBlock($block_id);
         $this->slot_id = $slot_id;
@@ -235,20 +231,12 @@ class Consultation_AdminController extends ConsultationController
 
             $note = trim(Request::get('note'));
 
-            $changed = false;
-            if ($slot_id) {
-                $slot = $this->block->slots->find($slot_id);
-                $slot->note = $note;
-                $changed = $slot->store();
-            } else {
-                $this->block->note = $note;
-                foreach ($this->block->slots as $slot) {
-                    $slot->note = '';
-                }
-                $changed = $this->block->store();
-            }
+            $slot = $this->block->slots->find($slot_id);
+            $slot->note = $note;
+            $changed = $slot->store();
+
             if ($changed) {
-                PageLayout::postSuccess(_('Der Block wurde bearbeitet'));
+                PageLayout::postSuccess(_('Die Anmerkung wurde bearbeitet'));
             }
 
             if ($this->block->is_expired) {
@@ -351,20 +339,31 @@ class Consultation_AdminController extends ConsultationController
         }
     }
 
-    public function edit_room_action($block_id, $page = 0)
+    public function edit_action($block_id, $page = 0)
     {
-        PageLayout::setTitle(_('Ort des Blocks bearbeiten'));
+        PageLayout::setTitle(_('Block bearbeiten'));
 
         $this->block = $this->loadBlock($block_id);
         $this->page  = $page;
     }
 
-    public function store_room_action($block_id, $page = 0)
+    public function store_edited_action($block_id, $page = 0)
     {
         CSRFProtection::verifyUnsafeRequest();
 
         $this->block = $this->loadBlock($block_id);
-        $this->block->room = Request::get('room');
+        $this->block->room = trim(Request::get('room'));
+        $this->block->note = trim(Request::get('note'));
+        $this->block->size = Request::int('size');
+        $this->block->calendar_events = Request::bool('calender-events', false);
+        $this->block->show_participants = Request::bool('show-participants', false);
+        $this->block->require_reason = Request::option('require-reason');
+        $this->block->confirmation_text = trim(Request::get('confirmation-text'));
+
+        foreach ($this->block->slots as $slot) {
+            $slot->note = '';
+        }
+
         $this->block->store();
 
         PageLayout::postSuccess(_('Der Block wurde gespeichert.'));

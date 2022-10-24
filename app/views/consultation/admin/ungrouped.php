@@ -66,13 +66,8 @@
             </td>
             <td class="actions">
                 <?= ActionMenu::get()->addLink(
-                    $controller->edit_roomURL($block, $page),
-                    _('Raum bearbeiten'),
-                    Icon::create('edit'),
-                    ['data-dialog' => 'size=auto']
-                )->addLink(
-                    $controller->noteURL($block, 0, $page),
-                    _('Information bearbeiten'),
+                    $controller->editURL($block, $page),
+                    _('Bearbeiten'),
                     Icon::create('edit'),
                     ['data-dialog' => 'size=auto']
                 )->addLink(
