@@ -61,12 +61,12 @@ const MultiPersonSearch = {
     },
 
     selectAll: function() {
-        $('#' + this.name + '_selectbox').select2();
+        $('#' + this.name + '_selectbox option').attr('selected', 'selected');
         this.count();
     },
 
     unselectAll: function() {
-        $('#' + this.name + '_selectbox').select2('deselect_all');
+        $('#' + this.name + '_selectbox option').attr('selected', 'false');
         this.count();
     },
 
@@ -87,14 +87,12 @@ const MultiPersonSearch = {
 
     append: function(value, text) {
         if ($('#' + this.name + '_selectbox option[value=' + value + ']').length == 0) {
-            console.debug('new option');
             let new_option = new Option(text, value, true, true);
             $('#' + this.name + '_selectbox').append(new_option).trigger('change');
         }
     },
 
     refresh: function() {
-        //$('#' + this.name + '_selectbox').select2();
         MultiPersonSearch.count();
     },
 
