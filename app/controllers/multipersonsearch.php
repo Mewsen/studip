@@ -74,28 +74,16 @@ class MultipersonsearchController extends AuthenticatedController
         $this->name = $name;
         $this->description = $mp->getDescription();
         $this->quickfilter = $mp->getQuickfilterIds();
-        $this->additionHTML = $mp->getAdditionHTML();
+        $this->additional_html = $mp->getAdditionHTML();
         $this->data_dialog_status = $mp->getDataDialogStatus();
         foreach ($this->quickfilter as $title => $users) {
             $tmp = User::findFullMany($users, 'ORDER BY Nachname ASC, Vorname ASC');
             $this->quickfilter[$title] = $tmp;
         }
         $this->executeURL = $mp->getExecuteURL();
-        $this->jsFunction = $mp->getJSFunctionOnSubmit();
-        $tmp = User::findFullMany($mp->getDefaultSelectableUsersIDs(), 'ORDER BY Nachname asc, Vorname asc');
-        $this->defaultSelectableUsers = $tmp;
-        $tmp = User::findFullMany($mp->getDefaultSelectedUsersIDs(), 'ORDER BY Nachname ASC, Vorname ASC');
-        $this->defaultSelectedUsers = $tmp;
-        $this->ajax = Request::isXhr();
-
-        if ($this->ajax) {
-            $this->set_layout(null);
-        } else {
-            $this->title = $mp->getTitle();
-            if ($mp->getNavigationItem() != "") {
-                Navigation::activateItem($mp->getNavigationItem());
-            }
-        }
+        //may still be needed: $this->jsFunction = $mp->getJSFunctionOnSubmit();
+        $this->selectable_users = User::findFullMany($mp->getDefaultSelectableUsersIDs(), 'ORDER BY Nachname asc, Vorname asc');
+        $this->selected_users = User::findFullMany($mp->getDefaultSelectedUsersIDs(), 'ORDER BY Nachname ASC, Vorname ASC');
     }
 
     /**

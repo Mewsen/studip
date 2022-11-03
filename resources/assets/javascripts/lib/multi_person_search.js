@@ -17,8 +17,6 @@ const MultiPersonSearch = {
     },
 
     dialog: function(name) {
-        var count_template = _.template($gettext('Sie haben <%= count %> Personen ausgewählt'));
-
         this.name = name;
 
         $('#' + name + '_selectbox').select2({
@@ -30,15 +28,6 @@ const MultiPersonSearch = {
             //TODO: alle auswählen und alle abwählen
         });
 
-        $('#' + this.name).on('keyup keypress', function(e) {
-            var code = e.keyCode || e.which;
-            if (code == 13) {
-                e.preventDefault();
-                MultiPersonSearch.search();
-                return false;
-            }
-        });
-
         $('#' + this.name + '_selectbox').change(function() {
             MultiPersonSearch.count();
         });
@@ -46,7 +35,6 @@ const MultiPersonSearch = {
         $('#' + this.name + ' .quickfilter').click(function(event) {
             event.preventDefault();
             MultiPersonSearch.loadQuickfilter($(this).data('quickfilter'));
-            return false;
         });
     },
 
@@ -65,40 +53,11 @@ const MultiPersonSearch = {
     },
 
     isAlreadyMember: function(user_id) {
-        if ($('#' + this.name + '_selectbox_default option[value="' + user_id + '"]').length > 0) {
+        if ($('#' + this.name + '_selectbox option[value="' + user_id + '"]').length > 0) {
             return true;
         } else {
             return false;
         }
-    },
-
-    search: function() {
-        var searchterm = $('#' + this.name + '_searchinput').val(),
-            name = this.name,
-            not_found_template = _.template(
-                $gettext('Es wurden keine neuen Ergebnisse für "<%= needle %>" gefunden.')
-            );
-        $.getJSON(
-            STUDIP.URLHelper.getURL('dispatch.php/multipersonsearch/ajax_search/' + this.name, { s: searchterm }),
-            function(data) {
-                MultiPersonSearch.removeAllNotSelected();
-                var searchcount = 0;
-                $.each(data, function(i, item) {
-                    searchcount += MultiPersonSearch.append(
-                        item.user_id,
-                        item.avatar + ' -- ' + item.text,
-                        item.member
-                    );
-                });
-                MultiPersonSearch.refresh();
-
-                if (searchcount == 0) {
-                    MultiPersonSearch.append('--', not_found_template({ needle: searchterm }), true);
-                    MultiPersonSearch.refresh();
-                }
-            }
-        );
-        return false;
     },
 
     selectAll: function() {
@@ -127,14 +86,11 @@ const MultiPersonSearch = {
     },
 
     append: function(value, text) {
-        console.debug('append');
         if ($('#' + this.name + '_selectbox option[value=' + value + ']').length == 0) {
             console.debug('new option');
             let new_option = new Option(text, value, true, true);
             $('#' + this.name + '_selectbox').append(new_option).trigger('change');
-            return 1;
         }
-        return 0;
     },
 
     refresh: function() {

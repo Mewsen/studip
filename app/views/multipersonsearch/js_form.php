@@ -15,12 +15,20 @@
             <? endif ?>
         <? endforeach ?>
         <fieldset>
-            <select multiple="multiple" id="<?= htmlReady($name . '_selectbox') ?>" name="<?= htmlReady($name . '_selectbox') ?>[]" data-init-js="true">
-                <? foreach ($defaultSelectableUsers as $user) : ?>
-                    <option value="<?= htmlReady($user->id) ?>"><?= htmlReady($user->getFullName('full_rev_username')) ?> [<?= htmlReady($user->perms) ?>]</option>
+            <select multiple="multiple" id="<?= htmlReady($name . '_selectbox') ?>"
+                    name="<?= htmlReady($name . '_selectbox') ?>[]">
+                <? foreach ($selectable_users as $user) : ?>
+                    <option value="<?= htmlReady($user->id) ?>">
+                        <?= htmlReady($user->getFullName('full_rev_username')) ?> [<?= htmlReady($user->perms) ?>]
+                    </option>
+                <? endforeach ?>
+                <? foreach ($selected_users as $user) : ?>
+                    <option value="<?= htmlReady($user->id) ?>" selected>
+                        <?= htmlReady($user->getFullName('full_rev_username')) ?> [<?= htmlReady($user->perms) ?>]
+                    </option>
                 <? endforeach ?>
             </select>
-            <?= $additionHTML ?>
+            <?= $additional_html ?>
         </fieldset>
         <footer data-dialog-button>
             <?= \Studip\Button::create(_('Speichern'), 'confirm', ['data-dialog-button' => true]) ?>
