@@ -21,7 +21,11 @@ const MultiPersonSearch = {
 
         this.name = name;
 
-        $('#' + name + '_selectbox').multiSelect({
+        $('#' + name + '_selectbox').select2({
+            ajax: {
+                url: STUDIP.URLHelper.getURL('dispatch.php/multipersonsearch/ajax_search/' + name),
+                dataType: 'json'
+            },
             selectableHeader: '<div>' + $gettext('Suchergebnisse') + '</div>',
             selectionHeader:
                 '<div>' + count_template({ count: "<span id='" + this.name + "_count'>0</span>" }) + '.</div>',
@@ -111,12 +115,12 @@ const MultiPersonSearch = {
     },
 
     selectAll: function() {
-        $('#' + this.name + '_selectbox').multiSelect('select_all');
+        $('#' + this.name + '_selectbox').select2();
         this.count();
     },
 
     unselectAll: function() {
-        $('#' + this.name + '_selectbox').multiSelect('deselect_all');
+        $('#' + this.name + '_selectbox').select2('deselect_all');
         this.count();
     },
 
@@ -137,7 +141,7 @@ const MultiPersonSearch = {
 
     append: function(value, text, selected) {
         if ($('#' + this.name + '_selectbox option[value=' + value + ']').length == 0) {
-            $('#' + this.name + '_selectbox').multiSelect('addOption', {
+            $('#' + this.name + '_selectbox').select2('addOption', {
                 value: value,
                 text: text,
                 disabled: selected
@@ -148,7 +152,7 @@ const MultiPersonSearch = {
     },
 
     refresh: function() {
-        $('#' + this.name + '_selectbox').multiSelect('refresh');
+        $('#' + this.name + '_selectbox').select2('refresh');
         MultiPersonSearch.count();
     },
 

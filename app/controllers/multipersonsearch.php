@@ -21,7 +21,7 @@ class MultipersonsearchController extends AuthenticatedController
      */
     public function ajax_search_action($name)
     {
-        $searchterm = Request::get('s');
+        $searchterm = Request::get('q');
         $searchterm = str_replace(',', ' ', $searchterm);
         $searchterm = preg_replace('/\s+/u', ' ', $searchterm);
 
@@ -40,13 +40,13 @@ class MultipersonsearchController extends AuthenticatedController
         $output = [];
         foreach ($result as $user) {
             $output[] = [
-                'user_id' => $user->id,
+                'id' => $user->id,
                 'avatar'  => Avatar::getAvatar($user->id)->getURL(Avatar::SMALL),
-                'text'    => "{$user->nachname}, {$user->vorname} -- {$user->perms} ({$user->username})",
+                'text'    => $user->getFullName('full_rev_username') . sprintf(' [%s]', $user->perms),
                 'member'  => in_array($user->id, $alreadyMember),
             ];
         }
-        $this->render_json($output);
+        $this->render_json(['results' => $output]);
     }
 
     /**
