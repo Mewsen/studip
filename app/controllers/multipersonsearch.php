@@ -8,6 +8,7 @@
  * he License, or (at your option) any later version.
  *
  * @author      Sebastian Hobert <sebastian.hobert@uni-goettingen.de>
+ * @author      Moritz Strohm <strohm@data-quest.de>
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  */

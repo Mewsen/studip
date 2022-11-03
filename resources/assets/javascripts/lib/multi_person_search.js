@@ -27,17 +27,7 @@ const MultiPersonSearch = {
                 dataType: 'json',
                 delay: 250
             },
-            selectableHeader: '<div>' + $gettext('Suchergebnisse') + '</div>',
-            selectionHeader:
-                '<div>' + count_template({ count: "<span id='" + this.name + "_count'>0</span>" }) + '.</div>',
-            selectableFooter:
-                '<a href="javascript:STUDIP.MultiPersonSearch.selectAll();">' +
-                $gettext('Alle hinzufügen') +
-                '</a>',
-            selectionFooter:
-                '<a href="javascript:STUDIP.MultiPersonSearch.unselectAll();">' +
-                $gettext('Alle entfernen') +
-                '</a>'
+            //TODO: alle auswählen und alle abwählen
         });
 
         $('#' + this.name).on('keyup keypress', function(e) {
@@ -53,7 +43,8 @@ const MultiPersonSearch = {
             MultiPersonSearch.count();
         });
 
-        $('#' + this.name + ' .quickfilter').click(function() {
+        $('#' + this.name + ' .quickfilter').click(function(event) {
+            event.preventDefault();
             MultiPersonSearch.loadQuickfilter($(this).data('quickfilter'));
             return false;
         });
@@ -62,19 +53,14 @@ const MultiPersonSearch = {
     loadQuickfilter: function(title) {
         MultiPersonSearch.removeAllNotSelected();
 
-        var count = 0;
-        $('#' + this.name + '_quickfilter_' + title + ' option').each(function() {
+        let count = 0;
+        $('#' + this.name + ' .quickfilter-value[data-quickfilter_id="' + title + '"]').each(function() {
             count += MultiPersonSearch.append(
-                $(this).val(),
+                $(this).data('value'),
                 $(this).text(),
-                MultiPersonSearch.isAlreadyMember($(this).val())
+                MultiPersonSearch.isAlreadyMember($(this).data('value'))
             );
         });
-
-        if (count == 0) {
-            MultiPersonSearch.append('--', $gettext(' Dieser Filter enthält keine (neuen) Personen.'), true);
-        }
-
         MultiPersonSearch.refresh();
     },
 
@@ -140,20 +126,19 @@ const MultiPersonSearch = {
         MultiPersonSearch.removeAllNotSelected();
     },
 
-    append: function(value, text, selected) {
+    append: function(value, text) {
+        console.debug('append');
         if ($('#' + this.name + '_selectbox option[value=' + value + ']').length == 0) {
-            $('#' + this.name + '_selectbox').select2('addOption', {
-                value: value,
-                text: text,
-                disabled: selected
-            });
+            console.debug('new option');
+            let new_option = new Option(text, value, true, true);
+            $('#' + this.name + '_selectbox').append(new_option).trigger('change');
             return 1;
         }
         return 0;
     },
 
     refresh: function() {
-        $('#' + this.name + '_selectbox').select2('refresh');
+        //$('#' + this.name + '_selectbox').select2();
         MultiPersonSearch.count();
     },
 
