@@ -24,7 +24,8 @@ const MultiPersonSearch = {
         $('#' + name + '_selectbox').select2({
             ajax: {
                 url: STUDIP.URLHelper.getURL('dispatch.php/multipersonsearch/ajax_search/' + name),
-                dataType: 'json'
+                dataType: 'json',
+                delay: 250
             },
             selectableHeader: '<div>' + $gettext('Suchergebnisse') + '</div>',
             selectionHeader:
