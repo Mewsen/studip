@@ -38,7 +38,7 @@
 <? if ($js_function): ?>
     <script>
         jQuery(document).off('submit.mps-<?= md5($name) ?>').on('submit.mps-<?= md5($name) ?>', '#<?= jsReady($name) ?>', function () {
-            return <?= $js_function ?><?= preg_match('/;$/', $js_function) ? '' : '(this);'; ?>
+            return <?= $js_function ?><?= preg_match('/;$/', $js_function) ? '' : '(this);' ?>
         });
     </script>
-<? endif; ?>
+<? endif ?>
