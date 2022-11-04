@@ -6,3 +6,20 @@
         }
     }
 }
+
+.mpscontainer {
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        width: 45%;
+        height: 2em;
+        background-color: white;
+    }
+
+    .quickfilter {
+        border: 1px solid #28497c;
+        color: #28497c;
+        background-color: white;
+        height: 2.5em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+}
