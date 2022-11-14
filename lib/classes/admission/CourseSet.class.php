@@ -393,9 +393,9 @@ class CourseSet
             $query .= " AND s.start_time = ?";
             $parameters[] = Semester::find($filter['semester_id'])->beginn;
         }
-        if ($filter['course_set_chdate']) {
-            $query .= " AND c.chdate < ?";
-            $parameters[] = $filter['chdate'];
+        if (!empty($filter['course_set_chdate'])) {
+            $query .= " AND c.chdate > ?";
+            $parameters[] = $filter['course_set_chdate'];
         }
         $query .= " ORDER BY c.name";
         $stmt = DBManager::get()->prepare($query);
@@ -432,9 +432,9 @@ class CourseSet
             $query .= " AND s.start_time = ?";
             $parameters[] = Semester::find($filter['semester_id'])->beginn;
         }
-        if ($filter['course_set_chdate']) {
-            $query .= " AND c.chdate < ?";
-            $parameters[] = $filter['chdate'];
+        if (!empty($filter['course_set_chdate'])) {
+            $query .= " AND c.chdate > ?";
+            $parameters[] = $filter['course_set_chdate'];
         }
         $query .= " ORDER BY c.name";
         $stmt = DBManager::get()->prepare($query);
