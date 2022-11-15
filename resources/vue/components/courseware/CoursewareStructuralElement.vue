@@ -263,18 +263,18 @@
                             <courseware-tab :name="textEdit.image" :index="2">
                                 <form class="default" @submit.prevent="">
                                     <img
-                                        v-if="image"
+                                        v-if="showPreviewImage"
                                         :src="image"
                                         class="cw-structural-element-image-preview"
                                         :alt="$gettext('Vorschaubild')"
                                     />
-                                    <label v-if="image">
+                                    <label v-if="showPreviewImage">
                                         <button class="button" @click="deleteImage" v-translate>Bild löschen</button>
                                     </label>
                                     <div v-if="uploadFileError" class="messagebox messagebox_error">
                                         {{ uploadFileError }}
                                     </div>
-                                    <label v-if="!image">
+                                    <label v-if="!showPreviewImage">
                                         <translate>Bild hochladen</translate>
                                         <input ref="upload_image" type="file" accept="image/*" @change="checkUploadFile" />
                                     </label>
@@ -625,6 +625,13 @@ export default {
             },
             errorEmptyChapterName: false,
             consumModeTrap: false,
+            additionalText: '',
+
+            publicLink: {
+                passsword: '',
+                'expire-date': ''
+            },
+            deletingPreviewImage: false,
         };
     },
 
@@ -720,6 +727,10 @@ export default {
 
         image() {
             return this.structuralElement.relationships?.image?.meta?.['download-url'] ?? null;
+        },
+
+        showPreviewImage() {
+            return this.image !== null && this.deletingPreviewImage === false;
         },
 
         structuralElementLoaded() {
@@ -1150,6 +1161,7 @@ export default {
         initCurrent() {
             this.currentElement = _.cloneDeep(this.structuralElement);
             this.uploadFileError = '';
+            this.deletingPreviewImage = false;
         },
         async menuAction(action) {
             switch (action) {
@@ -1249,8 +1261,9 @@ export default {
             }
         },
         deleteImage() {
-            this.deleteImageForStructuralElement(this.currentElement);
-            this.initCurrent();
+            if (!this.deletingPreviewImage) {
+                this.deletingPreviewImage = true;
+            }
         },
         async storeCurrentElement() {
             await this.loadStructuralElement(this.currentElement.id);
@@ -1276,6 +1289,9 @@ export default {
                     console.error(error);
                     this.uploadFileError = this.$gettext('Fehler beim Hochladen der Datei.');
                 });
+                await this.loadStructuralElement(this.currentElement.id);
+            } else if (this.deletingPreviewImage) {
+                await this.deleteImageForStructuralElement(this.currentElement);
             }
             this.showElementEditDialog(false);
 
