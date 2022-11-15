@@ -249,6 +249,10 @@ class Authority
 
     public static function canUpdateBlockComment(User $user, BlockComment $resource)
     {
+        if ($resource->block->container->structural_element->range_type === 'user') {
+            return $resource->block->container->structural_element->range_id === $user->id;
+        }
+
         $perm = $GLOBALS['perm']->have_studip_perm(
             $resource->block->container->structural_element->course->config->COURSEWARE_EDITING_PERMISSION,
             $resource->block->container->structural_element->course->id,
@@ -370,6 +374,10 @@ class Authority
             return true;
         }
 
+        if ($resource->structural_element->range_type === 'user') {
+            return $resource->structural_element->range_id === $user->id;
+        }
+
         $perm = $GLOBALS['perm']->have_studip_perm(
             $resource->structural_element->course->config->COURSEWARE_EDITING_PERMISSION,
             $resource->structural_element->course->id,
@@ -393,6 +401,10 @@ class Authority
     {
         if ($GLOBALS['perm']->have_perm('root')) {
             return true;
+        }
+
+        if ($resource->range_type === 'user') {
+            return $resource->range_id === $user->id;
         }
 
         $perm = $GLOBALS['perm']->have_studip_perm(
