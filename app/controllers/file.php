@@ -522,13 +522,13 @@ class FileController extends AuthenticatedController
         ];
 
         // only if you were in Dateibereich
-        if ($this->redirect == 'redirect_to_files') {
+        if ($this->redirect === 'redirect_to_files') {
             $_SESSION['NEW_OER']['redirect_url'] = 'files';
             $_SESSION['NEW_OER']['dir'] = $this->folder->getId();
             $_SESSION['NEW_OER']['cid'] = $this->folder->range_id;
         }
 
-        $this->redirect("oer/mymaterial/edit/");
+        $this->redirect('oer/mymaterial/edit');
     }
 
     /**

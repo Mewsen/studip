@@ -40,7 +40,7 @@ class RemindOerUpload extends CronJob
                 $file_to_suggest = $filetype->convertToStandardFile();
 
                 $this->author = $file_ref->owner->username;
-                $this->link_to_share = URLHelper::getURL("dispatch.php/file/share_oer/" . $result['file_ref_id']);
+                $this->link_to_share = URLHelper::getURL('dispatch.php/file/share_oer/' . $result['file_ref_id']);
                 $this->linktext = _('Klicken Sie hier, um das Material im OER-Campus zu veröffentlichen.');
                 $this->formatted_link = '['. $this->linktext .']' . $this->link_to_share;
 

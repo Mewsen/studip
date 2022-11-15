@@ -148,9 +148,13 @@ class Oer_MymaterialController extends AuthenticatedController
 
             PageLayout::postSuccess(_('Lernmaterial erfolgreich gespeichert.'));
             if (Request::get('redirect_url')) {
-                if (Request::get('redirect_url') == 'files') {
-                    $this->redirect(URLHelper::getURL('dispatch.php/course/files/index/'
-                        . Request::get('dir') . '?cid=' . Request::get('cid')));
+                if (Request::get('redirect_url') === 'files') {
+                    $this->redirect(
+                        URLHelper::getURL(
+                            'dispatch.php/course/files/index/' . Request::get('dir'),
+                            ['cid' => Request::get('cid')]
+                       )
+                    );
                 } else {
                     $this->redirect(URLHelper::getURL(Request::get('redirect_url'), [
                         'material_id' => $material->getId(),
