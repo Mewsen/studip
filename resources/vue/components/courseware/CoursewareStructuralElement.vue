@@ -272,7 +272,7 @@
                             <label>
                                 <translate>Position der neuen Seite</translate>
                                 <select v-model="newChapterParent">
-                                    <option v-if="!isRoot" value="sibling">
+                                    <option v-if="!isRoot && canEditParent" value="sibling">
                                         <translate>Neben der aktuellen Seite</translate>
                                     </option>
                                     <option value="descendant"><translate>Unterhalb der aktuellen Seite</translate></option>
@@ -718,6 +718,16 @@ export default {
             return this.userIsTeacher;
         },
 
+        canEditParent() {
+            if (this.isRoot) {
+                return false;
+            }
+            const parentId = this.structuralElement.relationships.parent.data.id;
+            const parent = this.structuralElementById({ id: parentId });
+
+            return parent.attributes['can-edit'];
+        },
+
         isRoot() {
             return this.structuralElement.relationships.parent.data === null;
         },
@@ -1117,7 +1127,7 @@ export default {
                 console.debug(error);
             });
         },
-        async createElement() {
+        createElement() {
             let title = this.newChapterName; // this is the title of the new element
             let parent_id = this.currentId; // new page is descandant as default
             let writeApproval = this.currentElement.attributes['write-approval'];
@@ -1128,7 +1138,7 @@ export default {
                 readApproval = [];
             }
             this.showElementAddDialog(false);
-            await this.createStructuralElement({
+            this.createStructuralElement({
                 attributes: {
                     title: title,
                     'write-approval':  writeApproval,
@@ -1136,13 +1146,24 @@ export default {
                 },
                 parentId: parent_id,
                 currentId: this.currentId,
-            });
-            let newElement = this.$store.getters['courseware-structural-elements/lastCreated'];
-            this.companionSuccess({
-                info: this.$gettextInterpolate(
-                    this.$gettext('Die Seite %{ pageTitle } wurde erfolgreich angelegt.'),
-                    {pageTitle: newElement.attributes.title}
-                )
+            })
+            .then(() => {
+                let newElement = this.$store.getters['courseware-structural-elements/lastCreated'];
+                this.companionSuccess({
+                    info:
+                        this.$gettextInterpolate(
+                            this.$gettext('Die Seite %{ pageTitle } wurde erfolgreich angelegt.'), 
+                            { pageTitle: newElement.attributes.title }
+                        )
+                });
+            })
+            .catch(e => {
+                let errorMessage = this.$gettext('Es ist ein Fehler aufgetreten. Die Seite konnte nicht erstellt werden.');
+                if (e.status === 403) {
+                    errorMessage = this.$gettext('Die Seite konnte nicht erstellt werden. Sie haben nicht die notwendigen Schreibrechte.');
+                }
+
+                this.companionError({ info: errorMessage });
             });
         },
         containerComponent(container) {
