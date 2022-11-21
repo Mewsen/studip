@@ -115,7 +115,7 @@
                                 'formaction'   => $controller->url_for('my_ilias_accounts/new_account/'.$ilias_index),
                                 'data-confirm' =>
                                     sprintf(_('Möchten Sie wirklich die bestehende Zuordnung aufheben? Sie verlieren dadurch alle mit dem bestehenden Account verbundenen Inhalte und Lernfortschritte im System "%s".'),
-                                    htmlReady($ilias->getName())
+                                    $ilias->getName()
                                 ),
                                 'data-dialog'  => 'size=auto;reload-on-close'
                             ])
@@ -128,7 +128,7 @@
                                 'formaction'   => $controller->url_for('my_ilias_accounts/change_account/'.$ilias_index.'/remove'),
                                 'data-confirm' =>
                                     sprintf(_('Möchten Sie wirklich die bestehende Zuordnung aufheben? Sie verlieren dadurch alle mit dem bestehenden Account verbundenen Inhalte und Lernfortschritte im System "%s".'),
-                                    htmlReady($ilias->getName())
+                                    $ilias->getName()
                                 )
                             ])
                     ) ?>

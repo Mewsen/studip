@@ -19,8 +19,8 @@
                                 ['fach_id' => $studycourse->fach_id, 'abschluss_id' => $deg->abschluss_id]),
                                 _('Nachricht an Studierende schreiben'),
                                 Icon::create('mail', Icon::ROLE_CLICKABLE,
-                                    ['title' => htmlReady(sprintf(_('Nachricht an alle Studierende mit dem Studiengang %s mit dem Abschluss %s'),
-                                            $studycourse->name, $deg->name))]),
+                                    ['title' => sprintf(_('Nachricht an alle Studierende mit dem Studiengang %s mit dem Abschluss %s'),
+                                            $studycourse->name, $deg->name)]),
                                 ['data-dialog' => '']) ?>
                         <?= $action ?>
                     </td>

@@ -53,7 +53,7 @@
                                         'formaction'   => $controller->url_for('/delete', $lvgruppe->id),
                                         'data-confirm' => sprintf(
                                                 _('Wollen Sie wirklich die Lehrveranstaltungsgruppe "%s" löschen?'),
-                                                htmlReady($lvgruppe->getDisplayName())
+                                                $lvgruppe->getDisplayName()
                                         )
                                     ]
                                 ) ?>

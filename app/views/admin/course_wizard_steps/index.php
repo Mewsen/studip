@@ -58,7 +58,7 @@
                                 'formaction'   => $controller->url_for("admin/coursewizardsteps/delete/{$step->id}"),
                                 'data-confirm' => sprintf(
                                     _('Soll der Eintrag "%s" wirklich gelöscht werden?'),
-                                    htmlReady($step->name)
+                                    $step->name
                                 ),
                             ])
                     ) ?>
