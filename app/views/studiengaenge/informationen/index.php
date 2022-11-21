@@ -30,7 +30,7 @@
                             <?= Icon::create('mail')->asImg(
                                 ['title' => sprintf(
                                     _('Alle Studierenden des Faches %s benachrichtigen.'),
-                                    htmlReady($studycourse->name))
+                                    $studycourse->name)
                                 ]) ?>
                         </a>
                     </td>

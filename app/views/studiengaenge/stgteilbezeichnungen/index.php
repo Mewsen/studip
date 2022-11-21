@@ -43,7 +43,7 @@
                                 <?= Icon::create('trash', Icon::ROLE_CLICKABLE , ['title' => _('Studiengangteil-Bezeichnung löschen')])
                                     ->asInput([
                                         'formaction'   => $controller->url_for('/delete/' . $stgteilbezeichnung->id),
-                                        'data-confirm' => sprintf(_('Wollen Sie wirklich die Studiengangteil-Bezeichnung "%s" löschen?'), htmlReady($stgteilbezeichnung->name)),]) ?>
+                                        'data-confirm' => sprintf(_('Wollen Sie wirklich die Studiengangteil-Bezeichnung "%s" löschen?'), $stgteilbezeichnung->name),]) ?>
                             <? endif; ?>
                         </td>
                     </tr>
