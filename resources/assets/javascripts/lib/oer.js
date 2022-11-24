@@ -201,7 +201,7 @@ const OER = {
                 },
                 mounted: function () {
                     this.results = $(this.$el).data('searchresults');
-                    if (this.results !== null) {
+                    if (this.results !== false) {
                         $("#new_ones").hide();
                     }
                     if ($(this.$el).data('filteredcategory')) {
