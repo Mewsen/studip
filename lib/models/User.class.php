@@ -162,7 +162,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
         $config['has_many']['mvv_assignments'] = [
             'class_name'        => MvvContact::class,
             'assoc_foreign_key' => 'contact_id',
-            'on_delete'         => 'delete',
+            'on_delete'         => 'delete'
         ];
 
         $config['has_and_belongs_to_many']['domains'] = [
