@@ -160,6 +160,10 @@ class Consultation_AdminController extends ConsultationController
                 throw new InvalidArgumentException(_('Die Endzeit liegt vor der Startzeit!'));
             }
 
+            if ($this->range instanceof Institute && !Request::getArray('responsibilities')) {
+                throw new InvalidArgumentException(_('Es muss mindestens eine durchführende Person, Statusgruppe oder Einrichtung ausgewählt werden.'));
+            }
+
             $slot_count = ConsultationBlock::countBlocks(
                 $start,
                 $end,

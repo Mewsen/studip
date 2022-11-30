@@ -102,9 +102,7 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
                 $persons[] = $block->range;
             } elseif ($block->range instanceof Course) {
                 $persons = ConsultationResponsibility::getCourseResponsibilities($block->range);
-            } elseif ($block->range instanceof Institute) {
-                $persons = ConsultationResponsibility::getInstituteResponsibilites($block->range);
-            } else {
+            } elseif (!($block->range instanceof Institute)) {
                 throw new Exception('Unknown range type');
             }
 
