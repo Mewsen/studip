@@ -85,7 +85,11 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
                              $GLOBALS['perm']->have_perm('autor') &&
                              PersonalNotifications::isActivated()) ?>,
             wysiwyg_enabled: <?= json_encode((bool) Config::get()->WYSIWYG) ?>,
-            server_timestamp: <?= time() ?>
+            server_timestamp: <?= time() ?>,
+            config: <?= json_encode([
+                'ENTRIES_PER_PAGE' => Config::get()->ENTRIES_PER_PAGE,
+                'OPENGRAPH_ENABLE' => Config::get()->OPENGRAPH_ENABLE,
+            ]) ?>,
         }
     </script>
 
