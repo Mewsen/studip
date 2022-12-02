@@ -73,8 +73,14 @@ const SkipLinks = {
         } else {
             fragment = document.location.hash;
         }
+        let valid_selector = undefined;
+        try {
+            valid_selector = document.querySelector(fragment) != null;
+        } catch (e) {
+            valid_selector = false;
+        }
 
-        if (fragment.length > 0 && jQuery(fragment).length > 0) {
+        if (fragment.length > 0 && fragment !== SkipLinks.activeElement && valid_selector) {
             SkipLinks.moveSkipLinkNavigationOut();
             if (jQuery(fragment).is(':focusable')) {
                 jQuery(fragment).click().focus();
