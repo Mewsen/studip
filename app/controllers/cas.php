@@ -13,6 +13,7 @@
  */
 
 require_once 'lib/classes/cas/CAS_PGTStorage_Cache.php';
+require_once 'lib/classes/cas/CAS_ServiceBaseUrl_Studip.php';
 
 class CasController extends StudipController
 {
@@ -23,8 +24,9 @@ class CasController extends StudipController
     {
         $pgt = Request::get('pgtId');
         $pgt_iou = Request::get('pgtIou');
+        $base_url = new CAS_ServiceBaseUrl_Studip();
         $cas_config = $GLOBALS['STUDIP_AUTH_CONFIG_CAS'];
-        phpCAS::proxy(CAS_VERSION_2_0, $cas_config['host'], $cas_config['port'], $cas_config['uri'], false);
+        phpCAS::proxy(CAS_VERSION_2_0, $cas_config['host'], $cas_config['port'], $cas_config['uri'], $base_url, false);
 
         $pgt_storage = new CAS_PGTStorage_Cache(phpCAS::getCasClient());
         $pgt_storage->write($pgt, $pgt_iou);

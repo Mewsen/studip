@@ -8,6 +8,7 @@
  */
 
 require_once 'lib/classes/cas/CAS_PGTStorage_Cache.php';
+require_once 'lib/classes/cas/CAS_ServiceBaseUrl_Studip.php';
 
 class StudipAuthCAS extends StudipAuthSSO
 {
@@ -31,13 +32,15 @@ class StudipAuthCAS extends StudipAuthSSO
             $this->login_description = _('für Single Sign On mit CAS');
         }
         if (Request::get('sso') === $this->plugin_name) {
+            $base_url = new CAS_ServiceBaseUrl_Studip();
+
             if ($this->proxy) {
                 URLHelper::setBaseUrl($GLOBALS['ABSOLUTE_URI_STUDIP']);
-                phpCAS::proxy(CAS_VERSION_2_0, $this->host, $this->port, $this->uri, false);
+                phpCAS::proxy(CAS_VERSION_2_0, $this->host, $this->port, $this->uri, $base_url, false);
                 phpCAS::setPGTStorage(new CAS_PGTStorage_Cache(phpCAS::getCasClient()));
                 phpCAS::setFixedCallbackURL(URLHelper::getURL('dispatch.php/cas/proxy'));
             } else {
-                phpCAS::client(CAS_VERSION_2_0, $this->host, $this->port, $this->uri, false);
+                phpCAS::client(CAS_VERSION_2_0, $this->host, $this->port, $this->uri, $base_url, false);
             }
 
             if (isset($this->cacert)) {
@@ -83,7 +86,8 @@ class StudipAuthCAS extends StudipAuthSSO
     function logout()
     {
         // do a global cas logout
-        phpCAS::client(CAS_VERSION_2_0, $this->host, $this->port, $this->uri, false);
+        $base_url = new CAS_ServiceBaseUrl_Studip();
+        phpCAS::client(CAS_VERSION_2_0, $this->host, $this->port, $this->uri, $base_url, false);
         phpCAS::logout();
     }
 }
