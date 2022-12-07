@@ -41,6 +41,11 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
             'foreign_key'       => 'user_id',
             'assoc_foreign_key' => 'user_id',
         ];
+        $config['has_many']['visits'] = [
+            'class_name'        => ObjectUserVisit::class,
+            'assoc_foreign_key' => 'object_id',
+            'on_delete'         => 'delete',
+        ];
 
         $config['serialized_fields']['metadata'] = 'JSONArrayObject';
 
@@ -48,7 +53,6 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
     }
 
     public static $mention_thread_id = null;
-    protected $last_visit = null;
 
     /**
      * Pre-Markup rule. Recognizes mentions in blubber as @username or @"Firstname lastname"
@@ -103,6 +107,9 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
         return $markup->quote($matches[0]);
     }
 
+    /**
+     * @return BlubberThread[]
+     */
     public static function findBySQL($sql, $params = [])
     {
         return parent::findAndMapBySQL(function ($thread) {
@@ -110,6 +117,9 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
         }, $sql, $params);
     }
 
+    /**
+     * @return BlubberThread|null
+     */
     public static function find($id)
     {
         return self::upgradeThread(parent::find($id));
@@ -606,7 +616,39 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
      */
     public function getLastVisit(string $user_id = null)
     {
-        return UserConfig::get($user_id ?? $GLOBALS['user']->id)->getValue("BLUBBERTHREAD_VISITED_".$this->getId());
+        return object_get_visit(
+            $this->id,
+            $this->getBlubberPluginId(),
+            '',
+            '',
+            $user_id ?? User::findCurrent()->id
+        );
+    }
+
+    /**
+     * Sets the last visit timestamp for this thread
+     *
+     * @param string|null $user_id
+     */
+    public function setLastVisit(string $user_id = null): void
+    {
+        object_set_visit(
+            $this->id,
+            $this->getBlubberPluginId(),
+            $user_id ?? User::findCurrent()->id
+        );
+    }
+
+    /**
+     * Returns the id of the blubber plugin.
+     *
+     * @return int Id of the plugin
+     */
+    protected function getBlubberPluginId(): int
+    {
+        $plugin_info = PluginManager::getInstance()->getPluginInfo(Blubber::class);
+        return (int) $plugin_info['id'];
+
     }
 
     public function notifyUsersForNewComment($comment)
@@ -851,7 +893,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
             'more_down'       => 0,
             'unseen_comments' => BlubberComment::countBySQL("thread_id = ? AND mkdate >= ? AND user_id != ?", [
                 $this->getId(),
-                $this->getLastVisit() ?: object_get_visit_threshold(),
+                $this->getLastVisit(),
                 $user_id
             ]),
             'notifications' => $this->mayDisableNotifications(),
@@ -927,10 +969,8 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
             'user_id' => $user_id,
             'html_id' => "blubberthread_".$this->getId()
         ]);
-        $this->last_visit[$user_id] = empty($this->last_visit[$user_id])
-            ? object_get_visit($this->getId(), "blubberthread", "last", "", $user_id)
-            : $this->last_visit[$user_id];
-        UserConfig::get($user_id)->store("BLUBBERTHREAD_VISITED_".$this->getId(), time());
+
+        $this->setLastVisit($user_id);
     }
 
     public function getHashtags($since = null)
