@@ -28,7 +28,6 @@ class Resources_RoomRequestController extends AuthenticatedController
         $this->current_user = User::findCurrent();
 
         if (in_array($action, ['overview', 'planning', 'export_list', 'resolve', 'decline'])) {
-            $this->current_user = User::findCurrent();
             $user_is_global_resource_autor = ResourceManager::userHasGlobalPermission($this->current_user, 'autor');
             if (!RoomManager::userHasRooms($this->current_user, 'autor', true) && !$user_is_global_resource_autor) {
                 throw new AccessDeniedException(_('Ihre Berechtigungen an Räumen reichen nicht aus, um die Anfrageliste anzeigen zu können!'));
@@ -70,7 +69,6 @@ class Resources_RoomRequestController extends AuthenticatedController
                     $GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE = Semester::findCurrent()->id;
                 }
                 $this->filter['marked'] = -1;
-                $this->filter['own_requests'] = 1;
                 if (Request::submitted('marked')) {
                     $this->filter['marked'] = Request::get('marked');
                 }
@@ -83,10 +81,10 @@ class Resources_RoomRequestController extends AuthenticatedController
                     }
                 }
                 if (Request::submitted('toggle_specific_requests')) {
-                    $this->filter['specific_requests'] = $this->filter['specific_requests'] ? 0 : 1;
+                    $this->filter['specific_requests'] = !Request::bool('toggle_specific_requests');
                 }
                 if (Request::submitted('toggle_own_requests')) {
-                    $this->filter['own_requests'] = $this->filter['own_requests'] ? 0 : 1;
+                    $this->filter['own_requests'] = !Request::bool('toggle_own_requests');
                 }
                 if (Request::submitted('course_type')) {
                     $this->filter['course_type'] = Request::option('course_type');
@@ -210,9 +208,9 @@ class Resources_RoomRequestController extends AuthenticatedController
             $sql .= "OR resource_id IS NULL or resource_id = ''";
         }
         $sql .= ") ";
-        if (!$this->filter['own_requests']) {
-            $sql .= " AND resource_requests.user_id <> :current_user_id ";
-            $sql_params['current_user_id'] = User::findCurrent()->id;
+        if (!empty($this->filter['own_requests'])) {
+            $sql .= " AND resource_requests.user_id = :current_user_id ";
+            $sql_params['current_user_id'] = $this->current_user->id;
         }
 
         if ($this->filter['request_periods'] == 'periodic') {
@@ -415,7 +413,7 @@ class Resources_RoomRequestController extends AuthenticatedController
     * Sorts the resource requests according to columns not belonging to the
     * resource requests db table.
     *
-    * @param Array $requests array of ResourceRequest objects
+    * @param array $requests array of ResourceRequest objects
     * @param int $sort_variable property according to which the requests should be sorted
     *               values 1 and 10 are database columns (marked state and chdate) and already dealt with
                     2 = lecture number
@@ -428,7 +426,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                     9 = priority
     * @param string $order ascending ('asc') or descending ('desc') order
     *
-    * @return sorted array of resource requests
+    * @return array sorted array of resource requests
     */
     protected function sort_request_table($requests, int $sort_variable, string $order)
     {
@@ -543,7 +541,6 @@ class Resources_RoomRequestController extends AuthenticatedController
         if (Navigation::hasItem('/resources/planning/requests_overview')) {
             Navigation::activateItem('/resources/planning/requests_overview');
         }
-
         PageLayout::setTitle(_('Anfragenliste'));
 
         $sidebar = Sidebar::get();
@@ -666,8 +663,8 @@ class Resources_RoomRequestController extends AuthenticatedController
         $widget->addElement(
             new SelectElement(
                 '',
-                _('bitte wählen'),
-                !$this->filter['room_id']
+                _('Bitte wählen'),
+                empty($this->filter['room_id'])
             )
         );
         foreach ($this->available_rooms as $room) {
@@ -717,14 +714,15 @@ class Resources_RoomRequestController extends AuthenticatedController
         $widget->addElement(new WidgetElement('<br>'));
         $widget->addCheckbox(
             _('Nur mit Raumangabe'),
-            $this->filter['specific_requests'],
-            $this->overviewURL(['toggle_specific_requests' => 1])
+            !empty($this->filter['specific_requests']),
+            $this->overviewURL(['toggle_specific_requests' => !empty($this->filter['specific_requests'])])
         );
         $widget->addCheckbox(
             _('Eigene Anfragen anzeigen'),
-            $this->filter['own_requests'],
-            $this->overviewURL(['toggle_own_requests' => 1])
+            !empty($this->filter['own_requests']),
+            $this->overviewURL(['toggle_own_requests' => !empty($this->filter['own_requests'])])
         );
+
         $sidebar->addWidget($widget);
 
         $dow_selector = new SelectWidget(
@@ -852,8 +850,8 @@ class Resources_RoomRequestController extends AuthenticatedController
                 $this->resource->getFullName()
             )
         );
-        $current_user = User::findCurrent();
-        if (!$this->resource->userHasRequestRights($current_user)) {
+
+        if (!$this->resource->userHasRequestRights($this->current_user)) {
             throw new AccessDeniedException();
         }
         $this->form_action_link = $this->link_for('resources/room_request/add/' . $this->resource->id);
@@ -1027,7 +1025,7 @@ class Resources_RoomRequestController extends AuthenticatedController
             try {
                 //All checks are done in Resource::createSimpleRequest.
                 $request = $this->resource->createSimpleRequest(
-                    User::findCurrent(),
+                    $this->current_user,
                     $new_begin,
                     $new_end,
                     $this->comment,
@@ -1088,14 +1086,12 @@ class Resources_RoomRequestController extends AuthenticatedController
             return;
         }
 
-        $current_user = User::findCurrent();
-
         //Since all Stud.IP users are allowed to create requests,
         //there is no restriction for creating requests.
         $user_may_edit_request = $this->resource->userHasPermission(
-                $current_user,
+                $this->current_user,
                 'autor'
-            ) || $this->request->user_id == $current_user->id;
+            ) || $this->request->user_id === $this->current_user->id;
 
         if (!$user_may_edit_request) {
             throw new AccessDeniedException();
@@ -2691,13 +2687,13 @@ class Resources_RoomRequestController extends AuthenticatedController
         $widget->addElement(new WidgetElement('<br>'));
         $widget->addCheckbox(
             _('Nur mit Raumangabe'),
-            $this->filter['specific_requests'],
-            $this->planningURL(['toggle_specific_requests' => 1])
+            !empty($this->filter['specific_requests']),
+            $this->overviewURL(['toggle_specific_requests' => !empty($this->filter['specific_requests'])])
         );
         $widget->addCheckbox(
             _('Eigene Anfragen anzeigen'),
-            $this->filter['own_requests'],
-            $this->planningURL(['toggle_own_requests' => 1])
+            !empty($this->filter['own_requests']),
+            $this->overviewURL(['toggle_own_requests' => !empty($this->filter['own_requests'])])
         );
         $sidebar->addWidget($widget);
 
