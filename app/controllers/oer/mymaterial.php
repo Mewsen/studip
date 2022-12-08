@@ -202,7 +202,7 @@ class Oer_MymaterialController extends AuthenticatedController
             _('Zugriffszahlen für %s'),
             $material->name
         ));
-        if (!$GLOBALS['perm']->have_perm('root') && $material->user_id && $material->user_id !== $GLOBALS['user']->id) {
+        if (!$GLOBALS['perm']->have_perm('root') && !$material->isMine()) {
             throw new AccessDeniedException();
         }
         if (Request::get("export")) {
