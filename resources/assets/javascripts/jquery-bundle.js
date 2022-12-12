@@ -56,8 +56,6 @@ import 'jquery-ui/ui/effects/effect-size.js';
 import 'jquery-ui/ui/effects/effect-slide.js';
 import 'jquery-ui/ui/effects/effect-transfer.js';
 
-import 'jquery-ui-timepicker-addon';
-
 import 'multiselect';
 
 import 'jquery.scrollto';

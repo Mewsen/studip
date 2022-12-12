@@ -99,19 +99,17 @@ $intervals = [
         <label for="start-time" class="col-3">
             <span class="required"><?= _('Von') ?></span>
 
-            <input required type="text" name="start-time" id="start-time"
+            <input required type="time" name="start-time" id="start-time"
                    value="<?= htmlReady(Request::get('start-time', '08:00')) ?>"
-                   placeholder="<?= _('HH:mm') ?>"
-                   data-time-picker='{"<":"#end-time"}'>
+                   placeholder="<?= _('HH:mm') ?>">
         </label>
 
         <label for="ende_hour" class="col-3">
             <span class="required"><?= _('Bis') ?></span>
 
-            <input required type="text" name="end-time" id="end-time"
+            <input required type="time" name="end-time" id="end-time"
                    value="<?= htmlReady(Request::get('end-time', '09:00')) ?>"
-                   placeholder="<?= _('HH:mm') ?>"
-                   data-time-picker='{">":"#start-time"}'>
+                   placeholder="<?= _('HH:mm') ?>">
         </label>
 
         <label class="col-3">
