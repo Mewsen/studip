@@ -202,37 +202,6 @@ jQuery.extend(jQuery.ui.dialog.prototype.options, {
  * jQuery timepicker
  * ------------------------------------------------------------------------ */
 
-/* German translation for the jQuery Timepicker Addon */
-/* Written by Marvin */
-(function ($) {
-    $.timepicker.regional.de = {
-        timeOnlyTitle: 'Zeit wählen',
-        timeText: 'Zeit',
-        hourText: 'Stunde',
-        minuteText: 'Minute',
-        secondText: 'Sekunde',
-        millisecText: 'Millisekunde',
-        microsecText: 'Mikrosekunde',
-        timezoneText: 'Zeitzone',
-        currentText: 'Jetzt',
-        closeText: 'Fertig',
-        timeFormat: "HH:mm",
-        amNames: ['vorm.', 'AM', 'A'],
-        pmNames: ['nachm.', 'PM', 'P'],
-        isRTL: false,
-        showTimezone: false
-    };
-    $.timepicker.setDefaults($.timepicker.regional.de);
-
-    $(document).on('focus', '.has-time-picker', function () {
-        $(this).removeClass('has-time-picker').timepicker();
-    });
-    $(document).on('focus', '.has-time-picker-select', function () {
-        $(this).removeClass('has-time-picker-select').timepicker({controlType: 'select'});
-    });
-}(jQuery));
-
-
 (function ($) {
     $(document).on('focusout', '.studip-timepicker', function () {
         var time = $(this).val();

@@ -15,15 +15,10 @@ export default {
     ].join(','),
     // Initialize all datetimepickers that not yet been initialized (e.g. in dialogs)
     init() {
-        const elements = Array.from(document.querySelectorAll(this.selector)).filter(node => {
+        Array.from(document.querySelectorAll(this.selector)).filter(node => {
             return node.dataset.datetimePickerInit === undefined;
-        });
-
-        elements.forEach(element => {
+        }).forEach(element => {
             element.dataset.datetimePickerInit = true;
-            element.addEventListener('change', event => {
-                this.refresh(event.target);
-            });
 
             // Load and apply polyfill if necessary
             if (!this.supportsNativeInput) {
@@ -32,26 +27,29 @@ export default {
                     element.classList.add('hasTimepicker');
                 });
             }
-        });
 
-        $(this.selector).filter(function () {
-            return $(this).data('datetime-picker-init') === undefined;
-        }).each(function () {
-            $(this).data('datetime-picker-init', true).datetimepicker();
+            this.refresh(element);
+
+            element.addEventListener('change', event => {
+                this.refresh(event.target);
+            });
         });
+        //
+        // $(this.selector).filter(function () {
+        //     return $(this).data('datetime-picker-init') === undefined;
+        // }).each(function () {
+        //     $(this).data('datetime-picker-init', true).datetimepicker();
+        // });
     },
     // Apply registered handlers. Take care: This happens upon before a
     // picker is shown as well as after a date has been selected.
     refresh(node) {
-        $(this.selector).each(function () {
-            var element = this,
-                options = $(element).data().datetimePicker;
-            if (options) {
-                $.each(options, function (key, value) {
-                    if (this.dataHandlers[key] !== undefined) {
-                        this.dataHandlers[key].call(element, value);
-                    }
-                });
+        const options = node.dataset.datetimePicker !== undefined
+            ? JSON.parse(node.dataset.datetimePicker)
+            : {};
+        Object.entries(options).forEach(([key, value]) => {
+            if (this.dataHandlers[key] !== undefined) {
+                this.dataHandlers[key](node, value);
             }
         });
     },
