@@ -63,7 +63,7 @@ const SkipLinks = {
      * and highlights it
      */
     setActiveTarget (id) {
-        let fragment = '';
+        let fragment;
         // set active area only if skip links are activated
         if (!document.getElementById('skip_link_navigation')) {
             return false;
@@ -73,7 +73,7 @@ const SkipLinks = {
         } else {
             fragment = document.location.hash;
         }
-        let valid_selector = undefined;
+        let valid_selector;
         try {
             valid_selector = document.querySelector(fragment) != null;
         } catch (e) {
