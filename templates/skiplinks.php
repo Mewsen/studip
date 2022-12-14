@@ -8,11 +8,9 @@
         <? if (mb_substr($url = $nav->getURL(), 0, 1) == '#') : ?>
             <button class="skiplink" role="link" onclick="STUDIP.SkipLinks.setActiveTarget('<?= $url ?>');"><?= htmlReady($nav->getTitle()) ?></button>
         <? else : ?>
-            <? if (is_internal_url($url)) : ?>
-                <a href="<?= URLHelper::getLink($url) ?>"><?= htmlReady($nav->getTitle()) ?></a>
-            <? else : ?>
-                <a href="<?= htmlReady($url) ?>"><?= htmlReady($nav->getTitle()) ?></a>
-            <? endif ?>
+            <a href="<?= URLHelper::getLink($url, [], !is_internal_url($url)) ?>" data-in-fullscreen="<?= $fullscreen[$index] ?>">
+                <?= htmlReady($nav->getTitle()) ?>
+            </a>
         <? endif ?>
         </li>
     <? endforeach ?>
