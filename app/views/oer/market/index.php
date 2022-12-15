@@ -1,37 +1,20 @@
-<?
-if ($best_nine_tags && count($best_nine_tags) > 0) {
-    $tags = [];
-    foreach ($best_nine_tags as $tag) {
-        $tags[] = [
-            'tag_hash' => $tag['tag_hash'],
-            'name' => $tag['name']
-        ];
-    }
-}
-if ($materialien !== null) {
-    $material_data = [];
-    foreach ($materialien as $material) {
-        $data = $material->toRawArray();
-
-        $data['tags'] = array_map(function($tag) {
-            return $tag['name'];
-        }, $material->getTopics());
-
-        $data['logo_url'] = $material->getLogoURL();
-        $data['download_url'] = $material->getDownloadUrl();
-        $material_data[] = $data;
-    }
-}
+<?php
+/**
+ * @var Oer_MarketController $controller
+ * @var array $material_data
+ * @var array $tags
+ * @var OERMaterial[] $new_ones
+ */
 ?>
 <form class="oer_search"
-      action="<?= $controller->link_for("oer/market/search") ?>"
+      action="<?= $controller->search() ?>"
       method="GET" aria-live="polite"
       data-searchresults="<?= htmlReady(json_encode($material_data)) ?>"
-      data-filteredtag="<?= htmlReady(Request::get("tag")) ?>"
-      data-filteredcategory="<?= htmlReady(Request::get("category")) ?>"
+      data-filteredtag="<?= htmlReady(Request::get('tag')) ?>"
+      data-filteredcategory="<?= htmlReady(Request::get('category')) ?>"
       data-tags="<?= htmlReady(json_encode($tags)) ?>"
-      data-material_select_url_template="<?= htmlReady($controller->url_for('oer/market/details/__material_id__')) ?>">
-    <?= $this->render_partial("oer/market/_searchform") ?>
+      data-material_select_url_template="<?= htmlReady($controller->detailsURL('__material_id__')) ?>">
+    <?= $this->render_partial('oer/market/_searchform') ?>
 </form>
 
 
@@ -43,26 +26,3 @@ if ($materialien !== null) {
         </ul>
     </div>
 <? endif ?>
-
-
-
-
-
-
-<?
-if ($GLOBALS['perm']->have_perm("autor")) {
-    $actions = new ActionsWidget();
-    $actions->addLink(
-        _('Eigenes Lernmaterial hochladen'),
-        $controller->url_for("oer/mymaterial/edit"),
-        Icon::create("add", Icon::ROLE_CLICKABLE),
-        ['data-dialog' => "1"]
-    );
-    $actions->addLink(
-        $abo ? _('Neuigkeiten abbestellen') : _('Neuigkeiten abonnieren'),
-        $controller->url_for("oer/market/abo"),
-        $abo ? Icon::create("rss+decline", Icon::ROLE_CLICKABLE) : Icon::create("rss", Icon::ROLE_CLICKABLE),
-        ['data-dialog' => "size=small"]
-    );
-    Sidebar::Get()->addWidget($actions);
-}
