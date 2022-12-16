@@ -433,19 +433,17 @@ $sidebarOut: -330px;
 
             .cw-ribbon-tools {
                 right: 0;
-                top: 96px;
+                top: 44px;
+
+                .cw-tabs-nav {
+                    height: 52px;
+                }
             }
         }
     }
 
-    #toc {
-        position: absolute;
-        right: -8px;
-        top: 82px;
-    }
-
     #toc_header {
-        height: 47px;
+        height: 52px;
     }
 
     #main-footer {

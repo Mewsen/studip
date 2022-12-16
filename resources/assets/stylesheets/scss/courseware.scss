@@ -454,7 +454,7 @@ $consum_ribbon_width: calc(100% - 58px);
     z-index: 42;
 
     &.unfold {
-        right: 12px;
+        right: 0;
     }
 
     &.cw-ribbon-tools-consume {
@@ -1387,7 +1387,7 @@ label[for="cw-keypoint-color"] {
                                 padding-left: 1em;
                             }
                             > li.cw-tree-item {
-                                margin: 4px 0; 
+                                margin: 4px 0;
                                 > .cw-tree-item-wrapper {
                                     border: none;
                                     > a.cw-tree-item-link {
@@ -1421,7 +1421,7 @@ label[for="cw-keypoint-color"] {
                     }
                 }
             }
-        }    
+        }
     }
 
     .cw-tree-item-link {
