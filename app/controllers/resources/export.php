@@ -266,6 +266,7 @@ class Resources_ExportController extends AuthenticatedController
             PageLayout::postError(
                 _('Der Startzeitpunkt darf nicht hinter dem Endzeitpunkt liegen!')
             );
+            $this->redirect(Request::get('from'));
             return;
         }
 
