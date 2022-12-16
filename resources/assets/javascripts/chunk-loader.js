@@ -24,6 +24,16 @@ STUDIP.loadChunk = (function () {
                 });
                 break;
 
+            case 'courseware':
+                promise = Promise.all([
+                    import(
+                        /* webpackChunkName: "courseware" */
+                        './chunks/courseware'
+                    ),
+                    STUDIP.loadChunk('vue')
+                ]).then((dummy, Vue) => Vue);
+                break;
+
             case 'chartist':
                 promise = import(
                     /* webpackChunkName: "chartist" */
