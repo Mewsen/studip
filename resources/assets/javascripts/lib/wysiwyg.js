@@ -2,7 +2,6 @@
  * wysiwyg.js - Replace HTML textareas with WYSIWYG editor.
  */
 import parseOptions from './parse_options.js';
-import WikiLink from '../cke/wiki-link/wiki-link.js';
 
 const wysiwyg = {
     // NOTE keep this function in sync with Markup class
@@ -56,7 +55,7 @@ function isEditorHidden(textarea) {
     return editor && editor.ui && $(editor.ui.element).is(':hidden');
 }
 
-function replaceTextarea(textarea) {
+async function replaceTextarea(textarea) {
     setEditor(textarea, {});
     const $textarea = textarea instanceof jQuery ? textarea : $(textarea);
 
@@ -107,7 +106,9 @@ function replaceTextarea(textarea) {
         }
 
         if (parsed.extraPlugins) {
-            const pluginMap = { WikiLink };
+            const pluginMap = {
+                WikiLink: await import('../cke/wiki-link/wiki-link.js').then(({ default: WikiLink }) => WikiLink)
+            };
             options.extraPlugins = parsed.extraPlugins.split(",").reduce((memo, plugin) => {
                 if (plugin in pluginMap) {
                     memo.push(pluginMap[plugin]);

@@ -31,7 +31,7 @@ STUDIP.loadChunk = (function () {
                         './chunks/courseware'
                     ),
                     STUDIP.loadChunk('vue')
-                ]).then((dummy, Vue) => Vue);
+                ]).then(([dummy, Vue]) => Vue);
                 break;
 
             case 'chartist':
