@@ -155,11 +155,15 @@ export default {
 
             const unallocated = new Set(this.blocks.map(({ id }) => id));
 
-            sections.forEach(section => {
+            for (let section of sections) {
                 section.locked = false;
                 section.blocks = section.blocks.map((id) =>  view.blockById({id})).filter(Boolean);
-                section.blocks.forEach(({ id }) => unallocated.delete(id));
-            });
+                for (let sectionBlock of section.blocks) {
+                    if (sectionBlock?.id && unallocated.has(sectionBlock.id)) {
+                        unallocated.delete(sectionBlock.id);
+                    }
+                }
+            }
 
             if (unallocated.size > 0) {
                 this.unallocatedBlocks = [...unallocated].map((id) => view.blockById({ id }));
@@ -223,8 +227,12 @@ export default {
         }
     },
     watch: {
-        blocks() {
-            this.initCurrentData();
+        blocks(newBlocks, oldBlocks) {
+            if (!this.showEdit && !this.checkSimpleArrayEquality(newBlocks, oldBlocks)) {
+                this.$nextTick(() => {
+                    setTimeout(() =>  this.initCurrentData(), 250);
+                });
+            }
         }
     }
 };
