@@ -338,6 +338,42 @@ export const actions = {
         return response ? response.data.data : response;
     },
 
+    async createCustomFile(context, { file, filedata, block_id }) {
+        // create custom file for block
+        let url = `courseware-blocks/${block_id}/custom-files`;
+        let newFile = await state.httpClient.post(url, file).
+            then(({data }) => {
+                return data.data;
+            });
+
+        // set file data with separate call
+        let formData = new FormData();
+        formData.append('file', filedata, newFile.id);
+
+        url = `courseware-blocks/${block_id}/custom-files/${newFile.id}`;
+
+        await state.httpClient.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        return newFile;
+    },
+
+    async loadCustomFiles(context, block_id) {
+        const parent = {
+            type: 'courseware-blocks',
+            id: block_id,
+        };
+
+        const url = `courseware-blocks/${block_id}/custom-files`
+        return state.httpClient.get(url)
+            .then(({ data }) => {
+                return data.data;
+            });
+    },
+
     async createRootFolder({ dispatch, rootGetters }, { context, folder }) {
         // get root folder for this context
         await dispatch(

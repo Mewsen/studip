@@ -285,11 +285,40 @@ export default {
             // export file data (if any)
             if (block_ref.relationships['file-refs']?.links?.related) {
                 await this.exportFileRefs(block_ref.id);
+                await this.exportCustomFiles(block_ref.id);
             }
 
             delete block.relationships;
 
             return block;
+        },
+
+        async exportCustomFiles(block_id) {
+            // load export data
+            let refs =  []
+            try {
+                refs = await this.loadCustomFiles(block_id);
+            } catch(e) {
+                //TODO: Companion explains error
+            }
+
+            for (let ref_id in refs) {
+                console.log('custom-file-ref', refs[ref_id]);
+
+                let attributes = refs[ref_id].attributes;
+                delete attributes.content;
+
+                this.exportFiles.json.push({
+                    'id'               : refs[ref_id].id,
+                    'attributes'       : refs[ref_id].attributes,
+                    'related_block_id' : block_id,
+                    'type'             : 'custom-file'
+                });
+
+                this.exportFiles.download[refs[ref_id].id] = {
+                    url: refs[ref_id].meta['download-url']
+                };
+            }
         },
 
         async exportFileRefs(block_id) {
@@ -361,6 +390,7 @@ export default {
         ...mapActions([
             'loadStructuralElement',
             'loadFileRefs',
+            'loadCustomFiles',
             'loadFolder',
             'companionInfo',
             'setExportState',

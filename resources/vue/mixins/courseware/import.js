@@ -9,6 +9,7 @@ export default {
             elementCounter: 0,
             importElementCounter: 0,
             currentImportErrors: [],
+            customFiles: []
         };
     },
 
@@ -246,7 +247,7 @@ export default {
 
             // update old id ids in payload part
             for (var i = 0; i < files.length; i++) {
-                if (files[i].related_block_id === block.id) {
+                if (files[i].related_block_id === block.id && files[i].type === undefined) {
                     let old_file = this.file_mapping[files[i].id].old;
                     let new_file = this.file_mapping[files[i].id].new;
                     let payload = JSON.stringify(block.attributes.payload);
@@ -273,6 +274,24 @@ export default {
                 this.unlockObject({ id: new_block.id, type: 'courseware-blocks' });
             }
 
+
+            this.setImportFilesProgress(0);
+            this.setImportFilesState('');
+
+            for (var i = 0; i < this.customFiles.length; i++) {
+                if (this.customFiles[i].related_block_id == block.id) {
+                    await this.createCustomFile({
+                        file: this.customFiles[i],
+                        block_id: new_block.id
+                    });
+                }
+
+                this.setImportFilesState(this.$gettext('Erzeuge Datei'));
+                this.setImportFilesProgress(parseInt(i / this.customFiles.length * 100));
+            }
+
+            this.setImportFilesProgress(100);
+            this.setImportFilesState('');
 
             return new_block;
         },
@@ -333,11 +352,14 @@ export default {
             // upload all files to the newly created folder
             if (main_folder) {
                 for (var i = 0; i < files.length; i++) {
+                    let custom = files[i].type === 'custom-file';
+
                     // if the subfolder with the referenced id does not exist yet, create it
                     if (!files[i].folder) {
                         continue;
                     }
-                    if (!folders[files[i].folder.id]) {
+
+                    if (!custom && !folders[files[i].folder.id]) {
                         this.setImportFilesState(this.$gettext('Lege Ordner an') + ': ' + files[i].folder.name);
                         folders[files[i].folder.id] = await this.createFolder({
                             context: this.context,
@@ -355,7 +377,29 @@ export default {
                     }
 
                     // only upload files with the same id once
-                    if (this.file_mapping[files[i].id] === undefined) {
+                    if (custom) {
+                        let zip_filedata = await this.zip.file(files[i].id).async('blob');
+
+                        // create new blob with correct type
+                        let filedata = zip_filedata.slice(0, zip_filedata.size);
+
+                        this.setImportFilesState(this.$gettext('Erzeuge Datei'));
+
+
+                        let file = await this.createCustomFile({
+                            'file': files[i],
+                            'filedata' : filedata,
+                            'block_id' : files[i].attributes['block_id']
+                        });
+
+                        //file mapping
+                        this.file_mapping[files[i].id] = {
+                            old: files[i],
+                            new: file
+                        };
+
+                        this.setImportFilesProgress(parseInt(i / files.length * 100));
+                    } else if (this.file_mapping[files[i].id] === undefined) {
                         let zip_filedata = await this.zip.file(files[i].id).async('blob');
 
                         // create new blob with correct type
@@ -394,6 +438,7 @@ export default {
             'createFolder',
             'createRootFolder',
             'createFile',
+            'createCustomFile',
             'lockObject',
             'unlockObject',
             'setImportFilesState',
