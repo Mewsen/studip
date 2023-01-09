@@ -107,7 +107,7 @@ class ActionMenu
                     'link'       => $url->link,
                     'icon'       => $url->icon,
                     'label'      => $url->label,
-                    'attributes' => $url->attributes
+                    'attributes' => $url->attributes,
                 ];
             } else {
                 $action = [
@@ -118,7 +118,7 @@ class ActionMenu
                     'attributes' => $attributes,
                 ];
             }
-            $index = $index ?: md5($action['link'].json_encode($action['attributes']));
+            $index = $index ?: md5($action['link'] . json_encode($action['attributes']));
             $action['index'] = $index;
             //now insert it possibly at the desired position:
             $before_key = null;
