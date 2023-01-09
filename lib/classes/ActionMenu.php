@@ -106,7 +106,7 @@ class ActionMenu
                     'type'       => 'link',
                     'link'       => $url->link,
                     'icon'       => $url->icon,
-                    'label'      => $url->label,
+                    'label'      => $url->title,
                     'attributes' => $url->attributes,
                 ];
             } else {
