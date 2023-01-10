@@ -760,6 +760,7 @@ export default {
             viewMode: 'viewMode',
             taskById: 'courseware-tasks/byId',
             userById: 'users/byId',
+            groupById: 'status-groups/byId',
 
             blocked: 'currentElementBlocked',
             blockerId: 'currentElementBlockerId',
