@@ -1326,7 +1326,7 @@ class Admin_UserController extends AuthenticatedController
         if (!empty($courses)) {
             $this->sections['courses'] = $courses;
         }
-        if (!empty($courses)) {
+        if (!empty($closed_courses)) {
             $this->sections['closed_courses'] = $closed_courses;
         }
 
