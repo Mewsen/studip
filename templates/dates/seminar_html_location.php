@@ -20,8 +20,9 @@ if (is_array($dates['regular']['turnus_data'])) foreach ($dates['regular']['turn
         if ($link) {
             $output[
                 '<a href="' . $room_obj->getActionLink('show') . '" data-dialog="1">'
-                . htmlReady($room_obj->name) . '</a>'
-                ][] = $cycle['tostring_short'] .' ('. $count .'x)';
+                . htmlReady($room_obj->name)
+                . '</a>'
+                ][] = $cycle['tostring'] .' ('. $count .'x)';
         } else {
             $output[htmlReady($room_obj->name)][] = $cycle['tostring_short'] .' ('. $count .'x)';
         }
@@ -34,7 +35,7 @@ if (is_array($dates['regular']['turnus_data'])) foreach ($dates['regular']['turn
             if($count) :
                 $without_location .=  '(' . $count . 'x)';
             endif;
-            $output[_('k.A.')][] = $without_location;
+            $output[_('Keine Raumangabe')][] = $without_location;
         endif;
     endforeach;
 endforeach;
@@ -47,9 +48,10 @@ if (is_array($dates['irregular'])) foreach ($dates['irregular'] as $date) :
     elseif (!empty($date['raum'])) :
         $output_dates[$date['raum']][] = $date;
     else :
-        $output_dates[_('k.A.')][]  = $date['tostring'];
+        $output_dates[_('Keine Raumangabe')][]  = $date['tostring'];
     endif;
 endforeach;
+
 
 // now shrink the dates for each room/freetext and add them to the output
 if (is_array($output_dates)) foreach ($output_dates as $dates) :
@@ -58,7 +60,8 @@ if (is_array($output_dates)) foreach ($output_dates as $dates) :
         if ($link) {
             $output[
                 '<a href="' . $room_obj->getActionLink('show') . '" data-dialog="1">'
-                . htmlReady($room_obj->name) . '</a>'
+                . htmlReady($room_obj->name)
+                . '</a>'
                 ][] = implode('<br>', shrink_dates($dates));
         } else {
             $output[htmlReady($room_obj->name)][] = implode('<br>', shrink_dates($dates));
@@ -66,35 +69,23 @@ if (is_array($output_dates)) foreach ($output_dates as $dates) :
     elseif (isset($dates[0]['raum'])) :
         $output['(' . htmlReady($dates[0]['raum']) . ')'][] = implode('<br>', shrink_dates($dates));
     else :
-        $output[_('k.A.')][] = implode('<br>', $dates);
+        $output[_('Keine Raumangabe')][] = implode('<br>', $dates);
     endif;
 endforeach;
 ?>
 
 
 <? if (!is_array($output) || count($output) === 0) : ?>
-    <?= htmlReady($ort) ?: _("nicht angegeben") ?>
+    <?= htmlReady($ort) ?: _('Keine Raumangabe') ?>
 <? else: ?>
-    <table class="default">
-        <? foreach ($output as $room => $dates) : ?>
-        <tr>
-            <td style="vertical-align: top"><?= $room ?></td>
-            <td>
-                <? $dates = implode('<br>', $dates) ?>
-
-                <? if (mb_strlen($dates) > 222 && !$disable_list_shrinking) : ?>
-                    <?= mb_substr($dates, 0, 228) ?>
-                    <div class="more-location-dates-infos" style="display:none">
-                        <?= $dates ?>
-                    </div>
-                    <div>
-                        <span class='more-location-digits'>...</span>
-                        <a class="more-location-dates" style="cursor: pointer; margin-left: 3px">(mehr)</a>
-                    </div>
-                <? else : ?>
-                    <?= $dates ?>
-                <? endif ?>
-            </td>
+    <dl>
+        <? foreach ($output as $room_html => $dates) : ?>
+            <dt><?= $room_html ?></dt>
+            <? foreach ($dates as $date) : ?>
+                <dd>
+                    <?= $date ?>
+                </dd>
             <? endforeach ?>
+        <? endforeach ?>
     </table>
 <? endif ?>
