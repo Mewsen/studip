@@ -310,12 +310,12 @@
 
 <article class="studip">
     <header>
-        <h1><?= _('Veranstaltungsort') ?> / <?= _('Veranstaltungszeiten')?></h1>
+        <h1><?= _('Räume und Zeiten') ?></h1>
     </header>
     <section>
         <?= $sem->getDatesTemplate(
             'dates/seminar_html_location',
-            ['ort' => $course->ort, 'disable_list_shrinking' => true]
+            ['ort' => $course->ort]
         ) ?>
     </section>
 </article>
