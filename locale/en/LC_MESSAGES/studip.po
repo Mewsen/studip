@@ -1,9 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-# Translators:
 # honkmaster <tiemerding-online@web.de>, 2021
 # Arno <transifex@senlogik.de>, 2021
 # Datenpunk <transifex@tillgloeggler.de>, 2021
@@ -14,22 +11,26 @@
 # Jakob Diel <jakobdiel@gmail.com>, 2021
 # M S <strohm@data-quest.de>, 2021
 # Jan-Hendrik Willms <tleilax@gmail.com>, 2021
+# Jan-Hendrik Willms <tleilax+studip@gmail.com>, 2023.
+# Moritz Strohm <strohm@data-quest.de>, 2023.
+#
+# Translators:
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-24 12:35+0100\n"
-"PO-Revision-Date: 2022-09-21 12:36+0000\n"
-"Last-Translator: Jan-Hendrik Willms <tleilax@gmail.com>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-2/en/>\n"
+"PO-Revision-Date: 2023-01-24 12:46+0000\n"
+"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-2/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.15\n"
 
 #: app/controllers/news.php:40
 msgid "Stud.IP (systemweit)"
@@ -20557,6 +20558,7 @@ msgid ""
 "Ein Löschen des Zeitraums führt auch zum Verlust einer vorhandenen "
 "Raumbuchung."
 msgstr ""
+"Deleting the time range will also result in the loss of an existing booking."
 
 #: app/views/course/timesrooms/_regularEvents.php:196
 msgid "Keine regelmäßigen Termine vorhanden"
@@ -54543,11 +54545,11 @@ msgid "Menü"
 msgstr "Menu"
 
 #: templates/header.php:90
-#, fuzzy, php-format
+#, php-format
 msgid "%u Benachrichtigung"
 msgid_plural "%u Benachrichtigungen"
-msgstr[0] "Notification"
-msgstr[1] "Notification"
+msgstr[0] "%u notification"
+msgstr[1] "%u notifications"
 
 #: templates/header.php:99
 msgid "Alle Benachrichtigungen als gelesen markieren"
