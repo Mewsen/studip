@@ -86,7 +86,10 @@ if (isset($_COOKIE['navigation-length'])) {
                         }
                     } ?>
                     <button id="notification_marker" data-toggles="#notification_checkbox" <?= !empty($alert) ? ' class="alert"' : "" ?>
-                            title="<?= _('Benachrichtigungen') ?>" data-lastvisit="<?= $lastvisit ?>"
+                            title="<?= sprintf(
+                                   ngettext('%u Benachrichtigung', '%u Benachrichtigungen', count($notifications)),
+                                   count($notifications)
+                                   ) ?>" data-lastvisit="<?= $lastvisit ?>"
                             <?= count($notifications) == 0 ? 'disabled' : '' ?>>
                         <span class="count" aria-hidden="true"><?= count($notifications) ?></span>
                     </button>
