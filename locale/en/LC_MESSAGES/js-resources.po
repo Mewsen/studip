@@ -1,16 +1,16 @@
-# Moritz Strohm <strohm@data-quest.de>, 2022.
+# Moritz Strohm <strohm@data-quest.de>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2022-09-22 12:24+0000\n"
+"PO-Revision-Date: 2023-01-24 12:47+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-1-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-1-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.15\n"
 "Generated-By: easygettext\n"
 
 #: resources/assets/javascripts/lib/multi_person_search.js:70
@@ -33,11 +33,10 @@ msgid "[Vertretung]"
 msgstr "[Substitute]"
 
 #: resources/assets/javascripts/lib/personal_notifications.js:186
-#, fuzzy
 msgid "%{ count } Benachrichtigung"
 msgid_plural "%{ count } Benachrichtigungen"
-msgstr[0] "Notification"
-msgstr[1] "Notification"
+msgstr[0] "%{ count } notification"
+msgstr[1] "%{ count } notifications"
 
 #: resources/vue/components/courseware/CoursewareManagerElement.vue:125
 #: resources/vue/components/courseware/CoursewareManagerElementItem.vue:61
