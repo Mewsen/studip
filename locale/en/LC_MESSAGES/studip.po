@@ -13,7 +13,7 @@
 # Ron Lucke <lucke@elan-ev.de>, 2022
 # M S <strohm@data-quest.de>, 2022
 # Jan-Hendrik Willms <tleilax@gmail.com>, 2022
-# Moritz Strohm <strohm@data-quest.de>, 2022.
+# Moritz Strohm <strohm@data-quest.de>, 2022, 2023.
 #
 # Translators:
 #
@@ -22,16 +22,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-25 13:41+0100\n"
-"PO-Revision-Date: 2022-05-13 14:48+0000\n"
+"PO-Revision-Date: 2023-01-25 12:45+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-0/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-0/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.15\n"
 
 #: app/routes/Clipboard.php:26 app/routes/Clipboard.php:68
 #: app/controllers/resources/property.php:65
@@ -8991,7 +8991,7 @@ msgstr ""
 "automatically when you access the page. The tours can still be started using "
 "the help."
 
-#: app/views/settings/general.php:98
+#: app/views/settings/general.php:98 templates/header.php:88
 msgid "Benachrichtigungen"
 msgstr "Notifications"
 
@@ -16715,6 +16715,7 @@ msgid "Neues Lernmaterial erstellen"
 msgstr "Create new learning material"
 
 #: app/views/sitemap/index.php:1 templates/header.php:157
+#: templates/header.php:154
 msgid "Hauptnavigation"
 msgstr "Main navigation"
 
@@ -20318,6 +20319,7 @@ msgid ""
 "Ein Löschen des Zeitraums führt auch zum Verlust einer vorhandenen "
 "Raumbuchung."
 msgstr ""
+"Deleting the time range will also result in the loss of an existing booking."
 
 #: app/views/course/timesrooms/_regularEvents.php:185
 msgid "Keine regelmäßigen Termine vorhanden"
@@ -53670,25 +53672,26 @@ msgid "Menü"
 msgstr "Menu"
 
 #: templates/header.php:89
-#, fuzzy, php-format
+#, php-format
 msgid "%u Benachrichtigung"
 msgid_plural "%u Benachrichtigungen"
-msgstr[0] "Notification"
-msgstr[1] "Notification"
+msgstr[0] "%u notification"
+msgstr[1] "%u notifications"
 
-#: templates/header.php:98
+#: templates/header.php:98 templates/header.php:95
 msgid "Alle Benachrichtigungen als gelesen markieren"
 msgstr "Mark all notifications as read"
 
-#: templates/header.php:101
+#: templates/header.php:101 templates/header.php:98
 msgid "Desktop-Benachrichtigungen aktivieren"
 msgstr "Activate desktop notifications"
 
-#: templates/header.php:127 templates/header.php:137
+#: templates/header.php:127 templates/header.php:137 templates/header.php:124
+#: templates/header.php:134
 msgid "Profilmenü"
 msgstr "Profile menu"
 
-#: templates/header.php:175
+#: templates/header.php:175 templates/header.php:172
 msgid "Mehr"
 msgstr "More"
 
