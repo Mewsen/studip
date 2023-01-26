@@ -2333,7 +2333,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
 
         $name_sort = Config::get()->IMPORTANT_SEMNUMBER ? 'VeranstaltungsNummer, Name' : 'Name';
 
-        return Course::findBySQL(
+        return Course::findDistinctBySQL(
             "LEFT JOIN semester_courses ON (semester_courses.course_id = seminare.Seminar_id)
              WHERE Seminar_id IN (?)
              GROUP BY seminare.Seminar_id

@@ -493,22 +493,41 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     /**
      * returns number of records
      *
-     * @param ?string $sql sql clause to use on the right side of WHERE
-     * @param ?array $params params for query
+     * @param string $sql sql clause to use on the right side of WHERE
+     * @param array $params params for query
      * @return int
      */
     public static function countBySql($sql = '1', $params = [])
     {
+        return (int) DBManager::get()->fetchColumn(
+            self::buildSQLQuery($sql, 'COUNT(*)'),
+            $params
+        );
+    }
+
+    /**
+     * Returns distinct number of records
+     *
+     * @param string $sql sql clause to use on the right side of WHERE
+     * @param array  $params params for query
+     * @return int
+     */
+    public static function countDistinctBySql(string $sql = '1', array $params = []): int
+    {
         $db_table = static::db_table();
-        $db = DBManager::get();
-        $has_join = stripos($sql, 'JOIN ');
-        if ($has_join === false || $has_join > 10) {
-            $sql = 'WHERE ' . $sql;
-        }
-        $sql = "SELECT count(*) FROM `" .  $db_table . "` " . $sql;
-        $st = $db->prepare($sql);
-        $st->execute($params);
-        return (int)$st->fetchColumn();
+
+        $pk_list = implode(',', array_map(
+            function ($key) use ($db_table) {
+                return "`{$db_table}`.`{$key}`";
+            },
+            static::pk()
+        ));
+
+
+        return (int) DBManager::get()->fetchColumn(
+            self::buildSQLQuery($sql, "COUNT(DISTINCT {$pk_list})"),
+            $params
+        );
     }
 
     /**
@@ -622,14 +641,38 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     public static function findBySQL($sql, $params = [])
     {
-        $db_table = static::db_table();
+        $query = self::buildSQLQuery($sql);
 
-        $has_join = stripos($sql, 'JOIN ');
-        if ($has_join === false || $has_join > 10) {
-            $sql = 'WHERE ' . $sql;
-        }
-        $sql = "SELECT `" . $db_table . "`.* FROM `" . $db_table . "` " . $sql;
-        $stmt = DBManager::get()->prepare($sql);
+        $stmt = DBManager::get()->prepare($query);
+        $stmt->execute($params);
+
+        $record = static::build([], false);
+        
+        $ret = [];
+        do  {
+            $clone = clone $record;
+            $stmt->setFetchMode(PDO::FETCH_INTO, $clone);
+
+            if ($clone = $stmt->fetch()) {
+                $clone->applyCallbacks('after_initialize');
+                $ret[] = $clone;
+            }
+        } while ($clone);
+        return $ret;
+    }
+
+    /**
+     * returns array of distinct instances of given class filtered by given sql
+     *
+     * @param string $sql sql clause to use on the right side of WHERE
+     * @param array $params parameters for query
+     * @return array array of "self" objects
+     */
+    public static function findDistinctBySQL(string $sql, array $params = []): array
+    {
+        $query = self::buildSQLQuery($sql, null, 'DISTINCT');
+
+        $stmt = DBManager::get()->prepare($query);
         $stmt->execute($params);
 
         $record = static::build([], false);
@@ -712,18 +755,59 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      *
      * @param callable $callable callback which gets the current record as param
      * @param string $sql where clause of sql
-     * @param ?array $params sql statement parameters
+     * @param array $params sql statement parameters
      * @return integer number of found records
      */
     public static function findEachBySQL($callable, $sql, $params = [])
     {
-        $has_join = stripos($sql, 'JOIN ');
-        if ($has_join === false || $has_join > 10) {
-            $sql = "WHERE {$sql}";
+        $query = self::buildSQLQuery($sql);
+
+        $record = new static();
+        $record->setNew(false);
+
+        $st = DBManager::get()->prepare($query);
+        $st->execute($params);
+        $st->setFetchMode(PDO::FETCH_INTO , $record);
+
+        // Indicate that we are performing a batch operation
+        static::$performs_batch_operation = true;
+
+        $ret = 0;
+        while ($record = $st->fetch()) {
+            // Reset all relations
+            $record->cleanup();
+            $record->applyCallbacks('after_initialize');
+
+            // Execute callable on current record
+            $callable(clone $record, $ret++);
         }
 
-        $db_table = static::db_table();
-        $st = DBManager::get()->prepare("SELECT `{$db_table}`.* FROM `{$db_table}` {$sql}");
+        // Reset batch operation indicator
+        static::$performs_batch_operation = false;
+
+        return $ret;
+    }
+
+    /**
+     * passes distinct objects for given sql through given callback
+     *
+     * @param callable $callable callback which gets the current record as param
+     * @param string $sql where clause of sql
+     * @param array $params sql statement parameters
+     * @return integer number of found records
+     */
+    public static function findDistinctEachBySQL(
+        callable $callable,
+        string $sql,
+        array $params = []
+    ): int
+    {
+        $query = self::buildSQLQuery($sql, null, 'DISTINCT');
+
+        $record = new static();
+        $record->setNew(false);
+
+        $st = DBManager::get()->prepare($query);
         $st->execute($params);
 
         // Indicate that we are performing a batch operation
@@ -833,6 +917,34 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         $where = "`$db_table`.`{$pk[0]}` IN ("  . $db->quote($pks) . ") ";
         static::findEachBySQL($calleach, $where . $order, $order_params);
         return $ret;
+    }
+
+    /**
+     * Builds the actual sql query used in some SORM operations.
+     *
+     * @param string $condition WHERE clause of SQL (may include JOINs)
+     * @param string|null $to_select What to select (defaults to <db_table>.*)
+     * @param string $prefix Optional prefix before $to_select
+     * @return string
+     */
+    public static function buildSQLQuery(
+        string $condition,
+        string $to_select = null,
+        string $prefix = ''
+    ): string
+    {
+        $db_table = static::db_table();
+
+        if ($to_select === null) {
+            $to_select = "`{$db_table}`.*";
+        }
+
+        $has_join = stripos($condition, 'JOIN ');
+        if ($has_join === false || $has_join > 10) {
+            $condition = 'WHERE ' . $condition;
+        }
+
+        return "SELECT {$prefix} {$to_select} FROM `{$db_table}` {$condition}";
     }
 
     /**
