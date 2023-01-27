@@ -81,8 +81,8 @@ class StructuralElementsCreate extends JsonApiController
             'title' => self::arrayGet($json, 'data.attributes.title', ''),
             'purpose' => self::arrayGet($json, 'data.attributes.purpose', $parent->purpose),
             'payload' => self::arrayGet($json, 'data.attributes.payload', ''),
-            'read_approval' => self::arrayGet($json, 'data.attributes.read-approval', []),
-            'write_approval' => self::arrayGet($json, 'data.attributes.write-approval', []),
+            'read_approval' => self::arrayGet($json, 'data.attributes.read-approval', $parent->read_approval),
+            'write_approval' => self::arrayGet($json, 'data.attributes.write-approval', $parent->write_approval),
             'position' => $parent->countChildren()
         ]);
 
