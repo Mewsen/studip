@@ -107,7 +107,16 @@ class DatafieldEntryModel extends SimpleORMap implements PrivacyObject
         $query .= "FROM datafields a LEFT JOIN datafields_entries b ON (a.datafield_id=b.datafield_id AND range_id = :range_id AND sec_range_id = :sec_range_id) ";
         $query .= "WHERE object_type = :object_type AND (ISNULL(lang) OR lang = '') AND (a.institut_id IS NULL OR a.institut_id IN (:institution_ids))";
 
-        if ($object_type === 'studycourse') {
+        if ($object_type === 'sem' || $object_type === 'inst') {
+            // find datafields by status (int)
+            $query .= " AND (object_class = :object_class OR object_class IS NULL) $one_datafield ORDER BY priority";
+            $params = array_merge($params, [
+                ':range_id'     => (string) $range_id,
+                ':sec_range_id' => (string) $sec_range_id,
+                ':object_type'  => $object_type,
+                ':object_class' => (int) $object_class
+            ]);
+        } elseif ($object_type === 'studycourse') {
             $query .= "AND (LOCATE(:object_class, object_class) OR LOCATE('all', object_class)) $one_datafield ORDER BY priority";
             $params = array_merge($params,[
                 ':range_id' => (string) $range_id,
