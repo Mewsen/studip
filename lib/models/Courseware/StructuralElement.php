@@ -682,6 +682,8 @@ SQL;
             'position' => $parent->countChildren(),
             'payload' => $this->payload,
             'image_id' => $file_ref_id,
+            'read_approval' => $parent->read_approval,
+            'write_approval' => $parent->write_approval
         ]);
 
         $element->store();
