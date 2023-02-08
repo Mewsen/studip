@@ -447,7 +447,7 @@ $consum_ribbon_width: calc(100% - 58px);
     z-index: 42;
 
     &.unfold {
-        right: 0px;
+        right: 0;
     }
 
     &.cw-ribbon-tools-consume {
