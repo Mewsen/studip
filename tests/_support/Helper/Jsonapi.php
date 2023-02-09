@@ -35,6 +35,9 @@ class Jsonapi extends \Codeception\Module
         return $result;
     }
 
+    /**
+     * @return \Slim\App
+     */
     public function createApp($credentials, $method, $pattern, $callable, $name = null)
     {
         return $this->createApp0(
@@ -48,6 +51,9 @@ class Jsonapi extends \Codeception\Module
         );
     }
 
+    /**
+     * @return \WoohooLabs\Yang\JsonApi\Request\JsonApiRequestBuilder
+     */
     public function createRequestBuilder($credentials = null)
     {
         $env = [];

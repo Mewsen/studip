@@ -5,7 +5,7 @@ use JsonApi\Routes\Wiki\WikiShow;
 class WikiShowTest extends \Codeception\Test\Unit
 {
     /**
-     * @var \UnitTester
+     * @var \JsonapiTester
      */
     protected $tester;
 
@@ -41,7 +41,13 @@ class WikiShowTest extends \Codeception\Test\Unit
     //helpers:
     private function getWikiPage($credentials, $rangeId, $keyword)
     {
-        $app = $this->tester->createApp($credentials, 'get', '/wiki-pages/{id}', WikiShow::class, 'get-wiki-page');
+        $app = $this->tester->createApp(
+            $credentials,
+            'get',
+            '/wiki-pages/{id}',
+            WikiShow::class,
+            'get-wiki-page'
+        );
 
         return $this->tester->sendMockRequest(
                 $app,
@@ -55,7 +61,7 @@ class WikiShowTest extends \Codeception\Test\Unit
     private function createWikiPage($rangeId, $keyword, $body)
     {
         $wikiPage = new \WikiPage([$rangeId, $keyword, 0]);
-        $wikiPage->body = studip_utf8decode($body);
+        $wikiPage->body = $body;
         $wikiPage->user_id = 'nobody';
         $wikiPage->store();
 

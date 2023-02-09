@@ -1,0 +1,9 @@
+path: ./
+jobs: 10
+cache: .caches/phplint-cache
+extensions:
+  - php
+exclude:
+  - composer
+  - public/plugins_packages
+  - vendor

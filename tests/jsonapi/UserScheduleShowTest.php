@@ -5,7 +5,7 @@ use JsonApi\Routes\Schedule\UserScheduleShow;
 class UserScheduleShowTest extends \Codeception\Test\Unit
 {
     /**
-     * @var \UnitTester
+     * @var \JsonapiTester
      */
     protected $tester;
 
@@ -43,6 +43,7 @@ class UserScheduleShowTest extends \Codeception\Test\Unit
 
         $requestBuilder = $this->tester->createRequestBuilder($credentials);
         $requestBuilder->setUri('/users/'.$credentials['id'].'/schedule')->fetch();
+        $requestBuilder->setUriQueryParam('filter[timestamp]', Semester::findOneBySQL('1')->beginn);
 
         $response = $this->tester->sendMockRequest($app, $requestBuilder->getRequest());
         $this->tester->assertTrue($response->isSuccessfulDocument([200]));

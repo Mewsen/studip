@@ -164,7 +164,7 @@ class StructuralElement extends SchemaProvider
 
         if ($includeData) {
             $user = $this->getDiContainer()->get('studip-current-user');
-            $relation[self::RELATIONSHIP_DATA] = $resource->children->filter(
+            $relation[self::DATA] = $resource->children->filter(
                 function ($child) use ($user) {
                     return $child->canRead($user);
                 }

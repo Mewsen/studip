@@ -1,11 +1,14 @@
 <?php
 
+require_once 'WikiTestHelper.php';
 use JsonApi\Routes\Wiki\WikiCreate;
 
 class WikiCreateTest extends \Codeception\Test\Unit
 {
+    use WikiTestHelper;
+
     /**
-     * @var \UnitTester
+     * @var \JsonapiTester
      */
     protected $tester;
 
@@ -55,6 +58,7 @@ class WikiCreateTest extends \Codeception\Test\Unit
             '/courses/{id}/wiki',
             WikiCreate::class
         );
+        $this->addNamedGetWikiPageRoute($app);
 
         return $this->tester->sendMockRequest(
             $app,

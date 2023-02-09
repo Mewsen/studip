@@ -1,11 +1,14 @@
 <?php
 
+require_once 'WikiTestHelper.php';
 use JsonApi\Routes\Wiki\WikiUpdate;
 
 class WikiUpdateTest extends \Codeception\Test\Unit
 {
+    use WikiTestHelper;
+
     /**
-     * @var \UnitTester
+     * @var \JsonapiTester
      */
     protected $tester;
 
@@ -48,6 +51,7 @@ class WikiUpdateTest extends \Codeception\Test\Unit
             ],
         ];
         $app = $this->tester->createApp($credentials, 'patch', '/wiki-pages/{id}', WikiUpdate::class);
+        $this->addNamedGetWikiPageRoute($app);
 
         return $this->tester->sendMockRequest(
                 $app,
@@ -62,7 +66,7 @@ class WikiUpdateTest extends \Codeception\Test\Unit
     private function createWikiPage($rangeId, $keyword, $body)
     {
         $wikiPage = new \WikiPage([$rangeId, $keyword, 0]);
-        $wikiPage->body = studip_utf8decode($body);
+        $wikiPage->body = $body;
         $wikiPage->user_id = 'nobody';
         $wikiPage->store();
 
