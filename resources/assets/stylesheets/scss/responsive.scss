@@ -445,7 +445,6 @@ $sidebarOut: -330px;
             margin-top: 4px;
 
             .cw-ribbon-tools {
-                right: 0;
                 top: 4px;
 
                 .cw-tabs-nav {
@@ -646,9 +645,15 @@ $sidebarOut: -330px;
 
                 .cw-ribbon-consume {
                     position: unset;
+                    width: 100%;
 
                     .cw-ribbon-consume-bottom {
                         height: unset;
+                    }
+
+                    .cw-ribbon-tools {
+                        position: absolute;
+                        top: 25px;
                     }
                 }
             }
