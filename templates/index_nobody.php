@@ -1,5 +1,11 @@
 <?php
-# Lifter010: TODO
+/**
+ * @var int $num_active_courses
+ * @var int $num_registered_users
+ * @var int $num_online_users
+ * @var bool $logout
+ * @var string[] $plugin_contents
+ */
 
 // Get background images (this should be resolved differently since mobile
 // browsers might still download the desktop background)
@@ -18,7 +24,7 @@ if ($bg_mobile) {
 ?>
 <!-- Startseite (nicht eingeloggt) -->
 <ul id="tabs" role="navigation"></ul>
-<? if (!empty($logout)) : ?>
+<? if ($logout) : ?>
     <?= MessageBox::success(_("Sie sind nun aus dem System abgemeldet."), array_filter([$GLOBALS['UNI_LOGOUT_ADD']])) ?>
 <? endif; ?>
 
@@ -99,3 +105,11 @@ if ($bg_mobile) {
         </div>
     </footer>
 </div>
+
+<? if (count($plugin_contents) > 0): ?>
+    <div id="login-plugin-contents">
+        <? foreach ($plugin_contents as $content): ?>
+            <?= $content ?>
+        <? endforeach; ?>
+    </div>
+<? endif; ?>
