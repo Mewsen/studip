@@ -1,4 +1,5 @@
 import { $gettext } from '../lib/gettext.js';
+import eventBus from "../lib/event-bus";
 
 /*jslint browser: true, esversion: 6 */
 /*global window, $, jQuery, _ */
@@ -190,9 +191,12 @@ jQuery.ui.accordion.prototype.options.icons = {
     header: 'arrow_right',
     activeHeader: 'arrow_down'
 };
-jQuery.extend(jQuery.ui.dialog.prototype.options, {
-    closeText: $gettext('Schließen')
+eventBus.on('studip:set-locale', () => {
+    jQuery.extend(jQuery.ui.dialog.prototype.options, {
+        closeText: $gettext('Schließen')
+    });
 });
+
 
 
 /* ------------------------------------------------------------------------
