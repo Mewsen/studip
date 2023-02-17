@@ -745,9 +745,7 @@ class Resources_AdminController extends AuthenticatedController
             _('Teilbare Räume verwalten')
         );
 
-        if (Request::isPost()) {
-            CSRFProtection::verifyUnsafeRequest();
-        }
+        $this->separable_room_name = '';
 
         $db = DBManager::get();
 
@@ -762,6 +760,8 @@ class Resources_AdminController extends AuthenticatedController
         }
 
         if (Request::submitted('create_separable_room')) {
+            CSRFProtection::verifyUnsafeRequest();
+
             $selected_single_room_ids  = Request::getArray('selected_single_rooms');
             $this->separable_room_name = Request::get('separable_room_name');
 
@@ -849,6 +849,8 @@ class Resources_AdminController extends AuthenticatedController
         }
 
         if (Request::submitted('add_room_part')) {
+            CSRFProtection::verifyUnsafeRequest();
+
             $selected_single_room_ids = Request::getArray('selected_single_rooms');
 
             $resources = Resource::findMany($selected_single_room_ids);
@@ -954,23 +956,31 @@ class Resources_AdminController extends AuthenticatedController
         }
 
         if (Request::submitted('delete_separable_room')) {
+            CSRFProtection::verifyUnsafeRequest();
+
             $delete_separable_room_array = Request::getArray('delete_separable_room');
             $separable_room_id           = array_keys($delete_separable_room_array)[0];
             $this->deleteSeparableRoomsById([$separable_room_id]);
         }
 
         if (Request::submitted('bulk_delete_separable_rooms')) {
+            CSRFProtection::verifyUnsafeRequest();
+
             $separable_room_ids = Request::getArray('selected_separable_rooms');
             $this->deleteSeparableRoomsById($separable_room_ids);
         }
 
         if (Request::submitted('delete_room_part')) {
+            CSRFProtection::verifyUnsafeRequest();
+
             $delete_room_part_array = Request::getArray('delete_room_part');
             $room_part_id           = array_keys($delete_room_part_array)[0];
             $this->deleteSeparableRoomPartsById([$room_part_id]);
         }
 
         if (Request::submitted('bulk_delete_room_parts')) {
+            CSRFProtection::verifyUnsafeRequest();
+
             $room_part_ids = Request::getArray('selected_room_parts');
             $this->deleteSeparableRoomPartsById($room_part_ids);
         }
