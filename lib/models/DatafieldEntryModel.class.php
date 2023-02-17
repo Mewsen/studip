@@ -109,7 +109,7 @@ class DatafieldEntryModel extends SimpleORMap implements PrivacyObject
 
         if ($object_type === 'sem' || $object_type === 'inst') {
             // find datafields by status (int)
-            $query .= " AND (object_class = :object_class OR object_class IS NULL) ORDER BY priority";
+            $query .= " AND (object_class = :object_class OR object_class IS NULL) $one_datafield ORDER BY priority";
             $params = array_merge($params, [
                 ':range_id'     => (string) $range_id,
                 ':sec_range_id' => (string) $sec_range_id,
