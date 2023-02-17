@@ -11,7 +11,7 @@
             @closeEdit="initCurrent"
         >
             <template #content>
-                <section class="cw-block-content formatted-content" v-html="currentText" ref="content"></section>
+                <section class="formatted-content" v-html="currentText" ref="content"></section>
             </template>
             <template v-if="canEdit" #edit>
                 <studip-wysiwyg v-model="currentText"></studip-wysiwyg>
