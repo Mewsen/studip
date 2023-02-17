@@ -561,26 +561,27 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     public static function findBySQL($sql, $params = [])
     {
         $db_table = static::config('db_table');
-        $class = get_called_class();
-        $record = new $class();
-        $db = DBManager::get();
+
         $has_join = stripos($sql, 'JOIN ');
         if ($has_join === false || $has_join > 10) {
             $sql = 'WHERE ' . $sql;
         }
         $sql = "SELECT `" . $db_table . "`.* FROM `" . $db_table . "` " . $sql;
-        $ret = [];
         $stmt = DBManager::get()->prepare($sql);
         $stmt->execute($params);
-        $stmt->setFetchMode(PDO::FETCH_INTO , $record);
-        $record->setNew(false);
-        while ($record = $stmt->fetch()) {
-            // Reset all relations
-            $record->cleanup();
 
-            $record->applyCallbacks('after_initialize');
-            $ret[] = clone $record;
-        }
+        $record = static::build([], false);
+
+        $ret = [];
+        do  {
+            $clone = clone $record;
+            $stmt->setFetchMode(PDO::FETCH_INTO, $clone);
+
+            if ($clone = $stmt->fetch()) {
+                $clone->applyCallbacks('after_initialize');
+                $ret[] = $clone;
+            }
+        } while ($clone);
         return $ret;
     }
 
@@ -616,24 +617,26 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         $assoc_foreign_key = $options['assoc_foreign_key'];
 
         $db_table = static::config('db_table');
-        $class = get_called_class();
-        $record = new $class();
+
         $sql = "SELECT `$db_table`.* FROM `$thru_table`
         INNER JOIN `$db_table` ON `$thru_table`.`$thru_assoc_key` = `$db_table`.`$assoc_foreign_key`
         WHERE `$thru_table`.`$thru_key` = ? " . $options['order_by'];
         $db = DBManager::get();
         $st = $db->prepare($sql);
         $st->execute([$foreign_key_value]);
-        $ret = [];
-        $st->setFetchMode(PDO::FETCH_INTO , $record);
-        $record->setNew(false);
-        while ($record = $st->fetch()) {
-            // Reset all relations
-            $record->cleanup();
 
-            $record->applyCallbacks('after_initialize');
-            $ret[] = clone $record;
-        }
+        $record = static::build([], false);
+
+        $ret = [];
+        do {
+            $clone = clone $record;
+            $st->setFetchMode(PDO::FETCH_INTO, $clone);
+
+            if ($clone = $st->fetch()) {
+                $clone->applyCallbacks('after_initialize');
+                $ret[] = $clone;
+            }
+        } while ($clone);
         return $ret;
     }
 
@@ -658,20 +661,22 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         $db_table = static::config('db_table');
         $st = DBManager::get()->prepare("SELECT `{$db_table}`.* FROM `{$db_table}` {$sql}");
         $st->execute($params);
-        $st->setFetchMode(PDO::FETCH_INTO , $record);
 
         // Indicate that we are performing a batch operation
         static::$performs_batch_operation = true;
 
-        $ret = 0;
-        while ($record = $st->fetch()) {
-            // Reset all relations
-            $record->cleanup();
-            $record->applyCallbacks('after_initialize');
+        $record = static::build([], false);
 
-            // Execute callable on current record
-            $callable(clone $record, $ret++);
-        }
+        $ret = 0;
+        do {
+            $clone = clone $record;
+            $st->setFetchMode(PDO::FETCH_INTO, $clone);
+
+            if ($clone = $st->fetch()) {
+                $clone->applyCallbacks('after_initialize');
+                $callable($clone, $ret++);
+            }
+        } while ($clone);
 
         // Reset batch operation indicator
         static::$performs_batch_operation = false;
