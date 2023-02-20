@@ -86,7 +86,7 @@ class CourseAvatar extends Avatar
     {
         return Seminar::GetInstance($this->user_id)->name;
     }
-    
+
     /**
      * Return if avatar is visible to the current user.
      * @return boolean: true if visible
@@ -94,5 +94,17 @@ class CourseAvatar extends Avatar
     protected function checkAvatarVisibility() {
         //no special conditions for visibility of course-avatars yet
         return true;
+    }
+
+
+    protected function generateFileName($user_id, $size, $ext = 'png', $retina = false)
+    {
+        if ($user_id === Avatar::NOBODY) {
+            $course = Course::find($this->user_id);
+            if ($course && $course->isStudygroup()) {
+                $user_id = 'studygroup';
+            }
+        }
+        return parent::generateFileName($user_id, $size, $ext, $retina);
     }
 }

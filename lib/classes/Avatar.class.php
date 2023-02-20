@@ -116,34 +116,55 @@ class Avatar {
     }
 
 
+    protected function generateFileName($user_id, $size, $ext = 'png', $retina = false)
+    {
+        return sprintf(
+            '%1$s_%2$s.%3$s',
+            $user_id,
+            $retina ? $size . '@2x' : $size,
+            $ext
+        );
+    }
+
+
     public function getCustomAvatarUrl($size, $ext = 'png')
     {
         $retina = isset($GLOBALS['auth']->auth['devicePixelRatio'])
                 ? $GLOBALS['auth']->auth['devicePixelRatio'] > 1.2
                 : false;
-        $size = $retina && file_exists($this->getCustomAvatarPath($size, 'png', true))
-              ? $size."@2x"
-              : $size;
+        $retina = $retina && file_exists($this->getCustomAvatarPath($size, 'png', true));
+        $file_name = $this->generateFileName($this->user_id, $size, $ext, $retina);
+        $file_path = $this->getAvatarDirectoryPath() . '/' . $file_name;
+        $use_nobody = !file_exists($file_path) || $this->user_id === Avatar::NOBODY;
+        if ($use_nobody) {
+            $file_name = $this->generateFileName('nobody', $size, $ext, $retina);
+            $file_path = $this->getAvatarDirectoryPath() . '/' . $file_name;
+        }
         return sprintf(
-            '%s/%s_%s.%s?d=%s',
+            '%s/%s?d=%s',
             $this->getAvatarDirectoryUrl(),
-            $this->user_id,
-            $size,
-            $ext,
-            @filemtime($this->getCustomAvatarPath($size)) ?: "0"
+            $file_name,
+            @filemtime($file_path) ?: "0"
         );
     }
 
 
     public function getCustomAvatarPath($size, $ext = 'png', $retina = false)
     {
-        return sprintf(
-            '%s/%s_%s.%s',
+        $file_name = sprintf(
+            '%s/%s',
             $this->getAvatarDirectoryPath(),
-            $this->user_id,
-            $retina ? $size."@2x" : $size,
-            $ext
+            $this->generateFileName($this->user_id, $size, $ext, $retina)
         );
+        if (!file_exists($file_name) || $this->user_id === Avatar::NOBODY) {
+            return sprintf(
+                '%s/%s',
+                $this->getAvatarDirectoryPath(),
+                $this->generateFileName('nobody', $size, $ext, $retina)
+            );
+        } else {
+            return $file_name;
+        }
     }
 
 
@@ -174,9 +195,7 @@ class Avatar {
      */
     public function getFilename($size, $ext = 'png')
     {
-        return $this->is_customized()
-            ? $this->getCustomAvatarPath($size, $ext)
-            : $this->getNobody()->getCustomAvatarPath($size, $ext);
+        return $this->getCustomAvatarPath($size, $ext);
     }
 
 
@@ -191,9 +210,7 @@ class Avatar {
     # TODO (mlunzena) in Url umbenennen
     public function getURL($size, $ext = 'png')
     {
-        return $this->is_customized()
-            ? $this->getCustomAvatarUrl($size, $ext)
-            : $this->getNobody()->getCustomAvatarUrl($size, $ext);
+        return $this->getCustomAvatarUrl($size, $ext);
     }
 
 
