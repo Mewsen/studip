@@ -97,6 +97,9 @@ class CourseAvatar extends Avatar
     }
 
 
+    /**
+     * @inheritdoc
+     */
     protected function generateFileName($user_id, $size, $ext = 'png', $retina = false)
     {
         if ($user_id === Avatar::NOBODY) {

@@ -116,6 +116,13 @@ class Avatar {
     }
 
 
+    /**
+     * @param $user_id The user-ID for the avatar icon.
+     * @param $size The size of the icon.
+     * @param $ext The file extension of the icon.
+     * @param $retina Whether to use retina resolution (true) or not (false). Defaults to false.
+     * @return string The generated file name for the avatar icon.
+     */
     protected function generateFileName($user_id, $size, $ext = 'png', $retina = false)
     {
         return sprintf(
