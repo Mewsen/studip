@@ -149,3 +149,77 @@ class CourseAvatarTestCase extends \Codeception\Test\Unit
         $this->assertEquals("/dynamic/course/nobody_normal.png", $path);
     }
 }
+
+
+
+class StudygroupAvatarTestCase extends \Codeception\Test\Unit
+{
+    private $avatar_id;
+    private $avatar;
+
+    public function setUp(): void
+    {
+        $this->avatar_id = "123456789";
+        $this->avatar = StudygroupAvatar::getAvatar($this->avatar_id);
+
+        $this->setUpFS();
+
+        $GLOBALS['DYNAMIC_CONTENT_URL'] = "/dynamic";
+        $GLOBALS['DYNAMIC_CONTENT_PATH'] = "/dynamic";
+    }
+
+    private function setUpFS()
+    {
+        ArrayFileStream::set_filesystem([
+            'dynamic' => [
+                'course' => [
+                    $this->avatar_id . '_normal.png' => '',
+                    $this->avatar_id . '_medium.png' => '',
+                    $this->avatar_id . '_small.png' => '',
+                    'studygroup_normal.png' => '',
+                    'studygroup_medium.png' => '',
+                    'studygroup_small.png' => '',
+                ],
+            ],
+        ]);
+
+        if (!stream_wrapper_register("var", "ArrayFileStream")) {
+            throw new Exception("Failed to register protocol");
+        }
+    }
+
+    public function tearDown(): void
+    {
+        stream_wrapper_unregister("var");
+        unset($GLOBALS['DYNAMIC_CONTENT_PATH'], $GLOBALS['DYNAMIC_CONTENT_URL']);
+    }
+
+    public function test_class_should_exist()
+    {
+        $this->assertTrue(class_exists('StudygroupAvatar'));
+    }
+
+    public function test_avatar_url()
+    {
+        $url = $this->avatar->getCustomAvatarUrl(Avatar::NORMAL);
+        $this->assertEquals("/dynamic/course/". $this->avatar_id . "_normal.png?d=0", $url);
+    }
+
+    public function test_avatar_path()
+    {
+        $path = $this->avatar->getCustomAvatarPath(Avatar::NORMAL);
+        $this->assertEquals("/dynamic/course/". $this->avatar_id . "_normal.png", $path);
+    }
+
+    public function test_nobody_url()
+    {
+        $url = StudygroupAvatar::getNobody()->getUrl(Avatar::NORMAL);
+        $this->assertEquals("/dynamic/course/studygroup_normal.png?d=0", $url);
+    }
+
+    public function test_nobody_path()
+    {
+        $path = StudygroupAvatar::getNobody()->getCustomAvatarPath(Avatar::NORMAL);
+        $this->assertEquals("/dynamic/course/studygroup_normal.png", $path);
+    }
+}

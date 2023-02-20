@@ -95,19 +95,4 @@ class CourseAvatar extends Avatar
         //no special conditions for visibility of course-avatars yet
         return true;
     }
-
-
-    /**
-     * @inheritdoc
-     */
-    protected function generateFileName($user_id, $size, $ext = 'png', $retina = false)
-    {
-        if ($user_id === Avatar::NOBODY) {
-            $course = Course::find($this->user_id);
-            if ($course && $course->isStudygroup()) {
-                $user_id = 'studygroup';
-            }
-        }
-        return parent::generateFileName($user_id, $size, $ext, $retina);
-    }
 }

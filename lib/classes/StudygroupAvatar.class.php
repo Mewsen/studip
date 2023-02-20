@@ -1,49 +1,27 @@
 <?php
-# Lifter010: TODO
 
-/*
- * Copyright (C) 2009 - Marcus Lunzenauer (mlunzena@uos)
+
+/**
+ * StudygroupAvatar.class.php
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
- */
-
-
-/**
- * This class represents the avatar of a course.
  *
- * @package    studip
- * @subpackage lib
- *
- * @author    Marcus Lunzenauer (mlunzena@uos), Till Glöggler (tgloeggl@uos)
- * @copyright (c) Authors
- * @since     1.10
+ * @author      Moritz Strohm <strohm@data-quest.de>
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  */
 class StudygroupAvatar extends CourseAvatar
 {
     /**
-     * Returns an avatar object of the appropriate class.
-     *
-     * @param  string  the studygroup's id
-     *
-     * @return mixed   the studygroup's avatar.
+     * @inheritdoc
      */
-    static function getAvatar($course_id)
+    protected function generateFileName($user_id, $size, $ext = 'png', $retina = false)
     {
-        return new StudygroupAvatar($course_id);
+        if ($user_id === Avatar::NOBODY) {
+            $user_id = 'studygroup';
+        }
+        return parent::generateFileName($user_id, $size, $ext, $retina);
     }
-
-
-    /**
-     * Returns an avatar object for "nobody".
-     *
-     * @return mixed   the studygroup's avatar.
-     */
-    static function getNobody()
-    {
-        return new StudygroupAvatar('studygroup');
-    }
-
 }
