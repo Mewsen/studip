@@ -101,6 +101,11 @@ class CourseAvatarTestCase extends \Codeception\Test\Unit
                     $this->avatar_id . '_medium.png' => '',
                     $this->avatar_id . '_small.png' => '',
                 ],
+                'user' => [
+                    $this->avatar_id . '_normal.png' => '',
+                    $this->avatar_id . '_medium.png' => '',
+                    $this->avatar_id . '_small.png' => '',
+                ],
             ],
         ]);
 
