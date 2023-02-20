@@ -17,6 +17,23 @@ class StudygroupAvatar extends CourseAvatar
     /**
      * @inheritdoc
      */
+    static function getAvatar($id)
+    {
+        return new StudygroupAvatar($id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    static function getNobody()
+    {
+        return new StudygroupAvatar('nobody');
+    }
+
+
+    /**
+     * @inheritdoc
+     */
     protected function generateFileName($user_id, $size, $ext = 'png', $retina = false)
     {
         if ($user_id === Avatar::NOBODY) {
