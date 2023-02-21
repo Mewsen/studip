@@ -209,6 +209,16 @@ export const actions = {
             }));
     },
 
+    async loadUserDataFields({ dispatch }, blockId) {
+        const parent = { type: 'courseware-blocks', id: `${blockId}` };
+        const relationship = 'user-data-field';
+        const options = {
+            include: 'user',
+        };
+
+        return dispatch('user-data-field/loadRelated', { parent, relationship, options }, { root: true });
+    },
+
     async createFile(context, { file, filedata, folder }) {
         const termId = file?.relationships?.['terms-of-use']?.data?.id ?? null;
         const formData = new FormData();
