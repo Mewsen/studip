@@ -112,7 +112,7 @@
                     </div>
                     <div
                         v-if="isLink"
-                        class="container-wrapper"
+                        class="cw-container-wrapper"
                         :class="{
                             'cw-container-wrapper-consume': consumeMode,
                             'cw-container-wrapper-discuss': discussView,
