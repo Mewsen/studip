@@ -21,8 +21,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-24 12:35+0100\n"
-"PO-Revision-Date: 2023-01-24 12:46+0000\n"
-"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
+"PO-Revision-Date: 2023-02-24 09:03+0000\n"
+"Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-2/en/>\n"
 "Language: en\n"
@@ -30,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15\n"
+"X-Generator: Weblate 4.15.1\n"
 
 #: app/controllers/news.php:40
 msgid "Stud.IP (systemweit)"
@@ -47176,8 +47176,9 @@ msgid "eine Nachricht"
 msgstr "a message"
 
 #: lib/activities/CoursewareProvider.php:33
+#, fuzzy
 msgid "Zur Courseware in der Veranstaltung"
-msgstr "To the Courseware in the course"
+msgstr "To the Courseware in the Course"
 
 #: lib/activities/CoursewareProvider.php:41
 msgid "Zur eigenen Courseware"
