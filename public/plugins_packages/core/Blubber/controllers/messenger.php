@@ -12,10 +12,10 @@ class MessengerController extends PluginController
 
     public function course_action($thread_id = null)
     {
-        PageLayout::setTitle(_("Blubber"));
+        PageLayout::setTitle(Context::get()->getFullname() . ' - ' . _('Blubber'));
 
         if (Navigation::hasItem('/course/blubber')) {
-            Navigation::activateItem("/course/blubber");
+            Navigation::activateItem('/course/blubber');
         }
 
         $this->threads = BlubberThread::findByContext(Context::get()->id, true, Context::getType());
