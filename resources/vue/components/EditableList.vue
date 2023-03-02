@@ -52,13 +52,14 @@ export default {
         category_order: {
             type: Array,
             required: false,
-            default: []
+            default: () => []
         }
     },
     data () {
         return {
             resort: false, //this is just for triggering the computed property sortedItems to be sorted again
-            preventChangeOfQuickselect: false
+            preventChangeOfQuickselect: false,
+            allItems: this.items
         };
     },
     methods: {
@@ -68,16 +69,9 @@ export default {
                 icon = id.split('__')[1];
                 id = id.split('__')[0];
             }
-            let insert = true;
-            for (let i in this.items) {
-                if (this.items[i].value === id) {
-                    insert = false;
-                    break;
-                }
-            }
 
-            if (insert) {
-                this.items.push({
+            if (!this.allItems.find(item => item.value === id)) {
+                this.allItems.push({
                     value: id,
                     name: name,
                     icon: icon,
@@ -143,22 +137,19 @@ export default {
     },
     computed: {
         sortedItems () {
-            let v = this;
-            let i = this.resort;
-            let items = this.items.sort(function (a, b) {
+            return [...this.allItems].sort((a, b) => {
                 if (a.icon === b.icon) {
                     return a.name.localeCompare(b.name);
                 } else {
                     let a_icon = a.icon || '';
                     let b_icon = b.icon || '';
-                    if (v.category_order.indexOf(a_icon) > -1 && v.category_order.indexOf(b_icon) > -1) {
-                        return v.category_order.indexOf(a_icon) < v.category_order.indexOf(b_icon) ? -1 : 1;
+                    if (this.category_order.indexOf(a_icon) > -1 && this.category_order.indexOf(b_icon) > -1) {
+                        return this.category_order.indexOf(a_icon) < this.category_order.indexOf(b_icon) ? -1 : 1;
                     } else {
                         return a_icon.localeCompare(b_icon);
                     }
                 }
             });
-            return items;
         }
     },
     mounted () {
