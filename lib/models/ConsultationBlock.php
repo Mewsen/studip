@@ -190,6 +190,8 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
             $current = strtotime('+1 day', $current);
         }
 
+        $warnings = [];
+
         while ($current <= $end) {
             $temp    = holiday($current);
             $holiday = is_array($temp) && $temp['col'] === 3;
@@ -220,9 +222,20 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
                 $block->end        = strtotime("today {$end_time}", $current);
 
                 yield $block;
+            } else {
+                $warnings[] = sprintf(
+                    _('Am %1$s können keine Termine erzeugt werden, da es ein Feiertag (%2$s) ist.'),
+                    strftime('%x', $current),
+                    $temp['name']
+                );
             }
 
             $current = strtotime("+{$interval} weeks", $current);
+        }
+
+        $warnings = array_unique($warnings);
+        foreach ($warnings as $warning) {
+            PageLayout::postInfo(htmlReady($warning));
         }
     }
 
