@@ -10,13 +10,6 @@
  *       method when the dev board finally fully supports PHP7 since that
  *       required "yield from".
  *
- * @property string note database column
- * @property string size database column
- * @property bool has_bookings computed column
- * @property Range range computed column
- * @property SimpleORMapCollection slots has_many ConsultationSlot
- * @property User teacher belongs_to User
-=======
  * @property string $id alias column for block_id
  * @property string $block_id database column
  * @property string $range_id database column
@@ -35,11 +28,8 @@
  * @property int $chdate database column
  *
  * @property bool $has_bookings computed column
- * @property Range $range computed column
+ * @property User $teacher computed column
  * @property ConsultationSlot[]|SimpleORMapCollection $slots has_many ConsultationSlot
- * @property ConsultationResponsibility[]|SimpleCollection $responsibilities has_many ConsultationResponsibility
- * @property User[] $responsible_persons
->>>>>>> ac6ddd390 (allow changing of many options for consultation blocks, fixes #1707)
  */
 class ConsultationBlock extends SimpleORMap implements PrivacyObject
 {
@@ -191,6 +181,8 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
             $current = strtotime('+1 day', $current);
         }
 
+        $warnings = [];
+
         while ($current <= $end) {
             $temp    = holiday($current);
             $holiday = is_array($temp) && $temp['col'] === 3;
@@ -221,9 +213,20 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
                 $block->end        = strtotime("today {$end_time}", $current);
 
                 yield $block;
+            } else {
+                $warnings[] = sprintf(
+                    _('Am %1$s können keine Termine erzeugt werden, da es ein Feiertag (%2$s) ist.'),
+                    strftime('%x', $current),
+                    $temp['name']
+                );
             }
 
             $current = strtotime("+{$interval} weeks", $current);
+        }
+
+        $warnings = array_unique($warnings);
+        foreach ($warnings as $warning) {
+            PageLayout::postInfo(htmlReady($warning));
         }
     }
 
