@@ -1,3 +1,23 @@
+10.03.2023 v 5.1.2
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.1.2&state=all
+- Courseware: Dauerhafte Sperrung von Blöcken führt zu Problemen [#887]
+- Courseware: Neues Lernmaterial anlegen -> ohne Titel wird kein Material erstellt [#924]
+- OER Campus: Aktion „Zugriffszahlen“ für ein Lernmaterial kann nicht aufgerufen werden [#1251]
+- Courseware: Dauerhafte Sperrung von Seiten führt zu Problemen [#1257]
+- Studiengruppe bearbeiten: TypeError: Argument 2 passed to Deputy::isDeputy() must be of the type string, null given [#1576]
+- Aufgaben in Gruppen: Fehler in Navigation und Inhaltsverzeichnis [#1609]
+- Aufgaben: Verlängerungsanfragen mit dem heutigen Datum gewähren erstellt Datum 1.1.1970 [#1611]
+- "Rechte" Tab stellt nur eine kleine Zahl der TN dar [#1629]
+- Einige Inhalte sind nicht Teil des responsiven Designs [#1630]
+- Untertitel in Blickfang teilweise nicht sichtbar [#1631]
+- Prioritäten bei den Ankündigungen verhalten sich nicht korrekt [#1636]
+- Courseware: Anzeige der Seitenaktionen inkonsistent [#1651]
+- Terminbuchungen über Einrichtungsseite sendet Benachrichtigung an "alle" [#1815]
+- Argument 1 passed to ConsultationSlot::{closure}() must be an instance of User, null given [#1821]
+- Fehler beim PDF-Export [#1958]
+- JSONAPI: Verschachtelte inkludierte Relationen werden nicht korrekt ausgegeben [#2003]
+- Courseware -> Aufgaben: „Teilnehmer/-in“ entspricht nicht dem Standard in Stud.IP und ist mit Screenreadern schwer verständlich [#2096]
+
 10.03.2023 v 5.0.4
 https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.0.4&state=all
 - Galerie-Block funktioniert nicht mit unsichtbaren Ordnern [#465]
