@@ -1,3 +1,28 @@
+10.03.2023 v 4.6.8
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+4.6.8&state=all
+- Raumplanung: Option "Eigene Anfragen anzeigen" fehlerhaft [#220]
+- table.collapsable läßt sich nicht mit Tastatur bedienen [#386]
+- Formular-CSS: Abstände nicht korrekt [#682]
+- Kaputtes Layout im Dialog zum Bearbeiten mehrerer Termine [#950]
+- Raumadmin nur Raumverwaltung: bei Raumgruppen Papierkorb- und  Notizblockicon nicht vorhanden [#1121]
+- Raumsuche: Gelöschter Filter läßt sich nicht wieder hinzufügen [#1442]
+- Raumsuche: Suche ist nach Fehleingabe nicht mehr zugänglich [#1565]
+- Call to undefined method SemesterSelectorWidget::setRange() [#1737]
+- resource_property_definitions.type hat den falschen Typ [#1796]
+- Forum: Übersicht der Themen behandelt HTML falsch [#1801]
+- XSS-Schwachstelle bei den Zusatzangaben einer Veranstaltung aus Lehrendensicht [#1810]
+- Select-Elemente in Dialogen bekommen nicht automatisch den Fokus [#1816]
+- PHP Deprecated:  Non-static method StatusgruppeUser::findByContact() should not be called statically [#1818]
+- Dateiupload für Hintergrundbilder auf Startseite scheitert an groß geschriebener Dateiendung [#1827]
+- Individuelle Raumgruppen werden unsortiert angezeigt [#1831]
+- Berechtigungen für die gesamte Raumgruppe setzen: „Zuweisen“ hat keine Auswirkungen, wenn die Rechtestufe bei speziellen Berechtigungen geändert wird [#1839]
+- Aufruf der Raumverwaltung liefert Call to a member function getTimestamp() on null [#1840]
+- Einzeltermine einer regelmäßigen Zeit werden doppelt/falsch erzeugt [#1855]
+- Fehlende Konfigurationseinträge durch fehlerhafte Migration [#1983]
+- Konfigurationseinstellung RESOURCES_ENABLE_EXPERT_SCHEDULE_VIEW wurde entfernt, aber wird noch genutzt [#1985]
+- ActionMenu::addLink() wertet übergebenen StudipLink falsch aus [#1989]
+- Keine Anzeige von zugangsbeschränkten Veranstaltungen in der Datei- und Aktivitätsübersicht [#2015]
+
 18.11.2022 v 5.0.3
 https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.0.3&state=all
 - Benachrichtigungen sind nicht per Tastaturnavigation erreichbar [#109]
