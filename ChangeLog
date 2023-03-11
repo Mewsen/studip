@@ -1,3 +1,19 @@
+11.03.2023 v 5.2.1
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.2.1&state=all
+- Courseware: JS-Error beim Aufklappen des Inhaltsverzeichnis [#1168]
+- Formbuilder: JS-Fehler beim Umschalten der Sprache im ckeditor [#1711]
+- Zeiten/Räume: Lehrende können beim Bearbeiten eines Einzeltermins einer regelmäßigen Serie nicht zugeordnet werden [#1812]
+- Zwei-Faktor-Authentifizierung: QR-Code wird nicht mehr angezeigt [#1861]
+- StudipForms\Form::autoStore() bricht ohne entsprechendes page_close() ab [#1890]
+- Ankündigung erstellen: Lehrende können ihre Einrichtung nicht als weiteren Bereich auswählen, in dem die Ankündigung angezeigt werden soll [#1982]
+- Schwarz/Weiß-Modus [#2005]
+- Schwarz/Weiß-Modus, kleine "Unsauberkeiten" [#2007]
+- Courseware: Falsches HTML-Escaping im Dialog zum OER-Campus [#2121]
+- Kontrastmodus: Raumverwaltung Strukturansicht Info-Icon [#2163]
+- Eine Courseware mit zwei nebeneinander liegenden Abschnitten halber Breite zeigt nach dem Verknüpfen in einer Veranstaltungen dort die Blöcke untereinander an [#2178]
+- Ankündigungen in weiteren Bereichen anzeigen - Sortierung der Veranstaltung nicht erkennbar [#2213]
+- Ankündigungen: Bereich verschwindet beim Ändern der Priorität [#2221]
+
 10.03.2023 v 5.1.2
 https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.1.2&state=all
 - Courseware: Dauerhafte Sperrung von Blöcken führt zu Problemen [#887]
