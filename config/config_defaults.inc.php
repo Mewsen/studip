@@ -70,13 +70,22 @@ $CACHING_ENABLE = true;
 $CACHING_FILECACHE_PATH = $TMP_PATH . '/studip_cache';
 $CACHE_IS_SESSION_STORAGE = false;                 //store session data in cache
 
-/*Stud.IP modules
-----------------------------------------------------------------
-enable or disable the Stud.IP internal modules, set and basic settings*/
-
 $FOP_SH_CALL = "/usr/bin/fop";                        //path to fop
 
 $EXTERN_SERVER_NAME = "";                               //define name, if you use special setup
+
+// static file delivery: you may configure your reverse proxy to deliver static files instead of PHP
+// this can save network traffic and php run time in some szenarios
+// confer to the X-accel module in your proxy documentation for how to use this feature
+// we have created some examples here ...
+$FILE_DELIVERY_X_ACCEL_PREFIX = '/protected_files';  // path prefix that should be sent in the x-accel-redirect
+                                                     // header to allow for location matching
+$FILE_DELIVERY_USE_X_ACCEL = TRUE;                   // if TRUE, all except temporary files should be delivered by your reverse proxy
+$FILE_DELIVERY_USE_X_ACCEL_FOR_ALL_FILES = TRUE;     // if TRUE, all files should be delivered by your reverse proxy
+
+/*Stud.IP modules
+----------------------------------------------------------------
+enable or disable the Stud.IP internal modules, set and basic settings*/
 
 $ELEARNING_INTERFACE_MODULES = [
     "ilias5" => [

@@ -202,48 +202,11 @@ if (Request::int('force_download') || $content_type == "application/octet-stream
     $content_disposition = "inline";
 }
 
-$start = $end = null;
-if ($filesize && $file_ref->file->filetype !== 'URLFile') {
-    header("Accept-Ranges: bytes");
-    $start = 0;
-    $end = $filesize - 1;
-    $length = $filesize;
-    if (isset($_SERVER['HTTP_RANGE'])) {
-        $c_start = $start;
-        $c_end   = $end;
-        list(, $range) = explode('=', $_SERVER['HTTP_RANGE'], 2);
-        if (mb_strpos($range, ',') !== false) {
-            header('HTTP/1.1 416 Requested Range Not Satisfiable');
-            header("Content-Range: bytes $start-$end/$filesize");
-            exit;
-        }
-        if ($range[0] == '-') {
-            $c_start = $filesize - mb_substr($range, 1);
-        } else {
-            $range  = explode('-', $range);
-            $c_start = $range[0];
-            $c_end   = (isset($range[1]) && is_numeric($range[1])) ? $range[1] : $filesize;
-        }
-        $c_end = ($c_end > $end) ? $end : $c_end;
-        if ($c_start > $c_end || $c_start > $filesize - 1 || $c_end >= $filesize) {
-            header('HTTP/1.1 416 Requested Range Not Satisfiable');
-            header("Content-Range: bytes $start-$end/$filesize");
-            exit;
-        }
-        $start  = $c_start;
-        $end    = $c_end;
-        $length = $end - $start + 1;
-        header('HTTP/1.1 206 Partial Content');
-    }
-    header("Content-Range: bytes $start-$end/$filesize");
-    header("Content-Length: $length");
-} elseif ($filesize) {
-    header("Content-Length: $filesize");
-}
+Metrics::increment('core.file_download');
 
 header("Expires: Mon, 12 Dec 2001 08:00:00 GMT");
 header("Last-Modified: " . gmdate ("D, d M Y H:i:s") . " GMT");
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+if ($_SERVER['HTTPS'] == "on"){
     header("Pragma: public");
     header("Cache-Control: private");
 } else {
@@ -254,15 +217,60 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Content-Type: $content_type");
 header("Content-Disposition: $content_disposition; " . encode_header_parameter('filename', $file_name));
 
+if ($GLOBALS['FILE_DELIVERY_USE_X_ACCEL'] && $type !== 4 || $GLOBALS['FILE_DELIVERY_USE_X_ACCEL_FOR_ALL_FILES']) {
+    // user wants its reverse proxy to serve this file
+    header('X-Accel-Redirect: ' . $GLOBALS['FILE_DELIVERY_X_ACCEL_PREFIX'] . $path_file);
+    if (isset($file_ref)) {
+        $file_ref->incrementDownloadCounter();
+    }
+} else {
+    $start = $end = null;
+    if ($filesize && $file_ref->file->filetype !== 'URLFile') {
+        header("Accept-Ranges: bytes");
+        $start = 0;
+        $end = $filesize - 1;
+        $length = $filesize;
+        if (isset($_SERVER['HTTP_RANGE'])) {
+            $c_start = $start;
+            $c_end   = $end;
+            list(, $range) = explode('=', $_SERVER['HTTP_RANGE'], 2);
+            if (mb_strpos($range, ',') !== false) {
+                header('HTTP/1.1 416 Requested Range Not Satisfiable');
+                header("Content-Range: bytes $start-$end/$filesize");
+                exit;
+            }
+            if ($range[0] == '-') {
+                $c_start = $filesize - mb_substr($range, 1);
+            } else {
+                $range  = explode('-', $range);
+                $c_start = $range[0];
+                $c_end   = (isset($range[1]) && is_numeric($range[1])) ? $range[1] : $filesize;
+            }
+            $c_end = ($c_end > $end) ? $end : $c_end;
+            if ($c_start > $c_end || $c_start > $filesize - 1 || $c_end >= $filesize) {
+                header('HTTP/1.1 416 Requested Range Not Satisfiable');
+                header("Content-Range: bytes $start-$end/$filesize");
+                exit;
+            }
+            $start  = $c_start;
+            $end    = $c_end;
+            $length = $end - $start + 1;
+            header('HTTP/1.1 206 Partial Content');
+        }
+        header("Content-Range: bytes $start-$end/$filesize");
+        header("Content-Length: $length");
+    } elseif ($filesize) {
+        header("Content-Length: $filesize");
+    }
 
-Metrics::increment('core.file_download');
+    readfile_chunked($path_file, $start, $end);
 
-readfile_chunked($path_file, $start, $end);
-if (isset($file_ref) && !$start) {
-    $file_ref->incrementDownloadCounter();
-}
+    if (isset($file_ref) && $start === 0) {
+        $file_ref->incrementDownloadCounter();
+    }
 
-//remove temporary file
-if ($type === 4) {
-    @unlink($path_file);
+    //remove temporary file
+    if ($type === 4) {
+        @unlink($path_file);
+    }
 }
