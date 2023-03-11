@@ -81,7 +81,7 @@ clean-icons:
 	find public/assets/images/icons -type f -not -path '*blue*' -delete
 
 optimize-icons: npm
-	find public/assets/images/icons -type f | xargs -P0 npx svgo -q --config=config/svgo.config.js
+	find public/assets/images/icons/blue -type f | xargs -P0 npx svgo -q --config=config/svgo.config.js
 
 icons: optimize-icons
 	find public/assets/images/icons/blue -type f -print0 | xargs -0 -n1 -I{} echo 'sed "s/#28497c/#000000/" {} > {}' | sed 's#icons/blue#icons/black#2' | sh
