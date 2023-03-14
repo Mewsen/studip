@@ -1882,3 +1882,25 @@ function randomString(int $length = 32): string
 
     return $string;
 }
+
+// Add polyfill for array_is_list
+if (!function_exists('array_is_list')) {
+    /**
+     * Returns whether the array is a list. A list has only numerical indices,
+     * starting from 0 and increasing by 1 with each element.
+     *
+     * @param array $array
+     * @return bool
+     */
+    function array_is_list(array $array): bool
+    {
+        $i = 0;
+        foreach (array_keys($array) as $k) {
+            if ($i++ !== $k) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
