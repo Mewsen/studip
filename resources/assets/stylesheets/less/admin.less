@@ -138,13 +138,13 @@ fieldset.attribute_table {
     }
 
     td .course-completion {
-        .background-icon('radiobutton-checked', 'status-red');
+        .background-icon('span-empty', 'status-red');
 
         &[data-course-completion="1"] {
-            .background-icon('radiobutton-checked', 'status-yellow');
+            .background-icon('span-2quarter', 'status-yellow');
         }
         &[data-course-completion="2"] {
-            .background-icon('radiobutton-checked', 'status-green');
+            .background-icon('span-full', 'status-green');
         }
 
         &.ajaxing {
