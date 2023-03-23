@@ -164,8 +164,8 @@
                                     <span class="cw-sortable-handle"></span>
                                     <span>{{ container.attributes.title }} ({{ container.attributes.width }})</span>
                                 </li>
-                            </transition-group>
-                        </draggable>
+                            </draggable>
+                        </template>
                         <div class="cw-container-sort-buttons">
                             <button class="button accept" @click="storeSort">
                                 <translate>Sortierung speichern</translate>
