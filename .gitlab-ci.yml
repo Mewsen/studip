@@ -134,6 +134,17 @@ lint-css:
     reports:
       junit: .reports/stylelint-report.xml
 
+test-assets:
+  stage: tests
+  needs: []
+  cache: *npm-cache
+  allow_failure: false
+  interruptible: true
+  before_script:
+    - make npm
+  script:
+    - make webpack-dev
+
 phpstan:
   stage: analyse
   needs: [lint-php]
