@@ -508,6 +508,7 @@ function replaceTextarea(textarea, config) {
 
         // update textarea on editor blur
         editor.on('blur', function(event) {
+            event.editor.setData(wysiwyg.markAsHtml(event.editor.getData()));
             event.editor.updateElement();
         });
         $(editor.container.$).on('blur', '.CodeMirror', function(event) {
