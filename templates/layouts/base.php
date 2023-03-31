@@ -76,25 +76,27 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
 
     <? include 'lib/include/header.php' ?>
 
-    <? if (PageLayout::isSidebarEnabled()): ?>
-        <?= Sidebar::get()->render() ?>
-    <? endif; ?>
+    <div id="page-content-wrapper">
+        <? if (PageLayout::isSidebarEnabled()): ?>
+            <?= Sidebar::get()->render() ?>
+        <? endif; ?>
 
-    <!-- Start main page content -->
-    <main id="content-wrapper">
-        <? SkipLinks::addIndex(_('Hauptinhalt'), 'content', 100) ?>
-        <div id="content">
-            <h1 class="sr-only"><?= htmlReady(PageLayout::getTitle()) ?></h1>
-            <? if (PageLayout::isFullscreenModeAllowed()): ?>
-                <button hidden class="fullscreen-toggle unfullscreen" aria-label="<?= _('Vollbildmodus verlassen') ?>" title="<?= _('Vollbildmodus verlassen') ?>">
-                    <?= Icon::create('zoom-out2')->asImg(24) ?>
-                </button>
-            <? endif; ?>
-            <?= implode(PageLayout::getMessages()) ?>
-            <?= $content_for_layout ?>
-        </div>
-    </main>
-    <!-- End main content -->
+        <!-- Start main page content -->
+        <main id="content-wrapper">
+            <? SkipLinks::addIndex(_('Hauptinhalt'), 'content', 100) ?>
+            <div id="content">
+                <h1 class="sr-only"><?= htmlReady(PageLayout::getTitle()) ?></h1>
+                <? if (PageLayout::isFullscreenModeAllowed()): ?>
+                    <button hidden class="fullscreen-toggle unfullscreen" aria-label="<?= _('Vollbildmodus verlassen') ?>" title="<?= _('Vollbildmodus verlassen') ?>">
+                        <?= Icon::create('zoom-out2')->asImg(24) ?>
+                    </button>
+                <? endif; ?>
+                <?= implode(PageLayout::getMessages()) ?>
+                <?= $content_for_layout ?>
+            </div>
+        </main>
+        <!-- End main content -->
+    </div>
 
     <a id="scroll-to-top" class="hide">
         <?= Icon::create('arr_1up', 'info_alt')->asImg(24, ['class' => '']) ?>

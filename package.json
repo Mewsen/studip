@@ -109,6 +109,7 @@
         "sass-loader": "^10.1.0",
         "select2": "4.0.13",
         "sprintf-js": "^1.0.3",
+        "sticky-sidebar-v2": "^1.1.1",
         "stream-browserify": "^3.0.0",
         "style-loader": "^2.0.0",
         "stylelint": "^14.9.1",

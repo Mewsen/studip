@@ -37,7 +37,7 @@ html:not(.is-fullscreen-immediately) {
     #navigation-level-2 {
         transition: top $transition-duration, margin-bottom $transition-duration, opacity $transition-duration;
     }
-    #sidebar {
+    #sidebar:not(.is-affixed) {
         transition: left $transition-duration, margin-right $transition-duration, opacity $transition-duration;
     }
     #main-footer {
