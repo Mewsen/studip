@@ -65,7 +65,7 @@ class OERHost extends OERIdentity
     {
         $endpoint_url = $this['url']."fetch_public_host_key";
         $endpoint_url .= "?from=".urlencode($GLOBALS['oer_PREFERRED_URI'] ?: $GLOBALS['ABSOLUTE_URI_STUDIP']."dispatch.php/oer/endpoints/");
-        $host_data = @file_get_contents($endpoint_url);
+        $host_data = @file_get_contents($endpoint_url, false, get_default_http_stream_context($endpoint_url));
         if ($host_data) {
             $host_data = json_decode($host_data, true);
             if ($host_data) {
@@ -89,7 +89,7 @@ class OERHost extends OERIdentity
     {
         $endpoint_url = $this['url']."fetch_known_hosts"
             ."?from=".urlencode($GLOBALS['oer_PREFERRED_URI'] ?: $GLOBALS['ABSOLUTE_URI_STUDIP']."dispatch.php/oer/endpoints/");
-        $output = @file_get_contents($endpoint_url);
+        $output = @file_get_contents($endpoint_url, false, get_default_http_stream_context($endpoint_url));
         if ($output) {
             $output = json_decode($output, true);
             foreach ((array) $output['hosts'] as $host_data) {
@@ -122,7 +122,7 @@ class OERHost extends OERIdentity
         } else {
             $endpoint_url .= "?text=".urlencode($text);
         }
-        $output = @file_get_contents($endpoint_url);
+        $output = @file_get_contents($endpoint_url, false, get_default_http_stream_context($endpoint_url));
         if ($output) {
             $output = json_decode($output, true);
             foreach ((array) $output['results'] as $material_data) {
@@ -206,7 +206,7 @@ class OERHost extends OERIdentity
     public function fetchItemData($foreign_material_id)
     {
         $endpoint_url = $this['url']."get_item_data/".urlencode($foreign_material_id);
-        $output = @file_get_contents($endpoint_url);
+        $output = @file_get_contents($endpoint_url, false, get_default_http_stream_context($endpoint_url));
         if ($output) {
             $output = json_decode($output, true);
             if ($output) {
