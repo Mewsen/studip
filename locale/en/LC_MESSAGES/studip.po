@@ -15,20 +15,21 @@
 # M S <strohm@data-quest.de>, 2021
 # Jan-Hendrik Willms <tleilax@gmail.com>, 2021
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-17 09:17+0100\n"
-"PO-Revision-Date: 2021-01-26 11:15+0000\n"
-"Last-Translator: Jan-Hendrik Willms <tleilax@gmail.com>, 2021\n"
-"Language-Team: English (https://www.transifex.com/studip/teams/36183/en/)\n"
+"PO-Revision-Date: 2023-04-05 07:28+0000\n"
+"Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-3/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.16.2\n"
 
 #: app/controllers/news.php:40 ../app/controllers/news.php:40
 msgid "Stud.IP (systemweit)"
@@ -7567,7 +7568,7 @@ msgstr "Change semester (%s)"
 #: ../app/controllers/files_dashboard/sidebar.php:119
 #: ../app/views/calendar/single/_semester_filter.php:4
 msgid "Semesterfilter"
-msgstr "Semersterfilter"
+msgstr "Semester filter"
 
 #: app/controllers/course/timesrooms.php:1520
 #, fuzzy, php-format
