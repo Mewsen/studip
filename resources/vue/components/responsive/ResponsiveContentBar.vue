@@ -66,6 +66,7 @@ export default {
         toggleSidebar() {
 
             const sidebar = document.getElementById('sidebar');
+            const wrapper = document.getElementById('page-content-wrapper');
             const content = document.getElementById('content-wrapper');
             const pageTitle = document.getElementById('page-title-container');
             if (this.sidebarOpen) {
@@ -80,7 +81,7 @@ export default {
                 }
 
                 if (!document.documentElement.classList.contains('responsive-display')) {
-                    document.body.style.display = 'flex';
+                    wrapper.style.display = 'flex';
                 }
 
                 this.sidebarOpen = false;
@@ -99,7 +100,7 @@ export default {
                 }
 
                 if (!document.documentElement.classList.contains('responsive-display')) {
-                    document.body.style.display = 'grid';
+                    wrapper.style.display = 'grid';
                 }
 
                 this.sidebarOpen = true;
