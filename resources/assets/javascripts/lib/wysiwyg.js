@@ -508,8 +508,7 @@ function replaceTextarea(textarea, config) {
 
         // update textarea on editor blur
         editor.on('blur', function(event) {
-            event.editor.setData(wysiwyg.markAsHtml(event.editor.getData()));
-            event.editor.updateElement();
+            event.editor.element.setValue(wysiwyg.markAsHtml(event.editor.getData()));
         });
         $(editor.container.$).on('blur', '.CodeMirror', function(event) {
             editor.updateElement(); // also update in source mode
@@ -525,14 +524,6 @@ function replaceTextarea(textarea, config) {
         });
         editor.on('blur', function(event) {
             event.editor.container.removeClass('cke_chrome_focused');
-        });
-
-        // keep the editor focused when a toolbar item gets selected
-        editor.on('blur', function(event) {
-            var toolbarContainer = $('#' + event.editor.config.sharedSpaces.top);
-            if (toolbarContainer.has(':focus').length > 0) {
-                event.editor.focus();
-            }
         });
 
         // Trigger load event for the editor event. Uses the underlying
