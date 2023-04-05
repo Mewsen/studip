@@ -1,7 +1,7 @@
 <template>
     <input v-if="name" type="image" :name="name" :src="url"
            :width="size" :height="size" v-bind="$attrs" v-on="$listeners">
-    <img v-else :src="url" :width="size" :height="size" v-bind="$attrs" v-on="$listeners">
+    <img v-else :src="url" alt='' :width="size" :height="size" v-bind="$attrs" v-on="$listeners">
 </template>
 
 <script>

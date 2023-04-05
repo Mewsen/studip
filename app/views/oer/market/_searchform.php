@@ -3,11 +3,12 @@
         <div class="frame">
             <span v-if="category != null"
                   class="category activefilter" title="<?= _('Aktiver Filter der Kategorie') ?>">
-                <span>{{ category }}</span>
+                <span id="oer_active_category">{{ category }}</span>
                 <a href="#"
                    @click.prevent="clearCategory"
                    class="erasefilter"
-                   title="<?= _('Filter der Kategorie entfernen') ?>">
+                   aria-describedby="oer_active_category"
+                   aria-label="<?= _('Filter der Kategorie entfernen') ?>">
                     <studip-icon shape="decline" role="clickable" size="16" class="text-bottom"></studip-icon>
                 </a>
             </span>
