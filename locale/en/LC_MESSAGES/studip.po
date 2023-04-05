@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-25 13:41+0100\n"
-"PO-Revision-Date: 2023-02-24 09:03+0000\n"
+"PO-Revision-Date: 2023-04-05 07:28+0000\n"
 "Last-Translator: Jan-Hendrik Willms <tleilax+studip@gmail.com>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-0/en/>\n"
@@ -32,7 +32,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.1\n"
+"X-Generator: Weblate 4.16.2\n"
 
 #: app/routes/Clipboard.php:26 app/routes/Clipboard.php:68
 #: app/controllers/resources/property.php:65
@@ -12324,7 +12324,7 @@ msgstr "Institute calendar:"
 #: app/controllers/files_dashboard/sidebar.php:119
 #: app/controllers/course/timesrooms.php:1362
 msgid "Semesterfilter"
-msgstr "Semersterfilter"
+msgstr "Semester filter"
 
 #: app/views/calendar/single/_semester_filter.php:6
 #: app/controllers/my_courses.php:1127
