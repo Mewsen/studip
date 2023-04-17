@@ -7,8 +7,8 @@ const Sidebar = {
         this.setSticky();
     },
     disableSticky() {
-        this.stickyEnabled = false;
         this.setSticky(false);
+        this.stickyEnabled = false;
     },
     open () {
         this.toggle(true);
