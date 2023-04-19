@@ -89,6 +89,7 @@ class QuickSearch
     private $autocomplete_disabled = false;
     private $search_button_name;
     private $reset_button_name;
+    private $minLength = 3;
 
     /**
      * Deletes all older requests that have not been used for three hours
@@ -258,6 +259,20 @@ class QuickSearch
     }
 
     /**
+     * Set the minimum length to start searching
+     *
+     * @param int $minLength
+     *
+     * @return QuickSearch
+     */
+    public function setMinLength(int $minLength)
+    {
+        $this->minLength = $minLength;
+
+        return $this;
+    }
+
+    /**
      * disables the select-box, which is displayed for non-JS users who will
      * choose with this box, which item they want to have.
      *
@@ -393,6 +408,7 @@ class QuickSearch
             $template->set_attribute('count_QS', self::$count_QS);
             $template->set_attribute('id', $this->getId());
             $template->set_attribute('query_id', $query_id);
+            $template->set_attribute('minLength', $this->minLength);
             $template->set_attribute('search_button_name', $this->search_button_name);
             $template->set_attribute('reset_button_name', $this->reset_button_name);
             $template->set_attribute('extendedLayout', $this->hasExtendedLayout());
