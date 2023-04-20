@@ -1,62 +1,70 @@
 <template>
     <div class="cw-block cw-block-table-of-contents">
         <courseware-default-block
-            :block="block"
-            :canEdit="canEdit"
-            :isTeacher="isTeacher"
-            :preview="true"
-            @storeEdit="storeText"
-            @closeEdit="closeEdit"
+                :block="block"
+                :canEdit="canEdit"
+                :isTeacher="isTeacher"
+                :preview="true"
+                @storeEdit="storeText"
+                @closeEdit="closeEdit"
         >
             <template #content>
-                <div v-if="currentStyle !== 'tiles' && currentTitle !== ''" class="cw-block-title">{{ currentTitle }}</div>
-                <ul
-                    v-if="currentStyle === 'list-details' || currentStyle === 'list'"
-                    :class="['cw-block-table-of-contents-' + currentStyle]"
-                >
-                    <li v-for="child in childElements" :key="child.id">
-                        <router-link :to="'/structural_element/' + child.id">
-                            <div class="cw-block-table-of-contents-title-box" :class="[child.attributes.payload.color]">
-                                {{ child.attributes.title }}
-                                <p v-if="currentStyle === 'list-details'">{{ child.attributes.payload.description }}</p>
-                            </div>
-                        </router-link>
-                    </li>
-                </ul>
-                <ul
-                    v-if="currentStyle === 'tiles'" 
-                    class="cw-block-table-of-contents-tiles cw-tiles"
-                >
-                    <li
-                        v-for="child in childElements"
-                        :key="child.id"
-                        class="tile"
-                        :class="[child.attributes.payload.color]"
+                <div v-if="childElementsWithTasks.length > 0">
+                    <div v-if="currentStyle !== 'tiles' && currentTitle !== ''" class="cw-block-title">{{ currentTitle }}</div>
+                    <ul
+                            v-if="currentStyle === 'list-details' || currentStyle === 'list'"
+                            :class="['cw-block-table-of-contents-' + currentStyle]"
                     >
-                        <router-link :to="'/structural_element/' + child.id" :title="child.attributes.title">
-                            <div
-                                class="preview-image"
-                                :class="[hasImage(child) ? '' : 'default-image']"
-                                :style="getChildStyle(child)"
-                            ></div>
-                            <div class="description">
-                                <header>{{ child.attributes.title }}</header>
-                                <div class="description-text-wrapper">
-                                    <p>{{ child.attributes.payload.description }}</p>
+                        <li v-for="child in childElements" :key="child.id">
+                            <router-link :to="'/structural_element/' + child.id">
+                                <div class="cw-block-table-of-contents-title-box" :class="[child.attributes.payload.color]">
+                                    {{ child.attributes.title }}
+                                    <p v-if="currentStyle === 'list-details'">{{ child.attributes.payload.description }}</p>
                                 </div>
-                                <footer>
-                                    {{ countChildChildren(child)}}
-                                    <translate
-                                        :translate-n="countChildChildren(child)"
-                                        translate-plural="Seiten"
-                                    >
-                                       Seite
-                                    </translate>
-                                </footer>
-                            </div>
-                        </router-link>
-                    </li>
-                </ul>
+                            </router-link>
+                        </li>
+                    </ul>
+                    <ul
+                            v-if="currentStyle === 'tiles'"
+                            class="cw-block-table-of-contents-tiles cw-tiles"
+                    >
+                        <li
+                                v-for="child in childElements"
+                                :key="child.id"
+                                class="tile"
+                                :class="[child.attributes.payload.color]"
+                        >
+                            <router-link :to="'/structural_element/' + child.id" :title="child.attributes.title">
+                                <div
+                                        class="preview-image"
+                                        :class="[hasImage(child) ? '' : 'default-image']"
+                                        :style="getChildStyle(child)"
+                                ></div>
+                                <div class="description">
+                                    <header>{{ child.attributes.title }}</header>
+                                    <div class="description-text-wrapper">
+                                        <p>{{ child.attributes.payload.description }}</p>
+                                    </div>
+                                    <footer>
+                                        {{ countChildChildren(child)}}
+                                        <translate
+                                                :translate-n="countChildChildren(child)"
+                                                translate-plural="Seiten"
+                                        >
+                                            Seite
+                                        </translate>
+                                    </footer>
+                                </div>
+                            </router-link>
+                        </li>
+                    </ul>
+                </div>
+                <courseware-companion-box
+                        v-if="viewMode === 'edit' && childElementsWithTasks.length === 0"
+                        :msgCompanion="$gettext('Es sind noch keine Unterseiten vorhanden. ' +
+                        'Sobald Sie weitere Unterseiten anlegen, erscheinen diese automatisch hier im Inhaltsverzeichnis.')"
+                        mood="pointing"
+                />
             </template>
             <template v-if="canEdit" #edit>
                 <form class="default" @submit.prevent="">
@@ -81,17 +89,20 @@
 
 <script>
 import CoursewareDefaultBlock from './CoursewareDefaultBlock.vue';
+import CoursewareCompanionBox from './CoursewareCompanionBox.vue';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-table-of-contents-block',
     components: {
         CoursewareDefaultBlock,
+        CoursewareCompanionBox,
     },
     props: {
         block: Object,
         canEdit: Boolean,
         isTeacher: Boolean,
+        viewMode: 'viewMode',
     },
     data() {
         return {
