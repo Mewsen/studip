@@ -7,42 +7,42 @@
         </li>
         <li class="cw-action-widget-show-consume-mode">
             <button @click="showConsumeMode">
-                <translate>Vollbild einschalten</translate>
+                {{ $gettext('Vollbild einschalten') }}
             </button>
         </li>
         <li v-if="canEdit && !blockedByAnotherUser" class="cw-action-widget-edit">
             <button @click="editElement">
-                <translate>Seite bearbeiten</translate>
+                {{ $gettext('Seite bearbeiten') }}
             </button>
         </li>
         <li v-if="canEdit && blockedByAnotherUser && userIsTeacher" class="cw-action-widget-remove-lock">
             <button @click="removeElementLock">
-                <translate>Sperre aufheben</translate>
+                {{ $gettext('Sperre aufheben') }}
             </button>
         </li>
         <li v-if="canEdit && !blockedByAnotherUser" class="cw-action-widget-sort">
             <button @click="sortContainers">
-                <translate>Abschnitte sortieren</translate>
+                {{ $gettext('Abschnitte sortieren') }}
             </button>
         </li>
         <li v-if="canEdit" class="cw-action-widget-add">
             <button @click="addElement">
-                <translate>Seite hinzufügen</translate>
+                {{ $gettext('Seite hinzufügen') }}
             </button>
         </li>
         <li class="cw-action-widget-info">
             <button @click="showElementInfo">
-                <translate>Informationen anzeigen</translate>
+                {{ $gettext('Informationen anzeigen') }}
             </button>
         </li>
         <li class="cw-action-widget-star">
             <button @click="createBookmark">
-                <translate>Lesezeichen setzen</translate>
+                {{ $gettext('Lesezeichen setzen') }}
             </button>
         </li>
         <li v-if="!isRoot && canEdit && !blockedByAnotherUser" class="cw-action-widget-trash">
             <button @click="deleteElement">
-                <translate>Seite löschen</translate>
+                {{ $gettext('Seite löschen') }}
             </button>
         </li>
     </ul>
