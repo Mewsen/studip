@@ -169,5 +169,10 @@ class OERHostOERSI extends OERHost
         return $material['uri'];
     }
 
+    public function cbCreateKeysIfNecessary()
+    {
+        //do nothing
+    }
+
 
 }
