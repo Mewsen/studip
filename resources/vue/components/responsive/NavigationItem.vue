@@ -5,26 +5,34 @@
                 <a :href="item.url" :title="navigateToText(item.title)"
                    :aria-label="navigateToText(item.title)" tabindex="0">
                     <span class="navigation-icon">
-                        <studip-icon v-if="isCourse" shape="seminar" role="info_alt" size="24" alt=""></studip-icon>
-                        <img v-if="item.icon" :src="iconUrl" width="24" alt="">
+                        <studip-icon v-if="isCourse" shape="seminar" role="info_alt" :size="24" alt=""></studip-icon>
+                        <img v-if="item.icon" :src="iconUrl" width="24" alt="" />
                     </span>
                     <span class="navigation-text">
                         {{ item.title }}
                     </span>
                 </a>
             </div>
-            <button class="styleless navigation-in"
-                    :title="openNavigationText(item.title)"
-                    :aria-label="openNavigationText(item.title)"
-                    @click="moveTo(item.path)" @keydown.prevent.enter="moveTo(item.path)" @keydown.prevent.space="moveTo(item.path)">
-                <studip-icon shape="arr_1right" role="info_alt" size="20" alt=""></studip-icon>
+            <button
+                class="styleless navigation-in"
+                :title="openNavigationText(item.title)"
+                :aria-label="openNavigationText(item.title)"
+                @click="moveTo(item.path)"
+                @keydown.prevent.enter="moveTo(item.path)"
+                @keydown.prevent.space="moveTo(item.path)"
+            >
+                <studip-icon shape="arr_1right" role="info_alt" :size="20" alt=""></studip-icon>
             </button>
         </template>
         <div v-else class="navigation-title">
-            <a :href="item.url" tabindex="0" :title="navigateToText(item.title)"
-               :aria-label="navigateToText(item.title)">
-                <studip-icon v-if="isCourse" shape="seminar" role="info_alt" size="24" alt=""></studip-icon>
-                <img v-if="item.icon" :src="iconUrl" width="24" alt="">
+            <a
+                :href="item.url"
+                tabindex="0"
+                :title="navigateToText(item.title)"
+                :aria-label="navigateToText(item.title)"
+            >
+                <studip-icon v-if="isCourse" shape="seminar" role="info_alt" :size="24" alt=""></studip-icon>
+                <img v-if="item.icon" :src="iconUrl" width="24" alt="" />
                 {{ item.title }}
             </a>
         </div>
