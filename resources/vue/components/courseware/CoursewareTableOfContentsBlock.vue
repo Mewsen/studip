@@ -9,11 +9,11 @@
                 @closeEdit="closeEdit"
         >
             <template #content>
-                <div v-if="childElementsWithTasks.length > 0">
+                <div v-if="childElements.length > 0">
                     <div v-if="currentStyle !== 'tiles' && currentTitle !== ''" class="cw-block-title">{{ currentTitle }}</div>
                     <ul
-                            v-if="currentStyle === 'list-details' || currentStyle === 'list'"
-                            :class="['cw-block-table-of-contents-' + currentStyle]"
+                        v-if="currentStyle === 'list-details' || currentStyle === 'list'"
+                        :class="['cw-block-table-of-contents-' + currentStyle]"
                     >
                         <li v-for="child in childElements" :key="child.id">
                             <router-link :to="'/structural_element/' + child.id">
@@ -25,20 +25,20 @@
                         </li>
                     </ul>
                     <ul
-                            v-if="currentStyle === 'tiles'"
-                            class="cw-block-table-of-contents-tiles cw-tiles"
+                        v-if="currentStyle === 'tiles'" 
+                        class="cw-block-table-of-contents-tiles cw-tiles"
                     >
                         <li
-                                v-for="child in childElements"
-                                :key="child.id"
-                                class="tile"
-                                :class="[child.attributes.payload.color]"
+                            v-for="child in childElements"
+                            :key="child.id"
+                            class="tile"
+                            :class="[child.attributes.payload.color]"
                         >
                             <router-link :to="'/structural_element/' + child.id" :title="child.attributes.title">
                                 <div
-                                        class="preview-image"
-                                        :class="[hasImage(child) ? '' : 'default-image']"
-                                        :style="getChildStyle(child)"
+                                    class="preview-image"
+                                    :class="[hasImage(child) ? '' : 'default-image']"
+                                    :style="getChildStyle(child)"
                                 ></div>
                                 <div class="description">
                                     <header>{{ child.attributes.title }}</header>
@@ -48,10 +48,10 @@
                                     <footer>
                                         {{ countChildChildren(child)}}
                                         <translate
-                                                :translate-n="countChildChildren(child)"
-                                                translate-plural="Seiten"
+                                            :translate-n="countChildChildren(child)"
+                                            translate-plural="Seiten"
                                         >
-                                            Seite
+                                        Seite
                                         </translate>
                                     </footer>
                                 </div>
@@ -60,10 +60,10 @@
                     </ul>
                 </div>
                 <courseware-companion-box
-                        v-if="viewMode === 'edit' && childElementsWithTasks.length === 0"
-                        :msgCompanion="$gettext('Es sind noch keine Unterseiten vorhanden. ' +
+                    v-if="viewMode === 'edit' && childElements.length === 0"
+                    :msgCompanion="$gettext('Es sind noch keine Unterseiten vorhanden. ' +
                         'Sobald Sie weitere Unterseiten anlegen, erscheinen diese automatisch hier im Inhaltsverzeichnis.')"
-                        mood="pointing"
+                    mood="pointing"
                 />
             </template>
             <template v-if="canEdit" #edit>
@@ -102,7 +102,6 @@ export default {
         block: Object,
         canEdit: Boolean,
         isTeacher: Boolean,
-        viewMode: 'viewMode',
     },
     data() {
         return {
@@ -114,6 +113,7 @@ export default {
         ...mapGetters({
             childrenById: 'courseware-structure/children',
             structuralElementById: 'courseware-structural-elements/byId',
+            viewMode: 'viewMode',
         }),
         structuralElement() {
             return this.structuralElementById({ id: this.$route.params.id });
