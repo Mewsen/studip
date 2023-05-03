@@ -43,17 +43,6 @@ STUDIP.domReady(() => {
         });
     }
 
-    if (document.getElementById('courseware-manager-app')) {
-        STUDIP.loadChunk('courseware').then(({ createApp }) => {
-            import(
-                /* webpackChunkName: "courseware-manager-app" */
-                '@/vue/courseware-manager-app.js'
-            ).then(({ default: mountApp }) => {
-                return mountApp(STUDIP, createApp, '#courseware-manager-app');
-            });
-        });
-    }
-
     if (document.getElementById('courseware-content-bookmark-app')) {
         STUDIP.loadChunk('courseware').then(({ createApp }) => {
             import(
