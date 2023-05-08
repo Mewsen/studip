@@ -106,7 +106,7 @@ class File extends SimpleORMap
             if (!@move_uploaded_file($path_to_file, $newpath)) {
                 return false;
             }
-        } else if (!@copy($path_to_file, $newpath)) {
+        } elseif (!@copy($path_to_file, $newpath)) {
             return false;
         }
         $this->size = filesize($newpath);

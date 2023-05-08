@@ -49,8 +49,7 @@ class FachFachbereich extends ModuleManagementModel
         $ret = [];
         $fach_insts = parent::getEnrichedByQuery('SELECT mfi.* '
                 . 'FROM mvv_fach_inst mfi '
-                . 'WHERE mfi.fach_id = ? '
-                , $params);
+                . 'WHERE mfi.fach_id = ? ', $params);
         foreach ($fach_insts as $fach_inst) {
             $ret[$fach_inst->institut_id] = $fach_inst;
         }

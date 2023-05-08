@@ -16,7 +16,6 @@
 
 class AbschlussKategorie extends ModuleManagementModelTreeItem
 {
-
     /**
      * Number of Abschluesse this Kategorie is assigned to.
      * @var int
@@ -72,13 +71,13 @@ class AbschlussKategorie extends ModuleManagementModelTreeItem
         ];
 
         $config['additional_fields']['count_abschluesse']['get'] =
-            function($ak) { return $ak->count_abschluesse; };
+            function ($ak) { return $ak->count_abschluesse; };
         $config['additional_fields']['count_studiengaenge']['get'] =
-            function($ak) { return $ak->count_studiengaenge; };
+            function ($ak) { return $ak->count_studiengaenge; };
         $config['additional_fields']['count_dokumente']['get'] =
-            function($ak) { return $ak->count_dokumente; };
+            function ($ak) { return $ak->count_dokumente; };
         $config['additional_fields']['count_objects']['get'] =
-            function($ak) { return $ak->count_objects; };
+            function ($ak) { return $ak->count_objects; };
 
         $config['i18n_fields']['name'] = true;
         $config['i18n_fields']['name_kurz'] = true;
@@ -124,16 +123,21 @@ class AbschlussKategorie extends ModuleManagementModelTreeItem
      * to filter the result set.
      * @return object A SimpleORMapCollection of Abschluss objects.
      */
-    public static function getAllEnriched($sortby = 'position', $order = 'ASC',
-            $row_count = null, $offset = null, $filter = null)
-    {
+    public static function getAllEnriched(
+        $sortby = 'position',
+        $order = 'ASC',
+        $row_count = null,
+        $offset = null,
+        $filter = null
+    ) {
         $sortby = self::createSortStatement(
             $sortby,
             $order,
             'position',
             ['count_abschluesse', 'count_dokumente', 'count_studiengaenge']
         );
-        return parent::getEnrichedByQuery("
+        return parent::getEnrichedByQuery(
+            "
             SELECT mvv_abschl_kategorie.*,
                 COUNT(DISTINCT mvv_abschl_zuord.abschluss_id) AS `count_abschluesse`,
                 COUNT(DISTINCT mvv_files_ranges.mvvfile_id) AS `count_dokumente`,
@@ -177,7 +181,8 @@ class AbschlussKategorie extends ModuleManagementModelTreeItem
      */
     public static function findByFachbereich($fachbereich_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT mak.*
             FROM mvv_abschl_kategorie mak
                 INNER JOIN mvv_abschl_zuord USING (kategorie_id)
@@ -264,8 +269,10 @@ class AbschlussKategorie extends ModuleManagementModelTreeItem
                 $existing = AbschlussKategorie::findOneBySQL('name = ?', [trim($this->name)]);
                 if ($existing && $existing->getId() != $this->getId()) {
                     $ret['name'] = true;
-                    $messages[] = sprintf(_('Es existiert bereits eine Abschluss-Kategorie mit dem Namen "%s"!'),
-                            $this->name);
+                    $messages[] = sprintf(
+                        _('Es existiert bereits eine Abschluss-Kategorie mit dem Namen "%s"!'),
+                        $this->name
+                    );
                     $rejected = true;
                 }
             }
@@ -310,7 +317,8 @@ class AbschlussKategorie extends ModuleManagementModelTreeItem
 
         $start_sem = self::$object_filter['StgteilVersion']['start_semester'] ?? null;
         $end_sem = self::$object_filter['StgteilVersion']['end_semester'] ?? null;
-        return StgteilVersion::getEnrichedByQuery("
+        return StgteilVersion::getEnrichedByQuery(
+            "
             SELECT msv.*
             FROM mvv_abschl_zuord maz
                 INNER JOIN mvv_studiengang ms ON (
@@ -331,7 +339,8 @@ class AbschlussKategorie extends ModuleManagementModelTreeItem
             [':kategorie_id' => $this->getId(),
                 ':parent_id' => $trail_parent_id,
                 ':sem_begin' => ($start_sem ? $start_sem->beginn : 0),
-                ':sem_end' => ($end_sem ? $end_sem->ende : PHP_INT_MAX)]);
+                ':sem_end' => ($end_sem ? $end_sem->ende : PHP_INT_MAX)]
+        );
 
     }
 

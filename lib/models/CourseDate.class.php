@@ -35,8 +35,8 @@
 
 class CourseDate extends SimpleORMap implements PrivacyObject
 {
-    const FORMAT_DEFAULT = 'default';
-    const FORMAT_VERBOSE = 'verbose';
+    public const FORMAT_DEFAULT = 'default';
+    public const FORMAT_VERBOSE = 'verbose';
 
     private static $numbered_dates = null;
 
@@ -124,10 +124,12 @@ class CourseDate extends SimpleORMap implements PrivacyObject
 
         if (!isset(self::$numbered_dates[$semester_id])) {
             $db = DBManager::get();
-            $numbered = array_flip($db->fetchFirst("SELECT termin_id FROM termine WHERE range_id = ?" .
+            $numbered = array_flip($db->fetchFirst(
+                "SELECT termin_id FROM termine WHERE range_id = ?" .
                 ($semester ? " AND date BETWEEN ? AND ?" : "") .
                 " ORDER BY date",
-                $semester ? [$date->range_id, $semester->beginn, $semester->ende] : [$date->range_id]));
+                $semester ? [$date->range_id, $semester->beginn, $semester->ende] : [$date->range_id]
+            ));
             self::$numbered_dates[$semester_id] = $numbered;
         }
         return isset(self::$numbered_dates[$semester_id][$date->termin_id])
@@ -143,7 +145,8 @@ class CourseDate extends SimpleORMap implements PrivacyObject
      */
     public static function findByIssue_id($issue_id)
     {
-        return self::findBySQL("INNER JOIN themen_termine USING (termin_id)
+        return self::findBySQL(
+            "INNER JOIN themen_termine USING (termin_id)
             WHERE themen_termine.issue_id = ?
             ORDER BY date ASC",
             [$issue_id]
@@ -181,7 +184,8 @@ class CourseDate extends SimpleORMap implements PrivacyObject
      */
     public static function findByStatusgruppe_id($group_id)
     {
-        return self::findBySQL("INNER JOIN `termin_related_groups` USING (`termin_id`)
+        return self::findBySQL(
+            "INNER JOIN `termin_related_groups` USING (`termin_id`)
             WHERE `termin_related_groups`.`statusgruppe_id` = ?
             ORDER BY `date` ASC",
             [$group_id]
@@ -239,7 +243,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject
     public function getRoom()
     {
         if (Config::get()->RESOURCES_ENABLE && !empty($this->room_booking->resource)) {
-           return $this->room_booking->resource->getDerivedClassInstance();
+            return $this->room_booking->resource->getDerivedClassInstance();
         }
         return null;
     }
@@ -270,7 +274,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject
         $latter_template = $format === 'verbose' ? _('%R Uhr') : '%R';
 
         if (($this->end_time - $this->date) / 60 / 60 > 23) {
-            $string = strftime('%a., %x (' . _('ganztägig') . ')' , $this->date);
+            $string = strftime('%a., %x (' . _('ganztägig') . ')', $this->date);
         } else {
             $string =  strftime('%a., %x, %R', $this->date) . ' - '
                 . strftime($latter_template, $this->end_time);
@@ -279,7 +283,8 @@ class CourseDate extends SimpleORMap implements PrivacyObject
         if($format === 'include-room') {
             $room = $this->getRoom();
             if($room) {
-                $string = sprintf('%s <a href="%s" target="_blank">%s</a>',
+                $string = sprintf(
+                    '%s <a href="%s" target="_blank">%s</a>',
                     $string,
                     $room->getActionURL('booking_plan'),
                     htmlReady($room->name)
@@ -465,7 +470,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject
     /**
      * @return string A string representation of the course date.
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return sprintf(
             _('Termin am %1$s, %2$s von %3$s bis %4$s Uhr'),

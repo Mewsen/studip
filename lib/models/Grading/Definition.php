@@ -4,7 +4,7 @@ namespace Grading;
 
 class Definition extends \SimpleORMap
 {
-    const CUSTOM_DEFINITIONS_CATEGORY = 'xyzzy';
+    public const CUSTOM_DEFINITIONS_CATEGORY = 'xyzzy';
 
     protected static function configure($config = [])
     {

@@ -1,9 +1,10 @@
 <?php
+
 require_once 'lib/classes/QuestionType.interface.php';
 
 class Vote extends QuestionnaireQuestion implements QuestionType
 {
-    public static function getIcon(bool $active = false) : Icon
+    public static function getIcon(bool $active = false): Icon
     {
         return Icon::create(static::getIconShape(), $active ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO);
     }
@@ -22,7 +23,7 @@ class Vote extends QuestionnaireQuestion implements QuestionType
         return _('Auswahlfrage');
     }
 
-    static public function getEditingComponent()
+    public static function getEditingComponent()
     {
         return ['vote-edit', ''];
     }
@@ -54,8 +55,7 @@ class Vote extends QuestionnaireQuestion implements QuestionType
             $userAnswer = $answers[$this->getId()]['answerdata']['answers'];
             if (is_array($userAnswer)) {
                 $userAnswer = array_map('intval', $userAnswer);
-            }
-            else {
+            } else {
                 $userAnswer = (int) $userAnswer;
             }
         }

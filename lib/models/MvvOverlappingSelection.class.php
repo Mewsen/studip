@@ -253,7 +253,8 @@ class MvvOverlappingSelection extends SimpleORMap
         $visible_sql = '';
         if ($only_visible) {
             $excluded_courses = SimpleORMapCollection::createFromArray(
-                    MvvOverlappingExclude::findBySelection_id($selection_id))->pluck('course_id');
+                MvvOverlappingExclude::findBySelection_id($selection_id)
+            )->pluck('course_id');
             if ($excluded_courses) {
                 $visible_sql = 'AND `mvv_ovl_conflicts`.`comp_course_id` NOT IN (:course_ids)';
             }

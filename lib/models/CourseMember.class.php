@@ -52,7 +52,7 @@ class CourseMember extends SimpleORMap implements PrivacyObject
         $config['has_many']['datafields'] = [
             'class_name' => DatafieldEntryModel::class,
             'assoc_foreign_key' =>
-                function($model, $params) {
+                function ($model, $params) {
                     list($sec_range_id, $range_id) = (array)$params[0]->getId();
                     $model->setValue('range_id', $range_id);
                     $model->setValue('sec_range_id', $sec_range_id);
@@ -61,7 +61,7 @@ class CourseMember extends SimpleORMap implements PrivacyObject
             'on_delete' => 'delete',
             'on_store' => 'store',
             'foreign_key' =>
-                function($course_member) {
+                function ($course_member) {
                     return [$course_member];
                 }
         ];
@@ -206,7 +206,8 @@ class CourseMember extends SimpleORMap implements PrivacyObject
      */
     public static function getMemberByIdentification(string $course_id, string $nachname, string $vorname = null): array
     {
-        return DBManager::get()->fetchAll("SELECT
+        return DBManager::get()->fetchAll(
+            "SELECT
                     auth_user_md5.user_id,
                     auth_user_md5.username,
                     auth_user_md5.perms,
@@ -219,7 +220,8 @@ class CourseMember extends SimpleORMap implements PrivacyObject
                  AND auth_user_md5.visible <> 'never'
                  AND auth_user_md5.Nachname LIKE ? AND (? IS NULL OR auth_user_md5.Vorname LIKE ?)
                  ORDER BY auth_user_md5.Nachname, auth_user_md5.Vorname",
-            [$course_id, $nachname, $vorname, $vorname]);
+            [$course_id, $nachname, $vorname, $vorname]
+        );
     }
 
     /**
@@ -276,7 +278,7 @@ class CourseMember extends SimpleORMap implements PrivacyObject
      * @param string $datafield_id
      * @return Array
      */
-    public static function getMemberByDatafield(string $course_id, string $nachname,  string $datafield_id): array
+    public static function getMemberByDatafield(string $course_id, string $nachname, string $datafield_id): array
     {
         // TODO Fullname
         return DBManager::get()->fetchAll(

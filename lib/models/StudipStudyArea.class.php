@@ -34,7 +34,7 @@ class StudipStudyArea extends SimpleORMap
     /**
      * This constant represents the key of the root area.
      */
-    const ROOT = 'root';
+    public const ROOT = 'root';
 
     protected static function configure($config = [])
     {
@@ -69,7 +69,7 @@ class StudipStudyArea extends SimpleORMap
     /**
      * Returns the children of the study area with the specified ID.
      */
-    static function findByParent($parent_id)
+    public static function findByParent($parent_id)
     {
         return self::findByparent_id($parent_id, "ORDER BY priority,name");
     }
@@ -80,13 +80,11 @@ class StudipStudyArea extends SimpleORMap
     public static function find($id)
     {
 
-        $result = NULL;
+        $result = null;
 
         if ($id === self::ROOT) {
             $result = self::getRootArea();
-        }
-
-        else {
+        } else {
             $result = parent::find($id);
         }
 
@@ -156,7 +154,7 @@ class StudipStudyArea extends SimpleORMap
      */
     public function getParent()
     {
-        $result = NULL;
+        $result = null;
         if ($this->getID() !== self::ROOT) {
             $result = $this->_parent;
         }
@@ -198,7 +196,7 @@ class StudipStudyArea extends SimpleORMap
      */
     public function getTypeName()
     {
-        if(isset($GLOBALS['SEM_TREE_TYPES'][$this->getType()]['name'])){
+        if(isset($GLOBALS['SEM_TREE_TYPES'][$this->getType()]['name'])) {
             return $GLOBALS['SEM_TREE_TYPES'][$this->getType()]['name'];
         } else {
             return '';
@@ -212,7 +210,7 @@ class StudipStudyArea extends SimpleORMap
      */
     public function isEditable()
     {
-        if(isset($GLOBALS['SEM_TREE_TYPES'][$this->getType()]['editable'])){
+        if(isset($GLOBALS['SEM_TREE_TYPES'][$this->getType()]['editable'])) {
             return (bool)$GLOBALS['SEM_TREE_TYPES'][$this->getType()]['editable'];
         } else {
             return false;
@@ -240,7 +238,7 @@ class StudipStudyArea extends SimpleORMap
      *
      * @return mixed      TODO
      */
-    public function getPath($separator = NULL)
+    public function getPath($separator = null)
     {
 
         $path = [];

@@ -1,7 +1,8 @@
 <?php
+
 class QuestionnaireInfo extends QuestionnaireQuestion implements QuestionType
 {
-    public static function getIcon(bool $active = false) : Icon
+    public static function getIcon(bool $active = false): Icon
     {
         return Icon::create(static::getIconShape(), $active ? 'clickable' : 'info');
     }
@@ -20,7 +21,7 @@ class QuestionnaireInfo extends QuestionnaireQuestion implements QuestionType
         return _('Information');
     }
 
-    static public function getEditingComponent()
+    public static function getEditingComponent()
     {
         return ['questionnaire-info-edit', ''];
     }

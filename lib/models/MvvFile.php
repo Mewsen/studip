@@ -165,9 +165,13 @@ class MvvFile extends ModuleManagementModel
      * @param int $offset The first object to return in a result set.
      * @return object A SimpleORMapCollection of Dokument objects.
      */
-    public static function getAllEnriched($sortby = 'chdate', $order = 'DESC',
-            $row_count = null, $offset = null, $filter = null)
-    {
+    public static function getAllEnriched(
+        $sortby = 'chdate',
+        $order = 'DESC',
+        $row_count = null,
+        $offset = null,
+        $filter = null
+    ) {
         $sortby = self::createSortStatement(
             $sortby,
             $order,
@@ -376,7 +380,7 @@ class MvvFile extends ModuleManagementModel
         if ($mvvfile_range = MvvFileRange::find([$this->mvvfile_id, $range_id])) {
             $vacant = $mvvfile_range->position;
             if ($mvvfile_range->delete()) {
-                foreach (MvvFileRange::findBySQL('range_id = ? ORDER BY position ASC',[$range_id]) as $other_range) {
+                foreach (MvvFileRange::findBySQL('range_id = ? ORDER BY position ASC', [$range_id]) as $other_range) {
                     if ($other_range->position > $vacant) {
                         $tmp = $other_range->position;
                         $other_range->position = $vacant;
@@ -417,13 +421,22 @@ class MvvFile extends ModuleManagementModel
      * @param array $filter Array of filter.
      * @return array Array of found Fachbereiche.
      */
-    public static function getAllAssignedInstitutes($sortby = 'name',
-            $order = 'ASC', $filter = null, $row_count = null, $offset = null)
-    {
-        $sortby = Fachbereich::createSortStatement($sortby, $order, 'name',
-                ['count_objects']);
+    public static function getAllAssignedInstitutes(
+        $sortby = 'name',
+        $order = 'ASC',
+        $filter = null,
+        $row_count = null,
+        $offset = null
+    ) {
+        $sortby = Fachbereich::createSortStatement(
+            $sortby,
+            $order,
+            'name',
+            ['count_objects']
+        );
 
-        return Fachbereich::getEnrichedByQuery("
+        return Fachbereich::getEnrichedByQuery(
+            "
             SELECT `Institute`.*,
                 `Institute`.`Name` as `name`,
                 `Institute`.`Institut_id` AS `institut_id`,
@@ -440,7 +453,10 @@ class MvvFile extends ModuleManagementModel
                 LEFT JOIN `semester_data` `end_sem`
                     ON (`mvv_studiengang`.`end` = `end_sem`.`semester_id`)"
             . Fachbereich::getFilterSql($filter, true) . "
-            GROUP BY `institut_id` ORDER BY " . $sortby, [], $row_count, $offset
+            GROUP BY `institut_id` ORDER BY " . $sortby,
+            [],
+            $row_count,
+            $offset
         );
     }
 

@@ -53,13 +53,13 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
 
 
         $config['additional_fields']['count_versionen']['get'] =
-            function($stgteil) { return $stgteil->count_versionen; };
+            function ($stgteil) { return $stgteil->count_versionen; };
         $config['additional_fields']['fach_name']['get'] =
-            function($stgteil) { return $stgteil->fach_name; };
+            function ($stgteil) { return $stgteil->fach_name; };
         $config['additional_fields']['count_contacts']['get'] =
-            function($stgteil) { return $stgteil->count_contacts; };
+            function ($stgteil) { return $stgteil->count_contacts; };
         $config['additional_fields']['stgteil_name']['get'] =
-            function($stgteil) { return $stgteil->stgteil_name; };
+            function ($stgteil) { return $stgteil->stgteil_name; };
 
         $config['i18n_fields']['zusatz'] = true;
 
@@ -115,8 +115,8 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
         } else {
             $name = '';
         }
-        $name .= $this->kp ?  $this->kp . ' CP ' : '';
-        $name .= $this->zusatz ? $this->zusatz  : '';
+        $name .= $this->kp ? $this->kp . ' CP ' : '';
+        $name .= $this->zusatz ? $this->zusatz : '';
         return trim($name);
     }
 
@@ -162,7 +162,8 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
      */
     public static function getEnriched($stgteil_id)
     {
-        $stgteil = parent::getEnrichedByQuery("
+        $stgteil = parent::getEnrichedByQuery(
+            "
             SELECT `mvv_stgteil`.*,
                 CONCAT(`fach`.`name`, ': ', `mvv_stgteil`.`zusatz`, ' (', `mvv_stgteil`.`kp`, ' CP)') AS stgteil_name,
                 `fach`.`name` AS `fach_name`,
@@ -170,7 +171,8 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
             FROM `mvv_stgteil`
                 LEFT JOIN `fach` USING(`fach_id`)
             WHERE `mvv_stgteil`.`stgteil_id` = ?",
-                [$stgteil_id]);
+            [$stgteil_id]
+        );
         if (sizeof($stgteil)) {
             return $stgteil->find($stgteil_id);
         }
@@ -191,14 +193,21 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
      * @param int $offset The first object to return in a result set.
      * @return SimpleORMapCollection A collection of Studiengangteile.
      */
-    public static function getAllEnriched($sortby = 'fach_name',
-            $order = 'ASC', $filter = null, $row_count = null, $offset = null)
-    {
-        $sortby = self::createSortStatement($sortby, $order,
-                'fach_name',
-                words('fach_name stgteil_name count_contacts count_versionen'));
+    public static function getAllEnriched(
+        $sortby = 'fach_name',
+        $order = 'ASC',
+        $filter = null,
+        $row_count = null,
+        $offset = null
+    ) {
+        $sortby = self::createSortStatement(
+            $sortby,
+            $order,
+            'fach_name',
+            words('fach_name stgteil_name count_contacts count_versionen')
+        );
         return parent::getEnrichedByQuery(
-                'SELECT mvv_stgteil.*, CONCAT(fach.name, ": ", '
+            'SELECT mvv_stgteil.*, CONCAT(fach.name, ": ", '
                 . 'mvv_stgteil.zusatz, " (", mvv_stgteil.kp, " KP)") AS stgteil_name, '
                 . 'fach.name AS fach_name, '
                 . 'COUNT(DISTINCT mvv_contacts_ranges.contact_range_id) AS count_contacts, '
@@ -211,7 +220,11 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
                 . 'LEFT JOIN mvv_stgteilversion USING(stgteil_id) '
                 . self::getFilterSql($filter, true)
                 . 'GROUP BY mvv_stgteil.stgteil_id '
-                . 'ORDER BY ' . $sortby, [], $row_count, $offset);
+                . 'ORDER BY ' . $sortby,
+            [],
+            $row_count,
+            $offset
+        );
     }
 
     /**
@@ -243,20 +256,28 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
      * @param string $order ASC or DESC direction of order.
      * @return SimpleORMapCollection A collection of Studiengangteile.
      */
-    public static function findByStudiengang($studiengang_id,
-            $sort = 'stgteil_position, stgteil_chdate', $order = 'ASC')
-    {
-        $sort = self::createSortStatement($sort, $order, 'chdate',
-                ['stgteil_position', 'stgteil_chdate']);
+    public static function findByStudiengang(
+        $studiengang_id,
+        $sort = 'stgteil_position, stgteil_chdate',
+        $order = 'ASC'
+    ) {
+        $sort = self::createSortStatement(
+            $sort,
+            $order,
+            'chdate',
+            ['stgteil_position', 'stgteil_chdate']
+        );
         return parent::getEnrichedByQuery(
-                'SELECT mst.*, msb.*, mss.position AS `stgteil_position`, '
+            'SELECT mst.*, msb.*, mss.position AS `stgteil_position`, '
                 . 'mss.chdate AS `stgteil_chdate`'
                 . 'FROM mvv_stg_stgteil mss '
                 . 'LEFT JOIN mvv_stgteil_bez msb USING(stgteil_bez_id) '
                 . 'LEFT JOIN mvv_stgteil mst USING(stgteil_id) '
                 . 'LEFT JOIN fach mf USING(fach_id) '
                 . 'WHERE studiengang_id = ? '
-                . 'ORDER BY ' . $sort, [$studiengang_id]);
+                . 'ORDER BY ' . $sort,
+            [$studiengang_id]
+        );
     }
 
     /**
@@ -270,9 +291,12 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
      * @param string $order ASC or DESC direction of order.
      * @return SimpleORMapCollection A collection of Studiengangteile.
      */
-    public static function findByFach($fach_id, $filter = null,
-            $sort = 'chdate', $order = 'DESC')
-    {
+    public static function findByFach(
+        $fach_id,
+        $filter = null,
+        $sort = 'chdate',
+        $order = 'DESC'
+    ) {
         $sort = self::createSortStatement($sort, $order, 'chdate');
         $params = [$fach_id];
         return parent::getEnrichedByQuery(
@@ -281,7 +305,9 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
                     LEFT JOIN `fach` USING(`fach_id`)
                 WHERE `fach`.`fach_id` = ? ' .
                 self::getFilterSql($filter) .
-                'ORDER BY ' . $sort, $params);
+                'ORDER BY ' . $sort,
+            $params
+        );
     }
 
     /**
@@ -296,11 +322,18 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
      * @param string $order ASC or DESC direction of order.
      * @return SimpleORMapCollection A collection of Studiengangteile.
      */
-    public static function findByFachbereich($fachbereich_id, $filter = null,
-            $sort = 'chdate', $order = 'DESC')
-    {
-        $sort = self::createSortStatement($sort, $order, 'chdate',
-                ['fach_name']);
+    public static function findByFachbereich(
+        $fachbereich_id,
+        $filter = null,
+        $sort = 'chdate',
+        $order = 'DESC'
+    ) {
+        $sort = self::createSortStatement(
+            $sort,
+            $order,
+            'chdate',
+            ['fach_name']
+        );
         $params = [$fachbereich_id];
         return parent::getEnrichedByQuery('
             SELECT `mvv_stgteil`.*, `fach`.`name` AS `fach_name`
@@ -322,11 +355,15 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
      * to filter the result set.
      * @return SimpleORMapCollection A collection of Studiengangteile.
      */
-    public static function getAssignedFachbereiche($sortby = 'name', $order = 'ASC',
-            $filter = null)
-    {
-        $sortby = (in_array($sortby,
-                words('name stgteile'))
+    public static function getAssignedFachbereiche(
+        $sortby = 'name',
+        $order = 'ASC',
+        $filter = null
+    ) {
+        $sortby = (in_array(
+            $sortby,
+            words('name stgteile')
+        )
                 ? $sortby : 'name');
         $order = ($order != 'DESC' ? ' ASC' : ' DESC');
         $fachbereiche = [];
@@ -358,9 +395,10 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
      * @param string $stgteil_bez_id The id of a Studiengangteil-Bezeichnung.
      * @return SimpleORMapCollection A collection of Studiengangteile.
      */
-    public static function findByStudiengangStgteilBez($studiengang_id,
-            $stgteil_bez_id)
-    {
+    public static function findByStudiengangStgteilBez(
+        $studiengang_id,
+        $stgteil_bez_id
+    ) {
         return parent::getEnrichedByQuery(
             'SELECT `mvv_stgteil`.*
                 FROM `mvv_stgteil`
@@ -369,7 +407,8 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
                 WHERE `mvv_stg_stgteil`.`studiengang_id` = ?
                     AND `mvv_stg_stgteil`.`stgteil_bez_id` = ?
                 ORDER BY `position`, `chdate`',
-                [$studiengang_id, $stgteil_bez_id]);
+            [$studiengang_id, $stgteil_bez_id]
+        );
     }
 
     /**
@@ -395,7 +434,9 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
                 WHERE (`mvv_stgteil`.`zusatz` LIKE ?
                     OR `fach`.`name` LIKE ?) ' .
                 self::getFilterSql($filter) .
-                'GROUP BY `stgteil_id` ORDER BY `fach`.`name`', [$term, $term]);
+                'GROUP BY `stgteil_id` ORDER BY `fach`.`name`',
+            [$term, $term]
+        );
     }
 
     /**
@@ -417,7 +458,8 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
             'SELECT COUNT(DISTINCT `fach_id`)
                 FROM `mvv_stgteil`
                     INNER JOIN `mvv_fach_inst` USING(`fach_id`) ' .
-            self::getFilterSql($filter, true));
+            self::getFilterSql($filter, true)
+        );
         return $result->fetchColumn();
     }
 

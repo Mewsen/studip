@@ -51,19 +51,19 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
         ];
 
         $config['additional_fields']['count_abschluesse']['get'] =
-            function($fach) { return $fach->count_abschluesse; };
+            function ($fach) { return $fach->count_abschluesse; };
         $config['additional_fields']['count_abschluesse']['set'] = false;
         $config['additional_fields']['count_user']['get'] =
-            function($fach) { return $fach->count_user; };
+            function ($fach) { return $fach->count_user; };
         $config['additional_fields']['count_user']['set'] = false;
         $config['additional_fields']['count_sem']['get'] =
-            function($fach) { return $fach->count_sem; };
+            function ($fach) { return $fach->count_sem; };
         $config['additional_fields']['count_sem']['set'] = false;
         $config['additional_fields']['count_stgteile']['get'] =
-            function($fach) { return $fach->count_stgteile; };
+            function ($fach) { return $fach->count_stgteile; };
         $config['additional_fields']['count_stgteile']['set'] = false;
         $config['additional_fields']['count_module']['get'] =
-            function($fach) { return $fach->count_module; };
+            function ($fach) { return $fach->count_module; };
 
         $config['i18n_fields']['name'] = true;
         $config['i18n_fields']['name_kurz'] = true;
@@ -101,12 +101,21 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      * @param int $offset The first object to return in a result set.
      * @return object A SimpleORMapCollection of Abschluss objects.
      */
-    public static function getAllEnriched($sortby = 'name', $order = 'ASC',
-            $row_count = null, $offset = null, $filter = null)
-    {
-        $sortby = self::createSortStatement($sortby, $order, 'name',
-                ['count_abschluesse']);
-        return parent::getEnrichedByQuery('
+    public static function getAllEnriched(
+        $sortby = 'name',
+        $order = 'ASC',
+        $row_count = null,
+        $offset = null,
+        $filter = null
+    ) {
+        $sortby = self::createSortStatement(
+            $sortby,
+            $order,
+            'name',
+            ['count_abschluesse']
+        );
+        return parent::getEnrichedByQuery(
+            '
             SELECT fach.*,
               COUNT(DISTINCT abschluss_id) AS `count_abschluesse`
             FROM fach
@@ -153,16 +162,21 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      * @param array $filter Array of filter parameters (name of column as key,
      * @return object Collection of Faecher.
      */
-    public static function getAllEnrichedByStgteile($sortby = 'name',
-            $order = 'ASC', $row_count = null, $offset = null, $filter = null)
-    {
+    public static function getAllEnrichedByStgteile(
+        $sortby = 'name',
+        $order = 'ASC',
+        $row_count = null,
+        $offset = null,
+        $filter = null
+    ) {
         $sortby = self::createSortStatement(
             $sortby,
             $order,
             'name',
             ['count_stgteile']
         );
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT fach.*,
             COUNT(stgteil_id) as `count_stgteile`
             FROM fach
@@ -186,7 +200,8 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      */
     public static function findByStudiengangTeil($stgteil_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT mf.*
             FROM fach mf
                 LEFT JOIN mvv_stgteil AS ms USING (fach_id)
@@ -222,7 +237,8 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      */
     public static function findByAbschluss($abschluss_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT mf.*
             FROM fach mf
                 LEFT JOIN mvv_stgteil USING (fach_id)
@@ -247,7 +263,8 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
         $has_stgteile_sql = $has_stgteile
                 ? 'INNER JOIN mvv_stgteil USING (fach_id) '
                 : '';
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT mf.*
             FROM fach mf
                 ' . $has_stgteile_sql . '
@@ -267,7 +284,8 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      */
     public static function findPublicByModule($modul_ids)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT mf.*,
                 COUNT(DISTINCT msm.modul_id) AS count_module
                 FROM mvv_stgteilabschnitt_modul AS msm
@@ -323,16 +341,22 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      * @param array $filter Array of filter parameters (name of column as key,
      * @return object Collection of Faecher.
      */
-    public static function findByIdsStgteile($stgteil_ids, $sortby = 'name',
-            $order = 'ASC', $row_count = null, $offset = null, $filter = null)
-    {
+    public static function findByIdsStgteile(
+        $stgteil_ids,
+        $sortby = 'name',
+        $order = 'ASC',
+        $row_count = null,
+        $offset = null,
+        $filter = null
+    ) {
         $sortby = self::createSortStatement(
             $sortby,
             $order,
             'name',
             ['count_stgteile']
         );
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT fach.*,
                 COUNT(DISTINCT stgteil_id) as `count_stgteile`
                 FROM fach
@@ -358,7 +382,8 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
     {
         $order = ($order == 'DESC' ? $order : 'ASC');
         $fachbereiche = [];
-        $stmt = DBManager::get()->prepare('
+        $stmt = DBManager::get()->prepare(
+            '
             SELECT mfi.institut_id, i.Name AS `name`,
                 COUNT(fach_id) AS faecher
             FROM mvv_fach_inst AS mfi
@@ -409,9 +434,10 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      * @param string $abschluss_id The id of the Abschluss.
      * @return array Found Fachbereiche as array. Empty array if none was found.
      */
-    public static function findUsedFachbereiche($kategorie_id = null,
-            $abschluss_id = null)
-    {
+    public static function findUsedFachbereiche(
+        $kategorie_id = null,
+        $abschluss_id = null
+    ) {
         $fachbereiche = [];
         if (!is_null($kategorie_id) && is_null($abschluss_id)) {
             $stmt = DBManager::get()->prepare('
@@ -427,8 +453,8 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
                 GROUP BY i.Institut_id ORDER BY `name`
             ');
             $stmt->execute([$kategorie_id]);
-        } else if (!is_null($abschluss_id)) {
-                $stmt = DBManager::get()->prepare('
+        } elseif (!is_null($abschluss_id)) {
+            $stmt = DBManager::get()->prepare('
                     SELECT i.Name AS `name`,
                         i.Institut_id AS institut_id
                     FROM mvv_fach_inst AS mfi
@@ -439,7 +465,7 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
                     WHERE ms.abschluss_id = ?
                     GROUP BY i.Institut_id ORDER BY `name`
                 ');
-                $stmt->execute([$abschluss_id]);
+            $stmt->execute([$abschluss_id]);
         } else {
             $stmt = DBManager::get()->prepare('
                 SELECT i.Name AS `name`,
@@ -469,13 +495,16 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
      * see ModulManagementModel::getFilterSql()).
      * @return array Associative array of Fachbereiche (id as key).
      */
-    public static function getAllFachbereiche($sortby = 'name', $order = 'ASC',
-            $filter = null)
-    {
+    public static function getAllFachbereiche(
+        $sortby = 'name',
+        $order = 'ASC',
+        $filter = null
+    ) {
         $sortby = ($sortby == 'name' ? 'name' : 'faecher');
         $order = ($order == 'ASC' ? 'ASC' : 'DESC');
         $fachbereiche = [];
-        $stmt = DBManager::get()->prepare('
+        $stmt = DBManager::get()->prepare(
+            '
             SELECT Institute.Name AS `name`,
                 Institute.Institut_id AS `institut_id`,
                 COUNT(DISTINCT fach_id) AS `faecher`
@@ -691,8 +720,10 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
                 $existing = $this->findBySql('name = ' . DBManager::get()->quote($this->name));
                 if (sizeof($existing)) {
                     $ret['name'] = true;
-                    $messages[] = sprintf(_('Es existiert bereits ein Fach mit dem Namen "%s"!'),
-                            $this->name);
+                    $messages[] = sprintf(
+                        _('Es existiert bereits ein Fach mit dem Namen "%s"!'),
+                        $this->name
+                    );
                     $rejected = true;
                 }
             }

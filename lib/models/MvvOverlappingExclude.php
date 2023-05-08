@@ -22,7 +22,8 @@ class MvvOverlappingExclude extends SimpleORMap
      *
      * @param array  $config Configuration
      */
-    protected static function configure($config = array()) {
+    protected static function configure($config = array())
+    {
 
         $config['db_table'] = 'mvv_ovl_excludes';
         $config['belongs_to']['selection'] = [
@@ -38,4 +39,3 @@ class MvvOverlappingExclude extends SimpleORMap
     }
 
 }
-

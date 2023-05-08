@@ -43,11 +43,12 @@ class CalendarUser extends SimpleORMap
     {
         if ($permission == Calendar::PERMISSION_READABLE) {
             $this->permission = Calendar::PERMISSION_READABLE;
-        } else if ($permission == Calendar::PERMISSION_WRITABLE) {
+        } elseif ($permission == Calendar::PERMISSION_WRITABLE) {
             $this->permission = Calendar::PERMISSION_WRITABLE;
         } else {
             throw new InvalidArgumentException(
-                'Calendar permission must be of type PERMISSION_READABLE or PERMISSION_WRITABLE.');
+                'Calendar permission must be of type PERMISSION_READABLE or PERMISSION_WRITABLE.'
+            );
         }
     }
 
@@ -57,15 +58,17 @@ class CalendarUser extends SimpleORMap
                 Calendar::PERMISSION_WRITABLE];
         if (!$permission) {
             $permission = $permission_array;
-        } else if (!in_array($permission, $permission_array)) {
+        } elseif (!in_array($permission, $permission_array)) {
             throw new InvalidArgumentException(
-                'Calendar permission must be of type PERMISSION_READABLE or PERMISSION_WRITABLE.');
+                'Calendar permission must be of type PERMISSION_READABLE or PERMISSION_WRITABLE.'
+            );
         } else {
             $permission = [$permission];
         }
         return SimpleORMapCollection::createFromArray(CalendarUser::findBySQL(
-                'owner_id = ? AND permission IN(?)',
-                [$user_id, $permission]));
+            'owner_id = ? AND permission IN(?)',
+            [$user_id, $permission]
+        ));
 
     }
 
@@ -75,9 +78,10 @@ class CalendarUser extends SimpleORMap
                 Calendar::PERMISSION_WRITABLE];
         if (!$permission) {
             $permission = $permission_array;
-        } else if (!in_array($permission, $permission_array)) {
+        } elseif (!in_array($permission, $permission_array)) {
             throw new InvalidArgumentException(
-                'Calendar permission must be of type PERMISSION_READABLE or PERMISSION_WRITABLE.');
+                'Calendar permission must be of type PERMISSION_READABLE or PERMISSION_WRITABLE.'
+            );
         } else {
             $permission = [$permission];
         }

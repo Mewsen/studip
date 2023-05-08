@@ -3,6 +3,7 @@
 namespace Courseware\BlockTypes;
 
 use Opis\JsonSchema\Schema;
+
 require_once 'lib/classes/Markup.class.php';
 
 /**

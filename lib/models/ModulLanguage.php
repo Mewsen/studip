@@ -41,7 +41,8 @@ class ModulLanguage extends ModuleManagementModel
     public static function findByModul($modul_id)
     {
         $languages = [];
-        $module_languages = parent::getEnrichedByQuery('
+        $module_languages = parent::getEnrichedByQuery(
+            '
             SELECT *
             FROM mvv_modul_language
             WHERE modul_id = ?

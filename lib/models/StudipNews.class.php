@@ -1,4 +1,5 @@
 <?php
+
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
 //
@@ -297,14 +298,15 @@ class StudipNews extends SimpleORMap implements PrivacyObject
                 if (!isset($objects[$area][$id]['semester'])) {
                     $objects[$area][$id]['semester'] = '';
                 }
-                $objects[$area][$id]['semester'] .= sprintf('(%s%s)',
+                $objects[$area][$id]['semester'] .= sprintf(
+                    '(%s%s)',
                     $result['startsem'],
-                    $result['startsem'] != $result['endsem'] ? ' - ' . $result['endsem'] : '');
+                    $result['startsem'] != $result['endsem'] ? ' - ' . $result['endsem'] : ''
+                );
             } elseif ($area === 'user') {
                 if ($GLOBALS['user']->id === $result['userid']) {
                     $objects[$area][$id]['title'] = _('Ankündigungen auf Ihrer Profilseite');
-                }
-                else {
+                } else {
                     $objects[$area][$id]['title'] = sprintf(_('Ankündigungen auf der Profilseite von %s'), get_fullname($result['userid']));
                 }
             } elseif ($area === 'global') {
@@ -331,7 +333,7 @@ class StudipNews extends SimpleORMap implements PrivacyObject
 
     public static function GetRangeFromRssID($rss_id)
     {
-        if ($rss_id){
+        if ($rss_id) {
             $query = "SELECT range_id ,range_type
                       FROM news_rss_range
                       WHERE rss_id = ?";
@@ -362,7 +364,7 @@ class StudipNews extends SimpleORMap implements PrivacyObject
 
     public static function SetRssId($range_id, $type = false)
     {
-        if (!$type){
+        if (!$type) {
             $type = get_object_type($range_id);
             if ($type === 'fak') {
                 $type = 'inst';
@@ -480,22 +482,25 @@ class StudipNews extends SimpleORMap implements PrivacyObject
         $type = get_object_type($range_id, ['global', 'sem', 'inst', 'fak', 'user']);
         switch($type) {
             case 'global':
-                if ($operation === 'view')
+                if ($operation === 'view') {
                     return $news_range_perm_cache[$user_id.$range_id.$operation] = true;
+                }
                 break;
             case 'fak':
             case 'inst':
             case 'sem':
                 if ($operation === 'view'
-                    && ($type !== 'sem'
+                    && (
+                        $type !== 'sem'
                         || $GLOBALS['perm']->have_studip_perm('user', $range_id)
                         || (Config::get()->ENABLE_FREE_ACCESS && Seminar::getInstance($range_id)->read_level == 0)
-                        )) {
+                    )) {
+                    return $news_range_perm_cache[$user_id.$range_id.$operation] = true;
+                }
+                if ($operation === 'edit' || $operation === 'copy') {
+                    if ($GLOBALS['perm']->have_studip_perm('tutor', $range_id)) {
                         return $news_range_perm_cache[$user_id.$range_id.$operation] = true;
                     }
-                if ($operation === 'edit' || $operation === 'copy') {
-                    if ($GLOBALS['perm']->have_studip_perm('tutor', $range_id))
-                        return $news_range_perm_cache[$user_id.$range_id.$operation] = true;
                 }
                 break;
             case 'user':
@@ -504,8 +509,9 @@ class StudipNews extends SimpleORMap implements PrivacyObject
                         return $news_range_perm_cache[$user_id.$range_id.$operation] = true;
                     }
                 } elseif ($operation === 'edit' || $operation == 'copy') {
-                    if ($GLOBALS['perm']->have_profile_perm('user', $range_id))
+                    if ($GLOBALS['perm']->have_profile_perm('user', $range_id)) {
                         return $news_range_perm_cache[$user_id.$range_id.$operation] = true;
+                    }
                 }
                 break;
         }
@@ -590,8 +596,7 @@ class StudipNews extends SimpleORMap implements PrivacyObject
         // root, owner, and owner's deputy have full permission
         if ($GLOBALS['perm']->have_perm('root', $user_id)
             || ($user_id === $this->user_id && $GLOBALS['perm']->have_perm('autor'))
-            || (Deputy::isEditActivated() && Deputy::isDeputy($user_id, $this->user_id, true)))
-        {
+            || (Deputy::isEditActivated() && Deputy::isDeputy($user_id, $this->user_id, true))) {
             return true;
         }
 
@@ -635,7 +640,7 @@ class StudipNews extends SimpleORMap implements PrivacyObject
             $this->user_id = $GLOBALS['user']->id;
             $this->author = get_fullname(false, 'full', false);
         }
-        if (!$this->user_id OR !$this->author) {
+        if (!$this->user_id or !$this->author) {
             PageLayout::postError(_('Fehler: Personenangabe unvollständig.'));
             return false;
         }

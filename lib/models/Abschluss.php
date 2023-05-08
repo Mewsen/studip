@@ -119,12 +119,21 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
      * to filter the result set.
      * @return object A SimpleORMapCollection of Abschluss objects.
      */
-    public static function getAllEnriched($sortby = 'name', $order = 'ASC',
-            $row_count = null, $offset = null, $filter = null)
-    {
-        $sortby = self::createSortStatement($sortby, $order, 'chdate',
-                ['kategorie_name', 'count_faecher', 'count_studiengaenge']);
-        return parent::getEnrichedByQuery('
+    public static function getAllEnriched(
+        $sortby = 'name',
+        $order = 'ASC',
+        $row_count = null,
+        $offset = null,
+        $filter = null
+    ) {
+        $sortby = self::createSortStatement(
+            $sortby,
+            $order,
+            'chdate',
+            ['kategorie_name', 'count_faecher', 'count_studiengaenge']
+        );
+        return parent::getEnrichedByQuery(
+            '
                 SELECT abschluss.*, mvv_abschl_kategorie.name AS `kategorie_name`,
                     COUNT(DISTINCT mvv_stgteil.fach_id) AS `count_faecher`,
                     COUNT(DISTINCT mvv_studiengang.studiengang_id) AS `count_studiengaenge`
@@ -138,7 +147,10 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
                 ' . self::getFilterSql($filter, true) . '
                 GROUP BY abschluss_id
                 ORDER BY ' . $sortby,
-        [], $row_count, $offset);
+            [],
+            $row_count,
+            $offset
+        );
     }
 
     /**
@@ -173,7 +185,8 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
      */
     public static function findByFach($fach_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT ma.*,
                 COUNT(DISTINCT mss.studiengang_id) AS count_studiengaenge
             FROM mvv_stgteil AS mst
@@ -231,7 +244,8 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
      */
     public static function findByFachbereich($fachbereich_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT a.*, maz.kategorie_id
             FROM abschluss AS a
                 INNER JOIN mvv_studiengang AS ms USING (abschluss_id)
@@ -253,7 +267,8 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
      */
     public static function findByModul($modul_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT ma.*
             FROM abschluss ma
                 INNER JOIN mvv_studiengang USING (abschluss_id)
@@ -317,7 +332,8 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
     {
         $institute = [];
 
-        $stmt = DBManager::get()->prepare('
+        $stmt = DBManager::get()->prepare(
+            '
             SELECT inst.*
             FROM mvv_studiengang ms
                 INNER JOIN Institute inst ON (inst.Institut_id = ms.institut_id)
@@ -373,7 +389,8 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
     {
         $_SESSION['MVV/Modul/trail_parent_id'] =  $this->getId();
         // return Modulteil::findByModul($this->getId());
-        return Modul::getEnrichedByQuery('
+        return Modul::getEnrichedByQuery(
+            '
             SELECT mm.*
             FROM mvv_modul mm
                 LEFT JOIN mvv_stgteilabschnitt_modul USING (modul_id)
@@ -434,8 +451,10 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
                             . DBManager::get()->quote($this->name));
                     if (sizeof($existing)) {
                         $ret['name'] = true;
-                        $messages[] = sprintf(_('Es existiert bereits ein Abschluss mit dem Namen "%s"!'),
-                                $this->name);
+                        $messages[] = sprintf(
+                            _('Es existiert bereits ein Abschluss mit dem Namen "%s"!'),
+                            $this->name
+                        );
                         $rejected = true;
                     }
                 }
@@ -457,7 +476,8 @@ class Abschluss extends ModuleManagementModelTreeItem implements PrivacyObject
 
     public function countUserByStudycourse($studycourse_id)
     {
-        $stmt = DBManager::get()->prepare('
+        $stmt = DBManager::get()->prepare(
+            '
             SELECT COUNT(DISTINCT user_id)
             FROM user_studiengang
             WHERE fach_id = ?

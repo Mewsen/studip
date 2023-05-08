@@ -249,7 +249,8 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
     {
         $query = SQLQuery::table('blubber_threads')->join(
             'blubber_comments',
-            'blubber_comments', 'blubber_threads.thread_id = blubber_comments.thread_id',
+            'blubber_comments',
+            'blubber_threads.thread_id = blubber_comments.thread_id',
             'LEFT JOIN'
         );
 
@@ -362,7 +363,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
         $threads = array_map(function ($thread) {
             return self::upgradeThread($thread);
         }, $threads);
-        $threads = array_filter($threads, function ($t) use ($user_id){
+        $threads = array_filter($threads, function ($t) use ($user_id) {
             return $t->isVisibleInStream() && $t->isReadable($user_id);
         });
         return $threads;

@@ -48,7 +48,7 @@ class StgteilAbschnitt extends ModuleManagementModelTreeItem
         ];
 
         $config['additional_fields']['count_module']['get'] =
-            function($fach) { return $fach->count_module; };
+            function ($fach) { return $fach->count_module; };
         $config['additional_fields']['count_module']['set'] = false;
 
         $config['i18n_fields']['name'] = true;
@@ -72,12 +72,13 @@ class StgteilAbschnitt extends ModuleManagementModelTreeItem
     public static function getEnriched($abschnitt_id)
     {
         $abschnitte = parent::getEnrichedByQuery(
-                'SELECT msa.*, COUNT(modul_id) AS count_module '
+            'SELECT msa.*, COUNT(modul_id) AS count_module '
                 . 'FROM mvv_stgteilabschnitt msa '
                 . 'LEFT JOIN mvv_stgteilabschnitt_modul msm USING(abschnitt_id) '
                 . 'WHERE msa.abschnitt_id = ? '
                 . 'GROUP BY abschnitt_id',
-                [$abschnitt_id]);
+            [$abschnitt_id]
+        );
         if (sizeof($abschnitte)) {
             return $abschnitte[$abschnitt_id];
         }
@@ -146,7 +147,8 @@ class StgteilAbschnitt extends ModuleManagementModelTreeItem
         }
         if (!$this->modul_zuordnungen) {
             $this->modul_zuordnungen = SimpleORMapCollection::createFromArray(
-                    [$abschnitt_modul]);
+                [$abschnitt_modul]
+            );
         } else {
             $this->modul_zuordnungen->append($abschnitt_modul);
         }
@@ -176,8 +178,9 @@ class StgteilAbschnitt extends ModuleManagementModelTreeItem
             return false;
         }
         $modul_zuordnung = StgteilabschnittModul::findOneBySQL(
-                'abschnitt_id = ? AND modul_id = ?',
-                [$this->id, $modul->id]);
+            'abschnitt_id = ? AND modul_id = ?',
+            [$this->id, $modul->id]
+        );
         $removed = $this->modul_zuordnungen->unsetByPk($modul_zuordnung->id);
         return $removed !== false;
     }

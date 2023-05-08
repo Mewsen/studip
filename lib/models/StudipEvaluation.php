@@ -82,7 +82,7 @@ class StudipEvaluation extends SimpleORMap
         return null;
     }
 
-    function getNumberOfVotes ()
+    public function getNumberOfVotes()
     {
         return DBManager::get()->fetchColumn("SELECT count(DISTINCT user_id) FROM eval_user WHERE eval_id = ?", [$this->id]);
     }

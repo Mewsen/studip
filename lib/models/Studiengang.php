@@ -84,14 +84,14 @@ class Studiengang extends ModuleManagementModelTreeItem
         $config['has_many']['datafields'] = [
             'class_name'        => DatafieldEntryModel::class,
             'assoc_foreign_key' =>
-                function($model, $params) {
+                function ($model, $params) {
                     $model->setValue('range_id', $params[0]->id);
                 },
             'assoc_func'        => 'findByModel',
             'on_delete'         => 'delete',
             'on_store'          => 'store',
             'foreign_key'       =>
-                function($stg) {
+                function ($stg) {
                     return [$stg];
                 }
         ];
@@ -152,7 +152,8 @@ class Studiengang extends ModuleManagementModelTreeItem
      */
     public static function findByAbschluss($abschluss_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT ms.*
             FROM mvv_studiengang ms
             WHERE ms.abschluss_id = ?',
@@ -170,7 +171,8 @@ class Studiengang extends ModuleManagementModelTreeItem
      */
     public static function findByFachAbschluss($fach_id, $abschluss_id, $filter = null)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT mvv_studiengang.*
             FROM mvv_studiengang
                 LEFT JOIN mvv_stg_stgteil USING(studiengang_id)
@@ -191,7 +193,8 @@ class Studiengang extends ModuleManagementModelTreeItem
      */
     public static function findByFachbereich($fachbereich_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT ms.*,
                 COUNT(mst.fach_id) as `count_faecher`,
                 mak.name AS `kategorie_name`
@@ -216,7 +219,8 @@ class Studiengang extends ModuleManagementModelTreeItem
      */
     public static function findByAbschlussKategorie($kategorie_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT ms.*,
                 COUNT(mst.fach_id) AS `count_faecher`
             FROM mvv_studiengang AS ms
@@ -240,10 +244,12 @@ class Studiengang extends ModuleManagementModelTreeItem
      * @param string $fachbereich_id The id of an institute.
      * @return SimpleORMapCollection A collection of Studiengaenge.
      */
-    public static function findByAbschlussKategorieFachbereich($kategorie_id,
-            $fachbereich_id)
-    {
-        return parent::getEnrichedByQuery('
+    public static function findByAbschlussKategorieFachbereich(
+        $kategorie_id,
+        $fachbereich_id
+    ) {
+        return parent::getEnrichedByQuery(
+            '
             SELECT ms.*,
                 COUNT(mfi.fach_id) AS `count_faecher`
             FROM mvv_studiengang AS ms
@@ -266,7 +272,8 @@ class Studiengang extends ModuleManagementModelTreeItem
      */
     public static function findByStgTeil($stgteil_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT ms.*
             FROM mvv_studiengang ms
                 LEFT JOIN mvv_stg_stgteil mss USING(studiengang_id)
@@ -288,7 +295,8 @@ class Studiengang extends ModuleManagementModelTreeItem
     public static function findByModule($modul_ids, $only_public = true)
     {
         if ($only_public) {
-            return parent::getEnrichedByQuery('
+            return parent::getEnrichedByQuery(
+                '
                 SELECT ms.*,
                     COUNT(DISTINCT modul_id) AS count_module
                 FROM mvv_stgteilabschnitt_modul AS msm
@@ -308,7 +316,8 @@ class Studiengang extends ModuleManagementModelTreeItem
                 ]
             );
         } else {
-            return parent::getEnrichedByQuery('
+            return parent::getEnrichedByQuery(
+                '
                 SELECT ms.*, COUNT(DISTINCT modul_id) AS count_module
                 FROM mvv_stgteilabschnitt_modul AS msm
                     INNER JOIN mvv_stgteilabschnitt USING (abschnitt_id)
@@ -318,7 +327,8 @@ class Studiengang extends ModuleManagementModelTreeItem
                 WHERE msm.modul_id IN (?)
                 GROUP BY studiengang_id
                 ORDER BY count_module DESC',
-                    [$modul_ids]);
+                [$modul_ids]
+            );
         }
     }
 
@@ -333,9 +343,10 @@ class Studiengang extends ModuleManagementModelTreeItem
      * @return array The array with studiengaenge. Empty if no Studiengang
      * was found.
      */
-    public static function toArrayFachbereichAbschlussKategorie($fachbereich_id,
-            $kategorie_id)
-    {
+    public static function toArrayFachbereichAbschlussKategorie(
+        $fachbereich_id,
+        $kategorie_id
+    ) {
         $studiengaenge = [];
         $query = '
             SELECT ms.studiengang_id, ms.name
@@ -369,13 +380,22 @@ class Studiengang extends ModuleManagementModelTreeItem
      * @param int $offset The first object to return in a result set.
      * @return SimpleORMapCollection A collection of Studiengaenge.
      */
-    public static function getAllEnriched($sortby = 'name', $order = 'ASC',
-            $filter = null, $row_count = null, $offset = null)
-    {
-        $sortby = self::createSortStatement($sortby, $order, 'name',
-                words('abschluss_name kategorie_name count_faecher '
-                        . 'count_stgteile count_dokumente institut_name'));
-        return parent::getEnrichedByQuery("
+    public static function getAllEnriched(
+        $sortby = 'name',
+        $order = 'ASC',
+        $filter = null,
+        $row_count = null,
+        $offset = null
+    ) {
+        $sortby = self::createSortStatement(
+            $sortby,
+            $order,
+            'name',
+            words('abschluss_name kategorie_name count_faecher '
+                        . 'count_stgteile count_dokumente institut_name')
+        );
+        return parent::getEnrichedByQuery(
+            "
             SELECT mvv_studiengang.*,
                 abschluss.name AS `abschluss_name`,
                 mvv_abschl_kategorie.name AS `kategorie_name`,
@@ -443,7 +463,8 @@ class Studiengang extends ModuleManagementModelTreeItem
      */
     public static function getEnriched($studiengang_id)
     {
-        $studiengaenge = parent::getEnrichedByQuery('
+        $studiengaenge = parent::getEnrichedByQuery(
+            '
             SELECT ms.*,
                 a.name AS `abschluss_name`, mak.name AS `kategorie_name`,
                 mak.kategorie_id, COUNT(mst.fach_id) AS `count_faecher`,
@@ -475,7 +496,8 @@ class Studiengang extends ModuleManagementModelTreeItem
             $ret .= ' (' . $this->abschluss->name . ')';
         }
         if ($options & self::DISPLAY_KATEGORIE) {
-            $ret .= (mb_strlen($this->abschluss->category->name)
+            $ret .= (
+                mb_strlen($this->abschluss->category->name)
                 ? ' (' . $this->abschluss->category->name . ')'
                 : ''
             );
@@ -558,7 +580,8 @@ class Studiengang extends ModuleManagementModelTreeItem
         } else {
             $fach_sql = '';
         }
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT mvv_studiengang.*,
                 abschluss.name AS `abschluss_name`,
                 mvv_abschl_kategorie.name AS `kategorie_name`,
@@ -752,7 +775,8 @@ class Studiengang extends ModuleManagementModelTreeItem
         return $start_sem->beginn <= $time && $time <= $end_sem->ende;
     }
 
-    public function getVariant() {
+    public function getVariant()
+    {
         return $this->typ;
     }
 
@@ -819,7 +843,8 @@ class Studiengang extends ModuleManagementModelTreeItem
         }
 
         $this->languages = SimpleORMapCollection::createFromArray(
-                $assigned_languages);
+            $assigned_languages
+        );
     }
 
     /**
@@ -915,7 +940,7 @@ class Studiengang extends ModuleManagementModelTreeItem
                     $ret['start'] = true;
                     $messages[] = _('Ungültiges Semester.');
                     $rejected = true;
-                } else if ($this->end) {
+                } elseif ($this->end) {
                     $end_sem = Semester::find($this->end);
                     if ($end_sem) {
                         if ($start_sem->beginn > $end_sem->beginn) {
@@ -929,7 +954,7 @@ class Studiengang extends ModuleManagementModelTreeItem
                         $rejected = true;
                     }
                 }
-            }  else {
+            } else {
                 $ret['start'] = true;
                 $messages[] = _('Bitte ein Startsemester angeben.');
                 $rejected = true;

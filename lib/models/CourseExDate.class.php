@@ -66,8 +66,8 @@ class CourseExDate extends SimpleORMap implements PrivacyObject
         parent::configure($config);
     }
 
-    const FORMAT_DEFAULT = 'default';
-    const FORMAT_VERBOSE = 'verbose';
+    public const FORMAT_DEFAULT = 'default';
+    public const FORMAT_VERBOSE = 'verbose';
 
     /**
      * Returns course dates by course id
@@ -139,7 +139,7 @@ class CourseExDate extends SimpleORMap implements PrivacyObject
                          : '%R';
 
         if (($this->end_time - $this->date) / 60 / 60 > 23) {
-            return strftime('%a., %x' . ' (' . _('ganztägig') . ')' , $this->date) . " (" . _("fällt aus") . ")";
+            return strftime('%a., %x' . ' (' . _('ganztägig') . ')', $this->date) . " (" . _("fällt aus") . ")";
         }
 
         return strftime('%a., %x, %R', $this->date) . ' - '
@@ -236,7 +236,7 @@ class CourseExDate extends SimpleORMap implements PrivacyObject
     /**
      * @return string A string representation of the course date.
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return sprintf(
             _('Ausgefallener Termin am %1$s, %2$s von %3$s bis %4$s Uhr'),

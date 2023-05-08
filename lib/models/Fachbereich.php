@@ -21,9 +21,9 @@ class Fachbereich extends ModuleManagementModelTreeItem
         $config['db_table'] = 'Institute';
 
         $config['additional_fields']['count_objects']['get'] =
-            function($fb) { return $fb->count_objects; };
+            function ($fb) { return $fb->count_objects; };
         $config['additional_fields']['count_module']['get'] =
-            function($fb) { return $fb->count_module; };
+            function ($fb) { return $fb->count_module; };
 
         $config['i18n_fields']['name'] = true;
 
@@ -219,8 +219,9 @@ class Fachbereich extends ModuleManagementModelTreeItem
                 . 'WHERE fak.Institut_id = fak.fakultaets_id '
                 . 'AND fak.Institut_id = inst.fakultaets_id '
                 . parent::getFilterSql(
-                        ['mvv_studiengang.studiengang_id'
-                            => $studiengang_ids])
+                    ['mvv_studiengang.studiengang_id'
+                            => $studiengang_ids]
+                )
                 . 'GROUP BY inst.Institut_id '
                 . 'ORDER BY is_fak DESC, fak_name ASC, inst_name ASC');
     }
@@ -233,11 +234,17 @@ class Fachbereich extends ModuleManagementModelTreeItem
      * @param string $order The direction of sorting.
      * @return Object SimplORMapCollection of all Fachbereiche
      */
-    public static function getFachbereiche($sortby = 'name', $order = 'ASC',
-            $filter = null)
-    {
-        $sortby = self::createSortStatement($sortby, $order, 'name',
-                words('name count_objects'));
+    public static function getFachbereiche(
+        $sortby = 'name',
+        $order = 'ASC',
+        $filter = null
+    ) {
+        $sortby = self::createSortStatement(
+            $sortby,
+            $order,
+            'name',
+            words('name count_objects')
+        );
         return Fachbereich::getEnrichedByQuery('SELECT Institute.*, '
                 . 'COUNT(DISTINCT studiengang_id) AS count_objects '
                 . 'FROM mvv_stg_stgteil '

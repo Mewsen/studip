@@ -102,7 +102,8 @@ class Modulteil extends ModuleManagementModelTreeItem
      */
     public static function findByModul($modul_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
                 SELECT mmt.*,
                 COUNT(lvgruppe_id) AS count_lvgruppen
                 FROM mvv_modulteil AS mmt
@@ -122,7 +123,8 @@ class Modulteil extends ModuleManagementModelTreeItem
      */
     public static function findByLvgruppe($lvgruppe_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
                 SELECT mmt.*
                 FROM mvv_modulteil mmt
                     LEFT JOIN mvv_lvgruppe_modulteil mlm USING(modulteil_id)
@@ -132,13 +134,14 @@ class Modulteil extends ModuleManagementModelTreeItem
         );
     }
 
-    public function getDisplayName($options = self::DISPLAY_DEFAULT) {
+    public function getDisplayName($options = self::DISPLAY_DEFAULT)
+    {
         $name = '';
         if ($this->num_bezeichnung) {
             $name .= $GLOBALS['MVV_MODULTEIL']['NUM_BEZEICHNUNG']['values'][$this->num_bezeichnung]['name'];
             $name .= !is_null($this->nummer) ? ' ' . $this->nummer : '';
             $name .= ': ';
-        } else if ($this->nummer) {
+        } elseif ($this->nummer) {
             $name .= $this->nummer . ': ';
         }
         $name .= $GLOBALS['MVV_MODULTEIL']['LERNLEHRFORM']['values'][$this->lernlehrform]['name'] ?? '';
@@ -171,7 +174,8 @@ class Modulteil extends ModuleManagementModelTreeItem
      * @param bool If true returns always a new descriptor
      * @return object The Deskriptor.
      */
-    public function getDeskriptor($language = null, $force_new = false) {
+    public function getDeskriptor($language = null, $force_new = false)
+    {
         if (!isset($GLOBALS['MVV_MODULTEIL_DESKRIPTOR']['SPRACHE']['values'][$language])) {
             $language = $this->default_language;
         }
@@ -297,7 +301,8 @@ class Modulteil extends ModuleManagementModelTreeItem
         }
 
         $this->languages = SimpleORMapCollection::createFromArray(
-                $assigned_languages);
+            $assigned_languages
+        );
     }
 
     /**

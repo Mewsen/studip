@@ -29,14 +29,14 @@ class ModulDeskriptor extends ModuleManagementModel
         $config['has_many']['datafields'] = [
             'class_name' => DatafieldEntryModel::class,
             'assoc_foreign_key' =>
-                function($model, $params) {
+                function ($model, $params) {
                     $model->setValue('range_id', $params[0]->id);
                 },
             'assoc_func' => 'findByModel',
             'on_delete' => 'delete',
             'on_store' => 'store',
             'foreign_key' =>
-                function($m) {
+                function ($m) {
                     return [$m];
                 }
         ];

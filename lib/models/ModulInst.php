@@ -48,7 +48,8 @@ class ModulInst extends ModuleManagementModel
         $params = is_null($group) ? [$modul_id]
                 : [$modul_id, $group];
         $ret = [];
-        $modul_insts = parent::getEnrichedByQuery('
+        $modul_insts = parent::getEnrichedByQuery(
+            '
             SELECT mmi.*
             FROM mvv_modul_inst mmi
             WHERE mmi.modul_id = ? '

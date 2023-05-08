@@ -63,7 +63,8 @@ class CourseTopic extends SimpleORMap
 
     public static function findByTermin_id($termin_id)
     {
-        return self::findBySQL("INNER JOIN themen_termine USING (issue_id)
+        return self::findBySQL(
+            "INNER JOIN themen_termine USING (issue_id)
             WHERE themen_termine.termin_id = ?
             ORDER BY priority ASC",
             [$termin_id]
@@ -117,7 +118,7 @@ class CourseTopic extends SimpleORMap
     {
         if ($this->seminar_id) {
             $forum_module = Seminar::getInstance($this->seminar_id)->getSlotModule('forum');
-            if ($forum_module instanceOf ForumModule) {
+            if ($forum_module instanceof ForumModule) {
                 $forum_module->setThreadForIssue($this->id, $this->title, $this->description);
                 return true;
             }
@@ -129,7 +130,7 @@ class CourseTopic extends SimpleORMap
     {
         if ($this->seminar_id) {
             $forum_module = Seminar::getInstance($this->seminar_id)->getSlotModule('forum');
-            if ($forum_module instanceOf ForumModule) {
+            if ($forum_module instanceof ForumModule) {
                 return html_entity_decode($forum_module->getLinkToThread($this->id));
             }
         }

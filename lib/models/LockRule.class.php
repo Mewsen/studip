@@ -50,7 +50,7 @@ class LockRule extends SimpleORMap
      * @param string $seminar_id id of a course
      * @return LockRule
      */
-    static function findBySeminar($seminar_id)
+    public static function findBySeminar($seminar_id)
     {
         $db = DBManager::get();
         $lock_rule_id = $db->query("SELECT lock_rule FROM seminare WHERE seminar_id = " . $db->quote($seminar_id))
@@ -64,7 +64,7 @@ class LockRule extends SimpleORMap
      * @param string $institute_id id of an institute
      * @return LockRule
      */
-    static function findByInstitute($institute_id)
+    public static function findByInstitute($institute_id)
     {
         $db = DBManager::get();
         $lock_rule_id = $db->query("SELECT lock_rule FROM Institute WHERE Institut_id = " . $db->quote($institute_id))
@@ -78,7 +78,7 @@ class LockRule extends SimpleORMap
      * @param string $user_id id of a user
      * @return LockRule
      */
-    static function findByUser($user_id)
+    public static function findByUser($user_id)
     {
         $db = DBManager::get();
         $lock_rule_id = $db->query("SELECT lock_rule FROM user_info WHERE user_id = " . $db->quote($user_id))
@@ -92,14 +92,14 @@ class LockRule extends SimpleORMap
      * @param string $type entity type, one of [sem,inst,user]
      * @return array of LockRule objects
      */
-    static function findAllByType($type)
+    public static function findAllByType($type)
     {
         return self::findByObject_type($type, " ORDER BY name");
     }
     /**
      * @see SimpleORMap::delete()
      */
-    function delete()
+    public function delete()
     {
         $id = $this->getId();
         $object_type = $this->object_type;
@@ -118,7 +118,7 @@ class LockRule extends SimpleORMap
      *
      * @return integer
      */
-    function getUsage()
+    public function getUsage()
     {
         if (!$this->isNew()) {
             $db = DBManager::get();

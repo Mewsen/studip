@@ -40,16 +40,16 @@ class Lvgruppe extends ModuleManagementModelTreeItem
         ];
 
         $config['additional_fields']['count_seminare']['get'] =
-            function($lvgruppe) { return $lvgruppe->count_seminare; };
+            function ($lvgruppe) { return $lvgruppe->count_seminare; };
         $config['additional_fields']['count_seminare']['set'] = false;
         $config['additional_fields']['count_archiv']['get'] =
-            function($lvgruppe) { return $lvgruppe->count_archiv; };
+            function ($lvgruppe) { return $lvgruppe->count_archiv; };
         $config['additional_fields']['count_archiv']['set'] = false;
         $config['additional_fields']['count_modulteile']['get'] =
-            function($lvgruppe) { return $lvgruppe->count_modulteile; };
+            function ($lvgruppe) { return $lvgruppe->count_modulteile; };
         $config['additional_fields']['count_modulteile']['set'] = false;
         $config['additional_fields']['count_semester']['get'] =
-            function($lvgruppe) { return $lvgruppe->count_semester; };
+            function ($lvgruppe) { return $lvgruppe->count_semester; };
         $config['additional_fields']['count_semester']['set'] = false;
 
         $config['i18n_fields']['alttext'] = true;
@@ -91,12 +91,20 @@ class Lvgruppe extends ModuleManagementModelTreeItem
      * assigned to courses span the semesters time range.
      * @return object A SimpleORMapCollection of Abschluss objects.
      */
-    public static function getAllEnriched($sortby = 'name', $order = 'ASC',
-            $filter = null, $row_count = null, $offset = null,
-            $semester_id = null)
-    {
-        $sortby = self::createSortStatement($sortby, $order, 'name',
-                ['count_seminare', 'count_modulteile', 'count_archiv']);
+    public static function getAllEnriched(
+        $sortby = 'name',
+        $order = 'ASC',
+        $filter = null,
+        $row_count = null,
+        $offset = null,
+        $semester_id = null
+    ) {
+        $sortby = self::createSortStatement(
+            $sortby,
+            $order,
+            'name',
+            ['count_seminare', 'count_modulteile', 'count_archiv']
+        );
         $params = [];
         if (!is_null($filter)) {
             $filter_sql = is_array($filter)
@@ -180,7 +188,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
                     $filter_sql .= ' WHERE';
                 }
 
-                $filter_sql = trim($filter_sql) ? $filter_sql  : ' AND';
+                $filter_sql = trim($filter_sql) ? $filter_sql : ' AND';
                 $filter_sql .= ' seminare.start_time <= :beginn '
                         . 'AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = :semester_id) '
                         . 'AND (start_sem.beginn <= :ende AND '
@@ -229,7 +237,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
 
         $term = '%' . $term . '%';
         return parent::getEnrichedByQuery(
-                "SELECT mvv_lvgruppe.*, GROUP_CONCAT(DISTINCT mvv_modul.modul_id SEPARATOR ',') "
+            "SELECT mvv_lvgruppe.*, GROUP_CONCAT(DISTINCT mvv_modul.modul_id SEPARATOR ',') "
                 . 'AS `assigned_modul_ids` '
                 . 'FROM mvv_lvgruppe '
                 . 'INNER JOIN mvv_lvgruppe_modulteil USING(lvgruppe_id) '
@@ -248,7 +256,9 @@ class Lvgruppe extends ModuleManagementModelTreeItem
                 . 'OR mvv_modul_deskriptor.bezeichnung LIKE :search_term) '
                 . $filter_sql
                 . 'GROUP BY lvgruppe_id '
-                . 'ORDER BY `name`', [':search_term' => $term]);
+                . 'ORDER BY `name`',
+            [':search_term' => $term]
+        );
     }
 
     /**
@@ -289,11 +299,19 @@ class Lvgruppe extends ModuleManagementModelTreeItem
      * @param array $filter Array of filter.
      * @return array Array of found Fachbereiche.
      */
-    public static function getAllAssignedInstitutes($sortby = 'name',
-            $order = 'ASC', $filter = null, $row_count = null, $offset = null)
-    {
-        $sortby = Fachbereich::createSortStatement($sortby, $order, 'name',
-                ['count_module']);
+    public static function getAllAssignedInstitutes(
+        $sortby = 'name',
+        $order = 'ASC',
+        $filter = null,
+        $row_count = null,
+        $offset = null
+    ) {
+        $sortby = Fachbereich::createSortStatement(
+            $sortby,
+            $order,
+            'name',
+            ['count_module']
+        );
         return Fachbereich::getEnrichedByQuery('SELECT Institute.*, '
                 . 'Institute.Name as `name`, '
                 . 'Institute.Institut_id AS institut_id, '
@@ -304,8 +322,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
                 . 'INNER JOIN Institute '
                 . 'ON mvv_modul_inst.institut_id = Institute.Institut_id '
                 . Fachbereich::getFilterSql($filter, true)
-                . 'GROUP BY institut_id ORDER BY ' . $sortby
-                , [], $row_count, $offset);
+                . 'GROUP BY institut_id ORDER BY ' . $sortby, [], $row_count, $offset);
     }
 
     /**
@@ -397,7 +414,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
      */
     public function getParents($mode = null)
     {
-         return Modulteil::findByLvgruppe($this->getId());
+        return Modulteil::findByLvgruppe($this->getId());
     }
 
     /**
@@ -432,7 +449,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
                     ':semester_beginn' => $semester->beginn,
                     ':semester_ende' => $semester->ende
                 ]);
-            } else if ($only_visible === true) {
+            } elseif ($only_visible === true) {
                 $stmt = DBManager::get()->prepare($sql . ' AND sem.visible = 1 ');
                 $stmt->execute([
                     ':id' => $this->getId(),
@@ -450,7 +467,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
                         ':semester_beginn' => $semester->beginn,
                         ':semester_ende' => $semester->ende
                     ]);
-                } else if ($user_perm == 'admin') {
+                } elseif ($user_perm == 'admin') {
                     $perm_institute_ids = [];
                     foreach (Institute::getMyInstitutes($only_visible) as $perm_institute) {
                         $perm_institute_ids[] = $perm_institute['Institut_id'];
@@ -511,10 +528,12 @@ class Lvgruppe extends ModuleManagementModelTreeItem
             $sem_start_times[$semester->id] = $semester->beginn;
         } else {
             $sem_start_times = SimpleORMapCollection::createFromArray(
-                    Semester::getAll())->toGroupedArray('id', 'beginn');
+                Semester::getAll()
+            )->toGroupedArray('id', 'beginn');
             $sem_start_times = array_map(
-                    function ($sem) { return $sem['beginn']; }
-                    , $sem_start_times);
+                function ($sem) { return $sem['beginn']; },
+                $sem_start_times
+            );
         }
         $visible_sql = $only_visible ? ' AND visible = 1' : '';
         $courses = [];
@@ -533,7 +552,9 @@ class Lvgruppe extends ModuleManagementModelTreeItem
         $stmt->execute([$this->getId()]);
         $sem_ids = array_keys($sem_start_times);
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $course) {
-            if ($course['sem_number'] == 0) $course['sem_number'] = 1;
+            if ($course['sem_number'] == 0) {
+                $course['sem_number'] = 1;
+            }
             for ($i = $course['sem_number']; $i <= $course['sem_number_end']; $i++) {
                 $courses[$sem_ids[$i-1]][] = $course;
             }
@@ -606,8 +627,10 @@ class Lvgruppe extends ModuleManagementModelTreeItem
                     $existing = $this->findBySql('name = ' . DBManager::get()->quote($this->name));
                     if (sizeof($existing)) {
                         $ret['name'] = true;
-                        $messages[] = sprintf(_('Es existiert bereits eine Lehrveranstaltungsgruppe mit dem Namen "%s"!'),
-                                $this->name);
+                        $messages[] = sprintf(
+                            _('Es existiert bereits eine Lehrveranstaltungsgruppe mit dem Namen "%s"!'),
+                            $this->name
+                        );
                         $rejected = true;
                     }
                 }

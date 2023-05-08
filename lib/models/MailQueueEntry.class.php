@@ -82,27 +82,29 @@ class MailQueueEntry extends SimpleORMap
         //The status messages will be returned
         $status_messages = [];
 
-        self::findEachBySQL(function ($m) use (&$status_messages) {
-            // Reconstruct the StudipMail object
-            $mail = new StudipMail($m->mail);
-            $status_message = sprintf(
-                'sending message %1$s (sender: %2$s, %3$u recipient(s))...',
-                $m->message_id,
-                $mail->getSenderEmail(),
-                count($mail->getRecipients())
-            );
+        self::findEachBySQL(
+            function ($m) use (&$status_messages) {
+                // Reconstruct the StudipMail object
+                $mail = new StudipMail($m->mail);
+                $status_message = sprintf(
+                    'sending message %1$s (sender: %2$s, %3$u recipient(s))...',
+                    $m->message_id,
+                    $mail->getSenderEmail(),
+                    count($mail->getRecipients())
+                );
 
-            $was_sent = $m->send();
-            $status_message .= $was_sent ? 'DONE' : 'FAILURE';
+                $was_sent = $m->send();
+                $status_message .= $was_sent ? 'DONE' : 'FAILURE';
 
-            if ($m->tries > 0) {
-                // If sending the message has failed at least once
-                // we add the amount of tries to the status message.
-                $status_message .= "(t={$m->tries})";
-            }
+                if ($m->tries > 0) {
+                    // If sending the message has failed at least once
+                    // we add the amount of tries to the status message.
+                    $status_message .= "(t={$m->tries})";
+                }
 
-            $status_messages[] = $status_message;
-        }, "tries = 0 " .
+                $status_messages[] = $status_message;
+            },
+            "tries = 0 " .
            "OR (last_try > (UNIX_TIMESTAMP() - 60 * 60) AND tries < 25) ORDER BY mkdate".
            ($limit > 0 ? " LIMIT ". (int) $limit : "")
         );

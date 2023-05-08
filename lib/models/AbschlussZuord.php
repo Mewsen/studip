@@ -17,7 +17,6 @@
 
 class AbschlussZuord extends ModuleManagementModel
 {
-
     protected static function configure($config = [])
     {
         $config['db_table'] = 'mvv_abschl_zuord';

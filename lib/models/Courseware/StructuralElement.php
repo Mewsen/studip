@@ -867,7 +867,7 @@ SQL;
         return $element;
     }
 
-    private function copyImage(User $user, StructuralElement $parent) : ?string
+    private function copyImage(User $user, StructuralElement $parent): ?string
     {
         $file_ref_id = null;
 

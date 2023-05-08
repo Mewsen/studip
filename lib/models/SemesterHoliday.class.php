@@ -62,7 +62,7 @@ class SemesterHoliday extends SimpleORMap
         $ret = [];
         if ($timestamp_start < $timestamp_end) {
             foreach(self::getAll() as $holiday) {
-               if ($holiday->beginn >= $timestamp_start && $holiday->ende <= $timestamp_end) {
+                if ($holiday->beginn >= $timestamp_start && $holiday->ende <= $timestamp_end) {
                     $ret[] = $holiday;
                 }
             }
@@ -92,7 +92,7 @@ class SemesterHoliday extends SimpleORMap
     {
         if (!is_array(self::$holiday_cache) || $force_reload) {
             self::$holiday_cache = [];
-            foreach(self::findBySql('1 ORDER BY beginn') as $holiday){
+            foreach(self::findBySql('1 ORDER BY beginn') as $holiday) {
                 self::$holiday_cache[$holiday->getId()] = $holiday;
             }
         }

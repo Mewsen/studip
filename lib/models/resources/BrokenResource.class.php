@@ -57,8 +57,7 @@ class BrokenResource extends Resource
         $description = '',
         $internal_comment = '',
         $booking_type = 0
-    )
-    {
+    ) {
         return null;
     }
 
@@ -71,8 +70,7 @@ class BrokenResource extends Resource
         $booking_type = 0,
         $prepend_preparation_time = false,
         $notify_lecturers = false
-    )
-    {
+    ) {
         return null;
     }
 
@@ -98,8 +96,7 @@ class BrokenResource extends Resource
         DateTime $end,
         $comment = '',
         $preparation_time = 0
-    )
-    {
+    ) {
         return null;
     }
 
@@ -110,8 +107,7 @@ class BrokenResource extends Resource
         $comment = '',
         $properties = [],
         $preparation_time = 0
-    )
-    {
+    ) {
         return null;
     }
 
@@ -120,8 +116,7 @@ class BrokenResource extends Resource
         DateTime $begin,
         DateTime $end,
         $internal_comment = ''
-    )
-    {
+    ) {
         return null;
     }
 
@@ -159,8 +154,7 @@ class BrokenResource extends Resource
     public function setPropertyByDefinitionId(
         $property_definition_id = null,
         $state = null
-    )
-    {
+    ) {
         return false;
     }
 
@@ -183,8 +177,7 @@ class BrokenResource extends Resource
         DateTime $begin,
         DateTime $end,
         $excluded_booking_ids = []
-    )
-    {
+    ) {
         return false;
     }
 
@@ -192,8 +185,7 @@ class BrokenResource extends Resource
         DateTime $begin,
         DateTime $end,
         $excluded_reservation_ids = []
-    )
-    {
+    ) {
         return false;
     }
 
@@ -201,8 +193,7 @@ class BrokenResource extends Resource
         DateTime $begin,
         DateTime $end,
         $excluded_lock_ids = []
-    )
-    {
+    ) {
         return true;
     }
 
@@ -210,8 +201,7 @@ class BrokenResource extends Resource
         DateTime $begin,
         DateTime $end,
         $excluded_booking_ids = []
-    )
-    {
+    ) {
         return false;
     }
 

@@ -169,8 +169,7 @@ class Room extends Resource
         $limit = 0,
         $searchable_rooms = [],
         $properties = []
-    )
-    {
+    ) {
         //We have to check first if the user is permitted to search:
         //The user must have at least 'tutor' status in the
         //room and resource management:
@@ -543,8 +542,7 @@ class Room extends Resource
         $comment = '',
         $properties = [],
         $preparation_time = 0
-    )
-    {
+    ) {
         $request = parent::createRequest(
             $user,
             $date_range_id,

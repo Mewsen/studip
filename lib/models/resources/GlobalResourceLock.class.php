@@ -28,13 +28,13 @@
 class GlobalResourceLock extends SimpleORMap
 {
     protected static $defined_types = [];
-    
+
     public function __construct($id = null)
     {
         self::initDefinedTypes();
         parent::__construct($id);
     }
-    
+
     protected static function initDefinedTypes()
     {
         if (empty(self::$defined_types)) {
@@ -45,14 +45,14 @@ class GlobalResourceLock extends SimpleORMap
             ];
         }
     }
-    
+
     protected static function configure($config = [])
     {
         $config['db_table'] = 'global_resource_locks';
-        
+
         parent::configure($config);
     }
-    
+
     public static function isLocked($begin, $end)
     {
         return self::countBySql('begin < :end AND end > :begin', compact('begin', 'end')) > 0;
@@ -68,7 +68,7 @@ class GlobalResourceLock extends SimpleORMap
         self::initDefinedTypes();
         return self::$defined_types;
     }
-    
+
     /**
      * Returns a string representation of the type of this resource lock.
      *

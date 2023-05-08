@@ -21,7 +21,8 @@ class MvvOverlappingConflict extends SimpleORMap
      *
      * @param array  $config Configuration
      */
-    protected static function configure($config = array()) {
+    protected static function configure($config = array())
+    {
 
         $config['db_table'] = 'mvv_ovl_conflicts';
         $config['belongs_to']['selection'] = [
@@ -84,9 +85,11 @@ class MvvOverlappingConflict extends SimpleORMap
      */
     public static function deleteBySelection($selection_id)
     {
-        return self::deleteBySQL('INNER JOIN `mvv_ovl_selections`
+        return self::deleteBySQL(
+            'INNER JOIN `mvv_ovl_selections`
             ON `mvv_ovl_selections`.`id` = `mvv_ovl_conflicts`.`selection_id`
             WHERE `mvv_ovl_selections`.`selection_id` = ?',
-            [$selection_id]);
+            [$selection_id]
+        );
     }
 }

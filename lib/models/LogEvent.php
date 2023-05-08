@@ -196,12 +196,16 @@ class LogEvent extends SimpleORMap implements PrivacyObject
         if (!$course) {
             return $this->$field;
         }
-        return sprintf('<a href="%s">%s %s (%s)</a>',
-                       URLHelper::getLink('dispatch.php/course/details',
-                               ['sem_id' => $course->getId()]),
-                       htmlReady($course->VeranstaltungsNummer),
-                       htmlReady(my_substr($course->name, 0, 100)),
-                       htmlReady($course->start_semester->name));
+        return sprintf(
+            '<a href="%s">%s %s (%s)</a>',
+            URLHelper::getLink(
+                'dispatch.php/course/details',
+                ['sem_id' => $course->getId()]
+            ),
+            htmlReady($course->VeranstaltungsNummer),
+            htmlReady(my_substr($course->name, 0, 100)),
+            htmlReady($course->start_semester->name)
+        );
     }
 
     /**
@@ -219,10 +223,14 @@ class LogEvent extends SimpleORMap implements PrivacyObject
             return $this->$field;
         }
 
-        return sprintf('<a href="%s">%s</a>',
-                       URLHelper::getLink('dispatch.php/institute/overview',
-                               ['auswahl' => $institute->getId()]),
-                       htmlReady(my_substr($institute->name, 0, 100)));
+        return sprintf(
+            '<a href="%s">%s</a>',
+            URLHelper::getLink(
+                'dispatch.php/institute/overview',
+                ['auswahl' => $institute->getId()]
+            ),
+            htmlReady(my_substr($institute->name, 0, 100))
+        );
     }
 
     /**
@@ -249,7 +257,8 @@ class LogEvent extends SimpleORMap implements PrivacyObject
      * @param string $field The name of the table field.
      * @return string The singledate.
      */
-    protected function formatSingledate($field) {
+    protected function formatSingledate($field)
+    {
         $termin = new SingleDate($this->$field);
         return '<em>' . $termin->toString() . '</em>';
     }
@@ -261,7 +270,8 @@ class LogEvent extends SimpleORMap implements PrivacyObject
      * @param string $field The name of the table field.
      * @return string The name of plugin or the id.
      */
-    protected function formatPlugin($field) {
+    protected function formatPlugin($field)
+    {
         $plugin_manager = PluginManager::getInstance();
         $plugin_info = $plugin_manager->getPluginInfoById($this->$field);
 
@@ -275,7 +285,8 @@ class LogEvent extends SimpleORMap implements PrivacyObject
      * @param string $field The name of the table field.
      * @return string The name of semester or the id.
      */
-    protected function formatSemester($field) {
+    protected function formatSemester($field)
+    {
         $all_semester = Semester::findAllVisible(false);
         foreach ($all_semester as $val) {
             if (!empty($val['beginn']) && ($val['beginn'] == $this->$field)) {

@@ -443,7 +443,7 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
     /**
      * @return string A string representation of the consultation block instance.
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return sprintf(
             _('Terminblock am %1$s, %2$s von %3$s bis %4$s Uhr'),

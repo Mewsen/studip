@@ -16,7 +16,6 @@
 
 class MvvCourse extends ModuleManagementModelTreeItem
 {
-
     protected static function configure($config = [])
     {
         $config['db_table'] = 'seminare';
@@ -66,6 +65,6 @@ class MvvCourse extends ModuleManagementModelTreeItem
      */
     public function getParents($mode = null)
     {
-       return Lvgruppe::findBySeminar($this->getId());
+        return Lvgruppe::findBySeminar($this->getId());
     }
 }

@@ -22,12 +22,12 @@ class SimpleORMapCollection extends SimpleCollection
     /**
      * @var int Exception error code denoting a wrong type of objects.
      */
-    const WRONG_OBJECT_TYPE = 1;
+    public const WRONG_OBJECT_TYPE = 1;
 
     /**
      * @var int Exception error code denoting that an object of this `id` already exists.
      */
-    const OBJECT_EXISTS = 2;
+    public const OBJECT_EXISTS = 2;
 
     /**
      * the record object this collection belongs to

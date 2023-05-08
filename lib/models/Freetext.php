@@ -9,7 +9,7 @@ class Freetext extends QuestionnaireQuestion implements QuestionType
      * @param bool $active: true if Icon should be clickable, false for black info-icon.
      * @return Icon : guestbook-icon.
      */
-    public static function getIcon(bool $active = false) : Icon
+    public static function getIcon(bool $active = false): Icon
     {
         return Icon::create(
             static::getIconShape(),
@@ -35,7 +35,7 @@ class Freetext extends QuestionnaireQuestion implements QuestionType
         return _('Freitextfrage');
     }
 
-    static public function getEditingComponent()
+    public static function getEditingComponent()
     {
         return ['freetext-edit', ''];
     }

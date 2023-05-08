@@ -40,10 +40,10 @@ class StatusgruppeUser extends SimpleORMap implements PrivacyObject
 
         $config['has_many']['datafields'] = [
             'class_name' => DatafieldEntryModel::class,
-            'foreign_key' => function($group_member) {
+            'foreign_key' => function ($group_member) {
                 return [$group_member];
             },
-            'assoc_foreign_key' => function($model, $params) {
+            'assoc_foreign_key' => function ($model, $params) {
                 $model->setValue('range_id', $params[0]->user_id);
                 $model->setValue('sec_range_id', $params[0]->statusgruppe_id);
             },

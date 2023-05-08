@@ -1,4 +1,5 @@
 <?php
+
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
 //
@@ -85,9 +86,11 @@ class HelpContent extends SimpleORMap
         $statement = DBManager::get()->prepare($query);
         $statement->execute([$route, $language]);
         $ret = $statement->fetchGrouped(PDO::FETCH_ASSOC);
-        foreach ($ret as $index => $data)
-            if (! match_route($data['route'], $route))
+        foreach ($ret as $index => $data) {
+            if (! match_route($data['route'], $route)) {
                 unset($ret[$index]);
+            }
+        }
         return $ret;
     }
 
@@ -172,8 +175,8 @@ class HelpContent extends SimpleORMap
     public static function GetContentObjects($content_result)
     {
         $objects = [];
-        if (is_array($content_result)){
-            foreach($content_result as $id => $result){
+        if (is_array($content_result)) {
+            foreach($content_result as $id => $result) {
                 $objects[$id] = new HelpContent();
                 $objects[$id]->setData($result, true);
                 $objects[$id]->setNew(false);

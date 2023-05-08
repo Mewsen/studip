@@ -14,7 +14,6 @@
 
 class CourseCancelledEvent extends CourseEvent
 {
-
     protected static function configure($config = [])
     {
         $config['alias_fields']['ex_description'] = 'content';

@@ -2,7 +2,8 @@
 
 namespace Courseware;
 
-use \User, \Course;
+use User;
+use Course;
 
 /**
  * Courseware's certificates.

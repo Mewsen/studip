@@ -81,12 +81,20 @@ class MvvContact extends ModuleManagementModel
      * @param int $offset The first object to return in a result set.
      * @return object A SimpleORMapCollection of Dokument objects.
      */
-    public static function getAllEnriched($sortby = 'chdate', $order = 'DESC',
-            $row_count = null, $offset = null, $filter = null)
-    {
+    public static function getAllEnriched(
+        $sortby = 'chdate',
+        $order = 'DESC',
+        $row_count = null,
+        $offset = null,
+        $filter = null
+    ) {
 
-        $sortby = self::createSortStatement($sortby, $order, 'name',
-                ['count_zuordnungen']);
+        $sortby = self::createSortStatement(
+            $sortby,
+            $order,
+            'name',
+            ['count_zuordnungen']
+        );
 
         $ids = self::getIdsFiltered($filter);
         return parent::getEnrichedByQuery("
@@ -326,14 +334,23 @@ class MvvContact extends ModuleManagementModel
      * @param array $filter Array of filter.
      * @return array Array of found Fachbereiche.
      */
-    public static function getAllAssignedInstitutes($sortby = 'name',
-            $order = 'ASC', $filter = null, $row_count = null, $offset = null)
-    {
+    public static function getAllAssignedInstitutes(
+        $sortby = 'name',
+        $order = 'ASC',
+        $filter = null,
+        $row_count = null,
+        $offset = null
+    ) {
         $ids = self::getIdsFiltered($filter);
-        $sortby = Fachbereich::createSortStatement($sortby, $order, 'name',
-                ['count_objects']);
+        $sortby = Fachbereich::createSortStatement(
+            $sortby,
+            $order,
+            'name',
+            ['count_objects']
+        );
 
-        return Fachbereich::getEnrichedByQuery("
+        return Fachbereich::getEnrichedByQuery(
+            "
             SELECT *, `Institut_id` AS `institut_id`, `Name` AS `name`, COUNT(`object_id`) AS `count_objects`
             FROM
                 (SELECT Institute.*,
@@ -358,7 +375,9 @@ class MvvContact extends ModuleManagementModel
                     AND `mvv_contacts_ranges`.`category` IN (:categories)
                     AND `mvv_contacts_ranges`.`range_id` IN (:ranges)) tab1
             GROUP BY institut_id ORDER BY " . $sortby,
-                $ids, $row_count, $offset
+            $ids,
+            $row_count,
+            $offset
         );
     }
 
@@ -373,7 +392,7 @@ class MvvContact extends ModuleManagementModel
      */
     public function addRange($range_id, $range_type, $contact_type, $category)
     {
-        if (!MvvContactRange::findOneBySQL("contact_id =? AND range_id =? AND category=?",[$this->contact_id, $range_id, $category])){
+        if (!MvvContactRange::findOneBySQL("contact_id =? AND range_id =? AND category=?", [$this->contact_id, $range_id, $category])) {
             $mvv_cr = new MvvContactRange();
             $mvv_cr->contact_id = $this->contact_id;
             $mvv_cr->range_id = $range_id;

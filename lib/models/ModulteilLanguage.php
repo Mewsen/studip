@@ -42,7 +42,8 @@ class ModulteilLanguage extends ModuleManagementModel
     public static function findByModulteil($modulteil_id)
     {
         $languages = [];
-        $modulteil_languages = parent::getEnrichedByQuery('
+        $modulteil_languages = parent::getEnrichedByQuery(
+            '
                 SELECT *
                 FROM mvv_modulteil_language
                 WHERE modulteil_id = ?

@@ -158,18 +158,20 @@ class Message extends SimpleORMap implements PrivacyObject
         }
         $db = DBManager::get();
         return new SimpleCollection(
-            $db->fetchAll($sql,
-                             $params,
-                             function ($data) {
-                                 $user_id = $data['user_id'];
-                                 unset($data['user_id']);
-                                 $user = User::build($data);
-                                 $ret = $user->toArray('username vorname nachname');
-                                 $ret['fullname'] = $user->getFullname();
-                                 $ret['user_id'] = $user_id;
-                                 return $ret;
-                             })
-            );
+            $db->fetchAll(
+                $sql,
+                $params,
+                function ($data) {
+                    $user_id = $data['user_id'];
+                    unset($data['user_id']);
+                    $user = User::build($data);
+                    $ret = $user->toArray('username vorname nachname');
+                    $ret['fullname'] = $user->getFullname();
+                    $ret['user_id'] = $user_id;
+                    return $ret;
+                }
+            )
+        );
     }
 
     public function getNumRecipients()
@@ -233,14 +235,16 @@ class Message extends SimpleORMap implements PrivacyObject
             $sender = '____%system%____';
         }
         $messaging = new \messaging();
-        $result = $messaging->insert_message($message,
-                                             $recipients,
-                                             $sender,
-                                             time(),
-                                             $message_id = md5(uniqid('message', true)),
-                                             false, // deleted
-                                             '', // force email
-                                             $subject);
+        $result = $messaging->insert_message(
+            $message,
+            $recipients,
+            $sender,
+            time(),
+            $message_id = md5(uniqid('message', true)),
+            false, // deleted
+            '', // force email
+            $subject
+        );
         return $result ? self::find($message_id) : null;
     }
 

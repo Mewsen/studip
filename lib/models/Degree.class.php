@@ -44,9 +44,11 @@ class Degree extends SimpleORMap
         $sql = 'SELECT COUNT(DISTINCT `user_id`) FROM `user_studiengang`';
         $parameters = [':degree_id' => $this->id];
         if (!$GLOBALS['perm']->have_perm('root')) {
-            $inst_ids = SimpleCollection::createFromArray(Institute::findBySQL('Institut_id IN (SELECT institut_id FROM roles_user WHERE userid = :user_id)
+            $inst_ids = SimpleCollection::createFromArray(Institute::findBySQL(
+                'Institut_id IN (SELECT institut_id FROM roles_user WHERE userid = :user_id)
                 OR fakultaets_id IN (SELECT institut_id FROM roles_user WHERE userid = :user_id)',
-                [':user_id' => $GLOBALS['user']->user_id]))->pluck('institut_id');
+                [':user_id' => $GLOBALS['user']->user_id]
+            ))->pluck('institut_id');
 
             $sql .=  'JOIN `mvv_fach_inst` as `fach_inst` ON (`user_studiengang`.`fach_id` = `fach_inst`.`fach_id`)
                 WHERE `user_studiengang`.`abschluss_id` = :degree_id AND `fach_inst`.`institut_id` IN (:inst_ids)';

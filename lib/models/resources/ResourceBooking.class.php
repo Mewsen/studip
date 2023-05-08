@@ -185,8 +185,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
         $time_ranges = [],
         $booking_types = [],
         $excluded_booking_ids = []
-    )
-    {
+    ) {
         if (!is_array($time_ranges)) {
             throw new InvalidArgumentException(
                 _('Es wurde keine Liste mit Zeiträumen angegeben!')
@@ -332,8 +331,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
         $time_ranges = [],
         $booking_types = [],
         $excluded_booking_ids = []
-    )
-    {
+    ) {
         //Build the SQL query and the parameter array.
 
         $sql_data = self::buildResourceAndTimeRangesSqlQuery(
@@ -362,8 +360,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
         $time_ranges = [],
         $booking_types = [],
         $excluded_booking_ids = []
-    )
-    {
+    ) {
         //Build the SQL query and the parameter array.
 
         $sql_data = self::buildResourceAndTimeRangesSqlQuery(
@@ -392,8 +389,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
         $time_ranges = [],
         $booking_types = [],
         $excluded_booking_ids = []
-    )
-    {
+    ) {
         //Build the SQL query and the parameter array.
         $sql_data = self::buildResourceAndTimeRangesSqlQuery(
             $resource,
@@ -491,7 +487,9 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
         //(the moment this booking is saved).
         $derived_resource = $this->resource->getDerivedClassInstance();
         $user_has_booking_rights = $derived_resource->userHasBookingRights(
-            $this->booking_user, $this->begin, $this->end
+            $this->booking_user,
+            $this->begin,
+            $this->end
         );
         if (!$user_has_booking_rights) {
             throw new ResourcePermissionException(
@@ -1766,8 +1764,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
         $range_type = null,
         $begin = null,
         $end = null
-    )
-    {
+    ) {
         $sql = "booking_id = :booking_id AND takes_place = 1 ";
         $sql_array = [
             'booking_id' => $this->id

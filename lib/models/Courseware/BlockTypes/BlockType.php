@@ -116,9 +116,9 @@ abstract class BlockType
         ];
 
         // try {
-            foreach (\PluginEngine::getPlugins(CoursewarePlugin::class) as $plugin) {
-                $blockTypes = $plugin->registerBlockTypes($blockTypes);
-            }
+        foreach (\PluginEngine::getPlugins(CoursewarePlugin::class) as $plugin) {
+            $blockTypes = $plugin->registerBlockTypes($blockTypes);
+        }
         // } catch (\Exception $e) {
         //     // there is nothing we can do here other than absorbing exceptions
         // }
