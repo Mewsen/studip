@@ -1,11 +1,21 @@
-<? use Studip\Button, Studip\LinkButton; ?>
+<?php
+/**
+ * @var CronjobTask[] $tasks
+ * @var CronjobSchedule[] $schedules
+ * @var Admin_Cronjobs_SchedulesController $controller
+ * @var int $total
+ * @var array $filter
+ */
+
+use Studip\Button, Studip\LinkButton;
+?>
 
 <form action="<?= $controller->filter() ?>" method="post" class="default cronjob-filters">
     <fieldset>
         <legend>
             <?= _('Darstellung einschränken') ?>
-            <? if ($pagination->getTotal() != $total): ?>
-                <?= sprintf(_('Passend: %u von %u Cronjobs'), $pagination->getTotal(), $total) ?>
+            <? if (count($schedules) != $total): ?>
+                <?= sprintf(_('Passend: %u von %u Cronjobs'), count($schedules), $total) ?>
             <? endif; ?>
         </legend>
         <label class="col-2">
@@ -56,7 +66,7 @@
 </form>
 
 
-<form class="cronjobs" action="<?= $controller->bulk($pagination->getCurrentPage()) ?>" method="post">
+<form class="cronjobs" action="<?= $controller->bulk() ?>" method="post">
     <?= CSRFProtection::tokenTag() ?>
 
     <table class="default cronjobs sortable-table" data-sortlist="[[1, 0]]">
@@ -103,12 +113,12 @@
                     <? if (!$schedule->task->active): ?>
                         <?= Icon::create('checkbox-unchecked', Icon::ROLE_INACTIVE)->asImg(['title' => _('Cronjob kann nicht aktiviert werden, da die zugehörige ' . 'Aufgabe deaktiviert ist.')]) ?>
                     <? elseif ($schedule->active): ?>
-                        <a href="<?= $controller->deactivate($schedule, $pagination->getCurrentPage()) ?>"
+                        <a href="<?= $controller->deactivate($schedule) ?>"
                            data-behaviour="ajax-toggle">
                             <?= Icon::create('checkbox-checked')->asImg(['title' => _('Cronjob deaktivieren')]) ?>
                         </a>
                     <? else: ?>
-                        <a href="<?= $controller->activate($schedule, $pagination->getCurrentPage()) ?>"
+                        <a href="<?= $controller->activate($schedule) ?>"
                            data-behaviour="ajax-toggle">
                             <?= Icon::create('checkbox-unchecked')->asImg(['title' => _('Cronjob aktivieren')]) ?>
                         </a>
@@ -126,7 +136,7 @@
                     <a data-dialog href="<?= $controller->display($schedule) ?>">
                         <?= Icon::create('admin')->asImg(['title' => _('Cronjob anzeigen')]) ?>
                     </a>
-                    <a href="<?= $controller->edit($schedule, $pagination->getCurrentPage()) ?>">
+                    <a href="<?= $controller->edit($schedule) ?>">
                         <?= Icon::create('edit')->asImg(['title' => _('Cronjob bearbeiten')]) ?>
                     </a>
                     <a href="<?= $controller->link_for('admin/cronjobs/logs/schedule', $schedule) ?>">
@@ -134,7 +144,7 @@
                     </a>
                     <?= Icon::create('trash')->asInput([
                         'data-confirm' => _('Wollen Sie den ausgewählten Cronjob wirklich löschen?'),
-                        'formaction'   => $controller->cancelURL($schedule, $pagination->getCurrentPage()),
+                        'formaction'   => $controller->cancelURL($schedule),
                     ]) ?>
                 </td>
             </tr>
@@ -150,12 +160,6 @@
                     <option value="cancel"><?= _('Löschen') ?></option>
                 </select>
                 <?= Button::createAccept(_('Ausführen'), 'bulk') ?>
-
-                <section style="float: right">
-                    <?= $pagination->asLinks(function ($page) use ($controller) {
-                        return $controller->index($page);
-                    }) ?>
-                </section>
             </td>
         </tr>
         </tfoot>
