@@ -68,10 +68,10 @@ export default {
         }
     },
     methods: {
-        async postFeedback() {
-            this.createFeedback({ blockId: this.block.id, feedback: this.feedbackText });
-            this.feedbackText = '';
-        },
+        ...mapActions({
+            createFeedback: 'courseware-block-feedback/create',
+            loadRelatedFeedback: 'courseware-block-feedback/loadRelated',
+        }),
         buildPayload(feedback) {
             const { id, type } = feedback;
             const user = this.getRelatedUser({ parent: { id, type }, relationship: 'user' });
@@ -90,7 +90,7 @@ export default {
                 type: this.block.type,
                 id: this.block.id,
             };
-            await this.$store.dispatch('courseware-block-feedback/loadRelated', {
+            await this.loadRelatedFeedback( {
                 parent,
                 relationship: 'feedback',
                 options: {
@@ -98,7 +98,7 @@ export default {
                 },
             });
         },
-        async createFeedback() {
+        async postFeedback() {
             const data = {
                 attributes: {
                     feedback: this.feedbackText,
@@ -112,7 +112,8 @@ export default {
                     },
                 },
             };
-            await this.$store.dispatch('courseware-block-feedback/create', data, { root: true });
+            await this.createFeedback(data, { root: true });
+            this.feedbackText = '';
             this.loadFeedback();
         }
     },
