@@ -148,10 +148,9 @@ export default {
             userId: 'userId',
             userById: 'users/byId',
             viewMode: 'viewMode',
-            currentElementisLink: 'currentElementisLink'
         }),
         showEditMode() {
-            let show = (this.viewMode === 'edit' || this.blockedByThisUser) && !this.currentElementisLink;
+            let show = this.viewMode === 'edit' || this.blockedByThisUser;
             if (!show) {
                 this.displayFeature(false);
             }

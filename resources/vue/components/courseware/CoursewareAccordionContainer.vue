@@ -10,12 +10,6 @@
         @sortBlocks="enableSort"
     >
         <template v-slot:containerContent>
-            <template v-if="showEditMode && canEdit && !currentElementisLink">
-                <span aria-live="assertive" class="assistive-text">{{ assistiveLive }}</span>
-                <span id="operation" class="assistive-text">
-                    {{$gettext('Drücken Sie die Leertaste, um neu anzuordnen.')}}
-                </span>
-            </template>
             <courseware-collapsible-box
                 v-for="(section, index) in currentSections"
                 :key="index"
@@ -23,7 +17,7 @@
                 :icon="section.icon"
                 :open="index === 0"
             >
-                <ul v-if="!showEditMode || currentElementisLink" class="cw-container-accordion-block-list">
+                <ul v-if="!sortMode" class="cw-container-accordion-block-list">
                     <li v-for="block in section.blocks" :key="block.id" class="cw-block-item">
                         <component
                             :is="component(block)"
@@ -36,51 +30,24 @@
                         <courseware-block-adder-area :container="container" :section="index" @updateContainerContent="updateContent"/>
                     </li>
                 </ul>
-                <template v-else>
-                    <template v-if="!processing">
-                        <draggable
-                            v-if="canEdit"
-                            class="cw-container-list-block-list cw-container-list-sort-mode"
-                            :class="[section.blocks.length === 0 ? 'cw-container-list-sort-mode-empty' : '']"
-                            tag="ol"
-                            role="listbox"
-                            v-model="section.blocks"
-                            v-bind="dragOptions"
-                            handle=".cw-sortable-handle"
-                            group="blocks"
-                            @start="isDragging = true"
-                            @end="dropBlock"
-                            :containerId="container.id"
-                            :sectionId="index"
-                        >
-                            <li v-for="block in section.blocks" :key="block.id" class="cw-block-item cw-block-item-sortable">
-                                <span
-                                    :class="{ 'cw-sortable-handle-dragging': isDragging }"
-                                    class="cw-sortable-handle"
-                                    tabindex="0"
-                                    role="option"
-                                    aria-describedby="operation"
-                                    :ref="'sortableHandle' + block.id"
-                                    @keydown="keyHandler($event, block.id, index)"
-                                ></span>
-                                <component
-                                    :is="component(block)"
-                                    :block="block"
-                                    :canEdit="canEdit"
-                                    :isTeacher="isTeacher"
-                                    :class="{ 'cw-block-item-selected': keyboardSelected === block.id}"
-                                    :blockId="block.id"
-                                />
-                            </li>
-                        </draggable>
-                        <template v-if="canAddElements">
-                            <courseware-block-adder-area :container="container" :section="index" @updateContainerContent="updateContent"/>
-                        </template>
-                    </template>
-                    <div v-else class="progress-wrapper">
-                        <studip-progress-indicator :description="$gettext('Vorgang wird bearbeitet...')" />
-                    </div>
-                </template>
+                <draggable
+                    v-if="sortMode && canEdit"
+                    class="cw-container-list-block-list cw-container-list-sort-mode"
+                    :class="[section.blocks.length === 0 ? 'cw-container-list-sort-mode-empty' : '']"
+                    tag="ul"
+                    v-model="section.blocks"
+                    v-bind="dragOptions"
+                    handle=".cw-sortable-handle"
+                    @start="isDragging = true"
+                    @end="isDragging = false"
+                >
+                    <transition-group type="transition" name="flip-blocks" tag="div">
+                        <li v-for="block in section.blocks" :key="block.id" class="cw-block-item cw-block-item-sortable">
+                            <component :is="component(block)" :block="block" :canEdit="canEdit" :isTeacher="isTeacher" />
+                        </li>
+                    </transition-group>
+
+                </draggable>
             </courseware-collapsible-box>
             <div v-if="sortMode && canEdit">
                 <button class="button accept" @click="storeSort"><translate>Sortierung speichern</translate></button>
@@ -165,8 +132,6 @@ export default {
     computed: {
         ...mapGetters({
             blockById: 'courseware-blocks/byId',
-            viewMode: 'viewMode',
-            currentElementisLink: 'currentElementisLink'
         }),
         blocks() {
             if (!this.container) {

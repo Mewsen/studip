@@ -99,11 +99,9 @@ export default {
         ...mapGetters({
             userId: 'userId',
             userById: 'users/byId',
-            viewMode: 'viewMode',
-            currentElementisLink: 'currentElementisLink'
         }),
         showEditMode() {
-            return this.viewMode === 'edit' && !this.currentElementisLink;
+            return this.$store.getters.viewMode === 'edit';
         },
         colSpan() {
             return this.container.attributes.payload.colspan ? this.container.attributes.payload.colspan : 'full';

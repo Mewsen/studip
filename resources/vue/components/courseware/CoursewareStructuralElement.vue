@@ -123,12 +123,11 @@
                             :structuralElement="structuralElement"
                             :canEdit="canEdit"
                         />
-                        <div v-if="editView" class="cw-companion-box-wrapper">
-                            <courseware-companion-box
-                                :msgCompanion="$gettextInterpolate($gettext('Dieser Inhalt ist aus den persönlichen Lernmaterialien von %{ ownerName } verlinkt und kann nur dort bearbeitet werden.'), { ownerName: ownerName })"
-                                mood="pointing"
-                            />
-                        </div>
+                        <courseware-companion-box
+                            v-if="editView"
+                            :msgCompanion="$gettextInterpolate($gettext('Dieser Inhalt ist aus den persönlichen Lerninhalten von %{ ownerName } verlinkt und kann nur dort bearbeitet werden.'), { ownerName: ownerName })"
+                            mood="pointing"
+                        />
                         <component
                             v-for="container in linkedContainers"
                             :key="container.id"
@@ -140,22 +139,17 @@
                             class="cw-container-item"
                         />
                     </div>
-                    <div v-if="canVisit && canEdit && editView && !isLink" class="cw-container-wrapper cw-container-wrapper-edit">
-                        <template v-if="!processing">
-                            <span aria-live="assertive" class="assistive-text">{{ assistiveLive }}</span>
-                            <span id="operation" class="assistive-text">
-                                {{$gettext('Drücken Sie die Leertaste, um neu anzuordnen.')}}
-                            </span>
-                            <draggable
-                                class="cw-structural-element-list"
-                                tag="ol"
-                                role="listbox"
-                                v-model="containerList"
-                                v-bind="dragOptions"
-                                handle=".cw-sortable-handle"
-                                @start="isDragging = true"
-                                @end="dropContainer"
-                            >
+                    <div v-if="canVisit && canEdit && sortMode" class="cw-container-wrapper-sort-mode">
+                        <draggable
+                            class="cw-structural-element-list-sort-mode"
+                            tag="ul"
+                            v-model="containerList"
+                            v-bind="dragOptions"
+                            handle=".cw-sortable-handle"
+                            @start="isDragging = true"
+                            @end="isDragging = false"
+                        >
+                            <transition-group type="transition" name="flip-containers">
                                 <li
                                     v-for="container in containerList"
                                     :key="container.id"
@@ -772,9 +766,6 @@ export default {
             blockerId: 'currentElementBlockerId',
             blockedByThisUser: 'currentElementBlockedByThisUser',
             blockedByAnotherUser: 'currentElementBlockedByAnotherUser',
-            isLink: 'currentElementisLink',
-
-            templates: 'courseware-templates/all',
         }),
 
         currentId() {
@@ -1259,6 +1250,14 @@ export default {
             return (
                 (!this.isRoot && this.canEdit) || !this.canEdit || (!this.noContainers && this.isRoot && this.canEdit)
             );
+        },
+
+        isLink() {
+            if (this.structuralElement) {
+                return this.structuralElement.attributes['is-link'] === 1;
+            }
+
+            return false;
         },
 
         linkedElement() {

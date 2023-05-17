@@ -114,7 +114,6 @@ export default {
             userById: 'users/byId',
             userId: 'userId',
             selectedToolbarItem: 'selectedToolbarItem',
-            currentElementisLink: 'currentElementisLink',
         }),
         showEditMode() {
             return this.viewMode === 'edit';
@@ -123,7 +122,7 @@ export default {
             if (this.disableAdder) {
                 return false;
             } else {
-                return !this.consumeMode && this.showEditMode && this.canEdit && !this.currentElementisLink;
+                return !this.consumeMode && this.showEditMode && this.canEdit;
             }
         },
         displaySettings() {
