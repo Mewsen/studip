@@ -67,14 +67,14 @@ class Institute extends SimpleORMap implements Range
         $config['has_many']['datafields'] = [
             'class_name' => DatafieldEntryModel::class,
             'assoc_foreign_key' =>
-                function($model,$params) {
+                function ($model, $params) {
                     $model->setValue('range_id', $params[0]->id);
                 },
             'assoc_func' => 'findByModel',
             'on_delete' => 'delete',
             'on_store' => 'store',
             'foreign_key' =>
-                function($i) {
+                function ($i) {
                     return [$i];
                 }
         ];
@@ -174,7 +174,7 @@ class Institute extends SimpleORMap implements Range
      *
      * @return array
      */
-    public static function getMyInstitutes($user_id = NULL)
+    public static function getMyInstitutes($user_id = null)
     {
         global $perm, $user;
         if (!$user_id) {
@@ -188,7 +188,7 @@ class Institute extends SimpleORMap implements Range
                 "WHERE (user_id = ".$db->quote($user_id)." " .
                     "AND (inst_perms = 'dozent' OR inst_perms = 'tutor')) " .
                 "ORDER BY Institute.Name ASC")->fetchAll(PDO::FETCH_ASSOC);
-        } else if (!$perm->have_perm("root", $user_id)) {
+        } elseif (!$perm->have_perm("root", $user_id)) {
             $result = $db->query("SELECT user_inst.Institut_id, Institute.Name, Institute.fakultaets_id, IF(user_inst.Institut_id=Institute.fakultaets_id,1,0) AS is_fak, user_inst.inst_perms " .
                 "FROM user_inst " .
                     "LEFT JOIN Institute USING (institut_id) " .
@@ -229,7 +229,7 @@ class Institute extends SimpleORMap implements Range
     {
         $template['type-name'] = '%2$s: %1$s';
         if ($format === 'default' || !isset($template[$format])) {
-           $format = 'type-name';
+            $format = 'type-name';
         }
         $type = $GLOBALS['INST_TYPE'][$this['type']]['name'];
         if (!$type) {
@@ -320,11 +320,11 @@ class Institute extends SimpleORMap implements Range
      */
     public function setDefaultTools()
     {
-       $this->tools = [];
-       foreach (array_values($this->getSemClass()->getActivatedModuleObjects()) as $module) {
-           PluginManager::getInstance()->setPluginActivated($module->getPluginId(), $this->id, true);
-           $this->tools[] = ToolActivation::find([$this->id, $module->getPluginId()]);
-       }
+        $this->tools = [];
+        foreach (array_values($this->getSemClass()->getActivatedModuleObjects()) as $module) {
+            PluginManager::getInstance()->setPluginActivated($module->getPluginId(), $this->id, true);
+            $this->tools[] = ToolActivation::find([$this->id, $module->getPluginId()]);
+        }
     }
 
     /**
@@ -350,7 +350,7 @@ class Institute extends SimpleORMap implements Range
     /**
      * @see Range::__toString()
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->getFullName();
     }

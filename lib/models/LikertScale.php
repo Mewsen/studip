@@ -1,9 +1,10 @@
 <?php
+
 require_once 'lib/classes/QuestionType.interface.php';
 
 class LikertScale extends QuestionnaireQuestion implements QuestionType
 {
-    public static function getIcon(bool $active = false) : Icon
+    public static function getIcon(bool $active = false): Icon
     {
         return Icon::create(static::getIconShape(), $active ? 'clickable' : 'info');
     }
@@ -22,7 +23,7 @@ class LikertScale extends QuestionnaireQuestion implements QuestionType
         return _('Likert-Skala');
     }
 
-    static public function getEditingComponent()
+    public static function getEditingComponent()
     {
         return ['likert-edit', ''];
     }

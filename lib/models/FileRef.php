@@ -124,7 +124,8 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
      * If you set download URL to null, the normal sendfile.php will be set as default download URL.
      * @param $url : string as URL or null to set URL to sendfile.php-URL
      */
-    public function setDownloadURL($field, $url) {
+    public function setDownloadURL($field, $url)
+    {
         $this->download_url = $url;
     }
 
@@ -167,7 +168,7 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
                 $link[] = 'sendfile.php';
                 if ($dltype == 'zip') {
                     $params['zip'] = 1;
-                } elseif (in_array($dltype,  ['force_download', 'force'])) {
+                } elseif (in_array($dltype, ['force_download', 'force'])) {
                     $params['force_download'] = 1;
                 }
                 $params['type'] = $type;
@@ -193,7 +194,7 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
     /**
      * Returns true if the file is accessible
      */
-    public function getAccessibility() : bool
+    public function getAccessibility(): bool
     {
         return (bool) $this->file->is_accessible;
     }
@@ -207,7 +208,7 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
     {
         $this->downloads += 1;
         if (!$this->isNew()) {
-            $where_query = join(' AND ' , $this->getWhereQuery());
+            $where_query = join(' AND ', $this->getWhereQuery());
             $query = "UPDATE `{$this->db_table()}`
                       SET `downloads` = `downloads` + 1
                       WHERE {$where_query}";

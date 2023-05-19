@@ -559,7 +559,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         ];
 
         if ($format === 'default' || !isset($template[$format])) {
-           $format = Config::get()->IMPORTANT_SEMNUMBER ? 'type-number-name' : 'type-name';
+            $format = Config::get()->IMPORTANT_SEMNUMBER ? 'type-number-name' : 'type-name';
         }
         $sem_type = $this->getSemType();
         $data[0] = $this->name;
@@ -596,7 +596,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             $dates = $this->ex_dates->findBy('content', '', '<>');
             $dates->merge($this->dates);
         }
-        $dates->uasort(function($a, $b) {
+        $dates->uasort(function ($a, $b) {
             return $a->date - $b->date
                 ?: strnatcasecmp($a->getRoomName(), $b->getRoomName());
         });
@@ -788,11 +788,11 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
 
         $log = [];
         if ($this->isFieldDirty('admission_prelim')) {
-            $log[] = $this->admission_prelim ?  _('Neuer Anmeldemodus: Vorläufiger Eintrag') : _('Neuer Anmeldemodus: Direkter Eintrag');
+            $log[] = $this->admission_prelim ? _('Neuer Anmeldemodus: Vorläufiger Eintrag') : _('Neuer Anmeldemodus: Direkter Eintrag');
         }
 
         if ($this->isFieldDirty('admission_binding')) {
-            $log[] = $this->admission_binding? _('Anmeldung verbindlich') : _('Anmeldung unverbindlich');
+            $log[] = $this->admission_binding ? _('Anmeldung verbindlich') : _('Anmeldung unverbindlich');
         }
 
         if ($this->isFieldDirty('admission_turnout')) {
@@ -938,7 +938,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
     }
 
 
-    public function getLink() : StudipLink
+    public function getLink(): StudipLink
     {
         return new StudipLink($this->getItemURL(), $this->name, Icon::create('seminar'));
     }
@@ -1034,7 +1034,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
     /**
      * @see Range::__toString()
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->getFullName();
     }

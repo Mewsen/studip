@@ -26,7 +26,7 @@
 
 class ConfigValue extends SimpleORMap
 {
-    const RANGE_STUDIP = 'studip';
+    public const RANGE_STUDIP = 'studip';
 
     /**
      * Configures this model.

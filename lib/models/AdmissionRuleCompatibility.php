@@ -21,7 +21,6 @@
  */
 class AdmissionRuleCompatibility extends SimpleORMap
 {
-
     protected static function configure($config = [])
     {
         $config['db_table'] = 'admissionrule_compat';

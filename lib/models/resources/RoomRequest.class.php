@@ -60,11 +60,11 @@ class RoomRequest extends ResourceRequest
         if ($this->termin_id) {
             $query           = sprintf("SELECT id FROM resource_bookings WHERE range_id = %s ", $db->quote($this->termin_id));
             $existing_assign = $db->query($query)->fetchColumn();
-            //metadate request
+        //metadate request
         } elseif ($this->metadate_id) {
             $query = sprintf("SELECT count(termin_id)=count(resource_bookings.id) FROM termine LEFT JOIN resource_bookings ON(termin_id=resource_bookings.range_id)
                     WHERE metadate_id=%s", $db->quote($this->metadate_id));
-            //seminar request
+        //seminar request
         } else {
             $query = sprintf("SELECT count(termin_id)=count(resource_bookings.id) FROM termine LEFT JOIN resource_bookings ON(termin_id=resource_bookings.range_id)
                     WHERE range_id='%s' AND date_typ IN" . getPresenceTypeClause(), $this->course_id);

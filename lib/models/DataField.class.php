@@ -227,8 +227,7 @@ class DataField extends SimpleORMap implements PrivacyObject
         // user may see his own data if this either no system field
         // or the user may edit the field
         if ($watcher && $user && $user === $watcher &&
-            (!$this->system || $this->editAllowed($perm)))
-        {
+            (!$this->system || $this->editAllowed($perm))) {
             return true;
         }
 

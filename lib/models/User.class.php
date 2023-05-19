@@ -515,7 +515,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
      */
     public function triggerChdate()
     {
-       return $this->info->triggerChdate();
+        return $this->info->triggerChdate();
     }
 
     /**
@@ -541,10 +541,10 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
             return $this->nachname . ', ' . $this->vorname;
         }
         if ($concat === null) {
-            $concat = function() {return join('', func_get_args());};
-            $left = function($str, $c = 0) {return mb_substr($str,0,$c);};
-            $if = function($ok,$yes,$no) {return $ok ? $yes : $no;};
-            $quote = function($str) {return "'" . addcslashes($str, "\\'\0") . "'";};
+            $concat = function () {return join('', func_get_args());};
+            $left = function ($str, $c = 0) {return mb_substr($str, 0, $c);};
+            $if = function ($ok, $yes, $no) {return $ok ? $yes : $no;};
+            $quote = function ($str) {return "'" . addcslashes($str, "\\'\0") . "'";};
         }
 
         $data = array_map($quote, $this->toArray('vorname nachname username title_front title_rear motto perms'));
@@ -667,7 +667,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
         parent::initRelation($relation);
         if ($relation == 'info' && is_null($this->relations['info'])) {
             $options = $this->getRelationOptions($relation);
-            $result = new $options['class_name'];
+            $result = new $options['class_name']();
             $foreign_key_value = call_user_func($options['assoc_func_params_func'], $this);
             call_user_func($options['assoc_foreign_key_setter'], $result, $foreign_key_value);
             $this->relations[$relation] = $result;
@@ -701,7 +701,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
      */
     public function getStudipKingIcon()
     {
-        $is_king = StudipKing::is_king($this->user_id, TRUE);
+        $is_king = StudipKing::is_king($this->user_id, true);
 
         $result = '';
         foreach ($is_king as $type => $text) {
@@ -931,7 +931,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
             return false;
         }
 
-        $validator          = new email_validation_class; ## Klasse zum Ueberpruefen der Eingaben
+        $validator          = new email_validation_class(); ## Klasse zum Ueberpruefen der Eingaben
         $validator->timeout = 10;
         $REMOTE_ADDR        = $_SERVER['REMOTE_ADDR'];
         $Zeit               = date('H:i:s, d.m.Y');
@@ -945,14 +945,16 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
                 for ($email_restriction_count = 0; $email_restriction_count < count($email_restriction_parts); $email_restriction_count++) {
                     if ($email_restriction_count == count($email_restriction_parts) - 1) {
                         $email_restriction_msg_part .= '@' . trim($email_restriction_parts[$email_restriction_count]) . '<br>';
-                    } else if (($email_restriction_count + 1) % 3) {
+                    } elseif (($email_restriction_count + 1) % 3) {
                         $email_restriction_msg_part .= '@' . trim($email_restriction_parts[$email_restriction_count]) . ', ';
                     } else {
                         $email_restriction_msg_part .= '@' . trim($email_restriction_parts[$email_restriction_count]) . ',<br>';
                     }
                 }
-                PageLayout::postError(sprintf(_('Die E-Mail-Adresse fehlt, ist falsch geschrieben oder gehört nicht zu folgenden Domains:%s'),
-                    '<br>' . htmlReady($email_restriction_msg_part)));
+                PageLayout::postError(sprintf(
+                    _('Die E-Mail-Adresse fehlt, ist falsch geschrieben oder gehört nicht zu folgenden Domains:%s'),
+                    '<br>' . htmlReady($email_restriction_msg_part)
+                ));
             } else {
                 PageLayout::postError(_('Die E-Mail-Adresse fehlt oder ist falsch geschrieben!'));
             }
@@ -971,8 +973,10 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
         }
 
         if (self::countBySql('email = ? AND user_id != ?', [$email, $this->user_id])) {
-            PageLayout::postError(sprintf(_('Die angegebene E-Mail-Adresse wird bereits von einem anderen Benutzer (%s) verwendet. Bitte geben Sie eine andere E-Mail-Adresse an.'),
-                htmlReady($this->getFullName())));
+            PageLayout::postError(sprintf(
+                _('Die angegebene E-Mail-Adresse wird bereits von einem anderen Benutzer (%s) verwendet. Bitte geben Sie eine andere E-Mail-Adresse an.'),
+                htmlReady($this->getFullName())
+            ));
             return false;
         }
 
@@ -983,13 +987,15 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
 
             // generate 10 char activation key
             $key = '';
-            mt_srand((double)microtime() * 1000000);
+            mt_srand((float)microtime() * 1000000);
             for ($i = 1; $i <= 10; $i++) {
                 $temp = mt_rand() % 36;
-                if ($temp < 10)
-                    $temp += 48;   // 0 = chr(48), 9 = chr(57)
-                else
-                    $temp += 87;   // a = chr(97), z = chr(122)
+                if ($temp < 10) {
+                    $temp += 48;
+                }   // 0 = chr(48), 9 = chr(57)
+                else {
+                    $temp += 87;
+                }   // a = chr(97), z = chr(122)
                 $key .= chr($temp);
             }
             $this->validation_key = $key;
@@ -1462,7 +1468,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
     /**
      * @see Range::__toString()
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->getFullName();
     }

@@ -2,10 +2,9 @@
 
 class OERHost extends OERIdentity
 {
-
     //These two HTTP-headers are non-conformant custom HTTP-headers for requests
-    const OER_HEADER_PUBLIC_KEY_HASH = "Publickey-Hash";
-    const OER_HEADER_SIGNATURE = "RSA-Signature-Base64";
+    public const OER_HEADER_PUBLIC_KEY_HASH = "Publickey-Hash";
+    public const OER_HEADER_SIGNATURE = "RSA-Signature-Base64";
 
     /**
      * Fetches the OERHost of this Stud.IP. If none existed before it will be created and the object returnd.

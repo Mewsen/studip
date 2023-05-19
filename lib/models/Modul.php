@@ -150,7 +150,8 @@ class Modul extends ModuleManagementModelTreeItem
      */
     public static function getEnriched($modul_id)
     {
-        $modul = parent::getEnrichedByQuery('
+        $modul = parent::getEnrichedByQuery(
+            '
             SELECT mvv_modul.*, mvv_modul_deskriptor.bezeichnung AS bezeichnung,
                 COUNT(DISTINCT(mvv_modulteil.modulteil_id)) AS count_modulteile
             FROM mvv_modul
@@ -187,12 +188,21 @@ class Modul extends ModuleManagementModelTreeItem
      * to filter the result set.
      * @return SimpleORMapCollection A collection of module objects.
      */
-    public static function getAllEnriched($sortby = 'chdate', $order = 'ASC',
-            $row_count = null, $offset = null, $filter = null)
-    {
-        $sortby = self::createSortStatement($sortby, $order, 'bezeichnung,chdate',
-                words('bezeichnung count_modulteile chdate'));
-        return parent::getEnrichedByQuery('
+    public static function getAllEnriched(
+        $sortby = 'chdate',
+        $order = 'ASC',
+        $row_count = null,
+        $offset = null,
+        $filter = null
+    ) {
+        $sortby = self::createSortStatement(
+            $sortby,
+            $order,
+            'bezeichnung,chdate',
+            words('bezeichnung count_modulteile chdate')
+        );
+        return parent::getEnrichedByQuery(
+            '
                 SELECT mvv_modul.*, mvv_modul_deskriptor.bezeichnung AS bezeichnung,
                     COUNT(DISTINCT(mvv_modulteil.modulteil_id)) AS count_modulteile
                 FROM mvv_modul
@@ -263,7 +273,8 @@ class Modul extends ModuleManagementModelTreeItem
     public function getChildren()
     {
         $_SESSION['MVV/Lvgruppe/trail_parent_id'] =  $this->getId();
-        return Lvgruppe::getEnrichedByQuery('
+        return Lvgruppe::getEnrichedByQuery(
+            '
             SELECT ml.*
             FROM mvv_lvgruppe ml
                 LEFT JOIN mvv_lvgruppe_modulteil USING (lvgruppe_id)
@@ -289,7 +300,8 @@ class Modul extends ModuleManagementModelTreeItem
         return StgteilabschnittModul::findBySQL('modul_id = ?', [$this->id]);
     }
 
-    public function getDisplayName($options = self::DISPLAY_DEFAULT) {
+    public function getDisplayName($options = self::DISPLAY_DEFAULT)
+    {
         $options = ($options !== self::DISPLAY_DEFAULT)
                 ? $options : self::DISPLAY_CODE;
         $with_code = $options & self::DISPLAY_CODE;
@@ -320,11 +332,16 @@ class Modul extends ModuleManagementModelTreeItem
         if ($end_sem || $start_sem) {
             if ($end_sem) {
                 if ($start_sem->name == $end_sem->name) {
-                    $ret .= sprintf(_('gültig im %s'),
-                            $start_sem->name);
+                    $ret .= sprintf(
+                        _('gültig im %s'),
+                        $start_sem->name
+                    );
                 } else {
-                    $ret .= sprintf(_('gültig %s bis %s'),
-                            $start_sem->name, $end_sem->name);
+                    $ret .= sprintf(
+                        _('gültig %s bis %s'),
+                        $start_sem->name,
+                        $end_sem->name
+                    );
                 }
             } else {
                 $ret .= sprintf(_('gültig ab %s'), $start_sem->name);
@@ -368,7 +385,8 @@ class Modul extends ModuleManagementModelTreeItem
      * @param bool If true returns always a new descriptor
      * @return object The Deskriptor.
      */
-    public function getDeskriptor($language = null, $force_new = false) {
+    public function getDeskriptor($language = null, $force_new = false)
+    {
         if (!isset($GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$language])) {
             $language = $this->default_language;
         }
@@ -391,7 +409,8 @@ class Modul extends ModuleManagementModelTreeItem
      * @param string $institut_id The id of the institute to assign.
      * @return boolean True if institute was successfully assigned.
      */
-    public function assignResponsibleInstitute($institut_id) {
+    public function assignResponsibleInstitute($institut_id)
+    {
 
         $institute = Fachbereich::find($institut_id);
         if (!$institute) {
@@ -420,7 +439,8 @@ class Modul extends ModuleManagementModelTreeItem
      *
      * @param array $institut_ids Array of institute ids.
      */
-    public function assignInstitutes($institut_ids) {
+    public function assignInstitutes($institut_ids)
+    {
         $institutes = [];
         foreach ($institut_ids as $pos => $institut_id) {
             $modul_inst = new ModulInst();
@@ -456,7 +476,8 @@ class Modul extends ModuleManagementModelTreeItem
         }
 
         $this->languages = SimpleORMapCollection::createFromArray(
-                $assigned_languages);
+            $assigned_languages
+        );
     }
 
     public function getResponsibleInstitutes()
@@ -550,7 +571,8 @@ class Modul extends ModuleManagementModelTreeItem
     public static function findBySearchTerm($term, $filter = null)
     {
         $term = '%' . $term . '%';
-        return parent::getEnrichedByQuery("
+        return parent::getEnrichedByQuery(
+            "
                 SELECT mvv_modul.*,
                     CONCAT(mvv_modul_deskriptor.bezeichnung, ' (', code, ')') AS name
                 FROM mvv_modul
@@ -564,7 +586,7 @@ class Modul extends ModuleManagementModelTreeItem
                 WHERE (code LIKE :term OR mvv_modul_deskriptor.bezeichnung LIKE :term) "
                 . self::getFilterSql($filter) . "
                 ORDER BY name",
-                [':term' => $term]
+            [':term' => $term]
         );
     }
 
@@ -578,7 +600,8 @@ class Modul extends ModuleManagementModelTreeItem
      */
     public static function findByStgteilAbschnitt($abschnitt_id, $filter)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
                 SELECT mvv_modul.* FROM mvv_modul
                 LEFT JOIN mvv_stgteilabschnitt_modul USING(modul_id)
                 LEFT JOIN semester_data start_sem
@@ -608,12 +631,21 @@ class Modul extends ModuleManagementModelTreeItem
      * @param int $offset
      * @return array Array of Module.
      */
-    public static function findByInstitut($sortby = 'chdate', $order = 'ASC',
-            $filter = [], $row_count = null, $offset = null)
-    {
-        $sortby = self::createSortStatement($sortby, $order, 'chdate',
-                ['count_modulteile', 'bezeichnung']);
-        return parent::getEnrichedByQuery('
+    public static function findByInstitut(
+        $sortby = 'chdate',
+        $order = 'ASC',
+        $filter = [],
+        $row_count = null,
+        $offset = null
+    ) {
+        $sortby = self::createSortStatement(
+            $sortby,
+            $order,
+            'chdate',
+            ['count_modulteile', 'bezeichnung']
+        );
+        return parent::getEnrichedByQuery(
+            '
                 SELECT mvv_modul.*, mvv_modul_deskriptor.bezeichnung,
                     COUNT(DISTINCT(mvv_modulteil.modulteil_id)) AS count_modulteile
                 FROM mvv_modul
@@ -645,7 +677,8 @@ class Modul extends ModuleManagementModelTreeItem
      */
     public static function findByLvgruppe($lvgruppe_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT mm.*
             FROM mvv_modul mm
                 LEFT JOIN mvv_modulteil mmt USING(modul_id)
@@ -663,11 +696,16 @@ class Modul extends ModuleManagementModelTreeItem
      * @param array $modul_ids Ids of modules.
      * @return object a SimpleORMapColection of institutes.
      */
-    public static function getAssignedInstitutes($sortby = 'name',
-            $order = 'ASC', $modul_ids = [])
-    {
-        return self::getAllAssignedInstitutes($sortby, $order,
-                ['mvv_modul.modul_id' => $modul_ids]);
+    public static function getAssignedInstitutes(
+        $sortby = 'name',
+        $order = 'ASC',
+        $modul_ids = []
+    ) {
+        return self::getAllAssignedInstitutes(
+            $sortby,
+            $order,
+            ['mvv_modul.modul_id' => $modul_ids]
+        );
     }
 
     /**
@@ -679,12 +717,21 @@ class Modul extends ModuleManagementModelTreeItem
      * @param array $filter Array of filter.
      * @return array Array of found Fachbereiche.
      */
-    public static function getAllAssignedInstitutes($sortby = 'name',
-            $order = 'ASC', $filter = null, $row_count = null, $offset = null)
-    {
-        $sortby = Fachbereich::createSortStatement($sortby, $order, 'name',
-                ['count_objects']);
-        return Fachbereich::getEnrichedByQuery('
+    public static function getAllAssignedInstitutes(
+        $sortby = 'name',
+        $order = 'ASC',
+        $filter = null,
+        $row_count = null,
+        $offset = null
+    ) {
+        $sortby = Fachbereich::createSortStatement(
+            $sortby,
+            $order,
+            'name',
+            ['count_objects']
+        );
+        return Fachbereich::getEnrichedByQuery(
+            '
                 SELECT Institute.*,
                     Institute.Name as `name`,
                     Institute.Institut_id AS institut_id,
@@ -699,7 +746,7 @@ class Modul extends ModuleManagementModelTreeItem
                         ON (mvv_modul.end = end_sem.semester_id)
                 '.Fachbereich::getFilterSql($filter, true).'
                 GROUP BY institut_id ORDER BY ' . $sortby,
-                [],
+            [],
             $row_count,
             $offset
         );
@@ -761,7 +808,8 @@ class Modul extends ModuleManagementModelTreeItem
         if ($filter_sql == '') {
             return [];
         }
-        $stmt = DBManager::get()->prepare('
+        $stmt = DBManager::get()->prepare(
+            '
             SELECT DISTINCT mvv_modul.modul_id
             FROM mvv_modul
                 LEFT JOIN mvv_modulteil
@@ -868,7 +916,7 @@ class Modul extends ModuleManagementModelTreeItem
                     $ret['start'] = true;
                     $messages[] = _('Ungültiges Semester.');
                     $rejected = true;
-                } else if ($this->end) {
+                } elseif ($this->end) {
                     $end_sem = Semester::find($this->end);
                     if ($end_sem) {
                         if ($start_sem->beginn > $end_sem->beginn) {
@@ -882,7 +930,7 @@ class Modul extends ModuleManagementModelTreeItem
                         $rejected = true;
                     }
                 }
-            }  else {
+            } else {
                 $ret['start'] = true;
                 $messages[] = _('Bitte ein Startsemester angeben.');
                 $rejected = true;
@@ -897,8 +945,10 @@ class Modul extends ModuleManagementModelTreeItem
                     $existing = $this->findBySql('code = ' . DBManager::get()->quote($this->code));
                     if (sizeof($existing)) {
                         $ret['code'] = true;
-                        $messages[] = sprintf(_('Es existiert bereits ein Modul mit dem Code "%s"!'),
-                                $this->code);
+                        $messages[] = sprintf(
+                            _('Es existiert bereits ein Modul mit dem Code "%s"!'),
+                            $this->code
+                        );
                         $rejected = true;
                     }
                 }

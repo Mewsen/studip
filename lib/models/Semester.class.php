@@ -40,7 +40,7 @@ class Semester extends SimpleORMap
         $config['additional_fields']['last_sem_week']['get'] = 'getLastSemesterWeek';
         $config['additional_fields']['current']['get'] = 'isCurrent';
         $config['additional_fields']['past']['get'] = 'isPast';
-        $config['additional_fields']['short_name']['get'] = function($semester) {
+        $config['additional_fields']['short_name']['get'] = function ($semester) {
             return (string) $semester->semester_token ?: (string) $semester->name;
         };
 
@@ -153,7 +153,7 @@ class Semester extends SimpleORMap
     public static function findAllVisible($with_before_first = true): array
     {
         return array_values(
-            array_filter(self::getAllAsArray(), function ($semester, $key) use($with_before_first) {
+            array_filter(self::getAllAsArray(), function ($semester, $key) use ($with_before_first) {
                 return $GLOBALS['perm']->have_perm('admin') || !empty($semester['visible']) || ((int)$key === 0 && $with_before_first);
             }, ARRAY_FILTER_USE_BOTH)
         );
@@ -264,8 +264,7 @@ class Semester extends SimpleORMap
         $option_value = 'semester_id',
         $include_all = true,
         $use_semester_id = true
-    )
-    {
+    ) {
         $select_attributes = array_merge([
             'name' => 'sem_select',
         ], $select_attributes ?? []);
@@ -392,7 +391,8 @@ class Semester extends SimpleORMap
             $start_weeks[$i] = sprintf(
                 _('%u. Semesterwoche (ab %s)'),
                 $i + 1,
-                strftime('%x', $timestamp));
+                strftime('%x', $timestamp)
+            );
 
             $i += 1;
 

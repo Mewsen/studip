@@ -39,8 +39,8 @@
  */
 class PersonalNotifications extends SimpleORMap
 {
-    const GC_MAX_DAYS = 30; // Garbage collector removes notifications after 30 days
-    const CACHE_DURATION = 86400; // 24 * 60 * 60 = 1 day
+    public const GC_MAX_DAYS = 30; // Garbage collector removes notifications after 30 days
+    public const CACHE_DURATION = 86400; // 24 * 60 * 60 = 1 day
 
     protected static function configure($config = [])
     {

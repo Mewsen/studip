@@ -1,4 +1,5 @@
 <?php
+
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
 //
@@ -29,7 +30,7 @@
  * @author      Arne Schröder <schroeder@data-quest>
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
- * 
+ *
  * @property string tour_id database column
  * @property string id alias column for tour_id
  * @property string active database column
@@ -40,7 +41,7 @@ class HelpTourSettings extends SimpleORMap
     protected static function configure($config = [])
     {
         $config['db_table'] = 'help_tour_settings';
-        
+
         parent::configure($config);
     }
 }

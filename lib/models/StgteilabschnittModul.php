@@ -77,8 +77,11 @@ class StgteilabschnittModul extends ModuleManagementModelTreeItem
         $name .= trim($this->bezeichnung) ?: trim($this->modul->getDeskriptor()->bezeichnung);
         if ($end_sem || $start_sem) {
             if ($end_sem) {
-                $name .= sprintf(_(', gültig %s bis %s'),
-                        $start_sem->name, $end_sem->name);
+                $name .= sprintf(
+                    _(', gültig %s bis %s'),
+                    $start_sem->name,
+                    $end_sem->name
+                );
             } else {
                 $name .= sprintf(_(', gültig ab %s'), $start_sem->name);
             }
@@ -122,7 +125,8 @@ class StgteilabschnittModul extends ModuleManagementModelTreeItem
     public function getFachsemester($modulteil_id, $fachsemester)
     {
         return ModulteilStgteilabschnitt::find(
-                [$modulteil_id, $this->abschnitt_id, $fachsemester]);
+            [$modulteil_id, $this->abschnitt_id, $fachsemester]
+        );
     }
 
     /**
@@ -135,9 +139,10 @@ class StgteilabschnittModul extends ModuleManagementModelTreeItem
     {
         $ret = [];
         $modulteil_abschnitte = ModulteilStgteilabschnitt::findBySql(
-                'modulteil_id = ' . DBManager::get()->quote($modulteil_id)
+            'modulteil_id = ' . DBManager::get()->quote($modulteil_id)
                 . ' AND abschnitt_id = '
-                . DBManager::get()->quote($this->abschnitt_id));
+                . DBManager::get()->quote($this->abschnitt_id)
+        );
         foreach ($modulteil_abschnitte as $modulteil_abschnitt) {
             $ret[$modulteil_abschnitt->fachsemester] = $modulteil_abschnitt;
         }
@@ -151,10 +156,11 @@ class StgteilabschnittModul extends ModuleManagementModelTreeItem
     {
         foreach ($this->modul->modulteile as $modulteil) {
             ModulteilStgteilabschnitt::deleteBySql(
-                    'modulteil_id = '
+                'modulteil_id = '
                     . DBManager::get()->quote($modulteil->getId())
                     . ' AND abschnitt_id = '
-                    . DBManager::get()->quote($this->abschnitt_id));
+                    . DBManager::get()->quote($this->abschnitt_id)
+            );
         }
 
         return parent::delete();

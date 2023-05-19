@@ -79,15 +79,15 @@ class CourseEvent extends CourseDate implements Event
             ':start'   => $start->getTimestamp(),
             ':end'     => $end->getTimestamp()
         ]);
-       $event_collection = [];
-       foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
-           $event = new CourseEvent();
-           $event->setData($row);
-           $event->setNew(false);
-           // related persons (dozenten) or groups
-           if (self::checkRelated($event, $user_id)) {
-               $event_collection[] = $event;
-           }
+        $event_collection = [];
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $event = new CourseEvent();
+            $event->setData($row);
+            $event->setNew(false);
+            // related persons (dozenten) or groups
+            if (self::checkRelated($event, $user_id)) {
+                $event_collection[] = $event;
+            }
         }
         $event_collection = SimpleORMapCollection::createFromArray($event_collection, false);
         $event_collection->setClassName('Event');
@@ -110,7 +110,7 @@ class CourseEvent extends CourseDate implements Event
         $check_related = false;
         $permission = $perm->get_studip_perm($event->range_id, $user_id);
         switch ($permission) {
-            case 'dozent' :
+            case 'dozent':
                 $related_persons = $event->dozenten->pluck('user_id');
                 if (sizeof($related_persons)) {
                     if (in_array($user_id, $related_persons)) {
@@ -120,15 +120,16 @@ class CourseEvent extends CourseDate implements Event
                     $check_related = true;
                 }
                 break;
-            case 'tutor' :
+            case 'tutor':
                 $check_related = true;
                 break;
-            default :
+            default:
                 $group_ids = $event->statusgruppen->pluck('statusgruppe_id');
                 if (sizeof($group_ids)) {
                     $member = StatusgruppeUser::findBySQL(
-                            'statusgruppe_id IN(?) AND user_id = ?',
-                            [$group_ids, $user_id]);
+                        'statusgruppe_id IN(?) AND user_id = ?',
+                        [$group_ids, $user_id]
+                    );
                     $check_related = sizeof($member) > 0;
                 } else {
                     $check_related = true;
@@ -266,7 +267,7 @@ class CourseEvent extends CourseDate implements Event
      *
      * @return int the duration of this event in seconds
      */
-    function getDuration()
+    public function getDuration()
     {
         return $this->end - $this->start;
     }
@@ -278,7 +279,7 @@ class CourseEvent extends CourseDate implements Event
      * @see ClendarDate::getRoomName()
      * @return string The location
      */
-    function getLocation()
+    public function getLocation()
     {
         $location = '';
         if ($this->havePermission(Event::PERMISSION_READABLE)) {
@@ -304,7 +305,7 @@ class CourseEvent extends CourseDate implements Event
      *
      * @return String the description
      */
-    function getDescription()
+    public function getDescription()
     {
         $description = '';
         if ($this->havePermission(Event::PERMISSION_READABLE)) {

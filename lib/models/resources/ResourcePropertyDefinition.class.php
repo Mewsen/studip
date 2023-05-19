@@ -49,7 +49,7 @@ class ResourcePropertyDefinition extends SimpleORMap
      * are always in a format as specified by the ISO-6709
      * string representation.
      */
-    const CRSWGS84_REGEX = '/[+-]\d{1,3}\.\d{1,10}[+-]\d{1,3}\.\d{1,10}[+-]\d{1,5}\.\d{1,10}CRSWGS_84\/$/';
+    public const CRSWGS84_REGEX = '/[+-]\d{1,3}\.\d{1,10}[+-]\d{1,3}\.\d{1,10}[+-]\d{1,5}\.\d{1,10}CRSWGS_84\/$/';
 
     protected static function configure($config = [])
     {
@@ -141,8 +141,7 @@ class ResourcePropertyDefinition extends SimpleORMap
         $special_name = '',
         $with_label = false,
         $allow_boolean_false = true
-    )
-    {
+    ) {
         $label_html_classes = '';
         $type = $this->type;
         $input_name = $special_name

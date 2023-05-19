@@ -104,7 +104,8 @@ class Deputy extends SimpleORMap
      * @param string $range_id ID of a course or a person
      * @return int Number of affected rows in the database (hopefully 1).
      */
-    public static function addDeputy($user_id, $range_id) {
+    public static function addDeputy($user_id, $range_id)
+    {
         if (self::exists([$range_id, $user_id])) {
             return true;
         }
@@ -136,7 +137,8 @@ class Deputy extends SimpleORMap
      * the other person's profile
      * @return boolean Is the given person deputy in the given context?
      */
-    public static function isDeputy(string $user_id, string $range_id, bool $check_edit_about=false) {
+    public static function isDeputy(string $user_id, string $range_id, bool $check_edit_about=false)
+    {
         $d = self::find([$range_id, $user_id]);
         if (!$d) {
             return false;
@@ -163,7 +165,8 @@ class Deputy extends SimpleORMap
      *
      * @return boolean activation status of the deputy boss profile page editing functionality.
      */
-    public static function isEditActivated() {
+    public static function isEditActivated()
+    {
         return self::isActivated() && Config::get()->DEPUTIES_EDIT_ABOUT_ENABLE;
     }
 
@@ -210,7 +213,8 @@ class Deputy extends SimpleORMap
         }
 
         return SimpleCollection::createFromArray(
-            self::findBySQL('JOIN auth_user_md5 ON (deputies.range_id = auth_user_md5.user_id)
+            self::findBySQL(
+                'JOIN auth_user_md5 ON (deputies.range_id = auth_user_md5.user_id)
                 WHERE deputies.user_id = ?',
                 [$user_id]
             )
@@ -247,7 +251,8 @@ class Deputy extends SimpleORMap
      * @return string The SQL query for getting all courses where the current
      * user is deputy in
      */
-    public static function getMySeminarsQuery($type, $sem_number_sql, $sem_number_end_sql, $add_fields, $add_query, $studygroups = false) {
+    public static function getMySeminarsQuery($type, $sem_number_sql, $sem_number_end_sql, $add_fields, $add_query, $studygroups = false)
+    {
         global $user;
         switch ($type) {
             // My courses list
@@ -283,7 +288,7 @@ class Deputy extends SimpleORMap
                     $where .= " AND seminare.status IN ({$studygroup_types})";
                 }
                 break;
-            // Grouping and notification settings for my courses
+                // Grouping and notification settings for my courses
             case 'gruppe':
             case 'notification':
                 $fields = [
@@ -301,7 +306,7 @@ class Deputy extends SimpleORMap
                 ];
                 $where = " WHERE deputies.user_id = '$user->id'";
                 break;
-            // Notification mail sending from client script
+                // Notification mail sending from client script
             case 'notification_cli':
                 $fields = [
                     "aum.user_id",

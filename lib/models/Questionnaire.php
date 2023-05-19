@@ -99,7 +99,8 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
 
                 $statusgruppe_user = StatusgruppeUser::findOneBySQL(
                     "statusgruppe_id = ? AND user_id = ?",
-                    [$assignment['range_id'], $GLOBALS['user']->id]);
+                    [$assignment['range_id'], $GLOBALS['user']->id]
+                );
                 if ($statusgruppe_user) {
                     return true;
                 }

@@ -139,7 +139,7 @@ class Banner extends SimpleORMap
                                    ->fetchColumn();
             $computed = true;
         }
-//        return '1/' . (1 / (pow(2, $prio) / $sum));
+        //        return '1/' . (1 / (pow(2, $prio) / $sum));
         return number_format(100 / (1 / (pow(2, $this->priority) / $sum)), 2, ',', '.') . '%';
     }
 
@@ -227,5 +227,5 @@ class Banner extends SimpleORMap
         $this->store();
 
         return sprintf('<div style="padding: 5px; text-align: center;">%s</div>', $link);
-   }
+    }
 }

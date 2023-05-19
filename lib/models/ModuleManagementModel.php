@@ -22,50 +22,50 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      * Usable as option for ModuleManagementModel::getDisplayName().
      * Use the deafault display options for this object.
      */
-    const DISPLAY_DEFAULT = 1;
+    public const DISPLAY_DEFAULT = 1;
 
     /**
      * Usable as option for ModuleManagementModel::getDisplayName().
      * Displays semesters of the validity period if available for this object.
      */
-    const DISPLAY_SEMESTER = 2;
+    public const DISPLAY_SEMESTER = 2;
 
     /**
      * Usable as option for ModuleManagementModel::getDisplayName().
      * Displays the code (usually a unique identifier) if available for this object.
      */
-    const DISPLAY_CODE = 4;
+    public const DISPLAY_CODE = 4;
 
     /**
      * Usable as option for ModuleManagementModel::getDisplayName().
      * Displays the name of the faculty if available for this object.
      */
-    const DISPLAY_FACULTY = 8;
+    public const DISPLAY_FACULTY = 8;
 
     /**
      * Usable as option for ModuleManagementModel::getDisplayName().
      * Displays the name of the Fach (subject of study) if available for this object.
      */
-    const DISPLAY_FACH = 16;
+    public const DISPLAY_FACH = 16;
 
     /**
      * Usable as option for ModuleManagementModel::getDisplayName().
      * Displays the name of the Studiengangteil if available for this object.
      */
-    const DISPLAY_STGTEIL = 32;
+    public const DISPLAY_STGTEIL = 32;
 
     /**
      * Usable as option ModuleManagementModel::getDisplayName().
      * Displays the name of the Abschluss if available for this object.
      */
-    const DISPLAY_ABSCHLUSS = 64;
+    public const DISPLAY_ABSCHLUSS = 64;
 
     /**
      * Usable as option ModuleManagementModel::getDisplayName().
      * Displays the name of the Abschluss-Kategorie
      * if available for this object.
      */
-    const DISPLAY_KATEGORIE = 128;
+    public const DISPLAY_KATEGORIE = 128;
 
 
     protected static $filter_params = [];
@@ -158,20 +158,26 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
             if (!$perm->haveObjectPerm(MvvPerm::PERM_CREATE, $user_id)) {
                 throw new Exception(sprintf(
                     'Permission denied! The user is not allowed to '
-                    . 'create/delete an object of type %s.', static::class));
+                    . 'create/delete an object of type %s.',
+                    static::class
+                ));
             }
         } else {
             if (!$perm->haveObjectPerm(MvvPerm::PERM_WRITE, $user_id)) {
                 throw new Exception(sprintf(
                     'Permission denied! The user is not allowed to store an '
-                    . 'object of type %s', static::class));
+                    . 'object of type %s',
+                    static::class
+                ));
             }
         }
 
         // check the permissions for every single db field except primary keys
         if ($this->isNew()) {
-            $fields = array_diff(array_keys($this->db_fields()),
-                    array_values($this->pk()));
+            $fields = array_diff(
+                array_keys($this->db_fields()),
+                array_values($this->pk())
+            );
         } else {
             $fields = array_keys($this->db_fields());
         }
@@ -179,8 +185,11 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
             if ($this->isFieldDirty($field)
                     && !$perm->haveFieldPerm($field, MvvPerm::PERM_WRITE, $user_id)) {
                 throw new Exception(sprintf(
-                        'Permission denied! The user is not allowed to change '
-                        . 'value of field %s.%s.', static::class, $field));
+                    'Permission denied! The user is not allowed to change '
+                        . 'value of field %s.%s.',
+                    static::class,
+                    $field
+                ));
             }
         }
 
@@ -202,7 +211,11 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
                                     if (!$perm->haveDfEntryPerm($entry->datafield_id, MvvPerm::PERM_WRITE)) {
                                         throw new Exception(sprintf(
                                             'Permission denied! The user is not '
-                                            . 'allowed to change value of field %s::datafields[%s] ("%s").', static::class, $entry->datafield_id, $entry->datafield->name));
+                                            . 'allowed to change value of field %s::datafields[%s] ("%s").',
+                                            static::class,
+                                            $entry->datafield_id,
+                                            $entry->datafield->name
+                                        ));
                                     }
                                 }
                             }
@@ -234,14 +247,18 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
                 && !$perm->haveFieldPerm($relation_name, MvvPerm::PERM_CREATE, $user_id)) {
             throw new Exception(sprintf(
                 'Permission denied! The user is not allowed to create/delete a relation %s::%s.',
-                get_class($relation_object), $relation_name));
+                get_class($relation_object),
+                $relation_name
+            ));
         } elseif ($relation_object->isDirty()) {
             if ($relation_object instanceof ModuleManagementModel) {
                 $relation_object->verifyPermission($user_id);
             } elseif (!$perm->haveFieldPerm($relation_name, MvvPerm::PERM_WRITE, $user_id)) {
                 throw new Exception(sprintf(
                     'Permission denied! The user is not allowed to modify a relation %s::%s.',
-                    get_class($relation_object), $relation_name));
+                    get_class($relation_object),
+                    $relation_name
+                ));
             }
         }
         return true;
@@ -286,7 +303,8 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      *
      * @throws InvalidValuesException
      */
-    public function validate() {
+    public function validate()
+    {
 
     }
 
@@ -294,7 +312,8 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      * @see SimpleOrMap::delete()
      * Triggers logging.
      */
-    public function delete() {
+    public function delete()
+    {
         $this->logChanges('delete');
         return parent::delete();
     }
@@ -305,7 +324,8 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      * @param string $action new, update or delete
      * @return boolean Return true if logging was successful.
      */
-    protected function logChanges ($action = null) {
+    protected function logChanges($action = null)
+    {
 
         switch ($this->db_table()) {
             case 'abschluss' :
@@ -462,7 +482,7 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
 
             if ($action == 'update') {
                 foreach ($this->content as $name => $value) {
-                    if ($name == 'author_id' || $name == 'editor_id' || $name == 'mkdate' || $name == 'chdate' ) {
+                    if ($name == 'author_id' || $name == 'editor_id' || $name == 'mkdate' || $name == 'chdate') {
                         continue;
                     }
                     if ($this->isFieldDirty($name)) {
@@ -497,9 +517,12 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      * @param int $offset Offset where the result set starts
      * @return SimpleOrMapCollection with all found objects or empty array
      */
-    public static function getEnrichedByQuery($query = null, $params = [],
-            $row_count = null, $offset = null)
-    {
+    public static function getEnrichedByQuery(
+        $query = null,
+        $params = [],
+        $row_count = null,
+        $offset = null
+    ) {
         $enriched = [];
         $params = array_merge($params, self::$filter_params);
         self::$filter_params = [];
@@ -605,24 +628,26 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
                         . join(',', array_map(
                             function ($val) {
                                 return DBManager::get()->quote($val);
-                            }, $val))
+                            },
+                            $val
+                        ))
                         . ') ';
                 }
-            } else if (trim($val)) {
+            } elseif (trim($val)) {
                 if ($val == '__undefined__') {
                     $sql_parts[] = '(ISNULL(' . $col . ') OR ' . $col . " = '')";
                 } else {
                     if (preg_match('/([\w\.]+)\s+([\<\>\!]\=?)/', $col, $matches)) {
                         $sql_parts[] = trim($matches[1]) . ' ' . $matches[2] . ' '
                                 . DBManager::get()->quote($val) . ' ';
-                    } else if ($col == 'start_sem.beginn') {
+                    } elseif ($col == 'start_sem.beginn') {
                         if ((int) $val >= 0) {
                             // start semester filter for Module, Studiengaenge, ...
                             $sql_parts[] = '(start_sem.beginn <= '
                                     . DBManager::get()->quote($val)
                                     . ' OR ISNULL(start_sem.beginn))';
                         }
-                    } else if ($col == 'end_sem.ende') {
+                    } elseif ($col == 'end_sem.ende') {
                         if ((int) $val >= 0) {
                             // end semester filter for Module, Studiengaenge, ...
                             $sql_parts[] = '(end_sem.ende >= '
@@ -655,15 +680,18 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      * @param string $additional_fields additional allowed fields
      * @return string|null the verified sort fields
      */
-    protected static function checkSortFields($sort, $standard_field = null,
-            $additional_fields = [])
-    {
+    protected static function checkSortFields(
+        $sort,
+        $standard_field = null,
+        $additional_fields = []
+    ) {
         if (!is_array($sort)) {
             $sort = explode(',', $sort);
         }
         if (sizeof(array_intersect(
-                array_merge(array_keys(static::db_fields()), $additional_fields),
-                $sort))) {
+            array_merge(array_keys(static::db_fields()), $additional_fields),
+            $sort
+        ))) {
             return implode(',', $sort);
         }
         return $standard_field;
@@ -678,9 +706,12 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      * @param array $additional_fields Calculated columns.
      * @return string The sort query part.
      */
-    protected static function createSortStatement($sort, $order = 'ASC',
-            $standard_field = null, $additional_fields = [])
-    {
+    protected static function createSortStatement(
+        $sort,
+        $order = 'ASC',
+        $standard_field = null,
+        $additional_fields = []
+    ) {
         $order = mb_strtoupper(trim($order)) !== 'DESC' ? ' ASC' : ' DESC';
         if (!is_array($sort)) {
             $sort = explode(',', $sort);
@@ -742,8 +773,10 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      */
     public static function getCountBySql($sql, $filter = null)
     {
-        $stmt = DBManager::get()->prepare($sql . self::getFilterSql($filter,
-                true));
+        $stmt = DBManager::get()->prepare($sql . self::getFilterSql(
+            $filter,
+            true
+        ));
         $stmt->execute(self::$filter_params);
         return $stmt->fetchColumn(0);
     }
@@ -756,7 +789,7 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      * @see mvv_config.php
      * @param string $language The language.
      */
-    public static final function setLanguage($language)
+    final public static function setLanguage($language)
     {
         $language = mb_strtoupper(mb_strstr($language . '_', '_', true));
         if (isset($GLOBALS['MVV_LANGUAGES']['values'][$language])) {
@@ -807,7 +840,7 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      *
      * @return string The currently selected language.
      */
-    public static final function getLanguage()
+    final public static function getLanguage()
     {
         $language = self::$language ?: $GLOBALS['MVV_LANGUAGES']['default'];
         return $language;
@@ -951,7 +984,7 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      * @param  Callable $finder Function to actually locate the item.
      * @return ModuleManagementModel object or null
      */
-    protected static function fromCache($index, $id, Callable $finder)
+    protected static function fromCache($index, $id, callable $finder)
     {
         // Leave immeditately if $id cannot be used as array index
         if (!is_string($id) && !is_int($id)) {

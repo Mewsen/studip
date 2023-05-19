@@ -70,10 +70,12 @@ class OERMaterial extends SimpleORMap
     public static function findMine($user_id = null)
     {
         $user_id = $user_id ?: $GLOBALS['user']->id;
-        return self::findBySQL("INNER JOIN `oer_material_users` USING (material_id)
+        return self::findBySQL(
+            "INNER JOIN `oer_material_users` USING (material_id)
             WHERE `oer_material_users`.user_id = ?
                 AND external_contact = '0'
-            ORDER BY mkdate DESC", [$user_id]
+            ORDER BY mkdate DESC",
+            [$user_id]
         );
     }
 
@@ -138,11 +140,13 @@ class OERMaterial extends SimpleORMap
         if ($tag) {
             self::fetchRemoteSearch($tag['name'], true);
         }
-        return self::findBySQL("INNER JOIN oer_tags_material USING (material_id)
+        return self::findBySQL(
+            "INNER JOIN oer_tags_material USING (material_id)
                 LEFT JOIN oer_hosts ON (oer_hosts.host_id = oer_material.host_id)
             WHERE oer_tags_material.tag_hash = ?
                 AND (oer_material.host_id IS NULL OR oer_hosts.`active` = '1')
-                AND draft = '0'", [$tag_hash]
+                AND draft = '0'",
+            [$tag_hash]
         );
     }
 

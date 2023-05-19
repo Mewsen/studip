@@ -1,4 +1,5 @@
 <?php
+
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
 //
@@ -88,9 +89,11 @@ class HelpTourStep extends SimpleORMap
      * @todo Das Model sollte nix über PageLayout wissen, das sollte anders raus transportiert werden
      * @return boolean true or false
      */
-    public function validate() {
-        if (!$this->orientation)
+    public function validate()
+    {
+        if (!$this->orientation) {
             $this->orientation = 'B';
+        }
         if (!$this->title && !$this->tip) {
             PageLayout::postMessage(MessageBox::error(_('Der Schritt muss einen Titel oder Inhalt besitzen.')));
             return false;
@@ -102,4 +105,3 @@ class HelpTourStep extends SimpleORMap
         return true;
     }
 }
-

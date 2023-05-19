@@ -43,12 +43,12 @@ class NewsRange extends SimpleORMap
         parent::configure($config);
     }
 
-    function getType()
+    public function getType()
     {
         return get_object_type($this->range_id, ['sem','inst','user','fak']);
     }
 
-    function getName()
+    public function getName()
     {
         switch ($this->type) {
             case 'global':
@@ -64,6 +64,6 @@ class NewsRange extends SimpleORMap
             case 'fak':
                 return $this->institute->name;
                 break;
-            }
+        }
     }
 }

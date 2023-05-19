@@ -1,4 +1,5 @@
 <?php
+
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
 // CronjobSchedule.class.php
@@ -144,7 +145,7 @@ class CronjobTask extends SimpleORMap
                 $parameters
             );
 
-            $task = new $this->class;
+            $task = new $this->class();
 
             $task->setUp();
             $result = $task->execute($last_result, $parameters);
@@ -167,9 +168,11 @@ class CronjobTask extends SimpleORMap
      * @param Array  $parameters Optional parameters passed to the task
      * @return CronjobSchedule The generated schedule object.
      */
-    public function scheduleOnce($timestamp, $priority = CronjobSchedule::PRIORITY_NORMAL,
-                                 $parameters = [])
-    {
+    public function scheduleOnce(
+        $timestamp,
+        $priority = CronjobSchedule::PRIORITY_NORMAL,
+        $parameters = []
+    ) {
         return CronjobScheduler::getInstance()->scheduleOnce(
             $this->id,
             $timestamp,
@@ -207,11 +210,15 @@ class CronjobTask extends SimpleORMap
      * @param Array  $parameters Optional parameters passed to the task
      * @return CronjobSchedule The generated schedule object.
      */
-    public function schedulePeriodic($minute = null, $hour = null,
-                                     $day = null, $month = null, $day_of_week = null,
-                                     $priority = CronjobSchedule::PRIORITY_NORMAL,
-                                     $parameters = [])
-    {
+    public function schedulePeriodic(
+        $minute = null,
+        $hour = null,
+        $day = null,
+        $month = null,
+        $day_of_week = null,
+        $priority = CronjobSchedule::PRIORITY_NORMAL,
+        $parameters = []
+    ) {
         return CronjobScheduler::getInstance()->schedulePeriodic(
             $this->id,
             $minute,

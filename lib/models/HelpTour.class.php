@@ -1,4 +1,5 @@
 <?php
+
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
 //
@@ -118,8 +119,7 @@ class HelpTour extends SimpleORMap
         //if there is an active tour, initialize it
         if (isset($_SESSION['active_tour']['tour_id'])
             && ($_SESSION['active_tour']['last_route'] === $route
-                || $_SESSION['active_tour']['next_route'] === $route))
-        {
+                || $_SESSION['active_tour']['next_route'] === $route)) {
             $active_tour = new HelpTour($_SESSION['active_tour']['tour_id']);
             $step_nr = $_SESSION['active_tour']['step_nr'];
             if ($_SESSION['active_tour']['last_route'] !== $route && $_SESSION['active_tour']['next_route'] === $route) {
@@ -238,8 +238,8 @@ class HelpTour extends SimpleORMap
     public static function GetTourObjects($tour_result)
     {
         $objects = [];
-        if (is_array($tour_result)){
-            foreach($tour_result as $id => $result){
+        if (is_array($tour_result)) {
+            foreach($tour_result as $id => $result) {
                 $objects[$id] = new HelpTour();
                 $objects[$id]->setData($result, true);
                 $objects[$id]->setNew(false);
@@ -275,23 +275,23 @@ class HelpTour extends SimpleORMap
                 case 'inst':
                     $table_name = 'user_inst';
                     $field_name = 'Institut_id';
-                break;
+                    break;
                 case 'sem':
                     $table_name = 'seminar_user';
                     $field_name = 'Seminar_id';
-                break;
+                    break;
                 case 'studiengang':
                     $table_name = 'user_studiengang';
                     $field_name = 'fach_id';
-                break;
+                    break;
                 case 'abschluss':
                     $table_name = 'user_studiengang';
                     $field_name = 'abschluss_id';
-                break;
+                    break;
                 case 'userdomain':
                     $table_name = 'user_userdomains';
                     $field_name = 'userdomain_id';
-                break;
+                    break;
             }
             if ($audience->range_id && $table_name) {
                 $query = "SELECT *

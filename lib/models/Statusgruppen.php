@@ -133,8 +133,7 @@ class Statusgruppen extends SimpleORMap implements PrivacyObject
         $selfassign_end,
         $makefolder,
         $dates = null
-    )
-    {
+    ) {
         $group = new Statusgruppen($id);
 
         $group->name = $name;

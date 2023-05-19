@@ -1,4 +1,5 @@
 <?php
+
 use OTPHP\TOTP;
 
 /**
@@ -23,7 +24,7 @@ class TFASecret extends SimpleORMap
 {
     // Possible authentication types (email may require more tokens in a short
     // period of time with a larger window to accept them).
-    const TYPES = [
+    public const TYPES = [
         'email' => [
             'window' => 60,
             'period' => 5,

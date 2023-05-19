@@ -79,7 +79,8 @@ class Unit extends \SimpleORMap
 
     public function canEdit(\User $user): bool
     {
-        return $this->structural_element->canEdit($user);;
+        return $this->structural_element->canEdit($user);
+        ;
     }
 
     public function copy(\User $user, string $rangeId, string $rangeType, array $modified = null): Unit

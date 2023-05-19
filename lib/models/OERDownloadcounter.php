@@ -1,4 +1,5 @@
 <?php
+
 class OERDownloadcounter extends SimpleORMap
 {
     protected static function configure($config = [])

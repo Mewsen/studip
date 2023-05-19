@@ -51,7 +51,7 @@ class EventData extends SimpleORMap implements PrivacyObject
         $ret = parent::delete();
         // only one calendar is left
         if ($ret) {
-            $calendars->each(function($c) { $c->delete(); });
+            $calendars->each(function ($c) { $c->delete(); });
         }
         return $ret;
     }
@@ -72,8 +72,14 @@ class EventData extends SimpleORMap implements PrivacyObject
             return $this->content['start'] + 3600;
         }
         if ($field == 'ts' && $this->content['start']) {
-            return mktime(12, 0, 0, date('n', $this->content['start']),
-                date('j', $this->content['start']), date('Y', $this->content['start']));
+            return mktime(
+                12,
+                0,
+                0,
+                date('n', $this->content['start']),
+                date('j', $this->content['start']),
+                date('Y', $this->content['start'])
+            );
         }
         return parent::getDefaultValue($field);
     }

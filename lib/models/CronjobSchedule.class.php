@@ -1,4 +1,5 @@
 <?php
+
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
 // CronjobSchedule.class.php
@@ -53,9 +54,9 @@
 
 class CronjobSchedule extends SimpleORMap
 {
-    const PRIORITY_LOW    = 'low';
-    const PRIORITY_NORMAL = 'normal';
-    const PRIORITY_HIGH   = 'high';
+    public const PRIORITY_LOW    = 'low';
+    public const PRIORITY_NORMAL = 'normal';
+    public const PRIORITY_HIGH   = 'high';
 
     protected static function configure($config = [])
     {

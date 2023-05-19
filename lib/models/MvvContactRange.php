@@ -134,7 +134,9 @@ class MvvContactRange extends ModuleManagementModel
                     . join(',', array_map(
                         function ($val) {
                             return DBManager::get()->quote($val);
-                        }, $val))
+                        },
+                        $val
+                    ))
                     . ') ';
                 } else {
                     $sql .= ' AND '.$column.' = ? ';

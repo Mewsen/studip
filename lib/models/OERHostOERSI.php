@@ -2,7 +2,6 @@
 
 class OERHostOERSI extends OERHost
 {
-
     /**
      * Executes a search request on the host.
      * @param string|null $text : the search string
@@ -28,7 +27,7 @@ class OERHostOERSI extends OERHost
         $output = curl_exec($cr);
         $error = curl_error($cr);
         if ($error) {
-            $error_number = curl_getinfo($cr,    CURLINFO_HTTP_CODE);
+            $error_number = curl_getinfo($cr, CURLINFO_HTTP_CODE);
             error_log('OERSI search is not working. '.$error_number.': '.$error);
         }
         curl_close($cr);

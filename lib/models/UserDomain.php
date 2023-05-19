@@ -9,7 +9,7 @@
  */
 class UserDomain extends SimpleORMap
 {
-    const REGEXP = '^[\\w\.\-]{1,32}$';
+    public const REGEXP = '^[\\w\.\-]{1,32}$';
 
     protected static function configure($config = [])
     {
@@ -43,7 +43,7 @@ class UserDomain extends SimpleORMap
      * Get an array of all defined user domains.
      * Returns an array of UserDomain objects.
      */
-    public static function getUserDomains ()
+    public static function getUserDomains()
     {
         return self::findBySQL('1 ORDER BY name');
     }
@@ -75,7 +75,7 @@ class UserDomain extends SimpleORMap
     /**
      * Add a user to this user domain.
      */
-    public function addUser ($user_id)
+    public function addUser($user_id)
     {
         $query = "INSERT IGNORE INTO user_userdomains (user_id, userdomain_id)
                   VALUES (:user_id, :id)";
@@ -90,7 +90,7 @@ class UserDomain extends SimpleORMap
     /**
      * Remove a user from this user domain.
      */
-    public function removeUser ($user_id)
+    public function removeUser($user_id)
     {
         $query = "DELETE FROM user_userdomains
                   WHERE user_id = :user_id
@@ -107,7 +107,7 @@ class UserDomain extends SimpleORMap
      * Get an array of all user domains for a specific user.
      * Returns an array of UserDomain objects.
      */
-    public static function getUserDomainsForUser ($user_id)
+    public static function getUserDomainsForUser($user_id)
     {
         $domains = User::find($user_id)->domains;
         return $domains ? $domains->getArrayCopy() : [];
@@ -116,7 +116,7 @@ class UserDomain extends SimpleORMap
     /**
      * Remove all user domains for a specific user.
      */
-    public static function removeUserDomainsForUser ($user_id)
+    public static function removeUserDomainsForUser($user_id)
     {
         $query = "DELETE FROM user_userdomains
                   WHERE user_id = :user_id";
@@ -130,7 +130,7 @@ class UserDomain extends SimpleORMap
     /**
      * Add a seminar to this user domain.
      */
-    public function addSeminar ($seminar_id)
+    public function addSeminar($seminar_id)
     {
         $query = "INSERT IGNORE INTO seminar_userdomains (seminar_id, userdomain_id)
                   VALUES (:seminar_id, :id)";
@@ -145,7 +145,7 @@ class UserDomain extends SimpleORMap
     /**
      * Remove a seminar from this user domain.
      */
-    public function removeSeminar ($seminar_id)
+    public function removeSeminar($seminar_id)
     {
         $query = "DELETE FROM seminar_userdomains
                   WHERE seminar_id = :seminar_id
@@ -162,7 +162,7 @@ class UserDomain extends SimpleORMap
      * Get an array of all user domains for a specific seminar.
      * Returns an array of UserDomain objects.
      */
-    public static function getUserDomainsForSeminar ($seminar_id)
+    public static function getUserDomainsForSeminar($seminar_id)
     {
         return Course::find($seminar_id)->domains->getArrayCopy();
     }
@@ -170,7 +170,7 @@ class UserDomain extends SimpleORMap
     /**
      * Remove all user domains for a specific seminar.
      */
-    public static function removeUserDomainsForSeminar ($seminar_id)
+    public static function removeUserDomainsForSeminar($seminar_id)
     {
         $query = "DELETE FROM seminar_userdomains
                   WHERE seminar_id = :seminar_id";

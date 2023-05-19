@@ -70,7 +70,7 @@ class Gallery extends BlockType
                 $file['meta'] = [
                     'download-url'  => $folderFile->getDownloadURL(),
                 ];
-    
+
                 if ($this->filePermission($typedFolder, $file, $user) && $fileRef->isImage()) {
                     array_push($payload['files'], $file);
                 }

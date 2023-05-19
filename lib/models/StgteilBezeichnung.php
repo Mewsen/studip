@@ -21,10 +21,10 @@ class StgteilBezeichnung extends ModuleManagementModel
         $config['db_table'] = 'mvv_stgteil_bez';
 
         $config['additional_fields']['count_stgteile']['get'] =
-            function($stg_bez) { return $stg_bez->count_stgteile; };
+            function ($stg_bez) { return $stg_bez->count_stgteile; };
         $config['additional_fields']['count_stgteile']['set'] = false;
         $config['additional_fields']['count_studiengaenge']['get'] =
-            function($stg_bez) { return $stg_bez->count_studiengaenge; };
+            function ($stg_bez) { return $stg_bez->count_studiengaenge; };
         $config['additional_fields']['count_studiengaenge']['set'] = false;
 
         $config['i18n_fields']['name'] = true;
@@ -55,12 +55,20 @@ class StgteilBezeichnung extends ModuleManagementModel
      * @return SimpleORMapCollection A collection of Studiengangteil-
      * Bezeichnungen.
      */
-    public static function getAllEnriched($sortby = 'position', $order = 'ASC',
-            $row_count = null, $offset = null)
-    {
-        $sortby = self::createSortStatement($sortby, $order, 'position',
-                ['count_studiengaenge', 'count_stgteile']);
-        return parent::getEnrichedByQuery('
+    public static function getAllEnriched(
+        $sortby = 'position',
+        $order = 'ASC',
+        $row_count = null,
+        $offset = null
+    ) {
+        $sortby = self::createSortStatement(
+            $sortby,
+            $order,
+            'position',
+            ['count_studiengaenge', 'count_stgteile']
+        );
+        return parent::getEnrichedByQuery(
+            '
             SELECT msb.*,
                 COUNT(DISTINCT studiengang_id) AS `count_studiengaenge`,
                 COUNT(DISTINCT stgteil_id) AS `count_stgteile`
@@ -98,7 +106,8 @@ class StgteilBezeichnung extends ModuleManagementModel
      */
     public static function findByStudiengang($studiengang_id)
     {
-        return parent::getEnrichedByQuery('
+        return parent::getEnrichedByQuery(
+            '
             SELECT msb.*,
                 COUNT(DISTINCT stgteil_id) AS `count_stgteile`
             FROM mvv_stgteil_bez msb

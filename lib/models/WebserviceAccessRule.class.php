@@ -45,7 +45,7 @@ class WebserviceAccessRule extends SimpleORMap
      * @param string $api_key
      * @return array of WebserviceAccessRule objects
      */
-    static function findByApiKey($api_key)
+    public static function findByApiKey($api_key)
     {
         return self::findByapi_key($api_key, " ORDER BY type");
     }
@@ -55,7 +55,7 @@ class WebserviceAccessRule extends SimpleORMap
      *
      * @return array of WebserviceAccessRule objects
      */
-    static function findAll()
+    public static function findAll()
     {
         return self::findBySQL("1 ORDER BY api_key, type");
     }
@@ -69,7 +69,7 @@ class WebserviceAccessRule extends SimpleORMap
      * @param string $ip an IP Address
      * @return boolean returns true if access fpr given params is allowed
      */
-    static function checkAccess($api_key, $method, $ip)
+    public static function checkAccess($api_key, $method, $ip)
     {
         $rules = self::findByApiKey($api_key);
         $access = false;
@@ -95,7 +95,7 @@ class WebserviceAccessRule extends SimpleORMap
      * @param string $check_ip an IP Address
      * @return boolean true if given Address is in specified range
      */
-    function checkIpInRange($check_ip)
+    public function checkIpInRange($check_ip)
     {
         if (!ip2long($check_ip)) {
             return false;
@@ -108,7 +108,7 @@ class WebserviceAccessRule extends SimpleORMap
             if (!$mask) {
                 $mask = 32;
             }
-            if ( (ip2long($check_ip) & ~((1 << (32 - $mask)) - 1)) == ip2long($ip)) {
+            if ((ip2long($check_ip) & ~((1 << (32 - $mask)) - 1)) == ip2long($ip)) {
                 return true;
             }
         }
@@ -124,7 +124,7 @@ class WebserviceAccessRule extends SimpleORMap
      * @param string $method a webservice method name
      * @return boolean true if given name matches the specified
      */
-    function checkMethodName($method)
+    public function checkMethodName($method)
     {
         return ($method && (!$this->method || mb_strpos($method, $this->method) !== false));
     }

@@ -38,11 +38,11 @@ class StudiengangStgteil extends ModuleManagementModel
         ];
 
         $config['additional_fields']['stgteil_name']['get'] =
-            function($st) { return $st->stgteil_name; };
+            function ($st) { return $st->stgteil_name; };
         $config['additional_fields']['stgbez_id']['get'] =
-            function($st) { return $st->stgbez_id; };
+            function ($st) { return $st->stgbez_id; };
         $config['additional_fields']['stgbez_name']['get'] =
-            function($st) { return $st->stgbez_name; };
+            function ($st) { return $st->stgbez_name; };
 
         parent::configure($config);
     }
@@ -64,7 +64,7 @@ class StudiengangStgteil extends ModuleManagementModel
             return false;
         }
         $stg_stgteil = parent::getEnrichedByQuery(
-                'SELECT mss.*, CONCAT(mf.name, ": ", '
+            'SELECT mss.*, CONCAT(mf.name, ": ", '
                 . 'mst.zusatz, " (", mst.kp, " CP)") AS `stgteil_name`, '
                 . 'msb.name AS `stgbez_name` '
                 . 'FROM mvv_stg_stgteil mss '
@@ -72,7 +72,8 @@ class StudiengangStgteil extends ModuleManagementModel
                 . 'LEFT JOIN fach mf USING(fach_id) '
                 . 'LEFT JOIN mvv_stgteil_bez msb USING(stgteil_bez_id) '
                 . 'WHERE mss.studiengang_id = ? AND mss.stgteil_id = ?',
-                [$id[0], $id[1]]);
+            [$id[0], $id[1]]
+        );
         if (sizeof($stg_stgteil)) {
             return $stg_stgteil->find(join('_', $id));
         }
@@ -108,19 +109,24 @@ class StudiengangStgteil extends ModuleManagementModel
      * @param string $bez_id The id of a Studiengangteil-Bezeichnung.
      * @return SimpleORMapCollection A collection of StudiengangStgteile.
      */
-    public static function findByStudiengangStgteilBez($studiengang_id,
-            $bez_id = null)
-    {
+    public static function findByStudiengangStgteilBez(
+        $studiengang_id,
+        $bez_id = null
+    ) {
         if ($bez_id) {
-            return parent::getEnrichedByQuery('SELECT * FROM mvv_stg_stgteil WHERE '
+            return parent::getEnrichedByQuery(
+                'SELECT * FROM mvv_stg_stgteil WHERE '
                     . 'studiengang_id = ? AND stgteil_bez_id = ? '
                     . 'ORDER BY position, mkdate',
-                    [$studiengang_id, $bez_id]);
+                [$studiengang_id, $bez_id]
+            );
         } else {
-            return parent::getEnrichedByQuery('SELECT * FROM mvv_stg_stgteil WHERE '
+            return parent::getEnrichedByQuery(
+                'SELECT * FROM mvv_stg_stgteil WHERE '
                     . "studiengang_id = ? AND stgteil_bez_id = '' "
                     . 'ORDER BY position, mkdate',
-                    [$studiengang_id]);
+                [$studiengang_id]
+            );
         }
     }
 

@@ -194,7 +194,8 @@ class SeminarCycleDate extends SimpleORMap
         $template['full'] .= '%s';
         $cycles = [_('wöchentlich'), _('zweiwöchentlich'), _('dreiwöchentlich')];
         $day = getWeekDay($this->weekday, $format == 'short');
-        $result = sprintf($template[$format],
+        $result = sprintf(
+            $template[$format],
             $day,
             $this->start_hour,
             $this->start_minute,
@@ -202,8 +203,9 @@ class SeminarCycleDate extends SimpleORMap
             $this->end_minute,
             $cycles[(int)$this->cycle],
             $this->week_offset + 1,
-            $this->end_offset ? $this->end_offset: '',
-            $this->description ? ' (' . $this->description . ')' : '');
+            $this->end_offset ? $this->end_offset : '',
+            $this->description ? ' (' . $this->description . ')' : ''
+        );
         return $result;
     }
 
@@ -295,7 +297,7 @@ class SeminarCycleDate extends SimpleORMap
                     return 0;
                 }
                 $this->resetRelation("dates");
-                StudipLog::log('SEM_ADD_CYCLE', $this->seminar_id, NULL, $this->toString());
+                StudipLog::log('SEM_ADD_CYCLE', $this->seminar_id, null, $this->toString());
                 return $result;
             }
             return 0;
@@ -309,20 +311,22 @@ class SeminarCycleDate extends SimpleORMap
 
         if ($this->start_time != $old_cycle->start_time
                 || $this->end_time != $old_cycle->end_time
-                || $old_cycle->weekday != $this->weekday )
-        {
+                || $old_cycle->weekday != $this->weekday) {
             $update_count = $this->updateExistingDates($old_cycle);
         }
 
         if ($old_cycle->week_offset != $this->week_offset
             || $old_cycle->end_offset != $this->end_offset
-            || $old_cycle->cycle != $this->cycle )
-        {
+            || $old_cycle->cycle != $this->cycle) {
             $update_count = $this->generateNewDates();
         }
 
-        StudipLog::log('SEM_CHANGE_CYCLE', $this->seminar_id, NULL,
-                $old_cycle->toString() .' -> ' . $this->toString());
+        StudipLog::log(
+            'SEM_CHANGE_CYCLE',
+            $this->seminar_id,
+            null,
+            $old_cycle->toString() .' -> ' . $this->toString()
+        );
 
         return $update_count;
     }
@@ -377,13 +381,13 @@ class SeminarCycleDate extends SimpleORMap
 
                 if ($holiday_date && $date instanceof CourseDate) {
                     $date->cancelDate();
-                } else if (!$holiday_date && $date instanceof CourseExDate) {
+                } elseif (!$holiday_date && $date instanceof CourseExDate) {
                     $date->unCancelDate();
-                } else if ($date->isDirty()) {
+                } elseif ($date->isDirty()) {
                     $date->store();
                     $update_count++;
                 }
-            } else if ($date->isDirty()) {
+            } elseif ($date->isDirty()) {
                 $date->store();
                 $update_count++;
             }
@@ -418,7 +422,8 @@ class SeminarCycleDate extends SimpleORMap
                     $end_time_offset = $course->end_semester->vorles_ende;
                 }
             } else {
-                $end_time_offset = $this->calculateTimestamp($course->start_semester->vorles_beginn,
+                $end_time_offset = $this->calculateTimestamp(
+                    $course->start_semester->vorles_beginn,
                     ($this->end_offset + 1) * 7
                 );
             }
@@ -488,11 +493,13 @@ class SeminarCycleDate extends SimpleORMap
             $sem_end = $this->calculateTimestamp($course->start_semester->vorles_beginn, ($this->end_offset + 1) * 7);
         }
 
-        $semester = Semester::findBySQL('beginn <= :ende AND ende >= :start',
-                ['start' => $startAfterTimeStamp, 'ende' => $sem_end]);
+        $semester = Semester::findBySQL(
+            'beginn <= :ende AND ende >= :start',
+            ['start' => $startAfterTimeStamp, 'ende' => $sem_end]
+        );
 
         foreach ($semester as $val) {
-                $ret[$val['semester_id']] = $this->createSemesterTerminSlots($val['vorles_beginn'], $val['vorles_ende'], $startAfterTimeStamp);
+            $ret[$val['semester_id']] = $this->createSemesterTerminSlots($val['vorles_beginn'], $val['vorles_ende'], $startAfterTimeStamp);
         }
         return $ret;
     }
@@ -539,7 +546,8 @@ class SeminarCycleDate extends SimpleORMap
             0,                                                  // Second
             date("n", $stamp),                                  // Month
             date("j", $stamp),                                  // Day
-            date("Y", $stamp));                                 // Year
+            date("Y", $stamp)
+        );                                 // Year
 
         $end = explode(':', $this->end_time);
         $end_time = mktime(
@@ -548,7 +556,8 @@ class SeminarCycleDate extends SimpleORMap
             0,                                                  // Second
             date("n", $stamp),                                  // Month
             date("j", $stamp),                                  // Day
-            date("Y", $stamp));                                 // Year
+            date("Y", $stamp)
+        );                                 // Year
 
         $course = Course::find($this->seminar_id);
 
@@ -655,7 +664,7 @@ class SeminarCycleDate extends SimpleORMap
                 if (!$date->isNew()) {
                     $dates_to_delete[] = $date;
                 }
-            } else if ($this->cycle == 2 && $week_count % 3 != 0 && $week_count > 0) {
+            } elseif ($this->cycle == 2 && $week_count % 3 != 0 && $week_count > 0) {
                 if (!$date->isNew()) {
                     $dates_to_delete[] = $date;
                 }
@@ -742,8 +751,7 @@ class SeminarCycleDate extends SimpleORMap
     protected function buildOpenRequestsForDatesQuery(
         $include_metadate = false,
         $order = ''
-    )
-    {
+    ) {
         $sql = "closed < '1' AND ";
         $sql_params = [];
 
@@ -787,8 +795,7 @@ class SeminarCycleDate extends SimpleORMap
     public function getOpenRequestsForDates(
         $include_metadate = false,
         $order = 'mkdate DESC'
-    )
-    {
+    ) {
         $data = $this->buildOpenRequestsForDatesQuery($include_metadate, $order);
         return ResourceRequest::findBySql($data['sql'], $data['sql_params']);
     }

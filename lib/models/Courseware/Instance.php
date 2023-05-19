@@ -196,8 +196,8 @@ class Instance
         $this->unit->config['sequential_progression'] = $isSequentialProgression ? 1 : 0;
     }
 
-    const EDITING_PERMISSION_DOZENT = 'dozent';
-    const EDITING_PERMISSION_TUTOR = 'tutor';
+    public const EDITING_PERMISSION_DOZENT = 'dozent';
+    public const EDITING_PERMISSION_TUTOR = 'tutor';
 
     /**
      * Returns the level needed to edit this courseware instance.

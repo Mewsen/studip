@@ -167,8 +167,7 @@ class Building extends Resource
         $action = 'show',
         $id = null,
         $link_parameters = []
-    )
-    {
+    ) {
         return URLHelper::getLink(
             self::buildPathForAction($action, $id),
             $link_parameters
@@ -191,8 +190,7 @@ class Building extends Resource
         $action = 'show',
         $id = null,
         $url_parameters = []
-    )
-    {
+    ) {
         return URLHelper::getURL(
             self::buildPathForAction($action, $id),
             $url_parameters
@@ -408,8 +406,7 @@ class Building extends Resource
         $description = '',
         $internal_comment = '',
         $booking_type = 0
-    )
-    {
+    ) {
         return null;
     }
 
@@ -422,8 +419,7 @@ class Building extends Resource
         $booking_type = 0,
         $prepend_preparation_time = false,
         $notify_lecturers = false
-    )
-    {
+    ) {
         return null;
     }
 
@@ -440,8 +436,7 @@ class Building extends Resource
         $internal_comment = '',
         $booking_type = 0,
         $force_booking = false
-    )
-    {
+    ) {
         return null;
     }
 
@@ -451,8 +446,7 @@ class Building extends Resource
         DateTime $end,
         $comment = '',
         $preparation_time = 0
-    )
-    {
+    ) {
         return null;
     }
 
@@ -462,8 +456,7 @@ class Building extends Resource
         $comment = '',
         $properties = [],
         $preparation_time = 0
-    )
-    {
+    ) {
         return null;
     }
 
@@ -472,8 +465,7 @@ class Building extends Resource
         DateTime $begin,
         DateTime $end,
         $internal_comment = ''
-    )
-    {
+    ) {
         return null;
     }
 
@@ -481,8 +473,7 @@ class Building extends Resource
         DateTime $begin,
         DateTime $end,
         $excluded_booking_ids = []
-    )
-    {
+    ) {
         return false;
     }
 
@@ -490,8 +481,7 @@ class Building extends Resource
         DateTime $begin,
         DateTime $end,
         $excluded_reservation_ids = []
-    )
-    {
+    ) {
         return false;
     }
 
@@ -499,8 +489,7 @@ class Building extends Resource
         DateTime $begin,
         DateTime $end,
         $excluded_lock_ids = []
-    )
-    {
+    ) {
         return true;
     }
 
@@ -508,8 +497,7 @@ class Building extends Resource
         DateTime $begin,
         DateTime $end,
         $excluded_booking_ids = []
-    )
-    {
+    ) {
         return false;
     }
 }

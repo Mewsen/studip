@@ -184,7 +184,9 @@ class ContentTermsOfUse extends SimpleORMap
         if ($allow_owner) {
             if (in_array($context_type, ['course', 'institute'])
                 && Seminar_Perm::get()->have_studip_perm(
-                    'tutor', $context_id, $user_id
+                    'tutor',
+                    $context_id,
+                    $user_id
                 )
             ) {
                 return true;

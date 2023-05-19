@@ -139,8 +139,7 @@ class WikiPage extends SimpleORMap implements PrivacyObject
         // anyone can see this page if it belongs to a free course
         if (!$this->config->read_restricted
             && Config::get()->ENABLE_FREE_ACCESS
-            && $this->course && $this->course->lesezugriff == 0)
-        {
+            && $this->course && $this->course->lesezugriff == 0) {
             return true;
         }
 
@@ -236,7 +235,8 @@ class WikiPage extends SimpleORMap implements PrivacyObject
      *
      * @param string ancestor Wikipage name to be set as the parent
      */
-    public function setAncestorForAllVersions($ancestor) {
+    public function setAncestorForAllVersions($ancestor)
+    {
         $query = "UPDATE
                     wiki
                   SET

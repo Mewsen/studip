@@ -117,8 +117,7 @@ class Location extends Resource
         $action = 'show',
         $id = null,
         $link_parameters = []
-    )
-    {
+    ) {
         return URLHelper::getLink(
             self::buildPathForAction($action, $id),
             $link_parameters
@@ -143,8 +142,7 @@ class Location extends Resource
         $action = 'show',
         $id = null,
         $url_parameters = []
-    )
-    {
+    ) {
         return URLHelper::getURL(
             self::buildPathForAction($action, $id),
             $url_parameters
@@ -329,8 +327,7 @@ class Location extends Resource
         $description = '',
         $internal_comment = '',
         $booking_type = 0
-    )
-    {
+    ) {
         return null;
     }
 
@@ -343,8 +340,7 @@ class Location extends Resource
         $booking_type = 0,
         $prepend_preparation_time = false,
         $notify_lecturers = false
-    )
-    {
+    ) {
         return null;
     }
 
@@ -360,8 +356,7 @@ class Location extends Resource
         $internal_comment = '',
         $booking_type = 0,
         $force_booking = false
-    )
-    {
+    ) {
         return null;
     }
 
@@ -371,8 +366,7 @@ class Location extends Resource
         DateTime $end,
         $comment = '',
         $preparation_time = 0
-    )
-    {
+    ) {
         return null;
     }
 
@@ -382,8 +376,7 @@ class Location extends Resource
         $comment = '',
         $properties = [],
         $preparation_time = 0
-    )
-    {
+    ) {
         return null;
     }
 
@@ -392,8 +385,7 @@ class Location extends Resource
         DateTime $begin,
         DateTime $end,
         $internal_comment = ''
-    )
-    {
+    ) {
         return null;
     }
 
@@ -401,8 +393,7 @@ class Location extends Resource
         DateTime $begin,
         DateTime $end,
         $excluded_booking_ids = []
-    )
-    {
+    ) {
         return false;
     }
 
@@ -410,8 +401,7 @@ class Location extends Resource
         DateTime $begin,
         DateTime $end,
         $excluded_reservation_ids = []
-    )
-    {
+    ) {
         return false;
     }
 
@@ -419,8 +409,7 @@ class Location extends Resource
         DateTime $begin,
         DateTime $end,
         $excluded_lock_ids = []
-    )
-    {
+    ) {
         return true;
     }
 
@@ -428,8 +417,7 @@ class Location extends Resource
         DateTime $begin,
         DateTime $end,
         $excluded_booking_ids = []
-    )
-    {
+    ) {
         return false;
     }
 }

@@ -117,8 +117,7 @@ class ResourceTemporaryPermission extends SimpleORMap implements PrivacyObject
         string $resource_id,
         DateTime $begin,
         DateTime $end
-    )
-    {
+    ) {
         //Query explaination: We want exactly one permission object
         //for the specified user and the resource.
         //The permission must exist during the whole specified time range

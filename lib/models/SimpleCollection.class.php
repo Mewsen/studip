@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('SORT_NATURAL')) {
     define('SORT_NATURAL', 6);
 }
@@ -105,23 +106,23 @@ class SimpleCollection extends StudipArrayObject
                     $comp_func = function ($a) use ($args) {
                         return in_array($a, $args);
                     };
-                break;
+                    break;
                 case '===':
                     $comp_func = function ($a) use ($args) {
                         return in_array($a, $args, true);
                     };
-                break;
+                    break;
                 case '!=':
                 case '<>':
                     $comp_func = function ($a) use ($args) {
                         return !in_array($a, $args);
                     };
-                break;
+                    break;
                 case '!==':
                     $comp_func = function ($a) use ($args) {
                         return !in_array($a, $args, true);
                     };
-                break;
+                    break;
                 case '<':
                 case '>':
                 case '<=':
@@ -140,12 +141,12 @@ class SimpleCollection extends StudipArrayObject
                     $comp_func = function ($a) use ($op_func, $args) {
                         return $op_func($a, $args[0]);
                     };
-                break;
+                    break;
                 case '><':
                     $comp_func = function ($a) use ($args) {
                         return $a > $args[0] && $a < $args[1];
                     };
-                break;
+                    break;
                 case '>=<=':
                     $comp_func = function ($a) use ($args) {
                         return $a >= $args[0] && $a <= $args[1];
@@ -158,7 +159,7 @@ class SimpleCollection extends StudipArrayObject
                         $args = array_map('mb_strtolower', $args);
                         return in_array($a, $args);
                     };
-                break;
+                    break;
                 case '*=':
                     $comp_func = function ($a) use ($args) {
                         foreach ($args as $arg) {
@@ -168,7 +169,7 @@ class SimpleCollection extends StudipArrayObject
                         }
                         return false;
                     };
-                break;
+                    break;
                 case '^=':
                     $comp_func = function ($a) use ($args) {
                         foreach ($args as $arg) {
@@ -178,7 +179,7 @@ class SimpleCollection extends StudipArrayObject
                         }
                         return false;
                     };
-                break;
+                    break;
                 case '$=':
                     $comp_func = function ($a) use ($args) {
                         foreach ($args as $arg) {
@@ -189,7 +190,7 @@ class SimpleCollection extends StudipArrayObject
                         }
                         return false;
                     };
-                break;
+                    break;
                 case '~=':
                     $comp_func = function ($a) use ($args) {
                         foreach ($args as $arg) {
@@ -202,9 +203,9 @@ class SimpleCollection extends StudipArrayObject
                     break;
                 default:
                     throw new InvalidArgumentException('unknown operator: ' . $operator);
-             }
-         }
-         return $comp_func;
+            }
+        }
+        return $comp_func;
     }
 
     /**
@@ -219,17 +220,17 @@ class SimpleCollection extends StudipArrayObject
             return $text;
         }
         $text = str_replace(['ä','Ä','ö','Ö','ü','Ü','ß'], ['a','A','o','O','u','U','s'], $text);
-        $text = str_replace(['À','Á','Â','Ã','Å','Æ'], 'A' , $text);
-        $text = str_replace(['à','á','â','ã','å','æ'], 'a' , $text);
-        $text = str_replace(['È','É','Ê','Ë'], 'E' , $text);
-        $text = str_replace(['è','é','ê','ë'], 'e' , $text);
-        $text = str_replace(['Ì','Í','Î','Ï'], 'I' , $text);
-        $text = str_replace(['ì','í','î','ï'], 'i' , $text);
-        $text = str_replace(['Ò','Ó','Õ','Ô','Ø'], 'O' , $text);
-        $text = str_replace(['ò','ó','ô','õ','ø'], 'o' , $text);
-        $text = str_replace(['Ù','Ú','Û'], 'U' , $text);
-        $text = str_replace(['ù','ú','û'], 'u' , $text);
-        $text = str_replace(['Ç','ç','Ð','Ñ','Ý','ñ','ý','ÿ'], ['C','c','D','N','Y','n','y','y'] , $text);
+        $text = str_replace(['À','Á','Â','Ã','Å','Æ'], 'A', $text);
+        $text = str_replace(['à','á','â','ã','å','æ'], 'a', $text);
+        $text = str_replace(['È','É','Ê','Ë'], 'E', $text);
+        $text = str_replace(['è','é','ê','ë'], 'e', $text);
+        $text = str_replace(['Ì','Í','Î','Ï'], 'I', $text);
+        $text = str_replace(['ì','í','î','ï'], 'i', $text);
+        $text = str_replace(['Ò','Ó','Õ','Ô','Ø'], 'O', $text);
+        $text = str_replace(['ò','ó','ô','õ','ø'], 'o', $text);
+        $text = str_replace(['Ù','Ú','Û'], 'U', $text);
+        $text = str_replace(['ù','ú','û'], 'u', $text);
+        $text = str_replace(['Ç','ç','Ð','Ñ','Ý','ñ','ý','ÿ'], ['C','c','D','N','Y','n','y','y'], $text);
         return $text;
     }
 
@@ -267,15 +268,16 @@ class SimpleCollection extends StudipArrayObject
     public function toArray()
     {
         $args = func_get_args();
-        return $this->map(function ($a) use ($args) {
-            if (method_exists($a, 'toArray')) {
-                return call_user_func_array([$a, 'toArray'], $args);
+        return $this->map(
+            function ($a) use ($args) {
+                if (method_exists($a, 'toArray')) {
+                    return call_user_func_array([$a, 'toArray'], $args);
+                }
+                if (method_exists($a, 'getArrayCopy')) {
+                    return $a->getArrayCopy();
+                }
+                return (array) $a;
             }
-            if (method_exists($a, 'getArrayCopy')) {
-                return $a->getArrayCopy();
-            }
-            return (array) $a;
-        }
         );
     }
 
@@ -663,27 +665,27 @@ class SimpleCollection extends StudipArrayObject
         //('name asc, nummer desc ')
         $sort_locale = false;
         switch ($sort_flags) {
-        case SORT_NATURAL:
-            $sort_func = 'strnatcmp';
-            break;
-        case SORT_NATURAL | SORT_FLAG_CASE:
-            $sort_func = 'strnatcasecmp';
-            break;
-        case SORT_STRING | SORT_FLAG_CASE:
-            $sort_func = 'strcasecmp';
-            break;
-        case SORT_STRING:
-            $sort_func = 'strcmp';
-            break;
-        case SORT_NUMERIC:
-            $sort_func = function ($a, $b) {
-                return (int) $a - (int) $b;
-            };
-            break;
-        case SORT_LOCALE_STRING:
-        default:
-            $sort_func = 'strnatcasecmp';
-            $sort_locale = true;
+            case SORT_NATURAL:
+                $sort_func = 'strnatcmp';
+                break;
+            case SORT_NATURAL | SORT_FLAG_CASE:
+                $sort_func = 'strnatcasecmp';
+                break;
+            case SORT_STRING | SORT_FLAG_CASE:
+                $sort_func = 'strcasecmp';
+                break;
+            case SORT_STRING:
+                $sort_func = 'strcmp';
+                break;
+            case SORT_NUMERIC:
+                $sort_func = function ($a, $b) {
+                    return (int) $a - (int) $b;
+                };
+                break;
+            case SORT_LOCALE_STRING:
+            default:
+                $sort_func = 'strnatcasecmp';
+                $sort_locale = true;
         }
 
         $sorter = [];
@@ -704,7 +706,9 @@ class SimpleCollection extends StudipArrayObject
                     $value2 = static::translitLatin1(mb_substr($d2[$field], 0, 100));
                 }
                 $ret = $sort_func($value1, $value2);
-                if (strtolower($dir) == 'desc') $ret = $ret * -1;
+                if (strtolower($dir) == 'desc') {
+                    $ret = $ret * -1;
+                }
             } while ($ret === 0 && next($sorter));
 
             return $ret;
@@ -750,7 +754,8 @@ class SimpleCollection extends StudipArrayObject
      * @param array $params parameters for methodcall
      * @return array of all return values
      */
-    public function sendMessage($method, $params = []) {
+    public function sendMessage($method, $params = [])
+    {
         $results = [];
         foreach ($this->storage as $record) {
             $results[] = call_user_func_array([$record, $method], $params);

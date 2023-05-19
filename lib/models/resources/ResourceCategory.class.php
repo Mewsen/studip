@@ -292,8 +292,7 @@ class ResourceCategory extends SimpleORMap
         $requestable = false,
         $protected = false,
         $write_permission_level = 'autor'
-    )
-    {
+    ) {
         if (!$name) {
             throw new ResourcePropertyException(
                 _('Es wurde kein Name für die Eigenschaft angegeben!')
@@ -424,8 +423,7 @@ class ResourceCategory extends SimpleORMap
         $parent_id = '',
         $properties = [],
         $ignore_invalid = false
-    )
-    {
+    ) {
         if (($this->class_name != 'Resource') and
             !is_subclass_of($this->class_name, 'Resource')) {
             //Invalid resource category specification:
@@ -440,7 +438,7 @@ class ResourceCategory extends SimpleORMap
             );
         }
 
-        $resource              = new $this->class_name;
+        $resource              = new $this->class_name();
         $resource->parent_id   = $parent_id;
         $resource->category_id = $this->id;
         $resource->name        = $name;
@@ -484,8 +482,7 @@ class ResourceCategory extends SimpleORMap
      */
     protected function setPropertyDefaultState(
         ResourcePropertyDefinition $definition
-    )
-    {
+    ) {
         switch ($definition->type) {
             case 'bool':
                 return false;
@@ -614,8 +611,7 @@ class ResourceCategory extends SimpleORMap
         ResourceRequest $request,
         $name,
         $state = null
-    )
-    {
+    ) {
         if ($request->category_id != $this->id) {
             throw new InvalidResourceCategoryException(
                 sprintf(
@@ -710,7 +706,7 @@ class ResourceCategory extends SimpleORMap
     {
         if ($type) {
             return ResourceCategoryProperty::countBySql(
-                    'INNER JOIN resource_property_definitions
+                'INNER JOIN resource_property_definitions
                 USING (property_id)
                 WHERE
                 name = :name
@@ -718,25 +714,25 @@ class ResourceCategory extends SimpleORMap
                 type = :type
                 AND
                 category_id = :category_id',
-                    [
+                [
                         'name'        => $name,
                         'type'        => $type,
                         'category_id' => $this->id
                     ]
-                ) > 0;
+            ) > 0;
         } else {
             return ResourceCategoryProperty::countBySql(
-                    'INNER JOIN resource_property_definitions
+                'INNER JOIN resource_property_definitions
                 USING (property_id)
                 WHERE
                 name = :name
                 AND
                 category_id = :category_id',
-                    [
+                [
                         'name'        => $name,
                         'category_id' => $this->id
                     ]
-                ) > 0;
+            ) > 0;
         }
     }
 

@@ -283,7 +283,7 @@ class Folder extends SimpleORMap implements FeedbackRange
             'id'        => $this->id,
         ]);
 
-        $found_folders = Folder::countBySql("name = :file_name AND parent_id= :id",[
+        $found_folders = Folder::countBySql("name = :file_name AND parent_id= :id", [
             'file_name' => $file_name,
             'id'        => $this->id,
         ]);

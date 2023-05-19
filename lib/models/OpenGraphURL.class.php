@@ -26,7 +26,7 @@
  */
 class OpenGraphURL extends SimpleORMap
 {
-    const EXPIRES_DURATION = 86400; // = 24 * 60 * 60
+    public const EXPIRES_DURATION = 86400; // = 24 * 60 * 60
 
     /**
      * Configures this model.
@@ -159,7 +159,7 @@ class OpenGraphURL extends SimpleORMap
         $isOpenGraph = false;
 
         $response = FileManager::fetchURLMetadata($this['url']);
-        if ((int)$response['response_code'] === 200 && isset($response['Content-Type']) && mb_strpos($response['Content-Type'],'html') !== false) {
+        if ((int)$response['response_code'] === 200 && isset($response['Content-Type']) && mb_strpos($response['Content-Type'], 'html') !== false) {
             if (preg_match('/(?<=charset=)[^;]*/i', $response['Content-Type'], $match)) {
                 $currentEncoding = trim($match[0], '"');
             } else {
@@ -193,13 +193,11 @@ class OpenGraphURL extends SimpleORMap
             foreach ($metatags as $tag) {
                 $key = false;
                 if ($tag->hasAttribute('property')
-                    && mb_strpos($tag->getAttribute('property'), 'og:') === 0)
-                {
+                    && mb_strpos($tag->getAttribute('property'), 'og:') === 0) {
                     $key = mb_strtolower(mb_substr($tag->getAttribute('property'), 3));
                 }
                 if (!$key && $tag->hasAttribute('name')
-                    && mb_strpos($tag->getAttribute('name'), 'og:') === 0)
-                {
+                    && mb_strpos($tag->getAttribute('name'), 'og:') === 0) {
                     $key = mb_strtolower(mb_substr($tag->getAttribute('name'), 3));
                 }
                 if ($key) {
@@ -223,8 +221,7 @@ class OpenGraphURL extends SimpleORMap
             if (empty($this['description']) && $isOpenGraph) {
                 foreach ($metatags as $tag) {
                     if (mb_stripos($tag->getAttribute('name'), "description") !== false
-                        || mb_stripos($tag->getAttribute('property'), "description") !== false)
-                    {
+                        || mb_stripos($tag->getAttribute('property'), "description") !== false) {
                         $this['description'] = $tag->getAttribute('content');
                     }
                 }

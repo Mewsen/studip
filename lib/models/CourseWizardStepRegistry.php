@@ -16,7 +16,6 @@
 
 class CourseWizardStepRegistry extends SimpleORMap
 {
-
     protected static function configure($config = [])
     {
         $config['db_table'] = 'coursewizardsteps';
@@ -36,8 +35,7 @@ class CourseWizardStepRegistry extends SimpleORMap
     public static function unregisterStep($id)
     {
         $step = self::find($id);
-        if ($step)
-        {
+        if ($step) {
             return $step->delete();
         }
         return true;

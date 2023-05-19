@@ -8,7 +8,7 @@
  */
 class PluginAsset extends SimpleORMap
 {
-    const CACHE_DURATION = 2419200; // = 4 * 7 * 24 * 60 * 60 = 4 weeks
+    public const CACHE_DURATION = 2419200; // = 4 * 7 * 24 * 60 * 60 = 4 weeks
 
     /**
      * Configures the model

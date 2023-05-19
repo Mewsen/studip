@@ -139,9 +139,9 @@ class DatafieldEntryModel extends SimpleORMap implements PrivacyObject
                 ':object_type'  => $object_type,
                 ':object_class' => (int) $object_class
             ]);
-        } else if ($object_type === 'studycourse') {
+        } elseif ($object_type === 'studycourse') {
             $query .= " AND (LOCATE(:object_class, object_class) OR LOCATE('all', object_class)) ORDER BY priority";
-            $params = array_merge($params,[
+            $params = array_merge($params, [
                 ':range_id'     => (string) $range_id,
                 ':sec_range_id' => (string) $sec_range_id,
                 ':object_type'  => $object_type,
@@ -151,7 +151,7 @@ class DatafieldEntryModel extends SimpleORMap implements PrivacyObject
                 || $object_type === 'modulteildeskriptor') {
             // find datafields by language (string)
             $query .= " AND (LOCATE(:object_class, object_class) OR object_class IS NULL) ORDER BY priority";
-            $params = array_merge($params,[
+            $params = array_merge($params, [
                 ':range_id'     => (string) $range_id,
                 ':sec_range_id' => (string) $sec_range_id,
                 ':object_type'  => $object_type,

@@ -14,7 +14,6 @@
 
 class CourseMarkedEvent extends CourseEvent
 {
-
     protected static function configure($config= [])
     {
         parent::configure($config);
