@@ -24,7 +24,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:55+0200\n"
-"PO-Revision-Date: 2023-05-22 09:19+0000\n"
+"PO-Revision-Date: 2023-05-22 11:35+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-1/en/>\n"
@@ -8463,7 +8463,7 @@ msgstr "Resolve request"
 
 #: app/controllers/resources/room_request.php:1438
 msgid "Abgelehnte Anfrage"
-msgstr "Denied requests"
+msgstr "Denied request"
 
 #: app/controllers/resources/room_request.php:1440
 #: app/controllers/resources/room_request.php:2071
@@ -9365,7 +9365,7 @@ msgstr "The booking is invalid!"
 
 #: app/controllers/resources/booking.php:1917
 msgid "Buchung in Reservierung umwandeln"
-msgstr "Transform booking into request"
+msgstr "Transform booking into reservation"
 
 #: app/controllers/resources/booking.php:1919
 msgid "Reservierung in Buchung umwandeln"
@@ -15994,8 +15994,8 @@ msgid ""
 "Sie haben im System %s noch keinen Account. Loggen Sie sich zuerst in %s "
 "ein, um ILIAS-Lernobjekte in Stud.IP nutzen zu können."
 msgstr ""
-"You do not have an account yet in the system %s. Log into %s first to be "
-"able to use a ILIAS learning object in Stud.IP."
+"You do not have an account in the system %s. Log into %s first to be able to "
+"use ILIAS learning objects in Stud.IP."
 
 #: app/controllers/my_ilias_accounts.php:187
 #, php-format
@@ -16705,7 +16705,7 @@ msgstr "The learning material has been deleted."
 
 #: app/controllers/oer/mymaterial.php:139
 msgid "Konnte Material nicht zu twillo.de hochladen."
-msgstr "Could not upload the material to twillo.de."
+msgstr "Learning material could not be uploaded to twillo.de."
 
 #: app/controllers/oer/mymaterial.php:149
 msgid "Lernmaterial erfolgreich gespeichert."
@@ -18206,7 +18206,9 @@ msgstr "Room management"
 msgid ""
 "Nach dem Verschieben einer Buchung per Drag & Drop im Belegungsplan eine "
 "Sicherheitsabfrage anzeigen"
-msgstr "Show a confirmation prompt after moving a booking via drag & drop"
+msgstr ""
+"Show a confirmation prompt after moving a booking via drag & drop in the "
+"booking plan"
 
 #: app/views/settings/general.php:141
 msgid ""
@@ -21679,18 +21681,18 @@ msgid ""
 "                <strong>Email &crarr;</strong><br />Geben Sie dazu in jede "
 "Zeile die Email Adresse ein."
 msgstr ""
-"In the text area <strong>Apply participants list</strong> you can put a list "
-"with names of students,\n"
-"                    that shall be enroled into the course. Use the select "
-"box to select the desired format in which you want to put the names.<br />\n"
-"                    <strong>Input format</strong><br/>\n"
-"                    <strong>Last name, first name &crarr;</strong><br /"
-">Enter the last name and (at your option) the first name in each row "
-"separated by comma or a tab.<br />\n"
-"                    <strong>User name &crarr;</strong><br />Enter the Stud."
-"IP user name in each row.\n"
-"                    <strong>E-Mail &crarr;</strong><br />For this, enter the "
-"E-Mail address in each line."
+"In the text area <strong>Apply participant list</strong>, you can enter a "
+"list of names of students that shall be enroled in the course.\n"
+"                Use the select box to select the appropriate format in which "
+"you want to enter the names.<br />\n"
+"                <strong>Input format</strong><br/>\n"
+"                <strong>Last name, first name &crarr;</strong><br />For "
+"this, enter in each line the last name and (at your option) the first name, "
+"separated by comma or a tabulator character.<br />\n"
+"                <strong>Username &crarr;</strong><br />For this, enter the "
+"Stud.IP username in each line.<br />\n"
+"                <strong>E-mail &crarr;</strong><br />Enter the E-mail "
+"address in each line for this."
 
 #: app/views/course/members/import_autorlist.php:26
 #: app/views/shared/contacts/add_ansprechpartner.php:93
