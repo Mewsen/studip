@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-05-22 07:08+0000\n"
+"PO-Revision-Date: 2023-05-22 09:19+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-1-js/en/>\n"
@@ -124,9 +124,8 @@ msgid "Abschnitt aktiv - Blöcke werden hier eingefügt"
 msgstr "Section is active - blocks will be inserted here"
 
 #: resources/vue/components/courseware/CoursewareManagerFiling.vue:3
-#, fuzzy
 msgid "Abschnitt an dieser Stelle einfügen"
-msgstr "Insert at this position"
+msgstr "Insert section here"
 
 #: resources/vue/components/courseware/CoursewareContainerActions.vue:29
 #: resources/vue/components/courseware/CoursewareDefaultContainer.vue:24
@@ -365,46 +364,38 @@ msgstr "Task"
 
 #: resources/vue/components/courseware/CoursewareDashboardTasks.vue:28
 #: resources/vue/components/courseware/CoursewareDashboardTasks.vue:76
-#, fuzzy
 msgid "Aufgabe abgeben"
-msgstr "Activate task"
+msgstr "Submit task"
 
 #: resources/vue/mixins/courseware/task-helper.js:48
-#, fuzzy
 msgid "Aufgabe abgegeben"
-msgstr "Activate task"
+msgstr "Submit task"
 
 #: resources/vue/mixins/courseware/task-helper.js:14
-#, fuzzy
 msgid "Aufgabe bereit"
-msgstr "Activate task"
+msgstr "Task ready"
 
 #: resources/vue/components/courseware/CoursewareManagerTaskDistributor.vue:58
-#, fuzzy
 msgid "Aufgabe Gruppen zuweisen"
-msgstr "Assign group"
+msgstr "Assign task to groups"
 
 #: resources/vue/mixins/courseware/task-helper.js:20
 #: resources/vue/mixins/courseware/task-helper.js:34
-#, fuzzy
 msgid "Aufgabe muss bald abgegeben werden"
-msgstr "The amount of semester must be provided."
+msgstr "The task must be submitted soon"
 
 #: resources/vue/components/courseware/CoursewareManagerTaskDistributor.vue:40
-#, fuzzy
 msgid "Aufgabe Studierenden zuweisen"
-msgstr "Assign group"
+msgstr "Assign task to students"
 
 #: resources/vue/components/courseware/CoursewareCourseManager.vue:204
 #: resources/vue/components/courseware/CoursewareManagerTaskDistributor.vue:77
-#, fuzzy
 msgid "Aufgabe verteilen"
-msgstr "Manage tasks"
+msgstr "Distribute tasks"
 
 #: resources/vue/components/courseware/CoursewareManagerTaskDistributor.vue:216
-#, fuzzy
 msgid "Aufgabe wurde verteilt."
-msgstr "%u task has been activated."
+msgstr "Tasks have been distributed."
 
 #: resources/vue/components/courseware/CoursewareCourseDashboard.vue:92
 #: resources/vue/components/courseware/CoursewareDashboardViewWidget.vue:9
@@ -418,9 +409,8 @@ msgstr "Tasks & Interaction"
 #: resources/vue/components/courseware/CoursewareDashboardStudents.vue:9
 #: resources/vue/components/courseware/CoursewareDashboardTasks.vue:9
 #: resources/vue/components/courseware/CoursewareManagerTaskDistributor.vue:6
-#, fuzzy
 msgid "Aufgabentitel"
-msgstr "Tasks"
+msgstr "Task title"
 
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:34
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:65
@@ -432,9 +422,8 @@ msgstr "Tasks"
 #: resources/vue/components/courseware/CoursewareManagerTaskDistributor.vue:10
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:120
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:37
-#, fuzzy
 msgid "Aufgabenvorlage"
-msgstr "Manage tasks"
+msgstr "Task template"
 
 #: resources/vue/components/courseware/CoursewareAudioBlock.vue:37
 #: resources/vue/components/courseware/CoursewareAudioBlock.vue:34
@@ -742,14 +731,12 @@ msgid "Bitte schreiben Sie ein Feedback."
 msgstr "Please enter the final date of the vacation period."
 
 #: resources/vue/components/courseware/CoursewareManagerTaskDistributor.vue:307
-#, fuzzy
 msgid "Bitte wählen aus, an welcher Stelle die Aufgabe eingefügt werden soll."
-msgstr "Please select data export format!"
+msgstr "Please select where the task shall be inserted."
 
 #: resources/vue/components/courseware/CoursewareManagerTaskDistributor.vue:155
-#, fuzzy
 msgid "Bitte wählen Sie aus, an wen die Aufgabe verteilt werden sollen."
-msgstr "Please select data export format!"
+msgstr "Please select to whom the task shall be distributed to."
 
 #: resources/vue/components/courseware/CoursewareBeforeAfterBlock.vue:134
 #, fuzzy
@@ -772,9 +759,8 @@ msgid "Bitte wählen Sie eine Abgabefrist aus."
 msgstr "Please choose a value"
 
 #: resources/vue/components/courseware/CoursewareManagerTaskDistributor.vue:141
-#, fuzzy
 msgid "Bitte wählen Sie eine Aufgabenvorlage aus."
-msgstr "Please choose a value"
+msgstr "Please select a task template."
 
 #: resources/vue/components/courseware/CoursewareAudioBlock.vue:230
 #: resources/vue/components/courseware/CoursewareDocumentBlock.vue:178
@@ -789,9 +775,8 @@ msgid "Bitte wählen Sie eine Seite als Ziel aus."
 msgstr "Please choose a value"
 
 #: resources/vue/components/courseware/CoursewareManagerTaskDistributor.vue:134
-#, fuzzy
 msgid "Bitte wählen Sie einen Aufgabentitel aus."
-msgstr "Please choose a value"
+msgstr "Please select a task title."
 
 #: resources/assets/javascripts/lib/quick_search.js:147
 msgid "Bitte wählen Sie einen gültigen Wert aus!"
@@ -1341,7 +1326,7 @@ msgstr "This block is already being edited."
 msgid ""
 "Dieser Ordner ist ein Hausaufgabenordner. Es können nur Dateien eingestellt "
 "werden."
-msgstr "This folder is for homework. Files can be uploaded to it, only."
+msgstr "This folder is a homework folder. Only files can be put into it."
 
 #: resources/vue/components/FilesTable.vue:260
 #: resources/vue/components/courseware/CoursewareFolderBlock.vue:98
@@ -1621,9 +1606,8 @@ msgstr "No feedback has been given yet."
 
 #: resources/vue/components/courseware/CoursewareDashboardStudents.vue:299
 #: resources/vue/components/courseware/CoursewareDashboardTasks.vue:229
-#, fuzzy
 msgid "Es wurden bisher keine Aufgaben gestellt."
-msgstr "No learning materials have been provided yet."
+msgstr "No tasks have been provided yet."
 
 #: resources/vue/components/courseware/CoursewareEmptyElementBox.vue:13
 msgid "Es wurden bisher noch keine Inhalte eingepflegt."
@@ -1800,14 +1784,12 @@ msgid "Feedback wurde gespeichert."
 msgstr "Feedback saved"
 
 #: resources/vue/components/courseware/CoursewareDashboardStudents.vue:31
-#, fuzzy
 msgid "Feedback zur Aufgabe ändern"
-msgstr "Give feedback"
+msgstr "Change feedback for the task"
 
 #: resources/vue/components/courseware/CoursewareDashboardStudents.vue:36
-#, fuzzy
 msgid "Feedback zur Aufgabe geben"
-msgstr "Give feedback"
+msgstr "Give feedback for the task"
 
 #: resources/vue/components/courseware/CoursewareStructuralElementDiscussion.vue:23
 #, fuzzy
@@ -2017,9 +1999,8 @@ msgid "Gruppen"
 msgstr "Groups"
 
 #: resources/vue/components/courseware/CoursewareDashboardTasks.vue:140
-#, fuzzy
 msgid "Gruppenaufgabe"
-msgstr "Group/colour"
+msgstr "Group task"
 
 #: resources/vue/components/courseware/CoursewareManagerTaskDistributor.vue:64
 msgid "Gruppenname"
@@ -3496,14 +3477,12 @@ msgstr[0] "PagePages"
 msgstr[1] ""
 
 #: resources/vue/components/courseware/CoursewareExportWidget.vue:9
-#, fuzzy
 msgid "Seite als pdf-Dokument exportieren"
-msgstr "Export list as rtf document"
+msgstr "Export page as PDF document"
 
 #: resources/vue/components/courseware/CoursewareManagerFiling.vue:2
-#, fuzzy
 msgid "Seite an dieser Stelle einfügen"
-msgstr "Insert at this position"
+msgstr "Insert page here"
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:155
 #, fuzzy
@@ -3576,6 +3555,15 @@ msgid ""
 "                            erkennen Sie an den zwei nach links zeigenden "
 "gelben Pfeilen."
 msgstr ""
+"Pages, sections and blocks can be copied from another course and from your "
+"own contents.\n"
+"                            For that, select \"Insert page here\", \"Insert "
+"section here\" or \"Insert block here\" below \"This Courseware\" on the "
+"left.\n"
+"                            After that, first select the course from which "
+"to copy or your own contents below \"Copy\" on the right side.\n"
+"                            Objects that can be copied can be identified by "
+"the two yellow arrows pointing to the left."
 
 #: resources/vue/components/courseware/CoursewareCourseManager.vue:38
 msgid ""
@@ -3606,6 +3594,14 @@ msgid ""
 "                            erkennen Sie an den zwei nach links zeigenden "
 "gelben Pfeilen."
 msgstr ""
+"Pages, sections and blocks can be moved.\n"
+"                            For that, select \"Insert page here\", \"Insert "
+"section here\" or \"Insert block here\" below \"This Courseware\" on the "
+"left.\n"
+"                            After that, select the object you want to move "
+"below \"Move\" on the right side.\n"
+"                            Objects that can be moved can be identified by "
+"the two yellow arrows pointing to the left."
 
 #: resources/vue/components/courseware/CoursewareVideoBlock.vue:29
 #: resources/vue/components/courseware/CoursewareVideoBlock.vue:22
@@ -4123,26 +4119,24 @@ msgid "Unterhalb der aktuellen Seite"
 msgstr "Below current page"
 
 #: resources/vue/components/courseware/CoursewareManagerElement.vue:176
-#, fuzzy
 msgid "Unterseiten"
-msgstr "Subtitle"
+msgstr "Sub-pages"
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:248
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:271
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:6
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:5
 msgid "Unterseiten exportieren"
-msgstr "Export sub pages"
+msgstr "Export sub-pages"
 
 #: resources/vue/components/courseware/CoursewareManagerElement.vue:41
-#, fuzzy
 msgid "Unterseiten sortieren"
-msgstr "Export pages"
+msgstr "Sort sub-pages"
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:308
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:30
 msgid "Unterseiten veröffentlichen"
-msgstr "Publish sub pages"
+msgstr "Publish sub-pages"
 
 #: resources/vue/components/courseware/CoursewareHeadlineBlock.vue:40
 #: resources/vue/components/courseware/CoursewareHeadlineBlock.vue:23
@@ -4348,6 +4342,16 @@ msgid ""
 "eingeblendet, mit der Sie beliebig\n"
 "                            weit hoch in der Hierarchie springen können."
 msgstr ""
+"Select \"This Courseware\" on the left.\n"
+"                            This is alway selected while loading the page. "
+"The heading shows which page you\n"
+"                            have currently selected. Below that are the "
+"sections of the page and in them their blocks.\n"
+"                            If you want to edit a page that lies below the "
+"selected one, you can select that one via\n"
+"                            the buttons in the area \"Sub-pages\". A "
+"navigation is shown above the heading. With it you can\n"
+"                            jump up the hierarchy as far as you wish."
 
 #: resources/vue/components/courseware/CoursewareManagerTaskDistributor.vue:13
 #, fuzzy
@@ -4407,6 +4411,8 @@ msgid ""
 "Wenn Sie eine Aufgabe stellen möchten, nutzen Sie bitte in der Verwaltung "
 "der Courseware die Funktion \"Aufgabe verteilen\"."
 msgstr ""
+"If you want to provide a task, please use the function \"Distribute tasks\" "
+"in the management part of the Courseware."
 
 #: resources/vue/components/courseware/CoursewareIframeBlock.vue:9
 #: resources/vue/components/courseware/CoursewareIframeBlock.vue:70
