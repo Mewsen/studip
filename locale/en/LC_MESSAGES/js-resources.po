@@ -2,15 +2,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-01-24 12:46+0000\n"
+"PO-Revision-Date: 2023-05-22 07:08+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-2-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-2-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15\n"
+"X-Generator: Weblate 4.16.2\n"
 "Generated-By: easygettext\n"
 
 #: resources/assets/javascripts/lib/multi_person_search.js:70
@@ -2570,14 +2570,12 @@ msgid "Inhaltsverzeichnis"
 msgstr "Table of contents"
 
 #: resources/vue/components/courseware/CoursewareActionWidget.vue:44
-#, fuzzy
 msgid "Inhaltsverzeichnis anzeigen"
-msgstr "Table of contents"
+msgstr "Show table of contents"
 
 #: resources/vue/components/courseware/CoursewareActionWidget.vue:44
-#, fuzzy
 msgid "Inhaltsverzeichnis ausblenden"
-msgstr "Table of contents"
+msgstr "Hide table of contents"
 
 #: resources/vue/components/courseware/CoursewareLinkBlock.vue:31
 #: resources/vue/components/courseware/CoursewareLinkBlock.vue:10
