@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:54+0200\n"
-"PO-Revision-Date: 2023-05-22 09:20+0000\n"
+"PO-Revision-Date: 2023-05-22 11:36+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-2/en/>\n"
@@ -203,9 +203,8 @@ msgid "Titel"
 msgstr "Title"
 
 #: app/controllers/news.php:324
-#, fuzzy
 msgid "Ankündigungstext"
-msgstr "Announcements"
+msgstr "Announcement text"
 
 #: app/controllers/news.php:331 app/controllers/course/dates.php:436
 #: app/controllers/calendar/calendar.php:345
@@ -263,13 +262,12 @@ msgid "Bereich auswählen"
 msgstr "Select range"
 
 #: app/controllers/news.php:387
-#, fuzzy
 msgid "Sichtbarkeitseinstellungen"
-msgstr "Page settings"
+msgstr "Visibility settings"
 
 #: app/controllers/news.php:390
 msgid "Priorität (1: niedrigste, 10: höchste)"
-msgstr ""
+msgstr "Priority (1: lowest, 10: highest)"
 
 #: app/controllers/news.php:395 app/controllers/calendar/contentbox.php:162
 #: app/controllers/admin/courses.php:993 app/controllers/admin/courses.php:994
@@ -852,12 +850,11 @@ msgstr "Please note:"
 #: lib/navigation/ProfileNavigation.php:128
 #: lib/navigation/AvatarNavigation.php:43
 msgid "Barrierefreiheit"
-msgstr ""
+msgstr "Accessibility"
 
 #: app/controllers/settings/accessibility.php:26
-#, fuzzy
 msgid "Barrierefreiheitseinstellungen anpassen"
-msgstr "Customise general settings"
+msgstr "Customise accessibility settings"
 
 #: app/controllers/settings/accessibility.php:41 app/controllers/online.php:133
 msgid "Ihre Einstellungen wurden gespeichert."
@@ -1100,12 +1097,11 @@ msgstr "Outdated session or unknown type of search"
 #: lib/navigation/ContentsNavigation.php:25
 #: lib/navigation/StartNavigation.php:236 lib/modules/ContentsWidget.php:14
 msgid "Mein Arbeitsplatz"
-msgstr ""
+msgstr "My work place"
 
 #: app/controllers/contents/overview.php:17
-#, fuzzy
 msgid "Alle Inhalte an einem Ort."
-msgstr "Deactivate all content elements"
+msgstr "All content in one place."
 
 #: app/controllers/contents/overview.php:18
 msgid ""
@@ -1114,6 +1110,10 @@ msgid ""
 "mit anderen Standorten austauschen können. Ihre Lehrveranstaltungen finden "
 "Sie am gewohnten Platz im Veranstalungsbereich."
 msgstr ""
+"In this new area, you will get access to your own contents: Courseware "
+"learning modules, files and free learning materials (OER) that you can "
+"exchange with other locations. You will find your courses at the usual place "
+"in the course area."
 
 #: app/controllers/contents/courseware.php:19
 #: app/controllers/course/courseware.php:22
@@ -1241,9 +1241,8 @@ msgid "Suche"
 msgstr "Search"
 
 #: app/controllers/contents/courseware.php:353
-#, fuzzy
 msgid "Neues Lernmaterial"
-msgstr "Learning materials"
+msgstr "New learning material"
 
 #: app/controllers/contents/courseware.php:425
 msgid "Neues Lernmaterial anlegen"
@@ -1314,18 +1313,16 @@ msgid "unbekannt"
 msgstr "unknown"
 
 #: app/controllers/web_migrate.php:86
-#, fuzzy
 msgid "Migrationen ausführen"
-msgstr "Execute action"
+msgstr "Execute migrations"
 
 #: app/controllers/web_migrate.php:90
-#, fuzzy
 msgid "Migrationen zurücknehmen"
-msgstr "Reset evaluation"
+msgstr "Revert migrations"
 
 #: app/controllers/web_migrate.php:94
 msgid "Branch"
-msgstr ""
+msgstr "Branch"
 
 #: app/controllers/web_migrate.php:103
 msgid "Aktueller Versionsstand"
@@ -1901,14 +1898,12 @@ msgid "Mehr Funktionen"
 msgstr "More functions"
 
 #: app/controllers/course/plus.php:101
-#, fuzzy
 msgid "Reihenfolge der Werkzeuge ändern"
-msgstr "Change order of documents"
+msgstr "Change order of tools"
 
 #: app/controllers/course/plus.php:130
-#, fuzzy
 msgid "Optionen des Werkzeugs ändern"
-msgstr "Change tab name"
+msgstr "Change options of the tool"
 
 #: app/controllers/course/plus.php:178
 msgid "Das Plugin/Modul enthält keine Funktion zum Löschen der Inhalte."
@@ -2034,9 +2029,8 @@ msgid "Anzeige nach Kategorien"
 msgstr "Display by categories"
 
 #: app/controllers/course/plus.php:306
-#, fuzzy
 msgid "Werkzeugreihenfolge ändern"
-msgstr "Change group order"
+msgstr "Change tool order"
 
 #: app/controllers/course/admission.php:42
 msgid "Verwaltung von Zugangsberechtigungen"
@@ -4042,6 +4036,8 @@ msgid ""
 "Um die Anmeldung zur Veranstaltung abzuschließen, müssen Sie zusätzliche "
 "Angaben auf dieser Seite machen."
 msgstr ""
+"To finish the enrolment into the course, you have to enter additional "
+"information on this page."
 
 #: app/controllers/course/members.php:1406
 #, php-format
@@ -4050,7 +4046,6 @@ msgstr "[%s: %s]"
 
 #: app/controllers/course/members.php:1421
 #: app/views/course/members/circular_mail.php:115
-#, fuzzy
 msgid "Rundmail schreiben"
 msgstr "Send circular mail"
 
@@ -4258,7 +4253,6 @@ msgid "Studiengänge"
 msgstr "Courses of study"
 
 #: app/controllers/course/members.php:1911
-#, fuzzy
 msgid "Es wurde keine Gruppe ausgewählt!"
 msgstr "No room group has been selected!"
 
@@ -4379,14 +4373,12 @@ msgid "Veranstaltung löschen"
 msgstr "Delete course"
 
 #: app/controllers/course/management.php:85
-#, fuzzy
 msgid "Veranstaltung verstecken"
-msgstr "Search for courses"
+msgstr "Hide course"
 
 #: app/controllers/course/management.php:85
-#, fuzzy
 msgid "Veranstaltung sichtbar schalten"
-msgstr "Enable/disable visibility of the course"
+msgstr "Make course visible"
 
 #: app/controllers/course/management.php:94
 #: app/controllers/course/management.php:165
@@ -5123,7 +5115,7 @@ msgstr "To book a room you must first select a room from the search results!"
 
 #: app/controllers/course/timesrooms.php:488
 #: app/controllers/course/timesrooms.php:1031
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Der Termin %s wurde geändert, etwaige Raumbuchungen wurden entfernt und "
 "stattdessen der angegebene Freitext eingetragen!"
@@ -5301,13 +5293,13 @@ msgid "Semesterfilter"
 msgstr "Semester filter"
 
 #: app/controllers/course/timesrooms.php:1565
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Dem Termin %s war ein Thema zugeordnet. Sie können das Thema im "
 "%sAblaufplan%s einem anderen Termin (z.B. einem Ausweichtermin) zuordnen."
 msgstr ""
 "A topic had been assigned to the date %s. You can assign the topic to "
-"another date (e.g. an alternative date) in the schedule."
+"another date (e.g. an alternative date) in the %sschedule%s."
 
 #: app/controllers/course/timesrooms.php:1572
 #, php-format
@@ -5610,13 +5602,12 @@ msgid "Die Anfrage konnte nicht gespeichert werden!"
 msgstr "The request could not be saved!"
 
 #: app/controllers/course/room_requests.php:649
-#, fuzzy
 msgid "freier Raum"
-msgstr "Separable room"
+msgstr "free room"
 
 #: app/controllers/course/room_requests.php:658
 msgid "teilweise belegter Raum"
-msgstr ""
+msgstr "partially booked room"
 
 #: app/controllers/course/room_requests.php:682
 #: app/controllers/resources/room_request.php:122
@@ -5633,9 +5624,8 @@ msgid "Es wurde keine Anzahl an Sitzplätzen angegeben!"
 msgstr "No amount of seats has been specified!"
 
 #: app/controllers/course/room_requests.php:937
-#, fuzzy
 msgid "Die Raumanfrage wurde wieder geöffnet und damit erneut gestellt."
-msgstr "The request has been processed and rejected."
+msgstr "The room request has been reopened and is thereby again put."
 
 #: app/controllers/course/room_requests.php:1012
 #, php-format
@@ -6555,14 +6545,13 @@ msgid "Sie haben keine Berechtigung, Berechtigungen von Wiki-Seiten zu ändern!"
 msgstr "You are not allowed to change permissions on wiki pages!"
 
 #: app/controllers/wiki.php:149
-#, fuzzy, php-format
+#, php-format
 msgid "Die Einstellungen für Wiki-Seite \"%s\" wurden geändert!"
-msgstr "The permissions for the wiki page \"%s\" have been changed!"
+msgstr "The settings for the wiki page \"%s\" have been modified!"
 
 #: app/controllers/wiki.php:183 lib/wiki.inc.php:77
-#, fuzzy
 msgid "Die Vorgängerseite konnte nicht gespeichert werden."
-msgstr "Cannot save list."
+msgstr "The previous page could not be saved."
 
 #: app/controllers/wiki.php:187 lib/wiki.inc.php:81
 msgid ""
@@ -7570,9 +7559,8 @@ msgid "Fehler beim Ändern der Datei %s!"
 msgstr "Error while changing file %s!"
 
 #: app/controllers/file.php:500
-#, fuzzy
 msgid "Klicken Sie hier, um das Material im OER Campus zu veröffentlichen."
-msgstr "Click here for becoming visible."
+msgstr "Click here to publish the learning material in the OER Campus."
 
 #: app/controllers/file.php:504
 #, php-format
@@ -7588,15 +7576,23 @@ msgid ""
 "Zusätzliche Info: \n"
 " %s"
 msgstr ""
+"Your uploaded file has been suggested for publishing in the OER Campus:\n"
+"\n"
+"File name: %s\n"
+"Description: %s\n"
+"\n"
+"%s\n"
+"\n"
+"Additional information:\n"
+"%s"
 
 #: app/controllers/file.php:530
 msgid "Vorschlag zur Veröffentlichung einer Datei im OER Campus"
-msgstr ""
+msgstr "Suggestion for publishing a file in the OER Campus"
 
 #: app/controllers/file.php:535
-#, fuzzy
 msgid "Vorschlag wurde eingereicht."
-msgstr "Allocation saved."
+msgstr "Suggestion submitted."
 
 #: app/controllers/file.php:628
 msgid "Es wurde keine neue Dateiversion gewählt!"
@@ -8396,24 +8392,20 @@ msgid "Filter zurücksetzen"
 msgstr "Reset filters"
 
 #: app/controllers/resources/room_request.php:579
-#, fuzzy
 msgid "Status der Anfrage"
-msgstr "Request date"
+msgstr "Request status"
 
 #: app/controllers/resources/room_request.php:585
-#, fuzzy
 msgid "offen"
-msgstr "none open"
+msgstr "open"
 
 #: app/controllers/resources/room_request.php:586
-#, fuzzy
 msgid "bearbeitet"
-msgstr "edit"
+msgstr "modified"
 
 #: app/controllers/resources/room_request.php:587
-#, fuzzy
 msgid "abgelehnt"
-msgstr "Refused"
+msgstr "denied"
 
 #: app/controllers/resources/room_request.php:593
 #: app/controllers/resources/room_request.php:2630
@@ -8622,9 +8614,8 @@ msgid "Anfrage auflösen"
 msgstr "Resolve request"
 
 #: app/controllers/resources/room_request.php:1440
-#, fuzzy
 msgid "Abgelehnte Anfrage"
-msgstr "Own request"
+msgstr "Denied request"
 
 #: app/controllers/resources/room_request.php:1442
 #: app/controllers/resources/room_request.php:2073
@@ -9516,24 +9507,20 @@ msgstr "Error while deleting the booking!"
 #: app/controllers/resources/booking.php:1907
 #: app/controllers/resources/booking.php:1912
 #: app/controllers/resources/booking.php:1934
-#, fuzzy
 msgid "Die Buchung ist ungültig!"
-msgstr "The permission level is invalid!"
+msgstr "The booking is invalid!"
 
 #: app/controllers/resources/booking.php:1917
-#, fuzzy
 msgid "Buchung in Reservierung umwandeln"
-msgstr "Convert booking to request"
+msgstr "Transform booking into reservation"
 
 #: app/controllers/resources/booking.php:1919
-#, fuzzy
 msgid "Reservierung in Buchung umwandeln"
-msgstr "Remove reservation and create booking"
+msgstr "Transform reservation into booking"
 
 #: app/controllers/resources/booking.php:1922
-#, fuzzy
 msgid "Die Buchung hat keinen passenden Buchungstyp!"
-msgstr "No valid booking type has been specified!"
+msgstr "The booking does not have a matching booking type!"
 
 #: app/controllers/resources/booking.php:1948
 #, php-format
@@ -9541,28 +9528,28 @@ msgid ""
 "Die Reservierung kann nicht in eine Buchung umgewandelt werden, weil der "
 "Zeitbereich von %1$s bis %2$s bereits belegt ist!"
 msgstr ""
+"The reservation cannot be transformed into a booking since the time raneg "
+"from %1$s to %2$s is already occupied!"
 
 #: app/controllers/resources/booking.php:1992
-#, fuzzy
 msgid "Die Buchung konnte nicht gespeichert werden."
-msgstr "The association could not be saved."
+msgstr "The booking could not be saved."
 
 #: app/controllers/resources/booking.php:1996
-#, fuzzy
 msgid "Die Reservierung konnte nicht gespeichert werden."
-msgstr "Vacation period could not be saved."
+msgstr "The reservation could not be saved."
 
 #: app/controllers/resources/booking.php:2003
-#, fuzzy
 msgid ""
 "Soll die folgende Buchung wirklich in eine Reservierung umgewandelt werden?"
-msgstr "Do you really want to delete the following booking?"
+msgstr ""
+"Do you really want to transform the following booking into a reservation?"
 
 #: app/controllers/resources/booking.php:2007
-#, fuzzy
 msgid ""
 "Soll die folgende Reservierung wirklich in eine Buchung umgewandelt werden?"
-msgstr "Do you really want to delete the following lock?"
+msgstr ""
+"Do you really want to transform the following reservation into a booking?"
 
 #: app/controllers/resources/export.php:65
 msgid "Quellen für den Export von Buchungen auswählen"
@@ -9596,9 +9583,8 @@ msgstr "Booking"
 #: app/controllers/resources/export.php:234
 #: app/controllers/resources/print.php:143
 #: app/controllers/resources/admin.php:1055
-#, fuzzy
 msgid "geplante Buchung"
-msgstr "Planned booking"
+msgstr "planned booking"
 
 #: app/controllers/resources/export.php:138
 #: app/views/room_management/overview/index.php:43
@@ -9896,9 +9882,8 @@ msgid "Die gewählte Ressource wurde nicht in der Datenbank gefunden!"
 msgstr "The selected resource could not be found in the database!"
 
 #: app/controllers/resources/search.php:103
-#, fuzzy
 msgid "URL zur Suche kopieren"
-msgstr "Copy bookings"
+msgstr "Copy the URL to the search"
 
 #: app/controllers/resources/print.php:46
 #, php-format
@@ -10126,9 +10111,8 @@ msgid "Die angegebene Person wurde nicht gefunden!"
 msgstr "The specified person could not be found!"
 
 #: app/controllers/resources/admin.php:204
-#, fuzzy
 msgid "Es gibt keine Personen mit Berechtigungen in der Raumverwaltung!"
-msgstr "Insufficient permissions to globally lock the room management system!"
+msgstr "There are no persons with permissions in the room management!"
 
 #: app/controllers/resources/admin.php:271
 #: lib/navigation/ResourceNavigation.php:291
@@ -13515,9 +13499,8 @@ msgid "Änderungen wurden gespeichert. <a href=\""
 msgstr "Changes saved. <a href=\""
 
 #: app/controllers/admin/courseware.php:9
-#, fuzzy
 msgid "Coursewareverwaltung"
-msgstr "Administration"
+msgstr "Courseware administration"
 
 #: app/controllers/admin/additional.php:60
 msgid "Zusatzangaben wurden erfolgreich zugeordnet"
@@ -13528,9 +13511,8 @@ msgid "Zuweisung der Zusatzangaben wurden aufgehoben"
 msgstr "Assignment of additional information has been revoked"
 
 #: app/controllers/admin/oauth2.php:22
-#, fuzzy
 msgid "OAuth2 Verwaltung"
-msgstr "API management"
+msgstr "OAuth2 management"
 
 #: app/controllers/admin/oauth2.php:25 app/controllers/admin/api.php:22
 #: app/controllers/api/authorizations.php:23
@@ -14043,10 +14025,10 @@ msgid "Die Endzeit liegt vor der Startzeit!"
 msgstr "The end time lies before the start time!"
 
 #: app/controllers/consultation/admin.php:172
-#, fuzzy
 msgid ""
 "Die definierte Zeit bis zur Pause ist kleiner als die Dauer eines Termins."
-msgstr "The start time must be earlier than the end time."
+msgstr ""
+"The defined time until the pause is shorter than the duration of a date."
 
 #: app/controllers/consultation/admin.php:176
 msgid ""
@@ -14526,24 +14508,20 @@ msgid "Extern"
 msgstr "External"
 
 #: app/controllers/shared/contacts.php:415
-#, fuzzy
 msgid "Externen Ansprechpartner bearbeiten"
-msgstr "Edit contact person"
+msgstr "Edit external contact person"
 
 #: app/controllers/shared/contacts.php:418
-#, fuzzy
 msgid "Internen Ansprechpartner bearbeiten"
-msgstr "Edit contact person"
+msgstr "Edit internal contact person"
 
 #: app/controllers/shared/contacts.php:420
-#, fuzzy
 msgid "Zugeordnete Einrichtung bearbeiten"
-msgstr "Edit this institute"
+msgstr "Edit associated institute"
 
 #: app/controllers/shared/contacts.php:422
-#, fuzzy
 msgid "Unbekannter Zuordnungs-Typ."
-msgstr "Unknown allocation"
+msgstr "Unknown association type."
 
 #: app/controllers/shared/contacts.php:430
 #: app/views/shared/contacts/index.php:39
@@ -14556,9 +14534,8 @@ msgid "Der Ansprechpartner wurde gespeichert."
 msgstr "The contact person has been saved."
 
 #: app/controllers/shared/contacts.php:542
-#, fuzzy
 msgid "Fehlerhafte Zuordnung!"
-msgstr "Processing error"
+msgstr "Erroneous association!"
 
 #: app/controllers/shared/contacts.php:583
 msgid "Die Verknüpfung wurde gelöscht."
@@ -15851,9 +15828,8 @@ msgstr "\"%s\" is asking for access"
 
 #: app/controllers/api/oauth2/applications.php:13
 #: app/controllers/api/oauth2/applications.php:15
-#, fuzzy
 msgid "Autorisierte Drittanwendungen"
-msgstr "Automatic enrolment"
+msgstr "Authorised third-party application"
 
 #: app/controllers/api/oauth2/applications.php:16
 msgid ""
@@ -15864,76 +15840,79 @@ msgid ""
 "der Anwendung vertrauen, überprüfen, wer sie entwickelt hat, und die Art der "
 "Informationen überprüfen, auf die die Anwendung zugreifen möchte."
 msgstr ""
+"You can connect your Stud.IP account with applications of third parties "
+"using OAuth.\n"
+"\n"
+"If you authorise an OAuth application, you should make sure that you trust "
+"the application, check who developed it and verify the kind of information "
+"the application accesses."
 
 #: app/controllers/api/oauth2/applications.php:30
 msgid "Autorisierte OAuth2-Drittanwendung"
-msgstr ""
+msgstr "Authorised OAuth2 third-party applications"
 
 #: app/controllers/api/oauth2/clients.php:23
 #: app/views/admin/oauth2/_notices.php:6 app/views/admin/oauth2/_clients.php:5
-#, fuzzy
 msgid "OAuth2-Client hinzufügen"
-msgstr "Add files"
+msgstr "Add OAuth2 client"
 
 #: app/controllers/api/oauth2/clients.php:35
-#, fuzzy
 msgid "Das Erstellen eines OAuth2-Clients war nicht erfolgreich."
-msgstr "The enrolment has not been successful."
+msgstr "The creation of an OAuth2 client has not been successful."
 
 #: app/controllers/api/oauth2/clients.php:51
-#, fuzzy, php-format
+#, php-format
 msgid "Der OAuth2-Client #%d (\"%s\") wurde gelöscht."
-msgstr "Step \"%s\" has been deleted."
+msgstr "The OAuth2 client #%d (\"%s\") has been deleted."
 
 #: app/controllers/api/oauth2/clients.php:79
 #: app/controllers/api/oauth2/clients.php:87
-#, fuzzy
 msgid "Der OAuth2-Client wurde erstellt."
-msgstr "Account has been associated."
+msgstr "The OAuth2 client has been created."
 
 #: app/controllers/api/oauth2/clients.php:80
 #: app/controllers/api/oauth2/clients.php:88
 #, php-format
 msgid "Die <em lang=\"en\"> client_id </em> lautet: <pre>%s</pre>"
-msgstr ""
+msgstr "The <em lang=\"en\"> client_id </em> is: <pre>%s</pre>"
 
 #: app/controllers/api/oauth2/clients.php:81
 #, php-format
 msgid "Das <em lang=\"en\"> client_secret </em> lautet: <pre>%s</pre>"
-msgstr ""
+msgstr "The <em lang=\"en\"> client_secret </em> is: <pre>%s</pre>"
 
 #: app/controllers/api/oauth2/clients.php:83
 msgid ""
 "Notieren Sie sich bitte das <em lang=\"en\"> client_secret </em>. Es wird "
 "Ihnen nur <strong> dieses eine Mal </strong> angezeigt."
 msgstr ""
+"Please note the <em lang=\"en\"> client_secret </em>. It will be shown to "
+"you only <strong> this one time </strong>."
 
 #: app/controllers/api/oauth2/clients.php:117
-#, fuzzy, php-format
+#, php-format
 msgid "Parameter \"%s\" fehlt."
-msgstr "User \"%s\" deleted."
+msgstr "Parameter \"%s\" missing."
 
 #: app/controllers/api/oauth2/clients.php:125
-#, fuzzy
 msgid "Der Parameter \"name\" darf nicht leer sein."
-msgstr "The title must not be empty."
+msgstr "The parameter \"name\" must not be empty."
 
 #: app/controllers/api/oauth2/clients.php:135
 msgid "Der Parameter \"redirect\" darf nur gültige URLs enthalten."
-msgstr ""
+msgstr "The parameter \"redirect\" may only contain valid URLs."
 
 #: app/controllers/api/oauth2/clients.php:145
 msgid "Der Parameter \"confidentiality\" darf nur gültige URLs enthalten."
-msgstr ""
+msgstr "The parameter \"confidentiality\" may only contain valid URLs."
 
 #: app/controllers/api/oauth2/clients.php:153
-#, fuzzy
 msgid "Der Parameter \"owner\" darf nicht leer sein."
-msgstr "The title must not be empty."
+msgstr "The parameter \"owner\" must not be empty."
 
 #: app/controllers/api/oauth2/clients.php:160
 msgid "Der Parameter \"homepage\" muss eine gültige URL enthalten."
-msgstr ""
+msgstr "The parameter \"homepage\" must contain a valid URL."
 
 #: app/controllers/api/authorizations.php:20
 #: app/views/api/authorizations/index.php:7
@@ -16221,6 +16200,8 @@ msgid ""
 "Sie haben im System %s noch keinen Account. Loggen Sie sich zuerst in %s "
 "ein, um ILIAS-Lernobjekte in Stud.IP nutzen zu können."
 msgstr ""
+"You do not have an account in the system %s. Log into %s first to be able to "
+"use ILIAS learning objects in Stud.IP."
 
 #: app/controllers/my_ilias_accounts.php:187
 #, php-format
@@ -16704,10 +16685,9 @@ msgid "Schlagwort gelöscht!"
 msgstr "Keyword deleted!"
 
 #: app/controllers/messages.php:936
-#, fuzzy
 msgid ""
 "Klicken Sie hier, um zum vorgeschlagenen Courseware-Material zu gelangen."
-msgstr "Click here for becoming invisible."
+msgstr "Click here to get to the suggested Courseware learning material."
 
 #: app/controllers/messages.php:939
 #, php-format
@@ -16720,10 +16700,18 @@ msgid ""
 "Zusätzliche Info: \n"
 " %s"
 msgstr ""
+"Your Courseware learning material has been suggested for publishing in the "
+"OER Campus:\n"
+"\n"
+"%s\n"
+"\n"
+"Additional information:\n"
+"%s"
 
 #: app/controllers/messages.php:954
 msgid "Vorschlag zur Veröffentlichung von Courseware-Material im OER Campus"
 msgstr ""
+"Suggestion for publication of Courseware learning material in the OER Campus"
 
 #: app/controllers/messages.php:981 lib/modules/NewsWidget.php:38
 msgid "Alle als gelesen markieren"
@@ -16986,9 +16974,8 @@ msgid "Das Material wurde gelöscht."
 msgstr "The learning material has been deleted."
 
 #: app/controllers/oer/mymaterial.php:139
-#, fuzzy
 msgid "Konnte Material nicht zu twillo.de hochladen."
-msgstr "No materials for this topic"
+msgstr "Learning material could not be uploaded to twillo.de."
 
 #: app/controllers/oer/mymaterial.php:149
 msgid "Lernmaterial erfolgreich gespeichert."
@@ -17004,9 +16991,8 @@ msgid "Zugriffszahlen für %s"
 msgstr "Access count for %s"
 
 #: app/controllers/oer/mymaterial.php:244
-#, fuzzy
 msgid "Datei ist nicht vorhanden"
-msgstr "Target file exists."
+msgstr "File not found"
 
 #: app/controllers/oer/mymaterial.php:281 app/views/oer/market/details.php:305
 #: app/views/oer/market/search.php:13
@@ -17040,9 +17026,8 @@ msgid "Neuigkeiten abonnieren"
 msgstr "Subscribe to announcements"
 
 #: app/controllers/oer/market.php:253
-#, fuzzy
 msgid "Lernmaterial existiert nicht mehr."
-msgstr "File \"%s\" does not exist."
+msgstr "Learning material does not exist anymore."
 
 #: app/controllers/oer/market.php:287
 msgid ""
@@ -17846,18 +17831,17 @@ msgstr ""
 "therefore cannot be changed by you."
 
 #: app/views/settings/accessibility.php:5
-#, fuzzy
 msgid "Barrierefreiheitseinstellungen"
-msgstr "Extended settings"
+msgstr "Accessibility settings"
 
 #: app/views/settings/accessibility.php:10
 msgid "Kontrastreiches Farbschema aktivieren"
-msgstr ""
+msgstr "Activate high-contrast colour scheme"
 
 #: app/views/settings/accessibility.php:12
 msgid ""
 "Mit dieser Einstellung wird ein Farbschema mit hohem Kontrast aktiviert."
-msgstr ""
+msgstr "A colour scheme with high contrast is activated with this option."
 
 #: app/views/settings/accessibility.php:20
 msgid "Skiplinks einblenden"
@@ -18554,21 +18538,19 @@ msgid ""
 msgstr "Choose which page is shown after login."
 
 #: app/views/settings/general.php:54
-#, fuzzy
 msgid ""
 "Semesteranzeige in der Überschrift und auf &raquo;Meine "
 "Veranstaltungen&laquo;"
-msgstr "Semester view on &raquo;My courses&laquo;"
+msgstr "Semester view in the heading and on \"My courses\""
 
 #: app/views/settings/general.php:55
-#, fuzzy
 msgid ""
 "Mit dieser Einstellung können Sie in der Überschrift einer Veranstaltung und "
 "auf der Seite &raquo;Meine Veranstaltungen&laquo; die Einblendung des Start- "
 "und Endsemesters hinter jeder Veranstaltung aktivieren."
 msgstr ""
-"This setting determines if the starting and ending semesters of courses are "
-"displayed on the \"My Courses\" page."
+"With this option you can activate the display of the start and end semester "
+"in the heading of a course and on the page \"My courses\"."
 
 #: app/views/settings/general.php:65
 msgid "Autostart von Touren verhindern"
@@ -18645,12 +18627,16 @@ msgid ""
 "Nach dem Verschieben einer Buchung per Drag & Drop im Belegungsplan eine "
 "Sicherheitsabfrage anzeigen"
 msgstr ""
+"Show a confirmation prompt after moving a booking via drag & drop in the "
+"booking plan"
 
 #: app/views/settings/general.php:130
 msgid ""
 "Wenn diese Einstellung aktiviert ist, wird die Buchung erst dann verschoben, "
 "wenn die Sicherheitsabfrage mit „Ja“ beantwortet wurde."
 msgstr ""
+"If this option is activated, the booking will be moved only after the "
+"confirmation prompt has been answered with \"Yes\"."
 
 #: app/views/settings/notification.php:27
 msgid "Benachrichtigung für unten aufgeführte Veranstaltungen:"
@@ -18678,17 +18664,15 @@ msgstr "(hidden)"
 msgid ""
 "Keine der Veranstaltungen auf die sie Zugriff haben hat eine Courseware mit "
 "Inhalten."
-msgstr ""
+msgstr "No courses where you have access to has a Courseware with contents."
 
 #: app/views/contents/courseware/create_project.php:8
-#, fuzzy
 msgid "Titel des Lernmaterials"
-msgstr "Tab title"
+msgstr "Learning material title"
 
 #: app/views/contents/courseware/create_project.php:21
-#, fuzzy
 msgid "Art des Lernmaterials"
-msgstr "Date type"
+msgstr "Learning material type"
 
 #: app/views/contents/courseware/create_project.php:27
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:934
@@ -18787,9 +18771,8 @@ msgid "Erstellen"
 msgstr "Create"
 
 #: app/views/contents/courseware/create_project.php:122
-#, fuzzy
 msgid "Neues Lernmaterial erstellen"
-msgstr "Add new learning material"
+msgstr "Create new learning material"
 
 #: app/views/contact/editGroup.php:6
 msgid "Gruppe anlegen"
@@ -20473,7 +20456,6 @@ msgid "Unregelmäßige Termine / Blocktermine"
 msgstr "Aperiodic dates / block dates"
 
 #: app/views/course/timesrooms/_irregularEvents.php:17
-#, fuzzy
 msgid "Unregelmäßige Termine/Blocktermine"
 msgstr "Aperiodic dates / block dates"
 
@@ -20859,9 +20841,8 @@ msgid "Durchschnitt: "
 msgstr "Average: "
 
 #: app/views/course/feedback/index.php:8
-#, fuzzy
 msgid "Es wurden noch keine Feedback-Elemente angelegt."
-msgstr "Feedback elements have been created."
+msgstr "No feedback elements have been created yet."
 
 #: app/views/course/feedback/index.php:13
 msgid "Feedback-Elemente"
@@ -22312,7 +22293,7 @@ msgstr "enter with status %s"
 #: app/views/course/members/circular_mail.php:6
 #: app/views/course/members/circular_mail.php:7
 msgid "An wen möchten Sie eine Rundmail schreiben?"
-msgstr ""
+msgstr "To which users do you want to write a circular mail?"
 
 #: app/views/course/members/circular_mail.php:17
 #: app/views/course/members/circular_mail.php:32
@@ -22321,26 +22302,23 @@ msgstr ""
 #: app/views/course/members/circular_mail.php:77
 #: app/views/course/members/circular_mail.php:92
 #: app/views/course/members/circular_mail.php:107
-#, fuzzy, php-format
+#, php-format
 msgid "%u Person"
 msgid_plural "%u Personen"
-msgstr[0] "%s persons"
-msgstr[1] "%s persons"
+msgstr[0] "%u person"
+msgstr[1] "%u persons"
 
 #: app/views/course/members/circular_mail.php:74
-#, fuzzy
 msgid "Alle vorläufig akzeptierten Teilnehmende der Veranstaltung"
-msgstr "Preliminary enroled participants"
+msgstr "All preliminary enroled participants of the course"
 
 #: app/views/course/members/circular_mail.php:89
-#, fuzzy
 msgid "Alle Personen auf der Warteliste der Veranstaltung"
-msgstr "You have been added to the wait list of this course."
+msgstr "All persons on the waitlist of the course"
 
 #: app/views/course/members/circular_mail.php:104
-#, fuzzy
 msgid "Alle Personen auf der Losliste der Veranstaltung"
-msgstr "You have been added to the wait list of this course."
+msgstr "All persons on the lot-list of the course"
 
 #: app/views/course/members/accepted_list.php:17
 msgid "vorläufig akzeptierten Nutzer/-innen"
@@ -22401,7 +22379,6 @@ msgid "Eingabeformat"
 msgstr "Input format"
 
 #: app/views/course/members/import_autorlist.php:16
-#, fuzzy
 msgid ""
 "In das Textfeld <strong>Teilnehmendenliste übernehmen</strong> können Sie "
 "eine Liste mit Namen von Studierenden eingeben,\n"
@@ -22418,7 +22395,7 @@ msgid ""
 "Zeile die Email Adresse ein."
 msgstr ""
 "In the text area <strong>Apply participant list</strong>, you can enter a "
-"list of names of %s that shall be enroled in the course.\n"
+"list of names of students that shall be enroled in the course.\n"
 "                Use the select box to select the appropriate format in which "
 "you want to enter the names.<br />\n"
 "                <strong>Input format</strong><br/>\n"
@@ -23173,9 +23150,8 @@ msgid "Keine Materialien zu dem Thema vorhanden"
 msgstr "No materials for this topic"
 
 #: app/views/course/topics/index.php:96 app/views/course/topics/edit.php:86
-#, fuzzy
 msgid "Das Thema wirklich löschen?"
-msgstr "Really delete this learning material?"
+msgstr "Really delete the topic?"
 
 #: app/views/course/topics/index.php:101
 msgid "Alle Termine ausfallen lassen"
@@ -23198,14 +23174,12 @@ msgid "Thema bearbeiten"
 msgstr "Edit topic"
 
 #: app/views/course/topics/edit.php:30
-#, fuzzy
 msgid "Dateiordner vorhanden"
-msgstr "Document folder available "
+msgstr "Document folder available"
 
 #: app/views/course/topics/edit.php:42
-#, fuzzy
 msgid "Forenthema vorhanden"
-msgstr "Forum topic available "
+msgstr "Forum topic available"
 
 #: app/views/course/topics/edit.php:45
 msgid "Forenthema anlegen"
@@ -23220,9 +23194,8 @@ msgid "Themen auswählen"
 msgstr "Select topics"
 
 #: app/views/course/plus/edittool.php:5
-#, fuzzy
 msgid "Name des Werkzeugs"
-msgstr "Name of the area"
+msgstr "Tool name"
 
 #: app/views/course/plus/index.php:20
 #: app/views/admin/sem_classes/details.php:207
@@ -23230,9 +23203,9 @@ msgid "Inhaltselemente"
 msgstr "Content elements"
 
 #: app/views/course/plus/index.php:77
-#, fuzzy, php-format
+#, php-format
 msgid "%s für Studierende"
-msgstr "Students"
+msgstr "%s for students"
 
 #: app/views/course/plus/index.php:78
 #: app/views/admin/sem_classes/details.php:150
@@ -23249,9 +23222,8 @@ msgid "Keine Beschreibung vorhanden."
 msgstr "No description available."
 
 #: app/views/course/plus/index.php:117
-#, fuzzy
 msgid "Optionen bearbeiten"
-msgstr "Edit app"
+msgstr "Edit options"
 
 #: app/views/course/plus/index.php:124
 msgid "Inhalte löschen"
@@ -24332,19 +24304,20 @@ msgid ""
 "Das folgende Material wird %s zur Veröffentlichung im OER Campus "
 "vorgeschlagen:"
 msgstr ""
+"%s wants to suggest the following learning material for publication in the "
+"OER Campus:"
 
 #: app/views/file/suggest_oer.php:9
 msgid "Ihr Vorschlag wird anonym versendet."
-msgstr ""
+msgstr "Your suggestion will be sent anonymously."
 
 #: app/views/file/suggest_oer.php:10
 msgid "Falls gewünscht, können Sie zusätzlich eine Nachricht verfassen:"
-msgstr ""
+msgstr "If desired, you can additionally write a message:"
 
 #: app/views/file/suggest_oer.php:19
-#, fuzzy
 msgid "Material vorschlagen"
-msgstr "Upload new learning material"
+msgstr "Suggest learning material"
 
 #: app/views/file/add_from_library.php:3
 msgid ""
@@ -25657,7 +25630,7 @@ msgstr "Room is requestable"
 
 #: app/views/resources/room/_add_edit_form.php:38
 msgid "Globale Buchungssperren gelten für diesen Raum"
-msgstr ""
+msgstr "Global booking locks are in place for this room"
 
 #: app/views/resources/room/_add_edit_form.php:41
 #: lib/classes/sidebar/RoomSearchWidget.class.php:91
@@ -25688,9 +25661,8 @@ msgstr "%d seats"
 
 #: app/views/resources/room_planning/booking_plan.php:92
 #: app/views/room_management/planning/index.php:73
-#, fuzzy
 msgid "Wollen Sie die Buchung wirklich ändern?"
-msgstr "Do you want to delete the invitation?"
+msgstr "Do you really want to modify the booking?"
 
 #: app/views/resources/room_planning/booking_plan.php:111
 #: app/views/resources/room_planning/semester_plan.php:137
@@ -26319,14 +26291,12 @@ msgid "Duplizieren"
 msgstr "Duplicate"
 
 #: app/views/resources/booking/edit.php:27
-#, fuzzy
 msgid "In Buchung umwandeln"
-msgstr "Convert booking to request"
+msgstr "Transform into booking"
 
 #: app/views/resources/booking/edit.php:35
-#, fuzzy
 msgid "In Reservierung umwandeln"
-msgstr "Reservations"
+msgstr "Transform into reservation"
 
 #: app/views/resources/booking/copy.php:11
 msgid "In welchen Raum bzw. welche Räume soll die Buchung kopiert werden?"
@@ -26437,18 +26407,18 @@ msgid "Nächste Anfrage"
 msgstr "Next request"
 
 #: app/views/resources/room_request/overview.php:9
-#, fuzzy, php-format
+#, php-format
 msgid "Anfragenliste (%d bearbeitete Anfrage)"
 msgid_plural "Anfragenliste (%d bearbeitete Anfragen)"
-msgstr[0] "Request list (%d request)"
-msgstr[1] "Request list (%d requests)"
+msgstr[0] "Request list (%d processed request)"
+msgstr[1] "Request list (%d processed requests)"
 
 #: app/views/resources/room_request/overview.php:18
-#, fuzzy, php-format
+#, php-format
 msgid "Anfragenliste (%d abgelehnte Anfrage)"
 msgid_plural "Anfragenliste (%d abgelehnte Anfragen)"
-msgstr[0] "Request list (%d request)"
-msgstr[1] "Request list (%d requests)"
+msgstr[0] "Request list (%d denied request)"
+msgstr[1] "Request list (%d denied requests)"
 
 #: app/views/resources/room_request/overview.php:27
 #, php-format
@@ -26489,19 +26459,18 @@ msgstr "Go to booking plan"
 
 #: app/views/resources/room_request/resolve_room_tr.php:40
 #: app/views/resources/room_request/resolve_room_tr.php:69
-#, fuzzy, php-format
+#, php-format
 msgid "%u von %u Terminen nicht verfügbar"
-msgstr "Profile not available."
+msgstr "%u out of %u dates unavailable"
 
 #: app/views/resources/room_request/resolve_room_tr.php:81
 #, php-format
 msgid "%s von %s Terminen sind in diesem Raum"
-msgstr ""
+msgstr "%s out of %s dates are in this room"
 
 #: app/views/resources/room_request/resolve.php:8
-#, fuzzy
 msgid "Gebuchte Räume"
-msgstr "multiple booked rooms"
+msgstr "Booked rooms"
 
 #: app/views/resources/room_request/resolve.php:43
 #, php-format
@@ -26576,16 +26545,15 @@ msgstr "Assign dates"
 
 #: app/views/resources/room_request/resolve.php:303
 msgid "Keine Auswahl / keine Änderung"
-msgstr ""
+msgstr "No selection / no change"
 
 #: app/views/resources/room_request/resolve.php:387
 msgid "Anfrage trotzdem auflösen"
 msgstr "Resolve request anyway"
 
 #: app/views/resources/room_request/resolve.php:391
-#, fuzzy
 msgid "Anfrage zwischenspeichern"
-msgstr "The request has been saved."
+msgstr "The request has been cached"
 
 #: app/views/resources/room_request/resolve.php:419
 msgid "Terminserien expandieren"
@@ -26708,9 +26676,9 @@ msgid "Es sind keine Eigenschaften definiert!"
 msgstr "No properties are defined!"
 
 #: app/views/resources/admin/global_locks.php:20
-#, fuzzy, php-format
+#, php-format
 msgid "Sperre vom %1$s, %2$s Uhr bis %3$s, %4$s Uhr"
-msgstr "From %1$s, %2$s until %3$s, %4$s (locked)"
+msgstr "Locked from %1$s, %2$s until %3$s, %4$s"
 
 #: app/views/resources/admin/global_locks.php:28
 msgid "Sperrung bearbeiten"
@@ -26800,9 +26768,8 @@ msgid "Dauerhafte Berechtigungen"
 msgstr "Permanent permissions"
 
 #: app/views/resources/admin/user_permissions.php:187
-#, fuzzy
 msgid "Personen mit Berechtigungen an der Raumverwaltung"
-msgstr "Insufficient permissions to globally lock the room management system!"
+msgstr "Persons with permissions in the room management"
 
 #: app/views/resources/admin/configuration.php:12
 msgid "Raumverwaltung aktivieren"
@@ -26893,12 +26860,13 @@ msgstr "What is the shortest allowed duration of a booking in minutes?"
 
 #: app/views/resources/admin/configuration.php:120
 msgid "Voreinstellung zu exportierender Buchungstypen"
-msgstr ""
+msgstr "Preset for booking types to be exported"
 
 #: app/views/resources/admin/configuration.php:132
 msgid ""
 "Zusatztext, der beim Seriendruck unter jedem Raumplan angezeigt werden soll"
 msgstr ""
+"Additional text that shall be shown below each room plan when serial printing"
 
 #: app/views/resources/admin/booking_log.php:7
 #, php-format
@@ -26986,9 +26954,8 @@ msgstr "Day booking plan"
 #: app/views/resources/print/clipboard_rooms.php:105
 #: app/views/resources/export/resource_bookings.php:35
 #: app/views/resources/export/select_booking_sources.php:106
-#, fuzzy
 msgid "Zu exportierende Belegungstypen"
-msgstr "Requested booking periods"
+msgstr "Booking types to be exported"
 
 #: app/views/resources/print/clipboard_rooms.php:117
 msgid "Weiter zur Raumauswahl"
@@ -27033,9 +27000,8 @@ msgstr "Select time range"
 
 #: app/views/resources/export/resource_bookings.php:32
 #: app/views/resources/export/select_booking_sources.php:104
-#, fuzzy
 msgid "Belegungstypen auswählen"
-msgstr "Select semester"
+msgstr "Select booking types"
 
 #: app/views/resources/export/resource_bookings.php:48
 #: app/views/resources/resource/export_bookings.php:33
@@ -27173,14 +27139,14 @@ msgid "Art der Anmelderegel"
 msgstr "Admission rule type"
 
 #: app/views/admission/ruleadministration/index.php:18
-#, fuzzy, php-format
+#, php-format
 msgid "Die Regel \"%s\" ist aktiv. Klicken Sie hier, um sie zu deaktivieren."
-msgstr "This ILIAS installation is active. Click here to deactivate it."
+msgstr "The rule \"%s\" is active. Click here to deactivate it."
 
 #: app/views/admission/ruleadministration/index.php:25
-#, fuzzy, php-format
+#, php-format
 msgid "Die Regel \"%s\" ist inaktiv. Klicken Sie hier, um sie zu aktivieren."
-msgstr "This ILIAS installation is inactive. Click here to activate it."
+msgstr "The rule \"%s\" is inactive. Click here to activate it."
 
 #: app/views/admission/ruleadministration/index.php:42
 msgid "Sie haben noch keine Anmelderegeln installiert!"
@@ -29104,81 +29070,73 @@ msgstr "Security token for corresponding system (read-only)"
 
 #: app/views/admin/oauth2/index.php:7
 msgid "OAuth2-Setup"
-msgstr ""
+msgstr "OAuth2 setup"
 
 #: app/views/admin/oauth2/_notices.php:3
-#, fuzzy
 msgid "Es wurde noch kein OAuth2-Client erstellt."
-msgstr "No learning materials have been provided yet."
+msgstr "No OAuth2 client has been created yet."
 
 #: app/views/admin/oauth2/_clients.php:14
-#, fuzzy
 msgid "Registrierte OAuth2-Clients"
-msgstr "registered authors"
+msgstr "Registered OAuth2 clients"
 
 #: app/views/admin/oauth2/_clients.php:30
 #: app/views/admin/oauth2/_clients.php:35
-#, fuzzy, php-format
+#, php-format
 msgid "OAuth2-Client \"%s\" löschen"
-msgstr "Delete smiley \"%s\""
+msgstr "Delete OAuth2 client \"%s\""
 
 #: app/views/admin/oauth2/_clients.php:34
-#, fuzzy
 msgid "Wollen Sie den OAuth2-Client wirklich löschen?"
-msgstr "Do you really intend to delete this content?"
+msgstr "Do you really want to delete this OAuth2 client?"
 
 #: app/views/admin/oauth2/_clients.php:48
-#, fuzzy
 msgid "Entwickelt durch"
-msgstr "Development mode"
+msgstr "Developed by"
 
 #: app/views/admin/oauth2/_clients.php:56
 msgid "client_id"
-msgstr ""
+msgstr "client_id"
 
 #: app/views/admin/oauth2/_clients.php:59
 #: app/views/api/oauth2/clients/add.php:17
 msgid "Redirect-URIs"
-msgstr ""
+msgstr "Redirect URIs"
 
 #: app/views/admin/oauth2/_clients.php:68
 msgid "Kann kryptographische Geheimnisse bewahren?"
-msgstr ""
+msgstr "Can keep cryptographic secrets?"
 
 #: app/views/admin/oauth2/_clients.php:71
 #: app/views/api/oauth2/clients/add.php:71
 msgid "Notizen (nur für Root-Accounts sichtbar)"
-msgstr ""
+msgstr "Notes (only visible for root accounts)"
 
 #: app/views/admin/oauth2/_setup_key.php:14
-#, fuzzy
 msgid "Datei existiert."
-msgstr "Data saved."
+msgstr "File exists."
 
 #: app/views/admin/oauth2/_setup_key.php:14
-#, fuzzy
 msgid "Datei existiert nicht."
-msgstr "File \"%s\" does not exist."
+msgstr "File does not exist."
 
 #: app/views/admin/oauth2/_setup_key.php:17
-#, fuzzy
 msgid "Datei ist lesbar."
-msgstr "This is news no. %u"
+msgstr "File is readable."
 
 #: app/views/admin/oauth2/_setup_key.php:17
-#, fuzzy
 msgid "Datei ist nicht lesbar."
-msgstr "The folder is not writeable."
+msgstr "File is not readable."
 
 #: app/views/admin/oauth2/_setup_key.php:23
-#, fuzzy, php-format
+#, php-format
 msgid "Korrekte Zugriffsberechtigung: %s"
-msgstr "Global access settings"
+msgstr "Correct access permission: %s"
 
 #: app/views/admin/oauth2/_setup_key.php:24
-#, fuzzy, php-format
+#, php-format
 msgid "Falsche Zugriffsberechtigung: %s"
-msgstr "Global access settings"
+msgstr "Wrong access permission: %s"
 
 #: app/views/admin/webservice_access/index.php:4
 #: app/views/admin/webservice_access/test.php:35
@@ -29349,16 +29307,14 @@ msgid "Kann Unterveranstaltungen haben"
 msgstr "Can have sub-courses"
 
 #: app/views/admin/sem_classes/details.php:211
-#, fuzzy
 msgid ""
 "Diese Inhaltselemente sind standardmäßig bei den Veranstaltungen dieser "
 "Klasse aktiviert."
-msgstr "There plug-ins are activated in courses of this class by default."
+msgstr "These plugins are activated by default in courses of this class."
 
 #: app/views/admin/sem_classes/details.php:211
-#, fuzzy
 msgid "Verfügbare Inhaltselemente"
-msgstr "Content elements"
+msgstr "Available content elements"
 
 #: app/views/admin/sem_classes/details.php:240
 msgid "Sicherheitsabfrage"
@@ -30194,43 +30150,40 @@ msgid "Name des ILIAS-Mandanten"
 msgstr "ILIAS mandator name"
 
 #: app/views/admin/ilias_interface/edit_server.php:58
-#, fuzzy
 msgid "Externe Authentifizierung"
-msgstr "Authentication"
+msgstr "External authentication"
 
 #: app/views/admin/ilias_interface/edit_server.php:63
-#, fuzzy
 msgid ""
 "Authentifizierungsplugin (nur LDAP/Shibboleth) beim Anlegen von externen "
 "Accounts übernehmen."
 msgstr ""
-"Copy authentication plug-in (LDAP only) while creating external accounts."
+"Apply authentication plugin (LDAP/Shibboleth only) while creating external "
+"accounts."
 
 #: app/views/admin/ilias_interface/edit_server.php:64
-#, fuzzy
 msgid ""
 "Wählen Sie hier ein Authentifizierungsplugin, damit neu angelegte ILIAS-"
 "Accounts den entsprechenden Authentifizierungsmodus erhalten, wenn dieser "
 "Modus auch für den vorhandenen Stud.IP-Account gilt. Andernfalls erhalten "
 "alle ILIAS-Accounts den default-Modus"
 msgstr ""
-"Please select an authentication plug-in in order to equip newly created "
-"ILIAS accounts with the authentication modus LDAP, provided this modus is "
-"the one for the existing Stud.IP account. Otherwise all ILIAS accounts will "
-"be equipped with the default modus"
+"Please select an authentication plugin in order to equip newly created ILIAS "
+"accounts with the authentication mode, provided this mode also is used by "
+"the existing Stud.IP account. Otherwise all ILIAS accounts will be equipped "
+"with the default mode"
 
 #: app/views/admin/ilias_interface/edit_server.php:66
-#, fuzzy
 msgid ""
 "(Um diese Einstellung zu nutzen muss zumindest ein Authentifizierungsplugin "
 "aktiviert sein.)"
 msgstr ""
-"(In order use this setting at least one LDAP authentication plug-in must be "
+"(In order use this option, at least one authentication plugin must be "
 "activated.)"
 
 #: app/views/admin/ilias_interface/edit_server.php:72
 msgid "Keine Accounts aus Stud.IP in ILIAS anlegen oder aktualisieren"
-msgstr ""
+msgstr "Do not create or update accounts from Stud.IP in ILIAS"
 
 #: app/views/admin/ilias_interface/edit_server.php:75
 msgid "Admin-Account"
@@ -30648,7 +30601,7 @@ msgstr "Course period"
 
 #: app/views/admin/semester/index.php:26 app/views/admin/semester/edit.php:98
 msgid "Tatsächlicher Semesterwechsel"
-msgstr ""
+msgstr "Real change of semester"
 
 #: app/views/admin/semester/index.php:38
 msgid "Es wurden noch keine Semester angelegt."
@@ -30740,6 +30693,8 @@ msgid ""
 "Optional. Wird kein Datum angegeben, wird das Wochen-Offset in "
 "SEMESTER_TIME_SWITCH berücksichtigt."
 msgstr ""
+"Optional. If no date is specified, the week offset in SEMESTER_TIME_SWITCH "
+"is regarded."
 
 #: app/views/admin/additional/index.php:6
 msgid "Set"
@@ -31407,7 +31362,7 @@ msgstr "Yes, I want to create %s dates."
 
 #: app/views/consultation/admin/create.php:47
 msgid "Ort und Zeit"
-msgstr ""
+msgstr "Location and time"
 
 #: app/views/consultation/admin/create.php:63
 #: app/views/consultation/admin/create.php:72
@@ -31448,21 +31403,19 @@ msgstr ""
 
 #: app/views/consultation/admin/create.php:135
 msgid "Pausen zwischen den Terminen einfügen?"
-msgstr ""
+msgstr "Insert pauses between dates?"
 
 #: app/views/consultation/admin/create.php:139
 msgid "Eine Pause nach wie vielen Minuten einfügen?"
-msgstr ""
+msgstr "Add a pause after how many minutes?"
 
 #: app/views/consultation/admin/create.php:146
-#, fuzzy
 msgid "Dauer der Pause in Minuten"
-msgstr "Date duration in minutes"
+msgstr "Pause duration in minutes"
 
 #: app/views/consultation/admin/create.php:155
-#, fuzzy
 msgid "Durchführende Personen, Gruppen oder Einrichtungen"
-msgstr "Available admissions at my institutes"
+msgstr "Realising persons, groups or institutes"
 
 #: app/views/consultation/admin/create.php:159
 msgid ""
@@ -31491,9 +31444,8 @@ msgstr ""
 "the selection here  upon consultation."
 
 #: app/views/consultation/admin/create.php:176
-#, fuzzy
 msgid "Weitere Einstellungen"
-msgstr "Extended settings"
+msgstr "Further settings"
 
 #: app/views/consultation/admin/create.php:179
 #: app/views/consultation/admin/edit.php:26
@@ -31540,19 +31492,16 @@ msgstr ""
 "this text."
 
 #: app/views/consultation/admin/block-responsibilities.php:19
-#, fuzzy
 msgid "Durchführende Personen"
-msgstr "Realising person"
+msgstr "Realising persons"
 
 #: app/views/consultation/admin/block-responsibilities.php:32
-#, fuzzy
 msgid "Durchführende Gruppen"
-msgstr "Realising lecturer"
+msgstr "Realising groups"
 
 #: app/views/consultation/admin/block-responsibilities.php:45
-#, fuzzy
 msgid "Durchführende Einrichtungen"
-msgstr "My institutes"
+msgstr "Realising institutes"
 
 #: app/views/consultation/admin/edit.php:13
 msgid ""
@@ -31724,9 +31673,8 @@ msgid "Verweise auf diese Seite"
 msgstr "Pages refering to this page"
 
 #: app/views/wiki/info.php:63
-#, fuzzy
 msgid "Untergeordnete Seiten"
-msgstr "External pages"
+msgstr "Subordinated pages"
 
 #: app/views/wiki/change_page_config.php:9
 msgid "Standard Wiki-Einstellungen verwenden"
@@ -31737,9 +31685,8 @@ msgid "Leseberechtigung"
 msgstr "Read permission"
 
 #: app/views/wiki/change_page_config.php:19
-#, fuzzy
 msgid "Wiki-Seite für alle Teilnehmenden lesbar"
-msgstr "Wiki page readable for all participants"
+msgstr "Wiki page is readable for all participants"
 
 #: app/views/wiki/change_page_config.php:21
 #: app/views/wiki/change_page_config.php:39
@@ -31772,17 +31719,15 @@ msgstr "Only editable if readable for this group of persons"
 
 #: app/views/wiki/change_page_config.php:50 app/views/wiki/create.php:16
 msgid "Vorgängerseite"
-msgstr ""
+msgstr "Previous page"
 
 #: app/views/wiki/change_page_config.php:53
-#, fuzzy
 msgid "Diese Wikiseite darf keine Vorgängerseite haben."
-msgstr "The preparation time must not contain a negative value!"
+msgstr "This wiki page must not have a previous page."
 
 #: app/views/wiki/change_page_config.php:56 app/views/wiki/create.php:18
-#, fuzzy
 msgid "keine Vorgängerseite"
-msgstr "no template"
+msgstr "no previous page"
 
 #: app/views/wiki/import.php:12
 msgid "Meinten Sie eine der folgenden Veranstaltungen?"
@@ -31923,9 +31868,8 @@ msgid "Wollen Sie die externe Person wirklich löschen?"
 msgstr "Do you really want to delete the external person?"
 
 #: app/views/shared/contacts/contact_range_fields.php:3
-#, fuzzy
 msgid "Zuordnungsdaten"
-msgstr "Assignments"
+msgstr "Assignment data"
 
 #: app/views/shared/contacts/add_ansprechpartner.php:78
 msgid "Neuer externer Ansprechpartner"
@@ -31942,9 +31886,8 @@ msgid "Alternative Kontaktmail (optional)"
 msgstr "Alternative contact mail (optional)"
 
 #: app/views/shared/contacts/edit_ansprechpartner.php:4
-#, fuzzy
 msgid "Personendaten"
-msgstr "Participant lists"
+msgstr "Personal data"
 
 #: app/views/shared/contacts/range.php:13
 msgid "Ansprechpartner hinzufügen"
@@ -32007,9 +31950,8 @@ msgstr "Academic degree"
 
 #: app/views/shared/studiengang/_studiengang.php:181
 #: app/views/search/studiengaenge/info.php:150
-#, fuzzy
 msgid "Ihre AnsprechpartnerInnen"
-msgstr "Contact person"
+msgstr "Your contact persons"
 
 #: app/views/shared/studiengang/_studiengang.php:202
 #: app/views/search/studiengaenge/info.php:171
@@ -32018,9 +31960,8 @@ msgstr "Documents: Regulations, forms, information"
 
 #: app/views/shared/studiengang/_studiengang.php:228
 #: app/views/search/studiengaenge/info.php:197
-#, fuzzy
 msgid "Aufbau-/Kombinationsstudiengänge"
-msgstr "Postgraduate course of studies"
+msgstr "Postgraduate / combined course of studies"
 
 #: app/views/shared/studiengang/_studiengang.php:241
 #: app/views/shared/modul/_modul.php:81
@@ -32425,14 +32366,12 @@ msgid "Sprache zuordnen"
 msgstr "Assign language"
 
 #: app/views/courseware/public/index.php:12
-#, fuzzy
 msgid "Der Link zu dieser Seite ist abgelaufen."
-msgstr "Link to this posting"
+msgstr "The link to this page has expired."
 
 #: app/views/courseware/public/index.php:15
-#, fuzzy
 msgid "Es wurde kein gültiger Link aufgerufen."
-msgstr "No valid group has been selected."
+msgstr "No valid link has been accessed."
 
 #: app/views/my_studygroups/index.php:18
 msgid "Gruppe ändern"
@@ -32980,7 +32919,6 @@ msgstr "%s (comment)"
 
 #: app/views/search/studiengaenge/verlauf.php:64
 #: app/views/search/studiengaenge/verlauf.php:106
-#, fuzzy
 msgid "Zusatzinformationen zum Studiengangabschnitt"
 msgstr "Additional information for the section of course of study"
 
@@ -34032,9 +33970,9 @@ msgid "Zugeordnet zu Gruppe "
 msgstr "Assigned to group "
 
 #: app/views/my_courses/groups.php:53
-#, fuzzy, php-format
+#, php-format
 msgid "Gruppe %u zuordnen"
-msgstr "Assign course group"
+msgstr "Assign group %u"
 
 #: app/views/my_courses/_deputy_bosses.php:3
 msgid "Personen, deren Standardvertretung ich bin"
@@ -34148,9 +34086,8 @@ msgid "Sprache der Tour:"
 msgstr "Tour language:"
 
 #: app/views/tour/admin_details.php:25
-#, fuzzy
 msgid "Name der Tour"
-msgstr "Name of tour:"
+msgstr "Name of tour"
 
 #: app/views/tour/admin_details.php:29
 msgid "Bitte geben Sie einen Namen für die Tour an"
@@ -34169,9 +34106,8 @@ msgid "Wizard (interaktiv)"
 msgstr "Wizard (interactive)"
 
 #: app/views/tour/admin_details.php:52
-#, fuzzy
 msgid "Zugang zur Tour"
-msgstr "Access to tour:"
+msgstr "Access to tour"
 
 #: app/views/tour/admin_details.php:58
 msgid "Anzeige im Hilfecenter"
@@ -34186,18 +34122,16 @@ msgid "Startet nur beim ersten Aufruf der Seite"
 msgstr "Starts only on the first loading of the page"
 
 #: app/views/tour/admin_details.php:71
-#, fuzzy
 msgid "Startseite der Tour"
-msgstr "Starting page of tour:"
+msgstr "Start page of tour"
 
 #: app/views/tour/admin_details.php:75
 msgid "Bitte geben Sie eine Startseite für die Tour an"
 msgstr "Please select a start page for the tour"
 
 #: app/views/tour/admin_details.php:81
-#, fuzzy
 msgid "Geltungsbereich (Nutzendenstatus)"
-msgstr "Scope (user status):"
+msgstr "Scope (user status)"
 
 #: app/views/tour/admin_details.php:96
 msgid "Teilnehmende der Veranstaltung"
@@ -34383,12 +34317,11 @@ msgid "Angemeldet als <strong>%s</strong> (%s)"
 msgstr "Logged in as <strong>%s</strong> (%s)"
 
 #: app/views/api/oauth/authorize.php:28 app/views/api/oauth2/authorize.php:54
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sind sie nicht <strong>%s</strong>, so melden Sie sich bitte ab und "
 "versuchen es erneut."
-msgstr ""
-"You are not <strong>%s</strong>. Please <a href=\"%s\">log out</a> and retry."
+msgstr "You are not <strong>%s</strong>. Please log out and retry."
 
 #: app/views/api/authorizations/index.php:4
 msgid "Sie haben noch keinen Apps Zugriff auf Ihren Account gewährt."
@@ -34404,84 +34337,82 @@ msgstr "Do you really want to forbid the app to access your data?"
 
 #: app/views/api/oauth2/clients/add.php:6
 msgid "Basisdaten des OAuth2-Clients"
-msgstr ""
+msgstr "Basic data of the OAuth2 client"
 
 #: app/views/api/oauth2/clients/add.php:19
 msgid "schema://<redirect-uri-1>\\nschema://<redirect-uri-2>"
 msgstr ""
+"schema://<redirect-uri-1>\\n"
+"schema://<redirect-uri-2>"
 
 #: app/views/api/oauth2/clients/add.php:32
 msgid "Kann der OAuth2-Client kryptographische Geheimnisse bewahren?"
-msgstr ""
+msgstr "Can the OAuth2 client keep cryptographic secrets?"
 
 #: app/views/api/oauth2/clients/add.php:38
 msgid ""
 "Nein. Es handelt sich zum Beispiel um eine <span lang=\"en\">Mobile App</"
 "span> oder <span lang=\"en\">Single Page App</span>."
 msgstr ""
+"No. It is for example a mobile application or a single page application."
 
 #: app/views/api/oauth2/clients/add.php:45
 msgid "Ja, dieser OAuth2-Client kann ein kryptographisches Geheimnis bewahren."
-msgstr ""
+msgstr "Yes, this OAuth2 client can keep a cryptographic secret."
 
 #: app/views/api/oauth2/clients/add.php:52
-#, fuzzy
 msgid "Meta-Informationen"
-msgstr "Information"
+msgstr "Meta information"
 
 #: app/views/api/oauth2/clients/add.php:57
 #: app/views/api/oauth2/applications/details.php:8
 msgid "Von wem wird der OAuth2-Client entwickelt?"
-msgstr ""
+msgstr "Who develops the OAuth2 client?"
 
 #: app/views/api/oauth2/clients/add.php:64
 msgid "Homepage der Entwickelnden des OAuth2-Clients"
-msgstr ""
+msgstr "Developer homepage of the OAuth2 client"
 
 #: app/views/api/oauth2/clients/add.php:80
-#, fuzzy
 msgid "Neuen OAuth2-Client erstellen"
-msgstr "Create a new folder"
+msgstr "Create new OAuth2 client"
 
 #: app/views/api/oauth2/authorize.php:3
-#, fuzzy
 msgid "Autorisierungsanfrage"
-msgstr "Automatic enrolment"
+msgstr "Authorisation request"
 
 #: app/views/api/oauth2/authorize.php:8
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Die Applikation <strong>\"%s\"</strong> möchte auf Ihre Daten zugreifen."
-msgstr "The application <strong>%s</strong> would like to access your data."
+msgstr "The application <strong>\"%s\"</strong> would like to access your data."
 
 #: app/views/api/oauth2/authorize.php:15
 msgid "Diese Applikation hat Zugriff auf:"
-msgstr ""
+msgstr "This application has access to:"
 
 #: app/views/api/oauth2/applications/index.php:18
 #: app/views/api/oauth2/applications/index.php:23
 msgid "Autorisierung widerrufen"
-msgstr ""
+msgstr "Revoke authorisation"
 
 #: app/views/api/oauth2/applications/index.php:22
-#, fuzzy
 msgid "Wollen Sie die OAuth2-Autorisierung wirklich widerrufen?"
-msgstr "Do you really want to kick the person?"
+msgstr "Do you really want to revoke the OAuth2 authorisation?"
 
 #: app/views/api/oauth2/applications/index.php:33
 msgid "Entwickelt durch:"
-msgstr ""
+msgstr "Developed by:"
 
 #: app/views/api/oauth2/applications/index.php:50
-#, fuzzy
 msgid "Keine autorisierten Drittanwendungen"
-msgstr "My archived courses"
+msgstr "No authorised third-party application"
 
 #: app/views/api/oauth2/applications/index.php:51
-#, fuzzy
 msgid ""
 "Sie haben keine Anwendungen, die zum Zugriff auf Ihr Konto berechtigt sind."
-msgstr "You do not have access to this area."
+msgstr ""
+"You do not have an application that is authorised to access your account."
 
 #: app/views/evaluation/_evaluation.php:16
 #: lib/evaluation/evaluation_admin_overview.lib.php:272
@@ -34827,14 +34758,12 @@ msgid "Bitte geben Sie eine Route für den Hilfe-Text an"
 msgstr "Please add a route for the help text"
 
 #: app/views/help_content/edit.php:22
-#, fuzzy
 msgid "Sprache des Textes"
-msgstr "Text language:"
+msgstr "Text language"
 
 #: app/views/help_content/edit.php:33
-#, fuzzy
 msgid "Hilfe-Text"
-msgstr "Help texts"
+msgstr "Help text"
 
 #: app/views/help_content/edit.php:35
 msgid "Bitte geben Sie den Text ein"
@@ -35084,20 +35013,17 @@ msgstr "Remove the topic from the list"
 
 #: app/views/oer/mymaterial/edit.php:225 app/views/oer/market/details.php:105
 #: app/views/oer/market/_searchform.php:96
-#, fuzzy
 msgid "Leicht"
-msgstr "Reading view"
+msgstr "Easy"
 
 #: app/views/oer/mymaterial/edit.php:226 app/views/oer/market/details.php:106
 #: app/views/oer/market/_searchform.php:97
-#, fuzzy
 msgid "Schwer"
-msgstr "Research interests"
+msgstr "Difficult"
 
 #: app/views/oer/mymaterial/edit.php:248
-#, fuzzy
 msgid "Auf twillo.de veröffentlichen"
-msgstr "Publish your score"
+msgstr "Publish on twillo.de"
 
 #: app/views/oer/mymaterial/edit.php:259 app/views/oer/market/details.php:131
 msgid "Lizenz"
@@ -35251,7 +35177,7 @@ msgstr "Directory structure"
 
 #: app/views/oer/market/details.php:59
 msgid "Webseite des Lerninhalts öffnen"
-msgstr ""
+msgstr "Open website of the learning content"
 
 #: app/views/oer/market/details.php:67 app/views/oer/market/details.php:328
 msgid "Zu Veranstaltung hinzufügen"
@@ -36817,10 +36743,10 @@ msgid "Sollen interne Nachrichten an alle betroffenen Nutzer gesendet werden)"
 msgstr "Should internal messages be sent to all affected users)"
 
 #: lib/cronjobs/check_admission.class.php:41
-#, fuzzy
 msgid ""
 "Die Liste mit Anmeldungen an die Person senden, der das Anmeldeset gehört."
-msgstr "Please specify at least one institution assigned to the admission!"
+msgstr ""
+"Send the list with admissions to the person which owns the admission set."
 
 #: lib/cronjobs/check_admission.class.php:87
 msgid "Nutzer-ID"
@@ -36831,9 +36757,9 @@ msgid "Veranstaltung-ID"
 msgstr "Course id"
 
 #: lib/cronjobs/check_admission.class.php:116
-#, fuzzy, php-format
+#, php-format
 msgid "Das Stud.IP Anmeldeset %s wird gelost"
-msgstr "The admission set %s has been saved"
+msgstr "Lots of the admission set %s have been drawn"
 
 #: lib/cronjobs/check_admission.class.php:118
 #, php-format
@@ -36841,6 +36767,8 @@ msgid ""
 "Ihr Anmeldeset %s wird jetzt gelost. Im Anhang finden Sie die Liste der "
 "Anmeldungen."
 msgstr ""
+"Lots of your admission set %s will be drawn now. You will find a list with "
+"admissions in the attachment."
 
 #: lib/cronjobs/send_mail_notifications.class.php:40
 msgid "Versendet tägliche E-Mailbenachrichtigungen"
@@ -36893,9 +36821,9 @@ msgid "Der gewählte Benutzername ist zu kurz!"
 msgstr "The selected username is too short!"
 
 #: lib/phplib/Seminar_Register_Auth.class.php:120
-#, fuzzy
 msgid "Das Passwort ist zu kurz, zu lang oder enthält nicht erlaubte Zeichen!"
-msgstr "The password is too short. It should have at least 8 characters."
+msgstr ""
+"The password is too short, too long or it does contain forbidden characters!"
 
 #: lib/phplib/Seminar_Register_Auth.class.php:133 lib/models/User.class.php:963
 msgid "Die E-Mail-Adresse fehlt oder ist falsch geschrieben!"
@@ -37041,15 +36969,16 @@ msgid "Ihre Position auf der Warteliste der Veranstaltung %s wurde verändert"
 msgstr "Your position on the waiting list of course %s has been changed"
 
 #: lib/admission.inc.php:284
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie sind in die Veranstaltung **%s (%s)** eingetragen worden, da für Sie ein "
 "Platz frei geworden ist. Damit sind Sie für die Teilnahme an der "
 "Veranstaltung zugelassen. Ab sofort finden Sie die Veranstaltung in der "
 "Übersicht Ihrer Veranstaltungen."
 msgstr ""
-"You have been accepted for the course **%s (%s)**. It has been added to \"My "
-"Courses\" on your start page."
+"You have been enroled in the course **%s (%s)**, because a seat has become "
+"available for you. You are thereby approved for the participation in the "
+"course. You will find the course in the overview of your courses from now on."
 
 #: lib/admission.inc.php:286
 #, php-format
@@ -37171,9 +37100,8 @@ msgid "Suchkriterien für Räume"
 msgstr "Search criteria for rooms"
 
 #: lib/classes/sidebar/Sidebar.php:225
-#, fuzzy
 msgid "Dritte Navigationsebene"
-msgstr "Template for navigation"
+msgstr "Third navigation layer"
 
 #: lib/classes/StudipMail.class.php:411
 msgid ""
@@ -37302,7 +37230,6 @@ msgstr "back to week view"
 #: lib/classes/forms/NewsRangesInput.php:115
 #: lib/classes/searchtypes/NewsRangesSearch.php:78
 #: lib/models/NewsRange.class.php:55
-#, fuzzy
 msgid "Stud.IP-Startseite"
 msgstr "Stud.IP start page"
 
@@ -37311,28 +37238,25 @@ msgid "Meine Profilseite"
 msgstr "My profile"
 
 #: lib/classes/forms/Form.php:127
-#, fuzzy
 msgid "Daten"
-msgstr "Files"
+msgstr "Data"
 
 #: lib/classes/forms/Form.php:185
-#, fuzzy
 msgid "Daten wurden gespeichert."
 msgstr "The data have been saved."
 
 #: lib/classes/forms/Part.php:206
-#, fuzzy, php-format
+#, php-format
 msgid "Klasse %s oder %s existiert nicht."
-msgstr "File \"%s\" does not exist."
+msgstr "Class %s or %s does not exist."
 
 #: lib/classes/auth_plugins/StudipAuthStandard.class.php:52
 msgid "Ungültige Benutzername/Passwort-Kombination!"
 msgstr "Invalid username/password combination!"
 
 #: lib/classes/auth_plugins/StudipAuthStandard.class.php:55
-#, fuzzy
 msgid "Bitte achten Sie auf korrekte Groß-Kleinschreibung beim Username!"
-msgstr "Please use correct upper and lower cases for the username!"
+msgstr "Please use correct upper and lower case for the username!"
 
 #: lib/classes/auth_plugins/StudipAuthStandard.class.php:58
 #: lib/classes/auth_plugins/StudipAuthAbstract.class.php:343
@@ -37380,18 +37304,16 @@ msgid "Methode %s nicht implementiert!"
 msgstr "Method %s not implemented!"
 
 #: lib/classes/auth_plugins/StudipAuthCAS.class.php:34
-#, fuzzy
 msgid "CAS"
-msgstr "CSV"
+msgstr "CAS"
 
 #: lib/classes/auth_plugins/StudipAuthCAS.class.php:37
 msgid "für Single Sign On mit CAS"
 msgstr "for single sign on using CAS"
 
 #: lib/classes/auth_plugins/StudipAuthShib.class.php:32
-#, fuzzy
 msgid "Shibboleth"
-msgstr "Login Shibboleth"
+msgstr "Shibboleth"
 
 #: lib/classes/auth_plugins/StudipAuthShib.class.php:35
 msgid "für Single Sign On mit Shibboleth"
@@ -37455,7 +37377,7 @@ msgstr " likes one of your forum posts!"
 #: lib/classes/JsonApi/JsonApiIntegration/SchemaContainer.php:97
 #, php-format
 msgid "Cannot find schema for type `%s`"
-msgstr ""
+msgstr "Cannot find schema for type `%s`"
 
 #: lib/classes/JsonApi/Schemas/Activity.php:185 lib/activities/Stream.php:160
 #, php-format
@@ -38291,9 +38213,9 @@ msgid "Stud.IP Benachrichtigung"
 msgstr "Stud.IP notification"
 
 #: lib/classes/ActionMenu.php:313
-#, fuzzy, php-format
+#, php-format
 msgid "Aktionsmenü für %s"
-msgstr "Actions for \"%s\""
+msgstr "Action menu for %s"
 
 #: lib/classes/ActionMenu.php:317 lib/classes/ContentGroupMenu.php:50
 msgid "Aktionsmenü"
@@ -38362,15 +38284,16 @@ msgstr ""
 "requisites specified in the course description."
 
 #: lib/classes/admission/RandomAlgorithm.class.php:390
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie haben bei der Platzvergabe der Veranstaltung **%s** einen Platz "
 "erhalten. Damit sind Sie für die Teilnahme an der Veranstaltung zugelassen. "
 "Ab sofort finden Sie die Veranstaltung in der Übersicht Ihrer "
 "Veranstaltungen."
 msgstr ""
-"You have been accepted for the course **%s**. It has been added to \"My "
-"Courses\" on your start page."
+"You obtained a seat in the seat allocation of the course **%s**. You are "
+"thereby approved for the participation in the course. You will find the "
+"course in the overview of your courses from now on."
 
 #: lib/classes/admission/AdmissionRule.class.php:208
 msgid ""
@@ -38418,12 +38341,11 @@ msgstr "All fields of study"
 
 #: lib/classes/OAuth2/Models/Scope.php:35
 msgid "Gewährt vollständigen Lese-/Schreibzugriff auf die API."
-msgstr ""
+msgstr "Grants full read/write permissions to the API."
 
 #: lib/classes/OAuth2/Exceptions/SetupError.php:11
-#, fuzzy
 msgid "Das OAuth2-Setup dieser Stud.IP-Installation ist fehlerhaft."
-msgstr "This Stud.IP installation runs in"
+msgstr "The OAuth2 setup of this Stud.IP installation has errors."
 
 #: lib/classes/helpbar/Helpbar.php:255
 msgid "Weiterführende Hilfe"
@@ -39057,9 +38979,9 @@ msgid "Termin bei %s zugesagt"
 msgstr "Date at %s confirmed"
 
 #: lib/classes/ConsultationMailer.php:110
-#, fuzzy, php-format
+#, php-format
 msgid "Grund des Termins bei %s bearbeitet"
-msgstr "Date reason on edit"
+msgstr "Reason for the date with %s modified"
 
 #: lib/classes/ConsultationMailer.php:132
 #, php-format
@@ -40199,9 +40121,8 @@ msgid "Person, Veranstaltung oder Einrichtung suchen"
 msgstr "Search for person, course or institute"
 
 #: lib/classes/searchtypes/NewsRangesSearch.php:11
-#, fuzzy
 msgid "Bereich suchen"
-msgstr "Search for areas"
+msgstr "Search area"
 
 #: lib/classes/librarysearch/LibraryDocument.class.php:201
 #, php-format
@@ -40286,14 +40207,12 @@ msgid "Raumbuchungen"
 msgstr "Room bookings"
 
 #: lib/classes/globalsearch/GlobalSearchCourseware.php:123
-#, fuzzy
 msgid "Suchbegriff wurde in einem Abschnitt gefunden"
-msgstr "No results in this area."
+msgstr "Search term has been found in a section"
 
 #: lib/classes/globalsearch/GlobalSearchCourseware.php:126
-#, fuzzy
 msgid "Suchbegriff wurde in einem Block gefunden"
-msgstr "No results in this area."
+msgstr "Search term has been found in a block"
 
 #: lib/classes/globalsearch/GlobalSearchCourseware.php:171
 #: lib/navigation/ContentsNavigation.php:56
@@ -41262,14 +41181,12 @@ msgid "Rundmails"
 msgstr "Circular mails"
 
 #: lib/navigation/ContentsNavigation.php:23
-#, fuzzy
 msgid "Arbeitsplatz"
-msgstr "Working group"
+msgstr "Work place"
 
 #: lib/navigation/ContentsNavigation.php:47
-#, fuzzy
 msgid "Erstellen und Sammeln von Lernmaterialien"
-msgstr "Create and edit questionnaires."
+msgstr "Create and collect learning materials"
 
 #: lib/navigation/ContentsNavigation.php:60
 msgid "Verwaltung persönlicher Lernmaterialien"
@@ -41284,31 +41201,28 @@ msgid "Lesezeichen"
 msgstr "Bookmark"
 
 #: lib/navigation/ContentsNavigation.php:79
-#, fuzzy
 msgid "Überblick über alle Dokumente"
-msgstr "Room overview"
+msgstr "Overview over all documents"
 
 #: lib/navigation/ContentsNavigation.php:100
-#, fuzzy
 msgid "Verwaltung von Ankündigungen in Ihren Bereichen"
-msgstr "Course and institute management"
+msgstr "Management of announcements in your areas"
 
 #: lib/navigation/ContentsNavigation.php:107
 msgid "Zentrale Sammlung Ihrer Fragebögen"
-msgstr ""
+msgstr "Central collection of your questionnaires"
 
 #: lib/navigation/ContentsNavigation.php:126
 msgid "Erstellen Sie komplexe Befragungen"
-msgstr ""
+msgstr "Create complex surveys"
 
 #: lib/navigation/ContentsNavigation.php:134
-#, fuzzy
 msgid "Zugang zu externen Lernmaterialien"
-msgstr "Add and access learning objects"
+msgstr "Access to external learning materials"
 
 #: lib/navigation/ContentsNavigation.php:141
 msgid "Verwaltung der Hilfe-Inhalte in diesem Stud.IP"
-msgstr ""
+msgstr "Help content management in this Stud.IP"
 
 #: lib/navigation/ContentsNavigation.php:146
 #: lib/navigation/AdminNavigation.php:180
@@ -41339,9 +41253,8 @@ msgid "API-Berechtigungen"
 msgstr "API permissions"
 
 #: lib/navigation/ProfileNavigation.php:125
-#, fuzzy
 msgid "Drittanwendungen"
-msgstr "Use filter"
+msgstr "Third-party applications"
 
 #: lib/navigation/CalendarNavigation.php:25
 #: lib/modules/CoreCalendar.class.php:52
@@ -41460,9 +41373,8 @@ msgid "Ressourcenkategorien anpassen"
 msgstr "Modify resource categories"
 
 #: lib/navigation/StartNavigation.php:255
-#, fuzzy
 msgid "Hilfe-Texte und Touren"
-msgstr "Help tours"
+msgstr "Help texts and tours"
 
 #: lib/navigation/StartNavigation.php:262
 msgid "OER Campus"
@@ -41577,7 +41489,7 @@ msgstr "API"
 
 #: lib/navigation/AdminNavigation.php:205
 msgid "OAuth2"
-msgstr ""
+msgstr "OAuth2"
 
 #: lib/navigation/AdminNavigation.php:218
 #: lib/navigation/AdminNavigation.php:219
@@ -41624,9 +41536,8 @@ msgid "Link kopieren"
 msgstr "Copy link"
 
 #: lib/filesystem/StandardFile.php:284
-#, fuzzy
 msgid "Im OER Campus veröffentlichen"
-msgstr "Publish your score"
+msgstr "Publish in the OER campus"
 
 #: lib/filesystem/StandardFile.php:297
 msgid "Material für OER Campus vorschlagen"
@@ -42032,9 +41943,9 @@ msgstr ""
 "the date."
 
 #: lib/models/CourseDate.class.php:474
-#, fuzzy, php-format
+#, php-format
 msgid "Termin am %1$s, %2$s von %3$s bis %4$s Uhr"
-msgstr "On %1$s from %2$s until %3$s"
+msgstr "Date on %1$s, %2$s from %3$s until %4$s"
 
 #: lib/models/StgteilVersion.php:282 lib/models/StgteilVersion.php:318
 #: lib/models/Modul.php:330
@@ -42236,9 +42147,8 @@ msgid "Dozenten"
 msgstr "Lecturers"
 
 #: lib/models/CourseMemberNotification.php:59
-#, fuzzy
 msgid "Veranstaltungsbenachrichtigung"
-msgstr "Course overview"
+msgstr "Course notification"
 
 #: lib/models/Vote.php:15
 msgid "Auswahlfrage"
@@ -42411,9 +42321,8 @@ msgid "Wiki Einträge"
 msgstr "Wiki entries"
 
 #: lib/models/OERMaterial.php:150
-#, fuzzy
 msgid "OER Material nicht vorhanden."
-msgstr "Target file exists."
+msgstr "OER learning material does not exist."
 
 #: lib/models/OERMaterial.php:613
 #, php-format
@@ -43197,9 +43106,8 @@ msgid "SeminareUser"
 msgstr "SeminareUser"
 
 #: lib/models/Courseware/ContainerTypes/ListContainer.php:29
-#, fuzzy
 msgid "In diesem Abschnitt werden Blöcke untereinander dargestellt."
-msgstr "In this container, blocks are displayed below each other."
+msgstr "In this section, blocks are shown below each other."
 
 #: lib/models/Courseware/ContainerTypes/ListContainer.php:37
 msgid "neue Liste"
@@ -43210,9 +43118,8 @@ msgid "Accordion"
 msgstr "Accordion"
 
 #: lib/models/Courseware/ContainerTypes/AccordionContainer.php:29
-#, fuzzy
 msgid "Mit diesem Abschnitt lassen sich Blöcke unter Überschriften gruppieren."
-msgstr "With this container, blocks can be grouped below headlines."
+msgstr "This section allows you to group blocks under headings."
 
 #: lib/models/Courseware/ContainerTypes/AccordionContainer.php:37
 msgid "neues Fach"
@@ -43239,13 +43146,10 @@ msgid "Tabs"
 msgstr "Tabs"
 
 #: lib/models/Courseware/ContainerTypes/TabsContainer.php:29
-#, fuzzy
 msgid ""
 "Dieser Abschnitt verfügt über eine horizontale Navigation, über die sich "
 "Gruppen von Blöcken erreichen lassen."
-msgstr ""
-"This container has a horizontal navigation over which groups of blocks can "
-"be reached."
+msgstr "This section has a horizontal navigation to access groups of blocks."
 
 #: lib/models/Courseware/ContainerTypes/TabsContainer.php:38
 msgid "neuer Tab"
@@ -43261,19 +43165,18 @@ msgid "neue Seite"
 msgstr "new page"
 
 #: lib/models/Courseware/StructuralElement.php:829
-#, fuzzy, php-format
+#, php-format
 msgid "Courseware aus %s"
-msgstr "Courseware"
+msgstr "Courseware from %s"
 
 #: lib/models/Courseware/StructuralElement.php:832
-#, fuzzy, php-format
+#, php-format
 msgid "Courseware von %s"
-msgstr "Courseware"
+msgstr "Courseware of %s"
 
 #: lib/models/Courseware/StructuralElement.php:837
-#, fuzzy
 msgid "Diese Seite steht Ihnen nicht zur Verfügung!"
-msgstr "This server is not available as index server."
+msgstr "This page is not available for you!"
 
 #: lib/models/Courseware/StructuralElement.php:847
 #: lib/models/Courseware/StructuralElement.php:850
@@ -43355,9 +43258,8 @@ msgid "Bindet externe Inhalte wie Videos, Grafiken oder Musik ein."
 msgstr "Integrates external content such as videos, graphics or music."
 
 #: lib/models/Courseware/BlockTypes/Error.php:29
-#, fuzzy
 msgid "Zeigt eine Fehlemeldung an."
-msgstr "Displays a date or a countdown."
+msgstr "Displays an error message."
 
 #: lib/models/Courseware/BlockTypes/DialogCards.php:24
 #: templates/courseware/block_types/dialog_cards.php:2
@@ -43397,9 +43299,8 @@ msgid "Beliebige Bereiche auf einem Bild lassen sich verlinken."
 msgstr "Any areas on a picture can be linked."
 
 #: lib/models/Courseware/BlockTypes/TableOfContents.php:29
-#, fuzzy
 msgid "Stellt auf verschiedene Arten die Unterseiten dieser Seite dar."
-msgstr "Displays the subchapters of this chapter in various ways."
+msgstr "Displays the subpages of this page in different manners."
 
 #: lib/models/Courseware/BlockTypes/Canvas.php:24
 #: templates/courseware/block_types/canvas.php:2
@@ -43565,14 +43466,14 @@ msgid "Studiengangteil-Abschnitt"
 msgstr "Component section"
 
 #: lib/models/ConsultationBlock.php:72
-#, fuzzy, php-format
+#, php-format
 msgid "Veranstaltung: %s"
-msgstr "Course %u"
+msgstr "Course: %s"
 
 #: lib/models/ConsultationBlock.php:76
-#, fuzzy, php-format
+#, php-format
 msgid "Einrichtung: %s"
-msgstr "Institute:"
+msgstr "Institute: %s"
 
 #: lib/models/ConsultationBlock.php:190
 #, php-format
@@ -43595,9 +43496,9 @@ msgid "Terminvergabe"
 msgstr "Date allocation"
 
 #: lib/models/ConsultationBlock.php:446
-#, fuzzy, php-format
+#, php-format
 msgid "Terminblock am %1$s, %2$s von %3$s bis %4$s Uhr"
-msgstr "On %1$s from %2$s until %3$s"
+msgstr "Date blok on %1$s, %2$s from %3$s until %4$s"
 
 #: lib/models/ArchivedCourseMember.class.php:64
 msgid "archivierte SeminareUser"
@@ -43807,9 +43708,9 @@ msgid "ausgefallende Termine"
 msgstr "cancelled dates"
 
 #: lib/models/CourseExDate.class.php:243
-#, fuzzy, php-format
+#, php-format
 msgid "Ausgefallener Termin am %1$s, %2$s von %3$s bis %4$s Uhr"
-msgstr "On %1$s from %2$s until %3$s"
+msgstr "Cancelled date on %1$s, %2$s from %3$s until %4$s"
 
 #: lib/models/DataField.class.php:131
 msgid "Benutzerrollen in Einrichtungen"
@@ -43916,9 +43817,9 @@ msgid "Dieser Termin ist noch nicht belegt."
 msgstr "This date is not yet booked."
 
 #: lib/models/ConsultationSlot.php:294
-#, fuzzy, php-format
+#, php-format
 msgid "Termin am %1$s, %2$s von %3$s bis %4$s"
-msgstr "on %1$s from %2$s to %3$s"
+msgstr "Date on %1$s, %2$s from %3$s to %4$s"
 
 #: lib/soap/StudipSoapClient.class.php:35
 #: lib/soap/StudipSoapClient.class.php:41
@@ -44127,15 +44028,14 @@ msgid ""
 msgstr "Are you sure to completely delete page %s - including all versions?"
 
 #: lib/wiki.inc.php:479
-#, fuzzy
 msgid ""
 "Sie sind im Begriff die Startseite zu löschen, die dann durch einen leeren "
 "Text ersetzt wird. Damit wären auch alle anderen Seiten nicht mehr direkt "
 "erreichbar und auch das Inhaltsverzeichnis wäre leer."
 msgstr ""
-"You are about to delete the start page, which will then be replaced by an "
-"empty text box. Thereafter, all further pages can no longer be directly "
-"accessed."
+"You are about to delete the start page which then will be replaced by an "
+"empty text. All pages will thereby not be reachable directly anymore and "
+"also the table of contents would be empty."
 
 #: lib/wiki.inc.php:483
 msgid "Auf diese Seite verweist keine andere Seite."
@@ -44309,14 +44209,14 @@ msgstr ""
 "-- SubPage2"
 
 #: lib/wiki.inc.php:993 lib/wiki.inc.php:1547
-#, fuzzy, php-format
+#, php-format
 msgid "<a %s> Version %s</a>, geändert von %s"
-msgstr "Version %s, last changes on %s by %s."
+msgstr "<a %s>Version %s</a>, last modified by %s"
 
 #: lib/wiki.inc.php:997 lib/wiki.inc.php:1551
-#, fuzzy, php-format
+#, php-format
 msgid "am %x, %X"
-msgstr "at %s %s"
+msgstr "on %x, %X"
 
 #: lib/wiki.inc.php:1024 lib/wiki.inc.php:1583
 msgid "Seiten-Einstellungen"
@@ -44689,20 +44589,20 @@ msgid "Bitte wählen Sie eine Veranstaltung aus."
 msgstr "Please select a course."
 
 #: lib/admissionrules/coursememberadmission/templates/info.php:6
-#, fuzzy
 msgid ""
 "Die Anmeldung ist für Teilnehmende einer der folgenden Veranstaltungen nicht "
 "erlaubt:"
 msgstr ""
-"The enrolment is only permitted for participants of the course: <b>%s</b> %s."
+"The enrolment is not allowed for participants of one of the following "
+"courses:"
 
 #: lib/admissionrules/coursememberadmission/templates/info.php:8
-#, fuzzy
 msgid ""
 "Die Anmeldung ist nur für Teilnehmende mindestens einer der folgenden "
 "Veranstaltungen erlaubt:"
 msgstr ""
-"The enrolment is only permitted for participants of the course: <b>%s</b> %s."
+"The enrolment is only allowed for participants of at least one of the "
+"following courses:"
 
 #: lib/admissionrules/coursememberadmission/templates/info.php:18
 #: lib/admissionrules/coursememberadmission/templates/configure.php:17
@@ -44714,14 +44614,12 @@ msgid "Mitgliedschaft in folgender Veranstaltung überprüfen"
 msgstr "Check enrolment in the following course"
 
 #: lib/admissionrules/coursememberadmission/templates/configure.php:29
-#, fuzzy
 msgid "Mitgliedschaft ist in mindestens einer dieser Veranstaltungen notwendig"
-msgstr "Check enrolment in the following course"
+msgstr "Enrolment into at least one of those courses is necessary"
 
 #: lib/admissionrules/coursememberadmission/templates/configure.php:33
-#, fuzzy
 msgid "Mitgliedschaft ist in keiner dieser Veranstaltungen erlaubt"
-msgstr "Check enrolment in the following course"
+msgstr "Enrolment is allowed into none of these courses"
 
 #: lib/admissionrules/coursememberadmission/templates/configure.php:77
 #, php-format
@@ -44963,6 +44861,8 @@ msgid ""
 "Sie haben noch keinen ILIAS-Account. Loggen Sie sich zuerst in %s ein, um "
 "ILIAS-Lernobjekte in Stud.IP nutzen zu können."
 msgstr ""
+"You do not have an ILIAS account yet. Log into %s first to be able to use "
+"ILIAS learning objects in Stud.IP."
 
 #: lib/ilias_interface/ConnectedIlias.class.php:529
 msgid "ILIAS-User-Kategorie konnte nicht angelegt werden."
@@ -45533,9 +45433,9 @@ msgid "Die Frage wurde von Position %s nach oben verschoben."
 msgstr "The question has been moved up from position %s."
 
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:1747
-#, fuzzy, php-format
+#, php-format
 msgid "Die Frage wurde von Position %s nach unten verschoben."
-msgstr "The question has been moved up from position %s."
+msgstr "The question has been moved downwards from position %s."
 
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:1768
 msgid "Fragenblock"
@@ -47194,9 +47094,9 @@ msgid "sendete %s"
 msgstr "sent %s"
 
 #: lib/activities/Activity.php:146
-#, fuzzy, php-format
+#, php-format
 msgid "stellte %s"
-msgstr "created %s"
+msgstr "put %s"
 
 #: lib/activities/MessageProvider.php:36
 msgid "Zur Nachricht"
@@ -47215,9 +47115,8 @@ msgid "Zur eigenen Courseware"
 msgstr "To your own Courseware"
 
 #: lib/activities/CoursewareProvider.php:50
-#, fuzzy
 msgid "einen Courseware-Inhalt"
-msgstr "To your own Courseware"
+msgstr "a Courseware content"
 
 #: lib/activities/ParticipantsProvider.php:27
 #, php-format
@@ -51982,7 +51881,6 @@ msgid "Funktionen / Gruppen verwalten"
 msgstr "Manage function / groups"
 
 #: lib/modules/CorePersonal.class.php:47
-#, fuzzy
 msgid "Liste aller MitarbeiterInnen"
 msgstr "Staff list"
 
@@ -52150,7 +52048,7 @@ msgstr "new pages"
 
 #: lib/modules/CoursewareModule.class.php:124
 msgid "Lerninhalte erstellen, verteilen und erleben"
-msgstr ""
+msgstr "Create, distribute and experience learning contents"
 
 #: lib/modules/CoursewareModule.class.php:125
 msgid ""
@@ -52166,6 +52064,16 @@ msgid ""
 "Schreibrechtevergabe und dem Einsatz von Courseware in Studiengruppen "
 "realisiert werden."
 msgstr ""
+"With Courseware, you can create and use interactive multimedia learning "
+"contents. The learning contents can be subdivided hierarchically and can "
+"consist of texts, video sequences, tasks, communication elements and a "
+"variety of other elements. Finished learning contents can be exported and "
+"imported into other courses and installations. Courseware is not only "
+"designed for digital formats. It can also be used to supplement classic "
+"courses in presence with online parts. Formats like integrated learning ("
+"Blended Learning) can be ideally implemented with Courseware. Collaborative "
+"learning can be realised in study groups using write permissions and the use "
+"of Courseware."
 
 #: lib/modules/CoursewareModule.class.php:141
 msgid "Überssichtsseite der Courseware"
@@ -52210,7 +52118,7 @@ msgstr "There are new Blubbers"
 
 #: lib/modules/Blubber.class.php:120
 msgid "Schneller und einfacher Austausch von Informationen in Gesprächsform"
-msgstr ""
+msgstr "Quick and easy exchange of information while talking"
 
 #: lib/modules/Blubber.class.php:121
 msgid ""
@@ -52224,6 +52132,13 @@ msgid ""
 "verlinkt werden. Auch Textformatierungen und das Verwenden von Smileys sind "
 "möglich."
 msgstr ""
+"Blubber is a communication form with similarities to a forum in which real-"
+"time communication is possible and which due to the informal character feels "
+"more like a chat. Contrary to a forum, it isn't necessary to reload the page "
+"to see the newest entries (e.g. replys to own postings): The page "
+"automatically updates itself on new entries. Files (e.g. photos, audio "
+"files, links) can be moved inside the field via drag and drop and thereby be "
+"linked. Text formatting and the use of smileys is also possible."
 
 #: lib/modules/Blubber.class.php:122
 msgid ""
@@ -52236,6 +52151,13 @@ msgid ""
 "Feld gezogen und somit verlinkt werden. Auch Textformatierungen und das "
 "Verwenden von Smileys sind möglich."
 msgstr ""
+"Communication form with similarities to a forum. Contrary to a forum, "
+"Blubber allows real-time communication. The tool is similar to a messenger "
+"due to its informal character. Contrary to a forum, it isn't necessary to "
+"reload the page to see the newest entries (e.g. replys to own postings). "
+"Files (e.g. photos, audio files, links) can be moved inside the field via "
+"drag and drop and thereby be linked. Text formatting and the use of smileys "
+"is also possible."
 
 #: lib/modules/Blubber.class.php:124
 msgid ""
@@ -52244,6 +52166,9 @@ msgid ""
 "Stichworten über Hashtags (#Stichwort); Einbinden von Dateien per drag and "
 "drop"
 msgstr ""
+"Simply write text and send it with <Enter>; Contact other Stud.IP users "
+"directly (@First name last name); Set and search for keywords with hash tags "
+"(#keyword); Include files via drag and drop"
 
 #: lib/modules/CoreWiki.class.php:65
 #, php-format
@@ -52413,15 +52338,16 @@ msgid "Ansicht alle Dateien"
 msgstr "View all files"
 
 #: lib/modules/ContentsWidget.php:20
-#, fuzzy
 msgid "Mit diesem Widget haben Sie einen Überblick über Ihre Inhalte."
-msgstr "Here you find an overview on all available pages."
+msgstr "With this widget you have an overview over all your contents."
 
 #: lib/modules/QuickSelection.php:22
 msgid ""
 "Mit dem Schnellzugriff-Widget können Sie Links zu bestimmten Bereichen in "
 "Stud.IP verwalten."
 msgstr ""
+"With the quick access widget you can manage links to certain areas in Stud."
+"IP."
 
 #: lib/modules/QuickSelection.php:34 lib/modules/ActivityFeed.php:30
 msgid "Konfigurieren"
@@ -52429,17 +52355,16 @@ msgstr "Configure"
 
 #: lib/modules/EvaluationsWidget.php:22
 msgid "Mit diesem Widget haben Sie Zugriff auf systemweite Umfragen."
-msgstr ""
+msgstr "With this widget you have access to system-wide surveys."
 
 #: lib/modules/EvaluationsWidget.php:59
 msgid "Umfragen bearbeiten"
 msgstr "Edit surveys"
 
 #: lib/modules/ScheduleWidget.php:31
-#, fuzzy
 msgid ""
 "Mit diesem Widget haben Sie eine Übersicht Ihres aktuellen Stundenplans."
-msgstr "Here you find an overview on all available pages."
+msgstr "With this widget you have an overview over your current schedule."
 
 #: lib/modules/CoreForum.class.php:38
 msgid "Neue Beiträge"
@@ -52464,7 +52389,7 @@ msgstr ""
 
 #: lib/modules/CoreForum.class.php:193
 msgid "Veranstaltungsbegleitender Meinungsaustausch zu bestimmten Themen"
-msgstr ""
+msgstr "Course-accompanying exchange of views to certain topics"
 
 #: lib/modules/CoreForum.class.php:194
 msgid ""
@@ -52477,6 +52402,13 @@ msgid ""
 "können zusätzlich Themen in Bereiche gliedern, zwischen den Bereichen "
 "verschiebe, im Bereich hervorheben und diesen öffnen und schließen."
 msgstr ""
+"Text-based time and locaction independend possibility for the exchange of "
+"thoughts, point of views and experiences. Lecturers and/or studends can ask "
+"questions in parallel to course topics which are discussed in the form of "
+"text. These topics can be remembered, linked, positively valued (\"liked\") "
+"and modified (only for lecturers) by lecturers and/or students. Lecturers "
+"can additionally structure topics in areas, move between areas, highlight in "
+"an area and open and close that."
 
 #: lib/modules/CoreForum.class.php:195
 msgid ""
@@ -52489,12 +52421,21 @@ msgid ""
 "können zusätzlich Themen in Bereiche gliedern, zwischen den Bereichen "
 "verschieben, im Bereich hervorheben und diesen öffnen und schließen."
 msgstr ""
+"Text-based time and locaction independend possibility for the exchange of "
+"thoughts, point of views and experiences. Lecturers and/or studends can ask "
+"questions in parallel to course topics which are discussed in the form of "
+"text. These topics can be remembered, linked, positively valued (\"liked\") "
+"and modified (only for lecturers) by all participants of the course. "
+"Lecturers can additionally structure topics in areas, move between areas, "
+"highlight in an area and open and close that."
 
 #: lib/modules/CoreForum.class.php:197
 msgid ""
 "Möglichkeit zum intensiven, nachhaltigen textbasierten Austausch; "
 "(nachträgliche) Strukturierung der Beiträge; Editierfunktion für Lehrende"
 msgstr ""
+"Possibility for intensive sustainable text-based exchange; (afterward) "
+"structuring of posts; edit function for lecturers"
 
 #: lib/modules/CoreOverview.class.php:49
 #, php-format
@@ -52515,16 +52456,14 @@ msgid "Administration der Einrichtung"
 msgstr "Manage institutes"
 
 #: lib/modules/NewsWidget.php:24
-#, fuzzy
 msgid "Mit diesem Widget haben Sie Zugriff auf systemweite Ankündigungen."
-msgstr "Please enter the content of the announcement."
+msgstr "With this widget you have access to system-wide announcements."
 
 #: lib/modules/NewsWidget.php:52
 msgid "Ankündigungen bearbeiten"
 msgstr "Edit this announcement"
 
 #: lib/modules/IliasInterfaceModule.class.php:25
-#, fuzzy
 msgid "Schnittstelle zu ILIAS"
 msgstr "ILIAS interface"
 
@@ -52618,23 +52557,20 @@ msgid "Terminvergabe, Sprechstunden"
 msgstr "Date assignment, consultation hours"
 
 #: lib/modules/ConsultationModule.class.php:149
-#, fuzzy
 msgid "Übersicht der erstellten Termine"
-msgstr "This is the first date"
+msgstr "Overview over the created dates"
 
 #: lib/modules/ConsultationModule.class.php:153
-#, fuzzy
 msgid "Erstellen neuer Termine"
-msgstr "First date"
+msgstr "Creation of new dates"
 
 #: lib/modules/ConsultationModule.class.php:177
 msgid "Terminbuchungen"
 msgstr "Date bookings"
 
 #: lib/modules/ConsultationModule.class.php:188
-#, fuzzy
 msgid "Terminverantwortlichkeiten"
-msgstr "Responsible person"
+msgstr "Date responsibilities"
 
 #: lib/modules/ActivityFeed.php:11
 msgid "Aktivitäten"
@@ -52642,7 +52578,7 @@ msgstr "Activities"
 
 #: lib/modules/ActivityFeed.php:17
 msgid "Mit diesem Widget haben Sie alle Aktivitäten im Überblick."
-msgstr ""
+msgstr "With this widget you have an overview over all activities."
 
 #: lib/modules/ActivityFeed.php:37
 msgid "Eigene Aktivitäten ein-/ausblenden"
@@ -52701,7 +52637,7 @@ msgstr "My current dates"
 
 #: lib/modules/TerminWidget.php:25
 msgid "Mit diesem Widget haben Sie ihre aktuellen Termine im Überlick."
-msgstr ""
+msgstr "With this widget you have an overview over your current dates."
 
 #: lib/modules/CoreElearningInterface.class.php:47
 #, php-format
@@ -53436,9 +53372,8 @@ msgid "Seitenleiste"
 msgstr "Sidebar"
 
 #: templates/tabs.php:11
-#, fuzzy
 msgid "Zweite Navigationsebene"
-msgstr "Template for navigation"
+msgstr "Secondary navigation layer"
 
 #: templates/tabs.php:65
 msgid "Vollbildmodus"
@@ -53465,9 +53400,9 @@ msgid "... und %u weitere"
 msgstr "... and %u more"
 
 #: templates/toc/generic-toc-list.php:4
-#, fuzzy, php-format
+#, php-format
 msgid "Inhalt (%u Elemente)"
-msgstr "Content elements"
+msgstr "Content (%u elements)"
 
 #: templates/contact/header-alpha.php:4 templates/contact/header-groups.php:4
 msgid "Keine Einträge"
@@ -53606,16 +53541,15 @@ msgstr ""
 "minutes."
 
 #: templates/tfa-validate.php:60
-#, fuzzy, php-format
+#, php-format
 msgid "Diesem Gerät für %u Tag vertrauen."
 msgid_plural "Diesem Gerät für %u Tage vertrauen."
-msgstr[0] "Trust this device for 30 days."
-msgstr[1] "Trust this device for 30 days."
+msgstr[0] "Trust this device for %u day."
+msgstr[1] "Trust this device for %u days."
 
 #: templates/tfa-validate.php:67
-#, fuzzy
 msgid "Diesem Gerät dauerhaft vertrauen"
-msgstr "Trust this device for 30 days."
+msgstr "Trust this device permanently"
 
 #: templates/forms/multiselect_input.php:7
 #: templates/forms/checkbox_input.php:14 templates/forms/textarea_input.php:6
@@ -53624,31 +53558,30 @@ msgstr "Trust this device for 30 days."
 #: templates/forms/i18n_textarea_input.php:7 templates/forms/select_input.php:7
 #: templates/forms/text_input.php:7 templates/forms/i18n_formatted_input.php:7
 #: templates/forms/range_input.php:6 templates/forms/datetimepicker_input.php:7
-#, fuzzy
 msgid "Dies ist ein Pflichtfeld"
-msgstr "At least one mandatory field is empty!"
+msgstr "This is a mandatory field"
 
 #: templates/forms/form.php:38
 msgid "Hinweise zum Ausfüllen des Formulars"
-msgstr ""
+msgstr "Notes on filling out the form"
 
 #: templates/forms/form.php:43
 msgid "Pflichtfelder sind mit Sternchen gekennzeichnet."
-msgstr ""
+msgstr "Mandatory fields are labelled with a star."
 
 #: templates/forms/form.php:46
 msgid "Dieses Formular enthält Pflichtfelder."
-msgstr ""
+msgstr "This form contains mandatory fields."
 
 #: templates/forms/form.php:51
 msgid ""
 "Folgende Angaben müssen korrigiert werden, um das Formular abschicken zu "
 "können:"
-msgstr ""
+msgstr "The following fields must be corrected to be able to submit the form:"
 
 #: templates/contentbar/contentbar.php:27
 msgid "Konsummodus ein-/ausschalten"
-msgstr ""
+msgstr "Switch consumer mode on/off"
 
 #: templates/terms.php:3
 msgid "Was ist Stud.IP?"
@@ -53715,18 +53648,16 @@ msgid "Sie sind nun aus dem System abgemeldet."
 msgstr "Now you have logged out of the system."
 
 #: templates/index_nobody.php:74
-#, fuzzy
 msgid "Normalen Kontrast aktivieren"
-msgstr "Activate RSS feeds"
+msgstr "Activate normal contrast"
 
 #: templates/index_nobody.php:75
 msgid "Aktiviert standardmäßige, nicht barrierefreie Kontraste."
-msgstr ""
+msgstr "Activate default, non-accessible contrasts."
 
 #: templates/index_nobody.php:78
-#, fuzzy
 msgid "Hohen Kontrast aktivieren"
-msgstr "Activate RSS feeds"
+msgstr "Activate high contrast"
 
 #: templates/index_nobody.php:79
 msgid ""
@@ -53734,6 +53665,8 @@ msgid ""
 "dem Login übernommen.\n"
 "                Sie können sie in Ihren persönlichen Einstellungen ändern."
 msgstr ""
+"Activates a high contrast according to WCAG 2.1. This option will be applied "
+"after login. You can set it in your personal settings."
 
 #: templates/index_nobody.php:91
 msgid "Registrierte NutzerInnen"
@@ -53942,15 +53875,16 @@ msgid "Die Zeichen %s sind ein Platzhalter für änderbare Bedingungen"
 msgstr "The character %s is a placeholder for changeable conditions"
 
 #: templates/admission/rules/configure.php:10
-#, fuzzy
 msgid "Gültigkeitszeitraum dieser Regel festlegen"
-msgstr "Valid during"
+msgstr "Set the validity time range for this rule"
 
 #: templates/admission/rules/configure.php:15
 msgid ""
 "Hiermit verändern Sie nur, wann die in dieser Regel getroffenen "
 "Einstellungen gelten sollen, und nicht den generellen Anmeldezeitraum!"
 msgstr ""
+"With this you only change when the settings of this rule shall be applied "
+"and not the general enrolment time range!"
 
 #: templates/admission/userlist.php:2
 msgid ""
@@ -54007,12 +53941,11 @@ msgstr "Hints & help"
 
 #: templates/helpbar/helpbar.php:3
 msgid "Hilfelasche anzeigen/verstecken"
-msgstr ""
+msgstr "Show/hide help bar"
 
 #: templates/helpbar/helpbar.php:10
-#, fuzzy
 msgid "Hilfelasche verstecken"
-msgstr "Create help text"
+msgstr "Hide help bar"
 
 #: templates/elearning/ilias4_connected_cms_preferences.php:13
 msgid "SOAP-Verbindung:"
@@ -54151,7 +54084,7 @@ msgstr "Username:"
 #: templates/start/contents.php:3
 msgid ""
 "Erstellen und finden Sie persönliche Materialien zum Teilen mit anderen."
-msgstr ""
+msgstr "Create and find personal learning materials to share with others."
 
 #: templates/start/_jstemplates.php:23
 msgid "Keine (weiteren) Aktivitäten gefunden."
@@ -54372,9 +54305,9 @@ msgid "Nachrichtenbox schließen"
 msgstr "Close message box"
 
 #: templates/courseware/container_types/default.php:1
-#, fuzzy, php-format
+#, php-format
 msgid "Container-Typ: %s"
-msgstr " (unknown type: %s)"
+msgstr "Container type: %s"
 
 #: templates/courseware/block_types/document.php:6
 msgid "Datei"
@@ -54400,12 +54333,11 @@ msgstr "Card"
 #: templates/courseware/block_types/default.php:1
 #, php-format
 msgid "Block-Typ: %s"
-msgstr ""
+msgstr "Block type: %s"
 
 #: templates/courseware/block_types/default.php:2
-#, fuzzy
 msgid "Block-Daten"
-msgstr "XML data"
+msgstr "Block data"
 
 #: templates/courseware/block_types/default.php:10
 msgid "Block-Dateien"
