@@ -22,8 +22,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:54+0200\n"
-"PO-Revision-Date: 2023-04-27 08:28+0000\n"
-"Last-Translator: Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>\n"
+"PO-Revision-Date: 2023-05-22 07:09+0000\n"
+"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-2/en/>\n"
 "Language: en\n"
@@ -41642,7 +41642,7 @@ msgstr "Publish your score"
 
 #: lib/filesystem/StandardFile.php:297
 msgid "Material für OER Campus vorschlagen"
-msgstr ""
+msgstr "Suggest learning material for the OER Campus"
 
 #: lib/filesystem/InboxFolder.php:27
 msgid "Alle Anhänge eingegangener Nachrichten"
