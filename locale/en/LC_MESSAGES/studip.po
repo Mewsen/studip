@@ -24,8 +24,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:55+0200\n"
-"PO-Revision-Date: 2023-04-27 08:28+0000\n"
-"Last-Translator: Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>\n"
+"PO-Revision-Date: 2023-05-22 09:19+0000\n"
+"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-1/en/>\n"
 "Language: en\n"
@@ -2634,7 +2634,7 @@ msgstr "The specified course has already been created."
 
 #: app/controllers/course/wizard.php:250
 msgid "Ihre Session ist abgelaufen, bitte erneut anfangen."
-msgstr ""
+msgstr "Your session has expired, please restart from the beginning."
 
 #: app/controllers/course/wizard.php:294
 msgid "Sie dürfen diese Veranstaltung nicht kopieren"
@@ -2708,9 +2708,8 @@ msgstr "All documents"
 
 #: app/controllers/course/files.php:143 app/controllers/institute/files.php:117
 #: app/controllers/files.php:585
-#, fuzzy
 msgid "Der gewählte Ordner wurde nicht gefunden."
-msgstr "The selected room could not be found!"
+msgstr "The selected folder could not be found."
 
 #: app/controllers/course/files.php:166
 msgid "Neue Dateien herunterladen"
@@ -2823,6 +2822,8 @@ msgid ""
 "Einstellungen zum Eintrag in eine Gruppe oder zum Eintragszeitraum können "
 "nur gespeichert werden, wenn der Selbsteintrag aktiviert ist."
 msgstr ""
+"Settings for inscription into a group or the period for inscription can only "
+"be saved if self-inscription is activated."
 
 #: app/controllers/course/statusgroups.php:539
 #, php-format
@@ -3121,12 +3122,12 @@ msgstr "Please enter correct values as start and end date!"
 #: app/controllers/course/timesrooms.php:526
 #: app/controllers/course/timesrooms.php:1194
 #: app/controllers/course/timesrooms.php:1265
-#, fuzzy, php-format
+#, php-format
 msgid "Die minimale Dauer eines Termins von einer Minute wurde unterschritten."
 msgid_plural ""
 "Die minimale Dauer eines Termins von %u Minuten wurde unterschritten."
-msgstr[0] "The booking duration is below the minimum of %1$d minutes!"
-msgstr[1] "The booking duration is below the minimum of %1$d minutes!"
+msgstr[0] "The minimum duration of one minute for a date has been undercut."
+msgstr[1] "The minimum duration of %u minutes for a date has been undercut."
 
 #: app/controllers/course/block_appointments.php:171
 msgid "Bitte wählen Sie mindestens einen Tag aus!"
@@ -9417,7 +9418,7 @@ msgid "Sie müssen zunächst Raumgruppen erstellen"
 msgstr "You need to create a room group first"
 
 #: app/controllers/resources/export.php:89
-#, fuzzy, php-format
+#, php-format
 msgid "Klicken Sie %shier%s, um eine Raumgruppe anzulegen."
 msgstr "Klick %shere%s to create a room group."
 
@@ -13899,11 +13900,11 @@ msgid "Die Endzeit liegt vor der Startzeit!"
 msgstr "The end time lies before the start time!"
 
 #: app/controllers/consultation/admin.php:168
-#, fuzzy
 msgid ""
 "Es muss mindestens eine durchführende Person, Statusgruppe oder Einrichtung "
 "ausgewählt werden."
-msgstr "At least one responsible institute must be assigned."
+msgstr ""
+"At least one responsible person, status group or institute must be assigned."
 
 #: app/controllers/consultation/admin.php:232
 msgid ""
@@ -16145,9 +16146,8 @@ msgid "Meine Räume"
 msgstr "My rooms"
 
 #: app/controllers/room_management/overview.php:362
-#, fuzzy
 msgid "Gebäude oder Raum"
-msgstr "Building number"
+msgstr "Building or room"
 
 #: app/controllers/room_management/overview.php:428
 msgid "Es wurden keine Räume gefunden!"
@@ -16744,9 +16744,8 @@ msgstr ""
 "available for everyone for free."
 
 #: app/controllers/oer/market.php:77
-#, fuzzy
 msgid "Neues Lernmaterial hochladen"
-msgstr "Upload own learning material"
+msgstr "Upload new learning material"
 
 #: app/controllers/oer/market.php:83
 msgid "Neuigkeiten abbestellen"
@@ -20063,9 +20062,8 @@ msgid "Art/Form"
 msgstr "Type/Form"
 
 #: app/views/course/details/index.php:313
-#, fuzzy
 msgid "Räume und Zeiten"
-msgstr "Search rooms"
+msgstr "Rooms and times"
 
 #: app/views/course/details/index.php:326
 msgid "Studienmodule"
@@ -20299,24 +20297,20 @@ msgid "-- Keine Änderung --"
 msgstr "-- No change --"
 
 #: app/views/course/timesrooms/editStack.php:126
-#, fuzzy
 msgid "Lehrende hinzufügen"
-msgstr "Add multiple lecturers"
+msgstr "Add lecturers"
 
 #: app/views/course/timesrooms/editStack.php:127
-#, fuzzy
 msgid "Lehrende entfernen"
-msgstr "Remove dates"
+msgstr "Remove lecturers"
 
 #: app/views/course/timesrooms/editStack.php:152
-#, fuzzy
 msgid "Gruppen hinzufügen"
-msgstr "Add course group:"
+msgstr "Add groups"
 
 #: app/views/course/timesrooms/editStack.php:153
-#, fuzzy
 msgid "Gruppen entfernen"
-msgstr "Delete app"
+msgstr "Remove groups"
 
 #: app/views/course/timesrooms/editStack.php:158
 #: lib/models/Statusgruppen.php:707
@@ -23764,9 +23758,8 @@ msgid "Literatur"
 msgstr "References"
 
 #: app/views/file/add_files_window.php:61
-#, fuzzy
 msgid "Originaldokument aus Bibliothek"
-msgstr "Insert original document from library catalogue"
+msgstr "Original document from the library"
 
 #: app/views/file/add_files_window.php:86
 #, php-format
@@ -25772,9 +25765,8 @@ msgid "Letzte Änderung am %1$s von %2$s"
 msgstr "Last changes on %1$s by %2$s"
 
 #: app/views/resources/room_request/resolve.php:69
-#, fuzzy
 msgid "Zu den Veranstaltungszeiten"
-msgstr "Course dates"
+msgstr "To the course times"
 
 #: app/views/resources/room_request/resolve.php:88
 msgid "Anzahl Teilnehmende"
@@ -30635,11 +30627,12 @@ msgid "Durchführende Personen, Gruppen oder Einrichtungen"
 msgstr "Realising persons, groups or institutes"
 
 #: app/views/consultation/admin/create.php:138
-#, fuzzy
 msgid ""
 "Bei Einrichtungen muss mindestens eine durchführende Person, Gruppe oder "
 "Einrichtung zugewiesen werden."
-msgstr "At least one responsible institute must be assigned."
+msgstr ""
+"For institutes, at least one responsible person, group or institute must be "
+"assigned."
 
 #: app/views/consultation/admin/create.php:142
 msgid ""
@@ -30647,12 +30640,17 @@ msgid ""
 "Gruppe mit dem Status \"tutor\" und \"dozent\" als durchführende Personen "
 "zugewiesen werden und über alle Buchungen informiert werden."
 msgstr ""
+"Please note that on assignment of status groups, all persons of the group "
+"with the status \"tutor\" and \"dozent\" are being assigned and will be "
+"notified about all bookings."
 
 #: app/views/consultation/admin/create.php:145
 msgid ""
 "Gleiches gilt für eine zugewiesene Einrichtung. Bitte achten Sie darauf, "
 "dass Sie Ihre hier  getroffene Auswahl in Absprache tätigen."
 msgstr ""
+"The same is true for an assigned institute. Please take care that you make "
+"the selection here  upon consultation."
 
 #: app/views/consultation/admin/create.php:155
 msgid "Weitere Einstellungen"
@@ -31005,7 +31003,7 @@ msgid ""
 "In den %s grün markierten Veranstaltungen dürfen Sie nur lesen und Dokumente "
 "herunterladen."
 msgstr ""
-"In the %s green labelled courses you may only read and download documents."
+"In the %s green marked courses you can only read and download documents."
 
 #: app/views/public_courses/index.php:11
 #, php-format
@@ -31013,8 +31011,8 @@ msgid ""
 "In den %s rot markierten Veranstaltungen können Sie sich zusätzlich mit "
 "eigenen Beiträgen im Forum beteiligen."
 msgstr ""
-"In the %s red labelled courses you can furthermore contribute with own posts "
-"in the forum."
+"In the %s red marked courses you can furthermore contribute by writing own "
+"postings in the forum."
 
 #: app/views/public_courses/index.php:17
 msgid ""
@@ -31888,7 +31886,7 @@ msgstr "URL of questionnaire (read only)"
 
 #: app/views/questionnaire/context.php:11
 msgid "Freigaben bearbeiten"
-msgstr "Edit questionnaire"
+msgstr "Edit releases"
 
 #: app/views/questionnaire/context.php:14
 msgid "Auf der persönlichen Profilseite"
@@ -34204,9 +34202,8 @@ msgid "Vorschau-Bilddatei (optional)"
 msgstr "Preview image file (optional)"
 
 #: app/views/oer/mymaterial/edit.php:60
-#, fuzzy
 msgid "Vorschaubild löschen"
-msgstr "Upload preview image"
+msgstr "Delete preview image"
 
 #: app/views/oer/mymaterial/edit.php:75
 msgid "Datei (gerne auch eine ZIP-Datei) auswählen"
@@ -34929,12 +34926,12 @@ msgstr "Modifications to your Blubber."
 #: app/routes/Semester.php:64
 #, php-format
 msgid "KW %u"
-msgstr ""
+msgstr "Week %u"
 
 #: app/routes/Semester.php:71
-#, fuzzy, php-format
+#, php-format
 msgid "%u. Vorlesungswoche (ab %s)"
-msgstr "%u. week of semester (from %s)"
+msgstr "%u. week of lecture (from %s)"
 
 #: app/routes/Clipboard.php:33
 msgid "Fehler beim Speichern des Merkzettels!"
@@ -38410,14 +38407,12 @@ msgid "%s Einträge aus MitarbeiterInnenlisten gelöscht."
 msgstr "%s entries removed from staff list."
 
 #: lib/classes/UserManagement.class.php:682
-#, fuzzy
 msgid "24 Stunden"
-msgstr "2 hours"
+msgstr "24 hours"
 
 #: lib/classes/UserManagement.class.php:685
-#, fuzzy
 msgid "eine Woche"
-msgstr "every week"
+msgstr "a week"
 
 #: lib/classes/UserManagement.class.php:692
 #, php-format
@@ -38426,7 +38421,7 @@ msgid ""
 msgstr "[Stud.IP - %s] An access was created for you - Set a password"
 
 #: lib/classes/UserManagement.class.php:697
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Dies ist eine Bestätigungsmail des Stud.IP-Systems\n"
 "(Studienbegleitender Internetsupport von Präsenzlehre)\n"
@@ -38461,11 +38456,13 @@ msgstr ""
 "%s\n"
 "\n"
 "To be able to use this account you must set a password.\n"
-"Please open the following link for that\n"
+"Please open the following link\n"
 "\n"
 "%s\n"
 "\n"
 "in your browser.\n"
+"\n"
+"The link is %4$s valid (until %5$s).\n"
 "\n"
 "Your E-mail program probably supports a simple click on the link.\n"
 "If not, you must open your browser and copy the link completely in\n"
@@ -38504,7 +38501,7 @@ msgid "[Stud.IP - %s] Neues Passwort setzen"
 msgstr "[Stud.IP - %s] Set new password"
 
 #: lib/classes/UserManagement.class.php:748
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Dies ist eine Bestätigungsmail des Stud.IP-Systems\n"
 "(Studienbegleitender Internetsupport von Präsenzlehre)\n"
@@ -38552,6 +38549,8 @@ msgstr ""
 "%s\n"
 "\n"
 "in your browser. You can set another password on the page.\n"
+"\n"
+"The link is %3$s valid (until %4$s).\n"
 "\n"
 "Your E-mail program probably supports a simple click on the link.\n"
 "If not, you must open your browser and copy the link completely in\n"
@@ -38665,7 +38664,7 @@ msgid "[Stud.IP - %s] Passwortänderung"
 msgstr "[Stud.IP - %s] password change"
 
 #: lib/classes/UserManagement.class.php:1309
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Dies ist eine Informationsmail des Stud.IP-Systems\n"
 "(Studienbegleitender Internetsupport von Präsenzlehre)\n"
@@ -41111,23 +41110,20 @@ msgid "Wartelisten"
 msgstr "Waiting lists"
 
 #: lib/models/Course.class.php:760
-#, fuzzy
 msgid "unvollständig"
-msgstr "bottom-justified"
+msgstr "incomplete"
 
 #: lib/models/Course.class.php:761
-#, fuzzy
 msgid "in Bearbeitung"
-msgstr "Edit"
+msgstr "in Editing"
 
 #: lib/models/Course.class.php:762
 msgid "fertig"
-msgstr ""
+msgstr "ready"
 
 #: lib/models/Course.class.php:763
-#, fuzzy
 msgid "undefiniert"
-msgstr "Undefined"
+msgstr "undefined"
 
 #: lib/models/Course.class.php:785
 msgid "Neuer Anmeldemodus: Vorläufiger Eintrag"
@@ -42348,11 +42344,12 @@ msgid "Spielt ein Video aus dem Dateibereich oder von einer URL ab."
 msgstr "Plays a video from the file area or an URL."
 
 #: lib/models/Courseware/BlockTypes/Audio.php:29
-#, fuzzy
 msgid ""
 "Spielt eine Audiodatei aus dem Dateibereich oder von einer URL ab und "
 "ermöglicht Audioaufnahmen direkt im Block."
-msgstr "Plays an audio file from the file area or an URL."
+msgstr ""
+"Plays an audio file from the file area or from an URL and allows audio "
+"recordings directly in the block."
 
 #: lib/models/Courseware/BlockTypes/ImageMap.php:24
 #: templates/courseware/block_types/image_map.php:2
@@ -42553,7 +42550,7 @@ msgstr "The times overlap with other consultation hours already defined"
 #, php-format
 msgid ""
 "Am %1$s können keine Termine erzeugt werden, da es ein Feiertag (%2$s) ist."
-msgstr ""
+msgstr "Dates cannot be created on %1$s since it is a holiday (%2$s)."
 
 #: lib/models/ConsultationBlock.php:362
 #: lib/modules/ConsultationModule.class.php:140
@@ -46169,9 +46166,8 @@ msgid "eine Nachricht"
 msgstr "a message"
 
 #: lib/activities/CoursewareProvider.php:33
-#, fuzzy
 msgid "Zur Courseware in der Veranstaltung"
-msgstr "To the Courseware in the Course"
+msgstr "To the Courseware in the course"
 
 #: lib/activities/CoursewareProvider.php:41
 msgid "Zur eigenen Courseware"
@@ -52879,16 +52875,14 @@ msgid "Diesen Raum auswählen."
 msgstr "Select this room."
 
 #: templates/sidebar/room-clipboard-item.php:55
-#, fuzzy
 msgid "Rauminformationen"
-msgstr "Information"
+msgstr "Room information"
 
 #: templates/sidebar/room-clipboard-item.php:71
 #: templates/sidebar/clipboard-area.php:42
 #: templates/sidebar/clipboard-area.php:101
-#, fuzzy
 msgid "Sind Sie sicher?"
-msgstr "Save date"
+msgstr "Are you sure?"
 
 #: templates/sidebar/selector-widget.php:3
 msgid "Wählen Sie ein Objekt aus. Sie gelangen dann zur neuen Seite."
@@ -52905,9 +52899,8 @@ msgstr ""
 #: templates/sidebar/room-search-criteria-templates.php:67
 #: templates/sidebar/room-search-criteria.php:24
 #: templates/sidebar/room-search-criteria.php:25
-#, fuzzy
 msgid "Kriterium entfernen"
-msgstr "Remove filter"
+msgstr "Remove criteria"
 
 #: templates/sidebar/clipboard-widget.php:5
 msgid "Ziehen Sie Elemente in diesen Bereich um den Merkzettel zu füllen."
@@ -52928,14 +52921,14 @@ msgid "Name des neuen Merkzettels"
 msgstr "Name of the new clipboard"
 
 #: templates/sidebar/clipboard-area.php:86
-#, fuzzy, php-format
+#, php-format
 msgid "%s auswählen."
-msgstr "Select %s"
+msgstr "Select %s."
 
 #: templates/sidebar/clipboard-area.php:100
-#, fuzzy, php-format
+#, php-format
 msgid "%s löschen."
-msgstr "Delete %s"
+msgstr "Delete %s."
 
 #: templates/sidebar/clipboard-area.php:175
 msgid "Diesen Eintrag auswählen."
@@ -52969,9 +52962,8 @@ msgid "Bitte aus dieser Liste Kriterien für die Raumsuche auswählen."
 msgstr "Please select criteria for the room search from this list."
 
 #: templates/sidebar/sidebar.php:2
-#, fuzzy
 msgid "Seitenleiste"
-msgstr "Page title"
+msgstr "Sidebar"
 
 #: templates/tabs.php:11
 msgid "Zweite Navigationsebene"
@@ -53764,7 +53756,7 @@ msgstr "Visible on profile page"
 msgid ""
 "Dieser Ordner ist ein Hausaufgabenordner. Es können nur Dateien eingestellt "
 "werden."
-msgstr "This folder is for homework. Files can be uploaded to it, only."
+msgstr "This folder is a homework folder. Only files can be put into it."
 
 #: templates/filesystem/homework_folder/description.php:5
 #: templates/filesystem/timed_folder/description.php:42
@@ -53834,30 +53826,25 @@ msgid "Container-Typ: %s"
 msgstr "Container type: %s"
 
 #: templates/courseware/block_types/document.php:6
-#, fuzzy
 msgid "Datei"
-msgstr "File:"
+msgstr "File"
 
 #: templates/courseware/block_types/download.php:9
-#, fuzzy
 msgid "keine Datei ausgewählt"
-msgstr "No files have been selected!"
+msgstr "no file selected"
 
 #: templates/courseware/block_types/embed.php:2
 #: templates/courseware/block_types/iframe.php:2
-#, fuzzy
 msgid "Externer Inhalt"
-msgstr "External ID"
+msgstr "External content"
 
 #: templates/courseware/block_types/image_map.php:3
-#, fuzzy
 msgid "Hinweis: Positionen der Verweise können nicht dargestellt werden."
-msgstr "Cannot save list."
+msgstr "Note: Positions of the links cannot be displayed."
 
 #: templates/courseware/block_types/dialog_cards.php:4
-#, fuzzy
 msgid "Karte"
-msgstr "Start"
+msgstr "Card"
 
 #: templates/courseware/block_types/default.php:1
 #, php-format
@@ -53869,14 +53856,12 @@ msgid "Block-Daten"
 msgstr "Block data"
 
 #: templates/courseware/block_types/default.php:10
-#, fuzzy
 msgid "Block-Dateien"
-msgstr "Block data"
+msgstr "Block files"
 
 #: templates/courseware/block_types/canvas.php:10
-#, fuzzy
 msgid "ohne Hintergrundbild"
-msgstr "Background picture:"
+msgstr "without background picture"
 
 #: templates/privacy.php:7
 msgid "Stud.IP - Erläuterungen zum Datenschutz im Überblick"
@@ -54063,9 +54048,8 @@ msgid "Hauptinhalt"
 msgstr "Main content"
 
 #: templates/layouts/base.php:184
-#, fuzzy
 msgid "Vollbildmodus verlassen"
-msgstr "Full screen mode"
+msgstr "Leave full screen mode"
 
 #: templates/adminarea-start.php:4
 #, php-format
