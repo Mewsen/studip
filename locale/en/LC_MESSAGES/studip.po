@@ -21,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:54+0200\n"
 "PO-Revision-Date: 2023-05-23 15:01+0000\n"
-"Last-Translator: Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>\n"
+"Last-Translator: Kilian Pluta <pluta@zqs.uni-hannover.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3/en/>\n"
 "Language: en\n"
@@ -24590,7 +24590,7 @@ msgstr "Like the material?"
 
 #: app/views/file/suggest_oer.php:6
 msgid "Schlagen Sie es zum Teilen im OER Campus vor."
-msgstr "Suggest it for sharing on the OER Campus."
+msgstr "Suggest it for sharing in the OER Campus."
 
 #: app/views/file/suggest_oer.php:8
 msgid "Schreiben Sie der Autorin/dem Autoren:"
