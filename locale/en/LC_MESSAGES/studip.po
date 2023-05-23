@@ -21,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:54+0200\n"
 "PO-Revision-Date: 2023-05-23 12:59+0000\n"
-"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
+"Last-Translator: Kilian Pluta <pluta@zqs.uni-hannover.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3/en/>\n"
 "Language: en\n"
@@ -601,7 +601,7 @@ msgstr "Error during upload"
 
 #: app/controllers/wysiwyg.php:130
 msgid "Hilfe zur Bedienung des Editors"
-msgstr ""
+msgstr "Help for using the editor"
 
 #: app/controllers/settings/deputies.php:32
 #: lib/navigation/ProfileNavigation.php:114
@@ -683,7 +683,9 @@ msgid ""
 "Nachrichten werden nicht entfernt."
 msgstr ""
 "Reset restores default values for the messaging settings and removes "
-"personal message folders. No messages will be deleted."
+"personal message folders. \n"
+"\n"
+"No messages will be deleted."
 
 #: app/controllers/settings/messaging.php:111
 msgid "Wollen Sie wirklich die eingestellte Weiterleitung entfernen?"
@@ -812,7 +814,9 @@ msgid ""
 " Folgende Veränderungen wurden vorgenommen:\n"
 " \n"
 msgstr ""
-"Your profile page has been modified by an admin. These changes were made:\n"
+"Your profile page has been modified by an admin. \n"
+"These changes were made:\n"
+" \n"
 
 #: app/controllers/settings/settings.php:213
 msgid "Systemnachricht: Profil verändert"
@@ -1231,7 +1235,7 @@ msgstr "Filter"
 
 #: app/controllers/contents/courseware.php:302
 msgid "Geteiltes Lernmaterial"
-msgstr ""
+msgstr "Shared learning material"
 
 #: app/controllers/contents/courseware.php:314
 #, fuzzy
@@ -1381,7 +1385,7 @@ msgstr "Document management"
 msgid ""
 "Es wurden noch keine Dokumente angelegt. Klicken Sie %shier%s, um ein neues "
 "Dokument anzulegen."
-msgstr "No documents yet. Click  %shere%s to create a new document."
+msgstr "No documents yet. Click %shere%s to create a new document."
 
 #: app/controllers/materialien/files.php:116
 msgid "MVV Dokument"
@@ -1847,7 +1851,7 @@ msgstr "Groups"
 msgid "Raum"
 msgid_plural "Räume"
 msgstr[0] "Room"
-msgstr[1] "Rooms "
+msgstr[1] "Rooms"
 
 #: app/controllers/course/dates.php:446
 msgid "Raumbeschreibung"
@@ -3629,6 +3633,7 @@ msgid ""
 msgstr ""
 "%s wants to draw your attention to the study group %s. The link below takes "
 "you directly to the study group.\n"
+"\n"
 "%s"
 
 #: app/controllers/course/studygroup.php:786
@@ -3686,7 +3691,8 @@ msgid ""
 "Sie können die Studiengruppen nicht deaktivieren, da noch %s Studiengruppen "
 "vorhanden sind!"
 msgstr ""
-"You cannot deactivate study groups because there still are %s study groups."
+"You cannot deactivate the study group because there still are %s study "
+"groups!"
 
 #: app/controllers/course/studygroup.php:952
 msgid "Die Studiengruppen wurden deaktiviert."
@@ -6898,9 +6904,8 @@ msgid "Benutzername"
 msgstr "Username"
 
 #: app/controllers/questionnaire.php:380
-#, fuzzy
 msgid "Antworten wurden zurückgesetzt."
-msgstr "Groups reset!"
+msgstr "Answers have been reset."
 
 #: app/controllers/questionnaire.php:512
 msgid "Die Bereichszuweisungen wurden gespeichert."
@@ -16488,7 +16493,7 @@ msgstr "To the start page of %s"
 #: app/controllers/accessibility/forms.php:116
 #: lib/navigation/FooterNavigation.php:54
 msgid "Barriere melden"
-msgstr ""
+msgstr "Report accessibility problems"
 
 #: app/controllers/accessibility/forms.php:16
 #: app/controllers/accessibility/forms.php:66
@@ -16525,7 +16530,7 @@ msgstr ""
 
 #: app/controllers/accessibility/forms.php:41
 msgid "Ein Problem mit der Seite selbst oder der Navigation"
-msgstr ""
+msgstr "A problem with the page itself or the navigation"
 
 #: app/controllers/accessibility/forms.php:50
 #, fuzzy
@@ -16697,7 +16702,7 @@ msgstr[1] "The room groups for the building %s have been created!"
 
 #: app/controllers/room_management/overview.php:319
 msgid "Das Gebäude hat keine Räume."
-msgstr ""
+msgstr "The building has no rooms."
 
 #: app/controllers/room_management/overview.php:328
 msgid "Übersicht über alle Räume"
@@ -17559,7 +17564,7 @@ msgstr "Edit page"
 
 #: app/controllers/lti.php:63
 msgid "gleiches Fenster oder Tab"
-msgstr ""
+msgstr "same window or tab"
 
 #: app/controllers/lti.php:64
 #, fuzzy
@@ -17573,7 +17578,7 @@ msgstr "below the table"
 
 #: app/controllers/lti.php:66
 msgid "Popup-Fenster"
-msgstr ""
+msgstr "Pop-up window"
 
 #: app/controllers/lti.php:67
 #, fuzzy
@@ -24619,7 +24624,7 @@ msgstr ""
 
 #: app/views/file/suggest_oer.php:6
 msgid "Schlagen Sie es zum Teilen im OER Campus vor."
-msgstr ""
+msgstr "Suggest it for sharing on the OER Campus."
 
 #: app/views/file/suggest_oer.php:8
 #, fuzzy
@@ -25064,6 +25069,7 @@ msgid ""
 "Wenn Sie möchten, können Sie die hochgeladene Datei für den OER-Campus "
 "bereitstellen."
 msgstr ""
+"If you wish, you can make the uploaded file available in the OER Campus."
 
 #: app/views/file/oer_post_upload.php:12
 #, php-format
@@ -25071,6 +25077,8 @@ msgid ""
 "Falls Sie die Datei zu einem späteren Zeitpunkt bereitstellen möchten,\n"
 "            wird Ihnen am Ende des Semesters (%s) eine Nachricht zugeschickt."
 msgstr ""
+"If you wish to provide the file at a later date,\n"
+"            a message will be sent to you at the end of the semester (%s)."
 
 #: app/views/file/oer_post_upload.php:23
 #, fuzzy
@@ -25082,6 +25090,8 @@ msgid ""
 "Ich möchte die hochgeladene Datei jetzt nicht im OER-Campus bereitstellen.\n"
 "                Ich habe jedoch später jederzeit die Möglichkeit dazu."
 msgstr ""
+"I do not want to make the uploaded file available in the OER Campus now.\n"
+"                However, I have the option to do so at any time later."
 
 #: app/views/file/oer_post_upload.php:42
 #, fuzzy
@@ -25094,10 +25104,13 @@ msgid ""
 "vielen weiteren freien Lernmaterialien an allen Stud.IP-Standorten mit "
 "aktiviertem OER-Campus sichtbar."
 msgstr ""
+"The file is made available directly in the OER Campus. It is then visible "
+"alongside many other free learning materials at all Stud.IP locations with "
+"activated OER Campus."
 
 #: app/views/file/oer_post_upload.php:60
 msgid "Zu einem späteren Zeitpunkt für den OER-Campus bereitstellen."
-msgstr ""
+msgstr "Make available for the OER Campus at a later date."
 
 #: app/views/file/oer_post_upload.php:67
 #, php-format
@@ -25915,7 +25928,7 @@ msgstr "<strong>No compulsory attendance</strong>."
 
 #: app/views/wysiwyg/a11yhelp.php:1
 msgid "Editorwerkzeugleiste"
-msgstr ""
+msgstr "Editor toolbar"
 
 #: app/views/wysiwyg/a11yhelp.php:5
 msgid ""
@@ -25924,10 +25937,13 @@ msgid ""
 "linken Pfeiltaste. Drücken Sie die Leertaste oder Eingabetaste, um ein "
 "Element in der Werkzeugleiste zu aktivieren."
 msgstr ""
+"To access the elements of the editor toolbar, press Alt+F10. Go to the next "
+"or previous element with the right or left arrow key. Press the space bar or "
+"enter key to activate an element in the toolbar."
 
 #: app/views/wysiwyg/a11yhelp.php:9
 msgid "Editor-Kontextmenü (Rechtsklickmenü)"
-msgstr ""
+msgstr "Editor context menu (right-click menu)"
 
 #: app/views/wysiwyg/a11yhelp.php:13
 msgid ""
@@ -25944,27 +25960,27 @@ msgstr "missed %s"
 
 #: app/views/wysiwyg/a11yhelp.php:19
 msgid "Rückgängig-Befehl: Drücken Sie Strg+Z"
-msgstr ""
+msgstr "Undo command: Press Ctrl+Z"
 
 #: app/views/wysiwyg/a11yhelp.php:20
 msgid "Wiederherstellen-Befehl: Drücken Sie Strg+Y"
-msgstr ""
+msgstr "Redo command: Press Ctrl+Y"
 
 #: app/views/wysiwyg/a11yhelp.php:21
 msgid "Fettschrift-Befehl: Drücken Sie Strg+B"
-msgstr ""
+msgstr "Bold command: Press Ctrl+B"
 
 #: app/views/wysiwyg/a11yhelp.php:22
 msgid "Kursiv-Befehl: Drücken Sie Strg+I"
-msgstr ""
+msgstr "Italic command: Press Ctrl+I"
 
 #: app/views/wysiwyg/a11yhelp.php:23
 msgid "Unterstreichen-Befehl: Drücken Sie Strg+U"
-msgstr ""
+msgstr "Underline command: Press Ctrl+U"
 
 #: app/views/wysiwyg/a11yhelp.php:24
 msgid "Link-Befehl: Drücken Sie Strg+K"
-msgstr ""
+msgstr "Link command: Press Ctrl+K"
 
 #: app/views/wysiwyg/a11yhelp.php:25
 #, fuzzy
@@ -31655,6 +31671,8 @@ msgid ""
 "Die angegebene Information wird im Datei-Hochladen-Dialog unter der Checkbox "
 "angezeigt."
 msgstr ""
+"The specified information is displayed in the file upload dialogue under the "
+"checkbox."
 
 #: app/views/elearning/my_accounts.php:9 templates/elearning/my_elearning.php:9
 msgid "Mein Benutzeraccount"
@@ -31692,7 +31710,7 @@ msgstr "%s until %s o'clock"
 #: app/views/consultation/block-locked.php:3
 #, php-format
 msgid "Dieser Block wird %u Stunden vor Beginn für Buchungen gesperrt."
-msgstr ""
+msgstr "This block will be locked %u hours before the start of bookings."
 
 #: app/views/consultation/admin/book.php:21
 #, php-format
@@ -33114,7 +33132,7 @@ msgstr ""
 #: app/views/questionnaire/question_types/rangescale/rangescale_evaluation.php:61
 #: app/views/questionnaire/question_types/likert/likert_evaluation.php:61
 msgid "Zeige nur Ergebnisse von Personen an, die diese Option gewählt haben."
-msgstr ""
+msgstr "Only show results from people who have selected this option."
 
 #: app/views/questionnaire/question_types/vote/vote_answer.php:19
 #: app/views/questionnaire/question_types/rangescale/rangescale_answer.php:20
@@ -37254,11 +37272,11 @@ msgstr ""
 #: lib/cronjobs/courseware.php:248 lib/cronjobs/courseware.php:289
 #: lib/cronjobs/courseware.php:321
 msgid "Über folgenden Link kommen Sie direkt zur Courseware"
-msgstr ""
+msgstr "The following link will take you directly to the Courseware"
 
 #: lib/cronjobs/courseware.php:252
 msgid "Courseware: Zertifikat"
-msgstr ""
+msgstr "Courseware: Certificate"
 
 #: lib/cronjobs/courseware.php:292
 #, fuzzy
@@ -37874,7 +37892,7 @@ msgstr "This username is already authenticated via %s!"
 
 #: lib/classes/auth_plugins/StudipAuthStandard.class.php:76
 msgid "Das Passwort ist falsch!"
-msgstr "Incorrect password! "
+msgstr "Incorrect password!"
 
 #: lib/classes/auth_plugins/StudipAuthLdapReadAndBind.class.php:50
 #, php-format
@@ -38459,7 +38477,7 @@ msgstr "<b>%s</b> entries included in any sub-level "
 
 #: lib/classes/Virusscanner.php:57
 msgid "Die Datei ist zu groß, um vom Virenscanner gelesen zu werden."
-msgstr ""
+msgstr "The file is too large to be read by the virus scanner."
 
 #: lib/classes/Virusscanner.php:116
 #, fuzzy
@@ -38467,9 +38485,8 @@ msgid "Der Virenscanner ist nicht verfügbar."
 msgstr "This area is not available."
 
 #: lib/classes/Virusscanner.php:133
-#, fuzzy
 msgid "Die Datei kann nicht gelesen werden."
-msgstr "The file cannot be read!"
+msgstr "The file cannot be read."
 
 #: lib/classes/Virusscanner.php:152
 #, fuzzy
@@ -42390,6 +42407,8 @@ msgid ""
 "Die Datei \"%1$s\" wurde vom Virenscanner überprüft. Dabei wurde das Virus "
 "\"%2$s\" gefunden. Die Datei wird nicht hochgeladen."
 msgstr ""
+"The file \"%1$s\" was checked by the virus scanner. The virus \"%2$s\" was "
+"found. The file will not be uploaded."
 
 #: lib/filesystem/FileManager.php:351
 #, php-format
@@ -43983,7 +44002,7 @@ msgstr "Timeframe"
 
 #: lib/models/Courseware/BlockTypes/Timeline.php:29
 msgid "Kann beliebig viele Ereignisse in zeitlicher Reihenfolge darstellen."
-msgstr ""
+msgstr "Can display any number of events in chronological order."
 
 #: lib/models/Courseware/BlockTypes/Audio.php:29
 msgid ""
@@ -44000,7 +44019,7 @@ msgstr "Target"
 
 #: lib/models/Courseware/BlockTypes/BiographyGoals.php:30
 msgid "Präsentiert eines Ihrer Ziele."
-msgstr ""
+msgstr "Presents one of your goals."
 
 #: lib/models/Courseware/BlockTypes/ImageMap.php:24
 #: templates/courseware/block_types/image_map.php:2
@@ -44013,7 +44032,7 @@ msgstr "Any areas on a picture can be linked."
 
 #: lib/models/Courseware/BlockTypes/BiographyAchievements.php:25
 msgid "Erfolge"
-msgstr ""
+msgstr "Successes"
 
 #: lib/models/Courseware/BlockTypes/BiographyAchievements.php:30
 msgid "Zeigt verschiedene Arten von erreichten Erfolgen an."
@@ -47863,12 +47882,12 @@ msgstr "Module \"%s\" added to component \"%s\"."
 #: lib/activities/CoursewareProvider.php:119
 #, php-format
 msgid "Ein Block vom Typ \"%1$s\" wurde auf der Seite \"%2$s\" verändert."
-msgstr ""
+msgstr "A block of the type \"%1$s\" was changed on the page \"%2$s\"."
 
 #: lib/activities/CoursewareProvider.php:143
-#, fuzzy, php-format
+#, php-format
 msgid "Ein Block vom Typ \"%1$s\" wurde auf der Seite \"%2$s\" gelöscht."
-msgstr "The room %1$s has been deleted from the separable room %2$s!"
+msgstr "The room %1$s has been deleted from the separable room %2$s."
 
 #: lib/activities/CoursewareProvider.php:205
 #, fuzzy, php-format
@@ -47878,22 +47897,22 @@ msgstr "Module \"%s\" added to component \"%s\"."
 #: lib/activities/CoursewareProvider.php:229
 #, php-format
 msgid "Ein Abschnitt vom Typ \"%1$s\" wurde auf der Seite \"%2$s\" verändert."
-msgstr ""
+msgstr "A section of the type \"%1$s\" was changed on the page \"%2$s\"."
 
 #: lib/activities/CoursewareProvider.php:253
-#, fuzzy, php-format
+#, php-format
 msgid "Ein Abschnitt vom Typ \"%1$s\" wurde auf der Seite \"%2$s\" gelöscht."
-msgstr "The room %1$s has been deleted from the separable room %2$s!"
+msgstr "The room %1$s has been deleted from the separable room %2$s."
 
 #: lib/activities/CoursewareProvider.php:273
-#, fuzzy, php-format
+#, php-format
 msgid "Eine Seite mit dem Titel \"%s\" wurde angelegt."
-msgstr "The new property group with the name %s has been created!"
+msgstr "The new property group with the name %s has been created."
 
 #: lib/activities/CoursewareProvider.php:292
-#, fuzzy, php-format
+#, php-format
 msgid "Eine Seite mit dem Titel \"%s\" wurde gelöscht."
-msgstr "Entry with ID \"%s\" has been deleted!"
+msgstr "Entry with ID \"%s\" has been deleted."
 
 #: lib/activities/ParticipantsProvider.php:27
 #, php-format
