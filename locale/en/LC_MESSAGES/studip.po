@@ -21,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:54+0200\n"
 "PO-Revision-Date: 2023-05-23 13:15+0000\n"
-"Last-Translator: Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>\n"
+"Last-Translator: Kilian Pluta <pluta@zqs.uni-hannover.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3/en/>\n"
 "Language: en\n"
@@ -597,7 +597,7 @@ msgstr "WYSIWYG folder for uploaded files could not be created!"
 
 #: app/controllers/wysiwyg.php:101 app/controllers/file.php:97
 msgid "Beim Hochladen ist ein Fehler aufgetreten "
-msgstr "Error during upload"
+msgstr "Error during upload "
 
 #: app/controllers/wysiwyg.php:130
 msgid "Hilfe zur Bedienung des Editors"
@@ -3519,7 +3519,7 @@ msgstr "Changes successfully saved."
 #: lib/modules/CoreStudygroupParticipants.class.php:47
 #: public/eval_summary_export.php:481 public/eval_summary.php:453
 msgid "Teilnehmende"
-msgstr "Participants "
+msgstr "Participants"
 
 #: app/controllers/course/studygroup.php:550
 #: app/controllers/course/studygroup.php:752
@@ -3869,7 +3869,7 @@ msgid ""
 "Sie wurden manu\n"
 "\n"
 "                        ell in die Veranstaltung **%s** eingetragen."
-msgstr "You have been manually enrolled into the course **%s**"
+msgstr "You have been manually enroled into the course **%s**"
 
 #: app/controllers/course/members.php:719
 msgid "Niemanden gefunden!"
@@ -4275,7 +4275,7 @@ msgstr "No room group has been selected!"
 #: app/controllers/course/members.php:2043
 #, php-format
 msgid "%1$s wurde in die Veranstaltung mit dem Status<b>%2$s</b> eingetragen."
-msgstr "%1$s has been enrolled into the course with status<b>%2$s</b>."
+msgstr "%1$s has been enroled into the course with status<b>%2$s</b>."
 
 #: app/controllers/course/members.php:2052
 #, fuzzy
@@ -4508,7 +4508,7 @@ msgstr "The lock rule has been successfully reset!"
 #: app/controllers/course/forum/index.php:457
 #: lib/models/CalendarEvent.class.php:655
 msgid "Kein Titel"
-msgstr "No title "
+msgstr "No title"
 
 #: app/controllers/course/forum/area.php:55
 msgid "Die Änderungen am Bereich wurden gespeichert."
@@ -4581,7 +4581,7 @@ msgstr "You have subscribed to the entire forum!"
 
 #: app/controllers/course/forum/index.php:795
 msgid "Sie haben diesen Bereich abonniert."
-msgstr "You have subscribed to this area. "
+msgstr "You have subscribed to this area."
 
 #: app/controllers/course/forum/index.php:796
 msgid "Sie haben dieses Thema abonniert"
@@ -4973,7 +4973,7 @@ msgstr ""
 
 #: app/controllers/course/enrolment.php:153
 msgid "Zeitpunkt der automatischen Verteilung: "
-msgstr "Date of assignment:"
+msgstr "Date of assignment: "
 
 #: app/controllers/course/enrolment.php:156
 msgid "Sie sind bereits für die Verteilung angemeldet."
@@ -6045,7 +6045,7 @@ msgstr "Day view"
 #: app/controllers/calendar/single.php:113 app/views/settings/calendar.php:6
 #: app/views/settings/calendar.php:51
 msgid "Wochenansicht"
-msgstr "Week view "
+msgstr "Week view"
 
 #: app/controllers/calendar/group.php:294
 msgid "Monatssicht"
@@ -11754,7 +11754,7 @@ msgstr "Demo data for the module and course directory"
 
 #: app/controllers/admin/install.php:177
 msgid "Demodaten für die Ressourcenverwaltung "
-msgstr "Demo data for the resource management"
+msgstr "Demo data for the resource management "
 
 #: app/controllers/admin/install.php:222
 msgid "Der Benutzername ist ungültig"
@@ -16528,7 +16528,7 @@ msgstr "Voluntary provision of your contact details for any queries."
 
 #: app/controllers/accessibility/forms.php:60
 msgid "Anrede"
-msgstr ""
+msgstr "Title"
 
 #: app/controllers/accessibility/forms.php:64
 #: app/controllers/accessibility/forms.php:137
