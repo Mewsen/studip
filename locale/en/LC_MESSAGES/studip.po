@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:54+0200\n"
-"PO-Revision-Date: 2023-05-23 12:59+0000\n"
+"PO-Revision-Date: 2023-05-23 13:15+0000\n"
 "Last-Translator: Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3/en/>\n"
@@ -16476,19 +16476,19 @@ msgstr "To the start page of %s"
 #: app/controllers/accessibility/forms.php:116
 #: lib/navigation/FooterNavigation.php:54
 msgid "Barriere melden"
-msgstr "Report accessibility problem"
+msgstr "Report accessibility barrier"
 
 #: app/controllers/accessibility/forms.php:16
 #: app/controllers/accessibility/forms.php:66
 #: templates/courseware/mails/certificate.php:7
 msgid "Herr"
-msgstr ""
+msgstr "Mr"
 
 #: app/controllers/accessibility/forms.php:18
 #: app/controllers/accessibility/forms.php:65
 #: templates/courseware/mails/certificate.php:10
 msgid "Frau"
-msgstr ""
+msgstr "Ms"
 
 #: app/controllers/accessibility/forms.php:20
 #: app/controllers/accessibility/forms.php:67
@@ -16499,35 +16499,32 @@ msgid "divers"
 msgstr "diverse"
 
 #: app/controllers/accessibility/forms.php:32
-#, fuzzy
 msgid "Angaben zur gefundenen Barriere"
-msgstr "Information about table layout."
+msgstr "Information about accessibility barrier found"
 
 #: app/controllers/accessibility/forms.php:36
 msgid "Um welche Art von Barriere handelt es sich?"
-msgstr ""
+msgstr "Type of accessibility barrier"
 
 #: app/controllers/accessibility/forms.php:40
 msgid "Inhalte auf dieser Seite (z.B. PDF, Bilder oder Lernmodule)"
-msgstr ""
+msgstr "Content on this page (e.g. PDF, images or learning modules)"
 
 #: app/controllers/accessibility/forms.php:41
 msgid "Ein Problem mit der Seite selbst oder der Navigation"
 msgstr "A problem with the page itself or the navigation"
 
 #: app/controllers/accessibility/forms.php:50
-#, fuzzy
 msgid "Beschreiben Sie die Barriere"
-msgstr "Description of markers"
+msgstr "Description of the accessibility barrier"
 
 #: app/controllers/accessibility/forms.php:55
-#, fuzzy
 msgid "Ihre persönlichen Daten"
-msgstr "Personal start page"
+msgstr "Contact"
 
 #: app/controllers/accessibility/forms.php:56
 msgid "Freiwillige Angaben Ihrer Kontaktdaten für etwaige Rückfragen."
-msgstr ""
+msgstr "Voluntary provision of your contact details for any queries."
 
 #: app/controllers/accessibility/forms.php:60
 msgid "Anrede"
