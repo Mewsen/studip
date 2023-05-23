@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "PO-Revision-Date: 2023-05-23 15:01+0000\n"
-"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
+"Last-Translator: Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3-js/en/>\n"
 "Language: en\n"
@@ -494,9 +494,8 @@ msgid "Allgemeine Einstellungen"
 msgstr "General settings"
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:379
-#, fuzzy
 msgid "Als Vollbild anzeigen"
-msgstr "Show picture"
+msgstr "Show as full screen"
 
 #: resources/assets/javascripts/bootstrap/mvv_difflog.js:144
 msgid "Änderung durch %{user} am %{time}"
@@ -796,7 +795,7 @@ msgstr "selected"
 #: resources/vue/components/questionnaires/LikertEdit.vue:81
 #: resources/vue/components/questionnaires/RangescaleEdit.vue:91
 msgid "Aussage"
-msgstr ""
+msgstr "Statement"
 
 #: resources/vue/components/questionnaires/LikertEdit.vue:125
 #: resources/vue/components/questionnaires/RangescaleEdit.vue:147
@@ -1744,9 +1743,8 @@ msgid "Diese Courseware"
 msgstr "This Courseware"
 
 #: resources/vue/components/FilesTable.vue:464
-#, fuzzy
 msgid "Diese Datei ist barrierefrei."
-msgstr "The file is not an image file"
+msgstr "The file is accessible."
 
 #: resources/vue/components/courseware/CoursewareShelfDialogAdd.vue:82
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:682
@@ -6085,9 +6083,8 @@ msgstr "Timezone"
 #: resources/vue/components/courseware/CoursewareBiographyAchievementsBlock.vue:35
 #: resources/vue/components/courseware/CoursewareBiographyAchievementsBlock.vue:5
 #: resources/vue/components/courseware/CoursewareBiographyAchievementsBlock.vue:31
-#, fuzzy
 msgid "Zertifikat"
-msgstr "vertical"
+msgstr "Certificate"
 
 #: resources/vue/components/courseware/CoursewareUnitItemDialogSettings.vue:102
 msgid "Zertifikat bei Erreichen einer Fortschrittsgrenze versenden"
