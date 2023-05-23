@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:54+0200\n"
-"PO-Revision-Date: 2023-05-23 13:15+0000\n"
+"PO-Revision-Date: 2023-05-23 13:25+0000\n"
 "Last-Translator: Kilian Pluta <pluta@zqs.uni-hannover.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3/en/>\n"
@@ -13047,7 +13047,7 @@ msgstr ""
 "Dear %s %s,\n"
 "\n"
 "in the institute '%s' %s %s has been added as administrator and will be able "
-"to assist you in case of questions about or problems with Stud.IP."
+"to assist you in case of questions about or problems with Stud.IP. "
 
 #: app/controllers/admin/user.php:837
 #, php-format
@@ -15332,7 +15332,7 @@ msgstr "Ranking and score are not activated."
 #: app/controllers/score.php:51 lib/navigation/CommunityNavigation.php:81
 #: lib/navigation/StartNavigation.php:270
 msgid "Rangliste"
-msgstr "High score list "
+msgstr "High score list"
 
 #: app/controllers/score.php:104
 msgid "Ihren Wert veröffentlichen"
@@ -18382,7 +18382,7 @@ msgstr "An administrator has made your ID invisible."
 
 #: app/views/settings/privacy.php:43
 msgid "Sie haben Lehrendenrechte und sind daher immer global sichtbar."
-msgstr "You have lecturer permissions and therefore you are always vibible."
+msgstr "You have lecturer permissions and therefore you are always visible."
 
 #: app/views/settings/privacy.php:45
 msgid "Sie sind immer global sichtbar."
@@ -18552,7 +18552,7 @@ msgstr "Until"
 
 #: app/views/settings/calendar.php:85
 msgid "Endzeit der Tages- und Wochenansicht"
-msgstr "Finale time of day view and week view: "
+msgstr "Finale time of day view and week view:"
 
 #: app/views/settings/calendar.php:98 app/views/settings/calendar.php:128
 msgid "Zeitintervall der Tagesansicht"
@@ -20441,7 +20441,7 @@ msgid ""
 msgstr ""
 "To associate this course with an existing ILIAS-course then select the Stud."
 "IP-course to be linked with the given course. Both Stud.IP-courses will be "
-"linked with the same ILIAS-course.  <b>This step cannot be undone.</b>"
+"linked with the same ILIAS-course. <b>This step cannot be undone.</b>"
 
 #: app/views/course/elearning/edit.php:123
 #: templates/elearning/elearning_interface_edit.php:127
@@ -20461,9 +20461,9 @@ msgid ""
 msgstr ""
 "You may add further learning objects by creating internal links in the "
 "connected ILIAS course. Go to the course in ILIAS, select \"Weblink\" at "
-"\"Add new object\" and create a link within ILIAS. Than refresh this page "
+"\"Add new object\" and create a link within ILIAS. Then refresh this page "
 "and add the link. Please make sure that your participants are permitted to "
-"access the linked objects. These permissions must be set manually. "
+"access the linked objects. These permissions must be set manually."
 
 #: app/views/course/management/lock.php:2
 #, php-format
@@ -21136,7 +21136,7 @@ msgstr "Number"
 
 #: app/views/course/feedback/_results.php:52
 msgid "Durchschnitt: "
-msgstr "Average:"
+msgstr "Average: "
 
 #: app/views/course/feedback/index.php:8
 msgid "Es wurden noch keine Feedback-Elemente angelegt."
@@ -21358,7 +21358,7 @@ msgid ""
 "verschoben werden können. "
 msgstr ""
 "You are in the administration view of the forum. Please use the blue arrows "
-"to select one or more entries which may then be moved."
+"to select one or more entries which may then be moved. "
 
 #: app/views/course/forum/admin/index.php:10
 msgid ""
