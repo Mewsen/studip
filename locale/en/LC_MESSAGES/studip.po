@@ -21,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:54+0200\n"
 "PO-Revision-Date: 2023-05-23 13:25+0000\n"
-"Last-Translator: Kilian Pluta <pluta@zqs.uni-hannover.de>\n"
+"Last-Translator: Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3/en/>\n"
 "Language: en\n"
@@ -16544,9 +16544,8 @@ msgid "Keine Angabe"
 msgstr "No description"
 
 #: app/controllers/accessibility/forms.php:75
-#, fuzzy
 msgid "Vorname und Nachname"
-msgstr "First name last name"
+msgstr "First name and last name"
 
 #: app/controllers/accessibility/forms.php:82
 #: app/views/institute/basicdata/index.php:73
@@ -16566,22 +16565,21 @@ msgid ""
 "Informationen zum Datenschutz dieses Formulars finden Sie in der "
 "Datenschutzerklärung."
 msgstr ""
+"For information on the data protection of this form, please see the privacy "
+"declaration."
 
 #: app/controllers/accessibility/forms.php:101
 #: app/controllers/accessibility/forms.php:108
-#, fuzzy
 msgid "Datenschutzerklärung lesen"
-msgstr "Request data protection information"
+msgstr "Read privacy declaration"
 
 #: app/controllers/accessibility/forms.php:162
-#, fuzzy
 msgid "Meldung einer Barriere in Stud.IP"
-msgstr "Current version of helpbar entries in Stud.IP"
+msgstr "Reporting an accessibility barrier in Stud.IP"
 
 #: app/controllers/accessibility/forms.php:168
-#, fuzzy
 msgid "Ihre Meldung einer Barriere wurde weitergeleitet."
-msgstr "Your application has been saved."
+msgstr "Your report of an accessibility barrier has been forwarded."
 
 #: app/controllers/accessibility/forms.php:173
 #: app/views/course/wizard/step.php:21 app/views/course/wizard/summary.php:48
@@ -17533,37 +17531,32 @@ msgid "Verwendet von Fachbereich:"
 msgstr "In use at faculty:"
 
 #: app/controllers/lti.php:57 lib/navigation/BrowseNavigation.php:81
-#, fuzzy
 msgid "Veranstaltung verknüpfen"
-msgstr "Remove this course"
+msgstr "Link course"
 
 #: app/controllers/lti.php:62
-#, fuzzy
 msgid "in Seite einbetten"
-msgstr "Edit page"
+msgstr "embed in page"
 
 #: app/controllers/lti.php:63
 msgid "gleiches Fenster oder Tab"
 msgstr "same window or tab"
 
 #: app/controllers/lti.php:64
-#, fuzzy
 msgid "IFrame in der Seite"
-msgstr "Wiki page name"
+msgstr "IFrame in page"
 
 #: app/controllers/lti.php:65
-#, fuzzy
 msgid "neues Fenster oder Tab"
-msgstr "below the table"
+msgstr "new window or tab"
 
 #: app/controllers/lti.php:66
 msgid "Popup-Fenster"
 msgstr "Pop-up window"
 
 #: app/controllers/lti.php:67
-#, fuzzy
 msgid "Dialog"
-msgstr "Catalogue"
+msgstr "Dialogue"
 
 #: app/views/new_password/index.php:5
 msgid "Mail zum Zurücksetzen des Passworts anfordern"
@@ -20680,9 +20673,8 @@ msgid "Zugelassenene Nutzerdomänen:"
 msgstr "Admissible user domains:"
 
 #: app/views/course/shared/order_settings.php:5
-#, fuzzy
 msgid "Letzte Veranstaltungsliste sortieren nach"
-msgstr "Template for course list"
+msgstr "Sort last course list by"
 
 #: app/views/course/timesrooms/createSingleDate.php:13
 #: app/views/course/timesrooms/editDate.php:23
@@ -23878,9 +23870,8 @@ msgid "Schreiben"
 msgstr "Write"
 
 #: app/views/calendar/single/manage_access.php:11
-#, fuzzy
 msgid "Bestehende Freigaben"
-msgstr "Existing allocations:"
+msgstr "Existing allocations"
 
 #: app/views/calendar/single/manage_access.php:16
 msgid "Alle Personen anzeigen"
@@ -24600,24 +24591,23 @@ msgstr ""
 
 #: app/views/file/suggest_oer.php:5
 msgid "Das Material gefällt Ihnen?"
-msgstr ""
+msgstr "Like the material?"
 
 #: app/views/file/suggest_oer.php:6
 msgid "Schlagen Sie es zum Teilen im OER Campus vor."
 msgstr "Suggest it for sharing on the OER Campus."
 
 #: app/views/file/suggest_oer.php:8
-#, fuzzy
 msgid "Schreiben Sie der Autorin/dem Autoren:"
-msgstr "Write your forum post here."
+msgstr "Write to the author:"
 
 #: app/views/file/suggest_oer.php:15
 msgid "Warum gefällt Ihnen das Material?"
-msgstr ""
+msgstr "Why do you like this material?"
 
 #: app/views/file/suggest_oer.php:19
 msgid "Eine Nachricht ist freiwillig. Ihr Vorschlag wird anonym versendet."
-msgstr ""
+msgstr "A message is voluntary. Your suggestion will be sent anonymously."
 
 #: app/views/file/suggest_oer.php:53 app/views/file/_folder_aside.php:32
 #: app/views/file/_file_aside.php:10
@@ -24651,9 +24641,8 @@ msgid "Besitzer/-in"
 msgstr "Owner"
 
 #: app/views/file/suggest_oer.php:88
-#, fuzzy
 msgid "Teilen vorschlagen"
-msgstr "Upload files"
+msgstr "Suggest sharing"
 
 #: app/views/file/add_from_library.php:3
 msgid ""
