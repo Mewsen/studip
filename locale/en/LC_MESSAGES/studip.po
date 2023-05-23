@@ -16476,7 +16476,7 @@ msgstr "To the start page of %s"
 #: app/controllers/accessibility/forms.php:116
 #: lib/navigation/FooterNavigation.php:54
 msgid "Barriere melden"
-msgstr "Report accessibility problems"
+msgstr "Report accessibility problem"
 
 #: app/controllers/accessibility/forms.php:16
 #: app/controllers/accessibility/forms.php:66
