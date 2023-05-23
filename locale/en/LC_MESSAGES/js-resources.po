@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-05-22 11:35+0000\n"
+"PO-Revision-Date: 2023-05-23 15:02+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-1-js/en/>\n"
@@ -3363,8 +3363,8 @@ msgstr "Very fast"
 #: resources/vue/components/courseware/CoursewareTableOfContentsBlock.vue:29
 msgid "Seite"
 msgid_plural "Seiten"
-msgstr[0] "PagePages"
-msgstr[1] ""
+msgstr[0] "Page"
+msgstr[1] "Pages"
 
 #: resources/vue/components/courseware/CoursewareExportWidget.vue:9
 msgid "Seite als pdf-Dokument exportieren"
