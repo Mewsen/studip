@@ -21,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:54+0200\n"
 "PO-Revision-Date: 2023-05-23 14:04+0000\n"
-"Last-Translator: Kilian Pluta <pluta@zqs.uni-hannover.de>\n"
+"Last-Translator: Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3/en/>\n"
 "Language: en\n"
@@ -24898,13 +24898,12 @@ msgid "Aktueller Ordner"
 msgstr "Current folder"
 
 #: app/views/file/edit_license.php:25 app/views/file/edit.php:26
-#, fuzzy
 msgid "Diese Datei ist barrierefrei."
-msgstr "The file is not an image file"
+msgstr "The file is accessible."
 
 #: app/views/file/_file_aside.php:40
 msgid "Barrierefrei"
-msgstr ""
+msgstr "Accessible"
 
 #: app/views/file/_file_aside.php:51
 msgid "Hinweis zur Nutzung und Weitergabe:"
@@ -24944,9 +24943,8 @@ msgid "Der Dateibereich ist für diese Einrichtung nicht aktiviert."
 msgstr "The file area is not activated for this institute."
 
 #: app/views/file/_terms_of_use_select.php:8
-#, fuzzy
 msgid "Lizenzauswahl"
-msgstr "Cancel license selection"
+msgstr "License selection"
 
 #: app/views/file/_terms_of_use_select.php:10
 msgid ""
@@ -25050,9 +25048,8 @@ msgstr ""
 "            a message will be sent to you at the end of the semester (%s)."
 
 #: app/views/file/oer_post_upload.php:23
-#, fuzzy
 msgid "Nicht für den OER-Campus bereitstellen."
-msgstr "Information for distributing system. "
+msgstr "Do not provide for OER Campus."
 
 #: app/views/file/oer_post_upload.php:30
 msgid ""
@@ -25063,9 +25060,8 @@ msgstr ""
 "                However, I have the option to do so at any time later."
 
 #: app/views/file/oer_post_upload.php:42
-#, fuzzy
 msgid "Jetzt für den OER-Campus bereitstellen."
-msgstr "Information for distributing system. "
+msgstr "Provide for OER Campus."
 
 #: app/views/file/oer_post_upload.php:49
 msgid ""
@@ -25087,6 +25083,8 @@ msgid ""
 "Ich möchte am Semesterende (%s) daran erinnert werden, diese Datei "
 "gegebenenfalls im OER-Campus bereitzustellen."
 msgstr ""
+"I would like to be reminded at the end of the semester (%s) to make this "
+"file available in the OER Campus if necessary."
 
 #: app/views/file/folder_details.php:8
 msgid "Ordnertyp"
@@ -25921,11 +25919,14 @@ msgid ""
 "Menü benutzen. Mit der Leertaste oder der Enter-Taste kann man den Menüpunkt "
 "aufrufen. Das Kontextmenü kann mit der Escape-Taste geschlossen werden."
 msgstr ""
+"Press Shift+F10 / Shift+Ctrl+F10 or the application key to open the context "
+"menu. You can use the arrow keys to navigate through the menu. You can use "
+"the space bar or the Enter key to access the menu item. The context menu can "
+"be closed with the Escape key."
 
 #: app/views/wysiwyg/a11yhelp.php:16
-#, fuzzy
 msgid "Befehle"
-msgstr "missed %s"
+msgstr "Commands"
 
 #: app/views/wysiwyg/a11yhelp.php:19
 msgid "Rückgängig-Befehl: Drücken Sie Strg+Z"
@@ -25952,9 +25953,8 @@ msgid "Link-Befehl: Drücken Sie Strg+K"
 msgstr "Link command: Press Ctrl+K"
 
 #: app/views/wysiwyg/a11yhelp.php:25
-#, fuzzy
 msgid "Eingabehilfen: Drücken Sie Alt+0 zum Aufrufen dieses Dialoges"
-msgstr "You do not have permissions to call this plug-in."
+msgstr "Accessibility: Press Alt+0 to call up this dialogue"
 
 #: app/views/resources/global_locks/_add_edit_form.php:29
 #: app/views/resources/global_locks/delete.php:14
@@ -27444,9 +27444,8 @@ msgid "Exportieren"
 msgstr "Export"
 
 #: app/views/resources/export/weekday-selector.partial.php:17
-#, fuzzy
 msgid "Wochentage auswählen"
-msgstr "Select context"
+msgstr "Select weekdays"
 
 #: app/views/resources/export/select_booking_sources.php:32
 #, php-format
@@ -28518,15 +28517,13 @@ msgstr "Delete selected roles"
 
 #: app/views/admin/role/assign_plugin_role.php:66
 #: app/views/admin/role/assign_role.php:85
-#, fuzzy
 msgid "Systemrollen"
-msgstr "System role"
+msgstr "System roles"
 
 #: app/views/admin/role/assign_plugin_role.php:74
 #: app/views/admin/role/assign_role.php:93
-#, fuzzy
 msgid "Weitere Rollen"
-msgstr "More details"
+msgstr "More roles"
 
 #: app/views/admin/role/assign_role.php:20
 msgid "Rollen für Benutzer verwalten"
@@ -30039,14 +30036,14 @@ msgstr "Migrate the first user to the second one"
 
 #: app/views/admin/user/show_user_courses.php:47
 #: app/views/admin/user/show_user_courses.php:69
-#, fuzzy, php-format
+#, php-format
 msgid "Wollen Sie %s wirklich austragen?"
-msgstr "Do you really want to sign off the \"%s\"?"
+msgstr "Do you really want to sign out %s?"
 
 #: app/views/admin/user/show_user_courses.php:51
-#, fuzzy, php-format
+#, php-format
 msgid "Aus %s austragen"
-msgstr "sign out %s"
+msgstr "sign out from %s"
 
 #: app/views/admin/user/edit_institute.php:18
 msgid "Bearbeiten der Einrichtungsdaten"
@@ -30359,9 +30356,8 @@ msgid "Wollen Sie diesen Filter wirklich entfernen?"
 msgstr "Are you sure to delete this filter?"
 
 #: app/views/admin/specification/index.php:24
-#, fuzzy
 msgid "Anzahl der zugeordneten Veranstaltungen"
-msgstr "Amount of courses to be created"
+msgstr "Number of assigned courses"
 
 #: app/views/admin/specification/index.php:33
 msgid "Es wurden noch keine Zusatzangaben definiert."
@@ -30372,9 +30368,8 @@ msgid "Regel bearbeiten"
 msgstr "Edit rule"
 
 #: app/views/admin/specification/index.php:50
-#, fuzzy
 msgid "Die Regel kann nicht gelöscht werden, da sie noch verwendet wird."
-msgstr "The final degree cannot be deleted (in use in %s %s)."
+msgstr "The rule cannot be deleted since it is still in use."
 
 #: app/views/admin/specification/index.php:53
 msgid "Regel löschen"
@@ -30401,9 +30396,8 @@ msgid "Regel \"%s\" editieren"
 msgstr "Edit rule \"%s\""
 
 #: app/views/admin/specification/edit.php:25
-#, fuzzy
 msgid "Name der Regel"
-msgstr "Rule name:"
+msgstr "Name of rule"
 
 #: app/views/admin/specification/edit.php:42
 msgid "Zusatzinformationen"
@@ -31882,9 +31876,8 @@ msgstr "Pause duration in minutes"
 
 #: app/views/consultation/admin/create.php:154
 #: app/views/consultation/admin/edit.php:33
-#, fuzzy
 msgid "Termine für Buchungen sperren?"
-msgstr "Export booking list"
+msgstr "Block dates for bookings?"
 
 #: app/views/consultation/admin/create.php:158
 #: app/views/consultation/admin/edit.php:37
@@ -31892,6 +31885,8 @@ msgid ""
 "Wieviele Stunden vor Beginn des Blocks sollen die Termine für Buchungen "
 "gesperrt werden?"
 msgstr ""
+"How many hours before the start of the block should the dates be blocked for "
+"bookings?"
 
 #: app/views/consultation/admin/create.php:167
 msgid "Durchführende Personen, Gruppen oder Einrichtungen"
@@ -32055,9 +32050,8 @@ msgid "belegt"
 msgstr "reserved"
 
 #: app/views/consultation/slot-occupation.php:22
-#, fuzzy
 msgid "nicht buchbar"
-msgstr "invisible"
+msgstr "not bookable"
 
 #: app/views/consultation/slot-occupation.php:28
 #, php-format
@@ -32100,9 +32094,8 @@ msgstr "Currently, no dates are offered."
 
 #: app/views/consultation/overview/index.php:64
 #: app/views/consultation/overview/ungrouped.php:83
-#, fuzzy
 msgid "Dieser Termin ist für Buchungen gesperrt."
-msgstr "A topic has been associated with this date."
+msgstr "This date is blocked for bookings."
 
 #: app/views/consultation/overview/booked.php:3
 msgid "Sie haben aktuell keine Termine gebucht."
@@ -32947,9 +32940,8 @@ msgid "Zuweisungen bearbeiten"
 msgstr "Edit assignment"
 
 #: app/views/questionnaire/_overview_questionnaire.php:93
-#, fuzzy
 msgid "Ausfüllen"
-msgstr "Execute"
+msgstr "Fill in"
 
 #: app/views/questionnaire/_overview_questionnaire.php:99
 msgid "Fragebogen beenden"
@@ -32970,19 +32962,16 @@ msgid "Auswertung"
 msgstr "Assessment"
 
 #: app/views/questionnaire/_overview_questionnaire.php:129
-#, fuzzy
 msgid "Vorlage herunterladen"
-msgstr "Download file"
+msgstr "Download template"
 
 #: app/views/questionnaire/_overview_questionnaire.php:135
-#, fuzzy
 msgid "Antworten löschen"
-msgstr "Delete answer"
+msgstr "Delete answers"
 
 #: app/views/questionnaire/_overview_questionnaire.php:138
-#, fuzzy
 msgid "Sollen die Antworten wirklich gelöscht werden?"
-msgstr "Do you really want to delete the vacation period?"
+msgstr "Do you really want to delete the answers?"
 
 #: app/views/questionnaire/_overview_questionnaire.php:150
 msgid "Fragebogen löschen"
@@ -33065,9 +33054,8 @@ msgid "Ergebnisse herunterladen"
 msgstr "Download results"
 
 #: app/views/questionnaire/evaluate.php:79
-#, fuzzy
 msgid "PDF exportieren"
-msgstr "Export tour"
+msgstr "Export PDF"
 
 #: app/views/questionnaire/evaluate.php:82
 #: app/views/questionnaire/answer.php:59 templates/tour/tour.php:33
@@ -33094,7 +33082,7 @@ msgstr "Copy into courses"
 #: app/views/questionnaire/question_types/rangescale/rangescale_evaluation.php:54
 #: app/views/questionnaire/question_types/likert/likert_evaluation.php:54
 msgid "Zeige wieder alle Ergebnisse ohne Filterung an."
-msgstr ""
+msgstr "Show all results without filters."
 
 #: app/views/questionnaire/question_types/vote/vote_evaluation.php:101
 #: app/views/questionnaire/question_types/rangescale/rangescale_evaluation.php:61
@@ -33113,7 +33101,7 @@ msgstr "This question must be answered."
 #: app/views/questionnaire/question_types/likert/likert_evaluation.php:22
 #: app/views/questionnaire/question_types/likert/likert_answer.php:26
 msgid "Aussage"
-msgstr ""
+msgstr "Statement"
 
 #: app/views/questionnaire/_question.php:6 app/views/questionnaire/edit.php:178
 msgid "Frage nach oben verschieben"
@@ -33206,68 +33194,56 @@ msgid "Fragebogen zum Kopieren freigeben"
 msgstr "Release questionnaire for copying"
 
 #: app/views/questionnaire/edit.php:109
-#, fuzzy
 msgid "Teilnehmende anonymisieren"
-msgstr "List of participants"
+msgstr "Anonymise participants"
 
 #: app/views/questionnaire/edit.php:113
 msgid "Teilnehmende dürfen ihre Antworten revidieren"
 msgstr "Participants may revise their answers"
 
 #: app/views/questionnaire/edit.php:116
-#, fuzzy
 msgid "Ergebnisse einsehbar"
-msgstr "Show results"
+msgstr "Results viewable"
 
 #: app/views/questionnaire/edit.php:118
-#, fuzzy
 msgid "Immer"
-msgstr "Always."
+msgstr "Always"
 
 #: app/views/questionnaire/edit.php:119
-#, fuzzy
 msgid "Nach Ende der Befragung"
-msgstr "After the survey has ended."
+msgstr "After the survey has ended"
 
 #: app/views/questionnaire/edit.php:120
-#, fuzzy
 msgid "Nach der Teilnahme"
-msgstr "Number of participants"
+msgstr "After participation"
 
 #: app/views/questionnaire/edit.php:121
-#, fuzzy
 msgid "Niemals"
-msgstr "Never."
+msgstr "Never"
 
 #: app/views/questionnaire/edit.php:170
-#, fuzzy
 msgid "Internen Namen speichern"
-msgstr "Save changes"
+msgstr "Save internal name"
 
 #: app/views/questionnaire/edit.php:173
-#, fuzzy
 msgid "Internen Namen nicht speichern"
-msgstr "The changes could not be saved."
+msgstr "Do not save internal name"
 
 #: app/views/questionnaire/edit.php:178
-#, fuzzy
 msgid "Umbenennen"
-msgstr "Rename page"
+msgstr "Rename"
 
 #: app/views/questionnaire/edit.php:178
-#, fuzzy
 msgid "Frage kopieren"
-msgstr "Copy file"
+msgstr "Copy question"
 
 #: app/views/questionnaire/edit.php:178
-#, fuzzy
 msgid "Frage löschen"
-msgstr "Delete request"
+msgstr "Delete question"
 
 #: app/views/questionnaire/edit.php:190
-#, fuzzy
 msgid "Element hinzufügen"
-msgstr "Add document"
+msgstr "Add element"
 
 #: app/views/questionnaire/edit.php:198 templates/shared/question-box.php:10
 msgid "Bitte bestätigen Sie die Aktion"
@@ -33796,9 +33772,8 @@ msgid "Veranstaltung auswählen"
 msgstr "Choose course"
 
 #: app/views/lti/content_item.php:22
-#, fuzzy
 msgid "Art der Anzeige"
-msgstr "Type of request"
+msgstr "Type of view"
 
 #: app/views/lti/content_item.php:35
 msgid "Verknüpfen"
@@ -35237,6 +35212,8 @@ msgid ""
 "Auf dieser Seite können Sie eine Barriere melden, die die Nutzbarkeit von "
 "Stud.IP für Sie einschränkt. Füllen Sie dazu das untenstehende Formular aus."
 msgstr ""
+"On this page you can report an accessibility barrier that restricts the "
+"usability of Stud.IP for you. To do so, fill out the form below."
 
 #: app/views/help_content/delete.php:8 app/views/help_content/edit.php:9
 #, php-format
@@ -35563,9 +35540,8 @@ msgstr ""
 "originate from other sources with a compatible license."
 
 #: app/views/oer/embed/_link.php:3
-#, fuzzy
 msgid "Zum OER Campus wechseln"
-msgstr "Promote to %s"
+msgstr "Switch to OER Campus"
 
 #: app/views/oer/admin/hosts.php:3
 msgid "Lernmarktplatz-Server"
@@ -35772,9 +35748,8 @@ msgid "Stern"
 msgstr "Star"
 
 #: app/views/oer/market/abo.php:8
-#, fuzzy
 msgid "Ich möchte Nachrichten bekommen über neue Inhalte im OER Campus"
-msgstr "Customise new content notification"
+msgstr "I would like to receive news about new content in the OER Campus"
 
 #: app/views/oer/market/embed.php:4
 msgid "Platzhalter zum Teilen in Stud.IP (Forum, Blubber, Wiki, Ankündigung)"
@@ -37216,7 +37191,7 @@ msgstr "Deleted date blocks: %u"
 msgid ""
 "Courseware-Erinnerungen und -zertifikate verschicken sowie Fortschritt "
 "zurücksetzen"
-msgstr ""
+msgstr "Send courseware reminders and certificates and reset progress"
 
 #: lib/cronjobs/courseware.php:19
 msgid ""
@@ -37224,11 +37199,12 @@ msgid ""
 "Fortschritts und setzt Fortschritt bei derartig konfigurierten Coursewares "
 "zurück."
 msgstr ""
+"Sends reminders, certificates when a certain progress is reached and resets "
+"progress for such configured coursewares."
 
 #: lib/cronjobs/courseware.php:237
-#, fuzzy
 msgid "Zertifikat"
-msgstr "vertical"
+msgstr "Certificate"
 
 #: lib/cronjobs/courseware.php:245
 #, php-format
@@ -37236,6 +37212,9 @@ msgid ""
 "Anbei erhalten Sie Ihr Courseware-Zertifikat zur Veranstaltung %1$s, in der "
 "Sie einen Fortschritt von %2$u %% im Lernmaterial \"%s\" erreicht haben."
 msgstr ""
+"Enclosed you will receive your courseware certificate for the course %1$s in "
+"which you have achieved a progress of %2$u %% in the learning material \"%s\""
+"."
 
 #: lib/cronjobs/courseware.php:248 lib/cronjobs/courseware.php:289
 #: lib/cronjobs/courseware.php:321
@@ -37247,14 +37226,12 @@ msgid "Courseware: Zertifikat"
 msgstr "Courseware: Certificate"
 
 #: lib/cronjobs/courseware.php:292
-#, fuzzy
 msgid "Courseware: Erinnerung"
-msgstr "Course's forum"
+msgstr "Courseware: Reminder"
 
 #: lib/cronjobs/courseware.php:324
-#, fuzzy
 msgid "Courseware: Fortschritt zurückgesetzt"
-msgstr "Page title reset"
+msgstr "Courseware: Progress reset"
 
 #: lib/cronjobs/cleanup_log.class.php:40
 msgid "Logs aufräumen"
@@ -37337,18 +37314,19 @@ msgstr ""
 
 #: lib/cronjobs/remind_oer_upload.class.php:17
 msgid "An OER-Campus Upload erinnern"
-msgstr ""
+msgstr "Remind me of OER Campus upload"
 
 #: lib/cronjobs/remind_oer_upload.class.php:22
 msgid ""
 "Erinnert den Autor am Ende des Semesters an eine Datei, die in den OER-"
 "Campus hochgeladen werden soll."
 msgstr ""
+"Reminds the author at the end of the semester of a file to be uploaded to "
+"the OER campus."
 
 #: lib/cronjobs/remind_oer_upload.class.php:44
-#, fuzzy
 msgid "Klicken Sie hier, um das Material im OER-Campus zu veröffentlichen."
-msgstr "Click here for becoming visible."
+msgstr "Click here to publish the material in the OER Campus."
 
 #: lib/cronjobs/remind_oer_upload.class.php:47
 #, php-format
@@ -37361,11 +37339,16 @@ msgid ""
 "%s \n"
 "\n"
 msgstr ""
+"You wanted to be reminded to publish the following file in the OER Campus:\n"
+"\n"
+"File name: %s \n"
+"Description: %s \n"
+"%s \n"
+"\n"
 
 #: lib/cronjobs/remind_oer_upload.class.php:66
-#, fuzzy
 msgid "Erinnerung zur Veröffentlichung einer Datei im OER-Campus"
-msgstr "A folder for files which are open to the public"
+msgstr "Reminder to publish a file in the OER Campus"
 
 #: lib/cronjobs/send_mail_notifications.class.php:40
 msgid "Versendet tägliche E-Mailbenachrichtigungen"
@@ -38310,9 +38293,8 @@ msgid "erstellt von %s am %s"
 msgstr "created by %s on %s"
 
 #: lib/classes/ResponsiveHelper.php:44
-#, fuzzy
 msgid "Impressum & Information"
-msgstr "Free information"
+msgstr "Imprint & Information"
 
 #: lib/classes/ResponsiveHelper.php:287
 #, fuzzy
@@ -38448,23 +38430,20 @@ msgid "Die Datei ist zu groß, um vom Virenscanner gelesen zu werden."
 msgstr "The file is too large to be read by the virus scanner."
 
 #: lib/classes/Virusscanner.php:116
-#, fuzzy
 msgid "Der Virenscanner ist nicht verfügbar."
-msgstr "This area is not available."
+msgstr "The virus scanner is not available."
 
 #: lib/classes/Virusscanner.php:133
 msgid "Die Datei kann nicht gelesen werden."
 msgstr "The file cannot be read."
 
 #: lib/classes/Virusscanner.php:152
-#, fuzzy
 msgid "Fehler bei der Kommunikation mit dem Virenscanner."
-msgstr "Error while copying evaluations to areas."
+msgstr "Error connecting to the virus scanner."
 
 #: lib/classes/Virusscanner.php:196
-#, fuzzy
 msgid "Die Antwort des Virenscanners wurde nicht erkannt."
-msgstr "The type of the date %s has been changed."
+msgstr "The virus scanner response was not recognised."
 
 #: lib/classes/StudipRedisCache.class.php:22
 msgid "Redis"
@@ -39220,36 +39199,34 @@ msgstr ""
 "At least <b>one</b> course supervisor (%s) must be entered in the course!"
 
 #: lib/classes/Seminar.class.php:1959
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Tragen Sie zunächst eine weitere Person als Veranstaltungsleiter/-in (%s) "
 "ein."
-msgstr "You must enter a different one before demoting the present one."
+msgstr "First enter another course supervisor (%s)."
 
 #: lib/classes/Seminar.class.php:1994
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie wurden von der Warteliste der Veranstaltung **%s** gestrichen und sind "
 "damit __nicht__ zugelassen worden."
 msgstr ""
-"You have been removed from the waiting list of the course **%2$s** by %1$s "
-"or an administrator and therefore you are __not__ enroled."
+"You have been removed from the waiting list of the course **%s** and "
+"therefore you are __not__ enroled."
 
 #: lib/classes/Seminar.class.php:1999
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie wurden aus der Veranstaltung **%s** gestrichen und sind damit __nicht__ "
 "zugelassen worden."
 msgstr ""
-"You have been signed out of the course **%2$s** by %1$s or an administrator "
-"and therefore you are __not__ enroled."
+"You have been signed out of the course **%s** and therefore you are __not__ "
+"enroled."
 
 #: lib/classes/Seminar.class.php:2040
-#, fuzzy, php-format
+#, php-format
 msgid "Ihre Anmeldung zur Veranstaltung **%s** wurde aufgehoben."
-msgstr ""
-"Your enrolment to the course **%1$s** has been revoked by lecturers (%2$s) "
-"or an administrator."
+msgstr "Your enrolment to the course **%s** has been revoked."
 
 #: lib/classes/Seminar.class.php:2131
 #, php-format
@@ -41655,11 +41632,13 @@ msgstr "No designated authentication available in this system."
 
 #: lib/elearning/ConnectedCMS.class.php:151
 #: lib/elearning/ConnectedCMS.class.php:176
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Die Verbindung zum System \"%s\" konnte nicht hergestellt werden. Der Pfad "
 "\"%s\" ist ungültig."
-msgstr "Unable to create folder \"%s\"."
+msgstr ""
+"The connection to \"%s\" could not be established. The path \"%s\" is "
+"invalid."
 
 #: lib/elearning/ConnectedCMS.class.php:158
 #: lib/elearning/ConnectedCMS.class.php:183
@@ -42384,6 +42363,7 @@ msgid ""
 "Die Datei \"%1$s\" wurde vom Virenscanner überprüft. Dabei ist ein Problem "
 "aufgetreten: %2$s"
 msgstr ""
+"The file \"%1$s\" was checked by the virus scanner. A problem occurred: %2$s"
 
 #: lib/filesystem/FileManager.php:431
 #, php-format
@@ -42696,21 +42676,21 @@ msgid "Wartelisten"
 msgstr "Waiting lists"
 
 #: lib/models/AdmissionApplication.class.php:229
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie haben den Status vorläufig akzeptiert in der Veranstaltung **%s (%s)** "
 "erhalten, da für Sie ein Platz frei geworden ist."
 msgstr ""
-"You have provisionally been accepted for the course **%s (%s)**, because a "
+"You have been preliminary enrolled for the course **%s (%s)**, because a "
 "place became available."
 
 #: lib/models/AdmissionApplication.class.php:266
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie sind auf der Warteliste der Veranstaltung **%s (%s)** hochgestuft "
 "worden. Sie stehen zur Zeit auf Position %s."
 msgstr ""
-"You have been promoted within the waiting list for the course **%s(%s)**. At "
+"You have been promoted within the wait list for the course **%s(%s)**. At "
 "present you are at position %s."
 
 #: lib/models/Course.class.php:765
@@ -43001,7 +42981,7 @@ msgstr "OER learning material does not exist."
 
 #: lib/models/OERMaterial.php:672
 msgid "Neues Material im OER Campus"
-msgstr ""
+msgstr "New material in the OER Campus"
 
 #: lib/models/OERMaterial.php:682
 #, php-format
@@ -43009,6 +42989,7 @@ msgid ""
 "%1$s hat soeben neues Material auf dem OER Campus zur verfügung gestellt. "
 "Viel Spaß! <br> %2$s"
 msgstr ""
+"%1$s just made new material available on the OER Campus. Have fun! <br> %2$s"
 
 #: lib/models/UserDomain.php:35
 msgid "Ungültige ID für Nutzerdomäne"
@@ -43893,14 +43874,12 @@ msgid ""
 msgstr "Creates a link inside the Courseware or to another webpage."
 
 #: lib/models/Courseware/BlockTypes/BiographyPersonalInformation.php:25
-#, fuzzy
 msgid "Persönliche Informationen"
-msgstr "Personal files"
+msgstr "Personal information"
 
 #: lib/models/Courseware/BlockTypes/BiographyPersonalInformation.php:30
-#, fuzzy
 msgid "Zeigt persönliche Daten an."
-msgstr "Personal files"
+msgstr "Shows personal data."
 
 #: lib/models/Courseware/BlockTypes/Typewriter.php:24
 msgid "Schreibmaschine"
@@ -43964,9 +43943,8 @@ msgid "Spielt ein Video aus dem Dateibereich oder von einer URL ab."
 msgstr "Plays a video from the file area or an URL."
 
 #: lib/models/Courseware/BlockTypes/Timeline.php:24
-#, fuzzy
 msgid "Zeitstrahl"
-msgstr "Timeframe"
+msgstr "Timeline"
 
 #: lib/models/Courseware/BlockTypes/Timeline.php:29
 msgid "Kann beliebig viele Ereignisse in zeitlicher Reihenfolge darstellen."
@@ -43981,9 +43959,8 @@ msgstr ""
 "recordings directly in the block."
 
 #: lib/models/Courseware/BlockTypes/BiographyGoals.php:25
-#, fuzzy
 msgid "Ziele"
-msgstr "Target"
+msgstr "Targets"
 
 #: lib/models/Courseware/BlockTypes/BiographyGoals.php:30
 msgid "Präsentiert eines Ihrer Ziele."
