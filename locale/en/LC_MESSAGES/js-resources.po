@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "PO-Revision-Date: 2023-05-23 15:01+0000\n"
-"Last-Translator: Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>\n"
+"Last-Translator: Kilian Pluta <pluta@zqs.uni-hannover.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3-js/en/>\n"
 "Language: en\n"
@@ -2404,7 +2404,7 @@ msgstr "FAQ"
 #: resources/vue/components/courseware/CoursewareTimelineBlock.vue:55
 #: resources/vue/components/courseware/CoursewareTimelineBlock.vue:35
 msgid "Farbe"
-msgstr "Color"
+msgstr "Colour"
 
 #: resources/vue/mixins/MyCoursesMixin.js:74
 msgid "Farbgruppierung ändern"
