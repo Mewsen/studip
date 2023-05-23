@@ -20,8 +20,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:54+0200\n"
-"PO-Revision-Date: 2023-05-23 14:04+0000\n"
-"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
+"PO-Revision-Date: 2023-05-23 15:01+0000\n"
+"Last-Translator: Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3/en/>\n"
 "Language: en\n"
@@ -4278,7 +4278,6 @@ msgid "%1$s wurde in die Veranstaltung mit dem Status<b>%2$s</b> eingetragen."
 msgstr "%1$s has been enroled into the course with status<b>%2$s</b>."
 
 #: app/controllers/course/members.php:2052
-#, fuzzy
 msgid ""
 "Beim Eintragen ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut "
 "oder wenden Sie sich an die Administrierenden"
@@ -6811,7 +6810,6 @@ msgid "Der Fragebogen ist nicht bearbeitbar."
 msgstr "The questionnaire cannot be edited."
 
 #: app/controllers/questionnaire.php:128
-#, fuzzy
 msgid ""
 "Der Fragebogen ist gestartet worden und kann jetzt nicht mehr bearbeitet "
 "werden. Stoppen oder löschen Sie den Fragebogen stattdessen."
@@ -7652,9 +7650,8 @@ msgid "Datei für OER-Campus bereitstellen"
 msgstr "Provide file for OER Campus"
 
 #: app/controllers/file.php:488
-#, fuzzy
 msgid "Erinnerung wurde gespeichert."
-msgstr "Allocation saved."
+msgstr "Reminder saved."
 
 #: app/controllers/file.php:545
 msgid "Klicken Sie hier, um das Material im OER Campus zu veröffentlichen."
@@ -21955,7 +21952,6 @@ msgid "Hochstufen"
 msgstr "Promote"
 
 #: app/views/course/studygroup/_members_options.php:15
-#, fuzzy
 msgid "Möchten Sie die Person wirklich aus der Studiengruppe entfernen?"
 msgstr "Do you really want to sign out the person from the group?"
 
@@ -23897,7 +23893,6 @@ msgid "Teilnehmende:"
 msgstr "Participants:"
 
 #: app/views/calendar/single/seminar_events.php:10
-#, fuzzy
 msgid "Unbekanntes Semester"
 msgstr "unknown semester"
 
@@ -35356,7 +35351,6 @@ msgstr "Create room groups for buildings"
 
 #: app/views/room_management/overview/buildings.php:90
 #: app/views/room_management/overview/buildings.php:96
-#, fuzzy
 msgid "Berechtigungen für alle Räume setzen"
 msgstr "Apply permissions for all rooms"
 
@@ -38297,7 +38291,6 @@ msgid "Impressum & Information"
 msgstr "Imprint & Information"
 
 #: lib/classes/ResponsiveHelper.php:287
-#, fuzzy
 msgid "Mehr..."
 msgstr "more..."
 
@@ -39191,7 +39184,7 @@ msgid "Einzutragender Nutzer stammt nicht einem beteiligten Institut an."
 msgstr "The user to be entered is not member of a participating institution."
 
 #: lib/classes/Seminar.class.php:1956
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Die Person kann nicht herabgestuft werden, da mindestens ein/eine "
 "Veranstaltungsleiter/-in (%s) in die Veranstaltung eingetragen sein muss!"
@@ -42934,7 +42927,6 @@ msgid "Einrichtungs Informationen"
 msgstr "Institute information"
 
 #: lib/models/RangeScale.php:22
-#, fuzzy
 msgid "Pol-Skala"
 msgstr "Pole scale"
 
@@ -43981,7 +43973,7 @@ msgstr "Successes"
 
 #: lib/models/Courseware/BlockTypes/BiographyAchievements.php:30
 msgid "Zeigt verschiedene Arten von erreichten Erfolgen an."
-msgstr ""
+msgstr "Shows different types of achievements."
 
 #: lib/models/Courseware/BlockTypes/TableOfContents.php:29
 msgid "Stellt auf verschiedene Arten die Unterseiten dieser Seite dar."
@@ -44025,15 +44017,16 @@ msgid "Erzeugt einen typografisch ansprechenden Text."
 msgstr "Creates a typographically appealing text."
 
 #: lib/models/Courseware/BlockTypes/BiographyCareer.php:25
-#, fuzzy
 msgid "Karriere"
-msgstr "mark"
+msgstr "Career"
 
 #: lib/models/Courseware/BlockTypes/BiographyCareer.php:30
 msgid ""
 "Stellt die Stationen Ihrer schulischen, akademischen und beruflichen "
 "Qualifikationen, sowie Ihre Berufserfahrung dar."
 msgstr ""
+"Presents the stages of your school, academic and professional "
+"qualifications, as well as your work experience."
 
 #: lib/models/Courseware/BlockTypes/BeforeAfter.php:24
 #: templates/courseware/block_types/before_after.php:2
@@ -44425,9 +44418,8 @@ msgid "Modulteildeskriptoren"
 msgstr "Module component descriptors"
 
 #: lib/models/Studiengang.php:611
-#, fuzzy
 msgid "Undefinierter Status"
-msgstr "required status"
+msgstr "Undefined status"
 
 #: lib/models/Studiengang.php:858
 msgid "Der Name des Studiengangs ist zu kurz (mindestens 4 Zeichen)."
@@ -44488,7 +44480,6 @@ msgid "Ablage für Ordner und Dokumente dieser Gruppe"
 msgstr "Clipboard for folders and documents of this group"
 
 #: lib/models/LikertScale.php:22
-#, fuzzy
 msgid "Likert-Skala"
 msgstr "Lickert scale"
 
@@ -45058,9 +45049,8 @@ msgid "anzeigen"
 msgstr "display"
 
 #: lib/wiki.inc.php:1599
-#, fuzzy
 msgid "Als Vollbild anzeigen"
-msgstr "Show picture"
+msgstr "Show as full screen"
 
 #: lib/wiki.inc.php:1659
 msgid "Es gibt keine zu vergleichenden Versionen."
@@ -47820,9 +47810,9 @@ msgid "einen Courseware-Inhalt"
 msgstr "a Courseware content"
 
 #: lib/activities/CoursewareProvider.php:95
-#, fuzzy, php-format
+#, php-format
 msgid "Ein Block vom Typ \"%1$s\" wurde auf der Seite \"%2$s\" eingefügt."
-msgstr "Module \"%s\" added to component \"%s\"."
+msgstr "A block of type \"%1$s\" was inserted on page \"%2$s\"."
 
 #: lib/activities/CoursewareProvider.php:119
 #, php-format
@@ -47835,9 +47825,9 @@ msgid "Ein Block vom Typ \"%1$s\" wurde auf der Seite \"%2$s\" gelöscht."
 msgstr "The room %1$s has been deleted from the separable room %2$s."
 
 #: lib/activities/CoursewareProvider.php:205
-#, fuzzy, php-format
+#, php-format
 msgid "Ein Abschnitt vom Typ \"%1$s\" wurde auf der Seite \"%2$s\" eingefügt."
-msgstr "Module \"%s\" added to component \"%s\"."
+msgstr "A section of the type \"%1$s\" was inserted onto the page \"%2$s\"."
 
 #: lib/activities/CoursewareProvider.php:229
 #, php-format
@@ -53099,9 +53089,8 @@ msgid ""
 msgstr "With this widget you have an overview over your current schedule."
 
 #: lib/modules/MyCoursesWidget.php:22
-#, fuzzy
 msgid "Dieses Widget zeigt eine Liste Ihrer Veranstaltungen an."
-msgstr "This is just a pre-selected course"
+msgstr "This widget shows a list of your courses."
 
 #: lib/modules/CoreForum.class.php:38
 msgid "Neue Beiträge"
@@ -54064,9 +54053,8 @@ msgid "%s löschen."
 msgstr "Delete %s."
 
 #: templates/sidebar/search-widget.php:28
-#, fuzzy
 msgid "Suche ausführen"
-msgstr "Execute task"
+msgstr "Perform search"
 
 #: templates/sidebar/resources_individual_booking_plan_sidebar.php:5
 #, php-format
@@ -54100,9 +54088,8 @@ msgid "Zweite Navigationsebene"
 msgstr "Secondary navigation layer"
 
 #: templates/tabs.php:49
-#, fuzzy
 msgid "Kompakte Navigation aktivieren"
-msgstr "Template for navigation"
+msgstr "Activate compact navigation"
 
 #: templates/pagination/buttons.php:2 templates/pagination/links.php:2
 #: templates/shared/pagechooser.php:19
@@ -54369,6 +54356,8 @@ msgid ""
 "                    Sie können sie in Ihren persönlichen Einstellungen "
 "ändern."
 msgstr ""
+"Activates a high contrast according to WCAG 2.1. This setting is applied "
+"after login. You can change it in your personal settings."
 
 #: templates/index_nobody.php:95
 msgid "Registrierte NutzerInnen"
@@ -55210,9 +55199,8 @@ msgid "Profilmenü"
 msgstr "Profile menu"
 
 #: templates/header.php:208
-#, fuzzy
 msgid "Kompakte Navigation ausschalten"
-msgstr "Template for navigation"
+msgstr "Disable compact navigation"
 
 #: templates/header.php:243
 msgid "Mehr"
@@ -55264,9 +55252,8 @@ msgid "Sie sind angemeldet als %s (%s)"
 msgstr "You are signed in as %s (%s)"
 
 #: templates/footer.php:38
-#, fuzzy
 msgid "Fußzeilennavigation"
-msgstr "Additional navigation"
+msgstr "Footer navigation"
 
 #: templates/nocookies.php:2
 msgid "Cookies sind nicht aktiviert!"
