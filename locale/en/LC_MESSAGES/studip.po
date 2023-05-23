@@ -21,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:54+0200\n"
 "PO-Revision-Date: 2023-05-23 12:59+0000\n"
-"Last-Translator: Kilian Pluta <pluta@zqs.uni-hannover.de>\n"
+"Last-Translator: Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3/en/>\n"
 "Language: en\n"
@@ -1215,9 +1215,8 @@ msgstr "Courseware"
 
 #: app/controllers/contents/courseware.php:68
 #: app/controllers/course/courseware.php:48
-#, fuzzy
 msgid "Es wurde kein Lernmaterial gefunden."
-msgstr "No user found."
+msgstr "No learning material has been found."
 
 #: app/controllers/contents/courseware.php:127 app/controllers/files.php:232
 #: app/controllers/module/module.php:1395
@@ -1238,9 +1237,8 @@ msgid "Geteiltes Lernmaterial"
 msgstr "Shared learning material"
 
 #: app/controllers/contents/courseware.php:314
-#, fuzzy
 msgid "Der geteilte Inhalt kann nicht gefunden werden."
-msgstr "Plug-in not found."
+msgstr "The shared content cannot be found."
 
 #: app/controllers/web_migrate.php:31
 msgid "Stud.IP Web-Migrator"
@@ -2907,14 +2905,12 @@ msgid "Gruppenliste"
 msgstr "List of groups"
 
 #: app/controllers/course/statusgroups.php:260
-#, fuzzy
 msgid "Als CSV-Dokument exportieren"
-msgstr "Export groups as CSV document"
+msgstr "Export as CSV document"
 
 #: app/controllers/course/statusgroups.php:269
-#, fuzzy
 msgid "Als RTF-Dokument exportieren"
-msgstr "Export groups as RTF document"
+msgstr "Export as RTF document"
 
 #: app/controllers/course/statusgroups.php:279
 msgid "In eine Gruppe eintragen"
@@ -3868,14 +3864,12 @@ msgid "Eintragung in Veranstaltung"
 msgstr "Enrolment in course"
 
 #: app/controllers/course/members.php:704
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie wurden manu\n"
 "\n"
 "                        ell in die Veranstaltung **%s** eingetragen."
-msgstr ""
-"You have been entered in the course **%2$s**\n"
-"                                by %1$s or an admin."
+msgstr "You have been manually enrolled into the course **%s**"
 
 #: app/controllers/course/members.php:719
 msgid "Niemanden gefunden!"
@@ -4279,9 +4273,9 @@ msgid "Es wurde keine Gruppe ausgewählt!"
 msgstr "No room group has been selected!"
 
 #: app/controllers/course/members.php:2043
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s wurde in die Veranstaltung mit dem Status<b>%2$s</b> eingetragen."
-msgstr "%s has been enroled in the course with status <b>%s</b>."
+msgstr "%1$s has been enrolled into the course with status<b>%2$s</b>."
 
 #: app/controllers/course/members.php:2052
 #, fuzzy
@@ -4306,34 +4300,31 @@ msgid "Auf Warteliste gesetzt"
 msgstr "Added to wait list"
 
 #: app/controllers/course/members.php:2144
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie wurden aus der Warteliste in die Veranstaltung **%s** aufgenommen und "
 "sind damit zugelassen."
 msgstr ""
-"You have been enroled from the waiting list in the course **%2$s**\n"
-"                                by %1$s or an admin and you are therefore "
-"approved."
+"You have been enroled from the waiting list into the course **%s** and you "
+"are therefore approved."
 
 #: app/controllers/course/members.php:2149
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie wurden vom Status **vorläufig akzeptiert** auf **teilnehmend** in der "
 "Veranstaltung **%s** hochgestuft und sind damit zugelassen."
 msgstr ""
-"You have been promoted in the course **%2$s**\n"
-"                        by %1$s or an admin from the state **preliminary "
-"accepted** to \"**participating**\n"
-"                        and therefore you are admitted."
+"You have been promoted into the course **%s** from the state **preliminary "
+"accepted** to **participating** and therefore you are admitted."
 
 #: app/controllers/course/members.php:2198
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Sie wurden aus der Veranstaltung **%s** abgemeldet. Sie wurden auf die "
 "Warteliste dieser Veranstaltung gesetzt."
 msgstr ""
-"You have been removed from the course **%s** by %s or an admin. You are now "
-"on the waiting list for that course."
+"You have been removed from the course **%s**. You are now on the waiting "
+"list for that course."
 
 #: app/controllers/course/members.php:2203 lib/classes/MembersModel.php:502
 msgid "Anmeldung aufgehoben, auf Warteliste gesetzt"
@@ -4484,14 +4475,12 @@ msgstr "Simulate student's view"
 
 #: app/controllers/course/management.php:117
 #: lib/classes/sidebar/CourseManagementSelectWidget.php:21
-#, fuzzy
 msgid "Sortiereinstellungen"
-msgstr "Default settings"
+msgstr "Sorting settings"
 
 #: app/controllers/course/management.php:126
-#, fuzzy
 msgid "Die Sortiereinstellungen wurden erfolgreich gespeichert."
-msgstr "Your settings have been saved successfully."
+msgstr "The sorting settings have been saved successfully."
 
 #: app/controllers/course/management.php:147
 msgid "Die Veranstaltung wurde sichtbar gemacht."
@@ -6831,9 +6820,8 @@ msgstr ""
 "delete the questionnaire instead."
 
 #: app/controllers/questionnaire.php:193
-#, fuzzy
 msgid "Die Daten wurden erfolgreich gespeichert."
-msgstr "Vacation period successfully saved."
+msgstr "The data has been saved successfully."
 
 #: app/controllers/questionnaire.php:202 app/controllers/questionnaire.php:966
 msgid "Der Fragebogen ist nicht kopierbar."
@@ -7660,9 +7648,8 @@ msgid "Fehler beim Ändern der Datei %s!"
 msgstr "Error while changing file %s!"
 
 #: app/controllers/file.php:467
-#, fuzzy
 msgid "Datei für OER-Campus bereitstellen"
-msgstr "Information for distributing system. "
+msgstr "Provide file for OER Campus"
 
 #: app/controllers/file.php:488
 #, fuzzy
@@ -7828,11 +7815,11 @@ msgid "Datei wurde bearbeitet."
 msgstr "File has been edited."
 
 #: app/controllers/file.php:1729
-#, fuzzy, php-format
+#, php-format
 msgid "Zusatzangaben und Lizenz wählen"
 msgid_plural "Zusatzangaben und Lizenz auswählen: %s Dateien"
-msgstr[0] "Export additional information"
-msgstr[1] "Export additional information"
+msgstr[0] "Select additional information and licence"
+msgstr[1] "Select additional information and licence: %s files"
 
 #: app/controllers/file.php:1798
 msgid "Die angegebene URL ist ungültig."
@@ -10844,14 +10831,13 @@ msgid "Anmeldeset anlegen"
 msgstr "Create admission"
 
 #: app/controllers/admission/courseset.php:133
-#, fuzzy
 msgid ""
 "\"Es existieren Anmeldesets, die zum Zeitpunkt der Platzverteilung nicht "
 "gelost wurden. Stellen Sie sicher, dass der Cronjob \"Losverfahren "
 "überprüfen\" ausgeführt wird.\""
 msgstr ""
-"One or more admissions have not been executed at the set time. Please check "
-"the cronjob \"Check Admission\"."
+"\"One or more admissions have not been executed at the set time. Please "
+"check the cronjob \"Check Admission\".\""
 
 #: app/controllers/admission/courseset.php:287
 msgid "Bitte geben Sie einen Namen für das Anmeldeset an!"
@@ -11255,9 +11241,8 @@ msgstr "Error while deleting entry with ID \"%s\"!"
 #: app/controllers/admin/accessibility_info_text.php:18
 #: app/views/admin/accessibility_info_text/index.php:5
 #: lib/navigation/AdminNavigation.php:159
-#, fuzzy
 msgid "Infotext zu barrierefreien Dateien"
-msgstr "Information about current level"
+msgstr "Infotext on accessible files"
 
 #: app/controllers/admin/semester.php:30
 msgid "Verwaltung von Semestern"
@@ -13235,28 +13220,27 @@ msgid "Anzahl der Postings"
 msgstr "Number of postings"
 
 #: app/controllers/admin/user.php:1555
-#, fuzzy, php-format
+#, php-format
 msgid "Veranstaltungsübersicht von %s"
-msgstr "Course overview"
+msgstr "Course overview of %s"
 
 #: app/controllers/admin/user.php:1589
-#, fuzzy
 msgid "Sie haben keine Veranstaltungen ausgewählt."
-msgstr "You didn't select any contact."
+msgstr "You have not selected any courses."
 
 #: app/controllers/admin/user.php:1606
-#, fuzzy, php-format
+#, php-format
 msgid "%s wurde aus %u Veranstaltung ausgetragen."
 msgid_plural "%s wurde aus %u Veranstaltungen ausgetragen."
-msgstr[0] "%s %s were removed from the course."
-msgstr[1] "%s %s were removed from the course."
+msgstr[0] "%s has been removed from %u course."
+msgstr[1] "%s has been removed from %u courses."
 
 #: app/controllers/admin/user.php:1618
-#, fuzzy, php-format
+#, php-format
 msgid "%s konnte aus %u Veranstaltung nicht ausgetragen werden."
 msgid_plural "%s konnte aus %u Veranstaltungen nicht ausgetragen werden."
-msgstr[0] "%s has been removed from course \"%s\"."
-msgstr[1] "%s has been removed from course \"%s\"."
+msgstr[0] "%s could not be removed from %u course."
+msgstr[1] "%s could not be removed from %u courses."
 
 #: app/controllers/admin/user.php:1642
 msgid "Neues Konto anlegen"
@@ -14602,9 +14586,8 @@ msgid "Veranstaltungsübersicht"
 msgstr "Course overview"
 
 #: app/controllers/my_courses.php:961
-#, fuzzy
 msgid "Veranstaltungsübersicht ohne Module"
-msgstr "Export course overview without modules"
+msgstr "Course overview without modules"
 
 #: app/controllers/my_courses.php:1157
 #: app/views/contents/courseware/courses_overview.php:7
