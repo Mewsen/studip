@@ -16,6 +16,7 @@
 # Moritz Strohm <strohm@data-quest.de>, 2022, 2023.
 # Jan-Hendrik Willms <tleilax+studip@gmail.com>, 2023.
 # Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>, 2023.
+# Kilian Pluta <pluta@zqs.uni-hannover.de>, 2023.
 #
 # Translators:
 #
@@ -24,8 +25,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-26 09:55+0200\n"
-"PO-Revision-Date: 2023-05-22 11:36+0000\n"
-"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
+"PO-Revision-Date: 2023-05-24 14:29+0000\n"
+"Last-Translator: Kilian Pluta <pluta@zqs.uni-hannover.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-0/en/>\n"
 "Language: en\n"
@@ -510,7 +511,9 @@ msgid ""
 "Nachrichten werden nicht entfernt."
 msgstr ""
 "Reset restores default values for the messaging settings and removes "
-"personal message folders. No messages will be deleted."
+"personal message folders. \n"
+"\n"
+"No messages will be deleted."
 
 #: app/controllers/settings/messaging.php:100
 msgid "Wollen Sie wirklich die eingestellte Weiterleitung entfernen?"
@@ -639,7 +642,9 @@ msgid ""
 " Folgende Veränderungen wurden vorgenommen:\n"
 " \n"
 msgstr ""
-"Your profile page has been modified by an admin. These changes were made:\n"
+"Your profile page has been modified by an admin. \n"
+"These changes were made:\n"
+" \n"
 
 #: app/controllers/settings/settings.php:211
 msgid "Systemnachricht: Profil verändert"
@@ -3074,8 +3079,8 @@ msgstr ""
 #: app/controllers/course/grouping.php:574
 msgid "Die gewählte Person wurde eingetragen."
 msgid_plural "Die gewählten Personen wurden eingetragen."
-msgstr[0] "The chosen person was inscribed."
-msgstr[1] "The chosen persons were inscribed."
+msgstr[0] "The selected person has been enroled."
+msgstr[1] "The selected persons have been enroled."
 
 #: app/controllers/course/block_appointments.php:39
 msgid "Blockveranstaltungstermine anlegen"
@@ -3475,6 +3480,7 @@ msgid ""
 msgstr ""
 "%s wants to draw your attention to the study group %s. The link below takes "
 "you directly to the study group.\n"
+"\n"
 "%s"
 
 #: app/controllers/course/studygroup.php:778
@@ -3532,7 +3538,8 @@ msgid ""
 "Sie können die Studiengruppen nicht deaktivieren, da noch %s Studiengruppen "
 "vorhanden sind!"
 msgstr ""
-"You cannot deactivate study groups because there still are %s study groups!"
+"You cannot deactivate the study group because there still are %s study "
+"groups!"
 
 #: app/controllers/course/studygroup.php:952
 msgid "Die Studiengruppen wurden deaktiviert."
@@ -4711,7 +4718,7 @@ msgstr ""
 
 #: app/controllers/course/enrolment.php:150
 msgid "Zeitpunkt der automatischen Verteilung: "
-msgstr "Point in time of the automatic assignment: "
+msgstr "Date of assignment: "
 
 #: app/controllers/course/enrolment.php:153
 msgid "Sie sind bereits für die Verteilung angemeldet."
@@ -11374,7 +11381,7 @@ msgstr "Demo data for the module and course directory"
 
 #: app/controllers/admin/install.php:171
 msgid "Demodaten für die Ressourcenverwaltung "
-msgstr "Demo data for the resource management system "
+msgstr "Demo data for the resource management "
 
 #: app/controllers/admin/install.php:216
 msgid "Der Benutzername ist ungültig"
@@ -17656,7 +17663,7 @@ msgstr "Until"
 
 #: app/views/settings/calendar.php:85
 msgid "Endzeit der Tages- und Wochenansicht"
-msgstr "End time of the day and week view"
+msgstr "Finale time of day view and week view:"
 
 #: app/views/settings/calendar.php:98 app/views/settings/calendar.php:128
 msgid "Zeitintervall der Tagesansicht"
@@ -18070,10 +18077,7 @@ msgid ""
 "kleinen Plopps darüber in Kenntnis gesetzt - auch wenn Sie gerade einen "
 "anderen Browsertab anschauen. Der Plopp ist nur zu hören, wenn Sie die "
 "Benachrichtigungen über Javascript aktiviert haben."
-msgstr ""
-"When a new notification for you is received, you will be notified by a "
-"little plop noise - even if you are viewing another browser tap. The plop "
-"noise is only audible if you have activated notifications via Javascript."
+msgstr "Audiofeedback on new notifications."
 
 #: app/views/settings/general.php:128
 msgid "Wiki-Kommentare einblenden"
@@ -18323,7 +18327,7 @@ msgstr "Level"
 
 #: app/views/contents/courseware/create_project.php:75
 msgid "Farbe"
-msgstr "Color"
+msgstr "Colour"
 
 #: app/views/contents/courseware/create_project.php:79
 msgid "Königliches Purpur"
@@ -19788,12 +19792,11 @@ msgid ""
 "\"Aktualisieren\". Für die auf diese Weise verlinkten Objekte müssen Sie "
 "selbst sicherstellen, dass die Teilnehmenden des Kurses Zugriff darauf haben."
 msgstr ""
-"You may add further learning objects by creating internal links to the "
-"objects in the connected ILIAS course. Go to the course in ILIAS, select the "
-"\"Weblink\" option at \"Add new object\" and create a link within ILIAS. "
-"After that, return to this page and click on \"Refresh\" on this page. You "
-"have to make sure that your participants are permitted to access the objects "
-"that have been linked via this way."
+"You may add further learning objects by creating internal links in the "
+"connected ILIAS course. Go to the course in ILIAS, select \"Weblink\" at "
+"\"Add new object\" and create a link within ILIAS. Then refresh this page "
+"and add the link. Please make sure that your participants are permitted to "
+"access the linked objects. These permissions must be set manually."
 
 #: app/views/course/management/lock.php:2
 #, php-format
@@ -23507,9 +23510,9 @@ msgid ""
 "Stud.IP. Wenn es jemand hierher geschafft hat, der nicht zum Team gehört, "
 "dann kündige ich."
 msgstr ""
-"Shame on me that we have to meet like this... this page is the secret Stud."
-"IP easter egg. If someone not belonging to the team has managed to find "
-"their way to this point, then I'll quit."
+"Shame on me that we have to meet like this... this page is the secret "
+"Stud.IP easter egg. If someone not belonging to the team has managed to find "
+"his or her way hereto, then I'll quit."
 
 #: app/views/file/add_from_library.php:3
 msgid ""
@@ -26520,7 +26523,7 @@ msgstr "maximum"
 #: app/views/admission/courseset/instcourses.php:13
 #: templates/admission/courseset/info.php:23
 msgid "Veranstaltungszuordnung:"
-msgstr "Course assignment:"
+msgstr "Assignment of courses:"
 
 #: app/views/admission/courseset/instcourses.php:53
 #, php-format
@@ -27222,7 +27225,7 @@ msgstr "Select plug-in"
 
 #: app/views/admin/role/assign_plugin_role.php:36
 msgid "Gegenwärtig zugewiesene Rollen"
-msgstr "Currently assigned roles"
+msgstr "Presently assigned roles"
 
 #: app/views/admin/role/assign_plugin_role.php:38
 #: app/views/admin/role/assign_role.php:54
@@ -28197,7 +28200,7 @@ msgstr "Secure automatic updates via security tokens (optional)"
 
 #: app/views/admin/plugin/edit_automaticupdate.php:41
 msgid "Daten für das bereitstellende System"
-msgstr "Data for the distributing system"
+msgstr "Information for distributing system"
 
 #: app/views/admin/plugin/edit_automaticupdate.php:43
 msgid ""
@@ -28496,7 +28499,7 @@ msgstr "Delete this rule"
 
 #: app/views/admin/lockrules/index.php:59
 msgid "Keine Sperrebenen vorhanden"
-msgstr "No lockrule present"
+msgstr "No lock rule found"
 
 #: app/views/admin/lockrules/_form.php:11
 #, php-format
@@ -29343,7 +29346,7 @@ msgstr "tutor"
 
 #: app/views/admin/ilias_interface/edit_permissions.php:12
 msgid "dozent"
-msgstr "dozent"
+msgstr "Lecturer"
 
 #: app/views/admin/ilias_interface/edit_permissions.php:13
 msgid "admin"
@@ -29786,7 +29789,7 @@ msgstr "Delete?"
 
 #: app/views/admin/additional/index.php:37
 msgid "Keine Zusatzangaben vorhanden"
-msgstr "No additional information present"
+msgstr "No additional information available"
 
 #: app/views/admin/content_terms_of_use/index.php:8
 msgid "Download-Bedingung"
@@ -29859,7 +29862,7 @@ msgstr "Staff member"
 
 #: app/views/admin/statusgroups/editGroup.php:62
 msgid "Einordnen unter"
-msgstr "Insert at"
+msgstr "Subsume in"
 
 #: app/views/admin/statusgroups/editGroup.php:65
 msgid "Hauptebene"
@@ -29890,9 +29893,7 @@ msgstr "Sort in alphabetical order"
 msgid ""
 "Gruppe %s wirklich alphabetisch sortieren? Die vorherige Sortierung kann "
 "nicht wiederhergestellt werden."
-msgstr ""
-"Really sort the group %s alphabetically? The previous sorting order cannot "
-"be restored."
+msgstr "Sort group %s alphabetically? Former sorting cannot be restored."
 
 #: app/views/admin/statusgroups/sortAlphabetic.php:14
 #: app/views/evaluation/_buttons.php:10
@@ -30030,9 +30031,7 @@ msgstr "Mandatory field"
 msgid ""
 "Für die Person nur sichtbar, wenn der Status zum Bearbeiten  oder für die "
 "Sichtbarkeit ausreichend ist"
-msgstr ""
-"Only visible for the person, if the required status for editing  or the "
-"visibility is sufficient"
+msgstr "Only visible if user role is allowed to make changes"
 
 #: app/views/admin/datafields/index.php:77
 #: lib/classes/admission/AdmissionRule.class.php:242
@@ -30103,9 +30102,7 @@ msgstr "System field"
 msgid ""
 "Nur für die Person selbst sichtbar, wenn der benötigte Status zum Bearbeiten "
 "oder die Sichtbarkeit ausreichend ist"
-msgstr ""
-"Only visible for the person themselves, if the required status for editing "
-"or the visibility is sufficient"
+msgstr "Visible for the person only if status allows editing"
 
 #: app/views/admin/datafields/new.php:163
 #: app/views/admin/datafields/edit.php:189
@@ -35736,9 +35733,7 @@ msgstr "Send mail queue"
 msgid ""
 "Sendet alle Einträge in der Mailqueue bis zu 24 Stunden, nachdem sie "
 "hinzugefügt wurden."
-msgstr ""
-"Sends all entries in the mail queue up to 24 hours after they have been "
-"added."
+msgstr "Retry to send mail queue up to 24 h."
 
 #: lib/cronjobs/send_mail_queue.class.php:66
 msgid ""
@@ -36116,7 +36111,7 @@ msgstr "More Stud.IP features for your institution"
 
 #: lib/seminar_open.php:155
 msgid "Mehr Stud.IP-Funktionen für Ihr Profil"
-msgstr "More Stud.IP features for your profile"
+msgstr "Add more features to your profile"
 
 #: lib/seminar_open.php:186
 #, php-format
@@ -36867,7 +36862,7 @@ msgstr "display all entries in any sub-level"
 #: lib/classes/StudipSemRangeTreeViewSimple.class.php:200
 #, php-format
 msgid "<b>%s</b> Einträge in allen Unterebenen vorhanden"
-msgstr "<b>%s</b> entries available in all sub-levels"
+msgstr "<b>%s</b> entries included in any sub-level"
 
 #: lib/classes/StudipRedisCache.class.php:22
 msgid "Redis"
@@ -37079,7 +37074,7 @@ msgstr "Error, no element deleted!"
 #: lib/classes/StudipRangeTreeViewAdmin.class.php:346
 #, php-format
 msgid "<br>Es wurden %s Datenfelder gelöscht. "
-msgstr "<br>%s data fields have been deleted. "
+msgstr "<br>%s data fields deleted. "
 
 #: lib/classes/StudipRangeTreeViewAdmin.class.php:372
 msgid "Element wurde verschoben."
@@ -37658,8 +37653,7 @@ msgstr "The course is locked, you cannot enrol yourself!"
 msgid ""
 "Die Anmeldung zu dieser Veranstaltung folgt speziellen Regeln. Lesen Sie den "
 "Hinweistext."
-msgstr ""
-"The admission to this course follows special rules. Please read the hint."
+msgstr "Course under special admission. Please read the note."
 
 #: lib/classes/Seminar.class.php:2227
 #, php-format
@@ -37773,7 +37767,7 @@ msgstr "You need to be enlisted as %s."
 
 #: lib/classes/coursewizardsteps/BasicDataWizardStep.php:367
 msgid "Sie müssen die Nutzungsbedingungen akzeptieren."
-msgstr "You have to accept the terms of use."
+msgstr "You need to accept the terms of use."
 
 #: lib/classes/coursewizardsteps/LVGroupsWizardStep.php:416
 msgid ""
@@ -38555,7 +38549,7 @@ msgstr "Are you sure to delete these areas?"
 #, php-format
 msgid ""
 "Der Bereich <b>%s</b> und alle Unterbereiche (insgesamt %s) wurden gelöscht. "
-msgstr "The area <b>%s</b> and all sub-areas (total %s) have been deleted. "
+msgstr "Area <b>%s</b> and all sub-areas (a total of %s) have been deleted. "
 
 #: lib/classes/StudipSemTreeViewAdmin.class.php:254
 msgid "Fehler, es konnten keine Bereiche gelöscht werden !"
@@ -38790,11 +38784,11 @@ msgstr "Phone"
 
 #: lib/classes/Markup.class.php:504
 msgid "Ungültige interne Medienverknüpfung entfernt: "
-msgstr "Invalid internal media link deleted: "
+msgstr "Invalid medialink deleted. "
 
 #: lib/classes/Markup.class.php:508
 msgid "Verbotene externe Medienverknüpfung entfernt: "
-msgstr "Forbidden external media link deleted: "
+msgstr "Forbidden medialink deleted. "
 
 #: lib/classes/SemClass.class.php:632
 msgid "Lehre"
@@ -39529,7 +39523,7 @@ msgstr "Description: "
 
 #: lib/elearning/Ilias3ConnectedCMS.class.php:159
 msgid "Rollen-Template für die persönliche Kategorie: "
-msgstr "Role template for the personal category: "
+msgstr "Role template for personal categories: "
 
 #: lib/elearning/Ilias3ConnectedCMS.class.php:162
 msgid ""
@@ -39876,7 +39870,7 @@ msgstr "The association could not be saved."
 
 #: lib/elearning/Ilias3ContentModule.class.php:96
 msgid "Sie haben keine Leseberechtigung für dieses Modul."
-msgstr "You don't have read permissions for this module."
+msgstr "You do not have read access to this module."
 
 #: lib/elearning/Ilias3ContentModule.class.php:101
 msgid ""
@@ -41115,8 +41109,8 @@ msgid ""
 "Die E-Mail-Adresse fehlt, ist falsch geschrieben oder gehört nicht zu "
 "folgenden Domains:%s"
 msgstr ""
-"The e-mail address is missing or it is incorrectly written or it does not "
-"belong to any of the following domains:%s"
+"E-mail address is missing or is incorrectly written or does not belong to "
+"any of the following domains:%s"
 
 #: lib/models/User.class.php:965
 msgid ""
@@ -42349,7 +42343,7 @@ msgstr "%s until %s at %s until %s o'clock"
 
 #: lib/models/ConsultationBlock.php:204
 msgid "Die Zeiten überschneiden sich mit anderen bereits definierten Terminen"
-msgstr "The times overlap with other already defined consultation hours"
+msgstr "The times overlap with other consultation hours already defined"
 
 #: lib/models/ConsultationBlock.php:218
 #, php-format
@@ -43238,8 +43232,8 @@ msgid ""
 "Die Ansicht zeigt den Verlauf der Textänderungen einer Wiki-Seite mit einer "
 "Übersicht, welche Autor/-innen welche Textänderungen vorgenommen haben."
 msgstr ""
-"The view shows the history of text changes of a wiki-page with an overview "
-"over which authors did which text changes."
+"Shows the editing history of a wiki-page including information on the "
+"authors."
 
 #: lib/admissionrules/termsadmission/templates/info.php:1
 msgid ""
@@ -43356,7 +43350,7 @@ msgstr "Contingent: %s percent"
 
 #: lib/admissionrules/conditionaladmission/templates/configure.php:9
 msgid "Anmeldebedingungen"
-msgstr "Admission conditions"
+msgstr "Conditions:"
 
 #: lib/admissionrules/conditionaladmission/templates/configure.php:15
 #: lib/admissionrules/conditionaladmission/templates/configure.php:16
@@ -43407,7 +43401,7 @@ msgstr "Password required."
 
 #: lib/admissionrules/passwordadmission/PasswordAdmission.class.php:237
 msgid "Das Passwort stimmt nicht mit der Wiederholung überein."
-msgstr "The password does not match its confirmation."
+msgstr "Passwords do not match."
 
 #: lib/admissionrules/passwordadmission/templates/info.php:1
 msgid "Die Anmeldung ist nur mit Eingabe eines Passworts möglich."
@@ -43554,7 +43548,7 @@ msgstr "Preferred enrolment"
 #: lib/admissionrules/lockedadmission/LockedAdmission.class.php:32
 #: lib/admissionrules/lockedadmission/templates/info.php:1
 msgid "Die Anmeldung ist gesperrt."
-msgstr "The admission is locked."
+msgstr "Admission locked."
 
 #: lib/admissionrules/lockedadmission/LockedAdmission.class.php:57
 msgid ""
@@ -43628,7 +43622,7 @@ msgstr "<u>No</u> automatic assignment (aka first-come-first-serve)"
 
 #: lib/admissionrules/participantrestrictedadmission/templates/configure.php:24
 msgid "Es existieren bereits Anmeldungen für die automatische Platzverteilung."
-msgstr "There are already registrations for the automatic seat distribution."
+msgstr "Automated assignment is already set."
 
 #: lib/admissionrules/timedadmission/TimedAdmission.class.php:42
 msgid "Sie befinden sich nicht innerhalb des Anmeldezeitraums."
@@ -43639,10 +43633,7 @@ msgid ""
 "Anmelderegeln dieses Typs legen ein Zeitfenster fest, in dem die Anmeldung "
 "zu Veranstaltungen möglich ist. Es kann auch nur ein Start- oder "
 "Endzeitpunkt angegeben werden."
-msgstr ""
-"Admission rules of this type define a time frame in which the admission to "
-"courses is possible. It is possible to just specify a start and end point in "
-"time."
+msgstr "These settings define the admission period."
 
 #: lib/admissionrules/timedadmission/TimedAdmission.class.php:233
 msgid "Bitte geben Sie entweder ein Start- oder Enddatum an."
@@ -44124,8 +44115,7 @@ msgid ""
 "Sie beabsichtigen den Fragenblock <b>%s</b> inklusive aller Fragen zu "
 "löschen. "
 msgstr ""
-"You are about to delete the question block <b>%s</b>, including all "
-"questions. "
+"You are about to delete question block <b>%s</b> including all questions. "
 
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:1338
 #, php-format
@@ -44143,7 +44133,7 @@ msgid ""
 "Sie beabsichtigen den Gruppierungsblock <b>%s</b> inklusive aller "
 "Unterblöcke zu löschen. "
 msgstr ""
-"You are about to delete the grouping block <b>%s</b>, including all sub-"
+"You are about to delete content block <b>%s</b> including all content sub-"
 "blocks. "
 
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:1353
@@ -44173,7 +44163,7 @@ msgid ""
 "Der Fragenblock <b>%s</b> und alle darin enthaltenen Fragen (insgesamt %s) "
 "wurden gelöscht. "
 msgstr ""
-"The question block <b>%s</b> and all questions contained in it (total %s) "
+"Question block <b>%s</b> including all (a total of %s) questions contained "
 "has been deleted. "
 
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:1403
@@ -44193,7 +44183,7 @@ msgstr ""
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:1409
 #, php-format
 msgid "Der Gruppierungsblock <b>%s</b> wurde gelöscht. "
-msgstr "The grouping block <b>%s</b> has been deleted. "
+msgstr "Content block <b>%s</b> deleted. "
 
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:1441
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:1450
@@ -44362,7 +44352,7 @@ msgstr "Block <b>%s</b> moved to main level."
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:1957
 #, php-format
 msgid "Der Block <b>%s</b> wurde in diesen Gruppierungsblock verschoben."
-msgstr "The block <b>%s</b> has been moved into this grouping block."
+msgstr "Block <b>%s</b> moved to this content block."
 
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:1977
 #: lib/evaluation/classes/EvaluationTreeEditView.class.php:1982
@@ -45017,7 +45007,7 @@ msgstr "No personal evaluation template available."
 
 #: lib/evaluation/evaluation_admin_overview.inc.php:273
 msgid "Noch nicht gestartete Evaluationen: "
-msgstr "Not yet started evaluations: "
+msgstr "Evaluations not started yet: "
 
 #: lib/evaluation/evaluation_admin_overview.inc.php:294
 msgid "Keine neuen Evaluationen vorhanden."
@@ -46079,7 +46069,7 @@ msgid ""
 "In dieser Datei sind die Formatting Objects zur Erzeugung der PDF-Datei "
 "gespeichert."
 msgstr ""
-"In this file, the formatting objects for generating the PDF file are saved."
+"In this file, the formatting objects for generating a PDF file are saved."
 
 #: lib/export/export_run_fop.inc.php:129
 #, php-format
@@ -46586,10 +46576,7 @@ msgid ""
 "Modul zur Ausgabe von Personendaten als CSV-Datei. Es werden die Grunddaten "
 "der Personen in eine Tabelle geschrieben. Es werden auch die Kontingente und "
 "Studiengänge ausgegeben. Die Ausgabe-Datei kann in Excel bearbeitet werden."
-msgstr ""
-"Module to output personal data as CSV file. The basic data of the persons "
-"are written into a table. The contingents and courses of study are also "
-"written. The output file can be edited in Excel."
+msgstr "CSV-Export including name, contingent, field of study."
 
 #: lib/export/export_xslt_vars.inc.php:159
 msgid ""
@@ -47702,7 +47689,7 @@ msgstr "Numbered list"
 
 #: lib/extern/elements/ExternElementList.class.php:55
 msgid "Eigenschaften einer Aufzählungsliste."
-msgstr "Properties of a numbered list."
+msgstr "Properties of numbered list."
 
 #: lib/extern/elements/ExternElementList.class.php:77
 msgid ""
@@ -48541,9 +48528,9 @@ msgid ""
 "Wählen Sie diese Option nicht, wenn immer die Adresse der Einrichtung "
 "ausgegeben werden soll."
 msgstr ""
-"If you select this option, the default address that every staff member can "
-"select for their university services will be output. Do not select this "
-"option if the address of the institute shall always be exported."
+"If you select this option, then the default address each person may select "
+"for university details will be exported. Do not select this option if the "
+"institute's address always is to be exported."
 
 #: lib/extern/elements/main/ExternElementMainRangelecturetree.class.php:92
 #: lib/extern/elements/main/ExternElementMainSemlecturetree.class.php:93
@@ -49249,7 +49236,7 @@ msgstr "Date/author"
 #: lib/extern/modules/ExternModuleLectures.class.php:68
 #: lib/extern/modules/ExternModuleLecturestable.class.php:86
 msgid "Link zum Modul MitarbeiterInnendetails"
-msgstr "Link to the staff details module"
+msgstr "Link to staff details module"
 
 #: lib/extern/modules/ExternModuleNews.class.php:69
 msgid "Datenzeilen, Schrift von Name und Datum"
@@ -49481,7 +49468,7 @@ msgstr "personal categories"
 #: lib/extern/modules/ExternModuleLecturestable.class.php:84
 #: lib/extern/modules/ExternModuleTemplatePersondetails.class.php:90
 msgid "Link zum Modul Veranstaltungsdetails"
-msgstr "Link to the course details module"
+msgstr "Link to course details module"
 
 #: lib/extern/modules/ExternModuleTemplatePersons.class.php:109
 msgid "Nutzerbild (groß)"
@@ -50468,7 +50455,7 @@ msgstr "vertical"
 
 #: lib/extern/views/ExternEditHtml.class.php:598
 msgid "Aktivieren Sie einen Zebra-Effekt für die Spaltenüberschriften. "
-msgstr "Activate a Zebra effect for the column heading. "
+msgstr "Activate Zebra effect for the column heading. "
 
 #: lib/extern/views/ExternEditHtml.class.php:601
 msgid "an"
@@ -50658,11 +50645,8 @@ msgid ""
 "an alle zu schreiben (nur Lehrende) bzw. einzelne Teilnehmende separat "
 "anzuschreiben."
 msgstr ""
-"The participants will be grouped and listed in a table according to their "
-"function. For lecturers, the enrolment date and the course of study are "
-"displayed together with the semester. The list can be exported in various "
-"formats. Furthermore the possibilities exists to write a circular mail to "
-"all (only for lecturers) and to write to specific participants directly."
+"Participants are listed in order of their role. Lecturers can export the "
+"list and additional information. Lecturers are allowed to write newsletters."
 
 #: lib/modules/CoreParticipants.class.php:165
 msgid ""
@@ -50676,14 +50660,13 @@ msgid ""
 "                            Einrichten von Gruppen;\n"
 "                            Anzeige Studiengang und Fachsemester"
 msgstr ""
-"Circular mail to a single, several or all participants;\n"
-"                            Grouping by lecturers, tutors, students "
-"(authors;\n"
-"                            Enrolment of students (authors) and tutors;\n"
-"                            Import of a participant list;\n"
-"                            Export of the participant list;\n"
-"                            Creation of groups;\n"
-"                            Display of the course of study and the semester"
+"Mail to all or a selection of participants;\n"
+"Group by role;\n"
+"Add students or tutors;\n"
+"import ;\n"
+"Export;\n"
+"Create groups;\n"
+"Show degree program"
 
 #: lib/modules/CoreParticipants.class.php:173
 msgid ""
@@ -50733,10 +50716,8 @@ msgid ""
 "inhaltlichen Einstimmung der Studierenden können Lehrende den Terminen "
 "Themen hinzufügen, die z. B. eine Kurzbeschreibung der Inhalte darstellen."
 msgstr ""
-"The schedule lists all presence, e-learning, exam, excursion dates and other "
-"course dates. Lecturers can add topics to dates that contain a short "
-"description of the content for better orientation and to let students know "
-"the topics in advance."
+"The schedule contains all appointments and dates of a course. Lecturers can "
+"add topics."
 
 #: lib/modules/CoreSchedule.class.php:98
 msgid ""
@@ -50834,12 +50815,9 @@ msgid ""
 "kann aber auch für andere beliebige Zusatzinformationen (Links, Protokolle "
 "etc.) verwendet werden."
 msgstr ""
-"This page can be configured by lecturers according to their needs. For "
-"example, the tab title can be named freely. Furthermore, an arbitrary amount "
-"of pages can be inserted. For each entry, a page with a text editor opens in "
-"which arbitrary text can be entered and formatted. This page is often used "
-"to specify literature. It can also be used for other additional information "
-"(links, protocols etc.)."
+"This page can be named and edited to fit a broad variety of needs, e.g. for "
+"bibliography, link list or any other text-based functionality. Pictures and "
+"movies can be embedded."
 
 #: lib/modules/CoreScm.class.php:145
 msgid "Zwei Einträge mit Inhalten zur Verfügung stellen"
@@ -51068,14 +51046,11 @@ msgid ""
 "Versionen können zudem auch gelöscht werden (nur Lehrende). Eine "
 "Druckansicht und eine Exportmöglichkeit als PDF-Datei ist integriert."
 msgstr ""
-"In the wiki, multiple authors are able to collectively create and edit "
-"texts, concepts and other written works. However, that cannot be done "
-"simultaneously. Texts can be edited and saved individually. The special "
-"thing about the wiki is that students and lecturers have almost the same "
-"permissions (writing, reading, deleting), which makes mutual trust "
-"necessary. The system creates a version history that allows tracking "
-"changes. Furthermore, single versions can be deleted (only for lecturers). A "
-"print view and an export as PDF file are integrated."
+"The wiki allows multiple authors to create and edit texts. Simultaneous "
+"editing is NOT possible. Both lecturers and students have permission to edit "
+"the wiki, which requires some trust in each other. The history lists all "
+"changes. Lecturers may delete current versions. Pages can be printed or "
+"exported as PDF."
 
 #: lib/modules/CoreDocuments.class.php:100
 msgid "Dateibereich"
@@ -51100,12 +51075,11 @@ msgid ""
 "das PlugIn \"Dateiordnerberechtigung\" können Im Dateibereich bestimmte "
 "Rechte für Studierende, wie z.B. das Leserecht, festgelegt werden."
 msgstr ""
-"In the file area, files can be uploaded and downloaded by students and "
-"lecturers. Folders can be created and named individually (only for "
-"lecturers). Thereby, the files can be made available in a structured way. "
-"Multimedia files like pictures, audio and video files can be viewed and "
-"played immediately. Via the plugin \"document folder permissions\", certain "
-"permissions for students like the read permission can be set."
+"In \"documents\" files can be up- and downloaded by students and lecturers. "
+"Folders can be created. Most media files (pictures, audio- and video files) "
+"are shown and played right in folders. Activating the plug-in \"document "
+"folder permissions\" adds functionality to lock folders or make them "
+"invisible."
 
 #: lib/modules/CoreDocuments.class.php:161
 msgid ""
@@ -51561,9 +51535,9 @@ msgid ""
 "zugeschickten Aktivierungs Schlüssel im unten stehenden Eingabefeld "
 "eintragen."
 msgstr ""
-"You have changed your e-mail address. \n"
-"    In order to activate it, you have to enter the confirmation code which "
-"has been sent to the new e-mail address in the input field below."
+"You have changed your e-mail address. In order to activate it, you have to "
+"enter in the input field below the confirmation code which has been sent to "
+"the new e-mail address."
 
 #: public/activate_email.php:47
 msgid "Aktivierungs Schlüssel"
@@ -51697,7 +51671,7 @@ msgstr "Lecturer"
 #: public/plugins_packages/core/Forum/models/ForumHelpers.php:142
 #, php-format
 msgid "Seit Ihrem letzten Besuch gibt es %s neue Beiträge"
-msgstr "There are %s new postings since your last login"
+msgstr "%s new postings since your last login"
 
 #: public/plugins_packages/core/Forum/models/ForumHelpers.php:147
 #, php-format
@@ -51836,7 +51810,7 @@ msgstr "New postings"
 
 #: public/plugins_packages/core/Forum/CoreForum.class.php:52
 msgid "Letzte Beiträge"
-msgstr "Latest postings"
+msgstr "Latest posting"
 
 #: public/plugins_packages/core/Forum/CoreForum.class.php:53
 msgid "Gemerkte Beiträge"
@@ -51848,9 +51822,8 @@ msgid ""
 "können parallel zu Veranstaltungsthemen Fragen stellen, die von den "
 "Studierenden per Meinungsaustausch besprochen werden."
 msgstr ""
-"Text-based and time- and location-independent discourse possibility. "
-"Lecturers can ask questions parallel to course topics that will be discussed "
-"by students via exchange of opinions."
+"Text-based tool for asynchronous communication. Lecturers may add questions "
+"to topics to start a discussion."
 
 #: public/plugins_packages/core/Forum/controllers/area.php:54
 msgid "Die Änderungen am Bereich wurden gespeichert."
@@ -51994,8 +51967,8 @@ msgid ""
 "blauen Pfeilen können Sie einen oder mehrere Einträge auswählen, welche dann "
 "verschoben werden können. "
 msgstr ""
-"You are in the administration view of the forum. Using the blue arrows, you "
-"may select one or more entries which can then be moved. "
+"You are in the administration view of the forum. Please use the blue arrows "
+"to select one or more entries which may then be moved. "
 
 #: public/plugins_packages/core/Forum/views/admin/index.php:10
 msgid ""
@@ -52598,10 +52571,7 @@ msgid ""
 "eines Passwortes.\n"
 "                        Dieses Passwort erfahren Sie von den Lehrenden der "
 "Veranstaltung."
-msgstr ""
-"Some courses however require a password upon .\n"
-"                        You get the password from the lecturers of the "
-"course."
+msgstr "Some courses are protected. Ask the lecturers for the password."
 
 #: public/email_validation.php:95
 #, php-format
@@ -53120,8 +53090,8 @@ msgid ""
 "stehenden Eingabefeld eintragen."
 msgstr ""
 "You have changed your e-mail address. In order to activate it, you have to "
-"enter the confirmation code which has been sent to the new e-mail address in "
-"the input field below."
+"enter in the input field below the confirmation code which has been sent to "
+"the new e-mail address."
 
 #: templates/login_emailactivation.php:25
 msgid "E-Mail Aktivierung neu senden"
@@ -53133,8 +53103,8 @@ msgid ""
 "Aktivierungsschlüssel zuschicken lassen. Geben Sie dazu Ihre gewünschte E-"
 "Mail-Adresse unten an:"
 msgstr ""
-"In case you didn’t receive any e-mail, you can get another activation key "
-"sent to you. For that, please enter your desired e-mail address below:"
+"Didn’t get any activation mail yet? Please try again and enter your e-mail "
+"address:"
 
 #: templates/resources/position_attribute_form_part.php:4
 msgid "Breitengrad: "
@@ -53226,7 +53196,7 @@ msgstr "Persons on this list:"
 
 #: templates/admission/userlist.php:22
 msgid "Es wurde noch niemand zugeordnet."
-msgstr "Nobody has been assigned yet."
+msgstr "No-one assigned."
 
 #: templates/admin/topLinks.php:29
 msgid "vor"
@@ -53383,7 +53353,7 @@ msgstr "Author"
 
 #: templates/wiki/edit.php:22
 msgid "Speichern und weiter bearbeiten"
-msgstr "Save and continue editing"
+msgstr "Save and continue"
 
 #: templates/quicksearch/selectbox.php:25
 msgid "Keine Treffer gefunden"
@@ -54047,8 +54017,8 @@ msgid ""
 "Sie in diesem Fall den untenstehenden Link, um zurück zur Anmeldung zu "
 "gelangen."
 msgstr ""
-"This error also occurs if your session has expired. In this case, use the "
-"link below to return to the login screen."
+"This error also occurs if your session has expired. In this case, clicking "
+"the link below takes you back to the login screen."
 
 #: templates/check_object_exception.php:10
 msgid "Folgender von Ihnen eingegebene Text konnte nicht gespeichert werden:"
