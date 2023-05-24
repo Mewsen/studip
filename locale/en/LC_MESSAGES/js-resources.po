@@ -815,10 +815,6 @@ msgstr "File area"
 msgid "Dateibereich Datei"
 msgstr "File area file"
 
-#: resources/vue/components/courseware/CoursewareFileChooser.vue:25
-msgid "Dateibereich der Veranstaltung"
-msgstr "Course file area"
-
 #: resources/vue/components/courseware/CoursewareFolderChooser.vue:64
 msgid "Dateibereich dieser Veranstaltung"
 msgstr "File area of this course"
@@ -2102,7 +2098,7 @@ msgstr "Not specified for field of study"
 msgid "Keine Auswahl"
 msgstr "No selection"
 
-#: resources/vue/components/courseware/CoursewareFileChooser.vue:20
+#: resources/vue/components/courseware/CoursewareFileChooser.vue:13
 msgid "Keine Dateien vorhanden"
 msgstr "No files available"
 
@@ -2689,7 +2685,6 @@ msgstr "Add oval"
 msgid "Pause"
 msgstr "Pause"
 
-#: resources/vue/components/courseware/CoursewareFileChooser.vue:26
 #: resources/vue/components/courseware/CoursewareFolderChooser.vue:65
 msgid "Persönlicher Dateibereich"
 msgstr "Personal file area"
@@ -3840,6 +3835,9 @@ msgstr "Purpose"
 #: resources/vue/components/courseware/CoursewareToolsBlockadder.vue:187
 msgid "zweites Element"
 msgstr "second element"
+
+#~ msgid "Dateibereich der Veranstaltung"
+#~ msgstr "Course file area"
 
 #~ msgid "Alles importieren"
 #~ msgstr "Import all"
