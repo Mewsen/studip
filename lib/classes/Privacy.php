@@ -43,7 +43,15 @@ class Privacy
         'content' => [
             'FileRef',
             'ForumEntry',
-            'WikiPage'
+            'WikiPage',
+            'Courseware\StructuralElement',
+            'Courseware\Bookmark',
+            'Courseware\Container',
+            'Courseware\Block',
+            'Courserware\BlockComment',
+            'Courserware\BlockFeedback',
+            'Courseware\UserDataField',
+            'Courseware\UserProgress'
         ],
         'quest' => [
             'Evaluation',

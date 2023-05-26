@@ -48,7 +48,7 @@ use User;
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-class StructuralElement extends \SimpleORMap
+class StructuralElement extends \SimpleORMap implements \PrivacyObject
 {
     protected static function configure($config = [])
     {
@@ -692,5 +692,23 @@ SQL;
         foreach ($this->children as $child) {
             $child->copy($user, $newElement);
         }
+    }
+
+    /**
+     * Export available data of a given user into a storage object
+     * (an instance of the StoredUserData class) for that user.
+     *
+     * @param StoredUserData $storage object to store data into
+     */
+    public static function exportUserData(\StoredUserData $storage)
+    {
+        $structuralElements = \DBManager::get()->fetchAll(
+            'SELECT * FROM cw_structural_elements WHERE ? IN (owner_id, editor_id, range_id)',
+            [$storage->user_id]
+        );
+        if ($structuralElements) {
+            $storage->addTabularData(_('Courseware Seiten'), 'cw_structural_elements', $structuralElements);
+        }
+        
     }
 }
