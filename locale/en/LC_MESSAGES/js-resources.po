@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-05-22 11:36+0000\n"
+"PO-Revision-Date: 2023-05-31 14:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-2-js/en/>\n"
@@ -2280,7 +2280,7 @@ msgstr "Information"
 
 #: resources/vue/components/courseware/CoursewareBlockInfo.vue:2
 msgid "Informationen"
-msgstr "Information"
+msgstr "information"
 
 #: resources/vue/components/courseware/CoursewareActionWidget.vue:90
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:346
