@@ -1,9 +1,9 @@
-# Moritz Strohm <strohm@data-quest.de>, 2022.
+# Moritz Strohm <strohm@data-quest.de>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-05-23 15:01+0000\n"
-"Last-Translator: Kilian Pluta <pluta@zqs.uni-hannover.de>\n"
+"PO-Revision-Date: 2023-05-31 14:29+0000\n"
+"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3-js/en/>\n"
 "Language: en\n"
@@ -3092,7 +3092,7 @@ msgstr "Information"
 
 #: resources/vue/components/courseware/CoursewareBlockInfo.vue:2
 msgid "Informationen"
-msgstr "Information"
+msgstr "information"
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:371
 msgid "Informationen anzeigen"
