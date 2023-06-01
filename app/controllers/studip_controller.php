@@ -210,11 +210,9 @@ abstract class StudipController extends Trails_Controller
                     break;
 
                 case 'option':
-                    //NSI MOD BEGIN
-                    if (preg_match('/[^\\w\.,-]/', $arg)) {
+                    if (preg_match('/[^\\w,-]/', $arg)) {
                         throw new Trails_Exception(400);
                     }
-                    //NSI MOD END
                     break;
 
                 case 'sorm':

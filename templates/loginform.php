@@ -74,12 +74,9 @@ if (!match_route('web_migrate.php')) {
             <? if (Config::get()->ENABLE_REQUEST_NEW_PASSWORD_BY_USER && in_array('Standard', $GLOBALS['STUDIP_AUTH_PLUGIN'])): ?>
                 <a href="<?= URLHelper::getLink('dispatch.php/new_password?cancel_login=1') ?>">
             <? else: ?>
-                <? /* MOD NSI BEGIN */ ?>
-                <!-- <a href="mailto:<?= $GLOBALS['UNI_CONTACT'] ?>?subject=<?= rawurlencode('Stud.IP Passwort vergessen - '.Config::get()->UNI_NAME_CLEAN) ?>&amp;body=<?= rawurlencode('Ich habe mein Passwort vergessen. Bitte senden Sie mir ein Neues.\nMein Nutzername: ' . htmlReady($uname) . "\n") ?>"> -->
-                <a href="https://www.nsi-hsvn.de/login.html?tx_nsiportal_login%5Baction%5D=requestPasswordUpdateForm&tx_nsiportal_login%5Bcontroller%5D=Account&cHash=4ca05d2bd995bbb12b5b107570a03e89">Passwort vergessen? - Bitte benutzen Sie das NSI-Portal
+                <a href="mailto:<?= $GLOBALS['UNI_CONTACT'] ?>?subject=<?= rawurlencode('Stud.IP Passwort vergessen - '.Config::get()->UNI_NAME_CLEAN) ?>&amp;body=<?= rawurlencode('Ich habe mein Passwort vergessen. Bitte senden Sie mir ein Neues.\nMein Nutzername: ' . htmlReady($uname) . "\n") ?>">
             <? endif; ?>
-                    <!--<?= _('Passwort vergessen') ?> -->
-                    <? /* MOD NSI END */ ?>
+                    <?= _('Passwort vergessen') ?>
                 </a>
             <? if ($self_registration_activated): ?>
                 /
