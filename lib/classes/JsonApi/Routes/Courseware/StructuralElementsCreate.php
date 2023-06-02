@@ -79,6 +79,7 @@ class StructuralElementsCreate extends JsonApiController
             'edit_blocker_id' => '',
             'title' => self::arrayGet($json, 'data.attributes.title', ''),
             'purpose' => 'CONTENT',
+            'payload' => self::arrayGet($json, 'data.attributes.payload', ''),
             'read_approval' => $parent->read_approval,
             'write_approval' => $parent->write_approval,
             'position' => $parent->countChildren()
