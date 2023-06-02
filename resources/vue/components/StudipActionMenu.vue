@@ -1,5 +1,5 @@
 <template>
-    <nav v-if="shouldCollapse" class="action-menu">
+    <div v-if="shouldCollapse" class="action-menu">
         <a class="action-menu-icon" :title="$gettext('Aktionen')" aria-expanded="false" :aria-label="$gettext('Aktionsmenü')" href="#">
             <div></div>
             <div></div>
@@ -20,12 +20,12 @@
                 </li>
             </ul>
         </div>
-    </nav>
-    <nav v-else>
+    </div>
+    <div v-else>
         <a v-for="item in navigationItems" :key="item.id" v-bind="linkAttributes(item)" v-on="linkEvents(item)">
             <studip-icon :title="item.label" :shape="item.icon.shape" :role="item.icon.role" :size="20"></studip-icon>
         </a>
-    </nav>
+    </div>
 </template>
 
 <script>

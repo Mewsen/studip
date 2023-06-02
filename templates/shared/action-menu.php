@@ -12,13 +12,12 @@
  */
 ?>
 <? // class "action-menu" will be set from API ?>
-<nav <?= arrayToHtmlAttributes($attributes) ?> aria-role="presentation">
+<div <?= arrayToHtmlAttributes($attributes) ?>>
     <a class="action-menu-icon" aria-role="button" aria-expanded="false" title="<?= _('Aktionsmenü') ?>" href="#">
         <div></div>
         <div></div>
         <div></div>
     </a>
-    <div class="action-menu-content">
         <div class="action-menu-title" aria-hidden="true">
             <?= _('Aktionen') ?>
         </div>
@@ -53,4 +52,4 @@
         <? endforeach ?>
         </ul>
     </div>
-</nav>
+</div>
