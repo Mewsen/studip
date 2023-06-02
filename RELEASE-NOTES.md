@@ -31,3 +31,7 @@
 
 - REST-API
 - Evaluationen
+
+## Known Issues
+
+- Inhalte aus dem Coursewareplugin können nicht in einem Schritt zum Stand der Courseware in Stud.IP 5.3 migriert werden. Auch wenn die Migration erfolgreich durchgelaufen ist, muss nachträglich noch der Code der Kernmigration 5.3.16 ausgeführt werden, da sonst alle Inhalte keinen Bezug mehr zu ihren Veranstaltungen haben.
