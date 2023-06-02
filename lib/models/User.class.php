@@ -68,6 +68,13 @@
  * @property UserInfo   info   has_one UserInfo
  * @property UserOnline online has_one UserOnline
  * @property Kategorie[]|SimpleORMapCollection $profile_categories has_many Kategorie
+<<<<<<< HEAD
+=======
+ * @property UserDomain[]|SimpleORMapCollection $domains
+ * @property ConsultationBlock[]|SimpleORMapCollection $consultation_blocks
+ * @property ConsultationBooking[]|SimpleORMapCollection $consultation_bookings
+ * @property ConsultationResponsibility[]|SimpleORMapCollection $consultation_responsibilities
+>>>>>>> cc4a9f0d2f (remove all consultation responsibilities upon range deletion and clean up db table, fixes #2673)
  *
  * @property UserConfig config
  */
@@ -160,6 +167,11 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
         $config['has_many']['consultation_bookings'] = [
             'class_name' => ConsultationBooking::class,
             'on_delete'  => 'delete',
+        ];
+        $config['has_many']['consultation_responsibilities'] = [
+            'class_name'        => ConsultationResponsibility::class,
+            'assoc_func'        => 'findByUserId',
+            'on_delete'         => 'delete',
         ];
 
         $config['has_many']['mvv_assignments'] = [
