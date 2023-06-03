@@ -1,16 +1,17 @@
 # Moritz Strohm <strohm@data-quest.de>, 2022, 2023.
+# Till Glöggler <tgloeggl@uos.de>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-05-31 14:29+0000\n"
-"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
+"PO-Revision-Date: 2023-06-03 09:28+0000\n"
+"Last-Translator: Till Glöggler <tgloeggl@uos.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.16.2\n"
+"X-Generator: Weblate 4.17\n"
 "Generated-By: easygettext\n"
 
 #: resources/assets/javascripts/lib/multi_person_search.js:70
@@ -197,7 +198,7 @@ msgid ""
 "%{elementTitle}, abgelegt. Entgültige Position in der Liste: %{pos} von "
 "%{listLength}."
 msgstr ""
-"%{elementTitle}, set. Final position in the list: %{pos} of %{listLength}"
+"%{elementTitle}, set. Final position in the list: %{pos} of %{listLength}."
 
 #: resources/vue/components/courseware/CoursewareTreeItem.vue:278
 #: resources/vue/components/courseware/CoursewareTreeItem.vue:308
