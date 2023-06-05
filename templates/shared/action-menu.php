@@ -18,6 +18,7 @@
         <div></div>
         <div></div>
     </a>
+    <div class="action-menu-content">
         <div class="action-menu-title" aria-hidden="true">
             <?= _('Aktionen') ?>
         </div>
