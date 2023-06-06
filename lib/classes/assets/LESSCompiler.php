@@ -2,7 +2,6 @@
 namespace Assets;
 
 use Assets;
-use Less_Autoloader;
 use StudipCacheFactory;
 
 /**
@@ -37,7 +36,6 @@ class LESSCompiler implements Compiler
      */
     private function __construct()
     {
-        Less_Autoloader::register();
     }
 
     /**
@@ -60,7 +58,7 @@ class LESSCompiler implements Compiler
             'compress' => \Studip\ENV === 'production',
             'sourceMap' => \Studip\ENV !== 'production',
         ]);
-        $parser->SetImportDirs(["{$GLOBALS['STUDIP_BASE_PATH']}/resources/"]);
+        $parser->SetImportDirs(["{$GLOBALS['STUDIP_BASE_PATH']}/resources/" => '']);
         $parser->ModifyVars($variables);
         $parser->parse($less);
         return $parser->getCSS();
