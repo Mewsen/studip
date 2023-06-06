@@ -2,16 +2,13 @@
 namespace Assets;
 
 use Assets;
+use Less_Autoloader;
 use StudipCacheFactory;
-
-use ILess\Autoloader;
-use ILess\Importer\FileSystemImporter;
-use ILess\Parser;
 
 /**
  * LESS Compiler for assets.
  *
- * Uses ILess by mishal <https://github.com/mishal/iless>.
+ * Uses less.php by wikimedia <https://github.com/wikimedia/less.php>.
  *
  * @author  Jan-Hendrik Willms <tleilax+studip@gmail.com>
  * @license GPL2 or any later version
@@ -40,7 +37,7 @@ class LESSCompiler implements Compiler
      */
     private function __construct()
     {
-        Autoloader::register();
+        Less_Autoloader::register();
     }
 
     /**
@@ -58,23 +55,15 @@ class LESSCompiler implements Compiler
 
         $variables['image-path'] = '"' . Assets::url('images') . '"';
 
-        // Disable warnings since we currently have no other means to get rid
-        // of them
-        // TODO: Look again into this (2022-06-23)
-        $error_reporting = error_reporting();
-        error_reporting($error_reporting & ~E_WARNING);
-
-        $parser = new Parser(['strictMath' => true], null, [
-            new FileSystemImporter(["{$GLOBALS['STUDIP_BASE_PATH']}/resources/"])
+        $parser = new \Less_Parser([
+            'strictMath' => true,
+            'compress' => \Studip\ENV === 'production',
+            'sourceMap' => \Studip\ENV !== 'production',
         ]);
-        $parser->setVariables($variables);
-        $parser->parseString($less);
-        $css = $parser->getCSS();
-
-        // Restore error reporting
-        error_reporting($error_reporting);
-
-        return $css;
+        $parser->SetImportDirs(["{$GLOBALS['STUDIP_BASE_PATH']}/resources/"]);
+        $parser->ModifyVars($variables);
+        $parser->parse($less);
+        return $parser->getCSS();
     }
 
     /**

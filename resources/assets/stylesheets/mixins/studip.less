@@ -203,7 +203,7 @@
 /********************
  ** Widget actions **
  ********************/
-.widget-action(@action, @icon: @action, @role: 'clickable', @rules: {}) {
+.widget-action(@action, @icon: @action, @role: 'clickable') {
     .widget-action[data-action="@{action}"] {
         .hide-text();
         .square(16px);
@@ -213,7 +213,5 @@
         cursor: pointer;
         display: block;
         // vertical-align: middle;
-
-        @rules();
     }
 }

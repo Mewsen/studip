@@ -252,7 +252,7 @@ trait PluginAssetsTrait
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
         if ($extension === 'less') {
             $contents = Assets\LESSCompiler::getInstance()->compile($contents, $variables + [
-                'plugin-path' => $this->getPluginURL(),
+                'plugin-path' => '"' . $this->getPluginURL() . '"',
             ]);
         } elseif ($extension === 'scss') {
             $contents = Assets\SASSCompiler::getInstance()->compile($contents, $variables + [
