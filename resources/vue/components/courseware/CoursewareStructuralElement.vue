@@ -1155,6 +1155,7 @@ export default {
                             { pageTitle: newElement.attributes.title }
                         )
                 });
+                this.$router.push(newElement.id);
             })
             .catch(e => {
                 let errorMessage = this.$gettext('Es ist ein Fehler aufgetreten. Die Seite konnte nicht erstellt werden.');
