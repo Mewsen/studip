@@ -108,7 +108,10 @@ $(document)
         // select was opened by click
         if (!is_default && shouldSubmit) {
             $(this.form).trigger('submit');
-            event.preventDefault();
+
+            if (event.type !== 'keydown') {
+                return false;
+            }
         }
     });
 
