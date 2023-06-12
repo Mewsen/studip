@@ -107,8 +107,8 @@ $(document)
         // Submit only if value has changed and either enter was pressed or
         // select was opened by click
         if (!is_default && shouldSubmit) {
-            $(this.form).submit();
-            return false;
+            $(this.form).trigger('submit');
+            event.preventDefault();
         }
     });
 
