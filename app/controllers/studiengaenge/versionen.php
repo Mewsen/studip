@@ -23,7 +23,9 @@ class Studiengaenge_VersionenController extends SharedVersionController
             'chooser_filter',
             Request::optionArray('chooser')
         );
-        URLHelper::bindLinkParam('chooser', $this->chooser_filter);
+        if (count($this->chooser_filter) > 0) {
+            URLHelper::bindLinkParam('chooser', $this->chooser_filter);
+        }
     }
 
     public function chooser_action()
