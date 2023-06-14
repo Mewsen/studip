@@ -307,12 +307,12 @@ test-assets:
 
 test-e2e:
   stage: test
-  #  needs: [lint-css, lint-js, lint-php]
-  image: mcr.microsoft.com/playwright:v1.33.0-jammy
+  needs: []
+  image: mcr.microsoft.com/playwright:v1.35.0-jammy
   services:
     - mariadb
   variables:
-    PHP_WEBSERVER_URL: localhost:65432
+    PHP_WEBSERVER_URL: 127.0.0.1:65432
     E2E_REPORT: $REPORT_DIR/e2e.xml
   interruptible: true
   when: manual
@@ -328,9 +328,10 @@ test-e2e:
     - DEBIAN_FRONTEND=noninteractive
       apt-get -yq install
       make zip unzip mariadb-client
+      libcups2 libfreetype6 libwebpdemux2 libxml2
       php7.4 libapache2-mod-php7.4 php7.4-common php7.4-curl php7.4-mbstring
       php7.4-xmlrpc php7.4-mysql php7.4-gd php7.4-xml php7.4-intl php7.4-ldap
-      php7.4-imagick php7.4-json php7.4-cli
+      php7.4-imagick php7.4-json php7.4-cli php7.4-zip
     - echo "short_open_tag=On" >> /etc/php/7.4/php.ini
     - echo "short_open_tag=On" >> /etc/php/7.4/cli/php.ini
     - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -339,16 +340,19 @@ test-e2e:
     - php -r "unlink('composer-setup.php');"
     - *mkdir-reports
     - *initialize-studip-database
+    - echo "namespace{\$ABSOLUTE_URI_STUDIP = \"http://$PHP_WEBSERVER_URL/\";}" >> config/config_local.inc.php
     - ./cli/studip config:set SHOW_TERMS_ON_FIRST_LOGIN 0
     - npm install playwright
     - npm ci
     - npx playwright install --with-deps
   script:
-    - php -S $PHP_WEBSERVER_URL -t public -q &
+    - php -S $PHP_WEBSERVER_URL -t public &
     - PHP_SERVER_PID=$!
     - PLAYWRIGHT_JUNIT_OUTPUT_NAME="$E2E_REPORT"
-      PLAYWRIGHT_BASE_URL="http://$PHP_WEBSERVER_URL"
-      npx playwright test --reporter=junit --grep-invert a11y
+      PLAYWRIGHT_BASE_URL="http://$PHP_WEBSERVER_URL/"
+      npx playwright test
+      --reporter=junit
+      --grep-invert a11y
     - kill -3 $PHP_SERVER_PID
   artifacts:
     reports:
@@ -377,7 +381,7 @@ packaging:
     expire_in: never
 
 build_image:
-  image: 
+  image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   stage: build
