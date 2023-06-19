@@ -35,10 +35,6 @@ $_views = [];
 $_views['sem_number_sql'] = "INTERVAL(start_time," . join(",",$sem_start_times) .")";
 $_views['sem_number_end_sql'] = "IF(duration_time=-1,-1,INTERVAL(start_time+duration_time," . join(",",$sem_start_times) ."))";
 
-$_views["SEM_TREE_GET_DATA_NO_ENTRIES"] = ["pk"=>"sem_tree_id","temp_table_type"=>"HEAP",
-                            "query"=>"SELECT a.*, c.Name AS studip_object_name
-                             FROM sem_tree a LEFT JOIN Institute c ON (a.studip_object_id = c.Institut_id)
-                            ORDER BY priority"];
 $_views["SEM_TREE_GET_ENTRIES"] = ["pk"=>"sem_tree_id","temp_table_type"=>"HEAP",
                             "query" => "SELECT st.sem_tree_id, count(b.Seminar_id) AS entries
                                 FROM seminare b INNER JOIN seminar_sem_tree st ON(st.seminar_id = b.Seminar_id)
@@ -69,10 +65,6 @@ $_views["SEM_TREE_GET_NUM_LONELY_SEM"] = ["query" => "SELECT COUNT(DISTINCT(b.se
                                         WHERE ISNULL(c.sem_tree_id)
                                         AND a.fakultaets_id LIKE ? AND NOT ISNULL(b.seminar_id) GROUP BY sem_number,sem_number_end § "];
 $_views["SEM_TREE_GET_LONELY_FAK"] = ["query" => "SELECT Institut_id,a.Name FROM Institute a LEFT JOIN sem_tree b ON(studip_object_id=Institut_id) WHERE Institut_id = fakultaets_id AND ISNULL(studip_object_id) ORDER BY a.Name"];
-$_views["SEM_TREE_UPD_PRIO"] = ["query" => "UPDATE sem_tree SET priority=§ WHERE sem_tree_id=?"];
-$_views["SEM_TREE_INS_ITEM"] = ["query" => "INSERT INTO sem_tree (sem_tree_id,parent_id,name,priority,info,studip_object_id,type) VALUES (?,?,?,?,?,?,?)"];
-$_views["SEM_TREE_UPD_ITEM"] = ["query" => "UPDATE sem_tree SET name=?, info=?, type=? WHERE sem_tree_id=?"];
-$_views["SEM_TREE_DEL_ITEM"] = ["query" => "DELETE FROM sem_tree WHERE sem_tree_id IN (&)"];
 $_views["SEM_TREE_MOVE_ITEM"] = ["query" => "UPDATE sem_tree SET parent_id=?, priority=§ WHERE sem_tree_id=?"];
 $_views["SEM_TREE_SEARCH_SEM"] = ["query" => "SELECT b.seminar_id, " . $_views['sem_number_sql'] . " AS sem_number, " . $_views['sem_number_end_sql'] . " AS sem_number_end FROM sem_tree a LEFT JOIN seminar_sem_tree b USING(sem_tree_id)
                                                     LEFT JOIN seminare c USING(seminar_id)

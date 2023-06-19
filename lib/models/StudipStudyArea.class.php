@@ -19,8 +19,8 @@
  * @property string id alias column for sem_tree_id
  * @property string parent_id database column
  * @property string priority database column
- * @property string info database column
- * @property string name database column
+ * @property I18NString info database column
+ * @property I18NString name database column
  * @property string studip_object_id database column
  * @property string type database column
  * @property SimpleORMapCollection _children has_many StudipStudyArea
@@ -28,7 +28,6 @@
  * @property StudipStudyArea _parent belongs_to StudipStudyArea
  * @property SimpleORMapCollection courses has_and_belongs_to_many Course
  */
-
 class StudipStudyArea extends SimpleORMap
 {
     /**
@@ -58,6 +57,10 @@ class StudipStudyArea extends SimpleORMap
             'class_name' => StudipStudyArea::class,
             'foreign_key' => 'parent_id',
         ];
+
+        $config['i18n_fields']['name'] = true;
+        $config['i18n_fields']['info'] = true;
+
         parent::configure($config);
     }
 
@@ -79,14 +82,11 @@ class StudipStudyArea extends SimpleORMap
      */
     public static function find($id)
     {
-
         $result = NULL;
 
         if ($id === self::ROOT) {
             $result = self::getRootArea();
-        }
-
-        else {
+        } else {
             $result = parent::find($id);
         }
 
@@ -101,26 +101,6 @@ class StudipStudyArea extends SimpleORMap
         return $this->id;
     }
 
-
-    /**
-     * Get the comment of this study area.
-     */
-    public function getInfo()
-    {
-        return $this->content['info'];
-    }
-
-
-    /**
-     * Set the comment of this study area.
-     */
-    public function setInfo($info)
-    {
-        $this->content['info'] = (string) $info;
-        return $this;
-    }
-
-
     /**
      * Get the display name of this study area.
      */
@@ -129,18 +109,9 @@ class StudipStudyArea extends SimpleORMap
         if ($this->studip_object_id) {
             return $this->institute ? $this->institute->name : _('Unbekannte Einrichtung');
         }
+
         return $this->content['name'];
     }
-
-    /**
-     * Set the display name of this study area.
-     */
-    public function setName($name)
-    {
-        $this->content['name'] = (string) $name;
-        return $this;
-    }
-
 
     /**
      * Get the parent ID of this study area.
@@ -175,34 +146,13 @@ class StudipStudyArea extends SimpleORMap
     }
 
     /**
-     * get the type of this study area.
-     */
-    public function getType()
-    {
-        return $this->content['type'];
-    }
-
-    /**
-     * set the type of this study area.
-     */
-    public function setType($type)
-    {
-        $this->content['type'] = (int) $type;
-        return $this;
-    }
-
-    /**
      * get the name of the type of this study area, see $SEM_TREE_TYPES in config.inc.php
      *
      * @return string
      */
     public function getTypeName()
     {
-        if(isset($GLOBALS['SEM_TREE_TYPES'][$this->getType()]['name'])){
-            return $GLOBALS['SEM_TREE_TYPES'][$this->getType()]['name'];
-        } else {
-            return '';
-        }
+        return $GLOBALS['SEM_TREE_TYPES'][$this->getType()]['name'] ?? '';
     }
 
     /**
@@ -212,11 +162,7 @@ class StudipStudyArea extends SimpleORMap
      */
     public function isEditable()
     {
-        if(isset($GLOBALS['SEM_TREE_TYPES'][$this->getType()]['editable'])){
-            return (bool)$GLOBALS['SEM_TREE_TYPES'][$this->getType()]['editable'];
-        } else {
-            return false;
-        }
+        return (bool) ($GLOBALS['SEM_TREE_TYPES'][$this->getType()]['editable'] ?? false);
     }
 
     /**
@@ -226,23 +172,17 @@ class StudipStudyArea extends SimpleORMap
      */
     public function isHidden()
     {
-        if (isset($GLOBALS['SEM_TREE_TYPES'][$this->getType()]['hidden'])) {
-            return (bool) $GLOBALS['SEM_TREE_TYPES'][$this->getType()]['hidden'];
-        } else {
-            return false;
-        }
+        return ($GLOBALS['SEM_TREE_TYPES'][$this->getType()]['hidden'] ?? false);
     }
 
     /**
      * Get the path along the sem_tree to this study area.
      *
      * @param  string     optional; TODO
-     *
      * @return mixed      TODO
      */
     public function getPath($separator = NULL)
     {
-
         $path = [];
 
         $area = $this;
@@ -263,26 +203,6 @@ class StudipStudyArea extends SimpleORMap
         : $path;
     }
 
-
-    /**
-     * Get the priority of this study area.
-     */
-    public function getPriority()
-    {
-        return $this->content['priority'];
-    }
-
-
-    /**
-     * Set the priority of this study area.
-     */
-    public function setPriority($priority)
-    {
-        $this->content['priority'] = (int) $priority;
-        return $this;
-    }
-
-
     /**
      * Get the studip_object_id of this study area.
      */
@@ -302,7 +222,6 @@ class StudipStudyArea extends SimpleORMap
         return $this;
     }
 
-
     /**
      * Returns the children of this study area.
      */
@@ -316,9 +235,8 @@ class StudipStudyArea extends SimpleORMap
      */
     public function hasChildren()
     {
-        return sizeof($this->_children) > 0;
+        return count($this->_children) > 0;
     }
-
 
     /**
      * Returns TRUE if this area is the root.
@@ -327,7 +245,6 @@ class StudipStudyArea extends SimpleORMap
     {
         return $this->getId() === self::ROOT;
     }
-
 
     /**
      * Returns TRUE if this area can be select.
@@ -367,7 +284,6 @@ class StudipStudyArea extends SimpleORMap
         return $course ? $course->study_areas : new SimpleCollection();
     }
 
-
     /**
      * Returns the not really existing root study area.
      *
@@ -377,10 +293,9 @@ class StudipStudyArea extends SimpleORMap
     {
         $root = new StudipStudyArea();
         $root->setID(self::ROOT);
-        $root->setName(Config::get()->UNI_NAME_CLEAN);
+        $root->name = Config::get()->UNI_NAME_CLEAN;
         return $root;
     }
-
 
     /**
      * Search for study areas whose name matches the given search term.
@@ -449,5 +364,4 @@ class StudipStudyArea extends SimpleORMap
         // plant the tree
         return $root;
     }
-
 }

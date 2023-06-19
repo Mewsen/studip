@@ -226,7 +226,7 @@ if ($the_tree->mode === "MoveItem" || $the_tree->mode === "CopyItem"){
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
         <td class="blank" width="75%" align="left" valign="top" colspan="2">
-            <? $the_tree->showSemTree(); ?>
+            <?= $the_tree->showSemTree(); ?>
         </td>
     </tr>
 </table>
