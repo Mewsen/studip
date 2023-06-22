@@ -342,6 +342,7 @@ test-e2e:
     - *initialize-studip-database
     - echo "namespace{\$ABSOLUTE_URI_STUDIP = \"http://$PHP_WEBSERVER_URL/\";}" >> config/config_local.inc.php
     - ./cli/studip config:set SHOW_TERMS_ON_FIRST_LOGIN 0
+    - make build
     - npm install playwright
     - npm ci
     - npx playwright install --with-deps
