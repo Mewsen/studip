@@ -13,15 +13,12 @@
                 <div class="cw-block-title">
                     <translate>Bestätigung</translate>
                 </div>
-                <div class="cw-block-confirm-content">
-                    <div class="cw-block-confirm-checkbox">
-                        <studip-icon v-if="!confirm" shape="checkbox-unchecked" role="info" @click="setConfirm" />
-                        <studip-icon v-if="confirm" shape="checkbox-checked" role="info" />
-                    </div>
-                    <p class="cw-block-confirm-text">
-                        {{ currentText }}
-                    </p>
-                </div>
+                <form class="default cw-block-confirm-content" prevent.default="">
+                    <label>
+                        <input type="checkbox" :disabled="confirm" :checked="confirm" @click="setConfirm"/>
+                        <span>{{ currentText }}</span>
+                    </label>
+                </form>
             </template>
             <template v-if="canEdit" #edit>
                 <form class="default" @submit.prevent="">
@@ -40,14 +37,12 @@
 import CoursewareDefaultBlock from './CoursewareDefaultBlock.vue';
 import { mapActions, mapGetters } from 'vuex';
 import { blockMixin } from './block-mixin.js';
-import StudipIcon from '../StudipIcon.vue';
 
 export default {
     name: 'courseware-confirm-block',
     mixins: [blockMixin],
     components: {
-        CoursewareDefaultBlock,
-        StudipIcon,
+        CoursewareDefaultBlock
     },
     props: {
         block: Object,
@@ -86,6 +81,9 @@ export default {
             }
         },
         async setConfirm() {
+            if (this.confirm) {
+                return;
+            }
             let data = {};
             data.type = 'courseware-user-data-fields';
             data.id = this.block.relationships['user-data-field'].data.id;
