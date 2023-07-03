@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b208b63a6fc53d453c263420fa7350da",
+    "content-hash": "b57262021a4cc6cbcfb893719b5b3edc",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -1112,63 +1112,6 @@
                 }
             ],
             "time": "2021-06-28T04:27:21+00:00"
-        },
-        {
-            "name": "mishal/iless",
-            "version": "2.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mishal/iless.git",
-                "reference": "d75af501ab0ca411efd041faa53e6652f1602553"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mishal/iless/zipball/d75af501ab0ca411efd041faa53e6652f1602553",
-                "reference": "d75af501ab0ca411efd041faa53e6652f1602553",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "bin": [
-                "bin/iless"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "ILess\\": "lib/ILess"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ILess contributors",
-                    "homepage": "https://github.com/mishal/iless/wiki/Contributors"
-                }
-            ],
-            "description": "Less.js port to PHP",
-            "homepage": "http://github.com/mishal/iless",
-            "keywords": [
-                "compiler",
-                "css",
-                "less",
-                "less.js",
-                "lesscss",
-                "parser"
-            ],
-            "support": {
-                "issues": "https://github.com/mishal/iless/issues",
-                "source": "https://github.com/mishal/iless/tree/master"
-            },
-            "time": "2016-04-25T07:03:37+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4394,6 +4337,81 @@
             "time": "2021-09-14T12:46:25+00:00"
         },
         {
+            "name": "wikimedia/less.php",
+            "version": "v3.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/less.php.git",
+                "reference": "0d5b30ba792bdbf8991a646fc9c30561b38a5559"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/less.php/zipball/0d5b30ba792bdbf8991a646fc9c30561b38a5559",
+                "reference": "0d5b30ba792bdbf8991a646fc9c30561b38a5559",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.9"
+            },
+            "require-dev": {
+                "mediawiki/mediawiki-codesniffer": "40.0.1",
+                "mediawiki/mediawiki-phan-config": "0.12.0",
+                "mediawiki/minus-x": "1.1.1",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
+                "phpunit/phpunit": "^8.5"
+            },
+            "bin": [
+                "bin/lessc"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Less": "lib/"
+                },
+                "classmap": [
+                    "lessc.inc.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Timo Tijhof",
+                    "homepage": "https://timotijhof.net"
+                },
+                {
+                    "name": "Josh Schmidt",
+                    "homepage": "https://github.com/oyejorge"
+                },
+                {
+                    "name": "Matt Agar",
+                    "homepage": "https://github.com/agar"
+                },
+                {
+                    "name": "Martin Jantošovič",
+                    "homepage": "https://github.com/Mordred"
+                }
+            ],
+            "description": "PHP port of the LESS processor",
+            "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/less.php",
+            "keywords": [
+                "css",
+                "less",
+                "less.js",
+                "lesscss",
+                "php",
+                "stylesheet"
+            ],
+            "support": {
+                "issues": "https://github.com/wikimedia/less.php/issues",
+                "source": "https://github.com/wikimedia/less.php/tree/v3.2.1"
+            },
+            "time": "2023-02-03T06:43:41+00:00"
+        },
+        {
             "name": "willdurand/negotiation",
             "version": "3.1.0",
             "source": {
@@ -7144,7 +7162,7 @@
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "7.2.5"
+        "php": "7.2.34"
     },
     "plugin-api-version": "2.3.0"
 }
