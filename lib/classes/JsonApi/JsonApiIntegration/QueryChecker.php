@@ -104,15 +104,15 @@ class QueryChecker
 
     protected function checkSorting(ErrorCollection $errors, QueryParserInterface $queryParser): void
     {
-        if (null !== $queryParser->getSorts() && null !== $this->sortParameters) {
-            foreach ($queryParser->getSorts() as $sortParameter) {
-                if (!array_key_exists($sortParameter->getField(), $this->sortParameters)) {
-                    $errors->addQueryParameterError(
-                        QueryParser::PARAM_SORT,
-                        sprintf('Sort parameter %s is not allowed.', $sortParameter->getField())
-                    );
-                }
-            }
+        $withinAllowed = $this->keysWithinAllowed(
+            iterator_to_array($queryParser->getSorts()),
+            $this->sortParameters
+        );
+        if (!$withinAllowed) {
+            $errors->addQueryParameterError(
+                QueryParser::PARAM_SORT,
+                'Sort parameter should contain only allowed values.'
+            );
         }
     }
 
