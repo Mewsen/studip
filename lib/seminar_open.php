@@ -104,7 +104,10 @@ if ($auth->is_authenticated() && is_object($user) && $user->id != "nobody") {
         if (!empty($_SESSION['contrast'])) {
             UserConfig::get($GLOBALS['user']->id)->store('USER_HIGH_CONTRAST', 1);
             unset($_SESSION['contrast']);
+        } else {
+            UserConfig::get($GLOBALS['user']->id)->store('USER_HIGH_CONTRAST', 0);
         }
+
         $user_did_login = true;
     }
 
