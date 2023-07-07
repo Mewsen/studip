@@ -469,7 +469,8 @@ import eventBus from "./lib/event-bus";
             if (value !== instance.lastVal) {
                 $(this).change();
             }
-        }
+        },
+        minDate: new Date(1970, 0)
     };
 
     $.datepicker.setDefaults({
