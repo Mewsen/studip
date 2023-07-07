@@ -166,7 +166,7 @@ class OERHostOERSI extends OERHost
 
     public function getDownloadURLForMaterial(OERMaterial $material)
     {
-        return $material['uri'];
+        return $material['data']['download'] ?? $material['uri'];
     }
 
     public function cbCreateKeysIfNecessary()
