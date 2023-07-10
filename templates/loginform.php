@@ -53,21 +53,34 @@ if (!match_route('web_migrate.php')) {
                            value="<?= htmlReady($uname) ?>"
                            size="20"
                            autocorrect="off" autocapitalize="off">
+                    <? if (Config::get()->USERNAME_TOOLTIP_ACTIVATED) : ?>
+                        <?= tooltipIcon(htmlReady((string)Config::get()->USERNAME_TOOLTIP_TEXT)) ?>
+                    <? endif ?>
                 </label>
             </section>
+            <p id="loginname_caps" style="display: none"><?= _('Feststelltaste ist aktiviert!') ?></p>
             <section>
-                <label for="password">
+                <label for="password" style="position: relative">
                     <?= _('Passwort:') ?>
                     <input type="password" <?= mb_strlen($uname) ? 'autofocus' : '' ?>
                            id="password" name="password" size="20">
+
+                    <i id="password_toggle" style="position: absolute;right: 30px;bottom: 0px; cursor: pointer;" href=""
+                        <?= tooltip(_('Passwort zeigen/verstecken'), true) ?>>
+                        <?= Icon::create('visibility-checked')->asImg(20) ?>
+                    </i>
+
+                    <? if (Config::get()->PASSWORD_TOOLTIP_ACTIVATED) : ?>
+                        <?= tooltipIcon(htmlReady((string)Config::get()->PASSWORD_TOOLTIP_TEXT)) ?>
+                    <? endif ?>
                 </label>
             </section>
-                <?= CSRFProtection::tokenTag() ?>
-                <input type="hidden" name="login_ticket" value="<?=Seminar_Session::get_ticket();?>">
-                <input type="hidden" name="resolution"  value="">
-                <input type="hidden" name="device_pixel_ratio" value="1">
-                <?= Button::createAccept(_('Anmelden'), _('Login')); ?>
-                <?= LinkButton::create(_('Abbrechen'), URLHelper::getURL('index.php', ['cancel_login' => 1], true)) ?>
+            <p id="password_caps" style="display: none"><?= _('Feststelltaste ist aktiviert!') ?></p>
+            <?= CSRFProtection::tokenTag() ?>
+            <input type="hidden" name="login_ticket" value="<?=Seminar_Session::get_ticket();?>">
+            <input type="hidden" name="resolution"  value="">
+            <input type="hidden" name="device_pixel_ratio" value="1">
+            <?= Button::createAccept(_('Anmelden'), _('Login')); ?>
         </form>
 
         <div>
@@ -78,23 +91,135 @@ if (!match_route('web_migrate.php')) {
             <? endif; ?>
                     <?= _('Passwort vergessen') ?>
                 </a>
-            <? if ($self_registration_activated): ?>
-                /
-                <a href="<?= URLHelper::getLink('register1.php?cancel_login=1') ?>">
-                    <?= _('Registrieren') ?>
-                </a>
-            <? endif; ?>
+
         </div>
+
+        <header>
+            <h1><?= htmlReady(Config::get()->UNI_NAME_CLEAN) ?></h1>
+        </header>
+        <nav>
+            <ul>
+                <? foreach (Navigation::getItem('/login') as $key => $nav) : ?>
+                    <? if ($nav->isVisible()) : ?>
+                        <? $name_and_title = explode(' - ', $nav->getTitle()) ?>
+                        <li class="login_link">
+                            <? if (is_internal_url($url = $nav->getURL())) : ?>
+                            <? SkipLinks::addLink($name_and_title[0], $url) ?>
+                            <a href="<?= URLHelper::getLink($url) ?>?cancel_login=1">
+                                <? else : ?>
+                                <a href="<?= htmlReady($url) ?>" target="_blank" rel="noopener noreferrer">
+                                    <? endif ?>
+                                    <?= htmlReady($name_and_title[0]) ?>
+                                    <p>
+                                        <?= htmlReady(!empty($name_and_title[1]) ? $name_and_title[1] : $nav->getDescription()) ?>
+                                    </p>
+                                </a>
+                        </li>
+                    <? endif ?>
+                <? endforeach ?>
+            </ul>
+        </nav>
+        <footer>
+            <? if ($GLOBALS['UNI_LOGIN_ADD']) : ?>
+                <div class="uni_login_add">
+                    <?= $GLOBALS['UNI_LOGIN_ADD'] ?>
+                </div>
+            <? endif; ?>
+
+            <div id="languages">
+                <? foreach ($GLOBALS['INSTALLED_LANGUAGES'] as $temp_language_key => $temp_language): ?>
+                    <?= Assets::img('languages/' . $temp_language['picture'], ['alt' => $temp_language['name'], 'size' => '24']) ?>
+                    <a href="index.php?set_language=<?= $temp_language_key ?>">
+                        <?= htmlReady($temp_language['name']) ?>
+                    </a>
+                <? endforeach; ?>
+            </div>
+
+            <div id="contrast">
+                <? if (isset($_SESSION['contrast'])) : ?>
+                    <?= Icon::create('accessibility')->asImg(24) ?>
+                    <a href="index.php?unset_contrast=1"><?= _('Normalen Kontrast aktivieren') ?></a>
+                    <?= tooltipIcon(_('Aktiviert standardmäßige, nicht barrierefreie Kontraste.')); ?>
+                <? else : ?>
+                    <?= Icon::create('accessibility')->asImg(24) ?>
+                    <a href="index.php?set_contrast=1" id="highcontrastlink"><?= _('Hohen Kontrast aktivieren')?></a>
+                    <?= tooltipIcon(_('Aktiviert einen hohen Kontrast gemäß WCAG 2.1. Diese Einstellung wird nach dem Login übernommen.
+                    Sie können sie in Ihren persönlichen Einstellungen ändern.')); ?>
+                <? endif ?>
+            </div>
+
+            <div class="login_info">
+                <div>
+                    <?= _('Aktive Veranstaltungen') ?>:
+                    <?= number_format($num_active_courses, 0, ',', '.') ?>
+                </div>
+
+                <div>
+                    <?= _('Registrierte NutzerInnen') ?>:
+                    <?= number_format($num_registered_users, 0, ',', '.') ?>
+                </div>
+
+                <div>
+                    <?= _('Davon online') ?>:
+                    <?= number_format($num_online_users, 0, ',', '.') ?>
+                </div>
+
+                <div>
+                    <a href="dispatch.php/siteinfo/show">
+                        <?= _('mehr') ?> &hellip;
+                    </a>
+                </div>
+            </div>
+        </footer>
+
     </div>
 </main>
 
 <script type="text/javascript" language="javascript">
-//<![CDATA[
-$(function () {
-    $('form[name=login]').submit(function () {
-        $('input[name=resolution]', this).val( screen.width + 'x' + screen.height );
-        $('input[name=device_pixel_ratio]').val(window.devicePixelRatio || 1);
+
+    var loginname = document.getElementById("loginname");
+    var password = document.getElementById("password");
+
+    var loginname_caps = document.getElementById("loginname_caps");
+    var password_caps = document.getElementById("password_caps");
+
+    // When the user presses any key on the keyboard, run the function
+    loginname.addEventListener("keyup", function(event) {
+
+        // If "caps lock" is pressed, display the warning text
+        if (event.getModifierState("CapsLock")) {
+            loginname_caps.style.display = "block";
+        } else {
+            loginname_caps.style.display = "none"
+        }
     });
-});
-// -->
+
+    // When the user presses any key on the keyboard, run the function
+    password.addEventListener("keyup", function(event) {
+
+        // If "caps lock" is pressed, display the warning text
+        if (event.getModifierState("CapsLock")) {
+            password_caps.style.display = "block";
+        } else {
+            password_caps.style.display = "none"
+        }
+    });
+
+    $(function () {
+        $('form[name=login]').submit(function () {
+            $('input[name=resolution]', this).val( screen.width + 'x' + screen.height );
+            $('input[name=device_pixel_ratio]').val(window.devicePixelRatio || 1);
+        });
+    });
+
+    var togglePassword = document.getElementById('password_toggle')
+
+    togglePassword.addEventListener('click', function (e) {
+        // toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        // toggle the eye slash icon
+        this.classList.toggle('fa-eye-slash');
+    });
+
 </script>
