@@ -303,6 +303,27 @@ class Seminar_Auth
 
         $this->check_environment();
 
+        // if desired, switch to high contrast stylesheet and store when user logs in
+        if (Request::get('unset_contrast')) {
+            unset($_SESSION['contrast']);
+            PageLayout::RemoveStylesheet('accessibility.css');
+
+        }
+        if (Request::get('set_contrast') ) {
+            $_SESSION['contrast'] = true;
+            PageLayout::addStylesheet('accessibility.css');
+
+        }
+
+        // evaluate language clicks
+        // has to be done before seminar_open to get switching back to german (no init of i18n at all))
+        if (Request::get('set_language')) {
+            if(array_key_exists(Request::get('set_language'), $GLOBALS['INSTALLED_LANGUAGES'])) {
+                $_SESSION['forced_language'] = Request::get('set_language');
+                $_SESSION['_language'] = Request::get('set_language');
+            }
+        }
+
         PageLayout::setBodyElementId('login');
 
         // load the default set of plugins
@@ -318,6 +339,35 @@ class Seminar_Auth
         } else {
             unset($_SESSION['semi_logged_in']); // used by email activation
             $login_template = $GLOBALS['template_factory']->open('loginform');
+
+            /*
+            $portalplugins = PluginEngine::getPlugins('PortalPlugin');
+            $layout = $GLOBALS['template_factory']->open('shared/index_box');
+
+            $plugin_contents = [];
+            foreach ($portalplugins as $portalplugin) {
+                $template = $portalplugin->getPortalTemplate();
+
+                if ($template) {
+                    $plugin_contents[] = $template->render(NULL, $layout);
+                    $layout->clear_attributes();
+                }
+            }
+            */
+            // get statistics
+            $cache = StudipCacheFactory::getCache();
+            $stat = $cache->read('LOGINFORM_STATISTICS');
+            if (!is_array($stat)) {
+                $stat = [];
+                $stat['num_active_courses'] = Course::countBySQL();
+                $stat['num_registered_users'] = User::countBySQL();
+                $cache->write('LOGINFORM_STATISTICS', $stat, 3600);
+            }
+            $login_template->set_attributes(array_merge($stat, [
+                'num_online_users' => get_users_online_count(),
+                'logout'           =>  Request::bool('logout'),
+            ]));
+
             $login_template->set_attribute('loginerror', (isset($this->auth["uname"]) && $this->error_msg));
             $login_template->set_attribute('error_msg', $this->error_msg);
             $login_template->set_attribute('uname', (isset($this->auth["uname"]) ? $this->auth["uname"] : Request::username('loginname')));

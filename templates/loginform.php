@@ -165,7 +165,7 @@ if (!match_route('web_migrate.php')) {
                 </div>
 
                 <div>
-                    <a href="dispatch.php/siteinfo/show">
+                    <a href="dispatch.php/siteinfo/show?cancel_login=1">
                         <?= _('mehr') ?> &hellip;
                     </a>
                 </div>
@@ -205,12 +205,6 @@ if (!match_route('web_migrate.php')) {
         }
     });
 
-    $(function () {
-        $('form[name=login]').submit(function () {
-            $('input[name=resolution]', this).val( screen.width + 'x' + screen.height );
-            $('input[name=device_pixel_ratio]').val(window.devicePixelRatio || 1);
-        });
-    });
 
     var togglePassword = document.getElementById('password_toggle')
 

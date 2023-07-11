@@ -21,24 +21,7 @@ require '../lib/bootstrap.php';
 
 page_open(['sess' => 'Seminar_Session', 'auth' => 'Seminar_Default_Auth', 'perm' => 'Seminar_Perm', 'user' => 'Seminar_User']);
 
-$auth->login_if(Request::get('again') && ($auth->auth['uid'] == 'nobody'));
-
-// if desired, switch to high contrast stylesheet and store when user logs in
-if (Request::get('unset_contrast')) {
-    unset($_SESSION['contrast']);
-}
-if (Request::get('set_contrast') ) {
-    $_SESSION['contrast'] = true;
-}
-
-// evaluate language clicks
-// has to be done before seminar_open to get switching back to german (no init of i18n at all))
-if (Request::get('set_language')) {
-    if(array_key_exists(Request::get('set_language'), $GLOBALS['INSTALLED_LANGUAGES'])) {
-        $_SESSION['forced_language'] = Request::get('set_language');
-        $_SESSION['_language'] = Request::get('set_language');
-    }
-}
+$auth->login_if(($auth->auth['uid'] == 'nobody'));
 
 // store user-specific language preference
 if ($auth->is_authenticated() && $user->id != 'nobody') {

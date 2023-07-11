@@ -56,6 +56,7 @@ $gap-between-boxes: calc($login-page-margin / 2);
             list-style-type: none;
             margin: 0;
             width: 450px;
+            padding-inline-start: 10px;
 
             .login_link {
                 display: inline-block;
