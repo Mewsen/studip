@@ -355,3 +355,69 @@ jQuery(document).on('click', 'a[data-behaviour~="ajax-toggle"]', function (event
         $('#open_variable').attr('value', $(this).parent('fieldset').data('open'));
     });
 }(jQuery));
+
+STUDIP.ready(function () {
+    var loginname = $('#loginname');
+    var password = $('#password');
+
+    var loginname_caps = $('#loginname_caps');
+    var password_caps = $('#password_caps');
+    
+
+    check_capslock_form($('#content')); //applies the capslock check to all input tags
+
+    function check_capslock_form(where) {
+        if (!where) { where = $(document); }
+        where.find('input,select').each(function () {
+            if (this.type != "hidden") {
+                $(this).keypress(check_capslock);
+            }
+        });
+    }
+
+    document.onkeydown = function (e) { //check if capslock key was pressed in the whole window
+        e = e || event;
+        if (typeof (window.lastpress) === 'undefined') { window.lastpress = e.timeStamp; }
+        if (typeof (window.capsLockEnabled) !== 'undefined') {
+            if (e.key == 'CapsLock' && e.timeStamp > window.lastpress + 50) {
+                window.capsLockEnabled = !window.capsLockEnabled;
+                $('#password_caps').toggle();
+            }
+            window.lastpress = e.timeStamp;
+            //sometimes this function is called twice when pressing capslock once, so I use the timeStamp to fix the problem
+        }
+
+    };
+
+    function check_capslock(e) { //check what key was pressed in the form
+        var s = String.fromCharCode(e.keyCode);
+        if (s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey) {
+            window.capsLockEnabled = true;
+            $('#password_caps').show();
+        }
+        else {
+            window.capsLockEnabled = false;
+            $('#password_caps').hide();
+        }
+    }
+
+
+
+
+    $(document).on('click', '#password_toggle', function () {
+        if (password.attr("type") == "password") {
+            password.attr("type", "text");
+        } else {
+            password.attr("type", "password");
+        }
+
+        // toggle the eye slash icon
+        this.classList.toggle('fa-eye-slash');
+    });
+
+
+
+
+
+
+});
