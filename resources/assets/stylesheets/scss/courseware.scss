@@ -4928,3 +4928,12 @@ p u b l i c  l i n k s
 /* * * * * * * * * * * * * * *
 e n d  p u b l i c  l i n k s 
 * * * * * * * * * * * * * * */
+
+#course-courseware-index,
+#contents-courseware-index,
+#course-courseware-courseware,
+#contents-courseware-courseware {
+    form.default input[type=date] {
+        max-width: 9em;
+    }
+}
