@@ -5028,3 +5028,12 @@ s h e l f  i t e m s
 /* * * * * * * * * * * * * * * * * *
 s h e l f  i t e m s  e n d
 * * * * * * * * * * * * * * * * * */
+
+#course-courseware-index,
+#contents-courseware-index,
+#course-courseware-courseware,
+#contents-courseware-courseware {
+    form.default input[type=date] {
+        max-width: 9em;
+    }
+}
