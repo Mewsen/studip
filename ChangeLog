@@ -1,3 +1,26 @@
+14.07.2023 v 5.0.6
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.0.6&state=all
+- Courseware Tabs erhalten keine eindeutige id [#700]
+- Fehlerhafte Einträge in mail_queue_entries [#1134]
+- Semester lassen sich überschneiden [#1956]
+- Courseware: Nach Anlegen einer Seite sollte man auf der Seite landen [#1974]
+- Terminkalender: Springen an Termine vor 1970 ist möglich [#2076]
+- Courseware: Checkbox im Bestätigungs-Block ist nicht tastaturbedienbar [#2114]
+- OER Campus: Bei Entwurf: Zugriff verweigert [#2527]
+- Systemeigenschaften eines Raumes sind unveränderbar [#2707]
+- PHP - Warnung in members.php [#2711]
+- MVV: Drag&Drop von Modulteilen bei 2 Elementen [#2732]
+- Installer: Class 'AccessDeniedException' not found [#2734]
+- Texte in Datumsfeldern werden abgeschnitten (Firefox) [#2760]
+- Verwaltung von Veranstaltungen zeigt immer deutsche Veranstaltungstitel an [#2761]
+- Vorlesungsverzeichnis zeigt immer deutsche Veranstaltungstitel an [#2763]
+- Liste aller Veranstaltungen der Einrichtung zeigt immer deutsche Veranstaltungstitel an [#2764]
+- Ablaufplan: "Thema hinzufügen" fügt den Suchbegriff statt des ausgewählten Themas hinzu [#2784]
+- Fehler beim Löschen von Nutzern [#2788]
+- Lokalisation klappt auf Mac OS nicht [#2809]
+- Startseite: Verschieben von Widgets inkonsistent [#2821]
+- Missing template "messages/purge" [#2830]
+
 13.06.2023 v 5.0.5
 https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.0.5&state=all
 - Anzeige Personendaten funktioniert nicht für Courseware-Daten [#797]
