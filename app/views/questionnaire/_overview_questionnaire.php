@@ -119,7 +119,7 @@
             Icon::create('file-excel', 'clickable')
         );
         $menu->addLink(
-            $controller->url_for('questionnaire/delete/'  .$questionnaire->id),
+            $controller->url_for('questionnaire/delete/'  .$questionnaire->id, $params),
             _('Fragebogen löschen'),
             Icon::create('trash', 'clickable'),
             ['data-confirm' => _('Wirklich löschen?')]
