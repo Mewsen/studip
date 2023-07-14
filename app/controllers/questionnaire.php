@@ -26,7 +26,7 @@ class QuestionnaireController extends AuthenticatedController
         if (Navigation::hasItem('/contents/questionnaire/overview')) {
             Navigation::activateItem('/contents/questionnaire/overview');
         }
-
+        $this->params = [];
         $this->range_id = null;
         $this->range_type = null;
         if (!$GLOBALS['perm']->have_perm('autor')) {
@@ -64,6 +64,7 @@ class QuestionnaireController extends AuthenticatedController
                 $questionnaire->stop();
             }
         }
+        $this->params = ['redirect' => 'questionnaire/courseoverview'];
         $this->render_action("overview");
     }
 
