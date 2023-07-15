@@ -240,6 +240,10 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
                         $this->lock_comment
                     )
                 );
+            } else if ($this->isFieldDirty('locked') && $this->isFieldDirty('lock_comment') && (int)$this->locked === 0) {
+                StudipLog::log('USER_UNLOCK',
+                    $this->user_id
+                );
             }
         }
     }
