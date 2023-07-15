@@ -124,7 +124,7 @@
             <?= formatReady($material['description']) ?>
         </div>
 
-        <h2><?= _('Zum Autor') ?></h2>
+        <h2><?= _('Autor/-in') ?></h2>
         <ul class="author_information clean">
             <? foreach ($material->users as $materialuser) : ?>
                 <li>
