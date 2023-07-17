@@ -338,12 +338,8 @@ $sidebarOut: -330px;
                 animation: slide-in $transition-duration forwards;
             }
 
-            top: 100px;
+            top: 80px;
             visibility: visible;
-
-            &:not(.oversized) {
-                position: sticky;
-            }
         }
 
         .sidebar-image {
@@ -550,11 +546,10 @@ $sidebarOut: -330px;
 
     #sidebar {
         height: 100%;
+        overflow-y: auto;
         position: fixed;
-        top: 75px;
         transform: translateX($sidebarOut);
         -webkit-transform: translateX($sidebarOut);
-        top: 80px;
         z-index: 100;
 
         &.responsive-show {

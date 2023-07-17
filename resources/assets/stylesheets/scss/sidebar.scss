@@ -150,24 +150,26 @@
     }
 }
 
-#admin-courses-index {
-    #sidebar {
-        top: 50px;
+html:not(.responsive-display) {
+    #admin-courses-index {
+        #sidebar {
+            top: 50px;
 
-        &.adjusted {
-            height: calc(100vh - 250px);
-            top: 155px;
-
-            &.no-footer {
-                height: calc(100vh - 200px);
-            }
-
-            &.fixed {
-                height: calc(100vh - 125px);
-                top: 35px;
+            &.adjusted {
+                height: calc(100vh - 250px);
+                top: 155px;
 
                 &.no-footer {
-                    height: calc(100vh - 100px);
+                    height: calc(100vh - 200px);
+                }
+
+                &.fixed {
+                    height: calc(100vh - 125px);
+                    top: 35px;
+
+                    &.no-footer {
+                        height: calc(100vh - 100px);
+                    }
                 }
             }
         }
