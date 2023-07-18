@@ -3,7 +3,7 @@ const Sidebar = {
     place() {
         const header = document.getElementById('main-header');
         const sidebar = document.getElementById('sidebar');
-        if (sidebar) {
+        if (sidebar && !document.body.classList.contains('fixed')) {
             sidebar.style.top =
                 header.offsetTop + header.offsetHeight + 'px';
         }
