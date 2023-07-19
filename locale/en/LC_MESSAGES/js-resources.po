@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "PO-Revision-Date: 2023-05-31 14:28+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
-"stud-ip-5-1-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
+"ip-5-1-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -147,7 +147,7 @@ msgstr "Section data are damaged. It may be that not all blocks are displayed"
 msgid "Abschnitte"
 msgstr "Sections"
 
-#: resources/vue/components/courseware/CoursewareActionWidget.vue:24
+#: resources/vue/components/courseware/CoursewareActionWidget.vue:63
 #: resources/vue/components/courseware/CoursewareManagerElement.vue:21
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:345
 msgid "Abschnitte sortieren"
@@ -298,11 +298,11 @@ msgstr "Anonymous"
 msgid "Apfelgrün"
 msgstr "Apple green"
 
-#: resources/assets/javascripts/studip-ui.js:540
+#: resources/assets/javascripts/studip-ui.js:541
 msgid "Apr"
 msgstr "Apr"
 
-#: resources/assets/javascripts/studip-ui.js:526
+#: resources/assets/javascripts/studip-ui.js:527
 msgid "April"
 msgstr "April"
 
@@ -456,11 +456,11 @@ msgstr "Repeat recording"
 msgid "Aufsteigend sortiert, "
 msgstr "Sorted ascending, "
 
-#: resources/assets/javascripts/studip-ui.js:544
+#: resources/assets/javascripts/studip-ui.js:545
 msgid "Aug"
 msgstr "Aug"
 
-#: resources/assets/javascripts/studip-ui.js:530
+#: resources/assets/javascripts/studip-ui.js:531
 msgid "August"
 msgstr "August"
 
@@ -910,7 +910,7 @@ msgid "Das Herunterladen dieser Datei ist nur eingeschränkt möglich."
 msgstr "The download of this file is restricted."
 
 #: resources/vue/components/courseware/CoursewareActionWidget.vue:130
-#: resources/vue/components/courseware/CoursewareStructuralElement.vue:953
+#: resources/vue/components/courseware/CoursewareStructuralElement.vue:954
 msgid "Das Lesezeichen wurde gesetzt."
 msgstr "The bookmark has been set."
 
@@ -974,10 +974,6 @@ msgstr "File area"
 msgid "Dateibereich Datei"
 msgstr "File area file"
 
-#: resources/vue/components/courseware/CoursewareFileChooser.vue:25
-msgid "Dateibereich der Veranstaltung"
-msgstr "Course file area"
-
 #: resources/vue/components/courseware/CoursewareFolderChooser.vue:64
 msgid "Dateibereich dieser Veranstaltung"
 msgstr "File area of this course"
@@ -1009,7 +1005,7 @@ msgstr "File path"
 msgid "Dateityp"
 msgstr "File type"
 
-#: resources/assets/javascripts/mvv.js:603
+#: resources/assets/javascripts/mvv.js:604
 msgid "Datenfeld in Original-Sprache nicht verfügbar."
 msgstr "The data field isn't available in the original language."
 
@@ -1073,15 +1069,15 @@ msgstr "Switch detailed view"
 msgid "Detaillierte Veranstaltungsliste"
 msgstr "Detailed list of courses"
 
-#: resources/assets/javascripts/studip-ui.js:548
+#: resources/assets/javascripts/studip-ui.js:549
 msgid "Dez"
 msgstr "Dec"
 
-#: resources/assets/javascripts/studip-ui.js:534
+#: resources/assets/javascripts/studip-ui.js:535
 msgid "Dezember"
 msgstr "December"
 
-#: resources/assets/javascripts/studip-ui.js:562
+#: resources/assets/javascripts/studip-ui.js:563
 msgid "Di"
 msgstr "Tue."
 
@@ -1146,7 +1142,7 @@ msgstr "This person is already enroled."
 msgid "Die Seite %{ pageTitle } wurde erfolgreich angelegt."
 msgstr "The page %{ pageTitle } has been created successfully."
 
-#: resources/vue/components/courseware/CoursewareStructuralElement.vue:940
+#: resources/vue/components/courseware/CoursewareStructuralElement.vue:941
 msgid ""
 "Die Seite konnte nicht erstellt werden. Sie haben nicht die notwendigen "
 "Schreibrechte."
@@ -1183,7 +1179,7 @@ msgid "Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden."
 msgstr "Participation is binding. Please contact the lecturers."
 
 #: resources/assets/javascripts/lib/calendar.js:7
-#: resources/assets/javascripts/studip-ui.js:553
+#: resources/assets/javascripts/studip-ui.js:554
 msgid "Dienstag"
 msgstr "Tuesday"
 
@@ -1288,7 +1284,7 @@ msgstr "This element does not contain sections."
 msgid "Dieses Element enthält keine Unterseiten."
 msgstr "This element does not contain sub-pages."
 
-#: resources/assets/javascripts/studip-ui.js:564
+#: resources/assets/javascripts/studip-ui.js:565
 msgid "Do"
 msgstr "Thu."
 
@@ -1307,7 +1303,7 @@ msgid "Dokument suchen"
 msgstr "Search document"
 
 #: resources/assets/javascripts/lib/calendar.js:9
-#: resources/assets/javascripts/studip-ui.js:555
+#: resources/assets/javascripts/studip-ui.js:556
 msgid "Donnerstag"
 msgstr "Thursday"
 
@@ -1466,7 +1462,7 @@ msgid ""
 "Es ist ein Fehler aufgetreten! Die Aufnahme konnte nicht gespeichert werden."
 msgstr "An error occurred! The recording could not be saved."
 
-#: resources/vue/components/courseware/CoursewareStructuralElement.vue:938
+#: resources/vue/components/courseware/CoursewareStructuralElement.vue:939
 msgid "Es ist ein Fehler aufgetreten. Die Seite konnte nicht erstellt werden."
 msgstr "An error occurred. The page could not be created."
 
@@ -1667,11 +1663,11 @@ msgstr "Edit favourites"
 msgid "Favoriten bearbeiten schließen"
 msgstr "Close edit favorites"
 
-#: resources/assets/javascripts/studip-ui.js:538
+#: resources/assets/javascripts/studip-ui.js:539
 msgid "Feb"
 msgstr "Feb"
 
-#: resources/assets/javascripts/studip-ui.js:524
+#: resources/assets/javascripts/studip-ui.js:525
 msgid "Februar"
 msgstr "February"
 
@@ -1766,7 +1762,7 @@ msgstr "Progress"
 msgid "Fortschritt erst beim Herunterladen"
 msgstr "Progress only when downloading"
 
-#: resources/assets/javascripts/studip-ui.js:565
+#: resources/assets/javascripts/studip-ui.js:566
 msgid "Fr"
 msgstr "Fri."
 
@@ -1775,7 +1771,7 @@ msgid "Frei"
 msgstr "Free"
 
 #: resources/assets/javascripts/lib/calendar.js:10
-#: resources/assets/javascripts/studip-ui.js:556
+#: resources/assets/javascripts/studip-ui.js:557
 msgid "Freitag"
 msgstr "Friday"
 
@@ -1978,7 +1974,7 @@ msgstr "Light gray"
 msgid "Hervorhebung aufheben"
 msgstr "Delete mark"
 
-#: resources/assets/javascripts/studip-ui.js:584
+#: resources/assets/javascripts/studip-ui.js:585
 msgid "HH:mm"
 msgstr "HH:mm"
 
@@ -2189,7 +2185,7 @@ msgstr "Information"
 msgid "Informationen"
 msgstr "information"
 
-#: resources/vue/components/courseware/CoursewareActionWidget.vue:34
+#: resources/vue/components/courseware/CoursewareActionWidget.vue:76
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:332
 msgid "Informationen anzeigen"
 msgstr "Display information"
@@ -2199,7 +2195,7 @@ msgstr "Display information"
 msgid "Informationen zum Audio-Block"
 msgstr "Information about the audio block"
 
-#: resources/vue/components/courseware/CoursewareConfirmBlock.vue:25
+#: resources/vue/components/courseware/CoursewareConfirmBlock.vue:22
 #: resources/vue/components/courseware/CoursewareConfirmBlock.vue:1
 msgid "Informationen zum Bestätigungs-Block"
 msgstr "Information about the confirmation block"
@@ -2398,32 +2394,32 @@ msgstr "yes"
 msgid "Ja"
 msgstr "Yes"
 
-#: resources/assets/javascripts/studip-ui.js:537
+#: resources/assets/javascripts/studip-ui.js:538
 msgid "Jan"
 msgstr "Jan"
 
-#: resources/assets/javascripts/studip-ui.js:523
+#: resources/assets/javascripts/studip-ui.js:524
 msgid "Januar"
 msgstr "January"
 
-#: resources/assets/javascripts/studip-ui.js:521
+#: resources/assets/javascripts/studip-ui.js:522
 #: resources/vue/components/StudipDateTime.vue:39
 msgid "Jetzt"
 msgstr "Now"
 
-#: resources/assets/javascripts/studip-ui.js:543
+#: resources/assets/javascripts/studip-ui.js:544
 msgid "Jul"
 msgstr "Jul"
 
-#: resources/assets/javascripts/studip-ui.js:529
+#: resources/assets/javascripts/studip-ui.js:530
 msgid "Juli"
 msgstr "July"
 
-#: resources/assets/javascripts/studip-ui.js:542
+#: resources/assets/javascripts/studip-ui.js:543
 msgid "Jun"
 msgstr "Jun"
 
-#: resources/assets/javascripts/studip-ui.js:528
+#: resources/assets/javascripts/studip-ui.js:529
 msgid "Juni"
 msgstr "June"
 
@@ -2483,7 +2479,7 @@ msgstr "Not specified for field of study"
 msgid "Keine Auswahl"
 msgstr "No selection"
 
-#: resources/vue/components/courseware/CoursewareFileChooser.vue:20
+#: resources/vue/components/courseware/CoursewareFileChooser.vue:13
 msgid "Keine Dateien vorhanden"
 msgstr "No files available"
 
@@ -2673,7 +2669,7 @@ msgstr "Read and write"
 msgid "Leser/-innen"
 msgstr "Readers"
 
-#: resources/vue/components/courseware/CoursewareActionWidget.vue:39
+#: resources/vue/components/courseware/CoursewareActionWidget.vue:81
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:333
 msgid "Lesezeichen setzen"
 msgstr "Set bookmark"
@@ -2760,18 +2756,19 @@ msgstr ""
 #: resources/vue/components/courseware/CoursewareActionWidget.vue:112
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:689
 msgid "Löschen nicht möglich, da %{blockingUserName} die Seite bearbeitet."
-msgstr "Deleting is not possible since %{blockingUserName} is editing the page."
+msgstr ""
+"Deleting is not possible since %{blockingUserName} is editing the page."
 
-#: resources/assets/javascripts/studip-ui.js:527
-#: resources/assets/javascripts/studip-ui.js:541
+#: resources/assets/javascripts/studip-ui.js:528
+#: resources/assets/javascripts/studip-ui.js:542
 msgid "Mai"
 msgstr "May"
 
-#: resources/assets/javascripts/studip-ui.js:539
+#: resources/assets/javascripts/studip-ui.js:540
 msgid "Mär"
 msgstr "Mar"
 
-#: resources/assets/javascripts/studip-ui.js:525
+#: resources/assets/javascripts/studip-ui.js:526
 msgid "März"
 msgstr "March"
 
@@ -2804,19 +2801,19 @@ msgstr "Key point"
 msgid "Metadaten"
 msgstr "Metadata"
 
-#: resources/assets/javascripts/studip-ui.js:563
+#: resources/assets/javascripts/studip-ui.js:564
 msgid "Mi"
 msgstr "Wed."
 
-#: resources/assets/javascripts/studip-ui.js:582
+#: resources/assets/javascripts/studip-ui.js:583
 msgid "Mikrosekunde"
 msgstr "Microsecond"
 
-#: resources/assets/javascripts/studip-ui.js:581
+#: resources/assets/javascripts/studip-ui.js:582
 msgid "Millisekunde"
 msgstr "Millisecond"
 
-#: resources/assets/javascripts/studip-ui.js:579
+#: resources/assets/javascripts/studip-ui.js:580
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:26
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:23
 msgid "Minute"
@@ -2828,11 +2825,11 @@ msgid "Minuten"
 msgstr "Minutes"
 
 #: resources/assets/javascripts/lib/calendar.js:8
-#: resources/assets/javascripts/studip-ui.js:554
+#: resources/assets/javascripts/studip-ui.js:555
 msgid "Mittwoch"
 msgstr "Wednesday"
 
-#: resources/assets/javascripts/studip-ui.js:561
+#: resources/assets/javascripts/studip-ui.js:562
 msgid "Mo"
 msgstr "Mon."
 
@@ -2880,7 +2877,7 @@ msgid "Mögliche Ursachen:"
 msgstr "Possible causes:"
 
 #: resources/assets/javascripts/lib/calendar.js:6
-#: resources/assets/javascripts/studip-ui.js:552
+#: resources/assets/javascripts/studip-ui.js:553
 msgid "Montag"
 msgstr "Monday"
 
@@ -2888,7 +2885,7 @@ msgstr "Monday"
 msgid "Multimedia"
 msgstr "Multimedia"
 
-#: resources/assets/javascripts/studip-ui.js:586
+#: resources/assets/javascripts/studip-ui.js:587
 msgid "nachm."
 msgstr "PM"
 
@@ -3053,11 +3050,11 @@ msgstr "normal"
 msgid "Normal"
 msgstr "Normal"
 
-#: resources/assets/javascripts/studip-ui.js:547
+#: resources/assets/javascripts/studip-ui.js:548
 msgid "Nov"
 msgstr "Nov"
 
-#: resources/assets/javascripts/studip-ui.js:533
+#: resources/assets/javascripts/studip-ui.js:534
 msgid "November"
 msgstr "November"
 
@@ -3113,11 +3110,11 @@ msgstr "without template"
 msgid "Ok"
 msgstr "Ok"
 
-#: resources/assets/javascripts/studip-ui.js:546
+#: resources/assets/javascripts/studip-ui.js:547
 msgid "Okt"
 msgstr "Oct"
 
-#: resources/assets/javascripts/studip-ui.js:532
+#: resources/assets/javascripts/studip-ui.js:533
 msgid "Oktober"
 msgstr "October"
 
@@ -3156,7 +3153,6 @@ msgstr "Add oval"
 msgid "Pause"
 msgstr "Break"
 
-#: resources/vue/components/courseware/CoursewareFileChooser.vue:26
 #: resources/vue/components/courseware/CoursewareFolderChooser.vue:65
 msgid "Persönlicher Dateibereich"
 msgstr "Personal file area"
@@ -3264,12 +3260,12 @@ msgstr "Red"
 msgid "Rückgängig"
 msgstr "Undo"
 
-#: resources/assets/javascripts/studip-ui.js:566
+#: resources/assets/javascripts/studip-ui.js:567
 msgid "Sa"
 msgstr "Sat."
 
 #: resources/assets/javascripts/lib/calendar.js:11
-#: resources/assets/javascripts/studip-ui.js:557
+#: resources/assets/javascripts/studip-ui.js:558
 msgid "Samstag"
 msgstr "Saturday"
 
@@ -3290,7 +3286,7 @@ msgstr "close"
 #: resources/assets/javascripts/lib/dialog.js:418
 #: resources/assets/javascripts/lib/jsupdater.js:174
 #: resources/assets/javascripts/lib/qr_code.js:56
-#: resources/assets/javascripts/studip-ui.js:518
+#: resources/assets/javascripts/studip-ui.js:519
 #: resources/vue/components/StudipDialog.vue:76
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:114
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:245
@@ -3382,7 +3378,7 @@ msgstr "Publish page on %{oerTitle}"
 msgid "Seite auf %{oerTitle} veröffentlichen"
 msgstr "Publish page on %{oerTitle}"
 
-#: resources/vue/components/courseware/CoursewareActionWidget.vue:14
+#: resources/vue/components/courseware/CoursewareActionWidget.vue:49
 #: resources/vue/components/courseware/CoursewareEmptyElementBox.vue:5
 #: resources/vue/components/courseware/CoursewareEmptyElementBox.vue:2
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:54
@@ -3395,7 +3391,7 @@ msgstr "Edit page"
 msgid "Seite exportieren"
 msgstr "Export page"
 
-#: resources/vue/components/courseware/CoursewareActionWidget.vue:29
+#: resources/vue/components/courseware/CoursewareActionWidget.vue:70
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:73
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:358
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:761
@@ -3406,7 +3402,7 @@ msgstr "Add page"
 msgid "Seite konnte nicht erstellt werden"
 msgstr "Page could not be created"
 
-#: resources/vue/components/courseware/CoursewareActionWidget.vue:44
+#: resources/vue/components/courseware/CoursewareActionWidget.vue:87
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:363
 msgid "Seite löschen"
 msgstr "Delete page"
@@ -3458,8 +3454,8 @@ msgid ""
 "Seiten, Abschnitte und Blöcke lassen sich in ihrer Reihenfolge sortieren.\n"
 "                            Hierzu wählen Sie auf der linken Seite unter "
 "\"Diese Courseware\" die Schaltfläche \"Unterseiten sortieren\",\n"
-"                            \"Abschnitte sortieren\" oder \"Blöcke "
-"sortieren\".\n"
+"                            \"Abschnitte sortieren\" oder \"Blöcke sortieren"
+"\".\n"
 "                            An den Objekten werden Pfeile angezeigt, mit "
 "diesen können die Objekte an die gewünschte\n"
 "                            Position gebracht werden. Um die neue Sortierung "
@@ -3507,7 +3503,7 @@ msgstr "Aspect ratio"
 msgid "Sektion entfernen"
 msgstr "Remove section"
 
-#: resources/assets/javascripts/studip-ui.js:580
+#: resources/assets/javascripts/studip-ui.js:581
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:35
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:32
 msgid "Sekunde"
@@ -3525,11 +3521,11 @@ msgstr "Seconds"
 msgid "Senden"
 msgstr "Send"
 
-#: resources/assets/javascripts/studip-ui.js:545
+#: resources/assets/javascripts/studip-ui.js:546
 msgid "Sep"
 msgstr "Sep"
 
-#: resources/assets/javascripts/studip-ui.js:531
+#: resources/assets/javascripts/studip-ui.js:532
 msgid "September"
 msgstr "September"
 
@@ -3650,7 +3646,7 @@ msgstr "Do really want to discard your posting?"
 msgid "Smileys"
 msgstr "Smileys"
 
-#: resources/assets/javascripts/studip-ui.js:560
+#: resources/assets/javascripts/studip-ui.js:561
 msgid "So"
 msgstr "Sun."
 
@@ -3666,7 +3662,7 @@ msgid "Sonnenschein"
 msgstr "Sunglow"
 
 #: resources/assets/javascripts/lib/calendar.js:12
-#: resources/assets/javascripts/studip-ui.js:551
+#: resources/assets/javascripts/studip-ui.js:552
 msgid "Sonntag"
 msgstr "Sunday"
 
@@ -3735,7 +3731,7 @@ msgstr "Save"
 msgid "Speicherort"
 msgstr "Storage location"
 
-#: resources/vue/components/courseware/CoursewareActionWidget.vue:19
+#: resources/vue/components/courseware/CoursewareActionWidget.vue:56
 #: resources/vue/components/courseware/CoursewareBlockActions.vue:52
 #: resources/vue/components/courseware/CoursewareContainerActions.vue:38
 #: resources/vue/components/courseware/CoursewareDefaultBlock.vue:58
@@ -3788,7 +3784,7 @@ msgstr "Search course of study"
 msgid "Studierende"
 msgstr "Students"
 
-#: resources/assets/javascripts/studip-ui.js:578
+#: resources/assets/javascripts/studip-ui.js:579
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:17
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:14
 msgid "Stunde"
@@ -3848,7 +3844,7 @@ msgstr "Participants/Groups"
 msgid "Termindetails bearbeiten"
 msgstr "Edit date details"
 
-#: resources/vue/components/courseware/CoursewareConfirmBlock.vue:20
+#: resources/vue/components/courseware/CoursewareConfirmBlock.vue:17
 #: resources/vue/components/courseware/CoursewareConfirmBlock.vue:3
 #: resources/vue/components/courseware/CoursewareTypewriterBlock.vue:10
 #: resources/vue/components/courseware/CoursewareTypewriterBlock.vue:2
@@ -3974,8 +3970,8 @@ msgstr "To allow recordings, a folder must be selectced."
 
 #: resources/vue/mixins/MyCoursesMixin.js:48
 msgid ""
-"Um die Veranstaltung sichtbar zu machen, wählen Sie den Punkt "
-"\"Sichtbarkeit\" im Administrationsbereich der Veranstaltung."
+"Um die Veranstaltung sichtbar zu machen, wählen Sie den Punkt \"Sichtbarkeit"
+"\" im Administrationsbereich der Veranstaltung."
 msgstr ""
 "In order to enable visibility of the course, please choose the tab "
 "\"visibility\" in the administration area of the course."
@@ -4139,7 +4135,7 @@ msgstr "Full screen"
 msgid "Vollbild ausschalten"
 msgstr "Turn off fullscreen"
 
-#: resources/vue/components/courseware/CoursewareActionWidget.vue:9
+#: resources/vue/components/courseware/CoursewareActionWidget.vue:43
 #: resources/vue/components/courseware/CoursewareRibbon.vue:17
 msgid "Vollbild einschalten"
 msgstr "Turn on fullscreen"
@@ -4151,7 +4147,7 @@ msgstr "Turn on fullscreen"
 msgid "von"
 msgstr "from"
 
-#: resources/assets/javascripts/studip-ui.js:520
+#: resources/assets/javascripts/studip-ui.js:521
 msgid "Vor"
 msgstr "Before"
 
@@ -4193,7 +4189,7 @@ msgstr "Select template archive"
 msgid "Vorlagen"
 msgstr "Templates"
 
-#: resources/assets/javascripts/studip-ui.js:585
+#: resources/assets/javascripts/studip-ui.js:586
 msgid "vorm."
 msgstr "AM"
 
@@ -4342,7 +4338,7 @@ msgstr "Loading"
 msgid "wird im Moment von %{ userName } bearbeitet"
 msgstr "This page is currently being edited by %{ userName }"
 
-#: resources/assets/javascripts/studip-ui.js:568
+#: resources/assets/javascripts/studip-ui.js:569
 msgid "Wo"
 msgstr "Where"
 
@@ -4374,15 +4370,15 @@ msgstr "Remaining characters: "
 msgid "Zeichenwerkzeug"
 msgstr "Drawing tool"
 
-#: resources/assets/javascripts/studip-ui.js:577
+#: resources/assets/javascripts/studip-ui.js:578
 msgid "Zeit"
 msgstr "Time"
 
-#: resources/assets/javascripts/studip-ui.js:576
+#: resources/assets/javascripts/studip-ui.js:577
 msgid "Zeit wählen"
 msgstr "Select time"
 
-#: resources/assets/javascripts/studip-ui.js:583
+#: resources/assets/javascripts/studip-ui.js:584
 msgid "Zeitzone"
 msgstr "Timezone"
 
@@ -4440,7 +4436,7 @@ msgstr "to the previous card"
 msgid "zurück"
 msgstr "back"
 
-#: resources/assets/javascripts/studip-ui.js:519
+#: resources/assets/javascripts/studip-ui.js:520
 #: resources/vue/components/StudipPagination.vue:33
 #: resources/vue/components/courseware/CoursewareAudioBlock.vue:97
 msgid "Zurück"
@@ -4463,6 +4459,9 @@ msgstr "Additional information"
 #: resources/vue/components/courseware/CoursewareToolsBlockadder.vue:187
 msgid "zweites Element"
 msgstr "second element"
+
+#~ msgid "Dateibereich der Veranstaltung"
+#~ msgstr "Course file area"
 
 #, fuzzy
 #~ msgid "Teilnehmer/-in"
