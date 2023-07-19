@@ -1,9 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-# Translators:
 # honkmaster <tiemerding-online@web.de>, 2021
 # Arno <transifex@senlogik.de>, 2021
 # Datenpunk <transifex@tillgloeggler.de>, 2021
@@ -14,22 +11,25 @@
 # Jakob Diel <jakobdiel@gmail.com>, 2021
 # M S <strohm@data-quest.de>, 2021
 # Jan-Hendrik Willms <tleilax@gmail.com>, 2021
+# Moritz Strohm <strohm@data-quest.de>, 2023.
+#
+# Translators:
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-19 08:53+0200\n"
-"PO-Revision-Date: 2023-05-23 15:01+0000\n"
-"Last-Translator: Kilian Pluta <pluta@zqs.uni-hannover.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-3/en/>\n"
+"PO-Revision-Date: 2023-07-19 07:05+0000\n"
+"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-3/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.16.2\n"
+"X-Generator: Weblate 4.17\n"
 
 #: app/routes/Clipboard.php:26 app/routes/Clipboard.php:68
 #: app/controllers/resources/property.php:70
@@ -46170,9 +46170,9 @@ msgid "Gesperrt im Bereich vom %1$s bis zum %2$s"
 msgstr "Locked from %1$s to %2$s"
 
 #: lib/models/resources/ResourceBooking.class.php:551
-#, fuzzy, php-format
+#, php-format
 msgid "Gebucht im Bereich vom %1$s bis %2$s durch die Veranstaltung %3$s."
-msgstr "Booked in range from %1$s to %2$s"
+msgstr "Booked in the range from %1$s to %2$s by the course %3$s."
 
 #: lib/models/resources/ResourceBooking.class.php:558
 #, php-format
@@ -46180,9 +46180,9 @@ msgid "Gebucht im Bereich vom %1$s bis %2$s"
 msgstr "Booked in range from %1$s to %2$s"
 
 #: lib/models/resources/ResourceBooking.class.php:566
-#, fuzzy, php-format
+#, php-format
 msgid "Gebucht im Bereich vom %1$s bis zum %2$s durch die Veranstaltung %3$s."
-msgstr "Booked in range from %1$s to %2$s"
+msgstr "Booked in the range from %1$s until %2$s by the course %3$s."
 
 #: lib/models/resources/ResourceBooking.class.php:573
 #, php-format
