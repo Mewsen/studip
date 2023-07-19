@@ -217,6 +217,6 @@ class Banner extends SimpleORMap
         $this->views += 1;
         $this->store();
 
-        return sprintf('<div style="padding: 5px; text-align: center;">%s</div>', $link);
+        return sprintf('<div class="studip-banner">%s</div>', $link);
    }
 }
