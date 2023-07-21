@@ -828,9 +828,8 @@ SQL;
 
     private function getChildrenPdfExport(int $depth, bool $with_children, $user, $doc)
     {
-        $children = self::findBySQL('parent_id = ?', [$this->id]);
         $depth++;
-        foreach ($children as $child) {
+        foreach ($this->children as $child) {
             $child->getElementPdfExport($depth, $with_children, $user, $doc);
         }
     }
