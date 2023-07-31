@@ -184,7 +184,7 @@ function replaceTextarea(textarea) {
 
         ckeditor.ui.focusTracker.on('change:isFocused', (evt, name, isFocused) => {
             if (!isFocused) {
-                ckeditor.updateSourceElement(wysiwyg.markAsHtml(ckeditor.getData()));
+                ckeditor.sourceElement.value = wysiwyg.markAsHtml(ckeditor.getData());
             }
         });
 
