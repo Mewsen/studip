@@ -74,6 +74,7 @@ class FileController extends AuthenticatedController
         }
 
         URLHelper::addLinkParam('from_plugin', Request::get('from_plugin'));
+        URLHelper::addLinkParam('to_plugin', Request::get('to_plugin'));
 
         if (!$folder || !$folder->isWritable($GLOBALS['user']->id)) {
             throw new AccessDeniedException();
@@ -171,32 +172,59 @@ class FileController extends AuthenticatedController
 
     public function unzipquestion_action()
     {
-        $this->file_refs      = FileRef::findMany(Request::getArray('file_refs'));
-        $this->file_ref       = $this->file_refs[0];
-        $this->current_folder = $this->file_ref->folder->getTypedFolder();
+        $this->to_plugin      = Request::get('to_plugin');
+        $this->files      = [];
+        if ($this->to_plugin) {
+            //Plugin file area.
+            $plugin = PluginManager::getInstance()->getPlugin($this->to_plugin);
+            if (!$plugin) {
+                throw new Trails_Exception(404, _('Plugin existiert nicht.'));
+            }
+            if (!($plugin instanceof FilesystemPlugin)) {
+                throw new Trails_Exception(400, _('Das Plugin ist kein Dateibereich-Plugin.'));
+            }
+            $file_ids = Request::getArray('file_refs');
+            foreach ($file_ids as $file_id) {
+                $file = $plugin->getPreparedFile($file_id);
+                /*if ($file instanceof FileType) {
+                    $file = $file->convertToStandardFile();
+                }*/
+                if ($file instanceof FileType) {
+                    $this->files[] = $file;
+                }
+            }
+        } else {
+            //Stud.IP file area.
+            $file_refs = FileRef::findMany(Request::getArray('file_refs'));
+            foreach ($file_refs as $file_ref) {
+                $this->files[] = $file_ref->getFileType();
+            }
+        }
+        $this->first_file     = $this->files[0];
+        $this->current_folder = $this->first_file->getFolderType();
 
         if (Request::isPost()) {
             $changes = [];
 
             if (Request::submitted('unzip')) {
                 //unzip!
-                $this->file_refs = FileArchiveManager::extractArchiveFileToFolder(
-                    $this->file_ref,
+                $this->files = FileArchiveManager::extractArchiveFileToFolder(
+                    $this->first_file,
                     $this->current_folder,
                     $GLOBALS['user']->id
                 );
 
                 $ref_ids = [];
 
-                foreach ($this->file_refs as $file_ref) {
-                    $ref_ids[] = $file_ref->id;
+                foreach ($this->files as $file) {
+                    $ref_ids[] = $file->getId();
                 }
 
                 //Delete the original zip file:
-                $changes['removed_files'] = [$this->file_ref->id];
-                $this->file_ref->delete();
+                $changes['removed_files'] = [$this->first_file->getId()];
+                $this->first_file->delete();
             } else {
-                $ref_ids = [$this->file_ref->getId()];
+                $ref_ids = [$this->first_file->getId()];
             }
 
             $this->flash->set('file_refs', $ref_ids);
@@ -213,23 +241,25 @@ class FileController extends AuthenticatedController
                     'add_folders' => [],
                 ];
                 $added_folders = [];
-                foreach ($this->file_refs as $fileref) {
-                    if ($fileref->folder->id === $this->current_folder->id) {
-                        $payload['added_files'][] = FilesystemVueDataManager::getFileVueData($fileref->getFileType(), $this->current_folder);
+                foreach ($this->files as $file) {
+                    $folder = $file->getFolderType();
+                    if ($folder && $folder->getId() === $this->current_folder->getId()) {
+                        $payload['added_files'][] = FilesystemVueDataManager::getFileVueData($file, $this->current_folder);
                     } elseif (
-                        $fileref->folder->parentfolder->id === $this->current_folder->id
-                        && !in_array($fileref->folder->id, $added_folders)
+                        $folder->getParent() &&
+                        $folder->getParent()->getId() === $this->current_folder->getId()
+                        && !in_array($folder->getId(), $added_folders)
                     ) {
                         if ($topFolder === null) {
                             $topFolder = $this->current_folder;
-                            while ($topFolder->parentfolder !== null) {
-                                $topFolder = $topFolder->parentFolder;
+                            while ($topFolder->getParent() !== null) {
+                                $topFolder = $topFolder->getParent();
                             }
                         }
 
-                        $payload['added_folders'][] = FilesystemVueDataManager::getFolderVueData($fileref->getFolderType(), $this->current_folder);
+                        $payload['added_folders'][] = FilesystemVueDataManager::getFolderVueData($folder, $this->current_folder);
 
-                        $added_folders[] = $fileref->folder->id;
+                        $added_folders[] = $folder->getId();
                     }
                 }
 

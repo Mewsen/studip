@@ -887,16 +887,16 @@ class FileArchiveManager
     /**
      * Extracts an archive into a folder inside the Stud.IP file area.
      *
-     * @param FileRef $archive_file_ref The archive file which shall be extracted.
+     * @param FileType $archive_file The archive file which shall be extracted.
      * @param FolderType $folder The folder where the archive shall be extracted.
      * @param string $user_id The ID of the user who wants to extract the archive.
      *
-     * @return FileRef[] Array with extracted files, represented as FileRef objects.
+     * @return FileType[] Array with extracted files, represented as FileRef objects.
      */
     public static function extractArchiveFileToFolder(
-        FileRef $archive_file_ref,
+        FileType   $archive_file,
         FolderType $folder,
-        $user_id = null
+                   $user_id = null
     )
     {
         $user = $user_id ? User::find($user_id) : User::findCurrent();
@@ -913,7 +913,12 @@ class FileArchiveManager
         $keep_hierarchy = $folder->isSubfolderAllowed($user->id);
 
         $archive = new Studip\ZipArchive();
-        $archive->open($archive_file_ref->file->getPath());
+        $standard_archive_file = $archive_file->convertToStandardFile();
+        if (!($standard_archive_file instanceof StandardFile)) {
+            //Error converting the archive file.
+            return [];
+        }
+        $archive->open($standard_archive_file->getPath());
 
         // loop over all entries in the zip archive and put each entry
         // in the current folder or one of its subfolders:
