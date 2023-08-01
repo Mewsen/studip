@@ -173,6 +173,8 @@ class FileController extends AuthenticatedController
     public function unzipquestion_action()
     {
         $this->to_plugin      = Request::get('to_plugin');
+        URLHelper::addLinkParam('to_plugin', $this->to_plugin);
+
         $this->files      = [];
         if ($this->to_plugin) {
             //Plugin file area.
@@ -186,9 +188,6 @@ class FileController extends AuthenticatedController
             $file_ids = Request::getArray('file_refs');
             foreach ($file_ids as $file_id) {
                 $file = $plugin->getPreparedFile($file_id);
-                /*if ($file instanceof FileType) {
-                    $file = $file->convertToStandardFile();
-                }*/
                 if ($file instanceof FileType) {
                     $this->files[] = $file;
                 }
@@ -1619,7 +1618,7 @@ class FileController extends AuthenticatedController
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
 
-            if (count($file_ref_ids) === 1) {
+            if (is_array($file_ref_ids) && count($file_ref_ids) === 1) {
                 // store flag if file is an accessible file
                 $this->store_accessibility_flag($file_ref_ids[0]);
             }
@@ -1686,7 +1685,7 @@ class FileController extends AuthenticatedController
                         }
                     }
 
-                    if (count($file_ref_ids) === 1) {
+                    if (is_array($file_ref_ids) && count($file_ref_ids) === 1) {
                         if (Config::get()->OERCAMPUS_ENABLED
                             && Config::get()->OER_ENABLE_POST_UPLOAD
                             && $GLOBALS['perm']->have_perm('tutor')
