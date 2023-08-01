@@ -844,37 +844,41 @@ class FileArchiveManager
             return null;
         }
 
-        $file = new File();
-        $file->user_id   = $user->id;
-        $file->name      = $archive->convertArchiveFilename(basename($archive_path));
-        $file->mime_type = get_mime_type($file->name);
-        $file->size      = $file_info['size'];
-        $file->store();
+        $studip_file = new File();
+        $studip_file->user_id   = $user->id;
+        $studip_file->name      = $archive->convertArchiveFilename(basename($archive_path));
+        $studip_file->mime_type = get_mime_type($studip_file->name);
+        $studip_file->size      = $file_info['size'];
+        $studip_file->id = $studip_file->getNewId();
+        //$file->store();
 
         // Ok, we have a file object in the database. Now we must connect
         // it with the data file by extracting the data file into
         // the place, where the file's content has to be placed.
-        $file_path = pathinfo($file->getPath(), PATHINFO_DIRNAME);
+        $file_dir = pathinfo($studip_file->getPath(), PATHINFO_DIRNAME);
+        $file_path = $file_dir . '/' . $studip_file->id;
 
+        var_dump($file_dir);
         // Create the directory for the file, if necessary:
-        if (!is_dir($file_path)) {
-            mkdir($file_path);
+        if (!is_dir($file_dir)) {
+            mkdir($file_dir);
         }
 
         // Ok, now we read all data from $file_resource and put it into
         // the file's path:
-        if (file_put_contents($file->getPath(), $file_resource) === false) {
+        if (file_put_contents($file_path, $file_resource) === false) {
             //Something went wrong: abort and clean up!
-            $file->delete();
+            //$file->delete();
             return null;
         }
 
         // Ok, we now must create a File:
         $file_ref = new FileRef();
-        $file_ref->file_id   = $file->id;
+        $file_ref->file_id   = $studip_file->id;
         $file_ref->folder_id = $target_folder->getId();
         $file_ref->user_id   = $user->id;
-        $file_ref->name     = $file->name;
+        $file_ref->name      = $studip_file->name;
+        $file_ref->file      = $studip_file;
         $file = new StandardFile($file_ref);
         if ($saved_file = $target_folder->addFile($file, $user->id)) {
             return $saved_file;
