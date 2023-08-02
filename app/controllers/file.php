@@ -407,7 +407,7 @@ class FileController extends AuthenticatedController
             $force_save = Request::submitted('force_save');
             $this->name = trim(Request::get('name'));
             $this->description = Request::get('description');
-            $this->store_accessibility_flag($file_ref_id);
+            $this->store_accessibility_flag($this->file);
 
             $this->content_terms_of_use_id = Request::get('content_terms_of_use_id');
 
@@ -1599,17 +1599,48 @@ class FileController extends AuthenticatedController
         }
     }
 
+
+    protected function loadFiles($param = 'files', $plugin = null, $with_blob = false)
+    {
+        $result = [];
+        $file_ids = Request::getArray($param);
+        if (!$file_ids) {
+            //In case the file ref IDs are not set in the request
+            //they may still be set in the flash object of the controller:
+            $file_ids = $this->flash->get($param);
+        }
+        if ($plugin instanceof FilesystemPlugin) {
+            foreach ($file_ids as $file_id) {
+                $file = $plugin->getPreparedFile($file_id);
+                if ($file instanceof FileType) {
+                    $result[] = $file;
+                }
+            }
+        } else {
+            //Stud.IP core file system:
+            $file_refs = FileRef::findMany($file_ids);
+            foreach ($file_refs as $file_ref) {
+                $file = $file_ref->getFileType();
+                if ($file instanceof FileType) {
+                    $result[] = $file;
+                }
+            }
+        }
+        return $result;
+    }
+
     public function edit_license_action($folder_id = null)
     {
         $this->re_location = Request::get('re_location');
-        $file_ref_ids = Request::getArray('file_refs');
-        if (!$file_ref_ids) {
-            //In case the file ref IDs are not set in the request
-            //they may still be set in the flash object of the controller:
-            $file_ref_ids = $this->flash->get('file_refs');
+        $this->files = [];
+        $this->file = null;
+        $this->file_ref = null;
+        $this->plugin = null;
+        if (Request::submitted('to_plugin')) {
+            $this->plugin = PluginManager::getInstance()->getPlugin(Request::get('to_plugin'));
         }
-        $this->file_refs = FileRef::findMany($file_ref_ids);
-        $this->folder = $this->file_refs[0]->folder;
+        $this->files = $this->loadFiles('file_refs', $this->plugin);
+        $this->folder = $this->files[0]->getFolderType();
         $this->show_description_field = Config::get()->ENABLE_DESCRIPTION_ENTRY_ON_UPLOAD;
         if ($folder_id == 'bulk') {
             $this->show_description_field = false;
@@ -1618,51 +1649,54 @@ class FileController extends AuthenticatedController
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
 
-            if (is_array($file_ref_ids) && count($file_ref_ids) === 1) {
+            if (count($this->files) === 1) {
                 // store flag if file is an accessible file
-                $this->store_accessibility_flag($file_ref_ids[0]);
+                $this->store_accessibility_flag($this->files[0]);
             }
 
             if (($folder_id == 'bulk') && !Request::submitted('accept')) {
-                $file_ref_ids = Request::getArray('ids');
-                $this->file_refs = FileRef::findMany($file_ref_ids);
+                $this->files = $this->loadFiles('ids', $this->plugin);
             } else {
                 $description = Request::get('description');
                 $success_files = [];
                 $error_files = [];
-                foreach ($this->file_refs as $file_ref) {
+                foreach ($this->files as $file) {
                     //Check if the user may change the license of the file:
-                    $folder = $file_ref['folder'];
+                    $folder = $file->getFolderType();
                     if (!$folder) {
                         //We have no way of determining whether the user may change
                         //the license.
-                        $error_files[] = sprintf(_('Die Datei "%s" ist ungültig!'), $file_ref['name']);
+                        $error_files[] = sprintf(_('Die Datei "%s" ist ungültig!'), $file['name']);
                         continue;
                     }
-
-                    $file_ref['content_terms_of_use_id'] = Request::option('content_terms_of_use_id');
-                    if ($this->show_description_field && $description) {
-                        $file_ref['description'] = $description;
-                    }
-                    if ($file_ref->isDirty()) {
-                        if ($file_ref->store()) {
-                            $success_files[] = $file_ref['name'];
-                        } else {
-                            $error_files[] = sprintf(_('Fehler beim Speichern der Datei "%s"!'), $file_ref['name']);
+                    if ($file instanceof StandardFile) {
+                        //Due to missing methods in the FileType interface,
+                        //terms of use and the description can only be set
+                        //for StandardFile instances.
+                        $file_ref = $file->getFileRef();
+                        $file_ref->content_terms_of_use_id = Request::option('content_terms_of_use_id');
+                        if ($this->show_description_field && $description) {
+                            $file_ref->description = $description;
                         }
-                    } else {
-                        $success_files[] = $file_ref['name'];
+                        if ($file_ref->store()) {
+                            $success_files[] = $file->getName();
+                        } else {
+                            $error_files[] = sprintf(_('Fehler beim Speichern der Datei "%s"!'), $file['name']);
+                        }
                     }
 
-                    $this->file = $file_ref->getFileType();
-                    $this->current_folder = $file_ref->folder->getTypedFolder();
+                    $this->file = $file;
+                    if ($file instanceof StandardFile) {
+                        $this->file_ref = $file->getFileRef();
+                    }
+                    $this->current_folder = $folder;
                     $this->marked_element_ids = [];
                     $payload['html'][] = FilesystemVueDataManager::getFileVueData($this->file, $this->current_folder);
                 }
                 if (Request::isXhr() && !$this->re_location) {
                     $payload = ['html' => []];
-                    foreach ($this->file_refs as $file_ref) {
-                        $folder = $file_ref->folder->getTypedFolder();
+                    foreach ($this->files as $file) {
+                        $folder = $file->getFolderType();
 
                         // Skip files not in current folder (during archive extract)
                         if ($folder_id && $folder_id !== $folder->getId()) {
@@ -1670,31 +1704,34 @@ class FileController extends AuthenticatedController
                         }
 
                         $payload['html'][] = FilesystemVueDataManager::getFileVueData(
-                            $file_ref->getFileType(),
-                            $file_ref->folder->getTypedFolder()
+                            $file,
+                            $file->getFolderType()
                         );
                     }
 
                     $plugins = PluginManager::getInstance()->getPlugins('FileUploadHook');
                     $redirect = null;
-                    foreach ($plugins as $plugin) {
-                        $url = $plugin->getAdditionalUploadWizardPage($file_ref);
+                    foreach ($plugins as $upload_hook_plugin) {
+                        $url = $upload_hook_plugin->getAdditionalUploadWizardPage($file_ref);
                         if ($url) {
                             $redirect = $url;
                             break;
                         }
                     }
 
-                    if (is_array($file_ref_ids) && count($file_ref_ids) === 1) {
+                    if (count($this->files) === 1) {
                         if (Config::get()->OERCAMPUS_ENABLED
                             && Config::get()->OER_ENABLE_POST_UPLOAD
                             && $GLOBALS['perm']->have_perm('tutor')
                         ) {
-                            if ($file_ref['content_terms_of_use_id'] === 'SELFMADE_NONPUB'
-                                || $file_ref['content_terms_of_use_id'] === 'FREE_LICENSE'
-                            ) {
-                                $this->redirect('file/oer_post_upload/' . $file_ref['id']);
-                                return;
+                            if ($this->file instanceof StandardFile) {
+                                $file_ref = $this->file->getFileRef();
+                                if ($file_ref['content_terms_of_use_id'] === 'SELFMADE_NONPUB'
+                                    || $file_ref['content_terms_of_use_id'] === 'FREE_LICENSE'
+                                ) {
+                                    $this->redirect('file/oer_post_upload/' . $file_ref['id']);
+                                    return;
+                                }
                             }
                         }
                     }
@@ -1706,15 +1743,15 @@ class FileController extends AuthenticatedController
 
                     $payload['url'] = $this->generateFilesUrl(
                         $this->folder,
-                        $file_ref
+                        $this->file
                     );
 
-                    if ($folder_id == 'bulk' && $this->file_refs) {
+                    if ($folder_id == 'bulk' && $this->files) {
                         if ($success_files) {
                             if (count($success_files) == 1) {
                                 PageLayout::postSuccess(sprintf(
                                     _('Die Lizenz der Datei "%s" wurde geändert.'),
-                                    htmlReady($this->file_refs[0]->name)
+                                    htmlReady($this->files[0]->getName())
                                 ));
                             } else {
                                 sort($success_files);
@@ -1728,7 +1765,7 @@ class FileController extends AuthenticatedController
                             if (count($error_files) == 1) {
                                 PageLayout::postError(sprintf(
                                     _('Die Lizenz der Datei "%s" konnte nicht geändert werden!'),
-                                    htmlReady($this->file_refs[0]->name)
+                                    htmlReady($this->files[0]->getName())
                                 ));
                             } else {
                                 PageLayout::postError(
@@ -1760,9 +1797,9 @@ class FileController extends AuthenticatedController
             ngettext(
                 'Zusatzangaben und Lizenz wählen',
                 'Zusatzangaben und Lizenz auswählen: %s Dateien',
-                count($this->file_refs)
+                count($this->files)
             ),
-            count($this->file_refs)
+            count($this->files)
         ));
 
         $this->licenses = ContentTermsOfUse::findBySQL("1 ORDER BY position ASC, id ASC");
@@ -2242,7 +2279,7 @@ class FileController extends AuthenticatedController
     {
         require_once 'app/controllers/files.php';
 
-        return \FilesController::getRangeLink($folder) . '#fileref_' . $fileRef->id;
+        return \FilesController::getRangeLink($folder) . '#fileref_' . $fileRef->getId();
     }
 
     private function getFolderSize($folder): array
@@ -2256,10 +2293,14 @@ class FileController extends AuthenticatedController
         return [$folder_size, $folder_file_amount];
     }
 
-    private function store_accessibility_flag($file_ref_id)
+    private function store_accessibility_flag(FileType $file)
     {
-        $file_ref = FileRef::find($file_ref_id);
-        $file_ref->file['is_accessible'] = Request::get('is_accessible');
-        $file_ref->file->store();
+        if ($file instanceof StandardFile) {
+            $file_ref = $file->getFileRef();
+            if ($file_ref) {
+                $file_ref->file['is_accessible'] = Request::get('is_accessible');
+                $file_ref->file->store();
+            }
+        }
     }
 }

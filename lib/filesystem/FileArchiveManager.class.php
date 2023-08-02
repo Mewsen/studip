@@ -858,7 +858,6 @@ class FileArchiveManager
         $file_dir = pathinfo($studip_file->getPath(), PATHINFO_DIRNAME);
         $file_path = $file_dir . '/' . $studip_file->id;
 
-        var_dump($file_dir);
         // Create the directory for the file, if necessary:
         if (!is_dir($file_dir)) {
             mkdir($file_dir);
