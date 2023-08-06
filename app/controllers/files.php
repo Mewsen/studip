@@ -695,9 +695,9 @@ class FilesController extends AuthenticatedController
     public function copyhandler_action($destination_id)
     {
         $to_plugin = Request::get('to_plugin');
-        $from_plugin    = Request::get('from_plugin');
+        $from_plugin = Request::get('from_plugin');
 
-        $fileref_id = Request::getArray('fileref_id');
+        $fileref_id = $this->flash['fileref_id'] ?? Request::getArray('fileref_id') ?? [];
         $copymode   = Request::get('copymode');
 
         $user = User::findCurrent();

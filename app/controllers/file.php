@@ -701,8 +701,8 @@ class FileController extends AuthenticatedController
     {
         PageLayout::setTitle(_('Ziel wählen'));
 
-        if (empty($fileref_id)) {
-            $fileref_id = Request::getArray('fileref_id');
+        if (!$fileref_id) {
+            $fileref_id = $this->flash['fileref_id'] ?? Request::getArray('fileref_id') ?? [];
         } elseif ($fileref_id === 'bulk') {
             $fileref_id = Request::getArray('ids');
         }
@@ -820,14 +820,12 @@ class FileController extends AuthenticatedController
 
         if (Request::get('course_id')) {
             $folder = Folder::findTopFolder(Request::get("course_id"));
-            $this->redirect($this->url_for(
-                'file/choose_folder/' . $folder->getId(), [
-                    'from_plugin'  => Request::get('from_plugin'),
-                    'fileref_id' => Request::getArray('fileref_id'),
-                    'copymode'   => Request::get('copymode'),
-                    'isfolder'   => Request::get('isfolder')
-                ]
-            ));
+            $this->flash['fileref_id'] = Request::getArray('fileref_id') ?? $this->flash['file_ref_id'];
+            $this->redirect($this->url_for('file/choose_folder/' . $folder->getId(), [
+                'from_plugin' => Request::get('from_plugin'),
+                'copymode'    => Request::get('copymode'),
+                'isfolder'    => Request::get('isfolder')
+            ]));
             return;
         }
 
@@ -868,14 +866,12 @@ class FileController extends AuthenticatedController
 
         if (Request::get('Institut_id')) {
             $folder = Folder::findTopFolder(Request::get("Institut_id"));
-            $this->redirect($this->url_for(
-                'file/choose_folder/' . $folder->getId(), [
-                    'from_plugin'  => Request::get('from_plugin'),
-                    'fileref_id' => Request::getArray('fileref_id'),
-                    'copymode'   => Request::get('copymode'),
-                    'isfolder'   => Request::get('isfolder'),
-                ]
-            ));
+            $this->flash['fileref_id'] = Request::getArray('fileref_id') ?? $this->flash['file_ref_id'];
+            $this->redirect($this->url_for('file/choose_folder/' . $folder->getId(), [
+                'from_plugin' => Request::get('from_plugin'),
+                'copymode'    => Request::get('copymode'),
+                'isfolder'    => Request::get('isfolder'),
+            ]));
             return;
         }
 
