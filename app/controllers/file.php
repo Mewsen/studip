@@ -407,7 +407,7 @@ class FileController extends AuthenticatedController
             $force_save = Request::submitted('force_save');
             $this->name = trim(Request::get('name'));
             $this->description = Request::get('description');
-)
+
             $this->content_terms_of_use_id = Request::get('content_terms_of_use_id');
 
             //Check if the FileRef is unmodified:
