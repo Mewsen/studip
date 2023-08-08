@@ -776,7 +776,7 @@ class StudipSemTreeViewAdmin extends TreeView
         if ($item_id != "root"){
             $head .= " (" . $this->tree->getNumEntries($item_id,true) . ") " ;
         }
-        if ($item_id != $this->start_item_id && $this->isParentAdmin($item_id) && !empty($this->edit_item_id) && ($item_id != $this->edit_item_id)){
+        if ($item_id != $this->start_item_id && $this->isParentAdmin($item_id) && $item_id != $this->edit_item_id){
             $head .= "</td><td nowrap align=\"right\" valign=\"bottom\" class=\"printhead\">";
             if (!$this->tree->isFirstKid($item_id)){
                 $head .= "<a href=\"". URLHelper::getLink($this->getSelf("cmd=OrderItem&direction=up&item_id=$item_id")) .
