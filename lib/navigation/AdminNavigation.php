@@ -163,7 +163,17 @@ class AdminNavigation extends Navigation
         if ($GLOBALS['perm']->have_perm('admin')) {
             $pool = new Navigation(_('Bilder-Pool'), 'dispatch.php/stock_images', []);
             $navigation->addSubNavigation('stock_images', $pool);
+
+            $navigation->addSubNavigation(
+                'login_faq',
+                new Navigation(
+                    _('Hilfetexte zum Login'),
+                    'dispatch.php/admin/login_faq'
+                )
+            );
         }
+
+
 
         $this->addSubNavigation('locations', $navigation);
 

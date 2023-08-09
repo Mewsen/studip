@@ -362,18 +362,9 @@ STUDIP.ready(function () {
 
     var loginname_caps = $('#loginname_caps');
     var password_caps = $('#password_caps');
-    
+
 
     check_capslock_form($('#content')); //applies the capslock check to all input tags
-
-    function check_capslock_form(where) {
-        if (!where) { where = $(document); }
-        where.find('input,select').each(function () {
-            if (this.type != "hidden") {
-                $(this).keypress(check_capslock);
-            }
-        });
-    }
 
     document.onkeydown = function (e) { //check if capslock key was pressed in the whole window
         e = e || event;
@@ -401,23 +392,31 @@ STUDIP.ready(function () {
         }
     }
 
+    function check_capslock_form(where) {
+        if (!where) { where = $(document); }
+        where.find('input,select').each(function () {
+            if (this.type != "hidden") {
+                $(this).keypress(check_capslock);
+            }
+        });
+    }
 
-
-
+    // toggle password visibility and eye icon
     $(document).on('click', '#password_toggle', function () {
         if (password.attr("type") == "password") {
             password.attr("type", "text");
+            $('#visible-password').hide();
+            $('#invisible-password').show();
         } else {
             password.attr("type", "password");
+            $('#visible-password').show();
+            $('#invisible-password').hide();
         }
-
-        // toggle the eye slash icon
-        this.classList.toggle('fa-eye-slash');
     });
 
-
-
-
+    $(document).on('click', '#submit_login', function () {
+        console.log('klicki');
+    });
 
 
 });

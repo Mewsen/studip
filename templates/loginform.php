@@ -41,18 +41,17 @@ if (!match_route('web_migrate.php')) {
     <div id="loginbox">
         <form class="default" name="login" method="post" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => NULL]) ?>">
             <header>
-                <h1 style="margin: 0; padding-bottom:10px;">
-                    <?=_('Herzlich willkommen!')?>
-                </h1>
+                <h1><?= htmlReady(Config::get()->UNI_NAME_CLEAN) ?></h1>
+                <h2 style="margin: 0; padding-bottom:10px;"><?=_('Herzlich willkommen!')?></h2>
             </header>
             <section>
                 <label>
-                    <?= _('Benutzername:') ?>
+                    <span class="required"><?= _('Benutzername:') ?></span>
                     <input type="text" <?= mb_strlen($uname) ? '' : 'autofocus' ?>
                            id="loginname" name="loginname"
                            value="<?= htmlReady($uname) ?>"
                            size="20"
-                           autocorrect="off" autocapitalize="off">
+                           autocorrect="off" autocapitalize="off" required>
                     <? if (Config::get()->USERNAME_TOOLTIP_ACTIVATED) : ?>
                         <?= tooltipIcon(htmlReady((string)Config::get()->USERNAME_TOOLTIP_TEXT)) ?>
                     <? endif ?>
@@ -61,13 +60,15 @@ if (!match_route('web_migrate.php')) {
             <p id="loginname_caps" style="display: none"><?= _('Feststelltaste ist aktiviert!') ?></p>
             <section>
                 <label for="password" style="position: relative">
-                    <?= _('Passwort:') ?>
+                    <span class="required"><?= _('Passwort:') ?></span>
                     <input type="password" <?= mb_strlen($uname) ? 'autofocus' : '' ?>
-                           id="password" name="password" size="20">
+                           id="password" name="password" size="20" required>
 
-                    <i id="password_toggle" style="position: absolute;right: 30px;bottom: 0px; cursor: pointer;" href=""
+                    <i id="password_toggle" href=""
                         <?= tooltip(_('Passwort zeigen/verstecken'), true) ?>>
-                        <?= Icon::create('visibility-checked')->asImg(20) ?>
+                        <?= Icon::create('visibility-checked')->asImg(20, ['id' => 'visible-password']) ?>
+                        <?= Icon::create('visibility-invisible')->asImg(20, ['id' => 'invisible-password']) ?>
+
                     </i>
 
                     <? if (Config::get()->PASSWORD_TOOLTIP_ACTIVATED) : ?>
@@ -80,7 +81,7 @@ if (!match_route('web_migrate.php')) {
             <input type="hidden" name="login_ticket" value="<?=Seminar_Session::get_ticket();?>">
             <input type="hidden" name="resolution"  value="">
             <input type="hidden" name="device_pixel_ratio" value="1">
-            <?= Button::createAccept(_('Anmelden'), _('Login')); ?>
+            <?= Button::createAccept(_('Anmelden'), _('Login'), ['id' => 'submit_login']); ?>
         </form>
 
         <div>
@@ -89,14 +90,10 @@ if (!match_route('web_migrate.php')) {
             <? else: ?>
                 <a href="mailto:<?= $GLOBALS['UNI_CONTACT'] ?>?subject=<?= rawurlencode('Stud.IP Passwort vergessen - '.Config::get()->UNI_NAME_CLEAN) ?>&amp;body=<?= rawurlencode('Ich habe mein Passwort vergessen. Bitte senden Sie mir ein Neues.\nMein Nutzername: ' . htmlReady($uname) . "\n") ?>">
             <? endif; ?>
-                    <?= _('Passwort vergessen') ?>
+                    <?= _('Passwort vergessen?') ?>
                 </a>
-
         </div>
 
-        <header>
-            <h1><?= htmlReady(Config::get()->UNI_NAME_CLEAN) ?></h1>
-        </header>
         <nav>
             <ul>
                 <? foreach (Navigation::getItem('/login') as $key => $nav) : ?>
@@ -129,7 +126,7 @@ if (!match_route('web_migrate.php')) {
             <div id="languages">
                 <? foreach ($GLOBALS['INSTALLED_LANGUAGES'] as $temp_language_key => $temp_language): ?>
                     <?= Assets::img('languages/' . $temp_language['picture'], ['alt' => $temp_language['name'], 'size' => '24']) ?>
-                    <a href="index.php?set_language=<?= $temp_language_key ?>">
+                    <a href="index.php?set_language=<?= $temp_language_key ?>&cancel_login=1">
                         <?= htmlReady($temp_language['name']) ?>
                     </a>
                 <? endforeach; ?>
@@ -138,11 +135,11 @@ if (!match_route('web_migrate.php')) {
             <div id="contrast">
                 <? if (isset($_SESSION['contrast'])) : ?>
                     <?= Icon::create('accessibility')->asImg(24) ?>
-                    <a href="index.php?unset_contrast=1"><?= _('Normalen Kontrast aktivieren') ?></a>
+                    <a href="index.php?unset_contrast=1&cancel_login=1"><?= _('Normalen Kontrast aktivieren') ?></a>
                     <?= tooltipIcon(_('Aktiviert standardmäßige, nicht barrierefreie Kontraste.')); ?>
                 <? else : ?>
                     <?= Icon::create('accessibility')->asImg(24) ?>
-                    <a href="index.php?set_contrast=1" id="highcontrastlink"><?= _('Hohen Kontrast aktivieren')?></a>
+                    <a href="index.php?set_contrast=1&cancel_login=1" id="highcontrastlink"><?= _('Hohen Kontrast aktivieren')?></a>
                     <?= tooltipIcon(_('Aktiviert einen hohen Kontrast gemäß WCAG 2.1. Diese Einstellung wird nach dem Login übernommen.
                     Sie können sie in Ihren persönlichen Einstellungen ändern.')); ?>
                 <? endif ?>
@@ -171,7 +168,19 @@ if (!match_route('web_migrate.php')) {
                 </div>
             </div>
         </footer>
-
     </div>
+
+    <? if (StudipNews::GetNewsByRange('studip')) : ?>
+        <div id="newsbox">
+
+        <article class="studip toggle">
+            <header>
+                <h1><a><?= _('Hilfe zum Login') ?></a></h1>
+            </header>
+            <section>
+            </section>
+        </article>
+        </div>
+    <? endif ?>
 </main>
 
