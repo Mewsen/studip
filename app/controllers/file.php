@@ -686,6 +686,8 @@ class FileController extends AuthenticatedController
     {
         PageLayout::setTitle(_('Ziel wählen'));
 
+        $this->hidden = false; //This is used in the view.
+
         if (empty($fileref_id)) {
             $fileref_id = Request::getArray('fileref_id');
         } elseif ($fileref_id === 'bulk') {
