@@ -589,7 +589,7 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
     protected static function getUploadedFilesSql($user_id, $begin = null, $end = null, $course_id = '', $unknown_license_only = false, $file_limit = 0, $file_offset = 0)
     {
         $sql = '';
-        if ($course_id) {
+        if ($course_id || $unknown_license_only) {
             $sql = 'INNER JOIN `folders`
                 ON `file_refs`.`folder_id` = `folders`.`id`
                 WHERE ';
@@ -599,10 +599,13 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
             'user_id' => $user_id
         ];
         if ($unknown_license_only) {
-            $sql .= " AND (
+            $sql .= " AND ( (
                 `file_refs`.`content_terms_of_use_id` IN ('', 'UNDEF_LICENSE')
                 OR
                 `file_refs`.`content_terms_of_use_id` IS NULL
+                ) AND (
+                `folders`.`range_type` != 'message'
+                )
             )";
         }
 
