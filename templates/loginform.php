@@ -170,17 +170,20 @@ if (!match_route('web_migrate.php')) {
         </footer>
     </div>
 
-    <? if (StudipNews::GetNewsByRange('studip')) : ?>
-        <div id="newsbox">
+    <? if (count($faq_entries) > 0) : ?>
+        <div id="newsbox" style="margin-top: 20px">
 
-        <article class="studip toggle">
-            <header>
-                <h1><a><?= _('Hilfe zum Login') ?></a></h1>
-            </header>
-            <section>
-            </section>
-        </article>
+        <? foreach ($faq_entries as $entry) : ?>
+            <article class="studip toggle">
+                <header>
+                    <h1><a><?= htmlReady($entry->title) ?></a></h1>
+                </header>
+                <section><?= htmlReady($entry->description) ?>
+                </section>
+            </article>
+        <? endforeach ?>
         </div>
+
     <? endif ?>
 </main>
 
