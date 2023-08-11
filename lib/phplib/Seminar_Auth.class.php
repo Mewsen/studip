@@ -373,7 +373,12 @@ class Seminar_Auth
             $login_template->set_attribute('uname', (isset($this->auth["uname"]) ? $this->auth["uname"] : Request::username('loginname')));
             $login_template->set_attribute('self_registration_activated', Config::get()->ENABLE_SELF_REGISTRATION);
 
-            //$login_template->set_attribute('faq_entries', LoginFaq::findBySQL("1"));
+            $query = "SHOW TABLES LIKE 'login_faq'";
+            $result = DBManager::get()->query($query);
+
+            if ($result && $result->rowCount() > 0) {
+                $login_template->set_attribute('faq_entries', LoginFaq::findBySQL("1"));
+            }
         }
         PageLayout::setHelpKeyword('Basis.AnmeldungLogin');
         $header_template = $GLOBALS['template_factory']->open('header');
