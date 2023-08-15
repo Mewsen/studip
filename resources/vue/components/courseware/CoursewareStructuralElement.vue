@@ -961,9 +961,14 @@ export default {
             let menu = [
                 { id: 4, label: this.$gettext('Informationen anzeigen'), icon: 'info', emit: 'showInfo' },
                 { id: 5, label: this.$gettext('Lesezeichen setzen'), icon: 'star', emit: 'setBookmark' },
-                { id: 6, label: this.$gettextInterpolate(this.$gettext('Material für %{ oerTitle } vorschlagen'), {oerTitle: this.oerTitle}), icon: 'oer-campus', emit: 'showSuggest' },
-
             ];
+
+            if (this.oerEnabled) {
+                menu.push(
+                    { id: 6, label: this.$gettextInterpolate(this.$gettext('Material für %{ oerTitle } vorschlagen'), {oerTitle: this.oerTitle}), icon: 'oer-campus', emit: 'showSuggest' },
+                );
+            }
+
             if (this.canEdit) {
                 if (!this.blockedByAnotherUser) {
                     menu.push({

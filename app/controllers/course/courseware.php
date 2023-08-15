@@ -29,6 +29,7 @@ class Course_CoursewareController extends AuthenticatedController
         $this->studip_module = checkObjectModule('CoursewareModule', true);
         object_set_visit_module($this->studip_module->getPluginId());
         $this->last_visitdate = object_get_visit(Context::getId(), $this->studip_module->getPluginId());
+        $this->oer_enabled = Config::get()->OERCAMPUS_ENABLED && $GLOBALS['perm']->have_perm(Config::get()->OER_PUBLIC_STATUS);
     }
 
     public function index_action()

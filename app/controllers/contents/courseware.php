@@ -19,6 +19,7 @@ class Contents_CoursewareController extends AuthenticatedController
         PageLayout::setTitle(_('Courseware'));
 
         $this->user = $GLOBALS['user'];
+        $this->oer_enabled = Config::get()->OERCAMPUS_ENABLED && $GLOBALS['perm']->have_perm(Config::get()->OER_PUBLIC_STATUS);
     }
 
     /**
@@ -71,7 +72,7 @@ class Contents_CoursewareController extends AuthenticatedController
      */
     public function courseware_action($action = false, $widgetId = null)
     {
-        global $perm, $user;
+        global $user;
 
         Navigation::activateItem('/contents/courseware/courseware');
         $this->user_id = $user->id;
@@ -101,8 +102,6 @@ class Contents_CoursewareController extends AuthenticatedController
         UserConfig::get($this->user_id)->store('COURSEWARE_LAST_ELEMENT', $last);
 
         $this->licenses = $this->getLicences();
-
-        $this->oer_enabled = Config::get()->OERCAMPUS_ENABLED && $perm->have_perm(Config::get()->OER_PUBLIC_STATUS);
 
         // Make sure struct has value., to evaluate the export (edit) capability.
         if (!isset($struct)) {
