@@ -76,9 +76,9 @@ use Studip\Button, Studip\LinkButton;
                         <td <? if (!$plugin['enabled']) echo 'class="quiet"'; ?>>
                         <? if (!$plugin['depends']) : ?>
                             <?= htmlReady($migrations[$pluginid]['schema_version']) ?>
-                            <? if ($migrations[$pluginid]['schema_version'] < $migrations[$pluginid]['migration_top_version']): ?>
+                            <? if (!empty($migrations[$pluginid]['pending_migrations'])): ?>
                                 <a href="<?= $controller->url_for('admin/plugin/migrate/' . $pluginid) ?>"
-                                   title="<?= sprintf(_('Update auf Version %d verfügbar'), $migrations[$pluginid]['migration_top_version']) ?>">
+                                   title="<?= sprintf(_('%d ausstehende Migration(en)'), $migrations[$pluginid]['pending_migrations']) ?>">
                                     <?= Icon::create('plugin+new') ?>
                                 </a>
                             <? endif; ?>
