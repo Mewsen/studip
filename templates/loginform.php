@@ -178,7 +178,7 @@ if (!match_route('web_migrate.php')) {
                 <header>
                     <h1><a><?= htmlReady($entry->title) ?></a></h1>
                 </header>
-                <section><?= htmlReady($entry->description) ?>
+                <section><?= formatReady($entry->description) ?>
                 </section>
             </article>
         <? endforeach ?>
