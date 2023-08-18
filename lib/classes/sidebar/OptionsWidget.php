@@ -34,7 +34,7 @@ class OptionsWidget extends ListWidget
         $toggle_url_off = isset($toggle_url_off) ? html_entity_decode($toggle_url_off) : null;
 
         $content = sprintf(
-            '<button formaction="%s" class="as-link options-checkbox options-%s" %s>%s</button>',
+            '<button formaction="%s" class="options-checkbox options-%s" %s>%s</button>',
             htmlReady($state && $toggle_url_off !== null ? $toggle_url_off : $toggle_url),
             $state ? 'checked' : 'unchecked',
             arrayToHtmlAttributes($attributes),
@@ -54,7 +54,7 @@ class OptionsWidget extends ListWidget
         $url = html_entity_decode($url);
 
         $content = sprintf(
-            '<button formaction="%s" class="as-link options-radio options-%s" %s>%s</button>',
+            '<button formaction="%s" class="options-radio options-%s" %s>%s</button>',
             htmlReady($url),
             $checked ? 'checked' : 'unchecked',
             arrayToHtmlAttributes($attributes),
