@@ -122,6 +122,20 @@ ul.widget-list {
         padding-left: 20px;
         word-wrap: break-word;
     }
+
+    button {
+        background-color: transparent;
+        border: none;
+        color: $base-color;
+        cursor: pointer;
+        margin: 0px;
+        padding: 0px;
+        text-align: left;
+        width: 100%;
+        &:hover {
+            color: $active-color;
+        }
+    }
 }
 div#sidebar-navigation {
     div.sidebar-widget-header {
@@ -188,21 +202,6 @@ div#sidebar-navigation {
             &:after {
                 border-left-width: floor((14px * 2 / 3 - 1));
             }
-        }
-    }
-
-    button {
-        background: transparent;
-        border: 0;
-        color: $base-color;
-        margin: 0;
-        padding: 0;
-        text-align: left;
-        width: 100%;
-
-        &:hover {
-            color: $active-color;
-            cursor: pointer;
         }
     }
 }
