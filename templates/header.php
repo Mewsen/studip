@@ -113,8 +113,6 @@ if (isset($_COOKIE['navigation-length'])) {
                     </audio>
                 <? endif; ?>
                 </div>
-            <? else: ?>
-                <div id="notification_container"></div>
             <? endif; ?>
 
             <? if (Navigation::hasItem('/avatar')): ?>
