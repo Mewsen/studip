@@ -550,7 +550,7 @@
                                     <p>{{ currentLicenseName }}</p>
                                 </label>
                                 <label>
-                                    <translate>Sie können diese Daten unter "Seite bearbeiten" verändern.</translate>
+                                    <translate>Sie können diese Daten unter "Seiteneinstellungen" verändern.</translate>
                                 </label>
                             </fieldset>
                             <fieldset>
@@ -728,7 +728,7 @@ export default {
             uploadFileError: '',
             textCompanionWrongContext: this.$gettext('Die angeforderte Seite ist nicht Teil dieser Courseware.'),
             textEdit: {
-                title: this.$gettext('Seite bearbeiten'),
+                title: this.$gettext('Seiteneinstellungen'),
                 confirm: this.$gettext('Speichern'),
                 close: this.$gettext('Schließen'),
                 basic: this.$gettext('Grunddaten'),
@@ -1055,8 +1055,8 @@ export default {
                 if (!this.blockedByAnotherUser) {
                     menu.push({
                         id: 1,
-                        label: this.$gettext('Seite bearbeiten'),
-                        icon: 'edit',
+                        label: this.$gettext('Seiteneinstellungen'),
+                        icon: 'settings',
                         emit: 'editCurrentElement',
                     });
                 }
