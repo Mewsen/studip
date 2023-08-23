@@ -1924,7 +1924,7 @@ v i e w  w i d g e t
         @include background-icon(fullscreen-on, clickable);
     }
     .cw-action-widget-edit{
-        @include background-icon(edit, clickable);
+        @include background-icon(settings, clickable);
     }
     .cw-action-widget-sort{
         @include background-icon(arr_1sort, clickable);
