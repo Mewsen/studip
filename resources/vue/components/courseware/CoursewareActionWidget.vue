@@ -12,7 +12,7 @@
         </li>
         <li v-if="canEdit" class="cw-action-widget-edit">
             <button @click="editElement">
-                <translate>Seite bearbeiten</translate>
+                <translate>Seiteneinstellungen</translate>
             </button>
         </li>
         <li v-if="canEdit" class="cw-action-widget-add">
