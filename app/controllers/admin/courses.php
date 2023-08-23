@@ -235,6 +235,17 @@ class Admin_CoursesController extends AuthenticatedController
             )->asDialog('size=auto');
             $sidebar->addWidget($export);
         }
+
+        foreach (PluginManager::getInstance()->getPlugins('AdminCourseWidgetPlugin') as $plugin) {
+            foreach ($plugin->getWidgets() as $index => $widget) {
+                $position = $plugin->getPositionInSidebar($index);
+                if ($position) {
+                    $sidebar->insertWidget($widget, $position, $index);
+                } else {
+                    $sidebar->addWidget($widget, $index);
+                }
+            }
+        }
     }
 
 
@@ -315,21 +326,26 @@ class Admin_CoursesController extends AuthenticatedController
                      ? $configuration->MY_INSTITUTES_DEFAULT
                      : null;
 
+        $filters = array_merge(
+            $this->getDatafieldFilters(),
+            [
+                'institut_id'    => $institut_id,
+                'search'         => $configuration->ADMIN_COURSES_SEARCHTEXT,
+                'semester_id'    => $configuration->MY_COURSES_SELECTED_CYCLE,
+                'course_type'    => $configuration->MY_COURSES_TYPE_FILTER,
+                'stgteil'        => $configuration->MY_COURSES_SELECTED_STGTEIL,
+                'teacher_filter' => $configuration->ADMIN_COURSES_TEACHERFILTER,
+            ]
+        );
+
+        foreach (PluginManager::getInstance()->getPlugins('AdminCourseWidgetPlugin') as $plugin) {
+            $filters = array_merge($filters, $plugin->getFilterValues());
+        }
 
         return [
             'setActivatedFields' => $this->getFilterConfig(),
             'setActionArea' => $configuration->MY_COURSES_ACTION_AREA ?? '1',
-            'setFilter' => array_filter(array_merge(
-                $this->getDatafieldFilters(),
-                [
-                    'institut_id'    => $institut_id,
-                    'search'         => $configuration->ADMIN_COURSES_SEARCHTEXT,
-                    'semester_id'    => $configuration->MY_COURSES_SELECTED_CYCLE,
-                    'course_type'    => $configuration->MY_COURSES_TYPE_FILTER,
-                    'stgteil'        => $configuration->MY_COURSES_SELECTED_STGTEIL,
-                    'teacher_filter' => $configuration->ADMIN_COURSES_TEACHERFILTER,
-                ]
-            )),
+            'setFilter' => array_filter($filters),
         ];
     }
 
@@ -405,6 +421,12 @@ class Admin_CoursesController extends AuthenticatedController
             }
         }
         $GLOBALS['user']->cfg->store('ADMIN_COURSES_DATAFIELDS_FILTERS', $datafields_filters);
+
+        foreach (PluginManager::getInstance()->getPlugins('AdminCourseWidgetPlugin') as $plugin) {
+            foreach ($plugin->getWidgets() as $name => $widget) {
+                $plugin->setFilter($name, Request::get($name));
+            }
+        }
 
         $filter = AdminCourseFilter::get();
         if (Request::option('course_id')) { //we have only one course and want to see if that course is part of the result set

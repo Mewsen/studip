@@ -171,6 +171,10 @@ class AdminCourseFilter
                     'de_' . $datafield_id . '_content' => '%' . $value . '%'
                 ]);
         }
+
+        foreach (PluginManager::getInstance()->getPlugins('AdminCourseWidgetPlugin') as $plugin) {
+            $plugin->applyFilter($this);
+        }
     }
 
     /**
