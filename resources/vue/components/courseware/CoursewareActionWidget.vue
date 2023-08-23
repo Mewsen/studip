@@ -14,7 +14,7 @@
                 </li>
                 <li v-if="canEdit && !blockedByAnotherUser" class="cw-action-widget-edit">
                     <button @click="editElement">
-                        {{ $gettext('Seite bearbeiten') }}
+                        {{ $gettext('Seiteneinstellungen') }}
                     </button>
                 </li>
                 <li v-if="canEdit && blockedByAnotherUser && userIsTeacher" class="cw-action-widget-remove-lock">
