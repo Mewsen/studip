@@ -53,7 +53,7 @@ export default {
         ...mapGetters({
             courseware: 'courseware',
             context: 'context',
-            showSearchResults: 'showSearchResults'
+            showSearchResults: 'showSearchResults',
         }),
     },
     methods: {
@@ -71,17 +71,17 @@ export default {
             const limit = 100;
             let params = {
                 search: this.searchTerm,
-                filters: { category: 'GlobalSearchCourseware', contextType: this.context.type, rangeId: this.context.id}
+                filters: { unitId: this.context.unit, contextType: this.context.type, rangeId: this.context.id }
             };
 
             axios({
                 method: 'get',
-                url: STUDIP.URLHelper.getURL('dispatch.php/globalsearch/find/' + limit),
+                url: STUDIP.URLHelper.getURL('dispatch.php/courseware/local_search/'),
                 params: params,
             }).then( result => {
                 this.setShowSearchResults(true);
-                if (result.data.GlobalSearchCourseware) {
-                    this.setSearchResults((result.data.GlobalSearchCourseware.content));
+                if (result.data?.length > 0) {
+                    this.setSearchResults(result.data);
                 } else {
                     this.setSearchResults([]);
                 }
