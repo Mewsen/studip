@@ -291,7 +291,11 @@ Dialog.fromURL = function(url, options) {
                 var value = xhr.getResponseHeader(header),
                     result = true;
                 if (value !== null) {
-                    result = handler(value, options, xhr);
+                    try {
+                        result = handler(value, options, xhr);
+                    } catch (e) {
+                        console.error(e);
+                    }
                 }
                 advance = advance && result !== false;
                 return result;
