@@ -44,7 +44,7 @@ trait HelperTrait
 
         return ConfigValue::build([
             'field' => $field,
-            'range_id' => $range->id,
+            'range_id' => $range->id ?? 'studip',
             'value' => $configEntry->value,
             'mkdate' => $configEntry->mkdate,
             'chdate' => $configEntry->chdate,
