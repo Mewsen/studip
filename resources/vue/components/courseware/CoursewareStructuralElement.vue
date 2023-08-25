@@ -656,7 +656,12 @@
                     v-if="currentElement !== ''"
                     :msgCompanion="textCompanionWrongContext"
                     mood="sad"
-                />
+                >
+                    <template v-slot:companionActions >
+                        <a class="button" :href="unitRootUrl">{{ $gettext('Lernmaterial neu laden') }}</a>
+                        <a class="button" :href="shelfURL">{{ $gettext('Zurück zur Lernmaterialübersicht') }}</a>
+                    </template>
+                </courseware-companion-box>
             </div>
         </div>
     </focus-trap>
@@ -879,13 +884,26 @@ export default {
         },
 
         validContext() {
-            let valid = false;
+            if (this.context.type === 'sharedusers') {
+                if (this.context.id === this.courseware.relationships.root.data.id) {
+                    return true;
+                }
+            }
+
+            if (this.context.type === 'public') {
+                return true;
+            }
+
+            if (this.context.unit !== this.currentElement.relationships?.unit?.data?.id) {
+                return false;
+            }
+
             if (this.context.type === 'courses' && this.currentElement.relationships) {
                 if (
                     this.currentElement.relationships.course &&
                     this.context.id === this.currentElement.relationships.course.data.id
                 ) {
-                    valid = true;
+                    return true;
                 }
             }
 
@@ -894,20 +912,12 @@ export default {
                     this.currentElement.relationships.user &&
                     this.context.id === this.currentElement.relationships.user.data.id
                 ) {
-                    valid = true;
+                    return true;
                 }
             }
-            if (this.context.type === 'sharedusers') {
-                if (this.context.id === this.courseware.relationships.root.data.id) {
-                    valid = true;
-                }
-            }
+            
 
-            if (this.context.type === 'public') {
-                valid = true;
-            }
-
-            return valid;
+            return false;
         },
 
         image() {
@@ -1224,6 +1234,18 @@ export default {
                 return template.attributes.purpose === this.newChapterPurpose
             });
         },
+        shelfURL() {
+            return STUDIP.URLHelper.getURL(
+                'dispatch.php/course/courseware/',
+                {cid: this.context.id}
+            );
+        },
+        unitRootUrl() {
+            return STUDIP.URLHelper.getURL(
+                'dispatch.php/course/courseware/courseware/' + this.context.unit,
+                {cid: this.context.id}
+            );
+        }
     },
 
     methods: {
