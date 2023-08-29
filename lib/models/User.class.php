@@ -68,13 +68,6 @@
  * @property UserInfo   info   has_one UserInfo
  * @property UserOnline online has_one UserOnline
  * @property Kategorie[]|SimpleORMapCollection $profile_categories has_many Kategorie
-<<<<<<< HEAD
-=======
- * @property UserDomain[]|SimpleORMapCollection $domains
- * @property ConsultationBlock[]|SimpleORMapCollection $consultation_blocks
- * @property ConsultationBooking[]|SimpleORMapCollection $consultation_bookings
- * @property ConsultationResponsibility[]|SimpleORMapCollection $consultation_responsibilities
->>>>>>> cc4a9f0d2f (remove all consultation responsibilities upon range deletion and clean up db table, fixes #2673)
  *
  * @property UserConfig config
  */
@@ -893,7 +886,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
         }
         if ($this->info->schwerp && empty($GLOBALS['NOT_HIDEABLE_FIELDS'][$this->perms]['schwerp'])) {
             $homepage_elements['schwerp'] = [
-                'name'       => _('Arbeitsschwerpunkte'),
+                'name'       => _('Schwerpunkte'),
                 'visibility' => $homepage_visibility['schwerp'] ?: get_default_homepage_visibility($this->id),
                 'extern'     => true,
                 'identifier' => 'privatedata'
