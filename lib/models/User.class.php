@@ -877,7 +877,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
         }
         if ($this->info->schwerp && !$GLOBALS['NOT_HIDEABLE_FIELDS'][$this->perms]['schwerp']) {
             $homepage_elements['schwerp'] = [
-                'name'       => _('Arbeitsschwerpunkte'),
+                'name'       => _('Schwerpunkte'),
                 'visibility' => $homepage_visibility['schwerp'] ?: get_default_homepage_visibility($this->id),
                 'extern'     => true,
                 'identifier' => 'privatedata'
