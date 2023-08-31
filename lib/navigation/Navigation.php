@@ -78,12 +78,12 @@ class Navigation implements IteratorAggregate
 
     /**
      * Add a new navigation item at the given path. The new
-     * item is inserted immediately before the item with the
+     * item is inserted immediately after the item with the
      * name given by $where (at the same level in the tree).
      *
      * @param string $path       path of new navigation item
      * @param object $navigation navigation item to add
-     * @param string $where      insert it before this item
+     * @param string $where      insert it after this item
      */
     public static function insertItem($path, Navigation $navigation, $where)
     {
@@ -509,14 +509,14 @@ class Navigation implements IteratorAggregate
 
     /**
      * Add the given item to the subnavigation of this object.
-     * The new item is inserted immediately before the item with
+     * The new item is inserted immediately after the item with
      * the name given by $where (if there is one, it is appended
      * to the end otherwise). This also assigns a name to this
      * subnavigation item.
      *
      * @param string $name       name of new navigation item
      * @param object $navigation navigation item to add
-     * @param string $where      insert it before this item
+     * @param string $where      insert it after this item
      */
     public function insertSubNavigation($name, Navigation $navigation, $where)
     {
