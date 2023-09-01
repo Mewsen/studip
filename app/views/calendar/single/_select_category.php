@@ -11,6 +11,7 @@
                     </option>
                 <? endforeach; ?>
             </select>
+
             <?= Icon::create('accept', 'clickable')->asInput(['class' => "text-top"]) ?>
         </div>
     </section>
