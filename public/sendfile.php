@@ -57,7 +57,7 @@ init_i18n($_SESSION['_language']);
 // Set Base URL, otherwise links will fail on SENDFILE_LINK_MODE = rewrite
 URLHelper::setBaseURL($GLOBALS['ABSOLUTE_URI_STUDIP']);
 
-$file_id = escapeshellcmd(basename(Request::get('file_id')));
+$file_id = basename(Request::get('file_id'));
 $type = Request::int('type');
 if ($type < 0 || $type > 7) {
     $type = 0;
