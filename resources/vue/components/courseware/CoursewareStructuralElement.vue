@@ -813,7 +813,8 @@ export default {
             showSuggestOerDialog: 'showSuggestOerDialog',
             showPublicLinkDialog: 'showStructuralElementPublicLinkDialog',
             showRemoveLockDialog: 'showStructuralElementRemoveLockDialog',
-            oerEnabled: 'oerEnabled',
+            oerCampusEnabled: 'oerCampusEnabled',
+            oerEnableSuggestions: 'oerEnableSuggestions',
             licenses: 'licenses',
             exportState: 'exportState',
             exportProgress: 'exportProgress',
@@ -1037,9 +1038,9 @@ export default {
                 { id: 5, label: this.$gettext('Lesezeichen setzen'), icon: 'star', emit: 'setBookmark' },
             ];
 
-            if (this.oerEnabled) {
+            if (this.oerEnableSuggestions) {
                 menu.push(
-                    { id: 6, label: this.$gettext('Lerninhalt für OER Campus vorschlagen'), icon: 'oer-campus',
+                    { id: 6, label: this.$gettext('Seite für OER Campus vorschlagen'), icon: 'oer-campus',
                         emit: 'showSuggest' }
                 );
             }
