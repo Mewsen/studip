@@ -74,12 +74,46 @@ class Unit extends \SimpleORMap implements \PrivacyObject
 
     public function canRead(\User $user): bool
     {
-        return $this->structural_element->canRead($user);
+        if ($this->structural_element) {
+            return $this->structural_element->canRead($user);
+        } else {
+            if ($GLOBALS['perm']->have_perm('root', $user->id)) {
+                return true;
+            }
+            switch ($this->range_type) {
+                case 'user':
+                    if ($this->range_id === $user->id) {
+                        return true;
+                    }
+                case 'course':
+                    return $GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user->id);
+                default:
+                    throw new \InvalidArgumentException('Unknown range type.');
+            }
+        }
     }
 
     public function canEdit(\User $user): bool
     {
-        return $this->structural_element->canEdit($user);;
+        if ($this->structural_element) {
+            return $this->structural_element->canEdit($user);
+        } else {
+            if ($GLOBALS['perm']->have_perm('root', $user->id)) {
+                return true;
+            }
+
+            switch ($this->range_type) {
+                case 'user':
+                    if ($this->range_id === $user->id) {
+                        return true;
+                    }
+                case 'course':
+                    return $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user->id);
+
+                default:
+                    throw new \InvalidArgumentException('Unknown range type.');
+            }
+        }
     }
 
     public function copy(\User $user, string $rangeId, string $rangeType, array $modified = null): Unit
@@ -125,6 +159,6 @@ class Unit extends \SimpleORMap implements \PrivacyObject
         if ($units) {
             $storage->addTabularData(_('Courseware Lernmaterialien'), 'cw_units', $units);
         }
-        
+
     }
 }

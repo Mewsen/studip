@@ -36,6 +36,11 @@ class UserProgressesOfUnitsShow extends NonJsonApiController
         if (!$GLOBALS['perm']->have_studip_perm('autor', $root->range_id) || !$unit->canRead($user)) {
             throw new AuthorizationFailedException();
         }
+        $response = $response->withHeader('Content-Type', 'application/json');
+        if (!$root) {
+            $response->getBody()->write((string) json_encode([]));
+            return $response;
+        }
         $instance = new Instance($root);
         $isTeacher = $GLOBALS['perm']->have_studip_perm('tutor', $root->range_id);
 
@@ -46,9 +51,7 @@ class UserProgressesOfUnitsShow extends NonJsonApiController
 
         $progresses = $this->prepareProgressData($elements, $progress);
 
-        $response = $response->withHeader('Content-Type', 'application/json');
         $response->getBody()->write((string) json_encode($progresses));
-
         return $response;
     }
 
