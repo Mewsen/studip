@@ -13,7 +13,7 @@ class Studip
     {
         $properties = [
             new StudipProperty('studip-version', 'Stud.IP-Version', $GLOBALS['SOFTWARE_VERSION']),
-            new StudipProperty('OERCAMPUS_VISIBLE', 'Is oer campus visible with current user permission?', $GLOBALS['perm']->have_perm(\Config::get()->OER_PUBLIC_STATUS)),
+            new StudipProperty('OERCAMPUS_VISIBLE', 'Is oer campus visible with current user permission.', $GLOBALS['perm']->have_perm(\Config::get()->OER_PUBLIC_STATUS)),
         ];
 
         $oerCampusEnabled = self::getConfigOption('OERCAMPUS_ENABLED');
