@@ -13,9 +13,11 @@ class Studip
     {
         $properties = [
             new StudipProperty('studip-version', 'Stud.IP-Version', $GLOBALS['SOFTWARE_VERSION']),
-            new StudipProperty('oer-campus-enabled', 'OERCAMPUS_ENABLED', \Config::get()->OERCAMPUS_ENABLED),
-            new StudipProperty('oer-enable-suggestions', 'OER_ENABLE_SUGGESTIONS', \Config::get()->OER_ENABLE_SUGGESTIONS),
+            new StudipProperty('OERCAMPUS_VISIBLE', 'Is oer campus visible with current user permission?', $GLOBALS['perm']->have_perm(\Config::get()->OER_PUBLIC_STATUS)),
         ];
+
+        $properties[] = self::getConfigOption('OERCAMPUS_ENABLED');
+        $properties[] = self::getConfigOption('OER_ENABLE_SUGGESTIONS');
 
         $copyrightDialog = self::getConfigOption('COPYRIGHT_DIALOG_ON_UPLOAD');
         if ($copyrightDialog) {

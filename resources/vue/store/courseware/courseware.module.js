@@ -256,11 +256,17 @@ const getters = {
         return state.progresses;
     },
 
+    oerCampusVisible(state, getters, rootState, rootGetters) {
+        return rootGetters['studip-properties/byId']({ id: 'OERCAMPUS_VISIBLE' }).attributes?.value;
+    },
     oerCampusEnabled(state, getters, rootState, rootGetters) {
-        return rootGetters['studip-properties/byId']({ id: 'oer-campus-enabled'}).attributes?.value;
+        return rootGetters['studip-properties/byId']({ id: 'OERCAMPUS_ENABLED' }).attributes?.value;
+    },
+    oerCampusAvailableForUser(state, getters) {
+        return getters.oerCampusEnabled && getters.oerCampusVisible;
     },
     oerEnableSuggestions(state, getters, rootState, rootGetters) {
-        return getters.oerCampusEnabled && rootGetters['studip-properties/byId']({ id: 'oer-enable-suggestions'}).attributes?.value;
+        return getters.oerCampusEnabled && rootGetters['studip-properties/byId']({ id: 'OER_ENABLE_SUGGESTIONS' }).attributes?.value;
     }
 };
 
