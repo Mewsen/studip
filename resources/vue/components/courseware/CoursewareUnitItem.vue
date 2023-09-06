@@ -100,7 +100,7 @@ export default {
                 menu.push({ id: 2, label: this.$gettext('Einstellungen'), icon: 'settings', emit: 'showSettings' });
             }
             if(this.userIsTeacher || !this.inCourseContext) {
-                menu.push({ id: 3, label: this.$gettext('Kopieren'), icon: 'copy', emit: 'copyUnit' });
+                menu.push({ id: 3, label: this.$gettext('Duplizieren'), icon: 'copy', emit: 'copyUnit' });
                 menu.push({ id: 4, label: this.$gettext('Exportieren'), icon: 'export', emit: 'showExport' });
                 menu.push({ id: 5, label: this.$gettext('Löschen'), icon: 'trash', emit: 'showDelete' });
             }
