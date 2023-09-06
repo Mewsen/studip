@@ -18,9 +18,17 @@ class Courseware_LocalSearchController extends AuthenticatedController
         $filters = json_decode(Request::get('filters'));
         $range_id = $filters->rangeId;
         $search = Request::get('search');
-        $payload_search = str_replace('\\u00', '\\\\u00', json_encode($search));
-        $payload_search = str_replace('\"', '"', $payload_search);
-        $payload_search = substr($payload_search, 1, -1);
+        $payload_search = substr(str_replace('\\u00', '\\\\u00', json_encode($search)), 1, -1);
+
+        if (str_starts_with($payload_search, '\\\\u00')) {
+            $payload_search = substr($payload_search, 1, strlen($payload_search));
+        }
+        if (str_starts_with($payload_search, '\"')) {
+            $payload_search = '"' . substr($payload_search, 2, strlen($payload_search));
+        }
+        if (str_ends_with($payload_search, '\"')) {
+            $payload_search = substr($payload_search, 0, -2) . '\\\\"';
+        }
 
         $query = DBManager::get()->quote("%{$search}%");
         $payload_query = DBManager::get()->quote("%{$payload_search}%");
