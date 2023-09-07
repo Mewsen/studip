@@ -17,6 +17,7 @@
 # Jan-Hendrik Willms <tleilax+studip@gmail.com>, 2023.
 # Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>, 2023.
 # Kilian Pluta <pluta@zqs.uni-hannover.de>, 2023.
+# Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023.
 #
 # Translators:
 #
@@ -25,8 +26,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-19 08:59+0200\n"
-"PO-Revision-Date: 2023-08-22 15:29+0000\n"
-"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
+"PO-Revision-Date: 2023-09-07 10:29+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-0/en/>\n"
 "Language: en\n"
@@ -26961,7 +26963,7 @@ msgstr "Stud.IP (system)"
 
 #: app/controllers/news.php:110
 msgid "Ankündigung wirklich aus diesem Bereich entfernen?"
-msgstr "Do you really want to the announcement from this area?"
+msgstr "Do you really want to remove the announcement from this area?"
 
 #: app/controllers/news.php:125
 msgid "Ankündigung wirklich löschen?"
