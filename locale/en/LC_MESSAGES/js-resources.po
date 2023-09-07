@@ -1,12 +1,14 @@
 # Moritz Strohm <strohm@data-quest.de>, 2022, 2023.
 # Till Glöggler <tgloeggl@uos.de>, 2023.
+# Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-06-03 09:28+0000\n"
-"Last-Translator: Till Glöggler <tgloeggl@uos.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-3-js/en/>\n"
+"PO-Revision-Date: 2023-09-07 12:29+0000\n"
+"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
+"oldenburg.de>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-3-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1206,6 +1208,7 @@ msgstr "Context menu"
 
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:65
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:13
+#, fuzzy
 msgid "Countdown"
 msgstr "Countdown"
 
@@ -3392,6 +3395,7 @@ msgstr "Slow"
 #: resources/vue/components/courseware/CoursewareHeadlineBlock.vue:3
 #: resources/vue/components/courseware/CoursewareTableOfContentsBlock.vue:51
 #: resources/vue/components/courseware/CoursewareTableOfContentsBlock.vue:7
+#, fuzzy
 msgid "Layout"
 msgstr "Layout"
 
