@@ -360,8 +360,8 @@ STUDIP.ready(function () {
     var loginname = $('#loginname');
     var password = $('#password');
 
-    var loginname_caps = $('#loginname_caps');
-    var password_caps = $('#password_caps');
+    let loginname_caps = jQuery('#loginname_caps');
+    let password_caps = jQuery('#password_caps');
 
 
     check_capslock_form($('#content')); //applies the capslock check to all input tags
@@ -374,7 +374,7 @@ STUDIP.ready(function () {
         if (typeof (window.capsLockEnabled) !== 'undefined') {
             if (e.key == 'CapsLock' && e.timeStamp > window.lastpress + 50) {
                 window.capsLockEnabled = !window.capsLockEnabled;
-                $('#password_caps').toggle();
+                jQuery('#password_caps').toggle();
             }
             window.lastpress = e.timeStamp;
             //sometimes this function is called twice when pressing capslock once, so I use the timeStamp to fix the problem
@@ -386,7 +386,7 @@ STUDIP.ready(function () {
         var s = String.fromCharCode(e.keyCode);
         if (s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey) {
             window.capsLockEnabled = true;
-            $('#password_caps').show();
+            jQuery('#password_caps').show();
         }
         else {
             window.capsLockEnabled = false;
