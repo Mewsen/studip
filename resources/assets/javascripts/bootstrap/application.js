@@ -390,7 +390,7 @@ STUDIP.ready(function () {
         }
         else {
             window.capsLockEnabled = false;
-            $('#password_caps').hide();
+            jQuery('#password_caps').hide();
         }
     }
 
@@ -400,7 +400,7 @@ STUDIP.ready(function () {
         }
         where.find('input,select').each(function () {
             if (this.type != "hidden") {
-                $(this).keypress(check_capslock);
+                jQuery(this).keypress(check_capslock);
             }
         });
     }
@@ -409,12 +409,12 @@ STUDIP.ready(function () {
     $(document).on('click', '#password_toggle', function () {
         if (password.attr("type") == "password") {
             password.attr("type", "text");
-            $('#visible-password').hide();
-            $('#invisible-password').show();
+            jQuery('#visible-password').hide();
+            jQuery('#invisible-password').show();
         } else {
             password.attr("type", "password");
-            $('#visible-password').show();
-            $('#invisible-password').hide();
+            jQuery('#visible-password').show();
+            jQuery('#invisible-password').hide();
         }
     });
 });
