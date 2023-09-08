@@ -357,8 +357,8 @@ jQuery(document).on('click', 'a[data-behaviour~="ajax-toggle"]', function (event
 }(jQuery));
 
 STUDIP.ready(function () {
-    var loginname = $('#loginname');
-    var password = $('#password');
+    let loginname = jQuery('#loginname');
+    let password = jQuery('#password');
 
     let loginname_caps = jQuery('#loginname_caps');
     let password_caps = jQuery('#password_caps');
