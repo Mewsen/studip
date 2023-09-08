@@ -897,7 +897,8 @@ html:not(.responsive-display):not(.fullscreen-mode) {
             left: 0;
         }
 
-        #loginbox {
+        #loginbox,
+        #newsbox {
             box-shadow: unset;
             margin: 0;
             width: calc(100vw - 40px);
@@ -911,6 +912,10 @@ html:not(.responsive-display):not(.fullscreen-mode) {
                     width: unset;
                 }
             }
+        }
+
+        #newsbox {
+            margin: 20px 0 0 0;
         }
     }
 }

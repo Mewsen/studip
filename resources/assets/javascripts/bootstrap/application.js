@@ -414,9 +414,6 @@ STUDIP.ready(function () {
         }
     });
 
-    $(document).on('click', '#submit_login', function () {
-        console.log('klicki');
-    });
 
 
 });

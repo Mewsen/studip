@@ -171,8 +171,8 @@ if (!match_route('web_migrate.php')) {
     </div>
 
     <? if (count($faq_entries) > 0) : ?>
-        <div id="newsbox" style="margin-top: 20px">
-
+        <div id="newsbox">
+            <h1><?= _('FAQ zum Login') ?></h1>
         <? foreach ($faq_entries as $entry) : ?>
             <article class="studip toggle">
                 <header>

@@ -67,4 +67,4 @@ if ($auth->auth["uid"]!="nobody") {
     page_close();
 }
 
-header("Location:" . URLHelper::getURL("index.php?again=yes?logout=true&set_language=$_language&set_contrast=$contrast"));
+header("Location:" . URLHelper::getURL("index.php?again=yes&logout=true&set_language=$_language&set_contrast=$contrast"));
