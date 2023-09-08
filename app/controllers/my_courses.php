@@ -401,7 +401,10 @@ class MyCoursesController extends AuthenticatedController
 
         // Ensure last teacher cannot leave course
         $course = Course::find($course_id);
-        if ($course->members->findOneBy('user_id', $GLOBALS['user']->id)->status === 'dozent'
+        $teacher = $course->members->findOneBy('user_id', User::findCurrent()->id);
+        if (
+            $teacher
+            && $teacher->status === 'dozent'
             && count($course->getMembersWithStatus('dozent')) === 1
         ) {
             PageLayout::postError(sprintf(
