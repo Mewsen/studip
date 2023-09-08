@@ -368,7 +368,9 @@ STUDIP.ready(function () {
 
     document.onkeydown = function (e) { //check if capslock key was pressed in the whole window
         e = e || event;
-        if (typeof (window.lastpress) === 'undefined') { window.lastpress = e.timeStamp; }
+        if (typeof (window.lastpress) === 'undefined') {
+            window.lastpress = e.timeStamp;
+        }
         if (typeof (window.capsLockEnabled) !== 'undefined') {
             if (e.key == 'CapsLock' && e.timeStamp > window.lastpress + 50) {
                 window.capsLockEnabled = !window.capsLockEnabled;
@@ -393,7 +395,9 @@ STUDIP.ready(function () {
     }
 
     function check_capslock_form(where) {
-        if (!where) { where = $(document); }
+        if (!where) {
+            where = $(document);
+        }
         where.find('input,select').each(function () {
             if (this.type != "hidden") {
                 $(this).keypress(check_capslock);
@@ -413,7 +417,4 @@ STUDIP.ready(function () {
             $('#invisible-password').hide();
         }
     });
-
-
-
 });
