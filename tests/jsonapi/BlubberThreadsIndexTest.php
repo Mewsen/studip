@@ -52,7 +52,7 @@ class BlubberThreadsIndexTest extends \Codeception\Test\Unit
             return count(
                 $this->upgradeAndFilterThreads(
                     $credentials,
-                    \BlubberThread::findBySQL('context_type = "public" AND visible_in_stream')
+                    \BlubberThread::findBySQL("context_type = 'public' AND visible_in_stream")
                 )
             );
         });
