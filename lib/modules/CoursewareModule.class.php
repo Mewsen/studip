@@ -35,6 +35,10 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
      */
     public function getTabNavigation($courseId)
     {
+        if ($GLOBALS['user']->id === 'nobody') {
+            return [];
+        }
+
         $navigation = new Navigation(
             _('Courseware'),
             URLHelper::getURL('dispatch.php/course/courseware/?cid='.$courseId)
@@ -74,6 +78,10 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
      */
     public function getIconNavigation($courseId, $last_visit, $user_id)
     {
+        if ($user_id === 'nobody') {
+            return null;
+        }
+
         $statement = DBManager::get()->prepare("
                 SELECT COUNT(DISTINCT elem.id) 
                 FROM `cw_structural_elements` AS elem 
