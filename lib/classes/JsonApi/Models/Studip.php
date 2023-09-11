@@ -11,10 +11,7 @@ class Studip
 
     public function getProperties()
     {
-        $oerCampusVisible = false;
-        if ($GLOBALS['perm']) {
-            $oerCampusVisible =  $GLOBALS['perm']->have_perm(\Config::get()->OER_PUBLIC_STATUS);
-        }
+        $oerCampusVisible =  $GLOBALS['perm']->have_perm(\Config::get()->OER_PUBLIC_STATUS);
         $properties = [
             new StudipProperty('studip-version', 'Stud.IP-Version', $GLOBALS['SOFTWARE_VERSION']),
             new StudipProperty('OERCAMPUS_VISIBLE', 'Is oer campus visible with current user permission?', $oerCampusVisible),
