@@ -917,6 +917,14 @@ html:not(.responsive-display):not(.fullscreen-mode) {
         #newsbox {
             margin: 20px 0 0 0;
         }
+
+        #loginbox {
+            #password_toggle {
+                bottom: 26px;
+            }
+        }
+
+
     }
 }
 

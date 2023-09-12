@@ -124,6 +124,13 @@ $gap-between-boxes: calc($login-page-margin / 2);
         bottom: 6px;
         cursor: pointer;
 
+
+        #visible-password,
+        #invisible-password {
+            position: absolute;
+            left: -20px;
+            top: -20px;
+        }
         #visible-password {
             display: block;
         }
