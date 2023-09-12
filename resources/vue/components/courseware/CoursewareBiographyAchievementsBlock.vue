@@ -27,7 +27,7 @@
                             <translate>Enddatum</translate>: {{ getReadableDate(currentData.end_date)}}
                         </h4>
                         <h4 v-show="hasParticipation">
-                            <translate>Beteiligung</translate>: <span v-html="currentData.role"></span>
+                            <translate>Beteiligung</translate>: {{ currentData.role }}
                         </h4>
                         <div>
                             <h4><translate>Beschreibung</translate>:</h4>
