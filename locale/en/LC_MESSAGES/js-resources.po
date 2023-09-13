@@ -4,9 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-09-07 12:29+0000\n"
-"Last-Translator: Hans Christian von Steuber <hans.christian.von.steuber@uni-"
-"oldenburg.de>\n"
+"PO-Revision-Date: 2023-09-13 08:29+0000\n"
+"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3-js/en/>\n"
 "Language: en\n"
@@ -1208,7 +1207,6 @@ msgstr "Context menu"
 
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:65
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:13
-#, fuzzy
 msgid "Countdown"
 msgstr "Countdown"
 
@@ -1384,7 +1382,7 @@ msgstr "The data field isn't available in the original language."
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:25
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:19
 msgid "Datensatz"
-msgstr "Data record"
+msgstr "Dataset"
 
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:37
 msgid "Datensatz entfernen"
@@ -2689,7 +2687,7 @@ msgstr ""
 #: resources/vue/components/courseware/CoursewareHeadlineBlock.vue:119
 #: resources/vue/components/courseware/CoursewareHeadlineBlock.vue:102
 msgid "Hintergrundbild"
-msgstr "Background image"
+msgstr "Background picture"
 
 #: resources/vue/components/courseware/CoursewareUnitItemDialogSettings.vue:124
 msgid "Hintergrundbild des Zertifikats wählen"
@@ -3395,7 +3393,6 @@ msgstr "Slow"
 #: resources/vue/components/courseware/CoursewareHeadlineBlock.vue:3
 #: resources/vue/components/courseware/CoursewareTableOfContentsBlock.vue:51
 #: resources/vue/components/courseware/CoursewareTableOfContentsBlock.vue:7
-#, fuzzy
 msgid "Layout"
 msgstr "Layout"
 
