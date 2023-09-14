@@ -36,7 +36,7 @@
                             {{ taskGroup.attributes.title }}
                         </a>
                     </td>
-                    <td>{{ task.attributes?.progress?.toFixed(0) || '-' }}%</td>
+                    <td>{{ task.attributes.progress.toFixed(0) || '-' }}%</td>
                     <td>{{ getReadableDate(task.attributes['submission-date']) }}</td>
                     <td>
                         <studip-icon v-if="task.attributes.submitted" shape="accept" role="status-green" />
