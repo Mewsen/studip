@@ -5,6 +5,17 @@ import axios from 'axios';
 import { mapResourceModules } from '@elan-ev/reststate-vuex';
 
 const mountApp = async (STUDIP, createApp, element) => {
+    // handle studip 5.0 to 5.2 urls
+    const elemId = window.location.hash.match(/structural_element\/(\d+)/);
+
+    if (elemId) {
+        let url = new URL(window.location.href);
+        url.searchParams.set('element_id', elemId[1]);
+        window.location.href = url;
+
+        return false;
+    }
+
     const getHttpClient = () =>
         axios.create({
             baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
