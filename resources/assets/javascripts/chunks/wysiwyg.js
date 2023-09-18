@@ -179,7 +179,7 @@ ClassicEditor.defaultConfig = {
             '|',
             'sourceEditing',
         ],
-        shouldNotGroupWhenFull: true,
+        shouldNotGroupWhenFull: false,
     },
     fontColor: {
         colors: customColorPalette,
