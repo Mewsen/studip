@@ -102,6 +102,10 @@ class SingleDate
         }
     }
 
+    public function __toString()
+    {
+        return $this->toString();
+    }
 
     function getStartTime()
     {
