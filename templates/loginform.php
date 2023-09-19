@@ -39,11 +39,13 @@ if (!match_route('web_migrate.php')) {
     <?= implode('', PageLayout::getMessages()); ?>
 
     <div id="loginbox">
-        <form class="default" name="login" method="post" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => NULL]) ?>">
-            <header>
-                <h1><?= htmlReady(Config::get()->UNI_NAME_CLEAN) ?></h1>
-                <h2 style="margin: 0; padding-bottom:10px;"><?=_('Herzlich willkommen!')?></h2>
-            </header>
+        <header>
+            <h1><?= htmlReady(Config::get()->UNI_NAME_CLEAN) ?></h1>
+            <h2 style="margin: 0; padding-bottom:10px;"><?=_('Herzlich willkommen!')?></h2>
+        </header>
+
+        <form class="default" name="login_form" id="login_form" method="post" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => NULL]) ?>" style="display:none">
+
             <section>
                 <label>
                     <span class="required"><?= _('Benutzername:') ?></span>
@@ -82,20 +84,24 @@ if (!match_route('web_migrate.php')) {
             <input type="hidden" name="resolution"  value="">
             <input type="hidden" name="device_pixel_ratio" value="1">
             <?= Button::createAccept(_('Anmelden'), _('Login'), ['id' => 'submit_login']); ?>
+
+            <div>
+                <? if (Config::get()->ENABLE_REQUEST_NEW_PASSWORD_BY_USER && in_array('Standard', $GLOBALS['STUDIP_AUTH_PLUGIN'])): ?>
+                <a href="<?= URLHelper::getLink('dispatch.php/new_password?cancel_login=1') ?>">
+                    <? else: ?>
+                    <a href="mailto:<?= $GLOBALS['UNI_CONTACT'] ?>?subject=<?= rawurlencode('Stud.IP Passwort vergessen - '.Config::get()->UNI_NAME_CLEAN) ?>&amp;body=<?= rawurlencode('Ich habe mein Passwort vergessen. Bitte senden Sie mir ein Neues.\nMein Nutzername: ' . htmlReady($uname) . "\n") ?>">
+                        <? endif; ?>
+                        <?= _('Passwort vergessen?') ?>
+                    </a>
+            </div>
         </form>
 
-        <div>
-            <? if (Config::get()->ENABLE_REQUEST_NEW_PASSWORD_BY_USER && in_array('Standard', $GLOBALS['STUDIP_AUTH_PLUGIN'])): ?>
-                <a href="<?= URLHelper::getLink('dispatch.php/new_password?cancel_login=1') ?>">
-            <? else: ?>
-                <a href="mailto:<?= $GLOBALS['UNI_CONTACT'] ?>?subject=<?= rawurlencode('Stud.IP Passwort vergessen - '.Config::get()->UNI_NAME_CLEAN) ?>&amp;body=<?= rawurlencode('Ich habe mein Passwort vergessen. Bitte senden Sie mir ein Neues.\nMein Nutzername: ' . htmlReady($uname) . "\n") ?>">
-            <? endif; ?>
-                    <?= _('Passwort vergessen?') ?>
-                </a>
-        </div>
 
         <nav>
             <ul>
+                <li class="login_link">
+                    <a href="#" id="toggle_login">Standard-Login</a>
+                </li>
                 <? foreach (Navigation::getItem('/login') as $key => $nav) : ?>
                     <? if ($nav->isVisible()) : ?>
                         <? $name_and_title = explode(' - ', $nav->getTitle()) ?>

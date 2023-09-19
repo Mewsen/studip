@@ -417,4 +417,11 @@ STUDIP.ready(function () {
             jQuery('#invisible-password').hide();
         }
     });
+
+    $(document).on('click', '#toggle_login', function () {
+        $('#login_form').slideToggle("slow");
+
+
+    });
+
 });
