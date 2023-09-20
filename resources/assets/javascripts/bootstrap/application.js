@@ -406,7 +406,7 @@ STUDIP.ready(function () {
     }
 
     // toggle password visibility and eye icon
-    $(document).on('click', '#password_toggle', function () {
+    $(document).on('click', '#password-toggle', function () {
         if (password.attr("type") == "password") {
             password.attr("type", "text");
             jQuery('#visible-password').hide();
