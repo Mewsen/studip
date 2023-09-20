@@ -1,10 +1,11 @@
 # Moritz Strohm <strohm@data-quest.de>, 2022, 2023.
 # Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023.
+# Ron Lucke <lucke@elan-ev.de>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-09-13 08:29+0000\n"
-"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
+"PO-Revision-Date: 2023-09-20 09:29+0000\n"
+"Last-Translator: Ron Lucke <lucke@elan-ev.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-1-js/en/>\n"
 "Language: en\n"
@@ -510,7 +511,7 @@ msgstr "Author"
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:16
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:10
 msgid "Balkendiagramm"
-msgstr "Bar graph"
+msgstr "Bar chart"
 
 #: resources/vue/components/courseware/CoursewareHeadlineBlock.vue:23
 #: resources/vue/components/courseware/CoursewareHeadlineBlock.vue:6
@@ -1646,7 +1647,7 @@ msgstr "FAQ"
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:100
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:17
 msgid "Farbe"
-msgstr "Colour"
+msgstr "Color"
 
 #: resources/vue/mixins/MyCoursesMixin.js:74
 msgid "Farbgruppierung ändern"
@@ -3241,7 +3242,7 @@ msgstr "huge"
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:18
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:12
 msgid "Ringdiagramm"
-msgstr "Donut"
+msgstr "Donut chart"
 
 #: resources/vue/components/courseware/CoursewareCanvasBlock.vue:42
 msgid "rot"
@@ -4013,7 +4014,7 @@ msgstr "Sub-pages"
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:6
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:5
 msgid "Unterseiten exportieren"
-msgstr "Export sub-pages"
+msgstr "Export sub pages"
 
 #: resources/vue/components/courseware/CoursewareManagerElement.vue:41
 msgid "Unterseiten sortieren"
@@ -4022,7 +4023,7 @@ msgstr "Sort sub-pages"
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:308
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:30
 msgid "Unterseiten veröffentlichen"
-msgstr "Publish sub-pages"
+msgstr "Publish sub pages"
 
 #: resources/vue/components/courseware/CoursewareHeadlineBlock.vue:40
 #: resources/vue/components/courseware/CoursewareHeadlineBlock.vue:23
