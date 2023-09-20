@@ -516,7 +516,7 @@ import eventBus from "./lib/event-bus";
             closeText: $gettext('Schließen'),
             prevText: $gettext('Zurück'),
             nextText: $gettext('Vor'),
-            currentText: $gettext('Jetzt'),
+            currentText: $gettext('Heute'),
             monthNames: [
                 $gettext('Januar'),
                 $gettext('Februar'),
@@ -587,7 +587,10 @@ import eventBus from "./lib/event-bus";
         locale.dayNamesMin = locale.dayNamesShort;
 
         $.datepicker.setDefaults(locale);
-        $.timepicker.setDefaults(locale);
+        $.timepicker.setDefaults({
+            ...locale,
+            currentText: $gettext('Jetzt'),
+        });
     });
 
     var DpHideOnScroll = function () {
