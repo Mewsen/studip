@@ -46,32 +46,33 @@ if (!match_route('web_migrate.php')) {
 
         <nav>
             <ul>
-                <li class="login_link">
-                    <a href="#" id="toggle_login">Login ohne WebSSO
-                    <p><?= _('Gasthörende, Gäste etc.') ?></p></a>
-                </li>
                 <? foreach (Navigation::getItem('/login') as $key => $nav) : ?>
                     <? if ($nav->isVisible()) : ?>
                         <? $name_and_title = explode(' - ', $nav->getTitle()) ?>
                         <li class="login_link">
                             <? if (is_internal_url($url = $nav->getURL())) : ?>
                             <? SkipLinks::addLink($name_and_title[0], $url) ?>
-                            <a href="<?= URLHelper::getLink($url) ?>?cancel_login=1">
-                                <? else : ?>
-                                <a href="<?= htmlReady($url) ?>" target="_blank" rel="noopener noreferrer">
-                                    <? endif ?>
-                                    <?= htmlReady($name_and_title[0]) ?>
-                                    <p>
-                                        <?= htmlReady(!empty($name_and_title[1]) ? $name_and_title[1] : $nav->getDescription()) ?>
-                                    </p>
-                                </a>
+                            <a href="<?= URLHelper::getLink($url) ?>?cancel_login=1" id="<?= $nav->getLinkAttributes()['id'] ?>">
+                            <? else : ?>
+                            <a href="<?= htmlReady($url) ?>" target="_blank" rel="noopener noreferrer">
+                            <? endif ?>
+                            <?= htmlReady($name_and_title[0]) ?>
+                            <p>
+                                <?= htmlReady(!empty($name_and_title[1]) ? $name_and_title[1] : $nav->getDescription()) ?>
+                            </p>
+                            </a>
                         </li>
                     <? endif ?>
                 <? endforeach ?>
             </ul>
         </nav>
 
-        <form class="default" name="login_form" id="login_form" method="post" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => NULL]) ?>" style="display:none">
+        <? if (in_array('Standard', $GLOBALS['STUDIP_AUTH_PLUGIN']) && count($GLOBALS['STUDIP_AUTH_PLUGIN']) === 1) : ?>
+            <? $display = 'block' ?>
+        <? else : ?>
+            <? $display = 'none' ?>
+        <? endif ?>
+        <form class="default" name="login_form" id="login_form" method="post" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => NULL]) ?>" style="display: <?= $display ?>">
 
             <section>
                 <label>
@@ -84,7 +85,6 @@ if (!match_route('web_migrate.php')) {
                            value="<?= htmlReady($uname) ?>"
                            size="20"
                            autocorrect="off" autocapitalize="off" required>
-
                 </label>
             </section>
             <p id="loginname_caps" style="display: none"><?= _('Feststelltaste ist aktiviert!') ?></p>
@@ -178,7 +178,7 @@ if (!match_route('web_migrate.php')) {
     </div>
 
     <? if (count($faq_entries) > 0) : ?>
-        <div id="newsbox">
+        <div id="faq_box">
             <h1><?= _('FAQ zum Login') ?></h1>
         <? foreach ($faq_entries as $entry) : ?>
             <article class="studip toggle">

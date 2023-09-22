@@ -23,6 +23,14 @@ class LoginNavigation extends Navigation
     {
         parent::initSubNavigation();
 
+        $navigation = new Navigation(_('Login'), '');
+        $navigation->setDescription(_('für registrierte NutzerInnen'));
+        $navigation->setLinkAttributes([
+            'id' => 'toggle_login'
+        ]);
+        $navigation->setURL('index.php?#');
+        $this->addSubNavigation('login', $navigation);
+
         foreach (StudipAuthAbstract::getInstance() as $auth_plugin) {
             if ($auth_plugin instanceof StudipAuthSSO && isset($auth_plugin->login_description)) {
                 $navigation = new Navigation($auth_plugin->plugin_fullname . ' ' . _('Login'), 'index.php?again=yes&sso=' . $auth_plugin->plugin_name);
