@@ -29,7 +29,7 @@ class LoginNavigation extends Navigation
             'id' => 'toggle_login'
         ]);
         $navigation->setURL('index.php?#');
-        $this->addSubNavigation('login', $navigation);
+        $this->addSubNavigation('standard_login', $navigation);
 
         foreach (StudipAuthAbstract::getInstance() as $auth_plugin) {
             if ($auth_plugin instanceof StudipAuthSSO && isset($auth_plugin->login_description)) {

@@ -420,6 +420,7 @@ STUDIP.ready(function () {
 
     $(document).on('click', '#toggle_login', function () {
         $('#login_form').slideToggle("slow");
+        $('#loginname').trigger('focus');
 
 
     });
