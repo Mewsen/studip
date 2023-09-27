@@ -34,6 +34,7 @@ $options = array_filter([
                 <button
                     class="undecorated"
                     formaction="<?= $controller->link_for('/choose_folder/' . $parent_folder->getId()) ?>" <? if ($options['from_plugin']): ?> name="to_plugin" value="<?= htmlReady($options['from_plugin']) ?>"<? endif; ?>>
+                    data-dialog="size=medium">
                     <?= _('Aktueller Ordner') ?>
                 </button>
             </div>
@@ -42,8 +43,7 @@ $options = array_filter([
                 <?= Icon::create('files')->asInput(50, ['formaction' => $controller->url_for('/choose_folder/' . Folder::findTopFolder($GLOBALS['user']->id)->getId())]) ?>
                 <button
                     class="undecorated"
-                    formaction="<?= $controller->link_for('/choose_folder/' . Folder::findTopFolder($GLOBALS['user']->id)->getId()) ?>">
-
+                    formaction="<?= $controller->link_for('/choose_folder/' . Folder::findTopFolder($GLOBALS['user']->id)->getId()) ?>" data-dialog="size=medium">
                     <?= _('Persönlicher Dateibereich') ?>
                 </button>
             </div>
@@ -51,7 +51,7 @@ $options = array_filter([
             <div class="clickable">
                 <?= Icon::create('seminar')->asinput(50, ['formaction' => $controller->url_for('/choose_folder_from_course')]) ?>
                 <button class="undecorated"
-                        formaction="<?= $controller->link_for('/choose_folder_from_course') ?>">
+                        formaction="<?= $controller->link_for('/choose_folder_from_course') ?>" data-dialog="size=medium">
                     <?= _('Meine Veranstaltungen') ?>
                 </button>
             </div>
@@ -59,7 +59,7 @@ $options = array_filter([
             <div class="clickable">
                 <?= Icon::create('institute')->asInput(50, ['formaction' => $controller->url_for('/choose_folder_from_institute')]) ?>
                 <button class="undecorated"
-                        formaction="<?= $controller->link_for('/choose_folder_from_institute') ?>">
+                        formaction="<?= $controller->link_for('/choose_folder_from_institute') ?>" data-dialog="size=medium">
                     <?= _('Meine Einrichtungen') ?>
                 </button>
             </div>
