@@ -1104,6 +1104,6 @@ SQL;
         if ($structuralElements) {
             $storage->addTabularData(_('Courseware Seiten'), 'cw_structural_elements', $structuralElements);
         }
-        
+
     }
 }
