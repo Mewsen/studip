@@ -10,14 +10,27 @@
 <table class="default">
     <tbody>
         <tr>
-            <td rowspan="9" colspan="2" style="text-align: center;">
+            <td><?= _("Banner:") ?></td>
+            <td style="text-align: left;">
             <? if ($banner['banner_path']): ?>
-                <?= $banner->toImg() ?>
+                <?= $banner->toImg(['style' => 'max-width:100%']) ?>
             <? else: ?>
                 <?= _('noch kein Bild hochgeladen') ?>
             <? endif; ?>
             </td>
         </tr>
+        <? if ($banner['banner_mobile_path']) : ?>
+            <tr>
+                <td><?= _("Mobiles Banner:") ?></td>
+                <td style="text-align: left;">
+                    <? if ($banner['banner_mobile_path']): ?>
+                        <?= $banner->toImg(['style' => 'max-width:100%'], true) ?>
+                    <? else: ?>
+                        <?= _('noch kein Bild hochgeladen') ?>
+                    <? endif; ?>
+                </td>
+            </tr>
+        <? endif; ?>
         <tr>
             <td><?= _("Beschreibung:") ?></td>
             <td>

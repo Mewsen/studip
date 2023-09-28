@@ -18,6 +18,8 @@
     <fieldset>
 
         <label>
+            <?= _('Banner:') ?><br>
+
             <? if ($banner['banner_path']) : ?>
                 <?= $banner->toImg(['style' => 'max-width:500px']) ?>
             <? else : ?>
@@ -28,6 +30,22 @@
                 <?= _('Bilddatei auswählen') ?>
                 <input id="imgfile" name="imgfile" type="file" accept="image/*">
                 <input type="hidden" name="banner_path" value="<?= $banner['banner_path'] ?>">
+            </label>
+        </label>
+
+        <label>
+            <?= _('Mobiles Banner (optional):') ?><br>
+
+            <? if ($banner['banner_mobile_path']) : ?>
+                <?= $banner->toImg(['style' => 'max-width:500px'], true) ?>
+            <? else : ?>
+                <?= _('Noch kein Bild hochgeladen') ?>
+            <? endif; ?><br>
+
+            <label class="file-upload">
+                <?= _('Bilddatei auswählen') ?>
+                <input id="imgfile_mobile" name="imgfile_mobile" type="file" accept="image/*">
+                <input type="hidden" name="banner_mobile_path" value="<?= $banner['banner_mobile_path'] ?>">
             </label>
         </label>
 
