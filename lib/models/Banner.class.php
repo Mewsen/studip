@@ -17,6 +17,7 @@
  * @property string ad_id database column
  * @property string id alias column for ad_id
  * @property string banner_path database column
+ * @property string banner_mobile_path database column
  * @property string description database column
  * @property string alttext database column
  * @property string target_type database column
@@ -115,8 +116,11 @@ class Banner extends SimpleORMap
     public function delete()
     {
         if (!$this->isNew()) {
-            // Remove banner file
+            // Remove banner files
             unlink($GLOBALS['DYNAMIC_CONTENT_PATH'] . '/banner/' . $this->banner_path);
+            if (!empty($this->banner_mobile_path)) {
+                unlink($GLOBALS['DYNAMIC_CONTENT_PATH'] . '/banner/' . $this->banner_mobile_path);
+            }
         }
         return parent::delete();
     }
@@ -183,10 +187,15 @@ class Banner extends SimpleORMap
      *
      * @return string
      */
-    public function toImg($attributes = [])
+    public function toImg($attributes = [], $mobile = false)
     {
+        $src = $this->banner_path;
+        if ($mobile && !empty($this->banner_mobile_path)) {
+            $src = $this->banner_mobile_path;
+        }
+
         $attr = [
-            'src'    => $GLOBALS['DYNAMIC_CONTENT_URL'] . '/banner/' . $this->banner_path,
+            'src'    => $GLOBALS['DYNAMIC_CONTENT_URL'] . '/banner/' . $src,
             'border' => '0',
         ];
         if ($this->alttext) {
@@ -213,6 +222,8 @@ class Banner extends SimpleORMap
             return '';
         }
 
+        $banner_images = $this->toImg(['class' => 'studip-banner-image']) . $this->toImg(['class' => 'studip-mobile-banner-image'], true);
+
         if ($this->target_type === 'url') {
             $template = '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>';
         } elseif ($this->target_type === 'none') {
@@ -221,7 +232,7 @@ class Banner extends SimpleORMap
             $template = '<a href="%s">%s</a>';
         }
 
-        $link = sprintf($template, $this->getLink($internal), $this->toImg());
+        $link = sprintf($template, $this->getLink($internal), $banner_images);
 
         $this->views += 1;
         $this->store();

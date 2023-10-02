@@ -102,6 +102,7 @@ class Admin_BannerController extends AuthenticatedController
         // edit banner input
         if (Request::submitted('speichern')) {
             $banner_path = Request::get('banner_path');
+            $banner_mobile_path = Request::get('banner_mobile_path');
             $description = Request::get('description');
             $alttext     = Request::get('alttext');
             $target_type = Request::get('target_type');
@@ -130,6 +131,12 @@ class Admin_BannerController extends AuthenticatedController
 
             if(!$banner_path){
                 $errors[] = _('Es wurde kein Bild ausgewählt.');
+            }
+
+            // upload mobile banner file
+            $upload = $_FILES['imgfile_mobile'];
+            if (!empty($upload['name'])) {
+                $banner_mobile_path = $this->bannerupload($upload['tmp_name'], $upload['size'], $upload['name'], $errors);
             }
 
             $startdate = strtotime(Request::get('start_date', 0));
@@ -173,14 +180,15 @@ class Admin_BannerController extends AuthenticatedController
                 PageLayout::postError(_('Es sind folgende Fehler aufgetreten:'), $errors);
                 $this->redirect('admin/banner');
             } else {
-                $banner->banner_path = $banner_path;
-                $banner->description = $description;
-                $banner->alttext     = $alttext;
-                $banner->target_type = $target_type;
-                $banner->target      = $target;
-                $banner->startdate   = $startdate;
-                $banner->enddate     = $enddate;
-                $banner->priority    = $priority;
+                $banner->banner_path        = $banner_path;
+                $banner->banner_mobile_path = $banner_mobile_path;
+                $banner->description        = $description;
+                $banner->alttext            = $alttext;
+                $banner->target_type        = $target_type;
+                $banner->target             = $target;
+                $banner->startdate          = $startdate;
+                $banner->enddate            = $enddate;
+                $banner->priority           = $priority;
                 $banner->store();
 
                 $assignedroles = Request::intArray('assignedroles');

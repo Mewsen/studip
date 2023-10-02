@@ -959,4 +959,14 @@ html:not(.responsive-display):not(.fullscreen-mode) {
         min-width: 20vw;
         max-width: 100vw;
     }
+
+    .studip-banner {
+        .studip-banner-image {
+            display: none;
+        }
+
+        .studip-mobile-banner-image {
+            display: unset;
+        }
+    }
 }
