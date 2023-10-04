@@ -29,12 +29,14 @@ class Oer_MymaterialController extends AuthenticatedController
         $content_types = ['application/x-zip-compressed', 'application/zip', 'application/x-zip'];
         $tmp_folder = $GLOBALS['TMP_PATH'] . '/temp_folder_' . md5(uniqid());
         if (Request::submitted('delete') && Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
             $material->pushDataToIndexServers('delete');
             $material->delete();
             PageLayout::postSuccess(_('Das Material wurde gelöscht.'));
             $this->redirect('oer/market/index');
             return;
         } elseif (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
             $was_new = $material->isNew();
             $material->setData(Request::getArray('data'));
             $material['host_id'] = null;
