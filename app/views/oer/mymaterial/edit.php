@@ -120,8 +120,8 @@
 
             <label>
                 <?= _('Vorschau-URL (optional)') ?>
-                <input type="text" name="data[player_url]"
-                       value="<?= htmlReady($material['player_url'] ?: $template['player_url']) ?>">
+                <input type="url" name="data[player_url]" pattern="^https?://.*"
+                       value="<?= htmlReady($material['player_url'] ?: $template['player_url'] ?? '') ?>">
             </label>
 
             <? if (!$material->isNew()) : ?>
