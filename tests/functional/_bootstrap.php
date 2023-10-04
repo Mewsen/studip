@@ -72,6 +72,21 @@ if (!class_exists('StudipArrayCache')) {
         {
             return ($this->data[$name] = $content);
         }
+
+        public static function getDisplayName(): string
+        {
+            return '';
+        }
+
+        public function getStats(): array
+        {
+            return [];
+        }
+
+        public static function getConfig(): array
+        {
+            return [];
+        }
     }
 }
 
