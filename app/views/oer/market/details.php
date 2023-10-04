@@ -2,7 +2,7 @@
 
 <? $url = $material['host_id'] ? $material->host->url."download/".$material['foreign_material_id'] : $controller->link_for("oer/endpoints/download/".$material->getId()) ?>
 
-<? if ($material['player_url']) : ?>
+<? if ($material->hasValidPreviewUrl()) : ?>
     <iframe src="<?= htmlReady($material['player_url']) ?>"
             class="lernmarktplatz_player"></iframe>
     <? OERDownloadcounter::addCounter($material->id) ?>
