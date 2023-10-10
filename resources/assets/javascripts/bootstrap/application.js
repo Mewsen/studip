@@ -366,21 +366,18 @@ STUDIP.ready(function () {
 
     check_capslock_form($('#content')); //applies the capslock check to all input tags
 
-    document.onkeydown = function (e) { //check if capslock key was pressed in the whole window
-        e = e || event;
-        if (typeof (window.lastpress) === 'undefined') {
-            window.lastpress = e.timeStamp;
-        }
-        if (typeof (window.capsLockEnabled) !== 'undefined') {
-            if (e.key == 'CapsLock' && e.timeStamp > window.lastpress + 50) {
-                window.capsLockEnabled = !window.capsLockEnabled;
-                jQuery('#password_caps').toggle();
-            }
-            window.lastpress = e.timeStamp;
-            //sometimes this function is called twice when pressing capslock once, so I use the timeStamp to fix the problem
+
+    function check_capslock_form(where) {
+        if (!where) {
+            where = $(document);
         }
 
-    };
+        where.find('input,select').each(function () {
+            if (this.type != "hidden") {
+                jQuery(this).keypress(check_capslock);
+            }
+        });
+    }
 
     function check_capslock(e) { //check what key was pressed in the form
         var s = String.fromCharCode(e.keyCode);
@@ -394,16 +391,7 @@ STUDIP.ready(function () {
         }
     }
 
-    function check_capslock_form(where) {
-        if (!where) {
-            where = $(document);
-        }
-        where.find('input,select').each(function () {
-            if (this.type != "hidden") {
-                jQuery(this).keypress(check_capslock);
-            }
-        });
-    }
+
 
     // toggle password visibility and eye icon
     $(document).on('click', '#password-toggle', function () {
