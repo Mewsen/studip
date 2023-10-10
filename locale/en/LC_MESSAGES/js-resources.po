@@ -5,15 +5,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-09-20 09:29+0000\n"
-"Last-Translator: Ron Lucke <lucke@elan-ev.de>\n"
+"PO-Revision-Date: 2023-10-10 11:29+0000\n"
+"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
+"X-Generator: Weblate 5.0.2\n"
 "Generated-By: easygettext\n"
 
 #: resources/assets/javascripts/lib/multi_person_search.js:70
@@ -2451,7 +2451,7 @@ msgstr "Birthday"
 #: resources/vue/components/courseware/CoursewareBiographyPersonalInformationBlock.vue:6
 #: resources/vue/components/courseware/CoursewareBiographyPersonalInformationBlock.vue:7
 msgid "Geburtsort"
-msgstr "Birthplace"
+msgstr "Place of birth"
 
 #: resources/vue/components/courseware/CoursewareCanvasBlock.vue:43
 msgid "gelb"
@@ -2490,7 +2490,7 @@ msgstr "Speed"
 
 #: resources/vue/components/courseware/CoursewareToolsBlockadder.vue:67
 msgid "Gestaltung"
-msgstr "Layout"
+msgstr "Design"
 
 #: resources/vue/components/courseware/CoursewareSharedItems.vue:17
 msgid "Geteilte Lernmaterialien"
