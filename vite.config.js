@@ -1,4 +1,4 @@
-import {defineConfig} from 'vite';
+import {defineConfig, splitVendorChunkPlugin } from 'vite';
 import path from 'path'
 import {processAssetFileNames, entryFileNames, chunkFileNames, assetDir} from "./configAssets";
 import vue from '@vitejs/plugin-vue2'
@@ -36,6 +36,7 @@ export default defineConfig({
     },
     plugins: [
         vue(),
+        splitVendorChunkPlugin(),
     ],
     build: {
         lib: {
@@ -46,14 +47,15 @@ export default defineConfig({
                 "studip-statusgroups": fullAssetsDir + "/javascripts/entry-statusgroups.js",
                 "studip-wysiwyg": fullAssetsDir + "/javascripts/entry-wysiwyg.js",
                 "studip-installer": fullAssetsDir + "/javascripts/entry-installer.js",
-                "studip-less": fullAssetsDir + "/stylesheets/studip.less",
-                "studip-scss": fullAssetsDir + "/stylesheets/studip.scss",
-                "studip-jquery-ui": fullAssetsDir + "/stylesheets/studip-jquery-ui.less",
+                // "studip-less": fullAssetsDir + "/stylesheets/studip.less",
+                // "studip-scss": fullAssetsDir + "/stylesheets/studip.scss",
+                // "studip-jquery-ui": fullAssetsDir + "/stylesheets/studip-jquery-ui.less",
                 "print": fullAssetsDir + "/stylesheets/print.less",
                 "webservices": fullAssetsDir + "/stylesheets/webservices.scss",
                 "accessibility": fullAssetsDir + "/stylesheets/highcontrast.scss"
             },
         },
+        cssCodeSplit: true,
         assetsDir: assetDir,
         minify: true,
         outDir: './',

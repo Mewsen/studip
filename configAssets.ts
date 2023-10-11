@@ -33,5 +33,5 @@ export function processAssetFileNames(info: PreRenderedAsset): string {
         }
     }
     // default since we don't have an entry
-    return `${assetDir}/[name].[extname]`
+    return `${assetDir}/[name][extname]`
 }
