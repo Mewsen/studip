@@ -40,23 +40,11 @@ export default defineConfig({
         vue(),
         requireTransform({}),
     ],
+    root: '/',
+    rollupOptions: {
+        input: fullAssetsDir + "/javascripts/entry-base.js"
+    },
     build: {
-        lib: {
-            // Could also be a dictionary or array of multiple entry points
-            entry: {
-                "studip-base": fullAssetsDir + "/javascripts/entry-base.js",
-                "studip-admission": fullAssetsDir + "/javascripts/entry-admission.js",
-                "studip-statusgroups": fullAssetsDir + "/javascripts/entry-statusgroups.js",
-                "studip-wysiwyg": fullAssetsDir + "/javascripts/entry-wysiwyg.js",
-                "studip-installer": fullAssetsDir + "/javascripts/entry-installer.js",
-                // "studip-less": fullAssetsDir + "/stylesheets/studip.less",
-                // "studip-scss": fullAssetsDir + "/stylesheets/studip.scss",
-                // "studip-jquery-ui": fullAssetsDir + "/stylesheets/studip-jquery-ui.less",
-                "print": fullAssetsDir + "/stylesheets/print.less",
-                "webservices": fullAssetsDir + "/stylesheets/webservices.scss",
-                "accessibility": fullAssetsDir + "/stylesheets/highcontrast.scss"
-            },
-        },
         cssCodeSplit: true,
         assetsDir: assetDir,
         minify: true,
