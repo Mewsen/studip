@@ -1,12 +1,13 @@
 import {defineConfig} from 'vite';
 import path from 'path'
-import { nodeResolve } from '@rollup/plugin-node-resolve';
+import {processAssetFileNames, entryFileNames, chunkFileNames, assetDir} from "./configAssets";
 import vue from '@vitejs/plugin-vue2'
 
-const assetsPath = path.resolve(__dirname, "resources/assets");
+const fullAssetsDir = path.resolve(__dirname, "resources/assets");
 export default defineConfig({
     resolve: {
         alias: {
+            '@img': path.resolve(__dirname, 'public/assets/images'),
             '@vue$': 'vue/dist/vue.esm.js',
             '@jquery-ui/data': 'jquery-ui/ui/data',
             '@jquery-ui/disable-selection': 'jquery-ui/ui/disable-selection',
@@ -34,32 +35,28 @@ export default defineConfig({
         }
     },
     plugins: [
-        nodeResolve(),
         vue(),
     ],
-    dedupe: ['vue-resizable', '@node_modules/vrp-vue-resizable'],
-    optimizeDeps: {
-        exclude: ['components/vue-resizable']
-    },
     build: {
         lib: {
             // Could also be a dictionary or array of multiple entry points
             entry: {
-                "studip-base": assetsPath + "/javascripts/entry-base.js",
-                "studip-admission": assetsPath + "/javascripts/entry-admission.js",
-                "studip-statusgroups": assetsPath + "/javascripts/entry-statusgroups.js",
-                "studip-wysiwyg": assetsPath + "/javascripts/entry-wysiwyg.js",
-                "studip-installer": assetsPath + "/javascripts/entry-installer.js",
-                "print": path.resolve(__dirname, "resources/assets/stylesheets") + "/print.less",
-                "webservices": path.resolve(__dirname, "resources/assets/stylesheets") + "/webservices.scss",
-                "accessibility": path.resolve(__dirname, "resources/assets/stylesheets") + "/highcontrast.scss"
+                "studip-base": fullAssetsDir + "/javascripts/entry-base.js",
+                "studip-admission": fullAssetsDir + "/javascripts/entry-admission.js",
+                "studip-statusgroups": fullAssetsDir + "/javascripts/entry-statusgroups.js",
+                "studip-wysiwyg": fullAssetsDir + "/javascripts/entry-wysiwyg.js",
+                "studip-installer": fullAssetsDir + "/javascripts/entry-installer.js",
+                "studip-less": fullAssetsDir + "/stylesheets/studip.less",
+                "studip-scss": fullAssetsDir + "/stylesheets/studip.scss",
+                "studip-jquery-ui": fullAssetsDir + "/stylesheets/studip-jquery-ui.less",
+                "print": fullAssetsDir + "/stylesheets/print.less",
+                "webservices": fullAssetsDir + "/stylesheets/webservices.scss",
+                "accessibility": fullAssetsDir + "/stylesheets/highcontrast.scss"
             },
-            name: 'MyLib',
-            // the proper extensions will be added
-            fileName: 'my-lib',
         },
+        assetsDir: assetDir,
         minify: true,
-        outDir: 'public/assets',
+        outDir: './',
         // don't inline anything for demo
         assetsInlineLimit: 0,
         emptyOutDir: false,
@@ -69,9 +66,11 @@ export default defineConfig({
                 /^expose-loader.*/,
                 'vue'
             ],
+            output: {
+                entryFileNames: entryFileNames,
+                assetFileNames: processAssetFileNames,
+                chunkFileNames: chunkFileNames
+            }
         }
-    },
-    define: {
-        _global: ({})
     }
 })
