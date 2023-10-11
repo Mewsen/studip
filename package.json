@@ -7,7 +7,12 @@
         "webpack-dev": "webpack --config webpack.dev.js --mode development",
         "webpack-prod": "webpack --config webpack.prod.js --mode production",
         "webpack-watch": "webpack --config webpack.dev.js --mode development --watch",
-        "test": "jest tests/jest/"
+        "test": "jest tests/jest/",
+        "build": "vite build",
+        "dev": "vite serv",
+        "serve-vite": "vite",
+        "build-vite": "vite build",
+        "preview-vite": "vite preview"
     },
     "author": "",
     "license": "GPL-2.0",
@@ -65,8 +70,11 @@
         "@fullcalendar/resource-timeline": "^4.3.0",
         "@fullcalendar/timegrid": "^4.3.0",
         "@johmun/vue-tags-input": "^2.1.0",
+        "@originjs/vite-plugin-commonjs": "^1.0.1",
         "@playwright/test": "^1.33.0",
         "@popperjs/core": "^2.11.2",
+        "@rollup/plugin-alias": "^5.0.1",
+        "@rollup/plugin-node-resolve": "^15.2.3",
         "@types/jquery": "^3.5.16",
         "@types/jqueryui": "^1.12.16",
         "@types/lodash": "^4.14.191",
@@ -116,7 +124,7 @@
         "multiselect": "0.9.12",
         "pdfjs-dist": "^2.6.347",
         "portal-vue": "^2.1.7",
-        "postcss": "^8.1.8",
+        "postcss": "^8.4.5",
         "postcss-less": "^6.0.0",
         "postcss-loader": "4.1.0",
         "postcss-scss": "^4.0.4",
@@ -132,6 +140,10 @@
         "tablesorter": "2.31.3",
         "ts-loader": "^9.4.2",
         "typescript": "^5.0.2",
+        "vite": "^4.4.11",
+        "vite-plugin-env-compatible": "^1.1.1",
+        "vite-plugin-html": "3.2.0",
+        "vite-plugin-vue2": "^2.0.3",
         "vrp-vue-resizable": "1.2.7",
         "vue": "^2.7.14",
         "vue-dragscroll": "^3.0.1",
@@ -173,5 +185,8 @@
     },
     "eslint-junit": {
         "output": "./.reports/eslint-report.xml"
+    },
+    "dependencies": {
+        "@vitejs/plugin-vue2": "^2.2.0"
     }
 }

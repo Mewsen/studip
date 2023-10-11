@@ -1,8 +1,9 @@
 import {defineConfig} from 'vite';
-import path, from 'path'
+import path from 'path'
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import vue from '@vitejs/plugin-vue2'
 
+const assetsPath = path.resolve(__dirname, "resources");
 export default defineConfig({
     resolve: {
         alias: {
