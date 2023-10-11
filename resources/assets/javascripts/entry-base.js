@@ -1,3 +1,5 @@
+import jQuery from 'jquery';
+window.$ = jQuery;
 import './public-path.js'
 
 // promise polyfill needed for IE11 to load tablesorter

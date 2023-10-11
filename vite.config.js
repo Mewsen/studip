@@ -1,13 +1,15 @@
-import {defineConfig, splitVendorChunkPlugin } from 'vite';
+import {defineConfig } from 'vite';
 import path from 'path'
 import {processAssetFileNames, entryFileNames, chunkFileNames, assetDir} from "./configAssets";
 import vue from '@vitejs/plugin-vue2'
+import requireTransform from 'vite-plugin-require-transform';
 
 const fullAssetsDir = path.resolve(__dirname, "resources/assets");
 export default defineConfig({
     resolve: {
         alias: {
             '@img': path.resolve(__dirname, 'public/assets/images'),
+            '@fonts': path.resolve(__dirname, 'public/assets/fonts'),
             '@vue$': 'vue/dist/vue.esm.js',
             '@jquery-ui/data': 'jquery-ui/ui/data',
             '@jquery-ui/disable-selection': 'jquery-ui/ui/disable-selection',
@@ -36,7 +38,7 @@ export default defineConfig({
     },
     plugins: [
         vue(),
-        splitVendorChunkPlugin(),
+        requireTransform({}),
     ],
     build: {
         lib: {
@@ -58,20 +60,18 @@ export default defineConfig({
         cssCodeSplit: true,
         assetsDir: assetDir,
         minify: true,
+        modulePreload: false,
         outDir: './',
-        // don't inline anything for demo
-        assetsInlineLimit: 0,
         emptyOutDir: false,
         copyPublicDir: false,
         rollupOptions: {
             external: [
-                /^expose-loader.*/,
                 'vue'
             ],
             output: {
                 entryFileNames: entryFileNames,
                 assetFileNames: processAssetFileNames,
-                chunkFileNames: chunkFileNames
+                chunkFileNames: chunkFileNames,
             }
         }
     }
