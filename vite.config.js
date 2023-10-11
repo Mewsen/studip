@@ -62,7 +62,8 @@ export default defineConfig({
         outDir: 'public/assets',
         // don't inline anything for demo
         assetsInlineLimit: 0,
-        emptyOutDir: true,
+        emptyOutDir: false,
+        copyPublicDir: false,
         rollupOptions: {
             external: [
                 /^expose-loader.*/,
