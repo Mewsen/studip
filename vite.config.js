@@ -40,10 +40,6 @@ export default defineConfig({
         vue(),
         requireTransform({}),
     ],
-    root: '/',
-    rollupOptions: {
-        input: fullAssetsDir + "/javascripts/entry-base.js"
-    },
     build: {
         cssCodeSplit: true,
         assetsDir: assetDir,
@@ -52,15 +48,23 @@ export default defineConfig({
         outDir: './',
         emptyOutDir: false,
         copyPublicDir: false,
+        target: "es2015",
         rollupOptions: {
-            external: [
-                'vue'
-            ],
             output: {
                 entryFileNames: entryFileNames,
                 assetFileNames: processAssetFileNames,
                 chunkFileNames: chunkFileNames,
-            }
+            },
+            input: {
+                "studip-base": fullAssetsDir + "/javascripts/entry-base.js",
+                "studip-admission": fullAssetsDir + "/javascripts/entry-admission.js",
+                "studip-statusgroups": fullAssetsDir + "/javascripts/entry-statusgroups.js",
+                "studip-wysiwyg": fullAssetsDir + "/javascripts/entry-wysiwyg.js",
+                "studip-installer": fullAssetsDir + "/javascripts/entry-installer.js",
+                "print": path.resolve(__dirname, "resources/assets/stylesheets") + "/print.less",
+                "webservices": path.resolve(__dirname, "resources/assets/stylesheets") + "/webservices.scss",
+                "accessibility": path.resolve(__dirname, "resources/assets/stylesheets") + "/highcontrast.scss"
+            },
         }
     }
 })
