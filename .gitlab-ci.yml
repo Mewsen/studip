@@ -159,7 +159,7 @@ lint-js:
   interruptible: true
   before_script:
     - *mkdir-reports
-    - npm install -g npm@7
+    - npm install -g npm@8
     - npm install
       --no-save --no-audit --no-fund
       --loglevel=error
