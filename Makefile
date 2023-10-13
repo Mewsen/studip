@@ -51,12 +51,17 @@ webpack-watch: npm
 	npm run webpack-prod
 	@touch $@
 
-clean-webpack:
+clean-webpack: clean-assets
 	@rm -f .webpack.dev .webpack.prod
+
+clean-assets:
 	rm -rf public/assets/javascripts/*.js
 	rm -rf public/assets/javascripts/*.js.map
 	rm -rf public/assets/stylesheets/*.css
 	rm -rf public/assets/stylesheets/*.css.map
+
+assets: npm node_modules/.package-lock.json $(RESOURCES)
+	npm run build-vite
 
 doc: force_update
 	doxygen Doxyfile
