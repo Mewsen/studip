@@ -38,7 +38,6 @@ class Admin_LoginFaqController extends AuthenticatedController
             $this->entry->isNew() ? _('Hilfetext hinzufügen') : _('Hilfetext bearbeiten')
         );
 
-
     }
 
     public function store_action()

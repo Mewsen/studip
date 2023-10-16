@@ -32,7 +32,9 @@
                     _('Hinweistext löschen'),
                     Icon::create('trash'),
                     [
-                        'data-confirm' => _('Wollen Sie den Hinweistext wirklich löschen?'),
+                        'data-confirm' => sprintf(
+                            _('Wollen Sie den Hinweistext "%s" wirklich löschen?'),
+                        $entry->title),
                         'data-dialog'  => 'size=auto',
                     ]
                 ); ?>
