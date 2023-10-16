@@ -22,7 +22,7 @@ if (!match_route('web_migrate.php')) {
     $bg_mobile = URLHelper::getURL('pictures/loginbackgrounds/2.jpg');
 }
 ?>
-<main id="content">
+<main id="content" class="loginpage">
     <div id="background-desktop" style="background: url(<?= $bg_desktop ?>) no-repeat top left/cover;"></div>
     <div id="background-mobile" style="background: url(<?= $bg_mobile ?>) no-repeat top left/cover;"></div>
     <? if ($loginerror): ?>
@@ -140,7 +140,7 @@ if (!match_route('web_migrate.php')) {
 
     <? if (count($faq_entries) > 0) : ?>
         <div id="faq_box">
-            <h1><?= _('FAQ zum Login') ?></h1>
+            <h1><?= _('Hinweise zum Login') ?></h1>
         <? foreach ($faq_entries as $entry) : ?>
             <article class="studip toggle">
                 <header>

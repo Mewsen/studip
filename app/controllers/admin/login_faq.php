@@ -18,7 +18,7 @@ class Admin_LoginFaqController extends AuthenticatedController
 
         parent::before_filter($action, $args);
         $GLOBALS['perm']->check('admin');
-        PageLayout::setTitle(_('Hilfetexte zum Login'));
+        PageLayout::setTitle(_('Hinweise zum Login'));
         Navigation::activateItem('/admin/locations/login_faq');
     }
 
@@ -54,25 +54,21 @@ class Admin_LoginFaqController extends AuthenticatedController
             if ($entry->store()) {
                 PageLayout::postSuccess(_('Hilfetext wurde gespeichert.'));
                 $this->redirect('admin/login_faq/index');
-
             }
-
         }
-
     }
 
-    public function delete_action()
+    public function delete_action($faq_entry_id)
     {
-        $this->faq_entry = new LoginFaq(Request::get("id"));
-        if (Request::isPost()) {
-            $this->faq_entry->delete();
-            PageLayout::postSuccess(sprintf(
-                _("Der Hilfetext wurde gelöscht."), htmlReady(Request::get("id"))
-            ));
-        } else {
-            throw new AccessDeniedException();
-        }
-        $this->redirect("admin/login_faq/index");
+        CSRFProtection::verifyRequest();
+
+        LoginFaq::deleteBySQL('faq_id = ?', [$faq_entry_id]);
+        PageLayout::postSuccess(sprintf(
+            _("Der Hilfetext wurde gelöscht."), htmlReady(Request::get("id"))
+        ));
+
+        $redirect_url = $this->url_for('admin/login_faq/index');
+        $this->relocate($redirect_url);
     }
 
     protected function setupSidebar()

@@ -3,7 +3,7 @@
 ?>
 
 <table class="default">
-    <caption><?= _('Hilfetexte zum Login') ?></caption>
+    <caption><?= _('Hinweise zum Login') ?></caption>
     <thead>
     <tr>
         <th><?= _('Titel') ?></th>
@@ -19,15 +19,26 @@
             <td><?= htmlReady($entry->title) ?></td>
             <td><?= formatReady($entry->description) ?></td>
             <td class="actions">
-                <a href="<?= $controller->url_for("admin/login_faq/edit", ['entry_id' => $entry->getId()] ) ?>" data-dialog>
-                    <?= Icon::create("edit")->asImg(20) ?>
-                </a>
-                <form action="<?= $controller->url_for("admin/login_faq/delete/" . $entry->getId()) ?>"
-                      method="post"
-                      data-confirm="<?= _("Wirklich löschen?") ?>"
-                      class="inline">
-                    <?= Icon::create("trash")->asInput(20) ?>
-                </form>
+                <? $actionmenu = ActionMenu::get() ?>
+                <? $actionmenu->addLink(
+                    $controller->url_for("admin/login_faq/edit", ['entry_id' => $entry->getId()]),
+                    _('Hinweistext bearbeiten'),
+                    Icon::create('edit'),
+                    ['data-dialog' => 'size=medium']);
+                ?>
+
+                <? $actionmenu->addLink(
+                    $controller->url_for("admin/login_faq/delete/{$entry->getId()}"),
+                    _('Hinweistext löschen'),
+                    Icon::create('trash'),
+                    [
+                        'data-confirm' => _('Wollen Sie den Hinweistext wirklich löschen?'),
+                        'data-dialog'  => 'size=auto',
+                    ]
+                ); ?>
+                <?= $actionmenu->render() ?>
+
+
             </td>
         </tr>
         <? endforeach ?>

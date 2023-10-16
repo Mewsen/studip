@@ -167,7 +167,7 @@ class AdminNavigation extends Navigation
             $navigation->addSubNavigation(
                 'login_faq',
                 new Navigation(
-                    _('Hilfetexte zum Login'),
+                    _('Hinweise zum Login'),
                     'dispatch.php/admin/login_faq'
                 )
             );
