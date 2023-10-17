@@ -33,6 +33,7 @@
  * @property string children computed column
  * @property SimpleORMapCollection members has_many StatusgruppeUser
  * @property Statusgruppen parent belongs_to Statusgruppen
+ * @property-read Range|null $range
  */
 class Statusgruppen extends SimpleORMap implements PrivacyObject
 {
@@ -77,6 +78,12 @@ class Statusgruppen extends SimpleORMap implements PrivacyObject
             'on_delete' => 'delete'
         ];
         $config['additional_fields']['children'] = true;
+
+        $config['additional_fields']['range'] = [
+            'get' => function (Statusgruppen $group): ?Range {
+                return RangeFactory::find($group->range_id);
+            },
+        ];
 
         $config['default_values']['position'] = null;
 

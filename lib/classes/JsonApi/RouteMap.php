@@ -140,6 +140,7 @@ class RouteMap
         $this->app->get('/config-values/{id}', Routes\ConfigValues\ConfigValuesShow::class);
         $this->app->patch('/config-values/{id}', Routes\ConfigValues\ConfigValuesUpdate::class);
 
+        $this->app->get('/status-groups/{id}', Routes\StatusgroupShow::class);
 
         $this->addAuthenticatedBlubberRoutes();
 //        $this->addAuthenticatedConsultationRoutes();
