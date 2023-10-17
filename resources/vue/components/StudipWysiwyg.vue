@@ -50,6 +50,9 @@ export default {
             this.$emit('input', value);
         },
     },
+    created() {
+        STUDIP.loadChunk('mathjax');
+    },
     mounted() {
         if (!this.enabled) {
             Toolbar.initialize(this.$refs.textarea);
