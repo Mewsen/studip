@@ -162,11 +162,17 @@ class AdminNavigation extends Navigation
             $pool = new Navigation(_('Bilder-Pool'), 'dispatch.php/stock_images', []);
             $navigation->addSubNavigation('stock_images', $pool);
 
+        }
+
+        if ($perm->have_perm('root')) {
             $navigation->addSubNavigation(
                 'loginstyle',
-                new Navigation(_('Startseite: Bilder'),
+                new Navigation(
+                    _('Startseite: Bilder'),
                     'dispatch.php/admin/loginstyle'));
+        }
 
+        if ($GLOBALS['perm']->have_perm('admin')) {
             $navigation->addSubNavigation(
                 'login_faq',
                 new Navigation(
