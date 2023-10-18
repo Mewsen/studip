@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-04 14:31+0200\n"
-"PO-Revision-Date: 2023-10-18 15:28+0000\n"
+"PO-Revision-Date: 2023-10-18 15:51+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-4/en/>\n"
@@ -44007,14 +44007,12 @@ msgid "Dateiliste"
 msgstr "File list"
 
 #: lib/models/Courseware/BlockTypes/Download.php:100
-#, fuzzy
 msgid "Dateiablage"
-msgstr "File name"
+msgstr "File tray"
 
 #: lib/models/Courseware/BlockTypes/Download.php:100
-#, fuzzy
 msgid "Ablegen"
-msgstr "Create"
+msgstr "File"
 
 #: lib/models/Courseware/BlockTypes/Download.php:102
 msgid "Filesharing"
@@ -44662,9 +44660,8 @@ msgid "Input"
 msgstr "Input"
 
 #: lib/models/Courseware/BlockTypes/Video.php:104
-#, fuzzy
 msgid "Vertiefung"
-msgstr "Substitute"
+msgstr "Absorption"
 
 #: lib/models/Courseware/BlockTypes/Timeline.php:24
 #: lib/models/Courseware/BlockTypes/Timeline.php:73
