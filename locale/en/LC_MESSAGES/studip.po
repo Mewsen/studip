@@ -27,8 +27,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-19 08:58+0200\n"
-"PO-Revision-Date: 2023-09-20 09:29+0000\n"
-"Last-Translator: Ron Lucke <lucke@elan-ev.de>\n"
+"PO-Revision-Date: 2023-10-19 15:29+0000\n"
+"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-1/en/>\n"
 "Language: en\n"
@@ -36,7 +36,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
+"X-Generator: Weblate 5.0.2\n"
 
 #: app/routes/Clipboard.php:26 app/routes/Clipboard.php:68
 #: app/controllers/resources/property.php:65
@@ -8816,9 +8816,8 @@ msgstr "Curriculum vitae"
 #: app/views/settings/details.php:61 lib/classes/LockRules.class.php:237
 #: lib/extern/elements/main/ExternElementMainPersondetails.class.php:73
 #: lib/extern/modules/ExternModulePersondetails.class.php:79
-#, fuzzy
 msgid "Schwerpunkte"
-msgstr "Research interests"
+msgstr "Focus"
 
 #: app/views/settings/details.php:65 app/controllers/settings/details.php:113
 #: app/controllers/profile.php:149 lib/classes/LockRules.class.php:238
