@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-10-10 11:29+0000\n"
+"PO-Revision-Date: 2023-10-19 15:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-3-js/en/>\n"
@@ -780,7 +780,7 @@ msgstr "Author"
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:16
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:10
 msgid "Balkendiagramm"
-msgstr "Bar chart"
+msgstr "Bar diagram"
 
 #: resources/vue/components/courseware/CoursewareHeadlineBlock.vue:23
 #: resources/vue/components/courseware/CoursewareHeadlineBlock.vue:6
@@ -887,7 +887,7 @@ msgstr "Professional goal"
 #: resources/vue/components/courseware/CoursewareBiographyCareerBlock.vue:27
 #: resources/vue/components/courseware/CoursewareBiographyCareerBlock.vue:107
 msgid "Berufserfahrung"
-msgstr "Professional experience"
+msgstr "Work experience"
 
 #: resources/vue/components/courseware/CoursewareBiographyAchievementsBlock.vue:24
 #: resources/vue/components/courseware/CoursewareBiographyAchievementsBlock.vue:61
@@ -917,7 +917,7 @@ msgstr "Description"
 #: resources/vue/components/courseware/CoursewareImageMapBlock.vue:85
 #: resources/vue/components/courseware/CoursewareImageMapBlock.vue:57
 msgid "Beschriftung"
-msgstr "Labeling"
+msgstr "Label"
 
 #: resources/vue/components/courseware/CoursewareConfirmBlock.vue:5
 #: resources/vue/components/courseware/CoursewareConfirmBlock.vue:2
@@ -3335,7 +3335,7 @@ msgstr "Add circle"
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:17
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:11
 msgid "Kreisdiagramm"
-msgstr "Pie chart"
+msgstr "Circle diagram"
 
 #: resources/vue/mixins/courseware/colors.js:120
 msgid "Kürbis"
@@ -3565,7 +3565,7 @@ msgstr "Purple"
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:20
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:14
 msgid "Liniendiagramm"
-msgstr "Line chart"
+msgstr "Line diagram"
 
 #: resources/vue/components/courseware/CoursewareContentLinks.vue:9
 msgid "Link"
@@ -4257,7 +4257,7 @@ msgstr "Mandatory question"
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:19
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:13
 msgid "Polardiagramm"
-msgstr "Polar area chart"
+msgstr "Polar diagram"
 
 #: resources/vue/components/MemcachedCacheConfig.vue:17
 #: resources/vue/components/RedisCacheConfig.vue:10
@@ -4349,7 +4349,7 @@ msgstr "huge"
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:18
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:12
 msgid "Ringdiagramm"
-msgstr "Donut chart"
+msgstr "Ring diagram"
 
 #: resources/vue/components/courseware/CoursewareCanvasBlock.vue:42
 msgid "rot"
@@ -4377,7 +4377,7 @@ msgstr "Saturday"
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:15
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:9
 msgid "Säulendiagramm"
-msgstr "Bar chart"
+msgstr "Column diagram"
 
 #: resources/assets/javascripts/lib/smiley_picker.js:83
 msgid "Schliessen"
