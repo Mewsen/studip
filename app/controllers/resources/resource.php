@@ -1468,5 +1468,7 @@ class Resources_ResourceController extends AuthenticatedController
 
         //Set the last visit date to the current timestamp:
         $this->last_visitdate = time();
+
+        $this->show_bulk_checkboxes = true;
     }
 }
