@@ -5,6 +5,7 @@
         entry-type="users"
         entry-id="<?= htmlReady($user_id) ?>"
         unit-id="<?= htmlReady($unit_id) ?>"
+        oer-enabled='<?= htmlReady($oer_enabled) ?>'
         licenses='<?= htmlReady($licenses) ?>'
         >
     </div>

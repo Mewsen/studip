@@ -8,6 +8,7 @@ const getDefaultState = () => {
         context: {},
         courseware: {},
         currentElement: {},
+        oerEnabled: null,
         licenses: null, // we need a route for License SORM
         httpClient: null,
         lastElement: null,
@@ -98,8 +99,8 @@ const getters = {
     currentElementisLink(state, getters, rootState, rootGetters) {
         return getters.currentStructuralElement?.attributes?.['is-link'] === 1;
     },
-    currentStructuralElementImageURL(state, getters) {
-        return getters.currentStructuralElement?.relationships?.image?.meta?.['download-url'];
+    oerEnabled(state) {
+        return state.oerEnabled;
     },
     licenses(state) {
         return state.licenses;
@@ -250,13 +251,6 @@ const getters = {
     },
     assistiveLiveContents(state) {
         return state.assistiveLiveContents;
-    },
-
-    oerCampusEnabled(state, getters, rootState, rootGetters) {
-        return rootGetters['studip-properties/byId']({ id: 'oer-campus-enabled'}).attributes?.value;
-    },
-    oerEnableSuggestions(state, getters, rootState, rootGetters) {
-        return getters.oerCampusEnabled && rootGetters['studip-properties/byId']({ id: 'oer-enable-suggestions'}).attributes?.value;
     }
 };
 
@@ -784,6 +778,10 @@ export const actions = {
 
     coursewareContext(context, id) {
         context.commit('coursewareContextSet', id);
+    },
+
+    oerEnabled(context, enabled) {
+        context.commit('oerEnabledSet', enabled);
     },
 
     licenses(context, licenses) {
@@ -1353,6 +1351,10 @@ export const mutations = {
 
     coursewareContextSet(state, data) {
         state.context = data;
+    },
+
+    oerEnabledSet(state, data) {
+        state.oerEnabled = data;
     },
 
     licensesSet(state, data) {
