@@ -297,6 +297,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
             $this->isEditable($GLOBALS['user']->id)
             && Config::get()->OERCAMPUS_ENABLED
             && $GLOBALS['perm']->have_perm(Config::get()->OER_PUBLIC_STATUS)
+            && in_array($this->fileref->folder->range_type, ['course', 'user'])
         ) {
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/share_oer/' . $this->fileref->id),
