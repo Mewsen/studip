@@ -144,6 +144,11 @@ class Request implements ArrayAccess, IteratorAggregate
         if (!empty($GLOBALS['REVERSE_PROXY_TARGET_URL'])) {
             //Only return the remainder of the path that is not part of REVERSE_PROXY_TARGET_URL.
             $reverse_proxy_target_path = parse_url($GLOBALS['REVERSE_PROXY_TARGET_URL'], PHP_URL_PATH);
+            if ($reverse_proxy_target_path[-1] === '/') {
+                //Remove the slash at the end since REQUEST_URI will contain one.
+                $reverse_proxy_target_path = mb_substr($reverse_proxy_target_path, 0, -1);
+            }
+
             $remaining_path = substr($_SERVER['REQUEST_URI'], strlen($reverse_proxy_target_path));
             if ($remaining_path[0] !== '/') {
                 $remaining_path = '/' . $remaining_path;
