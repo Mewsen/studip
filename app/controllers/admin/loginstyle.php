@@ -176,7 +176,7 @@ class Admin_LoginStyleController extends AuthenticatedController
 
     }
 
-    public function store_action()
+    public function store_faq_action()
     {
         if (Request::isPost()) {
             CSRFProtection::verifyRequest();
@@ -188,7 +188,7 @@ class Admin_LoginStyleController extends AuthenticatedController
 
             if ($entry->store()) {
                 PageLayout::postSuccess(_('Hilfetext wurde gespeichert.'));
-                $this->redirect('admin/login_faq/index');
+                $this->redirect('admin/loginstyle/login_faq');
             }
         }
     }
@@ -202,7 +202,7 @@ class Admin_LoginStyleController extends AuthenticatedController
             _("Der Hilfetext wurde gelöscht."), htmlReady(Request::get("id"))
         ));
 
-        $redirect_url = $this->url_for('admin/login_faq/index');
+        $redirect_url = $this->url_for('admin/loginstyle/login_faq');
         $this->relocate($redirect_url);
     }
 

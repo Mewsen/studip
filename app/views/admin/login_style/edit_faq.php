@@ -1,4 +1,4 @@
-<form action="<?= $controller->link_for("admin/login_faq/store", ['id' => $entry->getId()]) ?>"
+<form action="<?= $controller->link_for("admin/loginstyle/store_faq", ['id' => $entry->getId()]) ?>"
       method="post"
       enctype="multipart/form-data"
       class="default">

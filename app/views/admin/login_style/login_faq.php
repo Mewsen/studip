@@ -1,7 +1,3 @@
-<?php
-
-?>
-
 <table class="default">
     <caption><?= _('Hinweise zum Login') ?></caption>
     <thead>
