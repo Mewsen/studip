@@ -137,9 +137,9 @@ if (!match_route('web_migrate.php')) {
         </footer>
     </div>
 
-    <? if (count($faq_entries) > 0) : ?>
+    <? if (Config::get()->LOGIN_FAQ_VISIBILITY && count($faq_entries) > 0) : ?>
         <div id="faq_box">
-            <header><h1><?= _('Hinweise zum Login') ?></h1></header>
+            <header><h1><?= htmlReady(Config::get()->LOGIN_FAQ_TITLE) ?></h1></header>
         <? foreach ($faq_entries as $entry) : ?>
             <article class="studip toggle">
                 <header>
