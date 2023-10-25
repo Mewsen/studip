@@ -322,7 +322,6 @@ class Seminar_Auth
                 $_SESSION['forced_language'] = Request::get('set_language');
                 $_SESSION['_language'] = Request::get('set_language');
             }
-            echo "seminar_auth_:-->";
         }
 
         PageLayout::setBodyElementId('login');

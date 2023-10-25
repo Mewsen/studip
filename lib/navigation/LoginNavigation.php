@@ -28,7 +28,7 @@ class LoginNavigation extends Navigation
         $navigation->setLinkAttributes([
             'id' => 'toggle_login'
         ]);
-        $navigation->setURL('index.php?#');
+        $navigation->setURL('index.php?');
         $this->addSubNavigation('standard_login', $navigation);
 
         foreach (StudipAuthAbstract::getInstance() as $auth_plugin) {

@@ -216,6 +216,5 @@ function setLocaleEnv($language, $language_domain = ''){
         textdomain($language_domain);
         bind_textdomain_codeset($language_domain, 'utf-8');
     }
-    echo $language;
     return $ret;
 }

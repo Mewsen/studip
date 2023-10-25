@@ -407,8 +407,9 @@ STUDIP.ready(function () {
     });
 
     $(document).on('click', '#toggle_login', function () {
-        $('#login_form').slideToggle("slow");
+        $('#login_form').slideToggle('400');
         $('#loginname').trigger('focus');
+        return false;
 
 
     });
