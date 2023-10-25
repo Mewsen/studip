@@ -41,7 +41,7 @@ class LoginNavigation extends Navigation
 
         if (Config::get()->ENABLE_SELF_REGISTRATION) {
             $navigation = new Navigation(_('Registrieren'), 'register1.php');
-            $navigation->setDescription(_('um NutzerIn zu werden'));
+            $navigation->setDescription(_('um das System erstmalig zu nutzen'));
             $this->addSubNavigation('register', $navigation);
         }
 

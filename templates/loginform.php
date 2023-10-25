@@ -41,7 +41,6 @@ if (!match_route('web_migrate.php')) {
     <div id="loginbox">
         <header>
             <h1><?= htmlReady(Config::get()->UNI_NAME_CLEAN) ?></h1>
-            <h2 style="margin: 0; padding-bottom:10px;"><?=_('Herzlich willkommen!')?></h2>
         </header>
 
         <? if (in_array('Standard', $GLOBALS['STUDIP_AUTH_PLUGIN']) && count($GLOBALS['STUDIP_AUTH_PLUGIN']) === 1) : ?>
@@ -94,7 +93,7 @@ if (!match_route('web_migrate.php')) {
             <div id="languages">
                 <? foreach ($GLOBALS['INSTALLED_LANGUAGES'] as $temp_language_key => $temp_language): ?>
                     <?= Assets::img('languages/' . $temp_language['picture'], ['alt' => $temp_language['name'], 'size' => '24']) ?>
-                    <a href="index.php?set_language=<?= $temp_language_key ?>&cancel_login=1">
+                    <a href="index.php?set_language=<?= $temp_language_key ?>">
                         <?= htmlReady($temp_language['name']) ?>
                     </a>
                 <? endforeach; ?>
@@ -140,7 +139,7 @@ if (!match_route('web_migrate.php')) {
 
     <? if (count($faq_entries) > 0) : ?>
         <div id="faq_box">
-            <h1><?= _('Hinweise zum Login') ?></h1>
+            <header><h1><?= _('Hinweise zum Login') ?></h1></header>
         <? foreach ($faq_entries as $entry) : ?>
             <article class="studip toggle">
                 <header>

@@ -48,9 +48,8 @@ use Studip\Button;
     <input type="hidden" name="login_ticket" value="<?=Seminar_Session::get_ticket();?>">
     <input type="hidden" name="resolution"  value="">
     <input type="hidden" name="device_pixel_ratio" value="1">
-    <?= Button::createAccept(_('Anmelden'), _('Login'), ['id' => 'submit_login']); ?>
 
-    <div>
+    <div style="text-align: right; width: 95%">
         <? if (Config::get()->ENABLE_REQUEST_NEW_PASSWORD_BY_USER && in_array('Standard', $GLOBALS['STUDIP_AUTH_PLUGIN'])): ?>
         <a href="<?= URLHelper::getLink('dispatch.php/new_password?cancel_login=1') ?>">
             <? else: ?>
@@ -59,4 +58,7 @@ use Studip\Button;
                 <?= _('Passwort vergessen?') ?>
             </a>
     </div>
+    <?= Button::createAccept(_('Anmelden'), _('Login'), ['id' => 'submit_login']); ?>
+
+
 </form>

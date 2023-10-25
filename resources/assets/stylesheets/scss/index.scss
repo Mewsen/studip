@@ -158,7 +158,10 @@ $gap-between-boxes: calc($login-page-margin / 2);
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
     padding: 20px;
     width: 450px;
-    float:left;
+    float: left;
+    > header {
+        margin: 10px 0 0 0;
+    }
 }
 
 #login-plugin-contents {
@@ -179,5 +182,5 @@ $gap-between-boxes: calc($login-page-margin / 2);
 }
 
 ::-ms-reveal {
-    display: none
+    display: none;
 }
