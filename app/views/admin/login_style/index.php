@@ -54,7 +54,7 @@
                 </td>
                 <td class="actions">
                 <? if (!$pic->in_release): ?>
-                    <a href="<?= $controller->link_for("admin/loginstyle/delete/{$pic->id}") ?>">
+                    <a href="<?= $controller->link_for("admin/loginstyle/delete_pic/{$pic->id}") ?>">
                         <?= Icon::create('trash')->asImg([
                             'title'        => _('Bild löschen'),
                             'data-confirm' => _('Soll das Bild wirklich gelöscht werden?'),

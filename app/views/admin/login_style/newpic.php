@@ -3,7 +3,7 @@
  * @var Admin_LoginStyleController $controller
  */
 ?>
-<form class="default" action="<?= $controller->link_for('admin/loginstyle/add') ?>" method="post" enctype="multipart/form-data">
+<form class="default" action="<?= $controller->link_for('admin/loginstyle/add_pic') ?>" method="post" enctype="multipart/form-data">
     <fieldset>
         <legend>
             <?= _('Bild(er) hinzufügen') ?>

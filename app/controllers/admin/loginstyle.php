@@ -19,6 +19,11 @@ class Admin_LoginStyleController extends AuthenticatedController
      */
     public function before_filter(&$action, &$args)
     {
+
+        if ($action === 'add_faq') {
+            $action = 'edit_faq';
+        }
+
         parent::before_filter($action, $args);
 
         // user must have root permission
@@ -28,8 +33,21 @@ class Admin_LoginStyleController extends AuthenticatedController
         PageLayout::setTitle(_('Hintergrundbilder für den Startbildschirm'));
         Navigation::activateItem('/admin/locations/loginstyle');
 
-        // Setup sidebar
-        $this->setSidebar();
+        $sidebar = Sidebar::get();
+        $views = new ViewsWidget();
+        $views->addLink(
+            _('Bilder'),
+            $this->url_for('admin/loginstyle')
+        )->setActive($action === 'index');
+
+        $views->addLink(
+            _('Hinweise zum Login'),
+            $this->url_for('admin/loginstyle/login_faq')
+        )->setActive($action === 'login_faq');
+
+        $sidebar->addWidget($views);
+
+
     }
 
     /**
@@ -37,6 +55,8 @@ class Admin_LoginStyleController extends AuthenticatedController
      */
     public function index_action()
     {
+        // Setup sidebar
+        $this->setSidebar('index');
         $this->pictures = LoginBackground::findBySQL("1 ORDER BY `background_id`");
     }
 
@@ -50,7 +70,7 @@ class Admin_LoginStyleController extends AuthenticatedController
     /**
      * Adds a new picture ass possible login background.
      */
-    public function add_action()
+    public function add_pic_action()
     {
         CSRFProtection::verifyRequest();
         $success = 0;
@@ -103,7 +123,7 @@ class Admin_LoginStyleController extends AuthenticatedController
      * Deletes the given picture.
      * @param $id the picture to delete
      */
-    public function delete_action($id)
+    public function delete_pic_action($id)
     {
         $pic = LoginBackground::find($id);
         if ($pic->in_release) {
@@ -135,19 +155,85 @@ class Admin_LoginStyleController extends AuthenticatedController
         $this->relocate('admin/loginstyle');
     }
 
+
+    /**
+     * FAQ part of login page
+     */
+    public function login_faq_action()
+    {
+        $this->setSidebar('login_faq');
+        $this->faq_entries = LoginFaq::findBySql('1');
+    }
+
+    public function edit_faq_action()
+    {
+        $id = Request::get('entry_id') ?: null;
+        $this->entry = new LoginFaq($id);
+
+        PageLayout::setTitle(
+            $this->entry->isNew() ? _('Hilfetext hinzufügen') : _('Hilfetext bearbeiten')
+        );
+
+    }
+
+    public function store_action()
+    {
+        if (Request::isPost()) {
+            CSRFProtection::verifyRequest();
+            $id = Request::get('id') ?: null; // Convert possible empty string to null
+            $entry = new LoginFaq($id);
+            $entry->id = Request::get('id');
+            $entry->title = Request::get('title');
+            $entry->description = Request::get('description');
+
+            if ($entry->store()) {
+                PageLayout::postSuccess(_('Hilfetext wurde gespeichert.'));
+                $this->redirect('admin/login_faq/index');
+            }
+        }
+    }
+
+    public function delete_faq_action($faq_entry_id)
+    {
+        CSRFProtection::verifyRequest();
+
+        LoginFaq::deleteBySQL('faq_id = ?', [$faq_entry_id]);
+        PageLayout::postSuccess(sprintf(
+            _("Der Hilfetext wurde gelöscht."), htmlReady(Request::get("id"))
+        ));
+
+        $redirect_url = $this->url_for('admin/login_faq/index');
+        $this->relocate($redirect_url);
+    }
+
     /**
      * Adds the content to sidebar
      */
-    protected function setSidebar()
+    protected function setSidebar($action)
     {
         $sidebar = Sidebar::get();
 
         $links = new ActionsWidget();
-        $links->addLink(
-            _('Bild hinzufügen'),
-            $this->url_for('admin/loginstyle/newpic'),
-            Icon::create('add', 'clickable')
-        )->asDialog('size=auto');
+
+        if ($action === 'index') {
+            $links->addLink(
+                _('Bild hinzufügen'),
+                $this->url_for('admin/loginstyle/newpic'),
+                Icon::create('add', 'clickable')
+            )->asDialog('size=auto');
+        } else if ($action === 'login_faq') {
+            $links->addLink(
+                _('Hilfetext hinzufügen'),
+                $this->url_for('admin/loginstyle/add_faq'),
+                Icon::create('add')
+            )->asDialog();
+
+        }
+
+
+
+
         $sidebar->addWidget($links);
+
     }
 }

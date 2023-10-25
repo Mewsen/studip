@@ -168,18 +168,8 @@ class AdminNavigation extends Navigation
             $navigation->addSubNavigation(
                 'loginstyle',
                 new Navigation(
-                    _('Startseite: Bilder'),
+                    _('Startseite'),
                     'dispatch.php/admin/loginstyle'));
-        }
-
-        if ($GLOBALS['perm']->have_perm('admin')) {
-            $navigation->addSubNavigation(
-                'login_faq',
-                new Navigation(
-                    _('Startseite: Hinweise zum Login'),
-                    'dispatch.php/admin/login_faq'
-                )
-            );
         }
 
         $this->addSubNavigation('locations', $navigation);
