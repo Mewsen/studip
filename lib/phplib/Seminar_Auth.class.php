@@ -301,8 +301,6 @@ class Seminar_Auth
             throw new AccessDeniedException();
         }
 
-        $this->check_environment();
-
         // if desired, switch to high contrast stylesheet and store when user logs in
         if (Request::get('unset_contrast')) {
             unset($_SESSION['contrast']);
@@ -323,6 +321,8 @@ class Seminar_Auth
                 $_SESSION['_language'] = Request::get('set_language');
             }
         }
+
+        $this->check_environment();
 
         PageLayout::setBodyElementId('login');
 

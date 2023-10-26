@@ -19,72 +19,9 @@
 
 require '../lib/bootstrap.php';
 
-page_open(['sess' => 'Seminar_Session', 'auth' => 'Seminar_Default_Auth', 'perm' => 'Seminar_Perm', 'user' => 'Seminar_User']);
-
-$auth->login_if(($auth->auth['uid'] == 'nobody'));
-
-// store user-specific language preference
-if ($auth->is_authenticated() && $user->id != 'nobody') {
-    // store last language click
-    if (!empty($_SESSION['forced_language'])) {
-        $query = "UPDATE user_info SET preferred_language = ? WHERE user_id = ?";
-        $statement = DBManager::get()->prepare($query);
-        $statement->execute([$_SESSION['forced_language'], $user->id]);
-
-        $_SESSION['_language'] = $_SESSION['forced_language'];
-    }
-    $_SESSION['forced_language'] = null;
-}
-
-// -- wir sind jetzt definitiv in keinem Seminar, also... --
-closeObject();
-
-include 'lib/seminar_open.php'; // initialise Stud.IP-Session
+page_open(['sess' => 'Seminar_Session', 'auth' => 'Seminar_Auth', 'perm' => 'Seminar_Perm', 'user' => 'Seminar_User']);
 
 // if new start page is in use, redirect there (if logged in)
 if ($auth->is_authenticated() && $user->id != 'nobody') {
     header('Location: ' . URLHelper::getURL('dispatch.php/start'));
-    die;
 }
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * *   L O G I N - P A G E   ( N O B O D Y - U S E R )   * *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-PageLayout::setHelpKeyword("Basis.Startseite"); // set keyword for new help
-PageLayout::setTitle(_("Startseite"));
-Navigation::activateItem('/start');
-PageLayout::setTabNavigation(NULL); // disable display of tabs
-
-// Start of Output
-include 'lib/include/html_head.inc.php'; // Output of html head
-include 'lib/include/header.php';
-
-// Prüfen, ob PortalPlugins vorhanden sind.
-// TODO: Remove for Stud.IP 6.0
-/** @deprecated */
-$portalplugins = PluginEngine::getPlugins('PortalPlugin');
-$layout = $GLOBALS['template_factory']->open('shared/index_box');
-
-$plugin_contents = [];
-foreach ($portalplugins as $portalplugin) {
-    $template = $portalplugin->getPortalTemplate();
-
-    if ($template) {
-        $plugin_contents[] = $template->render(NULL, $layout);
-        $layout->clear_attributes();
-    }
-}
-
-
-$index_nobody_template = $GLOBALS['template_factory']->open('index_nobody');
-$index_nobody_template->set_attributes([
-    'plugin_contents'  => $plugin_contents,
-    'logout'           =>  Request::bool('logout'),
-]);
-
-echo $index_nobody_template->render();
-
-page_close();
-
-include 'lib/include/html_end.inc.php';
