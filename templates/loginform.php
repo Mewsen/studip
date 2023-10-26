@@ -21,6 +21,7 @@ if (!match_route('web_migrate.php')) {
     $bg_desktop = URLHelper::getURL('pictures/loginbackgrounds/1.jpg');
     $bg_mobile = URLHelper::getURL('pictures/loginbackgrounds/2.jpg');
 }
+$show_hidden_login = false;
 ?>
 <main id="content" class="loginpage">
     <div id="background-desktop" style="background: url(<?= $bg_desktop ?>) no-repeat top left/cover;"></div>
@@ -43,7 +44,7 @@ if (!match_route('web_migrate.php')) {
             <h1><?= htmlReady(Config::get()->UNI_NAME_CLEAN) ?></h1>
         </header>
 
-        <? if (in_array('Standard', $GLOBALS['STUDIP_AUTH_PLUGIN']) && count($GLOBALS['STUDIP_AUTH_PLUGIN']) === 1) : ?>
+        <? if (count($GLOBALS['STUDIP_AUTH_PLUGIN']) === 1 && StudipAuthAbstract::isLoginEnabled()) : ?>
             <?= $this->render_partial('_standard_loginform', [
                 'display' => 'block'
             ]) ?>
@@ -52,34 +53,36 @@ if (!match_route('web_migrate.php')) {
             <ul>
                 <? foreach (Navigation::getItem('/login') as $key => $nav) : ?>
                     <? if ($nav->isVisible()) : ?>
-                        <? if (
-                                (in_array('Standard', $GLOBALS['STUDIP_AUTH_PLUGIN'])
-                                && count($GLOBALS['STUDIP_AUTH_PLUGIN']) === 1
-                                && $key !== 'standard_login')
-                            || (count($GLOBALS['STUDIP_AUTH_PLUGIN']) > 1)) : ?>
-                                <? $name_and_title = explode(' - ', $nav->getTitle()) ?>
-                                <li class="login_link">
-                                    <? if (is_internal_url($url = $nav->getURL())) : ?>
-                                    <? SkipLinks::addLink($name_and_title[0], $url) ?>
-                                    <a href="<?= URLHelper::getLink($url) ?>?cancel_login=1" id="<?= $nav->getLinkAttributes()['id'] ?>">
-                                    <? else : ?>
-                                    <a href="<?= htmlReady($url) ?>" target="_blank" rel="noopener noreferrer">
-                                    <? endif ?>
-                                    <?= htmlReady($name_and_title[0]) ?>
-                                    <p>
-                                        <?= htmlReady(!empty($name_and_title[1]) ? $name_and_title[1] : $nav->getDescription()) ?>
-                                    </p>
-                                    </a>
-                                </li>
-                        <? endif ?>
+                    <? if ($key === 'standard_login') {
+                            if (count($GLOBALS['STUDIP_AUTH_PLUGIN']) === 1 && StudipAuthAbstract::isLoginEnabled()) {
+                                continue;
+                            } else {
+                                $show_hidden_login = true;
+                            }
+                        }
+                        ?>
+                        <? $name_and_title = explode(' - ', $nav->getTitle()) ?>
+                        <li class="login_link">
+                            <? if (is_internal_url($url = $nav->getURL())) : ?>
+                            <? SkipLinks::addLink($name_and_title[0], $url) ?>
+                            <a href="<?= URLHelper::getLink($url, ['cancel_login' => 1]) ?>" id="<?= $nav->getLinkAttributes()['id'] ?>">
+                            <? else : ?>
+                            <a href="<?= htmlReady($url) ?>" target="_blank" rel="noopener noreferrer">
+                            <? endif ?>
+                            <?= htmlReady($name_and_title[0]) ?>
+                            <p>
+                                <?= htmlReady(!empty($name_and_title[1]) ? $name_and_title[1] : $nav->getDescription()) ?>
+                            </p>
+                            </a>
+                        </li>
                     <? endif ?>
                 <? endforeach ?>
             </ul>
         </nav>
 
-        <? if (in_array('Standard', $GLOBALS['STUDIP_AUTH_PLUGIN']) && count($GLOBALS['STUDIP_AUTH_PLUGIN']) >= 1) : ?>
+        <? if ($show_hidden_login) : ?>
             <?= $this->render_partial('_standard_loginform', [
-                'display' => 'none'
+                'display' => empty($loginerror) ? 'none' : 'block'
             ]) ?>
         <? endif ?>
 
