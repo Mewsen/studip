@@ -19,7 +19,9 @@
 
 require '../lib/bootstrap.php';
 
-page_open(['sess' => 'Seminar_Session', 'auth' => 'Seminar_Auth', 'perm' => 'Seminar_Perm', 'user' => 'Seminar_User']);
+page_open(['sess' => 'Seminar_Session', 'auth' => 'Seminar_Default_Auth', 'perm' => 'Seminar_Perm', 'user' => 'Seminar_User']);
+
+$auth->login_if($user->id === 'nobody');
 
 // if new start page is in use, redirect there (if logged in)
 if ($auth->is_authenticated() && $user->id != 'nobody') {
