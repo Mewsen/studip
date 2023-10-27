@@ -161,6 +161,9 @@ class Admin_LoginStyleController extends AuthenticatedController
      */
     public function login_faq_action()
     {
+
+        PageLayout::setTitle(_('Hinweise zum Login für den Startbildschirm'));
+
         $this->setSidebar('login_faq');
         $this->faq_entries = LoginFaq::findBySql('1');
     }
@@ -188,7 +191,7 @@ class Admin_LoginStyleController extends AuthenticatedController
 
             if ($entry->store()) {
                 PageLayout::postSuccess(_('Hilfetext wurde gespeichert.'));
-                $this->redirect('admin/loginstyle/login_faq');
+                $this->relocate('admin/loginstyle/login_faq');
             }
         }
     }
