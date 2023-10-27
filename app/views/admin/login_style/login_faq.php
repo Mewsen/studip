@@ -3,26 +3,16 @@
     <thead>
     <tr>
         <th><?= _('Titel') ?></th>
-        <th><?= _('Text') ?></th>
-
-        <th class="actions"><?= _('Aktionen') ?></th>
+        <th class="actions"><?= _('Löschen') ?></th>
     </tr>
     </thead>
     <tbody>
     <? if (count($faq_entries) > 0) : ?>
         <? foreach ($faq_entries as $entry) : ?>
             <tr>
-                <td><?= htmlReady($entry->title) ?></td>
-                <td><?= formatReady($entry->description) ?></td>
+                <td><a href="<?= $controller->link_for("admin/loginstyle/edit_faq", ['entry_id' => $entry->getId()]) ?>" data-dialog="size=medium"><?= htmlReady($entry->title) ?></a></td>
                 <td class="actions">
                     <? $actionmenu = ActionMenu::get() ?>
-                    <? $actionmenu->addLink(
-                        $controller->url_for("admin/loginstyle/edit_faq", ['entry_id' => $entry->getId()]),
-                        _('Hinweistext bearbeiten'),
-                        Icon::create('edit'),
-                        ['data-dialog' => 'size=medium']);
-                    ?>
-
                     <? $actionmenu->addLink(
                         $controller->url_for("admin/loginstyle/delete_faq/{$entry->getId()}"),
                         _('Hinweistext löschen'),
@@ -35,8 +25,6 @@
                         ]
                     ); ?>
                     <?= $actionmenu->render() ?>
-
-
                 </td>
             </tr>
         <? endforeach ?>

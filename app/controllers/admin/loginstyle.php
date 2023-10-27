@@ -189,10 +189,10 @@ class Admin_LoginStyleController extends AuthenticatedController
             $entry->title = Request::get('title');
             $entry->description = Request::get('description');
 
-            if ($entry->store()) {
-                PageLayout::postSuccess(_('Hilfetext wurde gespeichert.'));
-                $this->relocate('admin/loginstyle/login_faq');
-            }
+            $entry->store();
+            PageLayout::postSuccess(_('Hilfetext wurde gespeichert.'));
+            $this->relocate('admin/loginstyle/login_faq');
+
         }
     }
 
