@@ -187,7 +187,6 @@ class ActionMenu
                 'icon'       => $icon,
                 'label'      => $label,
                 'attributes' => $attributes,
-                'index'      => ''
             ];
         }
 
@@ -206,7 +205,6 @@ class ActionMenu
             $this->actions[] = [
                 'type'   => 'multi-person-search',
                 'object' => $mp,
-                'index'  => ''
             ];
         }
 
