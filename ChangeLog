@@ -1,3 +1,9 @@
+02.11.2023 v 5.2.5
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.2.5&state=all
+- Paket league/oauth2-server sollte aufgrund eines Sicherheitsupdate aktualisiert werden [#3334]
+- Nicht mehr verwendete JS-Dateien der Ankündigungen entfernen [#3351]
+- XSS-Schwachstelle bei der globalen Suche [#3353]
+
 01.11.2023 v 5.1.6
 https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.1.6&state=all
 - Insecure header validation in slim/psr7 [#3304]
