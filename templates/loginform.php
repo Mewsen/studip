@@ -117,28 +117,6 @@ $show_hidden_login = false;
                     <? endif ?>
                 </div>
 
-                <div class="login_info">
-                    <div>
-                        <?= _('Aktive Veranstaltungen') ?>:
-                        <?= number_format($num_active_courses, 0, ',', '.') ?>
-                    </div>
-
-                    <div>
-                        <?= _('Registrierte NutzerInnen') ?>:
-                        <?= number_format($num_registered_users, 0, ',', '.') ?>
-                    </div>
-
-                    <div>
-                        <?= _('Davon online') ?>:
-                        <?= number_format($num_online_users, 0, ',', '.') ?>
-                    </div>
-
-                    <div>
-                        <a href="dispatch.php/siteinfo/show?cancel_login=1">
-                            <?= _('mehr') ?> &hellip;
-                        </a>
-                    </div>
-                </div>
             </footer>
         </div>
     </div>

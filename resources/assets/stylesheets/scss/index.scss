@@ -54,7 +54,7 @@ $gap-between-boxes: calc($login-page-margin / 2);
     float: left;
 
     header {
-        margin: 10px 0 0 0;
+        margin: 5px 0 0 0;
 
         h1 {
             border-bottom: 0;
@@ -67,7 +67,7 @@ $gap-between-boxes: calc($login-page-margin / 2);
             list-style-type: none;
             margin: 0;
             width: 450px;
-            padding-inline-start: 10px;
+            padding-inline-start: 0px;
 
             .login_link {
                 display: inline-block;
@@ -102,6 +102,10 @@ $gap-between-boxes: calc($login-page-margin / 2);
             a {
                 text-decoration: underline;
             }
+        }
+
+        #contrast {
+            padding-bottom: 0;
         }
 
         div.login_info {
@@ -160,7 +164,7 @@ $gap-between-boxes: calc($login-page-margin / 2);
     width: 450px;
     float: left;
     > header {
-        margin: 10px 0 0 0;
+        margin: 5px 0 0 0;
     }
 }
 
