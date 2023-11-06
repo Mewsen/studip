@@ -1,7 +1,8 @@
 <?php
 /*
- * StudipAuthLTI.php - Stud.IP authentication against LTI 1.1 consumer
+ * StudipAuthLTI.class.php - Stud.IP authentication against an LTI 1.3A consumer
  * Copyright (c) 2018  Elmar Ludwig
+ * Copyright (c) 2023-2024  Moritz Strohm
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -11,7 +12,12 @@
 
 use Studip\OAuth2\NegotiatesWithPsr7;
 
+use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
+use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResultInterface;
+use OAT\Library\Lti1p3Core\Security\User\UserAuthenticatorInterface;
+
 class StudipAuthLTI extends StudipAuthSSO
+    implements UserAuthenticatorInterface
 {
     use NegotiatesWithPsr7;
 
@@ -66,9 +72,19 @@ class StudipAuthLTI extends StudipAuthSSO
      *
      * @return  bool    true if authentication succeeds
      *
+     * @throws OAuthException2  if the signature verification failed
+     *
      */
     public function isAuthenticated($username, $password)
     {
+        require_once 'vendor/oauth-php/library/OAuthRequestVerifier.php';
+
+        OAuthStore::instance('PDO', [
+            'dsn' => 'mysql:host=' . $GLOBALS['DB_STUDIP_HOST'] . ';dbname=' . $GLOBALS['DB_STUDIP_DATABASE'],
+            'username' => $GLOBALS['DB_STUDIP_USER'],
+            'password' => $GLOBALS['DB_STUDIP_PASSWORD']
+        ]);
+
         $consumer_key = Request::get('oauth_consumer_key');
         $consumer_secret = $this->consumer_keys[$consumer_key]['consumer_secret'];
 
@@ -88,6 +104,8 @@ class StudipAuthLTI extends StudipAuthSSO
      * @param   string $password the password (ignored)
      *
      * @return  mixed   if authentication succeeds: the Stud.IP user, else false
+     *
+     * @throws OAuthException2  if the signature verification failed
      */
     public function authenticateUser($username, $password)
     {
@@ -131,5 +149,15 @@ class StudipAuthLTI extends StudipAuthSSO
     public function getUserData($key)
     {
         return Request::get($key);
+    }
+
+    //\OAT\Library\Lti1p3Core\Security\User\UserAuthenticatorInterface implementation:
+
+    public function authenticate(RegistrationInterface $registration, string $loginHint) : UserAuthenticationResultInterface
+    {
+        //Not implemented yet:
+        return new \OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult(false, null);
+
+        // TODO: Implement authenticate() method.
     }
 }
