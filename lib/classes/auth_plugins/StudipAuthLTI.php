@@ -155,9 +155,30 @@ class StudipAuthLTI extends StudipAuthSSO
 
     public function authenticate(RegistrationInterface $registration, string $loginHint) : UserAuthenticationResultInterface
     {
-        //Not implemented yet:
-        return new \OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult(false, null);
+        //Check if the user-ID is known:
+        $user = User::find($loginHint);
+        if (!$user) {
+            return new \OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult(false, null);
+        }
 
-        // TODO: Implement authenticate() method.
+        //Authenticate the user:
+        if ($this->authenticateUser($user->username, '')) {
+            return new \OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult(
+                true,
+                new \OAT\Library\Lti1p3Core\User\UserIdentity(
+                    $user->id,
+                    $user->getFullName(),
+                    $user->email,
+                    $user->vorname,
+                    $user->nachname,
+                    '',
+                    $user->preferred_language,
+                    Avatar::getAvatar($user->id)->getURL(Avatar::SMALL)
+                )
+            );
+        }
+
+        //The user could not be authenticated:
+        return new \OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult(false, null);
     }
 }
