@@ -173,8 +173,11 @@ function replaceTextarea(textarea) {
         // make sure HTML marker is always set, in
         // case contents are cut-off by the backend
         $textarea.closest('form').submit(() => {
-            ckeditor.setData(wysiwyg.markAsHtml(ckeditor.getData()));
-            ckeditor.updateSourceElement();
+            // only trigger if the editor is still attached to the textarea
+            if (getEditor($textarea[0]) === ckeditor) {
+                ckeditor.setData(wysiwyg.markAsHtml(ckeditor.getData()));
+                ckeditor.updateSourceElement();
+            }
         });
 
         // focus the editor if requested
