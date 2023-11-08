@@ -24,7 +24,6 @@ import ImageToolbarPlugin from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 import Indent from '@ckeditor/ckeditor5-indent/src/indent';
 import IndentBlock from '@ckeditor/ckeditor5-indent/src/indentblock';
 import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
-import LanguageDe from '@ckeditor/ckeditor5-build-classic/build/translations/de.js';
 import LinkPlugin from '@ckeditor/ckeditor5-link/src/link';
 import List from '@ckeditor/ckeditor5-list/src/list';
 import ListProperties from '@ckeditor/ckeditor5-list/src/listproperties';

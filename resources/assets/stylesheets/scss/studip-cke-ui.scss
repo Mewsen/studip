@@ -60,6 +60,9 @@
 
     /* z-index */
     --ck-z-modal: 1003;
+
+    /* tooltips */
+    --ck-color-tooltip-text: var(--color-text);
 }
 
 .ck.ck-editor {
@@ -78,6 +81,7 @@
 /* buttons */
 .ck.ck-button, a.ck.ck-button {
     font-size: 12px;
+    color: var(--base-color);
 }
 
 .ck.ck-button:hover {
@@ -315,23 +319,28 @@ a.ck.ck-button.ck-button_with-text.ck-dropdown__button:not(.ck-disabled):hover {
 
 /* tooltips */
 
+.ck.ck-balloon-panel.ck-tooltip {
+    background-color: transparent;
+}
 
 .ck.ck-tooltip .ck-tooltip__text {
+    background-color: var(--dark-gray-color-5);
     border: 1px solid var(--dark-gray-color-30);
     box-shadow: inset 0 1px 0 hsla(0,0%,100%,.5);
     font-size: 14px;
     margin-bottom: 8px;
-    padding: 8px;
+    padding: 12px;
     text-align: left;
     text-shadow: 0 1px 0 hsla(0,0%,100%,.5);
     white-space: normal;
     z-index: 10000;
     word-wrap: break-word;
     color: var(--black);
-    top: 4px;
+    top: 12px;
+    position: relative;
 }
 
-.ck.ck-tooltip.ck-tooltip_s .ck-tooltip__text::after {
+.ck.ck-tooltip__text::after {
     content: "";
     height: 0;
     width: 0;
@@ -344,7 +353,8 @@ a.ck.ck-button.ck-button_with-text.ck-dropdown__button:not(.ck-disabled):hover {
     margin-right: -8px;
     top: -16px;
 }
-.ck.ck-tooltip.ck-tooltip_s .ck-tooltip__text::before {
+
+.ck.ck-tooltip__text::before {
     content: "";
     height: 0;
     width: 0;
@@ -391,7 +401,9 @@ form.default .ck-source-editing-area textarea {
 #forum .ck form {
     display: inherit;
 }
-
+.ck.ck-toolbar {
+    background-color: var(--dark-gray-color-5);
+}
 /* toolbar fix for dialogs */
 .ck.ck-toolbar > .ck-toolbar__items {
     max-width: calc(100% - 20px);
