@@ -207,6 +207,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
         };
 
         $config['registered_callbacks']['after_delete'][] = 'cbRemoveFeedback';
+        $config['registered_callbacks']['after_delete'][] = 'cbRemoveForumVisits';
         $config['registered_callbacks']['before_store'][] = 'cbClearCaches';
 
         $info = new UserInfo();
@@ -1458,6 +1459,17 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
     {
         FeedbackElement::deleteBySQL('user_id = ?', [$this->id]);
         FeedbackEntry::deleteBySQL('user_id = ?', [$this->id]);
+    }
+
+    /**
+     * This callback is called after deleting a User.
+     * It removes forum visit entries that are associated with the User.
+     */
+    public function cbRemoveForumVisits()
+    {
+        $query = "DELETE FROM `forum_visits`
+                  WHERE `user_id` = ?";
+        DBManager::get()->execute($query, [$this->id]);
     }
 
     public function cbClearCaches()
