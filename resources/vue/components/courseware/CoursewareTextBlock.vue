@@ -23,6 +23,7 @@
 
 <script>
 import CoursewareDefaultBlock from './CoursewareDefaultBlock.vue';
+import FindAndReplace from '@ckeditor/ckeditor5-find-and-replace/src/findandreplace';
 import { blockMixin } from './block-mixin.js';
 import { ClassicEditor, BalloonEditor } from '@/assets/javascripts/chunks/wysiwyg'
 import { mapActions } from 'vuex';
@@ -44,6 +45,7 @@ export default {
             editor: ClassicEditor,
             editorConfig: {
                 // The configuration of the editor.
+                extraPlugins: [FindAndReplace],
             }
         };
     },
