@@ -8,7 +8,6 @@ import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import EasyImagePlugin from '@ckeditor/ckeditor5-easy-image/src/easyimage';
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
 import FileRepository from '@ckeditor/ckeditor5-upload/src/filerepository';
-import FindAndReplace from '@ckeditor/ckeditor5-find-and-replace/src/findandreplace';
 import FontBackgroundColor from '@ckeditor/ckeditor5-font/src/fontbackgroundcolor.js';
 import FontColor from '@ckeditor/ckeditor5-font/src/fontcolor.js';
 import GeneralHtmlSupport from '@ckeditor/ckeditor5-html-support/src/generalhtmlsupport';
@@ -50,9 +49,7 @@ import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline.js';
 import Mathematics from 'ckeditor5-math/src/math';
 /* ckeditor elan */
 import StudipA11YDialog, { updateVoiceLabel } from '../cke/studip-a11y-dialog/a11y-dialog.js';
-import StudipBlockQuote from '../cke/studip-quote/StudipBlockQuote.js';
 import StudipUpload from '../cke/StudipUpload.js';
-import StudipWikiLink from '../cke/wiki-link/wiki-link.js';
 import SpecialCharactersSmiley from '../cke/special_characters/SpecialCharactersSmiley.js';
 import SpecialCharactersGreek from '../cke/special_characters/SpecialCharactersGreek.js';
 import '../../stylesheets/scss/studip-cke-ui.scss';
@@ -67,7 +64,6 @@ ClassicEditor.builtinPlugins = [
     BoldPlugin,
     CodeBlock,
     EssentialsPlugin,
-    FindAndReplace,
     FontColor,
     FontBackgroundColor,
     GeneralHtmlSupport,
@@ -97,7 +93,6 @@ ClassicEditor.builtinPlugins = [
     SpecialCharactersMathematical,
     SpecialCharactersText,
     Strikethrough,
-    StudipBlockQuote,
     StudipUpload,
     Subscript,
     Superscript,
@@ -139,12 +134,15 @@ ClassicEditor.defaultConfig = {
             'redo',
             'findAndReplace',
             '|',
+            'heading',
             'bold',
             'italic',
             'underline',
             'strikethrough',
             'subscript',
             'superscript',
+            'fontColor',
+            'fontBackgroundColor',
             '|',
             'removeFormat',
             '|',
@@ -158,10 +156,6 @@ ClassicEditor.defaultConfig = {
             'alignment:right',
             'alignment:center',
             'alignment:justify',
-            '-',
-            'heading',
-            'fontColor',
-            'fontBackgroundColor',
             '|',
             'link',
             'insertTable',

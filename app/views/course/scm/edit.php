@@ -38,6 +38,7 @@
             <?= _('Inhalt') ?>
             <?= I18N::textarea('content', $scm->content, [
                 'class' => 'add_toolbar wysiwyg size-l',
+                'data-editor' => 'extraPlugins=FindAndReplace',
             ]) ?>
         </label>
     </fieldset>
