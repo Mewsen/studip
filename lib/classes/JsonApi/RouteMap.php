@@ -563,6 +563,22 @@ class RouteMap
         $group->delete('/courseware-clipboards/{id}', Routes\Courseware\ClipboardsDelete::class);
 
         $group->post('/courseware-clipboards/{id}/insert', Routes\Courseware\ClipboardsInsert::class);
+
+        $group->get('/courseware-peer-review-processes', Routes\Courseware\PeerReview\ProcessesIndex::class);
+        $group->get('/courseware-peer-review-processes/{id}', Routes\Courseware\PeerReview\ProcessesShow::class);
+        $group->get('/courseware-peer-review-processes/{id}/peer-reviews', Routes\Courseware\PeerReview\ReviewsOfProcessesIndex::class);
+
+        $group->patch('/courseware-peer-review-processes/{id}', Routes\Courseware\PeerReview\ProcessesUpdate::class);
+        $group->delete('/courseware-peer-review-processes/{id}', Routes\Courseware\PeerReview\ProcessesDelete::class);
+
+        $group->post('/courseware-peer-review-processes', Routes\Courseware\PeerReview\ProcessesCreate::class);
+
+        $group->get('/courses/{id}/courseware-peer-reviews', Routes\Courseware\PeerReview\ReviewsIndex::class);
+        $group->get('/courseware-tasks/{id}/peer-reviews', Routes\Courseware\PeerReview\ReviewsByTaskIndex::class);
+
+        $group->post('/courseware-peer-reviews', Routes\Courseware\PeerReview\ReviewsCreate::class);
+        $group->patch('/courseware-peer-reviews/{id}', Routes\Courseware\PeerReview\ReviewsUpdate::class);
+        $group->delete('/courseware-peer-reviews/{id}', Routes\Courseware\PeerReview\ReviewsDelete::class);
     }
 
     private function addAuthenticatedFilesRoutes(RouteCollectorProxy $group): void

@@ -32,7 +32,7 @@
                     <studip-icon shape="edit" />
                 </button>
 
-                <span v-if="task">| {{ solverName }}</span>
+                <span v-if="task">| {{ userIsReviewer ? $gettext("anonym") : solverName }}</span>
                 <span
                     v-if="hasReleaseOrWithdrawDate"
                     class="cw-tree-item-flag-date"
@@ -48,7 +48,7 @@
                     class="cw-tree-item-flag-cant-read"
                     :title="$gettext('Diese Seite kann von Teilnehmenden nicht gesehen werden')"
                 ></span>
-                <template v-if="!userIsTeacher && inCourse">
+                <template v-if="!(userIsTeacher || userIsReviewer)  && inCourse">
                     <span
                         v-if="complete"
                         class="cw-tree-item-sequential cw-tree-item-sequential-complete"
@@ -325,6 +325,9 @@ export default {
         },
         complete() {
             return this.itemProgress === 100;
+        },
+        userIsReviewer() {
+            return this.task ? this.task.attributes['can-peer-review'] : false;
         },
     },
     methods: {

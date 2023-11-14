@@ -93,9 +93,16 @@ class Course_CoursewareController extends CoursewareController
             Context::getId(),
             $GLOBALS['user']->id
         );
-
-        Navigation::activateItem('course/courseware/tasks');
-        PageLayout::setTitle(_('Courseware: Aufgaben'));
+        switch ($route) {
+            case 'peer-review-processes':
+                Navigation::activateItem('course/courseware/peer-review');
+                PageLayout::setTitle(_('Courseware: Peer-Review-Prozesse'));
+                break;
+            default:
+                Navigation::activateItem('course/courseware/tasks');
+                PageLayout::setTitle(_('Courseware: Aufgaben'));
+                break;
+        }
         $this->setTasksSidebar();
     }
 

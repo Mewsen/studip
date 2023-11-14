@@ -1,3 +1,4 @@
+import PeerReviewProcessesIndex from './components/courseware/tasks/peer-review/PagesProcessesIndex.vue';
 import TaskGroupsIndex from './components/courseware/tasks/PagesTaskGroupsIndex.vue';
 import TaskGroupsShow from './components/courseware/tasks/PagesTaskGroupsShow.vue';
 import { mapResourceModules } from '@elan-ev/reststate-vuex';
@@ -30,6 +31,11 @@ const mountApp = async (STUDIP, createApp, element) => {
             name: 'task-groups-show',
             component: TaskGroupsShow,
             props: true,
+        },
+        {
+            path: '/peer-review-processes',
+            name: 'peer-review-processes-index',
+            component: PeerReviewProcessesIndex,
         },
     ];
 
@@ -69,6 +75,8 @@ const mountApp = async (STUDIP, createApp, element) => {
                     'courseware-block-feedback',
                     'courseware-containers',
                     'courseware-instances',
+                    'courseware-peer-reviews',
+                    'courseware-peer-review-processes',
                     'courseware-structural-elements',
                     'courseware-task-feedback',
                     'courseware-task-groups',

@@ -1393,7 +1393,7 @@ export const actions = {
             {
                 id: taskId,
                 options: {
-                    include: 'solver,task-group,task-group.lecturer',
+                    include: 'solver,task-group,task-group.lecturer,peer-reviews.process',
                 },
             },
             { root: true }

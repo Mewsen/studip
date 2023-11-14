@@ -78,6 +78,14 @@ class Task extends \SimpleORMap
             'foreign_key' => 'feedback_id',
         ];
 
+        $config['has_many']['peer_reviews'] = [
+            'class_name' => PeerReview::class,
+            'assoc_foreign_key' => 'task_id',
+            'on_delete' => 'delete',
+            'on_store' => 'store',
+            'order_by' => 'ORDER BY mkdate',
+        ];
+
         $config['additional_fields']['solver'] = [
             'get' => 'getSolver',
             'set' => false,
@@ -162,6 +170,14 @@ class Task extends \SimpleORMap
     }
 
     /**
+     * @param \User|\Seminar_User $user
+     */
+    public function userIsAPeerReviewer($user): bool
+    {
+        return $this->isPeerReviewed() && $this->isPeerReviewedBy($user);
+    }
+
+    /**
      * @return \User|\Statusgruppen|null the solver
      */
     public function getSolver()
@@ -233,6 +249,31 @@ class Task extends \SimpleORMap
         $this->renewal = 'granted';
         $this->renewal_date = $renewalDate->getTimestamp();
         $this->store();
+    }
+
+    public function isPeerReviewed(): bool
+    {
+        return PeerReview::countBySql('task_id = ?', [$this->getId()]) !== 0;
+    }
+
+    /**
+     * @param \User|\Seminar_User $user
+     */
+    public function isPeerReviewedBy($user): bool
+    {
+        $sql = 'task_id = ? AND reviewer_id = ? AND reviewer_type = "autor"';
+        if (PeerReview::countBySql($sql, [$this->getId(), $user->id]) !== 0) {
+            return true;
+        }
+
+        $sql = 'SELECT reviewer_id FROM cw_peer_reviews WHERE task_id = ? AND reviewer_type = "group"';
+        foreach (\DBManager::get()->fetchFirst($sql, [$this->getId()]) as $reviewerId) {
+            if (\Statusgruppen::isMemberOf($reviewerId, $user->id)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function getStructuralElementProgress(StructuralElement $structural_element): float

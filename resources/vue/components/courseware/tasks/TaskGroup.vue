@@ -12,7 +12,9 @@
         <section v-if="tasks.length > 0">
             <table class="default">
                 <caption>
-                    {{ $gettext('Verteilte Aufgaben') }}
+                    {{
+                        $gettext('Verteilte Aufgaben')
+                    }}
                 </caption>
                 <thead>
                     <tr>
@@ -38,6 +40,12 @@
                     />
                 </tbody>
             </table>
+
+            <PeerReviewProcesses
+                :taskGroup="taskGroup"
+                @add-peer-review-process="$emit('add-peer-review-process', taskGroup)"
+                class="cw-task-group-peer-review-processes"
+            />
         </section>
         <div v-else>
             <CompanionBox mood="pointing" :msgCompanion="$gettext('Diese Aufgabe wurde an niemanden verteilt.')" />
@@ -46,29 +54,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import CompanionBox from '../layouts/CoursewareCompanionBox.vue';
 import StudipDate from '../../StudipDate.vue';
+import PeerReviewProcesses from './TaskGroupPeerReviewProcesses.vue';
 import TaskItem from './TaskGroupTaskItem.vue';
 import { getStatus } from './task-groups-helper.js';
 
 export default {
-    components: { CompanionBox, StudipDate, TaskItem },
+    components: { CompanionBox, PeerReviewProcesses, StudipDate, TaskItem },
     props: ['taskGroup', 'tasks'],
     computed: {
-        ...mapGetters({
-            coursewareContext: 'context',
-        }),
-        actionMenuContext() {
-            return this.$gettextInterpolate(this.$gettext('Courseware-Aufgabe "%{ taskGroup }"'), {
-                taskGroup: this.taskGroup.attributes.title,
-            });
-        },
         endDate() {
             return new Date(this.taskGroup.attributes['end-date']);
-        },
-        isAfter() {
-            return new Date() > this.endDate;
         },
         startDate() {
             return new Date(this.taskGroup.attributes['start-date']);
@@ -82,3 +79,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.cw-task-group-peer-review-processes {
+    margin-block-start: 3rem;
+}
+</style>

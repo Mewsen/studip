@@ -13,6 +13,7 @@ class Task extends SchemaProvider
     const TYPE = 'courseware-tasks';
 
     const REL_FEEDBACK = 'task-feedback';
+    const REL_PEER_REVIEWS = 'peer-reviews';
     const REL_SOLVER = 'solver';
     const REL_STRUCTURAL_ELEMENT = 'structural-element';
     const REL_TASK_GROUP = 'task-group';
@@ -30,12 +31,15 @@ class Task extends SchemaProvider
      */
     public function getAttributes($resource, ContextInterface $context): iterable
     {
+        $user = $this->currentUser;
+
         return [
             'progress' => (float) $resource->getTaskProgress(),
             'submission-date' => date('c', $resource['submission_date']),
             'submitted' => (bool) $resource['submitted'],
             'renewal' => empty($resource['renewal']) ? null : (string) $resource['renewal'],
             'renewal-date' => date('c', $resource['renewal_date']),
+            'can-peer-review' => $resource->userIsAPeerReviewer($user),
             'mkdate' => date('c', $resource['mkdate']),
             'chdate' => date('c', $resource['chdate']),
         ];
@@ -58,13 +62,18 @@ class Task extends SchemaProvider
             ]
             : [self::RELATIONSHIP_DATA => null];
 
-        $solver = $resource->getSolver();
-        $relationships[self::REL_SOLVER] = $solver
+        $relationships = $this->addPeerReviews(
+            $relationships,
+            $resource,
+            $this->shouldInclude($context, self::REL_PEER_REVIEWS)
+        );
+
+        $relationships[self::REL_SOLVER] = $resource['solver_id']
             ? [
                 self::RELATIONSHIP_LINKS => [
-                    Link::RELATED => $this->createLinkToResource($solver),
+                    Link::RELATED => $this->createLinkToResource($resource->solver),
                 ],
-                self::RELATIONSHIP_DATA => $solver,
+                self::RELATIONSHIP_DATA => $resource->solver,
             ]
             : [self::RELATIONSHIP_DATA => null];
 
@@ -83,6 +92,32 @@ class Task extends SchemaProvider
             ],
             self::RELATIONSHIP_DATA => $resource['task_group'],
         ];
+
+        return $relationships;
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    private function addPeerReviews(array $relationships, TaskModel $resource, bool $includeData): array
+    {
+        $relationships[self::REL_PEER_REVIEWS] = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_PEER_REVIEWS),
+            ],
+        ];
+
+        if ($includeData) {
+            $data = [];
+            $user = $this->currentUser;
+            if ($resource->isPeerReviewedBy($this->currentUser)) {
+                $data = $resource->peer_reviews->filter(function ($review) use ($user) {
+                    return CoursewareAuthority::canShowPeerReview($user, $review);
+                });
+            }
+
+            $relationships[self::REL_PEER_REVIEWS][self::RELATIONSHIP_DATA] = $data;
+        }
 
         return $relationships;
     }

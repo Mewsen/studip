@@ -30,6 +30,7 @@ use User;
  * @property \Course $course belongs_to \Course
  * @property \Courseware\StructuralElement $target belongs_to Courseware\StructuralElement
  * @property \SimpleORMapCollection $tasks has_many Courseware\Task
+ * @property \SimpleORMapCollection $peer_review_processes has_many Courseware\PeerReviewProcess
  *
  * @SuppressWarnings(PHPMD.StaticAccess)
  */
@@ -61,6 +62,16 @@ class TaskGroup extends \SimpleORMap implements \PrivacyObject
             'on_store' => 'store',
             'order_by' => 'ORDER BY mkdate',
         ];
+
+        $config['has_many']['peer_review_processes'] = [
+            'class_name' => PeerReviewProcess::class,
+            'assoc_foreign_key' => 'task_group_id',
+            'on_delete' => 'delete',
+            'on_store' => 'store',
+            'order_by' => 'ORDER BY mkdate',
+        ];
+
+        $config['registered_callbacks']['after_store'][] = 'cbAfterStore';
 
         parent::configure($config);
     }
@@ -109,6 +120,11 @@ class TaskGroup extends \SimpleORMap implements \PrivacyObject
         );
     }
 
+    public function hasPeerReviewProcesses(): bool
+    {
+        return PeerReviewProcess::countBySql('task_group_id = ?', [$this->getId()]) > 0;
+    }
+
     /**
      * Returns the task of this TaskGroup given to $solver.
      *
@@ -130,4 +146,19 @@ class TaskGroup extends \SimpleORMap implements \PrivacyObject
         return empty($row) ? null : Task::find($row['id']);
     }
 
+    public function cbAfterStore(): void
+    {
+        if ($this->isFieldDirty('end_date')) {
+            $this->reschedulePeerReviewProcesses();
+        }
+    }
+
+    private function reschedulePeerReviewProcesses(): void
+    {
+        if ($this->hasPeerReviewProcesses()) {
+            foreach ($this->peer_review_processes as $process) {
+                $process->rescheduleTo($this->end_date);
+            }
+        }
+    }
 }

@@ -8,6 +8,8 @@ use Courseware\BlockFeedback;
 use Courseware\Clipboard;
 use Courseware\Container;
 use Courseware\Instance;
+use Courseware\PeerReview;
+use Courseware\PeerReviewProcess;
 use Courseware\StructuralElement;
 use Courseware\StructuralElementComment;
 use Courseware\StructuralElementFeedback;
@@ -324,7 +326,8 @@ class Authority
 
     public static function canShowTask(User $user, Task $resource): bool
     {
-        return self::canUpdateTask($user, $resource);
+        return ($resource->isPeerReviewed() && $resource->isPeerReviewedBy($user)) ||
+            self::canUpdateTask($user, $resource);
     }
 
     public static function canIndexTasks(User $user): bool
@@ -584,4 +587,109 @@ class Authority
         return $resource->user_id === $user->id;
     }
 
+    public static function canIndexPeerReviewProcesses(User $user): bool
+    {
+        return (bool) $user;
+    }
+
+    public static function canShowPeerReviewProcess(User $user, PeerReviewProcess $process): bool
+    {
+        return $GLOBALS['perm']->have_studip_perm('user', $process->task_group['seminar_id'], $user->getId());
+    }
+
+    public static function canCreatePeerReviewProcesses(User $user, TaskGroup $taskGroup): bool
+    {
+        return $GLOBALS['perm']->have_studip_perm('tutor', $taskGroup['seminar_id'], $user->getId());
+    }
+
+    public static function canUpdatePeerReviewProcess(User $user, PeerReviewProcess $process): bool
+    {
+        return self::canCreatePeerReviewProcesses($user, $process->task_group);
+    }
+
+    public static function canDeletePeerReviewProcess(User $user, PeerReviewProcess $process): bool
+    {
+        return self::canCreatePeerReviewProcess($user, $process->task_group);
+    }
+
+    public static function canIndexPeerReviews(User $user)
+    {
+        // TODO: Reicht das? Werden die in der Route gefiltert? Brauchen das nur Lehrende?
+        return (bool) $user;
+    }
+
+    public static function canShowPeerReview(User $user, PeerReview $review): bool
+    {
+        $cid = $review->process->task_group['seminar_id'];
+        if ($GLOBALS['perm']->have_studip_perm('tutor', $cid, $user->getId())) {
+            return true;
+        }
+
+        return $review->isReviewer($user) ||
+            ($review->isSubmitter($user) && $review->process->getCurrentState() === PeerReviewProcess::STATE_AFTER);
+    }
+
+    public static function canShowPeerReviewReviewer(User $user, PeerReview $review): bool
+    {
+        $cid = $review->process->task_group['seminar_id'];
+        if ($GLOBALS['perm']->have_studip_perm('tutor', $cid, $user->getId())) {
+            return true;
+        }
+
+        if ($review->isReviewer($user)) {
+            return true;
+        }
+
+        return $review->isSubmitter($user) && !$review->isAnonymous();
+    }
+
+    public static function canShowPeerReviewSubmitter(User $user, PeerReview $review): bool
+    {
+        $cid = $review->process->task_group['seminar_id'];
+        if ($GLOBALS['perm']->have_studip_perm('tutor', $cid, $user->getId())) {
+            return true;
+        }
+
+        if ($review->isSubmitter($user)) {
+            return true;
+        }
+
+        return $review->isReviewer($user) && !$review->isAnonymous();
+    }
+
+    public static function canShowPeerReviewAssessment(User $user, PeerReview $review): bool
+    {
+        if ($review->isReviewer($user)) {
+            return true;
+        }
+
+        $isTutor = $GLOBALS['perm']->have_studip_perm(
+            'tutor',
+            $review->process->task_group['seminar_id'],
+            $user->getId()
+        );
+
+        return ($isTutor || $review->isSubmitter($user)) &&
+            $review->process->getCurrentState() === PeerReviewProcess::STATE_AFTER;
+    }
+
+    public static function canIndexReviewsOfProcesses(User $user, PeerReviewProcess $process): bool
+    {
+        return self::canShowPeerReviewProcess($user, $process);
+    }
+
+    public static function canUpdatePeerReview(User $user, PeerReview $review): bool
+    {
+        return $review->process->getCurrentState() === PeerReviewProcess::STATE_ACTIVE && $review->isReviewer($user);
+    }
+
+    public static function canCreatePeerReviews(User $user, PeerReviewProcess $process): bool
+    {
+        return self::canCreatePeerReviewProcesses($user, $process->task_group);
+    }
+
+    public static function canDeletePeerReview(User $user, PeerReview $review): bool
+    {
+        return self::canCreatePeerReviews($user, $review->process);
+    }
 }

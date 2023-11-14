@@ -8,7 +8,8 @@
             <CoursewareRibbon :isContentBar="true" :showToolbarButton="false">
                 <template #buttons>
                     <router-link :to="{ name: 'task-groups-index' }">
-                        <StudipIcon shape="category-task" :size="24" />
+                        <StudipIcon shape="category-task" :size="24" aria-role="presentation" />
+                        <span class="sr-only">{{ $gettext('Aufgaben') }}</span>
                     </router-link>
                 </template>
                 <template #breadcrumbList>
@@ -25,6 +26,7 @@
                 :taskGroup="taskGroup"
                 :tasks="tasksByGroup[taskGroup.id]"
                 @add-feedback="onShowAddFeedback"
+                @add-peer-review-process="onShowPeerReviewProcessCreate"
                 @edit-feedback="onShowEditFeedback"
                 @solve-renewal="onShowSolveRenewal"
             />
@@ -45,6 +47,13 @@
             v-if="showEditFeedbackDialog"
             :content="currentDialogFeedback.attributes.content"
             @update="updateFeedback"
+            @close="closeDialogs"
+        />
+
+        <PeerReviewProcessCreateDialog
+            v-if="showPeerReviewProcessCreate"
+            :taskGroup="taskGroup"
+            @create="onCreatePeerReviewProcess"
             @close="closeDialogs"
         />
 
@@ -71,6 +80,7 @@ import CoursewareRibbon from '../structural-element/CoursewareRibbon.vue';
 import CoursewareTasksActionWidget from '../widgets/CoursewareTasksActionWidget.vue';
 import CoursewareTasksDialogDistribute from './CoursewareTasksDialogDistribute.vue';
 import EditFeedbackDialog from './EditFeedbackDialog.vue';
+import PeerReviewProcessCreateDialog from './peer-review/ProcessCreateDialog.vue';
 import RenewalDialog from './RenewalDialog.vue';
 import TaskGroup from './TaskGroup.vue';
 import TaskGroupsAddSolversDialog from './TaskGroupsAddSolversDialog.vue';
@@ -85,6 +95,7 @@ export default {
         CoursewareTasksActionWidget,
         CoursewareTasksDialogDistribute,
         EditFeedbackDialog,
+        PeerReviewProcessCreateDialog,
         RenewalDialog,
         TaskGroup,
         TaskGroupsAddSolversDialog,
@@ -97,6 +108,7 @@ export default {
             currentDialogFeedback: {},
             renewalTask: null,
             showAddFeedbackDialog: false,
+            showPeerReviewProcessCreate: null,
             showEditFeedbackDialog: false,
         };
     },
@@ -131,6 +143,7 @@ export default {
         ...mapActions({
             companionError: 'companionError',
             companionSuccess: 'companionSuccess',
+            createPeerReviewProcess: 'tasks/createPeerReviewProcess',
             createTaskFeedback: 'createTaskFeedback',
             deleteTaskFeedback: 'deleteTaskFeedback',
             loadAllTasks: 'courseware-tasks/loadAll',
@@ -141,6 +154,7 @@ export default {
         closeDialogs() {
             this.showAddFeedbackDialog = false;
             this.showEditFeedbackDialog = false;
+            this.showPeerReviewProcessCreate = false;
 
             this.currentDialogFeedback = {};
             this.renewalTask = null;
@@ -155,6 +169,11 @@ export default {
             this.currentDialogFeedback.attributes.content = content;
             this.createTaskFeedback({ taskFeedback: this.currentDialogFeedback });
             this.closeDialogs();
+        },
+        onCreatePeerReviewProcess(options) {
+            this.createPeerReviewProcess({ taskGroup: this.taskGroup, options })
+                .then(() => this.loadTaskGroup(this.taskGroup))
+                .then(() => this.closeDialogs());
         },
         onShowAddFeedback(task) {
             this.currentDialogFeedback = {
@@ -173,6 +192,9 @@ export default {
         onShowEditFeedback(feedback) {
             this.currentDialogFeedback = _.cloneDeep(feedback);
             this.showEditFeedbackDialog = true;
+        },
+        onShowPeerReviewProcessCreate() {
+            this.showPeerReviewProcessCreate = true;
         },
         onShowSolveRenewal(task) {
             this.renewalTask = _.cloneDeep(task);

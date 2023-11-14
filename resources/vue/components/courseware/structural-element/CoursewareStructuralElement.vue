@@ -32,10 +32,12 @@
                             <li
                                 class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
                                 :title="structuralElement.attributes.title"
-                            >
+                                >
                                 <span>{{ structuralElement.attributes.title || "–" }}</span>
-                                <span v-if="isTask">[ {{ solverName }} ]</span>
-                                <template v-if="!userIsTeacher && inCourse">
+                                <span v-if="task">
+                                    [ {{ (userIsReviewer && isPeerReviewAnonymous) ? $gettext('anonym') : solverName }} ]
+                                </span>
+                                <template v-if="inCourse && !(userIsTeacher || userIsReviewer)">
                                     <studip-icon
                                         v-if="complete"
                                         shape="accept"
@@ -130,6 +132,18 @@
                                     <template #companionActions>
                                         <button v-if="userIsTeacher" class="button" @click="menuAction('removeLock')">
                                             {{ textRemoveLock.title }}
+                                        </button>
+                                    </template>
+                                </courseware-companion-box>
+                                <courseware-companion-box
+                                    v-for="peerReview in peerReviews"
+                                    :key="peerReview.id"
+                                    mood="pointing"
+                                    :msgCompanion="$gettext('Sie beurteilen diese Seite im Rahmen eines Peer-Reviews.')"
+                                    >
+                                    <template #companionActions>
+                                        <button class="button" @click="openPeerReviewForm(peerReview)">
+                                            {{ $gettext('Peer-Review öffnen') }}
                                         </button>
                                     </template>
                                 </courseware-companion-box>
@@ -610,6 +624,11 @@
                 <courseware-structural-element-dialog-export v-if="showExportDialog" :structuralElement="currentElement" />
                 <courseware-structural-element-dialog-export-pdf v-if="showPdfExportDialog" :structuralElement="currentElement" />
                 <courseware-structural-element-dialog-add-chooser v-if="showAddChooserDialog" />
+                <PeerReviewAssessmentDialog
+                    v-model="showPeerReviewForm"
+                    v-if="selectedPeerReview"
+                    :review="selectedPeerReview"
+                    />
                 <feedback-dialog
                     v-if="showFeedbackDialog"
                     :feedbackElementId="parseInt(feedbackElementId)"
@@ -669,6 +688,7 @@ import CoursewareStructuralElementDiscussion from './CoursewareStructuralElement
 import CoursewareStructuralElementPermissions from './CoursewareStructuralElementPermissions.vue';
 import CoursewareContentPermissions from '../CoursewareContentPermissions.vue';
 import CoursewareWelcomeScreen from './CoursewareWelcomeScreen.vue';
+import PeerReviewAssessmentDialog from '../tasks/peer-review/AssessmentDialog.vue';
 import CoursewareExport from '@/vue/mixins/courseware/export.js';
 import CoursewareOerMessage from '@/vue/mixins/courseware/oermessage.js';
 import colorMixin from '@/vue/mixins/courseware/colors.js';
@@ -713,6 +733,7 @@ export default {
         StudipFiveStars,
         FocusTrap,
         IsoDate,
+        PeerReviewAssessmentDialog,
         StockImageSelector,
         StudipDialog,
         StudipProgressIndicator,
@@ -779,6 +800,8 @@ export default {
             uploadImageURL: null,
             showStockImageSelector: false,
             selectedStockImage: null,
+            showPeerReviewForm: false,
+            selectedPeerReview: null,
             displayFeedback: false,
 
             showRatingPopup: false,
@@ -795,6 +818,8 @@ export default {
             consumeMode: 'consumeMode',
             containerById: 'courseware-containers/byId',
             relatedContainers: 'courseware-containers/related',
+            relatedPeerReviewProcesses: 'courseware-peer-review-processes/related',
+            relatedPeerReviews: 'courseware-peer-reviews/related',
             relatedStructuralElements: 'courseware-structural-elements/related',
             getRelatedFeedback: 'courseware-structural-element-feedback/related',
             getRelatedComments: 'courseware-structural-element-comments/related',
@@ -1409,6 +1434,27 @@ export default {
                 ),
             { length: this.commentsCounter });
         },
+        userIsReviewer() {
+            return this.task ? this.task.attributes['can-peer-review'] : false;
+        },
+        peerReviews() {
+            if (this.isTask && this.userIsReviewer) {
+                return this.relatedPeerReviews({
+                    parent: { id: this.task.id, type: this.task.type },
+                    relationship: 'peer-reviews',
+                });
+            }
+            return [];
+        },
+        isPeerReviewAnonymous() {
+            return this.peerReviews.every(({ id, type }) => {
+                const process = this.relatedPeerReviewProcesses({
+                    parent: { id, type },
+                    relationship: 'process',
+                });
+                return process.attributes.configuration.anonymous;
+            });
+        },
     },
 
     methods: {
@@ -1951,7 +1997,11 @@ export default {
         submitFeedback() {
             this.showRatingPopup = false;
             this.companionSuccess({ info: this.$gettext('Feedback wurde abgegeben.') });
-        }
+        },
+        openPeerReviewForm(peerReview) {
+            this.selectedPeerReview = peerReview;
+            this.showPeerReviewForm = true;
+        },
     },
     created() {
         this.pluginManager.registerComponentsLocally(this);

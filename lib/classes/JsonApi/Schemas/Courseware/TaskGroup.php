@@ -15,6 +15,7 @@ class TaskGroup extends SchemaProvider
 
     const REL_COURSE = 'course';
     const REL_LECTURER = 'lecturer';
+    const REL_PEER_REVIEW_PROCESSES = 'peer-review-processes';
     const REL_SOLVERS = 'solvers';
     const REL_TARGET = 'target';
     const REL_TASK_TEMPLATE = 'task-template';
@@ -68,6 +69,8 @@ class TaskGroup extends SchemaProvider
             ]
             : [self::RELATIONSHIP_DATA => null];
 
+        $relationships = $this->addPeerReviewProcessesRelationship($relationships, $resource, $context);
+
         $relationships[self::REL_SOLVERS] = [
             self::RELATIONSHIP_DATA => $resource->getSolvers(),
         ];
@@ -101,6 +104,21 @@ class TaskGroup extends SchemaProvider
                     }
                 ),
         ];
+
+        return $relationships;
+    }
+
+    private function addPeerReviewProcessesRelationship(iterable $relationships, TaskGroupModel $resource, ContextInterface $context): iterable
+    {
+        $relationships[self::REL_PEER_REVIEW_PROCESSES] = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_PEER_REVIEW_PROCESSES),
+            ],
+        ];
+
+        if ($this->shouldInclude($context, self::REL_PEER_REVIEW_PROCESSES)) {
+            $relationships[self::REL_PEER_REVIEW_PROCESSES][self::RELATIONSHIP_DATA] = $resource->peer_review_processes;
+        }
 
         return $relationships;
     }

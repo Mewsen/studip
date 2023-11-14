@@ -102,6 +102,8 @@ const mountApp = async (STUDIP, createApp, element) => {
                     'courseware-containers',
                     'courseware-instances',
                     'courseware-public-links',
+                    'courseware-peer-reviews',
+                    'courseware-peer-review-processes',
                     'courseware-structural-elements',
                     'courseware-structural-element-comments',
                     'courseware-structural-element-feedback',

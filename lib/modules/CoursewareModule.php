@@ -71,6 +71,12 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
             'tasks',
             new Navigation(_('Aufgaben'), 'dispatch.php/course/courseware/tasks?cid=' . $courseId)
         );
+        if (!$GLOBALS['perm']->have_studip_perm('tutor', $courseId)) {
+            $navigation->addSubNavigation(
+                'peer-review',
+                new Navigation(_('Peer-Reviews'), 'dispatch.php/course/courseware/tasks/peer-review-processes?cid=' . $courseId)
+            );
+        }
         $navigation->addSubNavigation(
             'comments',
             new Navigation(_('Kommentare und Anmerkungen'), 'dispatch.php/course/courseware/comments_overview?cid=' . $courseId)

@@ -391,7 +391,7 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
                         return true;
                     }
 
-                    return $task->userIsASolver($user);
+                    return $task->userIsASolver($user) || $task->userIsAPeerReviewer($user);
                 }
 
                 if ($this->canEdit($user)) {
