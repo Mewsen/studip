@@ -45,6 +45,10 @@
                 <template v-slot:dialogContent>
                     <slot name="containerEditDialog"></slot>
                 </template>
+                <template v-slot:dialogButtons>
+                    <slot name="containerEditButtons"></slot>
+                </template>
+
             </studip-dialog>
 
             <studip-dialog
