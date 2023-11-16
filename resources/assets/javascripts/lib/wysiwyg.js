@@ -33,32 +33,16 @@ const wysiwyg = {
     getEditor,
     hasEditor,
 
-    replace(textarea) {
-        if (!hasEditor(textarea)) {
-            if (isTextareaVisible(textarea)) {
-                replaceTextarea(textarea);
-            }
-        } else if (isEditorHidden(textarea)) {
-            destroyTextarea(textarea);
-        }
-    },
+    replace: replaceTextarea,
 };
 
 export default wysiwyg;
 
-function isTextareaVisible(textarea) {
-    return $(textarea).is(':visible');
-}
-
-function isEditorHidden(textarea) {
-    if (!hasEditor(textarea)) {
-        return false;
-    }
-    const editor = getEditor(textarea);
-    return editor && editor.ui && $(editor.ui.element).is(':hidden');
-}
-
 function replaceTextarea(textarea) {
+    if (hasEditor(textarea)) {
+        return getEditor(textarea);
+    }
+
     setEditor(textarea, {});
     const $textarea = textarea instanceof jQuery ? textarea : $(textarea);
 
