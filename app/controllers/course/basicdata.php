@@ -438,7 +438,7 @@ class Course_BasicdataController extends AuthenticatedController
                     } else {
                         // format of input element name is "course_xxx"
                         $varname = mb_substr($field['name'], 7);
-                        if ($field['i18n']) {
+                        if (!empty($field['i18n'])) {
                             $req_value = Request::i18n($field['name']);
                         } else {
                             $req_value = Request::get($field['name']);
@@ -476,7 +476,12 @@ class Course_BasicdataController extends AuthenticatedController
             $after  = array_diff_assoc($sem->getSettings(), $old_settings);
 
             //update admission, if turnout was raised
-            if($after['admission_turnout'] > $before['admission_turnout'] && $sem->isAdmissionEnabled()) {
+            if (
+                !empty($after['admission_turnout'])
+                && !empty($before['admission_turnout'])
+                && $after['admission_turnout'] > $before['admission_turnout']
+                && $sem->isAdmissionEnabled()
+            ) {
                 AdmissionApplication::addMembers($sem->getId());
             }
 
