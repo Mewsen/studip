@@ -278,7 +278,7 @@ class ActionMenu
     protected function getKeyForIndex($index)
     {
         foreach ($this->actions as $key => $value) {
-            if ($value['index'] === $index) {
+            if (!empty($value['index']) && $value['index'] === $index) {
                 return $key;
             }
         }
