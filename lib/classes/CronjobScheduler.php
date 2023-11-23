@@ -239,13 +239,6 @@ class CronjobScheduler
             return;
         }
 
-        $lock = new FileLock('studip-cronjob');
-
-        // Check whether a previous cronjob worker is still running.
-        if (!$lock->tryLock()) {
-            return;
-        }
-
         // Find all schedules that are due to execute and which task is active
         $temp = CronjobSchedule::findBySQL('`active` = 1 AND `next_execution` <= UNIX_TIMESTAMP() '
                                           .'ORDER BY `next_execution`');
@@ -264,6 +257,13 @@ class CronjobScheduler
             $log->duration    = -1;
 
             try {
+                $lock = new FileLock("cronjob-{$schedule->schedule_id}");
+
+                // Check whether a previous cronjob worker is still running.
+                if (!$lock->tryLock()) {
+                    continue;
+                }
+
                 // Skip schedules with missing task classes
                 if (!$schedule->task->valid) {
                     throw new Exception(_('Die Klasse für den Cronjob-Task konnte nicht gefunden werden'));
@@ -306,11 +306,11 @@ class CronjobScheduler
                 URLHelper::setBaseURL($old);
 
                 $this->sendMailToRoots($subject, $message);
+            } finally {
+                // Release lock
+                $lock->release();
             }
         }
-
-        // Release lock
-        $lock->release();
     }
 
     /**
