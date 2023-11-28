@@ -102,21 +102,7 @@ $action-menu-shadow: 1px 1px 1px $dark-gray-color-60;
             display: block;
         }
 
-        &.action-menu-item-disabled {
-            > a,
-            > label {
-                &,
-                &:hover {
-                    color: $dark-gray-color-80;
-                    cursor: default;
-                }
-            }
-        }
-
-        a img,
-        a svg,
-        .action-menu-no-icon,
-        input[type="image"] {
+        .action-menu-item-icon {
             display: inline-block;
             margin: 0 0.25em;
             vertical-align: middle;
@@ -139,6 +125,18 @@ $action-menu-shadow: 1px 1px 1px $dark-gray-color-60;
             cursor: pointer;
             &:hover {
                 color: $active-color;
+            }
+        }
+
+        &.action-menu-item-disabled {
+            > label,
+            > button {
+                color: $dark-gray-color-80;
+                cursor: default;
+
+                &:hover {
+                    color: $dark-gray-color-80;
+                }
             }
         }
     }
