@@ -28,7 +28,7 @@ class LoginNavigation extends Navigation
         foreach (StudipAuthAbstract::getInstance() as $auth_plugin) {
             if ($auth_plugin->show_login === true && $standard_login_active === false) {
                 $navigation = new Navigation(_('Login'), '');
-                $navigation->setDescription($auth_plugin->login_description ?: _('für registrierte NutzerInnen'));
+                $navigation->setDescription($auth_plugin->login_description ?: _('für registrierte Nutzende'));
                 $navigation->setLinkAttributes([
                     'id' => 'toggle_login'
                 ]);

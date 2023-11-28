@@ -46,6 +46,15 @@ $gap-between-boxes: calc($login-page-margin / 2);
     }
 }
 
+#login_flex {
+    display: flex;
+    flex-direction: row;
+    column-gap: 20px;
+    flex-wrap: wrap;
+    row-gap: 20px;
+    align-items: flex-start;
+}
+
 #loginbox {
     background-color: var(--white);
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
@@ -54,7 +63,7 @@ $gap-between-boxes: calc($login-page-margin / 2);
     float: left;
 
     header {
-        margin: 5px 0 0 0;
+        margin: 0 0 0 0;
 
         h1 {
             border-bottom: 0;
@@ -164,7 +173,7 @@ $gap-between-boxes: calc($login-page-margin / 2);
     width: 450px;
     float: left;
     > header {
-        margin: 5px 0 0 0;
+        margin: 0 0 0 0;
     }
 }
 

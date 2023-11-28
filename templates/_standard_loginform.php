@@ -7,7 +7,7 @@ use Studip\Button;
 
     <section>
         <label>
-            <span class="required"><?= _('Benutzername:') ?></span>
+            <span class="required"><?= _('Benutzername') ?></span>
             <? if (Config::get()->USERNAME_TOOLTIP_ACTIVATED) : ?>
                 <?= tooltipIcon(htmlReady((string)Config::get()->USERNAME_TOOLTIP_TEXT)) ?>
             <? endif ?>
@@ -25,7 +25,7 @@ use Studip\Button;
     <p id="loginname_caps" style="display: none"><?= _('Feststelltaste ist aktiviert!') ?></p>
     <section>
         <label for="password" style="position: relative">
-            <span class="required"><?= _('Passwort:') ?></span>
+            <span class="required"><?= _('Passwort') ?></span>
             <? if (Config::get()->PASSWORD_TOOLTIP_ACTIVATED) : ?>
                 <?= tooltipIcon(htmlReady((string)Config::get()->PASSWORD_TOOLTIP_TEXT)) ?>
             <? endif ?>

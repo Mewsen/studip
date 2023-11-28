@@ -27,7 +27,7 @@ $show_hidden_login = false;
     <div id="background-desktop" style="background: url(<?= $bg_desktop ?>) no-repeat top left/cover;"></div>
     <div id="background-mobile" style="background: url(<?= $bg_mobile ?>) no-repeat top left/cover;"></div>
 
-    <div>
+    <div id="login_flex">
         <? if ($loginerror): ?>
             <!-- failed login code -->
             <?= MessageBox::error(_('Bei der Anmeldung trat ein Fehler auf!'), [
@@ -119,22 +119,23 @@ $show_hidden_login = false;
 
             </footer>
         </div>
+        <? if (Config::get()->LOGIN_FAQ_VISIBILITY && count($faq_entries) > 0) : ?>
+            <div id="faq_box">
+                <header><h1><?= htmlReady(Config::get()->LOGIN_FAQ_TITLE) ?></h1></header>
+                <? foreach ($faq_entries as $entry) : ?>
+                    <article class="studip toggle">
+                        <header>
+                            <h1><a><?= htmlReady($entry->title) ?></a></h1>
+                        </header>
+                        <section><?= formatReady($entry->description) ?>
+                        </section>
+                    </article>
+                <? endforeach ?>
+            </div>
+        <? endif ?>
+
     </div>
 
-    <? if (Config::get()->LOGIN_FAQ_VISIBILITY && count($faq_entries) > 0) : ?>
-        <div id="faq_box">
-            <header><h1><?= htmlReady(Config::get()->LOGIN_FAQ_TITLE) ?></h1></header>
-        <? foreach ($faq_entries as $entry) : ?>
-            <article class="studip toggle">
-                <header>
-                    <h1><a><?= htmlReady($entry->title) ?></a></h1>
-                </header>
-                <section><?= formatReady($entry->description) ?>
-                </section>
-            </article>
-        <? endforeach ?>
-        </div>
 
-    <? endif ?>
 </main>
 
