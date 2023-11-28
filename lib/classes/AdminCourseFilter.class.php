@@ -96,9 +96,7 @@ class AdminCourseFilter
      */
     public function restoreSettings()
     {
-        if ($_SESSION['AdminCourseFilter_settings']) {
-            $this->settings = $_SESSION['AdminCourseFilter_settings'];
-        }
+        $this->settings = $_SESSION['AdminCourseFilter_settings'] ?? [];
     }
 
     /**
