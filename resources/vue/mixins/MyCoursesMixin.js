@@ -61,7 +61,7 @@ export default {
                     label: this.$gettext('Veranstaltungsdetails'),
                     icon: 'info-circle',
                     attributes: {
-                        'data-dialog': ''
+                        'data-dialog': '',
                     },
                 });
             }
