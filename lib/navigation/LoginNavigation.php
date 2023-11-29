@@ -23,7 +23,6 @@ class LoginNavigation extends Navigation
     {
         parent::initSubNavigation();
 
-
         $standard_login_active = false;
         foreach (StudipAuthAbstract::getInstance() as $auth_plugin) {
             if ($auth_plugin->show_login === true && $standard_login_active === false) {

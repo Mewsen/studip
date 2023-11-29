@@ -407,11 +407,11 @@ STUDIP.ready(function () {
     });
 
     $(document).on('click', '#toggle_login', function () {
-        $('#login_form').slideToggle('400');
-        $('#loginname').trigger('focus');
+        $('#login_form').slideToggle(400, function() {
+            $('#loginname').focus();$('html, body').animate({scrollTop: $('#login_form').offset().top}, 100);
+        });
         return false;
-
-
     });
+
 
 });
