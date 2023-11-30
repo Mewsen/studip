@@ -8,14 +8,17 @@
       method="post"
       enctype="multipart/form-data"
       class="default">
+    <?= CSRFProtection::tokenTag() ?>
 
-    <label for="title">
+    <label class="studiprequired">
         <?= _('Titel') ?>
+        <span title="Dies ist ein Pflichtfeld" aria-hidden="true" class="asterisk">*</span>
         <input type="text" name="title" value="<?= htmlReady($entry->title) ?>" required>
     </label>
 
-    <label for="description">
+    <label class="studiprequired">
         <?= _('Text') ?>
+        <span title="Dies ist ein Pflichtfeld" aria-hidden="true" class="asterisk">*</span>
         <textarea name="description"
                   class="add_toolbar wysiwyg" data-editor="toolbar=minimal"><?= htmlReady($entry->description)?></textarea>
     </label>

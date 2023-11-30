@@ -3,7 +3,7 @@
 use Studip\Button;
 
 ?>
-<form class="default" name="login_form" id="login_form" method="post" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => NULL]) ?>" style="display: <?= $display ?>">
+<form class="default" name="login_form" id="login_form" method="post" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => null]) ?>" style="display: <?= $display ?>">
 
     <section>
         <label>
@@ -36,9 +36,9 @@ use Studip\Button;
                    required>
 
             <i id="password-toggle" href=""
-                <?= tooltip(_('Passwort zeigen/verstecken'), true) ?>>
-                <?= Icon::create('visibility-checked')->asImg(20, ['id' => 'visible-password']) ?>
-                <?= Icon::create('visibility-invisible')->asImg(20, ['id' => 'invisible-password']) ?>
+                <?= tooltip(_('Passwort zeigen/verstecken')) ?>>
+                <?= Icon::create('visibility-checked')->asImg(['id' => 'visible-password']) ?>
+                <?= Icon::create('visibility-invisible')->asImg(['id' => 'invisible-password']) ?>
             </i>
 
         </label>
@@ -59,6 +59,4 @@ use Studip\Button;
             </a>
     </div>
     <?= Button::createAccept(_('Anmelden'), _('Login'), ['id' => 'submit_login']); ?>
-
-
 </form>

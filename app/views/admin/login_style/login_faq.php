@@ -1,40 +1,59 @@
-<table class="default">
-    <caption><?= _('Hinweise zum Login') ?></caption>
-    <thead>
-    <tr>
-        <th><?= _('Titel') ?></th>
-        <th class="actions"><?= _('Löschen') ?></th>
-    </tr>
-    </thead>
-    <tbody>
-    <? if (count($faq_entries) > 0) : ?>
-        <? foreach ($faq_entries as $entry) : ?>
+<?php
+/**
+ * @var Admin_LoginStyleController $controller
+ * @var LoginFaq[] $faq_entries
+ */
+?>
+<form method="post">
+    <?= CSRFProtection::tokenTag() ?>
+    <table class="default">
+        <caption><?= _('Hinweise zum Login') ?></caption>
+        <thead>
+        <tr>
+            <th><?= _('Titel') ?></th>
+            <th class="actions"><?= _('Aktionen') ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <? if (count($faq_entries) > 0) : ?>
+            <? foreach ($faq_entries as $entry) : ?>
+                <tr>
+                    <td><?= htmlReady($entry->title) ?></td>
+                    <td class="actions">
+                        <?= ActionMenu::get()
+                            ->setContext($entry->title)
+                            ->addLink(
+                                $controller->edit_faqURL($entry),
+                                _('Hinweistext bearbeiten'),
+                                Icon::create('edit'),
+                                [
+                                    'data-dialog' => 'size=medium'
+                                ]
+                            )->addButton(
+                                'delete',
+                                _('Hinweistext löschen'),
+                                Icon::create('trash'),
+                                [
+                                    'formaction'   => $controller->delete_faqURL($entry),
+                                    'data-confirm' => sprintf(
+                                        _('Wollen Sie den Hinweistext "%s" wirklich löschen?'),
+                                        $entry->title
+                                    ),
+                                    'data-dialog'  => 'size=auto',
+                                ]
+                            )->render()
+                        ?>
+                    </td>
+                </tr>
+            <? endforeach ?>
+        <? else : ?>
             <tr>
-                <td><a href="<?= $controller->link_for("admin/loginstyle/edit_faq", ['entry_id' => $entry->getId()]) ?>" data-dialog="size=medium"><?= htmlReady($entry->title) ?></a></td>
-                <td class="actions">
-                    <? $actionmenu = ActionMenu::get() ?>
-                    <? $actionmenu->addLink(
-                        $controller->url_for("admin/loginstyle/delete_faq/{$entry->getId()}"),
-                        _('Hinweistext löschen'),
-                        Icon::create('trash'),
-                        [
-                            'data-confirm' => sprintf(
-                                _('Wollen Sie den Hinweistext "%s" wirklich löschen?'),
-                                $entry->title),
-                            'data-dialog'  => 'size=auto',
-                        ]
-                    ); ?>
-                    <?= $actionmenu->render() ?>
+                <td colspan="3" style="text-align: center">
+                    <?= _('Keine Hilfetexte vorhanden') ?>
                 </td>
             </tr>
-        <? endforeach ?>
-    <? else : ?>
-        <tr>
-            <td colspan="3" style="text-align: center">
-                <?=_('Keine Hilfetexte vorhanden')?>
-            </td>
-        </tr>
-    <? endif ?>
-    </tbody>
+        <? endif ?>
+        </tbody>
 
-</table>
+    </table>
+</form>

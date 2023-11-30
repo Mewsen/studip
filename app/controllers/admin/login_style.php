@@ -36,7 +36,7 @@ class Admin_LoginStyleController extends AuthenticatedController
 
         $views->addLink(
             _('Hinweise zum Login'),
-            $this->url_for('admin/loginstyle/login_faq')
+            $this->login_faqURL()
         )->setActive($action === 'login_faq');
 
         Sidebar::Get()->addWidget($views);
@@ -146,7 +146,7 @@ class Admin_LoginStyleController extends AuthenticatedController
         } else {
             PageLayout::postSuccess(_('Der Aktivierungsstatus konnte nicht gespeichert werden.'));
         }
-        $this->relocate('admin/loginstyle');
+        $this->relocate($this->indexURL());
     }
 
 
@@ -184,11 +184,11 @@ class Admin_LoginStyleController extends AuthenticatedController
         $this->relocate($this->login_faqURL());
     }
 
-    public function delete_faq_action($faq_entry_id)
+    public function delete_faq_action(LoginFaq $entry)
     {
         CSRFProtection::verifyRequest();
 
-        if (LoginFaq::deleteBySQL('faq_id = ?', [$faq_entry_id])) {
+        if ($entry->delete()) {
             PageLayout::postSuccess(_('Der Hilfetext wurde gelöscht'));
         }
 
@@ -200,7 +200,6 @@ class Admin_LoginStyleController extends AuthenticatedController
      */
     protected function setSidebar($action)
     {
-
         $links = new ActionsWidget();
         if ($action === 'index') {
             $links->addLink(
@@ -211,7 +210,7 @@ class Admin_LoginStyleController extends AuthenticatedController
         } else if ($action === 'login_faq') {
             $links->addLink(
                 _('Hilfetext hinzufügen'),
-                $this->add_faqURL(),
+                $this->edit_faqURL(),
                 Icon::create('add')
             )->asDialog();
         }
