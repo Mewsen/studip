@@ -1,4 +1,10 @@
-<form action="<?= $controller->link_for("admin/loginstyle/store_faq", ['id' => $entry->getId()]) ?>"
+<?php
+/**
+ * @var Admin_LoginStyleController $controller
+ * @var LoginFaq $entry
+ */
+?>
+<form action="<?= $controller->store_faq($entry) ?>"
       method="post"
       enctype="multipart/form-data"
       class="default">
@@ -15,7 +21,7 @@
     </label>
 
     <div data-dialog-button>
-        <?= \Studip\Button::create(_("Speichern")) ?>
+        <?= \Studip\Button::create(_('Speichern')) ?>
     </div>
 
 </form>

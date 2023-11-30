@@ -11,6 +11,7 @@
 
 class Admin_LoginStyleController extends AuthenticatedController
 {
+    protected $_autobind = true;
     /**
      * common tasks for all actions
      *
@@ -19,25 +20,18 @@ class Admin_LoginStyleController extends AuthenticatedController
      */
     public function before_filter(&$action, &$args)
     {
-
-        if ($action === 'add_faq') {
-            $action = 'edit_faq';
-        }
-
         parent::before_filter($action, $args);
 
-        // user must have root permission
         $GLOBALS['perm']->check('root');
 
         //setting title and navigation
         PageLayout::setTitle(_('Hintergrundbilder für den Startbildschirm'));
         Navigation::activateItem('/admin/locations/loginstyle');
 
-        $sidebar = Sidebar::get();
         $views = new ViewsWidget();
         $views->addLink(
             _('Bilder'),
-            $this->url_for('admin/loginstyle')
+            $this->indexURL()
         )->setActive($action === 'index');
 
         $views->addLink(
@@ -45,9 +39,7 @@ class Admin_LoginStyleController extends AuthenticatedController
             $this->url_for('admin/loginstyle/login_faq')
         )->setActive($action === 'login_faq');
 
-        $sidebar->addWidget($views);
-
-
+        Sidebar::Get()->addWidget($views);
     }
 
     /**
@@ -116,15 +108,16 @@ class Admin_LoginStyleController extends AuthenticatedController
                 $fail
             ), $fail));
         }
-        $this->relocate('admin/loginstyle');
+        $this->relocate($this->indexURL());
     }
 
     /**
      * Deletes the given picture.
-     * @param $id the picture to delete
+     * @param string $id the picture to delete
      */
     public function delete_pic_action($id)
     {
+        CSRFProtection::tokenTag();
         $pic = LoginBackground::find($id);
         if ($pic->in_release) {
             PageLayout::postError(_('Dieses Bild wird vom System mitgeliefert und kann daher nicht gelöscht werden.'));
@@ -134,17 +127,18 @@ class Admin_LoginStyleController extends AuthenticatedController
             PageLayout::postError(_('Das Bild konnte nicht gelöscht werden.'));
         }
 
-        $this->relocate('admin/loginstyle');
+        $this->relocate($this->indexURL());
     }
 
     /**
      * (De-)activate the given picture for given view.
-     * @param $id the picture to change activation for
-     * @param $view one of 'desktop', 'mobile', view to (de-) activate picture for
-     * @param $newStatus new activation status for given view.
+     * @param string $id the picture to change activation for
+     * @param string $view one of 'desktop', 'mobile', view to (de-) activate picture for
+     * @param string $newStatus new activation status for given view.
      */
     public function activation_action($id, $view, $newStatus)
     {
+        CSRFProtection::tokenTag();
         $pic = LoginBackground::find($id);
         $pic->$view = $newStatus;
         if ($pic->store()) {
@@ -161,52 +155,44 @@ class Admin_LoginStyleController extends AuthenticatedController
      */
     public function login_faq_action()
     {
-
         PageLayout::setTitle(_('Hinweise zum Login für den Startbildschirm'));
 
         $this->setSidebar('login_faq');
         $this->faq_entries = LoginFaq::findBySql('1');
     }
 
-    public function edit_faq_action()
+    public function edit_faq_action(LoginFaq $entry = null)
     {
-        $id = Request::get('entry_id') ?: null;
-        $this->entry = new LoginFaq($id);
-
         PageLayout::setTitle(
-            $this->entry->isNew() ? _('Hilfetext hinzufügen') : _('Hilfetext bearbeiten')
+            $entry->isNew() ? _('Hilfetext hinzufügen') : _('Hilfetext bearbeiten')
         );
-
     }
 
-    public function store_faq_action()
+    public function store_faq_action(LoginFaq $entry = null)
     {
-        if (Request::isPost()) {
-            CSRFProtection::verifyRequest();
-            $id = Request::get('id') ?: null; // Convert possible empty string to null
-            $entry = new LoginFaq($id);
-            $entry->id = Request::get('id');
-            $entry->title = Request::get('title');
-            $entry->description = Request::get('description');
+        CSRFProtection::verifyRequest();
 
-            $entry->store();
+        $entry->setData([
+            'title' => Request::get('title'),
+            'description' => Request::get('description'),
+        ]);
+
+        if ($entry->store()) {
             PageLayout::postSuccess(_('Hilfetext wurde gespeichert.'));
-            $this->relocate('admin/loginstyle/login_faq');
-
         }
+
+        $this->relocate($this->login_faqURL());
     }
 
     public function delete_faq_action($faq_entry_id)
     {
         CSRFProtection::verifyRequest();
 
-        LoginFaq::deleteBySQL('faq_id = ?', [$faq_entry_id]);
-        PageLayout::postSuccess(sprintf(
-            _("Der Hilfetext wurde gelöscht."), htmlReady(Request::get("id"))
-        ));
+        if (LoginFaq::deleteBySQL('faq_id = ?', [$faq_entry_id])) {
+            PageLayout::postSuccess(_('Der Hilfetext wurde gelöscht'));
+        }
 
-        $redirect_url = $this->url_for('admin/loginstyle/login_faq');
-        $this->relocate($redirect_url);
+        $this->relocate($this->login_faqURL());
     }
 
     /**
@@ -214,29 +200,21 @@ class Admin_LoginStyleController extends AuthenticatedController
      */
     protected function setSidebar($action)
     {
-        $sidebar = Sidebar::get();
 
         $links = new ActionsWidget();
-
         if ($action === 'index') {
             $links->addLink(
                 _('Bild hinzufügen'),
-                $this->url_for('admin/loginstyle/newpic'),
-                Icon::create('add', 'clickable')
+                $this->newpicURL(),
+                Icon::create('add')
             )->asDialog('size=auto');
         } else if ($action === 'login_faq') {
             $links->addLink(
                 _('Hilfetext hinzufügen'),
-                $this->url_for('admin/loginstyle/add_faq'),
+                $this->add_faqURL(),
                 Icon::create('add')
             )->asDialog();
-
         }
-
-
-
-
-        $sidebar->addWidget($links);
-
+        Sidebar::get()->addWidget($links);
     }
 }

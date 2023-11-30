@@ -10,6 +10,7 @@
  */
 class Admin_LoginFaqController extends AuthenticatedController
 {
+    protected $_autobind = true;
     public function before_filter(&$action, &$args)
     {
         if ($action === 'add') {
@@ -29,45 +30,35 @@ class Admin_LoginFaqController extends AuthenticatedController
     }
 
 
-    public function edit_action()
+    public function edit_action(LoginFaq $entry = null)
     {
-        $id = Request::get('entry_id') ?: null;
-        $this->entry = new LoginFaq($id);
-
         PageLayout::setTitle(
-            $this->entry->isNew() ? _('Hilfetext hinzufügen') : _('Hilfetext bearbeiten')
+            $entry->isNew() ? _('Hilfetext hinzufügen') : _('Hilfetext bearbeiten')
         );
-
     }
 
-    public function store_action()
+    public function store_action(LoginFaq $entry = null)
     {
-        if (Request::isPost()) {
-            CSRFProtection::verifyRequest();
-            $id = Request::get('id') ?: null; // Convert possible empty string to null
-            $entry = new LoginFaq($id);
-            $entry->id = Request::get('id');
-            $entry->title = Request::get('title');
-            $entry->description = Request::get('description');
+        CSRFProtection::verifyRequest();
+        $entry->setData([
+            'title' => Request::get('title'),
+            'description' => Request::get('description'),
+        ]);
 
-            if ($entry->store()) {
-                PageLayout::postSuccess(_('Hilfetext wurde gespeichert.'));
-                $this->redirect('admin/login_faq/index');
-            }
+        if ($entry->store()) {
+            PageLayout::postSuccess(_('Hilfetext wurde gespeichert.'));
         }
+        $this->redirect($this->indexURL());
     }
 
     public function delete_action($faq_entry_id)
     {
         CSRFProtection::verifyRequest();
 
-        LoginFaq::deleteBySQL('faq_id = ?', [$faq_entry_id]);
-        PageLayout::postSuccess(sprintf(
-            _("Der Hilfetext wurde gelöscht."), htmlReady(Request::get("id"))
-        ));
-
-        $redirect_url = $this->url_for('admin/login_faq/index');
-        $this->relocate($redirect_url);
+        if (LoginFaq::deleteBySQL('faq_id = ?', [$faq_entry_id])) {
+            PageLayout::postSuccess(_("Der Hilfetext wurde gelöscht."));
+        }
+        $this->relocate($this->indexURL());
     }
 
     protected function setupSidebar()
@@ -75,10 +66,9 @@ class Admin_LoginFaqController extends AuthenticatedController
         $actions = new ActionsWidget();
         $actions->addLink(
             _('Hilfetext hinzufügen'),
-            $this->url_for('admin/login_faq/add'),
+            $this->edit_URL(),
             Icon::create('add')
         )->asDialog();
         Sidebar::get()->addWidget($actions);
-
     }
 }
