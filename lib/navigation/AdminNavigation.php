@@ -169,7 +169,7 @@ class AdminNavigation extends Navigation
                 'loginstyle',
                 new Navigation(
                     _('Startseite'),
-                    'dispatch.php/admin/loginstyle'));
+                    'dispatch.php/admin/login_style'));
         }
 
         $this->addSubNavigation('locations', $navigation);
