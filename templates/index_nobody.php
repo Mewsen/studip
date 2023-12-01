@@ -62,28 +62,31 @@ if ($bg_mobile) {
                     <?= $GLOBALS['UNI_LOGIN_ADD'] ?>
                 </div>
             <? endif; ?>
-
-            <div id="languages">
-                <? foreach ($GLOBALS['INSTALLED_LANGUAGES'] as $temp_language_key => $temp_language): ?>
-                    <?= Assets::img('languages/' . $temp_language['picture'], ['alt' => $temp_language['name'], 'size' => '24']) ?>
-                    <a href="index.php?set_language=<?= $temp_language_key ?>">
-                        <?= htmlReady($temp_language['name']) ?>
-                    </a>
-                <? endforeach; ?>
-            </div>
-
-            <div id="contrast">
-                <? if (isset($_SESSION['contrast'])) : ?>
-                    <?= Icon::create('accessibility')->asImg(24) ?>
-                    <a href="index.php?unset_contrast=1"><?= _('Normalen Kontrast aktivieren') ?></a>
-                    <?= tooltipIcon(_('Aktiviert standardmäßige, nicht barrierefreie Kontraste.')); ?>
-                <? else : ?>
-                    <?= Icon::create('accessibility')->asImg(24) ?>
-                    <a href="index.php?set_contrast=1" id="highcontrastlink"><?= _('Hohen Kontrast aktivieren')?></a>
-                    <?= tooltipIcon(_('Aktiviert einen hohen Kontrast gemäß WCAG 2.1. Diese Einstellung wird nach dem Login übernommen.
-                    Sie können sie in Ihren persönlichen Einstellungen ändern.')); ?>
-                <? endif ?>
-            </div>
+            <form method="POST" action="index.php">
+                <?=CSRFProtection::tokenTag()?>
+                <input type="hidden" name="user_config_submitted" value="1">
+                <div id="languages">
+                    <? foreach ($GLOBALS['INSTALLED_LANGUAGES'] as $temp_language_key => $temp_language): ?>
+                        <?= Assets::img('languages/' . $temp_language['picture'], ['alt' => $temp_language['name'], 'size' => '24']) ?>
+                        <button class="as-link" name="set_language_<?=$temp_language_key?>">
+                            <?= htmlReady($temp_language['name']) ?>
+                        </button>
+                    <? endforeach; ?>
+                </div>
+                <div id="contrast">
+                    <?=CSRFProtection::tokenTag()?>
+                    <? if (!empty($_SESSION['contrast'])) : ?>
+                        <?= Icon::create('accessibility')->asImg(24) ?>
+                        <button class="as-link" name="unset_contrast"><?= _('Normalen Kontrast aktivieren') ?></button>
+                        <?= tooltipIcon(_('Aktiviert standardmäßige, nicht barrierefreie Kontraste.')); ?>
+                    <? else : ?>
+                        <?= Icon::create('accessibility')->asImg(24) ?>
+                        <button class="as-link" name="set_contrast"><?= _('Hohen Kontrast aktivieren') ?></button>
+                        <?= tooltipIcon(_('Aktiviert einen hohen Kontrast gemäß WCAG 2.1. Diese Einstellung wird nach dem Login übernommen.
+                        Sie können sie in Ihren persönlichen Einstellungen ändern.')); ?>
+                    <? endif ?>
+                </div>
+            </form>
 
             <div class="login_info">
                 <div>
@@ -110,11 +113,11 @@ if ($bg_mobile) {
         </footer>
     </article>
 
-<? if (count($plugin_contents) > 0): ?>
-    <div id="login-plugin-contents">
-    <? foreach ($plugin_contents as $content): ?>
-        <?= $content ?>
-    <? endforeach; ?>
-    </div>
-<? endif; ?>
+    <? if (count($plugin_contents) > 0): ?>
+        <div id="login-plugin-contents">
+            <? foreach ($plugin_contents as $content): ?>
+                <?= $content ?>
+            <? endforeach; ?>
+        </div>
+    <? endif; ?>
 </main>
