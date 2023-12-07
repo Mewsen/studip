@@ -161,6 +161,7 @@ class RouteMap
         }
 
         $this->addUnauthenticatedTreeRoutes($group);
+        $this->addUnauthenticatedResourcesRoutes($group);
     }
 
     private function getAuthenticator(): callable
@@ -663,5 +664,23 @@ class RouteMap
     private function addRelationship(RouteCollectorProxy $group, string $url, string $handler): void
     {
         $group->map(['GET', 'PATCH', 'POST', 'DELETE'], $url, $handler);
+    }
+
+    private function addUnauthenticatedResourcesRoutes(RouteCollectorProxy $group): void
+    {
+        $group->get('/resources', Routes\Resources\ResourceIndex::class);
+        $group->get('/resources/{id}', Routes\Resources\ResourceShow::class);
+
+        $group->get('/resource-bookings', Routes\Resources\ResourceBookingIndex::class);
+        $group->get('/resource-bookings/{id}', Routes\Resources\ResourceShow::class);
+        $group->get('/resources/{id}/bookings', Routes\Resources\ResourceBookingIndex::class)->setName('bookings-of-resource');
+
+        $group->get('/resource-booking-intervals', Routes\Resources\ResourceBookingIntervalIndex::class);
+        $group->get('/resource-booking-intervals/{id}', Routes\Resources\ResourceBookingIntervalShow::class);
+        $group->get('/resources/{id}/intervals', Routes\Resources\ResourceBookingIntervalIndex::class)->setName('intervals-of-resource');
+        $group->get('/resource-bookings/{id}/intervals', Routes\Resources\ResourceBookingIntervalIndex::class)->setName('intervals-of-booking');
+
+        $group->get('/resource-categories', Routes\Resources\ResourceCategoryIndex::class);
+        $group->get('/resource-categories/{id}', Routes\Resources\ResourceCategoryShow::class);
     }
 }

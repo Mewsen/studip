@@ -60,6 +60,12 @@ class SchemaMap
             \FileRef::class => Schemas\FileRef::class,
             \FolderType::class => Schemas\Folder::class,
 
+            \Resource::class => Schemas\ResourceSchema::class,
+            \ResourceBooking::class => Schemas\ResourceBookingSchema::class,
+            \ResourceBookingInterval::class => Schemas\ResourceBookingIntervalSchema::class,
+            \ResourceCategory::class => Schemas\ResourceCategorySchema::class,
+            \ResourceProperty::class => Schemas\ResourcePropertySchema::class,
+
             \Courseware\Block::class => Schemas\Courseware\Block::class,
             \Courseware\BlockComment::class => Schemas\Courseware\BlockComment::class,
             \Courseware\BlockFeedback::class => Schemas\Courseware\BlockFeedback::class,
