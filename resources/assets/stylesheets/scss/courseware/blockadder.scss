@@ -104,29 +104,6 @@
         &:hover {
             border-color: var(--base-color);
         }
-        .cw-blockadder-item {
-            padding: 64px 10px 4px 10px;
-            @include background-icon(unit-test, clickable, 48);
-            background-position: 10px 10px;
-            background-repeat: no-repeat;
-            cursor: pointer;
-
-            @each $item, $icon in $blockadder-items {
-                &.cw-blockadder-item-#{$item} {
-                    @include background-icon($icon, clickable, 48);
-                }
-            }
-            .cw-clipboard-item-title,
-            .cw-blockadder-item-title {
-                display: inline-block;
-                font-weight: 600;
-                margin-bottom: 2px;
-            }
-            .cw-blockadder-item-description {
-                display: inline-block;
-                margin: 0 0 4px;
-            }
-        }
         .cw-blockadder-item-fav {
             height: 32px;
             padding: 8px;
@@ -134,6 +111,29 @@
             border: none;
             cursor: pointer;
         }
+    }
+}
+
+.cw-blockadder-item {
+    padding: 64px 10px 4px 10px;
+    @include background-icon(unit-test, clickable, 48);
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+
+    @each $item, $icon in $blockadder-items {
+        &.cw-blockadder-item-#{$item} {
+            @include background-icon($icon, clickable, 48);
+        }
+    }
+    .cw-clipboard-item-title,
+    .cw-blockadder-item-title {
+        display: inline-block;
+        font-weight: 600;
+        margin-bottom: 2px;
+    }
+    .cw-blockadder-item-description {
+        display: inline-block;
+        margin: 0 0 4px;
     }
 }
 
@@ -268,40 +268,42 @@
             border-color: var(--base-color);
         }
 
-        .cw-clipboard-item {
-            width: calc(100% - 36px);
-            padding: 64px 10px 4px 10px;
-            @include background-icon(unit-test, clickable, 48);
-            background-position: 10px 10px;
-            background-repeat: no-repeat;
-            cursor: pointer;
-            background-color: var(--white);
-            border: none;
-            text-align: left;
-            color: var(--base-color);
-
-            @each $item, $icon in $blockadder-items {
-                &.cw-clipboard-item-#{$item} {
-                    @include background-icon($icon, clickable, 48);
-                }
-            }
-            @each $item, $icon in $containeradder-items {
-                &.cw-clipboard-item-#{$item} {
-                    @include background-icon($icon, clickable, 48);
-                }
-            }
-
-            .cw-clipboard-item-title {
-                display: inline-block;
-                font-weight: 600;
-                margin-bottom: 2px;
-            }
-        }
         .cw-clipboard-item-action-menu-wrapper {
             padding: 8px;
         }
     }
 }
+
+.cw-clipboard-item {
+    width: calc(100% - 36px);
+    padding: 64px 10px 4px 10px;
+    @include background-icon(unit-test, clickable, 48);
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    background-color: var(--white);
+    border: none;
+    text-align: left;
+    color: var(--base-color);
+
+    @each $item, $icon in $blockadder-items {
+        &.cw-clipboard-item-#{$item} {
+            @include background-icon($icon, clickable, 48);
+        }
+    }
+    @each $item, $icon in $containeradder-items {
+        &.cw-clipboard-item-#{$item} {
+            @include background-icon($icon, clickable, 48);
+        }
+    }
+
+    .cw-clipboard-item-title {
+        display: inline-block;
+        font-weight: 600;
+        margin-bottom: 2px;
+    }
+}
+
 .action-menu.is-open,
 .action-menu-wrapper.is-open {
     &.cw-clipboard-item-action-menu {
