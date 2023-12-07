@@ -54,32 +54,32 @@ class LtiTool extends SimpleORMap
 
     //ToolInterface implementation:
 
-    public function getIdentifier(): string
+    public function getIdentifier() : string
     {
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName() : string
     {
         return $this->name;
     }
 
-    public function getAudience(): string
+    public function getAudience() : string
     {
         // TODO: Implement getAudience() method.
     }
 
-    public function getOidcInitiationUrl(): string
+    public function getOidcInitiationUrl() : string
     {
         // TODO: Implement getOidcInitiationUrl() method.
     }
 
-    public function getLaunchUrl(): ?string
+    public function getLaunchUrl() : ?string
     {
         return $this->launch_url;
     }
 
-    public function getDeepLinkingUrl(): ?string
+    public function getDeepLinkingUrl() : ?string
     {
         // TODO: Implement getDeepLinkingUrl() method.
     }
