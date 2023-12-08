@@ -52,9 +52,10 @@ class Keyring extends SimpleORMap
             if ($keyring->store()) {
                 return $keyring;
             }
+            //TODO: improve exception after the „bald-rapunzel“ StEP is merged.
             throw new StudipException(_('Es konnte kein Schlüsselpaar erzeugt werden.'));
         } else {
-            //TODO: improve exceptions after the „bald-rapunzel“ StEP is merged.
+            //TODO: improve exception after the „bald-rapunzel“ StEP is merged.
             throw new StudipException(
                 sprintf(
                     _('Der Schlüsselalgorithmus %s wird nicht unterstützt.'),
