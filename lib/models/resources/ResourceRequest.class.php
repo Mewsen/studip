@@ -1182,10 +1182,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 if ($with_range) {
                     $date = CourseDate::find($appointment->appointment_id);
 
-                    $interval['range']       = 'ResourceRequestAppointment';
+                    $interval['range']       = ResourceRequestAppointment::class;
                     $interval['range_id']    = $appointment->appointment_id;
-                    $interval['booked_room'] = $date->room_booking->resource_id;
-                    $interval['booking_id']  = $date->room_booking->id;
+                    $interval['booked_room'] = $date->room_booking ? $date->room_booking->resource_id : null;
+                    $interval['booking_id']  = $date->room_booking ? $date->room_booking->id : null;
 
                 }
                 $time_intervals[] = $interval;
@@ -1207,7 +1207,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 ];
             }
             if ($with_range) {
-                $interval['range']       = 'CourseDate';
+                $interval['range']       = CourseDate::class;
                 $interval['range_id']    = $this->termin_id;
                 $interval['booked_room'] = $this->date->room_booking ? $this->date->room_booking->resource_id: null;
                 $interval['booking_id']  = $this->date->room_booking ? $this->date->room_booking->id : null;
@@ -1231,7 +1231,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                     ];
                 }
                 if ($with_range) {
-                    $interval['range']       = 'CourseDate';
+                    $interval['range']       = CourseDate::class;
                     $interval['range_id']    = $date->id;
                     $interval['booked_room'] = $date->room_booking->resource_id;
                     $interval['booking_id']  = $date->room_booking->id;
@@ -1258,10 +1258,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                         ];
                     }
                     if ($with_range) {
-                        $interval['range']       = 'CourseDate';
+                        $interval['range']       = CourseDate::class;
                         $interval['range_id']    = $date->id;
-                        $interval['booked_room'] = $date->room_booking->resource_id;
-                        $interval['booking_id']  = $date->room_booking->id;
+                        $interval['booked_room'] = $date->room_booking ? $date->room_booking->resource_id: null;
+                        $interval['booking_id']  = $date->room_booking ? $date->room_booking->id : null;
                     }
                     $time_intervals[] = $interval;
                 }
