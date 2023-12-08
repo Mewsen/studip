@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * TODO: doc
+ */
+class Keyring extends SimpleORMap
+{
+    const ALGORTIHM_ES256 = 'ECDSA_P-256_SHA256';
+    protected static function configure($config = [])
+    {
+        $config['db_table'] = 'keyrings';
+        parent::configure($config);
+    }
+
+    /**
+     * TODO
+     *
+     * @param string $range_id
+     *
+     * @param string $range_type
+     *
+     * @param string $passphrase
+     *
+     * @param string $algorithm
+     *
+     * @return Keyring
+     *
+     * @throws StudipException
+     */
+    public static function generate(
+        string $range_id,
+        string $range_type,
+        string $passphrase = '',
+        string $algorithm = self::ALGORTIHM_ES256
+    ) : Keyring
+    {
+        if ($algorithm === self::ALGORTIHM_ES256) {
+            $private_key = phpseclib3\Crypt\EC::createKey('ED25519');
+            if ($passphrase) {
+                $private_key = $private_key->withPassword($passphrase);
+            }
+            $public_key = $private_key->getPublicKey();
+            $keyring = new Keyring();
+            $keyring->range_id = $range_id;
+            $keyring->range_type = $range_type;
+            $keyring->private_key = $private_key;
+            $keyring->public_key = $public_key;
+            if ($passphrase) {
+                $hasher = UserManagement::getPwdHasher();
+                $keyring->passphrase = $hasher->HashPassword($passphrase);
+            }
+            if ($keyring->store()) {
+                return $keyring;
+            }
+            throw new StudipException(_('Es konnte kein Schlüsselpaar erzeugt werden.'));
+        } else {
+            //TODO: improve exceptions after the „bald-rapunzel“ StEP is merged.
+            throw new StudipException(
+                sprintf(
+                    _('Der Schlüsselalgorithmus %s wird nicht unterstützt.'),
+                    $algorithm
+                )
+            );
+        }
+    }
+}
