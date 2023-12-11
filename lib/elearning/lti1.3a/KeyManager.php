@@ -9,7 +9,6 @@ use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
 
 class KeyManager implements KeyChainFactoryInterface
 {
-
     public function create(string $identifier, string $keySetName, $publicKey, $privateKey = null, ?string $privateKeyPassPhrase = null, string $algorithm = KeyInterface::ALG_RS256): KeyChainInterface
     {
         $keyring = null;
@@ -22,9 +21,9 @@ class KeyManager implements KeyChainFactoryInterface
         } else {
             $keyring = \Keyring::findOneBySQL('range_id = :id', ['id' => $identifier]);
             if ($keyring) {
-                return $keyring;
+                return $keyring->toKeyChain();
             }
         }
-
+        throw new \StudipException('Unable to create a keyring.');
     }
 }

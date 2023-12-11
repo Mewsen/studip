@@ -64,4 +64,28 @@ class Keyring extends SimpleORMap
             );
         }
     }
+
+    /**
+     * Converts the keyring to a KeyChain instance of the Lti1p3Core library.
+     *
+     * @return \OAT\Library\Lti1p3Core\Security\Key\KeyChain A KeyChain representation
+     *     of the keyring.
+     */
+    public function toKeyChain() : \OAT\Library\Lti1p3Core\Security\Key\KeyChain
+    {
+        $public_key = new \OAT\Library\Lti1p3Core\Security\Key\Key(
+            $this->public_key
+        );
+        $private_key = new \OAT\Library\Lti1p3Core\Security\Key\Key(
+            $this->private_key,
+            $this->passphrase ?? null
+        );
+        $keychain = new \OAT\Library\Lti1p3Core\Security\Key\KeyChain(
+            $this->id,
+            'studip-key', //TODO: better name
+            $public_key,
+            $private_key
+        );
+        return $keychain;
+    }
 }
