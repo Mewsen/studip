@@ -1816,6 +1816,8 @@ function xml_escape($string)
 }
 
 /**
+ * NOTE: Temporary backport of TIC 3555. Must be merged/removed when that TIC is available in main.
+ *
  * This function mimics the functionality of the $gettextInterpolate function in JavaScript.
  * This makes it easier to format text in translatable strings.
  *
