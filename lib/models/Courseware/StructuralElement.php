@@ -595,7 +595,7 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    private function canReadSequential($user): bool
+    public function canReadSequential($user): bool
     {
         $unit = $this->findUnit();
         if (!$unit->config['sequential_progression']) {

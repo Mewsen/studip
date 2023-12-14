@@ -142,9 +142,9 @@
                                     {{ $gettext('Diese Seite gehört zu einer Aufgabe, die von einer anderen Person bearbeitet wird.') }}
                                 </StudipMessageBox>
                                 <courseware-companion-box
-                                    v-if="!canVisit"
-                                    mood="sad"
-                                    :msgCompanion="$gettext('Diese Seite steht Ihnen leider nicht zur Verfügung.')"
+                                    v-if="canNotShow"
+                                    :mood="canNotShow.mood"
+                                    :msgCompanion="canNotShow.msg"
                                 />
                                 <courseware-companion-box
                                     v-if="blockedByAnotherUser"
@@ -1178,6 +1178,20 @@ export default {
                 return process.attributes.configuration.anonymous;
             });
         },
+        canNotShow() {
+            if (!this.canVisit) {
+                if (this.isTask && this.userIsTeacher) {
+                    return { msg: this.$gettext('Sie können die Aufgabe erst nach Abgabe betrachten.'), mood: 'pointing' };
+                }
+
+                if (!this.structuralElement.attributes['can-read-sequential']) {
+                    return { msg: this.$gettext('Bitte bearbeiten Sie alle Inhalte der vorhergehenden Seite, um diese Seite freizuschalten.'), mood: 'pointing' };
+                }
+                
+                return { msg: this.$gettext('Diese Seite steht Ihnen leider nicht zur Verfügung.'), mood: 'sad' };
+            }
+            return false;
+        }
     },
 
     methods: {
