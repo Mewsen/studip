@@ -64,5 +64,15 @@ export default {
         }
 
     },
+    methods: {
+        ...mapActions({
+            loadTeacherStatus: 'loadTeacherStatus'
+        }),
+    },
+    mounted() {
+        if (this.inCourseContext) {
+            this.loadTeacherStatus();
+        }
+    }
 }
 </script>

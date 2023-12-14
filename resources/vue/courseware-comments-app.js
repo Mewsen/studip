@@ -16,6 +16,7 @@ const mountApp = async (STUDIP, createApp, element) => {
     let elem = document.getElementById(element.substring(1));
     let entry_id = null;
     let entry_type = null;
+    let course_perms = null;
 
     if (elem !== undefined) {
         if (elem.attributes !== undefined) {
@@ -24,6 +25,9 @@ const mountApp = async (STUDIP, createApp, element) => {
             }
             if (elem.attributes['entry-id'] !== undefined) {
                 entry_id = elem.attributes['entry-id'].value;
+            }
+            if (elem.attributes['course-perms'] !== undefined) {
+                course_perms = JSON.parse(elem.attributes['course-perms'].value);
             }
         }
     }
@@ -57,9 +61,9 @@ const mountApp = async (STUDIP, createApp, element) => {
         id: entry_id,
         type: entry_type,
     });
+    store.dispatch('setUserIsTeacher', course_perms.tutor);
     store.dispatch('setUserId', STUDIP.USER_ID);
     await store.dispatch('users/loadById', { id: STUDIP.USER_ID });
-    await store.dispatch('loadTeacherStatus', STUDIP.USER_ID);
 
     const data = await axios(STUDIP.URLHelper.getURL('dispatch.php/course/courseware/comments_overview_data/'));
     store.commit(

@@ -7,6 +7,7 @@
         unit-id="<?= htmlReady($unit_id) ?>"
         licenses='<?= htmlReady($licenses) ?>'
         feedback-settings='<?= htmlReady($feedback_settings) ?>'
+        course-perms="<?= htmlReady($CoursePerms) ?>"
         >
     </div>
 <? endif; ?>

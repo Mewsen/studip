@@ -22,8 +22,8 @@ const getDefaultState = () => {
         userId: null,
         viewMode: 'read',
         dashboardViewMode: 'default',
+        coursePerms: null,
         userIsTeacher: false,
-        teacherStatusLoaded: false,
 
         showStructuralElementEditDialog: false,
         showStructuralElementAddDialog: false,
@@ -184,8 +184,8 @@ const getters = {
     userIsTeacher(state) {
         return state.userIsTeacher;
     },
-    teacherStatusLoaded(state) {
-        return state.teacherStatusLoaded;
+    coursePerms(state) {
+        return state.coursePerms;
     },
     pluginManager(state) {
         return state.pluginManager;
@@ -1290,63 +1290,19 @@ export const actions = {
         );
     },
 
-    async loadTeacherStatus({ dispatch, rootGetters, state, commit, getters }, userId) {
-        const user = rootGetters['users/byId']({ id: userId });
+    setCoursePerms({ commit }, perms) {
+        commit('setCoursePerms', perms);
+    },
 
-        if (user.attributes.permission === 'root') {
-            commit('setUserIsTeacher', true);
-            return;
-        }
-        if (user.attributes.permission === 'admin') {
-            await dispatch('courses/loadById', { id: state.context.id });
-            const course = rootGetters['courses/byId']({id: state.context.id });
-            const instituteId = course.relationships.institute.data.id;
+    setUserIsTeacher({ commit }, isTeacher) {
+        commit('setUserIsTeacher', isTeacher);
+    },
 
-            const parent = { type: 'users', id: `${userId}` };
-            const relationship = 'institute-memberships';
-            const options = {};
-            await dispatch('institute-memberships/loadRelated', { parent, relationship, options }, { root: true });
-            const instituteMemberships = rootGetters['institute-memberships/all'];
-            const instituteMembership = instituteMemberships.filter(membership => membership.relationships.institute.data.id === instituteId);
+    loadTeacherStatus({ commit, getters }) {
+        const editingLevel = getters.courseware.attributes['editing-permission-level'];
+        const isTeacher = getters.coursePerms[editingLevel];
 
-            if (instituteMembership.length > 0 && instituteMembership[0].attributes.permission === 'admin') {
-                commit('setUserIsTeacher', true);
-                return;
-            }
-        }
-
-        const membershipId = `${state.context.id}_${userId}`;
-        try {
-            await dispatch('course-memberships/loadById', { id: membershipId });
-        } catch (error) {
-            console.error(`Could not find course membership for ${membershipId}.`);
-            commit('setUserIsTeacher', false);
-
-            return false;
-        }
-        const membership = rootGetters['course-memberships/byId']({ id: membershipId });
-        if (membership) {
-            let editingLevel = 'tutor';
-            if (getters.courseware.attributes) {
-                editingLevel = getters.courseware.attributes['editing-permission-level'];
-            }
-            const membershipPermission = membership.attributes.permission;
-
-            let isTeacher = false;
-            if (editingLevel === 'dozent') {
-                isTeacher = membershipPermission === 'dozent';
-            } else if (editingLevel === 'tutor') {
-                isTeacher = membershipPermission === 'dozent' || membershipPermission === 'tutor';
-            }
-            commit('setUserIsTeacher', isTeacher);
-
-            return true;
-        } else {
-            console.error(`Could not find course membership for ${membershipId}.`);
-            commit('setUserIsTeacher', false);
-
-            return false;
-        }
+        commit('setUserIsTeacher', isTeacher);
     },
 
     loadFeedback({ dispatch }, blockId) {
@@ -1623,8 +1579,11 @@ export const mutations = {
     },
 
     setUserIsTeacher(state, isTeacher) {
-        state.teacherStatusLoaded = true;
         state.userIsTeacher = isTeacher;
+    },
+
+    setCoursePerms(state, perms) {
+        state.coursePerms = perms;
     },
 
     setPluginManager(state, pluginManager) {

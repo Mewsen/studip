@@ -4,4 +4,5 @@
     entry-id="<?= Context::getId() ?>"
     licenses='<?= $licenses ?>'
     feedback-settings='<?= htmlReady($feedback_settings) ?>'
+    course-perms="<?= htmlReady($CoursePerms) ?>"
 ></div>

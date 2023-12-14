@@ -25,6 +25,7 @@
             <courseware-structural-element-feedback
                 v-if="isStructuralElement && isFeedback"
                 :structuralElement="item"
+                :canEdit="item.attributes['can-edit']"
             />
         </template>
     </studip-dialog>

@@ -96,6 +96,7 @@ export default {
             invalidateStructureCache: 'courseware-structure/invalidateCache',
             loadCoursewareStructure: 'courseware-structure/load',
             loadStructuralElement: 'loadStructuralElement',
+            loadTeacherStatus: 'loadTeacherStatus',
         }),
         async selectStructuralElement(id) {
             if (!id) {
@@ -128,6 +129,11 @@ export default {
         }
 
         this.structureLoadingState = 'done';
+
+        if (this.context.type === 'courses') {
+            this.loadTeacherStatus();
+        }
+
         const selectedId = this.$route.params?.id;
         await this.selectStructuralElement(selectedId);
     },

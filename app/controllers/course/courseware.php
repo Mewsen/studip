@@ -42,6 +42,12 @@ class Course_CoursewareController extends CoursewareController
             'adminPerm' => \Feedback::hasAdminPerm(Context::getId()),
             'createPerm' => \Feedback::hasCreatePerm(Context::getId()),
         ]);
+
+        $this->CoursePerms = json_encode([
+            'dozent' => $GLOBALS['perm']->have_studip_perm('dozent', Context::getId()),
+            'tutor' => $GLOBALS['perm']->have_studip_perm('tutor', Context::getId()),
+            'autor' => $GLOBALS['perm']->have_studip_perm('autor', Context::getId()),
+        ]);
     }
 
     public function index_action(): void

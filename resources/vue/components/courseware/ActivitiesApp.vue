@@ -14,18 +14,12 @@
 import CoursewareActivities from './CoursewareActivities.vue';
 import CoursewareActivitiesWidgetFilterType from './widgets/CoursewareActivitiesWidgetFilterType.vue';
 import CoursewareActivitiesWidgetFilterUnit from './widgets/CoursewareActivitiesWidgetFilterUnit.vue';
-import { mapGetters } from 'vuex';
 
 export default {
     components: {
         CoursewareActivities,
         CoursewareActivitiesWidgetFilterType,
         CoursewareActivitiesWidgetFilterUnit
-    },
-    computed: {
-        ...mapGetters({
-            userIsTeacher: 'userIsTeacher',
-        }),
-    },
+    }
 }
 </script>

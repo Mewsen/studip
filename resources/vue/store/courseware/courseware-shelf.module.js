@@ -1,6 +1,7 @@
 const getDefaultState = () => {
     return {
         context: null,
+        coursePerms: null,
         httpClient: null,
         showCompanionOverlay: false,
         msgCompanionOverlay: '',
@@ -87,6 +88,9 @@ const getters = {
     userIsTeacher(state) {
         return state.userIsTeacher;
     },
+    coursePerms(state) {
+        return state.coursePerms;
+    },
     urlHelper(state) {
         return state.urlHelper;
     },
@@ -130,6 +134,9 @@ export const actions = {
     // setters
     setContext({ commit }, context) {
         commit('setContext', context);
+    },
+    setCoursePerms({ commit }, perms) {
+        commit('setCoursePerms', perms);
     },
     setHttpClient({ commit }, httpClient) {
         commit('setHttpClient', httpClient);
@@ -546,52 +553,10 @@ export const actions = {
         return dispatch('courseware-instances/update', instance, { root: true });
     },
 
-    async loadTeacherStatus({ dispatch, rootGetters, state, commit, getters }, userId) {
-        const user = rootGetters['users/byId']({ id: userId });
+    loadTeacherStatus({ commit, getters }) {
+        const isTeacher = getters.coursePerms['tutor'];
 
-        if (user.attributes.permission === 'root') {
-            commit('setUserIsTeacher', true);
-            return;
-        }
-        if (user.attributes.permission === 'admin') {
-            await dispatch('courses/loadById', { id: state.context.id });
-            const course = rootGetters['courses/byId']({id: state.context.id });
-            const instituteId = course.relationships.institute.data.id;
-
-            const parent = { type: 'users', id: `${userId}` };
-            const relationship = 'institute-memberships';
-            const options = {};
-            await dispatch('institute-memberships/loadRelated', { parent, relationship, options }, { root: true });
-            const instituteMemberships = rootGetters['institute-memberships/all'];
-            const instituteMembership = instituteMemberships.filter(membership => membership.relationships.institute.data.id === instituteId);
-
-            if (instituteMembership.length > 0 && instituteMembership[0].attributes.permission === 'admin') {
-                commit('setUserIsTeacher', true);
-                return;
-            }
-        }
-
-        const membershipId = `${state.context.id}_${userId}`;
-        try {
-            await dispatch('course-memberships/loadById', { id: membershipId });
-        } catch (error) {
-            console.error(`Could not find course membership for ${membershipId}.`);
-            commit('setUserIsTeacher', false);
-
-            return false;
-        }
-        const membership = rootGetters['course-memberships/byId']({ id: membershipId });
-        if (membership) {
-            const membershipPermission = membership.attributes.permission;
-            commit('setUserIsTeacher', membershipPermission === 'dozent' || membershipPermission === 'tutor');
-
-            return true;
-        } else {
-            console.error(`Could not find course membership for ${membershipId}.`);
-            commit('setUserIsTeacher', false);
-
-            return false;
-        }
+        commit('setUserIsTeacher', isTeacher);
     },
 
     uploadImageForStructuralElement({ dispatch, state }, { structuralElement, file }) {
@@ -746,6 +711,9 @@ export const mutations = {
     setContext(state, data){
         state.context = data;
     },
+    setCoursePerms(state, perms) {
+        state.coursePerms = perms;
+    },
     setHttpClient(state, data){
         state.httpClient = data;
     },
@@ -789,7 +757,6 @@ export const mutations = {
         state.exportProgress = exportProgress;
     },
     setUserIsTeacher(state, isTeacher) {
-        state.teacherStatusLoaded = true;
         state.userIsTeacher = isTeacher;
     },
     setUrlHelper(state, urlHelper) {

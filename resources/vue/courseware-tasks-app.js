@@ -92,6 +92,7 @@ const mountApp = async (STUDIP, createApp, element) => {
     });
     let entry_id = null;
     let entry_type = null;
+    let course_perms = null;
     let elem;
 
     if ((elem = document.getElementById(element.substring(1))) !== undefined) {
@@ -102,6 +103,10 @@ const mountApp = async (STUDIP, createApp, element) => {
 
             if (elem.attributes['entry-id'] !== undefined) {
                 entry_id = elem.attributes['entry-id'].value;
+            }
+
+            if (elem.attributes['course-perms'] !== undefined) {
+                course_perms = JSON.parse(elem.attributes['course-perms'].value);
             }
         }
     }
@@ -115,6 +120,14 @@ const mountApp = async (STUDIP, createApp, element) => {
     });
     await store.dispatch('loadTeacherStatus', STUDIP.USER_ID);
     await store.dispatch('tasks/loadTasksOfCourse', { cid: entry_id });
+    store.dispatch('setCoursePerms', course_perms);
+    store.dispatch('setUserIsTeacher', course_perms.tutor);
+    store.dispatch('courseware-tasks/loadAll', {
+        options: {
+            'filter[cid]': entry_id,
+            include: 'solver, structural-element, task-feedback, task-group, task-group.lecturer',
+        },
+    });
 
     const app = createApp({
         render: (h) => h(RouterView),

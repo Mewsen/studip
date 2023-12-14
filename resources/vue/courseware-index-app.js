@@ -27,6 +27,7 @@ const mountApp = async (STUDIP, createApp, element) => {
     let entry_type = null;
     let unit_id = null;
     let licenses = null;
+    let course_perms = null;
     let elem;
     let feedbackSettings = null;
 
@@ -46,6 +47,10 @@ const mountApp = async (STUDIP, createApp, element) => {
 
             if (elem.attributes['unit-id'] !== undefined) {
                 unit_id = elem.attributes['unit-id'].value;
+            }
+
+            if (elem.attributes['course-perms'] !== undefined) {
+                course_perms = JSON.parse(elem.attributes['course-perms'].value);
             }
 
             // we need a route for License SORM
@@ -154,7 +159,7 @@ const mountApp = async (STUDIP, createApp, element) => {
     });
 
     if (entry_type === 'courses') {
-        await store.dispatch('loadTeacherStatus', STUDIP.USER_ID);
+        store.dispatch('setCoursePerms', course_perms);
         store.dispatch('loadProgresses');
         await store.dispatch('setFeedbackSettings', feedbackSettings);
     }
