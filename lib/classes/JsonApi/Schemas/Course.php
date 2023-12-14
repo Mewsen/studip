@@ -11,7 +11,7 @@ class Course extends SchemaProvider
     const TYPE = 'courses';
 
     const REL_BLUBBER = 'blubber-threads';
-    const REL_COURSEWARE = 'courseware';
+    const REL_COURSEWARE = 'courseware-units';
     const REL_END_SEMESTER = 'end-semester';
     const REL_EVENTS = 'events';
     const REL_FEEDBACK = 'feedback-elements';
@@ -200,8 +200,7 @@ class Course extends SchemaProvider
         $includeData
     ) {
         $relationships[self::REL_COURSEWARE] = [
-            self::RELATIONSHIP_DATA =>
-                \Courseware\Instance::existsForRange($course) ? \Courseware\Instance::findForRange($course) : null,
+            self::RELATIONSHIP_DATA => $course->courseware_units,
             self::RELATIONSHIP_LINKS => [
                 Link::RELATED => $this->getRelationshipRelatedLink($course, self::REL_COURSEWARE),
             ],
