@@ -1463,7 +1463,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      *
      * @throws \Studip\MembershipException In case when moving the member position was unsuccessful.
      */
-    public function swapMemberPosition(CourseMember $membership, int $new_position): int
+    public function swapMemberPosition(CourseMember $membership, int $new_position)
     {
         //At this point, the user is not at the highest position.
         //Load the member with the position $position + 1 and swap the positions.
@@ -1482,12 +1482,23 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             $next_member->position = $membership->position;
             $membership->position = $swapped_position;
 
-            $next_member->store();
-            $success = !$membership->isDirty() || $membership->store();
+            if ($next_member->isDirty()) {
+                $next_member->store();
+            }
+            if ($membership->isDirty()) {
+                $success = $membership->store();
+            } else {
+                $success = true;
+            }
         } else {
             //There is a gap in the position numbers. The user can just be placed to the new position:
-            $membership->position = $new_position;
-            $success = !$membership->isDirty() || $membership->store();
+            $membership->position = strval($new_position);
+            $success = false;
+            if ($membership->isDirty()) {
+                $success = $membership->store();
+            } else {
+                $success = true;
+            }
         }
 
         if (!$success) {
@@ -1502,7 +1513,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                 $membership->user
             );
         }
-        return (int) $membership->position;
+        return intval($membership->position);
     }
 
     /**
@@ -1550,15 +1561,16 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
 
         //Get the maximum number for the permission level in the course:
         $stmt = DBManager::get()->prepare(
-            'SELECT MAX(`position`)
-             FROM `seminar_user`
-             WHERE `seminar_id` = :course_id
-               AND `status` = :permission_level'
+            'SELECT MAX(`position`) FROM `seminar_user`
+            WHERE
+            `seminar_id` = :course_id AND `status` = :permission_level'
         );
-        $stmt->execute([
-            'course_id'        => $this->id,
-            'permission_level' => $membership->status,
-        ]);
+        $stmt->execute(
+            [
+                'course_id'        => $this->id,
+                'permission_level' => $membership->status
+            ]
+        );
         $max_number = $stmt->fetchColumn();
         if ($max_number === false) {
             //Nothing there to move.
@@ -1567,7 +1579,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
 
         if ($membership->position == $max_number) {
             //The user is already at the lowest position.
-            return (int) $max_number;
+            return intval($max_number);
         }
 
         return $this->swapMemberPosition($membership, intval($membership->position + 1));
@@ -1628,7 +1640,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         //Check the course set and if the user is on an admission list:
 
         if ($course_set = $this->getCourseSet()) {
-            $info = new \Studip\EnrolmentInformation('');
+            $info = new \Studip\EnrolmentInformation();
             $info->setCodeword('course_set');
             $info->setEnrolmentAllowed(true);
             $message = _('Die Anmeldung zu dieser Veranstaltung folgt bestimmten Regeln.');
@@ -1657,11 +1669,8 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         }
 
         //Check the visibility of the course for the user:
-        if (
-            !$this->visible
-            && !$this->isStudygroup()
-            && !$GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM, $user_id)
-        ) {
+        if (!$this->visible && !$this->isStudygroup()
+            && !$GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM, $user_id)) {
             return new \Studip\EnrolmentInformation(
                 _('Sie dürfen sich in diese Veranstaltung nicht eintragen.'),
                 \Studip\Information::INFO,
@@ -1692,20 +1701,12 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                 false
             );
         }
-        if (!$GLOBALS['perm']->have_perm('user', $user_id)) {
+        if ($GLOBALS['perm']->have_perm('user', $user_id)) {
             return new \Studip\EnrolmentInformation(
                 _('Sie haben keine ausreichende Berechtigung, um sich in die Veranstaltung einzutragen.'),
                 \Studip\Information::INFO,
                 'user',
                 false
-            );
-        }
-        if ($GLOBALS['perm']->have_perm('root', $user_id)) {
-            return new \Studip\EnrolmentInformation(
-                _('Sie haben root-Rechte und dürfen damit alles in Stud.IP.'),
-                \Studip\Information::INFO,
-                'root',
-                true
             );
         }
         if ($GLOBALS['perm']->have_studip_perm('admin', $this->id, $user_id)) {
@@ -1722,6 +1723,14 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                 \Studip\Information::INFO,
                 'admin',
                 false
+            );
+        }
+        if ($GLOBALS['perm']->have_perm('root', $user_id)) {
+            return new \Studip\EnrolmentInformation(
+                _('Sie haben root-Rechte und dürfen damit alles in Stud.IP.'),
+                \Studip\Information::INFO,
+                'root',
+                true
             );
         }
 
@@ -1760,10 +1769,8 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         if (count($user_domains) > 0) {
             //The user is in at least one domain. Check if the course is in one of them.
             $course_domains = UserDomain::getUserDomainsForSeminar($this->id);
-            if (
-                !UserDomain::checkUserVisibility($course_domains, $user_domains)
-                && !$this->isStudygroup()
-            ) {
+            if (!UserDomain::checkUserVisibility($course_domains, $user_domains)
+                && !$this->isStudygroup()) {
                 //The user is not in the same domain as the course and the course
                 //is not a studygroup.
                 return new \Studip\EnrolmentInformation(
@@ -1856,19 +1863,18 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      * @param bool $with_cancelled_dates Whether to include cancelled dates (true) or not (false).
      *     Defaults to false.
      *
-     * @return CourseDateList A collection of irregular and regular course dates.
+     * @return CourseDateCollection A collection of irregular and regular course dates.
      *
      * @throws \Studip\Exception In case that the end semester is before the start semester.
      */
-    public function getAllDatesInSemester(
-        ?Semester $start_semester = null,
-        ?Semester $end_semester = null,
-        bool $with_cancelled_dates = false
-    ) : CourseDateList {
-        $all_dates_of_course = !$start_semester && !$end_semester;
-
+    public function getAllDatesInSemester(?Semester $start_semester = null, ?Semester $end_semester = null, bool $with_cancelled_dates = false) : CourseDateCollection
+    {
+        $all_dates_of_course = false;
+        if (!$start_semester && !$end_semester) {
+            $all_dates_of_course = true;
+        }
         if ($all_dates_of_course) {
-            $collection = new CourseDateList();
+            $collection = new CourseDateCollection();
             foreach ($this->cycles as $regular_date) {
                 $collection->addRegularDate($regular_date);
             }
@@ -1885,7 +1891,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             return $collection;
         } else {
             if (!$start_semester) {
-                return new CourseDateList();
+                return new CourseDateCollection();
             }
             $beginning = $start_semester->beginn;
             $end = $start_semester->ende;
@@ -1899,7 +1905,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                 $end = $end_semester->ende;
             }
 
-            $collection = new CourseDateList();
+            $collection = new CourseDateCollection();
 
             SeminarCycleDate::findEachBySQL(
                 function ($date) use ($collection) {
@@ -2009,8 +2015,9 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      */
     public function getNextDate(bool $include_cancelled = false)
     {
-        $sql = '`range_id` = :course_id AND `date` > UNIX_TIMESTAMP() - 3600
-                ORDER BY `date`, `end_time`';
+        $sql = '`range_id` = :course_id
+            AND `date` > UNIX_TIMESTAMP() - 3600
+            ORDER BY `date`, `end_time`';
 
         $date = CourseDate::findOneBySQL($sql, ['course_id' => $this->id]);
         if (!$date && $include_cancelled) {
