@@ -114,7 +114,8 @@ class UnitsCreate extends JsonApiController
 
         $instance = new \Courseware\Instance($struct);
 
-        $instance->setRootLayout(self::arrayGet($json, 'data.attributes.settings.root-layout'));
+        $layout = self::arrayGet($json, 'data.attributes.settings.root-layout') ?? 'default';
+        $instance->setRootLayout(self::arrayGet($layout);
 
         $instance->getUnit()->store();
 
