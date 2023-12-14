@@ -3,6 +3,9 @@
 
 class Lti13aController extends StudipController
 {
+    use Studip\OAuth2\NegotiatesWithPsr7;
+
+
     public function platform_auth_action()
     {
 
@@ -22,12 +25,20 @@ class Lti13aController extends StudipController
         //and output its response.
         //See: https://oat-sa.github.io/doc-lti1p3/libraries/lib-lti1p3-core/doc/message/platform-originating-messages/
 
-        /*
-        $request = new \Slim\Psr7\Request(
-            Request::method(),
-            Request::url(),
+        $registration = null; //TODO
 
+        $nonce = null; //TODO
+
+        $validator = new \OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidator(
+            $registration,
+            $nonce
         );
-        */
+
+        $result = $validator->validatePlatformOriginatingLaunch($this->getPsrRequest());
+        if ($result->hasError()) {
+            //TODO: Display the error message.
+            return;
+        }
+        //TODO: Output the result.
     }
 }
