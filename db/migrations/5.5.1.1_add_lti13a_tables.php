@@ -25,11 +25,32 @@ class AddLti13aTables extends Migration
             )"
         );
         $db->exec("ALTER TABLE `keyrings` ADD INDEX(`range_id`, `range_type`)");
+
+        $db->exec(
+            "CREATE TABLE IF NOT EXISTS lti_registrations (
+                id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                client_id BIGINT NOT NULL,
+                tool_id CHAR(32) NOT NULL,
+                mkdate BIGINT(10) NOT NULL DEFAULT '0',
+                chdate BIGINT(10) NOT NULL DEFAULT '0'
+            )"
+        );
+
+        $db->exec(
+            "CREATE TABLE IF NOT EXISTS lti_deployments (
+                id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                tool_id CHAR(32) NOT NULL,
+                mkdate BIGINT(10) NOT NULL DEFAULT '0',
+                chdate BIGINT(10) NOT NULL DEFAULT '0'
+            )"
+        );
     }
 
     protected function down()
     {
         $db = DBManager::get();
+        $db->exec('DROP TABLE IF EXISTS lti_deployments');
+        $db->exec('DROP TABLE IF EXISTS lti_registrations');
         $db->exec('DROP TABLE IF EXISTS keyrings');
     }
 }
