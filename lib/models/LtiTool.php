@@ -83,4 +83,17 @@ class LtiTool extends SimpleORMap
     {
         // TODO: Implement getDeepLinkingUrl() method.
     }
+
+    /**
+     * Retrieves the keyring of the LTI tool.
+     *
+     * @return Keyring|null The keyring for the tool or null if no such keyring exists.
+     */
+    public function getKeyring() : ?Keyring
+    {
+        return Keyring::findOneBySQL(
+            "`range_type` = 'lti_tool' AND `range_id` = :tool_id",
+            ['tool_id' => $this->id]
+        );
+    }
 }

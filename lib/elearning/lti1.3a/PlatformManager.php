@@ -18,4 +18,14 @@ class PlatformManager
             \URLHelper::getURL('dispatch.php/lti13a/oauth2_token')
         );
     }
+
+    /**
+     * Returns the keyring for the platform.
+     *
+     * @return \Keyring|null The keyring for the platform or null if no such keyring exists.
+     */
+    public static function getPlatformKeyring() : ?\Keyring
+    {
+        return \Keyring::findOneBySQL("`range_type` = 'global' AND `range_id` = 'lti13a_platform'");
+    }
 }
