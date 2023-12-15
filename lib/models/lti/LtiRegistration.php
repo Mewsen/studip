@@ -22,9 +22,8 @@ class LtiRegistration extends SimpleORMap
 
     public function getTool(): \OAT\Library\Lti1p3Core\Tool\ToolInterface
     {
-        // TODO: Implement getTool() method.
+        return new \LtiTool($this->tool_id);
     }
-
     public function getDeploymentIds(): array
     {
         $db = DBManager::get();
