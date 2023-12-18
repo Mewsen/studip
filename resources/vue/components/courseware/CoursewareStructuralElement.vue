@@ -829,7 +829,7 @@ export default {
 
         textOer() {
             return {
-                title: this.$gettext('Lerninhalte auf dem OER Campus veröffentlichen'),
+                title: this.$gettext('Seite auf dem OER Campus veröffentlichen'),
                 confirm: this.$gettext('Veröffentlichen'),
                 close: this.$gettext('Abbrechen'),
             };
@@ -837,8 +837,8 @@ export default {
 
         textSuggestOer() {
             return {
-                title: this.$gettext('Lerninhalt für den OER Campus vorschlagen'),
-                confirm: this.$gettext('Lerninhalt vorschlagen'),
+                title: this.$gettext('Seite für den OER Campus vorschlagen'),
+                confirm: this.$gettext('Vorschlagen'),
                 close: this.$gettext('Abbrechen'),
             };
         },
