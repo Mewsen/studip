@@ -39,6 +39,7 @@
                 closeClass="cancel"
                 @close="closeEdit"
                 @confirm="storeContainer"
+                :confirmDisabled="!editDataValid"
                 height="430"
                 width="680"
             >
@@ -91,6 +92,10 @@ export default {
         container: Object,
         canEdit: Boolean,
         isTeacher: Boolean,
+        editDataValid: {
+            type: Boolean,
+            default: true
+        },
     },
     data() {
         return {
