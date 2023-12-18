@@ -133,7 +133,8 @@ if (isset($_COOKIE['navigation-length'])) {
                     $action_menu->addLink(
                         URLHelper::getURL($subnav->getURL(), [], true),
                         $subnav->getTitle(),
-                        $subnav->getImage()
+                        $subnav->getImage(),
+                        $subnav->getLinkAttributes()
                     );
                 }
                 SkipLinks::addIndex(_("Profilmenü"), "header_avatar_image_link", 1);
