@@ -198,13 +198,8 @@ class Admin_SmileysController extends AuthenticatedController
             return;
         }
 
-        // Correct mime-type?
-        $no_image = !empty($upload['type']) && mb_substr($upload['type'], 0, 5) != 'image';
-        if (!$no_image) {
-            $image_info = getimagesize($upload['tmp_name']); // Used later on!
-            $no_gif = $image_info[2] != IMAGETYPE_GIF;
-        }
-        if ($no_image) {
+        // Is the file actually an image?
+        if (!$this->checkFileIsImage($upload['tmp_name'], $upload['type'])) {
             $error = _('Die Datei ist keine Bilddatei');
             PageLayout::postError($error);
             return;
@@ -241,7 +236,7 @@ class Admin_SmileysController extends AuthenticatedController
         $message = $replace
                  ? sprintf(_('Die Bilddatei "%s" wurde erfolgreich ersetzt.'), $smiley_file)
                  : sprintf(_('Die Bilddatei "%s" wurde erfolgreich hochgeladen.'), $smiley_file);
-        PageLayout::postSuccess($message);
+        PageLayout::postSuccess(htmlReady($message));
 
         // Return to index and display the view the uploaded smiley is in
         $this->redirect('admin/smileys?view=' . $smiley_file[0]);
@@ -316,5 +311,25 @@ class Admin_SmileysController extends AuthenticatedController
         $widget->setTitle(_('Statistiken'));
         $widget->addElement(new WidgetElement($statistics));
         $sidebar->addWidget($widget);
+    }
+
+    private function checkFileIsImage(string $filename, string $type): bool
+    {
+        if (mb_substr($type, 0, 5) !== 'image') {
+            return false;
+        }
+
+        $mime_type = function_exists('mime_content_type') ? mime_content_type($filename) : false;
+        if ($mime_type !== false && mb_substr($mime_type, 0, 5) !== 'image') {
+            return false;
+        }
+
+        $check = imagecreatefromstring(file_get_contents($filename));
+        if ($check === false) {
+            return false;
+        }
+
+        imagedestroy($check);
+        return true;
     }
 }
