@@ -111,7 +111,7 @@
                 if (!text.trim()) {
                     return false;
                 }
-                let formatted_text = text.replace(/\n/g, "<br>");
+                let formatted_text = _.escape(text).replace(/\n/g, "<br>");
                 let comment = {
                     comment_id: Math.random().toString(36),
                     avatar: '',
@@ -316,7 +316,7 @@
 
                 thread.thread_data.comments.forEach((comment) => {
                     if (comment.comment_id === comment_id) {
-                        comment.html = content;
+                        comment.text = content;
                     }
                 });
 
