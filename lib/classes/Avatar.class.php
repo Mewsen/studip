@@ -367,7 +367,7 @@ class Avatar
             $ext = mb_strtolower($pathinfo['extension']);
 
             // passende Endung ?
-            if (!in_array($ext, words('jpg jpeg gif png webp'))) {
+            if (!app(\Studip\Services\ImageValidator::class)->validateName($_FILES[$userfile]['name'])) {
                 throw new Exception(sprintf(
                     _('Der Dateityp der Bilddatei ist falsch (%s). Es sind nur die Dateiendungen .gif, .png, .jpeg, .jpg oder .webp erlaubt!'),
                     $ext

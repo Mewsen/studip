@@ -65,17 +65,21 @@ class Admin_LoginStyleController extends AuthenticatedController
     public function add_pic_action()
     {
         CSRFProtection::verifyRequest();
+
+        $image_validator = app(\Studip\Services\ImageValidator::class);
+
         $success = 0;
         foreach ($_FILES['pictures']['name'] as $index => $filename) {
             if ($_FILES['pictures']['error'][$index] !== UPLOAD_ERR_OK) {
                 continue;
             }
 
-            $extension = pathinfo($filename, PATHINFO_EXTENSION);
-            $extension = strtolower($extension);
-            if (!in_array($extension, ['gif', 'jpeg', 'jpg', 'png'])) {
+            if (!$image_validator->validateName($filename)) {
                 continue;
             }
+
+            $extension = pathinfo($filename, PATHINFO_EXTENSION);
+            $extension = strtolower($extension);
 
             $entry = new LoginBackground();
             $entry->filename = $filename;

@@ -9,6 +9,7 @@ use JsonApi\NonJsonApiController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\UploadedFile;
+use Studip\Services\ImageValidator;
 use Studip\StockImages\Scaler;
 use Studip\StockImages\PaletteCreator;
 
@@ -115,8 +116,14 @@ class StockImagesUpload extends NonJsonApiController
      */
     private function validate(UploadedFile $file)
     {
+        $validator = $this->container->get(ImageValidator::class);
+
         $mimeType = $file->getClientMediaType();
-        if (!in_array($mimeType, ['image/gif', 'image/jpeg', 'image/png', 'image/webp'])) {
+        $fileName = $file->getClientFilename();
+        if (
+            !$validator->validateMimeType($mimeType)
+            || !$validator->validateName($fileName)
+        ) {
             return 'Unsupported media type.';
         }
     }

@@ -264,17 +264,16 @@ class Admin_BannerController extends AuthenticatedController
         }
 
         //Dateiendung bestimmen
-        $dot = mb_strrpos($img_name, '.');
-        if ($dot) {
-            $l   = mb_strlen($img_name) - $dot;
-            $ext = mb_strtolower(mb_substr($img_name, $dot + 1, $l));
-        }
+        $ext = pathinfo($img_name, PATHINFO_EXTENSION);
+        $ext = strtolower($ext);
 
         //passende Endung ?
-        if (!in_array($ext, words('gif jpeg jpg png'))) {
-            $errors[] = sprintf(_('Der Dateityp der Bilddatei ist falsch (%s).<br>'
-                                 .'Es sind nur die Dateiendungen .gif, .png und .jpg erlaubt!')
-                                , htmlReady($ext));
+        if (!app(\Studip\Services\ImageValidator::class)->validateName($img_name)) {
+            $errors[] = sprintf(
+                _('Der Dateityp der Bilddatei ist falsch (%s).<br>'
+                 .'Es sind nur die Dateiendungen .gif, .png, .jpg und .webp erlaubt!'),
+                htmlReady($ext)
+            );
             return false;
         }
 
