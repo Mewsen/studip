@@ -199,7 +199,7 @@ class Admin_SmileysController extends AuthenticatedController
         }
 
         // Is the file actually an image?
-        if (!$this->checkFileIsImage($upload['tmp_name'], $upload['type'])) {
+        if (!$this->checkFileIsImage($upload['name'], $upload['tmp_name'], $upload['type'])) {
             $error = _('Die Datei ist keine Bilddatei');
             PageLayout::postError($error);
             return;
@@ -313,18 +313,24 @@ class Admin_SmileysController extends AuthenticatedController
         $sidebar->addWidget($widget);
     }
 
-    private function checkFileIsImage(string $filename, string $type): bool
+    private function checkFileIsImage(string $filename, string $tempname, string $type): bool
     {
         if (mb_substr($type, 0, 5) !== 'image') {
             return false;
         }
 
-        $mime_type = function_exists('mime_content_type') ? mime_content_type($filename) : false;
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $extension = strtolower($extension);
+        if (!in_array($extension, ['gif', 'jpeg', 'jpg', 'png', 'webp'])) {
+            return false;
+        }
+
+        $mime_type = function_exists('mime_content_type') ? mime_content_type($tempname) : false;
         if ($mime_type !== false && mb_substr($mime_type, 0, 5) !== 'image') {
             return false;
         }
 
-        $check = imagecreatefromstring(file_get_contents($filename));
+        $check = imagecreatefromstring(file_get_contents($tempname));
         if ($check === false) {
             return false;
         }
