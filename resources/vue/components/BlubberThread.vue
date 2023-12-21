@@ -46,7 +46,7 @@
                             <a :href="getUserProfileURL(comment.user_id, comment.user_username)" class="name">{{ comment.user_name }}</a>
                             <div v-html="comment.html" class="html"></div>
                             <textarea class="edit"
-                                      v-html="comment.content"
+                                      v-model="comment.content"
                                       @keydown.enter.exact="saveComment"
                                       @keyup.escape.exact="editComment"></textarea>
                         </div>
@@ -111,18 +111,6 @@
                 if (!text.trim()) {
                     return false;
                 }
-                let formatted_text = _.escape(text).replace(/\n/g, "<br>");
-                let comment = {
-                    comment_id: Math.random().toString(36),
-                    avatar: '',
-                    html: formatted_text,
-                    content: text,
-                    mkdate:  Math.floor(Date.now() / 1000),
-                    name: 'Nobody',
-                    class: 'mine new',
-                    writable: 1
-                };
-                this.addComment(comment);
                 let thread = this;
 
                 //AJAX-Request ...
@@ -139,13 +127,17 @@
                     }
                     return data;
                 }).done(data => {
-                    comment.comment_id = data.comment_id;
-                    comment.avatar = data.avatar;
-                    comment.user_name = data.user_name;
-                    comment.mkdate = data.mkdate;
-                    comment.html = data.html;
-                    comment.class = data.class;
-
+                    let comment = {
+                        comment_id: data.comment_id,
+                        avatar: data.avatar,
+                        html: data.html,
+                        content: data.content,
+                        mkdate:  data.mkdate,
+                        user_name: data.user_name,
+                        class: data.class,
+                        writable: 1
+                    };
+                    thread.addComment(comment);
                     thread.$nextTick(() => {
                         STUDIP.Markup.element($(thread.$el).find(`.comments > li[data-comment_id="${data.comment_id}"]`));
                     });
@@ -313,12 +305,6 @@
                 let li = $(event.target).closest('li[data-comment_id]');
                 let comment_id = li.data('comment_id');
                 let content = li.find('textarea').val();
-
-                thread.thread_data.comments.forEach((comment) => {
-                    if (comment.comment_id === comment_id) {
-                        comment.text = content;
-                    }
-                });
 
                 li.find('.content').removeClass('editing');
 
