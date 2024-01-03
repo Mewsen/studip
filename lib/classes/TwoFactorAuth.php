@@ -16,6 +16,7 @@ final class TwoFactorAuth
     const SESSION_DATA          = 'tfa/data';
     const SESSION_CONFIRMATIONS = 'tfa/confirmations';
     const SESSION_FAILED        = 'tfa/failed';
+    const SESSION_TOKEN_SENT    = 'tfa/token-sent';
 
     const COOKIE_KEY = 'tfa/authentication';
 
@@ -179,10 +180,11 @@ final class TwoFactorAuth
      */
     public function confirm($action, $text, array $data = [])
     {
-        if (isset($_SESSION[self::SESSION_CONFIRMATIONS])
+        if (
+            isset($_SESSION[self::SESSION_CONFIRMATIONS])
             && is_array($_SESSION[self::SESSION_CONFIRMATIONS])
-            && in_array($action, $_SESSION[self::SESSION_CONFIRMATIONS]))
-        {
+            && in_array($action, $_SESSION[self::SESSION_CONFIRMATIONS])
+        ) {
             $_SESSION[self::SESSION_CONFIRMATIONS] = array_diff(
                 $_SESSION[self::SESSION_CONFIRMATIONS],
                 [$action]
@@ -212,14 +214,21 @@ final class TwoFactorAuth
         ]);
 
         if ($this->secret->type === 'email') {
-            StudipMail::sendMessage(
-                $this->secret->user->email,
-                _('Ihr Zwei-Faktor-Token'),
-                sprintf(
-                    _('Bitte geben Sie dieses Token ein: %s'),
-                    $this->secret->getToken()
-                )
-            );
+            if (
+                !isset($_SESSION[self::SESSION_TOKEN_SENT])
+                || $_SESSION[self::SESSION_TOKEN_SENT] < time()
+            ) {
+                StudipMail::sendMessage(
+                    $this->secret->user->email,
+                    _('Ihr Zwei-Faktor-Token'),
+                    sprintf(
+                        _('Bitte geben Sie dieses Token ein: %s'),
+                        $this->secret->getToken()
+                    )
+                );
+
+                $_SESSION[self::SESSION_TOKEN_SENT] = time() + TFASecret::getValidationDuration('email');
+            }
         }
 
         echo $GLOBALS['template_factory']->render(
@@ -296,8 +305,9 @@ final class TwoFactorAuth
 
             if ($this->secret->validateToken($token)) {
                 $_SESSION[self::SESSION_FAILED] = [];
+                unset($_SESSION[self::SESSION_TOKEN_SENT]);
 
-                if ($data['global'] ?: false) {
+                if ($data['global'] ?? false) {
                     $this->registerSecretInSession();
 
                     if (Request::int('tfa-trusted')) {
@@ -305,7 +315,7 @@ final class TwoFactorAuth
                     }
                 }
 
-                if ($data['confirm'] ?: false) {
+                if ($data['confirm'] ?? false) {
                     if (!isset($_SESSION[self::SESSION_CONFIRMATIONS])) {
                         $_SESSION[self::SESSION_CONFIRMATIONS] = [];
                     }
