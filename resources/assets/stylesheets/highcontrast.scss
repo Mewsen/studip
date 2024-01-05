@@ -30,6 +30,10 @@ body.fixed #barTopMenu li > a,
 
 div.index_container div.index_main {
     background-color: hsla(0, 0%, 100%, 1);
+
+    footer a {
+        text-decoration: underline;
+    }
 }
 
 .js .drag-and-drop {
