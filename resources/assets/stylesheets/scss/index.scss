@@ -86,10 +86,6 @@ $gap-between-boxes: calc($login-page-margin / 2);
             border-top: 1px solid $light-gray-color;
             font-size: 0.9em;
             padding: 10px;
-
-            button {
-                text-decoration: underline;
-            }
         }
 
         div.login_info {
