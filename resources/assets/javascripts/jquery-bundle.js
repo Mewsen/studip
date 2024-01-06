@@ -66,7 +66,6 @@ import 'jquery.qrcode';
 import 'jquery-ui-touch-punch';
 
 import './studip-jquery-tweaks.js';
-import './studip-jquery.multi-select.tweaks.js';
 import './studip-jquery-selection-helper.js';
 
 import select2 from 'select2/dist/js/select2.full.js';
