@@ -202,11 +202,13 @@ class Folder extends SimpleORMap implements FeedbackRange
                 [$course_topic->seminar_id]
             );
 
-            foreach ($topic_folders as $folder) {
-                if ($folder['data_content']['topic_id'] === $topic_id) {
-                    $ret[] = $folder;
+            $ret = array_filter(
+                $topic_folders,
+                function (Folder $folder) use ($topic_id): bool {
+                    return isset($folder->data_content)
+                        && $folder->data_content['topic_id'] === $topic_id;
                 }
-            }
+            );
         }
         return $ret;
     }
@@ -221,7 +223,7 @@ class Folder extends SimpleORMap implements FeedbackRange
      */
     public static function findByTermin_id($termin_id)
     {
-        $course_date   = CourseDate::find($termin_id);
+        $course_date = CourseDate::find($termin_id);
         $ret = [];
         if ($course_date) {
             $date_folders = self::findBySQL(
@@ -229,11 +231,13 @@ class Folder extends SimpleORMap implements FeedbackRange
                 [$course_date->range_id]
             );
 
-            foreach ($date_folders as $folder) {
-                if ($folder['data_content']['termin_id'] === $termin_id) {
-                    $ret[] = $folder;
+            $ret = array_filter(
+                $date_folders,
+                function (Folder $folder) use ($termin_id): bool {
+                    return isset($folder->data_content['termin_id'])
+                        && $folder->data_content['termin_id'] === $termin_id;
                 }
-            }
+            );
         }
         return $ret;
     }

@@ -1,4 +1,4 @@
-<? if (!$embedded) : ?>
+<? if (empty($embedded)) : ?>
     <?= $this->render_partial(
         'course/room_requests/_request_form_header',
         [
@@ -54,7 +54,7 @@
                         </option>
                         <? endforeach ?>
                     </select>
-                    <? if ($category) : ?>
+                    <? if (!empty($category)) : ?>
                         <?= Icon::create('refresh', Icon::ROLE_CLICKABLE, ['title' => _('alle Angaben zurücksetzen')])->asInput(
                             [
                                 'type'  => 'image',
@@ -77,9 +77,9 @@
                     </span>
                 </label>
             <? endif ?>
-            <? if (!$embedded) : ?>
         </fieldset>
     </div>
 </section>
+<? if (empty($embedded)) : ?>
 <?= $this->render_partial('course/room_requests/_request_form_footer') ?>
 <? endif ?>
