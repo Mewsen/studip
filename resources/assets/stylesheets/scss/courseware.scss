@@ -1531,13 +1531,10 @@ c o l l a p s i b l e   b o x
         }
     }
 
-    .cw-collapsible-content {
-        display: none;
-        &.cw-collapsible-content-open {
-            display: block;
-            padding: 10px;
-        }
+    .cw-collapsible-content .cw-collapsible-content-open {
+        padding: 10px;
     }
+
 }
 
 form .cw-collapsible .cw-collapsible-content.cw-collapsible-content-open {
@@ -1794,15 +1791,8 @@ $icons: (
 }
 
 .cw-tabs {
-    .cw-tab {
-        display: none;
-        height: 0;
-
-        &.cw-tab-active {
-            display: block;
-            height: unset;
-            padding: 4px 8px;
-        }
+    .cw-tab .cw-tab-active {
+        padding: 4px 8px;
     }
     &.cw-course-manager-tabs {
         .cw-tab {
