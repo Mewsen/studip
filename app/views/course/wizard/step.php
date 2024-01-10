@@ -23,11 +23,15 @@
                 !empty($dialog) ? ['data-dialog' => 'size=50%'] : []
             ) ?>
         <? endif; ?>
+        <? if (!$studygroup) : ?>
             <?= Studip\Button::create(
                 _('Weiter'),
                 'next',
                 !empty($dialog) ? ['data-dialog' => 'size=50%'] : []
             ) ?>
+        <? else : ?>
+            <?= Studip\Button::createAccept(_('Studiengruppe anlegen'), 'create') ?>
+        <? endif; ?>
         </footer>
     </form>
 <? else : ?>
