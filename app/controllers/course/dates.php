@@ -522,7 +522,7 @@ class Course_DatesController extends AuthenticatedController
             $data[] = $row;
         }
 
-        $filename = $this->course->name . '-' . _('Ablaufplan') . '.csv';
+        $filename = $sem->name . '-' . _('Ablaufplan') . '.csv';
         $this->render_csv($data, $filename);
     }
 
