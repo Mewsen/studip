@@ -720,6 +720,60 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         return $new_admission_member;
     }
 
+    public function removePreliminaryMember(User $user) : void
+    {
+        //Get the status of the user first:
+        $application = AdmissionApplication::findOneBySQL(
+            'seminar_id = :course_id AND user_id = :user_id',
+            [
+                'course_id' => $this->id,
+                'user_id'   => $user->id
+            ]
+        );
+
+        $deleted_from_course_set = false;
+        $course_set = $this->getCourseSet();
+        if ($course_set) {
+            $deleted_from_course_set = AdmissionPriority::unsetPriority(
+                $course_set->getId(),
+                $user->id,
+                $this->id
+            );
+        }
+        if ($application->delete() || $deleted_from_course_set) {
+            setTempLanguage($user->id);
+            $message = '';
+            if ($application->status === 'accepted') {
+                $message = studip_interpolate(
+                    _('Ihre vorläufige Anmeldung zur Veranstaltung %{name} wurde aufgehoben. Sie sind damit __nicht__ zugelassen worden.'),
+                    ['name' => $this->getFullName()]
+                );
+            } else {
+                $message = studip_interpolate(
+                    _('Sie wurden von der Warteliste der Veranstaltung %{name} gestrichen. Sie sind damit __nicht__ zugelassen worden.'),
+                    ['name' => $this->getFullName()]
+                );
+            }
+            $messaging = new messaging();
+            $messaging->insert_message(
+                $message,
+                $user->username,
+                '____%system%____',
+                false,
+                false,
+                '1',
+                false,
+                studip_interpolate(
+                    _('%{course_name}: Sie wurden nicht zugelassen!'),
+                    ['course_name' => $this->getFullName()]
+                ),
+                true
+            );
+            restoreLanguage();
+            StudipLog::log('SEM_USER_DEL', $this->id, $user->id, 'Wurde aus der Veranstaltung entfernt');
+        }
+    }
+
     /**
      * Removes a preliminary member from the course.
      *
