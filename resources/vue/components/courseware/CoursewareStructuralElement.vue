@@ -692,6 +692,7 @@ import CoursewareDateInput from './CoursewareDateInput.vue';
 import { FocusTrap } from 'focus-trap-vue';
 import IsoDate from './IsoDate.vue';
 import StudipDialog from '../StudipDialog.vue';
+import StudipProgressIndicator from '../StudipProgressIndicator.vue';
 import draggable from 'vuedraggable';
 import { mapActions, mapGetters } from 'vuex';
 
@@ -717,6 +718,7 @@ export default {
         FocusTrap,
         IsoDate,
         StudipDialog,
+        StudipProgressIndicator,
         draggable,
     },
     props: ['canVisit', 'orderedStructuralElements', 'structuralElement'],
@@ -786,7 +788,6 @@ export default {
                 'expire-date': ''
             },
             deletingPreviewImage: false,
-            processing: false,
             keyboardSelected: null,
             assistiveLive: ''
         };
@@ -836,6 +837,7 @@ export default {
             isLink: 'currentElementisLink',
 
             templates: 'courseware-templates/all',
+            processing: 'processing',
         }),
 
         currentId() {
@@ -1277,6 +1279,7 @@ export default {
             loadStructuralElement: 'loadStructuralElement',
             createLink: 'createLink',
             setCurrentElementId: 'coursewareCurrentElement',
+            setProcessing: 'setProcessing',
         }),
 
         initCurrent() {
@@ -1441,7 +1444,7 @@ export default {
         },
 
         async storeSort() {
-            const timeout = setTimeout(() => this.processing = true, 800);
+            const timeout = setTimeout(() => this.setProcessing(true), 800);
             if (this.blockedByAnotherUser) {
                 this.companionInfo({ info: this.$gettext('Diese Seite wird bereits bearbeitet.') });
                 clearTimeout(timeout);
@@ -1458,7 +1461,7 @@ export default {
                 }
 
                 clearTimeout(timeout);
-                this.processing = false;
+                this.setProcessing(false);
                 return false;
             }
 
@@ -1469,7 +1472,7 @@ export default {
             this.$emit('select', this.currentId);
 
             clearTimeout(timeout);
-            this.processing = false;
+            this.setProcessing(false);
         },
 
         async exportCurrentElement(data) {

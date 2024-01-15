@@ -60,7 +60,8 @@ const getDefaultState = () => {
         showSearchResults: false,
         searchResults: [],
 
-        assistiveLiveContents: ''
+        assistiveLiveContents: '',
+        processing: false,
     };
 };
 
@@ -251,7 +252,18 @@ const getters = {
     },
     assistiveLiveContents(state) {
         return state.assistiveLiveContents;
-    }
+    },
+    processing(state) {
+        return state.processing;
+    },
+
+    oerCampusEnabled(state, getters, rootState, rootGetters) {
+        return rootGetters['studip-properties/byId']({ id: 'oer-campus-enabled'}).attributes?.value;
+    },
+    oerEnableSuggestions(state, getters, rootState, rootGetters) {
+        return getters.oerCampusEnabled && rootGetters['studip-properties/byId']({ id: 'oer-enable-suggestions'}).attributes?.value;
+    },
+
 };
 
 export const state = { ...initialState };
@@ -1290,6 +1302,10 @@ export const actions = {
         commit('setBookmarkFilter', course);
     },
 
+    setProcessing({ commit }, processing) {
+        commit('setProcessing', processing);
+    },
+
     createLink({ dispatch, rootGetters }, { publicLink }) {
         dispatch('courseware-public-links/create', publicLink, { root: true });
     },
@@ -1523,6 +1539,9 @@ export const mutations = {
     },
     setAssistiveLiveContents(state, text) {
         state.assistiveLiveContents = text;
+    },
+    setProcessing(state, processing) {
+        state.processing = processing;
     }
 };
 
