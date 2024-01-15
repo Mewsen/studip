@@ -675,6 +675,7 @@ import { FocusTrap } from 'focus-trap-vue';
 import IsoDate from './IsoDate.vue';
 import StockImageSelector from '../stock-images/SelectorDialog.vue';
 import StudipDialog from '../StudipDialog.vue';
+import StudipProgressIndicator from '../StudipProgressIndicator.vue';
 import draggable from 'vuedraggable';
 import { mapActions, mapGetters } from 'vuex';
 
@@ -702,6 +703,7 @@ export default {
         IsoDate,
         StockImageSelector,
         StudipDialog,
+        StudipProgressIndicator,
         draggable,
     },
     props: ['canVisit', 'orderedStructuralElements', 'structuralElement'],
@@ -767,7 +769,6 @@ export default {
                 'expire-date': ''
             },
             deletingPreviewImage: false,
-            processing: false,
             keyboardSelected: null,
             assistiveLive: '',
             uploadImageURL: null,
@@ -821,6 +822,8 @@ export default {
 
             templates: 'courseware-templates/all',
             progressData: 'progresses',
+
+            processing: 'processing',
         }),
 
         currentId() {
@@ -1280,7 +1283,8 @@ export default {
             loadStructuralElement: 'loadStructuralElement',
             createLink: 'createLink',
             setCurrentElementId: 'coursewareCurrentElement',
-            loadProgresses: 'loadProgresses'
+            loadProgresses: 'loadProgresses',
+            setProcessing: 'setProcessing',
         }),
 
         initCurrent() {
@@ -1452,7 +1456,7 @@ export default {
         },
 
         async storeSort() {
-            const timeout = setTimeout(() => this.processing = true, 800);
+            const timeout = setTimeout(() => this.setProcessing(true), 800);
             if (this.blockedByAnotherUser) {
                 this.companionInfo({ info: this.$gettext('Diese Seite wird bereits bearbeitet.') });
                 clearTimeout(timeout);
@@ -1469,7 +1473,7 @@ export default {
                 }
 
                 clearTimeout(timeout);
-                this.processing = false;
+                this.setProcessing(false);
                 return false;
             }
 
@@ -1480,7 +1484,7 @@ export default {
             this.$emit('select', this.currentId);
 
             clearTimeout(timeout);
-            this.processing = false;
+            this.setProcessing(false);
         },
 
         async exportCurrentElement(data) {
