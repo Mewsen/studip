@@ -166,7 +166,7 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
     public function cbGenerateUniqueId()
     {
         if (!$this->unique_id) {
-            $this->unique_id = 'Stud.IP-' . $this->id . '@' . $_SERVER['SERVER_NAME'];
+            $this->unique_id = 'Stud.IP-' . $this->id . '@' . ($_SERVER['SERVER_NAME'] ?? '');
         }
     }
 
