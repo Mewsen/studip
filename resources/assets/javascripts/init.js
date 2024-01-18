@@ -21,6 +21,7 @@ import CourseWizard from './lib/course_wizard.js';
 import { createURLHelper } from './lib/url_helper.ts';
 import CSS from './lib/css.js';
 import Dates from './lib/dates.js';
+import DateTime from './lib/datetime.js';
 import Dialog from './lib/dialog.js';
 import DragAndDropUpload from './lib/drag_and_drop_upload.js';
 import enrollment from './lib/enrollment.js';
@@ -31,6 +32,7 @@ import FilesDashboard from './lib/files_dashboard.js';
 import Folders from './lib/folders.js';
 import Forms from './lib/forms.js';
 import Forum from './lib/forum.js';
+import Fullcalendar from './lib/fullcalendar.js';
 import Fullscreen from './lib/fullscreen.js';
 import GlobalSearch from './lib/global_search.js';
 import HeaderMagic from './lib/header_magic.js';
@@ -106,6 +108,7 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     CourseWizard,
     CSS,
     Dates,
+    DateTime,
     Dialog,
     DragAndDropUpload,
     enrollment,
@@ -116,6 +119,7 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     Folders,
     Forms,
     Forum,
+    Fullcalendar,
     Fullscreen,
     Gettext,
     GlobalSearch,
