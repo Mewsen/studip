@@ -186,11 +186,11 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
         $assignments = CalendarDateAssignment::findByCalendar_date_id($this->id);
         foreach ($assignments as $assignment) {
             if ($assignment->course instanceof Course) {
-                if ($assignment->course->calendarReadable($range_id)) {
+                if ($assignment->course->isCalendarReadable($range_id)) {
                     return true;
                 }
             } elseif ($assignment->user instanceof User) {
-                if ($assignment->user->calendarReadable($range_id)) {
+                if ($assignment->user->isCalendarReadable($range_id)) {
                     return true;
                 }
             }

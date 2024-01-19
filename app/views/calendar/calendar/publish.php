@@ -49,7 +49,7 @@
         <? endif ?>
 
         <? if (!Request::isXhr()) : ?>
-            <?= LinkButton::create(_('Abbrechen'), $controller->url_for('calendar/single/' . $last_view)) ?>
+            <?= LinkButton::create(_('Abbrechen'), $controller->url_for('calendar/calendar')) ?>
         <? endif; ?>
     </footer>
 </form>

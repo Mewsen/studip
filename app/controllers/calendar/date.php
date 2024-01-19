@@ -44,7 +44,7 @@ class Calendar_DateController extends AuthenticatedController
             }
         }
 
-        if (!$owner || !$owner->calendarReadable($GLOBALS['user']->id)) {
+        if (!$owner || !$owner->isCalendarReadable()) {
             throw new AccessDeniedException(_('Sie dürfen diesen Kalender nicht sehen!'));
         }
         return $owner;
@@ -76,21 +76,21 @@ class Calendar_DateController extends AuthenticatedController
                 $group = ContactGroup::find($group_id);
                 if ($group) {
                     foreach ($group->items as $item) {
-                        if ($item->user && $item->user->calendarWritable($GLOBALS['user']->id)) {
+                        if ($item->user && $item->user->isCalendarWritable()) {
                             $result[$item->user_id] = $item->user;
                         }
                     }
                 }
             } elseif ($user_id = Request::get('user_id', $GLOBALS['user']->id)) {
                 $user = User::find($user_id);
-                if ($user && $user->calendarWritable($GLOBALS['user']->id)) {
+                if ($user && $user->isCalendarWritable()) {
                     $result[$user->id] = $user;
                 }
             }
             if ($other_calendar_ids = Request::getArray('other_calendar_ids')) {
                 foreach ($other_calendar_ids as $other_calendar_id) {
                     $user = User::find($other_calendar_id);
-                    if ($user && $user->calendarWritable($GLOBALS['user']->id)) {
+                    if ($user && $user->isCalendarWritable()) {
                         $result[$user->id] = $user;
                     }
                 }

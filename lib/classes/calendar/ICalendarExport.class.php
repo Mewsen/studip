@@ -183,10 +183,12 @@ class ICalendarExport
         // Default values
         $header = "BEGIN:VCALENDAR" . self::NEWLINE;
         $header .= "VERSION:2.0" . self::NEWLINE;
-        if ($this->client_identifier) {
+        if (isset($this->client_identifier)) {
             $header .= "PRODID:" . $this->client_identifier . self::NEWLINE;
         } else {
-            $header .= "PRODID:-//Stud.IP@{$_SERVER['SERVER_NAME']}//Stud.IP_iCalendar Library";
+            $server_name = $_SERVER['SERVER_NAME'] ?? 'unknown';
+
+            $header .= "PRODID:-//Stud.IP@{$server_name}//Stud.IP_iCalendar Library";
             $header .= " //EN" . self::NEWLINE;
         }
         $header .= "METHOD:PUBLISH" . self::NEWLINE;
@@ -232,8 +234,6 @@ class ICalendarExport
      */
     public function writeICalEvent(array $properties): string
     {
-        $exdate_time = 0;
-
         $result = "BEGIN:VEVENT" . self::NEWLINE;
 
         foreach ($properties as $name => $value) {
@@ -338,7 +338,7 @@ class ICalendarExport
                 case "UID":
                     $value = "$value";
             }
-            if ($name) {
+            if ($name && !is_array($value)) {
                 $attr_string = $name . $params_str . ':' . $value;
                 $result .= $this->foldLine($attr_string) . self::NEWLINE;
             }

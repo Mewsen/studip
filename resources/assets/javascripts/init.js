@@ -14,7 +14,6 @@ import Blubber from './lib/blubber.js';
 import Browse from './lib/browse.js';
 import Cache from './lib/cache.js';
 import Calendar from './lib/calendar.js';
-import CalendarDialog from './lib/calendar_dialog.js';
 import Clipboard from './lib/clipboard.js';
 import Cookie from './lib/cookie.js';
 import CourseWizard from './lib/course_wizard.js';
@@ -103,7 +102,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     Browse,
     Cache,
     Calendar,
-    CalendarDialog,
     Cookie,
     CourseWizard,
     CSS,

@@ -1553,8 +1553,12 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
     /**
      * @inheritDoc
      */
-    public function calendarReadable(string $user_id): bool
+    public function isCalendarReadable(?string $user_id = null): bool
     {
+        if ($user_id === null) {
+            $user_id = self::findCurrent()->id;
+        }
+
         if ($this->id === $user_id) {
             //The owner can always read their own calendar.
             return true;
@@ -1569,8 +1573,12 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
     /**
      * @inheritDoc
      */
-    public function calendarWritable(string $user_id): bool
+    public function isCalendarWritable(string $user_id = null): bool
     {
+        if ($user_id === null) {
+            $user_id = self::findCurrent()->id;
+        }
+
         if ($this->id === $user_id) {
             //The owner can always write their own calendar.
             return true;

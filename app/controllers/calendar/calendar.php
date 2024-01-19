@@ -155,16 +155,16 @@ class Calendar_CalendarController extends AuthenticatedController
         $read_permissions = false;
         $write_permissions = false;
         if ($calendar_owner) {
-            $read_permissions  = $calendar_owner->calendarReadable(User::findCurrent()->id);
-            $write_permissions = $calendar_owner->calendarWritable(User::findCurrent()->id);
+            $read_permissions  = $calendar_owner->isCalendarReadable();
+            $write_permissions = $calendar_owner->isCalendarWritable();
         } elseif ($selected_group) {
             //Count on how many group member calendars the current user has read or write permissions:
             foreach ($selected_group->items as $item) {
                 if ($item->user) {
-                    if ($item->user->calendarReadable(User::findCurrent()->id)) {
+                    if ($item->user->isCalendarReadable()) {
                         $read_permissions = true;
                     }
-                    if ($item->user->calendarWritable(User::findCurrent()->id)) {
+                    if ($item->user->isCalendarWritable()) {
                         $write_permissions = true;
                     }
                 }
@@ -210,7 +210,7 @@ class Calendar_CalendarController extends AuthenticatedController
                 //Check if the user has at least read permissions for the calendar of one user of one group:
                 foreach ($groups as $group) {
                     foreach ($group->items as $item) {
-                        if ($item->user && $item->user->calendarReadable(User::findCurrent()->id)) {
+                        if ($item->user && $item->user->isCalendarReadable()) {
                             $available_groups[] = $group;
                             break 1;
                         }
@@ -279,7 +279,7 @@ class Calendar_CalendarController extends AuthenticatedController
         if ($group_view && $selected_group) {
             //All users in the selected group that have granted read permissions to the user can be shown.
             foreach ($selected_group->items as $item) {
-                if ($item->user && $item->user->calendarReadable(User::findCurrent()->id)) {
+                if ($item->user && $item->user->isCalendarReadable()) {
                     $calendar_resources[] = [
                         'id' => $item->user_id,
                         'title' => $item->user ? $item->user->getFullName() : '',
@@ -412,7 +412,7 @@ class Calendar_CalendarController extends AuthenticatedController
             throw new AccessDeniedException(_('Sie dürfen diesen Kalender nicht sehen!'));
         }
 
-        if (!$course->isVisibleForUser(User::findCurrent()->id) || !$course->calendarReadable(User::findCurrent()->id)) {
+        if (!$course->isVisibleForUser() || !$course->isCalendarReadable()) {
             throw new AccessDeniedException(_('Sie dürfen diesen Kalender nicht sehen!'));
         }
 
@@ -448,7 +448,7 @@ class Calendar_CalendarController extends AuthenticatedController
 
         //Create the fullcalendar object:
 
-        $calendar_writable = $course->calendarWritable(User::findCurrent()->id);
+        $calendar_writable = $course->isCalendarWritable();
         $calendar_settings = User::findCurrent()->getConfiguration()->CALENDAR_SETTINGS ?? [];
         $slot_settings = $this->getUserCalendarSlotSettings();
 
@@ -524,7 +524,7 @@ class Calendar_CalendarController extends AuthenticatedController
             $owner = Course::getCalendarOwner($range_id);
         }
 
-        if (!$owner || !$owner->calendarReadable(User::findCurrent()->id)) {
+        if (!$owner || !$owner->isCalendarReadable()) {
             throw new AccessDeniedException(_('Sie dürfen diesen Kalender nicht sehen!'));
         }
 
@@ -600,7 +600,7 @@ class Calendar_CalendarController extends AuthenticatedController
                 throw new AccessDeniedException();
             }
             foreach ($group->items as $item) {
-                if ($item->user->calendarReadable(User::findCurrent()->id)) {
+                if ($item->user->isCalendarReadable()) {
                     $users[] = $item->user;
                 }
             }
@@ -661,6 +661,9 @@ class Calendar_CalendarController extends AuthenticatedController
             $this->selected_semester_id = $semester->id;
         } else {
             $this->selected_semester_id = $selected_semester_pseudo_id ?? '';
+            if (!Semester::exists($this->selected_semesters_id)) {
+                $this->selected_semester_id = '';
+            }
         }
 
         $this->selected_course_ids = SimpleCollection::createFromArray(

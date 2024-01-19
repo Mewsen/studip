@@ -4,7 +4,6 @@ import DateListInput from './components/form_inputs/DateListInput.vue';
 import Multiselect from './components/Multiselect.vue';
 import MyCoursesColouredTable from './components/form_inputs/MyCoursesColouredTable.vue';
 import EditableList from "./components/EditableList.vue";
-import ItemList from "./components/ItemList.vue";
 import Quicksearch from './components/Quicksearch.vue';
 import RepetitionInput from "./components/form_inputs/RepetitionInput.vue";
 import SidebarWidget from './components/SidebarWidget.vue';
@@ -36,7 +35,6 @@ const BaseComponents = {
     Multiselect,
     MyCoursesColouredTable,
     EditableList,
-    ItemList,
     Quicksearch,
     RangeInput,
     RepetitionInput,

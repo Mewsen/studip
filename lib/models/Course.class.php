@@ -1093,8 +1093,12 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
     /**
      * @inheritDoc
      */
-    public function calendarReadable(string $user_id): bool
+    public function isCalendarReadable(?string $user_id = null): bool
     {
+        if ($user_id === null) {
+            $user_id = self::findCurrent()->id;
+        }
+
         //Calendar read permissions are granted for all participants
         //that have at least user permissions.
         return $GLOBALS['perm']->have_studip_perm('user', $this->id, $user_id);
@@ -1103,8 +1107,12 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
     /**
      * @inheritDoc
      */
-    public function calendarWritable(string $user_id): bool
+    public function isCalendarWritable(string $user_id = null): bool
     {
+        if ($user_id === null) {
+            $user_id = self::findCurrent()->id;
+        }
+
         //Calendar write permissions are granted for all participants
         //that have autor permissions or higher.
         return $GLOBALS['perm']->have_studip_perm('autor', $this->id, $user_id);

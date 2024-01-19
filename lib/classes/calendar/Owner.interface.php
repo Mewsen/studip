@@ -21,18 +21,20 @@ interface Owner
     /**
      * Determines whether the specified user has read permissions to the calendar.
      *
-     * @param string $user_id The user for which to determine read permissions.
+     * @param string|null $user_id The ID of the user for which to determine write permissions.
+     *                             Defaults to the current user if no user-ID is provided.
      *
      * @return bool True, if the user has read permissions, false otherwise.
      */
-    public function calendarReadable(string $user_id) : bool;
+    public function isCalendarReadable(?string $user_id = null) : bool;
 
     /**
      * Determines whether the specified user has write permissions to the calendar.
      *
-     * @param string $user_id The user for which to determine write permissions.
+     * @param string|null $user_id The ID of the user for which to determine write permissions.
+     *                             Defaults to the current user if no user-ID is provided.
      *
      * @return bool True, if the user has write permissions, false otherwise.
      */
-    public function calendarWritable(string $user_id) : bool;
+    public function isCalendarWritable(?string $user_id = null) : bool;
 }

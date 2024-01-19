@@ -284,7 +284,7 @@ class StartNavigation extends Navigation
             $navigation = new Navigation(_('Kalender'));
 
             if (Config::get()->CALENDAR_ENABLE) {
-                $navigation->addSubNavigation('calendar', new Navigation(_('Kalender'), 'dispatch.php/calendar/single'));
+                $navigation->addSubNavigation('calendar', new Navigation(_('Kalender'), 'dispatch.php/calendar/calendar'));
             }
 
             if (Config::get()->SCHEDULE_ENABLE) {
