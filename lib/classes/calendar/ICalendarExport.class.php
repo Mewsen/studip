@@ -104,12 +104,12 @@ class ICalendarExport
         }
         $dates = CourseExDate::findBySql(
             "LEFT JOIN `seminar_user`
-                ON `termine`.`range_id` = `seminar_user`.`Seminar_id`
+                ON `ex_termine`.`range_id` = `seminar_user`.`Seminar_id`
             WHERE
                 `seminar_user`.`user_id` = :user_id
                 AND `seminar_user`.`bind_calendar` = 1
-                AND (`termine`.`date` <= :end
-                    AND `termine`.`end_time` >= :begin)",
+                AND (`ex_termine`.`date` <= :end
+                    AND `ex_termine`.`end_time` >= :begin)",
             [
                 ':user_id'  => $user_id,
                 ':begin'    => $start->getTimestamp(),
