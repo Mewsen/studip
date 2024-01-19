@@ -294,13 +294,13 @@ class Markup
             hr
             img[alt|src|height|width|style]
             li
-            ol
+            ol[reversed|start|style]
             p[style]
             pre[class]
             span[style|class]
             strong
             u
-            ul
+            ul[style]
             s
             small
             sub
@@ -374,6 +374,10 @@ class Markup
               'height' => 'Length',
               'controls' => 'Text',     // Bool triggers bug in HTMLPurifier
         ]);
+
+        $def->addAttribute('ol', 'reversed', 'Bool');
+        $def->addAttribute('ol', 'style', 'Text');
+        $def->addAttribute('ul', 'style', 'Text');
 
         return new \HTMLPurifier($config);
     }
