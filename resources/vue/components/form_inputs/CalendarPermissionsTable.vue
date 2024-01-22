@@ -36,7 +36,7 @@
                     <td class="actions">
                         <studip-icon shape="trash" aria-role="button" @click="removeContact(user.id)"
                                      :title="$gettextInterpolate(
-                                         gettext('Kalender nicht mehr mit %{name} teilen'),
+                                         $gettext('Kalender nicht mehr mit %{name} teilen'),
                                          {name: user.name}
                                      )"></studip-icon>
                     </td>
