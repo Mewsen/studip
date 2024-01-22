@@ -7,28 +7,28 @@
                   action="<?= $controller->link_for('calendar/date/participation/' . $date->id) ?>">
                 <?= CSRFProtection::tokenTag() ?>
                 <fieldset>
-                    <? if ($calendar_assignment->participation) : ?>
+                    <? if ($user_participation_status) : ?>
                         <label>
                             <input type="radio" name="participation" value=""
                                    data-activates="button[name='update_participation']">
                             <?= _('Abwartend') ?>
                         </label>
                     <? endif ?>
-                    <? if ($calendar_assignment->participation !== 'ACCEPTED') : ?>
+                    <? if ($user_participation_status !== 'ACCEPTED') : ?>
                         <label>
                             <input type="radio" name="participation" value="ACCEPTED"
                                    data-activates="button[name='update_participation']">
                             <?= _('Angenommen') ?>
                         </label>
                     <? endif ?>
-                    <? if ($calendar_assignment->participation !== 'DECLINED') : ?>
+                    <? if ($user_participation_status !== 'DECLINED') : ?>
                         <label>
                             <input type="radio" name="participation" value="DECLINED"
                                    data-activates="button[name='update_participation']">
                             <?= _('Abgelehnt') ?>
                         </label>
                     <? endif ?>
-                    <? if ($calendar_assignment->participation !== 'ACKNOWLEDGED') : ?>
+                    <? if ($user_participation_status !== 'ACKNOWLEDGED') : ?>
                         <label>
                             <input type="radio" name="participation" value="ACKNOWLEDGED"
                                    data-activates="button[name='update_participation']">

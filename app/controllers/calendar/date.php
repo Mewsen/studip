@@ -130,6 +130,7 @@ class Calendar_DateController extends AuthenticatedController
             ['calendar_date_id' => $this->date->id]
         );
         $this->participation_message = null;
+        $this->user_participation_status = '';
         $this->all_assignments_writable = false;
         $this->is_group_date = count($this->calendar_assignments) > 1;
 
@@ -140,6 +141,7 @@ class Calendar_DateController extends AuthenticatedController
             //according to the participation status.
             foreach ($this->calendar_assignments as $index => $assignment) {
                 if ($assignment->range_id === $GLOBALS['user']->id && $this->is_group_date) {
+                    $this->user_participation_status = $assignment->participation;
                     if ($assignment->participation === 'ACCEPTED') {
                         $this->participation_message = MessageBox::info(_('Sie nehmen am Termin teil.'));
                     } elseif ($assignment->participation === 'DECLINED') {
