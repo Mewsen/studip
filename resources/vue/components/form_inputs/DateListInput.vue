@@ -41,7 +41,7 @@ export default {
     data () {
         return {
             selected_date_value: STUDIP.DateTime.getStudipDate(new Date(), false, true),
-            selected_date_list: this.selected_date_list.map(date => new Date(date)),
+            selected_date_list: this.selected_dates.map(date => new Date(date)),
             input_name: this.name,
         };
     },

@@ -128,6 +128,10 @@
                 :items="<?= htmlReady(json_encode($calendar_assignment_items)) ?>"
             ></editable-list>
         </fieldset>
+    <? elseif ($calendar_assignment_items) : ?>
+       <? foreach ($calendar_assignment_items as $item) : ?>
+            <input type="hidden" name="assigned_calendar_ids[]" value="<?= htmlReady($item['value']) ?>">
+       <? endforeach ?>
     <? elseif ($owner_id): ?>
         <input type="hidden" name="assigned_calendar_ids[]" value="<?= htmlReady($owner_id) ?>">
     <? endif ?>
