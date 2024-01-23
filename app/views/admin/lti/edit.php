@@ -40,6 +40,20 @@
         </label>
 
         <label>
+            <span class="required">
+                <?= _('LTI-Version') ?>
+            </span>
+            <select name="lti_version">
+                <option value="1.1" <?= empty($tool->lti_version) || $tool->lti_version === '1.1' ? 'selected' : '' ?>>
+                    1.0/1.1
+                </option>
+                <option value="1.3a" <?= $tool->lti_version === '1.3a' ? 'selected' : '' ?>>
+                    1.3a
+                </option>
+            </select>
+        </label>
+
+        <label>
             <?= _('OAuth Signatur Methode') ?>
             <select name="oauth_signature_method">
                 <option value="sha1">HMAC-SHA1</option>

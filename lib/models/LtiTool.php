@@ -16,6 +16,7 @@
  * @property string $consumer_key database column
  * @property string $consumer_secret database column
  * @property string $custom_parameters database column
+ * @property string $lti_version database column
  * @property int $allow_custom_url database column
  * @property int $deep_linking database column
  * @property int $send_lis_person database column
@@ -61,7 +62,7 @@ class LtiTool extends SimpleORMap
 
     public function getName() : string
     {
-        return $this->name;
+        return $this->name ?? '';
     }
 
     public function getAudience() : string

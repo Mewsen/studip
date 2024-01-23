@@ -44,11 +44,17 @@ class AddLti13aTables extends Migration
                 chdate BIGINT(10) NOT NULL DEFAULT '0'
             )"
         );
+
+        $db->exec(
+            "ALTER TABLE `lti_tool`
+            ADD COLUMN lti_version VARCHAR(8) NOT NULL DEFAULT '1.1'"
+        );
     }
 
     protected function down()
     {
         $db = DBManager::get();
+        $db->exec("ALTER TABLE `lti_tool` DROP COLUMN `lti_version`");
         $db->exec('DROP TABLE IF EXISTS lti_deployments');
         $db->exec('DROP TABLE IF EXISTS lti_registrations');
         $db->exec('DROP TABLE IF EXISTS keyrings');
