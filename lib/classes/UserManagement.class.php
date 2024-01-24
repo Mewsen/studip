@@ -982,7 +982,10 @@ class UserManagement
         \Courseware\UserDataField::deleteBySQL('user_id = ?', [$this->user_data['auth_user_md5.user_id']]);
         \Courseware\UserProgress::deleteBySQL('user_id = ?', [$this->user_data['auth_user_md5.user_id']]);
         \Courseware\Bookmark::deleteBySQL('user_id = ?', [$this->user_data['auth_user_md5.user_id']]);
-
+        \Courseware\Task::deleteBySQL(
+            '`solver_id` = ? AND `solver_type`= "autor"',
+            [$this->user_data['auth_user_md5.user_id']]
+        );
         // delete courseware elements in courses of this user
         if ($delete_courseware) {
             \Courseware\StructuralElement::deleteBySQL('owner_id = ?', [$this->user_data['auth_user_md5.user_id']]);
