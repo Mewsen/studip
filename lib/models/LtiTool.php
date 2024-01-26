@@ -27,7 +27,6 @@
  */
 
 class LtiTool extends SimpleORMap
-    implements \OAT\Library\Lti1p3Core\Tool\ToolInterface
 {
     /**
      * Configure the database mapping.
@@ -53,36 +52,18 @@ class LtiTool extends SimpleORMap
         return self::findBySQL('1 ORDER BY name');
     }
 
-    //ToolInterface implementation:
+    //ToolInterface implementation
 
-    public function getIdentifier() : string
+    public function getToolData() : \OAT\Library\Lti1p3Core\Tool\Tool
     {
-        return $this->id;
-    }
-
-    public function getName() : string
-    {
-        return $this->name ?? '';
-    }
-
-    public function getAudience() : string
-    {
-        // TODO: Implement getAudience() method.
-    }
-
-    public function getOidcInitiationUrl() : string
-    {
-        // TODO: Implement getOidcInitiationUrl() method.
-    }
-
-    public function getLaunchUrl() : ?string
-    {
-        return $this->launch_url;
-    }
-
-    public function getDeepLinkingUrl() : ?string
-    {
-        // TODO: Implement getDeepLinkingUrl() method.
+        return new \OAT\Library\Lti1p3Core\Tool\Tool(
+            $this->id,
+            $this->name,
+            '', //TODO
+            '', //TODO
+            $this->launch_url,
+            '' //TODO
+        );
     }
 
     /**
