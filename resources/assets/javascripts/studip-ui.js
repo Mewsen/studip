@@ -593,14 +593,18 @@ import eventBus from "./lib/event-bus.ts";
             }
             $(window).bind('scroll.datepicker-scroll', _.debounce($.proxy(DpHideOnScroll, null, input), 100, {leading:true, trailing:false}));
 
-            if ($(input).closest('#sidebar').length === 0) {
-                return;
+            if (input.closest('#sidebar')) {
+                const button = input.nextElementSibling;
+                if (button && button.matches('input[type="submit"]')) {
+                    button.style.position = 'relative';
+                    button.style.zIndex = input.style.zIndex;
+                }
             }
 
-            const button = input.nextElementSibling;
-            if (button && button.matches('input[type="submit"]')) {
-                button.style.position = 'relative';
-                button.style.zIndex = input.style.zIndex;
+            // Prevent element from overlapping the upper blue bar
+            const topBar = document.querySelector('#top-bar');
+            if (topBar && !input.closest('.ui-dialog')) {
+                input.style.zIndex = window.getComputedStyle(topBar).zIndex - 1;
             }
         },
         onClose (date, inst) {
