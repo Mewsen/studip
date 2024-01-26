@@ -72,6 +72,11 @@ class Admin_LtiController extends AuthenticatedController
         $tool->deep_linking = Request::int('deep_linking', 0);
         $tool->send_lis_person = Request::int('send_lis_person', 0);
         $tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
+        $tool->lti_version = Request::get('lti_version');
+        if (!in_array($tool->lti_version, ['1.1', '1.3a'])) {
+            PageLayout::postError(_('Die ausgewählte LTI-Version ist ungültig.'));
+            return;
+        }
 
         if ($tool->store()) {
             PageLayout::postSuccess(sprintf(
