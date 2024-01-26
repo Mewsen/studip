@@ -568,10 +568,8 @@ import eventBus from "./lib/event-bus.ts";
                 return;
             }
 
-            $(input).css({
-                'position': 'relative',
-                'z-index': 1002
-            });
+            input.style.zIndex = input.closest('.ui-dialog') ? 1002 : 1000;
+            input.style.position = 'relative';
         },
         showButtonPanel: true,
         onSelect: function (value, instance) {
@@ -593,18 +591,14 @@ import eventBus from "./lib/event-bus.ts";
             }
             $(window).bind('scroll.datepicker-scroll', _.debounce($.proxy(DpHideOnScroll, null, input), 100, {leading:true, trailing:false}));
 
-            if (input.closest('#sidebar')) {
-                const button = input.nextElementSibling;
-                if (button && button.matches('input[type="submit"]')) {
-                    button.style.position = 'relative';
-                    button.style.zIndex = input.style.zIndex;
-                }
+            if ($(input).closest('#sidebar').length === 0) {
+                return;
             }
 
-            // Prevent element from overlapping the upper blue bar
-            const topBar = document.querySelector('#top-bar');
-            if (topBar && !input.closest('.ui-dialog')) {
-                input.style.zIndex = window.getComputedStyle(topBar).zIndex - 1;
+            const button = input.nextElementSibling;
+            if (button && button.matches('input[type="submit"]')) {
+                button.style.position = 'relative';
+                button.style.zIndex = input.style.zIndex;
             }
         },
         onClose (date, inst) {
