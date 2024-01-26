@@ -47,9 +47,9 @@
                         {{ $gettext('Öffentlichen Link erzeugen') }}
                     </button>
                 </li>
-                <li v-if="!isOwner" class="cw-action-widget-oer">
+                <li v-if="!isOwner && oerEnabled" class="cw-action-widget-oer">
                     <button @click="suggestOER">
-                        <translate>Material für %{oerTitle} vorschlagen</translate>
+                        {{ $gettextInterpolate($gettext('Material für %{ oerTitle } vorschlagen'), {oerTitle: oerTitle}) }}
                     </button>
                 </li>
                 <li v-if="!isRoot && canEdit && !blockedByAnotherUser" class="cw-action-widget-trash">
@@ -83,6 +83,7 @@ export default {
             consumeMode: 'consumeMode',
             showToolbar: 'showToolbar',
             context: 'context',
+            oerEnabled: 'oerEnabled',
 
             blocked: 'currentElementBlocked',
             blockerId: 'currentElementBlockerId',
