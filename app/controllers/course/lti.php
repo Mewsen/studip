@@ -40,7 +40,8 @@ class Course_LtiController extends StudipController
             throw new AccessDeniedException(_('Sie besitzen keine Berechtigung, um LTI-Tools zu konfigurieren.'));
         }
 
-        if ($action !== 'grades') {
+        if (!in_array($action, ['admin', 'grades'])
+            && Navigation::hasItem('/course/lti/index')) {
             Navigation::activateItem('/course/lti/index');
         }
 
@@ -566,5 +567,36 @@ class Course_LtiController extends StudipController
 
         $filename = Context::get()->name . ' - ' . _('Ergebnisse') . '.csv';
         $this->render_csv($data, $filename);
+    }
+
+    /**
+     * This action gives an overview over the LTI connection in the course.
+     * @return void
+     */
+    public function admin_action()
+    {
+        if (Navigation::hasItem('/course/admin/lti')) {
+            Navigation::activateItem('/course/admin/lti');
+        }
+
+        $sidebar = Sidebar::get();
+
+        $actions = new ActionsWidget();
+        $actions->addLink(
+            _('Über LTI freigeben'),
+            $this->url_for('course/lti/share'),
+            Icon::create('link-extern'),
+            ['data-dialog' => 'size=auto']
+        );
+        $sidebar->addWidget($actions);
+    }
+
+    /**
+     * This action allows sharing the course as LTI tool.
+     * @return void
+     */
+    public function share_action()
+    {
+        
     }
 }

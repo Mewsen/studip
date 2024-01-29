@@ -79,6 +79,17 @@ class CoreAdmin extends CorePlugin implements StudipModule
                     $item->setDescription(_('Erstellen und bearbeiten von Fragebögen.'));
                     $navigation->addSubNavigation('questionnaires', $item);
                 }
+
+                if (Config::get()->EVAL_ENABLE) {
+                    $item = new Navigation(_('Evaluationen'), 'admin_evaluation.php?view=eval_sem');
+                    $item->setImage(Icon::create('evaluation'));
+                    $item->setDescription(_('Richten Sie fragebogenbasierte Umfragen und Lehrevaluationen ein.'));
+                    $navigation->addSubNavigation('evaluation', $item);
+                }
+                $item = new Navigation(_('LTI'), 'dispatch.php/course/lti/admin');
+                $item->setImage(Icon::create('link-extern'));
+                $item->setDescription(_('Verwalten der LTI-Anbindung'));
+                $navigation->addSubNavigation('lti', $item);
             }
 
             /*
