@@ -24,6 +24,7 @@
                 <th><?= _('Name der Anwendung') ?></th>
                 <th><?= _('URL der Anwendung') ?></th>
                 <th><?= _('Consumer-Key') ?></th>
+                <th><?= _('LTI-Version') ?></th>
                 <th><?= _('Links') ?></th>
                 <th class="actions">
                     <?= _('Aktionen') ?>
@@ -46,6 +47,9 @@
                     </td>
                     <td>
                         <?= htmlReady($tool->consumer_key) ?>
+                    </td>
+                    <td>
+                        <?= htmlReady($tool->getLtiVersionString()) ?>
                     </td>
                     <td>
                         <?= count($tool->links) ?>

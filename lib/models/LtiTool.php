@@ -78,4 +78,15 @@ class LtiTool extends SimpleORMap
             ['tool_id' => $this->id]
         );
     }
+
+    public function getLtiVersionString() : string
+    {
+        if ($this->lti_version === '1.3a') {
+            return '1.3a';
+        } elseif ($this->lti_version === '1.1') {
+            return '1.0/1.1';
+        } else {
+            return _('unbekannt');
+        }
+    }
 }
