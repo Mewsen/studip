@@ -11,38 +11,33 @@
             <?= _('Konfiguration des LTI-Tools') ?>
         </legend>
 
-        <label>
-            <span class="required">
-                <?= _('Name der Anwendung') ?>
-            </span>
+        <label class="studiprequired">
+            <span class="textlabel"><?= _('Name der Anwendung') ?></span>
+            <span class="asterisk">*</span>
             <input type="text" name="name" value="<?= htmlReady($tool->name) ?>" required>
         </label>
 
-        <label>
-            <span class="required">
-                <?= _('URL der Anwendung') ?>
-            </span>
+        <label class="studiprequired">
+            <span class="textlabel"><?= _('URL der Anwendung') ?></span>
+            <span class="asterisk">*</span>
             <input type="text" name="launch_url" value="<?= htmlReady($tool->launch_url) ?>" required>
         </label>
 
-        <label>
-            <span class="required">
-                <?= _('Consumer-Key') ?>
-            </span>
+        <label class="studiprequired">
+            <span class="textlabel"><?= _('Consumer-Key') ?></span>
+            <span class="asterisk">*</span>
             <input type="text" name="consumer_key" value="<?= htmlReady($tool->consumer_key) ?>" required>
         </label>
 
-        <label>
-            <span class="required">
-                <?= _('Consumer-Secret') ?>
-            </span>
+        <label class="studiprequired">
+            <span class="textlabel"><?= _('Consumer-Secret') ?></span>
+            <span class="asterisk">*</span>
             <input type="text" name="consumer_secret" value="<?= htmlReady($tool->consumer_secret) ?>" required>
         </label>
 
-        <label>
-            <span class="required">
-                <?= _('LTI-Version') ?>
-            </span>
+        <label class="studiprequired">
+            <span class="textlabel"><?= _('LTI-Version') ?></span>
+            <span class="asterisk">*</span>
             <select name="lti_version">
                 <option value="1.1" <?= empty($tool->lti_version) || $tool->lti_version === '1.1' ? 'selected' : '' ?>>
                     1.0/1.1
