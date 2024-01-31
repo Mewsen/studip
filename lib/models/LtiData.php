@@ -153,4 +153,23 @@ class LtiData extends SimpleORMap
 
         return $this->options['send_lis_person'];
     }
+
+
+    public function getLtiRegistration() : ?\OAT\Library\Lti1p3Core\Registration\Registration
+    {
+        if (empty($this->tool->lti_version) || $this->tool->lti_version !== '1.3a') {
+            //No registration can be generated.
+            return null;
+        }
+
+        $registration = new OAT\Library\Lti1p3Core\Registration\Registration(
+            Config::get()->UNI_NAME_CLEAN . ' - ' . $this->course->getFullName(),
+            Config::get()->STUDIP_INSTALLATION_ID . '_course_' . $this->course_id,
+            \Studip\LTI13a\PlatformManager::getPlatformConfiguration(),
+            $this->tool->getToolData(),
+            [$this->id]
+        );
+
+        return $registration;
+    }
 }

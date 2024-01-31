@@ -87,12 +87,21 @@ class Course_LtiController extends StudipController
     public function iframe_action(string $position)
     {
         $lti_data = LtiData::findByCourseAndPosition($this->course_id, $position);
-        $lti_link = $this->getLtiLink($lti_data);
 
-        $this->launch_url = $lti_data->getLaunchURL();
-        $this->launch_data = $lti_link->getBasicLaunchData();
-        $this->signature = $lti_link->getLaunchSignature($this->launch_data);
+        $this->lti13a_mode = false;
 
+        if ($lti_data->tool->lti_version === '1.3a') {
+            //LTI 1.3a
+            $this->lti13a_mode = true;
+
+            $this->message = null;
+        } else {
+            //LTI 1.0/1.1
+            $lti_link = $this->getLtiLink($lti_data);
+            $this->launch_url = $lti_data->getLaunchURL();
+            $this->launch_data = $lti_link->getBasicLaunchData();
+            $this->signature = $lti_link->getLaunchSignature($this->launch_data);
+        }
         $this->set_layout(null);
     }
 
@@ -597,6 +606,6 @@ class Course_LtiController extends StudipController
      */
     public function share_action()
     {
-        
+
     }
 }
