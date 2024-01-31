@@ -60,7 +60,7 @@ class LtiTool extends SimpleORMap
             $this->id,
             $this->name,
             '', //TODO
-            '', //TODO
+            $this->launch_url, //TODO
             $this->launch_url,
             '' //TODO
         );

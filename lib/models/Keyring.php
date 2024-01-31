@@ -35,12 +35,15 @@ class Keyring extends SimpleORMap
     ) : Keyring
     {
         if ($algorithm === self::ALGORTIHM_RS256) {
-            //OAEP and SHA256 are selected by default in phpseclib,
-            //so there is no need to set them explicitly at this time.
             $private_key = phpseclib3\Crypt\RSA::createKey(4096);
             if ($passphrase) {
                 $private_key = $private_key->withPassword($passphrase);
             }
+            //Explicitly set OAEP as padding method:
+            $private_key->withPadding(\phpseclib\Crypt\RSA::ENCRYPTION_OAEP);
+            //Explicitly set sha256:
+            $private_key->withHash('sha256');
+
             $public_key = $private_key->getPublicKey();
             $keyring = new Keyring();
             $keyring->range_id = $range_id;
