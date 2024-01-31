@@ -1,6 +1,6 @@
 <?php
 /**
- * An interface which has to be implemented by instances returned from
+ * An abstract class which has to be extended by instances returned from
  * StudipCacheFactory#getCache
  *
  * @package    studip
@@ -8,6 +8,7 @@
  *
  * @author     Marco Diedrich (mdiedric@uos)
  * @author     Marcus Lunzenauer (mlunzena@uos.de)
+ * @author     Moritz Strohm <strohm@data-quest.de>
  * @copyright  (c) Authors
  * @since      1.6
  * @license    GPL2 or any later version
@@ -16,6 +17,12 @@
 interface StudipCache
 {
     const DEFAULT_EXPIRATION = 12 * 60 * 60; // 12 hours
+
+    /**
+     * @var array An array of deferred items that shall be saved only
+     * when commit() is called. This is only used in PSR-6 cache methods.
+     */
+    protected array $deferred_items = [];
 
     /**
      * Expire item from the cache.
@@ -48,6 +55,17 @@ interface StudipCache
      *                  exists on the server or FALSE on failure.
      */
     public function read($arg);
+
+    /**
+     * Reads an item from the cache identified by its key.
+     *
+     * @param mixed $key The key of the cache item.
+     *
+     * @return \Studip\CacheItem A CacheItem interface, even if the item cannot be found in the cache.
+     *
+     * @throws \Psr\Cache\InvalidArgumentException In case $key is invalid.
+     */
+    abstract public function readItem($key) : \Studip\CacheItem;
 
     /**
      * Store data at the server.
@@ -91,4 +109,94 @@ interface StudipCache
      * @return array
      */
     public static function getConfig(): array;
+
+    //PSR-6 CacheItemPoolInterface:
+
+    /**
+     * @see \Psr\Cache\CacheItemPoolInterface::getItem()
+     */
+    abstract public function getItem($key);
+
+    /**
+     * @see \Psr\Cache\CacheItemPoolInterface::getItems()
+     */
+    public function getItems(array $keys = array())
+    {
+        $items = [];
+        foreach ($keys as $key) {
+            $item = $this->getItem($key);
+            if ($item instanceof \Studip\CacheItem) {
+                $items[] = $item;
+            }
+        }
+        return $items;
+    }
+
+    /**
+     * @see \Psr\Cache\CacheItemPoolInterface::hasItem()
+     */
+    abstract public function hasItem($key);
+
+    /**
+     * @see \Psr\Cache\CacheItemPoolInterface::clear()
+     */
+    public function clear()
+    {
+        $this->deferred_items = [];
+        $this->flush();
+    }
+
+    /**
+     * @see \Psr\Cache\CacheItemPoolInterface::deleteItem()
+     */
+    public function deleteItem($key)
+    {
+        $this->expire($key);
+    }
+
+    /**
+     * @see \Psr\Cache\CacheItemPoolInterface::deleteItems()
+     */
+    public function deleteItems(array $keys)
+    {
+        foreach ($keys as $key) {
+            $this->expire($key);
+        }
+    }
+
+    /**
+     * @see \Psr\Cache\CacheItemPoolInterface::save()
+     */
+    public function save(\Psr\Cache\CacheItemInterface $item)
+    {
+        $expiration_seconds = null;
+        $expiration = $item->expiresAfter();
+        if ($expiration instanceof DateInterval) {
+            $now = new DateTime();
+            $then = clone $now;
+            $then = $then->add($expiration);
+            $expiration_seconds = $then->getTimestamp() - $now->getTimestamp();
+        } elseif (is_int($expiration) && $expiration > 0) {
+            $expiration_seconds = $expiration;
+        }
+        $this->write($item->getKey(), $item->get(), $expiration_seconds);
+    }
+
+    /**
+     * @see \Psr\Cache\CacheItemPoolInterface::saveDeferred()
+     */
+    public function saveDeferred(\Psr\Cache\CacheItemInterface $item)
+    {
+        $this->deferred_items[] = $item;
+    }
+
+    /**
+     * @see \Psr\Cache\CacheItemPoolInterface::commit()
+     */
+    public function commit()
+    {
+        foreach ($this->deferred_items as $item) {
+            $this->save($item);
+        }
+    }
 }
