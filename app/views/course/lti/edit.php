@@ -9,7 +9,7 @@
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend>
-            <?= _('Einstellungen') ?>
+            <?= _('Grunddaten') ?>
         </legend>
 
         <label>
@@ -24,6 +24,9 @@
             <textarea name="description" class="wysiwyg"><?= wysiwygReady($lti_data->description) ?></textarea>
         </label>
 
+    </fieldset>
+    <fieldset>
+        <legend><?= _('Zugangsdaten') ?></legend>
         <label>
             <?= _('Auswahl des externen Tools') ?>
             <select class="config_tool" name="tool_id">
@@ -77,7 +80,9 @@
                 <?= tooltipIcon(_('Nutzerdaten dürfen nur an das externe Tool gesendet werden, wenn es keine Datenschutzbedenken gibt. Mit Setzen des Hakens bestätigen Sie, dass die Übermittlung der Daten zulässig ist.')) ?>
             </label>
         </div>
-
+    </fieldset>
+    <fieldset>
+        <legend><?= _('Anzeigeeinstellungen') ?></legend>
         <label>
             <input type="checkbox" name="document_target" value="iframe" <?= isset($lti_data->options['document_target']) && $lti_data->options['document_target'] === 'iframe' ? ' checked' : '' ?>>
             <?= _('Anzeige im IFRAME auf der Seite') ?>
