@@ -162,12 +162,23 @@ class LtiData extends SimpleORMap
             return null;
         }
 
+        $platform_keyring = \Studip\LTI13a\PlatformManager::getPlatformKeyring();
+        if (!$platform_keyring) {
+            $platform_keyring = \Studip\LTI13a\PlatformManager::generatePlatformKeyring();
+        }
+        $tool_keyring = $this->tool->getKeyring();
+        if (!$tool_keyring) {
+            $tool_keyring = $this->tool->getKeyring(true);
+        }
+
         $registration = new OAT\Library\Lti1p3Core\Registration\Registration(
             Config::get()->UNI_NAME_CLEAN . ' - ' . $this->course->getFullName(),
             Config::get()->STUDIP_INSTALLATION_ID . '_course_' . $this->course_id,
             \Studip\LTI13a\PlatformManager::getPlatformConfiguration(),
             $this->tool->getToolData(),
-            [$this->id]
+            [$this->id],
+            $platform_keyring->toKeyChain(),
+            $tool_keyring->toKeyChain()
         );
 
         return $registration;

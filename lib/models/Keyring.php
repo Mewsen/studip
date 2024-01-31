@@ -5,7 +5,7 @@
  */
 class Keyring extends SimpleORMap
 {
-    const ALGORTIHM_ES256 = 'ECDSA_P-256_SHA256';
+    const ALGORTIHM_RS256 = 'RSA-OAEP-256';
     protected static function configure($config = [])
     {
         $config['db_table'] = 'keyrings';
@@ -31,11 +31,13 @@ class Keyring extends SimpleORMap
         string $range_id,
         string $range_type,
         string $passphrase = '',
-        string $algorithm = self::ALGORTIHM_ES256
+        string $algorithm = self::ALGORTIHM_RS256
     ) : Keyring
     {
-        if ($algorithm === self::ALGORTIHM_ES256) {
-            $private_key = phpseclib3\Crypt\EC::createKey('ED25519');
+        if ($algorithm === self::ALGORTIHM_RS256) {
+            //OAEP and SHA256 are selected by default in phpseclib,
+            //so there is no need to set them explicitly at this time.
+            $private_key = phpseclib3\Crypt\RSA::createKey(4096);
             if ($passphrase) {
                 $private_key = $private_key->withPassword($passphrase);
             }

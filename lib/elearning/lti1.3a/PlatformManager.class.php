@@ -28,4 +28,9 @@ class PlatformManager
     {
         return \Keyring::findOneBySQL("`range_type` = 'global' AND `range_id` = 'lti13a_platform'");
     }
+
+    public static function generatePlatformKeyring() : \Keyring
+    {
+        return \Keyring::generate('lti13a_platform', 'global');
+    }
 }

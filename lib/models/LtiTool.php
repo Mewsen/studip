@@ -67,16 +67,23 @@ class LtiTool extends SimpleORMap
     }
 
     /**
-     * Retrieves the keyring of the LTI tool.
+     * Retrieves the keyring of the LTI tool or generates one, if explicitly requested.
+     *
+     * @param bool $generate Generates a new keyring for the tool if set to true.
+     *     Defaults to false.
      *
      * @return Keyring|null The keyring for the tool or null if no such keyring exists.
      */
-    public function getKeyring() : ?Keyring
+    public function getKeyring(bool $generate = false) : ?Keyring
     {
-        return Keyring::findOneBySQL(
+        $keyring = Keyring::findOneBySQL(
             "`range_type` = 'lti_tool' AND `range_id` = :tool_id",
             ['tool_id' => $this->id]
         );
+        if ($generate && !$keyring) {
+            $keyring = Keyring::generate($this->id, 'lti_tool');
+        }
+        return $keyring;
     }
 
     public function getLtiVersionString() : string
