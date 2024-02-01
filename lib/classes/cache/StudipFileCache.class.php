@@ -269,7 +269,7 @@ class StudipFileCache implements StudipCache
             }
             $item->set(unserialize($result));
             $expiration = new DateTime();
-            $expiration->setTimestamp(time() + $expire);
+            $expiration->setTimestamp($expire);
             $item->expiresAt($expiration);
         }
         return $item;
@@ -280,6 +280,8 @@ class StudipFileCache implements StudipCache
      */
     public function hasItem($key)
     {
-        // TODO: Implement hasItem() method.
+        $real_key = $this->getCacheKey($key);
+        $file_data = $this->check($real_key);
+        return $file_data !== false;
     }
 }
