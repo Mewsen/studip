@@ -81,24 +81,6 @@ class StudipMemcachedCache implements StudipCache
     }
 
     /**
-     * Retrieve item from the server.
-     *
-     * Example:
-     *
-     *   # reads foo
-     *   $foo = $cache->reads('foo');
-     *
-     * @param   string $arg a single key
-     * @returns mixed  the previously stored data if an item with such a key
-     *                 exists on the server or FALSE on failure.
-     */
-    public function read($arg)
-    {
-        $key = $this->getCacheKey($arg);
-        return $this->memcache->get($key);
-    }
-
-    /**
      * Store data at the server.
      *
      * @param string $arg the item's key.
@@ -154,4 +136,26 @@ class StudipMemcachedCache implements StudipCache
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getItem($key)
+    {
+        $item = new \Studip\CacheItem($key);
+        $value = $this->memcache->get($this->getCacheKey($key));
+        if ($this->memcache->getResultCode() !== Memcached::RES_NOTFOUND) {
+            //Set the value, even if it is the boolean value false:
+            $item->setHit();
+            $item->set($value);
+        }
+        return $item;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasItem($key)
+    {
+        return $this->memcache->checkKey($this->getCacheKey($key));
+    }
 }

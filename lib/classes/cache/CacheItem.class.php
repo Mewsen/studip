@@ -64,4 +64,16 @@ class CacheItem implements \Psr\Cache\CacheItemInterface
     {
         // TODO: Implement expiresAfter() method.
     }
+
+    //\Studip\CacheItem specific methods:
+
+    /**
+     * Sets the item to be a cache hit.
+     *
+     * @return void
+     */
+    public function setHit() : void
+    {
+        $this->cache_hit = true;
+    }
 }

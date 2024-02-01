@@ -267,6 +267,7 @@ class StudipFileCache implements StudipCache
                 $result = stream_get_contents($f);
                 @fclose($f);
             }
+            $item->setHit();
             $item->set(unserialize($result));
             $expiration = new DateTime();
             $expiration->setTimestamp($expire);
