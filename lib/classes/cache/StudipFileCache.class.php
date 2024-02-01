@@ -113,30 +113,6 @@ class StudipFileCache implements StudipCache
     }
 
     /**
-     * retrieve cache item from filesystem
-     * tests first if item is expired
-     *
-     * @see StudipCache::read()
-     * @param string $arg a cache key
-     * @return string|bool
-     */
-    public function read($arg)
-    {
-        $key = $this->getCacheKey($arg);
-
-        if ($file = $this->check($key)){
-            $f = @fopen($file, 'rb');
-            if ($f) {
-                @flock($f, LOCK_SH);
-                $result = stream_get_contents($f);
-                @fclose($f);
-            }
-            return unserialize($result);
-        }
-        return false;
-    }
-
-    /**
      * store data as cache item in filesystem
      *
      * @see StudipCache::write()
@@ -167,7 +143,7 @@ class StudipFileCache implements StudipCache
         if ($file = $this->getPathAndFile($key)){
             list($id, $expire) = explode('-', basename($file));
             if (time() < $expire) {
-                return $file;
+                return [$file, $expire];
             } else {
                 @unlink($file);
             }
@@ -273,4 +249,37 @@ class StudipFileCache implements StudipCache
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getItem($key)
+    {
+        $real_key = $this->getCacheKey($key);
+
+        $item = new \Studip\CacheItem($key);
+
+        if ($file_data = $this->check($real_key)) {
+            $file = $file_data[0];
+            $expire = $file_data[1];
+            $f = @fopen($file, 'rb');
+            if ($f) {
+                @flock($f, LOCK_SH);
+                $result = stream_get_contents($f);
+                @fclose($f);
+            }
+            $item->set(unserialize($result));
+            $expiration = new DateTime();
+            $expiration->setTimestamp(time() + $expire);
+            $item->expiresAt($expiration);
+        }
+        return $item;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasItem($key)
+    {
+        // TODO: Implement hasItem() method.
+    }
 }

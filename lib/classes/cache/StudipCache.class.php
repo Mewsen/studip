@@ -54,7 +54,14 @@ interface StudipCache
      * @return mixed    the previously stored data if an item with such a key
      *                  exists on the server or FALSE on failure.
      */
-    public function read($arg);
+    public function read($arg)
+    {
+        $item = $this->getItem($arg);
+        if ($item->isHit()) {
+            return $item->get();
+        }
+        return false;
+    }
 
     /**
      * Store data at the server.
