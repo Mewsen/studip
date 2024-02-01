@@ -8,7 +8,7 @@
  * @subpackage  cache
  * @since       Stud.IP 5.0
  */
-class StudipRedisCache implements StudipCache
+class StudipRedisCache extends StudipCache
 {
     use StudipCacheKeyTrait;
 

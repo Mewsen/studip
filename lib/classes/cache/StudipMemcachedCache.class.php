@@ -21,7 +21,7 @@
  * @since   5.0
  */
 
-class StudipMemcachedCache implements StudipCache
+class StudipMemcachedCache extends StudipCache
 {
     use StudipCacheKeyTrait;
 

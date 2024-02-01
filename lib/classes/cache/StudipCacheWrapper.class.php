@@ -8,7 +8,7 @@
  * @license GPL2 or any later version
  * @since Stud.IP 5.4
  */
-class StudipCacheWrapper implements StudipCache
+class StudipCacheWrapper extends StudipCache
 {
     const DEFAULT_MEMORY_EXPIRATION = 60;
 

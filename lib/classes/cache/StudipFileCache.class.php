@@ -31,7 +31,7 @@
  * @author    André Noack <noack@data-quest.de>
  * @version   2
  */
-class StudipFileCache implements StudipCache
+class StudipFileCache extends StudipCache
 {
     use StudipCacheKeyTrait;
 

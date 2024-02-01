@@ -14,7 +14,7 @@
  * @license    GPL2 or any later version
  */
 
-interface StudipCache
+abstract class StudipCache implements Psr\Cache\CacheItemPoolInterface
 {
     const DEFAULT_EXPIRATION = 12 * 60 * 60; // 12 hours
 
@@ -34,12 +34,12 @@ interface StudipCache
      *
      * @param string $arg a single key
      */
-    public function expire($arg);
+    abstract public function expire($arg);
 
     /**1
      * Expire all items from the cache.
      */
-    public function flush();
+    abstract public function flush();
 
     /**
      * Retrieve item from the server.
@@ -88,7 +88,7 @@ interface StudipCache
     /**
      * @return string A translateable display name for this cache class.
      */
-    public static function getDisplayName(): string;
+    abstract public static function getDisplayName(): string;
 
     /**
      * Get some statistics from cache, like number of entries, hit rate or
@@ -103,7 +103,7 @@ interface StudipCache
      *
      * @return array
      */
-    public function getStats(): array;
+    abstract public function getStats(): array;
 
     /**
      * Return the Vue component name and props that handle configuration.
@@ -115,7 +115,7 @@ interface StudipCache
      *
      * @return array
      */
-    public static function getConfig(): array;
+    abstract public static function getConfig(): array;
 
     /**
      * Calculates the expiration by a cache item. If that cannot be determined,

@@ -8,7 +8,7 @@
  * @license GPL2 or any later version
  * @since   Stud.IP 3.3
  */
-class StudipCacheProxy implements StudipCache
+class StudipCacheProxy extends StudipCache
 {
     protected $actual_cache;
     protected $proxy_these;

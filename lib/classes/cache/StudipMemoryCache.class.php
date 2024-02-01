@@ -6,7 +6,7 @@
  * @license GPL2 or any later version
  * @since   Stud.IP 5.0
  */
-class StudipMemoryCache implements StudipCache
+class StudipMemoryCache extends StudipCache
 {
     protected $memory_cache = [];
 
