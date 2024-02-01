@@ -53,6 +53,8 @@ interface StudipCache
      *
      * @return mixed    the previously stored data if an item with such a key
      *                  exists on the server or FALSE on failure.
+     *
+     * @deprecated To be removed with Stud.IP 7.0.
      */
     public function read($arg)
     {
@@ -71,6 +73,8 @@ interface StudipCache
      * @param int    $expires  the item's expiry time in seconds. Optional, defaults to 12h.
      *
      * @return bool     returns TRUE on success or FALSE on failure.
+
+     * @deprecated To be removed with Stud.IP 7.0.
      */
     public function write($name, $content, $expires = self::DEFAULT_EXPIRATION)
     {
@@ -112,6 +116,23 @@ interface StudipCache
      * @return array
      */
     public static function getConfig(): array;
+
+    /**
+     * Calculates the expiration by a cache item. If that cannot be determined,
+     * the default expiration period is returned.
+     *
+     * @param \Studip\CacheItem $item The item from which to get the expiration time.
+     *
+     * @return int The time from now until the expiration in seconds.
+     */
+    public function getExpiration(\Psr\Cache\CacheItemInterface $item) : int
+    {
+        $expiration = self::DEFAULT_EXPIRATION;
+        if ($item instanceof \Studip\CacheItem) {
+            $expiration = $item->getExpirationInSeconds();
+        }
+        return $expiration;
+    }
 
     //PSR-6 CacheItemPoolInterface:
 

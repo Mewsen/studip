@@ -56,18 +56,6 @@ class StudipCacheWrapper implements StudipCache
         return $cached;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function write($name, $content, $expires = self::DEFAULT_EXPIRATION)
-    {
-        if ($this->actual_cache->write($name, $content, $expires)) {
-            return $this->memory_cache->write($name, $content, $expires);
-        } else {
-            return false;
-        }
-    }
-
     public static function getDisplayName(): string
     {
         return static::class;
@@ -97,5 +85,17 @@ class StudipCacheWrapper implements StudipCache
     public function hasItem($key)
     {
         return $this->actual_cache->hasItem($key);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function save(\Psr\Cache\CacheItemInterface $item)
+    {
+        if ($this->actual_cache->save($item)) {
+            return $this->memory_cache->save($item);
+        } else {
+            return false;
+        }
     }
 }

@@ -74,20 +74,6 @@ class StudipRedisCache implements StudipCache
     }
 
     /**
-     * Store data at the server.
-     *
-     * @param string   the item's key.
-     * @param string   the item's content.
-     * @param int      the item's expiry time in seconds. Defaults to 12h.
-     * @return mixed  returns TRUE on success or FALSE on failure.
-     */
-    public function write($name, $content, $expire = self::DEFAULT_EXPIRATION)
-    {
-        $key = $this->getCacheKey($name);
-        return $this->redis->setEx($key, $expire, serialize($content));
-    }
-
-    /**
      * Expire all items from the cache.
      */
     public function flush()
@@ -180,5 +166,20 @@ class StudipRedisCache implements StudipCache
     {
         $real_key = $this->getCacheKey($key);
         return $this->redis->get($real_key) !== null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function save(\Psr\Cache\CacheItemInterface $item)
+    {
+        $expiration = $this->getExpiration($item);
+        if ($expiration < 1) {
+            //The item would expire immediately.
+            return false;
+        }
+
+        $real_key = $this->getCacheKey($item->getKey());
+        return $this->redis->setEx($real_key, $expiration, serialize($item->get()));
     }
 }

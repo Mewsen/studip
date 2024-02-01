@@ -70,23 +70,6 @@ class StudipDbCache implements StudipCache
     }
 
     /**
-     * Store data at the server.
-     *
-     * @param string $name     the item's key.
-     * @param mixed  $content  the item's content (will be serialized if necessary).
-     * @param int    $expired  the item's expiry time in seconds. Optional, defaults to 12h.
-     *
-     * @return bool     returns TRUE on success or FALSE on failure.
-     */
-    public function write($name, $content, $expires = self::DEFAULT_EXPIRATION)
-    {
-        $db = DBManager::get();
-
-        $stmt = $db->prepare('REPLACE INTO cache VALUES(?, ?, ?)');
-        return $stmt->execute([$name, serialize($content), time() + $expires]);
-    }
-
-    /**
      * Return statistics.
      *
      * @see StudipCache::getStats()
@@ -167,5 +150,21 @@ class StudipDbCache implements StudipCache
             return true;
         }
         return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function save(\Psr\Cache\CacheItemInterface $item)
+    {
+        $expiration = $this->getExpiration($item);
+        if ($expiration < 1) {
+            //The item would expire immediately.
+            return false;
+        }
+
+        $db = DBManager::get();
+        $stmt = $db->prepare('REPLACE INTO `cache` VALUES(?, ?, ?)');
+        return $stmt->execute([$item->getKey(), serialize($item->get()), $expiration]);
     }
 }

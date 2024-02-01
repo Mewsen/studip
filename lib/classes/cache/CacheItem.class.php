@@ -97,4 +97,13 @@ class CacheItem implements \Psr\Cache\CacheItemInterface
     {
         return $this->expiration;
     }
+
+    public function getExpirationInSeconds() : int
+    {
+        if ($this->expiration) {
+            return $this->expiration->getTimestamp() - time();
+        }
+        //No expiration: The cache entry is permanent:
+        return PHP_INT_MAX;
+    }
 }

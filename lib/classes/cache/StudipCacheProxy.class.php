@@ -78,28 +78,6 @@ class StudipCacheProxy implements StudipCache
         return $this->actual_cache->read($key);
     }
 
-    /**
-     * Store data at the server.
-     *
-     * @param string $key     The item's key
-     * @param string $content The item's conten
-     * @param int    $expires The item's expiry time in seconds, defaults to 12h
-     * @return bool  Returns TRUE on success or FALSE on failure
-     */
-    public function write($key, $content, $expires = self::DEFAULT_EXPIRATION)
-    {
-        if (in_array('write', $this->proxy_these)) {
-            try {
-                $operation = new StudipCacheOperation([$key, 'write']);
-                $operation->parameters = serialize([$content, $expires]);
-                $operation->store();
-            } catch (Exception $e) {
-            }
-        }
-
-        return $this->actual_cache->write($key, $content, $expires);
-    }
-
     public static function getDisplayName(): string
     {
         return static::class;
@@ -129,5 +107,22 @@ class StudipCacheProxy implements StudipCache
     public function hasItem($key)
     {
         return $this->actual_cache->hasItem($key);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function save(\Psr\Cache\CacheItemInterface $item)
+    {
+        if (in_array('save', $this->proxy_these)) {
+            try {
+                $operation = new StudipCacheOperation([$item->getKey(), 'save']);
+                $operation->parameters = serialize([$item]);
+                $operation->store();
+            } catch (Exception $e) {
+            }
+        }
+
+        return $this->actual_cache->save($item);
     }
 }

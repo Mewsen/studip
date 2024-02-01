@@ -28,26 +28,6 @@ class StudipMemoryCache implements StudipCache
         $this->memory_cache = [];
     }
 
-    /**
-     * Store data at the server.
-     *
-     * @param string   the item's key.
-     * @param mixed    the item's content (will be serialized if necessary).
-     * @param int      the item's expiry time in seconds. Defaults to 12h.
-     *
-     * @returns mixed  returns TRUE on success or FALSE on failure.
-     *
-     */
-    public function write($name, $content, $expires = self::DEFAULT_EXPIRATION)
-    {
-        $this->memory_cache[$name] = [
-            'expires' => time() + $expires,
-            'data'    => $content,
-        ];
-
-        return true;
-    }
-
     public static function getDisplayName(): string
     {
         return 'Memory cache';
@@ -88,5 +68,24 @@ class StudipMemoryCache implements StudipCache
     {
         return isset($this->memory_cache[$key])
             && $this->memory_cache[$key]['expires'] < time();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function save(\Psr\Cache\CacheItemInterface $item)
+    {
+        $expiration = $this->getExpiration($item);
+        if ($expiration < 1) {
+            //The item would expire immediately.
+            return false;
+        }
+
+        $this->memory_cache[$item->getKey()] = [
+            'expires' => $expiration,
+            'data'    => $item->get(),
+        ];
+
+        return true;
     }
 }

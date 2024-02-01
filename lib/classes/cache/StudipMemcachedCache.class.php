@@ -81,22 +81,6 @@ class StudipMemcachedCache implements StudipCache
     }
 
     /**
-     * Store data at the server.
-     *
-     * @param string $arg the item's key.
-     * @param string $content the item's content.
-     * @param int $expire the item's expiry time in seconds. Defaults to 12h.
-     *
-     * @returns mixed  returns TRUE on success or FALSE on failure.
-     *
-     */
-    public function write($arg, $content, $expire = self::DEFAULT_EXPIRATION)
-    {
-        $key = $this->getCacheKey($arg);
-        return $this->memcache->set($key, $content, $expire);
-    }
-
-    /**
      * Return statistics.
      *
      * @StudipCache::getStats()
@@ -157,5 +141,20 @@ class StudipMemcachedCache implements StudipCache
     public function hasItem($key)
     {
         return $this->memcache->checkKey($this->getCacheKey($key));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function save(\Psr\Cache\CacheItemInterface $item)
+    {
+        $expiration = $this->getExpiration($item);
+        if ($expiration < 1) {
+            //The item would expire immediately.
+            return false;
+        }
+
+        $real_key = $this->getCacheKey($item->getKey());
+        return $this->memcache->set($real_key, $item->get(), $expiration);
     }
 }

@@ -113,25 +113,6 @@ class StudipFileCache implements StudipCache
     }
 
     /**
-     * store data as cache item in filesystem
-     *
-     * @see StudipCache::write()
-     * @param string $arg a cache key
-     * @param mixed $content data to store
-     * @param int $expire expiry time in seconds, default 12h
-     * @return int|bool the number of bytes that were written to the file,
-     *         or false on failure
-     */
-    public function write($arg, $content, $expire = self::DEFAULT_EXPIRATION)
-    {
-        $key = $this->getCacheKey($arg);
-
-        $this->expire($key);
-        $file = $this->getPathAndFile($key, $expire);
-        return @file_put_contents($file, serialize($content), LOCK_EX);
-    }
-
-    /**
      * checks if specified cache item is expired
      * if expired the cache file is deleted
      *
@@ -284,5 +265,22 @@ class StudipFileCache implements StudipCache
         $real_key = $this->getCacheKey($key);
         $file_data = $this->check($real_key);
         return $file_data !== false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function save(\Psr\Cache\CacheItemInterface $item)
+    {
+        $expiration = $this->getExpiration($item);
+        if ($expiration < 1) {
+            //The item would expire immediately.
+            return false;
+        }
+
+        $real_key = $this->getCacheKey($item->getKey());
+        $this->expire($real_key);
+        $file = $this->getPathAndFile($real_key, $expiration);
+        return @file_put_contents($file, serialize($item->get()), LOCK_EX);
     }
 }
