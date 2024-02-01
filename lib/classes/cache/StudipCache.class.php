@@ -76,9 +76,9 @@ interface StudipCache
     {
         $expiration = new DateTime();
         $expiration->setTimestamp(time() + $expires);
-        $item = new Studip\CacheItem($name, $content, $expiration);
+        $item = new Studip\CacheItem($name, $content, false, $expiration);
 
-        $this->save($item);
+        return $this->save($item);
     }
 
     /**
