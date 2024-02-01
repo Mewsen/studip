@@ -8,13 +8,18 @@ class CacheItem implements \Psr\Cache\CacheItemInterface
 
     protected $value;
 
+    protected ?\DateTime $expiration = null;
+
     protected bool $cache_hit = false;
 
-    public function __construct($key, $value = null, bool $cache_hit = false)
+    public function __construct($key, $value = null, bool $cache_hit = false, ?\DateTime $expiration = null)
     {
         $this->key       = $key;
         $this->value     = $value;
         $this->cache_hit = $cache_hit;
+        if ($expiration) {
+            $this->expiration = $expiration;
+        }
     }
 
     /**
@@ -54,7 +59,9 @@ class CacheItem implements \Psr\Cache\CacheItemInterface
      */
     public function expiresAt($expiration)
     {
-        // TODO: Implement expiresAt() method.
+        if ($expiration instanceof \DateTime) {
+            $this->expiration = $expiration;
+        }
     }
 
     /**
@@ -62,7 +69,16 @@ class CacheItem implements \Psr\Cache\CacheItemInterface
      */
     public function expiresAfter($time)
     {
-        // TODO: Implement expiresAfter() method.
+        if ($time instanceof \DateInterval) {
+            $this->expiration = new DateTime();
+            $this->expiration = $this->expiration->add($time);
+        } elseif (is_integer($time)) {
+            $this->expiration = new DateTime();
+            $this->expiration->setTimestamp(time() + $time);
+        } else {
+            //Remove any existing expiration:
+            $this->expiration = null;
+        }
     }
 
     //\Studip\CacheItem specific methods:
@@ -75,5 +91,10 @@ class CacheItem implements \Psr\Cache\CacheItemInterface
     public function setHit() : void
     {
         $this->cache_hit = true;
+    }
+
+    public function getExpiration() : ?\DateTime
+    {
+        return $this->expiration;
     }
 }
