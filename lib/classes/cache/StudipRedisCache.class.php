@@ -74,27 +74,6 @@ class StudipRedisCache implements StudipCache
     }
 
     /**
-     * Retrieve item from the server.
-     *
-     * Example:
-     *
-     *   # reads foo
-     *   $foo = $cache->reads('foo');
-     *
-     * @param  string $arg a single key
-     * @return mixed  the previously stored data if an item with such a key
-     *                exists on the server or FALSE on failure.
-     */
-    public function read($arg)
-    {
-        $key = $this->getCacheKey($arg);
-
-        $result = $this->redis->get($key);
-
-        return ($result === null) ? null : unserialize($result);
-    }
-
-    /**
      * Store data at the server.
      *
      * @param string   the item's key.
@@ -173,5 +152,33 @@ class StudipRedisCache implements StudipCache
             'component' => 'RedisCacheConfig',
             'props' => $currentConfig
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getItem($key)
+    {
+        $item = new \Studip\CacheItem($key);
+        $real_key = $this->getCacheKey($key);
+        $result = $this->redis->get($real_key);
+        if ($result === null) {
+            return $item;
+        }
+        $item->setHit();
+        $item->set(unserialize($result));
+        $expiration = new DateTime();
+        $expiration->setTimestamp($this->redis->expiretime($real_key));
+        $item->expiresAt($expiration);
+        return $item;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasItem($key)
+    {
+        $real_key = $this->getCacheKey($key);
+        return $this->redis->get($real_key) !== null;
     }
 }
