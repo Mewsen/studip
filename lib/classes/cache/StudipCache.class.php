@@ -57,17 +57,6 @@ interface StudipCache
     public function read($arg);
 
     /**
-     * Reads an item from the cache identified by its key.
-     *
-     * @param mixed $key The key of the cache item.
-     *
-     * @return \Studip\CacheItem A CacheItem interface, even if the item cannot be found in the cache.
-     *
-     * @throws \Psr\Cache\InvalidArgumentException In case $key is invalid.
-     */
-    abstract public function readItem($key) : \Studip\CacheItem;
-
-    /**
      * Store data at the server.
      *
      * @param string $name     the item's key.

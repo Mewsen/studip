@@ -114,4 +114,20 @@ class StudipCacheProxy implements StudipCache
     {
         return [];
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getItem($key)
+    {
+        return $this->actual_cache->getItem($key);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasItem($key)
+    {
+        return $this->actual_cache->hasItem($key);
+    }
 }

@@ -62,13 +62,11 @@ class StudipDbCache implements StudipCache
      */
     public function read($arg)
     {
-        $db = DBManager::get();
-
-        $stmt = $db->prepare('SELECT content FROM cache WHERE cache_key = ? AND expires > ?');
-        $stmt->execute([$arg, time()]);
-        $result = $stmt->fetchColumn();
-
-        return $result !== false ? unserialize($result) : false;
+        $item = $this->getItem($arg);
+        if ($item->isHit()) {
+            return unserialize($item->get());
+        }
+        return false;
     }
 
     /**
@@ -120,4 +118,52 @@ class StudipDbCache implements StudipCache
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getItem($key)
+    {
+        $db = DBManager::get();
+        $stmt = $db->prepare(
+            'SELECT `content`, `expires`
+            FROM `cache`
+            WHERE `cache_key` = :key AND `expires` > :now'
+        );
+        $stmt->execute(
+            [
+                'key' => $key,
+                'now' => time()
+            ]
+        );
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $item = new \Studip\CacheItem($key, $result['content'] ?? null, !empty($result));
+        if (!empty($result)) {
+            $item->expiresAt($result['expires']);
+        }
+        return $item;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasItem($key)
+    {
+        $db = DBManager::get();
+        $stmt = $db->prepare(
+            "SELECT '1' FROM `cache`
+            WHERE `cache_key` = :key AND `expires` > :now"
+        );
+        $stmt->execute(
+            [
+                'key' => $key,
+                'now' => time()
+            ]
+        );
+        $result = $stmt->fetchColumn();
+        if ($result === '1') {
+            return true;
+        }
+        return false;
+    }
 }
