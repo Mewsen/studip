@@ -29,25 +29,6 @@ class StudipMemoryCache implements StudipCache
     }
 
     /**
-     * Reads just a single key from the cache.
-     *
-     * @param  string  the key
-     *
-     * @return mixed   the corresponding value
-     */
-    public function read($key)
-    {
-        if (!isset($this->memory_cache[$key])) {
-            return false;
-        }
-        if ($this->memory_cache[$key]['expires'] < time()) {
-            $this->expire($key);
-            return false;
-        }
-        return $this->memory_cache[$key]['data'];
-    }
-
-    /**
      * Store data at the server.
      *
      * @param string   the item's key.
@@ -80,5 +61,32 @@ class StudipMemoryCache implements StudipCache
     public static function getConfig(): array
     {
         return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getItem($key)
+    {
+        $item = new Studip\CacheItem($key);
+        if (!isset($this->memory_cache[$key])) {
+            return $item;
+        }
+        if ($this->memory_cache[$key]['expires'] < time()) {
+            $this->expire($key);
+            return $item;
+        }
+        $item->setHit();
+        $item->set($this->memory_cache[$key]['data']);
+        return $item;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasItem($key)
+    {
+        return isset($this->memory_cache[$key])
+            && $this->memory_cache[$key]['expires'] < time();
     }
 }
