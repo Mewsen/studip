@@ -139,7 +139,9 @@ class StudipDbCache implements StudipCache
 
         $item = new \Studip\CacheItem($key, $result['content'] ?? null, !empty($result));
         if (!empty($result)) {
-            $item->expiresAt($result['expires']);
+            $expiration = new DateTime();
+            $expiration->setTimestamp($result['expires']);
+            $item->expiresAt($expiration);
         }
         return $item;
     }
