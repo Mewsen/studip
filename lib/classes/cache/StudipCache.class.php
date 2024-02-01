@@ -72,7 +72,14 @@ interface StudipCache
      *
      * @return bool     returns TRUE on success or FALSE on failure.
      */
-    public function write($name, $content, $expires = self::DEFAULT_EXPIRATION);
+    public function write($name, $content, $expires = self::DEFAULT_EXPIRATION)
+    {
+        $expiration = new DateTime();
+        $expiration->setTimestamp(time() + $expires);
+        $item = new Studip\CacheItem($name, $content, $expiration);
+
+        $this->save($item);
+    }
 
     /**
      * @return string A translateable display name for this cache class.
@@ -158,24 +165,6 @@ interface StudipCache
         foreach ($keys as $key) {
             $this->expire($key);
         }
-    }
-
-    /**
-     * @see \Psr\Cache\CacheItemPoolInterface::save()
-     */
-    public function save(\Psr\Cache\CacheItemInterface $item)
-    {
-        $expiration_seconds = null;
-        $expiration = $item->expiresAfter();
-        if ($expiration instanceof DateInterval) {
-            $now = new DateTime();
-            $then = clone $now;
-            $then = $then->add($expiration);
-            $expiration_seconds = $then->getTimestamp() - $now->getTimestamp();
-        } elseif (is_int($expiration) && $expiration > 0) {
-            $expiration_seconds = $expiration;
-        }
-        $this->write($item->getKey(), $item->get(), $expiration_seconds);
     }
 
     /**
