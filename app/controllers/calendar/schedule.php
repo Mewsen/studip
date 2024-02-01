@@ -243,12 +243,12 @@ class Calendar_ScheduleController extends AuthenticatedController
                 $this->render_template('calendar/schedule/_entry_course');
             } else if ($id) {
                 $entry_columns = CalendarScheduleModel::getScheduleEntries($GLOBALS['user']->id, 0, 0, $id);
-                $entries = [];
-                $entry_columns = array_pop($entry_columns);
-                if ($entry_columns) {
-                    $entries = $entry_columns->getEntries();
+                if (count($entry_columns) > 0) {
+                    $entries = array_pop($entry_columns)->getEntries();
+                    $this->show_entry = array_pop($entries);
+                } else {
+                    $this->show_entry = null;
                 }
-                $this->show_entry = array_pop($entries);
                 $this->render_template('calendar/schedule/_entry_schedule');
             }
         } else {
