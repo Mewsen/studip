@@ -23,6 +23,8 @@ StudipAutoloader::addAutoloadPath('lib/classes/admission');
 StudipAutoloader::addAutoloadPath('lib/classes/admission/userfilter');
 StudipAutoloader::addAutoloadPath('lib/classes/auth_plugins');
 StudipAutoloader::addAutoloadPath('lib/classes/calendar');
+StudipAutoloader::addAutoloadPath('lib/classes/cache');
+StudipAutoloader::addAutoloadPath('lib/classes/cache', 'Studip');
 StudipAutoloader::addAutoloadPath('lib/classes/exportdocument');
 StudipAutoloader::addAutoloadPath('lib/classes/forms');
 StudipAutoloader::addAutoloadPath('lib/classes/globalsearch');
