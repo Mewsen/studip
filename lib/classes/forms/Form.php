@@ -123,7 +123,11 @@ class Form extends Part
         }
         foreach ($params['fields'] as $fieldname => $fielddata) {
             if (is_array($fielddata) && !array_key_exists('value', $fielddata)) {
-                if ($object->isField($fieldname)) {
+                if (
+                    $object->isField($fieldname)
+                    || $object->isAdditionalField($fieldname)
+                    || $object->isAliasField($fieldname)
+                ) {
                     $params['fields'][$fieldname]['value'] = $object[$fieldname];
                 }
             }
@@ -309,7 +313,6 @@ class Form extends Part
                 $all_values[$input->getName()] = $value;
             }
         }
-
         foreach ($this->parts as $part) {
             $context = $part->getContextObject();
             if ($context && method_exists($context, 'store')) {
@@ -388,7 +391,16 @@ class Form extends Part
             return $input->store;
         }
         $context = $input->getParent()->getContextObject();
-        if ($context && is_subclass_of($context, \SimpleORMap::class)) {
+        if (
+            $context
+            && is_subclass_of($context, \SimpleORMap::class)
+            && (
+                $context->isField($input->getName())
+                || $context->isAdditionalField($input->getName())
+                || $context->isAliasField($input->getName())
+                || $context->isRelation($input->getName())
+            )
+        ) {
             return function ($value) use ($context, $input) {
                 $context[$input->getName()] = $value;
             };
