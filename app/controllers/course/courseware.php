@@ -46,7 +46,7 @@ class Course_CoursewareController extends AuthenticatedController
         }
 
         // load courseware for course
-        if (!$this->entry_element_id || !$struct || !$struct->canRead($GLOBALS['user'])) {
+        if (!$this->entry_element_id || !$struct || !$struct->canVisit($GLOBALS['user'])) {
             $course = Course::find(Context::getId());
 
             if (!$course->courseware) {
