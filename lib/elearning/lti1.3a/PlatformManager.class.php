@@ -33,4 +33,17 @@ class PlatformManager
     {
         return \Keyring::generate('lti13a_platform', 'global');
     }
+
+    public static function getLtiRoleClaimForStudipRole(string $role) : string
+    {
+        if (in_array($role, ['tutor', 'dozent', 'admin', 'root'])) {
+            //Lecturer/admin
+            return 'http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor';
+        } elseif (in_array($role, ['user', 'autor'])) {
+            //Learner
+            return  'http://purl.imsglobal.org/vocab/lis/v2/membership#Learner';
+        }
+        //Invalid role:
+        return '';
+    }
 }

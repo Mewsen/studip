@@ -104,7 +104,9 @@ class Course_LtiController extends StudipController
                     'to_be_implemented',
                     null,
                     [
-
+                        \Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole('autor')
+                    ],
+                    [
                     ]
                 );
             }
