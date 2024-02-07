@@ -26,6 +26,7 @@
  */
 
 class LtiData extends SimpleORMap
+    implements \OAT\Library\Lti1p3Core\Registration\RegistrationInterface
 {
     /**
      * Configure the database mapping.
@@ -85,7 +86,8 @@ class LtiData extends SimpleORMap
      */
     public function getLaunchURL()
     {
-        if ($this->tool_id) {
+        var_dump($this->tool);
+        if ($this->tool instanceof LtiTool) {
             if (!$this->tool->allow_custom_url && !$this->tool->deep_linking || !$this->launch_url) {
                 return $this->tool->launch_url;
             }
@@ -154,7 +156,7 @@ class LtiData extends SimpleORMap
         return $this->options['send_lis_person'];
     }
 
-
+/*
     public function getLtiRegistration() : ?\OAT\Library\Lti1p3Core\Registration\Registration
     {
         if (empty($this->tool->lti_version) || $this->tool->lti_version !== '1.3a') {
@@ -182,5 +184,87 @@ class LtiData extends SimpleORMap
         );
 
         return $registration;
+    }*/
+
+    //RegistrationInterface methods:
+
+    #[\Override] public function getIdentifier(): string
+    {
+        return $this->id;
+    }
+
+    #[\Override] public function getClientId(): string
+    {
+        return $this->client_id;
+    }
+
+    #[\Override] public function getPlatform(): \OAT\Library\Lti1p3Core\Platform\PlatformInterface
+    {
+        return \Studip\LTI13a\PlatformManager::getPlatformConfiguration();
+    }
+
+    #[\Override] public function getTool(): \OAT\Library\Lti1p3Core\Tool\ToolInterface
+    {
+        return new \OAT\Library\Lti1p3Core\Tool\Tool(
+            $this->getIdentifier(),
+            $this->tool->name ?? '',
+            '', //TODO
+            '', //TODO
+            $this->launch_url
+        );
+    }
+
+    #[\Override] public function getDeploymentIds(): array
+    {
+        $db = DBManager::get();
+        $stmt = $db->prepare(
+            "SELECT `deployment_id`
+            FROM `lti_deployments`
+            WHERE `tool_id` = :tool_id"
+        );
+        $stmt->execute(['tool_id' => $this->tool_id]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+    }
+
+    #[\Override] public function hasDeploymentId(string $deploymentId): bool
+    {
+        return count($this->deployments) > 1;
+    }
+
+    #[\Override] public function getDefaultDeploymentId(): ?string
+    {
+        return md5($this->id . $this->course_id . random_bytes(64));
+    }
+
+    #[\Override] public function getPlatformKeyChain(): ?\OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface
+    {
+        $keyring = \Studip\LTI13a\PlatformManager::getPlatformKeyring();
+        if ($keyring) {
+            return $keyring->toKeyChain();
+        }
+        return null;
+    }
+
+    #[\Override] public function getToolKeyChain(): ?\OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface
+    {
+        if ($this->tool) {
+            $keyring = $this->tool->getKeyring();
+            if ($keyring) {
+                return $keyring->toKeyChain();
+            }
+        }
+        return null;
+    }
+
+    #[\Override] public function getPlatformJwksUrl(): ?string
+    {
+        // TODO: Implement getPlatformJwksUrl() method.
+        return '';
+    }
+
+    #[\Override] public function getToolJwksUrl(): ?string
+    {
+        // TODO: Implement getToolJwksUrl() method.
+        return '';
     }
 }

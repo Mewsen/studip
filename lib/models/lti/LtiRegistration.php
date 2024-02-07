@@ -43,7 +43,7 @@ class LtiRegistration extends SimpleORMap
 
     public function getDefaultDeploymentId(): ?string
     {
-        // TODO: Implement getDefaultDeploymentId() method.
+        return md5($this->id . $this->client_id . random_bytes(64));
     }
 
     public function getPlatformKeyChain(): ?\OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface
