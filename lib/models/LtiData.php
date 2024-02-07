@@ -154,6 +154,18 @@ class LtiData extends SimpleORMap
         return $this->options['send_lis_person'];
     }
 
+    public function getDeploymentIds(): array
+    {
+        $db = DBManager::get();
+        $stmt = $db->prepare(
+            "SELECT `deployment_id`
+            FROM `lti_deployments`
+            WHERE `tool_id` = :tool_id"
+        );
+        $stmt->execute(['tool_id' => $this->tool_id]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+    }
+
 
     public function getLtiRegistration() : ?\OAT\Library\Lti1p3Core\Registration\Registration
     {
@@ -176,7 +188,7 @@ class LtiData extends SimpleORMap
             Config::get()->STUDIP_INSTALLATION_ID . '_course_' . $this->course_id,
             \Studip\LTI13a\PlatformManager::getPlatformConfiguration(),
             $this->tool->getToolData(),
-            [$this->id],
+            $this->getDeploymentIds(),
             $platform_keyring->toKeyChain(),
             $tool_keyring->toKeyChain()
         );
