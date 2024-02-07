@@ -158,7 +158,7 @@ class LtiData extends SimpleORMap
     {
         $db = DBManager::get();
         $stmt = $db->prepare(
-            "SELECT `deployment_id`
+            "SELECT `id`
             FROM `lti_deployments`
             WHERE `tool_id` = :tool_id"
         );
@@ -188,7 +188,7 @@ class LtiData extends SimpleORMap
             Config::get()->STUDIP_INSTALLATION_ID . '_course_' . $this->course_id,
             \Studip\LTI13a\PlatformManager::getPlatformConfiguration(),
             $this->tool->getToolData(),
-            $this->getDeploymentIds(),
+            [$this->id],
             $platform_keyring->toKeyChain(),
             $tool_keyring->toKeyChain()
         );

@@ -26,6 +26,7 @@ class AddLti13aTables extends Migration
         );
         $db->exec("ALTER TABLE `keyrings` ADD INDEX(`range_id`, `range_type`)");
 
+        /*
         $db->exec(
             "CREATE TABLE IF NOT EXISTS lti_registrations (
                 id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -35,6 +36,7 @@ class AddLti13aTables extends Migration
                 chdate BIGINT(10) NOT NULL DEFAULT '0'
             )"
         );
+        */
 
         $db->exec(
             "CREATE TABLE IF NOT EXISTS lti_deployments (
