@@ -67,6 +67,18 @@
             </label>
 
             <label>
+                <?= _('LTI-Version') ?>
+                <select name="lti_version">
+                    <option value="1.1" <?= empty($lti_data->tool->lti_version) || $lti_data->tool->lti_version === '1.1' ? 'selected' : '' ?>>
+                        1.0/1.1
+                    </option>
+                    <option value="1.3a" <?= !empty($lti_data->tool->lti_version) && $lti_data->tool->lti_version === '1.3a' ? 'selected' : '' ?>>
+                        1.3a
+                    </option>
+                </select>
+            </label>
+
+            <label>
                 <?= _('OAuth Signatur Methode des LTI-Tools') ?>
                 <select name="oauth_signature_method">
                     <option value="sha1">HMAC-SHA1</option>

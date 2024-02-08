@@ -80,6 +80,18 @@ class LtiData extends SimpleORMap
         return $result;
     }
 
+    public function getToolLtiVersion() : string
+    {
+        if ($this->tool instanceof LtiTool) {
+            return $this->tool->lti_version;
+        } elseif ($this->options['lti_version']) {
+            return $this->options['lti_version'];
+        }
+        //Unknown LTI version.
+        return '';
+    }
+
+
     /**
      * Get the launch_url of this entry.
      */
@@ -169,7 +181,7 @@ class LtiData extends SimpleORMap
 
     public function getLtiRegistration() : ?\OAT\Library\Lti1p3Core\Registration\Registration
     {
-        if (empty($this->tool->lti_version) || $this->tool->lti_version !== '1.3a') {
+        if ($this->getToolLtiVersion() !== '1.3a') {
             //No registration can be generated.
             return null;
         }

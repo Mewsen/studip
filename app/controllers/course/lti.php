@@ -89,8 +89,8 @@ class Course_LtiController extends StudipController
         $lti_data = LtiData::findByCourseAndPosition($this->course_id, $position);
 
         $this->lti13a_mode = false;
-
-        if ($lti_data->tool->lti_version === '1.3a') {
+        $lti_version = $lti_data->getToolLtiVersion();
+        if ($lti_version === '1.3a') {
             //LTI 1.3a
             $this->lti13a_mode = true;
 
@@ -215,6 +215,7 @@ class Course_LtiController extends StudipController
             $options['consumer_secret'] = trim(Request::get('consumer_secret'));
             $options['send_lis_person'] = Request::int('send_lis_person', 0);
             $options['oauth_signature_method'] = Request::get('oauth_signature_method', 'sha1');
+            $options['lti_version'] = Request::get('lti_version', '1.1');
         } else {
             $lti_data->launch_url = trim(Request::get('custom_url'));
         }
