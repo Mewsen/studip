@@ -227,6 +227,7 @@ class Course_LtiController extends StudipController
             } else {
                 //Set the (globally defined) LTI tool:
                 $lti_data->tool_id = $new_tool_id;
+                $lti_data->launch_url = trim(Request::get('launch_url'));
             }
         } else {
             if ($new_tool_id === 0) {
@@ -251,13 +252,14 @@ class Course_LtiController extends StudipController
             } else {
                 //Set the (globally defined) LTI tool:
                 $lti_data->tool_id = $new_tool_id;
+                $lti_data->launch_url = trim(Request::get('launch_url'));
             }
         }
-        $lti_data->launch_url = trim(Request::get('launch_url'));
 
-        $options['custom_parameters'] = trim(Request::get('custom_parameters'));
-        $options['document_target'] = Request::option('document_target', 'window');
-        $lti_data->options = $options;
+        $lti_data->options = [
+            'custom_parameters' => trim(Request::get('custom_parameters')),
+            'document_target' => Request::option('document_target', 'window')
+        ];
         $lti_data->store();
 
         PageLayout::postSuccess(_('Der Abschnitt wurde gespeichert.'));

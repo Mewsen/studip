@@ -50,9 +50,9 @@ class LtiTool extends SimpleORMap
      * @param bool $with_private_tools Whether to include all private tools (true)
      *     or not (false). Defautls to false.
      *
-     * @return SimpleORMapCollection A list of all LTI tools.
+     * @return array A list of all LTI tools.
      */
-    public static function findAll(bool $with_private_tools = false) : SimpleORMapCollection
+    public static function findAll(bool $with_private_tools = false) : array
     {
         if ($with_private_tools) {
             return self::findBySQL("1 ORDER BY name");
