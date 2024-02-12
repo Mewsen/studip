@@ -115,7 +115,7 @@ class LtiData extends SimpleORMap
             return $this->tool->consumer_key;
         }
 
-        return $this->options['consumer_key'];
+        return $this->options['consumer_key'] ?? '';
     }
 
     /**
@@ -127,7 +127,7 @@ class LtiData extends SimpleORMap
             return $this->tool->consumer_secret;
         }
 
-        return $this->options['consumer_secret'];
+        return $this->options['consumer_secret'] ?? '';
     }
 
     /**
@@ -181,7 +181,7 @@ class LtiData extends SimpleORMap
 
     public function getLtiRegistration() : ?\OAT\Library\Lti1p3Core\Registration\Registration
     {
-        if ($this->getToolLtiVersion() !== '1.3a') {
+        if ($this->getToolLtiVersion() !== '1.3a' || !$this->tool) {
             //No registration can be generated.
             return null;
         }
@@ -206,5 +206,16 @@ class LtiData extends SimpleORMap
         );
 
         return $registration;
+    }
+
+    /**
+     * Whether the LtiData instance uses its own (private) tool
+     * or one of the globally defined LTI tools.
+     *
+     * @return bool True, if the LtiData instance uses its own tool, false otherwise.
+     */
+    public function hasOwnTool() : bool
+    {
+        return $this->tool && !$this->tool->is_global;
     }
 }

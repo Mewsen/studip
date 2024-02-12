@@ -31,13 +31,15 @@
             <?= _('Auswahl des externen Tools') ?>
             <select class="config_tool" name="tool_id">
                 <? foreach ($tools as $tool): ?>
-                    <option value="<?= $tool->id ?>"
+                    <option value="<?= htmlReady($tool->id) ?>"
                         <? if ($tool->allow_custom_url): ?>
                             data-url="<?= htmlReady($tool->launch_url) ?>"
                         <? endif ?>
-                        <?= $lti_data->tool_id == $tool->id ? 'selected' : '' ?>><?= htmlReady($tool->name) ?></option>
+                        <?= !$lti_data->hasOwnTool() && $lti_data->tool_id === $tool->id ? 'selected' : '' ?>>
+                        <?= htmlReady($tool->name) ?>
+                    </option>
                 <? endforeach ?>
-                <option value="0" <?= !$lti_data->tool_id ? 'selected' : '' ?>><?= _('Zugangsdaten selbst eingeben...') ?></option>
+                <option value="0" <?= $lti_data->hasOwnTool() ? 'selected' : '' ?>><?= _('Eigenes Tool einrichten') ?></option>
             </select>
         </label>
 
@@ -45,7 +47,7 @@
             <label>
                 <?= _('URL der Anwendung (optional)') ?>
                 <?= tooltipIcon(_('Sie können direkt auf eine URL in der Anwendung verlinken.')) ?>
-                <input type="text" name="custom_url" value="<?= htmlReady($lti_data->launch_url) ?>">
+                <input type="text" name="custom_url" value="<?= htmlReady($lti_data->getLaunchURL()) ?>">
             </label>
         </div>
 
@@ -53,17 +55,17 @@
             <label>
                 <?= _('URL der Anwendung') ?>
                 <?= tooltipIcon(_('Die Betreiber dieses Tools müssen Ihnen eine URL und Zugangsdaten (Consumer-Key und Consumer-Secret) mitteilen.')) ?>
-                <input type="text" name="launch_url" value="<?= htmlReady($lti_data->launch_url) ?>">
+                <input type="text" name="launch_url" value="<?= htmlReady($lti_data->getLaunchURL()) ?>">
             </label>
 
             <label>
                 <?= _('Consumer-Key des LTI-Tools') ?>
-                <input type="text" name="consumer_key" value="<?= htmlReady($lti_data->options['consumer_key'] ?? '') ?>">
+                <input type="text" name="consumer_key" value="<?= htmlReady($lti_data->getConsumerKey()) ?>">
             </label>
 
             <label>
                 <?= _('Consumer-Secret des LTI-Tools') ?>
-                <input type="text" name="consumer_secret" value="<?= htmlReady($lti_data->options['consumer_secret'] ?? '') ?>">
+                <input type="text" name="consumer_secret" value="<?= htmlReady($lti_data->getConsumerSecret()) ?>">
             </label>
 
             <label>
@@ -79,15 +81,18 @@
             </label>
 
             <label>
+                <?
+                $signature_method = $lti_data->getOauthSignatureMethod();
+                ?>
                 <?= _('OAuth Signatur Methode des LTI-Tools') ?>
                 <select name="oauth_signature_method">
                     <option value="sha1">HMAC-SHA1</option>
-                    <option value="sha256" <?= isset($lti_data->options['oauth_signature_method']) && $lti_data->options['oauth_signature_method'] === 'sha256' ? 'selected' : '' ?>>HMAC-SHA256</option>
+                    <option value="sha256" <?= $signature_method === 'sha256' ? 'selected' : '' ?>>HMAC-SHA256</option>
                 </select>
             </label>
 
             <label>
-                <input type="checkbox" name="send_lis_person" value="1" <?= !empty($lti_data->options['send_lis_person']) ? ' checked' : '' ?>>
+                <input type="checkbox" name="send_lis_person" value="1" <?= $lti_data->getSendLisPerson() ? ' checked' : '' ?>>
                 <?= _('Nutzerdaten an LTI-Tool senden') ?>
                 <?= tooltipIcon(_('Nutzerdaten dürfen nur an das externe Tool gesendet werden, wenn es keine Datenschutzbedenken gibt. Mit Setzen des Hakens bestätigen Sie, dass die Übermittlung der Daten zulässig ist.')) ?>
             </label>
