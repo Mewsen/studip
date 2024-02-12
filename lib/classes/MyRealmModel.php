@@ -666,7 +666,7 @@ class MyRealmModel
                     'StudipSemTree',
                     ['build_index' => true]
                 );
-                return (int)($the_tree->tree_data[$a]['index'] ?? 0 - $the_tree->tree_data[$b]['index'] ?? 0);
+                return ($the_tree->tree_data[$a]['index'] ?? 0) - ($the_tree->tree_data[$b]['index'] ?? 0);
             });
             //At this point the $_tmp_courses array is sorted by the ordering
             //of the sem_tree.
