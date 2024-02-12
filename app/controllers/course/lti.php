@@ -185,7 +185,7 @@ class Course_LtiController extends StudipController
             $this->lti_data = LtiData::findByCourseAndPosition($this->course_id, $position);
         }
 
-        $this->tools = LtiTool::findAllGlobalTools();
+        $this->tools = LtiTool::findAll();
     }
 
     /**

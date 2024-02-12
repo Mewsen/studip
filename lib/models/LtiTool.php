@@ -45,11 +45,20 @@ class LtiTool extends SimpleORMap
     }
 
     /**
-     * Find all global tools (tools with is_global set to 1).
+     * Retrieves all LTI tools.
+     *
+     * @param bool $with_private_tools Whether to include all private tools (true)
+     *     or not (false). Defautls to false.
+     *
+     * @return SimpleORMapCollection A list of all LTI tools.
      */
-    public static function findAllGlobalTools()
+    public static function findAll(bool $with_private_tools = false) : SimpleORMapCollection
     {
-        return self::findBySQL("`is_global` = '1' ORDER BY name");
+        if ($with_private_tools) {
+            return self::findBySQL("1 ORDER BY name");
+        } else {
+            return self::findBySQL("`is_global` = '1' ORDER BY name");
+        }
     }
 
     //ToolInterface implementation
