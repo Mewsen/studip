@@ -45,11 +45,11 @@ class LtiTool extends SimpleORMap
     }
 
     /**
-     * Find all entries.
+     * Find all global tools (tools with is_global set to 1).
      */
-    public static function findAll()
+    public static function findAllGlobalTools()
     {
-        return self::findBySQL('1 ORDER BY name');
+        return self::findBySQL("`is_global` = '1' ORDER BY name");
     }
 
     //ToolInterface implementation

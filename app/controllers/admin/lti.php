@@ -40,7 +40,7 @@ class Admin_LtiController extends AuthenticatedController
      */
     public function index_action()
     {
-        $this->tools = LtiTool::findAll();
+        $this->tools = LtiTool::findAllGlobalTools();
     }
 
     /**
