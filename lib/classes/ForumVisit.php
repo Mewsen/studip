@@ -36,17 +36,21 @@ class ForumVisit {
 
         $constraints = ForumEntry::getConstraints($parent_id);
 
+        if (!$constraints) {
+            return 0;
+        }
+
         $stmt = DBManager::get()->prepare("SELECT COUNT(*) FROM forum_entries
             WHERE lft >= :lft AND rgt <= :rgt AND user_id != :user_id
                 AND seminar_id = :seminar_id
                 AND topic_id != seminar_id
                 AND chdate > :lastvisit");
 
-        $stmt->bindParam(':user_id', $GLOBALS['user']->id);
-        $stmt->bindParam(':lft', $constraints['lft']);
-        $stmt->bindParam(':rgt', $constraints['rgt']);
-        $stmt->bindParam(':seminar_id', $constraints['seminar_id']);
-        $stmt->bindParam(':lastvisit', $visitdate);
+        $stmt->bindValue(':user_id', $GLOBALS['user']->id);
+        $stmt->bindValue(':lft', $constraints['lft']);
+        $stmt->bindValue(':rgt', $constraints['rgt']);
+        $stmt->bindValue(':seminar_id', $constraints['seminar_id']);
+        $stmt->bindValue(':lastvisit', $visitdate);
 
         $stmt->execute();
 

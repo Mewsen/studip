@@ -416,10 +416,11 @@ class Seminar_Session
      */
     function gc()
     {
-        if ($this->module == 'user') {
+        if ($this->module === 'user') {
             //bail out if cronjob activated and not called in cli context
-            if (Config::getInstance()->getValue('CRONJOBS_ENABLE')
-                && ($task = array_pop(CronjobTask::findByClass('SessionGcJob')))
+            if (
+                Config::getInstance()->getValue('CRONJOBS_ENABLE')
+                && ($task = CronjobTask::findOneByClass(SessionGcJob::class))
                 && count($task->schedules->findBy('active', 1))
                 && PHP_SAPI !== 'cli'
             ) {
