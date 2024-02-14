@@ -13,11 +13,11 @@
             <form class="default" @submit.prevent="">
                 <label>
                     <span>{{ text.title }}</span><span aria-hidden="true" class="wizard-required">*</span>
-                    <input type="text" v-model="addWizardData.title" required/>
+                    <input type="text" v-model="addWizardData.title" name="title" required/>
                 </label>
                 <label>
                     <span>{{ text.description }}</span><span aria-hidden="true" class="wizard-required">*</span>
-                    <textarea v-model="addWizardData.description" required/>
+                    <textarea v-model="addWizardData.description" name="description" required/>
                 </label>
             </form>
         </template>
@@ -26,7 +26,7 @@
                 <label>
                         {{ $gettext('Bild hochladen') }}
                         <br>
-                        <input class="cw-file-input" ref="upload_image" type="file" accept="image/*" @change="checkUploadFile"/>
+                        <input class="cw-file-input" ref="upload_image" type="file" accept="image/*" name="image" @change="checkUploadFile"/>
                         <CoursewareCompanionBox
                             v-if="uploadFileError"
                             :msgCompanion="uploadFileError"
@@ -57,6 +57,7 @@
                         :options="colors"
                         :reduce="(color) => color.class"
                         label="class"
+                        name="color"
                     >
                         <template #open-indicator="selectAttributes">
                             <span v-bind="selectAttributes"
@@ -78,7 +79,7 @@
                 </label>
                 <label>
                     <span>{{ $gettext('Titelseite') }}</span>
-                    <select v-model="addWizardData.rootLayout">
+                    <select v-model="addWizardData.rootLayout" name="layout">
                         <option value="default">{{ $gettext('Automatisch') }}</option>
                         <option value="toc">{{ $gettext('Automatisch mit Inhaltsverzeichnis') }}</option>
                         <option value="classic">{{ $gettext('Frei bearbeitbar') }}</option>
@@ -91,7 +92,7 @@
             <form class="default" @submit.prevent="">
                 <label>
                     {{ $gettext('Art des Lernmaterials') }}
-                    <select v-model="addWizardData.purpose">
+                    <select v-model="addWizardData.purpose" name="purpose">
                         <option value="content">{{ $gettext('Inhalt') }}</option>
                         <option value="oer">{{ $gettext('OER-Material') }}</option>
                         <option value="portfolio">{{ $gettext('ePortfolio') }}</option>
@@ -164,11 +165,11 @@ export default {
     data() {
         return {
             wizardSlots: [
-                { id: 1, valid: false, name: 'basic', title: this.$gettext('Grundeinstellungen'), icon: 'courseware',
+                { id: 1, valid: false, name: 'basic', title: this.$gettext('Grundeinstellungen'), icon: 'courseware', target: 'title',
                   description: this.$gettext('Wählen Sie einen kurzen, prägnanten Titel und beschreiben Sie in einigen Worten den Inhalt des Lernmaterials. Eine Beschreibung erleichtert Lernenden die Auswahl des Lernmaterials.') },
-                { id: 2, valid: true, name: 'layout', title: this.$gettext('Darstellung'), icon: 'picture',
+                { id: 2, valid: true, name: 'layout', title: this.$gettext('Darstellung'), icon: 'picture', target: 'image',
                   description: this.$gettext('Ein Vorschaubild motiviert Lernende das Lernmaterial zu erkunden. Die Kombination aus Bild und Farbe erleichtert das wiederfinden des Lernmaterials in der Übersicht.') },
-                { id: 3, valid: true, name: 'advanced', title: this.$gettext('Zusatzangaben'), icon: 'info-list',
+                { id: 3, valid: true, name: 'advanced', title: this.$gettext('Zusatzangaben'), icon: 'info-list', target: 'purpose',
                   description: this.$gettext('Hier können Sie detaillierte Angaben zum Lernmaterial eintragen. Diese sind besonders interessant wenn das Lernmaterial als OER geteilt wird.') }
             ],
             text: {
@@ -321,11 +322,11 @@ export default {
                 }
                 if (newData.title === '' ) {
                     slot.valid = false;
-                    this.requirements.push({slot: slot, text: this.text.title });
+                    this.requirements.push({slot: slot, text: this.text.title, target: 'title' });
                 }
                 if (newData.description === '') {
                     slot.valid = false;
-                    this.requirements.push({slot:  slot, text: this.text.description });
+                    this.requirements.push({slot: slot, text: this.text.description, target: 'description' });
                 }
             },
             deep: true

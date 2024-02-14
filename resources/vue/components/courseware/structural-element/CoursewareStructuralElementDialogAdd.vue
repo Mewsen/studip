@@ -13,7 +13,7 @@
             <form class="default" @submit.prevent="">
                 <label>
                     {{ $gettext('Position der neuen Seite') }}
-                    <select v-model="pageParent">
+                    <select v-model="pageParent" name="relativePosition">
                         <option v-if="!isRoot && canEditParent" value="sibling">
                             {{ $gettext('Neben der aktuellen Seite') }}
                         </option>
@@ -23,11 +23,11 @@
                 <label>
                     <span>{{ text.title }}</span>
                     <span aria-hidden="true" class="wizard-required">*</span>
-                    <input type="text" v-model="title" required />
+                    <input type="text" v-model="title" name="title" required />
                 </label>
                 <label>
                     <span>{{ $gettext('Beschreibung') }}</span>
-                    <textarea v-model="description" required />
+                    <textarea v-model="description" name="description" required />
                 </label>
             </form>
         </template>
@@ -35,7 +35,7 @@
             <form v-if="hasTemplates" class="default" @submit.prevent="">
                 <label>
                     {{ $gettext('Art der Vorlage') }}
-                    <select v-model="templatePurpose">
+                    <select v-model="templatePurpose" name="templatePurpose">
                         <option value="content">{{ $gettext('Inhalt') }}</option>
                         <option value="oer">{{ $gettext('OER-Material') }}</option>
                         <option value="portfolio">{{ $gettext('ePortfolio') }}</option>
@@ -46,7 +46,7 @@
                 </label>
                 <label>
                     <span>{{ $gettext('Vorlage') }}</span>
-                    <select v-model="selectedTemplate">
+                    <select v-model="selectedTemplate" name="template">
                         <option :value="null">{{ $gettext('ohne Vorlage') }}</option>
                         <option v-for="template in selectableTemplates" :key="template.id" :value="template">
                             {{ template.attributes.name }}
@@ -70,6 +70,7 @@
                         ref="upload_image"
                         type="file"
                         accept="image/*"
+                        name="image"
                         @change="checkUploadFile"
                     />
                     <courseware-companion-box
@@ -81,7 +82,7 @@
                 </label>
                 <label>
                     {{ $gettext('Farbe') }}
-                    <studip-select v-model="color" :options="colors" :reduce="(color) => color.class" label="class">
+                    <studip-select v-model="color" :options="colors" :reduce="(color) => color.class" label="class" name="color">
                         <template #open-indicator="selectAttributes">
                             <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
                         </template>
@@ -104,7 +105,7 @@
             <form class="default" @submit.prevent="">
                 <label>
                     {{ $gettext('Art des Lernmaterials') }}
-                    <select v-model="purpose">
+                    <select v-model="purpose" name="purpose">
                         <option value="content">{{ $gettext('Inhalt') }}</option>
                         <option value="oer">{{ $gettext('OER-Material') }}</option>
                         <option value="portfolio">{{ $gettext('ePortfolio') }}</option>
@@ -177,6 +178,7 @@ export default {
                     name: 'basic',
                     title: this.$gettext('Grundeinstellungen'),
                     icon: 'courseware',
+                    target: 'title',
                     description: this.$gettext(
                         'Wählen Sie einen kurzen, prägnanten Titel und beschreiben Sie in einigen Worten den Inhalt der Seite.'
                     ),
@@ -187,6 +189,7 @@ export default {
                     name: 'template',
                     title: this.$gettext('Vorlage'),
                     icon: 'content2',
+                    target: 'templatePurpose',
                     description: this.$gettext('Vorlagen enthalten Abschnitte und Blöcke, die bereits für bestimmte Zwecke angeordent sind. Beim anlegen der Seite, wird diese mit Abschnitten und Blöcken befüllt.'),
                 },
                 {
@@ -195,6 +198,7 @@ export default {
                     name: 'layout',
                     title: this.$gettext('Erscheinung'),
                     icon: 'picture',
+                    target: 'image',
                     description: this.$gettext(
                         'Ein Vorschaubild motiviert Lernende die Seite zu erkunden. Die Kombination aus Bild und Farbe erleichtert das wiederfinden der Seite in einem Inhaltsverzeichnisblock.'
                     ),
@@ -205,6 +209,7 @@ export default {
                     name: 'advanced',
                     title: this.$gettext('Zusatzangaben'),
                     icon: 'info-list',
+                    target: 'purpose',
                     description: this.$gettext(
                         'Hier können Sie detaillierte Angaben zur Seite eintragen. Diese sind besonders interessant wenn die Seite als OER geteilt wird.'
                     ),
@@ -278,7 +283,7 @@ export default {
             this.difficulty_end = '';
             this.templatePurpose = 'content';
             this.selectedTemplate = null;
-            this.requirements.push({ slot: this.wizardSlots[0], text: this.text.title });
+            this.requirements.push({ slot: this.wizardSlots[0], text: this.text.title, target: 'title' });
         },
         closeAddDialog() {
             this.showElementAddDialog(false);
@@ -372,7 +377,7 @@ export default {
             const slot = this.wizardSlots[0];
             if (newTitle === '') {
                 slot.valid = false;
-                this.requirements.push({ slot: slot, text: this.text.title });
+                this.requirements.push({ slot: slot, text: this.text.title, target: 'title' });
             } else {
                 slot.valid = true;
             }

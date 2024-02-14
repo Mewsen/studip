@@ -60,7 +60,7 @@
                 <label>
                     <span>{{ $gettext('Aufgabentitel') }}</span>
                     <span aria-hidden="true" class="wizard-required">*</span>
-                    <input type="text" v-model="taskTitle" required />
+                    <input type="text" v-model="taskTitle" name="taskTitle" required />
                 </label>
                 <label>
                     <span>{{ $gettext('Startdatum') }}</span>
@@ -70,7 +70,7 @@
                 <label>
                     <span>{{ $gettext('Abgabefrist') }}</span>
                     <span aria-hidden="true" class="wizard-required">*</span>
-                    <input type="date" v-model="endDate" :min="startDate" required />
+                    <input type="date" v-model="endDate" name="endDate" :min="startDate" required />
                 </label>
                 <label>
                     {{ $gettext('Inhalte ergänzen') }}
@@ -287,6 +287,7 @@ export default {
                     name: 'tasksettings',
                     title: this.$gettext('Aufgabeneinstellungen'),
                     icon: 'settings',
+                    target: 'taskTitle',
                     description: this.$gettext(
                         'Wählen Sie hier die Einstellungen der Aufgabe. Es muss ein Aufgabentitel und eine Abgabenfrist gesetzt werden.'
                     ),
@@ -600,8 +601,6 @@ export default {
             } else {
                 this.wizardSlots[2].valid = false;
             }
-
-            return this.wizardSlots[2].valid;
         },
         validate() {
             this.requirements = [];
@@ -611,9 +610,13 @@ export default {
             if (!this.selectedTaskIsTask) {
                 this.requirements.push({ slot: this.wizardSlots[1], text: this.$gettext('Aufgabenvorlage') });
             }
-            if (!this.validateTaskSettings()) {
-                this.requirements.push({ slot: this.wizardSlots[2], text: this.$gettext('Aufgabeneinstellungen') });
+            if (this.taskTitle === '') {
+                this.requirements.push({ slot: this.wizardSlots[2], text: this.$gettext('Aufgabentitel'), target: 'taskTitle' });
             }
+            if (this.endDate === '') {
+                this.requirements.push({ slot: this.wizardSlots[2], text: this.$gettext('Abgabefrist'), target: 'endDate' });
+            }
+            this.validateTaskSettings();
             if (this.selectedTargetUnit === null) {
                 this.requirements.push({ slot: this.wizardSlots[3], text: this.$gettext(' Ziel-Lernmaterial') });
             }

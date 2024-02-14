@@ -8,6 +8,7 @@
         :confirmDisabled="!showConfirm"
         :closeText="closeText"
         :closeClass="closeClass"
+        :defaultFocus="false"
         @close="$emit('close')"
         @confirm="confirm"
     >
@@ -22,7 +23,7 @@
                         <span>{{ $gettext('Bitte geben Sie die folgenden Informationen an:') }}</span>
                         <ul>
                             <li v-for="(requirement, index) in requirements" :key="requirement.slot.name + '_' + index">
-                                <button @click="selectSlot(requirement.slot.id)">
+                                <button @click="selectSlot(requirement.slot.id, requirement.target)">
                                     <studip-icon
                                         :shape="requirement.slot.icon"
                                         :size="16"
@@ -54,7 +55,7 @@
                                 :aria-selected="activeId === progress.id"
                                 :aria-controls="progress.name"
                                 :tabindex="0"
-                                @click="selectSlot(progress.id)"
+                                @click="selectSlot(progress.id, progress.target)"
                                 @keydown.right="nextContent"
                                 @keydown.left="prevContent"
                             >
@@ -206,9 +207,7 @@ export default {
                 return;
             } else {
                 this.activeId = this.activeId - 1;
-                this.$nextTick(() => {
-                    this.$refs.tabs[this.activeId - 1].focus();
-                });
+                this.selectSlot(this.activeId , this.activeSlot.target);
             }
         },
         nextContent() {
@@ -216,13 +215,17 @@ export default {
                 return;
             } else {
                 this.activeId = this.activeId + 1;
-                this.$nextTick(() => {
-                    this.$refs.tabs[this.activeId - 1].focus();
-                });
+                this.selectSlot(this.activeId , this.activeSlot.target);
             }
         },
-        selectSlot(id) {
+        selectSlot(id, target = null) {
             this.activeId = id;
+            if (target) {
+                this.$nextTick()
+                .then(() => {
+                    document.getElementsByName(target)[0].focus();
+                });
+            }
         },
         isValid(id) {
             const slot = this.slots.find( slot => slot.id === id);
@@ -242,6 +245,9 @@ export default {
         confirm() {
             this.$emit('confirm');
         }
+    },
+    mounted() {
+        this.selectSlot(this.activeId , this.activeSlot.target);
     },
     watch: {
         activeId(newVal) {
