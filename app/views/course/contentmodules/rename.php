@@ -8,11 +8,11 @@
             <input type="text"
                    name="displayname"
                    value="<?= $tool && $tool['metadata'] ? htmlReady($tool['metadata']['displayname']) : ''?>"
-                   placeholder="<?= htmlReady($metadata['displayname']) ?>">
+                   placeholder="<?= htmlReady($metadata['displayname'] ?? '') ?>">
         </label>
 
         <div>
-            <?= htmlReady(sprintf(_('Ursprünglicher Werkzeugname ist "%s".'), $metadata['displayname'])) ?>
+            <?= htmlReady(sprintf(_('Ursprünglicher Werkzeugname ist "%s".'), $metadata['displayname'] ?? '')) ?>
         </div>
     </fieldset>
     <div data-dialog-button>

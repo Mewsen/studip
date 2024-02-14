@@ -134,7 +134,7 @@ class Course_ContentmodulesController extends AuthenticatedController
         Navigation::getItem('/course/admin')->setActive(true);
         $this->render_json([
             'tabs' => $template->render(),
-            'position' => $active_tool->position
+            'position' => isset($active_tool) ? $active_tool->position : null,
         ]);
     }
 
