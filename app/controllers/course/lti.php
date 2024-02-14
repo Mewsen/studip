@@ -229,19 +229,7 @@ class Course_LtiController extends StudipController
                 $lti_data->tool_id = $tool->id;
             }
             if ($tool_public_key) {
-                $keyring = $tool->getKeyring();
-                if ($keyring) {
-                    //Clear the fields for the passphrase and the private key:
-                    $keyring->passphrase  = '';
-                    $keyring->private_key = '';
-                } else {
-                    $keyring = new Keyring();
-                    $keyring->range_type = 'lti_tool';
-                    $keyring->range_id = $tool->id;
-                }
-                //Store the public key for the tool:
-                $keyring->public_key = $tool_public_key;
-                if (!$keyring->store()) {
+                if (!$tool->updatePublicKey()) {
                     PageLayout::postError(
                         _('Der öffentliche Schlüssel des LTI-Tools konnte nicht gespeichert werden.')
                     );

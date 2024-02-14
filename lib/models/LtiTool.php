@@ -96,6 +96,34 @@ class LtiTool extends SimpleORMap
         return $keyring;
     }
 
+    /**
+     * Sets or updates the public key for the LTI tool.
+     *
+     * @param string $public_key The public key to set.
+     *
+     * @return bool True, if the public key could be set, false otherwise.
+     */
+    public function updatePublicKey(string $public_key) : bool
+    {
+        if (!$public_key) {
+            //No key? Then it cannot be set.
+            return false;
+        }
+        $keyring = $this->getKeyring();
+        if ($keyring) {
+            //Clear the fields for the passphrase and the private key:
+            $keyring->passphrase  = '';
+            $keyring->private_key = '';
+        } else {
+            $keyring = new Keyring();
+            $keyring->range_type = 'lti_tool';
+            $keyring->range_id = $this->id;
+        }
+        //Store the public key for the tool:
+        $keyring->public_key = $public_key;
+        return $keyring->store();
+    }
+
     public function getLtiVersionString() : string
     {
         if ($this->lti_version === '1.3a') {
