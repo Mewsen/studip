@@ -1,4 +1,3 @@
-import CoursewareBlockAdderArea from './containers/CoursewareBlockAdderArea.vue';
 import CoursewareCollapsibleBox from './layouts/CoursewareCollapsibleBox.vue';
 import CoursewareCompanionBox from './layouts/CoursewareCompanionBox.vue';
 import CoursewareDefaultBlock from './blocks/CoursewareDefaultBlock.vue';
@@ -8,7 +7,6 @@ import CoursewareTabs from './layouts/CoursewareTabs.vue';
 import CoursewareTab from './layouts/CoursewareTab.vue';
 
 const CoursewarePluginComponents = {
-    CoursewareBlockAdderArea,
     CoursewareCollapsibleBox,
     CoursewareCompanionBox,
     CoursewareDefaultBlock,

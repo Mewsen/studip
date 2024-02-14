@@ -28,7 +28,11 @@
                                     : child.attributes.title
                                 ">
                                 <courseware-tile tag="div" :color="child.attributes.payload.color"
-                                    :title="child.attributes.title" :imageUrl="getChildImageUrl(child)">
+                                    :title="child.attributes.title" :imageUrl="getChildImageUrl(child)"
+                                >
+                                    <template v-if="child.attributes.purpose === 'task'" #image-overlay>
+                                        {{ child.solverName }}
+                                    </template>
                                     <template #description>
                                         {{ child.attributes.payload.description }}
                                     </template>
@@ -121,7 +125,7 @@ export default {
             let children = [];
             this.childElements.forEach((element) => {
                 if (element.relationships.task.data) {
-                    let solverName = this.getSolverName(element.relationships.task.data.id);
+                    const solverName = this.getSolverName(element.relationships.task.data.id);
                     if (solverName) {
                         element.solverName = solverName;
                         children.push(element);

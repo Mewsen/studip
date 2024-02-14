@@ -1,6 +1,5 @@
 import CoursewareDefaultBlock from '../blocks/CoursewareDefaultBlock.vue';
 import CoursewareDefaultContainer from './CoursewareDefaultContainer.vue';
-import CoursewareBlockAdderArea from './CoursewareBlockAdderArea.vue';
 // blocks
 import CoursewareAudioBlock from '../blocks/CoursewareAudioBlock.vue';
 import CoursewareBeforeAfterBlock from '../blocks/CoursewareBeforeAfterBlock.vue';
@@ -39,7 +38,6 @@ import StudipProgressIndicator from '../../StudipProgressIndicator.vue';
 const ContainerComponents = {
     CoursewareDefaultBlock,
     CoursewareDefaultContainer,
-    CoursewareBlockAdderArea,
     // blocks
     CoursewareAudioBlock,
     CoursewareBeforeAfterBlock,
