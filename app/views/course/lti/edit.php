@@ -92,21 +92,24 @@
             </label>
 
             <label>
-                <?= _('URL zum Schlüsselsatz des LTI-Tools (Keyset URL)') ?>
-                <input type="url" name="keyset_url" value="<?= $lti_data->getKeysetUrl() ?>">
+                <?= _('Schlüssel des LTI-Tools per URL laden') ?>
+                <input type="url" name="keyset_url" value="">
             </label>
 
             <label>
                 <?= _('Öffentlicher Schlüssel des LTI-Tools') ?>
                 <?
-                $keyring = $lti_data->tool->getKeyring();
+                $keyring = null;
+                if ($lti_data->tool) {
+                    $keyring = $lti_data->tool->getKeyring();
+                }
                 $public_key_string = '';
                 if ($keyring) {
                     $keychain = $keyring->toKeyChain();
                     $public_key_string = $keychain->getPublicKey()->getContent();
                 }
                 ?>
-                <textarea name="lti_tool_private_key"><?= htmlReady($public_key_string) ?></textarea>
+                <textarea name="tool_public_key"><?= htmlReady($public_key_string) ?></textarea>
             </label>
 
             <label>

@@ -20,7 +20,7 @@
 <body>
     <? if ($lti13a_mode) : ?>
         <? if ($message) : ?>
-            <?= $message->toHtmlRedirectForm(false) ?>
+            <?= $message->toHtmlRedirectForm() ?>
         <? else: ?>
             <?= _('Das LTI-Tool kann nicht aufgerufen werden.') ?>
         <? endif ?>

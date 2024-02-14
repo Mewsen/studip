@@ -206,52 +206,51 @@ class Course_LtiController extends StudipController
         $lti_data->title = trim(Request::get('title'));
         $lti_data->description = Studip\Markup::purifyHtml(Request::get('description'));
         $new_tool_id = Request::int('tool_id');
+        $tool_public_key = trim(Request::get('tool_public_key'));
 
-        if ($lti_data->isNew()) {
-            if ($new_tool_id === 0) {
+        if ($new_tool_id === 0) {
+            $tool = null;
+            if (!$lti_data->isNew()) {
+                $tool = $lti_data->tool;
+            }
+            if (!$tool) {
                 //Create a new LTI tool:
                 $tool = new LtiTool();
-                $tool->is_global       = '0'; //"Uuhh this is like... private or something. Uh-huhuh-hu."
-                $tool->name            = $lti_data->title;
-                $tool->launch_url      = trim(Request::get('launch_url'));
-                $tool->consumer_key    = trim(Request::get('consumer_key'));
-                $tool->consumer_secret = trim(Request::get('consumer_secret'));
-                $tool->send_lis_person = Request::int('send_lis_person', 0);
-                $tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
-                $tool->lti_version     = Request::get('lti_version', '1.1');
-                if ($tool->store()) {
-                    $lti_data->tool_id = $tool->id;
+                $tool->is_global = '0'; //"Hey, this is private!" (moving hand away from body) "Mmmm!"
+            }
+            $tool->name            = $lti_data->title;
+            $tool->launch_url      = trim(Request::get('launch_url'));
+            $tool->consumer_key    = trim(Request::get('consumer_key'));
+            $tool->consumer_secret = trim(Request::get('consumer_secret'));
+            $tool->send_lis_person = Request::int('send_lis_person', 0);
+            $tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
+            $tool->lti_version     = Request::get('lti_version', '1.1');
+            if ($tool->store()) {
+                $lti_data->tool_id = $tool->id;
+            }
+            if ($tool_public_key) {
+                $keyring = $tool->getKeyring();
+                if ($keyring) {
+                    //Clear the fields for the passphrase and the private key:
+                    $keyring->passphrase  = '';
+                    $keyring->private_key = '';
+                } else {
+                    $keyring = new Keyring();
+                    $keyring->range_type = 'lti_tool';
+                    $keyring->range_id = $tool->id;
                 }
-            } else {
-                //Set the (globally defined) LTI tool:
-                $lti_data->tool_id = $new_tool_id;
-                $lti_data->launch_url = trim(Request::get('launch_url'));
+                //Store the public key for the tool:
+                $keyring->public_key = $tool_public_key;
+                if (!$keyring->store()) {
+                    PageLayout::postError(
+                        _('Der öffentliche Schlüssel des LTI-Tools konnte nicht gespeichert werden.')
+                    );
+                }
             }
         } else {
-            if ($new_tool_id === 0) {
-                //Change the data for the existing LTI tool:
-                $tool = $lti_data->tool;
-                if (!$tool) {
-                    //Backward compatibility for old configurations:
-                    $tool = new LTITool();
-                    $tool->is_global = '0'; //"Hey, this is private!" (moving hand away from body) "Mmmm!"
-                }
-                $tool->name = $lti_data->title;
-                $tool->launch_url      = trim(Request::get('launch_url'));
-                $tool->consumer_key    = trim(Request::get('consumer_key'));
-                $tool->consumer_secret = trim(Request::get('consumer_secret'));
-                $tool->send_lis_person = Request::int('send_lis_person', 0);
-                $tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
-                $tool->lti_version     = Request::get('lti_version', '1.1');
-                if ($tool->store()) {
-                    //Backward compatibility for old configurations: Set the tool-ID again:
-                    $lti_data->tool_id = $tool->id;
-                }
-            } else {
-                //Set the (globally defined) LTI tool:
-                $lti_data->tool_id = $new_tool_id;
-                $lti_data->launch_url = trim(Request::get('launch_url'));
-            }
+            //Set the (globally defined) LTI tool:
+            $lti_data->tool_id = $new_tool_id;
+            $lti_data->launch_url = trim(Request::get('launch_url'));
         }
 
         $lti_data->options = [
