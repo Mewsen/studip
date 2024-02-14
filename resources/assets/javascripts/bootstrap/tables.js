@@ -20,7 +20,7 @@ STUDIP.domReady(function() {
                     } else {
                         $(mutation.target)
                             .next()
-                            .show()
+                            .css('display', 'table-row')
                             .find('td')
                             .slideUp()
                             .find('.detailscontainer')
