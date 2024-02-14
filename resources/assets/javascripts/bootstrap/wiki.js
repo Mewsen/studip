@@ -15,7 +15,7 @@ STUDIP.domReady(() => {
     STUDIP.JSUpdater.register('wiki_page_content', STUDIP.Wiki.updatePageContent, function () {
         //update the wiki page for readers:
         return Array.from(document.getElementsByClassName('wiki_page_content')).map(node => {
-            return node.data.set.page_id;
+            return node.dataset.page_id;
         });
     });
 
@@ -52,4 +52,3 @@ STUDIP.domReady(() => {
         return info;
     });
 });
-
