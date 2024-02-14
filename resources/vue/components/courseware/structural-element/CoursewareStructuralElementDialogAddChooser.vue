@@ -21,7 +21,7 @@
                 />
                 <studip-square-button
                     v-if="inCourseContext && userIsTeacher"
-                    icon="copy"
+                    icon="group"
                     :title="$gettext('Aus Arbeitsplatz verknüpfen')"
                     @click="selectType('link')"
                 />
