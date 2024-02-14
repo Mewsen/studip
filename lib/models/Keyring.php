@@ -81,10 +81,15 @@ class Keyring extends SimpleORMap
         $public_key = new \OAT\Library\Lti1p3Core\Security\Key\Key(
             $this->public_key
         );
-        $private_key = new \OAT\Library\Lti1p3Core\Security\Key\Key(
-            $this->private_key,
-            $this->passphrase ?? null
-        );
+
+        //A private key is optional.
+        if ($this->private_key) {
+            $private_key = new \OAT\Library\Lti1p3Core\Security\Key\Key(
+                $this->private_key,
+                $this->passphrase ?? null
+            );
+        }
+
         $keychain = new \OAT\Library\Lti1p3Core\Security\Key\KeyChain(
             $this->id,
             'studip-key', //TODO: better name

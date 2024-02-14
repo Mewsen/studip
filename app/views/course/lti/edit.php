@@ -92,6 +92,24 @@
             </label>
 
             <label>
+                <?= _('URL zum Schlüsselsatz des LTI-Tools (Keyset URL)') ?>
+                <input type="url" name="keyset_url" value="<?= $lti_data->getKeysetUrl() ?>">
+            </label>
+
+            <label>
+                <?= _('Öffentlicher Schlüssel des LTI-Tools') ?>
+                <?
+                $keyring = $lti_data->tool->getKeyring();
+                $public_key_string = '';
+                if ($keyring) {
+                    $keychain = $keyring->toKeyChain();
+                    $public_key_string = $keychain->getPublicKey()->getContent();
+                }
+                ?>
+                <textarea name="lti_tool_private_key"><?= htmlReady($public_key_string) ?></textarea>
+            </label>
+
+            <label>
                 <input type="checkbox" name="send_lis_person" value="1" <?= $lti_data->getSendLisPerson() ? ' checked' : '' ?>>
                 <?= _('Nutzerdaten an LTI-Tool senden') ?>
                 <?= tooltipIcon(_('Nutzerdaten dürfen nur an das externe Tool gesendet werden, wenn es keine Datenschutzbedenken gibt. Mit Setzen des Hakens bestätigen Sie, dass die Übermittlung der Daten zulässig ist.')) ?>

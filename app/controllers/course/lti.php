@@ -107,6 +107,7 @@ class Course_LtiController extends StudipController
                         \Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole('autor')
                     ],
                     [
+                        'test' => 'example'
                     ]
                 );
             }
