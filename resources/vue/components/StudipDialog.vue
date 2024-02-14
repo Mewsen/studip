@@ -1,6 +1,6 @@
 <template>
     <MountingPortal mountTo="body" append>
-        <focus-trap v-model="trap" :initial-focus="() => $refs.buttonB">
+        <focus-trap v-model="trap" :initial-focus="() => defaultFocus ? $refs.buttonB : null">
             <div class="studip-dialog" @keydown.esc="closeDialog">
                 <transition name="dialog-fade">
                     <div class="studip-dialog-backdrop">
@@ -139,6 +139,10 @@ export default {
         question: String,
         alert: String,
         message: String,
+        defaultFocus: {
+            type: Boolean,
+            default: true
+        }
     },
     data() {
         const dialogId = uuid++;

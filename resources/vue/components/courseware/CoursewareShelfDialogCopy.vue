@@ -123,7 +123,7 @@
             <form v-if="selectedUnit" class="default" @submit.prevent="">
                 <label>
                     <span>{{$gettext('Titel')}}</span><span aria-hidden="true" class="wizard-required">*</span>
-                    <input type="text" v-model="modifiedTitle" :placeholder="selectedUnitTitle" required />
+                    <input type="text" v-model="modifiedTitle" :placeholder="selectedUnitTitle" name="title" required />
                 </label>
                 <label>
                     {{$gettext('Farbe')}}
@@ -189,7 +189,7 @@ export default {
                   description: this.$gettext('Wählen Sie hier den Ort in Stud.IP aus, an dem sich das zu kopierende Lernmaterial befindet.') },
                 { id: 2, valid: false, name: 'unit', title: this.$gettext('Lernmaterial'), icon: 'courseware',
                   description: this.$gettext('Wählen Sie hier das gewünschte Lernmaterial aus der Liste aus. Eine Auswahl wird durch einen grauen Hintergrund und einen Kontrollhaken angezeigt.') },
-                { id: 3, valid: true, name: 'edit', title: this.$gettext('Anpassen'), icon: 'edit',
+                { id: 3, valid: true, name: 'edit', title: this.$gettext('Anpassen'), icon: 'edit', target: 'title',
                   description: this.$gettext('Sie können hier die Daten des zu kopierenden Lernmaterials anpassen. Eine Anpassung ist optional, Sie können das Lernmaterial auch unverändert kopieren.') },
             ],
             source: '',

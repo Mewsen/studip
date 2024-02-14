@@ -168,7 +168,7 @@
             <form v-if="selectedUnit" class="default" @submit.prevent="">
                 <label>
                     {{$gettext('Titel')}}
-                    <input type="text" v-model="modifiedTitle" required />
+                    <input type="text" v-model="modifiedTitle" name="title" required />
                 </label>
                 <label>
                     {{$gettext('Farbe')}}
@@ -236,7 +236,7 @@ export default {
                   description: this.$gettext('Wählen Sie das Lernmaterial aus, in dem sich der zu kopierende Lerninhalt befindet.') },
                 { id: 3, valid: false, name: 'element', title: this.$gettext('Seite'), icon: 'content2',
                   description: this.$gettext('Wählen Sie die zu kopierende Seite aus. Vorausgewählt ist die oberste Seite des ausgewählten Lernmaterials. Unterseiten erreichen Sie über die Schaltflächen im Bereich "Unterseiten". Sie können über die "zurück zu" Schaltfläche das übergeordnete Element anwählen. Die ausgewählte Seite ist mit einem Kontrollhaken markiert.') },
-                { id: 4, valid: true, name: 'edit', title: this.$gettext('Anpassen'), icon: 'edit',
+                { id: 4, valid: true, name: 'edit', title: this.$gettext('Anpassen'), icon: 'edit', target: 'title',
                   description: this.$gettext('Sie können hier die Daten der zu kopierenden Seite anpassen. Eine Anpassung ist optional, Sie können die Seite auch unverändert kopieren.') },
             ],
             source: '',
