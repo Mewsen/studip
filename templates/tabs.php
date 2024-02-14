@@ -12,7 +12,7 @@ foreach (Navigation::getItem("/")->getSubNavigation() as $path => $nav) {
         <? if (!empty($navigation)): ?>
         <? foreach ($navigation as $path => $nav) : ?>
             <? if ($nav->isVisible()) : ?>
-                <li id="nav_<?= $path1 ?>_<?= $path ?>"<?= $nav->isActive() ? ' class="current"' : '' ?>>
+                <li id="nav_<?= $path1 ?? '' ?>_<?= $path ?>"<?= $nav->isActive() ? ' class="current"' : '' ?>>
                     <? if ($nav->isEnabled()): ?>
                         <?
                         $attr = array_merge(['class' => ''], $nav->getLinkAttributes());

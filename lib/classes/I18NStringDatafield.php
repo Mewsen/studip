@@ -86,17 +86,20 @@ class I18NStringDatafield extends I18NString
      */
     public static function load($object_id, $table = '', $field = '', $base = null)
     {
-        if (is_null($base)) {
+        if ($base === null) {
             $df = DatafieldEntryModel::findOneBySQL(
                 "`datafield_id` = ? AND `range_id` = ? AND `sec_range_id` = ? AND `lang` = ''",
                 $object_id
             );
-            $base = $df->content ?? '';
+            $base = $df ? $df->content : '';
         }
         $table = null;
         $field = null;
-        return new self($base, self::fetchDataForField($object_id, $table, $field),
-                compact('object_id', 'table', 'field'));
+        return new self(
+            $base,
+            self::fetchDataForField($object_id, $table, $field),
+            compact('object_id', 'table', 'field')
+        );
     }
 
     /**
