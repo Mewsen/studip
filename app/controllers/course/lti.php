@@ -105,9 +105,6 @@ class Course_LtiController extends StudipController
                     $lti_data->id,
                     [
                         \Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole('autor')
-                    ],
-                    [
-                        'test' => 'example'
                     ]
                 );
             }
