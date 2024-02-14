@@ -210,11 +210,17 @@ export default {
             return this.blockingUser ? this.blockingUser.attributes['formatted-name'] : '';
         },
         containerStyles() {
-            return [
+            let styles = [
                 { title: this.$gettext('Volle Breite'), colspan: 'full'},
                 { title: this.$gettext('Halbe Breite'), colspan: 'half' },
                 { title: this.$gettext('Halbe Breite (zentriert)'), colspan: 'half-center' },
             ];
+
+            if (this.type === 'list') {
+                styles.unshift({ title: this.$gettext('Bildschirmbreite'), colspan: 'full-hd' });
+            }
+
+            return styles;
         },
         type() {
             return this.container.attributes['container-type'];
@@ -387,6 +393,16 @@ export default {
 
             await this.createClipboard(clipboard, { root: true });
             this.companionSuccess({ info: this.$gettext('Abschnitt wurde in Merkliste abgelegt.') });
+        },
+
+        enableFullHDListMode() {
+            document.querySelector('#content-wrapper').classList.add('cw-colspan-full-hd');
+            document.querySelector('.cw-container-wrapper').classList.add('cw-colspan-full-hd');
+        },
+
+        disableFullHDListMode() {
+            document.querySelector('#content-wrapper').classList.remove('cw-colspan-full-hd');
+            document.querySelector('.cw-container-wrapper').classList.remove('cw-colspan-full-hd');
         }
 
     },
@@ -395,6 +411,15 @@ export default {
         showEditDialog(state) {
             this.$emit('showEdit', state);
         }
+    },
+
+    mounted() {
+        this.globalOn('consuming-mode-enabled', () => {
+            this.enableFullHDListMode();
+        });
+        this.globalOn('consuming-mode-disabled', () => {
+            this.disableFullHDListMode();
+        });
     }
 
 };

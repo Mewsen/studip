@@ -10,6 +10,18 @@
     }
 }
 
+#content-wrapper.cw-colspan-full-hd {
+    max-width: 1920px;
+
+    .cw-structural-element .cw-container-wrapper {
+        max-width: 1920px;
+
+        &.cw-container-wrapper-edit {
+            max-width: $max-content-width;
+        }
+    }
+}
+
 .cw-structural-element {
     &.cw-structural-element-consumemode {
         position: fixed;
