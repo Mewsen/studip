@@ -68,6 +68,11 @@ class Calendar_CalendarController extends AuthenticatedController
                 Icon::create('share'),
                 ['data-dialog' => 'size=default']
             );
+            $actions->addLink(
+                _('Gruppen verwalten'),
+                $this->url_for('contact/index'),
+                Icon::create('group2')
+            );
         }
         $actions->addLink(
             _('Drucken'),
