@@ -74,7 +74,7 @@
                                         :title="
                                             $gettextInterpolate(
                                                 $gettext(
-                                                    'Inhaltsmoduls %{ name } für Teilnehmende unsichtbar bzw. sichtbar schalten'
+                                                    'Inhaltsmodul %{ name } für Teilnehmende unsichtbar bzw. sichtbar schalten'
                                                 ),
                                                 { name: module.displayname }
                                             )
