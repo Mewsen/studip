@@ -103,6 +103,7 @@ export default {
                     this.getNode(this.searchConfig.startId).then(response => {
                         return this.getNodeCourses(
                             response.data.data,
+                            0,
                             this.searchConfig.semester,
                             this.searchConfig.semclass,
                             this.searchConfig.searchterm,
