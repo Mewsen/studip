@@ -55,18 +55,10 @@ class Calendar_CalendarController extends AuthenticatedController
                 ['data-dialog' => 'size=auto']
             );
             $actions->addLink(
-                _('Kalender veröffentlichen'),
-                $this->url_for('calendar/calendar/publish'),
-                Icon::create('export'),
-                ['data-dialog' => 'size=auto']
-            );
-        }
-        if (!$schedule && Config::get()->CALENDAR_GROUP_ENABLE) {
-            $actions->addLink(
                 _('Kalender teilen'),
-                $this->url_for('calendar/calendar/share'),
+                $this->url_for('calendar/calendar/share_select'),
                 Icon::create('share'),
-                ['data-dialog' => 'size=default']
+                ['data-dialog' => 'size=auto']
             );
             $actions->addLink(
                 _('Gruppen verwalten'),
@@ -773,6 +765,13 @@ class Calendar_CalendarController extends AuthenticatedController
                 $import_count
             ));
             $this->redirect($this->url_for('calendar/calendar/'));
+        }
+    }
+
+    public function share_select_action()
+    {
+        if (!Config::get()->CALENDAR_GROUP_ENABLE) {
+            $this->redirect($this->url_for('calendar/calendar/publish'));
         }
     }
 
