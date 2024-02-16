@@ -20,7 +20,10 @@ STUDIP.domReady(() => {
     // hidden, the editor does not function properly; therefore attach to
     // visible textareas only
     function replaceVisibleTextareas() {
-        const textareas = document.querySelectorAll('textarea.wysiwyg');
-        textareas.forEach(STUDIP.wysiwyg.replace);
+        const textareas = document.querySelectorAll('textarea.wysiwyg:not(.has-editor)');
+        textareas.forEach(node => {
+            STUDIP.wysiwyg.replace(node);
+            node.classList.add('has-editor');
+        });
     }
 });

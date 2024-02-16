@@ -59,44 +59,26 @@ async function replaceTextarea(textarea) {
     return editor;
 }
 
-function destroyTextarea(textarea) {
-    if (!hasEditor(textarea)) {
-        throw new Error('Trying to destroy a non-existing editor instance.');
-    }
-
-    const editor = getEditor(textarea);
-    editor.destroy(true);
-    unsetEditor(textarea);
-}
-
-// create an unused id
-function createNewId(prefix) {
-    var i = 0;
-    while ($('#' + prefix + i).length > 0) {
-        i++;
-    }
-    return prefix + i;
-}
-
 const instances = new Map();
+let internalIdCounter = 0;
 
 function getEditor(textarea) {
-    return textarea?.id !== '' ? instances.get(textarea.id) : null;
+    return textarea.dataset.editorId !== undefined ? instances.get(textarea.dataset.editorId) : null;
 }
 
 function hasEditor(textarea) {
-    return textarea.id !== '' && instances.has(textarea.id);
+    return textarea.dataset.editorId !== undefined && instances.has(textarea.dataset.editorId);
 }
 
 function setEditor(textarea, editor) {
-    if (textarea.id === '') {
-        textarea.id = createNewId('wysiwyg');
+    if (textarea.dataset.editorId === undefined) {
+        textarea.dataset.editorId = String(internalIdCounter++);
     }
-    instances.set(textarea.id, editor);
+    instances.set(textarea.dataset.editorId, editor);
 }
 
 function unsetEditor(textarea) {
-    instances.delete(textarea.id);
+    instances.delete(textarea.dataset.editorId);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
