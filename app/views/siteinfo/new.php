@@ -40,7 +40,7 @@ use Studip\Button, Studip\LinkButton;
 
             <label>
                 <?= _('Seiteninhalt') ?>
-                <textarea style="width: 90%;height: 15em;" name="content" id="content"></textarea><br>
+                <textarea style="width: 90%;height: 15em;" class="add_toolbar size-l wysiwyg" name="content" id="content"></textarea><br>
             </label>
         <? endif ?>
     </fieldset>
