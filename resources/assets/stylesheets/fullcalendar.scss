@@ -12,6 +12,8 @@ a.fc-event, td.fc-event {
 }
 
 .fc {
+    max-width: $max-content-width;
+
     .fc-toolbar.fc-header-toolbar {
         margin-bottom: 0.5em;
     }
