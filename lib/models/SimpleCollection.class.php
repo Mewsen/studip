@@ -154,7 +154,7 @@ class SimpleCollection extends StudipArrayObject
                 case '%=':
                     $comp_func = function ($a) use ($args) {
                         $a = mb_strtolower(static::translitLatin1($a));
-                        $args = array_map('static::translitLatin1', $args);
+                        $args = array_map([static::class, 'translitLatin1'], $args);
                         $args = array_map('mb_strtolower', $args);
                         return in_array($a, $args);
                     };
@@ -256,7 +256,10 @@ class SimpleCollection extends StudipArrayObject
      */
     public function exchangeArray($input)
     {
-        return parent::exchangeArray(array_map('static::arrayToArrayObject', $input));
+        return parent::exchangeArray(array_map(
+            [static::class, 'arrayToArrayObject'],
+            $input
+        ));
     }
 
     /**

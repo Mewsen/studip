@@ -107,7 +107,7 @@ class PersonalNotifications extends SimpleORMap
             $user_ids = [$user_ids];
         }
 
-        $user_ids = array_filter($user_ids, 'self::isActivated');
+        $user_ids = array_filter($user_ids, [self::class, 'isActivated']);
 
         if (!count($user_ids)) {
             return false;

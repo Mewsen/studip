@@ -644,7 +644,7 @@ class PluginManager
         $plugin_info = $this->getPluginInfos($type);
         $plugins = [];
 
-        usort($plugin_info, ['self', 'positionCompare']);
+        usort($plugin_info, [self::class, 'positionCompare']);
 
         foreach ($plugin_info as $info) {
             $activated = $context == null

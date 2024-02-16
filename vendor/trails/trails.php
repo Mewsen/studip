@@ -997,11 +997,13 @@ class Trails_Flash implements ArrayAccess {
   }
 
 
+  #[ReturnTypeWillChange]
   function offsetExists($offset) {
     return isset($this->flash[$offset]);
   }
 
 
+  #[ReturnTypeWillChange]
   function offsetGet($offset) {
     return $this->get($offset);
   }
@@ -1012,6 +1014,7 @@ class Trails_Flash implements ArrayAccess {
   }
 
 
+  #[ReturnTypeWillChange]
   function offsetUnset($offset) {
     unset($this->flash[$offset], $this->used[$offset]);
   }

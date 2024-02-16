@@ -184,6 +184,7 @@ class StudipPDO extends PDO
      * @param mixed  ...$fetch_args fetch mode parameters (see PDOStatement::setFetchMode)
      * @return object   PDOStatement object
      */
+    #[ReturnTypeWillChange]
     public function query($statement, $fetch_mode = NULL, ...$fetch_args)
     {
         $this->verify($statement);

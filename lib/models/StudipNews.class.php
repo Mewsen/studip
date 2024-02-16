@@ -184,7 +184,10 @@ class StudipNews extends SimpleORMap implements PrivacyObject
 
     public static function GetNewsObjects($news_result)
     {
-        return array_map('static::buildExisting', (array) $news_result);
+        return array_map(
+            [static::class, 'buildExisting'],
+            (array) $news_result
+        );
     }
 
     /**

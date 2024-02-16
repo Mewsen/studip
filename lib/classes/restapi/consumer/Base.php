@@ -108,7 +108,7 @@ abstract class Base extends \SimpleORMap
         $statement = DBManager::get()->query($query);
         $ids = $statement->fetchAll(PDO::FETCH_COLUMN);
 
-        return array_map('self::find', $ids);
+        return array_map([self::class, 'find'], $ids);
     }
 
     /**
