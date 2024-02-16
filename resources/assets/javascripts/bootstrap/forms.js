@@ -258,6 +258,7 @@ STUDIP.ready(function () {
                         params.STUDIPFORM_VALIDATED = false;
                         params.STUDIPFORM_REDIRECTURL = f.dataset.url;
                         params.STUDIPFORM_INPUTS_ORDER = [];
+                        params.STUDIPFORM_SELECTEDLANGUAGES = {};
                         for (let i in JSON.parse(f.dataset.inputs)) {
                             params.STUDIPFORM_INPUTS_ORDER.push(i);
                         }
