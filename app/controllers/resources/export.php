@@ -359,10 +359,30 @@ class Resources_ExportController extends AuthenticatedController
             foreach ($intervals as $interval) {
                 //Check the weekday of the interval first to avoid any other computation
                 //if the weekday is not one of the selected weekdays.
-                $interval_weekday = date('N', $interval->begin);
-                if (!in_array($interval_weekday, $this->weekdays)) {
-                    //The interval is not on one of the selected weekdays.
-                    continue;
+                if (date('Ymd', $interval->begin) !== date('Ymd', $interval->end)) {
+                    //The interval spans over multiple days. So the computation for the weekdays must
+                    //take that into account.
+                    $current_day = new DateTime();
+                    $current_day->setTimestamp($interval->begin);
+                    $current_day->setTime(0,0,0);
+                    $end = new DateTime();
+                    $end->setTimestamp($interval->end);
+                    $interval_is_on_weekday = false;
+                    while ($current_day <= $end && !$interval_is_on_weekday) {
+                        $interval_is_on_weekday = in_array($current_day->format('N'), $this->weekdays);
+                        $current_day = $current_day->add(new DateInterval('P1D'));
+                    }
+                    if (!$interval_is_on_weekday) {
+                        //The interval does not take place on one of the weekdays that have been selected.
+                        continue;
+                    }
+                } else {
+                    //The interval lies on one day.
+                    $interval_weekday = date('N', $interval->begin);
+                    if (!in_array($interval_weekday, $this->weekdays)) {
+                        //The interval is not on one of the selected weekdays.
+                        continue;
+                    }
                 }
                 $booking = $interval->booking;
                 if (!$booking instanceof ResourceBooking || !in_array($booking->booking_type, $types)) {
