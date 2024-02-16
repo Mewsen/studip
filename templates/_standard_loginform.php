@@ -23,10 +23,10 @@ $password_tooltip_text = (string)Config::get()->PASSWORD_TOOLTIP_TEXT;
             <? if ($username_tooltip_text) : ?>
                 <?= tooltipIcon($username_tooltip_text) ?>
             <? endif ?>
-            <input type="text" <?= (mb_strlen($uname) || $hidden) ? '' : 'autofocus' ?>
+            <input type="text" <?= (mb_strlen($uname ?? '') || $hidden) ? '' : 'autofocus' ?>
                    id="loginname"
                    name="loginname"
-                   value="<?= htmlReady($uname) ?>"
+                   value="<?= htmlReady($uname ?? '') ?>"
                    size="20"
                    spellcheck="false"
                    autocapitalize="off"
@@ -38,7 +38,7 @@ $password_tooltip_text = (string)Config::get()->PASSWORD_TOOLTIP_TEXT;
             <? if ($password_tooltip_text) : ?>
                 <?= tooltipIcon($password_tooltip_text) ?>
             <? endif ?>
-            <input type="password" <?= mb_strlen($uname) && !$hidden ? 'autofocus' : '' ?>
+            <input type="password" <?= mb_strlen($uname ?? '') && !$hidden ? 'autofocus' : '' ?>
                    id="password"
                    name="password"
                    autocomplete="current-password"
