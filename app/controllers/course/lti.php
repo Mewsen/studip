@@ -229,7 +229,7 @@ class Course_LtiController extends StudipController
                 $lti_data->tool_id = $tool->id;
             }
             if ($tool_public_key) {
-                if (!$tool->updatePublicKey()) {
+                if (!$tool->updatePublicKey($tool_public_key)) {
                     PageLayout::postError(
                         _('Der öffentliche Schlüssel des LTI-Tools konnte nicht gespeichert werden.')
                     );
