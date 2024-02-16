@@ -199,7 +199,7 @@ $MAIL_TRANSPORT = "smtp";
 ----------------------------------------------------------------
 leave blank or try 127.0.0.1 if localhost is also the mailserver
 ignore if you don't use smtp as transport*/
-$MAIL_HOST_NAME = "";                               //which mailserver should we use? (must allow mail-relaying from $MAIL_LOCALHOST, defaults to SERVER_NAME)
+$MAIL_HOST_NAME = "";                               //which mailserver should we use? (must allow mail-relaying from $MAIL_LOCALHOST, defaults to localhost)
 $MAIL_SMTP_OPTIONS = [
     'port' => 25,
     'user' => '',
