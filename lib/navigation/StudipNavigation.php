@@ -146,11 +146,11 @@ class StudipNavigation extends Navigation
         // login / logout
         if (!isset($user) || $user->id === 'nobody') {
             if (in_array('CAS', $GLOBALS['STUDIP_AUTH_PLUGIN'])) {
-                $links->addSubNavigation('login_cas', new Navigation(_('Login CAS'), Request::url(), ['again' => 'yes', 'sso' => 'cas']));
+                $links->addSubNavigation('login_cas', new Navigation(_('Login CAS'), Request::url(), ['again' => 'yes', 'sso' => 'cas', 'cancel_login' => 1]));
             }
 
             if (in_array('Shib', $GLOBALS['STUDIP_AUTH_PLUGIN'])) {
-                $links->addSubNavigation('login_shib', new Navigation(_('Login Shibboleth'), Request::url(), ['again' => 'yes', 'sso' => 'shib']));
+                $links->addSubNavigation('login_shib', new Navigation(_('Login Shibboleth'), Request::url(), ['again' => 'yes', 'sso' => 'shib', 'cancel_login' => 1]));
             }
 
             $links->addSubNavigation('login', new Navigation(_('Login'), Request::url(), ['again' => 'yes']));
