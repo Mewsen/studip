@@ -27,6 +27,16 @@ a.fc-event, td.fc-event {
 
             margin-top: 0;
             margin-bottom: 0;
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+
+            .fc-icon {
+                /* Unset rules that are set in the fullcalendar default stylesheet: */
+                line-height: unset;
+                height: unset;
+            }
         }
     }
 }
