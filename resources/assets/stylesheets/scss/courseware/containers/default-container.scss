@@ -6,7 +6,8 @@
         width: 100%;
     }
     &.cw-container-colspan-half {
-        max-width: 540px;
+        max-width: calc(50% - 5px);
+        min-width: 500px;
         width: 100%;
     }
     &.cw-container-colspan-half-center {
