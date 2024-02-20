@@ -372,7 +372,7 @@
 /* editor */
 $editor-min-height: 8em;
 
-.ck.ck-source-editing-area {
+.ck-source-editing-area {
     min-height: calc($editor-min-height + 2px);
 }
 .ck.ck-editor__editable_inline {
