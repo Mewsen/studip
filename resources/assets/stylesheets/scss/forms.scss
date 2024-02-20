@@ -70,8 +70,18 @@ form.default {
         }
     }
 
+    .ck-source-editing-area textarea {
+        max-width: unset;
+    }
+
     textarea:not(.size-l) + .ck-editor {
         max-width: $max-width-m;
+
+        .ck-toolbar__grouped-dropdown {
+            .ck-toolbar {
+                max-width: calc($max-width-m - 2px);
+            }
+        }
     }
 
     .quicksearch_container {
@@ -95,13 +105,17 @@ form.default {
 
         input[type=date], input[type=email], input[type=number],
         input[type=password], input[type=text], input[type=time], input[type=tel], input[type=url],
-        textarea, select, .ckplaceholder {
+        textarea, select, .ck.ck-editor {
             display: block;
             margin-top: 0.5ex;
         }
 
         .ck-editor {
             text-indent: initial;
+        }
+
+        .ck-source-editing-area textarea {
+            margin-top: 0;
         }
     }
 
