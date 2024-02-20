@@ -629,7 +629,7 @@ $sidebarOut: -330px;
         display: block;
         margin-left: auto;
         margin-right: auto;
-        max-width: $max-content-width;
+        max-width: calc($max-content-width + 2 * $page-margin);
         min-height: 100vh;
         padding-top: 10px;
     }
