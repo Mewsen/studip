@@ -90,7 +90,7 @@ class MyCoursesController extends AuthenticatedController
             'order'               => 'asc',
             'studygroups_enabled' => Config::get()->MY_COURSES_ENABLE_STUDYGROUPS,
             'deputies_enabled'    => Config::get()->DEPUTIES_ENABLE,
-        ]) ?? [];
+        ]);
 
         // Waiting list
         $this->waiting_list = MyRealmModel::getWaitingList($GLOBALS['user']->id);

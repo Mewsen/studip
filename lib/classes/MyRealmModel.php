@@ -282,7 +282,7 @@ class MyRealmModel
      *
      * @param string $sem Semester index
      * @param array $params Additional parameters
-     * @return array|null
+     * @return array
      */
     public static function getPreparedCourses($sem = 'all', $params = [])
     {
@@ -297,10 +297,6 @@ class MyRealmModel
 
         $param_array = 'name seminar_id visible veranstaltungsnummer start_time duration_time status visible ';
         $param_array .= 'chdate admission_binding modules admission_prelim';
-
-        if (!$courses) {
-            return null;
-        }
 
         // filtering courses
         $member_ships = User::findCurrent()->course_memberships->toGroupedArray('seminar_id', 'status gruppe');
@@ -393,10 +389,6 @@ class MyRealmModel
             $sem_courses[$semester_assign[$parent]][$parent]['children'] = $kids;
         }
 
-        if (!$sem_courses) {
-            return null;
-        }
-
         if (!empty($params['main_navigation'])) {
             return $sem_courses;
         }
@@ -444,7 +436,7 @@ class MyRealmModel
             self::groupByMVVModule($sem_courses);
         }
 
-        return $sem_courses ?: null;
+        return $sem_courses;
     }
 
     /**
