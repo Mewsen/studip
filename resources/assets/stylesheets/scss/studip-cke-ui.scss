@@ -65,9 +65,6 @@
     --ck-color-tooltip-text: var(--color-text);
 }
 
-.ck.ck-editor {
-    margin-top: 0.5ex;
-}
 .ck.ck-icon, .ck.ck-icon * {
     color: var(--base-color);
 }
@@ -384,14 +381,6 @@ $editor-min-height: 8em;
     min-height: $editor-min-height;
 }
 
-form.default label:not(.undecorated):not(.ck-voice-label) .ck-source-editing-area textarea {
-    margin-top: 0;
-}
-
-form.default .ck-source-editing-area textarea {
-    max-width: unset;
-}
-
 /* forum fixes */
 #forum .ck-source-editing-area textarea {
     height: 100%;
@@ -415,14 +404,6 @@ form.default .ck-source-editing-area textarea {
         .ck-editor__editable_inline {
             height: 200px;
             resize: vertical;
-        }
-    }
-}
-
-form.default textarea:not(.size-l) + .ck-editor {
-    .ck-toolbar__grouped-dropdown {
-        .ck-toolbar {
-            max-width: calc(48em - 2px);
         }
     }
 }
