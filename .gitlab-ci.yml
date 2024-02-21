@@ -64,6 +64,11 @@ stages:
     paths:
       - .npm
 
+.definitions:
+  mariadb-service: &mariadb-service
+   - name: mariadb
+     command: [ "--sql_mode=","--character-set-client=utf8","--character-set-server=utf8","--collation-server=utf8_unicode_ci"]
+
 build-composer:
   stage: build
   needs: []
@@ -283,8 +288,7 @@ test-functional:
     <<: *composer-cache
     policy: pull
   services:
-    - name: mariadb
-      command: ["--sql_mode="]
+    - *mariadb-service
   allow_failure: false
   interruptible: true
   before_script:
@@ -308,8 +312,7 @@ test-jsonapi:
     <<: *composer-cache
     policy: pull
   services:
-    - name: mariadb
-      command: ["--sql_mode="]
+    - *mariadb-service
   variables:
     JSONAPI_XML_REPORT: $REPORT_DIR/jsonapi-report.xml
   interruptible: true
