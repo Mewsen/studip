@@ -278,7 +278,8 @@ $consum_ribbon_width: calc(100% - 58px);
 
 .cw-ribbon-wrapper-consume {
     position: fixed;
-    padding: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     background-color: $white;
     width: $consum_ribbon_width;
     height: 46px;
@@ -680,7 +681,6 @@ ribbon end
 
         &.cw-container-wrapper-consume {
             margin: 0 auto;
-            padding: 91px 15px 15px 15px;
         }
 
         &.cw-container-wrapper-discuss {
@@ -2124,7 +2124,7 @@ b l o c k a d d e r
                 @include background-icon($icon, clickable, 48);
             }
         }
-    
+
         .cw-clipboard-item-title {
             display: inline-block;
             font-weight: 600;
@@ -3311,7 +3311,7 @@ c a n v a s  b l o c k
             display: inline-block;
             padding: 5px;
             margin-right: 0.5em;
-    
+
             button {
                 cursor: pointer;
                 user-select: none;
@@ -3322,7 +3322,7 @@ c a n v a s  b l o c k
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: 24px 24px;
-        
+
                 &.cw-canvasblock-color {
                     $colors: (
                         white: #ffffff,
@@ -3336,25 +3336,25 @@ c a n v a s  b l o c k
                         darkgrey: #34495e,
                         black: #000000,
                     );
-        
+
                     @each $name, $color in $colors {
                         &.#{"" + $name} {
                             background-color: $color;
                         }
                     }
-        
+
                     &.selected-color {
                         border: solid 2px var(--black);
                     }
                 }
-        
+
                 &.cw-canvasblock-reset {
                     @include background-icon(refresh, clickable, 24);
                 }
-        
+
                 &.cw-canvasblock-size {
                     @include background-icon(stop, clickable);
-        
+
                     &.cw-canvasblock-size-small {
                         background-size: 8px 7px;
                     }
@@ -3371,28 +3371,28 @@ c a n v a s  b l o c k
                         border: solid 2px var(--black);
                     }
                 }
-        
+
                 &.cw-canvasblock-tool {
                     &.cw-canvasblock-tool-pen {
                         @include background-icon(comment, clickable);
                     }
-        
+
                     &.cw-canvasblock-tool-text {
                         vertical-align: top;
                         font-size: 22px;
                         color: var(--base-color);
                         font-weight: 600;
                     }
-        
+
                     &.selected-tool {
                         border: solid 2px var(--black);
                     }
                 }
-        
+
                 &.cw-canvasblock-undo {
                     @include background-icon(arr_2left, clickable, 24);
                 }
-        
+
                 &.cw-canvasblock-download {
                     @include background-icon(download, clickable, 24);
                 }
@@ -3449,7 +3449,7 @@ d o c u m e n t  b l o c k
             height: 100%;
             margin: 0 2px 0 0;
             padding: 4px;
-            
+
             &.active {
                 background-color: var(--base-color);
             }
@@ -3541,11 +3541,11 @@ d o c u m e n t  b l o c k
                 align-self: stretch;
                 background-color: var(--white);
                 border-right: solid 1px var(--content-color-40);
-    
+
                 ul.cw-pdf-toc-list, ul.cw-pdf-toc-sub-list {
                     padding: 0;
                     list-style: none;
-    
+
                     li {
                         padding: 0.5em 1em;
                     }
@@ -3560,7 +3560,7 @@ d o c u m e n t  b l o c k
                 height: 100%;
                 overflow: hidden;
                 cursor: text;
-    
+
                 &.hand-cursor-grab {
                     cursor: grab;
                     &.grabbing {
@@ -4754,7 +4754,7 @@ $large-icon-size-px: $large-icon-size + px;
                     width: 192px;
                     display: inline-block;
                     margin: auto;
-    
+
                     @each $icon in $icons {
                         &.icon-black-#{$icon} {
                             @include background-icon($icon, info, 128);
@@ -4778,7 +4778,7 @@ $large-icon-size-px: $large-icon-size + px;
                             @include background-icon($icon, inactive, 128);
                         }
                     };
-    
+
                    &.half {
                         height: 128px;
                         background-size: 128px;
@@ -4837,7 +4837,7 @@ $large-icon-size-px: $large-icon-size + px;
                             font-size: 4em;
                         }
                     }
-    
+
                     .cw-block-headline-subtitle {
                         h2 {
                             font-size: 1em;
@@ -4854,7 +4854,7 @@ $large-icon-size-px: $large-icon-size + px;
                             font-size: 2em;
                         }
                     }
-    
+
                     .cw-block-headline-subtitle {
                         h2 {
                             font-size: 1em;
@@ -5813,7 +5813,7 @@ r a d i o s e t
 }
 
 /* * * * * * * * * * * *
-r a d i o s e t  e n d 
+r a d i o s e t  e n d
 * * * * * * * * * * * */
 /* * * * * * * * * * * * * * * *
 c o m m e n t s  o v e r v i e w
