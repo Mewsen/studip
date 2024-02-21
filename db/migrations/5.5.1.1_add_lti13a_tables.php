@@ -50,7 +50,7 @@ class AddLti13aTables extends Migration
         $db->exec(
             "ALTER TABLE `lti_tool`
             ADD COLUMN lti_version VARCHAR(8) NOT NULL DEFAULT '1.1'
-            ADD COLUMN is_global TINYINT(1) NOT NULL DEFAULT 1"
+            ADD COLUMN is_global TINYINT(1) NOT NULL DEFAULT '1'"
         );
     }
 

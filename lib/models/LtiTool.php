@@ -121,7 +121,7 @@ class LtiTool extends SimpleORMap
         }
         //Store the public key for the tool:
         $keyring->public_key = $public_key;
-        return $keyring->store();
+        return $keyring->store() !== false;
     }
 
     public function getLtiVersionString() : string
