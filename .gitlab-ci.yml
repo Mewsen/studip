@@ -65,6 +65,11 @@ stages:
       - .caches/eslint-cache
       - .caches/stylelint-cache
 
+.definitions:
+  mariadb-service: &mariadb-service
+   - name: mariadb
+     command: [ "--sql_mode=","--character-set-client=utf8","--character-set-server=utf8","--collation-server=utf8_unicode_ci"]
+
 lint-php:
   stage: checks
   needs: []
@@ -160,7 +165,7 @@ test-functional:
     <<: *composer-cache
     policy: pull
   services:
-    - mariadb
+    - *mariadb-service
   allow_failure: false
   interruptible: true
   before_script:
@@ -178,7 +183,7 @@ test-jsonapi:
     <<: *composer-cache
     policy: pull
   services:
-    - mariadb
+    - *mariadb-service
   allow_failure: false
   interruptible: true
   before_script:
