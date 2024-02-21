@@ -69,10 +69,10 @@ class LtiTool extends SimpleORMap
         return new \OAT\Library\Lti1p3Core\Tool\Tool(
             $this->id,
             $this->name,
-            '', //TODO
-            $this->launch_url, //TODO
+            $GLOBALS['ABSOLUTE_URI_STUDIP'],
+            \URLHelper::getURL('dispatch.php/lti13a/oidc_init', [], true),
             $this->launch_url,
-            '' //TODO
+            \URLHelper::getURL('dispatch.php/lti13a/deep_linking', [], true)
         );
     }
 
