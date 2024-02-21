@@ -260,7 +260,8 @@ $consum_ribbon_width: calc(100% - 58px);
 
 .cw-ribbon-wrapper-consume {
     position: fixed;
-    padding: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     background-color: $white;
     width: $consum_ribbon_width;
     height: 46px;
@@ -658,7 +659,6 @@ ribbon end
 
         &.cw-container-wrapper-consume {
             margin: 0 auto;
-            padding: 91px 15px 15px 15px;
         }
 
         &.cw-container-wrapper-discuss {
