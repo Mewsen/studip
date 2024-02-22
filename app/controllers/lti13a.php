@@ -6,13 +6,13 @@ class Lti13aController extends StudipController
     use Studip\OAuth2\NegotiatesWithPsr7;
 
 
-    public function platform_auth_action()
+    public function oidc_init_action()
     {
-
+        $request = $this->getPsrRequest();
     }
 
 
-    public function oauth2_token_action()
+    public function deep_linking_action()
     {
 
     }

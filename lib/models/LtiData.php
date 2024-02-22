@@ -178,34 +178,25 @@ class LtiData extends SimpleORMap
         return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
     }
 
-
-    public function getLtiRegistration() : ?\OAT\Library\Lti1p3Core\Registration\Registration
+    public function hasDeploymentId(string $deployment_id) : bool
     {
-        if ($this->getToolLtiVersion() !== '1.3a' || !$this->tool) {
-            //No registration can be generated.
-            return null;
-        }
-
-        $platform_keyring = \Studip\LTI13a\PlatformManager::getPlatformKeyring();
-        if (!$platform_keyring) {
-            $platform_keyring = \Studip\LTI13a\PlatformManager::generatePlatformKeyring();
-        }
-        $tool_keyring = $this->tool->getKeyring();
-        if (!$tool_keyring) {
-            $tool_keyring = $this->tool->getKeyring(true);
-        }
-
-        $registration = new OAT\Library\Lti1p3Core\Registration\Registration(
-            Config::get()->UNI_NAME_CLEAN . ' - ' . $this->course->getFullName(),
-            Config::get()->STUDIP_INSTALLATION_ID . '_course_' . $this->course_id,
-            \Studip\LTI13a\PlatformManager::getPlatformConfiguration(),
-            $this->tool->getToolData(),
-            [$this->id],
-            $platform_keyring->toKeyChain(),
-            $tool_keyring->toKeyChain()
+        $db = DBManager::get();
+        $stmt = $db->prepare(
+            "SELECT '1'
+            FROM `lti_deployments`
+            WHERE `tool_id` = :tool_id
+            AND `id` = :deployment_id"
         );
+        $stmt->execute([
+            'tool_id'       => $this->tool_id,
+            'deployment_id' => $deployment_id
+        ]);
+        return $stmt->fetchColumn();
+    }
 
-        return $registration;
+    public function makeDeploymentId() : string
+    {
+        
     }
 
     /**
