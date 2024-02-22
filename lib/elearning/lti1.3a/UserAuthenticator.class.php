@@ -18,6 +18,6 @@ class UserAuthenticator implements UserAuthenticatorInterface
             $identity = new Identity($user);
         }
 
-        return new UserAuthenticationResult($user instanceof User, $identity);
+        return new UserAuthenticationResult($user instanceof \User, $identity);
     }
 }
