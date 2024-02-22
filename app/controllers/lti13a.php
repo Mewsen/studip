@@ -8,6 +8,7 @@ class Lti13aController extends StudipController
 
     public function oidc_init_action()
     {
+        require_once 'lib/elearning/lti1.3a/RegistrationManager.class.php';
         $request = $this->getPsrRequest();
         $reg_manager = new \Studip\Lti13a\RegistrationManager();
         $nonce_repo = new \OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository(
@@ -19,6 +20,16 @@ class Lti13aController extends StudipController
             $nonce_repo
         );
         $result = $validator->validateToolOriginatingLaunch($request);
+
+        $redirect_path = '';
+
+        if ($result->hasError()) {
+            PageLayout::postError(
+                _('Ein Fehler trat bei der OIDC-Initialisierung auf:'),
+                [$result->getError()]
+            );
+            return;
+        }
 
         //Find out where to redirect to:
         $deployment_ids = $result->getRegistration()->getDeploymentIds();
@@ -32,15 +43,6 @@ class Lti13aController extends StudipController
             return;
         }
         $redirect_path = $this->url_for('course/lti', ['cid' => $lti_deployment->course_id]);
-
-
-        if ($result->hasError()) {
-            PageLayout::postError(
-                _('Ein Fehler trat bei der OIDC-Initialisierung auf:'),
-                [$result->getError()]
-            );
-            $this->redirect($redirect_path);
-        }
 
         if ($result->getVersion() !== '1.3.0') {
             PageLayout::postError(_('Die LTI-Version wird nicht unterstüttz.'));
