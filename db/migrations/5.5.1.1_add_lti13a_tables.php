@@ -37,7 +37,7 @@ class AddLti13aTables extends Migration
             )"
         );
         */
-
+/*
         $db->exec(
             "CREATE TABLE IF NOT EXISTS lti_deployments (
                 id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -46,6 +46,7 @@ class AddLti13aTables extends Migration
                 chdate BIGINT(10) NOT NULL DEFAULT '0'
             )"
         );
+*/
 
         $db->exec(
             "ALTER TABLE `lti_tool`

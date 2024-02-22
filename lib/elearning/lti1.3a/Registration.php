@@ -63,7 +63,7 @@ class Registration implements RegistrationInterface
         if (!$this->lti_link) {
             return [];
         }
-        return $this->lti_link->getDeploymentIds();
+        return [$this->lti_link->id];
     }
 
     #[\Override] public function hasDeploymentId(string $deploymentId): bool
@@ -71,13 +71,18 @@ class Registration implements RegistrationInterface
         if (!$this->lti_link) {
             return false;
         }
-        return $this->lti_link->hasDeploymentId($deploymentId);
+        return $this->lti_link->id == $deploymentId;
     }
 
     #[\Override] public function getDefaultDeploymentId(): ?string
     {
-        //TODO
-        return null;
+        if (!$this->lti_link) {
+            return null;
+        };
+        if ($this->lti_link->isNew() && !$this->lti_link->id) {
+            $this->lti_link->getNewId();
+        }
+        return $this->lti_link->id;
     }
 
     #[\Override] public function getPlatformKeyChain(): ?KeyChainInterface

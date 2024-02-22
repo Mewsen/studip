@@ -2,6 +2,8 @@
 /**
  * LtiData.php - LTI consumer API for Stud.IP
  *
+ * A LtiData instance represents an LTI tool deployment.
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of
@@ -164,39 +166,6 @@ class LtiData extends SimpleORMap
         }
 
         return $this->options['send_lis_person'];
-    }
-
-    public function getDeploymentIds(): array
-    {
-        $db = DBManager::get();
-        $stmt = $db->prepare(
-            "SELECT `id`
-            FROM `lti_deployments`
-            WHERE `tool_id` = :tool_id"
-        );
-        $stmt->execute(['tool_id' => $this->tool_id]);
-        return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-    }
-
-    public function hasDeploymentId(string $deployment_id) : bool
-    {
-        $db = DBManager::get();
-        $stmt = $db->prepare(
-            "SELECT '1'
-            FROM `lti_deployments`
-            WHERE `tool_id` = :tool_id
-            AND `id` = :deployment_id"
-        );
-        $stmt->execute([
-            'tool_id'       => $this->tool_id,
-            'deployment_id' => $deployment_id
-        ]);
-        return $stmt->fetchColumn();
-    }
-
-    public function makeDeploymentId() : string
-    {
-        
     }
 
     /**
