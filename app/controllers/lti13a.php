@@ -9,6 +9,20 @@ class Lti13aController extends StudipController
     public function oidc_init_action()
     {
         $request = $this->getPsrRequest();
+        $reg_manager = new \Studip\Lti13a\RegistrationManager();
+        $nonce_repo = new \OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository(
+            StudipCacheFactory::getCache()
+        );
+
+        $validator = new \OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator(
+            $reg_manager,
+            $nonce_repo
+        );
+        $result = $validator->validateToolOriginatingLaunch($request);
+
+        if (!$result->hasError()) {
+            $this->renderPsrResponse($result);
+        }
     }
 
 
