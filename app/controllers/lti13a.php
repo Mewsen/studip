@@ -9,50 +9,16 @@ class Lti13aController extends StudipController
     public function oidc_init_action()
     {
         require_once 'lib/elearning/lti1.3a/RegistrationManager.class.php';
-        $request = $this->getPsrRequest();
         $reg_manager = new \Studip\Lti13a\RegistrationManager();
-        $nonce_repo = new \OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository(
-            StudipCacheFactory::getCache()
-        );
-
-        $validator = new \OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator(
+        $user_authenticator = new \Studip\LTI13a\UserAuthenticator();
+        $request = $this->getPsrRequest();
+        $oidc_authenticator = new \OAT\Library\Lti1p3Core\Security\Oidc\OidcAuthenticator(
             $reg_manager,
-            $nonce_repo
+            $user_authenticator
         );
-        $result = $validator->validateToolOriginatingLaunch($request);
 
-        $redirect_path = '';
-
-        if ($result->hasError()) {
-            PageLayout::postError(
-                _('Ein Fehler trat bei der OIDC-Initialisierung auf:'),
-                [$result->getError()]
-            );
-            return;
-        }
-
-        //Find out where to redirect to:
-        $deployment_ids = $result->getRegistration()->getDeploymentIds();
-        if (count($deployment_ids) != 1) {
-            PageLayout::postError(_('Die LTI Deployment-ID ist ungültig.'));
-            return;
-        }
-        $lti_deployment = LtiData::find($deployment_ids[0]);
-        if (!$lti_deployment) {
-            PageLayout::postError(_('Die LTI Deployment-ID ist ungültig.'));
-            return;
-        }
-        $redirect_path = $this->url_for('course/lti', ['cid' => $lti_deployment->course_id]);
-
-        if ($result->getVersion() !== '1.3.0') {
-            PageLayout::postError(_('Die LTI-Version wird nicht unterstüttz.'));
-            $this->redirect($redirect_path);
-        }
-        PageLayout::postSuccess(
-            _('LTI OIDC Initialisierung erfolgreich. Debug-Meldungen:'),
-            $result->getSuccesses()
-        );
-        $this->redirect($redirect_path);
+        $lti_message = $oidc_authenticator->authenticate($request);
+        $this->render_text($lti_message->toHtmlRedirectForm());
     }
 
 

@@ -100,7 +100,7 @@ class Course_LtiController extends StudipController
                 $registration,
                 \OAT\Library\Lti1p3Core\Message\LtiMessageInterface::LTI_MESSAGE_TYPE_RESOURCE_LINK_REQUEST,
                 $lti_data->getLaunchURL(),
-                'to_be_implemented',
+                $GLOBALS['user']->id,
                 $lti_data->id,
                 [
                     \Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole('autor')
