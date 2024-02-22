@@ -20,9 +20,37 @@ class Lti13aController extends StudipController
         );
         $result = $validator->validateToolOriginatingLaunch($request);
 
-        if (!$result->hasError()) {
-            $this->renderPsrResponse($result);
+        //Find out where to redirect to:
+        $deployment_ids = $result->getRegistration()->getDeploymentIds();
+        if (count($deployment_ids) != 1) {
+            PageLayout::postError(_('Die LTI Deployment-ID ist ungültig.'));
+            return;
         }
+        $lti_deployment = LtiData::find($deployment_ids[0]);
+        if (!$lti_deployment) {
+            PageLayout::postError(_('Die LTI Deployment-ID ist ungültig.'));
+            return;
+        }
+        $redirect_path = $this->url_for('course/lti', ['cid' => $lti_deployment->course_id]);
+
+
+        if ($result->hasError()) {
+            PageLayout::postError(
+                _('Ein Fehler trat bei der OIDC-Initialisierung auf:'),
+                [$result->getError()]
+            );
+            $this->redirect($redirect_path);
+        }
+
+        if ($result->getVersion() !== '1.3.0') {
+            PageLayout::postError(_('Die LTI-Version wird nicht unterstüttz.'));
+            $this->redirect($redirect_path);
+        }
+        PageLayout::postSuccess(
+            _('LTI OIDC Initialisierung erfolgreich. Debug-Meldungen:'),
+            $result->getSuccesses()
+        );
+        $this->redirect($redirect_path);
     }
 
 
