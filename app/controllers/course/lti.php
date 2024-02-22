@@ -104,6 +104,9 @@ class Course_LtiController extends StudipController
                 $lti_data->id,
                 [
                     \Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole('autor')
+                ],
+                [
+                    new \OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim($this->course_id)
                 ]
             );
         } else {
