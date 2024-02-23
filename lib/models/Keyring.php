@@ -83,6 +83,7 @@ class Keyring extends SimpleORMap
         );
 
         //A private key is optional.
+        $private_key = null;
         if ($this->private_key) {
             $private_key = new \OAT\Library\Lti1p3Core\Security\Key\Key(
                 $this->private_key,
@@ -90,12 +91,11 @@ class Keyring extends SimpleORMap
             );
         }
 
-        $keychain = new \OAT\Library\Lti1p3Core\Security\Key\KeyChain(
+        return new \OAT\Library\Lti1p3Core\Security\Key\KeyChain(
             $this->id,
             'studip-key', //TODO: better name
             $public_key,
             $private_key
         );
-        return $keychain;
     }
 }

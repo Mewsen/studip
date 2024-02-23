@@ -103,7 +103,7 @@ class Registration implements RegistrationInterface
         if (!$keyring) {
             $keyring = $this->lti_link->tool->getKeyring(true);
         }
-        return $keyring;
+        return $keyring->toKeyChain();
     }
 
     #[\Override] public function getPlatformJwksUrl(): ?string
