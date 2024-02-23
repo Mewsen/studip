@@ -18,7 +18,7 @@ class AddLti13aTables extends Migration
                 range_id CHAR(32) NOT NULL,
                 range_type VARCHAR(16) NOT NULL,
                 public_key BLOB(16384) NOT NULL,
-                private_key BLOB(16384) NOT NULL,
+                private_key BLOB(16384) NOT NULL DEFAULT '',
                 passphrase VARCHAR(512) NOT NULL DEFAULT '',
                 mkdate BIGINT(10) NOT NULL DEFAULT '0',
                 chdate BIGINT(10) NOT NULL DEFAULT '0'
