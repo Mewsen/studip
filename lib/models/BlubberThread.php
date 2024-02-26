@@ -478,7 +478,12 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
                 if ($module = $tool->getStudipModule()) {
                     $last_visit = object_get_visit($this['context_id'], $module->getPluginId());
                     $nav = $module->getIconNavigation($this['context_id'], $last_visit, $GLOBALS['user']->id);
-                    if (isset($nav) && $nav->isVisible(true)) {
+                    if (
+                        isset($nav)
+                        && $nav->isVisible(true)
+                        && count($module->getTabNavigation($this['context_id'])) > 0
+                        && $GLOBALS['perm']->have_studip_perm($tool->getVisibilityPermission(), $this['context_id'])
+                    ) {
                         $icons[] = $nav;
                     }
                     if ($module instanceof CoreSchedule) {
