@@ -114,14 +114,14 @@
     <? if ($standalone): ?>
         <p>
             <?= sprintf(
-                _('In der %d. Kalenderwoche sind keine Buchungen mit Kommentaren vorhanden!'),
+                _('In der %d. Kalenderwoche sind keine Buchungen vorhanden!'),
                 $date->format('W')
             ) ?>
         </p>
     <? else: ?>
         <?= MessageBox::info(
             sprintf(
-                _('In der %d. Kalenderwoche sind keine Buchungen mit Kommentaren vorhanden!'),
+                _('In der %d. Kalenderwoche sind keine Buchungen vorhanden!'),
                 $date->format('W')
             )
         ) ?>
