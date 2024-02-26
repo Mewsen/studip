@@ -47,7 +47,7 @@
             </td>
             <td class="dont-hide">
             <? foreach ($mvv_file->file_refs as $fileref) : ?>
-                <?= Assets::img('languages/lang_' . mb_strtolower($fileref->file_language) . '.gif') ?>
+                <?= Assets::img(MVV::getContentLanguageImagePath($fileref->file_language), ['size' => '24']) ?>
             <? endforeach; ?>
             </td>
             <td class="dont-hide"><?= htmlReady($GLOBALS['MVV_DOCUMENTS']['TYPE']['values'][$mvv_file->type]['name']) ?></td>

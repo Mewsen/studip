@@ -24,7 +24,7 @@
     <? foreach($GLOBALS['MVV_LANGUAGES']['values'] as $key => $entry) : ?>
         <tr>
             <td rowspan="2">
-                <?= Assets::img('languages/lang_' . mb_strtolower($key) . '.gif') ?>
+                <?= Assets::img(MVV::getContentLanguageImagePath($key), ['alt' => $entry['name'], 'size' => 24]) ?>
             </td>
             <td>
                 <label>

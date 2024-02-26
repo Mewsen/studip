@@ -16,7 +16,7 @@
                 <ul class="list-unstyled">
                 <? foreach($documents as $key => $document): ?>
                     <li>
-                        <?= Assets::img('languages/lang_' . mb_strtolower($key) . '.gif') ?>
+                        <?= Assets::img(MVV::getContentLanguageImagePath($key), ['size' => 24]) ?>
                         <b><?= htmlReady($document->getDisplayName()); ?></b>
                         <? if($document->file_ref->isLink()): ?>
                             <a href="<?= htmlReady($document->getFilename()); ?>" target="_blank"><?= htmlReady($document->getFilename()); ?></a>
