@@ -19,14 +19,14 @@
                         <? $def_lang = reset(array_keys($languages)); ?>
                         <? if (mb_strlen($lvgruppe->alttext->original())) : ?>
                         <div>
-                            <img style="display: block;" src="<?= Assets::image_path('languages/' . $languages[$def_lang]['picture']) ?>" alt="<?= $languages[$def_lang]['name'] ?>" title="<?= $languages[$def_lang]['name'] ?>">
+                            <img style="display: block;" src="<?= Assets::image_path('languages/' . $languages[$def_lang]['picture']) ?>" width="24" alt="<?= $languages[$def_lang]['name'] ?>" title="<?= $languages[$def_lang]['name'] ?>">
                             <?= formatReady($lvgruppe->alttext->original()) ?>
                         </div>
                         <? endif; ?>
                         <? foreach ($lvgruppe->alttext->toArray() as $lang => $alttext) : ?>
                             <? if (mb_strlen($alttext)) : ?>
                             <div style="margin-top:10px;">
-                                <img style="display: block;" src="<?= Assets::image_path('languages/' . $languages[$lang]['picture']) ?>" alt="<?= $languages[$lang]['name'] ?>" title="<?= $languages[$lang]['name'] ?>">
+                                <img style="display: block;" src="<?= Assets::image_path('languages/' . $languages[$lang]['picture']) ?>" width="24" alt="<?= $languages[$lang]['name'] ?>" title="<?= $languages[$lang]['name'] ?>">
                                 <?= formatReady($alttext) ?>
                             </div>
                             <? endif; ?>
