@@ -154,7 +154,7 @@ class ResourceNavigation extends Navigation
                 $this->addSubNavigation('planning', $sub_navigation);
 
                 $sub_sub_nav = new Navigation(
-                    _('Buchungen mit Kommentaren'),
+                    _('Buchungsübersicht mit Kommentaren'),
                     'dispatch.php/room_management/planning/booking_comments'
                 );
                 $sub_navigation->addSubNavigation('booking_comments', $sub_sub_nav);
@@ -194,7 +194,7 @@ class ResourceNavigation extends Navigation
 
             if (RoomManager::userHasRooms($user, 'autor', true)) {
                 $sub_sub_nav = new Navigation(
-                    _('Buchungen mit Kommentaren'),
+                    _('Buchungsübersicht mit Kommentaren'),
                     'dispatch.php/room_management/planning/booking_comments'
                 );
                 $sub_navigation->addSubNavigation('booking_comments', $sub_sub_nav);
