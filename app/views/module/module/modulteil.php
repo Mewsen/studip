@@ -478,6 +478,6 @@ if ($GLOBALS['MVV_MODULTEIL']['SPRACHE']['default'] != $display_language) {
 </form>
 <? if (!$def_lang) : ?>
     <script>
-        jQuery('#modulteil_form').find('textarea, input[type=text]').after('<div style="padding-top:10px;"><a href="#" title="<?= _('Originalfassung anzeigen') ?>" class="mvv-show-original" data-type="modulteil"><img src="<?= Assets::image_path('languages/lang_' . mb_strtolower($modul->getDefaultLanguage()) . '.gif') ?>" alt="<?= _('Originalfassung') ?>"></a></div>');
+        jQuery('#modulteil_form').find('textarea, input[type=text]').after('<div style="padding-top:10px;"><a href="#" title="<?= _('Originalfassung anzeigen') ?>" class="mvv-show-original" data-type="modulteil"><?= Assets::img(MVV::getContentLanguageImagePath($modul->getDefaultLanguage()), ['alt' => _('Originalfassung'), 'size' => 24]) ?></a></div>');
     </script>
 <? endif; ?>
