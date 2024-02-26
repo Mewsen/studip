@@ -164,6 +164,7 @@ export default {
                     return;
                 }
 
+                this.sortChildren(courseware.children);
                 await view.loadCoursewareStructure();
                 const rootId = view.courseware.relationships.root.data.id;
 
@@ -182,6 +183,15 @@ export default {
                 return (size / 1048576).toFixed(2) + ' MB';
             }
         },
+
+        sortChildren(children) {
+            children?.sort((a, b) => {
+                return a.attributes.position - b.attributes.position;
+            });
+            children?.forEach(child => {
+                this.sortChildren(child.children);
+            });
+        }
     },
     mounted() {
         let view = this;
