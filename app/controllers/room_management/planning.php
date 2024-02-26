@@ -1063,7 +1063,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
 
     public function booking_comments_action($selected_clipboard_id = null)
     {
-        PageLayout::setTitle(_('Buchungen mit Kommentaren'));
+        PageLayout::setTitle(_('Buchungsübersicht mit Kommentaren'));
 
         if (Navigation::hasItem('/resources/planning/booking_comments')) {
             Navigation::activateItem('/resources/planning/booking_comments');
@@ -1139,7 +1139,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
             $this->clipboard = $clipboard;
             if ($clipboard) {
                 PageLayout::setTitle(
-                    $clipboard->name . ': ' . _('Buchungen mit Kommentaren')
+                    $clipboard->name . ': ' . _('Buchungsübersicht mit Kommentaren')
                 );
                 $room_ids = $clipboard->getAllRangeIds('Room');
                 $rooms = Resource::findMany($room_ids);
@@ -1193,8 +1193,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
         $booking_intervals = ResourceBookingInterval::findBySql(
             "INNER JOIN resource_bookings rb
             ON resource_booking_intervals.booking_id = rb.id
-            WHERE rb.internal_comment <> ''
-            AND rb.resource_id IN ( :room_ids )
+            WHERE rb.resource_id IN ( :room_ids )
             AND resource_booking_intervals.begin < :end AND resource_booking_intervals.end > :begin
             ORDER BY resource_booking_intervals.begin ASC, resource_booking_intervals.end ASC",
             [
