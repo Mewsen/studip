@@ -47,8 +47,7 @@
                     <? foreach ($languages as $language) : ?>
                         <? $lang = $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$language]; ?>
                         <a href="<?= $controller->action_link('modul/' . $modul->id . '/', ['display_language' => $language]) ?>">
-                            <img src="<?= Assets::image_path('languages/lang_' . mb_strtolower($language) . '.gif') ?>"
-                                 alt="<?= $lang['name'] ?>" title="<?= $lang['name'] ?>">
+                            <?= Assets::img(MVV::getContentLanguageImagePath($language), ['alt' => $lang['name'], 'size' => 24]) ?>
                         </a>
                     <? endforeach; ?>
                 <? endif; ?>
