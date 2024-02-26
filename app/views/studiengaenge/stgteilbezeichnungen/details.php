@@ -18,7 +18,7 @@ $def_lang = reset($def_lang);
             <tr>
                 <td>
                     <img src="<?= Assets::image_path('languages/' . $languages[$def_lang]['picture']) ?>"
-                         alt="<?= $languages[$def_lang]['name'] ?>">
+                         width="24" alt="<?= $languages[$def_lang]['name'] ?>">
                     <?= htmlReady($stgteilbezeichnung->isI18nField('name')
                         ? $stgteilbezeichnung->name->original()
                         : $stgteilbezeichnung->name) ?>
@@ -30,7 +30,7 @@ $def_lang = reset($def_lang);
                     <tr>
                         <td>
                             <img src="<?= Assets::image_path('languages/' . $languages[$locale]['picture']) ?>"
-                                 alt="<?= $languages[$locale]['name'] ?>">
+                                width="24" alt="<?= $languages[$locale]['name'] ?>">
                             <?= htmlReady($localized) ?>
                         </td>
                     </tr>
@@ -45,7 +45,7 @@ $def_lang = reset($def_lang);
                         <tr>
                             <td>
                                 <img src="<?= Assets::image_path('languages/' . $languages[$def_lang]['picture']) ?>"
-                                     alt="<?= $languages[$def_lang]['name'] ?>">
+                                     width="24" alt="<?= $languages[$def_lang]['name'] ?>">
                                 <?= htmlReady($stgteilbezeichnung->name_kurz->original()) ?>
                             </td>
                         </tr>
@@ -55,7 +55,7 @@ $def_lang = reset($def_lang);
                         <tr>
                             <td>
                                 <img src="<?= Assets::image_path('languages/' . $languages[$locale]['picture']) ?>"
-                                     alt="<?= $languages[$locale]['name'] ?>">
+                                     width="24"alt="<?= $languages[$locale]['name'] ?>">
                                 <?= htmlReady($localized) ?>
                             </td>
                         </tr>

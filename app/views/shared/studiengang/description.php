@@ -3,7 +3,7 @@
 <div style="width: 100%; text-align: right;">
     <? foreach ($languages as $language) : ?>
         <a data-dialog="size=auto;title='<?= htmlReady($stg->getDisplayName()) ?>'" href="<?= $controller->action_link('description/' . $stg->id . '/', array('display_language' => $language)) ?>">
-            <img src="<?= Assets::image_path('languages/' . $language['picture']) ?>" alt="<?= $language['name'] ?>" title="<?= $language['name'] ?>">
+            <img src="<?= Assets::image_path('languages/' . $language['picture']) ?>" width="24" alt="<?= $language['name'] ?>" title="<?= $language['name'] ?>">
         </a>
     <? endforeach; ?>
 </div>

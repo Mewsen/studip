@@ -30,7 +30,7 @@
 <div style="width: 100%; text-align: right;">
     <? foreach (Config::get()->CONTENT_LANGUAGES as $locale => $language) : ?>
         <a data-dialog="title='<?= htmlReady($studiengang->getDisplayName()) ?>'" href="<?= $controller->action_link('info/' . $studiengang->id . '/', ['language' => $locale]) ?>">
-            <img src="<?= Assets::image_path('languages/' . $language['picture']) ?>" alt="<?= $language['name'] ?>" title="<?= $language['name'] ?>">
+            <img src="<?= Assets::image_path('languages/' . $language['picture']) ?>" width="24" alt="<?= $language['name'] ?>" title="<?= $language['name'] ?>">
         </a>
     <? endforeach ?>
 </div>
