@@ -351,6 +351,7 @@ export default {
                         }
                     }
                 };
+            this.sortChildren(this.loadedZipData.courseware.children);
             await this.createCoursewareUnit(unit, { root: true });
             const newElementId = this.lastCreateCoursewareUnit.relationships['structural-element'].data.id;
             await this.loadStructuralElementById({ id: newElementId });
@@ -371,6 +372,14 @@ export default {
                    this.requirements.push({slot: slot, text: text});
                 }
             }
+        },
+        sortChildren(children) {
+            children?.sort((a, b) => {
+                return a.attributes.position - b.attributes.position;
+            });
+            children?.forEach(child => {
+                this.sortChildren(child.children);
+            });
         }
     }
 }
