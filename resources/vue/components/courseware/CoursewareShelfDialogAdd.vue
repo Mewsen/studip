@@ -156,11 +156,7 @@ export default {
             wizardSlots: [
                 { id: 1, valid: false, name: 'basic', title: this.$gettext('Grundeinstellungen'), icon: 'courseware', target: 'title',
                   description: this.$gettext('Wählen Sie einen kurzen, prägnanten Titel und beschreiben Sie in einigen Worten den Inhalt des Lernmaterials. Eine Beschreibung erleichtert Lernenden die Auswahl des Lernmaterials.') },
-<<<<<<< HEAD:resources/vue/components/courseware/CoursewareShelfDialogAdd.vue
                 { id: 2, valid: true, name: 'layout', title: this.$gettext('Erscheinung'), icon: 'picture',
-=======
-                { id: 2, valid: true, name: 'layout', title: this.$gettext('Darstellung'), icon: 'picture', target: 'image',
->>>>>>> 092e06596 (fix #2768):resources/vue/components/courseware/unit/CoursewareShelfDialogAdd.vue
                   description: this.$gettext('Ein Vorschaubild motiviert Lernende das Lernmaterial zu erkunden. Die Kombination aus Bild und Farbe erleichtert das wiederfinden des Lernmaterials in der Übersicht.') },
                 { id: 3, valid: true, name: 'advanced', title: this.$gettext('Zusatzangaben'), icon: 'info-list', target: 'purpose',
                   description: this.$gettext('Hier können Sie detaillierte Angaben zum Lernmaterial eintragen. Diese sind besonders interessant wenn das Lernmaterial als OER geteilt wird.') }
