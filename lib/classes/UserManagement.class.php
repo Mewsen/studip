@@ -583,10 +583,6 @@ class UserManagement
             if ($count = $statement->rowCount()) {
                 $this->msg .= 'info§' . sprintf(_('%s Zuordnungen zu Studiengängen gelöscht.'), $count) . '§';
             }
-            // delete all private appointments of this user
-            if ($count = delete_range_of_dates($this->user_data['auth_user_md5.user_id'], false)) {
-                $this->msg .= 'info§' . sprintf(_('%s Einträge aus den Terminen gelöscht.'), $count) . '§';
-            }
         }
 
         if ($newuser['auth_user_md5.perms'] === 'admin') {
