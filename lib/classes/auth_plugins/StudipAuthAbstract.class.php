@@ -125,7 +125,7 @@ class StudipAuthAbstract
                 self::$plugin_instances[strtoupper($plugin)] = new $plugin_class($config);
             }
         }
-        return ($plugin_name) ? self::$plugin_instances[strtoupper($plugin_name)] : self::$plugin_instances;
+        return ($plugin_name) ? self::$plugin_instances[strtoupper($plugin_name)]??null : self::$plugin_instances;
     }
 
     /**
