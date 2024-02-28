@@ -727,7 +727,7 @@ class IliasSoap extends StudipSoapClient
 
         $xml = "<!DOCTYPE Objects SYSTEM \"http://www.ilias.uni-koeln.de/download/dtd/ilias_object_0_1.dtd\">
 <Objects>
-  <Object type=\"$type\">
+  <Object type=\"$type\" obj_id=\"\">
     <Title>
     $title
     </Title>
@@ -768,7 +768,7 @@ class IliasSoap extends StudipSoapClient
 
         $xml = "<!DOCTYPE Objects SYSTEM \"http://www.ilias.uni-koeln.de/download/dtd/ilias_object_0_1.dtd\">
 <Objects>
-  <Object type=\"$type\">
+  <Object type=\"$type\" obj_id=\"\">
     <Title>
     $title
     </Title>
@@ -1652,7 +1652,8 @@ class IliasSoap extends StudipSoapClient
     {
         $param = [
             'sid'          => $this->getSID(),
-            'reference_id' => $id
+            'reference_id' => $id,
+            'user_id'      => 0
         ];
 
         $result = $this->call('getObjectByReference', $param);

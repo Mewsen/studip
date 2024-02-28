@@ -503,7 +503,7 @@ class ConnectedIlias
      */
     public function newUserCategory()
     {
-        if (!$this->user->studip_login) {
+        if (!$this->user->isConnected()) {
             return false;
         }
         $this->soap_client->setCachingStatus(false);
