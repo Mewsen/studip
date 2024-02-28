@@ -94,13 +94,17 @@ class Course_LtiController extends StudipController
             //LTI 1.3a
             $this->lti13a_mode = true;
 
+            $state = md5(random_bytes(32) . 'lti1.3' . $this->course_id);
+            $state_key = sprintf('lti1.3_state_%s', $state);
+            $_SESSION[$state_key] = $this->course_id . '_' . $GLOBALS['user']->id;
+
             $registration = new \Studip\LTI13a\Registration($lti_data);
             $builder = new \OAT\Library\Lti1p3Core\Message\Launch\Builder\PlatformOriginatingLaunchBuilder();
             $this->message = $builder->buildPlatformOriginatingLaunch(
                 $registration,
                 \OAT\Library\Lti1p3Core\Message\LtiMessageInterface::LTI_MESSAGE_TYPE_RESOURCE_LINK_REQUEST,
                 $lti_data->getLaunchURL(),
-                $GLOBALS['user']->id,
+                $state,
                 $lti_data->id,
                 [
                     \Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole('autor')

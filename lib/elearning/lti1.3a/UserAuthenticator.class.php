@@ -12,7 +12,13 @@ class UserAuthenticator implements UserAuthenticatorInterface
 
     #[\Override] public function authenticate(RegistrationInterface $registration, string $loginHint): UserAuthenticationResultInterface
     {
-        $user = \User::find($loginHint);
+        $state_key = sprintf('lti1.3_state_%s', $loginHint);
+        if (empty($_SESSION[$state_key])) {
+            return new UserAuthenticationResult(false, null);
+        }
+        $ids = explode('_', $_SESSION[$state_key]);
+
+        $user = \User::find($ids[1]);
         $identity = null;
         if ($user instanceof \User) {
             $identity = new Identity($user);
