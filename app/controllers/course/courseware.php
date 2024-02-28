@@ -61,7 +61,7 @@ class Course_CoursewareController extends CoursewareController
         $lastStructuralElement = \Courseware\StructuralElement::findOneById($last);
 
         if ($unit_id === null) {
-            if ($lastStructuralElement->canVisit($user)) {
+            if ($lastStructuralElement->canVisit(User::findCurrent())) {
                 $this->redirectToFirstUnit('course', Context::getId(), $last);
             } else {
                 $this->redirectToFirstUnit('course', Context::getId(), []);
