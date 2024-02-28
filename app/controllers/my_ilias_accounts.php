@@ -184,9 +184,14 @@ class MyIliasAccountsController extends AuthenticatedController
                     '<a href="'.$this->ilias->getAbsolutePath().'">'.htmlReady($this->ilias->getName()).'</a>'
                 ));
             } elseif (!$session_id) {
-                PageLayout::postError(sprintf(_('Automatischer Login für %s-Installation (Nutzername %s) fehlgeschlagen.'),
+                PageLayout::postError(
+                    sprintf(
+                        _('Automatischer Login für %s-Installation (Nutzername %s) fehlgeschlagen.'),
                         htmlReady($this->ilias->getName()),
-                        htmlReady($this->ilias->user->getUsername())));
+                        htmlReady($this->ilias->user->getUsername())
+                    ),
+                    $this->ilias->getError()
+                );
             } elseif (($target == 'new') AND ! $module_id) {
                 PageLayout::postError(sprintf(_('Keine Kategorie zum Anlegen neuer Lernobjekte in der %s-Installation vorhanden.'),
                         htmlReady($this->ilias->getName())));
