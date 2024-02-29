@@ -64,14 +64,11 @@
             <?= htmlReady($criteria['title']) ?>
             <select name="<?= htmlReady($criteria['name']) ?>">
                 <? if (is_array($criteria['options'])): ?>
-                    <? foreach ($criteria['options'] as $title):
-                        $chunks = explode('--', $title, 2);
-                        $value = $chunks[1] ?? $chunks[0];
-                    ?>
-                        <option value="<?= htmlReady($value) ?>"
-                                <?= $value == $criteria['value'] ? 'selected' : '' ?>
+                    <? foreach ($criteria['options'] as $title): ?>
+                        <option value="<?= htmlReady($title) ?>"
+                                <?= $title == $criteria['value'] ? 'selected' : '' ?>
                         >
-                            <?= htmlReady($chunks[0]) ?>
+                            <?= htmlReady($title) ?>
                         </option>
                     <? endforeach ?>
                 <? endif ?>
