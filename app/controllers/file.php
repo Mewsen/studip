@@ -1973,8 +1973,6 @@ class FileController extends AuthenticatedController
         if (!$folder || !$folder->isEditable($GLOBALS['user']->id)) {
             throw new AccessDeniedException();
         }
-        $parent_folder = $folder->getParent();
-        $folder_types = FileManager::getAvailableFolderTypes($parent_folder->range_id, $GLOBALS['user']->id);
         $this->name = Request::get('name', $folder->name);
         $this->description = Request::get('description', $folder->description);
 
@@ -1983,13 +1981,16 @@ class FileController extends AuthenticatedController
 
         $this->folder_types = [];
 
-        if (!is_a($folder, 'VirtualFolderType')) {
+        if (!is_a($folder, 'VirtualFolderType') && !is_a($folder, 'RootFolder')) {
+            $folder_types = FileManager::getAvailableFolderTypes(
+                $folder->range_id,
+                $GLOBALS['user']->id
+            );
             foreach ($folder_types as $folder_type) {
                 $folder_type_instance = new $folder_type(
                     [
-                        'range_id' => $parent_folder->range_id,
-                        'range_type' => $parent_folder->range_type,
-                        'parent_id' => $parent_folder->getId()
+                        'range_id' => $folder->range_id,
+                        'range_type' => $folder->range_type
                     ]
                 );
                 $this->folder_types[] = [
@@ -1999,6 +2000,14 @@ class FileController extends AuthenticatedController
                     'icon'     => $folder_type_instance->getIcon('clickable')
                 ];
             }
+        } else {
+            //It is a virtual folder or a root folder (folder without parent):
+            $this->folder_types[] = [
+                'class' => get_class($folder),
+                'instance' => $folder,
+                'name' => $folder::getTypeName(),
+                'icon' => $folder->getIcon('clickable')
+            ];
         }
 
 
