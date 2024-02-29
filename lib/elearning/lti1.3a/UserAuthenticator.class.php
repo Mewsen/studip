@@ -12,6 +12,7 @@ class UserAuthenticator implements UserAuthenticatorInterface
 
     #[\Override] public function authenticate(RegistrationInterface $registration, string $loginHint): UserAuthenticationResultInterface
     {
+        /*
         $state_key = sprintf('lti1.3_state_%s', $loginHint);
         $cache = \StudipCacheFactory::getCache();
         $state_cache_item = $cache->getItem($state_key);
@@ -21,6 +22,8 @@ class UserAuthenticator implements UserAuthenticatorInterface
         $ids = explode('_', $state_cache_item->get());
 
         $user = \User::find($ids[1]);
+        */
+        $user = \User::find($loginHint);
         $identity = null;
         if ($user instanceof \User) {
             $identity = new Identity($user);
