@@ -292,14 +292,15 @@ class Resources
                 //Something is wrong.
                 return;
             }
-            let options_html = '';
+            let options = [];
             for (let option of option_select_options) {
-                let splitted_option = option.split('~~');
-                options_html += '<option value="' + splitted_option[0] + '">'
-                    + (splitted_option[1] ?? splitted_option[0])
-                    + '</option>';
+                const opt = $('<option>', {
+                    value: option,
+                    text: option,
+                });
+                options.push(opt);
             }
-            $(new_criteria_select).append(options_html);
+            $(new_criteria_select).append(options);
         } else if (option_type === 'date') {
             let time_inputs = jQuery(new_criteria).find('input[data-time="yes"]');
             let date_inputs = jQuery(new_criteria).find('input[type="date"]');
