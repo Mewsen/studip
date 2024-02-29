@@ -1,7 +1,7 @@
 <?php
 
 
-class Lti13aController extends StudipController
+class Lti13aController extends AuthenticatedController
 {
     use Studip\OAuth2\NegotiatesWithPsr7;
 
