@@ -12,13 +12,15 @@ class Lti13aController extends AuthenticatedController
         $reg_manager = new \Studip\Lti13a\RegistrationManager();
         $user_authenticator = new \Studip\LTI13a\UserAuthenticator();
         $request = $this->getPsrRequest();
-        $oidc_authenticator = new \OAT\Library\Lti1p3Core\Security\Oidc\OidcAuthenticator(
-            $reg_manager,
-            $user_authenticator
+        $oidc_handler = new \OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcAuthenticationRequestHandler(
+            new \OAT\Library\Lti1p3Core\Security\Oidc\OidcAuthenticator(
+                $reg_manager,
+                $user_authenticator
+            )
         );
 
-        $lti_message = $oidc_authenticator->authenticate($request);
-        $this->render_text($lti_message->toHtmlRedirectForm());
+        $response = $oidc_handler->handle($request);
+        $this->renderPsrResponse($response);
     }
 
 
