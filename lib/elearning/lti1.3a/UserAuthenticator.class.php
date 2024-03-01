@@ -17,14 +17,6 @@ class UserAuthenticator implements UserAuthenticatorInterface
             return new UserAuthenticationResult(false, null);
         }
         $state_key = sprintf('lti1.3_state_%s', $state);
-        /*
-        $cache = \StudipCacheFactory::getCache();
-        $state_cache_item = $cache->getItem($state_key);
-        if (!$state_cache_item->isHit()) {
-            return new UserAuthenticationResult(false, null);
-        }
-        $ids = explode('_', $state_cache_item->get());
-        */
         $ids = explode('_', $_SESSION[$state_key]);
 
         $user = \User::find($ids[1]);
