@@ -97,6 +97,7 @@ class Course_LtiController extends StudipController
 
             $state = md5(random_bytes(32) . 'lti1.3' . $this->course_id);
             $state_key = sprintf('lti1.3_state_%s', $state);
+            /*
             $state_cache_item = new \Studip\CacheItem(
                 $state_key,
                 sprintf('%1$s_%2$s', $this->course_id, $GLOBALS['user']->id)
@@ -104,13 +105,15 @@ class Course_LtiController extends StudipController
             $state_cache_item->expiresAfter(3600);
             $cache = StudipCacheFactory::getCache();
             $cache->save($state_cache_item);
+            */
+            $_SESSION[$state_key] = $this->course_id . '_' . $GLOBALS['user']->id;
 
             $registration = new \Studip\LTI13a\Registration($lti_data);
             $builder = new \OAT\Library\Lti1p3Core\Message\Launch\Builder\PlatformOriginatingLaunchBuilder();
             $unfinished_message = $builder->buildPlatformOriginatingLaunch(
                 $registration,
                 \OAT\Library\Lti1p3Core\Message\LtiMessageInterface::LTI_MESSAGE_TYPE_RESOURCE_LINK_REQUEST,
-                $lti_data->getLaunchURL(),
+                URLHelper::getURL($lti_data->getLaunchURL(), ['state' => $state]),
                 $GLOBALS['user']->id, //$state,
                 $lti_data->id,
                 [
