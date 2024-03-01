@@ -103,8 +103,8 @@ class Course_LtiController extends StudipController
             $unfinished_message = $builder->buildPlatformOriginatingLaunch(
                 $registration,
                 \OAT\Library\Lti1p3Core\Message\LtiMessageInterface::LTI_MESSAGE_TYPE_RESOURCE_LINK_REQUEST,
-                URLHelper::getURL($lti_data->getLaunchURL(), ['state' => $state]),
-                $GLOBALS['user']->id, //$state,
+                URLHelper::getURL($lti_data->getLaunchURL(), ['state' => $state], true),
+                $GLOBALS['user']->id,
                 $lti_data->id,
                 [
                     \Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole('autor')
