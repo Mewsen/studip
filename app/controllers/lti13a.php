@@ -23,6 +23,11 @@ class Lti13aController extends AuthenticatedController
         $this->renderPsrResponse($response);
     }
 
+    public function oauth2_token_action()
+    {
+        die('not yet implemented');
+    }
+
 
     public function deep_linking_action()
     {
