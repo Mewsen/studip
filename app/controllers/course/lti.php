@@ -100,10 +100,10 @@ class Course_LtiController extends StudipController
 
             $registration = new \Studip\LTI13a\Registration($lti_data);
             $builder = new \OAT\Library\Lti1p3Core\Message\Launch\Builder\PlatformOriginatingLaunchBuilder();
-            $unfinished_message = $builder->buildPlatformOriginatingLaunch(
+            $this->message = $builder->buildPlatformOriginatingLaunch(
                 $registration,
                 \OAT\Library\Lti1p3Core\Message\LtiMessageInterface::LTI_MESSAGE_TYPE_RESOURCE_LINK_REQUEST,
-                URLHelper::getURL($lti_data->getLaunchURL(), ['state' => $state], true),
+                URLHelper::getURL($lti_data->getLaunchURL()),
                 $GLOBALS['user']->id,
                 $lti_data->id,
                 [
@@ -113,6 +113,7 @@ class Course_LtiController extends StudipController
                     new \OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim($this->course_id)
                 ]
             );
+            /*
             $this->message = new \OAT\Library\Lti1p3Core\Message\LtiMessage(
                 $unfinished_message->getUrl(),
                 array_merge(
@@ -120,6 +121,7 @@ class Course_LtiController extends StudipController
                     $unfinished_message->getParameters()->all()
                 )
             );
+            */
         } else {
             //LTI 1.0/1.1
             $lti_link = $this->getLtiLink($lti_data);
