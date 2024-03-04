@@ -129,13 +129,13 @@ class Settings_DeputiesController extends Settings_SettingsController
         if (!empty($msg['error'])) {
             PageLayout::postError(
                 _('Die gewünschte Operation konnte nicht ausgeführt werden.'),
-                htmlReady($msg['error'])
+                $msg['error']
             );
         }
         if (!empty($msg['success'])) {
             PageLayout::postSuccess(
                 _('Die gewünschten Personen wurden als Ihre Vertretung eingetragen!'),
-                htmlReady($msg['success'])
+                $msg['success']
             );
         }
 
