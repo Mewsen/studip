@@ -50,12 +50,14 @@ class RegistrationManager implements RegistrationRepositoryInterface
     #[\Override] public function findByPlatformIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
     {
         // TODO: Implement findByPlatformIssuer() method.
+        die('RegistrationManager::findByPlatformIssuer: TODO');
         return null;
     }
 
     #[\Override] public function findByToolIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
     {
         // TODO: Implement findByToolIssuer() method.
+        die('RegistrationManager::findByToolIssuer: TODO');
         return null;
     }
 }
