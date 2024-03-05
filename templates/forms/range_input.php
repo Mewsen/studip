@@ -1,4 +1,4 @@
-<label<?= ($this->required ? ' class="studiprequired"' : '') ?> for="<?= $id ?>">
+    <label<?= ($this->required ? ' class="studiprequired"' : '') ?> for="<?= $id ?>">
     <span class="textlabel">
         <?= htmlReady($this->title) ?>
     </span>
@@ -10,4 +10,7 @@
              name="<?= htmlReady($name) ?>"
              value="<?= htmlReady($value) ?>"
              id="<?= $id ?>"
+             <? if (isset($min)) printf(':min="%s"', $min); ?>
+             <? if (isset($max)) printf(':max="%s"', $max); ?>
+             <? if (isset($step)) printf(':max="%s"', $step); ?>
              <?= $attributes ?>></range-input>
