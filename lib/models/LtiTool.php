@@ -70,9 +70,9 @@ class LtiTool extends SimpleORMap
             $this->id,
             $this->name,
             $this->launch_url, //TODO: some sort of base-URL for the tool.
-            $this->oidc_init_url ?? $this->launch_url,
+            !empty($this->oidc_init_url) ? $this->oidc_init_url : $this->launch_url,
             $this->launch_url,
-            $this->deep_linking_url ?? $this->launch_url
+            !empty($this->deep_linking_url) ? $this->deep_linking_url : $this->launch_url
         );
     }
 
