@@ -10,7 +10,7 @@
              name="<?= htmlReady($name) ?>"
              value="<?= htmlReady($value) ?>"
              id="<?= $id ?>"
-             min="<?= $min ?>"
-             max="<?= $max ?>"
-             step="<?= $step ?>"
+             <? if (isset($min)) printf(':min="%s"', $min); ?>
+             <? if (isset($max)) printf(':max="%s"', $max); ?>
+             <? if (isset($step)) printf(':max="%s"', $step); ?>
     <?= $attributes ?>></range-input>
