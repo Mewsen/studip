@@ -18,9 +18,10 @@ class Lti13aController extends AuthenticatedController
                 $user_authenticator
             )
         );
-
+        die('laaft');
         $response = $oidc_handler->handle($request);
         $this->renderPsrResponse($response);
+
     }
 
     public function oauth2_token_action()

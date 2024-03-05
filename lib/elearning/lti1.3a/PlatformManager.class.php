@@ -46,4 +46,9 @@ class PlatformManager
         //Invalid role:
         return '';
     }
+
+    public static function getJwksUrlForDeployment(\LtiData $link)
+    {
+        return \URLHelper::getURL('lti13a/jwks', ['link_id' => $link->id], true);
+    }
 }

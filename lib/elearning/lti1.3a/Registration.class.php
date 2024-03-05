@@ -111,7 +111,7 @@ class Registration implements RegistrationInterface
         if (!$this->lti_link) {
             return null;
         }
-        return \URLHelper::getURL('lti13a/jwks', ['link_id' => $this->lti_link->id], true);
+        return PlatformManager::getJwksUrlForDeployment($this->lti_link);
     }
 
     #[\Override] public function getToolJwksUrl(): ?string
