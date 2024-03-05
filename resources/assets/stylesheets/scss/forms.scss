@@ -1,4 +1,4 @@
-$gap: 1.5ex;
+s   $gap: 1.5ex;
 
 $max-width-s: 8em;
 $max-width-m: 48em;
@@ -67,6 +67,10 @@ form.default {
 
         &[readonly] {
             background-color: $light-gray-color-20;
+        }
+
+        &[disabled] {
+            background-color: $dark-gray-color-15;
         }
     }
 
@@ -237,10 +241,6 @@ form.default {
         .asterisk {
             color: $red;
         }
-    }
-
-    select[disabled] {
-        background-color: $dark-gray-color-15;
     }
 
     .tooltip.tooltip-icon::before {
