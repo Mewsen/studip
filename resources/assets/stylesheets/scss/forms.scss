@@ -68,6 +68,10 @@ form.default {
         &[readonly] {
             background-color: var(--light-gray-color-20);
         }
+
+        &[disabled] {
+            background-color: var(--dark-gray-color-15);
+        }
     }
 
     .ck-source-editing-area textarea {
@@ -249,10 +253,6 @@ form.default {
         .asterisk {
             color: var(--red);
         }
-    }
-
-    select[disabled] {
-        background-color: var(--dark-gray-color-15);
     }
 
     .tooltip.tooltip-icon::before {
