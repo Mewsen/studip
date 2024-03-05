@@ -8,7 +8,7 @@
             <input type=text
                    ref="inputfield"
                    :name="nameOfInput(language.id)"
-                   v-model="values[selectedLanguage.id]"
+                   v-model="currentText"
                    :required="required && defaultLanguage === language.id"
                    v-bind="$attrs"
                    v-on="$listeners"
@@ -17,12 +17,12 @@
                       ref="inputfield"
                       v-bind="$attrs"
                       v-on="$listeners"
-                      v-model="values[language.id]"
+                      v-model="currentText"
                       :required="required && defaultLanguage === language.id"
                       v-else-if="type === 'textarea'">{{ values[language.id] }}</textarea>
             <studip-wysiwyg :name="nameOfInput(language.id)"
                             ref="inputfield"
-                            v-model="values[selectedLanguage.id]"
+                            v-model="currentText"
                             v-bind="$attrs"
                             v-on="$listeners"
                             :required="required && defaultLanguage === language.id"
@@ -38,7 +38,7 @@
         <input type="hidden"
                v-for="language in languages"
                v-if="(selectedLanguage !== null) && (language.id !== selectedLanguage.id)"
-               v-model="values[language.id]"
+               v-model="currentText"
                :required="required && defaultLanguage === language.id"
                :name="nameOfInput(language.id)">
         <select class="i18n"
@@ -53,21 +53,21 @@
         <input type=text
                ref="inputfield"
                :name="name"
-               v-model="values[selectedLanguage.id]"
+               v-model="currentText"
                v-bind="$attrs"
                v-on="$listeners"
                :required="required"
                v-if="type === 'text'">
         <textarea :name="name"
                   ref="inputfield"
-                  v-model="values[selectedLanguage.id]"
+                  v-model="currentText"
                   v-bind="$attrs"
                   v-on="$listeners"
                   :required="required"
                   v-else-if="type === 'textarea'"></textarea>
         <studip-wysiwyg :name="name"
                         ref="inputfield"
-                        v-model="values[selectedLanguage.id]"
+                        v-model="currentText"
                         v-bind="$attrs"
                         v-on="$listeners"
                         :required="required"
@@ -179,7 +179,15 @@ export default {
                 }
             }
             return languages;
-        }
+        },
+        currentText: {
+            get () {
+                return this.values[this.selectedLanguage.id] ?? '';
+            },
+            set (newValue) {
+                this.values[this.selectedLanguage.id] = newValue;
+            },
+        },
     },
     inheritAttrs: false,
     watch: {
