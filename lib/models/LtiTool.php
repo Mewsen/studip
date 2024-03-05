@@ -70,9 +70,9 @@ class LtiTool extends SimpleORMap
             $this->id,
             $this->name,
             $GLOBALS['ABSOLUTE_URI_STUDIP'],
-            \URLHelper::getURL('dispatch.php/lti13a/oidc_init', [], true),
+            $this->oidc_init_url ?? $this->launch_url,
             $this->launch_url,
-            \URLHelper::getURL('dispatch.php/lti13a/deep_linking', [], true)
+            $this->deep_linking_url ?? $this->launch_url
         );
     }
 
