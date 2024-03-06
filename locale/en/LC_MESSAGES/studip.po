@@ -10,15 +10,15 @@
 # David Broz, 2021
 # Jakob Diel <jakobdiel@gmail.com>, 2021
 # M S <strohm@data-quest.de>, 2021
-# Jan-Hendrik Willms <tleilax@gmail.com>, 2021, 2022.
-# Jan-Hendrik Willms <tleilax+studip@gmail.com>, 2022, 2023.
-# Moritz Strohm <strohm@data-quest.de>, 2022, 2023.
+# Jan-Hendrik Willms <tleilax@gmail.com>, 2021, 2022, 2024.
+# Jan-Hendrik Willms <tleilax+studip@gmail.com>, 2022, 2023, 2024.
+# Moritz Strohm <strohm@data-quest.de>, 2022, 2023, 2024.
 # Thomas Hackl <hackl@data-quest.de>, 2022.
-# Ann Yanich <ann@yanich.de>, 2022.
-# Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>, 2023.
-# Kilian Pluta <pluta@zqs.uni-hannover.de>, 2023.
-# Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023.
-# Ron Lucke <lucke@elan-ev.de>, 2023.
+# Ann Yanich <ann@yanich.de>, 2022, 2024.
+# Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>, 2023, 2024.
+# Kilian Pluta <pluta@zqs.uni-hannover.de>, 2023, 2024.
+# Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023, 2024.
+# Ron Lucke <lucke@elan-ev.de>, 2023, 2024.
 #
 # Translators:
 #
@@ -27,16 +27,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-06 13:24+0100\n"
-"PO-Revision-Date: 2023-10-19 15:29+0000\n"
-"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-1/en/>\n"
+"PO-Revision-Date: 2024-03-06 12:38+0000\n"
+"Last-Translator: Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-1/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.2\n"
+"X-Generator: Weblate 5.3.1\n"
 
 #: app/controllers/quicksearch.php:73
 msgid "Session abgelaufen oder unbekannter Suchtyp"
@@ -208,8 +208,7 @@ msgid_plural ""
 "%u Personen wurden der Liste hinzugefügt, die Liste ist aber noch nicht "
 "gespeichert."
 msgstr[0] "One person has been added to the list."
-msgstr[1] ""
-"%u persons have been added to the list but the list isn't saved yet."
+msgstr[1] "%u persons have been added to the list but the list isn't saved yet."
 
 #: app/controllers/admission/restricted_courses.php:24
 msgid "Teilnahmebeschränkte Veranstaltungen"
@@ -2460,8 +2459,8 @@ msgid_plural ""
 "Die Wikiseiten wurden importiert! Sie sind unter dem Navigationspunkt \"Alle "
 "Seiten\" erreichbar."
 msgstr[0] ""
-"The wiki page has been imported! It is available at the navigation item "
-"\"All pages\"."
+"The wiki page has been imported! It is available at the navigation item \"All"
+" pages\"."
 msgstr[1] ""
 "The wiki pages have been imported! They are available at the navigation item "
 "\"All pages\"."
@@ -2954,10 +2953,8 @@ msgstr "%d separable rooms could not be found!"
 msgid "Der folgende Fehler trat beim Löschen mehrerer teilbarer Räume auf:"
 msgid_plural ""
 "Die folgenden Fehler traten beim Löschen mehrerer teilbarer Räume auf:"
-msgstr[0] ""
-"The following error occurred while deleting several separable rooms:"
-msgstr[1] ""
-"The following errors occurred while deleting several separable rooms:"
+msgstr[0] "The following error occurred while deleting several separable rooms:"
+msgstr[1] "The following errors occurred while deleting several separable rooms:"
 
 #: app/controllers/resources/admin.php:653
 #: app/controllers/resources/admin.php:694
@@ -3459,8 +3456,7 @@ msgstr "The location has been saved!"
 msgid ""
 "Der Standort wurde gespeichert, aber dessen folgende Eigenschaften wurden "
 "nicht gesetzt:"
-msgstr ""
-"The location has been saved, but the following properties were not set:"
+msgstr "The location has been saved, but the following properties were not set:"
 
 #: app/controllers/resources/location.php:341
 msgid "Fehler beim Speichern des Standortes!"
@@ -4731,8 +4727,7 @@ msgstr "A maximum of %d minutes is allowed for the preparation time!"
 
 #: app/controllers/resources/booking.php:191
 msgid "Die Buchung wurde vorgenommen und die Anfrage als bearbeitet markiert!"
-msgstr ""
-"The booking has been made and the request has been marked as processed!"
+msgstr "The booking has been made and the request has been marked as processed!"
 
 #: app/controllers/resources/booking.php:195
 msgid "Ein Fehler trat auf beim Erstellen der Buchung!"
@@ -4749,8 +4744,8 @@ msgid ""
 "Raum %1$s: Der Teilraum %2$s ist im Zeitbereich von %3$s bis %4$s nicht "
 "verfügbar und kann daher nicht gebucht werden!"
 msgstr ""
-"Room %1$s: The room part %2$s is not available in the range from %3$s to "
-"%4$s and can therefore not be booked!"
+"Room %1$s: The room part %2$s is not available in the range from %3$s to %4$"
+"s and can therefore not be booked!"
 
 #: app/controllers/resources/booking.php:549
 msgid "Es konnten nicht alle Reservierungen gespeichert werden!"
@@ -5024,8 +5019,8 @@ msgid ""
 "Die Buchung wurde in das Semester %1$s kopiert und findet dort vom %2$s, "
 "%3$s Uhr bis zum %4$s, %5$s Uhr statt!"
 msgstr ""
-"The booking has been copied into the semester %1$s and takes place from "
-"%2$s, %3$s to %4$s, %5$s!"
+"The booking has been copied into the semester %1$s and takes place from %2$"
+"s, %3$s to %4$s, %5$s!"
 
 #: app/controllers/resources/booking.php:1870
 msgid "Buchung löschen"
@@ -6886,8 +6881,7 @@ msgstr "Errors occurred while assigning:"
 #: app/controllers/questionnaire.php:878
 msgid ""
 "Alle gewählten Fragebögen wurden den gewählten Veranstaltungen zugeordnet!"
-msgstr ""
-"All selected questionnaires have been assigned to the selected courses!"
+msgstr "All selected questionnaires have been assigned to the selected courses!"
 
 #: app/controllers/questionnaire.php:922
 #, php-format
@@ -9368,8 +9362,7 @@ msgstr "Periodic course date \"%s\" has been added!"
 msgid ""
 "Die regelmäßige Veranstaltungszeit konnte nicht hinzugefügt werden! Bitte "
 "überprüfen Sie Ihre Eingabe."
-msgstr ""
-"The periodic course date could not be added! Please check your entries."
+msgstr "The periodic course date could not be added! Please check your entries."
 
 #: app/controllers/course/timesrooms.php:1298
 #, php-format
@@ -11940,8 +11933,7 @@ msgstr "The semester has been saved successfully."
 msgid ""
 "Das Semester \"%s\" hat noch Veranstaltungen und kann daher nicht gelöscht "
 "werden."
-msgstr ""
-"The semester \"%s\" still contains courses and there cannot be deleted."
+msgstr "The semester \"%s\" still contains courses and there cannot be deleted."
 
 #: app/controllers/admin/semester.php:132
 #, php-format
@@ -13710,8 +13702,7 @@ msgstr "Link target must be a valid URL (including http://)."
 msgid ""
 "Die angegebene Einrichtung existiert nicht. Bitte geben Sie eine gültige "
 "Einrichtungs-ID ein."
-msgstr ""
-"The given institute does not exist. Enter a valid institute-ID, please."
+msgstr "The given institute does not exist. Enter a valid institute-ID, please."
 
 #: app/controllers/admin/banner.php:155
 msgid "Der angegebene Benutzername existiert nicht."
@@ -15324,8 +15315,7 @@ msgstr "Widget \"%s\" could not be removed."
 msgid ""
 "Sind Sie sicher, dass Sie das Widget \"%s\" von der Startseite entfernen "
 "möchten?"
-msgstr ""
-"Are you sure that you want to remove widget \"%s\" from the start page?"
+msgstr "Are you sure that you want to remove widget \"%s\" from the start page?"
 
 #: app/controllers/start.php:251
 msgid "Die Widgets wurden auf die Standardkonfiguration zurückgesetzt."
@@ -16007,8 +15997,7 @@ msgid ""
 msgid_plural ""
 "%s Personen wurden mit der Berechtigung zum Lesen des Kalenders hinzugefügt."
 msgstr[0] "A person with the permission to read the calendar has been added."
-msgstr[1] ""
-"%s persons with the permission to read the calendar have been added."
+msgstr[1] "%s persons with the permission to read the calendar have been added."
 
 #: app/controllers/calendar/single.php:424
 #, php-format
@@ -16316,8 +16305,7 @@ msgstr "The course group cannot be deleted (unknown course group)."
 msgid ""
 "Die Lehrveranstaltungsgruppe kann nicht gelöscht werden, da sie mit "
 "Veranstaltungen oder Modulteilen verknüpft ist."
-msgstr ""
-"Cannot delete course group. It is still assigned to courses or modules."
+msgstr "Cannot delete course group. It is still assigned to courses or modules."
 
 #: app/controllers/lvgruppen/lvgruppen.php:230
 #, php-format
@@ -16618,8 +16606,8 @@ msgid ""
 "Die Zuordnung des Studiengangteils \"%s\" als \"%s\" zum Studiengang \"%s\" "
 "wurde gelöscht."
 msgstr ""
-"Allocation of partial course of study \"%s\" as \"%s\" to course of study "
-"\"%s\" deleted."
+"Allocation of partial course of study \"%s\" as \"%s\" to course of study \"%"
+"s\" deleted."
 
 #: app/controllers/studiengaenge/studiengaenge.php:558
 #: app/controllers/studiengaenge/studiengaenge.php:613
@@ -16898,8 +16886,8 @@ msgid ""
 "einen oder mehrere Studiengangteil(e) haben, die Studiengängen zugeordnet "
 "werden."
 msgstr ""
-"Manage partial courses of study here. One field of study may consist of one "
-"(or several) partial courses of study allocated to one course of study."
+"Manage partial courses of study here. One field of study may consist of one ("
+"or several) partial courses of study allocated to one course of study."
 
 #: app/controllers/studiengaenge/studiengangteile.php:265
 msgid ""
@@ -19108,8 +19096,7 @@ msgstr "What may I do with the learning materials?"
 
 #: app/views/oer/market/licenseinfo.php:28
 msgid "Grundsätzlich können Sie also mit Materialien im Marktplatz immer:"
-msgstr ""
-"Basically you can always do with learning materials in the marketplace:"
+msgstr "Basically you can always do with learning materials in the marketplace:"
 
 #: app/views/oer/market/licenseinfo.php:30
 msgid "Die Dateien können Sie selbst nutzen."
@@ -20133,8 +20120,8 @@ msgid ""
 "In der Fassung des <b>%s</b>. Beschlusses vom <b>%s</b> (<b>%s</b>) / "
 "Version <b>%s</b>."
 msgstr ""
-"Version of <b>%s</b>. Decision from <b>%s</b> (<b>%s</b>) / Version <b>%s</"
-"b>."
+"Version of <b>%s</b>. Decision from <b>%s</b> (<b>%s</b>) / Version "
+"<b>%s</b>."
 
 #: app/views/shared/modul/_modul.php:26
 #, php-format
@@ -23410,8 +23397,7 @@ msgstr "Please specify participating institutes, if any."
 msgid ""
 "Die Reihenfolge der beteiligten Einrichtungen kann durch Anklicken und "
 "Ziehen geändert werden."
-msgstr ""
-"The order of participating institutes can be modified by drag and drop."
+msgstr "The order of participating institutes can be modified by drag and drop."
 
 #: app/views/module/module/modul.php:359
 msgid "Es wurden noch keine weiteren beteiligten Einrichtungen angegeben."
@@ -24227,8 +24213,8 @@ msgid ""
 msgstr ""
 "Creates a new instance of the object. The copied object is offline at first. "
 "You therefore must set the object \"online\" in ILIAS so that it becomes "
-"visible for participants of the course. This option is suitable for tests e."
-"g. because a test instance cannot be modified after lecturers participated "
+"visible for participants of the course. This option is suitable for tests "
+"e.g. because a test instance cannot be modified after lecturers participated "
 "in it."
 
 #: app/views/course/ilias_interface/edit_object_assignment.php:27
@@ -26750,8 +26736,8 @@ msgid ""
 "Die Betreiber dieses Tools müssen Ihnen eine URL und Zugangsdaten (Consumer-"
 "Key und Consumer-Secret) mitteilen."
 msgstr ""
-"The operators of this tool must provide you with an URL and credentials "
-"(consumer key and consumer secret)."
+"The operators of this tool must provide you with an URL and credentials ("
+"consumer key and consumer secret)."
 
 #: app/views/course/lti/edit.php:50
 msgid "Consumer-Key des LTI-Tools"
@@ -27444,8 +27430,8 @@ msgid ""
 msgstr ""
 "You have automatically been logged out in order to ensure correct "
 "authentication of your new data.<br>If you have changed your e-mail address, "
-"then you must use the password which has been sent to the new address!"
-"<br><br>Your current username is: %s"
+"then you must use the password which has been sent to the new "
+"address!<br><br>Your current username is: %s"
 
 #: app/views/settings/account/logout.php:5
 #: app/views/my_ilias_accounts/new_account.php:4
@@ -28251,9 +28237,9 @@ msgid ""
 "Stud.IP. Wenn es jemand hierher geschafft hat, der nicht zum Team gehört, "
 "dann kündige ich."
 msgstr ""
-"Shame on me that we have to meet like this... this page is the secret Stud."
-"IP easter egg. If someone not belonging to the team has managed to find his "
-"or her way hereto, then I'll quit."
+"Shame on me that we have to meet like this... this page is the secret "
+"Stud.IP easter egg. If someone not belonging to the team has managed to find "
+"his or her way hereto, then I'll quit."
 
 #: app/views/contents/courseware/courses_overview.php:12
 msgid ""
@@ -29359,8 +29345,7 @@ msgstr "External ID"
 msgid ""
 "Das Startdatum kann nur bei Semestern geändert werden, in denen keine "
 "Veranstaltungen liegen!"
-msgstr ""
-"The starting date only of semesters without any courses can be changed!"
+msgstr "The starting date only of semesters without any courses can be changed!"
 
 #: app/views/admin/semester/edit.php:76
 msgid "Vorlesungszeitraum"
@@ -29541,8 +29526,7 @@ msgstr "Database"
 #: app/views/admin/install/install-basic.php:5
 msgid ""
 "Datenbanktabellen wurden erzeugt und ausgewählte Beispieldaten eingetragen"
-msgstr ""
-"Database tables have been created and selected sample data was imported"
+msgstr "Database tables have been created and selected sample data was imported"
 
 #: app/views/admin/install/install.php:11
 msgid "Fehler beim Installieren"
@@ -31190,8 +31174,7 @@ msgstr "No plug-in in this Stud.IP installation available."
 #: app/views/admin/plugin/index.php:12
 msgid ""
 "Sie können Plugins aus dem Marktplatz installieren oder manuell hochladen."
-msgstr ""
-"You can install plug-ins from the market place or manually upload them."
+msgstr "You can install plug-ins from the market place or manually upload them."
 
 #: app/views/admin/plugin/index.php:14
 #, php-format
@@ -34672,8 +34655,7 @@ msgstr "Component version"
 msgid ""
 "Für den Studiengangteil <strong>%s</strong> wurden noch keine Versionen "
 "angelegt. "
-msgstr ""
-"No versions have been added for the component <strong>%s</strong> yet. "
+msgstr "No versions have been added for the component <strong>%s</strong> yet. "
 
 #: app/views/studiengaenge/versionen/index.php:37
 msgid "Eine neue Version anlegen."
@@ -35050,8 +35032,8 @@ msgid ""
 "Wollen Sie die Zuordnung des Studiengangteils \"%s\" als \"%s\" zum "
 "Studiengang \"%s\" wirklich löschen?"
 msgstr ""
-"Do you really want to delete the assignment of the partial course of study "
-"\"%s\" as \"%s\" for the course of study \"%s\"?"
+"Do you really want to delete the assignment of the partial course of study \""
+"%s\" as \"%s\" for the course of study \"%s\"?"
 
 #: app/views/studiengaenge/studiengaenge/studiengangteile.php:26
 #: app/views/studiengaenge/studiengaenge/studiengangteile.php:41
@@ -35907,8 +35889,7 @@ msgstr "The category \"%s\" could not be created."
 msgid ""
 "Das Rollen-Template für die persönliche Kategorie wurde noch nicht "
 "festgelegt."
-msgstr ""
-"The role template for the personal category has not yet been specified."
+msgstr "The role template for the personal category has not yet been specified."
 
 #: lib/ilias_interface/ConnectedIlias.class.php:301
 #: lib/elearning/Ilias3ConnectedCMS.class.php:104
@@ -36070,8 +36051,7 @@ msgstr "%s"
 #: lib/ilias_interface/ConnectedIlias.class.php:1030
 #, php-format
 msgid "Dieser Kurs enthält die Lernobjekte der Stud.IP-Veranstaltung \"%s\"."
-msgstr ""
-"This course contains the learning objects of the Stud.IP course \"%s\"."
+msgstr "This course contains the learning objects of the Stud.IP course \"%s\"."
 
 #: lib/ilias_interface/ConnectedIlias.class.php:1033
 msgid "ILIAS-Kurs konnte nicht angelegt werden."
@@ -36592,8 +36572,7 @@ msgstr "A location must not be assigned to a building in the hierarchy!"
 msgid ""
 "Ihre Berechtigungen sind unzureichend, um Räume anhand einer Raumanfrage zu "
 "suchen!"
-msgstr ""
-"Your permissions are insufficient to search rooms using a room request!"
+msgstr "Your permissions are insufficient to search rooms using a room request!"
 
 #: lib/models/resources/Room.class.php:409
 msgid "Zur Erstellung der URL fehlt eine Raum-ID!"
@@ -37089,8 +37068,7 @@ msgstr "Start time and end time are identically!"
 #: lib/models/resources/Resource.class.php:965
 #, php-format
 msgid "Die Ressource %1$s ist im Zeitraum von %2$s bis %3$s nicht verfügbar!"
-msgstr ""
-"The resource %1$s is not available in the time range from %2$s to %3$s!"
+msgstr "The resource %1$s is not available in the time range from %2$s to %3$s!"
 
 #: lib/models/resources/Resource.class.php:992
 #: lib/models/resources/Resource.class.php:1163
@@ -37116,8 +37094,7 @@ msgstr "No period could be found for the request of the resource %s."
 #: lib/models/resources/Resource.class.php:1090
 #, php-format
 msgid "Die Ressource %1$s ist im Zeitraum vom %2$s bis %3$s nicht verfügbar!"
-msgstr ""
-"The resource %1$s is not available in the time range from %2$s to %3$s!"
+msgstr "The resource %1$s is not available in the time range from %2$s to %3$s!"
 
 #: lib/models/resources/Resource.class.php:1109
 #: lib/resources/ResourceManager.class.php:84
@@ -38648,10 +38625,9 @@ msgid ""
 "Ist für das aufgerufene Modul noch keine Konfiguration erstellt worden, wird "
 "die Stud.IP-Default-Konfiguration verwendet."
 msgstr ""
-"The link calls the module with the selected configuration. Select "
-"\"Default\" to use your default configuration. If no configuration has been "
-"created for the selected module, the Stud.IP default configuration will be "
-"taken."
+"The link calls the module with the selected configuration. Select \"Default\""
+" to use your default configuration. If no configuration has been created for "
+"the selected module, the Stud.IP default configuration will be taken."
 
 #: lib/extern/elements/ExternElementLinkIntern.class.php:105
 #: lib/extern/elements/ExternElementLinkInternSimple.class.php:107
@@ -39003,8 +38979,8 @@ msgid ""
 "Geben Sie die URL eines Bildes ein, das als Link auf die übergeordnete Ebene "
 "verweist (z.B. Back-Button)."
 msgstr ""
-"Enter the URL of an image file to serve as link referring to higher level (e."
-"g. back button)."
+"Enter the URL of an image file to serve as link referring to higher level ("
+"e.g. back button)."
 
 #: lib/extern/elements/ExternElementSelectInstitutes.class.php:54
 msgid "Auswahl der anzuzeigenden Institute/Einrichtungen"
@@ -39037,8 +39013,7 @@ msgstr "Select the institutes/institutions to be exported to external pages."
 #: lib/extern/elements/main/ExternElementMainRangelecturetree.class.php:54
 msgid ""
 "In den Grundeinstellungen können Sie allgemeine Daten des Moduls ändern."
-msgstr ""
-"In the basic settings you can change the general details of the module."
+msgstr "In the basic settings you can change the general details of the module."
 
 #: lib/extern/elements/main/ExternElementMainSemlecturetree.class.php:83
 #: lib/extern/elements/main/ExternElementMainLecturedetails.class.php:112
@@ -42499,8 +42474,7 @@ msgstr "Courses (table)"
 msgid ""
 "Das Modul &quot;Veranstaltungen&quot; gibt alle Veranstaltungen einer "
 "Einrichtung als Tabelle aus."
-msgstr ""
-"The module \"Courses\" displays an institute's courses in table format."
+msgstr "The module \"Courses\" displays an institute's courses in table format."
 
 #: lib/extern/extern_config.inc.php:82
 msgid "Mitarbeiter (templatebasiert)"
@@ -43122,8 +43096,8 @@ msgid ""
 "Sie sich an [die Stud.IP-Administration]%s ."
 msgstr ""
 "Courses can only be created in the current or in future semesters. "
-"Unfortunately, no matching semester could be found. Please contact [the Stud."
-"IP administration]%s ."
+"Unfortunately, no matching semester could be found. Please contact [the "
+"Stud.IP administration]%s ."
 
 #: lib/classes/coursewizardsteps/BasicDataWizardStep.php:141
 #, php-format
@@ -43324,8 +43298,8 @@ msgid ""
 "                                    hochgestuft und sind damit zugelassen."
 msgstr ""
 "You have been promoted in the course **%2$s**\n"
-"                                    by a %1$s or an admin from the state "
-"**preliminary accepted**\n"
+"                                    by a %1$s or an admin from the state **"
+"preliminary accepted**\n"
 "                                    to **participating** and therefore you "
 "are admitted."
 
@@ -45480,8 +45454,7 @@ msgstr "Clean up logs"
 msgid ""
 "Entfernt abgelaufene Log-Einträge sowohl für das Eventsystem als auch für "
 "die Cronjobs"
-msgstr ""
-"Purges old log entries for the event system as well as for the cronjobs"
+msgstr "Purges old log entries for the event system as well as for the cronjobs"
 
 #: lib/cronjobs/cleanup_log.class.php:64
 msgid "Sollen die Logeinträge für Cronjobs auch gelöscht werden"
@@ -45599,8 +45572,8 @@ msgid ""
 "(Ankündigungen): Nach wie vielen Tagen sollen die abgelaufenen Ankündigungen "
 "gelöscht werden (0 für Zeitpunkt des Ablaufdatums, Default: 365 Tage)?"
 msgstr ""
-"(Announcements): After how many days shall expired announcements be deleted "
-"(0 for the expiration date, default: 365 days)?"
+"(Announcements): After how many days shall expired announcements be deleted ("
+"0 for the expiration date, default: 365 days)?"
 
 #: lib/cronjobs/garbage_collector.class.php:46
 msgid ""
@@ -47456,8 +47429,7 @@ msgstr "remove"
 #: lib/evaluation/evaluation_admin_overview.lib.php:1826
 msgid ""
 "Sie haben keine Berechtigung die Evaluation aus diesem Bereich auszuhängen."
-msgstr ""
-"You do not have the permission to remove the evaluation from this area."
+msgstr "You do not have the permission to remove the evaluation from this area."
 
 #: lib/evaluation/evaluation_admin_overview.lib.php:1840
 msgid "Diese Evaluation wurde keinem Bereich zugeordnet."
@@ -48271,8 +48243,8 @@ msgstr ""
 "variety of other elements. Finished learning contents can be exported and "
 "imported into other courses and installations. Courseware is not only "
 "designed for digital formats. It can also be used to supplement classic "
-"courses in presence with online parts. Formats like integrated learning "
-"(Blended Learning) can be ideally implemented with Courseware. Collaborative "
+"courses in presence with online parts. Formats like integrated learning ("
+"Blended Learning) can be ideally implemented with Courseware. Collaborative "
 "learning can be realised in study groups using write permissions and the use "
 "of Courseware."
 
@@ -49653,8 +49625,7 @@ msgstr ""
 msgid ""
 "Die angegebene E-Mail-Adresse ist nicht erreichbar, bitte überprüfen Sie "
 "Ihre Angaben!"
-msgstr ""
-"The specified e-mail address is not accessible. Please check your data!"
+msgstr "The specified e-mail address is not accessible. Please check your data!"
 
 #: lib/phplib/Seminar_Register_Auth.class.php:130
 msgid "Der gewählte Benutzername ist bereits vorhanden!"
@@ -51021,8 +50992,8 @@ msgid ""
 "%s Stud.IP-User-Accounts sind mit externen Accounts mit dem Index \"%s\" "
 "verknüpft."
 msgstr ""
-"%s Stud.IP user accounts are associated to external accounts with index "
-"\"%s\"."
+"%s Stud.IP user accounts are associated to external accounts with index \"%"
+"s\"."
 
 #: lib/elearning/Ilias4ContentModule.class.php:74
 msgid "Zuordnungs-Fehler: Objekt konnte nicht angelegt werden."
@@ -51123,8 +51094,8 @@ msgstr "--- An unknown error has occurred! ---"
 msgid ""
 "Unbekannter Fehler beim Lernmodul mit der Referenz-ID \"%s\" im LCMS \"%s\""
 msgstr ""
-"Unknown error in the learning module with the reference-ID \"%s\" in LCMS "
-"\"%s\""
+"Unknown error in the learning module with the reference-ID \"%s\" in LCMS \"%"
+"s\""
 
 #: lib/elearning/Ilias3ConnectedCMS.class.php:92
 #: lib/elearning/Ilias4ConnectedCMS.class.php:198
@@ -53153,8 +53124,8 @@ msgstr ""
 "The file search can be refined using a slash (/). Example: \"My courses/"
 "file\" will display all files which contain the word \"file\" and which are "
 "placed inside \"My courses\". The course can also be reduced (e.g. \"courses/"
-"file\") or it can be limited to its capital letters or its abbreviation (e."
-"g. \"MC/file\" or \"C/file\")."
+"file\") or it can be limited to its capital letters or its abbreviation ("
+"e.g. \"MC/file\" or \"C/file\")."
 
 #: templates/globalsearch/searchbar.php:14
 msgid "Tipps ausblenden"
@@ -54347,9 +54318,9 @@ msgid ""
 "Kommunikation an dieser Stelle öffentlich erfolgt und halten sich an die "
 "Nutzungsbedingungen und die Netiquette."
 msgstr ""
-"Blubber is a communication tool that is provided under the premise "
-"\"students help students\". Please note that your communication on this page "
-"is public and follow the terms of use and the netiquette."
+"Blubber is a communication tool that is provided under the premise \"students"
+" help students\". Please note that your communication on this page is public "
+"and follow the terms of use and the netiquette."
 
 #: templates/blubber/global_context.php:9
 #: templates/blubber/disable-notifications.php:6
