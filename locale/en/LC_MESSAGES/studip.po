@@ -27,8 +27,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-06 13:24+0100\n"
-"PO-Revision-Date: 2024-03-06 12:38+0000\n"
-"Last-Translator: Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>\n"
+"PO-Revision-Date: 2024-03-06 12:41+0000\n"
+"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-1/en/>\n"
 "Language: en\n"
@@ -10559,7 +10559,7 @@ msgstr "No contact person has been defined."
 msgid ""
 "Bitte wenden Sie sich an den in der Datenschutzerklärung angegebenen "
 "Ansprechpartner."
-msgstr "Please contact the person specified in the privacy policy."
+msgstr "Please contact the person specified in the privacy statement."
 
 #: app/controllers/privacy.php:416
 msgid "Alle Daten"
@@ -50526,9 +50526,8 @@ msgid "Footer"
 msgstr "Footer"
 
 #: lib/navigation/FooterNavigation.php:49
-#, fuzzy
 msgid "Datenschutzerklärung"
-msgstr "Data protection"
+msgstr "Privacy statement"
 
 #: lib/navigation/MVVNavigation.php:54
 msgid "Studiengangsinformationen"
