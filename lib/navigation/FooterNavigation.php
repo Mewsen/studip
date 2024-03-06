@@ -47,7 +47,7 @@ class FooterNavigation extends Navigation
             $privacy_url = URLHelper::getURL($privacy_url, ['cancel_login' => '1']);
         }
 
-        $this->addSubNavigation('privacy', new Navigation(_('Datenschutz'), $privacy_url));
+        $this->addSubNavigation('privacy', new Navigation(_('Datenschutzerklärung'), $privacy_url));
 
         $a11yurl = Config::get()->ACCESSIBILITY_DISCLAIMER_URL;
         if ($a11yurl) {
