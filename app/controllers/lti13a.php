@@ -16,7 +16,9 @@ class Lti13aController extends AuthenticatedController
             new \OAT\Library\Lti1p3Core\Security\Oidc\OidcAuthenticator(
                 $reg_manager,
                 $user_authenticator
-            )
+            ),
+            null,
+            new \Monolog\Logger('lti13a', [new \Monolog\Handler\StreamHandler($GLOBALS['TMP_PATH'] . '/lti13a_debug.log', \Monolog\Logger::DEBUG)])
         );
         die('laaft');
         $response = $oidc_handler->handle($request);
