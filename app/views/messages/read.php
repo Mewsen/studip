@@ -100,7 +100,7 @@
             ['data-dialog' => 'size=700']
         ) ?>
     </div>
-    <?= Studip\Button::create(
+    <?= Studip\LinkButton::create(
         _('Drucken'),
         URLHelper::getURL('dispatch.php/messages/print/' . $message->id),
         ['class' => 'print_action']
