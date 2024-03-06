@@ -46,6 +46,6 @@ class FooterNavigation extends Navigation
             //It is a Stud.IP page. Add the cancel_login URL parameter.
             $privacy_url = URLHelper::getURL($privacy_url, ['cancel_login' => '1']);
         }
-        $this->addSubNavigation('privacy', new Navigation(_('Datenschutz'), $privacy_url));
+        $this->addSubNavigation('privacy', new Navigation(_('Datenschutzerklärung'), $privacy_url));
     }
 }
