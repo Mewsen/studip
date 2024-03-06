@@ -1191,23 +1191,15 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
         $statement->execute([$new_id, $old_id]);
 
         //Kalender
-        $query = "UPDATE IGNORE calendar_event SET range_id = ? WHERE range_id = ?";
+        $query = "UPDATE IGNORE `calendar_date_assignments` SET `range_id` = ? WHERE `range_id` = ?";
         $statement = DBManager::get()->prepare($query);
         $statement->execute([$new_id, $old_id]);
 
-        $query = "UPDATE IGNORE calendar_user SET owner_id = ? WHERE owner_id = ?";
+        $query = "UPDATE IGNORE `calendar_dates` SET `author_id` = ? WHERE `author_id` = ?";
         $statement = DBManager::get()->prepare($query);
         $statement->execute([$new_id, $old_id]);
 
-        $query = "UPDATE IGNORE calendar_user SET user_id = ? WHERE user_id = ?";
-        $statement = DBManager::get()->prepare($query);
-        $statement->execute([$new_id, $old_id]);
-
-        $query = "UPDATE IGNORE event_data SET author_id = ? WHERE author_id = ?";
-        $statement = DBManager::get()->prepare($query);
-        $statement->execute([$new_id, $old_id]);
-
-        $query = "UPDATE IGNORE event_data SET editor_id = ? WHERE editor_id = ?";
+        $query = "UPDATE IGNORE `calendar_dates` SET `editor_id` = ? WHERE `editor_id` = ?";
         $statement = DBManager::get()->prepare($query);
         $statement->execute([$new_id, $old_id]);
 

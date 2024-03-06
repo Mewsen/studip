@@ -35,11 +35,12 @@ class Score
         }
 
         // Events
-        $query = "SELECT range_id as user_id, COUNT(*) AS eventcount
-                  FROM calendar_event
-                  INNER JOIN event_data ON (calendar_event.event_id = event_data.event_id AND class = 'PUBLIC')
-                  WHERE range_id IN (?) AND UNIX_TIMESTAMP() <= end
-                  GROUP BY range_id
+        $query = "SELECT `range_id` AS user_id, COUNT(*) AS eventcount
+                  FROM `calendar_date_assignments`
+                  INNER JOIN `calendar_dates`
+                  ON (`calendar_date_assignments`.`calendar_date_id` = `calendar_dates`.`id` AND `access` = 'PUBLIC')
+                  WHERE `range_id` IN (?) AND UNIX_TIMESTAMP() <= `end`
+                  GROUP BY `range_id`
                   ORDER BY NULL";
         $statement = DBManager::get()->prepare($query);
         $statement->execute([$user_ids]);
