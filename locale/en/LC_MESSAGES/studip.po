@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-06 13:16+0100\n"
-"PO-Revision-Date: 2024-03-06 12:29+0000\n"
+"PO-Revision-Date: 2024-03-06 12:30+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-main/en/>\n"
@@ -48782,9 +48782,8 @@ msgid "Datenschutzerklärung"
 msgstr "Privacy statement"
 
 #: lib/navigation/FooterNavigation.php:59
-#, fuzzy
 msgid "Barrierefreiheitserklärung"
-msgstr "Accessibility settings"
+msgstr "Accessibility declaration"
 
 #: lib/navigation/FooterNavigation.php:89
 #, fuzzy
