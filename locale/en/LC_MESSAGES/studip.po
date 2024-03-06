@@ -10788,6 +10788,7 @@ msgstr "No new files are available in this course!"
 
 #: app/controllers/privacy.php:38 app/controllers/privacy.php:101
 #: app/controllers/profile.php:341 app/controllers/admin/user.php:1753
+#: lib/navigation/FooterNavigation.php:50
 msgid "Datenschutz"
 msgstr "Data protection"
 
@@ -10872,7 +10873,7 @@ msgstr "No contact person has been defined."
 msgid ""
 "Bitte wenden Sie sich an den in der Datenschutzerklärung angegebenen "
 "Ansprechpartner."
-msgstr "Please contact the person specified in the privacy policy."
+msgstr "Please contact the person specified in the privacy statement."
 
 #: app/controllers/privacy.php:416
 msgid "Alle Daten"
@@ -16758,12 +16759,12 @@ msgid ""
 "Datenschutzerklärung."
 msgstr ""
 "For information on the data protection of this form, please see the privacy "
-"declaration."
+"statement."
 
 #: app/controllers/accessibility/forms.php:119
 #: app/controllers/accessibility/forms.php:126
 msgid "Datenschutzerklärung lesen"
-msgstr "Read privacy declaration"
+msgstr "Read privacy statement"
 
 #: app/controllers/accessibility/forms.php:187
 msgid "Meldung einer Barriere in Stud.IP"
@@ -53446,9 +53447,8 @@ msgid "Datenschutzerklärung"
 msgstr "Read privacy declaration"
 
 #: lib/navigation/FooterNavigation.php:57
-#, fuzzy
 msgid "Barrierefreiheitserklärung"
-msgstr "Accessibility settings"
+msgstr "Accessibility declaration"
 
 #: lib/navigation/MVVNavigation.php:54
 msgid "Studiengangsinformationen"
