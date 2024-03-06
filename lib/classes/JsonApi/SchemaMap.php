@@ -18,7 +18,7 @@ class SchemaMap
             \BlubberStatusgruppeThread::class => Schemas\BlubberStatusgruppeThread::class,
             \BlubberThread::class => Schemas\BlubberThread::class,
 
-            \CalendarDateAssignment::class => Schemas\CalendarEvent::class,
+            \CalendarDateAssignment::class => Schemas\CalendarDateAssignment::class,
             \ConsultationBlock::class => Schemas\ConsultationBlock::class,
             \ConsultationBooking::class => Schemas\ConsultationBooking::class,
             \ConsultationSlot::class => Schemas\ConsultationSlot::class,

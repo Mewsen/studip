@@ -780,7 +780,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
 
         // Non-private dates.
         if (Config::get()->CALENDAR_ENABLE) {
-            $dates = CalendarEvent::countBySql('range_id = ?', [$this->id]);
+            $dates = CalendarDateAssignment::countBySql('range_id = ?', [$this->id]);
         } else {
             $dates = [];
         }

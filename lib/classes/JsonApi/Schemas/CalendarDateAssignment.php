@@ -5,7 +5,7 @@ namespace JsonApi\Schemas;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 use Neomerx\JsonApi\Schema\Link;
 
-class CalendarEvent extends SchemaProvider
+class CalendarDateAssignment extends SchemaProvider
 {
     const TYPE = 'calendar-events';
     const REL_OWNER = 'owner';

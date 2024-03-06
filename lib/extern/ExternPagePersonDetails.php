@@ -360,44 +360,48 @@ class ExternPagePersonDetails extends ExternPage
             return [];
         }
 
-        $list_start = new DateTimeImmutable();
-        $list_end = $list_start->modify('+ 7 days');
-        $events = SingleCalendar::getEventList(
+        $list_start = new DateTime();
+        $list_end = clone $list_start;
+        $list_end = $list_end->add(new DateInterval('P7D'));
+
+        $assigned_events = CalendarDateAssignment::getEvents(
+            $list_start,
+            $list_end,
             $user->id,
-            $list_start->getTimestamp(),
-            $list_end->getTimestamp(),
-            null,
-            ['class' => 'PUBLIC'],
-            ['CalendarEvent']
+            ['PUBLIC']
         );
 
         $content['APPOINTMENTS_START'] = $list_start->getTimestamp();
         $content['APPOINTMENTS_END']   = $list_end->getTimestamp();
         $content_events = [];
-        if (!empty($events)) {
-            foreach ($events as $event) {
-                if ($event->isDayEvent()) {
-                    $date = date('d.m.Y', $event->getStart()) . ' (' . _('ganztägig') . ')';
+        if (!empty($assigned_events)) {
+            foreach ($assigned_events as $assigned_event) {
+                $event = $assigned_event->calendar_date;
+                if (!$event) {
+                    continue;
+                }
+                if ($event->isWholeDay()) {
+                    $date = date('d.m.Y', $event->begin) . ' (' . _('ganztägig') . ')';
                 } else {
-                    $date = date('d.m.Y G:H:s', $event->getStart());
-                    if (date('dmY', $event->getStart()) === date('dmY', $event->getEnd())) {
-                        $date .= date('d.m.Y G:H:s', $event->getEnd());
+                    $date = date('d.m.Y G:i:s', $event->begin);
+                    if (date('dmY', $event->begin) === date('dmY', $event->end)) {
+                        $date .= date('d.m.Y G:i:s', $event->end);
                     } else {
-                        $date .= ' - ' . date('d.m.Y G:H:s', $event->getEnd());
+                        $date .= ' - ' . date('d.m.Y G:i:s', $event->end);
                     }
                 }
                 $content_events[] = [
                     'DATE'            => $date,
-                    'TITLE'           => $event->getTitle(),
-                    'DESCRIPTION'     => $event->getDescription(),
-                    'LOCATION'        => $event->getLocation(),
-                    'RECURRENCE'      => $event->toStringRecurrence(),
-                    'CATEGORY'        => $event->toStringCategories(),
-                    'PRIORITY'        => $event->toStringPriority(),
-                    'START'           => date('d.m.Y G:H:s', $event->getStart()),
-                    'END'             => date('d.m.Y G:H:s', $event->getEnd()),
-                    'TIMESTAMP_START' => $event->getStart(),
-                    'TIMESTAMP_END'   => $event->getEnd(),
+                    'TITLE'           => $event->title,
+                    'DESCRIPTION'     => $event->description,
+                    'LOCATION'        => $event->location,
+                    'RECURRENCE'      => $event->getRepetitionAsString(),
+                    'CATEGORY'        => $event->getCategoryAsString(),
+                    'PRIORITY'        => _('Keine Angabe'),
+                    'START'           => date('d.m.Y G:i:s', $event->begin),
+                    'END'             => date('d.m.Y G:i:s', $event->end),
+                    'TIMESTAMP_START' => $event->begin,
+                    'TIMESTAMP_END'   => $event->end,
                 ];
             }
         }

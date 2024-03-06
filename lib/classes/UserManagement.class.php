@@ -1161,7 +1161,25 @@ class UserManagement
 
         // delete all private appointments of this user
         if (Config::get()->CALENDAR_ENABLE) {
-            $count = CalendarEvent::deleteBySQL('range_id = ?', [$user_id]);
+            // delete private appointments (omit group appointments)
+            $count = CalendarDate::deleteBySQL(
+                '`id` IN (
+                    SELECT `id`
+                    FROM (
+                        SELECT `id`, COUNT(*)
+                        FROM `calendar_dates`
+                        JOIN `calendar_date_assignments`
+                          ON `calendar_dates`.`id` = `calendar_date_assignments`.`calendar_date_id`
+                        WHERE `calendar_dates`.`author_id` = :user_id
+                        GROUP BY `id`
+                        HAVING COUNT(*) = 1
+                        ORDER BY NULL
+                    ) AS `cal_date_delete`
+                )',
+                [':user_id' => $user_id]
+            );
+            // delete assignments to group appointments
+            $count += CalendarDateAssignment::deleteBySQL('`range_id` = ?', [$user_id]);
             if ($count) {
                 $msg .= 'info§' . sprintf(_('%s Einträge aus den Terminen gelöscht.'), $count) . '§';
             }

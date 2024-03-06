@@ -40,31 +40,31 @@ class Events extends \RESTAPI\RouteMap
             $this->error(401);
         }
 
-        $start = time();
-        $end   = strtotime('+2 weeks', $start);
-        $list = SingleCalendar::getEventList($user_id, $start, $end, null, [], [
-            'CourseEvent',
-            'CourseCancelledEvent',
-            'CourseMarkedEvent',
-        ]);
+        $start = new \DateTime();
+        $end   = clone $start;
+        $end   = $end->add(new \DateInterval('P2W'));
+
+        $list = array_merge(
+            \CalendarCourseDate::getEvents($start, $end, $user_id),
+            \CalendarCourseExDate::getEvents($start, $end, $user_id)
+        );
 
         $json = [];
         $events = array_slice($list, $this->offset, $this->limit); ;
         foreach ($events as $event) {
-            $singledate = new SingleDate($event->id);
 
-            $course_uri = $this->urlf('/course/%s', [htmlReady($event->getSeminarId())]);
+            $course_uri = $this->urlf('/course/%s', [htmlReady($event->course_id)]);
 
             $json[] = [
                 'event_id'    => $event->id,
                 'course'      => $course_uri,
-                'start'       => $event->getStart(),
-                'end'         => $event->getEnd(),
+                'start'       => $event->date,
+                'end'         => $event->end_time,
                 'title'       => $event->getTitle(),
                 'description' => $event->getDescription() ?: '',
                 'categories'  => $event->toStringCategories() ?: '',
-                'room'        => html_entity_decode(strip_tags($singledate->getRoom() ?: $singledate->getFreeRoomText() ?: '')),
-                'canceled'    => $singledate->isHoliday() ?: false,
+                'room'        => $event->getRoomName(),
+                'canceled'    => $event instanceof \CourseExDate || holiday($event->date),
             ];
         }
 

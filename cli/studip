@@ -36,7 +36,6 @@ $commands = [
     Commands\Fix\Biest7789::class,
     Commands\Fix\Biest7866::class,
     Commands\Fix\Biest8136::class,
-    Commands\Fix\EndTimeWeeklyRecurredEvents::class,
     Commands\Fix\IconDimensions::class,
     Commands\HelpContent\Migrate::class,
     Commands\Migrate\MigrateList::class,
