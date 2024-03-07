@@ -53,6 +53,7 @@ class AddLti13aTables extends Migration
             ADD COLUMN lti_version VARCHAR(8) NOT NULL DEFAULT '1.1',
             ADD COLUMN is_global TINYINT(1) NOT NULL DEFAULT '1',
             ADD COLUMN oidc_init_url VARCHAR(255) NOT NULL DEFAULT '',
+            ADD COLUMN jwks_url VARCHAR(255) NOT NULL DEFAULT '',
             ADD COLUMN deep_linking_url VARCHAR(255) NOT NULL DEFAULT ''"
         );
     }

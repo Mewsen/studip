@@ -116,7 +116,6 @@ class Registration implements RegistrationInterface
 
     #[\Override] public function getToolJwksUrl(): ?string
     {
-        //TODO
-        return null;
+        return $this->lti_link->tool->jwks_url ?? null;
     }
 }

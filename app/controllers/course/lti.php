@@ -99,7 +99,7 @@ class Course_LtiController extends StudipController
             $this->message = $builder->buildPlatformOriginatingLaunch(
                 $registration,
                 \OAT\Library\Lti1p3Core\Message\LtiMessageInterface::LTI_MESSAGE_TYPE_RESOURCE_LINK_REQUEST,
-                URLHelper::getURL($lti_data->getLaunchURL()),
+                URLHelper::getURL($lti_data->getLaunchURL(), [], true),
                 $GLOBALS['user']->id,
                 $lti_data->id,
                 [
@@ -221,6 +221,8 @@ class Course_LtiController extends StudipController
             }
             $tool->name            = $lti_data->title;
             $tool->launch_url      = trim(Request::get('launch_url'));
+            $tool->oidc_init_url   = trim(Request::get('oidc_init_url'));
+            $tool->jwks_url        = trim(Request::get('jwks_url'));
             $tool->consumer_key    = trim(Request::get('consumer_key'));
             $tool->consumer_secret = trim(Request::get('consumer_secret'));
             $tool->send_lis_person = Request::int('send_lis_person', 0);

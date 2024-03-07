@@ -59,6 +59,18 @@
             </label>
 
             <label>
+                <?= _('Login-URL') ?>
+                <?= tooltipIcon(_('Die URL, mit der der Login via OpenID Connect stattfindet.')) ?>
+                <input type="text" name="oidc_init_url" value="<?= htmlReady($lti_data->tool->oidc_init_url ?? '') ?>">
+            </label>
+
+            <label>
+                <?= _('JWKS-URL') ?>
+                <?= tooltipIcon(_('Die URL, mit der der der Austausch von JSON web keys stattfinden kann.')) ?>
+                <input type="text" name="jwks_url" value="<?= htmlReady($lti_data->tool->jwks_url ?? '') ?>">
+            </label>
+
+            <label>
                 <?= _('Consumer-Key des LTI-Tools') ?>
                 <input type="text" name="consumer_key" value="<?= htmlReady($lti_data->getConsumerKey()) ?>">
             </label>

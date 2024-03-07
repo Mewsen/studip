@@ -20,7 +20,6 @@ class Lti13aController extends AuthenticatedController
             null,
             new \Monolog\Logger('lti13a', [new \Monolog\Handler\StreamHandler($GLOBALS['TMP_PATH'] . '/lti13a_debug.log', \Monolog\Logger::DEBUG)])
         );
-        die('laaft');
         $response = $oidc_handler->handle($request);
         $this->renderPsrResponse($response);
 
