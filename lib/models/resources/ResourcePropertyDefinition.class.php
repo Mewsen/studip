@@ -111,7 +111,8 @@ class ResourcePropertyDefinition extends SimpleORMap
     public function getOptionsArray()
     {
         if ($this->options) {
-            return explode(';', $this->options);
+            $options = explode(';', $this->options);
+            return array_combine($options, $options);
         }
         return [];
     }
