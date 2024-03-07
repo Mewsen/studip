@@ -64,9 +64,9 @@
             <?= htmlReady($criteria['title']) ?>
             <select name="<?= htmlReady($criteria['name']) ?>">
                 <? if (is_array($criteria['options'])): ?>
-                    <? foreach ($criteria['options'] as $title): ?>
-                        <option value="<?= htmlReady($title) ?>"
-                                <?= $title == $criteria['value'] ? 'selected' : '' ?>
+                    <? foreach ($criteria['options'] as $value => $title): ?>
+                        <option value="<?= htmlReady($value) ?>"
+                                <?= $value == $criteria['value'] ? 'selected' : '' ?>
                         >
                             <?= htmlReady($title) ?>
                         </option>
