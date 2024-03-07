@@ -13,7 +13,7 @@
 # Ron Lucke <lucke@elan-ev.de>, 2022, 2023.
 # M S <strohm@data-quest.de>, 2022
 # Jan-Hendrik Willms <tleilax@gmail.com>, 2022
-# Moritz Strohm <strohm@data-quest.de>, 2022, 2023.
+# Moritz Strohm <strohm@data-quest.de>, 2022, 2023, 2024.
 # Jan-Hendrik Willms <tleilax+studip@gmail.com>, 2023.
 # Philipp Schüttlöffel <schuettloeffel@zqs.uni-hannover.de>, 2023.
 # Kilian Pluta <pluta@zqs.uni-hannover.de>, 2023.
@@ -26,7 +26,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-19 08:59+0200\n"
-"PO-Revision-Date: 2023-10-19 15:29+0000\n"
+"PO-Revision-Date: 2024-03-07 12:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-0/en/>\n"
@@ -35,7 +35,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.2\n"
+"X-Generator: Weblate 5.3.1\n"
 
 #: app/routes/Clipboard.php:26 app/routes/Clipboard.php:68
 #: app/controllers/resources/property.php:65
@@ -25259,7 +25259,7 @@ msgstr "No contact person has been defined."
 msgid ""
 "Bitte wenden Sie sich an den in der Datenschutzerklärung angegebenen "
 "Ansprechpartner."
-msgstr "Please contact the person specified in the privacy policy."
+msgstr "Please contact the person specified in the privacy statement."
 
 #: app/controllers/privacy.php:416
 msgid "Alle Daten"
