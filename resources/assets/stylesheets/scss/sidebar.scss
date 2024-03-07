@@ -87,6 +87,7 @@ $sidebar-width: 270px;
         color: $base-color;
         font-weight: bold;
         padding: 4px;
+        word-break: break-word;
     }
     .sidebar-widget-options {
         float: right;
