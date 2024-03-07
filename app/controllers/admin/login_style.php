@@ -177,8 +177,8 @@ class Admin_LoginStyleController extends AuthenticatedController
         CSRFProtection::verifyRequest();
 
         $entry->setData([
-            'title' => trim(Request::get('title')),
-            'description' => trim(Request::get('description')),
+            'title' => Request::i18n('title'),
+            'description' => Request::i18n('description'),
         ]);
 
         if ($entry->store()) {

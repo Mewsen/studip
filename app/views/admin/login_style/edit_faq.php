@@ -9,23 +9,25 @@
       enctype="multipart/form-data"
       class="default">
     <?= CSRFProtection::tokenTag() ?>
-
-    <label class="studiprequired">
-        <?= _('Titel') ?>
-        <span title="<?= _('Dies ist ein Pflichtfeld') ?>" aria-hidden="true" class="asterisk">*</span>
-        <input type="text" name="title" value="<?= htmlReady($entry->title) ?>" required>
-    </label>
-
     <label>
-        <span class="studiprequired">
-            <?= _('Text') ?>
-            <span title="<?= _('Dies ist ein Pflichtfeld') ?>" aria-hidden="true" class="asterisk">*</span>
+        <span class="required">
+            <?= _('Titel') ?>
         </span>
-        <textarea name="description"
-                  class="add_toolbar wysiwyg" data-editor="toolbar=minimal"><?= htmlReady($entry->description)?></textarea>
+        <?= I18N::input('title', $entry->title, ['required' => true]) ?>
     </label>
-
-
+    <label>
+        <span class="required">
+            <?= _('Text') ?>
+        </span>
+        <?= I18N::textarea('description',
+            $entry->description,
+            [
+                'class'       => 'wysiwyg',
+                'required'    => true,
+                'data-editor' => 'toolbar=small'
+            ]
+        ) ?>
+    </label>
     <div data-dialog-button>
         <?= \Studip\Button::create(_('Speichern')) ?>
     </div>

@@ -25,7 +25,8 @@ class LoginFaq extends SimpleORMap
     {
         $config['db_table'] = 'login_faq';
 
-    $config['i18n'] = ['title', 'description'];
+        $config['i18n_fields']['title'] = true;
+        $config['i18n_fields']['description'] = true;
 
         parent::configure($config);
     }
