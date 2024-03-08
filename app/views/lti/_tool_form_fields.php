@@ -1,7 +1,9 @@
-<label>
-    <?= _('URL der Anwendung') ?>
+<label class="studiprequired">
+    <span class="textlabel"><?= _('URL der Anwendung') ?></span>
+    <span class="asterisk">*</span>
     <?= tooltipIcon(_('Die Betreiber dieses Tools müssen Ihnen eine URL und Zugangsdaten (Consumer-Key und Consumer-Secret) mitteilen.')) ?>
-    <input type="text" name="launch_url" value="<?= htmlReady($custom_launch_url ?: $tool->launch_url) ?>">
+    <input type="text" name="launch_url" required
+           value="<?= htmlReady($custom_launch_url ?? $tool->launch_url) ?>">
 </label>
 
 <label>
@@ -13,21 +15,27 @@
 <label>
     <?= _('JWKS-URL') ?>
     <?= tooltipIcon(_('Die URL, mit der der der Austausch von JSON web keys stattfinden kann.')) ?>
-    <input type="text" name="jwks_url" value="<?= htmlReady($tool->jwks_url ?? '') ?>">
+    <input type="text" name="jwks_url"
+           value="<?= htmlReady($tool->jwks_url ?? '') ?>">
 </label>
 
-<label>
-    <?= _('Consumer-Key des LTI-Tools') ?>
-    <input type="text" name="consumer_key" value="<?= htmlReady($tool->consumer_key) ?>">
+<label class="studiprequired">
+    <span class="textlabel"><?= _('Consumer-Key des LTI-Tools') ?></span>
+    <span class="asterisk">*</span>
+    <input type="text" name="consumer_key" required
+           value="<?= htmlReady($tool->consumer_key) ?>">
 </label>
 
-<label>
-    <?= _('Consumer-Secret des LTI-Tools') ?>
-    <input type="text" name="consumer_secret" value="<?= htmlReady($tool->consumer_secret) ?>">
+<label class="studiprequired">
+    <span class="textlabel"><?= _('Consumer-Secret des LTI-Tools') ?></span>
+    <span class="asterisk">*</span>
+    <input type="text" name="consumer_secret" required
+           value="<?= htmlReady($tool->consumer_secret) ?>">
 </label>
 
-<label>
-    <?= _('LTI-Version') ?>
+<label class="studiprequired">
+    <span class="textlabel"><?= _('LTI-Version') ?></span>
+    <span class="asterisk">*</span>
     <select name="lti_version">
         <option value="1.1" <?= empty($tool->lti_version) || $tool->lti_version === '1.1' ? 'selected' : '' ?>>
             1.0/1.1
@@ -48,7 +56,7 @@
 
 <label>
     <?= _('Schlüssel des LTI-Tools per URL laden') ?>
-    <input type="url" name="keyset_url" value="TODO">
+    <input type="url" name="keyset_url" value="">
 </label>
 
 <label>
