@@ -29,7 +29,10 @@
         <legend><?= _('Zugangsdaten') ?></legend>
         <label>
             <?= _('Auswahl des externen Tools') ?>
-            <select class="config_tool" name="tool_id">
+            <select class="config_tool" name="tool_id"
+                    data-shows=".custom-tool-config"
+                    data-hides=".global-tool-settings"
+                    data-triggering-value="">
                 <? foreach ($tools as $tool): ?>
                     <option value="<?= htmlReady($tool->id) ?>"
                         <? if ($tool->allow_custom_url): ?>
@@ -39,13 +42,13 @@
                         <?= htmlReady($tool->name) ?>
                     </option>
                 <? endforeach ?>
-                <option value="0" <?= $lti_data->hasOwnTool() ? 'selected' : '' ?>><?= _('Eigenes Tool einrichten') ?></option>
+                <option value="" <?= $lti_data->hasOwnTool() ? 'selected' : '' ?>><?= _('Eigenes Tool einrichten') ?></option>
             </select>
         </label>
     </fieldset>
     <fieldset>
         <legend><?= _('Konfiguration des LTI-Tools') ?></legend>
-        <div class="config_custom_url">
+        <div class="global-tool-settings">
             <label>
                 <?= _('URL der Anwendung (optional)') ?>
                 <?= tooltipIcon(_('Sie können direkt auf eine URL in der Anwendung verlinken.')) ?>
@@ -53,7 +56,7 @@
             </label>
         </div>
 
-        <div class="config_launch_url">
+        <div class="custom-tool-config">
             <?= $this->render_partial(
                 'lti/_tool_form_fields',
                 [
@@ -77,22 +80,3 @@
         <?= Studip\LinkButton::createCancel(_('Abbrechen'), $controller->url_for('course/lti')) ?>
     </footer>
 </form>
-
-<script>
-    $('.config_tool').change(function() {
-        let url = $(this).find(':selected').data('url');
-
-        if ($(this).val() == 0) {
-            $('.config_launch_url').show();
-        } else {
-            $('.config_launch_url').hide();
-        }
-
-        if (url) {
-            $('.config_custom_url').find('input').attr('placeholder', url);
-            $('.config_custom_url').show();
-        } else {
-            $('.config_custom_url').hide();
-        }
-    }).trigger('change');
-</script>

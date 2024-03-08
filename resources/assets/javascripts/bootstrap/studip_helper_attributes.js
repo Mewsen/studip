@@ -126,7 +126,7 @@ STUDIP.ready((event) => {
 
 //
 $(document).on('change', '[data-hides],[data-shows]', function () {
-    if (!$(this).is(':checkbox,:radio')) {
+    if (!$(this).is(':checkbox,:radio,select')) {
         return;
     }
 
@@ -135,8 +135,12 @@ $(document).on('change', '[data-hides],[data-shows]', function () {
         if (selector === undefined || $(this).prop('disabled')) {
             return;
         }
+        let triggering_value = undefined;
+        if ($(this).is('select')) {
+            triggering_value = $(this).data('triggering-value');
+        }
 
-        var state = $(this).prop('checked') || $(this).prop('indeterminate') || false;
+        var state = $(this).prop('checked') || $(this).prop('indeterminate') || $(this).val() === triggering_value || false;
         $(selector).each(function() {
             var condition = $(this).data(`${type}Condition`),
                 toggle = state && (!condition || $(condition).length > 0);
