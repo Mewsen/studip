@@ -167,6 +167,7 @@ class Resources_PropertyController extends AuthenticatedController
             $this->property->searchable = $this->searchable ? '1' : '0';
             $this->property->info_label = $this->info_label ? '1' : '0';
             $this->property->range_search = $this->range_search ? '1' : '0';
+            $this->property->options = $this->options;
 
             if (!$this->property->system) {
                 //The following fields may only be edited
