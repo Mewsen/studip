@@ -17,7 +17,10 @@ class ConsultationMailer
     public static function sendMessage(?User $sender, User $user, ConsultationBooking $booking, string $subject, ?string $reason = '')
     {
         // Don't send message if user doesn't want it
-        if (!UserConfig::get($user->id)->CONSULTATION_SEND_MESSAGES) {
+        if (
+            $booking->user_id !== $user->id
+            && !UserConfig::get($user->id)->CONSULTATION_SEND_MESSAGES
+        ) {
             return;
         }
 
