@@ -70,12 +70,6 @@
             <?= _('Anzeige im IFRAME auf der Seite') ?>
             <?= tooltipIcon(_('Normalerweise wird das externe Tool in einem neuen Fenster angezeigt. Aktivieren Sie diese Option, wenn die Anzeige stattdessen in einem IFRAME erfolgen soll.')) ?>
         </label>
-
-        <label>
-            <?= _('Zusätzliche LTI-Parameter') ?>
-            <?= tooltipIcon(_('Ein Wert pro Zeile, Beispiel: Review:Chapter=1.2.56')) ?>
-            <textarea name="custom_parameters"><?= htmlReady($lti_data->options['custom_parameters'] ?? '') ?></textarea>
-        </label>
     </fieldset>
 
     <footer data-dialog-button>

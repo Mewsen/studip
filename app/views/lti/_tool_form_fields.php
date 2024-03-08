@@ -69,3 +69,9 @@
     <?= _('Nutzerdaten an LTI-Tool senden') ?>
     <?= tooltipIcon(_('Nutzerdaten dürfen nur an das externe Tool gesendet werden, wenn es keine Datenschutzbedenken gibt. Mit Setzen des Hakens bestätigen Sie, dass die Übermittlung der Daten zulässig ist.')) ?>
 </label>
+
+<label>
+    <?= _('Zusätzliche LTI-Parameter') ?>
+    <?= tooltipIcon(_('Ein Wert pro Zeile, Beispiel: Review:Chapter=1.2.56')) ?>
+    <textarea name="custom_parameters"><?= htmlReady($tool->custom_parameters) ?></textarea>
+</label>
