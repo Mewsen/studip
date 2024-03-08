@@ -26,9 +26,9 @@
 
     </fieldset>
     <fieldset>
-        <legend><?= _('Zugangsdaten') ?></legend>
+        <legend><?= _('LTI-Tool') ?></legend>
         <label>
-            <?= _('Auswahl des externen Tools') ?>
+            <?= _('LTI-Tool auswählen') ?>
             <select class="config_tool" name="tool_id"
                     data-shows=".custom-tool-config"
                     data-hides=".global-tool-settings"
@@ -42,7 +42,7 @@
                         <?= htmlReady($tool->name) ?>
                     </option>
                 <? endforeach ?>
-                <option value="" <?= $lti_data->hasOwnTool() ? 'selected' : '' ?>><?= _('Eigenes Tool einrichten') ?></option>
+                <option value="" <?= $lti_data->hasOwnTool() ? 'selected' : '' ?>><?= _('Eigenes LTI-Tool einrichten') ?></option>
             </select>
         </label>
     </fieldset>
@@ -50,8 +50,8 @@
         <legend><?= _('Konfiguration des LTI-Tools') ?></legend>
         <div class="global-tool-settings">
             <label>
-                <?= _('URL der Anwendung (optional)') ?>
-                <?= tooltipIcon(_('Sie können direkt auf eine URL in der Anwendung verlinken.')) ?>
+                <?= _('Angepasste URL des LTI-Tools') ?>
+                <?= tooltipIcon(_('Sie können direkt auf eine URL im LTI-Tool verlinken.')) ?>
                 <input type="text" name="custom_url" value="<?= htmlReady($lti_data->getLaunchURL()) ?>">
             </label>
         </div>
