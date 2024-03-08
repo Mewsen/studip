@@ -133,8 +133,6 @@ class RegistrationController extends AuthenticatedController
                 $GLOBALS['auth']->auth['auth_plugin']  = $new_user['auth_plugin'];
                 $GLOBALS['auth']->auth_set_user_settings($new_user->user_id);
                 $GLOBALS['auth']->auth['uid'] = $new_user['user_id'];
-                $GLOBALS['auth']->auth['exp'] = time() + (60 * $GLOBALS['auth']->lifetime);
-                $GLOBALS['auth']->auth['refresh'] = time() + (60 * $GLOBALS['auth']->refresh);
 
                 Seminar_Register_Auth::sendValidationMail($new_user);
 

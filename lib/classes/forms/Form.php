@@ -527,7 +527,10 @@ class Form extends Part
             return function ($value) use ($context, $input) {
                 if ($context && !$value && $value !== null) {
                     $metadata = $context->getTableMetadata();
-                    if ($metadata['fields'][$input->getName()]['null'] === 'YES') {
+                    if (
+                        isset($metadata['fields'][$input->getName()]['null'])
+                        && $metadata['fields'][$input->getName()]['null'] === 'YES'
+                    ) {
                         //sets the value to null if this is a feasible db value for this field:
                         $value = null;
                     }

@@ -699,7 +699,7 @@ class smtp_message_class extends email_message_class
 					$message_id_set=1;
 					break;
 			}
-			if(strcmp($error,""))
+			if(strcmp($error ?? null,""))
 				return($this->ResetConnection($error));
 			if(strtolower($header_name)=="bcc")
 				continue;
