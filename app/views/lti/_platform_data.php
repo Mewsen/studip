@@ -5,13 +5,25 @@
 ?>
 <dl>
     <dt><?= _('Zielgruppe') ?></dt>
-    <dd><?= htmlReady($platform->getAudience()) ?></dd>
+    <dd>
+        <a href="<?= htmlReady($platform->getAudience()) ?>">
+            <?= htmlReady($platform->getAudience()) ?>
+        </a>
+    </dd>
 
     <dt><?= _('OAuth2 access token URL') ?></dt>
-    <dd><?= htmlReady($platform->getOAuth2AccessTokenUrl()) ?></dd>
+    <dd>
+        <a href="<?= htmlReady($platform->getOAuth2AccessTokenUrl()) ?>">
+            <?= htmlReady($platform->getOAuth2AccessTokenUrl()) ?>
+        </a>
+    </dd>
 
     <dt><?= _('OIDC authentication URL') ?></dt>
-    <dd><?= htmlReady($platform->getOidcAuthenticationUrl()) ?></dd>
+    <dd>
+        <a href="<?= htmlReady($platform->getOidcAuthenticationUrl()) ?>">
+            <?= htmlReady($platform->getOidcAuthenticationUrl()) ?>
+        </a>
+    </dd>
 
     <?
     $keyring = \Studip\LTI13a\PlatformManager::getPlatformKeyring();
