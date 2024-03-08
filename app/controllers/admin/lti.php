@@ -31,6 +31,11 @@ class Admin_LtiController extends AuthenticatedController
             $this->url_for('admin/lti/edit'),
             Icon::create('add')
         )->asDialog();
+        $widget->addLink(
+            _('Daten zur LTI-Plattform anzeigen'),
+            $this->url_for('admin/lti/platform_data'),
+            Icon::create('info')
+        )->asDialog();
 
         Helpbar::get()->addPlainText('', _('Hier können Sie Verknüpfungen mit externen Tools konfigurieren, sofern diese den LTI-Standard (Version 1.x) unterstützen.'));
     }
@@ -108,5 +113,11 @@ class Admin_LtiController extends AuthenticatedController
         }
 
         $this->redirect('admin/lti');
+    }
+
+    public function platform_data_action()
+    {
+        $this->platform = \Studip\LTI13a\PlatformManager::getPlatformConfiguration();
+        $this->render_template('lti/_platform_data');
     }
 }

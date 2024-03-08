@@ -18,6 +18,13 @@
         <?= $this->render_partial('lti/_tool_form_fields', ['tool' => $tool]) ?>
     </fieldset>
 
+    <? if ($platform) : ?>
+    <fieldset>
+        <legend><?= _('Daten zur LTI-Plattform') ?></legend>
+        <?= $this->render_partial('lti/_platform_data', ['platform' => $platform]) ?>
+    </fieldset>
+    <? endif ?>
+
     <footer data-dialog-button>
         <?= Studip\Button::createAccept(_('Speichern'), 'save') ?>
         <?= Studip\LinkButton::createCancel(_('Abbrechen'), $controller->url_for('admin/lti')) ?>
