@@ -91,7 +91,7 @@
                     <? if ($pagedata['is_in_content'] || $pagedata['is_in_name']) : ?>
                         <?= _('Aktuelle Version') . ': ' . ($pagedata['page']->chdate ? date('d.m.Y H:i:s', $pagedata['page']->chdate) : _('unbekannt')) ?>
                     <? else : ?>
-                        <?= $version->chdate > 0 ? date('d.m.Y H:i:s', $version->chdate) : _('unbekannt') ?>
+                        <?= $version->mkdate > 0 ? date('d.m.Y H:i:s', $version->mkdate) : _('unbekannt') ?>
                     <? endif ?>
                 </td>
             </tr>
