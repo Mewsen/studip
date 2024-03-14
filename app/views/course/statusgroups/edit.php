@@ -83,7 +83,7 @@
                                 <label for="<?= $d->id ?>">
                                     <input type="checkbox" name="dates[]" value="<?= $d->id ?>" id="<?= $d->id?>"
                                     <?= $group->dates->find($d->id) ? ' checked' : '' ?>>
-                                    <?= htmlReady($d->getFullname()) ?>
+                                    <?= htmlReady($d->getFullName()) ?>
                                 </label>
                             <?php endforeach ?>
                         </section>
@@ -100,7 +100,7 @@
                     <label for="<?= $s->id ?>">
                         <input type="checkbox" name="dates[]" value="<?= $s->id ?>" id="<?= $s->id?>"
                             <?= $group->dates->find($s->id) ? ' checked' : '' ?>>
-                        <?= htmlReady($s->getFullname()) ?>
+                        <?= htmlReady($s->getFullName()) ?>
                     </label>
                 <?php endforeach ?>
             </fieldset>

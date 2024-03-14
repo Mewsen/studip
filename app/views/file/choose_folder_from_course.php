@@ -55,7 +55,7 @@ jQuery(function ($) {
                             name="course_id"
                             value="<?= htmlReady($course->id) ?>"
                             class="undecorated">
-                        <?= htmlReady($course->getFullname()) ?>
+                        <?= htmlReady($course->getFullName()) ?>
                     </button>
                 </td>
                 <td data-sort-value="<?= htmlReady($course->getTextualSemester()) ?>">

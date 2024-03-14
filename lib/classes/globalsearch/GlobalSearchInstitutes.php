@@ -65,7 +65,7 @@ class GlobalSearchInstitutes extends GlobalSearchModule
         $inst = Institute::buildExisting($inst_id);
         $result = [
             'id'     => $inst->id,
-            'name'   => self::mark($inst->getFullname(), $search),
+            'name'   => self::mark($inst->getFullName(), $search),
             'url'    => URLHelper::getURL(
                 'dispatch.php/institute/overview',
                 ['cid' => $inst->id],

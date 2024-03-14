@@ -285,7 +285,7 @@ class InstituteCalendarHelper
             $course = Course::find($cid);
             $cycle_dates = SeminarCycleDate::findBySeminar($course->seminar_id);
             if (count($cycle_dates) < 1) {
-                $eventless[$cid] = $course->getFullname('number-name');
+                $eventless[$cid] = $course->getFullName('number-name');
             } elseif ($semester) {
                 $has_date_in_semester = false;
                 foreach ($cycle_dates as $cycle_date) {
@@ -298,7 +298,7 @@ class InstituteCalendarHelper
                     if ($has_date_in_semester) break;
                 }
                 if (!$has_date_in_semester) {
-                    $eventless[$cid] = $course->getFullname('number-name');
+                    $eventless[$cid] = $course->getFullName('number-name');
                 }
             }
         }
@@ -399,7 +399,7 @@ class InstituteCalendarHelper
                 $end_time = implode(':', $end_time);
 
                 $move_url = URLHelper::getURL('dispatch.php/admin/courseplanning/move_event');
-                $name = $course->getFullname('number-name');
+                $name = $course->getFullName('number-name');
 
                 if ($start_time != $cycle_date['start_time'] && $end_time != $cycle_date['end_time']) {
                     $start = self::iso8601date(strtotime($day_offset . ' days'), $cycle_date['start_time']);
@@ -525,7 +525,7 @@ class InstituteCalendarHelper
         $event_colors = self::getCourseEventcolors($course);
 
         $move_url = URLHelper::getURL('dispatch.php/admin/courseplanning/move_event');
-        $name = $course->getFullname('number-name');
+        $name = $course->getFullName('number-name');
 
         if ($start_time != $cycle_date['start_time'] && $end_time != $cycle_date['end_time']) {
             $start = self::iso8601date(strtotime($day_offset . ' days'), $cycle_date['start_time']);
@@ -596,11 +596,11 @@ class InstituteCalendarHelper
     {
         $info_string = '';
 
-        $info_string .= $course->getFullname('number-name') . "\n";
+        $info_string .= $course->getFullName('number-name') . "\n";
 
         $dozenten = [];
         foreach (CourseMember::findByCourseAndStatus($course->id, 'dozent') as $cmember) {
-            $dozenten[$cmember->user->user_id] = $cmember->user->getFullname();
+            $dozenten[$cmember->user->user_id] = $cmember->user->getFullName();
         }
         if ($dozenten) {
             $info_string .= implode(', ', $dozenten) . "\n";

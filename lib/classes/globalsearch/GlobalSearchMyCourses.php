@@ -151,7 +151,7 @@ class GlobalSearchMyCourses extends GlobalSearchModule
         $result = [
             'id'            => $course->id,
             'number'        => self::mark($course->veranstaltungsnummer, $search),
-            'name'          => self::mark($course->getFullname(), $search),
+            'name'          => self::mark($course->getFullName(), $search),
             'url'           => URLHelper::getURL('seminar_main.php', ['cid' => $course->id], true),
             'date'          => htmlReady($semester->short_name),
             'dates'         => $turnus_string,

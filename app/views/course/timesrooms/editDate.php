@@ -130,7 +130,7 @@
                             <?= Avatar::getAvatar($teacher->user_id)->getImageTag(Avatar::SMALL) ?>
                         </span>
                         <span class="studip-selection-label">
-                            <?= htmlReady($teacher->getFullname()) ?>
+                            <?= htmlReady($teacher->getFullName()) ?>
                         </span>
                     </li>
                 <? endforeach ?>

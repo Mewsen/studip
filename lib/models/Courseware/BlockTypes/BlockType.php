@@ -279,7 +279,7 @@ abstract class BlockType
         $feedbacks = [];
         foreach ($this->block['feedback'] as $item) {
             if ($item['user_id']) {
-                $item['user_name'] = \User::find($item['user_id'])->getFullname();
+                $item['user_name'] = \User::find($item['user_id'])->getFullName();
                 $item['user_avatar'] = \Avatar::getAvatar($item['user_id'])->getImageTag(\Avatar::SMALL);
             }
             array_push($feedbacks, $item);

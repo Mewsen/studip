@@ -31,7 +31,7 @@
                     <li>
                         <a href="<?= $controller->link_for('profile?username=' . $teacher->username) ?>">
                             <?= Avatar::getAvatar($teacher->user_id)->getImageTag(Avatar::SMALL) ?>
-                            <?= htmlReady($teacher->getFullname()) ?>
+                            <?= htmlReady($teacher->getFullName()) ?>
                         </a>
                     </li>
                 <? endforeach ?>

@@ -80,7 +80,7 @@ class GlobalSearchUsers extends GlobalSearchModule implements GlobalSearchFullte
         $user = User::buildExisting($data);
         return [
             'id'         => $user->id,
-            'name'       => self::markMany($user->getFullname(), $search),
+            'name'       => self::markMany($user->getFullName(), $search),
             'url'        => URLHelper::getURL(
                 'dispatch.php/profile',
                 ['username' => $user->username],

@@ -22,7 +22,7 @@
             <h4><?= _('Nächster Termin') ?></h4>
             <a href="<?= URLHelper::getLink("dispatch.php/course/dates/details/".$nextdate->getId(), ['cid' => $course->id]) ?>" data-dialog="size=auto">
                 <?= Icon::create('date')->asImg(['class' => "text-bottom"]) ?>
-                <?= htmlReady($nextdate->getFullname()) ?>
+                <?= htmlReady($nextdate->getFullName()) ?>
             </a>
         </div>
     <? endif ?>

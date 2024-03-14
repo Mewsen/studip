@@ -641,11 +641,11 @@ class MessagesController extends AuthenticatedController {
             $this->msg['from'] = $message['autor_id'] === '____%system%____'
                 ? _('Stud.IP')
                 : ($message->getSender()
-                    ? $message->getSender()->getFullname()
+                    ? $message->getSender()->getFullName()
                     : _('unbekannt'));
             $this->msg['to'] = $GLOBALS['user']->id == $message->autor_id ?
                 join(', ', $message->getRecipients()->pluck('fullname')) :
-                $GLOBALS['user']->getFullname() . ' ' . sprintf(_('(und %d weitere)'), $message->getNumRecipients()-1);
+                $GLOBALS['user']->getFullName() . ' ' . sprintf(_('(und %d weitere)'), $message->getNumRecipients()-1);
 
             if ($attachment_folder = Folder::findOneByRange_id($message->id)) {
                 $this->msg['attachments'] = $attachment_folder->file_refs->toArray('name size');

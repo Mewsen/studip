@@ -88,12 +88,12 @@ class StatusgruppeUser extends SimpleORMap implements PrivacyObject
      */
     public function name($format = 'full_rev')
     {
-        return $this->user->getFullname($format);
+        return $this->user->getFullName($format);
     }
 
     public function getUserFullname($format = "full")
     {
-        return User::build(array_merge(['motto' => ''], $this->toArray('vorname nachname username title_front title_rear')))->getFullname($format);
+        return User::build(array_merge(['motto' => ''], $this->toArray('vorname nachname username title_front title_rear')))->getFullName($format);
     }
 
     /**

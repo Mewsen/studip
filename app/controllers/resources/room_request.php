@@ -2193,7 +2193,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                 );
                 return;
             }
-            $range_name = $course_date->course->getFullname();
+            $range_name = $course_date->course->getFullName();
             try {
                 $booking = $room->createBooking(
                     $this->current_user,
@@ -2228,7 +2228,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                 );
                 return;
             }
-            $range_name = $metadate->course->getFullname();
+            $range_name = $metadate->course->getFullName();
             if ($metadate->dates) {
                 foreach ($metadate->dates as $date) {
                     try {

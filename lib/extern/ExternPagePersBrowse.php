@@ -377,7 +377,7 @@ class ExternPagePersBrowse extends ExternPage
                     $content[] = array_merge(
                         [
                             'NAME'        => $institute->name,
-                            'FULLNAME'    => $institute->getFullname(),
+                            'FULLNAME'    => $institute->getFullName(),
                             'ID'          => $institute->id,
                             'COUNT_USERS' => $row_count['count_user'],
                         ],

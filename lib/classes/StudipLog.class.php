@@ -280,7 +280,7 @@ class StudipLog
         foreach ($users as $user) {
             $name = sprintf(
                 '%s (%s)',
-                my_substr($user->getFullname(), 0, 20),
+                my_substr($user->getFullName(), 0, 20),
                 $user->username
             );
             $result[] = [$user->getId(), $name];

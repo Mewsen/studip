@@ -36,7 +36,7 @@ class RootFolder extends StandardFolder
     {
         if ($attribute === 'name') {
             $range = $this->getRangeObject();
-            return isset($range) ? $range->getFullname('short') : '';
+            return isset($range) ? $range->getFullName('short') : '';
         }
         return $this->folderdata[$attribute];
     }

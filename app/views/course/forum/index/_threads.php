@@ -78,7 +78,7 @@
                             <? endif; ?>
                             <? if (!$entry['anonymous'] || $entry['user_id'] == $GLOBALS['user']->id || $GLOBALS['perm']->have_perm('root')): ?>
                                 <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => get_username($entry['user_id'])]) ?>">
-                                    <?= htmlReady(($temp_user = User::find($entry['user_id'])) ? $temp_user->getFullname() : $entry['author']) ?>
+                                    <?= htmlReady(($temp_user = User::find($entry['user_id'])) ? $temp_user->getFullName() : $entry['author']) ?>
                                 </a>
                             <? endif; ?>
                             <?= _("am") ?> <?= strftime($time_format_string_short, (int)$entry['mkdate']) ?>

@@ -73,7 +73,7 @@
                                 <a href="<?= $controller->url_for('admin/overlapping/course_info', $comp_cycle->comp_course_id) ?>" data-dialog="">
                                     <?= Icon::create('info-circle', Icon::ROLE_INFO, ['style' => 'vertical-align: text-bottom;', 'title' => _('Veranstaltungsdetails')]) ?>
                                 </a>
-                                <?= htmlReady($comp_cycle->comp_course->getFullname('type-name')) ?>
+                                <?= htmlReady($comp_cycle->comp_course->getFullName('type-name')) ?>
                                 <? if ($comp_cycle->comp_course->admission_turnout) : ?>
                                     <?= sprintf(_('(erw. TN %s)'), htmlReady($comp_cycle->comp_course->admission_turnout)) ?>
                                 <? endif; ?>
@@ -82,7 +82,7 @@
                                 }); ?>
                                 <?= Icon::create('date-cycle', Icon::ROLE_INFO, ['style' => 'vertical-align: text-bottom;']) ?>
                                 <?= sprintf('%s (%sx)', $comp_cycle->comp_cycle->toString('short'), count($dates)); ?>
-                                <a href="<?= $controller->url_for('admin/overlapping/admin_info', $comp_cycle->comp_course->id) ?>" data-dialog="size=auto;title='<?= htmlReady($comp_cycle->comp_course->getFullname()) ?>';">
+                                <a href="<?= $controller->url_for('admin/overlapping/admin_info', $comp_cycle->comp_course->id) ?>" data-dialog="size=auto;title='<?= htmlReady($comp_cycle->comp_course->getFullName()) ?>';">
                                     <?= Icon::create('person-online', Icon::ROLE_INFO, ['style' => 'vertical-align: text-bottom;', 'title' => _('Zuständige Administratoren')]) ?>
                                 </a>
                                 <span title="<?= $comp_cycle->isExcluded() ? _('Veranstaltung nicht berücksichtigen') : _('Veranstaltung berücksichtigen') ?>"

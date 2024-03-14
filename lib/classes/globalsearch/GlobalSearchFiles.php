@@ -220,14 +220,14 @@ class GlobalSearchFiles extends GlobalSearchModule implements GlobalSearchFullte
                 true
             ),
             'img'        => FileManager::getIconForMimeType($data['mime_type'])->asImagePath(),
-            'additional' => self::mark($range ? $range->getFullname() : '', $search, false, true),
+            'additional' => self::mark($range ? $range->getFullName() : '', $search, false, true),
             'date'       => strftime('%x', $fileref['chdate']),
             'expand'     => URLHelper::getURL(
                 "dispatch.php{$range_path}/files/index/{$fileref->folder_id}",
                 ['cid' => $data['range_id']]
             ),
             'expandtext'  => _('In diesem Dateibereich suchen'),
-            'user'       => $user ? $user->getFullname() : _('unbekannt')
+            'user'       => $user ? $user->getFullName() : _('unbekannt')
         ];
     }
 

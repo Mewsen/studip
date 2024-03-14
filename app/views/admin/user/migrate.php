@@ -19,7 +19,7 @@ use Studip\Button, Studip\LinkButton;
 
             <? if ($user !== null): ?>
                 <?= QuickSearch::get('old_id', new StandardSearch('user_id'))
-                               ->defaultValue($user->id, $user->getFullname() . ' (' . $user->username . ')')
+                               ->defaultValue($user->id, $user->getFullName() . ' (' . $user->username . ')')
                                ->render() ?>
             <? else: ?>
                 <?= QuickSearch::get('old_id', new StandardSearch('user_id'))->render() ?>

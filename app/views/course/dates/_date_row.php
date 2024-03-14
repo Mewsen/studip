@@ -8,11 +8,11 @@ $dialog_url = $show_raumzeit
     <td data-sort-value="<?= htmlReady($date->date) ?>" class="date_name">
         <a href="<?= $dialog_url ?>" data-dialog>
             <?= Icon::create($icon)->asImg(['class' => 'text-bottom']) ?>
-            <?= htmlReady($date->getFullname(CourseDate::FORMAT_VERBOSE)) ?>
+            <?= htmlReady($date->getFullName(CourseDate::FORMAT_VERBOSE)) ?>
         </a>
     <? if (count($date->dozenten) > 0): ?>
         <br>
-        (<?= htmlReady(implode(', ', $date->dozenten->getFullname())) ?>)
+        (<?= htmlReady(implode(', ', $date->dozenten->getFullName())) ?>)
     <? endif; ?>
     </td>
     <td class="hidden-small-down">

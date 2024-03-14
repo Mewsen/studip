@@ -127,7 +127,7 @@ class Admin_ConfigurationController extends AuthenticatedController
             $this->configs = ConfigurationModel::searchConfiguration($range);
             $this->title = sprintf(
                 _('Vorhandene Konfigurationsparameter für "%s"'),
-                $range->getFullname()
+                $range->getFullName()
             );
             $this->linkchunk = 'admin/configuration/edit_range_config/' . $range_id;
         } else {
@@ -148,7 +148,7 @@ class Admin_ConfigurationController extends AuthenticatedController
         $field = Request::get('field');
         $range = RangeFactory::find($range_id);
 
-        PageLayout::setTitle(_('Bearbeiten von Konfigurationsparametern für die Range: ') . $range->getFullname());
+        PageLayout::setTitle(_('Bearbeiten von Konfigurationsparametern für die Range: ') . $range->getFullName());
 
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
@@ -186,7 +186,7 @@ class Admin_ConfigurationController extends AuthenticatedController
             $this->configs = ConfigurationModel::searchConfiguration($user);
             $this->title = sprintf(
                 _('Vorhandene Konfigurationsparameter für "%s"'),
-                $user->getFullname()
+                $user->getFullName()
             );
             $this->linkchunk = 'admin/configuration/edit_user_config/' . $user_id;
         } else {
@@ -205,7 +205,7 @@ class Admin_ConfigurationController extends AuthenticatedController
      */
     public function edit_user_config_action(User $user)
     {
-        PageLayout::setTitle(_('Bearbeiten von Konfigurationsparametern für die Person: ') . $user->getFullname());
+        PageLayout::setTitle(_('Bearbeiten von Konfigurationsparametern für die Person: ') . $user->getFullName());
 
         $field = Request::get('field');
 
@@ -246,7 +246,7 @@ class Admin_ConfigurationController extends AuthenticatedController
             $this->configs = ConfigurationModel::searchConfiguration($course);
             $this->title = sprintf(
                 _('Vorhandene Konfigurationsparameter für "%s"'),
-                $course->getFullname()
+                $course->getFullName()
             );
             $this->linkchunk = 'admin/configuration/edit_course_config/' . $course_id;
         } else {
@@ -265,7 +265,7 @@ class Admin_ConfigurationController extends AuthenticatedController
      */
     public function edit_course_config_action(Course $course)
     {
-        PageLayout::setTitle(_('Bearbeiten von Konfigurationsparametern für die Veranstaltung: ') . $course->getFullname());
+        PageLayout::setTitle(_('Bearbeiten von Konfigurationsparametern für die Veranstaltung: ') . $course->getFullName());
 
         $field = Request::get('field');
 
@@ -306,7 +306,7 @@ class Admin_ConfigurationController extends AuthenticatedController
             $this->configs = ConfigurationModel::searchConfiguration($institute);
             $this->title = sprintf(
                 _('Vorhandene Konfigurationsparameter für "%s"'),
-                $institute->getFullname()
+                $institute->getFullName()
             );
             $this->linkchunk = 'admin/configuration/edit_institute_config/' . $institute_id;
         } else {
@@ -325,7 +325,7 @@ class Admin_ConfigurationController extends AuthenticatedController
      */
     public function edit_institute_config_action(Institute $institute)
     {
-        PageLayout::setTitle(_('Bearbeiten von Konfigurationsparametern für die Einrichtung: ') . $institute->getFullname());
+        PageLayout::setTitle(_('Bearbeiten von Konfigurationsparametern für die Einrichtung: ') . $institute->getFullName());
 
         $field = Request::get('field');
 

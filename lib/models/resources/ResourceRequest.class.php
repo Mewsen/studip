@@ -1446,14 +1446,14 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                     continue;
                 }
                 if ($rra->appointment) {
-                    $parts[] = $rra->appointment->getFullname('include-room');
+                    $parts[] = $rra->appointment->getFullName('include-room');
                 }
             }
             $strings[] = implode('; ', $parts);
         } elseif ($this->termin_id) {
             if ($this->date) {
                 if ($with_past_intervals || $this->date->end_time >= $now) {
-                    $strings[] = $this->date->getFullname('include-room');
+                    $strings[] = $this->date->getFullName('include-room');
                 }
             }
         } elseif ($this->metadate_id) {
@@ -1461,7 +1461,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 $this->cycle->dates->filter(function($date) use($with_past_intervals, $now) {
                     return $with_past_intervals || $date->end_time >= $now;
                 })->map(function($date) use(&$strings) {
-                    $strings[] = $date->getFullname('include-room');
+                    $strings[] = $date->getFullName('include-room');
                 });
             }
         } elseif ($this->course_id) {
@@ -1519,13 +1519,13 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             if ($short || !$date) {
                 return _('Einzeltermin');
             } else {
-                return sprintf(_('Einzeltermin (%s)'), $date->getFullname());
+                return sprintf(_('Einzeltermin (%s)'), $date->getFullName());
             }
         } elseif ($this->date) {
             if ($short) {
                 return _('Einzeltermin');
             } else {
-                return sprintf(_('Einzeltermin (%s)'), $this->date->getFullname());
+                return sprintf(_('Einzeltermin (%s)'), $this->date->getFullName());
             }
         } elseif ($this->cycle) {
             if ($short) {
@@ -1820,7 +1820,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
     public function getRangeName()
     {
         if ($this->getRangeType() === 'course') {
-            $name = $this->getRangeObject()->getFullname();
+            $name = $this->getRangeObject()->getFullName();
             $name .= ' (' . implode(',', $this->getRangeObject()->getMembersWithStatus('dozent', true)->limit(3)->getValue('nachname')) . ')';
         } else {
             $range_object = $this->getRangeObject();
@@ -1837,9 +1837,9 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                         //see the name of the requester.
                         if ($this->resource_id && ($this->resource instanceof Resource)
                             && $this->resource->userHasPermission($current_user, 'autor')) {
-                            $name = $range_object->getFullname();
+                            $name = $range_object->getFullName();
                         } else if (ResourceManager::userHasGlobalPermission($current_user, 'autor')) {
-                            $name = $range_object->getFullname();
+                            $name = $range_object->getFullName();
                         } else {
                             return '';
                         }
@@ -1848,7 +1848,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                     }
                 }
             } else {
-                $name = $range_object->getFullname();
+                $name = $range_object->getFullName();
             }
             if ($this->comment) {
                 $name .= " \n" . $this->comment;
@@ -2210,7 +2210,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
         $range_object = $this->getRangeObject();
         $mail_title = _('Raumanfrage wurde abgelehnt');
         if($range_object instanceof Course) {
-            $mail_title .= ': ' . $range_object->getFullname();
+            $mail_title .= ': ' . $range_object->getFullName();
         }
         $mail_text  = $template->render(
             [

@@ -56,7 +56,7 @@ class Course_TimesroomsController extends AuthenticatedController
         PageLayout::setHelpKeyword('Basis.Veranstaltungen');
 
         $title = _('Verwaltung von Zeiten und Räumen');
-        $title = $this->course->getFullname() . ' - ' . $title;
+        $title = $this->course->getFullName() . ' - ' . $title;
 
         PageLayout::setTitle($title);
 
@@ -411,7 +411,7 @@ class Course_TimesroomsController extends AuthenticatedController
         //time changed for regular date. create normal singledate and cancel the regular date
         if ($termin->metadate_id != '' && $time_changed) {
             $termin_values = $termin->toArray();
-            $termin_info   = $termin->getFullname();
+            $termin_info   = $termin->getFullName();
 
             $termin->cancelDate();
             PageLayout::postInfo(sprintf(
@@ -537,7 +537,7 @@ class Course_TimesroomsController extends AuthenticatedController
      */
     public function createSingleDate_action()
     {
-        PageLayout::setTitle(Course::findCurrent()->getFullname() . " - " . _('Einzeltermin anlegen'));
+        PageLayout::setTitle(Course::findCurrent()->getFullName() . " - " . _('Einzeltermin anlegen'));
         $this->restoreRequest(
             words('date start_time end_time room related_teachers related_statusgruppen freeRoomText dateType fromDialog course_type')
         );
@@ -624,7 +624,7 @@ class Course_TimesroomsController extends AuthenticatedController
             $this->course->setFilter('all');
         }
 
-        $this->course->createMessage(sprintf(_('Der Termin %s wurde hinzugefügt!'), htmlReady($termin->getFullname())));
+        $this->course->createMessage(sprintf(_('Der Termin %s wurde hinzugefügt!'), htmlReady($termin->getFullName())));
         $this->course->store();
         $this->displayMessages();
 
@@ -643,7 +643,7 @@ class Course_TimesroomsController extends AuthenticatedController
         if ($termin) {
             $this->course->createMessage(sprintf(
                 _('Der Termin %s wurde wiederhergestellt!'),
-                htmlReady($termin->getFullname())
+                htmlReady($termin->getFullName())
             ));
             $this->displayMessages();
         }
@@ -852,7 +852,7 @@ class Course_TimesroomsController extends AuthenticatedController
             if ($termin !== null) {
                 $this->course->createMessage(sprintf(
                     _('Der Termin %s wurde wiederhergestellt!'),
-                    htmlReady($termin->getFullname())
+                    htmlReady($termin->getFullName())
                 ));
             }
         }
@@ -1174,7 +1174,7 @@ class Course_TimesroomsController extends AuthenticatedController
      */
     public function createCycle_action($cycle_id = null)
     {
-        PageLayout::setTitle(Course::findCurrent()->getFullname() . " - " . _('Regelmäßige Termine anlegen'));
+        PageLayout::setTitle(Course::findCurrent()->getFullName() . " - " . _('Regelmäßige Termine anlegen'));
         $this->restoreRequest(
             words('day start_time end_time description cycle startWeek teacher_sws fromDialog course_type')
         );
@@ -1440,18 +1440,18 @@ class Course_TimesroomsController extends AuthenticatedController
             if ($termin->store()) {
                 $this->course->createMessage(sprintf(
                     _('Der Kommtentar des gelöschten Termins %s wurde geändert.'),
-                    htmlReady($termin->getFullname())
+                    htmlReady($termin->getFullName())
                 ));
             } else {
                 $this->course->createInfo(sprintf(
                     _('Der gelöschte Termin %s wurde nicht verändert.'),
-                    htmlReady($termin->getFullname())
+                    htmlReady($termin->getFullName())
                 ));
             }
         } else {
             $this->course->createInfo(sprintf(
                 _('Der gelöschte Termin %s wurde nicht verändert.'),
-                htmlReady($termin->getFullname())
+                htmlReady($termin->getFullName())
             ));
         }
         if (Request::int('cancel_send_message')) {
@@ -1474,7 +1474,7 @@ class Course_TimesroomsController extends AuthenticatedController
             $actions->addLink(
                 sprintf(
                     _('Semester ändern (%s)'),
-                    $this->course->getFullname('sem-duration-name')
+                    $this->course->getFullName('sem-duration-name')
                 ),
                 $this->url_for('course/timesrooms/editSemester'),
                 Icon::create('date')
@@ -1569,7 +1569,7 @@ class Course_TimesroomsController extends AuthenticatedController
     {
         $seminar_id = $termin->range_id;
         $termin_room = $termin->getRoomName();
-        $termin_date = $termin->getFullname();
+        $termin_date = $termin->getFullName();
         $has_topics  = $termin->topics->count();
 
         if ($cancel_comment != '') {

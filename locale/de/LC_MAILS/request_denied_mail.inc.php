@@ -1,5 +1,5 @@
 Ihre Raumanfrage vom <?= date('d.m.Y', $request->mkdate) ?>
- <?= $range_object instanceof Course ? sprintf('zur Veranstaltung %s', htmlReady($range_object->getFullname())) : ''?> wurde
+ <?= $range_object instanceof Course ? sprintf('zur Veranstaltung %s', htmlReady($range_object->getFullName())) : ''?> wurde
  <?= $request->last_modifier instanceof User
    ? 'von ' . $request->last_modifier->getFullName()
  : ''

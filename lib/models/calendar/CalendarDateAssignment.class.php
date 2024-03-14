@@ -681,7 +681,7 @@ class CalendarDateAssignment extends SimpleORMap implements Event
     public function getRangeName() : string
     {
         if ($this->course instanceof Course) {
-            return $this->course->getFullname();
+            return $this->course->getFullName();
         } elseif ($this->user instanceof User) {
             return $this->user->getFullName();
         }

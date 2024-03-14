@@ -82,7 +82,7 @@
                             <?= htmlReady($user->username) ?>
                         </a>
                     <? if ($user->locked) : ?>
-                        <?= Icon::create('lock-locked', Icon::ROLE_INFO)->asImg(tooltip2(sprintf(_('%s ist gesperrt'), htmlReady($user->getFullname())))) ?>
+                        <?= Icon::create('lock-locked', Icon::ROLE_INFO)->asImg(tooltip2(sprintf(_('%s ist gesperrt'), htmlReady($user->getFullName())))) ?>
                     <? endif ?>
                     </td>
                     <td>

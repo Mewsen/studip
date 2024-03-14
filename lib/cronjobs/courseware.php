@@ -239,7 +239,7 @@ class CoursewareCronjob extends CronJob
 
         $folder = $this->requireCertificateFolder($unit);
         $data = [
-            'name'=> $user->getFullname('full') . '-' . date('ymd') . '.pdf',
+            'name'=> $user->getFullName('full') . '-' . date('ymd') . '.pdf',
             'tmp_name'=> $pdf,
             'type' => 'application/pdf',
             'size' => @filesize($pdf)
@@ -250,7 +250,7 @@ class CoursewareCronjob extends CronJob
         setTempLanguage('', $user->preferred_language);
 
         // Send the message containing a link to the PDF certificate.
-        $subject = _('Courseware: Zertifikat') . ' - ' . $course->getFullname() .
+        $subject = _('Courseware: Zertifikat') . ' - ' . $course->getFullName() .
             ' (' . $unit->structural_element->title . ')';
         $message = sprintf(
             _('Sie haben einen Fortschritt von %1$u % % im Lernmaterial "%2$s" erreicht und können daher Ihr ' .
@@ -294,7 +294,7 @@ class CoursewareCronjob extends CronJob
                 URLHelper::getURL('dispatch.php/course/courseware/courseware/' . $unit->id, ['cid' => $course->id]));
         ;
 
-        $mail->setSubject(_('Courseware: Erinnerung') . ' - ' . $course->getFullname() .
+        $mail->setSubject(_('Courseware: Erinnerung') . ' - ' . $course->getFullName() .
                 ', ' . $unit->structural_element->title)
             ->setBodyText($message);
 
@@ -332,7 +332,7 @@ class CoursewareCronjob extends CronJob
             sprintf(_('Sie können das Lernmaterial [direkt hier aufrufen]%s .'),
             URLHelper::getURL('dispatch.php/course/courseware/courseware/' . $unit->id, ['cid' => $course->id]));
 
-        $mail->setSubject(_('Courseware: Fortschritt zurückgesetzt') . ' - ' . $course->getFullname())
+        $mail->setSubject(_('Courseware: Fortschritt zurückgesetzt') . ' - ' . $course->getFullName())
             ->setBodyText($message);
 
         return $mail->send();

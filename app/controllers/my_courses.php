@@ -680,12 +680,12 @@ class MyCoursesController extends AuthenticatedController
         if ($deputy && $deputy->delete()) {
             PageLayout::postSuccess(sprintf(
                 _('Sie wurden als Standardvertretung von %s entfernt.'),
-                htmlReady($boss->getFullname())
+                htmlReady($boss->getFullName())
             ));
         } else {
             PageLayout::postError(sprintf(
                 _('Sie konnten nicht als Standardvertretung von %s entfernt werden.'),
-                htmlReady($boss->getFullname())
+                htmlReady($boss->getFullName())
             ));
         }
         $this->redirect($this->url_for('my_courses'));

@@ -47,7 +47,7 @@ class Course_StudyAreasController extends AuthenticatedController
         $this->values[get_class($this->step)]['ajax_url'] = $this->url_for('course/study_areas/ajax');
         $this->values[get_class($this->step)]['no_js_url'] = $this->url_for('course/study_areas/show');
 
-        PageLayout::setTitle($this->course->getFullname() . ' - ' . _('Studienbereiche'));
+        PageLayout::setTitle($this->course->getFullName() . ' - ' . _('Studienbereiche'));
     }
 
 

@@ -82,7 +82,7 @@ class GlobalSearchMessages extends GlobalSearchModule
                 $additional = sprintf(
                     '<a href="%s">%s</a>',
                     URLHelper::getLink('dispatch.php/profile', ['username' => $user->username]),
-                    self::mark($user->getFullname(), $search)
+                    self::mark($user->getFullName(), $search)
                 );
             }
         }

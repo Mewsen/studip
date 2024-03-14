@@ -443,10 +443,10 @@ class ExternPageCourses extends ExternPage
     {
         $course_content = [
             'TITLE'           => $course->name,
-            'FULLTITLE'       => $course->getFullname(),
+            'FULLTITLE'       => $course->getFullName(),
             'SUBTITLE'        => $course->untertitel,
             'NUMBER'          => $course->veranstaltungsnummer,
-            'SEMESTER'        => $course->getFullname('sem-duration-name'),
+            'SEMESTER'        => $course->getFullName('sem-duration-name'),
             'FORM'            => $course->art,
             'ROOM'            => $course->ort,
             'CYCLE'           => Seminar::getInstance($course->id)->getDatesExport(['show_room' => true]),

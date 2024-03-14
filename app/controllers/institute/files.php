@@ -31,7 +31,7 @@ class Institute_FilesController extends AuthenticatedController
         object_set_visit_module($this->studip_module->getPluginId());
 
         PageLayout::setHelpKeyword("Basis.Dateien");
-        PageLayout::setTitle($this->institute->getFullname() . " - " . _("Dateien"));
+        PageLayout::setTitle($this->institute->getFullName() . " - " . _("Dateien"));
 
         $this->last_visitdate = object_get_visit($this->institute->id, $this->studip_module->getPluginId());
         Navigation::activateItem('/course/files');

@@ -164,7 +164,7 @@ class Message extends SimpleORMap implements PrivacyObject
                                  unset($data['user_id']);
                                  $user = User::build($data);
                                  $ret = $user->toArray('username vorname nachname');
-                                 $ret['fullname'] = $user->getFullname();
+                                 $ret['fullname'] = $user->getFullName();
                                  $ret['user_id'] = $user_id;
                                  return $ret;
                              })

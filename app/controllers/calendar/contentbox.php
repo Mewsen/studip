@@ -87,10 +87,10 @@ class Calendar_ContentboxController extends StudipController
         foreach ($this->termine as $course_date) {
             if ($this->course_range) {
                 //Display only date and time:
-                $this->titles[$course_date->id] = $course_date->getFullname('include-room');
+                $this->titles[$course_date->id] = $course_date->getFullName('include-room');
             } else {
                 //Include the course title:
-                $this->titles[$course_date->id] = $course_date->getFullname('verbose');
+                $this->titles[$course_date->id] = $course_date->getFullName('verbose');
             }
         }
     }
@@ -118,7 +118,7 @@ class Calendar_ContentboxController extends StudipController
                     $this->titles[$course_date->id] = sprintf(
                         '%1$s: %2$s',
                         $course_date->course->name,
-                        $course_date->getFullname()
+                        $course_date->getFullName()
                     );
                     $this->termine[] = $course_date;
                 }

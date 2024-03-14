@@ -129,7 +129,7 @@ class CourseExDate extends SimpleORMap implements PrivacyObject, Event
      *                       'verbose' are supported by now)
      * @return String containing the full name of this date.
      */
-    public function getFullname($format = 'default')
+    public function getFullName($format = 'default')
     {
         if (!$this->date || !in_array($format, ['default', 'verbose'])) {
             return '';
@@ -337,7 +337,7 @@ class CourseExDate extends SimpleORMap implements PrivacyObject, Event
     {
         $descriptions = [];
         if (count($this->dozenten) > 0) {
-            $descriptions[_('Durchführende Lehrende')] = implode(', ', $this->dozenten->getFullname());
+            $descriptions[_('Durchführende Lehrende')] = implode(', ', $this->dozenten->getFullName());
         }
         if (count($this->statusgruppen) > 0) {
             $descriptions[_('Beteiligte Gruppen')] = implode(', ', $this->statusgruppen->getValue('name'));

@@ -34,9 +34,9 @@
                             <tr>
                                 <td>
                                     <input type="checkbox" name="courses[]" value="<?= htmlReady($course->id) ?>"
-                                    title="<?= sprintf(_('%s auswählen'), htmlReady($course->getFullname())) ?>">
+                                    title="<?= sprintf(_('%s auswählen'), htmlReady($course->getFullName())) ?>">
                                 </td>
-                                <td><?= htmlReady($course->getFullname()) ?></td>
+                                <td><?= htmlReady($course->getFullName()) ?></td>
                                 <td class="actions">
                                     <?= Icon::create('trash')->asInput([
                                         'formaction'   => $controller->delete_course_assignment(
@@ -49,7 +49,7 @@
                                         ),
                                         'title' => sprintf(
                                             _('Aus %s austragen'),
-                                            htmlReady($course->getFullname())
+                                            htmlReady($course->getFullName())
                                         ),
                                         'data-dialog'  => 'size=auto'
                                     ]) ?>

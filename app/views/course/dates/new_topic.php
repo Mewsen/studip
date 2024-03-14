@@ -12,7 +12,7 @@
         <tbody>
         <tr>
             <td><?= _("Termin") ?></td>
-            <td class="date_name"><?= htmlReady($date->getFullname()) ?></td>
+            <td class="date_name"><?= htmlReady($date->getFullName()) ?></td>
         </tr>
         <tr>
             <td><label for="topic_title"><?= _("Thema") ?></label></td>

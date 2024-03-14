@@ -24,7 +24,7 @@ class CourseDateFolder extends PermissionEnabledFolder implements FolderType
             _("%'.02d. %s am %s"),
             CourseDate::getConsecutiveNumber($date),
             $date->getTypeName(),
-            $date->getFullname()
+            $date->getFullName()
         );
     }
 

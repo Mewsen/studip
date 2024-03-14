@@ -1,11 +1,11 @@
 <tr id="date_<?= $date->id ?>" class="ausfall" data-termin-id="<?= htmlReady($date->id) ?>">
     <td data-sort-value="<?= htmlReady($date->date) ?>" class="date_name">
         <?= Icon::create('date', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom']) ?>
-        <?= htmlReady($date->getFullname()) ?>
+        <?= htmlReady($date->getFullName()) ?>
         <?= tooltipIcon($date->content) ?>
     <? if (count($date->dozenten) > 0): ?>
         <br>
-        (<?= htmlReady(implode(', ', $date->dozenten->getFullname())) ?>)
+        (<?= htmlReady(implode(', ', $date->dozenten->getFullName())) ?>)
     <? endif; ?>
     </td>
     <td class="hidden-small-down"></td>

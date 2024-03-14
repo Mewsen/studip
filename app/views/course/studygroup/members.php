@@ -67,7 +67,7 @@
                         </td>
                         <td>
                             <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $p->username]) ?>">
-                                <?= htmlReady($p->user->getFullname('no_title_rev')) ?>
+                                <?= htmlReady($p->user->getFullName('no_title_rev')) ?>
                             </a>
                         </td>
                         <td class="actions">

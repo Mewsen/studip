@@ -375,7 +375,7 @@ class NewsController extends StudipController
                         'type' => 'no',
                         'mapper' => function () use ($news) {
                             $author = $news->user_id ? User::find($news->user_id): User::findCurrent();
-                            return $author ? $author->getFullname() : '';
+                            return $author ? $author->getFullName() : '';
                         }
                     ]
                 ]

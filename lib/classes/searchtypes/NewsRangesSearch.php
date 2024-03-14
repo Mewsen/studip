@@ -123,7 +123,7 @@ class NewsRangesSearch extends SearchType
                                ) AS tmp_user_table
                                WHERE `name` LIKE :input";
             $parameters[':user_id'] = $user->id;
-            $parameters[':user_name'] = $user->getFullname();
+            $parameters[':user_name'] = $user->getFullName();
             $parameters[':profile_name'] = _('Profilseite');
         }
 

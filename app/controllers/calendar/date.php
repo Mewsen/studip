@@ -175,13 +175,13 @@ class Calendar_DateController extends AuthenticatedController
                 if ($compare_name) {
                     $a_name = '';
                     if ($a->course instanceof Course) {
-                        $a_name = $a->course->getFullname();
+                        $a_name = $a->course->getFullName();
                     } elseif ($a->user instanceof User) {
                         $a_name = $a->user->getFullName();
                     }
                     $b_name = '';
                     if ($b->course instanceof Course) {
-                        $b_name = $b->course->getFullname();
+                        $b_name = $b->course->getFullName();
                     } elseif ($b->user instanceof User) {
                         $b_name = $b->user->getFullName();
                     }

@@ -75,6 +75,6 @@ class InstituteContext extends Context
      */
     public function getContextFullname($format = 'default')
     {
-        return $this->institute->getFullname($format);
+        return $this->institute->getFullName($format);
     }
 }

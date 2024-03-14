@@ -159,7 +159,7 @@ if (isset($flash['error'])) {
             <? else : ?>
             <?
             Course::findEachMany(function($c) {
-                echo htmlReady($c->getFullname('number-name-semester'));
+                echo htmlReady($c->getFullName('number-name-semester'));
                 echo '<br>';
             },
                 $courseIds,

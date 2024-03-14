@@ -286,7 +286,7 @@ class Course_BasicdataController extends AuthenticatedController
         PageLayout::setHelpKeyword("Basis.VeranstaltungenVerwaltenGrunddaten");
         PageLayout::setTitle(_("Verwaltung der Grunddaten"));
         if ($this->course_id) {
-            PageLayout::setTitle(Course::find($this->course_id)->getFullname()." - ".PageLayout::getTitle());
+            PageLayout::setTitle(Course::find($this->course_id)->getFullName()." - ".PageLayout::getTitle());
         }
 
         //Daten sammeln:
@@ -614,9 +614,9 @@ class Course_BasicdataController extends AuthenticatedController
         foreach ($mp->getAddedUsers() as $a) {
             $result = $this->$func($a, $course_id);
             if ($result !== false) {
-                $succeeded[] = User::find($a)->getFullname('no_title_rev');
+                $succeeded[] = User::find($a)->getFullName('no_title_rev');
             } else {
-                $failed[] = User::find($a)->getFullname('no_title_rev');
+                $failed[] = User::find($a)->getFullName('no_title_rev');
             }
         }
         // Only show the success messagebox once

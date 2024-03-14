@@ -8,7 +8,7 @@
         <? foreach ($targets as $one) : ?>
             <label>
                 <input type="radio" name="target" value="<?= $one->id ?>">
-                <?= htmlReady($one->getFullname()) ?>
+                <?= htmlReady($one->getFullName()) ?>
             </label>
         <? endforeach ?>
         </section>

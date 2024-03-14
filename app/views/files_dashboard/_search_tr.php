@@ -67,7 +67,7 @@
                 <?= $controller->markPhrase($searchResult['folder']->message->subject, $query->getQuery()) ?>
             <? elseif ($searchResult['folder']->range_type === 'user') : ?>
                 <?= _('Öffentlicher Dateibereich') ?>:
-                <?= $controller->markPhrase($searchResult['folder']->user->getFullname('full_rev_username'), $query->getQuery()) ?>
+                <?= $controller->markPhrase($searchResult['folder']->user->getFullName('full_rev_username'), $query->getQuery()) ?>
             <? endif ?>
         </a>
     </td>

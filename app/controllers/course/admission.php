@@ -37,7 +37,7 @@ class Course_AdmissionController extends AuthenticatedController
         $this->course = Course::find($this->course_id);
         $this->user_id = $GLOBALS['user']->id;
         PageLayout::setHelpKeyword("Basis.VeranstaltungenVerwaltenZugangsberechtigungen");
-        PageLayout::setTitle($this->course->getFullname()." - " ._("Verwaltung von Zugangsberechtigungen"));
+        PageLayout::setTitle($this->course->getFullName()." - " ._("Verwaltung von Zugangsberechtigungen"));
 
         $lockrules = words('admission_turnout admission_type admission_endtime admission_binding passwort read_level write_level admission_prelim admission_prelim_txt admission_starttime admission_endtime_sem admission_disable_waitlist user_domain admission_binding admission_studiengang');
         $this->is_locked = [];

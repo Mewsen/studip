@@ -17,7 +17,7 @@
                 <?= _('Heimateinrichtung') ?>
             </dt>
             <dd>
-                <?= htmlReady($course->home_institut->getFullname()) ?>
+                <?= htmlReady($course->home_institut->getFullName()) ?>
             </dd>
             <dt>
                 <?= _('Zuständige Administratoren') ?>
@@ -25,7 +25,7 @@
             <? foreach ($admins as $admin) : ?>
             <dd>
                 <a href="<?= $controller->url_for('profile', ['username' => $admin->username]) ?>">
-                    <?= htmlReady($admin->user->getFullname()) ?>
+                    <?= htmlReady($admin->user->getFullName()) ?>
                 </a>
             </dd>
             <? endforeach; ?>

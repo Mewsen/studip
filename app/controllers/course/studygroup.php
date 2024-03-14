@@ -82,7 +82,7 @@ class Course_StudygroupController extends AuthenticatedController
         if (Request::isXhr()) {
             PageLayout::setTitle(_('Studiengruppendetails'));
         } else {
-            PageLayout::setTitle((Context::getHeaderLine() ?: Course::find($id)->getFullname()) . ' - ' . _('Studiengruppendetails'));
+            PageLayout::setTitle((Context::getHeaderLine() ?: Course::find($id)->getFullName()) . ' - ' . _('Studiengruppendetails'));
             PageLayout::setHelpKeyword('Basis.StudiengruppenAbonnieren');
 
             $stmt = DBManager::get()->prepare("SELECT * FROM admission_seminar_user"
@@ -507,7 +507,7 @@ class Course_StudygroupController extends AuthenticatedController
 
         $this->last_visitdate   = object_get_visit($id,  $this->studip_module->getPluginId());
         $this->anzahl           = StudygroupModel::countMembers($id);
-        $this->groupname        = $sem->getFullname();
+        $this->groupname        = $sem->getFullName();
         $this->sem_id           = $id;
         $this->groupdescription = $sem->beschreibung;
         $this->moderators       = $sem->getMembersWithStatus('dozent');

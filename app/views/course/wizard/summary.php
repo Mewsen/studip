@@ -24,7 +24,7 @@
                 sprintf(
                     '<a data-dialog href="%s">%s</a>',
                     URLHelper::getLink('dispatch.php/course/details', ['sem_id' => $source_course->id]),
-                    htmlReady($source_course->getFullname())
+                    htmlReady($source_course->getFullName())
                 )
             ) ?>
         </label>

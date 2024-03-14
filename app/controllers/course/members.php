@@ -55,7 +55,7 @@ class Course_MembersController extends AuthenticatedController
         $this->is_locked        = LockRules::Check($this->course_id, 'participants');
 
         // Layoutsettings
-        PageLayout::setTitle(sprintf('%s - %s', Course::findCurrent()->getFullname(), _("Teilnehmende")));
+        PageLayout::setTitle(sprintf('%s - %s', Course::findCurrent()->getFullName(), _("Teilnehmende")));
 
         $this->studip_module = checkObjectModule('participants');
         object_set_visit_module( $this->studip_module->getPluginId());
@@ -2186,13 +2186,13 @@ class Course_MembersController extends AuthenticatedController
                 messaging::sendSystemMessage($user_id, sprintf('%s %s', _('Systemnachricht:'),
                     _('Anmeldung aufgehoben, auf Warteliste gesetzt')), $message);
                 if ($course->addToWaitlist($user_id, $which_end)) {
-                    $msgs['success'][] = $temp_user->getFullname('no_title');
+                    $msgs['success'][] = $temp_user->getFullName('no_title');
                 } else {
-                    $msgs['error'][] = $temp_user->getFullname('no_title');
+                    $msgs['error'][] = $temp_user->getFullName('no_title');
                 }
                 // Something went wrong on inserting the user in waitlist.
             } else {
-                $msgs['error'][] = $temp_user->getFullname('no_title');
+                $msgs['error'][] = $temp_user->getFullName('no_title');
             }
         }
         return $msgs;

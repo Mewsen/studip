@@ -29,7 +29,7 @@
         </thead>
         <tbody>
         <? foreach ($members as $m): ?>
-            <? $fullname = $m instanceof CourseMember ? $m->user->getFullname('no_title_rev') : $m['fullname']?>
+            <? $fullname = $m instanceof CourseMember ? $m->user->getFullName('no_title_rev') : $m['fullname']?>
             <tr <? if ($last_visitdate <= $m['mkdate'] && $GLOBALS['perm']->have_studip_perm('tutor', $sem_id)) echo 'class="new-member"'; ?>>
             <? if ($GLOBALS['perm']->have_studip_perm('tutor', $sem_id)): ?>
                 <td>

@@ -32,7 +32,7 @@ class Course_StatusgroupsController extends AuthenticatedController
 
         $course = Course::findCurrent();
         $this->course_id = $course->id;
-        $this->course_title = $course->getFullname();
+        $this->course_title = $course->getFullName();
         $this->config = CourseConfig::get($this->course_id);
 
         // Check perms
@@ -49,7 +49,7 @@ class Course_StatusgroupsController extends AuthenticatedController
         $this->is_locked = LockRules::Check($this->course_id, 'groups');
         $this->is_participants_locked = LockRules::Check($this->course_id, 'participants');
 
-        PageLayout::setTitle(sprintf('%s - %s', Course::findCurrent()->getFullname(), _('Gruppen')));
+        PageLayout::setTitle(sprintf('%s - %s', Course::findCurrent()->getFullName(), _('Gruppen')));
         PageLayout::addStyleSheet('studip-statusgroups.css');
         PageLayout::addScript('studip-statusgroups.js');
     }
@@ -672,7 +672,7 @@ class Course_StatusgroupsController extends AuthenticatedController
         }
 
         $s = StatusgruppeUser::find([$group_id, $user_id]);
-        $name = $s->user->getFullname();
+        $name = $s->user->getFullName();
         if ($s->delete()) {
             if ($user_id == $GLOBALS['user']->id) {
                 PageLayout::postSuccess(sprintf(
@@ -943,7 +943,7 @@ class Course_StatusgroupsController extends AuthenticatedController
                     $dates = CourseDate::findBySeminar_id($this->course_id);
                     $singledates = array_filter($dates, function ($d) { return !((bool) $d->metadate_id); });
                     foreach ($singledates as $d) {
-                        $name = $d->getFullname();
+                        $name = $d->getFullName();
 
                         // Append description to group title if applicable.
                         if ($d->description) {

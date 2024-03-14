@@ -273,7 +273,7 @@ abstract class ExternPage
             $user = $member->user;
             $content[] = array_merge(
                 [
-                    'FULLNAME'   => $user->getFullname(),
+                    'FULLNAME'   => $user->getFullName(),
                     'LASTNAME'   => $user->nachname,
                     'FIRSTNAME'  => $user->vorname,
                     'TITLEFRONT' => $user->title_front,

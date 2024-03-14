@@ -7,7 +7,7 @@
             <?= _('(Studierende dürfen keine Dateien hochladen.)')?>
         <? endif ?>
     <? endif ?>
-    <?$dates = isset($topic) ? $topic->dates->getFullname() : [];?>
+    <?$dates = isset($topic) ? $topic->dates->getFullName() : [];?>
     <? if (count($dates)) :?>
     <?=_('Folgende Termine sind diesem Thema zugeordnet:') ?>
         <div>

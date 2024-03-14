@@ -55,10 +55,10 @@ class ObjectdisplayHelper {
             return URLHelper::getLink('dispatch.php/profile', ['username' => $obj->username]);
         },
                 'name' => function($obj) {
-            return htmlReady($obj->getFullname());
+            return htmlReady($obj->getFullName());
         },
                 'avatar' => function($obj) {
-            return Avatar::getAvatar($obj->id, $obj->username)->getImageTag(Avatar::SMALL,['title' => $obj->getFullname('no_title')]);
+            return Avatar::getAvatar($obj->id, $obj->username)->getImageTag(Avatar::SMALL,['title' => $obj->getFullName('no_title')]);
         }
             ],
             'Course' => [

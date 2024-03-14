@@ -10,9 +10,9 @@
                     sprintf(
                         '<a href="%s" title="%s">',
                         $controller->link_for('course/grouping/children', ['cid' => $parent->id]),
-                        htmlReady($parent->getFullname())
+                        htmlReady($parent->getFullName())
                     ),
-                    htmlReady($parent->getFullname()),
+                    htmlReady($parent->getFullName()),
                     '</a>'
                 ) ?>
             </p>

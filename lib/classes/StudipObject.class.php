@@ -150,7 +150,7 @@ class StudipObject extends AuthorObject {
     * @access  public
     * @return  string  The authorID
     */
-   function getFullname () {
+   function getFullName () {
      return get_fullname ($this->authorID);
    }
 

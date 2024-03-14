@@ -146,7 +146,7 @@ class Admission_UserlistController extends AuthenticatedController
 
         PageLayout::postInfo(
             sprintf(_('%s wurde von der Liste entfernt, die Liste ist aber noch nicht gespeichert.'),
-            User::find($userId)->getFullname()));
+            User::find($userId)->getFullName()));
 
         $this->redirect($this->url_for('admission/userlist/configure', $userlistId));
     }

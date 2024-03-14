@@ -36,7 +36,7 @@ class Course_BlockAppointmentsController extends AuthenticatedController
             throw new Trails_Exception(400);
         }
         PageLayout::setHelpKeyword('Basis.VeranstaltungenVerwaltenAendernVonZeitenUndTerminen');
-        PageLayout::setTitle(Course::findCurrent()->getFullname() . " - " . _('Blockveranstaltungstermine anlegen'));
+        PageLayout::setTitle(Course::findCurrent()->getFullName() . " - " . _('Blockveranstaltungstermine anlegen'));
     }
 
 
@@ -245,7 +245,7 @@ class Course_BlockAppointmentsController extends AuthenticatedController
                         $singledate = new SingleDate($d);
                         $singledate->bookRoom(Request::option('room_id'));
                     }
-                    return $result ? $d->getFullname() : null;
+                    return $result ? $d->getFullName() : null;
                 }, $dates));
                 if ($date_count > 1) {
                     $dates_created = array_count_values($dates_created);

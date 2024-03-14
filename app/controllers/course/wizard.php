@@ -201,13 +201,13 @@ class Course_WizardController extends AuthenticatedController
                             $message = MessageBox::success(sprintf(
                                 _('Die Veranstaltung <a class="link-intern" href="%s">"%s"</a> wurde angelegt.'),
                                 $this->link_for($dest_url, ['cid' => $this->course->id]),
-                                htmlReady($this->course->getFullname())
+                                htmlReady($this->course->getFullName())
                             ));
                             $target = $this->url_for('admin/courses');
                         } else {
                             $message = MessageBox::success(sprintf(
                                 _('Die Veranstaltung "%s" wurde angelegt. Sie können sie direkt hier weiter verwalten.'),
-                                htmlReady($this->course->getFullname())
+                                htmlReady($this->course->getFullName())
                             ));
                             $target = $this->url_for($dest_url, ['cid' => $this->course->id]);
                         }

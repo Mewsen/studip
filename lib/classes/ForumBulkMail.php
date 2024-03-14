@@ -48,13 +48,13 @@ class ForumBulkMail extends messaging
 
                 $template = $GLOBALS['template_factory']->open('mail/text');
                 $template->message      = kill_format(stripslashes($message));
-                $template->rec_fullname = $receiver->getFullname();
+                $template->rec_fullname = $receiver->getFullName();
                 $mailmessage = $template->render();
 
                 $template = $GLOBALS['template_factory']->open('mail/html');
                 $template->lang         = getUserLanguagePath($rec_user_id);
                 $template->message      = stripslashes($message);
-                $template->rec_fullname = $receiver->getFullname();
+                $template->rec_fullname = $receiver->getFullName();
                 $mailhtml = $template->render();
 
                 $this->bulk_mail[md5($message)][getenv('LANG')] = [

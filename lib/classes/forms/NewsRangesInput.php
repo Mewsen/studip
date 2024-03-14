@@ -165,7 +165,7 @@ class NewsRangesInput extends Input
 
             $options[] = [
                 'value' => $course->id . '__seminar',
-                'name'  => $course->getFullname($name_format),
+                'name'  => $course->getFullName($name_format),
             ];
         }
 

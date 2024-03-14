@@ -48,13 +48,13 @@ class CoursewareContext extends Context
         if ($this->context === 'user') {
             $user = \User::find($this->range_id);
 
-            return $user->getFullname($format);
+            return $user->getFullName($format);
         }
 
         if ($this->context === 'course') {
             $course = \Course::find($this->range_id);
 
-            return $course->getFullname($format);
+            return $course->getFullName($format);
         }
 
         throw new \UnexpectedValueException("Unknown context {$this->context}");

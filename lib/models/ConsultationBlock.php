@@ -76,7 +76,7 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
             }
 
             if ($block->range instanceof Institute) {
-                return sprintf(_('Einrichtung: %s'), $block->range->getFullname());
+                return sprintf(_('Einrichtung: %s'), $block->range->getFullName());
             }
 
             throw new Exception('Not implemented yet');

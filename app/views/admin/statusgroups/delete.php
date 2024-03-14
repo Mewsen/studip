@@ -13,7 +13,7 @@
         </legend>
 
         <section>
-            <?= sprintf(_('%s wirklich aus %s austragen?'), htmlReady($user->getFullname()), htmlReady($group->name)) ?>
+            <?= sprintf(_('%s wirklich aus %s austragen?'), htmlReady($user->getFullName()), htmlReady($group->name)) ?>
         </section>
     </fieldset>
 

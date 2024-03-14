@@ -263,10 +263,10 @@ class ExternPageTimetable extends ExternPage
     {
         return [
             'TITLE'        => $date->course->name,
-            'FULLTITLE'    => $date->course->getFullname(),
+            'FULLTITLE'    => $date->course->getFullName(),
             'SUBTITLE'     => $date->course->untertitel,
             'NUMBER'       => $date->course->veranstaltungsnummer,
-            'SEMESTER'     => $date->course->getFullname('sem-duration-name'),
+            'SEMESTER'     => $date->course->getFullName('sem-duration-name'),
             'AVATAR_URL'   => $date->course->getItemAvatarURL(),
             'INFO_URL'     => $date->course->getItemURL(),
             'SEMTYPENAME'  => $GLOBALS['SEM_TYPE'][$date->course->status]['name'],
@@ -284,7 +284,7 @@ class ExternPageTimetable extends ExternPage
             $lecturers_content[] = [
                 'LASTNAME'  => $lecturer->nachname,
                 'FIRSTNAME' => $lecturer->vorname,
-                'FULLNAME'  => $lecturer->getFullname(),
+                'FULLNAME'  => $lecturer->getFullName(),
                 'ID'        => $lecturer->id,
                 'EMAIL'     => $lecturer->email
             ];

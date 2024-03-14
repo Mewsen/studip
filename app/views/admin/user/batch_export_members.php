@@ -16,9 +16,9 @@
                 <tr>
                     <td>
                         <a href="<?= URLHelper::getLink('dispatch.php/course/overview', ['cid' => $course->id])?>"
-                           title="<?= sprintf(_('Zur Veranstaltung %s'), htmlReady($course->getFullname())) ?>"
+                           title="<?= sprintf(_('Zur Veranstaltung %s'), htmlReady($course->getFullName())) ?>"
                            target="_blank">
-                            <?= htmlReady($course->getFullname('number-name-semester')) ?>
+                            <?= htmlReady($course->getFullName('number-name-semester')) ?>
                         </a>
                         <input type="hidden" name="courses[]" value="<?= htmlReady($course->id) ?>">
                     </td>

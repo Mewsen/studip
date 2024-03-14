@@ -48,7 +48,7 @@ class ResourceProperty extends SimpleORMap
         ];
 
         $config['additional_fields']['name'] = ['definition', 'name'];
-        $config['additional_fields']['fullname'] = ['get' => 'getFullname'];
+        $config['additional_fields']['fullname'] = ['get' => 'getFullName'];
         $config['additional_fields']['display_name'] = ['definition', 'display_name'];
         $config['additional_fields']['type'] = ['definition', 'type'];
         $config['additional_fields']['info_label'] = ['definition', 'info_label'];
@@ -114,7 +114,7 @@ class ResourceProperty extends SimpleORMap
         return $string;
     }
 
-    public function getFullname()
+    public function getFullName()
     {
         $name = (string)$this->definition->display_name ?: $this->definition->name;
         $category = trim(strstr($name, ':', true));

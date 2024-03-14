@@ -61,7 +61,7 @@ class ProfileController extends AuthenticatedController
                 )
             )
         ) {
-            PageLayout::setTitle(_('Profil von') . ' ' . $this->current_user->getFullname());
+            PageLayout::setTitle(_('Profil von') . ' ' . $this->current_user->getFullName());
             object_add_view($this->current_user->id);
         } else {
             PageLayout::setTitle(_('Profil'));

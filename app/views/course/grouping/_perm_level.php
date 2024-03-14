@@ -7,7 +7,7 @@
                 <? $actionMenu->addLink(
                     URLHelper::getURL('dispatch.php/messages/write', [
                         'rec_uname'       => $members->pluck('username'),
-                        'default_subject' => '[' . $current->getFullname() . ']',
+                        'default_subject' => '[' . $current->getFullName() . ']',
                     ]),
                     _('Nachricht schicken'),
                     Icon::create('mail', Icon::ROLE_CLICKABLE, ['title' => _('Nachricht schicken')]),
@@ -65,7 +65,7 @@
                         <? $actionMenu->addLink(
                             URLHelper::getURL('dispatch.php/messages/write', [
                                 'rec_uname'       => $m->user_id,
-                                'default_subject' => '[' . $current->getFullname() . ']'
+                                'default_subject' => '[' . $current->getFullName() . ']'
                             ]),
                             _('Nachricht schicken'),
                             Icon::create('mail', Icon::ROLE_CLICKABLE, ['title' => _('Nachricht schicken')]),

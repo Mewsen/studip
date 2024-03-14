@@ -1926,7 +1926,7 @@ class FileController extends AuthenticatedController
                     ) {
                         PageLayout::postWarning(sprintf(
                             _('Für den Termin am %s existiert bereits ein Sitzungs-Ordner. Möchten Sie trotzdem einen weiteren Sitzungs-Ordner erstellen?'),
-                            htmlReady($course_date->getFullname())
+                            htmlReady($course_date->getFullName())
                         ));
                         $this->show_confirmation_button = true;
                         $this->folder = $new_folder ?: new StandardFolder();

@@ -9,7 +9,7 @@
 <ul>
 <? foreach ($userlist->getUsers(true) as $user): ?>
     <li>
-        <?= htmlReady($user->getFullname('full_rev')) ?>
+        <?= htmlReady($user->getFullName('full_rev')) ?>
         (<?= htmlReady($user->username) ?>)
     </li>
 <? endforeach; ?>

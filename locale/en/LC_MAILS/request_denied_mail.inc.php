@@ -1,5 +1,5 @@
 Your room request from <?= date('d.m.Y', $request->mkdate) ?>
- <?= $range_object instanceof Course ? sprintf('for the Course %s', htmlReady($range_object->getFullname())) : ''?> has been denied
+ <?= $range_object instanceof Course ? sprintf('for the Course %s', htmlReady($range_object->getFullName())) : ''?> has been denied
  <?= $request->last_modifier instanceof User
    ? 'by ' . $request->last_modifier->getFullName()
  : ''

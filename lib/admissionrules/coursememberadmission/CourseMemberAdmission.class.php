@@ -211,7 +211,7 @@ class CourseMemberAdmission extends AdmissionRule
         $message = parent::getMessage();
 
         if ($course) {
-            return sprintf($message, $course->getFullname('number-name'));
+            return sprintf($message, $course->getFullName('number-name'));
         } else {
             return $message;
         }

@@ -190,7 +190,7 @@ class Context
         if (!self::$context) {
             return null;
         }
-        return self::get()->getFullname();
+        return self::get()->getFullName();
     }
 
     /**

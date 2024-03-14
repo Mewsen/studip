@@ -449,7 +449,7 @@ class MembersModel
             foreach (AdmissionPriority::getPrioritiesByCourse($cs->getId(), $this->course_id) as $user_id => $p) {
                 $user = User::find($user_id);
                 $data = $user->toArray('user_id username vorname nachname email');
-                $data['fullname'] = $user->getFullname('full_rev');
+                $data['fullname'] = $user->getFullName('full_rev');
                 $data['position'] = $cs->hasAdmissionRule('LimitedAdmission') ? $p : '-';
                 $data['visible'] = 'unknown';
                 $data['status'] = 'claiming';
@@ -503,15 +503,15 @@ class MembersModel
                 // Insert user in waitlist at current position.
                 if ($course->addToWaitlist($user_id, $which_end)) {
                     $temp_user = User::find($user_id);
-                    $msgs['success'][] = $temp_user->getFullname('no_title');
+                    $msgs['success'][] = $temp_user->getFullName('no_title');
                     $curpos++;
                     // Something went wrong on removing the user from course.
                 } else {
-                    $msgs['error'][] = $temp_user->getFullname('no_title');
+                    $msgs['error'][] = $temp_user->getFullName('no_title');
                 }
                 // Something went wrong on inserting the user in waitlist.
             } else {
-                $msgs['error'][] = $temp_user->getFullname('no_title');
+                $msgs['error'][] = $temp_user->getFullName('no_title');
             }
         }
         return $msgs;

@@ -21,14 +21,14 @@ $is_exTermin = $termin instanceof CourseExDate;
     <td class="<?= $termin->getRoom() !== null ? 'green' : 'red' ?>">
     <? if ($is_exTermin) : ?>
         <span class="is_ex_termin">
-            <?= htmlReady($termin->getFullname(CourseDate::FORMAT_VERBOSE)) ?>
+            <?= htmlReady($termin->getFullName(CourseDate::FORMAT_VERBOSE)) ?>
         </span>
     <? elseif ($locked): ?>
-        <?= htmlReady($termin->getFullname(CourseDate::FORMAT_VERBOSE)) ?>
+        <?= htmlReady($termin->getFullName(CourseDate::FORMAT_VERBOSE)) ?>
     <? else: ?>
         <a data-dialog
            href="<?= $controller->url_for('course/timesrooms/editDate/' . $termin->termin_id, $linkAttributes) ?>">
-            <?= htmlReady($termin->getFullname(CourseDate::FORMAT_VERBOSE)) ?>
+            <?= htmlReady($termin->getFullName(CourseDate::FORMAT_VERBOSE)) ?>
         </a>
     <? endif ?>
     </td>
@@ -37,7 +37,7 @@ $is_exTermin = $termin instanceof CourseExDate;
     <? if (count($termin->dozenten) > 0): ?>
         <ul class="list-unstyled list-csv <? if ($is_exTermin) echo 'is_ex_termin' ?>">
         <? foreach ($termin->dozenten as $dozent) : ?>
-            <li><?= $dozent instanceof User ? htmlReady($dozent->getFullname()) : '' ?></li>
+            <li><?= $dozent instanceof User ? htmlReady($dozent->getFullName()) : '' ?></li>
         <? endforeach ?>
         </ul>
     <? endif ?>

@@ -60,7 +60,7 @@ class EvaluationObjectDB extends DatabaseObject
         if (in_array($o_type, ['sem','inst','fak'])) {
             $range = get_object_by_range_id($rangeID);
             if ($range) {
-                $rangename = $range->getFullname('number-name-semester');
+                $rangename = $range->getFullName('number-name-semester');
             } else {
                 $rangename = _('Kein Titel gefunden.');
             }

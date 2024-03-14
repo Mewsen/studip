@@ -55,7 +55,7 @@ class Course_LvgselectorController extends AuthenticatedController
             Navigation::activateItem('/course/admin/lvgruppen');
         }
         PageLayout::setTitle(sprintf('%s - %s',
-                                     $this->course->getFullname(),
+                                     $this->course->getFullName(),
                                      _('Lehrveranstaltungsgruppen')));
 
         // is locked?

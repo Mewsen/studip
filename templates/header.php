@@ -76,7 +76,7 @@ if ($navigation) {
                 $hasSidebar = false;
             } ?>
             <responsive-navigation :me="<?= htmlReady(json_encode($me)) ?>"
-                                   context="<?= htmlReady(Context::get() ? Context::get()->getFullname() : '') ?>"
+                                   context="<?= htmlReady(Context::get() ? Context::get()->getFullName() : '') ?>"
                                    :has-sidebar="<?= $hasSidebar ? 'true' : 'false' ?>"
                                    :navigation="<?= htmlReady(json_encode(ResponsiveHelper::getNavigationObject($_COOKIE['responsive-navigation-hash'] ?? null))) ?>"
             ></responsive-navigation>
@@ -290,7 +290,7 @@ if ($navigation) {
                 <div id="context-title">
                     <? if (Context::isCourse()) : ?>
                         <?= Icon::create('seminar', Icon::ROLE_INFO)->asImg(20, ['class' => 'context_icon']) ?>
-                        <?= htmlReady(Context::get()->getFullname()) ?>
+                        <?= htmlReady(Context::get()->getFullName()) ?>
                         <? if ($GLOBALS['user']->config->SHOWSEM_ENABLE && !Context::get()->isOpenEnded()): ?>
                             (<?= htmlReady(Context::get()->getTextualSemester()) ?>)
                         <? endif ?>

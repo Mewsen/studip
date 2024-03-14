@@ -34,7 +34,7 @@ interface Range
      * @param  string $format
      * @return string
      */
-    public function getFullname($format = 'default');
+    public function getFullName($format = 'default');
 
     /**
      * Returns the configuration object for this range.

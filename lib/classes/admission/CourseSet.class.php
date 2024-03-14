@@ -1029,7 +1029,7 @@ class CourseSet
             $courses = Course::findAndMapMany(function($c) {
                 return [
                     'id' => $c->id,
-                    'name' => $c->getFullname('number-name-semester'),
+                    'name' => $c->getFullName('number-name-semester'),
                     'visible' => $c->visible
                 ];
             },

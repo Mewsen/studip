@@ -35,7 +35,7 @@ class TreeController extends AuthenticatedController
 
             $data[] = [
                 $course->veranstaltungsnummer,
-                $course->getFullname('type-number-name'),
+                $course->getFullName('type-number-name'),
                 $course->getTextualSemester(),
                 $sem->getDatesExport(),
                 implode(', ', $lecturersSorted)

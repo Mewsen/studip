@@ -589,7 +589,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      * @param string formatting template name
      * @return string Fullname
      */
-    public function getFullname($format = 'default')
+    public function getFullName($format = 'default')
     {
         $template = [
             'name'                 => '%1$s',

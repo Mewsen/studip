@@ -46,7 +46,7 @@ $selected = function ($type, $id) use ($block) {
         <select name="responsibilities[institute][]" multiple class="nested-select">
             <? foreach ($responsible['institutes'] as $institute): ?>
                 <option value="<?= htmlReady($institute->id) ?>" <?= $selected('institute', $institute->id) ?>>
-                    <?= htmlReady($institute->getFullname()) ?>
+                    <?= htmlReady($institute->getFullName()) ?>
                 </option>
             <? endforeach; ?>
         </select>

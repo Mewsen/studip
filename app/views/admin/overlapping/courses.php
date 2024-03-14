@@ -26,7 +26,7 @@
                         'title' => _('Veranstaltungsdetails')
                     ]) ?>
                 </a>
-                <?= htmlReady($course_obj->getFullname('type-name')) ?>
+                <?= htmlReady($course_obj->getFullName('type-name')) ?>
                 <? if ($course_obj->admission_turnout) : ?>
                     <?= sprintf(_('(erw. TN %s)'), htmlReady($course_obj->admission_turnout)) ?>
                 <? endif; ?>

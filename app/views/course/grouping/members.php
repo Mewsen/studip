@@ -15,7 +15,7 @@
                                data-get-members-url="<?= $controller->url_for('course/grouping/child_course_members', $child->id) ?>"
                                class="get-course-members">
                                 <?= Icon::create('seminar') ?>
-                                <?= htmlReady($child->getFullname()) ?>
+                                <?= htmlReady($child->getFullName()) ?>
                             </a>
                         </h1>
                         <span class="actions">
@@ -24,7 +24,7 @@
                         $controller->url_for('messages/write', [
                             'filter'          => 'all',
                             'course_id'       => $child->id,
-                            'default_subject' => '[' . $child->getFullname() . ']',
+                            'default_subject' => '[' . $child->getFullName() . ']',
                         ]),
                         _('Nachricht schicken'),
                         Icon::create('mail', Icon::ROLE_CLICKABLE, ['title' => _('Nachricht schicken')]),

@@ -423,7 +423,7 @@ class Resources_ResourceController extends AuthenticatedController
         PageLayout::setTitle(
             sprintf(
                 _('%s: bearbeiten'),
-                $this->resource->getFullname()
+                $this->resource->getFullName()
             )
         );
     }
@@ -436,7 +436,7 @@ class Resources_ResourceController extends AuthenticatedController
         PageLayout::setTitle(
             sprintf(
                 _('%s: löschen'),
-                $this->resource->getFullname()
+                $this->resource->getFullName()
             )
         );
     }

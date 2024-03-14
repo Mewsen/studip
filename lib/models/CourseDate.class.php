@@ -262,7 +262,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
      *                       'verbose' are supported by now)
      * @return String containing the full name of this date.
      */
-    public function getFullname($format = 'default')
+    public function getFullName($format = 'default')
     {
         if (!$this->date || !in_array($format, ['default', 'verbose', 'include-room'])) {
             return '';
@@ -388,11 +388,11 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
     {
         if (!$this->metadate_id) {
             if ($type == 'after_create') {
-                StudipLog::log('SEM_ADD_SINGLEDATE', $this->range_id, $this->getFullname());
+                StudipLog::log('SEM_ADD_SINGLEDATE', $this->range_id, $this->getFullName());
             }
             if ($type == 'before_store' && !$this->isNew() && ($this->isFieldDirty('date') || $this->isFieldDirty('end_time'))) {
                 $old_entry = self::build($this->content_db);
-                StudipLog::log('SINGLEDATE_CHANGE_TIME', $this->range_id, $this->getFullname(), $old_entry->getFullname() . ' -> ' . $this->getFullname());
+                StudipLog::log('SINGLEDATE_CHANGE_TIME', $this->range_id, $this->getFullName(), $old_entry->getFullName() . ' -> ' . $this->getFullName());
             }
         }
     }
@@ -572,7 +572,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
     {
         $descriptions = [];
         if (count($this->dozenten) > 0) {
-            $descriptions[_('Durchführende Lehrende')] = implode(', ', $this->dozenten->getFullname());
+            $descriptions[_('Durchführende Lehrende')] = implode(', ', $this->dozenten->getFullName());
         }
         if (count($this->statusgruppen) > 0) {
             $descriptions[_('Beteiligte Gruppen')] = implode(', ', $this->statusgruppen->getValue('name'));

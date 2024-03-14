@@ -236,7 +236,7 @@ class ResponsiveHelper
             $cnav = [
                 'icon'     => $icon,
                 'avatar'   => $hasAvatar,
-                'title'    => $course->getFullname(),
+                'title'    => $course->getFullName(),
                 'url'      => URLHelper::getURL($url, ['cid' => $course->id]),
                 'parent'   => 'browse/my_courses',
                 'path'     => 'browse/my_courses/' . $course->id,

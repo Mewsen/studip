@@ -60,7 +60,7 @@ class NewsRange extends SimpleORMap
                 return $this->course->name;
                 break;
             case 'user':
-                return $this->user->getFullname();
+                return $this->user->getFullName();
                 break;
             case 'inst':
             case 'fak':

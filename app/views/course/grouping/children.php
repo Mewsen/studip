@@ -10,7 +10,7 @@
                     <? foreach ($children as $child) : ?>
                         <li>
                             <a href="<?= $controller->url_for('course/management', ['cid' => $child->id]) ?>">
-                                <?= htmlReady($child->getFullname()) ?>
+                                <?= htmlReady($child->getFullName()) ?>
                             </a>
                             <a href="<?= $controller->url_for('course/grouping/unassign_child', $child->id) ?>"
                                data-confirm="<?= _('Wollen Sie die Zuordnung dieser Unterveranstaltung wirklich entfernen?') ?>">

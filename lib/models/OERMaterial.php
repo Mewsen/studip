@@ -695,7 +695,7 @@ class OERMaterial extends SimpleORMap
         if ($this->users[0]) {
             $user_name = $this->users[0]['external_contact']
                 ? $this->users[0]['oeruser']['name']
-                : User::find($this->users[0]['user_id'])->getFullname();
+                : User::find($this->users[0]['user_id'])->getFullName();
         } else {
             $user_name = _("unbekannt");
         }

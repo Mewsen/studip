@@ -138,7 +138,7 @@ class FilesystemVueDataManager
                 ? count($folder->getFiles()) + count($folder->getSubfolders())
                 : 0
             ),
-            'author_name' => $folder->owner ? $folder->owner->getFullname('no_title_rev') : '',
+            'author_name' => $folder->owner ? $folder->owner->getFullName('no_title_rev') : '',
             'author_url' => $folder->owner && $folder->owner->id !== $GLOBALS['user']->id? URLHelper::getURL('dispatch.php/profile', ['username' => $folder->owner->username]) : '',
             'chdate' => (int) $folder->chdate,
             'actions' => $actionMenu->render(),

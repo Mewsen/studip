@@ -1063,7 +1063,7 @@ SQL;
             $doc->setHeaderTitle(sprintf(_('Courseware aus %s'), $this->course->name));
         }
         if ($this->user) {
-            $doc->setHeaderTitle(sprintf(_('Courseware von %s'), $this->user->getFullname()));
+            $doc->setHeaderTitle(sprintf(_('Courseware von %s'), $this->user->getFullName()));
         }
 
         if (!self::canVisit($user)) {

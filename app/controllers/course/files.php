@@ -30,7 +30,7 @@ class Course_FilesController extends AuthenticatedController
         $this->last_visitdate = object_get_visit($this->course->id, $this->studip_module->getPluginId());
 
         PageLayout::setHelpKeyword('Basis.Dateien');
-        PageLayout::setTitle(Context::get()->getFullname() . ' - ' . _('Dateien'));
+        PageLayout::setTitle(Context::get()->getFullName() . ' - ' . _('Dateien'));
 
         Navigation::activateItem('/course/files');
 

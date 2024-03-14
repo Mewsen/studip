@@ -59,7 +59,7 @@ class Course_EnrolmentController extends AuthenticatedController
         if (!$enrolment_info['enrolment_allowed']) {
             throw new AccessDeniedException($enrolment_info['description']);
         }
-        PageLayout::setTitle($course->getFullname() . " - " . _("Veranstaltungsanmeldung"));
+        PageLayout::setTitle($course->getFullName() . " - " . _("Veranstaltungsanmeldung"));
         if (Request::submitted('cancel')) {
             $this->redirect(URLHelper::getURL('dispatch.php/course/details/', ['sem_id' => $this->course_id]));
         }

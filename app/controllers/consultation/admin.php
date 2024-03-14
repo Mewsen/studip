@@ -27,7 +27,7 @@ class Consultation_AdminController extends ConsultationController
 
         $this->activateNavigation('admin');
         if (Context::isCourse() || Context::isInstitute()) {
-            PageLayout::setTitle(Context::get()->getFullname() . ' - ' . _('Verwaltung der Termine'));
+            PageLayout::setTitle(Context::get()->getFullName() . ' - ' . _('Verwaltung der Termine'));
         } else {
             PageLayout::setTitle(_('Verwaltung der Termine'));
         }

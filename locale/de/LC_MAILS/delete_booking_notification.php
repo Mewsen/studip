@@ -7,7 +7,7 @@ Ihre Buchung der Ressource <?= $resource->name ?> am <?= date('d.m.Y', $begin) ?
 <? endif ?>
 
 <? if ($booking_course instanceof Course): ?>
-Es handelte sich um eine Buchung für die Veranstaltung <?= $booking_course->getFullname() ?>.
+Es handelte sich um eine Buchung für die Veranstaltung <?= $booking_course->getFullName() ?>.
 <? endif ?>
 
 <? if ($deleting_user instanceof User) : ?>

@@ -25,7 +25,7 @@ Die folgenden Zeiträume wurden gebucht:
 <? foreach ($single_dates as $date) : ?>
 
     <? if($date instanceof CourseDate) : ?>
-        - <?= $date->getFullname() ?>
+        - <?= $date->getFullName() ?>
     <? else : ?>
         - <?= $date->toString('default') ?>
     <? endif ?>

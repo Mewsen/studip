@@ -2,7 +2,7 @@
 
 <ul class="studygroup-gallery">
 <? foreach ($members as $user_id => $m) : ?>
-    <? $fullname = $m instanceof CourseMember ? $m->user->getFullname('no_title_rev') : $m['fullname']?>
+    <? $fullname = $m instanceof CourseMember ? $m->user->getFullName('no_title_rev') : $m['fullname']?>
     <? ($last_visitdate <= $m['mkdate'] && $GLOBALS['perm']->have_studip_perm('tutor', $sem_id))
         ? $options = ['style' => 'border: 3px solid rgb(255, 100, 100);border: 1px solid rgba(255, 0, 0, 0.5)']
         : $options = [] ?>

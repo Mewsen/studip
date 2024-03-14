@@ -146,7 +146,7 @@ class CourseMember extends SimpleORMap implements PrivacyObject
         return User::build(array_merge(
             ['motto' => ''],
             $this->toArray('vorname nachname username title_front title_rear')
-        ))->getFullname($format);
+        ))->getFullName($format);
     }
 
     public function cbRemoveNotifications()

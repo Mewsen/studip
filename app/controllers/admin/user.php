@@ -534,12 +534,12 @@ class Admin_UserController extends AuthenticatedController
                             StudipLog::log('INST_USER_ADD', $institute_id, $user_id, $editPerms[0]);
                             NotificationCenter::postNotification('UserInstitutionDidUpdate', $institute_id, $user_id);
                             InstituteMember::ensureDefaultInstituteForUser($user_id);
-                            $details[] = sprintf(_('%s wurde hinzugefügt.'), htmlReady($membership->institute->getFullname()));
+                            $details[] = sprintf(_('%s wurde hinzugefügt.'), htmlReady($membership->institute->getFullName()));
                         }
                     } elseif ($institute_id != '' && Request::option('new_student_inst') == $institute_id && $editPerms[0] != 'root') {
                         $details[] = sprintf(
                             _('<b>%s wurde nicht hinzugefügt.</b> Sie können keine Person gleichzeitig als Studierende/-r und als Mitarbeiter/-in einer Einrichtung hinzufügen.'),
-                            htmlReady(Institute::find($institute_id)->getFullname())
+                            htmlReady(Institute::find($institute_id)->getFullName())
                         );
                     }
                 }
@@ -779,7 +779,7 @@ class Admin_UserController extends AuthenticatedController
                                             . " und steht Ihnen als neuer Ansprechpartner bei Fragen oder Problemen "
                                             . "in Stud.IP zur Verfügung. "),
                                             $admin['Vorname'], $admin['Nachname'],
-                                            $institute->getFullname(), $this->user['Vorname'], $this->user['Nachname']);
+                                            $institute->getFullName(), $this->user['Vorname'], $this->user['Nachname']);
 
                                         StudipMail::sendMessage($admin['Email'], $subject, $mailbody);
                                         $notin[] = $admin['user_id'];
@@ -812,7 +812,7 @@ class Admin_UserController extends AuthenticatedController
                                                 . " und steht Ihnen als neuer Ansprechpartner bei Fragen oder Problemen "
                                                 . "in Stud.IP zur Verfügung. "),
                                                 $admin['Vorname'], $admin['Nachname'],
-                                                $institute->getFullname(), $this->user['Vorname'], $this->user['Nachname']);
+                                                $institute->getFullName(), $this->user['Vorname'], $this->user['Nachname']);
 
                                             StudipMail::sendMessage($admin['Email'], $subject, $mailbody);
                                             $i++;
@@ -824,20 +824,20 @@ class Admin_UserController extends AuthenticatedController
                                             _('Es wurden ingesamt %s Mails an die %s der Einrichtung "%s" geschickt.'),
                                             $i,
                                             $wem,
-                                            htmlReady($institute->getFullname())
+                                            htmlReady($institute->getFullName())
                                         );
                                     }
                                 }
 
                                 $details[] = sprintf(
                                     _('Person wurde erfolgreich in die Einrichtung "%s" mit dem Status "%s" eingetragen.'),
-                                    htmlReady($institute->getFullname()),
+                                    htmlReady($institute->getFullName()),
                                     $UserManagement->user_data['auth_user_md5.perms']
                                 );
                             } else {
                                 $details[] = sprintf(
                                     _('Person konnte nicht in die Einrichtung "%s" eingetragen werden.'),
-                                    htmlReady($institute->getFullname())
+                                    htmlReady($institute->getFullName())
                                 );
                             }
                         }
@@ -988,7 +988,7 @@ class Admin_UserController extends AuthenticatedController
     public function lock_comment_action($user_id)
     {
         $this->user = User::find($user_id);
-        PageLayout::setTitle(sprintf(_('%s sperren'), $this->user->getFullname()));
+        PageLayout::setTitle(sprintf(_('%s sperren'), $this->user->getFullName()));
 
         $this->params = [];
         if (Request::int('from_index')) {
@@ -1012,7 +1012,7 @@ class Admin_UserController extends AuthenticatedController
         if ($user->store()) {
             PageLayout::postSuccess(sprintf(
                 _('%s wurde gesperrt.'),
-                htmlReady($user->getFullname())
+                htmlReady($user->getFullName())
             ));
         }
 
@@ -1040,12 +1040,12 @@ class Admin_UserController extends AuthenticatedController
         if ($user->store()) {
             PageLayout::postSuccess(sprintf(
                 _('%s wurde entsperrt.'),
-                htmlReady($user->getFullname())
+                htmlReady($user->getFullName())
             ));
         } else {
             PageLayout::postError(sprintf(
                 _('%s konnte nicht entsperrt werden.'),
-                htmlReady($user->getFullname())
+                htmlReady($user->getFullName())
             ));
         }
 
@@ -1242,7 +1242,7 @@ class Admin_UserController extends AuthenticatedController
     public function activities_action($user_id)
     {
         $this->user     = User::find($user_id);
-        $this->fullname = $this->user->getFullname();
+        $this->fullname = $this->user->getFullName();
         $this->params   = [];
 
         if (Request::int('from_index')) {
@@ -1380,7 +1380,7 @@ class Admin_UserController extends AuthenticatedController
         if (is_null($this->range)) {
             $this->range = Institute::find($range_id);
         }
-        PageLayout::setTitle(sprintf(_('Dateiübersicht für %s'), $this->range->getFullname()));
+        PageLayout::setTitle(sprintf(_('Dateiübersicht für %s'), $this->range->getFullName()));
     }
 
     /**

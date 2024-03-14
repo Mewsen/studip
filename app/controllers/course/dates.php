@@ -15,7 +15,7 @@ class Course_DatesController extends AuthenticatedController
 
         $this->course = Context::get();
         if ($this->course) {
-            PageLayout::setTitle($this->course->getFullname() . ' ' . _('Termine'));
+            PageLayout::setTitle($this->course->getFullName() . ' ' . _('Termine'));
         } else {
             PageLayout::setTitle(_('Termine'));
         }
@@ -143,7 +143,7 @@ class Course_DatesController extends AuthenticatedController
         Navigation::activateItem('/course/schedule/dates');
         PageLayout::setTitle(
             $this->date->getTypeName() . ': ' .
-            $this->date->getFullname(CourseDate::FORMAT_VERBOSE)
+            $this->date->getFullName(CourseDate::FORMAT_VERBOSE)
         );
 
         if ($this->hasAccess()) {
@@ -168,7 +168,7 @@ class Course_DatesController extends AuthenticatedController
         Navigation::activateItem('/course/schedule/dates');
         PageLayout::setTitle(
             $this->date->getTypeName() . ': ' .
-            $this->date->getFullname(CourseDate::FORMAT_VERBOSE)
+            $this->date->getFullName(CourseDate::FORMAT_VERBOSE)
         );
         $this->render_action('details');
     }
@@ -224,7 +224,7 @@ class Course_DatesController extends AuthenticatedController
             }
         } elseif ($termin_id) {
             $this->date = new CourseDate($termin_id);
-            $xtitle = $this->date->getTypeName() . ': ' . $this->date->getFullname();
+            $xtitle = $this->date->getTypeName() . ': ' . $this->date->getFullName();
 
         } else {
             $this->date = new CourseDate();
@@ -484,7 +484,7 @@ class Course_DatesController extends AuthenticatedController
 
             if ($date->related_persons) {
                 foreach ($date->related_persons as $user_id) {
-                    $related_persons .= User::find($user_id)->getFullname() . "\n";
+                    $related_persons .= User::find($user_id)->getFullName() . "\n";
                 }
             }
 
@@ -606,12 +606,12 @@ class Course_DatesController extends AuthenticatedController
                 if (count($dates_with_folders) === 1) {
                     PageLayout::postWarning(sprintf(
                         _('Für den Termin am %s existiert bereits ein Sitzungs-Ordner. Möchten Sie trotzdem einen weiteren Sitzungs-Ordner erstellen?'),
-                        htmlReady($dates_with_folders[0]->getFullname())
+                        htmlReady($dates_with_folders[0]->getFullName())
                     ));
                 } else {
                     $dates_string = [];
                     foreach ($dates_with_folders as $date) {
-                        $dates_string[] = $date->getFullname();
+                        $dates_string[] = $date->getFullName();
                     }
                     PageLayout::postWarning(
                         _('Für die folgenden Termine gibt es bereits Sitzungs-Ordner. Möchten Sie trotzdem weitere Sitzungs-Ordner erstellen?'),

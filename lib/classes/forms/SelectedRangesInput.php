@@ -20,7 +20,7 @@ class SelectedRangesInput extends Input
         foreach ($this->selected_items as $item) {
             $item_data = [];
             if ($item instanceof \Range) {
-                $item_data['name'] = $item->getFullname();
+                $item_data['name'] = $item->getFullName();
                 $item_data['id'] = $item->getRangeId();
             } elseif ($item instanceof \StudipItem) {
                 $item_data['name'] = $item->getItemName();

@@ -43,7 +43,7 @@ class Course_GroupingController extends AuthenticatedController
      */
     public function parent_action()
     {
-        PageLayout::setTitle($this->course->getFullname() . ' - ' . _('Zuordnung zu Hauptveranstaltung'));
+        PageLayout::setTitle($this->course->getFullName() . ' - ' . _('Zuordnung zu Hauptveranstaltung'));
         Navigation::activateItem('/course/admin/parent');
 
         $this->parent = $this->course->parent;
@@ -84,7 +84,7 @@ class Course_GroupingController extends AuthenticatedController
      */
     public function children_action()
     {
-        PageLayout::setTitle($this->course->getFullname() . ' - ' . _('Unterveranstaltungen'));
+        PageLayout::setTitle($this->course->getFullName() . ' - ' . _('Unterveranstaltungen'));
         Navigation::activateItem('/course/admin/children');
 
         $this->children = $this->course->children;
@@ -144,7 +144,7 @@ class Course_GroupingController extends AuthenticatedController
     {
         PageLayout::setTitle(sprintf(
             '%s - %s',
-            Course::findCurrent()->getFullname(),
+            Course::findCurrent()->getFullName(),
             _('Teilnehmende in Unterveranstaltungen')
         ));
         Navigation::activateItem('course/members/children');
@@ -181,7 +181,7 @@ class Course_GroupingController extends AuthenticatedController
             $this->url_for('messages/write', [
                 'filter'          => 'all',
                 'course_id'       => $this->course->id,
-                'default_subject' => '[' . $this->course->getFullname() . ']',
+                'default_subject' => '[' . $this->course->getFullName() . ']',
             ]),
             Icon::create('mail', 'clickable')
         )->asDialog('size=auto');
@@ -198,7 +198,7 @@ class Course_GroupingController extends AuthenticatedController
                 htmlReady(sprintf(
                     '%s %s',
                     get_title_for_status('autor', 2),
-                    $this->course->getFullname()
+                    $this->course->getFullName()
                 )),
                 'csv',
                 'csv-teiln',
@@ -217,7 +217,7 @@ class Course_GroupingController extends AuthenticatedController
                 'person',
                 htmlReady(sprintf(
                     '%s %s',
-                    get_title_for_status('autor', 2), $this->course->getFullname()
+                    get_title_for_status('autor', 2), $this->course->getFullName()
                 )),
                 'rtf',
                 'rtf-teiln',
@@ -279,7 +279,7 @@ class Course_GroupingController extends AuthenticatedController
                 case 'message':
                     $this->redirect($this->url_for('messages/write', [
                         'rec_uname'       => $users->pluck('username'),
-                        'default_subject' => '[' . Course::find($course_id)->getFullname() . ']',
+                        'default_subject' => '[' . Course::find($course_id)->getFullName() . ']',
                     ]));
                     break;
                 case 'move':
@@ -550,20 +550,20 @@ class Course_GroupingController extends AuthenticatedController
                         $d->user_id = $user;
                         // Error on storing.
                         if (!$d->store()) {
-                            $fail[$sem->getFullname()][] = $user;
+                            $fail[$sem->getFullName()][] = $user;
                         // Check if new deputy was regular member before, remove entry.
                         } else {
                             $m = CourseMember::find([$course, $user]);
                             // Could not delete old course membership, remove deputy entry.
                             if ($m && !$m->delete()) {
                                 $d->delete();
-                                $fail[$sem->getFullname()][] = $user;
+                                $fail[$sem->getFullName()][] = $user;
                             }
                         }
                     }
                 // Add member with given permission.
                 } elseif (!$sem->addMember($user, Request::option('permission'))) {
-                    $fail[$sem->getFullname()][] = $user;
+                    $fail[$sem->getFullName()][] = $user;
                 }
             }
         }

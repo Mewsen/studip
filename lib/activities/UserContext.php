@@ -69,6 +69,6 @@ class UserContext extends Context
     */
     public function getContextFullname($format = 'default')
     {
-        return $this->user->getFullname($format);
+        return $this->user->getFullName($format);
     }
 }

@@ -81,6 +81,6 @@ class CourseContext extends Context
      */
     public function getContextFullname($format = 'default')
     {
-        return $this->course->getFullname($format);
+        return $this->course->getFullName($format);
     }
 }

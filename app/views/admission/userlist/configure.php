@@ -83,7 +83,7 @@ Helpbar::get()->addPlainText(_('Info'), "Stellen Sie hier ein, wie die Chancen b
                         </td>
                         <td>
                             <a href="<?= URLHelper::getLink('dispatch.php/profile?username=' . $u->username) ?>">
-                                <?= $u->getFullname('full_rev') . ' (' . $u->username . ')' ?>
+                                <?= $u->getFullName('full_rev') . ' (' . $u->username . ')' ?>
                             </a>
                             <input type="hidden" name="users[]" value="<?= $u->id ?>"/>
                         </td>
@@ -91,7 +91,7 @@ Helpbar::get()->addPlainText(_('Info'), "Stellen Sie hier ein, wie die Chancen b
                             <a href="<?= $controller->url_for('admission/userlist/delete_member',
                                 $userlist_id, $u->id) ?>" class="userlist-delete-user"
                                 data-confirm="<?= sprintf(_('Soll %s wirklich von der Liste entfernt werden?'),
-                                    htmlReady($u->getFullname())) ?>">
+                                    htmlReady($u->getFullName())) ?>">
                                 <?= Icon::create('trash', 'clickable') ?>
                             </a>
                         </td>

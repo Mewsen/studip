@@ -81,7 +81,7 @@ class AdmissionApplication extends SimpleORMap implements PrivacyObject
 
     public function getUserFullname($format = 'full')
     {
-        return User::build(array_merge(['motto' => ''], $this->toArray('vorname nachname username title_front title_rear')))->getFullname($format);
+        return User::build(array_merge(['motto' => ''], $this->toArray('vorname nachname username title_front title_rear')))->getFullName($format);
     }
 
     /**
@@ -123,7 +123,7 @@ class AdmissionApplication extends SimpleORMap implements PrivacyObject
             foreach (AdmissionPriority::getPrioritiesByCourse($cs->getId(), $course_id) as $user_id => $p) {
                 $user = User::find($user_id);
                 $data = $user->toArray('user_id username vorname nachname email');
-                $data['fullname'] = $user->getFullname('full_rev');
+                $data['fullname'] = $user->getFullName('full_rev');
                 $data['position'] = $cs->hasAdmissionRule('LimitedAdmission') ? $p : '-';
                 $data['visible'] = 'unknown';
                 $data['status'] = 'claiming';

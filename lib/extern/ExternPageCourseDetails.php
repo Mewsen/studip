@@ -128,7 +128,7 @@ class ExternPageCourseDetails extends ExternPage
         $content = [
             'TITLE'             => $course->name,
             'SUBTITLE'          => $course->untertitel,
-            'FULLNAME'          => $course->getFullname(),
+            'FULLNAME'          => $course->getFullName(),
             'SEMESTER'          => $course->getTextualSemester(),
             'CYCLE'             => $seminar->getDatesExport(),
             'ROOM'              => $course->ort,
@@ -278,7 +278,7 @@ class ExternPageCourseDetails extends ExternPage
                 'BODY'       => $news_detail->body,
                 'TOPIC'      => $news_detail->topic,
                 'DATE'       => $news_detail->date,
-                'FULLNAME'   => $news_detail->owner->getFullname(),
+                'FULLNAME'   => $news_detail->owner->getFullName(),
                 'LASTNAME'   => $news_detail->owner->nachname,
                 'FIRSTNAME'  => $news_detail->owner->vorname,
                 'TITLEFRONT' => $news_detail->owner->title_front,

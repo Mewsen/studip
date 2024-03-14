@@ -231,7 +231,7 @@ class EvalOverview
             case "public_template":
                 $arrowLink = "&nbsp;";
                 $titleLink = $eval->getTitle() ? $eval->getTitle() : " ";
-                $content[0] = $eval->getFullname() ? $eval->getFullname() : " ";
+                $content[0] = $eval->getFullName() ? $eval->getFullName() : " ";
                 $content[1] = $eval->getChangedate() == NULL ? " " : date("d.m.Y", $eval->getChangedate());
 
                 $button = LinkButton::create(_('Vorschau'), URLHelper::getURL('show_evaluation.php?evalID=' . $evalID . '&isPreview=' . YES), ['title' => _('Vorschau dieser öffentlichen Evaluationsvorlage.'),
@@ -276,7 +276,7 @@ class EvalOverview
 
             case EVAL_STATE_NEW:
                 $arrowLink->addContent(EvalCommon::createImage(($open ? EVAL_PIC_ARROW_NEW_OPEN : EVAL_PIC_ARROW_NEW), _("Aufklappen")));
-                $content[0] = $eval->getFullname() ? $eval->getFullname() : " ";
+                $content[0] = $eval->getFullName() ? $eval->getFullName() : " ";
                 $content[1] = $startDate;
                 if (!$no_buttons) {
                     $content[2] = Button::create(_('Start'), 'start_button', ['title' => _('Evaluation starten')]);
@@ -289,7 +289,7 @@ class EvalOverview
 
             case EVAL_STATE_ACTIVE:
                 $arrowLink->addContent(EvalCommon::createImage(($open ? EVAL_PIC_ARROW_RUNNING_OPEN : EVAL_PIC_ARROW_RUNNING), _("Aufklappen")));
-                $content[0] = $eval->getFullname() ? $eval->getFullname() : " ";
+                $content[0] = $eval->getFullName() ? $eval->getFullName() : " ";
                 $content[1] = $stopDate;
                 if (!$no_buttons) {
                     $content[2] = Button::createCancel(_('Stop'), 'stop_button', ['title' => _('Evaluation stoppen')]);;
@@ -304,7 +304,7 @@ class EvalOverview
 
             case EVAL_STATE_STOPPED:
                 $arrowLink->addContent(EvalCommon::createImage(($open ? EVAL_PIC_ARROW_STOPPED_OPEN : EVAL_PIC_ARROW_STOPPED), _("Aufklappen")));
-                $content[0] = $eval->getFullname() ? $eval->getFullname() : " ";
+                $content[0] = $eval->getFullName() ? $eval->getFullName() : " ";
                 //$content[1] = $eval->isVisible() ? "yes" : "no";
                 if (!$no_buttons) {
                     $content[2] = Button::create(_('Fortsetzen'), 'continue_button', ['title' => _('Evaluation fortsetzen')]);

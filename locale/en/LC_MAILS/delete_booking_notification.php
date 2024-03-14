@@ -7,7 +7,7 @@ Your booking of the resource <?= $resource->name ?> on <?= date('d.m.Y', $begin)
 <? endif ?>
 
 <? if ($booking_course instanceof Course): ?>
-The booking deleted belonged to course <?= $booking_course->getFullname() ?>.
+The booking deleted belonged to course <?= $booking_course->getFullName() ?>.
 <? endif ?>
 
 <? if ($deleting_user instanceof User) : ?>

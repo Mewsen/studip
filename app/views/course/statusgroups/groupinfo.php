@@ -71,7 +71,7 @@
             <ul>
                 <?php foreach ($group->dates as $d) : ?>
                     <li>
-                        <?= htmlReady($d->getFullname()) ?>
+                        <?= htmlReady($d->getFullName()) ?>
                     </li>
                 <?php endforeach ?>
             </ul>
@@ -94,7 +94,7 @@
             <?= sprintf(_('Zugeordnete %s:'), htmlReady(get_title_for_status('dozent', 2))) ?>
             <ul>
                 <?php foreach ($lecturers as $l) : ?>
-                    <li><?= htmlReady($l->getFullname()) ?></li>
+                    <li><?= htmlReady($l->getFullName()) ?></li>
                 <?php endforeach ?>
             </ul>
         </p>

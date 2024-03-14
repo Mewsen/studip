@@ -1464,13 +1464,13 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
     {
         $name = '';
         if ($this->getAssignedUserType() === 'course') {
-            $name = $this->assigned_course_date->course->getFullname();
+            $name = $this->assigned_course_date->course->getFullName();
             $name .= ' (' . implode(',', $this->assigned_course_date->course->getMembersWithStatus('dozent', true)->limit(3)->getValue('nachname')) . ')';
         } elseif ($this->getAssignedUserType() === 'user') {
             if (get_visibility_by_id($this->assigned_user->id) ||
                 ($this->assigned_user->id == $GLOBALS['user']->id)
             ) {
-                $name = $this->assigned_user->getFullname();
+                $name = $this->assigned_user->getFullName();
                 if ($this->description) {
                     $name .= " \n" . $this->description;
                 }
@@ -1482,7 +1482,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 $current_user = User::findCurrent();
                 if (($resource instanceof Resource) && ($current_user instanceof User)) {
                     if ($resource->userHasPermission($current_user, 'user')) {
-                        $name = $this->assigned_user->getFullname();
+                        $name = $this->assigned_user->getFullName();
                         if ($this->description) {
                             $name .= " \n" . $this->description;
                         }

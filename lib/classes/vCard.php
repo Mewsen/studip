@@ -61,7 +61,7 @@ class vCard {
 
         // User specific data
         //Fullname
-        $vCard['FN'] = $user->getFullname();
+        $vCard['FN'] = $user->getFullName();
 
         //Name
         $vCard['N'][] = $user->Nachname;

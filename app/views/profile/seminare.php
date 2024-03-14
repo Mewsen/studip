@@ -11,9 +11,9 @@
 
         <? foreach ($seminar as $one) :?>
             <a href="<?= URLHelper::getScriptLink('dispatch.php/course/details', ['sem_id' => $one->id])?>">
-                <?= htmlReady($one->getFullname('number-name')) ?>
+                <?= htmlReady($one->getFullName('number-name')) ?>
                 <? if ($one->start_semester !== $one->end_semester) : ?>
-                    (<?= htmlReady($one->getFullname('sem-duration-name')) ?>)
+                    (<?= htmlReady($one->getFullName('sem-duration-name')) ?>)
                 <? endif ?>
             </a><br>
         <?endforeach?>

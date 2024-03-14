@@ -12,7 +12,7 @@
             <select name="course_id" class="nested-select">
                 <? foreach ($courses as $course): ?>
                     <option value="<?= $course->id ?>">
-                        <?= htmlReady($course->getFullname('number-name-semester')) ?>
+                        <?= htmlReady($course->getFullName('number-name-semester')) ?>
                     </option>
                 <? endforeach ?>
             </select>

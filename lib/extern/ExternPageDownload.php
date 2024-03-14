@@ -114,7 +114,7 @@ class ExternPageDownload extends ExternPage
                 $content_owner = [
                     'USERNAME'          => $file_ref->owner->username,
                     'USERID'            => $file_ref->owner->id,
-                    'FULLNAME'          => $file_ref->owner->getFullname(),
+                    'FULLNAME'          => $file_ref->owner->getFullName(),
                     'FIRSTNAME'         => $file_ref->owner->vorname,
                     'LASTNAME'          => $file_ref->owner->nachname,
                     'TITLEFRONT'        => $file_ref->owner->title_front,

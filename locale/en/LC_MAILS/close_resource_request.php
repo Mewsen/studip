@@ -25,7 +25,7 @@ The following time ranges have been booked:
 <? foreach ($single_dates as $date) : ?>
 
 <? if($date instanceof CourseDate) : ?>
-- <?= $date->getFullname() ?>
+- <?= $date->getFullName() ?>
 <? else : ?>
 - <?= $date->toString('default') ?>
 <? endif ?>

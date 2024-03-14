@@ -5,7 +5,7 @@
     <?= htmlReady($unit->config['certificate']['title']) ?>
 </h1>
 <h2 style="font-size: 14px; text-align: center">
-    <?= sprintf(_('für %s'), htmlReady($user->getFullname())) ?>
+    <?= sprintf(_('für %s'), htmlReady($user->getFullName())) ?>
 </h2>
 <p style="font-size: 14px; text-align: center;">
     <?= $unit->config['certificate']['text'] ?>

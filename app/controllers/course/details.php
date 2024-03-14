@@ -68,7 +68,7 @@ class Course_DetailsController extends AuthenticatedController
     public function index_action()
     {
         $this->prelim_discussion = vorbesprechung($this->course->id);
-        $this->title             = $this->course->getFullname();
+        $this->title             = $this->course->getFullName();
         $this->course_domains    = UserDomain::getUserDomainsForSeminar($this->course->id);
         $this->sem = new Seminar($this->course);
         $this->links = [];

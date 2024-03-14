@@ -23,7 +23,7 @@ class Course_CoursewareController extends CoursewareController
         if (!Context::get()) {
             throw new CheckObjectException(_('Sie haben kein Objekt gewählt.'));
         }
-        PageLayout::setTitle(Context::get()->getFullname() . ' - ' . _('Courseware'));
+        PageLayout::setTitle(Context::get()->getFullName() . ' - ' . _('Courseware'));
         PageLayout::setHelpKeyword('Basis.Courseware');
 
         checkObject();

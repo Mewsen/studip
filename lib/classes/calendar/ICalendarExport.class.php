@@ -159,7 +159,7 @@ class ICalendarExport
     {
         $properties =
             [
-                'SUMMARY'       => $date->course->getFullname(),
+                'SUMMARY'       => $date->course->getFullName(),
                 'DESCRIPTION'   => '',
                 'LOCATION'      => $date->getRoomName(),
                 'CATEGORIES'    => $GLOBALS['TERMIN_TYP'][$date->date_typ]['name'],

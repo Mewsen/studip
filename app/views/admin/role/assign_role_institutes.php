@@ -14,7 +14,7 @@
         </legend>
 
         <label>
-            <?= sprintf(_("Einrichtungszuordnung für %s in der Rolle %s"), htmlReady($user->getFullname()), htmlready($role->getRoleName()))?>
+            <?= sprintf(_("Einrichtungszuordnung für %s in der Rolle %s"), htmlReady($user->getFullName()), htmlready($role->getRoleName()))?>
             <div class="hgroup">
                 <?= $qsearch->render() ?>
 

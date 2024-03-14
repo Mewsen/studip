@@ -236,7 +236,7 @@ class Institute extends SimpleORMap implements Range
      * @param string formatting template name
      * @return string Fullname
      */
-    public function getFullname($format = 'default'): string
+    public function getFullName($format = 'default'): string
     {
         $template['type-name'] = '%2$s: %1$s';
         if ($format === 'default' || !isset($template[$format])) {

@@ -122,19 +122,19 @@ class GlobalSearchForum extends GlobalSearchModule implements GlobalSearchFullte
         if ($data['name']) {
             $name = self::mark($data['name'], $search);
         } elseif ($course) {
-            $name = htmlReady($course->getFullname());
+            $name = htmlReady($course->getFullName());
         }
 
         // Get additional info
         if ($user && !$data['anonymous']) {
-            $temp = $user->getFullname();
+            $temp = $user->getFullName();
         } else {
             $temp = _('Anonym');
         }
         $additional = sprintf(
             _('Beitrag von %1$s in %2$s'),
             $temp,
-            $course ? $course->getFullname() : _('Ohne Titel')
+            $course ? $course->getFullName() : _('Ohne Titel')
         );
 
         // Clear content from blockquotes

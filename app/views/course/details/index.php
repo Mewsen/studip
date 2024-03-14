@@ -58,7 +58,7 @@
                     <strong><?= _('Semester') ?></strong>
                 </td>
                 <td>
-                    <?= htmlReady($course->getFullname('sem-duration-name')) ?>
+                    <?= htmlReady($course->getFullName('sem-duration-name')) ?>
                 </td>
             </tr>
         <? endif ?>
@@ -128,8 +128,8 @@
                 <?= _('Diese Veranstaltung gehört zu einer Hauptveranstaltung') ?>:
                 <br><br>
                 <a href="<?= $controller->link_for('course/details/', ['sem_id' => $course->parent->id]) ?>"
-                   title="<?= htmlReady($course->parent->getFullname()) ?>">
-                    <?= htmlReady($course->parent->getFullname()) ?>
+                   title="<?= htmlReady($course->parent->getFullName()) ?>">
+                    <?= htmlReady($course->parent->getFullName()) ?>
                 </a>
             <? if (count($siblings) > 0) : ?>
                 <br><br>
@@ -139,8 +139,8 @@
                     <? foreach ($siblings as $sibling): ?>
                         <li>
                             <a href="<?= $controller->link_for('course/details/', ['sem_id' => $sibling->id]) ?>"
-                               title="<?= htmlReady($sibling->getFullname()) ?>">
-                                <?= htmlReady($sibling->getFullname()) ?>
+                               title="<?= htmlReady($sibling->getFullName()) ?>">
+                                <?= htmlReady($sibling->getFullName()) ?>
                             </a>
                         </li>
                     <? endforeach ?>
@@ -158,8 +158,8 @@
                 <? foreach ($children as $child): ?>
                     <li>
                         <a href="<?= $controller->link_for('course/details/', ['sem_id' => $child->id]) ?>"
-                           title="<?= htmlReady($child->getFullname()) ?>">
-                            <?= htmlReady($child->getFullname()) ?>
+                           title="<?= htmlReady($child->getFullName()) ?>">
+                            <?= htmlReady($child->getFullName()) ?>
                         </a>
                     </li>
                 <? endforeach ?>

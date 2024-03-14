@@ -45,7 +45,7 @@ class ConfigurationModel
                     'description' => 'missing in table `config`',
                 ];
                 $data['value'] = $value;
-                $data['fullname'] = $range->getFullname();
+                $data['fullname'] = $range->getFullName();
 
                 $allconfigs[] = $data;
             }
@@ -80,7 +80,7 @@ class ConfigurationModel
         ];
 
         $data['value']    = $range->getConfiguration()->$field;
-        $data['fullname'] = $range->getFullname();
+        $data['fullname'] = $range->getFullName();
 
         return $data;
     }

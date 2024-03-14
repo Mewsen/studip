@@ -15,7 +15,7 @@ class Course_TopicsController extends AuthenticatedController
         checkObjectModule("schedule");
 
         Navigation::activateItem('/course/schedule/topics');
-        PageLayout::setTitle(sprintf('%s - %s', Course::findCurrent()->getFullname(), _("Themen")));
+        PageLayout::setTitle(sprintf('%s - %s', Course::findCurrent()->getFullName(), _("Themen")));
 
         $seminar = new Seminar(Course::findCurrent());
         $this->forum_activated = $seminar->getSlotModule('forum');
