@@ -70,7 +70,7 @@
             ?>
             </td>
         </tr>
-        <? if ($range_id == $mvv_contact->range_id && ($contact_id ?? null) == $mvv_contact->contact_id) : ?>
+        <? if ($range_id == $mvv_contact->range_id && $contact_id == $mvv_contact->contact_id) : ?>
             <tr class="loaded-details nohover">
                 <?= $this->render_partial('shared/contacts/details', compact('mvv_contact')) ?>
             </tr>
