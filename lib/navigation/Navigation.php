@@ -352,38 +352,27 @@ class Navigation implements IteratorAggregate
     }
 
     /**
-     * Set the image of this navigation item. Additional HTML
-     * attributes can be passed using the $options parameter
-     * (like 'style' or 'onclick').
+     * Set the image of this navigation item.
      *
-     * @param Icon   $image            an instance of class Icon depicting this item
-     * @param array  $link_attributes  additional link attributes
+     * @param \Icon|null $image an instance of class Icon depicting this item
+     *                          or null to remove the image
      */
-    public function setImage(\Icon $image = null, $linkAttributes = [])
+    public function setImage(?\Icon $image)
     {
         $this->image = $image;
-        $this->link_attributes = array_merge(
-            $this->link_attributes,
-            $linkAttributes
-        );
     }
 
     /**
      * Set the image for the active state of this navigation item.
      * If no active image is set, the normal image is used for the
-     * active state. Additional HTML attributes can be passed using
-     * the $options parameter (like 'style' or 'onclick').
+     * active state.
      *
-     * @param Icon   $image            an instance of class Icon depicting this item
-     * @param array  $link_attributes  additional link attributes
+     * @param \Icon|null $image an instance of class Icon depicting this item
+     *                          or null to remove the image
      */
-    public function setActiveImage(\Icon $image = null, $linkAttributes = [])
+    public function setActiveImage(?\Icon $image)
     {
         $this->active_image = $image;
-        $this->link_attributes = array_merge(
-            $this->link_attributes,
-            $linkAttributes
-        );
     }
 
     /**

@@ -44,14 +44,12 @@ class NavigationTest extends \Codeception\Test\Unit
         $navigation = new Navigation('test', 'foo.php');
         $this->assertNull($navigation->getImage());
 
-        $icon = Icon::create('foo', 'clickable');
-        $link_attrs = ['alt' => 'foo'];
+        $icon = Icon::create('foo', Icon::ROLE_CLICKABLE);
 
-        $navigation->setImage($icon, $link_attrs);
+        $navigation->setImage($icon);
 
         $this->assertTrue($navigation->isVisible(true));
         $this->assertEquals($icon, $navigation->getImage());
-        $this->assertEquals($link_attrs, $navigation->getLinkAttributes());
     }
 
     public function testActiveImage ()
