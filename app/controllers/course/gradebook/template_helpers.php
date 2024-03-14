@@ -95,7 +95,7 @@ trait GradebookTemplateHelpers
         $ilias->addLink(
             _('Test als Leistung hinzufügen'),
             $this->url_for('course/gradebook/lecturers/new_ilias_definition'),
-            Icon::create('learnmodule+add')
+            Icon::create('add')
         )->asDialog();
         if ($num_definitions) {
             $ilias->addLink(
