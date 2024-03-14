@@ -254,7 +254,7 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
             ['calendar_date_id' => $this->id]
         );
         foreach ($course_assignments as $course_assignment) {
-            if ($course_assignment->course->calendarWritable($range_id)) {
+            if ($course_assignment->course->isCalendarWritable($range_id)) {
                 return true;
             }
         }
