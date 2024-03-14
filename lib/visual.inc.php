@@ -155,17 +155,6 @@ function blubberReady($text, $trim=TRUE) {
     return $formatted !== '' ? sprintf(FORMATTED_CONTENT_WRAPPER, $formatted) : '';
 }
 
-/**
- * Obsolete function for compatibility, returns text unchanged.
- *
- * @param  string $text  Marked-up text.
- * @return string        Marked-up text.
- * @deprecated since Stud.IP 5.3
- */
-function transformBeforeSave($text){
-    return $text;
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
