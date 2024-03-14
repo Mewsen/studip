@@ -504,19 +504,6 @@ function check_and_set_date($tag, $monat, $jahr, $stunde, $minute, &$arr, $field
     return $check;
 }
 
-
-/**
- * gets an entry from the studip configuration table
- *
- * @param string $key the key for the config entry
- * @return string  the value
- * @deprecated since Stud.IP 5.0
- */
-function get_config($key)
-{
-    return Config::get()->$key;
-}
-
 /**
  * reset the order-positions for the lecturers in the passed seminar,
  * starting at the passed position
