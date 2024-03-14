@@ -330,24 +330,6 @@ function idna_link($link, $mail = false) {
     return $link;
 }
 
-
-/**
- * Create smileys
- *
- * This functions converts the smiley codes notation (:name:) as well as the
- * available short notation.
- *
- * @access public
- * @param  string $text The text to convert
- * @return string Converted text
- * @deprecated and useless since Stud.IP 5.4
- */
-function smile($text = '') {
-    trigger_error('Smileys are no longer supported.', E_USER_DEPRECATED);
-    return $text;
-}
-
-
 /**
  * create symbols from the shorts
  *
