@@ -1096,7 +1096,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
     public function isCalendarReadable(?string $user_id = null): bool
     {
         if ($user_id === null) {
-            $user_id = self::findCurrent()->id;
+            $user_id = User::findCurrent()->id;
         }
 
         //Calendar read permissions are granted for all participants
