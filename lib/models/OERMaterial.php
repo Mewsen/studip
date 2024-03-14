@@ -632,9 +632,9 @@ class OERMaterial extends SimpleORMap
                     $user['contact_type'] = "oercampus";
                 }
                 $user['name'] = $userdata['name'];
-                $user['avatar_url'] = $userdata['avatar'] ?: null;
+                $user['avatar_url'] = $userdata['avatar'] ?? null;
                 $userdata = $user['data'] ? $user['data']->getArrayCopy() : [];
-                $userdata['description'] = $userdata['description'] ?: null;
+                $userdata['description'] = $userdata['description'] ?? null;
                 $user['data'] = $userdata;
                 $user->store();
 
