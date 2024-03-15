@@ -14,8 +14,8 @@ class PluginAssetFactory implements AssetFactory
      * Restores or create a css file based on the given information.
      *
      * @param String $filename Filename of the original file
-     * @param Array  $metadata Potential metadata
-     * @return Assets\PluginAsset
+     * @param array  $metadata Potential metadata
+     * @return PluginAsset
      */
     public function createCSSFile($filename, array $metadata = [])
     {
@@ -44,9 +44,9 @@ class PluginAssetFactory implements AssetFactory
     /**
      * Restores or create a js file based on the given information.
      *
-     * @param String $filename Filename of the original file
-     * @param Array  $metadata Potential metadata
-     * @return Assets\PluginAsset
+     * @param string $filename Filename of the original file
+     * @param array  $metadata Potential metadata
+     * @return PluginAsset
      */
     public function createJSFile($filename, array $metadata = [])
     {

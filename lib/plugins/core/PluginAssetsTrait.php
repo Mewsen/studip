@@ -12,7 +12,7 @@ trait PluginAssetsTrait
      * Adds an asset while detecting the type automatically.
      *
      * @param string $asset Asset to add
-     * @param array  $variables Variables for the LESS/SCSS compiler, unused for JS
+     * @param array  $variables Variables for the SCSS compiler, unused for JS
      * @since Stud.IP 5.4
      */
     public function addAsset(string $asset, array $variables = []): void
@@ -29,7 +29,7 @@ trait PluginAssetsTrait
      * Adds many assets while detecting the type automatically.
      *
      * @param string[] $assets Assets to add
-     * @param array $variables Variables for the LESS/SCSS compiler, unused
+     * @param array $variables Variables for the SCSS compiler, unused
      *                         for JS
      * @param bool $combine If true, the assets will be combined into one
      *                      single file for each type
@@ -61,7 +61,7 @@ trait PluginAssetsTrait
      * Adds many stylesheeets at once.
      * @param array  $filenames List of relative filenames
      * @param array  $variables Optional array of variables to pass to the
-     *                           LESS compiler
+     *                           SCSS compiler
      * @param array  $link_attr Attributes to pass to the link elements
      * @param string $path      Common path prefix for all filenames
      */
@@ -96,18 +96,18 @@ trait PluginAssetsTrait
     }
 
     /**
-     * Includes given stylesheet in page, compiles less if neccessary
+     * Includes given stylesheet in page, compiles scss if neccessary
      *
-     * @param string $filename Name of the stylesheet (css or less) to include
+     * @param string $filename Name of the stylesheet (css or scss) to include
      *                         (relative to plugin directory)
      * @param array  $variables Optional array of variables to pass to the
-     *                          LESS compiler
+     *                          SCSS compiler
      * @param array  $link_attr Attributes to pass to the link element
      */
     protected function addStylesheet($filename, array $variables = [], array $link_attr = [])
     {
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
-        if (!in_array($extension, ['less', 'scss'])) {
+        if ($extension != 'scss') {
             PageLayout::addStylesheet(
                 "{$this->getPluginURL()}/{$filename}?v={$this->getPluginVersion()}",
                 $link_attr
@@ -250,11 +250,7 @@ trait PluginAssetsTrait
         $contents = file_get_contents($filename);
 
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
-        if ($extension === 'less') {
-            $contents = Assets\LESSCompiler::getInstance()->compile($contents, $variables + [
-                'plugin-path' => $this->getPluginURL(),
-            ]);
-        } elseif ($extension === 'scss') {
+        if ($extension === 'scss') {
             $contents = Assets\SASSCompiler::getInstance()->compile($contents, $variables + [
                 'plugin-path' => '"' . $this->getPluginURL() . '"',
             ]);
@@ -277,7 +273,7 @@ trait PluginAssetsTrait
             return 'js';
         }
 
-        if (in_array($extension, ['css', 'less', 'scss'])) {
+        if (in_array($extension, ['css', 'scss'])) {
             return 'css';
         }
 

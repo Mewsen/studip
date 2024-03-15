@@ -48,7 +48,7 @@ class SASSCompiler implements Compiler
      * core system can be used. This includes colors and icons.
      *
      * @param String $input      Scss content to compile
-     * @param array  $variables Additional variables for the LESS compilation
+     * @param array  $variables Additional variables for the SCSS compilation
      * @return String containing the generated CSS
      */
     public function compile($input, array $variables = [])
@@ -73,7 +73,7 @@ class SASSCompiler implements Compiler
     }
 
     /**
-     * Generates the less prefix containing the variables and mixins of the
+     * Generates the scss prefix containing the variables and mixins of the
      * Stud.IP core system.
      * This prefix will be cached in Stud.IP's cache in order to minimize
      * disk accesses.
