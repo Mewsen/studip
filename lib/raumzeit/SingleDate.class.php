@@ -147,9 +147,9 @@ class SingleDate
                 $after = $this->toString();
                 // logging
                 if ($before) {
-                    StudipLog::log("SINGLEDATE_CHANGE_TIME", $this->range_id, $before, $before . ' -> ' . $after);
+                    StudipLog::log('SINGLEDATE_CHANGE_TIME', $this->range_id, $this->id, $before . ' -> ' . $after);
                 } else {
-                    StudipLog::log("SEM_ADD_SINGLEDATE", $this->range_id, $after);
+                    StudipLog::log('SEM_ADD_SINGLEDATE', $this->range_id, $this->id, $after);
                 }
 
                 return true;
