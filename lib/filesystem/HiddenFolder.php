@@ -107,7 +107,7 @@ class HiddenFolder extends PermissionEnabledFolder
     public function __get($attribute)
     {
         if ($attribute === 'download_allowed') {
-            return $this->folderdata['data_content']['download_allowed'];
+            return !empty($this->folderdata['data_content']['download_allowed']);
         }
         return $this->folderdata[$attribute];
     }
