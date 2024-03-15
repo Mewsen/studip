@@ -79,32 +79,6 @@ module.exports = {
                 ]
             },
             {
-                test: /\.less$/,
-                use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader
-                    },
-                    {
-                        loader: "css-loader",
-                        options: {
-                            url: false,
-                            importLoaders: 2
-                        }
-                    },
-                    {
-                        loader: "postcss-loader"
-                    },
-                    {
-                        loader: "less-loader",
-                        options: {
-                            lessOptions: {
-                                relativeUrls: false
-                            }
-                        }
-                    }
-                ]
-            },
-            {
                 test: /\.ts$/,
                 loader: 'ts-loader',
                 exclude: /node_modules/,

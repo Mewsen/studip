@@ -84,15 +84,10 @@
             "rules": {
                 "at-rule-no-unknown": null
             }
-        },
-        {
-            "files": ["**/*.less"],
-            "customSyntax": "postcss-less"
         }
     ],
     "ignoreFiles": [
         "resource/assets/stylesheets/jquery-ui.structure.css",
-        "resources/assets/stylesheets/less/jquery-ui/*",
         "resources/assets/stylesheets/vendor/*"
     ]
 }
