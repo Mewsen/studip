@@ -387,12 +387,12 @@ class CourseDate extends SimpleORMap implements PrivacyObject
     protected function cbStudipLog($type)
     {
         if (!$this->metadate_id) {
-            if ($type == 'after_create') {
-                StudipLog::log('SEM_ADD_SINGLEDATE', $this->range_id, $this->getFullname());
+            if ($type === 'after_create') {
+                StudipLog::log('SEM_ADD_SINGLEDATE', $this->range_id, $this->id, $this->getFullName());
             }
-            if ($type == 'before_store' && !$this->isNew() && ($this->isFieldDirty('date') || $this->isFieldDirty('end_time'))) {
+            if ($type === 'before_store' && !$this->isNew() && ($this->isFieldDirty('date') || $this->isFieldDirty('end_time'))) {
                 $old_entry = self::build($this->content_db);
-                StudipLog::log('SINGLEDATE_CHANGE_TIME', $this->range_id, $this->getFullname(), $old_entry->getFullname() . ' -> ' . $this->getFullname());
+                StudipLog::log('SINGLEDATE_CHANGE_TIME', $this->range_id, $this->id, $old_entry->getFullName() . ' -> ' . $this->getFullName());
             }
         }
     }
