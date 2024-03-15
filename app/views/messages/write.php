@@ -1,4 +1,4 @@
-<form class="default" name="write_message" action="<?= URLHelper::getLink("dispatch.php/messages/send") ?>" method="post" style="margin-left: auto; margin-right: auto;" data-dialog data-secure="#adressees > li:eq(1), .files > li:eq(1)">
+<form class="default" name="write_message" action="<?= URLHelper::getLink("dispatch.php/messages/send") ?>" method="post" style="margin-left: auto; margin-right: auto;" data-dialog data-secure="true">
     <?= CSRFProtection::tokenTag() ?>
 
     <input type="hidden" name="message_id" id="message_id" value="<?= htmlReady($default_message->id) ?>">
