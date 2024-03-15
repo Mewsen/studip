@@ -299,18 +299,8 @@ class Course_ContentmodulesController extends AuthenticatedController
                 'displayname' => $displayname,
                 'visibility'  => $visibility,
                 'active'      => (bool) $tool,
+                'icon'        => $this->getIconFromMetadata($metadata, $plugin),
             ];
-            if (!empty($metadata['icon_clickable'])) {
-                $list[$plugin_id]['icon'] = $metadata['icon_clickable'] instanceof Icon
-                    ? $metadata['icon_clickable']->asImagePath()
-                    : Icon::create($plugin->getPluginURL().'/'.$metadata['icon_clickable'])->asImagePath();
-            } elseif (!empty($metadata['icon'])) {
-                $list[$plugin_id]['icon'] = $metadata['icon'] instanceof Icon
-                    ? $metadata['icon']->asImagePath()
-                    : Icon::create($plugin->getPluginURL().'/'.$metadata['icon'])->asImagePath();
-            } else {
-                $list[$plugin_id]['icon'] = null;
-            }
             $list[$plugin_id]['summary'] = $metadata['summary'] ?? null;
             $list[$plugin_id]['mandatory'] = $this->sem_class->isModuleMandatory(get_class($plugin));
             $list[$plugin_id]['highlighted'] = (bool) $plugin->isHighlighted();
@@ -319,5 +309,51 @@ class Course_ContentmodulesController extends AuthenticatedController
         }
 
         return $list;
+    }
+
+    /**
+     * @param array $metadata
+     * @param CorePlugin|StudIPPlugin $plugin
+     */
+    private function getIconFromMetadata(array $metadata, $plugin): ?string
+    {
+        $icon = $metadata['icon_clickable'] ?? $metadata['icon'] ?? null;
+
+        if (!$icon) {
+            return null;
+        }
+
+        if ($plugin instanceof StudIPPlugin) {
+            $path = $GLOBALS['ABSOLUTE_PATH_STUDIP'] . '/' . $plugin->getPluginPath() . '/' . $icon;
+            $icon = $this->getCoreIcon($path) ?? $icon;
+        }
+
+        if (!$icon instanceof Icon) {
+            $icon = Icon::create($plugin->getPluginURL() . '/' . $icon);
+        }
+
+        return $icon->copyWithRole(Icon::ROLE_CLICKABLE)->asImagePath();
+    }
+
+    private function getCoreIcon(string $path): ?Icon
+    {
+        $path = realpath($path);
+
+        if (!file_exists($path)) {
+            return null;
+        }
+
+        try {
+            $icon = basename($path, '.svg');
+            $color = basename(dirname($path));
+            $roles = Icon::colorToRoles($color);
+
+            return Icon::create($icon, $roles[0]);
+        } catch (Exception $e) {
+            return null;
+        }
+
+
+
     }
 }

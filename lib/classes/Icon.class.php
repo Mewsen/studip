@@ -66,7 +66,7 @@ class Icon
     }
 
     // return the roles! associated to a color
-    private static function colorToRoles($color)
+    public static function colorToRoles($color)
     {
         static $colors_to_roles;
 
