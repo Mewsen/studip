@@ -1,5 +1,5 @@
-@import "mixins.less";
-@import (less) "vendor/jquery-nestable.css";
+@import "mixins.scss";
+@import "vendor/jquery-nestable.css";
 
 .tree-seperator {
     list-style-type: none;

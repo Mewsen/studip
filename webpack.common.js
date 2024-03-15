@@ -16,7 +16,7 @@ module.exports = {
         "studip-statusgroups": assetsPath + "/entry-statusgroups.js",
         "studip-wysiwyg": assetsPath + "/entry-wysiwyg.js",
         "studip-installer": assetsPath + "/entry-installer.js",
-        "print": path.resolve(__dirname, "resources/assets/stylesheets") + "/print.less",
+        "print": path.resolve(__dirname, "resources/assets/stylesheets") + "/print.scss",
         "webservices": path.resolve(__dirname, "resources/assets/stylesheets") + "/webservices.scss",
         "accessibility": path.resolve(__dirname, "resources/assets/stylesheets") + "/highcontrast.scss"
     },

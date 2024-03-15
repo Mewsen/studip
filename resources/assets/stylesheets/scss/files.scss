@@ -1,3 +1,483 @@
+.file_uploader {
+    display: none;
+}
+.file_upload_window {
+    .filenames li {
+        display: flex;
+        justify-content: space-between;
+
+        span {
+            flex: 1;
+            &.upload-progress {
+                flex: 0;
+            }
+        }
+
+        &:only-child .upload-progress {
+            display: none;
+        }
+    }
+}
+.uploadbar {
+    position: relative;
+
+    img {
+        margin: 10px;
+        z-index: 1;
+    }
+
+    &.uploadbar-outer {
+        border: var(--base-color) solid 1px;
+    }
+    &.uploadbar-inner {
+        position: absolute;
+        top: 0;
+        right: 100%;
+        bottom: 0;
+        left: 0;
+        background-color: var(--base-color);
+        overflow: hidden;
+        white-space: nowrap;
+
+        display: flex;
+        justify-content: space-between;
+
+        transition: right var(--transition-duration);
+
+        img {
+            background-color: var(--base-color);
+            flex: 0;
+            outline: 10px solid var(--base-color);
+        }
+        .ufo {
+            animation: ufoflight 1.5s linear infinite;
+            z-index: 0;
+        }
+    }
+
+    .upload-progress {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        mix-blend-mode: luminosity;
+
+        color: invert($base-color);
+        font-size: large;
+    }
+}
+
+@keyframes ufoflight {
+    25% {
+        transform: translateX(-2px) translateY(4px);
+    }
+    50% {
+        transform: translateX(-0px) translateY(8px);
+    }
+    75% {
+        transform: translateX(-2px) translateY(4px);
+    }
+    100% {
+        transform: translateX(0px) translateY(0px);
+    }
+}
+
+/* for file/edit view and file/new_edit_folder_form view and other views that offer a selection via tiles: */
+div.file_select_possibilities,
+.folder_type_select_possibilities,
+.square-item-container {
+    $width: 100px;
+    $height: 100px;
+
+    display: flex;
+    flex-direction: column;
+    > div {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: stretch;
+        > a,
+        > button,
+        > div.clickable {
+            cursor: pointer;
+            background-color: transparent;
+            margin: 10px;
+            border: thin solid var(--content-color-20);
+            padding: 10px;
+            width: $width;
+            min-width: $width;
+            max-width: $width;
+            height: $height;
+            min-height: $height;
+            max-height: $height;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            text-align: center;
+            > img {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        > .important-item {
+            min-width: calc(100% - 1.5em);
+            background-color: var(--content-color-20);
+            border-color: var(--base-color-60);
+            display: flex;
+            flex-direction: row;
+            height: initial;
+            max-height: initial;
+
+            > .icon {
+                width: 10em;
+            }
+
+            > .description {
+                width: 100%;
+                text-align: left;
+                margin-left: 1em;
+                color: var(--black);
+            }
+        }
+    }
+
+    > button {
+        box-sizing: content-box;
+        cursor: pointer;
+        color: var(--yellow);
+    }
+
+
+    > label:not(.undecorated) {
+        display: flex;
+        justify-content: center;
+        font-size:0.7em;
+        cursor: pointer;
+
+        img {
+            width: 40%;
+            height: 40%;
+            display: block;
+        }
+    }
+
+
+    /* for file/edit view only: */
+
+    /* for file/edit view only: content_terms_of_use_id, oer_upload */
+    /* for file/new_edit_folder_form view only: folder_type */
+
+    input[name=content_terms_of_use_id],
+    input[name=oer_upload],
+    input[name=folder_type] {
+        display: none;
+
+        &:checked + label {
+            background-color: var(--brand-color-darker);
+            color: var(--contrast-content-white);
+
+            img {
+                filter: invert(100%) brightness(200%);
+            }
+        }
+    }
+
+}
+
+div.file_select_possibilities.content_terms_of_use_icons {
+    justify-content: left;
+}
+
+
+#file_edit_window,
+#file_details_window,
+#oer_file_details {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: flex-start;
+}
+
+#oer_file_details {
+    max-width: 555px;
+    flex-wrap: wrap;
+}
+
+#preview_container,
+#oer_aside {
+    width: 270px;
+}
+
+#oer_title {
+    max-height: 34px;
+    max-width: 225px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    hyphens: auto;
+    word-break: break-all;
+    text-indent: initial;
+}
+
+#oer_preview_image {
+    width: 100%;
+    display: flex;
+    height: 170px;
+    align-items: center;
+
+    img {
+        width: 100%;
+    }
+}
+
+#file_suggest_oer {
+    margin-top: 2%;
+
+    .suggestion_text {
+        font-size: 2em;
+        font-weight: 700;
+        margin-bottom: 0;
+    }
+
+    #note {
+        margin: 0 0 30px;
+    }
+}
+
+
+
+table.documents tfoot {
+    td.sticky {
+        position: sticky;
+        bottom: 0;
+    }
+
+    .footer-items {
+        display: flex;
+        flex-direction: row;
+        & > .bulk-buttons {
+            flex-grow: 1;
+        }
+    }
+}
+
+
+/* for file/edit and folder/edit only: */
+@include media-breakpoint-small-down() {
+    /* mobile view: */
+    #file_aside,
+    #folder_aside {
+        display: block;
+
+        .file-icon,
+        .folder-icon {
+            img {
+                width: 30%;
+                height: 100%;
+                max-height: 10em;
+                margin-right: 1em;
+            }
+        }
+
+        h3 {
+            font-size: 140%;
+            padding-top: 1em;
+        }
+
+        dl {
+            display: table;
+        }
+    }
+
+    #file_management_forms {
+        display: table;
+        width: 100%;
+    }
+
+    .file_preview {
+        max-width: 100%;
+    }
+
+    #file_edit_window,
+    #file_details_window {
+        flex-direction: column;
+    }
+
+    #file_aside,
+    #folder_aside {
+        width: 100%;
+        max-width: none;
+    }
+
+    #file_management_forms {
+        width: 100%;
+        max-width: none;
+    }
+
+    div#preview_container {
+        .file_preview {
+            max-width: 100%;
+        }
+
+        iframe.file_preview {
+            width: 100%;
+            height: 20em;
+        }
+    }
+}
+
+@include media-breakpoint-small-up() {
+    /* desktop view: */
+
+    #file_aside,
+    #folder_aside {
+        width: calc(30% - 10px);
+        max-width: calc(30% - 10px);
+
+        .file-icon,
+        .folder-icon {
+            img {
+                margin-left: 20%;
+                width: 60%;
+                max-height: 16em;
+                height: 100%;
+            }
+        }
+
+        h3 {
+            font-size: 1.1em;
+        }
+    }
+
+
+    #file_management_forms,
+    #preview_container:not(.oercampus_editmaterial) {
+        width: calc(70% - 10px);
+        max-width: calc(70% - 10px);
+
+        .file_preview {
+            max-width: 100%;
+        }
+
+        iframe.file_preview {
+            width: 100%;
+            height: 40em;
+        }
+    }
+
+}
+
+form.default {
+    #select_oer_upload_info {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
+    fieldset.select_terms_of_use,
+    fieldset.select_oer_upload {
+        > legend {
+            margin: 0;
+            width: 100%;
+        }
+        border: none;
+        padding: 0;
+        margin-left: 0;
+        margin-right: 0;
+
+        > input[type=radio] {
+            opacity: 0;
+            position: absolute;
+            &:focus + label {
+                outline: auto;
+            }
+        }
+        > label {
+            cursor: pointer;
+            border: 1px solid var(--content-color-40);
+            transition: background-color var(--transition-duration);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 6px 2px;
+            margin-bottom: 0;
+            border-top: none;
+            > .text {
+                width: 100%;
+                margin-left: 10px;
+            }
+            > .arrow {
+                margin-right: 5px;
+            }
+            > .check {
+                display: none;
+            }
+        }
+        > label:first-of-type {
+            border-top: 1px solid var(--content-color-40);
+        }
+        > div {
+            border: 1px solid var(--content-color-40);
+            border-top: none;
+            display: none;
+            padding: 10px;
+
+        }
+        > input[type=radio]:checked + label {
+            background-color: var(--content-color-20);
+            transition: background-color var(--transition-duration);
+            > .arrow {
+                display: none;
+            }
+            > .check {
+                display: inline-block;
+            }
+        }
+        > input[type=radio]:checked + label + div {
+            display: block;
+            .description {
+                animation-duration: 400ms;
+                animation-name: terms_of_use_fadein;
+            }
+        }
+    }
+
+}
+
+@keyframes terms_of_use_fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+table.documents {
+    tr:target {
+        background-color: var(--activity-color-20);
+    }
+}
+
+
+/* Rules for the library search dialog: */
+
+h2.search-result-info {
+    font-weight: normal;
+    font-size: 1.4em;
+    color: var(--base-gray);
+    border-bottom: none;
+    margin-top: 0;
+}
+
+
 table.documents tfoot td div.pagination-wrapper {
     float: right;
 }

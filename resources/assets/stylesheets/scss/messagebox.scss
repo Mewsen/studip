@@ -24,23 +24,25 @@ div.messagebox {
 
             display: inline-block;
             margin: 1px;
-            .size(16px, 16px);
+            width: 16px;
+            height: 16px;
 
-            &.close, &.details {
+            &.close,
+            &.details {
                 span { display: none; }
             }
             &.close {
-                .background-icon('decline', 'clickable');
+                @include background-icon(decline);
             }
             &.details {
-                .background-icon('arr_eol-down', 'clickable');
+                @include background-icon(arr_eol-down);
             }
         }
     }
 
     &.details_hidden {
         .messagebox_buttons a.details {
-            .background-icon('arr_eol-up', 'clickable');
+            @include background-icon(arr_eol-up);
         }
         .messagebox_details { height: 0; }
     }
@@ -52,35 +54,25 @@ div.messagebox_details {
 }
 
 // Messagebox definitions
-
-.messagebox (@name, @color, @background-color) {
-  .messagebox (@name, @color, @background-color, @color, @name);
-}
-
-.messagebox (@name, @color, @background-color, @border-color) {
-  .messagebox (@name, @color, @background-color, @border-color, @name);
-}
-
-.messagebox (@name, @color, @background-color, @border-color, @image) {
-    // Also generates the neccessary selector not only the rules
-    div.messagebox_@{name} {
-        color: @color;
-        background-color: @background-color;
-        background-image: url("@{image-path}/messagebox/@{image}.png");
+@mixin messagebox ($name, $color, $background-color, $border-color: $color, $image: $name) {
+    div.messagebox_#{$name} {
+        color: $color;
+        background-color: $background-color;
+        background-image: url("#{$image-path}/messagebox/#{$image}.png");
         background-size: 32px 32px;
-        border-color: @border-color;
+        border-color: $border-color;
     }
 }
 
-.messagebox(info, var(--black), var(--white), var(--base-color));
-.messagebox(success, var(--black), var(--white), var(--dark-green));
-.messagebox(error, var(--black), var(--white), var(--red));
-.messagebox(exception, var(--red), var(--red-20), var(--red));
-.messagebox(warning, var(--black), var(--white), var(--yellow-60), 'advice');
+@include messagebox(info, var(--black), var(--white), var(--base-color));
+@include messagebox(success, var(--black), var(--white), var(--dark-green));
+@include messagebox(error, var(--black), var(--white), var(--red));
+@include messagebox(exception, var(--red), var(--red-20), var(--red));
+@include messagebox(warning, var(--black), var(--white), var(--yellow-60), advice);
 
 // Define modal messagebox
 .modaloverlay {
-    background: fadeout(@base-color, 50%);
+    background: fadeout($base-color, 50%);
     position: fixed;
     top: 0;
     left: 0;

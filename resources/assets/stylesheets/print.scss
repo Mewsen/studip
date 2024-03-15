@@ -1,9 +1,9 @@
-@import "mixins.less";
-@import "less/breakpoints.less";
-@import "less/visibility.less";
-@import "less/fullcalendar-print.less";
-@import "less/resources-print.less";
-@import (reference) "less/schedule.less";
+@import "mixins";
+@import "scss/breakpoints";
+@import "scss/visibility";
+@import "scss/fullcalendar-print";
+@import "scss/resources-print";
+@import "scss/schedule" ;
 
 
 /*******************************************************************************
@@ -13,10 +13,7 @@
 *******************************************************************************/
 
 @page {
-    margin-top: 15mm;
-    margin-bottom: 15mm;
-    margin-left: 15mm;
-    margin-right: 15mm;
+    margin: 15mm;
 }
 
 html, body {
@@ -46,7 +43,7 @@ img {
 }
 
 a, a:link, a:visited {
-    color: #000000;
+    color: var(--black);
 }
 
 a:visited, a:link, a:hover, a:active {
@@ -79,21 +76,21 @@ h3 {
 }
 
 td.angemeldet {
-    border: 1pt solid #000000;
+    border: 1pt solid var(--black);
 }
 
 td.rahmen_white {
-    border: 1pt solid #000000;
-    background: #FFFFFF none;
+    border: 1pt solid var(--black);
+    background: var(--white) none;
 }
 
 td.rahmen_steel {
-    border: 1pt solid #000000;
+    border: 1pt solid var(--black);
     background-color: #f3f5f8;
 }
 
 td.rahmen_table_row_odd {
-    border: 1pt solid #000000;
+    border: 1pt solid var(--black);
     background-color: #ebebeb;
 }
 
@@ -108,7 +105,7 @@ td.rahmen_table_row_odd {
     font-size: 18pt;
     padding: 0 0 2pt 0;
     margin: 0 0 5pt 0;
-    border-bottom: 1pt solid #000000;
+    border-bottom: 1pt solid var(--black);
 
 }
 
@@ -122,7 +119,7 @@ td.rahmen_table_row_odd {
     text-align: center;
     padding: 2pt 0 0 0;
     margin: 5pt 0 0 0;
-    border-top: 1pt solid #000000;
+    border-top: 1pt solid var(--black);
 
     &:after {
         content: url('../images/logos/logo2b.png');
@@ -161,14 +158,14 @@ td.rahmen_table_row_odd {
         margin: 0;
         padding: 0;
         font-size: 11pt;
-        color: #000000;
+        color: var(--black);
 
         dl {
             height: 100%;
             margin: 0;
-            color: black ! important;
-            background-color: @white;
-            border: 1px solid @light-gray-color-60;
+            color: var(--black) ! important;
+            background-color: var(--white);
+            border: 1px solid var(--light-gray-color-60);
             overflow: hidden;
 
             dd {
@@ -188,7 +185,7 @@ td.rahmen_table_row_odd {
     }
 
     div.schedule_day {
-        border-left: 1pt solid black;
+        border-left: 1pt solid var(--black);
         position: relative;
     }
 
@@ -235,57 +232,60 @@ td.rahmen_table_row_odd {
 }
 
 /* aus style.css */
-h1.content, h2.content, h3.content { color:#24437c; }
+h1.content, h2.content, h3.content {
+    color: var(--base-color);
+}
+
 hr.content {
-  margin:0 1em;
-  background-color:#555555;
-  border-radius:5px;
-  height:1px;
-  border:none;
+    margin: 0 1em;
+    background-color: #555555;
+    border-radius: 5px;
+    height: 1px;
+    border: none;
 }
 
 table.content {
-    border-collapse:collapse;
+    border-collapse: collapse;
 
     td {
-      border:thin solid #666666;
-      padding:3px;
+        border: thin solid #666666;
+        padding: 3px;
     }
 }
 
 div.content {
-  background-color:#f3f5f8;
-  clear:both;
-  margin:0;
-  overflow:hidden;
-  padding:2px;
+    background-color: #f3f5f8;
+    clear: both;
+    margin: 0;
+    overflow: hidden;
+    padding: 2px;
 }
 
 .quote {
-  background:#eeeeee none;
-  border:1px solid black;
-  margin-left:20px;
-  margin-right:20px;
-  padding:3px;
+    background: #eeeeee none;
+    border: 1px solid var(--black);
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 3px;
 }
 
 td.quote {
-  border:1px solid #000000;
-  font-size:8px;
+    border: 1px solid var(--black);
+    font-size: 8px;
 }
 
 a.link-intern {
-  padding-left:18px;
-  .background-icon('link-intern', 'clickable');
-  background-repeat: no-repeat;
+    padding-left: 18px;
+    @include background-icon(intern, clickable);
+    background-repeat: no-repeat;
 }
 
 a.link-extern {
-  padding-left:18px;
-  .background-icon('link-extern', 'clickable');
-  background-repeat: no-repeat;
+    padding-left: 18px;
+    @include background-icon(link-extern, clickable);
+    background-repeat: no-repeat;
 }
 
 .formatted-content {
-  display: inline;
+    display: inline;
 }

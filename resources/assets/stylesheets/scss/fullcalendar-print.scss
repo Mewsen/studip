@@ -1,11 +1,11 @@
 
 a.fc-event {
     border-radius: 0;
-    color: black;
+    color: var(--black);
 
     .fc-time {
         text-decoration: underline;
-        color: black;
+        color: var(--black);
     }
 }
 
@@ -60,7 +60,7 @@ div.fc-view-container {
         display: block;
         width: 100%;
         margin-top: 2em;
-        margin-right: 0em;
+        margin-right: 0;
     }
 }
 
@@ -89,7 +89,7 @@ div.fc-content-skeleton {
 
 div.fc-time-grid a.fc-event {
     position: absolute !important;
-    margin: 0px 0px 1px 0px !important;
+    margin: 0 0 1px 0 !important;
 
     img {
         filter: brightness(0);
@@ -103,7 +103,6 @@ a.fc-timeline-event {
 }
 
 .fc-slats table tr {
-    line-height: 1.7em;
     line-height: 22px;
 }
 
