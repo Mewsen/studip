@@ -391,8 +391,9 @@ form.default {
     }
 
     // Collapsable fieldsets
-    .js &.collapsable fieldset, fieldset.collapsable {
-        legend {
+    .js &.collapsable fieldset,
+    fieldset.collapsable {
+        > legend {
             box-sizing: border-box;
             @include background-icon(arr_1down, clickable, 20);
             background-position: 6px center;
@@ -402,13 +403,13 @@ form.default {
         }
 
         &.collapsed {
-            legend {
+            > legend {
                 @include background-icon(arr_1right, clickable, 20);
                 margin-bottom: 0;
             }
             padding-bottom: 0;
             padding-top: 0;
-            *:not(legend) {
+            > *:not(legend) {
                 display: none;
             }
         }
