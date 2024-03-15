@@ -1,9 +1,34 @@
+__15.03.2024 V 5.5__
+- System: Neues Registrierungsformular
+- System: Neue Login-Seite
+- System: Erklärung in leichter Sprache
+- System: komplett neu entwickelte externe Seiten
+- System: Impressum kann optional  Seiten für nicht eingeloggte Nutzer ausblenden, Reihenfolge von Seiten lassen sich ändern, neuer Entwurfsmodus
+- Modul- und Vorlesungsverzeichnis (MVV): Logging von Personen und Dateizuordnungen
+- Modul- und Vorlesungsverzeichnis (MVV): Suche (Filter) nach Abschlüssen und Fächern im Backend
+- Veranstaltungen: neu entwickelte Exporte
+- Veranstaltungen: neu entwickeltes Wiki
+- Veranstaltungen: Import von ILIAS-Ergebnissen in das Stud.IP-Gradebook
+- Veranstaltungen: Verbesserungen bei der Auswertung von Fragebögen
+- Persönliche Services: Komplett überarbeiteter Terminkalender auf Basis von FullCalendar
+- Courseware: Bewertung von Lernmaterialien
+- Courseware: Erweiterte Courseware-Zertifikate
+- Courseware: Blubber Block
+- Courseware: Werkzeugleiste
+- Courseware: Neue Sortierfunktionen für Lernmaterialien
+- Courseware: Seiten im Inhaltsverzeichnis anlegen und umbenennen
+- Courseware: Lerninhalte und Seiten hinzufügen, kopieren und importieren als eine Aktion
+- Unter der Haube: Parallelisierte Cronjobs
+- Unter der Haube: Integration Storybook.js
+- Unter der Haube: Mindestanforderung an PHP auf 7.4 angehoben
+- Unter der Haube: Mehr Bilder werden als WebP gespeichert
+
 __08.11.2023 V 5.4__
 - System: Komplett neu entwickelte Verzeichnisstrukturen
-- System: Systemweiter Pool von Bilder 
+- System: Systemweiter Pool von Bilder
 - System: Barrierefreiheitserklärung und Meldefunktion integriert
 - System: WYSWIG-Editor hat einen kompakten Modus zur Nutzung auf Mobilgeräten bekommen
-- Raumverwaltung: Vereinfachte Raumanfragen 
+- Raumverwaltung: Vereinfachte Raumanfragen
 - Raumverwaltung: Sammelaktionen
 - Veranstaltungen: "Mehr"-Seite gibt es nicht mehr als separaten Reiter. Die Verwaltung der Veranstaltungswerkzeuge passiert jetzt auf der Verwaltungsseite
 - Veranstaltungen: Hauptordner im Dateibereich lässt sich für Uploads von Teilnehmenden sperren.
@@ -11,7 +36,7 @@ __08.11.2023 V 5.4__
 - Courseware: Sammelmappe für Abschnitte und Blöcke
 - Courseware: Übersichtsseite für Feedback und Kommentare
 - Courseware: Neue Blöcke zur Darstellung eines Lebenslaufs
-- Courseware: Funktionen zum Teilen von Seiten an Peers 
+- Courseware: Funktionen zum Teilen von Seiten an Peers
 - Courseware: Übersichtsseite für verteilte Aufgaben mit Bearbeitungsstatus, Feedbackfunktion und Fristverlängerungsanfrage
 
 __11.03.2023 V 5.3__
