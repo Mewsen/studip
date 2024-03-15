@@ -713,7 +713,7 @@ class MyCoursesController extends AuthenticatedController
     /**
      * Get the data array for presenting the course list in Vue.
      *
-     * @param array $sem_courses
+     * @param array|null $sem_courses
      * @param string $group_field
      * @return array{
      *     courses: array,
@@ -730,7 +730,7 @@ class MyCoursesController extends AuthenticatedController
      *     }
      * }
      */
-    private function getMyCoursesData(array $sem_courses, string $group_field): array
+    private function getMyCoursesData(?array $sem_courses, string $group_field): array
     {
         $sem_data = Semester::getAllAsArray();
         $temp_courses = [];
