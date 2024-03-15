@@ -178,5 +178,5 @@
     @include navigation-icon(no-activity, activity);
 }
 #toggle-user-activities {
-    @include navigation-icon(visibility-invisible/headache, visibility-visible/headache);
+    @include navigation-icon(visibility-invisible, visibility-visible);
 }
