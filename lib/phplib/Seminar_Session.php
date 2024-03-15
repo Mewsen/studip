@@ -233,7 +233,6 @@ class Seminar_Session
         if (
             !isset($_COOKIE[$this->name])
             || strlen($_COOKIE[$this->name]) != ini_get('session.sid_length')
-            || preg_match('/[^0-9a-f]+/', $_COOKIE[$this->name])
         ) {
             $new_id = session_create_id();
             session_id($new_id);
