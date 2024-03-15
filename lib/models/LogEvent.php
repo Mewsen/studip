@@ -111,6 +111,7 @@ class LogEvent extends SimpleORMap implements PrivacyObject
             '/%user\(%coaffected\)/',
             '/%user/',
             '/%singledate\(%affected\)/',
+            '/%singledate\(%coaffected\)/',
             '/%semester\(%coaffected\)/',
             '/%plugin\(%coaffected\)/',
             '/%group\(%coaffected\)/',
