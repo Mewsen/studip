@@ -22,12 +22,11 @@
     </strong>
     <br>
 <? endif ?>
-<? if ($folder->data_content['permission']  == 3) : ?>
+<? if (isset($folder->data_content['permission']) && $folder->data_content['permission'] == 3): ?>
     <div>
         <?= _("Dieser Ordner ist ein Hausaufgabenordner. Es können nur Dateien eingestellt werden.") ?>
     </div>
-<? endif ?>
-<? if ($folder->data_content['permission']  == 5) : ?>
+<? elseif (isset($folder->data_content['permission']) && $folder->data_content['permission'] == 5): ?>
     <div>
         <?= _('Ein Ordner für Materialien, welche nur zum Download zu Verfügung gestellt werden sollen.') ?>
     </div>

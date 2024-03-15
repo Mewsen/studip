@@ -10,7 +10,7 @@ $dates = CourseDate::findByRange_id($folder->range_id);
         </option>
     <? endif; ?>
     <? foreach ($dates as $one_date): ?>
-        <option <?= @$date->id === $one_date->id ? 'selected' : '' ?> value="<?= htmlReady($one_date->id) ?>">
+        <option <?= isset($date) && $date->id === $one_date->id ? 'selected' : '' ?> value="<?= htmlReady($one_date->id) ?>">
             <?= htmlReady(CourseDateFolder::formatDate($one_date)) ?>
         </option>
     <? endforeach; ?>

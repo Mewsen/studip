@@ -123,8 +123,8 @@ class TimedFolder extends PermissionEnabledFolder
             $this->folderdata['data_content']['permission'] = $this->permission;
         }
 
-        $this->start_time = intval($this->folderdata['data_content']['start_time']);
-        $this->end_time = intval($this->folderdata['data_content']['end_time']);
+        $this->start_time = intval($this->folderdata['data_content']['start_time'] ?? 0);
+        $this->end_time = intval($this->folderdata['data_content']['end_time'] ?? 0);
 
         $this->must_have_perm = 'tutor';
     }
