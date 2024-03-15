@@ -12,7 +12,7 @@ jQuery(function ($) {
             <ol class="dd-list">
                 <? foreach ($contacts as $contact): ?>
                     <li class="dd-item" data-id="<?= $contact->contact_id ?>_<?= $contact->category ?>">
-                        <div class="dd-handle"><?= formatReady($contact->name) ?> (<?= formatReady($contact_cat[$contact->category]['name']) ?>)</div>
+                        <div class="dd-handle"><?= htmlReady($contact->name) ?> (<?= htmlReady($contact_cat[$contact->category]['name']) ?>)</div>
                     </li>
                 <? endforeach; ?>
             </ol>
