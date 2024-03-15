@@ -4,7 +4,7 @@
 
 ## Neue Features
 
-- 
+-
 
 ## Breaking changes
 
@@ -14,16 +14,16 @@
 - Die Funktion `transformBeforeSave()` wurde entfernt. Sie kann ersatzlos entfernt werden. ([Issue #3159](https://gitlab.studip.de/studip/studip/-/issues/3159))
 - Die schon lange nicht mehr genutzten Methoden zum Setzen, Auslesen und Enfernen von Schmuckgrafiken von Bildern für die Sidebar wurde entfernt. Die Methoden `Sidebar::setImage()`, `Sidebar::getImage()` sowie `Sidebar::removeImage()` müssen ersatzlos entfernt werden. ([Issue #3157](https://gitlab.studip.de/studip/studip/-/issues/3157))
 - Der zweite Parameter für die Methode `Navigation::setImage()` wurde entfernt. Der Parameter schien sich auf das Bild zu beziehen, hat aber Attribute an dem Link gesetzt. Stattdessen muss die Methode `Navigation::setLinkAttributes()` verwendet werden. ([Issue #3578](https://gitlab.studip.de/studip/studip/-/issues/3578))
-- Die Unterstützung für LESS-Stylsheets in Plugins wurde entfernt. Als Alternative wird SCSS unterstützt. ([Issue #2720](https://gitlab.studip.de/studip/studip/-/issues/2720)) 
-
+- Die Unterstützung für LESS-Stylsheets in Plugins wurde entfernt. Als Alternative wird SCSS unterstützt. ([Issue #2720](https://gitlab.studip.de/studip/studip/-/issues/2720))
+- Die Funktionen `studip_json_encode()` und `studip_json_decode()` wurden entfernt. Stattdessen müssen die Methode `json_encode()` und `json_decode()` verwendet werden. ([Issue #3814](https://gitlab.studip.de/studip/studip/-/issues/3814))
 ## Security related issues
 
 -
 
 ## Deprecated Features
 
-- 
+-
 
 ## Known Issues
 
-- 
+-

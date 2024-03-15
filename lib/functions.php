@@ -1088,36 +1088,6 @@ function legacy_studip_utf8decode($data)
 }
 
 /**
- * Special stud.ip version of json_decode() that also converts the data
- * from utf8 and creates an associative array by default (this differs
- * from the default behavior of json_decode() !).
- *
- * @param String $json
- * @param bool   $assoc
- * @param int    $depth
- * @param int    $options
- * @deprecated since Stud.IP 5.0
- */
-function studip_json_decode($json, $assoc = true, $depth = 512, $options = 0)
-{
-    return json_decode($json, $assoc, $depth, $options);
-}
-
-/**
- * Special stud.ip version of json_decode() that also converts the data
- * to utf8.
- *
- * @param mixed $data
- * @param int   $options
- * @param int   $depth
- * @deprecated since Stud.IP 5.0
- */
-function studip_json_encode($data, $options = 0)
-{
-    return json_encode($data, $options);
-}
-
-/**
  * Encode an HTTP header parameter (e.g. filename for 'Content-Disposition').
  *
  * @param string $name  parameter name
