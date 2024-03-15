@@ -59,7 +59,7 @@ class CoursePublicFolder extends StandardFolder
      */
     public function hasWorldwideAccess()
     {
-        return (bool) $this->folderdata['data_content']['worldwide_access'];
+        return !empty($this->folderdata['data_content']['worldwide_access']);
     }
 
 
