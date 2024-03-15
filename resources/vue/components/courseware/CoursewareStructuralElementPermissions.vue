@@ -242,6 +242,7 @@ export default {
             relatedCourseMemberships: 'course-memberships/related',
             relatedCourseStatusGroups: 'status-groups/related',
             relatedUser: 'users/related',
+            userId: 'userId',
         }),
         users() {
             const parent = { type: 'courses', id: this.context.id };
@@ -280,9 +281,9 @@ export default {
             if (Object.keys(this.users).length === 0 && this.users.constructor === Object) {
                 return [];
             }
-
-            let members = this.users.filter(function (user) {
-                return user.perm === 'autor';
+            const currentUserId = this.userId;
+            let members = this.users.filter(function (member) {
+                return member.perm === 'autor' && member.user_id !== currentUserId;
             });
 
             return members;
