@@ -36,10 +36,6 @@ class OptionsWidget extends ListWidget
         ?string $toggle_url_off = null,
         array $attributes = []
     ): ButtonElement {
-        // TODO: Remove this some versions after 5.0
-        $toggle_url = html_entity_decode($toggle_url);
-        $toggle_url_off = isset($toggle_url_off) ? html_entity_decode($toggle_url_off) : null;
-
         $attributes['class'] = trim(($attributes['class'] ?? '') . ' options-checkbox options-' . ($state ? 'checked' : 'unchecked'));
 
         return $this->addElement(
@@ -67,9 +63,6 @@ class OptionsWidget extends ListWidget
         $checked = false,
         array $attributes = []
     ): ButtonElement {
-        // TODO: Remove this some versions after 5.0
-        $url = html_entity_decode($url);
-
         $attributes['class'] = trim(($attributes['class'] ?? '') . ' options-radio options-' . ($checked ? 'checked' : 'unchecked'));
 
         return $this->addElement(

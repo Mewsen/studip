@@ -39,9 +39,6 @@ class SelectWidget extends SidebarWidget
      */
     public function setUrl($url)
     {
-        // TODO: Remove this some versions after 5.0
-        $url = html_entity_decode($url);
-
         $query = parse_url($url, PHP_URL_QUERY);
         if ($query) {
             $url = str_replace('?' . $query , '', $url);

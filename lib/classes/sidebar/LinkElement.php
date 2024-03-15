@@ -76,9 +76,6 @@ class LinkElement extends WidgetElement implements ArrayAccess
     {
         parent::__construct();
 
-        // TODO: Remove this some versions after 5.0
-        $url = html_entity_decode($url);
-
         $this->label      = $label;
         $this->url        = $url;
         $this->attributes = $attributes;
