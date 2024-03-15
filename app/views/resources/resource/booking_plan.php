@@ -19,8 +19,7 @@
         'eventSources' => [
             [
                 'url' => URLHelper::getLink(
-                    'api.php/resources/resource/'
-                  . htmlReady($resource->id) . '/booking_plan'
+                    'dispatch.php/resources/ajax/get_semester_booking_plan/' . $resource->id
                 ),
                 'method' => 'GET',
                 'extraParams' => [

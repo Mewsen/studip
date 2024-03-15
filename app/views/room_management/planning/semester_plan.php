@@ -61,8 +61,7 @@
             'eventSources' => [
                 [
                     'url' => URLHelper::getLink(
-                        'api.php/room_clipboard/'
-                      . htmlReady($clipboard->id) . '/semester_plan'
+                        'dispatch.php/resources/ajax/get_clipboard_semester_plan/' . $clipboard->id
                     ),
                     'method' => 'GET',
                     'extraParams' => [

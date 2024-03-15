@@ -171,8 +171,7 @@
                     'eventSources' => [
                         [
                             'url' => URLHelper::getURL(
-                                'api.php/resources/resource/'
-                                . $room->id . '/booking_plan'
+                                'dispatch.php/resources/ajax/get_semester_booking_plan/' . $room->id
                             ),
                             'method' => 'GET',
                             'extraParams' => [

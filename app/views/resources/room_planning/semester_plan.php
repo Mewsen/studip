@@ -103,10 +103,7 @@
             'eventSources' => [
                 [
                     'url' => URLHelper::getURL(
-                        sprintf(
-                            'api.php/resources/resource/%s/semester_plan',
-                            htmlReady($resource->id)
-                        )
+                        'dispatch.php/resources/ajax/get_semester_booking_plan/' . $resource->id
                     ),
                     'method' => 'GET',
                     'extraParams' => [

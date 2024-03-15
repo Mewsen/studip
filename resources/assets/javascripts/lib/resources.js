@@ -1,10 +1,9 @@
-import { $gettext } from '../lib/gettext';
+import {$gettext} from '../lib/gettext';
 
 class Resources
 {
 
-    static addUserToPermissionList(user_id, table_element)
-    {
+    static addUserToPermissionList(user_id, table_element) {
         if (!user_id || !table_element) {
             return;
         }
@@ -37,7 +36,7 @@ class Resources
                 }
             }
         }
-        var insert_function = function(user_id = null, username = null) {
+        var insert_function = function (user_id = null, username = null) {
             var new_row = jQuery(template_row).clone(true);
             jQuery(new_row).removeClass('invisible');
             jQuery(new_row).removeClass('resource-permission-list-template');
@@ -137,7 +136,7 @@ class Resources
 
         STUDIP.api.GET(
             `user/${user_id}`
-        ).done(function(data) {
+        ).done(function (data) {
             var username = data.name.family
                 + ', '
                 + data.name.given;
@@ -147,17 +146,16 @@ class Resources
             if (data.name.suffix) {
                 username += ' ' + data.name.suffix;
             }
-            username += ' (' + data.name.username +')'
+            username += ' (' + data.name.username + ')'
                 + ' (' + data.perms + ')';
             insert_function(user_id, username);
-        }).fail(function() {
+        }).fail(function () {
             insert_function(user_id);
         });
     }
 
 
-    static addCourseUsersToPermissionList(course_id, table_element)
-    {
+    static addCourseUsersToPermissionList(course_id, table_element) {
         if (!course_id || !table_element) {
             return;
         }
@@ -171,7 +169,7 @@ class Resources
                     limit: 1000000
                 }
             }
-        ).done(function(data) {
+        ).done(function (data) {
             for (var attribute in data.collection) {
                 var user_id = data.collection[attribute].member.id;
                 STUDIP.Resources.addUserToPermissionList(
@@ -183,8 +181,7 @@ class Resources
     }
 
 
-    static removeUserFromPermissionList(html_node)
-    {
+    static removeUserFromPermissionList(html_node) {
         if (!html_node) {
             return;
         }
@@ -208,8 +205,7 @@ class Resources
     //Room search related methods:
 
 
-    static addSearchCriteriaToRoomSearchWidget(select_node)
-    {
+    static addSearchCriteriaToRoomSearchWidget(select_node) {
         if (!select_node) {
             return;
         }
@@ -331,13 +327,13 @@ class Resources
                 jQuery(date_inputs[1]).attr('name', option_value + '_end_date');
                 jQuery(date_inputs[0]).val(
                     now.getFullYear() + '-'
-                        + (now.getMonth() + 1) + '-'
-                        + (now.getDate() + 1)
+                    + (now.getMonth() + 1) + '-'
+                    + (now.getDate() + 1)
                 );
                 jQuery(date_inputs[1]).val(
                     now.getFullYear() + '-'
-                        + (now.getMonth() + 1) + '-'
-                        + (now.getDate() + 2)
+                    + (now.getMonth() + 1) + '-'
+                    + (now.getDate() + 2)
                 );
             } else {
                 //One date field, two time fields.
@@ -348,8 +344,8 @@ class Resources
                 jQuery(date_inputs[0]).attr('name', option_value + '_date');
                 jQuery(date_inputs[0]).val(
                     now.getFullYear() + '-'
-                        + (now.getMonth() + 1) + '-'
-                        + (now.getDate() + 1)
+                    + (now.getMonth() + 1) + '-'
+                    + (now.getDate() + 1)
                 );
             }
 
@@ -381,8 +377,7 @@ class Resources
     }
 
 
-    static removeSearchCriteriaFromRoomSearchWidget(icon_node)
-    {
+    static removeSearchCriteriaFromRoomSearchWidget(icon_node) {
         if (!icon_node) {
             return;
         }
@@ -412,8 +407,7 @@ class Resources
     }
 
 
-    static submitRoomSearchWidgetForm(input_node)
-    {
+    static submitRoomSearchWidgetForm(input_node) {
         if (!input_node) {
             return;
         }
@@ -431,8 +425,7 @@ class Resources
     //Resource request related methods:
 
 
-    static addPropertyToRequest(event)
-    {
+    static addPropertyToRequest(event) {
         var select = jQuery(event.target).siblings('select.requestable-properties-select')[0];
         if (!select) {
             return;
@@ -486,48 +479,32 @@ class Resources
     //ResourceBookingInterval methods:
 
 
-    static toggleBookingIntervalStatus(event)
-    {
+    static toggleBookingIntervalStatus(event) {
         event.preventDefault();
-        var li = jQuery(event.target).parents('tr')[0];
-        if (!li) {
-            //Something is wrong with the HTML.
-            return;
-        }
-        var interval_id = jQuery(li).data('interval_id');
-        if (!interval_id) {
+        let button = event.target.closest('button');
+        let intervalId = button.dataset.interval_id;
+
+        if (!intervalId) {
             return;
         }
 
-        STUDIP.api.POST(
-            `resources/booking_interval/${interval_id}/toggle_takes_place`
-        ).done(function(data) {
-            if (data['takes_place'] === undefined) {
-                //Something went wrong: do nothing.
-                return;
-            }
+        const url = STUDIP.URLHelper.getURL(`dispatch.php/resources/ajax/toggle_takes_place_field/${intervalId}`);
+        fetch(url)
+            .then(response => response.json())
+            .then(response => {
+                if (response['takes_place'] === undefined) {
+                    //Something went wrong: do nothing.
+                    return;
+                }
 
-            if (data['takes_place'] === '1') {
-                //Switch on the icons and text for the "takes place"
-                //status and switch off the other ones:
-                jQuery(li).find('.takes-place-revive').addClass('invisible');
-                jQuery(li).find('.takes-place-delete').removeClass('invisible');
-                jQuery(li).find('.booking-list-interval-date').removeClass('not-taking-place');
-            } else {
-                //Do the opposite of the if-block above:
-                jQuery(li).find('.takes-place-delete').addClass('invisible');
-                jQuery(li).find('.takes-place-revive').removeClass('invisible');
-                jQuery(li).find('.booking-list-interval-date').addClass('not-taking-place');
-            }
-        });
+                const cell = button.closest('td');
+                cell.previousElementSibling.classList.toggle('not-taking-place');
+                cell.querySelectorAll('button').forEach(node => node.classList.toggle('invisible'));
+            });
     }
 
 
-    //Methods for the resource category form:
-
-
-    static addResourcePropertyToTable(event)
-    {
+    static addResourcePropertyToTable(event) {
         var select = jQuery(event.target).siblings('select')[0];
         if (!select) {
             //Something is wrong with the HTML
@@ -607,22 +584,20 @@ class Resources
     //Methods for opening or closing of ressource tree elements:
 
 
-    static toggleTreeNode(treenode)
-    {
+    static toggleTreeNode(treenode) {
         var arr = treenode.children("img");
         if (arr.hasClass('rotated')) {
             arr.attr('style', 'transform: rotate(0deg)');
         } else {
             arr.attr('style', 'transform: rotate(90deg)');
         }
-        arr.toggleClass('rotated') ;
+        arr.toggleClass('rotated');
         treenode.children(".resource-tree").children("li").toggle();
     }
 
 
-    static moveTimeOptions(bookingtype_val)
-    {
-        if(bookingtype_val === 'single') {
+    static moveTimeOptions(bookingtype_val) {
+        if (bookingtype_val === 'single') {
             $(".time-option-container").hide();
             $(".block-booking-item").hide();
             $(".repetition-booking-item").hide();
@@ -632,7 +607,7 @@ class Resources
         } else {
             var time_options = $(".time-option-container");
             $(".time-option-container").detach();
-            if(bookingtype_val === 'block') {
+            if (bookingtype_val === 'block') {
                 $("#BlockBookingFieldset").prepend(time_options);
 
                 $("#BlockEndLabel").show();
@@ -657,83 +632,81 @@ class Resources
     //Fullcalendar specialisations:
 
 
-    static updateEventUrlsInCalendar(calendar_event)
-    {
-        if (!calendar_event) {
+    static updateEventUrlsInCalendar(calendarEvent) {
+        if (!calendarEvent) {
             return;
         }
 
-        STUDIP.api.GET(
-            `resources/booking/${calendar_event.extendedProps.studip_parent_object_id}/intervals`,
-            {
-                data: {
-                    begin: STUDIP.Fullcalendar.toRFC3339String(calendar_event.start),
-                    end: STUDIP.Fullcalendar.toRFC3339String(calendar_event.end)
+        let parentObjectId = calendarEvent.extendedProps.studip_parent_object_id;
+        let begin = STUDIP.Fullcalendar.toRFC3339String(calendarEvent.start);
+        let end = STUDIP.Fullcalendar.toRFC3339String(calendarEvent.end);
+
+        const url = STUDIP.URLHelper.getURL(
+            `dispatch.php/resources/ajax/get_resource_booking_intervals/${parentObjectId}`,
+            {begin, end}
+        );
+        fetch(url)
+            .then(response => response.json())
+            .then(response => {
+                if (!response || response.length === 0) {
+                    return;
                 }
-            }
-        ).done(function (data) {
-            if (!data || data.length === 0) {
-                return;
-            }
-            var new_interval_id = data[0].interval_id;
-            calendar_event.setExtendedProp('studip_object_id', new_interval_id);
-            if (new_interval_id) {
-                var move_url = calendar_event.extendedProps.studip_api_urls['move'];
-                var resize_url = calendar_event.extendedProps.studip_api_urls['resize'];
-                move_url = move_url.replace(
-                    /&interval_id=([0-9a-f]{32})/,
-                    '&interval_id=' + new_interval_id
-                );
-                resize_url = resize_url.replace(
-                    /&interval_id=([0-9a-f]{32})/,
-                    '&interval_id=' + new_interval_id
-                );
-                var studip_api_urls = calendar_event.extendedProps.studip_api_urls;
-                studip_api_urls['move'] = move_url;
-                studip_api_urls['resize'] = resize_url;
-                calendar_event.setExtendedProp('studip_api_urls', studip_api_urls);
-            }
-        });
+                let newIntervalId = response[0].intervalId;
+                calendarEvent.setExtendedProp('studip_object_id', newIntervalId);
+                if (newIntervalId) {
+                    let moveUrl = calendarEvent.extendedProps.studip_api_urls['move'];
+                    let resizeUrl = calendarEvent.extendedProps.studip_api_urls['resize'];
+                    moveUrl = moveUrl.replace(
+                        /&interval_id=([0-9a-f]{32})/,
+                        '&interval_id=' + newIntervalId
+                    );
+                    resizeUrl = resizeUrl.replace(
+                        /&interval_id=([0-9a-f]{32})/,
+                        '&interval_id=' + newIntervalId
+                    );
+                    let studipApiUrls = calendarEvent.extendedProps.studip_api_urls;
+                    studipApiUrls['move'] = moveUrl;
+                    studipApiUrls['resize'] = resizeUrl;
+                    calendarEvent.setExtendedProp('studip_api_urls', studipApiUrls);
+                }
+            })
     }
 
 
-    static resizeEventInRoomGroupBookingPlan(info)
-    {
+    static resizeEventInRoomGroupBookingPlan(info) {
         STUDIP.Fullcalendar.defaultResizeEventHandler(info);
         STUDIP.Resources.updateEventUrlsInCalendar(info.event);
     }
 
-    static dropEventInRoomGroupBookingPlan(info)
-    {
+    static dropEventInRoomGroupBookingPlan(info) {
         STUDIP.Fullcalendar.defaultDropEventHandler(info);
         STUDIP.Resources.updateEventUrlsInCalendar(info.event);
     }
 
-    static toggleRequestMarked(source_node)
-    {
-        if (!source_node) {
+    static toggleRequestMarked(sourceNode) {
+        if (!sourceNode) {
             return;
         }
 
-        var request_id = jQuery(source_node).data('request_id');
-        if (!request_id) {
+        let requestId = sourceNode.dataset.request_id
+
+        if (!requestId) {
             return;
         }
 
-        STUDIP.api.POST(
-            `resources/request/${request_id}/toggle_marked`
-        ).done(function(data) {
-            jQuery(source_node).attr('data-marked', data.marked);
-            jQuery(source_node).parent().attr('data-sort-value', data.marked);
-            jQuery(source_node).parents('table.request-list').trigger('update');
-        });
+        fetch(STUDIP.URLHelper.getURL(`dispatch.php/resources/ajax/toggle_marked/${requestId}`))
+            .then(response => response.json())
+            .then(response => {
+                sourceNode.dataset.marked = response.marked;
+                sourceNode.parentNode.dataset.sortValue = response.marked;
+                sourceNode.closest('table.request-list').dispatchEvent(new Event('update'));
+            })
     }
 
-    static bookAllCalendarRequests()
-    {
-        var calendarSektion = $('*[data-resources-fullcalendar="1"]')[0];
-        if (calendarSektion) {
-            var calendar = calendarSektion.calendar;
+    static bookAllCalendarRequests() {
+        let calendarSection = $('*[data-resources-fullcalendar="1"]')[0];
+        if (calendarSection) {
+            let calendar = calendarSection.calendar;
             if (calendar) {
                 if (!$('#loading-spinner').length) {
                     jQuery('#content').append(
@@ -746,14 +719,14 @@ class Resources
                         )
                     );
                 }
-                $('.fc-request-event').each(function(){
-                    var objectData = $(this).data();
-                    var existingRequestEvent = calendar.getEventById(objectData.eventId);
+                $('.fc-request-event').each(function () {
+                    let objectData = $(this).data();
+                    let existingRequestEvent = calendar.getEventById(objectData.eventId);
                     if (existingRequestEvent) {
-                        var bookingURL = 'dispatch.php/resources/room_request/quickbook/'
-                                       + objectData.eventRequest +'/'
-                                       + objectData.eventResource +'/'
-                                       + objectData.eventMetadate;
+                        let bookingURL = 'dispatch.php/resources/room_request/quickbook/'
+                            + objectData.eventRequest + '/'
+                            + objectData.eventResource + '/'
+                            + objectData.eventMetadate;
                         jQuery.ajax(
                             STUDIP.URLHelper.getURL(bookingURL),
                             {
@@ -780,10 +753,8 @@ Resources.definedResourceClasses = [
 ];
 
 
-class Messages
-{
-    static selectRoom(room_id, room_name)
-    {
+class Messages {
+    static selectRoom(room_id, room_name) {
         if (!room_id) {
             return;
         }
@@ -806,30 +777,29 @@ class Messages
         jQuery(selection_area).append(new_room);
     }
 }
+
 Resources.Messages = Messages;
 
 
-class BookingPlan
-{
-    static insertEntry(new_entry, date, begin_hour, end_hour)
-    {
+class BookingPlan {
+    static insertEntry(new_entry, date, begin_hour, end_hour) {
         //Get the resource-ID from the current URL:
-        var results = window.location.href.match(
-                /dispatch.php\/resources\/resource\/booking_plan\/([a-z0-9]{1,32})/
+        let results = window.location.href.match(
+            /dispatch.php\/resources\/resource\/booking_plan\/([a-z0-9]{1,32})/
         );
         if (results.length === 0) {
             //No resource-ID found.
             jQuery(new_entry).remove();
             return;
         }
-        var resource_id = results[1];
+        let resource_id = results[1];
 
         //Now we re-format the time from begin_hour and end_hour.
         //In case the data-dragged attribute is set for the
         //calendar entry we just add two hours to the start time
         //to get the end time.
 
-        var dragged = jQuery(new_entry).data('dragged');
+        let dragged = jQuery(new_entry).data('dragged');
         if (dragged) {
             end_hour = begin_hour + 2;
         }
@@ -840,7 +810,7 @@ class BookingPlan
             end_hour += ':00';
         }
 
-        var result = STUDIP.Dialog.fromURL(
+        let result = STUDIP.Dialog.fromURL(
             STUDIP.URLHelper.getURL(
                 'dispatch.php/resources/booking/add/' + resource_id,
                 {
@@ -853,6 +823,7 @@ class BookingPlan
         );
     }
 }
+
 Resources.BookingPlan = BookingPlan;
 
 

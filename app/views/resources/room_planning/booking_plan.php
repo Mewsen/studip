@@ -76,7 +76,7 @@
             'eventSources' => [
                 [
                     'url' => URLHelper::getURL(
-                        'api.php/resources/resource/' . $resource->id . '/booking_plan'
+                        'dispatch.php/resources/ajax/get_booking_plan/' . $resource->id
                     ),
                     'method' => 'GET',
                     'extraParams' => [
