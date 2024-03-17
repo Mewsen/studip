@@ -90,10 +90,7 @@ class Course_TimesroomsController extends AuthenticatedController
         if (!Request::isXhr()) {
             $this->setSidebar();
         } elseif (Request::isXhr() && $this->flash['update-times']) {
-            $semester_id = $GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE;
-            if ($semester_id === 'all') {
-                $semester_id = '';
-            }
+            $semester_id = $GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE ?? '';
             $this->response->add_header(
                 'X-Raumzeit-Update-Times',
                 json_encode([
