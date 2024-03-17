@@ -225,7 +225,7 @@ class MyRealmModel
         return self::sortCourses($courses, $ordering);
     }
 
-    public static function getSelectedSemesters($sem = 'all')
+    public static function getSelectedSemesters($sem = '')
     {
         $sem_data = Semester::getAllAsArray();
         $semesters = [];
@@ -241,14 +241,8 @@ class MyRealmModel
             $max_sem = $current_sem;
         }
 
-        if (isset($sem_data[$current_sem + 2])) {
-            $after_next_sem = $current_sem + 2;
-        } else {
-            $after_next_sem = $max_sem;
-        }
-
         // Get the needed semester
-        if (!in_array($sem, ['all', 'current', 'future', 'last', 'lastandnext'])) {
+        if (!in_array($sem, ['', 'current', 'future', 'last', 'lastandnext'])) {
             $semesters[] = Semester::getIndexById($sem);
         } else {
             switch ($sem) {
@@ -284,7 +278,7 @@ class MyRealmModel
      * @param array $params Additional parameters
      * @return array
      */
-    public static function getPreparedCourses($sem = 'all', $params = [])
+    public static function getPreparedCourses($sem = '', $params = [])
     {
         $semesters   = self::getSelectedSemesters($sem);
         $current_semester_nr = Semester::getIndexById(@Semester::findCurrent()->id);

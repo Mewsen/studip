@@ -85,7 +85,7 @@ $colspan = 2
 
     </colgroup>
     <caption>
-        <? if (!$GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE || ($GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE === "all")) : ?>
+        <? if (!$GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE) : ?>
             <?= _('Veranstaltungen') ?>
         <? else : ?>
             <?= htmlReady(sprintf(_('Veranstaltungen im %s'), $semester->name)) ?>
