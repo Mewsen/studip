@@ -344,7 +344,7 @@ class MyCoursesController extends AuthenticatedController
      * @param string $type
      * @param string $sem
      */
-    public function tabularasa_action($sem = 'all', $timestamp = null)
+    public function tabularasa_action($sem = '', $timestamp = null)
     {
         NotificationCenter::postNotification('OverviewWillClear', $GLOBALS['user']->id);
 
@@ -628,7 +628,8 @@ class MyCoursesController extends AuthenticatedController
      */
     public function set_semester_action()
     {
-        $sem = Request::option('sem_select', null);
+        $sem = Request::option('sem_select');
+
         if (!is_null($sem)) {
             $GLOBALS['user']->cfg->store('MY_COURSES_SELECTED_CYCLE', $sem);
             PageLayout::postSuccess(
@@ -1118,7 +1119,7 @@ class MyCoursesController extends AuthenticatedController
     private function getSemesterKey()
     {
         $config_sem = $GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE;
-        if (!Config::get()->MY_COURSES_ENABLE_ALL_SEMESTERS && $config_sem === 'all') {
+        if (!Config::get()->MY_COURSES_ENABLE_ALL_SEMESTERS && $config_sem === '') {
             $config_sem = 'future';
         }
 
@@ -1130,11 +1131,10 @@ class MyCoursesController extends AuthenticatedController
             $config_sem = null;
         }
 
-        $sem = Request::get(
-            'sem_select',
-            $config_sem ?: Config::get()->MY_COURSES_DEFAULT_CYCLE
-        );
-
+        if (!Config::get()->MY_COURSES_ENABLE_ALL_SEMESTERS && !$config_sem) {
+            $config_sem = Config::get()->MY_COURSES_DEFAULT_CYCLE;
+        }
+        $sem = Request::get('sem_select', $config_sem);
 
         if ($sem && !$this->isValidTextualSemesterEntry($sem)) {
             Request::set('sem_select', $sem);
@@ -1181,7 +1181,7 @@ class MyCoursesController extends AuthenticatedController
         ];
 
         if (Config::get()->MY_COURSES_ENABLE_ALL_SEMESTERS) {
-            $entries['all'] = _('Alle Semester');
+            $entries[''] = _('Alle Semester');
         }
 
         return $entries;

@@ -48,10 +48,7 @@ class Admin_CourseplanningController extends AuthenticatedController
             $stgteil = StudiengangTeil::find($GLOBALS['user']->cfg->MY_COURSES_SELECTED_STGTEIL);
             $plan_title .= ' - ' . $stgteil->getDisplayName();
         }
-        if (
-            isset($this->semester)
-            && $GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE
-            && $GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE !== 'all'
+        if (isset($this->semester) && $GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE
         ) {
             $plan_title .= ' - ' . $this->semester->name;
         }
@@ -611,7 +608,7 @@ class Admin_CourseplanningController extends AuthenticatedController
         $sidebar = Sidebar::Get();
         $list = new SelectWidget(_('Semester'), $this->url_for('admin/courseplanning/set_selection/' . $this->selected_weekday), 'sem_select');
         foreach ($semesters as $semester) {
-            if (!$GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE ||$GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE == 'all') {
+            if (!$GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE) {
                 $GLOBALS['user']->cfg->store('MY_COURSES_SELECTED_CYCLE', $semester->id);
             }
             $list->addElement(new SelectElement(
@@ -726,7 +723,7 @@ class Admin_CourseplanningController extends AuthenticatedController
 
         $sidebar = Sidebar::Get();
         $list = new SelectWidget(_('Lehrendenfilter'), $this->url_for('admin/courseplanning/index'), 'teacher_filter');
-        $list->addElement(new SelectElement('all', _('alle'), Request::get('teacher_filter') == 'all'), 'teacher_filter-all');
+        $list->addElement(new SelectElement('', _('alle'), Request::get('teacher_filter') === ''), 'teacher_filter-all');
 
         foreach ($teachers as $teacher) {
             $list->addElement(new SelectElement(
@@ -848,7 +845,7 @@ class Admin_CourseplanningController extends AuthenticatedController
 
         if (Request::option('sem_select')) {
             $GLOBALS['user']->cfg->store('MY_COURSES_SELECTED_CYCLE', Request::option('sem_select'));
-            if (Request::option('sem_select') !== 'all') {
+            if (Request::option('sem_select') !== '') {
                 PageLayout::postSuccess(sprintf(
                     _('Das %s wurde ausgewählt'),
                     htmlReady(Semester::find(Request::option('sem_select'))->name)
