@@ -68,7 +68,7 @@ export default {
     },
     computed: {
         commentAvatar() {
-            return this.comment.author?.avatar.small ?? '';
+            return this.comment.author?.avatar.medium ?? '';
         },
         commentClass() {
             return this.comment.isMine() ? 'mine' : 'theirs';
