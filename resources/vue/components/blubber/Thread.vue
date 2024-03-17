@@ -148,11 +148,11 @@ export default {
 
             this.scrolled = el.scrollTop > 0;
 
-            if (this.threadMoreUp && el.scrollTop < 1000) {
+            if (this.moreCommentsUp && el.scrollTop < 1000) {
                 this.$emit('load-older');
             }
 
-            if (this.threadMoreDown && el.scrollTop > threadPostingHeight - 1000) {
+            if (this.moreCommentsDown && el.scrollTop > threadPostingHeight - 1000) {
                 this.$emit('load-newer');
             }
         },
