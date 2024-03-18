@@ -73,8 +73,12 @@ class Helper
     public static function getDefaultCalendarDate() : \DateTime
     {
         $default_date = new \DateTime();
-        if (\Request::submitted('date')) {
-            $date = \Request::getDateTime('date', 'Y-m-d');
+        if (\Request::submitted('date') || \Request::submitted('defaultDate')) {
+            $parameter_name = 'date';
+            if (\Request::submitted('defaultDate')) {
+                $parameter_name = 'defaultDate';
+            }
+            $date = \Request::getDateTime($parameter_name, 'Y-m-d');
             if ($date instanceof \DateTime) {
                 $default_date = $date;
                 //Update the session value:
