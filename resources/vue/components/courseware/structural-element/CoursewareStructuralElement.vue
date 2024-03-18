@@ -780,7 +780,8 @@ export default {
             displayFeedback: false,
 
             showRatingPopup: false,
-            ratingPopupFeedbackElement: null
+            ratingPopupFeedbackElement: null,
+            storing: false,
         };
     },
 
@@ -1452,11 +1453,13 @@ export default {
         }),
 
         initCurrent() {
-            this.currentElement = _.cloneDeep(this.structuralElement);
-            this.uploadFileError = '';
-            this.deletingPreviewImage = false;
-            this.uploadImageURL = null;
-            this.loadFeedback();
+            if (!this.storing) {
+                this.currentElement = _.cloneDeep(this.structuralElement);
+                this.uploadFileError = '';
+                this.deletingPreviewImage = false;
+                this.uploadImageURL = null;
+                this.loadFeedback();
+            }
         },
         async menuAction(action) {
             switch (action) {
@@ -1559,6 +1562,7 @@ export default {
             }
         },
         async storeCurrentElement() {
+            this.storing = true;
             await this.loadStructuralElement(this.currentElement.id);
             if (this.blockedByAnotherUser) {
                 this.companionWarning({
@@ -1568,6 +1572,7 @@ export default {
                     )
                 });
                 this.showElementEditDialog(false);
+                this.storing = false;
                 return false;
             }
             if (!this.blocked) {
@@ -1598,7 +1603,6 @@ export default {
             }
 
             this.showElementEditDialog(false);
-
             if (this.currentElement.attributes['release-date'] !== '') {
                 this.currentElement.attributes['release-date'] =
                     new Date(this.currentElement.attributes['release-date']).getTime() / 1000;
@@ -1618,6 +1622,7 @@ export default {
             await this.updateStructuralElement({ element, id: this.currentId});
             await this.unlockObject({ id: this.currentId, type: 'courseware-structural-elements' });
             this.$emit('select', this.currentId);
+            this.storing = false;
             this.initCurrent();
         },
 
@@ -1977,7 +1982,7 @@ export default {
                     this.loadProgresses();
                 }
 
-                if (this.inCourse) {
+                if (this.inCourse && this.hasFeedbackElement) {
                     this.loadFeedbackElement({ id: this.feedbackElementId });
                 }
             },
