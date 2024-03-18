@@ -124,53 +124,53 @@ class ICalendarExport
     }
 
     /**
-     * @param CalendarDate $date
+     * @param CalendarDate | CourseExDate $date
      * @return array
      */
-    public function prepareCalendarDate(CalendarDate $date): array
+    public function prepareCalendarDate($date): array
     {
-        $properties =
-            [
-                'SUMMARY'       => $date->title,
-                'DESCRIPTION'   => $date->description,
-                'LOCATION'      => $date->location,
-                'CATEGORIES'    => $date->getCategoryAsString(),
-                'LAST-MODIFIED' => $date->chdate,
-                'CREATED'       => $date->mkdate,
-                'DTSTAMP'       => $this->time,
-                'DTSTART'       => $date->begin,
-                'DTEND'         => $date->end,
-                'EXDATE'        => implode(',', $date->exceptions->pluck('date')),
-                'PRIORITY'      => 5,
-                'RRULE'         => [
-                    'type'      => $date->repetition_type,
-                    'offset'    => $date->offset,
-                    'interval'  => $date->interval,
-                    'days'      => $date->days,
-                    'count'     => $date->number_of_dates,
-                    'expire'    => $date->repetition_end,
-                    'month'     => $date->month
-                ]
-            ];
-        return $properties;
+        return [
+            'SUMMARY'       => $date->title,
+            'DESCRIPTION'   => $date->description,
+            'LOCATION'      => $date->location,
+            'CATEGORIES'    => $date->getCategoryAsString(),
+            'LAST-MODIFIED' => $date->chdate,
+            'CREATED'       => $date->mkdate,
+            'DTSTAMP'       => $this->time,
+            'DTSTART'       => $date->begin,
+            'DTEND'         => $date->end,
+            'EXDATE'        => implode(',', $date->exceptions->pluck('date')),
+            'PRIORITY'      => 5,
+            'RRULE'         => [
+                'type'      => $date->repetition_type,
+                'offset'    => $date->offset,
+                'interval'  => $date->interval,
+                'days'      => $date->days,
+                'count'     => $date->number_of_dates,
+                'expire'    => $date->repetition_end,
+                'month'     => $date->month
+            ]
+        ];
     }
 
-    public function prepareCourseDate(CourseDate $date): array
+    /**
+     * @param CalendarDate | CourseExDate $date
+     * @return array
+     */
+    public function prepareCourseDate($date): array
     {
-        $properties =
-            [
-                'SUMMARY'       => $date->course->getFullname(),
-                'DESCRIPTION'   => '',
-                'LOCATION'      => $date->getRoomName(),
-                'CATEGORIES'    => $GLOBALS['TERMIN_TYP'][$date->date_typ]['name'],
-                'LAST-MODIFIED' => $date->chdate,
-                'CREATED'       => $date->mkdate,
-                'DTSTAMP'       => $this->time,
-                'DTSTART'       => $date->date,
-                'DTEND'         => $date->end_time,
-                'PRIORITY'      => ''
-            ];
-        return $properties;
+        return [
+            'SUMMARY'       => $date->course->getFullName(),
+            'DESCRIPTION'   => '',
+            'LOCATION'      => $date->getRoomName(),
+            'CATEGORIES'    => $GLOBALS['TERMIN_TYP'][$date->date_typ]['name'],
+            'LAST-MODIFIED' => $date->chdate,
+            'CREATED'       => $date->mkdate,
+            'DTSTAMP'       => $this->time,
+            'DTSTART'       => $date->date,
+            'DTEND'         => $date->end_time,
+            'PRIORITY'      => ''
+        ];
     }
 
     /**
@@ -600,14 +600,12 @@ class ICalendarExport
      */
     private function getFacultyEmail(string $user_id): string
     {
-        $stmt = DBManager::get()->prepare('
+        return DBManager::get()->fetchColumn('
             SELECT `email`
             FROM `Institute`
             LEFT JOIN `user_inst` USING(`institut_id`)
             WHERE `Institute`.`Institut_id` = `fakultaets_id`
-              AND `user_id` = ?');
-        $stmt->execute([$user_id]);
-        return $stmt->fetchColumn();
+              AND `user_id` = ?', [$user_id]);
     }
 
     /**
