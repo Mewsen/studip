@@ -754,7 +754,10 @@ class Fullcalendar
 
             // Update sidebar value
             let element = jQuery('#booking-plan-jmpdate,#date_select').first();
-            element.val(changedMoment.toLocaleDateString('de-DE'));
+            let padded_date = pad(changedMoment.getDate(), 2, '0')
+                + '.' + pad(changedMoment.getMonth() + 1, 2, '0')
+                + '.' + changedMoment.getFullYear();
+            element.val(padded_date);
             if (element.is('#booking-plan-jmpdate')) {
                 //Store the date in the sessionStorage:
                 sessionStorage.setItem('booking_plan_date', changed_date);
