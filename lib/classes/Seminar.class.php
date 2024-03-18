@@ -1611,10 +1611,6 @@ class Seminar
         $statement = DBManager::get()->prepare($query);
         $statement->execute([$s_id]);
 
-        $query = "DELETE FROM wiki_locks WHERE range_id = ?";
-        $statement = DBManager::get()->prepare($query);
-        $statement->execute([$s_id]);
-
         // delete course config values
         ConfigValue::deleteBySQL('range_id = ?', [$s_id]);
 

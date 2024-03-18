@@ -183,7 +183,8 @@ class CoreWiki extends CorePlugin implements StudipModule
      */
     public static function getTOC($startPage, $active_title = null): TOCItem
     {
-        $root = new TOCItem($startPage->isNew() || $startPage->name === 'WikiWikiWeb'
+        $root = new TOCItem(
+            ($startPage && ($startPage->isNew() || $startPage->name === 'WikiWikiWeb'))
             ? _('Wiki-Startseite')
             : $startPage->name
         );
