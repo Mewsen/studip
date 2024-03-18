@@ -38,7 +38,7 @@ class Resources_RoomRequestController extends AuthenticatedController
         }
 
         $this->filter = $this->getFilters($default_filters);
-
+        $this->available_rooms = [];
         if (in_array($action, ['overview', 'planning', 'export_list', 'resolve', 'decline'])) {
             $user_is_global_resource_autor = ResourceManager::userHasGlobalPermission($this->current_user, 'autor');
             if (!RoomManager::userHasRooms($this->current_user, 'autor', true) && !$user_is_global_resource_autor) {
