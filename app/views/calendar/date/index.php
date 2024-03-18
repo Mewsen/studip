@@ -102,7 +102,7 @@
         <section>
             <table class="default">
                 <body>
-                    <? foreach ($calendar_assignments as $assignment) : ?>
+                    <? foreach ($user_calendar_assignments as $assignment) : ?>
                         <tr>
                             <td><?= htmlReady($assignment->getRangeName()) ?></td>
                             <td><?= htmlReady($assignment->getParticipationAsString()) ?></td>

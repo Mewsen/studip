@@ -210,6 +210,23 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
             //may change the date.
             return true;
         }
+        //In case $range_id is a User-ID, a check has to be made if the calendar
+        //date is bound to a course and the user has at least "tutor" permissions
+        //in the course.
+        if (User::exists($range_id)) {
+            $writable_via_course = false;
+            $assignments = CalendarDateAssignment::findByCalendar_date_id($this->id);
+            foreach ($assignments as $assignment) {
+                if (Course::exists($assignment->range_id)
+                    && $GLOBALS['perm']->have_studip_perm('tutor', $assignment->range_id, $range_id)) {
+                    $writable_via_course = true;
+                    break;
+                }
+            }
+            if ($writable_via_course) {
+                return true;
+            }
+        }
 
         //Check contacts: Has the contact of the user that is represented by
         //$range_id write permissions to all the calendars of all the users that

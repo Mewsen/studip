@@ -122,7 +122,7 @@ class Calendar_DateController extends AuthenticatedController
         if ($this->date->repetition_type) {
             $this->selected_date = Request::get('selected_date');
         }
-        $this->calendar_assignments = CalendarDateAssignment::findBySql(
+        $this->user_calendar_assignments = CalendarDateAssignment::findBySql(
             "INNER JOIN `auth_user_md5`
             ON `calendar_date_assignments`.`range_id` = `auth_user_md5`.`user_id`
             WHERE
@@ -132,14 +132,14 @@ class Calendar_DateController extends AuthenticatedController
         $this->participation_message = null;
         $this->user_participation_status = '';
         $this->all_assignments_writable = false;
-        $this->is_group_date = count($this->calendar_assignments) > 1;
+        $this->is_group_date = count($this->user_calendar_assignments) > 1;
 
-        if ($this->calendar_assignments) {
+        if ($this->user_calendar_assignments) {
             $writable_assignment_c = 0;
-            $more_than_one_assignment = count($this->calendar_assignments) > 1;
+            $more_than_one_assignment = count($this->user_calendar_assignments) > 1;
             //Find the calendar assignment of the user and set the participation message
             //according to the participation status.
-            foreach ($this->calendar_assignments as $index => $assignment) {
+            foreach ($this->user_calendar_assignments as $index => $assignment) {
                 if ($assignment->range_id === $GLOBALS['user']->id && $this->is_group_date) {
                     $this->user_participation_status = $assignment->participation;
                     if ($assignment->participation === 'ACCEPTED') {
@@ -156,7 +156,7 @@ class Calendar_DateController extends AuthenticatedController
                     } else {
                         //We don't need the users own assignment in the list of assignments
                         //when there is only one assignment to the users own calendar.
-                        unset($this->calendar_assignments[$index]);
+                        unset($this->user_calendar_assignments[$index]);
 
                     }
                 } else {
@@ -166,10 +166,10 @@ class Calendar_DateController extends AuthenticatedController
                 }
             }
 
-            $this->all_assignments_writable = $writable_assignment_c === count($this->calendar_assignments);
+            $this->all_assignments_writable = $writable_assignment_c === count($this->user_calendar_assignments);
 
             //Order all calendar assignments by type and name:
-            uasort($this->calendar_assignments, function ($a, $b) {
+            uasort($this->user_calendar_assignments, function ($a, $b) {
                 $compare_name = ($a->course instanceof Course && $b->course instanceof Course)
                     || ($a->user instanceof User && $b->user instanceof User);
                 if ($compare_name) {
@@ -203,6 +203,20 @@ class Calendar_DateController extends AuthenticatedController
                     }
                 }
             });
+        } else {
+            //Check for other calendar assignments (course calendar):
+            $writable_assignment_c = 0;
+            $other_assignment_c = 0;
+            foreach ($this->date->calendars as $assignment) {
+                if (Course::exists($assignment->range_id)) {
+                    //It is a course assignment:
+                    $other_assignment_c++;
+                    if ($assignment->isWritable($GLOBALS['user']->id)) {
+                        $writable_assignment_c++;
+                    }
+                }
+            }
+            $this->all_assignments_writable = $writable_assignment_c == $other_assignment_c;
         }
     }
 
@@ -500,6 +514,9 @@ class Calendar_DateController extends AuthenticatedController
             if (($owner instanceof Course)) {
                 //Set the course as calendar:
                 $allowed_calendar_ids = [$owner->id];
+            } elseif (Context::isCourse()) {
+                //Set the course as allowed calendar:
+                $allowed_calendar_ids = [Context::getId()];
             } else {
                 //Assign the date to the calendars of all the selected users:
                 $allowed_calendar_ids = [$GLOBALS['user']->id];
