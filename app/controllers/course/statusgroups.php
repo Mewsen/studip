@@ -324,7 +324,7 @@ class Course_StatusgroupsController extends AuthenticatedController
         if ($groups) {
             foreach ($groups as $group) {
                 foreach ($group['members'] as $mem) {
-                    $member_data = CourseMember::getMemberDataByCourse($this->course_id, $mem['user_id']);
+                    $member_data = CourseMember::getMemberDataByCourse($this->course_id, '', $mem['user_id']);
 
                     foreach ($member_data as &$mem_data) {
                         $mem_data['Anmeldedatum'] = $mem_data['Anmeldedatum'] ? date('d.m.Y', $mem_data['Anmeldedatum']) : _('unbekannt');

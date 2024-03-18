@@ -190,44 +190,13 @@ class Course_GroupingController extends AuthenticatedController
         // Export all participants.
         if (Config::get()->EXPORT_ENABLE) {
             $widget = new ExportWidget();
-
-            // create csv-export link
-            $csvExport = export_link(
-                $this->course->id,
-                'person',
-                htmlReady(sprintf(
-                    '%s %s',
-                    get_title_for_status('autor', 2),
-                    $this->course->getFullName()
-                )),
-                'csv',
-                'csv-teiln',
-                '',
-                _('Teilnehmendenliste als CSV-Dokument exportieren'),
-                'passthrough'
-            );
-            $widget->addLinkFromhtmL(
-                $csvExport,
-                Icon::create('file-office', 'clickable')
-            );
-
-            // create csv-export link
-            $rtfExport = export_link(
-                $this->course->id,
-                'person',
-                htmlReady(sprintf(
-                    '%s %s',
-                    get_title_for_status('autor', 2), $this->course->getFullName()
-                )),
-                'rtf',
-                'rtf-teiln',
-                '',
-                _('Teilnehmendenliste als rtf-Dokument exportieren'),
-                'passthrough'
-            );
-            $widget->addLinkFromHTML(
-                $rtfExport,
-                Icon::create('file-text', 'clickable')
+            $widget->addLink(
+                _('Als CSV-Datei exportieren'),
+                URLHelper::getURL('dispatch.php/course/members/export', [
+                    'course_id' => $this->course_id,
+                    'format' => 'csv',
+                ]),
+                Icon::create('export')
             );
 
             $sidebar->addWidget($widget);
@@ -267,7 +236,7 @@ class Course_GroupingController extends AuthenticatedController
     {
         CSRFProtection::verifyUnsafeRequest();
         if (Request::submitted('single_action')) {
-            list($course_id, $permission) = explode('-', Request::get('single_action'));
+            [$course_id, $permission] = explode('-', Request::get('single_action'));
 
             $selected = Request::getArray('members');
 
