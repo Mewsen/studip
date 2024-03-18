@@ -55,6 +55,10 @@
         <dl>
             <dt><?= _('Zeit') ?></dt>
             <dd><?= date('d.m.Y H:i', $date->begin) ?> - <?= date('d.m.Y H:i', $date->end) ?></dd>
+            <? if ($date->location) : ?>
+                <dt><?= _('Ort') ?></dt>
+                <dd><?= formatLinks($date->location) ?></dd>
+            <? endif ?>
             <dt><?= _('Kategorie') ?></dt>
             <dd><?= htmlReady($date->getCategoryAsString()) ?></dd>
             <dt><?= _('Zugriff') ?></dt>
