@@ -589,6 +589,7 @@ class RoomManager
 
         $result = [];
         if (!empty($time_ranges)) {
+
             //We must check if the room is available:
             foreach ($filtered_rooms as $room) {
                 $room_is_available = $only_fully_available;
@@ -638,6 +639,9 @@ class RoomManager
         if (is_array($properties) && count($properties)) {
             $old_result = $result;
             $result = [];
+            $properties = array_filter($properties, function ($property) {
+                return !empty($property);
+            });
             $required_property_c = count($properties);
             foreach ($old_result as $room) {
                 $room_property_match = 0;
@@ -653,9 +657,9 @@ class RoomManager
                         //Furthermore we must check if only minimum or maximum are
                         //set or if both are set. Depending on that condition,
                         //the conditions are different.
-                        if ($state[0] and $state[1]) {
+                        if ($state[0] && $state[1]) {
                             //Minimum and maximum are specified:
-                            if (($room_prop_state >= $state[0]) && $room_prop_state <= $state[1]) {
+                            if ($room_prop_state >= $state[0] && $room_prop_state <= $state[1]) {
                                 $room_property_match++;
                             }
                         } elseif ($state[0]) {
@@ -675,7 +679,7 @@ class RoomManager
                         }
                     }
                 }
-                if ($room_property_match == $required_property_c) {
+                if ($room_property_match === $required_property_c) {
                     $result[] = $room;
                 }
             }

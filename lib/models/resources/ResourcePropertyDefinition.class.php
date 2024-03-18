@@ -158,7 +158,7 @@ class ResourcePropertyDefinition extends SimpleORMap
                     ? $special_name
                     : 'properties[' . $this->id . ']';
 
-        if ($type == 'bool') {
+        if ($type === 'bool') {
             $label_html_classes = 'col-3';
             //Booleans can have one or two input elements,
             //whether a false state shall be selectable or not.
@@ -192,7 +192,7 @@ class ResourcePropertyDefinition extends SimpleORMap
             } else {
                 return $input_html;
             }
-        } elseif ($type == 'select') {
+        } elseif ($type === 'select') {
             $options_html = sprintf(
                 '<option value="" %2$s>%1$s</option>',
                 _('Bitte wählen'),
@@ -224,7 +224,7 @@ class ResourcePropertyDefinition extends SimpleORMap
                     $options_html
                 );
             }
-        } elseif ($type == 'position') {
+        } elseif ($type === 'position') {
             $factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH']);
             $template = $factory->open('templates/resources/position_attribute_form_part.php');
             $template->set_attribute(
@@ -245,7 +245,7 @@ class ResourcePropertyDefinition extends SimpleORMap
             );
 
             return $template->render();
-        } elseif ($type == 'user') {
+        } elseif ($type === 'user') {
             $search = new QuickSearch($input_name, new StandardSearch('user_id'));
             $search->defaultValue($value, ($value ? get_fullname($value, 'full_rev_username') : ''));
             return sprintf(
@@ -269,12 +269,14 @@ class ResourcePropertyDefinition extends SimpleORMap
             );
         } else {
             $input_type = 'text';
-            if ($type == 'num') {
+            $min = '';
+            if ($type === 'num') {
                 $input_type = 'number';
+                $min = 'min="0"';
             }
             if ($with_label) {
                 return sprintf(
-                    '<label %1$s>%5$s<input type="%2$s" name="%3$s" value="%4$s" %5$s></label>',
+                    '<label %1$s>%5$s<input type="%2$s" name="%3$s" value="%4$s" %6$s %7$s></label>',
                     (
                         $label_html_classes
                         ? 'class="' . htmlReady($label_html_classes) . '"'
@@ -284,15 +286,17 @@ class ResourcePropertyDefinition extends SimpleORMap
                     htmlReady($input_name),
                     $value,
                     htmlReady($this->__toString()),
-                    $disabled ? 'disabled' : ''
+                    $disabled ? 'disabled' : '',
+                    $min
                 );
             } else {
                 return sprintf(
-                    '<input type="%1$s" name="%2$s" value="%3$s" %4$s>',
+                    '<input type="%1$s" name="%2$s" value="%3$s" %4$s %5$s>',
                     $input_type,
                     htmlReady($input_name),
                     $value,
-                    $disabled ? 'disabled' : ''
+                    $disabled ? 'disabled' : '',
+                    $min
                 );
             }
         }
