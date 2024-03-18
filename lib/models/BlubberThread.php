@@ -162,14 +162,14 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
 
 
 
-        $query = SQLQuery::table('blubber_threads')
-            ->join('my_comments', 'blubber_comments', 'blubber_threads.thread_id = my_comments.thread_id', 'LEFT JOIN')
-            ->join('blubber_mentions', 'blubber_mentions', 'blubber_mentions.thread_id = blubber_threads.thread_id', 'LEFT JOIN');
+        $query = SQLQuery::table('blubber_threads');
+        $query->join('my_comments', 'blubber_comments', 'blubber_threads.thread_id = my_comments.thread_id AND my_comments.user_id = :user_id', 'LEFT JOIN');
+        $query->join('blubber_mentions', 'blubber_mentions', 'blubber_mentions.thread_id = blubber_threads.thread_id', 'LEFT JOIN');
 
         if (!$GLOBALS['perm']->have_perm('admin', $user_id)) {
             //user, autor, tutor, dozent
             $query->where('mycourses', implode(' OR ', [
-                "(blubber_threads.context_type = 'public' AND (my_comments.user_id = :user_id OR blubber_threads.user_id = :user_id OR blubber_threads.thread_id = 'global'))",
+                "(blubber_threads.context_type = 'public' AND (my_comments.comment_id IS NOT NULL OR blubber_threads.user_id = :user_id OR blubber_threads.thread_id = 'global'))",
                 "(blubber_threads.context_type = 'course' AND blubber_threads.context_id IN (:seminar_ids))",
                 "(blubber_threads.context_type = 'institute' AND blubber_threads.context_id IN (:institut_ids))",
                 "(blubber_threads.context_type = 'private' AND blubber_mentions.user_id = :user_id AND blubber_mentions.external_contact = 0)",
@@ -180,14 +180,14 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
         } elseif (!$GLOBALS['perm']->have_perm('root', $user_id)) {
             //admin
             $query->where('mycourses', implode(' OR ', [
-                "(blubber_threads.context_type = 'public' AND (my_comments.user_id = :user_id OR blubber_threads.user_id = :user_id OR blubber_threads.thread_id = 'global'))",
+                "(blubber_threads.context_type = 'public' AND (my_comments.comment_id IS NOT NULL OR blubber_threads.user_id = :user_id OR blubber_threads.thread_id = 'global'))",
                 "(blubber_threads.context_type = 'institute' AND blubber_threads.context_id IN (:institut_ids))",
                 "(blubber_threads.context_type = 'private' AND blubber_mentions.user_id = :user_id AND blubber_mentions.external_contact = 0)",
             ]), ['institut_ids' => self::getMyBlubberInstitutes($user_id)]);
         } else {
             //root
             $query->where(implode(' OR ', [
-                "((blubber_threads.context_type = 'public' OR blubber_threads.context_type IN ('course', 'institute')) AND (my_comments.user_id = :user_id OR blubber_threads.user_id = :user_id OR blubber_threads.thread_id = 'global'))",
+                "(blubber_threads.context_type IN ('public', 'course', 'institute') AND (my_comments.comment_id IS NOT NULL OR blubber_threads.user_id = :user_id OR blubber_threads.thread_id = 'global'))",
                 "(blubber_threads.context_type = 'private' AND blubber_mentions.user_id = :user_id AND blubber_mentions.external_contact = '0')",
             ]));
         }
@@ -198,17 +198,6 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
         $thread_ids = $query->fetchAll("thread_id");
 
         $threads = [];
-
-        foreach ($threads as $thread) {
-            if ($since) {
-                $active_time = $thread->getLatestActivity();
-                $since = max($since, $active_time);
-            }
-            if ($olderthan) {
-                $active_time = $thread->getLatestActivity();
-                $olderthan = min($olderthan, $active_time);
-            }
-        }
 
         do {
             list($newthreads, $filtered, $new_since, $new_olderthan) = self::getOrderedThreads(
