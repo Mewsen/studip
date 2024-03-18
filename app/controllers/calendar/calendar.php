@@ -382,7 +382,7 @@ class Calendar_CalendarController extends AuthenticatedController
                             (
                             $group_view
                                 ? 'calendar/calendar/calendar_group_data/' . $selected_group->id
-                                : 'calendar/calendar/calendar_data/' . $calendar_owner->id
+                                : 'calendar/calendar/calendar_data/user_' . $calendar_owner->id
                             ),
                             $data_url_params
                         ),
