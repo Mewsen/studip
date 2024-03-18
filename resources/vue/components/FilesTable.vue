@@ -121,7 +121,7 @@
                     </td>
                     <td class="document-icon">
                         <a :href="folder.url" :id="`folder-${folder.id}`">
-                            <studip-icon :shape="folder.icon" role="clickable" size="26" class="text-bottom"></studip-icon>
+                            <studip-icon :shape="folder.icon" :size="26" class="text-bottom"></studip-icon>
                         </a>
                     </td>
                     <td :class="{'filter-match': valueMatchesFilter(folder.name)}">
@@ -173,9 +173,9 @@
                     </td>
                     <td class="document-icon">
                         <a v-if="file.download_url" :href="file.download_url" target="_blank" rel="noopener noreferrer">
-                            <studip-icon :shape="file.icon" role="clickable" size="24" class="text-bottom"></studip-icon>
+                            <studip-icon :shape="file.icon" :size="24" class="text-bottom"></studip-icon>
                         </a>
-                        <studip-icon v-else :shape="file.icon" role="clickable" size="24"></studip-icon>
+                        <studip-icon v-else :shape="file.icon" :size="24"></studip-icon>
 
                         <a :href="file.download_url"
                            v-if="file.download_url && file.mime_type.indexOf('image/') === 0"
@@ -188,7 +188,6 @@
                             <studip-icon v-if="file.isAccessible"
                                          shape="accessibility"
                                          role="info"
-                                         size="16"
                                          style="vertical-align: text-bottom"
                                          :title="$gettext('Diese Datei ist barrierefrei.')"></studip-icon>
                         </a>
@@ -196,7 +195,6 @@
                         <studip-icon v-if="file.restrictedTermsOfUse"
                                      shape="lock-locked"
                                      role="info"
-                                     size="16"
                                      :title="$gettext('Das Herunterladen dieser Datei ist nur eingeschränkt möglich.')"></studip-icon>
 
                     </td>

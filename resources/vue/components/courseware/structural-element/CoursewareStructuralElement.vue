@@ -160,7 +160,7 @@
                                     class="cw-container-item"
                                 />
                             </div>
-                        
+
                             <div
                                 v-if="isLink"
                                 class="cw-container-wrapper"
@@ -231,7 +231,7 @@
                                 <studip-progress-indicator v-if="processing" :description="$gettext('Vorgang wird bearbeitet...')" />
                             </div>
                         </div>
-                        <courseware-toolbar v-if="canVisit && canEdit && !isLink" /> 
+                        <courseware-toolbar v-if="canVisit && canEdit && !isLink" />
                     </div>
                     <courseware-call-to-action-box
                         v-if="commentable"
@@ -857,7 +857,7 @@ export default {
             if (this.parent) {
                 return this.childrenById(this.parent.id).length;
             }
-            
+
             return 0;
         },
 
@@ -933,7 +933,7 @@ export default {
                     return true;
                 }
             }
-            
+
 
             return false;
         },
@@ -1125,13 +1125,13 @@ export default {
 
         menuItems() {
             let menu = [
-                { id: 4, label: this.$gettext('Informationen anzeigen'), icon: 'info', emit: 'showInfo' },
-                { id: 5, label: this.$gettext('Lesezeichen setzen'), icon: 'star', emit: 'setBookmark' },
+                { id: 5, label: this.$gettext('Informationen anzeigen'), icon: 'info', emit: 'showInfo' },
+                { id: 6, label: this.$gettext('Lesezeichen setzen'), icon: 'star', emit: 'setBookmark' },
             ];
             if (this.isFeedbackActivated) {
                 if (this.canCreateFeedbackElement && !this.hasFeedbackElement) {
                     menu.push({
-                        id: 6,
+                        id: 7,
                         label: this.$gettext('Feedback aktivieren'),
                         icon: 'feedback',
                         emit: 'showFeedbackCreate',
@@ -1139,7 +1139,7 @@ export default {
                 }
                 if (this.hasFeedbackElement) {
                     menu.push({
-                        id: 6,
+                        id: 7,
                         label: this.$gettext('Feedback anzeigen'),
                         icon: 'feedback',
                         emit: 'showFeedback',
@@ -1149,14 +1149,14 @@ export default {
 
             if (this.oerEnableSuggestions && this.inCourse && this.userId !== this.structuralElement.relationships.owner.data.id) {
                 menu.push(
-                    { id: 7, label: this.$gettext('Seite für OER Campus vorschlagen'), icon: 'oer-campus',
+                    { id: 8, label: this.$gettext('Seite für OER Campus vorschlagen'), icon: 'oer-campus',
                         emit: 'showSuggest' }
                 );
             }
 
             if (!document.documentElement.classList.contains('responsive-display')) {
                 menu.push(
-                    { id: 8, label: this.$gettext('Als Vollbild anzeigen'), icon: 'screen-full',
+                    { id: 9, label: this.$gettext('Als Vollbild anzeigen'), icon: 'screen-full',
                         emit: 'activateFullscreen'},
                 );
             }
@@ -1196,14 +1196,14 @@ export default {
                         emit: 'removeLock',
                     });
                 }
-                menu.push({ id: 3, label: this.$gettext('Seite hinzufügen'), icon: 'add', emit: 'addElement' });
+                menu.push({ id: 4, label: this.$gettext('Seite hinzufügen'), icon: 'add', emit: 'addElement' });
             }
             if (this.context.type === 'users') {
-                menu.push({ id: 9, label: this.$gettext('Öffentlichen Link erzeugen'), icon: 'group', emit: 'linkElement' });
+                menu.push({ id: 10, label: this.$gettext('Öffentlichen Link erzeugen'), icon: 'group', emit: 'linkElement' });
             }
             if (this.deletable && this.canEdit && !this.isTask && !this.blocked) {
                 menu.push({
-                    id: 10,
+                    id: 11,
                     label: this.$gettext('Seite löschen'),
                     icon: 'trash',
                     emit: 'deleteCurrentElement',
@@ -1913,11 +1913,11 @@ export default {
                     await this.loadFeedbackElement({ id: feedbackElementId, options: { include: 'entries' }});
                     ratingPopupFeedbackElement = this.getFeedbackElementById({ id: feedbackElementId });
                     const hasUserEntry = this.feedbackEntries.filter(
-                        (entry) => 
+                        (entry) =>
                             parseInt(entry.relationships?.['feedback-element']?.data?.id) == feedbackElementId &&
                             this.currentUser.id === entry.relationships?.author?.data?.id
                     ).length > 0;
-                    
+
                     if (this.currentUser.id !== ratingPopupFeedbackElement?.relationships?.author?.data?.id && !hasUserEntry) {
                         showRatingPopup = true;
                     } else {
@@ -1938,7 +1938,7 @@ export default {
                 return this.structuralElementById({ id: elem.id });
             }
             const parent = this.structuralElementById({ id: parentId });
-            
+
             return this.findFirstLevelParent(parent);
         },
         submitFeedback() {
@@ -2007,4 +2007,3 @@ export default {
     }),
 };
 </script>
-

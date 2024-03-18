@@ -4,10 +4,10 @@
             <label class="with-action">
                 <input type="text" ref="searchInputField" v-model="searchTerm" :placeholder="$gettext('Suchen')" style="width: 260px;">
                 <a href="#" class="msp-btn" @click.prevent="search" :title="$gettext('Suche starten')">
-                    <studip-icon shape="search" role="clickable" size="16"></studip-icon>
+                    <studip-icon shape="search" />
                 </a>
                 <a href="#" class="msp-btn" @click.prevent="resetSearch" :title="$gettext('Suche zurücksetzen')">
-                    <studip-icon shape="decline" role="clickable" size="16"></studip-icon>
+                    <studip-icon shape="decline" />
                 </a>
             </label>
             <select multiple="multiple" :id="select_box_id" name="selectbox[]"></select>

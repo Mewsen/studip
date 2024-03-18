@@ -50,7 +50,7 @@ export default {
 
             if (this.blocked && this.blockedByAnotherUser && this.userIsTeacher) {
                 menuItems.push({
-                    id: 3,
+                    id: 4,
                     label: this.$gettext('Sperre aufheben'),
                     icon: 'lock-unlocked',
                     emit: 'removeLock',
