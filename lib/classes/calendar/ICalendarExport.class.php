@@ -149,7 +149,8 @@ class ICalendarExport
                 'count'     => $date->number_of_dates,
                 'expire'    => $date->repetition_end,
                 'month'     => $date->month
-            ]
+            ],
+            'UID'           => $date->unique_id
         ];
     }
 
@@ -159,17 +160,24 @@ class ICalendarExport
      */
     public function prepareCourseDate($date): array
     {
+        $summary = $date->course->getFullName();
+        $categories = $date->getTypeName();
+        if ($date instanceof CourseExDate) {
+            $summary .= ' ' . _('(fällt aus)');
+            $categories = '';
+        }
         return [
-            'SUMMARY'       => $date->course->getFullName(),
+            'SUMMARY'       => $summary,
             'DESCRIPTION'   => '',
             'LOCATION'      => $date->getRoomName(),
-            'CATEGORIES'    => $GLOBALS['TERMIN_TYP'][$date->date_typ]['name'],
+            'CATEGORIES'    => $categories,
             'LAST-MODIFIED' => $date->chdate,
             'CREATED'       => $date->mkdate,
             'DTSTAMP'       => $this->time,
             'DTSTART'       => $date->date,
             'DTEND'         => $date->end_time,
-            'PRIORITY'      => ''
+            'PRIORITY'      => '',
+            'UID'           => 'Stud.IP-SEM-' . $date->id . '@' . ($_SERVER['SERVER_NAME'] ?? '')
         ];
     }
 
