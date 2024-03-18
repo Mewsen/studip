@@ -292,20 +292,20 @@ class Course_ContentmodulesController extends AuthenticatedController
 
             $metadata = $plugin->getMetadata();
             $list[$plugin_id] = [
-                'id'          => $plugin_id,
-                'moduleclass' => get_class($plugin),
-                'position'    => $tool ? $tool->position : null,
-                'toolname'    => $toolname,
-                'displayname' => $displayname,
-                'visibility'  => $visibility,
-                'active'      => (bool) $tool,
-                'icon'        => $this->getIconFromMetadata($metadata, $plugin),
+                'id'             => $plugin_id,
+                'moduleclass'    => get_class($plugin),
+                'position'       => $tool ? $tool->position : null,
+                'toolname'       => $toolname,
+                'displayname'    => $displayname,
+                'visibility'     => $visibility,
+                'active'         => (bool) $tool,
+                'icon'           => $this->getIconFromMetadata($metadata, $plugin),
+                'summary'        => $metadata['summary'] ?? null,
+                'mandatory'      => $this->sem_class->isModuleMandatory(get_class($plugin)),
+                'highlighted'    => (bool) $plugin->isHighlighted(),
+                'highlight_text' => $plugin->getHighlightText(),
+                'category'       => $metadata['category'] ?? null,
             ];
-            $list[$plugin_id]['summary'] = $metadata['summary'] ?? null;
-            $list[$plugin_id]['mandatory'] = $this->sem_class->isModuleMandatory(get_class($plugin));
-            $list[$plugin_id]['highlighted'] = (bool) $plugin->isHighlighted();
-            $list[$plugin_id]['highlight_text'] = $plugin->getHighlightText();
-            $list[$plugin_id]['category'] = $metadata['category'] ?? null;
         }
 
         return $list;
@@ -323,7 +323,7 @@ class Course_ContentmodulesController extends AuthenticatedController
             return null;
         }
 
-        if ($plugin instanceof StudIPPlugin) {
+        if ($plugin instanceof StudIPPlugin && str_starts_with($icon, '..')) {
             $path = $GLOBALS['ABSOLUTE_PATH_STUDIP'] . '/' . $plugin->getPluginPath() . '/' . $icon;
             $icon = $this->getCoreIcon($path) ?? $icon;
         }
