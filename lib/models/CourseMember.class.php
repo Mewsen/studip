@@ -442,7 +442,7 @@ class CourseMember extends SimpleORMap implements PrivacyObject
      * Get user information for all users in this course
      *
      */
-    public static function getMemberDataByCourse(string $seminar_id, ?string $user_id = null): array
+    public static function getMemberDataByCourse(string $seminar_id, ?string $status = '', ?string $user_id = null,): array
     {
         $query = "SELECT `datafield_id`
                   FROM `datafields`
@@ -455,34 +455,64 @@ class CourseMember extends SimpleORMap implements PrivacyObject
             ':seminar_id' => $seminar_id,
             ':datafield_id' => $datafield_id,
         ];
-        if (func_num_args() > 1) {
+        if ($user_id !== null) {
             $user_condition = " AND su.`user_id` = :user_id";
             $parameters[':user_id'] = $user_id;
         }
 
-        $query = "SELECT su.`user_id`,
-                         su.`status`,
-                         ui.`geschlecht`,
-                         ui.`title_front` AS Titel,
-                         aum.`Vorname`,
-                         aum.`Nachname`,
-                         ui.`title_rear` AS Titel2,
-                         aum.`username`,
-                         ui.`privadr`,
-                         ui.`privatnr`,
-                         aum.`Email`,
-                         ui.`mkdate` AS Anmeldedatum,
-                         IFNULL(aum.`matriculation_number`, dfe.`content`) AS Matrikelnummer
-                  FROM `seminar_user` AS su
-                  JOIN `auth_user_md5` AS aum USING (`user_id`)
-                  LEFT JOIN `user_info` AS ui USING (`user_id`)
-                  LEFT JOIN `datafields_entries` AS dfe
-                    ON dfe.`range_id` = su.`user_id`
-                      AND dfe.`datafield_id` = :datafield_id
-                  WHERE `Seminar_id` = :seminar_id
-                    {$user_condition}
-                  GROUP BY su.`user_id`
-                  ORDER BY `status` DESC, `Nachname`, `Vorname`";
+
+        if (in_array($status, ['awaiting', 'claiming'])) {
+            $query  = "SELECT su.`user_id`,
+                           su.`status`,
+                           ui.`geschlecht`,
+                           ui.`title_front` AS Titel,
+                           aum.`Vorname`,
+                           aum.`Nachname`,
+                           ui.`title_rear` AS Titel2,
+                           aum.`username`,
+                           ui.`privadr`,
+                           ui.`privatnr`,
+                           aum.`Email`,
+                           ui.`mkdate` AS Anmeldedatum,
+                           IFNULL(aum.`matriculation_number`, dfe.`content`) AS Matrikelnummer,
+                           su.position AS admission_position
+                       FROM admission_seminar_user AS su
+                       LEFT JOIN user_info AS ui USING (user_id)
+                       LEFT JOIN auth_user_md5 AS aum USING (user_id)
+                       LEFT JOIN `datafields_entries` AS dfe
+                         ON dfe.`range_id` = su.`user_id`
+                           AND dfe.`datafield_id` = :datafield_id
+                       WHERE seminar_id = :seminar_id AND su.status = :status
+                           {$user_condition}
+                       GROUP BY aum.user_id
+                       ORDER BY Nachname, Vorname";
+            $parameters[':status'] = $status;
+        }  else {
+            $query = "SELECT su.`user_id`,
+                             su.`status`,
+                             ui.`geschlecht`,
+                             ui.`title_front` AS Titel,
+                             aum.`Vorname`,
+                             aum.`Nachname`,
+                             ui.`title_rear` AS Titel2,
+                             aum.`username`,
+                             ui.`privadr`,
+                             ui.`privatnr`,
+                             aum.`Email`,
+                             ui.`mkdate` AS Anmeldedatum,
+                             IFNULL(aum.`matriculation_number`, dfe.`content`) AS Matrikelnummer
+                      FROM `seminar_user` AS su
+                      JOIN `auth_user_md5` AS aum USING (`user_id`)
+                      LEFT JOIN `user_info` AS ui USING (`user_id`)
+                      LEFT JOIN `datafields_entries` AS dfe
+                        ON dfe.`range_id` = su.`user_id`
+                          AND dfe.`datafield_id` = :datafield_id
+                      WHERE `Seminar_id` = :seminar_id
+                        {$user_condition}
+                      GROUP BY su.`user_id`
+                      ORDER BY `status` DESC, `Nachname`, `Vorname`";
+        }
+
         return DBManager::get()->fetchAll(
             $query,
             $parameters,

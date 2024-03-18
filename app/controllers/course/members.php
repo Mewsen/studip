@@ -1675,33 +1675,13 @@ class Course_MembersController extends AuthenticatedController
                 );
 
                 if (count($this->awaiting) > 0) {
-                    $awaiting_rtf = export_link(
-                        $this->course_id,
-                        'person',
-                        sprintf(_('Warteliste %s'), $this->course_title),
-                        'rtf',
-                        'rtf-warteliste',
-                        $this->waiting_type,
-                        _('Warteliste als rtf-Dokument exportieren'),
-                        'passthrough'
-                    );
-                    $widget->addLinkFromHTML(
-                        $awaiting_rtf,
-                        Icon::create('export')
-                    );
-
-                    $awaiting_csv = export_link(
-                        $this->course_id,
-                        'person',
-                        sprintf(_('Warteliste %s'), $this->course_title),
-                        'csv',
-                        'csv-warteliste',
-                        $this->waiting_type,
-                        _('Warteliste als csv-Dokument exportieren'),
-                        'passthrough'
-                    );
-                    $widget->addLinkFromHTML(
-                        $awaiting_csv,
+                    $widget->addLink(
+                        _('Warteliste CSV-Datei exportieren'),
+                        URLHelper::getURL('dispatch.php/course/members/export', [
+                            'course_id' => $this->course_id,
+                            'format'    => 'csv',
+                            'status'    => $this->waiting_type,
+                        ]),
                         Icon::create('export')
                     );
                 }
@@ -1753,21 +1733,44 @@ class Course_MembersController extends AuthenticatedController
     public function export_action()
     {
         $export_format = Request::get('format');
+        $status = Request::get('status');
 
         if ($export_format !== 'csv' && $export_format !== 'xlsx') {
             throw new Exception('Wrong format');
         }
 
-        $header = [_('Status'), _('Anrede'), _('Titel'), _('Vorname'), _('Nachname'), _('Titel nachgestellt'), _('Benutzername'), _('Adresse'), _('Telefonnr.'),
-            _('E-Mail'), _('Anmeldedatum'), _('Matrikelnummer'), _('Studiengänge')];
-        $members = CourseMember::getMemberDataByCourse($this->course_id);
+        $header = [
+            _('Status'),
+            _('Anrede'),
+            _('Titel'),
+            _('Vorname'),
+            _('Nachname'),
+            _('Titel nachgestellt'),
+            _('Benutzername'),
+            _('Adresse'),
+            _('Telefonnr.'),
+            _('E-Mail'),
+            _('Anmeldedatum'),
+            _('Matrikelnummer'),
+        ];
+
+        if (in_array($status, ['awaiting', 'claiming'])) {
+            $header[] = _('Position');
+            $filename = _('Wartelistenexport');
+        } else {
+            $filename = _('Teilnehmendenexport');
+        }
+
+        $header[] = _('Studiengänge');
+
+        $members = CourseMember::getMemberDataByCourse($this->course_id, $status);
 
         foreach ($members as &$member) {
             $member['Anmeldedatum'] = $member['Anmeldedatum'] ? date("d.m.Y", $member['Anmeldedatum']) : _("unbekannt");
             unset($member['user_id']);
         }
 
-        $filename = _('Teilnehmendenexport') . ' ' . $this->course_title . '.' . $export_format;
+        $filename = $filename . ' ' . $this->course_title . '.' . $export_format;
 
         $this->render_spreadsheet($header, $members, $export_format, $filename);
     }
