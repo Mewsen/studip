@@ -655,16 +655,18 @@ class MyRealmModel
 
             // Create sort order for assigned sem_tree entries.
             $entries = StudipStudyArea::findMany(array_keys($sem_tree_names));
-            $order = [];
-            foreach ($entries as $entry) {
-                $order[$entry->getId()] = $entry->getIndex();
-            }
-            $max = max(array_map('strlen', $order));
+            if (count($entries) > 0) {
+                $order = [];
+                foreach ($entries as $entry) {
+                    $order[$entry->getId()] = $entry->getIndex();
+                }
+                $max = max(array_map('strlen', $order));
 
-            // Now sort courses by sem_tree entry order.
-            uksort($_tmp_courses[$sem_key], function ($a, $b) use ($order, $max) {
-                return str_pad($order[$a] ?? '', $max, '0') - str_pad($order[$b] ?? '', $max, '0');
-            });
+                // Now sort courses by sem_tree entry order.
+                uksort($_tmp_courses[$sem_key], function ($a, $b) use ($order, $max) {
+                    return str_pad($order[$a] ?? '', $max, '0') - str_pad($order[$b] ?? '', $max, '0');
+                });
+            }
 
             //At this point the $_tmp_courses array is sorted by the ordering
             //of the sem_tree.
