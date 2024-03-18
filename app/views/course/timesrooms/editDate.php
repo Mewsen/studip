@@ -226,9 +226,9 @@
         <? if (Request::isXhr() && !$locked && Config::get()->RESOURCES_ENABLE && Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS): ?>
             <?  ?>
             <?= Studip\LinkButton::create(
-                ($request_id ? _('Zur Raumanfrage wechseln') : _('Raumanfrage erstellen')),
+                (isset($request_id) ? _('Zur Raumanfrage wechseln') : _('Raumanfrage erstellen')),
                 (
-                    $request_id
+                    isset($request_id)
                     ? $controller->url_for(
                         'course/room_requests/request_show_summary/' . $request_id
                     )
