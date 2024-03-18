@@ -190,7 +190,28 @@ class Course_GroupingController extends AuthenticatedController
         // Export all participants.
         if (Config::get()->EXPORT_ENABLE) {
             $widget = new ExportWidget();
+            $widget->addLink(
+                _('Teilnehmendenliste als Excel-Datei exportieren'),
+                URLHelper::getURL('dispatch.php/course/grouping/export', [
+                    'course_id' => $this->course_id,
+                    'format'    => 'xlsx',
+                    'type'      => 'grouping'
+                ]),
+                Icon::create('export')
+            );
 
+            $widget->addLink(
+                _('Teilnehmendenliste als CSV-Datei exportieren'),
+                URLHelper::getURL('dispatch.php/course/grouping/export', [
+                    'course_id' => $this->course_id,
+                    'format' => 'csv',
+                    'type'      => 'grouping'
+                ]),
+                Icon::create('export')
+            );
+            $sidebar->addWidget($widget);
+
+            /*
             // create csv-export link
             $csvExport = export_link(
                 $this->course->id,
@@ -229,8 +250,7 @@ class Course_GroupingController extends AuthenticatedController
                 $rtfExport,
                 Icon::create('file-text', 'clickable')
             );
-
-            $sidebar->addWidget($widget);
+            */
         }
     }
 
@@ -582,6 +602,33 @@ class Course_GroupingController extends AuthenticatedController
         }
 
         $this->relocate('course/grouping/members');
+    }
+
+    /**
+     *
+     */
+    public function export_action()
+    {
+        $export_format  = Request::get('format');
+        $export_type    = Request::get('type');
+
+        if ($export_format !== 'csv' && $export_format !== 'xlsx') {
+            throw new Exception('Wrong format');
+        }
+
+        $header = [_('Status'), _('Anrede'), _('Titel'), _('Vorname'), _('Nachname'), _('Titel nachgestellt'),
+            _('Benutzername'), _('Adresse'), _('Telefonnr.'), _('E-Mail'), _('Anmeldedatum'), _('Matrikelnummer'),
+            _('Studiengänge')];
+        $members = CourseMember::getMemberDataByCourse($this->course_id);
+
+        foreach ($members as &$member) {
+            $member['Anmeldedatum'] = $member['Anmeldedatum'] ? date("d.m.Y", $member['Anmeldedatum']) : _("unbekannt");
+            unset($member['user_id']);
+        }
+
+        $filename = _('Teilnehmendenexport') . ' ' . $this->course_title . '.' . $export_format;
+
+        $this->render_spreadsheet($header, $members, $export_format, $filename);
     }
 
     /**
