@@ -818,7 +818,7 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
             $repetition_dow_week = '1';
         } else {
 
-            if ($this->repetition_end) {
+            if ($this->repetition_end && intval($this->repetition_end) !== self::NEVER_ENDING) {
                 $repetition_end_date = htmlReady(date('d.m.Y', $this->repetition_end));
             } else {
                 //Provide a good default value in case the user wants to enable or change the repetition:
