@@ -233,7 +233,7 @@ class Course_RoomRequestsController extends AuthenticatedController
         $this->room_name = $_SESSION[$request_id]['room_name'];
 
         $this->request = new RoomRequest($this->request_id);
-        $this->request->setRangeFields($_SESSION[$this->request_id]['range'], $_SESSION[$this->request_id]['range_ids']);
+        $this->request->setRangeFields($_SESSION[$this->request_id]['range'], $_SESSION[$this->request_id]['range_ids'] ?? []);
 
         $search_properties = $_SESSION[$request_id]['selected_properties'] ?? [];
 
@@ -340,7 +340,6 @@ class Course_RoomRequestsController extends AuthenticatedController
             if (Request::submitted('search_rooms')) {
                 $this->selected_properties = Request::getArray('selected_properties');
                 $_SESSION[$request_id]['selected_properties'] = $this->selected_properties;
-
                 // no min number of seats
                 if (
                     (!$_SESSION[$request_id]['selected_properties']['seats'] || $_SESSION[$request_id]['selected_properties']['seats'] < 1)
@@ -408,7 +407,7 @@ class Course_RoomRequestsController extends AuthenticatedController
         $this->selected_room = Resource::find($_SESSION[$request_id]['room_id'] ?: $this->request->resource_id);
         $this->category = $this->room_category_id ? ResourceCategory::find($this->room_category_id) : '';
         $this->available_properties = $this->room_category_id ? $this->category->getRequestableProperties() : '';
-        $this->selected_properties = $_SESSION[$request_id]['selected_properties'];
+        $this->selected_properties = $_SESSION[$request_id]['selected_properties'] ?? [];
 
         $this->course = Course::find($this->course_id);
         $this->selected_properties['seats'] = $_SESSION[$request_id]['selected_properties']['seats']
@@ -530,8 +529,10 @@ class Course_RoomRequestsController extends AuthenticatedController
 
             $this->redirect('course/room_requests/request_show_summary/' . $this->request_id  );
         } else {
+            $room = Room::find($_SESSION[$request_id]['room_id']);
             $this->step = 2;
             $this->request = new RoomRequest($this->request_id);
+            $_SESSION[$request_id]['room_category_id'] = $room->category_id;
             $this->redirect(
                 'course/room_requests/request_find_matching_rooms/' . $this->request_id . '/' . $this->step
             );
