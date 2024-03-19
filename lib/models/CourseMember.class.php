@@ -442,7 +442,7 @@ class CourseMember extends SimpleORMap implements PrivacyObject
      * Get user information for all users in this course
      *
      */
-    public static function getMemberDataByCourse(string $seminar_id, ?string $status = '', ?string $user_id = null,): array
+    public static function getMemberDataByCourse(string $seminar_id, ?string $status = '', ?string $user_id = null): array
     {
         $query = "SELECT `datafield_id`
                   FROM `datafields`
