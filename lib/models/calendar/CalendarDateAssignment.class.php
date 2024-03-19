@@ -217,8 +217,9 @@ class CalendarDateAssignment extends SimpleORMap implements Event
         bool $with_declined = false
     ) : array
     {
-        $begin->setTime(0, 0);
-        $end->setTime(23, 59, 59);
+        // one whole day as minimum (begin and end time stamp at the same day)
+        $begin->modify('midnight');
+        $end->modify('tomorrow -1 second');
 
         $sql = "JOIN `calendar_dates`
             ON calendar_date_id = `calendar_dates`.`id`
@@ -256,12 +257,9 @@ class CalendarDateAssignment extends SimpleORMap implements Event
                 $e_end = clone $event->getEnd();
                 $e_expire = $event->getExpire();
 
-                // duration in full days
-                $duration = $event->getDurationDays();
-
                 $cal_start = DateTimeImmutable::createFromMutable($m_start);
-                $cal_end = DateTimeImmutable::createFromMutable($m_start)->setTime(23,59,59);
-                $cal_noon = $cal_start->setTime(12, 0);
+                $cal_end = DateTimeImmutable::createFromMutable($m_start)->modify('tomorrow -1 second');
+                $cal_noon = $cal_start->modify('noon');
                 // single events or first event
                 if (
                     ($e_start >= $cal_start && $e_end <= $cal_end)
@@ -270,11 +268,12 @@ class CalendarDateAssignment extends SimpleORMap implements Event
                     || ($e_end > $cal_start && $e_start <= $cal_end)
                 ) {
                     // exception for first event or single event
-                    if (!$event->calendar_date->exceptions->findOneBy('date', $cal_start->format('Y-m-d'))) {
-                        $events_created = array_merge($events_created, self::createRecurrentDate($event, $cal_noon));
+                    if (!$event->calendar_date->exceptions->findOneBy('date', $cal_start->format('Y-m-d'))
+                        && !isset($events_created[$event->calendar_date->id])) {
+                            $events_created[$event->calendar_date->id . '_' . $event->calendar_date->begin] = $event;
                     }
                 } elseif ($e_expire > $cal_start) {
-                    $events_created = array_merge($events_created, self::getRepetition($event, $cal_noon));
+                    $events_created = array_merge($events_created, self::getRepetition($event, $cal_noon, true));
                 }
             }
 
