@@ -167,4 +167,27 @@ class StatusgruppeUser extends SimpleORMap implements PrivacyObject
         }
     }
 
+    public function getExportData(): array
+    {
+        $user = $this->user;
+        $studycourse = [];
+        $user->studycourses->map(function($sc) use (&$studycourse) {
+            $studycourse[]= $sc->studycourse->name .  ',' . $sc->degree->name . ',' . $sc->semester;
+        });
+        return [
+            'gruppe' => (string)$this->group->name,
+            'salutation' => $user->salutation,
+            'Titel' => $user->title_front,
+            'Vorname' => $this->vorname,
+            'Nachname' => $this->nachname,
+            'Titel2' => $user->title_rear,
+            'username' => $this->username,
+            'privadr' => $user->privadr,
+            'privatnr' => $user->privatnr,
+            'Email' => $this->email,
+            'Anmeldedatum' => date('d.m.Y H:i:s', $this->mkdate),
+            'Matrikelnummer' => $user->matriculation_number,
+            'studiengaenge' => implode(';', $studycourse),
+        ];
+    }
 }

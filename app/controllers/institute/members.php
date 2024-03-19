@@ -654,7 +654,7 @@ class Institute_MembersController extends AuthenticatedController
                 Icon::create('export')
             );
             $widget->addLink(
-                _('Als .csv exportieren'),
+                _('Als CSV-Datei exportieren'),
                 URLHelper::getURL('dispatch.php/institute/members/export', [
                     'institute_id' => $this->institute->id,
                     'format' => 'csv',

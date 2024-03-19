@@ -1666,16 +1666,25 @@ class Admin_UserController extends AuthenticatedController
         mkdir($tmp_folder);
 
         $courses = Course::findMany(Request::optionArray('courses'));
-
+        $header = [
+            _('Status'),
+            _('Anrede'),
+            _('Titel'),
+            _('Vorname'),
+            _('Nachname'),
+            _('Titel nachgestellt'),
+            _('Benutzername'),
+            _('Adresse'),
+            _('Telefonnr.'),
+            _('E-Mail'),
+            _('Anmeldedatum'),
+            _('Matrikelnummer'),
+            _('Studiengänge'),
+            _('Position'),
+        ];
         foreach ($courses as $course) {
-            $header = ['Status', 'Anrede', 'Titel', 'Vorname', 'Nachname', 'Titel nachgestellt', 'Benutzername', 'Adresse', 'Telefonnr.',
-                'E-Mail', 'Anmeldedatum', 'Matrikelnummer', 'Studiengänge'];
-            $members = CourseMember::getMemberDataByCourse($course->seminar_id);
 
-            foreach ($members as &$member) {
-                $member['Anmeldedatum'] = $member['Anmeldedatum'] ? date('d.m.Y', $member['Anmeldedatum']) : _('unbekannt');
-                unset($member['user_id']);
-            }
+            $members = $course->getMembersData();
 
             $filename = FileManager::cleanFileName('Teilnehmendenexport ' . $course->Name . '.' . $export_format);
             $filepath = $tmp_folder . '/'. $filename;
