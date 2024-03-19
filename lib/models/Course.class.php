@@ -1117,4 +1117,57 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         //that have autor permissions or higher.
         return $GLOBALS['perm']->have_studip_perm('autor', $this->id, $user_id);
     }
+
+    /**
+     * Get user information for all users in this course
+     *
+     */
+    public function getMembersData(?string $status = ''): array
+    {
+        $result = [];
+
+        if (!$status) {
+            foreach ($this->members->orderBy('position, nachname') as $member) {
+                $result[$member->user_id] = $member->getExportData();
+            }
+            foreach ($this->admission_applicants->findBy('status', 'accepted')->orderBy('position') as $member) {
+                $result[$member->user_id] = $member->getExportData();
+            }
+        } elseif ($status === 'awaiting') {
+            foreach ($this->admission_applicants->findBy('status', $status)->orderBy('position') as $member) {
+                $result[$member->user_id] = $member->getExportData();
+            }
+        } elseif ($status === 'claiming') {
+            $cs = CourseSet::getSetForCourse($this->id);
+            if (is_object($cs) && !$cs->hasAlgorithmRun()) {
+                $claiming_users = User::findFullMany(array_keys(AdmissionPriority::getPrioritiesByCourse($cs->getId(), $this->id)), 'ORDER BY nachname');
+                foreach ($claiming_users as $claiming_user) {
+                        $studycourse = [];
+                        $claiming_user->studycourses->map(function($sc) use (&$studycourse) {
+                            $studycourse[]= $sc->studycourse->name .  ',' . $sc->degree->name . ',' . $sc->semester;
+                        });
+                        $export_data = [
+                            'status' => $status,
+                            'salutation' => $claiming_user->salutation,
+                            'Titel' => $claiming_user->title_front,
+                            'Vorname' => $claiming_user->vorname,
+                            'Nachname' => $claiming_user->nachname,
+                            'Titel2' => $claiming_user->title_rear,
+                            'username' => $claiming_user->username,
+                            'privadr' => $claiming_user->privadr,
+                            'privatnr' => $claiming_user->privatnr,
+                            'Email' => $claiming_user->email,
+                            'Anmeldedatum' => '',
+                            'Matrikelnummer' => $claiming_user->matriculation_number,
+                            'studiengaenge' => implode(';', $studycourse),
+                            'position' => 0,
+                        ];
+                    $result[$claiming_user->user_id] = $export_data;
+                }
+            }
+        }
+
+        return $result;
+    }
+
 }

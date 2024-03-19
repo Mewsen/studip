@@ -209,6 +209,8 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
         $config['additional_fields']['config']['get'] = function ($user) {
             return UserConfig::get($user->id);
         };
+        $config['additional_fields']['gender']['get'] = 'getGender';
+        $config['additional_fields']['salutation']['get'] = 'getSalutation';
 
         $config['registered_callbacks']['after_delete'][] = 'cbRemoveFeedback';
         $config['registered_callbacks']['after_delete'][] = 'cbRemoveForumVisits';
@@ -1584,5 +1586,39 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
             AND `calendar_permissions` = 'WRITE'",
             ['this_user_id' => $this->id, 'other_user_id' => $user_id]
         ) > 0;
+    }
+
+    /**
+     * Delivers the gender as text
+     * @return string
+     */
+    public function getGender(): string
+    {
+        switch ($this->geschlecht) {
+            case 1:
+                return _('männlich');
+            case 2:
+                return _('weiblich');
+            case 3:
+                return _('divers');
+            default:
+                return _('unbekannt');
+        }
+    }
+
+    /**
+     * Delivers the gender as text
+     * @return string
+     */
+    public function getSalutation(): string
+    {
+        switch ($this->geschlecht) {
+            case 1:
+                return _('Herr');
+            case 2:
+                return _('Frau');
+            default:
+                return '';
+        }
     }
 }

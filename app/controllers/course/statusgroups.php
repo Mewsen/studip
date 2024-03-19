@@ -265,7 +265,7 @@ class Course_StatusgroupsController extends AuthenticatedController
                 );
 
                 $export->addLink(
-                    _('Als .csv exportieren'),
+                    _('Als CSV-Datei exportieren'),
                     URLHelper::getURL('dispatch.php/course/statusgroups/export', [
                         'course_id' => $this->course_id,
                         'format' => 'csv',
@@ -311,57 +311,54 @@ class Course_StatusgroupsController extends AuthenticatedController
             throw new Exception('Wrong format');
         }
 
-        if (Request::get('institute_id')) {
-            $institute_id = Request::get('institute_id');
-        }
+        $course = Course::findCurrent();
 
-        $header = [_('Gruppe'), _('Titel'), _('Vorname'), _('Nachname'), _('Titel nachgestellt'), _('Nutzername'),
-            _('Privatadresse'), _('Privatnr.'), _('E-Mail'), _('Anmeldedatum'), _('Studiengänge')];
+        $header = [
+            _('Gruppe'),
+            _('geschlecht'),
+            _('Titel'),
+            _('Vorname'),
+            _('Nachname'),
+            _('Titel nachgestellt'),
+            _('Nutzername'),
+            _('Privatadresse'),
+            _('Privatnr.'),
+            _('E-Mail'),
+            _('Anmeldedatum'),
+            _('Matrikelnummer'),
+            _('Studiengänge')
+        ];
 
-        $temp = [];
 
         $groups = Statusgruppen::findBySeminar_id($this->course_id);
+        $result = [];
         if ($groups) {
+            $assigned_with_group = [];
             foreach ($groups as $group) {
-                foreach ($group['members'] as $mem) {
-                    $member_data = CourseMember::getMemberDataByCourse($this->course_id, '', $mem['user_id']);
-
-                    foreach ($member_data as &$mem_data) {
-                        $mem_data['Anmeldedatum'] = $mem_data['Anmeldedatum'] ? date('d.m.Y', $mem_data['Anmeldedatum']) : _('unbekannt');
-
-                        if (!isset($temp[$group['name']])) {
-                            $temp[$group['name']] = [];
-                        }
-                        $temp[$group['name']][$mem_data['user_id']] = [
-                            'Gruppe'               => $group['name'],
-                            'Titel'                => $mem_data['title_front'],
-                            'Vorname'              => $mem_data['Vorname'],
-                            'Nachname'             => $mem_data['Nachname'],
-                            'Titel nachgestellt'   => $mem_data['title_rear'],
-                            'Nutzername'           => $mem_data['title_front'],
-                            'Privatadresse'        => $mem_data['privadr'],
-                            'Privatnr.'            => $mem_data['privatnr'],
-                            'E-Mail'               => $mem_data['Email'],
-                            'Anmeldedatum'         => $mem_data['Anmeldedatum'],
-                            'Studiengänge'         => $mem_data['studiengaenge'],
-                        ];
+                foreach ($group->members as $member) {
+                    if (!in_array($member->user_id, $assigned_with_group)) {
+                        $assigned_with_group[] = $member->user_id;
                     }
+                    $result[$member->user_id] = $member->getExportData();
                 }
             }
-        }
+            $members = $course->members->filter(function($group_member) use ($assigned_with_group) {
+                    return !in_array($group_member->user_id, $assigned_with_group);
+                })->orderBy('position');
 
-        $statusgroup_data = [];
+            foreach ($members as $member) {
+                $data = ['gruppe' => _('keiner Funktion oder Gruppe zugeordnet')]  + $member->getExportData();
 
-        foreach ($temp as $group => $group_members) {
-            foreach ($group_members as $member) {
-                $statusgroup_data[] = $member;
+                unset($data['status']);
+                unset($data['position']);
+
+                $result[$member->user_id] = $data;
             }
-
         }
 
         $filename = FileManager::cleanFileName(_('Gruppenliste') . ' ' . $this->course_title . '.' . $export_format);
 
-        $this->render_spreadsheet($header, $statusgroup_data, $export_format, $filename);
+        $this->render_spreadsheet($header, $result, $export_format, $filename);
     }
 
     /**

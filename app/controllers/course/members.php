@@ -1676,7 +1676,16 @@ class Course_MembersController extends AuthenticatedController
 
                 if (count($this->awaiting) > 0) {
                     $widget->addLink(
-                        _('Warteliste CSV-Datei exportieren'),
+                        _('Warteliste als Excel-Datei exportieren'),
+                        URLHelper::getURL('dispatch.php/course/members/export', [
+                            'course_id' => $this->course_id,
+                            'format'    => 'xlsx',
+                            'status'    => $this->waiting_type,
+                        ]),
+                        Icon::create('export')
+                    );
+                    $widget->addLink(
+                        _('Warteliste als CSV-Datei exportieren'),
                         URLHelper::getURL('dispatch.php/course/members/export', [
                             'course_id' => $this->course_id,
                             'format'    => 'csv',
@@ -1738,7 +1747,6 @@ class Course_MembersController extends AuthenticatedController
         if ($export_format !== 'csv' && $export_format !== 'xlsx') {
             throw new Exception('Wrong format');
         }
-
         $header = [
             _('Status'),
             _('Anrede'),
@@ -1752,23 +1760,18 @@ class Course_MembersController extends AuthenticatedController
             _('E-Mail'),
             _('Anmeldedatum'),
             _('Matrikelnummer'),
+            _('Studiengänge'),
+            _('Position'),
         ];
 
         if (in_array($status, ['awaiting', 'claiming'])) {
-            $header[] = _('Position');
             $filename = _('Wartelistenexport');
         } else {
             $filename = _('Teilnehmendenexport');
         }
 
-        $header[] = _('Studiengänge');
-
-        $members = CourseMember::getMemberDataByCourse($this->course_id, $status);
-
-        foreach ($members as &$member) {
-            $member['Anmeldedatum'] = $member['Anmeldedatum'] ? date("d.m.Y", $member['Anmeldedatum']) : _("unbekannt");
-            unset($member['user_id']);
-        }
+        $course = Course::findCurrent();
+        $members = $course->getMembersData($status);
 
         $filename = $filename . ' ' . $this->course_title . '.' . $export_format;
 
