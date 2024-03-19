@@ -130,7 +130,7 @@ class AlterCalendarTables extends Migration
                     IF(`permission` = '4', 'WRITE', IF(`permission` = '2', 'READ', '')) AS calendar_permissions,
                    `mkdate`, `chdate`
                    FROM `calendar_user`
-            ON DUPLICATE KEY UPDATE `calendar_permissions` = calendar_permissions"
+            ON DUPLICATE KEY UPDATE `calendar_permissions` = VALUES(calendar_permissions)"
         );
 
         $db->exec("DROP TABLE `calendar_user`");
