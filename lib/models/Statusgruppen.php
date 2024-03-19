@@ -708,7 +708,7 @@ class Statusgruppen extends SimpleORMap implements PrivacyObject
      * This callback is called after deleting a User.
      * It removes courseware task entries that are associated with the group.
      */
-    public function cbRemoveTask()
+    public function cbRemoveTasks()
     {
         \Courseware\Task::deleteBySQL(
             '`solver_id` = ? AND `solver_type`= "group"',
