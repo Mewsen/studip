@@ -8,7 +8,9 @@
                             : $gettext('Navigation öffnen')"
                         @click.prevent="toggleMenu"
                         @keydown.prevent.space="toggleMenu"
-                        @keydown.prevent.enter="toggleMenu">
+                        @keydown.prevent.enter="toggleMenu"
+                        :aria-expanded="showMenu"
+                        aria-controls="responsive-navigation-items">
                     <studip-icon shape="hamburger" role="info_alt"
                                  :alt="showMenu ? $gettext('Navigation schließen') : $gettext('Navigation öffnen')"
                                  :size="iconSize" :class="showMenu ? 'menu-open' : 'menu-closed'">
@@ -17,8 +19,7 @@
             </transition>
         </div>
         <transition name="appear" appear>
-            <nav v-show="showMenu" id="responsive-navigation-items" class="responsive" ref="navigation"
-                 :aria-expanded="showMenu">
+            <nav v-show="showMenu" id="responsive-navigation-items" class="responsive" ref="navigation">
                 <header v-if="me.username !== 'nobody'">
                     <template v-if="!avatarMenuOpen">
                         <section class="profile-info">
