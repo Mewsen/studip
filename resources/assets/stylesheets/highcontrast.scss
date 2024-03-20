@@ -1552,3 +1552,55 @@ button.as-link {
     text-decoration: underline;
     color: $contrast-blue;
 }
+
+.talk-bubble-wrapper {
+    .talk-bubble {
+        background-color: $white;
+        border-radius: 8px;
+        border: solid 2px #000;
+
+        &::after {
+            top: -2px;
+            border-top-color: $black;
+            left: -18px;
+        }
+        .talk-bubble-content {
+            .talk-bubble-talktext {
+                .html {
+                    .opengraph,
+                    blockquote {
+                        border: solid thin $black;
+                        border-left: 3px solid $black;
+                    }
+                }
+            }
+        }
+    }
+
+    &.talk-bubble-own-post {
+        .talk-bubble {
+            background-color: $white;
+
+            &::after {
+                border-top-color: $black;
+                right: -18px;
+            }
+        }
+    }
+}
+form.default {
+    input[type=date],
+    input[type=datetime-local],
+    input[type=email],
+    input[type=number],
+    input[type=password],
+    input[type=tel],
+    input[type=text],
+    input[type=time],
+    input[type=url],
+    select,
+    textarea {
+        border: 1px solid $black;
+    }
+}
+
