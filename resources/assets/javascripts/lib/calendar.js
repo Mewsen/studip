@@ -124,6 +124,38 @@ const Calendar = {
         }
 
         return true;
+    },
+
+    parseDateFromString: function(date_string) {
+        if (!date_string) {
+            //Nothing that can be done.
+            return null;
+        }
+        let string_parts = date_string.split(' ');
+        if (string_parts.length !== 2) {
+            //Invalid format.
+            return null;
+        }
+        let date_parts = string_parts[0].split('.');
+        if (date_parts.length !== 3) {
+            //Invalid format.
+            return null;
+        }
+        let time_parts = string_parts[1].split(':');
+        if (time_parts.length !== 2) {
+            //Invalid format.
+            return null;
+        }
+        let date = new Date(
+            parseInt(date_parts[2]),
+            parseInt(date_parts[1]) - 1,
+            parseInt(date_parts[0])
+        );
+        date.setHours(parseInt(time_parts[0]));
+        date.setMinutes(parseInt(time_parts[1]));
+        date.setSeconds(0);
+
+        return date;
     }
 };
 
