@@ -64,8 +64,7 @@
             </label>
         </div>
         <label>
-            <input type="checkbox" name="all_day" value="1" <?= $all_day_event ? 'checked' : '' ?>
-                   data-deactivates=".new-calendar-date-form input[name='end']">
+            <input type="checkbox" name="all_day" value="1" <?= $all_day_event ? 'checked' : '' ?>>
             <?= _('Ganztägiger Termin') ?>
         </label>
         <label>
