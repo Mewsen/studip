@@ -120,33 +120,28 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
      */
     public function countCourses($semester_id = '', $semclass = 0, $with_children = false): int
     {
-        if ($semester_id) {
-            $query = "SELECT COUNT(DISTINCT i.`seminar_id`)
-                      FROM `seminar_inst` i
-                      JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)
-                      LEFT JOIN `semester_courses` sc ON (i.`seminar_id` = sc.`course_id`)
-                      WHERE i.`institut_id` IN (
-                          SELECT DISTINCT `studip_object_id`
-                          FROM `range_tree`
-                          WHERE `item_id` IN (:ids)
-                      ) AND (
-                          sc.`semester_id` = :semester
-                          OR sc.`semester_id` IS NULL
-                      )";
+        $query = "SELECT COUNT(DISTINCT i.`seminar_id`) FROM `seminar_inst` i";
+
+        if ($semester_id !== 'all') {
+            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)
+                  LEFT JOIN `semester_courses` sc ON (i.`seminar_id` = sc.`course_id`)
+                  WHERE sc.`semester_id` = :semester";
             $parameters = [
-                'ids' => $with_children ? $this->getDescendantIds() : [$this->id],
                 'semester' => $semester_id
             ];
         } else {
-            $query = "SELECT COUNT(DISTINCT `seminar_id`)
-                      FROM `seminar_inst` i
-                      JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)
-                      WHERE `institut_id` IN (
-                          SELECT DISTINCT `studip_object_id`
-                          FROM `range_tree`
-                          WHERE `item_id` IN (:ids)
-                      )";
-            $parameters = ['ids' => $with_children ? $this->getDescendantIds() : [$this->id]];
+            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)";
+            $parameters = [];
+        }
+
+        if ($with_children) {
+            $query .= " AND i.`institut_id` IN (
+                    SELECT DISTINCT `studip_object_id` FROM `range_tree` WHERE `item_id` IN (:ids)
+                )";
+            $parameters['ids'] = array_merge([$this->id], $this->getDescendantIds());
+        } else {
+            $query .= " AND i.`institut_id` = :id";
+            $parameters['id'] = $this->studip_object_id;
         }
 
         if (!$GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM)) {
@@ -177,48 +172,32 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
         array $courses = []
     ): array
     {
-        if ($semester_id !== 'all') {
-            $query = "SELECT DISTINCT s.*
-                      FROM `seminare` s
-                      JOIN `seminar_inst` i ON (i.`seminar_id` = s.`Seminar_id`)
-                      LEFT JOIN `semester_courses` sem ON (sem.`course_id` = s.`Seminar_id`)
-                      WHERE i.`institut_id` IN (
-                          SELECT DISTINCT `studip_object_id`
-                          FROM `range_tree`
-                          WHERE `item_id` IN (:ids)
-                      ) AND (
-                          sem.`semester_id` = :semester
-                          OR sem.`semester_id` IS NULL
-                      )";
+        $query = "SELECT DISTINCT s.* FROM `seminar_inst` i";
 
+        if ($semester_id !== 'all') {
+            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)
+                  LEFT JOIN `semester_courses` sc ON (i.`seminar_id` = sc.`course_id`)
+                  WHERE sc.`semester_id` = :semester";
             $parameters = [
-                'ids' => $with_children ? $this->getDescendantIds() : [$this->id],
                 'semester' => $semester_id
             ];
         } else {
-            $query = "SELECT DISTINCT s.*
-                      FROM `seminare` s
-                      JOIN `seminar_inst` i ON (i.`seminar_id` = s.`Seminar_id`)
-                      WHERE i.`institut_id` IN (
-                          SELECT DISTINCT `studip_object_id`
-                          FROM `range_tree`
-                          WHERE `item_id` IN (:ids)
-                      )";
-            $parameters = ['ids' => $with_children ? $this->getDescendantIds() : [$this->id]];
+            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)";
+            $parameters = [];
+        }
+
+        if ($with_children) {
+            $query .= " AND i.`institut_id` IN (
+                    SELECT DISTINCT `studip_object_id` FROM `range_tree` WHERE `item_id` IN (:ids)
+                )";
+            $parameters['ids'] = array_merge([$this->id], $this->getDescendantIds());
+        } else {
+            $query .= " AND i.`institut_id` = :id";
+            $parameters['id'] = $this->studip_object_id;
         }
 
         if (!$GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM)) {
             $query .= " AND s.`visible` = 1";
-        }
-
-        if ($searchterm) {
-            $query .= " AND s.`Name` LIKE :searchterm";
-            $parameters['searchterm'] = '%' . trim($searchterm) . '%';
-        }
-
-        if ($courses) {
-            $query .= " AND s.`Seminar_id` IN (:courses)";
-            $parameters['courses'] = $courses;
         }
 
         if ($semclass !== 0) {
@@ -232,6 +211,16 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
                     function ($t) use ($semclass) { return $t['class'] === $semclass; }
                 )
             );
+        }
+
+        if ($searchterm) {
+            $query .= " AND s.`Name` LIKE :searchterm";
+            $parameters['searchterm'] = '%' . trim($searchterm) . '%';
+        }
+
+        if ($courses) {
+            $query .= " AND t.`seminar_id` IN (:courses)";
+            $parameters['courses'] = $courses;
         }
 
         if (Config::get()->IMPORTANT_SEMNUMBER) {

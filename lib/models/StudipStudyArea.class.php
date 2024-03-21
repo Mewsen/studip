@@ -479,28 +479,32 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
     /**
      * @see StudipTreeNode::countCourses()
      */
-    public function countCourses($semester_id = 'all', $semclass = 0, $with_children = false) :int
+    public function countCourses(
+        $semester_id = 'all',
+        $semclass = 0,
+        $with_children = false
+    ) :int
     {
+        $query = "SELECT COUNT(DISTINCT t.`seminar_id`) FROM `seminar_sem_tree` t";
+
         if ($semester_id !== 'all') {
-            $query = "SELECT COUNT(DISTINCT t.`seminar_id`)
-                      FROM `seminar_sem_tree` t
-                      JOIN `seminare` s ON (s.`Seminar_id` = t.`seminar_id`)
-                      LEFT JOIN `semester_courses` sc ON (t.`seminar_id` = sc.`course_id`)
-                      WHERE t.`sem_tree_id` IN (:ids)
-                        AND (
-                          sc.`semester_id` = :semester
-                          OR sc.`semester_id` IS NULL
-                        )";
+            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = t.`seminar_id`)
+                  LEFT JOIN `semester_courses` sc ON (t.`seminar_id` = sc.`course_id`)
+                  WHERE sc.`semester_id` = :semester";
             $parameters = [
-                'ids' => $with_children ? array_merge([$this->id], $this->getDescendantIds()) : [$this->id],
                 'semester' => $semester_id
             ];
         } else {
-            $query = "SELECT COUNT(DISTINCT t.`seminar_id`)
-                      FROM `seminar_sem_tree` t
-                      JOIN `seminare` s ON (s.`Seminar_id` = t.`seminar_id`)
-                      WHERE `sem_tree_id` IN (:ids)";
-            $parameters = ['ids' => $with_children ? array_merge([$this->id], $this->getDescendantIds()) : [$this->id]];
+            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = t.`seminar_id`)";
+            $parameters = [];
+        }
+
+        if ($with_children) {
+            $query .= " AND t.`sem_tree_id` IN (:ids)";
+            $parameters['ids'] = array_merge([$this->id], $this->getDescendantIds());
+        } else {
+            $query .= " AND t.`sem_tree_id` = :id";
+            $parameters['id'] = $this->id;
         }
 
         if (!$GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM)) {
@@ -531,26 +535,26 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
         array $courses = []
     ): array
     {
+        $query = "SELECT DISTINCT s.* FROM `seminar_sem_tree` t";
+
         if ($semester_id !== 'all') {
-            $query = "SELECT DISTINCT s.*
-                      FROM `seminare` s
-                      JOIN `seminar_sem_tree` t ON (t.`seminar_id` = s.`Seminar_id`)
-                      LEFT JOIN `semester_courses` sem ON (sem.`course_id` = s.`Seminar_id`)
-                      WHERE t.`sem_tree_id` IN (:ids)
-                        AND (
-                          sem.`semester_id` = :semester
-                          OR sem.`semester_id` IS NULL
-                        )";
+            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = t.`seminar_id`)
+                  LEFT JOIN `semester_courses` sc ON (t.`seminar_id` = sc.`course_id`)
+                  WHERE sc.`semester_id` = :semester";
             $parameters = [
-                'ids' => $with_children ? $this->getDescendantIds() : [$this->id],
                 'semester' => $semester_id
             ];
         } else {
-            $query = "SELECT DISTINCT s.*
-                      FROM `seminare` s
-                      JOIN `seminar_sem_tree` t ON (t.`seminar_id` = s.`Seminar_id`)
-                      WHERE t.`sem_tree_id` IN (:ids)";
-            $parameters = ['ids' => $with_children ? $this->getDescendantIds() : [$this->id]];
+            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = t.`seminar_id`)";
+            $parameters = [];
+        }
+
+        if ($with_children) {
+            $query .= " AND t.`sem_tree_id` IN (:ids)";
+            $parameters['ids'] = array_merge([$this->id], $this->getDescendantIds());
+        } else {
+            $query .= " AND t.`sem_tree_id` = :id";
+            $parameters['id'] = $this->id;
         }
 
         if (!$GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM)) {
