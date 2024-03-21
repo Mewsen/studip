@@ -141,6 +141,10 @@ class Calendar_CalendarController extends AuthenticatedController
             } elseif ($user_id) {
                 $calendar_owner = User::getCalendarOwner($user_id);
                 $view = 'single';
+            } else {
+                //Show the calendar of the current user.
+                $view = 'single';
+                $calendar_owner = User::findCurrent();
             }
         } else {
             //Show the calendar of the current user.
