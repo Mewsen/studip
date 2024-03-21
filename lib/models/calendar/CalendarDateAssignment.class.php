@@ -217,6 +217,11 @@ class CalendarDateAssignment extends SimpleORMap implements Event
         bool $with_declined = false
     ) : array
     {
+        // Always use the timezone of the server:
+        $local_timezone = (new DateTime())->getTimezone();
+        $begin->setTimezone($local_timezone);
+        $end->setTimezone($local_timezone);
+
         // one whole day as minimum (begin and end time stamp at the same day)
         $begin->modify('midnight');
         $end->modify('tomorrow -1 second');
