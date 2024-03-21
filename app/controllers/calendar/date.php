@@ -386,7 +386,6 @@ class Calendar_DateController extends AuthenticatedController
             if (Request::get('all_day') === '1') {
                 $this->all_day_event = true;
                 $begin->setTime(0,0,0);
-                $end = clone $begin;
                 $end->setTime(23,59,59);
             }
             $this->date->begin = $begin->getTimestamp();
