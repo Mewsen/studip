@@ -78,7 +78,7 @@ $cal_step_weeks = [
         <label>
             <?= _('Enduhrzeit') ?>
             <select name="cal_end" aria-label="<?= _('Endzeit der Tages- und Wochenansicht') ?>" class="size-s">
-                <? for ($i = 0; $i < 24; $i += 1): ?>
+                <? for ($i = 1; $i < 25; $i += 1): ?>
                     <option value="<?= $i ?>" <? if ($end == $i) echo 'selected'; ?>>
                         <?= sprintf(_('%02u:00 Uhr'), $i) ?>
                     </option>
