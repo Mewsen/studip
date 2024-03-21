@@ -56,10 +56,23 @@ class Settings_CalendarController extends Settings_SettingsController
     {
         $this->check_ticket();
 
+        $start = Request::option('cal_start');
+        $end   = Request::option('cal_end');
+        if ($start >= $end) {
+            PageLayout::postError(_('Die Startuhrzeit muss vor der Enduhrzeit liegen.'));
+            $calendar_user_control_data = (array) UserConfig::get($GLOBALS['user']->id)->getValue('CALENDAR_SETTINGS');
+            foreach ($calendar_user_control_data as $key => $value) {
+                $this->$key = $value;
+            }
+            $this->start = $start;
+            $this->end   = $end;
+            return;
+        }
+
         $this->config->store('CALENDAR_SETTINGS', [
             'view'            => Request::option('cal_view'),
-            'start'           => Request::option('cal_start'),
-            'end'             => Request::option('cal_end'),
+            'start'           => $start,
+            'end'             => $end,
             'step_day'        => Request::option('cal_step_day'),
             'step_week'       => Request::option('cal_step_week'),
             'type_week'       => Request::option('cal_type_week'),
