@@ -46,7 +46,7 @@
 <? if ($date->description) : ?>
     <article class="studip">
         <header><h1><?= _('Beschreibung') ?></h1></header>
-        <section><?= htmlReady($date->description) ?></section>
+        <section><?= formatReady($date->description) ?></section>
     </article>
 <? endif ?>
 <article class="studip">
