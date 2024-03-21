@@ -278,7 +278,7 @@ class CalendarDateAssignment extends SimpleORMap implements Event
                             $events_created[$event->calendar_date->id . '_' . $event->calendar_date->begin] = $event;
                     }
                 } elseif ($e_expire > $cal_start) {
-                    $events_created = array_merge($events_created, self::getRepetition($event, $cal_noon, true));
+                    $events_created = array_merge($events_created, self::getRepetition($event, $cal_noon));
                 }
             }
 
@@ -400,7 +400,7 @@ class CalendarDateAssignment extends SimpleORMap implements Event
         $time_end = $date_end->format('H:i:s');
 
         $rec_date_begin = $date_time->modify(sprintf('today %s', $time_begin));
-        $rec_date_end = $rec_date_begin->add($date->getDuration())->modify(sprintf('today %s', $time_end));
+        $rec_date_end = $rec_date_begin->add($date->getDuration())->modify($time_end);
 
         $rec_date->calendar_date->begin = $rec_date_begin->getTimestamp();
         $rec_date->calendar_date->end = $rec_date_end->getTimestamp();
@@ -503,11 +503,12 @@ class CalendarDateAssignment extends SimpleORMap implements Event
     public function isAllDayEvent(): bool
     {
         $begin = $this->getBegin();
-        if ($begin->format('His') != '000000') {
+        if ($begin->format('His') !== '000000') {
             return false;
         }
-        $duration = $this->getDuration();
-        return $duration->h === 23 && $duration->i === 59 && $duration->s === 59;
+        $end = $this->getEnd();
+        return ($end->format('Ymd') === $begin->format('Ymd')
+            && $end->format('His') === '235959');
     }
 
     public function isWritable(string $user_id): bool
@@ -620,13 +621,8 @@ class CalendarDateAssignment extends SimpleORMap implements Event
     {
         $begin = $this->getBegin();
         $end = $this->getEnd();
-        $duration = $this->getDuration();
 
-        $all_day = $begin->format('H:i:s') === '00:00:00'
-            && $duration->h === 23
-            && $duration->i === 59
-            && $duration->s === 59;
-
+        $all_day = $this->isAllDayEvent();
 
         $hide_confidential_data = $this->calendar_date->access === 'CONFIDENTIAL'
             && $user_id !== $this->calendar_date->author_id;
