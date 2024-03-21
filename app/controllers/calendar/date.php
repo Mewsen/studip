@@ -565,6 +565,14 @@ class Calendar_DateController extends AuthenticatedController
                     $assignment->store();
                 }
             }
+            //Remove the date from calendars that are not in the $valid_assigned_calendar_ids array:
+            CalendarDateAssignment::deleteBySQL(
+                '`range_id` NOT IN ( :assigned_calendar_ids ) AND `calendar_date_id` = :calendar_date_id',
+                [
+                    'assigned_calendar_ids' => $valid_assigned_calendar_ids,
+                    'calendar_date_id'      => $this->date->id
+                ]
+            );
 
             //Clear all exceptions for the event and set them again:
             CalendarDateException::deleteByCalendar_date_id($this->date->id);
