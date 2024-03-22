@@ -507,8 +507,7 @@ class CalendarDateAssignment extends SimpleORMap implements Event
             return false;
         }
         $end = $this->getEnd();
-        return ($end->format('Ymd') === $begin->format('Ymd')
-            && $end->format('His') === '235959');
+        return $end->format('His') === '235959';
     }
 
     public function isWritable(string $user_id): bool
