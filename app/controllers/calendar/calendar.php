@@ -254,7 +254,7 @@ class Calendar_CalendarController extends AuthenticatedController
                     User::findCurrent()->id => _('Eigener Kalender')
                 ];
                 foreach ($other_users as $user) {
-                    $select_options[$user->id] = $user->getFullName();
+                    $select_options[$user->id] = sprintf('%1$s %2$s', $user->vorname, $user->nachname);
                 }
                 $calendar_select->setOptions($select_options, Request::get('user_id'));
                 $sidebar->addWidget($calendar_select);
