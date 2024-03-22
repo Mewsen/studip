@@ -88,21 +88,6 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
 
     }
 
-    public function delete()
-    {
-        // do not delete until one calendar is left
-        if (count($this->calendars) > 1) {
-            return false;
-        }
-        $calendars = $this->calendars;
-        $ret = parent::delete();
-        // only one calendar is left
-        if ($ret) {
-            $calendars->delete();
-        }
-        return $ret;
-    }
-
     public static function garbageCollect()
     {
         DBManager::get()->query(
