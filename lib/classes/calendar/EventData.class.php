@@ -69,15 +69,29 @@ class EventData
 
     public function toFullcalendarEvent()
     {
-        //Note: The timezone must not be transmitted or
-        //the events may be shifted when there is a timezone
-        //or daylight saving time difference between the server
-        //and the client!
-        return [
+        // Note: The timezone must not be transmitted or
+        // the events may be shifted when there is a timezone
+        // or daylight saving time difference between the server
+        // and the client!
+        // To display all-day events correctly in fullcalendar
+        // reduce the start and end to date without time and add one day
+        // to the end date...
+        if ($this->all_day) {
+            $fc_date = [
+                'allDay' => true,
+                'start'  => $this->begin->format('Y-m-d'),
+                'end'    => $this->end->modify('+1 day')->format('Y-m-d')
+            ];
+        } else {
+            $fc_date = [
+                'allDay' => false,
+                'start'  => $this->begin->format('Y-m-d\TH:i:s'),
+                'end'    => $this->end->format('Y-m-d\TH:i:s')
+            ];
+        }
+
+        return $fc_date + [
             'resourceId' => $this->range_id,
-            'start' => $this->begin->format('Y-m-d\TH:i:s'),
-            'end' => $this->end->format('Y-m-d\TH:i:s'),
-            'allDay' => $this->all_day,
             'title' => $this->title,
             'classNames' => $this->event_classes,
             'textColor' => $this->text_colour,
