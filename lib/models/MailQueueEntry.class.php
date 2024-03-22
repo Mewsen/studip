@@ -121,15 +121,19 @@ class MailQueueEntry extends SimpleORMap
     {
         $mail = new StudipMail($this->mail);
 
-        $success = $mail->send();
-        if ($success) {
-            $this->delete();
+        if ($mail->getRecipients()) {
+            $success = $mail->send();
+            if ($success) {
+                $this->delete();
+            } else {
+                $this['tries'] = $this['tries'] + 1;
+                $this['last_try'] = time();
+                $this->store();
+            }
         } else {
-            $this['tries'] = $this['tries'] + 1;
-            $this['last_try'] = time();
-            $this->store();
+            $success = false;
+            $this->delete();
         }
-
         return $success;
     }
 }
