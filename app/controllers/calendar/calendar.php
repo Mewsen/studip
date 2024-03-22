@@ -613,19 +613,40 @@ class Calendar_CalendarController extends AuthenticatedController
 
         $result = [];
 
+        uasort($users, function(User $a, User $b) {
+            $fullname_a = $a->getFullName('no_title');
+            $fullname_b = $b->getFullName('no_title');
+            if ($fullname_a == $fullname_b) {
+                return 0;
+            }
+            return ($fullname_a > $fullname_b) ? 1 : -1;
+        });
+
         foreach ($users as $user) {
             $events = CalendarDateAssignment::getEvents($begin, $end, $user->id);
             if ($events) {
                 foreach ($events as $event) {
                     $data = $event->toEventData(User::findCurrent()->id);
-                    if (!$timeline_view) {
-                        $data->title = $user->getFullName();
+                    if ($timeline_view) {
+                        $result[] = $data->toFullcalendarEvent();
+                    } else {
+                        //Prevent duplicate entries:
+                        $data->title = $user->getFullName('no_title');
+                        if (array_key_exists($event->calendar_date_id, $result)) {
+                            $result[$event->calendar_date_id]['title'] .= ', ' . $data->title;
+                        } else {
+                            $result[$event->calendar_date_id] = $data->toFullcalendarEvent();
+                        }
                     }
-                    $result[] = $data->toFullcalendarEvent();
                 }
             }
         }
-        $this->render_json($result);
+        if ($timeline_view) {
+            $this->render_json($result);
+        } else {
+            //Clean up the array keys:
+            $this->render_json(array_values($result));
+        }
     }
 
     public function add_courses_action()
