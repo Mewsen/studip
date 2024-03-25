@@ -19,6 +19,7 @@ class Courseware_PublicController extends StudipController
             $publicLink = PublicLink::find($this->link_id);
             $this->invalid = $publicLink === null;
             if (!$this->invalid) {
+                $this->block_types = Courseware\BlockTypes\BlockType::getBlockTypes();
                 $this->expired = $publicLink->isExpired();
                 $this->link_pass = $publicLink->password;
                 $this->entry_element_id = $publicLink->structural_element_id;
