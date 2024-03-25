@@ -305,7 +305,7 @@ class Admin_CoursesController extends AuthenticatedController
     public function index_action()
     {
         $this->fields = $this->getViewFilters();
-        $this->sortby = $GLOBALS['user']->cfg->MEINE_SEMINARE_SORT ?? 'name';
+        $this->sortby = $GLOBALS['user']->cfg->MEINE_SEMINARE_SORT ?? (Config::get()->IMPORTANT_SEMNUMBER ? 'number' : 'name');
         $this->sortflag = $GLOBALS['user']->cfg->MEINE_SEMINARE_SORT_FLAG ?? 'ASC';
 
         $this->buildSidebar();

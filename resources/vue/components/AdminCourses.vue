@@ -235,6 +235,16 @@ export default {
 
             if (sortby === 'last_activity') {
                 sortFunction = (a, b) => a.last_activity_raw - b.last_activity_raw;
+            } else if (sortby === 'name') {
+                sortFunction = (a, b) => {
+                    return collator.compare(striptags(a.name), striptags(b.name))
+                        || collator.compare(striptags(a.number), striptags(b.number));
+                };
+            } else if (sortby === 'number') {
+                sortFunction = (a, b) => {
+                    return collator.compare(striptags(a.number), striptags(b.number))
+                        || collator.compare(striptags(a.name), striptags(b.name));
+                };
             } else {
                 let is_numeric = true;
                 for (let i in array) {
