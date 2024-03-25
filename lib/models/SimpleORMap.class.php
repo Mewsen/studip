@@ -1009,8 +1009,8 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                 }
             }
         }
-        foreach ($this->alias_fields() as $alias => $field) {
-            if (isset($this->db_fields()[$field])) {
+        foreach ($this->alias_fields as $alias => $field) {
+            if (isset($this->db_fields[$field])) {
                 $this->content[$alias] =& $this->content[$field];
                 $this->content_db[$alias] =& $this->content_db[$field];
             }
