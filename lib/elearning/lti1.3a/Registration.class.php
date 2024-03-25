@@ -9,19 +9,19 @@ use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 
 class Registration implements RegistrationInterface
 {
-    protected ?\LtiData $lti_link = null;
+    protected ?\LtiDeployment $lti_link = null;
 
-    public function __construct(?\LtiData $lti_link)
+    public function __construct(?\LtiDeployment $lti_link)
     {
         $this->lti_link = $lti_link;
     }
 
-    public function setLtiLink(\LtiData $lti_link)
+    public function setLtiLink(\LtiDeployment $lti_link)
     {
         $this->lti_link = $lti_link;
     }
 
-    public function getLtiLink() : ?\LtiData
+    public function getLtiLink() : ?\LtiDeployment
     {
         return $this->lti_link;
     }

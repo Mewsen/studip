@@ -28,7 +28,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
             LtiGrade::deleteBySQL('user_id = ?', [$user->id]);
         });
         NotificationCenter::on('CourseDidDelete', function ($event, $course) {
-            LtiData::deleteBySQL('course_id = ?', [$course->id]);
+            LtiDeployment::deleteBySQL('course_id = ?', [$course->id]);
         });
     }
 
@@ -42,7 +42,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
         }
 
         $title = CourseConfig::get($course_id)->LTI_TOOL_TITLE;
-        $changed = LtiData::countBySQL('course_id = ? AND chdate > ?', [$course_id, $last_visit]);
+        $changed = LtiDeployment::countBySQL('course_id = ? AND chdate > ?', [$course_id, $last_visit]);
 
         $icon = $changed
               ? Icon::create('link-extern', Icon::ROLE_NEW)
@@ -64,7 +64,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
         }
 
         $title = CourseConfig::get($course_id)->LTI_TOOL_TITLE;
-        $grades = LtiData::countBySQL('course_id = ?', [$course_id]);
+        $grades = LtiDeployment::countBySQL('course_id = ?', [$course_id]);
 
         $navigation = new Navigation($title);
         $navigation->setImage(Icon::create('link-extern', Icon::ROLE_INFO_ALT));

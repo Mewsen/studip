@@ -24,7 +24,7 @@
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property string $oauth_signature_method database column
- * @property SimpleORMapCollection|LtiData[] $links has_many LtiData
+ * @property SimpleORMapCollection|LtiDeployment[] $links has_many LtiData
  */
 
 class LtiTool extends SimpleORMap
@@ -34,10 +34,10 @@ class LtiTool extends SimpleORMap
      */
     protected static function configure($config = [])
     {
-        $config['db_table'] = 'lti_tool';
+        $config['db_table'] = 'lti_tools';
 
         $config['has_many']['links'] = [
-            'class_name'        => LtiData::class,
+            'class_name'        => LtiDeployment::class,
             'assoc_foreign_key' => 'tool_id',
             'on_delete'         => 'delete'
         ];

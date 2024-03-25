@@ -47,7 +47,7 @@ class PlatformManager
         return '';
     }
 
-    public static function getJwksUrlForDeployment(\LtiData $link)
+    public static function getJwksUrlForDeployment(\LtiDeployment $link)
     {
         return \URLHelper::getURL('lti13a/jwks', ['link_id' => $link->id], true);
     }

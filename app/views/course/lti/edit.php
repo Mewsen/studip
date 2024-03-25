@@ -1,7 +1,7 @@
 <?php
 /**
  * @var Course_LtiController $controller
- * @var LtiData $lti_data
+ * @var LtiDeployment $lti_data
  * @var LtiTool[] $tools
  */
 ?>

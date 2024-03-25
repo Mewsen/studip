@@ -1,7 +1,7 @@
 <?php
 /**
  * @var Course_LtiController $controller
- * @var LtiData[] $lti_data_array
+ * @var LtiDeployment[] $lti_data_array
  * @var bool $edit_perm
  */
 ?>

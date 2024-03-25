@@ -1,7 +1,4 @@
 <?php
-
-use Studip\OAuth2\NegotiatesWithPsr7;
-
 /**
  * course/lti.php - LTI consumer API for Stud.IP
  *
@@ -54,7 +51,7 @@ class Course_LtiController extends StudipController
      */
     public function index_action()
     {
-        $this->lti_data_array = LtiData::findByCourse_id($this->course_id, 'ORDER BY position');
+        $this->lti_data_array = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY position');
 
         if ($this->edit_perm) {
             $widget = Sidebar::get()->addWidget(new ActionsWidget());
@@ -86,7 +83,7 @@ class Course_LtiController extends StudipController
      */
     public function iframe_action(string $position)
     {
-        $lti_data = LtiData::findByCourseAndPosition($this->course_id, $position);
+        $lti_data = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
 
         $this->lti13a_mode = false;
         $lti_version = $lti_data->getToolLtiVersion();
@@ -164,8 +161,8 @@ class Course_LtiController extends StudipController
             $position2 = $position + 1;
         }
 
-        $lti_data = LtiData::findByCourseAndPosition($this->course_id, $position);
-        $lti_data2 = LtiData::findByCourseAndPosition($this->course_id, $position2);
+        $lti_data = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
+        $lti_data2 = LtiDeployment::findByCourseAndPosition($this->course_id, $position2);
 
         if ($lti_data && $lti_data2) {
             $lti_data->position = $position2;
@@ -185,10 +182,10 @@ class Course_LtiController extends StudipController
      */
     public function edit_action($position = '')
     {
-        $this->lti_data = new LtiData();
+        $this->lti_data = new LtiDeployment();
 
         if ($position !== '') {
-            $this->lti_data = LtiData::findByCourseAndPosition($this->course_id, $position);
+            $this->lti_data = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
         }
 
         $this->tools = LtiTool::findAll();
@@ -204,11 +201,11 @@ class Course_LtiController extends StudipController
         CSRFProtection::verifyUnsafeRequest();
 
         if ($position !== '') {
-            $lti_data = LtiData::findByCourseAndPosition($this->course_id, $position);
+            $lti_data = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
         } else {
-            $lti_data = new LtiData();
+            $lti_data = new LtiDeployment();
             $lti_data->course_id = $this->course_id;
-            $lti_data->position = LtiData::countBySQL('course_id = ?', [$this->course_id]);
+            $lti_data->position = LtiDeployment::countBySQL('course_id = ?', [$this->course_id]);
         }
 
         $lti_data->title = trim(Request::get('title'));
@@ -270,7 +267,7 @@ class Course_LtiController extends StudipController
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        $lti_data = LtiData::findByCourseAndPosition($this->course_id, $position);
+        $lti_data = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
         $lti_data->delete();
 
         PageLayout::postSuccess(_('Der Abschnitt wurde gelöscht.'));
@@ -331,6 +328,8 @@ class Course_LtiController extends StudipController
      */
     public function save_link_action($tool_id)
     {
+        require_once 'vendor/oauth-php/library/OAuthRequestVerifier.php';
+
         $tool = LtiTool::find($tool_id);
         $lti_msg = Request::get('lti_msg');
         $lti_errormsg = Request::get('lti_errormsg');
@@ -345,9 +344,9 @@ class Course_LtiController extends StudipController
             // we only support selecting a single content item
             $item = $content_items['@graph'][0];
 
-            $lti_data = new LtiData();
+            $lti_data = new LtiDeployment();
             $lti_data->course_id = $this->course_id;
-            $lti_data->position = LtiData::countBySQL('course_id = ?', [$this->course_id]);
+            $lti_data->position = LtiDeployment::countBySQL('course_id = ?', [$this->course_id]);
             $lti_data->title = (string) $item['title'];
             $lti_data->description = Studip\Markup::purifyHtml(Studip\Markup::markAsHtml($item['text']));
             $lti_data->tool_id = $tool_id;
@@ -381,7 +380,7 @@ class Course_LtiController extends StudipController
     /**
      * Return an LtiLink object for the configured LTI content block.
      *
-     * @param   LtiData $lti_data data of LTI content block
+     * @param   LtiDeployment $lti_data data of LTI content block
      *
      * @return  LtiLink  LTI link representation
      */
@@ -508,7 +507,9 @@ class Course_LtiController extends StudipController
      */
     public function outcome_action($id)
     {
-        $lti_data = LtiData::find($id);
+        require_once 'vendor/oauth-php/library/OAuthRequestVerifier.php';
+
+        $lti_data = LtiDeployment::find($id);
 
         if (!Studip\OAuth1::verifyRequest($this->getPsrRequest(), $lti_data->getConsumerSecret(), '')) {
             throw new Exception('Could not verify request.');
@@ -568,7 +569,7 @@ class Course_LtiController extends StudipController
     {
         Navigation::activateItem('/course/lti/grades');
 
-        $this->lti_data_array = LtiData::findByCourse_id($this->course_id, 'ORDER BY position');
+        $this->lti_data_array = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY position');
 
         if ($this->edit_perm) {
             $this->desc = Request::int('desc');
@@ -596,7 +597,7 @@ class Course_LtiController extends StudipController
      */
     public function export_grades_action()
     {
-        $lti_data_array = LtiData::findByCourse_id($this->course_id, 'ORDER BY position');
+        $lti_data_array = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY position');
 
         $columns = [_('Nachname'), _('Vorname')];
 

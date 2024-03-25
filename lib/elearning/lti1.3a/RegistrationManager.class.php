@@ -9,7 +9,7 @@ class RegistrationManager implements RegistrationRepositoryInterface
 {
     #[\Override] public function find(string $identifier): ?RegistrationInterface
     {
-        $lti_link = \LtiData::find($identifier);
+        $lti_link = \LtiDeployment::find($identifier);
         if (!$lti_link) {
             return null;
         }
@@ -21,7 +21,7 @@ class RegistrationManager implements RegistrationRepositoryInterface
      */
     #[\Override] public function findAll(): array
     {
-        $lti_links = \LtiData::findBySQL('TRUE');
+        $lti_links = \LtiDeployment::findBySQL('TRUE');
         $registrations = [];
         foreach ($lti_links as $lti_link) {
             $registrations[] = new Registration($lti_link);
@@ -39,7 +39,7 @@ class RegistrationManager implements RegistrationRepositoryInterface
         //Array index 0: STUDIP_INSTALLATION_ID
         //Array index 1: LTI link ID
         if ($splitted_id[1]) {
-            $lti_link = \LtiData::find($splitted_id[1]);
+            $lti_link = \LtiDeployment::find($splitted_id[1]);
             if ($lti_link) {
                 return new Registration($lti_link);
             }

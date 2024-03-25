@@ -1,8 +1,6 @@
 <?php
 /**
- * LtiData.php - LTI consumer API for Stud.IP
- *
- * A LtiData instance represents an LTI tool deployment.
+ * LtiDeployment.php - A class that represents an LTI tool deployment.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -10,6 +8,7 @@
  * the License, or (at your option) any later version.
  *
  * @author      Elmar Ludwig
+ * @author      Moritz Strohm
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  *
  * @property int $id database column
@@ -27,14 +26,14 @@
  * @property LtiTool $tool belongs_to LtiTool
  */
 
-class LtiData extends SimpleORMap
+class LtiDeployment extends SimpleORMap
 {
     /**
      * Configure the database mapping.
      */
     protected static function configure($config = [])
     {
-        $config['db_table'] = 'lti_data';
+        $config['db_table'] = 'lti_deployments';
 
         $config['serialized_fields']['options'] = JSONArrayObject::class;
 
@@ -76,7 +75,7 @@ class LtiData extends SimpleORMap
         $position = $this->position;
 
         if ($result = parent::delete()) {
-            $db->execute('UPDATE lti_data SET position = position - 1 WHERE course_id = ? AND position > ?', [$course_id, $position]);
+            $db->execute('UPDATE `lti_deployments` SET `position` = position - 1 WHERE `course_id` = ? AND `position` > ?', [$course_id, $position]);
         }
 
         return $result;
@@ -84,13 +83,7 @@ class LtiData extends SimpleORMap
 
     public function getToolLtiVersion() : string
     {
-        if ($this->tool instanceof LtiTool) {
-            return $this->tool->lti_version;
-        } elseif ($this->options['lti_version']) {
-            return $this->options['lti_version'];
-        }
-        //Unknown LTI version.
-        return '';
+        return $this->tool->lti_version ?? '';
     }
 
 
@@ -99,13 +92,10 @@ class LtiData extends SimpleORMap
      */
     public function getLaunchURL()
     {
-        if ($this->tool_id) {
-            if (!$this->tool->allow_custom_url && !$this->tool->deep_linking || !$this->launch_url) {
-                return $this->tool->launch_url;
-            }
+        if (!$this->tool->allow_custom_url && !$this->tool->deep_linking || !$this->launch_url) {
+            return $this->tool->launch_url;
         }
-
-        return $this->launch_url;
+        return '';
     }
 
     /**
@@ -113,11 +103,7 @@ class LtiData extends SimpleORMap
      */
     public function getConsumerKey()
     {
-        if ($this->tool_id) {
-            return $this->tool->consumer_key;
-        }
-
-        return $this->options['consumer_key'] ?? '';
+        return $this->tool->consumer_key ?? '';
     }
 
     /**
@@ -125,11 +111,7 @@ class LtiData extends SimpleORMap
      */
     public function getConsumerSecret()
     {
-        if ($this->tool_id) {
-            return $this->tool->consumer_secret;
-        }
-
-        return $this->options['consumer_secret'] ?? '';
+        return $this->tool->consumer_secret ?? '';
     }
 
     /**
@@ -137,11 +119,7 @@ class LtiData extends SimpleORMap
      */
     public function getOauthSignatureMethod()
     {
-        if ($this->tool_id) {
-            return $this->tool->oauth_signature_method;
-        }
-
-        return $this->options['oauth_signature_method'] ?? 'sha1';
+        return $this->tool->oauth_signature_method ?? 'sha1';
     }
 
     /**
@@ -149,11 +127,7 @@ class LtiData extends SimpleORMap
      */
     public function getCustomParameters()
     {
-        if ($this->tool_id) {
-            return $this->tool->custom_parameters . "\n" . $this->options['custom_parameters'];
-        }
-
-        return $this->options['custom_parameters'];
+        return $this->tool->custom_parameters . "\n" . $this->options['custom_parameters'] ?? '';
     }
 
     /**
@@ -161,11 +135,7 @@ class LtiData extends SimpleORMap
      */
     public function getSendLisPerson()
     {
-        if ($this->tool_id) {
-            return $this->tool->send_lis_person;
-        }
-
-        return $this->options['send_lis_person'];
+        return $this->tool->send_lis_person;
     }
 
     /**
