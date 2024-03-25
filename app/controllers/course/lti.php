@@ -637,6 +637,9 @@ class Course_LtiController extends StudipController
         if (Navigation::hasItem('/course/admin/lti')) {
             Navigation::activateItem('/course/admin/lti');
         }
+        if (!Config::get()->ENABLE_COURSES_AS_LTI_TOOLS) {
+            throw new AccessDeniedException();
+        }
 
         $sidebar = Sidebar::get();
 
