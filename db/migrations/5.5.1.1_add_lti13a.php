@@ -136,7 +136,7 @@ class AddLti13a extends Migration
             "INSERT INTO `config`
             (`field`, `value`, `type`, `range`, `description`, `section`, `mkdate`, `chdate`)
             VALUES
-            (:field, :value, :type, :range, :description, 'global', UNIX_TIMESTAMP(), UNIX_TIMESTAMP())"
+            (:field, :value, :type, :range, :description, 'LTI', UNIX_TIMESTAMP(), UNIX_TIMESTAMP())"
         );
 
         foreach ($configs as $c) {
