@@ -302,7 +302,7 @@ class Admin_CoursesController extends AuthenticatedController
     public function index_action()
     {
         $this->fields = $this->getViewFilters();
-        $this->sortby = $GLOBALS['user']->cfg->MEINE_SEMINARE_SORT ?? 'name';
+        $this->sortby = $GLOBALS['user']->cfg->MEINE_SEMINARE_SORT ?? (Config::get()->IMPORTANT_SEMNUMBER ? 'number' : 'name');
         $this->sortflag = $GLOBALS['user']->cfg->MEINE_SEMINARE_SORT_FLAG ?? 'ASC';
 
         $this->buildSidebar();
@@ -780,11 +780,6 @@ class Admin_CoursesController extends AuthenticatedController
                 break;
             case 21: //Mehrfachzuweisung Studienbereiche
                 $template = $tf->open('admin/courses/batch_assign_semtree');
-                $template->course = $course;
-                $d['action'] = $template->render();
-                break;
-            case 22: //Masssenexport Teilnehmendendaten
-                $template = $tf->open('admin/courses/batch_export_members');
                 $template->course = $course;
                 $d['action'] = $template->render();
                 break;
