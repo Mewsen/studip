@@ -1,11 +1,11 @@
 <?php
 
 
-class AddLti13aTables extends Migration
+class AddLti13a extends Migration
 {
     public function description()
     {
-        return 'Add tables for the LTI 1.3A functionality.';
+        return 'Add tables and settings for the LTI 1.3A functionality.';
     }
 
     protected function up()
