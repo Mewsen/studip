@@ -349,21 +349,25 @@ class Calendar_CalendarController extends AuthenticatedController
                             ? 'resourceTimelineWeek,resourceTimelineDay'
                             : 'dayGridYear,dayGridMonth,timeGridWeek,timeGridDay'
                     ),
+                    'center'  => 'title',
                     'right'  => 'prev,today,next'
                 ],
                 'weekNumbers' => true,
                 'views' => [
                     'dayGridMonth' => [
                         'eventTimeFormat' => ['hour' => 'numeric', 'minute' => '2-digit'],
+                        'titleFormat'     => ['year' => 'numeric', 'month' => 'long'],
                         'displayEventEnd' => true
                     ],
                     'timeGridWeek' => [
                         'columnHeaderFormat' => ['weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
                         'weekends'           => $calendar_settings['type_week'] === 'LONG',
+                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
                         'slotDuration'       => $slot_durations['week']
                     ],
                     'timeGridDay' => [
                         'columnHeaderFormat' => ['weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true],
+                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
                         'slotDuration'       => $slot_durations['day']
                     ],
                     'resourceTimelineWeek' => [
@@ -470,21 +474,25 @@ class Calendar_CalendarController extends AuthenticatedController
                 'allDayText'  => '',
                 'header'      => [
                     'left'    => 'dayGridYear,dayGridMonth,timeGridWeek,timeGridDay',
+                    'center'  => 'title',
                     'right'   => 'prev,today,next'
                 ],
                 'weekNumbers' => true,
                 'views'       => [
                     'dayGridMonth' => [
                         'eventTimeFormat' => ['hour' => 'numeric', 'minute' => '2-digit'],
+                        'titleFormat'     => ['year' => 'numeric', 'month' => 'long'],
                         'displayEventEnd' => true
                     ],
                     'timeGridWeek' => [
                         'columnHeaderFormat' => [ 'weekday' => 'short', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ],
                         'weekends'           => $calendar_settings['type_week'] === 'LONG',
+                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
                         'slotDuration'       => $slot_settings['week']
                     ],
                     'timeGridDay'  => [
                         'columnHeaderFormat' => [ 'weekday' => 'long', 'year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit', 'omitCommas' => true ],
+                        'titleFormat'        => ['year' => 'numeric', 'month' => '2-digit', 'day' => '2-digit'],
                         'slotDuration'       => $slot_settings['day']
                     ]
                 ],
