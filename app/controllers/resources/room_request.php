@@ -2345,7 +2345,7 @@ class Resources_RoomRequestController extends AuthenticatedController
             Navigation::activateItem('/resources/planning/requests_planning');
         }
 
-        PageLayout::setTitle(_('Anfragenliste'));
+        PageLayout::setTitle(_('Anfragenplan'));
         PageLayout::allowFullscreenMode();
 
         $this->setupSidebar('planning');
@@ -2584,31 +2584,32 @@ class Resources_RoomRequestController extends AuthenticatedController
                 );
             }
             $sidebar->addWidget($widget);
+        }
 
-            $widget = new SelectWidget(
-                _('Räume'),
-                $this->filterURL('from_request', 'room_id', $from_params),
-                'room_id'
-            );
+        $widget = new SelectWidget(
+            _('Räume'),
+            $this->filterURL('from_request', 'room_id', $from_params),
+            'room_id'
+        );
+        $widget->addElement(
+            new SelectElement(
+                '',
+                _('Bitte wählen'),
+                empty($this->filter['room_id'])
+            )
+        );
+        foreach ($this->available_rooms as $room) {
             $widget->addElement(
                 new SelectElement(
-                    '',
-                    _('Bitte wählen'),
-                    empty($this->filter['room_id'])
+                    $room->id,
+                    $room->name,
+                    !empty($this->filter['room_id']) && $room->id == $this->filter['room_id']
                 )
             );
-            foreach ($this->available_rooms as $room) {
-                $widget->addElement(
-                    new SelectElement(
-                        $room->id,
-                        $room->name,
-                        !empty($this->filter['room_id']) && $room->id == $this->filter['room_id']
-                    )
-                );
-            }
-            $sidebar->addWidget($widget);
-
         }
+        $sidebar->addWidget($widget);
+
+
 
         $widget = new OptionsWidget(_('Filter'));
         $widget->addRadioButton(
