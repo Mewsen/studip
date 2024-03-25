@@ -658,12 +658,9 @@ class Course_LtiController extends StudipController
         } else {
             $actions->addLink(
                 _('Über LTI freigeben'),
-                sprintf(
-                    'javascript:void(STUDIP.Dialog.confirmAsPost(\'%1$s\', \'%2$s\'))',
-                    _('Soll die Veranstaltung über LTI freigegeben werden?'),
-                    $this->url_for('course/lti/share', ['cid' => Context::getId()])
-                ),
-                Icon::create('link-extern')
+                $this->url_for('course/lti/share', ['cid' => Context::getId()]),
+                Icon::create('link-extern'),
+                ['data-dialog' => 'size=auto']
             );
         }
         $sidebar->addWidget($actions);
@@ -678,18 +675,31 @@ class Course_LtiController extends StudipController
         if (!Config::get()->ENABLE_COURSES_AS_LTI_TOOLS || !$GLOBALS['perm']->have_studip_perm('tutor', Context::getId())) {
             throw new AccessDeniedException();
         }
-        CSRFProtection::verifyUnsafeRequest();
-        $c = CourseConfig::get();
-        if ($c->store('LTI_SHARING_ENABLED', '1')) {
-            PageLayout::postSuccess(
-                _('Die Veranstaltung wird ab jetzt als LTI-Tool freigegeben.')
-            );
-        } else {
-            PageLayout::postError(
-                _('Die Einstellung zur Freigabe der Veranstaltung als LTI-Tool konnte nicht geändert werden.')
-            );
+        if (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
+            if (!Request::bool('confirmed')) {
+                PageLayout::postError(
+                    _('Sie habe die Hinweise zur Freigabe als LTI-Tool nicht bestätigt.')
+                );
+                return;
+            }
+            $c = CourseConfig::get();
+            if ($c->store('LTI_SHARING_ENABLED', '1')) {
+                PageLayout::postSuccess(
+                    _('Die Veranstaltung wird ab jetzt als LTI-Tool freigegeben.')
+                );
+            } else {
+                PageLayout::postError(
+                    _('Die Einstellung zur Freigabe der Veranstaltung als LTI-Tool konnte nicht geändert werden.')
+                );
+            }
+            if (Request::isDialog()) {
+                $this->response->add_header('X-Dialog-Close', '1');
+                $this->render_nothing();
+            } else {
+                $this->redirect('course/lti/admin', ['cid' => Context::getId()]);
+            }
         }
-        $this->redirect('course/lti/admin', ['cid' => Context::getId()]);
     }
 
     /**
