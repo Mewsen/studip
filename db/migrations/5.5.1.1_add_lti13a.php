@@ -50,6 +50,8 @@ class AddLti13a extends Migration
         );
 
         $this->migrateLtiDataTable();
+
+        $this->addConfig();
     }
 
     protected function migrateLtiDataTable()
@@ -116,6 +118,37 @@ class AddLti13a extends Migration
                     ]
                 );
             }
+        }
+    }
+
+    protected function addConfig()
+    {
+        $db = DBManager::get();
+
+        $configs = [
+            [
+                'ENABLE_COURSES_AS_LTI_TOOLS', '0', 'boolean', 'global',
+                'Sollen Veranstaltungen über die LTI 1.3a Schnittstelle als LTI-Tool angeboten werden können?'
+            ]
+        ];
+
+        $stmt = $db->prepare(
+            "INSERT INTO `config`
+            (`field`, `value`, `type`, `range`, `description`, `section`, `mkdate`, `chdate`)
+            VALUES
+            (:field, :value, :type, :range, :description, 'global', UNIX_TIMESTAMP(), UNIX_TIMESTAMP())"
+        );
+
+        foreach ($configs as $c) {
+            $stmt->execute(
+                [
+                    'field'       => $c[0],
+                    'value'       => $c[1],
+                    'type'        => $c[2],
+                    'range'       => $c[3],
+                    'description' => $c[4]
+                ]
+            );
         }
     }
 
