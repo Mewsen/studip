@@ -94,12 +94,19 @@ class Course_LtiController extends StudipController
             //LTI 1.3a
             $this->lti13a_mode = true;
 
+            $lti_resource_link = new OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink(
+                $GLOBALS['UNI_NAME_SHORT'] . '_' . $this->course_id . '_' . $lti_data->id,
+                [
+                    'url'   => $lti_data->getLaunchURL(),
+                    'title' => $lti_data->title
+                ]
+            );
+
             $registration = new \Studip\LTI13a\Registration($lti_data);
-            $builder = new \OAT\Library\Lti1p3Core\Message\Launch\Builder\PlatformOriginatingLaunchBuilder();
-            $this->message = $builder->buildPlatformOriginatingLaunch(
+            $builder = new \OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder();
+            $this->message = $builder->buildLtiResourceLinkLaunchRequest(
+                $lti_resource_link,
                 $registration,
-                \OAT\Library\Lti1p3Core\Message\LtiMessageInterface::LTI_MESSAGE_TYPE_RESOURCE_LINK_REQUEST,
-                URLHelper::getURL($lti_data->getLaunchURL(), [], true),
                 $GLOBALS['user']->id,
                 $lti_data->id,
                 [
