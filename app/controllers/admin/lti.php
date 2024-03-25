@@ -55,7 +55,8 @@ class Admin_LtiController extends AuthenticatedController
      */
     public function edit_action($id = null)
     {
-        $this->tool = new LtiTool($id);
+        $this->tool     = new LtiTool($id);
+        $this->platform = \Studip\LTI13a\PlatformManager::getPlatformConfiguration();
     }
 
     /**
