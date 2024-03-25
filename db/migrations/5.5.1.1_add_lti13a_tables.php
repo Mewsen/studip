@@ -37,33 +37,88 @@ class AddLti13aTables extends Migration
             )"
         );
         */
-/*
-        $db->exec(
-            "CREATE TABLE IF NOT EXISTS lti_deployments (
-                id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                tool_id CHAR(32) NOT NULL,
-                mkdate BIGINT(10) NOT NULL DEFAULT '0',
-                chdate BIGINT(10) NOT NULL DEFAULT '0'
-            )"
-        );
-*/
+
+        $db->exec("RENAME TABLE `lti_tool` TO lti_tools");
 
         $db->exec(
-            "ALTER TABLE `lti_tool`
+            "ALTER TABLE `lti_tools`
             ADD COLUMN lti_version VARCHAR(8) NOT NULL DEFAULT '1.1',
             ADD COLUMN is_global TINYINT(1) NOT NULL DEFAULT '1',
             ADD COLUMN oidc_init_url VARCHAR(255) NOT NULL DEFAULT '',
             ADD COLUMN jwks_url VARCHAR(255) NOT NULL DEFAULT '',
             ADD COLUMN deep_linking_url VARCHAR(255) NOT NULL DEFAULT ''"
         );
+
+        $this->migrateLtiDataTable($db);
+    }
+
+    protected function migrateLtiDataTable(PDO $db)
+    {
+        $db->exec("RENAME TABLE `lti_data` TO lti_deployments");
+
+        //Create LTI tool instances for the old LTI 1.0/1.1 tools
+        //that have been configured directly in a course:
+        $stmt = $db->prepare(
+            "SELECT `id`, `tool_id`, `title`, `options`
+            FROM `lti_deployments`
+            WHERE `tool_id` = '0'"
+        );
+        $update_stmt = $db->prepare(
+            "UPDATE `lti_deployments`
+            SET `tool_id` = :new_tool_id,
+            OPTIONS = :new_options
+            WHERE `id` = :deployment_id"
+        );
+        $create_tool_stmt = $db->prepare(
+            "INSERT INTO `lti_tools`
+            (`id`, `name`, `launch_url`, `consumer_key`, `consumer_secret`,
+            `custom_parameters`, `send_lis_person`, `lti_version`, `is_global`,
+            `mkdate`, `chdate`)
+            VALUES
+            (:id, :name, :launch_url, :consumer_key, :consumer_secret,
+            :custom_parameters, :send_lis_person, '1.1', '0',
+            UNIX_TIMESTAMP(), UNIX_TIMESTAMP())"
+        );
+        $new_tool_id_stmt = $db->prepare("SELECT MAX(`id`) + 1 FROM `lti_tools`");
+        while ($row = $stmt->fetch()) {
+            if (empty($row['id']) || empty($row['title']) || empty($row['options'])) {
+                //That tool cannot be migrated.
+                continue;
+            }
+            //Create a new tool and migrate the data from the options field:
+            $options = json_decode($row['options'], true);
+            $new_tool_id_stmt->execute();
+            $new_tool_id = $new_tool_id_stmt->fetchColumn();
+            $success = $create_tool_stmt->execute(
+                [
+                    'id'           => $new_tool_id,
+                    'name'         => $row['title'],
+                    'launch_url'   => $options['launch_url'] ?? '',
+                    'consumer_key' => $options['consumer_key'] ?? '',
+                    'consumer_secret' => $options['consumer_secret'] ?? '',
+                    'custom_parameters' => $options['custom_parameters'] ?? '',
+                    'send_lis_person'   => $options['send_lis_person'] ?? '0'
+                ]
+            );
+            unset($options['launch_url']);
+            unset($options['consumer_key']);
+            unset($options['consumer_secret']);
+            unset($options['custom_parameters']);
+            unset($options['send_lis_person']);
+            if ($success) {
+                $update_stmt->execute(
+                    [
+                        'new_tool_id'   => $new_tool_id,
+                        'new_options'   => $options ?? [],
+                        'deployment_id' => $row['id']
+                    ]
+                );
+            }
+        }
     }
 
     protected function down()
     {
-        $db = DBManager::get();
-        $db->exec("ALTER TABLE `lti_tool` DROP COLUMN `lti_version`");
-        $db->exec('DROP TABLE IF EXISTS lti_deployments');
-        $db->exec('DROP TABLE IF EXISTS lti_registrations');
-        $db->exec('DROP TABLE IF EXISTS keyrings');
+        //Uhhh... no!
     }
 }
