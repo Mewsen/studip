@@ -43,7 +43,7 @@
                             </label>
                             <label>
                                 {{ $gettext('URL') }}
-                                <input type="text" v-model="currentUrl" @change="setProtocol" />
+                                <input type="text" v-model="currentUrl" @change="updateUrl" />
                             </label>
                             <label>
                                 {{ $gettext('Höhe') }}
@@ -150,6 +150,7 @@ export default {
         return {
             currentTitle: '',
             currentUrl: '',
+            currentUrlIsValid: true,
             currentHeight: '',
             currentSubmitUserId: '',
             currentSubmitParam: '',
@@ -210,6 +211,7 @@ export default {
     },
     methods: {
         ...mapActions({
+            companionError: 'companionError',
             updateBlock: 'updateBlockInContainer',
         }),
         initCurrentData() {
@@ -240,8 +242,35 @@ export default {
                 }
             }
         },
+        validateUrl() {
+            this.currentUrlIsValid = this.isValidUrl(this.currentUrl);
+        },
+        isValidUrl(urlString) {
+            const urlPattern = new RegExp(
+                '^(https?:\\/\\/)?' + // validate protocol
+                    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // validate domain name
+                    '((\\d{1,3}\\.){3}\\d{1,3}))' + // validate OR ip (v4) address
+                    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // validate port and path
+                    '(\\?[;&a-z\\d%_.~+=-]*)?' + // validate query string
+                    '(\\#[-a-z\\d_]*)?$',
+                'i'
+            ); // validate fragment locator
+
+            return !!urlPattern.test(urlString);
+        },
+
+        updateUrl() {
+            this.setProtocol();
+            this.validateUrl();
+        },
 
         storeBlock() {
+            if (!this.currentUrlIsValid) {
+                this.companionError({
+                    info: this.$gettext('Bitte geben Sie eine gültige URL ein.')
+                });
+                return false;
+            }
             let attributes = {};
             attributes.payload = {};
             attributes.payload.title = this.currentTitle;
