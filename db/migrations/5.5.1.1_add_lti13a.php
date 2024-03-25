@@ -129,6 +129,10 @@ class AddLti13a extends Migration
             [
                 'ENABLE_COURSES_AS_LTI_TOOLS', '0', 'boolean', 'global',
                 'Sollen Veranstaltungen über die LTI 1.3a Schnittstelle als LTI-Tool angeboten werden können?'
+            ],
+            [
+                'LTI_SHARING_ENABLED', '0', 'boolean', 'course',
+                'Darf die Veranstaltung als LTI-Tool angeboten werden?'
             ]
         ];
 

@@ -640,16 +640,32 @@ class Course_LtiController extends StudipController
         if (!Config::get()->ENABLE_COURSES_AS_LTI_TOOLS) {
             throw new AccessDeniedException();
         }
+        $this->lti_sharing_enabled = CourseConfig::get()->LTI_SHARING_ENABLED;
 
         $sidebar = Sidebar::get();
 
         $actions = new ActionsWidget();
-        $actions->addLink(
-            _('Über LTI freigeben'),
-            $this->url_for('course/lti/share'),
-            Icon::create('link-extern'),
-            ['data-dialog' => 'size=auto']
-        );
+        if ($this->lti_sharing_enabled) {
+            $actions->addLink(
+                _('Nicht mehr über LTI freigeben'),
+                sprintf(
+                    'javascript:void(STUDIP.Dialog.confirmAsPost(\'%1$s\', \'%2$s\'))',
+                    _('Soll die Freigabe der Veranstaltung über LTI beendet werden?'),
+                    $this->url_for('course/lti/disable_share', ['cid' => Context::getId()])
+                ),
+                Icon::create('link-extern')
+            );
+        } else {
+            $actions->addLink(
+                _('Über LTI freigeben'),
+                sprintf(
+                    'javascript:void(STUDIP.Dialog.confirmAsPost(\'%1$s\', \'%2$s\'))',
+                    _('Soll die Veranstaltung über LTI freigegeben werden?'),
+                    $this->url_for('course/lti/share', ['cid' => Context::getId()])
+                ),
+                Icon::create('link-extern')
+            );
+        }
         $sidebar->addWidget($actions);
     }
 
@@ -659,6 +675,44 @@ class Course_LtiController extends StudipController
      */
     public function share_action()
     {
+        if (!Config::get()->ENABLE_COURSES_AS_LTI_TOOLS) {
+            throw new AccessDeniedException();
+        }
+        CSRFProtection::verifyUnsafeRequest();
+        $c = CourseConfig::get();
+        if ($c->store('LTI_SHARING_ENABLED', '1')) {
+            PageLayout::postSuccess(
+                _('Die Veranstaltung wird ab jetzt als LTI-Tool freigegeben.')
+            );
+        } else {
+            PageLayout::postError(
+                _('Die Einstellung zur Freigabe der Veranstaltung als LTI-Tool konnte nicht geändert werden.')
+            );
+        }
+        $this->redirect('course/lti/admin', ['cid' => Context::getId()]);
+    }
 
+    /**
+     * This action disables sharing the course as LTI tool.
+     *
+     * @return void
+     */
+    public function disable_share_action()
+    {
+        if (!Config::get()->ENABLE_COURSES_AS_LTI_TOOLS) {
+            throw new AccessDeniedException();
+        }
+        CSRFProtection::verifyUnsafeRequest();
+        $c = CourseConfig::get();
+        if ($c->store('LTI_SHARING_ENABLED', '0')) {
+            PageLayout::postSuccess(
+                _('Die Veranstaltung wird ab jetzt nicht mehr als LTI-Tool freigegeben.')
+            );
+        } else {
+            PageLayout::postError(
+                _('Die Einstellung zur Freigabe der Veranstaltung als LTI-Tool konnte nicht geändert werden.')
+            );
+        }
+        $this->redirect('course/lti/admin', ['cid' => Context::getId()]);
     }
 }
