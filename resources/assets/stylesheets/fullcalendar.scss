@@ -236,11 +236,19 @@ a.fc-event, td.fc-event {
 // Responsive
 .responsive-display {
     .fc-header-toolbar {
-        .fc-button-group {
-            .fc-button {
-                min-width: 0;
-            }
+        flex-direction: column;
+
+        .fc-left,
+        .fc-center,
+        .fc-right {
+            width: 100%;
+            text-align: center;
         }
+        .fc-left,
+        .fc-center {
+            margin-bottom: $line-height-computed - $font-size-base;
+        }
+
     }
 
     .fc-view-container {
