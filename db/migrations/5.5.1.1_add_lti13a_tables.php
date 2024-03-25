@@ -55,7 +55,7 @@ class AddLti13aTables extends Migration
     protected function migrateLtiDataTable()
     {
         $db = DBManager::get();
-        $db->exec("RENAME TABLE `lti_data` TO lti_deployments");
+        $db->execute("RENAME TABLE `lti_data` TO lti_deployments");
 
         //Create LTI tool instances for the old LTI 1.0/1.1 tools
         //that have been configured directly in a course:
