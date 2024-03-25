@@ -32,7 +32,7 @@ class Search_CoursesController extends AuthenticatedController
         if (!in_array($this->show_as, ['list', 'table'])) {
             $this->show_as = 'list';
         }
-        $this->semester = Request::option('semester', Semester::findCurrent()->id);
+        $this->semester = Request::option('semester', Semester::findDefault()->id);
         $this->semClass = Request::int('semclass', 0);
         $this->search = Request::get('search', '');
     }
