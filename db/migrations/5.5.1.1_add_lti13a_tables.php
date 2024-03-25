@@ -52,7 +52,7 @@ class AddLti13aTables extends Migration
         $this->migrateLtiDataTable($db);
     }
 
-    protected function migrateLtiDataTable(PDO $db)
+    protected function migrateLtiDataTable(StudipPDO $db)
     {
         $db->exec("RENAME TABLE `lti_data` TO lti_deployments");
 
