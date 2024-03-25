@@ -241,7 +241,10 @@ export default {
             const directionFactor = this.sort.direction === 'ASC' ? 1 : -1;
 
             // Default sort function by string comparison of field
-            const collator = new Intl.Collator(String.locale, {numeric: true, sensitivity: 'base'});
+            const collator = new Intl.Collator(String.locale, {
+                numeric: sortby !== 'number',
+                sensitivity: 'base'
+            });
             let sortFunction = function (a, b) {
                 return collator.compare(striptags(a[sortby]), striptags(b[sortby]));
             };
