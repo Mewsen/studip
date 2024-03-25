@@ -637,7 +637,7 @@ class Course_LtiController extends StudipController
         if (Navigation::hasItem('/course/admin/lti')) {
             Navigation::activateItem('/course/admin/lti');
         }
-        if (!Config::get()->ENABLE_COURSES_AS_LTI_TOOLS) {
+        if (!Config::get()->ENABLE_COURSES_AS_LTI_TOOLS || !$GLOBALS['perm']->have_studip_perm('tutor', Context::getId())) {
             throw new AccessDeniedException();
         }
         $this->lti_sharing_enabled = CourseConfig::get()->LTI_SHARING_ENABLED;
@@ -675,7 +675,7 @@ class Course_LtiController extends StudipController
      */
     public function share_action()
     {
-        if (!Config::get()->ENABLE_COURSES_AS_LTI_TOOLS) {
+        if (!Config::get()->ENABLE_COURSES_AS_LTI_TOOLS || !$GLOBALS['perm']->have_studip_perm('tutor', Context::getId())) {
             throw new AccessDeniedException();
         }
         CSRFProtection::verifyUnsafeRequest();
@@ -699,7 +699,7 @@ class Course_LtiController extends StudipController
      */
     public function disable_share_action()
     {
-        if (!Config::get()->ENABLE_COURSES_AS_LTI_TOOLS) {
+        if (!Config::get()->ENABLE_COURSES_AS_LTI_TOOLS || !$GLOBALS['perm']->have_studip_perm('tutor', Context::getId())) {
             throw new AccessDeniedException();
         }
         CSRFProtection::verifyUnsafeRequest();
