@@ -356,8 +356,16 @@ class Calendar_DateController extends AuthenticatedController
         }
 
         $this->all_day_event = false;
-        if ($mode === 'add' && Request::get('all_day') === '1') {
+        if ($mode === 'add' && Request::bool('all_day')) {
             $this->all_day_event = true;
+            //Check for a fullcalendar all-day event ending. In that case, remove one second to have an all-day event
+            //that abides to the Stud.IP rules.
+            $end = new DateTime();
+            $end->setTimestamp($this->date->end);
+            if ($end->format('His') === '000000') {
+                $end = $end->sub(new DateInterval('PT1S'));
+            }
+            $this->date->end = $end->getTimestamp();
         } else {
             $begin = new DateTime();
             $begin->setTimestamp(intval($this->date->begin));
