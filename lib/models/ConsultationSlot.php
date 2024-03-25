@@ -273,7 +273,7 @@ class ConsultationSlot extends SimpleORMap
                     );
                     $event->event->description = $booking->reason;
                 } else {
-                    $event->event->title = sprintf(
+                    $event->event->summary = sprintf(
                         _('Termin mit %u Personen'),
                         count($bookings)
                     );
