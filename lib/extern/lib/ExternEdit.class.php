@@ -51,11 +51,15 @@ class ExternEdit {
     var $width_2 = " width=\"80%\"";
     var $error_sign = "<font size=\"4\" color=\"ff0000\">&nbsp; &nbsp;<b>*</b></font>";
 
-    function __construct(&$config, $form_values = "", $faulty_values = "",
-             $edit_element = "") {
-
+    function __construct(
+        &$config,
+        $form_values = '',
+        $faulty_values = '',
+        $edit_element = ""
+    ) {
         $this->config =& $config;
-        $this->form_values = $form_values;
+        $this->form_values = is_array($form_values) ? $form_values : [];
+        $this->faulty_values = is_array($faulty_values) ? $faulty_values : [];
         $this->edit_element = $edit_element;
 
         if (is_array($form_values)) {
