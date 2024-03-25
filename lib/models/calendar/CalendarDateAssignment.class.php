@@ -102,7 +102,9 @@ class CalendarDateAssignment extends SimpleORMap implements Event
         if ($this->suppress_mails) {
             return;
         }
-        if ($this->range_id === $this->calendar_date->editor_id) {
+        $actor = User::findCurrent() ?? $this->calendar_date->editor;
+        if ($this->range_id === $actor->id) {
+            //The user who deleted the date shall not get notified about this.
             return;
         }
         if (!$this->calendar_date || !$this->user) {
@@ -116,12 +118,13 @@ class CalendarDateAssignment extends SimpleORMap implements Event
         $lang_path = getUserLanguagePath($this->range_id);
         $template = $template_factory->open($lang_path . '/LC_MAILS/date_deleted.php');
         $template->set_attribute('date', $this->calendar_date);
+        $template->set_attribute('actor', $actor);
         $template->set_attribute('receiver', $this->user);
         $mail_text = $template->render();
         Message::send(
             '____%system%____',
             [$this->user->username],
-            sprintf(_('%s hat einen Termin im Kalender gelöscht'), $this->calendar_date->editor->getFullName()),
+            sprintf(_('%s hat einen Termin im Kalender gelöscht'), $actor->getFullName()),
             $mail_text
         );
 

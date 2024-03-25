@@ -23,6 +23,6 @@
 <? endforeach ?>
 <? endif ?>
 
-<? if ($receiver_date_assignment) : ?>
+<? if (!empty($receiver_date_assignment)) : ?>
 **Ihre Teilnahme:** <?= $receiver_date_assignment->getParticipationAsString() ?>
 <? endif ?>
