@@ -106,7 +106,7 @@ class Statusgruppen extends SimpleORMap implements PrivacyObject
 
         $config['registered_callbacks']['before_store'][] = 'cbAddPosition';
         $config['registered_callbacks']['after_delete'][] = 'cbReorderPositions';
-        $config['registered_callbacks']['after_delete'][] = 'cbRemoveTasks';
+
         $config['i18n_fields']['name'] = true;
         $config['i18n_fields']['name_w'] = true;
         $config['i18n_fields']['name_m'] = true;
