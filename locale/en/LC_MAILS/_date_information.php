@@ -22,3 +22,7 @@
 - <?= $participant_string ?>
 <? endforeach ?>
 <? endif ?>
+
+<? if (!empty($receiver_date_assignment)) : ?>
+**Your participation:** <?= $receiver_date_assignment->getParticipationAsString() ?>
+<? endif ?>
