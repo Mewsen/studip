@@ -4,12 +4,9 @@ namespace RESTAPI\Routes;
 use Config;
 use Resource;
 use Room;
-use SingleCalendar;
-use SingleDate;
 use Seminar;
 use Issue;
-use CalendarExport;
-use CalendarWriterICalendar;
+
 
 /**
  * @author     André Klaßen <andre.klassen@elan-ev.de>
@@ -23,11 +20,6 @@ use CalendarWriterICalendar;
  */
 class Events extends \RESTAPI\RouteMap
 {
-    public function before($router, &$handler, &$parameters)
-    {
-        require_once 'lib/calendar/CalendarExportFile.class.php';
-        require_once 'lib/calendar/CalendarWriterICalendar.class.php';
-    }
 
     /**
      * returns all upcoming events within the next two weeks for a given user
@@ -53,7 +45,7 @@ class Events extends \RESTAPI\RouteMap
         $events = array_slice($list, $this->offset, $this->limit); ;
         foreach ($events as $event) {
 
-            $course_uri = $this->urlf('/course/%s', [htmlReady($event->course_id)]);
+            $course_uri = $this->urlf('/course/%s', [htmlReady($event->range_id)]);
 
             $json[] = [
                 'event_id'    => $event->id,
@@ -62,7 +54,7 @@ class Events extends \RESTAPI\RouteMap
                 'end'         => $event->end_time,
                 'title'       => $event->getTitle(),
                 'description' => $event->getDescription() ?: '',
-                'categories'  => $event->toStringCategories() ?: '',
+                'categories'  => $event->getTypeName(),
                 'room'        => $event->getRoomName(),
                 'canceled'    => $event instanceof \CourseExDate || holiday($event->date),
             ];
@@ -83,15 +75,15 @@ class Events extends \RESTAPI\RouteMap
         if ($user_id !== $GLOBALS['user']->id) {
             $this->error(401);
         }
-        $calender_writer = new CalendarWriterICalendar();
-        $export = new CalendarExport($calender_writer);
-        $export->exportFromDatabase($user_id, 0, 2114377200, 'ALL_EVENTS');
-
-        if ($GLOBALS['_calendar_error']->getMaxStatus(\ErrorHandler::ERROR_CRITICAL)) {
-            $this->halt(500);
-        }
-
-        $content = implode($export->getExport());
+        $end = new \DateTime();
+        $end->setTimestamp(\CalendarDate::NEVER_ENDING);
+        $start = new \DateTime();
+        $start->modify('-4 week');
+        $ical_export = new \ICalendarExport();
+        $ical = $ical_export->exportCalendarDates($user_id, $start, $end)
+            . $ical_export->exportCourseDates($user_id, $start, $end)
+            . $ical_export->exportCourseExDates($user_id, $start, $end);
+        $content = $ical_export->writeHeader() . $ical . $ical_export->writeFooter();
 
         $this->contentType('text/calendar');
         $this->headers([
