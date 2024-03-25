@@ -23,14 +23,14 @@
     <span class="textlabel"><?= _('Consumer-Key des LTI-Tools') ?></span>
     <span class="asterisk">*</span>
     <input type="text" name="consumer_key" required
-           value="<?= htmlReady($tool->consumer_key) ?>">
+           value="<?= htmlReady($tool->consumer_key ?? '') ?>">
 </label>
 
 <label class="studiprequired">
     <span class="textlabel"><?= _('Consumer-Secret des LTI-Tools') ?></span>
     <span class="asterisk">*</span>
     <input type="text" name="consumer_secret" required
-           value="<?= htmlReady($tool->consumer_secret) ?>">
+           value="<?= htmlReady($tool->consumer_secret ?? '') ?>">
 </label>
 
 <label class="studiprequired">
@@ -76,7 +76,7 @@
 </label>
 
 <label>
-    <input type="checkbox" name="send_lis_person" value="1" <?= $tool->send_lis_person ? ' checked' : '' ?>>
+    <input type="checkbox" name="send_lis_person" value="1" <?= !empty($tool->send_lis_person) ? ' checked' : '' ?>>
     <?= _('Nutzerdaten an LTI-Tool senden') ?>
     <?= tooltipIcon(_('Nutzerdaten dürfen nur an das externe Tool gesendet werden, wenn es keine Datenschutzbedenken gibt. Mit Setzen des Hakens bestätigen Sie, dass die Übermittlung der Daten zulässig ist.')) ?>
 </label>
@@ -84,5 +84,5 @@
 <label>
     <?= _('Zusätzliche LTI-Parameter') ?>
     <?= tooltipIcon(_('Ein Wert pro Zeile, Beispiel: Review:Chapter=1.2.56')) ?>
-    <textarea name="custom_parameters"><?= htmlReady($tool->custom_parameters) ?></textarea>
+    <textarea name="custom_parameters"><?= htmlReady($tool->custom_parameters ?? '') ?></textarea>
 </label>

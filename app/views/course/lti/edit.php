@@ -1,11 +1,11 @@
 <?php
 /**
  * @var Course_LtiController $controller
- * @var LtiDeployment $lti_data
+ * @var LtiDeployment $deployment
  * @var LtiTool[] $tools
  */
 ?>
-<form class="default" action="<?= $controller->link_for('course/lti/save', $lti_data->isNew() ? '' : $lti_data->position) ?>" method="post">
+<form class="default" action="<?= $controller->link_for('course/lti/save', $deployment->isNew() ? '' : $deployment->position) ?>" method="post">
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend>
@@ -16,12 +16,12 @@
             <span class="required">
                 <?= _('Titel') ?>
             </span>
-            <input type="text" name="title" value="<?= htmlReady($lti_data->title) ?>" required>
+            <input type="text" name="title" value="<?= htmlReady($deployment->title) ?>" required>
         </label>
 
         <label>
             <?= _('Beschreibung') ?>
-            <textarea name="description" class="wysiwyg"><?= wysiwygReady($lti_data->description) ?></textarea>
+            <textarea name="description" class="wysiwyg"><?= wysiwygReady($deployment->description) ?></textarea>
         </label>
 
     </fieldset>
@@ -38,11 +38,11 @@
                         <? if ($tool->allow_custom_url): ?>
                             data-url="<?= htmlReady($tool->launch_url) ?>"
                         <? endif ?>
-                        <?= !$lti_data->hasOwnTool() && $lti_data->tool_id === $tool->id ? 'selected' : '' ?>>
+                        <?= !$deployment->hasOwnTool() && $deployment->tool_id === $tool->id ? 'selected' : '' ?>>
                         <?= htmlReady($tool->name) ?>
                     </option>
                 <? endforeach ?>
-                <option value="" <?= $lti_data->hasOwnTool() ? 'selected' : '' ?>><?= _('Eigenes LTI-Tool einrichten') ?></option>
+                <option value="" <?= $deployment->hasOwnTool() ? 'selected' : '' ?>><?= _('Eigenes LTI-Tool einrichten') ?></option>
             </select>
         </label>
     </fieldset>
@@ -52,7 +52,7 @@
             <label>
                 <?= _('Angepasste URL des LTI-Tools') ?>
                 <?= tooltipIcon(_('Sie können direkt auf eine URL im LTI-Tool verlinken.')) ?>
-                <input type="text" name="custom_url" value="<?= htmlReady($lti_data->getLaunchURL()) ?>">
+                <input type="text" name="custom_url" value="<?= htmlReady($deployment->tool->launch_url ?? '') ?>">
             </label>
         </div>
 
@@ -60,8 +60,8 @@
             <?= $this->render_partial(
                 'lti/_tool_form_fields',
                 [
-                    'tool'              => $lti_data->tool,
-                    'custom_launch_url' => $lti_data->getLaunchURL()
+                    'tool'              => $deployment->tool,
+                    'custom_launch_url' => $deployment->tool->launch_url ?? ''
                 ]
             ) ?>
         </div>
@@ -69,7 +69,7 @@
     <fieldset>
         <legend><?= _('Anzeigeeinstellungen') ?></legend>
         <label>
-            <input type="checkbox" name="document_target" value="iframe" <?= isset($lti_data->options['document_target']) && $lti_data->options['document_target'] === 'iframe' ? ' checked' : '' ?>>
+            <input type="checkbox" name="document_target" value="iframe" <?= isset($deployment->options['document_target']) && $deployment->options['document_target'] === 'iframe' ? ' checked' : '' ?>>
             <?= _('Anzeige im IFRAME auf der Seite') ?>
             <?= tooltipIcon(_('Normalerweise wird das externe Tool in einem neuen Fenster angezeigt. Aktivieren Sie diese Option, wenn die Anzeige stattdessen in einem IFRAME erfolgen soll.')) ?>
         </label>

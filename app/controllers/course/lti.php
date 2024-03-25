@@ -83,29 +83,29 @@ class Course_LtiController extends StudipController
      */
     public function iframe_action(string $position)
     {
-        $lti_data = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
+        $deployment = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
 
         $this->lti13a_mode = false;
-        $lti_version = $lti_data->getToolLtiVersion();
+        $lti_version = $deployment->getToolLtiVersion();
         if ($lti_version === '1.3a') {
             //LTI 1.3a
             $this->lti13a_mode = true;
 
             $lti_resource_link = new OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink(
-                $GLOBALS['UNI_NAME_SHORT'] . '_' . $this->course_id . '_' . $lti_data->id,
+                Config::get()->STUDIP_INSTALLATION_ID . '_' . $this->course_id . '_' . $deployment->id,
                 [
-                    'url'   => $lti_data->getLaunchURL(),
-                    'title' => $lti_data->title
+                    'url'   => $deployment->getLaunchURL(),
+                    'title' => $deployment->title
                 ]
             );
 
-            $registration = new \Studip\LTI13a\Registration($lti_data);
+            $registration = new \Studip\LTI13a\Registration($deployment);
             $builder = new \OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder();
             $this->message = $builder->buildLtiResourceLinkLaunchRequest(
                 $lti_resource_link,
                 $registration,
                 $GLOBALS['user']->id,
-                $lti_data->id,
+                $deployment->id,
                 [
                     \Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole('autor')
                 ],
@@ -115,8 +115,8 @@ class Course_LtiController extends StudipController
             );
         } else {
             //LTI 1.0/1.1
-            $lti_link = $this->getLtiLink($lti_data);
-            $this->launch_url = $lti_data->getLaunchURL();
+            $lti_link = $this->getLtiLink($deployment);
+            $this->launch_url = $deployment->getLaunchURL();
             $this->launch_data = $lti_link->getBasicLaunchData();
             $this->signature = $lti_link->getLaunchSignature($this->launch_data);
         }
@@ -182,10 +182,10 @@ class Course_LtiController extends StudipController
      */
     public function edit_action($position = '')
     {
-        $this->lti_data = new LtiDeployment();
+        $this->deployment = new LtiDeployment();
 
         if ($position !== '') {
-            $this->lti_data = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
+            $this->deployment = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
         }
 
         $this->tools = LtiTool::findAll();
@@ -200,30 +200,31 @@ class Course_LtiController extends StudipController
     {
         CSRFProtection::verifyUnsafeRequest();
 
+        $deployment = null;
         if ($position !== '') {
-            $lti_data = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
+            $deployment = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
         } else {
-            $lti_data = new LtiDeployment();
-            $lti_data->course_id = $this->course_id;
-            $lti_data->position = LtiDeployment::countBySQL('course_id = ?', [$this->course_id]);
+            $deployment = new LtiDeployment();
+            $deployment->course_id = $this->course_id;
+            $deployment->position = LtiDeployment::countBySQL('course_id = ?', [$this->course_id]);
         }
 
-        $lti_data->title = trim(Request::get('title'));
-        $lti_data->description = Studip\Markup::purifyHtml(Request::get('description'));
+        $deployment->title = trim(Request::get('title'));
+        $deployment->description = Studip\Markup::purifyHtml(Request::get('description'));
         $new_tool_id = Request::int('tool_id');
         $tool_public_key = trim(Request::get('tool_public_key'));
 
         if ($new_tool_id === 0) {
             $tool = null;
-            if (!$lti_data->isNew()) {
-                $tool = $lti_data->tool;
+            if (!$deployment->isNew()) {
+                $tool = $deployment->tool;
             }
             if (!$tool) {
                 //Create a new LTI tool:
                 $tool = new LtiTool();
                 $tool->is_global = '0'; //"Hey, this is private!" (moving hand away from body) "Mmmm!"
             }
-            $tool->name            = $lti_data->title;
+            $tool->name            = $deployment->title;
             $tool->launch_url      = trim(Request::get('launch_url'));
             $tool->oidc_init_url   = trim(Request::get('oidc_init_url'));
             $tool->jwks_url        = trim(Request::get('jwks_url'));
@@ -233,7 +234,7 @@ class Course_LtiController extends StudipController
             $tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
             $tool->lti_version     = Request::get('lti_version', '1.1');
             if ($tool->store()) {
-                $lti_data->tool_id = $tool->id;
+                $deployment->tool_id = $tool->id;
             }
             if ($tool_public_key) {
                 if (!$tool->updatePublicKey($tool_public_key)) {
@@ -244,15 +245,15 @@ class Course_LtiController extends StudipController
             }
         } else {
             //Set the (globally defined) LTI tool:
-            $lti_data->tool_id = $new_tool_id;
-            $lti_data->launch_url = trim(Request::get('launch_url'));
+            $deployment->tool_id = $new_tool_id;
+            $deployment->launch_url = trim(Request::get('launch_url'));
         }
 
-        $lti_data->options = [
+        $deployment->options = [
             'custom_parameters' => trim(Request::get('custom_parameters')),
             'document_target' => Request::option('document_target', 'window')
         ];
-        $lti_data->store();
+        $deployment->store();
 
         PageLayout::postSuccess(_('Der Abschnitt wurde gespeichert.'));
         $this->redirect('course/lti');
@@ -267,8 +268,8 @@ class Course_LtiController extends StudipController
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        $lti_data = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
-        $lti_data->delete();
+        $deployment = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
+        $deployment->delete();
 
         PageLayout::postSuccess(_('Der Abschnitt wurde gelöscht.'));
         $this->redirect('course/lti');
