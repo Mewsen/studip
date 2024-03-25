@@ -49,11 +49,12 @@ class AddLti13aTables extends Migration
             ADD COLUMN deep_linking_url VARCHAR(255) NOT NULL DEFAULT ''"
         );
 
-        $this->migrateLtiDataTable($db);
+        $this->migrateLtiDataTable();
     }
 
-    protected function migrateLtiDataTable(StudipPDO $db)
+    protected function migrateLtiDataTable()
     {
+        $db = DBManager::get();
         $db->exec("RENAME TABLE `lti_data` TO lti_deployments");
 
         //Create LTI tool instances for the old LTI 1.0/1.1 tools
