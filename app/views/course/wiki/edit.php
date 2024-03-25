@@ -25,11 +25,15 @@
         <div></div>
         <label>
             <input type="checkbox" v-model="autosave">
-            <?= _('Autosave aktiv') ?>
+            <?= _('Automatisches Speichern aktivieren.') ?>
         </label>
+        <div>
+            <?= _('Zuletzt gespeichert') .': ' ?>
+            <studip-date-time :timestamp="Math.floor(lastSaveDate / 1000)" :relative="true"></studip-date-time>
+        </div>
 
         <div data-dialog-button="">
-            <button class="button" :disabled="!isChanged" :title="isChanged ? '<?= _('Speichern Sie den aktuellen Stand.') ?>' : '<?= _('Der aktuelle Stand ist schon gespeichert.') ?>'">
+            <button class="button" :title="isChanged ? '<?= _('Den aktuellen Stand speichern.') ?>' : '<?= _('Der aktuelle Stand wurde bereits gespeichert.') ?>'">
                 <?= _('Speichern') ?>
             </button>
             <?= \Studip\LinkButton::create(_('Verlassen'), $controller->leave_editing($page))?>
