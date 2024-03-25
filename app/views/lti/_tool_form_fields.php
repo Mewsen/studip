@@ -62,7 +62,10 @@
 <label>
     <?= _('Öffentlicher Schlüssel des LTI-Tools') ?>
     <?
-    $keyring = $tool->getKeyring();
+    $keyring = null;
+    if ($tool && !$tool->isNew()) {
+        $keyring = $tool->getKeyring();
+    }
     $public_key_string = '';
     if ($keyring) {
         $keychain = $keyring->toKeyChain();
