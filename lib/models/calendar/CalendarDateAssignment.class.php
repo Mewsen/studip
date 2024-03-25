@@ -232,28 +232,34 @@ class CalendarDateAssignment extends SimpleORMap implements Event
         $sql = "JOIN `calendar_dates`
             ON calendar_date_id = `calendar_dates`.`id`
             WHERE
-            `calendar_date_assignments`.`range_id` = :range_id ";
+            `calendar_date_assignments`.`range_id` = :range_id
+            AND
+            `access` IN ( :access_levels ) ";
         if (!$with_declined) {
             $sql .= "AND `calendar_date_assignments`.`participation` <> 'DECLINED' ";
         }
-        $sql .= "AND (
-                `calendar_dates`.`begin` BETWEEN :begin AND :end
-                OR
-                (`calendar_dates`.`begin` <= :end AND `calendar_dates`.`repetition_type` <> ''
-                    AND `calendar_dates`.`repetition_end` > :begin)
-                OR
-                :begin BETWEEN `calendar_dates`.`begin` AND `calendar_dates`.`end`
-            )
-            AND
-            `access` IN ( :access_levels )
-            ORDER BY `calendar_dates`.`begin` ASC";
+        $sql_single = $sql . " AND
+                `calendar_dates`.`begin` < :end  AND :begin < `calendar_dates`.`end`
+            ";
 
-        $events = self::findBySql($sql, [
+        $events = self::findBySql($sql_single, [
             'range_id'      => $range_id,
             'begin'         => $begin->getTimestamp(),
             'end'           => $end->getTimestamp(),
             'access_levels' => $access_levels
         ]);
+
+
+        $sql_repetition = $sql . " AND `calendar_dates`.`begin` < :end AND `calendar_dates`.`repetition_type` IN ('DAYLY', 'WEEKLY', 'MONTHLY', 'YEARLY')
+                    AND `calendar_dates`.`repetition_end` > :begin
+            ";
+
+        $events = array_merge($events, self::findBySql($sql_repetition, [
+            'range_id'      => $range_id,
+            'begin'         => $begin->getTimestamp(),
+            'end'           => $end->getTimestamp(),
+            'access_levels' => $access_levels
+        ]));
 
         $m_start = clone $begin;
         $m_end = clone $end;
