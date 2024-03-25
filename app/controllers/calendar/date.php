@@ -783,7 +783,10 @@ class Calendar_DateController extends AuthenticatedController
                 $this->selected_date->setTimestamp($this->date->begin);
             }
         }
+        $this->date_is_in_multiple_calendars = count($this->date->calendars) > 1;
+
         $this->repetition_handling  = Request::get('repetition_handling', 'create_exception');
+        $this->multiple_calendar_handling = Request::get('multiple_calendar_handling', 'delete_from_mine');
         if (Request::submitted('delete')) {
             $delete_whole_date = false;
             CSRFProtection::verifyUnsafeRequest();
@@ -801,6 +804,7 @@ class Calendar_DateController extends AuthenticatedController
                         );
                         $this->response->add_header('X-Dialog-Close', '1');
                         $this->render_nothing();
+                        return;
                     } else {
                         PageLayout::postError(
                             sprintf(
@@ -809,11 +813,11 @@ class Calendar_DateController extends AuthenticatedController
                             )
                         );
                     }
-                } elseif ($this->repetition_handling === 'delete_all') {
+                } elseif ($this->repetition_handling === 'delete_all' && $this->multiple_calendar_handling === 'delete_all') {
                     $delete_whole_date = true;
                 }
             } else {
-                $delete_whole_date = true;
+                $delete_whole_date = $this->multiple_calendar_handling === 'delete_all';
             }
             if ($delete_whole_date) {
                 if ($this->date->delete()) {
@@ -830,6 +834,21 @@ class Calendar_DateController extends AuthenticatedController
                     } else {
                         PageLayout::postError(_('Der Termin konnte nicht gelöscht werden!'));
                     }
+                }
+            } elseif ($this->multiple_calendar_handling === 'delete_from_mine') {
+                $result = CalendarDateAssignment::deleteBySQL(
+                    '`calendar_date_id` = :calendar_date_id AND `range_id` = :current_user_id',
+                    [
+                        'calendar_date_id' => $this->date->id,
+                        'current_user_id'  => User::findCurrent()->id
+                    ]
+                );
+                if ($result) {
+                    PageLayout::postSuccess(_('Der Termin wurde aus Ihrem Kalender gelöscht.'));
+                    $this->response->add_header('X-Dialog-Close', '1');
+                    $this->render_nothing();
+                } else {
+                    PageLayout::postError(_('Der Termin konnte nicht aus Ihrem Kalender gelöscht werden!'));
                 }
             }
         }

@@ -7,6 +7,7 @@
             <legend><?= _('Es handelt sich um einen Termin in einer Terminserie. Was möchten Sie tun?') ?></legend>
             <label>
                 <input type="radio" name="repetition_handling" value="create_exception"
+                       data-hides="#calendar_delete_date_form_delete_question"
                     <?= $repetition_handling === 'create_exception' ? 'checked' : '' ?>>
                 <?= sprintf(
                     _('Am %s soll aus dem Einzeltermin eine Ausnahme der Terminserie werden.'),
@@ -15,11 +16,28 @@
             </label>
             <label>
                 <input type="radio" name="repetition_handling" value="delete_all"
+                       data-shows="#calendar_delete_date_form_delete_question"
                     <?= $repetition_handling === 'delete_all' ? 'checked' : '' ?>>
                 <?= _('Die gesamte Terminserie soll gelöscht werden.') ?>
             </label>
         </fieldset>
-    <? else : ?>
+    <? endif ?>
+    <? if ($date_is_in_multiple_calendars) : ?>
+        <fieldset id="calendar_delete_date_form_delete_question" <?= $date_has_repetitions ? 'style="display: none"' : '' ?>>
+            <legend><?= _('Der Termin ist in mehreren Kalendern eingetragen. Was möchten Sie tun?') ?></legend>
+            <label>
+                <input type="radio" name="multiple_calendar_handling" value="delete_from_mine"
+                       <?= $multiple_calendar_handling === 'delete_from_mine' ? 'checked' : '' ?>>
+                <?= _('Den Termin nur aus meinem Kalender löschen.') ?>
+            </label>
+            <label>
+                <input type="radio" name="multiple_calendar_handling" value="delete_all"
+                    <?= $multiple_calendar_handling === 'delete_all' ? 'checked' : '' ?>>
+                <?= _('Den Termin aus allen Kalendern löschen.') ?>
+            </label>
+        </fieldset>
+    <? endif ?>
+    <? if (!$date_has_repetitions && !$date_is_in_multiple_calendars) : ?>
         <?= MessageBox::warning(_('Soll der folgende Termin wirklich gelöscht werden?')) ?>
     <? endif ?>
     <fieldset>
