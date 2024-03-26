@@ -60,7 +60,8 @@
         "ksubileau/color-thief-php": "^2.0",
         "symfony/polyfill-php82": "^1.28",
         "symfony/polyfill-php83": "^1.28",
-        "phpoffice/phpspreadsheet": "^1.19"
+        "phpoffice/phpspreadsheet": "^1.19",
+        "psy/psysh": "^0.12.2"
     },
     "replace": {
         "symfony/polyfill-php54": "*",
