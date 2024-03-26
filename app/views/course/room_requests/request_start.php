@@ -77,9 +77,9 @@
                     </span>
                 </label>
             <? endif ?>
+<? if (empty($embedded)) : ?>
         </fieldset>
     </div>
 </section>
-<? if (empty($embedded)) : ?>
 <?= $this->render_partial('course/room_requests/_request_form_footer') ?>
 <? endif ?>

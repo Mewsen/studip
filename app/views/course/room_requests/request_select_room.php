@@ -20,8 +20,9 @@
             ['embedded' => true]
         ) ?>
     <? endif ?>
-<? endif ?>
+    </fieldset>
 </div>
+<? endif ?>
 
 <div>
 <? if ($available_rooms) : ?>
@@ -51,9 +52,9 @@
     <? else : ?>
         <?= MessageBox::info(_('Es wurden keine passenden Räume gefunden!')) ?>
     <? endif ?>
-    </div>
-</section>
+</div>
 <? if (empty($embedded)) : ?>
+</section>
     <?= $this->render_partial(
         'course/room_requests/_request_form_footer',
         [

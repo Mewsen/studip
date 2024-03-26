@@ -51,6 +51,7 @@
     </label>
 
 <? if (empty($embedded)) : ?>
+        </fieldset>
     </div>
     </section>
     <?= $this->render_partial(
