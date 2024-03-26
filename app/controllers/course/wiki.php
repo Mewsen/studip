@@ -116,7 +116,7 @@ class Course_WikiController extends AuthenticatedController
 
         $startPage = WikiPage::find($this->range->getConfiguration()->WIKI_STARTPAGE_ID);
         $this->contentbar = ContentBar::get()
-            ->setTOC(CoreWiki::getTOC($this->page->parent && $startPage ? $startPage : $this->page, $this->page['name']))
+            ->setTOC(CoreWiki::getTOC($this->page))
             ->setIcon(Icon::create('wiki'))
             ->setInfo(sprintf(
                 _('Version %1$s, geändert von %2$s <br> am %3$s'),
@@ -418,7 +418,7 @@ class Course_WikiController extends AuthenticatedController
         );
         $startPage = WikiPage::find($this->range->getConfiguration()->WIKI_STARTPAGE_ID);
         $this->contentbar = ContentBar::get()
-            ->setTOC(CoreWiki::getTOC($startPage, $page['name']))
+            ->setTOC(CoreWiki::getTOC($page))
             ->setIcon(Icon::create('wiki'))
             ->setInfo(_('Zuletzt gespeichert') .': '. '<studip-date-time :timestamp="Math.floor(lastSaveDate / 1000)" :relative="true"></studip-date-time>');
     }
@@ -609,7 +609,7 @@ class Course_WikiController extends AuthenticatedController
         Sidebar::Get()->addWidget($this->getViewsWidget($version->page, 'history'));
         $startPage = WikiPage::find($this->range->getConfiguration()->WIKI_STARTPAGE_ID);
         $this->contentbar = ContentBar::get()
-            ->setTOC(CoreWiki::getTOC($startPage, $version->page['name']))
+            ->setTOC(CoreWiki::getTOC($version->page))
             ->setIcon(Icon::create('wiki'))
             ->setInfo(sprintf(
                 _('Version %1$s vom %2$s'),

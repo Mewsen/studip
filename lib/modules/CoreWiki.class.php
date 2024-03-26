@@ -181,23 +181,22 @@ class CoreWiki extends CorePlugin implements StudipModule
      * Generates a page hierarchy for table of contents/breadcrumbs.
      * @return TOCItem
      */
-    public static function getTOC($startPage, $active_title = null): TOCItem
+    public static function getTOC($page, $first = true): TOCItem
     {
         $root = new TOCItem(
-            ($startPage && ($startPage->isNew() || $startPage->name === 'WikiWikiWeb'))
+            ($page && ($page->isNew() || $page->name === 'WikiWikiWeb'))
             ? _('Wiki-Startseite')
-            : $startPage->name
+            : $page->name
         );
-        $root->setURL(URLHelper::getURL('dispatch.php/course/wiki/page/'.$startPage->id));
-        if ($startPage->name == 'WikiWikiWeb' || $startPage->id == CourseConfig::get($startPage->range_id)->WIKI_STARTPAGE_ID) {
+        $root->setURL(URLHelper::getURL('dispatch.php/course/wiki/page/'.$page->id));
+        if ($page->name == 'WikiWikiWeb' || $page->id == CourseConfig::get($page->range_id)->WIKI_STARTPAGE_ID) {
             $root->setIcon(Icon::create('wiki'));
         }
-        $root->setActive($root->getTitle() === $active_title);
+        $root->setActive($first);
 
-        foreach ($startPage->children as $child) {
-            $item = self::getTOC($child, $active_title);
-            $item->setActive($item->getTitle() === $active_title);
-            $root->addChild($item);
+        if ($page->parent) {
+            $parent = self::getTOC($page->parent, false);
+            $root->setParent($parent);
         }
 
         return $root;
