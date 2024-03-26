@@ -19,6 +19,9 @@ class CoreParticipants extends CorePlugin implements StudipModule
         if ($user_id === 'nobody') {
             return null;
         }
+        if (CourseConfig::get()->LTI_SHARING_ENABLED) {
+            return null;
+        }
 
         $auto_insert_perm = Config::get()->AUTO_INSERT_SEM_PARTICIPANTS_VIEW_PERM;
         // show the participants-icon only if the course is not an auto-insert-sem
@@ -129,6 +132,9 @@ class CoreParticipants extends CorePlugin implements StudipModule
         if ($GLOBALS['user']->id === 'nobody') {
             return [];
         }
+        if (CourseConfig::get()->LTI_SHARING_ENABLED) {
+            return [];
+        }
 
         $navigation = new Navigation(_('Teilnehmende'));
         $navigation->setImage(Icon::create('persons', Icon::ROLE_INFO_ALT));
@@ -219,6 +225,6 @@ class CoreParticipants extends CorePlugin implements StudipModule
 
     public function isActivatableForContext(Range $context)
     {
-        return $context->getRangeType() === 'course';
+        return $context->getRangeType() === 'course' && !CourseConfig::get()->LTI_SHARING_ENABLED;
     }
 }

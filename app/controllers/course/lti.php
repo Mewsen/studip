@@ -683,6 +683,7 @@ class Course_LtiController extends StudipController
                 );
                 return;
             }
+
             $c = CourseConfig::get();
             if ($c->store('LTI_SHARING_ENABLED', '1')) {
                 PageLayout::postSuccess(
