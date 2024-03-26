@@ -45,6 +45,16 @@
                 <option value="" <?= $deployment->hasOwnTool() ? 'selected' : '' ?>><?= _('Eigenes LTI-Tool einrichten') ?></option>
             </select>
         </label>
+        <label class="custom-tool-config">
+            <input type="radio" name="config_type" value="automatic" <?= empty($config_type) || $config_type === 'automatic' ? 'selected' : '' ?>
+                   data-shows=".automatic-tool-config" data-hides=".manual-tool-config">
+            <?= _('LTI-Tool automatisch konfigurieren') ?>
+        </label>
+        <label class="custom-tool-config">
+            <input type="radio" name="config_type" value="manual" <?= $config_type === 'manual' ? 'selected' : '' ?>
+                   data-shows=".manual-tool-config" data-hides=".automatic-tool-config">
+            <?= _('LTI-Tool manuell konfigurieren') ?>
+        </label>
     </fieldset>
     <fieldset>
         <legend><?= _('Konfiguration des LTI-Tools') ?></legend>
@@ -55,8 +65,7 @@
                 <input type="text" name="custom_url" value="<?= htmlReady($deployment->tool->launch_url ?? '') ?>">
             </label>
         </div>
-
-        <div class="custom-tool-config">
+        <div class="tool-config">
             <?= $this->render_partial(
                 'lti/_tool_form_fields',
                 [
