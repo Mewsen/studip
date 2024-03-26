@@ -79,6 +79,7 @@ const mountApp = async (STUDIP, createApp, element) => {
                     'semesters',
                     'sem-classes',
                     'sem-types',
+                    'stock-images',
                     'terms-of-use'
                 ],
                 httpClient,
