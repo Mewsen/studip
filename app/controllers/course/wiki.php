@@ -736,7 +736,7 @@ class Course_WikiController extends AuthenticatedController
         $parent_id = $parent_id ?? $this->range->getConfiguration()->WIKI_STARTPAGE_ID;
         PageLayout::setTitle(_('Neue Wikiseite erstellen'));
         $options = [
-            '-' => _('Keine')
+            '' => _('Keine')
         ];
         WikiPage::findEachBySQL(
             function (WikiPage $p) use (&$options) {
