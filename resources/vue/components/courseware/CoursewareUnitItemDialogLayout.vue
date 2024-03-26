@@ -172,15 +172,17 @@ export default {
                 this.uploadImageForStructuralElement({
                     structuralElement: this.currentElement,
                     file: this.currentFile,
+                }).then(() => {
+                    this.loadStructuralElement(this.currentElement.id)
                 }).catch((error) => {
                     console.error(error);
                     this.companionWarning({
                         info: this.$gettext('Beim Hochladen der Bilddatei ist ein Fehler aufgetretten.')
                     });
                 });
-                await this.loadStructuralElement(this.currentElement.id);
             } else if (this.deletingPreviewImage) {
                 await this.deleteImageForStructuralElement(this.currentElement);
+                this.currentElement.relationships.image = { data: null };
             }
 
             await this.updateStructuralElement({
