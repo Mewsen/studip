@@ -348,6 +348,7 @@ class WikiController extends AuthenticatedController
                 $new_page->body     = $selected_page->body;
                 $new_page->chdate   = $selected_page->chdate;
                 $new_page->version  = $latest_version ? $latest_version->version + 1 : 1;
+                $new_page->ancestor = $selected_page->ancestor;
 
                 if (!$new_page->store()) {
                     $errors[] = sprintf(
