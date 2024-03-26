@@ -1062,6 +1062,7 @@ class Course_WikiController extends AuthenticatedController
             }
 
             $errors = [];
+            $new_ids = [];
             foreach ($selected_wiki_pages as $selected_page) {
                 if ($selected_page->isReadable()) {
                     $count = WikiPage::countBySql(
@@ -1074,6 +1075,7 @@ class Course_WikiController extends AuthenticatedController
                     if ($count === 0) {
                         $new_page = WikiPage::build([
                             'range_id' => $this->range->id,
+                            'parent_id'=> null,
                             'user_id'  => $selected_page->user_id,
                             'name'     => $selected_page->name,
                             'content'  => $selected_page->content,
@@ -1085,8 +1087,15 @@ class Course_WikiController extends AuthenticatedController
                                 htmlReady($new_page->name)
                             );
                         }
+                        $new_ids[$selected_page->id] = $new_page->id;
                     }
                 }
+            }
+            foreach ($new_ids as $old_page_id => $new_page_id) {
+                $old_page = WikiPage::find($old_page_id);
+                $new_page = WikiPage::find($new_page_id);
+                $new_page->parent_id = $new_ids[$old_page->parent_id] ?? null;
+                $new_page->store();
             }
             if ($errors) {
                 PageLayout::postError(
