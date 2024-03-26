@@ -22,11 +22,11 @@ export default {
         },
         width: {
             type: Number,
-            default: 270,
+            default: 1080,
         },
         height: {
             type: Number,
-            default: 180,
+            default: 720,
         },
         shapesMin: {
             type: Number,
@@ -63,8 +63,8 @@ export default {
 
             const curveStart = this.randint(10, 70)/100 * this.height;
             const curveEnd = this.randint(10, 70)/100 * this.height;
-            ctx.strokeStyle = `rgba(255, 255, 255, ${this.randint(30, 40) / 100})`;
-            const curvedistance = this.randint(10, 20);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${this.randint(50, 70) / 100})`;
+            const curvedistance = this.randint(20, 40);
             const xFactor = this.randint(10, 45) / 100;
             const yFactor = this.randint(10, 45) / 100;
             for (let c = 0; c < numShape * 2; c++) {
