@@ -341,7 +341,7 @@ class Calendar_CalendarController extends AuthenticatedController
                 'minTime'     => sprintf('%02u:00', $calendar_settings['start'] ?? 8),
                 'maxTime'     => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
                 'defaultDate' => $default_date->format('Y-m-d'),
-                'allDaySlot'  => !$group_view,
+                'allDaySlot'  => true,
                 'allDayText'  => '',
                 'header'      => [
                     'left'   => (
