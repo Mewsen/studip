@@ -1128,10 +1128,8 @@ a:hover.tree {
 
 /* Suchfelder und -ergebnisse */
 
-::placeholder,
-:-ms-input-placeholder, /* Internet Explorer 10-11 */
-::-ms-input-placeholder { /* Microsoft Edge */
-    color: $black;
+::placeholder {
+    color: $darkergray;
 }
 
 #globalsearch-searchbar #globalsearch-list section header {
@@ -1600,4 +1598,3 @@ form.default {
         border: 1px solid $black;
     }
 }
-
