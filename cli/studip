@@ -60,6 +60,7 @@ $commands = [
     Commands\Resources\UpdateBookingIntervals::class,
     Commands\SORM\DescribeModels::class,
     Commands\Twillo\PrivateKeys::class,
+    Commands\User\ChangePassword::class,
     Commands\User\GetUser::class,
     Commands\User\UsersDelete::class,
 ];
