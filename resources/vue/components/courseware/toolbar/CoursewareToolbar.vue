@@ -1,11 +1,11 @@
 <template>
     <div class="cw-toolbar-wrapper">
         <div id="cw-toolbar" class="cw-toolbar" :style="toolbarStyle">
-            <div v-if="showTools" class="cw-toolbar-tools" :class="{ unfold: unfold, hd: isHd, wqhd: isWqhd}">
+            <div v-if="showTools" class="cw-toolbar-tools" :class="{ unfold: unfold, hd: isHd, wqhd: isWqhd }">
                 <div class="cw-toolbar-button-wrapper">
                     <button
                         class="cw-toolbar-button"
-                        :class="{active: activeTool === 'blockAdder'}"
+                        :class="{ active: activeTool === 'blockAdder' }"
                         :title="$gettext('Blöcke hinzufügen')"
                         @click="activateTool('blockAdder')"
                     >
@@ -13,7 +13,7 @@
                     </button>
                     <button
                         class="cw-toolbar-button"
-                        :class="{active: activeTool === 'containerAdder'}"
+                        :class="{ active: activeTool === 'containerAdder' }"
                         :title="$gettext('Abschnitte hinzufügen')"
                         @click="activateTool('containerAdder')"
                     >
@@ -21,28 +21,44 @@
                     </button>
                     <button
                         class="cw-toolbar-button"
-                        :class="{active: activeTool === 'clipboard'}"
+                        :class="{ active: activeTool === 'clipboard' }"
                         :title="$gettext('Block Merkliste')"
                         @click="activateTool('clipboard')"
                     >
                         {{ $gettext('Merkliste') }}
                     </button>
                     <button
-                        class="cw-toolbar-button cw-toolbar-button-toggle cw-toolbar-button-toggle-out"
+                        class="cw-toolbar-button cw-toolbar-button-toggle"
                         :title="$gettext('Werkzeugleiste einklappen')"
                         @click="toggleToolbarActive"
-                    ></button>
+                    >
+                        <studip-icon shape="arr_2right" :size="24" />
+                    </button>
                 </div>
                 <courseware-toolbar-blocks v-if="activeTool === 'blockAdder'" />
                 <courseware-toolbar-containers v-if="activeTool === 'containerAdder'" />
                 <courseware-toolbar-clipboard v-if="activeTool === 'clipboard'" />
             </div>
-            <button
-                v-else
-                class="cw-toolbar-button cw-toolbar-button-toggle cw-toolbar-button-toggle-in"
-                :title="$gettext('Werkzeugleiste ausklappen')"
-                @click="toggleToolbarActive"
-            ></button>
+            <div v-else class="cw-toolbar-folded-wrapper">
+                <button
+                    class="cw-toolbar-button"
+                    :title="$gettext('Werkzeugleiste ausklappen')"
+                    @click="toggleToolbarActive"
+                >
+                    <studip-icon shape="arr_2left" :size="24" />
+                </button>
+                <button
+                    class="cw-toolbar-button"
+                    :title="
+                        hideEditLayout
+                            ? $gettext('Bearbeitungselemente anzeigen')
+                            : $gettext('Bearbeitungselemente ausblenden')
+                    "
+                    @click="toggleHideEditLayout"
+                >
+                    <studip-icon :shape="hideEditLayout ? 'visibility-checked' : 'visibility-invisible'" :size="24" />
+                </button>
+            </div>
             <div class="cw-toolbar-spacer-right"></div>
         </div>
     </div>
@@ -61,7 +77,7 @@ export default {
     components: {
         CoursewareToolbarBlocks,
         CoursewareToolbarContainers,
-        CoursewareToolbarClipboard
+        CoursewareToolbarClipboard,
     },
     data() {
         return {
@@ -71,7 +87,7 @@ export default {
             activeTool: 'blockAdder',
 
             windowWidth: window.outerWidth,
-            windowInnerHeight: window.innerHeight
+            windowInnerHeight: window.innerHeight,
         };
     },
     computed: {
@@ -79,10 +95,15 @@ export default {
             relatedContainers: 'courseware-containers/related',
             structuralElementById: 'courseware-structural-elements/byId',
             toolbarActive: 'toolbarActive',
+            hideEditLayout: 'hideEditLayout',
         }),
         toolbarStyle() {
             const scrollTopStyles = window.getComputedStyle(document.getElementById('scroll-to-top'));
-            const scrollTopHeight = parseInt(scrollTopStyles['height'], 10) + parseInt(scrollTopStyles['padding-top'], 10) + parseInt(scrollTopStyles['padding-bottom'], 10) + parseInt(scrollTopStyles['margin-bottom'], 10);
+            const scrollTopHeight =
+                parseInt(scrollTopStyles['height'], 10) +
+                parseInt(scrollTopStyles['padding-top'], 10) +
+                parseInt(scrollTopStyles['padding-bottom'], 10) +
+                parseInt(scrollTopStyles['margin-bottom'], 10);
             let height = parseInt(
                 Math.min(this.windowInnerHeight * 0.9, this.windowInnerHeight - this.toolbarTop - scrollTopHeight)
             );
@@ -95,8 +116,8 @@ export default {
         },
         containers() {
             return this.relatedContainers({
-                parent: this.structuralElementById({id: this.$route.params.id}), 
-                relationship: 'containers'    
+                parent: this.structuralElementById({ id: this.$route.params.id }),
+                relationship: 'containers',
             });
         },
         toolbarHeader() {
@@ -120,6 +141,7 @@ export default {
     methods: {
         ...mapActions({
             toggleToolbarActive: 'toggleToolbarActive',
+            toggleHideEditLayout: 'toggleHideEditLayout',
         }),
         activateTool(tool) {
             this.activeTool = tool;
@@ -135,18 +157,17 @@ export default {
             const ribbon = document.getElementById('cw-ribbon') ?? document.getElementById('contentbar');
             if (ribbon) {
                 const contentbarRect = ribbon.getBoundingClientRect();
-                if (ribbon.classList.contains("cw-ribbon-sticky")) {
+                if (ribbon.classList.contains('cw-ribbon-sticky')) {
                     this.toolbarTop = contentbarRect.bottom + 16;
                 } else {
                     this.toolbarTop = contentbarRect.bottom + 15;
                 }
             }
-            
         },
         onResize() {
             this.windowWidth = window.outerWidth;
             this.windowInnerHeight = window.innerHeight;
-        }
+        },
     },
     mounted() {
         this.updateToolbarTop();
@@ -156,9 +177,9 @@ export default {
         });
         this.resetAdderStorage();
     },
-    beforeDestroy() { 
+    beforeDestroy() {
         window.removeEventListener('scroll', this.updateToolbarTop);
-        window.removeEventListener('resize', this.onResize); 
+        window.removeEventListener('resize', this.onResize);
     },
 
     watch: {

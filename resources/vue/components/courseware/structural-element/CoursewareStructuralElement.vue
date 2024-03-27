@@ -143,7 +143,7 @@
                             <courseware-root-content v-if="showRootLayout" :structuralElement="currentElement" :canEdit="canEdit" />
 
                             <div
-                                v-if="canVisit && (!canEdit || !toolbarActive ) && !isLink && !hideRootContent"
+                                v-if="canVisit && (!canEdit || hideEditLayout ) && !isLink && !hideRootContent"
                                 class="cw-container-wrapper"
                                 :class="{
                                     'cw-container-wrapper-consume': consumeMode,
@@ -154,7 +154,7 @@
                                     :key="container.id"
                                     :is="containerComponent(container)"
                                     :container="container"
-                                    :canEdit="canEdit && toolbarActive"
+                                    :canEdit="canEdit && !hideEditLayout"
                                     :canAddElements="canAddElements"
                                     :isTeacher="userIsTeacher"
                                     class="cw-container-item"
@@ -185,7 +185,7 @@
                                     class="cw-container-item"
                                 />
                             </div>
-                            <div v-if="canVisit && canEdit && toolbarActive && !isLink && !hideRootContent" class="cw-container-wrapper cw-container-wrapper-edit">
+                            <div v-if="canVisit && canEdit && !hideEditLayout && !isLink && !hideRootContent" class="cw-container-wrapper cw-container-wrapper-edit">
                                 <template v-if="!processing">
                                     <span aria-live="assertive" class="assistive-text">{{ assistiveLive }}</span>
                                     <span id="operation" class="assistive-text">
@@ -841,7 +841,7 @@ export default {
             childrenById: 'courseware-structure/children',
 
             rootLayout: 'rootLayout',
-            toolbarActive: 'toolbarActive',
+            hideEditLayout: 'hideEditLayout',
             isFeedbackActivated: 'isFeedbackActivated',
             canCreateFeedbackElement: 'canCreateFeedbackElement',
             getFeedbackElementById: 'feedback-elements/byId',

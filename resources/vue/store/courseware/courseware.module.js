@@ -67,6 +67,7 @@ const getDefaultState = () => {
         progresses: null,
 
         toolbarActive: true,
+        hideEditLayout: false,
         feedbackSettings: null,
         processing: false,
     };
@@ -301,6 +302,9 @@ const getters = {
 
     toolbarActive(state) {
         return state.toolbarActive;
+    },
+    hideEditLayout(state) {
+        return state.hideEditLayout;
     },
     feedbackSettings(state) {
         return state.feedbackSettings;
@@ -1544,7 +1548,13 @@ export const actions = {
     },
 
     toggleToolbarActive({ commit, rootGetters }) {
+        if (!rootGetters['toolbarActive']) {
+            commit('setHideEditLayout', false);
+        }
         commit('setToolbarActive', !rootGetters['toolbarActive']);
+    },
+    toggleHideEditLayout({ commit, rootGetters}) {
+        commit('setHideEditLayout', !rootGetters['hideEditLayout']);
     },
     setFeedbackSettings(context, feedbackSettings) {
         context.commit('setFeedbackSettings', feedbackSettings);
@@ -1753,6 +1763,9 @@ export const mutations = {
     },
     setToolbarActive(state, active) {
         state.toolbarActive = active;
+    },
+    setHideEditLayout(state, hide) {
+        state.hideEditLayout = hide;
     },
     setFeedbackSettings(state, feedbackSettings) {
         state.feedbackSettings = feedbackSettings;
