@@ -55,49 +55,46 @@ class Admin_LtiController extends AuthenticatedController
      */
     public function edit_action($id = null)
     {
-        $this->tool     = new LtiTool($id);
+        $this->tool     = new LtiTool($id ?: null);
         $this->platform = \Studip\LTI13a\PlatformManager::getPlatformConfiguration();
-    }
 
-    /**
-     * Save changes for an LTI tool.
-     *
-     * @param   int $id tool id
-     */
-    public function save_action($id)
-    {
-        CSRFProtection::verifyUnsafeRequest();
+        if (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
+            $this->tool->name = trim(Request::get('name'));
+            $this->tool->launch_url = trim(Request::get('launch_url'));
+            $this->tool->oidc_init_url   = trim(Request::get('oidc_init_url'));
+            $this->tool->jwks_url        = trim(Request::get('jwks_url'));
+            $this->tool->consumer_key = trim(Request::get('consumer_key'));
+            $this->tool->consumer_secret = trim(Request::get('consumer_secret'));
+            $this->tool->custom_parameters = trim(Request::get('custom_parameters'));
+            $this->tool->allow_custom_url = Request::int('allow_custom_url', 0);
+            $this->tool->deep_linking = Request::int('deep_linking', 0);
+            $this->tool->send_lis_person = Request::int('send_lis_person', 0);
+            $this->tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
+            $this->tool->lti_version = trim(Request::get('lti_version', '1.3a'));
+            $errors = $this->tool->validate();
+            if ($errors) {
+                PageLayout::postError(
+                    _('Die folgenden Daten zum LTI-Tool sind fehlerhaft:'),
+                    $errors
+                );
+                return;
+            }
 
-        $tool = new LtiTool($id ?: null);
-        $tool->name = trim(Request::get('name'));
-        $tool->launch_url = trim(Request::get('launch_url'));
-        $tool->oidc_init_url   = trim(Request::get('oidc_init_url'));
-        $tool->jwks_url        = trim(Request::get('jwks_url'));
-        $tool->consumer_key = trim(Request::get('consumer_key'));
-        $tool->consumer_secret = trim(Request::get('consumer_secret'));
-        $tool->custom_parameters = trim(Request::get('custom_parameters'));
-        $tool->allow_custom_url = Request::int('allow_custom_url', 0);
-        $tool->deep_linking = Request::int('deep_linking', 0);
-        $tool->send_lis_person = Request::int('send_lis_person', 0);
-        $tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
-        $tool->lti_version = Request::get('lti_version', '1.3a');
-        $errors = $tool->validate();
-        if ($errors) {
-            PageLayout::postError(
-                _('Die folgenden Daten zum LTI-Tool sind fehlerhaft:'),
-                $errors
-            );
-            return;
+            if ($this->tool->store()) {
+                PageLayout::postSuccess(sprintf(
+                    _('Einstellungen für "%s" wurden gespeichert.'),
+                    htmlReady($this->tool->name)
+                ));
+            }
+
+            if (Request::isDialog()) {
+                $this->response->add_header('X-Dialog-Close', '1');
+                $this->render_nothing();
+            } else {
+                $this->redirect('admin/lti');
+            }
         }
-
-        if ($tool->store()) {
-            PageLayout::postSuccess(sprintf(
-                _('Einstellungen für "%s" wurden gespeichert.'),
-                htmlReady($tool->name)
-            ));
-        }
-
-        $this->redirect('admin/lti');
     }
 
     /**

@@ -2,9 +2,11 @@
 /**
  * @var Admin_LtiController $controller
  * @var LtiTool $tool
+ * @var \OAT\Library\Lti1p3Core\Platform\Platform $platform
  */
 ?>
-<form class="default" action="<?= $controller->link_for('admin/lti/save/' . $tool->id) ?>" method="post">
+<form class="default" action="<?= $controller->link_for('admin/lti/edit/' . $tool->id) ?>"
+      method="post" data-dialog="reload-on-close">
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend>
