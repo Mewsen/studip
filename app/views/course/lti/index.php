@@ -31,16 +31,16 @@
                             ]) ?>
                         <? endif ?>
 
-                        <?= Icon::create('edit')->asInput([
-                            'formaction' => $controller->url_for('course/lti/edit/' . $lti_data->position),
-                            'title' => _('Abschnitt bearbeiten'),
-                            'data-dialog' => ''
-                        ]) ?>
-                        <?= Icon::create('trash')->asInput([
-                            'formaction' => $controller->url_for('course/lti/delete/' . $lti_data->position),
-                            'title' => _('Abschnitt löschen'),
-                            'data-confirm' => sprintf(_('Wollen Sie wirklich den Abschnitt "%s" löschen?'), $lti_data->title)
-                        ]) ?>
+                        <a href="<?= $controller->link_for('course/lti/edit/' . $lti_data->position) ?>"
+                           title="<?= _('Abschnitt bearbeiten') ?>"
+                           data-dialog>
+                            <?= Icon::create('edit') ?>
+                        </a>
+                        <a href="<?= $controller->link_for('course/lti/delete/' . $lti_data->position) ?>"
+                           title="<?= _('Abschnitt löschen') ?>"
+                           data-confirm="<?= htmlReady(sprintf(_('Wollen Sie wirklich den Abschnitt "%s" löschen?'), $lti_data->title)) ?>">
+                            <?= Icon::create('trash') ?>
+                        </a>
                     </form>
                 </nav>
             <? endif ?>

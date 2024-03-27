@@ -183,89 +183,84 @@ class Course_LtiController extends StudipController
     public function edit_action($position = '')
     {
         $this->deployment = new LtiDeployment();
+        $this->tool = null;
 
         if ($position !== '') {
             $this->deployment = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
         }
 
         $this->tools = LtiTool::findAll();
-    }
 
-    /**
-     * Save an LTI content block.
-     *
-     * @param   int $position   block position (blank: create a new block)
-     */
-    public function save_action($position)
-    {
-        CSRFProtection::verifyUnsafeRequest();
+        if (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
 
-        $deployment = null;
-        if ($position !== '') {
-            $deployment = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
-        } else {
-            $deployment = new LtiDeployment();
-            $deployment->course_id = $this->course_id;
-            $deployment->position = LtiDeployment::countBySQL('course_id = ?', [$this->course_id]);
-        }
-
-        $deployment->title = trim(Request::get('title'));
-        $deployment->description = Studip\Markup::purifyHtml(Request::get('description'));
-        $new_tool_id = Request::int('tool_id');
-        $tool_public_key = trim(Request::get('tool_public_key'));
-
-        if ($new_tool_id === 0) {
-            $tool = null;
-            if (!$deployment->isNew()) {
-                $tool = $deployment->tool;
+            if ($this->deployment->isNew()) {
+                $this->deployment->course_id = $this->course_id;
+                $this->deployment->position = LtiDeployment::countBySQL('`course_id` = ?', [$this->course_id]);
             }
-            if (!$tool) {
-                //Create a new LTI tool:
-                $tool = new LtiTool();
-                $tool->is_global = '0'; //"Hey, this is private!" (moving hand away from body) "Mmmm!"
-            }
-            $tool->name            = $deployment->title;
-            $tool->launch_url      = trim(Request::get('launch_url'));
-            $tool->oidc_init_url   = trim(Request::get('oidc_init_url'));
-            $tool->jwks_url        = trim(Request::get('jwks_url'));
-            $tool->consumer_key    = trim(Request::get('consumer_key'));
-            $tool->consumer_secret = trim(Request::get('consumer_secret'));
-            $tool->send_lis_person = Request::int('send_lis_person', 0);
-            $tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
-            $tool->lti_version     = Request::get('lti_version', '1.3a');
-            $errors = $tool->validate();
-            if ($errors) {
-                PageLayout::postError(
-                    _('Die folgenden Daten zum LTI-Tool sind fehlerhaft:'),
-                    $errors
-                );
-                return;
-            }
+            $this->deployment->title = trim(Request::get('title'));
+            $this->deployment->description = Studip\Markup::purifyHtml(Request::get('description'));
+            $new_tool_id = Request::int('tool_id');
+            $tool_public_key = trim(Request::get('tool_public_key'));
 
-            if ($tool->store()) {
-                $deployment->tool_id = $tool->id;
-            }
-            if ($tool_public_key) {
-                if (!$tool->updatePublicKey($tool_public_key)) {
+            if ($new_tool_id === 0) {
+                if (!$this->deployment->isNew()) {
+                    $this->tool = $this->deployment->tool;
+                }
+                if (!$this->tool) {
+                    //Create a new LTI tool:
+                    $this->tool = new LtiTool();
+                    $this->tool->is_global = '0'; //"Hey, this is private!" (moving hand away from body) "Mmmm!"
+                }
+                $this->tool->name            = $this->deployment->title;
+                $this->tool->launch_url      = trim(Request::get('launch_url'));
+                $this->tool->oidc_init_url   = trim(Request::get('oidc_init_url'));
+                $this->tool->jwks_url        = trim(Request::get('jwks_url'));
+                $this->tool->consumer_key    = trim(Request::get('consumer_key'));
+                $this->tool->consumer_secret = trim(Request::get('consumer_secret'));
+                $this->tool->send_lis_person = Request::int('send_lis_person', 0);
+                $this->tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
+                $this->tool->lti_version     = Request::get('lti_version', '1.3a');
+                $errors = $this->tool->validate();
+                if ($errors) {
                     PageLayout::postError(
-                        _('Der öffentliche Schlüssel des LTI-Tools konnte nicht gespeichert werden.')
+                        _('Die folgenden Daten zum LTI-Tool sind fehlerhaft:'),
+                        $errors
                     );
+                    return;
+                }
+
+                if ($this->tool->store()) {
+                    $this->deployment->tool_id = $this->tool->id;
+                }
+                if ($tool_public_key) {
+                    if (!$this->tool->updatePublicKey($tool_public_key)) {
+                        PageLayout::postError(
+                            _('Der öffentliche Schlüssel des LTI-Tools konnte nicht gespeichert werden.')
+                        );
+                    }
+                }
+            } else {
+                //Set the (globally defined) LTI tool:
+                $this->deployment->tool_id = $new_tool_id;
+                $this->deployment->launch_url = trim(Request::get('launch_url'));
+            }
+
+            $this->deployment->options = [
+                'custom_parameters' => trim(Request::get('custom_parameters')),
+                'document_target' => Request::option('document_target', 'window')
+            ];
+
+            if ($this->deployment->store()) {
+                PageLayout::postSuccess(_('Der Abschnitt wurde gespeichert.'));
+                if (Request::isDialog()) {
+                    $this->response->add_header('X-Dialog-Close', '1');
+                    $this->render_nothing();
+                } else {
+                    $this->redirect('course/lti');
                 }
             }
-        } else {
-            //Set the (globally defined) LTI tool:
-            $deployment->tool_id = $new_tool_id;
-            $deployment->launch_url = trim(Request::get('launch_url'));
         }
-
-        $deployment->options = [
-            'custom_parameters' => trim(Request::get('custom_parameters')),
-            'document_target' => Request::option('document_target', 'window')
-        ];
-        $deployment->store();
-
-        PageLayout::postSuccess(_('Der Abschnitt wurde gespeichert.'));
-        $this->redirect('course/lti');
     }
 
     /**
