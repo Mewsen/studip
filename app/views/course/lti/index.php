@@ -36,9 +36,12 @@
                            data-dialog>
                             <?= Icon::create('edit') ?>
                         </a>
-                        <a href="<?= $controller->link_for('course/lti/delete/' . $lti_data->position) ?>"
-                           title="<?= _('Abschnitt löschen') ?>"
-                           data-confirm="<?= htmlReady(sprintf(_('Wollen Sie wirklich den Abschnitt "%s" löschen?'), $lti_data->title)) ?>">
+                        <a href="<?= htmlReady(sprintf(
+                                'javascript:void(STUDIP.Dialog.confirmAsPost(\'%1$s\', \'%2$s\'))',
+                                sprintf(_('Wollen Sie wirklich den Abschnitt "%s" löschen?'), $lti_data->title),
+                                $controller->url_for('course/lti/delete/' . $lti_data->position)
+                        )) ?>"
+                           title="<?= _('Abschnitt löschen') ?>">
                             <?= Icon::create('trash') ?>
                         </a>
                     </form>
