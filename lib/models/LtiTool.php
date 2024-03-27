@@ -46,6 +46,33 @@ class LtiTool extends SimpleORMap
     }
 
     /**
+     * Validates the data in the LtiTool instance.
+     *
+     * @return string[] An array with errors. The array is empty if all
+     *     fields are filled with valid data.
+     */
+    public function validate() : array
+    {
+        $errors = [];
+        if (!$this->name) {
+            $errors[] = _('Es wurde kein Name angegeben.');
+        }
+        if (!$this->launch_url) {
+            $errors[] = _('Es wurde keine Launch-URL angegeben.');
+        }
+        if (!$this->consumer_key) {
+            $errors[] = _('Es wurde kein Consumer-Key angegeben.');
+        }
+        if (!$this->consumer_secret) {
+            $errors[] = _('Es wurde kein Consumer-Secret angegeben.');
+        }
+        if (!in_array($this->lti_version, ['1.1', '1.3a'])) {
+            $errors[] = _('Die ausgewählte LTI-Version ist ungültig.');
+        }
+        return $errors;
+    }
+
+    /**
      * Retrieves all LTI tools.
      *
      * @param bool $with_private_tools Whether to include all private tools (true)

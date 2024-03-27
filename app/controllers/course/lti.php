@@ -232,7 +232,16 @@ class Course_LtiController extends StudipController
             $tool->consumer_secret = trim(Request::get('consumer_secret'));
             $tool->send_lis_person = Request::int('send_lis_person', 0);
             $tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
-            $tool->lti_version     = Request::get('lti_version', '1.1');
+            $tool->lti_version     = Request::get('lti_version', '1.3a');
+            $errors = $tool->validate();
+            if ($errors) {
+                PageLayout::postError(
+                    _('Die folgenden Daten zum LTI-Tool sind fehlerhaft:'),
+                    $errors
+                );
+                return;
+            }
+
             if ($tool->store()) {
                 $deployment->tool_id = $tool->id;
             }

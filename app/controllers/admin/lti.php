@@ -71,6 +71,8 @@ class Admin_LtiController extends AuthenticatedController
         $tool = new LtiTool($id ?: null);
         $tool->name = trim(Request::get('name'));
         $tool->launch_url = trim(Request::get('launch_url'));
+        $tool->oidc_init_url   = trim(Request::get('oidc_init_url'));
+        $tool->jwks_url        = trim(Request::get('jwks_url'));
         $tool->consumer_key = trim(Request::get('consumer_key'));
         $tool->consumer_secret = trim(Request::get('consumer_secret'));
         $tool->custom_parameters = trim(Request::get('custom_parameters'));
@@ -78,9 +80,13 @@ class Admin_LtiController extends AuthenticatedController
         $tool->deep_linking = Request::int('deep_linking', 0);
         $tool->send_lis_person = Request::int('send_lis_person', 0);
         $tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
-        $tool->lti_version = Request::get('lti_version');
-        if (!in_array($tool->lti_version, ['1.1', '1.3a'])) {
-            PageLayout::postError(_('Die ausgewählte LTI-Version ist ungültig.'));
+        $tool->lti_version = Request::get('lti_version', '1.3a');
+        $errors = $tool->validate();
+        if ($errors) {
+            PageLayout::postError(
+                _('Die folgenden Daten zum LTI-Tool sind fehlerhaft:'),
+                $errors
+            );
             return;
         }
 
