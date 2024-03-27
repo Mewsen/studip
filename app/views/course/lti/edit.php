@@ -46,12 +46,12 @@
             </select>
         </label>
         <label class="custom-tool-config">
-            <input type="radio" name="config_type" value="automatic" <?= empty($config_type) || $config_type === 'automatic' ? 'selected' : '' ?>
+            <input type="radio" name="config_type" value="automatic" <?= empty($config_type) || $config_type === 'automatic' ? 'checked' : '' ?>
                    data-shows=".automatic-tool-config" data-hides=".manual-tool-config">
             <?= _('LTI-Tool automatisch konfigurieren') ?>
         </label>
         <label class="custom-tool-config">
-            <input type="radio" name="config_type" value="manual" <?= $config_type === 'manual' ? 'selected' : '' ?>
+            <input type="radio" name="config_type" value="manual" <?= !empty($config_type) && $config_type === 'manual' ? 'checked' : '' ?>
                    data-shows=".manual-tool-config" data-hides=".automatic-tool-config">
             <?= _('LTI-Tool manuell konfigurieren') ?>
         </label>
