@@ -27,6 +27,9 @@
 
     <?
     $keyring = \Studip\LTI13a\PlatformManager::getPlatformKeyring();
+    if (!$keyring) {
+        $keyring = \Studip\LTI13a\PlatformManager::generatePlatformKeyring();
+    }
     ?>
     <? if ($keyring) : ?>
         <dt><?= _('Öffentlicher Schlüssel') ?></dt>
