@@ -148,7 +148,7 @@ class QuestionnaireController extends AuthenticatedController
             : null;
 
         $this->questionnaire['user_id'] = User::findCurrent()->id;
-        $questions_data = Request::getArray('questions_data');
+        $questions_data = json_decode(Request::get('questions_data'), true);
         $questions = [];
         foreach ($questions_data as $index => $question_data) {
             $class = $question_data['questiontype'];
