@@ -86,7 +86,7 @@ const Questionnaire = {
                             }
                             $.post(STUDIP.URLHelper.getURL('dispatch.php/questionnaire/store/' + (this.data.id || '')), {
                                 questionnaire: data,
-                                questions_data: questions,
+                                questions_data: JSON.stringify(questions),
                                 range_type: this.range_type,
                                 range_id: this.range_id
                             }).done(() => {
