@@ -93,7 +93,7 @@ class Keyring extends SimpleORMap
 
         return new \OAT\Library\Lti1p3Core\Security\Key\KeyChain(
             $this->id,
-            'studip-key', //TODO: better name
+            $this->range_id,
             $public_key,
             $private_key
         );
