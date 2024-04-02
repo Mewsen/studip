@@ -1,6 +1,6 @@
 <template>
     <MountingPortal mountTo="body" append>
-        <focus-trap v-model="trap" :initial-focus="() => defaultFocus ? $refs.buttonB : null">
+        <focus-trap v-model="trap">
             <div class="studip-dialog" @keydown.esc="closeDialog">
                 <transition name="dialog-fade">
                     <div class="studip-dialog-backdrop">
@@ -266,5 +266,13 @@ export default {
             return typeof value !== "number" ? 0 : value;
         }
     },
+    mounted() {
+        if (this.defaultFocus) {
+            this.$nextTick()
+                .then(() => {
+                    this.$refs.buttonB.focus();
+                });
+        }
+    }
 };
 </script>
