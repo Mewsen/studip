@@ -232,7 +232,9 @@ class MyRealmModel
         $current_sem = null;
         foreach ($sem_data as $sem_key => $one_sem) {
             $current_sem = $sem_key;
-            if (!$one_sem['past']) break;
+            if (!$one_sem['past']) {
+                break;
+            }
         }
 
         if (isset($sem_data[$current_sem + 1])) {
