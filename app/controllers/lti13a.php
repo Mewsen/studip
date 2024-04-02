@@ -30,6 +30,23 @@ class Lti13aController extends AuthenticatedController
 
     }
 
+    /**
+     * Handles JSON web key set (JWKS) requests for the platform key.
+     *
+     * @return void
+     */
+    public function jwks_action()
+    {
+        $handler = new \OAT\Library\Lti1p3Core\Security\Jwks\Server\JwksRequestHandler(
+            new \OAT\Library\Lti1p3Core\Security\Jwks\Exporter\JwksExporter(
+                new Studip\LTI13a\KeyManager()
+            )
+        );
+
+        $response = $handler->handle('lti13a_platform');
+        $this->renderPsrResponse($response);
+    }
+
     public function oauth2_token_action()
     {
         die('not yet implemented');

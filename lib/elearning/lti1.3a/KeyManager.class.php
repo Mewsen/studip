@@ -2,28 +2,30 @@
 
 namespace Studip\LTI13a;
 
-use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
-use OAT\Library\Lti1p3Core\Security\Key\KeyChainFactoryInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
-use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 
-class KeyManager implements KeyChainFactoryInterface
+class KeyManager implements KeyChainRepositoryInterface
 {
-    public function create(string $identifier, string $keySetName, $publicKey, $privateKey = null, ?string $privateKeyPassPhrase = null, string $algorithm = KeyInterface::ALG_RS256): KeyChainInterface
+
+    #[\Override] public function find(string $identifier): ?KeyChainInterface
     {
-        $keyring = null;
-        if (!$publicKey && !$privateKey) {
-            try {
-                $keyring = \Keyring::generate($identifier, 'global', $privateKeyPassPhrase, $algorithm);
-            } catch (\StudipException $e) {
-                //TODO
-            }
-        } else {
-            $keyring = \Keyring::findOneBySQL('range_id = :id', ['id' => $identifier]);
-            if ($keyring) {
-                return $keyring->toKeyChain();
-            }
+        $keyring = \Keyring::findOneByRange_id($identifier);
+        if ($keyring) {
+            return $keyring->toKeyChain();
         }
-        throw new \StudipException('Unable to create a keyring.');
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[\Override] public function findByKeySetName(string $keySetName): array
+    {
+        $keyring = \Keyring::findOneByRange_id($keySetName);
+        if ($keyring) {
+            return [$keyring->toKeyChain()];
+        }
+        return [];
     }
 }
