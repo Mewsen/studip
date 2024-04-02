@@ -131,26 +131,16 @@ class MyCoursesController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        $this->with_modules = Request::bool('modules');
-
-        $this->sem_data = Semester::getAllAsArray();
-
-        $this->group_field = 'sem_number';
-
-        // Needed parameters for selecting courses
-        $params = [
-            'group_field'         => $this->group_field,
+        $template = $this->get_template_factory()->open('my_courses/courseexport');
+        $template->sem_courses = MyRealmModel::getPreparedCourses('', [
+            'group_field'         => 'sem_number',
             'order_by'            => null,
             'order'               => 'asc',
             'studygroups_enabled' => Config::get()->MY_COURSES_ENABLE_STUDYGROUPS,
             'deputies_enabled'    => Config::get()->DEPUTIES_ENABLE,
-        ];
-
-        $this->sem_courses  = MyRealmModel::getPreparedCourses('all', $params);
-
-        $factory  = $this->get_template_factory();
-        $template = $factory->open('my_courses/courseexport');
-        $template->set_attributes($this->get_assigned_variables());
+        ]);
+        $template->sem_data = Semester::getAllAsArray();
+        $template->with_modules = Request::bool('modules');
         $template->image_style = 'height: 6px; width: 8px;';
 
         $doc = new ExportPDF();
