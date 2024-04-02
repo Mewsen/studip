@@ -212,15 +212,16 @@ class Course_LtiController extends StudipController
                     $this->tool = new LtiTool();
                     $this->tool->is_global = '0'; //"Hey, this is private!" (moving hand away from body) "Mmmm!"
                 }
-                $this->tool->name            = $this->deployment->title;
-                $this->tool->launch_url      = trim(Request::get('launch_url'));
-                $this->tool->oidc_init_url   = trim(Request::get('oidc_init_url'));
-                $this->tool->jwks_url        = trim(Request::get('jwks_url'));
-                $this->tool->consumer_key    = trim(Request::get('consumer_key'));
-                $this->tool->consumer_secret = trim(Request::get('consumer_secret'));
-                $this->tool->send_lis_person = Request::int('send_lis_person', 0);
+                $this->tool->name             = $this->deployment->title;
+                $this->tool->launch_url       = trim(Request::get('launch_url'));
+                $this->tool->oidc_init_url    = trim(Request::get('oidc_init_url'));
+                $this->tool->jwks_url         = trim(Request::get('jwks_url'));
+                $this->tool->deep_linking_url = trim(Request::get('deep_linking_url'));
+                $this->tool->consumer_key     = trim(Request::get('consumer_key'));
+                $this->tool->consumer_secret  = trim(Request::get('consumer_secret'));
+                $this->tool->send_lis_person  = Request::int('send_lis_person', 0);
                 $this->tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
-                $this->tool->lti_version     = Request::get('lti_version', '1.3a');
+                $this->tool->lti_version      = Request::get('lti_version', '1.3a');
                 $errors = $this->tool->validate();
                 if ($errors) {
                     PageLayout::postError(

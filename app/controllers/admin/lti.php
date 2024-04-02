@@ -64,6 +64,7 @@ class Admin_LtiController extends AuthenticatedController
             $this->tool->launch_url = trim(Request::get('launch_url'));
             $this->tool->oidc_init_url   = trim(Request::get('oidc_init_url'));
             $this->tool->jwks_url        = trim(Request::get('jwks_url'));
+            $this->tool->deep_linking_url = trim(Request::get('deep_linking_url'));
             $this->tool->consumer_key = trim(Request::get('consumer_key'));
             $this->tool->consumer_secret = trim(Request::get('consumer_secret'));
             $this->tool->custom_parameters = trim(Request::get('custom_parameters'));

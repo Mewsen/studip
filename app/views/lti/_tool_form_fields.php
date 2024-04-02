@@ -21,6 +21,11 @@
            value="<?= htmlReady($tool->jwks_url ?? '') ?>">
 </label>
 
+<label>
+    <?= _('Deep-linking URL') ?>
+    <input type="url" name="deep_linking_url" value="<?= htmlReady($tool->deep_linking_url ?? '') ?>">
+</label>
+
 <label class="studiprequired">
     <span class="textlabel"><?= _('Consumer-Key des LTI-Tools') ?></span>
     <span class="asterisk">*</span>
