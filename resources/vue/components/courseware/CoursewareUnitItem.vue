@@ -107,9 +107,9 @@ export default {
             }
             if(this.userIsTeacher || !this.inCourseContext) {
                 menu.push({ id: 4, label: this.$gettext('Darstellung'), icon: 'colorpicker', emit: 'showLayout' });
-                menu.push({ id: 4, label: this.$gettext('Duplizieren'), icon: 'copy', emit: 'copyUnit' });
-                menu.push({ id: 5, label: this.$gettext('Exportieren'), icon: 'export', emit: 'showExport' });
-                menu.push({ id: 6, label: this.$gettext('Löschen'), icon: 'trash', emit: 'showDelete' });
+                menu.push({ id: 5, label: this.$gettext('Duplizieren'), icon: 'copy', emit: 'copyUnit' });
+                menu.push({ id: 6, label: this.$gettext('Exportieren'), icon: 'export', emit: 'showExport' });
+                menu.push({ id: 7, label: this.$gettext('Löschen'), icon: 'trash', emit: 'showDelete' });
             }
 
             return menu;

@@ -103,13 +103,13 @@
                                         />
                                         <label @click="selectedTerm = term.id" :key="term.id + 'label'">
                                             <div class="icon">
-                                                <studip-icon :shape="term.attributes.icon" size="32"/>
+                                                <studip-icon :shape="term.attributes.icon" :size="32"/>
                                             </div>
                                             <div class="text">
                                                 {{ term.attributes.name }}
                                             </div>
-                                            <studip-icon shape="arr_1down" size="24" class="arrow" />
-                                            <studip-icon shape="check-circle" size="24" class="check" />
+                                            <studip-icon shape="arr_1down" :size="24" class="arrow" />
+                                            <studip-icon shape="check-circle" :size="24" class="check" />
                                         </label>
                                         <div class="terms_of_use_description" :key="term.id + '_description'">
                                             <div class="description">

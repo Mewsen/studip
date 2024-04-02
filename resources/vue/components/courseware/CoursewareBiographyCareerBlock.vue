@@ -17,8 +17,8 @@
                         class="cw-timeline-item"
                     >
                         <div class="cw-timeline-item-icon cw-timeline-item-icon-color-studip-blue">
-                            <studip-icon v-if="item.type === 'school'" shape="doctoral-cap" role="clickable" size="32"/>
-                            <studip-icon v-if="item.type === 'experience'" shape="tools" role="clickable" size="32"/>
+                            <studip-icon v-if="item.type === 'school'" shape="doctoral-cap" :size="32"/>
+                            <studip-icon v-if="item.type === 'experience'" shape="tools" :size="32"/>
                         </div>
                         <div
                             class="cw-timeline-item-content cw-timeline-item-content-color-studip-blue"
