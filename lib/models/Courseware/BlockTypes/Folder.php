@@ -55,7 +55,7 @@ class Folder extends BlockType
         if ($folder) {
             $typedFolder = $folder->getTypedFolder();
             $payload['folder-type'] = $typedFolder->folder_type;
-            if ($typedFolder->isReadable($user->id)) {   
+            if ($typedFolder->isReadable($user->id) || $typedFolder->folder_type === 'HomeworkFolder') {   
                 foreach ($typedFolder->getFiles() as $folderFile) {
                     $file['id'] = $folderFile->id;
                     $file['attributes'] = [
