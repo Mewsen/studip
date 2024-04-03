@@ -9,6 +9,7 @@
         :role="ariaRole"
         v-bind="$attrs"
         v-on="$listeners"
+        :alt="$attrs.alt ?? ''"
     />
     <img v-else
          :src="url"
@@ -17,6 +18,7 @@
          :role="ariaRole"
          v-bind="$attrs"
          v-on="$listeners"
+         :alt="$attrs.alt ?? ''"
     />
 </template>
 
