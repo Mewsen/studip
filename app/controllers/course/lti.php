@@ -256,8 +256,18 @@ class Course_LtiController extends StudipController
                         StudipCacheFactory::getCache(),
                         new GuzzleHttp\Client(),
                     );
-                    $key_fetcher->fetchKey($this->tool->jwks_url, $this->tool->jwks_key_id);
-                    
+                    $keyring = Keyring::createFromKeyChain(
+                        $key_fetcher->fetchKey($this->tool->jwks_url, $this->tool->jwks_key_id)
+                    );
+                    if ($keyring) {
+                        $keyring->range_type = 'lti_tool';
+                        $keyring->range_id = $this->tool->id;
+                        if (!$keyring->store()) {
+                            PageLayout::postError(
+                                _('Der öffentliche Schlüssel des LTI-Tools konnte nicht gespeichert werden.')
+                            );
+                        }
+                    }
                 } else {
                     PageLayout::postError(
                         _('Es wurde weder ein öffentlicher Schlüssel noch eine JWKS-URL zum Tool angegeben.')

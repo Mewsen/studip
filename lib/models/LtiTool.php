@@ -141,13 +141,11 @@ class LtiTool extends SimpleORMap
             //Clear the fields for the passphrase and the private key:
             $keyring->passphrase  = '';
             $keyring->private_key = '';
+            //Store the new public key for the tool:
+            $keyring->public_key = $public_key;
         } else {
-            $keyring = new Keyring();
-            $keyring->range_type = 'lti_tool';
-            $keyring->range_id = $this->id;
+            $keyring = Keyring::createFromPublicKey($public_key, 'lti_tool', $this->id);
         }
-        //Store the public key for the tool:
-        $keyring->public_key = $public_key;
         return $keyring->store() !== false;
     }
 

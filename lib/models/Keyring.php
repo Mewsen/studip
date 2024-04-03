@@ -71,6 +71,40 @@ class Keyring extends SimpleORMap
     }
 
     /**
+     * Generates a new keyring from a public key.
+     *
+     * @param \OAT\Library\Lti1p3Core\Security\Key\KeyInterface|string $key The public key.
+     *
+     * @param string $range_type The range type for the keyring.
+     *
+     * @param string $range_id The range-ID for the keyring.
+     *
+     * @return Keyring|null A keyring, if it can be created or null in case of failure to do so.
+     */
+    public static function createFromPublicKey(
+        \OAT\Library\Lti1p3Core\Security\Key\KeyInterface|string $key,
+        string $range_type,
+        string $range_id
+    ) : ?Keyring
+    {
+        $keyring = new Keyring();
+        $keyring->range_type = $range_type;
+        $keyring->range_id = $range_id;
+
+        if (is_string($key)) {
+            $keyring->public_key = $key;
+        } else {
+            //Instance of KeyInterface:
+            if (!$key->getContent()) {
+                //No key present.
+                return null;
+            }
+            $keyring->public_key = $key->getContent();
+        }
+        return $keyring;
+    }
+
+    /**
      * Converts the keyring to a KeyChain instance of the Lti1p3Core library.
      *
      * @return \OAT\Library\Lti1p3Core\Security\Key\KeyChain A KeyChain representation
