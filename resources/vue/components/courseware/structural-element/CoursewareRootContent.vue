@@ -16,21 +16,21 @@
     </div>
     <div v-else class="cw-root-content-wrapper">
         <div class="cw-root-content" :class="['cw-root-content-' + rootLayout]">
-            <div class="cw-root-content-img" :style="image">
+            <div class="cw-root-content-img" :style="bgImage">
                 <section class="cw-root-content-description" :style="bgColor">
-                    <img v-if="imageIsSet" class="cw-root-content-description-img" :src="imageURL" />
-                    <template v-else>
+                    <div class="cw-root-content-description-img" :src="imageURL" :style="image"></div>
+                    <template v-if="!imageIsSet">
                         <studip-ident-image
                             class="cw-root-content-description-img"
-                            v-model="identImageCanvas"
-                            :showCanvas="true"
+                            v-model="identImage"
                             :baseColor="bgColorHex"
                             :pattern="structuralElement.attributes.title"
                         />
                         <studip-ident-image
-                            v-model="identImage"
-                            :width="1095"
-                            :height="withTOC ? 300 : 480"
+                            v-model="identBgImage"
+                            class="cw-root-content-description-background-img"
+                            :width="4380"
+                            :height="withTOC ? 1200 : 1920"
                             :baseColor="bgColorHex"
                             :pattern="structuralElement.attributes.title"
                         />
@@ -46,44 +46,28 @@
         </div>
         <div v-if="withTOC" class="cw-root-content-toc">
             <ul class="cw-tiles">
-                <li
-                    v-for="child in childElements"
-                    :key="child.id"
-                    class="tile"
-                    :class="[child.attributes.payload.color]"
-                >
+                <li v-for="child in childElements" :key="child.id">
                     <router-link :to="'/structural_element/' + child.id" :title="child.attributes.title">
-                        <div
-                            v-if="hasImage(child)"
-                            class="preview-image"
-                            :style="getChildStyle(child)"
-                        ></div>
-                        <studip-ident-image
-                            v-else
-                            :baseColor="getColor(child).hex"
-                            :pattern="child.attributes.title"
-                            :showCanvas="true"
-                        />
-                        <div class="description">
-                            <header
-                                :class="[
-                                    child.attributes.purpose !== ''
-                                        ? 'description-icon-' + child.attributes.purpose
-                                        : '',
-                                ]"
-                            >
-                                {{ child.attributes.title || '–' }}
-                            </header>
-                            <div class="description-text-wrapper">
-                                <p>{{ child.attributes.payload.description }}</p>
-                            </div>
-                            <footer>
-                                {{ countChildChildren(child) }}
-                                <translate :translate-n="countChildChildren(child)" translate-plural="Seiten">
-                                    Seite
-                                </translate>
-                            </footer>
-                        </div>
+                        <courseware-tile
+                            tag="div"
+                            :color="child.attributes.payload.color"
+                            :title="child.attributes.title || '–'"
+                            :imageUrl="hasImage(child) ? child.relationships?.image?.meta?.['download-url'] : ''"
+                        >
+                            <template #description>
+                                {{ child.attributes.payload.description }}
+                            </template>
+                            <template #footer>
+                                <p class="cw-root-content-toc-tile-footer">
+                                {{
+                                    $gettextInterpolate(
+                                        $ngettext('%{pages} Seite', '%{pages} Seiten', countChildChildren(child)),
+                                        { pages: countChildChildren(child) }
+                                    )
+                                }}
+                                </p>
+                            </template>
+                        </courseware-tile>
                     </router-link>
                 </li>
             </ul>
@@ -93,6 +77,7 @@
 
 <script>
 import CoursewareCompanionBox from './../layouts/CoursewareCompanionBox.vue';
+import CoursewareTile from './../layouts/CoursewareTile.vue';
 import StudipIdentImage from './../../StudipIdentImage.vue';
 import colorMixin from '@/vue/mixins/courseware/colors.js';
 import { mapActions, mapGetters } from 'vuex';
@@ -100,18 +85,19 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'courseware-root-content',
     mixins: [colorMixin],
+    components: {
+        CoursewareCompanionBox,
+        CoursewareTile,
+        StudipIdentImage,
+    },
     props: {
         structuralElement: Object,
         canEdit: Boolean,
     },
-    components: {
-        CoursewareCompanionBox,
-        StudipIdentImage,
-    },
     data() {
         return {
             identImage: '',
-            identImageCanvas: '',
+            identBgImage: '',
         };
     },
     computed: {
@@ -130,6 +116,18 @@ export default {
         image() {
             let style = {};
             const backgroundURL = this.imageIsSet ? this.imageURL : this.identImage;
+
+            style.backgroundImage = 'url(' + backgroundURL + ')';
+            if (!this.imageIsSet) {
+                style.backgroundSize = '100% auto';
+                style.height = '180px';
+            }
+
+            return style;
+        },
+        bgImage() {
+            let style = {};
+            const backgroundURL = this.imageIsSet ? this.imageURL : this.identBgImage;
 
             style.backgroundImage = 'url(' + backgroundURL + ')';
             style.height = this.withTOC ? '300px' : '480px';
@@ -180,7 +178,7 @@ export default {
         },
         addPage() {
             this.showElementAddDialog(true);
-        }
+        },
     },
 };
 </script>
@@ -203,9 +201,10 @@ export default {
         top: 8em;
 
         .cw-root-content-description-img {
-            width: 240px;
+            width: 270px;
             height: fit-content;
             margin-right: 2em;
+            background-color: #fff;
         }
         .cw-root-content-description-text {
             max-height: calc(480px - 18em);
@@ -238,6 +237,9 @@ export default {
         .cw-root-content-description-text {
             max-height: calc(300px - 6em);
         }
+    }
+    .cw-root-content-toc-tile-footer {
+        line-height: 4em;
     }
 }
 .cw-root-content-hint {
