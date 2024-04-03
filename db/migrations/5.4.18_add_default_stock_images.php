@@ -58,22 +58,21 @@ final class AddDefaultStockImages extends Migration
         ;StudIP-Bilderpool-46;Getty center architecture;An arched gray terrace reflected in a window;Armando Castillejos;https://commons.wikimedia.org/wiki/File:Getty_center_architecture_(Unsplash).jpg;https://creativecommons.org/publicdomain/zero/1.0/
         ;StudIP-Bilderpool-47;Autumn leaves;Colorful autumn leaves;Bluemorphos;https://pixabay.com/photos/autumn-leaves-fall-leaves-leaves-1486062/;https://creativecommons.org/publicdomain/zero/1.0/
         ;StudIP-Bilderpool-48;Spiral Staircase;Spiral stairway in building, low angle view of spiral stairway with pink lights - going up;Johannes Plenio;https://freerangestock.com/photos/143898/spiral-stairway-in-building--interior-design.html;https://creativecommons.org/publicdomain/zero/1.0/";
-        $lines = explode( "\n", $csv_string );
-        $headers = str_getcsv( array_shift( $lines ), ';' );
-        $files = array();
-        foreach ( $lines as $line ) {
-            $row = array();
-            foreach ( str_getcsv( $line, ';' ) as $key => $field ) {
-                $row[ $headers[ $key ] ] = $field;
+        $lines = explode("\n", $csv_string);
+        $headers = str_getcsv(array_shift($lines), ';');
+        $files = [];
+        foreach ($lines as $line) {
+            $row = [];
+            foreach (str_getcsv($line, ';') as $key => $field) {
+                $row[$headers[$key]] = $field;
             }
-            $row = array_filter( $row );
+            $row = array_filter($row);
             $files[] = $row;
         }
 
         $dir = $GLOBALS['STUDIP_BASE_PATH'] . '/public/assets/images/default-stock-images/';
-        for ($i = 0; $i < sizeof($files); $i++) {
-            $meta = $files[$i];
-            $filename = $i + 1 . '.webp';
+        foreach ($files as $i => $meta) {
+            $filename = ($i + 1) . '.webp';
             $filepath = $dir . $filename;
             $filesize = filesize($filepath);
             $imagesize = getimagesize($filepath);
@@ -95,13 +94,13 @@ final class AddDefaultStockImages extends Migration
             $paletteCreator($image);
         }
 
-        echo sizeof($files) . ' images have been added';
+        $this->write(count($files) . ' images have been added');
     }
 
     public function down()
     {
         $images = StockImage::findBySQL('tags = ?', ['["Stud.IP 5"]']);
-        foreach($images as $image) {
+        foreach ($images as $image) {
             $image->delete();
         }
     }
