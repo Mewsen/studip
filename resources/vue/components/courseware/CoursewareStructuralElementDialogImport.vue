@@ -130,7 +130,6 @@ export default {
             this.importZipFile = event.target.files[0];
             this.setImportFilesProgress(0);
             this.setImportStructuresProgress(0);
-            this.setImportErrors([]);
         },
         async importCoursewareArchiv() {
             this.importAborted = false;
@@ -199,6 +198,9 @@ export default {
 
             await this.importCourseware(courseware, this.currentElement, files, this.importBehavior, null);
         }
+    },
+    mounted() {
+        this.setImportErrors([]);
     }
 }
 </script>
