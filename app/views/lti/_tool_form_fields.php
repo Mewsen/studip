@@ -1,7 +1,6 @@
 <label class="studiprequired">
-    <span class="textlabel"><?= _('URL der Anwendung') ?></span>
+    <span class="textlabel"><?= _('LTI Launch-URL') ?></span>
     <span class="asterisk">*</span>
-    <?= tooltipIcon(_('Die Betreiber dieses Tools müssen Ihnen eine URL und Zugangsdaten (Consumer-Key und Consumer-Secret) mitteilen.')) ?>
     <input type="text" name="launch_url" required
            value="<?= htmlReady($custom_launch_url ?? $tool->launch_url) ?>">
 </label>
