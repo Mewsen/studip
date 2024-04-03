@@ -604,6 +604,7 @@ class Admin_CoursesController extends AuthenticatedController
         }
         if (in_array('semester', $activated_fields)) {
             $d['semester'] = $course->semester_text;
+            $d['semester_sort'] = $course->start_semester ? $course->start_semester->beginn : 0;
         }
         if (in_array('institute', $activated_fields)) {
             $d['institute'] = $course->home_institut ? $course->home_institut->name : $course->institute;
