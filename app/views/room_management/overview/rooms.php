@@ -40,7 +40,7 @@
                         'user_has_booking_rights' => $room->userHasBookingRights(
                             $user
                         ),
-                        'show_room_picture' => true,
+                        'show_picture' => true,
                         'additional_columns' => [
                             $room->category->name,
                         ]
