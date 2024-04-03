@@ -23,6 +23,7 @@ data/oer_logos/*
 data/upload_doc/*
 
 public/.htaccess
+public/.rnd
 public/assets/javascripts/*.js
 public/assets/javascripts/*.js.map
 public/assets/stylesheets/*.css
