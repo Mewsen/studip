@@ -78,6 +78,15 @@ class Calendar_ContentboxController extends StudipController
         if ($this->admin) {
             $this->isProfile = $this->single && $this->userRange;
         }
+
+        // Sort dates
+        usort($this->termine, function ($a, $b) {
+            [$a_begin, $a_end] = $this->parseBeginAndEndFromDate($a);
+            [$b_begin, $b_end] = $this->parseBeginAndEndFromDate($b);
+
+            return $a_begin - $b_begin
+                ?: $a_end - $b_end;
+        });
     }
 
     private function parseSeminar($id)
@@ -169,5 +178,24 @@ class Calendar_ContentboxController extends StudipController
             // Store for view
             $this->termine[] = $assignment;
         }
+    }
+
+    private function parseBeginAndEndFromDate($date): array
+    {
+        if ($date instanceof CalendarDateAssignment) {
+            return [
+                $date->calendar_date->begin,
+                $date->calendar_date->end,
+            ];
+        }
+
+        if ($date instanceof CourseDate || $date instanceof CourseExDate) {
+            return [
+                $date->date,
+                $date->end_time,
+            ];
+        }
+
+        throw new Exception('Invalid date type passed: ' . get_class($date));
     }
 }
