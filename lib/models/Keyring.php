@@ -110,8 +110,7 @@ class Keyring extends SimpleORMap
                     'n' => new \phpseclib3\Math\BigInteger(base64_decode($content['n']))
                 ]
             );
-            $keyring->public_key = $loaded_key->toString();
-            var_dump($keyring->public_key);die();
+            $keyring->public_key = $loaded_key->toString('PKCS1');
         }
         return $keyring;
     }
