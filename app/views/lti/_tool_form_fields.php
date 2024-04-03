@@ -20,6 +20,11 @@
     <input type="text" name="jwks_url"
            value="<?= htmlReady($tool->jwks_url ?? '') ?>">
 </label>
+<label>
+    <?= _('Schlüssel-ID') ?>
+    <?= tooltipIcon(_('Die ID des Schlüssels, der über die JWKS-URL geladen werden soll.')) ?>
+    <input type="text" name="key_id" value="<?= htmlReady($key_id) ?>">
+</label>
 
 <label>
     <?= _('Deep-linking URL') ?>

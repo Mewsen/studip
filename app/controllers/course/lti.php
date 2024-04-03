@@ -1,4 +1,7 @@
 <?php
+
+use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcher;
+
 /**
  * course/lti.php - LTI consumer API for Stud.IP
  *
@@ -216,6 +219,7 @@ class Course_LtiController extends StudipController
                 $this->tool->launch_url       = trim(Request::get('launch_url'));
                 $this->tool->oidc_init_url    = trim(Request::get('oidc_init_url'));
                 $this->tool->jwks_url         = trim(Request::get('jwks_url'));
+                $this->key_id                 = trim(Request::get('key_id'));
                 $this->tool->deep_linking_url = trim(Request::get('deep_linking_url'));
                 $this->tool->consumer_key     = trim(Request::get('consumer_key'));
                 $this->tool->consumer_secret  = trim(Request::get('consumer_secret'));
@@ -240,6 +244,24 @@ class Course_LtiController extends StudipController
                             _('Der öffentliche Schlüssel des LTI-Tools konnte nicht gespeichert werden.')
                         );
                     }
+                } elseif ($this->tool->jwks_url) {
+                    if (!$this->key_id) {
+                        PageLayout::postError(
+                            _('Die Schlüssel-ID ist leer.')
+                        );
+                        return;
+                    }
+                    //Fetch the key:
+                    $key_fetcher = new JwksFetcher(
+                        StudipCacheFactory::getCache(),
+                        new GuzzleHttp\Client(),
+                    );
+                    $key_fetcher->fetchKey($this->tool->jwks_url, $this->key_id);
+                } else {
+                    PageLayout::postError(
+                        _('Es wurde weder ein öffentlicher Schlüssel noch eine JWKS-URL zum Tool angegeben.')
+                    );
+                    return;
                 }
             } else {
                 //Set the (globally defined) LTI tool:

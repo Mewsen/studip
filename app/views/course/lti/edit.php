@@ -71,7 +71,8 @@
                 'lti/_tool_form_fields',
                 [
                     'tool'              => $deployment->tool,
-                    'custom_launch_url' => $deployment->tool->launch_url ?? ''
+                    'custom_launch_url' => $deployment->tool->launch_url ?? '',
+                    'key_id'            => $key_id
                 ]
             ) ?>
         </div>
