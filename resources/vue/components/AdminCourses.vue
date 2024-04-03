@@ -248,6 +248,8 @@ export default {
                     return collator.compare(striptags(a.number), striptags(b.number))
                         || collator.compare(striptags(a.name), striptags(b.name));
                 };
+            } else if (sortby === 'semester') {
+                sortFunction = (a, b) => a.semester_sort - b.semester_sort;
             } else {
                 let is_numeric = true;
                 for (let i in array) {
