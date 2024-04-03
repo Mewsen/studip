@@ -256,8 +256,10 @@ class Course_LtiController extends StudipController
                         StudipCacheFactory::getCache(),
                         new GuzzleHttp\Client(),
                     );
-                    $keyring = Keyring::createFromKeyChain(
-                        $key_fetcher->fetchKey($this->tool->jwks_url, $this->tool->jwks_key_id)
+                    $keyring = Keyring::createFromPublicKey(
+                        $key_fetcher->fetchKey($this->tool->jwks_url, $this->tool->jwks_key_id),
+                        'lti_tool',
+                        $this->tool->id
                     );
                     if ($keyring) {
                         $keyring->range_type = 'lti_tool';

@@ -99,7 +99,19 @@ class Keyring extends SimpleORMap
                 //No key present.
                 return null;
             }
-            $keyring->public_key = $key->getContent();
+            $content = $key->getContent();
+            if (!$content['n'] || !$content['e']) {
+                //Base or exponent are missing.
+                return null;
+            }
+            $loaded_key = \phpseclib3\Crypt\PublicKeyLoader::load(
+                [
+                    'e' => new \phpseclib3\Math\BigInteger(base64_decode($content['e'])),
+                    'n' => new \phpseclib3\Math\BigInteger(base64_decode($content['n']))
+                ]
+            );
+            $keyring->public_key = $loaded_key->toString();
+            var_dump($keyring->public_key);die();
         }
         return $keyring;
     }
