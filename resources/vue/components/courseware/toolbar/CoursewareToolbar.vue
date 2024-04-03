@@ -183,8 +183,8 @@ export default {
     },
 
     watch: {
-        containers(oldValue, newValue) {
-            if (oldValue && newValue && oldValue.length !== newValue.length) {
+        containers(newValue, oldValue) {
+            if (newValue) {
                 this.resetAdderStorage();
             }
         },
