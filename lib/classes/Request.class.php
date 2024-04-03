@@ -321,7 +321,7 @@ class Request implements ArrayAccess, IteratorAggregate
         //The second format and value is only added
         //when $second_param and $second_format are set
         //and a second value could be retrieved.
-        if ($second_param and $second_format) {
+        if ($second_param && $second_format) {
             $second_value = Request::get($second_param);
             if ($second_value) {
                 $combined_format .= ' ' . $second_format;
@@ -337,11 +337,22 @@ class Request implements ArrayAccess, IteratorAggregate
 
         //Now we return a DateTime object created from the
         //specified date value(s):
-        return DateTime::createFromFormat(
+        $result = DateTime::createFromFormat(
             $combined_format,
             $combined_value,
             $time_zone
         );
+
+        if (
+            $result
+            && !$second_param
+            && !$second_format
+            && !preg_match('/[aAghGHisvu]/', $format) // Ensure no time in format
+        ) {
+            $result->setTime(0, 0);
+        }
+
+        return $result;
     }
 
 
