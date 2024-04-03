@@ -19,7 +19,7 @@
  *     Defaults to false (do not show actions).
  * $user_has_booking_rights: Boolean: Whether the user for which this template
  *     is rendered has booking rights on the resource (true) or not (false).
- * $show_room_picture: Boolean: Whether to display the room picture or not.
+ * $show_picture: Boolean: Whether to display the room picture or not.
  *     Defaults to false (do not show picture).
  * $additional_properties: Array: Additional properties
  *     that shall be displayed in extra columns.
