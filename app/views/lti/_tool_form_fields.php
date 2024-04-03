@@ -22,7 +22,7 @@
 <label>
     <?= _('Schlüssel-ID') ?>
     <?= tooltipIcon(_('Die ID des Schlüssels, der über die JWKS-URL geladen werden soll.')) ?>
-    <input type="text" name="key_id" value="<?= htmlReady($key_id) ?>">
+    <input type="text" name="jwks_key_id" value="<?= htmlReady($tool->jwks_key_id ?? '') ?>">
 </label>
 
 <label>
