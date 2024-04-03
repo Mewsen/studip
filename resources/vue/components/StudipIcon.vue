@@ -1,7 +1,8 @@
 <template>
     <input v-if="name" type="image" :name="name" :src="url"
-           :width="size" :height="size" :role="ariaRole" v-bind="$attrs" v-on="$listeners">
-    <img v-else :src="url" :width="size" :height="size" :role="ariaRole" v-bind="$attrs" v-on="$listeners">
+           :width="size" :height="size" :role="ariaRole" v-bind="$attrs" v-on="$listeners" :alt="$attrs.alt ?? ''">
+    <img v-else :src="url" :width="size" :height="size" :role="ariaRole" v-bind="$attrs" v-on="$listeners"
+         :alt="$attrs.alt ?? ''">
 </template>
 
 <script>
