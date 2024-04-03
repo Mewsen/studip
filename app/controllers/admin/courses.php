@@ -621,7 +621,7 @@ class Admin_CoursesController extends AuthenticatedController
         }
         if (in_array('members', $activated_fields)) {
             $d['members'] = '<a href="'.URLHelper::getLink('dispatch.php/course/members', ['cid' => $course->id]).'">'
-                .$course->getNumParticipants()
+                .$course->countMembersWithStatus('user autor')
                 .'</a>';
         }
         if (in_array('waiting', $activated_fields)) {
