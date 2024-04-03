@@ -16,7 +16,10 @@ use Studip\Button, Studip\LinkButton;
     <? if ($user->locked): ?>
         <br>
         <span style="color: red">
-            (<?= sprintf(_('gesperrt von %s'), htmlReady(get_fullname($user->locked_by))) ?>
+            (<?= htmlReady(sprintf(
+                _('gesperrt von %s'),
+                $user->locked_by ? get_fullname($user->locked_by) : _('unbekannt')
+             )) ?>
         <? if ($user->lock_comment): ?>
             , <?= _('Kommentar') ?>: <?= htmlReady($user->lock_comment) ?>
         <? endif; ?>
