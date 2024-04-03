@@ -2296,29 +2296,14 @@ class Resource extends SimpleORMap implements StudipItem
             return 'admin';
         }
 
-        //Check for a temporary permission first:
 
         $perm_string = '';
         $temp_perm   = null;
 
         $begin = time();
         $end   = $begin;
-
-        //If $time range is set and contains two DateTime objects
-        //we can include that in the search for temporary permissions.
-        if ($time_range) {
-            if ($time_range[0] instanceof DateTime) {
-                $begin = $time_range[0]->getTimestamp();
-            } else {
-                $begin = $time_range[0];
-            }
-            if ($time_range[1] instanceof DateTime) {
-                $end = $time_range[1]->getTimestamp();
-            } else {
-                $end = $time_range[1];
-            }
-        }
-
+        //Check for a temporary permission first:
+        //check only against current timestamp
         if (!$permanent_only) {
             $temp_perm = ResourceTemporaryPermission::findOneBySql(
                 '(resource_id = :resource_id) AND (user_id = :user_id)
@@ -2375,8 +2360,18 @@ class Resource extends SimpleORMap implements StudipItem
             $perm_string = $global_perm;
         }
         //Now we must check for global resource locks:
-
         if ($perm_string && $time_range && $this->lockable) {
+
+            if ($time_range[0] instanceof DateTime) {
+                $begin = $time_range[0]->getTimestamp();
+            } else {
+                $begin = $time_range[0];
+            }
+            if ($time_range[1] instanceof DateTime) {
+                $end = $time_range[1]->getTimestamp();
+            } else {
+                $end = $time_range[1];
+            }
             if (GlobalResourceLock::isLocked($begin, $end)) {
                 //A permission level exists for the user.
                 //The user gets "user" permissions in case
