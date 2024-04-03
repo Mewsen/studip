@@ -1,11 +1,11 @@
 <template>
-        <studip-dialog
+    <studip-dialog
         :title="$gettext('Darstellung')"
         :confirmText="$gettext('Speichern')"
         confirmClass="accept"
         :closeText="$gettext('Schließen')"
         closeClass="cancel"
-        height="720"
+        height="800"
         width="500"
         @close="$emit('close')"
         @confirm="storeLayout"
@@ -22,12 +22,8 @@
                 <label v-if="showPreviewImage">
                     <button class="button" @click="deleteImage">{{ $gettext('Bild löschen') }}</button>
                 </label>
-                <courseware-companion-box
-                    v-if="uploadFileError"
-                    :msgCompanion="uploadFileError"
-                    mood="sad"
-                />
-                <label v-if="!showPreviewImage">
+                <courseware-companion-box v-if="uploadFileError" :msgCompanion="uploadFileError" mood="sad" />
+                <template v-if="!showPreviewImage">
                     <img
                         v-if="currentFile"
                         :src="uploadImageURL"
@@ -35,13 +31,31 @@
                         :alt="$gettext('Vorschaubild')"
                     />
                     <div v-else class="cw-structural-element-image-preview-placeholder"></div>
-                    {{ $gettext('Bild hochladen') }}
-                    <input class="cw-file-input" ref="upload_image" type="file" accept="image/*" @change="checkUploadFile" />
-                </label>
+                    <label>
+                        {{ $gettext('Bild hochladen') }}
+                        <input
+                            class="cw-file-input"
+                            ref="upload_image"
+                            type="file"
+                            accept="image/*"
+                            @change="checkUploadFile"
+                        />
+                    </label>
+                    {{ $gettext('oder') }}
+                    <br />
+                    <button class="button" type="button" @click="showStockImageSelector = true">
+                        {{ $gettext('Aus dem Bilderpool auswählen') }}
+                    </button>
+                    <StockImageSelector
+                        v-if="showStockImageSelector"
+                        @close="showStockImageSelector = false"
+                        @select="onSelectStockImage"
+                    />
+                </template>
 
                 <label>
                     {{ $gettext('Titel') }}
-                    <input type="text" v-model="currentElement.attributes.title"/>
+                    <input type="text" v-model="currentElement.attributes.title" />
                 </label>
                 <label>
                     {{ $gettext('Beschreibung') }}
@@ -60,13 +74,9 @@
                         class="cw-vs-select"
                     >
                         <template #open-indicator="selectAttributes">
-                            <span v-bind="selectAttributes"
-                                ><studip-icon shape="arr_1down" :size="10"
-                            /></span>
+                            <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
                         </template>
-                        <template #no-options>
-                            {{ $gettext('Es steht keine Auswahl zur Verfügung') }}.
-                        </template>
+                        <template #no-options> {{ $gettext('Es steht keine Auswahl zur Verfügung') }}. </template>
                         <template #selected-option="{ name, hex }">
                             <span class="vs__option-color" :style="{ 'background-color': hex }"></span
                             ><span>{{ name }}</span>
@@ -84,18 +94,18 @@
 
 <script>
 import CoursewareCompanionBox from './CoursewareCompanionBox.vue';
-
+import StockImageSelector from '../stock-images/SelectorDialog.vue';
 import colorMixin from '@/vue/mixins/courseware/colors.js';
 import { mapActions, mapGetters } from 'vuex';
-
 
 export default {
     name: 'courseware-unit-item-dialog-layout',
     components: {
-        CoursewareCompanionBox
+        CoursewareCompanionBox,
+        StockImageSelector,
     },
     props: {
-        unitElement: Object
+        unitElement: Object,
     },
     mixins: [colorMixin],
     data() {
@@ -105,16 +115,24 @@ export default {
             uploadFileError: '',
             currentFile: null,
             uploadImageURL: null,
-        }
+            showStockImageSelector: false,
+            selectedStockImage: null,
+        };
     },
     computed: {
         ...mapGetters({
-            userId: 'userId'
+            userId: 'userId',
         }),
         colors() {
-            return this.mixinColors.filter(color => color.darkmode);
+            return this.mixinColors.filter((color) => color.darkmode);
         },
         image() {
+            if (this.selectedStockImage) {
+                return this.selectedStockImage.attributes['download-urls'].small;
+            }
+            if (this.uploadImageURL) {
+                return this.uploadImageURL;
+            }
             return this.currentElement.relationships?.image?.meta?.['download-url'] ?? null;
         },
 
@@ -132,6 +150,7 @@ export default {
             updateStructuralElement: 'updateStructuralElement',
             uploadImageForStructuralElement: 'uploadImageForStructuralElement',
             deleteImageForStructuralElement: 'deleteImageForStructuralElement',
+            setStockImageForStructuralElement: 'setStockImageForStructuralElement',
         }),
         initData() {
             this.currentElement = _.cloneDeep(this.unitElement);
@@ -157,11 +176,13 @@ export default {
             this.$emit('close');
             await this.loadStructuralElement(this.currentElement.id);
             if (
-                this.unitElement.relationships['edit-blocker'].data !== null
-                && this.unitElement.relationships['edit-blocker'].data?.id !== this.userId
+                this.unitElement.relationships['edit-blocker'].data !== null &&
+                this.unitElement.relationships['edit-blocker'].data?.id !== this.userId
             ) {
                 this.companionWarning({
-                    info: this.$gettext('Ihre Änderungen konnten nicht gespeichert werden, die Daten werden bereits von einem anderen Nutzer bearbeitet.')
+                    info: this.$gettext(
+                        'Ihre Änderungen konnten nicht gespeichert werden, die Daten werden bereits von einem anderen Nutzer bearbeitet.'
+                    ),
                 });
                 return false;
             } else {
@@ -172,13 +193,20 @@ export default {
                 this.uploadImageForStructuralElement({
                     structuralElement: this.currentElement,
                     file: this.currentFile,
-                }).then(() => {
-                    this.loadStructuralElement(this.currentElement.id)
-                }).catch((error) => {
-                    console.error(error);
-                    this.companionWarning({
-                        info: this.$gettext('Beim Hochladen der Bilddatei ist ein Fehler aufgetretten.')
+                })
+                    .then(() => {
+                        this.loadStructuralElement(this.currentElement.id);
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        this.companionWarning({
+                            info: this.$gettext('Beim Hochladen der Bilddatei ist ein Fehler aufgetretten.'),
+                        });
                     });
+            } else if (this.selectedStockImage) {
+                await this.setStockImageForStructuralElement({
+                    structuralElement: this.currentElement,
+                    stockImage: this.selectedStockImage,
                 });
             } else if (this.deletingPreviewImage) {
                 await this.deleteImageForStructuralElement(this.currentElement);
@@ -190,10 +218,19 @@ export default {
                 id: this.currentElement.id,
             });
             await this.unlockObject({ id: this.currentElement.id, type: 'courseware-structural-elements' });
-        }
+        },
+
+        onSelectStockImage(stockImage) {
+            if (this.$refs?.upload_image) {
+                this.$refs.upload_image.value = null;
+            }
+            this.selectedStockImage = stockImage;
+            this.showStockImageSelector = false;
+            this.deletingPreviewImage = false;
+        },
     },
     async mounted() {
         this.initData();
-    }
-}
+    },
+};
 </script>
