@@ -5,7 +5,7 @@
  * @var LtiTool[] $tools
  */
 ?>
-<form class="default" action="<?= $controller->link_for('course/lti/edit/' . $deployment->isNew() ? '' : $deployment->position) ?>"
+<form class="default" action="<?= $controller->link_for('course/lti/edit/' . $deployment->position ?? '' ) ?>"
       method="post" data-dialog="reload-on-close">
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
