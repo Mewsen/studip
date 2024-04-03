@@ -33,12 +33,20 @@ class RequestParametersTest extends Codeception\Test\Unit
         $_GET['v3']  = ['root@studip', 'hotte.testfreund', 42, '!"$%&/()'];
         $_POST['v4'] = ['0', '1', '', 'foo'];
 
+        $_GET['date'] = '2025-03-25';
+        $_GET['time'] = '17:39:04';
+        $_GET['datetime'] = '2025-03-25 17:39:04';
+        $_GET['invalid_date'] = 'foobar';
+
         $testconfig = new Config([
             'USERNAME_REGULAR_EXPRESSION' => '/^([a-zA-Z0-9_@.-]{4,})$/',
         ]);
         Config::set($testconfig);
     }
 
+    /**
+     * @covers Request::offsetGet
+     */
     public function testArrayAccess ()
     {
         $request = Request::getInstance();
@@ -49,6 +57,9 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame($request['c'], '-23');
     }
 
+    /**
+     * @covers Request::set
+     */
     public function testSetParam ()
     {
         Request::set('yyy', 'xyzzy');
@@ -58,6 +69,10 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame(Request::getArray('zzz'), [1, 2]);
     }
 
+    /**
+     * @covers Request::get
+     * @covers Request::quoted
+     */
     public function testStringParam ()
     {
         $this->assertNull(Request::get('null'));
@@ -74,6 +89,9 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertNull(Request::quoted('v2'));
     }
 
+    /**
+     * @covers Request::option
+     */
     public function testOptionParam ()
     {
         $this->assertNull(Request::option('null'));
@@ -82,6 +100,9 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertNull(Request::option('v1'));
     }
 
+    /**
+     * @covers Request::int
+     */
     public function testIntParam ()
     {
         $this->assertNull(Request::int('null'));
@@ -92,6 +113,9 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertNull(Request::int('v1'));
     }
 
+    /**
+     * @covers Request::float
+     */
     public function testFloatParam ()
     {
         $this->assertNull(Request::float('null'));
@@ -102,6 +126,9 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertNull(Request::float('v1'));
     }
 
+    /**
+     * @covers Request::bool
+     */
     public function testBoolParam ()
     {
         $this->assertNull(Request::bool('null'));
@@ -115,6 +142,9 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertNull(Request::bool('v1'));
     }
 
+    /**
+     * @covers Request::username
+     */
     public function testUsernameParam ()
     {
         $this->assertNull(Request::username('null'));
@@ -124,6 +154,10 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertNull(Request::username('v1'));
     }
 
+    /**
+     * @covers Request::getArray
+     * @covers Request::quotedArray
+     */
     public function testStringArrayParam ()
     {
         $this->assertSame(Request::getArray('null'), []);
@@ -137,6 +171,9 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame(Request::quotedArray('v2'), ['on\\\'e', 'two', 'thr33']);
     }
 
+    /**
+     * @covers Request::optionArray
+     */
     public function testOptionArrayParam ()
     {
         $this->assertSame(Request::optionArray('null'), []);
@@ -145,6 +182,9 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame(Request::optionArray('v2'), [1 => 'two', 2 => 'thr33']);
     }
 
+    /**
+     * @covers Request::intArray
+     */
     public function testIntArrayParam ()
     {
         $this->assertSame(Request::intArray('null'), []);
@@ -153,6 +193,9 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame(Request::intArray('v2'), [0, 0, 0]);
     }
 
+    /**
+     * @covers Request::floatArray
+     */
     public function testFloatArrayParam ()
     {
         $this->assertSame(Request::floatArray('null'), []);
@@ -161,6 +204,9 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame(Request::floatArray('v2'), [0.0, 0.0, 0.0]);
     }
 
+    /**
+     * @covers Request::boolArray
+     */
     public function testBoolArrayParam ()
     {
         $this->assertSame(Request::boolArray('null'), []);
@@ -168,6 +214,9 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame(Request::boolArray('v4'), [false, true, false, true]);
     }
 
+    /**
+     * @covers Request::usernameArray
+     */
     public function testUsernameArrayParam ()
     {
         $this->assertSame(Request::usernameArray('null'), []);
@@ -177,6 +226,9 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame(Request::usernameArray('v3'), ['root@studip', 'hotte.testfreund']);
     }
 
+    /**
+     * @covers Request::submitted
+     */
     public function testSubmitted ()
     {
         $this->assertFalse(Request::submitted('null'));
@@ -184,10 +236,52 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertTrue(Request::submitted('v1'));
     }
 
+    /**
+     * @covers Request::submittedSome
+     */
     public function testSubmittedSome ()
     {
         $this->assertFalse(Request::submittedSome('null', 'null'));
         $this->assertTrue(Request::submittedSome('null', 's', 'v'));
+    }
+
+    /**
+     * @covers Request::getDateTime
+     */
+    public function testGetDatetimeWithDate()
+    {
+        $date = Request::getDateTime();
+        $this->assertNotFalse($date);
+        $this->assertEquals('2025-03-25 00:00:00', $date->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * @covers Request::getDateTime
+     */
+    public function testGetDatetimeWithDateAndTime()
+    {
+        $datetime = Request::getDateTime('datetime', 'Y-m-d H:i:s');
+        $this->assertNotFalse($datetime);
+        $this->assertEquals('2025-03-25 17:39:04', $datetime->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * @covers Request::getDateTime
+     */
+    public function testGetDatetimeWithDateAndTimeInTwoParameters()
+    {
+        $date = Request::getDateTime('date', 'Y-m-d', 'time', 'H:i:s');
+        $this->assertNotFalse($date);
+        $this->assertEquals('2025-03-25 17:39:04', $date->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * @covers Request::getDateTime
+     */
+    public function testGetDatetimeWithInvalidDate()
+    {
+        $invalid_date = Request::getDateTime('invalid_date');
+        $this->assertFalse($invalid_date);
     }
 
     public function tearDown(): void
