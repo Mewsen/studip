@@ -95,22 +95,19 @@ class Keyring extends SimpleORMap
             $keyring->public_key = $key;
         } else {
             //Instance of KeyInterface:
-            if (!$key->getContent()) {
-                //No key present.
-                return null;
-            }
             $content = $key->getContent();
-            if (!$content['n'] || !$content['e']) {
-                //Base or exponent are missing.
+            if (!$content || empty($content['n']) || empty($content['e'])) {
+                //No key present or base or exponent missing.
                 return null;
             }
-            $loaded_key = \phpseclib3\Crypt\PublicKeyLoader::load(
+
+            $loaded_key = \phpseclib3\Crypt\PublicKeyLoader::loadPublicKey(
                 [
-                    'e' => new \phpseclib3\Math\BigInteger(base64_decode($content['e'])),
-                    'n' => new \phpseclib3\Math\BigInteger(base64_decode($content['n']))
+                    'e' => new \phpseclib3\Math\BigInteger(base64_decode(strtr($content['e'], '-_', '+/'))),
+                    'n' => new \phpseclib3\Math\BigInteger(base64_decode(strtr($content['n'], '-_', '+/')))
                 ]
             );
-            $keyring->public_key = $loaded_key->toString('PKCS1');
+            $keyring->public_key = $loaded_key->toString('PKCS8');
         }
         return $keyring;
     }
