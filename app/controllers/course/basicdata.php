@@ -878,20 +878,30 @@ class Course_BasicdataController extends AuthenticatedController
     private function _getTypes($sem, $data, &$changable = true)
     {
         $sem_types = [];
+
+        $sem_classes = [];
         if ($GLOBALS['perm']->have_perm("admin")) {
             foreach (SemClass::getClasses() as $sc) {
                 if (!$sc['course_creation_forbidden']) {
-                    $sem_types[$sc['name']] = array_map(function ($st) {
-                        return $st['name'];
-                    }, $sc->getSemTypes());
+                    $sem_classes[] = $sc;
                 }
             }
         } else {
-            $sc = $sem->getSemClass();
+            $sem_classes[] = $sem->getSemClass();
+        }
+
+        if (!$sem->isStudyGroup()) {
+            $sem_classes = array_filter($sem_classes, function (SemClass $sc) {
+                return !$sc['studygroup_mode'];
+            });
+        }
+
+        foreach ($sem_classes as $sc) {
             $sem_types[$sc['name']] = array_map(function ($st) {
                 return $st['name'];
             }, $sc->getSemTypes());
         }
+
         if (!in_array($data['status'], array_flatten(array_values(array_map('array_keys', $sem_types))))) {
             $class_name = $sem->getSemClass()->offsetGet('name');
             if (!isset($sem_types[$class_name])) {
