@@ -189,9 +189,21 @@ class ContactController extends AuthenticatedController
             $user = User::findManyByUsername(Request::getArray('user'));
         }
         if ($group) {
-            $user = User::findMany(Statusgruppen::find($group)->members->pluck('user_id'));
+            $group_object = Statusgruppen::find($group);
+            if (!$group_object) {
+                $this->set_status(404);
+                $this->render_nothing();
+                return;
+            }
+            $user = User::findMany($group_object->members->pluck('user_id'));
         }
         if (!$user) {
+            $user_object = User::findCurrent();
+            if (!$user_object) {
+                $this->set_status(404);
+                $this->render_nothing();
+                return;
+            }
             $user = User::findCurrent()->contacts;
         }
 

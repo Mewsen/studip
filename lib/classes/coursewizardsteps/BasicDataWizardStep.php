@@ -356,9 +356,9 @@ class BasicDataWizardStep implements CourseWizardStep
                 htmlReady(get_title_for_status('dozent', 1, $values['coursetype']))
             );
         }
-        if (!$values['lecturers'][$GLOBALS['user']->id] && !$GLOBALS['perm']->have_perm('admin')) {
+        if (empty($values['lecturers'][$GLOBALS['user']->id]) && !$GLOBALS['perm']->have_perm('admin')) {
             if (Config::get()->DEPUTIES_ENABLE) {
-                if (!$values['deputies'][$GLOBALS['user']->id]) {
+                if (empty($values['deputies'][$GLOBALS['user']->id])) {
                     $errors[] = sprintf(
                         _('Sie selbst müssen entweder als %s oder als Vertretung eingetragen sein.'),
                         htmlReady(get_title_for_status('dozent', 1, $values['coursetype']))

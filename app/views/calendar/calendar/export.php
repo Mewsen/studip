@@ -8,7 +8,7 @@
  */
 ?>
 <form class="default" method="post"
-      action="<?= $controller->link_for('calendar/calendar/export/' . $user_id) ?>">
+      action="<?= $controller->link_for('calendar/calendar/export', $user_id ?? null) ?>">
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend><?= _('Termine exportieren') ?></legend>
