@@ -80,6 +80,7 @@
 
 <script>
 import draggable from 'vuedraggable';
+import StudipWysiwyg from '../StudipWysiwyg.vue';
 import InputArray from "./InputArray.vue";
 import { $gettext } from '../../../assets/javascripts/lib/gettext';
 
@@ -100,6 +101,7 @@ export default {
     name: 'likert-edit',
     components: {
         draggable,
+        StudipWysiwyg,
         InputArray
     },
     props: {

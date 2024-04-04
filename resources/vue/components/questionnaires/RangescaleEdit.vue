@@ -94,6 +94,7 @@
 
 <script>
 import draggable from 'vuedraggable';
+import StudipWysiwyg from '../StudipWysiwyg.vue';
 
 const default_value = () => ({
     description: '',
@@ -108,6 +109,7 @@ export default {
     name: 'likert-edit',
     components: {
         draggable,
+        StudipWysiwyg,
     },
     props: {
         value: {
