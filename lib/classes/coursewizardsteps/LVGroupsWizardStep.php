@@ -36,7 +36,7 @@ class LVGroupsWizardStep implements CourseWizardStep
         $course_start_time = $values[$step_one_class]['start_time'];
 
         // We only need our own stored values here.
-        $values = $values[__CLASS__];
+        $values = $values[__CLASS__] ?? [];
 
         // Load template from step template directory.
         $factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views/course/wizard/steps');
@@ -53,9 +53,12 @@ class LVGroupsWizardStep implements CourseWizardStep
             }
         }
 
-        $selection_details = $values['lvgruppe_selection']['area_details'];
+        $selection_details = $values['lvgruppe_selection']['area_details'] ?? null;
 
-        if ($_SESSION[__CLASS__]['course_start_time'] != $course_start_time) {
+        if (
+            isset($_SESSION[__CLASS__]['course_start_time'])
+            && $_SESSION[__CLASS__]['course_start_time'] != $course_start_time
+        ) {
             // don't store previously opened nodes
             // because we get in trouble if the semester has changed
             $open_nodes = [];
@@ -65,15 +68,15 @@ class LVGroupsWizardStep implements CourseWizardStep
 
         $_SESSION[__CLASS__]['course_start_time'] = $course_start_time;
 
-        $tpl->set_attribute('open_lvg_nodes', $open_nodes);
-        $tpl->set_attribute('selection', $selection);
-        $tpl->set_attribute('selection_details', $selection_details);
-        $tpl->set_attribute('tree', $lvgtree->getRootItem()->getChildren());
+        $tpl->open_lvg_nodes = $open_nodes;
+        $tpl->selection = $selection;
+        $tpl->selection_details = $selection_details;
+        $tpl->tree = $lvgtree->getRootItem()->getChildren();
 
-        $tpl->set_attribute('ajax_url', $values['ajax_url'] ?: URLHelper::getLink('dispatch.php/course/wizard/ajax'));
-        $tpl->set_attribute('no_js_url', $values['no_js_url'] ?: 'dispatch.php/course/wizard/forward/'.$stepnumber.'/'.$temp_id);
-        $tpl->set_attribute('stepnumber', $stepnumber);
-        $tpl->set_attribute('temp_id', $temp_id);
+        $tpl->ajax_url = !empty($values['ajax_url']) ? $values['ajax_url'] : URLHelper::getLink('dispatch.php/course/wizard/ajax');
+        $tpl->no_js_url = !empty($values['no_js_url']) ? $values['no_js_url'] : URLHelper::getURL('dispatch.php/course/wizard/forward/'.$stepnumber.'/'.$temp_id);
+        $tpl->stepnumber = $stepnumber;
+        $tpl->temp_id = $temp_id;
         return $tpl->render();
     }
 

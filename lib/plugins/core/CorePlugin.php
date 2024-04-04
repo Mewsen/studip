@@ -70,7 +70,7 @@ abstract class CorePlugin
         if (!empty($metadata['description_' . $language])) {
             return $metadata['description_' . $language];
         }
-        $description = $metadata['descriptionlong'] ?? $metadata['description'];
+        $description = $metadata['descriptionlong'] ?? $metadata['description'] ?? '';
 
         if ($this->plugin_info['description_mode'] === 'override_description') {
             return $this->plugin_info['description'];
