@@ -46,22 +46,20 @@ class Course_CoursewareController extends CoursewareController
 
     public function courseware_action($unit_id = null):  void
     {
-        global $user;
-
         Navigation::activateItem('course/courseware/unit');
         if ($this->unitsNotFound) {
             PageLayout::postMessage(MessageBox::info(_('Es wurde kein Lernmaterial gefunden.')));
             return;
         }
+        $user = User::findCurrent();
         $this->setCoursewareSidebar();
 
-        $this->user_id = $user->id;
         /** @var array<mixed> $last */
-        $last = UserConfig::get($this->user_id)->getValue('COURSEWARE_LAST_ELEMENT');
+        $last = UserConfig::get($user->id)->getValue('COURSEWARE_LAST_ELEMENT');
         $lastStructuralElement = \Courseware\StructuralElement::findOneById($last);
 
         if ($unit_id === null) {
-            if (isset($lastStructuralElement) && $lastStructuralElement->canVisit(User::findCurrent())) {
+            if (isset($lastStructuralElement) && $lastStructuralElement->canVisit($user)) {
                 $this->redirectToFirstUnit('course', Context::getId(), $last);
             } else {
                 $this->redirectToFirstUnit('course', Context::getId(), []);
