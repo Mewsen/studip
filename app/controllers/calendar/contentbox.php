@@ -91,17 +91,16 @@ class Calendar_ContentboxController extends StudipController
 
     private function parseSeminar($id)
     {
-        $course = Course::find($id);
-        $this->termine = $course->getDatesWithExdates()->findBy('end_time', [$this->start, $this->start + $this->timespan], '><');
-        foreach ($this->termine as $course_date) {
-            if ($this->course_range) {
-                //Display only date and time:
-                $this->titles[$course_date->id] = $course_date->getFullName('include-room');
-            } else {
-                //Include the course title:
-                $this->titles[$course_date->id] = $course_date->getFullName('verbose');
-            }
-        }
+        // Display only date and time if in course range, include course title
+        // otherwise
+        $date_format = $this->course_range ? 'include-room' : 'verbose';
+
+        $this->termine = Course::find($id)->getDatesWithExdates()
+            ->findBy('end_time', [$this->start, $this->start + $this->timespan], '><')
+            ->map(function ($course_date) use ($date_format) {
+                $this->titles[$course_date->id] = $course_date->getFullName($date_format);
+                return $course_date;
+            });
     }
 
     private function parseUser($id)
