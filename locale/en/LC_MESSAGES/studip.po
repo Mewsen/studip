@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-06 13:16+0100\n"
-"PO-Revision-Date: 2024-03-06 12:30+0000\n"
+"PO-Revision-Date: 2024-04-06 15:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-main/en/>\n"
@@ -1017,9 +1017,8 @@ msgid "Alle Termine exportieren"
 msgstr "Export all dates"
 
 #: app/controllers/consultation/admin.php:860
-#, fuzzy
 msgid "Link zur Terminübersicht kopieren"
-msgstr "Copy link to this course"
+msgstr "Copy link to date overview"
 
 #: app/controllers/consultation/consultation_controller.php:96
 msgid "Dieser Terminblock ist ungültig."
@@ -1594,19 +1593,16 @@ msgid "Veranstaltungskategorie"
 msgstr "Course category"
 
 #: app/controllers/search/courses.php:117
-#, fuzzy
 msgid "Als Liste"
-msgstr "List"
+msgstr "As list"
 
 #: app/controllers/search/courses.php:121
-#, fuzzy
 msgid "Als Tabelle"
-msgstr "Table"
+msgstr "As table"
 
 #: app/controllers/oer/endpoints.php:328
-#, fuzzy
 msgid "Die gewünschte Datei konnte nicht gefunden werden."
-msgstr "The selected operation could not be executed."
+msgstr "The requested file could not be found."
 
 #: app/controllers/oer/admin.php:30
 msgid "Ihr PHP hat kein aktiviertes cURL-Modul."
@@ -2041,9 +2037,8 @@ msgstr ""
 "Do you want to delete all messages in the inbox? %u messages will be deleted."
 
 #: app/controllers/messages.php:981
-#, fuzzy
 msgid "Posteingang leeren"
-msgstr "Mail inbox"
+msgstr "Empty inbox"
 
 #: app/controllers/messages.php:990
 #, php-format
@@ -2055,7 +2050,7 @@ msgstr ""
 
 #: app/controllers/messages.php:994
 msgid "Postausgang leeren"
-msgstr ""
+msgstr "Empty outbox"
 
 #: app/controllers/messages.php:1006
 msgid "Nachrichten durchsuchen"
@@ -6793,7 +6788,6 @@ msgid "Der Fragebogen ist nicht kopierbar."
 msgstr "The questionnaire cannot be copied."
 
 #: app/controllers/questionnaire.php:207
-#, fuzzy
 msgid "Kopie"
 msgstr "Copy"
 
@@ -7279,14 +7273,12 @@ msgid "Neue Wiki-Seite anlegen"
 msgstr "Create new wiki page"
 
 #: app/controllers/course/wiki.php:79 app/controllers/course/wiki.php:299
-#, fuzzy
 msgid "Wiki verwalten"
-msgstr "Edit account"
+msgstr "Manage wiki"
 
 #: app/controllers/course/wiki.php:87
-#, fuzzy
 msgid "Seiten aus Veranstaltung importieren"
-msgstr "Copy topics from course"
+msgstr "Import pages from course"
 
 #: app/controllers/course/wiki.php:100 app/controllers/course/wiki.php:309
 #: app/controllers/course/wiki.php:890
@@ -7294,17 +7286,15 @@ msgid "Im Wiki suchen"
 msgstr "Search in the Wiki"
 
 #: app/controllers/course/wiki.php:110
-#, fuzzy
 msgid "Als PDF exportieren"
-msgstr "Export PDF"
+msgstr "Export as PDF"
 
 #: app/controllers/course/wiki.php:122
-#, fuzzy, php-format
+#, php-format
 msgid "Version %1$s, geändert von %2$s <br> am %3$s"
-msgstr ", last changes from %s at %s"
+msgstr "Version %1$s, modified by %2$s <br> on %3$s"
 
 #: app/controllers/course/wiki.php:140
-#, fuzzy
 msgid "Seiteneinstellungen"
 msgstr "Page settings"
 
@@ -7313,9 +7303,8 @@ msgid "Seite löschen"
 msgstr "Delete page"
 
 #: app/controllers/course/wiki.php:148
-#, fuzzy
 msgid "Wollen Sie wirklich die komplette Seite löschen?"
-msgstr "Are you sure to delete role \"%s\"?"
+msgstr "Do you really want to delete the whole page?"
 
 #: app/controllers/course/wiki.php:153
 msgid "Als Vollbild anzeigen"
@@ -7327,7 +7316,6 @@ msgid "Keine"
 msgstr "None"
 
 #: app/controllers/course/wiki.php:185
-#, fuzzy
 msgid "Lehrende und Tutoren/Tutorinnen"
 msgstr "Lecturers and tutors"
 
@@ -7338,19 +7326,16 @@ msgid "Nur Lehrende"
 msgstr "Only lecturers"
 
 #: app/controllers/course/wiki.php:199
-#, fuzzy
 msgid "Seiteneinstellung"
 msgstr "Page settings"
 
 #: app/controllers/course/wiki.php:202
-#, fuzzy
 msgid "Titel der Seite"
-msgstr "Tab title"
+msgstr "Page title"
 
 #: app/controllers/course/wiki.php:212
-#, fuzzy
 msgid "Dieser Name ist bereits vergeben."
-msgstr "This date is already occupied."
+msgstr "This name is already in use."
 
 #: app/controllers/course/wiki.php:219 app/controllers/course/wiki.php:773
 #, fuzzy
@@ -7358,39 +7343,34 @@ msgid "Übergeordnete Seite im Inhaltsverzeichnis"
 msgstr "Table of contents"
 
 #: app/controllers/course/wiki.php:224
-#, fuzzy
 msgid "Lesezugriff für"
-msgstr "Read access"
+msgstr "Read access for"
 
 #: app/controllers/course/wiki.php:229
-#, fuzzy
 msgid "Schreibzugriff für"
-msgstr "Write access"
+msgstr "Write access for"
 
 #: app/controllers/course/wiki.php:279
-#, fuzzy, php-format
+#, php-format
 msgid "Die Seite %s wurde gelöscht."
-msgstr "The column %s has been deleted."
+msgstr "The page %s has been deleted."
 
 #: app/controllers/course/wiki.php:317
-#, fuzzy
 msgid "Alle Wiki-Seiten als PDF exportieren"
-msgstr "Export postings as PDF"
+msgstr "Export all wiki pages as PDF"
 
 #: app/controllers/course/wiki.php:423
-#, fuzzy
 msgid "Zuletzt gespeichert"
-msgstr "saved"
+msgstr "Last saved"
 
 #: app/controllers/course/wiki.php:528
-#, fuzzy
 msgid "Die Seite wurde gespeichert."
-msgstr "The rule has been saved."
+msgstr "The page has been saved."
 
 #: app/controllers/course/wiki.php:615
-#, fuzzy, php-format
+#, php-format
 msgid "Version %1$s vom %2$s"
-msgstr "Postings from %1$s in %2$s"
+msgstr "Version %1$s from %2$s"
 
 #: app/controllers/course/wiki.php:713
 #, fuzzy
@@ -7398,9 +7378,8 @@ msgid "Änderungen dieser Version"
 msgstr "Save changes"
 
 #: app/controllers/course/wiki.php:737
-#, fuzzy
 msgid "Neue Wikiseite erstellen"
-msgstr "Create new rule"
+msgstr "Create new wiki page"
 
 #: app/controllers/course/wiki.php:751
 #: lib/models/Courseware/BlockTypes/BiographyPersonalInformation.php:70
@@ -7409,14 +7388,12 @@ msgid "Daten"
 msgstr "Data"
 
 #: app/controllers/course/wiki.php:759
-#, fuzzy
 msgid "Name der Seite"
-msgstr "Wiki page name"
+msgstr "Page name"
 
 #: app/controllers/course/wiki.php:768
-#, fuzzy
 msgid "Name existiert schon."
-msgstr "File does not exist."
+msgstr "The name already exists."
 
 #: app/controllers/course/wiki.php:778
 msgid ""
@@ -7442,9 +7419,8 @@ msgid "Lesen"
 msgstr "Read"
 
 #: app/controllers/course/wiki.php:962
-#, fuzzy
 msgid "Seiten-Historie"
-msgstr "Sidebar"
+msgstr "Page history"
 
 #: app/controllers/course/wiki.php:966 app/views/course/wiki/diff.php:7
 msgid "Änderungsliste"
@@ -7464,17 +7440,15 @@ msgid "Die ausgewählte Veranstaltung wurde nicht gefunden!"
 msgstr "The selected course could not be found!"
 
 #: app/controllers/course/wiki.php:1047
-#, fuzzy
 msgid "Es wurden keine Wiki-Seiten ausgewählt!"
 msgstr "No wiki pages have been selected!"
 
 #: app/controllers/course/wiki.php:1060
-#, fuzzy
 msgid "Es wurden keine Wiki-Seiten gefunden!"
 msgstr "No wiki pages have been found!"
 
 #: app/controllers/course/wiki.php:1084
-#, fuzzy, php-format
+#, php-format
 msgid "Fehler beim Import der Wiki-Seite %s!"
 msgstr "Error while importing the wiki page %s!"
 
@@ -7948,9 +7922,8 @@ msgstr "Import participant list"
 #: app/controllers/course/members.php:1660
 #: app/controllers/course/statusgroups.php:259
 #: app/controllers/institute/members.php:649
-#, fuzzy
 msgid "Als Excel-Datei exportieren"
-msgstr "Export to Excel"
+msgstr "Export as Excel file"
 
 #: app/controllers/course/members.php:1669 app/controllers/course/dates.php:97
 #: app/controllers/admin/courses.php:229
@@ -8026,9 +7999,8 @@ msgid "Titel nachgestellt"
 msgstr "Second title"
 
 #: app/controllers/course/members.php:1761
-#, fuzzy
 msgid "Telefonnr."
-msgstr "Telephone"
+msgstr "Phone"
 
 #: app/controllers/course/members.php:1762
 #: app/controllers/course/statusgroups.php:319
@@ -8049,9 +8021,8 @@ msgstr "Matriculation number"
 #: app/controllers/course/members.php:1770
 #: app/controllers/admin/courses.php:483 app/controllers/admin/courses.php:1383
 #: app/controllers/admin/courses.php:1384
-#, fuzzy
 msgid "Teilnehmendenexport"
-msgstr "Participant page"
+msgstr "Participant export"
 
 #: app/controllers/course/members.php:1891
 msgid "Es wurde keine Gruppe ausgewählt!"
@@ -8414,9 +8385,8 @@ msgid "Es wurde kein Lernmaterial gefunden."
 msgstr "No learning material has been found."
 
 #: app/controllers/course/courseware.php:100
-#, fuzzy
 msgid "Courseware: Aufgaben"
-msgstr "Courseware tasks"
+msgstr "Courseware: Tasks"
 
 #: app/controllers/course/forum/area.php:22
 #: app/controllers/course/forum/index.php:446
@@ -8764,9 +8734,8 @@ msgstr "Progress"
 #: app/controllers/course/gradebook/students.php:91
 #: app/views/course/gradebook/lecturers/edit_ilias_definitions.php:15
 #: app/views/course/gradebook/lecturers/custom_definitions.php:47
-#, fuzzy
 msgid "Bestanden"
-msgstr "I understand"
+msgstr "Passed"
 
 #: app/controllers/course/gradebook/students.php:92
 #: app/views/course/gradebook/students/index.php:45
@@ -8801,9 +8770,8 @@ msgid "Test als Leistung hinzufügen"
 msgstr "Add a course"
 
 #: app/controllers/course/gradebook/template_helpers.php:102
-#, fuzzy
 msgid "Ergebnisse aus ILIAS importieren"
-msgstr "Export results"
+msgstr "Import results from ILIAS"
 
 #: app/controllers/course/gradebook/lecturers.php:75
 #: app/views/course/gradebook/students/index.php:17
@@ -8811,9 +8779,8 @@ msgstr "Export results"
 #: app/views/course/gradebook/students/index.php:63
 #: app/views/course/gradebook/lecturers/index.php:52
 #: app/views/course/gradebook/lecturers/index.php:62
-#, fuzzy
 msgid "bestanden"
-msgstr "I understand"
+msgstr "passed"
 
 #: app/controllers/course/gradebook/lecturers.php:138
 msgid "Gewichtungen erfolgreich verändert."
@@ -8914,9 +8881,8 @@ msgstr "Create several groups"
 
 #: app/controllers/course/statusgroups.php:268
 #: app/controllers/institute/members.php:657
-#, fuzzy
 msgid "Als .csv exportieren"
-msgstr "Export to Excel"
+msgstr "Export as .csv"
 
 #: app/controllers/course/statusgroups.php:281
 msgid "In eine Gruppe eintragen"
@@ -13204,9 +13170,8 @@ msgstr[0] "%s could not be removed from %u course."
 msgstr[1] "%s could not be removed from %u courses."
 
 #: app/controllers/admin/user.php:1623
-#, fuzzy
 msgid "Teilnehmendendaten exportieren"
-msgstr "Import participant list"
+msgstr "Export participant data"
 
 #: app/controllers/admin/user.php:1705
 msgid "Neues Konto anlegen"
@@ -14827,14 +14792,12 @@ msgid "Konfiguration hochladen"
 msgstr "Upload configuration"
 
 #: app/controllers/admin/extern.php:102 app/controllers/admin/extern.php:422
-#, fuzzy
 msgid "Neue externe Seite anlegen"
-msgstr "Create new page"
+msgstr "Create new external page"
 
 #: app/controllers/admin/extern.php:120
-#, fuzzy
 msgid "Vorschau anzeigen"
-msgstr "Display log entries"
+msgstr "Display preview"
 
 #: app/controllers/admin/extern.php:126
 #: app/views/resources/_common/_resource_tree_item.php:17
@@ -14844,9 +14807,8 @@ msgstr "Display information"
 
 #: app/controllers/admin/extern.php:132
 #: app/views/institute/extern/_table-row.php:42
-#, fuzzy
 msgid "Konfiguration herunterladen"
-msgstr "Download configuration file"
+msgstr "Download configuration"
 
 #: app/controllers/admin/extern.php:167
 #, fuzzy
@@ -14904,7 +14866,6 @@ msgid "Liste der Veranstaltungen"
 msgstr "Type of course"
 
 #: app/controllers/admin/extern.php:477
-#, fuzzy
 msgid "Veranst.-Details"
 msgstr "Course details"
 
@@ -15224,9 +15185,8 @@ msgid "Diese Emailadresse ist bereits registriert."
 msgstr "The Plug-in is already registered."
 
 #: app/controllers/registration.php:120
-#, fuzzy
 msgid "Registrierung abschließen"
-msgstr "Cancel registration"
+msgstr "Finish registration"
 
 #: app/controllers/registration.php:121
 #: app/views/admission/rule/configure.php:24
@@ -15819,9 +15779,8 @@ msgid "Liste der Dateien zum Download"
 msgstr "Link to file download"
 
 #: app/controllers/institute/extern.php:67
-#, fuzzy
 msgid "Externe Seiten (Einrichtung)"
-msgstr "Name of an institute"
+msgstr "External pages (Institute)"
 
 #: app/controllers/institute/files.php:28
 msgid "Es wurde keine passende Einrichtung gefunden."
@@ -16416,9 +16375,8 @@ msgstr "None of the selected bookings could be copied!"
 #: app/controllers/room_management/planning.php:1142
 #: lib/navigation/ResourceNavigation.php:157
 #: lib/navigation/ResourceNavigation.php:197
-#, fuzzy
 msgid "Buchungsübersicht mit Kommentaren"
-msgstr "Bookings with comments"
+msgstr "Booking overview with comments"
 
 #: app/controllers/room_management/planning.php:1161
 msgid "Export für Word"
@@ -16541,39 +16499,33 @@ msgstr "Sunday"
 #: app/controllers/calendar/calendar.php:413
 #: app/controllers/calendar/calendar.php:525
 #: app/controllers/calendar/calendar.php:606
-#, fuzzy
 msgid "Sie dürfen diesen Kalender nicht sehen!"
-msgstr "You must not copy this course"
+msgstr "You are not allowed to view this calendar!"
 
 #: app/controllers/calendar/date.php:106 app/controllers/calendar/date.php:593
-#, fuzzy
 msgid "Der angegebene Termin wurde nicht gefunden."
-msgstr "The specified person could not be found!"
+msgstr "The specified date could not be found."
 
 #: app/controllers/calendar/date.php:114
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s (am %2$s von %3$s bis %4$s Uhr)"
-msgstr "Date on %1$s, %2$s from %3$s until %4$s"
+msgstr "%1$s (on %2$s from %3$s until %4$s)"
 
 #: app/controllers/calendar/date.php:146
-#, fuzzy
 msgid "Sie nehmen am Termin teil."
-msgstr "You did not select any date."
+msgstr "You participate on this date."
 
 #: app/controllers/calendar/date.php:148
-#, fuzzy
 msgid "Sie nehmen nicht am Termin teil."
-msgstr "You did not select any date."
+msgstr "You do not participate on this date."
 
 #: app/controllers/calendar/date.php:150
-#, fuzzy
 msgid "Sie haben den Termin zur Kenntnis genommen."
-msgstr "I acknowledge the hint from above"
+msgstr "You acknowledge the date."
 
 #: app/controllers/calendar/date.php:152
-#, fuzzy
 msgid "Sie haben keine Angaben zur Teilnahme gemacht."
-msgstr "You did not select any date."
+msgstr "You did not specify whether you participate on the date."
 
 #: app/controllers/calendar/date.php:211
 #: app/controllers/calendar/calendar.php:29
@@ -16591,30 +16543,25 @@ msgid "Termin bearbeiten"
 msgstr "Edit date"
 
 #: app/controllers/calendar/date.php:244 app/controllers/calendar/date.php:741
-#, fuzzy
 msgid "Der Termin wurde nicht gefunden!"
-msgstr "The date has not been changed."
+msgstr "The date could not be found!"
 
 #: app/controllers/calendar/date.php:381
-#, fuzzy
 msgid "Bitte geben Sie einen Startzeitpunkt ein."
-msgstr "Please enter a name."
+msgstr "Please enter a start time."
 
 #: app/controllers/calendar/date.php:384
-#, fuzzy
 msgid "Bitte geben Sie einen Endzeitpunkt ein."
-msgstr "Please enter a name."
+msgstr "Please enter an end time."
 
 #: app/controllers/calendar/date.php:387
 #: app/controllers/calendar/calendar.php:717
-#, fuzzy
 msgid "Der Startzeitpunkt darf nicht nach dem Endzeitpunkt liegen!"
 msgstr "The start time must not lie after the end time!"
 
 #: app/controllers/calendar/date.php:392
-#, fuzzy
 msgid "Bitte geben Sie einen Titel ein."
-msgstr "Please enter a name."
+msgstr "Please enter a title."
 
 #: app/controllers/calendar/date.php:397 app/views/admin/api/permissions.php:14
 #: app/views/calendar/date/index.php:60 app/views/calendar/date/delete.php:40
@@ -16623,14 +16570,12 @@ msgid "Zugriff"
 msgstr "Access"
 
 #: app/controllers/calendar/date.php:397
-#, fuzzy
 msgid "Bitte wählen Sie einen Zugriffstyp aus."
-msgstr "Please choose a value"
+msgstr "Please select an access type."
 
 #: app/controllers/calendar/date.php:404
-#, fuzzy
 msgid "Bitte wählen Sie eine gültige Kategorie aus."
-msgstr "Select two valid accounts."
+msgstr "Please select a valid category."
 
 #: app/controllers/calendar/date.php:416 app/views/calendar/date/index.php:63
 #: app/views/calendar/date/delete.php:43
@@ -16642,19 +16587,16 @@ msgid "Wiederholung"
 msgstr "Repetition"
 
 #: app/controllers/calendar/date.php:416
-#, fuzzy
 msgid "Bitte wählen Sie ein gültiges Wiederholungsintervall aus."
-msgstr "Select two valid accounts."
+msgstr "Please select a valid repetition interval."
 
 #: app/controllers/calendar/date.php:428
-#, fuzzy
 msgid "Wiederholung an bestimmtem Wochentag"
-msgstr "Repetition date"
+msgstr "Repetition on a certain day of week"
 
 #: app/controllers/calendar/date.php:428
-#, fuzzy
 msgid "Bitte wählen Sie einen Wochentag zwischen Montag und Sonntag aus."
-msgstr "Please select a course."
+msgstr "Please select a day of week between Monday and Sunday."
 
 #: app/controllers/calendar/date.php:449
 #: app/views/admin/cronjobs/schedules/periodic-schedule.php:42
@@ -16664,25 +16606,21 @@ msgid "Monat"
 msgstr "Month"
 
 #: app/controllers/calendar/date.php:449
-#, fuzzy
 msgid "Bitte wählen Sie einen Monat zwischen Januar und Dezember aus."
-msgstr "Please select a course."
+msgstr "Please select a month between January and December."
 
 #: app/controllers/calendar/date.php:476
 #: app/views/calendar/date/_add_edit_form.php:124
-#, fuzzy
 msgid "Teilnehmende Personen"
-msgstr "Remove participant(s)"
+msgstr "Participants"
 
 #: app/controllers/calendar/date.php:476
-#, fuzzy
 msgid "Der Termin ist keinem Kalender zugewiesen!"
-msgstr "File reference is not assigned to a folder!"
+msgstr "The date is not assigned to a calendar!"
 
 #: app/controllers/calendar/date.php:491
-#, fuzzy
 msgid "Beim Speichern des Termins ist ein Fehler aufgetreten."
-msgstr "Error during upload"
+msgstr "An error occurred while saving the date."
 
 #: app/controllers/calendar/date.php:525
 #, fuzzy
@@ -17021,7 +16959,7 @@ msgstr "Telephone"
 #: app/controllers/accessibility/forms.php:103
 #: app/controllers/accessibility/forms.php:104
 msgid "Dieses Feld nicht ausfüllen"
-msgstr ""
+msgstr "Do not fill this field"
 
 #: app/controllers/accessibility/forms.php:113
 msgid ""
@@ -18960,7 +18898,7 @@ msgstr "Also mark the free dates in the calendar"
 #: app/views/consultation/admin/edit.php:64
 msgid ""
 "Tutor/innen beim Versand von Buchungsbenachrichtigungen berücksichtigen?"
-msgstr ""
+msgstr "Regard tutors when sending booking notifications?"
 
 #: app/views/consultation/admin/create.php:211
 #: app/views/consultation/admin/edit.php:71
@@ -24299,7 +24237,7 @@ msgstr "Page title"
 
 #: app/views/siteinfo/new.php:47 app/views/siteinfo/edit.php:46
 msgid "Entwurfsmodus (nur sichtbar für root)"
-msgstr ""
+msgstr "Draft mode (only visible for root)"
 
 #: app/views/siteinfo/new.php:52 app/views/siteinfo/edit.php:51
 #, fuzzy
@@ -26357,7 +26295,7 @@ msgstr "Transfer groups"
 #: app/views/course/gradebook/lecturers/edit_ilias_definition.php:17
 #: app/views/course/gradebook/lecturers/new_ilias_definition.php:23
 msgid "Bestanden/nicht bestanden übertragen"
-msgstr ""
+msgstr "Submit passed/not passed"
 
 #: app/views/course/gradebook/lecturers/weights.php:2
 #: app/views/course/gradebook/lecturers/index.php:73
@@ -27099,7 +27037,7 @@ msgstr "Search results for %s"
 #: app/views/course/wiki/search.php:85
 #, php-format
 msgid "Treffer in alten Namen: %s"
-msgstr ""
+msgstr "Match in old names: %s"
 
 #: app/views/course/wiki/search.php:92
 #, fuzzy
@@ -27192,7 +27130,7 @@ msgstr "Leave"
 
 #: app/views/course/wiki/edit.php:49
 msgid "Beantragen Sie, dass Sie den Text jetzt bearbeiten wollen."
-msgstr ""
+msgstr "Request that you want to edit the text now."
 
 #: app/views/course/wiki/edit.php:51
 #, fuzzy
@@ -27201,7 +27139,7 @@ msgstr "Abort modification"
 
 #: app/views/course/wiki/page.php:26
 msgid "Dieses Wiki ist noch leer. Erstellen Sie die erste Wiki-Seite."
-msgstr ""
+msgstr "This wiki is still empty. Create the first wiki page."
 
 #: app/views/course/wiki/page.php:36 templates/wiki/show.php:8
 msgid "Mach die Welt ein Stückchen schlauer."
@@ -28942,7 +28880,7 @@ msgstr "Display all study areas"
 
 #: app/views/settings/calendar.php:58
 msgid "Nur Montag bis Freitag in der Wochenansicht anzeigen."
-msgstr ""
+msgstr "Only show monday until friday in the week view."
 
 #: app/views/settings/calendar.php:64
 msgid "Einzelterminkalender"
@@ -28955,7 +28893,7 @@ msgstr "Starting time of day view and week view"
 #: app/views/settings/calendar.php:72 app/views/settings/calendar.php:83
 #, php-format
 msgid "%02u:00 Uhr"
-msgstr ""
+msgstr "%02u:00"
 
 #: app/views/settings/calendar.php:80
 msgid "Endzeit der Tages- und Wochenansicht"
@@ -32995,7 +32933,7 @@ msgstr "Can have sub-courses"
 
 #: app/views/admin/sem_classes/details.php:205
 msgid "Unbegrenzte Laufzeit verbieten"
-msgstr ""
+msgstr "Forbid unlimited duration"
 
 #: app/views/admin/sem_classes/details.php:209
 msgid "Kurzer Beschreibungstext zum Anlegen einer Veranstaltung"
@@ -33663,7 +33601,7 @@ msgstr "Name of configuration"
 #: app/views/institute/extern/info.php:23
 #, php-format
 msgid "durch %s"
-msgstr ""
+msgstr "by %s"
 
 #: app/views/institute/extern/info.php:22
 #, fuzzy
@@ -34234,7 +34172,7 @@ msgstr "Download booking list"
 #: app/views/calendar/date/move.php:1 app/views/calendar/date/delete.php:7
 msgid ""
 "Es handelt sich um einen Termin in einer Terminserie. Was möchten Sie tun?"
-msgstr ""
+msgstr "This is a date in a date series. What do you want to do?"
 
 #: app/views/calendar/date/move.php:9
 msgid "Der Termin soll aus der Terminserie herausgelöst werden."
@@ -40558,9 +40496,8 @@ msgid "Kalendereinträge"
 msgstr "Calendar entries"
 
 #: lib/models/calendar/CalendarDate.class.php:454
-#, fuzzy
 msgid "Keine Wiederholung"
-msgstr "Repetition"
+msgstr "No repetition"
 
 #: lib/models/calendar/CalendarDate.class.php:461
 #, fuzzy, php-format
@@ -40570,7 +40507,7 @@ msgstr "additional dates"
 #: lib/models/calendar/CalendarDate.class.php:466
 #, php-format
 msgid "Täglich bis zum %1$s"
-msgstr ""
+msgstr "Daily until %1$s"
 
 #: lib/models/calendar/CalendarDate.class.php:470
 #, fuzzy
@@ -40580,7 +40517,7 @@ msgstr "Daily repetition"
 #: lib/models/calendar/CalendarDate.class.php:476
 #, php-format
 msgid "Jeden %1$u. Tag (%2$u Termine)"
-msgstr ""
+msgstr "Every %1$u day (%2$u dates)"
 
 #: lib/models/calendar/CalendarDate.class.php:482
 #, fuzzy, php-format
@@ -40590,7 +40527,7 @@ msgstr "Every %s in %s"
 #: lib/models/calendar/CalendarDate.class.php:488
 #, php-format
 msgid "Jeden %u. Tag ohne Begrenzung"
-msgstr ""
+msgstr "Every %u day never ending"
 
 #: lib/models/calendar/CalendarDate.class.php:507
 #, fuzzy, php-format
@@ -40612,12 +40549,12 @@ msgstr "Every %s in %s"
 #: lib/models/calendar/CalendarDate.class.php:531
 #, php-format
 msgid "Jeden %s ohne Begrenzung"
-msgstr ""
+msgstr "Every %s never ending"
 
 #: lib/models/calendar/CalendarDate.class.php:539
 #, php-format
 msgid "Jeden %1$u. %2$s (%3$u Termine)"
-msgstr ""
+msgstr "Every %1$u %2$s (%3$u dates)"
 
 #: lib/models/calendar/CalendarDate.class.php:546
 #, fuzzy, php-format
@@ -40627,17 +40564,17 @@ msgstr "%1$d. week, from %2$s to %3$s"
 #: lib/models/calendar/CalendarDate.class.php:553
 #, php-format
 msgid "Jeden %1$u. %2$s ohne Begrenzung"
-msgstr ""
+msgstr "Every %1$u. %2$s never ending"
 
 #: lib/models/calendar/CalendarDate.class.php:566
 #, php-format
 msgid "Jeden Monat am letzten %s"
-msgstr ""
+msgstr "Every month on the last %s"
 
 #: lib/models/calendar/CalendarDate.class.php:572
 #, php-format
 msgid "Jeden Monat am %1$u. %2$s"
-msgstr ""
+msgstr "Every month on the %1$u. %2$s"
 
 #: lib/models/calendar/CalendarDate.class.php:580
 #, fuzzy, php-format
@@ -40647,7 +40584,7 @@ msgstr "Every %s. day"
 #: lib/models/calendar/CalendarDate.class.php:590
 #, php-format
 msgid "Jeden %1$u. Monat am letzten %2$s"
-msgstr ""
+msgstr "Evety %1$u. month on the last %2$s"
 
 #: lib/models/calendar/CalendarDate.class.php:597
 #, php-format
@@ -41251,7 +41188,7 @@ msgstr "Tutors"
 
 #: lib/extern/ExternPagePersBrowse.php:89
 msgid "Dozenten/Dozentinnen"
-msgstr ""
+msgstr "Lecturers"
 
 #: lib/extern/ExternPagePersBrowse.php:90
 #, fuzzy
