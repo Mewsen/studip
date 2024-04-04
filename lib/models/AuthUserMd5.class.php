@@ -27,6 +27,7 @@
  * @property string|null $lock_comment database column
  * @property string|null $locked_by database column
  * @property string $visible database column
+ * @property string|null $matriculation_number database column
  */
 
 class AuthUserMd5 extends SimpleORMap

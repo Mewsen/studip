@@ -15,6 +15,11 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  * @since       5.5
+ *
+ * @property int $id alias column for faq_id
+ * @property int $faq_id database column
+ * @property I18NString $title database column
+ * @property I18NString $description database column
 */
 class LoginFaq extends SimpleORMap
 {

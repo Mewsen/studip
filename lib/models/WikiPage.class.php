@@ -11,23 +11,27 @@
  * @author    mlunzena
  * @copyright (c) Authors
  *
- * @property array $id alias for pk
- * @property string $course_id database column
- * @property string|null $user_id database column
+ * @property int $id alias column for page_id
+ * @property int $page_id database column
+ * @property string $range_id database column
  * @property string $name database column
- * @property string $content database column
- * @property string|null $ancestor database column
- * @property int|null $chdate database column
- * @property int $version database column
- * @property int|null $mkdate database column
- * @property User|null $user belongs_to User
+ * @property string|null $content database column
+ * @property int|null $parent_id database column
+ * @property string $read_permission database column
+ * @property string $write_permission database column
+ * @property string $user_id database column
+ * @property int|null $locked_since database column
+ * @property string|null $locked_by_user_id database column
+ * @property int $chdate database column
+ * @property int $mkdate database column
+ * @property SimpleORMapCollection|WikiVersion[] $versions has_many WikiVersion
+ * @property SimpleORMapCollection|WikiOnlineEditingUser[] $onlineeditingusers has_many WikiOnlineEditingUser
+ * @property User $user belongs_to User
  * @property Course $course belongs_to Course
- * @property WikiVersion[]|SimpleORMapCollection $versions
- * @property WikiOnlineEditingUser[]|SimpleORMapCollection $onlineeditingusers
- * @property-read WikiPage $parent additional field
- * @property-read WikiPage[] $children additional field
- * @property-read WikiVersion|null $predecessor additional field
- * @property-read int $versionnumber additional field
+ * @property-read mixed $parent additional field
+ * @property-read mixed $children additional field
+ * @property-read mixed $predecessor additional field
+ * @property-read mixed $versionnumber additional field
  */
 class WikiPage extends SimpleORMap implements PrivacyObject
 {

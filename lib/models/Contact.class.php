@@ -9,13 +9,12 @@
  * @property array $id alias for pk
  * @property string $owner_id database column
  * @property string $user_id database column
+ * @property int $mkdate database column
+ * @property int $chdate database column
  * @property string $calendar_permissions database column
- *     An enum with the possible values "", "READ" and "WRITE".
- *     The empty string specifies that no calendar permissions are granted.
+ * @property SimpleORMapCollection|ContactGroupItem[] $groups has_many ContactGroupItem
  * @property User $owner belongs_to User
  * @property User $friend belongs_to User
- * @property string $mkdate database column
- * @property string $chdate database column
  */
 class Contact extends SimpleORMap
 {

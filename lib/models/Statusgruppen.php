@@ -42,7 +42,7 @@
  * @property BlubberStatusgruppeThread $blubberthread has_one BlubberStatusgruppeThread
  * @property SimpleORMapCollection|CourseDate[] $dates has_and_belongs_to_many CourseDate
  * @property mixed $children additional field
- * @property-read Range|null $range
+ * @property-read mixed $range additional field
  */
 class Statusgruppen extends SimpleORMap implements PrivacyObject
 {
