@@ -7,11 +7,13 @@ RUN apt update && apt install -y  --no-install-recommends \
     lsb-release \
     zip \
     tar \
+    libwebp-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install php extensions
 RUN docker-php-ext-configure gd --with-png-dir=/usr/include/ \
-                                --with-jpeg-dir=/usr/include/
+                                --with-jpeg-dir=/usr/include/ \
+                                --with-webp-dir=/usr/include/
 RUN docker-php-ext-install pdo gettext curl gd mbstring zip pdo pdo_mysql mysqli intl json
 
 # Install npm using nvm
