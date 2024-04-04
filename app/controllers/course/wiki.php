@@ -282,11 +282,18 @@ class Course_WikiController extends AuthenticatedController
 
     public function allpages_action()
     {
-        Navigation::activateItem('/course/wiki/allpages');
         $this->pages = WikiPage::findBySQL(
             "`range_id` = ? ORDER BY `name` ASC",
             [$this->range->id]
         );
+
+        if (count($this->pages) === 0) {
+            $this->redirect($this->pageURL());
+            return;
+        }
+
+        Navigation::activateItem('/course/wiki/allpages');
+
         if ($GLOBALS['perm']->have_studip_perm('tutor', $this->range->id)) {
             $actions = new ActionsWidget();
             $actions->addLink(
