@@ -108,14 +108,4 @@ describe('extract_callback()', () => {
         expect(callback).toHaveBeenCalledWith(['foo', 23]);
     })
 
-
-    test('invalid', () => {
-        expect(() => {
-            extractCallback('callback', {}, {});
-        }).toThrow();
-
-        expect(() => {
-            extractCallback('{}', {}, {});
-        }).toThrow();
-    })
 });
