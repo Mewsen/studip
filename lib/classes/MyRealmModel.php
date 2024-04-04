@@ -283,7 +283,7 @@ class MyRealmModel
     public static function getPreparedCourses($sem = '', $params = [])
     {
         $semesters   = self::getSelectedSemesters($sem);
-        $current_semester_nr = Semester::getIndexById(@Semester::findCurrent()->id);
+        $current_semester_nr = Semester::getIndexById(Semester::findCurrent()->id ?? null);
         $min_sem_key = min($semesters);
         $max_sem_key = max($semesters);
         $group_field = $params['group_field'];
@@ -334,7 +334,7 @@ class MyRealmModel
             $_course['visitdate']      = $visits[$course->id][0]['visitdate'];
             $_course['user_status']    = $user_status;
             $_course['gruppe']         = !$is_deputy ? $member_ships[$course->id]['gruppe'] ?? null : ($deputy ? $deputy->gruppe : null);
-            $_course['sem_number_end'] = $course->isOpenEnded() ? $max_sem_key : Semester::getIndexById($course->end_semester->id);
+            $_course['sem_number_end'] = $course->isOpenEnded() ? $max_sem_key : Semester::getIndexById($course->end_semester->id ?? null);
             $_course['sem_number']     = Semester::getIndexById($course->start_semester->id);
             $_course['tools']          = $course->tools;
             $_course['name']           = $course->name;
