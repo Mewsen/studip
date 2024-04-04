@@ -199,7 +199,7 @@ abstract class ContainerType
             foreach ($section['blocks'] as &$block) {
                 $block = $block_map[$block] ?? null;
             }
-            $section['blocks'] = array_filter($section['blocks']);
+            $section['blocks'] = array_values(array_filter($section['blocks']));
         }
 
         return $payload;

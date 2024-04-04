@@ -192,7 +192,7 @@ class Text extends BlockType
 
             }
 
-            return array();
+            return null;
         });
     }
 }
