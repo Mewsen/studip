@@ -110,17 +110,7 @@ class Search_CoursesController extends AuthenticatedController
         }
 
         $sidebar->addWidget(new VueWidget('search-widget'));
+        $sidebar->addWidget(new VueWidget('views-widget'));
         $sidebar->addWidget(new VueWidget('export-widget'));
-
-        $views = new ViewsWidget();
-        $views->addLink(
-            _('Als Liste'),
-            $this->url_for('search/courses', array_merge($params, ['show_as' => 'list']))
-        )->setActive($this->show_as === 'list');
-        $views->addLink(
-            _('Als Tabelle'),
-            $this->url_for('search/courses', array_merge($params, ['show_as' => 'table']))
-        )->setActive($this->show_as === 'table');
-        $sidebar->addWidget($views);
     }
 }

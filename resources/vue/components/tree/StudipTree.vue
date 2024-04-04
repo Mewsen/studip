@@ -33,6 +33,11 @@
         <MountingPortal v-if="withSearch" mountTo="#search-widget" name="sidebar-search">
             <search-widget v-if="currentNode" :min-length="3" ref="searchWidget"></search-widget>
         </MountingPortal>
+        <MountingPortal v-if="!editable && !isSearching && !isLoading && currentNode"
+                        mountTo="#views-widget"
+                        name="sidebar-views">
+            <studip-tree-view-widget :config="viewConfig" />
+        </MountingPortal>
     </div>
 </template>
 
@@ -41,6 +46,7 @@ import axios from 'axios';
 import { TreeMixin } from '../../mixins/TreeMixin';
 import StudipProgressIndicator from '../StudipProgressIndicator.vue';
 import SearchWidget from '../SearchWidget.vue';
+import StudipTreeViewWidget from './StudipTreeViewWidget.vue';
 import StudipTreeList from './StudipTreeList.vue';
 import StudipTreeTable from './StudipTreeTable.vue';
 import StudipTreeNode from './StudipTreeNode.vue';
@@ -49,7 +55,13 @@ import TreeSearchResult from './TreeSearchResult.vue';
 export default {
     name: 'StudipTree',
     components: {
-        TreeSearchResult, SearchWidget, StudipProgressIndicator, StudipTreeList, StudipTreeTable, StudipTreeNode
+        TreeSearchResult,
+        SearchWidget,
+        StudipTreeViewWidget,
+        StudipProgressIndicator,
+        StudipTreeList,
+        StudipTreeTable,
+        StudipTreeNode
     },
     mixins: [ TreeMixin ],
     props: {
@@ -163,12 +175,19 @@ export default {
             isLoading: false,
             showStructuralNavigation: false,
             searchConfig: {},
-            isSearching: false
+            isSearching: false,
+            viewConfig: null
         }
     },
     methods: {
         changeCurrentNode(node) {
             this.currentNode = node;
+            this.viewConfig = {
+                view: this.viewType,
+                node: this.currentNode,
+                semester: this.semester,
+                semClass: this.semClass
+            };
             this.$nextTick(() => {
                 document.getElementById('tree-breadcrumb-' + node.attributes.id)?.focus();
             });
@@ -206,6 +225,12 @@ export default {
             this.currentNode = this.startNode;
             this.loaded = true;
             this.isLoading = false;
+            this.viewConfig = {
+                view: this.viewType,
+                node: this.currentNode,
+                semester: this.semester,
+                semClass: this.semClass
+            };
         });
 
         axios.interceptors.request.eject(loadingIndicator);
