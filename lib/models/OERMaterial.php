@@ -172,7 +172,7 @@ class OERMaterial extends SimpleORMap
                     $host->fetchRemoteSearch($text, $tag);
                 }
             }
-            StudipCacheFactory::getCache()->read($cache_name, "1", 60);
+            StudipCacheFactory::getCache()->write($cache_name, "1", 60);
         }
     }
 
