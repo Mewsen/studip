@@ -630,7 +630,9 @@ class Course_RoomRequestsController extends AuthenticatedController
 
             //Store the properties:
             foreach ($_SESSION[$request_id]['selected_properties'] as $name => $state) {
-                $this->request->setProperty($name, $state);
+                if (!empty($state)) {
+                    $this->request->setProperty($name, $state);
+                }
             }
 
             // once stored, we can delete the session data for this request
