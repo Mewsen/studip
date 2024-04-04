@@ -100,6 +100,20 @@ class UnitsCreate extends JsonApiController
             'commentable' => 0
         ]);
 
+        \Courseware\Container::create([
+            'structural_element_id' => $struct->id,
+            'owner_id'              => $user->id,
+            'editor_id'             => $user->id,
+            'edit_blocker_id'       => '',
+            'position'              => 0,
+            'container_type'        => 'list',
+
+            'payload' => json_encode([
+                'colspan' => 'full',
+                'sections' => [['name' => _('erstes Element'), 'icon' => '','blocks' => []]]
+            ]),
+        ]);
+
         $unit = \Courseware\Unit::create([
             'range_id' => $range->getRangeId(),
             'range_type' => $range->getRangeType(),
