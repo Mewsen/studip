@@ -1,4 +1,4 @@
-image: studip/studip:tests-php8.2
+image: studip/studip:tests-php8.3
 
 variables:
   FF_NETWORK_PER_BUILD: 1

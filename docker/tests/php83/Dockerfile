@@ -1,5 +1,5 @@
 # Setup php, apache and stud.ip
-FROM php:8.2-cli
+FROM php:8.3-cli
 
 # Install system requirements
 RUN apt update && apt install -y  --no-install-recommends \
