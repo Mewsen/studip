@@ -660,7 +660,7 @@ class Calendar_CalendarController extends AuthenticatedController
     public function add_courses_action()
     {
         $selected_semester_pseudo_id = Request::option('semester_id');
-        $this->selected_semesters_id = '';
+        $this->selected_semester_id = '';
         $this->available_semester_data = [];
         $semesters = Semester::getAll();
         foreach ($semesters as $semester) {
@@ -691,8 +691,9 @@ class Calendar_CalendarController extends AuthenticatedController
             $this->selected_semester_id = $semester->id;
         } else {
             $this->selected_semester_id = $selected_semester_pseudo_id ?? '';
-            if (!Semester::exists($this->selected_semesters_id)) {
-                $this->selected_semester_id = '';
+            if (!Semester::exists($this->selected_semester_id)) {
+                $semester = Semester::findCurrent();
+                $this->selected_semester_id = $semester->id;
             }
         }
 
