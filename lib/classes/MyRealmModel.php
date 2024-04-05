@@ -788,7 +788,7 @@ class MyRealmModel
         foreach ($sem_courses as $sem_key => $collection) {
             $_tmp_courses[$sem_key] = [];
             foreach ($collection as $course) {
-                $modules = Course::getMVVModulesForCourseId($course['seminar_id']);
+                $modules = Course::getMVVModulesForCourseId($course['seminar_id'], ['genehmigt']);
                 if ($modules) {
                     $modules = array_map(function (Modul $module) {
                         return $module->getDisplayName();
