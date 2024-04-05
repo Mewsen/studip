@@ -28,17 +28,14 @@ done
 
 sh $STUDIP/.gitlab/scripts/install_db.sh
 
-if [ ! -z $AUTO_MIGRATE ]; then
-    echo "Migrate Instance"
-    # If migrate fails start instance anyway
-    php "$STUDIP/cli/studip migrate" || true
-    echo "Migration finished"
-fi
+echo "Migrate Instance"
+# If migrate fails start instance anyway
+php "$STUDIP/cli/studip migrate" || true
+echo "Migration finished"
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
-	set -- apache2-foreground "$@"
+    set -- apache2-foreground "$@"
 fi
 
 exec "$@"
-
