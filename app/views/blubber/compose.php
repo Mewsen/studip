@@ -70,7 +70,7 @@
                     <?= Icon::create('search')->asImg(['class' => 'text-bottom']) ?>
                 </a>
                 <a href="" onClick="$('#blubber_contacts').val(null).trigger('change'); return false;">
-                    <?= Icon::create('decline',)->asImg(['class' => "text-bottom"]) ?>
+                    <?= Icon::create('decline')->asImg(['class' => "text-bottom"]) ?>
                 </a>
             </div>
         <? endif ?>
