@@ -56,7 +56,7 @@ export default {
         if (!this.value.description) {
             this.$emit('input', {
                 multiplechoice: 1,
-                options: ['', '', '', '']
+                options: ['', '', '', ''],
             });
         }
         this.$refs.autofocus.focus();

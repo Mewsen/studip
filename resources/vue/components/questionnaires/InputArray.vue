@@ -19,16 +19,16 @@
                 <button class="as-link"
                    :title="$gettext('Option löschen')"
                    @click.prevent="askForDeletingOption(index)">
-                    <studip-icon shape="trash" role="clickable" :size="20" alt=""></studip-icon>
-                </button>
-                <button v-if="index == options.length - 1"
-                   class="as-link"
-                   :title="$gettext('Option hinzufügen')"
-                   @click.prevent="addOption">
-                    <studip-icon shape="add" role="clickable" :size="20" alt=""></studip-icon>
+                    <studip-icon shape="trash" :role="options.length > 1 ? 'clickable' : 'inactive'" :size="20" alt=""></studip-icon>
                 </button>
             </li>
         </draggable>
+
+        <button class="as-link"
+                :title="$gettext('Option hinzufügen')"
+                @click.prevent="addOption">
+            <studip-icon shape="add" :size="20" alt=""></studip-icon>
+        </button>
 
         <studip-dialog
             v-if="askForDeleting"
@@ -90,6 +90,10 @@ export default {
             });
         },
         askForDeletingOption: function (index) {
+            if (this.options.length <= 1) {
+                return;
+            }
+
             this.indexOfDeletingOption = index;
             if (this.value[index]) {
                 this.askForDeleting = true;
@@ -175,3 +179,28 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+.input-array {
+    display: grid;
+    grid-template-areas:
+        "sr sr"
+        "options button";
+    grid-template-columns: calc(100% - 24px) 24px;
+    grid-template-rows: auto;
+
+    > .sr-only {
+        grid-area: sr;
+    }
+
+    > .options {
+        grid-area: options;
+    }
+
+    > button.as-link {
+        align-self: end;
+        grid-area: button;
+        justify-self: left;
+        margin-bottom: 8px;
+    }
+}
+</style>
