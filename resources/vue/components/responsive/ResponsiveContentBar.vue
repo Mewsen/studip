@@ -131,7 +131,11 @@ export default {
                             .classList.add('contentbar-wrapper-right');
                     }
 
-                    document.getElementById('responsive-contentbar-container').prepend(this.realContentbar);
+                    const contentbarContainer = document.getElementById('responsive-contentbar-container');
+
+                    contentbarContainer.prepend(this.realContentbar);
+
+                    document.getElementById('content-wrapper').style.marginTop = `${contentbarContainer.clientHeight}px`;
                 } else {
                     this.realContentbar.id = 'contentbar';
                     document.getElementById('toggle-sidebar').remove();
@@ -145,6 +149,8 @@ export default {
                     }
 
                     document.querySelector(this.realContentbarSource).prepend(this.realContentbar);
+
+                    document.getElementById('content-wrapper').style.marginTop = 'initial';
                 }
             }
         },
