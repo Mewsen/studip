@@ -142,12 +142,15 @@ class ModulesNotification
             }
         }
         if (count($news)) {
-            $auth_plugin = User::find($user_id)->auth_plugin;
+            $user = User::find($user_id);
+            $auth_plugin = $user->auth_plugin;
             if (!is_a('StudipAuth' . ucfirst($auth_plugin), 'StudipAuthSSO', true)) {
                 $auth_plugin = null;
             }
             $template = $GLOBALS['template_factory']->open('mail/notification_html');
             $template->set_attribute('lang', getUserLanguagePath($user_id));
+            $template->set_attribute('rec_fullname', $user->getFullname('full'));
+            $template->set_attribute('rec_username', $user->username);
             $template->set_attribute('news', $news);
             $template->set_attribute('sso', $auth_plugin);
 

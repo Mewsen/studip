@@ -183,7 +183,7 @@ class messaging
         if ($snd_user_id != "____%system%____") {
             $sender = User::find($snd_user_id);
 
-            $snd_fullname = $sender->getFullName();
+            $snd_fullname = $sender->getFullName() . ' (' . $sender->username . ')';
             $reply_to = $sender->Email;
         }
         $attachments = [];
@@ -198,8 +198,8 @@ class messaging
         $template->set_attribute('message', kill_format($message));
         $template->set_attribute('rec_fullname', $rec_fullname);
         $template->set_attribute('rec_email', $to);
+        $template->set_attribute('snd_email', $reply_to);
         if (isset($snd_fullname)) {
-            $template->set_attribute('snd_email', $reply_to);
             $template->set_attribute('snd_fullname', $snd_fullname);
         }
         if ($attachments_as_links) {
@@ -211,9 +211,10 @@ class messaging
         $template->set_attribute('lang', getUserLanguagePath($rec_user_id));
         $template->set_attribute('message', $message);
         $template->set_attribute('rec_fullname', $rec_fullname);
+        $template->set_attribute('rec_username', $receiver->username);
         $template->set_attribute('rec_email', $to);
+        $template->set_attribute('snd_email', $reply_to);
         if (isset($snd_fullname)) {
-            $template->set_attribute('snd_email', $reply_to);
             $template->set_attribute('snd_fullname', $snd_fullname);
         }
         if ($attachments_as_links) {
@@ -296,8 +297,6 @@ class messaging
             // system-signatur
             $snd_user_id = '____%system%____';
             setTempLanguage();
-            $message .= $this->sig_string;
-            $message .= _('Diese Nachricht wurde automatisch vom Stud.IP-System generiert. Sie können darauf nicht antworten.');
 
             restoreLanguage();
         }
@@ -306,11 +305,19 @@ class messaging
         $query = "INSERT INTO message (message_id, autor_id, subject, message, show_adressees, priority, mkdate)
                   VALUES (?, ?, ?, ?, ?, ?, UNIX_TIMESTAMP())";
         $statement = DBManager::get()->prepare($query);
+
+        $internal_message = $message;
+
+        if ($snd_user_id === '____%system%____') {
+            $internal_message .= $this->sig_string . ' ' .
+                _('Diese Nachricht wurde automatisch vom Stud.IP-System generiert. Sie können darauf nicht antworten.');
+        }
+
         $statement->execute([
             $tmp_message_id,
             $snd_user_id,
             $subject,
-            $message,
+            $internal_message,
             (int) $show_adressees,
             $priority,
         ]);
