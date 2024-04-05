@@ -135,7 +135,7 @@ class BlubberController extends AuthenticatedController
                     'user_id' => $user_id,
                 ]);
             }
-            $this->redirect("blubber/index/{$blubber->getId()}");
+            $this->relocate("blubber/index/{$blubber->getId()}");
             return;
         }
 
@@ -271,13 +271,12 @@ class BlubberController extends AuthenticatedController
 
         $output = [];
         foreach ($_FILES as $file) {
-            $newfile = null; //is filled below
             $file_ref = null; //is also filled below
 
             if ($file['size']) {
                 $document['user_id'] = $GLOBALS['user']->id;
-                $document['filesize'] = $file['size'];
-
+                $success = false;
+                $url = '';
                 try {
                     $root_dir = Folder::findTopFolder($GLOBALS['user']->id);
                     $root_dir = $root_dir->getTypedFolder();
@@ -339,7 +338,6 @@ class BlubberController extends AuthenticatedController
                     }
                 } catch (Exception $e) {
                     $output['errors'][] = $e->getMessage();
-                    $success = false;
                 }
 
                 if ($success) {
@@ -373,21 +371,22 @@ class BlubberController extends AuthenticatedController
         }
         PageLayout::setTitle(_('Person hinzufügen'));
         if (Request::isPost() && Request::option('user_id')) {
-            $query = "INSERT IGNORE INTO blubber_mentions
-                      SET thread_id = :thread_id,
-                          user_id = :user_id,
-                          external_contact = 0,
-                          mkdate = UNIX_TIMESTAMP()";
-            $statement = DBManager::get()->prepare($query);
-            $statement->execute([
-                'thread_id' => $thread_id,
-                'user_id' => Request::option('user_id'),
-            ]);
-            $this->response->add_header('X-Dialog-Execute', 'STUDIP.Blubber.refreshThread');
-            $this->response->add_header('X-Dialog-Close', '1');
-            $this->render_json([
-                'thread_id' => $thread_id,
-            ]);
+            $data = [
+                'user_id'          => Request::option('user_id'),
+                'thread_id'        => $thread_id,
+                'external_contact' => 0,
+            ];
+
+            $blubber_mention = BlubberMention::findOneBySQL('user_id = ? AND thread_id = ?', [Request::option('user_id'), $thread_id]);
+
+            if ($blubber_mention) {
+                $blubber_mention->setData($data);
+            } else {
+                $blubber_mention = BlubberMention::create($data);
+            }
+            $blubber_mention->store();
+            $this->relocate('blubber/index/' . $thread_id);
+            return;
         }
     }
 
@@ -408,13 +407,9 @@ class BlubberController extends AuthenticatedController
                 CourseAvatar::getAvatar($course->getId())->createFromUpload('avatar');
             }
 
-            $query = "SELECT user_id
-                      FROM blubber_mentions
-                      WHERE thread_id = ?";
-            $statement = DBManager::get()->prepare($query);
-            $statement->execute([$this->thread->id]);
-            foreach ($statement->fetchFirst() as $user_id) {
-                CourseMember::insertCourseMember($course->getId(), $user_id, $user_id === $this->thread['user_id'] ? 'dozent' : 'tutor');
+            $blubber_mentions = BlubberMention::findBySQL('thread_id = ?', [$this->thread->id]);
+            foreach ($blubber_mentions as $blubber_mention) {
+                CourseMember::insertCourseMember($course->getId(), $blubber_mention->user_id, $blubber_mention->user_id === $this->thread['user_id'] ? 'dozent' : 'tutor');
             }
 
             $this->thread['context_type'] = 'course';
@@ -430,7 +425,7 @@ class BlubberController extends AuthenticatedController
                 true
             );
 
-            PageLayout::postSuccess(sprintf(_("Studiengruppe '%s' wurde angelegt."), htmlReady($course['name'])));
+            PageLayout::postSuccess(sprintf(_('Studiengruppe "%s" wurde angelegt.'), htmlReady($course['name'])));
             $this->redirect(URLHelper::getURL('seminar_main.php', ['auswahl' => $course->getId()]));
         }
     }

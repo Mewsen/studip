@@ -642,15 +642,12 @@
 }
 
 
-form.default {
-    .blubber_composer_select_container {
-        input, select, .container {
-            width: calc(100% - 50px);
-            display: inline-block;
-        }
+.blubber_composer_select_container {
+    input, select, .container {
+        width: 90%;
+        display: inline-block;
     }
 }
-
 .float_right {
     float: right;
 }
