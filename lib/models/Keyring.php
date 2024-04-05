@@ -100,14 +100,21 @@ class Keyring extends SimpleORMap
                 //No key present or base or exponent missing.
                 return null;
             }
+            var_dump($content['e']);
+            var_dump(strtr($content['e'], '-_', '+/'));
+            var_dump(base64_decode(strtr($content['e'], '-_', '+/')));
+            var_dump($content['n']);
+            var_dump(strtr($content['n'], '-_', '+/'));
+            var_dump(base64_decode(strtr($content['n'], '-_', '+/')));
 
-            $loaded_key = \phpseclib3\Crypt\PublicKeyLoader::loadPublicKey(
+            $loaded_key = \phpseclib3\Crypt\RSA::loadPublicKey(
                 [
                     'e' => new \phpseclib3\Math\BigInteger(base64_decode(strtr($content['e'], '-_', '+/'))),
                     'n' => new \phpseclib3\Math\BigInteger(base64_decode(strtr($content['n'], '-_', '+/')))
                 ]
             );
             $keyring->public_key = $loaded_key->toString('PKCS8');
+            var_dump($keyring->public_key);die();
         }
         return $keyring;
     }
