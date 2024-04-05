@@ -26,7 +26,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-06 13:24+0100\n"
-"PO-Revision-Date: 2024-03-06 12:40+0000\n"
+"PO-Revision-Date: 2024-04-05 15:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-2/en/>\n"
@@ -6980,7 +6980,6 @@ msgid "Der Fragebogen ist nicht kopierbar."
 msgstr "The questionnaire cannot be copied."
 
 #: app/controllers/questionnaire.php:216
-#, fuzzy
 msgid "Kopie"
 msgstr "Copy"
 
@@ -15808,9 +15807,8 @@ msgstr "None of the selected bookings could be copied!"
 #: app/controllers/room_management/planning.php:1124
 #: lib/navigation/ResourceNavigation.php:157
 #: lib/navigation/ResourceNavigation.php:197
-#, fuzzy
 msgid "Buchungsübersicht mit Kommentaren"
-msgstr "Bookings with comments"
+msgstr "Booking overview with comments"
 
 #: app/controllers/room_management/planning.php:1157
 msgid "Export für Word"
