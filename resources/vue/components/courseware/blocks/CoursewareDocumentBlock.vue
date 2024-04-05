@@ -131,8 +131,8 @@
                                     </button>
                                     <select v-model="currentScale" :aria-label="$gettext('Zoom')" @change="updateZoom">
                                         <option v-show="false" :value="currentScale">{{ formattedZoom }}%</option>
-                                        <option v-for="(value, index) in scaleValues" :key="index" :value="value">
-                                            {{ value * 100 }}%
+                                        <option v-for="(value, index) in scaleValues" :key="index" :value="value.scale">
+                                            {{ value.name }}
                                         </option>
                                     </select>
                                 </div>
@@ -305,7 +305,7 @@ export default {
             pdfAnnotationLayer: null,
             pdfAnnotation: false,
             pdfRotate: 0,
-            PdfViewer: null,
+            pdfViewer: null,
             pdfEventBus: null,
             pdfLinkService: null,
             pdfFindController: null,
@@ -322,8 +322,8 @@ export default {
             pageNum: 1,
             pageCount: 0,
             scale: 1,
+            baseScale: 1,
             currentScale: 1,
-            scaleValues: [0.5, 1, 1.5, 2, 3, 4],
             file: null,
 
             srMessage: '',
@@ -361,10 +361,23 @@ export default {
         formattedZoom() {
             return Number.parseInt(this.scale * 100, 10);
         },
+        scaleValues() {
+            const defaultValues = [
+                { name: '25%', scale: 0.25 },
+                { name: '50%', scale: 0.5 },
+                { name: '75%', scale: 0.75 },
+                { name: '100%', scale: 1.0 },
+                { name: '150%', scale: 1.5 },
+                { name: '200%', scale: 2.0 },
+                { name: '300%', scale: 3.0 },
+            ];
+
+            return defaultValues.concat([{ name: this.$gettext('volle Breite'), scale: this.baseScale }]);
+        },
     },
     watch: {
         scale(newValue) {
-            let overflow = newValue > 1 ? 'auto' : 'hidden';
+            let overflow = newValue > this.baseScale ? 'auto' : 'hidden';
             let container = this.$refs.container;
             container.style.overflow = overflow;
             this.currentScale = newValue;
@@ -473,9 +486,12 @@ export default {
                     .getPage(parseInt(view.pageNum))
                     .then((pdfPage) => {
                         view.pdfPage = pdfPage;
+                        const width = outerContainer.offsetWidth;
+                        view.baseScale = (width / pdfPage.view[2] / 1.33).toFixed(2);
+                        view.scale = view.baseScale;
                         // Creating the page view with default parameters.
                         let defaultViewport = pdfPage.getViewport({
-                            scale: 1.35,
+                            scale: 1.0,
                         });
 
                         view.pdfBasePage = new PDFViewer({
@@ -512,8 +528,6 @@ export default {
                         view.pdfViewer.setPdfPage(view.pdfPage);
                         // Set LinkService viewer
                         view.pdfLinkService.setViewer(view.pdfViewer);
-                        // Set outer container height
-                        outerContainer.style.height = container.offsetHeight + 'px';
                         view.renderPage();
                     })
                     .catch((err) => {
@@ -610,12 +624,12 @@ export default {
             this.updateSrMessage(this.$gettext('gedreht'));
         },
         zoomIn() {
-            this.scale = this.scale < 4 ? (this.scale * 10 + 1) / 10 : this.scale;
+            this.scale = this.scale < 4 ? ((this.scale * 10 + 1) / 10).toFixed(1) : this.scale;
             this.renderPage();
             this.updateSrMessage(this.$gettext('vergrößert'));
         },
         zoomOut() {
-            this.scale = this.scale > 0.1 ? (this.scale * 10 - 1) / 10 : this.scale;
+            this.scale = this.scale > 0.1 ? ((this.scale * 10 - 1) / 10).toFixed(1) : this.scale;
             this.renderPage();
             this.updateSrMessage(this.$gettext('verkleinert'));
         },
