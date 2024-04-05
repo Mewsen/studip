@@ -31,7 +31,7 @@ sh $STUDIP/.gitlab/scripts/install_db.sh
 if [ ! -z $AUTO_MIGRATE ]; then
     echo "Migrate Instance"
     # If migrate fails start instance anyway
-    php "$STUDIP/cli/studip migrate" || true
+    php "$STUDIP/cli/studip" migrate || true
     echo "Migration finished"
 fi
 
