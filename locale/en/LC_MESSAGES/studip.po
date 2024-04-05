@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-06 13:16+0100\n"
-"PO-Revision-Date: 2024-04-04 15:20+0000\n"
+"PO-Revision-Date: 2024-04-06 15:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-5/en/>\n"
@@ -16959,7 +16959,7 @@ msgstr "Telephone"
 #: app/controllers/accessibility/forms.php:103
 #: app/controllers/accessibility/forms.php:104
 msgid "Dieses Feld nicht ausfüllen"
-msgstr ""
+msgstr "Do not fill this field"
 
 #: app/controllers/accessibility/forms.php:113
 msgid ""
@@ -18898,7 +18898,7 @@ msgstr "Also mark the free dates in the calendar"
 #: app/views/consultation/admin/edit.php:64
 msgid ""
 "Tutor/innen beim Versand von Buchungsbenachrichtigungen berücksichtigen?"
-msgstr ""
+msgstr "Regard tutors when sending booking notifications?"
 
 #: app/views/consultation/admin/create.php:211
 #: app/views/consultation/admin/edit.php:71
@@ -24237,7 +24237,7 @@ msgstr "Page title"
 
 #: app/views/siteinfo/new.php:47 app/views/siteinfo/edit.php:46
 msgid "Entwurfsmodus (nur sichtbar für root)"
-msgstr ""
+msgstr "Draft mode (only visible for root)"
 
 #: app/views/siteinfo/new.php:52 app/views/siteinfo/edit.php:51
 #, fuzzy
@@ -26295,7 +26295,7 @@ msgstr "Transfer groups"
 #: app/views/course/gradebook/lecturers/edit_ilias_definition.php:17
 #: app/views/course/gradebook/lecturers/new_ilias_definition.php:23
 msgid "Bestanden/nicht bestanden übertragen"
-msgstr ""
+msgstr "Submit passed/not passed"
 
 #: app/views/course/gradebook/lecturers/weights.php:2
 #: app/views/course/gradebook/lecturers/index.php:73
@@ -27037,7 +27037,7 @@ msgstr "Search results for %s"
 #: app/views/course/wiki/search.php:85
 #, php-format
 msgid "Treffer in alten Namen: %s"
-msgstr ""
+msgstr "Match in old names: %s"
 
 #: app/views/course/wiki/search.php:92
 #, fuzzy
@@ -27130,7 +27130,7 @@ msgstr "Leave"
 
 #: app/views/course/wiki/edit.php:49
 msgid "Beantragen Sie, dass Sie den Text jetzt bearbeiten wollen."
-msgstr ""
+msgstr "Request that you want to edit the text now."
 
 #: app/views/course/wiki/edit.php:51
 #, fuzzy
@@ -27139,7 +27139,7 @@ msgstr "Abort modification"
 
 #: app/views/course/wiki/page.php:26
 msgid "Dieses Wiki ist noch leer. Erstellen Sie die erste Wiki-Seite."
-msgstr ""
+msgstr "This wiki is still empty. Create the first wiki page."
 
 #: app/views/course/wiki/page.php:36 templates/wiki/show.php:8
 msgid "Mach die Welt ein Stückchen schlauer."
@@ -28880,7 +28880,7 @@ msgstr "Display all study areas"
 
 #: app/views/settings/calendar.php:58
 msgid "Nur Montag bis Freitag in der Wochenansicht anzeigen."
-msgstr ""
+msgstr "Only show monday until friday in the week view."
 
 #: app/views/settings/calendar.php:64
 msgid "Einzelterminkalender"
@@ -28893,7 +28893,7 @@ msgstr "Starting time of day view and week view"
 #: app/views/settings/calendar.php:72 app/views/settings/calendar.php:83
 #, php-format
 msgid "%02u:00 Uhr"
-msgstr ""
+msgstr "%02u:00"
 
 #: app/views/settings/calendar.php:80
 msgid "Endzeit der Tages- und Wochenansicht"
@@ -32933,7 +32933,7 @@ msgstr "Can have sub-courses"
 
 #: app/views/admin/sem_classes/details.php:205
 msgid "Unbegrenzte Laufzeit verbieten"
-msgstr ""
+msgstr "Forbid unlimited duration"
 
 #: app/views/admin/sem_classes/details.php:209
 msgid "Kurzer Beschreibungstext zum Anlegen einer Veranstaltung"
@@ -33601,7 +33601,7 @@ msgstr "Name of configuration"
 #: app/views/institute/extern/info.php:23
 #, php-format
 msgid "durch %s"
-msgstr ""
+msgstr "by %s"
 
 #: app/views/institute/extern/info.php:22
 #, fuzzy
@@ -34172,7 +34172,7 @@ msgstr "Download booking list"
 #: app/views/calendar/date/move.php:1 app/views/calendar/date/delete.php:7
 msgid ""
 "Es handelt sich um einen Termin in einer Terminserie. Was möchten Sie tun?"
-msgstr ""
+msgstr "This is a date in a date series. What do you want to do?"
 
 #: app/views/calendar/date/move.php:9
 msgid "Der Termin soll aus der Terminserie herausgelöst werden."
@@ -40496,9 +40496,8 @@ msgid "Kalendereinträge"
 msgstr "Calendar entries"
 
 #: lib/models/calendar/CalendarDate.class.php:454
-#, fuzzy
 msgid "Keine Wiederholung"
-msgstr "Repetition"
+msgstr "No repetition"
 
 #: lib/models/calendar/CalendarDate.class.php:461
 #, fuzzy, php-format
@@ -40508,7 +40507,7 @@ msgstr "additional dates"
 #: lib/models/calendar/CalendarDate.class.php:466
 #, php-format
 msgid "Täglich bis zum %1$s"
-msgstr ""
+msgstr "Daily until %1$s"
 
 #: lib/models/calendar/CalendarDate.class.php:470
 #, fuzzy
@@ -40518,7 +40517,7 @@ msgstr "Daily repetition"
 #: lib/models/calendar/CalendarDate.class.php:476
 #, php-format
 msgid "Jeden %1$u. Tag (%2$u Termine)"
-msgstr ""
+msgstr "Every %1$u day (%2$u dates)"
 
 #: lib/models/calendar/CalendarDate.class.php:482
 #, fuzzy, php-format
@@ -40528,7 +40527,7 @@ msgstr "Every %s in %s"
 #: lib/models/calendar/CalendarDate.class.php:488
 #, php-format
 msgid "Jeden %u. Tag ohne Begrenzung"
-msgstr ""
+msgstr "Every %u day never ending"
 
 #: lib/models/calendar/CalendarDate.class.php:507
 #, fuzzy, php-format
@@ -40550,12 +40549,12 @@ msgstr "Every %s in %s"
 #: lib/models/calendar/CalendarDate.class.php:531
 #, php-format
 msgid "Jeden %s ohne Begrenzung"
-msgstr ""
+msgstr "Every %s never ending"
 
 #: lib/models/calendar/CalendarDate.class.php:539
 #, php-format
 msgid "Jeden %1$u. %2$s (%3$u Termine)"
-msgstr ""
+msgstr "Every %1$u %2$s (%3$u dates)"
 
 #: lib/models/calendar/CalendarDate.class.php:546
 #, fuzzy, php-format
@@ -40565,17 +40564,17 @@ msgstr "%1$d. week, from %2$s to %3$s"
 #: lib/models/calendar/CalendarDate.class.php:553
 #, php-format
 msgid "Jeden %1$u. %2$s ohne Begrenzung"
-msgstr ""
+msgstr "Every %1$u. %2$s never ending"
 
 #: lib/models/calendar/CalendarDate.class.php:566
 #, php-format
 msgid "Jeden Monat am letzten %s"
-msgstr ""
+msgstr "Every month on the last %s"
 
 #: lib/models/calendar/CalendarDate.class.php:572
 #, php-format
 msgid "Jeden Monat am %1$u. %2$s"
-msgstr ""
+msgstr "Every month on the %1$u. %2$s"
 
 #: lib/models/calendar/CalendarDate.class.php:580
 #, fuzzy, php-format
@@ -40585,7 +40584,7 @@ msgstr "Every %s. day"
 #: lib/models/calendar/CalendarDate.class.php:590
 #, php-format
 msgid "Jeden %1$u. Monat am letzten %2$s"
-msgstr ""
+msgstr "Evety %1$u. month on the last %2$s"
 
 #: lib/models/calendar/CalendarDate.class.php:597
 #, php-format
@@ -41189,7 +41188,7 @@ msgstr "Tutors"
 
 #: lib/extern/ExternPagePersBrowse.php:89
 msgid "Dozenten/Dozentinnen"
-msgstr ""
+msgstr "Lecturers"
 
 #: lib/extern/ExternPagePersBrowse.php:90
 #, fuzzy
