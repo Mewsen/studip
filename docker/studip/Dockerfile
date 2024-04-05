@@ -59,5 +59,6 @@ COPY ./docker/studip/docker-entrypoint.sh /usr/local/bin/
 RUN chmod u+x /usr/local/bin/docker-entrypoint.sh
 
 # Set start parameters
+ENV AUTO_MIGRATE 1
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["apache2-foreground"]
