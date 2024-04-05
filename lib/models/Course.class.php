@@ -299,19 +299,27 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
     /**
      * Returns the associated mvv modules for a given course id.
      *
-     * @param string $course_id
+     * @param string     $course_id
+     * @param array|null $statusses Limit the results by a given module status
      * @return Modul[]
      */
-    public static function getMVVModulesForCourseId(string $course_id): array
+    public static function getMVVModulesForCourseId(string $course_id, ?array $statusses = null): array
     {
         $query = "SELECT mvv_modul.*
                   FROM mvv_lvgruppe_seminar
-                  JOIN `mvv_lvgruppe` on(`mvv_lvgruppe_seminar`.`lvgruppe_id` = `mvv_lvgruppe`.`lvgruppe_id`)
-                  JOIN `mvv_lvgruppe_modulteil` on(`mvv_lvgruppe_seminar`.`lvgruppe_id` = `mvv_lvgruppe_modulteil`.`lvgruppe_id`)
-                  JOIN `mvv_modulteil` on(`mvv_lvgruppe_modulteil`.`modulteil_id` = `mvv_modulteil`.`modulteil_id`)
-                  JOIN `mvv_modul` on(`mvv_modulteil`.`modul_id` = `mvv_modul`.`modul_id`)
+                  JOIN `mvv_lvgruppe` ON (`mvv_lvgruppe_seminar`.`lvgruppe_id` = `mvv_lvgruppe`.`lvgruppe_id`)
+                  JOIN `mvv_lvgruppe_modulteil` ON (`mvv_lvgruppe_seminar`.`lvgruppe_id` = `mvv_lvgruppe_modulteil`.`lvgruppe_id`)
+                  JOIN `mvv_modulteil` ON (`mvv_lvgruppe_modulteil`.`modulteil_id` = `mvv_modulteil`.`modulteil_id`)
+                  JOIN `mvv_modul` ON (`mvv_modulteil`.`modul_id` = `mvv_modul`.`modul_id`)
                   WHERE seminar_id = ?";
-        return DBManager::get()->fetchAll($query, [$course_id], function ($row) {
+        $parameters = [$course_id];
+
+        if ($statusses !== null) {
+            $query .= ' AND `mvv_modul`.`stat` IN (?)';
+            $parameters[] = $statusses;
+        }
+
+        return DBManager::get()->fetchAll($query, $parameters, function ($row) {
             return Modul::buildExisting($row);
         });
     }

@@ -190,7 +190,7 @@ class MyCoursesController extends AuthenticatedController
                            LEFT JOIN `mvv_lvgruppe` AS ml ON (mls.`lvgruppe_id` = ml.`lvgruppe_id`)
                            LEFT JOIN `mvv_lvgruppe_modulteil` AS mlm on(mls.`lvgruppe_id` = mlm.`lvgruppe_id`)
                            LEFT JOIN `mvv_modulteil` AS mmt ON (mlm.`modulteil_id` = mmt.`modulteil_id`)
-                           LEFT JOIN `mvv_modul` AS mm ON (mmt.`modul_id` = mm.`modul_id`)";
+                           LEFT JOIN `mvv_modul` AS mm ON (mmt.`modul_id` = mm.`modul_id` AND mm.`stat` = 'genehmigt')";
 
         }
 
