@@ -3520,6 +3520,7 @@ d o c u m e n t  b l o c k
     .cw-pdf-outer-container {
         position: relative;
         width: 100%;
+        overflow: hidden;
 
         .cw-pdf-content {
             display: flex;
