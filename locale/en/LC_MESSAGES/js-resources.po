@@ -2,15 +2,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-10-18 15:49+0000\n"
+"PO-Revision-Date: 2024-04-06 15:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-4-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-4-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.2\n"
+"X-Generator: Weblate 5.3.1\n"
 "Generated-By: easygettext\n"
 
 #: resources/assets/javascripts/lib/multi_person_search.js:71
@@ -537,9 +537,8 @@ msgid "Alle Kategorien"
 msgstr "All categories"
 
 #: resources/vue/components/FilesTable.vue:201
-#, fuzzy
 msgid "Alle Ordner und Dateien auswählen"
-msgstr "Select all students"
+msgstr "Select all folders and files"
 
 #: resources/assets/javascripts/bootstrap/raumzeit.js:114
 msgid "Alle Räume anzeigen"
@@ -737,9 +736,8 @@ msgid "Aufgabe abgegeben"
 msgstr "Submit task"
 
 #: resources/vue/components/courseware/CoursewareDashboardTasks.vue:78
-#, fuzzy
 msgid "Aufgabe bearbeiten"
-msgstr "Edit data"
+msgstr "Edit task"
 
 #: resources/vue/mixins/courseware/task-helper.js:14
 msgid "Aufgabe bereit"
@@ -1543,9 +1541,8 @@ msgid "Datei"
 msgstr "File"
 
 #: resources/vue/components/FilesTable.vue:154
-#, fuzzy
 msgid "Datei %{name} auswählen"
-msgstr "Select data field"
+msgstr "Select file %{name}"
 
 #: resources/vue/components/courseware/CoursewareShelfDialogImport.vue:69
 msgid "Datei ändern"
@@ -1696,6 +1693,8 @@ msgid ""
 "Der Ordnertyp wurde nach der Erstellung des Blocks geändert! Bitte "
 "überprüfen Sie die Einstellungen."
 msgstr ""
+"The folder type has been changed after the creation of the block! Please "
+"check the settings."
 
 #: resources/vue/mixins/courseware/oermessage.js:17
 msgid "Der Vorschlag wurde verschickt."
@@ -5565,7 +5564,7 @@ msgstr "Search for …"
 
 #: resources/vue/components/tree/TreeSearchResult.vue:30
 msgid "Suche nach dem Begriff \"%{ term }\""
-msgstr ""
+msgstr "Search for the term \"%{ term }\""
 
 #: resources/vue/components/SearchWithFilter.vue:60
 #: resources/vue/components/StudipMultiPersonSearch.vue:33
@@ -5617,7 +5616,7 @@ msgstr "Reset search form"
 #: resources/vue/components/courseware/CoursewareAccordionContainer.vue:176
 #: resources/vue/components/courseware/CoursewareTabsContainer.vue:171
 msgid "Symbol"
-msgstr ""
+msgstr "Symbol"
 
 #: resources/vue/components/courseware/CoursewareTabsContainer.vue:221
 msgid "Tab hinzufügen"
