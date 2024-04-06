@@ -1,19 +1,19 @@
-# Moritz Strohm <strohm@data-quest.de>, 2022, 2023.
+# Moritz Strohm <strohm@data-quest.de>, 2022, 2023, 2024.
 # Till Glöggler <tgloeggl@uos.de>, 2023.
 # Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023.
 # Ron Lucke <lucke@elan-ev.de>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-10-19 15:29+0000\n"
+"PO-Revision-Date: 2024-04-06 15:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-3-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-3-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.2\n"
+"X-Generator: Weblate 5.3.1\n"
 "Generated-By: easygettext\n"
 
 #: resources/assets/javascripts/lib/multi_person_search.js:71
@@ -430,9 +430,8 @@ msgid "Alle hinzufügen"
 msgstr "Add all"
 
 #: resources/vue/components/FilesTable.vue:203
-#, fuzzy
 msgid "Alle Ordner und Dateien auswählen"
-msgstr "Select all students"
+msgstr "Select all folders and files"
 
 #: resources/assets/javascripts/bootstrap/raumzeit.js:114
 msgid "Alle Räume anzeigen"
@@ -616,9 +615,8 @@ msgid "Aufgabe abgegeben"
 msgstr "Submit task"
 
 #: resources/vue/components/courseware/CoursewareDashboardTasks.vue:78
-#, fuzzy
 msgid "Aufgabe bearbeiten"
-msgstr "Task ready"
+msgstr "Edit task"
 
 #: resources/vue/mixins/courseware/task-helper.js:14
 msgid "Aufgabe bereit"
@@ -1330,9 +1328,8 @@ msgid "Datei"
 msgstr "File"
 
 #: resources/vue/components/FilesTable.vue:154
-#, fuzzy
 msgid "Datei %{name} auswählen"
-msgstr "Select data field"
+msgstr "Select file %{name}"
 
 #: resources/vue/components/courseware/CoursewareShelfDialogImport.vue:69
 msgid "Datei ändern"
@@ -1490,6 +1487,8 @@ msgid ""
 "Der Ordnertyp wurde nach der Erstellung des Blocks geändert! Bitte "
 "überprüfen Sie die Einstellungen."
 msgstr ""
+"The folder type has been changed after the creation of the block! Please "
+"check the settings."
 
 #: resources/vue/mixins/courseware/oermessage.js:17
 msgid "Der Vorschlag wurde verschickt."
@@ -4652,7 +4651,6 @@ msgstr "Link pages"
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:66
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:398
-#, fuzzy
 msgid "Seiteneinstellungen"
 msgstr "Page settings"
 
@@ -5034,7 +5032,7 @@ msgstr "Close search results"
 #: resources/vue/components/courseware/CoursewareAccordionContainer.vue:178
 #: resources/vue/components/courseware/CoursewareTabsContainer.vue:173
 msgid "Symbol"
-msgstr ""
+msgstr "Symbol"
 
 #: resources/vue/components/courseware/CoursewareTabsContainer.vue:223
 msgid "Tab hinzufügen"
