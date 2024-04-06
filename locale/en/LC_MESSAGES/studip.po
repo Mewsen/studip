@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-06 13:22+0100\n"
-"PO-Revision-Date: 2024-03-07 13:29+0000\n"
+"PO-Revision-Date: 2024-04-06 15:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-4/en/>\n"
@@ -1691,19 +1691,16 @@ msgid "Veranstaltungskategorie"
 msgstr "Course category"
 
 #: app/controllers/search/courses.php:117
-#, fuzzy
 msgid "Als Liste"
-msgstr "List"
+msgstr "As list"
 
 #: app/controllers/search/courses.php:121
-#, fuzzy
 msgid "Als Tabelle"
-msgstr "Table"
+msgstr "As table"
 
 #: app/controllers/oer/endpoints.php:328
-#, fuzzy
 msgid "Die gewünschte Datei konnte nicht gefunden werden."
-msgstr "The selected operation could not be executed."
+msgstr "The requested file could not be found."
 
 #: app/controllers/oer/admin.php:30
 msgid "Ihr PHP hat kein aktiviertes cURL-Modul."
@@ -7029,7 +7026,6 @@ msgid "Der Fragebogen ist nicht kopierbar."
 msgstr "The questionnaire cannot be copied."
 
 #: app/controllers/questionnaire.php:207
-#, fuzzy
 msgid "Kopie"
 msgstr "Copy"
 
@@ -16065,9 +16061,8 @@ msgstr "None of the selected bookings could be copied!"
 #: app/controllers/room_management/planning.php:1134
 #: lib/navigation/ResourceNavigation.php:157
 #: lib/navigation/ResourceNavigation.php:197
-#, fuzzy
 msgid "Buchungsübersicht mit Kommentaren"
-msgstr "Bookings with comments"
+msgstr "Booking overview with comments"
 
 #: app/controllers/room_management/planning.php:1153
 msgid "Export für Word"
@@ -16751,7 +16746,7 @@ msgstr "Telephone"
 #: app/controllers/accessibility/forms.php:103
 #: app/controllers/accessibility/forms.php:104
 msgid "Dieses Feld nicht ausfüllen"
-msgstr ""
+msgstr "Do not fill this field"
 
 #: app/controllers/accessibility/forms.php:113
 msgid ""
