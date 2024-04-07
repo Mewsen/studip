@@ -17,7 +17,7 @@ class DIContainer
     /**
      * Get the globally available instance of the container.
      *
-     * @return static
+     * @return ContainerInterface
      */
     public static function getInstance()
     {
