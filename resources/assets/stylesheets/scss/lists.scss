@@ -22,8 +22,12 @@ ol {
             content: ",";
         }
 
-        &:last-child::after {
-            content: unset;
+        &:last-child {
+            padding-right: 0;
+
+            &::after {
+                content: unset;
+            }
         }
     }
 
