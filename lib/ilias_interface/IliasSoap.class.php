@@ -961,13 +961,9 @@ class IliasSoap extends StudipSoapClient
      */
     function getUserFullname($user_id)
     {
-        $param = [
-                        'sid' => $this->getSID(),
-                        'user_id'         => $user_id,
-        ];
-        $result = $this->call('getUser', $param); // returns user data array
-        $objects = $result;
-        return trim(sprintf('%s %s %s', $result['title'], $result['firstname'], $result['lastname']));
+        $result = $this->getUser($user_id);
+
+        return !empty($result) ? trim(sprintf('%s %s %s', $result['title'], $result['firstname'], $result['lastname'])) : '';
     }
 
     /**
