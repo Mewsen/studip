@@ -532,6 +532,15 @@ class Course_WikiController extends AuthenticatedController
 
         $page->content = \Studip\Markup::markAsHtml(trim(Request::get('content')));
         $page->store();
+        $user = User::findCurrent();
+        $pageData = [
+            'page_id' => $page->id,
+            'user_id' => $user->id
+        ];
+        WikiOnlineEditingUser::deleteBySQL(
+            '`page_id` = :page_id AND `user_id` = :user_id',
+            $pageData
+        );
         PageLayout::postSuccess(_('Die Seite wurde gespeichert.'));
         $this->redirect($this->pageURL($page));
     }
