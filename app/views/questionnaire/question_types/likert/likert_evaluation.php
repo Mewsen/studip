@@ -35,6 +35,7 @@ $options = $vote->questiondata['options'];
                 </td>
 
                 <? foreach($options as $option_index => $option) : ?>
+                <? if ($countAnswers) : ?>
                     <?
                     $hits = 0;
                     $names = [];
@@ -46,7 +47,7 @@ $options = $vote->questiondata['options'];
                             }
                         }
                     }
-                    $color = 'hsl(0 0% '.round(70 + (30 * (1 - ($hits / $countAnswers ?? 1)) )).'%)';
+                    $color = 'hsl(0 0% '.round(70 + (30 * (1 - ($hits / $countAnswers)) )).'%)';
                     ?>
                     <td style="background-color: <?= $color ?>;" <?= count($names) > 0 ? 'title="'.htmlReady(implode(', ', $names)).'"' : ''?>>
                         <? if ($filtered !== null && $filtered == $key.'_'.$option_index) : ?>
@@ -64,6 +65,11 @@ $options = $vote->questiondata['options'];
                             </a>
                         <? endif ?>
                     </td>
+                <? else : ?>
+                    <td>
+                        0%
+                    </td>
+                <? endif ?>
                 <? endforeach ?>
             </tr>
         <? endforeach ?>
