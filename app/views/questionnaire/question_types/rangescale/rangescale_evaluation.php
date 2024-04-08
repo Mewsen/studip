@@ -34,6 +34,7 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
             </td>
 
             <? foreach($options as $option) : ?>
+            <? if ($countAnswers) : ?>
                 <?
                 $hits = 0;
                 $names = [];
@@ -45,7 +46,7 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
                         }
                     }
                 }
-                $color = 'hsl(0 0% '.round(70 + (30 * (1 - ($hits / $countAnswers ?? 1)) )).'%)';
+                $color = 'hsl(0 0% '.round(70 + (30 * (1 - ($hits / $countAnswers)) )).'%)';
                 ?>
                 <td style="background-color: <?= $color ?>;" style="white-space: nowrap;"<?= count($names) > 0 ? 'title="'.htmlReady(implode(', ', $names)).'"' : ''?>>
                     <? if ($filtered !== null && $filtered == ($key.'_'.$option)) : ?>
@@ -63,6 +64,11 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
                         </a>
                     <? endif ?>
                 </td>
+            <? else : ?>
+                <td>
+                    0%
+                </td>
+            <? endif ?>
             <? endforeach ?>
         </tr>
     <? endforeach ?>
