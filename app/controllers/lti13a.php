@@ -1,10 +1,21 @@
 <?php
 
 
-class Lti13aController extends AuthenticatedController
+class Lti13aController extends StudipController
 {
     use Studip\OAuth2\NegotiatesWithPsr7;
 
+
+    public function before_filter(&$action, &$args)
+    {
+        $this->allow_nobody = false;
+        $this->with_session = true;
+        if ($action === 'jwks') {
+            $this->allow_nobody = true;
+            $this->with_session = false;
+        }
+        parent::before_filter($action, $args);
+    }
 
     public function oidc_init_action()
     {
