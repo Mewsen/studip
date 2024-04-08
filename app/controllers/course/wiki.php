@@ -117,8 +117,9 @@ class Course_WikiController extends AuthenticatedController
         $startPage = WikiPage::find($this->range->getConfiguration()->WIKI_STARTPAGE_ID);
         $this->contentbar = ContentBar::get()
             ->setTOC(CoreWiki::getTOC($this->page))
-            ->setIcon(Icon::create('wiki'))
-            ->setInfo(sprintf(
+            ->setIcon(Icon::create('wiki'));
+        if (!$this->page->isNew()) {
+            $this->contentbar->setInfo(sprintf(
                 _('Version %1$s, geändert von %2$s <br> am %3$s'),
                 $this->page->versionnumber,
                 sprintf(
@@ -128,33 +129,35 @@ class Course_WikiController extends AuthenticatedController
                 ),
                 date('d.m.Y H:i:s', $this->page['chdate'])
             ));
-        $action_menu = ActionMenu::get();
-        if ($this->page->isEditable()) {
+            $action_menu = ActionMenu::get();
+            if ($this->page->isEditable()) {
+                $action_menu->addLink(
+                    $this->editURL($this->page),
+                    _('Bearbeiten'),
+                    Icon::create('edit')
+                );
+                $action_menu->addLink(
+                    $this->pagesettingsURL($this->page->id),
+                    _('Seiteneinstellungen'),
+                    Icon::create('settings'),
+                    ['data-dialog' => 'width=700']
+                );
+                $action_menu->addButton(
+                    'delete',
+                    _('Seite löschen'),
+                    Icon::create('trash'),
+                    ['data-confirm' => _('Wollen Sie wirklich die komplette Seite löschen?'), 'form' => 'delete_page']
+                );
+            }
             $action_menu->addLink(
-                $this->editURL($this->page),
-                _('Bearbeiten'),
-                Icon::create('edit')
+                '#',
+                _('Als Vollbild anzeigen'),
+                Icon::create('screen-full'),
+                ['class' => 'fullscreen-trigger hidden-medium-down']
             );
-            $action_menu->addLink(
-                $this->pagesettingsURL($this->page->id),
-                _('Seiteneinstellungen'),
-                Icon::create('settings'),
-                ['data-dialog' => 'width=700']
-            );
-            $action_menu->addButton(
-                'delete',
-                _('Seite löschen'),
-                Icon::create('trash'),
-                ['data-confirm' => _('Wollen Sie wirklich die komplette Seite löschen?'), 'form' => 'delete_page']
-            );
+            $this->contentbar->setActionMenu($action_menu);
         }
-        $action_menu->addLink(
-            '#',
-            _('Als Vollbild anzeigen'),
-            Icon::create('screen-full'),
-            ['class' => 'fullscreen-trigger hidden-medium-down']
-        );
-        $this->contentbar->setActionMenu($action_menu);
+
     }
 
     public function pagesettings_action(WikiPage $page)
