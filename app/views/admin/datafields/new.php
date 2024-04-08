@@ -35,7 +35,7 @@ use Studip\Button, Studip\LinkButton;
             <?= _('Veranstaltungskategorie') ?>
         <? elseif ($object_typ === 'inst'): ?>
             <?= _('Einrichtungstyp') ?>
-        <? elseif ($object_typ === 'moduldeskriptor' || $object_type === 'modulteildeskriptor') : ?>
+        <? elseif ($object_typ === 'moduldeskriptor' || $object_typ === 'modulteildeskriptor') : ?>
             <?= _('Sprache') ?>
         <? elseif ($object_typ === 'studycourse'): ?>
             <?= _('Typ/Abschnitt') ?>
