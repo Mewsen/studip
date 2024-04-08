@@ -55,36 +55,39 @@
             <td>
             <?
                 $authors = [$page->user_id => $page->user];
+                $versions = [$page];
                 $oldcontent = "";
                 $oldversion = $page;
                 while ($oldversion = $oldversion->predecessor) {
                     if ($oldversion->mkdate >= $last_visit && $oldversion->user_id !== User::findCurrent()->id) {
                         $oldcontent = $oldversion->content;
                         if (!isset($authors[$oldversion->user_id])) {
+                            $versions[] = $oldversion;
                             $authors[$oldversion->user_id] = $oldversion->user;
                         }
                     } else {
                         break;
                     }
                 }
+                $oldcontent = $oldversion->content;
                 $oldcontent = strip_tags(wikiReady($oldcontent));
                 $content = strip_tags(wikiReady($page->content));
 
                 $commonFromStart = $controller->findLongestCommonSubstring($content, $oldcontent);
                 $commonFromEnd = $controller->findLongestCommonSubstring($content, $oldcontent, true);
 
-                $content = mb_substr($content, $commonFromStart, $commonFromEnd);
-                $oldcontent = mb_substr($oldcontent, $commonFromStart, $commonFromEnd);
+                $oldcontent = mb_substr($oldcontent, $commonFromStart, mb_strlen($oldcontent) - mb_strlen($content));
+                $content = mb_substr($content, $commonFromStart, $commonFromEnd - $commonFromStart);
                 if ($content) {
                     echo htmlReady(mila($content, 300), true, true);
                 } elseif ($oldcontent) {
-                    echo _('Gelöscht') . ': ' . htmlReady($oldcontent, true, true);
+                    echo _('Gelöscht') . ': ' . htmlReady(mila($oldcontent, 300), true, true);
                 }
             ?>
             </td>
             <td>
                 <ul class="wiki_authors">
-                <? foreach ($authors as $user) : ?>
+                <? foreach ($authors as $user_id => $user) : ?>
                     <li>
                     <? if ($user): ?>
                         <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $user->username]) ?>"
@@ -95,6 +98,15 @@
                     <? else: ?>
                         <?= _('unbekannt') ?>
                     <? endif; ?>
+                    <? foreach ($versions as $version) : ?>
+                        <? if ($version->user_id === $user_id) : ?>
+                            <a href="<?= $controller->versiondiff($page, is_a($version, 'WikiVersion') ? $version->id : null) ?>"
+                               title="<?= _('Einzelne Änderung anzeigen') ?>"
+                               data-dialog>
+                                <?= Icon::create('log')->asImg(['class' => 'text-bottom']) ?>
+                            </a>
+                        <? endif ?>
+                   <? endforeach ?>
                     </li>
                 <? endforeach ?>
                 </ul>
