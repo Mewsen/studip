@@ -126,7 +126,8 @@ class ModulesNotification
             $navigation = MyRealmModel::getAdditionalNavigations($seminar_id, $s_data, null, $user_id, $visit_data[$seminar_id]);
             $n_data = [];
             foreach ($this->registered_notification_modules as $id => $m_data) {
-                if (in_array($id, $s_data['notification'])
+                if (
+                    in_array($id, $s_data['notification'])
                     && isset($navigation[$id])
                     && $navigation[$id]->getImage()
                     && $navigation[$id]->getImage()->getRole() === Icon::ROLE_ATTENTION
@@ -168,14 +169,14 @@ class ModulesNotification
         $base_url = URLHelper::setBaseURL('');
         URLHelper::setBaseURl($base_url);
         if ($nav instanceof Navigation && $nav->isVisible(true)) {
-                $url = 'seminar_main.php?again=yes&auswahl=' . $seminar_id . '&redirect_to=' . strtr($nav->getURL(), '?', '&');
-                $icon = $nav->getImage();
-                $text = $nav->getTitle();
-                if (!$text) {
-                    $text = $this->registered_notification_modules[$id]['name'];
-                }
-                $text .= ' - ' .  $nav->getLinkAttributes()['title'];
-                return compact('text', 'url', 'icon', 'seminar_id');
+            $url = 'seminar_main.php?again=yes&auswahl=' . $seminar_id . '&redirect_to=' . strtr($nav->getURL(), '?', '&');
+            $icon = $nav->getImage();
+            $text = $nav->getTitle();
+            if (!$text) {
+                $text = $this->registered_notification_modules[$id]['name'];
             }
+            $text .= ' - ' .  $nav->getLinkAttributes()['title'];
+            return compact('text', 'url', 'icon', 'seminar_id');
+        }
     }
 }

@@ -94,7 +94,7 @@
               <? foreach ($news as $sem_titel => $data) : ?>
                 <tr class="table_header_bold">
                   <td style="font-weight: bold;">
-                    <a href="<?= URLHelper::getLink('seminar_main.php', ['again' => 'yes', 'sso' => $sso, 'auswahl' => $data[0]['range_id']]) ?>">
+                    <a href="<?= URLHelper::getLink('seminar_main.php', ['again' => 'yes', 'sso' => $sso, 'auswahl' => $data[0]['seminar_id']]) ?>">
                       <?= htmlReady($sem_titel) ?>
                       <?= (($semester = Course::find($data[0]['range_id'])->semester_text) ? ' ('.$semester.')' : '') ?>
                     </a>
