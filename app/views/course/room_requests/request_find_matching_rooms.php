@@ -41,7 +41,7 @@
                             ]
                         ) ?>
 
-                            <? if ($category) : ?>
+                            <? if (!empty($category)) : ?>
                             <?= Icon::create('decline')->asInput(
                                 [
                                     'title' => _('alle Angaben zurücksetzen'),
