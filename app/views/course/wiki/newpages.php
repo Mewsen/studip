@@ -69,7 +69,9 @@
                         break;
                     }
                 }
-                $oldcontent = $oldversion->content;
+                if ($oldversion) {
+                    $oldcontent = $oldversion->content;
+                }
                 $oldcontent = strip_tags(wikiReady($oldcontent));
                 $content = strip_tags(wikiReady($page->content));
 

@@ -389,7 +389,7 @@ class Course_WikiController extends AuthenticatedController
             $this->redirect($this->editURL($page));
             return;
         }
-        if (!$page->isEditable()) {
+        if ($page->isNew() || !$page->isEditable()) {
             throw new AccessDeniedException();
         }
         Navigation::activateItem('/course/wiki/start');
