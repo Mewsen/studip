@@ -621,7 +621,7 @@ class CalendarScheduleModel
                     SET visible = 0
                     WHERE seminar_id = ? AND user_id = ? AND metadate_id = ?");
             } else {
-                $stmt = DBManager::get()->prepare("INSERT INTO schedule_seminare
+                $stmt = DBManager::get()->prepare("INSERT IGNORE INTO schedule_seminare
                     (seminar_id, user_id, metadate_id, visible)
                     VALUES(?, ?, ?, 0)");
             }
