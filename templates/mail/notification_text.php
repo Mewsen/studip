@@ -14,7 +14,7 @@
 <? foreach ($news as $sem_titel => $data) : ?>
 <?= sprintf(_("In der Veranstaltung \"%s\" gibt es folgende Neuigkeiten:"), $sem_titel) ?>
 
-<?= URLHelper::getURL('seminar_main.php', ['again' => 'yes', 'sso' => $sso, 'auswahl' => $data[0]['range_id']]) ?>
+<?= URLHelper::getURL('seminar_main.php', ['again' => 'yes', 'sso' => $sso, 'auswahl' => $data[0]['seminar_id']]) ?>
 
 
 <? foreach ($data as $module) : ?>
