@@ -11,11 +11,12 @@ RUN apt update && apt install -y --no-install-recommends \
         libonig-dev \
         libzip-dev \
         libicu-dev \
+        libwebp-dev \
         vim \
     && rm -rf /var/lib/apt/lists/*
 
 # Install php extensions
-RUN docker-php-ext-configure gd --with-jpeg
+RUN docker-php-ext-configure gd --with-jpeg --with-webp
 RUN docker-php-ext-install pdo gettext curl gd mbstring zip pdo pdo_mysql mysqli intl json
 
 FROM node:16 as nodejs
