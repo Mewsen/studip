@@ -246,7 +246,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     protected static function configure($config = [])
     {
-        $class = get_called_class();
+        $class = static::class;
 
         if (empty($config['db_table'])) {
             $config['db_table'] = strtolower($class);
@@ -459,8 +459,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     public static function find($id)
     {
-        $class = get_called_class();
-        $ref = new ReflectionClass($class);
+        $ref = new ReflectionClass(static::class);
         /** @var static $record */
         $record = $ref->newInstanceArgs(func_get_args());
         if (!$record->isNew()) {
@@ -480,9 +479,8 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     {
         $ret = false;
         $db_table = static::db_table();
-        $class = get_called_class();
-        $record = new $class();
-        call_user_func_array([$record, 'setId'], func_get_args());
+        $record = new static();
+        $record->setId(...func_get_args());
         $where_query = $record->getWhereQuery();
         if ($where_query) {
             $query = "SELECT 1 FROM `$db_table` WHERE "
@@ -521,8 +519,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     public static function create($data)
     {
-        $class = get_called_class();
-        $record = new $class();
+        $record = new static();
         $record->setData($data, false);
         if ($record->store()) {
             return $record;
@@ -540,9 +537,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     public static function build($data, $is_new = true)
     {
-        $class = get_called_class();
-        /** @var static $record */
-        $record = new $class();
+        $record = new static();
         $record->setData($data, !$is_new);
         $record->setNew($is_new);
         return $record;
@@ -570,7 +565,6 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     public static function import($data)
     {
-        $class = get_called_class();
         $record_data = [];
         $relation_data = [];
         foreach ($data as $key => $value) {
@@ -581,8 +575,8 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             }
         }
         $record = static::toObject($record_data);
-        if (!$record instanceof $class) {
-            $record = new $class();
+        if (!$record instanceof static) {
+            $record = new static();
             $record->setData($record_data, true);
         } else {
             $record->setData($record_data);
@@ -857,8 +851,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     public static function toObject($id_or_object)
     {
-        $class = get_called_class();
-        if ($id_or_object instanceof $class) {
+        if ($id_or_object instanceof static) {
             return $id_or_object;
         }
         if (is_array($id_or_object)) {
@@ -879,31 +872,31 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         } else {
             $id = $id_or_object;
         }
-        return call_user_func([$class, 'find'], $id);
+        return static::find($id);
     }
 
     /**
      * interceptor for static findByColumn / findEachByColumn / countByColumn /
      * deleteByColumn magic
+     *
      * @param string $name
      * @param array $arguments
      * @throws BadMethodCallException
      * @return int|static|static[]
      */
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic(string $name, array $arguments)
     {
         $db_table = static::db_table();
         $alias_fields = static::alias_fields();
         $db_fields = static::db_fields();
         $name = strtolower($name);
-        $class = get_called_class();
         $order = '';
         $param_arr = [];
         $where = '';
         $where_param = is_array($arguments[0]) ? $arguments[0] : [$arguments[0]];
-        $prefix = strstr($name, 'by', true);
-        $field = substr($name, strlen($prefix) + 2);
-        switch ($prefix) {
+        $action = strstr($name, 'by', true);
+        $field = substr($name, strlen($action) + 2);
+        switch ($action) {
             case 'findone':
                 $order = $arguments[1] ?? '';
                 $param_arr[0] =& $where;
@@ -929,19 +922,19 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             case 'delete':
                 $param_arr[0] =& $where;
                 $param_arr[1] = [$where_param];
-                $method = "{$prefix}bysql";
+                $method = "{$action}bysql";
                 break;
             default:
-                throw new BadMethodCallException("Method $class::$name not found");
+                throw new BadMethodCallException("Method " . static::class . "::$name not found");
         }
         if (isset($alias_fields[$field])) {
             $field = $alias_fields[$field];
         }
         if (isset($db_fields[$field])) {
             $where = "`$db_table`.`$field` IN(?) " . $order;
-            return call_user_func_array([$class, $method], $param_arr);
+            return call_user_func_array([static::class, $method], $param_arr);
         }
-        throw new BadMethodCallException("Method $class::$name not found");
+        throw new BadMethodCallException("Method " . static::class . "::$name not found");
     }
 
     /**
