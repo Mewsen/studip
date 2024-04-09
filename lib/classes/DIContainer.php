@@ -47,7 +47,10 @@ class DIContainer
     {
         $builder = new ContainerBuilder();
         if (\Studip\ENV == 'production') {
-            $builder->enableCompilation($GLOBALS['TMP_PATH']);
+            $builder->enableCompilation(
+                self::getCompilationPath(),
+                self::getCompilationClass()
+            );
         }
         $builder->ignorePhpDocErrors(true);
         $builder->addDefinitions('lib/bootstrap-definitions.php');
@@ -59,5 +62,15 @@ class DIContainer
         $jsonapiDependencies($builder);
 
         return $builder;
+    }
+
+    public static function getCompilationPath(): string
+    {
+        return $GLOBALS['TMP_PATH'];
+    }
+
+    public static function getCompilationClass(): string
+    {
+        return 'CompiledContainer';
     }
 }
