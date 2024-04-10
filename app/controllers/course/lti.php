@@ -287,7 +287,12 @@ class Course_LtiController extends StudipController
                 'document_target' => Request::option('document_target', 'window')
             ];
 
-            if (!$this->deployment->isDirty() || $this->deployment->store()) {
+            $success = !$this->deployment->isDirty();
+            if (!$success) {
+                $success = $this->deployment->store();
+            }
+
+            if ($this->deployment->store()) {
                 PageLayout::postSuccess(_('Der Abschnitt wurde gespeichert.'));
                 if (Request::isDialog()) {
                     $this->response->add_header('X-Dialog-Close', '1');
