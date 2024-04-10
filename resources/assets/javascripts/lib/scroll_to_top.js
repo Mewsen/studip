@@ -4,9 +4,9 @@ let fold;
 let was_below_the_fold = false;
 
 const back_to_top = function(scrolltop) {
-    var is_below_the_fold = scrolltop > fold;
+    let is_below_the_fold = scrolltop > fold;
     if (is_below_the_fold !== was_below_the_fold) {
-        $('#scroll-to-top').toggleClass('hide', !is_below_the_fold);
+        document.getElementById('scroll-to-top').classList.toggle('hide', !is_below_the_fold);
         was_below_the_fold = is_below_the_fold;
     }
 };
@@ -23,15 +23,21 @@ const ScrollToTop = {
     },
     disable() {
         Scroll.removeHandler('header');
-        $('#scroll-to-top').addClass('hide');
+        document.getElementById('scroll-to-top').classList.add('hide');
     },
     moveBack() {
-        $('#scroll-to-top').on('click', function(e) {
-            $('html, body').stop().animate({
-                scrollTop: (0)
-            }, 1000, 'easeInOutExpo');
-            e.preventDefault();
+        document.getElementById('scroll-to-top').addEventListener('click', (evt)  => {
+            evt.preventDefault();
+            this.toTop();
         });
+        document.getElementById('scroll-to-top').addEventListener('keypress', (evt) => {
+            if (evt.code === 'Space') {
+                this.toTop();
+            }
+        });
+    },
+    toTop() {
+        window.scroll({top: 0, left: 0, behavior: 'smooth'});
     }
 };
 
