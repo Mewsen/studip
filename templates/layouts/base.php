@@ -94,7 +94,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
     </main>
     <!-- End main content -->
 
-    <a id="scroll-to-top" class="hide">
+    <a id="scroll-to-top" class="hide" tabindex="0" title="<?= _('Zurück zum Seitenanfang') ?>">
         <?= Icon::create('arr_1up', 'info_alt')->asImg(24, ['class' => '']) ?>
     </a>
 
