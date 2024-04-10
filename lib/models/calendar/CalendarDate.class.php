@@ -402,8 +402,8 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
         $sorm = self::findThru($storage->user_id, [
             'thru_table'        => 'calendar_date_assignments',
             'thru_key'          => 'range_id',
-            'thru_assoc_key'    => 'event_id',
-            'assoc_foreign_key' => 'event_id',
+            'thru_assoc_key'    => 'calendar_date_id',
+            'assoc_foreign_key' => 'id',
         ]);
         if ($sorm) {
             $field_data = [];
