@@ -2,7 +2,11 @@
     <span class="textlabel"><?= _('LTI Launch-URL') ?></span>
     <span class="asterisk">*</span>
     <input type="text" name="launch_url" required
-           value="<?= htmlReady($custom_launch_url ?? $tool->launch_url) ?>">
+           value="<?= htmlReady(
+               !empty($deployment->launch_url)
+                   ? $deployment->launch_url
+                   : $tool->launch_url ?? ''
+           ) ?>">
 </label>
 
 <div class="manual-tool-config">
@@ -94,5 +98,9 @@
 <label>
     <?= _('Zusätzliche LTI-Parameter') ?>
     <?= tooltipIcon(_('Ein Wert pro Zeile, Beispiel: Review:Chapter=1.2.56')) ?>
-    <textarea name="custom_parameters"><?= htmlReady($tool->custom_parameters ?? '') ?></textarea>
+    <textarea name="custom_parameters"><?= htmlReady(
+        !empty($deployment->options['custom_parameters'])
+            ? $deployment->options['custom_parameters']
+            : $tool->custom_parameters ?? ''
+        ) ?></textarea>
 </label>

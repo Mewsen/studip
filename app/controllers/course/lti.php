@@ -215,17 +215,19 @@ class Course_LtiController extends StudipController
                     $this->tool = new LtiTool();
                     $this->tool->is_global = '0'; //"Hey, this is private!" (moving hand away from body) "Mmmm!"
                 }
-                $this->tool->name             = $this->deployment->title;
-                $this->tool->launch_url       = trim(Request::get('launch_url'));
-                $this->tool->oidc_init_url    = trim(Request::get('oidc_init_url'));
-                $this->tool->jwks_url         = trim(Request::get('jwks_url'));
-                $this->tool->jwks_key_id      = trim(Request::get('jwks_key_id'));
-                $this->tool->deep_linking_url = trim(Request::get('deep_linking_url'));
-                $this->tool->consumer_key     = trim(Request::get('consumer_key'));
-                $this->tool->consumer_secret  = trim(Request::get('consumer_secret'));
-                $this->tool->send_lis_person  = Request::int('send_lis_person', 0);
+                $this->tool->name              = $this->deployment->title;
+                $this->tool->launch_url        = trim(Request::get('launch_url'));
+                $this->tool->oidc_init_url     = trim(Request::get('oidc_init_url'));
+                $this->tool->jwks_url          = trim(Request::get('jwks_url'));
+                $this->tool->jwks_key_id       = trim(Request::get('jwks_key_id'));
+                $this->tool->deep_linking_url  = trim(Request::get('deep_linking_url'));
+                $this->tool->consumer_key      = trim(Request::get('consumer_key'));
+                $this->tool->consumer_secret   = trim(Request::get('consumer_secret'));
+                $this->tool->send_lis_person   = Request::int('send_lis_person', 0);
                 $this->tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
-                $this->tool->lti_version      = Request::get('lti_version', '1.3a');
+                $this->tool->lti_version       = Request::get('lti_version', '1.3a');
+                $this->tool->custom_parameters = trim(Request::get('custom_parameters'));
+                $this->deployment->options     = [];
                 $errors = $this->tool->validate();
                 if ($errors) {
                     PageLayout::postError(
@@ -280,19 +282,18 @@ class Course_LtiController extends StudipController
                 //Set the (globally defined) LTI tool:
                 $this->deployment->tool_id = $new_tool_id;
                 $this->deployment->launch_url = trim(Request::get('launch_url'));
+                $this->deployment->options = [
+                    'custom_parameters' => trim(Request::get('custom_parameters')),
+                    'document_target' => Request::option('document_target', 'window')
+                ];
             }
-
-            $this->deployment->options = [
-                'custom_parameters' => trim(Request::get('custom_parameters')),
-                'document_target' => Request::option('document_target', 'window')
-            ];
 
             $success = !$this->deployment->isDirty();
             if (!$success) {
                 $success = $this->deployment->store();
             }
 
-            if ($this->deployment->store()) {
+            if ($success) {
                 PageLayout::postSuccess(_('Der Abschnitt wurde gespeichert.'));
                 if (Request::isDialog()) {
                     $this->response->add_header('X-Dialog-Close', '1');
