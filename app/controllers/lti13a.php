@@ -48,12 +48,14 @@ class Lti13aController extends StudipController
      */
     public function jwks_action()
     {
+        $repo = new \OAT\Library\Lti1p3Core\Security\Key\KeyChainRepository();
+        $keyring = Keyring::findOneBySQL("`range_type` = 'global' AND `range_id` = 'lti13a_platform'");
+        if ($keyring) {
+            $repo->addKeyChain($keyring->toKeyChain());
+        }
         $handler = new \OAT\Library\Lti1p3Core\Security\Jwks\Server\JwksRequestHandler(
-            new \OAT\Library\Lti1p3Core\Security\Jwks\Exporter\JwksExporter(
-                new Studip\LTI13a\KeyManager()
-            )
+            new \OAT\Library\Lti1p3Core\Security\Jwks\Exporter\JwksExporter($repo)
         );
-
         $response = $handler->handle('lti13a_platform');
         $this->renderPsrResponse($response);
     }
