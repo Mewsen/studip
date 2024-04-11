@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-06 13:16+0100\n"
-"PO-Revision-Date: 2024-04-11 13:32+0000\n"
+"PO-Revision-Date: 2024-04-11 14:44+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-5/en/>\n"
@@ -7338,9 +7338,8 @@ msgid "Dieser Name ist bereits vergeben."
 msgstr "This name is already in use."
 
 #: app/controllers/course/wiki.php:219 app/controllers/course/wiki.php:773
-#, fuzzy
 msgid "Übergeordnete Seite im Inhaltsverzeichnis"
-msgstr "Table of contents"
+msgstr "Superordinated page in the table of contents"
 
 #: app/controllers/course/wiki.php:224
 msgid "Lesezugriff für"
@@ -8760,9 +8759,8 @@ msgid "ILIAS"
 msgstr "ILIAS"
 
 #: app/controllers/course/gradebook/template_helpers.php:96
-#, fuzzy
 msgid "Test als Leistung hinzufügen"
-msgstr "Add a course"
+msgstr "Add test as achievement"
 
 #: app/controllers/course/gradebook/template_helpers.php:102
 msgid "Ergebnisse aus ILIAS importieren"
@@ -8826,14 +8824,12 @@ msgid "Die Leistung wurde gelöscht."
 msgstr "The achivement has been deleted."
 
 #: app/controllers/course/gradebook/lecturers.php:325
-#, fuzzy
 msgid "Es sind keine ILIAS-Tests als Leistungen definiert."
-msgstr "There are no manual achievements defined yet."
+msgstr "There are no ILIAS test defined as achievements."
 
 #: app/controllers/course/gradebook/lecturers.php:418
-#, fuzzy
 msgid "Die Leistung wurde erfolgreich aktualisiert."
-msgstr "The achievement has been defined successfully."
+msgstr "The achievement has been updated successfully."
 
 #: app/controllers/course/gradebook/lecturers.php:430
 #, php-format
@@ -8903,7 +8899,6 @@ msgid "Privatadresse"
 msgstr "Private address"
 
 #: app/controllers/course/statusgroups.php:319
-#, fuzzy
 msgid "Privatnr."
 msgstr "Home number"
 
@@ -16757,9 +16752,8 @@ msgstr[0] "A date has been imported."
 msgstr[1] "%u dates have been imported."
 
 #: app/controllers/calendar/calendar.php:859
-#, fuzzy
 msgid "Die Kalenderfreigaben wurden geändert."
-msgstr "Locking level changed."
+msgstr "The calendar share has been modified."
 
 #: app/controllers/calendar/calendar.php:871
 msgid "Die Adresse, unter der Ihre Termine abrufbar sind, wurde gelöscht"
@@ -18662,12 +18656,16 @@ msgid ""
 "Die Person, für die die Sprechstunden angezeigt werden sollen, ist nicht "
 "mehr vorhanden"
 msgstr ""
+"The person for which the consultation hours shall be displayed is not "
+"available anymore"
 
 #: app/views/consultation/not_found.php:9
 msgid ""
 "Das Objekt, für das die Sprechstunden angezeigt werden sollen, ist nicht "
 "mehr vorhanden"
 msgstr ""
+"The object for which the consultation hours shall be displayed is not "
+"available anymore"
 
 #: app/views/consultation/slot-bookings.php:19
 #: app/views/consultation/admin/ungrouped.php:214
@@ -26185,9 +26183,8 @@ msgid "Gewichtung"
 msgstr "Weighting"
 
 #: app/views/course/gradebook/lecturers/edit_ilias_definitions.php:7
-#, fuzzy
 msgid "ILIAS Leistungen definieren"
-msgstr "Define achievement"
+msgstr "Define ILIAS achievements"
 
 #: app/views/course/gradebook/lecturers/edit_ilias_definitions.php:13
 #: app/views/admin/domain/index.php:26
@@ -26207,14 +26204,12 @@ msgid "Wollen Sie die Leistungsdefinition wirklich löschen?"
 msgstr "Do you really want to delete the achievement definition?"
 
 #: app/views/course/gradebook/lecturers/edit_ilias_definitions.php:67
-#, fuzzy
 msgid "Weiteren Test als Leistung definieren"
-msgstr "Define more achievements"
+msgstr "Define another test as achievement"
 
 #: app/views/course/gradebook/lecturers/edit_ilias_definitions.php:67
-#, fuzzy
 msgid "Test als Leistung definieren"
-msgstr "Define achievement"
+msgstr "Define test as achievement"
 
 #: app/views/course/gradebook/lecturers/edit_ilias_definition.php:9
 #: app/views/course/gradebook/lecturers/edit_custom_definition.php:5
@@ -30280,9 +30275,8 @@ msgstr "Configuration for outputting courses"
 #: app/views/institute/extern/extern_config/persondetails.php:18
 #: app/views/institute/extern/extern_config/timetable.php:17
 #: app/views/institute/extern/extern_config/courses.php:17
-#, fuzzy
 msgid "Angaben zum Inhalt"
-msgstr "Information about HTML tag &lt;tr&gt;"
+msgstr "Information about the content"
 
 #: app/views/admin/extern/extern_config/persbrowse.php:22
 msgid "Rechtestufe in Einrichtungen"
@@ -33506,9 +33500,8 @@ msgid "Hilfe zur Konfiguration des Moduls \"%s\"."
 msgstr "Help for the configuration of the module \"%s\"."
 
 #: app/views/institute/extern/info.php:36
-#, fuzzy
 msgid "Informationen zur Verlinkung"
-msgstr "Request information"
+msgstr "Information on the link"
 
 #: app/views/institute/extern/info.php:40
 msgid "Direkter Link"
@@ -33540,7 +33533,7 @@ msgstr "Import configuration file"
 
 #: app/views/institute/extern/upload.php:17
 msgid "Ohne Angabe wird der Name aus den importierten Daten genommen."
-msgstr ""
+msgstr "Without information, the name of the imported file will be selected."
 
 #: app/views/institute/extern/upload.php:22
 msgid "Konfigurationsdatei"
@@ -33570,26 +33563,24 @@ msgid "Soll die Konfiguration \"%s\" gelöscht werden?"
 msgstr "Do you really want to delete the configuration \"%s\"?"
 
 #: app/views/institute/extern/extern_config/_basic_settings.php:40
-#, fuzzy
 msgid "Automatisches Umkodieren der Inhalte"
-msgstr "Manage automatic updates"
+msgstr "Automatic recoding of contents"
 
 #: app/views/institute/extern/extern_config/_basic_settings.php:43
-#, fuzzy
 msgid "Keine Umkodierung vornehmen"
-msgstr "No changes made."
+msgstr "Do not recode"
 
 #: app/views/institute/extern/extern_config/_basic_settings.php:44
 msgid "html-konform umkodieren"
-msgstr ""
+msgstr "recode html-compliant"
 
 #: app/views/institute/extern/extern_config/_basic_settings.php:45
 msgid "xml-konform umkodieren"
-msgstr ""
+msgstr "recode xml-compliant"
 
 #: app/views/institute/extern/extern_config/_basic_settings.php:46
 msgid "json-konform umkodieren"
-msgstr ""
+msgstr "recode json-compliant"
 
 #: app/views/institute/extern/extern_config/_template.php:9
 #: app/views/event_log/admin.php:8 app/views/event_log/edit.php:16
@@ -33643,13 +33634,12 @@ msgid "Ordnerauswahl"
 msgstr "Folder selection"
 
 #: app/views/institute/extern/extern_config/download.php:46
-#, fuzzy
 msgid "Unterordner der ausgewählten Ordner anzeigen."
-msgstr "Display evaluations in the selected area"
+msgstr "Display sub-folders of the selected folder."
 
 #: app/views/institute/extern/extern_config/persondetails.php:10
 msgid "Konfiguration für die Detailansicht von Mitarbeitenden (Personal)"
-msgstr ""
+msgstr "Configuration for the detailed staff view"
 
 #: app/views/institute/extern/extern_config/persondetails.php:24
 msgid ""
@@ -33738,10 +33728,9 @@ msgstr[0] "%s week before the end of the semester"
 msgstr[1] "%s weeks before the end of the semester"
 
 #: app/views/institute/extern/extern_config/persondetails.php:84
-#, fuzzy
 msgid ""
 "Wählen Sie aus, welche Veranstaltungskategorien angezeigt werden sollen."
-msgstr "Choose the course classes to be displayed."
+msgstr "Select which course categories shall be displayed."
 
 #: app/views/institute/extern/extern_config/timetable.php:10
 msgid "Konfiguration für die Ausgabe Veranstaltungsterminen"
@@ -33752,12 +33741,9 @@ msgid "Anzahl der Zeitbereiche"
 msgstr "Amount of time ranges"
 
 #: app/views/institute/extern/extern_config/timetable.php:34
-#, fuzzy
 msgid ""
 "Geben Sie an, wie viele der folgenden Zeitbereiche angezeigt werden sollen."
-msgstr ""
-"Please specify how many semesters shall be displayed (starting with the "
-"start semester selected above)."
+msgstr "Select how many of the following time ranges shall be displayed."
 
 #: app/views/institute/extern/extern_config/timetable.php:38
 msgid "Anzuzeigender Zeitbereich"
@@ -33781,12 +33767,10 @@ msgid "Wenn keine Studienbereiche ausgewählt werden, werden alle angezeigt."
 msgstr "If no fields of study are selected, all of them will be displayed."
 
 #: app/views/institute/extern/extern_config/_study_areas_selector.php:27
-#, fuzzy
 msgid "Unterebenen anzeigen."
-msgstr "Show level"
+msgstr "Show sub-layers."
 
 #: app/views/institute/extern/extern_config/courses.php:29
-#, fuzzy
 msgid ""
 "Geben Sie das erste anzuzeigende Semester an. Die Angaben \"Vorheriges\", "
 "\"Aktuelles\" und \"Nächstes\" beziehen sich immer auf das laufende Semester "
@@ -41013,9 +40997,8 @@ msgid "Nächstes Jahr"
 msgstr "Next year"
 
 #: lib/extern/ExternPagePersons.php:33
-#, fuzzy
 msgid "Titel vorangestellt"
-msgstr "Second title"
+msgstr "Prefixed title"
 
 #: lib/extern/ExternPageDownload.php:37
 msgid "Autor:in"
@@ -42403,9 +42386,8 @@ msgid "Sie haben keine Datei zum Hochladen ausgewählt!"
 msgstr "You have not selected any file to be uploaded!"
 
 #: lib/classes/Avatar.class.php:352
-#, fuzzy
 msgid "Es gab einen Fehler beim Hochladen der Datei!"
-msgstr "Error while saving the file!"
+msgstr "An error occurred while uploading the file!"
 
 #: lib/classes/Avatar.class.php:359
 #, php-format
@@ -43623,7 +43605,7 @@ msgid "[Stud.IP - %s] Neues Passwort setzen"
 msgstr "[Stud.IP - %s] Set new password"
 
 #: lib/classes/UserManagement.class.php:748
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Dies ist eine Bestätigungsmail des Stud.IP-Systems\n"
 "(Studienbegleitender Internetsupport von Präsenzlehre)\n"
@@ -43659,9 +43641,9 @@ msgid ""
 msgstr ""
 "This is a confirmation mail from the Stud.IP system\n"
 "(Studienbegleitender Internetsupport von Präsenzlehre)\n"
-"- %s -\n"
+"- %1$s -\n"
 "\n"
-"You have requested the reset of your password.\n"
+"You have requested the reset of your password for your username %5$s.\n"
 "\n"
 "This e-mail has been sent to you to make sure\n"
 "that the specified e-mail address really belongs to you.\n"
@@ -43669,7 +43651,7 @@ msgstr ""
 "If you have requested the reset of your password,\n"
 "please open the following link\n"
 "\n"
-"%s\n"
+"%2$s\n"
 "\n"
 "in your browser. You can set another password on the page.\n"
 "\n"
@@ -43679,9 +43661,9 @@ msgstr ""
 "If not, you must open your browser and copy the link completely in\n"
 "the line named \"location\" or \"URL\".\n"
 "\n"
-"If you did not request this e-mail or if you don't know what\n"
+"If you did not request this e-mail or if you do not know what\n"
 "this is about, then someone maliciously used your e-mail address!\n"
-"In this case, ignore this e-mail. No changes will be made on your account.\n"
+"In this case, ignore this E-Mail. No changes will be made to your account.\n"
 "\n"
 
 #: lib/classes/UserManagement.class.php:806
@@ -46563,9 +46545,8 @@ msgid "Gradebook"
 msgstr "Gradebook"
 
 #: lib/modules/GradebookModule.class.php:118
-#, fuzzy
 msgid "ILIAS-Test als Leistung definieren"
-msgstr "Define more achievements"
+msgstr "Define ILIAS test as achievement"
 
 #: lib/modules/GradebookModule.class.php:140
 msgid "Leistungen"
@@ -46623,7 +46604,6 @@ msgid "Gemeinsames Erstellen und Bearbeiten von Texten"
 msgstr "Collaborative creating and editing of text"
 
 #: lib/modules/CoreWiki.class.php:133
-#, fuzzy
 msgid ""
 "Im Wiki können verschiedene Autor/-innen gemeinsam Texte, Konzepte und "
 "andere schriftliche Arbeiten erstellen und gestalten, dies allerdings nicht "
@@ -46634,9 +46614,13 @@ msgid ""
 "mit der Änderungen nachvollziehbar werden. Einzelne Versionen können zudem "
 "auch gelöscht werden (nur Lehrende). Ein Export als pdf-Datei ist integriert."
 msgstr ""
-"Different authors can edit and create texts. A wiki consist of an unlimited "
-"number of pages everyone can create. The version history allows to toll back "
-"changes. Pages can be downloaded as PDF."
+"In the wiki, different authors can edit and create and design texts, "
+"concepts and other written works together, but not at the same time. Texts "
+"can be edited individually and the changes be saved. The special thing in "
+"the wiki is that students and lecturers almost have the same permissions ("
+"write, read, change, delete) which cannot be restricted. The system creates "
+"a version history that makes changes visible. Single versions can also be "
+"deleted (only for lecturers). An export as PDF file is integrated."
 
 #: lib/modules/CoreWiki.class.php:146
 msgid "Wiki-Web"
@@ -46663,7 +46647,6 @@ msgid "Gemeinsames asynchrones Erstellen und Bearbeiten von Texten"
 msgstr "Collaborative work on text"
 
 #: lib/modules/CoreWiki.class.php:153
-#, fuzzy
 msgid ""
 "Im Wiki können verschiedene Autor/-innen gemeinsam Texte, Konzepte und "
 "andere schriftliche Arbeiten erstellen und gestalten. Dies allerdings nicht "
@@ -46675,11 +46658,13 @@ msgid ""
 "gelöscht werden (nur Lehrende). Eine Druckansicht und eine Exportmöglichkeit "
 "als PDF-Datei ist integriert."
 msgstr ""
-"The wiki allows multiple authors to create and edit texts. Simultaneous "
-"editing is NOT possible. Both lecturers and students have permission to edit "
-"the wiki, which requires some trust in each other. The history lists all "
-"changes. Lecturers may delete current versions. Pages can be printed or "
-"exported as PDF. "
+"In the wiki, different authors can edit and create and design texts, "
+"concepts and other written works together, but not at the same time. Texts "
+"can be edited individually and the changes be saved. The special thing in "
+"the wiki is that students and lecturers almost have the same permissions ("
+"write, read, change, delete) which requires mutual trust. The system creates "
+"a version history that makes changes visible. Single versions can also be "
+"deleted (only for lecturers). An export as PDF file is integrated."
 
 #: lib/modules/CoreWiki.class.php:162 lib/modules/Blubber.class.php:124
 #: lib/modules/CoreForum.class.php:196 lib/modules/FeedbackModule.class.php:53
@@ -48555,9 +48540,8 @@ msgid "Barrierefreiheitserklärung"
 msgstr "Accessibility declaration"
 
 #: lib/navigation/FooterNavigation.php:89
-#, fuzzy
 msgid "Leichte Sprache"
-msgstr "Language of instruction"
+msgstr "Simple language"
 
 #: lib/navigation/MVVNavigation.php:54
 msgid "Studiengangsinformationen"
@@ -51021,7 +51005,6 @@ msgid "Hohen Kontrast aktivieren"
 msgstr "Activate high contrast"
 
 #: templates/loginform.php:115
-#, fuzzy
 msgid ""
 "Aktiviert einen hohen Kontrast gemäß WCAG 2.1. Diese Einstellung wird nach "
 "dem Login übernommen.\n"
@@ -51654,14 +51637,12 @@ msgid "Kurztitel"
 msgstr "Short title"
 
 #: templates/library/library_document_info.php:59
-#, fuzzy
 msgid "Verlagsort"
-msgstr "Course location"
+msgstr "Place of publication"
 
 #: templates/library/library_document_info.php:63
-#, fuzzy
 msgid "Bandanzahl"
-msgstr "Number"
+msgstr "Amount of volumes"
 
 #: templates/library/library_document_info.php:67
 msgid "Seitenanzahl"
@@ -51672,51 +51653,44 @@ msgid "Zusätzliche Information"
 msgstr "Additional information"
 
 #: templates/library/library_document_info.php:79
-#, fuzzy
 msgid "Datum der Veröffentlichung der Ausgabe"
-msgstr "Release date"
+msgstr "Release date of the edition"
 
 #: templates/library/library_document_info.php:85
 msgid "ISBN"
 msgstr "ISBN"
 
 #: templates/library/library_document_info.php:93
-#, fuzzy
 msgid "Verfasser*in"
-msgstr "Leave"
+msgstr "Author"
 
 #: templates/library/library_document_info.php:102
-#, fuzzy
 msgid "Auflagen"
-msgstr "Requests"
+msgstr "Editions"
 
 #: templates/library/library_document_info.php:106
-#, fuzzy
 msgid "Sammlungstitel"
-msgstr "Collection"
+msgstr "Collection title"
 
 #: templates/library/library_document_info.php:110
-#, fuzzy
 msgid "Sammlungsnummer"
-msgstr "Collection"
+msgstr "Collection number"
 
 #: templates/library/library_document_info.php:114
 msgid "Sammlungseditor"
 msgstr "Collection editor"
 
 #: templates/library/library_document_info.php:127
-#, fuzzy
 msgid "Speicherort im Archiv"
-msgstr "Search in archive"
+msgstr "Save location in the archive"
 
 #: templates/library/library_document_info.php:135
 msgid "Zugriffsdatum"
 msgstr "Access date"
 
 #: templates/library/library_document_info.php:141
-#, fuzzy
 msgid "Inhaltsangabe"
-msgstr "Contents"
+msgstr "Summary"
 
 #~ msgid "Als CSV-Dokument exportieren"
 #~ msgstr "Export as CSV document"
