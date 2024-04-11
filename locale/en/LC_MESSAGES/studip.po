@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-06 13:16+0100\n"
-"PO-Revision-Date: 2024-04-10 16:02+0000\n"
+"PO-Revision-Date: 2024-04-11 11:15+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-5/en/>\n"
@@ -11006,11 +11006,11 @@ msgid "Diesen Nutzer gibt es nicht"
 msgstr "This user does not exist"
 
 #: app/controllers/tfa.php:42
-#, fuzzy
 msgid ""
 "Sie können die Zwei-Faktor-Authentifizierung nicht für andere Personen "
 "einrichten."
-msgstr "Two-factor authentication has been deactivated for this person."
+msgstr ""
+"You may not configure the two-factor authentification for other persons."
 
 #: app/controllers/tfa.php:66
 msgid "Die Zwei-Faktor-Authentifizierung wurde eingerichtet"
@@ -16595,18 +16595,16 @@ msgid "Der Termin wurde gespeichert."
 msgstr "The date has been saved."
 
 #: app/controllers/calendar/date.php:572
-#, fuzzy
 msgid "Der Termin wurde gespeichert, aber nicht mit allen Terminausfällen!"
-msgstr "The date has been accepted, but %s will not be participating."
+msgstr "The date has been saved but not with all of its exceptions!"
 
 #: app/controllers/calendar/date.php:598
 msgid "Sie sind nicht berechtigt, diesen Termin zu ändern."
 msgstr "You are not allowed to modify this date."
 
 #: app/controllers/calendar/date.php:609
-#, fuzzy
 msgid "Verschieben eines Termins aus einer Terminserie"
-msgstr "Try again in %u minute(s)"
+msgstr "Moving a date from a date series"
 
 #: app/controllers/calendar/date.php:695
 msgid "Ungültige Auswahl!"
@@ -26955,14 +26953,13 @@ msgid "Treffer"
 msgstr "Research results"
 
 #: app/views/course/wiki/search.php:41
-#, fuzzy
 msgid "Nur in alter Version der Seite enthalten."
-msgstr "in all versions of page %s"
+msgstr "Only available in an old version of the page."
 
 #: app/views/course/wiki/search.php:82
-#, fuzzy, php-format
+#, php-format
 msgid "Treffer im Namen: %s"
-msgstr "Search results for %s"
+msgstr "Match in the name: %s"
 
 #: app/views/course/wiki/search.php:85
 #, php-format
@@ -27748,14 +27745,12 @@ msgid "Optionale Beschreibung"
 msgstr "Optional description"
 
 #: app/views/course/feedback/_new_edit_feedback_form.php:17
-#, fuzzy
 msgid "Feedback-Ergebnisse nach Antwort sichtbar"
-msgstr "Feedback results visible after answer"
+msgstr "Feedback results visible by answer"
 
 #: app/views/course/feedback/_new_edit_feedback_form.php:27
-#, fuzzy
 msgid "Feedback kann anonym abgegeben werden"
-msgstr "Feedback could not be saved"
+msgstr "Feedback can be given anonymously"
 
 #: app/views/course/feedback/_new_edit_feedback_form.php:33
 msgid "Abgegebenes Feedback kann einen Kommentar beinhalten"
@@ -30277,9 +30272,8 @@ msgstr ""
 
 #: app/views/admin/extern/extern_config/persbrowse.php:10
 #: app/views/institute/extern/extern_config/courses.php:10
-#, fuzzy
 msgid "Konfiguration für die Ausgabe von Veranstaltungen"
-msgstr "Information about displaying courses."
+msgstr "Configuration for outputting courses"
 
 #: app/views/admin/extern/extern_config/persbrowse.php:19
 #: app/views/institute/extern/extern_config/coursedetails.php:17
@@ -30293,9 +30287,8 @@ msgid "Angaben zum Inhalt"
 msgstr "Information about HTML tag &lt;tr&gt;"
 
 #: app/views/admin/extern/extern_config/persbrowse.php:22
-#, fuzzy
 msgid "Rechtestufe in Einrichtungen"
-msgstr "Permission level in institute"
+msgstr "Permission level in institutes"
 
 #: app/views/admin/extern/extern_config/persbrowse.php:36
 msgid "Nur Lehrende anzeigen."
@@ -31880,10 +31873,9 @@ msgid "Aus dieser Nutzerdomäne austragen"
 msgstr "Remove from this user domain"
 
 #: app/views/admin/user/edit.php:587
-#, fuzzy
 msgid ""
 "Sind Sie sicher, dass sie die Person aus der Nutzerdomäne austragen wollen?"
-msgstr "Do really want to discard your posting?"
+msgstr "Are you sure to remove the person from the user domain?"
 
 #: app/views/admin/user/edit.php:611
 msgid "-- Bitte Sperrebene auswählen --"
@@ -32014,14 +32006,12 @@ msgid "Dateien in Veranstaltungen und Einrichtungen"
 msgstr "Files in courses and institutes"
 
 #: app/views/admin/user/_delete.php:56
-#, fuzzy
 msgid "Lernmaterialien löschen?"
-msgstr "Learning materials"
+msgstr "Delete learning materials?"
 
 #: app/views/admin/user/_delete.php:57
-#, fuzzy
 msgid "Courseware Lernmaterialien, Seiten, Abschnitte und Blöcke"
-msgstr "Courseware learning materials"
+msgstr "Courseware learning materials, pages, sections and blocks"
 
 #: app/views/admin/user/_delete.php:63
 msgid "veranstaltungsbezogene Inhalte, bis auf Wiki und Forum Einträge"
@@ -33512,14 +33502,13 @@ msgid "Bearbeitet am"
 msgstr "Modified on"
 
 #: app/views/institute/extern/info.php:26
-#, fuzzy
 msgid "Zur Hilfeseite"
-msgstr "New help text"
+msgstr "Go to help page"
 
 #: app/views/institute/extern/info.php:28
-#, fuzzy, php-format
+#, php-format
 msgid "Hilfe zur Konfiguration des Moduls \"%s\"."
-msgstr "Configuration of the module"
+msgstr "Help for the configuration of the module \"%s\"."
 
 #: app/views/institute/extern/info.php:36
 #, fuzzy
@@ -33561,14 +33550,13 @@ msgid "Konfigurationsdatei"
 msgstr "Configuration file"
 
 #: app/views/institute/extern/index.php:9
-#, fuzzy
 msgid "Es wurde noch keine externe Seite angelegt."
-msgstr "No vacation periods have been created yet."
+msgstr "No external page has been created yet."
 
 #: app/views/institute/extern/index.php:11
-#, fuzzy, php-format
+#, php-format
 msgid "Um eine neue externe Seite anzulegen, klicken sie %shier%s."
-msgstr "Click %shere%s to download the output file."
+msgstr "Click %shere%s to create a new external page."
 
 #: app/views/institute/extern/index.php:21
 #: lib/navigation/AdminNavigation.php:83 lib/navigation/AdminNavigation.php:109
@@ -33616,9 +33604,8 @@ msgid "Geben Sie hier das Template ein."
 msgstr "Enter the template."
 
 #: app/views/institute/extern/extern_config/coursedetails.php:9
-#, fuzzy
 msgid "Konfiguration für die Detailansicht einer Veranstaltung"
-msgstr "Room requests for the entire course"
+msgstr "Configuration for the detail view of a course"
 
 #: app/views/institute/extern/extern_config/coursedetails.php:20
 msgid "Bereichspfad ab Ebene"
@@ -33630,17 +33617,16 @@ msgstr "Displaying the area path will start at the level to be selected here."
 
 #: app/views/institute/extern/extern_config/persons.php:10
 msgid "Konfiguration für eine Liste der Mitarbeitenden (Personal)"
-msgstr ""
+msgstr "Configuration for a list of staff members"
 
 #: app/views/institute/extern/extern_config/persons.php:34
-#, fuzzy
 msgid "Gruppierung nach Funktionen/Gruppen"
-msgstr "Manage functions and groups"
+msgstr "Group by functions/groups"
 
 #: app/views/institute/extern/extern_config/persons.php:39
 msgid ""
 "Ausgabe der Funktionen / Gruppen (Sichtbarkeit, alternative Gruppennamen)"
-msgstr ""
+msgstr "Output of the functions / groups (visibility, alternativ group names)"
 
 #: app/views/institute/extern/extern_config/persons.php:52
 #, php-format
@@ -33648,13 +33634,12 @@ msgid "Alternativer Gruppenname (%s)"
 msgstr "Alternative group name (%s)"
 
 #: app/views/institute/extern/extern_config/persons.php:56
-#, fuzzy
 msgid "Keine Funktionen / Gruppen an dieser Einrichtung vorhanden."
-msgstr "No courses in this subject area available."
+msgstr "No functions / groups available on this institute."
 
 #: app/views/institute/extern/extern_config/download.php:10
 msgid "Konfiguration für eine Liste von Dateien (Download)"
-msgstr ""
+msgstr "Configuration for a list of files (download)"
 
 #: app/views/institute/extern/extern_config/download.php:33
 msgid "Ordnerauswahl"
@@ -33779,30 +33764,25 @@ msgstr ""
 "start semester selected above)."
 
 #: app/views/institute/extern/extern_config/timetable.php:38
-#, fuzzy
 msgid "Anzuzeigender Zeitbereich"
-msgstr "Areas to be displayed:"
+msgstr "Time range to be displayed"
 
 #: app/views/institute/extern/extern_config/timetable.php:48
-#, fuzzy
 msgid "Anzuzeigende Termintypen"
-msgstr "Areas to be displayed:"
+msgstr "Date types to be displayed"
 
 #: app/views/institute/extern/extern_config/timetable.php:60
 #: app/views/institute/extern/extern_config/courses.php:71
-#, fuzzy
 msgid "Veranstaltungen beteiligter Institute anzeigen."
-msgstr "Show courses of involved institutes"
+msgstr "Show courses of involved institutes."
 
 #: app/views/institute/extern/extern_config/_study_areas_selector.php:12
-#, fuzzy
 msgid "Anzuzeigende Studienbereiche"
-msgstr "Selection of fields of study to be displayed"
+msgstr "Fields of study to be displayed"
 
 #: app/views/institute/extern/extern_config/_study_areas_selector.php:13
-#, fuzzy
 msgid "Wenn keine Studienbereiche ausgewählt werden, werden alle angezeigt."
-msgstr "Select the fields of study whose courses are to be displayed."
+msgstr "If no fields of study are selected, all of them will be displayed."
 
 #: app/views/institute/extern/extern_config/_study_areas_selector.php:27
 #, fuzzy
@@ -34022,9 +34002,9 @@ msgstr "Calendar week: %d. week"
 
 #: app/views/room_management/planning/booking_comments.php:117
 #: app/views/room_management/planning/booking_comments.php:124
-#, fuzzy, php-format
+#, php-format
 msgid "In der %d. Kalenderwoche sind keine Buchungen vorhanden!"
-msgstr "There are no bookings with comments in the %d. calendar week!"
+msgstr "There are no bookings in the %d. calendar week!"
 
 #: app/views/room_management/planning/copy_bookings.php:7
 msgid "Verfügbare Räume"
@@ -34137,7 +34117,7 @@ msgstr "Participations"
 #: app/views/calendar/date/delete.php:12
 #, php-format
 msgid "Am %s soll aus dem Einzeltermin eine Ausnahme der Terminserie werden."
-msgstr ""
+msgstr "The date shall become an exception on %s in the date series."
 
 #: app/views/calendar/date/delete.php:19
 msgid "Die gesamte Terminserie soll gelöscht werden."
@@ -34174,9 +34154,8 @@ msgid "Ganztägiger Termin"
 msgstr "All-day date"
 
 #: app/views/calendar/date/_add_edit_form.php:76
-#, fuzzy
 msgid "Öffentlich zugänglich"
-msgstr "Room plans accessible to the public"
+msgstr "Publicly accessible"
 
 #: app/views/calendar/date/_add_edit_form.php:82
 #: lib/models/calendar/CalendarDate.class.php:441
@@ -34298,9 +34277,8 @@ msgid "Datei zum Importieren wählen"
 msgstr "Select file for import"
 
 #: app/views/calendar/calendar/export.php:16
-#, fuzzy
 msgid "Zu exportierende Termine"
-msgstr "Booking types to be exported"
+msgstr "Dates to be exported"
 
 #: app/views/calendar/calendar/export.php:20
 msgid "Persönliche Termine"
@@ -37707,7 +37685,7 @@ msgstr ""
 #: lib/models/resources/ResourceBooking.class.php:469
 #: lib/models/resources/ResourceBooking.class.php:777
 msgid "Es wurde ein Wiederholungsintervall ohne Begrenzung angegeben!"
-msgstr "A repetition interval without limit has been specified!"
+msgstr "A never ending repetition interval has been specified!"
 
 #: lib/models/resources/ResourceBooking.class.php:474
 #: lib/models/resources/ResourceBooking.class.php:782
@@ -40381,9 +40359,9 @@ msgid "Keine Wiederholung"
 msgstr "No repetition"
 
 #: lib/models/calendar/CalendarDate.class.php:461
-#, fuzzy, php-format
+#, php-format
 msgid "Täglich (%u Termine)"
-msgstr "additional dates"
+msgstr "Daily (%u dates)"
 
 #: lib/models/calendar/CalendarDate.class.php:466
 #, php-format
@@ -40391,9 +40369,8 @@ msgid "Täglich bis zum %1$s"
 msgstr "Daily until %1$s"
 
 #: lib/models/calendar/CalendarDate.class.php:470
-#, fuzzy
 msgid "Täglich ohne Begrenzung"
-msgstr "Daily repetition"
+msgstr "Daily never ending"
 
 #: lib/models/calendar/CalendarDate.class.php:476
 #, php-format
@@ -40401,9 +40378,9 @@ msgid "Jeden %1$u. Tag (%2$u Termine)"
 msgstr "Every %1$u day (%2$u dates)"
 
 #: lib/models/calendar/CalendarDate.class.php:482
-#, fuzzy, php-format
+#, php-format
 msgid "Jeden %1$u. Tag bis zum %2$s"
-msgstr "Every %s in %s"
+msgstr "Every %1$u. day until %2$s"
 
 #: lib/models/calendar/CalendarDate.class.php:488
 #, php-format
@@ -40411,21 +40388,21 @@ msgid "Jeden %u. Tag ohne Begrenzung"
 msgstr "Every %u day never ending"
 
 #: lib/models/calendar/CalendarDate.class.php:507
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s und %2$s"
-msgstr "%s %s and %s"
+msgstr "%1$s and %2$s"
 
 #: lib/models/calendar/CalendarDate.class.php:519
-#, fuzzy, php-format
+#, php-format
 msgid "Einmal am folgenden %s"
 msgid_plural "Jeden %1$s (%2$u Termine)"
-msgstr[0] "Once at %s %s"
-msgstr[1] "Once at %s %s"
+msgstr[0] "Once on the following %s"
+msgstr[1] "Every %1$s (%2$u dates)"
 
 #: lib/models/calendar/CalendarDate.class.php:525
-#, fuzzy, php-format
+#, php-format
 msgid "Jeden %1$s bis zum %2$s"
-msgstr "Every %s in %s"
+msgstr "Every %1$s until %2$s"
 
 #: lib/models/calendar/CalendarDate.class.php:531
 #, php-format
@@ -40438,9 +40415,9 @@ msgid "Jeden %1$u. %2$s (%3$u Termine)"
 msgstr "Every %1$u %2$s (%3$u dates)"
 
 #: lib/models/calendar/CalendarDate.class.php:546
-#, fuzzy, php-format
+#, php-format
 msgid "Jeden %1$u. %2$s bis zum %3$s"
-msgstr "%1$d. week, from %2$s to %3$s"
+msgstr "Every %1$u. %2$s until %3$s"
 
 #: lib/models/calendar/CalendarDate.class.php:553
 #, php-format
@@ -40458,9 +40435,9 @@ msgid "Jeden Monat am %1$u. %2$s"
 msgstr "Every month on the %1$u. %2$s"
 
 #: lib/models/calendar/CalendarDate.class.php:580
-#, fuzzy, php-format
+#, php-format
 msgid "Jeden Monat am %u. Tag"
-msgstr "Every %s. day"
+msgstr "Every Monday on the %u. day"
 
 #: lib/models/calendar/CalendarDate.class.php:590
 #, php-format
@@ -40470,102 +40447,102 @@ msgstr "Evety %1$u. month on the last %2$s"
 #: lib/models/calendar/CalendarDate.class.php:597
 #, php-format
 msgid "Jeden %1$u. Monat am %2$u. %3$s"
-msgstr ""
+msgstr "Every %1$u. month on the %2$u. %3$s"
 
 #: lib/models/calendar/CalendarDate.class.php:606
 #, php-format
 msgid "Jeden %1$u. Monat am %2$u."
-msgstr ""
+msgstr "Every %1$u month on the %2$u."
 
 #: lib/models/calendar/CalendarDate.class.php:621
 #, php-format
 msgid "Jedes Jahr im %1$s am letzten %2$s (%3$u Termine)"
-msgstr ""
+msgstr "Every year in %1$s on the last %2$s (%3$u dates)"
 
 #: lib/models/calendar/CalendarDate.class.php:628
-#, fuzzy, php-format
+#, php-format
 msgid "Jedes Jahr im %1$s am letzten %2$s bis zum %3$s"
-msgstr "on %1$s from %2$s to %3$s"
+msgstr "Every year in %1$s on the last %2$s until %3$s"
 
 #: lib/models/calendar/CalendarDate.class.php:635
 #, php-format
 msgid "Jedes Jahr im %1$s am letzten %2$s ohne Begrenzung"
-msgstr ""
+msgstr "Every year in %1$s on the last %2$s never ending"
 
 #: lib/models/calendar/CalendarDate.class.php:643
 #, php-format
 msgid "Jedes Jahr im %1$s am %2$u. %3$s (%4$u Termine"
-msgstr ""
+msgstr "Every year in %1$s on the %2$u. %3$s (%4$u dates"
 
 #: lib/models/calendar/CalendarDate.class.php:651
-#, fuzzy, php-format
+#, php-format
 msgid "Jedes Jahr im %1$s am %2$u. %3$s bis zum %4$s"
-msgstr "Date on %1$s, %2$s from %3$s to %4$s"
+msgstr "Every year in %1$s on the %2$u. %3$s until %4$s"
 
 #: lib/models/calendar/CalendarDate.class.php:659
 #, php-format
 msgid "Jedes Jahr im %1$s am %2$u. %3$s ohne Begrenzung"
-msgstr ""
+msgstr "Every year in %1$s on the %2$u. %3$s never ending"
 
 #: lib/models/calendar/CalendarDate.class.php:670
 #, php-format
 msgid "Jedes Jahr am %1$u. %2$s (%3$u Termine)"
-msgstr ""
+msgstr "Every year on the %1$u. %2$s (%3$u dates)"
 
 #: lib/models/calendar/CalendarDate.class.php:677
-#, fuzzy, php-format
+#, php-format
 msgid "Jedes Jahr am %1$u. %2$s bis zum %3$s"
-msgstr "%1$d. week, from %2$s to %3$s"
+msgstr "Every year on the %1$u. %2$s until %3$s"
 
 #: lib/models/calendar/CalendarDate.class.php:684
 #, php-format
 msgid "Jedes Jahr am %1$u. %2$s ohne Begrenzung"
-msgstr ""
+msgstr "Every year on %1$u. %2$s never ending"
 
 #: lib/models/calendar/CalendarDate.class.php:698
 #, php-format
 msgid "Jedes %1$u. Jahr im %2$s am letzten %3$s (%4$u Termine)"
-msgstr ""
+msgstr "Every %1$u. year in %2$s on the last %3$s (%4$u dates)"
 
 #: lib/models/calendar/CalendarDate.class.php:706
 #, php-format
 msgid "Jedes %1$u. Jahr im %2$s am letzten %3$s bis zum %4$s"
-msgstr ""
+msgstr "Every %1$u. year in %2$s on the last %3$s until %4$s"
 
 #: lib/models/calendar/CalendarDate.class.php:714
 #, php-format
 msgid "Jedes %1$u. Jahr im %2$s am letzten %3$s ohne Begrenzung"
-msgstr ""
+msgstr "Every %1$u. year in %2$s on the last %3$s never ending"
 
 #: lib/models/calendar/CalendarDate.class.php:723
 #, php-format
 msgid "Jedes %1$u. Jahr im %2$s am %3$u. %4$s (%5$u Termine)"
-msgstr ""
+msgstr "Every %1$u. year in %2$s on the %3$u. %4$s (%5$u dates)"
 
 #: lib/models/calendar/CalendarDate.class.php:732
 #, php-format
 msgid "Jedes %1$u. Jahr im %2$s am %3$u. %4$s bis zum %5$s"
-msgstr ""
+msgstr "Every %1$u. year in %2$s on the %3$u. %4$s until %5$s"
 
 #: lib/models/calendar/CalendarDate.class.php:741
 #, php-format
 msgid "Jedes %1$u. Jahr im %2$s am %3$u. %4$s ohne Begrenzung"
-msgstr ""
+msgstr "Every %1$u. year in %2$s on the %3$u. %4$s never ending"
 
 #: lib/models/calendar/CalendarDate.class.php:753
 #, php-format
 msgid "Jedes %1$u. Jahr am %2$u. %3$s (%4$u Termine)"
-msgstr ""
+msgstr "Every %1$u. year on %2$u. %3$s (%4$u dates)"
 
 #: lib/models/calendar/CalendarDate.class.php:761
-#, fuzzy, php-format
+#, php-format
 msgid "Jedes %1$u. Jahr am %2$u. %3$s bis zum %4$s"
-msgstr "%1$d. week, from %2$s to %3$s"
+msgstr "Every %1$u. year on %2$u. %3$s until %4$s"
 
 #: lib/models/calendar/CalendarDate.class.php:769
 #, php-format
 msgid "Jedes %1$u. Jahr am %2$u. %3$s ohne Begrenzung"
-msgstr ""
+msgstr "Every %1$u. year on %2$u. %3$s never ending"
 
 #: lib/models/calendar/CalendarDateAssignment.class.php:93
 #, fuzzy, php-format
