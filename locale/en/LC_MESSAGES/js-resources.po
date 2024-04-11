@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2024-04-06 15:29+0000\n"
+"PO-Revision-Date: 2024-04-11 13:32+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-5-js/en/>\n"
@@ -3184,9 +3184,8 @@ msgid "Feedback geschrieben am: %{ date }"
 msgstr "Feedback written on:"
 
 #: resources/vue/components/feedback/FeedbackCreateDialog.vue:47
-#, fuzzy
 msgid "Feedback kann anonym abgegeben werden"
-msgstr "Feedback could not be saved"
+msgstr "Feedback can be given anonymously"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:1297
 #, fuzzy
@@ -7548,7 +7547,7 @@ msgstr "Last changed on"
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:256
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:19
 msgid "Zuletzt bearbeitet von"
-msgstr "Last changed by"
+msgstr "Last modified by"
 
 #: resources/assets/javascripts/cke/wiki-link/formview.js:23
 msgid "zum Beispiel \"Wiki-Startseite\""
