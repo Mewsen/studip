@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-06 13:16+0100\n"
-"PO-Revision-Date: 2024-04-11 11:15+0000\n"
+"PO-Revision-Date: 2024-04-11 13:32+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-5/en/>\n"
@@ -9986,9 +9986,8 @@ msgid "Thema gespeichert."
 msgstr "Topic saved."
 
 #: app/controllers/course/topics.php:121
-#, fuzzy
 msgid "Eines oder mehrere Themen gehören nicht zur ausgewählten Veranstaltung."
-msgstr "back to selected course"
+msgstr "One or more topics do not belong to the selected course."
 
 #: app/controllers/course/topics.php:158
 #, php-format
@@ -14757,17 +14756,19 @@ msgid ""
 "Die mit einem Ausrufezeichen versehenen Konfigurationen müssen eventuell "
 "überarbeitet werden."
 msgstr ""
+"The configurations marked with an exclaimation mark may need to be revised."
 
 #: app/controllers/admin/extern.php:81
 msgid ""
 "Der Aufbau der Templates hat sich in der aktuellen Stud.IP-Version geändert."
 msgstr ""
+"The structure of the templates has changed in the current Stud.IP version."
 
 #: app/controllers/admin/extern.php:82
 msgid ""
 "Nach dem Speichern der gekennzeichneten Templates wird die Markierung "
 "entfernt."
-msgstr ""
+msgstr "After saving the marked templates, the marking will be removed."
 
 #: app/controllers/admin/extern.php:88 app/controllers/admin/extern.php:137
 msgid "Konfiguration hochladen"
@@ -24162,9 +24163,8 @@ msgid "Titel der Rubrik"
 msgstr "Category title"
 
 #: app/views/siteinfo/new.php:27 app/views/siteinfo/edit.php:24
-#, fuzzy
 msgid "Position der Rubrik"
-msgstr "Category title"
+msgstr "Category position"
 
 #: app/views/siteinfo/new.php:32 app/views/siteinfo/edit.php:29
 msgid "Rubrik-Zuordnung"
@@ -24530,7 +24530,6 @@ msgstr "Cancel the following course dates"
 
 #: app/views/course/cancel_dates/index.php:15
 #: app/views/course/timesrooms/_cancel_form.php:9
-#, fuzzy
 msgid ""
 "Wenn Sie die nicht stattfindenden Termine mit einem Kommentar versehen, "
 "werden die Ausfalltermine im Ablaufplan weiterhin dargestellt und auch im "
@@ -27054,9 +27053,8 @@ msgid "Beantragen Sie, dass Sie den Text jetzt bearbeiten wollen."
 msgstr "Request that you want to edit the text now."
 
 #: app/views/course/wiki/edit.php:51
-#, fuzzy
 msgid "Bearbeiten beantragen"
-msgstr "Abort modification"
+msgstr "Request editing"
 
 #: app/views/course/wiki/page.php:26
 msgid "Dieses Wiki ist noch leer. Erstellen Sie die erste Wiki-Seite."
@@ -31939,11 +31937,8 @@ msgid ""
 msgstr "Downloading this file is restricted due to terms of use!"
 
 #: app/views/admin/user/batch_export_members.php:4
-#, fuzzy
 msgid "Die Daten der Teilnehmenden folgender Veranstaltungen werden exportiert"
-msgstr ""
-"The enrolment is not allowed for participants of one of the following "
-"courses:"
+msgstr "The participant data of the following courses will be exported"
 
 #: app/views/admin/user/batch_export_members.php:9
 msgid "Anzahl Lehrende"
@@ -33536,6 +33531,8 @@ msgid ""
 "Hinweis: Die gelisteten Datenfelder sind eventuell nicht für alle Objekte "
 "eines Typs verfügbar."
 msgstr ""
+"Note: The listed data fields are possibly not available for all objects of a "
+"type."
 
 #: app/views/institute/extern/upload.php:13
 msgid "Konfigurationsdatei importieren"
@@ -33747,9 +33744,8 @@ msgid ""
 msgstr "Choose the course classes to be displayed."
 
 #: app/views/institute/extern/extern_config/timetable.php:10
-#, fuzzy
 msgid "Konfiguration für die Ausgabe Veranstaltungsterminen"
-msgstr "Global configuration parameters for all courses"
+msgstr "Configuration for the output of course dates"
 
 #: app/views/institute/extern/extern_config/timetable.php:33
 msgid "Anzahl der Zeitbereiche"
@@ -34091,9 +34087,8 @@ msgid "Teilnahmestatus ändern"
 msgstr "Change participation status"
 
 #: app/views/calendar/date/index.php:73
-#, fuzzy
 msgid "Bearbeitung"
-msgstr "in Editing"
+msgstr "Being edited"
 
 #: app/views/calendar/date/index.php:78
 #, php-format
@@ -34169,6 +34164,9 @@ msgid ""
 "Personen, denen der Kalender freigegeben wurde, sichtbar. Vertrauliche "
 "Termine sind hingegen nur für einen selbst sichtbar."
 msgstr ""
+"Public dates are visible system-wide. Private dates are visible for persons "
+"with which the calendar is shared. Confidential dates on the other hand are "
+"only visible for oneself."
 
 #: app/views/calendar/date/_add_edit_form.php:106
 msgid "Eigene Kategorie"
@@ -34184,13 +34182,12 @@ msgid "Neuen Termin anlegen"
 msgstr "Create new date"
 
 #: app/views/calendar/contentbox/display.php:31
-#, fuzzy
 msgid ""
 "Es sind keine aktuellen Termine vorhanden. Zum Anlegen neuer Termine können "
 "Sie die Aktion „Neuen Termin anlegen“ benutzen."
 msgstr ""
-"No current dates available. To create new dates click on the cogwheel icon "
-"on the right."
+"No current dates available. To create new dates you can use the action "
+"\"Create new date\"."
 
 #: app/views/calendar/contentbox/_termin.php:16
 msgid "Zum Kalender"
@@ -34879,13 +34876,13 @@ msgid "Wählen Sie ein Bild von Ihrer Festplatte aus."
 msgstr "Select an image from your hard drive."
 
 #: app/views/avatar/update.php:34
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Die Bilddatei darf max. %s groß sein, es sind nur Dateien mit den Endungen ."
 "jpg, .png, .gif und .webp erlaubt!"
 msgstr ""
-"The image file's maximum allowed size is %s, only files with the extensions ."
-"jpg, .png or .gif are allowed!"
+"The maximum allowed image file size is %s, only files with the extensions ."
+"jpg, .png, .gif and .webp are allowed!"
 
 #: app/views/avatar/update.php:45 app/views/avatar/update.php:47
 msgid "Vergrößern"
@@ -35481,13 +35478,12 @@ msgid "Mail zum Zurücksetzen des Passworts anfordern"
 msgstr "Request mail to reset passwort"
 
 #: app/views/new_password/index.php:9
-#, fuzzy
 msgid ""
 "Geben Sie die Mail-Adresse des Zugangs an, für den Sie das Passwort "
 "zurücksetzen möchten"
 msgstr ""
-"Please specify the mail address for the account for which you want to reset "
-"the password"
+"Please specify the mail address for the account for which you would like to "
+"reset the password"
 
 #: app/views/new_password/index.php:10
 msgid "Ihre Mail-Adresse"
@@ -40346,9 +40342,9 @@ msgid "Die Tour muss mindestens einen Schritt enthalten."
 msgstr "The tour must have at least one step."
 
 #: lib/models/calendar/CalendarDate.class.php:154
-#, fuzzy, php-format
+#, php-format
 msgid "Terminänderung durch %s"
-msgstr "Calendar of %s"
+msgstr "Date changed by %s"
 
 #: lib/models/calendar/CalendarDate.class.php:412
 msgid "Kalendereinträge"
@@ -40545,24 +40541,24 @@ msgid "Jedes %1$u. Jahr am %2$u. %3$s ohne Begrenzung"
 msgstr "Every %1$u. year on %2$u. %3$s never ending"
 
 #: lib/models/calendar/CalendarDateAssignment.class.php:93
-#, fuzzy, php-format
+#, php-format
 msgid "%s hat einen Termin im Kalender eingetragen"
-msgstr "%s has inserted a new date into your calendar."
+msgstr "%s has inserted a new date into the calendar"
 
 #: lib/models/calendar/CalendarDateAssignment.class.php:124
-#, fuzzy, php-format
+#, php-format
 msgid "%s hat einen Termin im Kalender gelöscht"
-msgstr "%s has deleted following date in your calendar:"
+msgstr "%s has deleted a date in the calendar"
 
 #: lib/models/calendar/CalendarDateAssignment.class.php:171
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s hat Ihren Termin am %2$s angenommen"
-msgstr "%s has participated in the survey '%s'."
+msgstr "%1$s has accepted your date on %2$s"
 
 #: lib/models/calendar/CalendarDateAssignment.class.php:177
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s hat Ihren Termin am %2$s abgelehnt"
-msgstr "%1$s: Edit reservation on %2$s"
+msgstr "%1$s has declined your date on %2$s"
 
 #: lib/models/ModulteilDeskriptor.php:83 lib/models/ModulteilDeskriptor.php:91
 msgid "Modulteil-Deskriptor"
@@ -40965,69 +40961,56 @@ msgid "Keinem Modul zugeordnet"
 msgstr "Not assigned to a module"
 
 #: lib/extern/ExternPageCourses.php:150
-#, fuzzy
 msgid "Vorheriges"
-msgstr "previous"
+msgstr "Previous"
 
 #: lib/extern/ExternPageCourses.php:151
-#, fuzzy
 msgid "Aktuelles"
-msgstr "current"
+msgstr "Current"
 
 #: lib/extern/ExternPageCourses.php:152
-#, fuzzy
 msgid "Nächstes"
-msgstr "next"
+msgstr "Next"
 
 #: lib/extern/ExternPageCourses.php:165
-#, fuzzy
 msgid "Keine Gruppierung"
-msgstr "no grouping"
+msgstr "No grouping"
 
 #: lib/extern/ExternPageTimetable.php:83
-#, fuzzy
 msgid "Wochen"
-msgstr "Week"
+msgstr "Weeks"
 
 #: lib/extern/ExternPageTimetable.php:84
-#, fuzzy
 msgid "Monate"
-msgstr "Month"
+msgstr "Months"
 
 #: lib/extern/ExternPageTimetable.php:85
-#, fuzzy
 msgid "Jahre"
-msgstr "Year"
+msgstr "Years"
 
 #: lib/extern/ExternPageTimetable.php:98
-#, fuzzy
 msgid "Angegebenes Startdatum"
-msgstr "Coupled system"
+msgstr "Specified start date"
 
 #: lib/extern/ExternPageTimetable.php:99
-#, fuzzy
 msgid "Aktuelles Datum"
-msgstr "Current name"
+msgstr "Current date"
 
 #: lib/extern/ExternPageTimetable.php:100
-#, fuzzy
 msgid "Nächstes Semester"
-msgstr "whole semester"
+msgstr "Next semester"
 
 #: lib/extern/ExternPageTimetable.php:101
-#, fuzzy
 msgid "Nächste Woche"
-msgstr "Next request"
+msgstr "Next week"
 
 #: lib/extern/ExternPageTimetable.php:102
-#, fuzzy
 msgid "Nächster Monat"
-msgstr "Next date"
+msgstr "Next month"
 
 #: lib/extern/ExternPageTimetable.php:103
-#, fuzzy
 msgid "Nächstes Jahr"
-msgstr "next"
+msgstr "Next year"
 
 #: lib/extern/ExternPagePersons.php:33
 #, fuzzy
@@ -41035,12 +41018,10 @@ msgid "Titel vorangestellt"
 msgstr "Second title"
 
 #: lib/extern/ExternPageDownload.php:37
-#, fuzzy
 msgid "Autor:in"
 msgstr "Author"
 
 #: lib/extern/ExternPagePersBrowse.php:88
-#, fuzzy
 msgid "Tutoren/Tutorinnen"
 msgstr "Tutors"
 
@@ -41049,9 +41030,8 @@ msgid "Dozenten/Dozentinnen"
 msgstr "Lecturers"
 
 #: lib/extern/ExternPagePersBrowse.php:90
-#, fuzzy
 msgid "Administratoren/Administratorinnen"
-msgstr "Admins"
+msgstr "Administrators"
 
 #: lib/classes/SemBrowse.class.php:475
 msgid "Der Suchbegriff fehlt oder ist zu kurz"
@@ -42271,9 +42251,9 @@ msgid "Sie haben keine Berechtigung, die Seite %s zu lesen!"
 msgstr "You are not allowed to read the page %s!"
 
 #: lib/classes/ActionMenu.php:444
-#, fuzzy, php-format
+#, php-format
 msgid "%s für %s"
-msgstr "Roles for %s"
+msgstr "%s for %s"
 
 #: lib/classes/SemClass.class.php:74
 msgid "Generierte Standardinstitutsklasse"
@@ -42437,13 +42417,13 @@ msgstr ""
 "%s KB!"
 
 #: lib/classes/Avatar.class.php:372
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Der Dateityp der Bilddatei ist falsch (%s). Es sind nur die Dateiendungen ."
 "gif, .png, .jpeg, .jpg oder .webp erlaubt!"
 msgstr ""
-"Invalid file format of the image file (%s). The file formats .gif, png, ."
-"jpeg and .jpg are permitted, only!"
+"The file format of the image file is wrong (%s). Only the file extensions ."
+"gif, png, .jpeg, .jpg or .webp are allowed!"
 
 #: lib/classes/Avatar.class.php:406
 msgid "Es ist ein Fehler beim Bearbeiten des Bildes aufgetreten."
@@ -42458,9 +42438,8 @@ msgid "Der Typ des Bilds wird nicht unterstützt."
 msgstr "The file format of the image file is not supported."
 
 #: lib/classes/Avatar.class.php:513
-#, fuzzy
 msgid "Das Verzeichnis zum Speichern der Datei konnte nicht angelegt werden."
-msgstr "Export folder cannot be generated!"
+msgstr "The directory for saving the file could not be created."
 
 #: lib/classes/StudipSemTreeView.class.php:127
 #: lib/classes/StudipSemTreeViewAdmin.class.php:487
@@ -43383,14 +43362,12 @@ msgid "Ungültige Sortierung."
 msgstr "Invalid ordering."
 
 #: lib/classes/wiki/WikiDiffer.php:35
-#, fuzzy
 msgid "Dieser Text wurde hinzugefügt"
-msgstr "The date %s has been added!"
+msgstr "This text has been added"
 
 #: lib/classes/wiki/WikiDiffer.php:36
-#, fuzzy
 msgid "Dieser Text wurde gelöscht bzw. ersetzt."
-msgstr "The date has been deleted."
+msgstr "This text has been deleted or replaced."
 
 #: lib/classes/StudipRedisCache.class.php:22
 msgid "Redis"
@@ -44014,9 +43991,8 @@ msgid "Suchkriterien für Räume"
 msgstr "Search criteria for rooms"
 
 #: lib/classes/sidebar/DateSelectWidget.php:39
-#, fuzzy
 msgid "Datum auswählen"
-msgstr "Select room"
+msgstr "Select date"
 
 #: lib/classes/sidebar/RoomClipboardWidget.class.php:24
 msgid "Gruppenbelegungsplan anzeigen"
@@ -44425,12 +44401,14 @@ msgid ""
 "Sie haben einen Fortschritt von %1$u % % im Lernmaterial \"%2$s\" erreicht "
 "und können daher Ihr [Zertifikat herunterladen]%3$s ."
 msgstr ""
+"You have reached a progress of %1$u %% in the learning material \"%2$s\" and "
+"can therefore [download your certificate]%3$s ."
 
 #: lib/cronjobs/courseware.php:259 lib/cronjobs/courseware.php:293
 #: lib/cronjobs/courseware.php:332
-#, fuzzy, php-format
+#, php-format
 msgid "Sie können das Lernmaterial [direkt hier aufrufen]%s ."
-msgstr "Now, you may close this window."
+msgstr "You can access the learning material [directly here]%s ."
 
 #: lib/cronjobs/courseware.php:297
 msgid "Courseware: Erinnerung"
@@ -44441,29 +44419,28 @@ msgid "Courseware: Fortschritt zurückgesetzt"
 msgstr "Courseware: Progress reset"
 
 #: lib/cronjobs/courseware.php:371
-#, fuzzy
 msgid "Courseware-Zertifikate"
-msgstr "Courseware: Certificate"
+msgstr "Courseware certificates"
 
 #: lib/cronjobs/courseware.php:372
 msgid ""
 "Erteilte Zertifikate für den Fortschritt in Courseware-Inhalten dieser "
 "Veranstaltung "
 msgstr ""
+"Granted certificates for the progress in Courseware contents in this course "
 
 #: lib/cronjobs/courseware.php:384
-#, fuzzy, php-format
+#, php-format
 msgid "Zertifikate für Lernmaterial %u"
-msgstr "Shared learning material"
+msgstr "Certificates for learning material %u"
 
 #: lib/cronjobs/import_ilias_testresults.php:12
-#, fuzzy
 msgid "Testergebnisse aus ILIAS importieren"
-msgstr "Export results"
+msgstr "Import test results from ILIAS"
 
 #: lib/cronjobs/import_ilias_testresults.php:17
 msgid "Importiert Testergebnisse in das Gradebook"
-msgstr ""
+msgstr "Imports test results into the gradebook"
 
 #: lib/cronjobs/session_gc.class.php:15
 msgid "Sessions bereinigen"
@@ -46622,11 +46599,11 @@ msgstr[0] "%d wiki page"
 msgstr[1] "%d wiki pages"
 
 #: lib/modules/CoreWiki.class.php:81
-#, fuzzy, php-format
+#, php-format
 msgid "%d Änderung"
 msgid_plural "%d Änderungen"
-msgstr[0] "Changes"
-msgstr[1] "Changes"
+msgstr[0] "%d change"
+msgstr[1] "%d changes"
 
 #: lib/modules/CoreWiki.class.php:118 lib/modules/CoreWiki.class.php:187
 #: templates/wiki/edit.php:5 templates/wiki/list.php:36
@@ -46781,9 +46758,8 @@ msgid "Aktivitäten"
 msgstr "Activities"
 
 #: lib/modules/CoursewareModule.class.php:76
-#, fuzzy
 msgid "Kommentare und Anmerkungen"
-msgstr "Show comments"
+msgstr "Comments and annotations"
 
 #: lib/modules/CoursewareModule.class.php:121
 msgid "neue Seiten"
@@ -47116,9 +47092,8 @@ msgid "Meine aktuellen Termine"
 msgstr "My current dates"
 
 #: lib/modules/TerminWidget.php:23
-#, fuzzy
 msgid "Dieses Widget zeigt die eigenen aktuellen Termine an."
-msgstr "This widget shows a list of your courses."
+msgstr "This widget shows the own current dates."
 
 #: lib/modules/FeedbackModule.class.php:51
 msgid "Einholen von Feedback zu Inhaltselementen"
@@ -47715,9 +47690,8 @@ msgid "Sie haben eine Nachricht von %s erhalten!"
 msgstr "You have received a message from %s!"
 
 #: lib/exceptions/FeatureDisabledException.php:7
-#, fuzzy
 msgid "Diese Funktion ist ausgeschaltet."
-msgstr "The reference management is disabled!"
+msgstr "This function is disabled."
 
 #: lib/exceptions/MethodNotAllowedException.php:21
 msgid "Unzulässige Request-Methode beim Aufruf."
@@ -48011,9 +47985,9 @@ msgstr "The folder is not writeable."
 #: lib/filesystem/FileArchiveManager.class.php:114
 #: lib/filesystem/FileArchiveManager.class.php:152
 #: lib/filesystem/FileArchiveManager.class.php:186
-#, fuzzy, php-format
+#, php-format
 msgid "Das ZIP-Archiv ist zu groß! Die maximal erlaubte Größe ist %s!"
-msgstr "The ZIP archive is too big! Maximum allowed size is %d bytes!"
+msgstr "The ZIP archive is too big! The maximum allowed size is %s!"
 
 #: lib/filesystem/FileArchiveManager.class.php:176
 #, php-format
@@ -48784,7 +48758,7 @@ msgstr "for registered users"
 
 #: lib/navigation/LoginNavigation.php:47
 msgid "um das System erstmalig zu nutzen"
-msgstr ""
+msgstr "for using the system for the first time"
 
 #: lib/navigation/LoginNavigation.php:52
 msgid "Freier Zugang"
@@ -50385,28 +50359,24 @@ msgid "Kommentar entfernen"
 msgstr "Remove comment"
 
 #: templates/_standard_loginform.php:51
-#, fuzzy
 msgid "Passwort anzeigen"
-msgstr "Confirm password"
+msgstr "Show password"
 
 #: templates/_standard_loginform.php:56
-#, fuzzy
 msgid "Passwort verstecken"
-msgstr "Forgotten password"
+msgstr "Hide password"
 
 #: templates/_standard_loginform.php:61
-#, fuzzy
 msgid "Feststelltaste ist aktiviert!"
-msgstr "Wait list activated"
+msgstr "Caps lock is activated!"
 
 #: templates/_standard_loginform.php:69
 msgid "Anmelden"
 msgstr "Login"
 
 #: templates/_standard_loginform.php:76
-#, fuzzy
 msgid "Passwort vergessen?"
-msgstr "Forgotten password"
+msgstr "Forgot your password?"
 
 #: templates/header.php:147
 #, php-format
@@ -50962,9 +50932,9 @@ msgid "Speichern und weiter bearbeiten"
 msgstr "Save and continue "
 
 #: templates/courseware/mails/certificate.php:8
-#, fuzzy, php-format
+#, php-format
 msgid "für %s"
-msgstr "Roles for %s"
+msgstr "for %s"
 
 #: templates/courseware/block_types/iframe.php:2
 #: templates/courseware/block_types/embed.php:2
@@ -51676,14 +51646,12 @@ msgid "Der Termin am %s findet nicht statt."
 msgstr "The date on %s has been cancelled."
 
 #: templates/library/library_document_info.php:42
-#, fuzzy
 msgid "Übersetzer*in"
-msgstr "translate"
+msgstr "Translator"
 
 #: templates/library/library_document_info.php:51
-#, fuzzy
 msgid "Kurztitel"
-msgstr "Course title"
+msgstr "Short title"
 
 #: templates/library/library_document_info.php:59
 #, fuzzy
@@ -51696,14 +51664,12 @@ msgid "Bandanzahl"
 msgstr "Number"
 
 #: templates/library/library_document_info.php:67
-#, fuzzy
 msgid "Seitenanzahl"
-msgstr "Page content"
+msgstr "Page number"
 
 #: templates/library/library_document_info.php:71
-#, fuzzy
 msgid "Zusätzliche Information"
-msgstr "Personal information"
+msgstr "Additional information"
 
 #: templates/library/library_document_info.php:79
 #, fuzzy
@@ -51711,9 +51677,8 @@ msgid "Datum der Veröffentlichung der Ausgabe"
 msgstr "Release date"
 
 #: templates/library/library_document_info.php:85
-#, fuzzy
 msgid "ISBN"
-msgstr "ISBN: %s"
+msgstr "ISBN"
 
 #: templates/library/library_document_info.php:93
 #, fuzzy
