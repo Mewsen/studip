@@ -13,7 +13,7 @@
     padding: 0 1em;
 }
 .profile-view-actions {
-    @include list-unstyled();
+    @extend .list-unstyled;
     img {
         vertical-align: text-top;
     }
