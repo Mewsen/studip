@@ -421,7 +421,7 @@ class Course_TimesroomsController extends AuthenticatedController
         }
 
         // Set assigned groups
-        $assigned_groups       = Request::optionArray('assigned_groups');
+        $assigned_groups       = Request::optionArray('assigned-groups');
         $termin->statusgruppen = Statusgruppen::findMany($assigned_groups);
 
         $termin->store();
