@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2024-04-11 14:21+0000\n"
+"PO-Revision-Date: 2024-04-11 14:27+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-5-js/en/>\n"
@@ -564,9 +564,8 @@ msgid "Aktivitäten"
 msgstr "Activities"
 
 #: resources/vue/components/courseware/tasks/TaskGroupsModifyDeadlineDialog.vue:26
-#, fuzzy
 msgid "Aktuelle Bearbeitungszeit:"
-msgstr "Processing time"
+msgstr "Current editing time:"
 
 #: resources/vue/components/questionnaires/LikertEdit.vue:76
 #: resources/vue/components/questionnaires/LikertEdit.vue:89
@@ -1202,14 +1201,12 @@ msgstr "Processing time"
 #: resources/vue/components/courseware/tasks/CoursewareDashboardStudents.vue:84
 #: resources/vue/components/courseware/tasks/TaskGroupsModifyDeadlineDialog.vue:15
 #: resources/vue/components/courseware/widgets/CoursewareTasksActionWidget.vue:33
-#, fuzzy
 msgid "Bearbeitungszeit verlängern"
-msgstr "Change status"
+msgstr "Prolong editing time"
 
 #: resources/vue/components/courseware/tasks/TaskGroupsModifyDeadlineDialog.vue:34
-#, fuzzy
 msgid "Bearbeitungszeit verlängern bis zum"
-msgstr "Change status"
+msgstr "Editing time prolonged until"
 
 #: resources/assets/javascripts/lib/user_filter.js:12
 msgid "Bedingung konfigurieren"
@@ -1668,9 +1665,8 @@ msgid "Block merken"
 msgstr "Remember block"
 
 #: resources/vue/components/courseware/toolbar/CoursewareToolbar.vue:41
-#, fuzzy
 msgid "Block Merkliste"
-msgstr "Watch list"
+msgstr "Block clipboard"
 
 #: resources/vue/components/courseware/blocks/CoursewareDefaultBlock.vue:50
 msgid "Block unwiderruflich löschen"
@@ -2107,19 +2103,16 @@ msgid "Die Aufnahme wurde erfolgreich im Dateibereich abgelegt."
 msgstr "The recording has been successfully placed in the file area."
 
 #: resources/vue/components/courseware/tasks/task-groups-helper.js:12
-#, fuzzy
 msgid "Die Bearbeitungszeit hat begonnen."
-msgstr "Processing time"
+msgstr "The editing time has begun."
 
 #: resources/vue/components/courseware/tasks/task-groups-helper.js:20
-#, fuzzy
 msgid "Die Bearbeitungszeit hat noch nicht begonnen."
-msgstr "This date is not yet booked."
+msgstr "The editing time has not yet begun."
 
 #: resources/vue/components/courseware/tasks/task-groups-helper.js:28
-#, fuzzy
 msgid "Die Bearbeitungszeit ist beendet."
-msgstr "The evaluation has ended."
+msgstr "The editing time has ended."
 
 #: resources/assets/javascripts/bootstrap/studip_helper_attributes.js:242
 msgid "Die beiden Werte \"$1\" und \"$2\" stimmen nicht überein. "
@@ -2178,6 +2171,8 @@ msgid ""
 "Die Fortschrittsanzeige bezieht sich auf den Anteil der Teilnehmenden, die "
 "eine Seite aufgerufen haben."
 msgstr ""
+"The progress meter relates to the share of participants that have accessed a "
+"page."
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElementDialogImport.vue:69
 msgid "Die gewählte Datei ist kein Archiv oder das Archiv ist beschädigt."
@@ -3839,6 +3834,9 @@ msgid ""
 "den Einstellungen des Lernmaterials ändern. Wenn Sie die Einstellung "
 "beibehalten wollen, legen Sie bitte eine Seite an."
 msgstr ""
+"In this learning material, the start page will be hidden. You can change "
+"this in the settings of the learning material. If you wan to keept this "
+"setting, please create a page."
 
 #: resources/vue/components/courseware/blocks/CoursewareDownloadBlock.vue:127
 msgid "Infobox"
@@ -5420,9 +5418,8 @@ msgid "Ordner anlegen"
 msgstr "Create folder"
 
 #: resources/vue/components/file-chooser/FileChooserTree.vue:22
-#, fuzzy
 msgid "Ordner aufklappen"
-msgstr "Open object"
+msgstr "Expand folder"
 
 #: resources/vue/components/StudipFileChooser.vue:61
 #: resources/vue/components/file-chooser/FileChooserDialog.vue:68
@@ -5443,9 +5440,8 @@ msgid "Ordner und Dateien auswählen"
 msgstr "Select folder and files"
 
 #: resources/vue/components/file-chooser/FileChooserTree.vue:22
-#, fuzzy
 msgid "Ordner zuklappen"
-msgstr "Close object"
+msgstr "Fold folder"
 
 #: resources/vue/components/courseware/layouts/CoursewareFileChooser.vue:2
 msgid "Ordner-Filter"
@@ -5591,9 +5587,8 @@ msgid "Radius"
 msgstr "Radius"
 
 #: resources/vue/components/file-chooser/FileChooserBox.vue:39
-#, fuzzy
 msgid "Rasteransicht umschalten"
-msgstr "Make course visible"
+msgstr "Switch raster view"
 
 #: resources/vue/components/courseware/structural-element/CoursewareStructuralElement.vue:86
 msgid "Rechte"
@@ -7130,6 +7125,9 @@ msgid ""
 "Zertifikats verwenden möchten, muss es nur die passende Größe haben, um die "
 "ganze Seite auszufüllen."
 msgstr ""
+"Select an image here that is shown in the left top corner of the certificate "
+"in its original size. If you want to use the image as background for the "
+"certificate, it just has to have the matching size to fill the whole page."
 
 #: resources/vue/components/courseware/unit/CoursewareShelfDialogImport.vue:20
 msgid ""
