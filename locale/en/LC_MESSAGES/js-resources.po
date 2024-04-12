@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2024-04-06 15:29+0000\n"
+"PO-Revision-Date: 2024-04-12 14:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-4-js/en/>\n"
@@ -265,11 +265,10 @@ msgid "<%= count %> ausgewählt"
 msgstr "<%= count %> selected"
 
 #: resources/vue/components/tree/TreeNodeCourseInfo.vue:3
-#, fuzzy
 msgid "<strong>Eine</strong> Veranstaltung"
 msgid_plural "<strong>%{count}</strong> Veranstaltungen"
-msgstr[0] "<strong>One</strong> course on this layer."
-msgstr[1] "<strong>%{count}</strong> courses on this layer."
+msgstr[0] "<strong>One</strong> course"
+msgstr[1] "<strong>%{count}</strong> courses"
 
 #: resources/vue/components/courseware/CoursewareUnitItemDialogSettings.vue:158
 #: resources/vue/components/courseware/CoursewareUnitItemDialogSettings.vue:236
@@ -759,9 +758,8 @@ msgid "Aufgabe zuweisen"
 msgstr "Assign task"
 
 #: resources/vue/components/courseware/CoursewareTasksDialogDistribute.vue:283
-#, fuzzy
 msgid "Aufgaben werden bereits verteilt."
-msgstr "Tasks have been distributed."
+msgstr "Tasks are already being distributed."
 
 #: resources/vue/components/courseware/CoursewareTasksDialogDistribute.vue:321
 msgid "Aufgaben wurden verteilt."
@@ -1786,6 +1784,8 @@ msgid ""
 "Die Fortschrittsanzeige bezieht sich auf den Anteil der Teilnehmenden, die "
 "eine Seite aufgerufen haben."
 msgstr ""
+"The progress meter relates to the share of participants that have accessed a "
+"page."
 
 #: resources/vue/components/courseware/CoursewareStructuralElementDialogImport.vue:69
 msgid "Die gewählte Datei ist kein Archiv oder das Archiv ist beschädigt."
@@ -1923,7 +1923,6 @@ msgid "Diese Seite hat eine zeitlich beschränkte Sichtbarkeit"
 msgstr "This page has a time-restricted visibility"
 
 #: resources/vue/components/courseware/CoursewareUnitProgress.vue:64
-#, fuzzy
 msgid "diese Seite inkl. darunter liegender Seiten"
 msgstr "this page incl. underlying pages"
 
@@ -2466,9 +2465,8 @@ msgid "Es wurden keine Aktivitäten gefunden."
 msgstr "No activities have been found."
 
 #: resources/vue/components/tree/TreeSearchResult.vue:104
-#, fuzzy
 msgid "Es wurden keine Ergebnisse zu Ihrem Suchbegriff \"%{term}\" gefunden."
-msgstr "No results for \"%s\"."
+msgstr "No results could be found for your search term \"%{term}\"."
 
 #: resources/vue/components/courseware/CoursewareShelfDialogCopy.vue:208
 #: resources/vue/components/courseware/CoursewareStructuralElementDialogCopy.vue:201
@@ -2762,14 +2760,12 @@ msgid "Fortschritt"
 msgstr "Progress"
 
 #: resources/vue/components/courseware/CoursewareUnitItem.vue:60
-#, fuzzy
 msgid "Fortschritt aller Teilnehmenden"
-msgstr "Number of participants:"
+msgstr "Progress of all participants"
 
 #: resources/vue/components/courseware/CoursewareTile.vue:88
-#, fuzzy
 msgid "Fortschritt aller Teilnehmenden: %{progress}%"
-msgstr "Progress: %{progress}%"
+msgstr "Progress of all participants: %{progress}%"
 
 #: resources/vue/components/courseware/CoursewareDownloadBlock.vue:163
 msgid "Fortschritt erst beim Herunterladen"
@@ -2889,9 +2885,8 @@ msgid "Gelöscht"
 msgstr "Deleted"
 
 #: resources/vue/components/courseware/CoursewareUnitProgress.vue:64
-#, fuzzy
 msgid "Gesamtes Lernmaterial"
-msgstr "Shared learning material"
+msgstr "All learning material"
 
 #: resources/vue/components/courseware/CoursewareShelfDialogAdd.vue:207
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:147
@@ -3534,10 +3529,9 @@ msgstr "Merge contents"
 #: resources/vue/components/ContentModulesControl.vue:38
 #: resources/vue/components/ContentModulesEditTiles.vue:120
 #: resources/vue/components/ContentmodulesEditTable.vue:135
-#, fuzzy
 msgid ""
 "Inhaltsmodul %{ name } für Teilnehmende unsichtbar bzw. sichtbar schalten"
-msgstr "Make content module %{ name } invisible or visible for participants"
+msgstr "Make the content module %{ name } invisible or visible for participants"
 
 #: resources/vue/components/courseware/CoursewareDocumentBlock.vue:105
 #: resources/vue/components/courseware/CoursewareRibbon.vue:30
@@ -4201,14 +4195,12 @@ msgid "Mehrere Antworten sind erlaubt"
 msgstr "Multiple answers are allowed"
 
 #: resources/vue/components/courseware/CoursewareUnitItem.vue:60
-#, fuzzy
 msgid "Mein Fortschritt"
-msgstr "Progress"
+msgstr "My progress"
 
 #: resources/vue/components/courseware/CoursewareTile.vue:90
-#, fuzzy
 msgid "Mein Fortschritt: %{progress}%"
-msgstr "Progress: %{progress}%"
+msgstr "My progress: %{progress}%"
 
 #: resources/vue/components/MemcachedCacheConfig.vue:5
 msgid "Memcached-Server"
@@ -4364,14 +4356,12 @@ msgid "Möchten Sie diesen Link löschen"
 msgstr "Do you really want to delete this link"
 
 #: resources/vue/components/courseware/CoursewareAccordionContainer.vue:149
-#, fuzzy
 msgid "Möchten Sie dieses Fach wirklich löschen?"
-msgstr "Do you really want to delete this block?"
+msgstr "Do you really want to delete this field of study?"
 
 #: resources/vue/components/courseware/CoursewareTabsContainer.vue:50
-#, fuzzy
 msgid "Möchten Sie dieses Tab wirklich löschen?"
-msgstr "Do you really want to delete this template?"
+msgstr "Do you really want to delete this tab?"
 
 #: resources/assets/javascripts/mvv.js:117
 msgid "Modul suchen"
@@ -4417,9 +4407,8 @@ msgid "Nächste"
 msgstr "Next"
 
 #: resources/vue/components/courseware/CoursewareGalleryBlock.vue:120
-#, fuzzy
 msgid "Nächstes Bild"
-msgstr "Next"
+msgstr "Next picture"
 
 #: resources/vue/components/ContentModules.vue:72
 msgid "Nächstes Inhaltselement"
@@ -4750,14 +4739,12 @@ msgid "Ordner"
 msgstr "Folder"
 
 #: resources/vue/components/FilesTable.vue:148
-#, fuzzy
 msgid "Ordner %{name} auswählen"
-msgstr "Select folder type"
+msgstr "Select folder %{name}"
 
 #: resources/vue/components/FilesTable.vue:195
-#, fuzzy
 msgid "Ordner und Dateien auswählen"
-msgstr "Select folder type"
+msgstr "Select folder and files"
 
 #: resources/vue/components/courseware/CoursewareFileChooser.vue:2
 msgid "Ordner-Filter"
@@ -4781,9 +4768,8 @@ msgid "Passwort"
 msgstr "Password"
 
 #: resources/vue/components/RedisCacheConfig.vue:35
-#, fuzzy
 msgid "Passwort/Token zur Authentifizierung"
-msgstr "External authentication"
+msgstr "Password/token for authentification"
 
 #: resources/vue/components/courseware/CoursewareAudioBlock.vue:103
 msgid "Pause"
@@ -5062,9 +5048,8 @@ msgstr[0] "Page"
 msgstr[1] "Pages"
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:182
-#, fuzzy
 msgid "Seite auf dem OER Campus veröffentlichen"
-msgstr "Publish learning content on the OER Campus"
+msgstr "Publish page on the OER Campus"
 
 #: resources/vue/components/courseware/CoursewareEmptyElementBox.vue:5
 #: resources/vue/components/courseware/CoursewareEmptyElementBox.vue:2
@@ -5076,7 +5061,6 @@ msgid "Seite exportieren"
 msgstr "Export page"
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:190
-#, fuzzy
 msgid "Seite für den OER Campus vorschlagen"
 msgstr "Suggest page for the OER Campus"
 
@@ -5403,13 +5387,12 @@ msgstr "Miscellanea"
 
 #: resources/vue/components/questionnaires/LikertEdit.vue:67
 #: resources/vue/components/questionnaires/RangescaleEdit.vue:76
-#, fuzzy
 msgid ""
 "Sortierelement für Aussage %{statement}. Drücken Sie die Tasten Pfeil-nach-"
 "oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben."
 msgstr ""
-"Sorting element for the element %{node}. Press the up or down arrow key to "
-"move this element inside the list."
+"Sorting element for the statement %{statement}. Press the up or down arrow "
+"key to move this element inside the list."
 
 #: resources/vue/components/tree/StudipTreeList.vue:128
 #: resources/vue/components/tree/StudipTreeTable.vue:183
@@ -5421,21 +5404,19 @@ msgstr ""
 "move this element inside the list."
 
 #: resources/vue/components/ContentmodulesEditTable.vue:76
-#, fuzzy
 msgid ""
 "Sortierelement für Module %{module}. Drücken Sie die Tasten Pfeil-nach-oben "
 "oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben."
 msgstr ""
-"Sorting element for the element %{node}. Press the up or down arrow key to "
+"Sorting element for the module %{module}. Press the up or down arrow key to "
 "move this element inside the list."
 
 #: resources/vue/components/ContentModulesEditTiles.vue:77
-#, fuzzy
 msgid ""
 "Sortierelement für Werkzeug %{module}. Drücken Sie die Tasten Pfeil-nach-"
 "oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben."
 msgstr ""
-"Sorting element for the element %{node}. Press the up or down arrow key to "
+"Sorting element for the tool %{module}. Press the up or down arrow key to "
 "move this element inside the list."
 
 #: resources/assets/javascripts/chunks/tablesorter.js:26
@@ -5972,9 +5953,8 @@ msgstr "Display all courses on this level"
 #: resources/vue/components/tree/StudipTreeList.vue:169
 #: resources/vue/components/tree/StudipTreeTable.vue:124
 #: resources/vue/components/tree/StudipTreeTable.vue:125
-#, fuzzy
 msgid "Veranstaltungen auf Unterebenen anzeigen"
-msgstr "Show courses on all sub-layers"
+msgstr "Show courses on sub-layers"
 
 #: resources/vue/components/tree/StudipTreeList.vue:258
 msgid "Veranstaltungen exportieren"
@@ -6151,9 +6131,8 @@ msgid "Vorher"
 msgstr "Before"
 
 #: resources/vue/components/courseware/CoursewareGalleryBlock.vue:115
-#, fuzzy
 msgid "Vorheriges Bild"
-msgstr "previous"
+msgstr "Previous image"
 
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:42
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:18
@@ -6210,9 +6189,8 @@ msgid "Vorschaubild"
 msgstr "Preview image"
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:191
-#, fuzzy
 msgid "Vorschlagen"
-msgstr "Templates"
+msgstr "Suggest"
 
 #: resources/vue/components/courseware/CoursewareStructuralElementDialogCopy.vue:24
 msgid ""
@@ -6603,7 +6581,7 @@ msgstr "Last changed on"
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:236
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:19
 msgid "Zuletzt bearbeitet von"
-msgstr "Last changed by"
+msgstr "Last modified by"
 
 #: resources/assets/javascripts/cke/wiki-link/formview.js:23
 msgid "zum Beispiel \"Wiki-Startseite\""
