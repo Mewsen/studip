@@ -308,17 +308,6 @@ class Course_RoomRequestsController extends AuthenticatedController
                 }
                 $_SESSION[$request_id]['selected_properties']['seats'] = $this->selected_properties['seats'];
                 $_SESSION[$request_id]['room_category_id'] = $this->selected_room_category_id;
-            } else if ($_SESSION[$request_id]['search_by'] === 'category') {
-                $this->room = Room::find($_SESSION[$request_id]['room_id']);
-                if ($this->room) {
-                    $this->grouped_properties = $this->room->getGroupedProperties();
-                    $this->selected_properties = [];
-                    foreach ($this->grouped_properties as $properties) {
-                        foreach ($properties as $property) {
-                            $this->selected_properties[$property->name] = $property->state;
-                        }
-                    }
-                }
             } else {
                 // let's find all the properties belonging to the selected category
                 $this->room_category_id = $_SESSION[$request_id]['room_category_id'];
