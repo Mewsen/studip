@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2024-04-06 15:29+0000\n"
+"PO-Revision-Date: 2024-04-12 14:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-1-js/en/>\n"
@@ -2925,9 +2925,8 @@ msgid "Nachrichtenbox schließen"
 msgstr "Close message box"
 
 #: resources/vue/components/courseware/CoursewareGalleryBlock.vue:86
-#, fuzzy
 msgid "Nächstes Bild"
-msgstr "next"
+msgstr "Next picture"
 
 #: resources/vue/components/FilesTable.vue:200
 #: resources/vue/components/MyCoursesTables.vue:99
@@ -3172,14 +3171,12 @@ msgid "Ordner"
 msgstr "Folder"
 
 #: resources/vue/components/FilesTable.vue:146
-#, fuzzy
 msgid "Ordner %{name} auswählen"
-msgstr "Select folder type"
+msgstr "Select folder %{name}"
 
 #: resources/vue/components/FilesTable.vue:174
-#, fuzzy
 msgid "Ordner und Dateien auswählen"
-msgstr "Select folder type"
+msgstr "Select folder and files"
 
 #: resources/vue/components/courseware/CoursewareFileChooser.vue:2
 msgid "Ordner-Filter"
@@ -3191,9 +3188,8 @@ msgid "Oval hinzufügen"
 msgstr "Add oval"
 
 #: resources/vue/components/RedisCacheConfig.vue:35
-#, fuzzy
 msgid "Passwort/Token zur Authentifizierung"
-msgstr "External authentication"
+msgstr "Password/token for authentification"
 
 #: resources/vue/components/courseware/CoursewareAudioBlock.vue:113
 msgid "Pause"
@@ -4209,9 +4205,8 @@ msgid "Vorgang läuft. Bitte warten Sie einen Moment."
 msgstr "Process running. Please wait a moment."
 
 #: resources/vue/components/courseware/CoursewareGalleryBlock.vue:81
-#, fuzzy
 msgid "Vorheriges Bild"
-msgstr "previous"
+msgstr "Previous image"
 
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:42
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:18
@@ -4458,7 +4453,7 @@ msgstr "Last changed on"
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:230
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:19
 msgid "Zuletzt bearbeitet von"
-msgstr "Last changed by"
+msgstr "Last modified by"
 
 #: resources/vue/components/FilesTable.vue:106
 msgid "Zum Hauptordner"
