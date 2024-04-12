@@ -26,7 +26,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-19 08:59+0200\n"
-"PO-Revision-Date: 2024-03-07 12:29+0000\n"
+"PO-Revision-Date: 2024-04-12 11:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-0/en/>\n"
@@ -44250,7 +44250,7 @@ msgstr ""
 #: lib/models/resources/ResourceBooking.class.php:475
 #: lib/models/resources/ResourceBooking.class.php:755
 msgid "Es wurde ein Wiederholungsintervall ohne Begrenzung angegeben!"
-msgstr "A repetition interval without limit has been specified!"
+msgstr "A never ending repetition interval has been specified!"
 
 #: lib/models/resources/ResourceBooking.class.php:480
 #: lib/models/resources/ResourceBooking.class.php:760
