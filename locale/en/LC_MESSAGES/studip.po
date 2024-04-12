@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-06 13:22+0100\n"
-"PO-Revision-Date: 2024-04-06 15:29+0000\n"
+"PO-Revision-Date: 2024-04-12 15:29+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-5-4/en/>\n"
@@ -7721,11 +7721,10 @@ msgstr ""
 "An error occurred while changing the visibility. The setting was not altered."
 
 #: app/controllers/course/members.php:1004
-#, fuzzy
 msgid ""
 "Sie dürfen keine Lehrenden oder Tutor/-innen in diese Veranstaltung "
 "eintragen."
-msgstr "With write access for all lecturers/tutors of this course"
+msgstr "You are not allowed to add lecturers or tutors to this course."
 
 #: app/controllers/course/members.php:1028
 #, php-format
@@ -8073,11 +8072,10 @@ msgid "Anmeldung aufgehoben, auf Warteliste gesetzt"
 msgstr "Enrolment cancelled, added to wait list"
 
 #: app/controllers/course/members.php:2275
-#, fuzzy
 msgid ""
 "Sie dürfen keine Lehrenden oder Tutor/-innen aus dieser Veranstaltungen "
 "austragen."
-msgstr "You are not allowed to sign out of the course by yourself."
+msgstr "You are not allowed to remove lecturers or tutors from this course."
 
 #: app/controllers/course/management.php:37
 msgid "Dies ist eine Studiengruppe und kein Seminar!"
@@ -8816,9 +8814,8 @@ msgid "Die Noten wurden gespeichert."
 msgstr "The grades have been saved."
 
 #: app/controllers/course/gradebook/lecturers.php:187
-#, fuzzy
 msgid "Beim Übermitteln der Daten trat ein Fehler auf."
-msgstr "An error occurred while copying!"
+msgstr "An error occurred while transferring data."
 
 #: app/controllers/course/gradebook/lecturers.php:220
 #: app/controllers/course/gradebook/lecturers.php:267
@@ -9986,9 +9983,8 @@ msgid "Thema gespeichert."
 msgstr "Topic saved."
 
 #: app/controllers/course/topics.php:121
-#, fuzzy
 msgid "Eines oder mehrere Themen gehören nicht zur ausgewählten Veranstaltung."
-msgstr "back to selected course"
+msgstr "One or more topics do not belong to the selected course."
 
 #: app/controllers/course/topics.php:158
 #, php-format
@@ -11013,11 +11009,11 @@ msgid "Diesen Nutzer gibt es nicht"
 msgstr "This user does not exist"
 
 #: app/controllers/tfa.php:42
-#, fuzzy
 msgid ""
 "Sie können die Zwei-Faktor-Authentifizierung nicht für andere Personen "
 "einrichten."
-msgstr "Two-factor authentication has been deactivated for this person."
+msgstr ""
+"You may not configure the two-factor authentification for other persons."
 
 #: app/controllers/tfa.php:66
 msgid "Die Zwei-Faktor-Authentifizierung wurde eingerichtet"
@@ -15636,9 +15632,8 @@ msgid "Datei konnte nicht gelöscht werden."
 msgstr "File could not be deleted."
 
 #: app/controllers/file.php:1454
-#, fuzzy
 msgid "Beim Kopieren ist ein Fehler aufgetreten"
-msgstr "An error occurred during copying."
+msgstr "An error occurred during copying"
 
 #: app/controllers/file.php:1496
 #, php-format
@@ -18669,12 +18664,16 @@ msgid ""
 "Die Person, für die die Sprechstunden angezeigt werden sollen, ist nicht "
 "mehr vorhanden"
 msgstr ""
+"The person for which the consultation hours shall be displayed is not "
+"available anymore"
 
 #: app/views/consultation/not_found.php:9
 msgid ""
 "Das Objekt, für das die Sprechstunden angezeigt werden sollen, ist nicht "
 "mehr vorhanden"
 msgstr ""
+"The object for which the consultation hours shall be displayed is not "
+"available anymore"
 
 #: app/views/consultation/slot-bookings.php:19
 #: app/views/consultation/admin/ungrouped.php:214
@@ -29873,9 +29872,8 @@ msgid ""
 msgstr "Name of entry (will be overwritten when assigned to a Stud.IP unit)"
 
 #: app/views/admin/tree/create.php:6
-#, fuzzy
 msgid "Name des Eintrags"
-msgstr "Name of the other entry:"
+msgstr "Entry name"
 
 #: app/views/admin/tree/create.php:12 app/views/admin/tree/edit.php:15
 msgid "Infotext"
@@ -31796,9 +31794,8 @@ msgid "Diesen Studiengang löschen"
 msgstr "Delete this course of study"
 
 #: app/views/admin/user/edit.php:432
-#, fuzzy
 msgid "Sind Sie sicher, dass Sie diesen Studiengang löschen wollen?"
-msgstr "Are you sure to delete this institute?"
+msgstr "Are you sure you want to delete this course of study?"
 
 #: app/views/admin/user/edit.php:472 app/views/admin/user/edit.php:533
 msgid "Diese Einrichtung löschen"
@@ -31827,10 +31824,9 @@ msgid "Aus dieser Nutzerdomäne austragen"
 msgstr "Remove from this user domain"
 
 #: app/views/admin/user/edit.php:577
-#, fuzzy
 msgid ""
 "Sind Sie sicher, dass sie die Person aus der Nutzerdomäne austragen wollen?"
-msgstr "Do really want to discard your posting?"
+msgstr "Are you sure to remove the person from the user domain?"
 
 #: app/views/admin/user/edit.php:601
 msgid "-- Bitte Sperrebene auswählen --"
@@ -31934,14 +31930,12 @@ msgid "Dateien in Veranstaltungen und Einrichtungen"
 msgstr "Files in courses and institutes"
 
 #: app/views/admin/user/_delete.php:56
-#, fuzzy
 msgid "Lernmaterialien löschen?"
-msgstr "Learning materials"
+msgstr "Delete learning materials?"
 
 #: app/views/admin/user/_delete.php:57
-#, fuzzy
 msgid "Courseware Lernmaterialien, Seiten, Abschnitte und Blöcke"
-msgstr "Courseware learning materials"
+msgstr "Courseware learning materials, pages, sections and blocks"
 
 #: app/views/admin/user/_delete.php:63
 msgid "veranstaltungsbezogene Inhalte, bis auf Wiki und Forum Einträge"
@@ -33628,9 +33622,8 @@ msgid "Webseite"
 msgstr "Website"
 
 #: app/views/room_management/overview/buildings.php:18
-#, fuzzy
 msgid "Alle Gebäude auswählen"
-msgstr "Select building"
+msgstr "Select all buildings"
 
 #: app/views/room_management/overview/buildings.php:86
 #: app/views/room_management/overview/buildings.php:88
@@ -33693,9 +33686,9 @@ msgstr "Calendar week: %d. week"
 
 #: app/views/room_management/planning/booking_comments.php:117
 #: app/views/room_management/planning/booking_comments.php:124
-#, fuzzy, php-format
+#, php-format
 msgid "In der %d. Kalenderwoche sind keine Buchungen vorhanden!"
-msgstr "There are no bookings with comments in the %d. calendar week!"
+msgstr "There are no bookings in the %d. calendar week!"
 
 #: app/views/room_management/planning/copy_bookings.php:7
 msgid "Verfügbare Räume"
@@ -37593,7 +37586,6 @@ msgid "Nur %1$d von %2$d Räumen konnten dem teilbaren Raum zugeordnet werden!"
 msgstr "Only %1$d of %2$d rooms could be assigned to the separable room!"
 
 #: lib/models/resources/ResourcePropertyDefinition.class.php:263
-#, fuzzy
 msgid "Zuorndung entfernen"
 msgstr "Remove assignment"
 
@@ -37765,7 +37757,7 @@ msgstr ""
 #: lib/models/resources/ResourceBooking.class.php:473
 #: lib/models/resources/ResourceBooking.class.php:781
 msgid "Es wurde ein Wiederholungsintervall ohne Begrenzung angegeben!"
-msgstr "A repetition interval without limit has been specified!"
+msgstr "A never ending repetition interval has been specified!"
 
 #: lib/models/resources/ResourceBooking.class.php:478
 #: lib/models/resources/ResourceBooking.class.php:786
@@ -56466,7 +56458,6 @@ msgid "Hohen Kontrast aktivieren"
 msgstr "Activate high contrast"
 
 #: templates/index_nobody.php:85
-#, fuzzy
 msgid ""
 "Aktiviert einen hohen Kontrast gemäß WCAG 2.1. Diese Einstellung wird nach "
 "dem Login übernommen.\n"
@@ -56722,84 +56713,68 @@ msgid "Der Termin am %s findet nicht statt."
 msgstr "The date on %s has been cancelled."
 
 #: templates/library/library_document_info.php:42
-#, fuzzy
 msgid "Übersetzer*in"
-msgstr "translate"
+msgstr "Translator"
 
 #: templates/library/library_document_info.php:51
-#, fuzzy
 msgid "Kurztitel"
-msgstr "Course title"
+msgstr "Short title"
 
 #: templates/library/library_document_info.php:59
-#, fuzzy
 msgid "Verlagsort"
-msgstr "Course location"
+msgstr "Place of publication"
 
 #: templates/library/library_document_info.php:63
-#, fuzzy
 msgid "Bandanzahl"
-msgstr "Number"
+msgstr "Amount of volumes"
 
 #: templates/library/library_document_info.php:67
-#, fuzzy
 msgid "Seitenanzahl"
-msgstr "Page content"
+msgstr "Page number"
 
 #: templates/library/library_document_info.php:71
-#, fuzzy
 msgid "Zusätzliche Information"
-msgstr "Personal information"
+msgstr "Additional information"
 
 #: templates/library/library_document_info.php:79
-#, fuzzy
 msgid "Datum der Veröffentlichung der Ausgabe"
-msgstr "Release date"
+msgstr "Release date of the edition"
 
 #: templates/library/library_document_info.php:85
-#, fuzzy
 msgid "ISBN"
-msgstr "ISBN: %s"
+msgstr "ISBN"
 
 #: templates/library/library_document_info.php:93
-#, fuzzy
 msgid "Verfasser*in"
-msgstr "Leave"
+msgstr "Author"
 
 #: templates/library/library_document_info.php:102
-#, fuzzy
 msgid "Auflagen"
-msgstr "Requests"
+msgstr "Editions"
 
 #: templates/library/library_document_info.php:106
-#, fuzzy
 msgid "Sammlungstitel"
-msgstr "Collection"
+msgstr "Collection title"
 
 #: templates/library/library_document_info.php:110
-#, fuzzy
 msgid "Sammlungsnummer"
-msgstr "Collection"
+msgstr "Collection number"
 
 #: templates/library/library_document_info.php:114
-#, fuzzy
 msgid "Sammlungseditor"
-msgstr "Collection"
+msgstr "Collection editor"
 
 #: templates/library/library_document_info.php:127
-#, fuzzy
 msgid "Speicherort im Archiv"
-msgstr "Search in archive"
+msgstr "Save location in the archive"
 
 #: templates/library/library_document_info.php:135
-#, fuzzy
 msgid "Zugriffsdatum"
-msgstr "Access type"
+msgstr "Access date"
 
 #: templates/library/library_document_info.php:141
-#, fuzzy
 msgid "Inhaltsangabe"
-msgstr "Contents"
+msgstr "Summary"
 
 #~ msgid "Nutzerbilder"
 #~ msgstr "User pictures"
