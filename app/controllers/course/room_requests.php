@@ -26,8 +26,6 @@ class Course_RoomRequestsController extends AuthenticatedController
      */
     public function before_filter(&$action, &$args)
     {
-        $this->current_action = $action;
-
         parent::before_filter($action, $args);
 
         $this->current_user = User::findCurrent();
