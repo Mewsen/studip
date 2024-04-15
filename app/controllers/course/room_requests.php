@@ -576,9 +576,13 @@ class Course_RoomRequestsController extends AuthenticatedController
         }
     }
 
-    private function getRoomBookingIcons($available_rooms)
+    /**
+     * @param Room[] $available_rooms
+     * @return array
+     */
+    private function getRoomBookingIcons(array $available_rooms)
     {
-        $this->available_room_icons = [];
+        $icons = [];
 
         $request_time_intervals = $this->request->getTimeIntervals();
 
@@ -589,8 +593,8 @@ class Course_RoomRequestsController extends AuthenticatedController
                     'resource_id = :room_id AND begin < :end AND end > :begin',
                     [
                         'room_id' => $room->id,
-                        'begin' => $interval['begin'],
-                        'end' => $interval['end']
+                        'begin'   => $interval['begin'],
+                        'end'     => $interval['end'],
                     ]
                 ) > 0;
                 if ($booked) {
@@ -598,23 +602,23 @@ class Course_RoomRequestsController extends AuthenticatedController
                 }
             }
             if ($request_dates_booked === 0) {
-                $this->available_room_icons[$room->id] =
-                    Icon::create('check-circle', Icon::ROLE_STATUS_GREEN)->asImg(
-                        [
-                            'class' => 'text-bottom',
-                            'title' => _('freier Raum')
-                        ]
-                    );
-                $available_rooms[] = $room;
-            } elseif ($request_dates_booked < $request_time_intervals) {
-                $this->available_room_icons[$room->id] = Icon::create('exclaim-circle', Icon::ROLE_STATUS_YELLOW)->asImg([
+                $icons[$room->id] = Icon::create('check-circle', Icon::ROLE_STATUS_GREEN)->asImg([
+                    'class' => 'text-bottom',
+                    'title' => _('freier Raum'),
+                ]);
+            } elseif ($request_dates_booked < count($request_time_intervals)) {
+                $icons[$room->id] = Icon::create('exclaim-circle', Icon::ROLE_STATUS_YELLOW)->asImg([
                     'class' => 'text-bottom',
                     'title' => _('teilweise belegter Raum')
                 ]);
-                $available_rooms[] = $room;
+            } else {
+                $icons[$room->id] = Icon::create('exclaim-circle', Icon::ROLE_STATUS_RED)->asImg([
+                    'class' => 'text-bottom',
+                    'title' => _('belegter Raum')
+                ]);
             }
         }
-        return $this->available_room_icons;
+        return $icons;
     }
 
     /**
