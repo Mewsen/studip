@@ -85,7 +85,7 @@
                 <label>
                     <?= _('Raumname') ?>
                     <span class="flex-row">
-                    <input type="text" name="room_name" value="<?= htmlReady($_SESSION[$request_id]['room_name']) ?>">
+                    <input type="text" name="room_name" value="<?= htmlReady($_SESSION[$request_id]['room_name'] ?? '') ?>">
                     <?= Icon::create('search')->asInput(
                         [
                             'title' => _('Räume suchen'),
@@ -107,7 +107,7 @@
                                             <input type="radio" name="selected_room_id"
                                                    data-activates="button[type='submit'][name='select_room']"
                                                    value="<?= htmlReady($room->id) ?>"
-                                                <? if ($_SESSION[$request_id]['room_id'] === $room->id) echo 'checked' ?>>
+                                                <? if (isset($_SESSION[$request_id]['room_id']) && $_SESSION[$request_id]['room_id'] === $room->id) echo 'checked' ?>>
                                             <?= htmlReady(mila($room->name, 60)) . ' (' . $room['category']->name . ')'?>
                                             <? if ($room->properties): ?>
                                                 <? $property_names = $room->getInfolabelProperties()

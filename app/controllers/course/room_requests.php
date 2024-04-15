@@ -350,11 +350,14 @@ class Course_RoomRequestsController extends AuthenticatedController
         $this->step = (int)$step;
 
         $this->request = new RoomRequest($this->request_id);
-        $this->request->setRangeFields($_SESSION[$this->request_id]['range'], $_SESSION[$this->request_id]['range_ids']);
+        $this->request->setRangeFields(
+            $_SESSION[$this->request_id]['range'] ?? null,
+            $_SESSION[$this->request_id]['range_ids'] ?? null
+        );
 
         // let's find all the properties belonging to the selected category
         $this->room_category_id = $_SESSION[$request_id]['room_category_id'] ?: $this->request->category_id;
-        $this->room_name = $_SESSION[$request_id]['room_name'];
+        $this->room_name = $_SESSION[$request_id]['room_name'] ?? '';
         $this->selected_room = Resource::find($_SESSION[$request_id]['room_id'] ?: $this->request->resource_id);
         $this->category = $this->room_category_id ? ResourceCategory::find($this->room_category_id) : '';
         $this->available_properties = $this->room_category_id ? $this->category->getRequestableProperties() : '';
@@ -369,7 +372,10 @@ class Course_RoomRequestsController extends AuthenticatedController
         $this->comment = $_SESSION[$request_id]['comment'] ?? null;
 
         // when searching for a room name, list found room
-        if ($_SESSION[$request_id]['room_name'] !== '') {
+        if (
+            isset($_SESSION[$request_id]['room_name'])
+            && $_SESSION[$request_id]['room_name'] !== ''
+        ) {
             $search_properties['room_category_id'] = $this->room_category_id;
             $search_properties['seats'] = [
                 1,
