@@ -535,6 +535,10 @@ class Admin_CoursesController extends AuthenticatedController
             if (isset($filters[$key])) {
                 $config->store($field, $filters[$key]);
             }
+            if (!$config->MY_INSTITUTES_DEFAULT) {
+                $config->delete('ADMIN_COURSES_TEACHERFILTER');
+                $config->delete('MY_COURSES_SELECTED_STGTEIL');
+            }
 
             unset($filters[$key]);
         }
