@@ -28,6 +28,12 @@ class Course_RoomRequestsController extends AuthenticatedController
     {
         parent::before_filter($action, $args);
 
+        if (!Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS) {
+            throw new AccessDeniedException(
+                _('Das Erstellen von Raumanfragen ist nicht erlaubt!')
+            );
+        }
+
         $this->current_user = User::findCurrent();
         $this->user_is_global_resource_admin = ResourceManager::userHasGlobalPermission(
             $this->current_user,
@@ -62,11 +68,6 @@ class Course_RoomRequestsController extends AuthenticatedController
      */
     public function index_action()
     {
-        if (!Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS) {
-            throw new AccessDeniedException(
-                _('Das Erstellen von Raumanfragen ist nicht erlaubt!')
-            );
-        }
         $this->url_params = [];
         if (Request::get('origin') !== null) {
             $this->url_params['origin'] = Request::get('origin');
@@ -113,12 +114,6 @@ class Course_RoomRequestsController extends AuthenticatedController
      */
     public function new_request_action($request_id = '')
     {
-        if (!Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS) {
-            throw new AccessDeniedException(
-                _('Das Erstellen von Raumanfragen ist nicht erlaubt!')
-            );
-        }
-
         Helpbar::get()->addPlainText(
             _('Information'),
             _('Hier können Sie Angaben zu gewünschten Raumeigenschaften machen.')
@@ -158,12 +153,6 @@ class Course_RoomRequestsController extends AuthenticatedController
      */
     public function request_first_step_action($request_id)
     {
-        if (!Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS) {
-            throw new AccessDeniedException(
-                _('Das Erstellen von Raumanfragen ist nicht erlaubt!')
-            );
-        }
-
         $this->request_id = $request_id;
 
         if (Request::isPost()) {
@@ -209,11 +198,6 @@ class Course_RoomRequestsController extends AuthenticatedController
      */
     public function request_find_matching_rooms_action($request_id, $step)
     {
-        if (!Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS) {
-            throw new AccessDeniedException(
-                _('Das Erstellen von Raumanfragen ist nicht erlaubt!')
-            );
-        }
         $this->request_id = $request_id;
         $this->step = (int)$step;
         $this->room_name = $_SESSION[$request_id]['room_name'];
@@ -339,11 +323,6 @@ class Course_RoomRequestsController extends AuthenticatedController
      */
     public function request_find_available_properties_action($request_id, $step)
     {
-        if (!Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS) {
-            throw new AccessDeniedException(
-                _('Das Erstellen von Raumanfragen ist nicht erlaubt!')
-            );
-        }
         $this->request_id = $request_id;
         $this->step = (int)$step;
 
@@ -403,12 +382,6 @@ class Course_RoomRequestsController extends AuthenticatedController
      */
     public function request_check_properties_action($request_id)
     {
-        if (!Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS) {
-            throw new AccessDeniedException(
-                _('Das Erstellen von Raumanfragen ist nicht erlaubt!')
-            );
-        }
-
         $this->request_id = $request_id;
         $this->selected_properties = Request::getArray('selected_properties');
         // select a room, search for a room name or search for rooms matching properties
@@ -502,12 +475,6 @@ class Course_RoomRequestsController extends AuthenticatedController
      */
     public function request_show_summary_action($request_id)
     {
-        if (!Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS) {
-            throw new AccessDeniedException(
-                _('Das Erstellen von Raumanfragen ist nicht erlaubt!')
-            );
-        }
-
         $this->request_id = $request_id;
         $this->step = 3;
 
@@ -549,12 +516,6 @@ class Course_RoomRequestsController extends AuthenticatedController
 
     public function store_request_action($request_id)
     {
-        if (!Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS) {
-            throw new AccessDeniedException(
-                _('Das Erstellen von Raumanfragen ist nicht erlaubt!')
-            );
-        }
-
         $this->request_id = $request_id;
         $this->request = new RoomRequest($this->request_id);
         $this->request->setRangeFields($_SESSION[$this->request_id]['range'], $_SESSION[$this->request_id]['range_ids']);
