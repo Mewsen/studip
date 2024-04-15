@@ -313,11 +313,6 @@ class Course_TimesroomsController extends AuthenticatedController
         $this->date       = CourseDate::find($termin_id) ?: CourseExDate::find($termin_id);
         $this->attributes = [];
 
-        if ($request = RoomRequest::findByDate($this->date->id)) {
-            $this->params = ['request_id' => $request->getId()];
-        } else {
-            $this->params = ['new_room_request_type' => 'date_' . $this->date->id];
-        }
         $this->only_bookable_rooms = Request::submitted('only_bookable_rooms');
 
         if (Config::get()->RESOURCES_ENABLE) {

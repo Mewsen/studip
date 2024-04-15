@@ -223,21 +223,5 @@
                 ),
               ['data-dialog' => 'size=big']) ?>
         <? endif ?>
-        <? if (Request::isXhr() && !$locked && Config::get()->RESOURCES_ENABLE && Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS): ?>
-            <?  ?>
-            <?= Studip\LinkButton::create(
-                ($request_id ? _('Zur Raumanfrage wechseln') : _('Raumanfrage erstellen')),
-                (
-                    $request_id
-                    ? $controller->url_for(
-                        'course/room_requests/request_summary/' . $request_id
-                    )
-                    :  $controller->url_for(
-                        'course/room_requests/request_start/' . $request_id,
-                        array_merge($params, ['range_str' => 'date_' . $date->id,'origin' => 'course_timesrooms'])
-                    )
-                ),
-                ['data-dialog' => 'size=big']) ?>
-        <? endif ?>
     </footer>
 </form>
