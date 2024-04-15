@@ -45,6 +45,7 @@
                 <td>
                     <?
                     $content = Studip\Markup::removeHtml($content);
+                    $ignore_next_hits = 0;
                     $offset  = 0;
                     $output  = [];
 
@@ -55,7 +56,7 @@
                             break;
                         }
                         $offset = $pos + 1;
-                        if (($ignore_next_hits--) > 0) {
+                        if ($ignore_next_hits-- > 0) {
                             // if more than one occurence is found
                             // in a fragment to be displayed,
                             // the fragment is only shown once
