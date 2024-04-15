@@ -18,6 +18,8 @@
 
 class Course_RoomRequestsController extends AuthenticatedController
 {
+    protected $_autobind = true;
+
     /**
      * Common tasks for all actions
      *
@@ -618,16 +620,12 @@ class Course_RoomRequestsController extends AuthenticatedController
     /**
      * delete one room request
      */
-    public function delete_action($request_id)
+    public function delete_action(RoomRequest $request)
     {
-        $request = RoomRequest::find($request_id);
-        if (!$request) {
-            throw new Trails\Exception(403);
-        }
         if (Request::isGet()) {
             PageLayout::postQuestion(sprintf(
                 _('Möchten Sie die Raumanfrage "%s" löschen?'),
-                htmlReady($request->getTypeString())), $this->url_for('course/room_requests/delete/' . $request_id));
+                htmlReady($request->getTypeString())), $this->url_for('course/room_requests/delete/' . $request->id));
         } else {
             CSRFProtection::verifyUnsafeRequest();
             if (Request::submitted('yes')) {
@@ -636,6 +634,7 @@ class Course_RoomRequestsController extends AuthenticatedController
                 }
             }
         }
+
         $this->redirect('course/timesrooms/index');
     }
 

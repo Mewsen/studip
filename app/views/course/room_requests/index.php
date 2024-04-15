@@ -92,16 +92,14 @@ echo $flash['message'];
                             ['data-dialog' => '1']
                         ) ?>
                     <? endif ?>
-                    <? $actionMenu->addLink(
-                        $controller->url_for('course/room_requests/delete/' . $rr->id),
+                    <? $actionMenu->addButton(
+                        'delete',
                         _('Diese Anfrage löschen'),
-                        Icon::create(
-                            'trash',
-                            Icon::ROLE_CLICKABLE,
-                            [
-                                'title' => _('Diese Anfrage löschen')
-                            ]
-                        )
+                        Icon::create('trash'),
+                        [
+                            'data-confirm' => sprintf(_('Möchten Sie die Raumanfrage "%s" löschen?'), $rr->getTypeString()),
+                            'formaction'   => $controller->deleteURL($rr),
+                        ]
                     ) ?>
                     <?= $actionMenu->render() ?>
                 </td>
