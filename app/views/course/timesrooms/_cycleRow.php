@@ -70,8 +70,8 @@ $is_exTermin = $termin instanceof CourseExDate;
         <?= $room_holiday ?: '' ?>
     <? endif ?>
 
-    <? $room_request_exists = RoomRequest::existsByDate($termin->id, true) ?>
-    <? if ($room_request_exists): ?>
+    <? $room_request = RoomRequest::findByDate($termin->id) ?>
+    <? if ($room_request && $room_request->closed == ResourceRequest::STATE_OPEN): ?>
         <? $msg_info = _('Für diesen Termin existiert eine Raumanfrage.') ?>
         <?= tooltipIcon($msg_info) ?>
     <? endif ?>
@@ -111,9 +111,33 @@ $is_exTermin = $termin instanceof CourseExDate;
         <? $actionMenu->addLink(
             $controller->url_for('course/timesrooms/editDate/' . $termin->id, $linkAttributes),
             _('Termin bearbeiten'),
-            Icon::create('edit', 'clickable', ['title' => _('Diesen Termin bearbeiten')]),
+            Icon::create('edit'),
             ['data-dialog' => '']
         ) ?>
+        <? $actionMenu
+                ->conditionAll(Config::get()->RESOURCES_ENABLE && Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS)
+                ->condition((bool) $room_request)
+                ->addLink(
+                    $controller->url_for(
+                        'course/room_requests/request_show_summary',
+                        $room_request
+                    ),
+                    _('Raumanfrage bearbeiten'),
+                    Icon::create('room-occupied'),
+                    ['data-dialog' => 'size=big']
+                )
+                ->condition(!$room_request)
+                ->addLink(
+                    $controller->url_for(
+                        'course/room_requests/new_request',
+                        ['range_str' => 'date', 'range_id' => $termin->id]
+                    ),
+                    _('Neue Raumanfrage'),
+                    Icon::create('room-request'),
+                    ['data-dialog' => 'size=big']
+                )
+                ->conditionAll(true)
+        ?>
 
         <? $actionMenu->addLink(
             $controller->url_for(
