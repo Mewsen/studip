@@ -276,6 +276,15 @@ $(document).on('click keydown', '[data-toggles]', function (event) {
             $(target).toggle();
         }
 
+        const controls = $(event.currentTarget).attr('aria-controls');
+        if (controls) {
+            // Find elements which control the expanded status of the same element.
+            const elements = $('[aria-controls="' + controls + '"]');
+            const expanded = $(event.currentTarget).attr('aria-expanded') === 'true';
+            // Set the aria-expanded status accordingly.
+            elements.attr('aria-expanded', !expanded);
+        }
+
         event.preventDefault();
     }
 });

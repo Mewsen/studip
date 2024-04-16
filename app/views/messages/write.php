@@ -67,22 +67,26 @@
         <ul class="message-options">
         <? if ($GLOBALS['ENABLE_EMAIL_ATTACHMENTS']): ?>
             <li>
-                <a href="" onClick="STUDIP.Messages.toggleSetting('attachments'); return false;">
-                    <?= Icon::create('staple', 'clickable')->asImg(40) ?>
+                <a href="" onClick="STUDIP.Messages.toggleSetting('attachments'); return false;" aria-expanded="false"
+                   role="button" title="<?= _('Anhänge verwalten') ?>" aria-controls="attachments"
+                   id="toggle-attachments">
+                    <?= Icon::create('staple')->asImg(40) ?>
                     <br>
                     <strong><?= _("Anhänge") ?></strong>
                 </a>
             </li>
         <? endif; ?>
             <li>
-                <a href="" onClick="STUDIP.Messages.toggleSetting('tags'); return false;">
-                    <?= Icon::create('star', 'clickable')->asImg(40) ?>
+                <a href="" onClick="STUDIP.Messages.toggleSetting('tags'); return false;" aria-expanded="false"
+                   role="button" title="<?= _('Schlagworte verwalten') ?>" aria-controls="tags" id="toggle-tags">
+                    <?= Icon::create('star')->asImg(40) ?>
                     <br>
                     <strong><?= _("Schlagworte") ?></strong>
                 </a>
             </li>
             <li>
-                <a href="" onClick="STUDIP.Messages.toggleSetting('settings'); return false;">
+                <a href="" onClick="STUDIP.Messages.toggleSetting('settings'); return false;" aria-expanded="false"
+                   role="button" title="<?= _('Optionen') ?>" aria-controls="settings" id="toggle-settings">
                     <?= Icon::create('admin', 'clickable')->asImg(40) ?>
                     <br>
                     <strong><?= _("Optionen") ?></strong>
