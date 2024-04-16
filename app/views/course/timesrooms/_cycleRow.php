@@ -83,7 +83,7 @@ $is_exTermin = $termin instanceof CourseExDate;
     <? endif ?>
 
     <? $room_request = RoomRequest::findByDate($termin->id) ?>
-    <? if ($room_request && $room_request->closed == ResourceRequest::STATE_OPEN): ?>
+    <? if ($room_request && !$room_request->closed): ?>
         <? $msg_info = _('Für diesen Termin existiert eine Raumanfrage.') ?>
         <?= tooltipIcon($msg_info) ?>
     <? endif ?>
