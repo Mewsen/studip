@@ -111,7 +111,7 @@ const GlobalSearch = {
 
                     // Optional image...
                     if (result.img !== null) {
-                        $(`<img src="${result.img}">`)
+                        $(`<img src="${result.img}" alt="">`)
                             .wrap('<div class="globalsearch-result-img">')
                             .parent() // Element is now the wrapper
                             .appendTo(link);
