@@ -200,7 +200,7 @@ const Search = {
         // Optional image...
         if (result.img !== null) {
             $('<div class="search-result-img hidden-tiny-down">')
-                .append(`<img src="${result.img}">`)
+                .append(`<img src="${result.img}" alt="">`)
                 .appendTo(link);
         }
 
