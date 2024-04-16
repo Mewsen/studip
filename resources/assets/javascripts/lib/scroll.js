@@ -6,49 +6,54 @@
  * Updates/calls to the callback are synchronized to screen refresh by using
  * the animation frame method (which will fallback to a timer based solution).
  */
-var handlers = {};
-var animId = false;
+const handlers = {};
+let animId = false;
 
-var lastTop  = null;
-var lastLeft = null;
-
-function scrollHandler() {
-    var scrollTop = $(document).scrollTop();
-    var scrollLeft = $(document).scrollLeft();
-
-    if (scrollTop !== lastTop || scrollLeft !== lastLeft) {
-        $.each(handlers, function(index, handler) {
-            handler(scrollTop, scrollLeft);
-        });
-
-        lastTop  = scrollTop;
-        lastLeft = scrollLeft;
-    }
-
-    animId = false;
-
-    engageScrollTrigger();
-}
+let lastTop = null;
+let lastLeft = null;
 
 function refresh() {
-    var hasHandlers = !$.isEmptyObject(handlers);
+    const hasHandlers = Object.keys(handlers).length > 0;
     if (!hasHandlers && animId !== false) {
         window.cancelAnimationFrame(animId);
         animId = false;
     } else if (hasHandlers && animId === false) {
-        animId = window.requestAnimationFrame(scrollHandler);
+        animId = window.requestAnimationFrame(() => Scroll.executeHandlers());
     }
 }
 
 function engageScrollTrigger() {
-    $(window).off('scroll.studip-handler');
-    $(window).one('scroll.studip-handler', refresh);
+    window.removeEventListener('scroll', refresh);
+    window.addEventListener('scroll', refresh, {once: true});
 }
 
 const Scroll = {
-    addHandler(index, handler) {
+    executeHandlers(only_these = []) {
+        const scrollTop = document.scrollingElement.scrollTop;
+        const scrollLeft = document.scrollingElement.scrollLeft;
+
+        if (scrollTop !== lastTop || scrollLeft !== lastLeft) {
+            for (const [index, handler] of Object.entries(handlers)) {
+                if (only_these.length === 0 || only_these.includes(index)) {
+                    handler(scrollTop, scrollLeft);
+                }
+            }
+
+            lastTop  = scrollTop;
+            lastLeft = scrollLeft;
+        }
+
+        animId = false;
+
+        engageScrollTrigger();
+    },
+    addHandler(index, handler, immediate = false) {
         handlers[index] = handler;
         engageScrollTrigger();
+
+        if (immediate) {
+            Scroll.executeHandlers([index]);
+        }
     },
     removeHandler(index) {
         delete handlers[index];
