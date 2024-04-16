@@ -594,6 +594,9 @@ export default {
                 attributeFilter: ['class']
             })
         });
+
+        // Check initial state after load
+        this.headerMagic = document.querySelector('body').classList.contains('fixed');
     },
     beforeDestroy() {
         this.classObserver.disconnect();
