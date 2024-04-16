@@ -596,6 +596,11 @@ class Course_StudygroupController extends AuthenticatedController
         global $perm;
 
         $id = Context::getId();
+
+        if (!$id) {
+            throw new CheckObjectException(_('Sie haben kein Objekt gewählt.'));
+        }
+
         $user = Request::username('user');
 
         if ($from_status === 'moderator') {
