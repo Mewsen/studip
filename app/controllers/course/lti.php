@@ -114,7 +114,7 @@ class Course_LtiController extends StudipController
                 ],
                 array_merge(
                     [new \OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim($this->course_id)],
-                    !empty($deployment->options['custom_parameters']) ? explode('\n', $deployment->options['custom_parameters']) : []
+                    $deployment->getCustomParameterArray()
                 )
             );
         } else {
