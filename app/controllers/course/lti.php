@@ -34,6 +34,7 @@ class Course_LtiController extends StudipController
         parent::before_filter($action, $args);
 
         $this->course_id = Context::getId();
+        $this->course = Course::find($this->course_id);
         $this->edit_perm = $GLOBALS['perm']->have_studip_perm('tutor', $this->course_id);
 
         if (!in_array($action, ['index', 'iframe', 'grades']) && !$this->edit_perm) {
@@ -113,7 +114,16 @@ class Course_LtiController extends StudipController
                     \Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole('autor')
                 ],
                 array_merge(
-                    [new \OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim($this->course_id)],
+                    [
+                        new \OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim(
+                            $this->course_id,
+                            [
+                                'http://purl.imsglobal.org/vocab/lis/v2/course#CourseOffering'
+                            ],
+                            $this->course->veranstaltungsnummer ?? '',
+                            !empty($this->course) ? $this->course->getFullName() : ''
+                        )
+                    ],
                     $deployment->getCustomLtiParameterArray(),
                 )
             );
