@@ -2,8 +2,10 @@
 
 namespace Studip\LTI13a;
 
+use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface;
 use OAT\Library\Lti1p3Core\User\UserIdentityInterface;
 use OAT\Library\Lti1p3Core\Util\Collection\CollectionInterface;
+
 
 class Identity implements UserIdentityInterface
 {
@@ -51,7 +53,7 @@ class Identity implements UserIdentityInterface
 
     #[\Override] public function getPicture(): ?string
     {
-        return \Avatar::getAvatar($this->user->id)->getURL();
+        return \Avatar::getAvatar($this->user->id)->getURL(\Avatar::MEDIUM);
     }
 
     #[\Override] public function getAdditionalProperties(): CollectionInterface
@@ -61,7 +63,15 @@ class Identity implements UserIdentityInterface
 
     #[\Override] public function normalize(): array
     {
-        // TODO: Implement normalize() method.
-        return [];
+        return [
+            MessagePayloadInterface::CLAIM_SUB => $this->getIdentifier(),
+            MessagePayloadInterface::CLAIM_USER_NAME => $this->getName(),
+            MessagePayloadInterface::CLAIM_USER_EMAIL => $this->getEmail(),
+            MessagePayloadInterface::CLAIM_USER_GIVEN_NAME => $this->getGivenName(),
+            MessagePayloadInterface::CLAIM_USER_FAMILY_NAME => $this->getFamilyName(),
+            MessagePayloadInterface::CLAIM_USER_MIDDLE_NAME => $this->getMiddleName(),
+            MessagePayloadInterface::CLAIM_USER_LOCALE => $this->getLocale(),
+            MessagePayloadInterface::CLAIM_USER_PICTURE => $this->getPicture()
+        ];
     }
 }

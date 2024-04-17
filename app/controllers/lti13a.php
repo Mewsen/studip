@@ -23,6 +23,8 @@ class Lti13aController extends StudipController
         $reg_manager = new \Studip\Lti13a\RegistrationManager();
         $user_authenticator = new \Studip\LTI13a\UserAuthenticator();
         $request = $this->getPsrRequest();
+        $logger = new \Monolog\Logger('lti13a', [new \Monolog\Handler\StreamHandler($GLOBALS['TMP_PATH'] . '/lti13a_debug.log', \Monolog\Logger::DEBUG)]);
+        $user_authenticator->setLogger($logger);
         $oidc_handler = new \OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcAuthenticationRequestHandler(
             new \OAT\Library\Lti1p3Core\Security\Oidc\OidcAuthenticator(
                 $reg_manager,
@@ -34,7 +36,7 @@ class Lti13aController extends StudipController
                 )
             ),
             null,
-            new \Monolog\Logger('lti13a', [new \Monolog\Handler\StreamHandler($GLOBALS['TMP_PATH'] . '/lti13a_debug.log', \Monolog\Logger::DEBUG)])
+            $logger
         );
         $response = $oidc_handler->handle($request);
         $this->renderPsrResponse($response);

@@ -114,7 +114,7 @@ class Keyring extends SimpleORMap
                 ]
             );
             $keyring->public_key = $loaded_key->toString('PKCS8');
-            //var_dump($keyring->public_key);die();
+            var_dump($keyring->public_key);die();
         }
         return $keyring;
     }

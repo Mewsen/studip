@@ -9,6 +9,12 @@ use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult;
 
 class UserAuthenticator implements UserAuthenticatorInterface
 {
+    protected $logger = null;
+
+    public function setLogger(\Psr\Log\LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
 
     #[\Override] public function authenticate(RegistrationInterface $registration, string $loginHint): UserAuthenticationResultInterface
     {
@@ -17,6 +23,11 @@ class UserAuthenticator implements UserAuthenticatorInterface
         $identity = null;
         if ($user instanceof \User) {
             $identity = new Identity($user);
+        }
+        if ($this->logger) {
+            //$this->logger->debug($user instanceof \User);
+            //$this->logger->debug($loginHint);
+            $this->logger->debug(var_export($identity->normalize(), true));
         }
 
         return new UserAuthenticationResult($user instanceof \User, $identity);

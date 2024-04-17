@@ -112,9 +112,10 @@ class Course_LtiController extends StudipController
                 [
                     \Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole('autor')
                 ],
-                [
-                    new \OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim($this->course_id)
-                ]
+                array_merge(
+                    [new \OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim($this->course_id)],
+                    !empty($deployment->options['custom_parameters']) ? explode('\n', $deployment->options['custom_parameters']) : []
+                )
             );
         } else {
             //LTI 1.0/1.1
