@@ -229,6 +229,15 @@ class messaging
         $mail->setSubject($title)
             ->addRecipient($to, $rec_fullname)
             ->setBodyText($mailmessage);
+
+        // Add Stud.IP logo as "pseudo" attachment - this will be embedded in the mail via Content-ID.
+        $mail->addRelatedAttachment(
+            $GLOBALS['STUDIP_BASE_PATH'] . '/public/assets/images/logos/studip4-logo@2x.png',
+            'studip-logo.png',
+            'image/png',
+            'studiplogo'
+        );
+
         if (mb_strlen($reply_to)) {
             if ($GLOBALS['MESSAGING_FORWARD_USE_REPLYTO']) {
                 $mail->setReplyToEmail($reply_to)

@@ -36,6 +36,11 @@ class StudipMail
      */
     private $attachments = [];
     /**
+     * Array of attachments that are related to the content
+     * @var array
+     */
+    private $related_attachments = [];
+    /**
      * @var array
      */
     private $sender;
@@ -307,6 +312,17 @@ class StudipMail
         return $this;
     }
 
+    public function addRelatedAttachment(string $file_name, string $name, string $type, string $content_id): void
+    {
+        $this->related_attachments[$name] = [
+            'FileName' => $file_name,
+            'Name' => $name,
+            'Content-Type' => $type,
+            'Disposition' => 'inline',
+            'Content-ID' => $content_id
+        ];
+    }
+
     /**
      * @param $name
      * @return StudipMail provides fluent interface
@@ -411,16 +427,29 @@ class StudipMail
             $transporter->SetMultipleEncodedEmailHeader($type, $recipients);
         }
         $transporter->SetEncodedHeader('Subject', $this->getSubject());
-        if($this->getBodyHtml()){
-            $html_part = '';
+        if($this->getBodyHtml()) {
+            $html_part = 0;
             $transporter->CreateQuotedPrintableHTMLPart($this->getBodyHtml(), "", $html_part);
             $text_part = '';
             $text_message = $this->getBodyText();
+
             if(!$text_message){
                 $text_message = _('Diese Nachricht ist im HTML-Format verfasst. Sie benötigen eine E-Mail-Anwendung, die das HTML-Format anzeigen kann.');
             }
             $transporter->CreateQuotedPrintableTextPart($transporter->WrapText($text_message), "", $text_part);
+
             $part = [$text_part, $html_part];
+            if (count($this->related_attachments) > 0) {
+                $relparts = [$html_part];
+                $i = 99;
+                $multipart = 0;
+                foreach ($this->related_attachments as $one) {
+                    $transporter->CreateFilePart($one, $i);
+                    $relparts[] = $i;
+                }
+                $transporter->CreateRelatedMultipart($relparts, $multipart);
+                $part = [$text_part, $multipart];
+            }
             $transporter->AddAlternativeMultipart($part);
         } else {
             $transporter->AddQuotedPrintableTextPart($this->getBodyText());
