@@ -130,17 +130,17 @@ class LtiDeployment extends SimpleORMap
         return $this->tool->custom_parameters . "\n" . $this->options['custom_parameters'] ?? '';
     }
 
-    public function getCustomParameterArray() : array
+    public function getCustomLtiParameterArray() : array
     {
         $parameters = explode('\n', $this->getCustomParameters());
         $array = [];
         foreach ($parameters as $parameter) {
             $key_value_parts = explode('=', $parameter, 2);
             if (count($key_value_parts) === 2) {
-                $array[$key_value_parts[0]] = $key_value_parts[1];
+                $array[trim($key_value_parts[0])] = trim($key_value_parts[1]);
             }
         }
-        return $array;
+        return ['https://purl.imsglobal.org/spec/lti/claim/custom' => $array];
     }
 
     /**
