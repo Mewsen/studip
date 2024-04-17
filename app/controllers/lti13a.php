@@ -20,10 +20,13 @@ class Lti13aController extends StudipController
     public function oidc_init_action()
     {
         require_once 'lib/elearning/lti1.3a/RegistrationManager.class.php';
-        $reg_manager = new \Studip\Lti13a\RegistrationManager();
+        $reg_manager = new \Studip\LTI13a\RegistrationManager();
         $user_authenticator = new \Studip\LTI13a\UserAuthenticator();
         $request = $this->getPsrRequest();
+
+        //DEBUG:
         $logger = new \Monolog\Logger('lti13a', [new \Monolog\Handler\StreamHandler($GLOBALS['TMP_PATH'] . '/lti13a_debug.log', \Monolog\Logger::DEBUG)]);
+
         $user_authenticator->setLogger($logger);
         $oidc_handler = new \OAT\Library\Lti1p3Core\Security\Oidc\Server\OidcAuthenticationRequestHandler(
             new \OAT\Library\Lti1p3Core\Security\Oidc\OidcAuthenticator(
