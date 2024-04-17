@@ -14,7 +14,6 @@ $application = new Application();
 $commands = [
     Commands\Base\Dump::class,
     Commands\Checks\Compatibility::class,
-    Commands\Checks\GlobalizedConfig::class,
     Commands\Checks\HelpTours::class,
     Commands\Checks\HelpTours::class,
     Commands\CleanupAdmissionRules::class,
