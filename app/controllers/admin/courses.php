@@ -573,19 +573,19 @@ class Admin_CoursesController extends AuthenticatedController
         if (in_array('name', $activated_fields)) {
             $params = tooltip2(_('Veranstaltungsdetails anzeigen'));
             $params['style'] = 'cursor: pointer';
-            $d['name'] = '<a href="'.URLHelper::getLink('seminar_main.php', ['auswahl' => $course->id]).'">'
+            $d['name'] = '<a href="'.URLHelper::getLink('dispatch.php/course/basicdata/view', ['cid' => $course->id]).'">'
                 . htmlReady($course->name)
                 .'</a> '
                 .'<a href="'.URLHelper::getLink('dispatch.php/course/details/index/'. $course->id).'" data-dialog><button class="undecorated">'.Icon::create('info-circle', Icon::ROLE_INACTIVE)->asImg($params).'</button></a> '
                 .(!$course->visible ? _('(versteckt)') : '');
         }
         if (in_array('number', $activated_fields)) {
-            $d['number'] = '<a href="'.URLHelper::getLink('seminar_main.php', ['auswahl' => $course->id]).'">'
+            $d['number'] = '<a href="'.URLHelper::getLink('dispatch.php/course/basicdata/view', ['cid' => $course->id]).'">'
                 .$course->veranstaltungsnummer
                 .'</a>';
         }
         if (in_array('avatar', $activated_fields)) {
-            $d['avatar'] = '<a href="'.URLHelper::getLink('seminar_main.php', ['auswahl' => $course->id]).'">'
+            $d['avatar'] = '<a href="'.URLHelper::getLink('dispatch.php/course/basicdata/view', ['cid' => $course->id]).'">'
                 .CourseAvatar::getAvatar($course->getId())->getImageTag(Avatar::SMALL, ['title' => $course->name])
                 ."</a>";
         }
