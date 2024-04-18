@@ -3,7 +3,7 @@
         class="cw-container"
         :class="['cw-container-colspan-' + colSpan, showEditMode && canEdit ? 'cw-container-active' : '', containerClass]"
     >
-        <div class="cw-container-content">
+        <div class="cw-container-content" :class="fullHD ? 'cw-colspan-full-hd' : ''">
             <header v-if="showEditMode" class="cw-container-header" :class="{ 'cw-container-header-open': isOpen }">
                 <a href="#" class="cw-container-header-toggle" :aria-expanded="isOpen" @click.prevent="isOpen = !isOpen">
                     <studip-icon :shape="isOpen ? 'arr_1down' : 'arr_1right'" />
@@ -103,6 +103,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div v-if="changeStyle === 'full' && type === 'list'">
+                            <p id="container-width">{{ $gettext('Vollbild') }}</p>
+                            <div class="">
+                                <label>
+                                    <input type="checkbox" value="fullHD" v-model="changeWidth" name="change-container-width">
+                                    {{ $gettext('Inhalt auf die gesamte Bildschirmbreite (bis 1980px) strecken') }}
+                                </label>
+                            </div>
+                        </div>
                     </form>
                 </template>
             </studip-dialog>
@@ -170,6 +179,8 @@ export default {
 
             changeType: '',
             changeStyle: '',
+            changeWidth: '',
+            fullHD: false,
         };
     },
     computed: {
@@ -180,6 +191,8 @@ export default {
             viewMode: 'viewMode',
             currentElementisLink: 'currentElementisLink',
             containerTypes: 'containerTypes',
+            consumeMode: 'consumeMode',
+            fullHDEnabled: 'fullHDEnabled'
         }),
         showEditMode() {
             return this.canEdit && !this.currentElementisLink;
@@ -210,20 +223,17 @@ export default {
             return this.blockingUser ? this.blockingUser.attributes['formatted-name'] : '';
         },
         containerStyles() {
-            let styles = [
-                { title: this.$gettext('Volle Breite'), colspan: 'full'},
+            return [
+                { title: this.$gettext('Volle Breite'), colspan: 'full' },
                 { title: this.$gettext('Halbe Breite'), colspan: 'half' },
                 { title: this.$gettext('Halbe Breite (zentriert)'), colspan: 'half-center' },
             ];
-
-            if (this.type === 'list') {
-                styles.unshift({ title: this.$gettext('Bildschirmbreite'), colspan: 'full-hd' });
-            }
-
-            return styles;
         },
         type() {
             return this.container.attributes['container-type'];
+        },
+        cwidth() {
+            return this.container.attributes.payload['cwidth'];
         }
     },
     methods: {
@@ -237,7 +247,8 @@ export default {
             lockObject: 'lockObject',
             unlockObject: 'unlockObject',
             coursewareBlockAdder: 'coursewareBlockAdder',
-            createClipboard: 'courseware-clipboards/create'
+            createClipboard: 'courseware-clipboards/create',
+            toggleFullHD: 'toggleFullHD'
         }),
         async displayEditDialog() {
             await this.loadContainer({ id: this.container.id, options: { include: 'edit-blocker' } });
@@ -261,6 +272,7 @@ export default {
             await this.lockObject({ id: this.container.id, type: 'courseware-containers' });
             this.changeType = this.type;
             this.changeStyle = this.colSpan;
+            this.changeWidth = this.cwidth;
             this.showChangeDialog = true;
         },
         async storeChange() {
@@ -282,6 +294,7 @@ export default {
             let container = this.container;
             container.attributes['container-type'] = this.changeType;
             container.attributes.payload.colspan = this.changeStyle;
+            container.attributes.payload.cwidth = this.changeWidth;
             await this.updateContainer({
                 container: container,
                 structuralElementId: this.container.relationships['structural-element'].data.id,
@@ -395,32 +408,29 @@ export default {
             this.companionSuccess({ info: this.$gettext('Abschnitt wurde in Merkliste abgelegt.') });
         },
 
-        enableFullHDListMode() {
-            document.querySelector('#content-wrapper').classList.add('cw-colspan-full-hd');
-            document.querySelector('.cw-container-wrapper').classList.add('cw-colspan-full-hd');
-        },
-
-        disableFullHDListMode() {
-            document.querySelector('#content-wrapper').classList.remove('cw-colspan-full-hd');
-            document.querySelector('.cw-container-wrapper').classList.remove('cw-colspan-full-hd');
-        }
-
     },
 
     watch: {
         showEditDialog(state) {
             this.$emit('showEdit', state);
+        },
+        consumeMode(newState) {
+            if (newState && this.cwidth) {
+                if (!this.fullHDEnabled) {
+                    this.toggleFullHD();
+                }
+                this.fullHD = true;
+                document.querySelector('#content-wrapper').classList.add('cw-colspan-full-hd');
+            }
+            if (!newState) {
+                if (this.fullHDEnabled) {
+                    this.toggleFullHD();
+                }
+                this.fullHD = false;
+                document.querySelector('#content-wrapper').classList.remove('cw-colspan-full-hd');
+            }
         }
     },
-
-    mounted() {
-        this.globalOn('consuming-mode-enabled', () => {
-            this.enableFullHDListMode();
-        });
-        this.globalOn('consuming-mode-disabled', () => {
-            this.disableFullHDListMode();
-        });
-    }
 
 };
 </script>
