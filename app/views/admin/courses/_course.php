@@ -42,7 +42,7 @@ if (!$values['parent_course'] || !in_array($values['parent_course'], array_keys(
         <? if (in_array('number', $view_filter)) : ?>
             <td>
                 <? if ($GLOBALS['perm']->have_studip_perm('autor', $semid)) : ?>
-                <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $semid]) ?>">
+                <a href="<?= URLHelper::getLink('dispatch.php/course/basicdata/view', ['cid' => $semid]) ?>">
                     <? endif ?>
                     <?= htmlReady($values["VeranstaltungsNummer"]) ?>
                     <? if ($GLOBALS['perm']->have_studip_perm('autor', $semid)) : ?>
@@ -53,7 +53,7 @@ if (!$values['parent_course'] || !in_array($values['parent_course'], array_keys(
         <? if (in_array('name', $view_filter)) : ?>
             <td>
                 <? if ($GLOBALS['perm']->have_studip_perm("autor", $semid)) : ?>
-                <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $semid]) ?>">
+                <a href="<?= URLHelper::getLink('dispatch.php/course/basicdata/view', ['cid' => $semid]) ?>">
                     <? endif ?>
                     <?= htmlReady($course->name) ?>
                     <? if ($GLOBALS['perm']->have_studip_perm("autor", $semid)) : ?>
