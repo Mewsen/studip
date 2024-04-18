@@ -130,10 +130,6 @@ export default {
             type: String,
             default: ''
         },
-        hasSidebar: {
-            type: Boolean,
-            default: true
-        },
         navigation: {
             type: Object,
             required: true,
@@ -162,6 +158,7 @@ export default {
             classObserver: null,
             dialogObserver: null,
             hasSkiplinks: document.querySelector('#skiplink_list') !== null,
+            hasSidebar: false,
             hasContentbar: false,
             contentbarTitle: ''
         }
@@ -494,6 +491,8 @@ export default {
         }
     },
     mounted() {
+        this.hasSidebar = document.querySelectorAll('#sidebar .sidebar-widget:not(#sidebar-navigation)').length > 0;
+
         const cache = STUDIP.Cache.getInstance('responsive.');
         const fullscreen = cache.get('fullscreen-mode') ?? false;
         const fullscreenDocument = document.documentElement.classList.contains('fullscreen-mode');
