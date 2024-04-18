@@ -1,7 +1,7 @@
 .blubber_panel {
     display: flex;
     align-items: stretch;
-    height: calc(100vh - 174px);
+    height: calc(100vh - 130px);
     transition: opacity 100ms, filter 100ms;
     &.waiting {
         filter: blur(1px);
@@ -519,5 +519,8 @@ ol.tagcloud {
 .responsive-display {
     .blubber_thread {
         margin-right: 0;
+    }
+    .blubber_threads_widget .sidebar-widget-content {
+        max-height: calc(100vh - 230px);
     }
 }
