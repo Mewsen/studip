@@ -66,18 +66,12 @@ if ($navigation) {
                     'username' => $user->username,
                     'perm' => $GLOBALS['perm']->get_perm()
                 ];
-
-                $navWidget = Sidebar::get()->countWidgets(NavigationWidget::class);
-                $allWidgets = Sidebar::get()->countWidgets();
-                $hasSidebar = $allWidgets - $navWidget > 0;
                 ?>
             <? } else {
                 $me = ['username' => 'nobody'];
-                $hasSidebar = false;
             } ?>
             <responsive-navigation :me="<?= htmlReady(json_encode($me)) ?>"
                                    context="<?= htmlReady(Context::get() ? Context::get()->getFullName() : '') ?>"
-                                   :has-sidebar="<?= $hasSidebar ? 'true' : 'false' ?>"
                                    :navigation="<?= htmlReady(json_encode(ResponsiveHelper::getNavigationObject($_COOKIE['responsive-navigation-hash'] ?? null))) ?>"
             ></responsive-navigation>
         </div>
