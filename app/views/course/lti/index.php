@@ -31,10 +31,14 @@
                             ]) ?>
                         <? endif ?>
 
+                        <a href="<?= $controller->link_for('lti/tool/edit/' . $lti_data->tool->id . '/' . $lti_data->course_id) ?>"
+                           title="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>
+                            <?= Icon::create('edit') ?>
+                        </a>
                         <a href="<?= $controller->link_for('course/lti/edit/' . $lti_data->position) ?>"
                            title="<?= _('Abschnitt bearbeiten') ?>"
                            data-dialog>
-                            <?= Icon::create('edit') ?>
+                            <?= Icon::create('edit', 'inactive') ?>
                         </a>
                         <a href="<?= htmlReady(sprintf(
                                 'javascript:void(STUDIP.Dialog.confirmAsPost(\'%1$s\', \'%2$s\'))',

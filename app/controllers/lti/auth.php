@@ -1,6 +1,6 @@
 <?php
 /**
- * lti.php - LTI 1.1 single sign on controller
+ * auth.php - LTI authentication controller
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -12,7 +12,7 @@
  * @category    Stud.IP
  */
 
-class LtiController extends AuthenticatedController
+class Lti_AuthController extends AuthenticatedController
 {
     /**
      * Callback function being called before an action is executed.
@@ -26,7 +26,7 @@ class LtiController extends AuthenticatedController
     }
 
     /**
-     * Redirect to enrollment action for the given course, if needed.
+     * Redirect to enrolment action for the given course, if needed.
      */
     public function index_action($course_id = null)
     {

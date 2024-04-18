@@ -30,7 +30,9 @@ class Lti_ToolController extends AuthenticatedController
     protected function addEditHandler($mode, $range_id = '')
     {
         $this->deployment = null;
+        $this->range_id = null;
         if ($range_id) {
+            $this->range_id = $range_id;
             if ($this->tool->isNew()) {
                 if ($range_id && $range_id !== 'global') {
                     $this->deployment = new LtiDeployment();
@@ -47,7 +49,7 @@ class Lti_ToolController extends AuthenticatedController
                 }
             }
         }
-        if ($this->deployment && !$GLOBALS['perm']->have_studip_perm('dozent', $this->deployment->range_id)) {
+        if ($this->deployment && !$GLOBALS['perm']->have_studip_perm('dozent', $this->deployment->course_id)) {
             throw new AccessDeniedException();
         }
 
@@ -59,6 +61,7 @@ class Lti_ToolController extends AuthenticatedController
             } else {
                 //The page for editing tools configured in courses.
                 $this->deployment->title = trim(Request::get('name'));
+                $this->deployment->description = trim(Request::get('description'));
                 $this->tool->name = $this->deployment->title;
 
                 $this->deployment->launch_url        = trim(Request::get('launch_url'));
