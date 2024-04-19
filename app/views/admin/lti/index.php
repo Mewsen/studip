@@ -55,7 +55,8 @@
                         <?= count($tool->links) ?>
                     </td>
                     <td class="actions">
-                        <a href="<?= $controller->link_for('lti/tool/edit/' . $tool->id . '/global') ?>" title="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>
+                        <a href="<?= $controller->link_for('lti/tool/edit/' . $tool->id . '/global') ?>" title="<?= _('LTI-Tool konfigurieren') ?>"
+                           aria-label="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>
                             <?= Icon::create('edit') ?>
                         </a>
                         <a href="<?= $controller->link_for('admin/lti/edit/' . $tool->id) ?>" title="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>
@@ -66,7 +67,6 @@
                                 'formaction'   => $controller->url_for('lti/tool/delete/' . $tool->id . '/global'),
                                 'title'        => _('LTI-Tool löschen'),
                                 'data-confirm' => sprintf(_('Wollen Sie das LTI-Tool „%s“ wirklich löschen?'), $tool->name),
-                                'aria-role'    => 'button',
                                 'aria-label'   => _('LTI-Tool löschen')
                             ]
                         ) ?>
