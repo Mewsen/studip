@@ -14,8 +14,8 @@ class PlatformManager
             $c->STUDIP_INSTALLATION_ID,
             $c->UNI_NAME_CLEAN,
             $GLOBALS['ABSOLUTE_URI_STUDIP'],
-            \URLHelper::getURL('dispatch.php/lti13a/oidc_init', null, true),
-            \URLHelper::getURL('dispatch.php/lti13a/oauth2_token', null, true)
+            \URLHelper::getURL('dispatch.php/lti/lti13a/oidc_init', null, true),
+            \URLHelper::getURL('dispatch.php/lti/lti13a/oauth2_token', null, true)
         );
     }
 

@@ -8,6 +8,7 @@
  * the License, or (at your option) any later version.
  *
  * @author      Elmar Ludwig
+ * @author      Moritz Strohm
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  */

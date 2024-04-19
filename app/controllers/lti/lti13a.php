@@ -1,7 +1,7 @@
 <?php
 
 
-class Lti13aController extends StudipController
+class Lti_Lti13aController extends StudipController
 {
     use Studip\OAuth2\NegotiatesWithPsr7;
 
@@ -43,7 +43,6 @@ class Lti13aController extends StudipController
         );
         $response = $oidc_handler->handle($request);
         $this->renderPsrResponse($response);
-
     }
 
     /**
@@ -112,5 +111,11 @@ class Lti13aController extends StudipController
             return;
         }
         //TODO: Output the result.
+    }
+
+    public function platform_data_action()
+    {
+        $this->platform = \Studip\LTI13a\PlatformManager::getPlatformConfiguration();
+        $this->render_template('lti/_platform_data');
     }
 }
