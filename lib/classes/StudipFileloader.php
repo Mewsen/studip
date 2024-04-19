@@ -27,6 +27,12 @@ class StudipFileloader
         $_oldVariableNames = array_keys(get_defined_vars());
 
         foreach (preg_split('/ /', $_filename, -1, PREG_SPLIT_NO_EMPTY) as $file) {
+            if (
+                !file_exists($file)
+                && !stream_resolve_include_path($file)
+            ) {
+                continue;
+            }
             include $file;
         }
         unset($file);

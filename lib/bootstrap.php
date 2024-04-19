@@ -64,6 +64,16 @@ if (isset($_SERVER['SERVER_NAME'])) {
 // default ASSETS_URL, customize if required
 $GLOBALS['ASSETS_URL'] = $ABSOLUTE_URI_STUDIP . 'assets/';
 
+// Check if instance is configured; redirect to install script if not
+if (!file_exists($GLOBALS['STUDIP_BASE_PATH'] . '/config/config_local.inc.php') && php_sapi_name() !== 'cli') {
+    require_once __DIR__ . '/classes/URLHelper.php';
+
+    URLHelper::setBaseUrl($GLOBALS['ABSOLUTE_URI_STUDIP']);
+    header('Location: ' . URLHelper::getURL('install.php'));
+    die;
+}
+
+// Load configuration
 require __DIR__ . '/classes/StudipFileloader.php';
 
 $added_configs = [];
@@ -77,14 +87,6 @@ foreach($added_configs as $key => $value) {
 // If no ENV setting was found in the config files, assume ENV=production
 if (!defined('Studip\ENV')) {
     define('Studip\ENV', DEFAULT_ENV);
-}
-
-if (!file_exists($GLOBALS['STUDIP_BASE_PATH'] . '/config/config_local.inc.php') && php_sapi_name() !== 'cli') {
-    require_once __DIR__ . '/classes/URLHelper.php';
-
-    URLHelper::setBaseUrl($GLOBALS['ABSOLUTE_URI_STUDIP']);
-    header('Location: ' . URLHelper::getURL('install.php'));
-    die;
 }
 
 require __DIR__ . '/bootstrap-autoload.php';
