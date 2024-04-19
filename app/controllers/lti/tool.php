@@ -2,75 +2,87 @@
 
 class Lti_ToolController extends AuthenticatedController
 {
+    public function before_filter(&$action, &$args)
+    {
+        parent::before_filter($action, $args);
+
+        $this->tool       = null;
+        $this->deployment = null;
+        $this->tool_id    = '';
+        $this->range_id   = '';
+
+        if (in_array($action, ['add', 'edit', 'delete'])) {
+            if ($action === 'add') {
+                $this->range_id = $args[0];
+            } else {
+                $this->tool_id  = $args[0];
+                $this->range_id = $args[1];
+            }
+            if (!$this->range_id || ($this->range_id === 'global' && !$GLOBALS['perm']->have_perm('root'))) {
+                throw new AccessDeniedException();
+            }
+            if ($this->range_id !== 'global' && !$GLOBALS['perm']->have_studip_perm('tutor', $this->range_id)) {
+                throw new AccessDeniedException();
+            }
+            if ($action === 'add') {
+                $this->tool = new LtiTool();
+            } else {
+                if (!$this->tool_id) {
+                    PageLayout::postError(_('Es wurde kein LTI-Tool angegeben.'));
+                    $this->render_nothing();
+                    return;
+                }
+                $this->tool = LtiTool::find($this->tool_id);
+                if (!$this->tool) {
+                    PageLayout::postError(_('Das angegebene LTI-Tool wurde nicht gefunden.'));
+                }
+            }
+        }
+    }
+
     public function add_action($range_id)
     {
-        if (!$range_id || ($range_id === 'global' && !$GLOBALS['perm']->have_perm('root'))) {
-            throw new AccessDeniedException();
-        }
-
-        $this->tool = new LtiTool();
-
+        //NOTE: The parameters are checked and processed in the before_filter.
         $this->addEditHandler('add', $range_id);
     }
 
     public function edit_action($tool_id, $range_id)
     {
-        if (!$range_id || ($range_id === 'global' && !$GLOBALS['perm']->have_perm('root'))) {
-            throw new AccessDeniedException();
-        }
-        if (!$tool_id) {
-            PageLayout::postError(_('Es wurde kein LTI-Tool angegeben.'));
-            return;
-        }
-        $this->tool = LtiTool::find($tool_id);
-        if (!$this->tool) {
-            PageLayout::postError(_('Das angegebene LTI-Tool wurde nicht gefunden.'));
-            return;
-        }
+        //NOTE: The parameters are checked and processed in the before_filter.
         $this->addEditHandler('edit', $range_id);
     }
 
     protected function addEditHandler($mode, $range_id = '')
     {
         $this->deployment = null;
-        $this->range_id = null;
-        if ($range_id) {
-            $this->range_id = $range_id;
-            if ($this->tool->isNew()) {
-                if ($range_id && $range_id !== 'global') {
-                    $this->deployment = new LtiDeployment();
-                    $this->deployment->course_id = $range_id;
-                }
-            } elseif ($range_id !== 'global') {
-                $this->deployment = LtiDeployment::findOneBySQL(
-                    '`tool_id` = :tool_id AND `course_id` = :range_id',
-                    ['tool_id' => $this->tool->id, 'range_id' => $range_id]
-                );
-                if (!$this->deployment) {
-                    PageLayout::postError(_('Das angegebene LTI-Deployment wurde nicht gefunden.'));
-                    return;
-                }
+        if ($this->tool->isNew()) {
+            if ($this->range_id !== 'global') {
+                $this->deployment = new LtiDeployment();
+                $this->deployment->course_id = $range_id;
             }
-        }
-        if ($this->deployment && !$GLOBALS['perm']->have_studip_perm('dozent', $this->deployment->course_id)) {
-            throw new AccessDeniedException();
+        } elseif ($this->range_id !== 'global') {
+            $this->deployment = LtiDeployment::findOneBySQL(
+                '`tool_id` = :tool_id AND `course_id` = :range_id',
+                ['tool_id' => $this->tool->id, 'range_id' => $range_id]
+            );
+            if (!$this->deployment) {
+                PageLayout::postError(_('Das angegebene LTI-Deployment wurde nicht gefunden.'));
+                return;
+            }
         }
 
         if (Request::isPost()) {
-            if ($range_id === 'global') {
+            CSRFProtection::verifyUnsafeRequest();
+            if ($this->range_id === 'global') {
                 //The admin page for editing global tools.
                 $this->tool->name = trim(Request::get('name'));
                 $this->tool->launch_url        = trim(Request::get('launch_url'));
             } else {
                 //The page for editing tools configured in courses.
-                $this->deployment->title = trim(Request::get('name'));
+                $this->deployment->title       = trim(Request::get('name'));
                 $this->deployment->description = trim(Request::get('description'));
+                $this->deployment->launch_url  = trim(Request::get('launch_url'));
                 $this->tool->name = $this->deployment->title;
-
-                $this->deployment->launch_url        = trim(Request::get('launch_url'));
-                if (!is_array($this->deployment->options)) {
-                    $this->deployment->options = [];
-                }
             }
             $this->tool->oidc_init_url     = trim(Request::get('oidc_init_url'));
             $this->tool->jwks_url          = trim(Request::get('jwks_url'));
@@ -127,6 +139,26 @@ class Lti_ToolController extends AuthenticatedController
                     $this->redirect('course/lti');
                 }
             }
+        }
+    }
+
+    public function delete_action($tool_id, $range_id)
+    {
+        //NOTE: The parameters are checked and processed in the before_filter.
+        if (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
+            if ($this->tool->delete()) {
+                PageLayout::postSuccess(_('Das LTI-Tool wurde gelöscht.'));
+            } else {
+                PageLayout::postError(_('Das LTI-Tool konnte nicht gelöscht werden.'));
+            }
+        }
+        if ($range_id === 'global') {
+            //Redirect to the admin overview page.
+            $this->redirect('admin/lti');
+        } elseif (Course::exists($range_id)) {
+            //Redirect to the LTI module of the course:
+            $this->redirect('course/lti', ['cid' => $range_id]);
         }
     }
 }
