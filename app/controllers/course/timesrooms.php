@@ -1485,23 +1485,10 @@ class Course_TimesroomsController extends AuthenticatedController
         }
         Sidebar::Get()->addWidget($widget);
 
-        if ($GLOBALS['perm']->have_perm('admin')) {
-            $list = new SelectWidget(
-                _('Veranstaltungen'),
-                $this->indexURL(),
-                'cid'
-            );
 
-            foreach (AdminCourseFilter::get()->getCoursesForAdminWidget() as $seminar) {
-                $list->addElement(new SelectElement(
-                    $seminar['Seminar_id'],
-                    $seminar['Name'],
-                    $seminar['Seminar_id'] === Context::getId(),
-                    $seminar['VeranstaltungsNummer'] . ' ' . $seminar['Name']
-                ));
-            }
-            $list->size = 8;
-            Sidebar::Get()->addWidget($list);
+        if ($GLOBALS['perm']->have_studip_perm('admin', $this->course_id)) {
+            $widget = new CourseManagementSelectWidget();
+            Sidebar::get()->addWidget($widget);
         }
     }
 

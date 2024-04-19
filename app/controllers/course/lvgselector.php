@@ -37,6 +37,11 @@ class Course_LvgselectorController extends AuthenticatedController
         $widget = new HelpbarWidget();
         $widget->addElement(new WidgetElement(_('Auf dieser Seite kann die Veranstaltung ausgewählten Lehrveranstaltungsgruppen zugeordnet werden.')));
         Helpbar::get()->addWidget($widget);
+
+        if ($GLOBALS['perm']->have_studip_perm('admin', $this->course_id)) {
+            $widget = new CourseManagementSelectWidget();
+            Sidebar::get()->addWidget($widget);
+        }
     }
 
     /**

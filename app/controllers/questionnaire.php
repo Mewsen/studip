@@ -52,7 +52,16 @@ class QuestionnaireController extends AuthenticatedController
         if (!$GLOBALS['perm']->have_studip_perm("tutor", $this->range_id)) {
             throw new AccessDeniedException("Only for logged in users.");
         }
+
         Navigation::activateItem("/course/admin/questionnaires");
+        if ($GLOBALS['perm']->have_studip_perm('admin', $this->course_id)) {
+            // Ensure the select widget is added last
+            NotificationCenter::on('SidebarWillRender', function () {
+                $widget = new CourseManagementSelectWidget();
+                Sidebar::get()->addWidget($widget);
+            });
+        }
+
         $this->statusgruppen = Statusgruppen::findByRange_id($this->range_id);
         $this->questionnaires = Questionnaire::findBySQL(
             "INNER JOIN questionnaire_assignments USING (questionnaire_id) WHERE (questionnaire_assignments.range_id = ? AND questionnaire_assignments.range_type = ?) OR (questionnaire_assignments.range_id IN (?) AND questionnaire_assignments.range_type = 'statusgruppe') ORDER BY questionnaires.chdate DESC",
