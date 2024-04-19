@@ -20,13 +20,13 @@ interface StudipModule
      * By convention, new or changed plugin content is indicated
      * by a different icon and a corresponding tooltip.
      *
-     * @param  string   $course_id   course or institute range id
-     * @param  int      $last_visit  time of user's last visit
-     * @param  string   $user_id     the user to get the navigation for
+     * @param string $course_id  course or institute range id
+     * @param int    $last_visit time of user's last visit
+     * @param string $user_id    the user to get the navigation for
      *
-     * @return object   navigation item to render or NULL
+     * @return Navigation|null   navigation item to render or NULL
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id);
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation;
 
     /**
      * Return a navigation object representing this plugin in the
@@ -38,11 +38,11 @@ interface StudipModule
      * By convention, new or changed plugin content is indicated
      * by a different icon and a corresponding tooltip.
      *
-     * @param  string   $course_id   course or institute range id
+     * @param string $course_id course or institute range id
      *
      * @return array    navigation item to render or NULL
      */
-    public function getTabNavigation($course_id);
+    public function getTabNavigation(string $course_id): array;
 
     /**
      * Provides metadata like a descriptional text for this module that
@@ -51,7 +51,7 @@ interface StudipModule
      *
      * @return array    metadata containg description and/or url
      */
-    public function getMetadata();
+    public function getMetadata(): array;
 
     /**
      * Return a template (an instance of the Flexi\Template class)
@@ -68,5 +68,5 @@ interface StudipModule
      *
      * @return Flexi\Template|null template object to render or NULL
      */
-    public function getInfoTemplate($course_id);
+    public function getInfoTemplate($course_id): ?Flexi_Template;
 }
