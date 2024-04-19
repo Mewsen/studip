@@ -30,7 +30,7 @@ class LinksWidget extends ListWidget
     public function &addLink($label, $url, $icon = null, $attributes = [], $index = null)
     {
         if ($index === null) {
-            $index = 'link-' . md5($url);
+            $index = 'link-' . md5($url . $label);
         }
         $element = new LinkElement($label, $url, $icon, $attributes);
         $this->addElement($element, $index);
