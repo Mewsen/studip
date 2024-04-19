@@ -147,10 +147,11 @@ class Lti_ToolController extends AuthenticatedController
         //NOTE: The parameters are checked and processed in the before_filter.
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
+            $tool_name = $this->tool->name;
             if ($this->tool->delete()) {
-                PageLayout::postSuccess(_('Das LTI-Tool wurde gelöscht.'));
+                PageLayout::postSuccess(sprintf(_('Das LTI-Tool „%s“ wurde gelöscht.'), $tool_name));
             } else {
-                PageLayout::postError(_('Das LTI-Tool konnte nicht gelöscht werden.'));
+                PageLayout::postError(_('Das LTI-Tool „%s“ konnte nicht gelöscht werden.'), $tool_name);
             }
         }
         if ($range_id === 'global') {

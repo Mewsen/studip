@@ -98,28 +98,6 @@ class Admin_LtiController extends AuthenticatedController
         }
     }
 
-    /**
-     * Delete an LTI tool.
-     *
-     * @param   int $id tool id
-     */
-    public function delete_action($id)
-    {
-        CSRFProtection::verifyUnsafeRequest();
-
-        $tool = LtiTool::find($id);
-        $tool_name = $tool->name;
-
-        if ($tool && $tool->delete()) {
-            PageLayout::postSuccess(sprintf(
-                _('Das LTI-Tool "%s" wurde gelöscht.'),
-                htmlReady($tool_name)
-            ));
-        }
-
-        $this->redirect('admin/lti');
-    }
-
     public function platform_data_action()
     {
         $this->platform = \Studip\LTI13a\PlatformManager::getPlatformConfiguration();
