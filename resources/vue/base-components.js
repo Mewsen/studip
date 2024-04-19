@@ -1,63 +1,32 @@
-import CalendarPermissionsTable from "./components/form_inputs/CalendarPermissionsTable.vue";
-import DayOfWeekSelect from './components/form_inputs/DayOfWeekSelect.vue';
-import DateListInput from './components/form_inputs/DateListInput.vue';
-import Multiselect from './components/Multiselect.vue';
-import MyCoursesColouredTable from './components/form_inputs/MyCoursesColouredTable.vue';
-import EditableList from "./components/EditableList.vue";
-import Quicksearch from './components/Quicksearch.vue';
-import RepetitionInput from "./components/form_inputs/RepetitionInput.vue";
-import SidebarWidget from './components/SidebarWidget.vue';
-import StudipActionMenu from './components/StudipActionMenu.vue';
-import StudipAssetImg from './components/StudipAssetImg.vue';
-import StudipDateTime from './components/StudipDateTime.vue';
-import StudipDialog from './components/StudipDialog.vue';
-import StudipFileSize from './components/StudipFileSize.vue';
-import StudipFolderSize from './components/StudipFolderSize.vue';
-import StudipIcon from './components/StudipIcon.vue';
-import RangeInput from './components/RangeInput.vue';
-import Datepicker from './components/Datepicker.vue';
-import Datetimepicker from './components/Datetimepicker.vue';
-import TextareaWithToolbar from './components/TextareaWithToolbar.vue';
-import I18nTextarea from "./components/I18nTextarea.vue";
-import StudipWysiwyg from "./components/StudipWysiwyg.vue";
-// import StudipLoadingIndicator from './StudipLoadingIndicator.vue';
-import StudipMessageBox from './components/StudipMessageBox.vue';
-import StudipProxyCheckbox from './components/StudipProxyCheckbox.vue';
-import StudipProxiedCheckbox from './components/StudipProxiedCheckbox.vue';
-import StudipTooltipIcon from './components/StudipTooltipIcon.vue';
-import StudipSelect from './components/StudipSelect.vue';
-import StudipMultiPersonSearch from './components/StudipMultiPersonSearch.vue';
-
 const BaseComponents = {
-    CalendarPermissionsTable,
-    DayOfWeekSelect,
-    DateListInput,
-    Multiselect,
-    MyCoursesColouredTable,
-    EditableList,
-    Quicksearch,
-    RangeInput,
-    RepetitionInput,
-    SidebarWidget,
-    StudipActionMenu,
-    StudipAssetImg,
-    StudipDateTime,
-    Datepicker,
-    Datetimepicker,
-    StudipDialog,
-    StudipFileSize,
-    StudipFolderSize,
-    StudipIcon,
-    I18nTextarea,
-    StudipWysiwyg,
-//    StudipLoadingIndicator,
-    StudipMessageBox,
-    StudipProxyCheckbox,
-    StudipProxiedCheckbox,
-    StudipTooltipIcon,
-    StudipSelect,
-    TextareaWithToolbar,
-    StudipMultiPersonSearch
+    CalendarPermissionsTable: () => import("./components/form_inputs/CalendarPermissionsTable.vue"),
+    DateListInput: () => import('./components/form_inputs/DateListInput.vue'),
+    Datepicker: () => import('./components/Datepicker.vue'),
+    Datetimepicker: () => import('./components/Datetimepicker.vue'),
+    DayOfWeekSelect: () => import('./components/form_inputs/DayOfWeekSelect.vue'),
+    EditableList: () => import("./components/EditableList.vue"),
+    I18nTextarea: () => import("./components/I18nTextarea.vue"),
+    Multiselect: () => import('./components/Multiselect.vue'),
+    MyCoursesColouredTable: () => import('./components/form_inputs/MyCoursesColouredTable.vue'),
+    Quicksearch: () => import('./components/Quicksearch.vue'),
+    RangeInput: () => import('./components/RangeInput.vue'),
+    RepetitionInput: () => import("./components/form_inputs/RepetitionInput.vue"),
+    SidebarWidget: () => import('./components/SidebarWidget.vue'),
+    StudipActionMenu: () => import('./components/StudipActionMenu.vue'),
+    StudipAssetImg: () => import('./components/StudipAssetImg.vue'),
+    StudipDateTime: () => import('./components/StudipDateTime.vue'),
+    StudipDialog: () => import('./components/StudipDialog.vue'),
+    StudipFileSize: () => import('./components/StudipFileSize.vue'),
+    StudipFolderSize: () => import('./components/StudipFolderSize.vue'),
+    StudipIcon: () => import('./components/StudipIcon.vue'),
+    StudipMessageBox: () => import('./components/StudipMessageBox.vue'),
+    StudipMultiPersonSearch: () => import('./components/StudipMultiPersonSearch.vue'),
+    StudipProxiedCheckbox: () => import('./components/StudipProxiedCheckbox.vue'),
+    StudipProxyCheckbox: () => import('./components/StudipProxyCheckbox.vue'),
+    StudipSelect: () => import('./components/StudipSelect.vue'),
+    StudipTooltipIcon: () => import('./components/StudipTooltipIcon.vue'),
+    StudipWysiwyg: () => import("./components/StudipWysiwyg.vue"),
+    TextareaWithToolbar: () => import('./components/TextareaWithToolbar.vue'),
 };
 
 export default BaseComponents;
