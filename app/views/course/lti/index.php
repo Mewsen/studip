@@ -6,7 +6,7 @@
  */
 ?>
 <? if (empty($lti_data_array)): ?>
-    <?= MessageBox::info(_('Es wurden noch keine Inhalte angelegt.')) ?>
+    <?= MessageBox::info(_('Es sind keine LTI-Tools konfiguriert.')) ?>
 <? endif ?>
 
 <? foreach ($lti_data_array as $lti_data): ?>
