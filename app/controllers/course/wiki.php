@@ -511,6 +511,7 @@ class Course_WikiController extends AuthenticatedController
             $this->render_json([
                 'error' => 'user_not_requested_edit_mode'
             ]);
+            return;
         }
 
         $online_user_me->editing = 0;
