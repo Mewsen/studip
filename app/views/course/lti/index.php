@@ -35,11 +35,6 @@
                            title="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>
                             <?= Icon::create('edit') ?>
                         </a>
-                        <a href="<?= $controller->link_for('course/lti/edit/' . $lti_data->position) ?>"
-                           title="<?= _('Abschnitt bearbeiten') ?>"
-                           data-dialog>
-                            <?= Icon::create('edit', 'inactive') ?>
-                        </a>
                         <a href="<?= htmlReady(sprintf(
                                 'javascript:void(STUDIP.Dialog.confirmAsPost(\'%1$s\', \'%2$s\'))',
                                 sprintf(_('Wollen Sie wirklich den Abschnitt "%s" löschen?'), $lti_data->title),
