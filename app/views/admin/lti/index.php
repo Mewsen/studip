@@ -61,16 +61,15 @@
                         <a href="<?= $controller->link_for('admin/lti/edit/' . $tool->id) ?>" title="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>
                             <?= Icon::create('edit', 'inactive') ?>
                         </a>
-                        <a href="<?= $controller->link_for('lti/tool/delete/' . $tool->id . '/global') ?>"
-                           title="<?= _('LTI-Tool löschen') ?>"
-                           data-confirm="<?= sprintf(_('Wollen Sie das LTI-Tool „%s“ wirklich löschen?'), htmlReady($tool->name)) ?>">
-                            <?= Icon::create('trash') ?>
-                        </a>
-                        <?= Icon::create('trash', 'inactive')->asInput([
-                            'formaction' => $controller->url_for('admin/lti/delete/' . $tool->id),
-                            'title' => _('LTI-Tool löschen'),
-                            'data-confirm' => sprintf(_('Wollen Sie wirklich das LTI-Tool "%s" löschen?'), $tool->name)
-                        ]) ?>
+                        <?= Icon::create('trash')->asInput(
+                            [
+                                'formaction'   => $controller->url_for('lti/tool/delete/' . $tool->id . '/global'),
+                                'title'        => _('LTI-Tool löschen'),
+                                'data-confirm' => sprintf(_('Wollen Sie das LTI-Tool „%s“ wirklich löschen?'), $tool->name),
+                                'aria-role'    => 'button',
+                                'aria-label'   => _('LTI-Tool löschen')
+                            ]
+                        ) ?>
                     </td>
                 </tr>
             <? endforeach ?>
