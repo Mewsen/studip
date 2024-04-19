@@ -70,7 +70,7 @@ class AddLti13a extends Migration
         $update_stmt = $db->prepare(
             "UPDATE `lti_deployments`
             SET `tool_id` = :new_tool_id,
-            OPTIONS = :new_options
+            `options` = :new_options
             WHERE `id` = :deployment_id"
         );
         $create_tool_stmt = $db->prepare(
@@ -114,7 +114,7 @@ class AddLti13a extends Migration
                 $update_stmt->execute(
                     [
                         'new_tool_id'   => $new_tool_id,
-                        'new_options'   => $options ?? [],
+                        'new_options'   => json_encode($options ?? []),
                         'deployment_id' => $row['id']
                     ]
                 );
