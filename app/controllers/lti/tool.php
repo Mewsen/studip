@@ -12,19 +12,15 @@ class Lti_ToolController extends AuthenticatedController
         $this->range_id   = '';
 
         if (in_array($action, ['add', 'edit', 'delete'])) {
-            if ($action === 'add') {
-                $this->range_id = $args[0];
-            } else {
-                $this->tool_id  = $args[0];
-                $this->range_id = $args[1];
-            }
+            $this->range_id = $args[0];
+            $this->tool_id  = $args[1];
             if (!$this->range_id || ($this->range_id === 'global' && !$GLOBALS['perm']->have_perm('root'))) {
                 throw new AccessDeniedException();
             }
             if ($this->range_id !== 'global' && !$GLOBALS['perm']->have_studip_perm('tutor', $this->range_id)) {
                 throw new AccessDeniedException();
             }
-            if ($action === 'add') {
+            if ($action === 'add' && !$this->tool_id) {
                 $this->tool = new LtiTool();
             } else {
                 if (!$this->tool_id) {
@@ -40,34 +36,36 @@ class Lti_ToolController extends AuthenticatedController
         }
     }
 
-    public function add_action($range_id)
+    public function add_action($range_id, $tool_id = '')
     {
         //NOTE: The parameters are checked and processed in the before_filter.
-        $this->addEditHandler('add', $range_id);
+        $this->addEditHandler('add');
     }
 
-    public function edit_action($tool_id, $range_id)
+    public function edit_action($range_id, $tool_id)
     {
         //NOTE: The parameters are checked and processed in the before_filter.
-        $this->addEditHandler('edit', $range_id);
+        $this->addEditHandler('edit');
     }
 
-    protected function addEditHandler($mode, $range_id = '')
+    protected function addEditHandler($mode)
     {
         $this->deployment = null;
         if ($this->tool->isNew()) {
             if ($this->range_id !== 'global') {
                 $this->deployment = new LtiDeployment();
-                $this->deployment->course_id = $range_id;
+                $this->deployment->course_id = $this->range_id;
             }
         } elseif ($this->range_id !== 'global') {
             $this->deployment = LtiDeployment::findOneBySQL(
                 '`tool_id` = :tool_id AND `course_id` = :range_id',
-                ['tool_id' => $this->tool->id, 'range_id' => $range_id]
+                ['tool_id' => $this->tool->id, 'range_id' => $this->range_id]
             );
             if (!$this->deployment) {
-                PageLayout::postError(_('Das angegebene LTI-Deployment wurde nicht gefunden.'));
-                return;
+                //Create a new deployment:
+                $this->deployment = new LtiDeployment();
+                $this->deployment->tool_id   = $this->tool->id;
+                $this->deployment->course_id = $this->range_id;
             }
         }
 
@@ -133,7 +131,7 @@ class Lti_ToolController extends AuthenticatedController
                 $this->response->add_header('X-Dialog-Close', '1');
                 $this->render_nothing();
             } else {
-                if ($range_id === 'global') {
+                if ($this->range_id === 'global') {
                     $this->redirect('admin/lti');
                 } else {
                     $this->redirect('course/lti');

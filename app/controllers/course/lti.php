@@ -65,9 +65,10 @@ class Course_LtiController extends StudipController
                 Icon::create('admin')
             )->asDialog('size=auto');
             $widget->addLink(
-                _('Abschnitt hinzufügen'),
-                $this->url_for('course/lti/edit'),
-                Icon::create('add')
+                _('LTI-Tool hinzufügen'),
+                $this->url_for('course/lti/select_tool'),
+                Icon::create('add'),
+                ['data-dialog' => 'size=auto']
             )->asDialog();
 
             if (LtiTool::findByDeep_linking(1)) {
@@ -81,6 +82,48 @@ class Course_LtiController extends StudipController
 
         Helpbar::get()->addPlainText('', _('Auf dieser Seite können Sie externe Anwendungen einbinden, sofern diese den LTI-Standard (Version 1.x) unterstützen.'));
     }
+
+    public function select_tool_action()
+    {
+        if (!$this->course) {
+            //Invalid course.
+            throw new AccessDeniedException();
+        }
+        if (!$GLOBALS['perm']->have_studip_perm('tutor', $this->course->id)) {
+            throw new AccessDeniedException();
+        }
+
+        $this->global_tools = LtiTool::findBySQL("`is_global` = '1' ORDER BY `name` ASC");
+
+        if (!$this->global_tools) {
+            //Redirect to the page to configure an LTI tool for the course:
+            $this->redirect('lti/tool/add/' . $this->course->id);
+        }
+
+        $this->selected_tool_id = '';
+        if (count($this->global_tools) >= 1) {
+            //Preselect the first tool:
+            $this->selected_tool_id = $this->global_tools[0]->id;
+        }
+
+        if (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
+            $selected_tool_id = Request::get('selected_tool_id');
+            if ($selected_tool_id === 'new') {
+                //Redirect to the page to configure an LTI tool for the course:
+                $this->redirect('lti/tool/add/' . $this->course->id);
+            } else {
+                //Load the selected tool and check if it can be used in the course.
+                $selected_tool = LtiTool::find($selected_tool_id);
+                if (!$selected_tool || !$selected_tool->is_global) {
+                    PageLayout::postError(_('Das ausgewählte LTI-Tool kann nicht genutzt werden.'));
+                    return;
+                }
+                $this->redirect('lti/tool/add/' . $this->course->id . '/' . $selected_tool->id);
+            }
+        }
+    }
+
 
     /**
      * Display the launch form for a tool as an iframe.
