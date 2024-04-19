@@ -1,6 +1,12 @@
 <template>
     <div>
-        <studip-icon shape="info-circle" @click="togglePathInfo"></studip-icon>
+        <button type="button"
+                @click.prevent="togglePathInfo"
+                :title="showPaths
+                    ? $gettext('Pfad im Verzeichnis ausblenden')
+                    : $gettext('Pfad im Verzeichnis anzeigen')">
+            <studip-icon shape="info-circle"></studip-icon>
+        </button>
         <ul v-if="showPaths" class="studip-tree-course-path">
             <li v-for="(path, pindex) in paths" :key="pindex">
                 <button @click.prevent="openNode(path[path.length - 1].id)">

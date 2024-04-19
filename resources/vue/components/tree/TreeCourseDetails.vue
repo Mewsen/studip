@@ -4,14 +4,16 @@
             ({{ details.semester }})
         </div>
         <div class="admission-state" v-if="details.admissionstate">
-            <studip-icon :shape="details.admissionstate.icon" :role="details.admissionstate.role"
-                         :title="details.admissionstate.info"></studip-icon>
+            <studip-icon :shape="details.admissionstate.icon"
+                         :role="details.admissionstate.role"
+                         :alt="details.admissionstate.info"></studip-icon>
         </div>
         <div class="course-lecturers">
             <span v-for="(lecturer, index) in details.lecturers" :key="index">
                 <a :href="profileUrl(lecturer.username)"
                    :title="$gettextInterpolate($gettext('Zum Profil von %{ user }'),
-                        { user: lecturer.name })">
+                        { user: lecturer.name })"
+                   tabindex="0">
                     {{ lecturer.name }}
                 </a><template v-if="details.lecturers.length > 1 && index < details.lecturers.length - 1">, </template>
             </span>
