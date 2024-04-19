@@ -8,6 +8,7 @@
 ?>
 <form class="default" method="post" data-dialog="reload-on-close"
       action="<?= $controller->link_for('lti/tool/add/' . $range_id) ?>">
+    <?= CSRFProtection::tokenTag() ?>
     <?= $this->render_partial(
         'lti/_tool_form_fields',
         [
