@@ -452,7 +452,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
                     if (
                         isset($nav)
                         && $nav->isVisible(true)
-                        && count($module->getTabNavigation($this['context_id'])) > 0
+                        && $module->getTabNavigation($this['context_id'])
                         && $GLOBALS['perm']->have_studip_perm($tool->getVisibilityPermission(), $this['context_id'])
                     ) {
                         $icons[] = $nav;
