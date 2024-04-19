@@ -66,6 +66,13 @@ if ($view === 'eval_inst') {
     require_once 'lib/admin_search.inc.php';
 } else if (Context::getId() && $view == "eval_sem") {
     Navigation::activateItem('/course/admin/evaluation');
+    if ($GLOBALS['perm']->have_studip_perm('admin', Context::getId())) {
+        // Ensure the select widget is added last
+        NotificationCenter::on('SidebarWillRender', function () {
+            $widget = new CourseManagementSelectWidget();
+            Sidebar::get()->addWidget($widget);
+        });
+    }
 } else {
     Navigation::activateItem('/contents/evaluation');
 }

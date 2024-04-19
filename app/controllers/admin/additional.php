@@ -30,6 +30,8 @@ class Admin_AdditionalController extends AuthenticatedController
             throw new AccessDeniedException(_("Sie haben keine Berechtigung diese " .
                     "Veranstaltung zu verändern."));
         }
+
+        Sidebar::get()->addWidget(new CourseManagementSelectWidget());
     }
 
     /**
