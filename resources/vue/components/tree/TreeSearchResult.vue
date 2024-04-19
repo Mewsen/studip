@@ -31,13 +31,14 @@
                     </td>
                     <td>
                         <a :href="courseUrl(course.id)"
-                           :title="$gettextInterpolate($gettext('Zur Veranstaltung %{name}'), {name:  + course.attributes.title})">
+                           :title="$gettextInterpolate($gettext('Zur Veranstaltung %{title}'), {title: course.attributes.title})"
+                           tabindex="0">
                             <template v-if="course.attributes['course-number']">
                                 {{ course.attributes['course-number'] }}
                             </template>
                             {{ course.attributes.title }}
-                            <div :id="'course-dates-' + course.id" class="course-dates"></div>
                         </a>
+                        <div :id="'course-dates-' + course.id" class="course-dates"></div>
                         <tree-node-course-path :node-class="searchConfig.classname"
                                                :course-id="course.id"></tree-node-course-path>
                     </td>
