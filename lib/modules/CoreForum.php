@@ -26,7 +26,7 @@ NotificationCenter::addObserver('ForumIssue', 'unlinkIssue', 'ForumBeforeDelete'
 class CoreForum extends CorePlugin implements ForumModule
 {
     /* interface method */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         $navigation = new Navigation(_('Forum'), 'dispatch.php/course/forum/index');
         $navigation->setImage(Icon::create('forum', 'info_alt'));
@@ -49,7 +49,7 @@ class CoreForum extends CorePlugin implements ForumModule
     }
 
     /* interface method */
-    public function getIconNavigation($course_id, $last_visit, $user_id = null)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         if ($GLOBALS['perm']->have_studip_perm('user', $course_id)) {
             $num_entries = ForumVisit::getCount($course_id, ForumVisit::getVisit($course_id));
@@ -100,7 +100,7 @@ class CoreForum extends CorePlugin implements ForumModule
         ForumAbo::removeForCourseAndUser($course_id, $user_id);
     }
 
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         return null;
     }
@@ -187,7 +187,7 @@ class CoreForum extends CorePlugin implements ForumModule
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary' => _('Veranstaltungsbegleitender Meinungsaustausch zu bestimmten Themen'),

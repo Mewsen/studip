@@ -16,10 +16,12 @@ class Blubber extends CorePlugin implements StudipModule
 {
     /**
      * Returns a navigation for the tab displayed in the course.
+     *
      * @param string $course_id of the course
-     * @return \Navigation
+     *
+     * @return array
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id) :array
     {
         $tab = new Navigation(
             _('Blubber'),
@@ -32,12 +34,14 @@ class Blubber extends CorePlugin implements StudipModule
     /**
      * Returns a navigation-object with the grey/red icon for displaying in the
      * my_courses.php page.
-     * @param string  $course_id
-     * @param int $last_visit
-     * @param string|null  $user_id
-     * @return \Navigation
+     *
+     * @param string $course_id
+     * @param int    $last_visit
+     * @param string $user_id
+     *
+     * @return Navigation|null
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id = null)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         $user_id || $user_id = $GLOBALS['user']->id;
         $icon = new Navigation(
@@ -103,10 +107,12 @@ class Blubber extends CorePlugin implements StudipModule
     /**
      * Returns no template, because this plugin doesn't want to insert an
      * info-template in the course-overview.
+     *
      * @param string $course_id
-     * @return null
+     *
+     * @return Flexi_Template|null
      */
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         return null;
     }
@@ -114,7 +120,7 @@ class Blubber extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'displayname' => _('Blubber'),

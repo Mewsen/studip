@@ -15,7 +15,7 @@ class CoreStudygroupAdmin extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         $navigation = new Navigation(_('Verwaltung'), "dispatch.php/course/studygroup/edit/?cid={$course_id}");
         $navigation->setImage(Icon::create('admin', Icon::ROLE_CLICKABLE), ['title' => _('Verwaltung')]);
@@ -25,7 +25,7 @@ class CoreStudygroupAdmin extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         if (!$GLOBALS['perm']->have_studip_perm('dozent', $course_id)) {
             return [];
@@ -50,7 +50,7 @@ class CoreStudygroupAdmin extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'displayname' => _('Verwaltung')
@@ -62,7 +62,7 @@ class CoreStudygroupAdmin extends CorePlugin implements StudipModule
         return false;
     }
 
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         // TODO: Implement getInfoTemplate() method.
         return null;

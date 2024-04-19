@@ -16,7 +16,7 @@ class FeedbackModule extends CorePlugin implements StudipModule, SystemPlugin
     /**
      * {@inheritdoc}
      */
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         return null;
     }
@@ -24,7 +24,7 @@ class FeedbackModule extends CorePlugin implements StudipModule, SystemPlugin
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         return null;
     }
@@ -32,7 +32,7 @@ class FeedbackModule extends CorePlugin implements StudipModule, SystemPlugin
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         if (Feedback::hasAdminPerm($course_id)) {
             $navigation = new Navigation(_('Feedback'));
@@ -45,7 +45,7 @@ class FeedbackModule extends CorePlugin implements StudipModule, SystemPlugin
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary'       => _('Einholen von Feedback zu Inhaltselementen'),

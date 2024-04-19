@@ -33,7 +33,7 @@ class GradebookModule extends CorePlugin implements SystemPlugin, StudipModule
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function getInfoTemplate($courseId)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         return null;
     }
@@ -43,24 +43,24 @@ class GradebookModule extends CorePlugin implements SystemPlugin, StudipModule
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function getIconNavigation($courseId, $lastVisit, $userId)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
-        if ($userId === 'nobody') {
+        if ($user_id === 'nobody') {
             return null;
         }
 
         $title = _('Gradebook');
-        if ($GLOBALS['perm']->have_studip_perm('tutor', $courseId, $userId)) {
+        if ($GLOBALS['perm']->have_studip_perm('tutor', $course_id, $user_id)) {
             $changed = Instance::countBySQL(
                 'INNER JOIN grading_definitions gd ON(gd.id = definition_id) '.
                 'WHERE gd.course_id = ? AND grading_instances.chdate > ?',
-                [$courseId, $lastVisit]
+                [$course_id, $last_visit]
             );
         } else {
             $changed = Instance::countBySQL(
                 'INNER JOIN grading_definitions gd ON(gd.id = definition_id) '.
                 'WHERE gd.course_id = ? AND grading_instances.chdate > ? AND user_id = ?',
-                [$courseId, $lastVisit, $userId]
+                [$course_id, $last_visit, $user_id]
             );
         }
 
@@ -79,7 +79,7 @@ class GradebookModule extends CorePlugin implements SystemPlugin, StudipModule
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function getTabNavigation($cid)
+    public function getTabNavigation(string $course_id): array
     {
         if ('nobody' === $GLOBALS['user']->id) {
             return [];
@@ -88,8 +88,8 @@ class GradebookModule extends CorePlugin implements SystemPlugin, StudipModule
         $gradebook = new Navigation('Gradebook');
         $gradebook->addSubNavigation('index', new Navigation(_('Erbrachte Leistungen'), 'dispatch.php/course/gradebook/overview'));
 
-        if ($GLOBALS['perm']->have_studip_perm('tutor', $cid)) {
-            $this->addTabNavigationOfLecturers($gradebook, $cid);
+        if ($GLOBALS['perm']->have_studip_perm('tutor', $course_id)) {
+            $this->addTabNavigationOfLecturers($gradebook, $course_id);
         }
 
         return compact('gradebook');
@@ -149,7 +149,7 @@ class GradebookModule extends CorePlugin implements SystemPlugin, StudipModule
      *
      * @return array metadata containg description and/or url
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary' => _('Noten- und Fortschrittserfassung (Gradebook)'),

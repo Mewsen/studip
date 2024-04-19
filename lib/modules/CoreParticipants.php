@@ -14,7 +14,7 @@ class CoreParticipants extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         if ($user_id === 'nobody') {
             return null;
@@ -124,7 +124,7 @@ class CoreParticipants extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         if ($GLOBALS['user']->id === 'nobody') {
             return [];
@@ -152,13 +152,13 @@ class CoreParticipants extends CorePlugin implements StudipModule
             $navigation->addSubNavigation('additional', new Navigation(_('Zusatzangaben'), 'dispatch.php/course/members/additional'));
         }
 
-        return count($navigation->getSubNavigation()) > 0 ? ['members' => $navigation] : null;
+        return count($navigation->getSubNavigation()) > 0 ? ['members' => $navigation] : [];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary' => _('Liste aller Teilnehmenden einschließlich Nachrichtenfunktionen'),
@@ -211,7 +211,7 @@ class CoreParticipants extends CorePlugin implements StudipModule
         return false;
     }
 
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         // TODO: Implement getInfoTemplate() method.
         return null;

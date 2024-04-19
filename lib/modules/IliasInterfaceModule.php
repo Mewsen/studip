@@ -33,15 +33,15 @@ class IliasInterfaceModule extends CorePlugin implements StudipModule, SystemPlu
         return Config::get()->ILIAS_INTERFACE_ENABLE && $context->getRangeType() === 'course';
     }
 
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         return null;
     }
 
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         if (!Config::get()->ILIAS_INTERFACE_ENABLE) {
-            return;
+            return null;
         }
 
         $sql = "SELECT COUNT(IF(a.module_type != 'crs', module_id, NULL)) AS count_modules,
@@ -107,14 +107,14 @@ class IliasInterfaceModule extends CorePlugin implements StudipModule, SystemPlu
         return $nav;
     }
 
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         if (!Config::get()->ILIAS_INTERFACE_ENABLE) {
-            return null;
+            return [];
         }
         $ilias_interface_config = Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS;
         if (count($ilias_interface_config) === 0) {
-            return null;
+            return [];
         }
 
         $moduletitle = Config::get()->ILIAS_INTERFACE_MODULETITLE;
@@ -139,7 +139,7 @@ class IliasInterfaceModule extends CorePlugin implements StudipModule, SystemPlu
     /**
      * @see StudipModule::getMetadata()
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary'          => _('Zugang zu extern erstellten ILIAS-Lernobjekten'),

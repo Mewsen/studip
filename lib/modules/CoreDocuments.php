@@ -106,7 +106,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         $range_type = get_object_type($course_id, ['sem', 'inst']) === 'sem' ? 'course' : 'institute';
         $navigation = new Navigation(
@@ -143,7 +143,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         $range_type = get_object_type($course_id, ['sem', 'inst']) === 'sem' ? 'course' : 'institute';
         $newFilesNavigation = new Navigation(_('Dateien'), "dispatch.php/{$range_type}/files");
@@ -155,7 +155,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary'          => _('Austausch von Dateien, Hausaufgabenordner & Terminordner'),
@@ -201,7 +201,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
         ];
     }
 
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         // TODO: Implement getInfoTemplate() method.
         return null;

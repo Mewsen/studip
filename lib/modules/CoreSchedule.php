@@ -14,7 +14,7 @@ class CoreSchedule extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         $query = "SELECT COUNT(termin_id) AS count,
                          COUNT(IF((chdate > IFNULL(ouv.visitdate, :threshold) AND autor_id != :user_id), termin_id, NULL)) AS neue
@@ -68,7 +68,7 @@ class CoreSchedule extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         $navigation = new Navigation(_('Ablaufplan'));
         $navigation->setImage(Icon::create('schedule', Icon::ROLE_INFO_ALT));
@@ -83,7 +83,7 @@ class CoreSchedule extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary' => _('Anzeige aller Termine der Veranstaltung'),
@@ -117,7 +117,7 @@ class CoreSchedule extends CorePlugin implements StudipModule
         ];
     }
 
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         // TODO: Implement getInfoTemplate() method.
         return null;
