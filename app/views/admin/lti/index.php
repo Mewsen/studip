@@ -36,7 +36,7 @@
             <? foreach ($tools as $tool): ?>
                 <tr>
                     <td>
-                        <a href="<?= $controller->link_for('admin/lti/edit/' . $tool->id) ?>" title="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>
+                        <a href="<?= $controller->link_for('lti/tool/edit/' . $tool->id . '/global') ?>" data-dialog>
                             <?= htmlReady($tool->name) ?>
                         </a>
                     </td>
@@ -55,8 +55,11 @@
                         <?= count($tool->links) ?>
                     </td>
                     <td class="actions">
-                        <a href="<?= $controller->link_for('admin/lti/edit/' . $tool->id) ?>" title="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>
+                        <a href="<?= $controller->link_for('lti/tool/edit/' . $tool->id . '/global') ?>" title="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>
                             <?= Icon::create('edit') ?>
+                        </a>
+                        <a href="<?= $controller->link_for('admin/lti/edit/' . $tool->id) ?>" title="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>
+                            <?= Icon::create('edit', 'inactive') ?>
                         </a>
                         <?= Icon::create('trash')->asInput([
                             'formaction' => $controller->url_for('admin/lti/delete/' . $tool->id),

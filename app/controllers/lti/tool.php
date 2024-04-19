@@ -13,8 +13,11 @@ class Lti_ToolController extends AuthenticatedController
         $this->addEditHandler('add', $range_id);
     }
 
-    public function edit_action($tool_id, $range_id = '')
+    public function edit_action($tool_id, $range_id)
     {
+        if (!$range_id || ($range_id === 'global' && !$GLOBALS['perm']->have_perm('root'))) {
+            throw new AccessDeniedException();
+        }
         if (!$tool_id) {
             PageLayout::postError(_('Es wurde kein LTI-Tool angegeben.'));
             return;
@@ -38,7 +41,7 @@ class Lti_ToolController extends AuthenticatedController
                     $this->deployment = new LtiDeployment();
                     $this->deployment->course_id = $range_id;
                 }
-            } else {
+            } elseif ($range_id !== 'global') {
                 $this->deployment = LtiDeployment::findOneBySQL(
                     '`tool_id` = :tool_id AND `course_id` = :range_id',
                     ['tool_id' => $this->tool->id, 'range_id' => $range_id]
@@ -95,11 +98,14 @@ class Lti_ToolController extends AuthenticatedController
                 return;
             }
             if ($this->tool->store()) {
-                $this->deployment->tool_id = $this->tool->id;
+                if ($this->deployment) {
+                    $this->deployment->tool_id = $this->tool->id;
+                }
             } else {
                 PageLayout::postError(_('Das LTI-Tool konnte nicht gespeichert werden.'));
+                return;
             }
-            if ($this->deployment->isDirty()) {
+            if ($this->deployment && $this->deployment->isDirty()) {
                 $this->deployment->store();
             }
             if ($tool_public_key) {

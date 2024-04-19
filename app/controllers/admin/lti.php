@@ -28,7 +28,7 @@ class Admin_LtiController extends AuthenticatedController
         $widget = Sidebar::get()->addWidget(new ActionsWidget());
         $widget->addLink(
             _('Neues LTI-Tool registrieren'),
-            $this->url_for('admin/lti/edit'),
+            $this->url_for('lti/tool/add/global'),
             Icon::create('add')
         )->asDialog();
         $widget->addLink(
