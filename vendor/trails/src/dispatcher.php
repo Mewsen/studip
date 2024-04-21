@@ -255,14 +255,12 @@ class Trails_Dispatcher {
    * @param  string     the error message
    * @param  string     the filename that the error was raised in
    * @param  integer    the line number the error was raised at
-   * @param  array      an array of every variable that existed in the scope the
-   *                    error was triggered in
    *
    * @throws Trails_Exception
    *
    * @return void
    */
-  function error_handler($errno, $string, $file, $line, $context) {
+  function error_handler($errno, $string, $file, $line) {
     throw new Trails_Exception(500, $string);
   }
 }
