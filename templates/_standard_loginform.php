@@ -43,9 +43,11 @@ $password_tooltip_text = (string)Config::get()->PASSWORD_TOOLTIP_TEXT;
                    name="password"
                    autocomplete="current-password"
                    size="20"
-                   required>
+                   required
+                   <?= $loginerror ? 'aria-describedby="messagebox-0"' : ''?>
+            >
 
-            <i id="password-toggle" tabindex="0" aria-role="button" class="enter-accessible">
+            <i id="password-toggle" tabindex="0" role="button" class="enter-accessible">
                 <?= Icon::create('visibility-checked')->asImg(20, [
                     'id   ' => 'visible-password',
                     'title' => _('Passwort anzeigen'),
