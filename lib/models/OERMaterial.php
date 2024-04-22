@@ -703,7 +703,7 @@ class OERMaterial extends SimpleORMap
         $message = sprintf(
             _('%1$s hat soeben neues Material auf dem OER Campus zur verfügung gestellt. Viel Spaß! <br> %2$s'),
             $user_name,
-            URLHelper::getURL("dispatch.php/oer/market/details/".$this->getId())
+            URLHelper::getURL("dispatch.php/oer/market/details/".$this->getId(), [], true)
         );
         URLHelper::setBaseURL($oldbase);
         $messsaging->insert_message(
