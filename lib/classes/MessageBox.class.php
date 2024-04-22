@@ -41,6 +41,7 @@ class MessageBox implements LayoutMessage
     public $details;
     public $close_details;
     protected $hide_close = false;
+    public static $counter = 0;
 
     /**
      * This function returns an exception message box. Use it only for system errors
@@ -147,12 +148,21 @@ class MessageBox implements LayoutMessage
      */
     public function __toString()
     {
+        $label = [
+            'exception' => _('Systemfehler'),
+            'error'     => _('Fehler'),
+            'warning'   => _('Warnung'),
+            'info'      => _('Hinweis'),
+            'success'   => _('Erfolg'),
+        ];
         return $GLOBALS['template_factory']->render('shared/message_box', [
             'class'         => $this->class,
             'message'       => $this->message,
             'details'       => is_array($this->details) ? $this->details : [],
             'close_details' => $this->close_details,
             'hide_close'    => $this->hide_close,
+            'label'         => $label[$this->class],
+            'counter'       => self::$counter++,
         ]);
     }
 }
