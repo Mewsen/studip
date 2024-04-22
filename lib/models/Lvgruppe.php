@@ -216,7 +216,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
      *
      * @param string $term The search term.
      * @param array|string $filter An array with filter options or a where part.
-     * @return object A SimpleORMapCollection of LV-Gruppen.
+     * @return SimpleORMapCollection A SimpleORMapCollection of LV-Gruppen.
      */
     public static function findBySearchTerm($term, $filter = null)
     {
@@ -255,7 +255,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
      * Retrieves all LV-Gruppen related to the Modulteil with given id.
      *
      * @param string $modulteil_id The id of a Modulteil.
-     * @return object A SimpleORMapCollection of LV-Gruppen.
+     * @return SimpleORMapCollection A SimpleORMapCollection of LV-Gruppen.
      */
     public static function findByModulteil($modulteil_id)
     {
@@ -270,7 +270,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
      * Retrieves all LV-Gruppen related to the course with given id.
      *
      * @param string $seminar_id The id of a course.
-     * @return object A SimpleORMapCollection of LV-Gruppen.
+     * @return SimpleORMapCollection A SimpleORMapCollection of LV-Gruppen.
      */
     public static function findBySeminar($seminar_id)
     {
@@ -323,7 +323,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
     /**
      * Assigns the given course to the given LvGruppen.
      *
-     * @param array Array of ids
+     * @param string $seminar_id Array of ids
      * @return int The number of assigned LvGruppen.
      */
     public static function setLvgruppen($seminar_id, $lvgruppen_ids)
@@ -331,9 +331,13 @@ class Lvgruppe extends ModuleManagementModelTreeItem
         $old = Lvgruppe::findBySeminar($seminar_id);
         $removed = array_diff($old->pluck('id'), $lvgruppen_ids);
         $added = array_diff($lvgruppen_ids, $old->pluck('id'));
+
+        $count_removed = 0;
         foreach ($removed as $one) {
             $count_removed += $old->findOneBy('id', $one)->removeSeminar($seminar_id);
         }
+
+        $count_added = 0;
         foreach ($added as $one) {
             $count_added += Lvgruppe::get($one)->addSeminar($seminar_id);
         }
