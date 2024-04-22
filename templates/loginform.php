@@ -61,7 +61,9 @@ if (!match_route('web_migrate.php')) {
                     <label for="password">
                         <?= _('Passwort:') ?>
                         <input type="password" <?= mb_strlen($uname) ? 'autofocus' : '' ?>
-                               id="password" name="password" size="20">
+                               id="password" name="password" size="20"
+                            <?= $loginerror ? 'aria-describedby="messagebox-0"' : '' ?>
+                        >
                     </label>
                 </section>
                     <?= CSRFProtection::tokenTag() ?>
