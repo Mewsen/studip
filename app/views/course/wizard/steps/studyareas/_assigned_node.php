@@ -1,8 +1,8 @@
 <li class="sem-tree-assigned-<?= $element['id'] ?>">
     <?= htmlReady($element['name']) ?>
-    <?php if (!$values['locked'] && $element['assignable'] && in_array($element['id'], $studyareas ?: [])) : ?>
-        <?= Icon::create('trash', 'clickable')->asInput(["name" => 'unassign['.$element['id'].']', "onclick" => "return STUDIP.CourseWizard.unassignNode('".$element['id']."')"]) ?>
-    <input type="hidden" name="studyareas[]" value="<?= $element['id'] ?>"/>
+    <?php if (empty($values['locked']) && $element['assignable'] && in_array($element['id'], $studyareas ?: [])) : ?>
+        <?= Icon::create('trash')->asInput(["name" => 'unassign['.$element['id'].']', "onclick" => "return STUDIP.CourseWizard.unassignNode('".$element['id']."')"]) ?>
+    <input type="hidden" name="studyareas[]" value="<?= htmlReady($element['id']) ?>"/>
     <?php endif ?>
     <ul>
         <?php foreach ($element['children'] as $c) : ?>
