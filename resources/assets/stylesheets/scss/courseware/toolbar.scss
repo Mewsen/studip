@@ -14,7 +14,8 @@
         min-height: 100%;
         border: solid thin var(--content-color-40);
         background-color: var(--white);
-        overflow: hidden;
+        overflow-y: auto;
+        overflow-x: hidden;
         position: relative;
         padding: 0 4px;
         top: 0;
@@ -30,11 +31,6 @@
         }
         &.unfold {
             right: 0;
-        }
-
-        .cw-toolbar-tool-content {
-            overflow-y: auto;
-            padding-right: 8px;
         }
 
         .cw-toolbar-blocks {
@@ -100,12 +96,6 @@
             }
 
         }
-
-        .cw-toolbar-clipboard {
-            .cw-collapsible {
-                margin-bottom: 4px;
-            }
-        }
     }
     .cw-toolbar-folded-wrapper {
         display: flex;
@@ -134,7 +124,6 @@
 
         &.cw-toolbar-button-toggle {
             text-align: end;
-            flex-grow: 1;
         }
 
         &.active {
@@ -153,7 +142,7 @@
     .cw-toolbar-tools.hd {
         .cw-toolbar-button-wrapper {
             .cw-toolbar-button {
-                min-width: 110px;
+                width: 128px;
                 padding: 2px 16px 0 16px;
                 &.cw-toolbar-button-toggle {
                     text-align: end;

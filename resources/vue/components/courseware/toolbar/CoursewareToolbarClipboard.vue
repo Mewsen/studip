@@ -1,5 +1,5 @@
 <template>
-    <div class="cw-toolbar-clipboard cw-toolbar-tool-content" :style="toolContentStyle">
+    <div class="cw-toolbar-clipboard">
         <courseware-collapsible-box :title="$gettext('Blöcke')" :open="clipboardBlocks.length > 0">
             <template v-if="clipboardBlocks.length > 0">
                 <div class="cw-element-inserter-wrapper">
@@ -101,12 +101,7 @@ export default {
         StudipDialog,
         draggable,
     },
-    props: {
-        toolbarContentHeight: {
-            type: Number,
-            required: true,
-        },
-    },
+
     data() {
         return {
             showDeleteClipboardDialog: false,
@@ -147,11 +142,6 @@ export default {
                 return this.$gettext('Möchten Sie die Merkliste für Abschnitte unwiderruflich leeren?');
             }
             return '';
-        },
-        toolContentStyle() {
-            return {
-                height: this.toolbarContentHeight + 'px',
-            };
         },
     },
     methods: {

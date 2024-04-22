@@ -2,7 +2,7 @@
     <div class="cw-toolbar-wrapper">
         <div id="cw-toolbar" class="cw-toolbar" :style="toolbarStyle">
             <div v-if="showTools" class="cw-toolbar-tools" :class="{ unfold: unfold, hd: isHd, wqhd: isWqhd }">
-                <div id="cw-toolbar-nav" class="cw-toolbar-button-wrapper">
+                <div class="cw-toolbar-button-wrapper">
                     <button
                         class="cw-toolbar-button"
                         :class="{ active: activeTool === 'blockAdder' }"
@@ -35,19 +35,9 @@
                         <studip-icon shape="arr_2right" :size="24" />
                     </button>
                 </div>
-                <div class="cw-toolbar-tool-wrapper">
-                    <CoursewareToolbarBlocks
-                        v-if="activeTool === 'blockAdder'"
-                        :toolbarContentHeight="toolbarContentHeight"
-                    />
-                    <CoursewareToolbarContainers
-                        v-if="activeTool === 'containerAdder'"
-                    />
-                    <CoursewareToolbarClipboard
-                        v-if="activeTool === 'clipboard'"
-                        :toolbarContentHeight="toolbarContentHeight"
-                    />
-                </div>
+                <courseware-toolbar-blocks v-if="activeTool === 'blockAdder'" />
+                <courseware-toolbar-containers v-if="activeTool === 'containerAdder'" />
+                <courseware-toolbar-clipboard v-if="activeTool === 'clipboard'" />
             </div>
             <div v-else class="cw-toolbar-folded-wrapper">
                 <button
@@ -107,26 +97,20 @@ export default {
             toolbarActive: 'toolbarActive',
             hideEditLayout: 'hideEditLayout',
         }),
-        scrollTopStyles() {
-            return window.getComputedStyle(document.getElementById('scroll-to-top'));
-        },
-        toolbarHeight() {
+        toolbarStyle() {
+            const scrollTopStyles = window.getComputedStyle(document.getElementById('scroll-to-top'));
             const scrollTopHeight =
-                parseInt(this.scrollTopStyles['height'], 10) +
-                parseInt(this.scrollTopStyles['padding-top'], 10) +
-                parseInt(this.scrollTopStyles['padding-bottom'], 10) +
-                parseInt(this.scrollTopStyles['margin-bottom'], 10);
-            return parseInt(
+                parseInt(scrollTopStyles['height'], 10) +
+                parseInt(scrollTopStyles['padding-top'], 10) +
+                parseInt(scrollTopStyles['padding-bottom'], 10) +
+                parseInt(scrollTopStyles['margin-bottom'], 10);
+            let height = parseInt(
                 Math.min(this.windowInnerHeight * 0.9, this.windowInnerHeight - this.toolbarTop - scrollTopHeight)
             );
-        },
-        toolbarContentHeight() {
-            return this.toolbarHeight - 55;
-        },
-        toolbarStyle() {
+
             return {
-                height: this.toolbarHeight + 'px',
-                minHeight: this.toolbarHeight + 'px',
+                height: height + 'px',
+                minHeight: height + 'px',
                 top: this.toolbarTop + 'px',
             };
         },
