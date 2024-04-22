@@ -641,7 +641,7 @@ class OERMaterial extends SimpleORMap
             _('%1$s hat soeben neues Material auf dem %2$s zur verfügung gestellt. Viel Spaß! <br> %3$s'),
             $user_name,
             Config::get()->OER_TITLE,
-            URLHelper::getURL("dispatch.php/oer/market/details/".$this->getId())
+            URLHelper::getURL("dispatch.php/oer/market/details/".$this->getId(), [], true)
         );
         URLHelper::setBaseURL($oldbase);
         $messsaging->insert_message(
