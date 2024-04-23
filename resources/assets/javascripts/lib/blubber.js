@@ -47,6 +47,7 @@ const Blubber = {
                 subscribe: follow,
             });
         }).then(() => {
+            elements.attr('aria-pressed', follow ? 'true' : 'false');
             elements.toggleClass('unfollowed', !follow);
         }).finally(() => {
             elements.removeClass('loading');
