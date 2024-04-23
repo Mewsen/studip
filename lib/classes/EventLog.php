@@ -87,7 +87,7 @@ class EventLog
         $offset = (int) $offset;
 
         $filter  = $this->sql_event_filter($action_id, $object_id, $parameters) ?: '1';
-        $filter .= " ORDER BY mkdate DESC, event_id DESC LIMIT {$offset}, 50";
+        $filter .= " ORDER BY event_id DESC LIMIT {$offset}, 50";
         $log_events = LogEvent::findBySQL($filter, $parameters);
 
         foreach ($log_events as $log_event) {
