@@ -28,6 +28,8 @@
 class AdminCourseFilter
 {
     static protected $instance = null;
+
+    /** @var SQLQuery|null  */
     public $query = null;
     public $max_show_courses = 500;
     public $settings = [];
@@ -109,13 +111,10 @@ class AdminCourseFilter
         }
 
         if (Config::get()->ALLOW_ADMIN_RELATED_INST) {
-            $sem_inst = 'seminar_inst';
-            $this->query->join('seminar_inst', 'seminar_inst', 'seminar_inst.seminar_id = seminare.Seminar_id');
+            $this->query->where('seminar_inst', 'EXISTS (SELECT 1 FROM seminar_inst WHERE seminar_id = seminare.Seminar_id AND institut_id IN (:institut_ids))');
         } else {
-            $sem_inst = 'seminare';
+            $this->query->where("seminar_inst", "seminare.institut_id IN (:institut_ids)");
         }
-
-        $this->query->where('seminar_inst', "$sem_inst.institut_id IN (:institut_ids)");
         $this->query->parameter('institut_ids', $inst_ids);
 
         if ($GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE) {
@@ -196,6 +195,16 @@ class AdminCourseFilter
     }
 
     /**
+     * @param int|null $limit
+     * @return Course[]
+     */
+    public function fetchCourses(?int $limit = null): array
+    {
+        NotificationCenter::postNotification('AdminCourseFilterWillQuery', $this);
+        return $this->query->fetchAll(Course::class, $limit);
+    }
+
+    /**
      * Returns the data of the resultset of the AdminCourseFilter.
      *
      * @param string $order_by possible values name or number
@@ -206,16 +215,16 @@ class AdminCourseFilter
      */
     public function getCoursesForAdminWidget(string $order_by = 'name')
     {
-        $count_courses = $this->countCourses();
-        $order = 'seminare.name';
-        if ($order_by === 'number') {
-            $order = 'seminare.veranstaltungsnummer, seminare.name';
-        }
-        if ($count_courses && $count_courses <= $this->max_show_courses) {
+        try {
+            $order = 'seminare.name';
+            if ($order_by === 'number') {
+                $order = 'seminare.veranstaltungsnummer, seminare.name';
+            }
             $this->query->orderBy($order);
-            return $this->getCourses();
+            return $this->fetchCourses($this->max_show_courses);
+        } catch (OverflowException $e) {
+            return [];
         }
-        return [];
     }
 
 }
