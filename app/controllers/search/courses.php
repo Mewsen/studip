@@ -40,6 +40,7 @@ class Search_CoursesController extends AuthenticatedController
     public function index_action()
     {
         $nodeClass = '';
+        $title = _('Vorlesungsverzeichnis');
         if (Request::option('type', 'semtree') === 'semtree') {
             Navigation::activateItem('/search/courses/semtree');
             $nodeClass = StudipStudyArea::class;
@@ -52,10 +53,12 @@ class Search_CoursesController extends AuthenticatedController
             $this->treeTitle = _('Einrichtungen');
             $this->breadcrumbIcon = 'institute';
             $this->editUrl = $this->url_for('rangetree/edit');
+            $title = _('Einrichtungsverzeichnis');
         }
         $this->startId = Request::option('node_id', $nodeClass . '_root');
 
         $this->setupSidebar();
+        PageLayout::setTitle($title);
     }
 
     public function export_results_action()
