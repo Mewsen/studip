@@ -1486,7 +1486,7 @@ class Course_TimesroomsController extends AuthenticatedController
         Sidebar::Get()->addWidget($widget);
 
 
-        if ($GLOBALS['perm']->have_studip_perm('admin', $this->course_id)) {
+        if ($GLOBALS['perm']->have_studip_perm('admin', $this->course->id)) {
             $widget = new CourseManagementSelectWidget();
             Sidebar::get()->addWidget($widget);
         }
