@@ -177,6 +177,7 @@ const Blubber = {
             : STUDIP.api.DELETE(`blubber/threads/${thread_id}/follow`);
 
         return promise.then(() => {
+            elements.attr('aria-pressed', follow ? 'true' : 'false');
             elements.toggleClass('unfollowed', !follow);
             return follow;
         }).always(() => {
