@@ -4,4 +4,17 @@ table.default {
             width: 30px;
         }
     }
+
+
+    th.sortasc {
+        span[role=img] {
+            @include icon('after', 'arr_1up', 'clickable');
+        }
+    }
+
+    th.sortdesc {
+        span[role=img] {
+            @include icon('after', 'arr_1down', 'clickable');
+        }
+    }
 }
