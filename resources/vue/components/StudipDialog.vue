@@ -38,7 +38,11 @@
                                 <header
                                     class="studip-dialog-header"
                                 >
-                                    <span :id="dialogTitleId" class="studip-dialog-title" :title="dialogTitle">
+                                    <span :id="dialogTitleId"
+                                          class="studip-dialog-title"
+                                          :title="dialogTitle"
+                                          role="heading"
+                                          aria-level="2">
                                         {{ dialogTitle }}
                                     </span>
                                     <slot name="dialogHeader"></slot>
