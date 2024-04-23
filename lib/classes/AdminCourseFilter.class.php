@@ -27,8 +27,10 @@
  */
 class AdminCourseFilter
 {
-    static protected $instance = null;
-    public $query = null;
+    private const WIDGET_CACHE_EXPIRATION = 1 * 60 * 60;
+
+    protected static $instance = null;
+    public ?SQLQuery $query = null;
     public $max_show_courses = 500;
     public $settings = [];
 
@@ -127,7 +129,7 @@ class AdminCourseFilter
 
         if ($GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER && $GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER !== 'all') {
             if (str_contains($GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER, '_')) {
-                list($sem_class_id, $sem_type_id) = explode('_', $GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER);
+                [$sem_class_id, $sem_type_id] = explode('_', $GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER);
                 $this->query->where('course_type', 'seminare.status = :course_type', ['course_type' => $sem_type_id]);
             } else {
                 //sem class
@@ -206,16 +208,47 @@ class AdminCourseFilter
      */
     public function getCoursesForAdminWidget(string $order_by = 'name')
     {
-        $count_courses = $this->countCourses();
-        $order = 'seminare.name';
-        if ($order_by === 'number') {
-            $order = 'seminare.veranstaltungsnummer, seminare.name';
-        }
-        if ($count_courses && $count_courses <= $this->max_show_courses) {
-            $this->query->orderBy($order);
-            return $this->getCourses();
-        }
-        return [];
-    }
+        $index = __METHOD__ . '::' . User::findCurrent()->id;
 
+        $cache = app(StudipCache::class);
+        $cached = $cache->read($index);
+        $hash = md5(serialize($this->query->settings));
+
+        if ($cached === false || $cached['hash'] !== $hash) {
+            $courses = [];
+
+            $count_courses = $this->countCourses();
+            if ($count_courses && $count_courses <= $this->max_show_courses) {
+                $courses = $this->getCourses();
+            }
+
+            $cache->write(
+                $index,
+                [
+                    'hash' => $hash,
+                    'courses' => array_map(
+                        fn(Course $course): array => $course->toRawArray(),
+                        $courses
+                    ),
+                ],
+                self::WIDGET_CACHE_EXPIRATION
+            );
+        } else {
+            $courses = array_map(
+                fn(array $data): Course => Course::buildExisting($data),
+                $cached['courses']
+            );
+        }
+
+        usort($courses, function (Course $a, Course $b) use ($order_by): int {
+            if ($order_by === 'number') {
+                return strnatcasecmp($a->veranstaltungsnummer, $b->veranstaltungsnummer)
+                    ?? strnatcasecmp($a->name, $b->name);
+            }
+
+            return strnatcasecmp($a->name, $b->name);
+        });
+
+        return $courses;
+    }
 }
