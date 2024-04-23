@@ -375,14 +375,14 @@ class Admin_CoursesController extends AuthenticatedController
         }
         PluginEngine::sendMessage(AdminCourseWidgetPlugin::class, 'applyFilters', $filter);
 
-        $count = $filter->countCourses();
-        if ($count > $this->max_show_courses && !Request::submitted('without_limit')) {
-            $this->render_json([
-                'count' => $count
-            ]);
+        try {
+            $courses = $filter->fetchCourses(
+                Request::bool('without_limit') ? null: $this->max_show_courses
+            );
+        } catch (OverflowException $e) {
+            $this->render_json(['count' => (int) $e->getMessage()]);
             return;
         }
-        $courses = AdminCourseFilter::get()->getCourses();
 
         $data = [
             'data' => []
