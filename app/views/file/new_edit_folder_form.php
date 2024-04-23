@@ -27,20 +27,19 @@
                id="folder-type-<?= htmlReady($folder_type['class']) ?>"
                <? if ($folder_type['class'] === get_class($folder)) echo 'checked'; ?>>
         <label for="folder-type-<?= htmlReady($folder_type['class']) ?>">
+            <?= Icon::create('radiobutton-unchecked')->asImg(24, ['class' => 'arrow']) ?>
+            <?= Icon::create('radiobutton-checked')->asImg(24, ['class' => 'check']) ?>
+            <div class="text">
+                <?= htmlReady($folder_type['name']) ?>
+            <? if ($template = $folder_type['instance']->getDescriptionTemplate()): ?>
+                <?= tooltipIcon($template instanceof Flexi_Template ? $template->render() : $template, false, true) ?>
+            <? endif ?>
+            </div>
             <div class="icon">
                 <? if ($folder_type['icon']) : ?>
                     <?= $folder_type['icon']->asImg(32) ?>
                 <? endif ?>
             </div>
-            <div class="text">
-                <?= htmlReady($folder_type['name']) ?>
-            <? if ($template = $folder_type['instance']->getDescriptionTemplate()): ?>
-                <?= tooltipIcon($template instanceof Flexi_Template ? $template->render() : $template, false, true) ?>
-            <? endif; ?>
-
-            </div>
-            <?= Icon::create('arr_1down')->asImg(24, ['class' => 'arrow']) ?>
-            <?= Icon::create('check-circle')->asImg(32, ['class' => 'check']) ?>
         </label>
         <? if ($folder_type['class'] === get_class($folder)) : ?>
             <? $folder_template = $folder->getEditTemplate() ?>
