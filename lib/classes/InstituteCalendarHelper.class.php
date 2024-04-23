@@ -43,14 +43,6 @@ class InstituteCalendarHelper
      */
     public static function getResourceColumns($institut_id, $only_visible = false)
     {
-        /*
-        returns the columns in following format:
-            $columns = [
-                ['id' => '0', 'title' => 'Sammelspalte'],
-                ['id' => '1', 'title' => 'Spalte 1']
-            ];
-        */
-
         $columns = [];
         $inst_columns = [
             0 => ['Sammelspalte', 1]
@@ -206,13 +198,13 @@ class InstituteCalendarHelper
     /**
      * Looks up default color value for institute course events
      *
-     * @param Course $course
+     * @param SimpleORMap $context
      *
      * @return array course events with color value
      */
-    public static function getInstituteDefaultEventcolors($institut)
+    public static function getInstituteDefaultEventcolors($context)
     {
-        $df = DatafieldEntryModel::findByModel($institut, self::INST_DEFAULT_COLOR_DATAFIELD_ID);
+        $df = DatafieldEntryModel::findByModel($context, self::INST_DEFAULT_COLOR_DATAFIELD_ID);
         if ($df && $df[0]->content) {
             $event_colors = unserialize($df[0]->content);
         } else {
@@ -224,17 +216,17 @@ class InstituteCalendarHelper
     /**
      * Sets default institute course events color value for semtypes
      *
-     * @param Institut $institut
+     * @param SimpleORMap $context
      * @param string $semtype
      * @param string $color colorcode
      *
      * @return bool stored
      */
-    public static function setInstituteDefaultEventcolor($institut, $semtype, $color)
+    public static function setInstituteDefaultEventcolor($context, $semtype, $color)
     {
-        $df = DatafieldEntryModel::findByModel($institut, self::INST_DEFAULT_COLOR_DATAFIELD_ID);
+        $df = DatafieldEntryModel::findByModel($context, self::INST_DEFAULT_COLOR_DATAFIELD_ID);
         if ($df[0]) {
-            $event_colors = self::getInstituteDefaultEventcolors($institut);
+            $event_colors = self::getInstituteDefaultEventcolors($context);
             $event_colors[$semtype['name']] = $color;
             $df[0]->content = serialize($event_colors);
             return $df[0]->store();
@@ -317,7 +309,6 @@ class InstituteCalendarHelper
      */
     public static function getEvents($courses, $institut_id, $semester = null, $specific_weekday = null)
     {
-        $events = [];
         $today = date('w');
 
         $user_insts = array_map(function ($arr) {
@@ -330,9 +321,15 @@ class InstituteCalendarHelper
         $maxbigtime = (int) $max_time[0];
 
         $institut = Institute::find($institut_id);
+
+        if (!$institut) {
+            return [];
+        }
+
         $inst_default_colors = self::getInstituteDefaultEventcolors($institut);
 
-        Course::findAndMapMany(function ($course) use (
+        $events = [];
+        Course::findEachMany(function ($course) use (
             $courses,
             &$events,
             $today,
@@ -418,8 +415,8 @@ class InstituteCalendarHelper
                     }
                     if (!$backgroundcolor) {
                         $backgroundcolor = array_key_exists($semtype['name'], $inst_default_colors)
-                                         ? $inst_default_colors[$semtype['name']]
-                                         : self::DEFAULT_EVENT_COLOR;
+                            ? $inst_default_colors[$semtype['name']]
+                            : self::DEFAULT_EVENT_COLOR;
                     }
 
                     $textcolor = '#ffffff';
@@ -472,7 +469,7 @@ class InstituteCalendarHelper
      * @param SeminarCycleDate $cycle_date
      * @param string $institut_id
      *
-     * @return string enriched course info string for tooltip
+     * @return array enriched course info string for tooltip
      */
     public static function getCycleEvent($cycle_date, $institut_id)
     {
@@ -594,9 +591,8 @@ class InstituteCalendarHelper
      */
     private static function getCycleInfos($course, $cycle_date)
     {
-        $info_string = '';
 
-        $info_string .= $course->getFullname('number-name') . "\n";
+        $info_string = $course->getFullName('number-name') . "\n";
 
         $dozenten = [];
         foreach (CourseMember::findByCourseAndStatus($course->id, 'dozent') as $cmember) {
