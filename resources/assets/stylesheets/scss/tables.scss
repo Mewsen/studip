@@ -271,11 +271,15 @@ tr.sortable {
     }
 
     th.sortasc {
-        @include icon('after', 'arr_1up', 'clickable');
+        span[role=img] {
+            @include icon('after', 'arr_1up', 'clickable');
+        }
     }
 
     th.sortdesc {
-        @include icon('after', 'arr_1down', 'clickable');
+        span[role=img] {
+            @include icon('after', 'arr_1down', 'clickable');
+        }
     }
 }
 
