@@ -386,7 +386,12 @@ Dialog.show = function(content, options = {}) {
                     .before(element);
             }
 
-            $(this).parent().find('.ui-dialog-title').attr('title', options.title);
+            $(this).parent().find('.ui-dialog-title').attr({
+                title: options.title,
+                role: 'heading',
+                'aria-level': 2
+            });
+            $(this).parents('.studip-dialog').attr('aria-modal', 'true');
 
             instance.open = true;
             // Execute scripts
