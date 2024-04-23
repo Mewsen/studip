@@ -14,8 +14,8 @@ class PlatformManager
             $c->STUDIP_INSTALLATION_ID,
             $c->UNI_NAME_CLEAN,
             $GLOBALS['ABSOLUTE_URI_STUDIP'],
-            \URLHelper::getURL('dispatch.php/lti/lti13a/oidc_init', null, true),
-            \URLHelper::getURL('dispatch.php/lti/lti13a/oauth2_token', null, true)
+            \URLHelper::getURL('dispatch.php/lti/auth/oidc_init', null, true),
+            \URLHelper::getURL('dispatch.php/lti/auth/oauth2_token', null, true)
         );
     }
 
@@ -49,6 +49,6 @@ class PlatformManager
 
     public static function getJwksUrlForDeployment(\LtiDeployment $link)
     {
-        return \URLHelper::getURL('lti13a/jwks', ['link_id' => $link->id], true);
+        return \URLHelper::getURL('lti/auth/jwks', ['link_id' => $link->id], true);
     }
 }
