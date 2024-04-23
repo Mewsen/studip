@@ -12,8 +12,12 @@ class Calendar_CalendarController extends AuthenticatedController
     }
 
 
-    protected function buildSidebar($schedule = false)
-    {
+    protected function buildSidebar(
+        bool $schedule = false,
+        string $user_id = '',
+        string $group_id = ''
+    ) {
+
         $sidebar = Sidebar::get();
 
         $actions = new ActionsWidget();
@@ -25,9 +29,15 @@ class Calendar_CalendarController extends AuthenticatedController
                 ['data-dialog' => 'size=default']
             );
         } else {
+            $params = [];
+            if ($user_id) {
+                $params['user_id'] = $user_id;
+            } elseif ($group_id) {
+                $params['group_id'] = $group_id;
+            }
             $actions->addLink(
                 _('Termin anlegen'),
-                $this->url_for('calendar/date/add'),
+                $this->url_for('calendar/date/add', $params),
                 Icon::create('add'),
                 ['data-dialog' => 'size=auto']
             );
@@ -181,7 +191,11 @@ class Calendar_CalendarController extends AuthenticatedController
             throw new AccessDeniedException(_('Sie dürfen diesen Kalender nicht sehen!'));
         }
 
-        $this->buildSidebar(false);
+        $this->buildSidebar(
+            false,
+            $calendar_owner ? $calendar_owner->id : '',
+            $selected_group ? $selected_group->id : ''
+        );
 
         $sidebar = Sidebar::get();
 
