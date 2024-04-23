@@ -122,12 +122,12 @@ class Shared_LogEventController extends MVVController
                     $search_action .= " AND `log_actions`.`name` LIKE CONCAT('%_'," . DBManager::get()->quote($log_action) . ")";
                 }
 
-                $statement = DBManager::get()->prepare("SELECT *, `log_actions`.`name`
+                $statement = DBManager::get()->prepare("SELECT *
                         FROM `log_events`
                         LEFT JOIN `log_actions` ON `log_events`.`action_id` =  `log_actions`.`action_id`
                         WHERE `info` = ?
                         " . $search_action . "
-                        ORDER BY `log_events`.`mkdate` DESC");
+                        ORDER BY `log_events`.`event_id` DESC");
                 $statement->execute([$mvv_field]);
                 $res = $statement->fetchOne();
                 if ($res) {
