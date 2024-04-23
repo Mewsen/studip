@@ -44,6 +44,7 @@
 <script>
 import axios from 'axios';
 import { TreeMixin } from '../../mixins/TreeMixin';
+import PageLayout from '../../../assets/javascripts/lib/page_layout';
 import StudipProgressIndicator from '../StudipProgressIndicator.vue';
 import SearchWidget from '../SearchWidget.vue';
 import StudipTreeViewWidget from './StudipTreeViewWidget.vue';
@@ -176,7 +177,8 @@ export default {
             showStructuralNavigation: false,
             searchConfig: {},
             isSearching: false,
-            viewConfig: null
+            viewConfig: null,
+            pageTitle: document.title
         }
     },
     methods: {
@@ -188,6 +190,7 @@ export default {
                 semester: this.semester,
                 semClass: this.semClass
             };
+            this.setPageTitle(this.currentNode.attributes.name);
             this.$nextTick(() => {
                 document.getElementById('tree-breadcrumb-' + node.attributes.id)?.focus();
             });
@@ -206,6 +209,10 @@ export default {
                 form.appendChild(input);
             }
             input.setAttribute('value', searchterm);
+        },
+        setPageTitle(nodeTitle) {
+            const title = this.pageTitle.split('-');
+            PageLayout.title = title.slice(0, -1).join('-') + '/ ' + nodeTitle + ' -' + title[title.length - 1];
         }
     },
     mounted() {
@@ -231,6 +238,7 @@ export default {
                 semester: this.semester,
                 semClass: this.semClass
             };
+            this.setPageTitle(this.currentNode.attributes.name);
         });
 
         axios.interceptors.request.eject(loadingIndicator);
