@@ -142,7 +142,7 @@ $is_exTermin = $termin instanceof CourseExDate;
                 ->addLink(
                     $controller->url_for(
                         'course/room_requests/request_start',
-                        ['origin' => 'date', 'course_timesrooms' => 'date_' . $termin->id]
+                        ['range' => 'date', 'range_id' => $termin->id]
                     ),
                     _('Neue Raumanfrage'),
                     Icon::create('room-request'),
