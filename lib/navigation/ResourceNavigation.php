@@ -30,14 +30,16 @@ class ResourceNavigation extends Navigation
 
     public function initItem()
     {
+        parent::initItem();;
+
         $user = User::findCurrent();
-        if (ResourceManager::userHasGlobalPermission($user, 'user')) {
+        if (ResourceManager::userHasGlobalPermission($user)) {
             $this->setURL('dispatch.php/room_management/overview/index');
         } else {
             $this->setURL('dispatch.php/room_management/overview/rooms');
         }
         $this->setImage(
-            Icon::create('resources', 'navigation', ['title' => _('Raumverwaltung')])
+            Icon::create('resources', Icon::ROLE_NAVIGATION, ['title' => _('Raumverwaltung')])
         );
     }
 
