@@ -370,5 +370,6 @@ jQuery(document).on('click', 'a[data-behaviour~="ajax-toggle"]', function (event
 (function ($) {
     $(document).on('click', 'form[name=course-details] fieldset legend', function () {
         $('#open_variable').attr('value', $(this).parent('fieldset').data('open'));
+        $(this).parent('fieldset').attr('aria-expanded',  $(this).parent('fieldset').attr('aria-expanded') == 'true' ? 'false' : 'true');
     });
 }(jQuery));
