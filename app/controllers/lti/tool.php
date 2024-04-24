@@ -13,7 +13,7 @@ class Lti_ToolController extends AuthenticatedController
 
         if (in_array($action, ['add', 'edit', 'delete'])) {
             $this->range_id = $args[0];
-            $this->tool_id  = $args[1];
+            $this->tool_id  = $args[1] ?? '';
             if (!$this->range_id || ($this->range_id === 'global' && !$GLOBALS['perm']->have_perm('root'))) {
                 throw new AccessDeniedException();
             }
@@ -25,7 +25,6 @@ class Lti_ToolController extends AuthenticatedController
             } else {
                 if (!$this->tool_id) {
                     PageLayout::postError(_('Es wurde kein LTI-Tool angegeben.'));
-                    $this->render_nothing();
                     return;
                 }
                 $this->tool = LtiTool::find($this->tool_id);
@@ -50,6 +49,9 @@ class Lti_ToolController extends AuthenticatedController
 
     protected function addEditHandler($mode)
     {
+        if (!$this->tool) {
+            return;
+        }
         $this->deployment = null;
         if ($this->tool->isNew()) {
             if ($this->range_id !== 'global') {
@@ -80,40 +82,50 @@ class Lti_ToolController extends AuthenticatedController
                 $this->deployment->title       = trim(Request::get('name'));
                 $this->deployment->description = trim(Request::get('description'));
                 $this->deployment->launch_url  = trim(Request::get('launch_url'));
-                $this->tool->name = $this->deployment->title;
-            }
-            $this->tool->oidc_init_url     = trim(Request::get('oidc_init_url'));
-            $this->tool->jwks_url          = trim(Request::get('jwks_url'));
-            $this->tool->jwks_key_id       = trim(Request::get('jwks_key_id'));
-            $this->tool->deep_linking_url  = trim(Request::get('deep_linking_url'));
-            $this->tool->consumer_key      = trim(Request::get('consumer_key'));
-            $this->tool->consumer_secret   = trim(Request::get('consumer_secret'));
-            $this->tool->send_lis_person   = Request::int('send_lis_person', 0);
-            $this->tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
-            $this->tool->lti_version       = Request::get('lti_version', '1.3a');
-            $this->tool->custom_parameters = trim(Request::get('custom_parameters'));
-            $tool_public_key = trim(Request::get('tool_public_key'));
-            $errors = $this->tool->validate();
-            if ($errors) {
-                PageLayout::postError(
-                    _('Die folgenden Daten zum LTI-Tool sind fehlerhaft:'),
-                    $errors
-                );
-                return;
-            }
-            if (!$tool_public_key && !$this->tool->jwks_url) {
-                PageLayout::postError(
-                    _('Es wurde weder ein öffentlicher Schlüssel noch eine JWKS-URL zum Tool angegeben.')
-                );
-                return;
-            }
-            if ($this->tool->store()) {
-                if ($this->deployment) {
-                    $this->deployment->tool_id = $this->tool->id;
+                $document_target = trim(Request::get('document_target'));
+                if ($document_target === 'iframe') {
+                    if (!is_array($this->deployment->options)) {
+                        $this->deployment->options = [];
+                    }
+                    $this->deployment->options['document_target'] = $document_target;
                 }
-            } else {
-                PageLayout::postError(_('Das LTI-Tool konnte nicht gespeichert werden.'));
-                return;
+            }
+            if ($this->tool->is_global) {
+                $this->tool->name = trim(Request::get('name'));
+                $this->tool->launch_url = trim(Request::get('launch_url'));
+                $this->tool->oidc_init_url = trim(Request::get('oidc_init_url'));
+                $this->tool->jwks_url = trim(Request::get('jwks_url'));
+                $this->tool->jwks_key_id = trim(Request::get('jwks_key_id'));
+                $this->tool->deep_linking_url = trim(Request::get('deep_linking_url'));
+                $this->tool->consumer_key = trim(Request::get('consumer_key'));
+                $this->tool->consumer_secret = trim(Request::get('consumer_secret'));
+                $this->tool->send_lis_person = Request::int('send_lis_person', 0);
+                $this->tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
+                $this->tool->lti_version = Request::get('lti_version', '1.3a');
+                $this->tool->custom_parameters = trim(Request::get('custom_parameters'));
+                $tool_public_key = trim(Request::get('tool_public_key'));
+                $errors = $this->tool->validate();
+                if ($errors) {
+                    PageLayout::postError(
+                        _('Die folgenden Daten zum LTI-Tool sind fehlerhaft:'),
+                        $errors
+                    );
+                    return;
+                }
+                if (!$tool_public_key && !$this->tool->jwks_url) {
+                    PageLayout::postError(
+                        _('Es wurde weder ein öffentlicher Schlüssel noch eine JWKS-URL zum Tool angegeben.')
+                    );
+                    return;
+                }
+                if ($this->tool->store() !== false) {
+                    if ($this->deployment) {
+                        $this->deployment->tool_id = $this->tool->id;
+                    }
+                } else {
+                    PageLayout::postError(_('Das LTI-Tool konnte nicht gespeichert werden.'));
+                    return;
+                }
             }
             if ($this->deployment && $this->deployment->isDirty()) {
                 $this->deployment->store();
@@ -140,24 +152,46 @@ class Lti_ToolController extends AuthenticatedController
         }
     }
 
-    public function delete_action($tool_id, $range_id)
+    public function delete_action($range_id, $tool_id)
     {
         //NOTE: The parameters are checked and processed in the before_filter.
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
+            $deleted = false;
             $tool_name = $this->tool->name;
-            if ($this->tool->delete()) {
+            if ($this->tool->is_global) {
+                if ($range_id === 'global') {
+                    $deleted = $this->tool->delete();
+                } else {
+                    //A tool shall be deleted from a course: Delete the deployment instead.
+                    $deployment = LtiDeployment::findOneBySQL(
+                        "`tool_id` = :tool_id AND `course_id` = :course_id",
+                        ['tool_id' => $this->tool->id, 'course_id' => $range_id]
+                    );
+                    if ($deployment) {
+                        $tool_name = $deployment->title;
+                        $deleted = $deployment->delete();
+                    } else {
+                        PageLayout::postError(sprintf(_('Das LTI-Tool „%s“ ist in dieser Veranstaltung nicht vorhanden.'), $this->tool->name));
+                        return;
+                    }
+                }
+            } else {
+                //Delete the tool directly:
+                $deleted = $this->tool->delete();
+            }
+            if ($deleted !== false) {
                 PageLayout::postSuccess(sprintf(_('Das LTI-Tool „%s“ wurde gelöscht.'), $tool_name));
             } else {
                 PageLayout::postError(_('Das LTI-Tool „%s“ konnte nicht gelöscht werden.'), $tool_name);
             }
-        }
-        if ($range_id === 'global') {
-            //Redirect to the admin overview page.
-            $this->redirect('admin/lti');
-        } elseif (Course::exists($range_id)) {
-            //Redirect to the LTI module of the course:
-            $this->redirect('course/lti', ['cid' => $range_id]);
+            if ($range_id === 'global') {
+                //Redirect to the admin overview page.
+                $this->redirect('admin/lti');
+            } elseif (Course::exists($range_id)) {
+                //Redirect to the LTI module of the course:
+                $this->redirect('course/lti', ['cid' => $range_id]);
+            }
         }
     }
 }

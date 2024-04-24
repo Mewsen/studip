@@ -6,14 +6,16 @@
  * @var LtiDeployment $deployment
  */
 ?>
-<form class="default" method="post" data-dialog="reload-on-close"
-      action="<?= $controller->link_for('lti/tool/edit/' . $tool->id . '/' . $range_id) ?>">
-    <?= CSRFProtection::tokenTag() ?>
-    <?= $this->render_partial(
-        'lti/_tool_form_fields',
-        [
-            'tool'       => $tool,
-            'deployment' => $deployment
-        ]
-    ) ?>
-</form>
+<? if ($tool) : ?>
+    <form class="default" method="post" data-dialog="reload-on-close"
+          action="<?= $controller->link_for('lti/tool/edit/' . $range_id . '/' . $tool->id) ?>">
+        <?= CSRFProtection::tokenTag() ?>
+        <?= $this->render_partial(
+            'lti/_tool_form_fields',
+            [
+                'tool'       => $tool,
+                'deployment' => $deployment
+            ]
+        ) ?>
+    </form>
+<? endif ?>

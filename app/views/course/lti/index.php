@@ -31,14 +31,14 @@
                             ]) ?>
                         <? endif ?>
 
-                        <a href="<?= $controller->link_for('lti/tool/edit/' . $lti_data->tool->id . '/' . $lti_data->course_id) ?>"
+                        <a href="<?= $controller->link_for('lti/tool/edit/' . $lti_data->course_id . '/' . $lti_data->tool->id) ?>"
                            title="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>
                             <?= Icon::create('edit') ?>
                         </a>
                         <a href="<?= htmlReady(sprintf(
                                 'javascript:void(STUDIP.Dialog.confirmAsPost(\'%1$s\', \'%2$s\'))',
                                 sprintf(_('Wollen Sie wirklich den Abschnitt "%s" löschen?'), $lti_data->title),
-                                $controller->url_for('course/lti/delete/' . $lti_data->position)
+                                $controller->url_for('lti/tool/delete/' . $lti_data->course_id . '/' . $lti_data->tool->id)
                         )) ?>"
                            title="<?= _('Abschnitt löschen') ?>">
                             <?= Icon::create('trash') ?>
@@ -47,17 +47,19 @@
                 </nav>
             <? endif ?>
         </header>
-
+        <?
+        $document_target = $lti_data->options['document_target'] ?? '';
+        ?>
         <section>
             <?= formatReady($lti_data->description) ?>
 
-            <? if ($launch_url && $lti_data->options['document_target'] === 'iframe'): ?>
+            <? if ($launch_url && $document_target === 'iframe'): ?>
                 <iframe style="border: none; height: 640px; width: 100%;"
                         src="<?= $controller->link_for('course/lti/iframe', $lti_data->position) ?>"></iframe>
             <? endif ?>
         </section>
 
-        <? if ($launch_url && $lti_data->options['document_target'] !== 'iframe'): ?>
+        <? if ($launch_url && $document_target !== 'iframe'): ?>
             <footer>
                 <?= Studip\LinkButton::create(
                     _('Anwendung starten'),
