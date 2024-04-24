@@ -46,7 +46,7 @@
                         <td><?= htmlReady($tool->getLtiVersionString()) ?></td>
                         <td><?= count($tool->links) ?></td>
                         <td class="actions">
-                            <a href="<?= $controller->link_for('lti/tool/edit/' . $tool->id . '/global') ?>" title="<?= _('LTI-Tool konfigurieren') ?>"
+                            <a href="<?= $controller->link_for('lti/tool/edit/global/' . $tool->id) ?>" title="<?= _('LTI-Tool konfigurieren') ?>"
                                aria-label="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>
                                 <?= Icon::create('edit') ?>
                             </a>
