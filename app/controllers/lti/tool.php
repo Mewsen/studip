@@ -54,7 +54,9 @@ class Lti_ToolController extends AuthenticatedController
         }
         $this->deployment = null;
         if ($this->tool->isNew()) {
-            if ($this->range_id !== 'global') {
+            if ($this->range_id === 'global') {
+                $this->tool->is_global = '1';
+            } else {
                 $this->deployment = new LtiDeployment();
                 $this->deployment->course_id = $this->range_id;
             }

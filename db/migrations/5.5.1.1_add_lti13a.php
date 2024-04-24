@@ -43,7 +43,7 @@ class AddLti13a extends Migration
         $db->exec(
             "ALTER TABLE `lti_tools`
             ADD COLUMN lti_version VARCHAR(8) NOT NULL DEFAULT '1.3a',
-            ADD COLUMN is_global TINYINT(1) NOT NULL DEFAULT '1',
+            ADD COLUMN is_global TINYINT(1) NOT NULL DEFAULT '0',
             ADD COLUMN oidc_init_url VARCHAR(255) NOT NULL DEFAULT '',
             ADD COLUMN jwks_url VARCHAR(255) NOT NULL DEFAULT '',
             ADD COLUMN jwks_key_id VARCHAR(255) NOT NULL DEFAULT '',
