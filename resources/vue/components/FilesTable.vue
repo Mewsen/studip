@@ -52,7 +52,9 @@
                         ></studip-proxy-checkbox>
                     </th>
                     <th @click="sort('mime_type')"
-                        :class="sortClasses('mime_type')">
+                        :class="sortClasses('mime_type')"
+                        :aria-sort="getAriaSortString('mime_type')"
+                        :aria-labelledby="sortedBy === 'mime_type' ? 'sort-indicator-mime_type' : null">
                         <a href="#"
                            @click.prevent
                            :title="$gettext('Nach Typ sortieren')">
@@ -60,14 +62,16 @@
                         </a>
                         <span v-if="sortedBy === 'mime_type'"
                               role="img"
-                              :aria-sort="sortDirection === 'asc' ? 'ascending' : 'descending'"
+                              id="sort-indicator-mime_type"
                               :aria-label="sortDirection === 'asc'
-                                ? $gettext('Es wird aufsteigend nach dieser Spalte sortiert.')
-                                : $gettext('Es wird abfsteigend nach dieser Spalte sortiert.')">
+                                ? $gettext('Es wird aufsteigend nach der Spalte Typ sortiert.')
+                                : $gettext('Es wird absteigend nach der Spalte Typ sortiert.')">
                         </span>
                     </th>
                     <th @click="sort('name')"
-                        :class="sortClasses('name')">
+                        :class="sortClasses('name')"
+                        :aria-sort="getAriaSortString('name')"
+                        :aria-labelledby="sortedBy === 'name' ? 'sort-indicator-name' : null">
                         <a href="#"
                            @click.prevent
                            :title="$gettext('Nach Name sortieren')">
@@ -75,15 +79,17 @@
                         </a>
                         <span v-if="sortedBy === 'name'"
                               role="img"
-                              :aria-sort="sortDirection === 'asc' ? 'ascending' : 'descending'"
+                              id="sort-indicator-name"
                               :aria-label="sortDirection === 'asc'
-                                ? $gettext('Es wird aufsteigend nach dieser Spalte sortiert.')
-                                : $gettext('Es wird absteigend nach dieser Spalte sortiert.')">
+                                ? $gettext('Es wird aufsteigend nach der Spalte Name sortiert.')
+                                : $gettext('Es wird absteigend nach der Spalte Name sortiert.')">
                         </span>
                     </th>
                     <th @click="sort('size')"
                         class="responsive-hidden"
-                        :class="sortClasses('size')">
+                        :class="sortClasses('size')"
+                        :aria-sort="getAriaSortString('size')"
+                        :aria-labelledby="sortedBy === 'size' ? 'sort-indicator-size' : null">
                         <a href="#"
                            @click.prevent
                            :title="$gettext('Nach Größe sortieren')">
@@ -91,16 +97,18 @@
                         </a>
                         <span v-if="sortedBy === 'size'"
                               role="img"
-                              :aria-sort="sortDirection === 'asc' ? 'ascending' : 'descending'"
+                              id="sort-indicator-size"
                               :aria-label="sortDirection === 'asc'
-                                ? $gettext('Es wird aufsteigend nach dieser Spalte sortiert.')
-                                : $gettext('Es wird absteigend nach dieser Spalte sortiert.')">
+                                ? $gettext('Es wird aufsteigend nach der Spalte Größe sortiert.')
+                                : $gettext('Es wird absteigend nach der Spalte Größe sortiert.')">
                         </span>
                     </th>
                     <th v-if="showdownloads"
                         @click="sort('downloads')"
                         class="responsive-hidden"
-                        :class="sortClasses('downloads')">
+                        :class="sortClasses('downloads')"
+                        :aria-sort="getAriaSortString('downloads')"
+                        :aria-labelledby="sortedBy === 'downloads' ? 'sort-indicator-downloads' : null">
                         <a href="#"
                            @click.prevent
                            :title="$gettext('Nach Downloads sortieren')">
@@ -108,15 +116,17 @@
                         </a>
                         <span v-if="sortedBy === 'downloads'"
                               role="img"
-                              :aria-sort="sortDirection === 'asc' ? 'ascending' : 'descending'"
+                              id="sort-indicator-downloads"
                               :aria-label="sortDirection === 'asc'
-                                ? $gettext('Es wird aufsteigend nach dieser Spalte sortiert.')
-                                : $gettext('Es wird absteigend nach dieser Spalte sortiert.')">
+                                ? $gettext('Es wird aufsteigend nach der Spalte Downloads sortiert.')
+                                : $gettext('Es wird absteigend nach der Spalte Downloads sortiert.')">
                         </span>
                     </th>
                     <th class="responsive-hidden"
                         @click="sort('author_name')"
-                        :class="sortClasses('author_name')">
+                        :class="sortClasses('author_name')"
+                        :aria-sort="getAriaSortString('author_name')"
+                        :aria-labelledby="sortedBy === 'author_name' ? 'sort-indicator-author_name' : null">
                         <a href="#"
                            @click.prevent
                            :title="$gettext('Nach Autor/-in sortieren')">
@@ -124,15 +134,17 @@
                         </a>
                         <span v-if="sortedBy === 'author_name'"
                               role="img"
-                              :aria-sort="sortDirection === 'asc' ? 'ascending' : 'descending'"
+                              id="sort-indicator-author_name"
                               :aria-label="sortDirection === 'asc'
-                                ? $gettext('Es wird aufsteigend nach dieser Spalte sortiert.')
-                                : $gettext('Es wird absteigend nach dieser Spalte sortiert.')">
+                                ? $gettext('Es wird aufsteigend nach der Spalte Autor-/in sortiert.')
+                                : $gettext('Es wird absteigend nach der Spalte Autor-/in sortiert.')">
                         </span>
                     </th>
                     <th class="responsive-hidden"
                         @click="sort('chdate')"
-                        :class="sortClasses('chdate')">
+                        :class="sortClasses('chdate')"
+                        :aria-sort="getAriaSortString('chdate')"
+                        :aria-labelledby="sortedBy === 'chdate' ? 'sort-indicator-chdate' : null">
                         <a href="#"
                            @click.prevent
                            :title="$gettext('Nach Datum sortieren')">
@@ -140,17 +152,19 @@
                         </a>
                         <span v-if="sortedBy === 'chdate'"
                               role="img"
-                              :aria-sort="sortDirection === 'asc' ? 'ascending' : 'descending'"
+                              id="sort-indicator-chdate"
                               :aria-label="sortDirection === 'asc'
-                                ? $gettext('Es wird aufsteigend nach dieser Spalte sortiert.')
-                                : $gettext('Es wird absteigend nach dieser Spalte sortiert.')">
+                                ? $gettext('Es wird aufsteigend nach der Spalte Datum sortiert.')
+                                : $gettext('Es wird absteigend nach der Spalte Datum sortiert.')">
                         </span>
                     </th>
                     <th v-for="(name, index) in additionalColumns"
                         :key="index"
                         @click="sort(index)"
                         class="responsive-hidden"
-                        :class="sortClasses(index)">
+                        :class="sortClasses(index)"
+                        :aria-sort="getAriaSortString(name)"
+                        :aria-labelledby="sortedBy === name ? 'sort-indicator-' + name : null">
                         <a href="#"
                            @click.prevent
                            :title="$gettextInterpolate($gettext('Nach %{ colName } sortieren'), {colName: name})">
@@ -158,10 +172,10 @@
                         </a>
                         <span v-if="sortedBy === name"
                               role="img"
-                              :aria-sort="sortDirection === 'asc' ? 'ascending' : 'descending'"
+                              :id="'sort-indicator-' + name"
                               :aria-label="sortDirection === 'asc'
-                                ? $gettext('Es wird aufsteigend nach dieser Spalte sortiert.')
-                                : $gettext('Es wird absteigend nach dieser Spalte sortiert.')">
+                                ? $gettextInterpolate($gettext('Es wird aufsteigend nach der Spalte %{colName} sortiert.'), {colName: name})
+                                : $gettextInterpolate($gettext('Es wird absteigend nach der Spalte %{colName} sortiert.'), {colName: name})">
                         </span>
                     </th>
                     <th class="actions" data-sort="false">{{ $gettext('Aktionen') }}</th>
@@ -495,6 +509,11 @@ export default {
                 this.$gettext('Datei %{name} auswählen'),
                 {name: file.name}
             );
+        },
+        getAriaSortString(column) {
+            return column === this.sortedBy
+                ? (this.sortDirection === 'asc' ? 'ascending' : 'descending')
+                : null;
         }
     },
     computed: {
