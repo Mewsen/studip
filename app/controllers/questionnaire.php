@@ -54,7 +54,7 @@ class QuestionnaireController extends AuthenticatedController
         }
 
         Navigation::activateItem("/course/admin/questionnaires");
-        if ($GLOBALS['perm']->have_studip_perm('admin', $this->course_id)) {
+        if ($GLOBALS['perm']->have_studip_perm('admin', $this->range_id)) {
             // Ensure the select widget is added last
             NotificationCenter::on('SidebarWillRender', function () {
                 $widget = new CourseManagementSelectWidget();
