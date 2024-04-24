@@ -13,5 +13,6 @@ $(document).on('click', 'section.contentbox article header h1 a', function(e) {
 
         // Open the contentbox
         article.toggleClass('open').removeClass('new');
+        article.attr('aria-expanded', article.attr('aria-expanded') === 'true' ? 'false' : 'true');
     }
 });

@@ -116,6 +116,11 @@ const PersonalNotifications = {
                     .click(STUDIP.PersonalNotifications.activate);
             }
         }
+
+        // Special handling for personal notifications:
+        $('#notification-container').on('mouseover mouseout', function (event) {
+            $(this).attr('aria-expanded', $(this).attr('aria-expanded') === 'true' ? 'false' : 'true');
+        });
     },
     activate () {
         Promise.resolve(Notification.requestPermission()).then(permission => {

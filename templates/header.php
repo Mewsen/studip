@@ -141,7 +141,8 @@ if ($navigation) {
                                     ngettext('%u Benachrichtigung', '%u Benachrichtigungen', count($notifications)),
                                     count($notifications)
                                 ) ?>" data-lastvisit="<?= $lastvisit ?>"
-                                <?= count($notifications) == 0 ? 'disabled' : '' ?>>
+                                <?= count($notifications) == 0 ? 'disabled' : '' ?> aria-controls="notification-list"
+                                aria-expanded="false">
                             <span class="count" aria-hidden="true"><?= count($notifications) ?></span>
                         </button>
                         <input type="checkbox" id="notification_checkbox">
