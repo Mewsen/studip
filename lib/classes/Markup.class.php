@@ -363,7 +363,8 @@ class Markup
             'border-color',
             'border-style',
             'float',
-            'border'
+            'border',
+            'vertical-align'
         ]);
         $config->set('CSS.MaxImgLength', null);
 
