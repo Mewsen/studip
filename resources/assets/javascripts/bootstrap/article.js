@@ -13,6 +13,7 @@
 
         // Open the contentbox
         article.toggleClass('open').removeClass('new');
+        article.attr('aria-expanded', article.attr('aria-expanded') === 'true' ? 'false' : 'true');
     });
 
     // Open closed article contents when location hash matches
