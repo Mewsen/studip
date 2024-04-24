@@ -37,7 +37,7 @@ class Course_GroupingController extends AuthenticatedController
             throw new AccessDeniedException(_('Sie haben leider nicht die notwendige Berechtigung für diese Aktion.'));
         }
 
-        if ($GLOBALS['perm']->have_studip_perm('admin', $this->course_id)) {
+        if ($GLOBALS['perm']->have_studip_perm('admin', $this->course->id)) {
             $widget = new CourseManagementSelectWidget();
             Sidebar::get()->addWidget($widget);
         }
