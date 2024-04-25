@@ -5,27 +5,17 @@
         <div class="main_part">
             <div class="header">
                 <div class="image">
-                    <?
-                    if ($metadata['icon']) {
-                        $icon = $metadata['icon'] instanceof Icon
-                            ? $metadata['icon']->asImagePath()
-                            : Icon::create($plugin->getPluginURL().'/'.$metadata['icon'])->asImagePath();
-                    } else {
-                        $icon = null;
-                    }
-                    if ($icon && !is_a($icon, 'Icon')) {
-                        $icon = Icon::create($icon);
-                    }
-                    ?>
-                    <? if ($icon) : ?>
-                        <?= $icon->asImg(100) ?>
-                    <? endif ?>
+                <? if ($metadata['icon']): ?>
+                    <?= $metadata['icon']->copyWithRole(Icon::ROLE_INFO)->asImg(100) ?>
+                <? endif; ?>
                 </div>
                 <div class="text">
                     <h1><?= htmlReady($metadata['displayname'] ?? $plugin->getPluginName()) ?></h1>
+                <? if (!empty($metadata['summary'])): ?>
                     <strong>
                         <?= htmlReady($metadata['summary']) ?>
                     </strong>
+                <? endif; ?>
                 </div>
             </div>
             <div class="content-modules-controls-vue-app" is="ContentModulesControl" module_id="<?= htmlReady($plugin->getPluginId()) ?>"></div>
