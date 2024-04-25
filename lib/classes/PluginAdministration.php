@@ -440,12 +440,14 @@ class PluginAdministration
         // get plugin meta data
         $pluginclass = $manifest['pluginclassname'];
         $origin      = $manifest['origin'];
-        $min_version = $manifest['studipMinVersion'];
-        $max_version = $manifest['studipMaxVersion'];
+        $min_version = $manifest['studipMinVersion'] ?? null;
+        $max_version = $manifest['studipMaxVersion'] ?? null;
 
         // check for compatible version
-        if ((isset($min_version) && StudipVersion::olderThan($min_version)) ||
-            (isset($max_version) && StudipVersion::newerThan($max_version))) {
+        if (
+            (isset($min_version) && StudipVersion::olderThan($min_version))
+            || (isset($max_version) && StudipVersion::newerThan($max_version))
+        ) {
             throw new PluginInstallationException(_('Das Plugin ist mit dieser Stud.IP-Version nicht kompatibel.'));
         }
 
@@ -456,7 +458,7 @@ class PluginAdministration
         $pluginregistered = $plugin_manager->getPluginInfo($pluginclass);
 
         if ($pluginregistered) {
-            new PluginInstallationException(_('Das Plugin ist bereits registriert.'));
+            throw new PluginInstallationException(_('Das Plugin ist bereits registriert.'));
         }
 
         // create database schema if needed
