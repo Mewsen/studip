@@ -3,6 +3,7 @@ set -e
 
 importSQLFile() {
     mysql --default-character-set=utf8mb4\
+        --init-command="SET NAMES UTF8;"\
         -u $MYSQL_USER\
         -h $MYSQL_HOST\
         -p$MYSQL_PASSWORD\
