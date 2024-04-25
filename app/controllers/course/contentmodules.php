@@ -261,7 +261,12 @@ class Course_ContentmodulesController extends AuthenticatedController
             }
         }
 
-        PageLayout::setTitle(sprintf(_('Informationen über %s'), $this->metadata['displayname']));
+        $this->metadata['icon'] = $this->getIconFromMetadata($this->metadata, $this->plugin);
+
+        PageLayout::setTitle(sprintf(
+            _('Informationen über %s'),
+            $this->metadata['displayname'] ?? $this->plugin->getPluginName()
+        ));
     }
 
     private function getModules(Range $context)
@@ -291,6 +296,7 @@ class Course_ContentmodulesController extends AuthenticatedController
             $visibility = $tool ? $tool->getVisibilityPermission() : 'nobody';
 
             $metadata = $plugin->getMetadata();
+            $icon = $this->getIconFromMetadata($metadata, $plugin);
             $list[$plugin_id] = [
                 'id'             => $plugin_id,
                 'moduleclass'    => get_class($plugin),
@@ -299,7 +305,7 @@ class Course_ContentmodulesController extends AuthenticatedController
                 'displayname'    => $displayname,
                 'visibility'     => $visibility,
                 'active'         => (bool) $tool,
-                'icon'           => $this->getIconFromMetadata($metadata, $plugin),
+                'icon'           => $icon ? $icon->asImagePath() : null,
                 'summary'        => $metadata['summary'] ?? null,
                 'mandatory'      => $this->sem_class->isModuleMandatory(get_class($plugin)),
                 'highlighted'    => (bool) $plugin->isHighlighted(),
@@ -315,7 +321,7 @@ class Course_ContentmodulesController extends AuthenticatedController
      * @param array $metadata
      * @param CorePlugin|StudIPPlugin $plugin
      */
-    private function getIconFromMetadata(array $metadata, $plugin): ?string
+    private function getIconFromMetadata(array $metadata, $plugin): ?Icon
     {
         $icon = $metadata['icon_clickable'] ?? $metadata['icon'] ?? null;
 
@@ -332,7 +338,7 @@ class Course_ContentmodulesController extends AuthenticatedController
             $icon = Icon::create($plugin->getPluginURL() . '/' . $icon);
         }
 
-        return $icon->copyWithRole(Icon::ROLE_CLICKABLE)->asImagePath();
+        return $icon->copyWithRole(Icon::ROLE_CLICKABLE);
     }
 
     private function getCoreIcon(string $path): ?Icon

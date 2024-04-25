@@ -59,7 +59,7 @@ class OERHostOERSI extends OERHost
                     $material['difficulty_end'] = 12;
                     $material['uri'] = $material_data['_source']['id'];
                     $material['source_url'] = $material_data['_source']['id'];
-                    $material['content_type'] = $material_data['_source']['encoding'][0]['encodingFormat'] ?: '';
+                    $material['content_type'] = $material_data['_source']['encoding'][0]['encodingFormat'] ?? '';
                     $material['license_identifier'] = $this->getLicenseID($material_data['_source']['license']['id']) ?: '';
                     if (!$material['category']) {
                         $material['category'] = $material->autoDetectCategory();
@@ -69,18 +69,23 @@ class OERHostOERSI extends OERHost
                         'front_image_url' => $material_data['_source']['image'] ?? null,
                         'download' => $material_data['_source']['encoding'][0]['contentUrl'] ?: '',
                         'id' => $material_data['_id'],
-                        'organization' => $material_data['_source']['sourceOrganization'][0]['name'] ?: $material_data['_source']['publisher'][0]['name']
+                        'organization' => $material_data['_source']['sourceOrganization'][0]['name'] ?? $material_data['_source']['publisher'][0]['name'] ?? '',
                     ];
                     $material->store();
 
                     //set users:
                     $userdata = [];
-                    foreach ((array) $material_data['_source']['creator'] as $creator) {
-                        $userdata[] = [
-                            'user_id' => md5($creator['name']),
-                            'name' => $creator['name'],
-                            'host_url' => $this['url']
-                        ];
+                    if (
+                        isset($material_data['_source']['creator'])
+                        && is_array($material_data['_source']['creator'])
+                    ) {
+                        foreach ($material_data['_source']['creator'] as $creator) {
+                            $userdata[] = [
+                                'user_id' => md5($creator['name']),
+                                'name' => $creator['name'],
+                                'host_url' => $this['url']
+                            ];
+                        }
                     }
                     $material->setUsers($userdata);
 
