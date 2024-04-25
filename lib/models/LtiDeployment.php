@@ -127,7 +127,12 @@ class LtiDeployment extends SimpleORMap
      */
     public function getCustomParameters()
     {
-        return $this->tool->custom_parameters . "\n" . $this->options['custom_parameters'] ?? '';
+        $parameters = '';
+        if (!empty($this->tool->custom_parameters)) {
+            $parameters .= $this->tool->custom_parameters . "\n";
+        }
+        $parameters .= $this->options['custom_parameters'] ?? '';
+        return $parameters;
     }
 
     public function getCustomLtiParameterArray() : array
