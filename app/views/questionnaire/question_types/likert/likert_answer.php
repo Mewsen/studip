@@ -25,7 +25,7 @@ $responseData = isset($response->answerdata['answers']) ? $response->answerdata[
             <tr>
                 <th><?= _('Aussage') ?></th>
                 <? foreach ($answers as $answer) : ?>
-                <th><?= htmlReady($answer) ?></th>
+                <th class="option-cell"><?= htmlReady($answer) ?></th>
                 <? endforeach ?>
             </tr>
         </thead>
@@ -35,7 +35,7 @@ $responseData = isset($response->answerdata['answers']) ? $response->answerdata[
                 <? $html_id = md5(uniqid($index)) ?>
                 <td id="<?= $html_id ?>"><?= htmlReady($statements[$index]) ?></td>
                 <? foreach ($answers as $answer_index => $answer) : ?>
-                    <td>
+                    <td class="option-cell">
                         <input type="radio"
                                title="<?= htmlReady($answer) ?>"
                                aria-labelledby="<?= $html_id ?>"
