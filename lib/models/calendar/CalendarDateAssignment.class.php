@@ -250,9 +250,9 @@ class CalendarDateAssignment extends SimpleORMap implements Event
         ]);
 
 
-        $sql_repetition = $sql . " AND `calendar_dates`.`begin` < :end AND `calendar_dates`.`repetition_type` IN ('DAYLY', 'WEEKLY', 'MONTHLY', 'YEARLY')
-                    AND `calendar_dates`.`repetition_end` > :begin
-            ";
+        $sql_repetition = $sql . " AND `calendar_dates`.`begin` < :end
+            AND `calendar_dates`.`repetition_type` IN ('DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY')
+            AND `calendar_dates`.`repetition_end` > :begin ";
 
         $events = array_merge($events, self::findBySql($sql_repetition, [
             'range_id'      => $range_id,
@@ -286,7 +286,7 @@ class CalendarDateAssignment extends SimpleORMap implements Event
                         && !isset($events_created[$event->calendar_date->id])) {
                             $events_created[$event->calendar_date->id . '_' . $event->calendar_date->begin] = $event;
                     }
-                } elseif ($e_expire > $cal_start) {
+                } elseif ($e_expire > $cal_start && $e_end < $cal_start) {
                     $events_created = array_merge($events_created, self::getRepetition($event, $cal_noon));
                 }
             }
@@ -327,45 +327,45 @@ class CalendarDateAssignment extends SimpleORMap implements Event
     private function isRepeatedAtDate(DateTimeImmutable $cal_date): bool
     {
         $ts = $this->getNoonDate();
-        $pos = 1;
+        $repeated = false;
         switch ($this->getRepetitionType()) {
             case 'DAILY':
-                $pos = $cal_date->diff($ts)->days % $this->calendar_date->interval;
+                $repeated = $cal_date->diff($ts)->days % $this->calendar_date->interval === 0;
                 break;
             case 'WEEKLY':
                 $cal_ts = $cal_date->modify('monday this week noon');
                 if ($cal_date >= $this->getBegin()) {
-                    $pos = $cal_ts->diff($ts)->days % ($this->calendar_date->interval * 7);
+                    $repeated = $cal_ts->diff($ts)->days % ($this->calendar_date->interval * 7) === 0;
                     if (
-                        $pos === 0
+                        $repeated
                         && strpos($this->calendar_date->days, $cal_date->format('N')) === false
                     ) {
-                        $pos = 1;
+                        $repeated = false;
                     }
                 }
                 break;
             case 'MONTHLY':
                 $cal_ts = $cal_date->modify('first day of this month noon');
                 $diff = $cal_ts->diff($ts);
-                $pos = ($diff->m + $diff->y * 12) % $this->calendar_date->interval;
-                if ($pos === 0) {
+                $repeated = ($diff->m + $diff->y * 12) % $this->calendar_date->interval === 0;
+                if ($repeated) {
                     if (strlen($this->calendar_date->days)) {
                         $cal_ts_dom = $cal_ts->modify(sprintf('%s %s of this month noon',
                             $this->calendar_date->getOrdinalName(),
                             $this->calendar_date->getWeekdayName()));
                         if ($cal_ts_dom != $cal_date->setTime(12, 0)) {
-                            $pos = 1;
+                            $repeated = false;
                         }
                     } elseif ($this->calendar_date->offset !== $cal_date->format('j')) {
-                        $pos = 1;
+                        $repeated = false;
                     }
                 }
                 break;
             case 'YEARLY':
                 $cal_ts = $cal_date->modify('first day of this year noon');
                 $diff = $cal_ts->diff($ts);
-                $pos = $diff->y % $this->calendar_date->interval;
-                if ($pos === 0) {
+                $repeated = $diff->y % $this->calendar_date->interval === 0;
+                if ($repeated) {
                     if (strlen($this->calendar_date->days)) {
                         $ts_doy = $ts->modify(sprintf('%s %s of %s-%s noon',
                             $this->calendar_date->getOrdinalName(),
@@ -373,7 +373,7 @@ class CalendarDateAssignment extends SimpleORMap implements Event
                             $cal_date->format('Y'),
                             $this->calendar_date->month));
                         if ($ts_doy->format('n-j') !== $cal_date->format('n-j')) {
-                            $pos = 1;
+                            $repeated = false;
                         }
                     } elseif (
                         $cal_date->format('n-j') !== sprintf(
@@ -382,15 +382,15 @@ class CalendarDateAssignment extends SimpleORMap implements Event
                             $this->calendar_date->offset
                         )
                     ) {
-                        $pos = 1;
+                        $repeated = false;
                     }
                 }
                 break;
             default:
-                $pos = 1;
+                $repeated = false;
         }
         //Also check for exceptions before returning:
-        return $pos === 0
+        return $repeated
             && !$this->calendar_date->exceptions->findOneBy(
                 'date',
                 $cal_date->format('Y-m-d'));
@@ -471,18 +471,18 @@ class CalendarDateAssignment extends SimpleORMap implements Event
     }
 
     /**
-     * Returns the "extent" in days of this date.
+     * Returns the "extent" in days between given begin and end.
      * The extent is the number of days a date is displayed in a calendar.
      *
+     * @param DateTimeInterface $date_begin begin
+     * @param DateTimeInterface $date_end end
      * @return int The "extent" in days of this date.
      */
     public static function getExtent(DateTimeInterface $date_begin, DateTimeInterface $date_end): int
     {
-        $days_duration = $date_end->diff($date_begin)->days;
-        if ($date_begin->format('His') > $date_end->format('His')) {
-            $days_duration += 1;
-        }
-        return $days_duration;
+        return (clone $date_end)->modify('noon')->diff(
+            (clone $date_begin)->modify('noon')
+        )->days;
     }
 
     public function getLocation(): string
@@ -597,7 +597,6 @@ class CalendarDateAssignment extends SimpleORMap implements Event
         return $end;
     }
 
-    // TODO calculate ts for monthly and yearly repetition
     public function getNoonDate()
     {
         $ts = DateTimeImmutable::createFromMutable($this->getBegin());
