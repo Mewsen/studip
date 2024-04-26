@@ -8,39 +8,28 @@
 
         <div class="formpart">
             {{ $gettext('Hinweistext (optional)') }}
-            <studip-wysiwyg v-model="val_clone.description" :key="question_id"></studip-wysiwyg>
+            <StudipWysiwyg v-model="val_clone.description" />
         </div>
     </div>
 </template>
 
 <script>
-import StudipWysiwyg from "../StudipWysiwyg.vue";
+import StudipWysiwyg from '../StudipWysiwyg.vue';
+import { QuestionnaireComponent } from '../../mixins/QuestionnaireComponent';
 
 export default {
     name: 'questionnaire-info-edit',
-    components: {
-        StudipWysiwyg
+    components: { StudipWysiwyg },
+    mixins: [ QuestionnaireComponent ],
+    created() {
+        this.setDefaultValues({
+            url: '',
+            description: ''
+        });
     },
-    props: {
-        value: {
-            type: Object,
-            required: false,
-            default() {
-                return {
-                    url: '',
-                    description: ''
-                };
-            }
-        },
-        question_id: {
-            type: String,
-            required: false
-        }
-    },
-    data () {
-        return {
-            val_clone: this.value,
-        };
+    mounted() {
+        this.$refs.infoUrl.focus();
+        this.checkValidity();
     },
     methods: {
         checkValidity() {
@@ -52,15 +41,6 @@ export default {
                 );
                 this.$refs.infoUrl.reportValidity();
             }
-        }
-    },
-    mounted() {
-        this.$refs.infoUrl.focus();
-        this.checkValidity();
-    },
-    watch: {
-        value (new_val) {
-            this.val_clone = new_val;
         }
     }
 }
