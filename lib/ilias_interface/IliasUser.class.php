@@ -172,7 +172,7 @@ class IliasUser
         // data for user-account in ILIAS
         $user_data['id'] = $this->id;
         $user_data['login'] = $this->studip_login;
-        $user_data['passwd'] = $this->external_password;
+        $user_data['passwd'] = md5(uniqid()); //never gets used, only to ensure correct entry in ilias db
         $user_data['firstname'] = $this->firstname;
         $user_data['lastname'] = $this->lastname;
         $user_data['title'] = $this->title;
