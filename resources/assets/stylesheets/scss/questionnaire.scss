@@ -1,8 +1,6 @@
 $width: 270px;
 
 .questionnaire_edit {
-
-
     .editor {
         display: flex;
         flex-direction: row-reverse;
@@ -14,14 +12,16 @@ $width: 270px;
             min-width: $width;
             width: $width;
             .questions_container {
-                padding: 0px;
+                padding: 0;
                 .questions {
                     display: flex;
                     flex-direction: column;
                 }
             }
 
-            > .admin, > .add_question, .questions > * {
+            > .admin,
+            > .add_question,
+            .questions > * {
                 width: calc(100% - 8px);
                 padding: 4px;
                 border-bottom: 1px solid $content-color-40;
@@ -42,8 +42,8 @@ $width: 270px;
                     &::before {
                         content: '';
                         position: absolute;
-                        height: 0px;
-                        width: 0px;
+                        height: 0;
+                        width: 0;
                         border-top: 25px transparent solid;
                         border-bottom: 25px transparent solid;
                         border-left: 7px $content-color-40 solid;
@@ -52,8 +52,8 @@ $width: 270px;
                     &::after {
                         content: '';
                         position: absolute;
-                        height: 0px;
-                        width: 0px;
+                        height: 0;
+                        width: 0;
                         border-top: 25px transparent solid;
                         border-bottom: 25px transparent solid;
                         border-left: 7px $yellow-40 solid;
@@ -93,42 +93,11 @@ $width: 270px;
             border: 1px solid $content-color-40;
             border-left: none;
             flex-grow: 1;
-            padding: 10px;
-            padding-left: 15px;
+            padding: 10px 10px 10px 15px;
             min-height: 150px;
             min-width: 0;
         }
-        .vote_edit {
-            .options {
-                > li {
-                    display: flex;
-                    align-items: center;
-                    > * {
-                        margin-right: 10px;
-                    }
-                }
-            }
-        }
-        .rangescale_edit table.default > thead > tr > th.number {
-            padding-left: 12px;
-        }
 
-        .dragcolumn {
-            max-width: 1px;
-            padding-bottom: 0px;
-            > .dragarea {
-                display: inline-block;
-                height: 27px;
-            }
-        }
-
-        .input-array {
-            margin-left: 4px;
-        }
-
-        .likert_edit .input-array {
-            margin-left: 7px;
-        }
         .inline_editing {
             width: 100%;
             display: flex;
@@ -150,7 +119,17 @@ $width: 270px;
                 justify-items: center;
             }
         }
-        .handle {
+
+        .dragcolumn {
+            max-width: 1px;
+            padding-bottom: 0;
+            > .dragarea {
+                display: inline-block;
+                height: 27px;
+            }
+        }
+
+        .drag-handle {
             display: inline-block;
             width: 8px;
             height: 27px;
@@ -163,109 +142,10 @@ $width: 270px;
                 background-image: url("#{$image-path}/grabber_black.svg");
             }
         }
-    }
 
-    /* ab hier der alte kram */
-
-    section {
-        border: thin solid $black;
-        margin: 3px;
-    }
-
-    .options {
-        padding: 0;
-        list-style-type: none;
-
-        > li {
-            margin-top: 5px;
-            margin-bottom: 5px;
-
-            > .move {
-                cursor: move;
-                display: inline-block;
-                vertical-align: middle;
-            }
-
-            > input {
-                display: inline-block;
-                vertical-align: middle;
-            }
-
-            > input[type=text] {
-                width: calc(100% - 70px);
-            }
-
-            .delete {
-                display: inline-block;
-                vertical-align: middle;
-                cursor: pointer;
-            }
-
-            .add {
-                display: none;
-                vertical-align: middle;
-                cursor: pointer;
-            }
-        }
-
-        > li:last-child .delete {
-            display: none;
-        }
-
-        > li:last-child .add {
-            display: inline-block;
-        }
-
-        > li:only-child .move {
-            display: none;
-        }
-
-    }
-
-    .all_questions {
-        .question:first-child .move_up {
-            display: none;
-        }
-
-        .question:last-child .move_down {
-            display: none;
-        }
-    }
-
-    .add_questions {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: stretch;
-        border: thin dashed $content-color-40;
-
-        > a {
-            background-color: transparent;
-            margin: 10px;
-            border: thin solid $content-color-20;
-            padding: 5px;
-            width: 100px;
-            min-width: 100px;
-            max-width: 100px;
-            height: 100px;
-            min-height: 100px;
-            max-height: 100px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
+        .option-cell {
             text-align: center;
-
-            > img {
-                margin-left: auto;
-                margin-right: auto;
-            }
         }
-    }
-
-    .questionnaire_metadata {
-        margin-top: 10px;
     }
 }
 
@@ -317,7 +197,8 @@ $width: 270px;
 }
 
 
-.questionnaire_answer, .questionnaire_results {
+.questionnaire_answer,
+.questionnaire_results {
     .description_container {
         display: flex;
         > .icon_container {
@@ -344,12 +225,62 @@ $width: 270px;
         border: none;
 
         > :first-child {
-            margin-top: 0px;
+            margin-top: 0;
         }
 
         .invalidation_notice {
-            color: $red;
+            color: var(--red);
         }
+    }
+
+    .average {
+        position: absolute;
+        border-left: 2px solid var(--red);
+        height: 70px;
+        z-index: 1;
+        font-size: 0.7em;
+        padding-left: 5px;
+    }
+    .centerline {
+        border-top: 1px solid var(--base-color);
+        position: relative;
+        top: 35px;
+        margin-left: -5px;
+        margin-right: -5px;
+        z-index: 2;
+    }
+    .questionnaire-evaluation-circle-container {
+        text-align: center;
+        display: block;
+        .questionnaire-evaluation-circle {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+            z-index: 3;
+            position: relative;
+            > .value {
+                border-radius: 100px;
+                color: var(--white);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: var(--base-color);
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}
+
+.questionnaire_edit,
+.questionnaire_answer,
+.questionnaire_results {
+    .option-cell {
+        text-align: center;
     }
 }
 

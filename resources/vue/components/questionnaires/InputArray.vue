@@ -1,206 +1,170 @@
 <template>
     <div class="input-array">
         <span aria-live="assertive" class="sr-only">{{ assistiveLive }}</span>
-        <draggable v-model="options" handle=".dragarea" tag="ol" class="clean options">
-            <li v-for="(option, index) in options" :key="index">
-                <a class="dragarea"
-                   v-if="options.length > 1"
-                   tabindex="0"
-                   :ref="'draghandle_' + index"
-                   :title="$gettextInterpolate('Sortierelement für Option %{option}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.', {option: option})"
-                   @keydown="keyHandler($event, index)">
-                    <span class="handle"></span>
-                </a>
-                <input type="text"
-                       :placeholder="$gettext('Option')"
-                       :ref="'option_' + index"
-                       @paste="(ev) => onPaste(ev, index)"
-                       v-model="options[index]">
-                <button class="as-link"
-                   :title="$gettext('Option löschen')"
-                   @click.prevent="askForDeletingOption(index)">
-                    <studip-icon shape="trash" :role="options.length > 1 ? 'clickable' : 'inactive'" :size="20" alt=""></studip-icon>
-                </button>
-            </li>
-        </draggable>
 
-        <button class="as-link"
-                :title="$gettext('Option hinzufügen')"
-                @click.prevent="addOption">
-            <studip-icon shape="add" :size="20" alt=""></studip-icon>
-        </button>
-
-        <studip-dialog
-            v-if="askForDeleting"
-            :title="$gettext('Bitte bestätigen Sie die Aktion.')"
-            :question="$gettext('Wirklich löschen?')"
-            :confirmText="$gettext('Ja')"
-            :closeText="$gettext('Nein')"
-            closeClass="cancel"
-            height="180"
-            @confirm="deleteOption"
-            @close="askForDeleting = false"
-        >
-        </studip-dialog>
+        <table class="default nohover">
+            <colgroup>
+                <col style="width: 16px">
+                <col>
+                <col v-for="i in additionalColspan" :key="`colspan-${i}`">
+                <col style="width: 24px">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th class="dragcolumn"></th>
+                    <th>{{ labelPlural }}</th>
+                    <slot name="header-cells" />
+                    <th class="actions"></th>
+                </tr>
+            </thead>
+            <Draggable v-model="options" handle=".dragarea" tag="tbody" class="statements">
+                <tr v-for="(option, index) in options" :key="index">
+                    <td class="dragcolumn">
+                        <a class="dragarea"
+                           tabindex="0"
+                           :title="$gettextInterpolate($gettext(`Sortierelement für %{label} %{option}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.`), {option, label})"
+                           @keydown="keyHandler($event, index)"
+                           ref="draghandle">
+                            <span class="drag-handle"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <input type="text"
+                               ref="inputs"
+                               :placeholder="label"
+                               @paste="(ev) => onPaste(ev, index)"
+                               v-model="options[index]">
+                    </td>
+                    <slot name="body-cells" />
+                    <td class="actions">
+                        <StudipIcon name="delete"
+                                     shape="trash"
+                                     :size="20"
+                                     @click.prevent="deleteOption(index)"
+                                     :title="$gettextInterpolate($gettext('%{label} löschen'), {label})"
+                        />
+                    </td>
+                </tr>
+            </Draggable>
+            <tfoot>
+                <tr>
+                    <td :colspan="3 + additionalColspan">
+                        <button class="as-link"
+                                :title="$gettextInterpolate($gettext('%{label} hinzufügen'),  {label})"
+                                @click.prevent="addOption()">
+                            <StudipIcon shape="add" :size="20" alt="" />
+                        </button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
 </template>
 
 <script>
-import StudipIcon from "../StudipIcon.vue";
-import StudipDialog from "../StudipDialog.vue";
-import draggable from 'vuedraggable';
+import Draggable from 'vuedraggable';
+import { $gettext } from '../../../assets/javascripts/lib/gettext';
+
 export default {
     name: 'input-array',
-    components: {
-        StudipIcon,
-        StudipDialog,
-        draggable
-    },
+    components: { Draggable },
     props: {
-        value: {
-            type: Array,
-            required: false
-        }
+        additionalColspan: {
+            type: Number,
+            default: 0,
+        },
+        label: {
+            type: String,
+            default: $gettext('Option'),
+        },
+        labelPlural: {
+            type: String,
+            default: $gettext('Optionen'),
+        },
+        value: Array,
     },
-    data: function () {
+    data() {
         return {
             options: [],
-            askForDeleting: false,
-            indexOfDeletingOption: 0,
-            unique_id: null,
-            assistiveLive: ''
+            assistiveLive: '',
         };
     },
     methods: {
-        addOption: function (val, position) {
-            let data = this.value;
-            if (val.target) {
-                val = '';
-            }
-            if (typeof position === "undefined") {
-                data.push(val || '');
-                position = this.value.length - 1
-            } else {
-                data.splice(position, 0, val || '');
-            }
-            this.$emit('input', data);
-            let v = this;
-            this.$nextTick(function () {
-                v.$refs['option_' + position][0].focus();
+        addOption(val = '', position = this.options.length) {
+            this.$set(this.options, position, val.trim());
+
+            this.$nextTick(() => {
+                this.$refs.inputs[position].focus();
             });
         },
-        askForDeletingOption: function (index) {
-            if (this.options.length <= 1) {
+        deleteOption(index) {
+            const question = this.options[index] ? this.$gettext('Wirklich löschen?') : true;
+            STUDIP.Dialog.confirm(question).done(() => {
+                this.$delete(this.options, index);
+            });
+        },
+        onPaste(ev, position) {
+            ev.clipboardData
+                .getData('text')
+                .split("\n")
+                .filter(str => str.trim().length > 0)
+                .forEach((value, index) => this.addOption(value, position + index));
+            ev.preventDefault();
+        },
+        keyHandler(e, index) {
+            if (e.keyCode !== 38 && e.keyCode !== 40) {
                 return;
             }
 
-            this.indexOfDeletingOption = index;
-            if (this.value[index]) {
-                this.askForDeleting = true;
-            } else {
-                this.deleteOption();
-            }
+            e.preventDefault();
+
+            const moveUp = e.keyCode === 38;
+
+            this.moveElement(index, moveUp ? -1 : 1).then((newIndex) => {
+                this.assistiveLive = this.$gettextInterpolate(
+                    this.$gettext('Aktuelle Position in der Liste: %{pos} von %{listLength}.'),
+                    {pos: newIndex + 1, listLength: this.options.length}
+                );
+
+                this.$nextTick(() => {
+                    this.$refs['draghandle'][newIndex].focus();
+                });
+            })
         },
-        deleteOption: function () {
-            this.$delete(this.value, this.indexOfDeletingOption);
-            this.askForDeleting = false;
-        },
-        onPaste: function (ev, position) {
-            let data = ev.clipboardData.getData("text").split("\n");
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].trim()) {
-                    this.addOption(data[i], position + i);
-                }
+        moveElement(index, direction) {
+            if (this.options[index + direction] === undefined) {
+                return Promise.resolve(index);
             }
-        },
-        keyHandler(e, index) {
-            switch (e.keyCode) {
-                case 38: // up
-                    e.preventDefault();
-                    if (index > 0) {
-                        this.moveUp(index);
-                        this.$nextTick(function () {
-                            this.$refs['draghandle_' + (index - 1)][0].focus();
-                            this.assistiveLive = this.$gettextInterpolate(
-                                'Aktuelle Position in der Liste: %{pos} von %{listLength}.'
-                                , {pos: index, listLength: this.options.length}
-                            );
-                        });
-                    }
-                    break;
-                case 40: // down
-                    e.preventDefault();
-                    if (index < this.options.length - 1) {
-                        this.moveDown(index);
-                        this.$nextTick(function () {
-                            this.$refs['draghandle_' + (index + 1)][0].focus();
-                            this.assistiveLive = this.$gettextInterpolate(
-                                'Aktuelle Position in der Liste: %{pos} von %{listLength}.'
-                                , {pos: index + 2, listLength: this.options.length}
-                            );
-                        });
-                    }
-                    break;
-            }
-        },
-        moveDown: function (index) {
-            if (index == this.options.length - 1) {
-                return;
-            }
-            let option = this.options[index];
-            this.options[index] = this.options[index + 1];
-            this.options[index + 1] = option;
-            this.$forceUpdate();
-        },
-        moveUp: function (index) {
-            if (index === 0) {
-                return;
-            }
-            let option = this.options[index];
-            this.options[index] = this.options[index - 1];
-            this.options[index - 1] = option;
-            this.$forceUpdate();
+
+            const indices = [index, index + direction].sort();
+
+            this.options.splice(
+                Math.min(...indices),
+                2,
+                ...indices.reverse().map(idx => this.options[idx])
+            );
+
+            return Promise.resolve(index + direction);
         }
     },
-    mounted: function () {
-        this.options = this.value;
-        this.unique_id = 'array_input_' + Math.floor(Math.random() * 100000000);
-    },
     watch: {
-        options (new_data, old_data) {
-            if (typeof old_data === 'undefined' || typeof new_data === 'undefined') {
-                return;
-            }
-            this.$emit('input', new_data);
+        options: {
+            handler(current) {
+                this.$emit('input', current);
+            },
+            deep: true
         },
-        value (new_val) {
-            this.options = new_val;
+        value: {
+            handler(current) {
+                this.options = current;
+            },
+            immediate: true
         }
     }
 }
 </script>
-<style lang="scss" scoped>
-.input-array {
-    display: grid;
-    grid-template-areas:
-        "sr sr"
-        "options button";
-    grid-template-columns: calc(100% - 24px) 24px;
-    grid-template-rows: auto;
-
-    > .sr-only {
-        grid-area: sr;
-    }
-
-    > .options {
-        grid-area: options;
-    }
-
-    > button.as-link {
-        align-self: end;
-        grid-area: button;
-        justify-self: left;
-        margin-bottom: 8px;
-    }
+<style scoped>
+.input-array input[type="text"] {
+    max-width: unset;
 }
 </style>

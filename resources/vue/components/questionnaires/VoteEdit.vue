@@ -2,10 +2,10 @@
     <div class="vote_edit">
         <div class="formpart" tabindex="0" ref="autofocus">
             {{ $gettext('Frage') }}
-            <studip-wysiwyg v-model="val_clone.description" :key="question_id"></studip-wysiwyg>
+            <StudipWysiwyg v-model="val_clone.description" />
         </div>
 
-        <input-array v-model="val_clone.options"></input-array>
+        <InputArray v-model="val_clone.options" />
 
         <label>
             <input type="checkbox" v-model.number="val_clone.multiplechoice" true-value="1" false-value="0">
@@ -24,47 +24,25 @@
 </template>
 
 <script>
-import StudipWysiwyg from "../StudipWysiwyg.vue";
 import InputArray from "./InputArray.vue";
+import { QuestionnaireComponent } from '../../mixins/QuestionnaireComponent';
+import StudipWysiwyg from '../StudipWysiwyg.vue';
 
 export default {
     name: 'vote-edit',
-    components: {
-        StudipWysiwyg,
-        InputArray
+    components: { StudipWysiwyg, InputArray },
+    mixins: [QuestionnaireComponent],
+    created() {
+        this.setDefaultValues({
+            description: '',
+            mandatory: '0',
+            multiplechoice: '1',
+            options: ['', '', '', ''],
+            randomize: '0',
+        });
     },
-    props: {
-        value: {
-            type: Object,
-            required: false,
-            default: function () {
-                return {};
-            }
-        },
-        question_id: {
-            type: String,
-            required: false
-        }
-    },
-    data: function () {
-        return {
-            val_clone: {}
-        };
-    },
-    mounted: function () {
-        this.val_clone = this.value;
-        if (!this.value.description) {
-            this.$emit('input', {
-                multiplechoice: 1,
-                options: ['', '', '', ''],
-            });
-        }
+    mounted() {
         this.$refs.autofocus.focus();
-    },
-    watch: {
-        value (new_val) {
-            this.val_clone = new_val;
-        }
     }
 }
 </script>
