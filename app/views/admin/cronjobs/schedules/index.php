@@ -18,19 +18,7 @@ use Studip\Button, Studip\LinkButton;
                 <?= sprintf(_('Passend: %u von %u Cronjobs'), count($schedules), $total) ?>
             <? endif; ?>
         </legend>
-        <label class="col-2">
-            <?= _('Typ') ?>
-            <select name="filter[type]" id="type" class="submit-upon-select">
-                <option value=""><?= _('Alle Cronjobs anzeigen') ?></option>
-                <option value="once" <? if ($filter['type'] === 'once') echo 'selected'; ?>>
-                    <?= _('Nur einmalige Cronjobs anzeigen') ?>
-                </option>
-                <option value="periodic" <? if ($filter['type'] === 'periodic') echo 'selected'; ?>>
-                    <?= _('Nur regelmässige Cronjobs anzeigen') ?>
-                </option>
-            </select>
-        </label>
-        <label class="col-2">
+        <label class="col-3">
             <?= _('Aufgabe') ?>
             <select name="filter[task_id]" id="task_id" class="submit-upon-select">
                 <option value=""><?= _('Alle Cronjobs anzeigen') ?></option>
@@ -41,7 +29,7 @@ use Studip\Button, Studip\LinkButton;
                 <? endforeach; ?>
             </select>
         </label>
-        <label class="col-2">
+        <label class="col-3">
             <?= _('Status') ?>
             <select name="filter[status]" id="status" class="submit-upon-select">
                 <option value=""><?= _('Alle Cronjobs anzeigen') ?></option>
@@ -74,7 +62,6 @@ use Studip\Button, Studip\LinkButton;
             <col style="width: 20px">
             <col>
             <col style="width: 40px">
-            <col style="width: 100px">
             <col style="width: 30px">
             <col style="width: 30px">
             <col style="width: 30px">
@@ -91,7 +78,6 @@ use Studip\Button, Studip\LinkButton;
             </th>
             <th data-sort="text"><?= _('Cronjob') ?></th>
             <th data-sort="htmldata"><?= _('Aktiv') ?></th>
-            <th data-sort="text"><?= _('Typ') ?></th>
             <th colspan="5" data-sort="false"><?= _('Ausführung') ?></th>
             <th data-sort="false"><?= _('Optionen') ?></th>
         </tr>
@@ -124,14 +110,7 @@ use Studip\Button, Studip\LinkButton;
                         </a>
                     <? endif; ?>
                 </td>
-                <td><?= $schedule->type === 'once' ? _('Einmalig') : _('Regelmässig') ?></td>
-                <? if ($schedule->type === 'once'): ?>
-                    <td colspan="5">
-                        <?= strftime('%x %R', $schedule->next_execution) ?>
-                    </td>
-                <? else: ?>
-                    <?= $this->render_partial('admin/cronjobs/schedules/periodic-schedule', $schedule->toArray() + ['display' => 'table-cells']) ?>
-                <? endif; ?>
+                <?= $this->render_partial('admin/cronjobs/schedules/periodic-schedule', $schedule->toArray() + ['display' => 'table-cells']) ?>
                 <td style="text-align: right">
                     <a data-dialog href="<?= $controller->display($schedule) ?>">
                         <?= Icon::create('admin')->asImg(['title' => _('Cronjob anzeigen')]) ?>
@@ -152,7 +131,7 @@ use Studip\Button, Studip\LinkButton;
         </tbody>
         <tfoot>
         <tr>
-            <td colspan="10">
+            <td colspan="9">
                 <select name="action" data-activates=".cronjobs button[name=bulk]" aria-label="<?= _('Aktion auswählen')?>">
                     <option value="">- <?= _('Aktion auswählen') ?> -</option>
                     <option value="activate"><?= _('Aktivieren') ?></option>

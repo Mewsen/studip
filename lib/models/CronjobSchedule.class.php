@@ -34,8 +34,6 @@
  * @property string|null $title database column
  * @property string|null $description database column
  * @property string|null $parameters database column
- * @property string $priority database column
- * @property string $type database column
  * @property int|null $minute database column
  * @property int|null $hour database column
  * @property int|null $day database column
@@ -53,10 +51,6 @@
 
 class CronjobSchedule extends SimpleORMap
 {
-    const PRIORITY_LOW    = 'low';
-    const PRIORITY_NORMAL = 'normal';
-    const PRIORITY_HIGH   = 'high';
-
     protected static function configure($config = [])
     {
         $config['db_table'] = 'cronjobs_schedules';
@@ -76,41 +70,6 @@ class CronjobSchedule extends SimpleORMap
         $config['registered_callbacks']['after_initialize'][] = 'cbJsonifyParameters';
 
         parent::configure($config);
-    }
-
-    /**
-     * Returns a mapped version of the priorities (key = priority value,
-     * value = localized priority label).
-     *
-     * @return Array The mapped priorities
-     */
-    public static function getPriorities()
-    {
-        $mapping = [];
-        $mapping[self::PRIORITY_LOW]    = _('niedrig');
-        $mapping[self::PRIORITY_NORMAL] = _('normal');
-        $mapping[self::PRIORITY_HIGH]   = _('hoch');
-
-        return $mapping;
-    }
-
-    /**
-     * Maps a priority value to it's localized label.
-     *
-     * @param  String $priority Priority value
-     * @return String The localized label
-     * @throws RuntimeException when an unknown priority value is passed
-     */
-    public static function describePriority($priority)
-    {
-        $priority = $priority ?? 'normal';
-
-        $mapping = self::getPriorities();
-        if (!isset($mapping[$priority])) {
-            throw new RuntimeException('Access to unknown priority "' . $priority . '"');
-        }
-
-        return $mapping[$priority];
     }
 
     /**
@@ -171,10 +130,12 @@ class CronjobSchedule extends SimpleORMap
      *
      * @return CronjobSchedule Returns itself to allow chaining
      */
-    public function activate()
+    public function activate(bool $run_immediately = false)
     {
-        $this->active         = 1;
-        $this->next_execution = $this->calculateNextExecution();
+        $next_execution = $run_immediately ? strtotime('-1 minute') : $this->calculateNextExecution();
+
+        $this->active = true;
+        $this->next_execution = $next_execution;
         $this->store();
 
         return $this;
@@ -187,7 +148,7 @@ class CronjobSchedule extends SimpleORMap
      */
     public function deactivate()
     {
-        $this->active = 0;
+        $this->active = false;
         $this->store();
 
         return $this;
@@ -221,9 +182,6 @@ class CronjobSchedule extends SimpleORMap
 
         $result = $this->task->engage($this->last_result, $this->parameters);
 
-        if ($this->type === 'once') {
-            $this->active = 0;
-        }
         $this->last_result = $result;
         $this->store();
 
@@ -245,16 +203,12 @@ class CronjobSchedule extends SimpleORMap
     /**
      * Calculates the next execution for this schedule.
      *
-     * For schedules of type 'once' the check solely tests whether the
-     * timestamp has already passed and will return false in that case.
-     * Otherwise the defined timestamp will be returned.
-     *
-     * For schedules of type 'periodic' the next execution
-     * is calculated by increasing the current timestamp and testing
-     * whether all conditions match. This is not the best method to test
-     * and should be optimized sooner or later.
+     * The next execution is calculated by increasing the current timestamp
+     * and testing whether all conditions match. This is not the best method
+     * to test and should be optimized sooner or later.
      *
      * @param mixed $now Defines the temporal fix point
+     *
      * @return int Timestamp of calculated next execution
      * @throws RuntimeException When calculation takes too long (you should
      *                          check the conditions for validity in that case)
@@ -262,12 +216,6 @@ class CronjobSchedule extends SimpleORMap
     public function calculateNextExecution($now = null)
     {
         $now = $now ?: time();
-
-        if ($this->type === 'once') {
-            return $now <= $this->next_execution
-                ? $this->next_execution
-                : false;
-        }
 
         $result  = $now;
         $result -= $result % 60;

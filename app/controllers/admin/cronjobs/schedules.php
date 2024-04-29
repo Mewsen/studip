@@ -29,7 +29,7 @@ class Admin_Cronjobs_SchedulesController extends AuthenticatedController
         if (empty($_SESSION['cronjob-filter'])) {
             $_SESSION['cronjob-filter'] = [
                 'where'  => '1',
-                'values' => array_fill_keys(['type', 'status', 'task_id'], null),
+                'values' => array_fill_keys(['status', 'task_id'], null),
             ];
         }
 
@@ -102,9 +102,6 @@ class Admin_Cronjobs_SchedulesController extends AuthenticatedController
         $filter     = array_filter(Request::optionArray('filter'));
         $conditions = [];
 
-        if (!empty($filter['type'])) {
-            $conditions[] = "type = " . DBManager::get()->quote($filter['type']);
-        }
         if (!empty($filter['status'])) {
             $active = (int)($filter['status'] === 'active');
             $conditions[] = "active = " . DBManager::get()->quote($active);
@@ -130,7 +127,6 @@ class Admin_Cronjobs_SchedulesController extends AuthenticatedController
         if (Request::submitted('store')) {
             $parameters = Request::getArray('parameters');
 
-            $schedule->priority    = Request::option('priority', 'normal');
             $schedule->title       = Request::get('title');
             $schedule->description = Request::get('description');
             $schedule->active      = Request::int('active', 0);
@@ -138,27 +134,20 @@ class Admin_Cronjobs_SchedulesController extends AuthenticatedController
                 $schedule->task_id = Request::option('task_id');
             }
             $schedule->parameters  = $parameters[$schedule->task_id];
-            $schedule->type        = Request::option('type') === 'once'
-                                   ? 'once'
-                                   : 'periodic';
 
-            if ($schedule->type === 'once') {
-                $temp = Request::getArray('once');
-                $schedule->next_execution = strtotime($temp['date'] . ' ' . $temp['time']);
-            } else {
-                $temp = Request::getArray('periodic');
-                $schedule->minute      = $this->extractCronItem($temp['minute']);
-                $schedule->hour        = $this->extractCronItem($temp['hour']);
-                $schedule->day         = $this->extractCronItem($temp['day']);
-                $schedule->month       = $this->extractCronItem($temp['month']);
-                $schedule->day_of_week = mb_strlen($temp['day_of_week']['value'])
-                                       ? (int) $temp['day_of_week']['value']
-                                       : null;
+            $temp = Request::getArray('periodic');
+            $schedule->minute      = $this->extractCronItem($temp['minute']);
+            $schedule->hour        = $this->extractCronItem($temp['hour']);
+            $schedule->day         = $this->extractCronItem($temp['day']);
+            $schedule->month       = $this->extractCronItem($temp['month']);
+            $schedule->day_of_week = mb_strlen($temp['day_of_week']['value'])
+                                   ? (int) $temp['day_of_week']['value']
+                                   : null;
 
-                if ($schedule->active) {
-                    $schedule->next_execution = $schedule->calculateNextExecution();
-                }
+            if ($schedule->active) {
+                $schedule->next_execution = $schedule->calculateNextExecution();
             }
+
             $schedule->store();
 
             PageLayout::postSuccess(_('Die Änderungen wurden gespeichert.'));

@@ -132,35 +132,6 @@ class CronjobScheduler
     }
 
     /**
-     * Schedules a task for a single execution at the provided time.
-     *
-     * @param String $task_id    The id of the task to be executed
-     * @param int    $timestamp  When the task should be executed
-     * @param String $priority   Priority of the execution (low, normal, high),
-     *                           defaults to normal
-     * @param Array  $parameters Optional parameters passed to the task
-     * @return CronjobSchedule The generated schedule object.
-     */
-    public function scheduleOnce($task_id, $timestamp, $priority = CronjobSchedule::PRIORITY_NORMAL,
-                                 $parameters = [])
-    {
-        $schedule = new CronjobSchedule();
-        $schedule->type           = 'once';
-        $schedule->task_id        = $task_id;
-        $schedule->parameters     = $parameters;
-        $schedule->priority       = $priority;
-        $schedule->next_execution = $timestamp;
-
-        $schedule->store();
-
-        $task = $schedule->task;
-        $task->assigned_count += 1;
-        $task->store();
-
-        return $schedule;
-    }
-
-    /**
      * Schedules a task for periodic execution with the provided schedule.
      *
      * @param String $task_id     The id of the task to be executed
@@ -185,21 +156,21 @@ class CronjobScheduler
      *                            - 1 >= x >= 7 for "exactly at day of week x"
      *                              (x starts with monday at 1 and ends with
      *                               sunday at 7)
-     * @param String $priority   Priority of the execution (low, normal, high),
-     *                           defaults to normal
      * @param Array  $parameters Optional parameters passed to the task
      * @return CronjobSchedule The generated schedule object.
      */
-    public function schedulePeriodic($task_id, $minute = null, $hour = null,
-                                     $day = null, $month = null, $day_of_week = null,
-                                     $priority = CronjobSchedule::PRIORITY_NORMAL,
-                                     $parameters = [])
-    {
+    public function schedule(
+        string $task_id,
+        ?int $minute = null,
+        ?int $hour = null,
+        ?int $day = null,
+        ?int $month = null,
+        ?int $day_of_week = null,
+        array $parameters = []
+    ): CronjobSchedule {
         $schedule = new CronjobSchedule();
-        $schedule->type       = 'periodic';
         $schedule->task_id    = $task_id;
         $schedule->parameters = $parameters;
-        $schedule->priority   = $priority;
 
         $schedule->minute = $minute;
         $schedule->hour = $hour;
@@ -214,6 +185,24 @@ class CronjobScheduler
         $task->store();
 
         return $schedule;
+    }
+
+    /**
+     * An alias for schedule for backwards compatibility.
+     *
+     * @see CronjobScheduler::schedule()
+     */
+    public function schedulePeriodic(
+        $task_id,
+        $minute = null,
+        $hour = null,
+        $day = null,
+        $month = null,
+        $day_of_week = null,
+        $priority = null,
+        $parameters = []
+    ) {
+        return $this->schedule($task_id, $minute, $hour, $day, $month, $day_of_week, $parameters);
     }
 
     /**
@@ -259,7 +248,7 @@ class CronjobScheduler
 
         // Find all schedules that are due to execute and which task is active
         $temp = CronjobSchedule::findBySQL('active = 1 AND next_execution <= UNIX_TIMESTAMP() '
-                                          .'ORDER BY priority DESC, next_execution ASC');
+                                          .'ORDER next_execution');
         $schedules = array_filter($temp, function ($schedule) { return $schedule->task->active; });
 
         if (count($schedules) === 0) {
