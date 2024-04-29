@@ -250,7 +250,7 @@ class CalendarDateAssignment extends SimpleORMap implements Event
         ]);
 
 
-        $sql_repetition = $sql . " AND `calendar_dates`.`begin` < :end AND `calendar_dates`.`repetition_type` IN ('DAYLY', 'WEEKLY', 'MONTHLY', 'YEARLY')
+        $sql_repetition = $sql . " AND `calendar_dates`.`begin` < :end AND `calendar_dates`.`repetition_type` IN ('DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY')
                     AND `calendar_dates`.`repetition_end` > :begin
             ";
 
