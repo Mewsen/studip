@@ -253,7 +253,8 @@ class Helpbar extends WidgetContainer
         // add wiki link and remove it from navigation
         $this->addLink(
             _('Weiterführende Hilfe'),
-            format_help_url(PageLayout::getHelpKeyword()), Icon::create('link-extern', 'info_alt'),
+            PageLayout::getHelpUrl(),
+            Icon::create('link-extern', Icon::ROLE_INFO_ALT),
             '_blank',
             ['rel' => 'noopener noreferrer']
         );

@@ -36,6 +36,11 @@ class PageLayout
     private static $help_keyword;
 
     /**
+     * current help URL (or null if unset)
+     */
+    private static ?string $help_url = null;
+
+    /**
      * base item path for tab view (defaults to active item in top nav)
      */
     private static $tab_navigation_path = false;
@@ -179,7 +184,24 @@ class PageLayout
      */
     public static function getHelpKeyword()
     {
-        return isset(self::$help_keyword) ? self::$help_keyword : 'Basis.Allgemeines';
+        return self::$help_keyword ?? 'Basis.Allgemeines';
+    }
+
+    /**
+     * Set the help URL in the help bar. Pass null to fall back to the help keyword.
+     */
+    public static function setHelpUrl(?string $url): void
+    {
+        self::$help_url = $url;
+    }
+
+    /**
+     * Get the current help URL. If no URL is set explicitely, the URL for
+     * the help keyword is used.
+     */
+    public static function getHelpUrl(): ?string
+    {
+        return self::$help_url ?? format_help_url(self::getHelpKeyword());
     }
 
     /**
