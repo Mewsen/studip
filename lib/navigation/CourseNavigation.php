@@ -15,15 +15,23 @@
 
 class CourseNavigation extends Navigation
 {
+    private $range;
+
     /**
      * Initialize a new Navigation instance.
      */
-    public function __construct()
+    public function __construct(Range $range)
     {
-        global $user, $perm;
+        if (!($range instanceof Course) && !($range instanceof Institute)) {
+            throw new InvalidArgumentException('Invalid range type "' . get_class($range) . '" for course navigation');
+        }
+
+        $this->range = $range;
+
+        global $user;
 
         // check if logged in
-        if (is_object($user) && $user->id != 'nobody') {
+        if (User::findCurrent()) {
             $coursetext = _('Veranstaltungen');
             $courseinfo = _('Meine Veranstaltungen & Einrichtungen');
             $courselink = 'dispatch.php/my_courses';
@@ -35,8 +43,8 @@ class CourseNavigation extends Navigation
 
         parent::__construct($coursetext, $courselink);
 
-        if (is_object($user)) {
-            $this->setImage(Icon::create('seminar', 'navigation', ["title" => $courseinfo]));
+        if (User::findCurrent()) {
+            $this->setImage(Icon::create('seminar', Icon::ROLE_NAVIGATION, ['title' => $courseinfo]));
         }
     }
 
@@ -48,21 +56,19 @@ class CourseNavigation extends Navigation
     {
         parent::initSubNavigation();
 
-        $context = Context::get();
-        if (!$context) {
-            return;
-        }
-
         $admin_plugin_ids = [];
-        $core_admin = PluginManager::getInstance()->getPlugin('CoreAdmin');
+
+        $core_admin = PluginManager::getInstance()->getPlugin(CoreAdmin::class);
         if ($core_admin) {
             $admin_plugin_ids[] = $core_admin->getPluginId();
         }
-        $core_studygroup_admin = PluginManager::getInstance()->getPlugin('CoreStudygroupAdmin');
+
+        $core_studygroup_admin = PluginManager::getInstance()->getPlugin(CoreStudygroupAdmin::class);
         if ($core_studygroup_admin) {
             $admin_plugin_ids[] = $core_studygroup_admin->getPluginId();
         }
-        $tools = $context->tools->getArrayCopy();
+
+        $tools = $this->range->tools->getArrayCopy();
         usort($tools, function ($a, $b) use ($admin_plugin_ids) {
             if (in_array($a['plugin_id'], $admin_plugin_ids)) {
                 return -1;
@@ -72,22 +78,32 @@ class CourseNavigation extends Navigation
             }
             return $a['position'] - $b['position'];
         });
+
         foreach ($tools as $tool) {
-            if (Context::isInstitute() || Seminar_Perm::get()->have_studip_perm($tool->getVisibilityPermission(), $context->id)) {
-                $studip_module = $tool->getStudipModule();
-                if ($studip_module instanceof StudipModule) {
-                    $tool_nav = $studip_module->getTabNavigation($context->id) ?: [];
-                    foreach ($tool_nav as $nav_name => $navigation) {
-                        if ($nav_name && is_a($navigation, "Navigation")) {
-                            if ($tool->metadata['displayname']) {
-                                $navigation->setTitle($tool->getDisplayname());
-                            }
-                            $this->addSubNavigation($nav_name, $navigation);
-                        }
-                    }
+            if (
+                !($this->range instanceof Institute)
+                && !Seminar_Perm::get()->have_studip_perm($tool->getVisibilityPermission(), $this->range->id)
+            ) {
+                continue;
+            }
+
+            $studip_module = $tool->getStudipModule();
+            if (!($studip_module instanceof StudipModule)) {
+                continue;
+            }
+
+            $tool_nav = $studip_module->getTabNavigation($this->range->id) ?: [];
+
+            foreach ($tool_nav as $nav_name => $navigation) {
+                if (!$nav_name || !$navigation instanceof Navigation) {
+                    continue;
                 }
+
+                if ($tool->metadata['displayname']) {
+                    $navigation->setTitle($tool->getDisplayname());
+                }
+                $this->addSubNavigation($nav_name, $navigation);
             }
         }
     }
-
 }
