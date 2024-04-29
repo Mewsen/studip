@@ -299,7 +299,10 @@ class JsupdaterController extends AuthenticatedController
                             $page->content = \Studip\Markup::markAsHtml(
                                 $pageInfo['wiki_editor_status']['page_content']
                             );
-                            $page->store();
+                            if ($page->isDirty()) {
+                                $page['user_id'] = User::findCurrent()->id;
+                                $page->store();
+                            }
                         }
                         $onlineData = [
                             'user_id' => $user->id,

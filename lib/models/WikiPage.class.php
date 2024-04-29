@@ -96,7 +96,7 @@ class WikiPage extends SimpleORMap implements PrivacyObject
 
     protected function createVersion()
     {
-        $this->user_id = User::findCurrent()->id;
+        $last_version = $this->versions[0];
         if (
             !$this->isNew()
             && $this->content['content'] !== $this->content_db['content']
@@ -104,6 +104,7 @@ class WikiPage extends SimpleORMap implements PrivacyObject
                 $this->content_db['user_id'] !== $this->content['user_id']
                 || $this->content_db['chdate'] < time() - 60 * 30
             )
+            && (!$last_version || $last_version['content'] !== $this['content'])
         ) {
             //Neue Version anlegen:
             WikiVersion::create([
