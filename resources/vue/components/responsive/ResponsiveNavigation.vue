@@ -563,18 +563,6 @@ export default {
             attributeFilter: ['class']
         });
 
-        // Check for closed dialog, re-mounting the Vue component.
-        this.dialogObserver = new MutationObserver(mutations => {
-            if (mutations[0].removedNodes.length > 0 &&
-                    mutations[0].removedNodes[0].classList.contains('ui-widget-overlay')) {
-                document.getElementById('responsive-menu').replaceChildren(this.$el);
-            }
-        });
-
-        this.dialogObserver.observe(document.body, {
-            childList: true
-        });
-
         this.globalOn('has-contentbar', value => {
             this.hasContentbar = value;
             if (value && this.isFullscreen) {
