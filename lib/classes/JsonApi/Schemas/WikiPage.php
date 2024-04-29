@@ -152,7 +152,7 @@ class WikiPage extends SchemaProvider
      */
     private function addAuthorRelationship($relationships, $wiki, $includeList)
     {
-        if ($wiki->user_id) {
+        if ($wiki->user_id && $wiki->user_id !== 'nobody') {
             $relationships[self::REL_AUTHOR] = [
                 self::RELATIONSHIP_LINKS => [
                     Link::RELATED => $this->createLinkToResource($wiki->user),
