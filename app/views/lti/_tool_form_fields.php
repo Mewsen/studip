@@ -25,13 +25,13 @@
     <label class="studiprequired">
         <span class="textlabel"><?= _('LTI-Version') ?></span>
         <span class="asterisk">*</span>
-        <select name="lti_version">
-            <option value="1.1" <?= !empty($tool->lti_version) && $tool->lti_version === '1.1' ? 'selected' : '' ?>
-                    data-shows=".lti11-field" data-hides=".lti13a-field">
+        <select name="lti_version"
+                data-shows=".lti11-field" data-hides=".lti13a-field"
+                data-triggering-value="1.1">
+            <option value="1.1" <?= !empty($tool->lti_version) && $tool->lti_version === '1.1' ? 'selected' : '' ?>>
                 1.0/1.1
             </option>
-            <option value="1.3a" <?= empty($tool->lti_version) || $tool->lti_version === '1.3a' ? 'selected' : '' ?>
-                    data-shows=".lti13a-field" data-hides=".lti11-field">
+            <option value="1.3a" <?= empty($tool->lti_version) || $tool->lti_version === '1.3a' ? 'selected' : '' ?>>
                 1.3a
             </option>
         </select>

@@ -137,10 +137,9 @@ $(document).on('change', '[data-hides],[data-shows]', function () {
         }
         let triggering_value = undefined;
         if ($(this).is('select')) {
-            triggering_value = $(this).data('triggering-value');
+            triggering_value = $(this).data('triggering-value').toString();
         }
-
-        var state = $(this).prop('checked') || $(this).prop('indeterminate') || $(this).val() === triggering_value || false;
+        var state = $(this).prop('checked') || $(this).prop('indeterminate') || $(this).val().toString() === triggering_value || false;
         $(selector).each(function() {
             var condition = $(this).data(`${type}Condition`),
                 toggle = state && (!condition || $(condition).length > 0);
