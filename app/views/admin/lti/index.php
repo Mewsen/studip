@@ -65,5 +65,5 @@
         </table>
     </form>
 <? else : ?>
-    <?= MessageBox::info(_('Es sind keine LTI-Tools konfiguriert.')) ?>
+    <?= MessageBox::info(_('Es sind keine globalen LTI-Tools konfiguriert.')) ?>
 <? endif ?>

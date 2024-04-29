@@ -38,7 +38,7 @@ class Course_LtiController extends StudipController
         $this->edit_perm = $GLOBALS['perm']->have_studip_perm('tutor', $this->course_id);
 
         if (!in_array($action, ['index', 'iframe', 'grades']) && !$this->edit_perm) {
-            throw new AccessDeniedException(_('Sie besitzen keine Berechtigung, um LTI-Tools zu konfigurieren.'));
+            throw new AccessDeniedException();
         }
 
         if (!in_array($action, ['admin', 'grades'])
@@ -71,11 +71,12 @@ class Course_LtiController extends StudipController
                 ['data-dialog' => 'size=auto']
             )->asDialog();
 
-            if (LtiTool::findByDeep_linking(1)) {
+            $global_deep_linking_tools_exist = LtiTool::countBySQL("`deep_linking` = '1' AND `is_global` = '1'");
+            if ($global_deep_linking_tools_exist) {
                 $widget->addLink(
-                    _('Link aus LTI-Tool einfügen'),
+                    _('Tool mittels LTI Deep Linking hinzufügen'),
                     $this->url_for('course/lti/add_link'),
-                    Icon::create('add')
+                    Icon::create('network2')
                 )->asDialog('size=auto');
             }
         }
@@ -85,15 +86,14 @@ class Course_LtiController extends StudipController
 
     public function select_tool_action()
     {
+        //The permission check is done in the before filter.
+
         if (!$this->course) {
             //Invalid course.
             throw new AccessDeniedException();
         }
-        if (!$GLOBALS['perm']->have_studip_perm('tutor', $this->course->id)) {
-            throw new AccessDeniedException();
-        }
 
-        $this->global_tools = LtiTool::findBySQL("`is_global` = '1' ORDER BY `name` ASC");
+        $this->global_tools = LtiTool::findBySQL("`version` = '1.3a' AND `is_global` = '1' ORDER BY `name` ASC");
 
         if (!$this->global_tools) {
             //Redirect to the page to configure an LTI tool for the course:
@@ -123,7 +123,6 @@ class Course_LtiController extends StudipController
             }
         }
     }
-
 
     /**
      * Display the launch form for a tool as an iframe.
@@ -253,7 +252,18 @@ class Course_LtiController extends StudipController
      */
     public function add_link_action()
     {
-        $this->tools = LtiTool::findByDeep_linking(1);
+        //The permission check is done in the before filter.
+
+        if (!$this->course) {
+            //Invalid course.
+            throw new AccessDeniedException();
+        }
+
+        $this->tools = LtiTool::findBySQL("`deep_linking` = '1' AND `is_global` = '1' ORDER BY `name` ASC");
+        if (!$this->tools) {
+            PageLayout::postError(_('Es sind keine globalen LTI-Tools konfiguriert.'));
+            return;
+        }
     }
 
     /**
