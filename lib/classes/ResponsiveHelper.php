@@ -210,30 +210,29 @@ class ResponsiveHelper
             $courses = [];
         }
 
-        $items = [];
-
-        $standardIcon = Icon::create('seminar', Icon::ROLE_INFO_ALT)->asImagePath();
-
         // Add current course to list.
         if (Context::get()) {
             $courses[] = Context::get();
         }
 
-        foreach ($courses as $course) {
 
+        if (Context::isInstitute()) {
+            $avatarClass = InstituteAvatar::class;
+            $url = 'dispatch.php/institute/overview';
+            $standardIcon = Icon::create('institute', Icon::ROLE_INFO_ALT)->asImagePath();
+        } else {
             $avatarClass = CourseAvatar::class;
             $url = 'dispatch.php/course/details';
-            if (Context::isInstitute()) {
-                $avatarClass = InstituteAvatar::class;
-                $url = 'dispatch.php/institute/overview';
-                $standardIcon = Icon::create('institute', Icon::ROLE_INFO_ALT)->asImagePath();
-            }
+            $standardIcon = Icon::create('seminar', Icon::ROLE_INFO_ALT)->asImagePath();
+        }
 
+        $items = [];
+        foreach ($courses as $course) {
             $avatar = $avatarClass::getAvatar($course->id);
             $hasAvatar = $avatar->is_customized();
             $icon = $hasAvatar ? $avatar->getURL(Avatar::SMALL) : $standardIcon;
 
-            $cnav = [
+            $items['browse/my_courses/' . $course->id] = [
                 'icon'     => $icon,
                 'avatar'   => $hasAvatar,
                 'title'    => $course->getFullname(),
@@ -242,60 +241,60 @@ class ResponsiveHelper
                 'path'     => 'browse/my_courses/' . $course->id,
                 'visible'  => true,
                 'active'   => Context::getId() === $course->id,
-                'children' => []
+                'children' => self::getRangeNavigation(
+                    $course,
+                    'browse/my_courses/' . $course->id,
+                    $activated
+                ),
             ];
-
-            $path = 'browse/my_courses/' . $course->id;
-
-            foreach ($course->tools as $tool) {
-                if (Seminar_Perm::get()->have_studip_perm($tool->getVisibilityPermission(), $course->id)) {
-
-                    $studip_module = $tool->getStudipModule();
-                    if ($studip_module instanceof StudipModule) {
-                        $tool_nav = $studip_module->getTabNavigation($course->id) ?: [];
-                        foreach ($tool_nav as $nav_name => $navigation) {
-                            if ($nav_name && is_a($navigation, 'Navigation')) {
-                                if (!empty($tool->metadata['displayname'])) {
-                                    $navigation->setTitle($tool->getDisplayname());
-                                }
-                                $cnav['children'][$path . '/' . $nav_name] = [
-                                    'icon'     => $navigation->getImage() ? $navigation->getImage()->asImagePath() : '',
-                                    'title'    => $navigation->getTitle(),
-                                    'url'      => URLHelper::getURL($navigation->getURL(), ['cid' => $course->id]),
-                                    'parent'   => 'browse/my_courses/' . $course->id,
-                                    'path'     => 'browse/my_courses/' . $course->id . '/' . $nav_name,
-                                    'visible'  => true,
-                                    'active'   => $navigation->isActive(),
-                                    'children' => static::getChildren(
-                                        $navigation,
-                                        'browse/my_courses/' . $course->id . '/' . $nav_name,
-                                        $activated,
-                                        $course->id
-                                    ),
-                                ];
-                            }
-                        }
-                    }
-                }
-            }
-
-            if ($GLOBALS['perm']->have_studip_perm('tutor', $course->id)) {
-                $cnav['children'][$path . '/plus'] = [
-                    'icon' => Icon::create('add', Icon::ROLE_INFO_ALT)->asImagePath(),
-                    'title' => _('Mehr...'),
-                    'url' => URLHelper::getURL('dispatch.php/course/plus/index', ['cid' => $course->id]),
-                    'parent' => 'browse/my_courses/' . $course->id,
-                    'path' => 'browse/my_courses/' . $course->id . '/plus/index',
-                    'visible' => true,
-                    'active' => false,
-                    'children' => [],
-                ];
-            }
-
-            $items['browse/my_courses/' . $course->id] = $cnav;
 
         }
 
         return $items;
+    }
+
+    private static function getRangeNavigation(Range $range, string $path_prefix, array &$activated): array
+    {
+        if ($range->id === Context::getId()) {
+            $navigation = Navigation::getItem('/course');
+        } else {
+            $navigation = new CourseNavigation($range);
+        }
+
+        $result = [];
+
+        foreach ($navigation as $nav_name => $nav) {
+            $result[$path_prefix . '/' . $nav_name] = [
+                'icon'     => $nav->getImage() ? $nav->getImage()->asImagePath() : '',
+                'title'    => $nav->getTitle(),
+                'url'      => URLHelper::getURL($nav->getURL(), ['cid' => $range->id]),
+                'parent'   => 'browse/my_courses/' . $range->id,
+                'path'     => 'browse/my_courses/' . $range->id . '/' . $nav_name,
+                'visible'  => true,
+                'active'   => $nav->isActive(),
+                'children' => static::getChildren(
+                    $nav,
+                    'browse/my_courses/' . $range->id . '/' . $nav_name,
+                    $activated,
+                    $range->id
+                ),
+            ];
+        }
+
+        // Move admin page to the end
+        if (count($result) > 0) {
+            $first_path = array_keys($result)[0];
+            if (str_ends_with($first_path, '/admin')) {
+                $admin_navigation = array_slice(array_values($result), 0, 1)[0];
+                $admin_navigation['title'] = _('Verwaltung');
+                $admin_navigation['icon'] = Icon::create('add', Icon::ROLE_INFO_ALT)->asImagePath();
+                $result = array_merge(
+                    array_slice($result, 1),
+                    [$path_prefix . '/admin' => $admin_navigation]
+                );
+            }
+        }
+
+        return $result;
     }
 }
