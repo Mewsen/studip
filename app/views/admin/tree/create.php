@@ -20,8 +20,8 @@
                     <? foreach ($GLOBALS['SEM_TREE_TYPES'] as $index => $type) : ?>
                         <option value="<?= htmlReady($index) ?>">
                             <?= $type['name'] ?: _('Standard') ?>
-                            <?= !$type['editable'] ? _('(nicht mehr nachträglich änderbar)') : '' ?>
-                            <?= $type['hidden'] ? _('(dieser Knoten ist versteckt)') : '' ?>
+                            <?= empty($type['editable']) ? _('(nicht mehr nachträglich änderbar)') : '' ?>
+                            <?= !empty($type['hidden']) ? _('(dieser Knoten ist versteckt)') : '' ?>
                         </option>
                     <? endforeach ?>
                 </select>
