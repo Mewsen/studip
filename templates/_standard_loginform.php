@@ -18,8 +18,8 @@ $password_tooltip_text = (string)Config::get()->PASSWORD_TOOLTIP_TEXT;
       <? if ($hidden) echo 'hidden'; ?>
 >
     <section>
-        <label>
-            <span class="required"><?= _('Benutzername') ?></span>
+        <label class="studiprequired">
+            <span><?= _('Benutzername') ?></span>
             <? if ($username_tooltip_text) : ?>
                 <?= tooltipIcon($username_tooltip_text) ?>
             <? endif ?>
@@ -33,8 +33,8 @@ $password_tooltip_text = (string)Config::get()->PASSWORD_TOOLTIP_TEXT;
                    autocomplete="username"
                    required>
         </label>
-        <label for="password" style="position: relative">
-            <span class="required"><?= _('Passwort') ?></span>
+        <label for="password" style="position: relative" class="studiprequired">
+            <span ><?= _('Passwort') ?></span>
             <? if ($password_tooltip_text) : ?>
                 <?= tooltipIcon($password_tooltip_text) ?>
             <? endif ?>
