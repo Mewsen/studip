@@ -55,11 +55,10 @@ if (!$dates['regular']['turnus_data'] && empty($dates['irregular'])) {
                 }
                 $irregular_rooms[$date['resource_id']]++;
             } elseif ($date['raum']) {
-                $temp = '(' . htmlReady($date['raum']) . ')';
-                if (!isset($freetext_rooms[$temp])) {
-                    $freetext_rooms[$temp] = 0;
+                if (!isset($freetext_rooms[$date['raum']])) {
+                    $freetext_rooms[$date['raum']] = 0;
                 }
-                $freetext_rooms[$temp]++;
+                $freetext_rooms[$date['raum']]++;
             }
         }
         // Remove invalid entry if present
