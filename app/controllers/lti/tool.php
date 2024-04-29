@@ -110,19 +110,21 @@ class Lti_ToolController extends AuthenticatedController
             if (!$this->deployment || ($this->deployment && $this->tool->is_global === '0')) {
                 $this->tool->name = trim(Request::get('name'));
                 $this->tool->launch_url = trim(Request::get('launch_url'));
-                $this->tool->oidc_init_url = trim(Request::get('oidc_init_url'));
-                $this->tool->jwks_url = trim(Request::get('jwks_url'));
-                $this->tool->jwks_key_id = trim(Request::get('jwks_key_id'));
-                $this->tool->deep_linking_url = trim(Request::get('deep_linking_url'));
-                $this->tool->consumer_key = trim(Request::get('consumer_key'));
-                $this->tool->consumer_secret = trim(Request::get('consumer_secret'));
-                $this->tool->send_lis_person = Request::int('send_lis_person', 0);
                 $this->tool->lti_version = Request::get('lti_version', '1.3a');
                 if ($this->tool->lti_version === '1.3a') {
                     $this->tool->oauth_signature_method = 'sha256';
+                    $this->tool->oidc_init_url = trim(Request::get('oidc_init_url'));
+                    $this->tool->jwks_url = trim(Request::get('jwks_url'));
+                    $this->tool->jwks_key_id = trim(Request::get('jwks_key_id'));
+                    $this->tool->deep_linking_url = trim(Request::get('deep_linking_url'));
                 } else {
+                    //LTI 1.0/1.1:
                     $this->tool->oauth_signature_method = 'sha1';
+                    $this->tool->consumer_key = trim(Request::get('consumer_key'));
+                    $this->tool->consumer_secret = trim(Request::get('consumer_secret'));
                 }
+                $this->tool->send_lis_person = Request::int('send_lis_person', 0);
+
                 $this->tool->custom_parameters = trim(Request::get('custom_parameters'));
                 $tool_public_key = trim(Request::get('tool_public_key'));
                 $errors = $this->tool->validate();
@@ -133,7 +135,7 @@ class Lti_ToolController extends AuthenticatedController
                     );
                     return;
                 }
-                if (!$tool_public_key && !$this->tool->jwks_url) {
+                if ($this->tool->lti_version === '1.3a' && !$tool_public_key && !$this->tool->jwks_url) {
                     PageLayout::postError(
                         _('Es wurde weder ein öffentlicher Schlüssel noch eine JWKS-URL zum Tool angegeben.')
                     );
@@ -151,7 +153,7 @@ class Lti_ToolController extends AuthenticatedController
             if ($this->deployment) {
                 $this->deployment->store();
             }
-            if ($tool_public_key) {
+            if ($this->tool->lti_version === '1.3a' && $tool_public_key) {
                 if (!$this->tool->updatePublicKey($tool_public_key)) {
                     PageLayout::postError(
                         _('Der öffentliche Schlüssel des LTI-Tools konnte nicht gespeichert werden.')

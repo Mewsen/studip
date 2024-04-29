@@ -60,14 +60,16 @@ class LtiTool extends SimpleORMap
         if (!$this->launch_url) {
             $errors[] = _('Es wurde keine Launch-URL angegeben.');
         }
-        if (!$this->consumer_key) {
-            $errors[] = _('Es wurde kein Consumer-Key angegeben.');
-        }
-        if (!$this->consumer_secret) {
-            $errors[] = _('Es wurde kein Consumer-Secret angegeben.');
-        }
         if (!in_array($this->lti_version, ['1.1', '1.3a'])) {
             $errors[] = _('Die ausgewählte LTI-Version ist ungültig.');
+        }
+        if ($this->lti_version === '1.1') {
+            if (!$this->consumer_key) {
+                $errors[] = _('Es wurde kein Consumer-Key angegeben.');
+            }
+            if (!$this->consumer_secret) {
+                $errors[] = _('Es wurde kein Consumer-Secret angegeben.');
+            }
         }
         return $errors;
     }

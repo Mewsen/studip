@@ -50,9 +50,13 @@
 
     <div class="lti13a-field">
         <label>
-            <?= _('Login-URL') ?>
+            <?= _('OIDC Login-URL') ?>
             <?= tooltipIcon(_('Die URL, mit der der Login via OpenID Connect stattfindet.')) ?>
             <input type="text" name="oidc_init_url" value="<?= htmlReady($tool->oidc_init_url ?? '') ?>">
+        </label>
+        <label>
+            <?= _('Deep-linking URL') ?>
+            <input type="url" name="deep_linking_url" value="<?= htmlReady($tool->deep_linking_url ?? '') ?>">
         </label>
         <label>
             <?= _('JWKS-URL') ?>
@@ -64,10 +68,6 @@
             <?= _('Schlüssel-ID') ?>
             <?= tooltipIcon(_('Die ID des Schlüssels, der über die JWKS-URL geladen werden soll.')) ?>
             <input type="text" name="jwks_key_id" value="<?= htmlReady($tool->jwks_key_id ?? '') ?>">
-        </label>
-        <label>
-            <?= _('Schlüssel des LTI-Tools per URL laden') ?>
-            <input type="url" name="keyset_url" value="">
         </label>
         <label>
             <?= _('Öffentlicher Schlüssel des LTI-Tools') ?>
@@ -83,10 +83,6 @@
             }
             ?>
             <textarea name="tool_public_key"><?= htmlReady($public_key_string) ?></textarea>
-        </label>
-        <label>
-            <?= _('Deep-linking URL') ?>
-            <input type="url" name="deep_linking_url" value="<?= htmlReady($tool->deep_linking_url ?? '') ?>">
         </label>
     </div>
     <div class="lti11-field">
