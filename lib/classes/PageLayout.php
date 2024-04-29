@@ -196,7 +196,7 @@ class PageLayout
     }
 
     /**
-     * Get the current help URL. If no URL is set explicitely, the URL for
+     * Get the current help URL. If no URL is set explicitly, the URL for
      * the help keyword is used.
      */
     public static function getHelpUrl(): ?string
