@@ -25,6 +25,13 @@
         </a>
     </dd>
 
+    <dt><?= _('JWKS URL') ?></dt>
+    <dd>
+        <a href="<?= URLHelper::getLink('dispatch.php/lti/auth/jwks', [], true) ?>">
+            <?= URLHelper::getLink('dispatch.php/lti/auth/jwks', [], true) ?>
+        </a>
+    </dd>
+
     <?
     $keyring = \Studip\LTI13a\PlatformManager::getPlatformKeyring();
     if (!$keyring) {

@@ -20,6 +20,10 @@
                 <nav>
                     <form action="" method="post">
                         <?= CSRFProtection::tokenTag() ?>
+                        <a href="<?= $controller->link_for('lti/tool/index/' . $lti_data->course_id . '/' . $lti_data->tool->id) ?>"
+                           title="<?= _('Konfiguration des LTI-Tools anzeigen') ?>" data-dialog>
+                            <?= Icon::create('info-circle') ?>
+                        </a>
                         <? if ($lti_data->position > 0): ?>
                             <?= Icon::create('arr_2up', Icon::ROLE_SORT)->asInput([
                                 'formaction' => $controller->url_for('course/lti/move/' . $lti_data->position . '/up')

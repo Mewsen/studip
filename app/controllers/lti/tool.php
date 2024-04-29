@@ -11,7 +11,7 @@ class Lti_ToolController extends AuthenticatedController
         $this->tool_id    = '';
         $this->range_id   = '';
 
-        if (in_array($action, ['add', 'edit', 'delete'])) {
+        if (in_array($action, ['index', 'add', 'edit', 'delete'])) {
             $this->range_id = $args[0];
             $this->tool_id  = $args[1] ?? '';
             if (!$this->range_id || ($this->range_id === 'global' && !$GLOBALS['perm']->have_perm('root'))) {
@@ -32,6 +32,17 @@ class Lti_ToolController extends AuthenticatedController
                     PageLayout::postError(_('Das angegebene LTI-Tool wurde nicht gefunden.'));
                 }
             }
+        }
+    }
+
+    public function index_action($range_id, $tool_id)
+    {
+        //$this->tool is created in the before-filter.
+        if ($this->range_id !== 'global') {
+            $this->deployment = LtiDeployment::findOneBySQL(
+                '`tool_id` = :tool_id AND `course_id` = :range_id',
+                ['tool_id' => $this->tool->id, 'range_id' => $this->range_id]
+            );
         }
     }
 
