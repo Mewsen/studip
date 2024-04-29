@@ -51,7 +51,10 @@ if (!$dates['regular']['turnus_data'] && empty($dates['irregular'])) {
             if ($date['resource_id']) {
                 $irregular_rooms[$date['resource_id']]++;
             } elseif ($date['raum']) {
-                $freetext_rooms['(' . htmlReady($date['raum']) . ')']++;
+                if (!isset($freetext_rooms[$date['raum']])) {
+                    $freetext_rooms[$date['raum']] = 0;
+                }
+                $freetext_rooms[$date['raum']]++;
             }
         }
         unset($irregular_rooms['']);
