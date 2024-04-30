@@ -1113,18 +1113,6 @@ class UserManagement
         // delete the datafields
         $localEntries = DataFieldEntry::removeAll($user_id);
 
-        // delete all blubber entrys
-        $query = "DELETE blubber_threads, blubber_mentions, blubber_comments
-                  FROM blubber_threads
-                  LEFT JOIN blubber_mentions USING (user_id)
-                  LEFT JOIN blubber_comments USING (user_id)
-                  WHERE user_id = ?";
-        $statement = DBManager::get()->prepare($query);
-        $statement->execute([$user_id]);
-        if ($count = $statement->rowCount()) {
-            $msg .= 'info§' . sprintf(_('%s Blubber gelöscht.'), $count) . '§';
-        }
-
         // delete user from waiting lists
         $query = "SELECT seminar_id FROM admission_seminar_user WHERE user_id = ?";
         $statement = DBManager::get()->prepare($query);

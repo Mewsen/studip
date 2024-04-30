@@ -65,6 +65,9 @@
  * @property SimpleORMapCollection datafields has_many DatafieldEntryModel
  * @property SimpleORMapCollection studycourses has_many UserStudyCourse
  * @property SimpleORMapCollection contacts has_many Contact
+ * @property SimpleORMapCollection|BlubberThread[] $blubber_threads has_many BlubberThread
+ * @property SimpleORMapCollection|BlubberComment[] $blubber_comments has_many BlubberComment
+ * @property SimpleORMapCollection|BlubberMention[] $blubber_mentions has_many BlubberMention
  * @property UserInfo   info   has_one UserInfo
  * @property UserOnline online has_one UserOnline
  * @property Kategorie[]|SimpleORMapCollection $profile_categories has_many Kategorie
@@ -189,6 +192,20 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
         $config['has_many']['course_notifications'] = [
             'class_name'        => CourseMemberNotification::class,
             'on_delete'         => 'delete',
+        ];
+
+        // Blubber relations
+        $config['has_many']['blubber_threads'] = [
+            'class_name' => BlubberThread::class,
+            'on_delete'  => 'delete',
+        ];
+        $config['has_many']['blubber_comments'] = [
+            'class_name' => BlubberComment::class,
+            'on_delete'  => 'delete',
+        ];
+        $config['has_many']['blubber_mentions'] = [
+            'class_name' => BlubberMention::class,
+            'on_delete'  => 'delete',
         ];
 
         $config['additional_fields']['config']['get'] = function ($user) {
