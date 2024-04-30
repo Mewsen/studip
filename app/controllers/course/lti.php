@@ -302,12 +302,12 @@ class Course_LtiController extends StudipController
             if ($deployment->store()) {
                 $builder = new \OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchRequestBuilder();
                 $message = $builder->buildDeepLinkingLaunchRequest(
-                    \Studip\Lti13a\PlatformManager::getDeepLinkingConfiguration($tool->id),
-                    new \Studip\Lti13a\Registration($deployment),
+                    \Studip\LTI13a\PlatformManager::getDeepLinkingConfiguration($tool->id),
+                    new \Studip\LTI13a\Registration($deployment),
                     $GLOBALS['user']->id,
-                    \Studip\Lti13a\PlatformManager::getDeepLinkingReturnUrl(),
+                    \Studip\LTI13a\PlatformManager::getDeepLinkingReturnUrl(),
                     null,
-                    [\Studip\Lti13a\PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->getPerm())]
+                    [\Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->course_id))]
                 );
                 $this->render_text($message->toHtmlRedirectForm());
             }
@@ -369,7 +369,7 @@ class Course_LtiController extends StudipController
             //LTI 1.3a
 
             $validator = new \OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator(
-                new \Studip\Lti13a\RegistrationManager(),
+                new \Studip\LTI13a\RegistrationManager(),
                 new \OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository(StudipCacheFactory::getCache())
             );
             $result = $validator->validateToolOriginatingLaunch($this->getPsrRequest());
