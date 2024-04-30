@@ -16,6 +16,8 @@ return new class extends Migration
                   LEFT JOIN `object_user_visits` AS ouv
                     ON (bt.`thread_id` = ouv.`object_id`)
                   WHERE bt.`external_contact` = 0
+                    AND bt.`thread_id` != 'global'
+                    AND bt.`user_id` != ''
                     AND bt.`user_id` NOT IN (
                         SELECT `user_id` FROM `auth_user_md5`
                     )";
