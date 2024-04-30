@@ -117,6 +117,13 @@ class Lti_ToolController extends AuthenticatedController
                     $this->tool->jwks_url = trim(Request::get('jwks_url'));
                     $this->tool->jwks_key_id = trim(Request::get('jwks_key_id'));
                     $this->tool->deep_linking_url = trim(Request::get('deep_linking_url'));
+                    if ($this->tool->deep_linking_url) {
+                        //Enable deep linking:
+                        $this->tool->deep_linking = '1';
+                    } else {
+                        //Disable deep linking:
+                        $this->tool->deep_linking = '0';
+                    }
                 } else {
                     //LTI 1.0/1.1:
                     $this->tool->oauth_signature_method = 'sha1';
