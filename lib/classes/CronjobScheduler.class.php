@@ -247,8 +247,8 @@ class CronjobScheduler
         }
 
         // Find all schedules that are due to execute and which task is active
-        $temp = CronjobSchedule::findBySQL('active = 1 AND next_execution <= UNIX_TIMESTAMP() '
-                                          .'ORDER next_execution');
+        $temp = CronjobSchedule::findBySQL('`active` = 1 AND `next_execution` <= UNIX_TIMESTAMP() '
+                                          .'ORDER BY `next_execution`');
         $schedules = array_filter($temp, function ($schedule) { return $schedule->task->active; });
 
         if (count($schedules) === 0) {
