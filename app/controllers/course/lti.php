@@ -370,7 +370,7 @@ class Course_LtiController extends StudipController
 
             $validator = new \OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator(
                 new \Studip\Lti13a\RegistrationManager(),
-                new \OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository(StudipCacheFactory::getCache());
+                new \OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository(StudipCacheFactory::getCache())
             );
             $result = $validator->validateToolOriginatingLaunch($this->getPsrRequest());
             if ($result->hasError()) {
