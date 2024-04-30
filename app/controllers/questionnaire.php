@@ -48,6 +48,10 @@ class QuestionnaireController extends AuthenticatedController
     public function courseoverview_action()
     {
         $this->range_id = Context::getId();
+
+        if (!$this->range_id) {
+            throw new CheckObjectException(_('Sie haben kein Objekt gewählt.'));
+        }
         $this->range_type = Context::getType();
         if (!$GLOBALS['perm']->have_studip_perm("tutor", $this->range_id)) {
             throw new AccessDeniedException("Only for logged in users.");
@@ -593,8 +597,8 @@ class QuestionnaireController extends AuthenticatedController
         }
         $this->statusgruppen_ids = [];
         if (in_array($this->range_type, ["course", "institute"])) {
-            if ($GLOBALS['perm']->have_studip_perm("tutor", $this->range_id)) {
-                $statusgruppen = Statusgruppen::findByRange_id(Context::get()->id);
+            if ($this->range_id && $GLOBALS['perm']->have_studip_perm("tutor", $this->range_id)) {
+                $statusgruppen = Statusgruppen::findByRange_id($this->range_id);
             } else {
                 $statusgruppen = Statusgruppen::findBySQL("INNER JOIN statusgruppe_user USING (statusgruppe_id) WHERE statusgruppen.range_id = ? AND statusgruppe_user.user_id = ? ", [
                     Context::get()->id,
@@ -643,6 +647,7 @@ class QuestionnaireController extends AuthenticatedController
             object_set_visit($questionnaire['questionnaire_id'], 'vote');
         }
         if (in_array($this->range_type, ["course", "institute"])
+                && $this->range_id
                 && !$GLOBALS['perm']->have_studip_perm("tutor", $this->range_id)
                 && !($stopped_visible || count($this->questionnaire_data))) {
             $this->render_nothing();
