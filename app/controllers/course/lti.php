@@ -315,43 +315,61 @@ class Course_LtiController extends StudipController
         require_once 'vendor/oauth-php/library/OAuthRequestVerifier.php';
 
         $tool = LtiTool::find($tool_id);
-        $lti_msg = Request::get('lti_msg');
-        $lti_errormsg = Request::get('lti_errormsg');
-        $content_items = Request::get('content_items');
-        $content_items = json_decode($content_items, true);
+
+        if (!$tool) {
+            PageLayout::postError(_('Das ausgewählte LTI-Tool wurde nicht gefunden.'));
+            $this->redirect('course/lti/add_link');
+            return;
+        }
+        if ($tool->deep_linking !== '1') {
+            PageLayout::postError(_('Das ausgewählte LTI-Tool unterstützt kein Deep Linking.'));
+            $this->redirect('course/lti/add_link');
+            return;
+        }
+
+        if ($tool->lti_version === '1.3a') {
+            //LTI 1.3a
+            die('TODO');
+        } else {
+            require_once 'vendor/oauth-php/library/OAuthRequestVerifier.php';
+
+            $lti_msg = Request::get('lti_msg');
+            $lti_errormsg = Request::get('lti_errormsg');
+            $content_items = Request::get('content_items');
+            $content_items = json_decode($content_items, true);
 
         if (!Studip\OAuth1::verifyRequest($this->getPsrRequest(), $tool->consumer_secret, '')) {
             throw new Exception('Could not verify request.');
         }
 
-        if (is_array($content_items) && count($content_items['@graph'])) {
-            // we only support selecting a single content item
-            $item = $content_items['@graph'][0];
+            if (is_array($content_items) && count($content_items['@graph'])) {
+                // we only support selecting a single content item
+                $item = $content_items['@graph'][0];
 
-            $lti_data = new LtiDeployment();
-            $lti_data->course_id = $this->course_id;
-            $lti_data->position = LtiDeployment::countBySQL('course_id = ?', [$this->course_id]);
-            $lti_data->title = (string) $item['title'];
-            $lti_data->description = Studip\Markup::purifyHtml(Studip\Markup::markAsHtml($item['text']));
-            $lti_data->tool_id = $tool_id;
-            $lti_data->launch_url = (string) ($item['url'] ?? '');
-            $options = [];
-            if (is_array($item['custom'])) {
-                $custom_parameters = '';
-                foreach ($item['custom'] as $key => $value) {
-                    $custom_parameters .= $key . '=' . $value . "\n";
+                $lti_data = new LtiDeployment();
+                $lti_data->course_id = $this->course_id;
+                $lti_data->position = LtiDeployment::countBySQL('course_id = ?', [$this->course_id]);
+                $lti_data->title = (string) $item['title'];
+                $lti_data->description = Studip\Markup::purifyHtml(Studip\Markup::markAsHtml($item['text']));
+                $lti_data->tool_id = $tool_id;
+                $lti_data->launch_url = (string) ($item['url'] ?? '');
+                $options = [];
+                if (is_array($item['custom'])) {
+                    $custom_parameters = '';
+                    foreach ($item['custom'] as $key => $value) {
+                        $custom_parameters .= $key . '=' . $value . "\n";
+                    }
+                    $options['custom_parameters'] = $custom_parameters;
                 }
-                $options['custom_parameters'] = $custom_parameters;
+
+                if (isset($item['placementAdvice']['presentationDocumentTarget'])) {
+                    $options['document_target'] = $item['placementAdvice']['presentationDocumentTarget'];
+                }
+
+                $lti_data->options = $options;
+                $lti_data->store();
+                PageLayout::postSuccess($lti_msg ?: _('Der Link wurde als neuer Abschnitt hinzugefügt.'));
             }
-
-            if (isset($item['placementAdvice']['presentationDocumentTarget'])) {
-                $options['document_target'] = $item['placementAdvice']['presentationDocumentTarget'];
-            }
-
-            $lti_data->options = $options;
-            $lti_data->store();
-
-            PageLayout::postSuccess($lti_msg ?: _('Der Link wurde als neuer Abschnitt hinzugefügt.'));
         }
 
         if ($lti_errormsg) {

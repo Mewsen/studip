@@ -39,7 +39,7 @@ class Registration implements RegistrationInterface
         if (!$this->lti_link) {
             return '';
         }
-        if (!$this->lti_link->course_id) {
+        if (!$this->lti_link->id) {
             return '';
         }
         return \Config::get()->STUDIP_INSTALLATION_ID . '_' . $this->lti_link->id;
@@ -108,10 +108,7 @@ class Registration implements RegistrationInterface
 
     #[\Override] public function getPlatformJwksUrl(): ?string
     {
-        if (!$this->lti_link) {
-            return null;
-        }
-        return PlatformManager::getJwksUrlForDeployment($this->lti_link);
+        return PlatformManager::getJwksUrl();
     }
 
     #[\Override] public function getToolJwksUrl(): ?string
