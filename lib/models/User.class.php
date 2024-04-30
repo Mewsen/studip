@@ -52,7 +52,9 @@
  * @property SimpleORMapCollection|Kategorie[] $profile_categories has_many Kategorie
  * @property SimpleORMapCollection|MvvContact[] $mvv_assignments has_many MvvContact
  * @property SimpleORMapCollection|CourseMemberNotification[] $course_notifications has_many CourseMemberNotification
- * @property SimpleORMapCollection|ExternPageConfig[] $extern_pages_configs has_many ExternPageConfig
+ * @property SimpleORMapCollection|BlubberThread[] $blubber_threads has_many BlubberThread
+ * @property SimpleORMapCollection|BlubberComment[] $blubber_comments has_many BlubberComment
+ * @property SimpleORMapCollection|BlubberMention[] $blubber_mentions has_many BlubberMention
  * @property UserInfo $info has_one UserInfo
  * @property UserOnline $online has_one UserOnline
  * @property SimpleORMapCollection|User[] $contacts has_and_belongs_to_many User
@@ -206,6 +208,20 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
         $config['has_many']['extern_pages_configs'] = [
             'class_name' => ExternPageConfig::class,
             'assoc_foreign_key' => 'author_id'
+        ];
+
+        // Blubber relations
+        $config['has_many']['blubber_threads'] = [
+            'class_name' => BlubberThread::class,
+            'on_delete'  => 'delete',
+        ];
+        $config['has_many']['blubber_comments'] = [
+            'class_name' => BlubberComment::class,
+            'on_delete'  => 'delete',
+        ];
+        $config['has_many']['blubber_mentions'] = [
+            'class_name' => BlubberMention::class,
+            'on_delete'  => 'delete',
         ];
 
         $config['additional_fields']['config']['get'] = function ($user) {
