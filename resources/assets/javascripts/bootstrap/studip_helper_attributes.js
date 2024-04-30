@@ -146,6 +146,29 @@ $(document).on('change', '[data-hides],[data-shows]', function () {
             $(this)
                 .toggle(type === 'shows' ? toggle : !toggle)
                 .trigger('update.proxy');
+            //Check if there are required fields that become hidden or the other way around.
+            //Hidden fields must not be required.
+            let elements = $(this).find('input[required]');
+            if ($(this).attr('required')) {
+                //Append the element itself:
+                $(elements).append($(this));
+            }
+            $(elements).each(function(index, element) {
+                console.debug(element);
+                let hide = (type === 'shows' && !condition) || (type === 'hides' && condition);
+                if (hide) {
+                    //Remove the required attribute:
+                    if ($(element).attr('required') !== 'false') {
+                        $(element).attr('data-is_required', '1');
+                        $(element).removeAttr('required');
+                    }
+                } else {
+                    //Set the required attribute:
+                    if ($(element).attr('data-is_required')) {
+                        $(element).attr('required', 'required');
+                    }
+                }
+            });
         });
     });
 });
