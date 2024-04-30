@@ -274,35 +274,75 @@ class Course_LtiController extends StudipController
         $tool_id = Request::int('tool_id');
         $tool = LtiTool::find($tool_id);
 
-        $custom_parameters = explode("\n", $tool->custom_parameters);
-        $content_item_return_url = $this->url_for('course/lti/save_link/' . $tool_id);
-
-        // set up ContentItemSelectionRequest
-        $lti_link = new LtiLink($tool->launch_url, $tool->consumer_key, $tool->consumer_secret, $tool->oauth_signature_method);
-        $lti_link->setUser($GLOBALS['user']->id, 'Instructor', $tool->send_lis_person);
-        $lti_link->setCourse($this->course_id);
-        $lti_link->addLaunchParameters([
-            'lti_message_type' => 'ContentItemSelectionRequest',
-            'accept_media_types' => 'application/vnd.ims.lti.v1.ltilink',
-            'accept_presentation_document_targets' => 'iframe,window',
-            'content_item_return_url' => $content_item_return_url,
-            'launch_presentation_locale' => str_replace('_', '-', $_SESSION['_language']),
-            'launch_presentation_document_target' => 'window'
-        ]);
-
-        foreach ($custom_parameters as $param) {
-            if (strpos($param, '=') !== false) {
-                list($key, $value) = explode('=', $param, 2);
-                $lti_link->addCustomParameter(trim($key), trim($value));
-            }
+        if (!$tool) {
+            PageLayout::postError(_('Das ausgewählte LTI-Tool wurde nicht gefunden.'));
+            $this->redirect('course/lti/add_link');
+            return;
+        }
+        if ($tool->deep_linking !== '1') {
+            PageLayout::postError(_('Das ausgewählte LTI-Tool unterstützt kein Deep Linking.'));
+            $this->redirect('course/lti/add_link');
+            return;
         }
 
-        $this->launch_url = $lti_link->getLaunchURL();
-        $this->launch_data = $lti_link->getBasicLaunchData();
-        $this->signature = $lti_link->getLaunchSignature($this->launch_data);
+        if ($tool->lti_version === '1.3a') {
+            //LTI 1.3a
 
-        $this->set_layout(null);
-        $this->render_action('iframe');
+            if (!$this->course_id) {
+                PageLayout::postError(_('Diese Aktion benötigt einen Veranstaltungskontext.'));
+                $this->redirect('course/lti/add_link');
+                return;
+            }
+            //Build a LTI deployment object and mark it as not configured
+            //so that it can be displayed differently in the UI.
+            $deployment = new LtiDeployment();
+            $deployment->tool_id = $tool->id;
+            $deployment->course_id = $this->course_id;
+            $deployment->options = ['not_configured' => true];
+            if ($deployment->store()) {
+                $builder = new \OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchRequestBuilder();
+                $message = $builder->buildDeepLinkingLaunchRequest(
+                    \Studip\Lti13a\PlatformManager::getDeepLinkingConfiguration($tool->id),
+                    new \Studip\Lti13a\Registration($deployment),
+                    $GLOBALS['user']->id,
+                    \Studip\Lti13a\PlatformManager::getDeepLinkingReturnUrl(),
+                    null,
+                    [\Studip\Lti13a\PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->getPerm())]
+                );
+                $this->render_text($message->toHtmlRedirectForm());
+            }
+        } else {
+            //LTI 1.0/1.1
+            $custom_parameters = explode("\n", $tool->custom_parameters);
+            $content_item_return_url = $this->url_for('course/lti/save_link/' . $tool_id);
+
+            // set up ContentItemSelectionRequest
+            $lti_link = new LtiLink($tool->launch_url, $tool->consumer_key, $tool->consumer_secret, $tool->oauth_signature_method);
+            $lti_link->setUser($GLOBALS['user']->id, 'Instructor', $tool->send_lis_person);
+            $lti_link->setCourse($this->course_id);
+            $lti_link->addLaunchParameters([
+                'lti_message_type' => 'ContentItemSelectionRequest',
+                'accept_media_types' => 'application/vnd.ims.lti.v1.ltilink',
+                'accept_presentation_document_targets' => 'iframe,window',
+                'content_item_return_url' => $content_item_return_url,
+                'launch_presentation_locale' => str_replace('_', '-', $_SESSION['_language']),
+                'launch_presentation_document_target' => 'window'
+            ]);
+
+            foreach ($custom_parameters as $param) {
+                if (strpos($param, '=') !== false) {
+                    list($key, $value) = explode('=', $param, 2);
+                    $lti_link->addCustomParameter(trim($key), trim($value));
+                }
+            }
+
+            $this->launch_url = $lti_link->getLaunchURL();
+            $this->launch_data = $lti_link->getBasicLaunchData();
+            $this->signature = $lti_link->getLaunchSignature($this->launch_data);
+
+            $this->set_layout(null);
+            $this->render_action('iframe');
+        }
     }
 
     /**
@@ -312,8 +352,6 @@ class Course_LtiController extends StudipController
      */
     public function save_link_action($tool_id)
     {
-        require_once 'vendor/oauth-php/library/OAuthRequestVerifier.php';
-
         $tool = LtiTool::find($tool_id);
 
         if (!$tool) {
@@ -329,7 +367,49 @@ class Course_LtiController extends StudipController
 
         if ($tool->lti_version === '1.3a') {
             //LTI 1.3a
-            die('TODO');
+
+            $validator = new \OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator(
+                new \Studip\Lti13a\RegistrationManager(),
+                new \OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository(StudipCacheFactory::getCache());
+            );
+            $result = $validator->validateToolOriginatingLaunch($this->getPsrRequest());
+            if ($result->hasError()) {
+                PageLayout::postError($result->getError());
+                $this->redirect('course/lti/add_link');
+                return;
+            }
+            $all_lti_resources = (new \OAT\Library\Lti1p3DeepLinking\Factory\ResourceCollectionFactory())->createFromClaim(
+                $result->getPayload()->getDeepLinkingContentItems()
+            );
+
+            $lti_resource_links = $all_lti_resources->getByType(\OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface::TYPE);
+            if (count($lti_resource_links) > 0) {
+                $use_first_link = true;
+                foreach ($lti_resource_links as $lti_resource_link) {
+                    //DEBUG:
+                    var_dump($lti_resource_link->getIdentifier());
+
+                    $deployment = null;
+                    if ($use_first_link) {
+                        //Recycle the deployment that has been created before
+                        //for the course.
+                        $deployment = LtiDeployment::findOneBySQL(
+                            "`tool_id` = :tool_id AND `course_id` = :course_id
+                            AND `options` LIKE '%not_configured%=%true'"
+                        );
+                        $use_first_link = false;
+                    }
+                    if (!$deployment) {
+                        //If this is the first link, the deployment has been removed.
+                        //In that case and if it is not the first link, a new deployment
+                        //has to be created.
+                        $deployment = new LtiDeployment();
+                        $deployment->tool_id = $tool->id;
+                        $deployment->course_id = $this->course_id;
+                    }
+                    $deployment->launch_url = $lti_resource_link->getUrl();
+                }
+            }
         } else {
             require_once 'vendor/oauth-php/library/OAuthRequestVerifier.php';
 
