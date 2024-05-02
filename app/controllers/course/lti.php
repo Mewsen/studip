@@ -298,7 +298,8 @@ class Course_LtiController extends StudipController
             $deployment = new LtiDeployment();
             $deployment->tool_id = $tool->id;
             $deployment->course_id = $this->course_id;
-            $deployment->options = ['not_configured' => true];
+            $deployment->title = $tool->name;
+            $deployment->options = ['unfinished_deep_linking' => true];
             if ($deployment->store()) {
                 $builder = new \OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchRequestBuilder();
                 $message = $builder->buildDeepLinkingLaunchRequest(

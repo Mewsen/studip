@@ -10,11 +10,17 @@
 <? endif ?>
 
 <? foreach ($lti_data_array as $lti_data): ?>
-    <? $launch_url = $lti_data->getLaunchURL() ?>
+    <?
+    $launch_url = $lti_data->getLaunchURL();
+    $unfinished_deep_linking = !empty($lti_data->options['unfinished_deep_linking']);
+    ?>
 
     <article class="studip">
         <header>
-            <h1><?= htmlReady($lti_data->title) ?></h1>
+            <h1>
+                <?= htmlReady($lti_data->title) ?>
+                <?= $unfinished_deep_linking ? '(' . _('LTI Deep Linking noch nicht fertig eingerichtet') . ')' : '' ?>
+            </h1>
 
             <? if ($edit_perm): ?>
                 <nav>
