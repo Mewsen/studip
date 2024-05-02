@@ -46,17 +46,18 @@
         <col>
         <col>
         <col class="hidden-tiny-down">
-        <col>
+        <col style="width: 20px">
     </colgroup>
 
     <thead>
         <tr>
-            <th colspan="2"> <?= _('Name des Bereichs') ?></th>
+            <th></th>
+            <th> <?= _('Name des Bereichs') ?></th>
             <th data-type="answers"><?= _("Beiträge") ?></th>
             <th data-type="last_posting" class="hidden-tiny-down">
                 <?= _("letzte Antwort") ?>
             </th>
-            <th></th>
+            <th> <?= _('Aktionen') ?> </th>
         </tr>
     </thead>
 
