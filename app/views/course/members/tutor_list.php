@@ -43,7 +43,7 @@
                            type="checkbox" name="all" value="1" data-proxyfor=":checkbox[name^=tutor]">
                 </th>
             <? endif ?>
-                <th></th>
+                <th><p class="sr-only"><?= _('Nummer') ?></p></th>
                 <th <? if ($sort_by === 'nachname' && $sort_status === 'tutor') printf('class="sort%s"', $order); ?>>
                     <? $order = $sort_status !== 'tutor' ? 'desc' : $order; ?>
                     <a href="<?= URLHelper::getLink(sprintf(
