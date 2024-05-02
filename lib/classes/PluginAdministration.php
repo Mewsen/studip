@@ -452,17 +452,14 @@ class PluginAdministration
         }
 
         // determine the plugin path
-        $basepath = Config::get()->PLUGINS_PATH;
         $pluginpath = $origin . '/' . $pluginclass;
 
-        $pluginregistered = $plugin_manager->getPluginInfo($pluginclass);
-
-        if ($pluginregistered) {
-            throw new PluginInstallationException(_('Das Plugin ist bereits registriert.'));
-        }
-
         // create database schema if needed
-        $this->createDBSchema($plugindir, $manifest, $pluginregistered);
+        $this->createDBSchema(
+            $plugindir,
+            $manifest,
+            (bool) $plugin_manager->getPluginInfo($pluginclass)
+        );
 
         // now register the plugin in the database
         $pluginid = $plugin_manager->registerPlugin($manifest['pluginname'], $pluginclass, $pluginpath);
