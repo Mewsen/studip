@@ -57,26 +57,36 @@
                 </nav>
             <? endif ?>
         </header>
-        <?
-        $document_target = $lti_data->options['document_target'] ?? '';
-        ?>
+        <? if ($unfinished_deep_linking) : ?>
         <section>
-            <?= formatReady($lti_data->description) ?>
-
-            <? if ($launch_url && $document_target === 'iframe'): ?>
-                <iframe style="border: none; height: 640px; width: 100%;"
-                        src="<?= $controller->link_for('course/lti/iframe', $lti_data->position) ?>"></iframe>
-            <? endif ?>
+            <?= Studip\LinkButton::create(
+                _('Einrichtung abschließen'),
+                $controller->url_for('course/lti/select_link/' . $lti_data->id, ['tool_id' => $lti_data->tool_id]),
+                ['target' => '_blank']
+            ) ?>
         </section>
+        <? else : ?>
+            <?
+            $document_target = $lti_data->options['document_target'] ?? '';
+            ?>
+            <section>
+                <?= formatReady($lti_data->description) ?>
 
-        <? if ($launch_url && $document_target !== 'iframe'): ?>
-            <footer>
-                <?= Studip\LinkButton::create(
-                    _('Anwendung starten'),
-                    $controller->link_for('course/lti/iframe', $lti_data->position),
-                    ['target' => '_blank']
-                ) ?>
-            </footer>
+                <? if ($launch_url && $document_target === 'iframe'): ?>
+                    <iframe style="border: none; height: 640px; width: 100%;"
+                            src="<?= $controller->link_for('course/lti/iframe', $lti_data->position) ?>"></iframe>
+                <? endif ?>
+            </section>
+
+            <? if ($launch_url && $document_target !== 'iframe'): ?>
+                <section>
+                    <?= Studip\LinkButton::create(
+                        _('Anwendung starten'),
+                        $controller->url_for('course/lti/iframe', $lti_data->position),
+                        ['target' => '_blank']
+                    ) ?>
+                </section>
+            <? endif ?>
         <? endif ?>
     </article>
 <? endforeach ?>
