@@ -528,12 +528,42 @@ class Admin_CoursesController extends AuthenticatedController
             if (isset($filters[$key])) {
                 $config->store($field, $filters[$key]);
             }
+            unset($filters[$key]);
+        }
+
+        if ($config->ADMIN_COURSES_TEACHERFILTER) {
             if (!$config->MY_INSTITUTES_DEFAULT) {
                 $config->delete('ADMIN_COURSES_TEACHERFILTER');
-                $config->delete('MY_COURSES_SELECTED_STGTEIL');
+            } else {
+                $exists = InstituteMember::countBySQL("INNER JOIN `auth_user_md5` USING (`user_id`) WHERE `user_inst`.`user_id` = :user_id AND `user_inst`.`Institut_id` = :institut_id AND `auth_user_md5`.`perms` = 'dozent' ", [
+                    'user_id' => $config->ADMIN_COURSES_TEACHERFILTER,
+                    'institut_id' => $config->MY_INSTITUTES_DEFAULT
+                ]) > 0;
+                if (!$exists) {
+                    $config->delete('ADMIN_COURSES_TEACHERFILTER');
+                }
             }
-
-            unset($filters[$key]);
+        }
+        if ($config->MY_COURSES_SELECTED_STGTEIL) {
+            if (!$config->MY_INSTITUTES_DEFAULT) {
+                $config->delete('MY_COURSES_SELECTED_STGTEIL');
+            } else {
+                $statement = DBManager::get()->prepare("
+                    SELECT 1
+                    FROM `mvv_stg_stgteil`
+                        INNER JOIN `mvv_studiengang` ON (`mvv_stg_stgteil`.`studiengang_id` = `mvv_studiengang`.`studiengang_id`)
+                    WHERE `mvv_studiengang`.`institut_id` = :institut_id
+                        AND `mvv_stg_stgteil`.`stgteil_id` = :stgteil_id
+                ");
+                $statement->execute([
+                    'institut_id' => $config->MY_INSTITUTES_DEFAULT,
+                    'stgteil_id' => $config->MY_COURSES_SELECTED_STGTEIL
+                ]);
+                $exists = (bool) $statement->fetch(PDO::FETCH_COLUMN);
+                if (!$exists) {
+                    $config->delete('MY_COURSES_SELECTED_STGTEIL');
+                }
+            }
         }
 
         // Datafield filters
