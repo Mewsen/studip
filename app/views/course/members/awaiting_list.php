@@ -36,7 +36,7 @@
                            data-activates="#action_awaiting,button[name='submit_awaiting']">
                 </th>
             <? endif ?>
-                <th></th>
+                <th><p class="sr-only"><?= _('Nummer') ?></p></th>
                 <th <? if ($sort_by === 'nachname' && $sort_status === $waiting_type) printf('class="sort%s"', $order); ?>>
                     <a href="<?= URLHelper::getLink(sprintf(
                         "?sortby=nachname&sort_status={$waiting_type}&order=%s&toggle=%s#awaiting",

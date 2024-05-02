@@ -25,7 +25,7 @@
     </colgroup>
     <thead>
         <tr class="sortable">
-            <th></th>
+            <th><p class="sr-only"><?= _('Nummer') ?></p></th>
             <th <? if ($sort_by === 'nachname' && $sort_status === 'dozent') printf('class="sort%s"', $order); ?>>
                 <? $order = $sort_status !== 'dozent' ? 'desc' : $order; ?>
                 <a href="<?= URLHelper::getLink(sprintf(
