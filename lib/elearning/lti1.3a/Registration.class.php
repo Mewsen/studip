@@ -36,13 +36,7 @@ class Registration implements RegistrationInterface
 
     #[\Override] public function getClientId(): string
     {
-        if (!$this->lti_link) {
-            return '';
-        }
-        if (!$this->lti_link->id) {
-            return '';
-        }
-        return \Config::get()->STUDIP_INSTALLATION_ID . '_' . $this->lti_link->id;
+        return \Config::get()->STUDIP_INSTALLATION_ID;
     }
 
     #[\Override] public function getPlatform(): PlatformInterface

@@ -93,7 +93,7 @@ class Course_LtiController extends StudipController
             throw new AccessDeniedException();
         }
 
-        $this->global_tools = LtiTool::findBySQL("`version` = '1.3a' AND `is_global` = '1' ORDER BY `name` ASC");
+        $this->global_tools = LtiTool::findBySQL("`lti_version` = '1.3a' AND `is_global` = '1' ORDER BY `name` ASC");
 
         if (!$this->global_tools) {
             //Redirect to the page to configure an LTI tool for the course:
@@ -272,20 +272,20 @@ class Course_LtiController extends StudipController
     public function select_link_action($deployment_id = '')
     {
         $tool_id = Request::int('tool_id');
-        $tool = LtiTool::find($tool_id);
+        $this->tool = LtiTool::find($tool_id);
 
-        if (!$tool) {
+        if (!$this->tool) {
             PageLayout::postError(_('Das ausgewählte LTI-Tool wurde nicht gefunden.'));
             $this->redirect('course/lti/add_link');
             return;
         }
-        if (!$tool->deep_linking) {
+        if (!$this->tool->deep_linking) {
             PageLayout::postError(_('Das ausgewählte LTI-Tool unterstützt kein Deep Linking.'));
             $this->redirect('course/lti/add_link');
             return;
         }
 
-        if ($tool->lti_version === '1.3a') {
+        if ($this->tool->lti_version === '1.3a') {
             //LTI 1.3a
 
             if (!$this->course_id) {
@@ -293,50 +293,58 @@ class Course_LtiController extends StudipController
                 $this->redirect('course/lti/add_link');
                 return;
             }
-            $deployment = null;
+            $this->deployment = null;
             if ($deployment_id) {
-                $deployment = LtiDeployment::find($deployment_id);
-                if (!$deployment) {
+                if (Request::isPost()) {
+                    CSRFProtection::verifyUnsafeRequest();
+                }
+                $this->deployment = LtiDeployment::find($deployment_id);
+                if (!$this->deployment) {
                     PageLayout::postError(_('Die Einbindung des LTI-Tools wurde nicht gefunden!'));
                     return;
                 }
-                if ($deployment->course_id !== $this->course_id) {
+                if ($this->deployment->course_id !== $this->course_id) {
                     PageLayout::postError(_('Die Einbindung des LTI-Tools ist nicht für diese Veranstaltung bestimmt.'));
                     return;
                 }
-                if (empty($deployment->options['unfinished_deep_linking'])) {
+                if (empty($this->deployment->options['unfinished_deep_linking'])) {
                     PageLayout::postError(_('Die Einbindung des LTI-Tools ist bereits abgeschlossen.'));
                     return;
                 }
-            } else {
-                //Build an LTI deployment object and mark it as not configured
-                //so that it can be displayed differently in the UI.
-                $deployment = new LtiDeployment();
-                $deployment->tool_id = $tool->id;
-                $deployment->course_id = $this->course_id;
-                $deployment->title = $tool->name;
-            }
-            $deployment->options = ['unfinished_deep_linking' => true];
-            if ($deployment->store() !== false) {
                 $builder = new \OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchRequestBuilder();
                 $message = $builder->buildDeepLinkingLaunchRequest(
-                    \Studip\LTI13a\PlatformManager::getDeepLinkingConfiguration($tool->id),
-                    new \Studip\LTI13a\Registration($deployment),
+                    \Studip\LTI13a\PlatformManager::getDeepLinkingConfiguration($this->tool->id),
+                    new \Studip\LTI13a\Registration($this->deployment),
                     $GLOBALS['user']->id,
                     null,
-                    $deployment->id,
+                    $this->deployment->id,
                     [\Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->course_id))]
                 );
                 $this->render_text($message->toHtmlRedirectForm());
+            } else {
+                //Build an LTI deployment object and mark it as not configured
+                //so that it can be displayed differently in the UI.
+                $this->deployment = new LtiDeployment();
+                $this->deployment->tool_id = $this->tool->id;
+                $this->deployment->course_id = $this->course_id;
+                $this->deployment->title = $this->tool->name;
+                $this->deployment->options = ['unfinished_deep_linking' => true];
+                if ($this->deployment->store() !== false) {
+                    //Display the tool deployment data so that the user can enter
+                    //them in the LTI tool.
+                    PageLayout::postInfo(
+                        _('Bitte tragen Sie die Daten zur Einbindung im LTI-Tool ein bevor sie fortfahren.')
+                    );
+                }
             }
         } else {
             //LTI 1.0/1.1
-            $custom_parameters = explode("\n", $tool->custom_parameters);
+            $custom_parameters = explode("\n", $this->tool->custom_parameters);
             $content_item_return_url = $this->url_for('course/lti/save_link/' . $tool_id);
 
             // set up ContentItemSelectionRequest
-            $lti_link = new LtiLink($tool->launch_url, $tool->consumer_key, $tool->consumer_secret, $tool->oauth_signature_method);
-            $lti_link->setUser($GLOBALS['user']->id, 'Instructor', $tool->send_lis_person);
+            $lti_link = new LtiLink($this->tool->launch_url, $this->tool->consumer_key, $this->tool->consumer_secret, $this->tool->oauth_signature_method);
+            $lti_link->setUser($GLOBALS['user']->id, 'Instructor', $this->tool->send_lis_person);
             $lti_link->setCourse($this->course_id);
             $lti_link->addLaunchParameters([
                 'lti_message_type' => 'ContentItemSelectionRequest',

@@ -28,7 +28,7 @@
                 <dd><?= htmlReady($deployment->id) ?></dd>
 
                 <dt><?= _('Client-ID') ?></dt>
-                <dd><?= htmlReady(Config::get()->STUDIP_INSTALLATION_ID . '_' . $deployment->id) ?></dd>
+                <dd><?= htmlReady(Config::get()->STUDIP_INSTALLATION_ID) ?></dd>
 
                 <? if ($parameters = $deployment->getCustomParameters()) : ?>
                     <dt><?= _('LTI custom parameters') ?></dt>
