@@ -322,6 +322,9 @@ class Admin_CoursesController extends AuthenticatedController
         $institut_id = $configuration->MY_INSTITUTES_DEFAULT && $configuration->MY_INSTITUTES_DEFAULT !== 'all'
                      ? $configuration->MY_INSTITUTES_DEFAULT
                      : null;
+        if ($configuration->MY_INSTITUTES_INCLUDE_CHILDREN) {
+            $institut_id .= '_withinst';
+        }
 
         $filters = array_merge(
             array_merge(...PluginEngine::sendMessage(AdminCourseWidgetPlugin::class, 'getFilters')),
@@ -530,6 +533,14 @@ class Admin_CoursesController extends AuthenticatedController
             'course_type'    => 'MY_COURSES_TYPE_FILTER',
             'institut_id'    => 'MY_INSTITUTES_DEFAULT',
         ];
+
+        $config->store(
+            'MY_INSTITUTES_INCLUDE_CHILDREN',
+            str_contains($filters['institut_id'], '_') ? 1 : 0
+        );
+        if ($config->MY_INSTITUTES_INCLUDE_CHILDREN) {
+            $filters['institut_id'] = substr($filters['institut_id'], 0, strpos($filters['institut_id'], '_'));
+        }
 
         foreach ($mapping as $key => $field) {
             if (isset($filters[$key])) {
@@ -1522,6 +1533,7 @@ class Admin_CoursesController extends AuthenticatedController
                     $institut['Institut_id'],
                     (!$institut['is_fak'] ? ' ' : '') . $institut['Name'],
                     $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT === $institut['Institut_id']
+                        && !$GLOBALS['user']->cfg->MY_INSTITUTES_INCLUDE_CHILDREN
                 );
 
             //check if the institute is a faculty.
@@ -1534,7 +1546,8 @@ class Admin_CoursesController extends AuthenticatedController
                     new SelectElement(
                         $institut['Institut_id'] . '_withinst', //_withinst = with institutes
                         ' ' . $institut['Name'] . ' +' . _('Institute'),
-                        ($GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT === $institut['Institut_id'] && $GLOBALS['user']->cfg->MY_INSTITUTES_INCLUDE_CHILDREN)
+                        $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT === $institut['Institut_id']
+                            && $GLOBALS['user']->cfg->MY_INSTITUTES_INCLUDE_CHILDREN
                     );
             }
         }
@@ -1567,6 +1580,9 @@ class Admin_CoursesController extends AuthenticatedController
     private function getStgteilSelector($institut_id = null)
     {
         $institut_id = $institut_id ?: $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT;
+        if (str_contains($institut_id, '_')) {
+            $institut_id = substr($institut_id, 0, strpos($institut_id, '_'));
+        }
         $stgteile = StudiengangTeil::getAllEnriched('fach_name', 'ASC', ['mvv_fach_inst.institut_id' => $institut_id]);
         $list = [];
         if (!$institut_id || $institut_id === 'all') {
@@ -1655,6 +1671,9 @@ class Admin_CoursesController extends AuthenticatedController
     private function getTeacherWidget($institut_id = null)
     {
         $institut_id = $institut_id ?: $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT;
+        if (str_contains($institut_id, '_')) {
+            $institut_id = substr($institut_id, 0, strpos($institut_id, '_'));
+        }
         $teachers = DBManager::get()->fetchAll("
                 SELECT auth_user_md5.*, user_info.*
                 FROM auth_user_md5
