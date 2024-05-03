@@ -33,7 +33,7 @@ class Admin_LtiController extends AuthenticatedController
         )->asDialog();
         $widget->addLink(
             _('Daten zur LTI-Plattform anzeigen'),
-            $this->url_for('lti/lti13a/platform_data'),
+            $this->url_for('lti/auth/platform_data'),
             Icon::create('info')
         )->asDialog();
 

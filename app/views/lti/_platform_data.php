@@ -4,7 +4,7 @@
  */
 ?>
 <dl>
-    <dt><?= _('Zielgruppe') ?></dt>
+    <dt><?= _('Plattform-ID') ?></dt>
     <dd>
         <a href="<?= htmlReady($platform->getAudience()) ?>">
             <?= htmlReady($platform->getAudience()) ?>
@@ -31,6 +31,9 @@
             <?= URLHelper::getLink('dispatch.php/lti/auth/jwks', [], true) ?>
         </a>
     </dd>
+
+    <dt><?= _('Client ID') ?></dt>
+    <dd><?= htmlReady(Config::get()->STUDIP_INSTALLATION_ID) ?></dd>
 
     <?
     $keyring = \Studip\LTI13a\PlatformManager::getPlatformKeyring();
