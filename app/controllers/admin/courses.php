@@ -527,12 +527,14 @@ class Admin_CoursesController extends AuthenticatedController
             'institut_id'    => 'MY_INSTITUTES_DEFAULT',
         ];
 
-        $config->store(
-            'MY_INSTITUTES_INCLUDE_CHILDREN',
-            str_contains($filters['institut_id'], '_') ? 1 : 0
-        );
-        if ($config->MY_INSTITUTES_INCLUDE_CHILDREN) {
-            $filters['institut_id'] = substr($filters['institut_id'], 0, strpos($filters['institut_id'], '_'));
+        if (!empty($filters['institut_id'])) {
+            $config->store(
+                'MY_INSTITUTES_INCLUDE_CHILDREN',
+                str_contains($filters['institut_id'], '_') ? 1 : 0
+            );
+            if ($config->MY_INSTITUTES_INCLUDE_CHILDREN) {
+                $filters['institut_id'] = substr($filters['institut_id'], 0, strpos($filters['institut_id'], '_'));
+            }
         }
 
         foreach ($mapping as $key => $field) {
@@ -1710,7 +1712,9 @@ class Admin_CoursesController extends AuthenticatedController
         if (str_contains($institut_id, '_')) {
             $institut_id = substr($institut_id, 0, strpos($institut_id, '_'));
         }
-        $teachers = DBManager::get()->fetchAll("
+        $teachers = [];
+        if ($institut_id) {
+            $teachers = DBManager::get()->fetchAll("
                 SELECT auth_user_md5.*, user_info.*
                 FROM auth_user_md5
                     LEFT JOIN user_info ON (auth_user_md5.user_id = user_info.user_id)
@@ -1718,18 +1722,19 @@ class Admin_CoursesController extends AuthenticatedController
                     INNER JOIN Institute ON (Institute.Institut_id = user_inst.Institut_id)
                 WHERE (Institute.Institut_id = :institut_id OR Institute.fakultaets_id = :institut_id)
                     AND auth_user_md5.perms = 'dozent'
+                GROUP BY auth_user_md5.user_id
                 ORDER BY auth_user_md5.Nachname ASC, auth_user_md5.Vorname ASC
             ", [
                 'institut_id' => $institut_id
             ],
-            function ($data) {
-                $ret['user_id'] = $data['user_id'];
-                unset($data['user_id']);
-                $ret['fullname'] = User::build($data)->getFullName("full_rev");
-                return $ret;
-            }
-        );
-
+                function ($data) {
+                    $ret['user_id'] = $data['user_id'];
+                    unset($data['user_id']);
+                    $ret['fullname'] = User::build($data)->getFullName("full_rev");
+                    return $ret;
+                }
+            );
+        }
 
         $list = new SelectWidget(_('Lehrendenfilter'), $this->url_for('admin/courses/index'), 'teacher_filter');
         if (!$institut_id || $institut_id === 'all') {
