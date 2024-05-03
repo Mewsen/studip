@@ -55,7 +55,17 @@ class Course_LtiController extends StudipController
      */
     public function index_action()
     {
-        $this->lti_data_array = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY position');
+        $this->lti_data_array = [];
+        if ($this->edit_perm) {
+            $this->lti_data_array = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY position');
+        } else {
+            //Only load those deployments that are fully configured:
+            $this->lti_data_array = LtiDeployment::findBySQL(
+                "`course_id` = :course_id AND `options` NOT LIKE '%unfinished_deep_linking%'
+                ORDER BY `position`",
+                ['course_id' => $this->course_id]
+            );
+        }
 
         if ($this->edit_perm) {
             $widget = Sidebar::get()->addWidget(new ActionsWidget());
@@ -421,7 +431,7 @@ class Course_LtiController extends StudipController
                         //for the course.
                         $deployment = LtiDeployment::findOneBySQL(
                             "`tool_id` = :tool_id AND `course_id` = :course_id
-                            AND `options` LIKE '%not_configured%=%true'"
+                            AND `options` LIKE '%unfinished_deep_linking%=%true'"
                         );
                         $use_first_link = false;
                     }
@@ -430,10 +440,15 @@ class Course_LtiController extends StudipController
                         //In that case and if it is not the first link, a new deployment
                         //has to be created.
                         $deployment = new LtiDeployment();
-                        $deployment->tool_id = $tool->id;
+                        $deployment->tool_id   = $tool->id;
+                        $deployment->title     = $tool->name;
                         $deployment->course_id = $this->course_id;
                     }
                     $deployment->launch_url = $lti_resource_link->getUrl();
+                    if (!empty($deployment->options['unfinished_deep_linking'])) {
+                        unset($deployment->options['unfinished_deep_linking']);
+                    }
+                    $deployment->store();
                 }
             }
         } else {
@@ -677,7 +692,16 @@ class Course_LtiController extends StudipController
     {
         Navigation::activateItem('/course/lti/grades');
 
-        $this->lti_data_array = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY position');
+        if ($this->edit_perm) {
+            $this->lti_data_array = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY position');
+        } else {
+            //Only load those deployments that are fully configured:
+            $this->lti_data_array = LtiDeployment::findBySQL(
+                "`course_id` = :course_id AND `options` NOT LIKE '%unfinished_deep_linking%'
+                ORDER BY `position`",
+                ['course_id' => $this->course_id]
+            );
+        }
 
         if ($this->edit_perm) {
             $this->desc = Request::int('desc');
@@ -705,7 +729,17 @@ class Course_LtiController extends StudipController
      */
     public function export_grades_action()
     {
-        $lti_data_array = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY position');
+        $lti_data_array = [];
+        if ($this->edit_perm) {
+            $lti_data_array = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY position');
+        } else {
+            //Only load those deployments that are fully configured:
+            $lti_data_array = LtiDeployment::findBySQL(
+                "`course_id` = :course_id AND `options` NOT LIKE '%unfinished_deep_linking%'
+                ORDER BY `position`",
+                ['course_id' => $this->course_id]
+            );
+        }
 
         $columns = [_('Nachname'), _('Vorname')];
 
