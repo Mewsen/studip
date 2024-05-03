@@ -1,5 +1,5 @@
 # Setup php, apache and stud.ip
-FROM php:7.4-apache as base
+FROM php:8.1-apache as base
 
 # Install system requirements
 RUN apt update && apt install -y --no-install-recommends \
@@ -17,7 +17,7 @@ RUN apt update && apt install -y --no-install-recommends \
 
 # Install php extensions
 RUN docker-php-ext-configure gd --with-jpeg --with-webp
-RUN docker-php-ext-install pdo gettext curl gd mbstring zip pdo pdo_mysql mysqli intl json
+RUN docker-php-ext-install gettext gd zip pdo_mysql mysqli intl
 
 FROM node:16 as nodejs
 

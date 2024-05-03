@@ -1,5 +1,5 @@
 # Setup php, apache and stud.ip
-FROM php:8.3-cli
+FROM php:8.1-cli
 
 # Install system requirements
 RUN apt update && apt install -y  --no-install-recommends \
@@ -13,7 +13,7 @@ RUN apt update && apt install -y  --no-install-recommends \
 
 # Install php extensions
 RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-webp
-RUN docker-php-ext-install -j$(nproc) gd gettext intl mysqli pdo_mysql zip
+RUN docker-php-ext-install -j$(nproc) gd gettext intl mysqli pdo pdo_mysql zip
 
 # Install node/npm
 COPY --from=node:16-slim /usr/local/bin /usr/local/bin

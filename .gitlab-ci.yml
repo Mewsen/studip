@@ -1,4 +1,4 @@
-image: studip/studip:tests-php8.3
+image: studip/studip:tests-php8.1
 
 variables:
   FF_NETWORK_PER_BUILD: 1
@@ -115,14 +115,14 @@ lint-php:
     reports:
       codequality: $PHPLINT_CODE_QUALITY_REPORT
 
-lint-php-7.4:
-  image: studip/studip:tests-php8.2
+lint-php-8.3:
+  image: studip/studip:tests-php8.3
   stage: checks
   needs: [build-composer]
   variables:
     CACHE_LOCATION: $CACHE_DIR/phplint-cache
-    PHPLINT_JSON_REPORT: $REPORT_DIR/phplint-report-7.4.json
-    PHPLINT_CODE_QUALITY_REPORT: $REPORT_DIR/phplint-codequality-7.4.json
+    PHPLINT_JSON_REPORT: $REPORT_DIR/phplint-report-8.3.json
+    PHPLINT_CODE_QUALITY_REPORT: $REPORT_DIR/phplint-codequality-8.3.json
   interruptible: true
   cache:
     - *composer-cache

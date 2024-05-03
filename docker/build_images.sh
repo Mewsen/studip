@@ -11,7 +11,7 @@ build_image () {
 
 build_image tests/php83 studip:tests-php8.3 &
 build_image tests/php82 studip:tests-php8.2 &
-build_image tests/php74 studip:tests-php7.4 &
+build_image tests/php81 studip:tests-php8.1 &
 build_image release-cli release-cli &
 wait
 
