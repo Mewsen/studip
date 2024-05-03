@@ -1859,3 +1859,34 @@ function xml_escape($string)
     $string = preg_replace('/[\x00-\x08\x0b\x0c\x0e-\x1f]/', '', $string);
     return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 }
+
+/**
+ * This function mimics the functionality of the $gettextInterpolate function in JavaScript.
+ * This makes it easier to format text in translatable strings.
+ *
+ * Note that the behavior of this function is simplified in comparison with $gettextInterpolate:
+ * - All placeholders that have a value are replaced with the string value of that value.
+ *   Numbers must be pre-formatted before added to the parameters.
+ * - All placeholders that have no replacements in the parameters array are output.
+ *
+ * @param string $gettext_string The translation string to be interpolated.
+ *
+ * @param array $parameters The parameters that replace the placeholders in the translation string.
+ *     Array keys are the names of the placeholders while array values are the values that are
+ *     placed inside the string.
+ *
+ * @return string The interpolated translation string.
+ */
+function studip_interpolate(string $gettext_string, array $parameters) : string
+{
+    return preg_replace_callback(
+        '/%\{\s*(\w+)\s*\}/',
+        function ($match) use ($parameters): string {
+            if (!isset($parameters[$match[1]])) {
+                throw new Exception('The parameter for the placeholder ' . $match[1] . ' is missing.');
+            }
+            return $parameters[$match[1]];
+        },
+        $gettext_string
+    );
+}

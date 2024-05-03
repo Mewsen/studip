@@ -80,11 +80,29 @@ class FunctionsTest extends \Codeception\Test\Unit
     public function testTrailsControllerExtractActionAndArgs()
     {
         $controller = new Trails_Controller(null);
-        list($action, $args, $format) = $controller->extract_action_and_args('foo/bar//42.html');
+        [$action, $args, $format] = $controller->extract_action_and_args('foo/bar//42.html');
 
         $this->assertEquals('foo', $action);
         $this->assertEquals(['bar', '', '42'], $args);
         $this->assertEquals('html', $format);
 
+    }
+
+    /**
+     * @covers ::studip_interpolate
+     */
+    public function testStudipInterpolate()
+    {
+        $this->assertEquals(
+            '12bar34',
+            studip_interpolate('12%{foo}34', ['foo' => 'bar'])
+        );
+        $this->assertEquals(
+            'foo',
+            studip_interpolate('%{ bar }', ['bar' => 'foo'])
+        );
+
+        $this->expectException(Exception::class);
+        studip_interpolate('%{foo}', []);
     }
 }
