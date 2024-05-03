@@ -61,7 +61,7 @@ class Course_LtiController extends StudipController
         } else {
             //Only load those deployments that are fully configured:
             $this->lti_data_array = LtiDeployment::findBySQL(
-                "`course_id` = :course_id AND `options` NOT LIKE '%unfinished_deep_linking%'
+                "`course_id` = :course_id AND (`options` IS NULL OR `options` NOT LIKE '%unfinished_deep_linking%')
                 ORDER BY `position`",
                 ['course_id' => $this->course_id]
             );
@@ -697,7 +697,7 @@ class Course_LtiController extends StudipController
         } else {
             //Only load those deployments that are fully configured:
             $this->lti_data_array = LtiDeployment::findBySQL(
-                "`course_id` = :course_id AND `options` NOT LIKE '%unfinished_deep_linking%'
+                "`course_id` = :course_id AND (`options` IS NULL OR `options` NOT LIKE '%unfinished_deep_linking%')
                 ORDER BY `position`",
                 ['course_id' => $this->course_id]
             );
@@ -735,7 +735,7 @@ class Course_LtiController extends StudipController
         } else {
             //Only load those deployments that are fully configured:
             $lti_data_array = LtiDeployment::findBySQL(
-                "`course_id` = :course_id AND `options` NOT LIKE '%unfinished_deep_linking%'
+                "`course_id` = :course_id AND (`options` IS NULL OR `options` NOT LIKE '%unfinished_deep_linking%')
                 ORDER BY `position`",
                 ['course_id' => $this->course_id]
             );
