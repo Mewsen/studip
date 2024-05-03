@@ -16,12 +16,22 @@
             ACHTUNG! Sie verlassen jetzt Stud.IP! Vorsicht mit den Daten!
         </section>
     </article>
+    <article class="studip">
+        <header><h1><?= _('Zu übertragende personenbezogene Daten') ?></h1></header>
+        <section>
+            <ul>
+                <li><?= _('Vorname') ?></li>
+                <li><?= _('Nachname') ?></li>
+                <li><?= _('(weiteres)') ?></li>
+            </ul>
+        </section>
+    </article>
     <?= $this->render_partial('lti/_deployment_user_info', ['deployment' => $deployment]) ?>
     <article class="studip">
         <header><h1><?= _('Bestätigung') ?></h1></header>
         <section>
             <?= _(
-                'Ich habe die Datenschutzhinweise zur Benutzung des LTI-Tools zur Kenntnis genommen und stimme der Weitergabe meiner Daten zu. '
+                'Ich habe die Datenschutzhinweise zur Benutzung des LTI-Tools zur Kenntnis genommen und stimme der Weitergabe meiner personenbezogenen Daten zu. '
                 . 'Mir ist bewusst, dass ich ohne die Zustimmung das LTI-Tool nicht nutzen kann.'
             ) ?>
             <form class="default" method="post" action="<?= $controller->link_for('course/lti/iframe/' . htmlReady($deployment->id)) ?>">
