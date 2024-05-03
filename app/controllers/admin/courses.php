@@ -1499,6 +1499,7 @@ class Admin_CoursesController extends AuthenticatedController
                 INNER JOIN Institute ON (Institute.Institut_id = user_inst.Institut_id)
             WHERE (Institute.Institut_id = :institut_id OR Institute.fakultaets_id = :institut_id)
                 AND auth_user_md5.perms = 'dozent'
+            GROUP BY auth_user_md5.user_id
             ORDER BY auth_user_md5.Nachname ASC, auth_user_md5.Vorname ASC
         ", [
             'institut_id' => $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT
