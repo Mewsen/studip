@@ -4,7 +4,7 @@
  * @var LtiDeployment $deployment
  */
 ?>
-<? if ($tool) : ?>
+<? if (!empty($tool)) : ?>
     <article class="studip">
         <header>
             <? if ($deployment) : ?>
