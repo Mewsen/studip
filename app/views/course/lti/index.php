@@ -82,7 +82,7 @@
                 <section>
                     <?= Studip\LinkButton::create(
                         _('Anwendung starten'),
-                        $controller->url_for('course/lti/iframe', $lti_data->position),
+                        $controller->url_for('course/lti/iframe', $lti_data->id),
                         ['target' => '_blank']
                     ) ?>
                 </section>

@@ -137,56 +137,70 @@ class Course_LtiController extends StudipController
     /**
      * Display the launch form for a tool as an iframe.
      */
-    public function iframe_action(string $position)
+    public function iframe_action(string $deployment_id)
     {
-        $deployment = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
+        $this->show_data_protection_info = false;
+        $this->deployment = LtiDeployment::find($deployment_id);
 
-        $this->lti13a_mode = false;
-        $lti_version = $deployment->getToolLtiVersion();
-        if ($lti_version === '1.3a') {
-            //LTI 1.3a
-            $this->lti13a_mode = true;
+        if (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
+            if (Request::submitted('continue')) {
+                //Redirect to the tool.
 
-            $lti_resource_link = new OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink(
-                Config::get()->STUDIP_INSTALLATION_ID . '_' . $this->course_id . '_' . $deployment->id,
-                [
-                    'url'   => $deployment->getLaunchURL(),
-                    'title' => $deployment->title
-                ]
-            );
+                $this->lti13a_mode = false;
+                $lti_version = $this->deployment->getToolLtiVersion();
+                if ($lti_version === '1.3a') {
+                    //LTI 1.3a
+                    $this->lti13a_mode = true;
 
-            $registration = new \Studip\LTI13a\Registration($deployment);
-            $builder = new \OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder();
-            $this->message = $builder->buildLtiResourceLinkLaunchRequest(
-                $lti_resource_link,
-                $registration,
-                $GLOBALS['user']->id,
-                $deployment->id,
-                [
-                    \Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole('autor')
-                ],
-                array_merge(
-                    [
-                        new \OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim(
-                            $this->course_id,
+                    $lti_resource_link = new OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink(
+                        Config::get()->STUDIP_INSTALLATION_ID . '_' . $this->course_id . '_' . $this->deployment->id,
+                        [
+                            'url' => $this->deployment->getLaunchURL(),
+                            'title' => $this->deployment->title
+                        ]
+                    );
+
+                    $registration = new \Studip\LTI13a\Registration($this->deployment);
+                    $builder = new \OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder();
+                    $this->message = $builder->buildLtiResourceLinkLaunchRequest(
+                        $lti_resource_link,
+                        $registration,
+                        $GLOBALS['user']->id,
+                        $this->deployment->id,
+                        [
+                            \Studip\LTI13a\PlatformManager::getLtiRoleClaimForStudipRole('autor')
+                        ],
+                        array_merge(
                             [
-                                'http://purl.imsglobal.org/vocab/lis/v2/course#CourseOffering'
+                                new \OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim(
+                                    $this->course_id,
+                                    [
+                                        'http://purl.imsglobal.org/vocab/lis/v2/course#CourseOffering'
+                                    ],
+                                    $this->course->veranstaltungsnummer ?? '',
+                                    !empty($this->course) ? $this->course->getFullName() : ''
+                                )
                             ],
-                            $this->course->veranstaltungsnummer ?? '',
-                            !empty($this->course) ? $this->course->getFullName() : ''
+                            $this->deployment->getCustomLtiParameterArray(),
                         )
-                    ],
-                    $deployment->getCustomLtiParameterArray(),
-                )
-            );
+                    );
+                } else {
+                    //LTI 1.0/1.1
+                    $lti_link = $this->getLtiLink($this->deployment);
+                    $this->launch_url = $this->deployment->getLaunchURL();
+                    $this->launch_data = $lti_link->getBasicLaunchData();
+                    $this->signature = $lti_link->getLaunchSignature($this->launch_data);
+                }
+                $this->set_layout(null);
+            } else {
+                //Redirect back to the course:
+                $this->redirect('course/lti/index');
+            }
         } else {
-            //LTI 1.0/1.1
-            $lti_link = $this->getLtiLink($deployment);
-            $this->launch_url = $deployment->getLaunchURL();
-            $this->launch_data = $lti_link->getBasicLaunchData();
-            $this->signature = $lti_link->getLaunchSignature($this->launch_data);
+            //Show the data protection information:
+            $this->show_data_protection_info = true;
         }
-        $this->set_layout(null);
     }
 
     /**
