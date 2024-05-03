@@ -58,13 +58,13 @@
             <? endif ?>
         </header>
         <? if ($unfinished_deep_linking) : ?>
-        <section>
-            <?= Studip\LinkButton::create(
-                _('Einrichtung abschließen'),
-                $controller->url_for('course/lti/select_link/' . $lti_data->id, ['tool_id' => $lti_data->tool_id]),
-                ['target' => '_blank']
-            ) ?>
-        </section>
+            <section>
+                <?= Studip\LinkButton::create(
+                    _('Einrichtung abschließen'),
+                    $controller->url_for('course/lti/select_link/' . $lti_data->id, ['tool_id' => $lti_data->tool_id]),
+                    ['target' => '_blank']
+                ) ?>
+            </section>
         <? else : ?>
             <?
             $document_target = $lti_data->options['document_target'] ?? '';

@@ -95,7 +95,7 @@ class LtiDeployment extends SimpleORMap
         if (empty($this->tool->allow_custom_url) && empty($this->tool->deep_linking) || empty($this->launch_url)) {
             return $this->tool->launch_url ?? '';
         }
-        return '';
+        return $this->launch_url;
     }
 
     /**
