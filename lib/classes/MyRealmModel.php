@@ -163,16 +163,22 @@ class MyRealmModel
     public static function getCourses($min_sem_key, $max_sem_key, $params = [])
     {
         // init
-        $order_by          = $params['order_by'] ?? null;
-        $order             = $params['order'] ?? null;
-        $deputies_enabled  = $params['deputies_enabled'];
+        $order_by         = $params['order_by'] ?? null;
+        $order            = $params['order'] ?? null;
+        $deputies_enabled = $params['deputies_enabled'];
 
         $sem_data = Semester::getAllAsArray();
 
         $semester_ids = [];
         if (is_numeric($min_sem_key) && is_numeric($max_sem_key)) {
             foreach ($sem_data as $index => $data) {
-                if ($index >= $min_sem_key && $index <= $max_sem_key) {
+                if (
+                    $index >= $min_sem_key && $index <= $max_sem_key
+                    && (
+                        !isset($params['exactly'])
+                        || in_array($index, $params['exactly'])
+                    )
+                ) {
                     $semester_ids[] = $data['semester_id'] ?? '';
                 }
             }
@@ -244,7 +250,7 @@ class MyRealmModel
         }
 
         // Get the needed semester
-        if (!in_array($sem, ['', 'current', 'future', 'last', 'lastandnext'])) {
+        if (!in_array($sem, ['', 'current', 'future', 'last', 'lastandnext','lastbutone'])) {
             $semesters[] = Semester::getIndexById($sem);
         } else {
             switch ($sem) {
@@ -263,6 +269,10 @@ class MyRealmModel
                     $semesters[] = $current_sem - 1;
                     $semesters[] = $current_sem;
                     $semesters[] = $max_sem;
+                    break;
+                case 'lastbutone':
+                    $semesters[] = $current_sem - 2;
+                    $semesters[] = $current_sem;
                     break;
                 default:
                     $semesters = array_keys($sem_data);
@@ -287,7 +297,7 @@ class MyRealmModel
         $min_sem_key = min($semesters);
         $max_sem_key = max($semesters);
         $group_field = $params['group_field'];
-        $courses     = self::getCourses($min_sem_key, $max_sem_key, $params);
+        $courses     = self::getCourses($min_sem_key, $max_sem_key, $params + ['exactly' => $semesters]);
         $show_semester_name = UserConfig::get($GLOBALS['user']->id)->SHOWSEM_ENABLE;
         $sem_courses = [];
 

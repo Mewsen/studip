@@ -344,7 +344,10 @@ class MyCoursesController extends AuthenticatedController
         $semesters   = MyRealmModel::getSelectedSemesters($sem);
         $min_sem_key = min($semesters);
         $max_sem_key = max($semesters);
-        $courses     = MyRealmModel::getCourses($min_sem_key, $max_sem_key, compact('deputies_enabled'));
+        $courses     = MyRealmModel::getCourses($min_sem_key, $max_sem_key, [
+            'deputies_enabled' => $deputies_enabled,
+            'exactly'          => $semesters,
+        ]);
         foreach ($courses as $index => $course) {
             MyRealmModel::setObjectVisits($course, $GLOBALS['user']->id, $timestamp);
         }
@@ -1168,6 +1171,7 @@ class MyCoursesController extends AuthenticatedController
             'future'      => _('Aktuelles und nächstes Semester'),
             'last'        => _('Aktuelles und letztes Semester'),
             'lastandnext' => _('Letztes, aktuelles, nächstes Semester'),
+            'lastbutone'  => _('Aktuelles und vorletztes Semester'),
         ];
 
         if (Config::get()->MY_COURSES_ENABLE_ALL_SEMESTERS) {
