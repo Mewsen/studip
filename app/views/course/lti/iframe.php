@@ -25,6 +25,7 @@
     <article class="studip">
         <header><h1><?= _('Zu übertragende personenbezogene Daten') ?></h1></header>
         <section>
+            <?= _('Beim Wechsel in das LTI-Tool werden die folgenden personenbezogenen Daten übertragen:') ?>
             <ul>
                 <li><?= _('Die ID ihres Stud.IP-Kontos') ?></li>
                 <li><?= _('Ihr Vor- und Nachname, sowie gegebenenfalls vorhandene Titel') ?></li>
