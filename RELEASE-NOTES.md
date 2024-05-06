@@ -18,6 +18,7 @@
 - Die Funktionen `studip_json_encode()` und `studip_json_decode()` wurden entfernt. Stattdessen müssen die Methode `json_encode()` und `json_decode()` verwendet werden. ([Issue #3814](https://gitlab.studip.de/studip/studip/-/issues/3814))
 - Die `MembersModel.php` wurde entfernt ([Issue #3811](https://gitlab.studip.de/studip/studip/-/issues/3811))
 - Die `admission.inc.php` wurde entfernt. ([Issue #3812](https://gitlab.studip.de/studip/studip/-/issues/3812))
+- Die folgenden Funktionen wurden aus der Datei `lib/functions.php` entfernt: `re_sort_dozenten()`, `re_sort_tutoren()` und `get_next_position()` ([Issue #4002](https://gitlab.studip.de/studip/studip/-/issues/4002))
 - Die Methoden `CronjobScheduler::scheduleOnce()` sowie `CronjobTask::scheduleOnce()` wurden ersatzlos entfernt. ([Issue #4078](https://gitlab.studip.de/studip/studip/-/issues/4078))
 - Die folgenden Klassen wurden innerhalb von Stud.IP verschoben. Da sie über den Autoloader geladen werden, kann jedes manuelle Einbinden ersatzlos entfernt werden. ([Issue #4105](https://gitlab.studip.de/studip/studip/-/issues/4105))
   - `AuthenticatedController`

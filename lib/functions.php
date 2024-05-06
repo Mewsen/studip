@@ -504,64 +504,6 @@ function check_and_set_date($tag, $monat, $jahr, $stunde, $minute, &$arr, $field
     return $check;
 }
 
-/**
- * reset the order-positions for the lecturers in the passed seminar,
- * starting at the passed position
- *
- * @param string $s_id     the seminar to work on
- * @param int    $position the position to start with
- * @deprecated since Stud.IP 5.3
- *
- * @return void
- */
-function re_sort_dozenten($s_id, $position)
-{
-    $query = "UPDATE seminar_user
-              SET position = position - 1
-              WHERE Seminar_id = ? AND status = 'dozent' AND position > ?";
-    $statement = DBManager::get()->prepare($query);
-    $statement->execute([$s_id, $position]);
-}
-
-/**
- * reset the order-positions for the tutors in the passed seminar,
- * starting at the passed position
- *
- * @param string $s_id     the seminar to work on
- * @param int    $position the position to start with
- * @deprecated since Stud.IP 5.3
- *
- * @return void
- */
-function re_sort_tutoren($s_id, $position)
-{
-    $query = "UPDATE seminar_user
-              SET position = position - 1
-              WHERE Seminar_id = ? AND status = 'tutor' AND position > ?";
-    $statement = DBManager::get()->prepare($query);
-    $statement->execute([$s_id, $position]);
-}
-
-/**
- * return the highest position-number increased by one for the
- * passed user-group in the passed seminar
- *
- * @param string $status     can be on of 'tutor', 'dozent', ...
- * @param string $seminar_id the seminar to work on
- * @deprecated since Stud.IP 5.3
- *
- * @return int  the next available position
- */
-function get_next_position($status, $seminar_id)
-{
-    $query = "SELECT MAX(position) + 1
-              FROM seminar_user
-              WHERE Seminar_id = ? AND status = ?";
-    $statement = DBManager::get()->prepare($query);
-    $statement->execute([$seminar_id, $status]);
-
-    return $statement->fetchColumn() ?: 0;
-}
 
 /**
  * converts a string to a float, depending on the locale
