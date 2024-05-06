@@ -86,21 +86,11 @@ class AdminCourseFilter
                 return $a['Institut_id'];
             });
         } else {
-            //We must check, if the institute ID belongs to a faculty
-            //and has the string _i appended to it.
-            //In that case we must display the courses of the faculty
-            //and all its institutes.
-            //Otherwise we just display the courses of the faculty.
 
-            $include_children = false;
             $inst_id = $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT;
-            if (str_contains($inst_id, '_')) {
-                $inst_id = substr($inst_id, 0, strpos($inst_id, '_'));
-                $include_children = true;
-            }
             $inst_ids[] = $inst_id;
 
-            if ($include_children) {
+            if ($GLOBALS['user']->cfg->MY_INSTITUTES_INCLUDE_CHILDREN) {
                 $inst = Institute::find($inst_id);
                 if ($inst && $inst->isFaculty()) {
                     foreach ($inst->sub_institutes->pluck('Institut_id') as $institut_id) {
