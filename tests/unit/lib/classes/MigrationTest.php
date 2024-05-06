@@ -16,10 +16,10 @@ class MigrationTest extends \Codeception\Test\Unit
         $this->before = $GLOBALS['CACHING_ENABLE'] ?? null;
         $GLOBALS['CACHING_ENABLE'] = false;
 
+        require_once 'lib/classes/SimpleORMap.class.php';
         require_once 'lib/classes/StudipCache.class.php';
         require_once 'lib/classes/StudipMemoryCache.class.php';
         require_once 'lib/classes/StudipCacheFactory.class.php';
-        require_once 'lib/models/SimpleORMap.class.php';
 
         require_once 'lib/migrations/Migration.php';
         require_once 'lib/migrations/Migrator.php';
