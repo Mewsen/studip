@@ -82,7 +82,7 @@ class Admin_CourseplanningController extends AuthenticatedController
         foreach ($this->events as $event) {
             $start_date_time = explode('T', $event['start']);
             $time_elements = explode(':', $start_date_time[1]);
-            if (!$event['comform'] || $time_elements[0] % 2) {
+            if (!$event['conform'] || $time_elements[0] % 2) {
                 Sidebar::get()->getWidget('actions')->addLink(
                     _('Veranstaltungen außerhalb des Rasters'),
                     $this->nonconformURL(),
