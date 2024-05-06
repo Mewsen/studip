@@ -26,6 +26,7 @@
   - `StudipController`
   - `StudipControllerPropertiesTrait`
   - `StudipResponse`
+- Im Rahmen von [Issue #4118](https://gitlab.studip.de/studip/studip/-/issues/4118) wurde `write_excel` ausgebaut. Als Alternative kann `phpoffice/phpspreadsheet` verwendet werden.
 
 ## Security related issues
 

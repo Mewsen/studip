@@ -61,18 +61,6 @@ class Search_CoursesController extends AuthenticatedController
         PageLayout::setTitle($title);
     }
 
-    public function export_results_action()
-    {
-        $sem_browse_obj = new SemBrowse();
-        $tmpfile = basename($sem_browse_obj->create_result_xls());
-        if ($tmpfile) {
-            $this->redirect(FileManager::getDownloadURLForTemporaryFile(
-                    $tmpfile, _('ErgebnisVeranstaltungssuche.xls'), 4));
-        } else {
-            $this->render_nothing();
-        }
-    }
-
     private function setupSidebar()
     {
         $sidebar = Sidebar::Get();
