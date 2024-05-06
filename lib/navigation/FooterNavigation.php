@@ -69,13 +69,20 @@ class FooterNavigation extends Navigation
                 && User::findCurrent()
             )
         ) {
+            $url = Request::url();
+
+            // Remove 'page' parameter if the page links to itself
+            if (str_contains($url, 'dispatch.php/accessibility/forms/report_barrier')) {
+                $url = URLHelper::getURL($url, ['page' => null], true);
+            }
+
             $this->addSubNavigation(
                 'report_barrier',
                 new Navigation(
                     _('Barriere melden'),
                     URLHelper::getURL(
                         'dispatch.php/accessibility/forms/report_barrier',
-                        ['page' => Request::url(), 'cancel_login' => '1']
+                        ['page' => $url, 'cancel_login' => '1']
                     )
                 )
             );
