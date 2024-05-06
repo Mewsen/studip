@@ -17,7 +17,8 @@ return new class extends Migration
                       SELECT `pluginid`
                       FROM `plugins`
                       WHERE FIND_IN_SET(?, `plugintype`)
+                         OR FIND_IN_SET(?, `plugintype`)
                   )";
-        DBManager::get()->execute($query, [StandardPlugin::class]);
+        DBManager::get()->execute($query, [StudipModule::class, StandardPlugin::class]);
     }
 };
