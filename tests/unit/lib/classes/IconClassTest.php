@@ -27,7 +27,7 @@ class IconClassTest extends \Codeception\Test\Unit
     {
         $this->assertEquals(
             '<img width="16" height="16" src="images/icons/blue/vote.svg" alt="" class="icon-role-clickable icon-shape-vote">',
-            Icon::create('vote', 'clickable')->asImg()
+            Icon::create('vote')->asImg()
         );
     }
 
@@ -35,7 +35,7 @@ class IconClassTest extends \Codeception\Test\Unit
     {
         $this->assertEquals(
             '<img width="16" height="16" src="images/icons/blue/vote.svg" alt="" class="icon-role-clickable icon-shape-vote">',
-            Icon::create('vote', 'clickable')->asImg()
+            Icon::create('vote')->asImg()
         );
     }
 
@@ -43,7 +43,7 @@ class IconClassTest extends \Codeception\Test\Unit
     {
         $this->assertEquals(
             '<img width="20" height="20" src="images/icons/blue/vote.svg" alt="" class="icon-role-clickable icon-shape-vote">',
-            Icon::create('vote', 'clickable')->asImg(20)
+            Icon::create('vote')->asImg(20)
         );
     }
 
@@ -51,7 +51,7 @@ class IconClassTest extends \Codeception\Test\Unit
     {
         $this->assertEquals(
             '<img title="Mit Anhang" width="20" height="20" src="images/icons/blue/vote.svg" class="icon-role-clickable icon-shape-vote">',
-            Icon::create('vote', 'clickable', ['title' => _("Mit Anhang")])->asImg(20)
+            Icon::create('vote')->asImg(20, ['title' => _('Mit Anhang')])
         );
     }
 
@@ -59,7 +59,7 @@ class IconClassTest extends \Codeception\Test\Unit
     {
         $this->assertEquals(
             '<img hspace="3" width="16" height="16" src="images/icons/blue/arr_2left.svg" alt="" class="icon-role-clickable icon-shape-arr_2left">',
-            Icon::create('arr_2left', 'clickable')->asImg(['hspace' => 3])
+            Icon::create('arr_2left')->asImg(['hspace' => 3])
         );
     }
 
@@ -67,7 +67,7 @@ class IconClassTest extends \Codeception\Test\Unit
     {
         $this->assertEquals(
             '<img class="text-bottom icon-role-info icon-shape-staple" width="20" height="20" src="images/icons/black/staple.svg" alt="">',
-            Icon::create('staple', 'info')->asImg(20, ['class' => 'text-bottom'])
+            Icon::create('staple', Icon::ROLE_INFO)->asImg(20, ['class' => 'text-bottom'])
         );
     }
 
@@ -75,7 +75,7 @@ class IconClassTest extends \Codeception\Test\Unit
     {
         $this->assertEquals(
             '<img title="Datei hochladen" class="text-bottom icon-role-new icon-shape-upload" width="20" height="20" src="images/icons/red/upload.svg">',
-            Icon::create('upload', 'new', ['title' => _("Datei hochladen")])
+            Icon::create('upload', Icon::ROLE_NEW, ['title' => _("Datei hochladen")])
                 ->asImg(20, ['class' => 'text-bottom'])
         );
     }
@@ -84,22 +84,22 @@ class IconClassTest extends \Codeception\Test\Unit
     {
         $this->assertEquals(
             '<input type="image" class="text-bottom icon-role-clickable icon-shape-upload" width="20" height="20" src="images/icons/blue/upload.svg" alt="">',
-            Icon::create('upload', 'clickable')->asInput(20, ['class' => 'text-bottom'])
+            Icon::create('upload')->asInput(20, ['class' => 'text-bottom'])
         );
     }
 
     function testIconIsImmutable()
     {
-        $icon = Icon::create('upload', 'clickable', ['title' => _('a title')]);
-        $copy = $icon->copyWithRole('clickable');
+        $icon = Icon::create('upload', Icon::ROLE_CLICKABLE, ['title' => _('a title')]);
+        $copy = $icon->copyWithRole(Icon::ROLE_CLICKABLE);
 
         $this->assertNotSame($icon, $copy);
     }
 
     function testIconCopyWithRole()
     {
-        $icon = Icon::create('upload', 'clickable', ['title' => _('a title')]);
-        $copy = $icon->copyWithRole('info');
+        $icon = Icon::create('upload', Icon::ROLE_CLICKABLE, ['title' => _('a title')]);
+        $copy = $icon->copyWithRole(Icon::ROLE_INFO);
 
         $this->assertEquals($icon->getShape(),      $copy->getShape());
         $this->assertNotEquals($icon->getRole(),    $copy->getRole());
@@ -108,7 +108,7 @@ class IconClassTest extends \Codeception\Test\Unit
 
     function testIconCopyWithShape()
     {
-        $icon = Icon::create('upload', 'clickable', ['title' => _('a title')]);
+        $icon = Icon::create('upload', Icon::ROLE_CLICKABLE, ['title' => _('a title')]);
         $copy = $icon->copyWithShape('staple');
 
         $this->assertNotEquals($icon->getShape(),   $copy->getShape());
@@ -118,7 +118,7 @@ class IconClassTest extends \Codeception\Test\Unit
 
     function testIconCopyWithAttributes()
     {
-        $icon = Icon::create('upload', 'clickable', ['title' => _('a title')]);
+        $icon = Icon::create('upload', Icon::ROLE_CLICKABLE, ['title' => _('a title')]);
         $copy = $icon->copyWithAttributes(['title' => _('another title')]);
 
         $this->assertEquals($icon->getShape(),         $copy->getShape());
@@ -136,7 +136,7 @@ class IconClassTest extends \Codeception\Test\Unit
     {
         $this->assertEquals(
             'background-image:url(images/icons/blue/vote.svg);background-size:17px 17px;',
-            Icon::create('vote', 'clickable')->asCSS(17)
+            Icon::create('vote')->asCSS(17)
         );
     }
 
@@ -144,7 +144,7 @@ class IconClassTest extends \Codeception\Test\Unit
     {
         $this->assertEquals(
             'images/icons/blue/vote.svg',
-            Icon::create('vote', 'clickable')->asImagePath()
+            Icon::create('vote')->asImagePath()
         );
     }
 
@@ -152,7 +152,7 @@ class IconClassTest extends \Codeception\Test\Unit
     {
         $this->assertEquals(
             '<img src="images/icons/blue/vote.svg" alt="" class="icon-role-clickable icon-shape-vote">',
-            Icon::create('vote', 'clickable')->asImg(false)
+            Icon::create('vote')->asImg(false)
         );
     }
 
@@ -160,7 +160,19 @@ class IconClassTest extends \Codeception\Test\Unit
     {
         $this->assertEquals(
             '<input type="image" src="images/icons/blue/upload.svg" alt="" class="icon-role-clickable icon-shape-upload">',
-            Icon::create('upload', 'clickable')->asInput(false)
+            Icon::create('upload')->asInput(false)
+        );
+    }
+
+    function testIconCreateRemovedExtras()
+    {
+        $this->assertEquals(
+            '<img src="images/icons/blue/vote.svg" alt="" class="icon-role-clickable icon-shape-vote">',
+            Icon::create('add/vote')->asImg(false)
+        );
+        $this->assertEquals(
+            '<img src="images/icons/blue/vote.svg" alt="" class="icon-role-clickable icon-shape-vote">',
+            Icon::create('vote+add')->asImg(false)
         );
     }
 }

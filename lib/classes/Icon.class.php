@@ -338,7 +338,7 @@ class Icon
         $classNames = 'icon-role-' . $this->role;
 
         if (!self::isStatic($this->shape)) {
-            $classNames .= ' icon-shape-' . $this->shape;
+            $classNames .= ' icon-shape-' . $this->shapeToPath($this->shape);
         }
 
         $result['class'] = isset($result['class']) ? $result['class'] . ' ' . $classNames : $classNames;
@@ -385,8 +385,11 @@ class Icon
     // transforms a shape w/ possible additions (`shape`) to a path `(addition/)?shape`
     private function shapeToPath()
     {
-        return self::isStatic($this->shape)
-            ? $this->shape :
-            join('/', array_reverse(explode('+', preg_replace('/\.svg$/', '', $this->shape))));
+        if (self::isStatic($this->shape)) {
+            return $this->shape;
+        }
+        $shape = array_reverse(explode('/', $this->shape))[0];
+        $shape = explode('+', $shape)[0];
+        return $shape;
     }
 }
