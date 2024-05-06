@@ -1,24 +1,36 @@
-<? use Studip\Button, Studip\LinkButton; ?>
+<?php
+/**
+ * @var NewsController $controller
+ * @var string $area_type
+ * @var Trails_Flash $flash
+ * @var string $news_searchterm
+ * @var string $news_startdate
+ * @var string $news_enddate
+ * @var string|null $filter_text
+ * @var array<string, array<string, array{title: string, object: StudipNews}>> $news_items
+ * @var array $area_structure
+ */
+?>
 <? if (!empty($flash['question_text'])) : ?>
-<?= QuestionBox::create(
-        htmlReady($flash['question_text']),
-        $controller->url_for('news/admin_news/' . $area_type, array_merge(
-            $flash['question_param'],
-            [
+    <?= QuestionBox::create(
+            htmlReady($flash['question_text']),
+            $controller->url_for('news/admin_news/' . $area_type, array_merge(
+                $flash['question_param'],
+                [
+                    'news_filter_term'  => htmlReady($news_searchterm),
+                    'news_filter_start' => $news_startdate,
+                    'news_filter_end'   => $news_enddate,
+                    'news_filter'       => 'set'
+                ]
+            )),
+            $controller->url_for('news/admin_news/' . $area_type, [
                 'news_filter_term'  => htmlReady($news_searchterm),
                 'news_filter_start' => $news_startdate,
                 'news_filter_end'   => $news_enddate,
                 'news_filter'       => 'set'
-            ]
-        )),
-        $controller->url_for('news/admin_news/' . $area_type, [
-            'news_filter_term'  => htmlReady($news_searchterm),
-            'news_filter_start' => $news_startdate,
-            'news_filter_end'   => $news_enddate,
-            'news_filter'       => 'set'
-        ])
-    );
-?>
+            ])
+        );
+    ?>
 <? endif ?>
 
 <form action="<?= $controller->link_for('news/admin_news/' . $area_type) ?>" id="admin_news_form" class="default" method="post">
@@ -52,9 +64,9 @@
         </label>
     </fieldset>
     <footer>
-        <?= Button::create(_('Filter anwenden'), 'apply_news_filter', ['aria-label' => _('Liste mit Suchbegriff und/oder Zeitraum filtern')]) ?>
+        <?= Studip\Button::create(_('Filter anwenden'), 'apply_news_filter', ['aria-label' => _('Liste mit Suchbegriff und/oder Zeitraum filtern')]) ?>
     <? if ($filter_text) : ?>
-        <?= Button::create(_('Filter zurücksetzen'), 'reset_filter') ?>
+        <?= Studip\Button::create(_('Filter zurücksetzen'), 'reset_filter') ?>
     <? endif ?>
     </footer>
     <br>
@@ -74,12 +86,13 @@
                 </caption>
             <? endif ?>
                 <colgroup>
-                    <col width="20">
+                    <col style="width: 20px">
                     <col>
-                    <col width="25%">
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="80">
+                    <col style="width: 25%">
+                    <col style="width: 10%">
+                    <col style="width: 10%">
+                    <col style="width: 5%">
+                    <col style="width: 80px">
                 </colgroup>
                 <thead>
                     <tr>
@@ -88,6 +101,7 @@
                         <th><?= _('Autor') ?></th>
                         <th><?= _('Einstelldatum') ?></th>
                         <th><?= _('Ablaufdatum') ?></th>
+                        <th><?= _('Aufrufe') ?></th>
                         <th class="actions"><?= _('Aktion') ?></th>
                     </tr>
                 </thead>
@@ -99,18 +113,18 @@
                             <tr>
                                 <th>
                                     <input type="checkbox"
-                                           data-proxyfor=".news_<?= $news['range_id'] ?>"
+                                           data-proxyfor=".news_<?= htmlReady($news['range_id']) ?>"
                                            aria-labelledby="<?= _('Alle auswählen') ?>">
                                 </th>
-                                <th colspan="5"><?= mila(htmlReady($news['title'] ?? '')) . ' ' . htmlReady($news['semester'] ?? '') ?></th>
+                                <th colspan="6"><?= mila(htmlReady($news['title'] ?? '')) . ' ' . htmlReady($news['semester'] ?? '') ?></th>
                             </tr>
                         <? endif ?>
                         <? $last_title = $title ?>
                     <? endif ?>
                     <tr>
                         <td>
-                            <input type="checkbox" class="news_<?= $news['range_id'] ?>" name="mark_news[]"
-                                   value="<?= $news['object']->news_id . '_' . $news['range_id'] ?>"
+                            <input type="checkbox" class="news_<?= htmlReady($news['range_id']) ?>" name="mark_news[]"
+                                   value="<?= htmlReady($news['object']->news_id . '_' . $news['range_id']) ?>"
                                    aria-label="<?= _('Diese Ankündigung zum Entfernen vormerken') ?>" <?= tooltip(_("Diese Ankündigung zum Entfernen vormerken"), false) ?>>
                         </td>
                         <td><?= htmlReady($news['object']->topic) ?></td>
@@ -119,9 +133,19 @@
                             $body = $parts[0];
                             $admin_msg = $parts[1] ?? ';'
                         ?>
-                        <td><?= htmlReady($news['object']->author) ?></td>
+                        <td>
+                        <? if ($news['object']->owner): ?>
+                            <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $news['object']->owner->username]) ?>">
+                                <?= Avatar::getAvatar($news['object']->user_id)->getImageTag(Avatar::SMALL) ?>
+                                <?= htmlReady($news['object']->owner->getFullName()) ?>
+                            </a>
+                        <? else: ?>
+                            <?= htmlReady($news['object']->author) ?>
+                        <? endif; ?>
+                        </td>
                         <td><?= strftime("%d.%m.%y", $news['object']->date) ?></td>
                         <td><?= strftime("%d.%m.%y", $news['object']->date + $news['object']->expire) ?></td>
+                        <td><?= $news['object']->views ?></td>
                         <td class="actions">
                             <?
                             $menu = ActionMenu::get()->setContext($news['object']->topic);
@@ -158,8 +182,8 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="6">
-                            <?= Button::create(_('Alle markierten Ankündigungen entfernen'), 'remove_marked_news') ?>
+                        <td colspan="7">
+                            <?= Studip\Button::create(_('Alle markierten Ankündigungen entfernen'), 'remove_marked_news') ?>
                         </td>
                     </tr>
                 </tfoot>

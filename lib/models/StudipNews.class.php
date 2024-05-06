@@ -44,6 +44,7 @@ require_once 'lib/object.inc.php';
  * @property SimpleORMapCollection|StudipComment[] $comments has_many StudipComment
  * @property SimpleORMapCollection|NewsRoles[] $news_roles has_many NewsRoles
  * @property User $owner belongs_to User
+ * @property int $views additional field
  */
 class StudipNews extends SimpleORMap implements PrivacyObject
 {
@@ -72,8 +73,15 @@ class StudipNews extends SimpleORMap implements PrivacyObject
             'on_delete'         => 'delete'
         ];
 
-        $config['i18n_fields']['topic'] = true;
-        $config['i18n_fields']['body'] = true;
+        $config['additional_fields'] = [
+            'views' => [
+                'get' => function (StudipNews $news): int {
+                    return object_return_views($news->id);
+                },
+            ],
+        ];
+
+        $config['i18n_fields'] = ['topic', 'body'];
 
         // Strip <admin_msg> from news body
         $config['registered_callbacks']['after_initialize'][] = function ($news) {
@@ -292,7 +300,7 @@ class StudipNews extends SimpleORMap implements PrivacyObject
         $news_result    = $statement->fetchGrouped();
 
         $objects = [$area => []];
-        foreach($news_result as $id => $result) {
+        foreach ($news_result as $id => $result) {
             $objects[$area][$id] = [
                 'range_id' => $result['range_id'],
                 'title'    => $result['title'] ?? '',
@@ -307,8 +315,7 @@ class StudipNews extends SimpleORMap implements PrivacyObject
             } elseif ($area === 'user') {
                 if ($GLOBALS['user']->id === $result['userid']) {
                     $objects[$area][$id]['title'] = _('Ankündigungen auf Ihrer Profilseite');
-                }
-                else {
+                } else {
                     $objects[$area][$id]['title'] = sprintf(_('Ankündigungen auf der Profilseite von %s'), get_fullname($result['userid']));
                 }
             } elseif ($area === 'global') {
