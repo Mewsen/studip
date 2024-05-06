@@ -13,7 +13,13 @@
     <article class="studip">
         <header><h1><?= _('Datenschutzhinweise') ?></h1></header>
         <section>
-            ACHTUNG! Sie verlassen jetzt Stud.IP! Vorsicht mit den Daten!
+            <?
+            $data_protection_warning = CourseConfig::get()->LTI_DATA_PROTECTION_COURSE_WARNING;
+            if (empty($data_protection_warning)) {
+                $data_protection_warning = Config::get()->LTI_DATA_PROTECTION_DEFAULT_WARNING;
+            }
+            ?>
+            <?= htmlReady($data_protection_warning) ?>
         </section>
     </article>
     <article class="studip">
