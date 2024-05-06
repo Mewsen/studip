@@ -86,8 +86,8 @@ class SemType implements ArrayAccess
         if ($this->countSeminars() === 0) {
             $db = DBManager::get();
             $statement = $db->prepare("
-                DELETE FROM sem_types 
-                WHERE id = :id 
+                DELETE FROM sem_types
+                WHERE id = :id
             ");
             StudipCacheFactory::getCache()->expire('DB_SEM_TYPES_ARRAY');
             return $statement->execute([
@@ -119,11 +119,9 @@ class SemType implements ArrayAccess
      * deprecated, does nothing, should not be used
      * @param string $offset
      * @param mixed $value
-     *
-     * @todo Add void return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+
+    public function offsetSet($offset, $value): void
     {
     }
 
@@ -131,12 +129,8 @@ class SemType implements ArrayAccess
      * Compatibility function with old $SEM_TYPE variable for plugins. Maps the
      * new array-structure to the old boolean values.
      * @param integer $offset: name of attribute
-     * @return boolean|(localized)string
-     *
-     * @todo Add mixed return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         switch ($offset) {
             case "name":
@@ -153,12 +147,8 @@ class SemType implements ArrayAccess
     /**
      * ArrayAccess method to check if an attribute exists.
      * @param mixed $offset
-     * @return bool
-     *
-     * @todo Add bool return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->data[$offset]);
     }
@@ -166,11 +156,8 @@ class SemType implements ArrayAccess
     /**
      * deprecated, does nothing, should not be used
      * @param string $offset
-     *
-     * @todo Add void return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
     }
 

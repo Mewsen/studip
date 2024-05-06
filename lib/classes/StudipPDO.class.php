@@ -122,23 +122,20 @@ class StudipPDO extends PDO
      * Quotes the given value in a form appropriate for the type.
      * If no explicit type is given, the value's PHP type is used.
      *
-     * @param mixed $value PHP value to quote
+     * @param mixed $string PHP value to quote
      * @param ?int $type parameter type (e.g. PDO::PARAM_STR)
      * @return string|false quoted SQL string
-     *
-     * @todo Add string|false return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function quote($value, $type = null)
+    public function quote($string, $type = null): false|string
     {
         if (!isset($type)) {
-            if (is_null($value)) {
+            if (is_null($string)) {
                 $type = PDO::PARAM_NULL;
-            } else if (is_bool($value)) {
+            } else if (is_bool($string)) {
                 $type = PDO::PARAM_BOOL;
-            } else if (is_int($value)) {
+            } else if (is_int($string)) {
                 $type = PDO::PARAM_INT;
-            } else if (is_array($value)) {
+            } else if (is_array($string)) {
                 $type = StudipPDO::PARAM_ARRAY;
             } else {
                 $type = PDO::PARAM_STR;
@@ -149,28 +146,24 @@ class StudipPDO extends PDO
             case PDO::PARAM_NULL:
                 return 'NULL';
             case PDO::PARAM_BOOL:
-                return $value ? '1' : '0';
+                return $string ? '1' : '0';
             case PDO::PARAM_INT:
-                return (int) $value;
+                return (int) $string;
             case StudipPDO::PARAM_ARRAY:
-                return is_array($value) && count($value) ? join(',', array_map([$this, 'quote'], $value)) : 'NULL';
+                return is_array($string) && count($string) ? join(',', array_map([$this, 'quote'], $string)) : 'NULL';
             case StudipPDO::PARAM_COLUMN:
-                return preg_replace('/\\W/', '', $value);
+                return preg_replace('/\\W/', '', $string);
             default:
-                return parent::quote($value);
+                return parent::quote($string);
         }
     }
 
     /**
      * Executes an SQL statement and returns the number of affected rows.
      *
-     * @param string    SQL statement
-     * @return int|false      number of affected rows
-     *
-     * @todo Add mixed return type when Stud.IP requires PHP8 minimal
+     * @param string $statement SQL statement
      */
-    #[ReturnTypeWillChange]
-    public function exec($statement)
+    public function exec(string $statement): false|int
     {
         $this->verify($statement);
         return parent::exec($statement);

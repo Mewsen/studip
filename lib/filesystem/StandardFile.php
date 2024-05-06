@@ -112,46 +112,33 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
 
     /**
      * ArrayAccess: Check whether the given offset exists.
-     *
-     * @todo Add bool return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->__isset($offset);
     }
 
     /**
      * ArrayAccess: Get the value at the given offset.
-     *
-     * @todo Add mixed return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->__get($offset);
     }
 
     /**
      * ArrayAccess: Set the value at the given offset.
-     *
-     * @todo Add void return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->__set($offset, $value);
     }
 
     /**
      * ArrayAccess: unset the value at the given offset (not applicable)
-     *
-     * @todo Add void return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
-
     }
 
     /**

@@ -26,66 +26,48 @@ class UserDataAdapter implements ArrayAccess, Countable, IteratorAggregate
 
     /**
      * ArrayAccess: Check whether the given offset exists.
-     *
-     * @todo Add bool return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->user->offsetExists($this->adaptOffset($offset));
     }
 
     /**
      * ArrayAccess: Get the value at the given offset.
-     *
-     * @todo Add mixed return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->user->offsetGet($this->adaptOffset($offset));
     }
 
     /**
      * ArrayAccess: Set the value at the given offset.
-     *
-     * @todo Add void return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->user->offsetSet($this->adaptOffset($offset), $value);
     }
 
     /**
      * ArrayAccess: unset the value at the given offset.
-     *
-     * @todo Add void return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->user->offsetUnset($this->adaptOffset($offset));
     }
 
     /**
      * @see Countable::count()
-     *
-     * @todo Add int return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return $this->user->count();
     }
 
     /**
      * @see IteratorAggregate::getIterator()
-     *
-     * @todo Add Traversable return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return $this->user->getIterator();
     }

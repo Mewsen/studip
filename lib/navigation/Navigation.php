@@ -562,12 +562,9 @@ class Navigation implements IteratorAggregate
     }
 
     /**
-     * IteratorAggregate: Create interator for request parameters.
-     *
-     * @todo Add Traversable return type when Stud.IP requires PHP8 minimal
+     * IteratorAggregate: Create iterator for request parameters.
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->getSubNavigation());
     }

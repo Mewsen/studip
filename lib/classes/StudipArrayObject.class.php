@@ -157,13 +157,8 @@ class StudipArrayObject implements IteratorAggregate, ArrayAccess, Serializable,
 
     /**
      * Get the number of public properties in the ArrayObject
-     *
-     * @return int
-     *
-     * @todo Add int return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return count($this->storage);
     }
@@ -216,13 +211,8 @@ class StudipArrayObject implements IteratorAggregate, ArrayAccess, Serializable,
 
     /**
      * Create a new iterator from an ArrayObject instance
-     *
-     * @return \Iterator
-     *
-     * @todo Add Traversable return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         $class = $this->iteratorClass;
 
@@ -273,12 +263,8 @@ class StudipArrayObject implements IteratorAggregate, ArrayAccess, Serializable,
      * Returns whether the requested key exists
      *
      * @param  mixed $key
-     * @return bool
-     *
-     * @todo Add void return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return isset($this->storage[$key]);
     }
@@ -287,12 +273,8 @@ class StudipArrayObject implements IteratorAggregate, ArrayAccess, Serializable,
      * Returns the value at the specified key
      *
      * @param  mixed $key
-     * @return mixed
-     *
-     * @todo Add mixed return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetGet($key)
+    public function offsetGet($key): mixed
     {
         $ret = null;
         if (!$this->offsetExists($key)) {
@@ -308,12 +290,8 @@ class StudipArrayObject implements IteratorAggregate, ArrayAccess, Serializable,
      *
      * @param  mixed $key
      * @param  mixed $value
-     * @return void
-     *
-     * @todo Add void return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         if (is_null($key)) {
             $this->append($value);
@@ -326,12 +304,8 @@ class StudipArrayObject implements IteratorAggregate, ArrayAccess, Serializable,
      * Unsets the value at the specified key
      *
      * @param  mixed $key
-     * @return void
-     *
-     * @todo Add void return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         if ($this->offsetExists($key)) {
             unset($this->storage[$key]);

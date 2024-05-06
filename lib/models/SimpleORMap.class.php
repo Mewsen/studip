@@ -1638,16 +1638,13 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             return false;
         }
     }
+
     /**
      * ArrayAccess: Check whether the given offset exists.
      *
      * @param string $offset
-     * @return bool
-     *
-     * @todo Add bool return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->__isset($offset);
     }
@@ -1659,11 +1656,8 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      * @throws BadMethodCallException if getter for additional field could not be found
      * @param string $offset the column or additional field
      * @return null|string|SimpleORMapCollection
-     *
-     * @todo Add mixed return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->getValue($offset);
     }
@@ -1675,49 +1669,34 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      * @throws BadMethodCallException if setter for additional field could not be found
      * @param string $offset
      * @param mixed $value
-     * @return void
-     *
-     * @todo Add void return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->setValue($offset, $value);
     }
+
     /**
      * ArrayAccess: unset the value at the given offset (not applicable)
      *
      * @param string $offset
-     * @return void
-     *
-     * @todo Add void return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
 
     }
+
     /**
      * IteratorAggregate
-     *
-     * @return ArrayIterator
-     *
-     * @todo Add Traversable return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->toArray());
     }
+
     /**
      * Countable
-     *
-     * @return int
-     *
-     * @todo Add int return type when Stud.IP requires PHP8 minimal
      */
-    #[ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return count($this->known_slots()) - count($this->relations);
     }
