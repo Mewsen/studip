@@ -1487,4 +1487,20 @@ class Course_StatusgroupsController extends AuthenticatedController
         return $members->orderBy($order);
 
     }
+
+    public function details_action(Statusgruppen $group): void
+    {
+        $course = Course::findCurrent();
+
+        if ($course->id !== $group->range_id) {
+            throw new AccessDeniedException();
+        }
+
+        PageLayout::setTitle(sprintf(
+            _('Personen der Gruppe %s'),
+            $group->name
+        ));
+
+        $this->group = $group;
+    }
 }

@@ -1,4 +1,15 @@
 <?php
+/**
+ * @var bool $show_raumzeit
+ * @var bool $has_access
+ * @var bool $is_next_date
+ * @var bool $cancelled_dates_locked
+ * @var Course_DatesController $controller
+ * @var CourseDate $date
+ * @var Course $course
+ */
+?>
+<?php
 $icon = 'date';
 $dialog_url = $show_raumzeit
             ? $controller->url_for('course/dates/details/' . $date->id)
@@ -30,7 +41,11 @@ $dialog_url = $show_raumzeit
     <? if (count($date->statusgruppen) > 0) : ?>
         <ul class="clean">
         <? foreach ($date->statusgruppen as $statusgruppe) : ?>
-            <li><?= htmlReady($statusgruppe->name) ?></li>
+            <li>
+                <a href="<?= $controller->link_for('course/statusgroups/details', $statusgruppe) ?>" data-dialog="size=default">
+                    <?= htmlReady($statusgruppe->name) ?>
+                </a>
+            </li>
         <? endforeach ?>
         </ul>
     <? else : ?>
