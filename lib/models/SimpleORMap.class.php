@@ -563,10 +563,11 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         $record_data = [];
         $relation_data = [];
         foreach ($data as $key => $value) {
-            if (is_array($value)) {
-                $relation_data[$key] = $value;
-            } else {
+            $temp = static::alias_fields()[$key] ?? $key;
+            if (isset(static::db_fields()[$temp])) {
                 $record_data[$key] = $value;
+            } else {
+                $relation_data[$key] = $value;
             }
         }
         $record = static::toObject($record_data);
@@ -576,29 +577,31 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         } else {
             $record->setData($record_data);
         }
-        if (is_array($relation_data)) {
-            foreach ($relation_data as $relation => $data) {
-                $options = $record->getRelationOptions($relation);
-                if ($options['type'] == 'has_one') {
-                    $record->{$relation} = call_user_func([$options['class_name'], 'import'], $data);
-                }
-                if ($options['type'] == 'has_many' || $options['type'] == 'has_and_belongs_to_many') {
-                    foreach ($data as $one) {
-                        $current = call_user_func([$options['class_name'], 'import'], $one);
-                        if ($options['type'] == 'has_many') {
-                            $foreign_key_value = call_user_func($options['assoc_func_params_func'], $record);
-                            call_user_func($options['assoc_foreign_key_setter'], $current, $foreign_key_value);
-                        }
-                        if ($current->id !== null) {
-                            $existing = $record->{$relation}->find($current->id);
-                            if ($existing) {
-                                $existing->setData($current);
-                            } else {
-                                $record->{$relation}->append($current);
-                            }
+        foreach ($relation_data as $relation => $data) {
+            if (!$record->isRelation($relation)) {
+                continue;
+            }
+
+            $options = $record->getRelationOptions($relation);
+            if ($options['type'] == 'has_one') {
+                $record->{$relation} = call_user_func([$options['class_name'], 'import'], $data);
+            }
+            if ($options['type'] == 'has_many' || $options['type'] == 'has_and_belongs_to_many') {
+                foreach ($data as $one) {
+                    $current = call_user_func([$options['class_name'], 'import'], $one);
+                    if ($options['type'] == 'has_many') {
+                        $foreign_key_value = call_user_func($options['assoc_func_params_func'], $record);
+                        call_user_func($options['assoc_foreign_key_setter'], $current, $foreign_key_value);
+                    }
+                    if ($current->id !== null) {
+                        $existing = $record->{$relation}->find($current->id);
+                        if ($existing) {
+                            $existing->setData($current);
                         } else {
                             $record->{$relation}->append($current);
                         }
+                    } else {
+                        $record->{$relation}->append($current);
                     }
                 }
             }
