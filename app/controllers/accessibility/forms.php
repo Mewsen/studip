@@ -3,6 +3,21 @@ class Accessibility_FormsController extends StudipController
 {
     protected $with_session = true;
 
+    public function before_filter(&$action, &$args)
+    {
+        parent::before_filter($action, $args);
+
+        if (
+            Config::get()->REPORT_BARRIER_MODE === 'off'
+            || (
+                Config::get()->REPORT_BARRIER_MODE === 'logged-in'
+                && !User::findCurrent()
+            )
+        ) {
+            throw new AccessDeniedException();
+        }
+    }
+
     public function report_barrier_action()
     {
         PageLayout::setTitle(_('Barriere melden'));
