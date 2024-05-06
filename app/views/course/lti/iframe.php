@@ -26,9 +26,11 @@
         <header><h1><?= _('Zu übertragende personenbezogene Daten') ?></h1></header>
         <section>
             <ul>
-                <li><?= _('Vorname') ?></li>
-                <li><?= _('Nachname') ?></li>
-                <li><?= _('(weiteres)') ?></li>
+                <li><?= _('Die ID ihres Stud.IP-Kontos') ?></li>
+                <li><?= _('Ihr Vor- und Nachname, sowie gegebenenfalls vorhandene Titel') ?></li>
+                <li><?= _('Ihre E-Mail Adresse') ?></li>
+                <li><?= _('Ihre in Stud.IP eingestellte Sprache') ?></li>
+                <li><?= _('Ihr Profilbild') ?></li>
             </ul>
         </section>
     </article>
