@@ -208,7 +208,12 @@ class Course_LtiController extends StudipController
      */
     public function config_action()
     {
-        $this->title = CourseConfig::get($this->course_id)->LTI_TOOL_TITLE;
+        $course_config = CourseConfig::get($this->course_id);
+        $this->title = $course_config->LTI_TOOL_TITLE;
+        $this->personal_data_warning = $course_config->LTI_DATA_PROTECTION_COURSE_WARNING;
+        if (empty($this->personal_data_warning)) {
+            $this->personal_data_warning = Config::get()->LTI_DATA_PROTECTION_DEFAULT_WARNING;
+        }
     }
 
     /**
@@ -218,8 +223,20 @@ class Course_LtiController extends StudipController
     {
         CSRFProtection::verifyUnsafeRequest();
 
+        $course_config = CourseConfig::get($this->course_id);
+
         $title = trim(Request::get('title'));
-        CourseConfig::get($this->course_id)->store('LTI_TOOL_TITLE', $title);
+        $course_config->store('LTI_TOOL_TITLE', $title);
+
+        $personal_data_warning = trim(Request::get('personal_data_warning'));
+        $global_personal_data_warning = Config::get()->LTI_DATA_PROTECTION_DEFAULT_WARNING;
+        if ($personal_data_warning === $global_personal_data_warning || Request::bool('reset_warning')) {
+            //Store an empty string for the course warning field:
+            $course_config->store('LTI_DATA_PROTECTION_COURSE_WARNING', '');
+        } else {
+            //Store the modified warning.
+            $course_config->store('LTI_DATA_PROTECTION_COURSE_WARNING', $personal_data_warning);
+        }
 
         PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
         $this->redirect('course/lti');

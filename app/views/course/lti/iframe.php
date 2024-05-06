@@ -14,7 +14,7 @@
         <header><h1><?= _('Datenschutzhinweise') ?></h1></header>
         <section>
             <?
-            $data_protection_warning = CourseConfig::get()->LTI_DATA_PROTECTION_COURSE_WARNING;
+            $data_protection_warning = CourseConfig::get(Context::getId())->LTI_DATA_PROTECTION_COURSE_WARNING;
             if (empty($data_protection_warning)) {
                 $data_protection_warning = Config::get()->LTI_DATA_PROTECTION_DEFAULT_WARNING;
             }
