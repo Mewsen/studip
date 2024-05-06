@@ -127,9 +127,14 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
      */
     public function getValue($field)
     {
+        if ($this->fromEnv($field)) {
+            return $_ENV["STUDIP_CONFIG_{$field}"];
+        }
+
         if (array_key_exists($field, $this->data)) {
             return $this->data[$field];
         }
+
         if (isset($GLOBALS[$field]) && !isset($_REQUEST[$field])) {
             return $GLOBALS[$field];
         }
@@ -449,5 +454,16 @@ class Config implements ArrayAccess, Countable, IteratorAggregate
         }
 
         return (string) $value;
+    }
+
+    /**
+     * Returns whether the value was set from the environment.
+     *
+     * @param string $field
+     * @return bool
+     */
+    public function fromEnv(string $field): bool
+    {
+        return isset($_ENV["STUDIP_CONFIG_{$field}"]);
     }
 }

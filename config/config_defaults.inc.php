@@ -10,10 +10,10 @@ please fill in your database connection settings.
 */
 
 // default Stud.IP database (DB_Seminar)
-$DB_STUDIP_HOST = "localhost";
-$DB_STUDIP_USER = "";
-$DB_STUDIP_PASSWORD = "";
-$DB_STUDIP_DATABASE = "studip";
+$DB_STUDIP_HOST = $_ENV['MYSQL_HOST'] ?? 'localhost';
+$DB_STUDIP_USER = $_ENV['MYSQL_USER'] ?? '';
+$DB_STUDIP_PASSWORD = $_ENV['MYSQL_PASSWORD'] ?? '';
+$DB_STUDIP_DATABASE = $_ENV['MYSQL_DATABASE'] ?? 'studip';
 $DEBUG_ALL_DB_QUERIES_WITH_TRACE = false;
 /*
 // optional Stud.IP slave database
@@ -66,9 +66,9 @@ $TMP_PATH ="/tmp";                                  //the system temp path
 $MEDIA_CACHE_PATH = $STUDIP_BASE_PATH . '/data/media_cache';
 
 //caching
-$CACHING_ENABLE = true;
+$CACHING_ENABLE = $_ENV['STUDIP_CACHING_ENABLE'] ?? true;
 $CACHING_FILECACHE_PATH = $TMP_PATH . '/studip_cache';
-$CACHE_IS_SESSION_STORAGE = false;                 //store session data in cache
+$CACHE_IS_SESSION_STORAGE = $_ENV['STUDIP_CACHE_IS_SESSION_STORAGE'] ?? false; //store session data in cache
 
 /*Stud.IP modules
 ----------------------------------------------------------------
@@ -159,7 +159,7 @@ $ELEARNING_INTERFACE_MODULES["loncapa"] =
         ]
 ];
 
-$PLUGINS_UPLOAD_ENABLE = TRUE;      //Upload of Plugins is enabled
+$PLUGINS_UPLOAD_ENABLE = $_ENV['STUDIP_PLUGIN_UPLOAD_ENABLE'] ?? true;      //Upload of Plugins is enabled
 
 $PLUGIN_REPOSITORIES = [
     'https://develop.studip.de/studip/plugins.php/pluginmarket/extern/xml',
@@ -193,7 +193,7 @@ sendmail  use local sendmail script
 qmail     use local Qmail MTA
 debug     mails are only written to a file in $TMP_PATH
 */
-$MAIL_TRANSPORT = "smtp";
+$MAIL_TRANSPORT = $_ENV['STUDIP_MAIL_TRANSPORT'] ?? 'smtp';
 
 /*smtp settings
 ----------------------------------------------------------------

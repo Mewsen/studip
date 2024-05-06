@@ -9,8 +9,16 @@
  * the License, or (at your option) any later version.
  */
 
+// Include composer's autoload
+require __DIR__ . '/../composer/autoload.php';
+
+// Load enviroment
+$dot_env_path = __DIR__ . '/..';
+$dotenv = \Dotenv\Dotenv::createImmutable($dot_env_path);
+$dotenv->safeLoad();
+
 // Default environment, do not change. Change in config/config_local.inc.php.
-const DEFAULT_ENV = 'production';
+define('DEFAULT_ENV',  $_ENV['STUDIP_ENV'] ?? 'production');
 
 //software version - please leave it as it is!
 $SOFTWARE_VERSION = '6.0.alpha';
