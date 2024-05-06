@@ -183,9 +183,7 @@
                 </div>
             <? endif; ?>
             </td>
-            <td>
-                <?= htmlReady($block->room) ?>
-            </td>
+            <td><?= htmlReady($slot->block->room) ?></td>
             <td>
                 <?= $this->render_partial('consultation/slot-occupation.php', compact('slot')) ?>
             </td>
