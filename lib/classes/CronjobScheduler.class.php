@@ -256,19 +256,18 @@ class CronjobScheduler
         }
 
         foreach ($schedules as $schedule) {
+            $log = new CronjobLog();
+            $log->schedule_id = $schedule->schedule_id;
+            $log->scheduled   = $schedule->next_execution;
+            $log->executed    = time();
+            $log->exception   = null;
+            $log->duration    = -1;
+
             try {
                 // Skip schedules with missing task classes
                 if (!$schedule->task->valid) {
                     throw new Exception(_('Die Klasse für den Cronjob-Task konnte nicht gefunden werden'));
                 }
-
-                $log = new CronjobLog();
-                $log->schedule_id = $schedule->schedule_id;
-                $log->scheduled   = $schedule->next_execution;
-                $log->executed    = time();
-                $log->exception   = null;
-                $log->duration    = -1;
-                $log->store();
 
                 // Start capturing output and measuring duration
                 ob_start();
@@ -286,6 +285,7 @@ class CronjobScheduler
                 $log->store();
             } catch (Exception $e) {
                 $log->exception = $e;
+                $log->store();
 
                 // Deactivate schedule
                 $schedule->deactivate();
