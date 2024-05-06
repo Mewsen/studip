@@ -134,6 +134,20 @@ class AddLti13a extends Migration
             [
                 'LTI_SHARING_ENABLED', '0', 'boolean', 'course',
                 'Darf die Veranstaltung als LTI-Tool angeboten werden?'
+            ],
+            [
+                'LTI_DATA_PROTECTION_DEFAULT_WARNING',
+                'Sie verlassen jetzt Stud.IP. Vorsicht mit den persönlichen Daten!', //TODO
+                'string',
+                'global',
+                'Eine Warnung zur Weitergabe personenbezogener Daten, die standardmäßig angezeigt wird, wenn Personen aus einer Veranstaltung in ein LTI-Tool wechselt.'
+            ],
+            [
+                'LTI_DATA_PROTECTION_COURSE_WARNING',
+                '',
+                'string',
+                'course',
+                'Eine in einer Veranstaltung angepasste Warnung zur Weitergabe personenbezogener Daten, die angezeigt wird, wenn Personen aus der Veranstaltung in ein LTI-Tool wechselt.'
             ]
         ];
 
