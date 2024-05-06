@@ -1,6 +1,6 @@
 <?php
 /*
- * studip_controller.php - studip controller base class
+ * StudipController.php - studip controller base class
  * Copyright (c) 2009  Elmar Ludwig
  *
  * This program is free software; you can redistribute it and/or
@@ -12,9 +12,6 @@
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
-require_once 'studip_controller_properties_trait.php';
-require_once 'studip_response.php';
 
 /**
  * @property StudipResponse $response

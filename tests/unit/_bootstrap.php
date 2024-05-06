@@ -60,7 +60,6 @@ StudipAutoloader::addAutoloadPath('lib/plugins/engine');
 StudipAutoloader::addAutoloadPath('lib/plugins/core');
 StudipAutoloader::addAutoloadPath('lib/plugins/db');
 
-StudipAutoloader::addClassLookup('StudipController', 'app/controllers/studip_controller.php');
 $trails_classes = [
     'Trails_Dispatcher', 'Trails_Response', 'Trails_Controller',
     'Trails_Inflector', 'Trails_Flash',

@@ -19,6 +19,12 @@
 - Die `MembersModel.php` wurde entfernt ([Issue #3811](https://gitlab.studip.de/studip/studip/-/issues/3811))
 - Die `admission.inc.php` wurde entfernt. ([Issue #3812](https://gitlab.studip.de/studip/studip/-/issues/3812))
 - Die Methoden `CronjobScheduler::scheduleOnce()` sowie `CronjobTask::scheduleOnce()` wurden ersatzlos entfernt. ([Issue #4078](https://gitlab.studip.de/studip/studip/-/issues/4078))
+- Die folgenden Klassen wurden innerhalb von Stud.IP verschoben. Da sie über den Autoloader geladen werden, kann jedes manuelle Einbinden ersatzlos entfernt werden. ([Issue #4105](https://gitlab.studip.de/studip/studip/-/issues/4105))
+  - `AuthenticatedController`
+  - `PluginController`
+  - `StudipController`
+  - `StudipControllerPropertiesTrait`
+  - `StudipResponse`
 
 ## Security related issues
 

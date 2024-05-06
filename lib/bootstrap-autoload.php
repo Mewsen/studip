@@ -76,18 +76,6 @@ StudipAutoloader::addClassLookup(
     $trails_classes,
     'vendor/trails/trails.php'
 );
-StudipAutoloader::addClassLookup(
-    'StudipController',
-    'app/controllers/studip_controller.php'
-);
-StudipAutoloader::addClassLookup(
-    'AuthenticatedController',
-    'app/controllers/authenticated_controller.php'
-);
-StudipAutoloader::addClassLookup(
-    'PluginController',
-    'app/controllers/plugin_controller.php'
-);
 
 // Vendor
 StudipAutoloader::addClassLookups([

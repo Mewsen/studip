@@ -1,6 +1,4 @@
 <?php
-require_once 'app/controllers/authenticated_controller.php';
-
 class LoncapaController extends AuthenticatedController
 {
     public function enter_action()
