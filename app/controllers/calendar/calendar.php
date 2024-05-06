@@ -770,27 +770,39 @@ class Calendar_CalendarController extends AuthenticatedController
                 PageLayout::postError(_('Bitte wählen Sie aus, welche Termine exportiert werden sollen!'));
                 return;
             }
-            $ical = '';
-            $calendar_export = new ICalendarExport();
-            if ($this->dates_to_export === 'user') {
-                $ical = $calendar_export->exportCalendarDates(User::findCurrent()->id, $this->begin, $this->end);
-            } elseif ($this->dates_to_export === 'course') {
-                $ical = $calendar_export->exportCourseDates(User::findCurrent()->id, $this->begin, $this->end);
-                $ical .= $calendar_export->exportCourseExDates(User::findCurrent()->id, $this->begin, $this->end);
-            } elseif ($this->dates_to_export === 'all') {
-                $ical = $calendar_export->exportCalendarDates(User::findCurrent()->id, $this->begin, $this->end);
-                $ical .= $calendar_export->exportCourseDates(User::findCurrent()->id, $this->begin, $this->end);
-                $ical .= $calendar_export->exportCourseExDates(User::findCurrent()->id, $this->begin, $this->end);
-            }
-            $ical = $calendar_export->writeHeader() . $ical . $calendar_export->writeFooter();
-            $this->response->add_header('Content-Type', 'text/calendar;charset=utf-8');
-            $this->response->add_header('Content-Disposition', 'attachment; filename="studip.ics"');
-            $this->response->add_header('Content-Transfer-Encoding', 'binary');
-            $this->response->add_header('Pragma', 'public');
-            $this->response->add_header('Cache-Control', 'private');
-            $this->response->add_header('Content-Length', strlen($ical));
-            $this->render_text($ical);
+            $this->relocate($this->url_for('calendar/calendar/export_file', [
+                'begin' => $this->begin->format('d.m.Y'),
+                'end' => $this->end->format('d.m.Y'),
+                'dates_to_export' => $this->dates_to_export
+            ]));
         }
+    }
+
+    public function export_file_action()
+    {
+        $begin = Request::getDateTime('begin', 'd.m.Y');
+        $end = Request::getDateTime('end', 'd.m.Y');
+        $dates_to_export = Request::option('dates_to_export', 'user');
+        $ical = '';
+        $calendar_export = new ICalendarExport();
+        if ($dates_to_export === 'user') {
+            $ical = $calendar_export->exportCalendarDates(User::findCurrent()->id, $begin, $end);
+        } elseif ($dates_to_export === 'course') {
+            $ical = $calendar_export->exportCourseDates(User::findCurrent()->id, $begin, $end);
+            $ical .= $calendar_export->exportCourseExDates(User::findCurrent()->id, $begin, $end);
+        } elseif ($dates_to_export === 'all') {
+            $ical = $calendar_export->exportCalendarDates(User::findCurrent()->id, $begin, $end);
+            $ical .= $calendar_export->exportCourseDates(User::findCurrent()->id, $begin, $end);
+            $ical .= $calendar_export->exportCourseExDates(User::findCurrent()->id, $begin, $end);
+        }
+        $ical = $calendar_export->writeHeader() . $ical . $calendar_export->writeFooter();
+        $this->response->add_header('Content-Type', 'text/calendar;charset=utf-8');
+        $this->response->add_header('Content-Disposition', 'attachment; filename="studip.ics"');
+        $this->response->add_header('Content-Transfer-Encoding', 'binary');
+        $this->response->add_header('Pragma', 'public');
+        $this->response->add_header('Cache-Control', 'private');
+        $this->response->add_header('Content-Length', strlen($ical));
+        $this->render_text($ical);
     }
 
     public function import_action() {}
