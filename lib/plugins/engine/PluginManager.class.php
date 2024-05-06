@@ -418,41 +418,49 @@ class PluginManager
             $this->plugins[$id]['name'] = $name;
             $this->plugins[$id]['path'] = $path;
             $this->plugins[$id]['type'] = $type;
+        } else {
+            foreach ($this->plugins as $plugin) {
+                $common_types = array_intersect($type, $plugin['type']);
 
-            return $id;
-        }
-
-        foreach ($this->plugins as $plugin) {
-            $common_types = array_intersect($type, $plugin['type']);
-
-            if (count($common_types) > 0 && $plugin['position'] >= $position) {
-                $position = $plugin['position'] + 1;
+                if (count($common_types) > 0 && $plugin['position'] >= $position) {
+                    $position = $plugin['position'] + 1;
+                }
             }
-        }
 
-        $sql = 'INSERT INTO plugins (
+            $sql = 'INSERT INTO plugins (
                     pluginname, pluginclassname, pluginpath,
                     plugintype, navigationpos, dependentonid
                 ) VALUES (?,?,?,?,?,?)';
-        $stmt = $db->prepare($sql);
-        $stmt->execute([$name, $class, $path, join(',', $type), $position, $depends]);
-        $id = $db->lastInsertId();
+            $stmt = $db->prepare($sql);
+            $stmt->execute([$name, $class, $path, join(',', $type), $position, $depends]);
+            $id = $db->lastInsertId();
 
-        $this->plugins[$id] = [
-            'id'          => $id,
-            'name'        => $name,
-            'class'       => $class,
-            'path'        => $path,
-            'type'        => $type,
-            'enabled'     => false,
-            'position'    => $position,
-            'depends'     => $depends
-        ];
+            $this->plugins[$id] = [
+                'id'          => $id,
+                'name'        => $name,
+                'class'       => $class,
+                'path'        => $path,
+                'type'        => $type,
+                'enabled'     => false,
+                'position'    => $position,
+                'depends'     => $depends
+            ];
 
-        $this->readPluginInfos();
+            $this->readPluginInfos();
 
-        $db->exec("INSERT INTO roles_plugins (roleid, pluginid)
+            $db->exec("INSERT INTO roles_plugins (roleid, pluginid)
                    SELECT roleid, $id FROM roles WHERE `system` = 'y' AND rolename != 'Nobody'");
+        }
+
+        if (!in_array(StandardPlugin::class, $type)) {
+            ToolActivation::findEachBySQL(
+                function (ToolActivation $activation) use ($id) {
+                    $this->setPluginActivated($id, $activation->range_id, false);
+                },
+                'plugin_id = ?',
+                [$id]
+            );
+        }
 
         return $id;
     }
