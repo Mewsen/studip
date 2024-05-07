@@ -190,7 +190,7 @@ class Resources_AjaxController extends AuthenticatedController
                 'resource_id' => $resource->id
             ];
             if (!$display_all_requests) {
-                $requests_sql .= "AND user_id = :user_id ";
+                $requests_sql .= " AND user_id = :user_id ";
                 $requests_sql_params['user_id'] = $current_user->id;
             }
 

@@ -92,7 +92,7 @@
                 <? else : ?>
                     <ul style="list-style-type:none;" id="mvv-lvgruppen-semester">
                         <? foreach ($display_semesters as $semester) : ?>
-                            <? if ($courses[$semester->id]) : ?>
+                            <? if (!empty($courses[$semester->id])) : ?>
                                 <li>
                                     <strong><?= htmlReady($semester->name) ?></strong>
                                     <ul style="list-style-type:none;">

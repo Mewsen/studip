@@ -38,7 +38,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
         if ($selected_clipboard_id) {
             $_SESSION['selected_clipboard_id'] = $selected_clipboard_id;
         } else {
-            $selected_clipboard_id = $_SESSION['selected_clipboard_id'];
+            $selected_clipboard_id = $_SESSION['selected_clipboard_id'] ?? null;
         }
 
         $this->display_all_requests = Request::get('display_all_requests');
@@ -282,7 +282,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
         if ($selected_clipboard_id) {
             $_SESSION['selected_clipboard_id'] = $selected_clipboard_id;
         } else {
-            $selected_clipboard_id = $_SESSION['selected_clipboard_id'];
+            $selected_clipboard_id = $_SESSION['selected_clipboard_id'] ?? null;
         }
 
         $this->display_all_requests = Request::get('display_all_requests');
@@ -411,7 +411,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
         }
 
         //Check if a clipboard is selected:
-        $selected_clipboard_id = $_SESSION['selected_clipboard_id'];
+        $selected_clipboard_id = $_SESSION['selected_clipboard_id'] ?? null;
         $rooms = [];
         if ($selected_clipboard_id) {
             $clipboard = Clipboard::find($selected_clipboard_id);
@@ -1075,7 +1075,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
         if ($selected_clipboard_id) {
             $_SESSION['selected_clipboard_id'] = $selected_clipboard_id;
         } else {
-            $selected_clipboard_id = $_SESSION['selected_clipboard_id'];
+            $selected_clipboard_id = $_SESSION['selected_clipboard_id'] ?? null;
         }
 
         //Get the selected date or use the current date, if none specified:

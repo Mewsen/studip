@@ -228,7 +228,7 @@ class Search_StudiengaengeController extends MVVController
             } else {
                 $this->active_sem = Semester::find($this->sessGet('selected_semester', Semester::findCurrent()->id));
             }
-            $this->active_sem = $this->semesters[$this->active_sem->id] ? $this->active_sem : null;
+            $this->active_sem = !empty($this->semesters[$this->active_sem->id]) ? $this->active_sem : null;
             if (!$this->active_sem && count($this->semesters)) {
                 $active_sem = reset($this->semesters);
                 $this->active_sem = Semester::find($active_sem['semester_id']);
