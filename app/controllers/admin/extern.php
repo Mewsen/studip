@@ -66,8 +66,8 @@ class Admin_ExternController extends AuthenticatedController
         ExternPageConfig::findEachBySQL(
             function ($c) use (&$configs, &$count_not_migrated) {
                 $configs[$c->type][] = $c;
-                if (isset($c->conf['not_fixed_after_migration'])) { 
-                    $count_not_migrated++; 
+                if (isset($c->conf['not_fixed_after_migration'])) {
+                    $count_not_migrated++;
                 }
             },
             "range_id = ?", [$this->range]
@@ -165,7 +165,7 @@ class Admin_ExternController extends AuthenticatedController
                 if ($this->page->page_config->isNew()) {
                     PageLayout::postSuccess(sprintf(
                         _('Eine neue externe Seite "%$1s" vom Typ %$2s wurde angelegt.'),
-                        htmlReady($this->page->name), 
+                        htmlReady($this->page->name),
                         htmlReady($this->page->type)
                     ));
                 } else {
@@ -259,7 +259,11 @@ class Admin_ExternController extends AuthenticatedController
      */
     public function info_action(string $config_id)
     {
-        $this->page = ExternPage::get(ExternPageConfig::find($config_id));
+        $config = ExternPageConfig::find($config_id);
+        if (!$config) {
+            throw new Exception('ExternPageConfig object not found!');
+        }
+        $this->page = ExternPage::get($config);
         if ($this->page->author) {
             $this->author = '<a href="'
                 . URLHelper::getLink('dispatch.php/profile', ['username' => $this->page->author->username])
@@ -364,7 +368,7 @@ class Admin_ExternController extends AuthenticatedController
             $config->author_id = $config->editor_id = $GLOBALS['user']->id;
             $config->store();
             PageLayout::postSuccess(
-                sprintf(_('Die Konfiguration "%s" wurde erfolgreich importiert.'), 
+                sprintf(_('Die Konfiguration "%s" wurde erfolgreich importiert.'),
                 htmlReady($config->name)
             ));
         }
