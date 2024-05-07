@@ -618,7 +618,7 @@ class MVV implements Loggable {
     public static function getContentLanguageImagePath($language): string
     {
         $content_language = $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$language]['content_language'];
-        return 'languages/' . ($GLOBALS['CONTENT_LANGUAGES'][$content_language]?$GLOBALS['CONTENT_LANGUAGES'][$content_language]['picture']:'lang_' . mb_strtolower($language) . '.gif');
+        return 'languages/' . ($GLOBALS['CONTENT_LANGUAGES'][$content_language]['picture'] ?? 'lang_' . mb_strtolower($language) . '.gif');
     }
 
 }

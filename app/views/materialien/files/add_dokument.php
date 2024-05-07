@@ -35,7 +35,7 @@
         </tr>
         <tr>
             <td>
-                <div class="attachments" style="<?= (!$documents || !key_exists($key, $documents))  ? '' : 'display: none;'?>">
+                <div class="attachments" style="<?= (empty($documents) || !array_key_exists($key, $documents))  ? '' : 'display: none;'?>">
                     <span style="cursor:pointer;" onClick="$('#fileselector_<?= $key; ?>').toggle();$(this).toggle();">
                         <?= Icon::create('add', Icon::ROLE_CLICKABLE, ['title' => _("Datei hinzufügen"), 'class' => 'text-bottom']); ?>
                         <?= _("Datei hinzufügen") ?>
@@ -43,11 +43,11 @@
                     <div id="fileselector_<?= $key; ?>" style="display:none;">
                         <ul class="stgfiles list-unstyled">
                             <li style="display: none;" class="stgfile">
-                                <input type="hidden" name="document_id" id="document_id" value="<?= htmlReady($document_id) ?>">
+                                <input type="hidden" name="document_id" id="document_id" value="<?= htmlReady($document_id ?? '') ?>">
                                 <span class="icon"></span>
                                 <span class="name"></span>
                                 <span class="size"></span>
-                                <a class="remove_attachment"><?= Icon::create('trash', 'clickable')->asImg(['class' => "text-bottom"]) ?></a>
+                                <a class="remove_attachment"><?= Icon::create('trash')->asImg(['class' => 'text-bottom']) ?></a>
                             </li>
                         </ul>
                         <div id="statusbar_container">

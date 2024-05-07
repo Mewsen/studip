@@ -620,7 +620,10 @@ class BasicDataWizardStep implements CourseWizardStep
 
                 }
             }
-
+        } else {
+            foreach ($indices as $index) {
+                $values[$index] = $values[$index] ?? '';
+            }
         }
 
         return $values;
