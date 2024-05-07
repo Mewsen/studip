@@ -10,8 +10,8 @@
                     <select name="semester_id">
                         <? foreach ($available_semesters as $available_semester): ?>
                             <option value="<?= htmlReady($available_semester->id) ?>"
-                                    <?= ($available_semester->id == $semester_id)
-                                      ? 'selected="selected"'
+                                    <?= isset($semester_id) && $available_semester->id == $semester_id
+                                      ? 'selected'
                                       : ''
                                     ?>>
                                 <?= htmlReady($available_semester->name) ?>
@@ -24,13 +24,13 @@
                     (<?= _('optional') ?>)
                     <select name="institute_id">
                         <option value=""
-                                <?= ($institute_id == '' ? 'selected="selected"' : '') ?>>
+                                <?= empty($institute_id) ? 'selected' : '' ?>>
                                 <?= _('(bitte wählen)') ?>
                         </option>
                         <? foreach ($available_institutes as $available_institute): ?>
                             <option value="<?= htmlReady($available_institute['Institut_id']) ?>"
-                                    <?= ($available_institute['Institut_id'] == $institute_id)
-                                      ? 'selected="selected"'
+                                    <?= isset($institute_id) && $available_institute['Institut_id'] == $institute_id
+                                      ? 'selected'
                                       : ''
                                     ?>>
                                 <?= htmlReady($available_institute['Name']) ?>
@@ -43,13 +43,13 @@
                     (<?= _('optional') ?>)
                     <select name="course_type_id">
                         <option value=""
-                                <?= ($course_type_id == '' ? 'selected="selected"' : '') ?>>
+                                <?= empty($course_type_id) ? 'selected' : '' ?>>
                             <?= dgettext('AskALotPlugin', '(bitte wählen)') ?>
                         </option>
                         <? foreach ($available_course_types as $available_course_type): ?>
                             <option value="<?= htmlReady($available_course_type['id']) ?>"
-                                    <?= ($available_course_type['id'] == $course_type_id)
-                                      ? 'selected="selected"'
+                                    <?= isset($course_type_id) && $available_course_type['id'] == $course_type_id
+                                      ? 'selected'
                                       : ''
                                     ?>>
                                 <?= htmlReady($available_course_type['name']) ?>

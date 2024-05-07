@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <? foreach ($abschluesse as $abschluss) : ?>
-        <tbody class="<?= $abschluss->count_faecher ? '' : 'empty' ?> <?= ($abschluss_id ? 'not-collapsed' : 'collapsed') ?>">
+        <tbody class="<?= $abschluss->count_faecher ? '' : 'empty' ?> <?= !empty($abschluss_id) ? 'not-collapsed' : 'collapsed' ?>">
         <tr class="header-row">
             <td class="toggle-indicator">
                 <? if ($abschluss->count_faecher) : ?>

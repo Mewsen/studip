@@ -53,7 +53,7 @@ class Module_ModuleController extends MVVController
         if (count($search_result) > 0) {
             $module_ids = $search_result;
         } else {
-            if ($_SESSION['mvv_filter_module_fach_id']) {
+            if (!empty($_SESSION['mvv_filter_module_fach_id'])) {
                 $module_ids = $this->findModuleIdsByFach($_SESSION['mvv_filter_module_fach_id']);
             }
             if (!empty($_SESSION['mvv_filter_module_abschluss_id'])) {
