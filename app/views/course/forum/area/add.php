@@ -12,7 +12,7 @@
         <? else : ?>
             <? $num_postings = ForumVisit::getCount($entry['topic_id'], $visitdate) ?>
             <?= Icon::create('forum', $num_postings > 0 ? Icon::ROLE_ATTENTION : Icon::ROLE_INFO)->asImg([
-                'title' => ForumHelpers::getVisitText($num_postings, $entry['topic_id'], $constraint['depth']),
+                'title' => ForumHelpers::getVisitText($num_postings, $entry['topic_id']),
             ]) ?>
         <? endif ?>
         </a>
@@ -42,7 +42,7 @@
     </td>
 
     <td class="postings">
-        <?= number_format(max($entry['num_postings'] - 1, 0), 0, ',', '.') ?>
+        <?= number_format(max(($entry['num_postings'] ?? 0) - 1, 0), 0, ',', '.') ?>
     </td>
 
     <td class="answer hidden-tiny-down">
