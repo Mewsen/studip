@@ -138,7 +138,7 @@ abstract class ExternPage
             $extract[] = array_values(array_filter(array_map('trim', explode(' ', $one))));
         }
         foreach ($extract as $one) {
-            $return[$one[0]] = $one[1];
+            $return[$one[0]] = $one[1] ?? null;
         }
         return $return;
     }
@@ -236,7 +236,7 @@ abstract class ExternPage
         $allowed_params = $this->getAllowedRequestParams(true);
         $config_fields = $this->getConfigFields(true);
         foreach ($allowed_params as $param_name) {
-            $method = $config_fields[$param_name] ?: 'get';
+            $method = $config_fields[$param_name] ?? 'get';
             $param_value = Request::$method($param_name);
             if ($param_value) {
                 $this->setValue($param_name, $param_value);
@@ -342,6 +342,7 @@ abstract class ExternPage
     ): string {
         if (count($scopes) > 0) {
             $study_areas = StudipStudyArea::findMany($scopes);
+
             $scopes = [];
             if ($with_kids) {
                 foreach ($study_areas as $study_area) {

@@ -22,7 +22,7 @@ else : ?>
             </h1>
         </header>
         <? foreach ($config_types as $type_id => $config_type): ?>
-            <? if ($configs[$type_id]) : ?>
+            <? if (!empty($configs[$type_id])) : ?>
                 <article id="<?= $type_id ?>" <? if (Request::option('open_type') === $type_id) echo 'class="open"'; ?>>
                     <header>
                         <h1>
