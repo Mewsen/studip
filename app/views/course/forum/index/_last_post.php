@@ -1,4 +1,4 @@
-<? if (is_array($entry['last_posting']) && count($entry['last_posting'])) : ?>
+<? if (!empty($entry['last_posting']) && is_array($entry['last_posting'])) : ?>
     <?= _('von') ?>
     <? if (!empty($entry['last_posting']['anonymous'])): ?>
         <?= _('Anonym') ?>
