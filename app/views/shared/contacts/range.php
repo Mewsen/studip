@@ -40,7 +40,7 @@
             <td><?= htmlReady($mvv_contact->position); ?></td>
             <td><?= htmlReady($mvv_contact->name) ?></td>
         <? if($range_type !== 'Modul'): ?>
-            <td><?= htmlReady($GLOBALS['MVV_CONTACTS']['TYPE']['values'][$mvv_contact->type]['name']) ?></td>
+            <td><?= htmlReady($GLOBALS['MVV_CONTACTS']['TYPE']['values'][$mvv_contact->type]['name'] ?? '') ?></td>
         <? endif; ?>
             <td><?= htmlReady($mvv_contact->getCategoryDisplayname()); ?></td>
             <td ><?= htmlReady($mvv_contact->count_relations); ?></td>

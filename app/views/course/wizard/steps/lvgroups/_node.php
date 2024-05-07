@@ -1,4 +1,4 @@
-<? if (!$search_result || in_array($node->id, $search_result)) : ?>
+<? if (empty($search_result) || in_array($node->id, $search_result)) : ?>
 <? $id = $node->id . '-' . $pos_id; ?>
     <? if (!count($children)) : ?>
         <li><?= _('Keine Module verfügbar') ?></li>
