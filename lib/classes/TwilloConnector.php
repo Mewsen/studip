@@ -50,14 +50,14 @@ class TwilloConnector
     public static function uploadMaterial(OERMaterial $material, $user_id = null)
     {
         $user_id || $user_id = User::findCurrent()->id;
-        $base = new EduSharingHelperBase(
+        $base = new \EduSharingApiClient\EduSharingHelperBase(
             self::$twillo_base_url,
             file_get_contents($GLOBALS['STUDIP_BASE_PATH']."/config/twillo-private.key"),
             Config::get()->OERCAMPUS_TWILLO_APPID,
             self::getHttpProxy()
         // 'data-quest-Test'
         );
-        $authHelper = new EduSharingAuthHelper($base);
+        $authHelper = new \EduSharingApiClient\EduSharingAuthHelper($base);
         if (!static::$ticket) {
             static::$ticket = $authHelper->getTicketForUser(TwilloConnector::getTwilloUserID($user_id));
         }
@@ -261,13 +261,13 @@ class TwilloConnector
     {
         $user_id || $user_id = User::findCurrent()->id;
 
-        $base = new EduSharingHelperBase(
+        $base = new \EduSharingApiClient\EduSharingHelperBase(
             self::$twillo_base_url,
             file_get_contents($GLOBALS['STUDIP_BASE_PATH']."/config/twillo-private.key"),
             Config::get()->OERCAMPUS_TWILLO_APPID,
             self::getHttpProxy()// 'data-quest-Test'
         );
-        $authHelper = new EduSharingAuthHelper($base);
+        $authHelper = new \EduSharingApiClient\EduSharingAuthHelper($base);
         if (!static::$ticket) {
             static::$ticket = $authHelper->getTicketForUser(TwilloConnector::getTwilloUserID($user_id));
         }

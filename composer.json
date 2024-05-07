@@ -61,7 +61,8 @@
         "phpoffice/phpspreadsheet": "^1.19",
         "psy/psysh": "^0.12.2",
         "okvpn/clock-lts": "^1.0",
-        "vlucas/phpdotenv": "^5.6"
+        "vlucas/phpdotenv": "^5.6",
+        "edu-sharing/auth-plugin": "8.0.x-dev"
     },
     "replace": {
         "symfony/polyfill-php73": "*",
