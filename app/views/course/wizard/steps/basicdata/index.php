@@ -123,7 +123,7 @@
     </div>
 </section>
 
-<?php if ($dsearch) : ?>
+<?php if (isset($dsearch)) : ?>
 <section>
     <label for="deputy_id_3">
         <?= _('Vertretungen') ?>
