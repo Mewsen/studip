@@ -1,4 +1,5 @@
 const BaseComponents = {
+    CaptchaInput: () => import('./components/form_inputs/CaptchaInput.vue'),
     CalendarPermissionsTable: () => import("./components/form_inputs/CalendarPermissionsTable.vue"),
     DateListInput: () => import('./components/form_inputs/DateListInput.vue'),
     Datepicker: () => import('./components/Datepicker.vue'),

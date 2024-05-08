@@ -309,7 +309,7 @@ class Form extends Part
             //verify the user input:
             $output = [];
             foreach ($this->getAllInputs() as $input) {
-                if ($input->validate) {
+                if ($input->hasValidation()) {
                     $callback = $input->getValidationCallback();
                     $value = $this->getStorableValueFromRequest($input);
                     $valid = $callback($value, $input);
@@ -317,7 +317,7 @@ class Form extends Part
                         $output[$input->getName()] = [
                             'name' => $input->getName(),
                             'label' => $input->getTitle(),
-                            'error' => $callback($value, $input)
+                            'error' => $valid,
                         ];
                     }
                 }
@@ -396,7 +396,7 @@ class Form extends Part
         $stored = 0;
 
         foreach ($this->getAllInputs() as $input) {
-            if ($input->validate) {
+            if ($input->hasValidation()) {
                 $callback = $input->getValidationCallback();
                 $value = $this->getStorableValueFromRequest($input);
                 $valid = $callback($value, $input);
@@ -450,7 +450,7 @@ class Form extends Part
 
     /**
      * Returns all the Part objects like Fieldsets as an array.
-     * @return array
+     * @return Part[]
      */
     public function getParts() : array
     {

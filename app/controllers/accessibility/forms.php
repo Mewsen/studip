@@ -146,6 +146,9 @@ class Accessibility_FormsController extends StudipController
         }
 
         $this->form->addPart($personal_data_part);
+
+        $this->form->addPart(new \Studip\Forms\Captcha());
+
         $this->form->setSaveButtonText(_('Barriere melden'));
         $this->form->setSaveButtonName('report');
         $this->form->setURL($this->report_barrierURL());

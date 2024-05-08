@@ -195,5 +195,8 @@ class GarbageCollectorJob extends CronJob
             'mkdate < UNIX_TIMESTAMP() - ?',
             [TFASecret::getGreatestValidityDuration()]
         );
+
+        // Remove expired solved captcha challenges
+        CaptchaChallenge::gc();
     }
 }

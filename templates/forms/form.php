@@ -1,4 +1,8 @@
-<?
+<?php
+/**
+ * @var \Studip\Forms\Form $form
+ */
+
 $inputs = [];
 $allinputs = $form->getAllInputs();
 $required_inputs = [];
