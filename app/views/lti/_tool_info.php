@@ -2,6 +2,7 @@
 /**
  * @var LtiTool $tool
  * @var LtiDeployment $deployment
+ * @var StudipControlle $controller
  */
 ?>
 <? if (!empty($tool)) : ?>
@@ -17,9 +18,15 @@
             <dt><?= _('Launch-URL') ?></dt>
             <dd>
                 <? if ($deployment && $deployment->launch_url) : ?>
-                    <a href="<?= htmlReady($deployment->launch_url) ?>"><?= htmlReady($deployment->launch_url) ?></a>
+                    <a href="<?= htmlReady($deployment->launch_url) ?>">
+                        <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
+                        <?= htmlReady($deployment->launch_url) ?>
+                    </a>
                 <? else : ?>
-                    <a href="<?= htmlReady($tool->launch_url) ?>"><?= htmlReady($tool->launch_url) ?></a>
+                    <a href="<?= htmlReady($tool->launch_url) ?>">
+                        <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
+                        <?= htmlReady($tool->launch_url) ?>
+                    </a>
                 <? endif ?>
             </dd>
 
@@ -32,6 +39,13 @@
                     <dd><?= htmlReady($parameters) ?></dd>
                 <? endif ?>
             <? endif ?>
+            <dt><?= _('Direktlink zum LTI-Tool') ?></dt>
+            <dd>
+                <a href="<?= $controller->link_for('course/lti/iframe', $deployment->id) ?>">
+                    <?= Icon::create('link-extern')->asImg(['class' => 'text-bottom']) ?>
+                    <?= $controller->link_for('course/lti/iframe', $deployment->id) ?>
+                </a>
+            </dd>
         </dl>
     </article>
     <article class="studip">
