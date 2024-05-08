@@ -8,7 +8,7 @@
         width: 100%;
 
         .content-item {
-            height: 100px;
+            min-height: 100px;
 
             .content-item-link {
                 height: 90px;
@@ -48,7 +48,7 @@
         background-color: var(--dark-gray-color-5);
         border: solid thin var(--light-gray-color-40);
         display: flex;
-        height: 150px;
+        min-height: 150px;
         justify-content: stretch;
 
         .content-item-link {
