@@ -27,11 +27,36 @@
         <section>
             <?= _('Beim Wechsel in das LTI-Tool werden die folgenden personenbezogenen Daten übertragen:') ?>
             <ul>
-                <li><?= _('Die ID ihres Stud.IP-Kontos') ?></li>
-                <li><?= _('Ihr Vor- und Nachname, sowie gegebenenfalls vorhandene Titel') ?></li>
-                <li><?= _('Ihre E-Mail Adresse') ?></li>
-                <li><?= _('Ihre in Stud.IP eingestellte Sprache') ?></li>
-                <li><?= _('Ihr Profilbild') ?></li>
+                <li>
+                    <label>
+                        <input type="checkbox" checked disabled>
+                        <?= _('Die ID ihres Stud.IP-Kontos') ?>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" checked disabled>
+                        <?= _('Ihr Vor- und Nachname, sowie gegebenenfalls vorhandene Titel') ?>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" checked disabled>
+                        <?= _('Ihre E-Mail Adresse') ?>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="submit_optional_field[lang]" value="1">
+                        <?= _('Ihre in Stud.IP eingestellte Sprache') ?>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="submit_optional_field[profile_url]" value="1">
+                        <?= _('Ihr Profilbild') ?>
+                    </label>
+                </li>
             </ul>
         </section>
     </article>
