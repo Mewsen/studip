@@ -10,7 +10,7 @@
 
     <table class="default">
         <caption>
-            <?= sprintf(_('Treffer für Suche nach <em>%s</em> in allen Versionen'), htmlReady(Request::get('search'))) ?>
+            <?= sprintf(_('Treffer für Suche nach <em>%s</em>'), htmlReady(Request::get('search'))) ?>
         </caption>
         <thead>
         <tr>
@@ -96,6 +96,20 @@
                     <? endif ?>
                 </td>
             </tr>
+            <? if ($pagedata['is_in_history'] && count($pagedata['versions']) > 1 || ($pagedata['is_in_content'] && count($pagedata['versions']) > 0)) : ?>
+            <tr>
+                <td colspan="3">
+                    <a href="<?= $controller->searchpage($page_id, ['search' => Request::get('search')]) ?>">
+                        <?= Icon::create('add')->asImg(['class' => 'text-bottom']) ?>
+                        <? if (count($pagedata['versions']) === 1) : ?>
+                            <?= _('Weiterer Treffer in einer älteren Version.') ?>
+                        <? else : ?>
+                            <?= sprintf(_('Weitere Treffer in %d älteren Versionen.'), count($pagedata['versions'])) ?>
+                        <? endif ?>
+                    </a>
+                </td>
+            </tr>
+            <? endif ?>
         <? endforeach ?>
         </tbody>
     </table>

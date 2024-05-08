@@ -976,6 +976,30 @@ class Course_WikiController extends AuthenticatedController
         Sidebar::Get()->addWidget($search);
     }
 
+    public function searchpage_action(WikiPage $page)
+    {
+        if (!$page->isReadable()) {
+            throw new AccessDeniedException();
+        }
+        Navigation::activateItem('/course/wiki/allpages');
+        if (!Request::get('search')) {
+            throw new Exception('No search text.');
+        }
+        $search = str_replace(['\\', '_', '%'], ['\\\\', '\\_', '\\%'], Request::get('search'));
+        $this->versions = WikiVersion::findBySQL("`page_id` = :page_id AND (`wiki_versions`.`content` LIKE :searchterm OR `wiki_versions`.`name` LIKE :searchterm) ORDER BY `mkdate` DESC ", [
+            'page_id' => $page->id,
+            'searchterm' => '%' . $search . '%'
+        ]);
+
+        $search = new SearchWidget($this->searchURL());
+        $search->addNeedle(
+            _('Im Wiki suchen'),
+            'search',
+            true
+        );
+        Sidebar::Get()->addWidget($search);
+    }
+
     public function pdf_action(WikiPage $page)
     {
         if (!$page->isReadable()) {
@@ -1216,5 +1240,42 @@ class Course_WikiController extends AuthenticatedController
         );
 
         return $from_end ? mb_strlen($str0) - $length : $length;
+    }
+
+    public function findTextualHits($text, $search, $length = 80)
+    {
+        $content = Studip\Markup::removeHtml($text);
+        $offset  = 0;
+        $output  = [];
+
+        // find all occurences
+        while ($offset < mb_strlen($content)) {
+            $pos = mb_stripos($content, Request::get('search'), $offset);
+            if ($pos === false) {
+                break;
+            }
+            $offset = $pos + 1;
+
+            // show max 200 chars
+            $fragment       = '';
+            $split_fragment = preg_split(
+                '/(' . preg_quote(Request::get('search'), '/') . ')/i',
+                mb_substr($content, max(0, $pos - floor($length / 2)), $length),
+                -1,
+                PREG_SPLIT_DELIM_CAPTURE
+            );
+            for ($i = 0; $i < count($split_fragment); ++$i) {
+                if ($i % 2) {
+                    $fragment .= '<span class="wiki_highlight">';
+                    $fragment .= htmlready($split_fragment[$i], false);
+                    $fragment .= '</span>';
+                } else {
+                    $fragment .= htmlready($split_fragment[$i], false);
+                }
+            }
+            $found_in_fragment = (count($split_fragment) - 1) / 2; // number of hits in fragment
+            $output[]          = '...' . $fragment . '...';
+        }
+        return implode('<br>', $output);
     }
 }
