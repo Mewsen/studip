@@ -54,15 +54,10 @@ class Settings_PasswordController extends Settings_SettingsController
         $this->check_ticket();
 
         $errors = [];
-        $hasher = UserManagement::getPwdHasher();
-
 
         $password = Request::get('new_password');
         $confirm  = Request::get('new_password_confirm');
-        if (!($hasher->CheckPassword(md5(Request::get('password')), $this->user['password'])
-              || $hasher->CheckPassword(Request::get('password'), $this->user['password'])
-              || (mb_strlen($this->user['password']) == 32 && md5(Request::get('password')) == $this->user['password']))
-        ) {
+        if (!password_verify($password, $this->user['password'])) {
             $errors[] = _('Das aktuelle Passwort wurde nicht korrekt eingegeben.');
         }
         if (!$this->validator->ValidatePassword($password)) {
@@ -78,7 +73,7 @@ class Settings_PasswordController extends Settings_SettingsController
         if (count($errors) > 0) {
             PageLayout::postError(_('Bitte überprüfen Sie Ihre Eingabe:'), $errors);
         } else {
-            $this->user->password = $hasher->HashPassword($password);
+            $this->user->password = password_hash($password, PASSWORD_DEFAULT);
             if ($this->user->store()) {
                 PageLayout::postSuccess(_('Das Passwort wurde erfolgreich geändert.'));
             }

@@ -38,14 +38,20 @@ class UserManagement
 
     public $msg;
 
-    private static $pwd_hasher;
-
+    /**
+     * @deprecated since Stud.IP 6.0; use native password_hash($pwd, PASSWORD_DEFAULT)
+     */
     public static function getPwdHasher()
     {
-        if (self::$pwd_hasher === null) {
-            self::$pwd_hasher = new PasswordHash(8, Config::get()->PHPASS_USE_PORTABLE_HASH);
-        }
-        return self::$pwd_hasher;
+        return new class {
+            public function HashPassword(string $password): string {
+                trigger_error(
+                    'UserMamanger::getPwdHasher->HashPassword() is deprecated, use native password_hash($pwd, PASSWORD_DEFAULT) instead',
+                    E_USER_DEPRECATED
+                );
+                return password_hash($password, PASSWORD_DEFAULT);
+            }
+        };
     }
 
     /**
@@ -295,7 +301,7 @@ class UserManagement
 
         if ($this->user_data['auth_user_md5.auth_plugin'] === 'standard') {
             $password = $this->generate_password(8);
-            $this->user_data['auth_user_md5.password'] = self::getPwdHasher()->HashPassword($password);
+            $this->user_data['auth_user_md5.password'] = password_hash($password, PASSWORD_DEFAULT);
         }
 
         // Does the user already exist?
@@ -1294,7 +1300,7 @@ class UserManagement
     */
     public function changePassword($password)
     {
-        $this->user_data['auth_user_md5.password'] = self::getPwdHasher()->HashPassword($password);
+        $this->user_data['auth_user_md5.password'] = password_hash($password, PASSWORD_DEFAULT);
         $this->storeToDatabase();
 
         $this->msg .= 'msg§' . _('Das Passwort wurde neu gesetzt.') . '§';
