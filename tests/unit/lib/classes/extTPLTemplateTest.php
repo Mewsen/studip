@@ -10,15 +10,13 @@
  * the License, or (at your option) any later version.
  */
 
-require 'Template.php';
-
 use exTpl\Template;
 
-class template_test extends PHPUnit\Framework\TestCase
+class extTplTemplateTest extends \Codeception\Test\Unit
 {
     public function testSimpleString()
     {
-        $bindings = array();
+        $bindings = [];
         $template = 'The quick brown fox jumps over the layz dog.';
         $expected = $template;
         $tmpl_obj = new Template($template);

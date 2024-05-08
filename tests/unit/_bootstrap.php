@@ -53,6 +53,7 @@ StudipAutoloader::addAutoloadPath('lib/activities', 'Studip\\Activity');
 StudipAutoloader::addAutoloadPath('lib/models');
 StudipAutoloader::addAutoloadPath('lib/classes');
 StudipAutoloader::addAutoloadPath('lib/classes', 'Studip');
+StudipAutoloader::addAutoloadPath('lib/exTpl', 'exTpl');
 StudipAutoloader::addAutoloadPath('lib/exceptions');
 StudipAutoloader::addAutoloadPath('lib/classes/sidebar');
 StudipAutoloader::addAutoloadPath('lib/classes/helpbar');

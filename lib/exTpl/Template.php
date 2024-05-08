@@ -12,8 +12,9 @@
 
 namespace exTpl;
 
-require_once 'Scanner.php';
-require_once 'Node.php';
+use Closure;
+use InvalidArgumentException;
+
 
 /**
  * The Template class is the only externally visible API of this
@@ -22,37 +23,39 @@ require_once 'Node.php';
  */
 class Template
 {
-    private static $tag_start = '{';
-    private static $tag_end = '}';
-    private $escape;
-    private $functions;
-    private $template;
+    private static string $tag_start = '{';
+    private static string $tag_end   = '}';
+    private Closure|string|null $escape = null;
+    private array $functions;
+    private ArrayNode $template;
 
     /**
      * Sets the delimiter strings used for the template tags, the
      * default delimiters are: $tag_start = '{', $tag_end = '}'.
      *
      * @param string $tag_start tag start marker
-     * @param string $tag_end   tag end marker
+     * @param string $tag_end tag end marker
      */
-    public static function setTagMarkers($tag_start, $tag_end)
+    public static function setTagMarkers(string $tag_start, string $tag_end): void
     {
         self::$tag_start = $tag_start;
-        self::$tag_end = $tag_end;
+        self::$tag_end   = $tag_end;
     }
 
     /**
      * Initializes a new Template instance from the given string.
      *
-     * @param string $string    template text
+     * @param string $string template text
+     *
+     * @throws TemplateParserException
      */
-    public function __construct($string)
+    public function __construct(string $string)
     {
-        $this->template = new ArrayNode();
-        $this->functions = array(
-            'count' => function($a) { return count($a); },
-            'strlen' => function($a) { return mb_strlen($a); }
-        );
+        $this->template  = new ArrayNode();
+        $this->functions = [
+            'count'  => fn($a) => count($a),
+            'strlen' => fn($a) => mb_strlen($a),
+        ];
         self::parseTemplate($this->template, $string, 0);
     }
 
@@ -60,9 +63,9 @@ class Template
      * Enables or disables automatic escaping for template values.
      * Currently supported strategies: NULL, 'html', 'json', 'xml'
      *
-     * @param string|callable $escape   escape strategy or callback
+     * @param callable|string|null $escape escape strategy or callback
      */
-    public function autoescape($escape)
+    public function autoescape(callable|string|null $escape): void
     {
         if ($escape === 'html' || $escape === 'xml') {
             $this->escape = 'htmlspecialchars';
@@ -70,8 +73,8 @@ class Template
             $this->escape = 'json_encode';
         } else if (is_callable($escape)) {
             $this->escape = $escape;
-        } else if ($escape === NULL) {
-            $this->escape = NULL;
+        } else if ($escape === null) {
+            $this->escape = null;
         } else {
             throw new InvalidArgumentException("invalid escape strategy: $escape");
         }
@@ -81,11 +84,11 @@ class Template
      * Renders the template to a string using the given array of
      * bindings to resolve symbol references inside the template.
      *
-     * @param array $bindings   symbol table
+     * @param array $bindings symbol table
      *
      * @return string   string representation of the template
      */
-    public function render(array $bindings)
+    public function render(array $bindings): string
     {
         $context = new Context($bindings + $this->functions);
         $context->autoescape($this->escape);
@@ -96,15 +99,14 @@ class Template
     /**
      * Skips tokens until the end of the current tag is reached.
      *
-     * @param string $string    template text
-     * @param int    $pos       offset in string
+     * @param string $string template text
+     * @param int $pos offset in string
      *
-     * @return int      new offset in the string
+     * @return int new offset in the string
      */
-    private static function skipTokens($string, $pos)
+    private static function skipTokens(string $string, int $pos): int
     {
-        for ($len = strlen($string); $pos < $len &&
-                substr_compare($string, self::$tag_end, $pos, strlen(self::$tag_end)); ++$pos) {
+        for ($len = strlen($string); $pos < $len && substr_compare($string, self::$tag_end, $pos, strlen(self::$tag_end)); ++$pos) {
             $chr = $string[$pos];
             if ($chr === '"' || $chr === "'") {
                 while (++$pos < $len && $string[$pos] !== $chr) {
@@ -128,8 +130,9 @@ class Template
      * @param int       $pos    offset in string
      *
      * @return int      new offset in the string
+     * @throws TemplateParserException
      */
-    private static function parseTemplate(ArrayNode $node, $string, $pos)
+    private static function parseTemplate(ArrayNode $node, string $string, int $pos): int
     {
         $len = strlen($string);
 
@@ -147,15 +150,15 @@ class Template
                 $node->addChild($child);
             }
 
-            $pos = $next_pos + strlen(self::$tag_start);
+            $pos      = $next_pos + strlen(self::$tag_start);
             $next_pos = self::skipTokens($string, $pos);
-            $scanner = new Scanner(substr($string, $pos, $next_pos - $pos));
-            $pos = $next_pos + strlen(self::$tag_end);
+            $scanner  = new Scanner(substr($string, $pos, $next_pos - $pos));
+            $pos      = $next_pos + strlen(self::$tag_end);
 
             switch ($scanner->nextToken()) {
                 case T_FOREACH:
                     $scanner->nextToken();
-                    $expr = self::parseExpr($scanner);
+                    $expr     = self::parseExpr($scanner);
                     $key_name = 'index';
                     $val_name = 'this';
 
@@ -183,15 +186,16 @@ class Template
                     }
 
                     $child = new IteratorNode($expr, $key_name, $val_name);
-                    $pos = self::parseTemplate($child, $string, $pos);
+                    $pos   = self::parseTemplate($child, $string, $pos);
                     $node->addChild($child);
                     break;
+                case T_ENDIF:
                 case T_ENDFOREACH:
                     return $pos;
                 case T_IF:
                     $scanner->nextToken();
                     $child = new ConditionNode(self::parseExpr($scanner));
-                    $pos = self::parseTemplate($child, $string, $pos);
+                    $pos   = self::parseTemplate($child, $string, $pos);
                     $node->addChild($child);
                     break;
                 case T_ELSEIF:
@@ -204,8 +208,6 @@ class Template
                     $scanner->nextToken();
                     $node->addElse();
                     break;
-                case T_ENDIF:
-                    return $pos;
                 default:
                     $child = new ExpressionNode(self::parseExpr($scanner));
                     $node->addChild($child);
@@ -221,8 +223,10 @@ class Template
 
     /**
      * value: NUMBER | STRING | SYMBOL | '(' expr ')'
+     *
+     * @throws TemplateParserException
      */
-    private static function parseValue(Scanner $scanner)
+    private static function parseValue(Scanner $scanner): mixed
     {
         switch ($scanner->tokenType()) {
             case T_CONSTANT_ENCAPSED_STRING:
@@ -251,15 +255,17 @@ class Template
 
     /**
      * function: value | function '(' ')' | function '(' expr { ',' expr } ')'
+     *
+     * @throws TemplateParserException
      */
-    private static function parseFunction(Scanner $scanner)
+    private static function parseFunction(Scanner $scanner): mixed
     {
         $result = self::parseValue($scanner);
-        $type = $scanner->tokenType();
+        $type   = $scanner->tokenType();
 
         while ($type === '(') {
             $scanner->nextToken();
-            $arguments = array();
+            $arguments = [];
 
             if ($scanner->tokenType() !== ')') {
                 $arguments[] = self::parseExpr($scanner);
@@ -276,7 +282,7 @@ class Template
 
             $scanner->nextToken();
             $result = new FunctionExpression($result, $arguments);
-            $type = $scanner->tokenType();
+            $type   = $scanner->tokenType();
         }
 
         return $result;
@@ -284,11 +290,13 @@ class Template
 
     /**
      * index: function | index '[' expr ']' | index '.' SYMBOL
+     *
+     * @throws TemplateParserException
      */
-    private static function parseIndex(Scanner $scanner)
+    private static function parseIndex(Scanner $scanner): mixed
     {
         $result = self::parseFunction($scanner);
-        $type = $scanner->tokenType();
+        $type   = $scanner->tokenType();
 
         while ($type === '[' || $type === '.') {
             $scanner->nextToken();
@@ -315,11 +323,13 @@ class Template
 
     /**
      * filter: index | filter '|' SYMBOL | filter '|' SYMBOL '(' expr { ',' expr } ')'
+     *
+     * @throws TemplateParserException
      */
-    private static function parseFilter(Scanner $scanner)
+    private static function parseFilter(Scanner $scanner): mixed
     {
         $result = self::parseIndex($scanner);
-        $type = $scanner->tokenType();
+        $type   = $scanner->tokenType();
 
         while ($type === '|') {
             $scanner->nextToken();
@@ -328,8 +338,8 @@ class Template
                 throw new TemplateParserException('symbol expected', $scanner);
             }
 
-            $arguments = array($result);
-            $symbol = new SymbolExpression($scanner->tokenValue());
+            $arguments = [$result];
+            $symbol    = new SymbolExpression($scanner->tokenValue());
             $scanner->nextToken();
 
             if ($scanner->tokenType() === '(') {
@@ -365,8 +375,10 @@ class Template
 
     /**
      * sign: '!' sign | '+' sign | '-' sign | filter
+     *
+     * @throws TemplateParserException
      */
-    private static function parseSign(Scanner $scanner)
+    private static function parseSign(Scanner $scanner): mixed
     {
         switch ($scanner->tokenType()) {
             case '!':
@@ -390,16 +402,18 @@ class Template
 
     /**
      * product: sign | product '*' sign | product '/' sign | product '%' sign
+     *
+     * @throws TemplateParserException
      */
-    private static function parseProduct(Scanner $scanner)
+    private static function parseProduct(Scanner $scanner): mixed
     {
         $result = self::parseSign($scanner);
-        $type = $scanner->tokenType();
+        $type   = $scanner->tokenType();
 
         while ($type === '*' || $type === '/' || $type === '%') {
             $scanner->nextToken();
             $result = new ArithExpression($result, self::parseSign($scanner), $type);
-            $type = $scanner->tokenType();
+            $type   = $scanner->tokenType();
         }
 
         return $result;
@@ -407,16 +421,18 @@ class Template
 
     /**
      * sum: product | sum '+' product | sum '-' product | sum '~' product
+     *
+     * @throws TemplateParserException
      */
-    private static function parseSum(Scanner $scanner)
+    private static function parseSum(Scanner $scanner): mixed
     {
         $result = self::parseProduct($scanner);
-        $type = $scanner->tokenType();
+        $type   = $scanner->tokenType();
 
         while ($type === '+' || $type === '-' || $type === '~') {
             $scanner->nextToken();
             $result = new ArithExpression($result, self::parseProduct($scanner), $type);
-            $type = $scanner->tokenType();
+            $type   = $scanner->tokenType();
         }
 
         return $result;
@@ -425,17 +441,19 @@ class Template
     /**
      * lt_gt: sum | lt_gt '<' concat | lt_gt IS_SMALLER_OR_EQUAL concat
      *            | lt_gt '>' concat | lt_gt IS_GREATER_OR_EQUAL concat
+     *
+     * @throws TemplateParserException
      */
-    private static function parseLtGt(Scanner $scanner)
+    private static function parseLtGt(Scanner $scanner): mixed
     {
         $result = self::parseSum($scanner);
-        $type = $scanner->tokenType();
+        $type   = $scanner->tokenType();
 
         while ($type === '<' || $type === T_IS_SMALLER_OR_EQUAL ||
-               $type === '>' || $type === T_IS_GREATER_OR_EQUAL) {
+            $type === '>' || $type === T_IS_GREATER_OR_EQUAL) {
             $scanner->nextToken();
             $result = new BooleanExpression($result, self::parseSum($scanner), $type);
-            $type = $scanner->tokenType();
+            $type   = $scanner->tokenType();
         }
 
         return $result;
@@ -443,16 +461,18 @@ class Template
 
     /**
      * cmp: lt_gt | cmp IS_EQUAL lt_gt | cmp IS_NOT_EQUAL lt_gt
+     *
+     * @throws TemplateParserException
      */
-    private static function parseCmp(Scanner $scanner)
+    private static function parseCmp(Scanner $scanner): mixed
     {
         $result = self::parseLtGt($scanner);
-        $type = $scanner->tokenType();
+        $type   = $scanner->tokenType();
 
         while ($type === T_IS_EQUAL || $type === T_IS_NOT_EQUAL) {
             $scanner->nextToken();
             $result = new BooleanExpression($result, self::parseLtGt($scanner), $type);
-            $type = $scanner->tokenType();
+            $type   = $scanner->tokenType();
         }
 
         return $result;
@@ -460,16 +480,18 @@ class Template
 
     /**
      * and: cmp | and BOOLEAN_AND cmp
+     *
+     * @throws TemplateParserException
      */
-    private static function parseAnd(Scanner $scanner)
+    private static function parseAnd(Scanner $scanner): mixed
     {
         $result = self::parseCmp($scanner);
-        $type = $scanner->tokenType();
+        $type   = $scanner->tokenType();
 
         while ($type === T_BOOLEAN_AND) {
             $scanner->nextToken();
             $result = new BooleanExpression($result, self::parseCmp($scanner), $type);
-            $type = $scanner->tokenType();
+            $type   = $scanner->tokenType();
         }
 
         return $result;
@@ -477,16 +499,18 @@ class Template
 
     /**
      * or: and | or BOOLEAN_OR and
+     *
+     * @throws TemplateParserException
      */
-    private static function parseOr(Scanner $scanner)
+    private static function parseOr(Scanner $scanner): mixed
     {
         $result = self::parseAnd($scanner);
-        $type = $scanner->tokenType();
+        $type   = $scanner->tokenType();
 
         while ($type === T_BOOLEAN_OR) {
             $scanner->nextToken();
             $result = new BooleanExpression($result, self::parseAnd($scanner), $type);
-            $type = $scanner->tokenType();
+            $type   = $scanner->tokenType();
         }
 
         return $result;
@@ -494,8 +518,10 @@ class Template
 
     /**
      * expr: or | or '?' expr ':' expr | or '?' ':' expr
+     *
+     * @throws TemplateParserException
      */
-    private static function parseExpr(Scanner $scanner)
+    private static function parseExpr(Scanner $scanner): mixed
     {
         $result = self::parseOr($scanner);
 
@@ -517,19 +543,5 @@ class Template
         }
 
         return $result;
-    }
-}
-
-/**
- * Exception class used to report template parse errors.
- */
-class TemplateParserException extends \Exception
-{
-    public function __construct($message, $scanner)
-    {
-        $type = $scanner->tokenType();
-        $value = is_int($type) ? $scanner->tokenValue() : $type;
-
-        return parent::__construct("$message at \"$value\"");
     }
 }

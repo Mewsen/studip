@@ -13,8 +13,6 @@
  * @since       5.4
  */
 
-require_once 'vendor/exTpl/Template.php';
-
 abstract class ExternPage
 {
     /**
