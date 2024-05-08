@@ -101,6 +101,8 @@ class Lti_ToolController extends AuthenticatedController
                         $this->deployment->options = [];
                     }
                     $this->deployment->options['document_target'] = $document_target;
+                } elseif (isset($this->deployment->options['document_target'])) {
+                    unset($this->deployment->options['document_target']);
                 }
             }
 
