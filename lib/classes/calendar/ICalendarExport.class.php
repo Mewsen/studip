@@ -76,20 +76,7 @@ class ICalendarExport
         if ($this->time === 0) {
             $this->time = time();
         }
-        $dates = CourseDate::findBySql(
-            "LEFT JOIN `seminar_user`
-                ON `termine`.`range_id` = `seminar_user`.`Seminar_id`
-            WHERE
-                `seminar_user`.`user_id` = :user_id
-                AND `seminar_user`.`bind_calendar` = 1
-                AND (`termine`.`date` <= :end
-                    AND `termine`.`end_time` >= :begin)",
-            [
-                ':user_id'  => $user_id,
-                ':begin'    => $start->getTimestamp(),
-                ':end'      => $end->getTimestamp(),
-            ]
-        );
+        $dates = CalendarCourseDate::getEvents($start, $end, $user_id);
         $ical = '';
         foreach ($dates as $date) {
             $ical .= $this->writeICalEvent($this->prepareCourseDate($date));
@@ -102,20 +89,7 @@ class ICalendarExport
         if ($this->time === 0) {
             $this->time = time();
         }
-        $dates = CourseExDate::findBySql(
-            "LEFT JOIN `seminar_user`
-                ON `ex_termine`.`range_id` = `seminar_user`.`Seminar_id`
-            WHERE
-                `seminar_user`.`user_id` = :user_id
-                AND `seminar_user`.`bind_calendar` = 1
-                AND (`ex_termine`.`date` <= :end
-                    AND `ex_termine`.`end_time` >= :begin)",
-            [
-                ':user_id'  => $user_id,
-                ':begin'    => $start->getTimestamp(),
-                ':end'      => $end->getTimestamp(),
-            ]
-        );
+        $dates = CalendarCourseExDate::getEvents($start, $end, $user_id);
         $ical = '';
         foreach ($dates as $date) {
             $ical .= $this->writeICalEvent($this->prepareCourseDate($date));
@@ -124,10 +98,10 @@ class ICalendarExport
     }
 
     /**
-     * @param CalendarDate | CourseExDate $date
-     * @return array
+     * @param CalendarDate $date The calendar date to export.
+     * @return array Calendar date data prepared for export.
      */
-    public function prepareCalendarDate($date): array
+    public function prepareCalendarDate(CalendarDate $date): array
     {
         return [
             'SUMMARY'       => $date->title,
@@ -155,8 +129,8 @@ class ICalendarExport
     }
 
     /**
-     * @param CalendarDate | CourseExDate $date
-     * @return array
+     * @param CourseDate | CourseExDate $date The course date to export.
+     * @return array Course date data prepared for export.
      */
     public function prepareCourseDate($date): array
     {
@@ -165,10 +139,13 @@ class ICalendarExport
         if ($date instanceof CourseExDate) {
             $summary .= ' ' . _('(fällt aus)');
             $categories = '';
+            $description = $date->content;
+        } else {
+            $description = implode("\n", $date->topics->pluck('title'));
         }
         return [
             'SUMMARY'       => $summary,
-            'DESCRIPTION'   => '',
+            'DESCRIPTION'   => $description,
             'LOCATION'      => $date->getRoomName(),
             'CATEGORIES'    => $categories,
             'LAST-MODIFIED' => $date->chdate,
@@ -381,8 +358,8 @@ class ICalendarExport
     public function _exportDateTime($value, $utc = false)
     {
         $date_time = new DateTime();
-        $date_time->setTimestamp($value);
-        //transform local time in UTC
+        $date_time->setTimestamp(intval($value));
+        //transform local time to UTC
         if ($utc) {
             $tz_utc = new DateTimeZone('UTC');
             $date_time->setTimezone($tz_utc);
