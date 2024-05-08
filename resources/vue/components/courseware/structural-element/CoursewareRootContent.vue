@@ -116,12 +116,7 @@ export default {
         image() {
             let style = {};
             const backgroundURL = this.imageIsSet ? this.imageURL : this.identImage;
-
             style.backgroundImage = 'url(' + backgroundURL + ')';
-            if (!this.imageIsSet) {
-                style.backgroundSize = '100% auto';
-                style.height = '180px';
-            }
 
             return style;
         },
@@ -194,17 +189,20 @@ export default {
     }
     .cw-root-content-description {
         display: flex;
-        flex-direction: row;
-        margin: 0 8em;
-        padding: 2em 4px 2em 2em;
         position: relative;
-        top: 8em;
+        flex-direction: column;
+        margin: 0 1em;
+        padding: 1em 4px 1em 1em;
+        top: 1em;
+        gap: 10px;
 
         .cw-root-content-description-img {
-            width: 270px;
-            height: fit-content;
-            margin-right: 2em;
+            min-width: 135px;
+            height: 90px;
             background-color: #fff;
+            background-size: cover;
+            background-position: center;
+            margin-right: 1em;
         }
         .cw-root-content-description-text {
             max-height: calc(480px - 18em);
@@ -232,8 +230,7 @@ export default {
     max-width: 1095px;
     margin-bottom: 1em;
     .cw-root-content-description {
-        margin: 0 8em;
-        top: 1.5em;
+        height: calc(100% - 4em);
         .cw-root-content-description-text {
             max-height: calc(300px - 6em);
         }
@@ -244,5 +241,57 @@ export default {
 }
 .cw-root-content-hint {
     max-width: 1095px;
+}
+
+.size-small {
+    .cw-root-content-description {
+        flex-direction: row;
+        padding: 1em 4px 1em 1em;
+
+        .cw-root-content-description-img {
+            min-width: 135px;
+            height: 90px;
+        }
+    }
+
+    .cw-root-content-default {
+        .cw-root-content-description {
+            margin: 0 4em;
+            top: 8em;
+        }
+    }
+    .cw-root-content-toc {
+        .cw-root-content-description {
+            height: calc(100% - 6em);
+            margin: 0 4em;
+            top: 1.5em;
+        }
+    }
+}
+
+.size-large {
+    .cw-root-content-description {
+        flex-direction: row;
+        padding: 2em 4px 2em 2em;
+
+        .cw-root-content-description-img {
+            min-width: 270px;
+            height: 180px;
+        }
+    }
+
+    .cw-root-content-default {
+        .cw-root-content-description {
+            margin: 0 8em;
+            top: 8em;
+        }
+    }
+    .cw-root-content-toc {
+        .cw-root-content-description {
+            height: calc(100% - 7em);
+            margin: 0 8em;
+            top: 1.5em;
+        }
+    }
 }
 </style>
