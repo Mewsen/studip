@@ -46,10 +46,17 @@ class auth_user_md5 extends SimpleORMap
     }
 }
 
+/**
+ * @backupGlobals enabled
+ */
 class SimpleOrMapNodbTest extends \Codeception\Test\Unit
 {
     protected static function setupFixture(): void
     {
+        if (count($GLOBALS['CONTENT_LANGUAGES']) < 2) {
+            $GLOBALS['CONTENT_LANGUAGES']['en_GB'] = ['picture' => 'lang_en.gif', 'name' => 'English'];
+        }
+
         StudipTestHelper::set_up_tables(['auth_user_md5']);
     }
 
