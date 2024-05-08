@@ -454,7 +454,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Returns new instance for given key when found in the database, else null.
      *
-     * @param string $id primary key
+     * @param string|array $id primary key
      * @return static|null
      */
     public static function find($id)
