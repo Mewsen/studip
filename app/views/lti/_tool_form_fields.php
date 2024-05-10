@@ -18,6 +18,11 @@
             <?= _('Beschreibung') ?>
             <textarea name="description" class="wysiwyg"><?= wysiwygReady($deployment->description ?? '') ?></textarea>
         </label>
+        <label>
+            <?= _('Datenschutzhinweise') ?>
+            <textarea name="data_protection_notes" class="wysiwyg"
+                      placeholder="<?= _('TODO: Hier sollte was zum Datenschutz stehen.') ?>"><?= $deployment->data_protection_notes ?></textarea>
+        </label>
     <? endif ?>
 </fieldset>
 <fieldset>

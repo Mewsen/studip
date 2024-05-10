@@ -95,6 +95,7 @@ class Lti_ToolController extends AuthenticatedController
                 $this->deployment->title       = trim(Request::get('name'));
                 $this->deployment->description = trim(Request::get('description'));
                 $this->deployment->launch_url  = trim(Request::get('launch_url'));
+                $this->deployment->data_protection_notes = trim(Request::get('data_protection_notes'));
                 $document_target = trim(Request::get('document_target'));
                 if ($document_target === 'iframe') {
                     if (!is_array($this->deployment->options)) {
