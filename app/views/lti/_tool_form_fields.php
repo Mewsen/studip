@@ -6,10 +6,9 @@
 ?>
 <fieldset>
     <legend><?= _('Grunddaten') ?></legend>
-    <label>
-        <span class="required">
-            <?= _('Titel') ?>
-        </span>
+    <label class="studiprequired">
+        <span class="textlabel"><?= _('Titel') ?></span>
+        <span class="asterisk">*</span>
         <input type="text" name="name" required
                value="<?= htmlReady(!empty($deployment) ? $deployment->title : $tool->name ?? '') ?>">
     </label>
@@ -24,6 +23,16 @@
                       placeholder="<?= _('TODO: Hier sollte was zum Datenschutz stehen.') ?>"><?= $deployment->data_protection_notes ?></textarea>
         </label>
     <? endif ?>
+    <label class="studiprequired">
+        <span class="textlabel"><?= _('URL zu den Nutzungsbedingungen') ?></span>
+        <span class="asterisk">*</span>
+        <input type="url" name="terms_of_use_url" required value="<?= htmlReady($tool->terms_of_use_url) ?>">
+    </label>
+    <label class="studiprequired">
+        <span class="textlabel"><?= _('URL zur Datenschutzerklärung') ?></span>
+        <span class="asterisk">*</span>
+        <input type="url" name="privacy_policy_url" required value="<?= htmlReady($tool->privacy_policy_url) ?>">
+    </label>
 </fieldset>
 <fieldset>
     <legend><?= _('Konfiguration des LTI-Tools') ?></legend>

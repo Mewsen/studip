@@ -47,7 +47,9 @@ class AddLti13a extends Migration
             ADD COLUMN oidc_init_url VARCHAR(255) NOT NULL DEFAULT '',
             ADD COLUMN jwks_url VARCHAR(255) NOT NULL DEFAULT '',
             ADD COLUMN jwks_key_id VARCHAR(255) NOT NULL DEFAULT '',
-            ADD COLUMN deep_linking_url VARCHAR(255) NOT NULL DEFAULT ''"
+            ADD COLUMN deep_linking_url VARCHAR(255) NOT NULL DEFAULT '',
+            ADD COLUMN terms_of_use_url VARCHAR(255) NOT NULL DEFAULT '',
+            ADD COLUMN privacy_policy_url VARCHAR(255) NOT NULL DEFAULT ''"
         );
 
         $this->migrateLtiDataTable();

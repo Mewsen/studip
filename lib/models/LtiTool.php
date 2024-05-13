@@ -17,6 +17,12 @@
  * @property string $consumer_secret database column
  * @property string $custom_parameters database column
  * @property string $lti_version database column
+ * @property string $oidc_init_url database column
+ * @property string $jwks_url database column
+ * @property string $jwks_key_id database column
+ * @property string $deep_linking_url database column
+ * @property string $terms_of_use_url database column
+ * @property string $privacy_policy_url database column
  * @property int $is_global database column
  * @property int $allow_custom_url database column
  * @property int $deep_linking database column

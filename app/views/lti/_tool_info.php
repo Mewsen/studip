@@ -30,6 +30,25 @@
                 <? endif ?>
             </dd>
 
+            <? if ($tool->terms_of_use_url) : ?>
+                <dt><?= _('Nutzungsbedingungen') ?></dt>
+                <dd>
+                    <a href="<?= htmlReady($tool->terms_of_use_url) ?>">
+                        <?= Icon::create('link-extern') ?>
+                        <?= htmlReady($tool->terms_of_use_url) ?>
+                    </a>
+                </dd>
+            <? endif ?>
+            <? if ($tool->privacy_policy_url) : ?>
+                <dt><?= _('Datenschutzerklärung') ?></dt>
+                <dd>
+                    <a href="<?= htmlReady($tool->privacy_policy_url) ?>">
+                        <?= Icon::create('link-extern') ?>
+                        <?= htmlReady($tool->terms_of_use_url) ?>
+                    </a>
+                </dd>
+            <? endif ?>
+
             <? if ($deployment) : ?>
                 <dt><?= _('Deployment-ID') ?></dt>
                 <dd><?= htmlReady($deployment->id) ?></dd>

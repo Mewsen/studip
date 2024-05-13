@@ -111,14 +111,16 @@ class Lti_ToolController extends AuthenticatedController
             //If a tool is not used in the global context and the is_global flag is not set,
             //it is a tool that is only used for one course.
             if (!$this->deployment || ($this->deployment && $this->tool->is_global === '0')) {
-                $this->tool->name = trim(Request::get('name'));
-                $this->tool->launch_url = trim(Request::get('launch_url'));
-                $this->tool->lti_version = Request::get('lti_version', '1.3a');
+                $this->tool->name               = trim(Request::get('name'));
+                $this->tool->launch_url         = trim(Request::get('launch_url'));
+                $this->tool->terms_of_use_url   = trim(Request::get('terms_of_use_url'));
+                $this->tool->privacy_policy_url = trim(Request::get('privacy_policy_url'));
+                $this->tool->lti_version        = Request::get('lti_version', '1.3a');
                 if ($this->tool->lti_version === '1.3a') {
                     $this->tool->oauth_signature_method = 'sha256';
-                    $this->tool->oidc_init_url = trim(Request::get('oidc_init_url'));
-                    $this->tool->jwks_url = trim(Request::get('jwks_url'));
-                    $this->tool->jwks_key_id = trim(Request::get('jwks_key_id'));
+                    $this->tool->oidc_init_url    = trim(Request::get('oidc_init_url'));
+                    $this->tool->jwks_url         = trim(Request::get('jwks_url'));
+                    $this->tool->jwks_key_id      = trim(Request::get('jwks_key_id'));
                     $this->tool->deep_linking_url = trim(Request::get('deep_linking_url'));
                     if ($this->tool->deep_linking_url) {
                         //Enable deep linking:
@@ -130,11 +132,10 @@ class Lti_ToolController extends AuthenticatedController
                 } else {
                     //LTI 1.0/1.1:
                     $this->tool->oauth_signature_method = 'sha1';
-                    $this->tool->consumer_key = trim(Request::get('consumer_key'));
-                    $this->tool->consumer_secret = trim(Request::get('consumer_secret'));
+                    $this->tool->consumer_key           = trim(Request::get('consumer_key'));
+                    $this->tool->consumer_secret        = trim(Request::get('consumer_secret'));
                 }
-                $this->tool->send_lis_person = Request::int('send_lis_person', 0);
-
+                $this->tool->send_lis_person   = Request::int('send_lis_person', 0);
                 $this->tool->custom_parameters = trim(Request::get('custom_parameters'));
                 $tool_public_key = trim(Request::get('tool_public_key'));
                 $errors = $this->tool->validate();
