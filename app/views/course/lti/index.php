@@ -47,10 +47,10 @@
                         </a>
                         <a href="<?= htmlReady(sprintf(
                                 'javascript:void(STUDIP.Dialog.confirmAsPost(\'%1$s\', \'%2$s\'))',
-                                sprintf(_('Wollen Sie wirklich den Abschnitt "%s" löschen?'), $lti_data->title),
+                                sprintf(_('Wollen Sie das LTI-Tool "%s" wirklich entfernen?'), $lti_data->title),
                                 $controller->url_for('lti/tool/delete/' . $lti_data->course_id . '/' . $lti_data->tool->id)
                         )) ?>"
-                           title="<?= _('Abschnitt löschen') ?>">
+                           title="<?= _('LTI-Tool entfernen') ?>">
                             <?= Icon::create('trash') ?>
                         </a>
                     </form>
