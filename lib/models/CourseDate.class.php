@@ -633,7 +633,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
         );
         $class_names = [];
         if ($membership) {
-            $class_names[] = sprintf('gruppe%u', $membership->status);
+            $class_names[] = 'course-color-' . $membership->gruppe;
         }
         $studip_view_urls = [];
         if ($GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user_id)) {
