@@ -48,7 +48,7 @@
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="submit_optional_field[profile_url]" value="1">
+                        <input type="checkbox" name="submit_optional_field[avatar_url]" value="1">
                         <?= _('Ihr Profilbild') ?>
                     </label>
                 </li>
