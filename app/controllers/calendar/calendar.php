@@ -578,20 +578,18 @@ class Calendar_CalendarController extends AuthenticatedController
             $course_dates = CalendarCourseDate::getEvents($begin, $end, $owner->id);
             foreach ($course_dates as $course_date) {
                 $event = $course_date->toEventData(User::findCurrent()->id);
-                $event->background_colour = '#ffffff';
+                $event->background_colour = '';
                 $event->text_colour = '#000000';
-                $event->border_colour = '#000000';
-                $event->event_classes = [];
+                $event->border_colour = '';
                 $result[] = $event->toFullcalendarEvent();
             }
             //Include relevant cancelled course dates:
             $cancelled_course_dates = CalendarCourseExDate::getEvents($begin, $end, $owner->id);
             foreach ($cancelled_course_dates as $cancelled_course_date) {
                 $event = $cancelled_course_date->toEventData(User::findCurrent()->id);
-                $event->background_colour = '#ffffff';
+                $event->background_colour = '';
                 $event->text_colour = '#000000';
-                $event->border_colour = '#000000';
-                $event->event_classes = [];
+                $event->border_colour = '';
                 $result[] = $event->toFullcalendarEvent();
             }
         }
