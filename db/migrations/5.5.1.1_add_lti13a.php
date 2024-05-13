@@ -124,6 +124,16 @@ class AddLti13a extends Migration
                 );
             }
         }
+
+        $db->exec(
+            "CREATE TABLE IF NOT EXISTS lti_deployment_privacy_settings (
+                deployment_id INT(11) NOT NULL,
+                user_id CHAR(32) NOT NULL,
+                accepted TINYINT(1) NOT NULL DEFAULT '0',
+                allowed_optional_fields VARCHAR(256) NOT NULL DEFAULT '',
+                PRIMARY KEY (deployment_id, user_id)
+            )"
+        );
     }
 
     protected function addConfig()
