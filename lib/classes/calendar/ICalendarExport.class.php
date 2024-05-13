@@ -55,7 +55,7 @@ class ICalendarExport
                     (`calendar_dates`.`begin` <= :end
                         AND `calendar_dates`.`end` >= :begin)
                     OR (`calendar_dates`.`repetition_type` != 'SINGLE'
-                        AND (`calendar_dates`.`repetition_end` >= :end
+                        AND (`calendar_dates`.`repetition_end` >= :begin
                             OR `calendar_dates`.`repetition_end` = 0)
                     AND `calendar_dates`.`begin` < :end))",
             [
@@ -263,7 +263,7 @@ class ICalendarExport
                 case 'DUE':
                 case 'RECURRENCE-ID':
                     if (array_key_exists('VALUE', $params)) {
-                        if ($params['VALUE'] == 'DATE') {
+                        if ($params['VALUE'] === 'DATE') {
                             $value = $this->_exportDate($value);
                         } else {
                             $value = $this->_exportDateTime($value);
@@ -276,12 +276,12 @@ class ICalendarExport
                     break;
 
                 case 'EXDATE':
-                    if (array_key_exists('VALUE', $params)) {
+                    if (array_key_exists('VALUE', $params) && $params['VALUE'] === 'DATE') {
                         $value = $this->exportExDate($value);
                     } else {
-                        $value = $this->exportExDateTime($value);
+                        $value = $this->exportExDateTime($value, $exdate_time);
+                        $params_str = ';TZID=Europe/Berlin';
                     }
-                    $params_str = ';TZID=Europe/Berlin';
                     break;
 
                 // Integer fields
@@ -315,7 +315,7 @@ class ICalendarExport
                 // Recursion fields
                 case 'EXRULE':
                 case 'RRULE':
-                    if ($value['type'] !== 'SINGLE') {
+                    if ($value['type'] !== 'SINGLE' && $value['type'] !== '') {
                         $value = $this->_exportRecurrence($value);
                     }
                     break;
@@ -404,7 +404,7 @@ class ICalendarExport
             $value['offset'] = '-1';
         }
 
-        if ($value['count']) {
+        if ($value['count'] > 1) {
             unset($value['expire']);
         }
 
@@ -415,7 +415,7 @@ class ICalendarExport
                         $rrule[] = 'FREQ=' . $r_value;
                         break;
                     case 'expire':
-                        if ($r_value < CalendarDate::NEVER_ENDING)
+                        if ($r_value)
                             $rrule[] = 'UNTIL=' . $this->_exportDateTime($r_value, true);
                         break;
                     case 'interval':
@@ -447,7 +447,9 @@ class ICalendarExport
                         $rrule[] = 'BYMONTH=' . $r_value;
                         break;
                     case 'count':
-                        $rrule[] = 'COUNT=' . $r_value;
+                        if ($r_value > 1) {
+                            $rrule[] = 'COUNT=' . $r_value;
+                        }
                         break;
                 }
             }
@@ -478,35 +480,40 @@ class ICalendarExport
         return implode(',', $wdays);
     }
 
+
     /**
      * Formats dates of exception.
      *
-     * @param string $value Unix timestamps as csv list.
+     * @param string $value Date values (Y-m-d) as csv list.
      * @return string The formatted Exceptions.
      */
     public function exportExDate(string $value): string
     {
-        $exdates = [];
-        $date_times = explode(',', $value);
-        foreach ($date_times as $date_time) {
-            $exdates[] = $this->_exportDate($date_time);
+        $ex_dates = [];
+        $dates = explode(',', $value);
+        foreach ($dates as $date) {
+            $ex_datetime = $date . ' 12:00:00';
+            $ex_date = DateTime::createFromFormat('Y-m-d H:i:s', $ex_datetime);
+            $ex_dates[] = $this->_exportDate($ex_date->getTimestamp());
         }
-        return implode(',', $exdates);
+
+        return implode(',', $ex_dates);
     }
 
     /**
      * Formats date times of exception.
      *
-     * @param string $value Unix timestamps as csv list.
+     * @param string $value Date values (Y-m-d) as csv list.
+     * @param int $begin Start date of event as unix timestamp.
      * @return string The formatted Exceptions.
      */
-    public function exportExDateTime(string $value): string
+    public function exportExDateTime(string $value, int $begin): string
     {
         $ex_dates = [];
-        $ex_date_times = explode(',', $value);
-        foreach ($ex_date_times as $ex_date_time) {
-            $date_time = new DateTime();
-            $date_time->setTimestamp($ex_date_time);
+        $dates = explode(',', $value);
+        foreach ($dates as $date) {
+            $ex_datetime = $date . date(' H:i:s', $begin);
+            $date_time = DateTime::createFromFormat('Y-m-d H:i:s', $ex_datetime);
             $ex_dates[] = $date_time->format('Ymd\THis');
         }
         return implode(',', $ex_dates);
