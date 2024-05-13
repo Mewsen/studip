@@ -110,7 +110,7 @@ class Lti_ToolController extends AuthenticatedController
             //If a deployment is present, the tool is not used in the global context.
             //If a tool is not used in the global context and the is_global flag is not set,
             //it is a tool that is only used for one course.
-            if (!$this->deployment || ($this->deployment && $this->tool->is_global === '0')) {
+            if (!$this->deployment || ($this->deployment && $this->tool->is_global === '0') || $GLOBALS['perm']->have_perm('root')) {
                 $this->tool->name               = trim(Request::get('name'));
                 $this->tool->launch_url         = trim(Request::get('launch_url'));
                 $this->tool->terms_of_use_url   = trim(Request::get('terms_of_use_url'));
