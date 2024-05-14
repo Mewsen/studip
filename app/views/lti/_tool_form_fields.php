@@ -20,7 +20,7 @@
         <label>
             <?= _('Datenschutzhinweise') ?>
             <textarea name="data_protection_notes" class="wysiwyg"
-                      placeholder="<?= _('TODO: Hier sollte was zum Datenschutz stehen.') ?>"><?= $deployment->data_protection_notes ?></textarea>
+                      placeholder="<?= _('Bitte machen Sie Angaben zu dem angebundenen Werkzeug (zum Beispiel Moodle, gegebenenfalls dem Anbieter des Tools), wozu das Tool eingesetzt wird (zum Beispiel Sprachtest mit Notenerfassung) und was gespeichert und/oder übertragen wird (zum Beispiel Name, Mailadresse, Noten...)') ?>"><?= $deployment->data_protection_notes ?></textarea>
         </label>
     <? endif ?>
     <label class="studiprequired">
