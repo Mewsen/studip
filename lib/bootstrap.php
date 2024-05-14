@@ -170,7 +170,7 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
 // bootstrap because the stud.ip cache needs to have a db conenction)
 if ($GLOBALS['CACHING_ENABLE']) {
     $lookup_hash = null;
-    $cached = StudipCacheFactory::getCache()->read('STUDIP#autoloader-classes');
+    $cached = \Studip\Cache\Factory::getCache()->read('STUDIP#autoloader-classes');
     if ($cached) {
         $class_lookup = json_decode($cached, true);
         if (is_array($class_lookup)) {
@@ -182,7 +182,7 @@ if ($GLOBALS['CACHING_ENABLE']) {
     register_shutdown_function(function () use ($lookup_hash) {
         $cached = json_encode(StudipAutoloader::$class_lookup, JSON_UNESCAPED_UNICODE);
         if (md5($cached) !== $lookup_hash) {
-            StudipCacheFactory::getCache()->write(
+            \Studip\Cache\Factory::getCache()->write(
                 'STUDIP#autoloader-classes',
                 $cached,
                 7 * 24 * 60 * 60

@@ -70,7 +70,7 @@ class PurgeCacheJob extends CronJob
      */
     public function setUp()
     {
-        require_once 'lib/classes/StudipFileCache.class.php';
+        require_once 'lib/classes/cache/FileCache.class.php';
     }
 
     /**
@@ -86,7 +86,7 @@ class PurgeCacheJob extends CronJob
      */
     public function execute($last_result, $parameters = [])
     {
-        $cache = new StudipFileCache();
+        $cache = new \Studip\Cache\FileCache();
         $cache->purge(empty($parameters['verbose']));
     }
 }

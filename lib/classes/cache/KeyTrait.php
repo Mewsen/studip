@@ -1,4 +1,6 @@
 <?php
+namespace Studip\Cache;
+
 /**
  * Trait for unique cache hashes per key for each system based on db configuration which should
  * be sufficient to eliminate cache mishaps.
@@ -9,9 +11,9 @@
  * @subpackage  cache
  * @since       Stud.IP 5.0
  */
-trait StudipCacheKeyTrait
+trait KeyTrait
 {
-    protected $cache_prefix = null;
+    protected ?string $cache_prefix = null;
 
     /**
      * Returns a prefix cache key based on db configuration.
@@ -19,11 +21,11 @@ trait StudipCacheKeyTrait
      * @param  string $offset
      * @return string
      */
-    protected function getCacheKey($offset)
+    protected function getCacheKey(string $offset): string
     {
         if ($this->cache_prefix === null) {
             $this->cache_prefix = md5("{$GLOBALS['DB_STUDIP_HOST']}|{$GLOBALS['DB_STUDIP_DATABASE']}");
         }
-        return "{$this->cache_prefix}/{$offset}";
+        return "$this->cache_prefix/$offset";
     }
 }

@@ -121,7 +121,7 @@ class Score
     public static function GetMyScore($user_or_id = null)
     {
         $user = $user_or_id ? User::toObject($user_or_id) : User::findCurrent();
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         if ($cache->read("user_score_of_".$user->id)) {
             return $cache->read("user_score_of_".$user->id);
         }

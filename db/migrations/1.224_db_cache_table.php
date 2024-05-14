@@ -17,7 +17,7 @@ class DbCacheTable extends Migration
                    PRIMARY KEY (cache_key)
                    ) ENGINE=InnoDB ROW_FORMAT=DYNAMIC');
 
-        StudipCacheFactory::getCache()->flush();
+        \Studip\Cache\Factory::getCache()->flush();
     }
 
     public function down()

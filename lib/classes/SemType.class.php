@@ -68,7 +68,7 @@ class SemType implements ArrayAccess
                 "chdate = UNIX_TIMESTAMP() " .
             "WHERE id = :id ".
         "");
-        StudipCacheFactory::getCache()->expire('DB_SEM_TYPES_ARRAY');
+        \Studip\Cache\Factory::getCache()->expire('DB_SEM_TYPES_ARRAY');
         return $statement->execute([
             'id' => $this->data['id'],
             'name' => $this->data['name'],
@@ -89,7 +89,7 @@ class SemType implements ArrayAccess
                 DELETE FROM sem_types
                 WHERE id = :id
             ");
-            StudipCacheFactory::getCache()->expire('DB_SEM_TYPES_ARRAY');
+            \Studip\Cache\Factory::getCache()->expire('DB_SEM_TYPES_ARRAY');
             return $statement->execute([
                 'id' => $this->data['id']
             ]);
@@ -175,7 +175,7 @@ class SemType implements ArrayAccess
             $db = DBManager::get();
             self::$sem_types = [];
 
-            $cache = StudipCacheFactory::getCache();
+            $cache = \Studip\Cache\Factory::getCache();
             $types_array = unserialize($cache->read('DB_SEM_TYPES_ARRAY'));
             if (!$types_array) {
                 try {
@@ -185,7 +185,7 @@ class SemType implements ArrayAccess
                     $statement->execute();
                     $types_array = $statement->fetchAll(PDO::FETCH_ASSOC);
                     if ($types_array) {
-                        $cache = StudipCacheFactory::getCache();
+                        $cache = \Studip\Cache\Factory::getCache();
                         $cache->write('DB_SEM_TYPES_ARRAY', serialize($types_array));
                     }
                 } catch (PDOException $e) {
@@ -210,7 +210,7 @@ class SemType implements ArrayAccess
 
     static public function refreshTypes() {
         self::$sem_types = null;
-        StudipCacheFactory::getCache()->expire('DB_SEM_TYPES_ARRAY');
+        \Studip\Cache\Factory::getCache()->expire('DB_SEM_TYPES_ARRAY');
         return self::getTypes();
     }
 

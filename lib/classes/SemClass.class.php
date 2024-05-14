@@ -389,7 +389,7 @@ class SemClass implements ArrayAccess
                 "chdate = UNIX_TIMESTAMP() " .
             "WHERE id = :id ".
         "");
-        StudipCacheFactory::getCache()->expire('DB_SEM_CLASSES_ARRAY');
+        \Studip\Cache\Factory::getCache()->expire('DB_SEM_CLASSES_ARRAY');
         return $statement->execute([
             'id' => $this->data['id'],
             'name' => $this->data['name'],
@@ -453,7 +453,7 @@ class SemClass implements ArrayAccess
                 DELETE FROM sem_classes
                 WHERE id = :id
             ");
-            StudipCacheFactory::getCache()->expire('DB_SEM_CLASSES_ARRAY');
+            \Studip\Cache\Factory::getCache()->expire('DB_SEM_CLASSES_ARRAY');
             return $statement->execute([
                 'id' => $this->data['id']
             ]);
@@ -552,7 +552,7 @@ class SemClass implements ArrayAccess
             $db = DBManager::get();
             self::$sem_classes = [];
 
-            $cache = StudipCacheFactory::getCache();
+            $cache = \Studip\Cache\Factory::getCache();
             $class_array = unserialize($cache->read('DB_SEM_CLASSES_ARRAY'));
             if (!$class_array) {
 
@@ -564,7 +564,7 @@ class SemClass implements ArrayAccess
                     $class_array = $statement->fetchAll(PDO::FETCH_ASSOC);
 
                     if ($class_array) {
-                        $cache = StudipCacheFactory::getCache();
+                        $cache = \Studip\Cache\Factory::getCache();
                         $cache->write('DB_SEM_CLASSES_ARRAY', serialize($class_array));
                     }
                 } catch (PDOException $e) {
@@ -593,7 +593,7 @@ class SemClass implements ArrayAccess
      */
     static public function refreshClasses()
     {
-        StudipCacheFactory::getCache()->expire('DB_SEM_CLASSES_ARRAY');
+        \Studip\Cache\Factory::getCache()->expire('DB_SEM_CLASSES_ARRAY');
         self::$sem_classes = null;
         return self::getClasses();
     }

@@ -29,7 +29,7 @@ class RolePersistence
     {
         if (self::$all_roles === null) {
             // read cache
-            $cache = StudipCacheFactory::getCache();
+            $cache = \Studip\Cache\Factory::getCache();
 
             // cache miss, retrieve from database
             self::$all_roles = $cache->read(self::ROLES_CACHE_KEY);
@@ -675,7 +675,7 @@ class RolePersistence
     public static function expireRolesCache()
     {
         self::$all_roles = null;
-        StudipCacheFactory::getCache()->expire(self::ROLES_CACHE_KEY);
+        \Studip\Cache\Factory::getCache()->expire(self::ROLES_CACHE_KEY);
     }
 
     /**

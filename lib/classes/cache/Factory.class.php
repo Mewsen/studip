@@ -1,4 +1,15 @@
 <?php
+
+namespace Studip\Cache;
+
+use Config;
+use DBSchemaVersion;
+use MessageBox;
+use PageLayout;
+use ReflectionClass;
+use StudipCacheOperation;
+use UnexpectedValueException;
+
 /**
  * This factory retrieves the instance of StudipCache configured for use in
  * this Stud.IP installation.
@@ -12,30 +23,29 @@
  * @since     1.6
  * @license   GPL2 or any later version
  */
-
-class StudipCacheFactory
+class Factory
 {
     /**
      * the default cache class
      *
      * @var string
      */
-    const DEFAULT_CACHE_CLASS = StudipDbCache::class;
+    const DEFAULT_CACHE_CLASS = DbCache::class;
 
     /**
      * singleton instance
      *
-     * @var StudipCache
+     * @var Cache|null
      */
-    private static $cache;
+    private static ?Cache $cache = null;
 
 
     /**
      * config instance
      *
-     * @var Config
+     * @var Config|null
      */
-    private static $config = null;
+    private static ?Config $config = null;
 
 
     /**
@@ -49,7 +59,7 @@ class StudipCacheFactory
      */
     public static function getConfig()
     {
-        return is_null(self::$config) ? Config::getInstance() : self::$config;
+        return self::$config ?? Config::getInstance();
     }
 
 
@@ -58,7 +68,7 @@ class StudipCacheFactory
      *                       determine the class of the implementation of interface
      *                       StudipCache
      */
-    public static function setConfig($config)
+    public static function setConfig(Config $config)
     {
         self::$config = $config;
         self::$cache = NULL;
@@ -77,15 +87,15 @@ class StudipCacheFactory
      *
      * @param bool $apply_proxied_operations Whether or not to apply any
      *                                       proxied (disable this in tests!)
-     * @return StudipCache the cache instance
+     * @return Cache the cache instance
      */
-    public static function getCache($apply_proxied_operations = true)
+    public static function getCache(bool $apply_proxied_operations = true): Cache
     {
-        if (is_null(self::$cache)) {
+        if (self::$cache === null) {
             $proxied = false;
 
             if (!$GLOBALS['CACHING_ENABLE']) {
-                self::$cache = new StudipMemoryCache();
+                self::$cache = new MemoryCache();
 
                 // Proxy cache operations if CACHING_ENABLE is different from the globally set
                 // caching value. This should only be the case in cli mode.
@@ -98,7 +108,7 @@ class StudipCacheFactory
                     $args = self::retrieveConstructorArguments();
 
                     self::$cache = self::instantiateCache($class, $args);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     error_log(__METHOD__ . ': ' . $e->getMessage());
                     PageLayout::addBodyElements(MessageBox::error(__METHOD__ . ': ' . $e->getMessage()));
                     $class = self::DEFAULT_CACHE_CLASS;
@@ -109,7 +119,7 @@ class StudipCacheFactory
             // If proxy should be used, inject it. Otherwise apply pending
             // operations, if any.
             if ($proxied) {
-                self::$cache = new StudipCacheProxy(self::$cache);
+                self::$cache = new Proxy(self::$cache);
             } elseif ($GLOBALS['CACHING_ENABLE'] && $apply_proxied_operations) {
                 // Even if the above condition will try to eliminate most
                 // failures, the following operation still needs to be wrapped
@@ -118,7 +128,7 @@ class StudipCacheFactory
                 // for said operation.
                 try {
                     StudipCacheOperation::apply(self::$cache);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                 }
             }
         }
@@ -174,10 +184,11 @@ class StudipCacheFactory
      * memory cache is instantiated, the cache will be wrapped in a wrapper
      * class that uses a memory cache to reduce accesses to the cache.
      *
-     * @param  string $class     the name of the class
-     * @param  array  $arguments an array of arguments to be used by the constructor
+     * @param string $class     the name of the class
+     * @param array  $arguments an array of arguments to be used by the constructor
      *
-     * @return StudipCache  an instance of the specified class
+     * @return Cache  an instance of the specified class
+     * @throws \ReflectionException
      */
     public static function instantiateCache($class, $arguments)
     {
@@ -186,8 +197,8 @@ class StudipCacheFactory
                ? $reflection_class->newInstanceArgs($arguments['config'])
                : $reflection_class->newInstance();
 
-        if ($class !== StudipMemoryCache::class) {
-            return new StudipCacheWrapper($cache);
+        if ($class !== MemoryCache::class) {
+            return new Wrapper($cache);
         }
 
         return $cache;

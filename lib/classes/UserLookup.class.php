@@ -239,7 +239,7 @@ class UserLookup
             return call_user_func(self::$types[$type]['values']);
         }
 
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $cache_key = "UserLookup/{$type}/values";
         $cached_values = $cache->read($cache_key);
         if ($cached_values) {

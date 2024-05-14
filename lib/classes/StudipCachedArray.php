@@ -27,10 +27,10 @@ class StudipCachedArray implements ArrayAccess
      * @param int    $duration Duration in seconds for which the item shall be
      *                         stored
      */
-    public function __construct(string $key, int $duration = StudipCache::DEFAULT_EXPIRATION)
+    public function __construct(string $key, int $duration = \Studip\Cache\Cache::DEFAULT_EXPIRATION)
     {
         $this->key = self::class . "/{$key}";
-        $this->cache = StudipCacheFactory::getCache();
+        $this->cache = \Studip\Cache\Factory::getCache();
         $this->duration = $duration;
         $this->hash = $this->getHash();
 
@@ -116,11 +116,14 @@ class StudipCachedArray implements ArrayAccess
     protected function loadData(string $offset)
     {
         if (!array_key_exists($offset, $this->data)) {
-            $cached = $this->cache->read($this->getCacheKey($offset));
-            $this->data[$offset] = $this->swapNullAndFalse($cached);
+            // Get the cache item from the cache:
+            $item = $this->cache->getItem($this->getCacheKey($offset));
+            if ($item->isHit()) {
+                $this->data[$offset] = $this->swapNullAndFalse($item->get());
+            }
         }
 
-        return $this->data[$offset];
+        return $this->data[$offset] ?? null;
     }
 
     /**
@@ -132,13 +135,12 @@ class StudipCachedArray implements ArrayAccess
      */
     protected function storeData(string $offset): void
     {
-        $data = $this->swapNullAndFalse($this->data[$offset]);
-
-        $this->cache->write(
+        $item = new \Studip\Cache\Item(
             $this->getCacheKey($offset),
-            $data,
+            $this->swapNullAndFalse($this->data[$offset]),
             $this->duration
         );
+        $this->cache->save($item);
     }
 
     /**

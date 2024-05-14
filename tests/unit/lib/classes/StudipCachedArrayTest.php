@@ -1,4 +1,7 @@
 <?php
+
+use Studip\Cache\MemoryCache;
+
 /**
  * StudipCachedArrayTest.php - unit tests for the StudipCachedArray class
  *
@@ -6,7 +9,7 @@
  * @license  GPL2 or any later version
  *
  * @covers StudipCachedArray
- * @uses StudipMemoryCache
+ * @uses   MemoryCache
  */
 
 class StudipCachedArrayTest extends \Codeception\Test\Unit

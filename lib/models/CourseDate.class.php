@@ -364,7 +364,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
         // load room-booking, if any
         $this->room_booking;
 
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $cache->expire('course/undecorated_data/'. $this->range_id);
         return parent::store();
     }
@@ -376,7 +376,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
      */
     public function delete()
     {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $cache->expire('course/undecorated_data/'. $this->range_id);
         return parent::delete();
     }
@@ -433,7 +433,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
             $folders = array_merge($folders, $topic->folders->getArrayCopy());
         }
         foreach ($folders as $folder) {
-            list($files, $typed_folders) = array_values(FileManager::getFolderFilesRecursive($folder->getTypedFolder(), $user_id));
+            [$files, $typed_folders] = array_values(FileManager::getFolderFilesRecursive($folder->getTypedFolder(), $user_id));
             foreach ($files as $file) {
                 $all_files[$file->id] = $file;
             }

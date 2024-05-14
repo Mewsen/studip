@@ -42,7 +42,7 @@ class StudipCacheOperation extends SimpleORMap
      */
     public static function apply(StudipCache $cache)
     {
-        self::findEachBySQL(function ($item) use ($cache) {
+        self::findEachBySQL(function (StudipCacheOperation $item) use ($cache): void {
             $parameters = unserialize($item->parameters);
             array_unshift($parameters, $item->cache_key);
             call_user_func_array([$cache, $item->operation], $parameters);

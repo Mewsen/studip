@@ -111,7 +111,7 @@ class Admin_CacheController extends AuthenticatedController
         // Store settings to global config.
         if (Config::get()->store('SYSTEMCACHE', $settings)) {
             PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
-            StudipCacheFactory::unconfigure();
+            \Studip\Cache\Factory::unconfigure();
         }
 
         $this->relocate('admin/cache/settings');
@@ -122,7 +122,7 @@ class Admin_CacheController extends AuthenticatedController
      */
     public function flush_action()
     {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $cache->flush();
 
         PageLayout::postSuccess(_('Die Inhalte des Caches wurden gelöscht.'));
@@ -135,7 +135,7 @@ class Admin_CacheController extends AuthenticatedController
      */
     public function stats_action()
     {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
 
         $this->stats = $cache->getStats();
     }

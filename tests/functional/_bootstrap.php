@@ -30,6 +30,8 @@ StudipAutoloader::register();
 StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/calendar', 'Studip\\Calendar');
 StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/classes');
 StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/classes', 'Studip');
+StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/classes/cache');
+StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/classes/cache', 'Studip');
 StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/exceptions');
 StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/exceptions/resources');
 StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/filesystem');
@@ -74,7 +76,7 @@ if (!class_exists('StudipTestHelper')) {
     {
         static function set_up_tables($tables)
         {
-            $cache = StudipCacheFactory::getCache(false);
+            $cache = \Studip\Cache\Factory::getCache(false);
 
             // second step, expire table scheme
             SimpleORMap::expireTableScheme();

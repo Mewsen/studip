@@ -636,7 +636,7 @@ function get_users_online($active_time = 5, $name_format = 'full_rev')
  */
 function get_users_online_count($active_time = 10)
 {
-    $cache = StudipCacheFactory::getCache();
+    $cache = \Studip\Cache\Factory::getCache();
     $online_count = $cache->read("online_count/{$active_time}");
     if ($online_count === false) {
         $query = "SELECT COUNT(*) FROM user_online

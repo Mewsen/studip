@@ -419,7 +419,7 @@ class SiteinfoMarkupEngine {
     }
 
     function coregroup() {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         if (!($remotefile = $cache->read('coregroup'))) {
             $remotefile = file_get_contents('https://develop.studip.de/studip/extern.php?module=Persons&config_id=8d1dafc3afca2bce6125d57d4119b631&range_id=4498a5bc62d7974d0a0ac3e97aca5296', false, get_default_http_stream_context('https://develop.studip.de'));
             $cache->write('coregroup', $remotefile);
@@ -428,7 +428,7 @@ class SiteinfoMarkupEngine {
     }
 
     function toplist($item) {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         if ($found_in_cache = $cache->read(__METHOD__ . $item)) {
             return $found_in_cache;
         }
@@ -531,7 +531,7 @@ class SiteinfoMarkupEngine {
     }
 
     function indicator($key) {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         if ($found_in_cache = $cache->read(__METHOD__ . $key)) {
             return $found_in_cache;
         }

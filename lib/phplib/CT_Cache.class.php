@@ -14,7 +14,7 @@ class CT_Cache
 
     public function ac_start()
     {
-        $this->cache = StudipCacheFactory::getCache();
+        $this->cache = \Studip\Cache\Factory::getCache();
     }
 
     public function ac_get_lock()

@@ -38,7 +38,7 @@ class RecalculateScore extends Migration {
     private static function getScore($user_id)
     {
         $user_id || $user_id = $GLOBALS['user']->id;
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         if ($cache->read("user_score_of_".$user_id)) {
             return $cache->read("user_score_of_".$user_id);
         }
@@ -142,4 +142,3 @@ class RecalculateScore extends Migration {
     }
 
 }
-

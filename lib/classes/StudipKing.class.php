@@ -63,7 +63,7 @@ class StudipKing {
     private static function get_kings()
     {
         if (self::$kings === null) {
-            $cache = StudipCacheFactory::getCache();
+            $cache = \Studip\Cache\Factory::getCache();
 
             # read cache (unserializing a cache miss - FALSE - does not matter)
             $kings = unserialize($cache->read(self::CACHE_KEY));

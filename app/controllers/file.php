@@ -364,7 +364,7 @@ class FileController extends AuthenticatedController
 
             //The file system object is a folder.
             //Calculate the files and the folder size:
-            list($this->folder_size, $this->folder_file_amount) = $this->getFolderSize($this->folder);
+            [$this->folder_size, $this->folder_file_amount] = $this->getFolderSize($this->folder);
             PageLayout::setTitle($this->folder->name);
             $this->render_action('folder_details');
         }
@@ -1128,7 +1128,7 @@ class FileController extends AuthenticatedController
 
                 $this->search_id = md5(json_encode($search_parameters));
 
-                $cache = StudipCacheFactory::getCache();
+                $cache = \Studip\Cache\Factory::getCache();
 
                 $merged_results = LibrarySearchManager::search(
                     $search_parameters,
@@ -1187,7 +1187,7 @@ class FileController extends AuthenticatedController
             $this->search_id = Request::get('search_id');
             $this->page = Request::get('page');
 
-            $cache = StudipCacheFactory::getCache();
+            $cache = \Studip\Cache\Factory::getCache();
             $cache_data = $cache->read($this->search_id);
             $results = $cache_data['results'];
             $this->total_results = count($results);
@@ -1247,7 +1247,7 @@ class FileController extends AuthenticatedController
         }
 
         if ($item_id) {
-            $cache = StudipCacheFactory::getCache();
+            $cache = \Studip\Cache\Factory::getCache();
             $documents = $cache->read($search_id);
             $document = $documents['results'][$item_id];
             if (!($document instanceof LibraryDocument)) {
@@ -1255,7 +1255,7 @@ class FileController extends AuthenticatedController
             }
             $file = LibraryFile::createFromLibraryDocument($document, $folder_id);
         } else {
-            $cache = StudipCacheFactory::getCache();
+            $cache = \Studip\Cache\Factory::getCache();
             $search = $cache->read($search_id);
             if (!$search) {
                 throw new Exception('Search not found in cache!');
@@ -2036,7 +2036,7 @@ class FileController extends AuthenticatedController
                 PageLayout::postMessage($result);
             }
         }
-        list($this->folder_size, $this->folder_file_amount) = $this->getFolderSize($folder);
+        [$this->folder_size, $this->folder_file_amount] = $this->getFolderSize($folder);
     }
 
     public function delete_folder_action($folder_id)

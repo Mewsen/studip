@@ -2,7 +2,7 @@
 namespace Assets;
 
 use Assets;
-use StudipCacheFactory;
+use Studip\Cache\Factory;
 use Studip;
 
 use ScssPhp\ScssPhp\Compiler as ScssCompiler;
@@ -82,7 +82,7 @@ class SASSCompiler implements Compiler
      */
     private function getPrefix()
     {
-        $cache = StudipCacheFactory::getCache();
+        $cache = Studip\Cache\Factory::getCache();
 
         $prefix = $cache->read(self::CACHE_KEY);
 

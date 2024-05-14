@@ -55,7 +55,7 @@ class PluginRepository
      */
     public function readMetadata($url)
     {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $cache_key = 'plugin_metadata/'.$url;
         $metadata = $cache->read($cache_key);
 

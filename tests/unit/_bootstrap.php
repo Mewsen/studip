@@ -54,6 +54,8 @@ StudipAutoloader::addAutoloadPath('lib/models');
 StudipAutoloader::addAutoloadPath('lib/classes');
 StudipAutoloader::addAutoloadPath('lib/classes', 'Studip');
 StudipAutoloader::addAutoloadPath('lib/exTpl', 'exTpl');
+StudipAutoloader::addAutoloadPath('lib/classes/cache');
+StudipAutoloader::addAutoloadPath('lib/classes/cache', 'Studip');
 StudipAutoloader::addAutoloadPath('lib/exceptions');
 StudipAutoloader::addAutoloadPath('lib/classes/sidebar');
 StudipAutoloader::addAutoloadPath('lib/classes/helpbar');
@@ -108,7 +110,7 @@ if (!class_exists('StudipTestHelper')) {
         static function set_up_tables($tables)
         {
             // first step, set fake cache
-            $cache = StudipCacheFactory::getCache(false);
+            $cache = \Studip\Cache\Factory::getCache(false);
 
             // second step, expire table scheme
             SimpleORMap::expireTableScheme();

@@ -1,5 +1,10 @@
 <?php
 
+use Studip\Cache\DbCache;
+use Studip\Cache\FileCache;
+use Studip\Cache\MemcachedCache;
+use Studip\Cache\RedisCache;
+
 class Step00353Cache extends Migration
 {
     public function description()
@@ -20,10 +25,10 @@ class Step00353Cache extends Migration
             ) ENGINE=InnoDB ROW_FORMAT=DYNAMIC");
 
         $types = [
-            'StudipDbCache',
-            'StudipFileCache',
-            'StudipMemcachedCache',
-            'StudipRedisCache'
+            DbCache::class,
+            FileCache::class,
+            MemcachedCache::class,
+            RedisCache::class,
         ];
 
         // Insert pre-defined cache types in to database

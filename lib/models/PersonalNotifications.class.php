@@ -262,7 +262,7 @@ class PersonalNotifications extends SimpleORMap
      */
     protected static function getCache($user_id)
     {
-        $cache  = StudipCacheFactory::getCache();
+        $cache  = \Studip\Cache\Factory::getCache();
         $hash   = self::getCacheHash($user_id);
         $cached = $cache->read($hash);
 
@@ -281,7 +281,7 @@ class PersonalNotifications extends SimpleORMap
      */
     protected static function setCache($user_id, $items)
     {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $hash  = self::getCacheHash($user_id);
         $cache->write($hash, serialize($items), self::CACHE_DURATION);
     }
@@ -293,7 +293,7 @@ class PersonalNotifications extends SimpleORMap
      */
     protected static function expireCache($user_id)
     {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $hash  = self::getCacheHash($user_id);
         $cache->expire($hash);
     }

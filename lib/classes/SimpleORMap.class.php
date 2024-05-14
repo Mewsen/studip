@@ -277,7 +277,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                     $relation = $a_config[0] ?? '';
                     $relation_field = $a_config[1] ?? '';
                     if (!$relation) {
-                        list($relation, $relation_field) = explode('_', $a_field);
+                        [$relation, $relation_field] = explode('_', $a_field);
                     }
                     if (!$relation_field || !$relation) {
                         throw new UnexpectedValueException('no relation found for autoget/set additional field: ' . $a_field);
@@ -415,7 +415,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     public static function tableScheme($db_table)
     {
         if (self::$schemes === null) {
-            $cache = StudipCacheFactory::getCache();
+            $cache = \Studip\Cache\Factory::getCache();
             self::$schemes = unserialize($cache->read('DB_TABLE_SCHEMES'));
         }
         if (!isset(self::$schemes[$db_table])) {
@@ -434,7 +434,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             }
             self::$schemes[$db_table]['db_fields'] = $db_fields;
             self::$schemes[$db_table]['pk'] = $pk;
-            $cache = StudipCacheFactory::getCache();
+            $cache = \Studip\Cache\Factory::getCache();
             $cache->write('DB_TABLE_SCHEMES', serialize(self::$schemes));
         }
         return isset(self::$schemes[$db_table]);
@@ -446,7 +446,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     public static function expireTableScheme()
     {
-        StudipCacheFactory::getCache()->expire('DB_TABLE_SCHEMES');
+        \Studip\Cache\Factory::getCache()->expire('DB_TABLE_SCHEMES');
         self::$schemes = null;
         self::$config = [];
     }
@@ -993,7 +993,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     protected function _getAdditionalValueFromRelation($field)
     {
-        list($relation, $relation_field) = [$this->additional_fields()[$field]['relation'],
+        [$relation, $relation_field] = [$this->additional_fields()[$field]['relation'],
                                                 $this->additional_fields()[$field]['relation_field']];
         if (!array_key_exists($field, $this->additional_data)) {
             $this->_setAdditionalValue($field, $this->getRelationValue($relation, $relation_field));
@@ -1010,7 +1010,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      */
     protected function _setAdditionalValueFromRelation($field, $value)
     {
-        list($relation, $relation_field) = [$this->additional_fields()[$field]['relation'],
+        [$relation, $relation_field] = [$this->additional_fields()[$field]['relation'],
                 $this->additional_fields()[$field]['relation_field']];
         $this->$relation->$field = $value;
         unset($this->additional_data[$field]);

@@ -303,7 +303,7 @@ class Seminar
     {
 
         // Caching
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $cache_key = 'course/undecorated_data/'. $this->id;
 
         if ($filter) {
@@ -745,7 +745,7 @@ class Seminar
         StudipLog::log("SEM_ADD_SINGLEDATE", $this->getId(), $singledate->toString(), 'SingleDateID: '.$singledate->getTerminID());
         // logging <<<<<<
 
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $cache->expire('course/undecorated_data/'. $this->getId());
 
         $this->readSingleDates();

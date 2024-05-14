@@ -53,6 +53,8 @@ StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/plugins/eng
 
 StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/calendar');
 StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/calendar', 'Studip\\Calendar');
+StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'lib/classes/cache');
+StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'lib/classes/cache', 'Studip');
 StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/calendar/lib');
 StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/exceptions');
 

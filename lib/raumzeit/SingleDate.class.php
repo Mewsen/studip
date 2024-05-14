@@ -292,7 +292,7 @@ class SingleDate
 
     function delete()
     {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $cache->expire('course/undecorated_data/' . $this->range_id);
 
         $this->chdate = time();
@@ -304,7 +304,7 @@ class SingleDate
     function store()
     {
 
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $cache->expire('course/undecorated_data/' . $this->range_id);
 
         $this->chdate = time();

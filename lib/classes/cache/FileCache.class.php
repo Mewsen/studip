@@ -1,46 +1,27 @@
 <?php
-# Lifter010: TODO
-// +--------------------------------------------------------------------------+
-// This file is part of Stud.IP
-// StudipFileCache.class.php
-//
-//
-//
-// Copyright (c) 2007 André Noack <noack@data-quest.de>
-// +--------------------------------------------------------------------------+
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or any later version.
-// +--------------------------------------------------------------------------+
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// +--------------------------------------------------------------------------+
+
+namespace Studip\Cache;
+
+use Config;
+use Exception;
 
 /**
- * StudipCache implementation using files
- *
- * @package     studip
- * @subpackage  cache
+ * Cache implementation using files
  *
  * @author    André Noack <noack@data-quest.de>
- * @version   2
+ * @copyright 2007 André Noack <noack@data-quest.de>
+ * @license GPL2 or any later version
  */
-class StudipFileCache implements StudipCache
+class FileCache extends Cache
 {
-    use StudipCacheKeyTrait;
+    use KeyTrait;
 
     /**
      * full path to cache directory
      *
      * @var string
      */
-    private $dir;
+    private string $dir;
 
     /**
      * @return string A translateable display name for this cache class.
@@ -55,26 +36,28 @@ class StudipFileCache implements StudipCache
      * $CACHING_FILECACHE_PATH or is set to
      * $TMP_PATH/studip_cache
      *
-     * @param string the path to use
-     * @return void
-     * @throws exception if the directory does not exist or could not be
+     * @param string $path the path to use
+     * @throws Exception if the directory does not exist or could not be
      *         created
      */
-    public function __construct($path = '')
+    public function __construct(string $path = '')
     {
         $this->dir = $path
-                  ?: (Config::get()->SYSTEMCACHE['type'] == 'StudipFileCache' ?
-                        Config::get()->SYSTEMCACHE['config']['path'] : '')
+                  ?: (
+                      Config::get()->SYSTEMCACHE['type'] === self::class
+                          ? Config::get()->SYSTEMCACHE['config']['path']
+                          : ''
+                  )
                   ?: $GLOBALS['CACHING_FILECACHE_PATH']
                   ?: ($GLOBALS['TMP_PATH'] . '/' . 'studip_cache');
         $this->dir = rtrim($this->dir, '\\/') . '/';
 
         if (!is_dir($this->dir) && !@mkdir($this->dir, 0700)) {
-            throw new Exception('Could not create directory: ' . $this->dir);
+            throw new \Exception('Could not create directory: ' . $this->dir);
         }
 
         if (!is_writable($this->dir)) {
-            throw new Exception('Can not write to directory: ' . $this->dir);
+            throw new \Exception('Can not write to directory: ' . $this->dir);
         }
     }
 
@@ -91,9 +74,11 @@ class StudipFileCache implements StudipCache
     /**
      * expire cache item
      *
-     * @see StudipCache::expire()
      * @param string $arg
+     *
      * @return void
+     * @throws Exception
+     * @see Cache::expire()
      */
     public function expire($arg)
     {
@@ -113,61 +98,20 @@ class StudipFileCache implements StudipCache
     }
 
     /**
-     * retrieve cache item from filesystem
-     * tests first if item is expired
-     *
-     * @see StudipCache::read()
-     * @param string $arg a cache key
-     * @return string|bool
-     */
-    public function read($arg)
-    {
-        $key = $this->getCacheKey($arg);
-
-        if ($file = $this->check($key)){
-            $f = @fopen($file, 'rb');
-            if ($f) {
-                @flock($f, LOCK_SH);
-                $result = stream_get_contents($f);
-                @fclose($f);
-            }
-            return unserialize($result);
-        }
-        return false;
-    }
-
-    /**
-     * store data as cache item in filesystem
-     *
-     * @see StudipCache::write()
-     * @param string $arg a cache key
-     * @param mixed $content data to store
-     * @param int $expire expiry time in seconds, default 12h
-     * @return int|bool the number of bytes that were written to the file,
-     *         or false on failure
-     */
-    public function write($arg, $content, $expire = self::DEFAULT_EXPIRATION)
-    {
-        $key = $this->getCacheKey($arg);
-
-        $this->expire($key);
-        $file = $this->getPathAndFile($key, $expire);
-        return @file_put_contents($file, serialize($content), LOCK_EX);
-    }
-
-    /**
      * checks if specified cache item is expired
      * if expired the cache file is deleted
      *
      * @param string $key a cache key to check
-     * @return string|bool the path to the cache file or false if expired
+     *
+     * @return array|bool the path to the cache file or false if expired
+     * @throws Exception
      */
     private function check($key)
     {
         if ($file = $this->getPathAndFile($key)){
-            list($id, $expire) = explode('-', basename($file));
+            [$id, $expire] = explode('-', basename($file));
             if (time() < $expire) {
-                return $file;
+                return [$file, $expire];
             } else {
                 @unlink($file);
             }
@@ -183,16 +127,18 @@ class StudipFileCache implements StudipCache
      * the filename is constructed from the hashed cache key
      * and the timestamp of expiration
      *
-     * @param string $key a cache key
-     * @param int $expire expiry time in seconds
+     * @param string   $key    a cache key
+     * @param int|null $expire expiry time in seconds
+     *
      * @return string|bool full path to cache item or false on failure
+     * @throws Exception
      */
-    private function getPathAndFile($key, $expire = null)
+    private function getPathAndFile(string $key, ?int $expire = null): bool|string
     {
         $id = hash('md5', $key);
         $path = $this->dir . mb_substr($id, 0, 2);
         if (!is_dir($path) && !@mkdir($path, 0700)) {
-            throw new Exception('Could not create directory: ' . $path);
+            throw new \Exception('Could not create directory: ' . $path);
         }
         if (!is_null($expire)){
             return $path . '/' . $id . '-' . (time() + $expire);
@@ -208,16 +154,17 @@ class StudipFileCache implements StudipCache
     /**
      * purges expired entries from the cache directory
      *
-     * @param bool echo messages if set to false
+     * @param bool $be_quiet echo messages if set to false
+     *
      * @return int the number of deleted files
      */
-    public function purge($be_quiet = true)
+    public function purge(bool $be_quiet = true): int
     {
         $now = time();
         $deleted = 0;
         foreach (@glob($this->dir . '*', GLOB_ONLYDIR) as $current_dir){
             foreach (@glob("{$current_dir}/*") as $file){
-                list($id, $expire) = explode('-', basename($file));
+                [$id, $expire] = explode('-', basename($file));
                 if ($expire < $now) {
                     if (@unlink($file)) {
                         ++$deleted;
@@ -225,8 +172,8 @@ class StudipFileCache implements StudipCache
                             echo "File: {$file} deleted.\n";
                         }
                     }
-                } else if (!$be_quiet){
-                    echo "File: {$file} expires on " . strftime('%x %X', $expire) . "\n";
+                } else if (!$be_quiet) {
+                    echo "File: {$file} expires on " . date('Y-m-d H:i:s', $expire) . "\n";
                 }
             }
         }
@@ -243,7 +190,7 @@ class StudipFileCache implements StudipCache
         return [
             __CLASS__ => [
                 'name' => _('Anzahl Einträge'),
-                'value' => DBManager::get()->fetchColumn("SELECT COUNT(*) FROM `cache`")
+                'value' => \DBManager::get()->fetchColumn("SELECT COUNT(*) FROM `cache`")
             ]
         ];
     }
@@ -273,4 +220,58 @@ class StudipFileCache implements StudipCache
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getItem($key)
+    {
+        $real_key = $this->getCacheKey($key);
+
+        $item = new \Studip\Cache\Item($key);
+
+        $file_data = $this->check($real_key);
+        if ($file_data) {
+            $file = $file_data[0];
+            $expire = $file_data[1];
+            $f = @fopen($file, 'rb');
+            if ($f) {
+                @flock($f, LOCK_SH);
+                $result = stream_get_contents($f);
+                @fclose($f);
+            }
+            $item->setHit();
+            $item->set(unserialize($result));
+            $expiration = new \DateTime();
+            $expiration->setTimestamp($expire);
+            $item->expiresAt($expiration);
+        }
+        return $item;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasItem($key)
+    {
+        $real_key = $this->getCacheKey($key);
+        $file_data = $this->check($real_key);
+        return $file_data !== false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function save(\Psr\Cache\CacheItemInterface $item)
+    {
+        $expiration = $this->getExpiration($item);
+        if ($expiration < 1) {
+            //The item would expire immediately.
+            return false;
+        }
+
+        $real_key = $this->getCacheKey($item->getKey());
+        $this->expire($real_key);
+        $file = $this->getPathAndFile($real_key, $expiration);
+        return @file_put_contents($file, serialize($item->get()), LOCK_EX);
+    }
 }

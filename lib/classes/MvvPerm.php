@@ -563,7 +563,7 @@ class MvvPerm {
     private static function getPrivileges($mvv_table)
     {
         if (self::$privileges === null) {
-            $cache = StudipCacheFactory::getCache();
+            $cache = \Studip\Cache\Factory::getCache();
             self::$privileges = unserialize($cache->read(MVV::CACHE_KEY . '/privileges'));
         }
 
@@ -576,7 +576,7 @@ class MvvPerm {
                     include $config_file; // Defines $privileges
                     self::$privileges[$mvv_table] = $privileges ?? [];
                 }
-                $cache = StudipCacheFactory::getCache();
+                $cache = \Studip\Cache\Factory::getCache();
                 $cache->write(MVV::CACHE_KEY . '/privileges', serialize(self::$privileges));
             }
         }

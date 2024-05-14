@@ -1,4 +1,15 @@
 <?php
+
+namespace Studip\Cache;
+
+use BadMethodCallException;
+use Config;
+use DateTime;
+use Exception;
+use Psr\Cache\CacheItemInterface;
+use Redis;
+use RedisException;
+
 /**
  * Cache implementation using redis.
  *
@@ -8,9 +19,9 @@
  * @subpackage  cache
  * @since       Stud.IP 5.0
  */
-class StudipRedisCache implements StudipCache
+class RedisCache extends Cache
 {
-    use StudipCacheKeyTrait;
+    use KeyTrait;
 
     private $redis;
 
@@ -28,6 +39,8 @@ class StudipRedisCache implements StudipCache
      * @param string $hostname Hostname of redis server
      * @param int    $port     Port of redis server
      * @param string $auth     Optional auth token/password
+     *
+     * @throws RedisException
      */
     public function __construct($hostname, $port, string $auth = '')
     {
@@ -71,41 +84,6 @@ class StudipRedisCache implements StudipCache
     {
         $key = $this->getCacheKey($arg);
         $this->redis->unlink($key);
-    }
-
-    /**
-     * Retrieve item from the server.
-     *
-     * Example:
-     *
-     *   # reads foo
-     *   $foo = $cache->reads('foo');
-     *
-     * @param  string $arg a single key
-     * @return mixed  the previously stored data if an item with such a key
-     *                exists on the server or FALSE on failure.
-     */
-    public function read($arg)
-    {
-        $key = $this->getCacheKey($arg);
-
-        $result = $this->redis->get($key);
-
-        return ($result === null) ? null : unserialize($result);
-    }
-
-    /**
-     * Store data at the server.
-     *
-     * @param string   the item's key.
-     * @param string   the item's content.
-     * @param int      the item's expiry time in seconds. Defaults to 12h.
-     * @return mixed  returns TRUE on success or FALSE on failure.
-     */
-    public function write($name, $content, $expire = self::DEFAULT_EXPIRATION)
-    {
-        $key = $this->getCacheKey($name);
-        return $this->redis->setEx($key, $expire, serialize($content));
     }
 
     /**
@@ -173,5 +151,48 @@ class StudipRedisCache implements StudipCache
             'component' => 'RedisCacheConfig',
             'props' => $currentConfig
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getItem($key)
+    {
+        $item = new Item($key);
+        $real_key = $this->getCacheKey($key);
+        $result = $this->redis->get($real_key);
+        if ($result === null) {
+            return $item;
+        }
+        $item->setHit();
+        $item->set(unserialize($result));
+        $expiration = new DateTime();
+        $expiration->setTimestamp($this->redis->expiretime($real_key));
+        $item->expiresAt($expiration);
+        return $item;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasItem($key)
+    {
+        $real_key = $this->getCacheKey($key);
+        return $this->redis->get($real_key) !== null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function save(CacheItemInterface $item)
+    {
+        $expiration = $this->getExpiration($item);
+        if ($expiration < 1) {
+            // The item would expire immediately.
+            return false;
+        }
+
+        $real_key = $this->getCacheKey($item->getKey());
+        return $this->redis->setEx($real_key, $expiration, serialize($item->get()));
     }
 }

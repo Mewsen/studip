@@ -181,7 +181,7 @@ class Semester extends SimpleORMap
         if (!is_array(self::$semester_cache) || $force_reload) {
             self::$semester_cache = [];
             if (!$force_reload) {
-                $cache = StudipCacheFactory::getCache();
+                $cache = \Studip\Cache\Factory::getCache();
                 $semester_data_array = unserialize($cache->read('DB_SEMESTER_DATA'));
                 if ($semester_data_array) {
                     foreach ($semester_data_array as $semester_data) {
@@ -202,7 +202,7 @@ class Semester extends SimpleORMap
                     }
                     $semester_data[] = $semester->toRawArray();
                 }
-                $cache = StudipCacheFactory::getCache();
+                $cache = \Studip\Cache\Factory::getCache();
                 $cache->write('DB_SEMESTER_DATA', serialize($semester_data));
             }
         }
@@ -471,7 +471,7 @@ class Semester extends SimpleORMap
      */
     public function refreshCache()
     {
-        StudipCacheFactory::getCache()->expire('DB_SEMESTER_DATA');
+        \Studip\Cache\Factory::getCache()->expire('DB_SEMESTER_DATA');
     }
 
     /*

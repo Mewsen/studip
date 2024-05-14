@@ -14,8 +14,8 @@ return [
             ),
         ]);
     }),
-    StudipCache::class => DI\factory(function () {
-        return StudipCacheFactory::getCache();
+    \Studip\Cache\Cache::class => DI\factory(function () {
+        return \Studip\Cache\Factory::getCache();
     }),
     StudipPDO::class => DI\factory(function () {
         return DBManager::get();
