@@ -156,6 +156,7 @@ final class DescribeModels extends AbstractCommand
 
                     if (
                         $options['foreign_key'] !== 'id'
+                        && !is_callable($options['foreign_key'])
                         && isset($meta['fields'][$options['foreign_key']])
                         && $meta['fields'][$options['foreign_key']]['null'] === 'YES'
                     ) {
