@@ -4,7 +4,7 @@
 
 ## Neue Features
 
--
+- Der Stud.IP-Cache ist nun kompatibel zu PSR-6. ([TIC #3701](https://gitlab.studip.de/studip/studip/-/issues/3701))
 
 ## Breaking changes
 
@@ -27,6 +27,8 @@
   - `StudipControllerPropertiesTrait`
   - `StudipResponse`
 - Im Rahmen von [Issue #4118](https://gitlab.studip.de/studip/studip/-/issues/4118) wurde `write_excel` ausgebaut. Als Alternative kann `phpoffice/phpspreadsheet` verwendet werden.
+- Im Rahmen von [TIC #3701](https://gitlab.studip.de/studip/studip/-/issues/3701) wurden die Klassen für den Cache umbenannt. Alle Vorkommnisse sollten ersetzt werden:
+  - `StudipCacheFactory` -> `Studip\Cache\Factory`
 
 ## Security related issues
 
