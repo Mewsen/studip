@@ -162,7 +162,7 @@ class GarbageCollectorJob extends CronJob
         ]);
 
         // clean db cache
-        $cache = new StudipDbCache();
+        $cache = new Studip\Cache\DbCache();
         $cache->purge();
 
         // Remove old plugin assets
