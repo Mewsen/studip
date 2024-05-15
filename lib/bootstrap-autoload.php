@@ -50,8 +50,6 @@ StudipAutoloader::addAutoloadPath('lib/phplib');
 StudipAutoloader::addAutoloadPath('lib/raumzeit');
 StudipAutoloader::addAutoloadPath('lib/resources');
 StudipAutoloader::addAutoloadPath('lib/activities', 'Studip\\Activity');
-StudipAutoloader::addAutoloadPath('lib/evaluation/classes');
-StudipAutoloader::addAutoloadPath('lib/evaluation/classes/db');
 
 StudipAutoloader::addAutoloadPath('lib/extern');
 StudipAutoloader::addAutoloadPath('lib/calendar/lib');

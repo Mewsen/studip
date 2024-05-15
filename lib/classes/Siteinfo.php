@@ -576,10 +576,6 @@ class SiteinfoMarkupEngine {
                                    "title" => _("Fragebögen"),
                                    "detail" => "",
                                    "constraint" => Config::get()->VOTE_ENABLE];
-        $indicator['evaluation'] = ["count" => ['count_table_rows','eval'],
-                                         "title" => _("Evaluationen"),
-                                         "detail" => "",
-                                         "constraint" => Config::get()->VOTE_ENABLE];
         $indicator['wiki_pages'] = ["query" => "SELECT COUNT(*) AS count FROM wiki_pages",
                                          "title" => _("Wiki-Seiten"),
                                          "detail" => "",

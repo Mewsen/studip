@@ -26,7 +26,6 @@
         "scssphp/scssphp": "1.12.1",
         "symfony/yaml": "^5.0",
         "ezyang/htmlpurifier": "^4.13",
-        "davefx/phplot": "^6.2",
         "jasig/phpcas": "1.5",
         "phpxmlrpc/phpxmlrpc": "^4.9.0",
         "phpxmlrpc/extras": "^1.0.0-beta2",

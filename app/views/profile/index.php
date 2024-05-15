@@ -87,8 +87,6 @@
 
 <?= $dates ?>
 
-<?= $evaluations ?? '' ?>
-
 <?= $questionnaires ?? '' ?>
 
 <? if (!empty($ausgabe_inhalt)) : ?>

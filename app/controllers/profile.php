@@ -159,9 +159,6 @@ class ProfileController extends AuthenticatedController
 
         // include and show votes and tests
         if (Config::get()->VOTE_ENABLE && Visibility::verify('votes', $this->current_user->user_id)) {
-            $response          = $this->relay('evaluation/display/' . $this->current_user->user_id);
-            $this->evaluations = $response->body;
-
             $response             = $this->relay('questionnaire/widget/' . $this->current_user->user_id . "/user");
             $this->questionnaires = $response->body;
         }

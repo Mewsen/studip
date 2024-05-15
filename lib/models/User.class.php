@@ -812,9 +812,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
             $activeVotes = [];
             $stoppedVotes = [];
         }
-        // Evaluations
-        $evalDB = new EvaluationDB();
-        $activeEvals = $evalDB->getEvaluationIDs($this->id, EVAL_STATE_ACTIVE);
+
         // Free datafields
         $data_fields = DataFieldEntry::getDataFieldEntries($this->id, 'user');
 
@@ -891,7 +889,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
                 'identifier' => 'commondata'
             ];
         }
-        if (Config::get()->VOTE_ENABLE && ($activeVotes || $stoppedVotes || $activeEvals) && empty($GLOBALS['NOT_HIDEABLE_FIELDS'][$this->perms]['votes'])) {
+        if (Config::get()->VOTE_ENABLE && ($activeVotes || $stoppedVotes) && empty($GLOBALS['NOT_HIDEABLE_FIELDS'][$this->perms]['votes'])) {
             $homepage_elements['votes'] = [
                 'name'       => _('Fragebögen'),
                 'visibility' => $homepage_visibility['votes'] ?? get_default_homepage_visibility($this->id),
@@ -1225,20 +1223,6 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
         //Archiv
         self::removeDoubles('archiv_user', 'seminar_id', $new_id, $old_id);
         $query = "UPDATE IGNORE archiv_user SET user_id = ? WHERE user_id = ?";
-        $statement = DBManager::get()->prepare($query);
-        $statement->execute([$new_id, $old_id]);
-
-        // Evaluationen
-        $query = "UPDATE IGNORE eval SET author_id = ? WHERE author_id = ?";
-        $statement = DBManager::get()->prepare($query);
-        $statement->execute([$new_id, $old_id]);
-
-        self::removeDoubles('eval_user', 'eval_id', $new_id, $old_id);
-        $query = "UPDATE IGNORE eval_user SET user_id = ? WHERE user_id = ?";
-        $statement = DBManager::get()->prepare($query);
-        $statement->execute([$new_id, $old_id]);
-
-        $query = "UPDATE IGNORE evalanswer_user SET user_id = ? WHERE user_id = ?";
         $statement = DBManager::get()->prepare($query);
         $statement->execute([$new_id, $old_id]);
 

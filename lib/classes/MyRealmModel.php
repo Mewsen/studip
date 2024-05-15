@@ -93,35 +93,6 @@ class MyRealmModel
             }
         }
 
-        $sql = "SELECT COUNT(a.eval_id) as count,
-                       COUNT(IF((chdate > IFNULL(b.visitdate, :threshold) AND d.author_id !=:user_id ), a.eval_id, NULL)) AS neue,
-                       MAX(IF ((chdate > IFNULL(b.visitdate, :threshold) AND d.author_id != :user_id), chdate, 0)) AS last_modified
-                FROM eval_range a
-                INNER JOIN eval d
-                  ON (a.eval_id = d.eval_id AND d.startdate < UNIX_TIMESTAMP() AND (d.stopdate > UNIX_TIMESTAMP() OR d.startdate + d.timespan > UNIX_TIMESTAMP() OR (d.stopdate IS NULL AND d.timespan IS NULL)))
-                LEFT JOIN object_user_visits b
-                  ON (b.object_id = a.eval_id AND b.user_id = :user_id AND b.plugin_id = :plugin_id)
-                WHERE a.range_id = :course_id
-                GROUP BY a.range_id";
-
-        $statement = DBManager::get()->prepare($sql);
-        $statement->bindValue(':user_id', $user_id);
-        $statement->bindValue(':course_id', $object_id);
-        $statement->bindValue(':threshold', object_get_visit_threshold());
-        $statement->bindValue(':plugin_id', -2);
-        $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if (!empty($result)) {
-            $count += $result['count'];
-            $neue += $result['neue'];
-            if (isset($my_obj['last_modified'], $result['last_modified']) && $result['last_modified']) {
-                if ($my_obj['last_modified'] < $result['last_modified']) {
-                    $my_obj['last_modified'] = $result['last_modified'];
-                }
-            }
-        }
-
-
         if ($neue || $count > 0) {
             $nav = new Navigation('vote', '#vote');
             if ($neue) {
@@ -506,16 +477,12 @@ class MyRealmModel
         // load plugins, so they have a chance to register themselves as observers
         PluginEngine::getPlugins('StandardPlugin');
 
-        // Update news, votes and evaluations
+        // Update news and votes
         $query = "INSERT INTO object_user_visits
                     (object_id, user_id, plugin_id, visitdate, last_visitdate)
                   (
                     SELECT questionnaire_id, :user_id, '-1', :timestamp, 0
                     FROM questionnaire_assignments
-                    WHERE range_id = :id
-                  ) UNION (
-                    SELECT eval_id, :user_id, '-2', :timestamp, 0
-                    FROM eval_range
                     WHERE range_id = :id
                   ) UNION (
                     SELECT `news_id`, :user_id, `pluginid`, :timestamp, 0

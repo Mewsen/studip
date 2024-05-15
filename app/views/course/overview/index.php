@@ -64,11 +64,6 @@ if (!empty($dates)) {
     echo $dates;
 }
 
-// Anzeige von Umfragen
-if (!empty($evaluations)) {
-    echo $evaluations;
-}
-
 if (!empty($questionnaires)) {
     echo $questionnaires;
 }

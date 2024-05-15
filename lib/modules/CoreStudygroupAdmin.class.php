@@ -43,10 +43,6 @@ class CoreStudygroupAdmin extends CorePlugin implements StudipModule
             $item = new Navigation(_('Fragebögen'), 'dispatch.php/questionnaire/courseoverview');
             $item->setDescription(_('Erstellen und bearbeiten von Fragebögen.'));
             $navigation->addSubNavigation('questionnaires', $item);
-
-            $item = new Navigation(_('Evaluationen'), 'admin_evaluation.php?view=eval_sem');
-            $item->setDescription(_('Richten Sie fragebogenbasierte Umfragen und Lehrevaluationen ein.'));
-            $navigation->addSubNavigation('evaluation', $item);
         }
         return ['admin' => $navigation];
     }

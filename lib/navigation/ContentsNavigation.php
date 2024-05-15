@@ -124,13 +124,6 @@ class ContentsNavigation extends Navigation
             }
         }
 
-        if (Config::get()->EVAL_ENABLE) {
-            $eval = new Navigation(_('Evaluationen'), 'admin_evaluation.php', ['rangeID' => $GLOBALS['user']->username]);
-            $eval->setImage(Icon::create('test'));
-            $eval->setDescription(_('Erstellen Sie komplexe Befragungen'));
-            $this->addSubNavigation('evaluation', $eval);
-        }
-
         // elearning
         if (Config::get()->ELEARNING_INTERFACE_ENABLE) {
             $elearning = new Navigation(_('Lernmodule'), 'dispatch.php/elearning/my_accounts');

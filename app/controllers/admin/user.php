@@ -1447,10 +1447,6 @@ class Admin_UserController extends AuthenticatedController
             'query' => "SELECT COUNT(*) FROM questionnaires WHERE user_id = ? GROUP BY user_id",
         ];
         $queries[] = [
-            'desc'  => _("Anzahl der Evaluationen"),
-            'query' => "SELECT COUNT(*) FROM eval WHERE author_id = ? GROUP BY author_id",
-        ];
-        $queries[] = [
             'desc'    => _("Anzahl der Dateien in Veranstaltungen und Einrichtungen"),
             'query'   => "SELECT COUNT(file_refs.id)
                   FROM (file_refs INNER JOIN files ON file_refs.file_id = files.id)

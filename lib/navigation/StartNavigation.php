@@ -231,9 +231,6 @@ class StartNavigation extends Navigation
         if (Config::get()->VOTE_ENABLE) {
             $navigation->addSubNavigation('questionnaire', new Navigation(_('Ankündigungen'), 'dispatch.php/news/admin_news'));
         }
-        if (Config::get()->EVAL_ENABLE) {
-            $navigation->addSubNavigation('evaluation', new Navigation(_('Evaluationen'), 'admin_evaluation.php', ['rangeID' => $auth->auth['uname']]));
-        }
 
         // elearning
         if (Config::get()->ELEARNING_INTERFACE_ENABLE) {

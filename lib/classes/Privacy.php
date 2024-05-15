@@ -59,7 +59,6 @@ class Privacy
             Courseware\UserProgress::class,
         ],
         'quest' => [
-            Evaluation::class,
             Questionnaire::class,
             QuestionnaireAnswer::class,
             QuestionnaireAnonymousAnswer::class,

@@ -849,7 +849,7 @@ function search_range($search_str = false, $search_user = false, $show_sem = tru
             }
         }
     } elseif ($GLOBALS['perm']->have_perm('tutor') || $GLOBALS['perm']->have_perm('autor')) {
-        // autors my also have evaluations and news in studygroups with proper rights
+        // autors my also have news in studygroups with proper rights
         $_hidden = _('(versteckt)');
         $query = "SELECT s.Seminar_id, IF(s.visible = 0, CONCAT(s.Name, ' {$_hidden}'), s.Name) AS Name %s
                   FROM seminar_user AS a
