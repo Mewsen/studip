@@ -1,4 +1,13 @@
-<form class="default" action="<?= $controller->url_for('course/wizard/process', $stepnumber, $temp_id) ?>" method="post">
+<?php
+/**
+ * @var Course_WikiController $controller
+ * @var int $stepnumber
+ * @var string $temp_id
+ * @var bool $dialog
+ * @var Course|null $source_course
+ */
+?>
+<form class="default" action="<?= $controller->link_for('course/wizard/process', $stepnumber, $temp_id) ?>" method="post">
 <fieldset>
     <legend><?= _('Anlegen der Veranstaltung') ?></legend>
 
