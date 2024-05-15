@@ -23,7 +23,7 @@
         "spomky-labs/otphp": "^10",
         "tuupola/cors-middleware": "^1.2.1",
         "tecnickcom/tcpdf": "^6.3",
-        "scssphp/scssphp": "^1.4",
+        "scssphp/scssphp": "1.12.1",
         "symfony/yaml": "^5.0",
         "ezyang/htmlpurifier": "^4.13",
         "davefx/phplot": "^6.2",
