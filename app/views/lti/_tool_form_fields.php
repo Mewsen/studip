@@ -20,18 +20,16 @@
         <label>
             <?= _('Datenschutzhinweise') ?>
             <textarea name="data_protection_notes" class="wysiwyg"
-                      placeholder="<?= _('Bitte machen Sie Angaben zu dem angebundenen Werkzeug (zum Beispiel Moodle, gegebenenfalls dem Anbieter des Tools), wozu das Tool eingesetzt wird (zum Beispiel Sprachtest mit Notenerfassung) und was gespeichert und/oder übertragen wird (zum Beispiel Name, Mailadresse, Noten...)') ?>"><?= $deployment->data_protection_notes ?></textarea>
+                      placeholder="<?= _('Bitte machen Sie Angaben zu dem angebundenen Werkzeug, soweit sie ihnen bekannt sind. Wie ist der Name, wer bietet es an, wozu wird es eingesetzt und welche Daten werden übertragen? (Beispiel: „Tool XY wird zur Durchführung von Sprachtests genutzt und Testergebnisse und ggf. Noten gespeichert. Zur Anmeldung werden Name und Nutzerkennung übertragen“)') ?>"><?= $deployment->data_protection_notes ?></textarea>
         </label>
     <? endif ?>
-    <label class="studiprequired">
-        <span class="textlabel"><?= _('URL zu den Nutzungsbedingungen') ?></span>
-        <span class="asterisk">*</span>
-        <input type="url" name="terms_of_use_url" required value="<?= htmlReady($tool->terms_of_use_url) ?>">
+    <label>
+        <?= _('URL zu den Nutzungsbedingungen des LTI-Tools (falls verfügbar)') ?>
+        <input type="url" name="terms_of_use_url" value="<?= htmlReady($tool->terms_of_use_url) ?>">
     </label>
-    <label class="studiprequired">
-        <span class="textlabel"><?= _('URL zur Datenschutzerklärung') ?></span>
-        <span class="asterisk">*</span>
-        <input type="url" name="privacy_policy_url" required value="<?= htmlReady($tool->privacy_policy_url) ?>">
+    <label>
+        <?= _('URL zur Datenschutzerklärung des LTI-Tools (falls verfügbar)') ?>
+        <input type="url" name="privacy_policy_url" value="<?= htmlReady($tool->privacy_policy_url) ?>">
     </label>
 </fieldset>
 <fieldset>

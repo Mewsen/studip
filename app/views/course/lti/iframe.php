@@ -16,9 +16,17 @@
         $data_protection_warning = Config::get()->LTI_DATA_PROTECTION_DEFAULT_WARNING;
     }
     ?>
-    <?= MessageBox::warning($data_protection_warning)->hideClose() ?>
     <article class="studip">
-        <header><h1><?= _('Zu übertragende personenbezogene Daten') ?></h1></header>
+        <header><h1><?= _('Datenschutzhinweise')  ?></h1></header>
+        <section>
+            <p><?= htmlReady($data_protection_warning) ?></p>
+            <? if ($deployment->data_protection_notes) : ?>
+                <p><?= formatReady($deployment->data_protection_notes) ?></p>
+            <? endif ?>
+        </section>
+    </article>
+    <article class="studip">
+        <header><h1><?= _('Folgenden Daten werden übertragen') ?></h1></header>
         <section>
             <?= _('Beim Wechsel in das LTI-Tool werden die folgenden personenbezogenen Daten übertragen:') ?>
             <ul>
@@ -59,15 +67,18 @@
     <article class="studip">
         <header><h1><?= _('Bestätigung') ?></h1></header>
         <section>
-            <?= _(
-                'Ich habe die Datenschutzhinweise zur Benutzung des LTI-Tools zur Kenntnis genommen und stimme der Weitergabe meiner personenbezogenen Daten zu. '
-                . 'Mir ist bewusst, dass ich ohne die Zustimmung das LTI-Tool nicht nutzen kann.'
-            ) ?>
+            <label>
+                <input type="checkbox" name="confirmed" value="1">
+                <?= _(
+                    'Ich habe die Datenschutzhinweise zur Benutzung des LTI-Tools zur Kenntnis genommen und stimme der Weitergabe meiner personenbezogenen Daten zu. '
+                    . 'Mir ist bewusst, dass ich ohne die Zustimmung das LTI-Tool nicht nutzen kann.'
+                ) ?>
+            </label>
             <form class="default" method="post" action="<?= $controller->link_for('course/lti/iframe/' . htmlReady($deployment->id)) ?>">
                 <?= CSRFProtection::tokenTag() ?>
-                <?= \Studip\Button::createAccept(_('Ja'), 'continue') ?>
+                <?= \Studip\Button::createAccept(_('Weiter'), 'continue') ?>
                 <? if (empty($deployment->options['document_target']) || $deployment->options['document_target'] !== 'ifame') : ?>
-                    <?= \Studip\Button::createCancel(_('Nein')) ?>
+                    <?= \Studip\Button::createCancel(_('Zurück')) ?>
                 <? endif ?>
             </form>
         </section>
