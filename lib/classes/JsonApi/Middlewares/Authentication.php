@@ -15,22 +15,21 @@ class Authentication
     // $user = $request->getAttribute(Authentication::USER_KEY);
     const USER_KEY = 'studip-user';
 
-    // a callable accepting two arguments username and password and
-    // returning either null or a Stud.IP user object
-    /** @var callable */
-    private $authenticator;
-
     /**
      * Der Konstruktor.
      *
-     * @param callable $authenticator ein Callable, das den Nutzernamen und
+     * @param \Closure $authenticator eine Closure, die den Nutzernamen und
      *                                das Passwort als Argumente erhält und
      *                                damit entweder einen Stud.IP-User-Objekt
      *                                oder null zurückgibt
+     * @param array    $excluded_strategies
      */
-    public function __construct($authenticator)
-    {
-        $this->authenticator = $authenticator;
+    public function __construct(
+        // a callable accepting two arguments username and password and
+        // returning either null or a Stud.IP user object
+        private readonly \Closure $authenticator,
+        private readonly array $excluded_strategies = []
+    ) {
     }
 
     /**
@@ -45,12 +44,7 @@ class Authentication
      */
     public function __invoke(Request $request, RequestHandler $handler)
     {
-        $guards = [
-            new Auth\SessionStrategy(),
-            new Auth\HttpBasicAuthStrategy($request, $this->authenticator),
-            new Auth\OAuth2Strategy($request, $this->authenticator),
-            new Auth\OAuth1Strategy($request, $this->authenticator),
-        ];
+        $guards = $this->getGuards($request);
 
         foreach ($guards as $guard) {
             if ($guard->check()) {
@@ -100,5 +94,26 @@ class Authentication
         }
 
         return $request->withAttribute(self::USER_KEY, $user);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
+    protected function getGuards(Request $request): array
+    {
+        $guards = [
+            'session' => new Auth\SessionStrategy(),
+            'basic'   => new Auth\HttpBasicAuthStrategy($request, $this->authenticator),
+            'oauth2'  => new Auth\OAuth2Strategy($request, $this->authenticator),
+            'oauth1'  => new Auth\OAuth1Strategy($request, $this->authenticator),
+        ];
+
+        foreach ($this->excluded_strategies as $strategy) {
+            unset($guards[$strategy]);
+        }
+
+        return $guards;
     }
 }

@@ -74,14 +74,12 @@ StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/classes/vis
 StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/vendor/oauth-php/library');
 
 // Messy file names
-StudipAutoloader::addClassLookups(
-    array(
-        'StudipPlugin' => $GLOBALS['STUDIP_BASE_PATH'].'/lib/plugins/core/StudIPPlugin.class.php',
-        'messaging' => $GLOBALS['STUDIP_BASE_PATH'].'/lib/messaging.inc.php',
-    )
-);
+StudipAutoloader::addClassLookups([
+    'StudipPlugin' => $GLOBALS['STUDIP_BASE_PATH'].'/lib/plugins/core/StudIPPlugin.class.php',
+    'messaging' => $GLOBALS['STUDIP_BASE_PATH'].'/lib/messaging.inc.php',
+]);
 
-$GLOBALS['_fullname_sql'] = array();
+$GLOBALS['_fullname_sql'] = [];
 $GLOBALS['_fullname_sql']['full'] = "TRIM(CONCAT(title_front,' ',Vorname,' ',Nachname,IF(title_rear!='',CONCAT(', ',title_rear),'')))";
 $GLOBALS['_fullname_sql']['full_rev'] = "TRIM(CONCAT(Nachname,', ',Vorname,IF(title_front!='',CONCAT(', ',title_front),''),IF(title_rear!='',CONCAT(', ',title_rear),'')))";
 $GLOBALS['_fullname_sql']['no_title'] = "CONCAT(Vorname ,' ', Nachname)";

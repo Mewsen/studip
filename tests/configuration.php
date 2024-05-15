@@ -1,6 +1,10 @@
 <?php
 
 return (function (string ...$filenames) {
+    $ABSOLUTE_URI_STUDIP = '';
+    $ASSETS_URL = '';
+    $STUDIP_BASE_PATH = '';
+
     foreach ($filenames as $filename) {
         if (file_exists($filename)) {
             require_once $filename;

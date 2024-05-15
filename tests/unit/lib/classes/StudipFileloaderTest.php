@@ -56,7 +56,7 @@ class StudipFileloaderTestCase extends \Codeception\Test\Unit
 
     public function test_should_balk_upon_file_not_found()
     {
-        $this->expectException(\PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         StudipFileloader::load('var://pathto/not-there.php', $container);
     }
 }

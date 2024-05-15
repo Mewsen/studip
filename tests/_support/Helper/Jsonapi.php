@@ -148,7 +148,7 @@ class Jsonapi extends \Codeception\Module
 
                     return $handler->handle($request);
                 })
-                ->add(new Authentication($authenticator));
+                ->add(new Authentication($authenticator, ['session']));
         }
 
         return $app;

@@ -5,7 +5,7 @@ namespace Helper;
 use Codeception\Exception\ModuleConfigException;
 use Codeception\Exception\ModuleException;
 
-require_once('lib/classes/StudipPDO.class.php');
+require_once 'lib/classes/StudipPDO.class.php';
 
 class StudipDb extends \Codeception\Module
 {
@@ -14,18 +14,17 @@ class StudipDb extends \Codeception\Module
      *
      * @var
      */
-    public $dbh;
+    public ?\StudipPdo $dbh;
 
     /**
      * @var array
      */
-    protected $config = [
-    ];
+    protected array $config = [];
 
     /**
      * @var array
      */
-    protected $requiredFields = ['dsn', 'user', 'password'];
+    protected array $requiredFields = ['dsn', 'user', 'password'];
 
     /**
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
@@ -42,7 +41,7 @@ class StudipDb extends \Codeception\Module
 
     private function checkConfig($configKey, $name)
     {
-        if (strstr($this->config[$configKey], '%'.$name.'%')) {
+        if (str_contains($this->config[$configKey], '%' . $name . '%')) {
             throw new ModuleConfigException(__CLASS__, 'You have to provide a '.$name.' either as ENV variable or in config_local.inc.php!');
         }
     }
