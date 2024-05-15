@@ -31,8 +31,6 @@ div.clear
     .quiet img { opacity: 0.25; }
 
     li {
-        background-color: var(--dark-gray-color-10);
-
         &:last-child {
             border-right: none;
         }
