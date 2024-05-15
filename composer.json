@@ -12,7 +12,7 @@
         "codeception/codeception": "5.1.2",
         "codeception/module-asserts": "3.0.0",
         "overtrue/phplint": "3.1.1",
-        "phpstan/phpstan": "^1.8",
+        "phpstan/phpstan": "1.11.0",
         "symfony/var-dumper": "6.4.7"
     },
     "require": {
