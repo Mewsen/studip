@@ -46,7 +46,7 @@
         "slim/psr7": "1.6.1",
         "slim/slim": "4.13.0",
         "php-di/php-di": "7.0.0",
-        "symfony/console": "^5.3.16",
+        "symfony/console": "6.4.7",
         "symfony/process": "^5.4",
         "jumbojett/openid-connect-php": "1.0.0",
         "league/oauth2-server": "8.5.4",
