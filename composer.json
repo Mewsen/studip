@@ -23,7 +23,7 @@
         "tuupola/cors-middleware": "^1.2.1",
         "tecnickcom/tcpdf": "6.7.5",
         "scssphp/scssphp": "1.12.1",
-        "symfony/yaml": "^5.0",
+        "symfony/yaml": "6.4.7",
         "ezyang/htmlpurifier": "^4.13",
         "jasig/phpcas": "1.5",
         "phpxmlrpc/phpxmlrpc": "^4.9.0",
