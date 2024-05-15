@@ -28,7 +28,7 @@
         "jasig/phpcas": "1.5",
         "phpxmlrpc/phpxmlrpc": "^4.9.0",
         "phpxmlrpc/extras": "^1.0.0-beta2",
-        "algo26-matthias/idna-convert": "^3.0",
+        "algo26-matthias/idna-convert": "4.0.2",
         "caxy/php-htmldiff": "0.1.15",
         "phpseclib/phpseclib": "3.0.37",
         "ext-gd": "*",

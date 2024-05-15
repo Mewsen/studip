@@ -21,6 +21,7 @@ class VisualFunctionsTest extends \Codeception\Test\Unit
         static $config = [
             'LOAD_EXTERNAL_MEDIA' => 'allow',
             'OPENGRAPH_ENABLE'    => false,
+            'CONVERT_IDNA_URL'    => true,
         ];
 
         Config::set(new Config($config));
@@ -222,6 +223,16 @@ class VisualFunctionsTest extends \Codeception\Test\Unit
         $expected = '<a href="mailto:some.user+tag@example.com">Mail</a>';
         $expected = $this->wrap($expected);
         $this->assertEquals($expected, formatReady($input));
+    }
+
+    public function testIdnaLink()
+    {
+        $input = htmlentities('https://www.täst-dömäne-mit-ümläuten.de');
+
+        $this->assertEquals(
+            'https://www.xn--tst-dmne-mit-mluten-gwbfj61b7e.de',
+            idna_link($input)
+        );
     }
 
     private function wrap($string)
