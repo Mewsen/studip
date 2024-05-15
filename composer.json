@@ -8,7 +8,6 @@
         }
     },
     "require-dev": {
-        "adlawson/vfs": "~0.12.1",
         "woohoolabs/yang": "2.3.2",
         "codeception/codeception": "5.1.2",
         "codeception/module-asserts": "3.0.0",
