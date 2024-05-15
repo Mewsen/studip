@@ -1565,7 +1565,7 @@ class Seminar
         SeminarCycleDate::deleteBySQL('seminar_id = ' . DBManager::get()->quote($s_id));
 
         // Alle weiteren Postings zu diesem Seminar in den Forums-Modulen löschen
-        foreach (PluginEngine::getPlugins('ForumModule') as $plugin) {
+        foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
             $plugin->deleteContents($s_id);  // delete content irrespective of plugin-activation in the seminar
 
             if ($plugin->isActivated($s_id)) {   // only show a message, if the plugin is activated, to not confuse the user

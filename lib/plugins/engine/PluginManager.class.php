@@ -1,14 +1,11 @@
 <?php
-# Lifter010: TODO
-/*
+/**
  * PluginManager.class.php - plugin manager for Stud.IP
  *
- * Copyright (c) 2009  Elmar Ludwig
+ * @copyright  2009  Elmar Ludwig
+ * @license GPL2 or any later version
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
+ * @template P of StudIPPlugin
  */
 
 class PluginManager
@@ -576,7 +573,7 @@ class PluginManager
      * Get instance of the plugin specified by plugin meta data.
      *
      * @param array $plugin_info plugin meta data
-     * @return object
+     * @return P
      */
     protected function getCachedPlugin ($plugin_info)
     {
@@ -603,8 +600,8 @@ class PluginManager
     /**
      * Get instance of the plugin specified by plugin class name.
      *
-     * @param string $class class name of plugin
-     * @return object
+     * @param class-string<P> $class class name of plugin
+     * @return P|null
      */
     public function getPlugin ($class)
     {
@@ -623,7 +620,7 @@ class PluginManager
      * Get instance of the plugin specified by plugin id.
      *
      * @param int $id id of the plugin
-     * @return object $plugin
+     * @return P|null $plugin
      */
     public function getPluginById ($id)
     {
@@ -643,8 +640,9 @@ class PluginManager
      * returns all enabled plugins. The optional context parameter can be
      * used to get only plugins that are activated in the given context.
      *
-     * @param string $type plugin type or null (all types)
+     * @param class-string<P>|null $type plugin type or null (all types)
      * @param string $context context range id (optional)
+     * @return P[]|StudIPPlugin[]
      */
     public function getPlugins ($type, $context = null)
     {

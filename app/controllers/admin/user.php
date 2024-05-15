@@ -1474,7 +1474,7 @@ class Admin_UserController extends AuthenticatedController
             'details' => "files",
         ];
 
-        foreach (PluginEngine::getPlugins('ForumModule') as $plugin) {
+        foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
             $table     = $plugin->getEntryTableInfo();
             $queries[] = [
                 'desc'  => $plugin->getPluginName() . ' - ' . _("Anzahl der Postings"),

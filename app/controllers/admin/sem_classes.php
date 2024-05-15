@@ -65,7 +65,7 @@ class Admin_SemClassesController extends AuthenticatedController
     {
         Navigation::activateItem("/admin/locations/sem_classes");
 
-        $plugins = PluginManager::getInstance()->getPlugins("StudipModule");
+        $plugins = PluginManager::getInstance()->getPlugins(StudipModule::class);
         $this->sem_class = SemClass::getClasses()[Request::get("id")];
         $modules = [];
         foreach ($this->sem_class->getModuleObjects() as $plugin) {

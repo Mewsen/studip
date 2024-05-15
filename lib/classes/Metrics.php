@@ -191,7 +191,7 @@ class Metrics {
 
         // cache the activated MetricsPlugins
         if (!self::$metricPlugins) {
-            self::$metricPlugins = \PluginEngine::getPlugins('MetricsPlugin');
+            self::$metricPlugins = \PluginEngine::getPlugins(MetricsPlugin::class);
         }
 
         // call every MetricPlugin

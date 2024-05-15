@@ -110,7 +110,7 @@ abstract class ExternPage
         $page_name = 'ExternPage' . $config->type;
         if (!class_exists($page_name)) {
             // lookup plugins
-            $plugins = PluginEngine::getPlugins('ExternPagePlugin');
+            $plugins = PluginEngine::getPlugins(ExternPagePlugin::class);
             foreach ($plugins as $plugin) {
                 if ($config->type === $plugin->getExternPageName()) {
                     return $plugin->getExternPage($config);

@@ -42,7 +42,7 @@ class ContentsNavigation extends Navigation
 
         $this->addSubNavigation('overview', $overview);
 
-        if (PluginManager::getInstance()->getPlugin('CoursewareModule')) {
+        if (PluginManager::getInstance()->getPlugin(CoursewareModule::class)) {
             $courseware = new Navigation(_('Courseware'));
             $courseware->setDescription(_('Erstellen und Sammeln von Lernmaterialien'));
             $courseware->setImage(Icon::create('courseware'));

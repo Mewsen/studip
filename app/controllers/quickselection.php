@@ -27,7 +27,7 @@ class QuickselectionController extends AuthenticatedController
 
         UserConfig::get($GLOBALS['user']->id)->store('QUICK_SELECTION', $names);
 
-        $template = PluginEngine::getPlugin('QuickSelection')->getPortalTemplate();
+        $template = PluginEngine::getPlugin(QuickSelection::class)->getPortalTemplate();
 
         $this->response->add_header('X-Dialog-Close', 1);
         $this->response->add_header('X-Dialog-Execute', 'STUDIP.QuickSelection.update');

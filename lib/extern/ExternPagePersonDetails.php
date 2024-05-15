@@ -439,7 +439,7 @@ class ExternPagePersonDetails extends ExternPage
     private function getContentHomepagePlugins(User $user)
     {
         $content = [];
-        $plugins = PluginEngine::getPlugins('HomepagePlugin');
+        $plugins = PluginEngine::getPlugins(HomepagePlugin::class);
         foreach ($plugins as $plugin) {
             $template = $plugin->getHomepageTemplate($user->id);
             if ($template) {

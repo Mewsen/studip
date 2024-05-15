@@ -118,7 +118,7 @@ class StudipKing {
         $kings = [];
 
         // sum up postings for all users from all ForumModules available
-        foreach (PluginEngine::getPlugins('ForumModule') as $plugin) {
+        foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
             $table = $plugin->getEntryTableInfo();
             $query = "SELECT user_id AS id, COUNT(*) AS num FROM ". $table['table'] ." GROUP BY user_id";
             $new_kings = self::select_kings($query);

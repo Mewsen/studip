@@ -440,7 +440,7 @@ class Admin_ExternController extends AuthenticatedController
      */
     protected function fetchPlugins(bool $is_system): void
     {
-        $plugins = PluginEngine::getPlugins('ExternPagePlugin');
+        $plugins = PluginEngine::getPlugins(ExternPagePlugin::class);
         foreach ($plugins as $plugin) {
             if (
                 $is_system === $plugin->isSystemPage()

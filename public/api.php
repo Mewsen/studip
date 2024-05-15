@@ -43,7 +43,7 @@ namespace RESTAPI {
         require 'lib/bootstrap-api.php';
 
         // Initialize RESTAPI plugins
-        \PluginEngine::getPlugins('RESTAPIPlugin');
+        \PluginEngine::getPlugins(RESTAPIPlugin::class);
 
         $uri = \Request::pathInfo();
 

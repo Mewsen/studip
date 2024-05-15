@@ -68,7 +68,7 @@ class FilesController extends AuthenticatedController
             $this->url_for("files/index"),
             Icon::create("files", "clickable")
         );
-        foreach (PluginManager::getInstance()->getPlugins('FilesystemPlugin') as $plugin) {
+        foreach (PluginManager::getInstance()->getPlugins(FilesystemPlugin::class) as $plugin) {
             if ($plugin->isPersonalFileArea()) {
                 $subnav = $plugin->getFileSelectNavigation();
                 $sources->addLink(
@@ -110,7 +110,7 @@ class FilesController extends AuthenticatedController
         }
 
         $config_urls = [];
-        foreach (PluginManager::getInstance()->getPlugins('FilesystemPlugin') as $plugin) {
+        foreach (PluginManager::getInstance()->getPlugins(FilesystemPlugin::class) as $plugin) {
             $url = $plugin->filesystemConfigurationURL();
             if ($url) {
                 $navigation = $plugin->getFileSelectNavigation();
@@ -647,7 +647,7 @@ class FilesController extends AuthenticatedController
         PageLayout::setTitle(_('Dateibereich zur Konfiguration auswählen'));
 
         $this->configure_urls = [];
-        foreach (PluginManager::getInstance()->getPlugins('FilesystemPlugin') as $plugin) {
+        foreach (PluginManager::getInstance()->getPlugins(FilesystemPlugin::class) as $plugin) {
             $url = $plugin->filesystemConfigurationURL();
             if ($url) {
                 $navigation = $plugin->getFileSelectNavigation();

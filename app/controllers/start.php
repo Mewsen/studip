@@ -132,7 +132,7 @@ class StartController extends AuthenticatedController
      */
     private function getAvailableWidgets($user_id)
     {
-        $all_widgets = PluginEngine::getPlugins('PortalPlugin');
+        $all_widgets = PluginEngine::getPlugins(PortalPlugin::class);
         $user_widgets = WidgetUser::getWidgets($user_id);
         $used_widgets = array_merge(...$user_widgets);
         $available = [];
@@ -190,7 +190,7 @@ class StartController extends AuthenticatedController
 
         PageLayout::setTitle(sprintf(_('Standard-Startseite für "%s" bearbeiten'), ucfirst($permission)));
 
-        $this->widgets = PluginEngine::getPlugins('PortalPlugin');
+        $this->widgets = PluginEngine::getPlugins(PortalPlugin::class);
         $this->initial_widgets = WidgetDefault::getWidgets($permission);
         $this->permission = $permission;
     }

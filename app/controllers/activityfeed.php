@@ -53,7 +53,7 @@ class ActivityfeedController extends AuthenticatedController
         unset($modules[Context::INSTITUTE]['participants']);
         unset($modules[Context::INSTITUTE]['schedule']);
 
-        $standard_plugins = PluginManager::getInstance()->getPlugins("StandardPlugin");
+        $standard_plugins = PluginManager::getInstance()->getPlugins(StandardPlugin::class);
         foreach ($standard_plugins as $plugin) {
             if ($plugin instanceof ActivityProvider) {
                 $modules[Context::COURSE][$plugin->getPluginName()] = $plugin->getPluginName();
@@ -67,7 +67,7 @@ class ActivityfeedController extends AuthenticatedController
             'blubber'      => _('Blubber'),
         ];
 
-        $homepage_plugins = PluginEngine::getPlugins('HomepagePlugin');
+        $homepage_plugins = PluginEngine::getPlugins(HomepagePlugin::class);
         foreach ($homepage_plugins as $plugin) {
             if ($plugin->isActivated($GLOBALS['user']->id, 'user')) {
                 if ($plugin instanceof ActivityProvider) {

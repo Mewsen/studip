@@ -126,7 +126,7 @@ class AdminNavigation extends Navigation
                 $navigation->addSubNavigation('banner', new Navigation(_('Werbebanner'), 'dispatch.php/admin/banner'));
             }
 
-            if (PluginManager::getInstance()->getPlugin('CoursewareModule')) {
+            if (PluginManager::getInstance()->getPlugin(CoursewareModule::class)) {
                 $navigation->addSubNavigation(
                     'courseware',
                     new Navigation(

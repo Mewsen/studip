@@ -122,7 +122,7 @@ class RouteMap
         $this->addAuthenticatedContactsRoutes($group);
         $this->addAuthenticatedCoursesRoutes($group);
 
-        if (\PluginManager::getInstance()->getPlugin('CoursewareModule')) {
+        if (\PluginManager::getInstance()->getPlugin(\CoursewareModule::class)) {
             $this->addAuthenticatedCoursewareRoutes($group);
         }
 
@@ -155,7 +155,7 @@ class RouteMap
 
         $group->get('/studip/properties', Routes\Studip\PropertiesIndex::class);
 
-        if (\PluginManager::getInstance()->getPlugin('CoursewareModule')) {
+        if (\PluginManager::getInstance()->getPlugin(\CoursewareModule::class)) {
             $group->get('/public/courseware/{link_id}/courseware-structural-elements/{id}', Routes\Courseware\PublicStructuralElementsShow::class);
             $group->get('/public/courseware/{link_id}/courseware-structural-elements', Routes\Courseware\PublicStructuralElementsIndex::class);
         }

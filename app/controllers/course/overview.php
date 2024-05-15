@@ -111,7 +111,7 @@ class Course_OverviewController extends AuthenticatedController
             $this->avatar   = StudygroupAvatar::getAvatar($this->course_id);
         }
 
-        $this->plugins = PluginEngine::getPlugins('StandardPlugin', $this->course_id);
+        $this->plugins = PluginEngine::getPlugins(StandardPlugin::class, $this->course_id);
 
         $sidebar = Sidebar::get();
 

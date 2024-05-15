@@ -69,7 +69,7 @@ if ($folder_id) {
                     <?= _('OER Campus') ?>
                 </a>
             <? endif ?>
-            <? foreach (PluginManager::getInstance()->getPlugins('FilesystemPlugin') as $plugin) : ?>
+            <? foreach (PluginManager::getInstance()->getPlugins(FilesystemPlugin::class) as $plugin) : ?>
                 <? if ($plugin->isSource()) : ?>
                     <? $nav = $plugin->getFileSelectNavigation() ?>
                     <? if ($nav): ?>

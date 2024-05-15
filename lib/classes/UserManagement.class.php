@@ -898,7 +898,7 @@ class UserManagement
 
         // Load privacy plugins to ensure all event handlers can react to the
         // UserDataDidRemove event
-        PluginEngine::getPlugins('PrivacyPlugin');
+        PluginEngine::getPlugins(PrivacyPlugin::class);
 
         // delete user from instituts
         $this->logInstUserDel($this->user_data['auth_user_md5.user_id']);

@@ -614,7 +614,7 @@ class Visibility
     private function createHomepagePluginEntries($user)
     {
         self::getUser($user);
-        $homepageplugins = PluginEngine::getPlugins('HomepagePlugin');
+        $homepageplugins = PluginEngine::getPlugins(HomepagePlugin::class);
         foreach ($homepageplugins as $plugin) {
             self::addPrivacySetting($plugin->getPluginName(), ("plugin".$plugin->getPluginId()), 'plugins', 1, $user, null, $plugin->getPluginId());
         }

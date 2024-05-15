@@ -18,7 +18,7 @@ class Course_WikiController extends AuthenticatedController
         parent::before_filter($action, $args);
         object_set_visit_module('wiki');
         $this->range = Context::get();
-        $this->plugin = PluginManager::getInstance()->getPlugin('CoreWiki');
+        $this->plugin = PluginManager::getInstance()->getPlugin(CoreWiki::class);
 
         PageLayout::setTitle(Navigation::getItem('/course/wiki')->getTitle());
     }

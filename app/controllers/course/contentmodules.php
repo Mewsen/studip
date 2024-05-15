@@ -273,7 +273,7 @@ class Course_ContentmodulesController extends AuthenticatedController
     {
         $list = [];
 
-        foreach (PluginEngine::getPlugins('StudipModule') as $plugin) {
+        foreach (PluginEngine::getPlugins(StudipModule::class) as $plugin) {
             if (!$plugin->isActivatableForContext($context)) {
                 continue;
             }

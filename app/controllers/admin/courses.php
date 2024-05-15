@@ -490,7 +490,7 @@ class Admin_CoursesController extends AuthenticatedController
                     ]);
                 break;
             default:
-                foreach (PluginManager::getInstance()->getPlugins('AdminCourseAction') as $plugin) {
+                foreach (PluginManager::getInstance()->getPlugins(AdminCourseAction::class) as $plugin) {
                     if ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA === get_class($plugin)) {
                         $multimode = $plugin->useMultimode();
                         if ($multimode) {
@@ -711,7 +711,7 @@ class Admin_CoursesController extends AuthenticatedController
             $d['last_activity_raw'] = $last_activity;
         }
 
-        foreach (PluginManager::getInstance()->getPlugins('AdminCourseContents') as $plugin) {
+        foreach (PluginManager::getInstance()->getPlugins(AdminCourseContents::class) as $plugin) {
             foreach ($plugin->adminAvailableContents() as $index => $label) {
                 if (in_array($plugin->getPluginId() . '_' . $index, $activated_fields)) {
                     $content = $plugin->adminAreaGetCourseContent($course, $index);
@@ -837,7 +837,7 @@ class Admin_CoursesController extends AuthenticatedController
                 $d['action'] = $template->render();
                 break;
             default:
-                foreach (PluginManager::getInstance()->getPlugins('AdminCourseAction') as $plugin) {
+                foreach (PluginManager::getInstance()->getPlugins(AdminCourseAction::class) as $plugin) {
                     if ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA === get_class($plugin)) {
                         $output = $plugin->getAdminCourseActionTemplate($course->getId());
                         $d['action'] = $output instanceof Flexi_Template ? $output->render() : (string) $output;
@@ -1029,7 +1029,7 @@ class Admin_CoursesController extends AuthenticatedController
                     $row['institute'] = $course->home_institut ? (string) $course->home_institut['name'] : $course['institut_id'];
                 }
 
-                foreach (PluginManager::getInstance()->getPlugins('AdminCourseContents') as $plugin) {
+                foreach (PluginManager::getInstance()->getPlugins(AdminCourseContents::class) as $plugin) {
                     foreach ($plugin->adminAvailableContents() as $index => $label) {
                         if (in_array($plugin->getPluginId() . "_" . $index, $filter_config)) {
                             $content = $plugin->adminAreaGetCourseContent($course, $index);
@@ -1048,7 +1048,7 @@ class Admin_CoursesController extends AuthenticatedController
             foreach ($filter_config as $index) {
                 $captions[$index] = $view_filters[$index];
             }
-            foreach (PluginManager::getInstance()->getPlugins('AdminCourseContents') as $plugin) {
+            foreach (PluginManager::getInstance()->getPlugins(AdminCourseContents::class) as $plugin) {
                 foreach ($plugin->adminAvailableContents() as $index => $label) {
                     if (in_array($plugin->getPluginId() . "_" . $index, $filter_config)) {
                         $captions[$plugin->getPluginId() . "_" . $index] = $label;
@@ -1446,7 +1446,7 @@ class Admin_CoursesController extends AuthenticatedController
 
         ksort($actions);
 
-        foreach (PluginManager::getInstance()->getPlugins('AdminCourseAction') as $plugin) {
+        foreach (PluginManager::getInstance()->getPlugins(AdminCourseAction::class) as $plugin) {
             $actions[get_class($plugin)] = [
                 'name'      => $plugin->getPluginName(),
                 'title'     => $plugin->getPluginName(),
@@ -1486,7 +1486,7 @@ class Admin_CoursesController extends AuthenticatedController
             'contents'      => _('Inhalt'),
             'last_activity' => _('Letzte Aktivität'),
         ];
-        foreach (PluginManager::getInstance()->getPlugins('AdminCourseContents') as $plugin) {
+        foreach (PluginManager::getInstance()->getPlugins(AdminCourseContents::class) as $plugin) {
             foreach ($plugin->adminAvailableContents() as $index => $label) {
                 $views[$plugin->getPluginId() . "_" . $index] = $label;
             }

@@ -262,7 +262,7 @@ class Contents_CoursewareController extends CoursewareController
      */
     private function isCoursewareEnabled($course_id): bool
     {
-        $studip_module = PluginManager::getInstance()->getPlugin('CoursewareModule');
+        $studip_module = PluginManager::getInstance()->getPlugin(CoursewareModule::class);
 
         if (!$studip_module || !$studip_module->isActivated($course_id)) {
             return false;

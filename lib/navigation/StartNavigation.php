@@ -222,7 +222,7 @@ class StartNavigation extends Navigation
         // contents
         $navigation = new Navigation(_('Mein Arbeitsplatz'), 'dispatch.php/contents/overview');
 
-        if (PluginManager::getInstance()->getPlugin('CoursewareModule')) {
+        if (PluginManager::getInstance()->getPlugin(CoursewareModule::class)) {
             $navigation->addSubNavigation('courseware',
                 new Navigation(_('Courseware'), 'dispatch.php/contents/courseware'));
         }

@@ -64,7 +64,7 @@ function lastActivity ($sem_id)
                           WHERE `range_id` = :id";
         }
 
-        foreach (PluginEngine::getPlugins('ForumModule') as $plugin) {
+        foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
             $table = $plugin->getEntryTableInfo();
             $queries[] = 'SELECT MAX(`'. $table['chdate'] .'`) AS chdate FROM `'. $table['table'] .'` WHERE `'. $table['seminar_id'] .'` = :id';
         }

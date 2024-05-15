@@ -419,7 +419,7 @@ class BlubberController extends AuthenticatedController
 
             PluginManager::getInstance()->setPluginActivated(
                 PluginManager::getInstance()
-                    ->getPlugin('Blubber')
+                    ->getPlugin(Blubber::class)
                     ->getPluginId(),
                 $course->getId(),
                 true

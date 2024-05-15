@@ -54,7 +54,7 @@
 
 <?
 // display plugins
-$plugins = PluginEngine::getPlugins('StandardPlugin', $institute_id);
+$plugins = PluginEngine::getPlugins(StandardPlugin::class, $institute_id);
 $layout = $GLOBALS['template_factory']->open('shared/index_box');
 
 foreach ($plugins as $plugin) {

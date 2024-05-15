@@ -493,7 +493,7 @@ class QuestionnaireController extends AuthenticatedController
                 $course_assignment['user_id'] = $GLOBALS['user']->id;
                 $course_assignment->store();
             }
-            foreach (PluginManager::getInstance()->getPlugins("QuestionnaireAssignmentPlugin") as $plugin) {
+            foreach (PluginManager::getInstance()->getPlugins(QuestionnaireAssignmentPlugin::class) as $plugin) {
                 $plugin->storeQuestionnaireAssignments($this->questionnaire);
             }
 

@@ -480,7 +480,7 @@ class SiteinfoMarkupEngine {
                 // get TopTen of seminars from all ForumModules and add up the
                 // count for seminars with more than one active ForumModule
                 // to get a combined toplist
-                foreach (PluginEngine::getPlugins('ForumModule') as $plugin) {
+                foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
                     $new_seminars = $plugin->getTopTenSeminars();
                     foreach ($new_seminars as $sem) {
                         if (!isset($seminars[$sem['seminar_id']])) {
@@ -589,7 +589,7 @@ class SiteinfoMarkupEngine {
             $count = 0;
 
             // sum up number of postings for all availabe ForumModules
-            foreach (PluginEngine::getPlugins('ForumModule') as $plugin) {
+            foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
                 $count += $plugin->getNumberOfPostings();
             }
 

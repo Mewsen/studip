@@ -348,7 +348,7 @@ class WidgetHelper
      */
     public static function getAvailableWidgets($user_id = null)
     {
-        $all_widgets = PluginEngine::getPlugins('PortalPlugin');
+        $all_widgets = PluginEngine::getPlugins(PortalPlugin::class);
 
         $used_widgets = is_null($user_id)
                 ? []

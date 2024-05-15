@@ -130,7 +130,7 @@ class RecalculateScore extends Migration {
             'date_column' => "chdate"
         ];
 
-        foreach (PluginManager::getInstance()->getPlugins("ScorePlugin") as $plugin) {
+        foreach (PluginManager::getInstance()->getPlugins(ScorePlugin::class) as $plugin) {
             foreach ((array) $plugin->getPluginActivityTables() as $table) {
                 if ($table['table']) {
                     $tables[] = $table;

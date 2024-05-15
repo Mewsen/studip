@@ -210,7 +210,7 @@ class ProfileController extends AuthenticatedController
         }
 
         // Hompageplugins
-        $homepageplugins = PluginEngine::getPlugins('HomepagePlugin');
+        $homepageplugins = PluginEngine::getPlugins(HomepagePlugin::class);
 
         $render = '';
         $layout = $GLOBALS['template_factory']->open('shared/content_box');

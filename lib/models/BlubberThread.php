@@ -1081,7 +1081,7 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
                   FROM user_inst
                   WHERE user_id = ?";
         $institut_ids = DBManager::get()->fetchFirst($query, [$user_id]);
-        $blubberplugin = PluginManager::getInstance()->getPlugin("Blubber");
+        $blubberplugin = PluginManager::getInstance()->getPlugin(Blubber::class);
         if (!$blubberplugin) {
             return [];
         }

@@ -1189,7 +1189,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
         // Restliche Daten übertragen
 
         // ForumsModule migrieren
-        foreach (PluginEngine::getPlugins('ForumModule') as $plugin) {
+        foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
             $plugin->migrateUser($old_id, $new_id);
         }
 

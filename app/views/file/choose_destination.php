@@ -64,7 +64,7 @@ $options = array_filter([
                 </button>
             </div>
 
-        <? foreach (PluginManager::getInstance()->getPlugins('FilesystemPlugin') as $plugin) : ?>
+        <? foreach (PluginManager::getInstance()->getPlugins(FilesystemPlugin::class) as $plugin) : ?>
             <? if ($plugin->isPersonalFileArea()) : ?>
                 <? $nav = $plugin->getFileSelectNavigation() ?>
                 <? if ($nav) : ?>

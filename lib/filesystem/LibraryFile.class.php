@@ -212,7 +212,7 @@ class LibraryFile extends StandardFile
         );
         if (Config::get()->LITERATURE_ENABLE && Context::get() && $GLOBALS['perm']->have_studip_perm('tutor', Context::getId())) {
             $plugin_manager = PluginManager::getInstance();
-            $library_plugins = $plugin_manager->getPlugins('LibraryPlugin');
+            $library_plugins = $plugin_manager->getPlugins(LibraryPlugin::class);
             if (count($library_plugins)) {
                 $plugin = $library_plugins[0];
                 $action_menu->addLink(

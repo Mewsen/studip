@@ -1103,7 +1103,7 @@ class FileController extends AuthenticatedController
                     return;
                 }
 
-                $this->library_plugins = $plugin_manager->getPlugins('LibraryPlugin');
+                $this->library_plugins = $plugin_manager->getPlugins(LibraryPlugin::class);
 
                 //Build the query parameter array:
                 $search_parameters = [];
@@ -1182,7 +1182,7 @@ class FileController extends AuthenticatedController
                 );
             }
         } elseif (Request::get('search_id')) {
-            $this->library_plugins = $plugin_manager->getPlugins('LibraryPlugin');
+            $this->library_plugins = $plugin_manager->getPlugins(LibraryPlugin::class);
 
             $this->search_id = Request::get('search_id');
             $this->page = Request::get('page');
@@ -1462,7 +1462,7 @@ class FileController extends AuthenticatedController
                 $this->current_folder = $this->to_folder_type;
                 $this->marked_element_ids = [];
 
-                $plugins = PluginManager::getInstance()->getPlugins('FileUploadHook');
+                $plugins = PluginManager::getInstance()->getPlugins(FileUploadHook::class);
 
                 $redirects = [];
                 foreach ($plugins as $plugin) {
@@ -1685,7 +1685,7 @@ class FileController extends AuthenticatedController
                         );
                     }
 
-                    $plugins = PluginManager::getInstance()->getPlugins('FileUploadHook');
+                    $plugins = PluginManager::getInstance()->getPlugins(FileUploadHook::class);
                     $redirect = null;
                     foreach ($plugins as $upload_hook_plugin) {
                         $url = $upload_hook_plugin->getAdditionalUploadWizardPage($file_ref);
@@ -1820,7 +1820,7 @@ class FileController extends AuthenticatedController
 
                     $payload['html'][] = FilesystemVueDataManager::getFileVueData($this->file, $this->top_folder);
 
-                    $plugins = PluginManager::getInstance()->getPlugins('FileUploadHook');
+                    $plugins = PluginManager::getInstance()->getPlugins(FileUploadHook::class);
 
                     $redirects = [];
                     foreach ($plugins as $plugin) {

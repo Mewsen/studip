@@ -3,8 +3,7 @@
 /**
  * Factory Class for the plugin engine
  * @author Dennis Reil, <dennis.reil@offis.de>
- * @package pluginengine
- * @subpackage engine
+ * @template P of StudIPPlugin
  */
 
 class PluginEngine
@@ -38,27 +37,28 @@ class PluginEngine
         global $user, $perm;
 
         // load system plugins
-        self::getPlugins('SystemPlugin');
+        self::getPlugins(SystemPlugin::class);
 
         // load homepage plugins
-        self::getPlugins('HomepagePlugin');
+        self::getPlugins(HomepagePlugin::class);
 
         // load course plugins
         if (Context::getId()) {
-            self::getPlugins('StudipModule');
-            self::getPlugins('StandardPlugin');
+            self::getPlugins(StudipModule::class);
+            self::getPlugins(StandardPlugin::class);
         }
 
         // load admin plugins
         if (is_object($user) && $perm->have_perm('admin')) {
-            self::getPlugins('AdministrationPlugin');
+            self::getPlugins(AdministrationPlugin::class);
         }
     }
 
     /**
      * Get instance of the plugin specified by plugin class name.
      *
-     * @param string $class class name of plugin
+     * @param class-string<P> $class class name of plugin
+     * @return P
      */
     public static function getPlugin ($class)
     {
@@ -70,10 +70,9 @@ class PluginEngine
      * returns all enabled plugins. The optional context parameter can be
      * used to get only plugins that are activated in the given context.
      *
-     * @template T
-     * @param T $type plugin type or null (all types)
+     * @param class-string<P>|null $type plugin type or null (all types)
      * @param string $context context range id (optional)
-     * @return T[] all plugins of the specified type
+     * @return P[]|StudIPPlugin[] all plugins of the specified type
      */
     public static function getPlugins ($type, $context = null)
     {

@@ -114,7 +114,7 @@ class Privacy
         }
 
         if (!$section || $section === 'plugins') {
-            foreach (PluginEngine::getPlugins('PrivacyPlugin') as $plugin) {
+            foreach (PluginEngine::getPlugins(PrivacyPlugin::class) as $plugin) {
                 $plugin->exportUserData($storage);
             }
         }

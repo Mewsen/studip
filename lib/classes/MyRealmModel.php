@@ -475,7 +475,7 @@ class MyRealmModel
     public static function setObjectVisits($object, $user_id, $timestamp = null)
     {
         // load plugins, so they have a chance to register themselves as observers
-        PluginEngine::getPlugins('StandardPlugin');
+        PluginEngine::getPlugins(StandardPlugin::class);
 
         // Update news and votes
         $query = "INSERT INTO object_user_visits

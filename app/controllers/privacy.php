@@ -305,7 +305,7 @@ class PrivacyController extends AuthenticatedController
             $storage->addFileRef($fileref);
         }
 
-        foreach (PluginEngine::getPlugins('PrivacyPlugin') as $plugin) {
+        foreach (PluginEngine::getPlugins(PrivacyPlugin::class) as $plugin) {
             $plugin->exportUserData($storage);
         }
 
