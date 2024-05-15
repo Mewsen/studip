@@ -134,31 +134,29 @@ class Course_LtiController extends StudipController
         }
     }
 
-    /**
-     * Display the launch form for a tool as an iframe.
-     */
-    public function iframe_action(string $deployment_id)
+    public function consent_action(string $deployment_id)
     {
         $this->deployment = LtiDeployment::find($deployment_id);
-        $this->show_data_protection_info = !LtiDeploymentPrivacySettings::countBySQL(
-            "`deployment_id` = :deployment_id AND `user_id` = :user_id AND `accepted` = '1'",
+        if (!$this->deployment) {
+            PageLayout::postError(_('Die Einbindung eines LTI-Tools ist ungültig.'));
+            return;
+        }
+
+        $this->privacy_settings = LtiDeploymentPrivacySettings::findOneBySQL(
+            'deployment_id = :deployment_id AND user_id = :user_id',
             ['deployment_id' => $this->deployment->id, 'user_id' => $GLOBALS['user']->id]
         );
+        if (!$this->privacy_settings) {
+            $this->privacy_settings = new LtiDeploymentPrivacySettings();
+            $this->privacy_settings->deployment_id = $this->deployment->id;
+            $this->privacy_settings->user_id = $GLOBALS['user']->id;
+        }
 
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
-            if (Request::submitted('continue')) {
+            if (Request::submitted('save')) {
                 //Save the privacy settings and redirect to the tool:
-                $privacy_settings = LtiDeploymentPrivacySettings::findOneBySQL(
-                    'deployment_id = :deployment_id AND user_id = :user_id',
-                    ['deployment_id' => $this->deployment->id, 'user_id' => $GLOBALS['user']->id]
-                );
-                if (!$privacy_settings) {
-                    $privacy_settings = new LtiDeploymentPrivacySettings();
-                    $privacy_settings->deployment_id = $this->deployment->id;
-                    $privacy_settings->user_id = $GLOBALS['user']->id;
-                }
-                $privacy_settings->accepted = '1';
+                $this->privacy_settings->accepted = '1';
 
                 //Check which optional fields are allowed to be transmitted to the tool:
                 $optional_field_list = Request::getArray('submit_optional_field', []);
@@ -169,15 +167,38 @@ class Course_LtiController extends StudipController
                 if (array_key_exists('avatar_url', $optional_field_list)) {
                     $optional_fields[] = 'avatar_url';
                 }
-                $privacy_settings->allowed_optional_fields = implode(',', $optional_fields);
+                $this->privacy_settings->allowed_optional_fields = implode(',', $optional_fields);
                 //Store the privacy settings:
-                $privacy_settings->store();
-                $this->show_data_protection_info = false;
+                $this->privacy_settings->store();
+            }
+            if (Request::isDialog()) {
+                //Close the dialog:
+                $this->response->add_header('X-Dialog-Close', '1');
+            } elseif (Request::submitted('redirect_to_tool') && Request::submitted('save')) {
+                //Redirect to the tool launch action, but only after the privacy settings have been saved:
+                $this->redirect('course/lti/iframe/' . $this->deployment->id);
             } else {
-                //Redirect back to the course:
+                //Redirect to the LTI tool page of the course:
                 $this->redirect('course/lti/index');
             }
         }
+    }
+
+    /**
+     * Display the launch form for a tool as an iframe.
+     */
+    public function iframe_action(string $deployment_id)
+    {
+        $show_data_protection_info = !LtiDeploymentPrivacySettings::countBySQL(
+            "`deployment_id` = :deployment_id AND `user_id` = :user_id AND `accepted` = '1'",
+            ['deployment_id' => $deployment_id, 'user_id' => $GLOBALS['user']->id]
+        );
+        if ($show_data_protection_info) {
+            $this->redirect('course/lti/consent/' . $deployment_id, ['redirect_to_tool' => '1']);
+            return;
+        }
+
+        $this->deployment = LtiDeployment::find($deployment_id);
 
         if (!$this->show_data_protection_info) {
             //Redirect to the tool.
