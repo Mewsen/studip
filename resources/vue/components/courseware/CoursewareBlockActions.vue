@@ -3,6 +3,7 @@
         <studip-action-menu
             :items="menuItems"
             :context="block.attributes.title"
+            :collapseAt="1"
             @editBlock="editBlock"
             @setVisibility="setVisibility"
             @showInfo="showInfo"
