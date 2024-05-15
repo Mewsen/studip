@@ -19,11 +19,11 @@ class MemoryCache extends Cache
     /**
      * Expires just a single key.
      *
-     * @param  string  the key
+     * @param  string $arg the key
      */
-    public function expire($key)
+    public function expire($arg)
     {
-        unset($this->memory_cache[$key]);
+        unset($this->memory_cache[$arg]);
     }
 
     /**
@@ -52,7 +52,7 @@ class MemoryCache extends Cache
     /**
      * @inheritDoc
      */
-    public function getItem($key)
+    public function getItem(string $key): CacheItemInterface
     {
         $item = new Item($key);
         if (!isset($this->memory_cache[$key])) {
@@ -75,7 +75,7 @@ class MemoryCache extends Cache
     /**
      * @inheritDoc
      */
-    public function hasItem($key)
+    public function hasItem(string $key): bool
     {
         return isset($this->memory_cache[$key])
             && $this->memory_cache[$key]['expires'] < time();
@@ -84,7 +84,7 @@ class MemoryCache extends Cache
     /**
      * @inheritDoc
      */
-    public function save(CacheItemInterface $item)
+    public function save(CacheItemInterface $item): bool
     {
         $expiration = $this->getExpiration($item);
 

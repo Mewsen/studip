@@ -71,7 +71,7 @@ class Item implements CacheItemInterface
     /**
      * @inheritDoc
      */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -79,7 +79,7 @@ class Item implements CacheItemInterface
     /**
      * @inheritDoc
      */
-    public function get()
+    public function get(): mixed
     {
         return $this->value;
     }
@@ -87,7 +87,7 @@ class Item implements CacheItemInterface
     /**
      * @inheritDoc
      */
-    public function isHit()
+    public function isHit(): bool
     {
         return $this->cache_hit;
     }
@@ -95,15 +95,16 @@ class Item implements CacheItemInterface
     /**
      * @inheritDoc
      */
-    public function set($value)
+    public function set($value): static
     {
         $this->value = $value;
+        return $this;
     }
 
     /**
      * @inheritDoc
      */
-    public function expiresAt($expiration)
+    public function expiresAt($expiration): static
     {
         $this->expiration = $expiration;
         return $this;
@@ -112,7 +113,7 @@ class Item implements CacheItemInterface
     /**
      * @inheritDoc
      */
-    public function expiresAfter($time)
+    public function expiresAfter($time): static
     {
         $this->expiration = new DateTime();
         if ($time instanceof DateInterval) {

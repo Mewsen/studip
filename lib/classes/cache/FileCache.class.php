@@ -4,6 +4,7 @@ namespace Studip\Cache;
 
 use Config;
 use Exception;
+use Psr\Cache\CacheItemInterface;
 
 /**
  * Cache implementation using files
@@ -223,7 +224,7 @@ class FileCache extends Cache
     /**
      * @inheritDoc
      */
-    public function getItem($key)
+    public function getItem(string $key): CacheItemInterface
     {
         $real_key = $this->getCacheKey($key);
 
@@ -251,7 +252,7 @@ class FileCache extends Cache
     /**
      * @inheritDoc
      */
-    public function hasItem($key)
+    public function hasItem(string $key): bool
     {
         $real_key = $this->getCacheKey($key);
         $file_data = $this->check($real_key);
@@ -261,7 +262,7 @@ class FileCache extends Cache
     /**
      * @inheritDoc
      */
-    public function save(\Psr\Cache\CacheItemInterface $item)
+    public function save(CacheItemInterface $item): bool
     {
         $expiration = $this->getExpiration($item);
         if ($expiration < 1) {

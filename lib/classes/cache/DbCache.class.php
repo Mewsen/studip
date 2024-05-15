@@ -3,6 +3,7 @@
 namespace Studip\Cache;
 
 use DBManager;
+use Psr\Cache\CacheItemInterface;
 
 /**
  * StudipCache implementation using database table
@@ -88,7 +89,7 @@ class DbCache extends Cache
     /**
      * @inheritDoc
      */
-    public function getItem($key)
+    public function getItem(string $key): CacheItemInterface
     {
         $query = "SELECT `content`, `expires`
                   FROM `cache`
@@ -114,7 +115,7 @@ class DbCache extends Cache
     /**
      * @inheritDoc
      */
-    public function hasItem($key)
+    public function hasItem(string $key): bool
     {
         $query = "SELECT 1
                   FROM `cache`
@@ -126,7 +127,7 @@ class DbCache extends Cache
     /**
      * @inheritDoc
      */
-    public function save(\Psr\Cache\CacheItemInterface $item)
+    public function save(CacheItemInterface $item): bool
     {
         $expiration = $this->getExpiration($item);
         if ($expiration < 1) {

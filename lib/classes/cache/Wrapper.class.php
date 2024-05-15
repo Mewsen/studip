@@ -59,7 +59,7 @@ class Wrapper extends Cache
     /**
      * @inheritDoc
      */
-    public function getItem($key)
+    public function getItem(string $key): CacheItemInterface
     {
         $cached = $this->memory_cache->getItem($key);
         if ($cached->isHit()) {
@@ -76,7 +76,7 @@ class Wrapper extends Cache
     /**
      * @inheritDoc
      */
-    public function hasItem($key)
+    public function hasItem(string $key): bool
     {
         return $this->actual_cache->hasItem($key);
     }
@@ -84,7 +84,7 @@ class Wrapper extends Cache
     /**
      * @inheritDoc
      */
-    public function save(CacheItemInterface $item)
+    public function save(CacheItemInterface $item): bool
     {
         if ($this->actual_cache->save($item)) {
             return $this->memory_cache->save($item);

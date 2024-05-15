@@ -114,7 +114,7 @@ class MemcachedCache extends Cache
     /**
      * @inheritDoc
      */
-    public function getItem($key)
+    public function getItem(string $key): CacheItemInterface
     {
         $item = new Item($key);
         $value = $this->memcache->get($this->getCacheKey($key));
@@ -129,7 +129,7 @@ class MemcachedCache extends Cache
     /**
      * @inheritDoc
      */
-    public function hasItem($key)
+    public function hasItem(string $key): bool
     {
         return $this->memcache->checkKey($this->getCacheKey($key));
     }
@@ -137,7 +137,7 @@ class MemcachedCache extends Cache
     /**
      * @inheritDoc
      */
-    public function save(CacheItemInterface $item)
+    public function save(CacheItemInterface $item): bool
     {
         $expiration = $this->getExpiration($item);
         if ($expiration < 1) {

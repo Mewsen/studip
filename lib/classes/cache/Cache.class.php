@@ -72,12 +72,12 @@ abstract class Cache implements CacheItemPoolInterface
     /**
      * @see CacheItemPoolInterface::getItem
      */
-    abstract public function getItem($key);
+    abstract public function getItem(string $key): CacheItemInterface;
 
     /**
      * @see CacheItemPoolInterface::hasItem
      */
-    abstract public function hasItem($key);
+    abstract public function hasItem(string $key): bool;
 
     /**
      * @var array An array of deferred items that shall be saved only
@@ -149,7 +149,7 @@ abstract class Cache implements CacheItemPoolInterface
     /**
      * @see CacheItemPoolInterface::getItems
      */
-    public function getItems(array $keys = [])
+    public function getItems(array $keys = []): iterable
     {
         $items = [];
         foreach ($keys as $key) {
@@ -164,45 +164,50 @@ abstract class Cache implements CacheItemPoolInterface
     /**
      * @see CacheItemPoolInterface::clear
      */
-    public function clear()
+    public function clear(): bool
     {
         $this->deferred_items = [];
         $this->flush();
+        return true;
     }
 
     /**
      * @see CacheItemPoolInterface::deleteItem
      */
-    public function deleteItem($key)
+    public function deleteItem($key): bool
     {
         $this->expire($key);
+        return true;
     }
 
     /**
      * @see CacheItemPoolInterface::deleteItems
      */
-    public function deleteItems(array $keys)
+    public function deleteItems(array $keys): bool
     {
         foreach ($keys as $key) {
             $this->expire($key);
         }
+        return true;
     }
 
     /**
      * @see CacheItemPoolInterface::saveDeferred
      */
-    public function saveDeferred(CacheItemInterface $item)
+    public function saveDeferred(CacheItemInterface $item): bool
     {
         $this->deferred_items[] = $item;
+        return true;
     }
 
     /**
      * @see CacheItemPoolInterface::commit
      */
-    public function commit()
+    public function commit(): bool
     {
         foreach ($this->deferred_items as $item) {
             $this->save($item);
         }
+        return true;
     }
 }

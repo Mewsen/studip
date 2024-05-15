@@ -2,6 +2,7 @@
 
 namespace Studip\Cache;
 
+use Psr\Cache\CacheItemInterface;
 use StudipCacheOperation;
 
 /**
@@ -39,20 +40,20 @@ class Proxy extends Cache
     /**
      * Expires just a single key.
      *
-     * @param string $key The item's key
+     * @param string $arg The item's key
      */
-    public function expire($key)
+    public function expire($arg)
     {
         if (in_array('expire', $this->proxy_these)) {
             try {
-                $operation = new StudipCacheOperation([$key, 'expire']);
+                $operation = new StudipCacheOperation([$arg, 'expire']);
                 $operation->parameters = serialize([]);
                 $operation->store();
-            } catch (\Exception $e) {
+            } catch (\Exception) {
             }
         }
 
-        return $this->actual_cache->expire($key);
+        return $this->actual_cache->expire($arg);
     }
 
     /**
@@ -65,7 +66,7 @@ class Proxy extends Cache
                 $operation = new StudipCacheOperation(['', 'flush']);
                 $operation->parameters = serialize([]);
                 $operation->store();
-            } catch (\Exception $e) {
+            } catch (\Exception) {
             }
         }
 
@@ -90,7 +91,7 @@ class Proxy extends Cache
     /**
      * @inheritDoc
      */
-    public function getItem($key)
+    public function getItem(string $key): CacheItemInterface
     {
         return $this->actual_cache->getItem($key);
     }
@@ -98,7 +99,7 @@ class Proxy extends Cache
     /**
      * @inheritDoc
      */
-    public function hasItem($key)
+    public function hasItem(string $key): bool
     {
         return $this->actual_cache->hasItem($key);
     }
@@ -106,14 +107,14 @@ class Proxy extends Cache
     /**
      * @inheritDoc
      */
-    public function save(\Psr\Cache\CacheItemInterface $item)
+    public function save(CacheItemInterface $item): bool
     {
         if (in_array('save', $this->proxy_these)) {
             try {
                 $operation = new StudipCacheOperation([$item->getKey(), 'save']);
                 $operation->parameters = serialize([$item]);
                 $operation->store();
-            } catch (\Exception $e) {
+            } catch (\Exception) {
             }
         }
 

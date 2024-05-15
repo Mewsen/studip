@@ -156,7 +156,7 @@ class RedisCache extends Cache
     /**
      * @inheritDoc
      */
-    public function getItem($key)
+    public function getItem(string $key): CacheItemInterface
     {
         $item = new Item($key);
         $real_key = $this->getCacheKey($key);
@@ -175,7 +175,7 @@ class RedisCache extends Cache
     /**
      * @inheritDoc
      */
-    public function hasItem($key)
+    public function hasItem(string $key): bool
     {
         $real_key = $this->getCacheKey($key);
         return $this->redis->get($real_key) !== null;
@@ -184,7 +184,7 @@ class RedisCache extends Cache
     /**
      * @inheritDoc
      */
-    public function save(CacheItemInterface $item)
+    public function save(CacheItemInterface $item): bool
     {
         $expiration = $this->getExpiration($item);
         if ($expiration < 1) {
