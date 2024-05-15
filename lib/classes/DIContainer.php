@@ -52,7 +52,6 @@ class DIContainer
                 self::getCompilationClass()
             );
         }
-        $builder->ignorePhpDocErrors(true);
         $builder->addDefinitions('lib/bootstrap-definitions.php');
 
         $jsonapiSettings = require 'lib/classes/JsonApi/settings.php';
