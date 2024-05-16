@@ -548,7 +548,9 @@ class Admin_CoursesController extends AuthenticatedController
             if (!$config->MY_INSTITUTES_DEFAULT) {
                 $config->delete('ADMIN_COURSES_TEACHERFILTER');
             } else {
-                $exists = InstituteMember::countBySQL("INNER JOIN `auth_user_md5` USING (`user_id`) WHERE `user_inst`.`user_id` = :user_id AND `user_inst`.`Institut_id` = :institut_id AND `auth_user_md5`.`perms` = 'dozent' ", [
+                $include_children = $GLOBALS['user']->cfg->MY_INSTITUTES_INCLUDE_CHILDREN ? ' OR Institute.fakultaets_id = :institut_id ' : '';
+
+                $exists = InstituteMember::countBySQL("INNER JOIN `Institute` USING (`Institut_id`) WHERE `user_inst`.`user_id` = :user_id AND (`Institute`.`Institut_id` = :institut_id $include_children) AND `user_inst`.`inst_perms` = 'dozent' ", [
                     'user_id' => $config->ADMIN_COURSES_TEACHERFILTER,
                     'institut_id' => $config->MY_INSTITUTES_DEFAULT
                 ]) > 0;
@@ -1708,11 +1710,20 @@ class Admin_CoursesController extends AuthenticatedController
      */
     private function getTeacherWidget($institut_id = null)
     {
-        $institut_id = $institut_id ?: $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT;
-        if (str_contains($institut_id, '_')) {
-            $institut_id = substr($institut_id, 0, strpos($institut_id, '_'));
+        if ($institut_id) {
+            if (str_contains($institut_id, '_')) {
+                $institut_id = substr($institut_id, 0, strpos($institut_id, '_'));
+                $GLOBALS['user']->cfg->store('MY_INSTITUTES_INCLUDE_CHILDREN', 1);
+            } else {
+                $GLOBALS['user']->cfg->store('MY_INSTITUTES_INCLUDE_CHILDREN', 0);
+            }
+        } else {
+            $institut_id = $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT;
         }
+
         $teachers = [];
+        $include_children = $GLOBALS['user']->cfg->MY_INSTITUTES_INCLUDE_CHILDREN ? ' OR Institute.fakultaets_id = :institut_id ' : '';
+
         if ($institut_id) {
             $teachers = DBManager::get()->fetchAll("
                 SELECT auth_user_md5.*, user_info.*
@@ -1720,8 +1731,8 @@ class Admin_CoursesController extends AuthenticatedController
                     LEFT JOIN user_info ON (auth_user_md5.user_id = user_info.user_id)
                     INNER JOIN user_inst ON (user_inst.user_id = auth_user_md5.user_id)
                     INNER JOIN Institute ON (Institute.Institut_id = user_inst.Institut_id)
-                WHERE (Institute.Institut_id = :institut_id OR Institute.fakultaets_id = :institut_id)
-                    AND auth_user_md5.perms = 'dozent'
+                WHERE (Institute.Institut_id = :institut_id $include_children)
+                    AND user_inst.inst_perms = 'dozent'
                 GROUP BY auth_user_md5.user_id
                 ORDER BY auth_user_md5.Nachname ASC, auth_user_md5.Vorname ASC
             ", [
