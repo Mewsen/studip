@@ -26,10 +26,6 @@
                 <nav>
                     <form action="" method="post">
                         <?= CSRFProtection::tokenTag() ?>
-                        <a href="<?= $controller->link_for('lti/tool/index/' . $lti_data->course_id . '/' . $lti_data->tool->id) ?>"
-                           title="<?= _('Konfiguration des LTI-Tools anzeigen') ?>" data-dialog>
-                            <?= Icon::create('info-circle') ?>
-                        </a>
                         <? if ($lti_data->position > 0): ?>
                             <?= Icon::create('arr_2up', Icon::ROLE_SORT)->asInput([
                                 'formaction' => $controller->url_for('course/lti/move/' . $lti_data->position . '/up')
@@ -41,18 +37,43 @@
                             ]) ?>
                         <? endif ?>
 
-                        <a href="<?= $controller->link_for('lti/tool/edit/' . $lti_data->course_id . '/' . $lti_data->tool->id) ?>"
-                           title="<?= _('LTI-Tool konfigurieren') ?>" data-dialog>
-                            <?= Icon::create('edit') ?>
-                        </a>
-                        <a href="<?= htmlReady(sprintf(
-                                'javascript:void(STUDIP.Dialog.confirmAsPost(\'%1$s\', \'%2$s\'))',
-                                sprintf(_('Wollen Sie das LTI-Tool "%s" wirklich entfernen?'), $lti_data->title),
-                                $controller->url_for('lti/tool/delete/' . $lti_data->course_id . '/' . $lti_data->tool->id)
-                        )) ?>"
-                           title="<?= _('LTI-Tool entfernen') ?>">
-                            <?= Icon::create('trash') ?>
-                        </a>
+                        <?
+                        $menu = ActionMenu::get();
+                        $show_admin_actions = $GLOBALS['perm']->have_studip_perm('tutor', $lti_data->course_id);
+                        if ($show_admin_actions) {
+                            $menu->addLink(
+                                $controller->url_for('lti/tool/index/' . $lti_data->course_id . '/' . $lti_data->tool->id),
+                                _('Konfiguration des LTI-Tools anzeigen'),
+                                Icon::create('info-circle'),
+                                ['data-dialog' => 'size=default']
+                            );
+                        }
+                        $menu->addLink(
+                            $controller->url_for('course/lti/consent/' . $lti_data->id),
+                            _('Datenschutzeinstellungen'),
+                            Icon::create('privacy'),
+                            ['data-dialog' => 'size=default']
+                        );
+
+                        if ($show_admin_actions) {
+                            $menu->addLink(
+                                $controller->url_for('lti/tool/edit/' . $lti_data->course_id . '/' . $lti_data->tool->id),
+                                _('LTI-Tool konfigurieren'),
+                                Icon::create('edit'),
+                                ['data-dialog' => 'size=default']
+                            );
+                            $menu->addLink(
+                                sprintf(
+                                    'javascript:void(STUDIP.Dialog.confirmAsPost(\'%1$s\', \'%2$s\'))',
+                                    sprintf(_('Wollen Sie das LTI-Tool "%s" wirklich entfernen?'), $lti_data->title),
+                                    $controller->url_for('lti/tool/delete/' . $lti_data->course_id . '/' . $lti_data->tool->id)
+                                ),
+                                _('LTI-Tool entfernen'),
+                                Icon::create('trash')
+                            );
+                        }
+                        ?>
+                        <?= $menu->render() ?>
                     </form>
                 </nav>
             <? endif ?>

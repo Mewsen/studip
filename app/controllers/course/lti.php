@@ -155,6 +155,10 @@ class Course_LtiController extends StudipController
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
             if (Request::submitted('save')) {
+                if (!Request::get('confirmed')) {
+                    PageLayout::postError(_('Ohne die aktive Zustimmung zur Weitergabe Ihrer personenbezogenen Daten können Sie das LTI-Tool nicht nutzen!'));
+                    return;
+                }
                 //Save the privacy settings and redirect to the tool:
                 $this->privacy_settings->accepted = '1';
 
