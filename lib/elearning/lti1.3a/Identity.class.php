@@ -11,9 +11,19 @@ class Identity implements UserIdentityInterface
 {
     protected \User $user;
 
-    public function __construct(\User $user)
+    protected array $allowed_optional_fields = [];
+
+    public function __construct(\User $user, \LtiDeployment $deployment)
     {
         $this->user = $user;
+
+        $privacy_settings = \LtiDeploymentPrivacySettings::findOneBySQL(
+            '`deployment_id` = :deployment_id AND `user_id` = :user_id',
+            ['deployment_id' => $deployment->id, 'user_id' => $user->id]
+        );
+        if ($privacy_settings) {
+            $this->allowed_optional_fields = explode(',', $privacy_settings->allowed_optional_fields);
+        }
     }
 
     #[\Override] public function getIdentifier(): string
@@ -48,11 +58,17 @@ class Identity implements UserIdentityInterface
 
     #[\Override] public function getLocale(): ?string
     {
+        if (!in_array('lang', $this->allowed_optional_fields)) {
+            return '';
+        }
         return $this->user->preferred_language;
     }
 
     #[\Override] public function getPicture(): ?string
     {
+        if (!in_array('avatar_url', $this->allowed_optional_fields)) {
+            return '';
+        }
         return \Avatar::getAvatar($this->user->id)->getURL(\Avatar::MEDIUM);
     }
 

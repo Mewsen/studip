@@ -16,12 +16,12 @@ class Registration implements RegistrationInterface
         $this->lti_link = $lti_link;
     }
 
-    public function setLtiLink(\LtiDeployment $lti_link)
+    public function setLtiDeployment(\LtiDeployment $lti_link)
     {
         $this->lti_link = $lti_link;
     }
 
-    public function getLtiLink() : ?\LtiDeployment
+    public function getLtiDeployment() : ?\LtiDeployment
     {
         return $this->lti_link;
     }

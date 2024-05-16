@@ -21,8 +21,14 @@ class UserAuthenticator implements UserAuthenticatorInterface
         $user = \User::find($loginHint);
 
         $identity = null;
-        if ($user instanceof \User) {
-            $identity = new Identity($user);
+        $deployment = null;
+        if ($registration instanceof \Studip\LTI13a\Registration) {
+            $deployment = $registration->getLtiDeployment();
+        } else {
+            $deployment = \LtiDeployment::find($registration->getIdentifier());
+        }
+        if ($user instanceof \User && $deployment instanceof \LtiDeployment) {
+            $identity = new Identity($user, $deployment);
         }
         if ($this->logger) {
             //$this->logger->debug($user instanceof \User);
