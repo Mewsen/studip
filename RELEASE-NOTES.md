@@ -29,6 +29,9 @@
 - Im Rahmen von [Issue #4118](https://gitlab.studip.de/studip/studip/-/issues/4118) wurde `write_excel` ausgebaut. Als Alternative kann `phpoffice/phpspreadsheet` verwendet werden.
 - Im Rahmen von [TIC #3701](https://gitlab.studip.de/studip/studip/-/issues/3701) wurden die Klassen für den Cache umbenannt. Alle Vorkommnisse sollten ersetzt werden:
   - `StudipCacheFactory` -> `Studip\Cache\Factory`
+- Die Bibliothek `opis/json-schema` wurde auf Version 2.3.0 aktualisiert ([Issue #4173](https://gitlab.studip.de/studip/studip/-/issues/4173)). Dadurch ergeben sich die folgenden Änderungen für Komponenten aus Courseware (siehe auch [Migration Guide](https://opis.io/json-schema/2.x/php-migration.html#validator)):
+  - Instanzen von `Courseware\ContainerTypes\BlockType` müssen die Methode `getJsonSchema` anpassen. Der Return Type ist nun `string` und es muss der Inhalt der Schema-Datei zurückgegeben werden ohne Aufruf von `Schema::fromJsonString()`.
+  - Instanzen von `Courseware\ContainerTypes\ContainerType` müssen die Methode `getJsonSchema` anpassen. Der Return Type ist nun `string` und es muss der Inhalt der Schema-Datei zurückgegeben werden ohne Aufruf von `Schema::fromJsonString()`.
 
 ## Security related issues
 

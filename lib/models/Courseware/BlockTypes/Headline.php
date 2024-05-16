@@ -2,7 +2,6 @@
 
 namespace Courseware\BlockTypes;
 
-use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\Validator;
 
 /**
@@ -49,11 +48,10 @@ class Headline extends BlockType
         ];
     }
 
-    public static function getJsonSchema(): Schema
+    public static function getJsonSchema(): string
     {
         $schemaFile = __DIR__.'/Headline.json';
-
-        return Schema::fromJsonString(file_get_contents($schemaFile));
+        return file_get_contents($schemaFile);
     }
 
     /**
@@ -88,11 +86,8 @@ class Headline extends BlockType
     public function validatePayload($payload): bool
     {
         unset($payload->background_image);
-        $schema = static::getJsonSchema();
-        $validator = new Validator();
-        $result = $validator->schemaValidation($payload, $schema);
 
-        return $result->isValid();
+        return parent::validatePayload($payload);
     }
 
     public static function getCategories(): array

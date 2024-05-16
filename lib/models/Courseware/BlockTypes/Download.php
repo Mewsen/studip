@@ -2,8 +2,6 @@
 
 namespace Courseware\BlockTypes;
 
-use Opis\JsonSchema\Schema;
-
 /**
  * This class represents the content of a Courseware download block.
  *
@@ -72,11 +70,11 @@ class Download extends BlockType
         return $payload;
     }
 
-    public static function getJsonSchema(): Schema
+    public static function getJsonSchema(): string
     {
         $schemaFile = __DIR__.'/Download.json';
 
-        return Schema::fromJsonString(file_get_contents($schemaFile));
+        return file_get_contents($schemaFile);
     }
 
     public static function getCategories(): array

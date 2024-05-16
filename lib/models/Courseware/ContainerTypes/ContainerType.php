@@ -3,7 +3,6 @@
 namespace Courseware\ContainerTypes;
 
 use Courseware\CoursewarePlugin;
-use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\Validator;
 
 /**
@@ -28,9 +27,9 @@ abstract class ContainerType
      * Returns the JSON schema which is used to validate the payload of
      * instances of this type of container.
      *
-     * @return Schema the JSON schema to be used
+     * @return string the JSON schema to be used
      */
-    abstract public static function getJsonSchema(): Schema;
+    abstract public static function getJsonSchema(): string;
 
     /**
      * Returns a short string describing this type of container.
@@ -150,10 +149,8 @@ abstract class ContainerType
      */
     public function validatePayload($payload): bool
     {
-        $schema = static::getJsonSchema();
         $validator = new Validator();
-        $result = $validator->schemaValidation($payload, $schema);
-
+        $result = $validator->validate($payload, static::getJsonSchema());
         return $result->isValid();
     }
 

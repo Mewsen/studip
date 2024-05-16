@@ -2,7 +2,6 @@
 
 namespace Courseware\BlockTypes;
 
-use Opis\JsonSchema\Schema;
 require_once 'lib/classes/Markup.class.php';
 
 /**
@@ -66,11 +65,10 @@ class Text extends BlockType
         parent::setPayload($payload);
     }
 
-    public static function getJsonSchema(): Schema
+    public static function getJsonSchema(): string
     {
         $schemaFile = __DIR__.'/Text.json';
-
-        return Schema::fromJsonString(file_get_contents($schemaFile));
+        return file_get_contents($schemaFile);
     }
 
     /**
