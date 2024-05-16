@@ -65,6 +65,11 @@ class Lti_ToolController extends AuthenticatedController
         }
         $this->deployment = null;
         if ($this->tool->isNew()) {
+            if (!Config::get()->LTI_ALLOW_TOOL_CONFIG_IN_COURSE) {
+                throw new AccessDeniedException(
+                    _('Die Einrichtung von LTI-Tools in Veranstaltungen ist ausgeschaltet.')
+                );
+            }
             if ($this->range_id === 'global') {
                 $this->tool->is_global = '1';
             } else {

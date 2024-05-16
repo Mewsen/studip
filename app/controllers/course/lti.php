@@ -74,12 +74,15 @@ class Course_LtiController extends StudipController
                 $this->url_for('course/lti/config'),
                 Icon::create('admin')
             )->asDialog('size=auto');
-            $widget->addLink(
-                _('LTI-Tool hinzufügen'),
-                $this->url_for('course/lti/select_tool'),
-                Icon::create('add'),
-                ['data-dialog' => 'size=auto']
-            )->asDialog();
+            $global_tools_available = LtiTool::countBySQL("`is_global` = '1'") > 0;
+            if (Config::get()->LTI_ALLOW_TOOL_CONFIG_IN_COURSE || $global_tools_available) {
+                $widget->addLink(
+                    _('LTI-Tool hinzufügen'),
+                    $this->url_for('course/lti/select_tool'),
+                    Icon::create('add'),
+                    ['data-dialog' => 'size=auto']
+                )->asDialog();
+            }
 
             $global_deep_linking_tools_exist = LtiTool::countBySQL("`deep_linking` = '1' AND `is_global` = '1'");
             if ($global_deep_linking_tools_exist) {
@@ -106,6 +109,10 @@ class Course_LtiController extends StudipController
         $this->global_tools = LtiTool::findBySQL("`lti_version` = '1.3a' AND `is_global` = '1' ORDER BY `name` ASC");
 
         if (!$this->global_tools) {
+            if (!Config::get()->LTI_ALLOW_TOOL_CONFIG_IN_COURSE) {
+                PageLayout::postError(_('Es sind keine globalen LTI-Tools konfiguriert, die in dieser Veranstaltung eingebunden werden können.'));
+                return;
+            }
             //Redirect to the page to configure an LTI tool for the course:
             $this->redirect('lti/tool/add/' . $this->course->id);
         }

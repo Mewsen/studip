@@ -17,9 +17,11 @@
                         <?= htmlReady($tool->name) ?>
                     </option>
                 <? endforeach ?>
-                <option value="new">
-                    <?= _('Neues LTI-Tool für die Veranstaltung einrichten.') ?>
-                </option>
+                <? if (Config::get()->LTI_ALLOW_TOOL_CONFIG_IN_COURSE) : ?>
+                    <option value="new">
+                        <?= _('Neues LTI-Tool für die Veranstaltung einrichten.') ?>
+                    </option>
+                <? endif ?>
             </select>
         </label>
     </fieldset>
