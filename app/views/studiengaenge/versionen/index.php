@@ -29,7 +29,7 @@
                         $pagination->set_attribute('num_postings', $count);
                         $pagination->set_attribute('page', $page);
                         $pagination->set_attribute('pagelink', '?page=%s');
-                        echo $pagination->render('shared/pagechooser');
+                        echo $pagination->render();
                         ?>
                     </td>
                 </tr>
