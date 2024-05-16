@@ -49,6 +49,24 @@ abstract class Migration
     }
 
     /**
+     * Returns the name of the migration. If the migration is an anonymous
+     * class, the the name is created from the filename. Otherwise, it's the
+     * class name of the migration.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        $reflection = new ReflectionClass($this);
+        if ($reflection->isAnonymous()) {
+            $filename = basename($reflection->getFileName(), '.php');
+            $name = implode(' ', array_slice(explode('_', $filename), 1));
+            return ucfirst($name);
+        }
+        return static::class;
+    }
+
+    /**
      * Abstract method performing this migration step.
      * This method should be implemented in a migration subclass.
      */
@@ -67,12 +85,12 @@ abstract class Migration
     /**
      * Perform or revert this migration, depending on the indicated direction.
      *
-     * @param string $direction migration direction (either 'up' or 'down')
+     * @param ?string $direction migration direction (either 'up' or 'down')
      */
     public function migrate($direction)
     {
         if (!in_array($direction, ['up', 'down'])) {
-            return;
+            return null;
         }
 
         $result = $this->$direction();
@@ -107,7 +125,7 @@ abstract class Migration
         $args = func_get_args();
         $message = vsprintf(array_shift($args), $args);
 
-        return $this->write($this->mark($message));
+        $this->write($this->mark($message));
     }
 
     /**
