@@ -62,7 +62,7 @@ class AddLti13a extends Migration
         $db = DBManager::get();
         $db->exec("RENAME TABLE `lti_data` TO lti_deployments");
 
-        $db->exec("ALTER TABLE `lti_deployments` ADD COLUMN data_protection_notes TEXT DEFAULT ''");
+        $db->exec("ALTER TABLE `lti_deployments` ADD COLUMN data_protection_notes TEXT DEFAULT NULL");
 
         //Create LTI tool instances for the old LTI 1.0/1.1 tools
         //that have been configured directly in a course:
