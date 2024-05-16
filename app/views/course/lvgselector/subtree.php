@@ -8,7 +8,7 @@
                 $has_children = $child->hasChildren();
             ?>
 
-            <div class="<?= TextHelper::cycle('odd', 'even') ?>">
+            <div>
                 <?= $this->render_partial('course/lvgselector/entry',
                                           ['area' => $child,
                                                 'show_link' => $has_children]) ?>

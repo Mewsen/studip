@@ -48,12 +48,12 @@
         <em><?= sprintf(_("Der Suchbegriff '%s' lieferte kein Ergebnis."), htmlReady($selection->getSearchKey())) ?></em>
       <? else : ?>
         <h3><?= _('Suchergebnisse') ?>:</h3>
-        <? TextHelper::reset_cycle(); $show_path = TRUE; $show_link = FALSE; ?>
+        <? $show_path = TRUE; $show_link = FALSE; ?>
         <? foreach ($selection->getSearchResult() as $area) : ?>
             <? // MVV: show LvGruppen with complete trails only ?>
             <? $pathes = ModuleManagementModelTreeItem::getPathes($area->getTrails(['Modulteil', 'StgteilabschnittModul',  'StgteilAbschnitt', 'StgteilVersion', 'Studiengang'])); ?>
             <? if (count($pathes)) : ?>
-          <div class="<?= TextHelper::cycle('odd', 'even') ?>">
+          <div>
             <?= $this->render_partial('course/lvgselector/entry', compact('area', 'show_path', 'show_link', 'pathes')); ?>
           </div>
             <? endif; ?>

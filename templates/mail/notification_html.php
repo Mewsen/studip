@@ -111,7 +111,7 @@
                   </td>
                 </tr>
                 <? foreach ($data as $module) : ?>
-                <tr class="<?= TextHelper::cycle('hover_odd', 'hover_even') ?>">
+                <tr>
                   <td>
                     <a href="<?= URLHelper::getLink($module['url'], ['sso' => $sso]) ?>"><?= htmlReady($module['text']) ?></a>
                   </td>

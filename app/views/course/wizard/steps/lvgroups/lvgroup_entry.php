@@ -2,7 +2,7 @@
 # Lifter010: TODO
 $_id = htmlReady(implode('_', (array) $area->getId()));
 ?>
-<li id="lvgroup-tree-assigned-<?= $_id ?>" class="<?= TextHelper::cycle('odd', 'even') ?>">
+<li id="lvgroup-tree-assigned-<?= $_id ?>">
 <? if (!$locked) : ?>
    <?= Icon::create('trash', 'clickable')->asInput(["name" => 'lvgruppe_selection[remove]['.$_id.']', "onclick" => "return STUDIP.MVV.CourseWizard.removeLVGroup('".$_id."')", "class" => '',
        "data-id" => $_id, "data-course_id" => htmlReady($course_id)]) ?>

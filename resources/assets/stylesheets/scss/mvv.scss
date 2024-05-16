@@ -253,22 +253,6 @@ ul {
         dd {
             margin: 0;
         }
-
-        &.even {
-            background-color: var(--dark-gray-color-10);
-
-            &:hover {
-                background-color: var(--content-color-60);
-            }
-        }
-
-        &.odd {
-            background-color: var(--dark-gray-color-5);
-
-            &:hover {
-                background-color: var(--content-color-40);
-            }
-        }
     }
 
     &.mvv-modul li {
@@ -558,14 +542,6 @@ form.default .mvv-inst-chooser select {
 
     h3 {
         margin-top: 1em;
-    }
-
-    &.odd {
-        background-color: var(--dark-gray-color-5);
-    }
-
-    &.even {
-        background-color: var(--content-color-20);
     }
 }
 

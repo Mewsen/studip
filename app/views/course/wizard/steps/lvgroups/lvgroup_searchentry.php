@@ -1,7 +1,7 @@
 <?php
 $_id = htmlReady(implode('_', (array) $area->getId()));
 ?>
-<li id="lvgruppe_search_<?= $_id ?>" class="<?= TextHelper::cycle('odd', 'even') ?>">
+<li id="lvgruppe_search_<?= $_id ?>">
 
    <?= Icon::create('arr_2left', Icon::ROLE_SORT)->asInput([
        'name'    => "assign[{$_id}]",
