@@ -69,10 +69,6 @@ if (isset($_SERVER['SERVER_NAME'])) {
     $ABSOLUTE_URI_STUDIP .= $CANONICAL_RELATIVE_PATH_STUDIP;
 }
 
-// default ASSETS_URL and ASSETS_PATH, customize if required
-$GLOBALS['ASSETS_URL'] = $ABSOLUTE_URI_STUDIP . 'assets/';
-$GLOBALS['ASSETS_PATH'] = $ABSOLUTE_PATH_STUDIP . 'assets/';
-
 // Check if instance is configured; redirect to install script if not
 if (!file_exists($GLOBALS['STUDIP_BASE_PATH'] . '/config/config_local.inc.php') && php_sapi_name() !== 'cli') {
     require_once __DIR__ . '/classes/URLHelper.php';
@@ -91,6 +87,14 @@ StudipFileloader::load('config_defaults.inc.php config_local.inc.php', $added_co
 
 foreach($added_configs as $key => $value) {
     $GLOBALS[$key] = $value;
+}
+
+// create ASSETS_URL and ASSETS_PATH if not customized in config_local.inc.php
+if (!isset($GLOBALS['ASSETS_URL'])) {
+    $GLOBALS['ASSETS_URL'] = $ABSOLUTE_URI_STUDIP . 'assets/';
+}
+if (!isset($GLOBALS['ASSETS_PATH'])) {
+    $GLOBALS['ASSETS_PATH'] = $ABSOLUTE_PATH_STUDIP . 'assets/';
 }
 
 // If no ENV setting was found in the config files, assume ENV=production
