@@ -64,7 +64,7 @@
                         $parts = explode('?', $controller->action_url('index'));
                         $page_link = reset($parts) . '?page_faecher=%s';
                         $pagination->set_attribute('pagelink', $page_link);
-                        echo $pagination->render("shared/pagechooser");
+                        echo $pagination->render();
                         ?>
                     </td>
                 </tr>
