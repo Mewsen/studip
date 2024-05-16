@@ -32,7 +32,11 @@ require_once 'lib/raumzeit/raumzeit_functions.inc.php'; // Helper-Funktionen
  * day_num  integer PHP-konformer Tag (0-6)
  * short    boolean Wenn gesetzt wird der Tag verkürzt zurückgegeben.
  */
-function getWeekday($day_num, $short = TRUE) {
+function getWeekday($day_num, $short = true): string
+{
+    if ($day_num < 0 || $day_num > 6) {
+        throw new Exception('Invalid day number');
+    }
     switch ($day_num) {
         case 0:
             $day = $short ? _("So") : _("Sonntag");
@@ -56,8 +60,6 @@ function getWeekday($day_num, $short = TRUE) {
             $day = $short ? _("Sa") : _("Samstag");
             break;
     }
-
-    // return i18n of day
     return $day;
 }
 
