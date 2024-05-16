@@ -6,7 +6,7 @@
  */
 ?>
 <? if ($deployment) : ?>
-    <form class="default" method="post" data-dialog
+    <form class="default" method="post" <?= $privacy_settings->isNew() ? 'data-dialog="reload-on-close"' : 'data-dialog' ?>
           action="<?= $controller->link_for('course/lti/consent/' . htmlReady($deployment->id)) ?>">
         <?= CSRFProtection::tokenTag() ?>
         <?

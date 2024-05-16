@@ -13,6 +13,10 @@
     <?
     $launch_url = $lti_data->getLaunchURL();
     $unfinished_deep_linking = !empty($lti_data->options['unfinished_deep_linking']);
+    $no_consent = !LtiDeploymentPrivacySettings::countBySql(
+        '`deployment_id` = :deployment_id AND `user_id` = :user_id',
+        ['deployment_id' => $lti_data->id, 'user_id' => $GLOBALS['user']->id]
+    );
     ?>
 
     <article class="studip">
@@ -78,36 +82,37 @@
                 </nav>
             <? endif ?>
         </header>
-        <? if ($unfinished_deep_linking) : ?>
-            <section>
+        <section>
+            <? if ($unfinished_deep_linking) : ?>
                 <?= Studip\LinkButton::create(
                     _('Einrichtung abschließen'),
                     $controller->url_for('course/lti/select_link/' . $lti_data->id, ['tool_id' => $lti_data->tool_id]),
                     ['target' => '_blank']
                 ) ?>
-            </section>
-        <? else : ?>
-            <?
-            $document_target = $lti_data->options['document_target'] ?? '';
-            ?>
-            <section>
+            <? elseif ($no_consent) : ?>
                 <?= formatReady($lti_data->description) ?>
-
-                <? if ($launch_url && $document_target === 'iframe'): ?>
+                <p><?= _('Sie haben der Datenweitergabe an das LTI-Tool noch nicht zugestimmt und können es deswegen noch nicht nutzen.') ?></p>
+                <?= Studip\LinkButton::create(
+                    _('Datenschutzeinstellungen öffnen'),
+                    $controller->url_for('course/lti/consent/' . $lti_data->id),
+                    ['data-dialog' => 'reload-on-close']
+                ) ?>
+            <? elseif ($launch_url) : ?>
+                <?
+                $document_target = $lti_data->options['document_target'] ?? '';
+                ?>
+                <?= formatReady($lti_data->description) ?>
+                <? if ($document_target === 'iframe') : ?>
                     <iframe style="border: none; height: 640px; width: 100%;"
-                            src="<?= $controller->link_for('course/lti/iframe', $lti_data->position) ?>"></iframe>
-                <? endif ?>
-            </section>
-
-            <? if ($launch_url && $document_target !== 'iframe'): ?>
-                <section>
+                            src="<?= $controller->link_for('course/lti/iframe/' . $lti_data->id) ?>"></iframe>
+                <? else : ?>
                     <?= Studip\LinkButton::create(
                         _('Anwendung starten'),
-                        $controller->url_for('course/lti/iframe', $lti_data->id),
+                        $controller->url_for('course/lti/iframe/' . $lti_data->id),
                         ['target' => '_blank']
                     ) ?>
-                </section>
+                <? endif ?>
             <? endif ?>
-        <? endif ?>
+        </section>
     </article>
 <? endforeach ?>
