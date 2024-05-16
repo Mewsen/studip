@@ -78,86 +78,87 @@ $FOP_SH_CALL = "/usr/bin/fop";                        //path to fop
 
 $EXTERN_SERVER_NAME = "";                               //define name, if you use special setup
 
-$ELEARNING_INTERFACE_MODULES = [
-    "ilias5" => [
-        "name" => "ILIAS 5",
-        "ABSOLUTE_PATH_ELEARNINGMODULES" => "http://<your Ilias installation>/",
-        "ABSOLUTE_PATH_SOAP" => "http://<your Ilias installation>/webservice/soap/server.php?wsdl",
-        "CLASS_PREFIX" => "Ilias5",
-        "auth_necessary" => true,
-        "USER_AUTO_CREATE" => true,
-        "USER_PREFIX" => "",
-        "target_file" => "studip_referrer.php",
-        "logo_file" => "assets/images/logos/ilias_logo.png",
-        "soap_data" => [
-                        "username" => "<username>",     //this credentials are used to communicate with your Ilias 3 installation over SOAP
-                        "password" => "<password>",
-                        "client" => "<ilias client id>"],
-        "types" => [
-                   "webr" => ["name" => "ILIAS-Link", "icon" => "learnmodule"],
-                   "htlm" => ["name" => "HTML-Lerneinheit", "icon" => "learnmodule"],
-                   "sahs" => ["name" => "SCORM/AICC-Lerneinheit", "icon" => "learnmodule"],
-                   "lm" => ["name" => "ILIAS-Lerneinheit", "icon" => "learnmodule"],
-                   "glo" => ["name" => "ILIAS-Glossar", "icon" => "learnmodule"],
-                   "tst" => ["name" => "ILIAS-Test", "icon" => "learnmodule"],
-                   "svy" => ["name" => "ILIAS-Umfrage", "icon" => "learnmodule"],
-                   "exc" => ["name" => "ILIAS-Übung", "icon" => "learnmodule"]
-                   ],
-        "global_roles" => [4,5,14], // put here the ilias role-ids for User, Guest and Anonymous
-        "roles" =>  [
-                        "autor" => "4",
-                        "tutor" => "4",
-                        "dozent" => "4",
-                        "admin" => "4",
-                        "root" => "2"
-                        ],
-        "crs_roles" =>  [
-                        "autor" => "member",
-                        "tutor" => "tutor",
-                        "dozent" => "admin",
-                        "admin" => "admin",
-                        "root" => "admin"
-                        ]
-        ]
-    ];
+$ELEARNING_INTERFACE_MODULES = [];
 
 // example entry for wikifarm as server for elearning modules
+// Copy them into your customized config_local.inc.php and adjust them.
 // remember to activate studip-webservices with WEBSERVICES_ENABLE and to set STUDIP_INSTALLATION_ID
 
-$ELEARNING_INTERFACE_MODULES["pmwiki-farm"] =   [
-                        "name" => "Wikifarm",
-                        "ABSOLUTE_PATH_ELEARNINGMODULES" => "http://<your PmWiki farm server>/<path to wiki fields>/",
-
-                        "WEBSERVICE_CLASS" => "xml_rpc_webserviceclient",
-                        "ABSOLUTE_PATH_SOAP" => "http://<your PmWiki farm server>/<path to PmWiki farm>/pmwiki.php",  // url to farm webservices
-                        "URL_PARAMS" => "action=xmlrpc",
-
-                        "CLASS_PREFIX" => "PmWiki",
-                        "auth_necessary" => false,
-
-                        "field_script" => "field.php",
-                        "logo_file" => $ASSETS_URL."/images/logos/pmwiki-32.gif",
-
-                        "soap_data" => [
-              "api-key" => "<api-key for wiki webservices>",
-            ],
-                        "types" =>  [
-              "wiki" => ["name" => "PmWiki-Lernmodul", "icon" => "learnmodule"],
-            ]
-];
-
-$ELEARNING_INTERFACE_MODULES["loncapa"] =
-[
-    "name" => "LonCapa",
-    "ABSOLUTE_PATH_ELEARNINGMODULES" => "http://127.0.0.1/loncapa",
-    "CLASS_PREFIX" => "LonCapa",
-    "auth_necessary" => false,
-    "logo_file" => "assets/images/logos/lon-capa.gif",
-    "types" =>  [
-        "loncapa" => ["name" => "LonCapa-Lernmodul",
-                           "icon" => "learnmodule"],
-        ]
-];
+// $ELEARNING_INTERFACE_MODULES["ilias5"] = [
+//     "name" => "ILIAS 5",
+//     "ABSOLUTE_PATH_ELEARNINGMODULES" => "http://<your Ilias installation>/",
+//     "ABSOLUTE_PATH_SOAP" => "http://<your Ilias installation>/webservice/soap/server.php?wsdl",
+//     "CLASS_PREFIX" => "Ilias5",
+//     "auth_necessary" => true,
+//     "USER_AUTO_CREATE" => true,
+//     "USER_PREFIX" => "",
+//     "target_file" => "studip_referrer.php",
+//     "logo_file" => "assets/images/logos/ilias_logo.png",
+//     "soap_data" => [
+//         "username" => "<username>",     //this credentials are used to communicate with your Ilias 3 installation over SOAP
+//         "password" => "<password>",
+//         "client" => "<ilias client id>"],
+//     "types" => [
+//         "webr" => ["name" => "ILIAS-Link", "icon" => "learnmodule"],
+//         "htlm" => ["name" => "HTML-Lerneinheit", "icon" => "learnmodule"],
+//         "sahs" => ["name" => "SCORM/AICC-Lerneinheit", "icon" => "learnmodule"],
+//         "lm" => ["name" => "ILIAS-Lerneinheit", "icon" => "learnmodule"],
+//         "glo" => ["name" => "ILIAS-Glossar", "icon" => "learnmodule"],
+//         "tst" => ["name" => "ILIAS-Test", "icon" => "learnmodule"],
+//         "svy" => ["name" => "ILIAS-Umfrage", "icon" => "learnmodule"],
+//         "exc" => ["name" => "ILIAS-Übung", "icon" => "learnmodule"]
+//     ],
+//     "global_roles" => [4,5,14], // put here the ilias role-ids for User, Guest and Anonymous
+//     "roles" =>  [
+//         "autor" => "4",
+//         "tutor" => "4",
+//         "dozent" => "4",
+//         "admin" => "4",
+//         "root" => "2"
+//     ],
+//     "crs_roles" =>  [
+//         "autor" => "member",
+//         "tutor" => "tutor",
+//         "dozent" => "admin",
+//         "admin" => "admin",
+//         "root" => "admin"
+//     ]
+// ];
+//
+// $ELEARNING_INTERFACE_MODULES["pmwiki-farm"] =   [
+//                         "name" => "Wikifarm",
+//                         "ABSOLUTE_PATH_ELEARNINGMODULES" => "http://<your PmWiki farm server>/<path to wiki fields>/",
+//
+//                         "WEBSERVICE_CLASS" => "xml_rpc_webserviceclient",
+//                         "ABSOLUTE_PATH_SOAP" => "http://<your PmWiki farm server>/<path to PmWiki farm>/pmwiki.php",  // url to farm webservices
+//                         "URL_PARAMS" => "action=xmlrpc",
+//
+//                         "CLASS_PREFIX" => "PmWiki",
+//                         "auth_necessary" => false,
+//
+//                         "field_script" => "field.php",
+//                         "logo_file" => $ASSETS_URL."/images/logos/pmwiki-32.gif",
+//
+//                         "soap_data" => [
+//               "api-key" => "<api-key for wiki webservices>",
+//             ],
+//                         "types" =>  [
+//               "wiki" => ["name" => "PmWiki-Lernmodul", "icon" => "learnmodule"],
+//             ]
+// ];
+//
+// $ELEARNING_INTERFACE_MODULES["loncapa"] =
+// [
+//     "name" => "LonCapa",
+//     "ABSOLUTE_PATH_ELEARNINGMODULES" => "http://127.0.0.1/loncapa",
+//     "CLASS_PREFIX" => "LonCapa",
+//     "auth_necessary" => false,
+//     "logo_file" => "assets/images/logos/lon-capa.gif",
+//     "types" =>  [
+//         "loncapa" => ["name" => "LonCapa-Lernmodul",
+//                            "icon" => "learnmodule"],
+//         ]
+// ];
 
 $PLUGINS_UPLOAD_ENABLE = $_ENV['STUDIP_PLUGIN_UPLOAD_ENABLE'] ?? true;      //Upload of Plugins is enabled
 
@@ -268,6 +269,10 @@ $STUDIP_AUTH_PLUGIN[] = "Standard";
 // $STUDIP_AUTH_PLUGIN[] = "IP";
 
 $STUDIP_AUTH_CONFIG_STANDARD = ["error_head" => "intern"];
+
+// Example configurations
+// Copy them into your customized config_local.inc.php and adjust them.
+
 /*
 $STUDIP_AUTH_CONFIG_LDAPREADANDBIND = array("host" => "localhost",
                                         "base_dn" => "dc=studip,dc=de",
