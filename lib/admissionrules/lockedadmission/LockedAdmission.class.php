@@ -72,7 +72,7 @@ class LockedAdmission extends AdmissionRule
      * @return String
      */
     public function getTemplate() {
-        $factory = new Flexi_TemplateFactory(dirname(__FILE__).'/templates/');
+        $factory = new Flexi\Factory(dirname(__FILE__).'/templates/');
         // Now open specific template for this rule and insert base template. 
         $tpl = $factory->open('configure');
         $tpl->set_attribute('rule', $this);
@@ -125,7 +125,7 @@ class LockedAdmission extends AdmissionRule
      * @return String
      */
     public function toString() {
-        $factory = new Flexi_TemplateFactory(dirname(__FILE__).'/templates/');
+        $factory = new Flexi\Factory(dirname(__FILE__).'/templates/');
         $tpl = $factory->open('info');
         $tpl->set_attribute('rule', $this);
         return $tpl->render();

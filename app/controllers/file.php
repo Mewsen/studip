@@ -980,7 +980,7 @@ class FileController extends AuthenticatedController
                 );
             } else {
                 $this->top_folder = $this->filesystemplugin->getFolder($folder_id, true);
-                if (is_a($this->top_folder, 'Flexi_Template')) {
+                if ($this->top_folder instanceof Flexi\Template) {
                     $this->top_folder->select    = true;
                     $this->top_folder->to_folder = $this->to_folder;
                     $this->render_text($this->top_folder);
@@ -1505,7 +1505,7 @@ class FileController extends AuthenticatedController
                     $folder_id = substr($folder_id, 0, strpos($folder_id, "?"));
                 }
                 $this->top_folder = $this->filesystemplugin->getFolder($folder_id, true);
-                if (is_a($this->top_folder, 'Flexi_Template')) {
+                if ($this->top_folder instanceof Flexi\Template) {
                     $this->top_folder->select    = true;
                     $this->top_folder->to_folder = $this->to_folder;
                     $this->render_text($this->top_folder->render());

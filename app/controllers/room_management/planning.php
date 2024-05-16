@@ -1371,7 +1371,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
         $export = Request::get('export');
         if ($export == 'html') {
             //Load the export template:
-            $factory = new Flexi_TemplateFactory(
+            $factory = new Flexi\Factory(
                 $GLOBALS['STUDIP_BASE_PATH'] . '/app/views/room_management/planning/'
             );
 

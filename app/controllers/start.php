@@ -53,6 +53,8 @@ class StartController extends AuthenticatedController
             }
         }
 
+        $this->widget_layout = $this->get_template_factory()->open('start/_widget.php');
+
         $sidebar = Sidebar::get();
 
         $nav = $sidebar->addWidget(new NavigationWidget());

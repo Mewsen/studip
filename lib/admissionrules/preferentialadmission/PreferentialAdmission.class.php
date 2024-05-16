@@ -338,7 +338,7 @@ class PreferentialAdmission extends AdmissionRule
      */
     public function getTemplate()
     {
-        $factory = new Flexi_TemplateFactory(__DIR__.'/templates/');
+        $factory = new Flexi\Factory(__DIR__.'/templates/');
         // Now open specific template for this rule and insert base template.
         $tpl = $factory->open('configure');
         $tpl->set_attribute('rule', $this);
@@ -503,7 +503,7 @@ class PreferentialAdmission extends AdmissionRule
      */
     public function toString()
     {
-        $factory = new Flexi_TemplateFactory(__DIR__.'/templates/');
+        $factory = new Flexi\Factory(__DIR__.'/templates/');
         $tpl = $factory->open('info');
         $tpl->set_attribute('rule', $this);
         return $tpl->render();

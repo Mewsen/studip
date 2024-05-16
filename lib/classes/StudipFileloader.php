@@ -31,7 +31,7 @@ class StudipFileloader
                 !file_exists($file)
                 && !stream_resolve_include_path($file)
             ) {
-                continue;
+                throw new Exception('Missing file '. $file);
             }
             include $file;
         }

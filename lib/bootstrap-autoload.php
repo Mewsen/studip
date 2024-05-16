@@ -51,10 +51,17 @@ StudipAutoloader::addAutoloadPath('lib/raumzeit');
 StudipAutoloader::addAutoloadPath('lib/resources');
 StudipAutoloader::addAutoloadPath('lib/activities', 'Studip\\Activity');
 
-StudipAutoloader::addAutoloadPath('lib/extern');
 StudipAutoloader::addAutoloadPath('lib/calendar/lib');
 StudipAutoloader::addAutoloadPath('lib/elearning');
+StudipAutoloader::addAutoloadPath('lib/extern');
 StudipAutoloader::addAutoloadPath('lib/ilias_interface');
+
+// Flexi
+StudipAutoloader::addAutoloadPath('lib/flexi', 'Flexi');
+class_alias(Flexi\PhpTemplate::class, 'Flexi_PhpTemplate');
+class_alias(Flexi\Template::class, 'Flexi_Template');
+class_alias(Flexi\Factory::class, 'Flexi_TemplateFactory');
+class_alias(Flexi\TemplateNotFoundException::class, 'Flexi_TemplateNotFoundException');
 
 // Messy file names
 StudipAutoloader::addClassLookups([

@@ -64,7 +64,7 @@ class Fullcalendar
 
     public function render()
     {
-        $factory = new \Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/templates');
+        $factory = new \Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/templates');
         $template = $factory->open('studip-fullcalendar.php');
         $real_data_name = sprintf('data-%s', $this->data_name);
         return $template->render(

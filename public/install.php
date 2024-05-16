@@ -41,7 +41,7 @@ if (!function_exists('_')) {
     require_once 'lib/language.inc.php';
 
     foreach (explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']) as $lang) {
-        list($lang, ) = explode(';', $lang);
+        [$lang, ] = explode(';', $lang);
         $lang = substr($lang, 0, 2);
 
         if (!in_array($lang, ['de', 'en'])) {
@@ -53,7 +53,7 @@ if (!function_exists('_')) {
     }
 }
 
-$GLOBALS['template_factory'] = new Flexi_TemplateFactory('../templates/');
+$GLOBALS['template_factory'] = new Flexi\Factory('../templates/');
 
 # get plugin class from request
 $dispatch_to = ltrim(Request::pathInfo(), '/');

@@ -1,11 +1,11 @@
 <?php
 /**
- * @var TOCItem $toc
- * @var Icon $icon
- * @var Flexi_Template $breadcrumbs
- * @var string $info
- * @var ActionMenu $actionMenu
- * @var Flexi_Template $ttpl
+ * @var TOCItem        $toc
+ * @var Icon           $icon
+ * @var Flexi\Template $breadcrumbs
+ * @var string         $info
+ * @var ActionMenu     $actionMenu
+ * @var Flexi\Template $ttpl
  */
 ?>
 <section>

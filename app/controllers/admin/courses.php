@@ -22,6 +22,7 @@
  * @category    Stud.IP
  * @since       3.1
  */
+
 require_once 'lib/meine_seminare_func.inc.php';
 require_once 'lib/object.inc.php';
 require_once 'lib/archiv.inc.php'; //for lastActivity in getCourses() method
@@ -420,7 +421,7 @@ class Admin_CoursesController extends AuthenticatedController
                 }
             }
         }
-        $tf = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views');
+        $tf = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views');
         switch ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA) {
             case 1:
             case 2:
@@ -495,7 +496,7 @@ class Admin_CoursesController extends AuthenticatedController
                         $multimode = $plugin->useMultimode();
                         if ($multimode) {
                             $data['buttons_top'] = '<label>'._('Alle auswählen').'<input type="checkbox" data-proxyfor=".course-admin td:last-child :checkbox"></label>';
-                            if ($multimode instanceof Flexi_Template) {
+                            if ($multimode instanceof Flex\Template) {
                                 $data['buttons_bottom'] = $multimode->render();
                             } elseif ($multimode instanceof \Studip\Button) {
                                 $data['buttons_bottom'] = (string) $multimode;
@@ -715,11 +716,14 @@ class Admin_CoursesController extends AuthenticatedController
             foreach ($plugin->adminAvailableContents() as $index => $label) {
                 if (in_array($plugin->getPluginId() . '_' . $index, $activated_fields)) {
                     $content = $plugin->adminAreaGetCourseContent($course, $index);
-                    $d[$plugin->getPluginId()."_".$index] = $content instanceof Flexi_Template ? $content->render() : $content;
+                    if ($content instanceof Flexi\Template) {
+                        $content = $content->render();
+                    }
+                    $d[$plugin->getPluginId()."_".$index] = $content;
                 }
             }
         }
-        $tf = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'].'/app/views');
+        $tf = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'].'/app/views');
 
         switch ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA) {
             case 1:
@@ -840,7 +844,10 @@ class Admin_CoursesController extends AuthenticatedController
                 foreach (PluginManager::getInstance()->getPlugins(AdminCourseAction::class) as $plugin) {
                     if ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA === get_class($plugin)) {
                         $output = $plugin->getAdminCourseActionTemplate($course->getId());
-                        $d['action'] = $output instanceof Flexi_Template ? $output->render() : (string) $output;
+                        if ($output instanceof Flexi\Template) {
+                            $output = $output->render();
+                        }
+                        $d['action'] = (string) $output;
                         break;
                     }
                 }
@@ -1033,10 +1040,10 @@ class Admin_CoursesController extends AuthenticatedController
                     foreach ($plugin->adminAvailableContents() as $index => $label) {
                         if (in_array($plugin->getPluginId() . "_" . $index, $filter_config)) {
                             $content = $plugin->adminAreaGetCourseContent($course, $index);
-                            $row[$plugin->getPluginId() . "_" . $index] = strip_tags(is_a($content, 'Flexi_Template')
-                                ? $content->render()
-                                : $content
-                            );
+                            if ($content instanceof Flexi\Template) {
+                                $content = $content->render();
+                            }
+                            $row[$plugin->getPluginId() . "_" . $index] = strip_tags($content);
                         }
                     }
                 }

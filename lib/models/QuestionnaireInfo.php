@@ -50,7 +50,7 @@ class QuestionnaireInfo extends QuestionnaireQuestion implements QuestionType
 
     public function getDisplayTemplate()
     {
-        $factory = new Flexi_TemplateFactory(realpath(__DIR__.'/../../app/views'));
+        $factory = new Flexi\Factory(realpath(__DIR__.'/../../app/views'));
         $template = $factory->open('questionnaire/question_types/info/info');
         $template->set_attribute('vote', $this);
         return $template;
@@ -68,7 +68,7 @@ class QuestionnaireInfo extends QuestionnaireQuestion implements QuestionType
 
     public function getResultTemplate($only_user_ids = null)
     {
-        $factory = new Flexi_TemplateFactory(realpath(__DIR__.'/../../app/views'));
+        $factory = new Flexi\Factory(realpath(__DIR__.'/../../app/views'));
         $template = $factory->open('questionnaire/question_types/info/info');
         $template->set_attribute('vote', $this);
         return $template;

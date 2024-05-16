@@ -61,10 +61,10 @@ class I18N
     /**
      * Protected constructor in order to always force a specific input type.
      *
-     * @param string|Flexi_Template $template   Template to use
+     * @param string|Flexi\Template $template   Template to use
      * @param string                $name       Name of the element
      * @param string|I18NString     $value      Value of the element
-     * @param array           $attributes Additional variables for the
+     * @param array                 $attributes Additional variables for the
      *                                          element
      */
     final protected function __construct($template, $name, $value, array $attributes)

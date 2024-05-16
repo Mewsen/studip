@@ -28,7 +28,7 @@ class BasicDataWizardStep implements CourseWizardStep
     public function getStepTemplate($values, $stepnumber, $temp_id)
     {
         // Load template from step template directory.
-        $factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views/course/wizard/steps');
+        $factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views/course/wizard/steps');
         if (!empty($values[__CLASS__]['studygroup'])) {
             $tpl = $factory->open('basicdata/index_studygroup');
             $values[__CLASS__]['lecturers'][$GLOBALS['user']->id] = 1;

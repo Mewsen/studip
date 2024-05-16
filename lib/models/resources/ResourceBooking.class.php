@@ -876,7 +876,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
 
         $deleted_c = 0;
 
-        $template_factory = new Flexi_TemplateFactory(
+        $template_factory = new Flexi\Factory(
             $GLOBALS['STUDIP_BASE_PATH'] . '/locale/'
         );
 
@@ -1917,7 +1917,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
             return;
         }
 
-        $template_factory = new Flexi_TemplateFactory(
+        $template_factory = new Flexi\Factory(
             $GLOBALS['STUDIP_BASE_PATH'] . '/locale/'
         );
         setTempLanguage($booking_user->id);

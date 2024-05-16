@@ -39,7 +39,7 @@ class LVGroupsWizardStep implements CourseWizardStep
         $values = $values[__CLASS__] ?? [];
 
         // Load template from step template directory.
-        $factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views/course/wizard/steps');
+        $factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views/course/wizard/steps');
         $tpl = $factory->open('lvgroups/index');
         $tpl->set_attribute('values', $values);
 
@@ -226,7 +226,7 @@ class LVGroupsWizardStep implements CourseWizardStep
                 continue;
             }
 
-            $factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views');
+            $factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views');
             $html = $factory->render('course/wizard/steps/lvgroups/lvgroup_searchentry', compact('area'));
             $data = [
                 'id' => $area->id,
@@ -288,7 +288,7 @@ class LVGroupsWizardStep implements CourseWizardStep
             'Studiengang']);
         $pathes = ModuleManagementModelTreeItem::getPathes($trails);
 
-        $factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views');
+        $factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views');
         $html = $factory->render('course/lvgselector/entry_trails',
                 compact('area', 'pathes'));
 
@@ -308,7 +308,7 @@ class LVGroupsWizardStep implements CourseWizardStep
         $mvvid = explode('-', $id);
         $area = Lvgruppe::find($mvvid[0]);
 
-        $factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views');
+        $factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views');
         $html = $factory->render('course/wizard/steps/lvgroups/lvgroup_entry', ['area' => $area, 'locked' => false, 'course_id' => '']);
 
         $data = [

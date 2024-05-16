@@ -1735,7 +1735,7 @@ class Seminar
      */
     public function getDatesTemplate($template, $params = [])
     {
-        if (!$template instanceof Flexi_Template && is_string($template)) {
+        if (!$template instanceof Flexi\Template && is_string($template)) {
             $template = $GLOBALS['template_factory']->open($template);
         }
 

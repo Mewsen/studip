@@ -438,9 +438,9 @@ abstract class BlockType
      * It turns the classname into snakecase in order to find the
      * template file in templates/courseware/block_types.
      *
-     * @return mixed the \Flexi_Template instance if exists, otherwise null.
+     * @return \Flexi\Template|null the \Flexi\Template instance if exists, otherwise null.
      */
-    public function getPdfHtmlTemplate(): ?\Flexi_Template
+    public function getPdfHtmlTemplate(): ?\Flexi\Template
     {
         $template = null;
         try {

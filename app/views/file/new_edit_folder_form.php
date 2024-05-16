@@ -32,7 +32,7 @@
             <div class="text">
                 <?= htmlReady($folder_type['name']) ?>
             <? if ($template = $folder_type['instance']->getDescriptionTemplate()): ?>
-                <?= tooltipIcon($template instanceof Flexi_Template ? $template->render() : $template, false, true) ?>
+                <?= tooltipIcon($template instanceof Flexi\Template ? $template->render() : $template, false, true) ?>
             <? endif ?>
             </div>
             <div class="icon">

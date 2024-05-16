@@ -186,7 +186,7 @@ class StandardFolder implements FolderType
     }
 
     /**
-     * @return string|Flexi_Template
+     * @return string|Flexi\Template
      */
     public function getDescriptionTemplate()
     {
@@ -194,7 +194,7 @@ class StandardFolder implements FolderType
     }
 
     /**
-     * @return string|Flexi_Template
+     * @return string|Flexi\Template
      */
     public function getEditTemplate()
     {
@@ -509,9 +509,11 @@ class StandardFolder implements FolderType
 
     /**
      * Returns the content for that additional column, if it exists. You can return null a string
-     * or a Flexi_Template as the content.
+     * or a Flexi\Template as the content.
+     *
      * @param string $column_index
-     * @return null|string|Flexi_Template
+     *
+     * @return null|string|Flexi\Template
      */
     public function getContentForAdditionalColumn($column_index)
     {

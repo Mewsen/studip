@@ -65,12 +65,13 @@ class Freetext extends QuestionnaireQuestion implements QuestionType
 
     /**
      * Returns the template of this question to answer the question.
-     * @return Flexi_Template
-     * @throws Flexi_TemplateNotFoundException if there is no template.
+     *
+     * @return Flexi\Template
+     * @throws Flexi\TemplateNotFoundException if there is no template.
      */
     public function getDisplayTemplate()
     {
-        $factory = new Flexi_TemplateFactory(realpath(__DIR__ . '/../../app/views'));
+        $factory = new Flexi\Factory(realpath(__DIR__ . '/../../app/views'));
         $template = $factory->open('questionnaire/question_types/freetext/freetext_answer.php');
         $template->vote = $this;
         return $template;
@@ -97,9 +98,11 @@ class Freetext extends QuestionnaireQuestion implements QuestionType
 
     /**
      * Returns the template with the answers of the question so far.
+     *
      * @param null $only_user_ids : array of user_ids
-     * @return Flexi_Template
-     * @throws Flexi_TemplateNotFoundException if there is no template.
+     *
+     * @return Flexi\Template
+     * @throws Flexi\TemplateNotFoundException if there is no template.
      */
     public function getResultTemplate($only_user_ids = null)
     {
@@ -111,7 +114,7 @@ class Freetext extends QuestionnaireQuestion implements QuestionType
                 }
             }
         }
-        $factory = new Flexi_TemplateFactory(realpath(__DIR__ . '/../../app/views'));
+        $factory = new Flexi\Factory(realpath(__DIR__ . '/../../app/views'));
         $template = $factory->open('questionnaire/question_types/freetext/freetext_evaluation.php');
         $template->vote = $this;
         $template->set_attribute('answers', $answers);

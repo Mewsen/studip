@@ -54,7 +54,7 @@ $ABSOLUTE_URI_STUDIP = "";
 if (isset($_SERVER['SERVER_NAME'])) {
     // work around possible bug in lighttpd
     if (mb_strpos($_SERVER['SERVER_NAME'], ':') !== false) {
-        list($_SERVER['SERVER_NAME'], $_SERVER['SERVER_PORT']) =
+        [$_SERVER['SERVER_NAME'], $_SERVER['SERVER_PORT']] =
             explode(':', $_SERVER['SERVER_NAME']);
     }
 
@@ -125,8 +125,7 @@ Assets::set_assets_url($GLOBALS['ASSETS_URL']);
 Assets::set_assets_path($GLOBALS['ASSETS_PATH']);
 
 // globale template factory anlegen
-require_once 'vendor/flexi/lib/flexi.php';
-$GLOBALS['template_factory'] = new Flexi_TemplateFactory("{$STUDIP_BASE_PATH}/templates");
+$GLOBALS['template_factory'] = new Flexi\Factory("{$STUDIP_BASE_PATH}/templates");
 
 // set default pdo connection
 try {

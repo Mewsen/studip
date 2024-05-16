@@ -281,7 +281,7 @@ class SiteinfoMarkupEngine {
 
     function __construct() {
         $this->db = DBManager::get();
-        $this->template_factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'].'/app/views/siteinfo/markup/');
+        $this->template_factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'].'/app/views/siteinfo/markup/');
         $this->siteinfoMarkup("/\(:version:\)/", [$this, 'version']);
         $this->siteinfoMarkup("/\(:uniname:\)/", [$this, 'uniName']);
         $this->siteinfoMarkup("/\(:unicontact:\)/", [$this, 'uniContact']);
@@ -659,7 +659,7 @@ function language_filter($input) {
 }
 
 function stripforeignlanguage($language, $text) {
-    list($primary, $sub) = explode('_',$_SESSION['_language']);
+    [$primary, $sub] = explode('_',$_SESSION['_language']);
     if ($language === $primary || $language === $_SESSION['_language']) {
         return str_replace('\"', '"', $text);
     } else {

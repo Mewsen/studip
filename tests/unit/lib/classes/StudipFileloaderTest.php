@@ -20,7 +20,7 @@ class StudipFileloaderTestCase extends \Codeception\Test\Unit
         ]);
 
         if (!stream_wrapper_register('var', 'ArrayFileStream')) {
-            new Exception('Failed to register protocol');
+            throw new Exception('Failed to register protocol');
         }
     }
 

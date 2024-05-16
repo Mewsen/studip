@@ -60,7 +60,8 @@ interface QuestionType {
      *
      * Try to prefix all your input variables at least with the id of the question,
      * so that they will never conflict with other variables.
-     * @return Flexi_Template
+     *
+     * @return Flexi\Template
      */
     public function getDisplayTemplate();
 
@@ -82,11 +83,13 @@ interface QuestionType {
 
     /**
      * Returns a template with the results of this question.
+     *
      * @param $only_user_ids : array\null array of user_ids that the results should be restricted to.
      *                         this is used to show only a subset of results to the user for
      *                         visible evaluation of the results. If the questionnaire is anonymous
      *                         just do nothing.
-     * @return Flexi_Template
+     *
+     * @return Flexi\Template
      */
     public function getResultTemplate($only_user_ids = null);
 

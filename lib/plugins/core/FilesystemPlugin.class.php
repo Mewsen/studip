@@ -34,11 +34,12 @@ interface FilesystemPlugin
 
     /**
      * This method is used to get a folder-object for this plugin.
-     * Not recommended but still possible is to return a Flexi_Template for the folder, if you want to
+     * Not recommended but still possible is to return a Flexi\Template for the folder, if you want to
      * take care of the frontend of displaying the folder as well.
      *
      * @param null $folder_id : folder_id of folder to get or null if you want the top-folder
-     * @return FolderType|Flexi_Template
+     *
+     * @return FolderType|Flexi\Template
      */
     public function getFolder($folder_id = null);
 

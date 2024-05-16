@@ -15,7 +15,7 @@
 interface HomepagePlugin
 {
     /**
-     * Return a template (an instance of the Flexi_Template class)
+     * Return a template (an instance of the Flexi\Template class)
      * to be rendered on the given user's home page. Return NULL to
      * render nothing for this plugin.
      *
@@ -27,7 +27,7 @@ interface HomepagePlugin
      *  admin_url    admin link for this plugin (if any)
      *  admin_title  title for admin link (default: Administration)
      *
-     * @return object   template object to render or NULL
+     * @return Flexi\Template|null template object to render or NULL
      */
     function getHomepageTemplate($user_id);
 }

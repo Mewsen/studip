@@ -92,7 +92,7 @@ class CourseDateFolder extends PermissionEnabledFolder implements FolderType
     /**
      * This method returns the special part for the edit template
      *
-     * @return Flexi_Template  edit template
+     * @return Flexi\Template  edit template
      */
     public function getEditTemplate()
     {
@@ -126,7 +126,7 @@ class CourseDateFolder extends PermissionEnabledFolder implements FolderType
     /**
      * Returns the description template
      *
-     * @return Flexi_Template description template
+     * @return Flexi\Template description template
      */
     public function getDescriptionTemplate()
     {

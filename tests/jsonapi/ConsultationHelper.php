@@ -3,9 +3,6 @@ use WoohooLabs\Yang\JsonApi\Response\JsonApiResponse;
 use WoohooLabs\Yang\JsonApi\Schema\Document;
 use WoohooLabs\Yang\JsonApi\Schema\Resource\ResourceObject;
 
-// Required for consultation mailer
-require_once 'vendor/flexi/flexi.php';
-
 trait ConsultationHelper
 {
     /**
@@ -96,7 +93,7 @@ trait ConsultationHelper
         // Create global template factory if neccessary
         $has_template_factory = isset($GLOBALS['template_factory']);
         if (!$has_template_factory) {
-            $GLOBALS['template_factory'] = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/templates');
+            $GLOBALS['template_factory'] = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/templates');
         }
 
         $result = $this->tester->withPHPLib($credentials, $fn);

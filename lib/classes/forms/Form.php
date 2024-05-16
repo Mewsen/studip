@@ -492,7 +492,7 @@ class Form extends Part
     /**
      * Renders the whole form as a string.
      * @return string
-     * @throws \Flexi_TemplateNotFoundException
+     * @throws \Flexi\TemplateNotFoundException
      */
     public function render()
     {

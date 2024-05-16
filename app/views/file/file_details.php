@@ -1,21 +1,21 @@
 <?php
 /**
- * @var Flexi_Template $this
- * @var FileController $controller
- * @var Flexi_Template|null $file_info_template
- * @var array $fullpath
- * @var FileType $file
- * @var string|null $previous_file_ref_id
- * @var string|null $next_file_ref_id
- * @var string|null $from_plugin
- * @var bool $include_navigation
+ * @var Flexi\Template      $this
+ * @var FileController      $controller
+ * @var Flexi\Template|null $file_info_template
+ * @var array               $fullpath
+ * @var FileType            $file
+ * @var string|null         $previous_file_ref_id
+ * @var string|null         $next_file_ref_id
+ * @var string|null         $from_plugin
+ * @var bool                $include_navigation
  */
 ?>
 <div id="file_details_window">
     <?= $this->render_partial('file/_file_aside.php') ?>
 
     <div id="preview_container">
-        <? if ($file_info_template instanceof Flexi_Template) : ?>
+        <? if ($file_info_template instanceof Flexi\Template) : ?>
             <?= $file_info_template->render() ?>
         <? endif ?>
         <h3><?=_('Pfad')?></h3>

@@ -1,6 +1,7 @@
 <?php
 /**
  * @var array $columns
+ * @var Flexi\Template $widget_layout
  */
 ?>
 <h1 class="sr-only">
@@ -29,7 +30,7 @@ if (Config::get()->BANNER_ADS_ENABLE) {
                 <li class="studip-widget-wrapper" id="<?= $widget->getPluginId() ?>">
                     <div class="ui-widget-content studip-widget">
                         <? if ($template = $widget->getPortalTemplate()): ?>
-                            <? $template->set_layout($this->_factory->open('start/_widget')) ?>
+                            <? $template->set_layout($widget_layout) ?>
                             <?= $this->render_partial($template, compact('widget')) ?>
                         <? else: ?>
                             <?= $this->render_partial('start/_widget', compact('widget')) ?>

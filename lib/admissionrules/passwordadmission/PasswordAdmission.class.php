@@ -80,7 +80,7 @@ class PasswordAdmission extends AdmissionRule
      * @return String A template-based input form.
      */
     public function getInput() {
-        $factory = new Flexi_TemplateFactory(dirname(__FILE__).'/templates/');
+        $factory = new Flexi\Factory(dirname(__FILE__).'/templates/');
         $tpl = $factory->open('input');
         $tpl->set_attribute('rule', $this);
         return $tpl->render();
@@ -111,7 +111,7 @@ class PasswordAdmission extends AdmissionRule
         // Open generic admission rule template.
         $tpl = $GLOBALS['template_factory']->open('admission/rules/configure');
         $tpl->set_attribute('rule', $this);
-        $factory = new Flexi_TemplateFactory(dirname(__FILE__).'/templates/');
+        $factory = new Flexi\Factory(dirname(__FILE__).'/templates/');
         // Now open specific template for this rule and insert base template.
         $tpl2 = $factory->open('configure');
         $tpl2->set_attribute('rule', $this);
@@ -214,7 +214,7 @@ class PasswordAdmission extends AdmissionRule
      * @return String
      */
     public function toString() {
-        $factory = new Flexi_TemplateFactory(dirname(__FILE__).'/templates/');
+        $factory = new Flexi\Factory(dirname(__FILE__).'/templates/');
         $tpl = $factory->open('info');
         $tpl->set_attribute('rule', $this);
         return $tpl->render();

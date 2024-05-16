@@ -53,7 +53,7 @@ class Vote extends QuestionnaireQuestion implements QuestionType
 
     public function getDisplayTemplate()
     {
-        $factory = new Flexi_TemplateFactory(realpath(__DIR__.'/../../app/views'));
+        $factory = new Flexi\Factory(realpath(__DIR__.'/../../app/views'));
         $template = $factory->open('questionnaire/question_types/vote/vote_answer');
         $template->set_attribute('vote', $this);
         return $template;
@@ -100,7 +100,7 @@ class Vote extends QuestionnaireQuestion implements QuestionType
                 }
             }
         }
-        $factory = new Flexi_TemplateFactory(realpath(__DIR__.'/../../app/views'));
+        $factory = new Flexi\Factory(realpath(__DIR__.'/../../app/views'));
         $template = $factory->open('questionnaire/question_types/vote/vote_evaluation');
         $template->set_attribute('vote', $this);
         $template->set_attribute('answers', $answers);

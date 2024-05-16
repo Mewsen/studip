@@ -1963,7 +1963,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             return;
         }
 
-        $factory = new Flexi_TemplateFactory(
+        $factory = new Flexi\Factory(
             $GLOBALS['STUDIP_BASE_PATH'] . '/locale/'
         );
 
@@ -2020,7 +2020,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
      */
     public function sendCloseRequestMailToRequester($bookings = [])
     {
-        $factory = new Flexi_TemplateFactory(
+        $factory = new Flexi\Factory(
             $GLOBALS['STUDIP_BASE_PATH'] . '/locale/'
         );
 
@@ -2110,7 +2110,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             );
 
             if ($lecturers) {
-                $factory = new Flexi_TemplateFactory(
+                $factory = new Flexi\Factory(
                     $GLOBALS['STUDIP_BASE_PATH'] . '/locale/'
                 );
 
@@ -2199,7 +2199,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
         }
 
         //Load the mail template:
-        $factory        = new Flexi_TemplateFactory(
+        $factory = new Flexi\Factory(
             $GLOBALS['STUDIP_BASE_PATH'] . '/locale/'
         );
         $user_lang_path = getUserLanguagePath($user->id);

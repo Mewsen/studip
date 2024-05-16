@@ -158,7 +158,7 @@ class Shared_DownloadController extends AuthenticatedController
         }
 
         $path = $GLOBALS['STUDIP_BASE_PATH'] . '/app/views/shared/modul/';
-        $factory = new Flexi_TemplateFactory($path);
+        $factory = new Flexi\Factory($path);
 
         $template = $factory->open('_modul');
         $template->_ = function ($string) { return $this->_($string); };
@@ -166,7 +166,7 @@ class Shared_DownloadController extends AuthenticatedController
         $template->display_language = $display_language;
         $content = $template->render();
 
-        $factory = new \Flexi_TemplateFactory($path);
+        $factory = new Flexi\Factory($path);
         $type = 1;
         if (count($modul->modulteile) == 1) {
             $modulteil = $modul->modulteile->first();

@@ -79,7 +79,7 @@ class CalendarDateAssignment extends SimpleORMap implements Event
             return;
         }
 
-        $template_factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/locale/');
+        $template_factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/locale/');
 
         setTempLanguage($this->range_id);
         $lang_path = getUserLanguagePath($this->range_id);
@@ -112,7 +112,7 @@ class CalendarDateAssignment extends SimpleORMap implements Event
             return;
         }
 
-        $template_factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/locale/');
+        $template_factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/locale/');
 
         setTempLanguage($this->range_id);
         $lang_path = getUserLanguagePath($this->range_id);
@@ -160,7 +160,7 @@ class CalendarDateAssignment extends SimpleORMap implements Event
             return;
         }
 
-        $template_factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/locale/');
+        $template_factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/locale/');
 
         setTempLanguage($this->range_id);
         $lang_path = getUserLanguagePath($this->range_id);

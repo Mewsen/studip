@@ -39,8 +39,10 @@ interface QuestionnaireAssignmentPlugin
      * This template will get displayed when someone at tools -> questionnaires
      * wants to edit the contexts of the questionnaire. Maybe you don't want to provide a
      * template here, so return null or just a readonly html-snippet.
+     *
      * @param Questionnaire $questionnaire
-     * @return null|Flexi_Template
+     *
+     * @return null|Flexi\Template
      */
     public function getQuestionnaireAssignmentEditTemplate(Questionnaire $questionnaire);
 

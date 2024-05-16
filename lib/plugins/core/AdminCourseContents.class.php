@@ -15,9 +15,11 @@ interface AdminCourseContents
 
     /**
      * Returns the value of the additional column for the course-overview table in the admin-area.
+     *
      * @param Course $course : A Course-object of the given ... course
      * @param string $index : the index that comes from adminAvailableContents to identify the column.
-     * @return Flexi_Template | String : Either one will do, but string is preferred, because it can exported as CSV-file more easily.
+     *
+     * @return Flexi\Template | String : Either one will do, but string is preferred, because it can exported as CSV-file more easily.
      */
     public function adminAreaGetCourseContent($course, $index);
 }

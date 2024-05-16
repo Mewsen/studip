@@ -198,7 +198,7 @@ class OERMaterial extends SimpleORMap
             return $output;
         }
 
-        $tf = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH']."/app/views");
+        $tf = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH']."/app/views");
         if ($material->hasValidPreviewUrl() || $material->isPDF()) {
             $template = $tf->open("oer/embed/url");
         } elseif ($material->isVideo()) {

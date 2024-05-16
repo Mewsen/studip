@@ -14,7 +14,6 @@
  * @since       4.6
  */
 
-
 /**
  * This class represents a document from a library.
  */
@@ -386,12 +385,12 @@ class LibraryDocument
 
 
     /**
-     * @returns Flexi_Template A template containing information about the
+     * @returns Flexi\Template A template containing information about the
      *     the document.
      */
     public function getInfoTemplate($format = 'short')
     {
-        $factory = new Flexi_TemplateFactory(
+        $factory = new Flexi\Factory(
             $GLOBALS['STUDIP_BASE_PATH'] . '/templates/library/'
         );
         $template = $factory->open('library_document_info');

@@ -253,8 +253,8 @@ class CourseMemberAdmission extends AdmissionRule
         return '';
     }
 
-    private function getTemplateFactory(): Flexi_TemplateFactory
+    private function getTemplateFactory(): Flexi\Factory
     {
-        return new Flexi_TemplateFactory(__DIR__ . '/templates/');
+        return new Flexi\Factory(__DIR__ . '/templates/');
     }
 }

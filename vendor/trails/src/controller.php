@@ -1,5 +1,4 @@
 <?php
-
 /**
  * A Trails_Controller is responsible for matching the unconsumed part of an URI
  * to an action using the left over words as arguments for that action. The
@@ -286,13 +285,6 @@ class Trails_Controller {
     $factory = $this->get_template_factory();
     $template = $factory->open($template_name);
 
-    # template requires setup ?
-    switch (get_class($template)) {
-      case 'Flexi_JsTemplate':
-        $this->set_content_type('text/javascript');
-        break;
-    }
-
     $template->set_attributes($this->get_assigned_variables());
 
     if (isset($layout)) {
@@ -306,10 +298,10 @@ class Trails_Controller {
   /**
    * Create and return a template factory for this controller.
    *
-   * @return a Flexi_TemplateFactory
+   * @return Flexi\Factory
    */
   function get_template_factory() {
-    return new Flexi_TemplateFactory($this->dispatcher->trails_root .
+    return new Flexi\Factory($this->dispatcher->trails_root .
                                      '/views/');
   }
 

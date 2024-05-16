@@ -207,7 +207,7 @@ class ConditionalAdmission extends AdmissionRule
         // Open generic admission rule template.
         $tpl = $GLOBALS['template_factory']->open('admission/rules/configure');
         $tpl->set_attribute('rule', $this);
-        $factory = new Flexi_TemplateFactory(dirname(__FILE__).'/templates/');
+        $factory = new Flexi\Factory(__DIR__ . '/templates/');
         // Now open specific template for this rule and insert base template.
         $tpl2 = $factory->open('configure');
         $tpl2->set_attribute('rule', $this);
@@ -471,7 +471,7 @@ class ConditionalAdmission extends AdmissionRule
      */
     public function toString()
     {
-        $factory = new Flexi_TemplateFactory(dirname(__FILE__).'/templates/');
+        $factory = new Flexi\Factory(__DIR__ . '/templates/');
         $tpl = $factory->open('info');
         $tpl->set_attribute('rule', $this);
         return $tpl->render();

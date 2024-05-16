@@ -61,16 +61,16 @@ class TermsAdmission extends AdmissionRule
     /**
      * Shows an input form
      *
-     * @return String A template-based input form.
-     * @throws Flexi_TemplateNotFoundException
+     * @return string A template-based input form.
+     * @throws Flexi\TemplateNotFoundException
      */
     public function getInput()
     {
-        $factory = new Flexi_TemplateFactory(__DIR__ . '/templates');
+        $factory = new Flexi\Factory(__DIR__ . '/templates');
         $template = $factory->open('input');
         $template->rule = $this;
 
-        return MessageBox::info($template->render())->hideClose(true);
+        return (string) MessageBox::info($template->render())->hideClose();
     }
 
     /**
@@ -84,11 +84,11 @@ class TermsAdmission extends AdmissionRule
      * Gets the template that provides a configuration GUI for this rule.
      *
      * @return String
-     * @throws Flexi_TemplateNotFoundException
+     * @throws Flexi\TemplateNotFoundException
      */
     public function getTemplate()
     {
-        $factory = new Flexi_TemplateFactory(__DIR__ . '/templates');
+        $factory = new Flexi\Factory(__DIR__ . '/templates');
         $template = $factory->open('configure');
         $template->rule = $this;
 
@@ -158,11 +158,11 @@ class TermsAdmission extends AdmissionRule
      * A textual description of the current rule.
      *
      * @return String
-     * @throws Flexi_TemplateNotFoundException
+     * @throws Flexi\TemplateNotFoundException
      */
     public function toString()
     {
-        $factory = new Flexi_TemplateFactory(__DIR__ . '/templates/');
+        $factory = new Flexi\Factory(__DIR__ . '/templates/');
         $template = $factory->open('info');
         $template->rule = $this;
 

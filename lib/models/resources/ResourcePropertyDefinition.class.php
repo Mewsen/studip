@@ -221,7 +221,7 @@ class ResourcePropertyDefinition extends SimpleORMap
                 );
             }
         } elseif ($type === 'position') {
-            $factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH']);
+            $factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH']);
             $template = $factory->open('templates/resources/position_attribute_form_part.php');
             $template->set_attribute(
                 'input_name',

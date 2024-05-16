@@ -132,7 +132,7 @@ class TimedFolder extends PermissionEnabledFolder
     /**
      * Returns the description template for a instance of a TimedFolder type.
      *
-     * @return Flexi_Template A description template for a instance of the type TimedFolder
+     * @return Flexi\Template A description template for a instance of the type TimedFolder
      */
     public function getDescriptionTemplate()
     {
@@ -155,7 +155,7 @@ class TimedFolder extends PermissionEnabledFolder
     /**
      * Returns the edit template for this folder type.
      *
-     * @return Flexi_Template
+     * @return Flexi\Template
      */
     public function getEditTemplate()
     {

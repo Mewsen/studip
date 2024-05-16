@@ -460,9 +460,11 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
 
     /**
      * Returns the content for that additional column, if it exists. You can return null a string
-     * or a Flexi_Template as the content.
+     * or a Flexi\Template as the content.
+     *
      * @param string $column_index
-     * @return null|string|Flexi_Template
+     *
+     * @return null|string|Flexi\Template
      */
     public function getContentForAdditionalColumn($column_index)
     {
@@ -497,7 +499,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
             return null;
         }
 
-        $factory = new Flexi_TemplateFactory(
+        $factory = new Flexi\Factory(
             $GLOBALS['STUDIP_BASE_PATH'] . '/templates/filesystem/file_types/'
         );
         $template = $factory->open('standard_file_info');

@@ -1,3 +1,0 @@
-<?
-$update_page->append(var_export(get_defined_vars(), 1));
-

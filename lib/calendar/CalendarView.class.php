@@ -214,7 +214,7 @@ class CalendarView
             'whole_height' => $this->getOverallHeight(),
             'entry_height' => $this->getHeight()
         ];
-        $factory = new Flexi_TemplateFactory(dirname(__file__).'/../../app/views');
+        $factory = new Flexi\Factory(dirname(__file__).'/../../app/views');
         PageLayout::addStyle($factory->render('calendar/schedule/stylesheet', $style_parameters));
 
         $template = $GLOBALS['template_factory']->open("calendar/calendar_view.php");

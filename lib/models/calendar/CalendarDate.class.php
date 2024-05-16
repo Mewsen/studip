@@ -114,7 +114,7 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
 
     public function cbSendDateModificationMail()
     {
-        $template_factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/locale/');
+        $template_factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/locale/');
 
         foreach ($this->calendars as $calendar) {
             if ($calendar->range_id === $this->editor_id) {

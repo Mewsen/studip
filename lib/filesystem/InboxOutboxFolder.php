@@ -269,10 +269,12 @@ class InboxOutboxFolder implements FolderType
     }
 
     /**
-     * Returns the content for that additional column, if it exists. You can return null a string
-     * or a Flexi_Template as the content.
+     * Returns the content for that additional column, if it exists. You can
+     * return null, a string or a Flexi\Template as the content.
+     *
      * @param string $column_index
-     * @return null|string|Flexi_Template
+     *
+     * @return null|string|Flexi\Template
      */
     public function getContentForAdditionalColumn($column_index)
     {

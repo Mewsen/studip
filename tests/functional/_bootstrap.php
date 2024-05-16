@@ -34,6 +34,7 @@ StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/classes/cache');
 StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/classes/cache', 'Studip');
 StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/exceptions');
 StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/exceptions/resources');
+StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/flexi', 'Flexi');
 StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/filesystem');
 StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/migrations');
 StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/models');
@@ -64,8 +65,7 @@ require 'vendor/email_message/email_message.php';
 require 'vendor/email_message/debug_message.php';
 StudipMail::setDefaultTransporter(new debug_message_class());
 
-require_once 'vendor/flexi/lib/flexi.php';
-$GLOBALS['template_factory'] = new Flexi_TemplateFactory(dirname(dirname(__DIR__)) . '/templates');
+$GLOBALS['template_factory'] = new Flexi\Factory(dirname(dirname(__DIR__)) . '/templates');
 
 // Disable caching to fallback to memory cache
 $GLOBALS['CACHING_ENABLE'] = false;

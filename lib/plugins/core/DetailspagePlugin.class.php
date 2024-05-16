@@ -12,7 +12,7 @@
 interface DetailspagePlugin
 {
     /**
-     * Return a template (an instance of the Flexi_Template class)
+     * Return a template (an instance of the Flexi\Template class)
      * to be rendered on the details page. Return NULL to
      * render nothing for this plugin or this course.
      *
@@ -21,7 +21,7 @@ interface DetailspagePlugin
      *
      *  title        title to display, defaults to plugin name
      *
-     * @return object   template object to render or NULL
+     * @return Flexi\Template|null template object to render or NULL
      */
     public function getDetailspageTemplate($course);
 }
