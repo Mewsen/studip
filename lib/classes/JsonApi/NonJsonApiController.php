@@ -49,11 +49,11 @@ class NonJsonApiController
     }
 
     /**
-     * @return mixed
+     * @return null|\User
      */
     protected function getUser(Request $request)
     {
-        return $request->getAttribute(Authentication::USER_KEY, null);
+        return $request->getAttribute(Authentication::USER_KEY);
     }
 
     /**
