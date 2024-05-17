@@ -66,6 +66,19 @@ ol {
     }
 }
 
+.list-slash-separated-small {
+    @extend .list-csv;
+
+    > li {
+        padding-right: 0;
+        font-size: small;
+
+        &::after {
+            content: "/";
+        }
+    }
+}
+
 dl {
     dt {
         font-weight: bold;

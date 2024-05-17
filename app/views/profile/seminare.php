@@ -9,14 +9,18 @@
     <? foreach ($seminare as $semester => $seminar) :?>
     <b><?= htmlReady($semester) ?></b><br>
 
+        <ul class="clean">
         <? foreach ($seminar as $one) :?>
-            <a href="<?= URLHelper::getScriptLink('dispatch.php/course/details', ['sem_id' => $one->id])?>">
-                <?= htmlReady($one->getFullname('number-name')) ?>
-                <? if ($one->start_semester !== $one->end_semester) : ?>
-                    (<?= htmlReady($one->getFullname('sem-duration-name')) ?>)
-                <? endif ?>
-            </a><br>
+            <li>
+                <a href="<?= URLHelper::getScriptLink('dispatch.php/course/details', ['sem_id' => $one->id])?>">
+                    <?= htmlReady($one->getFullname('number-name')) ?>
+                    <? if ($one->start_semester !== $one->end_semester) : ?>
+                        (<?= htmlReady($one->getFullname('sem-duration-name')) ?>)
+                    <? endif ?>
+                </a>
+            </li>
         <?endforeach?>
+        </ul>
     <?endforeach?>
     </section>
 </article>
