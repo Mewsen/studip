@@ -61,7 +61,7 @@ foreach ($plugins as $plugin) {
     $template = $plugin->getInfoTemplate($institute_id);
 
     if ($template) {
-        echo $template->render(NULL, $layout);
+        echo $template->render(layout: $layout);
         $layout->clear_attributes();
     }
 }

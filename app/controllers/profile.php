@@ -220,7 +220,7 @@ class ProfileController extends AuthenticatedController
                 $template = $homepageplugin->getHomepageTemplate($this->current_user->user_id);
                 // create output of the plugins
                 if (!empty($template)) {
-                    $render .= $template->render(null, $layout);
+                    $render .= $template->render(layout: $layout);
                 }
                 $layout->clear_attributes();
             }
