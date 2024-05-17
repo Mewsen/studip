@@ -41,6 +41,20 @@
 
   Sollte ein Plugin manuell Flexi einbinden, so wird dies zu einem Fehler führen. Jegliches Einbinden von Dateien
   unterhalb von `vendor/flexi` muss ersatzlos entfernt werden.
+- Die folgenden Funktionen wurden entfernt ([Issue #4179](https://gitlab.studip.de/studip/studip/-/issues/4179))
+  - `getWeekdays($short = true)`
+  - `veranstaltung_beginn($seminar_id = '', $return_mode = '')`
+  - `veranstaltung_beginn_from_metadata($reg_irreg, $sem_begin, $start_woche, $start_termin,$turnus_data, $return_mode='int')`
+  - `get_sem_name ($time)`
+  - `get_sem_num ($time)`
+  - `get_sem_num_sem_browse ()`
+  - `get_semester($seminar_id)`
+  - `delete_date($termin_id, $topic_delete = TRUE, $folder_move = TRUE, $sem_id=0)`
+  - `delete_range_of_dates($range_id, $topics = FALSE)`
+  - `isSchedule ($sem_id, $presence_dates_only = TRUE, $clearcache = FALSE)`
+  - `isMetadateCorrespondingDate ($termin_id, $begin = '', $end = '', $seminar_id='')`
+  - `getPresenceTypes()`
+
 
 ## Security related issues
 
