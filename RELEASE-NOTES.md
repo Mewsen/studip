@@ -54,7 +54,7 @@
   - `isSchedule ($sem_id, $presence_dates_only = TRUE, $clearcache = FALSE)`
   - `isMetadateCorrespondingDate ($termin_id, $begin = '', $end = '', $seminar_id='')`
   - `getPresenceTypes()`
-
+- Die Klasse `AuxLockRules` wurde ausgebaut. ([Issue #4187](https://gitlab.studip.de/studip/studip/-/issues/4187))
 
 ## Security related issues
 
