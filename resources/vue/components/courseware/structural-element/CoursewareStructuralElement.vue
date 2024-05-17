@@ -1190,7 +1190,7 @@ export default {
                 
                 return { msg: this.$gettext('Diese Seite steht Ihnen leider nicht zur Verfügung.'), mood: 'sad' };
             }
-            return false;
+            return null;
         }
     },
 
