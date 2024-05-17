@@ -224,10 +224,10 @@ class Factory
      * Class method to parse, render and return the presentation of a
      * template.
      *
-     * @param Template|string $template   A name of a template or a template
-     * @param array           $attributes An associative array of attributes and their
-     *                                    associated values.
-     * @param string|null     $layout     A name of a layout template.
+     * @param Template|string      $template   A name of a template or a template
+     * @param array                $attributes An associative array of attributes and their
+     *                                         associated values.
+     * @param Template|string|null $layout     A name of a layout template or a template.
      *
      * @return string A string representing the rendered presentation.
      *
@@ -236,7 +236,7 @@ class Factory
     public function render(
         Template|string $template,
         array $attributes = [],
-        ?string $layout = null
+        Template|string|null $layout = null
     ): string {
         return $this->open($template)->render($attributes, $layout);
     }
