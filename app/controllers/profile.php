@@ -37,11 +37,6 @@ class ProfileController extends AuthenticatedController
             'username',
             $this->user ? $this->user->username : null
         ));
-        // get additional informations to selected user
-        $this->profile = new ProfileModel(
-            $this->current_user ? $this->current_user->id : null,
-            $this->user ? $this->user->id : null
-        );
 
         // set the page title depending on user selection
         if (
