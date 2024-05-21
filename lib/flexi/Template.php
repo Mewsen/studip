@@ -193,7 +193,7 @@ abstract class Template
      */
     public function set_layout(Template|string|null $layout): void
     {
-        $this->layout = $this->factory->open($layout);
+        $this->layout = $layout ? $this->factory->open($layout) : null;
     }
 
     /**
