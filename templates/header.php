@@ -18,35 +18,35 @@ $navigation = PageLayout::getTabNavigation();
 $tab_root_path = PageLayout::getTabNavigationPath();
 if ($navigation) {
     $subnavigation = $navigation->activeSubNavigation();
-    if ($subnavigation !== null) {
-        $nav_links = new NavigationWidget();
-        $nav_links->setId('sidebar-navigation');
-        $nav_links->addCSSClass('navigation-level-3');
-        $nav_links->setTitle(_('Dritte Navigationsebene'));
-        if (!$navigation->getImage()) {
-            $nav_links->addLayoutCSSClass('show');
-        }
-        foreach ($subnavigation as $path => $nav) {
-            if (!$nav->isVisible()) {
-                continue;
-            }
-            $nav_id = "nav_".implode("_", preg_split("/\//", $tab_root_path, -1, PREG_SPLIT_NO_EMPTY))."_".$path;
-            $link = $nav_links->addLink(
-                $nav->getTitle(),
-                URLHelper::getURL($nav->getURL()),
-                null,
-                array_merge($nav->getLinkAttributes(), ['id' => $nav_id])
-            );
-            $link->setActive($nav->isActive());
-            if (!$nav->isEnabled()) {
-                $link['disabled'] = true;
-                $link->addClass('quiet');
-            }
-        }
-        if ($nav_links->hasElements()) {
-            Sidebar::get()->insertWidget($nav_links, ':first');
-        }
-    }
+    // if ($subnavigation !== null) {
+    //     $nav_links = new NavigationWidget();
+    //     $nav_links->setId('sidebar-navigation');
+    //     $nav_links->addCSSClass('navigation-level-3');
+    //     $nav_links->setTitle(_('Dritte Navigationsebene'));
+    //     if (!$navigation->getImage()) {
+    //         $nav_links->addLayoutCSSClass('show');
+    //     }
+    //     foreach ($subnavigation as $path => $nav) {
+    //         if (!$nav->isVisible()) {
+    //             continue;
+    //         }
+    //         $nav_id = "nav_".implode("_", preg_split("/\//", $tab_root_path, -1, PREG_SPLIT_NO_EMPTY))."_".$path;
+    //         $link = $nav_links->addLink(
+    //             $nav->getTitle(),
+    //             URLHelper::getURL($nav->getURL()),
+    //             null,
+    //             array_merge($nav->getLinkAttributes(), ['id' => $nav_id])
+    //         );
+    //         $link->setActive($nav->isActive());
+    //         if (!$nav->isEnabled()) {
+    //             $link['disabled'] = true;
+    //             $link->addClass('quiet');
+    //         }
+    //     }
+        // if ($nav_links->hasElements()) {
+        //     Sidebar::get()->insertWidget($nav_links, ':first');
+        // }
+    // }
 }
 
 ?>
@@ -301,6 +301,11 @@ if ($navigation) {
 
                 <? if (PageLayout::isHeaderEnabled() /*&& isset($navigation)*/) : ?>
                     <?= $this->render_partial('tabs', compact('navigation')) ?>
+                <? endif; ?>
+            </nav>
+            <nav id="navigation-level-3" aria-label="<?= _('Dritte Navigationsebene') ?>" >
+                <? if (PageLayout::isHeaderEnabled() && isset($subnavigation) && count($subnavigation->getIterator()) > 1) : ?>
+                    <?= $this->render_partial('secondary_tabs', compact('subnavigation')) ?>
                 <? endif; ?>
             </nav>
         <? endif; ?>
