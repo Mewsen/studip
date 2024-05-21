@@ -827,6 +827,36 @@ class Course_LtiController extends StudipController
     {
         $this->update_all = true;
         $this->deployments = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY `position`');
+        $this->selected_deployment_ids = [];
+
+        if (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
+            if (Request::submitted('update')) {
+                $this->update_all = Request::bool('update_all');
+                $deployments_to_update = [];
+                if ($this->update_all) {
+                    $deployments_to_update = $this->deployments;
+                } else {
+                    $this->selected_deployment_ids = Request::getArray('deployment_ids');
+                    foreach ($this->deployments as $deployment) {
+                        if (in_array($deployment->id, $this->selected_deployment_ids)) {
+                            $deployments_to_update[] = $deployment;
+                        }
+                    }
+                }
+                if (!$deployments_to_update) {
+                    PageLayout::postError(_('Es wurde kein LTI-Tool ausgewählt.'));
+                    return;
+                }
+
+                PageLayout::postWarning(
+                    'TODO',
+                    ($this->update_all ? ['update_all'] : $this->selected_deployment_ids)
+                );
+
+                //TODO: Let the LTI 1.3A magic begin here.
+            }
+        }
     }
 
     /**
