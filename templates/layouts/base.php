@@ -81,7 +81,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
     <? endif; ?>
 
     <!-- Start main page content -->
-    <main id="content-wrapper">
+    <main id="content-wrapper" class="<?= Sidebar::get()->hasWidgets() ? '' : 'empty-sidebar'?>">
         <? SkipLinks::addIndex(_('Hauptinhalt'), 'content', 100) ?>
         <div id="content">
             <h1 class="sr-only"><?= htmlReady(PageLayout::getTitle()) ?></h1>

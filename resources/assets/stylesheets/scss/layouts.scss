@@ -131,6 +131,10 @@ body {
     border-left: 1px dashed var(--brand-color-darker);
     grid-column: 1 / 2;
     grid-row: 2 / 3;
+
+    &.empty-sidebar {
+        display: none;
+    }
 }
 
 #content-wrapper {
@@ -155,6 +159,7 @@ body {
         overflow: visible;
     }
 
+    &.empty-sidebar, 
     .no-sidebar & {
         grid-column: 1 / 3;
     }
