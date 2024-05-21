@@ -2,6 +2,8 @@
 
 namespace Grading;
 
+use OAT\Library\Lti1p3Ags\Model\Result\Result;
+
 /**
  * @license GPL2 or any later version
  *
@@ -83,5 +85,17 @@ class Instance extends \SimpleORMap
             $grade = 9.99999;
         }
         return $this->content['rawgrade'] = number_format($grade, 5, '.', '');
+    }
+
+    public function toResult() : Result
+    {
+        return new Result(
+            $this->user_id,
+            $this->definition_id,
+            null, //TODO
+            $this->rawgrade,
+            null, //TODO
+            $this->feedback
+        );
     }
 }
