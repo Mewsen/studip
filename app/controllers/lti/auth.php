@@ -141,7 +141,6 @@ class Lti_AuthController extends StudipController
      */
     public function oidc_init_action()
     {
-        require_once 'lib/elearning/lti1.3a/RegistrationManager.class.php';
         $reg_manager = new \Studip\LTI13a\RegistrationManager();
         $user_authenticator = new \Studip\LTI13a\UserAuthenticator();
         $request = $this->getPsrRequest();
