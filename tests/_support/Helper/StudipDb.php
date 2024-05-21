@@ -11,19 +11,11 @@ class StudipDb extends \Codeception\Module
 {
     /**
      * @api
-     *
-     * @var
      */
     public ?\StudipPdo $dbh;
 
-    /**
-     * @var array
-     */
     protected array $config = [];
 
-    /**
-     * @var array
-     */
     protected array $requiredFields = ['dsn', 'user', 'password'];
 
     /**

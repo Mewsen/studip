@@ -23,6 +23,8 @@
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property Clipboard $clipboard belongs_to Clipboard
+ *
+ * @property-read string $name
  */
 class ClipboardItem extends SimpleORMap
 {
@@ -36,36 +38,32 @@ class ClipboardItem extends SimpleORMap
             'assoc_func' => 'find'
         ];
 
+        $config['additional_fields']['name'] = [
+            'get' => fn(ClipboardItem $item) => $item->__toString(),
+        ];
+
         parent::configure($config);
     }
-
 
     /**
      * @returns string representation of this clipboard item.
      */
     public function __toString()
     {
-        //Get the class $range_type and the object with ID $range_id,
-        //if $range_type is a StudipItem:
-
-        $use_generic_name = true;
-        $object = null;
-        if (is_subclass_of($this->range_type, 'StudipItem', true)) {
+        // Get the class $range_type and the object with ID $range_id,
+        // if $range_type is a StudipItem:
+        if (is_subclass_of($this->range_type, StudipItem::class)) {
             $range_class_name = $this->range_type;
             $object = $range_class_name::find($this->range_id);
             if ($object) {
-                $use_generic_name = false;
+                return $object->getItemName(false);
             }
         }
 
-        if ($use_generic_name) {
-            //$range_type is not a class name of a StudipItem class
-            //or no object of a StudipItem class could be found:
-            //We cannot determine the name and must therefore use
-            //a generic name:
-            return $this->range_type . '_' . $this->range_id;
-        } else {
-            return $object->getItemName(false);
-        }
+        // $range_type is not a class name of a StudipItem class
+        // or no object of a StudipItem class could be found:
+        // We cannot determine the name and must therefore use
+        // a generic name:
+        return $this->range_type . '_' . $this->range_id;
     }
 }

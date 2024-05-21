@@ -1,4 +1,14 @@
-import {$gettext} from './gettext';
+function extractAttribute(node, attribute) {
+    return node.querySelector(`input[name="${attribute}"]`)?.value.trim();
+}
+
+function extractAttributes(node, attributes) {
+    const result = {};
+    for (const key of attributes) {
+        result[key] = extractAttribute(node, key);
+    }
+    return result;
+}
 
 const Clipboard = {
     switchClipboard: function(event) {
@@ -32,32 +42,30 @@ const Clipboard = {
         }
     },
 
-    handleAddForm: function(event) {
-        if (!event) {
-            return false;
-        }
+    handleAddForm(event) {
+        event.preventDefault();
 
-
+        const attributes = extractAttributes(event.target, ['name', 'allowed_item_class']);
 
         //Check if a name is entered in the form:
-        let name_input = jQuery(event.target).find('input[type="text"][name="name"]');
+        const name_input = event.target.querySelector('input[name="name"]');
         if (!name_input) {
             //Something is wrong with the HTML:
             return false;
         }
-        let name = jQuery(name_input).val().trim();
-        if (!name) {
+        if (!attributes.name) {
             //The name field is empty. Why send an empty field?
             return false;
         }
 
-        //Submit the form via AJAX:
-        STUDIP.api.POST(
-            'clipboard/add',
-            {
-                data: jQuery(event.target).serialize()
-            }
-        ).done(STUDIP.Clipboard.add);
+        // Submit the form via AJAX:
+        STUDIP.jsonapi.POST('clipboards', {data: {data: {attributes}}}).done(({data}) => {
+            STUDIP.Clipboard.add({
+                id: data.id,
+                name: data.attributes.name,
+                widget_id: extractAttribute(event.target, 'widget_id')
+            });
+        });
     },
 
     add: function(data) {
@@ -134,11 +142,9 @@ const Clipboard = {
         jQuery(widget_node).find('#clipboard-group-container').removeClass('invisible');
 
         //Call the droppable jQuery method on the new clipboard area:
-        jQuery(clipboard_node).droppable(
-            {
-                drop: STUDIP.Clipboard.handleItemDrop
-            }
-        );
+        jQuery(clipboard_node).droppable({
+            drop: STUDIP.Clipboard.handleItemDrop
+        });
 
         //Clear the text input in the "add clipboard" form:
         jQuery(widget_node).find(
@@ -238,17 +244,19 @@ const Clipboard = {
         }
 
         //Add the item to the clipboard via AJAX:
-        STUDIP.api.POST(
-            'clipboard/' + clipboard_id + '/item',
-            {
+        STUDIP.jsonapi.POST(`clipboards/${clipboard_id}/items`, {
+            data: {
                 data: {
-                    'range_id': range_id,
-                    'range_type': range_type,
-                    'widget_id': widget_id
+                    attributes: { range_id, range_type }
                 }
             }
-        ).done(function(data) {
-            STUDIP.Clipboard.addDroppedItem(data);
+        }).done(({data}) => {
+            STUDIP.Clipboard.addDroppedItem({
+                id: data.id,
+                name: data.attributes.name,
+                range_id: data.attributes.range_id,
+                widget_id
+            });
         });
     },
 
@@ -262,6 +270,7 @@ const Clipboard = {
 
         let widget = jQuery('#ClipboardWidget_' + response_data['widget_id']);
         let clipboard_id = jQuery(widget).find(".clipboard-selector").val();
+
 
         if (!widget) {
             //The widget with the speicified widget-ID
@@ -325,25 +334,16 @@ const Clipboard = {
         );
     },
 
-    rename: function(widget_id) {
-         if (!widget_id) {
-            //Required data are missing!
-            return;
-        }
+    rename(widget_id) {
+        const widget = jQuery('#ClipboardWidget_' + widget_id);
+        const clipboard_id = widget.find('.clipboard-selector').val();
+        const name = widget.find('input.clipboard-name').val();
 
-        let widget = jQuery('#ClipboardWidget_' + widget_id);
-        let clipboard_id = jQuery(widget).find(".clipboard-selector").val();
-        let namer = jQuery(widget).find("input.clipboard-name");
-
-        STUDIP.api.PUT(
-            'clipboard/' + clipboard_id,
-            {
-                data: {
-                    name: namer.val()
-                }
-            }
-        ).done(function(data) {
-            STUDIP.Clipboard.update(data, widget_id)
+        STUDIP.jsonapi.PATCH(`clipboards/${clipboard_id}`, {data: {data: {attributes: {name}}}}).done(({data}) => {
+            STUDIP.Clipboard.update({
+                id: data.id,
+                name: data.attributes.name,
+            }, widget_id)
         });
     },
 
@@ -358,7 +358,7 @@ const Clipboard = {
         STUDIP.Clipboard.toggleEditButtons(widget_id);
     },
 
-    remove: function(clipboard_id, widget_id) {
+    remove(clipboard_id, widget_id) {
         if (!clipboard_id || !widget_id) {
             //Required data are missing!
             return;
@@ -427,10 +427,6 @@ const Clipboard = {
     },
 
     handleRemoveClick: function(delete_icon) {
-        if (!delete_icon) {
-            return;
-        }
-
         //Get the data of the clipboard:
         let clipboard_select = jQuery(delete_icon).siblings('.clipboard-selector')[0];
         if (!clipboard_select) {
@@ -444,52 +440,42 @@ const Clipboard = {
             //Another case where something is wrong with the HTML.
             return;
         }
-        let widget_id = jQuery(widget).data('widget_id');
 
-        STUDIP.api.DELETE(
-            'clipboard/' + clipboard_id,
-            {
-                data: {
-                    widget_id: widget_id
-                }
-            }
-        ).done(function() {
+        const widget_id = jQuery(widget).data('widget_id');
+
+        STUDIP.jsonapi.DELETE(`clipboards/${clipboard_id}`).done(() => {
             STUDIP.Clipboard.remove(clipboard_id, widget_id);
         });
     },
 
-    removeItem: function(delete_icon) {
-        if (!delete_icon) {
-            return;
-        }
-
-        //Get the item-ID:
-        let item_html = jQuery(delete_icon).parents('tr');
-        let range_id = jQuery(item_html).data('range_id');
-        let clipboard_element = jQuery(item_html).parents('table');
-        let clipboard_id = jQuery(clipboard_element).data('id');
+    removeItem(delete_icon) {
+        // Get the item-ID:
+        const item_element = jQuery(delete_icon).parents('tr');
+        const range_id = jQuery(item_element).data('range_id');
+        const clipboard_element = jQuery(item_element).parents('table');
+        const clipboard_id = jQuery(clipboard_element).data('id');
 
         if (!range_id || !clipboard_id) {
             //We cannot proceed without the item-ID and the clipboard-ID!
             return;
         }
 
-        STUDIP.api.DELETE(
-            'clipboard/' + clipboard_id + '/item/' + range_id
-        ).done(function() {
+        STUDIP.jsonapi.DELETE(`clipboards/${clipboard_id}/items`, {
+            data: {
+                filter: { range_id }
+            }
+        }).done(() => {
             //Check if the item has siblings:
-            let siblings = jQuery(item_html).siblings();
+            let siblings = item_element.siblings();
             if (siblings.length < 3) {
                 //Only the "no items" element and the template
                 //are siblings of the item.
                 //We must display the "no items" element:
-                jQuery(item_html).siblings(
-                    '.empty-clipboard-message'
-                ).removeClass('invisible');
+                item_element.siblings('.empty-clipboard-message').removeClass('invisible');
                 jQuery("#clipboard-group-container").find('.widget-links').addClass('invisible');
             }
             //Finally remove the item:
-            jQuery(item_html).remove();
+            item_element.remove();
         });
     },
 

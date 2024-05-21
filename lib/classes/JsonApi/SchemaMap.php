@@ -2,6 +2,8 @@
 
 namespace JsonApi;
 
+use JsonApi\Schemas\Clipboard;
+
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
@@ -19,6 +21,8 @@ class SchemaMap
             \BlubberThread::class => Schemas\BlubberThread::class,
 
             \CalendarDateAssignment::class => Schemas\CalendarDateAssignment::class,
+            \Clipboard::class => Schemas\Clipboard::class,
+            \ClipboardItem::class => Schemas\ClipboardItem::class,
             \ConsultationBlock::class => Schemas\ConsultationBlock::class,
             \ConsultationBooking::class => Schemas\ConsultationBooking::class,
             \ConsultationSlot::class => Schemas\ConsultationSlot::class,

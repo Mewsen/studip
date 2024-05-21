@@ -52,6 +52,8 @@ class AbstractAPI
 
         var deferred;
 
+        const request = this.#createRequest(url, options);
+
         if (options.async && this.request_count > 0) {
             // Request should be sent asynchronous after every other request
             // is finished. The configuration for this particular request is
@@ -73,10 +75,10 @@ class AbstractAPI
             this.total_requests += 1;
 
             // Actual request
-            deferred = $.ajax(STUDIP.URLHelper.getURL(`${this.base_url}/${url}`, {}, true), {
+            deferred = $.ajax(request.url, {
                 contentType: options.contentType || 'application/x-www-form-urlencoded; charset=UTF-8',
                 method: options.method.toUpperCase(),
-                data: this.encodeData(options.data, options.method.toUpperCase()),
+                data: this.encodeData(request.data, options.method.toUpperCase()),
                 headers: options.headers
             }).always(() => {
                 // Decrease request counter, remove overlay if neccessary
@@ -92,6 +94,27 @@ class AbstractAPI
                 this.queue.shift().resolve();
             }
         }).promise();
+    }
+
+    #createRequest(url, options) {
+        const hasBody = ['post', 'put', 'patch'].includes(options.method.toLowerCase());
+        const query = hasBody ? '' : `?${this.convertDataToRequestParameters(options.data)}`;
+
+        return {
+            url: STUDIP.URLHelper.getURL(`${this.base_url}/${url}${query}`, {}, true),
+            data: hasBody ? options.data : {},
+        };
+    }
+
+    convertDataToRequestParameters(data, prefix = '') {
+        return Object.entries(data).map(([key, value]) => {
+            const name = prefix ? `${prefix}[${key}]` : `${key}`;
+            if (value.constructor.name === 'Object') {
+                return this.convertDataToRequestParameters(value, name);
+            } else {
+                return `${name}=${value}`;
+            }
+        }).join('&');
     }
 }
 
