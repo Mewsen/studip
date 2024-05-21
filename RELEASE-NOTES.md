@@ -56,6 +56,7 @@
   - `getPresenceTypes()`
 - Die Klasse `AuxLockRules` wurde ausgebaut. ([Issue #4187](https://gitlab.studip.de/studip/studip/-/issues/4187))
 - Die Klasse `ProfileModel` wurde gelöscht. Die darin enthaltenen Methoden wurden in den `Profile_Controller` verschoben. ([Issue #4185]https://gitlab.studip.de/studip/studip/-/issues/4185))
+- Die Klasse `StudipTransformFormat` wurde ausgebaut ([Issue #4188](https://gitlab.studip.de/studip/studip/-/issues/4188))
 
 ## Security related issues
 
