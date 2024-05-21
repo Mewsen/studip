@@ -72,11 +72,12 @@ class Definition extends \SimpleORMap
 
     public function toLineItem() : LineItemInterface
     {
+        $deployment_id = explode('-', $this->tool)[1] ?? '';
         return new LineItem(
             PHP_FLOAT_MAX, //TODO
             $this->name,
             $this->id,
-            $this->course_id, //TODO: check if the course-ID is right as resource identifier
+            $deployment_id
         );
     }
 
@@ -85,7 +86,7 @@ class Definition extends \SimpleORMap
         $definition = new Definition();
         $definition->id = $line_item->getIdentifier();
         $definition->name = $line_item->getLabel();
-        $definition->course_id = $line_item->getResourceIdentifier();
+        $definition->tool = 'lti-' . $line_item->getResourceIdentifier();
         if ($definition->store()) {
             return $definition;
         }

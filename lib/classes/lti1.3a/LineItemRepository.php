@@ -24,8 +24,8 @@ class LineItemRepository implements LineItemRepositoryInterface
         $sql = '';
         $sql_params = [];
         if ($resourceIdentifier) {
-            $sql .= "`course_id` = :course_id ";
-            $sql_params['course_id'] = $resourceIdentifier;
+            $sql .= "`tool` = :tool ";
+            $sql_params['tool'] = sprintf('lti-%s', $resourceIdentifier);
         }
 
         //TODO: resourceLinkIdentifier, tag
