@@ -311,7 +311,6 @@ const Clipboard = {
         jQuery(new_item_node).removeClass('invisible');
 
         let name_column = jQuery(new_item_node).find('td.item-name');
-        console.log(name_column);
         jQuery('<span/>').text(response_data['name']).appendTo(name_column)
         let id_field = jQuery(new_item_node).find("input[name='selected_clipboard_items[]']");
         jQuery(id_field).val(checkbox_id);
