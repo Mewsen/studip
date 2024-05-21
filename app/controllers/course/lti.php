@@ -849,12 +849,15 @@ class Course_LtiController extends StudipController
                     return;
                 }
 
-                PageLayout::postWarning(
-                    'TODO',
-                    ($this->update_all ? ['update_all'] : $this->selected_deployment_ids)
-                );
-
-                //TODO: Let the LTI 1.3A magic begin here.
+                $successful = \Studip\LTI13a\GradeManager::updateGrades($deployments_to_update);
+                if ($successful === count($deployments_to_update)) {
+                    PageLayout::postSuccess(_('Die Noten wurden aktualisiert.'));
+                } elseif ($successful > 0) {
+                    PageLayout::postWarning(_('Es konnten nicht alle Noten aktualisiert werden.'));
+                } else {
+                    PageLayout::postError(_('Das Aktualisieren der Noten ist fehlgeschlagen.'));
+                }
+                $this->redirect('course/lti/grades');
             }
         }
     }
