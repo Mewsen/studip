@@ -81,11 +81,10 @@ class Admin_CacheController extends AuthenticatedController
 
     /**
      * Fetches necessary configuration for given cache type.
-     *
-     * @param string $className
      */
-    public function get_config_action($className)
+    public function get_config_action()
     {
+        $className = Request::get('cache');
         $type = CacheType::findOneByClass_name($className);
 
         $this->render_json($type->class_name::getConfig());
