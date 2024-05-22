@@ -246,6 +246,15 @@ class Course_LtiController extends StudipController
                                 ],
                                 $this->course->veranstaltungsnummer ?? '',
                                 !empty($this->course) ? $this->course->getFullName() : ''
+                            ),
+                            new \OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim(
+                                [
+                                    "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem",
+                                    "https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly",
+                                    "https://purl.imsglobal.org/spec/lti-ags/scope/score"
+                                ],
+                                $this->url_for('lti/ags/list_line_items'),
+                                $this->url_for('lti/ags/get_line_item')
                             )
                         ],
                         $this->deployment->getCustomLtiParameterArray(),
