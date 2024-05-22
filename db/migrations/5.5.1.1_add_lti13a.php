@@ -153,7 +153,7 @@ class AddLti13a extends Migration
             */
             [
                 'LTI_DATA_PROTECTION_DEFAULT_WARNING',
-                'Sie verlassen jetzt Stud.IP. Vorsicht mit den persönlichen Daten!', //TODO
+                'Bitte beachten Sie die Datenschutzhinweise. Wenn Sie zugestimmt haben, werden Ihre Daten weitergegeben.',
                 'string',
                 'global',
                 'Eine Warnung zur Weitergabe personenbezogener Daten, die standardmäßig angezeigt wird, wenn Personen aus einer Veranstaltung in ein LTI-Tool wechselt.'

@@ -70,6 +70,7 @@ class Lti_ToolController extends AuthenticatedController
                     _('Die Einrichtung von LTI-Tools in Veranstaltungen ist ausgeschaltet.')
                 );
             }
+            PageLayout::postWarning(_('Bitte beachten Sie das geltende europäische Datenschutzrecht (DSVGO)!'));
             if ($this->range_id === 'global') {
                 $this->tool->is_global = '1';
             } else {
