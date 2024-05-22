@@ -27,10 +27,7 @@
         <? if (
             (
                 $step === 1
-                && (
-                    !isset($_SESSION[$request_id]['room_category_id'])
-                    || $_SESSION[$request_id]['room_category_id'] !== '0'
-                )
+                && !empty($_SESSION[$request_id]['room_category_id'])
             )
             || $step === 2
         ) : ?>

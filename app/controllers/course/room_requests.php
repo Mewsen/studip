@@ -254,7 +254,7 @@ class Course_RoomRequestsController extends AuthenticatedController
         $this->selected_room = Resource::find($_SESSION[$request_id]['room_id'] ?: $this->request->resource_id);
 
         $this->selected_room_category_id = $this->selected_room->category_id ?? $_SESSION[$request_id]['room_category_id'] ?? null;
-        $this->category = ResourceCategory::find($this->selected_room_category_id);
+        $this->category = $this->selected_room_category_id ? ResourceCategory::find($this->selected_room_category_id) : null;
 
         $_SESSION[$request_id]['room_category_id'] = $_SESSION[$request_id]['room_category_id'] ?? $this->selected_room->category_id ?? null;
 
@@ -546,7 +546,7 @@ class Course_RoomRequestsController extends AuthenticatedController
 
         $_SESSION[$request_id]['search_by'] = $this->selected_room ? 'roomname' : 'category';
         $_SESSION[$request_id]['room_category_id'] = $this->selected_room_category->id;
-        $_SESSION[$request_id]['room_id'] = $this->selected_room->id;
+        $_SESSION[$request_id]['room_id'] = $this->selected_room ? $this->selected_room->id : '';
     }
 
     public function store_request_action($request_id)
