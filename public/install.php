@@ -18,7 +18,6 @@ set_include_path($GLOBALS['STUDIP_BASE_PATH']);
 require_once 'composer/autoload.php';
 require_once 'lib/visual.inc.php';
 require_once 'vendor/trails/trails.php';
-require_once 'vendor/flexi/flexi.php';
 require_once 'lib/classes/URLHelper.php';
 require_once 'lib/classes/LayoutMessage.interface.php';
 require_once 'lib/classes/MessageBox.class.php';
@@ -30,6 +29,10 @@ require_once 'lib/classes/StudipInstaller.php';
 require_once 'lib/classes/SystemChecker.php';
 require_once 'lib/classes/Markup.class.php';
 require_once 'lib/exceptions/AccessDeniedException.php';
+require_once 'lib/flexi/Factory.php';
+require_once 'lib/flexi/PhpTemplate.php';
+require_once 'lib/flexi/Template.php';
+require_once 'lib/flexi/TemplateNotFoundException.php';
 require_once 'vendor/phpass/PasswordHash.php';
 
 // Mock gettext functions if extension is not available
