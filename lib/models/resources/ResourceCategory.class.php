@@ -85,7 +85,7 @@ class ResourceCategory extends SimpleORMap
     public static function find($id)
     {
         $all = self::findAll();
-        return $all[$id] ?: null;
+        return $all[$id] ?? null;
     }
 
     /**
