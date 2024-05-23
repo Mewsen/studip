@@ -5,10 +5,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2024-04-12 14:29+0000\n"
+"PO-Revision-Date: 2024-05-23 13:55+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-3-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-3-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -198,14 +198,12 @@ msgid "%{groupName} auswählen"
 msgstr "Select %{groupName}"
 
 #: resources/vue/components/questionnaires/InputArray.vue:104
-#, fuzzy
 msgid "%{label} hinzufügen"
-msgstr "Add tab"
+msgstr "Add %{label}"
 
 #: resources/vue/components/questionnaires/InputArray.vue:89
-#, fuzzy
 msgid "%{label} löschen"
-msgstr "Delete %{ name }"
+msgstr "Delete %{label}"
 
 #: resources/vue/components/RangeInput.vue:3
 msgid "%{myValue} von %{max}"
@@ -396,10 +394,8 @@ msgid "Aktivitäten"
 msgstr "Activities"
 
 #: resources/vue/components/questionnaires/InputArray.vue:61
-#, fuzzy
 msgid "Aktuelle Position in der Liste: %{pos} von %{listLength}."
-msgstr ""
-"%{blockTitle} block. Current position in the list: %{pos} of %{listLength}."
+msgstr "Current position in the list: %{pos} of %{listLength}."
 
 #: resources/vue/components/courseware/CoursewareContentBookmarkFilterWidget.vue:12
 msgid "alle"
@@ -1048,9 +1044,8 @@ msgid "Bitte geben Sie ein Datum an."
 msgstr "Please specify a date."
 
 #: resources/vue/components/courseware/CoursewareIframeBlock.vue:137
-#, fuzzy
 msgid "Bitte geben Sie eine gültige URL ein."
-msgstr "Please enter a valid token"
+msgstr "Please enter a valid URL."
 
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:97
 msgid "Bitte geben Sie eine Uhrzeit an."
@@ -1325,14 +1320,12 @@ msgid "Datei"
 msgstr "File"
 
 #: resources/vue/components/FilesTable.vue:566
-#, fuzzy
 msgid "Datei %{filename} anzeigen"
-msgstr "Display filename"
+msgstr "Show file %{filename}"
 
 #: resources/vue/components/FilesTable.vue:544
-#, fuzzy
 msgid "Datei %{filename} herunterladen"
-msgstr "Download file"
+msgstr "Download file %{filename}"
 
 #: resources/vue/components/FilesTable.vue:154
 msgid "Datei %{name} auswählen"
@@ -1511,9 +1504,8 @@ msgid "Detaillierte Veranstaltungsliste"
 msgstr "Detailed list of courses"
 
 #: resources/vue/components/FilesTable.vue:578
-#, fuzzy
 msgid "Details zur Datei %{filename} anzeigen"
-msgstr "Display filename"
+msgstr "Display details for the file %{filename}"
 
 #: resources/assets/javascripts/studip-ui.js:567
 msgid "Dez"
@@ -1734,9 +1726,8 @@ msgid "Diese Veranstaltung"
 msgstr "This course"
 
 #: resources/vue/components/MyCoursesTables.vue:149
-#, fuzzy
 msgid "Diese Veranstaltung gehört zur Farbgruppe %{group}"
-msgstr "This course belongs to a main course"
+msgstr "This course belongs to the colour group %{group}"
 
 #: resources/vue/components/StudipDialog.vue:85
 msgid "Diesen Dialog schließen"
@@ -1779,9 +1770,8 @@ msgid ""
 msgstr "Preview size. Click to enlarge."
 
 #: resources/assets/javascripts/bootstrap/forms.js:328
-#, fuzzy
 msgid "Dieses Feld muss ausgewählt sein."
-msgstr "Nobody has been selected."
+msgstr "This field must be selected."
 
 #: resources/vue/components/EditableList.vue:25
 msgid "Direkt auswählen ..."
@@ -2019,7 +2009,6 @@ msgid "Erstellen"
 msgstr "Create"
 
 #: resources/vue/components/courseware/CoursewareUnitItems.vue:69
-#, fuzzy
 msgid ""
 "Erstellen und verwalten Sie hier Ihre eigenen persönlichen Lernmaterialien "
 "in Form von ePorfolios, Vorlagen für Veranstaltungen oder einfach nur "
@@ -2165,59 +2154,59 @@ msgstr "All postings in this area will be deleted as well!"
 
 #: resources/vue/components/FilesTable.vue:382
 msgid "Es wird absteigend nach der Spalte %{colName} sortiert."
-msgstr ""
+msgstr "The sorting will be done descending by the column %{colName}."
 
 #: resources/vue/components/FilesTable.vue:336
 msgid "Es wird absteigend nach der Spalte Autor-/in sortiert."
-msgstr ""
+msgstr "The sorting will be done descending by the column Author."
 
 #: resources/vue/components/FilesTable.vue:358
 msgid "Es wird absteigend nach der Spalte Datum sortiert."
-msgstr ""
+msgstr "The sorting will be done descending by the column Date."
 
 #: resources/vue/components/FilesTable.vue:313
 msgid "Es wird absteigend nach der Spalte Downloads sortiert."
-msgstr ""
+msgstr "The sorting will be done descending by the column Downloads."
 
 #: resources/vue/components/FilesTable.vue:289
 msgid "Es wird absteigend nach der Spalte Größe sortiert."
-msgstr ""
+msgstr "The sorting will be done descending by the column Size."
 
 #: resources/vue/components/FilesTable.vue:267
 msgid "Es wird absteigend nach der Spalte Name sortiert."
-msgstr ""
+msgstr "The sorting will be done descending by the column Name."
 
 #: resources/vue/components/FilesTable.vue:245
 msgid "Es wird absteigend nach der Spalte Typ sortiert."
-msgstr ""
+msgstr "The sorting will be done descending by the column Type."
 
 #: resources/vue/components/FilesTable.vue:381
 msgid "Es wird aufsteigend nach der Spalte %{colName} sortiert."
-msgstr ""
+msgstr "The sorting will be done ascending by the column %{colName}."
 
 #: resources/vue/components/FilesTable.vue:335
 msgid "Es wird aufsteigend nach der Spalte Autor-/in sortiert."
-msgstr ""
+msgstr "The sorting will be done ascending by the column Author."
 
 #: resources/vue/components/FilesTable.vue:357
 msgid "Es wird aufsteigend nach der Spalte Datum sortiert."
-msgstr ""
+msgstr "The sorting will be done ascending by the column Date."
 
 #: resources/vue/components/FilesTable.vue:312
 msgid "Es wird aufsteigend nach der Spalte Downloads sortiert."
-msgstr ""
+msgstr "The sorting will be done ascending by the column Downloads."
 
 #: resources/vue/components/FilesTable.vue:288
 msgid "Es wird aufsteigend nach der Spalte Größe sortiert."
-msgstr ""
+msgstr "The sorting will be done ascending by the column Size."
 
 #: resources/vue/components/FilesTable.vue:266
 msgid "Es wird aufsteigend nach der Spalte Name sortiert."
-msgstr ""
+msgstr "The sorting will be done ascending by the column Name."
 
 #: resources/vue/components/FilesTable.vue:244
 msgid "Es wird aufsteigend nach der Spalte Typ sortiert."
-msgstr ""
+msgstr "The sorting will be done ascending by the column Type."
 
 #: resources/vue/components/courseware/CoursewareBlockFeedback.vue:39
 #: resources/vue/components/courseware/CoursewareStructuralElementFeedback.vue:37
@@ -2444,9 +2433,8 @@ msgid "Fehler"
 msgstr "Error"
 
 #: resources/vue/mixins/courseware/import.js:412
-#, fuzzy
 msgid "Fehler beim Anlegen der Datei"
-msgstr "Error when uploading the file."
+msgstr "Error while creating the file"
 
 #: resources/assets/javascripts/lib/tour.js:104
 msgid "Fehler beim Aufruf des Tour-Controllers"
@@ -2465,9 +2453,8 @@ msgid "Fehler im Import-Archiv"
 msgstr "Error in the import archive"
 
 #: resources/assets/javascripts/bootstrap/forms.js:317
-#, fuzzy
 msgid "Fehler!"
-msgstr "Error"
+msgstr "Error!"
 
 #: resources/vue/components/courseware/CoursewareShelfDialogImport.vue:241
 #: resources/vue/components/courseware/CoursewareStructuralElementDialogImport.vue:140
@@ -2571,9 +2558,8 @@ msgid "Geben Sie einen Suchbegriff mit mindestens 3 Zeichen ein."
 msgstr "Please enter a search term with at least 3 characters."
 
 #: resources/assets/javascripts/bootstrap/forms.js:322
-#, fuzzy
 msgid "Geben Sie mindestens %{min} Zeichen ein."
-msgstr "Search string too short. Please enter at least 3 characters."
+msgstr "Please enter at least %{min} characters."
 
 #: resources/vue/components/courseware/CoursewareBiographyPersonalInformationBlock.vue:12
 #: resources/vue/components/courseware/CoursewareBiographyPersonalInformationBlock.vue:34
@@ -2806,9 +2792,8 @@ msgstr ""
 "especially interesting if the learning material is shared as OER."
 
 #: resources/assets/javascripts/bootstrap/forms.js:330
-#, fuzzy
 msgid "Hier muss ein Wert eingetragen werden."
-msgstr "Persons to be added to the group"
+msgstr "A value must be entered here."
 
 #: resources/vue/components/BlubberThread.vue:192
 msgid "Hierauf antworten."
@@ -2956,9 +2941,8 @@ msgid "Import abgeschlossen. Es sind Fehler aufgetreten!"
 msgstr "Import finished. Errors occurred!"
 
 #: resources/vue/mixins/courseware/import.js:411
-#, fuzzy
 msgid "Import einer Datei fehlgeschlagen."
-msgstr "Category could not be created."
+msgstr "Import of a file failed."
 
 #: resources/vue/components/courseware/CoursewareShelfDialogImport.vue:174
 #: resources/vue/components/courseware/CoursewareStructuralElementDialogImport.vue:67
@@ -3625,9 +3609,8 @@ msgid "Lernmaterial löschen"
 msgstr "Delete learning material"
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:1503
-#, fuzzy
 msgid "Lernmaterial neu laden"
-msgstr "Open learning material"
+msgstr "Reload learning material"
 
 #: resources/vue/components/courseware/CoursewareUnitItem.vue:19
 msgid "Lernmaterial öffnen"
@@ -4026,39 +4009,32 @@ msgid "Multimedia"
 msgstr "Multimedia"
 
 #: resources/vue/components/FilesTable.vue:373
-#, fuzzy
 msgid "Nach %{ colName } sortieren"
-msgstr "Don't sort"
+msgstr "Sort by %{ colName }"
 
 #: resources/vue/components/FilesTable.vue:327
-#, fuzzy
 msgid "Nach Autor/-in sortieren"
-msgstr "Don't sort"
+msgstr "Sort by Author"
 
 #: resources/vue/components/FilesTable.vue:349
-#, fuzzy
 msgid "Nach Datum sortieren"
-msgstr "Don't sort"
+msgstr "Sort by Date"
 
 #: resources/vue/components/FilesTable.vue:304
-#, fuzzy
 msgid "Nach Downloads sortieren"
-msgstr "Don't sort"
+msgstr "Sort by Download"
 
 #: resources/vue/components/FilesTable.vue:280
-#, fuzzy
 msgid "Nach Größe sortieren"
-msgstr "Don't sort"
+msgstr "Sort by Size"
 
 #: resources/vue/components/FilesTable.vue:258
-#, fuzzy
 msgid "Nach Name sortieren"
-msgstr "Don't sort"
+msgstr "Sort by Name"
 
 #: resources/vue/components/FilesTable.vue:236
-#, fuzzy
 msgid "Nach Typ sortieren"
-msgstr "Don't sort"
+msgstr "Sort by Type"
 
 #: resources/assets/javascripts/studip-ui.js:605
 msgid "nachm."
@@ -4383,9 +4359,8 @@ msgstr "Folder"
 
 #: resources/vue/components/FilesTable.vue:433
 #: resources/vue/components/FilesTable.vue:449
-#, fuzzy
 msgid "Ordner %{foldername} öffnen"
-msgstr "Select folder %{name}"
+msgstr "Open folder %{foldername}"
 
 #: resources/vue/components/FilesTable.vue:148
 msgid "Ordner %{name} auswählen"
@@ -4892,9 +4867,8 @@ msgstr ""
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:325
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:24
-#, fuzzy
 msgid "Sie können diese Daten unter \"Seiteneinstellungen\" verändern."
-msgstr "You can modify the data via \"Edit page\"."
+msgstr "You can modify the data via \"Page settings\"."
 
 #: resources/vue/components/courseware/CoursewareStructuralElementDialogCopy.vue:26
 msgid ""
@@ -4990,13 +4964,12 @@ msgid "Sonstiges"
 msgstr "Miscellanea"
 
 #: resources/vue/components/questionnaires/InputArray.vue:64
-#, fuzzy
 msgid ""
 "Sortierelement für %{label} %{option}. Drücken Sie die Tasten Pfeil-nach-"
 "oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben."
 msgstr ""
-"Sorting element for the statement %{statement}. Press the up or down arrow "
-"key to move this element inside the list."
+"Sorting element for %{label} %{option}. Press the up or down arrow key to "
+"move this element inside the list."
 
 #: resources/assets/javascripts/chunks/tablesorter.js:26
 msgid "Sortieren ist deaktiviert"
@@ -5542,9 +5515,8 @@ msgid "von"
 msgstr "from"
 
 #: resources/vue/components/courseware/CoursewareContentShared.vue:28
-#, fuzzy
 msgid "Von mir geteilte Seiten"
-msgstr "Learning contents shared by me"
+msgstr "Pages shared by me"
 
 #: resources/assets/javascripts/studip-ui.js:539
 msgid "Vor"
@@ -5973,9 +5945,8 @@ msgid "Zufallszeichen für Verschlüsselung (Salt)"
 msgstr "Random character for encryption (Salt)"
 
 #: resources/vue/components/MyCoursesTables.vue:87
-#, fuzzy
 msgid "Zugeordnete Farbgruppe"
-msgstr "Assigned to group "
+msgstr "Assigned colour group"
 
 #: resources/vue/components/courseware/CoursewareBlockInfo.vue:22
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:257
@@ -6037,9 +6008,8 @@ msgid "zurück zu %{ parentTitle }"
 msgstr "back to %{ parentTitle }"
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:1507
-#, fuzzy
 msgid "Zurück zur Lernmaterialübersicht"
-msgstr "Back to overview"
+msgstr "Back to the learning material overview"
 
 #: resources/vue/components/courseware/CoursewareTasksDialogDistribute.vue:165
 #: resources/vue/components/courseware/CoursewareTasksDialogDistribute.vue:338
