@@ -31,7 +31,7 @@
         <section class="noquestionnaires">
             <?= _('Es sind keine Fragebögen vorhanden.') ?>
             <? if ($allowed_to_add) : ?>
-                <?= _("Um neue Fragebögen zu erstellen, klicken Sie rechts auf das Plus.") ?>
+                <?= _("Nutzen Sie die Aktion „Fragebogen hinzufügen“ um einen neuen Fragebogen hinzuzufügen.") ?>
             <? endif ?>
         </section>
     <? endif; ?>

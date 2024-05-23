@@ -40,7 +40,7 @@ if ($_SERVER['HTTPS'] == 'on' && $_SERVER['SERVER_PORT'] != 443 ||
     <fieldset>
         <legend><?= _("Daten für das bereitstellende System") ?></legend>
         <p class="info">
-            <?= _("Tragen Sie bei gitlab, github.com oder dem Pluginmarktplatz untenstehende URL ein, die der Webhook aufrufen soll.") ?>
+            <?= _("Tragen Sie bei gitlab, github.com oder dem Pluginmarktplatz die folgende URL ein, die der Webhook aufrufen soll.") ?>
             <? if ($plugin['automatic_update_secret']) : ?>
             <?= _("Dieser Aufruf muss noch mit dem Sicherheitstoken abgesichert werden.") ?>
             <? endif ?>
