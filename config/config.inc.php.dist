@@ -38,7 +38,6 @@ global
   $INST_ADMIN_DATAFIELDS_VIEW,
   $INST_MODULES,
   $INST_TYPE,
-  $LIT_LIST_FORMAT_TEMPLATE,
   $NAME_FORMAT_DESC,
   $PERS_TERMIN_KAT,
   $SCM_PRESET,
@@ -69,7 +68,7 @@ $UNI_URL = "http://www.studip.de";
 $UNI_LOGIN_ADD='';
 $UNI_LOGOUT_ADD=sprintf(_("Und hier geht's zur %sStud.IP Portalseite%s&nbsp;"), "<a href=\"http://www.studip.de\"><b>", "</b></a>");
 $UNI_CONTACT = "<please insert your general contact mail-adress here>";
-$UNI_INFO = "Stud.IP 5.4 - Studienbegleitender Internetsupport von Präsenzlehre";
+$UNI_INFO = "Stud.IP 5.5 - Studienbegleitender Internetsupport von Präsenzlehre";
 
 
 /* $SEM_CLASS and $SEM_TYPE configuration moved to database
