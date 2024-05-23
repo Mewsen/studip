@@ -20,10 +20,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-23 14:58+0200\n"
-"PO-Revision-Date: 2024-04-12 15:29+0000\n"
+"PO-Revision-Date: 2024-05-23 13:58+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-4/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-4/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -441,9 +441,8 @@ msgid "Das Anmeldeset: %s wurde gespeichert"
 msgstr "The admission set %s has been saved"
 
 #: app/controllers/admission/courseset.php:335
-#, fuzzy
 msgid "Sie dürfen diese Anmelderegel nicht löschen."
-msgstr "You can also delete the address."
+msgstr "You must not delete this admission rule."
 
 #: app/controllers/admission/courseset.php:393
 #: app/views/admission/courseset/configure.php:140
@@ -55947,6 +55946,8 @@ msgid ""
 "Hiermit wird bescheinigt, dass %1$s am %2$s erfolgreich am Seminar %3$s "
 "teilgenommen hat."
 msgstr ""
+"It is hererby certified that %1$s successfully participated on the seminar "
+"%3$s on %2$s."
 
 #: templates/courseware/block_types/iframe.php:2
 #: templates/courseware/block_types/embed.php:2
