@@ -89,13 +89,15 @@ class Institute_OverviewController extends AuthenticatedController
                     'follow_inst' => 'on'
                 ]);
                 $widget->addLink(_('Einrichtung abonnieren'), $url);
+                $this->sidebar->addWidget($widget);
             } elseif (! $GLOBALS['perm']->have_studip_perm('autor', $this->institute_id)) {
                 $url = URLHelper::getURL('dispatch.php/institute/overview', [
                     'follow_inst' => 'off'
                 ]);
                 $widget->addLink(_('Austragen aus der Einrichtung'), $url);
+                $this->sidebar->addWidget($widget);
             }
-            $this->sidebar->addWidget($widget);
+            
 
             if (! $GLOBALS['perm']->have_studip_perm('user', $this->institute_id) AND (Request::option('follow_inst') == 'on')) {
                 $query = "INSERT IGNORE INTO user_inst

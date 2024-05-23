@@ -78,7 +78,8 @@ body:not(.fixed) #navigation-level-1-items {
     }
 
     img {
-        filter: hue-rotate(350deg) saturate(8.7%) brightness(177.3%) !important;
+        // filter: hue-rotate(350deg) saturate(8.7%) brightness(177.3%) !important;
+        filter: hue-rotate(350deg) saturate(8.7%) brightness(155%) !important;
     }
 
     // Hide all navigation item title on hover and display only the currently

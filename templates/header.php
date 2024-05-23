@@ -255,13 +255,13 @@ if ($navigation) {
             <? if ($contextable) : ?>
                 <div id="context-title">
                     <? if (Context::isCourse()) : ?>
-                        <?= Icon::create('seminar', Icon::ROLE_INFO)->asImg(20, ['class' => 'context_icon']) ?>
+                        <?= CourseAvatar::getAvatar(Context::get()->id)->getImageTag(Avatar::SMALL, ['class' => 'context-avatar']) ?>
                         <?= htmlReady(Context::get()->getFullName()) ?>
                         <? if ($GLOBALS['user']->config->SHOWSEM_ENABLE && !Context::get()->isOpenEnded()): ?>
                             (<?= htmlReady(Context::get()->getTextualSemester()) ?>)
                         <? endif ?>
                     <? elseif (Context::isInstitute()) : ?>
-                        <?= Icon::create('institute', Icon::ROLE_INFO)->asImg(20, ['class' => 'context_icon']) ?>
+                        <?= InstituteAvatar::getAvatar(Context::get()->id)->getImageTag(Avatar::SMALL, ['class' => 'context-avatar']) ?>
                         <?= htmlReady(Context::get()->name) ?>
                     <? endif ?>
                 </div>

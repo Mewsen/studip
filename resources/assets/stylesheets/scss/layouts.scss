@@ -81,30 +81,30 @@ body {
 #navigation-level-2,
 #navigation-level-3 {
     #context-title {
-        font-size: 1.1em;
-        height: 30px;
-        padding-left: $page-margin;
-        max-height: 30px;
+        font-size: 1.4em;
+        height: 25px;
+        padding: 20px 15px;
+        max-height: 25px;
         overflow: hidden;
 
-        background: linear-gradient(to bottom, var(--dark-gray-color-5), var(--dark-gray-color-10));
+        background-color:  var(--dark-gray-color-5);
 
-        > .context_icon {
-            margin: 7px 1px 0 9px;
+        > .context-avatar {
+            margin: 0 5px 0 12px;
             vertical-align: text-bottom;
         }
     }
 
     .tabs_wrapper {
         align-items: stretch;
-        background-color: var(--dark-gray-color-10);
-        border-bottom: 1px solid var(--dark-gray-color-40);
+        background-color: var(--dark-gray-color-5);
+        border-bottom: 1px solid var(--dark-gray-color-20);
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
         font-size: 0.9em;
         justify-content: space-between;
-        padding-left: 27px;
+        padding-left: 5px;
     }
 
     .contextless & {
@@ -191,16 +191,16 @@ body {
 }
 
 #context-title {
-    font-size: 1.1em;
-    height: 30px;
-    padding-left: $page-margin;
-    max-height: 30px;
+    font-size: 1.4em;
+    height: 25px;
+    padding: 20px 15px;
+    max-height: 25px;
     overflow: hidden;
 
-    background: linear-gradient(to bottom, var(--dark-gray-color-5), var(--dark-gray-color-10));
+    background:var(--dark-gray-color-5);
 
-    > .context_icon {
-        margin: 7px 1px 0 9px;
+    > .context-avatar {
+        margin: 0 5px 0 12px;
         vertical-align: text-bottom;
     }
 }
@@ -291,10 +291,10 @@ body {
             flex-direction: row;
             align-items: stretch;
             justify-content: space-between;
-            background-color: var(--dark-gray-color-10);
+            background-color: var(--dark-gray-color-5);
             font-size: 0.9em;
             min-height: 2.3em;
-            border-bottom: 1px solid var(--dark-gray-color-40);
+            border-bottom: 1px solid var(--dark-gray-color-20);
         }
 
         #tabs { // row 1 of layout_page

@@ -115,6 +115,8 @@ body:not(.fixed) #navigation-level-1-items > li.active:after,
 
 #tabs li,
 #navigation-level-2,
+#navigation-level-3,
+#current-page-structure #navigation-level-3 .tabs_wrapper,
 #current-page-structure #navigation-level-2 .tabs_wrapper {
     background-color: $white;
 }
