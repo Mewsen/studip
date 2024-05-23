@@ -785,7 +785,7 @@ class Course_StudygroupController extends AuthenticatedController
             // send invite message to user
             $msg     = new messaging();
             $sem     = new Seminar($id);
-            $message = sprintf(_("%s möchte Sie auf die Studiengruppe %s aufmerksam machen. Klicken Sie auf den untenstehenden Link, um direkt zur Studiengruppe zu gelangen.\n\n %s"),
+            $message = sprintf(_("%s möchte Sie auf die Studiengruppe %s aufmerksam machen. Klicken Sie auf den folgenden Link, um direkt zur Studiengruppe zu gelangen.\n\n %s"),
                 get_fullname(), $sem->name, URLHelper::getlink("dispatch.php/course/studygroup/details/" . $id, ['cid' => null]));
             $subject = _("Sie wurden in eine Studiengruppe eingeladen");
             $msg->insert_message($message, get_username($receiver), '', '', '', '', '', $subject);
