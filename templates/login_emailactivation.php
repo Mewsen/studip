@@ -9,7 +9,7 @@ use Studip\Button, Studip\LinkButton;
  <b><?= _('E-Mail Aktivierung') ?></b>
 </td></tr>
 <tr><td style="background-color: #fff; padding: 1.5em;">
-<?= _('Sie haben Ihre E-Mail-Adresse geändert. Um diese frei zu schalten müssen Sie den Ihnen an Ihre neue Adresse zugeschickten Aktivierungs Schlüssel im unten stehenden Eingabefeld eintragen.'); ?>
+<?= _('Sie haben Ihre E-Mail-Adresse geändert. Um diese frei zu schalten müssen Sie den Ihnen an Ihre neue Adresse zugeschickten Aktivierungs Schlüssel im folgenden Eingabefeld eintragen.'); ?>
 <br><form action="activate_email.php" method="post">
  <?= CSRFProtection::tokenTag() ?>
  <input name="key">
@@ -25,7 +25,7 @@ use Studip\Button, Studip\LinkButton;
  <b><?= _('E-Mail Aktivierung neu senden') ?></b>
 </td></tr>
 <tr><td style="background-color: #fff; padding: 1.5em;">
-<?= _('Sollten Sie keine E-Mail erhalten haben, können Sie sich einen neuen Aktivierungsschlüssel zuschicken lassen. Geben Sie dazu Ihre gewünschte E-Mail-Adresse unten an:'); ?>
+<?= _('Sollten Sie keine E-Mail erhalten haben, können Sie sich einen neuen Aktivierungsschlüssel zuschicken lassen. Geben Sie dazu Ihre gewünschte E-Mail-Adresse im folgenden Formular an:'); ?>
 <form action="activate_email.php" method="post">
 <?= CSRFProtection::tokenTag() ?>
 <input type="hidden" name="uid" value="<?= $uid ?>">
