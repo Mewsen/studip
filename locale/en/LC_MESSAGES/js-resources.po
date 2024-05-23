@@ -4,10 +4,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2024-04-12 14:29+0000\n"
+"PO-Revision-Date: 2024-05-23 14:02+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-1-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-1-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -689,9 +689,8 @@ msgid "Bitte geben Sie ein Datum an."
 msgstr "Please specify a date."
 
 #: resources/vue/components/courseware/CoursewareIframeBlock.vue:137
-#, fuzzy
 msgid "Bitte geben Sie eine gültige URL ein."
-msgstr "Please enter a valid token"
+msgstr "Please enter a valid URL."
 
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:97
 msgid "Bitte geben Sie eine Uhrzeit an."
@@ -3648,9 +3647,8 @@ msgstr ""
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:302
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:24
-#, fuzzy
 msgid "Sie können diese Daten unter \"Seiteneinstellungen\" verändern."
-msgstr "You can modify the data via \"Edit page\"."
+msgstr "You can modify the data via \"Page settings\"."
 
 #: resources/vue/components/courseware/CoursewareContentOverviewElements.vue:340
 msgid ""
