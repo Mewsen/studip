@@ -40,7 +40,7 @@ if (!function_exists('_')) {
 } else {
     require_once 'lib/language.inc.php';
 
-    foreach (explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']) as $lang) {
+    foreach (explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '') as $lang) {
         list($lang, ) = explode(';', $lang);
         $lang = substr($lang, 0, 2);
 
