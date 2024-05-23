@@ -24,7 +24,7 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <?= _('Benachrichtigung für unten aufgeführte Veranstaltungen:') ?>
+                    <?= _('Benachrichtigungen für die folgenden Veranstaltungen:') ?>
                 </td>
                 <? $i = 0; ?>
                 <? foreach ($modules as $index => $data): ?>
