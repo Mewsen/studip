@@ -26,10 +26,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-23 15:02+0200\n"
-"PO-Revision-Date: 2024-04-12 15:29+0000\n"
+"PO-Revision-Date: 2024-05-23 14:01+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-2/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-2/en/>\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -511,9 +511,8 @@ msgid "Das Anmeldeset: %s wurde gespeichert"
 msgstr "The admission set %s has been saved"
 
 #: app/controllers/admission/courseset.php:331
-#, fuzzy
 msgid "Sie dürfen diese Anmelderegel nicht löschen."
-msgstr "You can also delete the address."
+msgstr "You must not delete this admission rule."
 
 #: app/controllers/admission/courseset.php:388
 #: app/views/admission/courseset/configure.php:120
@@ -10600,15 +10599,15 @@ msgid "Jede Studiengruppe muss mindestens einen Gruppengründer haben!"
 msgstr "Each study group must have at least one group founder!"
 
 #: app/controllers/course/studygroup.php:776
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "%s möchte Sie auf die Studiengruppe %s aufmerksam machen. Klicken Sie auf "
 "den folgenden Link, um direkt zur Studiengruppe zu gelangen.\n"
 "\n"
 " %s"
 msgstr ""
-"%s wants to draw your attention to the study group %s. The link below takes "
-"you directly to the study group.\n"
+"%s wants to draw your attention to the study group %s. The following link "
+"takes you directly to the study group.\n"
 "\n"
 "%s"
 
@@ -11337,7 +11336,6 @@ msgid "Das Passwort wurde erfolgreich geändert."
 msgstr "Password has been changed."
 
 #: app/controllers/settings/details.php:35
-#, fuzzy
 msgid "Lebenslauf, Schwerpunkte und Publikationen bearbeiten"
 msgstr "Edit CV, research interests and publications"
 
@@ -11421,7 +11419,6 @@ msgid "Sie dürfen dieses Profil nicht bearbeiten"
 msgstr "You must not edit this profile"
 
 #: app/controllers/settings/settings.php:48
-#, fuzzy
 msgid ""
 "Wahrscheinlich ist Ihre Session abgelaufen. Bitte nutzen Sie in diesem Fall "
 "den folgenden Link, um zurück zur Anmeldung zu gelangen.\n"
@@ -11430,11 +11427,11 @@ msgid ""
 "nicht bearbeiten dürfen, sein. Nutzen Sie den folgenden Link, um zurück auf "
 "die Startseite zu gelangen."
 msgstr ""
-"Probably your session has expired. In this case, please use the link below "
-"to return to the login page.\n"
+"Probably your session has expired. In this case, please use the following "
+"link to return to the login page.\n"
 "\n"
 "Another possible cause is an attempt to access user data you are not allowed "
-"to edit. Use the link below to return to the start page."
+"to edit. Use the following link to return to the start page."
 
 #: app/controllers/settings/settings.php:210
 msgid ""
@@ -15282,9 +15279,8 @@ msgid "Es wurden %s Dateien hochgeladen"
 msgstr "%s files have been uploaded"
 
 #: app/controllers/file.php:190
-#, fuzzy
 msgid "Das Plugin ist kein Dateibereich-Plugin."
-msgstr "This plug-in does not include a valid plug-in class."
+msgstr "The plugin is not a file area plugin."
 
 #: app/controllers/file.php:431
 #, php-format
@@ -19301,7 +19297,6 @@ msgid "Lizenzen auf dem Marktplatz"
 msgstr "Licenses on the market place"
 
 #: app/views/oer/market/licenseinfo.php:21
-#, fuzzy
 msgid ""
 "Zum Glück gibt es kluge Menschen, die sich zum Thema <em>Lizenzen</em> kluge "
 "Gedanken gemacht haben. Daher gibt es die sogenannten CreativeCommons-"
@@ -19317,13 +19312,13 @@ msgid ""
 msgstr ""
 "Fortunately there are smart people that have made clever thoughts regarding "
 "<em>licenses</em>. Therefore the so-called CreativeCommons licenses exist. "
-"These are valid internationally and mean that which is required above. "
-"Thereby, everyone that is using the marketplace has legal certainty. These "
-"licenses are used very often outside of the marketplace. Musicians license "
-"their raw music files with them, writers their poems and lecturers naturally "
-"their slides. The only real requirement is that the authors of the learning "
-"materials must be named transparently in one form or another in case of "
-"distribution or modification!"
+"These are valid internationally and mean that which is required in the "
+"preceding text. Thereby, everyone that is using the marketplace has legal "
+"certainty. These licenses are used very often outside of the marketplace. "
+"Musicians license their raw music files with them, writers their poems and "
+"lecturers naturally their slides. The only real requirement is that the "
+"authors of the learning materials must be named transparently in one form or "
+"another in case of distribution or modification!"
 
 #: app/views/oer/market/licenseinfo.php:24
 msgid ""
@@ -19485,13 +19480,13 @@ msgid "Wirklich löschen?"
 msgstr "Really delete?"
 
 #: app/views/oer/market/details.php:106
-#, fuzzy, php-format
+#, php-format
 msgid "Niveau: %s-%s von 12"
-msgstr "Entry %s - %s out of %s"
+msgstr "Level: %s-%s of 12"
 
 #: app/views/oer/market/details.php:109
 msgid "1 = leicht, 12 = schwer"
-msgstr ""
+msgstr "1 = easy, 12 = hard"
 
 #: app/views/oer/market/details.php:114 app/views/oer/mymaterial/edit.php:259
 msgid "Lizenz"
@@ -19899,7 +19894,6 @@ msgid "Werden Sie Teil des weltweiten Stud.IP Lernmarktplatzes!"
 msgstr "Become a part of the worldwide Stud.IP learning marketplace!"
 
 #: app/views/oer/admin/hosts.php:81
-#, fuzzy
 msgid ""
 "Der Lernmarktplatz ist ein Ort des Austauschs von kostenlosen und freien "
 "Lernmaterialien. Daher wäre es schade, wenn er nur auf Ihr einzelnes Stud.IP "
@@ -19930,7 +19924,7 @@ msgstr ""
 "it fits into the open source idea of Stud.IP, because one doesn't become "
 "dependent of a central institution. But your Stud.IP must somehow find a "
 "first contact to the big network of all learning marketplaces to get "
-"started. For this, select one of the servers listed below. They are called "
+"started. For this, select one of the following servers. They are called "
 "index servers and form the gate to the rest of the whole network. Make sure "
 "that your are connected to at least one but not too many index servers."
 
@@ -21081,10 +21075,10 @@ msgid "Standort / Hierarchie"
 msgstr "Location / Hierarchy"
 
 #: app/views/resources/room_group/permissions.php:31
-#, fuzzy
 msgid ""
 "Es sind keine gemeinsamen Rechte für die zuvor aufgelisteten Räume vorhanden."
-msgstr "There are no common permissions for the rooms shown above."
+msgstr ""
+"There are no common permissions available for the previously listed rooms."
 
 #: app/views/resources/room_group/permissions.php:32
 #: app/views/resources/room_planning/semester_plan.php:35
@@ -22714,6 +22708,8 @@ msgid ""
 "Es sind aktuell keine Ankündigungen vorhanden. Nutzen Sie die Funktion "
 "„Hinzufügen“, um eine neue Ankündigung zu erstellen."
 msgstr ""
+"No current announcements are available. Use the function \"add\" to create a "
+"new announcement."
 
 #: app/views/news/display.php:57 app/views/news/display.php:63
 #, php-format
@@ -24854,9 +24850,8 @@ msgid "Termin wiederherstellen"
 msgstr "Restore date"
 
 #: app/views/course/timesrooms/_cycleRow.php:137
-#, fuzzy
 msgid "Raumanfrage bearbeiten"
-msgstr "Edit requests"
+msgstr "Edit room request"
 
 #: app/views/course/timesrooms/_cycleRow.php:162
 msgid "Termin löschen"
@@ -26101,28 +26096,26 @@ msgid "Ich möchte folgende Anzahl an Veranstaltungen belegen:"
 msgstr "I apply for the following number of courses:"
 
 #: app/views/course/enrolment/_priocourses.php:39
-#, fuzzy
 msgid ""
 "Ziehen Sie die in Frage kommenden Veranstaltungen in den Bereich für "
 "ausgewählte Veranstaltungen und ordnen Sie sie dort in der Reihenfolge der "
 "von Ihnen gewünschten Priorität an. Sie können mehr Veranstaltungen ziehen "
 "als Sie tatsächlich belegen wollen."
 msgstr ""
-"Drag and drop your choice to the right side and sort them by priority (most "
-"desired at the top). You can drag more courses than you really want to "
-"participate in."
+"Drag the favorable courses in the area for selected courses and order them "
+"by your priority. You can drag more courses than you really want to enrol "
+"into."
 
 #: app/views/course/enrolment/_priocourses.php:45
-#, fuzzy
 msgid ""
 "Sortieren Sie die in Frage kommenden Veranstaltungen im Bereich für "
 "ausgewählte Veranstaltungen und ordnen Sie sie dort in der Reihenfolge der "
 "von Ihnen gewünschten Priorität an. Sie können mehr Veranstaltungen zuweisen "
 "als Sie tatsächlich belegen wollen."
 msgstr ""
-"Drag and drop your choice to the right side and sort them by priority (most "
-"desired at the top). You can drag more courses than you really want to "
-"participate in."
+"Sort the favorable courses in the area for selected courses and order them "
+"by your priority. You can assign more courses than you really want to enrol "
+"into."
 
 #: app/views/course/enrolment/_priocourses.php:54
 msgid "Verfügbare Veranstaltungen"
@@ -26134,11 +26127,10 @@ msgid "Ausgewählte Veranstaltungen"
 msgstr "Selected courses"
 
 #: app/views/course/enrolment/_priocourses.php:82
-#, fuzzy
 msgid ""
 "Die gewünschten Veranstaltungen aus der Liste der verfügbaren "
 "Veranstaltungen auswählen"
-msgstr "Choose courses on the left side"
+msgstr "Select the favoured courses from the list of available courses"
 
 #: app/views/course/enrolment/_priocourses.php:85
 msgid "Gewünschte Veranstaltungen hierhin ziehen"
@@ -28186,27 +28178,25 @@ msgstr ""
 "used."
 
 #: app/views/settings/privacy.php:30 lib/user_visible.inc.php:203
-#, fuzzy, php-format
+#, php-format
 msgid "sichtbar für alle Nutzenden"
-msgstr "visible to all users"
+msgstr "visible for all users"
 
 #: app/views/settings/privacy.php:31 lib/user_visible.inc.php:204
 msgid "sichtbar für eigene Nutzerdomäne"
 msgstr "visible to your own user domain"
 
 #: app/views/settings/privacy.php:41
-#, fuzzy
 msgid "Sie sind unsichtbar (durch Administrator/in eingestellt)."
-msgstr "You are admin."
+msgstr "You are invisible (set by an administrator)."
 
 #: app/views/settings/privacy.php:43
 msgid "Sie haben Lehrendenrechte und sind daher immer global sichtbar."
 msgstr "You have lecturer permissions and therefore you are always visible."
 
 #: app/views/settings/privacy.php:45
-#, fuzzy
 msgid "Sie sind immer global sichtbar (durch Administrator/in eingestellt)."
-msgstr "You always are globally visible."
+msgstr "You are always globally visible (set by an administrator)."
 
 #: app/views/settings/privacy.php:54
 msgid "Erweiterte Einstellungen"
@@ -28379,9 +28369,8 @@ msgstr ""
 "cannot be changed by you."
 
 #: app/views/settings/notification.php:27
-#, fuzzy
 msgid "Benachrichtigungen für die folgenden Veranstaltungen:"
-msgstr "Notification for the following courses:"
+msgstr "Notifications for the following courses:"
 
 #: app/views/settings/notification.php:51
 msgid "Gruppierung schließen"
@@ -31583,9 +31572,8 @@ msgid "Allgemeine Daten"
 msgstr "General details"
 
 #: app/views/admin/user/edit.php:201
-#, fuzzy
 msgid "Zugewiesene Rollen"
-msgstr "Assigned groups"
+msgstr "Assigned roles"
 
 #: app/views/admin/user/edit.php:216
 msgid "Registrierungsdaten"
@@ -31922,9 +31910,9 @@ msgid "Automatische Updates sind eingerichtet"
 msgstr "Automatic updates are set up"
 
 #: app/views/admin/plugin/index.php:81
-#, fuzzy, php-format
+#, php-format
 msgid "%d ausstehende Migration(en)"
-msgstr "Executed migrations"
+msgstr "%d pending migrations"
 
 #: app/views/admin/plugin/index.php:95 app/views/admin/plugin/index.php:96
 msgid "Zugriffsrechte bearbeiten"
@@ -31998,13 +31986,12 @@ msgid "Daten für das bereitstellende System"
 msgstr "Information for distributing system"
 
 #: app/views/admin/plugin/edit_automaticupdate.php:43
-#, fuzzy
 msgid ""
 "Tragen Sie bei gitlab, github.com oder dem Pluginmarktplatz die folgende URL "
 "ein, die der Webhook aufrufen soll."
 msgstr ""
-"Add the URL below for the web hook call to GitLab, GitHub or the Stud.IP "
-"marketplace."
+"Add the following URL the web hook shall invoke on gitlab, github.com or the "
+"plugin marketplace."
 
 #: app/views/admin/plugin/edit_automaticupdate.php:45
 msgid "Dieser Aufruf muss noch mit dem Sicherheitstoken abgesichert werden."
@@ -34704,7 +34691,7 @@ msgstr "No questionnaires available."
 msgid ""
 "Nutzen Sie die Aktion „Fragebogen hinzufügen“ um einen neuen Fragebogen "
 "hinzuzufügen."
-msgstr ""
+msgstr "Use the action \"Add questionnaire\" to add a new questionnaire."
 
 #: app/views/questionnaire/widget.php:40
 msgid "Abgelaufene Fragebögen ausblenden"
@@ -42740,9 +42727,8 @@ msgid "Das ist mein Lebenslauf."
 msgstr "This is my C.V."
 
 #: lib/extern/modules/views/persondetails_preview.inc.php:40
-#, fuzzy
 msgid "Das sind meine Schwerpunkte."
-msgstr "These are my research interests."
+msgstr "This is my focus."
 
 #: lib/extern/modules/views/persondetails_preview.inc.php:43
 msgid "Das sind meine Publikationen."
@@ -43961,18 +43947,16 @@ msgid "Anzahl Einträge"
 msgstr "Number of entries"
 
 #: lib/classes/MessageBox.class.php:152
-#, fuzzy
 msgid "Systemfehler"
-msgstr "System field"
+msgstr "System error"
 
 #: lib/classes/MessageBox.class.php:154
-#, fuzzy
 msgid "Warnung"
-msgstr "Regulations"
+msgstr "Warning"
 
 #: lib/classes/MessageBox.class.php:156
 msgid "Erfolg"
-msgstr ""
+msgstr "Success"
 
 #: lib/classes/StudipSemSearch.class.php:77
 msgid "anderes Semester auswählen"
@@ -45377,15 +45361,15 @@ msgid "Einladung akzeptiert"
 msgstr "Invitation accepted"
 
 #: lib/classes/StudygroupModel.php:535
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "%s hat die Einladung zur Studiengruppe %s akzeptiert. Klicken Sie auf den "
 "folgenden Link, um direkt zur Studiengruppe zu gelangen.\n"
 "\n"
 " [Direkt zur Studiengruppe]%s"
 msgstr ""
-"%s has accepted the invitation to the study group %s. The link below "
-"directly takes you to the study group.\n"
+"%s has accepted the invitation to the study group %s. Click on the following "
+"link to get directly to the study group.\n"
 "\n"
 " [Directly to the study group]%s"
 
@@ -45394,15 +45378,15 @@ msgid "Neuer Mitgliedsantrag"
 msgstr "New membership application"
 
 #: lib/classes/StudygroupModel.php:546
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "%s möchte der Studiengruppe %s beitreten. Klicken Sie auf den folgenden "
 "Link, um direkt zur Studiengruppe zu gelangen.\n"
 "\n"
 " [Direkt zur Studiengruppe]%s"
 msgstr ""
-"%s would like to join study group %s. The link below directly takes you to "
-"the study group.\n"
+"%s would like to join study group %s. Click on the following link to get "
+"directly to the study group.\n"
 "\n"
 " [Directly to the study group]%s"
 
@@ -49953,19 +49937,16 @@ msgid "Vorherige Exception:"
 msgstr "Previous Exception:"
 
 #: lib/user_visible.inc.php:202
-#, fuzzy
 msgid "Standardeinstellung"
-msgstr "Default substitute"
+msgstr "Default setting"
 
 #: lib/user_visible.inc.php:206
-#, fuzzy
 msgid "Sichtbarkeit erzwingen"
-msgstr "Change visibility"
+msgstr "Enforce visibility"
 
 #: lib/user_visible.inc.php:207
-#, fuzzy
 msgid "Unsichtbarkeit erzwingen"
-msgstr "Invisible folder"
+msgstr "Enforce invisibility"
 
 #: lib/user_visible.inc.php:241
 msgid "Bitte wählen Sie Ihren Sichtbarkeitsstatus aus!"
@@ -50808,9 +50789,8 @@ msgid ""
 msgstr "This user account has expired. Please contact the administration."
 
 #: lib/phplib/Seminar_Auth.class.php:284
-#, fuzzy
 msgid "Login fehlgeschlagen"
-msgstr "Error on Saving"
+msgstr "Login failed"
 
 #: lib/seminar_open.php:148 lib/seminar_open.php:155 lib/seminar_open.php:161
 msgid "Mehr …"
@@ -52550,9 +52530,8 @@ msgid ""
 msgstr "Registration is only possible after accepting the terms of use:"
 
 #: lib/admissionrules/termsadmission/templates/input.php:9
-#, fuzzy
 msgid "Hiermit akzeptiere ich die Teilnahmebedingungen"
-msgstr "I hereby accept the terms of use shown above"
+msgstr "I hereby accept the terms of use"
 
 #: lib/admissionrules/coursememberadmission/CourseMemberAdmission.class.php:68
 msgid ""
@@ -53741,13 +53720,13 @@ msgstr ""
 "object (course or institute)."
 
 #: templates/check_object_exception.php:6
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Dieser Fehler tritt auch auf, wenn Ihre Session abgelaufen ist. Bitte nutzen "
 "Sie in diesem Fall den folgenden Link, um zurück zur Anmeldung zu gelangen."
 msgstr ""
 "This error also occurs if your session has expired. In this case, clicking "
-"the link below takes you back to the login screen."
+"the following link takes you back to the login screen."
 
 #: templates/check_object_exception.php:10
 msgid "Folgender von Ihnen eingegebene Text konnte nicht gespeichert werden:"
@@ -54075,29 +54054,27 @@ msgstr ""
 "In case of any problems, please contact: <a href=\"mailto:%1$s\">%1$s</a>"
 
 #: templates/login_emailactivation.php:12
-#, fuzzy
 msgid ""
 "Sie haben Ihre E-Mail-Adresse geändert. Um diese frei zu schalten müssen Sie "
 "den Ihnen an Ihre neue Adresse zugeschickten Aktivierungs Schlüssel im "
 "folgenden Eingabefeld eintragen."
 msgstr ""
 "You have changed your e-mail address. In order to activate it, you have to "
-"enter in the input field below the confirmation code which has been sent to "
-"the new e-mail address."
+"enter the confirmation code which has been sent to the new e-mail address in "
+"the following input field."
 
 #: templates/login_emailactivation.php:25
 msgid "E-Mail Aktivierung neu senden"
 msgstr "Resend e-mail activation"
 
 #: templates/login_emailactivation.php:28
-#, fuzzy
 msgid ""
 "Sollten Sie keine E-Mail erhalten haben, können Sie sich einen neuen "
 "Aktivierungsschlüssel zuschicken lassen. Geben Sie dazu Ihre gewünschte E-"
 "Mail-Adresse im folgenden Formular an:"
 msgstr ""
-"Didn’t get any activation mail yet? Please try again and enter your e-mail "
-"address:"
+"If you did not receive an E-Mail, you can get a new activation key. To do "
+"this, enter the desired E-Mail address in the following form:"
 
 #: templates/mail/notification_html.php:12
 msgid ""
@@ -54657,7 +54634,6 @@ msgid "(Studierende dürfen keine Dateien hochladen.)"
 msgstr "(Students may not upload files.)"
 
 #: templates/filesystem/date_folder/edit.php:5
-#, fuzzy
 msgid ""
 "Wählen sie einen zugehörigen Termin aus, der Titel wird automatisch aus dem "
 "Datum des Termins erzeugt."
