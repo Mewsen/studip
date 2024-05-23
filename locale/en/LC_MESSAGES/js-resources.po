@@ -730,6 +730,11 @@ msgstr "Please confirm action"
 msgid "Bitte geben Sie ein Datum an."
 msgstr "Please specify a date."
 
+#: resources/vue/components/courseware/CoursewareIframeBlock.vue:137
+#, fuzzy
+msgid "Bitte geben Sie eine gültige URL ein."
+msgstr "Please enter a valid token"
+
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:97
 msgid "Bitte geben Sie eine Uhrzeit an."
 msgstr "Please specify a time."
