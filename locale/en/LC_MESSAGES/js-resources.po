@@ -1,18 +1,18 @@
-# Moritz Strohm <strohm@data-quest.de>, 2022, 2023.
+# Moritz Strohm <strohm@data-quest.de>, 2022, 2023, 2024.
 # Hans Christian von Steuber <hans.christian.von.steuber@uni-oldenburg.de>, 2023.
 # Ron Lucke <lucke@elan-ev.de>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2023-10-19 15:29+0000\n"
+"PO-Revision-Date: 2024-05-23 14:00+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
-"ip-5-2-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
+"stud-ip-5-2-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0.2\n"
+"X-Generator: Weblate 5.3.1\n"
 "Generated-By: easygettext\n"
 
 #: resources/assets/javascripts/lib/multi_person_search.js:71
@@ -256,9 +256,8 @@ msgid "Alle Inhalte kopieren"
 msgstr "Copy all contents"
 
 #: resources/vue/components/FilesTable.vue:180
-#, fuzzy
 msgid "Alle Ordner und Dateien auswählen"
-msgstr "Select all courses"
+msgstr "Select all folders and files"
 
 #: resources/assets/javascripts/bootstrap/raumzeit.js:114
 msgid "Alle Räume anzeigen"
@@ -400,9 +399,8 @@ msgid "Aufgabe abgegeben"
 msgstr "Submit task"
 
 #: resources/vue/components/courseware/CoursewareDashboardTasks.vue:78
-#, fuzzy
 msgid "Aufgabe bearbeiten"
-msgstr "Task ready"
+msgstr "Edit task"
 
 #: resources/vue/mixins/courseware/task-helper.js:14
 msgid "Aufgabe bereit"
@@ -731,9 +729,8 @@ msgid "Bitte geben Sie ein Datum an."
 msgstr "Please specify a date."
 
 #: resources/vue/components/courseware/CoursewareIframeBlock.vue:137
-#, fuzzy
 msgid "Bitte geben Sie eine gültige URL ein."
-msgstr "Please enter a valid token"
+msgstr "Please enter a valid URL."
 
 #: resources/vue/components/courseware/CoursewareDateBlock.vue:97
 msgid "Bitte geben Sie eine Uhrzeit an."
@@ -1010,9 +1007,8 @@ msgid "Datei"
 msgstr "File"
 
 #: resources/vue/components/FilesTable.vue:152
-#, fuzzy
 msgid "Datei %{name} auswählen"
-msgstr "Select data field"
+msgstr "Select file %{name}"
 
 #: resources/vue/components/courseware/CoursewareDownloadBlock.vue:71
 #: resources/vue/components/courseware/CoursewareFolderBlock.vue:81
@@ -1141,6 +1137,8 @@ msgid ""
 "Der Ordnertyp wurde nach der Erstellung des Blocks geändert! Bitte "
 "überprüfen Sie die Einstellungen."
 msgstr ""
+"The folder type has been changed after the creation of the block! Please "
+"check the settings."
 
 #: resources/vue/mixins/courseware/oermessage.js:17
 msgid "Der Vorschlag wurde verschickt."
@@ -1340,7 +1338,6 @@ msgid "Dieser Block wird bereits bearbeitet."
 msgstr "This block is already being edited."
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:327
-#, fuzzy
 msgid ""
 "Dieser Inhalt ist aus den persönlichen Lerninhalten von %{ ownerName } "
 "verlinkt und kann nur dort bearbeitet werden."
@@ -1374,9 +1371,8 @@ msgid "Dieses Element enthält keine Unterseiten."
 msgstr "This element does not contain sub-pages."
 
 #: resources/assets/javascripts/bootstrap/forms.js:325
-#, fuzzy
 msgid "Dieses Feld muss ausgewählt sein."
-msgstr "Nobody has been selected."
+msgstr "This field must be selected."
 
 #: resources/vue/components/EditableList.vue:25
 msgid "Direkt auswählen ..."
@@ -1848,9 +1844,8 @@ msgid "Fehler beim Hochladen des Vorschaubildes."
 msgstr "Error while uploading the preview image."
 
 #: resources/assets/javascripts/bootstrap/forms.js:314
-#, fuzzy
 msgid "Fehler!"
-msgstr "Error"
+msgstr "Error!"
 
 #: resources/vue/components/courseware/CoursewareManagerImport.vue:26
 msgid "Fehlermeldungen"
@@ -1923,9 +1918,8 @@ msgid "Geben Sie einen Suchbegriff mit mindestens 3 Zeichen ein."
 msgstr "Please enter a search term with at least 3 characters."
 
 #: resources/assets/javascripts/bootstrap/forms.js:319
-#, fuzzy
 msgid "Geben Sie mindestens %{min} Zeichen ein."
-msgstr "Search string too short. Please enter at least 3 characters."
+msgstr "Please enter at least %{min} characters."
 
 #: resources/vue/components/courseware/CoursewareCanvasBlock.vue:43
 msgid "gelb"
@@ -2100,9 +2094,8 @@ msgid "HH:mm"
 msgstr "HH:mm"
 
 #: resources/assets/javascripts/bootstrap/forms.js:327
-#, fuzzy
 msgid "Hier muss ein Wert eingetragen werden."
-msgstr "Persons to be added to the group"
+msgstr "A value must be entered here."
 
 #: resources/vue/components/BlubberThread.vue:174
 msgid "Hierauf antworten."
@@ -3094,9 +3087,8 @@ msgid "Nachrichtenbox schließen"
 msgstr "Close message box"
 
 #: resources/vue/components/courseware/CoursewareGalleryBlock.vue:86
-#, fuzzy
 msgid "Nächstes Bild"
-msgstr "next"
+msgstr "Next picture"
 
 #: resources/vue/components/FilesTable.vue:200
 #: resources/vue/components/MyCoursesTables.vue:99
@@ -3365,14 +3357,12 @@ msgid "Ordner"
 msgstr "Folder"
 
 #: resources/vue/components/FilesTable.vue:146
-#, fuzzy
 msgid "Ordner %{name} auswählen"
-msgstr "Select folder type"
+msgstr "Select folder %{name}"
 
 #: resources/vue/components/FilesTable.vue:174
-#, fuzzy
 msgid "Ordner und Dateien auswählen"
-msgstr "Select folder type"
+msgstr "Select folder and files"
 
 #: resources/vue/components/courseware/CoursewareFileChooser.vue:2
 msgid "Ordner-Filter"
@@ -3393,9 +3383,8 @@ msgid "Passwort"
 msgstr "Password"
 
 #: resources/vue/components/RedisCacheConfig.vue:35
-#, fuzzy
 msgid "Passwort/Token zur Authentifizierung"
-msgstr "External authentication"
+msgstr "Password/token for authentification"
 
 #: resources/vue/components/courseware/CoursewareAudioBlock.vue:113
 msgid "Pause"
@@ -3748,7 +3737,6 @@ msgstr ""
 #: resources/vue/components/courseware/CoursewareActionWidget.vue:61
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:55
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:357
-#, fuzzy
 msgid "Seiteneinstellungen"
 msgstr "Page settings"
 
@@ -3857,9 +3845,8 @@ msgstr ""
 
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:308
 #: resources/vue/components/courseware/CoursewareStructuralElement.vue:24
-#, fuzzy
 msgid "Sie können diese Daten unter \"Seiteneinstellungen\" verändern."
-msgstr "You can modify the data via \"Edit page\"."
+msgstr "You can modify the data via \"Page settings\"."
 
 #: resources/vue/components/courseware/CoursewareContentOverviewElements.vue:340
 msgid ""
@@ -4440,9 +4427,8 @@ msgid "Vorgang läuft. Bitte warten Sie einen Moment."
 msgstr "Process running. Please wait a moment."
 
 #: resources/vue/components/courseware/CoursewareGalleryBlock.vue:81
-#, fuzzy
 msgid "Vorheriges Bild"
-msgstr "previous"
+msgstr "Previous image"
 
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:42
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:18
