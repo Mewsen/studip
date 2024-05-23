@@ -36,15 +36,15 @@ asort($user_prio);
 <? endif; ?>
 
     <p class="hidden-medium-down">
-        <?= _('Ziehen Sie die in Frage kommenden Veranstaltungen auf die rechte Seite '
+        <?= _('Ziehen Sie die in Frage kommenden Veranstaltungen in den Bereich für ausgewählte Veranstaltungen '
             . 'und ordnen Sie sie dort in der Reihenfolge der von Ihnen gewünschten '
-            . 'Priorität an. Sie können mehr Veranstaltungen nach rechts ziehen als Sie '
+            . 'Priorität an. Sie können mehr Veranstaltungen ziehen als Sie '
             . 'tatsächlich belegen wollen.') ?>
     </p>
     <p class="hidden-medium-up">
-        <?= _('Sortieren Sie die in Frage kommenden Veranstaltungen auf die rechte Seite '
+        <?= _('Sortieren Sie die in Frage kommenden Veranstaltungen im Bereich für ausgewählte Veranstaltungen '
             . 'und ordnen Sie sie dort in der Reihenfolge der von Ihnen gewünschten '
-            . 'Priorität an. Sie können mehr Veranstaltungen nach rechts zuweisen als Sie '
+            . 'Priorität an. Sie können mehr Veranstaltungen zuweisen als Sie '
             . 'tatsächlich belegen wollen.') ?>
     </p>
 
@@ -79,7 +79,7 @@ asort($user_prio);
             <ul id="selected-courses">
                 <li class="empty">
                     <span class="hidden-medium-up">
-                        <?= _('Die gewünschten Veranstaltungen links auswählen') ?>
+                        <?= _('Die gewünschten Veranstaltungen aus der Liste der verfügbaren Veranstaltungen auswählen') ?>
                     </span>
                     <span class="hidden-medium-down">
                         <?= _('Gewünschte Veranstaltungen hierhin ziehen') ?>

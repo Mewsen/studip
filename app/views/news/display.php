@@ -8,7 +8,8 @@
         </h1>
         <nav>
         <? if ($perm): ?>
-            <a href="<?= $controller->link_for('news/edit_news/new/' . $range); ?>" data-dialog>
+            <a href="<?= $controller->link_for('news/edit_news/new/' . $range); ?>" data-dialog
+               title="<?= _('Hinzufügen') ?>">
                 <?= Icon::create('add') ?>
             </a>
         <? endif; ?>
@@ -49,7 +50,7 @@
     <? endforeach; ?>
     <? if (!$news): ?>
     <section>
-        <?= _('Es sind keine aktuellen Ankündigungen vorhanden. Um neue Ankündigungen zu erstellen, klicken Sie rechts auf das Plus-Zeichen.') ?>
+        <?= _('Es sind aktuell keine Ankündigungen vorhanden. Nutzen Sie die Funktion „Hinzufügen“, um eine neue Ankündigung zu erstellen.') ?>
     </section>
         <? if ($perm && $count_all_news) : ?>
             <footer>
