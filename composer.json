@@ -56,7 +56,6 @@
         "ksubileau/color-thief-php": "^2.0",
         "symfony/polyfill-php82": "1.29.0",
         "symfony/polyfill-php83": "1.29.0",
-        "phpoffice/phpspreadsheet": "^1.19",
         "phpoffice/phpspreadsheet": "2.1.0",
         "psy/psysh": "0.12.3",
         "okvpn/clock-lts": "^1.0",
