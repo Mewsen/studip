@@ -140,7 +140,8 @@ button,
 .button {
     &.as-link,
     &.styleless,
-    &.undecorated {
+    &.undecorated,
+    &.icon-button {
         background-color: unset;
         border: 0;
     }
