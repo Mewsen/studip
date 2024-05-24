@@ -10,8 +10,12 @@
             <span><?= htmlReady($description); ?></span>
             <input id="<?= $name . '_searchinput'; ?>" type="text" placeholder="<?= _("Suchen"); ?>" value="" name="<?= $name . '_searchinput'; ?>" style="width: 260px;" aria-label="<?= _("Suchen"); ?>">
 
-            <?= Icon::create('search', 'clickable', ['title' => _('Suche starten')])->asImg(16, ['onclick' => 'STUDIP.MultiPersonSearch.search()']) ?>
-            <?= Icon::create('decline', 'clickable', ['title' => _('Suche zurücksetzen')])->asImg(16, ['onclick' => 'STUDIP.MultiPersonSearch.resetSearch()']) ?>
+            <button class="icon-button enter-accessible" onclick='STUDIP.MultiPersonSearch.search();return false' title="<?= _('Suche starten') ?>">
+                <?= Icon::create('search')->asImg(['class' => 'text-bottom']) ?>
+            </button>
+            <button class="icon-button enter-accessible" onclick='STUDIP.MultiPersonSearch.resetSearch(); return false' title="<?= _('Suche zurücksetzen') ?>">
+                <?= Icon::create('decline')->asImg(['class' => 'text-bottom']) ?>
+            </button>
         </label>
         <p><? foreach($quickfilter as $title => $users) : ?>
             <a href="#" class="quickfilter" data-quickfilter="<?= md5($title); ?>"><?= htmlReady($title); ?> (<?= count($users); ?>)</a>
