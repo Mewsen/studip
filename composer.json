@@ -18,7 +18,6 @@
     "require": {
         "php": "^8.1",
         "guzzlehttp/psr7": "2.6.2",
-        "neomerx/json-api": "4.0.1",
         "spomky-labs/otphp": "11.2.2",
         "tuupola/cors-middleware": "^1.2.1",
         "tecnickcom/tcpdf": "6.7.5",
@@ -61,7 +60,8 @@
         "okvpn/clock-lts": "^1.0",
         "vlucas/phpdotenv": "^5.6",
         "edu-sharing/auth-plugin": "8.0.x-dev",
-        "psr/cache": "3.0.0"
+        "psr/cache": "3.0.0",
+        "laravel-json-api/neomerx-json-api": "5.0.2"
     },
     "replace": {
         "symfony/polyfill-php73": "*",
