@@ -137,9 +137,12 @@ button.button {
 }
 
 
-button.styleless {
-    background-color: unset;
-    border: 0;
+button {
+    &.styleless,
+    &.icon-button {
+        background-color: unset;
+        border: 0;
+    }
 }
 
 button.as-link {
