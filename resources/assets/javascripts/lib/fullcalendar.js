@@ -737,6 +737,25 @@ class Fullcalendar
                 url.searchParams.set('defaultDate', changed_date)
                 this.href = url.toString();
             });
+            jQuery('.sidebar-widget.calendar-action').each(function() {
+                //Each sidebar widget is different. The placement of the defaultDate URL parameter
+                //has to reflect that.
+                jQuery(this).find('button[formaction]').each(function() {
+                    //Modify the formaction attribute:
+                    let url = new URL(jQuery(this).attr('formaction'));
+                    url.searchParams.set('defaultDate', changed_date);
+                    jQuery(this).attr('formaction', url.toString());
+                });
+                jQuery(this).find('form[action]').each(function() {
+                    //Add a hidden input with the defaultDate:
+                    let hidden_input = jQuery(this).find('input[name="defaultDate"]')[0];
+                    if (!hidden_input) {
+                        hidden_input = jQuery('<input type="hidden" name="defaultDate">');
+                        jQuery(this).append(hidden_input);
+                    }
+                    jQuery(hidden_input).val(changed_date);
+                });
+            });
 
             // Now change the URL of the window.
             const url = new URL(window.location.href);
