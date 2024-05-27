@@ -9,7 +9,7 @@
     background: $white;
 }
 
-.mycourses-group-selector {
+form.default .mycourses-group-selector {
     position: relative;
 
     background-clip: padding-box;
@@ -19,26 +19,41 @@
         @extend .sr-only;
 
         &:checked + label {
-            @include background-icon(accept, info);
+            .group-number {
+                display: none;
+            }
+            .checked-icon {
+                display: inline;
+            }
         }
     }
 
     &:hover label {
-        @include background-icon(accept, info);
+        .group-number {
+            display: none;
+        }
+        .checked-icon {
+            display: inline;
+        }
     }
 
     label {
-        @include hide-text();
-
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-
-        background-position: center;
-        background-repeat: no-repeat;
-
+        text-align: center;
+        font-size: large;
+        font-weight: bold;
         cursor: pointer;
+
+        background-color: var(--white);
+        margin-bottom: 0;
+        text-indent: 0;
+
+        height: 1.2em;
+
+        .group-number {
+            display: inline;
+        }
+        .checked-icon {
+            display: none;
+        }
     }
 }
