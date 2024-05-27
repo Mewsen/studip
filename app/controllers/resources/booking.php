@@ -1352,7 +1352,7 @@ class Resources_BookingController extends AuthenticatedController
                     $resource,
                     $time_intervals,
                     [1, 3],
-                    ($this->booking->id ? [$this->booking->id] : [])
+                    isset($this->booking->id) ? [$this->booking->id] : []
                 );
                 $reservations_to_overwrite = array_merge(
                     $reservations_to_overwrite,

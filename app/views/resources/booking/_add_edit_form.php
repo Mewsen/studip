@@ -537,7 +537,7 @@
                 <label>
                     <input type="checkbox" value="1"
                            name="overwrite_bookings"
-                        <?= $overwrite_bookings ? 'checked="checked"' : '' ?>>
+                        <?= !empty($overwrite_bookings) ? 'checked' : '' ?>>
                     <?= _('Vorhandene Buchungen überschreiben') ?>
                 </label>
             </fieldset>
