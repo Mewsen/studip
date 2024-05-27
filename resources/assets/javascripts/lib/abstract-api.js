@@ -107,9 +107,11 @@ class AbstractAPI
     }
 
     convertDataToRequestParameters(data, prefix = '') {
-        return Object.entries(data).map(([key, value]) => {
+        return Object.entries(data).filter(([key, value]) => {
+            return value !== null;
+        }).map(([key, value]) => {
             const name = prefix ? `${prefix}[${key}]` : `${key}`;
-            if (value.constructor.name === 'Object') {
+            if (value.constructor?.name === 'Object') {
                 return this.convertDataToRequestParameters(value, name);
             } else {
                 return `${name}=${value}`;
