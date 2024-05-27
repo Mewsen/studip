@@ -1,4 +1,7 @@
 <?php
+
+use Studip\OAuth2\NegotiatesWithPsr7;
+
 /**
  * course/lti.php - LTI consumer API for Stud.IP
  *
@@ -13,6 +16,8 @@
 
 class Course_LtiController extends StudipController
 {
+    use NegotiatesWithPsr7;
+
     /**
      * Callback function being called before an action is executed.
      */
@@ -268,22 +273,15 @@ class Course_LtiController extends StudipController
      */
     public function save_link_action($tool_id)
     {
-        require_once 'vendor/oauth-php/library/OAuthRequestVerifier.php';
-
         $tool = LtiTool::find($tool_id);
         $lti_msg = Request::get('lti_msg');
         $lti_errormsg = Request::get('lti_errormsg');
         $content_items = Request::get('content_items');
         $content_items = json_decode($content_items, true);
 
-        OAuthStore::instance('PDO', [
-            'dsn' => 'mysql:host=' . $GLOBALS['DB_STUDIP_HOST'] . ';dbname=' . $GLOBALS['DB_STUDIP_DATABASE'],
-            'username' => $GLOBALS['DB_STUDIP_USER'],
-            'password' => $GLOBALS['DB_STUDIP_PASSWORD']
-        ]);
-
-        $oarv = new OAuthRequestVerifier();
-        $oarv->verifySignature($tool->consumer_secret, false, false);
+        if (!Studip\OAuth1::verifyRequest($this->getPsrRequest(), $tool->consumer_secret, '')) {
+            throw new Exception('Could not verify request.');
+        }
 
         if (is_array($content_items) && count($content_items['@graph'])) {
             // we only support selecting a single content item
@@ -452,18 +450,11 @@ class Course_LtiController extends StudipController
      */
     public function outcome_action($id)
     {
-        require_once 'vendor/oauth-php/library/OAuthRequestVerifier.php';
-
         $lti_data = LtiData::find($id);
 
-        OAuthStore::instance('PDO', [
-            'dsn' => 'mysql:host=' . $GLOBALS['DB_STUDIP_HOST'] . ';dbname=' . $GLOBALS['DB_STUDIP_DATABASE'],
-            'username' => $GLOBALS['DB_STUDIP_USER'],
-            'password' => $GLOBALS['DB_STUDIP_PASSWORD']
-        ]);
-
-        $oarv = new OAuthRequestVerifier();
-        $oarv->verifySignature($lti_data->getConsumerSecret(), false, false);
+        if (!Studip\OAuth1::verifyRequest($this->getPsrRequest(), $lti_data->getConsumerSecret(), '')) {
+            throw new Exception('Could not verify request.');
+        }
 
         // fetch and parse POST data
         $message = file_get_contents('php://input');

@@ -9,8 +9,12 @@
  * the License, or (at your option) any later version.
  */
 
+use Studip\OAuth2\NegotiatesWithPsr7;
+
 class StudipAuthLTI extends StudipAuthSSO
 {
+    use NegotiatesWithPsr7;
+
     public $consumer_keys;
     public $username;
     public $domain;
@@ -62,24 +66,15 @@ class StudipAuthLTI extends StudipAuthSSO
      *
      * @return  bool    true if authentication succeeds
      *
-     * @throws OAuthException2  if the signature verification failed
-     *
      */
     public function isAuthenticated($username, $password)
     {
-        require_once 'vendor/oauth-php/library/OAuthRequestVerifier.php';
-
-        OAuthStore::instance('PDO', [
-            'dsn' => 'mysql:host=' . $GLOBALS['DB_STUDIP_HOST'] . ';dbname=' . $GLOBALS['DB_STUDIP_DATABASE'],
-            'username' => $GLOBALS['DB_STUDIP_USER'],
-            'password' => $GLOBALS['DB_STUDIP_PASSWORD']
-        ]);
-
         $consumer_key = Request::get('oauth_consumer_key');
         $consumer_secret = $this->consumer_keys[$consumer_key]['consumer_secret'];
 
-        $oarv = new OAuthRequestVerifier();
-        $oarv->verifySignature($consumer_secret, false, false);
+        if (!Studip\OAuth1::verifyRequest($this->getPsrRequest(), $consumer_secret, '')) {
+            return false;
+        }
 
         return parent::isAuthenticated($username, $password);
     }
@@ -93,8 +88,6 @@ class StudipAuthLTI extends StudipAuthSSO
      * @param   string $password the password (ignored)
      *
      * @return  mixed   if authentication succeeds: the Stud.IP user, else false
-     *
-     * @throws OAuthException2  if the signature verification failed
      */
     public function authenticateUser($username, $password)
     {
