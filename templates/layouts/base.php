@@ -125,7 +125,8 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
             <? $membership = CourseMember::find([Context::get()->id, $GLOBALS['user']->id]) ?>
             <? if ($membership) : ?>
                 <a href="<?= URLHelper::getLink('dispatch.php/my_courses/groups') ?>"
-                   data-dialog
+                   data-dialog aria-label="<?= _('Gruppenzuordnung der Veranstaltung ändern') ?>"
+                   title="<?= _('Gruppenzuordnung der Veranstaltung ändern') ?>"
                    class="colorblock gruppe<?= $membership ? $membership['gruppe'] : 1 ?>"></a>
             <? endif ?>
         <? endif ?>
