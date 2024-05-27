@@ -232,6 +232,14 @@ class Calendar_DateController extends AuthenticatedController
             $this->date->repetition_end = $this->date->end;
         } else {
             $time = new DateTime();
+            if (Request::submitted('timestamp')) {
+                $time->setTimestamp(Request::int('timestamp'));
+            } elseif (Request::submitted('defaultDate')) {
+                $date_parts = explode('-', Request::get('defaultDate'));
+                if (count($date_parts) === 3) {
+                    $time->setDate($date_parts[0], $date_parts[1], $date_parts[2]);
+                }
+            }
             $time = $time->add(new DateInterval('PT1H'));
             $time->setTime(intval($time->format('H')), 0, 0);
             $this->date->begin = $time->getTimestamp();

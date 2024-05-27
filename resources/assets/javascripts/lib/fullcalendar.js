@@ -731,9 +731,9 @@ class Fullcalendar
             //Get the timestamp:
             let timestamp = changedMoment.getTime() / 1000;
 
-            jQuery('a.resource-bookings-actions').each(function () {
+            jQuery('a.resource-bookings-actions, a.calendar-action').each(function () {
                 const url = new URL(this.href);
-                url.searchParams.set('timestamp', timestamp)
+                url.searchParams.set('timestamp', timestamp.toString())
                 url.searchParams.set('defaultDate', changed_date)
                 this.href = url.toString();
             });
