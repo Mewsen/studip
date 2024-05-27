@@ -111,6 +111,8 @@ class Calendar_CalendarController extends AuthenticatedController
     {
         PageLayout::setTitle(_('Kalender'));
 
+        $default_date = \Studip\Calendar\Helper::getDefaultCalendarDate();
+
         if (Request::isPost()) {
             //In case the checkbox of the options widget is clicked, the resulting
             //POST request must be catched here and result in a redirect.
@@ -203,6 +205,7 @@ class Calendar_CalendarController extends AuthenticatedController
             if ($calendar_owner && $calendar_owner->id === User::findCurrent()->id) {
                 //The user is viewing their own calendar.
                 $options = new OptionsWidget();
+                $options->addLayoutCSSClass('calendar-action');
                 $options->addCheckbox(
                     _('Abgelehnte Termine anzeigen'),
                     Request::bool('show_declined'),
@@ -237,6 +240,7 @@ class Calendar_CalendarController extends AuthenticatedController
                         $this->url_for('calendar/calendar/index', ['view' => 'group']),
                         'group_id'
                     );
+                    $group_select->addLayoutCSSClass('calendar-action');
                     $options = [
                         '' => _('(bitte wählen)')
                     ];
@@ -263,6 +267,7 @@ class Calendar_CalendarController extends AuthenticatedController
                     $this->url_for('calendar/calendar'),
                     'user_id'
                 );
+                $calendar_select->addLayoutCSSClass('calendar-action');
                 $select_options = [
                     '' => _('(bitte wählen)'),
                     User::findCurrent()->id => _('Eigener Kalender')
@@ -335,7 +340,6 @@ class Calendar_CalendarController extends AuthenticatedController
         $slot_durations = $this->getUserCalendarSlotSettings();
 
         //Create the fullcalendar object:
-        $default_date = \Studip\Calendar\Helper::getDefaultCalendarDate();
 
         $data_url_params = [];
         if (Request::bool('show_declined')) {
