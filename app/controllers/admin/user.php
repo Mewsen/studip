@@ -1440,7 +1440,7 @@ class Admin_UserController extends AuthenticatedController
         ];
         $queries[] = [
             'desc'  => _("Anzahl der Wikiseiten"),
-            'query' => "SELECT COUNT(*) FROM wiki WHERE user_id = ? GROUP BY user_id",
+            'query' => "SELECT COUNT(*) FROM `wiki_pages` WHERE `user_id` = ? GROUP BY `user_id`",
         ];
         $queries[] = [
             'desc'  => _("Anzahl der Umfragen"),
