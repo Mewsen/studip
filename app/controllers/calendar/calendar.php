@@ -39,7 +39,7 @@ class Calendar_CalendarController extends AuthenticatedController
                 _('Termin anlegen'),
                 $this->url_for('calendar/date/add', $params),
                 Icon::create('add'),
-                ['data-dialog' => 'size=auto']
+                ['data-dialog' => 'size=auto', 'class' => 'calendar-action']
             );
         }
 
@@ -446,7 +446,7 @@ class Calendar_CalendarController extends AuthenticatedController
             _('Termin anlegen'),
             $this->url_for('calendar/date/add/course_' . $course->id),
             Icon::create('add'),
-            ['data-dialog' => 'size=default']
+            ['data-dialog' => 'size=default', 'class' => 'calendar-action']
         );
         $actions->addLink(
             _('Drucken'),
