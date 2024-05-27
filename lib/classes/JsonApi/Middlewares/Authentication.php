@@ -107,7 +107,6 @@ class Authentication
             'session' => new Auth\SessionStrategy(),
             'basic'   => new Auth\HttpBasicAuthStrategy($request, $this->authenticator),
             'oauth2'  => new Auth\OAuth2Strategy($request, $this->authenticator),
-            'oauth1'  => new Auth\OAuth1Strategy($request, $this->authenticator),
         ];
 
         foreach ($this->excluded_strategies as $strategy) {
