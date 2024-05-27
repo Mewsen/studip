@@ -216,7 +216,7 @@ if (is_object($GLOBALS['user'])
     if (!Request::isXhr()) {
         header('Location: ' . URLHelper::getURL('dispatch.php/terms', ['return_to' => $_SERVER['REQUEST_URI'], 'redirect_token' => Token::create(600)], true));
     } else {
-        throw new Trails_Exception(400);
+        throw new Trails\Exception(400);
     }
     page_close();
     die;

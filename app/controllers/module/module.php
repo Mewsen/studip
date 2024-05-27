@@ -395,17 +395,17 @@ class Module_ModuleController extends MVVController
      * Deletes a descriptor from module
      *
      * @param type $deskriptor_id
-     * @throws Trails_Exception
+     * @throws Trails\Exception
      */
     public function delete_modul_deskriptor_action($deskriptor_id, $language)
     {
         $deskriptor = ModulDeskriptor::find($deskriptor_id);
         if (is_null($deskriptor)) {
-            throw new Trails_Exception(404, _('Unbekannter Deskriptor'));
+            throw new Trails\Exception(404, _('Unbekannter Deskriptor'));
         }
         $def_lang = $deskriptor->modul->getDefaultLanguage();
         if ($language === $def_lang) {
-            throw new Trails_Exception(403, _('Ein Deskriptor in der Original-Sprache kann nicht gelöscht werden.'));
+            throw new Trails\Exception(403, _('Ein Deskriptor in der Original-Sprache kann nicht gelöscht werden.'));
         }
         if (Request::submitted('delete')) {
             CSRFProtection::verifyUnsafeRequest();
@@ -819,17 +819,17 @@ class Module_ModuleController extends MVVController
      * Deletes a descriptor from Modulteil
      *
      * @param type $deskriptor_id
-     * @throws Trails_Exception
+     * @throws Trails\Exception
      */
     public function delete_modulteil_deskriptor_action($deskriptor_id, $language)
     {
         $deskriptor = ModulteilDeskriptor::find($deskriptor_id);
         if (is_null($deskriptor)) {
-            throw new Trails_Exception(404, _('Unbekannter Deskriptor'));
+            throw new Trails\Exception(404, _('Unbekannter Deskriptor'));
         }
         $def_lang = $deskriptor->modulteil->getDefaultLanguage();
         if ($language === $def_lang) {
-            throw new Trails_Exception(403, _('Ein Deskriptor in der Original-Sprache kann nicht gelöscht werden.'));
+            throw new Trails\Exception(403, _('Ein Deskriptor in der Original-Sprache kann nicht gelöscht werden.'));
         }
         if (Request::submitted('delete')) {
             CSRFProtection::verifyUnsafeRequest();

@@ -114,7 +114,7 @@ class Shared_ContactsController extends MVVController
         if ($this->contact_id) {
             $contact_range = MvvContactRange::findOneBySQL('contact_id=?', [$this->contact_id]);
             if (!$contact_range) {
-                throw new Trails_Exception(404);
+                throw new Trails\Exception(404);
             }
             $this->relations = $contact_range->getRelations($this->filter);
             $this->origin = 'index';
@@ -155,7 +155,7 @@ class Shared_ContactsController extends MVVController
     {
         $this->contact_range = MvvContactRange::findOneBySQL('contact_id = ?', [$contact_id]);
         if (!$this->contact_range) {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
 
         $this->relations = $this->contact_range->getRelations($this->filter);

@@ -144,7 +144,7 @@ class Studiengaenge_StudiengangteileController extends SharedVersionController
             $this->stgteil->contact_assignments = $stgteil_orig->contact_assignments;
 
         } else {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
         $this->perform_relayed('stgteil');
     }

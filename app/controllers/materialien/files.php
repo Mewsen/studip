@@ -510,7 +510,7 @@ class Materialien_FilesController extends MVVController
 
         $mvv_file = MvvFile::find($mvvfile_id);
         if (!$mvv_file) {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
 
         $this->doc_year = $mvv_file->year;

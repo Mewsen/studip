@@ -13,7 +13,7 @@ class Api_Oauth2_AuthorizeController extends OAuth2Controller
         parent::before_filter($action, $args);
 
         if ('index' !== $action) {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
 
         $action = $this->determineAction();

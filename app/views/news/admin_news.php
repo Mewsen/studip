@@ -2,7 +2,7 @@
 /**
  * @var NewsController $controller
  * @var string $area_type
- * @var Trails_Flash $flash
+ * @var Trails\Flash $flash
  * @var string $news_searchterm
  * @var string $news_startdate
  * @var string $news_enddate

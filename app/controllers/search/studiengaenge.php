@@ -423,7 +423,7 @@ class Search_StudiengaengeController extends MVVController
     {
         $this->abschnitt = StgteilAbschnitt::find($abschnitt_id);
         if (!$this->abschnitt) {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
         $this->render_template('search/studiengaenge/kommentar', $this->layout);
     }

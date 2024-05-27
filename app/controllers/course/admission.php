@@ -31,7 +31,7 @@ class Course_AdmissionController extends AuthenticatedController
         if (!get_object_type($this->course_id, ['sem']) ||
             SeminarCategories::GetBySeminarId($this->course_id)->studygroup_mode ||
             !$GLOBALS['perm']->have_studip_perm('tutor', $this->course_id)) {
-            throw new Trails_Exception(403);
+            throw new Trails\Exception(403);
         }
 
         $this->course = Course::find($this->course_id);
@@ -488,7 +488,7 @@ class Course_AdmissionController extends AuthenticatedController
             }
             $this->course_set_name = $course_set->getName();
         } else {
-            throw new Trails_Exception(400);
+            throw new Trails\Exception(400);
         }
     }
 
@@ -503,7 +503,7 @@ class Course_AdmissionController extends AuthenticatedController
                 $this->redirect($response->headers['Location']);
             }
         } else {
-            throw new Trails_Exception(403);
+            throw new Trails\Exception(403);
         }
     }
 
@@ -518,7 +518,7 @@ class Course_AdmissionController extends AuthenticatedController
                 $this->redirect($response->headers['Location']);
             }
         } else {
-            throw new Trails_Exception(403);
+            throw new Trails\Exception(403);
         }
     }
 

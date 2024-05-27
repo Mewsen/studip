@@ -121,7 +121,7 @@ abstract class Settings_SettingsController extends AuthenticatedController
     public function get_default_template($action)
     {
         $class = get_class($this);
-        $controller_name = Trails_Inflector::underscore(mb_substr($class, 0, -10));
+        $controller_name = Trails\Inflector::underscore(mb_substr($class, 0, -10));
         return file_exists($this->dispatcher->trails_root . '/views/' . $controller_name . '.php')
             ? $controller_name
             : $controller_name . '/' . $action;

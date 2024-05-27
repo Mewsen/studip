@@ -18,7 +18,6 @@ require_once 'lib/webservices/api/studip_lecture_tree.php';
 
 class Course_StudyAreasController extends AuthenticatedController
 {
-    // see Trails_Controller#before_filter
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
@@ -101,7 +100,7 @@ class Course_StudyAreasController extends AuthenticatedController
     public function save_action()
     {
         if($this->locked) {
-            throw new Trails_Exception(403);
+            throw new Trails\Exception(403);
         }
 
         $params = [];

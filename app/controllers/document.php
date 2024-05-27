@@ -21,7 +21,7 @@ class DocumentController extends StudipController
         if ($file_ref) {
             $this->redirect($file_ref->getDownloadURL($disposition === 'inline' ? 'normal' : 'force'));
         } else {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
     }
 }

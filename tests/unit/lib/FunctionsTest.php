@@ -75,11 +75,12 @@ class FunctionsTest extends \Codeception\Test\Unit
     }
 
     /**
-     * @covers Trails_Controller::extract_action_and_args()
+     * @covers Trails\Controller::extract_action_and_args()
      */
     public function testTrailsControllerExtractActionAndArgs()
     {
-        $controller = new Trails_Controller(null);
+        $dispatcher = new Trails\Dispatcher('', '', '');
+        $controller = new Trails\Controller($dispatcher);
         [$action, $args, $format] = $controller->extract_action_and_args('foo/bar//42.html');
 
         $this->assertEquals('foo', $action);

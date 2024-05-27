@@ -63,6 +63,22 @@ class_alias(Flexi\Template::class, 'Flexi_Template');
 class_alias(Flexi\Factory::class, 'Flexi_TemplateFactory');
 class_alias(Flexi\TemplateNotFoundException::class, 'Flexi_TemplateNotFoundException');
 
+// Trails
+StudipAutoloader::addAutoloadPath('lib/trails', 'Trails');
+class_alias(Trails\Controller::class, 'Trails_Controller');
+class_alias(Trails\Dispatcher::class, 'Trails_Dispatcher');
+class_alias(Trails\Exception::class, 'Trails_Exception');
+class_alias(Trails\Flash::class, 'Trails_Flash');
+class_alias(Trails\Inflector::class, 'Trails_Inflector');
+class_alias(Trails\Response::class, 'Trails_Response');
+
+class_alias(Trails\Exceptions\DoubleRenderError::class, 'Trails_DoubleRenderError');
+class_alias(Trails\Exceptions\MissingFile::class, 'Trails_MissingFile');
+class_alias(Trails\Exceptions\RoutingError::class, 'Trails_RoutingError');
+class_alias(Trails\Exceptions\SessionRequiredException::class, 'Trails_SessionRequiredException');
+class_alias(Trails\Exceptions\UnknownAction::class, 'Trails_UnknownAction');
+class_alias(Trails\Exceptions\UnknownController::class, 'Trails_UnknownController');
+
 // Messy file names
 StudipAutoloader::addClassLookups([
     'email_validation_class' => 'lib/phplib/email_validation.class.php',
@@ -70,19 +86,6 @@ StudipAutoloader::addClassLookups([
     'StudipPlugin'           => 'lib/plugins/core/StudIPPlugin.class.php',
     'MVVController'          => 'app/controllers/module/mvv_controller.php'
 ]);
-
-// Trails
-$trails_classes = [
-    'Trails_Dispatcher', 'Trails_Response', 'Trails_Controller',
-    'Trails_Inflector', 'Trails_Flash',
-    'Trails_Exception', 'Trails_DoubleRenderError', 'Trails_MissingFile',
-    'Trails_RoutingError', 'Trails_UnknownAction', 'Trails_UnknownController',
-    'Trails_SessionRequiredException',
-];
-StudipAutoloader::addClassLookup(
-    $trails_classes,
-    'vendor/trails/trails.php'
-);
 
 // Vendor
 StudipAutoloader::addClassLookups([

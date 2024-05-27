@@ -16,7 +16,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 /**
  * @property StudipResponse $response
  */
-abstract class StudipController extends Trails_Controller
+abstract class StudipController extends Trails\Controller
 {
     use StudipControllerPropertiesTrait;
 
@@ -48,7 +48,7 @@ abstract class StudipController extends Trails_Controller
             $GLOBALS['auth']->login_if((Request::get('again') || !$this->allow_nobody) && $GLOBALS['user']->id == 'nobody');
 
             // Setup flash instance
-            $this->flash = Trails_Flash::instance();
+            $this->flash = Trails\Flash::instance();
 
             // set up user session
             include 'lib/seminar_open.php';
@@ -107,7 +107,7 @@ abstract class StudipController extends Trails_Controller
      *
      * @param String $unconsumed_path Path segment containing action and
      *                                optionally arguments or format
-     * @return Trails_Response from parent controller
+     * @return Trails\Response from parent controller
      */
     public function perform($unconsumed_path)
     {
@@ -212,7 +212,7 @@ abstract class StudipController extends Trails_Controller
 
                 case 'option':
                     if (preg_match('/[^\\w,-]/', $arg)) {
-                        throw new Trails_Exception(400);
+                        throw new Trails\Exception(400);
                     }
                     break;
 
@@ -231,7 +231,7 @@ abstract class StudipController extends Trails_Controller
 
                     $sorm = $reflection->newInstance($id);
                     if (!$info['optional'] && $sorm->isNew()) {
-                        throw new Trails_Exception(
+                        throw new Trails\Exception(
                             404,
                             "Parameter {$info['var']} could not be resolved with value {$arg}"
                         );
@@ -247,7 +247,7 @@ abstract class StudipController extends Trails_Controller
                     break;
 
                 default:
-                    throw new Trails_Exception(500, 'Unknown type "' . $type . '"');
+                    throw new Trails\Exception(500, 'Unknown type "' . $type . '"');
             }
         }
 
@@ -497,11 +497,11 @@ abstract class StudipController extends Trails_Controller
         $chunk_size = 262144
     ) {
         if (!file_exists($file)) {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
 
         if (!is_readable($file)) {
-            throw new Trails_Exception(500);
+            throw new Trails\Exception(500);
         }
 
         if ($content_type === null) {
@@ -593,7 +593,7 @@ abstract class StudipController extends Trails_Controller
      * through
      *
      * @param string $to_uri a trails route
-     * @return Trails_Response
+     * @return Trails\Response
      */
     public function relay($to_uri/* , ... */)
     {
@@ -617,11 +617,11 @@ abstract class StudipController extends Trails_Controller
      * Relays current request and performs redirect if neccessary.
      *
      * @param string $to_uri a trails route
-     * @return Trails_Response
+     * @return Trails\Response
      *
      * @see StudipController::relay()
      */
-    public function relayWithRedirect(...$args): Trails_Response
+    public function relayWithRedirect(...$args): Trails\Response
     {
         $response = $this->relay(...$args);
 
@@ -641,7 +641,7 @@ abstract class StudipController extends Trails_Controller
      *
      * @see perform
      * @param string $unconsumed
-     * @return Trails_Response
+     * @return Trails\Response
      */
     public function perform_relayed($unconsumed/* , ... */)
     {
@@ -695,9 +695,9 @@ abstract class StudipController extends Trails_Controller
      *    <code>$controller->baz($param)</code>
      *
      * @param String $method    Called method name
-     * @param array  $argumetns Provided arguments
-     * @return url to the requested action
-     * @throws Trails_UnknownAction if no action matches the method
+     * @param array  $arguments Provided arguments
+     * @return string url to the requested action
+     * @throws Trails\Exceptions\UnknownAction if no action matches the method
      */
     public function __call($method, $arguments)
     {
@@ -710,7 +710,7 @@ abstract class StudipController extends Trails_Controller
         }
 
         if (!$this->has_action($method)) {
-            throw new Trails_UnknownAction("Unknown action '{$method}'");
+            throw new Trails\Exceptions\UnknownAction("Unknown action '{$method}'");
         }
 
         array_unshift($arguments, $method);
@@ -858,7 +858,7 @@ abstract class StudipController extends Trails_Controller
 
         // Extract controller name from class name
         $controller = preg_replace('/Controller$/', '', get_class($this));
-        $controller = Trails_Inflector::underscore($controller);
+        $controller = Trails\Inflector::underscore($controller);
 
         // Build main parts of the body element id
         $body_id_parts = explode('/', $controller);

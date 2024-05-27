@@ -18,29 +18,31 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Use this subclass to easily get an Stud.IP specific
- * Trails_Dispatcher.
+ * Trails\Dispatcher.
  *
  * Example of use:
+ *
  * @code
  * // deep in the Stud.IP jungle
  * $dispatcher = new StudipDispatcher();
  * $dispatcher->dispatch($requested_uri);
  * @endcode
  */
-class StudipDispatcher extends Trails_Dispatcher {
+class StudipDispatcher extends Trails\Dispatcher
+{
+    /**
+     * This variable contains the DI-Container.
+     *
+     * @var ContainerInterface
+     */
+    protected $container;
 
-  /**
-   * This variable contains the DI-Container.
-   * @var ContainerInterface
-   */
-  protected $container;
-
-  /**
-   * Create a new Trails_Dispatcher with Stud.IP specific parameters
-   * for: trails_root is "$STUDIP_BASE_PATH/app", trails_uri is
-   * "dispatch.php" and default_controller is "default" (which does
-   * not map to anything).
-   */
+    /**
+     * Create a new Trails\Dispatcher with Stud.IP specific parameters
+     * for: trails_root is "$STUDIP_BASE_PATH/app", trails_uri is
+     * "dispatch.php" and default_controller is "default" (which does
+     * not map to anything).
+     */
     public function __construct(ContainerInterface $container)
     {
         global $STUDIP_BASE_PATH, $ABSOLUTE_URI_STUDIP;
@@ -58,6 +60,7 @@ class StudipDispatcher extends Trails_Dispatcher {
      * exception instead of the standard trails handling.
      *
      * @param Exception $exception The exception that occured
+     *
      * @throws Exception
      */
     public function trails_error($exception)
@@ -66,21 +69,22 @@ class StudipDispatcher extends Trails_Dispatcher {
     }
 
     /**
-   * Loads the controller file for a given controller path and return an
-   * instance of that controller. If an error occures, an exception will be
-   * thrown.
-   *
-   * @param  string            the relative controller path
-   *
-   * @return TrailsController  an instance of that controller
-   */
-  function load_controller($controller) {
-    require_once "{$this->trails_root}/controllers/{$controller}.php";
-    $class = Trails_Inflector::camelize($controller) . 'Controller';
-    if (!class_exists($class)) {
-      throw new Trails_UnknownController("Controller missing: '$class'");
-    }
+     * Loads the controller file for a given controller path and return an
+     * instance of that controller. If an error occures, an exception will be
+     * thrown.
+     *
+     * @param string $controller the relative controller path
+     * @return Trails\Controller  an instance of that controller
+     * @throws \Trails\Exceptions\UnknownController
+     */
+    public function load_controller($controller)
+    {
+        require_once "{$this->trails_root}/controllers/{$controller}.php";
+        $class = Trails\Inflector::camelize($controller) . 'Controller';
+        if (!class_exists($class)) {
+            throw new Trails\Exceptions\UnknownController("Controller missing: '$class'");
+        }
 
-    return $this->container->make($class, ['dispatcher' => $this]);
-  }
+        return $this->container->make($class, ['dispatcher' => $this]);
+    }
 }

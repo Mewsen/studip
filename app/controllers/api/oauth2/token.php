@@ -8,11 +8,11 @@ class Api_Oauth2_TokenController extends OAuth2Controller
         parent::before_filter($action, $args);
 
         if ('index' !== $action) {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
 
         if (!Request::isPost()) {
-            throw new Trails_Exception(405);
+            throw new Trails\Exception(405);
         }
 
         $action = 'issue_token';

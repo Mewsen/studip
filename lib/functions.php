@@ -1319,7 +1319,7 @@ function get_route($route = '')
         $route = 'plugins.php/' . $pieces[0] . (!empty($pieces[1]) ? '/' . $pieces[1] : '') . (!empty($pieces[2]) ? '/' . $pieces[2] : '');
     } elseif (mb_strpos($route, 'dispatch.php/') !== false) {
         $trails = explode('dispatch.php/', $route);
-        $dispatcher = app(\Trails_Dispatcher::class);
+        $dispatcher = app(\Trails\Dispatcher::class);
         $pieces = explode('/', $trails[1]);
         $trail = '';
         foreach ($pieces as $index => $piece) {
@@ -1399,7 +1399,7 @@ function studip_default_exception_handler($exception) {
     } elseif ($exception instanceof LoginException) {
         $GLOBALS['auth']->login_if(true);
     } else {
-        if ($exception instanceOf Trails_Exception) {
+        if ($exception instanceOf Trails\Exception) {
             $status = $exception->getCode();
         } else {
             $status = 500;
@@ -1455,6 +1455,19 @@ function strtocamelcase($string, $ucfirst = false) {
     }
 
     return implode($chunks);
+}
+
+/**
+ * Converts a string to PascalCase.
+ *
+ * @param String $string  The string that should be converted
+ * @return String containing the converted input string
+ */
+function strtopascalcase(string $string): string {
+    return strtocamelcase(
+        str_replace('_', ' ', $string),
+        true
+    );
 }
 
 /**

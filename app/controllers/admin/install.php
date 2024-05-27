@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../../lib/classes/StudipControllerPropertiesTrait.php';
 
-class Admin_InstallController extends Trails_Controller
+class Admin_InstallController extends Trails\Controller
 {
     use StudipControllerPropertiesTrait;
 

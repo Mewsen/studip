@@ -762,7 +762,7 @@ class Course_StatusgroupsController extends AuthenticatedController
 
             // Safety check if no group_id at all.
             if (!$group_id) {
-                throw new Trails_Exception(400);
+                throw new Trails\Exception(400);
             }
         }
 

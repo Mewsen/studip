@@ -37,7 +37,7 @@ class SiteinfoController extends StudipController
         } else {
             $action = 'show';
             if ($this->page_is_draft || ($this->page_disabled_nobody && $GLOBALS['user']->id === 'nobody')) {
-                throw new Trails_Exception(404);
+                throw new Trails\Exception(404);
             }
         }
         $this->add_navigation($action);

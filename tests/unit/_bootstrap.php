@@ -62,18 +62,7 @@ StudipAutoloader::addAutoloadPath('lib/flexi', 'Flexi');
 StudipAutoloader::addAutoloadPath('lib/plugins/engine');
 StudipAutoloader::addAutoloadPath('lib/plugins/core');
 StudipAutoloader::addAutoloadPath('lib/plugins/db');
-
-$trails_classes = [
-    'Trails_Dispatcher', 'Trails_Response', 'Trails_Controller',
-    'Trails_Inflector', 'Trails_Flash',
-    'Trails_Exception', 'Trails_DoubleRenderError', 'Trails_MissingFile',
-    'Trails_RoutingError', 'Trails_UnknownAction', 'Trails_UnknownController',
-    'Trails_SessionRequiredException',
-];
-StudipAutoloader::addClassLookup(
-    $trails_classes,
-    'vendor/trails/trails.php'
-);
+StudipAutoloader::addAutoloadPath('lib/trails', 'Trails');
 
 // load config-variables
 $added_configs = [];

@@ -14,7 +14,7 @@ class Course_TimesroomsController extends AuthenticatedController
      * @param String $action Action to be executed
      * @param Array  $args Arguments passed to the action
      *
-     * @throws Trails_Exception when either no course was found or the user
+     * @throws Trails\Exception when either no course was found or the user
      *                          may not access this area
      */
     public function before_filter(&$action, &$args)
@@ -23,7 +23,7 @@ class Course_TimesroomsController extends AuthenticatedController
 
         // Try to find a valid course
         if (!Course::findCurrent()) {
-            throw new Trails_Exception(404, _('Es wurde keine Veranstaltung ausgewählt!'));
+            throw new Trails\Exception(404, _('Es wurde keine Veranstaltung ausgewählt!'));
         }
 
         if (!$GLOBALS['perm']->have_studip_perm('tutor', Course::findCurrent()->id)) {
@@ -250,7 +250,7 @@ class Course_TimesroomsController extends AuthenticatedController
     /**
      * Edit the start-semester of a course
      *
-     * @throws Trails_DoubleRenderError
+     * @throws Trails\Exceptions\DoubleRenderError
      */
     public function editSemester_action()
     {
@@ -368,7 +368,7 @@ class Course_TimesroomsController extends AuthenticatedController
      *
      * @param $termin_id
      *
-     * @throws Trails_DoubleRenderError
+     * @throws Trails\Exceptions\DoubleRenderError
      */
     public function saveDate_action($termin_id)
     {
@@ -544,7 +544,7 @@ class Course_TimesroomsController extends AuthenticatedController
     /**
      * Save Single Date
      *
-     * @throws Trails_DoubleRenderError
+     * @throws Trails\Exceptions\DoubleRenderError
      */
     public function saveSingleDate_action()
     {

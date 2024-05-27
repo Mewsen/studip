@@ -11,18 +11,18 @@ abstract class SharedVersionController extends MVVController
     {
         $this->stgteil = StudiengangTeil::find($stgteil_id);
         if (!$this->stgteil) {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
 
         if (!MvvPerm::haveFieldPermVersionen($this->stgteil, MvvPerm::PERM_READ)) {
-            throw new Trails_Exception(403);
+            throw new Trails\Exception(403);
         }
 
         if (!isset($this->version)) {
             $this->version = StgteilVersion::find($version_id);
             if (!$this->version) {
                 if (!MvvPerm::haveFieldPermVersionen($this->stgteil, MvvPerm::PERM_CREATE)) {
-                    throw new Trails_Exception(403);
+                    throw new Trails\Exception(403);
                 }
                 $this->version = new StgteilVersion();
             }
@@ -51,7 +51,7 @@ abstract class SharedVersionController extends MVVController
         if (Request::submitted('store')) {
             CSRFProtection::verifyUnsafeRequest();
             if (!MvvPerm::haveFieldPermVersionen($this->stgteil)) {
-                throw new Trails_Exception(403);
+                throw new Trails\Exception(403);
             }
             $stored = false;
             $this->version->stgteil_id = $this->stgteil->getId();
@@ -220,7 +220,7 @@ abstract class SharedVersionController extends MVVController
     {
         $version = StgteilVersion::find($version_id);
         if (!$version) {
-             throw new Trails_Exception(404, _('Unbekannte Version'));
+             throw new Trails\Exception(404, _('Unbekannte Version'));
         }
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
@@ -267,16 +267,16 @@ abstract class SharedVersionController extends MVVController
         $perm = MvvPerm::get($this->version);
 
         if (!$perm->haveFieldPerm('abschnitte', MvvPerm::PERM_READ)) {
-            throw new Trails_Exception(403);
+            throw new Trails\Exception(403);
         }
         if ($this->abschnitt->isNew() && !$perm->haveFieldPerm('abschnitte', MvvPerm::PERM_CREATE)) {
-            throw new Trails_Exception(403);
+            throw new Trails\Exception(403);
         }
 
         if (Request::submitted('store')) {
             CSRFProtection::verifyUnsafeRequest();
             if (!$perm->haveFieldPerm('abschnitte', MvvPerm::PERM_WRITE)) {
-                throw new Trails_Exception(403);
+                throw new Trails\Exception(403);
             }
             $this->abschnitt->version_id = $this->version->getId();
             $this->abschnitt->name = Request::i18n('name')->trim();
@@ -494,7 +494,7 @@ abstract class SharedVersionController extends MVVController
         $abschnitt = StgteilAbschnitt::find($abschnitt_id);
         if ($abschnitt) {
             if (!MvvPerm::haveFieldPermModul_zuordnungen($abschnitt, MvvPerm::PERM_CREATE)) {
-                throw new Trails_Exception(403);
+                throw new Trails\Exception(403);
             }
             $modul = Modul::find($modul_id);
             if (!$modul) {
@@ -614,7 +614,7 @@ abstract class SharedVersionController extends MVVController
     {
         $version = StgteilVersion::find($version_id);
         if (!$version) {
-             throw new Trails_Exception(404, _('Unbekannte Version'));
+             throw new Trails\Exception(404, _('Unbekannte Version'));
         } else {
             if (Request::isPost()) {
                 CSRFProtection::verifyUnsafeRequest();
@@ -754,7 +754,7 @@ abstract class SharedVersionController extends MVVController
                     $this->redirect($this->action_url('abschnitte/' . $version_id));
                 }
             } else {
-                throw new Trails_Exception(403);
+                throw new Trails\Exception(403);
             }
         }
         if (Request::isXhr()) {

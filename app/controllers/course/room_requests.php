@@ -46,7 +46,7 @@ class Course_RoomRequestsController extends AuthenticatedController
             SeminarCategories::GetBySeminarId($this->course_id)->studygroup_mode ||
             !$GLOBALS['perm']->have_studip_perm("tutor", $this->course_id)
         ) {
-            throw new Trails_Exception(400);
+            throw new Trails\Exception(400);
         }
 
         PageLayout::setHelpKeyword('Basis.VeranstaltungenVerwaltenAendernVonZeitenUndTerminen');
@@ -663,7 +663,7 @@ class Course_RoomRequestsController extends AuthenticatedController
     {
         $request = RoomRequest::find($request_id);
         if (!$request) {
-            throw new Trails_Exception(403);
+            throw new Trails\Exception(403);
         }
         if (Request::isGet()) {
             PageLayout::postQuestion(sprintf(

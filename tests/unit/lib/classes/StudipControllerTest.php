@@ -27,13 +27,13 @@ final class StudipControllerTest extends Codeception\Test\Unit
         parent::tearDown();
     }
 
-    private function getDispatcher(): Trails_Dispatcher
+    private function getDispatcher(): Trails\Dispatcher
     {
         $trails_root = $GLOBALS['STUDIP_BASE_PATH'] . DIRECTORY_SEPARATOR . 'app';
         $trails_uri = rtrim($GLOBALS['ABSOLUTE_URI_STUDIP'], '/') . '/dispatch.php';
         $default_controller = 'default';
 
-        return new Trails_Dispatcher($trails_root, $trails_uri, $default_controller);
+        return new Trails\Dispatcher($trails_root, $trails_uri, $default_controller);
     }
 
     private function getController(): StudipController
@@ -247,7 +247,7 @@ final class StudipControllerTest extends Codeception\Test\Unit
     {
         $args = [$should_fail];
 
-        $this->expectException(Trails_Exception::class);
+        $this->expectException(Trails\Exception::class);
         $this->getController()->validate_args($args);
     }
 

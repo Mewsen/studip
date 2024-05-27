@@ -711,7 +711,7 @@ class FilesController extends AuthenticatedController
 
             $destination_plugin = PluginManager::getInstance()->getPlugin($to_plugin);
             if (!$destination_plugin) {
-                throw new Trails_Exception(404, _('Plugin existiert nicht.'));
+                throw new Trails\Exception(404, _('Plugin existiert nicht.'));
             }
             $destination_folder = $destination_plugin->getFolder($destination_id);
         } else {
@@ -731,7 +731,7 @@ class FilesController extends AuthenticatedController
                 if ($from_plugin) {
                     $source_plugin = PluginManager::getInstance()->getPlugin($from_plugin);
                     if (!$source_plugin) {
-                        throw new Trails_Exception(404, _('Plugin existiert nicht.'));
+                        throw new Trails\Exception(404, _('Plugin existiert nicht.'));
                     }
                     if (Request::get("isfolder")) {
                         if ($source_folder = $source_plugin->getFolder($fileref)) {

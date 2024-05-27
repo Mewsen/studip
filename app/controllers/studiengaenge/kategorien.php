@@ -73,7 +73,7 @@ class Studiengaenge_KategorienController extends Studiengaenge_StudiengaengeCont
             
             if (count($perm_institutes)) {
                 if (!in_array($studiengang->institut_id, $perm_institutes)) {
-                    throw new Trails_Exception(403);
+                    throw new Trails\Exception(403);
                 }
             }
             

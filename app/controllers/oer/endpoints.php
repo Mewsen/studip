@@ -410,7 +410,7 @@ class Oer_EndpointsController extends StudipController
             $this->response->add_header('Content-Length', filesize($this->material->getFrontImageFilePath()));
             $this->render_text(file_get_contents($this->material->getFrontImageFilePath()));
         } else {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
     }
 

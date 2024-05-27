@@ -1,7 +1,7 @@
 <?php
 /**
  * @var Consultation_AdminController $controller
- * @var Trails_Flash $flash
+ * @var Trails\Flash $flash
  * @var string|null $room
  * @var array $responsible
  * @var Range $range

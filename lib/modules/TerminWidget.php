@@ -26,7 +26,7 @@ class TerminWidget extends CorePlugin implements PortalPlugin
 
     public function getPortalTemplate()
     {
-        $controller = app(\Trails_Dispatcher::class)->load_controller('calendar/contentbox');
+        $controller = app(\Trails\Dispatcher::class)->load_controller('calendar/contentbox');
         $response = $controller->relay('calendar/contentbox/display/'.$GLOBALS['user']->id);
         $template = $GLOBALS['template_factory']->open('shared/string');
         $template->content = $response->body;

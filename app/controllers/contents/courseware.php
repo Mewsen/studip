@@ -311,7 +311,7 @@ class Contents_CoursewareController extends CoursewareController
         );
 
         if (!$struct) {
-            throw new Trails_Exception(404, _('Der geteilte Inhalt kann nicht gefunden werden.'));
+            throw new Trails\Exception(404, _('Der geteilte Inhalt kann nicht gefunden werden.'));
         }
 
         if (!$struct->canRead($user) && !$struct->canEdit($user)) {

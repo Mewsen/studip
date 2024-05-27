@@ -93,7 +93,7 @@ class Course_ScmController extends AuthenticatedController
         $this->scm  = $id ? $this->scms->find($id) : $this->scms->first();
 
         if (!$this->scm && $this->scms->count() > 0) {
-            throw new Trails_Exception(404, _('Es konnte keine freie Informationsseite mit der angegebenen Id gefunden werden.'));
+            throw new Trails\Exception(404, _('Es konnte keine freie Informationsseite mit der angegebenen Id gefunden werden.'));
         }
 
         if (Request::get('verify') === 'delete') {

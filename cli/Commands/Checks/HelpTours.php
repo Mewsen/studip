@@ -59,7 +59,7 @@ class HelpTours extends Command
                         $plugin = new $plugin_info['class']();
 
                         if ($result[1]) {
-                            $dispatcher = app(\Trails_Dispatcher::class);
+                            $dispatcher = app(\Trails\Dispatcher::class);
                             $dispatcher->trails_root = $GLOBALS['ABSOLUTE_PATH_STUDIP'] . $plugin->getPluginPath();
                             $dispatcher->trails_uri = rtrim(\PluginEngine::getLink($plugin, [], null, true), '/');
                             $dispatcher->default_controller = 'index';
@@ -71,7 +71,7 @@ class HelpTours extends Command
                             }
                         }
                     } elseif (match_route('dispatch.php/*', $step->route)) {
-                        $dispatcher = app(\Trails_Dispatcher::class);
+                        $dispatcher = app(\Trails\Dispatcher::class);
                         $parsed = $dispatcher->parse(substr($step->route, strlen('dispatch.php') + 1));
                         $controller = $dispatcher->load_controller($parsed[0]);
                         if ($parsed[1] && !$controller->has_action($parsed[1])) {

@@ -1,5 +1,5 @@
 <?php
-class StudipResponse extends Trails_Response
+class StudipResponse extends Trails\Response
 {
     /**
      * Outputs this response to the client using "echo" and "header".

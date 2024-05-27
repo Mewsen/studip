@@ -196,14 +196,14 @@ abstract class StudIPPlugin
         $action = $args[0] !== '' ? array_shift($args).'_action' : 'show_action';
 
         if (!method_exists($this, $action)) {
-            $dispatcher = app(\Trails_Dispatcher::class);
+            $dispatcher = app(\Trails\Dispatcher::class);
             $dispatcher->trails_root = $this->getPluginPath();
             $dispatcher->trails_uri = rtrim(PluginEngine::getLink($this, [], null, true), '/');
             $dispatcher->default_controller = 'index';
             $dispatcher->current_plugin = $this;
             try {
                 $dispatcher->dispatch($unconsumed_path);
-            } catch (Trails_UnknownAction $exception) {
+            } catch (Trails\Exceptions\UnknownAction $exception) {
                 if (count($args) > 0) {
                     throw $exception;
                 } else {

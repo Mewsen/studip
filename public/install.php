@@ -17,7 +17,6 @@ set_include_path($GLOBALS['STUDIP_BASE_PATH']);
 
 require_once 'composer/autoload.php';
 require_once 'lib/visual.inc.php';
-require_once 'vendor/trails/trails.php';
 require_once 'lib/classes/URLHelper.php';
 require_once 'lib/classes/LayoutMessage.interface.php';
 require_once 'lib/classes/MessageBox.class.php';
@@ -33,6 +32,18 @@ require_once 'lib/flexi/Factory.php';
 require_once 'lib/flexi/PhpTemplate.php';
 require_once 'lib/flexi/Template.php';
 require_once 'lib/flexi/TemplateNotFoundException.php';
+require_once 'lib/trails/Controller.php';
+require_once 'lib/trails/Dispatcher.php';
+require_once 'lib/trails/Exception.php';
+require_once 'lib/trails/Flash.php';
+require_once 'lib/trails/Inflector.php';
+require_once 'lib/trails/Response.php';
+require_once 'lib/trails/Exceptions/DoubleRenderError.php';
+require_once 'lib/trails/Exceptions/MissingFile.php';
+require_once 'lib/trails/Exceptions/RoutingError.php';
+require_once 'lib/trails/Exceptions/SessionRequiredException.php';
+require_once 'lib/trails/Exceptions/UnknownAction.php';
+require_once 'lib/trails/Exceptions/UnknownController.php';
 require_once 'vendor/phpass/PasswordHash.php';
 
 // Mock gettext functions if extension is not available
@@ -61,5 +72,5 @@ $GLOBALS['template_factory'] = new Flexi\Factory('../templates/');
 # get plugin class from request
 $dispatch_to = ltrim(Request::pathInfo(), '/');
 
-$dispatcher = new Trails_Dispatcher( '../app', $_SERVER['SCRIPT_NAME'], 'admin/install');
+$dispatcher = new Trails\Dispatcher( '../app', $_SERVER['SCRIPT_NAME'], 'admin/install');
 $dispatcher->dispatch("admin/install/{$dispatch_to}");

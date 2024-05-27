@@ -10,8 +10,6 @@ require_once 'lib/user_visible.inc.php';
  */
 class Course_StudygroupController extends AuthenticatedController
 {
-
-    // see Trails_Controller#before_filter
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
@@ -851,7 +849,7 @@ class Course_StudygroupController extends AuthenticatedController
                 return;
             }
         }
-        throw new Trails_Exception(401);
+        throw new Trails\Exception(401);
     }
 
 

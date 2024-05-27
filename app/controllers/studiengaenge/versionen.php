@@ -52,7 +52,7 @@ class Studiengaenge_VersionenController extends SharedVersionController
                 $this->redirect($this->action_url('index/' .  $this->chooser_filter['stgteile']));
                 return;
             default :
-                throw new Trails_Exception(400);
+                throw new Trails\Exception(400);
         }
         $this->name = $list;
         if (!empty($this->lists[$list]['elements'])) {
@@ -218,7 +218,7 @@ class Studiengaenge_VersionenController extends SharedVersionController
         if ($stgteil_id) {
             $this->stgteil = StudiengangTeil::find($stgteil_id);
             if (!$this->stgteil) {
-                throw new Trails_Exception(404, _('Unbekannter Studiengangteil'));
+                throw new Trails\Exception(404, _('Unbekannter Studiengangteil'));
             }
 
             $this->initPageParams();

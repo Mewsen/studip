@@ -46,7 +46,7 @@ class MediaProxyController extends StudipController
         ini_set('default_socket_timeout', 5);
         $this->render_nothing();
 
-        //stop output buffering started in Trails_Dispatcher::dispatch()
+        //stop output buffering started in Trails\Dispatcher::dispatch()
         while (ob_get_level()) {
             ob_end_clean();
         }
