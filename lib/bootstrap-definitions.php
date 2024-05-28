@@ -40,14 +40,14 @@ return [
 
         // Future Improvements, not used/activated right now
         # $debugBar->addCollector(new MessagesCollector());
-        # $debugBar->addCollector(new TimeDataCollector());
+        $debugBar->addCollector(new TimeDataCollector());
 
         $config = iterator_to_array(Config::getInstance()->getIterator());
         ksort($config);
         $debugBar->addCollector(new DebugBar\DataCollector\ConfigCollector($config));
 
         $pdo = $container->get(PDO::class);
-        if ($pdo instanceof DebugBar\DataCollector\PDO\TraceablePDO) {
+        if ($pdo instanceof Studip\Debug\TraceableStudipPDO) {
             $collector = new DebugBar\DataCollector\PDO\PDOCollector($pdo);
             $debugBar->addCollector($collector);
         }
@@ -62,7 +62,7 @@ return [
         );
 
         if (Studip\Debug\DebugBar::isActivated()) {
-            $pdo = new DebugBar\DataCollector\PDO\TraceablePDO($pdo);
+            $pdo = new Studip\Debug\TraceableStudipPDO($pdo);
         }
 
         return $pdo;
