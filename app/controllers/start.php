@@ -57,6 +57,7 @@ class StartController extends AuthenticatedController
 
         $nav = $sidebar->addWidget(new NavigationWidget());
         $nav->setTitle(_('Sprungmarken'));
+        $nav->setId('navigation-layer-3');
         foreach (array_merge(...$this->columns) as $widget) {
             $nav->addLink(
                 $widget->getPluginName(),
