@@ -28,7 +28,7 @@ class CourseNavigation extends Navigation
             $courseinfo = _('Meine Veranstaltungen & Einrichtungen');
             $courselink = 'dispatch.php/my_courses';
         } else {
-            $coursetext = _('Freie');
+            $coursetext = _('Freie Veranstaltungen');
             $courseinfo = _('Freie Veranstaltungen');
             $courselink = 'dispatch.php/public_courses';
         }
