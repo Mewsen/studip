@@ -643,7 +643,12 @@ function tooltipIcon($text, $important = false, $html = false): string
 
     // render tooltip
     $template = $GLOBALS['template_factory']->open('shared/tooltip');
-    return $template->render(compact('text', 'important', 'html'));
+    return $template->render([
+        'text'       => $text,
+        'important'  => $important,
+        'html'       => $html,
+        'tooltip_id' => md5($text)
+    ]);
 }
 
 /**
@@ -655,9 +660,13 @@ function tooltipIcon($text, $important = false, $html = false): string
 function tooltipHtmlIcon($text, $important = false)
 {
     // render tooltip
-    $html = true;
     $template = $GLOBALS['template_factory']->open('shared/tooltip');
-    return $template->render(compact('text', 'important', 'html'));
+    return $template->render([
+        'text'       => $text,
+        'important'  => $important,
+        'html'       => true,
+        'tooltip_id' => md5($text)
+    ]);
 }
 
 /**
