@@ -76,7 +76,6 @@ import study_area_selection from './lib/study_area_selection.js';
 import Table from './lib/table.js';
 import TableOfContents from './lib/table-of-contents.js';
 import Toolbar from './lib/toolbar.js';
-import Tooltip from './lib/tooltip.js';
 import Tour from './lib/tour.js';
 import * as Gettext from './lib/gettext.js';
 import UserFilter from './lib/user_filter.js';
@@ -163,7 +162,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     Table,
     TableOfContents,
     Toolbar,
-    Tooltip,
     Tour,
     URLHelper,
     UserFilter,
