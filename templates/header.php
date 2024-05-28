@@ -222,7 +222,9 @@ if ($navigation) {
 
     <!-- Main navigation and right-hand logo -->
     <nav id="navigation-level-1" aria-label="<?= _('Hauptnavigation') ?>">
-        <? SkipLinks::addIndex(_('Hauptnavigation'), 'navigation-level-1', 2, false); ?>
+        <? if (!empty($header_nav['visible'])) : ?>
+            <? SkipLinks::addIndex(_('Hauptnavigation'), 'navigation-level-1', 2, false) ?>
+        <? endif ?>
         <ul id="navigation-level-1-items" <? if (count($header_nav['hidden']) > 0) echo 'class="overflown"'; ?>>
         <? foreach ($header_nav['visible'] as $path => $nav): ?>
             <?= $this->render_partial(
@@ -303,10 +305,12 @@ if ($navigation) {
                 </div>
             <? endif ?>
 
-            <? SkipLinks::addIndex(_('Zweite Navigationsebene'), 'navigation-level-2', 910) ?>
             <nav id="navigation-level-2" aria-label="<?= _('Zweite Navigationsebene') ?>">
 
                 <? if (PageLayout::isHeaderEnabled() /*&& isset($navigation)*/) : ?>
+                    <? if (!empty($navigation)) : ?>
+                        <? SkipLinks::addIndex(_('Zweite Navigationsebene'), 'navigation-level-2', 910) ?>
+                    <? endif ?>
                     <?= $this->render_partial('tabs', compact('navigation')) ?>
                 <? endif; ?>
             </nav>
