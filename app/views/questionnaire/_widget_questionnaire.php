@@ -30,7 +30,7 @@
             <span title="<?= _("Anzahl der Antworten") ?>">
                 <?= $questionnaire->countAnswers() ?>
             </span>
-            <span title="<?= _("QR-Code zu diesem Fragebogen anzeigen") ?>">
+            <span>
                 <? $oldbase = URLHelper::setBaseURL($GLOBALS['ABSOLUTE_URI_STUDIP']) ?>
                 <a href="<?=
                          URLHelper::getLink(
@@ -38,7 +38,8 @@
                              compact('range_type', 'range_id')
                          ) ?>"
                    class="questionnaire-qr"
-                    data-qr-code>
+                   title="<?= _("QR-Code zu diesem Fragebogen anzeigen") ?>" aria-label="<?= _("QR-Code zu diesem Fragebogen anzeigen") ?>"
+                   data-qr-code>
                     <? URLHelper::setBaseURL($oldbase) ?>
                     <?= Icon::create("code-qr", "clickable")->asImg(20, ['class' => "text-bottom"]) ?>
                 </a>
