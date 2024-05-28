@@ -28,15 +28,13 @@ class CourseNavigation extends Navigation
 
         $this->range = $range;
 
-        global $user;
-
         // check if logged in
         if (User::findCurrent()) {
             $coursetext = _('Veranstaltungen');
             $courseinfo = _('Meine Veranstaltungen & Einrichtungen');
             $courselink = 'dispatch.php/my_courses';
         } else {
-            $coursetext = _('Freie');
+            $coursetext = _('Freie Veranstaltungen');
             $courseinfo = _('Freie Veranstaltungen');
             $courselink = 'dispatch.php/public_courses';
         }
