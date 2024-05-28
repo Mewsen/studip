@@ -208,9 +208,9 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
                     array_map(
                         function ($lecturer, $index) use ($search, $course) {
                             if ($index < 3) {
-                                return '<a href="' . URLHelper::getURL('dispatch.php/profile', ['username' => $lecturer->username]) . '">' . self::mark($lecturer->getUserFullname(), $search) . '</a>';
+                                return self::mark($lecturer->getUserFullname(), $search);
                             } else if ($index == 3) {
-                                return '<a href="' . URLHelper::getURL('dispatch.php/course/details/index/' . $course->id) . '">... (' . _('mehr') . ') </a>';
+                                return '... (' . _('mehr') . ')';
                             }
                         },
                         $lecturers,

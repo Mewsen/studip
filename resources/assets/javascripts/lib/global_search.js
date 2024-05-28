@@ -9,6 +9,7 @@ const GlobalSearch = {
      */
     toggleSearchBar: function(visible, cleanup) {
         $('#globalsearch-searchbar').toggleClass('is-visible', visible);
+        $('#globalsearch-input').attr('aria-expanded', visible ? 'true' : 'false');
         $('#globalsearch-input').toggleClass('hidden-small-down', !visible);
         $('#globalsearch-icon').toggleClass('hidden-small-down', visible);
         $('#globalsearch-clear').toggleClass('hidden-small-down', !visible);
@@ -71,7 +72,7 @@ const GlobalSearch = {
             // Iterate over each result category.
             $.each(json, function(name, value) {
                 // Create an <article> for category.
-                var category = $(`<article id="globalsearch-${name}">`),
+                var category = $(`<article id="globalsearch-${name}" role="list">`),
                     header = $('<header>').appendTo(category),
                     counter = 0;
 
@@ -97,7 +98,7 @@ const GlobalSearch = {
                 // Process results and create corresponding entries.
                 $.each(value.content, function(index, result) {
                     // Create single result entry.
-                    var single = $('<section>'),
+                    var single = $(`<a href="${result.url}" role="listitem" ${dataDialog}>`),
                         data = $('<div class="globalsearch-result-data">'),
                         details = $('<div class="globalsearch-result-details">');
 
@@ -108,17 +109,17 @@ const GlobalSearch = {
                     // Which result types should be opened via dialog?
                     const openInDialog = ['GlobalSearchFiles', 'GlobalSearchMessages'];
                     var dataDialog = (openInDialog.indexOf(name) >= 0 ? dataDialog = 'data-dialog' : dataDialog = '');
-                    var link = $(`<a href="${result.url}" ${dataDialog}>`).appendTo(single);
+                    //var link = $(`<a href="${result.url}" ${dataDialog}>`).appendTo(single);
 
                     // Optional image...
                     if (result.img !== null) {
                         $(`<img src="${result.img}">`)
                             .wrap('<div class="globalsearch-result-img">')
                             .parent() // Element is now the wrapper
-                            .appendTo(link);
+                            .appendTo(single);
                     }
 
-                    link.append(data);
+                    single.append(data);
 
                     // Name/title
                     $('<div class="globalsearch-result-title">')
@@ -145,7 +146,7 @@ const GlobalSearch = {
                     if (result.date !== null) {
                         $('<div class="globalsearch-result-time">')
                             .html(result.date)
-                            .appendTo(link);
+                            .appendTo(single);
                     }
 
                     // "Expand" attribute for further, result-related search
@@ -179,6 +180,7 @@ const GlobalSearch = {
         GlobalSearch.lastSearch = null;
 
         $('#globalsearch-searchbar').removeClass('is-visible has-value');
+        $('#globalsearch-input').attr('aria-expanded', 'false');
         $('#globalsearch-input').val('');
         $('#globalsearch-results').html('');
         $('#globalsearch-input').focus();
