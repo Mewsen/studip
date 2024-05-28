@@ -57,16 +57,7 @@ class OAuth1Strategy implements Strategy
         $uri = (string) $this->request->getUri();
         $method = $this->request->getMethod();
 
-        if ('GET' === strtoupper(($method))) {
-            $parameters = (array) $this->request->getQueryParams();
-        } elseif ('POST' === strtoupper(($method))) {
-            $parameters = (array) $this->request->getParsedBody();
-        } else {
-            $parameters = [];
-        }
-        $parameters = $this->getParamsFromAuthorizationHeader($this->request, $parameters);
-
-        $req = new \OAuthRequestVerifier($uri, $method, $parameters);
+        $req = new \OAuthRequestVerifier($uri, $method);
 
         // Check oauth timestamp and deny access if timestamp is outdated
         if ($req->getParam('oauth_timestamp') < strtotime('-6 hours')) {
