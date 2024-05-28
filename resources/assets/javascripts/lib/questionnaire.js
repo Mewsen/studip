@@ -112,7 +112,7 @@ const Questionnaire = {
                                 id: id,
                                 questiontype: this.questions[i].questiontype,
                                 internal_name: this.questions[i].internal_name,
-                                questiondata: Object.assign({}, this.questions[i].questiondata)
+                                questiondata: JSON.parse(JSON.stringify(this.questions[i].questiondata)),
                             });
                             this.activeTab = id;
                         },
