@@ -33,14 +33,15 @@ class BrowseNavigation extends Navigation
                 $courselink = 'dispatch.php/admin/courses';
             }
         } else {
-            $coursetext = _('Freie');
+            $coursetext = _('Freie Veranstaltungen');
             $courseinfo = _('Freie Veranstaltungen');
             $courselink = 'dispatch.php/public_courses';
         }
 
         parent::__construct($coursetext, $courselink);
+
         if (!Context::getId()) {
-            $this->setImage(Icon::create('seminar', 'navigation', ["title" => $courseinfo]));
+            $this->setImage(Icon::create('seminar', Icon::ROLE_NAVIGATION, ['title' => $courseinfo]));
         }
     }
 
