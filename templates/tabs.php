@@ -7,10 +7,10 @@ foreach (Navigation::getItem("/")->getSubNavigation() as $path => $nav) {
 }
 ?>
 <div class="tabs_wrapper">
-    <? SkipLinks::addIndex(_('Zweite Navigationsebene'), 'navigation-level-2', 10, false); ?>
     <ul id="tabs">
         <? if (!empty($navigation)): ?>
-        <? foreach ($navigation as $path => $nav) : ?>
+            <? SkipLinks::addIndex(_('Zweite Navigationsebene'), 'navigation-level-2', 10, false); ?>
+            <? foreach ($navigation as $path => $nav) : ?>
             <? if ($nav->isVisible()) : ?>
                 <li id="nav_<?= $path1 ?? '' ?>_<?= $path ?>"<?= $nav->isActive() ? ' class="current"' : '' ?>>
                     <? if ($nav->isEnabled()): ?>
