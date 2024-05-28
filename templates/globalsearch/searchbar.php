@@ -1,6 +1,16 @@
-<div id="globalsearch-searchbar" role="search" aria-label="<?= _('Globale Suche') ?>">
-    <input class="hidden-small-down" type="text" name="globalsearchterm" id="globalsearch-input"
-           placeholder="<?= _('Was suchen Sie?') ?>" role="searchbox">
+<div id="globalsearch-searchbar"
+     role="search"
+     aria-label="<?= _('Globale Suche') ?>">
+    <input class="hidden-small-down"
+           type="text"
+           name="globalsearchterm"
+           id="globalsearch-input"
+           placeholder="<?= _('Was suchen Sie?') ?>"
+           role="combobox"
+           aria-haspopup="listbox"
+           aria-expanded="false"
+           aria-controls="globalsearch-list"
+           aria-label="Suche nach Objekten und Personen in Stud.IP">
     <?= Icon::create('decline', Icon::ROLE_INACTIVE)->asInput([
         'id'    => 'globalsearch-clear',
         'class' => 'hidden-small-down',
@@ -10,7 +20,8 @@
         'id'  => 'globalsearch-icon',
         'alt' => _('Suche starten')
     ]) ?>
-    <div id="globalsearch-list">
+    <div id="globalsearch-list"
+         role="listbox">
         <a href="#" id="globalsearch-togglehints" data-toggle-text="<?= _('Tipps ausblenden') ?>">
             <?= _('Tipps einblenden') ?>
         </a>
