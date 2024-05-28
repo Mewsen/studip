@@ -121,7 +121,7 @@ class email_validation_class
      */
     public function ValidateEmailAddress($email, $domains = '')
     {
-        $converted_email = $this->idna_convert->convert($email);
+        $converted_email = $this->idna_convert->convertEmailAddress($email);
         if (!filter_var($converted_email, FILTER_VALIDATE_EMAIL)) {
             return false;
         }
