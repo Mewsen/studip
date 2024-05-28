@@ -13,7 +13,8 @@
         "codeception/module-asserts": "3.0.0",
         "overtrue/phplint": "9.3.0",
         "phpstan/phpstan": "1.11.0",
-        "symfony/var-dumper": "6.4.7"
+        "symfony/var-dumper": "6.4.7",
+        "maximebf/debugbar": "1.22.3"
     },
     "require": {
         "php": "^8.1",

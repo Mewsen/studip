@@ -139,6 +139,21 @@ class PageLayout
         self::addScript('studip-wysiwyg.js?v=' . $v);
 
         self::addStylesheet('print.css?v=' . $v, ['media' => 'print']);
+
+        if (Studip\Debug\DebugBar::isActivated()) {
+            $old_base = URLHelper::setBaseURL($GLOBALS['ABSOLUTE_URI_STUDIP']);
+
+            self::addHeadElement('link', [
+                'href' => URLHelper::getURL('dispatch.php/debugbar/css'),
+                'rel' => 'stylesheet',
+                'type' => 'text/css',
+            ]);
+            self::addHeadElement('script', [
+                'src' => URLHelper::getURL('dispatch.php/debugbar/js'),
+            ]);
+
+            URLHelper::setBaseURL($old_base);
+        }
     }
 
     /**

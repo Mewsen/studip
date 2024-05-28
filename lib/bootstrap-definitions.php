@@ -1,9 +1,17 @@
 <?php
 
+use DebugBar\DataCollector\ExceptionsCollector;
+use DebugBar\DataCollector\MemoryCollector;
+use DebugBar\DataCollector\MessagesCollector;
+use DebugBar\DataCollector\PhpInfoCollector;
+use DebugBar\DataCollector\RequestDataCollector;
+use DebugBar\DataCollector\TimeDataCollector;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+
+use function DI\create;
 
 return [
     LoggerInterface::class => DI\factory(function () {
@@ -17,10 +25,46 @@ return [
     \Studip\Cache\Cache::class => DI\factory(function () {
         return \Studip\Cache\Factory::getCache();
     }),
-    StudipPDO::class => DI\factory(function () {
+    PDO::class => DI\factory(function () {
         return DBManager::get();
     }),
     Trails\Dispatcher::class => DI\factory(function (ContainerInterface $container) {
         return new \StudipDispatcher($container);
+    }),
+    DebugBar\DebugBar::class => DI\factory(function (ContainerInterface $container) {
+        $debugBar = new DebugBar\DebugBar();
+        $debugBar->addCollector(new PhpInfoCollector());
+        $debugBar->addCollector(new RequestDataCollector());
+        $debugBar->addCollector(new MemoryCollector());
+        $debugBar->addCollector(new ExceptionsCollector());
+
+        // Future Improvements, not used/activated right now
+        # $debugBar->addCollector(new MessagesCollector());
+        # $debugBar->addCollector(new TimeDataCollector());
+
+        $config = iterator_to_array(Config::getInstance()->getIterator());
+        ksort($config);
+        $debugBar->addCollector(new DebugBar\DataCollector\ConfigCollector($config));
+
+        $pdo = $container->get(PDO::class);
+        if ($pdo instanceof DebugBar\DataCollector\PDO\TraceablePDO) {
+            $collector = new DebugBar\DataCollector\PDO\PDOCollector($pdo);
+            $debugBar->addCollector($collector);
+        }
+
+        return $debugBar;
+    }),
+    StudipPDO::class => DI\factory(function () {
+        $pdo = new StudipPDO(
+            "mysql:host={$GLOBALS['DB_STUDIP_HOST']};dbname={$GLOBALS['DB_STUDIP_DATABASE']};charset=utf8mb4",
+            $GLOBALS['DB_STUDIP_USER'],
+            $GLOBALS['DB_STUDIP_PASSWORD']
+        );
+
+        if (Studip\Debug\DebugBar::isActivated()) {
+            $pdo = new DebugBar\DataCollector\PDO\TraceablePDO($pdo);
+        }
+
+        return $pdo;
     }),
 ];

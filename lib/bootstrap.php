@@ -129,13 +129,10 @@ $GLOBALS['template_factory'] = new Flexi\Factory("{$STUDIP_BASE_PATH}/templates"
 
 // set default pdo connection
 try {
-    DBManager::getInstance()
-        ->setConnection('studip',
-            'mysql:host=' . $GLOBALS['DB_STUDIP_HOST'] .
-            ';dbname=' . $GLOBALS['DB_STUDIP_DATABASE'] .
-            ';charset=utf8mb4',
-            $GLOBALS['DB_STUDIP_USER'],
-            $GLOBALS['DB_STUDIP_PASSWORD']);
+    DBManager::getInstance()->setConnection(
+        'studip',
+        app(StudipPDO::class)
+    );
 } catch (PDOException $exception) {
     if (Studip\ENV === 'development') {
         throw $exception;

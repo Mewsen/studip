@@ -9,6 +9,7 @@
  * the License, or (at your option) any later version.
  */
 
+use DebugBar\DebugBar;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -294,7 +295,7 @@ abstract class StudipController extends Trails\Controller
 
         // Extract fragment (if any)
         if (strpos($to, '#') !== false) {
-            list($args[0], $fragment) = explode('#', $to);
+            [$args[0], $fragment] = explode('#', $to);
         }
 
         // Extract parameters (if any)
@@ -664,6 +665,19 @@ abstract class StudipController extends Trails\Controller
             $this->render_action($action);
         }
         return $this->response;
+    }
+
+    public function render_template($template_name, $layout = null)
+    {
+        if (Studip\Debug\DebugBar::isActivated()) {
+            $debugbar = app()->get(Debugbar::class);
+            if (!isset($debugbar['trails'])) {
+                $collector = new \Studip\Debug\TrailsCollector($this);
+                $debugbar->addCollector($collector);
+            }
+        }
+
+        parent::render_template($template_name, $layout);
     }
 
     /**
