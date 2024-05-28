@@ -8,15 +8,18 @@
         <nav>
             <? if ($allowed_to_add) : ?>
                 <? if ($statusgruppen_ids): ?>
-                    <a href="<?= $controller->link_for('questionnaire/add_to_context') ?>" data-dialog="size=auto" title="<?= _('Fragebogen hinzufügen') ?>">
+                    <a href="<?= $controller->link_for('questionnaire/add_to_context') ?>" data-dialog="size=auto"
+                       title="<?= _('Fragebogen hinzufügen') ?>" aria-label="<?= _('Fragebogen hinzufügen') ?>">
                         <?= Icon::create("add", "clickable")->asimg("16px", ['class' => "text-bottom"]) ?>
                     </a>
                 <? else: ?>
-                    <a href="<?= $controller->link_for('questionnaire/edit', compact('range_type', 'range_id')) ?>" data-dialog title="<?= _('Fragebogen hinzufügen') ?>">
+                    <a href="<?= $controller->link_for('questionnaire/edit', compact('range_type', 'range_id')) ?>" data-dialog
+                       title="<?= _('Fragebogen hinzufügen') ?>" aria-label="<?= _('Fragebogen hinzufügen') ?>">
                         <?= Icon::create("add", "clickable")->asimg("16px", ['class' => "text-bottom"]) ?>
                     </a>
                 <? endif ?>
-                <a href="<?= URLHelper::getLink("dispatch.php/questionnaire/" . ($range_type == 'course' || $range_type == 'institute' ? 'course' : ''). "overview") ?>" title="<?= _('Fragebögen verwalten') ?>">
+                <a href="<?= URLHelper::getLink("dispatch.php/questionnaire/" . ($range_type == 'course' || $range_type == 'institute' ? 'course' : ''). "overview") ?>"
+                   title="<?= _('Fragebögen verwalten') ?>" aria-label="<?= _('Fragebögen verwalten') ?>">
                     <?= Icon::create("admin", "clickable")->asimg("16px", ['class' => "text-bottom"]) ?>
                 </a>
             <? endif ?>

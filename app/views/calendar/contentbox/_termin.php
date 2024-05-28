@@ -11,7 +11,8 @@
                 <?= $termin['room'] ? _('Raum') . ': ' . formatLinks($termin['room']) : '' ?>
             </span>
             <? if($admin && $isProfile && $termin['type'] === 'CalendarEvent'): ?>
-            <a href="<?= URLHelper::getLink('dispatch.php/calendar/single/edit/' . $termin['range_id'] . '/' . $termin['event_id'], ['source_page' => 'dispatch.php/profile']) ?>">
+            <a href="<?= URLHelper::getLink('dispatch.php/calendar/single/edit/' . $termin['range_id'] . '/' . $termin['event_id'], ['source_page' => 'dispatch.php/profile']) ?>"
+                title="<?= _('Termin bearbeiten') ?>" aria-label="<?= _('Termin bearbeiten') ?>">
                 <?= Icon::create('edit', 'clickable')->asImg(['class' => 'text-bottom']) ?>
             </a>
             <? endif; ?>

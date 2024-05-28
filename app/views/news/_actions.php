@@ -37,16 +37,19 @@ if ($new['allow_comments']) :
 
 
 <? if ($new->havePermission('edit')): ?>
-    <a href="<?= URLHelper::getLink('dispatch.php/news/edit_news/' . $new->id) ?>" data-dialog>
+    <a href="<?= URLHelper::getLink('dispatch.php/news/edit_news/' . $new->id) ?>" data-dialog
+       title="<?= _('Bearbeiten') ?>" aria-label="<?= _('Bearbeiten') ?>">
         <?= Icon::create('edit') ?>
     </a>
     <? if ($new->havePermission('unassign', $range)): ?>
-        <a href=" <?= URLHelper::getLink('', ['remove_news' => $new->id, 'news_range' => $range]) ?>" >
+        <a href=" <?= URLHelper::getLink('', ['remove_news' => $new->id, 'news_range' => $range]) ?>"
+           title="<?= _('Nicht mehr abonnieren') ?>" aria-label="<?= _('Nicht mehr abonnieren') ?>">
             <?= Icon::create('remove') ?>
         </a>
     <? endif; ?>
     <? if ($new->havePermission('delete')): ?>
-        <a href=" <?= URLHelper::getLink('', ['delete_news' => $new->id]) ?>" >
+        <a href=" <?= URLHelper::getLink('', ['delete_news' => $new->id]) ?>"
+           title="<?= _('Löschen') ?>" aria-label="<?= _('Löschen') ?>">
             <?= Icon::create('trash') ?>
         </a>
     <? endif; ?>
