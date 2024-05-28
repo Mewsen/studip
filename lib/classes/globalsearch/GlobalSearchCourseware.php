@@ -142,7 +142,7 @@ class GlobalSearchCourseware extends GlobalSearchModule implements GlobalSearchF
                 'description' => $description,
                 'url' => $pageData['url'],
                 'img' => $structural_element->image ? $structural_element->getImageUrl() : Icon::create('courseware')->asImagePath(),
-                'additional' => '<a href="' . htmlReady($pageData['originUrl']) . '" title="' . htmlReady($pageData['originName']) . '">' . htmlReady($pageData['originName']) . '</a>',
+                'additional' => htmlReady($pageData['originName']),
                 'date' => $date->format('d.m.Y H:i'),
                 'structural-element-id' => $structural_element->id,
                 'expand' => null

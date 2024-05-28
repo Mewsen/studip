@@ -36,6 +36,51 @@ STUDIP.domReady(() => {
             return false;
         }
     });
+    $('#globalsearch-input').on('keypress', function(e) {
+        if (e.which === 13) {
+            STUDIP.GlobalSearch.doSearch();
+            return false;
+        }
+    });
+    $('#globalsearch-searchbar').on('keydown', function(e) {
+        if (e.originalEvent.code === 'ArrowDown') {
+            if ($('#globalsearch-list [role=listitem]:focus').length === 0) {
+                $('#globalsearch-list [role=listitem]:visible').first().focus();
+            } else {
+                let n = $('#globalsearch-list [role=listitem]:focus').next();
+                if (n.length > 0 && n.is('[role=listitem]:visible')) {
+                    n.focus();
+                } else {
+                    n = $('#globalsearch-list [role=listitem]:focus').parent().next().find('[role=listitem]:visible').first();
+                    if (n.length > 0) {
+                        n.focus();
+                    } else {
+                        $('#globalsearch-list [role=listitem]:visible').first().focus();
+                    }
+                }
+            }
+            return false;
+        }
+        if (e.originalEvent.code === 'ArrowUp') {
+            if ($('#globalsearch-list [role=listitem]:focus').length === 0) {
+                $('#globalsearch-list [role=listitem]:visible').last().focus();
+            } else {
+                let n = $('#globalsearch-list [role=listitem]:focus').prev();
+                if (n.length > 0 && n.is('[role=listitem]:visible')) {
+                    n.focus();
+                } else {
+                    n = $('#globalsearch-list [role=listitem]:focus').parent().prev().find('[role=listitem]:visible').last();
+                    if (n.length > 0) {
+                        n.focus();
+                    } else {
+                        $('#globalsearch-list [role=listitem]:visible').last().focus();
+                    }
+                }
+            }
+            return false;
+        }
+    });
+
 
     // Close search on click on page.
     $('#navigation-level-1, #current-page-structure, #main-footer').on('click', function() {
