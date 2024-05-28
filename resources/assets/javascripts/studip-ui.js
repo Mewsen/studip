@@ -33,9 +33,9 @@ import eventBus from "./lib/event-bus.ts";
         if (STUDIP.UI.restrictedDates[year] === undefined) {
             STUDIP.UI.restrictedDates[year] = {};
 
-            STUDIP.jsonapi.GET('holidays', {data: {
+            STUDIP.jsonapi.withPromises().get('holidays', {data: {
                 'filter[year]': year
-            }}).done(response => {
+            }}).then(response => {
                 // Since PHP will return an empty object as an array,
                 // we need to check
                 if (Array.isArray(response)) {

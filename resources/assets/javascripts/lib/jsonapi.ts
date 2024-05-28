@@ -3,11 +3,11 @@ import AbstractAPI from './abstract-api.js';
 // Actual JSONAPI object
 class JSONAPI extends AbstractAPI
 {
-    constructor(version = 1) {
+    constructor(version: number = 1) {
         super(`jsonapi.php/v${version}`);
     }
 
-    encodeData (data, method) {
+    encodeData (data: any, method: string): any {
         data = super.encodeData(data);
 
         if (['DELETE', 'GET', 'HEAD'].includes(method)) {
@@ -21,11 +21,11 @@ class JSONAPI extends AbstractAPI
         return JSON.stringify(data);
     }
 
-    request (url, options = {}) {
+    request (url: string, options: any = {}) {
         options.contentType = 'application/vnd.api+json';
         return super.request(url, options);
     }
 }
 
 export default JSONAPI;
-export const jsonapi = new JSONAPI();
+export const jsonapi: JSONAPI = new JSONAPI();

@@ -71,7 +71,7 @@ export default {
                 attributes: { value: configValue[configKey] }
             };
 
-            return STUDIP.jsonapi.PATCH(`config-values/${documentId}`, { data: { data } })
+            return STUDIP.jsonapi.withPromises().patch(`config-values/${documentId}`, { data: { data } })
         },
         toggleOpenGroup ({ state, dispatch }, group) {
             let open_groups = [ ...state.config.open_groups ];

@@ -10,9 +10,9 @@ $(document).on('click', '.consultation-delete-check:not(.ignore)', event => {
     }
 
     let requests = ids.map(id => {
-        return STUDIP.jsonapi.GET(`consultation-slots/${id}/bookings`).then(result => result.data.length);
+        return STUDIP.jsonapi.withPromises().get(`consultation-slots/${id}/bookings`).then(response => response.data.length);
     });
-    $.when(...requests).done((...results) => {
+    Promise.all(requests).then((...results) => {
         if (results.some(result => result > 0)) {
             $(event.target).addClass('ignore').click().removeClass('ignore');
         } else {

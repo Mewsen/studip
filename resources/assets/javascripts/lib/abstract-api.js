@@ -1,5 +1,20 @@
 import Overlay from './overlay.js';
 
+class APIError extends Error
+{
+    static createWithJqXhr(message, jqXhr) {
+        const error = new APIError(message);
+        error.setJqXhr(jqXhr);
+        return error;
+    }
+
+    jqXhr = null;
+
+    setJqXhr(jqXhr) {
+        this.jqXhr = jqXhr;
+    }
+}
+
 class AbstractAPI
 {
     static get supportedMethods() {
@@ -117,6 +132,31 @@ class AbstractAPI
                 return `${name}=${value}`;
             }
         }).join('&');
+    }
+
+    withPromises() {
+        return new Proxy(this, {
+            get(target, prop, receiver) {
+                // This will allow http methods to be written as lowercase when called as methods
+                // (e.g. api.patch() instead of api.PATCH())
+                if (target[prop] === undefined && AbstractAPI.supportedMethods.includes(prop.toUpperCase())) {
+                    prop = prop.toUpperCase();
+                }
+
+                // Only handle calls to request methods
+                if (prop !== 'request') {
+                    return Reflect.get(target, prop, receiver);
+                }
+
+                // Return a wrapped promise that handles the deferred
+                return (url, options = {}) => new Promise((resolve, reject) => {
+                    target[prop].apply(target, [url, options]).then(
+                        (response) => resolve(response),
+                        (jqXhr, textStatus, errorThrown) => reject(APIError.createWithJqXhr(errorThrown || textStatus, jqXhr))
+                    );
+                });
+            }
+        })
     }
 }
 
