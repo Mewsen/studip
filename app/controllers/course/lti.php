@@ -812,12 +812,6 @@ class Course_LtiController extends StudipController
 
             $widget = Sidebar::get()->addWidget(new ExportWidget());
             $widget->addLink(
-                _('Noten aktualisieren'),
-                $this->url_for('course/lti/update_grades'),
-                Icon::create('refresh'),
-                ['data-dialog' => 'reload-on-close']
-            );
-            $widget->addLink(
                 _('Ergebnisse exportieren'),
                 $this->url_for('course/lti/export_grades'),
                 Icon::create('download')
@@ -827,48 +821,6 @@ class Course_LtiController extends StudipController
         }
 
         Helpbar::get()->addPlainText('', _('Auf dieser Seite können Sie die Ergebnisse sehen, die von LTI-Tools zurückgemeldet wurden.'));
-    }
-
-    /**
-     * Updates the grades by querying the LTI tools that are deployed in the course.
-     */
-    public function update_grades_action()
-    {
-        $this->update_all = true;
-        $this->deployments = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY `position`');
-        $this->selected_deployment_ids = [];
-
-        if (Request::isPost()) {
-            CSRFProtection::verifyUnsafeRequest();
-            if (Request::submitted('update')) {
-                $this->update_all = Request::bool('update_all');
-                $deployments_to_update = [];
-                if ($this->update_all) {
-                    $deployments_to_update = $this->deployments;
-                } else {
-                    $this->selected_deployment_ids = Request::getArray('deployment_ids');
-                    foreach ($this->deployments as $deployment) {
-                        if (in_array($deployment->id, $this->selected_deployment_ids)) {
-                            $deployments_to_update[] = $deployment;
-                        }
-                    }
-                }
-                if (!$deployments_to_update) {
-                    PageLayout::postError(_('Es wurde kein LTI-Tool ausgewählt.'));
-                    return;
-                }
-
-                $successful = \Studip\LTI13a\GradeManager::updateGrades($deployments_to_update);
-                if ($successful === count($deployments_to_update)) {
-                    PageLayout::postSuccess(_('Die Noten wurden aktualisiert.'));
-                } elseif ($successful > 0) {
-                    PageLayout::postWarning(_('Es konnten nicht alle Noten aktualisiert werden.'));
-                } else {
-                    PageLayout::postError(_('Das Aktualisieren der Noten ist fehlgeschlagen.'));
-                }
-                $this->redirect('course/lti/grades');
-            }
-        }
     }
 
     /**
