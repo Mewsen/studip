@@ -42,6 +42,7 @@ StudipAutoloader::addAutoloadPath('lib/calendar');
 StudipAutoloader::addAutoloadPath('lib/calendar', 'Studip\\Calendar');
 StudipAutoloader::addAutoloadPath('lib/exceptions');
 StudipAutoloader::addAutoloadPath('lib/exceptions/resources');
+StudipAutoloader::addAutoloadPath('lib/exTpl', 'exTpl');
 StudipAutoloader::addAutoloadPath('lib/filesystem');
 StudipAutoloader::addAutoloadPath('lib/migrations');
 StudipAutoloader::addAutoloadPath('lib/modules');
