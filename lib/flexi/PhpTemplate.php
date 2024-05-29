@@ -17,20 +17,15 @@ class PhpTemplate extends Template
      * @return string A string representing the rendered presentation.
      * @throws TemplateNotFoundException
      */
-    public function _render(): string
+    protected function _render(): string
     {
         extract($this->get_attributes());
 
         # include template, parse it and get output
-        try {
-            ob_start();
-            require $this->template;
-            $content_for_layout = ob_get_contents();
-        } catch (\Error $e) {
-            throw new TemplateNotFoundException(previous: $e);
-        } finally {
-            ob_end_clean();
-        }
+        ob_start();
+        require $this->template;
+        $content_for_layout = ob_get_contents();
+        ob_end_clean();
 
         # include layout, parse it and get output
         if (isset($this->layout)) {

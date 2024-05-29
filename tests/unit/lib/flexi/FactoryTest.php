@@ -108,7 +108,7 @@ final class FactoryTestCase extends \Codeception\Test\Unit
     public function testShouldRespondToAddedHandlers()
     {
         $handler = new class('', $this->factory) extends Flexi\Template {
-            public function _render(): string
+            protected function _render(): string
             {
                 return '';
             }

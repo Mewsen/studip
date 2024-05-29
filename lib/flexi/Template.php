@@ -18,7 +18,7 @@ abstract class Template
      *
      * @return string A string representing the rendered presentation.
      */
-    abstract public function _render(): string;
+    abstract protected function _render(): string;
 
     protected array $attributes = [];
     protected Template|null $layout = null;
