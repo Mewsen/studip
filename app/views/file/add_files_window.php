@@ -38,7 +38,7 @@ if ($folder_id) {
                 <?= Icon::create('computer')->asImg(50) ?>
                 <?= _('Mein Computer') ?>
             </a>
-            <a href="<?= $controller->link_for('file/add_url/' . $folder_id, array_merge($options, ['from_plugin' => ""])) ?>" data-dialog>
+            <a href="<?= $controller->link_for('file/add_url/' . $folder_id, array_merge($options, ['from_plugin' => ""])) ?>" data-dialog="size=medium">
                 <?= Icon::create('globe')->asImg(50) ?>
                 <?= _('Webadresse') ?>
             </a>

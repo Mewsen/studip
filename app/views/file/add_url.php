@@ -13,25 +13,25 @@
                    value="<?= htmlReady(Request::get('name')) ?>">
         </label>
 
-        <label>
-            <?= _('Zugriffsart') ?>
-        </label>
+    </fieldset>
+    <fieldset>
+        <legend><?= _('Zugriffsart') ?></legend>
         <label>
             <input type="radio" name="access_type" value="redirect"
-                   <? if (Request::option('access_type') !== 'proxy') echo 'checked'; ?>>
+                <? if (Request::option('access_type') !== 'proxy') echo 'checked'; ?>>
             <?= _('Direktlink')?>
         </label>
         <label>
             <input type="radio" name="access_type" value="proxy"
-                    <? if (Request::option('access_type') === 'proxy') echo 'checked'; ?>>
+                <? if (Request::option('access_type') === 'proxy') echo 'checked'; ?>>
             <?= _('Link über Proxy')?>
         </label>
-        <?= $this->render_partial('file/_terms_of_use_select.php', [
-            'content_terms_of_use_entries' => $content_terms_of_use_entries,
-            'selected_terms_of_use_id'     => $content_terms_of_use_id,
-        ]) ?>
-    </fieldset>
 
+    </fieldset>
+    <?= $this->render_partial('file/_terms_of_use_select.php', [
+        'content_terms_of_use_entries' => $content_terms_of_use_entries,
+        'selected_terms_of_use_id'     => $content_terms_of_use_id,
+    ]) ?>
     <footer data-dialog-button>
         <?= Studip\Button::createAccept(_('Speichern'), 'store') ?>
         <?= Studip\LinkButton::createCancel(
