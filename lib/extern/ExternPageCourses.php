@@ -117,7 +117,8 @@ class ExternPageCourses extends ExternPage
         }
         $query .= "
             WHERE (`semester_courses`.`semester_id` IN (:semester_ids) OR ISNULL(`semester_id`))
-                AND ISNULL(`seminare`.`parent_course`) "
+                AND ISNULL(`seminare`.`parent_course`)
+                AND `seminare`.`visible` = 1 "
             . $this->getScopesSQL($params, $this->studyareas, (bool) $this->scope_kids)
             . $this->getInstitutesSQL($params)
             . $this->getSemtypesSQL($params)
@@ -304,7 +305,8 @@ class ExternPageCourses extends ExternPage
         }
         $query .= "
             WHERE (`semester_courses`.`semester_id` IN (:semester_ids) OR ISNULL(`semester_id`))
-                AND ISNULL(`seminare`.`parent_course`) "
+                AND ISNULL(`seminare`.`parent_course`)
+                AND `seminare`.`visible` = 1 "
                 . $this->getScopesSQL($params, $this->studyareas, (bool) $this->scope_kids)
                 . $this->getInstitutesSQL($params)
                 . $this->getSemtypesSQL($params)
