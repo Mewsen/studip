@@ -119,7 +119,11 @@ class ExternPageTimetable extends ExternPage
                 LEFT JOIN `seminar_inst`
                     ON `seminare`.`Seminar_id` = `seminar_inst`.`Seminar_id`";
         $query .= "
-            WHERE (`termine`.`date` >= :start AND `termine`.`date` <= :end) "
+            WHERE (
+                `seminare`.`visible` = 1
+                    AND termine`.`date` >= :start
+                    AND `termine`.`date` <= :end
+            )"
             . $this->getEventTypeSQL($params)
             . $this->getScopesSQL($params, $this->studyareas, (bool) $this->scope_kids)
             . $this->getInstitutesSQL($params)

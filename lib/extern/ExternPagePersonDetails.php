@@ -146,7 +146,8 @@ class ExternPagePersonDetails extends ExternPage
                 LEFT JOIN `seminar_user` USING(`seminar_id`)
                 LEFT JOIN `sem_types`
                     ON `sem_types`.`id` = `seminare`.`status`
-            WHERE `semester_courses`.`semester_id` IN (:semester_ids) OR ISNULL(`semester_id`)
+            WHERE `seminare`.`visible` = 1
+                AND `semester_courses`.`semester_id` IN (:semester_ids) OR ISNULL(`semester_id`)
                 AND `seminar_user`.`user_id` = :user_id
                 AND `seminar_user`.`status` = 'dozent'
                 AND `sem_types`.`class` IN (:semclasses)";
