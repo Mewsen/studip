@@ -7,14 +7,10 @@ table.default {
 
 
     th.sortasc {
-        span[role=img] {
-            @include icon('after', 'arr_1up', 'clickable');
-        }
+        @include icon('after', 'arr_1up', 'clickable');
     }
 
     th.sortdesc {
-        span[role=img] {
-            @include icon('after', 'arr_1down', 'clickable');
-        }
+        @include icon('after', 'arr_1down', 'clickable');
     }
 }
