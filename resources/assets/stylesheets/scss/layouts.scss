@@ -121,7 +121,11 @@ body {
     margin-top: 5px;
 
     #tabs {
-        font-size: 1.3em;
+        font-size: 1.25em;
+
+        > li::after {
+            margin-top: -1px;
+        }
     }
 }
 
@@ -200,7 +204,7 @@ body {
 #context-title {
     font-size: 1.4em;
     height: 25px;
-    padding: 20px 15px;
+    padding: 20px 15px 10px 15px;
     max-height: 25px;
     overflow: hidden;
 
@@ -301,7 +305,7 @@ body {
             background-color: var(--white);
             font-size: 0.9em;
             min-height: 2.3em;
-            border-bottom: 3px solid var(--dark-gray-color-20);
+            border-bottom: 2px solid var(--dark-gray-color-20);
             margin: 0 $page-margin;
         }
         #navigation-level-3 {
