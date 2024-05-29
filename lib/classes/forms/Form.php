@@ -297,6 +297,8 @@ class Form extends Part
                     \PageLayout::postSuccess($this->success_message);
                 }
                 page_close();
+                //This indicates that the form has been stored successfully.
+                echo "STUDIPFORM_STORE_SUCCESS";
                 die();
             }
         }
