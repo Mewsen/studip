@@ -16,6 +16,8 @@
 
 class Lti_AgsController extends StudipController
 {
+    protected $allow_nobody = true;
+
     use \Studip\OAuth2\NegotiatesWithPsr7;
 
     public function before_filter(&$action, &$args)
