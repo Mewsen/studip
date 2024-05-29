@@ -2,7 +2,7 @@
     <ckeditor
         :editor="editor"
         :config="editorConfig"
-        @ready="prefill"
+        @ready="onReady"
         v-model="currentText"
         @input="onInput"
     />
@@ -29,11 +29,15 @@ export default {
             },
             default: 'classic',
         },
+        autofocus: Boolean,
     },
     data() {
         return {
             currentText: '',
             editorConfig: {},
+
+            createdEditor: null,
+            shouldFocus: this.autofocus,
         };
     },
     computed: {
@@ -48,13 +52,25 @@ export default {
         },
     },
     methods: {
-        prefill(editor) {
+        onReady(editor) {
+            this.createdEditor = editor;
             this.currentText = this.text;
+
+            if (this.shouldFocus) {
+                this.focus();
+            }
         },
         onInput(value) {
             this.currentText = value;
             this.$emit('input', value);
         },
+        focus() {
+            if (this.createdEditor) {
+                this.createdEditor.focus();
+            } else {
+                this.shouldFocus = true;
+            }
+        }
     },
     created() {
         STUDIP.loadChunk('mathjax');
