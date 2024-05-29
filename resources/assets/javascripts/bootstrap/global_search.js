@@ -27,58 +27,45 @@ STUDIP.domReady(() => {
     // Enlarge search input on focus and show hints.
     $('#globalsearch-input').on('focus', function() {
         STUDIP.GlobalSearch.toggleSearchBar(true, false);
-    });
-
-    // Start search on Enter
-    $('#globalsearch-input').on('keypress', function(e) {
-        if (e.which === 13) {
-            STUDIP.GlobalSearch.doSearch();
-            return false;
-        }
-    });
-    $('#globalsearch-input').on('keypress', function(e) {
-        if (e.which === 13) {
+    }).on('keypress', (e) => {
+        // Start search on Enter
+        if (e.key === 'Enter') {
             STUDIP.GlobalSearch.doSearch();
             return false;
         }
     });
     $('#globalsearch-searchbar').on('keydown', function(e) {
-        if (e.originalEvent.code === 'ArrowDown') {
-            if ($('#globalsearch-list [role=listitem]:focus').length === 0) {
-                $('#globalsearch-list [role=listitem]:visible').first().focus();
-            } else {
-                let n = $('#globalsearch-list [role=listitem]:focus').next();
-                if (n.length > 0 && n.is('[role=listitem]:visible')) {
-                    n.focus();
-                } else {
-                    n = $('#globalsearch-list [role=listitem]:focus').parent().next().find('[role=listitem]:visible').first();
-                    if (n.length > 0) {
-                        n.focus();
-                    } else {
-                        $('#globalsearch-list [role=listitem]:visible').first().focus();
-                    }
-                }
-            }
-            return false;
+        if (!['ArrowDown', 'ArrowUp'].includes(e.key)) {
+            return;
         }
-        if (e.originalEvent.code === 'ArrowUp') {
-            if ($('#globalsearch-list [role=listitem]:focus').length === 0) {
-                $('#globalsearch-list [role=listitem]:visible').last().focus();
-            } else {
-                let n = $('#globalsearch-list [role=listitem]:focus').prev();
-                if (n.length > 0 && n.is('[role=listitem]:visible')) {
-                    n.focus();
-                } else {
-                    n = $('#globalsearch-list [role=listitem]:focus').parent().prev().find('[role=listitem]:visible').last();
-                    if (n.length > 0) {
-                        n.focus();
-                    } else {
-                        $('#globalsearch-list [role=listitem]:visible').last().focus();
-                    }
-                }
-            }
-            return false;
+
+        e.preventDefault();
+
+        // Get all possible items
+        const items = $('#globalsearch-list [role=listitem]:visible');
+
+        // Find focussed element
+        const focussed = items.filter(':focus');
+
+        // Get index of focussed element in all items
+        let index = focussed.length > 0 ? items.index(focussed[0]) : null;
+
+        // Move focussed element up or down in items
+        if (e.key === 'ArrowDown') {
+            index = (index ?? -1) + 1;
+        } else {
+            index = (index ?? items.length) - 1;
         }
+
+        // Clamp index to sane boundaries
+        if (index < 0) {
+            index = 0;
+        } else if (index > items.length - 1) {
+            index = items.length - 1;
+        }
+
+        // Focus new element by index
+        items.get(index).focus();
     });
 
 
