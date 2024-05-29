@@ -7,7 +7,7 @@
     box-shadow: 0 1px 0 fade-out(#fff, 0.5) inset;
     font-size: $font-size-base;
     margin-bottom: 8px;
-    max-width: $grid-element-width;
+    max-width: 270px;
     padding: 10px;
     position: absolute;
     text-align: left;
@@ -44,7 +44,7 @@
         bottom: 100%;
         display: inline-block;
         left: 50%;
-        margin-left: - calc($grid-element-width / 2) - 10px;
-        width: $grid-element-width;
+        margin-left: -145px;
+        width: 270px;
     }
 }
