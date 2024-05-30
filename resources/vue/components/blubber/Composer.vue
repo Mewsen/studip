@@ -1,6 +1,9 @@
 <template>
     <div class="writer" :style="composerStyle">
         <studip-icon shape="blubber" :size="30" role="info"></studip-icon>
+        <label for="blubber-placeholder" class="sr-only">
+            {{ placeholder || $gettext('Schreib was, frag was. Enter zum Abschicken.') }}
+        </label>
         <textarea
             :placeholder="placeholder || $gettext('Schreib was, frag was. Enter zum Abschicken.')"
             v-model="localText"
@@ -10,6 +13,7 @@
             @keyup.up.exact="editPreviousComment"
             @keyup="saveCommentToSession"
             ref="textarea"
+            id="blubber-placeholder"
         ></textarea>
         <a class="send" @click="submit" :title="$gettext('Abschicken')">
             <studip-icon shape="arr_2up" :size="30"></studip-icon>
