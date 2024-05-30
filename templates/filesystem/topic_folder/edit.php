@@ -10,7 +10,7 @@ $topics = CourseTopic::findBySeminar_id($folder->range_id);
         </option>
     <? endif; ?>
     <? foreach ($topics as $one_topic): ?>
-        <option <?=(@$topic->id === $one_topic->id ? 'selected' : '')?> value="<?= htmlReady($one_topic->id) ?>">
+        <option <?= isset($topic) && $topic->id === $one_topic->id ? 'selected' : '' ?> value="<?= htmlReady($one_topic->id) ?>">
             <?= htmlReady($one_topic->title) ?>
         </option>
     <? endforeach; ?>
