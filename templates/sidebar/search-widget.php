@@ -6,7 +6,7 @@
     <? foreach ($needles as $needle): ?>
         <li <? if ($needle['quick_search'] && $needle['quick_search']->hasExtendedLayout()) echo 'class="extendedLayout" id="' . $needle['quick_search']->getId() . '_frame"'; ?>>
             <div class="input-group files-search">
-                <label for="needle-<?= $hash = md5($url . '|' . $needle['name']) ?>" <? if ($needle['placeholder']) echo 'style="display:none;"'; ?>>
+                <label for="needle-<?= $hash = md5($url . '|' . $needle['name']) ?>" <? if ($needle['placeholder']) echo 'class="sr-only'; ?>>
                     <?= htmlReady($needle['label']) ?>
                 </label>
                 <? if ($needle['quick_search']): ?>
