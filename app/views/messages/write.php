@@ -7,7 +7,11 @@
     <fieldset>
         <legend><?= _('Neue Nachricht') ?></legend>
     <div class="message-user-list">
-        <label><?= _("An") ?></label>
+        <label>
+            <span class="required">
+                <?= _("An") ?>
+            </span>
+        </label>
         <ul class="list-csv" id="adressees">
             <li id="template_adressee" style="display: none;" class="adressee">
                 <input type="hidden" name="message_to[]" value="">
@@ -51,7 +55,9 @@
     </div>
     <div>
         <label>
-            <?= _("Betreff") ?>
+            <span class="required">
+                <?= _("Betreff") ?>
+            </span>
             <input type="text" name="message_subject" required value="<?= htmlReady($default_message['subject']) ?>">
         </label>
     </div>
