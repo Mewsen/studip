@@ -154,7 +154,7 @@
         <tfoot>
             <tr>
                 <td colspan="6">
-                    <select name="action_user" id="user_action" aria-label="<?= _('Aktion ausführen') ?>">
+                    <select name="action_user" id="user_action" aria-label="<?= _('Aktion auswählen') ?>">
                         <option value="">- <?= _('Aktion auswählen') ?></option>
                         <option value="upgrade">
                             <?= sprintf(_('Zu %s hochstufen'), htmlReady($status_groups['autor'])) ?>
