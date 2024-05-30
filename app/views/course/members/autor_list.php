@@ -183,8 +183,8 @@
         <tfoot>
             <tr>
                 <td colspan="<?= $cols_foot ?>">
-                    <select name="action_autor" id="action_autor" aria-label="<?= _('Aktion ausführen') ?>">
-                        <option value="">- <?= _('Aktion wählen') ?></option>
+                    <select name="action_autor" id="action_autor" aria-label="<?= _('Aktion auswählen') ?>">
+                        <option value="">- <?= _('Aktion auswählen') ?></option>
                     <? if($is_dozent) : ?>
                         <option value="upgrade">
                             <?= sprintf(_('Zu %s hochstufen'), htmlReady($status_groups['tutor'])) ?>
