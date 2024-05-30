@@ -221,21 +221,27 @@ export default {
             });
         },
         sortArray (array) {
+            const mappedFields = {
+                last_activity: 'last_activity_raw',
+                semester: 'semester_sort',
+            };
+
             if (!array.length) {
                 return [];
             }
-            let sortby = this.sort.by;
-            if (!this.activatedFields.includes(sortby) && sortby !== 'completion') {
+            if (!this.activatedFields.includes(this.sort.by) && this.sort.by !== 'completion') {
                 return array;
             }
 
             const striptags = function (text) {
-                if (typeof text === "string") {
+                if (typeof text === 'string') {
                     return text.replace(/(<([^>]+)>)/gi, "");
                 } else {
                     return text;
                 }
             };
+
+            let sortby = mappedFields[this.sort.by] ?? this.sort.by;
 
             // Define sort direction by this factor
             const directionFactor = this.sort.direction === 'ASC' ? 1 : -1;
@@ -246,35 +252,28 @@ export default {
                 sensitivity: 'base'
             });
             let sortFunction = function (a, b) {
-                return collator.compare(striptags(a[sortby]), striptags(b[sortby]));
+                return collator.compare(striptags(a[sortby]), striptags(b[sortby]))
+                    || collator.compare(striptags(a.number), striptags(b.number));
             };
 
-            if (sortby === 'last_activity') {
-                sortFunction = (a, b) => a.last_activity_raw - b.last_activity_raw;
-            } else if (sortby === 'name') {
-                sortFunction = (a, b) => {
-                    return collator.compare(striptags(a.name), striptags(b.name))
-                        || collator.compare(striptags(a.number), striptags(b.number));
-                };
-            } else if (sortby === 'number') {
+            if (sortby === 'number') {
                 sortFunction = (a, b) => {
                     return collator.compare(striptags(a.number), striptags(b.number))
                         || collator.compare(striptags(a.name), striptags(b.name));
                 };
-            } else if (sortby === 'semester') {
-                sortFunction = (a, b) => a.semester_sort - b.semester_sort;
             } else {
-                let is_numeric = true;
-                for (let i in array) {
-                    if (striptags(array[i][sortby]) && isNaN(striptags(array[i][sortby]))) {
-                        is_numeric = false;
-                        break;
-                    }
-                }
+                let is_numeric = !array.some(i => {
+                    const value = striptags(i[sortby]);
+                    return value && isNaN(parseInt(value, 10));
+                });
+
                 if (is_numeric) {
                     sortFunction = function (a, b) {
-                        return (striptags(a[sortby]) ? parseInt(striptags(a[sortby]), 10) : 0)
-                            - (striptags(b[sortby]) ? parseInt(striptags(b[sortby]), 10) : 0);
+                        const aValue = (striptags(a[sortby]) ? parseInt(striptags(a[sortby]), 10) : 0);
+                        const bValue = (striptags(b[sortby]) ? parseInt(striptags(b[sortby]), 10) : 0);
+
+                        return aValue - bValue
+                            || collator.compare(striptags(a.number), striptags(b.number));
                     };
                 }
             }
