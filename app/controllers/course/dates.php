@@ -80,7 +80,10 @@ class Course_DatesController extends AuthenticatedController
             )->asDialog();
         }
 
-        if (Seminar::setInstance(new Seminar(Course::findCurrent()))->getSlotModule('documents') && CourseDateFolder::availableInRange(Course::findCurrent(), User::findCurrent()->id)) {
+        if (
+            Seminar::setInstance(new Seminar(Course::findCurrent()))->getSlotModule('documents')
+            && CourseDateFolder::availableInRange(Course::findCurrent(), User::findCurrent() ? User::findCurrent()->id : null)
+        ) {
             $actions->addLink(
                 _('Sitzungsordner anlegen'),
                 $this->url_for('course/dates/create_folders'),

@@ -230,7 +230,7 @@ class ForumEntry  implements PrivacyObject
         array_pop($path);
         $data = array_pop($path);
 
-        return $data['id'] ?: false;
+        return $data['id'] ?? false;
     }
 
 
@@ -1041,7 +1041,7 @@ class ForumEntry  implements PrivacyObject
         $stmt = DBManager::get()->prepare("SELECT chdate FROM forum_entries
             WHERE lft > ? AND rgt < ? AND seminar_id = ?
             ORDER BY chdate DESC LIMIT 1");
-        $stmt->execute([$parent['lft'], $parent['rgt'], $parent['seminar_id']]);
+        $stmt->execute([$parent['lft'] ?? null, $parent['rgt'] ?? null, $parent['seminar_id'] ?? null]);
         $chdate = $stmt->fetchColumn();
 
         $stmt_insert = DBManager::get()->prepare("UPDATE forum_entries

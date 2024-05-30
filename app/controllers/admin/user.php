@@ -1660,7 +1660,7 @@ class Admin_UserController extends AuthenticatedController
         )->asDialog();
         $actions->addLink(
             _('Konten zusammenführen'),
-            $this->url_for('admin/user/migrate/' . ((!empty($this->user) && is_array($this->user)) ? $this->user['user_id'] : '')),
+            $this->url_for('admin/user/migrate/' . (!empty($this->user['user_id']) ? $this->user['user_id'] : '')),
             Icon::create('community')
         );
 
