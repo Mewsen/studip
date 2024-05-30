@@ -455,7 +455,7 @@ class Course_WikiController extends AuthenticatedController
         );
         $pageData = [
             'page_id' => $page->id,
-            'user_id' => $user->id
+            'user_id' => $user ? $user->id : null,
         ];
         $online_user = WikiOnlineEditingUser::findOneBySQL(
             '`page_id` = :page_id AND `user_id` = :user_id',
@@ -466,7 +466,7 @@ class Course_WikiController extends AuthenticatedController
         }
         $editingUsers = WikiOnlineEditingUser::countBySQL(
             "`page_id` = ? AND `editing` = 1 AND `user_id` != ?",
-            [$page->id, $user->id]
+            [$page->id, $user ? $user->id : null]
         );
         $online_user->editing = $editingUsers === 0 ? 1 : 0;
         $online_user->chdate = time();
@@ -635,7 +635,7 @@ class Course_WikiController extends AuthenticatedController
         $statement->execute([
             'range_id' => $this->range->id,
             'threshold' => $this->last_visit,
-            'me' => User::findCurrent()->id
+            'me' => User::findCurrent() ? User::findCurrent()->id : null
         ]);
         $this->num_entries = $statement->fetch(PDO::FETCH_COLUMN);
         $this->pagenumber = Request::int('page', 0);

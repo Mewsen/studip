@@ -344,7 +344,7 @@ use Studip\Button, Studip\LinkButton;
 
             <br>
 
-            <? if ($user->online->last_lifesign): ?>
+            <? if (!empty($user->online->last_lifesign)): ?>
                 <abbr title="<?= strftime('%x %X', $user->online->last_lifesign) ?>">
                     <?= reltime($user->online->last_lifesign, true, 2) ?>
                 </abbr>
@@ -434,7 +434,7 @@ use Studip\Button, Studip\LinkButton;
                     <?= sprintf(
                         '%s, %s, %s. %s',
                         htmlReady($usc->studycourse->name),
-                        htmlReady($usc->degree->name),
+                        htmlReady($usc->degree->name ?? _('Unbekannt')),
                         htmlReady($usc->semester),
                         _('Fachsemester')
                     ) ?>

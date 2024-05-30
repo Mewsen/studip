@@ -648,7 +648,7 @@ function TransformInternalLinks($str){
             $domain_data['domains'] = preg_replace("'\|[^/|]*'", '$0[^/]*?', $domain_data['domains']);
             $domain_data['domains'] = mb_substr($domain_data['domains'], 1);
             $domain_data['user_domain'] = preg_replace("'^({$domain_data['domains']})(.*)$'i", "\\1", $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            $domain_data['user_domain_scheme'] = 'http' . (($_SERVER['HTTPS'] || $_SERVER['SERVER_PORT'] == 443) ? 's' : '') . '://';
+            $domain_data['user_domain_scheme'] = 'http' . ((!empty($_SERVER['HTTPS']) || $_SERVER['SERVER_PORT'] == 443) ? 's' : '') . '://';
             $GLOBALS['TransformInternalLinks_domainData'] = $domain_data;
         }
         $domain_data = $GLOBALS['TransformInternalLinks_domainData'];

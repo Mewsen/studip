@@ -321,8 +321,8 @@ class LibraryDocument
         $doc->csl_data = $data['csl_data'];
         $doc->datafields = $data['datafields'];
         $doc->search_params = $data['search_params'];
-        $doc->catalog = $data['catalog'];
-        $doc->opac_link = $data['opac_link'];
+        $doc->catalog = $data['catalog'] ?? null;
+        $doc->opac_link = $data['opac_link'] ?? null;
         return $doc;
     }
 
