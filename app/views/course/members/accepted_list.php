@@ -153,7 +153,7 @@
         <tfoot>
             <tr>
                 <td class="printhead" colspan="6">
-                    <select name="action_accepted" id="action_accepted" aria-label="<?= _('Aktion ausführen') ?>">
+                    <select name="action_accepted" id="action_accepted" aria-label="<?= _('Aktion wählen') ?>">
                         <option value="">- <?= _('Aktion wählen') ?></option>
                         <option value="upgrade"><?= _('Akzeptieren') ?></option>
                         <option value="remove"><?= _('Austragen') ?></option>
