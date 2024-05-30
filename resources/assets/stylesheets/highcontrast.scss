@@ -1092,6 +1092,11 @@ a:hover.tree {
 
 .blubber_thread ol.comments > li.mine > .content {
     background-color: $black;
+
+    blockquote,
+    blockquote > .author {
+        color: $white !important;
+    }
 }
 
 .blubber_thread ol.comments > li.theirs > .content {
@@ -1129,7 +1134,7 @@ a:hover.tree {
 /* Suchfelder und -ergebnisse */
 
 ::placeholder {
-    color: $darkergray;
+    color: $black;
 }
 
 #globalsearch-searchbar #globalsearch-list section header {
