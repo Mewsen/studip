@@ -35,7 +35,7 @@ use Studip\Button, Studip\LinkButton;
             <select name="filter[task_id]" id="task_id" class="submit-upon-select">
                 <option value=""><?= _('Alle Cronjobs anzeigen') ?></option>
                 <? foreach ($tasks as $task): ?>
-                    <option value="<?= $task->task_id ?>" <? if ($filter['task_id'] === $task->task_id) echo 'selected'; ?>>
+                    <option value="<?= $task->task_id ?>" <? if (isset($filter['task_id']) && $filter['task_id'] === $task->task_id) echo 'selected'; ?>>
                         <?= htmlReady($task->name) ?>
                     </option>
                 <? endforeach; ?>

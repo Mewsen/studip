@@ -33,7 +33,7 @@ $options = array_filter([
                 <?= Icon::create('folder-parent', Icon::ROLE_CLICKABLE)->asInput(50, ['formaction' => $controller->action_url('choose_folder/' . $parent_folder->getId()), 'to_plugin' => $options['from_plugin'] ?? null]) ?>
                 <button
                     class="undecorated"
-                    formaction="<?= $controller->action_link('choose_folder/' . $parent_folder->getId()) ?>" <? if ($options['from_plugin']): ?> name="to_plugin" value="<?= htmlReady($options['from_plugin'] ?? null) ?>"<? endif; ?>
+                    formaction="<?= $controller->action_link('choose_folder/' . $parent_folder->getId()) ?>" <? if (!empty($options['from_plugin'])): ?> name="to_plugin" value="<?= htmlReady($options['from_plugin']) ?>"<? endif; ?>
                     data-dialog="size=medium">
                     <?= _('Aktueller Ordner') ?>
                 </button>

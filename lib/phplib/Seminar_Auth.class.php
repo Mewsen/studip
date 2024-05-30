@@ -308,7 +308,7 @@ class Seminar_Auth
         // load the default set of plugins
         PluginEngine::loadPlugins();
 
-        if (Request::get('loginname') && !$_COOKIE[get_class($GLOBALS['sess'])]) {
+        if (Request::get('loginname') && empty($_COOKIE[get_class($GLOBALS['sess'])])) {
             $login_template = $GLOBALS['template_factory']->open('nocookies');
         } else if (isset($this->need_email_activation)) {
             $this->unauth();

@@ -115,12 +115,15 @@ class ExportPDF extends TCPDF implements ExportDocument
             // Fetch headers from url, handle possible redirects
             do {
                 $headers = get_headers($url, true, get_default_http_stream_context($url));
+                if (!$headers) {
+                    break;
+                }
                 list(, $status) = explode(' ', $headers[0]);
 
                 $url = $headers['Location'] ?? $headers['location'] ?? $url;
             } while (in_array($status, [300, 301, 302, 303, 305, 307]));
 
-            $status = $status ?: 404;
+            $status = $status ?? 404;
 
             // Replace image with link on error (and not internal), otherwise return sainitized
             // url
