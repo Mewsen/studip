@@ -163,7 +163,7 @@
         <tfoot>
             <tr>
                 <td colspan="6">
-                    <select name="action_tutor" id="tutor_action" aria-label="<?= _('Aktion ausführen') ?>">
+                    <select name="action_tutor" id="tutor_action" aria-label="<?= _('Aktion auswählen') ?>">
                         <option value="">- <?= _('Aktion auswählen') ?></option>
                         <option value="downgrade"><?= sprintf(_('Zu %s herunterstufen'), htmlReady($status_groups['autor'])) ?></option>
                         <option value="remove"><?= _('Austragen') ?></option>
