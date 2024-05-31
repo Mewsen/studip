@@ -46,7 +46,7 @@ class Keys extends Command
 
         $this->storeKeyContentsToFile($encryptionKey, $this->generateEncryptionKey());
 
-        $keys = RSA::createKey(4096);
+        $key = RSA::createKey(4096);
         $this->storeKeyContentsToFile($publicKey, (string) $key->getPublicKey());
         $this->storeKeyContentsToFile($privateKey, (string) $key);
 
