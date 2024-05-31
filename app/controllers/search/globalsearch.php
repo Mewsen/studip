@@ -72,37 +72,40 @@ class Search_GlobalsearchController extends AuthenticatedController
             }
         }
 
-        $semester_filter = $sidebar->addWidget(new OptionsWidget(_('Semester')));
-        $semester_filter->id = 'semester_filter';
-        $semester_filter->addSelect(
-            _('Semester'),
-            null,
-            'semester',
-            $this->getSemesters(),
-            'future',
-            ['id' => 'semester_select']
+        $filter_widget = $sidebar->addWidget(new OptionsWidget(_('Filter')));
+        $filter_widget->id = 'filter_widget';
+
+        $filter_widget->addElement(
+            new SelectListElement(
+                _('Semester'),
+                'semester',
+                $this->getSemesters(),
+                'future',
+                ['id' => 'semester_select']
+            ),
+            'semester_filter'
         );
 
-        $seminar_type_filter = $sidebar->addWidget(new OptionsWidget(_('Veranstaltungstypen')));
-        $seminar_type_filter->id = 'seminar_type_filter';
-        $seminar_type_filter->addSelect(
-            _('Typ der Veranstaltung'),
-            null,
-            'seminar_type',
-            $this->getSemClasses(),
-            '',
-            ['id' => 'seminar_type_select']
+        $filter_widget->addElement(
+            new SelectListElement(
+                _('Typ der Veranstaltung'),
+                'seminar_type',
+                $this->getSemClasses(),
+                '',
+                ['id' => 'seminar_type_select']
+            ),
+            'seminar_type_filter'
         );
 
-        $institute_filter = $sidebar->addWidget(new OptionsWidget(_('Einrichtungen')));
-        $institute_filter->id = 'institute_filter';
-        $institute_filter->addSelect(
-            _('Einrichtung'),
-            null,
-            'institute',
-            $this->getInstitutes(),
-            '',
-            ['id' => 'institute_select']
+        $filter_widget->addElement(
+            new SelectListElement(
+                _('Einrichtung'),
+                'institute',
+                $this->getInstitutes(),
+                '',
+                ['id' => 'institute_select']
+            ),
+            'institute_filter'
         );
     }
 

@@ -2,8 +2,6 @@ STUDIP.domReady(() => {
     var cache = STUDIP.Search.getCache();
     // initially hide all filters except for the semester filter
     $('#reset-search').hide();
-    STUDIP.Search.hideAllFilters();
-    $('div#semester_filter').show();
     STUDIP.Search.setActiveCategory('show_all_categories');
     STUDIP.Search.showActiveFilters(STUDIP.Search.getFilter());
 
