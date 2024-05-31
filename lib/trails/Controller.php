@@ -31,7 +31,7 @@ class Controller
     protected Dispatcher $dispatcher;
     protected Response $response;
     protected bool $performed = false;
-    protected Template|string|null $layout;
+    protected Template|string|null $layout = null;
     protected string $format = 'html';
 
     /**
