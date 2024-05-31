@@ -339,7 +339,8 @@ const Search = {
      * Hide all select filters in the sidebar.
      */
     hideAllFilters: function () {
-        $('div[id$="_filter"]').hide();
+        $('#filter_widget').hide();
+        $('#filter_widget *[id$="_filter"]').hide();
     },
 
     /**
@@ -350,12 +351,11 @@ const Search = {
     showFilter: function (category) {
         var filters = $('#search-results').data('filters');
         STUDIP.Search.hideAllFilters();
-        if (filters && filters[category] !== undefined && category != 'show_all_categories') {
+        if (filters && filters[category] !== undefined && filters[category].length > 0) {
+            $('#filter_widget').show();
             for (let i = 0; i < filters[category].length; i++) {
                 $(`#${filters[category][i]}_filter`).show();
             }
-        } else if (category === 'show_all_categories') {
-            $('#semester_filter').show();
         }
     },
 
@@ -547,7 +547,7 @@ const Search = {
             if (item != 'category') {
                 var value = filter[item];
                 if (value.trim()) {
-                    var name = $(`#${item}_filter .sidebar-widget-header`).text().trim();
+                    var name = $(`#${item}_filter .label-text`).text().trim();
                     var value_text = $(`#${item}_select option:selected`).text().trim();
                     var filterItem = $('<button></button>').addClass('button remove-filter').text(name + ': ' + value_text).attr('data-filter-name', item);
                     filterItem.on('click', function () {
