@@ -1502,6 +1502,13 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                              }
                              $this->setValue($options['foreign_key'], $assoc_foreign_key_value);
                          }
+                     } elseif (
+                         $value === null
+                         && $this->db_fields()[$options['foreign_key']]['null'] === 'YES'
+                     ) {
+                         $this->resetRelation($field);
+                         $this->setValue($options['foreign_key'], null);
+
                      } else {
                          throw new InvalidArgumentException(sprintf('relation %s expects object of type: %s', $field, $options['class_name']));
                      }
