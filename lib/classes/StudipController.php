@@ -649,8 +649,7 @@ abstract class StudipController extends Trails\Controller
         $args = func_get_args();
         $unconsumed = array_shift($args);
 
-        [$action, $extracted_args, $format] = $this->extract_action_and_args($unconsumed);
-        $this->format = isset($format) ? $format : 'html';
+        [$action, $extracted_args] = $this->extract_action_and_args($unconsumed);
         $this->current_action = $action;
         $args = array_merge($extracted_args, $args);
         $callable = $this->map_action($action);

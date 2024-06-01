@@ -32,7 +32,7 @@ class Controller
     protected Response $response;
     protected bool $performed = false;
     protected Template|string|null $layout = null;
-    protected string $format = 'html';
+    private string $format = 'html';
 
     /**
      * @param Dispatcher $dispatcher the dispatcher who creates this instance
