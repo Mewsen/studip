@@ -659,12 +659,8 @@ class ProfileController extends AuthenticatedController
 
     /**
      * Returns the visibility value
-     *
-     * @param string $param
-     * @param string $visibility
-     * @return string|bool
      */
-    private function getVisibilityValue(string $param, string $visibility = ''): string|bool
+    private function getVisibilityValue(string $param, string $visibility = ''): mixed
     {
         if (Visibility::verify($visibility ?: $param, $this->current_user->user_id)) {
             return $this->current_user->$param;
