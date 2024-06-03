@@ -2,11 +2,11 @@
     <div class="formpart">
         <div class="sr-only" aria-live="polite" ref="list_message_field"></div>
         <ul>
-            <li v-for="date in selected_date_list" v-bind="selected_date_list" :key="date">
+            <li v-for="date in selected_date_list" v-bind="selected_date_list" :key="getISODate(date)">
                 <input type="hidden" :name="input_name + '[]'" :value="getISODate(date)">
                 <studip-date-time :timestamp="Math.floor(date.getTime() / 1000)" :date_only="true"></studip-date-time>
-                <studip-icon shape="trash" :title="$gettext('Löschen')" @click="removeDate"
-                             class="enter-accessible" aria-role="button" tabindex="0"></studip-icon>
+                <studip-icon shape="trash" :title="$gettext('Löschen')" @click="removeDate(date)"
+                             class="icon enter-accessible button undecorated" aria-role="button" tabindex="0"></studip-icon>
             </li>
         </ul>
         <label>
@@ -82,13 +82,13 @@ export default {
             this.selected_date_list.push(new Date(reformatted_date));
             this.$refs.list_message_field.innerText = $gettextInterpolate($gettext('Datum %{date} hinzugefügt'), {date: this.selected_date_value});
         },
-        removeDate(date_key) {
-            if (date_key) {
-                let date = this.selected_date_list.at(date_key);
-                let formatted_date = STUDIP.DateTime.getStudipDate(date, false, true);
-                this.selected_date_list.splice(date_key, 1);
-                this.$refs.list_message_field.innerText = $gettextInterpolate($gettext('Datum %{date} entfernt'), {date: formatted_date});
-            }
+        removeDate(date) {
+            this.selected_date_list = this.selected_date_list.filter(d => d !== date);
+
+            this.$refs.list_message_field.innerText = $gettextInterpolate(
+                $gettext('Datum %{date} entfernt'),
+                {date: STUDIP.DateTime.getStudipDate(date, false, true)}
+            );
         },
         getISODate(date) {
             return STUDIP.DateTime.getISODate(date);
