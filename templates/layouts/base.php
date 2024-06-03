@@ -100,7 +100,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
         <?= Icon::create('arr_1up', 'info_alt')->asImg(24, ['class' => '']) ?>
     </a>
 
-    <?= $this->render_partial('footer', ['link_params' => $header_template->link_params]); ?>
+    <?= $this->render_partial('footer', ['link_params' => $header_template->link_params ?? null]); ?>
     <?= SkipLinks::getHTML() ?>
     <section class="sr-only" id="notes_for_screenreader" aria-live="polite"></section>
 </body>
