@@ -591,7 +591,7 @@ class PluginManager
         }
 
         if ($plugin_class) {
-            $plugin = $plugin_class->newInstance();
+            $plugin = app()->get($class);
         }
 
         return $this->plugin_cache[$class] = $plugin;

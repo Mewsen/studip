@@ -19,6 +19,7 @@ $inc_path .= PATH_SEPARATOR . __DIR__ . '/../../config';
 ini_set('include_path', $inc_path);
 
 require 'lib/classes/StudipAutoloader.php';
+require 'lib/helpers.php';
 require 'lib/functions.php';
 require_once 'lib/language.inc.php';
 require 'lib/visual.inc.php';

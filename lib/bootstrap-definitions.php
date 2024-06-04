@@ -67,4 +67,5 @@ return [
 
         return $pdo;
     }),
+    PluginManager::class => DI\factory([PluginManager::class, 'getInstance']),
 ];

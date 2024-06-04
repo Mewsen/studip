@@ -29,6 +29,7 @@ date_default_timezone_set('Europe/Berlin');
 
 require 'config.inc.php';
 
+require 'lib/helpers.php';
 require 'lib/functions.php';
 require 'lib/language.inc.php';
 require 'lib/visual.inc.php';
