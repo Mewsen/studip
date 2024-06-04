@@ -1622,4 +1622,29 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
                 return '';
         }
     }
+
+    /*
+     * Returns whether the user has the given permission (for the given range).
+     *
+     * @param string     $permission
+     * @param Range|null $for_range
+     *
+     * @return bool
+     */
+    public function hasPermissionLevel(string $permission, ?Range $for_range = null): bool
+    {
+        if (func_num_args() === 1) {
+            return $GLOBALS['perm']->have_perm($permission, $this->id);
+        }
+
+        if ($for_range === null) {
+            throw new Exception('No valid range given');
+        }
+
+        if ($for_range instanceof User) {
+            return $GLOBALS['perm']->have_profile_perm($permission, $for_range->id, $this->id);
+        }
+
+        return $GLOBALS['perm']->have_studip_perm($permission, $for_range->id, $this->id);
+    }
 }

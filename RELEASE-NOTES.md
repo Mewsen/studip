@@ -5,6 +5,7 @@
 ## Neue Features
 
 - Der Stud.IP-Cache ist nun kompatibel zu PSR-6. ([TIC #3701](https://gitlab.studip.de/studip/studip/-/issues/3701))
+- Das `User`-Model hat die Methode `hasPermissionLevel()` erhalten, um einfach abfragen zu können, ob eine Person einen bestimmten Berechtigungsstatus hat. ([Issue #3453](https://gitlab.studip.de/studip/studip/-/issues/3453))
 
 ## Breaking changes
 
