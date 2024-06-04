@@ -386,7 +386,7 @@ export default {
             if (this.currentUrl) {
                 let view = this;
                 view.pdfEventBus = new EventBus();
-                view.pdfLoadingTask = getDocument(this.currentUrl).promise;
+                view.pdfLoadingTask = getDocument({ url: this.currentUrl, verbosity: 0 }).promise;
                 view.pdfLoadingTask.__PDFDocumentLoadingTask = true;
                 // Link Service
                 view.pdfLinkService = new PDFLinkService({
@@ -453,7 +453,11 @@ export default {
                     .then((pdfPage) => {
                         view.pdfPage = pdfPage;
                         const width = outerContainer.offsetWidth;
-                        view.baseScale = (width / pdfPage.view[2] / 1.33).toFixed(2);
+                        let pdfWidth = pdfPage.view[2];
+                        if (pdfPage.rotate === 90 || pdfPage.rotate === 270) {
+                            pdfWidth = pdfPage.view[3];
+                        }
+                        view.baseScale = (width / pdfWidth / 1.33).toFixed(2);
                         view.scale = view.baseScale;
                         // Creating the page view with default parameters.
                         let defaultViewport = pdfPage.getViewport({
