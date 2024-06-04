@@ -192,7 +192,7 @@ export default {
             currentElementisLink: 'currentElementisLink',
             containerTypes: 'containerTypes',
             consumeMode: 'consumeMode',
-            fullHDEnabled: 'fullHDEnabled'
+            fullHDEnabled: 'fullHDEnabled',
         }),
         showEditMode() {
             return this.canEdit && !this.currentElementisLink;
@@ -295,6 +295,13 @@ export default {
             container.attributes['container-type'] = this.changeType;
             container.attributes.payload.colspan = this.changeStyle;
             container.attributes.payload.cwidth = this.changeWidth;
+
+            if (this.changeType !== 'list' && this.fullHDEnabled) {
+                this.fullHD = false;
+                this.toggleFullHD();
+                container.attributes.payload.cwidth = false;
+            }
+
             await this.updateContainer({
                 container: container,
                 structuralElementId: this.container.relationships['structural-element'].data.id,
