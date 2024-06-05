@@ -104,7 +104,7 @@ class MailQueueEntry extends SimpleORMap
 
             $status_messages[] = $status_message;
         }, "tries = 0 " .
-           "OR (last_try > (UNIX_TIMESTAMP() - 60 * 60) AND tries < 25) ORDER BY mkdate".
+           "OR (last_try > (UNIX_TIMESTAMP() - 60 * 60) AND tries < 25) ORDER BY tries, mkdate".
            ($limit > 0 ? " LIMIT ". (int) $limit : "")
         );
 
