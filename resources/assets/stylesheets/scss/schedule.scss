@@ -185,10 +185,6 @@ td.schedule-adminbind {
 }
 
 #color_picker {
-    div {
-        display: flex;
-        flex-wrap: wrap;
-    }
 
     span {
         flex: 0 0 auto;
@@ -198,7 +194,7 @@ td.schedule-adminbind {
     }
 
     input[type="radio"] {
-        display: none;
+        @extend .sr-only;
 
         &:checked + label {
             outline: 1px solid var(--black);
