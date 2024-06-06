@@ -4,8 +4,11 @@
     <? foreach ($GLOBALS['PERS_TERMIN_KAT'] as $index => $data): ?>
         <span>
             <input type="radio" name="entry_color" value="<?= $index ?>" id="color-<?= $index ?>"
-                   <? if ($index == $selected) echo 'checked'; ?>>
-            <label class="undecorated schedule-category<?= $index ?>" for="color-<?= $index ?>"></label>
+                   <?= $index === $selected ? 'checked' : '' ?>>
+            <label class="undecorated schedule-category<?= $index ?> enter-accessible"
+                   for="color-<?= $index ?>"
+                   aria-label="<?= sprintf(_('Farbe %u zuordnen'), $index) ?>"
+                   title="<?= sprintf(_('Farbe %u zuordnen'), $index) ?>"></label>
         </span>
     <? endforeach; ?>
     </div>
