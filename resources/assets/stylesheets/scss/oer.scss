@@ -275,7 +275,7 @@ ul.reviews, ol.reviews {
                 margin-left: 5px;
             }
 
-            button {
+            button[type="button"] {
                 border-right: none;
                 border-bottom: none;
                 border-top: none;
@@ -296,17 +296,13 @@ ul.reviews, ol.reviews {
             }
         }
 
-        button {
+        button[type="button"] {
             border: thin solid var(--content-color-40);
             background-color: var(--content-color-20);
             display: flex;
             align-items: center;
             justify-content: center;
             width: 35px;
-        }
-
-        > button {
-            margin-left: 10px;
         }
     }
 

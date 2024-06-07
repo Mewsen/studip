@@ -1,9 +1,6 @@
 import Quicksearch from '../../../vue/components/Quicksearch.vue';
 
 STUDIP.domReady(() => {
-    if (jQuery(".oer_search").length) {
-        STUDIP.OER.initSearch();
-    }
     jQuery(".serversettings .index_server a").on("click", function () {
         var host_id = jQuery(this).closest("tr").data("host_id");
         var active = jQuery(this).is(".checked") ? 0 : 1;
