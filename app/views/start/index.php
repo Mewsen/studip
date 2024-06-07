@@ -30,6 +30,7 @@ if (Config::get()->BANNER_ADS_ENABLE) {
                 <li class="studip-widget-wrapper" id="<?= $widget->getPluginId() ?>">
                     <div class="ui-widget-content studip-widget">
                         <? if ($template = $widget->getPortalTemplate()): ?>
+                            <? $widget_layout->clear_attributes() ?>
                             <? $template->set_layout($widget_layout) ?>
                             <?= $this->render_partial($template, compact('widget')) ?>
                         <? else: ?>
