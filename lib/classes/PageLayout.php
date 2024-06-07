@@ -150,7 +150,7 @@ class PageLayout
             ]);
             self::addHeadElement('script', [
                 'src' => URLHelper::getURL('dispatch.php/debugbar/js'),
-            ]);
+            ], '');
 
             URLHelper::setBaseURL($old_base);
         }
