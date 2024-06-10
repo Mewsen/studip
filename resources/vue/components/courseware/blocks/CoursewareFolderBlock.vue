@@ -104,7 +104,7 @@
                                     }}
                                 </div>
                                 <fieldset class="select_terms_of_use">
-                                    <template v-for="term in termsOfUse">
+                                    <template v-for="term in termsOfUse" :key="term.id">
                                         <input
                                             type="radio"
                                             name="content_terms_of_use_id"
@@ -113,9 +113,8 @@
                                             :id="'content_terms_of_use-' + term.id"
                                             :checked="selectedTerm === term.id"
                                             :aria-description="term.description"
-                                            :key="term.id + '_input'"
                                         />
-                                        <label @click="selectedTerm = term.id" :key="term.id + 'label'">
+                                        <label @click="selectedTerm = term.id">
                                             <div class="icon">
                                                 <studip-icon :shape="term.attributes.icon" :size="32" />
                                             </div>
@@ -125,7 +124,7 @@
                                             <studip-icon shape="arr_1down" :size="24" class="arrow" />
                                             <studip-icon shape="check-circle" :size="24" class="check" />
                                         </label>
-                                        <div class="terms_of_use_description" :key="term.id + '_description'">
+                                        <div class="terms_of_use_description">
                                             <div class="description">
                                                 {{ term.attributes.description }}
                                             </div>

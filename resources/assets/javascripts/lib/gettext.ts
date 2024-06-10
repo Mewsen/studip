@@ -1,4 +1,4 @@
-import { translate } from 'vue-gettext';
+import { createGettext } from 'vue3-gettext';
 import * as defaultTranslations from '../../../../locale/de/LC_MESSAGES/js-resources.json';
 import eventBus from './event-bus';
 
@@ -26,11 +26,7 @@ const DEFAULT_LANG_NAME = 'Deutsch';
 
 const state = getInitialState();
 
-const $gettext = translate.gettext.bind(translate);
-const $ngettext = translate.ngettext.bind(translate);
-const $gettextInterpolate = translate.gettextInterpolate.bind(translate);
-
-export { $gettext, $ngettext, $gettextInterpolate, translate, getLocale, setLocale, getVueConfig };
+export default createGettext({});
 
 function getLocale() {
     return state.locale;
@@ -47,12 +43,12 @@ async function setLocale(locale = getInitialLocale()) {
         state.translations[state.locale] = translations;
     }
 
-    translate.initTranslations(state.translations, {
-        getTextPluginMuteLanguages: [DEFAULT_LANG],
-        getTextPluginSilent: false,
-        language: state.locale,
-        silent: false,
-    });
+    // translate.initTranslations(state.translations, {
+    //     getTextPluginMuteLanguages: [DEFAULT_LANG],
+    //     getTextPluginSilent: false,
+    //     language: state.locale,
+    //     silent: false,
+    // });
 
     eventBus.emit('studip:set-locale', state.locale);
 }

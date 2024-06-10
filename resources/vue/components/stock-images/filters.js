@@ -1,4 +1,6 @@
-import { $gettext } from '@/assets/javascripts/lib/gettext';
+import gettext from '@/assets/javascripts/lib/gettext';
+const { $gettext } = gettext;
+
 import { fromHex, rgbToCIELab, cie94 } from 'colorpare';
 
 const SQUARE_DELTA = 1.1;

@@ -23,9 +23,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
-export default Vue.extend({
+export default defineComponent({
     name: 'studip-icon',
     props: {
         ariaRole: {
@@ -41,7 +41,10 @@ export default Vue.extend({
             required: false,
             default: 'clickable',
         },
-        shape: String,
+        shape: {
+            type: String,
+            required: true,
+        },
         size: {
             type: Number,
             required: false,

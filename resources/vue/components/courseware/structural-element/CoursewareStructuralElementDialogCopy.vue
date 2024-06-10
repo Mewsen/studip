@@ -93,17 +93,16 @@
         <template v-slot:unit>
             <form class="default" @submit.prevent="">
                 <fieldset v-if="units.length !== 0" class="radiobutton-set">
-                    <template v-for="unit in units">
+                    <template v-for="unit in units":key="unit.id">
                         <input
                             :id="'cw-element-copy-unit-' + unit.id"
                             type="radio"
                             v-model="selectedUnit"
                             :checked="unit.id === selectedUnitId"
                             :value="unit"
-                            :key="'radio-' + unit.id"
                             :aria-description="unit.element.attributes.title"
                         />
-                        <label :key="'label-' + unit.id" :for="'cw-element-copy-unit-' + unit.id">
+                        <label :for="'cw-element-copy-unit-' + unit.id">
                             <div class="icon"><studip-icon shape="courseware" :size="32"/></div>
                             <div class="text">{{ unit.element.attributes.title }}</div>
                             <studip-icon shape="radiobutton-unchecked" :size="24" class="unchecked" />

@@ -44,10 +44,10 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import { defineComponent } from 'vue';
 import StudipIcon from '../StudipIcon.vue';
 
-export default Vue.extend({
+export default defineComponent({
     name: 'NavigationItem',
     components: { StudipIcon },
     props: {

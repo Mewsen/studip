@@ -26,11 +26,11 @@
                 <option value=""><translate>Direkt auswählen ...</translate></option>
                 <template v-for="(opt, idx) in selectable">
                     <optgroup v-if="opt.label && opt.options" :label="opt.label" :key="idx">
-                        <option v-for="(option, index) in opt.options" :disabled="isSelected(option.value)" :value="JSON.stringify({value: option.value, name: option.name})" :key="index">
+                        <option v-for="(option, index) in opt.options" :disabled="isSelected(option.value)" :value="JSON.stringify({value: option.value, name: option.name})" :key="`group-${index}`">
                             {{ option.name + (isSelected(option.value) ? ' ✓' : '') }}
                         </option>
                     </optgroup>
-                    <option v-else :disabled="isSelected(opt.value)" @click="quicksearch" :value="JSON.stringify({value: opt.value, name: opt.name})" :key="idx">
+                    <option v-else :disabled="isSelected(opt.value)" @click="quicksearch" :value="JSON.stringify({value: opt.value, name: opt.name})" :key="`opt-${index}`">
                         {{ opt.name + (isSelected(option.value) ? ' ✓' : '') }}
                     </option>
                 </template>

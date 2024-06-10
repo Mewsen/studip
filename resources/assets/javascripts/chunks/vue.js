@@ -1,17 +1,15 @@
-import Vue from 'vue';
+import Vue, { createApp as vueCreateApp } from 'vue';
 import Vuex from 'vuex';
 import Router from "vue-router";
 import eventBus from '../lib/event-bus.ts';
-import GetTextPlugin from 'vue-gettext';
-import { getLocale, getVueConfig } from '../lib/gettext';
+import gettext from '../lib/gettext';
 import PortalVue from 'portal-vue';
 import BaseComponents from '../../../vue/base-components.js';
 import BaseDirectives from "../../../vue/base-directives.js";
 import StudipStore from "../../../vue/store/StudipStore.js";
-import CKEditor from '@ckeditor/ckeditor5-vue2';
+// import CKEditor from '@ckeditor/ckeditor5-vue2';
 
 // Setup gettext
-Vue.use(GetTextPlugin, getVueConfig());
 eventBus.on('studip:set-locale', (locale) => {
     Vue.config.language = locale;
 })
@@ -46,12 +44,17 @@ Vue.mixin({
     },
 });
 
-Vue.use(CKEditor);
+// Vue.use(CKEditor);
 
 // Define createApp function
 function createApp(options, ...args) {
-    Vue.config.language = getLocale();
-    return new Vue({ store, ...options }, ...args);
+//    Vue.config.language = getLocale();
+    const app = vueCreateApp({ store, ...options }, ...args);
+    app.use(gettext);
+    if (options.el) {
+        app.mount(options.el);
+    }
+    return app;
 }
 
 // Define global registration functions for components and directives
@@ -67,4 +70,4 @@ function registerGlobalDirectives() {
     }
 }
 
-export { Vue, createApp, eventBus, store };
+export { createApp, eventBus, store };

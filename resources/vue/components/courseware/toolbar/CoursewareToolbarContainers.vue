@@ -2,9 +2,8 @@
     <div class="cw-toolbar-containers">
         <div class="cw-container-style-selector" role="group" aria-labelledby="cw-containeradder-style">
             <p class="sr-only" id="cw-containeradder-style">{{ $gettext('Abschnitt-Stil') }}</p>
-            <template v-for="style in containerStyles">
+            <template v-for="style in containerStyles" :key="style.key + '-input'">
                 <input
-                    :key="style.key + '-input'"
                     type="radio"
                     name="container-style"
                     :id="'style-' + style.colspan"
@@ -12,7 +11,6 @@
                     :value="style.colspan"
                 />
                 <label
-                    :key="style.key + '-label'"
                     :for="'style-' + style.colspan"
                     :class="[
                         selectedContainerStyle === style.colspan ? 'cw-container-style-selector-active' : '',

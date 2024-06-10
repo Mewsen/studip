@@ -12,19 +12,17 @@
         <template v-slot:sourceunit>
             <form class="default" @submit.prevent="">
                 <fieldset v-if="sourceUnits.length !== 0" class="radiobutton-set">
-                    <template v-for="unit in sourceUnits">
+                    <template v-for="unit in sourceUnits" :key="'radio-' + unit.id">
                         <input
                             :id="'cw-task-dist-source-unit' + unit.id"
                             type="radio"
                             v-model="selectedSourceUnit"
                             :checked="unit.id === selectedSourceUnitId"
                             :value="unit"
-                            :key="'radio-' + unit.id"
                             :aria-description="unit.element.attributes.title"
                         />
                         <label
                             @click="selectedSourceUnit = unit"
-                            :key="'label-' + unit.id"
                             :for="'cw-task-dist-source-unit' + unit.id"
                         >
                             <div class="icon"><studip-icon shape="courseware" :size="32" /></div>
@@ -89,19 +87,17 @@
         <template v-slot:targetunit>
             <form v-if="selectedTaskIsTask" class="default" @submit.prevent="">
                 <fieldset v-if="targetUnits.length !== 0" class="radiobutton-set">
-                    <template v-for="unit in targetUnits">
+                    <template v-for="unit in targetUnits" :key="'radio-' + unit.id">
                         <input
                             :id="'cw-task-dist-target-unit' + unit.id"
                             type="radio"
                             v-model="selectedTargetUnit"
                             :checked="unit.id === selectedTargetUnitId"
                             :value="unit"
-                            :key="'radio-' + unit.id"
                             :aria-description="unit.element.attributes.title"
                         />
                         <label
                             @click="selectedTargetUnit = unit"
-                            :key="'label-' + unit.id"
                             :for="'cw-task-dist-target-unit' + unit.id"
                         >
                             <div class="icon"><studip-icon shape="courseware" :size="32" /></div>

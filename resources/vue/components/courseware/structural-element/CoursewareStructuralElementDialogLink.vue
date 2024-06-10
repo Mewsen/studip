@@ -12,16 +12,15 @@
         <template v-slot:unit>
             <form v-if="!loadingUnits" class="default" @submit.prevent="">
                 <fieldset v-if="hasUnits" class="radiobutton-set">
-                    <template v-for="unit in units">
+                    <template v-for="unit in units" :key="unit.id">
                         <input
                             :id="'cw-element-link-unit-' + unit.id"
                             type="radio"
                             :checked="unit.id === selectedUnitId"
                             :value="unit.id"
-                            :key="'radio-' + unit.id"
                             :aria-description="unit.element.attributes.title"
                         />
-                        <label @click="selectedUnit = unit" :key="'label-' + unit.id" :for="'cw-element-link-unit-' + unit.id">
+                        <label @click="selectedUnit = unit" :for="'cw-element-link-unit-' + unit.id">
                             <div class="icon"><studip-icon shape="courseware" :size="32"/></div>
                             <div class="text">{{ unit.element.attributes.title }}</div>
                             <studip-icon shape="radiobutton-unchecked" :size="24" class="unchecked" />

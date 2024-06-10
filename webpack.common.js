@@ -1,7 +1,7 @@
 const webpack = require("webpack");
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
 
@@ -99,7 +99,11 @@ module.exports = {
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
-                    compiler: require('vue-template-babel-compiler')
+                    compilerOptions: {
+                        compatConfig: {
+                            MODE: 2
+                        }
+                    }
                 }
             }
         ]
@@ -125,7 +129,7 @@ module.exports = {
     ],
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.esm.js',
+            vue: '@vue/compat',
             'jquery-ui/data': 'jquery-ui/ui/data',
             'jquery-ui/disable-selection': 'jquery-ui/ui/disable-selection',
             'jquery-ui/focusable': 'jquery-ui/ui/focusable',

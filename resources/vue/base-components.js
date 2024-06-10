@@ -26,7 +26,7 @@ const BaseComponents = {
     StudipProxyCheckbox: () => import('./components/StudipProxyCheckbox.vue'),
     StudipSelect: () => import('./components/StudipSelect.vue'),
     StudipTooltipIcon: () => import('./components/StudipTooltipIcon.vue'),
-    StudipWysiwyg: () => import("./components/StudipWysiwyg.vue"),
+//    StudipWysiwyg: () => import("./components/StudipWysiwyg.vue"),
     TextareaWithToolbar: () => import('./components/TextareaWithToolbar.vue'),
 };
 

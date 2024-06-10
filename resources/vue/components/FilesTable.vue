@@ -202,7 +202,7 @@
                             class="responsive-hidden"
                             v-html="folder.additionalColumns[index].html"
                             :key="index"></td>
-                        <td v-else class="responsive-hidden" :key="index"></td>
+                        <td v-else class="responsive-hidden" :key="`empty-${index}`"></td>
                     </template>
                     <td class="actions" v-html="folder.actions">
                     </td>
@@ -283,7 +283,7 @@
                             class="responsive-hidden"
                             v-html="file.additionalColumns[index].html"
                             :key="index"></td>
-                        <td v-else class="responsive-hidden" :key="index"></td>
+                        <td v-else class="responsive-hidden" :key="`empty-${index}`"></td>
                     </template>
                     <td class="actions" v-html="file.actions">
                     </td>
