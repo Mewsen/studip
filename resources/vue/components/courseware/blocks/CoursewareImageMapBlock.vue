@@ -263,7 +263,7 @@
 <script>
 import BlockComponents from './block-components.js';
 import blockMixin from '@/vue/mixins/courseware/block.js';
-import VueResizeable from 'vrp-vue-resizable';
+import VueResizeable from 'vue-resizable';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
