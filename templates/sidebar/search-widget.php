@@ -24,25 +24,24 @@
                        <? if ($needle['placeholder']) printf('placeholder="%s"', htmlReady($needle['label'])); ?>
                        <?= arrayToHtmlAttributes($needle['attributes']) ?>>
                 <? endif; ?>
-                <? if ($reset_link): ?>
-                    <? if ($onsubmit) : ?>
-                        <?= Icon::create('decline')->asInput([
-                            'title' =>  _('Suche zurücksetzen'),
-                            'class' => 'reset-search',
-                            'onclick' => "window.document.getElementById('needle-".$hash."').value = '';"
-                        ]) ?>
-                    <? else : ?>
-                        <a class="reset-search" href="<?= $reset_link ?>" tabindex="0" role="button"
-                            <?= $onsubmit ? 'onclick="'."window.document.getElementById('needle-".$hash."').value = ''; window.document.getElementById('".$id."').submit(); return false; ".'"' : '' ?>
-                           title="<?= _('Suche zurücksetzen') ?>">
-                            <?= Icon::create('decline')->asImg(20) ?>
-                        </a>
-                    <? endif ?>
-                <? endif; ?>
                 <button type="submit" class="submit-search<?= $reset_link ? ' is-executed' : '' ?>"
                         title="<?= _('Suche ausführen') ?>">
                     <?= Icon::create('search')->asImg(20) ?>
                 </button>
+            <? if ($reset_link): ?>
+                <? if ($onsubmit) : ?>
+                    <?= Icon::create('decline')->asInput([
+                        'title' =>  _('Suche zurücksetzen'),
+                        'class' => 'reset-search',
+                        'onclick' => "document.getElementById('needle-".$hash."').value = ''; this.remove();"
+                    ]) ?>
+                <? else : ?>
+                    <a class="reset-search" href="<?= $reset_link ?>" tabindex="0" role="button"
+                       title="<?= _('Suche zurücksetzen') ?>">
+                        <?= Icon::create('decline')->asImg(20) ?>
+                    </a>
+                <? endif ?>
+            <? endif; ?>
         </li>
     <? endforeach; ?>
     </ul>
