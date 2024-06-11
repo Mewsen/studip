@@ -47,7 +47,18 @@
                                 <span class="icon"></span>
                                 <span class="name"></span>
                                 <span class="size"></span>
-                                <a class="remove_attachment"><?= Icon::create('trash')->asImg(['class' => 'text-bottom']) ?></a>
+                                <button class="refresh_attachment as-link" data-language="<?= htmlReady($key) ?>">
+                                    <?= Icon::create('refresh')->asImg([
+                                        'class' => 'text-bottom',
+                                        'title' => _('Datei aktualisieren'),
+                                    ]) ?>
+                                </button>
+                                <button class="remove_attachment as-link">
+                                    <?= Icon::create('trash')->asImg([
+                                        'class' => 'text-bottom',
+                                        'title' => _('Datei löschen'),
+                                    ]) ?>
+                                </button>
                             </li>
                         </ul>
                         <div id="statusbar_container">
@@ -79,7 +90,18 @@
                             <span class="icon"><?= Icon::create('file', Icon::ROLE_INFO, ['class' => 'text-bottom']); ?></span>
                             <span class="name"><?= htmlReady($documents[$key]->filename) ?></span>
                             <span class="size"></span>
-                            <a class="remove_attachment"><?= Icon::create('trash', 'clickable')->asImg(['class' => "text-bottom"]) ?></a>
+                            <button class="refresh_attachment as-link" data-language="<?= htmlReady($key) ?>">
+                                <?= Icon::create('refresh')->asImg([
+                                    'class' => 'text-bottom',
+                                    'title' => _('Datei aktualisieren'),
+                                ]) ?>
+                            </button>
+                            <button class="remove_attachment as-link">
+                                <?= Icon::create('trash')->asImg([
+                                    'class' => 'text-bottom',
+                                    'title' => _('Datei löschen'),
+                                ]) ?>
+                            </button>
                         </li>
                     <? endif; ?>
                     </ul>

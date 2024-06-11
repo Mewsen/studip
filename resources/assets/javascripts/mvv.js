@@ -67,8 +67,15 @@ jQuery(function ($) {
     });
 
     $(document).on('click', '.stgfile .remove_attachment', function($event) {
-        STUDIP.MVV.Document.remove_attachment($(this));
+        STUDIP.Dialog.confirm($gettext('Soll die Datei wirklich gelöscht werden?')).done(() => {
+            STUDIP.MVV.Document.remove_attachment(this);
+        });
         return false;
+    });
+
+    $(document).on('click', '.stgfile .refresh_attachment', (event) => {
+        STUDIP.MVV.Document.refresh_attachment(event.target);
+        event.preventDefault();
     });
 
     STUDIP.dialogReady(
@@ -663,27 +670,55 @@ STUDIP.MVV.Document = {
             })
         }, 100);
     },
-    remove_attachment: function(item) {
-        jQuery.ajax({
-            url: STUDIP.ABSOLUTE_URI_STUDIP + 'dispatch.php/materialien/files/delete_attachment',
-            data: {
-                mvvfile_id: jQuery('#mvvfile_id').val(),
-                fileref_id: item.closest('li')
-                                .find('input[name=document_id]')
-                                .val()
-            },
-            type: 'POST'
+    refresh_attachment(item) {
+        const language = item.closest('button').dataset.language;
+        const document_id = item.closest('.stgfile').querySelector('[name="document_id"]').value;
+
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.hidden = true;
+
+        input.addEventListener('cancel', () => {
+            input.remove();
         });
-        item.parents('td').find('.attachments').toggle();
-        item.closest('li')
-            .fadeOut(300, function() {
-                jQuery(this).remove();
+        input.addEventListener('change', () => {
+            const fd = new FormData();
+            fd.append('file', input.files[0], input.files[0].name);
+            fd.append('mvvfile_id', jQuery('#mvvfile_id').val());
+            fd.append('range_id', jQuery('#range_id').val());
+            fd.append('document_id', document_id);
+            fd.append('file_language', language);
+
+            const statusbar = $('#statusbar_container .statusbar')
+                .first()
+                .clone()
+                .show();
+            statusbar.appendTo('#statusbar_container');
+
+            STUDIP.MVV.Document.upload_file(fd, statusbar, true).then(() => {
+                input.remove();
+            });
+        });
+
+        item.parentNode.after(input);
+        input.click();
+    },
+    remove_attachment(item) {
+        const url = STUDIP.URLHelper.getURL('dispatch.php/materialien/files/delete_attachment', {
+            mvvfile_id: document.getElementById('mvvfile_id').value,
+            fileref_id: item.closest('li').querySelector('input[name=document_id]').value,
+        });
+        $.post(url).done(() => {
+            $(item).closest('td').find('.attachments').toggle();
+            $(item).closest('li').fadeOut(300, function () {
+                this.remove();
                 jQuery('#upload_chooser').show();
             });
+        });
     },
-    upload_from_input: function(input, file_language) {
+    upload_from_input(input, file_language) {
         STUDIP.MVV.Document.upload_files(input.files, file_language);
-        jQuery(input).val('');
+        input.value = '';
     },
     fileIDQueue: 1,
     upload_files: function(files, file_language) {
@@ -701,82 +736,94 @@ STUDIP.MVV.Document = {
             STUDIP.MVV.Document.upload_file(fd, statusbar);
         }
     },
-    upload_file: function(formdata, statusbar) {
-        $.ajax({
-            xhr: function() {
-                var xhrobj = $.ajaxSettings.xhr();
-                if (xhrobj.upload) {
-                    xhrobj.upload.addEventListener(
-                        'progress',
-                        function(event) {
-                            var percent = 0;
-                            var position = event.loaded || event.position;
-                            var total = event.total;
-                            if (event.lengthComputable) {
-                                percent = Math.ceil((position / total) * 100);
-                            }
-                            //Set progress
-                            statusbar.find('.progress').css({ 'min-width': percent + '%', 'max-width': percent + '%' });
-                            statusbar
-                                .find('.progresstext')
-                                .text(percent === 100 ? jQuery('#upload_finished').text() : percent + '%');
-                        },
-                        false
-                    );
-                }
-                return xhrobj;
-            },
-            url: STUDIP.ABSOLUTE_URI_STUDIP + 'dispatch.php/materialien/files/upload_attachment',
-            type: 'POST',
-            contentType: false,
-            processData: false,
-            cache: false,
-            data: formdata,
-            dataType: 'json'
-        })
-        .done(function(data) {
-            statusbar.find('.progress').css({ 'min-width': '100%', 'max-width': '100%' });
-            var file = jQuery('#fileselector_'+formdata.get('file_language')).find('.stgfiles > .stgfile')
-                .first()
-                .clone();
-            file.find('.name').text(data.name);
-            if (data.size < 1024) {
-                file.find('.size').text(data.size + 'B');
-            }
-            if (data.size > 1024 && data.size < 1024 * 1024) {
-                file.find('.size').text(Math.floor(data.size / 1024) + 'KB');
-            }
-            if (data.size > 1024 * 1024 && data.size < 1024 * 1024 * 1024) {
-                file.find('.size').text(Math.floor(data.size / 1024 / 1024) + 'MB');
-            }
-            if (data.size > 1024 * 1024 * 1024) {
-                file.find('.size').text(Math.floor(data.size / 1024 / 1024 / 1024) + 'GB');
-            }
-            file.find('.icon').html(data.icon);
-            file.find('input[name=document_id]').attr('value', data.document_id);
-            jQuery('#fileviewer_'+formdata.get('file_language')).find('.stgfiles').append(file);
-            jQuery('#fileselector_'+formdata.get('file_language')).toggle();
-            jQuery('#fileselector_'+formdata.get('file_language')).parents('.attachments').toggle();
-            jQuery('#fileselector_'+formdata.get('file_language')).parents('.attachments').find('span').toggle();
-            file.fadeIn(300);
-            statusbar.find('.progresstext').text(jQuery('#upload_received_data').text());
-            statusbar.delay(1000).fadeOut(300, function() {
-                jQuery('#upload_chooser').hide();
-                jQuery(this).remove();
-            });
-        })
-        .fail(function(jqxhr, status, errorThrown) {
-            var error = jqxhr.responseJSON.error;
+    upload_file(formdata, statusbar, update = false) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                xhr() {
+                    var xhrobj = $.ajaxSettings.xhr();
+                    if (xhrobj.upload) {
+                        xhrobj.upload.addEventListener(
+                            'progress',
+                            function(event) {
+                                var percent = 0;
+                                var position = event.loaded || event.position;
+                                var total = event.total;
+                                if (event.lengthComputable) {
+                                    percent = Math.ceil((position / total) * 100);
+                                }
+                                //Set progress
+                                statusbar.find('.progress').css({ 'min-width': percent + '%', 'max-width': percent + '%' });
+                                statusbar
+                                    .find('.progresstext')
+                                    .text(percent === 100 ? jQuery('#upload_finished').text() : percent + '%');
+                            },
+                            false
+                        );
+                    }
+                    return xhrobj;
+                },
+                url: STUDIP.ABSOLUTE_URI_STUDIP + 'dispatch.php/materialien/files/upload_attachment',
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: formdata,
+                dataType: 'json'
+            }).done((data) => {
+                const language = formdata.get('file_language');
 
-            statusbar
-                .find('.progress')
-                .addClass('progress-error')
-                .attr('title', error);
-            statusbar.find('.progresstext').html(error);
-            statusbar.on('click', function() {
-                jQuery(this).fadeOut(300, function() {
-                    jQuery(this).remove();
+                statusbar.find('.progress').css({ 'min-width': '100%', 'max-width': '100%' });
+                var file = jQuery('#fileselector_'+formdata.get('file_language')).find('.stgfiles > .stgfile')
+                    .first()
+                    .clone();
+                file.find('.name').text(data.name);
+                if (data.size < 1024) {
+                    file.find('.size').text(data.size + 'B');
+                }
+                if (data.size > 1024 && data.size < 1024 * 1024) {
+                    file.find('.size').text(Math.floor(data.size / 1024) + 'KB');
+                }
+                if (data.size > 1024 * 1024 && data.size < 1024 * 1024 * 1024) {
+                    file.find('.size').text(Math.floor(data.size / 1024 / 1024) + 'MB');
+                }
+                if (data.size > 1024 * 1024 * 1024) {
+                    file.find('.size').text(Math.floor(data.size / 1024 / 1024 / 1024) + 'GB');
+                }
+                file.find('.icon').html(data.icon);
+                file.find('input[name=document_id]').attr('value', data.document_id);
+                if (update) {
+                    $(`#fileviewer_${language} .stgfiles`).empty().append(file);
+                    file.show();
+                } else {
+                    $(`#fileviewer_${language}`).find('.stgfiles').append(file);
+                    $(`#fileselector_${language}`)
+                        .toggle()
+                        .parents('.attachments').toggle()
+                        .find('span').toggle();
+                    file.fadeIn(300);
+                }
+                statusbar.find('.progresstext').text(jQuery('#upload_received_data').text());
+                statusbar.delay(1000).fadeOut(300, function() {
+                    $('#upload_chooser').hide();
+                    this.remove();
                 });
+
+                resolve();
+            }).fail(function(jqxhr, status, errorThrown) {
+                var error = jqxhr.responseJSON.error;
+
+                statusbar
+                    .find('.progress')
+                    .addClass('progress-error')
+                    .attr('title', error);
+                statusbar.find('.progresstext').html(error);
+                statusbar.on('click', function() {
+                    jQuery(this).fadeOut(300, function() {
+                        jQuery(this).remove();
+                    });
+                });
+
+                reject(new Error(error));
             });
         });
     }

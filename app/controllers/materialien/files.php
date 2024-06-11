@@ -362,29 +362,37 @@ class Materialien_FilesController extends MVVController
 
     public function upload_attachment_action()
     {
-        if ($GLOBALS['user']->id === "nobody") {
+        $user = User::findCurrent();
+        if (!$user) {
             throw new AccessDeniedException();
         }
 
+        $mvvfile_id = Request::option('mvvfile_id');
+        $document_id = Request::option('document_id');
+
         $file = $_FILES['file'];
         $output = [
-            'name' => $file['name'],
-            'size' => $file['size']];
+            'name'       => $file['name'],
+            'size'       => $file['size'],
+            'mvvfile_id' => $mvvfile_id,
+            'range_id'   => Request::option('range_id', $mvvfile_id),
+        ];
 
-        $mvvfile_id = Request::option('mvvfile_id');
-        $output['mvvfile_id'] = $mvvfile_id;
-        $range_id = Request::option('range_id', $mvvfile_id);
-        $output['range_id'] = $range_id;
-        $file_language = Request::option('file_language');
+        $top_folder = $this->getTopFolder($output['mvvfile_id']);
 
-        $top_folder = $this->getTopFolder($mvvfile_id);
-
-        $user = User::findCurrent();
-
-        $file = StandardFile::create($_FILES['file']);
-        $error = $top_folder->validateUpload($file, $GLOBALS['user']->id);
-        if ($error != null) {
-            $file->delete();
+        if ($document_id) {
+            $file = File::find($document_id);
+            $file->mime_type = $_FILES['file']['type'] ?? get_mime_type($_FILES['file']['name']);
+            $file->size = $_FILES['file']['size'] ?? filesize($_FILES['file']['tmp_name']);
+            $file->connectWithDataFile($_FILES['file']['tmp_name']);
+        } else {
+            $file = StandardFile::create($_FILES['file']);
+        }
+        $error = $top_folder->validateUpload($file, $user->id);
+        if ($error !== null) {
+            if (!$document_id) {
+                $file->delete();
+            }
             $this->response->set_status(400);
             $this->render_json(compact('error'));
             return;
@@ -399,18 +407,15 @@ class Materialien_FilesController extends MVVController
             return;
         }
 
-        $mvv_file_fileref = new MvvFileFileref([$mvvfile_id, $file_language]);
-        $mvv_file_fileref->fileref_id = $file->getId();
+        $mvv_file_fileref = new MvvFileFileref([
+            $output['mvvfile_id'],
+            Request::option('file_language'),
+        ]);
+        $mvv_file_fileref->fileref_id = $file->id;
         $mvv_file_fileref->store();
 
-        $output['document_id'] = $file->getId();
-
-        $output['icon'] = Icon::create(
-            FileManager::getIconNameForMimeType(
-                $file->getMimeType()
-            ),
-            'clickable'
-        )->asImg(['class' => "text-bottom"]);
+        $output['document_id'] = $file->id;
+        $output['icon'] = $file->getIcon(Icon::ROLE_CLICKABLE)->asImg(['class' => 'text-bottom']);
 
         $this->render_json($output);
     }

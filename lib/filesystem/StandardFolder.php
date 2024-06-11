@@ -224,14 +224,13 @@ class StandardFolder implements FolderType
     }
 
     /**
-     * @param FileType $newfile
-     * @param string $user_id
+     * @param string   $user_id
      * @return string
      */
-    public function validateUpload(FileType $newfile, $user_id)
+    public function validateUpload(FileType $file, $user_id)
     {
         $upload_type = FileManager::getUploadTypeConfig($this->range_id, $user_id);
-        return $this->getValidationMessages($upload_type, $newfile);
+        return $this->getValidationMessages($upload_type, $file);
     }
 
     protected function getValidationMessages($upload_type, $newfile)
@@ -256,6 +255,8 @@ class StandardFolder implements FolderType
         if (in_array($ext, $types) && $upload_type['type'] === 'allow') {
             return sprintf(_('Sie dürfen den Dateityp %s nicht hochladen!'), $ext);
         }
+
+        return null;
     }
 
     /**
