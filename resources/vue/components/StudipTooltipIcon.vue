@@ -37,6 +37,9 @@
 </script>
 
 <style lang="scss" scoped>
+.tooltip img {
+    vertical-align: text-bottom;
+}
 .tooltip.tooltip-icon::before {
     display: none;
 }

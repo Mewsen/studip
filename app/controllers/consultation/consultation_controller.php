@@ -19,7 +19,7 @@ abstract class ConsultationController extends AuthenticatedController
             $this->range = Context::get();
             $type = 'object';
         } else {
-            $this->range = $GLOBALS['user']->getAuthenticatedUser();
+            $this->range = User::findCurrent();
         }
 
         if (!$this->range) {
@@ -60,7 +60,7 @@ abstract class ConsultationController extends AuthenticatedController
         $this->render_template('consultation/not_found', $this->layout);
     }
 
-    protected function activateNavigation($path)
+    protected function activateNavigation($path): void
     {
         $path = ltrim($path, '/');
 
@@ -73,7 +73,7 @@ abstract class ConsultationController extends AuthenticatedController
         }
     }
 
-    protected function getConsultationTitle()
+    protected function getConsultationTitle(): string
     {
         return $this->range->getConfiguration()->CONSULTATION_TAB_TITLE;
     }
@@ -103,7 +103,8 @@ abstract class ConsultationController extends AuthenticatedController
         return $block;
     }
 
-    protected function loadSlot($block_id, $slot_id)
+
+    protected function loadSlot($block_id, $slot_id): ConsultationSlot
     {
         $block = $this->loadBlock($block_id);
         $slot  = $block->slots->find($slot_id);
@@ -115,7 +116,7 @@ abstract class ConsultationController extends AuthenticatedController
         return $slot;
     }
 
-    protected function loadBooking($block_id, $slot_id, $booking_id)
+    protected function loadBooking($block_id, $slot_id, $booking_id): ConsultationBooking
     {
         $slot    = $this->loadSlot($block_id, $slot_id);
         $booking = $slot->bookings->find($booking_id);

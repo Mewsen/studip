@@ -9,6 +9,7 @@
  * @property int $id alias column for slot_id
  * @property int $slot_id database column
  * @property int $block_id database column
+ * @property int $previous_slot_id database column
  * @property int $start_time database column
  * @property int $end_time database column
  * @property string $note database column
@@ -17,6 +18,7 @@
  * @property SimpleORMapCollection|ConsultationBooking[] $bookings has_many ConsultationBooking
  * @property SimpleORMapCollection|ConsultationEvent[] $events has_many ConsultationEvent
  * @property ConsultationBlock $block belongs_to ConsultationBlock
+ * @property ConsultationSlot|null $previous_slot has_one ConsultationSlot
  * @property-read mixed $has_bookings additional field
  * @property-read mixed $is_expired additional field
  */
@@ -45,15 +47,36 @@ class ConsultationSlot extends SimpleORMap
             'assoc_foreign_key' => 'slot_id',
             'on_delete'         => 'delete',
         ];
+        $config['has_one']['previous_slot'] = [
+            'class_name'        => ConsultationSlot::class,
+            'foreign_key'       => 'previous_slot_id',
+        ];
 
         $config['registered_callbacks']['before_create'][] = function (ConsultationSlot $slot) {
             $slot->updateEvents();
+        };
+        $config['registered_callbacks']['before_store'][] = function (ConsultationSlot $slot) {
+            $previous = static::findOneBySQL(
+                "block_id = ? AND start_time < ? ORDER BY start_time DESC",
+                [$slot->block_id, $slot->start_time]
+            );
+            $slot->previous_slot_id = $previous?->id;
         };
         $config['registered_callbacks']['after_delete'][] = function ($slot) {
             $block = $slot->block;
             if ($block && count($block->slots) === 0) {
                 $block->delete();
             }
+
+            // Close gap
+            self::findEachBySQL(
+                function (ConsultationSlot $s) use ($slot) {
+                    $s->previous_slot_id = $slot->previous_slot_id;
+                    $s->store();
+                },
+                'previous_slot_id = ?',
+                [$slot->id]
+            );
         };
 
         $config['additional_fields']['has_bookings']['get'] = function ($slot): bool {
@@ -139,10 +162,6 @@ class ConsultationSlot extends SimpleORMap
 
     /**
      * Returns whether this slot is occupied (by a given user).
-     *
-     * @param  mixed $user_id Id of the user (optional)
-     * @return boolean indicating whether the slot is occupied (by the given
-     *                 user)
      */
     public function isOccupied($user_id = null)
     {
@@ -154,12 +173,25 @@ class ConsultationSlot extends SimpleORMap
     /**
      * Returns whether the slot is locked for bookings.
      *
-     * @return bool
      */
     public function isLocked(): bool
     {
         return $this->block->lock_time
             && strtotime("-{$this->block->lock_time} hours", $this->block->start) < time();
+    }
+
+    /**
+     * Returns whether the slot is bookable for the given user_id
+     */
+    public function isBookable(?string $user_id = null): bool
+    {
+        return !$this->isOccupied($user_id)
+            && !$this->isLocked()
+            && !(
+                $this->block->consecutive
+                && $this->previous_slot
+                && !$this->previous_slot->isOccupied()
+            );
     }
 
     /**
@@ -306,8 +338,7 @@ class ConsultationSlot extends SimpleORMap
         $user = $user ?? User::findCurrent();
 
         return ConsultationBooking::userMayCreateBookingForRange($this->block->range, $user)
-            && !$this->isOccupied()
-            && !$this->isLocked();
+            && $this->isBookable($user->id);
     }
 
 

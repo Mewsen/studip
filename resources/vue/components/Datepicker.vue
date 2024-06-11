@@ -1,75 +1,143 @@
 <template>
     <span>
-        <input type="hidden" :name="name" :value="value">
+        <input type="hidden" :name="name" :value="returnValue">
         <input type="text"
                ref="visibleInput"
                class="visible_input"
-               @change="setUnixTimestamp"
                v-bind="$attrs"
-               v-on="$listeners">
+               v-on="$listeners"
+               :placeholder="placeholder">
     </span>
 </template>
 
 <script>
+import RestrictedDatesHelper from '../../assets/javascripts/lib/RestrictedDatesHelper';
+
 export default {
-    name: "datepicker",
+    name: 'Datepicker',
     inheritAttrs: false,
     props: {
         name: {
             type: String,
             required: false
         },
-        value: {
-            required: false
+        value: [Date, String, Number],
+        mindate: [Date, Number, String],
+        maxdate: [Date, Number, String],
+        placeholder: String,
+        disableHolidays: {
+            type: Boolean,
+            default: false,
         },
-        mindate: {
-            required: false
+        emitDate: {
+            type: Boolean,
+            default: false,
         },
-        maxdate: {
-            required: false
+        returnAs: {
+            type: String,
+            default: 'localized',
+            validator(value) {
+                return ['localized', 'unix', 'iso'].includes(value);
+            }
+        }
+    },
+    computed: {
+        input() {
+            return $(this.$refs.visibleInput);
+        },
+        parameters() {
+            let params = {
+                onSelect: () => {
+                    this.setUnixTimestamp();
+                },
+                maxDate: this.convertInputToNativeDate(this.maxdate),
+                minDate: this.convertInputToNativeDate(this.mindate),
+            };
+            if (this.disableHolidays) {
+                params.beforeShowDay = (date) => {
+                    RestrictedDatesHelper.loadRestrictedDatesByYear(date.getFullYear()).then(
+                        () => this.input.datepicker('refresh'),
+                        () => null
+                    );
+
+                    const {reason, lock} = RestrictedDatesHelper.isDateRestricted(date);
+                    return [!lock, lock ? 'ui-datepicker-is-locked' : null, reason];
+                };
+            }
+
+            return params;
+        },
+        returnValue() {
+            if (this.returnAs === 'unix') {
+                return this.convertInputToUnixTimestamp(this.value);
+            }
+
+            if (this.returnAs === 'iso') {
+                return this.convertInputToNativeDate(this.value).toISOString();
+            }
+
+            return this.convertInputToNativeDate(this.value).toLocaleDateString();
         }
     },
     methods: {
+        convertInputToNativeDate(input) {
+            if (input instanceof Date) {
+                return input;
+            }
+
+            if (input === 'today') {
+                return new Date();
+            }
+
+            return input ? new Date(input * 1000) : null;
+        },
+        convertInputToUnixTimestamp(input) {
+            if (input instanceof Date) {
+                return Math.floor(input.getTime() / 1000);
+            }
+
+            if (!isNaN(parseInt(input, 10))) {
+                return parseInt(input, 10);
+            }
+
+            return input;
+        },
         setUnixTimestamp () {
-            let formatted_date = this.$refs.visibleInput.value;
-            let date = formatted_date.match(/(\d+)/g);
-            date = new Date(`${date[2]}-${date[1]}-${date[0]} ${date[3]}:${date[4]}`);
-            this.$emit('input', Math.floor(date / 1000));
+            let date = this.input.datepicker('getDate');
+            this.$emit('input', this.emitDate ? date : Math.floor(date.getTime() / 1000));
         }
     },
     mounted () {
-        let value = !isNaN(parseInt(this.value, 10)) ? parseInt(this.value, 10) : this.value;
+        let value = this.convertInputToUnixTimestamp(this.value);
+
         if (Number.isInteger(value)) {
             let date = new Date(value * 1000);
-            let formatted_date =
-                (date.getDate() < 10 ? "0" : "") + date.getDate()
-                + "."
-                + (date.getMonth() < 9 ? "0" : "") + (date.getMonth() + 1)
-                + "."
-                + date.getFullYear();
-            this.$refs.visibleInput.value = formatted_date;
+            this.input.val(date.toLocaleDateString());
         } else {
-            this.$refs.visibleInput.value = value;
+            this.input.val(value);
         }
-        let params = {
-            onSelect: () => {
-                this.setUnixTimestamp();
-            }
-        };
-        if (this.mindate) {
-            params.minDate = new Date(this.mindate * 1000)
-        }
-        if (this.maxdate) {
-            params.maxDate = new Date(this.maxdate * 1000)
-        }
-        $(this.$refs.visibleInput).datetimepicker(params);
+        this.input.datepicker(this.parameters);
     },
     watch: {
-        mindate (new_data, old_data) {
-            $(this.$refs.visibleInput).datetimepicker('option', 'minDate', new Date(new_data * 1000));
+        maxdate(current) {
+            this.input.datepicker(
+                'option',
+                'maxDate',
+                this.convertInputToNativeDate(current)
+            );
         },
-        maxdate (new_data, old_data) {
-            $(this.$refs.visibleInput).datetimepicker('option', 'maxDate', new Date(new_data * 1000));
+        mindate(current) {
+            this.input.datepicker(
+                'option',
+                'minDate',
+                this.convertInputToNativeDate(current)
+            );
+        },
+        value(current, previous) {
+            if (current.toISOString() !== previous.toISOString()) {
+                this.input.datepicker('setDate', current);
+                this.input.datepicker('refresh');
+            }
         }
     }
 }

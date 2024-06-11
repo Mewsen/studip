@@ -5,6 +5,7 @@ namespace JsonApi;
 use JsonApi\Contracts\JsonApiPlugin;
 use JsonApi\Middlewares\Authentication;
 use JsonApi\Middlewares\DangerousRouteHandler;
+use JsonApi\Routes\Consultations\SlotCreationCount;
 use JsonApi\Routes\Holidays\HolidaysShow;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -220,6 +221,9 @@ class RouteMap
 
     private function addAuthenticatedConsultationRoutes(RouteCollectorProxy $group): void
     {
+        // TODO: I know, not very JSONAPI-like but it's a NonJsonApiController ¯\_(ツ)_/¯
+        $group->get('/consultation-slots/count', SlotCreationCount::class);
+
         $group->get('/{type:courses|institutes|users}/{id}/consultations', Routes\Consultations\BlocksByRangeIndex::class);
 
         $group->get('/consultation-blocks/{id}', Routes\Consultations\BlockShow::class);

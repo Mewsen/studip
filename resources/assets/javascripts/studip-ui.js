@@ -1,5 +1,6 @@
 import { $gettext } from './lib/gettext';
 import eventBus from "./lib/event-bus.ts";
+import RestrictedDatesHelper from './lib/RestrictedDatesHelper';
 
 /**
  * This file contains extensions/adjustments for jQuery UI.
@@ -28,33 +29,11 @@ import eventBus from "./lib/event-bus.ts";
     }
 
     function disableHolidaysBeforeShow(date) {
-        const year = date.getFullYear();
-
-        if (STUDIP.UI.restrictedDates[year] === undefined) {
-            STUDIP.UI.restrictedDates[year] = {};
-
-            STUDIP.jsonapi.withPromises().get('holidays', {data: {
-                'filter[year]': year
-            }}).then(response => {
-                // Since PHP will return an empty object as an array,
-                // we need to check
-                if (Array.isArray(response)) {
-                    return;
-                }
-
-                for (const [date, data] of Object.entries(response)) {
-                    STUDIP.UI.addRestrictedDate(
-                        new Date(date),
-                        data.holiday,
-                        data.mandatory
-                    );
-                }
-
-                $(this).datepicker('refresh');
-            });
-        }
-
-        const {reason, lock} = STUDIP.UI.isDateRestricted(date, false);
+        RestrictedDatesHelper.loadRestrictedDatesByYear(date.getFullYear()).then(
+            () => $(this).datepicker('refresh'),
+            () => null
+        );
+        const {reason, lock} = RestrictedDatesHelper.isDateRestricted(date);
         return [!lock, lock ? 'ui-datepicker-is-locked' : null, reason];
     }
 
@@ -83,57 +62,8 @@ import eventBus from "./lib/event-bus.ts";
         return;
     }
 
+    STUDIP.UI = {};
     // Setup Stud.IP's own datepicker extensions
-    STUDIP.UI = Object.assign(STUDIP.UI || {}, {
-        restrictedDates: {},
-        addRestrictedDate(date, reason = '', lock = true) {
-            if (this.isDateRestricted(date)) {
-                return;
-            }
-
-            const [year, month, day] = this.convertDateForRestriction(date);
-            if (this.restrictedDates[year] === undefined) {
-                this.restrictedDates[year] = {};
-            }
-            if (this.restrictedDates[year][month] === undefined) {
-                this.restrictedDates[year][month] = {};
-            }
-
-            this.restrictedDates[year][month][day] = {reason, lock};
-        },
-        removeRestrictedDate(date) {
-            if (!this.isDateRestricted(date)) {
-                return false;
-            }
-            const [year, month, day] = this.convertDateForRestriction(date);
-
-            delete this.restrictedDates[year][month][day];
-
-            if (Object.keys(this.restrictedDates[year][month]).length === 0) {
-                delete this.restrictedDates[year][month];
-            }
-
-            return true;
-        },
-        isDateRestricted(date, return_bool = true) {
-            const [year, month, day] = this.convertDateForRestriction(date);
-            if (
-                this.restrictedDates[year] === undefined
-                || this.restrictedDates[year][month] === undefined
-                || this.restrictedDates[year][month][day] === undefined
-            ) {
-                return return_bool ? false : {
-                    reason: null,
-                    lock: false,
-                };
-            }
-
-            return return_bool ? true : this.restrictedDates[year][month][day];
-        },
-        convertDateForRestriction(date) {
-            return [date.getFullYear(), date.getMonth() + 1, date.getDate()];
-        }
-    });
     STUDIP.UI.Datepicker = {
         selector: '.has-date-picker,[data-date-picker]',
         // Initialize all datepickers that not yet been initialized (e.g. in dialogs)

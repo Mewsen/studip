@@ -28,27 +28,17 @@ STUDIP.ready(() => {
         });
 
         STUDIP.Vue.load().then(async ({createApp, store}) => {
-            let vm;
             if (config.store) {
                 const storeConfig = await import(`../../../vue/store/${config.store}.js`);
-                console.log('store', storeConfig.default);
 
                 store.registerModule(config.id, storeConfig.default, {root: true});
 
                 Object.keys(data).forEach(command => {
                     store.commit(`${config.id}/${command}`, data[command]);
                 });
-                vm = createApp({components});
-            } else {
-                vm = createApp({data, components});
             }
-            // import myCoursesStore from '../stores/MyCoursesStore.js';
-            //
-            // myCoursesStore.namespaced = true;
-            //
-            // store.registerModule('my-courses', myCoursesStore);
 
-            vm.$mount(this);
+            createApp({components, data}).$mount(this);
         });
 
         $(this).attr('data-vue-app-created', '');

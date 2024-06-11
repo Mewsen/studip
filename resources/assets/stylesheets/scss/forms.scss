@@ -621,6 +621,28 @@ form.inline {
     }
 }
 
+.studip-dialog {
+    form[data-vue-app] {
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+
+        fieldset {
+            flex: 0;
+        }
+
+        footer[data-dialog-button] {
+            background: var(--white);
+            border-top-color: var(--base-color-20);
+            bottom: -0.5em;
+            margin-top: auto;
+            padding: 1.3em 0;
+            position: sticky;
+            text-align: center;
+        }
+    }
+}
+
 @media (min-width: 800px) {
     form.default .form-columns {
         display: flex;

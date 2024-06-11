@@ -14,7 +14,7 @@
 <?= MessageBox::info(sprintf(
     implode('<br>', [
         _('Derzeit sind keine Termine eingetragen.'),
-        '<a href="%s" class="button" data-dialog="size=auto">%s</a>',
+        '<a href="%s" class="button" data-dialog="size=big">%s</a>',
     ]),
     $controller->create(),
     _('Terminblöcke anlegen')
