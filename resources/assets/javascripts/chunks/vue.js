@@ -50,7 +50,12 @@ Vue.mixin({
 function createApp(options, ...args) {
 //    Vue.config.language = getLocale();
     const app = vueCreateApp({ store, ...options }, ...args);
+
+    app.config.globalProperties.$store = store;
+
     app.use(gettext);
+
+
     if (options.el) {
         app.mount(options.el);
     }

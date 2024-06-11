@@ -72,6 +72,10 @@
 </template>
 
 <script>
+import gettext from '../../assets/javascripts/lib/gettext';
+
+const { $gettext } = gettext;
+
 export default {
     name: 'studip-action-menu',
     props: {
@@ -86,7 +90,7 @@ export default {
         title: {
             type: String,
             default() {
-                return this.$gettext('Aktionen');
+                return $gettext('Aktionen');
             }
         }
     },

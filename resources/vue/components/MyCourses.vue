@@ -21,18 +21,17 @@
         </studip-message-box>
         <component v-else :is="displayComponent" :icon-size="iconSize"></component>
 
-        <MountingPortal mount-to="#tiled-courses-sidebar-switch .sidebar-widget-content .widget-list" name="sidebar-switch">
-            <my-courses-sidebar-switch></my-courses-sidebar-switch>
-        </MountingPortal>
+        <Teleport to="#tiled-courses-sidebar-switch .sidebar-widget-content .widget-list" name="sidebar-switch">
+            <MyCoursesSidebarSwitch />
+        </Teleport>
 
-        <MountingPortal mount-to="#tiled-courses-new-contents-toggle .sidebar-widget-content .widget-list" name="sidebar-content-toggle">
-            <my-courses-new-content-toggle></my-courses-new-content-toggle>
-        </MountingPortal>
+        <Teleport to="#tiled-courses-new-contents-toggle .sidebar-widget-content .widget-list" name="sidebar-content-toggle">
+            <MyCoursesNewContentToggle />
+        </Teleport>
     </div>
 </template>
 
 <script>
-import { sprintf } from 'sprintf-js';
 import MyCoursesTables from './MyCoursesTables.vue';
 import MyCoursesTiles from './MyCoursesTiles.vue';
 import MyCoursesMixin from '../mixins/MyCoursesMixin.js';
@@ -69,6 +68,10 @@ export default {
         isEmpty () {
             return this.groups.length === 0;
         }
+    },
+    beforeMount() {
+        document.querySelector('#tiled-courses-sidebar-switch .widget-list').innerHTML = '';
+        document.querySelector('#tiled-courses-new-contents-toggle .widget-list').innerHTML = '';
     }
 }
 </script>
