@@ -28,19 +28,18 @@
         'href' => $controller->link_for('files/overview', ['view' => 'all_files'])
     ];
     ?>
-    <form method="post"
-          class="vue-file-table"
-          data-topfolder="<?= htmlReady(json_encode($vue_topfolder)) ?>"
-          data-files="<?= htmlReady(json_encode($all_files)) ?>">
+    <form method="post">
         <?= CSRFProtection::tokenTag() ?>
-        <files-table :showdownloads="<?= $show_download_column ? "true" : "false" ?>"
-                     :files="files"
-                     :topfolder="topfolder"
-                     enable_table_filter="false"
-                     table_title="<?= _('Alle Dateien') ?>"
-                     :show_bulk_actions="false"
-                     :tfoot_link="<?= htmlReady(json_encode($tfoot_link)) ?>"
-        ></files-table>
+        <?= Studip\VueApp::create('FilesTable')
+            ->withProps([
+                'enable_table_filter' => false,
+                'files'               => $all_files,
+                'show_bulk_actions'   => false,
+                'showdownloads'       => $show_download_column,
+                'table_title'         => _('Alle Dateien'),
+                'tfoot_link'          => $tfoot_link,
+                'topfolder'           => $vue_topfolder,
+            ]) ?>
     </form>
 <? endif ?>
 
@@ -54,19 +53,18 @@
         'href' => $controller->link_for('files/overview', ['view' => 'my_uploaded_files'])
     ];
     ?>
-    <form method="post"
-          class="vue-file-table"
-          data-topfolder="<?= htmlReady(json_encode($vue_topfolder)) ?>"
-          data-files="<?= htmlReady(json_encode($uploaded_files)) ?>">
+    <form method="post">
         <?= CSRFProtection::tokenTag() ?>
-        <files-table :showdownloads="<?= $show_download_column ? "true" : "false" ?>"
-                     :files="files"
-                     :topfolder="topfolder"
-                     enable_table_filter="false"
-                     table_title="<?= _('Persönlicher Dateibereich') ?>"
-                     :show_bulk_actions="false"
-                     :tfoot_link="<?= htmlReady(json_encode($tfoot_link)) ?>"
-        ></files-table>
+        <?= Studip\VueApp::create('FilesTable')
+            ->withProps([
+                'enable_table_filter' => false,
+                'files'               => $uploaded_files,
+                'show_bulk_actions'   => false,
+                'showdownloads'       => $show_download_column,
+                'table_title'         => _('Persönlicher Dateibereich'),
+                'tfoot_link'          => $tfoot_link,
+                'topfolder'           => $vue_topfolder,
+            ]) ?>
     </form>
 <? endif ?>
 
@@ -80,19 +78,18 @@
         'href' => $controller->link_for('files/overview', ['view' => 'my_public_files'])
     ];
     ?>
-    <form method="post"
-          class="vue-file-table"
-          data-topfolder="<?= htmlReady(json_encode($vue_topfolder)) ?>"
-          data-files="<?= htmlReady(json_encode($public_files)) ?>">
+    <form method="post">
         <?= CSRFProtection::tokenTag() ?>
-        <files-table :showdownloads="<?= $show_download_column ? "true" : "false" ?>"
-                     :files="files"
-                     :topfolder="topfolder"
-                     enable_table_filter="false"
-                     table_title="<?= _('Meine öffentlichen Dateien') ?>"
-                     :show_bulk_actions="false"
-                     :tfoot_link="<?= htmlReady(json_encode($tfoot_link)) ?>"
-        ></files-table>
+        <?= Studip\VueApp::create('FilesTable')
+            ->withProps([
+                'enable_table_filter' => false,
+                'files'               => $public_files,
+                'show_bulk_actions'   => false,
+                'showdownloads'       => $show_download_column,
+                'table_title'         => _('Meine öffentlichen Dateien'),
+                'tfoot_link'          => $tfoot_link,
+                'topfolder'           => $vue_topfolder,
+            ]) ?>
     </form>
 <? endif ?>
 
@@ -106,19 +103,18 @@
         'href' => $controller->link_for('files/overview', ['view' => 'my_uploaded_files_unknown_license'])
     ];
     ?>
-    <form method="post"
-          class="vue-file-table"
-          data-topfolder="<?= htmlReady(json_encode($vue_topfolder)) ?>"
-          data-files="<?= htmlReady(json_encode($uploaded_unlic_files)) ?>">
+    <form method="post">
         <?= CSRFProtection::tokenTag() ?>
-        <files-table :showdownloads="<?= $show_download_column ? "true" : "false" ?>"
-                     :files="files"
-                     :topfolder="topfolder"
-                     enable_table_filter="false"
-                     table_title="<?= _('Meine Dateien mit ungeklärter Lizenz') ?>"
-                     :show_bulk_actions="false"
-                     :tfoot_link="<?= htmlReady(json_encode($tfoot_link)) ?>"
-        ></files-table>
+        <?= Studip\VueApp::create('FilesTable')
+            ->withProps([
+                'enable_table_filter' => false,
+                'files'               => $uploaded_unlic_files,
+                'show_bulk_actions'   => false,
+                'showdownloads'       => $show_download_column,
+                'table_title'         => _('Meine Dateien mit ungeklärter Lizenz'),
+                'tfoot_link'          => $tfoot_link,
+                'topfolder'           => $vue_topfolder,
+            ]) ?>
     </form>
 <? endif ?>
 
