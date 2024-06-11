@@ -1,5 +1,5 @@
 Eine Anfrage <?= $request->course instanceof Course
-               ? 'für die Veranstaltung ' . $request->course->getFullName('number-name')
+               ? 'für die Veranstaltung [' .$request->course->getFullName('number-name') . ']' . $request->course->getItemURL()
                : '' ?> wurde bearbeitet.
 
 <? if ($request->course): ?>
@@ -17,7 +17,9 @@ Gebuchte Räume: <?= $booked_rooms ?>
 Art der Anfrage: <?= $request->getTypeString() ?>
 
 
-Die folgenden Zeiträume wurden gebucht:
+Die folgenden Zeiträume wurden gebucht<?= $request->course->isToolActive('CoreSchedule')
+               ? ' und im [Ablaufplan]' . str_replace( 'details/index', 'dates', $request->course->getItemURL()) . ' eingetragen'
+               : '' ?>:
 <? foreach ($metadates as $metadate) : ?>
 
 - <?= $metadate->toString('full') ?>
