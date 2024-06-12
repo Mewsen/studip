@@ -179,11 +179,10 @@ const mountApp = async (STUDIP, createApp, element) => {
     const app = createApp({
         render: (h) => h(IndexApp),
         router,
-        store,
     });
 
     Vue.use(StockImagesPlugin, { store });
-
+    app.use(store);
     app.mount(element);
 
     return app;

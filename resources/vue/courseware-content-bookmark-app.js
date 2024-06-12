@@ -71,9 +71,8 @@ const mountApp = (STUDIP, createApp, element) => {
 
     const app = createApp({
         render: (h) => h(ContentBookmarkApp),
-        store
     });
-
+    app.use(store);
     app.mount(element);
 
     return app;

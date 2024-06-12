@@ -62,9 +62,8 @@ const mountApp = (STUDIP, createApp, element) => {
 
     const app = createApp({
         render: (h) => h(ContentReleasesApp),
-        store
     });
-
+    app.use(store);
     app.mount(element);
 
     return app;

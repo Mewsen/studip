@@ -124,9 +124,8 @@ const mountApp = async (STUDIP, createApp, element) => {
     const app = createApp({
         render: (h) => h(RouterView),
         router,
-        store,
     });
-
+    app.use(store);
     app.mount(element);
 
     return app;

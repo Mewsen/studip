@@ -81,9 +81,8 @@ const mountApp = async (STUDIP, createApp, element) => {
 
     const app = createApp({
         render: (h) => h(ActivitiesApp),
-        store,
     });
-
+    app.use(store);
     app.mount(element);
 
     return app;

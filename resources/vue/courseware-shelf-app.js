@@ -112,8 +112,9 @@ const mountApp = async (STUDIP, createApp, element) => {
 
     const app = createApp({
         render: (h) => h(ShelfApp),
-        store,
     });
+
+    app.use(store);
 
     app.mount(element);
 
