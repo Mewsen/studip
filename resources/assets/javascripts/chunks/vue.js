@@ -14,35 +14,12 @@ eventBus.on('studip:set-locale', (locale) => {
     Vue.config.language = locale;
 })
 
-// Register global components and directives
-registerGlobalComponents();
-registerGlobalDirectives();
-
 // Setup store and default Stud.IP store
-Vue.use(Vuex);
 const store = new Vuex.Store({});
-
 store.registerModule('studip', StudipStore);
 
-// Setup router and PortalVue
+// Setup router
 Vue.use(Router);
-Vue.use(PortalVue);
-
-// Define our own global mixin for Vue
-Vue.mixin({
-    methods: {
-        globalEmit(...args) {
-            eventBus.emit(...args);
-        },
-        globalOn(...args) {
-            eventBus.on(...args);
-        },
-        globalOff(...args) {
-            eventBus.off(...args);
-        },
-        getStudipConfig: store.getters['studip/getConfig']
-    },
-});
 
 // Vue.use(CKEditor);
 
@@ -51,10 +28,29 @@ function createApp(options, ...args) {
 //    Vue.config.language = getLocale();
     const app = vueCreateApp({ store, ...options }, ...args);
 
-    app.config.globalProperties.$store = store;
+    // Define our own global mixin for Vue
+    app.mixin({
+        methods: {
+            globalEmit(...args) {
+                eventBus.emit(...args);
+            },
+            globalOn(...args) {
+                eventBus.on(...args);
+            },
+            globalOff(...args) {
+                eventBus.off(...args);
+            },
+            getStudipConfig: store.getters['studip/getConfig']
+        },
+    });
 
+    app.use(store);
     app.use(gettext);
+    app.use(PortalVue);
 
+    // Register global components and directives
+    registerGlobalComponents(app);
+    registerGlobalDirectives(app);
 
     if (options.el) {
         app.mount(options.el);
@@ -63,15 +59,15 @@ function createApp(options, ...args) {
 }
 
 // Define global registration functions for components and directives
-function registerGlobalComponents() {
+function registerGlobalComponents(app) {
     for (const [name, component] of Object.entries(BaseComponents)) {
-        Vue.component(name, component);
+        app.component(name, component);
     }
 }
 
-function registerGlobalDirectives() {
+function registerGlobalDirectives(app) {
     for (const [name, directive] of Object.entries(BaseDirectives)) {
-        Vue.directive(name, directive);
+        app.directive(name, directive);
     }
 }
 
