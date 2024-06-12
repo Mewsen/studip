@@ -16,7 +16,7 @@ RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-webp
 RUN docker-php-ext-install -j$(nproc) gd gettext intl mysqli pdo_mysql zip
 
 # Install node/npm
-COPY --from=node:16-slim /usr/local/bin /usr/local/bin
+COPY --from=node:18-slim /usr/local/bin /usr/local/bin
 
 # Install composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
