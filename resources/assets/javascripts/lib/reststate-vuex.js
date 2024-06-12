@@ -1,4 +1,4 @@
-import { ResourceClient } from './reststate-client.js';
+import ResourceClient from './reststate-client.js';
 import { isEqual } from 'lodash';
 
 const STATUS_INITIAL = 'INITIAL';
