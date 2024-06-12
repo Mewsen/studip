@@ -108,7 +108,7 @@ const mountApp = async (STUDIP, createApp, element) => {
         store,
     });
 
-    app.$mount(element);
+    app.mount(element);
 };
 
 export default mountApp;

@@ -74,7 +74,7 @@ const mountApp = (STUDIP, createApp, element) => {
         store
     });
 
-    app.$mount(element);
+    app.mount(element);
 
     return app;
 }

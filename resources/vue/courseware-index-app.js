@@ -184,7 +184,7 @@ const mountApp = async (STUDIP, createApp, element) => {
 
     Vue.use(StockImagesPlugin, { store });
 
-    app.$mount(element);
+    app.mount(element);
 
     return app;
 };
