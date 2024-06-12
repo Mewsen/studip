@@ -2,7 +2,7 @@ import CoursewareCommentsModule from './store/courseware/courseware-comments.mod
 import CommentsApp from './components/courseware/CommentsApp.vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
+import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 
 const mountApp = async (STUDIP, createApp, element) => {
     const getHttpClient = () =>

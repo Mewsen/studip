@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
+import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import JSUpdater from '@/assets/javascripts/lib/jsupdater.js';
 import blubberModule from '../store/blubber.js';
 import * as components from '../components/blubber/components.js';

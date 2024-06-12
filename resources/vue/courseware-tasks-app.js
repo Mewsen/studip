@@ -1,6 +1,6 @@
 import TaskGroupsIndex from './components/courseware/tasks/PagesTaskGroupsIndex.vue';
 import TaskGroupsShow from './components/courseware/tasks/PagesTaskGroupsShow.vue';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
+import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import VueRouter, { RouterView } from 'vue-router';
 import Vuex from 'vuex';
 import CoursewareModule from './store/courseware/courseware.module';

@@ -1,6 +1,6 @@
 import ContentReleasesApp from './components/courseware/ContentReleasesApp.vue';
 import CoursewareModule from './store/courseware/courseware.module';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
+import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import Vuex from 'vuex';
 import axios from 'axios';
 

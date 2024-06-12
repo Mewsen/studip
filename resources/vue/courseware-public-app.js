@@ -6,7 +6,7 @@ import PluginManager from './components/courseware/plugin-manager.js';
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 import axios from 'axios';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
+import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import _ from 'lodash';
 
 const mountApp = (STUDIP, createApp, element) => {

@@ -1,5 +1,5 @@
 import ActivitiesApp from './components/courseware/ActivitiesApp.vue';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
+import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import Vuex from 'vuex';
 import CoursewareModule from './store/courseware/courseware.module';
 import CoursewareActivitiesModule from './store/courseware/courseware-activities.module';

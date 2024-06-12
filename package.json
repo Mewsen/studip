@@ -56,7 +56,6 @@
         "@ckeditor/ckeditor5-typing": "^36.x",
         "@ckeditor/ckeditor5-upload": "^36.x",
         "@ckeditor/ckeditor5-vue2": "^3.0.1",
-        "@elan-ev/reststate-vuex": "~1.0.5",
         "@fullcalendar/core": "^4.3.1",
         "@fullcalendar/daygrid": "^4.3.0",
         "@fullcalendar/interaction": "^4.3.0",

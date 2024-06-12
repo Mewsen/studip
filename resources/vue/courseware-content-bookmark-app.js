@@ -1,5 +1,5 @@
 import ContentBookmarkApp from './components/courseware/ContentBookmarkApp.vue';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
+import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import Vuex from 'vuex';
 import CoursewareModule from './store/courseware/courseware.module';
 import axios from 'axios';

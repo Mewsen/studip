@@ -9,7 +9,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 import axios from 'axios';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
+import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import { StockImagesPlugin } from './plugins/stock-images.js';
 
 const mountApp = async (STUDIP, createApp, element) => {

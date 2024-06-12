@@ -1,5 +1,5 @@
 import AdminApp from './components/courseware/AdminApp.vue';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
+import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import Vuex from 'vuex';
 import CoursewareAdminModule from './store/courseware/courseware-admin.module';
 import axios from 'axios';
