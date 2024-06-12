@@ -6,7 +6,7 @@ import axios from 'axios';
 import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import { StockImagesPlugin } from './plugins/stock-images.js';
 
-const mountApp = async (STUDIP, createApp, element) => {
+const mountApp = async (STUDIP, c, element) => {
     // handle studip 5.0 to 5.2 urls
     const elemId = window.location.hash.match(/structural_element\/(\d+)/);
 
@@ -57,39 +57,40 @@ const mountApp = async (STUDIP, createApp, element) => {
 
     const httpClient = getHttpClient();
 
-    const store = new Vuex.Store({
-        modules: {
-            'courseware-shelf': CoursewareShelfModule,
-            ...mapResourceModules({
-                names: [
-                    'courses',
-                    'course-memberships',
-                    'courseware-blocks',
-                    'courseware-containers',
-                    'courseware-instances',
-                    'courseware-units',
-                    'courseware-user-data-fields',
-                    'courseware-user-progresses',
-                    'courseware-structural-elements',
-                    'courseware-structural-elements-shared',
-                    'feedback-elements',
-                    'feedback-entries',
-                    'files',
-                    'file-refs',
-                    'folders',
-                    'users',
-                    'institutes',
-                    'institute-memberships',
-                    'semesters',
-                    'sem-classes',
-                    'sem-types',
-                    'stock-images',
-                    'terms-of-use'
-                ],
-                httpClient,
-            }),
-        },
+    const { createApp, store } = await STUDIP.Vue.load();
+    store.registerModule('courseware-shelf', CoursewareShelfModule);
+
+    Object.entries(mapResourceModules({
+        names: [
+            'courses',
+            'course-memberships',
+            'courseware-blocks',
+            'courseware-containers',
+            'courseware-instances',
+            'courseware-units',
+            'courseware-user-data-fields',
+            'courseware-user-progresses',
+            'courseware-structural-elements',
+            'courseware-structural-elements-shared',
+            'feedback-elements',
+            'feedback-entries',
+            'files',
+            'file-refs',
+            'folders',
+            'users',
+            'institutes',
+            'institute-memberships',
+            'semesters',
+            'sem-classes',
+            'sem-types',
+            'stock-images',
+            'terms-of-use'
+        ],
+        httpClient,
+    })).forEach(([name, module]) => {
+        store.registerModule(name, module);
     });
+
     store.dispatch('setUrlHelper', STUDIP.URLHelper);
     store.dispatch('setHttpClient', httpClient);
     store.dispatch('setLicenses', licenses);
@@ -108,14 +109,10 @@ const mountApp = async (STUDIP, createApp, element) => {
         await store.dispatch('courseware-structural-elements-shared/loadAll', { options: { include: 'owner' } });
     }
 
-    Vue.use(StockImagesPlugin, { store });
-
     const app = createApp({
         render: (h) => h(ShelfApp),
     });
-
-    app.use(store);
-
+    app.use(StockImagesPlugin, { store });
     app.mount(element);
 
 };
