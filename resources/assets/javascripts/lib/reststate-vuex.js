@@ -449,6 +449,7 @@ const resourceModule = ({ name: resourceName, httpClient }) => {
       removeRelated({ commit, dispatch }, params) {
         const { parent, relationship = resourceName, data } = params;
         client.removeRelationships(parent, relationship, data);
+        let relatedIds;
         if (Array.isArray(data)) {
           relatedIds = data.map(record => record.id);
         } else {
