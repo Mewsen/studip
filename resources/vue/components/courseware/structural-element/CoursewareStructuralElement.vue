@@ -1,5 +1,5 @@
 <template>
-    <focus-trap v-model="consumModeTrap">
+    <focus-trap v-model:active="consumModeTrap">
         <div>
             <div
                 v-if="validContext"
