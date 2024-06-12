@@ -163,7 +163,7 @@ class AuxLockRule extends SimpleORMap
             foreach ($this->datafields as $field => $useless_value_pls_refactor) {
 
                 // if standard get it from the mapping else get it from the datafield
-                if ($mapping[$field]) {
+                if (!empty($mapping[$field])) {
                     $result['head'][$field] = $head_mapping[$field];
                     $new[$field] = htmlReady($mapping[$field]);
                 } else {
