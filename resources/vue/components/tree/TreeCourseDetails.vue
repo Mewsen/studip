@@ -18,9 +18,9 @@
                 </a><template v-if="details.lecturers.length > 1 && index < details.lecturers.length - 1">, </template>
             </span>
         </div>
-        <MountingPortal :mountTo="'#course-dates-' + course" :append="true">
+        <Teleport :to="'#course-dates-' + course" :append="true">
             <span v-html="details.dates"></span>
-        </MountingPortal>
+        </Teleport>
     </div>
 </template>
 

@@ -146,13 +146,13 @@
                 </tr>
             </tfoot>
         </table>
-        <MountingPortal v-if="showExport" mountTo="#export-widget" name="sidebar-export">
+        <Teleport v-if="showExport" to="#export-widget" name="sidebar-export">
             <tree-export-widget v-if="courses.length > 0" :title="$gettext('Download des Ergebnisses')" :url="exportUrl()"
                                 :export-data="courses"></tree-export-widget>
-        </MountingPortal>
-        <MountingPortal v-if="withCourseAssign" mountTo="#assign-widget" name="sidebar-assign-courses">
+        </Teleport>
+        <Teleport v-if="withCourseAssign" to="#assign-widget" name="sidebar-assign-courses">
             <assign-link-widget v-if="courses.length > 0" :node="currentNode" :courses="courses"></assign-link-widget>
-        </MountingPortal>
+        </Teleport>
     </article>
 </template>
 

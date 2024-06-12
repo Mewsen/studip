@@ -26,12 +26,12 @@
             :description="$gettext('Bilder werden hochgeladen...')"
         >
         </studip-progress-indicator>
-        <MountingPortal mountTo="#stock-images-widget" name="sidebar-stock-images">
+        <Teleport to="#stock-images-widget" name="sidebar-stock-images">
             <SearchWidget :query="query" @search="onSearch" />
             <OrientationFilterWidget v-model="filters" />
             <ColorFilterWidget v-model="filters" />
             <ActionsWidget @initiateUpload="onUploadDialogShow" @initiateZipUpload="onZipUploadDialogShow" />
-        </MountingPortal>
+        </Teleport>
         <EditDialog
             :stock-image="selectedImage"
             :suggested-tags="suggestedTags"

@@ -9,9 +9,9 @@
                 :ordered-structural-elements="orderedStructuralElements"
                 @select="selectStructuralElement"
             ></courseware-structural-element>
-            <MountingPortal mountTo="#courseware-search-widget" name="sidebar-search">
+            <Teleport to="#courseware-search-widget" name="sidebar-search">
                 <courseware-search-widget v-if="selected !== null"></courseware-search-widget>
-            </MountingPortal>
+            </Teleport>
         </div>
         <studip-progress-indicator
             v-if="structureLoadingState === 'loading'"

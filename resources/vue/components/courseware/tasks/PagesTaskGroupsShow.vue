@@ -1,8 +1,8 @@
 <template>
     <div class="cw-tasks-wrapper">
-        <MountingPortal mountTo="#courseware-action-widget" name="sidebar-actions" v-if="userIsTeacher">
+        <Teleport to="#courseware-action-widget" name="sidebar-actions" v-if="userIsTeacher">
             <CoursewareTasksActionWidget :taskGroup="taskGroup" />
-        </MountingPortal>
+        </Teleport>
 
         <div v-if="taskGroup" class="cw-tasks-list">
             <CoursewareRibbon :isContentBar="true" :showToolbarButton="false">

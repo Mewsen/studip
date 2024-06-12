@@ -1,12 +1,12 @@
 <template>
     <div class="cw-admin">
         <courseware-admin-templates v-if="templatesView" />
-        <MountingPortal mountTo="#courseware-admin-view-widget" name="sidebar-views">
+        <Teleport to="#courseware-admin-view-widget" name="sidebar-views">
             <courseware-admin-view-widget />
-        </MountingPortal>
-        <MountingPortal mountTo="#courseware-admin-action-widget" name="sidebar-views">
+        </Teleport>
+        <Teleport to="#courseware-admin-action-widget" name="sidebar-views">
             <courseware-admin-action-widget />
-        </MountingPortal>
+        </Teleport>
 
     </div>
 </template>

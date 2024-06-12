@@ -1,8 +1,8 @@
 <template>
     <div>
-        <MountingPortal mount-to="#skiplink_list" append>
+        <Teleport to="#skiplink_list" append>
             <portal-target name="additional-skiplinks"></portal-target>
-        </MountingPortal>
+        </Teleport>
         <portal to="additional-skiplinks">
             <li v-for="(link) in links" :key="link.url">
                 <button class="skiplink" role="link" @click.prevent="goto(link.url)">

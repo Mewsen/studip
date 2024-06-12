@@ -1,8 +1,8 @@
 <template>
     <div v-if="realContentbarSource === ''">
-        <MountingPortal mount-to="#responsive-contentbar-container" append>
+        <Teleport to="#responsive-contentbar-container" append>
             <portal-target name="layout-page"></portal-target>
-        </MountingPortal>
+        </Teleport>
         <portal to="layout-page">
             <div id="responsive-contentbar" class="contentbar" ref="contentbar">
                 <div v-if="hasSidebar" class="contentbar-nav" ref="leftNav">

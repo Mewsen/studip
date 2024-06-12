@@ -2,10 +2,10 @@
     <div>
         <BlubberPanel :threadId="threadId" :search="search" v-if="threadId" />
 
-        <MountingPortal mountTo="#blubber-search-widget" name="sidebar-blubber-search">
+        <Teleport to="#blubber-search-widget" name="sidebar-blubber-search">
             <BlubberSearchWidget :search="search" />
-        </MountingPortal>
-        <MountingPortal mountTo="#blubber-threads-widget" name="sidebar-blubber-threads">
+        </Teleport>
+        <Teleport to="#blubber-threads-widget" name="sidebar-blubber-threads">
             <BlubberThreadsWidget
                 :hasMoreThreads="hasMoreThreads"
                 :threadId="threadId"
@@ -14,7 +14,7 @@
                 @select-thread="onSelectThread"
                 class="blubber_threads_widget"
             />
-        </MountingPortal>
+        </Teleport>
     </div>
 </template>
 

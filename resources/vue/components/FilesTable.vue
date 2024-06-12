@@ -305,9 +305,9 @@
             </tfoot>
         </table>
 
-        <MountingPortal v-if="allow_filter" mount-to="#table-view-filter .sidebar-widget-content div" name="sidebar-content-toggle">
+        <Teleport v-if="allow_filter" to="#table-view-filter .sidebar-widget-content div" name="sidebar-content-toggle">
             <input :placeholder="$gettext('Name oder Autor/in')" type="search" v-model="filter" :disabled="!hasData" />
-        </MountingPortal>
+        </Teleport>
     </div>
 </template>
 <script>

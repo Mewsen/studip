@@ -30,14 +30,14 @@
         <div v-else class="studip-tree">
             <tree-search-result :search-config="searchConfig"></tree-search-result>
         </div>
-        <MountingPortal v-if="withSearch" mountTo="#search-widget" name="sidebar-search">
+        <Teleport v-if="withSearch" to="#search-widget" name="sidebar-search">
             <search-widget v-if="currentNode" :min-length="3" ref="searchWidget"></search-widget>
-        </MountingPortal>
-        <MountingPortal v-if="!editable && !isSearching && !isLoading && currentNode"
-                        mountTo="#views-widget"
+        </Teleport>
+        <Teleport v-if="!editable && !isSearching && !isLoading && currentNode"
+                        to="#views-widget"
                         name="sidebar-views">
             <studip-tree-view-widget :config="viewConfig" />
-        </MountingPortal>
+        </Teleport>
     </div>
 </template>
 

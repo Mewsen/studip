@@ -4,9 +4,9 @@
             <CoursewareDashboardStudents v-if="userIsTeacher" />
             <CoursewareDashboardTasks v-else />
         </div>
-        <MountingPortal mountTo="#courseware-action-widget" name="sidebar-actions" v-if="userIsTeacher">
+        <Teleport to="#courseware-action-widget" name="sidebar-actions" v-if="userIsTeacher">
             <CoursewareTasksActionWidget />
-        </MountingPortal>
+        </Teleport>
         <courseware-companion-overlay />
     </div>
 </template>
