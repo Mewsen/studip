@@ -72,9 +72,7 @@
 </template>
 
 <script>
-import gettext from '../../assets/javascripts/lib/gettext';
-
-const { $gettext } = gettext;
+import { $gettext } from '../../assets/javascripts/lib/gettext';
 
 export default {
     name: 'studip-action-menu',

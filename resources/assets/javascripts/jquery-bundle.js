@@ -1,6 +1,6 @@
 import 'expose-loader?exposes[]=$&exposes[]=jQuery!jquery';
 
-// import { setLocale } from './lib/gettext';
+ import { setLocale } from './lib/gettext';
 
 import 'jquery-ui/ui/widget.js';
 import 'jquery-ui/ui/position.js';
@@ -143,7 +143,7 @@ $.fn.extend({
 });
 
 $(document).ready(async () => {
-//    await setLocale();
+    await setLocale();
     STUDIP.ready.trigger('dom');
 }).on('dialog-update', (event, data) => {
     STUDIP.ready.trigger('dialog', data.dialog);

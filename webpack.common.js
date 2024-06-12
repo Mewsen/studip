@@ -1,4 +1,3 @@
-const webpack = require("webpack");
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { VueLoaderPlugin } = require('vue-loader');
@@ -101,7 +100,9 @@ module.exports = {
                 options: {
                     compilerOptions: {
                         compatConfig: {
-                            MODE: 2
+                            MODE: 2,
+                            ATTR_FALSE_VALUE: false,
+                            OPTIONS_DESTROYED: false,
                         }
                     }
                 }

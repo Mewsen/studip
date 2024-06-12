@@ -1,5 +1,4 @@
-import gettext from '@/assets/javascripts/lib/gettext';
-const { $gettext } = gettext;
+import { $gettext } from '@/assets/javascripts/lib/gettext';
 
 import { fromHex, rgbToCIELab, cie94 } from 'colorpare';
 

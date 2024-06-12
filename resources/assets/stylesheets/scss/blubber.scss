@@ -484,10 +484,13 @@ ol.tagcloud {
 }
 
 //Animationen des Widgets:
-.blubberthreadwidget-list-move, .blubberthreadwidget-list-enter-active, .blubberthreadwidget-list-leave-active {
+.blubberthreadwidget-list-move,
+.blubberthreadwidget-list-enter-active,
+.blubberthreadwidget-list-leave-active {
     transition: transform 0.5s;
 }
-.blubberthreadwidget-list-enter, .blubberthreadwidget-list-leave-to {
+.blubberthreadwidget-list-enter-from,
+.blubberthreadwidget-list-leave-to {
     transform: translateY(-70px);
 }
 

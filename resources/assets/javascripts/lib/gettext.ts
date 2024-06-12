@@ -130,3 +130,7 @@ async function getTranslations(locale: string): Promise<Translation> {
         return {};
     }
 }
+
+export const $gettext = gettext.$gettext;
+export const $ngettext = gettext.$ngettext;
+export const $gettextInterpolate = gettext.interpolate;

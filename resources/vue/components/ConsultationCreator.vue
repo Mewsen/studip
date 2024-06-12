@@ -352,7 +352,7 @@ export default {
             slotCount: null,
             startDate: moment().add(1, 'weeks').toDate(),
             startTime: '08:00',
-        }
+        };
     },
     computed: {
         csrf() {

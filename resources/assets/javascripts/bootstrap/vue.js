@@ -95,7 +95,7 @@ STUDIP.ready(() => {
                     destroyed() {
                         STUDIP.Vue.emit('VueAppDidDestroy', this);
                     },
-                }).$mount(node);
+                }).mount(node);
             });
         });
 

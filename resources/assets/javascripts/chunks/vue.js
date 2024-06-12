@@ -28,6 +28,8 @@ function createApp(options, ...args) {
 //    Vue.config.language = getLocale();
     const app = vueCreateApp({ store, ...options }, ...args);
 
+    app.config.compilerOptions.whitespace = 'condense';
+
     // Define our own global mixin for Vue
     app.mixin({
         methods: {
