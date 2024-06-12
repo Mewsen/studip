@@ -88,9 +88,10 @@ class Folder extends SimpleORMap implements FeedbackRange
     protected function cbLogDeleteFolder()
     {
         StudipLog::log('FOLDER_DELETE',
-            $this->id,
+            User::findCurrent()->id,
             null,
             sprintf(
+                'Kommentar: %s',
                 $this->name
             )
         );
