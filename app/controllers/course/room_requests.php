@@ -583,9 +583,11 @@ class Course_RoomRequestsController extends AuthenticatedController
             $this->request->store();
 
             //Store the properties:
-            foreach ($_SESSION[$request_id]['selected_properties'] as $name => $state) {
-                if (!empty($state)) {
-                    $this->request->setProperty($name, $state);
+            if (isset($_SESSION[$request_id]['selected_properties'])) {
+                foreach ($_SESSION[$request_id]['selected_properties'] as $name => $state) {
+                    if (!empty($state)) {
+                        $this->request->setProperty($name, $state);
+                    }
                 }
             }
 
