@@ -93,7 +93,7 @@
         <template v-slot:unit>
             <form class="default" @submit.prevent="">
                 <fieldset v-if="units.length !== 0" class="radiobutton-set">
-                    <template v-for="unit in units":key="unit.id">
+                    <template v-for="unit in units" :key="unit.id">
                         <input
                             :id="'cw-element-copy-unit-' + unit.id"
                             type="radio"

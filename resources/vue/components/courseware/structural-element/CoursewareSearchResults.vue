@@ -22,7 +22,7 @@
                 <section v-for="result in searchResults" :key="result['structural-element-id']">
                     <router-link
                         :to="'/structural_element/' + result['structural-element-id']"
-                        @click.native="closeResults"
+                        @click="closeResults"
                     >
                         <div v-show="result.img !== null" class="search-result-img hidden-tiny-down">
                             <img :src="result.img" />

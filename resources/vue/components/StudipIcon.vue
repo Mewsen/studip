@@ -8,7 +8,6 @@
         :height="size"
         :role="ariaRole"
         v-bind="$attrs"
-        v-on="$listeners"
         :alt="$attrs.alt ?? ''"
     />
     <img v-else
@@ -17,7 +16,6 @@
          :height="size"
          :role="ariaRole"
          v-bind="$attrs"
-         v-on="$listeners"
          :alt="$attrs.alt ?? ''"
     />
 </template>

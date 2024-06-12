@@ -61,7 +61,7 @@ export default {
         this.$set(this.metadata, 'title', this.file.name);
     },
 
-    beforeDestroy() {
+    beforeUnmount() {
         if (this.fileURL) {
             URL.revokeObjectURL(this.fileURL);
         }

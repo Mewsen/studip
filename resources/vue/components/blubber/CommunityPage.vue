@@ -82,7 +82,7 @@ export default {
             }
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.globalOff('studip:select-blubber-thread', this.handleSelectBlubberThread);
     },
 };

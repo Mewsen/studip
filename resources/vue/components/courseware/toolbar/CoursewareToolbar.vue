@@ -195,7 +195,7 @@ export default {
         });
         this.resetAdderStorage();
     },
-    beforeDestroy() {
+    beforeUnmount() {
         window.removeEventListener('scroll', this.updateToolbarTop);
         window.removeEventListener('resize', this.onResize);
     },

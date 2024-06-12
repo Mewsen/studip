@@ -218,7 +218,7 @@ export default {
             }
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.$refs.scrollable.removeEventListener('scroll', this.handleDebouncedScroll);
     },
     beforeUpdate() {

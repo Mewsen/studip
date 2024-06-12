@@ -215,7 +215,7 @@ export default {
 </script>
 
 <style scoped>
-.cw-tasks-wrapper >>> .cw-ribbon-nav {
+.cw-tasks-wrapper :deep(.cw-ribbon-nav) {
     min-width: 24px;
     padding: 0 1em;
     height: 24px;

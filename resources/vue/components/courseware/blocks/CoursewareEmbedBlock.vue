@@ -165,7 +165,7 @@ export default {
             this.recalculateContentHeight(data);
         });
     },
-    destroyed() {
+    unmounted() {
         window.removeEventListener('resize', this.calcContentHeight);
     },
     methods: {

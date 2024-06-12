@@ -384,7 +384,7 @@ export default {
             semesterForm.appendChild(nodeField);
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         STUDIP.eventBus.off('open-tree-node');
         STUDIP.eventBus.off('load-tree-node');
         STUDIP.eventBus.off('sort-tree-children');

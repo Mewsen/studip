@@ -10,7 +10,7 @@
         </div>
         <ul>
             <li v-for="stockImage in filteredStockImages" :key="stockImage.id">
-                <SelectableImageCard :stock-image="stockImage" @click.native="onSelectImage(stockImage)" @keyup.enter.native="onSelectImage(stockImage)" />
+                <SelectableImageCard :stock-image="stockImage" @click="onSelectImage(stockImage)" @keyup.enter="onSelectImage(stockImage)" />
             </li>
         </ul>
     </div>

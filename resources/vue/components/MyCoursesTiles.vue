@@ -9,7 +9,7 @@
                     </h1>
                 </header>
                 <section class="studip-grid">
-                    <template v-for="course in getOrderedCourses(subgroup.ids)"  key="course.id">
+                    <template v-for="course in getOrderedCourses(subgroup.ids)" :key="course.id">
                         <div class="course-group-label" v-if="isParent(course)">
                             {{ getCourseName(course, getConfig('sem_number')) }}
                         </div>

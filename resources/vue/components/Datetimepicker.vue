@@ -5,8 +5,7 @@
                ref="visibleInput"
                class="visible_input"
                @change="setUnixTimestamp"
-               v-bind="$attrs"
-               v-on="$listeners">
+               v-bind="$attrs">
     </span>
 </template>
 

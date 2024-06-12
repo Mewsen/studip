@@ -31,7 +31,7 @@ export default {
     beforeMount() {
         this.originalBlock = this.block;
     },
-    beforeDestroy() {
+    beforeUnmount() {
         if (this.exitHandler) {
             this.$emit('store');
         }

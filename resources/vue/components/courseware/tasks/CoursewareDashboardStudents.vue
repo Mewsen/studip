@@ -207,7 +207,7 @@ export default {
 </script>
 
 <style scoped>
-.cw-dashboard-students-wrapper >>> .cw-ribbon-nav {
+.cw-dashboard-students-wrapper :deep(.cw-ribbon-nav) {
     min-width: 24px;
     padding: 0 1em;
     height: 24px;

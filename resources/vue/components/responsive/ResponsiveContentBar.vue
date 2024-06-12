@@ -232,7 +232,7 @@ export default {
         });
 
     },
-    beforeDestroy() {
+    beforeUnmount() {
         if (this.realContentbar) {
             this.adjustExistingContentbar(false);
         }

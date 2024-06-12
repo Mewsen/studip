@@ -585,7 +585,7 @@ export default {
         // Check initial state after load
         this.headerMagic = document.querySelector('body').classList.contains('fixed');
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.classObserver.disconnect();
         this.dialogObserver.disconnect();
         document.getElementById('header-links').style.display = null;

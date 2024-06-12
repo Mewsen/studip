@@ -138,7 +138,7 @@ export default {
             }
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         STUDIP.eventBus.off('switch-focus-mode');
     },
     watch: {

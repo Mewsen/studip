@@ -39,7 +39,7 @@ export default {
             });
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         const buttons = document.querySelectorAll('button.skiplink:not([data-in-fullscreen="1"])');
         buttons.forEach(button => {
             button.style.display = null;

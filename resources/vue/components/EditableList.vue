@@ -30,8 +30,8 @@
                             {{ option.name + (isSelected(option.value) ? ' ✓' : '') }}
                         </option>
                     </optgroup>
-                    <option v-else :disabled="isSelected(opt.value)" @click="quicksearch" :value="JSON.stringify({value: opt.value, name: opt.name})" :key="`opt-${index}`">
-                        {{ opt.name + (isSelected(option.value) ? ' ✓' : '') }}
+                    <option v-else :disabled="isSelected(opt.value)" @click="quicksearch" :value="JSON.stringify({value: opt.value, name: opt.name})" :key="`opt-${idx}`">
+                        {{ opt.name + (isSelected(opt.value) ? ' ✓' : '') }}
                     </option>
                 </template>
             </select>

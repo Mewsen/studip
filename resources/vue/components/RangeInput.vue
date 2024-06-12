@@ -9,7 +9,6 @@
                :aria-valuemax="max"
                :aria-valuenow="myValue"
                v-bind="$attrs"
-               v-on="$listeners"
                v-model="myValue">
         <output for="fader"><translate :translate-params="{myValue: myValue || '1', max: max}">%{myValue} von %{max}</translate></output>
     </div>

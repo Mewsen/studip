@@ -3,7 +3,7 @@
         <focus-trap v-model="trap">
             <div class="studip-dialog" @keydown.esc="closeDialog">
                 <transition name="dialog-fade">
-                    <div class="studip-dialog-backdrop">
+                    <div class="studip-dialog-backdrop" v-if="true">
                         <vue-resizeable
                             class="resizable"
                             style="position: absolute"

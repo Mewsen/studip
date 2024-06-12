@@ -5,7 +5,6 @@
                ref="visibleInput"
                class="visible_input"
                v-bind="$attrs"
-               v-on="$listeners"
                :placeholder="placeholder">
     </span>
 </template>
