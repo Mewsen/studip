@@ -1,6 +1,5 @@
 import Vue, { createApp as vueCreateApp } from 'vue';
 import { createStore as vuexCreateStore } from 'vuex';
-import Router from "vue-router";
 import eventBus from '../lib/event-bus.ts';
 import gettext from '../lib/gettext';
 import PortalVue from 'portal-vue';
@@ -38,10 +37,8 @@ eventBus.on('studip:set-locale', (locale) => {
     Vue.config.language = locale;
 })
 
-// Setup store and default Stud.IP store
+// Setup store
 const store = createStore();
-// Setup router
-Vue.use(Router);
 
 // Vue.use(CKEditor);
 
@@ -68,9 +65,9 @@ function createApp(options, ...args) {
         },
     });
 
-    app.use(store);
     app.use(gettext);
     app.use(PortalVue);
+    app.use(store);
 
     // Register global components and directives
     registerGlobalComponents(app);

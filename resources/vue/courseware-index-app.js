@@ -5,22 +5,11 @@ import CoursewareStructuralElement from './components/courseware/structural-elem
 import CoursewareTasksModule from './store/courseware/courseware-tasks.module';
 import IndexApp from './components/courseware/IndexApp.vue';
 import PluginManager from './components/courseware/plugin-manager.js';
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Vuex from 'vuex';
 import axios from 'axios';
-import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import { StockImagesPlugin } from './plugins/stock-images.js';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
-const mountApp = async (STUDIP, createApp, element) => {
-    const getHttpClient = () =>
-        axios.create({
-            baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
-            headers: {
-                'Content-Type': 'application/vnd.api+json',
-            },
-        });
-
+const mountApp = async (STUDIP, c, element) => {
     // get id of parent structural element
     let elem_id = null;
     let entry_id = null;
@@ -58,6 +47,19 @@ const mountApp = async (STUDIP, createApp, element) => {
             }
         }
     }
+
+    const { createApp, store, httpClient } = await STUDIP.Vue.load();
+
+
+    let base = new URL(
+        STUDIP.URLHelper.parameters.cid
+            ? STUDIP.URLHelper.getURL('dispatch.php/course/courseware/courseware/' + unit_id, { cid: STUDIP.URLHelper.parameters.cid }, true)
+            : STUDIP.URLHelper.getURL('dispatch.php/contents/courseware/courseware/' + unit_id)
+    );
+    if (entry_type === 'courses') {
+        base.search += '&';
+    }
+
     const routes = [
         {
             path: '/',
@@ -70,77 +72,23 @@ const mountApp = async (STUDIP, createApp, element) => {
         },
     ];
 
-    let base = new URL(
-        STUDIP.URLHelper.parameters.cid
-            ? STUDIP.URLHelper.getURL('dispatch.php/course/courseware/courseware/' + unit_id, { cid: STUDIP.URLHelper.parameters.cid }, true)
-            : STUDIP.URLHelper.getURL('dispatch.php/contents/courseware/courseware/' + unit_id)
-    );
-    if (entry_type === 'courses') {
-        base.search += '&';
-    }
-    const router = new VueRouter({
-        base: `${base.pathname}${base.search}`,
-        routes,
+
+    const router = createRouter({
+        history: createWebHashHistory(base.toString()),
+        routes
     });
 
-    const httpClient = getHttpClient();
+    store.registerModule('courseware', CoursewareModule);
+    store.registerModule('courseware-structure', CoursewareStructureModule);
+    store.registerModule('file-chooser', FileChooserStore);
+    store.registerModule('tasks', CoursewareTasksModule);
 
-    const store = new Vuex.Store({
-        modules: {
-            courseware: CoursewareModule,
-            'courseware-structure': CoursewareStructureModule,
-            'file-chooser': FileChooserStore,
-            'tasks': CoursewareTasksModule,
-            ...mapResourceModules({
-                names: [
-                    'courses',
-                    'course-memberships',
-                    'courseware-blocks',
-                    'courseware-block-comments',
-                    'courseware-block-feedback',
-                    'courseware-clipboards',
-                    'courseware-containers',
-                    'courseware-instances',
-                    'courseware-public-links',
-                    'courseware-structural-elements',
-                    'courseware-structural-element-comments',
-                    'courseware-structural-element-feedback',
-                    'courseware-task-feedback',
-                    'courseware-task-groups',
-                    'courseware-tasks',
-                    'courseware-templates',
-                    'courseware-user-data-fields',
-                    'courseware-user-progresses',
-                    'courseware-units',
-                    'feedback-elements',
-                    'feedback-entries',
-                    'files',
-                    'file-refs',
-                    'folders',
-                    'lti-tools',
-                    'status-groups',
-                    'users',
-                    'institutes',
-                    'institute-memberships',
-                    'semesters',
-                    'sem-classes',
-                    'sem-types',
-                    'terms-of-use',
-                    'user-data-field',
-                    'studip-properties'
-                ],
-                httpClient,
-            }),
-        },
-    });
-
-    axios.get(
-        STUDIP.URLHelper.getURL('jsonapi.php/v1/studip/properties', {}, true)
-    ).then(response => {
-        response.data.data.forEach(prop => {
-            store.dispatch('studip-properties/storeRecord', prop);
+    httpClient.get('studip/properties')
+        .then(response => {
+            response.data.data.forEach(prop => {
+                store.dispatch('studip-properties/storeRecord', prop);
+            });
         });
-    });
 
     store.dispatch('setUrlHelper', STUDIP.URLHelper);
     store.dispatch('setUserId', STUDIP.USER_ID);
@@ -178,11 +126,10 @@ const mountApp = async (STUDIP, createApp, element) => {
 
     const app = createApp({
         render: (h) => h(IndexApp),
-        router,
     });
 
-    Vue.use(StockImagesPlugin, { store });
-    app.use(store);
+    app.use(router);
+    app.use(StockImagesPlugin, { store });
     app.mount(element);
 
     return app;
