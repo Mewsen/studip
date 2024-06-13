@@ -1,5 +1,5 @@
 import Vue, { createApp as vueCreateApp } from 'vue';
-import Vuex from 'vuex';
+import { createStore as vuexCreateStore } from 'vuex';
 import Router from "vue-router";
 import eventBus from '../lib/event-bus.ts';
 import gettext from '../lib/gettext';
@@ -8,6 +8,30 @@ import BaseComponents from '../../../vue/base-components.js';
 import BaseDirectives from "../../../vue/base-directives.js";
 import StudipStore from "../../../vue/store/StudipStore.js";
 // import CKEditor from '@ckeditor/ckeditor5-vue2';
+import { resourceModule } from '@/assets/javascripts/lib/reststate-vuex.js';
+import axios from 'axios';
+
+const getHttpClient = () =>
+    axios.create({
+        baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
+        headers: {
+            'Content-Type': 'application/vnd.api+json',
+        },
+    });
+
+const httpClient = getHttpClient();
+
+const createStore = () => {
+    const store = vuexCreateStore({});
+
+    store.registerModule('studip', StudipStore);
+
+    STUDIP.jsonapi_schemas.forEach((name) => {
+        store.registerModule(name, resourceModule({ name, httpClient }));
+    });
+
+    return store;
+}
 
 // Setup gettext
 eventBus.on('studip:set-locale', (locale) => {
@@ -15,9 +39,7 @@ eventBus.on('studip:set-locale', (locale) => {
 })
 
 // Setup store and default Stud.IP store
-const store = new Vuex.Store({});
-store.registerModule('studip', StudipStore);
-
+const store = createStore();
 // Setup router
 Vue.use(Router);
 
@@ -73,4 +95,4 @@ function registerGlobalDirectives(app) {
     }
 }
 
-export { createApp, eventBus, store };
+export { createApp, eventBus, store, httpClient };

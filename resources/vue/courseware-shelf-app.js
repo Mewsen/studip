@@ -1,9 +1,6 @@
 import CoursewareShelfModule from './store/courseware/courseware-shelf.module';
 import ShelfApp from './components/courseware/ShelfApp.vue';
-import Vue from 'vue';
-import Vuex from 'vuex';
-import axios from 'axios';
-import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
+import { resourceModule } from '@/assets/javascripts/lib/reststate-vuex.js';
 import { StockImagesPlugin } from './plugins/stock-images.js';
 
 const mountApp = async (STUDIP, c, element) => {
@@ -17,14 +14,6 @@ const mountApp = async (STUDIP, c, element) => {
 
         return false;
     }
-
-    const getHttpClient = () =>
-        axios.create({
-            baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
-            headers: {
-                'Content-Type': 'application/vnd.api+json',
-            },
-        });
 
     let elem;
     let entry_id = null;
@@ -55,41 +44,15 @@ const mountApp = async (STUDIP, c, element) => {
         }
     }
 
-    const httpClient = getHttpClient();
-
-    const { createApp, store } = await STUDIP.Vue.load();
+    const { createApp, store, httpClient } = await STUDIP.Vue.load();
     store.registerModule('courseware-shelf', CoursewareShelfModule);
-
-    Object.entries(mapResourceModules({
-        names: [
-            'courses',
-            'course-memberships',
-            'courseware-blocks',
-            'courseware-containers',
-            'courseware-instances',
-            'courseware-units',
-            'courseware-user-data-fields',
-            'courseware-user-progresses',
-            'courseware-structural-elements',
-            'courseware-structural-elements-shared',
-            'feedback-elements',
-            'feedback-entries',
-            'files',
-            'file-refs',
-            'folders',
-            'users',
-            'institutes',
-            'institute-memberships',
-            'semesters',
-            'sem-classes',
-            'sem-types',
-            'stock-images',
-            'terms-of-use'
-        ],
-        httpClient,
-    })).forEach(([name, module]) => {
-        store.registerModule(name, module);
-    });
+    store.registerModule(
+        'courseware-structural-elements-shared',
+        resourceModule({
+            name: 'courseware-structural-elements-shared',
+            httpClient
+        })
+    );
 
     store.dispatch('setUrlHelper', STUDIP.URLHelper);
     store.dispatch('setHttpClient', httpClient);
