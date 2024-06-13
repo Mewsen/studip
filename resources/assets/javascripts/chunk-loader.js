@@ -9,48 +9,53 @@ STUDIP.loadScript = function (script_name) {
     });
 };
 
-STUDIP.loadChunk = (function () {
-    var mathjax_promise = null;
+let mathjax_promise = null;
 
-    return function (chunk) {
-        var promise = null;
-        switch (chunk) {
+/** This function dynamically loads JS features organized in chunks.
+ *
+ * @param {string} chunk  The name of the chunk to load.
+ * @param {{ silent: boolean }} options Options for loading the chunk.
+ *                                      Pass `{ silent: true }` to supress
+ *                                      error messages.
+ * @return {Promise}
+ */
+export const loadChunk = function (chunk, { silent = false } = {}) {
+    let promise = null;
+    switch (chunk) {
+        case 'code-highlight':
+            promise = import(
+                /* webpackChunkName: "code-highlight" */
+                './chunks/code-highlight'
+            ).then(({ default: hljs }) => {
+                return hljs;
+            });
+            break;
 
-            case 'code-highlight':
-                promise = import(
-                    /* webpackChunkName: "code-highlight" */
-                    './chunks/code-highlight'
-                ).then(({default: hljs}) => {
-                    return hljs;
-                });
-                break;
+        case 'chartist':
+            promise = import(
+                /* webpackChunkName: "chartist" */
+                './chunks/chartist'
+            ).then(({ default: Chartist }) => Chartist);
+            break;
 
-            case 'chartist':
-                promise = import(
-                    /* webpackChunkName: "chartist" */
-                    './chunks/chartist'
-                ).then(({ default: Chartist }) => Chartist);
-                break;
+        case 'fullcalendar':
+            promise = import(
+                /* webpackChunkName: "fullcalendar" */
+                './chunks/fullcalendar'
+            );
+            break;
 
-            case 'fullcalendar':
-                promise = import(
-                    /* webpackChunkName: "fullcalendar" */
-                    './chunks/fullcalendar'
-                );
-                break;
+        case 'tablesorter':
+            promise = import(
+                /* webpackChunkName: "tablesorter" */
+                './chunks/tablesorter'
+            );
+            break;
 
-            case 'tablesorter':
-                promise = import(
-                    /* webpackChunkName: "tablesorter" */
-                    './chunks/tablesorter'
-                );
-                break;
-
-            case 'mathjax':
-                if (mathjax_promise === null) {
-                    mathjax_promise = STUDIP.loadScript(
-                        'javascripts/mathjax/MathJax.js?config=TeX-AMS_HTML,default'
-                    ).then(() => {
+        case 'mathjax':
+            if (mathjax_promise === null) {
+                mathjax_promise = STUDIP.loadScript('javascripts/mathjax/MathJax.js?config=TeX-AMS_HTML,default')
+                    .then(() => {
                         (function (origPrint) {
                             window.print = function () {
                                 MathJax.Hub.Queue(
@@ -65,24 +70,28 @@ STUDIP.loadChunk = (function () {
                         return MathJax;
                     }).catch(() => {
                         mathjax_loaded = false;
+
+                        throw new Error('Could not load mathjax');
                     });
-                }
-                promise = mathjax_promise;
-                break;
+            }
+            promise = mathjax_promise;
+            break;
 
-            case 'vue':
-                promise = import(
-                    /* webpackChunkName: "vue.js" */
-                    './chunks/vue'
-                );
-                break;
+        case 'vue':
+            promise = import(
+                /* webpackChunkName: "vue.js" */
+                './chunks/vue'
+            );
+            break;
 
-            default:
-                promise = Promise.reject('Unknown chunk');
-        }
+        default:
+            promise = Promise.reject('Unknown chunk');
+    }
 
-        return promise.catch((error) => {
+    return promise.catch((error) => {
+        if (!silent) {
             console.error(`Could not load chunk ${chunk}`, error);
-        });
-    };
-}());
+        }
+        throw error;
+    });
+};
