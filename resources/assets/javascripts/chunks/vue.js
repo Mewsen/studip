@@ -6,9 +6,10 @@ import PortalVue from 'portal-vue';
 import BaseComponents from '../../../vue/base-components.js';
 import BaseDirectives from "../../../vue/base-directives.js";
 import StudipStore from "../../../vue/store/StudipStore.js";
-// import CKEditor from '@ckeditor/ckeditor5-vue2';
 import { resourceModule } from '@/assets/javascripts/lib/reststate-vuex.js';
 import axios from 'axios';
+
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 const getHttpClient = () =>
     axios.create({
@@ -40,8 +41,6 @@ eventBus.on('studip:set-locale', (locale) => {
 // Setup store
 const store = createStore();
 
-// Vue.use(CKEditor);
-
 // Define createApp function
 function createApp(options, ...args) {
 //    Vue.config.language = getLocale();
@@ -65,6 +64,7 @@ function createApp(options, ...args) {
         },
     });
 
+    app.use(CKEditor);
     app.use(gettext);
     app.use(PortalVue);
     app.use(store);
