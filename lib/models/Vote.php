@@ -98,28 +98,49 @@ class Vote extends QuestionnaireQuestion implements QuestionType
         $output = [];
 
         $options = $this['questiondata']['options'] ? $this['questiondata']['options']->getArrayCopy() : [];
+        $multiplechoice = (bool) $this['questiondata']['multiplechoice'];
 
-        foreach ($options as $key => $option) {
+        if ($multiplechoice) {
+            foreach ($options as $key => $option) {
+                $answerOption = [];
+                $countNobodys = 0;
+
+                foreach ($this->answers as $answer) {
+                    $answerData = $answer['answerdata']->getArrayCopy();
+
+                    if ($answer['user_id'] && $answer['user_id'] != 'nobody') {
+                        $userId = $answer['user_id'];
+                    } else {
+                        $countNobodys++;
+                        $userId = _('unbekannt') . ' ' . $countNobodys;
+                    }
+
+                    if (in_array($key, (array) $answerData['answers'])) {
+                        $answerOption[$userId] = 1;
+                    } else {
+                        $answerOption[$userId] = 0;
+                    }
+                }
+                $output[$option] = $answerOption;
+            }
+        } else {
+
             $answerOption = [];
             $countNobodys = 0;
 
             foreach ($this->answers as $answer) {
                 $answerData = $answer['answerdata']->getArrayCopy();
 
-                if ($answer['user_id'] && $answer['user_id'] != 'nobody') {
+                if ($answer['user_id'] && $answer['user_id'] !== 'nobody') {
                     $userId = $answer['user_id'];
                 } else {
-                    $countNobodys++;
-                    $userId = _('unbekannt').' '.$countNobodys;
+                    $userId = _('unbekannt') . ' ' . ++$countNobodys;
                 }
-
-                if (in_array($key, (array) $answerData['answers'])) {
-                    $answerOption[$userId] = 1;
-                } else {
-                    $answerOption[$userId] = 0;
-                }
+                $answerOption[$userId] = $options[$answerData['answers']];
             }
-            $output[$option] = $answerOption;
+
+            $question = strip_tags($this['questiondata']['description']);
+            $output[$question] = $answerOption;
         }
         return $output;
     }
