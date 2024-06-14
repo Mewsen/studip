@@ -21,7 +21,7 @@ return new class extends Migration
                   JOIN consultation_slots AS s1
                     ON s1.slot_id = (
                       SELECT slot_id
-                      FROM consultation_slots AS s2
+                      FROM (SELECT slot_id, block_id, start_time FROM consultation_slots) AS s2
                       WHERE s2.block_id = s0.block_id
                         AND s2.start_time < s0.start_time
                         AND s2.slot_id != s0.slot_id
