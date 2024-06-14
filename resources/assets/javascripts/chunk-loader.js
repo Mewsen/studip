@@ -1,5 +1,4 @@
-/*jslint esversion: 6*/
-STUDIP.loadScript = function (script_name) {
+export const loadScript = function (script_name) {
     return new Promise(function (resolve, reject) {
         let script = document.createElement('script');
         script.src = `${STUDIP.ASSETS_URL}${script_name}`;
