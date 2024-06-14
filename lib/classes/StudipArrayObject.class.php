@@ -135,6 +135,38 @@ class StudipArrayObject implements IteratorAggregate, ArrayAccess, Serializable,
     }
 
     /**
+     * Called when serializing an ArrayObject
+     */
+    public function __serialize(): array
+    {
+        return get_object_vars($this);
+    }
+
+    /**
+     * Called when unserializing an ArrayObject
+     */
+    public function __unserialize(array $data): void
+    {
+        foreach ($data as $k => $v) {
+            switch ($k) {
+                case 'flag':
+                    $this->setFlags($v);
+                    break;
+                case 'storage':
+                    $this->exchangeArray($v);
+                    break;
+                case 'iteratorClass':
+                    $this->setIteratorClass($v);
+                    break;
+                case 'protectedProperties':
+                    break;
+                default:
+                    $this->__set($k, $v);
+            }
+        }
+    }
+
+    /**
      * Appends the value
      *
      * @param  mixed $value
