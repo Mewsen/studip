@@ -1,5 +1,11 @@
+<?php
+/**
+ * @var bool $open
+ * @var Widget[] $widgets
+ */
+?>
 <div class="helpbar-container">
-    <?= SkipLinks::addIndex(_('Tipps & Hilfe'), 'helpbar_icon', 920) ?>
+    <? SkipLinks::addIndex(_('Tipps & Hilfe'), 'helpbar_icon', 920) ?>
     <a id="helpbar_icon" href="#" class="helpbar-toggler" data-toggles=".helpbar" role="button"
        title="<?= _('Hilfelasche anzeigen/verstecken') ?>" aria-controls="helpbar-content"
        aria-expanded="<?= $open ? 'true' : 'false' ?>">
@@ -41,7 +47,7 @@
         </ul>
     </div>
 </div>
-<? if ($tour_data['active_tour_id']) : ?>
+<? if (!empty($tour_data['active_tour_id'])) : ?>
     <script>
         STUDIP.Tour.init('<?=$tour_data['active_tour_id']?>', '<?=$tour_data['active_tour_step_nr']?>')
     </script>
