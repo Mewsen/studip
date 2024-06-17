@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "PO-Revision-Date: 2024-05-23 13:55+0000\n"
 "Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
-"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
-"stud-ip-5-3-js/en/>\n"
+"Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/stud-"
+"ip-5-3-js/en/>\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -352,7 +352,7 @@ msgstr "Accreditation"
 msgid "Aktion"
 msgstr "Action"
 
-#: resources/vue/components/FilesTable.vue:387
+#: resources/vue/components/FilesTable.vue:310
 #: resources/vue/components/StudipActionMenu.vue:42
 #: resources/vue/components/courseware/CoursewareActionWidget.vue:16
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:10
@@ -432,7 +432,7 @@ msgstr "Select all groups"
 msgid "Alle hinzufügen"
 msgstr "Add all"
 
-#: resources/vue/components/FilesTable.vue:223
+#: resources/vue/components/FilesTable.vue:216
 msgid "Alle Ordner und Dateien auswählen"
 msgstr "Select all folders and files"
 
@@ -793,7 +793,8 @@ msgstr "Autoplay timer in seconds"
 msgid "Autor"
 msgstr "Author"
 
-#: resources/vue/components/FilesTable.vue:328
+#: resources/vue/components/FilesTable.vue:275
+#: resources/vue/components/FilesTable.vue:281
 msgid "Autor/-in"
 msgstr "Author"
 
@@ -1287,7 +1288,7 @@ msgstr ""
 "The following Courseware learning material will be suggested to "
 "%{ ownerName } for publication in the OER Campus:"
 
-#: resources/vue/components/FilesTable.vue:601
+#: resources/vue/components/FilesTable.vue:524
 msgid "Das Herunterladen dieser Datei ist nur eingeschränkt möglich."
 msgstr "The download of this file is restricted."
 
@@ -1319,11 +1320,11 @@ msgstr "Password and re-typed password don't match!"
 msgid "Datei"
 msgstr "File"
 
-#: resources/vue/components/FilesTable.vue:566
+#: resources/vue/components/FilesTable.vue:489
 msgid "Datei %{filename} anzeigen"
 msgstr "Show file %{filename}"
 
-#: resources/vue/components/FilesTable.vue:544
+#: resources/vue/components/FilesTable.vue:467
 msgid "Datei %{filename} herunterladen"
 msgstr "Download file %{filename}"
 
@@ -1424,7 +1425,8 @@ msgstr "Remove data record"
 msgid "Datensatz hinzufügen"
 msgstr "Add data record"
 
-#: resources/vue/components/FilesTable.vue:350
+#: resources/vue/components/FilesTable.vue:287
+#: resources/vue/components/FilesTable.vue:293
 #: resources/vue/components/courseware/CoursewareBiographyAchievementsBlock.vue:13
 #: resources/vue/components/courseware/CoursewareBiographyAchievementsBlock.vue:48
 #: resources/vue/components/courseware/CoursewareBiographyAchievementsBlock.vue:10
@@ -1503,7 +1505,7 @@ msgstr "Switch detailed view"
 msgid "Detaillierte Veranstaltungsliste"
 msgstr "Detailed list of courses"
 
-#: resources/vue/components/FilesTable.vue:578
+#: resources/vue/components/FilesTable.vue:501
 msgid "Details zur Datei %{filename} anzeigen"
 msgstr "Display details for the file %{filename}"
 
@@ -1664,7 +1666,7 @@ msgstr "Participation is binding. Please contact the lecturers."
 msgid "Dienstag"
 msgstr "Tuesday"
 
-#: resources/vue/components/FilesTable.vue:591
+#: resources/vue/components/FilesTable.vue:514
 msgid "Diese Datei ist barrierefrei."
 msgstr "The file is accessible."
 
@@ -1758,7 +1760,7 @@ msgid ""
 "werden."
 msgstr "This folder is a homework folder. Only files can be put into it."
 
-#: resources/vue/components/FilesTable.vue:393
+#: resources/vue/components/FilesTable.vue:316
 #: resources/vue/components/courseware/CoursewareFolderBlock.vue:109
 msgid "Dieser Ordner ist leer"
 msgstr "This folder is empty"
@@ -1809,7 +1811,8 @@ msgstr "Thursday"
 msgid "Download-Icon anzeigen"
 msgstr "Show download icon"
 
-#: resources/vue/components/FilesTable.vue:305
+#: resources/vue/components/FilesTable.vue:262
+#: resources/vue/components/FilesTable.vue:268
 msgid "Downloads"
 msgstr "Downloads"
 
@@ -2152,61 +2155,15 @@ msgstr "No selection is available."
 msgid "Es werden auch alle Beiträge in diesem Bereich gelöscht!"
 msgstr "All postings in this area will be deleted as well!"
 
-#: resources/vue/components/FilesTable.vue:382
-msgid "Es wird absteigend nach der Spalte %{colName} sortiert."
+#: resources/vue/components/FilesTable.vue:169
+#, fuzzy
+msgid "Es wird absteigend nach der Spalte %{ label } sortiert."
 msgstr "The sorting will be done descending by the column %{colName}."
 
-#: resources/vue/components/FilesTable.vue:336
-msgid "Es wird absteigend nach der Spalte Autor-/in sortiert."
-msgstr "The sorting will be done descending by the column Author."
-
-#: resources/vue/components/FilesTable.vue:358
-msgid "Es wird absteigend nach der Spalte Datum sortiert."
-msgstr "The sorting will be done descending by the column Date."
-
-#: resources/vue/components/FilesTable.vue:313
-msgid "Es wird absteigend nach der Spalte Downloads sortiert."
-msgstr "The sorting will be done descending by the column Downloads."
-
-#: resources/vue/components/FilesTable.vue:289
-msgid "Es wird absteigend nach der Spalte Größe sortiert."
-msgstr "The sorting will be done descending by the column Size."
-
-#: resources/vue/components/FilesTable.vue:267
-msgid "Es wird absteigend nach der Spalte Name sortiert."
-msgstr "The sorting will be done descending by the column Name."
-
-#: resources/vue/components/FilesTable.vue:245
-msgid "Es wird absteigend nach der Spalte Typ sortiert."
-msgstr "The sorting will be done descending by the column Type."
-
-#: resources/vue/components/FilesTable.vue:381
-msgid "Es wird aufsteigend nach der Spalte %{colName} sortiert."
+#: resources/vue/components/FilesTable.vue:168
+#, fuzzy
+msgid "Es wird aufsteigend nach der Spalte %{ label } sortiert."
 msgstr "The sorting will be done ascending by the column %{colName}."
-
-#: resources/vue/components/FilesTable.vue:335
-msgid "Es wird aufsteigend nach der Spalte Autor-/in sortiert."
-msgstr "The sorting will be done ascending by the column Author."
-
-#: resources/vue/components/FilesTable.vue:357
-msgid "Es wird aufsteigend nach der Spalte Datum sortiert."
-msgstr "The sorting will be done ascending by the column Date."
-
-#: resources/vue/components/FilesTable.vue:312
-msgid "Es wird aufsteigend nach der Spalte Downloads sortiert."
-msgstr "The sorting will be done ascending by the column Downloads."
-
-#: resources/vue/components/FilesTable.vue:288
-msgid "Es wird aufsteigend nach der Spalte Größe sortiert."
-msgstr "The sorting will be done ascending by the column Size."
-
-#: resources/vue/components/FilesTable.vue:266
-msgid "Es wird aufsteigend nach der Spalte Name sortiert."
-msgstr "The sorting will be done ascending by the column Name."
-
-#: resources/vue/components/FilesTable.vue:244
-msgid "Es wird aufsteigend nach der Spalte Typ sortiert."
-msgstr "The sorting will be done ascending by the column Type."
 
 #: resources/vue/components/courseware/CoursewareBlockFeedback.vue:39
 #: resources/vue/components/courseware/CoursewareStructuralElementFeedback.vue:37
@@ -2640,7 +2597,8 @@ msgstr "Grey"
 msgid "groß"
 msgstr "large"
 
-#: resources/vue/components/FilesTable.vue:281
+#: resources/vue/components/FilesTable.vue:248
+#: resources/vue/components/FilesTable.vue:254
 msgid "Größe"
 msgstr "Size"
 
@@ -3378,7 +3336,7 @@ msgstr "no next page"
 msgid "Keine nächste Seite"
 msgstr "No next page"
 
-#: resources/vue/components/FilesTable.vue:121
+#: resources/vue/components/FilesTable.vue:93
 msgid "Keine Ordner oder Dateien entsprechen Ihrem Filter."
 msgstr "No folders or files match your filter."
 
@@ -4008,31 +3966,31 @@ msgstr "Monday"
 msgid "Multimedia"
 msgstr "Multimedia"
 
-#: resources/vue/components/FilesTable.vue:373
+#: resources/vue/components/FilesTable.vue:306
 msgid "Nach %{ colName } sortieren"
 msgstr "Sort by %{ colName }"
 
-#: resources/vue/components/FilesTable.vue:327
+#: resources/vue/components/FilesTable.vue:280
 msgid "Nach Autor/-in sortieren"
 msgstr "Sort by Author"
 
-#: resources/vue/components/FilesTable.vue:349
+#: resources/vue/components/FilesTable.vue:292
 msgid "Nach Datum sortieren"
 msgstr "Sort by Date"
 
-#: resources/vue/components/FilesTable.vue:304
+#: resources/vue/components/FilesTable.vue:267
 msgid "Nach Downloads sortieren"
 msgstr "Sort by Download"
 
-#: resources/vue/components/FilesTable.vue:280
+#: resources/vue/components/FilesTable.vue:253
 msgid "Nach Größe sortieren"
 msgstr "Sort by Size"
 
-#: resources/vue/components/FilesTable.vue:258
+#: resources/vue/components/FilesTable.vue:241
 msgid "Nach Name sortieren"
 msgstr "Sort by Name"
 
-#: resources/vue/components/FilesTable.vue:236
+#: resources/vue/components/FilesTable.vue:229
 msgid "Nach Typ sortieren"
 msgstr "Sort by Type"
 
@@ -4053,7 +4011,8 @@ msgstr "Close message box"
 msgid "Nächstes Bild"
 msgstr "Next picture"
 
-#: resources/vue/components/FilesTable.vue:259
+#: resources/vue/components/FilesTable.vue:236
+#: resources/vue/components/FilesTable.vue:242
 #: resources/vue/components/MyCoursesTables.vue:107
 #: resources/vue/components/courseware/CoursewareAdminTemplates.vue:9
 #: resources/vue/components/courseware/CoursewareBiographyPersonalInformationBlock.vue:26
@@ -4089,7 +4048,7 @@ msgstr "Name of employer"
 msgid "Name des Übergabeparameters"
 msgstr "Name of the transfer parameter"
 
-#: resources/vue/components/FilesTable.vue:710
+#: resources/vue/components/FilesTable.vue:633
 msgid "Name oder Autor/in"
 msgstr "Name or author"
 
@@ -4357,8 +4316,8 @@ msgstr "Orange"
 msgid "Ordner"
 msgstr "Folder"
 
-#: resources/vue/components/FilesTable.vue:433
-#: resources/vue/components/FilesTable.vue:449
+#: resources/vue/components/FilesTable.vue:356
+#: resources/vue/components/FilesTable.vue:372
 msgid "Ordner %{foldername} öffnen"
 msgstr "Open folder %{foldername}"
 
@@ -4366,7 +4325,7 @@ msgstr "Open folder %{foldername}"
 msgid "Ordner %{name} auswählen"
 msgstr "Select folder %{name}"
 
-#: resources/vue/components/FilesTable.vue:217
+#: resources/vue/components/FilesTable.vue:210
 msgid "Ordner und Dateien auswählen"
 msgstr "Select folder and files"
 
@@ -5265,7 +5224,8 @@ msgstr "almost always true"
 msgid "Türkis"
 msgstr "Turquoise"
 
-#: resources/vue/components/FilesTable.vue:237
+#: resources/vue/components/FilesTable.vue:224
+#: resources/vue/components/FilesTable.vue:230
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:13
 #: resources/vue/components/courseware/CoursewareChartBlock.vue:7
 msgid "Typ"
@@ -5964,7 +5924,7 @@ msgstr "Last modified by"
 msgid "zum Beispiel \"Wiki-Startseite\""
 msgstr "for example \"Wiki start page\""
 
-#: resources/vue/components/FilesTable.vue:153
+#: resources/vue/components/FilesTable.vue:146
 msgid "Zum Hauptordner"
 msgstr "Go to main folder"
 
@@ -6028,6 +5988,42 @@ msgstr "Additional information"
 #: resources/vue/components/courseware/CoursewareToolsBlockadder.vue:192
 msgid "zweites Element"
 msgstr "second element"
+
+#~ msgid "Es wird absteigend nach der Spalte Autor-/in sortiert."
+#~ msgstr "The sorting will be done descending by the column Author."
+
+#~ msgid "Es wird absteigend nach der Spalte Datum sortiert."
+#~ msgstr "The sorting will be done descending by the column Date."
+
+#~ msgid "Es wird absteigend nach der Spalte Downloads sortiert."
+#~ msgstr "The sorting will be done descending by the column Downloads."
+
+#~ msgid "Es wird absteigend nach der Spalte Größe sortiert."
+#~ msgstr "The sorting will be done descending by the column Size."
+
+#~ msgid "Es wird absteigend nach der Spalte Name sortiert."
+#~ msgstr "The sorting will be done descending by the column Name."
+
+#~ msgid "Es wird absteigend nach der Spalte Typ sortiert."
+#~ msgstr "The sorting will be done descending by the column Type."
+
+#~ msgid "Es wird aufsteigend nach der Spalte Autor-/in sortiert."
+#~ msgstr "The sorting will be done ascending by the column Author."
+
+#~ msgid "Es wird aufsteigend nach der Spalte Datum sortiert."
+#~ msgstr "The sorting will be done ascending by the column Date."
+
+#~ msgid "Es wird aufsteigend nach der Spalte Downloads sortiert."
+#~ msgstr "The sorting will be done ascending by the column Downloads."
+
+#~ msgid "Es wird aufsteigend nach der Spalte Größe sortiert."
+#~ msgstr "The sorting will be done ascending by the column Size."
+
+#~ msgid "Es wird aufsteigend nach der Spalte Name sortiert."
+#~ msgstr "The sorting will be done ascending by the column Name."
+
+#~ msgid "Es wird aufsteigend nach der Spalte Typ sortiert."
+#~ msgstr "The sorting will be done ascending by the column Type."
 
 #~ msgid "Aussage hinzufügen"
 #~ msgstr "Add statement"
