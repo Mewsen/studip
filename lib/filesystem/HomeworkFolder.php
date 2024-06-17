@@ -82,10 +82,6 @@ class HomeworkFolder extends PermissionEnabledFolder
         $template = $GLOBALS['template_factory']->open('filesystem/homework_folder/description.php');
         $template->folder     = $this;
         $template->folderdata = $this->folderdata;
-        if (!Seminar_Perm::get()->have_studip_perm('tutor', $this->range_id)) {
-            $files = new SimpleCollection($this->getFiles());
-            $template->own_files = $files->findBy('user_id', $GLOBALS['user']->id)->orderBy('name');
-        }
 
         return $template;
     }
@@ -98,6 +94,28 @@ class HomeworkFolder extends PermissionEnabledFolder
     public function getEditTemplate()
     {
         return '';
+    }
+
+    /**
+     * @param string $user_id
+     * @return bool
+     */
+    public function isReadable($user_id = null)
+    {
+        return StandardFolder::isReadable($user_id);
+    }
+
+    /**
+     * Determines if a user may see the file.
+     * @param FileRef|string $fileref_or_id
+     * @param string $user_id
+     * @return bool
+     */
+    public function isFileVisible($fileref_or_id, $user_id)
+    {
+        $fileref = FileRef::toObject($fileref_or_id);
+
+        return $fileref->user_id === $user_id || parent::isReadable($user_id);
     }
 
     /**
