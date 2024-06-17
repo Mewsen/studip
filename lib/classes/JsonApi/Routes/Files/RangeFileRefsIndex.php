@@ -13,7 +13,7 @@ class RangeFileRefsIndex extends AbstractRangeIndex
 
         $filerefs = [];
         foreach ($filesAndFolders['files'] as $file_object) {
-            if (method_exists($file_object, "getFileRef")) {
+            if (method_exists($file_object, 'getFileRef')) {
                 $filerefs[] = $file_object->getFileRef();
             }
         }
