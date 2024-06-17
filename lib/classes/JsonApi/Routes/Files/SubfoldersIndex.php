@@ -19,20 +19,31 @@ class SubfoldersIndex extends JsonApiController
      */
     public function __invoke(Request $request, Response $response, $args)
     {
-        if (!$folder = \FileManager::getTypedFolder($args['id'])) {
+        $folder = \FileManager::getTypedFolder($args['id']);
+        if (!$folder) {
             throw new RecordNotFoundException();
         }
 
-        if (!Authority::canShowFolder($this->getUser($request), $folder)) {
+        $user = $this->getUser($request);
+
+        if (!Authority::canShowFolder($user, $folder)) {
             throw new AuthorizationFailedException();
         }
 
-        $subfolders = array_map(
-            function ($subfolder) {
-                return $subfolder->getTypedFolder();
+        $subfolders = array_reduce(
+            $folder->subfolders->getArrayCopy(),
+            function ($result, $subfolder) use ($user) {
+                $folder = $subfolder->getTypedFolder();
+
+                if (Authority::canShowFolder($user, $folder)) {
+                    $result[] = $folder;
+                }
+
+                return $result;
             },
-            $folder->subfolders->getArrayCopy()
+            []
         );
+
         list($offset, $limit) = $this->getOffsetAndLimit();
 
         return $this->getPaginatedContentResponse(
