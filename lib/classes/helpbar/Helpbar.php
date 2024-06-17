@@ -264,7 +264,7 @@ class Helpbar extends WidgetContainer
             $template = $GLOBALS['template_factory']->open('helpbar/helpbar');
             $template->widgets   = $this->widgets;
             $template->open      = $this->open;
-            $template->tour_data = $tour_data;
+            $template->tour_data = $tour_data ?? null;
             $content = $template->render();
         }
 
