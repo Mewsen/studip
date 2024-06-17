@@ -29,7 +29,7 @@ class File extends SchemaProvider
             'chdate' => date('c', $resource['chdate']),
         ];
 
-        if ($resource['metadata']['url']) {
+        if (!empty($resource['metadata']['url'])) {
             if (FilesAuthority::canUpdateFile($this->currentUser, $resource)) {
                 $attributes['url'] = $resource['metadata']['url'];
             }
