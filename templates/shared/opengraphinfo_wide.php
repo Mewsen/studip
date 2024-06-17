@@ -18,12 +18,12 @@ if (Config::get()->LOAD_EXTERNAL_MEDIA === "proxy" && Seminar_Session::is_curren
 ?>
 <div class="opengraph <? if (count($videofiles) > 0) echo 'video'; ?> <? if (count($audiofiles) > 0) echo 'audio'; ?>">
 <? if ($og['image'] && count($videofiles) === 0): ?>
-    <a href="<?= URLHelper::getLink($og['url'], [], false) ?>" class="image"
+    <a href="<?= URLHelper::getLink($og['url'], [], true) ?>" class="image"
        target="_blank" rel="noopener noreferrer"
        style="background-image:url(<?= htmlReady($media_url_func($og['image'])) ?>)">
     </a>
 <? endif; ?>
-    <a href="<?= URLHelper::getLink($og['url'], [], false) ?>" class="info"
+    <a href="<?= URLHelper::getLink($og['url'], [], true) ?>" class="info"
        target="_blank" rel="noopener noreferrer">
         <strong><?= htmlReady($og['title']) ?></strong>
     <? if (!count($videofiles)) : ?>
