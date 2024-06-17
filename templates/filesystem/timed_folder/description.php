@@ -37,17 +37,6 @@
 <? endif ?>
 </div>
 
-<? if (!empty($own_files) && count($own_files) > 0) : ?>
-    <div>
-        <?= _('Sie selbst haben folgende Dateien in diesen Ordner eingestellt:') ?>
-        <ul>
-            <? foreach ($own_files as $own_file) : ?>
-                <li><?= htmlReady($own_file->name) ?> - <?= strftime('%x %X', $own_file->chdate) ?></li>
-            <? endforeach ?>
-        </ul>
-    </div>
-<? endif ?>
-
 <? if ($folderdata['description']) : ?>
 <hr>
     <div>

@@ -81,7 +81,7 @@ class TimedFolder extends PermissionEnabledFolder
                 ($this->end_time == 0 || $this->end_time >= $now)
                 ||
                 $GLOBALS['perm']->have_studip_perm($this->must_have_perm, $this->range_id, $user_id)) &&
-            parent::isReadable($user_id);
+            StandardFolder::isReadable($user_id);
     }
 
     public function isWritable($user_id = null)
@@ -93,6 +93,19 @@ class TimedFolder extends PermissionEnabledFolder
                 ||
                 $GLOBALS['perm']->have_studip_perm($this->must_have_perm, $this->range_id, $user_id)) &&
             parent::isWritable($user_id);
+    }
+
+    /**
+     * Determines if a user may see the file.
+     * @param FileRef|string $fileref_or_id
+     * @param string $user_id
+     * @return bool
+     */
+    public function isFileVisible($fileref_or_id, $user_id)
+    {
+        $fileref = FileRef::toObject($fileref_or_id);
+
+        return $fileref->user_id === $user_id || parent::isReadable($user_id);
     }
 
     /**
@@ -142,12 +155,6 @@ class TimedFolder extends PermissionEnabledFolder
         $template->type       = self::getTypeName();
         $template->folder     = $this;
         $template->folderdata = $this->folderdata;
-
-        if (!Seminar_Perm::get()->have_studip_perm('tutor', $this->range_id) &&
-                $this->isWritable($GLOBALS['user']->id) && !$this->isReadable($GLOBALS['user']->id)) {
-            $files = new SimpleCollection($this->getFiles());
-            $template->own_files = $files->findBy('user_id', $GLOBALS['user']->id)->orderBy('name');
-        }
 
         return $template;
     }
