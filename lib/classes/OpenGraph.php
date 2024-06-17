@@ -11,34 +11,71 @@ class OpenGraph
     /**
      * Extracts urls and their according open graph infos from a given string
      *
-     * @param String $string Text to extract urls and open graph infos from
+     * @param string $string Text to extract urls and open graph infos from
      * @return OpenGraphURLCollection containing the extracted urls
      */
-    public static function extract($string)
+    public static function extract(string $string): OpenGraphURLCollection
     {
-        $collection = new OpenGraphURLCollection;
+        $collection = new OpenGraphURLCollection();
 
-        if (Config::get()->OPENGRAPH_ENABLE) {
-            $regexp = StudipCoreFormat::getStudipMarkup('links')['start'];
-            $matched = preg_match_all('/' . $regexp . '/ums', $string, $matches, PREG_SET_ORDER);
-            foreach ($matches as $match) {
-                $url = $match[2];
+        if (!Config::get()->OPENGRAPH_ENABLE) {
+            return $collection;
+        }
 
-                if (!$url) {
-                    continue;
-                }
+        if (Studip\Markup::isHtml($string)) {
+            $urls = self::extractUrlsFromHtml($string);
+        } else {
+            $urls = self::extractUrlsFromText($string);
+        }
 
-                if (!isLinkIntern($url)) {
-                    $og_url = OpenGraphURL::fromURL($url);
-                    if ($og_url && !$collection->find($og_url->id)) {
-                        $og_url->store();
+        foreach ($urls as $url) {
+            $og_url = OpenGraphURL::fromURL($url);
+            if ($og_url && !$collection->find($og_url->id)) {
+                $og_url->store();
 
-                        $collection[] = $og_url;
-                    }
-                }
+                $collection[] = $og_url;
             }
         }
 
         return $collection;
+    }
+
+    public static function filterURLs(array $urls): array
+    {
+        return array_filter($urls, function (string $url): bool {
+            if (!$url) {
+                return false;
+            }
+
+            return !isLinkIntern($url);
+        });
+    }
+
+    public static function extractUrlsFromText(string $text): array
+    {
+        $regexp = StudipCoreFormat::getStudipMarkup('links')['start'];
+        preg_match_all('/' . $regexp . '/ums', $text, $matches, PREG_SET_ORDER);
+        $urls = array_column($matches, 2);
+
+        return self::filterURLs($urls);
+    }
+
+    public static function extractUrlsFromHtml(string $html): array
+    {
+        $document = new DOMDocument();
+        $document->loadHTML($html, LIBXML_NOWARNING | LIBXML_NOERROR);
+
+        $elements = $document->getElementsByTagName('a');
+
+        $urls = [];
+        foreach ($elements as $element) {
+            if (!$element->hasAttribute('href')) {
+                continue;
+            }
+
+            $urls[] = $element->getAttribute('href');
+        }
+
+        return self::filterURLs($urls);
     }
 }
