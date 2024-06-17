@@ -36,7 +36,11 @@ class LoginNavigation extends Navigation
                 $standard_login_active = true;
             }
             if ($auth_plugin instanceof StudipAuthSSO && isset($auth_plugin->login_description)) {
-                $navigation = new Navigation($auth_plugin->plugin_fullname . ' ' . _('Login'), '?sso=' . $auth_plugin->plugin_name);
+                $navigation = new Navigation(
+                    $auth_plugin->plugin_fullname . ' ' . _('Login'),
+                    Request::url(),
+                    ['again' => 'yes', 'sso' => $auth_plugin->plugin_name, 'cancel_login' => 1]
+                );
                 $navigation->setDescription($auth_plugin->login_description);
                 $this->addSubNavigation('login_' . $auth_plugin->plugin_name, $navigation);
             }
