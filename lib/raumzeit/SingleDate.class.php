@@ -75,7 +75,7 @@ class SingleDate
         if ($data instanceOf CourseDate || $data instanceof CourseExDate) {
             $single_date_data = $data->toArray();
             $single_date_data['ex_termin'] = $data instanceOf CourseDate ? 0 : 1;
-            $single_date_data['resource_id'] = $data->room_booking->resource_id ?: '';
+            $single_date_data['resource_id'] = $data->room_booking->resource_id ?? '';
             if ($data instanceOf CourseDate) {
                 $single_date_data['related_persons'] = $data->dozenten->pluck('user_id');
                 $single_date_data['related_groups'] = $data->statusgruppen->pluck('statusgruppe_id');
@@ -147,9 +147,9 @@ class SingleDate
                 $after = $this->toString();
                 // logging
                 if ($before) {
-                    StudipLog::log('SINGLEDATE_CHANGE_TIME', $this->range_id, $this->id, $before . ' -> ' . $after);
+                    StudipLog::log('SINGLEDATE_CHANGE_TIME', $this->range_id, $this->termin_id, $before . ' -> ' . $after);
                 } else {
-                    StudipLog::log('SEM_ADD_SINGLEDATE', $this->range_id, $this->id, $after);
+                    StudipLog::log('SEM_ADD_SINGLEDATE', $this->range_id, $this->termin_id, $after);
                 }
 
                 return true;

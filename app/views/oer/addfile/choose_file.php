@@ -12,7 +12,7 @@ if ($best_nine_tags && count($best_nine_tags) > 0) {
 <form class="oer_search"
       action="<?= $controller->link_for("oer/market/search") ?>"
       method="GET"
-      data-searchresults="<?= htmlReady(json_encode($material_data)) ?>"
+      data-searchresults="<?= htmlReady(json_encode($material_data ?? [])) ?>"
       data-filteredtag="<?= htmlReady(Request::get("tag")) ?>"
       data-filteredcategory="<?= htmlReady(Request::get("category")) ?>"
       data-tags="<?= htmlReady(json_encode($tags)) ?>"

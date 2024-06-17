@@ -426,7 +426,11 @@ class Course_TimesroomsController extends AuthenticatedController
         }
 
         // Set Room
-        $old_room_id = $termin->room_booking->resource_id;
+        if ($termin->room_booking) {
+            $old_room_id = $termin->room_booking->resource_id;
+        } else {
+            $old_room_id = null;
+        }
         $singledate = new SingleDate($termin);
         if ($singledate->setTime($date, $end_time)) {
             $singledate->store();
