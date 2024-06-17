@@ -20,7 +20,7 @@
             <?= _('Benachrichtigung über ausfallende Termine an alle Teilnehmenden verschicken') ?>
         </label>
     </fieldset>
-    <? if ($issue_id) : ?>
+    <? if (!empty($issue_id)) : ?>
         <input type="hidden" name="issue_id" value="<?= $issue_id ?>">
     <? else : ?>
         <input type="hidden" name="termin_id" value="<?= $dates[0]->getTerminId() ?>">

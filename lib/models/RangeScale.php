@@ -20,7 +20,7 @@ class RangeScale extends QuestionnaireQuestion implements QuestionType
 {
     public static function getIcon(bool $active = false) : Icon
     {
-        return Icon::create(static::getIconShape(), $active ? 'clickable' : 'info');
+        return Icon::create(static::getIconShape(), $active ? Icon::ROLE_CLICKABLE : Icon::ROLE_INFO);
     }
 
     /**
@@ -64,7 +64,11 @@ class RangeScale extends QuestionnaireQuestion implements QuestionType
         $answer = $this->getMyAnswer();
 
         $answers = Request::getArray('answers');
-        $userAnswer = (array) $answers[$this->getId()]['answerdata']['answers'];
+        if (!empty($answers[$this->getId()])) {
+            $userAnswer = (array)$answers[$this->getId()]['answerdata']['answers'];
+        } else {
+            $userAnswer = [];
+        }
         $answer->setData(['answerdata' => ['answers' => $userAnswer ] ]);
         return $answer;
     }
