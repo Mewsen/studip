@@ -119,7 +119,7 @@ class CourseDateFolder extends PermissionEnabledFolder implements FolderType
         } else {
             $this->folderdata['data_content']['permission'] = 5;
         }
-        $this->folderdata['description'] = $request['description'] ?: '';
+        $this->folderdata['description'] = $request['description'] ?? '';
         return $this;
     }
 
