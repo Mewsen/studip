@@ -1,7 +1,5 @@
 <?php
 
-require_once 'lib/classes/QuestionType.interface.php';
-
 class QuestionnaireController extends AuthenticatedController
 {
     protected $allow_nobody = true; //nobody is allowed

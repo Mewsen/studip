@@ -9,7 +9,7 @@
  * the License, or (at your option) any later version.
  */
 
-require_once 'lib/phplib/Seminar_Perm.class.php';
+require_once 'lib/phplib/Seminar_Perm.php';
 
 abstract class AvatarTest extends \Codeception\Test\Unit
 {

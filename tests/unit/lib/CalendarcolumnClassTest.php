@@ -9,7 +9,7 @@
  * the License, or (at your option) any later version.
  */
 
-require_once 'lib/calendar/CalendarColumn.class.php';
+require_once 'lib/calendar/CalendarColumn.php';
 
 class CalendarColumnCase extends \Codeception\Test\Unit {
 

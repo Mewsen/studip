@@ -9,9 +9,9 @@
  * the License, or (at your option) any later version.
  */
 
-require_once 'lib/classes/SimpleORMap.class.php';
+require_once 'lib/classes/SimpleORMap.php';
 require_once 'lib/visual.inc.php';
-require_once 'lib/classes/Config.class.php';
+require_once 'lib/classes/Config.php';
 
 class VisualFunctionsTest extends \Codeception\Test\Unit
 {

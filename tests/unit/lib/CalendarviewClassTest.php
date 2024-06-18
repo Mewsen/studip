@@ -9,7 +9,7 @@
  * the License, or (at your option) any later version.
  */
 
-require_once 'lib/calendar/CalendarView.class.php';
+require_once 'lib/calendar/CalendarView.php';
 
 class CalendarViewCase extends \Codeception\Test\Unit {
 

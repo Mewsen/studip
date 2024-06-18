@@ -10,7 +10,7 @@
  * the License, or (at your option) any later version.
  */
 
-require_once 'lib/plugins/engine/PluginRepository.class.php';
+require_once 'lib/plugins/engine/PluginRepository.php';
 
 class PluginRepositoryTest extends \Codeception\Test\Unit
 {

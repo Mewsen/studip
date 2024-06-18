@@ -18,7 +18,6 @@ $inc_path .= PATH_SEPARATOR . __DIR__ . '/../..';
 $inc_path .= PATH_SEPARATOR . __DIR__ . '/../../config';
 ini_set('include_path', $inc_path);
 
-require 'lib/classes/StudipAutoloader.php';
 require 'lib/helpers.php';
 require 'lib/functions.php';
 require_once 'lib/language.inc.php';
@@ -26,27 +25,6 @@ require 'lib/visual.inc.php';
 require 'lib/messaging.inc.php';
 
 $STUDIP_BASE_PATH = realpath(dirname(__FILE__) . '/../..');
-
-StudipAutoloader::register();
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/calendar', 'Studip\\Calendar');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/classes');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/classes', 'Studip');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/classes/cache');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/classes/cache', 'Studip');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/exceptions');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/exceptions/resources');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/flexi', 'Flexi');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/filesystem');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/migrations');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/models');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/models/resources');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/phplib');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/raumzeit');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/resources');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/plugins/core');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/modules');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/plugins/db');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/plugins/engine');
 
 // load config-variables
 $added_configs = [];

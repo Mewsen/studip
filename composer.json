@@ -7,6 +7,65 @@
             "php": "8.1"
         }
     },
+    "autoload": {
+        "psr-4": {
+            "exTpl\\": "lib/exTpl/",
+            "Flexi\\": "lib/flexi/",
+            "Studip\\Activity\\": "lib/activities/",
+            "Studip\\Cache\\": "lib/classes/cache/",
+            "Studip\\Calendar\\": "lib/classes/calendar/",
+            "Studip\\": "lib/classes/",
+            "Trails\\": "lib/trails/",
+            "": [
+                "lib/calendar/",
+                "lib/calendar/lib/",
+                "lib/classes/",
+                "lib/classes/admission/",
+                "lib/classes/admission/userfilter/",
+                "lib/classes/auth_plugins/",
+                "lib/classes/calendar/",
+                "lib/classes/coursewizardsteps/",
+                "lib/classes/exportdocument/",
+                "lib/classes/forms/",
+                "lib/classes/globalsearch/",
+                "lib/classes/helpbar/",
+                "lib/classes/librarysearch/",
+                "lib/classes/librarysearch/resultparsers/",
+                "lib/classes/librarysearch/searchmodules/",
+                "lib/classes/searchtypes/",
+                "lib/classes/sidebar/",
+                "lib/classes/visibility/",
+                "lib/classes/wiki/",
+                "lib/elearning/",
+                "lib/exTpl', 'exTpl/",
+                "lib/exceptions/",
+                "lib/exceptions/resources/",
+                "lib/extern/",
+                "lib/filesystem/",
+                "lib/ilias_interface",
+                "lib/migrations/",
+                "lib/models/",
+                "lib/models/calendar/",
+                "lib/models/resources/",
+                "lib/modules/",
+                "lib/navigation/",
+                "lib/phplib/",
+                "lib/plugins/core/",
+                "lib/plugins/db/",
+                "lib/plugins/engine/",
+                "lib/raumzeit/",
+                "lib/resources/"
+            ]
+        },
+        "classmap": [
+            "lib/phplib/email_validation.php",
+            "lib/messaging.inc.php",
+            "lib/plugins/core/StudIPPlugin.php",
+            "app/controllers/module/mvv_controller.php",
+            "vendor/phpass/PasswordHash.php",
+            "composer/phpxmlrpc/phpxmlrpc/lib/xmlrpc.inc"
+        ]
+    },
     "require-dev": {
         "woohoolabs/yang": "3.0.0",
         "codeception/codeception": "5.1.2",
@@ -14,7 +73,8 @@
         "overtrue/phplint": "9.3.0",
         "phpstan/phpstan": "1.11.0",
         "symfony/var-dumper": "6.4.7",
-        "maximebf/debugbar": "1.22.3"
+        "maximebf/debugbar": "1.22.3",
+        "codeception/specify": "^2.0"
     },
     "require": {
         "php": "^8.1",

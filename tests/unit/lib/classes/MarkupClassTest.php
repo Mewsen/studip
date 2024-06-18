@@ -21,15 +21,15 @@
 require_once 'tests/unit/fakeserver.php';
 
 # needed by visual.inc.php
-require_once 'lib/classes/DbView.class.php';
-require_once 'lib/classes/TreeAbstract.class.php';
+require_once 'lib/classes/DbView.php';
+require_once 'lib/classes/TreeAbstract.php';
 
-# needed by Markup.class.php
+# needed by Markup.php
 require_once 'lib/visual.inc.php';
-require_once 'lib/classes/Config.class.php';
+require_once 'lib/classes/Config.php';
 
 # class and functions that are tested by this script
-require_once 'lib/classes/Markup.class.php';
+require_once 'lib/classes/Markup.php';
 
 # Seminar_Session cannot be mocked since it uses static functions.
 # Also, including phplib_local.inc.php, where Seminar_Session is

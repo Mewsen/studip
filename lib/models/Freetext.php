@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lib/classes/QuestionType.interface.php';
+require_once 'lib/classes/QuestionType.php';
 
 /**
  * @license GPL2 or any later version

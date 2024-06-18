@@ -29,37 +29,31 @@ $inc_path .= PATH_SEPARATOR . __DIR__ . '/../..';
 $inc_path .= PATH_SEPARATOR . __DIR__ . '/../../config';
 ini_set('include_path', $inc_path);
 
+global $ABSOLUTE_URI_STUDIP,
+    $ASSETS_URL,
+    $CACHING_ENABLE,
+    $CACHING_FILECACHE_PATH,
+    $CANONICAL_RELATIVE_PATH_STUDIP,
+    $DYNAMIC_CONTENT_PATH,
+    $DYNAMIC_CONTENT_URL,
+    $STUDIP_BASE_PATH,
+    $SYMBOL_SHORT,
+    $TMP_PATH,
+    $UPLOAD_PATH;
+
 // load varstream for easier filesystem testing
 require_once 'varstream.php';
 
-define("TEST_FIXTURES_PATH", dirname(__DIR__) . "/_data/");
+define('TEST_FIXTURES_PATH', dirname(__DIR__) . '/_data/');
 
 require __DIR__ . '/../../composer/autoload.php';
 
 global $STUDIP_BASE_PATH;
 $STUDIP_BASE_PATH = realpath(dirname(__DIR__) . '/..');
 
-require 'lib/classes/StudipAutoloader.php';
+require 'lib/helpers.php';
 require 'lib/functions.php';
 require 'lib/visual.inc.php';
-
-StudipAutoloader::setBasePath(realpath(__DIR__ . '/../..'));
-StudipAutoloader::register();
-
-StudipAutoloader::addAutoloadPath('lib/activities', 'Studip\\Activity');
-StudipAutoloader::addAutoloadPath('lib/models');
-StudipAutoloader::addAutoloadPath('lib/classes');
-StudipAutoloader::addAutoloadPath('lib/classes', 'Studip');
-StudipAutoloader::addAutoloadPath('lib/classes/cache', 'Studip');
-StudipAutoloader::addAutoloadPath('lib/classes/sidebar');
-StudipAutoloader::addAutoloadPath('lib/classes/helpbar');
-StudipAutoloader::addAutoloadPath('lib/exTpl', 'exTpl');
-StudipAutoloader::addAutoloadPath('lib/exceptions');
-StudipAutoloader::addAutoloadPath('lib/flexi', 'Flexi');
-StudipAutoloader::addAutoloadPath('lib/plugins/engine');
-StudipAutoloader::addAutoloadPath('lib/plugins/core');
-StudipAutoloader::addAutoloadPath('lib/plugins/db');
-StudipAutoloader::addAutoloadPath('lib/trails', 'Trails');
 
 // load config-variables
 $added_configs = [];
@@ -74,16 +68,16 @@ foreach ($added_configs as $key => $value) {
     $GLOBALS[$key] = $value;
 }
 
-$config = Symfony\Component\Yaml\Yaml::parseFile(__DIR__ .'/../unit.suite.yml');
+$config = Symfony\Component\Yaml\Yaml::parseFile(__DIR__ . '/../unit.suite.yml');
 
 // connect to database if configured
 if (isset($config['modules']['config']['Db'])) {
-    DBManager::getInstance()->setConnection('studip',
+    DBManager::getInstance()->setConnection(
+        'studip',
         $config['modules']['config']['Db']['dsn'],
         $config['modules']['config']['Db']['user'],
-        $config['modules']['config']['Db']['password']);
-} else {
-    //DBManager::getInstance()->setConnection('studip', 'sqlite://'. $GLOBALS ,'', '');
+        $config['modules']['config']['Db']['password']
+    );
 }
 
 // Disable caching to fallback to memory cache
@@ -104,17 +98,17 @@ if (!class_exists('StudipTestHelper')) {
             $schemes = [];
 
             foreach ($tables as $db_table) {
-                include TEST_FIXTURES_PATH."simpleormap/$db_table.php";
+                include TEST_FIXTURES_PATH . "simpleormap/$db_table.php";
                 $db_fields = $pk = [];
                 foreach ($result as $rs) {
                     $db_fields[mb_strtolower($rs['name'])] = [
-                        'name'    => $rs['name'],
-                        'null'    => $rs['null'],
+                        'name' => $rs['name'],
+                        'null' => $rs['null'],
                         'default' => $rs['default'],
-                        'type'    => $rs['type'],
-                        'extra'   => $rs['extra']
+                        'type' => $rs['type'],
+                        'extra' => $rs['extra'],
                     ];
-                    if ($rs['key'] == 'PRI'){
+                    if ($rs['key'] == 'PRI') {
                         $pk[] = mb_strtolower($rs['name']);
                     }
                 }

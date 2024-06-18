@@ -27,6 +27,8 @@ $CACHING_ENABLE = false;
 
 date_default_timezone_set('Europe/Berlin');
 
+require_once __DIR__.'/../../composer/autoload.php';
+
 require 'config.inc.php';
 
 require 'lib/helpers.php';
@@ -35,51 +37,6 @@ require 'lib/language.inc.php';
 require 'lib/visual.inc.php';
 require 'lib/calendar_functions.inc.php';
 require 'lib/dates.inc.php';
-
-// Setup autoloading
-require 'lib/classes/StudipAutoloader.php';
-StudipAutoloader::register();
-
-// General classes folders
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/models');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/models/calendar');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/models/resources');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/classes');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/classes', 'Studip');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/flexi', 'Flexi');
-
-// Plugins
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/plugins/core');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/plugins/db');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/plugins/engine');
-
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/calendar');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/calendar', 'Studip\\Calendar');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'lib/classes/cache');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'lib/classes/cache', 'Studip');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/calendar/lib');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/exceptions');
-
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/filesystem');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/migrations');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/modules');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/navigation');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/phplib');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/raumzeit');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/resources');
-
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/activities', 'Studip\\Activity');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/classes/calendar');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/classes/globalsearch');
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/lib/classes/visibility');
-
-StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'].'/vendor/oauth-php/library');
-
-// Messy file names
-StudipAutoloader::addClassLookups([
-    'StudipPlugin' => $GLOBALS['STUDIP_BASE_PATH'].'/lib/plugins/core/StudIPPlugin.class.php',
-    'messaging' => $GLOBALS['STUDIP_BASE_PATH'].'/lib/messaging.inc.php',
-]);
 
 $GLOBALS['_fullname_sql'] = [];
 $GLOBALS['_fullname_sql']['full'] = "TRIM(CONCAT(title_front,' ',Vorname,' ',Nachname,IF(title_rear!='',CONCAT(', ',title_rear),'')))";
@@ -102,7 +59,5 @@ class DB_Seminar extends DB_Sql
         parent::__construct($query);
     }
 }
-
-require_once __DIR__.'/../../composer/autoload.php';
 
 session_id("test-session");
