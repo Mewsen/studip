@@ -12,8 +12,14 @@ RUN apt update && apt install -y --no-install-recommends \
         libzip-dev \
         libicu-dev \
         libwebp-dev \
+        locales \
         vim \
     && rm -rf /var/lib/apt/lists/*
+
+# Install locales
+RUN sed -i -e 's/# en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8/' /etc/locale.gen \
+    && dpkg-reconfigure --frontend=noninteractive locales \
+    && update-locale
 
 # Install php extensions
 RUN docker-php-ext-configure gd --with-jpeg --with-webp
