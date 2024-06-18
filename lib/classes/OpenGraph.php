@@ -11,14 +11,14 @@ class OpenGraph
     /**
      * Extracts urls and their according open graph infos from a given string
      *
-     * @param string $string Text to extract urls and open graph infos from
+     * @param string|null $string Text to extract urls and open graph infos from
      * @return OpenGraphURLCollection containing the extracted urls
      */
-    public static function extract(string $string): OpenGraphURLCollection
+    public static function extract(?string $string): OpenGraphURLCollection
     {
         $collection = new OpenGraphURLCollection();
 
-        if (!Config::get()->OPENGRAPH_ENABLE) {
+        if (!Config::get()->OPENGRAPH_ENABLE || !$string) {
             return $collection;
         }
 
