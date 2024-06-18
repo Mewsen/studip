@@ -1,0 +1,174 @@
+#system-notifications {
+    &.bottom-right {
+        bottom: 50px;
+        right: 15px;
+
+        .system-notification {
+            box-shadow: 5px 5px var(--dark-gray-color-10);
+
+            &.system-notification-slide-enter,
+            &.system-notification-slide-leave-to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            &.system-notification-slide-leave,
+            &.system-notification-slide-enter-to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    }
+
+    &.top-center {
+        left: calc(50% - 300px);
+        top: 0;
+
+        .system-notification {
+            box-shadow: 0 0 0 3px var(--dark-gray-color-10);
+
+            &.system-notification-slide-enter,
+            &.system-notification-slide-leave-to {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+
+            &.system-notification-slide-leave,
+            &.system-notification-slide-enter-to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    }
+
+    &:not(.system-notifications-login) {
+        position: fixed;
+        width: 600px;
+    }
+
+    &.system-notifications-login {
+        margin-bottom: 15px;
+    }
+
+    overflow: hidden;
+    z-index: 1001;
+}
+
+.system-notification {
+    background-color: var(--content-color-20);
+    border: thin solid var(--content-color-40);
+    color: var(--black);
+    cursor: pointer;
+    display: flex;
+    padding: 10px;
+    position: relative;
+
+    &.system-notification-slide-enter-active,
+    &.system-notification-slide-leave-active {
+        transition: all var(--transition-duration-slow) ease-in-out;
+    }
+
+    .system-notification-icon {
+        flex: 0;
+        padding: 10px;
+    }
+
+    .system-notification-content {
+        flex: 1;
+        height: auto;
+        margin: auto 25px auto 10px;
+        word-wrap: break-word;
+
+        .system-notification-details {
+            .system-notification-details-content {
+                padding-left: 10px;
+            }
+        }
+    }
+
+    .system-notification-close {
+        align-self: normal;
+        flex: 0;
+        height: 20px;
+        width: 20px;
+
+        img, svg {
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+    }
+
+    .system-notification-timeout {
+        &.system-notification-timeout-enter-active,
+        &.system-notification-timeout-leave-active {
+            transition: width 5s linear;
+        }
+
+        &.system-notification-timeout-enter {
+            width: 100%;
+        }
+
+        &.system-notification-timeout-leave {
+            width: 0;
+        }
+
+        background-color: var(--base-color-40);
+        bottom: 0;
+        height: 5px;
+        left: 0;
+        position: absolute;
+        width: 0;
+    }
+
+    a:not(.system-notification-message) {
+        color: var(--black);
+        text-decoration-line: underline;
+    }
+
+    a.system-notification-message {
+        color: var(--text-color);
+        text-decoration: unset;
+    }
+}
+
+.system-notification-exception {
+    background-color: var(--red-40);
+
+    .system-notification-timeout {
+        background-color: var(--red);
+    }
+}
+
+.system-notification-error {
+    background-color: var(--red-20);
+
+    .system-notification-timeout {
+        background-color: var(--red-80);
+    }
+}
+
+.system-notification-warning {
+    background-color: var(--yellow-20);
+
+    .system-notification-timeout {
+        background-color: var(--yellow-80);
+    }
+}
+
+.system-notification-success {
+    background-color: var(--green-20);
+
+    .system-notification-timeout {
+        background-color: var(--green-80);
+    }
+}
+
+.system-notification-info {
+    background-color: var(--dark-violet-20);
+
+    .system-notification-timeout {
+        background-color: var(--dark-violet-60);
+    }
+}

@@ -93,6 +93,21 @@ $start_pages = [
                 '- auch wenn Sie gerade einen anderen Browsertab anschauen. Der Plopp ist ' .
                 'nur zu hören, wenn Sie die Benachrichtigungen über Javascript aktiviert haben.')) ?>
         </label>
+
+        <label>
+            <?= _('Platzierung von Systembenachrichtigungen im Browserfenster') ?>
+            <?= tooltipIcon(_('Sie können entscheiden, an welcher Stelle Ihres Browserfensters ' .
+                'Systembenachrichtigungen erscheinen sollen: mittig am oberen Rand oder rechts unten.')) ?>
+            <select name="system_notifications_placement"
+                   aria-describedby="system_notifications_notifications_placement_description">
+                <option value="topcenter"<?= $notifications_placement === 'topcenter' ? ' selected' : '' ?>>
+                    <?= _('zentriert am oberen Rand') ?>
+                </option>
+                <option value="bottomright"<?= $notifications_placement === 'bottomright' ? ' selected' : '' ?>>
+                    <?= _('am rechten unteren Rand') ?>
+                </option>
+            </select>
+        </label>
     </fieldset>
 
     <fieldset>

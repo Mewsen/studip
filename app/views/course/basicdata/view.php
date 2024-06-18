@@ -12,13 +12,7 @@ use Studip\Button, Studip\LinkButton;
  */
 
 $dialog_attr = Request::isXhr() ? ' data-dialog="size=50%"' : '';
-
-$message_types = ['msg' => "success", 'error' => "error", 'info' => "info"];
 ?>
-
-<? if (is_array($flash['msg'])) foreach ($flash['msg'] as $msg) : ?>
-    <?= MessageBox::{$message_types[$msg[0]]}($msg[1]) ?>
-<? endforeach ?>
 
 <form name="course-details" name="details" method="post" action="<?= $controller->link_for('course/basicdata/set', $course_id) ?>" <?= $dialog_attr ?> class="default collapsable">
     <?= CSRFProtection::tokenTag() ?>

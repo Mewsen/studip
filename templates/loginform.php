@@ -32,20 +32,14 @@ $show_hidden_login = !$show_login && StudipAuthAbstract::isLoginEnabled();
 
     <div id="login_flex">
         <div>
-            <? if ($loginerror): ?>
-                <!-- failed login code -->
-                <?= MessageBox::error(_('Bei der Anmeldung trat ein Fehler auf!'), [
-                    $error_msg,
-                    sprintf(
-                        _('Bitte wenden Sie sich bei Problemen an: <a href="mailto:%1$s">%1$s</a>'),
-                        $GLOBALS['UNI_CONTACT']
-                    )
-                ]) ?>
-            <? endif ?>
-
-            <?= implode('', PageLayout::getMessages()); ?>
             <div id="loginbox">
                 <header>
+                    <system-notification-manager
+                        id="system-notifications"
+                        class="system-notifications-login"
+                        :notifications='<?= htmlReady(json_encode(PageLayout::getMessages())) ?>'
+                        append-all-to="#loginbox"></system-notification-manager>
+
                     <h1><?= htmlReady(Config::get()->UNI_NAME_CLEAN) ?></h1>
                 </header>
 
@@ -138,7 +132,6 @@ $show_hidden_login = !$show_login && StudipAuthAbstract::isLoginEnabled();
         <? endif ?>
 
     </div>
-
 
 </main>
 

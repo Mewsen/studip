@@ -1,12 +1,3 @@
-<template>
-    <div class="cw-companion-box" :class="[mood]">
-        <div>
-            <p v-html="msgCompanion"></p>
-            <slot name="companionActions"></slot>
-        </div>
-    </div>
-</template>
-
 <script>
 export default {
     name: 'courseware-companion-box',
@@ -20,5 +11,40 @@ export default {
             }
         }
     },
+    computed: {
+        msgType() {
+            let type = 'info';
+            switch (this.mood) {
+                case 'special':
+                case 'unsure':
+                    type = 'warning';
+                    break;
+                case 'sad':
+                    type = 'error';
+                    break;
+                case 'happy':
+                    type = 'success';
+                    break
+                case 'pointing':
+                case 'curious':
+            }
+            return type;
+        }
+    },
+    watch: {
+        msgCompanion: {
+            handler(current) {
+                if (current.trim().length === 0) {
+                    return;
+                }
+                const notification = {
+                    type: this.msgType,
+                    message: current
+                };
+                this.globalEmit('push-system-notification', notification);
+            },
+            immediate: true
+        }
+    }
 };
 </script>

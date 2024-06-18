@@ -16,6 +16,8 @@ import "./init.js"
 import "./bootstrap/responsive.js"
 import "./bootstrap/vue.js"
 
+import "./bootstrap/system-notifications.js"
+
 import "./bootstrap/my-courses.js";
 
 import "./studip-ui.js"

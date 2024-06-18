@@ -44,6 +44,7 @@ class Settings_GeneralController extends Settings_SettingsController
     public function index_action()
     {
         $this->user_language = getUserLanguage($this->user->id);
+        $this->notifications_placement = User::findCurrent()->getConfiguration()->SYSTEM_NOTIFICATIONS_PLACEMENT;
     }
 
     /**
@@ -80,6 +81,7 @@ class Settings_GeneralController extends Settings_SettingsController
         } else {
             PersonalNotifications::deactivateAudioFeedback($this->user->id);
         }
+        $this->config->store('SYSTEM_NOTIFICATIONS_PLACEMENT', Request::get('system_notifications_placement'));
 
         PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
         $this->redirect('settings/general');

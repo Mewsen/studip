@@ -537,6 +537,26 @@ $sidebarOut: -330px;
             }
         }
     }
+
+    #system-notifications {
+        top: 0;
+        position: fixed;
+        left: 0;
+        width: 100%;
+        z-index: 1001;
+    }
+
+    .system-notification {
+        &.system-notification-slide-enter,
+        &.system-notification-slide-leave-to {
+            transform: translateY(-100%);
+        }
+
+        &.system-notification-slide-leave,
+        &.system-notification-slide-enter-to {
+            transform: translateY(0);
+        }
+    }
 }
 
 /* Settings especially for fullscreen mode */

@@ -142,6 +142,15 @@ class MessageBox implements LayoutMessage
     }
 
     /**
+     * Return whether this messagebox can be closed or not.
+     * @return bool
+     */
+    public function isCloseable(): bool
+    {
+        return $this->hide_close;
+    }
+
+    /**
      * This method renders a MessageBox object to a string.
      *
      * @return string   html output of the message box

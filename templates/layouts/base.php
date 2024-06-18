@@ -53,7 +53,9 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
                 'ACTIONMENU_THRESHOLD' => Config::get()->ACTION_MENU_THRESHOLD,
                 'ENTRIES_PER_PAGE'     => Config::get()->ENTRIES_PER_PAGE,
                 'OPENGRAPH_ENABLE'     => Config::get()->OPENGRAPH_ENABLE,
-                'COURSEWARE_CERTIFICATES_ENABLE' => Config::get()->COURSEWARE_CERTIFICATES_ENABLE
+                'COURSEWARE_CERTIFICATES_ENABLE' => Config::get()->COURSEWARE_CERTIFICATES_ENABLE,
+                'PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED' =>
+                    (bool) User::findCurrent()->getConfiguration()->PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED,
             ]) ?>,
         }
     </script>
@@ -90,9 +92,12 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
                     <?= Icon::create('zoom-out2')->asImg(24) ?>
                 </button>
             <? endif; ?>
-            <?= implode(PageLayout::getMessages()) ?>
             <?= $content_for_layout ?>
         </div>
+        <system-notification-manager
+            id="system-notifications"
+            :notifications='<?= htmlReady(json_encode(PageLayout::getMessages())) ?>'
+            placement="<?= User::findCurrent()->getConfiguration()->SYSTEM_NOTIFICATIONS_PLACEMENT ?>"></system-notification-manager>
     </main>
     <!-- End main content -->
 

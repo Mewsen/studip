@@ -445,6 +445,14 @@ class Course_BasicdataController extends AuthenticatedController
             $widget = new CourseManagementSelectWidget();
             $sidebar->addWidget($widget);
         }
+
+        foreach ($this->flash['msg'] ?? [] as $msg) {
+            match ($msg[0]) {
+                'msg'   => PageLayout::postSuccess($msg[1]),
+                'error' => PageLayout::postError($msg[1]),
+                'info'  => PageLayout::postInfo($msg[1]),
+            };
+        }
     }
 
     /**

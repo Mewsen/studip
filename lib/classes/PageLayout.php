@@ -599,10 +599,18 @@ class PageLayout
         if (!isset($_SESSION['messages'])) {
             $_SESSION['messages'] = [];
         }
+
+        $structure = [
+            'type' => $message->class,
+            'message' => $message->message,
+            'details' => $message->details,
+            'closeable' => $message->isCloseable()
+        ];
+
         if ($id === null ) {
-            $_SESSION['messages'][] = $message;
+            $_SESSION['messages'][] = $structure;
         } else {
-            $_SESSION['messages'][$id] = $message;
+            $_SESSION['messages'][$id] = $structure;
         }
     }
 

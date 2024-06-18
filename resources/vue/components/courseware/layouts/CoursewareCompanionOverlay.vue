@@ -1,23 +1,3 @@
-<template>
-    <div class="cw-companion-overlay-wrapper">
-        <div
-            class="cw-companion-overlay"
-            :class="[showCompanion ? 'cw-companion-overlay-in' : '', showCompanion ? '' : 'cw-companion-overlay-out', styleCompanion]"
-            aria-hidden="true"
-        >
-            <div class="cw-companion-overlay-content" v-html="msgCompanion"></div>
-            <button class="cw-compantion-overlay-close" @click="hideCompanion"></button>
-        </div>
-        <div
-            class="sr-only"
-            aria-live="polite"
-            role="log"
-        >
-            <p>{{ msgCompanion }}</p>
-        </div>
-    </div>
-</template>
-
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
@@ -30,6 +10,24 @@ export default {
             styleCompanion: 'styleCompanionOverlay',
             showToolbar: 'showToolbar',
         }),
+        msgType() {
+            let type = 'info';
+            switch (this.styleCompanion) {
+                case 'special':
+                case 'unsure':
+                    type = 'warning';
+                    break;
+                case 'sad':
+                    type = 'error';
+                    break;
+                case 'happy':
+                    type = 'success';
+                    break
+                case 'pointing':
+                case 'curious':
+            }
+            return type;
+        }
     },
     methods: {
         ...mapActions({
@@ -49,11 +47,24 @@ export default {
             }
         },
         showToolbar(newValue, oldValue) {
-            // hide companion when toolbar is closed 
+            // hide companion when toolbar is closed
             if (oldValue === true && newValue === false) {
                 this.hideCompanion();
             }
+        },
+        msgCompanion: {
+            handler(current) {
+                if (current.trim().length === 0) {
+                    return;
+                }
+                const notification = {
+                    type: this.msgType,
+                    message: current
+                };
+                this.globalEmit('push-system-notification', notification);
+            },
+            immediate: true
         }
-    },
+    }
 };
 </script>
