@@ -9,6 +9,7 @@
     },
     "autoload": {
         "psr-4": {
+            "Assets\\": "lib/classes/assets",
             "exTpl\\": "lib/exTpl/",
             "Flexi\\": "lib/flexi/",
             "Studip\\Activity\\": "lib/activities/",
@@ -37,7 +38,6 @@
                 "lib/classes/visibility/",
                 "lib/classes/wiki/",
                 "lib/elearning/",
-                "lib/exTpl', 'exTpl/",
                 "lib/exceptions/",
                 "lib/exceptions/resources/",
                 "lib/extern/",
