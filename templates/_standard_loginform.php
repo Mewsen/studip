@@ -44,7 +44,6 @@ $password_tooltip_text = (string)Config::get()->PASSWORD_TOOLTIP_TEXT;
                    autocomplete="current-password"
                    size="20"
                    required
-                   <?= $loginerror ? 'aria-describedby="messagebox-0"' : ''?>
             >
 
             <i id="password-toggle" tabindex="0" role="button" class="enter-accessible">
