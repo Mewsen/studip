@@ -42,6 +42,7 @@
 ## Breaking changes
 
 - Mindestanforderung an PHP auf 7.4 angehoben
+- Mindestanforderung MySQL 5.7.8 oder MariaDB-10.2.7
 
 ## Security related issues
 
