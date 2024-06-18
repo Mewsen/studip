@@ -21,10 +21,7 @@
 // SOFTWARE.
 
 // set error reporting
-error_reporting(E_ALL & ~E_NOTICE);
-if (version_compare(phpversion(), '5.4', '>=')) {
-    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
-}
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 
 // set include path
 $inc_path = ini_get('include_path');

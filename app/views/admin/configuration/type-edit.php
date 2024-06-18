@@ -16,7 +16,7 @@
             <input name="value" type="number" id="item-value"
                    value="<?= htmlReady($value) ?>">
         <? elseif ($type === 'array') : ?>
-            <?php $v = version_compare(PHP_VERSION, '5.4.0', '>=') ? json_encode($value, JSON_UNESCAPED_UNICODE) : json_encode($value) ?>
+            <?php $v = json_encode($value, JSON_UNESCAPED_UNICODE) ?>
             <textarea cols="80" rows="5" name="value" id="item-value"><?= htmlReady($v, true, true) ?></textarea>
         <? elseif ($type === 'i18n'): ?>
             <?= I18N::textarea('value', $value, [
