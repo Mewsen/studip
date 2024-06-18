@@ -55,7 +55,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
                 'OPENGRAPH_ENABLE'     => Config::get()->OPENGRAPH_ENABLE,
                 'COURSEWARE_CERTIFICATES_ENABLE' => Config::get()->COURSEWARE_CERTIFICATES_ENABLE,
                 'PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED' =>
-                    (bool) User::findCurrent()->getConfiguration()->PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED,
+                    (bool) User::findCurrent()?->getConfiguration()->PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED,
             ]) ?>,
         }
     </script>
@@ -97,7 +97,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
         <system-notification-manager
             id="system-notifications"
             :notifications='<?= htmlReady(json_encode(PageLayout::getMessages())) ?>'
-            placement="<?= User::findCurrent()->getConfiguration()->SYSTEM_NOTIFICATIONS_PLACEMENT ?>"></system-notification-manager>
+            placement="<?= User::findCurrent()?->getConfiguration()->SYSTEM_NOTIFICATIONS_PLACEMENT ?? 'topcenter' ?>"></system-notification-manager>
     </main>
     <!-- End main content -->
 
