@@ -16,7 +16,10 @@ RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-webp
 RUN docker-php-ext-install -j$(nproc) gd gettext intl mysqli pdo_mysql zip
 
 # Install node/npm
-COPY --from=node:18-slim /usr/local/bin /usr/local/bin
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt update && apt install -y --no-install-recommends nodejs \
+        curl apt-transport-https ca-certificates gnupg unzip git \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
