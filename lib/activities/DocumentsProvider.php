@@ -29,7 +29,6 @@ class DocumentsProvider implements ActivityProvider
 
         if ($activity->context == "course") {
             $url = \URLHelper::getUrl("dispatch.php/course/files/flat?cid={$activity->context_id}");
-            $route = \URLHelper::getURL('api.php/file/' . $activity->object_id, NULL, true);
 
             $activity->object_url = [
                 $url => _('Zum Dateibereich der Veranstaltung')
@@ -42,8 +41,6 @@ class DocumentsProvider implements ActivityProvider
                 $url => _('Zum Dateibereich der Einrichtung')
             ];
         }
-
-        $activity->object_route = $route;
 
         return true;
     }

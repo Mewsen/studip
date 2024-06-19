@@ -62,13 +62,9 @@ class ParticipantsProvider implements ActivityProvider
 
         $url = \URLHelper::getUrl("dispatch.php/course/members/index", ['cid' => $activity->context_id]);
 
-        $route = \URLHelper::getURL('api.php/course/' . $activity->context_id, NULL, true);
-
         $activity->object_url = [
             $url => _('Zur Veranstaltung')
         ];
-
-        $activity->object_route = $route;
 
         return true;
     }

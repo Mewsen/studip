@@ -2244,24 +2244,19 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
 
     protected function convertToEventData(array $time_intervals, User $user)
     {
-        $booking_plan_request_bg     =
-            ColourValue::find('Resources.BookingPlan.Request.Bg');
-        $booking_plan_request_fg     =
-            ColourValue::find('Resources.BookingPlan.Request.Fg');
-        $booking_plan_preparation_bg =
-            ColourValue::find('Resources.BookingPlan.PreparationTime.Bg');
-        $booking_plan_preparation_fg =
-            ColourValue::find('Resources.BookingPlan.PreparationTime.Fg');
+        $booking_plan_request_bg = ColourValue::find('Resources.BookingPlan.Request.Bg');
+        $booking_plan_request_fg = ColourValue::find('Resources.BookingPlan.Request.Fg');
+        $booking_plan_preparation_bg = ColourValue::find('Resources.BookingPlan.PreparationTime.Bg');
+        $booking_plan_preparation_fg = ColourValue::find('Resources.BookingPlan.PreparationTime.Fg');
 
         $user_is_resource_autor = false;
-        if ($this->resource_id && ($this->resource instanceof Resource)) {
+        if ($this->resource_id && $this->resource instanceof Resource) {
             $user_is_resource_autor = $this->resource->userHasPermission(
                 $user,
                 'autor'
             );
         }
-        $request_is_editable =
-            $user_is_resource_autor || ($user->id == $this->user_id);
+        $request_is_editable = $user_is_resource_autor || ($user->id == $this->user_id);
 
         $request_api_urls  = [];
         $request_view_urls = [];
@@ -2269,18 +2264,12 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
         if ($request_is_editable) {
             $request_api_urls = [
                 'resize' => URLHelper::getURL(
-                    'api.php/resources/request/'
-                    . $this->id . '/move',
-                    [
-                        'quiet' => '1'
-                    ]
+                    'dispatch.php/resources/ajax/move_request/'. $this->id,
+                    ['quiet' => true]
                 ),
-                'move'   => URLHelper::getURL(
-                    'api.php/resources/request/'
-                    . $this->id . '/move',
-                    [
-                        'quiet' => '1'
-                    ]
+                'move' => URLHelper::getURL(
+                    'dispatch.php/resources/ajax/move_request/'. $this->id,
+                    ['quiet' => true]
                 )
             ];
 
@@ -2290,13 +2279,14 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                     . $this->id
                 )
             ];
-            if ($this->resource_id && ($this->resource instanceof Resource)) {
-                if ($this->resource->userHasBookingRights($user)) {
-                    $request_view_urls['edit'] = URLHelper::getURL(
-                        'dispatch.php/resources/room_request/resolve/'
-                        . $this->id
-                    );
-                }
+            if (
+                $this->resource_id
+                && $this->resource instanceof Resource
+                && $this->resource->userHasBookingRights($user)
+            ) {
+                $request_view_urls['edit'] = URLHelper::getURL(
+                    'dispatch.php/resources/room_request/resolve/'. $this->id
+                );
             }
         }
 
@@ -2306,7 +2296,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             $real_begin = $interval['begin'];
             if ($this->preparation_time) {
                 $real_begin += (int)$this->preparation_time;
-                $begin      = new DateTime();
+                $begin = new DateTime();
                 $begin->setTimestamp($interval['begin']);
                 $end = new DateTime();
                 $end->setTimestamp($real_begin);
@@ -2320,9 +2310,9 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                     $request_is_editable,
                     '',
                     '',
-                    'ResourceRequest',
+                    ResourceRequest::class,
                     $this->id,
-                    'Resource',
+                    Resource::class,
                     $this->resource_id,
                     $request_view_urls,
                     $request_api_urls
@@ -2342,11 +2332,11 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 $booking_plan_request_fg->__toString(),
                 $booking_plan_request_bg->__toString(),
                 $request_is_editable,
-                'ResourceRequest',
+                ResourceRequest::class,
                 $this->id,
-                'Resource',
+                Resource::class,
                 $this->resource_id,
-                'Resource',
+                Resource::class,
                 $this->resource_id,
                 $request_view_urls,
                 $request_api_urls

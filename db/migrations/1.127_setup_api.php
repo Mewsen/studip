@@ -1,12 +1,46 @@
 <?php
 class SetupApi extends Migration
 {
-    function description()
+    public function description()
     {
         return 'Creates api tables in database and according config entries';
     }
 
-    function up()
+    public function up()
+    {
+        $this->createTables();
+
+        // Add config entries
+        $query = "INSERT IGNORE INTO `config`
+                    (`config_id`, `field`, `value`, `is_default`, `type`, `range`, `section`,
+                     `mkdate`, `chdate`, `description`)
+                  VALUES (MD5(:field), :field, :value, 1, :type, 'global', 'global',
+                          UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), :description)";
+        $statement = DBManager::get()->prepare($query);
+
+        $statement->execute([
+            ':field' => 'API_ENABLED',
+            ':value' => (int)false,
+            ':type'  => 'boolean',
+            ':description' => 'Schaltet die REST-API an',
+        ]);
+
+        $statement->execute([
+            ':field'       => 'API_OAUTH_AUTH_PLUGIN',
+            ':value'       => 'Standard',
+            ':type'        => 'string',
+            ':description' => 'Definiert das für OAuth verwendete Authentifizierungsverfahren',
+        ]);
+    }
+
+    public function down()
+    {
+        DBManager::get()->exec("DELETE FROM config WHERE field IN ('API_ENABLED', 'API_OAUTH_AUTH_PLUGIN')");
+
+        $this->dropTables();
+    }
+
+    public function createTables(): void
     {
         // Add vendor tables
         $query = "CREATE TABLE IF NOT EXISTS `oauth_consumer_registry` (
@@ -29,7 +63,7 @@ class SetupApi extends Migration
           KEY `ocr_usa_id_ref` (`ocr_usa_id_ref`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
         DBManager::get()->exec($query);
-        
+
         $query = "CREATE TABLE IF NOT EXISTS `oauth_consumer_token` (
           `oct_id` int(11) NOT NULL AUTO_INCREMENT,
           `oct_ocr_id_ref` int(11) NOT NULL,
@@ -47,7 +81,7 @@ class SetupApi extends Migration
           CONSTRAINT `oauth_consumer_token_ibfk_1` FOREIGN KEY (`oct_ocr_id_ref`) REFERENCES `oauth_consumer_registry` (`ocr_id`) ON DELETE CASCADE ON UPDATE CASCADE
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
         DBManager::get()->exec($query);
-        
+
         $query = "CREATE TABLE IF NOT EXISTS `oauth_log` (
           `olg_id` int(11) NOT NULL AUTO_INCREMENT,
           `olg_osr_consumer_key` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
@@ -80,7 +114,7 @@ class SetupApi extends Migration
           UNIQUE KEY `osn_consumer_key` (`osn_consumer_key`,`osn_token`,`osn_timestamp`,`osn_nonce`)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
         DBManager::get()->exec($query);
-        
+
         $query = "CREATE TABLE IF NOT EXISTS `oauth_server_registry` (
           `osr_id` int(11) NOT NULL AUTO_INCREMENT,
           `osr_usa_id_ref` int(11) DEFAULT NULL,
@@ -176,39 +210,16 @@ class SetupApi extends Migration
           PRIMARY KEY (`user_id`,`consumer_id`)
         ) ENGINE=MyISAM";
         DBManager::get()->exec($query);
-
-        // Add config entries
-        $query = "INSERT IGNORE INTO `config`
-                    (`config_id`, `field`, `value`, `is_default`, `type`, `range`, `section`,
-                     `mkdate`, `chdate`, `description`)
-                  VALUES (MD5(:field), :field, :value, 1, :type, 'global', 'global',
-                          UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), :description)";
-        $statement = DBManager::get()->prepare($query);
-
-        $statement->execute([
-            ':field' => 'API_ENABLED',
-            ':value' => (int)false,
-            ':type'  => 'boolean',
-            ':description' => 'Schaltet die REST-API an',
-        ]);
-
-        $statement->execute([
-            ':field'       => 'API_OAUTH_AUTH_PLUGIN',
-            ':value'       => 'Standard',
-            ':type'        => 'string',
-            ':description' => 'Definiert das für OAuth verwendete Authentifizierungsverfahren',
-        ]);
     }
 
-    function down()
+    public function dropTables(): void
     {
-        DBManager::get()->exec("DELETE FROM config WHERE field IN ('API_ENABLED', 'API_OAUTH_AUTH_PLUGIN')");
         DBManager::get()->exec("DROP TABLE IF EXISTS `oauth_consumer_registry`,
                                                      `oauth_consumer_token`,
                                                      `oauth_log`,
                                                      `oauth_server_nonce`,
                                                      `oauth_server_registry`,
-                                                     `oauth_server_token`
+                                                     `oauth_server_token`,
                                                      `api_consumer_permissions`,
                                                      `api_consumers`,
                                                      `api_oauth_user_mapping`,

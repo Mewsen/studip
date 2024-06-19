@@ -30,13 +30,9 @@ class ForumProvider implements ActivityProvider
                     .'?cid='. $post['seminar_id'] .'&highlight_topic='. $post['topic_id']
                     .'#'. $post['topic_id']);
 
-        $route = \URLHelper::getURL('api.php/forum_entry/' . $post['topic_id'], NULL, true);
-
         $activity->object_url = [
             $url => _('Zum Forum der Veranstaltung')
         ];
-
-        $activity->object_route = $route;
 
         return true;
     }

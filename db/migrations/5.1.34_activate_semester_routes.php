@@ -8,7 +8,9 @@ class ActivateSemesterRoutes extends Migration
 
     public function up()
     {
-        require_once 'app/routes/Semester.php';
-        RESTAPI\ConsumerPermissions::get()->activateRouteMap(new RESTAPI\Routes\Semester());
+        // Deactivated since the restapi was removed in Stud.IP 6.0
+
+        # require_once 'app/routes/Semester.php';
+        # RESTAPI\ConsumerPermissions::get()->activateRouteMap(new RESTAPI\Routes\Semester());
     }
 }

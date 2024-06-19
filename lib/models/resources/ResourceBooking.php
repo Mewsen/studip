@@ -1755,18 +1755,16 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 //(lib/resources.js, method dropEventInRoomGroupBookingPlan)
                 $interval_api_urls = [
                     'resize' => \URLHelper::getURL(
-                        'api.php/resources/booking/'
-                      . $this->id . '/move',
+                        'dispatch.php/resources/ajax/move_booking/' . $this->id,
                         [
-                            'quiet' => '1',
+                            'quiet' => true,
                             'interval_id' => $interval->id
                         ]
                     ),
                     'move' => \URLHelper::getURL(
-                        'api.php/resources/booking/'
-                      . $this->id . '/move',
+                        'dispatch.php/resources/ajax/move_booking/' . $this->id,
                         [
-                            'quiet' => '1',
+                            'quiet' => true,
                             'interval_id' => $interval->id
                         ]
                     )
@@ -1784,11 +1782,11 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 $text_colour,
                 $colour,
                 $booking_is_editable,
-                'ResourceBookingInterval',
+                ResourceBookingInterval::class,
                 $interval->id,
-                'ResourceBooking',
+                ResourceBooking::class,
                 $this->id,
-                'Resource',
+                Resource::class,
                 $this->resource_id,
                 $booking_view_urls,
                 $interval_api_urls,

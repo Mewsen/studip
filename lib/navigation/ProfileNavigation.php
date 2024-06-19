@@ -114,10 +114,6 @@ class ProfileNavigation extends Navigation
                     $navigation->addSubNavigation('deputies', new Navigation(_('Standardvertretung'), 'dispatch.php/settings/deputies'));
                 }
 
-                if (Config::Get()->API_ENABLED) {
-                    $navigation->addSubNavigation('api', new Navigation(_('API-Berechtigungen'), 'dispatch.php/api/authorizations'));
-                }
-
                 if (TwoFactorAuth::isEnabledForUser()) {
                     $navigation->addSubNavigation('tfa', new Navigation(_('Zwei-Faktor-Authentifizierung'), 'dispatch.php/tfa'));
                 }

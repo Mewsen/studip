@@ -50,28 +50,4 @@ class ActivityFeed extends CorePlugin implements PortalPlugin
 
         return $template;
     }
-
-    public static function onEnable($pluginId)
-    {
-        $errors = [];
-        if (!Config::get()->API_ENABLED) {
-            $errors[] = sprintf(
-                _('Die REST-API ist nicht aktiviert (%s "API_ENABLED")'),
-                formatReady(sprintf('[%s]%s',
-                    _('Konfiguration'),
-                    URLHelper::getLink('dispatch.php/admin/configuration/configuration')
-                ))
-            );
-        } elseif (!RESTAPI\ConsumerPermissions::get('global')->check('/user/:user_id/activitystream', 'get')) {
-            $errors[] = sprintf(
-                _('Die REST-API-Route ist nicht aktiviert (%s "/user/:user_id/activitystream"")'),
-                formatReady(sprintf('[%s]%s',
-                    _('Konfiguration'),
-                    URLHelper::getLink('dispatch.php/admin/api/permissions')
-                ))
-            );
-        }
-
-        return count($errors) === 0;
-    }
 }

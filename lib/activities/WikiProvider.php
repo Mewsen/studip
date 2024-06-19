@@ -27,23 +27,17 @@ class WikiProvider implements ActivityProvider
 
         if ($activity->context === 'course') {
             $url = \URLHelper::getURL('dispatch.php/course/wiki/page/' . $page->id, ['cid' => $activity->context_id]);
-            $route = \URLHelper::getURL("api.php/course/{$activity->context_id}/wiki/{$activity->object_id}", null, true);
 
             $activity->object_url = [
                 $url => _('Zum Wiki der Veranstaltung'),
             ];
 
-            $activity->object_route = $route;
-
         } elseif ($activity->context === 'institute') {
             $url = \URLHelper::getURL('dispatch.php/course/wiki/page/' . $page->id, ['cid' => $activity->context_id]);
-            $route= null;
 
             $activity->object_url = [
                 $url => _('Zum Wiki der Einrichtung')
             ];
-
-            $activity->object_route = $route;
         }
 
         return true;

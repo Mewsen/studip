@@ -206,10 +206,6 @@ class AdminNavigation extends Navigation
 
             $navigation->addSubNavigation('admissionrules', new Navigation(_('Anmelderegeln'), 'dispatch.php/admission/ruleadministration'));
 
-            if (Config::get()->API_ENABLED) {
-                $navigation->addSubNavigation('api', new Navigation(_('API'), 'dispatch.php/admin/api'));
-            }
-
             $navigation->addSubNavigation('oauth2', new Navigation(_('OAuth2'), 'dispatch.php/admin/oauth2/index'));
 
             $navigation->addSubNavigation('globalsearch', new Navigation(_('Globale Suche'), 'dispatch.php/globalsearch/settings'));

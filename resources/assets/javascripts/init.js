@@ -64,7 +64,6 @@ import register from './lib/register.js';
 import Report from './lib/report.js';
 import Resources from './lib/resources.js';
 import Responsive from './lib/responsive.js';
-import RESTAPI, { api } from './lib/restapi.js';
 import Schedule from './lib/schedule.js';
 import Screenreader from './lib/screenreader.js';
 import Scroll from './lib/scroll.js';
@@ -92,7 +91,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     admin_sem_class,
     AdminCourses,
     Admission,
-    api,
     Arbeitsgruppen,
     Archive,
     Avatar,
@@ -151,7 +149,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     register,
     Report,
     Responsive,
-    RESTAPI,
     Schedule,
     Scroll,
     Screenreader,

@@ -622,8 +622,13 @@ class Fullcalendar
                     $('.fc-slats tr:odd .fc-widget-content:not(.fc-axis)').remove();
                 }
 
-                STUDIP.api.GET(`semester/${timestamp}/week`).done((data) => {
+                if (document.getElementById('booking-plan-header-semname') === null) {
+                    return;
+                }
 
+                $.getJSON(
+                    STUDIP.URLHelper.getURL(`dispatch.php/resources/ajax/semester_week/${timestamp}`)
+                ).done((data) => {
                     if (data) {
                         $('#booking-plan-header-semname').text(data.semester_name);
                         if (data.sem_week) {
@@ -640,7 +645,7 @@ class Fullcalendar
                         $('#booking-plan-header-semrow').hide();
                         $('#booking-plan-header-semweek-part').hide();
                     }
-            })
+                });
             },
             resourceRender (renderInfo) {
                 if ($(renderInfo.view.context.calendar.el).hasClass('room-group-booking-plan')) {

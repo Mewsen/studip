@@ -16,22 +16,22 @@ class Resources_AjaxController extends AuthenticatedController
 {
     public function toggle_marked_action($request_id)
     {
-        $request = \ResourceRequest::find($request_id);
+        $request = ResourceRequest::find($request_id);
 
         if (!$request) {
             throw new Exception('Resource request object not found!');
         }
 
-        $current_user = \User::findCurrent();
+        $current_user = User::findCurrent();
 
         if ($request->isReadOnlyForUser($current_user)) {
-            throw new \AccessDeniedException();
+            throw new AccessDeniedException();
         }
 
         //Switch to the next marking state or return to the unmarked state
         //if the next marking state would be after the last defined
         //marking state.
-        $request->marked = ($request->marked + 1) % \ResourceRequest::MARKING_STATES;
+        $request->marked = ($request->marked + 1) % ResourceRequest::MARKING_STATES;
         $request->store();
 
         $this->render_json($request->toArray());
@@ -39,46 +39,46 @@ class Resources_AjaxController extends AuthenticatedController
 
     public function get_resource_booking_intervals_action($booking_id)
     {
-        $booking = \ResourceBooking::find($booking_id);
+        $booking = ResourceBooking::find($booking_id);
         if (!$booking) {
             throw new Exception('Resource booking object not found!');
         }
 
         $resource = $booking->resource->getDerivedClassInstance();
-        if (!$resource->bookingPlanVisibleForUser(\User::findCurrent())) {
-            throw new \AccessDeniedException();
+        if (!$resource->bookingPlanVisibleForUser(User::findCurrent())) {
+            throw new AccessDeniedException();
         }
 
         //Get begin and end:
-        $begin_str = \Request::get('begin');
-        $end_str   = \Request::get('end');
+        $begin_str = Request::get('begin');
+        $end_str   = Request::get('end');
         $begin     = null;
         $end       = null;
         if ($begin_str && $end_str) {
             //Try the ISO format first: YYYY-MM-DDTHH:MM:SS±ZZ:ZZ
-            $begin = \DateTime::createFromFormat(\DateTime::RFC3339, $begin_str);
-            $end   = \DateTime::createFromFormat(\DateTime::RFC3339, $end_str);
-            if (!($begin instanceof \DateTime) || !($end instanceof \DateTime)) {
-                $tz = new \DateTime();
+            $begin = DateTime::createFromFormat(DateTime::RFC3339, $begin_str);
+            $end   = DateTime::createFromFormat(DateTime::RFC3339, $end_str);
+            if (!($begin instanceof DateTime) || !($end instanceof DateTime)) {
+                $tz = new DateTime();
                 $tz = $tz->getTimezone();
                 //Try the ISO format without timezone:
-                $begin = \DateTime::createFromFormat('Y-m-d\TH:i:s', $begin_str, $tz);
-                $end   = \DateTime::createFromFormat('Y-m-d\TH:i:s', $end_str, $tz);
+                $begin = DateTime::createFromFormat('Y-m-d\TH:i:s', $begin_str, $tz);
+                $end   = DateTime::createFromFormat('Y-m-d\TH:i:s', $end_str, $tz);
             }
         }
 
         $sql      = "booking_id = :booking_id ";
         $sql_data = ['booking_id' => $booking->id];
-        if ($begin instanceof \DateTime && $end instanceof \DateTime) {
+        if ($begin instanceof DateTime && $end instanceof DateTime) {
             $sql               .= "AND begin >= :begin AND end <= :end ";
             $sql_data['begin'] = $begin->getTimestamp();
             $sql_data['end']   = $end->getTimestamp();
         }
-        if (\Request::submitted('exclude_cancelled_intervals')) {
+        if (Request::submitted('exclude_cancelled_intervals')) {
             $sql .= "AND takes_place = '1' ";
         }
         $sql       .= "ORDER BY begin ASC, end ASC";
-        $intervals = \ResourceBookingInterval::findBySql($sql, $sql_data);
+        $intervals = ResourceBookingInterval::findBySql($sql, $sql_data);
 
         $result = [];
         foreach ($intervals as $interval) {
@@ -90,7 +90,7 @@ class Resources_AjaxController extends AuthenticatedController
 
     public function toggle_takes_place_field_action($interval_id)
     {
-        $interval = \ResourceBookingInterval::find($interval_id);
+        $interval = ResourceBookingInterval::find($interval_id);
         if (!$interval) {
             throw new Exception('ResourceBookingInterval object not found!');
         }
@@ -103,13 +103,13 @@ class Resources_AjaxController extends AuthenticatedController
 
         $resource = $resource->getDerivedClassInstance();
 
-        if (!$resource->userHasPermission(\User::findCurrent(), 'autor', [$interval->begin, $interval->end])) {
+        if (!$resource->userHasPermission(User::findCurrent(), 'autor', [$interval->begin, $interval->end])) {
             throw new Exception('You do not have sufficient permissions to modify the interval!');
         }
 
         if (
             !$interval->takes_place
-            && $resource->isAssigned(new \DateTime('@' . $interval->begin), new \DateTime('@' . $interval->end))
+            && $resource->isAssigned(new DateTime('@' . $interval->begin), new DateTime('@' . $interval->end))
         ) {
             throw new Exception('Already booked');
         }
@@ -121,13 +121,14 @@ class Resources_AjaxController extends AuthenticatedController
                 'takes_place' => $interval->takes_place
             ]);
         } else {
-            throw new Exception('Error while storing the interval!');
+            $this->set_status(500);
+            $this->render_text('Error while storing the interval!');
         }
     }
 
     public function get_semester_booking_plan_action($resource_id)
     {
-        $resource = \Resource::find($resource_id);
+        $resource = Resource::find($resource_id);
         if (!$resource) {
             throw new Exception('Resource object not found!');
         }
@@ -143,8 +144,8 @@ class Resources_AjaxController extends AuthenticatedController
         $display_requests     = Request::get('display_requests');
         $display_all_requests = Request::get('display_all_requests');
 
-        $begin = new \DateTime();
-        $end   = new \DateTime();
+        $begin = new DateTime();
+        $end   = new DateTime();
 
         $semester_id = Request::get('semester_id');
 
@@ -194,7 +195,7 @@ class Resources_AjaxController extends AuthenticatedController
                 $requests_sql_params['user_id'] = $current_user->id;
             }
 
-            $requests = \ResourceRequest::findBySql(
+            $requests = ResourceRequest::findBySql(
                 $requests_sql,
                 $requests_sql_params
             );
@@ -207,7 +208,7 @@ class Resources_AjaxController extends AuthenticatedController
             $booking->resource  = $resource;
             $irrelevant_booking = $booking->getRepetitionType() !== 'weekly'
                                   && (
-                                      !\Request::get('display_single_bookings')
+                                      !Request::get('display_single_bookings')
                                       || $booking->end < strtotime('today')
                                   );
             if ($booking->getAssignedUserType() === 'course' && in_array($booking->assigned_course_date->metadate_id, $meta_dates)) {
@@ -261,7 +262,7 @@ class Resources_AjaxController extends AuthenticatedController
 
         $relevant_request = false;
         foreach ($requests as $request) {
-            if ($request->cycle instanceof \SeminarCycleDate) {
+            if ($request->cycle instanceof SeminarCycleDate) {
                 $cycle_dates = $request->cycle->getAllDates();
                 foreach ($cycle_dates as $cycle_date) {
                     $relevant_request = $semester->beginn <= $cycle_date->date
@@ -488,7 +489,7 @@ class Resources_AjaxController extends AuthenticatedController
         $clipboard = Clipboard::find($clipboard_id);
 
         if (!empty($_SESSION['selected_clipboard_id'])) {
-            $clipboard = \Clipboard::find($_SESSION['selected_clipboard_id']);
+            $clipboard = Clipboard::find($_SESSION['selected_clipboard_id']);
         }
         if (!$clipboard) {
             throw new Exception('Clipboard object not found!');
@@ -497,7 +498,7 @@ class Resources_AjaxController extends AuthenticatedController
 
         //Permission check:
         if ($clipboard->user_id !== $current_user->id) {
-            throw new \AccessDeniedException();
+            throw new AccessDeniedException();
         }
 
         $display_requests     = Request::bool('display_requests');
@@ -655,5 +656,187 @@ class Resources_AjaxController extends AuthenticatedController
         }
 
         $this->render_json($data);
+    }
+
+    public function move_booking_action($booking_id): void
+    {
+        $booking = ResourceBooking::find($booking_id);
+        if (!$booking) {
+            $this->notFound('Resource booking object not found!');
+            return;
+        }
+
+        $current_user = User::findCurrent();
+
+        if ($booking->isReadOnlyForUser($current_user)) {
+            throw new AccessDeniedException();
+        }
+
+        $resource_id = Request::get('resource_id');
+        $interval_id = Request::get('interval_id');
+
+        $begin = $this->convertDatetime(Request::get('begin'));
+        $end = $this->convertDatetime(Request::get('end'));
+
+        //Check if a specific interval has been moved:
+        if ($interval_id) {
+            $interval = ResourceBookingInterval::findOneBySql(
+                'interval_id = ? AND booking_id = ?',
+                [$interval_id, $booking->id]
+            );
+            if (!$interval) {
+                $this->notFound('Resource booking interval not found!');
+                return;
+            }
+            $interval_begin = new DateTime();
+            $interval_begin->setTimestamp($interval->begin);
+            $interval_end = new DateTime();
+            $interval_end->setTimestamp($interval->end);
+
+            //Calculate the difference from the interval time range
+            //to the time range from the request. That difference
+            //is then applied to the booking.
+            $begin_diff = $interval_begin->diff($begin);
+            $end_diff = $interval_end->diff($end);
+
+            $new_booking_begin = new DateTime();
+            $new_booking_begin->setTimestamp($booking->begin);
+            $new_booking_end = new DateTime();
+            $new_booking_end->setTimestamp($booking->end);
+
+            $new_booking_begin = $new_booking_begin->add($begin_diff);
+            $new_booking_end = $new_booking_end->add($end_diff);
+            //We must substract the preparation time to the begin timestamp
+            //to get the real begin:
+            $real_begin = clone $new_booking_begin;
+            if ($booking->preparation_time > 0) {
+                $real_begin->sub(new DateInterval('PT' . ($booking->preparation_time / 60 ) . 'M'));
+            }
+            $booking->begin = $real_begin->getTimestamp();
+            $booking->end = $new_booking_end->getTimestamp();
+        } else {
+            //We must substract the preparation time to the begin timestamp
+            //to get the real begin:
+            $real_begin = clone $begin;
+            if ($booking->preparation_time > 0) {
+                $real_begin->sub(new DateInterval('PT' . ($booking->preparation_time / 60 ) . 'M'));
+            }
+            $booking->begin = $real_begin->getTimestamp();
+            $booking->end = $end->getTimestamp();
+        }
+        if ($resource_id) {
+            //The resource-ID has changed:
+            //The booking was moved from one resource to another.
+            $booking->resource_id = $resource_id;
+        }
+
+        //Update the booking_user_id field:
+        $booking->booking_user_id = User::findCurrent()->id;
+
+        try {
+            $booking->store();
+
+            if (Request::bool('quiet')) {
+                $this->render_nothing();
+            } else {
+                $this->render_json($booking->toRawArray());
+            }
+        } catch (Exception $e) {
+            $this->set_status(500);
+            $this->render_text($e->getMessage());
+        }
+    }
+
+    public function move_request_action($request_id): void
+    {
+        $request = ResourceRequest::find($request_id);
+        if (!$request) {
+            $this->notFound('Resource request object not found!');
+            return;
+        }
+
+        $current_user = User::findCurrent();
+
+        if ($request->isReadOnlyForUser($current_user)) {
+            throw new AccessDeniedException();
+        }
+
+        $request->begin = $this->convertDatetime(Request::get('begin'));
+        $request->end = $this->convertDatetime(Request::get('end'));
+
+        try {
+            $request->store();
+            $this->renderObject($request);
+        } catch (\Exception $e) {
+            $this->set_status(500);
+            $this->render_text($e->getMessage());
+        }
+    }
+
+    public function semester_week_action($timestamp)
+    {
+        $semester = \Semester::findByTimestamp($timestamp);
+        if (!$semester) {
+            $this->notFound('No semester found for given timestamp');
+            throw new RecordNotFoundException();
+        }
+
+        $timestamp = strtotime('today', $timestamp);
+        $week_begin_timestamp = strtotime('monday this week', $semester->vorles_beginn);
+        $end_date = $semester->vorles_ende;
+
+        $i = 0;
+        $result = [
+            'semester_name' => (string)$semester->name,
+            'week_number' => sprintf(_('KW %u'), date('W', $timestamp)),
+            'current_day' => strftime('%x', $timestamp)
+        ];
+        while ($week_begin_timestamp < $end_date) {
+            $next_week_timestamp = strtotime('+1 week', $week_begin_timestamp);
+            if ($week_begin_timestamp <= $timestamp && $timestamp < $next_week_timestamp) {
+                $result['sem_week'] = sprintf(
+                    _('%u. Vorlesungswoche (ab %s)'),
+                    $i + 1,
+                    strftime('%x', $week_begin_timestamp));
+                break;
+            }
+            $i += 1;
+
+            $week_begin_timestamp = $next_week_timestamp;
+        }
+
+        $this->render_json($result);
+    }
+
+    private function notFound(string $message = ''): void
+    {
+        $this->set_status(404);
+        $this->render_text($message);
+    }
+
+    private function renderObject(SimpleORMap $object): void
+    {
+        if (Request::bool('quiet')) {
+            $this->render_nothing();
+        } else{
+            $this->render_json($object->toArray());
+        }
+    }
+
+    /**
+     * Tries the ISO format first: YYYY-MM-DDTHH:MM:SS±ZZ:ZZ
+     */
+    private function convertDatetime(?string $input): ?Datetime
+    {
+        if (!$input) {
+            return null;
+        }
+
+        return DateTime::createFromFormat(DateTime::RFC3339, $input)
+            ?? DateTime::createFromFormat(
+                   'Y-m-d\TH:i:s',
+                   $input,
+                   (new DateTime())->getTimezone()
+               );
     }
 }
