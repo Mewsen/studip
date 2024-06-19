@@ -11,7 +11,7 @@
            aria-expanded="false"
            aria-controls="globalsearch-list"
            aria-label="Suche nach Objekten und Personen in Stud.IP">
-    <?= Icon::create('decline', Icon::ROLE_INACTIVE)->asInput([
+    <?= Icon::create('decline')->asInput([
         'id'    => 'globalsearch-clear',
         'class' => 'hidden-small-down',
         'alt'   => _('Suche zurücksetzen'),
