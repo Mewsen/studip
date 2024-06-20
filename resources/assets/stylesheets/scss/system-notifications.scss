@@ -122,6 +122,10 @@
         width: 0;
     }
 
+    &.system-notification-disrupted .system-notification-timeout {
+        display: none;
+    }
+
     a:not(.system-notification-message) {
         color: var(--black);
         text-decoration-line: underline;

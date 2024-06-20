@@ -1,10 +1,16 @@
 <template>
-    <div role="alert"
-         :class="'system-notifications ' + (placement === 'topcenter' ? 'top-center' : 'bottom-right')">
-        <system-notification v-for="(notification, index) in allNotifications"
-                             :key="'message-' + index"
-                             :notification="notification"></system-notification>
-    </div>
+    <transition-group name="system-notification-slide"
+                      :class="'system-notifications ' + (placement === 'topcenter' ? 'top-center' : 'bottom-right')"
+                      tag="div"
+                      role="alert"
+                      appear
+    >
+        <system-notification v-for="notification in allNotifications"
+                             :key="`message-${notification.key}`"
+                             :notification="notification"
+                             @destroyMe="destroyNotification(notification)"
+        ></system-notification>
+    </transition-group>
 </template>
 
 <script>
@@ -14,8 +20,9 @@ export default {
     name: 'SystemNotificationManager',
     components: { SystemNotification },
     props: {
+        appendAllTo: String,
         notifications: {
-            type: Array,
+            type: [Array, Object],
             default: () => []
         },
         placement: {
@@ -24,28 +31,42 @@ export default {
             validator: value => {
                 return ['topcenter', 'bottomright'].includes(value);
             }
-        },
-        appendAllTo: {
-            type: String,
-            default: null
         }
     },
     data() {
         return {
-            allNotifications: this.notifications
+            allNotifications: [],
+            counter: 0,
+            stoppedNotifications: false
         }
     },
     methods: {
-        getNotifications(type) {
-            return this.allNotifications.filter((n) => n.type === type);
-        },
-        destroyNotification(type, index) {
-
+        destroyNotification(notification) {
+            this.allNotifications = this.allNotifications.filter(n => n !== notification);
+        }
+    },
+    created() {
+        if (Array.isArray(this.notifications)) {
+            this.allNotifications = [...this.notifications];
+        } else {
+            this.allNotifications = Object.values(this.notifications);
         }
     },
     mounted() {
         this.globalOn('push-system-notification', notification => {
-            this.allNotifications.push(notification);
+            this.allNotifications.push({
+                key: this.counter++,
+                ...notification
+            });
+        });
+
+        window.addEventListener('keydown', evt => {
+            if (evt.altKey && evt.ctrlKey && evt.code === 'KeyT') {
+                this.stoppedNotifications = !this.stoppedNotifications;
+
+                const event = this.stoppedNotifications ? 'disrupt-system-notifications' : 'resume-system-notifications';
+                this.globalEmit(event);
+            }
         });
     }
 }

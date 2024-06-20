@@ -39,6 +39,9 @@ Vue.mixin({
         globalOn(...args) {
             eventBus.on(...args);
         },
+        globalOff(...args) {
+            eventBus.off(...args);
+        },
         getStudipConfig: store.getters['studip/getConfig']
     },
 });
