@@ -92,7 +92,7 @@
                 <tr v-for="(course) in courses" :key="course.id" class="studip-tree-child studip-tree-course">
                     <td>
                         <a :href="courseUrl(course.id)" tabindex="0"
-                           :title="$gettextInterpolate($gettext('Zur Veranstaltung %{ title }'),
+                           :title="$gettextInterpolate($gettext('fZur Veranstaltung %{ title }'),
                                 { title: course.attributes.title })">
                             <studip-icon shape="seminar" :size="26"></studip-icon>
                             <template v-if="course.attributes['course-number']">
