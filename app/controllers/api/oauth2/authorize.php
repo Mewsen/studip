@@ -55,7 +55,7 @@ class Api_Oauth2_AuthorizeController extends OAuth2Controller
         if ('nobody' === $GLOBALS['user']->id && 'Standard' !== $authPlugin && !Request::option('sso')) {
             $queryParams = $psrRequest->getQueryParams();
             $queryParams['sso'] = strtolower($authPlugin);
-            $this->redirect($this->url_for('api/oauth2/authorize', $queryParams));
+            $this->redirect($this->url_for('api/oaut2/authorize', $queryParams));
 
             return;
         } else {
