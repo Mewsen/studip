@@ -35,7 +35,8 @@
                                             $gettext(
                                                 'Sortierelement für Werkzeug %{module}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.'
                                             ),
-                                            { module: module.displayname }
+                                            { module: module.displayname },
+                                            true
                                         )
                                     "
                                     @keydown="keyboardHandler($event, module)"
@@ -76,7 +77,8 @@
                                                 $gettext(
                                                     'Inhaltsmodul %{ name } für Teilnehmende unsichtbar bzw. sichtbar schalten'
                                                 ),
-                                                { name: module.displayname }
+                                                { name: module.displayname },
+                                                true
                                             )
                                         "
                                     ></studip-icon>
@@ -90,7 +92,8 @@
                                                 $gettext(
                                                     'Umbenennen des Inhaltsmoduls %{ name }'
                                                 ),
-                                                { name: module.displayname }
+                                                { name: module.displayname },
+                                                true
                                             )
                                         "
                                     ></studip-icon>

@@ -42,7 +42,7 @@
                     <td class="perm">
                         <input
                             class="right"
-                            :title="$gettextInterpolate($gettext('Leserechte für %{ userName }'), { userName: user_perm.username })"
+                            :title="$gettextInterpolate($gettext('Leserechte für %{ userName }'), { userName: user_perm.username }, true)"
                             type="radio"
                             :name="`${user_perm.id}_right`"
                             value="read"
@@ -53,7 +53,7 @@
                     <td class="perm">
                         <input
                             class="right"
-                            :title="$gettextInterpolate($gettext('Lese- und Schreibrechte für %{ userName }'), { userName: user_perm.username })"
+                            :title="$gettextInterpolate($gettext('Lese- und Schreibrechte für %{ userName }'), { userName: user_perm.username }, true)"
                             type="radio"
                             :name="`${user_perm.id}_right`"
                             value="write"
@@ -75,7 +75,7 @@
                     <td class="actions">
                         <button
                             class="cw-permission-delete"
-                            :title="$gettextInterpolate($gettext('Entfernen der Rechte von %{ userName }'), { userName: user_perm.username })"
+                            :title="$gettextInterpolate($gettext('Entfernen der Rechte von %{ userName }'), { userName: user_perm.username }, true)"
                             @click.prevent="confirmDeleteUserPerm(index)"
                         >
                         </button>

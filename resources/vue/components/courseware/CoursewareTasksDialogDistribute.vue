@@ -174,7 +174,7 @@
                                         :aria-label="
                                             $gettextInterpolate($gettext('%{userName} auswählen'), {
                                                 userName: user.formattedname,
-                                            })
+                                            }, true)
                                         "
                                     />
                                 </td>
@@ -212,7 +212,7 @@
                                         :aria-label="
                                             $gettextInterpolate($gettext('%{groupName} auswählen'), {
                                                 groupName: group.name,
-                                            })
+                                            }, true)
                                         "
                                     />
                                 </td>

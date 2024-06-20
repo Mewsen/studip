@@ -1,6 +1,6 @@
 <template>
     <a :href="url" @click.prevent="openNode" :title="$gettextInterpolate($gettext('Unterebene %{ node } öffnen'),
-                                { node: node.attributes.name })">
+                                { node: node.attributes.name }, true)">
         <p class="studip-tree-child-title">
             {{ node.attributes.name }}
         </p>
