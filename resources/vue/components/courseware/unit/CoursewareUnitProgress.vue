@@ -17,7 +17,7 @@
             <h1>
                 <a
                     :href="chapterUrl"
-                    :title="$gettextInterpolate('%{ pageTitle } öffnen', { pageTitle: selected.name })"
+                    :title="$gettextInterpolate('%{ pageTitle } öffnen', { pageTitle: selected.name }, true)"
                 >
                     {{ selected.name }}
                 </a>

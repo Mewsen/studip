@@ -138,7 +138,7 @@
                     >
                         <a href="#"
                            @click.prevent
-                           :title="$gettextInterpolate($gettext('Nach %{ colName } sortieren'), {colName: name})">
+                           :title="$gettextInterpolate($gettext('Nach %{ colName } sortieren'), {colName: name}, true)">
                             {{name}}
                         </a>
                     </th>
@@ -176,14 +176,14 @@
                         <a :href="folder.url"
                            :id="`folder-${folder.id}`"
                            :title="$gettextInterpolate($gettext('Ordner %{foldername} öffnen'),
-                           { foldername: folder.name})">
+                           { foldername: folder.name}, true)">
                             <studip-icon :shape="folder.icon" :size="26" class="text-bottom" alt=""></studip-icon>
                         </a>
                     </td>
                     <td :class="{'filter-match': valueMatchesFilter(folder.name)}">
                         <a :href="folder.url"
                            :title="$gettextInterpolate($gettext('Ordner %{foldername} öffnen'),
-                           { foldername: folder.name})">
+                           { foldername: folder.name}, true)">
                             <span v-html="highlightString(folder.name)"></span>
                         </a>
                     </td>
@@ -234,7 +234,7 @@
                            :href="file.download_url"
                            target="_blank" rel="noopener noreferrer"
                            :title="$gettextInterpolate($gettext('Datei %{filename} herunterladen'),
-                            { filename: file.name })">
+                            { filename: file.name }, true)">
                             <studip-icon :shape="file.icon" role="clickable" size="24" class="text-bottom"></studip-icon>
                         </a>
                         <studip-icon v-else :shape="file.icon" role="clickable" size="24"></studip-icon>
@@ -243,14 +243,14 @@
                            class="lightbox-image"
                            data-lightbox="gallery"
                            :title="$gettextInterpolate($gettext('Datei %{filename} anzeigen'),
-                            { filename: file.name })"></a>
+                            { filename: file.name }, true)"></a>
                     </td>
                     <td :class="{'filter-match': valueMatchesFilter(file.name)}">
                         <a :href="file.details_url"
                            data-dialog
                            :id="`file-${file.id}`"
                            :title="$gettextInterpolate($gettext('Details zur Datei %{filename} anzeigen'),
-                            { filename: file.name })">
+                            { filename: file.name }, true)">
                             <span v-html="highlightString(file.name)"></span>
                             <studip-icon v-if="file.isAccessible"
                                          shape="accessibility"

@@ -15,7 +15,7 @@
                 <a v-if="editable && currentNode.attributes.id !== 'root'"
                    :href="editUrl + '/' + currentNode.attributes.id"
                    @click.prevent="editNode(editUrl, currentNode.id)" data-dialog="size=medium"
-                   :title="$gettextInterpolate($gettext('%{name} bearbeiten'), {name: currentNode.attributes.name})">
+                   :title="$gettextInterpolate($gettext('%{name} bearbeiten'), {name: currentNode.attributes.name}, true)">
                     <studip-icon shape="edit" :size="20"></studip-icon>
                 </a>
 
@@ -36,7 +36,7 @@
                 <li v-for="(child, index) in children" :key="index" class="studip-tree-child">
                     <a v-if="editable && children.length > 1" class="drag-link"
                        tabindex="0"
-                       :title="$gettextInterpolate($gettext('Sortierelement für Element %{node}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.'), {node: child.attributes.name})"
+                       :title="$gettextInterpolate($gettext('Sortierelement für Element %{node}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.'), {node: child.attributes.name}, true)"
                        @keydown="keyHandler($event, index)"
                        :ref="'draghandle-' + index">
                         <span class="drag-handle"></span>
@@ -92,8 +92,11 @@
                 <tr v-for="(course) in courses" :key="course.id" class="studip-tree-child studip-tree-course">
                     <td>
                         <a :href="courseUrl(course.id)" tabindex="0"
-                           :title="$gettextInterpolate($gettext('Zur Veranstaltung %{ title }'),
-                                { title: course.attributes.title })">
+                           :title="$gettextInterpolate(
+                               $gettext('Zur Veranstaltung %{ title }'),
+                               { title: course.attributes.title },
+                               true
+                           )">
                             <studip-icon shape="seminar" :size="26"></studip-icon>
                             <template v-if="course.attributes['course-number']">
                                 {{ course.attributes['course-number'] }}

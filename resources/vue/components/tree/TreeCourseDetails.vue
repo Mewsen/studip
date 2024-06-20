@@ -12,7 +12,7 @@
             <span v-for="(lecturer, index) in details.lecturers" :key="index">
                 <a :href="profileUrl(lecturer.username)"
                    :title="$gettextInterpolate($gettext('Zum Profil von %{ user }'),
-                        { user: lecturer.name })"
+                        { user: lecturer.name }, true)"
                    tabindex="0">
                     {{ lecturer.name }}
                 </a><template v-if="details.lecturers.length > 1 && index < details.lecturers.length - 1">, </template>
