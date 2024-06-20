@@ -16,7 +16,7 @@
         "url": "https://develop.studip.de/svn/studip"
     },
     "engines": {
-        "node": ">=18"
+        "node": ">=16"
     },
     "devDependencies": {
         "@axe-core/playwright": "^4.6.1",
