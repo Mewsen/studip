@@ -31,7 +31,7 @@
                     </td>
                     <td>
                         <a :href="courseUrl(course.id)"
-                           :title="$gettextInterpolate($gettext('Zur Veranstaltung %{title}'), {title: course.attributes.title})"
+                           :title="$gettextInterpolate($gettext('Zur Veranstaltung %{title}'), {title: course.attributes.title}, true)"
                            tabindex="0">
                             <template v-if="course.attributes['course-number']">
                                 {{ course.attributes['course-number'] }}

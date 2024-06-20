@@ -23,7 +23,7 @@
                 <th v-for="activeField in sortedActivatedFields" :key="`field-${activeField}`" :class="sort.by === activeField ? 'sort' + sort.direction.toLowerCase() : ''">
                     <a href="#"
                        @click.prevent="changeSort(activeField)"
-                       :title="sort.by === activeField && sort.direction === 'ASC' ? $gettextInterpolate('Sortiert aufsteigend nach %{field}', {field: fields[activeField]}) : (sort.by === activeField && sort.direction === 'DESC' ? $gettextInterpolate('Sortiert absteigend nach %{ field } ', { field: fields[activeField]}) : $gettextInterpolate('Sortieren nach %{ field }', { field: fields[activeField]}))"
+                       :title="sort.by === activeField && sort.direction === 'ASC' ? $gettextInterpolate('Sortiert aufsteigend nach %{field}', {field: fields[activeField]}, true) : (sort.by === activeField && sort.direction === 'DESC' ? $gettextInterpolate('Sortiert absteigend nach %{ field } ', { field: fields[activeField]}, true) : $gettextInterpolate('Sortieren nach %{ field }', { field: fields[activeField]}, true))"
                        v-if="!unsortableFields.includes(activeField)"
                     >
                         {{ fields[activeField] }}

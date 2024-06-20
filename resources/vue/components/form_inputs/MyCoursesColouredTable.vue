@@ -42,7 +42,7 @@
                         <input type="hidden" :name="`${name}_course_ids[${course.id}]`" value="0">
                         <input type="checkbox" :name="`${name}_course_ids[${course.id}]`"
                                value="1" :checked="selected_course_id_list.includes(course.id)"
-                               :title="$gettextInterpolate($gettext('%{course} auswählen'), {course: course.name})">
+                               :title="$gettextInterpolate($gettext('%{course} auswählen'), {course: course.name}, true)">
                     </td>
                 </tr>
                 <tr v-if="loadedSemesters.includes(semester_id) && courses.length === 0">

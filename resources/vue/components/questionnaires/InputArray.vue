@@ -22,7 +22,7 @@
                     <td class="dragcolumn">
                         <a class="dragarea"
                            tabindex="0"
-                           :title="$gettextInterpolate($gettext(`Sortierelement für %{label} %{option}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.`), {option, label})"
+                           :title="$gettextInterpolate($gettext(`Sortierelement für %{label} %{option}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.`), {option, label}, true)"
                            @keydown="keyHandler($event, index)"
                            ref="draghandle">
                             <span class="drag-handle"></span>
@@ -41,7 +41,7 @@
                                      shape="trash"
                                      :size="20"
                                      @click.prevent="deleteOption(index)"
-                                     :title="$gettextInterpolate($gettext('%{label} löschen'), {label})"
+                                     :title="$gettextInterpolate($gettext('%{label} löschen'), {label}, true)"
                         />
                     </td>
                 </tr>
@@ -50,7 +50,7 @@
                 <tr>
                     <td :colspan="3 + additionalColspan">
                         <button class="as-link"
-                                :title="$gettextInterpolate($gettext('%{label} hinzufügen'),  {label})"
+                                :title="$gettextInterpolate($gettext('%{label} hinzufügen'),  {label}, true)"
                                 @click.prevent="addOption()">
                             <StudipIcon shape="add" :size="20" alt="" />
                         </button>

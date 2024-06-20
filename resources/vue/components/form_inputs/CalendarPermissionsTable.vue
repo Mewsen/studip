@@ -30,14 +30,16 @@
                                v-model="user.write_permissions"
                                :aria-label="$gettextInterpolate(
                                    $gettext('Schreibzugriff für %{name}'),
-                                   {name: user.name}
+                                   {name: user.name},
+                                   true
                                )">
                     </td>
                     <td class="actions">
                         <studip-icon shape="trash" aria-role="button" @click="removeContact(user.id)"
                                      :title="$gettextInterpolate(
                                          $gettext('Kalender nicht mehr mit %{name} teilen'),
-                                         {name: user.name}
+                                         {name: user.name},
+                                         true
                                      )"></studip-icon>
                     </td>
                 </tr>

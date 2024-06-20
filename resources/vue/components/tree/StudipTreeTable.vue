@@ -79,7 +79,7 @@
                     <td>
                         <a v-if="editable && children.length > 1" class="drag-link" role="option"
                            tabindex="0"
-                           :title="$gettextInterpolate($gettext('Sortierelement für Element %{node}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.'), {node: child.attributes.name})"
+                           :title="$gettextInterpolate($gettext('Sortierelement für Element %{node}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.'), {node: child.attributes.name}, true)"
                            @keydown="keyHandler($event, index)"
                            :ref="'draghandle-' + index">
                             <span class="drag-handle"></span>
@@ -93,7 +93,7 @@
                         <a :href="nodeUrl(child.id, semester !== 'all' ? semester : null)" tabindex="0"
                            @click.prevent="openNode(child)"
                            :title="$gettextInterpolate($gettext('Unterebene %{ node } öffnen'),
-                                { node: node.attributes.name })">
+                                { node: node.attributes.name }, true)">
                             {{ child.attributes.name }}
                         </a>
                     </td>
@@ -112,8 +112,11 @@
                     </td>
                     <td>
                         <a :href="courseUrl(course.id)" tabindex="0"
-                           :title="$gettextInterpolate($gettext('Zur Veranstaltung %{ title }'),
-                                { title: course.attributes.title })">
+                           :title="$gettextInterpolate(
+                               $gettext('Zur Veranstaltung %{ title }'),
+                               { title: course.attributes.title },
+                               true
+                           )">
                             <template v-if="course.attributes['course-number']">
                                 {{ course.attributes['course-number'] }}
                             </template>

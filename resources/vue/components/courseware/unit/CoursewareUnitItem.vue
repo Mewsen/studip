@@ -63,7 +63,7 @@
             :question="
                 $gettextInterpolate($gettext('Möchten Sie das Lernmaterial %{ unitTitle } wirklich löschen?'), {
                     unitTitle: title,
-                })
+                }, true)
             "
             height="200"
             @confirm="executeDelete"
