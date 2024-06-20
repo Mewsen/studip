@@ -72,7 +72,7 @@ div.messagebox_details {
 
 // Define modal messagebox
 .modaloverlay {
-    background: fadeout($base-color, 50%);
+    background: fade-out($base-color, 0.5);
     position: fixed;
     top: 0;
     left: 0;
