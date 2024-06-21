@@ -14,8 +14,6 @@
  * @category    Stud.IP
  */
 
-require_once 'lib/classes/admission/AdmissionRule.class.php';
-
 class TermsAdmission extends AdmissionRule
 {
     // Terms of admission
