@@ -123,7 +123,7 @@ class CourseGroupFolder extends StandardFolder
     public function getEditTemplate()
     {
         $template = $GLOBALS['template_factory']->open('filesystem/group_folder/edit.php');
-        $group = Statusgruppen::find($this->folderdata['data_content']['group']);
+        $group = Statusgruppen::find($this->folderdata['data_content']['group'] ?? null);
         $template->set_attribute('group', $group);
         $template->set_attribute('folder', $this);
         return $template;
@@ -151,7 +151,7 @@ class CourseGroupFolder extends StandardFolder
      */
     public function getDescriptionTemplate()
     {
-        $group = new Statusgruppen($this->folderdata['data_content']['group']);
+        $group = new Statusgruppen($this->folderdata['data_content']['group'] ?? null);
 
         $template = $GLOBALS['template_factory']->open('filesystem/group_folder/description.php');
         $template->type       = self::getTypeName();

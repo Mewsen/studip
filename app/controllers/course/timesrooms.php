@@ -498,7 +498,7 @@ class Course_TimesroomsController extends AuthenticatedController
                 '<strong>' . htmlReady($singledate->toString()) . '</strong>'
             ));
         }
-        if ($singledate->messages['error']) {
+        if (!empty($singledate->messages['error'])) {
             PageLayout::postError(
                 _('Die folgenden Fehler traten beim Bearbeiten des Termins auf:'),
                 htmlReady($singledate->messages['error'])
@@ -1666,7 +1666,7 @@ class Course_TimesroomsController extends AuthenticatedController
             } else {
                 $user_rooms = RoomManager::getUserRooms($current_user);
                 foreach ($user_rooms as $room) {
-                    if ($room->userHasBookingRights($current_user, $begin, $end)) {
+                    if ($room->userHasBookingRights($current_user, $begin ?? null, $end ?? null)) {
                         $rooms_with_booking_permissions++;
                         if ($only_bookable_rooms) {
                             foreach ($all_time_intervals as $interval) {
