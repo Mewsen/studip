@@ -127,7 +127,7 @@
                                 <studip-file-chooser
                                     v-model="currentFileId"
                                     selectable="file"
-                                    :courseId="studipContext.id"
+                                    :courseId="context.id"
                                     :userId="userId"
                                     :isImage="true"
                                     :excludedCourseFolderTypes="excludedCourseFolderTypes"
@@ -187,7 +187,7 @@ export default {
             currentUserView: 'own',
             currentFile: {},
 
-            context: {},
+            canvasContext: {},
             paint: false,
             write: false,
             clickX: [],
@@ -221,7 +221,6 @@ export default {
     },
     computed: {
         ...mapGetters({
-            studipContext: 'context',
             fileRefById: 'file-refs/byId',
             getUserDataById: 'courseware-user-data-fields/byId',
             relatedUserData: 'user-data-field/related',
@@ -301,9 +300,7 @@ export default {
             return this.currentUploadFolderId !== "";
         },
         canSwitchView() {
-            // this feature is not something to offer in the Arbeitsplatz!
-            let context = this.$store.getters.context;
-            if (context.type !== 'courses') {
+            if (this.context.type !== 'courses') {
                 return false;
             }
             if (this.currentShowUserData === 'off') {
@@ -419,7 +416,7 @@ export default {
             } else {
                 canvas.height = 500;
             }
-            this.context = canvas.getContext('2d');
+            this.canvasContext = canvas.getContext('2d');
             this.setColor('blue');
             this.currentSize = this.sizes['normal'];
             this.currentTool = this.tools['pen'];
@@ -427,7 +424,7 @@ export default {
         },
         redraw() {
             let view = this;
-            let context = view.context;
+            let context = view.canvasContext;
             context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
             context.fillStyle = '#ffffff';
             context.fillRect(0, 0, context.canvas.width, context.canvas.height); // set background
@@ -658,7 +655,7 @@ export default {
         },
         async store() {
             let user = this.usersById({id: this.userId});
-            let imageBase64 = this.context.canvas.toDataURL("image/jpeg", 1.0);
+            let imageBase64 = this.canvasContext.canvas.toDataURL("image/jpeg", 1.0);
             let image = await fetch(imageBase64);
             let imageBlob = await image.blob();
             let file = {};
