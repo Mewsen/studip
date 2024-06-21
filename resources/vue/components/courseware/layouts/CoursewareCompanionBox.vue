@@ -1,6 +1,9 @@
 <script>
 export default {
     name: 'courseware-companion-box',
+    render(createElement) {
+        return null;
+    },
     props: {
         msgCompanion: String,
         mood: {

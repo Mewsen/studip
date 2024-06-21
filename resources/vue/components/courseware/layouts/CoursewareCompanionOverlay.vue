@@ -3,6 +3,9 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-companion-overlay',
+    render(createElement) {
+        return null;
+    },
     computed: {
         ...mapGetters({
             showCompanion: 'showCompanionOverlay',
