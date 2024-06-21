@@ -1,3 +1,18 @@
+<?php
+/**
+ * @var Course_TimesroomsController $controller
+ * @var CourseDate $date
+ * @var Room[] $selectable_rooms
+ * @var QuickSearch|null $room_search
+ * @var bool $only_bookable_rooms
+ * @var int $preparation_time
+ * @var int $max_preparation_time
+ * @var CourseMember[] $teachers
+ * @var User[] $assigned_teachers
+ * @var Statusgruppen[] $groups
+ * @var Statusgruppen[] $assigned_groups
+ */
+?>
 <form action="<?= $controller->link_for('course/timesrooms/saveDate/' . $date->termin_id) ?>"
       method="post" class="default collapsable" <?= Request::int('fromDialog') ? 'data-dialog="size=big"' : '' ?>>
     <?= CSRFProtection::tokenTag() ?>
@@ -177,7 +192,7 @@
                 <ul>
                     <? foreach ($assigned_groups as $group) : ?>
                         <li data-selection-id="<?= htmlReady($group->id) ?>">
-                            <input type="hidden" name="assigned_groups[]"
+                            <input type="hidden" name="assigned-groups[]"
                                    value="<?= htmlReady($group->id) ?>">
 
                             <span class="studip-selection-label">
