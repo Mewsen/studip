@@ -40,14 +40,14 @@ class ProfileController extends AuthenticatedController
 
         // set the page title depending on user selection
         if (
-            $this->user
+            isset($this->user, $this->current_user)
             && $this->current_user->id === $this->user->id
             && !$this->current_user->locked
         ) {
             PageLayout::setTitle(_('Mein Profil'));
             UserConfig::get($this->user->id)->store('PROFILE_LAST_VISIT', time());
         } elseif (
-            $this->current_user->id
+            !empty($this->current_user->id)
             && (
                 $this->perm->have_perm('root')
                 || (
@@ -139,17 +139,16 @@ class ProfileController extends AuthenticatedController
         }
 
         // calendar
-        $this->dates = '';
-        if (Config::get()->CALENDAR_ENABLE) {
-            if (!in_array($this->current_user->perms, ['admin', 'root'])) {
-                if (Visibility::verify('termine', $this->current_user->user_id)) {
-                    $start = time();
-                    $end   = strtotime('+1 week 23:59:59');
+        if (
+            Config::get()->CALENDAR_ENABLE
+            && !in_array($this->current_user->perms, ['admin', 'root'])
+            && Visibility::verify('termine', $this->current_user->user_id)
+        ) {
+            $start = time();
+            $end   = strtotime('+1 week 23:59:59');
 
-                    $response    = $this->relay('calendar/contentbox/display/' . $this->current_user->user_id . '/' . ($end - $start));
-                    $this->dates = $response->body;
-                }
-            }
+            $response    = $this->relay('calendar/contentbox/display/' . $this->current_user->user_id . '/' . ($end - $start));
+            $this->dates = $response->body;
         }
 
         // include and show votes and tests
