@@ -1,7 +1,7 @@
 <?php
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// StudipAuthAbstract.class.php
+// StudipAuthAbstract.php
 // Abstract class, used as a template for authentication plugins
 //
 // Copyright (c) 2003 André Noack <noack@data-quest.de>

@@ -1,6 +1,6 @@
 <?php
 /**
- * ContentTermsOfUse.class.php
+ * ContentTermsOfUse.php
  * model class for table licenses
  *
  * The ContentTermsOfUse class provides information about the terms under which

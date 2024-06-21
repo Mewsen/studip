@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GlobalResourceLock.class.php - model class for resource locks
+ * GlobalResourceLock.php - model class for resource locks
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

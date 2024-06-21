@@ -1,6 +1,6 @@
 <?php
 /**
- * WikiPage.class.php
+ * WikiPage.php
  * model class for table wiki
  *
  * This program is free software; you can redistribute it and/or

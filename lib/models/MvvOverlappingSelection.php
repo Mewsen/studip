@@ -1,6 +1,6 @@
 <?php
 /**
- * MvvOverlappingSelection.class.php - model class for table mvv_ovl_selections
+ * MvvOverlappingSelection.php - model class for table mvv_ovl_selections
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

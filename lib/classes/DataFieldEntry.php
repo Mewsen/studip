@@ -1,6 +1,6 @@
 <?php
 /**
- * DataFieldEntry.class.php
+ * DataFieldEntry.php
  *
  * @author  Jan-Hendrik Willms <tleilax+studip@gmail.com>
  * @author  Marcus Lunzenauer <mlunzena@uos.de>

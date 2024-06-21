@@ -1,6 +1,6 @@
 <?php
 /**
- * Role.class.php
+ * Role.php
  *
  * @author      Dennis Reil <dennis.reil@offis.de>
  * @author      Michael Riehemann <michael.riehemann@uni-oldenburg.de>

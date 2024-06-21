@@ -1,6 +1,6 @@
 <?php
 /**
- * LockRule.class.php
+ * LockRule.php
  * model class for table lock_rule
  * this class represents one record of the lock_rules table
  * the column attributes is converted to an ArrayObject and vice-versa,

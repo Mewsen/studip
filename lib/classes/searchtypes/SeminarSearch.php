@@ -1,7 +1,7 @@
 <?php
 # Lifter010: TODO
 /**
- * SeminarSearch.class.php
+ * SeminarSearch.php
  * class to adapt StudipSemSearch to Quicksearch
  *
  * This program is free software; you can redistribute it and/or

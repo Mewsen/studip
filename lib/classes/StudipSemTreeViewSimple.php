@@ -6,7 +6,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// StudipSemTreeViewSimple.class.php
+// StudipSemTreeViewSimple.php
 // Class to print out the seminar tree
 //
 // Copyright (c) 2003 André Noack <noack@data-quest.de>

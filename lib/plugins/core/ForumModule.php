@@ -1,6 +1,6 @@
 <?php
 /**
- * ForumModule.class.php - Interface for all intersections between the Stud.IP 
+ * ForumModule.php - Interface for all intersections between the Stud.IP
  *                         Core and something that behaves like a forum
  *
  * Implement all interface methods and you can integrate your plugin like

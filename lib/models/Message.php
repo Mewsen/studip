@@ -1,6 +1,6 @@
 <?php
 /**
- * Message.class.php
+ * Message.php
  * model class for table message
  *
  * This program is free software; you can redistribute it and/or

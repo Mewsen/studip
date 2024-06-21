@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// DbSnapshot.class.php
+// DbSnapshot.php
 // Class to provide snapshots of mysql result sets
 // Uses PHPLib DB Abstraction
 // Copyright (c) 2002 André Noack <andre.noack@gmx.net>

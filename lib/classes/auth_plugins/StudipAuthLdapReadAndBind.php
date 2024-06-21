@@ -4,7 +4,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// StudipAuthLdapReadAndBind.class.php
+// StudipAuthLdapReadAndBind.php
 // Stud.IP authentication against LDAP Server using read-only account and
 // user bind
 //

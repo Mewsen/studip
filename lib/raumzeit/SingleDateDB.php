@@ -4,9 +4,9 @@
 # Lifter010: DONE
 // +--------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// SingleDateDB.class.php
+// SingleDateDB.php
 //
-// Datenbank-Abfragen für SingleDate.class.php
+// Datenbank-Abfragen für SingleDate.php
 //
 // +--------------------------------------------------------------------------+
 // This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 
 
 /**
- * SingleDateDB.class.php
+ * SingleDateDB.php
  *
  *
  * @author      Till Glöggler <tgloeggl@uos.de>

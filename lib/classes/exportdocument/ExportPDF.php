@@ -1,7 +1,7 @@
 <?php
 # Lifter010: TODO
 /**
- * ExportPDF.class.php - create and export or save a pdf with simple HTML-Data
+ * ExportPDF.php - create and export or save a pdf with simple HTML-Data
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

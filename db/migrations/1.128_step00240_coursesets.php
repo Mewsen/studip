@@ -1,6 +1,6 @@
 <?php
 require_once 'vendor/phpass/PasswordHash.php';
-require_once 'lib/classes/admission/CourseSet.class.php';
+require_once 'lib/classes/admission/CourseSet.php';
 
 class Step00240CourseSets extends Migration
 {

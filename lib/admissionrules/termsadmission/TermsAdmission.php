@@ -1,6 +1,6 @@
 <?php
 /**
- * TermsAdmission.class.php
+ * TermsAdmission.php
  *
  * Represents a rule for course access with conditions of admission to be accepted.
  *

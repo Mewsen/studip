@@ -1,6 +1,6 @@
 <?php
 /**
- * Markup.class.php - Handling of Stud.IP- and HTML-markup.
+ * Markup.php - Handling of Stud.IP- and HTML-markup.
  **
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

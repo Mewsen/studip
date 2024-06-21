@@ -1,6 +1,6 @@
 <?php
 /**
- * User.class.php
+ * User.php
  * model class for combined auth_user_md5/user_info record
  * this class represents one user, the attributes from tables
  * auth_user_md5 and user_info were merged.
@@ -395,7 +395,7 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
     }
 
     /**
-     * Temporary migrate to User.class.php
+     * Temporary migrate to User.php
      *
      * @param $attributes
      * @return array

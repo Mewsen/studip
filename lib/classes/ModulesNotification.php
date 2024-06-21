@@ -4,7 +4,7 @@
 # Lifter003: TEST
 # Lifter010: DONE - no html output in this file
 /**
-* ModulesNotification.class.php
+* ModulesNotification.php
 *
 * check for modules (global and local for institutes and Veranstaltungen), read and write
 *
@@ -17,7 +17,7 @@
 
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// Modules.class.php
+// Modules.php
 // Checks fuer Module (global und lokal fuer Veranstaltungen und Einrichtungen), Schreib-/Lesezugriff
 // Copyright (C) 2003 Cornelis Kater <ckater@gwdg.de>, Suchi & Berg GmbH <info@data-quest.de>
 // +---------------------------------------------------------------------------+

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Resource.class.php - model class for a resource
+ * Resource.php - model class for a resource
  *
  * The Resource class is the base class of the new
  * Room and Resource management system in Stud.IP.

@@ -1,7 +1,7 @@
 <?php
 # Lifter010: TODO
 /*
- * StandardPlugin.class.php - course or institute plugin interface
+ * StandardPlugin.php - course or institute plugin interface
  *
  * Copyright (c) 2008 - Marcus Lunzenauer <mlunzena@uos.de>
  * Copyright (c) 2009 - Elmar Ludwig

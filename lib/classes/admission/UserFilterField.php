@@ -1,7 +1,7 @@
 <?php
 
 /**
- * UserFilterField.class.php
+ * UserFilterField.php
  *
  * A specification of a Stud.IP condition that must be fulfilled. One
  * or more instances of the UserFilterField subclasses make up a
@@ -197,11 +197,10 @@ class UserFilterField
         if (self::$available_filter_fields === null) {
         $fields = [];
         // Load all PHP class files found in the condition field folder.
-        foreach (glob(realpath(dirname(__FILE__).'/userfilter').'/*.class.php') as $file) {
+        foreach (glob(realpath(dirname(__FILE__).'/userfilter').'/*.php') as $file) {
             require_once($file);
             // Try to auto-calculate class name from file name.
-            $className = mb_substr(basename($file), 0,
-                mb_strpos(basename($file), '.class.php'));
+            $className = mb_substr(basename($file), 0, mb_strpos(basename($file), '.php'));
             // Check if class is right.
             if (is_subclass_of($className, 'UserFilterField')) {
                 if ($className::$isParameterized) {

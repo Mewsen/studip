@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Seminar_Auth.class.php
+ * Seminar_Auth.php
  *
  *
  * This program is free software; you can redistribute it and/or

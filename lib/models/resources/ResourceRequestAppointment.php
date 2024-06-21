@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ResourceRequestAppointment.class.php - Contains a model class for
+ * ResourceRequestAppointment.php - Contains a model class for
  * the resource_request_appointments table.
  *
  * ResourceRequestAppointment is a model class to connect

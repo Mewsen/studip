@@ -1,12 +1,12 @@
 <?php
 /**
-* garbage_collector.class.php
+* garbage_collector.php
 *
 * @author André Noack <noack@data-quest.de>, Suchi & Berg GmbH <info@data-quest.de>
 * @access public
 * @since  2.4
 */
-require_once 'lib/classes/CronJob.class.php';
+require_once 'lib/classes/CronJob.php';
 
 class GarbageCollectorJob extends CronJob
 {

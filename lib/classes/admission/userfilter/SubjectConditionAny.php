@@ -1,6 +1,6 @@
 <?php
 /**
- * SubjectConditionAny.class.php
+ * SubjectConditionAny.php
  *
  * All conditions concerning the study subject in Stud.IP can be specified here.
  *
@@ -14,7 +14,7 @@
  * @category    Stud.IP
  */
 
-require_once realpath(__DIR__ . '/..') . '/UserFilterField.class.php';
+require_once realpath(__DIR__ . '/..') . '/UserFilterField.php';
 
 class SubjectConditionAny extends UserFilterField
 {

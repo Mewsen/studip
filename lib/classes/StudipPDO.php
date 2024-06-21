@@ -1,6 +1,6 @@
 <?php
 /**
- * StudipPDO.class.php - Stud.IP PDO class
+ * StudipPDO.php - Stud.IP PDO class
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * InstituteCalendarHelper.class.php - class for institute calendar convenience functions
+ * InstituteCalendarHelper.php - class for institute calendar convenience functions
  *
  * @author      Timo Hartge <hartge@data-quest>
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2

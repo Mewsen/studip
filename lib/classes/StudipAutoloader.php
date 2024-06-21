@@ -52,8 +52,8 @@ class StudipAutoloader
     // file is found quickly and unneccessary, costly calls to file_exists()
     // can be avoided.
     protected static $file_extensions = [
-        '.class.php',
         '.php',
+        '.class.php',
         '.interface.php',
     ];
 

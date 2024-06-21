@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Semester.class.php
+ * Semester.php
  * model class for table semester_data
  *
  * This program is free software; you can redistribute it and/or

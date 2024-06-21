@@ -1,7 +1,7 @@
 <?php
 
 /**
- * LockedAdmission.class.php
+ * LockedAdmission.php
  * 
  * Represents a rule for completely locking courses for admission.
  *

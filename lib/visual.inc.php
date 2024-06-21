@@ -695,8 +695,8 @@ function display_exception($exception, $as_html = false, $deep = false) {
  * @return String Icon path for the mime type
  */
 //DEPRECATED: replaced by FileManager::getIconNameForMimeType
-//TODO: test: lib/extern/modules/ExternModuleDownload.class.php
-//TODO: test: lib/extern/modules/ExternModuleTemplateDownload.class.php
+//TODO: test: lib/extern/modules/ExternModuleDownload.php
+//TODO: test: lib/extern/modules/ExternModuleTemplateDownload.php
 /*
 function get_icon_for_mimetype($mime_type)
 {

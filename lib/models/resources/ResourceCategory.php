@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ResourceCategory.class.php - model class for resource categories
+ * ResourceCategory.php - model class for resource categories
  *
  * The ResourceCategory class can be used as a Factory for
  * Resource objects.

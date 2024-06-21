@@ -12,7 +12,7 @@
 
 /**
  * Class of type SearchType used for searches with QuickSearch
- * (lib/classes/QuickSearch.class.php). You can search for people with a given
+ * (lib/classes/QuickSearch.php). You can search for people with a given
  * Stud.IP permission level, either globally or at an institute.
  *
  * @author Thomas Hackl

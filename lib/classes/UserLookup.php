@@ -1,6 +1,6 @@
 <?php
 /**
- * UserLookup.class.php
+ * UserLookup.php
  *
  * provides an easy way to look up user ids by certain filter criteria
  *

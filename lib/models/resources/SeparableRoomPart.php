@@ -1,7 +1,7 @@
 <?php
 
 /**
- * SeparableRoomItem.class.php - model class for a separable room item
+ * SeparableRoomItem.php - model class for a separable room item
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

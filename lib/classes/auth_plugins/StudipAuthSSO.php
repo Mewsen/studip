@@ -3,7 +3,7 @@
 # Lifter003: TODO
 # Lifter010: TODO
 /*
- * StudipAuthSSO.class.php - abstract base class for SSO auth plugins
+ * StudipAuthSSO.php - abstract base class for SSO auth plugins
  * Copyright (c) 2007  Elmar Ludwig, Universitaet Osnabrueck
  *
  * This program is free software; you can redistribute it and/or

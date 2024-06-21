@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ResourceLabel.class.php - model class for a resource label
+ * ResourceLabel.php - model class for a resource label
  *
  * The ResourceLabel class represents headings or subheadings whose
  * only purpose is helping with organising the resource tree.

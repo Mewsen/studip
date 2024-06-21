@@ -4,7 +4,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// StudipAuthStandard.class.php
+// StudipAuthStandard.php
 // Basic Stud.IP authentication, using the Stud.IP database
 //
 // Copyright (c) 2003 André Noack <noack@data-quest.de>

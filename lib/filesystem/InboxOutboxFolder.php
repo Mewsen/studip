@@ -1,6 +1,6 @@
 <?php
 /**
- * InboxOutboxFolder.class.php
+ * InboxOutboxFolder.php
  *
  * This is a common FolderType implementation for inbox and outbox folders.
  * It it not meant to be used directly! Instead use the InboxFolder and

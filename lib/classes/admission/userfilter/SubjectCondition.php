@@ -1,6 +1,6 @@
 <?php
 /**
- * SubjectCondition.class.php
+ * SubjectCondition.php
  *
  * All conditions concerning the study subject in Stud.IP can be specified here.
  *

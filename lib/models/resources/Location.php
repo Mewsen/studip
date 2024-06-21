@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Location.class.php - model class for a resource which is a location
+ * Location.php - model class for a resource which is a location
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

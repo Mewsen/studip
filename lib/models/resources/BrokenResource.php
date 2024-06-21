@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ResourceLabel.class.php - model class for a resource label
+ * ResourceLabel.php - model class for a resource label
  *
  * The BrokenResource class represents resources whose class
  * cannot be found due to missing Resource specialisations

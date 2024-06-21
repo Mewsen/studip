@@ -4,7 +4,7 @@
 # Lifter007: TODO
 # Lifter010: TODO
 /**
- * Seminar.class.php - This class represents a Seminar in Stud.IP
+ * Seminar.php - This class represents a Seminar in Stud.IP
  *
  * This class provides functions for seminar-members, seminar-dates, and seminar-modules
  *

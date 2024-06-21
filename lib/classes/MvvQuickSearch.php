@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lib/classes/searchtypes/SQLSearch.class.php';
+require_once 'lib/classes/searchtypes/SQLSearch.php';
 
 class MvvQuickSearch extends SQLSearch
 {

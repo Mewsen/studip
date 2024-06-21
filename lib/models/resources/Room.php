@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Room.class.php - model class for a resource which is a room
+ * Room.php - model class for a resource which is a room
  *
  * The Room class is a derived class of the Resource class.
  * It containts specialisations for room resources.

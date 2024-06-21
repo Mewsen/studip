@@ -1,7 +1,7 @@
 <?php
 
 /**
- * UserFilter.class.php
+ * UserFilter.php
  *
  * Conditions for user selection in Stud.IP. A condition is a collection of
  * condition fields, e.g. degree, course of study or semester. Each

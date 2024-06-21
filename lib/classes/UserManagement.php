@@ -1,7 +1,7 @@
 <?php
 # Lifter007: TODO
 /**
- * UserManagement.class.php
+ * UserManagement.php
  *
  * Management for the Stud.IP global users
  *
@@ -25,7 +25,7 @@ require_once 'lib/messaging.inc.php';   // remove messages send or recieved by u
 require_once 'lib/object.inc.php';
 
 /**
- * UserManagement.class.php
+ * UserManagement.php
  *
  * Management for the Stud.IP global users
  *

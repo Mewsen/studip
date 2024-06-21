@@ -1,6 +1,6 @@
 <?php
 /**
- * HomeworkFolder.class.php
+ * HomeworkFolder.php
  *
  * This is a FolderType implementation for homework folders.
  *

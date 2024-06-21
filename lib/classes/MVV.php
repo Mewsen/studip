@@ -1,6 +1,6 @@
 <?php
 /**
- * MVV.class.php
+ * MVV.php
  * Helper class
  *
  * This program is free software; you can redistribute it and/or

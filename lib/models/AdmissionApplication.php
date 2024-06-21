@@ -1,6 +1,6 @@
 <?php
 /**
- * AdmissionApplication.class.php
+ * AdmissionApplication.php
  * model class for table admission_seminar_user
  *
  * This program is free software; you can redistribute it and/or

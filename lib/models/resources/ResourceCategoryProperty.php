@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ResourceCategoryProperty.class.php - model class for
+ * ResourceCategoryProperty.php - model class for
  * resource category properties
  *
  * This program is free software; you can redistribute it and/or

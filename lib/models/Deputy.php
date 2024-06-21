@@ -1,6 +1,6 @@
 <?php
 /**
- * Deputy.class.php
+ * Deputy.php
  * model class for table deputies
  *
  * This program is free software; you can redistribute it and/or

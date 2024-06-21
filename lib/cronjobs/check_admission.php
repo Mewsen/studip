@@ -4,7 +4,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 /**
-* check_admission.class.php
+* check_admission.php
 *
 * @author André Noack <noack@data-quest.de>, Suchi & Berg GmbH <info@data-quest.de>
 * @access public
@@ -49,7 +49,7 @@ class CheckAdmissionJob extends CronJob
 
     public function setUp()
     {
-        require_once 'lib/classes/admission/CourseSet.class.php';
+        require_once 'lib/classes/admission/CourseSet.php';
         if (empty($GLOBALS['ABSOLUTE_URI_STUDIP'])) {
             throw new Exception('To use check_admission job you MUST set correct values for $ABSOLUTE_URI_STUDIP in config_local.inc.php!');
         }

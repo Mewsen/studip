@@ -1,6 +1,6 @@
 <?php
 /**
- * Course.class.php
+ * Course.php
  * model class for table seminare
  *
  * This program is free software; you can redistribute it and/or

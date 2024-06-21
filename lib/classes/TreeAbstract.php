@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// TreeAbstract.class.php
+// TreeAbstract.php
 // Abstract Base Class to handle in-memory tree structures
 //
 // Copyright (c) 2002 André Noack <noack@data-quest.de>

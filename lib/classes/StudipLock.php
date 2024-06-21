@@ -1,6 +1,6 @@
 <?php
 /**
- * StudipLock.class.php
+ * StudipLock.php
  * class with methods to perform cooperative advisory locking
  * using the GET_LOCK feature from Mysql
  * https://dev.mysql.com/doc/refman/5.0/en/miscellaneous-functions.html#function_get-lock

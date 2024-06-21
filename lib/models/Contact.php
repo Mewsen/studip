@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Contact.class.php - model class for table contact
+ * Contact.php - model class for table contact
  *
  * @author      <mlunzena@uos.de>
  * @license GPL 2 or later

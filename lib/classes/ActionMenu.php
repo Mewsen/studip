@@ -410,7 +410,7 @@ class ActionMenu
         $rendering_mode = $this->rendering_mode;
 
         if ($rendering_mode === null) {
-            $rendering_mode = $this->countActions() <= Config::get()->ACTION_MENU_THRESHOLD
+            $rendering_mode = $this->countActions() <= 1 // Config::get()->ACTION_MENU_THRESHOLD
                             ? self::RENDERING_MODE_ICONS
                             : self::RENDERING_MODE_MENU;
         }

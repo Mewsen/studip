@@ -1,6 +1,6 @@
 <?php
 /**
- * AuthUserMd5.class.php
+ * AuthUserMd5.php
  * model class for table auth_user_md5
  *
  * This program is free software; you can redistribute it and/or

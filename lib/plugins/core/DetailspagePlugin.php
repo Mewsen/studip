@@ -1,6 +1,6 @@
 <?php
 /*
- * DetailspagePlugin.class.php
+ * DetailspagePlugin.php
  *
  * Copyright (c) 2019 - Rasmus Fuhse <fuhse@data-quest.de>
  *

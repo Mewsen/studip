@@ -1,6 +1,6 @@
 <?php
 /*
- * StudipAuthLTI.class.php - Stud.IP authentication against LTI 1.1 consumer
+ * StudipAuthLTI.php - Stud.IP authentication against LTI 1.1 consumer
  * Copyright (c) 2018  Elmar Ludwig
  *
  * This program is free software; you can redistribute it and/or

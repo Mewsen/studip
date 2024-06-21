@@ -5,7 +5,7 @@
 # Lifter010: TODO
 
 /*
- * PmWikiConnectedLink.class.php - Provides links to PmWiki Modules
+ * PmWikiConnectedLink.php - Provides links to PmWiki Modules
  *
  * Copyright (C) 2006 - Marco Diedrich (mdiedric@uos.de)
  *

@@ -1,7 +1,7 @@
 <?php
 # Lifter010: TODO
 /**
- * MessageBox.class.php
+ * MessageBox.php
  *
  * html boxes for different kinds of messages
  *

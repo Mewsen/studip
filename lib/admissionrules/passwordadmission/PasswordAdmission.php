@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PasswordAdmission.class.php
+ * PasswordAdmission.php
  *
  * Represents a rule for course access with a given password.
  *

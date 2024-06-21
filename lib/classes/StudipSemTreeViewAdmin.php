@@ -7,7 +7,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// StudipSemTreeViewAdmin.class.php
+// StudipSemTreeViewAdmin.php
 // Class to print out the seminar tree in administration mode
 //
 // Copyright (c) 2003 André Noack <noack@data-quest.de>

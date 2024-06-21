@@ -21,7 +21,7 @@
 require_once 'lib/object.inc.php';
 
 /**
- * HelpTour.class.php - model class for Stud.IP tours
+ * HelpTour.php - model class for Stud.IP tours
  *
  *
  *

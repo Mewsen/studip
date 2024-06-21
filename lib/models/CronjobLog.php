@@ -1,7 +1,7 @@
 <?php
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// CronjobLog.class.php
+// CronjobLog.php
 //
 // Copyright (C) 2013 Jan-Hendrik Willms <tleilax+studip@gmail.com>
 // +---------------------------------------------------------------------------+

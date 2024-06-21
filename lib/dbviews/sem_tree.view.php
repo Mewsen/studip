@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// sem_tree.view.class.php
+// sem_tree.view.php
 // Database views used with "sem_tree"
 //
 // Copyright (c) 2003 André Noack <noack@data-quest.de>

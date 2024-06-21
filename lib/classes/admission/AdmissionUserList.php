@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AdmissionUserList.class.php
+ * AdmissionUserList.php
  *
  * Contains users that get different probabilities than others in seat
  * distribution algorithm.

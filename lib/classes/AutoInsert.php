@@ -14,7 +14,7 @@
  */
 
 /**
- * AutoInsert.class.php
+ * AutoInsert.php
  * Provides functions required by StEP00216:
  * - Assign seminars for automatic registration of certain user types
  * - Maintenance of registration rules

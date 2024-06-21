@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +--------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// AuthorObject.class.php
+// AuthorObject.php
 //
 // Class to provide basic properties of an object in Stud.IP
 //
@@ -31,7 +31,7 @@ define("ERROR_CRITICAL", "8");
 
 
 /**
- * AuthorObject.class.php
+ * AuthorObject.php
  *
  * Class to provide basic properties of an object in Stud.IP
  *
@@ -136,4 +136,3 @@ class AuthorObject
         $class->resetErrors();
     }
 }
-

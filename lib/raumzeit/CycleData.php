@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +--------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// CycleData.class.php
+// CycleData.php
 //
 // Repräsentiert ein Turnusdatum eines MetaDates
 //

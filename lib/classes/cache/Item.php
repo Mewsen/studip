@@ -1,6 +1,6 @@
 <?php
 /**
- * Item.class.php
+ * Item.php
  * This file is part of Stud.IP.
  *
  * This program is free software; you can redistribute it and/or

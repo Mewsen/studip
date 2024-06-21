@@ -5,7 +5,7 @@
 # Lifter010: TODO
 
 /*
- * PmWikiConnectedCMS.class.php - Provides search capabilities
+ * PmWikiConnectedCMS.php - Provides search capabilities
  * to search WikiFarm
  *
  * Copyright (C) 2006 - Marco Diedrich (mdiedric@uos.de)

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TimedAdmission.class.php
+ * TimedAdmission.php
  *
  * Specifies a time frame for course admission.
  *

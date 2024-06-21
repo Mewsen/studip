@@ -1,6 +1,6 @@
 <?php
 /**
- * RangeConfig.class.php
+ * RangeConfig.php
  * provides access to object preferences
  *
  * This program is free software; you can redistribute it and/or

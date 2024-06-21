@@ -1,6 +1,6 @@
 <?php
 /**
- * SemesterOfStudyCondition.class.php
+ * SemesterOfStudyCondition.php
  *
  * All conditions concerning the semester of study in Stud.IP can be specified here.
  *

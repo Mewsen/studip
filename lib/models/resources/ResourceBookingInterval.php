@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ResourceBookingInterval.class.php - model class for storing
+ * ResourceBookingInterval.php - model class for storing
  * all resource bookings time intervals, including those for
  * repetitions.
  *

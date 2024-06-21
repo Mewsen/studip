@@ -1,6 +1,6 @@
 <?php
 /**
- * Config.class.php
+ * Config.php
  * provides access to global configuration
  *
  * This program is free software; you can redistribute it and/or

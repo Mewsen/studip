@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CourseSet.class.php
+ * CourseSet.php
  *
  * Represents groups of Stud.IP courses that have common rules for admission.
  *

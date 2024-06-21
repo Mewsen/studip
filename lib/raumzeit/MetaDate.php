@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +--------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// MetaDate.class.php
+// MetaDate.php
 //
 // Repräsentiert die Zeit- und Turnusdaten einer Veranstaltung
 //
@@ -26,7 +26,7 @@
 
 
 /**
- * MetaDate.class.php
+ * MetaDate.php
  *
  *
  * @author      Till Glöggler <tgloeggl@uos.de>

@@ -13,7 +13,7 @@
  * @category    Stud.IP
  */
 
-require_once dirname(__FILE__) . '/../StudipLvgruppeSelection.class.php';
+require_once dirname(__FILE__) . '/../StudipLvgruppeSelection.php';
 
 class LVGroupsWizardStep implements CourseWizardStep
 {

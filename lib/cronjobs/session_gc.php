@@ -1,6 +1,6 @@
 <?php
 /**
-* session_gc.class.php
+* session_gc.php
 *
 * @author André Noack <noack@data-quest.de>, Suchi & Berg GmbH <info@data-quest.de>
 * @access public

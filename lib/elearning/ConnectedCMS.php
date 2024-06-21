@@ -100,15 +100,15 @@ class ConnectedCMS
     public function initSubclasses()
     {
         if ($this->auth_necessary) {
-            require_once $this->CLASS_PREFIX . "ConnectedUser.class.php";
+            require_once $this->CLASS_PREFIX . "ConnectedUser.php";
             $classname = $this->CLASS_PREFIX . "ConnectedUser";
             $this->user = new $classname($this->cms_type);
 
-            require_once $this->CLASS_PREFIX  . "ConnectedPermissions.class.php";
+            require_once $this->CLASS_PREFIX  . "ConnectedPermissions.php";
             $classname = $this->CLASS_PREFIX  . "ConnectedPermissions";
             $this->permissions = new $classname($this->cms_type);
         }
-        require_once $this->CLASS_PREFIX . "ConnectedLink.class.php";
+        require_once $this->CLASS_PREFIX . "ConnectedLink.php";
         $classname = $this->CLASS_PREFIX . "ConnectedLink";
         $this->link = new $classname($this->cms_type);
     }
@@ -203,14 +203,14 @@ class ConnectedCMS
         $el_path = $GLOBALS['STUDIP_BASE_PATH'] . '/lib/elearning';
         // check if needed classes exist
         $files = [
-            'class_link'    => "{$el_path}/{$this->CLASS_PREFIX}ConnectedLink.class.php",
-            'class_content' => "{$el_path}/{$this->CLASS_PREFIX}ContentModule.class.php",
-            'class_cms'     => "{$el_path}/{$this->CLASS_PREFIX}ConnectedCMS.class.php",
+            'class_link'    => "{$el_path}/{$this->CLASS_PREFIX}ConnectedLink.php",
+            'class_content' => "{$el_path}/{$this->CLASS_PREFIX}ContentModule.php",
+            'class_cms'     => "{$el_path}/{$this->CLASS_PREFIX}ConnectedCMS.php",
         ];
 
         if ($this->auth_necessary) {
-            $files['class_user'] = "{$el_path}/{$this->CLASS_PREFIX}ConnectedUser.class.php";
-            $files['class_perm'] = "{$el_path}/{$this->CLASS_PREFIX}ConnectedPermissions.class.php";
+            $files['class_user'] = "{$el_path}/{$this->CLASS_PREFIX}ConnectedUser.php";
+            $files['class_perm'] = "{$el_path}/{$this->CLASS_PREFIX}ConnectedPermissions.php";
         }
 
         $errors = 0;
@@ -281,7 +281,7 @@ class ConnectedCMS
         global $current_module;
         $current_module = $data["ref_id"];
 
-        require_once($this->CLASS_PREFIX . "ContentModule.class.php");
+        require_once($this->CLASS_PREFIX . "ContentModule.php");
         $classname = $this->CLASS_PREFIX  . "ContentModule";
 
         $this->content_module[$current_module] = new  $classname("", $data["type"], $this->cms_type);
@@ -305,7 +305,7 @@ class ConnectedCMS
         global $current_module;
         $current_module = $module_id;
 
-        require_once($this->CLASS_PREFIX . "ContentModule.class.php");
+        require_once($this->CLASS_PREFIX . "ContentModule.php");
         $classname = $this->CLASS_PREFIX  . "ContentModule";
 
         if ($is_connected == false)

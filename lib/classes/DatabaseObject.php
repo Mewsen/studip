@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +--------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// DatabaseObject.class.php
+// DatabaseObject.php
 //
 // Class to provide basic properties of an DatabseObject in Stud.IP
 //
@@ -35,7 +35,7 @@ define("INSTANCEOF_DATABASEOBJECT", "DatabaseObject");
 
 
 /**
- * DatabaseObject.class.php
+ * DatabaseObject.php
  *
  * Class to provide basic properties of an DatabaseObject in Stud.IP
  *

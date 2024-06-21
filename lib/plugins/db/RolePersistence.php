@@ -1,6 +1,6 @@
 <?php
 /**
- * RolePersistence.class.php
+ * RolePersistence.php
  *
  * Funktionen für das Rollenmanagement
  *

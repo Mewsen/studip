@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ResourceBooking.class.php - model class for resource bookings
+ * ResourceBooking.php - model class for resource bookings
  *
  * The ResourceBooking class is responsible for storing
  * bookings of resources in a specified time range

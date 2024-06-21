@@ -3,7 +3,7 @@
 # Lifter003: TODO
 # Lifter010: TODO
 /**
- * SessionDecoder.class.php
+ * SessionDecoder.php
  *
  * decodes serialized PHP session data
  *
@@ -13,7 +13,7 @@
  */
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// SessionDecoder.class.php
+// SessionDecoder.php
 //
 // Copyright (C) 2008 André Noack <noack@data-quest>, data-quest GmbH <info@data-quest.de>
 // +---------------------------------------------------------------------------+

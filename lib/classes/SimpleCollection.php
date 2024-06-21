@@ -7,7 +7,7 @@ if (!defined('SORT_FLAG_CASE')) {
 }
 
 /**
- * SimpleCollection.class.php
+ * SimpleCollection.php
  * collection of assoc arrays with convenience
  *
  * This program is free software; you can redistribute it and/or

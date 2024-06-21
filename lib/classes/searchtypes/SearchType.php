@@ -1,7 +1,7 @@
 <?php
 # Lifter010: TODO
 /**
- * SQLSearch.class.php - A class-structure for alle search-objects in Stud.IP.
+ * SQLSearch.php - A class-structure for alle search-objects in Stud.IP.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -104,4 +104,3 @@ abstract class SearchType
      */
     abstract public function includePath();
 }
-

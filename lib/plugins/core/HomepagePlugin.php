@@ -1,7 +1,7 @@
 <?php
 # Lifter010: TODO
 /*
- * HomepagePlugin.class.php - home page plugin interface
+ * HomepagePlugin.php - home page plugin interface
  *
  * Copyright (c) 2008 - Marcus Lunzenauer <mlunzena@uos.de>
  * Copyright (c) 2009 - Elmar Ludwig

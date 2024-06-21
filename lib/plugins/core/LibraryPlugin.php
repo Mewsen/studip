@@ -2,7 +2,7 @@
 
 
 /*
- * LibraryPlugin.class.php - A plugin class for library plugins.
+ * LibraryPlugin.php - A plugin class for library plugins.
  *
  * Copyright (c) 2020  Moritz Strohm
  *

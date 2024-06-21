@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// StudipSemSearchForm.class.php
+// StudipSemSearchForm.php
 // Class to build search formular and execute search
 //
 // Copyright (c) 2003 André Noack <noack@data-quest.de>

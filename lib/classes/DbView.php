@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// DbView.class.php
+// DbView.php
 // Class to provide simple Views and Prepared Statements
 // Mainly for MySql, may work with other DBs (not tested)
 // Copyright (c) 2002 André Noack <andre.noack@gmx.net>

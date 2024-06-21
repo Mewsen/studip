@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CourseMemberAdmission.class.php
+ * CourseMemberAdmission.php
  *
  * Specifies a mandatory course membership for course admission.
  *

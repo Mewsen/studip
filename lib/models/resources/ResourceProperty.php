@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ResourceProperty.class.php - model class for resource properties
+ * ResourceProperty.php - model class for resource properties
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

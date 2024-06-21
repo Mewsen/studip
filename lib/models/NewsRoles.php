@@ -1,7 +1,7 @@
 <?php
 
 /**
- * NewsRoles.class.php - model class for the news roles
+ * NewsRoles.php - model class for the news roles
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

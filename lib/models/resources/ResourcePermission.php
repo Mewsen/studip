@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ResourcePermission.class.php - model class for resource permissions.
+ * ResourcePermission.php - model class for resource permissions.
  *
  * Description of the resources permission system:
  * - admin: An admin may do everything in the resource management:

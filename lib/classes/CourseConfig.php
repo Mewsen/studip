@@ -1,6 +1,6 @@
 <?php
 /**
- * CourseConfig.class.php
+ * CourseConfig.php
  * provides access to course preferences
  *
  * This program is free software; you can redistribute it and/or

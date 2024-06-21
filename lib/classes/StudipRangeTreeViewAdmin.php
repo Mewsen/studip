@@ -6,7 +6,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// StudipRangeTreeViewAdmin.class.php
+// StudipRangeTreeViewAdmin.php
 // Class to print out the "range tree"
 //
 // Copyright (c) 2002 André Noack <noack@data-quest.de>

@@ -1,6 +1,6 @@
 <?php
 /**
- * AdmissionPriority.class.php
+ * AdmissionPriority.php
  *
  * This class represents priorities a user has given to a set of courses.
  * No instance is needed, all methods are designed to be called statically.

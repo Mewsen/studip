@@ -4,7 +4,7 @@
 # Lifter003: TODO
 # Lifter010: TODO
 /**
- * SingelDate.class.php - Ein (Ex-)Termin
+ * SingelDate.php - Ein (Ex-)Termin
  *
  * Diese Klasse stellt einen einzelnen Eintrag in der Tabelle termine, bzw. ex_termine dar.
  *

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * LimitedAdmission.class.php
+ * LimitedAdmission.php
  *
  * Represents rules for admission to a limited number of courses.
  *

@@ -5,9 +5,9 @@
 # Lifter010: TODO
 // +--------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// IssueDB.class.php
+// IssueDB.php
 //
-// Datenbank-Abfragen für Issue.class.php
+// Datenbank-Abfragen für Issue.php
 //
 // +--------------------------------------------------------------------------+
 // This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 
 
 /**
- * IssueDB.class.php
+ * IssueDB.php
  *
  *
  * @author      Till Glöggler <tgloeggl@uos.de>

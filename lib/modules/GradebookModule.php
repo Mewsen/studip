@@ -4,7 +4,7 @@ use Grading\Definition;
 use Grading\Instance;
 
 /**
- * GradebookModule.class.php - Gradebook API for Stud.IP.
+ * GradebookModule.php - Gradebook API for Stud.IP.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

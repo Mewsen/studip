@@ -1,6 +1,6 @@
 <?php
 /*
- * StudipAuthIP.class.php - Stud.IP authentication with user ip
+ * StudipAuthIP.php - Stud.IP authentication with user ip
  * Copyright (c) 2014  Florian Bieringer, Uni Passau
  *
  * This program is free software; you can redistribute it and/or

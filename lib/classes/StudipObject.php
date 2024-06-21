@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +--------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// StudipObject.class.php
+// StudipObject.php
 //
 // Class to provide basic properties of an StudipObject in Stud.IP
 //
@@ -36,7 +36,7 @@ define ("INSTANCEOF_STUDIPOBJECT", "StudipObject");
 
 
 /**
- * StudipObject.class.php
+ * StudipObject.php
  *
  * Class to provide basic properties of an StudipObject in Stud.IP
  *

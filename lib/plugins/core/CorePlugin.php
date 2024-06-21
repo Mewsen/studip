@@ -1,6 +1,6 @@
 <?php
 /**
- * CorePlugin.class.php - base class
+ * CorePlugin.php - base class
  *
  * @author    André Noack <noack@data-quest.de>
  * @copyright 2021 Authors

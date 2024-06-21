@@ -1,6 +1,6 @@
 <?php
 /**
- * LtiToolModule.class.php - LTI consumer API for Stud.IP
+ * LtiToolModule.php - LTI consumer API for Stud.IP
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

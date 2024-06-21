@@ -1,6 +1,6 @@
 <?php
 /**
- * WebserviceAccessRule.class.php
+ * WebserviceAccessRule.php
  * model class for table webservice_access_rules
  * this class represents one record of the table webservice_access_rules
  * the column ip_range is converted from a comma separated list to an ArrayObject and vice-versa,

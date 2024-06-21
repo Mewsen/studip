@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PreferentialAdmission.class.php
+ * PreferentialAdmission.php
  *
  * An admission rule that favors selected courses of study or semesters of study.
  *

@@ -3,7 +3,7 @@
 # Lifter003: TODO
 # Lifter010: TODO
 /**
- * SeminarCategories.class.php
+ * SeminarCategories.php
  *
  * encapsulates configuration settings for courses from config.inc.php
  * aka $SEM_CLASS, $SEM_TYPE, $UPLOAD_TYPES
@@ -14,7 +14,7 @@
  */
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// SeminarCategories.class.php
+// SeminarCategories.php
 //
 // Copyright (C) 2008 André Noack <noack@data-quest>, data-quest GmbH <info@data-quest.de>
 // +---------------------------------------------------------------------------+

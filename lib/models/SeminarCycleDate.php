@@ -6,7 +6,7 @@ require_once 'lib/dates.inc.php';
 
 
 /**
- * SeminarCycleDate.class.php
+ * SeminarCycleDate.php
  * model class for table seminar_cycle_dates
  *
  * This program is free software; you can redistribute it and/or

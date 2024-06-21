@@ -19,7 +19,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // +---------------------------------------------------------------------------+
 /**
- * HelpTourUser.class.php - model class for tour user visits
+ * HelpTourUser.php - model class for tour user visits
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

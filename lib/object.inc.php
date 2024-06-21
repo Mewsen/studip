@@ -51,7 +51,7 @@ function object_set_visit_module($plugin_id)
 * This function saves the actual time as last visitdate for the given object, user and type
 *
 * @param    string  the id of the object (i.e. seminar_id, news_id, vote_id)
-* @param    string  the type of visited object or module (i.e. news, documents, wiki - see /lib/classes/Modules.class.php for definitions)
+* @param    string  the type of visited object or module (i.e. news, documents, wiki - see /lib/classes/Modules.php for definitions)
 * @param    string  the user who visited the object - if not given, the actual user is used
 *
 */
@@ -81,7 +81,7 @@ function object_set_visit($object_id, $plugin_id, $user_id = '')
 * This function gets the (last) visit time for an object or module. If no information is found, the last visit of the open-object can bes used
 *
 * @param    string  the id of the object (i.e. seminar_id, news_id, vote_id)
-* @param    string  the type of visited object or module (i.e. news, documents, wiki - see /lib/classes/Modules.class.php for definitions OR sem/inst, if the visit for the whole seminar was saved)
+* @param    string  the type of visited object or module (i.e. news, documents, wiki - see /lib/classes/Modules.php for definitions OR sem/inst, if the visit for the whole seminar was saved)
 * @param    string  the return-mode: 'last' for the last visit, other for actual-visit
 * @param    string  the user who visited the object - if not given, the actual user is used
 * @param    string  the id of an open-object (seminar or inst), to gather information for last visit from the visit of the whole open-object

@@ -1,6 +1,6 @@
 <?php
 /*
- * StudipAuthOpenID.class.php - Stud.IP authentication using OpenID Connect
+ * StudipAuthOpenID.php - Stud.IP authentication using OpenID Connect
  * Copyright (c) 2021  André Noack <noack@data-quest.de>
  *
  * This program is free software; you can redistribute it and/or

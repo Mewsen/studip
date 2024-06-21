@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ResourceTemporaryPermission.class.php
+ * ResourceTemporaryPermission.php
  * Contains the ResourceTemporaryPermission class
  *
  * The ResourceTemporaryPermission class represents temporary permissions

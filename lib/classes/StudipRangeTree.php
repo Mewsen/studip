@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// StudipRangeTree.class.php
+// StudipRangeTree.php
 // Class to handle structure of the "range tree"
 //
 // Copyright (c) 2002 André Noack <noack@data-quest.de>

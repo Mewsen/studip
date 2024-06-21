@@ -1,6 +1,6 @@
 <?php
 /**
- * UserConfig.class.php
+ * UserConfig.php
  * provides access to user preferences
  *
  * This program is free software; you can redistribute it and/or

@@ -6,7 +6,7 @@
 # Lifter010: TODO
 
 /*
- * Assets.class.php - assets helper
+ * Assets.php - assets helper
  *
  * Copyright (C) 2007 - Marcus Lunzenauer <mlunzena@uos.de>
  *

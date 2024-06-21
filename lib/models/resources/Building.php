@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Building.class.php - model class for a resource which is a building
+ * Building.php - model class for a resource which is a building
  *
  * The building class is a derived class from the Resource class
  * which includes specialisations for Building resource types.

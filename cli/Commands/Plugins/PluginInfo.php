@@ -65,11 +65,11 @@ class PluginInfo extends AbstractPluginCommand
 
     private function pluginClassExists(string $plugindir, array $plugin)
     {
-        $pluginfile = $plugindir . $plugin['class'] . '.class.php';
+        $pluginfile = $plugindir . $plugin['class'] . '.php';
         if (file_exists($pluginfile)) {
             return 1;
         } else {
-            $pluginfile = $plugindir . $plugin['class'] . '.php';
+            $pluginfile = $plugindir . $plugin['class'] . '.class.php';
             if (file_exists($pluginfile)) {
                 return 1;
             }

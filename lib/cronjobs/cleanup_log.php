@@ -10,7 +10,7 @@
 
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// cleanup_log.class.php
+// cleanup_log.php
 //
 // Copyright (C) 2013 Jan-Hendrik Willms <tleilax+studip@gmail.com>
 // +---------------------------------------------------------------------------+
@@ -28,7 +28,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // +---------------------------------------------------------------------------+
 
-require_once 'lib/classes/CronJob.class.php';
+require_once 'lib/classes/CronJob.php';
 
 class CleanupLogJob extends CronJob
 {

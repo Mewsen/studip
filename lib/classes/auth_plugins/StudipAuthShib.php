@@ -3,7 +3,7 @@
 # Lifter003: TODO
 # Lifter010: TODO
 /*
- * StudipAuthShib.class.php - Stud.IP authentication against Shibboleth server
+ * StudipAuthShib.php - Stud.IP authentication against Shibboleth server
  * Copyright (c) 2007  Elmar Ludwig, Universitaet Osnabrueck
  *
  * This program is free software; you can redistribute it and/or

@@ -1,6 +1,6 @@
 <?php
 /**
- * LockRules.class.php
+ * LockRules.php
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
 */
 
 /**
-* LockRules.class.php
+* LockRules.php
 *
 * This class contains only static methods dealing with lock rules
 *

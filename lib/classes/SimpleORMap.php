@@ -1,6 +1,6 @@
 <?php
 /**
- * SimpleORMap.class.php
+ * SimpleORMap.php
  * simple object-relational mapping
  *
  * This program is free software; you can redistribute it and/or

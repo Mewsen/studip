@@ -1,7 +1,7 @@
 <?php
 # Lifter010: TODO
 /*
- * SystemPlugin.class.php - generic system plugin interface
+ * SystemPlugin.php - generic system plugin interface
  *
  * Copyright (c) 2008 - Marcus Lunzenauer <mlunzena@uos.de>
  * Copyright (c) 2009 - Elmar Ludwig

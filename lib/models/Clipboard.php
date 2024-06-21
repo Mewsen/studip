@@ -2,7 +2,7 @@
 
 
 /**
- * Clipboard.class.php - model class for a clipboard (Merkzettel)
+ * Clipboard.php - model class for a clipboard (Merkzettel)
  *
  * The Clipboard class extends the wish list functionality of the clipboard
  * in the old literature management to allow it to be used in other areas of the

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * FeedbackModule.class.php - Feedback Elements for Stud.IP as Module.
+ * FeedbackModule.php - Feedback Elements for Stud.IP as Module.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

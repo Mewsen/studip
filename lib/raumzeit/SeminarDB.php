@@ -5,9 +5,9 @@
 # Lifter010: DONE
 // +--------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// SeminarDB.class.php
+// SeminarDB.php
 //
-// Datenbank-Abfragen für Seminar.class.php
+// Datenbank-Abfragen für Seminar
 //
 // +--------------------------------------------------------------------------+
 // This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 
 
 /**
- * SeminarDB.class.php
+ * SeminarDB.php
  *
  *
  * @author      Till Glöggler <tgloeggl@uos.de>

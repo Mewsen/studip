@@ -5,9 +5,9 @@
 # Lifter010: TODO
 // +--------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// CycleDataDB.class.php
+// CycleDataDB.php
 //
-// Datenbank-Abfragen für CycleData.class.php
+// Datenbank-Abfragen für CycleData.php
 //
 // +--------------------------------------------------------------------------+
 // This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 
 
 /**
- * CycleDataDB.class.php
+ * CycleDataDB.php
  *
  *
  * @author      Till Glöggler <tgloeggl@uos.de>

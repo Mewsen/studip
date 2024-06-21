@@ -1,13 +1,13 @@
 <?php
 /**
- * remind_oer_upload.class.php - Sends reminder emails for uploading files to OER Campus.
+ * remind_oer_upload.php - Sends reminder emails for uploading files to OER Campus.
  *
  * @author Michaela Brückner <brueckner@data-quest.de>, Suchi & Berg GmbH <info@data-quest.de>
  * @access public
  * @since  5.2
  */
 
-require_once 'lib/classes/CronJob.class.php';
+require_once 'lib/classes/CronJob.php';
 
 class RemindOerUpload extends CronJob
 {

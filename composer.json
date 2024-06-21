@@ -19,7 +19,6 @@
             "Trails\\": "lib/trails/",
             "": [
                 "lib/calendar/",
-                "lib/calendar/lib/",
                 "lib/classes/",
                 "lib/classes/admission/",
                 "lib/classes/admission/userfilter/",

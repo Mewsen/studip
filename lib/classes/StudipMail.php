@@ -1,6 +1,6 @@
 <?php
 /**
- * StudipMail.class.php
+ * StudipMail.php
  *
  * class for constructing and sending emails in Stud.IP
  *

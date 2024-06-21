@@ -1,7 +1,7 @@
 <?php
 
 /*
- * PluginRepository.class.php - query plugin meta data
+ * PluginRepository.php - query plugin meta data
  *
  * Copyright (c) 2008  Elmar Ludwig
  *

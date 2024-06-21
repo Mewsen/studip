@@ -6,9 +6,9 @@
 
 // +--------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// MetaDateDB.class.php
+// MetaDateDB.php
 //
-// Datenbank-Abfragen für MetaDate.class.php
+// Datenbank-Abfragen für MetaDate.php
 //
 // +--------------------------------------------------------------------------+
 // This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 
 
 /**
- * MetaDateDB.class.php
+ * MetaDateDB.php
  *
  *
  * @author      Till Glöggler <tgloeggl@uos.de>

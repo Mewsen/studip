@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// StudipSemSearchHelper.class.php
+// StudipSemSearchHelper.php
 //
 //
 // Copyright (c) 2003 André Noack <noack@data-quest.de>

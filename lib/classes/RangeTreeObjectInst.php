@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// RangeTreeObjectInst.class.php
+// RangeTreeObjectInst.php
 // Class to handle items in the "range tree"
 //
 // Copyright (c) 2002 André Noack <noack@data-quest.de>

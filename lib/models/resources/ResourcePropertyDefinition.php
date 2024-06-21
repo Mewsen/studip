@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ResourcePropertyDefinition.class.php - model class for resource property definitions
+ * ResourcePropertyDefinition.php - model class for resource property definitions
  *
  * The ResourcePropertyDefinition class can be used as a Factory
  * for ResourceProperty objects.

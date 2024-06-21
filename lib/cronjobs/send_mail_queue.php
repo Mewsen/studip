@@ -1,6 +1,6 @@
 <?php
 /**
-* send_mail_queue.class.php
+* send_mail_queue.php
 *
 * @author Rasmus Fuhse <fuhse@data-quest.de>, Suchi & Berg GmbH <info@data-quest.de>
 * @access public

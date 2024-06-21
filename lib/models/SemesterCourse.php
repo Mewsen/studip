@@ -1,6 +1,6 @@
 <?php
 /**
- * SemesterCourse.class.php
+ * SemesterCourse.php
  * Contains the SemesterCourse model.
  *
  * This class represents entries in the mapping table

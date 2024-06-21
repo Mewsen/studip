@@ -1,6 +1,6 @@
 <?php
 /**
- * ConfigEntry.class.php
+ * ConfigEntry.php
  * model class for table user_config
  *
  * This program is free software; you can redistribute it and/or

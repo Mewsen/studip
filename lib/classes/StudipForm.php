@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// StudipForm.class.php
+// StudipForm.php
 // Class to build HTML formular and handle persistence using PhpLib
 //
 // Copyright (c) 2003 André Noack <noack@data-quest.de>

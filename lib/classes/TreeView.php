@@ -5,8 +5,8 @@
 
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// TreeView.class.php
-// Class to print out html represantation of a tree object based on TreeAbstract.class.php
+// TreeView.php
+// Class to print out html represantation of a tree object based on TreeAbstract.php
 //
 // Copyright (c) 2002 André Noack <noack@data-quest.de>
 // Suchi & Berg GmbH <info@data-quest.de>
@@ -26,9 +26,7 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* Class to print out html represantation of a tree object based on TreeAbstract.class.php
-*
-* Class to print out html represantation of a tree object based on TreeAbstract.class.php
+* Class to print out html represantation of a tree object based on TreeAbstract.php
 *
 * @access   public
 * @author   André Noack <noack@data-quest.de>

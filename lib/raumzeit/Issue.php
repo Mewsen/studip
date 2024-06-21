@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +--------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// Issue.class.php
+// Issue.php
 //
 // Repräsentiert ein einzelnes Thema einer Veranstaltung
 //
@@ -26,7 +26,7 @@
 
 
 /**
- * Issue.class.php
+ * Issue.php
  *
  *
  * @author      Till Glöggler <tgloeggl@uos.de>
@@ -156,7 +156,7 @@ class Issue {
     function restore() {
         /*
          * To avoid inconsistency, the restore function has been removed.
-         * The only way to load an Issue is via the Seminar.class.php, with the function fillValuesFromArray
+         * The only way to load an Issue is via the Seminar.php, with the function fillValuesFromArray
          */
         $this->fillValuesFromArray(IssueDB::restoreIssue($this->issue_id));
     }

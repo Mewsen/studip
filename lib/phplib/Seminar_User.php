@@ -1,6 +1,6 @@
 <?php
 /**
- * Seminar_User.class.php
+ * Seminar_User.php
  * global object representing current user
  *
  * This program is free software; you can redistribute it and/or

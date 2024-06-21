@@ -21,7 +21,7 @@
 require_once 'lib/object.inc.php';
 
 /**
- * StudipNews.class.php
+ * StudipNews.php
  *
  * @author   André Noack <noack@data-quest>, Suchi & Berg GmbH <info@data-quest.de>
  * @author   Arne Schröder <schroeder@data-quest>

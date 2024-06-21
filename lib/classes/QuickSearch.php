@@ -1,7 +1,7 @@
 <?php
 # Lifter010: TODO
 /**
- * QuickSearch.class.php - GUI class for quciksearch
+ * QuickSearch.php - GUI class for quciksearch
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -66,7 +66,7 @@
  *  $searcher = new TeacherSearch();
  *  print QuickSearch::get("username", $searcher)->withButton->render();
  *  //code-end
- * Watch the SearchType class in lib/classes/searchtypes/SearchType.class.php
+ * Watch the SearchType class in lib/classes/searchtypes/SearchType.php
  * for details.
  * Enjoy!
  */
@@ -166,7 +166,7 @@ class QuickSearch
     /**
      * constructor which prepares a searchfield for persons, courses, institutes or
      * special items you may want to search for. This is a GUI-class, see
-     * QuickSearch.class.php for further documentation.
+     * QuickSearch.php for further documentation.
      *
      * @param string $name the name of the destinated variable in your html-form. Handle it
      * as if it was an '<input type="text" name="yourname">' input.

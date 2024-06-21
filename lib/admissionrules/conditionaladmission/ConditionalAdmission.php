@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ConditionalAdmission.class.php
+ * ConditionalAdmission.php
  *
  * An admission rule that specifies conditions for course admission, like
  * degree, study course or semester.

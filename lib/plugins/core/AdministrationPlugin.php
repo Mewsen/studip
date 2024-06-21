@@ -1,7 +1,7 @@
 <?php
 # Lifter010: TODO
 /*
- * AdministrationPlugin.class.php - administration plugin interface
+ * AdministrationPlugin.php - administration plugin interface
  *
  * NOTE: This interface is deprecated, use SystemPlugin instead.
  *

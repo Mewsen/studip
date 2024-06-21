@@ -2,7 +2,7 @@
 # Lifter010: TODO
 
  /**
- * CalendarView.class.php - generates a calendar
+ * CalendarView.php - generates a calendar
  *
  * This class takes and checks all necessary parameters to display a calendar/schedule/time-table.
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * CalendarDateAssignment.class.php - Model class for calendar date assignments.
+ * CalendarDateAssignment.php - Model class for calendar date assignments.
  *
  * CalendarDateAssignment represents the assignment of a calendar date
  *  to a specific calendar. The calendar is represented by a range-ID

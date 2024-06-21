@@ -1,6 +1,6 @@
 <?php
 /**
- * TreeSearch.class.php - Class of type SearchType used for searches with QuickSearch
+ * TreeSearch.php - Class of type SearchType used for searches with QuickSearch
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

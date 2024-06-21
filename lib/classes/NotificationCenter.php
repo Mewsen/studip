@@ -1,7 +1,7 @@
 <?php
 # Lifter010: TODO
 /*
- * NotificationCenter.class.php - NotificationCenter class
+ * NotificationCenter.php - NotificationCenter class
  *
  * Copyright (c) 2009  Elmar Ludwig
  *

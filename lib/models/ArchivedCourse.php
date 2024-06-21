@@ -1,6 +1,6 @@
 <?php
 /**
- * ArchivedCourse.class.php
+ * ArchivedCourse.php
  * model class for table archiv
  *
  * This program is free software; you can redistribute it and/or

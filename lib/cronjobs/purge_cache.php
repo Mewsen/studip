@@ -1,6 +1,6 @@
 <?php
 /**
- * purge_cache.class.php - Purges the file cache.
+ * purge_cache.php - Purges the file cache.
  * 
  * @author André Noack <noack@data-quest.de>, Suchi & Berg GmbH <info@data-quest.de>
  * @author Jan-Hendrik Willms <tleilax+studip@gmail.com>
@@ -10,7 +10,7 @@
 
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// purge_cache.class.php
+// purge_cache.php
 // 
 // Copyright (C) 2013 Jan-Hendrik Willms <tleilax+studip@gmail.com>
 // +---------------------------------------------------------------------------+
@@ -28,7 +28,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // +---------------------------------------------------------------------------+
 
-require_once 'lib/classes/CronJob.class.php';
+require_once 'lib/classes/CronJob.php';
 
 class PurgeCacheJob extends CronJob
 {
@@ -70,7 +70,7 @@ class PurgeCacheJob extends CronJob
      */
     public function setUp()
     {
-        require_once 'lib/classes/cache/FileCache.class.php';
+        require_once 'lib/classes/cache/FileCache.php';
     }
 
     /**

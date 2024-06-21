@@ -1,6 +1,6 @@
 <?php
 /**
- * PluginManager.class.php - plugin manager for Stud.IP
+ * PluginManager.php - plugin manager for Stud.IP
  *
  * @copyright  2009  Elmar Ludwig
  * @license GPL2 or any later version
@@ -351,10 +351,10 @@ class PluginManager
             $path = 'lib/modules';
         }
 
-        $pluginfile = $basepath.'/'.$path.'/'.$class.'.class.php';
+        $pluginfile = $basepath.'/'.$path.'/'.$class.'.php';
 
         if (!file_exists($pluginfile)) {
-            $pluginfile = $basepath.'/'.$path.'/'.$class.'.php';
+            $pluginfile = $basepath.'/'.$path.'/'.$class.'.class.php';
 
             if (!file_exists($pluginfile)) {
                 return null;

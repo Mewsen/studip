@@ -1,7 +1,7 @@
 <?php
 # Lifter010: TODO
 /**
- * StandardSearch.class.php - Class of type SearchType used for searches with QuickSearch
+ * StandardSearch.php - Class of type SearchType used for searches with QuickSearch
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -15,7 +15,7 @@
 
 /**
  * Class of type SearchType used for searches with QuickSearch
- * (lib/classes/QuickSearch.class.php). You can search with a sql-syntax in the
+ * (lib/classes/QuickSearch.php). You can search with a sql-syntax in the
  * database. You just need to give in a query like for a PDB-prepare statement
  * and at least the variable ":input" in the query (the :input will be replaced
  * with the input of the QuickSearch userinput.

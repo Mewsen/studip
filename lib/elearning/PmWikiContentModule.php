@@ -5,7 +5,7 @@
 # Lifter010: TODO
 
 /*
- * PmWikiContentModule.class.php - Provides access PmWiki Modules
+ * PmWikiContentModule.php - Provides access PmWiki Modules
  *
  * Copyright (C) 2006 - Marco Diedrich (mdiedric@uos.de)
  *

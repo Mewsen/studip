@@ -1,6 +1,6 @@
 <?php
 /**
- * UserStudyCourse.class.php
+ * UserStudyCourse.php
  * model class for table user_studiengang
  *
  * This program is free software; you can redistribute it and/or

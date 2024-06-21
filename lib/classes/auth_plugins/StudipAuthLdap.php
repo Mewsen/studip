@@ -1,7 +1,7 @@
 <?php
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// StudipAuthLdap.class.php
+// StudipAuthLdap.php
 // Stud.IP authentication against LDAP Server
 //
 // Copyright (c) 2003 André Noack <noack@data-quest.de>

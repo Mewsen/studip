@@ -44,7 +44,7 @@ class Ilias3ConnectedCMS extends ConnectedCMS
 
         parent::__construct($cms);
 
-        require_once($this->CLASS_PREFIX . "Soap.class.php");
+        require_once($this->CLASS_PREFIX . "Soap.php");
         $classname = $this->CLASS_PREFIX . "Soap";
         $this->soap_client = new $classname($this->cms_type);
         $this->soap_client->setCachingStatus(true);

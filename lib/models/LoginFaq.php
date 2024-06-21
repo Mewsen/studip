@@ -1,6 +1,6 @@
 <?php
 /**
- * LoginFaq.class.php
+ * LoginFaq.php
  * model class for table login_faq
  *
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * LoginBackground.class.php
+ * LoginBackground.php
  * model class for table loginbackgrounds
  *
  * This program is free software; you can redistribute it and/or

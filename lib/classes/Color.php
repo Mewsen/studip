@@ -1,6 +1,6 @@
 <?php
 /**
- * lib/classes/Color.class.php - class to mix colors and convert them between different types
+ * lib/classes/Color.php - class to mix colors and convert them between different types
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

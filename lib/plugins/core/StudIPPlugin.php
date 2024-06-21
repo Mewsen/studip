@@ -1,6 +1,6 @@
 <?php
 /**
- * StudIPPlugin.class.php - generic plugin base class
+ * StudIPPlugin.php - generic plugin base class
  *
  * @author    Elmar Ludwig <ludwig@uos.de>
  * @copyright 2009 Authors

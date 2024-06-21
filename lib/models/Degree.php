@@ -1,6 +1,6 @@
 <?php
 /**
- * Degree.class.php
+ * Degree.php
  * model class for table studiengang
  *
  * This program is free software; you can redistribute it and/or

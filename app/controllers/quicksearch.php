@@ -14,7 +14,7 @@
 
 /**
  * Controller for the ajax-response of the QuickSearch class found in
- * lib/classes/QuickSearch.class.php
+ * lib/classes/QuickSearch.php
  */
 class QuicksearchController extends AuthenticatedController
 {

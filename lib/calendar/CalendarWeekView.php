@@ -2,7 +2,7 @@
 # Lifter010: TODO
 
 /**
- * CalendarWeekView.class.php - a specialized calendar view for displaying weeks
+ * CalendarWeekView.php - a specialized calendar view for displaying weeks
  *
  * This class takes and checks all necessary parameters to display a calendar/schedule/time-table.
  *

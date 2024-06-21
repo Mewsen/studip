@@ -1,6 +1,6 @@
 <?php
 /**
- * StgteilVersionCondition.class.php
+ * StgteilVersionCondition.php
  *
  * All conditions concerning the Studiengangteil-Versionen in Stud.IP can be specified here.
  *

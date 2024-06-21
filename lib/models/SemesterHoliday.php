@@ -1,6 +1,6 @@
 <?php
 /**
- * SemesterHoliday.class.php
+ * SemesterHoliday.php
  * model class for table semester_holiday
  *
  * This program is free software; you can redistribute it and/or

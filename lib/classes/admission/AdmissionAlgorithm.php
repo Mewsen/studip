@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AdmissionAlgorithm.class.php
+ * AdmissionAlgorithm.php
  * 
  * Abstract class for seminar seat distribution. A concrete algorithm 
  * needs to be implemented.

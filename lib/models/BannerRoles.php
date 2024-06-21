@@ -1,7 +1,7 @@
 <?php
 
 /**
- * BannerRoles.class.php - model class for the banner roles
+ * BannerRoles.php - model class for the banner roles
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

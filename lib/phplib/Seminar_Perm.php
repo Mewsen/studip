@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Seminar_Perm.class.php
+ * Seminar_Perm.php
  *
  *
  * This program is free software; you can redistribute it and/or

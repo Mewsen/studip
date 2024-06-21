@@ -1,6 +1,6 @@
 <?php
 /**
- * MultiPersonSearch.class.php
+ * MultiPersonSearch.php
  *
  * This class provides a GUI-element for searching, adding and removing
  * multiple persons. If JavaScript is enabled the GUI-element is shown
@@ -242,7 +242,7 @@ class MultiPersonSearch {
     /**
      * sets the search object.
      *
-     * @param SearchType object of type SearchType (e.g. SQLSearch.class.php)
+     * @param SearchType object of type SearchType (e.g. SQLSearch.php)
      *
      * @return MultiPersonSearch
      */

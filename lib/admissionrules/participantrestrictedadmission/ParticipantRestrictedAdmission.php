@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ParticipantRestrictedAdmission.class.php
+ * ParticipantRestrictedAdmission.php
  *
  * Specifies restricted number of participants for course admission.
  *

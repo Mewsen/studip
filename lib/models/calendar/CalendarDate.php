@@ -1,6 +1,6 @@
 <?php
 /**
- * CalendarDate.class.php - Model class for calendar dates.
+ * CalendarDate.php - Model class for calendar dates.
  *
  * CalendarDate represents a date in the personal calendar.
  *

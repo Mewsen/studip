@@ -1,6 +1,6 @@
 <?php
 /**
- * ClipboardItem.class.php - model class for clipboard items
+ * ClipboardItem.php - model class for clipboard items
  * (Merkzettel-Einträge)
  *
  * The ClipboardItem class holds single items of a clipboard.

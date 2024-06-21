@@ -1,6 +1,6 @@
 <?php
 /**
- * PermissionCondition.class.php
+ * PermissionCondition.php
  *
  * All conditions concerning the semester of study in Stud.IP can be specified here.
  *

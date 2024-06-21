@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AdmissionRule.class.php
+ * AdmissionRule.php
  *
  * An abstract representation of rules for course admission.
  *

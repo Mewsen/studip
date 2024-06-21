@@ -2,8 +2,6 @@
 
 namespace Courseware\BlockTypes;
 
-require_once 'lib/classes/Markup.class.php';
-
 /**
  * This class represents the content of a Courseware text block.
  *

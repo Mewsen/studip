@@ -1,6 +1,6 @@
 <?php
 /**
- * DegreeCondition.class.php
+ * DegreeCondition.php
  *
  * All conditions concerning the study degree in Stud.IP can be specified here.
  *

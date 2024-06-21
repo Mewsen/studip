@@ -13,8 +13,8 @@ class LoncapaController extends AuthenticatedController
         if ($GLOBALS['perm']->have_studip_perm('user', $course_id)
             && isset($GLOBALS['ELEARNING_INTERFACE_MODULES'][$cms_type]))
         {
-            require_once 'lib/elearning/ELearningUtils.class.php';
-            require_once 'lib/elearning/ObjectConnections.class.php';
+            require_once 'lib/elearning/ELearningUtils.php';
+            require_once 'lib/elearning/ObjectConnections.php';
 
             $object_connections = new ObjectConnections($course_id);
             $connected_modules = $object_connections->getConnections();

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ColorValue.class.php
+ * ColorValue.php
  * model class for table color_values
  *
  * Objects of this class holds a colour's name (its purpose)

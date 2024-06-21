@@ -1,6 +1,6 @@
 <?php
 /**
- * InstituteConfig.class.php
+ * InstituteConfig.php
  * provides access to institute preferences
  *
  * @author  Jan-Hendrik Wullms <tleilax+studip@gmail.com>

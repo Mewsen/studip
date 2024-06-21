@@ -1,6 +1,6 @@
 <?php
 /*
- * CacheException.class.php
+ * CacheException.php
  * This file is part of Stud.IP.
  *
  * This program is free software; you can redistribute it and/or

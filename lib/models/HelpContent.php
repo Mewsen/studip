@@ -21,7 +21,7 @@
 //require_once 'lib/object.inc.php';
 
 /**
- * HelpContent.class.php - model class for Stud.IP help content
+ * HelpContent.php - model class for Stud.IP help content
  *
  * @author   Arne Schröder <schroeder@data-quest>
  * @access   public

@@ -1,7 +1,7 @@
 <?php
 # Lifter010: TODO
 /**
- * CalendarColumn.class.php - a column for a CalendarView
+ * CalendarColumn.php - a column for a CalendarView
  *
  * This class represents an entry-column like "monday" in the calendar
  *
