@@ -147,7 +147,7 @@ abstract class Context
         } else {
             foreach ($providers as $provider) {
                 $ctype = $this->getContextType();
-                $filtered_classes = $filter->getType()->$ctype;
+                $filtered_classes = $filter->getType()->$ctype ?? null;
 
                 if (is_array($filtered_classes)) {
                     foreach ($filtered_classes as $class) {

@@ -1,2 +1,2 @@
-<?= implode(PageLayout::getMessages()) ?>
+<?= implode('', PageLayout::getMessages()) ?>
 <?= $content_for_layout ?>
