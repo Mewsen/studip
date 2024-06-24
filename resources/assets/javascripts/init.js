@@ -164,11 +164,8 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     study_area_selection,
     Table,
     TableOfContents,
-<<<<<<< HEAD
     Toolbar,
-=======
     Tooltip,
->>>>>>> 50371cbb71 (add aria-label to all tooltips and align usage in vue as well, fixes #4330)
     Tour,
     URLHelper,
     UserFilter,
