@@ -1,7 +1,7 @@
 <template>
-    <span data-tooltip class="tooltip tooltip-icon" :class="cssClass" :title="title" tabindex="0">
+    <span data-tooltip class="tooltip tooltip-icon" :class="cssClass" tabindex="0" :aria-label="cleanText">
         <span class="tooltip-content" v-if="isHtml" v-html="text"></span>
-        <studip-icon shape="info-circle" role="inactive" :size="size"></studip-icon>
+        <span class="tooltip-content" v-else>{{ text }}</span>
     </span>
 </template>
 
@@ -26,21 +26,14 @@
             }
         },
         computed: {
+            cleanText() {
+                const div = document.createElement('div');
+                div.innerHTML = this.text;
+                return div.innerText.trim();
+            },
             cssClass () {
                 return this.isImportant ? 'tooltip-important' : '';
-            },
-            title () {
-                return !this.isHtml ? this.text : '';
             }
         }
     }
 </script>
-
-<style lang="scss" scoped>
-.tooltip img {
-    vertical-align: text-bottom;
-}
-.tooltip.tooltip-icon::before {
-    display: none;
-}
-</style>
