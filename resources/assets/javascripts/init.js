@@ -76,6 +76,7 @@ import Statusgroups from './lib/statusgroups.js';
 import study_area_selection from './lib/study_area_selection.js';
 import Table from './lib/table.js';
 import TableOfContents from './lib/table-of-contents.js';
+import Tooltip from './lib/tooltip.js';
 import Tour from './lib/tour.js';
 import * as Gettext from './lib/gettext';
 import UserFilter from './lib/user_filter.js';
@@ -163,6 +164,7 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     study_area_selection,
     Table,
     TableOfContents,
+    Tooltip,
     Tour,
     URLHelper,
     UserFilter,
