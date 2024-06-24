@@ -601,13 +601,13 @@ class PageLayout
         }
 
         $structure = [
-            'type' => $message->class,
-            'message' => $message->message,
-            'details' => $message->details,
-            'closeable' => $message->isCloseable()
+            'type'      => $message->class,
+            'message'   => $message->message,
+            'details'   => $message->details,
+            'closeable' => $message instanceof MessageBox ? $message->isCloseable() : false,
         ];
 
-        if ($id === null ) {
+        if ($id === null) {
             $_SESSION['messages'][] = $structure;
         } else {
             $_SESSION['messages'][$id] = $structure;
