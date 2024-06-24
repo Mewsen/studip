@@ -3,7 +3,7 @@
  * @type {[type]}
  */
 function determineBreakpoint(element) {
-    return $(element).closest('.ui-dialog-content').length > 0 ? '.ui-dialog-content' : 'body';
+    return $(element).closest('.ui-dialog-content').length > 0 ? '.ui-dialog-content' : '#content';
 }
 
 /**
@@ -48,49 +48,29 @@ function getScrollableParents(element, menu_width, menu_height) {
     return elements;
 }
 
-/**
- * Scroll handler for all scroll related events.
- * This will reposition the menu(s) according to the scrolled distance.
- */
-function scrollHandler(event) {
-    const data = $(event.target).data('action-menu-scroll-data');
+class ActionMenu
+{
+    static stash = new Map();
+    static openMenus = [];
+    static #secret = Symbol();
+    static scrollHandlerState = false;
 
-    const diff_x = event.target.scrollLeft - data.left;
-    const diff_y = event.target.scrollTop - data.top;
 
-    data.menus.forEach((menu) => {
-        const offset = menu.offset();
-        menu.offset({
-            left: offset.left - diff_x,
-            top: offset.top - diff_y
-        });
-    });
-
-    data.left = event.target.scrollLeft;
-    data.top  = event.target.scrollTop;
-
-    $(event.target).data('action-menu-scroll-data', data);
-}
-
-const stash  = new Map();
-const secret = typeof Symbol === 'undefined' ?  Math.random().toString(36).substring(2, 15) : Symbol();
-
-class ActionMenu {
     /**
      * Create menu using a singleton pattern for each element.
      */
     static create(element, position = true) {
         const id = $(element).uniqueId().attr('id');
         const breakpoint = determineBreakpoint(element);
-        if (!stash.has(id)) {
+        if (!ActionMenu.stash.has(id)) {
             const menu_offset = $(element).offset().top + $('.action-menu-content', element).height();
             const max_offset = $(breakpoint).offset().top + $(breakpoint).height();
             const reversed = menu_offset > max_offset;
 
-            stash.set(id, new ActionMenu(secret, element, reversed, position));
+            ActionMenu.stash.set(id, new ActionMenu(ActionMenu.#secret, element, reversed, position));
         }
 
-        return stash.get(id);
+        return ActionMenu.stash.get(id);
     }
 
     /**
@@ -98,7 +78,7 @@ class ActionMenu {
      * @return {[type]} [description]
      */
     static closeAll() {
-        stash.forEach((menu) => menu.close());
+        this.stash.forEach((menu) => menu.close());
     }
 
     /**
@@ -106,59 +86,64 @@ class ActionMenu {
      */
     constructor(passed_secret, element, reversed, position) {
         // Enforce use of create (would use a private constructor if I could)
-        if (secret !== passed_secret) {
+        if (ActionMenu.#secret !== passed_secret) {
             throw new Error('Cannot create ActionMenu. Use ActionMenu.create()!');
         }
-
-        const breakpoint = determineBreakpoint(element);
 
         this.element = $(element);
         this.menu = this.element;
         this.content = $('.action-menu-content', element);
         this.is_reversed = reversed;
         this.is_open = false;
+        this.position = position;
+
         const additionalClasses = Object.values({ ...this.element[0].classList }).filter((item) => item != 'action-menu');
         const menu_width  = this.content.width();
         const menu_height = this.content.height();
         
         // Reposition the menu?
         if (position) {
-            const form = this.element.closest('form');
-            if (form) {
-                const id = form.uniqueId().attr('id');
-                $('.action-menu-item input[type="image"]:not([form])', this.element).attr('form', id);
-                $('.action-menu-item button:not([form])', this.element).attr('form', id);
-            }
-
             let parents = getScrollableParents(this.element, menu_width, menu_height);
             if (parents.length > 0) {
+                const form = this.element.closest('form');
+                if (form) {
+                    const id = form.uniqueId().attr('id');
+                    $('.action-menu-item input[type="image"]:not([form])', this.element).attr('form', id);
+                    $('.action-menu-item button:not([form])', this.element).attr('form', id);
+                }
+
                 this.menu = $('<div class="action-menu-wrapper">').append(this.content);
                 $('.action-menu-icon', element).clone().data('action-menu-element', element).prependTo(this.menu);
 
                 this.menu
                     .addClass(additionalClasses.join(' '))
-                    .offset(this.element.offset())
-                    .appendTo(breakpoint);
-
-                // Always add breakpoint
-                parents.push(breakpoint);
-                parents.forEach((parent, index) => {
-                    let data = $(parent).data('action-menu-scroll-data') || {
-                        menus: [],
-                        left: parent.scrollLeft,
-                        top: parent.scrollTop
-                    };
-                    data.menus.push(this.menu);
-
-                    $(parent).data('action-menu-scroll-data', data);
-
-                    if (data.menus.length < 2) {
-                        $(parent).scroll(scrollHandler);
-                    }
-                });
+                    .appendTo(parents[0]);
+            } else {
+                this.position = false;
             }
         }
         this.update();
+    }
+
+    toggleScrollHandler(active) {
+        if (ActionMenu.scrollHandlerState === active) {
+            return;
+        }
+
+        ActionMenu.scrollHandlerState = active;
+
+        if (active) {
+            document.addEventListener('scroll', this.repositionAllMenus, true);
+            document.addEventListener('scrollend', this.repositionAllMenus, true);
+
+        } else {
+            document.removeEventListener('scroll', this.repositionAllMenus, true);
+            document.removeEventListener('scrollend', this.repositionAllMenus, true);
+        }
+    }
+
+    repositionAllMenus() {
+        ActionMenu.openMenus.forEach((menu) => menu.reposition());
     }
 
     /**
@@ -191,8 +176,23 @@ class ActionMenu {
         this.update();
 
         if (this.is_open) {
+            this.reposition();
             this.menu.find('.action-menu-icon').focus();
+            ActionMenu.openMenus.push(this);
+        } else {
+            ActionMenu.openMenus = ActionMenu.openMenus.filter(menu => menu !== this);
         }
+
+        this.toggleScrollHandler(ActionMenu.openMenus.filter(menu => menu.position).length > 0);
+    }
+
+    reposition() {
+        if (!this.position) {
+            return;
+        }
+
+        const offset = this.element.offset();
+        requestAnimationFrame(() => this.menu.offset(offset));
     }
 
     /**
