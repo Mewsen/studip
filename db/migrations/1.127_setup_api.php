@@ -214,12 +214,12 @@ class SetupApi extends Migration
 
     public function dropTables(): void
     {
-        DBManager::get()->exec("DROP TABLE IF EXISTS `oauth_consumer_registry`,
-                                                     `oauth_consumer_token`,
+        DBManager::get()->exec("DROP TABLE IF EXISTS `oauth_consumer_token`,
                                                      `oauth_log`,
                                                      `oauth_server_nonce`,
                                                      `oauth_server_registry`,
                                                      `oauth_server_token`,
+                                                     `oauth_consumer_registry`,
                                                      `api_consumer_permissions`,
                                                      `api_consumers`,
                                                      `api_oauth_user_mapping`,
