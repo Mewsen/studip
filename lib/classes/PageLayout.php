@@ -600,17 +600,10 @@ class PageLayout
             $_SESSION['messages'] = [];
         }
 
-        $structure = [
-            'type'      => $message->class,
-            'message'   => $message->message,
-            'details'   => $message->details,
-            'closeable' => $message instanceof MessageBox ? $message->isCloseable() : false,
-        ];
-
         if ($id === null) {
-            $_SESSION['messages'][] = $structure;
+            $_SESSION['messages'][] = $message;
         } else {
-            $_SESSION['messages'][$id] = $structure;
+            $_SESSION['messages'][$id] = $message;
         }
     }
 
@@ -713,13 +706,15 @@ class PageLayout
      *
      * @return array    list of MessageBox objects
      */
-    public static function getMessages()
+    public static function getMessages(string $type = LayoutMessage::class)
     {
         $messages = [];
 
-        if (isset($_SESSION['messages'])) {
-            $messages = $_SESSION['messages'];
-            self::clearMessages();
+        foreach ($_SESSION['messages'] ?? [] as $index => $message) {
+            if (is_a($message, $type)) {
+                $messages[$index] = $message;
+                unset($_SESSION['messages'][$index]);
+            }
         }
 
         return $messages;

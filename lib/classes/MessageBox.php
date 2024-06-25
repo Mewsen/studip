@@ -31,7 +31,7 @@
  * echo MessageBox::success('Nachricht', ['optional details'], true);
  *
  */
-class MessageBox implements LayoutMessage
+class MessageBox implements LayoutMessage, JsonSerializable
 {
     /**
      * type and contents of the message box
@@ -173,5 +173,15 @@ class MessageBox implements LayoutMessage
             'label'         => $label[$this->class],
             'counter'       => self::$counter++,
         ]);
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'type'      => $this->class,
+            'message'   => $this->message,
+            'details'   => $this->details,
+            'closeable' => $this->isCloseable(),
+        ];
     }
 }

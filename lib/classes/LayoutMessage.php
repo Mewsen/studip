@@ -7,7 +7,7 @@
  * @license GPL2 or any later version
  * @since   Stud.IP 4.2
  */
-interface LayoutMessage
+interface LayoutMessage extends Stringable
 {
     /**
      * Renders the message as html.
