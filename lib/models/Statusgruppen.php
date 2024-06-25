@@ -133,31 +133,35 @@ class Statusgruppen extends SimpleORMap implements PrivacyObject
     /**
      * Creates or updates a statusgroup.
      *
-     * @param string      $id                ID of an existing group or empty if new group
+     * @param string|null $id                ID of an existing group or empty if new group
      * @param string      $name              group name
-     * @param int         $position          position or null if automatic position after other groups
+     * @param int|null    $position          position or null if automatic position after other groups
      * @param string      $range_id          ID of the object this group belongs to
      * @param int         $size              max number of members or 0 if unlimited
-     * @param int         $selfassign        may users join this group by themselves?
+     * @param bool        $selfassign        may users join this group by themselves?
      * @param int         $selfassign_start  group joining is possible starting at ...
-     * @param int         $makefolder        create a document folder assigned to this group?
+     * @param int         $selfassign_end    group joining is possible until ...
+     * @param bool        $makefolder        create a document folder assigned to this group?
      * @param array|null  $dates             dates assigned to this group. Defaults to null which means already assigned
      *                                       dates are not changed.
+     * @param bool        $make_blubber      create a blubber thread for this group?
+     *
      * @return Statusgruppen The saved statusgroup.
      * @throws Exception
      */
     public static function createOrUpdate(
-        $id,
-        $name,
-        $position,
-        $range_id,
-        $size,
-        $selfassign,
-        $selfassign_start,
-        $selfassign_end,
-        $makefolder,
-        $dates = null
-    )
+        ?string $id,
+        string $name,
+        ?int $position,
+        string $range_id,
+        int $size,
+        bool $selfassign,
+        int $selfassign_start,
+        int $selfassign_end,
+        bool $makefolder,
+        ?array $dates = null,
+        bool $make_blubber = false
+    ): Statusgruppen
     {
         $group = new Statusgruppen($id);
 
@@ -176,11 +180,11 @@ class Statusgruppen extends SimpleORMap implements PrivacyObject
 
         $group->store();
 
-        /*
-         * Create document folder if requested (ID is needed here,
-         * so we do that after store()).
-         */
+        // Create document folder if requested (ID is needed here, so we do
+        // that after store()).
         $group->updateFolder($makefolder);
+
+        $group->updateBlubber($make_blubber);
 
         return $group;
     }
@@ -409,6 +413,38 @@ class Statusgruppen extends SimpleORMap implements PrivacyObject
                 $groupFolder = new CourseGroupFolder($folderdata);
                 return $groupFolder->store();
             }
+        }
+    }
+
+    /**
+     * Returns whether the group has an associated blubber thread.
+     */
+    public function hasBlubber(): bool
+    {
+        return (bool) BlubberStatusgruppeThread::findByStatusgruppe_id($this->id);
+    }
+
+    /**
+     * Delete or create blubber thread
+     *
+     * @param bool $set Whether to create a blubber thread or not; an existing
+     *                  blubber thread will be deleted if $set is false
+     */
+    public function updateBlubber(bool $set): void
+    {
+        if ($set && $this->hasBlubber()) {
+            BlubberStatusgruppeThread::create([
+                'context_type'      => 'course',
+                'context_id'        => $this->range_id,
+                'user_id'           => User::findCurrent()->id,
+                'external_contact'  => false,
+                'display_class'     => BlubberStatusgruppeThread::class,
+                'visible_in_stream' => true,
+                'commentable'       => true,
+                'metadata'          => ['statusgruppe_id' => $this->id],
+            ]);
+        } elseif (!$set) {
+            BlubberStatusgruppeThread::findByStatusgruppe_id($this->id)?->delete();
         }
     }
 

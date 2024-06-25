@@ -25,8 +25,6 @@ class Course_StatusgroupsController extends AuthenticatedController
     {
         parent::before_filter($action, $args);
 
-        global $perm;
-
         checkObject();
         checkObjectModule("participants");
 
@@ -92,7 +90,7 @@ class Course_StatusgroupsController extends AuthenticatedController
         $membercounts = array_column(DBManager::get()->fetchAll(
             "SELECT u.`statusgruppe_id`, COUNT(u.`user_id`) as membercount
                 FROM `statusgruppen` s
-    	            JOIN `statusgruppe_user` u USING (`statusgruppe_id`)
+                JOIN `statusgruppe_user` u USING (`statusgruppe_id`)
                 WHERE s.`range_id` = ?
                 GROUP BY `statusgruppe_id`
                 ORDER BY s.`position` ASC, s.`name` ASC",
@@ -253,6 +251,7 @@ class Course_StatusgroupsController extends AuthenticatedController
                     Icon::create('add')
                 )->asDialog('size=auto');
             }
+            
             if (Config::get()->EXPORT_ENABLE) {
                 $export = new ExportWidget();
                 $export->addLink(
@@ -297,6 +296,7 @@ class Course_StatusgroupsController extends AuthenticatedController
                 Icon::create('arr_1down')
             );
         }
+        
         $sidebar->addWidget($actions);
     }
 
@@ -587,16 +587,18 @@ class Course_StatusgroupsController extends AuthenticatedController
             $group_id,
             Request::get('name'),
             $position,
-            $this->course_id, Request::int('size', 0),
+            $this->course_id,
+            Request::int('size', 0),
             $selfassign,
-            Request::int('selfassign', 0) !== 0
+            $selfassign
                 ? strtotime(Request::get('selfassign_start', 'now'))
                 : 0,
-            Request::int('selfassign', 0) && Request::get('selfassign_end')
+            $selfassign && Request::get('selfassign_end')
                 ? strtotime(Request::get('selfassign_end'))
                 : 0,
-            Request::int('makefolder', 0),
-            Request::getArray('dates')
+            Request::bool('makefolder', false),
+            Request::getArray('dates'),
+            Request::bool('blubber', false)
         );
 
         $group->description = trim(Request::get('description')) ?: null;
@@ -612,22 +614,6 @@ class Course_StatusgroupsController extends AuthenticatedController
                 _('Die Daten der Gruppe "%s" wurden gespeichert.'),
                 htmlReady($group->name)
             ));
-        }
-
-        $thread = BlubberStatusgruppeThread::findByStatusgruppe_id($group->id);
-        if (Request::get("blubber") && !$thread) {
-            $thread = new BlubberStatusgruppeThread();
-            $thread['context_type'] = "course";
-            $thread['context_id'] = $this->course_id;
-            $thread['user_id'] = $GLOBALS['user']->id;
-            $thread['external_contact'] = 0;
-            $thread['visible_in_stream'] = 1;
-            $thread['display_class'] = "BlubberStatusgruppeThread";
-            $thread['commentable'] = 1;
-            $thread['metadata'] = ['statusgruppe_id' => $group->id];
-            $thread->store();
-        } elseif(!Request::get("blubber") && $thread) {
-            $thread->delete();
         }
 
         $this->relocate('course/statusgroups');
@@ -842,13 +828,17 @@ class Course_StatusgroupsController extends AuthenticatedController
                 $numbering = Request::int('startnumber', 1);
             }
             for ($i = 0 ; $i < Request::int('number') ; $i++) {
-                Statusgruppen::createOrUpdate('', Request::get('prefix').' '.
-                    $numbering++,
-                    null, $this->course_id, Request::int('size', 0),
+                Statusgruppen::createOrUpdate(
+                    null,
+                    Request::get('prefix') . ' ' . $numbering++,
+                    null,
+                    $this->course_id,
+                    Request::int('size', 0),
                     Request::int('selfassign', 0) + Request::int('exclusive', 0),
                     strtotime(Request::get('selfassign_start', 'now')),
                     strtotime(Request::get('selfassign_end', 0)),
-                    Request::int('makefolder', 0));
+                    Request::bool('makefolder', false)
+                );
                 $counter++;
             }
 
@@ -868,12 +858,16 @@ class Course_StatusgroupsController extends AuthenticatedController
                     })->orderBy('priority');
 
                     foreach ($topics as $t) {
-                        $group = Statusgruppen::createOrUpdate('', _('Thema:') . ' ' . $t->title,
-                            null, $this->course_id, Request::int('size', 0),
+                        $group = Statusgruppen::createOrUpdate(
+                            null,
+                            _('Thema:') . ' ' . $t->title,
+                            null,
+                            $this->course_id,
+                            Request::int('size', 0),
                             Request::int('selfassign', 0) + Request::int('exclusive', 0),
                             strtotime(Request::get('selfassign_start', 'now')),
                             strtotime(Request::get('selfassign_end', 0)),
-                            Request::int('makefolder', 0)
+                            Request::bool('makefolder', false)
                         );
 
                         // Connect group to dates that are assigned to the given topic.
@@ -920,12 +914,17 @@ class Course_StatusgroupsController extends AuthenticatedController
                             }
                         }
 
-                        $group = Statusgruppen::createOrUpdate('', $name,
-                            null, $this->course_id, Request::int('size', 0),
+                        $group = Statusgruppen::createOrUpdate(
+                            null,
+                            $name,
+                            null,
+                            $this->course_id,
+                            Request::int('size', 0),
                             Request::int('selfassign', 0) + Request::int('exclusive', 0),
                             strtotime(Request::get('selfassign_start', 'now')),
                             strtotime(Request::get('selfassign_end', 0)),
-                            Request::int('makefolder', 0));
+                            Request::bool('makefolder', false)
+                        );
 
                         // Connect group to dates that are assigned to the given cycle.
                         foreach ($c->dates as $d) {
@@ -952,12 +951,17 @@ class Course_StatusgroupsController extends AuthenticatedController
                             $name .= ' (' . $room . ')';
                         }
 
-                        $group = Statusgruppen::createOrUpdate('', $name,
-                            $counter + 1, $this->course_id, Request::int('size', 0),
+                        $group = Statusgruppen::createOrUpdate(
+                            null,
+                            $name,
+                            $counter + 1,
+                            $this->course_id,
+                            Request::int('size', 0),
                             Request::int('selfassign', 0) + Request::int('exclusive', 0),
                             strtotime(Request::get('selfassign_start', 'now')),
                             strtotime(Request::get('selfassign_end', 0)),
-                            Request::int('makefolder', 0));
+                            Request::bool('makefolder', false)
+                        );
 
                         $d->statusgruppen->append($group);
                         $d->store();
@@ -974,12 +978,17 @@ class Course_StatusgroupsController extends AuthenticatedController
                         CourseMember::findByCourseAndStatus($this->course_id, 'dozent'))->orderBy('position');
 
                     foreach ($lecturers as $l) {
-                        Statusgruppen::createOrUpdate('', $l->getUserFullname('full'),
-                            null, $this->course_id, Request::int('size', 0),
+                        Statusgruppen::createOrUpdate(
+                            null,
+                            $l->getUserFullname('full'),
+                            null,
+                            $this->course_id,
+                            Request::int('size', 0),
                             Request::int('selfassign', 0) + Request::int('exclusive', 0),
                             strtotime(Request::get('selfassign_start', 'now')),
                             strtotime(Request::get('selfassign_end', 0)),
-                            Request::int('makefolder', 0));
+                            Request::bool('makefolder', false)
+                        );
                         $counter++;
                     }
 
@@ -1012,9 +1021,11 @@ class Course_StatusgroupsController extends AuthenticatedController
 
         // Actions for selected groups.
         if (Request::submitted('batch_groups')) {
-            if ($groups = Request::getArray('groups')) {
+            $groups = Request::getArray('groups');
+            if ($groups) {
                 $this->groups = SimpleCollection::createFromArray(
-                    Statusgruppen::findMany($groups))->orderBy('position, name');
+                    Statusgruppen::findMany($groups)
+                )->orderBy('position, name');
                 switch (Request::option('groups_action')) {
                     case 'edit_size':
                         PageLayout::setTitle(_('Gruppengröße bearbeiten'));
@@ -1097,6 +1108,10 @@ class Course_StatusgroupsController extends AuthenticatedController
                             )
                         );
                         break;
+                    case 'copy':
+                        $this->keepRequest();
+                        $this->redirect($this->copyURL());
+                        return;
                     case 'delete':
                         PageLayout::setTitle(_('Gruppe(n) löschen?'));
                         $this->askdelete = true;
@@ -1232,10 +1247,17 @@ class Course_StatusgroupsController extends AuthenticatedController
         }
 
         foreach ($groups as $g) {
-            Statusgruppen::createOrUpdate($g->id, $g->name,
-                $g->position, $this->course_id, $g->size,
-                $selfassign, $selfassign_start, $selfassign_end,
-                false);
+            Statusgruppen::createOrUpdate(
+                $g->id,
+                $g->name,
+                $g->position,
+                $this->course_id,
+                $g->size,
+                $selfassign,
+                $selfassign_start,
+                $selfassign_end,
+                false
+            );
         }
         PageLayout::postSuccess(_('Die Einstellungen der ausgewählten Gruppen wurden gespeichert.'));
         $this->relocate('course/statusgroups');
@@ -1502,5 +1524,49 @@ class Course_StatusgroupsController extends AuthenticatedController
         ));
 
         $this->group = $group;
+    }
+
+    public function copy_action(): void
+    {
+        PageLayout::setTitle(_('Gruppen in andere Veranstaltung kopieren'));
+
+        $this->group_ids = Request::optionArray('groups');
+
+        $this->search = new MyCoursesSearch('Seminar_id', User::findCurrent()->perms, [
+            ':userid' => User::findCurrent()->id,
+            ':exclude' => [$this->course_id],
+        ]);
+
+        $this->response->add_header('X-Dialog-Size', 'medium');
+    }
+
+    public function do_copy_action(): void
+    {
+        if (!Request::isPost()) {
+            throw new MethodNotAllowedException();
+        }
+
+        $target_course_id = Request::option('course_id');
+        $target_course = Course::find($target_course_id);
+
+        BasicDataWizardStep::copyParticipantsAndGroups(
+            $target_course,
+            $this->course_id,
+            false,
+            true,
+            Request::bool('copy_members', false),
+            Request::optionArray('group_ids')
+        );
+
+        PageLayout::postSuccess(sprintf(
+            _('Die Gruppen wurden in die Veranstaltung %s kopiert.'),
+            sprintf(
+                '<a href="%s">%s</a>',
+                URLHelper::getLink('seminar_main.php', ['auswahl' => $target_course_id], true),
+                htmlReady($target_course->getFullName())
+            ),
+        ));
+
+        $this->redirect($this->indexURL());
     }
 }

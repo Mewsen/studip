@@ -114,7 +114,7 @@ class StandardSearch extends SQLSearch
                 if (empty($this->search_settings['simple_name'])) {
                     $sql .= ", CONCAT(auth_user_md5.Nachname, ', ', auth_user_md5.Vorname, ' (', auth_user_md5.username, ')'), auth_user_md5.perms ";
                 } else {
-                    $sql .= ", CONCAT(auth_user_md5.Vorname, ' ', auth_user_md5.Nachname) ";
+                    $sql .= ", CONCAT(auth_user_md5.Vorname, ' ', auth_user_md5.Nachname) ";
                 }
                 $sql .= "FROM auth_user_md5 LEFT JOIN user_info ON (user_info.user_id = auth_user_md5.user_id) " .
                     "LEFT JOIN user_visibility ON (user_visibility.user_id = auth_user_md5.user_id) " .

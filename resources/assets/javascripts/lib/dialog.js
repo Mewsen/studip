@@ -173,6 +173,10 @@ Dialog.handlers.header['X-Title'] = function(title, options) {
 Dialog.handlers.header['X-No-Buttons'] = function(value, options) {
     options.buttons = false;
 };
+// Handler for HTTP header X-Dialog-Size: Adjust the size of the dialog
+Dialog.handlers.header['X-Dialog-Size'] = function (value, options) {
+    options.size = value;
+};
 
 // Creates a dialog from an anchor, a button or a form element.
 // Will update the dialog if it is already open

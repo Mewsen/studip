@@ -155,7 +155,7 @@ class QuickSearch
      * the searchfield will automatically search for persons, courses, workgroups, institutes and
      * you don't need to call the specialSearch-method.
      *
-     * @return object of type QuickSearch
+     * @return static
      */
     public static function get($name, $search = NULL)
     {

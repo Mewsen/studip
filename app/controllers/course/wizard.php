@@ -20,17 +20,28 @@ class Course_WizardController extends AuthenticatedController
     /**
      * @var Array steps the wizard has to execute in order to create a new course.
      */
-    public $steps = [];
+    public array $steps = [];
 
     public function before_filter (&$action, &$args)
     {
         parent::before_filter($action, $args);
 
+        if ($GLOBALS['user']->perms === 'user') {
+            throw new AccessDeniedException();
+        }
+
         $this->dialog = Request::isXhr();
         $this->studygroup = Request::bool('studygroup', $this->flash['studygroup'] ?? false);
 
+        // Feels a bit hacky
+        $this->is_copy = isset($_SESSION['coursewizard'][$args[1] ?? '']['source_id']);
+
         if (!$this->studygroup) {
-            PageLayout::setTitle(_('Neue Veranstaltung anlegen'));
+            if ($this->is_copy) {
+                PageLayout::setTitle(_('Veranstaltung kopieren'));
+            } else {
+                PageLayout::setTitle(_('Neue Veranstaltung anlegen'));
+            }
 
             $navigation = new Navigation(_('Neue Veranstaltung anlegen'), 'dispatch.php/course/wizard');
             Navigation::addItem('/browse/my_courses/new_course', $navigation);
@@ -46,10 +57,6 @@ class Course_WizardController extends AuthenticatedController
         }
 
         $this->steps = CourseWizardStepRegistry::findBySQL("`enabled`=1 ORDER BY `number`");
-
-        if ($GLOBALS['user']->perms === 'user') {
-            throw new AccessDeniedException();
-        }
     }
 
     /**
@@ -132,7 +139,10 @@ class Course_WizardController extends AuthenticatedController
             }
         // The "create" button was clicked -> create course.
         } else if (Request::submitted('create')) {
-            $_SESSION['coursewizard'][$this->temp_id]['copy_basic_data'] = Request::submitted('copy_basic_data');
+            $_SESSION['coursewizard'][$this->temp_id]['copy_basic_data'] = Request::bool('copy_basic_data');
+            $_SESSION['coursewizard'][$this->temp_id]['copy_participants'] = Request::bool('copy_participants');
+            $_SESSION['coursewizard'][$this->temp_id]['copy_groups'] = Request::bool('copy_groups');
+            $_SESSION['coursewizard'][$this->temp_id]['copy_members'] = Request::bool('copy_members');
             if ($this->getValues()) {
                 // Batch creation of several courses at once.
                 if ($batch = Request::getArray('batchcreate')) {
@@ -141,7 +151,7 @@ class Course_WizardController extends AuthenticatedController
                     $failed = 0;
                     // Create given number of courses.
                     for ($i = 1 ; $i <= $batch['number'] ; $i++) {
-                        if ($newcourse = $this->createCourse($i == $batch['number'] ? true : false)) {
+                        if ($newcourse = $this->createCourse($i == $batch['number'])) {
                             // Add corresponding number/letter to name or number of newly created course.
                             if ($batch['add_number_to'] == 'name') {
                                 $newcourse->name .= ' ' . $numbering;
@@ -293,16 +303,20 @@ class Course_WizardController extends AuthenticatedController
      * Copy an existing course.
      */
     public function copy_action($id) {
-        if (!$GLOBALS['perm']->have_studip_perm('dozent', $id)
-            || LockRules::Check($id, 'seminar_copy')) {
-            throw new AccessDeniedException(_("Sie dürfen diese Veranstaltung nicht kopieren"));
+        if (
+            !$GLOBALS['perm']->have_studip_perm('dozent', $id)
+            || LockRules::Check($id, 'seminar_copy')
+        ) {
+            throw new AccessDeniedException(_('Sie dürfen diese Veranstaltung nicht kopieren'));
         }
+
         $course = Course::find($id);
         $values = [];
         for ($i = 0 ; $i < sizeof($this->steps) ; $i++) {
             $step = $this->getStep($i);
             $values = $step->copy($course, $values);
         }
+
         $values['source_id'] = $course->id;
         $this->initialize();
         $_SESSION['coursewizard'][$this->temp_id] = $values;

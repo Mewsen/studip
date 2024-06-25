@@ -1,5 +1,17 @@
-<form action="<?= $controller->url_for('course/statusgroups/batch_action') ?>" method="post">
-<section class="contentbox course-statusgroups" <? if ($is_tutor && !$is_locked) echo 'data-sortable="' . $controller->url_for('course/statusgroups/order') . '"'; ?>>
+<?php
+/**
+ * @var Course_StatusgroupsController $controller
+ * @var bool $is_tutor
+ * @var bool $is_locked
+ * @var array $groups
+ * @var bool $open_groups
+ * @var string $order
+ * @var string $sort_by
+ * @var int $ungrouped_count
+ */
+?>
+<form action="<?= $controller->batch_action() ?>" method="post">
+<section class="contentbox course-statusgroups" <? if ($is_tutor && !$is_locked) echo 'data-sortable="' . $controller->order() . '"'; ?>>
     <header>
         <h1><?= _('Teilnehmende nach Gruppen') ?></h1>
     </header>
@@ -29,14 +41,18 @@
             </div>
             <div class="groupactions">
                 <label>
-                    <select name="groups_action" id="batch-groups-action" disabled>
+                    <select name="groups_action" id="batch-groups-action">
                         <option value="edit_size"><?= _('Gruppengröße bearbeiten') ?></option>
                         <option value="edit_selfassign"><?= _('Selbsteintrag bearbeiten') ?></option>
                         <option value="write_message"><?= _('Nachricht schreiben') ?></option>
+                        <option value="copy"><?= _('In andere Veranstaltung kopieren') ?></option>
                         <option value="delete"><?= _('Löschen') ?></option>
                     </select>
                 </label>
-                <?= Studip\Button::create(_('Ausführen'), 'batch_groups', ['data-dialog' => 'size=auto', 'disabled' => '', 'id' => 'batch-groups-submit']) ?>
+                <?= Studip\Button::create(_('Ausführen'), 'batch_groups', [
+                    'data-dialog' => 'size=auto',
+                    'id'          => 'batch-groups-submit',
+                ]) ?>
             </div>
         </footer>
     <?php endif ?>

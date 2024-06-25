@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Course_WikiController $controller
+ * @var Course_WizardController $controller
  * @var int $stepnumber
  * @var string $temp_id
  * @var bool $dialog
@@ -24,18 +24,37 @@
     ) ?>
 <? endif ?>
 
-<? if ($source_course) : ?>
+<? if (isset($source_course)) : ?>
     <section>
-        <label>
-            <input type="checkbox" checked name="copy_basic_data" value="1">
+        <p>
             <?= sprintf(
-                _('Alle Grunddaten der Ursprungsveranstaltung (%s) kopieren'),
+                _('Folgende Daten der Ursprungsveranstaltung (%s) kopieren'),
                 sprintf(
                     '<a data-dialog href="%s">%s</a>',
                     URLHelper::getLink('dispatch.php/course/details', ['sem_id' => $source_course->id]),
                     htmlReady($source_course->getFullName())
                 )
             ) ?>
+        </p>
+
+        <label>
+            <input type="checkbox" checked name="copy_basic_data" value="1">
+            <?= _('Grunddaten') ?>
+        </label>
+
+        <label>
+            <input type="checkbox" name="copy_participants" value="1">
+            <?= _('Reguläre Teilnehmende') ?>
+        </label>
+
+        <label>
+            <input type="checkbox" name="copy_groups" value="1" data-activates="[name='copy_members']">
+            <?= _('Statusgruppen') ?>
+        </label>
+
+        <label>
+            <input type="checkbox" name="copy_members" value="1">
+            <?= _('Zugeordnete Teilnehmende der Statusgruppen') ?>
         </label>
     </section>
 <? endif ?>
@@ -50,9 +69,10 @@
 
     <footer data-dialog-button>
     <? if (isset($_SESSION['coursewizard'][$this->temp_id]['batchcreate'])) : ?>
-        <? foreach ($_SESSION['coursewizard'][$this->temp_id]['batchcreate'] as $key => $value) : ?>
-            <input type="hidden" name="batchcreate[<?= $key ?>]" value="<?= $value ?>">
-        <? endforeach ?>
+        <?= addHiddenFields(
+            'batchcreate',
+            $_SESSION['coursewizard'][$this->temp_id]['batchcreate']
+        ) ?>
     <? endif ?>
         <?= Studip\Button::create(_('Zurück'), 'back',
             $dialog ? ['data-dialog' => 'size=50%'] : []) ?>
