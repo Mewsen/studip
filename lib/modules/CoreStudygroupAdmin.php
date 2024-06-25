@@ -37,7 +37,7 @@ class CoreStudygroupAdmin extends CorePlugin implements StudipModule
 
         $navigation->addSubNavigation('contentmodules', new Navigation(_('Werkzeuge'), "dispatch.php/course/contentmodules?cid={$course_id}"));
         $navigation->addSubNavigation('main', new Navigation(_('Verwaltung'), "dispatch.php/course/studygroup/edit/?cid={$course_id}"));
-        $navigation->addSubNavigation('avatar', new Navigation(_('Infobild'), "dispatch.php/avatar/update/course/{$course_id}?cid={$course_id}"));
+        $navigation->addSubNavigation('avatar', new Navigation(_(' Studiengruppenbild'), "dispatch.php/course/studygroup/avatar?cid={$course_id}"));
 
         if (!$GLOBALS['perm']->have_perm('admin') && Config::get()->VOTE_ENABLE) {
             $item = new Navigation(_('Fragebögen'), 'dispatch.php/questionnaire/courseoverview');

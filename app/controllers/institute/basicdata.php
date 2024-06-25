@@ -35,8 +35,6 @@ class Institute_BasicdataController extends AuthenticatedController
     {
         PageLayout::setTitle(_('Verwaltung der Grunddaten'));
 
-        PageLayout::addSqueezePackage('avatar');
-
         //get ID from an open Institut
         $i_view = $i_id ?: Request::option('i_view', Context::getId());
 

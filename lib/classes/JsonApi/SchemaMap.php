@@ -16,6 +16,8 @@ class SchemaMap
 
             \JsonApi\Models\ScheduleEntry::class => Schemas\ScheduleEntry::class,
 
+            \Avatar::class => Schemas\Avatar::class,
+
             \BlubberComment::class => Schemas\BlubberComment::class,
             \BlubberStatusgruppeThread::class => Schemas\BlubberStatusgruppeThread::class,
             \BlubberThread::class => Schemas\BlubberThread::class,

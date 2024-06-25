@@ -142,23 +142,3 @@
        <input type="hidden" name="i_view" value="<?= $i_view ?>">
     </footer>
 </form>
-
-<?php
-$sidebar = Sidebar::get();
-
-if (!$institute->isNew()) {
-    $widget = new ActionsWidget();
-    $widget->addLink(
-        _('Infobild ändern'),
-        URLHelper::getURL('dispatch.php/avatar/update/institute/' . $institute->id),
-        Icon::create('edit')
-    )->asDialog();
-    if (InstituteAvatar::getAvatar($institute->id)->is_customized()) {
-        $widget->addLink(
-            _('Infobild löschen'),
-            URLHelper::getURL('dispatch.php/avatar/delete/institute/' . $institute->id),
-            Icon::create('trash')
-        );
-    }
-    $sidebar->addWidget($widget);
-}

@@ -72,6 +72,7 @@ class AdminNavigation extends Navigation
 
         $navigation->setURL('dispatch.php/institute/basicdata/index?cid=');
         $navigation->addSubNavigation('details', new Navigation(_('Grunddaten'), 'dispatch.php/institute/basicdata/index'));
+        $navigation->addSubNavigation('avatar', new Navigation(_('Einrichtungsbild'), 'dispatch.php/institute/avatar/index'));
         $navigation->addSubNavigation('faculty', new Navigation(_('Mitarbeiter'), 'dispatch.php/institute/members?admin_view=1'));
         $navigation->addSubNavigation('groups', new Navigation(_('Funktionen / Gruppen'), 'dispatch.php/admin/statusgroups?type=inst'));
 

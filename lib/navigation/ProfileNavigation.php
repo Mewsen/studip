@@ -62,6 +62,7 @@ class ProfileNavigation extends Navigation
             // profile data
             $navigation = new Navigation(_('Persönliche Angaben'));
             $navigation->addSubNavigation('profile', new Navigation(_('Grunddaten'), 'dispatch.php/settings/account'));
+            $navigation->addSubNavigation('avatar', new Navigation(_('Profilbild'), 'dispatch.php/settings/avatar'));
             if (
                 !StudipAuthAbstract::CheckField('auth_user_md5.password', $current_user->auth_plugin)
                 && (

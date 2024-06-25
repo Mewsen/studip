@@ -21,15 +21,6 @@ let mathjax_promise = null;
 export const loadChunk = function (chunk, { silent = false } = {}) {
     let promise = null;
     switch (chunk) {
-        case 'code-highlight':
-            promise = import(
-                /* webpackChunkName: "code-highlight" */
-                './chunks/code-highlight'
-            ).then(({ default: hljs }) => {
-                return hljs;
-            });
-            break;
-
         case 'courseware':
             promise = Promise.all([
                 STUDIP.loadChunk('vue'),
@@ -38,6 +29,25 @@ export const loadChunk = function (chunk, { silent = false } = {}) {
                     './chunks/courseware'
                 ),
             ]).then(([Vue]) => Vue);
+            break;
+
+        case 'avatar':
+            promise = Promise.all([
+                STUDIP.loadChunk('vue'),
+                import(
+                    /* webpackChunkName: "avatar" */
+                    './chunks/avatar'
+                ),
+            ]).then(([Vue]) => Vue);
+            break;
+
+        case 'code-highlight':
+            promise = import(
+                /* webpackChunkName: "code-highlight" */
+                './chunks/code-highlight'
+            ).then(({default: hljs}) => {
+                return hljs;
+            });
             break;
 
         case 'chartist':

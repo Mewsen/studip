@@ -383,13 +383,7 @@ class Course_StudygroupController extends AuthenticatedController
                 $this->url_for('course/wizard?studygroup=1'),
                 Icon::create('add')
             );
-            if ($GLOBALS['perm']->have_studip_perm('tutor', $id)) {
-                $actions->addLink(
-                    _('Bild ändern'),
-                    $this->url_for('avatar/update/course/' . $id),
-                    Icon::create('edit')
-                );
-            }
+
             $actions->addLink(
                 _('Diese Studiengruppe löschen'),
                 $this->deleteURL(),
@@ -977,6 +971,12 @@ class Course_StudygroupController extends AuthenticatedController
 
         $this->redirect($this->url_for('messages/write', ['course_id' => $id, 'default_subject' => $subject, 'filter' => 'all', 'emailrequest' => 1]));
     }
-
+    public function avatar_action()
+    {
+        Navigation::activateItem('/course/admin/avatar');
+        $this->studygroup_id = Context::getId();
+        $avatar = StudygroupAvatar::getAvatar($this->studygroup_id);
+        $this->avatar_url = $avatar->getURL(Avatar::NORMAL);
+    }
 
 }

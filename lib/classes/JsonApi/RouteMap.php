@@ -125,6 +125,7 @@ class RouteMap
             $this->addAuthenticatedCoursewareRoutes($group);
         }
 
+        $this->addAuthenticatedAvatarRoutes($group);
         $this->addAuthenticatedEventsRoutes($group);
         $this->addAuthenticatedFeedbackRoutes($group);
         $this->addAuthenticatedFilesRoutes($group);
@@ -648,6 +649,14 @@ class RouteMap
         $group->delete('/stock-images/{id}', Routes\StockImages\StockImagesDelete::class);
 
         $group->post('/stock-images/{id}/blob', Routes\StockImages\StockImagesUpload::class);
+    }
+
+    private function addAuthenticatedAvatarRoutes(RouteCollectorProxy $group): void
+    {
+        $group->get('/{type:courses|institutes|users}/{id}/avatar', Routes\Avatar\AvatarOfRangeShow::class);
+        $group->delete('/{type:courses|institutes|users}/{id}/avatar', Routes\Avatar\AvatarofRangeDelete::class);
+
+        $group->post('/{type:courses|institutes|users}/{id}/avatar', Routes\Avatar\AvatarUpload::class);
     }
 
     private function addRelationship(RouteCollectorProxy $group, string $url, string $handler): void

@@ -379,10 +379,7 @@ class Course_BasicdataController extends AuthenticatedController
                 );
             }
         }
-        $widget->addLink(_('Bild ändern'),
-            $this->url_for('avatar/update/course', $this->course_id),
-            Icon::create('edit')
-        );
+
         if ($GLOBALS['perm']->have_perm('admin')) {
             $is_locked = $course->lock_rule;
             $widget->addLink(

@@ -1,17 +1,11 @@
 <div class="avatar-widget">
     <? if ($GLOBALS['perm']->have_profile_perm('user', $current_user)) : ?>
         <a class="profile-avatar"
-           accept="image/gif,image/png,image/jpeg" capture="camera"
-           data-max-size="<?= Avatar::MAX_FILE_SIZE ?>"
-           data-message-too-large="<?= _('Die hochgeladene Datei ist zu groß. Bitte wählen Sie ein anderes Bild.') ?>"
-           data-message-unaccepted="<?= _('Die hochgeladene Datei hat falsche Typ. Bitte wählen Sie ein anderes Bild.') ?>"
-           href="<?= URLHelper::getURL('dispatch.php/avatar/update/user/' . $current_user) ?>" data-dialog>
+           href="<?= URLHelper::getURL('dispatch.php/settings/avatar/') ?>">
             <?= $avatar->getImageTag(Avatar::NORMAL) ?>
             <div id="avatar-overlay" class="avatar-overlay">
                 <div class="text">
-                    <?= _('Bild hochladen oder löschen.') ?>
-                    <br>
-                    <?= _('Drag & Drop oder Klicken') ?>
+                    <?= _('Profilbild ändern') ?>
                 </div>
             </div>
         </a>
