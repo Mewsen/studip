@@ -184,13 +184,15 @@ class Resources_RoomPlanningController extends AuthenticatedController
             );
         }
 
-        $week_timestamp = Request::get('timestamp');
-        $default_date   = Request::get('defaultDate');
-        $this->date     = new DateTime();
+
+        $week_timestamp = Request::int('timestamp');
+        $default_date = Request::get('defaultDate');
+        $this->date = new DateTime();
+
         if ($week_timestamp) {
             $this->date->setTimestamp($week_timestamp);
         } elseif ($default_date) {
-            $this->date     = Request::getDateTime('defaultDate');
+            $this->date = Request::getDateTime('defaultDate', 'Y-m-d', null, null, $this->date);
             $week_timestamp = $this->date->getTimestamp();
         } else {
             $week_timestamp = $this->date->getTimestamp();
@@ -214,14 +216,14 @@ class Resources_RoomPlanningController extends AuthenticatedController
         }
 
         $views = new ViewsWidget();
-        if ($GLOBALS['user']->id && ($GLOBALS['user']->id != 'nobody')) {
+        if ($GLOBALS['user']->id && $GLOBALS['user']->id !== 'nobody') {
             if ($this->resource->userHasPermission($this->user)) {
                 $views->addLink(
                     _('Standard Zeitfenster'),
                     URLHelper::getURL(
                         '',
                         [
-                            'defaultDate' => Request::get('defaultDate', date('Y-m-d'))
+                            'defaultDate' => $this->date->format('Y-m-d')
                         ]
                     ),
                     null,
@@ -234,7 +236,7 @@ class Resources_RoomPlanningController extends AuthenticatedController
                         '',
                         [
                             'allday'      => true,
-                            'defaultDate' => Request::get('defaultDate', date('Y-m-d'))
+                            'defaultDate' => $this->date->format('Y-m-d')
                         ]
                     ),
                     null,
@@ -254,13 +256,13 @@ class Resources_RoomPlanningController extends AuthenticatedController
                         'resources/room_planning/booking_plan/' . $this->resource->id,
                         [
                             'display_all_requests' => '1',
-                            'allday'               => Request::get('allday', false)
+                            'allday'               => Request::bool('allday', false)
                         ]
                     ),
                     $this->url_for(
                         'resources/room_planning/booking_plan/' . $this->resource->id,
                         [
-                            'allday' => Request::get('allday', false)
+                            'allday' => Request::bool('allday', false)
                         ]
                     ),
                     []
@@ -269,16 +271,14 @@ class Resources_RoomPlanningController extends AuthenticatedController
             $sidebar->addWidget($options);
         }
 
-        $dpicker = new SidebarWidget();
-        $dpicker->setTitle('Datum');
-        $picker_html = $this->get_template_factory()->render(
-            'resources/room_planning/_sidebar_date_selection.php'
-        );
-        $dpicker->addElement(new WidgetElement($picker_html));
-        $sidebar->addWidget($dpicker);
+        $sidebar->addWidget(new TemplateWidget(
+            _('Datum'),
+            $this->get_template_factory()->open('resources/room_planning/_sidebar_date_selection.php'),
+            ['date' => $this->date]
+        ));
 
         $actions = new ActionsWidget();
-        if ($GLOBALS['user']->id && ($GLOBALS['user']->id != 'nobody')) {
+        if ($GLOBALS['user']->id && $GLOBALS['user']->id !== 'nobody') {
             if ($this->user_has_booking_permissions) {
                 $actions->addLink(
                     _('Neue Buchung'),

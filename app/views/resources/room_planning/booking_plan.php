@@ -72,7 +72,7 @@
                 in_array(Request::get("defaultView"), ['dayGridMonth','timeGridWeek','timeGridDay'])
                 ? Request::get("defaultView")
                 : 'timeGridWeek',
-            'defaultDate' => Request::get("defaultDate"),
+            'defaultDate' => $date->format('Y-m-d'),
             'eventSources' => [
                 [
                     'url' => URLHelper::getURL(
