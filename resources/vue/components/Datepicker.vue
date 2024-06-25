@@ -76,7 +76,7 @@ export default {
                 return this.convertInputToNativeDate(this.value).toISOString();
             }
 
-            return this.convertInputToNativeDate(this.value).toLocaleDateString();
+            return this.convertInputToNativeDate(this.value).toLocaleDateString(String.locale);
         }
     },
     methods: {

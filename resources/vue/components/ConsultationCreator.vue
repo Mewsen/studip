@@ -412,6 +412,25 @@ export default {
                 event.preventDefault();
             }
         },
+        compareDates(date0, date1, operator = '=', precision = 'day') {
+            const mapping = {
+                '<': 'isBefore',
+                '<=': 'isSameOrBefore',
+                '=': 'isSame',
+                '>=': 'isSameOrAfter',
+                '>': 'isAfter',
+            };
+
+            if (mapping[operator] === undefined) {
+                throw new Error(`Unsupported operator '${operator}'`);
+            }
+
+            const compareDate0 = moment(date0);
+            const compareDate1 = moment(date1);
+
+            const method = mapping[operator];
+            return compareDate0[method](compareDate1, precision);
+        },
         validateInputs(event) {
             const errors = [];
 
@@ -419,7 +438,7 @@ export default {
                 errors.push(this.$gettext('Die Endzeit liegt vor der Startzeit!'));
             }
 
-            if (this.interval > 0 && this.startDate > this.endDate) {
+            if (this.interval > 0 && this.compareDates(this.startDate, this.endDate, '>')) {
                 errors.push(this.$gettext('Das Enddatum liegt vor dem Startdatum!'));
             }
 
