@@ -2479,7 +2479,7 @@ class Resource extends SimpleORMap implements StudipItem
      */
     public function userHasRequestRights(User $user)
     {
-        if (!Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS) {
+        if (!Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS || !$this->booking_plan_request) {
             return false;
         }
         $min_perm = Config::get()->RESOURCES_MIN_REQUEST_PERMISSION;

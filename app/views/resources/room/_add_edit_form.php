@@ -38,6 +38,11 @@
                 <?= _('Globale Buchungssperren gelten für diesen Raum') ?>
             </label>
             <label>
+                <input type="checkbox" name="booking_plan_request" value="1"
+                       <?= $room->booking_plan_request ? 'checked' : '' ?>>
+                <?= _('Raumanfragen über den Belegungsplan möglich') ?>
+            </label>
+            <label>
                 <?= _('Raumtyp') ?>
                 <input type="text" name="room_type" value="<?= htmlReady($room_type ?? '') ?>">
             </label>
