@@ -83,13 +83,10 @@ class RoomManagement_PlanningController extends AuthenticatedController
         }
         $sidebar->addWidget($views);
 
-        $dpicker = new SidebarWidget();
-        $dpicker->setTitle('Datum');
-        $picker_html = $this->get_template_factory()->render(
-            'resources/room_planning/_sidebar_date_selection.php'
-        );
-        $dpicker->addElement(new WidgetElement($picker_html));
-        $sidebar->addWidget($dpicker);
+        $sidebar->addWidget(new TemplateWidget(
+            _('Datum'),
+            $this->get_template_factory()->open('resources/room_planning/_sidebar_date_selection.php')
+        ));
 
         $clipboards = Clipboard::getClipboardsForUser($GLOBALS['user']->id);
         if (!empty($clipboards)) {
