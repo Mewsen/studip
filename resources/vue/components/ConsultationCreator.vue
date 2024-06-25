@@ -30,7 +30,7 @@
 
             <label :class="{'col-3': !isSingleDay}">
                 <span class="required">{{ $gettext('Intervall') }}</span>
-                <select required name="interval" v-model="interval">
+                <select required name="interval" v-model.number="interval">
                     <option v-for="(label, value) in intervals" :key="value" :value="value">
                         {{ label }}
                     </option>
@@ -40,9 +40,9 @@
             <label class="col-3" v-if="!isSingleDay">
                 <span class="required">{{ $gettext('Am Wochentag') }}</span>
 
-                <select required name="day-of-week" v-model="dayOfWeek">
-                    <option v-for="(label, value) in daysOfTheWeek" :value="value" :key="value">
-                        {{ label }}
+                <select required name="day-of-week" @change="evt => dayOfWeek = parseInt(evt.target.value, 10)">
+                    <option v-for="dow in daysOfTheWeek" :value="dow.key" :key="dow.key" :selected="dayOfWeek === dow.key">
+                        {{ dow.label }}
                     </option>
                 </select>
             </label>
@@ -359,15 +359,15 @@ export default {
             return STUDIP.CSRF_TOKEN;
         },
         daysOfTheWeek() {
-            return {
-                1: this.$gettext('Montag'),
-                2: this.$gettext('Dienstag'),
-                3: this.$gettext('Mittwoch'),
-                4: this.$gettext('Donnerstag'),
-                5: this.$gettext('Freitag'),
-                6: this.$gettext('Samstag'),
-                0: this.$gettext('Sonntag'),
-            };
+            return [
+                {key: 1, label:  this.$gettext('Montag')},
+                {key: 2, label: this.$gettext('Dienstag')},
+                {key: 3, label: this.$gettext('Mittwoch')},
+                {key: 4, label: this.$gettext('Donnerstag')},
+                {key: 5, label: this.$gettext('Freitag')},
+                {key: 6, label: this.$gettext('Samstag')},
+                {key: 0, label: this.$gettext('Sonntag')},
+            ];
         },
         intervals() {
             return {
@@ -385,7 +385,7 @@ export default {
             return this.rangeType === 'Institute';
         },
         isSingleDay() {
-            return this.interval === '0';
+            return this.interval === 0;
         },
         needsConfirmation() {
             return this.slotCount > this.slotCountThreshold;
@@ -419,7 +419,7 @@ export default {
                 errors.push(this.$gettext('Die Endzeit liegt vor der Startzeit!'));
             }
 
-            if (this.startDate > this.endDate) {
+            if (this.interval > 0 && this.startDate > this.endDate) {
                 errors.push(this.$gettext('Das Enddatum liegt vor dem Startdatum!'));
             }
 
@@ -457,7 +457,7 @@ export default {
     },
     watch: {
         interval(current) {
-            if (current === '0') {
+            if (current === 0) {
                 this.endDate = new Date(this.startDate);
             }
         },

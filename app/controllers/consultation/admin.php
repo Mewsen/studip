@@ -165,11 +165,17 @@ class Consultation_AdminController extends ConsultationController
         CSRFProtection::verifyUnsafeRequest();
 
         try {
+            $interval = Request::int('interval');
             $start = $this->getDateAndTime('start');
-            $end = $this->getDateAndTime('end');
+            $end = $this->getDateAndTime($interval === 0 ? 'start' : 'end', 'end');
 
             if (date('Hi', $end) <= date('Hi', $start)) {
                 throw new InvalidArgumentException(_('Die Endzeit liegt vor der Startzeit!'));
+            }
+
+            $dow = Request::int('day-of-week');
+            if ($interval === 0) {
+                $dow = date('w', $start);
             }
 
             // Determine duration of a slot and pause times
@@ -187,8 +193,8 @@ class Consultation_AdminController extends ConsultationController
             $slot_count = ConsultationBlock::countSlots(
                 $start,
                 $end,
-                Request::int('day-of-week'),
-                Request::int('interval'),
+                $dow,
+                $interval,
                 $duration,
                 $pause_time,
                 $pause_duration
@@ -202,8 +208,8 @@ class Consultation_AdminController extends ConsultationController
                 $this->range,
                 $start,
                 $end,
-                Request::int('day-of-week'),
-                Request::int('interval')
+                $dow,
+                $interval
             );
 
             $stored = 0;
@@ -872,15 +878,19 @@ class Consultation_AdminController extends ConsultationController
         }
     }
 
-    private function getDateAndTime($index)
+    private function getDateAndTime(string $index, string $index_time = null)
     {
-        if (!Request::submitted("{$index}-date") || !Request::submitted("{$index}-time")) {
+        if ($index_time === null) {
+            $index_time = $index;
+        }
+
+        if (!Request::submitted("{$index}-date") || !Request::submitted("{$index_time}-time")) {
             throw new Exception("Date with index '{$index}' was not submitted properly");
         }
 
         return strtotime(implode(' ', [
             Request::get("{$index}-date"),
-            Request::get("{$index}-time")
+            Request::get("{$index_time}-time")
         ]));
     }
 

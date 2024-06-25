@@ -91,7 +91,7 @@
                     <?= Icon::create('add')->asImg(tooltip2(_('Termin reservieren'))) ?>
                 </a>
             <? else: ?>
-                <?= Icon::create('add', Icon::ROLE_INACTIVE)->asImg(tooltip2(_('Dieser Termin ist für Buchungen gesperrt.'))) ?>
+                <?= Icon::create('decline', Icon::ROLE_INACTIVE)->asImg(tooltip2(_('Dieser Termin ist für Buchungen gesperrt.'))) ?>
             <? endif; ?>
             </td>
         </tr>

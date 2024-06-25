@@ -19,6 +19,7 @@
  * @property SimpleORMapCollection|ConsultationEvent[] $events has_many ConsultationEvent
  * @property ConsultationBlock $block belongs_to ConsultationBlock
  * @property ConsultationSlot|null $previous_slot has_one ConsultationSlot
+ * @property ConsultationSlot|null $next_slot has_one ConsultationSlot
  * @property-read mixed $has_bookings additional field
  * @property-read mixed $is_expired additional field
  */
@@ -48,8 +49,12 @@ class ConsultationSlot extends SimpleORMap
             'on_delete'         => 'delete',
         ];
         $config['has_one']['previous_slot'] = [
-            'class_name'        => ConsultationSlot::class,
-            'foreign_key'       => 'previous_slot_id',
+            'class_name'  => ConsultationSlot::class,
+            'foreign_key' => 'previous_slot_id',
+        ];
+        $config['has_one']['next_slot'] = [
+            'class_name' => ConsultationSlot::class,
+            'assoc_func' => 'findOneByPrevious_slot_id',
         ];
 
         $config['registered_callbacks']['before_create'][] = function (ConsultationSlot $slot) {
@@ -183,14 +188,15 @@ class ConsultationSlot extends SimpleORMap
     /**
      * Returns whether the slot is bookable for the given user_id
      */
-    public function isBookable(?string $user_id = null): bool
+    public function isBookable(): bool
     {
-        return !$this->isOccupied($user_id)
+        return !$this->isOccupied()
             && !$this->isLocked()
-            && !(
-                $this->block->consecutive
-                && $this->previous_slot
-                && !$this->previous_slot->isOccupied()
+            && (
+                !$this->block->consecutive
+                || !$this->block->has_bookings
+                || ($this->previous_slot && $this->previous_slot->isOccupied())
+                || ($this->next_slot && $this->next_slot->isOccupied())
             );
     }
 
