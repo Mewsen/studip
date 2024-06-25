@@ -343,58 +343,58 @@ class Request implements ArrayAccess, IteratorAggregate
     {
         $value = self::get($param);
 
-        if (!$value) {
-            //In case the first field is not set
-            //use the default value, if any:
-            if ($default instanceof DateTime) {
-                return $default;
-            } else {
-                $datetime = new DateTime();
-                $datetime->setTimestamp(0);
-                return $datetime;
+        if ($value) {
+            // Combine the format specifications and the
+            // values into one string each.
+            $combined_format = $format;
+            $combined_value = $value;
+
+            // The second format and value is only added
+            // when $second_param and $second_format are set
+            // and a second value could be retrieved.
+            if ($second_param && $second_format) {
+                $second_value = Request::get($second_param);
+                if ($second_value) {
+                    $combined_format .= ' ' . $second_format;
+                    $combined_value .= ' ' . $second_value;
+                }
+            }
+
+            // The time zone may not be set in the fields
+            // so we use the default timezone from a new
+            // DateTime object:
+            $value = new DateTime();
+            $time_zone = $value->getTimezone();
+
+            // Now we return a DateTime object created from the
+            // specified date value(s):
+            $result = DateTime::createFromFormat(
+                $combined_format,
+                $combined_value,
+                $time_zone
+            );
+
+            if ($result !== false) {
+                if (
+                    !$second_param
+                    && !$second_format
+                    && !preg_match('/[aAghGHisvu]/', $format) // Ensure no time in format
+                ) {
+                    $result->setTime(0, 0);
+                }
+
+                return $result;
             }
         }
 
-        //Combine the format specifications and the
-        //values into one string each.
-        $combined_format = $format;
-        $combined_value = $value;
 
-        //The second format and value is only added
-        //when $second_param and $second_format are set
-        //and a second value could be retrieved.
-        if ($second_param && $second_format) {
-            $second_value = Request::get($second_param);
-            if ($second_value) {
-                $combined_format .= ' ' . $second_format;
-                $combined_value .= ' ' . $second_value;
-            }
+        // In case the first field is not set
+        // use the default value, if any:
+        if ($default instanceof DateTime) {
+            return $default;
         }
 
-        //The time zone may not be set in the fields
-        //so we use the default timezone from a new
-        //DateTime object:
-        $value = new DateTime();
-        $time_zone = $value->getTimezone();
-
-        //Now we return a DateTime object created from the
-        //specified date value(s):
-        $result = DateTime::createFromFormat(
-            $combined_format,
-            $combined_value,
-            $time_zone
-        );
-
-        if (
-            $result
-            && !$second_param
-            && !$second_format
-            && !preg_match('/[aAghGHisvu]/', $format) // Ensure no time in format
-        ) {
-            $result->setTime(0, 0);
-        }
-
-        return $result;
+        return false;
     }
 
 
