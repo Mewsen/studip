@@ -1,8 +1,10 @@
 <form class="default" action="<?= $controller->link_for('admin/tree/store', get_class($node), $node->id ?: null) ?>" method="post">
     <section>
         <label>
-            <?= _('Name') ?>
-            <input type="text" name="name"
+            <span class="required">
+                <?= _('Name') ?>
+            </span>
+            <input type="text" name="name" required
                    placeholder="<?= get_class($node) === RangeTreeNode::class ? _('Name des Eintrags (wird bei Zuweisung zu einer Stud.IP-Einrichtung überschrieben)') : _('Name des Eintrags') ?>">
         </label>
     </section>

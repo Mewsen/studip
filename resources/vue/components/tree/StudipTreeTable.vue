@@ -86,8 +86,13 @@
                         </a>
                     </td>
                     <td>
-                        <studip-icon :shape="child.attributes['has-children'] ? 'folder-full' : 'folder-empty'"
-                                     :size="26"></studip-icon>
+                        <a :href="nodeUrl(child.id, semester !== 'all' ? semester : null)" tabindex="0"
+                           @click.prevent="openNode(child)"
+                           :title="$gettextInterpolate($gettext('Unterebene %{ node } öffnen'),
+                                { node: node.attributes.name }, true)">
+                            <studip-icon :shape="child.attributes['has-children'] ? 'folder-full' : 'folder-empty'"
+                                         :size="26"></studip-icon>
+                        </a>
                     </td>
                     <td>
                         <a :href="nodeUrl(child.id, semester !== 'all' ? semester : null)" tabindex="0"
