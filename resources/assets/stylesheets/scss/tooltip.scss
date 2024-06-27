@@ -39,7 +39,6 @@
         @extend %tooltip;
         display: none;
     }
-<<<<<<< HEAD
 
     &:hover .tooltip-content,
     &:focus .tooltip-content {
@@ -48,16 +47,5 @@
         left: 50%;
         margin-left: -145px;
         width: 270px;
-=======
-    &:hover,
-    &:focus {
-        .tooltip-content {
-            bottom: 100%;
-            display: inline-block;
-            left: 50%;
-            margin-left: -129px;
-            width: 230px;
-        }
->>>>>>> 50371cbb7 (add aria-label to all tooltips and align usage in vue as well, fixes #4330)
     }
 }
