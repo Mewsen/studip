@@ -15,6 +15,7 @@
             "Studip\\Activity\\": "lib/activities/",
             "Studip\\Cache\\": "lib/classes/cache/",
             "Studip\\Calendar\\": "lib/classes/calendar/",
+            "Studip\\Forms\\": "lib/classes/forms/",
             "Studip\\": "lib/classes/",
             "Trails\\": "lib/trails/",
             "": [
