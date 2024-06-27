@@ -272,6 +272,8 @@ class messaging
      */
     function insert_message($message, $rec_uname, $user_id='', $time='', $tmp_message_id='', $set_deleted='', $signature='', $subject='', $force_email='', $priority='normal', $tags = null, $show_adressees = false)
     {
+        $force_email = true;
+
         // wenn keine user_id uebergeben
         $user_id = $user_id ?: $GLOBALS['user']->id;
 
