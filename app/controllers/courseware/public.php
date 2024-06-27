@@ -4,6 +4,8 @@ use Courseware\PublicLink;
 
 class Courseware_PublicController extends StudipController
 {
+    protected $with_session = true;
+
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
