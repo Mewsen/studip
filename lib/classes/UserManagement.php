@@ -1207,8 +1207,6 @@ class UserManagement
             "DELETE FROM schedule_seminare WHERE user_id = ?",
             "DELETE FROM termin_related_persons WHERE user_id = ?",
             "DELETE FROM priorities WHERE user_id = ?",
-            "DELETE FROM api_oauth_user_mapping WHERE user_id = ?",
-            "DELETE FROM api_user_permissions WHERE user_id = ?",
             "DELETE FROM help_tour_user WHERE user_id = ?",
             "DELETE FROM personal_notifications_user WHERE user_id = ?",
             "DELETE FROM forum_abo_users WHERE user_id = ?",
