@@ -404,7 +404,7 @@ class BasicDataWizardStep implements CourseWizardStep
         $values = $values[__CLASS__];
         $seminar = new Seminar($course);
 
-        if ($copy_basic_data) {
+        if ($source_id && $copy_basic_data) {
             $this->copyBasicData(
                 $course,
                 $source_id
@@ -472,7 +472,9 @@ class BasicDataWizardStep implements CourseWizardStep
             CourseSet::addCourseToSet($course_set_id, $course->id);
         }
 
-        self::copyParticipantsAndGroups($course, $source_id, $copy_participants, $copy_groups, $copy_members);
+        if ($source_id  && ($copy_participants || $copy_groups || $copy_members)) {
+            self::copyParticipantsAndGroups($course, $source_id, $copy_participants, $copy_groups, $copy_members);
+        }
 
         return $course;
     }
