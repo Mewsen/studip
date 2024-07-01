@@ -188,11 +188,16 @@ class FileCache extends Cache
      */
     public function getStats(): array
     {
+        $count = 0;
+        foreach (@glob($this->dir . '*', GLOB_ONLYDIR) as $current_dir){
+            $count += count(@glob("{$current_dir}/*"));
+        }
+
         return [
             __CLASS__ => [
                 'name' => _('Anzahl Einträge'),
-                'value' => \DBManager::get()->fetchColumn("SELECT COUNT(*) FROM `cache`")
-            ]
+                'value' => $count,
+            ],
         ];
     }
 
