@@ -465,16 +465,16 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
     public function getChildNodes(bool $onlyVisible = false): array
     {
         if ($onlyVisible) {
-            $visibleTypes = array_filter($GLOBALS['SEM_TREE_TYPES'], function ($t) {
-                return isset($t['hidden']) ? !$t['hidden'] : true;
+            $visibleTypes = array_filter($GLOBALS['SEM_TREE_TYPES'], function ($t): bool {
+                return empty($t['hidden']);
             });
 
             return static::findBySQL(
-                "`parent_id` = :parent AND `type` IN (:types) ORDER BY `priority`, `name`",
+                "`parent_id` = :parent AND `type` IN (:types)",
                 ['parent' => $this->id, 'types' => $visibleTypes]
             );
         } else {
-            return static::findByParent_id($this->id, "ORDER BY `priority`, `name`");
+            return static::findByParent_id($this->id);
         }
     }
 

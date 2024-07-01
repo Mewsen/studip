@@ -114,7 +114,7 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
      */
     public function getChildNodes(bool $onlyVisible = false): array
     {
-        return self::findByParent_id($this->id, "ORDER BY `priority`, `name`");
+        return self::findByParent_id($this->id);
     }
 
     /**
