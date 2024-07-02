@@ -23,10 +23,11 @@ final class I18NExtract extends I18NCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            $folder   = $this->getPluginFolder($input);
+            $folder = $this->getPluginFolder($input);
             $manifest = $this->getPluginManifest($folder);
             $localedomain = $this->getPluginLocaleDomainByFolder($folder);
 
+            // Create locale directories if they don't exist
             foreach ($this->getSystemLanguages() as $lang) {
                 $lang = explode('_', $lang)[0];
                 $language_dir = "{$folder}/locale/{$lang}/LC_MESSAGES";
@@ -35,6 +36,7 @@ final class I18NExtract extends I18NCommand
                 }
             }
 
+            // Extract translations into pot file
             $main_lang = $this->getSystemLanguages()[0];
             $pot_file  = "{$folder}/locale/{$main_lang}/LC_MESSAGES/{$localedomain}.pot";
             file_put_contents($pot_file, '');
@@ -46,26 +48,57 @@ final class I18NExtract extends I18NCommand
 
             $process = Process::fromShellCommandline($command_line);
 
-            try {
-                $process->mustRun(null, [
-                    'FOLDER'      => $folder,
-                    'PACKAGENAME' => $manifest['pluginclassname'],
-                    'POTFILE'     => $pot_file,
+            $process->mustRun(null, [
+                'FOLDER'      => $folder,
+                'PACKAGENAME' => $manifest['pluginclassname'],
+                'POTFILE'     => $pot_file,
+            ]);
+
+            $out = $process->getOutput();
+            if ($out) {
+                $output->writeln($out, OutputInterface::VERBOSITY_VERBOSE);
+            }
+
+            // Merge pot into exisiting po files
+            foreach ($this->getSystemLanguages() as $lang) {
+                if ($lang === $main_lang) {
+                    continue;
+                }
+
+                $lang = explode('_', $lang)[0];
+                $po_file = "{$folder}/locale/{$lang}/LC_MESSAGES/{$localedomain}.po";
+
+                if (!file_exists($po_file)) {
+                    continue;
+                }
+
+                $command_line = 'msgmerge --backup=off --update "${:POFILE}" "${:POTFILE}"';
+                $process = Process::fromShellCommandline($command_line);
+                $process->run(null, [
+                    'POFILE'  => $po_file,
+                    'POTFILE' => $pot_file,
                 ]);
+
+                if (!$process->isSuccessful()) {
+                    $output->writeln(
+                        "<error>Update of po file failed: {$out}</error>",
+                        OutputInterface::VERBOSITY_VERBOSE
+                    );
+                    continue;
+                }
 
                 $out = $process->getOutput();
                 if ($out) {
                     $output->writeln($out, OutputInterface::VERBOSITY_VERBOSE);
                 }
-
-                $output->writeln("Translation strings have been extracted successfully.");
-                return Command::SUCCESS;
-            } catch (ProcessFailedException $e) {
-                $output->writeln("<error>Could not execute shell command</error>");
-                $output->writeln($e->getmessage());
-                return Command::FAILURE;
             }
 
+            $output->writeln("Translation strings have been extracted successfully.");
+            return Command::SUCCESS;
+        } catch (ProcessFailedException $e) {
+            $output->writeln("<error>Could not execute shell command</error>");
+            $output->writeln($e->getmessage());
+            return Command::FAILURE;
         } catch (Exception $e) {
             $output->writeln("<error>{$e->getMessage()}</error>");
             return Command::FAILURE;
