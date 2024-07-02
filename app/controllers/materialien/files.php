@@ -381,10 +381,18 @@ class Materialien_FilesController extends MVVController
         $top_folder = $this->getTopFolder($output['mvvfile_id']);
 
         if ($document_id) {
-            $file = File::find($document_id);
+            $ref = FileRef::find($document_id);
+            $ref->name = $_FILES['file']['name'];
+            $ref->store();
+
+            $file = $ref->file;
+            $file->name = $_FILES['file']['name'];
             $file->mime_type = $_FILES['file']['type'] ?? get_mime_type($_FILES['file']['name']);
             $file->size = $_FILES['file']['size'] ?? filesize($_FILES['file']['tmp_name']);
             $file->connectWithDataFile($_FILES['file']['tmp_name']);
+            $file->store();
+
+            $file = new StandardFile($ref);
         } else {
             $file = StandardFile::create($_FILES['file']);
         }
