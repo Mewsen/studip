@@ -57,8 +57,8 @@ class StockImage extends \SimpleORMap
     public function getPath(string $size = self::SIZE_ORIGINAL): string
     {
         return sprintf(
-            '%s/public/pictures/stock-images/%s',
-            $GLOBALS['STUDIP_BASE_PATH'],
+            '%s/stock-images/%s',
+            $GLOBALS['DYNAMIC_CONTENT_PATH'],
             $this->getFilename($size)
         );
     }
@@ -90,8 +90,8 @@ class StockImage extends \SimpleORMap
         }
 
         return sprintf(
-            '%spictures/stock-images/%s',
-            $GLOBALS['ABSOLUTE_URI_STUDIP'],
+            '%s/stock-images/%s',
+            $GLOBALS['DYNAMIC_CONTENT_URL'],
             $this->getFilename($size)
         );
     }
