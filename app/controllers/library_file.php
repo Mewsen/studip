@@ -101,11 +101,11 @@ class LibraryFileController extends AuthenticatedController
         $this->required_properties = [];
         $this->enriched_properties = [];
         foreach ($this->defined_variables as $key => $variable) {
-            if ($variable['required']) {
+            if (!empty($variable['required'])) {
                 $this->required_properties[] = $variable['name'];
                 $key += 100;
             }
-            if (in_array($variable['name'], $this->document_type['properties'])) {
+            if (isset($variable['name']) && in_array($variable['name'], $this->document_type['properties'])) {
                 $this->enriched_properties[$key] = $variable;
                 $property_types[$variable['name']] = $variable['type'];
             }
@@ -241,11 +241,11 @@ class LibraryFileController extends AuthenticatedController
         $this->required_properties = [];
         $this->enriched_properties = [];
         foreach ($this->defined_variables as $key => $variable) {
-            if ($variable['required']) {
+            if (!empty($variable['required'])) {
                 $this->required_properties[] = $variable['name'];
                 $key += 100;
             }
-            if (in_array($variable['name'], $this->document_type['properties'])) {
+            if (isset($variable['name']) && in_array($variable['name'], $this->document_type['properties'])) {
                 $this->enriched_properties[$key] = $variable;
                 $property_types[$variable['name']] = $variable['type'];
             }
