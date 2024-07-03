@@ -16,7 +16,7 @@ use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcher;
 
 class Course_LtiController extends StudipController
 {
-    use NegotiatesWithPsr7;
+    use Studip\OAuth2\NegotiatesWithPsr7;
 
     /**
      * Callback function being called before an action is executed.
