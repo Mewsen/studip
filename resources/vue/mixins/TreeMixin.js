@@ -1,5 +1,5 @@
 import axios from 'axios';
-import ChunkedRequester from '@/assets/javascripts/lib/chunked-requester';
+import ChunkedRequester from '@/assets/javascripts/lib/chunked-requester.ts';
 import Cache from '@/assets/javascripts/lib/cache';
 
 const requester = new ChunkedRequester();
