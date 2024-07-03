@@ -86,7 +86,7 @@ class PluginManager
                 'core'                    => $plugin['pluginpath'] === '',
                 'automatic_update_url'    => $plugin['automatic_update_url'],
                 'automatic_update_secret' => $plugin['automatic_update_secret'],
-                'description'             => $plugin['description'],
+                'description'             => $plugin['description'] ?? '',
                 'description_mode'        => $plugin['description_mode'] ?? null,
                 'highlight_until'         => $plugin['highlight_until'] ?? null,
                 'highlight_text'          => $plugin['highlight_text'] ?? null,
