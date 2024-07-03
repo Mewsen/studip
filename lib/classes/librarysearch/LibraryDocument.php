@@ -196,10 +196,10 @@ class LibraryDocument
     public function getIdentifiers(): string
     {
         $identifiers = [];
-        if ($this->csl_data['ISBN']) {
+        if (!empty($this->csl_data['ISBN'])) {
             $identifiers[] = sprintf(_('ISBN: %s'), $this->csl_data['ISBN']);
         }
-        if ($this->csl_data['ISSN']) {
+        if (!empty($this->csl_data['ISSN'])) {
             $identifiers[] = sprintf(_('ISSN: %s'), $this->csl_data['ISSN']);
         }
         return implode('; ', $identifiers);

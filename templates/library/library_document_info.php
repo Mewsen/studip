@@ -2,7 +2,7 @@
 $authors = $document->getAuthorNames();
 $issue_date = $document->getIssueDate(true);
 $identifiers = $document->getIdentifiers();
-$url = ($document->download_url ?: $document->document_url);
+$url = $document->download_url ?? $document->document_url ?? '';
 $is_search = !$document->csl_data;
 ?>
 <? if ($is_search) : ?>
