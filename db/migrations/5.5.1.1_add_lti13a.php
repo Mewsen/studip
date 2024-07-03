@@ -141,7 +141,6 @@ class AddLti13a extends Migration
         $db = DBManager::get();
 
         $configs = [
-            /*
             [
                 'ENABLE_COURSES_AS_LTI_TOOLS', '0', 'boolean', 'global',
                 'Sollen Veranstaltungen über die LTI 1.3a Schnittstelle als LTI-Tool angeboten werden können?'
@@ -150,7 +149,6 @@ class AddLti13a extends Migration
                 'LTI_SHARING_ENABLED', '0', 'boolean', 'course',
                 'Darf die Veranstaltung als LTI-Tool angeboten werden?'
             ],
-            */
             [
                 'LTI_DATA_PROTECTION_DEFAULT_WARNING',
                 'Bitte beachten Sie die Datenschutzhinweise. Wenn Sie zugestimmt haben, werden Ihre Daten weitergegeben.',
