@@ -39,7 +39,7 @@
 
             <? $content_terms_of_use = $file->getTermsOfUse() ?>
 
-            <? if ($content_terms_of_use) : ?>
+            <? if ($content_terms_of_use && !is_a($file, LibraryFile::class)) : ?>
             <tr>
                 <td colspan="2">
                     <h3><?=_('Hinweis zur Nutzung und Weitergabe:')?></h3>
