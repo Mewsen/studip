@@ -222,7 +222,7 @@ export default {
             courses: [],
             assistiveLive: '',
             subLevelsCourses: 0,
-            thisLevelCourses: 0,
+            thisLevelCourses: this.getCachedNodeCourseInfo(this.node.id, this.semester, this.semClass),
             showingAllCourses: false
         }
     },

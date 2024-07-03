@@ -1,4 +1,9 @@
 import axios from 'axios';
+import ChunkedRequester from '@/assets/javascripts/lib/chunked-requester';
+import Cache from '@/assets/javascripts/lib/cache';
+
+const requester = new ChunkedRequester();
+const cache = Cache.getInstance('tree-info/');
 
 export const TreeMixin = {
     data() {
@@ -56,7 +61,10 @@ export const TreeMixin = {
                 {params: parameters}
             );
         },
-        async getNodeCourseInfo(node, semesterId, semClass = 0) {
+        getCachedNodeCourseInfo(node, semesterId, semClass) {
+            return cache.get(['course-info', node.id, semesterId, semClass].join('/')) ?? null;
+        },
+        getNodeCourseInfo(node, semesterId, semClass = 0) {
             let parameters = {};
 
             if (semesterId !== 'all' && semesterId !== '0') {
@@ -67,10 +75,17 @@ export const TreeMixin = {
                 parameters['filter[semclass]'] = semClass;
             }
 
-            return axios.get(
+            return requester.addRequest(
                 STUDIP.URLHelper.getURL('jsonapi.php/v1/tree-node/' + node.id + '/courseinfo'),
-                { params: parameters }
-            );
+                parameters
+            ).then(courseinfo => {
+                cache.set(
+                    ['course-info', node.id, semesterId, semClass].join('/'),
+                    courseinfo.data.courses ?? 0,
+                    3 * 60 * 60
+                );
+                return courseinfo;
+            });
         },
         nodeUrl(node_id, semester = null ) {
             return STUDIP.URLHelper.getURL('', { node_id, semester })
