@@ -437,10 +437,26 @@ class UserLookup
             return [];
         }
 
-        $query = "SELECT `user_id`
+        $query = "SELECT DISTINCT `user_id`
                  FROM `user_userdomains`
                  WHERE `userdomain_id` IN (?)";
-        return DBManager::get()->fetchFirst($query, [$needles]);
+        $result = DBManager::get()->fetchFirst($query, [$needles]);
+
+        if (in_array('keine', $needles)) {
+            $query = "SELECT `user_id`
+                      FROM `auth_user_md5`
+                      WHERE `user_id` NOT IN (
+                          SELECT `user_id`
+                          FROM `user_userdomains`
+                      )";
+            $result = array_merge(
+                $result,
+                DBManager::get()->fetchFirst($query)
+            );
+            $result = array_unique($result);
+        }
+
+        return $result;
     }
 
     /**
