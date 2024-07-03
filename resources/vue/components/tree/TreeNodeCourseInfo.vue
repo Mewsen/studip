@@ -32,9 +32,13 @@ export default {
     },
     data() {
         return {
-            isLoading: false,
-            courseCount: 0,
+            courseCount: this.getCachedNodeCourseInfo(this.node, this.semester, this.semClass),
             showingAllCourses: false
+        }
+    },
+    computed: {
+        isLoading() {
+            return this.courseCount === null;
         }
     },
     methods: {
@@ -43,11 +47,9 @@ export default {
             this.$emit('showAllCourses', state);
         },
         loadNodeInfo(node) {
-            this.isLoading = true;
             this.getNodeCourseInfo(node, this.semester, this.semClass)
                 .then(info => {
-                    this.courseCount = info?.data.courses;
-                    this.isLoading = false;
+                    this.courseCount = info?.data.courses ?? 0;
                 });
         }
     },
