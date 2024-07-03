@@ -43,7 +43,7 @@ class Admin_PluginController extends AuthenticatedController
         $settings = $current = $GLOBALS['user']->cfg->PLUGINADMIN_DISPLAY_SETTINGS;
 
         foreach ((array)$settings as $key => $value) {
-            $settings[$key] = Request::option($key, $settings[$key]) ?: null;
+            $settings[$key] = Request::get($key, $settings[$key]) ?: null;
         }
 
         if ($settings !== $current) {
