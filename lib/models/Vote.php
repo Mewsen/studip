@@ -37,7 +37,7 @@ class Vote extends QuestionnaireQuestion implements QuestionType
 
     static public function getEditingComponent()
     {
-        return ['vote-edit', ''];
+        return ['VoteEdit', ''];
     }
 
     public function beforeStoringQuestiondata($questiondata)

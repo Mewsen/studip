@@ -46,7 +46,7 @@ class RangeScale extends QuestionnaireQuestion implements QuestionType
 
     static public function getEditingComponent()
     {
-        return ['rangescale-edit', ''];
+        return ['RangescaleEdit', ''];
     }
 
     public function getDisplayTemplate()

@@ -420,7 +420,10 @@ Dialog.show = function(content, options = {}) {
     });
 
     // Create buttons
-    if (options.buttons === undefined || (options.buttons && !$.isPlainObject(options.buttons))) {
+    if (
+        options.buttons === undefined
+        || (options.buttons && !$.isPlainObject(options.buttons))
+    ) {
         dialog_options.buttons = extractButtons.call(this, instance.element);
         // Create 'close' button
         if (dialog_options.buttons.cancel === undefined) {

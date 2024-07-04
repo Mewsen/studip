@@ -37,7 +37,7 @@ class QuestionnaireInfo extends QuestionnaireQuestion implements QuestionType
 
     static public function getEditingComponent()
     {
-        return ['questionnaire-info-edit', ''];
+        return ['QuestionnaireInfoEdit', ''];
     }
 
     public function beforeStoringQuestiondata($questiondata)

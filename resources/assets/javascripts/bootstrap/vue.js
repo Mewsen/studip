@@ -11,7 +11,29 @@ STUDIP.ready(() => {
         let components = {};
         config.components.forEach(component => {
             const name = component.split('/').reverse()[0];
-            components[name] = () => import(`../../../vue/components/${component}.vue`);
+            components[name] = () => {
+                // TODO: I wonder if this works with Vue3
+
+                const temp = import(`../../../vue/components/${component}.vue`);
+                temp.then(({default: c}) => {
+                    const mounted = c.mounted ?? null;
+                    c.mounted = function (...args) {
+                        if (
+                            this.$el instanceof Element
+                            && this.$el.querySelector('[data-dialog-button]')
+                        ) {
+                            this.$el.closest('.studip-dialog')
+                                .querySelector('.ui-dialog-buttonpane')
+                                .remove();
+                        }
+                        if (mounted) {
+                            mounted.call(this, args);
+                        }
+                    };
+                    return c;
+                })
+                return temp;
+            };
         });
 
         STUDIP.Vue.load().then(async ({createApp, store}) => {

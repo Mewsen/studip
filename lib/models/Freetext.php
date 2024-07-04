@@ -52,7 +52,7 @@ class Freetext extends QuestionnaireQuestion implements QuestionType
 
     static public function getEditingComponent()
     {
-        return ['freetext-edit', ''];
+        return ['FreetextEdit', ''];
     }
 
     public function beforeStoringQuestiondata($questiondata)

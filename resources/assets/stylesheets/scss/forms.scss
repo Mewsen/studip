@@ -622,23 +622,33 @@ form.inline {
 }
 
 .studip-dialog {
-    form[data-vue-app] {
-        display: flex;
-        flex-direction: column;
+    [data-vue-app] {
         min-height: 100%;
+        display: flex;
 
-        fieldset {
-            flex: 0;
+        > * {
+            flex: 1;
         }
 
-        footer[data-dialog-button] {
-            background: var(--white);
-            border-top-color: var(--base-color-20);
-            bottom: -0.5em;
-            margin-top: auto;
-            padding: 1.3em 0;
-            position: sticky;
-            text-align: center;
+        form {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+
+            > :not(footer[data-dialog-button]) {
+                flex: 0;
+                margin-bottom: auto;
+            }
+
+            footer[data-dialog-button] {
+                background: var(--white);
+                border-top-color: var(--base-color-20);
+                bottom: -0.5em;
+                margin-top: auto;
+                padding: 1.3em 0;
+                position: sticky;
+                text-align: center;
+            }
         }
     }
 }

@@ -37,7 +37,7 @@ class LikertScale extends QuestionnaireQuestion implements QuestionType
 
     static public function getEditingComponent()
     {
-        return ['likert-edit', ''];
+        return ['LikertEdit', ''];
     }
 
     public function beforeStoringQuestiondata($questiondata)
