@@ -1,7 +1,18 @@
 const AdminCourses = {
-    App: null,
+    App: {
+        loadCourse(courseId) {
+            STUDIP.Vue.emit('AdminCourses/loadCourse', courseId);
+        },
+        changeFilter(filters) {
+            STUDIP.Vue.emit('AdminCourses/changeFilter', filters);
+        },
+        changeActionArea(area) {
+            STUDIP.Vue.emit('AdminCourses/changeActionArea', area);
+        }
+    },
     changeFiltersDependendOnInstitute(institut_id) {
-        STUDIP.AdminCourses.App.changeFilter({ institut_id });
+        AdminCourses.App.changeFilter({ institut_id });
+
         //change Studiengangteil filter
         $.get(
             STUDIP.URLHelper.getURL('dispatch.php/admin/courses/get_stdgangteil_selector/' + institut_id)

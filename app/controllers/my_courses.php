@@ -113,13 +113,13 @@ class MyCoursesController extends AuthenticatedController
         }
 
         $this->setupSidebar($sem_key, $group_field, $this->check_for_new($sem_courses, $group_field));
-        $data = $this->getMyCoursesData($sem_courses, $group_field);
 
-        PageLayout::addHeadElement(
-            'script',
-            ['type' => 'text/javascript'],
-            'window.STUDIP.MyCoursesData = ' . json_encode($data) . ';'
-        );
+        $this->vueApp = Studip\VueApp::create('MyCourses')
+            ->withStore(
+                'MyCoursesStore',
+                'mycourses',
+                $this->getMyCoursesData($sem_courses, $group_field)
+            );
     }
 
     /**
@@ -797,10 +797,10 @@ class MyCoursesController extends AuthenticatedController
         }
 
         return [
-            'courses' => $this->sanitizeNavigations(array_map([$this, 'convertCourse'], $temp_courses)),
-            'groups'  => $groups,
-            'user_id' => $GLOBALS['user']->id,
-            'config'  => [
+            'setCourses' => $this->sanitizeNavigations(array_map([$this, 'convertCourse'], $temp_courses)),
+            'setGroups'  => $groups,
+            'setUserId'  => $GLOBALS['user']->id,
+            'setConfig'  => [
                 'allow_dozent_visibility'  => Config::get()->ALLOW_DOZENT_VISIBILITY,
                 'open_groups'              => array_values($GLOBALS['user']->cfg->MY_COURSES_OPEN_GROUPS),
                 'sem_number'               => Config::get()->IMPORTANT_SEMNUMBER,

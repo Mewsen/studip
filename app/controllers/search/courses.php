@@ -59,6 +59,21 @@ class Search_CoursesController extends AuthenticatedController
 
         $this->setupSidebar();
         PageLayout::setTitle($title);
+
+        $this->render_vue_app(
+            Studip\VueApp::create('tree/StudipTree')
+                ->withProps([
+                    'breadcrumb-icon' => $this->breadcrumbIcon,
+                    'sem-class'       => $this->semClass,
+                    'semester'        => $this->semester,
+                    'start-id'        => $this->startId,
+                    'title'           => $this->treeTitle,
+                    'view-type'       => $this->show_as,
+                    'with-courses'    => true,
+                    'with-export'     => true,
+                    'with-search'     => true,
+                ])
+        );
     }
 
     private function setupSidebar()

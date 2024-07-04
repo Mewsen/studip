@@ -2,10 +2,12 @@
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend><?= _('Studienbereichszuordnungen der ausgewählten Veranstaltungen bearbeiten') ?></legend>
-        <div data-studip-tree>
-            <studip-tree start-id="StudipStudyArea_root" :with-info="false" :open-levels="1"
-                         :assignable="true"></studip-tree>
-        </div>
+        <?= Studip\VueApp::create('tree/StudipTree')->withProps([
+            'assignable'  => true,
+            'open-levels' => 1,
+            'start-id'    => 'StudipStudyArea_root',
+            'with-info'   => false,
+        ]) ?>
     </fieldset>
     <fieldset>
         <legend><?= _('Diese Veranstaltungen werden zugewiesen') ?></legend>

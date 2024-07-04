@@ -16,10 +16,6 @@ import "./init.js"
 import "./bootstrap/responsive.js"
 import "./bootstrap/vue.js"
 
-import "./bootstrap/system-notifications.js"
-
-import "./bootstrap/my-courses.js";
-
 import "./studip-ui.js"
 import "./bootstrap/fullscreen.js"
 import "./bootstrap/tfa.js"
@@ -79,12 +75,8 @@ import "./bootstrap/blubber.js"
 import "./bootstrap/consultations.js"
 import "./bootstrap/scroll_to_top.js"
 import "./bootstrap/admin-courses.js"
-import "./bootstrap/cache-admin.js"
 import "./bootstrap/oer.js"
 import "./bootstrap/courseware.js"
-import "./bootstrap/contentmodules.js"
-import "./bootstrap/responsive-navigation.js"
-import "./bootstrap/treeview.js"
 import "./bootstrap/stock-images.js"
 import "./bootstrap/external_pages.js"
 

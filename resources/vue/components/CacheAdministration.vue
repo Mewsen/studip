@@ -1,5 +1,8 @@
 <template>
-    <form class="default" :action="actionUrl" method="post" ref="configForm">
+    <StudipMessageBox v-if="!enabled" type="warning" :hide-close="true">
+        {{ $gettext('Caching ist systemweit ausgeschaltet, daher kann hier nichts konfiguriert werden.') }}
+    </StudipMessageBox>
+    <form v-else class="default" :action="actionUrl" method="post" ref="configForm">
         <fieldset>
             <legend>
                 <translate>Cachetyp</translate>
@@ -36,10 +39,12 @@
 import FileCacheConfig from './FileCacheConfig.vue'
 import MemcachedCacheConfig from './MemcachedCacheConfig.vue'
 import RedisCacheConfig from './RedisCacheConfig.vue'
+import StudipMessageBox from './StudipMessageBox.vue';
 
 export default {
     name: 'CacheAdministration',
     components: {
+        StudipMessageBox,
         FileCacheConfig,
         MemcachedCacheConfig,
         RedisCacheConfig
@@ -61,6 +66,10 @@ export default {
                     props: []
                 };
             }
+        },
+        enabled: {
+            type: Boolean,
+            required: true,
         }
     },
     data () {

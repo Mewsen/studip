@@ -7,10 +7,28 @@ class Admin_TreeController extends AuthenticatedController
         $GLOBALS['perm']->check('root');
         Navigation::activateItem('/admin/locations/range_tree');
         PageLayout::setTitle(_('Einrichtungshierarchie bearbeiten'));
-        $this->startId = Request::get('node_id', 'RangeTreeNode_root');
+
         $this->semester = Request::option('semester', Semester::findCurrent()->id);
         $this->classname = RangeTreeNode::class;
         $this->setupSidebar();
+
+        $this->render_vue_app(
+            Studip\VueApp::create('tree/StudipTree')
+                ->withProps([
+                    'breadcrumb-icon'              => 'institute',
+                    'create-url'                   => $this->createURL(),
+                    'delete-url'                   => $this->deleteURL(),
+                    'edit-url'                     => $this->editURL(),
+                    'editable'                     => true,
+                    'semester'                     => $this->semester,
+                    'show-structure-as-navigation' => true,
+                    'start-id'                     => Request::get('node_id', 'RangeTreeNode_root'),
+                    'title'                        => _('Einrichtungshierarchie bearbeiten'),
+                    'view-type'                    => 'table',
+                    'visible-children-only'        => false,
+                    'with-courses'                 => true,
+                ])
+        );
     }
 
     public function semtree_action()
@@ -18,10 +36,30 @@ class Admin_TreeController extends AuthenticatedController
         $GLOBALS['perm']->check('root');
         Navigation::activateItem('/admin/locations/sem_tree');
         PageLayout::setTitle(_('Veranstaltungshierarchie bearbeiten'));
-        $this->startId = Request::get('node_id', 'StudipStudyArea_root');
+
+
         $this->semester = Request::option('semester', Semester::findCurrent()->id);
         $this->classname = StudipStudyArea::class;
         $this->setupSidebar();
+
+        $this->render_vue_app(
+            Studip\VueApp::create('tree/StudipTree')
+                ->withProps([
+                    'breadcrumb-icon'              => 'literature',
+                    'create-url'                   => $this->createURL(),
+                    'delete-url'                   => $this->deleteURL(),
+                    'edit-url'                     => $this->editURL(),
+                    'editable'                     => true,
+                    'semester'                     => $this->semester,
+                    'show-structure-as-navigation' => true,
+                    'start-id'                     => Request::get('node_id', 'StudipStudyArea_root'),
+                    'title'                        => _('Veranstaltungshierarchie bearbeiten'),
+                    'view-type'                    => 'table',
+                    'visible-children-only'        => false,
+                    'with-course-assign'           => true,
+                    'with-courses'                 => true,
+                ])
+        );
     }
 
     /**

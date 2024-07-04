@@ -1,15 +1,26 @@
-const load = async function () {
-    return STUDIP.loadChunk('vue');
-};
+class Vue
+{
+    static async load()
+    {
+        return STUDIP.loadChunk('vue');
+    }
 
-const on = async function (...args) {
-    const { eventBus } = await load();
-    eventBus.on(...args);
-};
+    static async on(...args)
+    {
+        const { eventBus } = await this.load();
+        eventBus.on(...args);
+    }
 
-const emit = async function (...args) {
-    const { eventBus } = await load();
-    eventBus.emit(...args);
-};
+    static async off(...args) {
+        const { eventBus } = await this.load();
+        eventBus.off(...args);
+}
 
-export default { load, on, emit };
+    static async emit(...args)
+    {
+        const { eventBus } = await this.load();
+        eventBus.emit(...args);
+    }
+}
+
+export default Vue;

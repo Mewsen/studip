@@ -83,18 +83,16 @@ class Course_ContentmodulesController extends AuthenticatedController
             Sidebar::Get()->addWidget($widget);
         }
 
-        PageLayout::addHeadElement('script', [
-            'type' => 'text/javascript',
-        ], sprintf(
-            'window.ContentModulesStoreData = %s;',
-            json_encode([
-                'setCategories' => $this->categories,
-                'setHighlighted' => $this->highlighted_modules,
-                'setModules' => array_values($this->modules),
-                'setUserId' => User::findCurrent()->id,
-                'setView' => $GLOBALS['user']->cfg->CONTENTMODULES_TILED_DISPLAY ? 'tiles' : 'table',
-            ])
-        ));
+        $this->render_vue_app(
+            Studip\VueApp::create('ContentModules')
+                ->withStore('ContentModulesStore', 'contentmodules', [
+                    'setCategories'  => $this->categories,
+                    'setHighlighted' => $this->highlighted_modules,
+                    'setModules'     => array_values($this->modules),
+                    'setUserId'      => User::findCurrent()->id,
+                    'setView'        => $GLOBALS['user']->cfg->CONTENTMODULES_TILED_DISPLAY ? 'tiles' : 'table',
+                ])
+        );
     }
 
     public function trigger_action()

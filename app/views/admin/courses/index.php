@@ -9,6 +9,7 @@
  * @var string $sortflag
  * @var array $activeSidebarElements
  * @var int $max_show_courses
+ * @var array $store_data
  */
 
 $unsortable_fields = [
@@ -17,29 +18,18 @@ $unsortable_fields = [
     'contents'
 ];
 ?>
-
 <? if (empty($insts)): ?>
     <?= MessageBox::info(sprintf(_('Sie wurden noch keinen Einrichtungen zugeordnet. Bitte wenden Sie sich an einen der zuständigen %sAdministratoren%s.'), '<a href="' . URLHelper::getLink('dispatch.php/siteinfo/show') . '">', '</a>')) ?>
-<? else :
-
-    $attributes = [
-        ':show-complete' => json_encode((bool) Config::get()->ADMIN_COURSES_SHOW_COMPLETE),
-        ':fields' => json_encode($fields),
-        ':unsortable-fields' => json_encode($unsortable_fields),
-        ':max-courses' => (int) $max_show_courses,
-        'sort-by' => $sortby,
-        'sort-flag' => $sortflag,
-    ];
-?>
-    <form method="post">
-        <?= CSRFProtection::tokenTag() ?>
-
-        <div class="admin-courses-vue-app course-admin"
-             is="AdminCourses"
-             v-cloak
-             ref="app"
-             <?= arrayToHtmlAttributes($attributes) ?>
-        ></div>
-    </form>
+<? else: ?>
+    <?= Studip\VueApp::create('AdminCourses')
+            ->withProps([
+                'show-complete' => (bool) Config::get()->ADMIN_COURSES_SHOW_COMPLETE,
+                'fields' => $fields,
+                'unsortable-fields' => $unsortable_fields,
+                'max-courses' => (int) $max_show_courses,
+                'sort-by' => $sortby,
+                'sort-flag' => $sortflag,
+            ])
+            ->withStore('AdminCoursesStore', 'admincourses', $store_data) ?>
 
 <? endif; ?>

@@ -305,15 +305,9 @@ class Admin_CoursesController extends AuthenticatedController
         $this->fields = $this->getViewFilters();
         $this->sortby = $GLOBALS['user']->cfg->MEINE_SEMINARE_SORT ?? (Config::get()->IMPORTANT_SEMNUMBER ? 'number' : 'name');
         $this->sortflag = $GLOBALS['user']->cfg->MEINE_SEMINARE_SORT_FLAG ?? 'ASC';
+        $this->store_data = $this->getStoreData();
 
         $this->buildSidebar();
-
-        PageLayout::addHeadElement('script', [
-            'type' => 'text/javascript',
-        ], sprintf(
-              'window.AdminCoursesStoreData = %s;',
-              json_encode($this->getStoreData())
-        ));
     }
 
     private function getStoreData(): array

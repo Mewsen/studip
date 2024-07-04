@@ -589,6 +589,17 @@ abstract class StudipController extends Trails\Controller
     }
 
     /**
+     * Renders a vue app
+     *
+     * Use this if the vue app is the only content located on the page so
+     * you don't have to create a template file.
+     */
+    public function render_vue_app(\Studip\VueApp $app): void
+    {
+        $this->render_template($app->getTemplate(), $this->layout);
+    }
+
+    /**
      * relays current request to another controller and returns the response
      * the other controller is given all assigned properties, additional parameters are passed
      * through

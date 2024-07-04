@@ -66,14 +66,14 @@ if ($navigation) {
                     'username' => $user->username,
                     'perm' => $GLOBALS['perm']->get_perm()
                 ];
-                ?>
-            <? } else {
+            } else {
                 $me = ['username' => 'nobody'];
             } ?>
-            <responsive-navigation :me="<?= htmlReady(json_encode($me)) ?>"
-                                   context="<?= htmlReady(Context::get() ? Context::get()->getFullName() : '') ?>"
-                                   :navigation="<?= htmlReady(json_encode(ResponsiveHelper::getNavigationObject($_COOKIE['responsive-navigation-hash'] ?? null))) ?>"
-            ></responsive-navigation>
+            <?= Studip\VueApp::create('responsive/ResponsiveNavigation')->withProps([
+                'context' => Context::get()?->getFullName() ?? '',
+                'me' => $me,
+                'navigation' => ResponsiveHelper::getNavigationObject($_COOKIE['responsive-navigation-hash'] ?? null),
+            ]) ?>
         </div>
         <div id="site-title">
             <?= htmlReady(Config::get()->UNI_NAME_CLEAN) ?>

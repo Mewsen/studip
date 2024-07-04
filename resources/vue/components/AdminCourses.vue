@@ -1,106 +1,109 @@
 <template>
-    <table class="default">
-        <caption>
-            {{ $gettext('Veranstaltungen') }}
-            <span class="actions" v-if="isLoading">
-                <img :src="loadingIndicator" width="20" height="20" :title="$gettext('Daten werden geladen')">
-            </span>
-            <span class="actions" v-else-if="coursesCount > 0">
-                {{ coursesCount + ' ' + $gettext('Veranstaltungen') }}
-            </span>
-        </caption>
-        <thead>
-            <tr class="sortable">
-                <th v-if="showComplete" :class="sort.by === 'completion' ? 'sort' + sort.direction.toLowerCase() : ''">
-                    <a
-                        @click.prevent="changeSort('completion')"
-                        class="course-completion"
-                        :title="$gettext('Bearbeitungsstatus')"
-                    >
-                        {{ $gettext('Bearbeitungsstatus') }}
-                    </a>
-                </th>
-                <th v-for="activeField in sortedActivatedFields" :key="`field-${activeField}`" :class="sort.by === activeField ? 'sort' + sort.direction.toLowerCase() : ''">
-                    <a href="#"
-                       @click.prevent="changeSort(activeField)"
-                       :title="sort.by === activeField && sort.direction === 'ASC' ? $gettextInterpolate('Sortiert aufsteigend nach %{field}', {field: fields[activeField]}, true) : (sort.by === activeField && sort.direction === 'DESC' ? $gettextInterpolate('Sortiert absteigend nach %{ field } ', { field: fields[activeField]}, true) : $gettextInterpolate('Sortieren nach %{ field }', { field: fields[activeField]}, true))"
-                       v-if="!unsortableFields.includes(activeField)"
-                    >
-                        {{ fields[activeField] }}
-                    </a>
-                    <template v-else>
-                        {{ fields[activeField] }}
-                    </template>
-                </th>
-                <th class="actions">
-                    {{ $gettext('Aktion') }}
-                    <studip-action-menu class="filter" :title="$gettext('Darstellungsfilter')" :items="availableFields" @toggleActiveField="toggleActiveField"></studip-action-menu>
-                </th>
-            </tr>
-            <tr v-if="buttons.top">
-                <th v-html="buttons.top" style="text-align: right" :colspan="colspan"></th>
-            </tr>
-        </thead>
-        <tbody :class="{ loading: isLoading }">
-            <tr v-for="course in sortedCourses"
-                :key="course.id"
-                :class="course.id === currentLine ? 'selected' : ''"
-                @click="currentLine = course.id">
-                <td v-if="showComplete">
-                    <button :href="getURL('dispatch.php/admin/courses/toggle_complete/' + course.id)"
-                            class="course-completion undecorated"
-                            :data-course-completion="course.completion"
-                            :title="(course.completion > 0 ? (course.completion == 1 ? $gettext('Veranstaltung in Bearbeitung.') : $gettext('Veranstaltung komplett.')) : $gettext('Veranstaltung neu.')) + ' ' +  $gettext('Klicken zum Ändern des Status.')"
-                            @click.prevent="toggleCompletionState(course.id)">
-                        {{ $gettext('Bearbeitungsstatus ändern') }}
-                    </button>
-                </td>
-                <td v-for="active_field in sortedActivatedFields" :key="active_field">
-                    <div v-html="course[active_field]"></div>
-                    <a v-if="active_field === 'name' && getChildren(course).length > 0"
-                       @click.prevent="toggleOpenChildren(course.id)"
-                       href="">
-                        <studip-icon :shape="open_children.indexOf(course.id) === -1 ? 'add' : 'remove'" class="text-bottom"></studip-icon>
-                        {{ $gettextInterpolate(
-                            $gettext('%{ n } Unterveranstaltungen'),
-                            { n: getChildren(course).length }
-                        ) }}
-                    </a>
-                </td>
-                <td class="actions" v-html="course.action">
-                </td>
-            </tr>
-            <tr v-if="coursesCount === 0 && coursesLoaded">
-                <td :colspan="colspan">
-                    {{ $gettext('Keine Ergebnisse') }}
-                </td>
-            </tr>
-            <tr v-if="coursesCount > 0 && sortedCourses.length === 0">
-                <td :colspan="colspan">
-                    {{
-                        $gettextInterpolate(
-                            $gettext(`%{ n } Veranstaltungen entsprechen Ihrem Filter. Schränken Sie nach Möglichkeit die Filter weiter ein.`),
-                            { n: coursesCount }
-                        )
-                    }}
-                    <a href="" @click.prevent="loadCourses({withoutLimit: true});">
-                        {{ $gettext('Alle anzeigen') }}
-                    </a>
-                </td>
-            </tr>
-            <tr v-if="!coursesLoaded">
-                <td :colspan="colspan">
-                    {{ $gettext('Daten werden geladen ...') }}
-                </td>
-            </tr>
-        </tbody>
-        <tfoot v-if="buttons.bottom">
-            <tr>
-                <td v-html="buttons.bottom" style="text-align: right" :colspan="colspan"></td>
-            </tr>
-        </tfoot>
-    </table>
+    <form method="post">
+        <input type="hidden" :name="csrf.name" :value="csrf.value">
 
+        <table class="default course-admin">
+            <caption>
+                {{ $gettext('Veranstaltungen') }}
+                <span class="actions" v-if="isLoading">
+                    <img :src="loadingIndicator" width="20" height="20" :title="$gettext('Daten werden geladen')">
+                </span>
+                <span class="actions" v-else-if="coursesCount > 0">
+                    {{ coursesCount + ' ' + $gettext('Veranstaltungen') }}
+                </span>
+            </caption>
+            <thead>
+                <tr class="sortable">
+                    <th v-if="showComplete" :class="sort.by === 'completion' ? 'sort' + sort.direction.toLowerCase() : ''">
+                        <a
+                            @click.prevent="changeSort('completion')"
+                            class="course-completion"
+                            :title="$gettext('Bearbeitungsstatus')"
+                        >
+                            {{ $gettext('Bearbeitungsstatus') }}
+                        </a>
+                    </th>
+                    <th v-for="activeField in sortedActivatedFields" :key="`field-${activeField}`" :class="sort.by === activeField ? 'sort' + sort.direction.toLowerCase() : ''">
+                        <a href="#"
+                           @click.prevent="changeSort(activeField)"
+                           :title="sort.by === activeField && sort.direction === 'ASC' ? $gettextInterpolate('Sortiert aufsteigend nach %{field}', {field: fields[activeField]}, true) : (sort.by === activeField && sort.direction === 'DESC' ? $gettextInterpolate('Sortiert absteigend nach %{ field } ', { field: fields[activeField]}, true) : $gettextInterpolate('Sortieren nach %{ field }', { field: fields[activeField]}, true))"
+                           v-if="!unsortableFields.includes(activeField)"
+                        >
+                            {{ fields[activeField] }}
+                        </a>
+                        <template v-else>
+                            {{ fields[activeField] }}
+                        </template>
+                    </th>
+                    <th class="actions">
+                        {{ $gettext('Aktion') }}
+                        <studip-action-menu class="filter" :title="$gettext('Darstellungsfilter')" :items="availableFields" @toggleActiveField="toggleActiveField"></studip-action-menu>
+                    </th>
+                </tr>
+                <tr v-if="buttons.top">
+                    <th v-html="buttons.top" style="text-align: right" :colspan="colspan"></th>
+                </tr>
+            </thead>
+            <tbody :class="{ loading: isLoading }">
+                <tr v-for="course in sortedCourses"
+                    :key="course.id"
+                    :class="course.id === currentLine ? 'selected' : ''"
+                    @click="currentLine = course.id">
+                    <td v-if="showComplete">
+                        <button :href="getURL('dispatch.php/admin/courses/toggle_complete/' + course.id)"
+                                class="course-completion undecorated"
+                                :data-course-completion="course.completion"
+                                :title="(course.completion > 0 ? (course.completion == 1 ? $gettext('Veranstaltung in Bearbeitung.') : $gettext('Veranstaltung komplett.')) : $gettext('Veranstaltung neu.')) + ' ' +  $gettext('Klicken zum Ändern des Status.')"
+                                @click.prevent="toggleCompletionState(course.id)">
+                            {{ $gettext('Bearbeitungsstatus ändern') }}
+                        </button>
+                    </td>
+                    <td v-for="active_field in sortedActivatedFields" :key="active_field">
+                        <div v-html="course[active_field]"></div>
+                        <a v-if="active_field === 'name' && getChildren(course).length > 0"
+                           @click.prevent="toggleOpenChildren(course.id)"
+                           href="">
+                            <studip-icon :shape="open_children.indexOf(course.id) === -1 ? 'add' : 'remove'" class="text-bottom"></studip-icon>
+                            {{ $gettextInterpolate(
+                                $gettext('%{ n } Unterveranstaltungen'),
+                                { n: getChildren(course).length }
+                            ) }}
+                        </a>
+                    </td>
+                    <td class="actions" v-html="course.action">
+                    </td>
+                </tr>
+                <tr v-if="coursesCount === 0 && coursesLoaded">
+                    <td :colspan="colspan">
+                        {{ $gettext('Keine Ergebnisse') }}
+                    </td>
+                </tr>
+                <tr v-if="coursesCount > 0 && sortedCourses.length === 0">
+                    <td :colspan="colspan">
+                        {{
+                            $gettextInterpolate(
+                                $gettext(`%{ n } Veranstaltungen entsprechen Ihrem Filter. Schränken Sie nach Möglichkeit die Filter weiter ein.`),
+                                { n: coursesCount }
+                            )
+                        }}
+                        <a href="" @click.prevent="loadCourses({withoutLimit: true});">
+                            {{ $gettext('Alle anzeigen') }}
+                        </a>
+                    </td>
+                </tr>
+                <tr v-if="!coursesLoaded">
+                    <td :colspan="colspan">
+                        {{ $gettext('Daten werden geladen ...') }}
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot v-if="buttons.bottom">
+                <tr>
+                    <td v-html="buttons.bottom" style="text-align: right" :colspan="colspan"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </form>
 </template>
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
@@ -130,6 +133,15 @@ export default {
     },
     created() {
         this.loadCourses();
+
+        this.globalOn('AdminCourses/changeActionArea', this.changeActionArea.bind(this));
+        this.globalOn('AdminCourses/changeFilter', this.changeFilter.bind(this));
+        this.globalOn('AdminCourses/loadCourse', this.loadCourse.bind(this));
+    },
+    destroyed() {
+        this.globalOff('AdminCourses/changeActionArea', this.changeActionArea.bind(this));
+        this.globalOff('AdminCourses/changeFilter', this.changeFilter.bind(this));
+        this.globalOff('AdminCourses/loadCourse', this.loadCourse.bind(this));
     },
     computed: {
         ...mapState('admincourses', [
@@ -143,6 +155,9 @@ export default {
         ...mapGetters('admincourses', [
             'isLoading',
         ]),
+        csrf() {
+            return STUDIP.CSRF_TOKEN;
+        },
         colspan () {
             let colspan = this.activatedFields.length + 1;
             if (this.showComplete) {
@@ -284,6 +299,41 @@ export default {
         getURL(url, params = {}) {
             return STUDIP.URLHelper.getURL(url, params);
         },
-    }
+    },
 };
 </script>
+<style lang="scss">
+@import '../../assets/stylesheets/mixins.scss';
+
+.course-admin {
+    .course-completion {
+        @include hide-text();
+        @include square(16px);
+        background-repeat: no-repeat;
+        display: block;
+    }
+
+    th .course-completion {
+        @include background-icon(radiobutton-checked, clickable);
+    }
+
+    td .course-completion {
+        @include background-icon(span-empty, status-red);
+
+        &[data-course-completion="1"] {
+            @include background-icon(span-2quarter, status-yellow);
+        }
+        &[data-course-completion="2"] {
+            @include background-icon(span-full, status-green);
+        }
+
+        &.ajaxing {
+            background-image: url("#{$image-path}/loading-indicator.svg");
+        }
+    }
+    > tbody.loading > tr > td {
+        opacity: 0.5;
+    }
+}
+
+</style>

@@ -64,19 +64,21 @@ class Admin_CacheController extends AuthenticatedController
      */
     public function settings_action()
     {
-        if ($this->enabled) {
-            $this->types = CacheType::findAndMapBySQL(function (CacheType $type) {
-                return $type->toArray();
-            }, "1 ORDER BY `cache_id`");
+        $currentCache = Config::get()->SYSTEMCACHE;
+        $currentCacheClass = CacheType::findOneByClass_name($currentCache['type']);
 
-            $currentCache = Config::get()->SYSTEMCACHE;
-            $currentCacheClass = CacheType::findOneByClass_name($currentCache['type']);
-            $this->cache = $currentCacheClass->class_name;
-            $this->config = $currentCacheClass->class_name::getConfig();
-        } else {
-            PageLayout::postWarning(
-                _('Caching ist systemweit ausgeschaltet, daher kann hier nichts konfiguriert werden.'));
-        }
+        $this->render_vue_app(
+            Studip\VueApp::create('CacheAdministration')
+                ->withProps([
+                    'enabled'       => (bool) $this->enabled,
+                    'currentCache'  => $currentCacheClass->class_name,
+                    'currentConfig' => $currentCacheClass->class_name::getConfig(),
+                    'cacheTypes'    => CacheType::findAndMapBySQL(
+                        fn(CacheType $type) => $type->toArray(),
+                        "1 ORDER BY `cache_id`"
+                    ),
+                ])
+        );
     }
 
     /**
