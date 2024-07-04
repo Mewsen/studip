@@ -90,7 +90,10 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules|ckeditor/,
                 use: {
-                    loader: 'babel-loader'
+                    loader: 'babel-loader',
+                    options: {
+                        cacheDirectory: true
+                    }
                 }
             },
             {
