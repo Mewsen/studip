@@ -159,7 +159,6 @@ class Lti_AuthController extends StudipController
                     new \Studip\LTI13a\NonceGenerator(true)
                 )
             ),
-            null,
             $logger
         );
         $response = $oidc_handler->handle($request);
