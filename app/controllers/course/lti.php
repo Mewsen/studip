@@ -200,11 +200,11 @@ class Course_LtiController extends StudipController
      */
     public function iframe_action(string $deployment_id)
     {
-        $show_data_protection_info = !LtiDeploymentPrivacySettings::countBySQL(
+        $this->show_data_protection_info = !LtiDeploymentPrivacySettings::countBySQL(
             "`deployment_id` = :deployment_id AND `user_id` = :user_id AND `accepted` = '1'",
             ['deployment_id' => $deployment_id, 'user_id' => $GLOBALS['user']->id]
         );
-        if ($show_data_protection_info) {
+        if ($this->show_data_protection_info) {
             $this->redirect('course/lti/consent/' . $deployment_id, ['redirect_to_tool' => '1']);
             return;
         }
