@@ -253,9 +253,11 @@ const containerMixin = {
             // choose the last container and its last section as the default adder slot
             // for adding blocks and containers via click
             if (this.containers) {
+                const lastContainer = this.containers[this.containers.length - 1];
+                const section = lastContainer.activeSection ?? 0;
                 this.setAdderStorage({
-                    container: this.containers[this.containers.length - 1],
-                    section: this.containers[this.containers.length - 1].attributes.payload.sections.length - 1
+                    container: lastContainer,
+                    section: section
                 });
             }
         },
