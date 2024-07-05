@@ -7,7 +7,7 @@
         closeClass="cancel"
         height="350"
         @close="showElementExportDialog(false)"
-        @confirm="exportStructuralElement"
+        @confirm="exportStructuralElementAction"
     >
         <template v-slot:dialogContent>
             <div v-show="!exportRunning">
@@ -75,7 +75,7 @@ export default {
         ...mapActions({
             showElementExportDialog: 'showElementExportDialog',
         }),
-        async exportStructuralElement(data) {
+        async exportStructuralElementAction(data) {
             if (this.exportRunning) {
                 return;
             }
