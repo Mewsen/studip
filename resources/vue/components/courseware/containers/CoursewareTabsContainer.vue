@@ -24,7 +24,7 @@
                     {{ $gettext('Drücken Sie die Leertaste, um neu anzuordnen.') }}
                 </span>
             </template>
-            <courseware-tabs>
+            <courseware-tabs @selectTab="selectTabHandler">
                 <courseware-tab
                     v-for="(section, index) in currentSections"
                     :key="index"
@@ -205,6 +205,7 @@ export default {
             loadContainer: 'courseware-containers/loadById',
             lockObject: 'lockObject',
             unlockObject: 'unlockObject',
+            storeContainerRecord: 'courseware-containers/storeRecord'
         }),
         initCurrentData() {
             this.currentContainer = _.cloneDeep(this.container);
@@ -402,6 +403,18 @@ export default {
                     , {blockTitle: block.attributes.title, pos: currentIndex + 1, listLength: this.currentSections[sectionIndex].blocks.length}
                 );
             this.storeSort();
+        },
+        selectTabHandler(event) {
+            const tabIndex = event.index;
+            let container = _.cloneDeep(this.container);
+            container.activeSection = tabIndex;
+            this.storeContainerRecord(container);
+            if (this.blockAdder.container.id === this.container.id) {
+                this.setAdderStorage({
+                    container: this.container,
+                    section: tabIndex
+                });
+            }
         }
     },
     watch: {
