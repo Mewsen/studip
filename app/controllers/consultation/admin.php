@@ -136,28 +136,56 @@ class Consultation_AdminController extends ConsultationController
     {
         PageLayout::setTitle(_('Neue Terminblöcke anlegen'));
 
-        $this->room = '';
-        $this->responsible = false;
-        $this->slot_count_threshold = self::SLOT_COUNT_THRESHOLD;
+        $room = '';
+        $responsible = false;
 
         // TODO: inst_default?
         if ($this->range instanceof User) {
             $rooms = $this->range->institute_memberships->pluck('Raum');
             $rooms = array_filter($rooms);
-            $this->room = $rooms ? reset($rooms) : '';
+            $room = $rooms ? reset($rooms) : '';
         } elseif ($this->range instanceof Course) {
-            $this->room = $this->range->ort;
+            $room = $this->range->ort;
 
             $block = new ConsultationBlock();
             $block->range = $this->range;
-            $this->responsible = $block->getPossibleResponsibilites();
+            $responsible = $block->getPossibleResponsibilites();
         } elseif ($this->range instanceof Institute) {
             $block = new ConsultationBlock();
             $block->range = $this->range;
-            $this->responsible = $block->getPossibleResponsibilites();
+            $responsible = $block->getPossibleResponsibilites();
         }
 
-        $this->response->add_header('X-No-Buttons', '');
+        $convertResponsibilities = function ($input) {
+            if ($input === false) {
+                return false;
+            }
+
+            foreach ($input as $key => $values) {
+                $input[$key] = array_map(
+                    fn($item) => [
+                        'id'    => $item->id,
+                        'label' => $item instanceof Statusgruppen ? $item->getName() : $item->getFullName(),
+                    ],
+                    $values
+                );
+            }
+
+            return $input;
+        };
+
+        $this->render_vue_app(
+            Studip\VueApp::create('ConsultationCreator')
+                ->withProps([
+                    'as-dialog'            => Request::isXhr(),
+                    'cancel-url'           => $this->indexURL(),
+                    'default-room'         => $room,
+                    'range-type'           => get_class($this->range),
+                    'slot-count_threshold' => self::SLOT_COUNT_THRESHOLD,
+                    'store-url'            => $this->storeURL(),
+                    'with-responsible'     => $convertResponsibilities($responsible),
+                ])
+        );
     }
 
     public function store_action()
