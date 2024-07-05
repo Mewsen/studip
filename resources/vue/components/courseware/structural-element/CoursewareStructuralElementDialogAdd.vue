@@ -131,12 +131,14 @@
                         {{ $gettext('Niveau') }}<br />
                         {{ $gettext('von') }}
                         <select v-model="difficulty_start">
+                            <option value="">-</option>
                             <option v-for="difficulty_start in 12" :key="difficulty_start" :value="difficulty_start">
                                 {{ difficulty_start }}
                             </option>
                         </select>
                         {{ $gettext('bis') }}
                         <select v-model="difficulty_end">
+                            <option value="">-</option>
                             <option v-for="difficulty_end in 12" :key="difficulty_end" :value="difficulty_end">
                                 {{ difficulty_end }}
                             </option>

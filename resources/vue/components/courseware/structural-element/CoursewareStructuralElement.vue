@@ -337,6 +337,7 @@
                                             <translate>Niveau</translate><br />
                                             <translate>von</translate>
                                             <select v-model="currentElement.attributes.payload.difficulty_start">
+                                                <option value="">-</option>
                                                 <option
                                                     v-for="difficulty_start in 12"
                                                     :key="difficulty_start"
@@ -347,6 +348,7 @@
                                             </select>
                                             <translate>bis</translate>
                                             <select v-model="currentElement.attributes.payload.difficulty_end">
+                                                <option value="">-</option>
                                                 <option
                                                     v-for="difficulty_end in 12"
                                                     :key="difficulty_end"
