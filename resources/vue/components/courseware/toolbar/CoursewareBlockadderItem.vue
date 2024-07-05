@@ -1,14 +1,14 @@
 <template>
     <div class="cw-blockadder-item-wrapper">
         <span class="cw-sortable-handle cw-sortable-handle-blockadder"></span>
-        <a href="#" class="cw-blockadder-item" :class="['cw-blockadder-item-' + type]" @click.prevent="addBlock">
+        <button class="cw-blockadder-item" :class="['cw-blockadder-item-' + type]" @click.prevent="addBlock">
             <header class="cw-blockadder-item-title">
                 {{ title }}
             </header>
             <p class="cw-blockadder-item-description">
                 {{ description }}
             </p>
-        </a>
+        </button>
         <button
             class="cw-blockadder-item-fav"
             :title="favButtonTitle"
@@ -17,7 +17,6 @@
             <studip-icon :shape="blockTypeIsFav ? 'star' : 'star-empty'" :size="20" />
         </button>
     </div>
-    
 </template>
 
 <script>

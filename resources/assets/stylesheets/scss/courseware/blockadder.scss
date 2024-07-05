@@ -9,6 +9,7 @@
         display: flex;
         position: relative;
         border: solid thin var(--content-color-40);
+        background-color: var(--white);
         max-width: 268px;
 
         .cw-sortable-handle {
@@ -23,6 +24,13 @@
             }
         }
         .cw-blockadder-item {
+            display: inline-flex;
+            align-items: flex-start;
+            flex-direction: column;
+            text-align: left;
+            color: var(--base-color);
+            border: none;
+            background-color: var(--white);
             padding: 64px 10px 4px 10px;
             @include background-icon(unit-test, clickable, 48);
             background-position: 16px 10px;
@@ -42,6 +50,10 @@
             .cw-blockadder-item-description {
                 display: inline-block;
                 margin: 0 0 4px;   
+            }
+
+            &:hover {
+                color: var(--active-color);
             }
         }
         .cw-blockadder-item-fav {
@@ -71,11 +83,15 @@
     }
 
     .cw-containeradder-item {
+        border: none;
+        background-color: var(--white);
         min-height: 5em;
         padding: 1em 1em 1em 6em;
         @include background-icon(unit-test, clickable, 48);
         background-position: 16px center;
         background-repeat: no-repeat;
+        text-align: left;
+        color: var(--base-color);
         cursor: pointer;
 
         @each $item, $icon in $containeradder-items {
@@ -86,6 +102,10 @@
 
         .cw-containeradder-item-title {
             font-weight: 600;
+        }
+
+        &:hover {
+            color: var(--active-color);
         }
     }
 }
@@ -135,6 +155,10 @@
             outline-width: 1px;
         }
     }
+
+    &.sortable-ghost {
+        background-color: var(--active-color);
+    }
 }
 .cw-element-inserter-wrapper {
     display: grid;
@@ -144,6 +168,7 @@
     margin-bottom: 8px;
 
     .cw-clipboard-item-wrapper {
+        background-color: var(--white);
         display: flex;
         border: solid thin var(--content-color-40);
         max-width: 248px;

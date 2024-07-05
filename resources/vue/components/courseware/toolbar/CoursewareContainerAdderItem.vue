@@ -1,24 +1,14 @@
 <template>
     <div class="cw-containeradder-item-wrapper">
         <span class="cw-sortable-handle cw-sortable-handle-containeradder"></span>
-        <a href="#" @click.prevent="addNewContainer">
-            <div class="cw-containeradder-item" :class="['cw-containeradder-item-' + type]">
-                <header class="cw-containeradder-item-title">
-                    {{ title }}
-                </header>
-                <p class="cw-containeradder-item-description">
-                    {{ description }}
-                </p>
-            </div>
-        </a>
-        <li class="cw-container-dragitem cw-container-item-sortable" ref="container-drag-item">
-            <div class="cw-container cw-container-list cw-container-item" :class="['cw-container-colspan-' + colspan]">
-                <div class="cw-container-content">
-                    <header class="cw-container-header">{{ title }}</header>
-                    <div class="cw-block-wrapper">{{ description }}</div>
-                </div>
-            </div>
-        </li>
+        <button class="cw-containeradder-item" :class="['cw-containeradder-item-' + type]" @click.prevent="addNewContainer">
+            <header class="cw-containeradder-item-title">
+                {{ title }}
+            </header>
+            <p class="cw-containeradder-item-description">
+                {{ description }}
+            </p>
+        </button>
     </div>
 </template>
 <script>
