@@ -41,32 +41,36 @@ class NewPasswordController extends StudipController
 
         $users = User::findByEmail(Request::get('mail'));
 
-        $user = $users[0];
-        setTempLanguage($user->id);
+        if (count($users) === 1) {
+            $user = $users[0];
+        } else if (count($users) > 1) {
+            setTempLanguage($users[0]->id);
 
-        // there are mutliple accounts with this mail addresses!
-        $subject = sprintf(
-            _("[Stud.IP - %s] Passwortänderung angefordert"),
-            Config::get()->UNI_NAME_CLEAN
-        );
+            // there are mutliple accounts with this mail addresses!
+            $subject = sprintf(
+                _("[Stud.IP - %s] Passwortänderung angefordert"),
+                Config::get()->UNI_NAME_CLEAN
+            );
 
-        $mailbody = sprintf(
-            _("Dies ist eine Informationsmail des Stud.IP-Systems\n"
-                ."(Studienbegleitender Internetsupport von Präsenzlehre)\n- %s -\n\n"
-                . "Für die Mail-Adresse %s wurde ein Link angefordert\n"
-                . "um das Passwort zurückzusetzen.\n"
-                . "Dieser Mail-Adresse sind jedoch mehrere Zugänge zugeordnet,\n"
-                . "deshalb ist es nicht möglich, das Passwort hierüber zurückzusetzen.\n"
-                . "Wenden sie sich bitte stattdessen an\n%s"
-            ),
-            Config::get()->UNI_NAME_CLEAN,
-            $users[0]->email,
-            $GLOBALS['UNI_CONTACT']
-        );
+            $mailbody = sprintf(
+                _("Dies ist eine Informationsmail des Stud.IP-Systems\n"
+                    ."(Studienbegleitender Internetsupport von Präsenzlehre)\n- %s -\n\n"
+                    . "Für die Mail-Adresse %s wurde ein Link angefordert\n"
+                    . "um das Passwort zurückzusetzen.\n"
+                    . "Dieser Mail-Adresse sind jedoch mehrere Zugänge zugeordnet,\n"
+                    . "deshalb ist es nicht möglich, das Passwort hierüber zurückzusetzen.\n"
+                    . "Wenden sie sich bitte stattdessen an\n%s"
+                ),
+                Config::get()->UNI_NAME_CLEAN,
+                $users[0]->email,
+                $GLOBALS['UNI_CONTACT']
+            );
 
-        StudipMail::sendMessage($user->email, $subject, $mailbody);
+            StudipMail::sendMessage($users[0]->email, $subject, $mailbody);
 
-        restoreLanguage();
+            restoreLanguage();
+        }
+
         if ($user) {
             // spam/abuse-protection
             // if there are more than 5 tokens present, do NOT send another mail
