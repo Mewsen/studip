@@ -22,6 +22,7 @@ STUDIP.ready(() => {
                             this.$el instanceof Element
                             && this.$el.closest('.studip-dialog')
                             && this.$el.querySelector('[data-dialog-button]')
+                            && this.$el.closest('.studip-dialog')
                         ) {
                             this.$el.closest('.studip-dialog')
                                 .querySelector('.ui-dialog-buttonpane')

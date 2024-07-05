@@ -128,53 +128,8 @@ ul.reviews, ol.reviews {
     max-width: 1000px;
 }
 
-.oercampus_editmaterial {
-    .drag-and-drop {
-        width: 260px;
-        margin-left: 0px;
-        height: 60px;
-        background-position: center 40px;
-        padding-top: 100px;
-    }
-
-    .autoren {
-        &.multiple label {
-            cursor: pointer;
-        }
-        input[type=checkbox] {
-            display: none;
-        }
-        input[type=checkbox]:checked + div {
-            text-decoration: line-through;
-        }
-        .avatar {
-            display: inline-block;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-            width: 20px;
-            min-width: 20px;
-            height: 20px;
-            margin-right: 5px;
-            position: relative;
-            top: 5px;
-        }
-    }
-    .oer_tags_container {
-        margin-top: 10px;
-    }
-
-    .level_labels {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.8em;
-        color: var(--black);
-        margin-top: 20px;
-    }
-
-}
-
-.oercampus_editmaterial, .oer_material_overview {
+.oercampus_editmaterial,
+.oer_material_overview {
     article.contentbox {
         display: inline-block;
         margin: 0 15px 15px 0;

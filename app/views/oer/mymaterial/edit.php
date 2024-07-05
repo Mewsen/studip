@@ -1,3 +1,60 @@
+<?php
+/**
+ * @var OERMaterial $material
+ * @var Oer_MymaterialController $controller
+ * @var SQLSearch $usersearch
+ * @var SQLSearch $tagsearch,
+ */
+?>
+
+
+<?= Studip\VueApp::create('OERMaterialEditor')
+    ->withProps([
+        'store-url' => $controller->edit($material),
+        'material' => [
+            ...$material->toArray(),
+
+            'filesize' => $material->getFilePath() && file_exists($material->getFilePath()) ? filesize($material->getFilePath()) : null,
+            'logoUrl' => $material->getLogoURL(),
+            'tags' => array_map(
+                fn($tag) => $tag['name'],
+                $material->getTopics()
+            ),
+            'users' => $material->users->map(function (OERMaterialUser $user) {
+                if ($user->external_contact) {
+                    return [
+                        'id' => $user->oeruser->id,
+                        'name' => $user->oeruser->name,
+                        'avatar' => $user->oeruser->avatar_url,
+                        'external' => true,
+                    ];
+                }
+
+                $u = User::find($user->user_id);
+                return [
+                    'id' => $u->user_id,
+                    'avatar' => Avatar::getAvatar($u->id)->getURL(Avatar::SMALL),
+                    'name' => $u ? $u->getFullName() : _('unbekannt'),
+                    'external' => false,
+                ];
+            }),
+        ],
+        'template' => $template ?? null,
+        'tag-search' => (string) $tagsearch,
+        'user-search' => (string) $usersearch,
+        'licenses-enabled' => !Config::get()->getValue('OER_DISABLE_LICENSE'),
+        'licenses' => License::findAndMapBySQL(
+            function (License $license) {
+                return [
+                    'id' => $license->id,
+                    'name' => $license->name,
+                ];
+            },
+            '1 ORDER BY name'
+        ),
+        'enable-twillo' => Config::get()->getValue('OERCAMPUS_ENABLE_TWILLO') && TwilloConnector::getTwilloUserID(),
+    ]) ?>
+
 <form action="<?= $controller->edit($material->isNew() ? '' : $material) ?>"
       method="post"
       class="default"
