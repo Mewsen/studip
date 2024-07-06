@@ -77,7 +77,7 @@ class MvvFile extends ModuleManagementModel
      */
     public function getRangeType()
     {
-        if ($this->ranges) {
+        if (count($this->ranges) > 0) {
             return $this->ranges[0]->range_type;
         }
         return '';
