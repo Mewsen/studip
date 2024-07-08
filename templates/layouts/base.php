@@ -95,10 +95,12 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
             <?= implode(PageLayout::getMessages(QuestionBox::class)) ?>
             <?= $content_for_layout ?>
         </div>
-        <system-notification-manager
-            id="system-notifications"
-            :notifications='<?= htmlReady(json_encode(PageLayout::getMessages(MessageBox::class))) ?>'
-            placement="<?= User::findCurrent()?->getConfiguration()->SYSTEM_NOTIFICATIONS_PLACEMENT ?? 'topcenter' ?>"></system-notification-manager>
+        <?= Studip\VueApp::create('SystemNotificationManager')
+            ->withProps([
+                'id'            => 'system-notifications',
+                'notifications' => PageLayout::getMessages(MessageBox::class),
+                'placement'     => User::findCurrent()?->getConfiguration()->SYSTEM_NOTIFICATIONS_PLACEMENT ?? 'topcenter',
+            ]) ?>
     </main>
     <!-- End main content -->
 
