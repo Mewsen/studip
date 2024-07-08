@@ -121,8 +121,6 @@ class Admin_StatusgroupsController extends AuthenticatedController
             $group = new Statusgruppen($group_id);
             if ($group->isNew()) {
                 $group->range_id = Context::getId();
-            } else {
-                DataFieldEntry::removeAll(['', $group->statusgruppe_id]);
             }
 
             $group->name       = Request::i18n('name');
