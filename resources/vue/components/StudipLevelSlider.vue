@@ -1,11 +1,16 @@
 <template>
     <div class="level-slider" :style="{width: this.width}">
         <div class="level-labels">
-            <div>{{ lowerLabel }}</div>
-            <div>{{ upperLabel }}</div>
+            <div class="level-label">{{ lowerLabel }}</div>
+            <div class="level-label">{{ upperLabel }}</div>
         </div>
         <div class="level-numbers">
-            <div v-for="i in this.maxValue" :key="`level-${i}`">{{ i }}</div>
+            <div v-for="i in this.maxValue"
+                 :key="`level-${i}`"
+                 class="level-number"
+            >
+                {{ i }}
+            </div>
         </div>
         <div ref="slider" class="slider-element"></div>
     </div>
@@ -48,8 +53,6 @@ export default {
             max: this.maxValue,
             values: [this.lowerValue, this.upperValue],
             change: (event, ui) => {
-                console.log('Updating', ui.values[0], ui.values[1]);
-
                 this.$emit('update:lowerValue', ui.values[0]);
                 this.$emit('update:upperValue', ui.values[1]);
             }
@@ -71,10 +74,14 @@ export default {
         display: flex;
         justify-content: space-between;
     }
+    .level-number {
+        flex: 0 2ex;
+        text-align: right;
+    }
     .slider-element {
-        margin-left: 5px;
-        margin-right: 9px;
         margin-top: 5px;
+        margin-left: 0.5ex;
+        margin-right: 0.5ex;
     }
 }
 </style>

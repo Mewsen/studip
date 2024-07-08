@@ -257,6 +257,9 @@ class OERMaterial extends SimpleORMap
 
     public function setTopics($tags)
     {
+        $tags = array_map('trim', $tags);
+        $tags = array_filter($tags);
+
         $statement = DBManager::get()->prepare("
             DELETE FROM oer_tags_material
             WHERE material_id = :material_id

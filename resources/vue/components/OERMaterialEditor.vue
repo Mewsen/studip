@@ -6,7 +6,7 @@
           data-secure
           enctype="multipart/form-data"
     >
-        <input type="hidden" :name="csrf.name" :value="csrf.token">
+        <input type="hidden" :name="csrf.name" :value="csrf.value">
         <input v-if="template?.redirect_url"
                type="hidden"
                name="redirect_url"
@@ -136,18 +136,18 @@
             <div class="oer_tags_container">
                 <h4>{{ $gettext('Themen (am besten mindestens 5)') }}</h4>
                 <ul class="clean oer_tags">
-                    <li v-for="(tag, index) in displayTags" :key="index">
+                    <li v-for="(tag, index) in tags" :key="index">
                         #
                         <quicksearch name="tags[]"
                                      :searchtype="tagSearch"
                                      v-model="tags[index]"
                                      :autocomplete="true"
+                                     v-focus-on-create
                         ></quicksearch>
-                        <a href="#"
-                           @click.prevent="removeTag(index)"
+                        <button class="as-link" @click.prevent="removeTag(index)"
                            :title="$gettext('Thema aus der Liste streichen')">
                             <studip-icon shape="trash" :size="20" class="text-bottom"></studip-icon>
-                        </a>
+                        </button>
 
                     </li>
                 </ul>
@@ -196,9 +196,12 @@
         </fieldset>
 
         <footer data-dialog-button>
-            <button type="button" name="save">
-                {{ material.id ? $gettext('Hochladen') : $gettext('Speichern') }}
+            <button type="submit" name="save" class="button">
+                {{ material.id ? $gettext('Speichern') : $gettext('Hochladen') }}
             </button>
+            <a :href="URLHelper.getURL('dispatch.php/oer/mymaterial')" class="button cancel">
+                {{ $gettext('Abbrechen') }}
+            </a>
         </footer>
     </form>
 </template>
@@ -206,10 +209,25 @@
 import Quicksearch from "./Quicksearch.vue";
 import StudipIcon from "./StudipIcon.vue";
 import StudipLevelSlider from "./StudipLevelSlider.vue";
+import Vue from "vue";
+
+let mounted = false;
 
 export default {
     name: "OERMaterialEditor",
     components: {StudipLevelSlider, StudipIcon, Quicksearch },
+    directives: {
+        ['focus-on-create']: {
+            bind(el) {
+                if (mounted) {
+                    Vue.nextTick(() => el.querySelector('input')?.focus());
+                }
+            }
+        }
+    },
+    mounted () {
+        mounted = true;
+    },
     props: {
         material: {
             type: Object,
@@ -287,20 +305,12 @@ export default {
             return this.template?.image_tmp_name?.length > 0
                 || this.material.front_image_content_type?.length > 0;
         },
-        displayTags () {
-            return this.material.tags.concat(
-                Array(this.minimumTags).fill('')
-            ).slice(0, this.minimumTags);
-        },
         logoUrl() {
             return this.template?.image_tmp_name ? STUDIP.URLHelper.getURL('dispatch.php/oer/mymaterial/show_tmp_image') : this.material.logoUrl;
         },
         URLHelper() {
             return STUDIP.URLHelper;
         }
-    },
-    mounted() {
-        jQuery('.oercampus_editmaterial').find(':focusable').first().focus();
     },
     methods: {
         editImage(event) {
@@ -336,12 +346,13 @@ export default {
             this.tags.push('');
         },
         removeTag(i) {
-            this.$delete(this.tags, i);
-            if (
-                this.minimumTags > this.tags.length
-                && this.minimumTags > 5
-            ) {
-                this.minimumTags--;
+            this.tags = this.tags.filter((element, index) => index !== i);
+        }
+    },
+    watch: {
+        tags(current) {
+            if (current.length === 0) {
+                this.tags.push('');
             }
         }
     }
@@ -383,14 +394,5 @@ export default {
     .oer_tags_container {
         margin-top: 10px;
     }
-
-    .level_labels {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.8em;
-        color: var(--black);
-        margin-top: 20px;
-    }
-
 }
 </style>

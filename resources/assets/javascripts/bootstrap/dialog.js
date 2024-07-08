@@ -2,7 +2,14 @@ STUDIP.domReady(function () {
     STUDIP.Dialog.initialize();
 });
 
-$(document).on('click', '[data-vue-app] [data-dialog-button] .cancel.button', () => {
-    STUDIP.Dialog.close();
-    return false;
-});
+document.addEventListener(
+    'click',
+    (event) => {
+        if (event.target.matches('.studip-dialog [data-vue-app] [data-dialog-button] .cancel.button')) {
+            STUDIP.Dialog.close();
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    },
+    true
+);
