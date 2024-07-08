@@ -497,7 +497,10 @@ class StudipAuthAbstract
      */
     function isUsedUsername($username)
     {
-        $this->error_msg = sprintf(_('Methode %s nicht implementiert!'), get_class($this) . '::isUsedUsername()');
+        $this->error_msg = sprintf(
+            _('Methode %s nicht implementiert!'),
+            __METHOD__
+        );
         return false;
     }
 
@@ -513,7 +516,10 @@ class StudipAuthAbstract
      */
     function isAuthenticated($username, $password)
     {
-        $this->error = sprintf(_('Methode %s nicht implementiert!'), get_class($this) . '::isAuthenticated()');
+        $this->error_msg = sprintf(
+            _('Methode %s nicht implementiert!'),
+            __METHOD__
+        );
         return false;
     }
 
