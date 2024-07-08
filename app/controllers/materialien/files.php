@@ -392,35 +392,36 @@ class Materialien_FilesController extends MVVController
             $file->connectWithDataFile($_FILES['file']['tmp_name']);
             $file->store();
 
-            $file = new StandardFile($ref);
+            $file = $ref->getFileType();
         } else {
             $file = StandardFile::create($_FILES['file']);
-        }
-        $error = $top_folder->validateUpload($file, $user->id);
-        if ($error !== null) {
-            if (!$document_id) {
-                $file->delete();
+
+            $error = $top_folder->validateUpload($file, $user->id);
+            if ($error !== null) {
+                if (!$document_id) {
+                    $file->delete();
+                }
+                $this->response->set_status(400);
+                $this->render_json(compact('error'));
+                return;
             }
-            $this->response->set_status(400);
-            $this->render_json(compact('error'));
-            return;
+            $file = $top_folder->addFile($file);
+
+            if (!$file instanceof FileType) {
+                $error = _('Ein Systemfehler ist beim Upload aufgetreten.');
+
+                $this->response->set_status(400);
+                $this->render_json(compact('error'));
+                return;
+            }
+
+            $mvv_file_fileref = new MvvFileFileref([
+                $output['mvvfile_id'],
+                Request::option('file_language'),
+            ]);
+            $mvv_file_fileref->fileref_id = $file->id;
+            $mvv_file_fileref->store();
         }
-        $file = $top_folder->addFile($file);
-
-        if (!$file instanceof FileType) {
-            $error = _('Ein Systemfehler ist beim Upload aufgetreten.');
-
-            $this->response->set_status(400);
-            $this->render_json(compact('error'));
-            return;
-        }
-
-        $mvv_file_fileref = new MvvFileFileref([
-            $output['mvvfile_id'],
-            Request::option('file_language'),
-        ]);
-        $mvv_file_fileref->fileref_id = $file->id;
-        $mvv_file_fileref->store();
 
         $output['document_id'] = $file->id;
         $output['icon'] = $file->getIcon(Icon::ROLE_CLICKABLE)->asImg(['class' => 'text-bottom']);
