@@ -181,7 +181,7 @@ class Consultation_AdminController extends ConsultationController
                     'cancel-url'           => $this->indexURL(),
                     'default-room'         => $room,
                     'range-type'           => get_class($this->range),
-                    'slot-count_threshold' => self::SLOT_COUNT_THRESHOLD,
+                    'slot-count-threshold' => self::SLOT_COUNT_THRESHOLD,
                     'store-url'            => $this->storeURL(),
                     'with-responsible'     => $convertResponsibilities($responsible),
                 ])

@@ -24,7 +24,7 @@
                 <span class="required">{{ $gettext('Ort') }}</span>
 
                 <input required type="text" name="room"
-                       v-model="room"
+                       v-model.trim="room"
                        :placeholder="$gettext('Ort')">
             </label>
 
@@ -275,7 +275,7 @@
         </fieldset>
 
         <footer data-dialog-button>
-            <button class="accept button" :disabled="!confirmed">
+            <button class="accept button" :disabled="room.length === 0 || !confirmed">
                 {{ $gettext('Termin speichern') }}
             </button>
             <a :href="cancelUrl" class="cancel button" @click="evt => closeCreator(evt)">

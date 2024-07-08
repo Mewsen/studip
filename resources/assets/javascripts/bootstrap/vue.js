@@ -20,6 +20,7 @@ STUDIP.ready(() => {
                     c.mounted = function (...args) {
                         if (
                             this.$el instanceof Element
+                            && this.$el.closest('.studip-dialog')
                             && this.$el.querySelector('[data-dialog-button]')
                         ) {
                             this.$el.closest('.studip-dialog')
