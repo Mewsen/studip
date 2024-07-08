@@ -113,8 +113,6 @@
         "willdurand/negotiation": "^3.1",
         "monolog/monolog": "^2.8",
         "ksubileau/color-thief-php": "^2.0",
-        "symfony/polyfill-php82": "1.29.0",
-        "symfony/polyfill-php83": "1.29.0",
         "phpoffice/phpspreadsheet": "2.1.0",
         "psy/psysh": "0.12.3",
         "okvpn/clock-lts": "^1.0",
@@ -122,7 +120,10 @@
         "edu-sharing/auth-plugin": "8.0.x-dev",
         "psr/cache": "3.0.0",
         "laravel-json-api/neomerx-json-api": "5.0.2",
-        "illuminate/collections": "^10.48"
+        "illuminate/collections": "^10.48",
+        "symfony/polyfill-php82": "1.30.0",
+        "symfony/polyfill-php83": "1.30.0",
+        "symfony/polyfill-php84": "1.30.0"
     },
     "replace": {
         "symfony/polyfill-php73": "*",
