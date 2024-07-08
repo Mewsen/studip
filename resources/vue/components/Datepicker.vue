@@ -125,6 +125,7 @@ export default {
                 'maxDate',
                 this.convertInputToNativeDate(current)
             );
+            this.setUnixTimestamp();
         },
         mindate(current) {
             this.input.datepicker(
@@ -132,6 +133,7 @@ export default {
                 'minDate',
                 this.convertInputToNativeDate(current)
             );
+            this.setUnixTimestamp();
         },
         value(current, previous) {
             if (current.toISOString() !== previous.toISOString()) {
