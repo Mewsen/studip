@@ -356,24 +356,27 @@ class Consultation_AdminController extends ConsultationController
                 'sem_perm'   => $permissions,
             ]);
         }
+    }
 
-        if (Request::isPost()) {
-            CSRFProtection::verifyUnsafeRequest();
+    public function store_booking_action($block_id, $slot_id, $page = 0): void
+    {
+        CSRFProtection::verifyUnsafeRequest();
 
-            if ($this->slot->isOccupied()) {
-                PageLayout::postError(_('Dieser Termin ist bereits belegt.'));
-            } else {
-                $booking = new ConsultationBooking();
-                $booking->slot_id = $this->slot->id;
-                $booking->user_id = Request::option('user_id');
-                $booking->reason  = trim(Request::get('reason'));
-                $booking->store();
+        $slot = $this->loadSlot($block_id, $slot_id);
 
-                PageLayout::postSuccess(_('Der Termin wurde reserviert.'));
-            }
+        if ($slot->isOccupied()) {
+            PageLayout::postError(_('Dieser Termin ist bereits belegt.'));
+        } else {
+            $booking = new ConsultationBooking();
+            $booking->slot_id = $slot->id;
+            $booking->user_id = Request::option('user_id');
+            $booking->reason  = trim(Request::get('reason'));
+            $booking->store();
 
-            $this->redirect("consultation/admin/index/{$page}#slot-{$this->slot->id}");
+            PageLayout::postSuccess(_('Der Termin wurde reserviert.'));
         }
+
+        $this->redirect("consultation/admin/index/{$page}#slot-{$slot->id}");
     }
 
     public function edit_action($block_id, $page = 0)
