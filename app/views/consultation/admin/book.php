@@ -5,7 +5,7 @@
  * @var int $page
  */
 ?>
-<form action="<?= $controller->book($slot->block, $slot, $page) ?>" method="post" class="default">
+<form action="<?= $controller->store_booking($slot->block, $slot, $page) ?>" method="post" class="default">
     <?= CSRFProtection::tokenTag() ?>
 
     <fieldset>
