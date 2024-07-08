@@ -130,18 +130,11 @@
                             </div>
                         </label>
                     </li>
-                    <li>
-                        <quicksearch name="new_user"
-                                     :searchtype="userSearch"
-                                     :placeholder="$gettext('Person hinzufügen')"
-                        ></quicksearch>
-                    </li>
                 </ul>
             </div>
 
-
             <div class="oer_tags_container">
-                {{ $gettext('Themen (am besten mindestens 5)') }}
+                <h4>{{ $gettext('Themen (am besten mindestens 5)') }}</h4>
                 <ul class="clean oer_tags">
                     <li v-for="(tag, index) in displayTags" :key="index">
                         #
@@ -165,21 +158,14 @@
             </div>
 
             <div class="level_filter" style="margin-top: 13px; max-width: 682px;">
-                {{ $gettext('Niveau') }}
+                <h4>{{ $gettext('Niveau') }}</h4>
 
-                <input type="hidden" id="difficulty_start" name="data[difficulty_start]"
-                       :value="material.difficulty_start">
-                <input type="hidden" id="difficulty_end" name="data[difficulty_end]"
-                       :value="material.difficulty_end">
+                <input type="hidden" name="data[difficulty_start]" :value="difficultyStart">
+                <input type="hidden" name="data[difficulty_end]" :value="difficultyEnd">
 
-                <div class="level_labels">
-                    <div>{{ $gettext('Leicht') }}</div>
-                    <div>{{ $gettext('Schwer') }}</div>
-                </div>
-                <div style="display: flex; justify-content: space-between;">
-                    <div v-for="i in 12" :key="`level-${i}`">{{ i }}</div>
-                </div>
-                <div id="difficulty_slider_edit" style="margin-left: 5px; margin-right: 9px;"></div>
+                <studip-level-slider :lower-value.sync="difficultyStart"
+                                     :upper-value.sync="difficultyEnd"
+                ></studip-level-slider>
             </div>
 
             <label v-if="enableTwillo"
@@ -219,10 +205,11 @@
 <script>
 import Quicksearch from "./Quicksearch.vue";
 import StudipIcon from "./StudipIcon.vue";
+import StudipLevelSlider from "./StudipLevelSlider.vue";
 
 export default {
     name: "OERMaterialEditor",
-    components: {StudipIcon, Quicksearch },
+    components: {StudipLevelSlider, StudipIcon, Quicksearch },
     props: {
         material: {
             type: Object,
@@ -233,10 +220,6 @@ export default {
             required: true
         },
         template: Object,
-        userSearch: {
-            type: String,
-            required: true,
-        },
         tagSearch: {
             type: String,
             required: true
@@ -260,6 +243,8 @@ export default {
             name: this.material.name.trim() || this.template?.name.trim() || '',
             category: this.material.category || (this.material.id ? '' : null),
             description: this.material.description.trim() || this.template?.description.trim() || '',
+            difficultyEnd: this.material.difficulty_end,
+            difficultyStart: this.material.difficulty_start,
             tags: tags,
         };
     },
@@ -315,16 +300,6 @@ export default {
         }
     },
     mounted() {
-        jQuery("#difficulty_slider_edit").slider({
-            range: true,
-            min: 1,
-            max: 12,
-            values: [jQuery("#difficulty_start").val(), jQuery("#difficulty_end").val()],
-            change: function (event, ui) {
-                jQuery("#difficulty_start").val(ui.values[0]);
-                jQuery("#difficulty_end").val(ui.values[1]);
-            }
-        });
         jQuery('.oercampus_editmaterial').find(':focusable').first().focus();
     },
     methods: {
@@ -376,7 +351,7 @@ export default {
 .oercampus_editmaterial {
     .drag-and-drop {
         width: 260px;
-        margin-left: 0px;
+        margin-left: 0;
         height: 60px;
         background-position: center 40px;
         padding-top: 100px;

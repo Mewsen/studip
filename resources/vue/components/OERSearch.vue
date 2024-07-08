@@ -14,14 +14,14 @@
                         </a>
                     </span>
 
-                    <span v-if="difficulty[0] != 1 || difficulty[1] != 12"
+                    <span v-if="difficultyStart > 1 || difficultyEnd < 12"
                           class="niveau activefilter"
                           title="$gettext('Aktiver Filter für das Niveau')"
                     >
                         {{ $gettext('Niveau') }}:
-                        <span>{{ difficulty[0] }}</span>
+                        <span>{{ difficultyStart }}</span>
                         -
-                        <span>{{ difficulty[1] }}</span>
+                        <span>{{ difficultyEnd }}</span>
                         <a href="#"
                            @click.prevent="clearDifficulty()"
                            class="erasefilter"
@@ -36,7 +36,7 @@
                            @focus="toggleFilterPanel(true)"
                            @keydown.enter.prevent="search()">
 
-                    <button v-if="difficulty[0] != 1 || difficulty[1] != 12 || (category != null) || (searchtext.length > 0)"
+                    <button v-if="difficultyStart > 1 || difficultyEnd < 12 || category !== null || searchtext.length > 0"
                             class="erase"
                             type="button"
                             :title="$gettext('Suchformular zurücksetzen')"
@@ -89,21 +89,13 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="level_filter">
-                            <h3>{{ $gettext('Niveau') }}</h3>
-                            <div class="level_labels">
-                                <div>{{ $gettext('Leicht') }}</div>
-                                <div>{{ $gettext('Schwer') }}</div>
-                            </div>
-                            <div class="level_numbers">
-                                <div v-for="i in 12" :key="i" style="text-align: right">
-                                    {{ i }}
-                                </div>
-                            </div>
-                            <div id="difficulty_slider"></div>
 
-                            <input type="hidden" id="difficulty" name="difficulty" value="">
-                        </div>
+                        <input type="hidden" id="difficulty" name="difficulty" value="">
+
+                        <studip-level-slider :lower-value.sync="difficultyStart"
+                                             :upper-value.sync="difficultyEnd"
+                                             width="300px"
+                        ></studip-level-slider>
                     </div>
 
 
@@ -191,10 +183,11 @@
 <script>
 import StudipMessageBox from './StudipMessageBox.vue';
 import StudipAssetImg from './StudipAssetImg.vue';
+import StudipLevelSlider from "./StudipLevelSlider.vue";
 
 export default {
     name: 'OERSearch',
-    components: {StudipAssetImg, StudipMessageBox},
+    components: {StudipLevelSlider, StudipAssetImg, StudipMessageBox},
     props: {
         searchResults: [Array, Boolean],
         filteredTag: String,
@@ -214,7 +207,8 @@ export default {
             tagHistory: [],
             searchtext: '',
             activeFilterPanel: false,
-            difficulty: [1, 12],
+            difficultyStart: 1,
+            difficultyEnd: 12,
             category: null,
             results: this.searchResults || false,
         };
@@ -238,10 +232,8 @@ export default {
             }
         },
         clearDifficulty() {
-            if (this.difficulty[0] != 1 && this.difficulty[1] != 12) {
-                this.difficulty = [1, 12];
-            }
-            jQuery("#difficulty_slider").slider("values", this.difficulty);
+            this.difficultyStart = 1
+            this.difficultyEnd = 12;
         },
         clearCategory() {
             if (this.category != null) {
@@ -270,7 +262,7 @@ export default {
             this.browseMode = false;
             $.getJSON(STUDIP.URLHelper.getURL('dispatch.php/oer/market/search', {
                 type: this.category,
-                difficulty: this.difficulty.join(','),
+                difficulty: [this.difficultyStart, this.difficultyEnd].join(','),
                 search: this.searchtext
             })).done(output => {
                 this.results = output.materials.length;
@@ -367,19 +359,6 @@ export default {
     },
     beforeDestroy() {
         document.body.removeEventListener('click', this.hideFilterPanelListener)
-    },
-    updated() {
-        this.$nextTick(() => {
-            jQuery("#difficulty_slider:not(.ui-slider)").slider({
-                range: true,
-                min: 1,
-                max: 12,
-                values: [this.difficulty[0], this.difficulty[1]],
-                change: (event, ui) => {
-                    this.difficulty = ui.values;
-                }
-            });
-        });
     }
 };
 </script>

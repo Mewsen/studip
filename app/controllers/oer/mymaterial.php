@@ -185,17 +185,6 @@ class Oer_MymaterialController extends AuthenticatedController
             $this->template = $_SESSION['NEW_OER'];
         }
 
-        $this->usersearch = new SQLSearch("
-            SELECT DISTINCT CONCAT('0_', auth_user_md5.user_id), CONCAT(auth_user_md5.Nachname, ', ', auth_user_md5.Vorname, ' (', auth_user_md5.username, ')')
-            FROM auth_user_md5 LEFT JOIN user_info ON (user_info.user_id = auth_user_md5.user_id)
-            WHERE (CONCAT(auth_user_md5.Vorname, ' ', auth_user_md5.Nachname) LIKE REPLACE(:input, ' ', '% ')
-                OR CONCAT(auth_user_md5.Nachname, ' ', auth_user_md5.Vorname) LIKE REPLACE(:input, ' ', '% ')
-                OR CONCAT(auth_user_md5.Nachname, ', ', auth_user_md5.Vorname) LIKE :input
-                OR auth_user_md5.username LIKE :input) AND " . get_vis_query() . "
-            UNION SELECT CONCAT('1_', oer_user.user_id), oer_user.name
-            FROM oer_user
-            WHERE name LIKE :input
-        ", _('Person hinzufügen'), 'user_id');
         $this->tagsearch = new SQLSearch("
             SELECT oer_tags.name, oer_tags.name
             FROM oer_tags

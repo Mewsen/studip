@@ -41,7 +41,6 @@
         ],
         'template' => $template ?? null,
         'tag-search' => (string) $tagsearch,
-        'user-search' => (string) $usersearch,
         'licenses-enabled' => !Config::get()->getValue('OER_DISABLE_LICENSE'),
         'licenses' => License::findAndMapBySQL(
             function (License $license) {

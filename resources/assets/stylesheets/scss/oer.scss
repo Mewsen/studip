@@ -290,27 +290,6 @@ ul.reviews, ol.reviews {
             margin-top: 10px;
             font-weight: normal;
         }
-
-        .level_filter {
-            width: 300px;
-            .level_labels {
-                display: flex;
-                justify-content: space-between;
-                font-size: 0.8em;
-                color: var(--black);
-                margin-top: 20px;
-            }
-            .level_numbers {
-                display: flex;
-                justify-content: space-between;
-            }
-            #difficulty_slider {
-                margin-top: 5px;
-                width: 93%;
-                margin-left: auto;
-                margin-right: auto;
-            }
-        }
     }
     .filterpanel_shadow {
         position: absolute;
