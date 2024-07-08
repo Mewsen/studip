@@ -187,18 +187,18 @@ class StudipAuthLdap extends StudipAuthAbstract
     function isUsedUsername($username)
     {
         if (!$this->anonymous_bind) {
-            $this->error = _('Kann den Benutzernamen nicht überprüfen, anonymous_bind ist ausgeschaltet!');
+            $this->error_msg = _('Kann den Benutzernamen nicht überprüfen, anonymous_bind ist ausgeschaltet!');
             return false;
         }
         if (!$this->doLdapConnect()) {
             return false;
         }
         if (!($r = @ldap_bind($this->conn))) {
-            $this->error = _('Anonymer Bind fehlgeschlagen.') . $this->getLdapError();
+            $this->error_msg = _('Anonymer Bind fehlgeschlagen.') . $this->getLdapError();
             return false;
         }
         if (!($result = @ldap_search($this->conn, $this->base_dn, $this->getLdapFilter($username), ['dn']))) {
-            $this->error = _('Anonymes Durchsuchen des LDAP Baumes fehlgeschlagen.') . $this->getLdapError();
+            $this->error_msg = _('Anonymes Durchsuchen des LDAP Baumes fehlgeschlagen.') . $this->getLdapError();
             return false;
         }
         if (!ldap_count_entries($this->conn, $result)) {
