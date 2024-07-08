@@ -25,9 +25,9 @@ class StockImagesCreate extends JsonApiController
      */
     public function __invoke(Request $request, Response $response, $args): Response
     {
-        $json = $this->validate($request, $resource);
+        $json = $this->validate($request);
         $user = $this->getUser($request);
-        if (!Authority::canCreateStockImage($user, $resource)) {
+        if (!Authority::canCreateStockImage($user)) {
             throw new AuthorizationFailedException();
         }
         $resource = $this->createResource($json);
