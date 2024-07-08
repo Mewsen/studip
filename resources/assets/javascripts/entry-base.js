@@ -77,7 +77,6 @@ import "./bootstrap/scroll_to_top.js"
 import "./bootstrap/admin-courses.js"
 import "./bootstrap/oer.js"
 import "./bootstrap/courseware.js"
-import "./bootstrap/stock-images.js"
 import "./bootstrap/external_pages.js"
 
 import "./mvv_course_wizard.js"

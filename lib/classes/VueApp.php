@@ -38,6 +38,7 @@ final class VueApp implements Stringable
         return new self($base_component);
     }
 
+    private array $plugins = [];
     private array $props = [];
     private array $stores = [];
     private array $storeData = [];
@@ -130,6 +131,27 @@ final class VueApp implements Stringable
     }
 
     /**
+     * Adds a plugin
+     *
+     * You may specify a different filename for the plugin.
+     */
+    public function withPlugin(string $plugin, string $filename = null): VueApp
+    {
+        $clone = clone $this;
+        $clone->plugins[$plugin] = $filename ?? $plugin;
+
+        return $clone;
+    }
+
+    /**
+     * Returns all plugins
+     */
+    public function getPlugins(): array
+    {
+        return $this->plugins;
+    }
+
+    /**
      * Returns the template to render the vue app
      */
     public function getTemplate(): Template
@@ -140,6 +162,10 @@ final class VueApp implements Stringable
 
         if (count($this->stores) > 0) {
             $data['stores'] = $this->stores;
+        }
+
+        if (count($this->plugins) > 0) {
+            $data['plugins'] = $this->plugins;
         }
 
         $template = $GLOBALS['template_factory']->open('vue-app.php');

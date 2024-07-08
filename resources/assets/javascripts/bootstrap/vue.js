@@ -3,6 +3,7 @@ STUDIP.ready(() => {
         const config = Object.assign(
             {
                 components: [],
+                plugins: {},
                 stores: {}
             },
             JSON.parse(node.dataset.vueApp)
@@ -37,7 +38,7 @@ STUDIP.ready(() => {
             };
         });
 
-        STUDIP.Vue.load().then(async ({createApp, store}) => {
+        STUDIP.Vue.load().then(async ({createApp, store, Vue}) => {
             for (const [index, name] of Object.entries(config.stores)) {
                 import(`../../../vue/store/${name}.js`).then(storeConfig => {
                     store.registerModule(index, storeConfig.default);
@@ -53,6 +54,13 @@ STUDIP.ready(() => {
                     }
                 });
             }
+
+            for (const [plugin, filename] of Object.entries(config.plugins)) {
+                import(`../../../vue/plugins/${filename}.js`)
+                    .then((temp) => Vue.use(temp[plugin], { store }));
+            }
+
+
             createApp({
                 components,
                 store,

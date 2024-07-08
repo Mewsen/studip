@@ -14,7 +14,7 @@
                             <button
                                 v-if="showSearchResults"
                                 @click.prevent="onReset"
-                                class="reset-search"
+                                class="reset-search as-link"
                                 :title="$gettext('Suchformular zurücksetzen')"
                             >
                                 <studip-icon shape="decline" :size="20" role="presentation" alt="" />

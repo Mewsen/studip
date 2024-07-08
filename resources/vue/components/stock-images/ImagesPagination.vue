@@ -1,7 +1,7 @@
 <template>
     <div>
         <StudipPagination
-            :style="{ visibility: totalItems <= perPage ? 'hidden' : 'visible' }"
+            v-show="totalItems > perPage"
             :currentOffset="offset"
             :totalItems="totalItems"
             :itemsPerPage="perPage"
@@ -9,7 +9,7 @@
         />
         <slot></slot>
         <StudipPagination
-            :style="{ visibility: totalItems <= perPage ? 'hidden' : 'visible' }"
+            v-show="totalItems > perPage"
             :currentOffset="offset"
             :totalItems="totalItems"
             :itemsPerPage="perPage"
