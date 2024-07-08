@@ -84,7 +84,7 @@ class StockImagesUpdate extends JsonApiController
         }
     }
 
-    private function updateResource(StockImage $resource, array $json): void
+    private function updateResource(StockImage $resource, array $json): StockImage
     {
         $updates = array_merge(
             self::getAttributeUpdates($json, ['title', 'description', 'author', 'license']),
@@ -92,5 +92,7 @@ class StockImagesUpdate extends JsonApiController
         );
         $resource->setData($updates);
         $resource->store();
+
+        return $resource;
     }
 }
