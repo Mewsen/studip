@@ -216,7 +216,7 @@ class ConsultationSlot extends SimpleORMap
         $event->end       = $this->end_time;
         $event->access    = 'PRIVATE';
         $event->location  = $this->block->room;
-        $event->repetition_type = '';
+        $event->repetition_type = 'SINGLE';
         $event->store();
 
         $calendar_event = new CalendarDateAssignment();
