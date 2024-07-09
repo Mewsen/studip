@@ -2,21 +2,21 @@
 
 namespace Studip\OAuth2;
 
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Psr7\Response;
 use Trails\Response as TrailsResponse;
 
 trait NegotiatesWithPsr7
 {
     protected function getPsrRequest(): ServerRequestInterface
     {
-        return \Slim\Psr7\Factory\ServerRequestFactory::createFromGlobals();
+        return app(ServerRequestInterface::class);
     }
 
     protected function getPsrResponse(): ResponseInterface
     {
-        return new Response();
+        return app(ResponseFactoryInterface::class)->createResponse();
     }
 
     protected function convertPsrResponse(ResponseInterface $response): TrailsResponse

@@ -78,7 +78,6 @@
     },
     "require": {
         "php": "^8.1",
-        "guzzlehttp/psr7": "2.6.2",
         "spomky-labs/otphp": "11.2.2",
         "tuupola/cors-middleware": "^1.2.1",
         "tecnickcom/tcpdf": "6.7.5",
@@ -103,7 +102,6 @@
         "ext-mbstring": "*",
         "ext-dom": "*",
         "opis/json-schema": "2.3.0",
-        "slim/psr7": "1.6.1",
         "slim/slim": "4.13.0",
         "php-di/php-di": "7.0.0",
         "symfony/console": "6.4.7",
@@ -123,7 +121,9 @@
         "illuminate/collections": "^10.48",
         "symfony/polyfill-php82": "1.30.0",
         "symfony/polyfill-php83": "1.30.0",
-        "symfony/polyfill-php84": "1.30.0"
+        "symfony/polyfill-php84": "1.30.0",
+        "nyholm/psr7": "1.8.1",
+        "nyholm/psr7-server": "1.1.0"
     },
     "replace": {
         "symfony/polyfill-php73": "*",

@@ -5,11 +5,11 @@ namespace Helper;
 use DI\ContainerBuilder;
 use JsonApi\Errors\JsonApiErrorRenderer;
 use JsonApi\Middlewares\Authentication;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Factory\AppFactory;
 use Slim\Interfaces\ErrorHandlerInterface;
-use Slim\Psr7\Factory\ServerRequestFactory;
-use Slim\Psr7\Request;
 use WoohooLabs\Yang\JsonApi\Request\JsonApiRequestBuilder;
 use WoohooLabs\Yang\JsonApi\Response\JsonApiResponse;
 
@@ -69,18 +69,13 @@ class Jsonapi extends \Codeception\Module
      */
     public function createRequestBuilder($credentials = null)
     {
-        $serverParams = [];
-        if ($credentials) {
-            $serverParams = [
-                'PHP_AUTH_USER' => $credentials['username'],
-                'PHP_AUTH_PW' => $credentials['password'],
-            ];
-        }
-        $factory = new ServerRequestFactory();
-        $request = $factory->createServerRequest('GET', '', $serverParams);
+        $serverParams = $credentials
+            ? ['PHP_AUTH_USER' => $credentials['username'], 'PHP_AUTH_PW' => $credentials['password']]
+            : [];
 
+        $psr17Factory = new Psr17Factory();
+        $request = $psr17Factory->createServerRequest('GET', '', $serverParams);
         $requestBuilder = new JsonApiRequestBuilder($request);
-
         $requestBuilder->setProtocolVersion('1.0')->setHeader('Accept-Charset', 'utf-8');
 
         return $requestBuilder;
@@ -91,11 +86,16 @@ class Jsonapi extends \Codeception\Module
      *
      * @return JsonApiResponse
      */
-    public function sendMockRequest($app, Request $request)
+    public function sendMockRequest($app, RequestInterface $request)
     {
         /** @var \DI\Container */
         $container = $app->getContainer();
         $container->set('request', $request);
+
+        // copy query string to query params
+        $queryParams = [];
+        parse_str($request->getUri()->getQuery(), $queryParams);
+        $request = $request->withQueryParams($queryParams);
 
         $response = $app->handle($request);
 
@@ -157,6 +157,8 @@ class Jsonapi extends \Codeception\Module
     private function appFactory(): \Slim\App
     {
         $containerBuilder = new ContainerBuilder();
+
+        $containerBuilder->addDefinitions('lib/bootstrap-definitions.php');
 
         $settings = require 'lib/classes/JsonApi/settings.php';
         $settings($containerBuilder);

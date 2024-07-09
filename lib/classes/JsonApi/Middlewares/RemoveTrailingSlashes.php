@@ -2,10 +2,10 @@
 
 namespace JsonApi\Middlewares;
 
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Slim\Psr7\Response;
 
 /**
  * Diese Klasse definiert eine Middleware, die Requests  umleitet,
@@ -14,6 +14,10 @@ use Slim\Psr7\Response;
  */
 class RemoveTrailingSlashes
 {
+    public function __construct(private ResponseFactoryInterface $responseFactory)
+    {
+    }
+
     /**
      * Diese Middleware überprüft den Pfad der URI des Requests. Endet
      * diese auf einem Schrägstrich, wird nicht weiter an `$next`
@@ -39,11 +43,7 @@ class RemoveTrailingSlashes
             $uri = $uri->withPath($path);
 
             if ('GET' == $request->getMethod()) {
-                $response = new Response();
-
-                return $response
-                    ->withHeader('Location', (string) $uri)
-                    ->withStatus(301);
+                return $this->responseFactory->createResponse(301)->withHeader('Location', (string) $uri);
             } else {
                 $request = $request->withUri($uri);
             }

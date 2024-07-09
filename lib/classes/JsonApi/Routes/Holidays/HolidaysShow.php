@@ -2,15 +2,15 @@
 
 namespace JsonApi\Routes\Holidays;
 
-use GuzzleHttp\Psr7;
 use JsonApi\JsonApiIntegration\QueryParserInterface;
 use JsonApi\NonJsonApiController;
 use Neomerx\JsonApi\Exceptions\JsonApiException;
 use Neomerx\JsonApi\Schema\Error;
 use Neomerx\JsonApi\Schema\ErrorCollection;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * List all holidays for a specific time period.
@@ -23,17 +23,14 @@ use Psr\Http\Message\ResponseInterface as Response;
  */
 final class HolidaysShow extends NonJsonApiController
 {
-    private $query_parser;
-
     protected $allowedFilteringParameters = ['year', 'month', 'day'];
 
     public function __construct(
         ContainerInterface $container,
-        QueryParserInterface $queryParser
+        private QueryParserInterface $queryParser,
+        private StreamFactoryInterface $streamFactory
     ) {
         parent::__construct($container);
-
-        $this->query_parser = $queryParser;
     }
 
     public function __invoke(Request $request, Response $response, $args): Response
@@ -55,7 +52,7 @@ final class HolidaysShow extends NonJsonApiController
 
         return $response
             ->withHeader('Content-Type', 'application/json')
-            ->withBody(Psr7\Utils::streamFor(json_encode($holidays)));
+            ->withBody($this->streamFactory->createStream(json_encode($holidays)));
     }
 
     private function getTimespanByFilters(): array

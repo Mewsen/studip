@@ -10,7 +10,7 @@ use JsonApi\Schemas\Folder as FolderSchema;
 use JsonApi\Schemas\ContentTermsOfUse as ContentTermsOfUseSchema;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Slim\Psr7\UploadedFile;
+use Psr\Http\Message\UploadedFileInterface;
 
 trait RoutesHelperTrait
 {
@@ -256,12 +256,12 @@ trait RoutesHelperTrait
      * Moves the uploaded file to the upload directory and assigns it a unique name
      * to avoid overwriting an existing uploaded file.
      *
-     * @param string       $directory directory to which the file is moved
-     * @param UploadedFile $uploaded  file uploaded file to move
+     * @param string $directory directory to which the file is moved
+     * @param UploadedFileInterface $uploaded  file uploaded file to move
      *
      * @return string filename of moved file
      */
-    protected function moveUploadedFile($directory, UploadedFile $uploadedFile)
+    protected function moveUploadedFile($directory, UploadedFileInterface $uploadedFile)
     {
         $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
         $basename = bin2hex(random_bytes(8));

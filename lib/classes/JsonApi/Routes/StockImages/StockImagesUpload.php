@@ -8,7 +8,7 @@ use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\NonJsonApiController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Psr7\UploadedFile;
+use Psr\Http\Message\UploadedFileInterface;
 use Studip\StockImages\Scaler;
 use Studip\StockImages\PaletteCreator;
 
@@ -58,7 +58,7 @@ class StockImagesUpload extends NonJsonApiController
         $resource->store();
     }
 
-    private function getUploadedFile(Request $request): UploadedFile
+    private function getUploadedFile(Request $request): UploadedFileInterface
     {
         $files = iterator_to_array($this->getUploadedFiles($request));
 
@@ -79,7 +79,7 @@ class StockImagesUpload extends NonJsonApiController
     }
 
     /**
-     * @return iterable<UploadedFile> a list of uploaded files
+     * @return iterable<UploadedFileInterface> a list of uploaded files
      */
     private function getUploadedFiles(Request $request): iterable
     {
@@ -113,7 +113,7 @@ class StockImagesUpload extends NonJsonApiController
     /**
      * @return string|null null, if the file is valid, otherwise a string containing the error
      */
-    private function validate(UploadedFile $file)
+    private function validate(UploadedFileInterface $file)
     {
         $mimeType = $file->getClientMediaType();
         if (!in_array($mimeType, ['image/gif', 'image/jpeg', 'image/png', 'image/webp'])) {

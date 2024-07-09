@@ -6,13 +6,20 @@ use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\InternalServerError;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\NonJsonApiController;
-use GuzzleHttp\Psr7;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\StreamFactoryInterface;
 
 class FileRefsContentShow extends NonJsonApiController
 {
     use EtagHelperTrait;
+
+    public function __construct(
+        ContainerInterface $container,
+        private StreamFactoryInterface $streamFactory
+    ) {
+        parent::__construct($container);
+    }
 
     public function invoke(Request $request, Response $response, array $args): Response
     {
@@ -114,7 +121,7 @@ class FileRefsContentShow extends NonJsonApiController
 
         $fileRef->incrementDownloadCounter();
 
-        $stream = Psr7\Utils::streamFor(fopen($pathFile, 'rb'));
+        $stream = $this->streamFactory->createStreamFromFile($pathFile, 'rb');
 
         return $response->withBody($stream);
     }

@@ -4,7 +4,8 @@ use JsonApi\Errors\UnprocessableEntityException;
 use JsonApi\Routes\Files\NegotiateFileRefsCreate as FileRefsCreate;
 use JsonApi\Schemas\ContentTermsOfUse;
 use JsonApi\Schemas\FileRef;
-use Slim\Psr7\Factory\ServerRequestFactory;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7Server\ServerRequestCreator;
 
 require_once 'FilesTestHelper.php';
 
@@ -153,17 +154,29 @@ class FileRefsCreateTest extends \Codeception\Test\Unit
             file_put_contents($filename, $content);
         }
         $this->tester->assertTrue(file_exists($filename));
-        $file = new \Slim\Psr7\UploadedFile($this->fileToStreamInterface($filename), $name);
+        $psr17Factory = new Psr17Factory();
+        $file = $psr17Factory->createUploadedFile(
+            stream: $psr17Factory->createStreamFromFile($filename),
+            clientFilename: $name
+        );
 
         $app = $this->tester->createApp($credentials, 'POST', '/folders/{id}/file-refs', FileRefsCreate::class);
 
-        $factory = new ServerRequestFactory();
         $serverParams = [
+            'REQUEST_METHOD' => 'POST',
+            'REQUEST_URI' => '/folders/' . $folder->id . '/file-refs',
             'PHP_AUTH_USER' => $credentials['username'],
             'PHP_AUTH_PW' => $credentials['password'],
         ];
-        $request = $factory->createServerRequest('POST', '/folders/' . $folder->id . '/file-refs', $serverParams);
-        $request = $request->withUploadedFiles([$file])->withHeader('Content-Type', 'multipart/form-data');
+        $creator = new ServerRequestCreator(
+            $psr17Factory,
+            $psr17Factory,
+            $psr17Factory,
+            $psr17Factory
+        );
+        $request = $creator->fromArrays($serverParams)
+            ->withUploadedFiles([$file])
+            ->withHeader('Content-Type', 'multipart/form-data');
 
         $response = $this->tester->sendMockRequest($app, $request);
         $this->tester->assertSame(201, $response->getStatusCode());
@@ -213,12 +226,5 @@ class FileRefsCreateTest extends \Codeception\Test\Unit
 
         $resourceLink = $resource->relationship('terms-of-use')->firstResourceLink();
         $this->tester->assertSame($license->id, $resourceLink['id']);
-    }
-
-    private function fileToStreamInterface(string $filename)
-    {
-        $factory = new \Slim\Psr7\Factory\StreamFactory();
-
-        return $factory->createStreamFromFile($filename);
     }
 }

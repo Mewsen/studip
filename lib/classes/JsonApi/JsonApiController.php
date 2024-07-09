@@ -15,6 +15,7 @@ use Neomerx\JsonApi\Contracts\Schema\SchemaInterface;
 use Neomerx\JsonApi\Http\Headers\MediaType;
 use Neomerx\JsonApi\Schema\Link;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -39,54 +40,18 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class JsonApiController
 {
     /**
-     * @var \Slim\App
-     */
-    protected $app;
-
-    /**
-     * @var ContainerInterface;
-     */
-    protected $container;
-
-    /**
-     * @var FactoryInterface
-     */
-    protected $factory;
-
-    /**
-     * @var EncoderInterface
-     */
-    protected $encoder;
-
-    /**
-     * @var SchemaContainerInterface
-     */
-    protected $schemaContainer;
-
-    /**
-     * @var QueryParserInterface
-     */
-    protected $queryParser;
-
-    /**
      * Der Konstruktor.
      */
     public function __construct(
-        \Slim\App $app,
-        ContainerInterface $container,
-        FactoryInterface $factory,
-        EncoderInterface $encoder,
-        SchemaContainerInterface $schemaContainer,
-        QueryParserInterface $queryParser,
+        protected \Slim\App $app,
+        protected ContainerInterface $container,
+        protected FactoryInterface $factory,
+        protected EncoderInterface $encoder,
+        protected SchemaContainerInterface $schemaContainer,
+        protected QueryParserInterface $queryParser,
+        protected ResponseFactoryInterface $responseFactory,
         HeaderParametersParserInterface $headerParametersParser
     ) {
-        $this->app = $app;
-        $this->container = $container;
-        $this->factory = $factory;
-        $this->encoder = $encoder;
-        $this->schemaContainer = $schemaContainer;
-        $this->queryParser = $queryParser;
-
         $queryChecker = new JsonApiIntegration\QueryChecker(
             $this->allowUnrecognizedParams,
             $this->allowedIncludePaths,
@@ -410,7 +375,7 @@ class JsonApiController
 
         $mediaType = new MediaType(MediaTypeInterface::JSON_API_TYPE, MediaTypeInterface::JSON_API_SUB_TYPE);
 
-        return new JsonApiIntegration\Responses($encoder, $mediaType);
+        return new JsonApiIntegration\Responses($encoder, $mediaType, $this->responseFactory);
     }
 
     private function checkAcceptHeader(HeaderParametersParserInterface $headerParametersParser): void

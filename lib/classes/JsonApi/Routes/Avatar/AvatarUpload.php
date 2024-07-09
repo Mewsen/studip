@@ -10,7 +10,6 @@ use JsonApi\NonJsonApiController;
 use JsonApi\Routes\Files\RoutesHelperTrait as FilesRoutesHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Psr7\UploadedFile;
 
 /**
  * Create an Avatar.
@@ -43,8 +42,8 @@ class AvatarUpload extends NonJsonApiController
 
         // Use new image file for avatar creation.
         $avatar->createFrom($filename);
-        
-        
+
+
         return $response->withStatus(201);
     }
 

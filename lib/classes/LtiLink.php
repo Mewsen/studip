@@ -1,4 +1,7 @@
 <?php
+
+use Psr\Http\Message\RequestFactoryInterface;
+
 /**
  * LtiLink.php - LTI 1.x link representation for Stud.IP
  *
@@ -310,11 +313,11 @@ class LtiLink
         // posted form data will always use CR LF
         $launch_params = preg_replace("/\r?\n/", "\r\n", $launch_params);
 
+        $requestFactory = app(RequestFactoryInterface::class);
+        $request = $requestFactory->createRequest('POST', $launch_url);
+
         return Studip\OAuth1::signRequest(
-            (new Slim\Psr7\Factory\ServerRequestFactory())->createServerRequest(
-                'POST',
-                $launch_url
-            )->withQueryParams($launch_params),
+            $request->withQueryParams($launch_params),
             $this->consumer_secret,
             '',
             $this->oauth_signature_method

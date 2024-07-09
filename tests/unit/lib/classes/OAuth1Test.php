@@ -1,5 +1,6 @@
 <?php
 
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ServerRequestInterface;
 use Studip\OAuth1;
 
@@ -84,8 +85,8 @@ final class OAuth1Test extends \Codeception\Test\Unit
 
     private function getTestRequest(): ServerRequestInterface
     {
-        $factory = new Slim\Psr7\Factory\ServerRequestFactory();
-        return $factory->createServerRequest(
+        $psr17Factory = new Psr17Factory();
+        return $psr17Factory->createServerRequest(
             'GET',
             'http://photos.example.net/photos'
         )->withQueryParams([

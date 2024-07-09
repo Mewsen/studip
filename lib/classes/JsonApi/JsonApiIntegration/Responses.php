@@ -5,12 +5,10 @@ namespace JsonApi\JsonApiIntegration;
 use Neomerx\JsonApi\Http\BaseResponses;
 use Neomerx\JsonApi\Contracts\Encoder\EncoderInterface;
 use Neomerx\JsonApi\Contracts\Http\Headers\MediaTypeInterface;
-use Slim\Psr7\Headers;
-use Slim\Psr7\Response;
-
 use Neomerx\JsonApi\Contracts\Encoder\Parameters\EncodingParametersInterface;
 use Neomerx\JsonApi\Contracts\Http\Headers\SupportedExtensionsInterface;
 use Neomerx\JsonApi\Contracts\Schema\ContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 
 /**
  * Diese Factory-Klasse verknüpft die "neomerx/json-api"-Bibliothek mit der
@@ -19,22 +17,11 @@ use Neomerx\JsonApi\Contracts\Schema\ContainerInterface;
  */
 class Responses extends BaseResponses
 {
-    /**
-     * @var EncoderInterface
-     */
-    private $encoder;
-
-    /**
-     * @var MediaTypeInterface
-     */
-    private $outputMediaType;
-
     public function __construct(
-        EncoderInterface $encoder,
-        MediaTypeInterface $outputMediaType
+        private EncoderInterface $encoder,
+        private MediaTypeInterface $outputMediaType,
+        private ResponseFactoryInterface $responseFactory
     ) {
-        $this->encoder = $encoder;
-        $this->outputMediaType = $outputMediaType;
     }
 
     /**
@@ -51,8 +38,10 @@ class Responses extends BaseResponses
      */
     protected function createResponse(?string $content, int $statusCode, array $headers)
     {
-        $headers = new Headers($headers);
-        $response = new Response($statusCode, $headers);
+        $response = $this->responseFactory->createResponse($statusCode);
+        foreach ($headers as $header => $value) {
+            $response = $response->withHeader($header, $value);
+        }
         $response->getBody()->write($content ?? '');
 
         return $response->withProtocolVersion('1.1');

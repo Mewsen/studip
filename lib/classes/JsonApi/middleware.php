@@ -21,7 +21,7 @@ return function (App $app) {
     });
 
     $app->add(new Middlewares\StudipMockNavigation());
-    $app->add(new Middlewares\RemoveTrailingSlashes());
+    $app->add(Middlewares\RemoveTrailingSlashes::class);
 
     // Add Routing Middleware
     $app->addRoutingMiddleware();

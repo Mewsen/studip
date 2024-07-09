@@ -18,6 +18,7 @@ use Psr\Container\ContainerInterface;
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
         FactoryInterface::class => \DI\create(JsonApiIntegration\Factory::class),
+
         HeaderParametersParserInterface::class => function (FactoryInterface $factory) {
             return new HeaderParametersParser($factory);
         },
@@ -51,12 +52,6 @@ return function (ContainerBuilder $containerBuilder) {
             $queryParser = new QueryParser($parameters);
 
             return $queryParser;
-        },
-
-        ResponsesInterface::class => function (EncoderInterface $encoder) {
-            $mediaType = new MediaType(MediaTypeInterface::JSON_API_TYPE, MediaTypeInterface::JSON_API_SUB_TYPE);
-
-            return new JsonApiIntegration\Responses($encoder, $mediaType);
         },
     ]);
 };

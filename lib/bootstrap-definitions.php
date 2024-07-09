@@ -8,6 +8,8 @@ use DebugBar\DataCollector\RequestDataCollector;
 use DebugBar\DataCollector\TimeDataCollector;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7Server\ServerRequestCreator;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -68,4 +70,14 @@ return [
         return $pdo;
     }),
     PluginManager::class => DI\factory([PluginManager::class, 'getInstance']),
+
+    // PSR-17 HTTP Factories
+    \Psr\Http\Message\RequestFactoryInterface::class => DI\get(Psr17Factory::class),
+    \Psr\Http\Message\ResponseFactoryInterface::class => DI\get(Psr17Factory::class),
+    \Psr\Http\Message\ServerRequestFactoryInterface::class => DI\get(Psr17Factory::class),
+    \Psr\Http\Message\StreamFactoryInterface::class => DI\get(Psr17Factory::class),
+    \Psr\Http\Message\UploadedFileFactoryInterface::class => DI\get(Psr17Factory::class),
+    \Psr\Http\Message\UriFactoryInterface::class => DI\get(Psr17Factory::class),
+
+    \Psr\Http\Message\ServerRequestInterface::class => DI\factory([ServerRequestCreator::class, 'fromGlobals']),
 ];

@@ -2,10 +2,10 @@
 
 namespace JsonApi\Middlewares;
 
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Slim\Psr7\Response;
 
 class Authentication
 {
@@ -58,9 +58,10 @@ class Authentication
     }
 
     // according to RFC 2616
-    private function generateChallenges(array $guards): Response
+    private function generateChallenges(array $guards): ResponseInterface
     {
-        $response = new Response(401);
+        $responseFactory = app(ResponseFactoryInterface::class);
+        $response = $responseFactory->createResponse(401);
 
         foreach ($guards as $guard) {
             $response = $guard->addChallenge($response);
