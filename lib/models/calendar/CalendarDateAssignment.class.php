@@ -521,10 +521,6 @@ class CalendarDateAssignment extends SimpleORMap implements Event
 
     public function isWritable(string $user_id): bool
     {
-        if ($this->calendar_date->author_id === $user_id) {
-            //The author may always modify one of their dates:
-            return true;
-        }
         if ($this->calendar_date->isWritable($user_id)) {
             //The date is writable.
             return true;
