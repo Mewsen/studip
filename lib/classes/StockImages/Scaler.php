@@ -20,12 +20,13 @@ final class Scaler
     {
         $image = $this->createImage($stockImage);
         $width = imagesx($image);
-        if ($width < $targetWidth) {
-            return false;
-        }
 
-        $scaledImage = imagescale($image, $targetWidth);
-        imagedestroy($image);
+        if ($width < $targetWidth) {
+            $scaledImage = $image;
+        } else {
+            $scaledImage = imagescale($image, $targetWidth);
+            imagedestroy($image);
+        }
 
         return $this->storeImage($stockImage, $scaledImage, $sizeName);
     }
