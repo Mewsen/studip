@@ -189,6 +189,15 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
 
     public function isWritable(string $range_id)
     {
+        if (ConsultationSlot::isSlotEvent($this)) {
+            return false;
+        }
+
+        if ($this->author_id === $range_id) {
+            //The author may always modify one of their dates:
+            return true;
+        }
+
         if (CalendarDateAssignment::exists([$range_id, $this->id])) {
             //The date is in the calendar of the user/course
             //and therefore, the user or course administrator (tutor, dozent)

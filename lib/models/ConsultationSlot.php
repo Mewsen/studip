@@ -25,6 +25,8 @@
  */
 class ConsultationSlot extends SimpleORMap
 {
+    private const EVENT_PREFIX = 'Stud.IP-Consultation-Event#';
+
     /**
      * Configures the model.
      * @param array  $config Configuration
@@ -166,6 +168,14 @@ class ConsultationSlot extends SimpleORMap
     }
 
     /**
+     * Returns whether the given event is an event for a consultation slot.
+     */
+    public static function isSlotEvent(CalendarDate $event): bool
+    {
+        return str_starts_with($event->unique_id, self::EVENT_PREFIX);
+    }
+
+    /**
      * Returns whether this slot is occupied (by a given user).
      */
     public function isOccupied($user_id = null)
@@ -233,10 +243,9 @@ class ConsultationSlot extends SimpleORMap
      * @param  User $user [description]
      * @return string unique event id
      */
-    protected function createEventId(User $user)
+    protected function createEventId(User $user): string
     {
-        $rand_id = md5(uniqid(self::class, true));
-        return "Termin{$rand_id}-{$user->id}";
+        return self::EVENT_PREFIX . "{$this->id}:{$user->id}";
     }
 
     /**
