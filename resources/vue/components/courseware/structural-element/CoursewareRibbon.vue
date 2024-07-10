@@ -97,7 +97,6 @@ export default {
     methods: {
         ...mapActions({
             coursewareConsumeMode: 'coursewareConsumeMode',
-            coursewareSelectedToolbarItem: 'coursewareSelectedToolbarItem',
             coursewareViewMode: 'coursewareViewMode',
             coursewareShowToolbar: 'coursewareShowToolbar'
 
@@ -107,7 +106,6 @@ export default {
             if (!this.consumeMode) {
                 document.body.classList.add('consuming_mode');
                 this.coursewareConsumeMode(true);
-                this.coursewareSelectedToolbarItem('contents');
                 this.coursewareViewMode('read');
             } else {
                 this.coursewareConsumeMode(false);

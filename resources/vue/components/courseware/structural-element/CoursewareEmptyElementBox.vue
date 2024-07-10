@@ -2,7 +2,7 @@
     <div class="cw-welcome-screen">
         <courseware-companion-box :msgCompanion="this.$gettext('Es wurden bisher noch keine Inhalte eingepflegt.')">
             <template v-slot:companionActions>
-                <button v-if="canEdit && noContainers" class="button" @click="addContainer">
+                <button v-if="canEdit && noContainers" class="button" @click="addNewContainer">
                     {{ $gettext('Einen Abschnitt hinzufügen') }}
                 </button>
             </template>
@@ -12,29 +12,28 @@
 
 <script>
 import CoursewareCompanionBox from '../layouts/CoursewareCompanionBox.vue';
-import { mapActions, mapGetters } from 'vuex';
+import containerMixin from '@/vue/mixins/courseware/container';
 
 export default {
     name: 'courseware-empty-element-box',
     components: {
         CoursewareCompanionBox,
     },
+    mixins: [containerMixin],
     props: {
         canEdit: Boolean,
         noContainers: Boolean,
     },
     methods: {
-        ...mapActions({
-            coursewareConsumeMode: 'coursewareConsumeMode',
-            coursewareContainerAdder: 'coursewareContainerAdder',
-            coursewareSelectedToolbarItem: 'coursewareSelectedToolbarItem',
-            coursewareShowToolbar: 'coursewareShowToolbar',
-        }),
-        addContainer() {
-            this.coursewareConsumeMode(false);
-            this.coursewareContainerAdder(true);
-            this.coursewareSelectedToolbarItem('blockadder');
-            this.coursewareShowToolbar(true);
+        addNewContainer() {
+            this.addContainer({
+                type: 'list',
+                colspan: 'full',
+                sections: {
+                    firstSection: ''
+                },
+                newPosition: null
+            });
         },
     },
 };
