@@ -376,7 +376,7 @@ class Folder extends SimpleORMap implements FeedbackRange
     public static function findTopFolder($range_id)
     {
         $top_folder = self::findOneBySQL(
-            "range_id = ? AND parent_id=''",
+            "range_id = ? AND folder_type = 'RootFolder' AND parent_id=''",
             [$range_id]
         );
 
