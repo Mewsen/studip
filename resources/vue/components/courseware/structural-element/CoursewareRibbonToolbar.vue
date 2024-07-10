@@ -94,7 +94,6 @@ export default {
     },
     methods: {
         ...mapActions({
-            setToolbarItem: 'coursewareSelectedToolbarItem',
             coursewareContainerAdder: 'coursewareContainerAdder'
         }),
         scrollToCurrent() {
@@ -111,21 +110,6 @@ export default {
         this.scrollToCurrent();
     },
     watch: {
-        adderStorage(newValue) {
-            if (Object.keys(newValue).length !== 0) {
-                this.selectTool('blockadder');
-            }
-        },
-        consumeMode(newValue) {
-            if (newValue) {
-                this.selectTool('contents');
-            }
-        },
-        containerAdder(newValue) {
-            if (newValue === true) {
-                this.selectTool('blockadder');
-            }
-        },
         toolsActive(newValue) {
             const focusElement = this.$refs.tabs.getTabButtonByAlias(this.selectedToolbarItem);
             if (newValue && focusElement) {
