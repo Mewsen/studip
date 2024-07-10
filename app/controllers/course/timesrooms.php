@@ -1,5 +1,8 @@
 <?php
 
+use Studip\ResourceBookingException;
+use Studip\ResourceBookingOverlapException;
+
 /**
  * @author  David Siegfried <david.siegfried@uni-vechta.de>
  * @license GPL2 or any later version
@@ -528,11 +531,34 @@ class Course_TimesroomsController extends AuthenticatedController
                         try {
                             $failure = !$termin->bookRoom($room, $preparation_time ?: 0);
                         } catch (ResourceBookingException|ResourceBookingOverlapException $e) {
-                            PageLayout::postError(sprintf(
-                                _('Der angegebene Raum konnte für den Termin %1$s nicht gebucht werden: %2$s'),
-                                '<strong>' . htmlReady($termin->getFullName()) . '</strong>',
-                                $e->getMessage()
-                            ));
+                            $course = $e->getRange();
+                            $link = null;
+
+                            if ($course instanceof Course) {
+                                if ($course->isEditableByUser($GLOBALS['user']->id)) {
+                                    //Link to the times/rooms page:
+                                    $link = new LinkElement(
+                                        _('Direkt zur Veranstaltung'),
+                                        URLHelper::getURL('dispatch.php/course/timesrooms/index', ['cid' => $course->id]),
+                                        Icon::create('link-intern')
+                                    );
+                                } elseif ($course->isAccessibleToUser($GLOBALS['user']->id)) {
+                                    //Link to the details page:
+                                    $link = new LinkElement(
+                                        _('Direkt zur Veranstaltung'),
+                                        URLHelper::getURL('course/details/index', ['cid' => $course->id]),
+                                        Icon::create('link-intern')
+                                    );
+                                }
+                            }
+                            PageLayout::postError(
+                                sprintf(
+                                    _('Der angegebene Raum konnte für den Termin %1$s nicht gebucht werden: %2$s'),
+                                    '<strong>' . htmlReady($termin->getFullName()) . '</strong>',
+                                    $e->getMessage()
+                                ),
+                                $link ? [$link->render()] : []
+                            );
                         }
                     }
                     if ($failure) {

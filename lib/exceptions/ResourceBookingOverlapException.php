@@ -9,16 +9,18 @@
  * the License, or (at your option) any later version.
  *
  * @author      Moritz Strohm <strohm@data-quest.de>
- * @copyright   2017
+ * @copyright   2017-2024
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  */
+
+namespace Studip;
 
 /**
  * This exception is thrown when a resource booking overlaps with
  * other resource bookings or with a resource lock.
  */
-class ResourceBookingOverlapException extends InvalidArgumentException
+class ResourceBookingOverlapException extends Exception
 {
 
 }

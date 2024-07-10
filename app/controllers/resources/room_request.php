@@ -15,6 +15,8 @@
  * @since       4.5
  */
 
+use Studip\ResourceBookingException;
+
 
 /**
  * Resources_RequestController contains resource request functionality.

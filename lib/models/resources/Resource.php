@@ -1,5 +1,8 @@
 <?php
 
+use Studip\ResourceBookingException;
+use Studip\ResourceBookingOverlapException;
+
 /**
  * Resource.php - model class for a resource
  *
@@ -866,7 +869,9 @@ class Resource extends SimpleORMap implements StudipItem
                         $begin->format('d.m.Y H:i'),
                         $end->format('H:i'),
                         $e->getMessage()
-                    )
+                    ),
+                    0,
+                    $e->getRange()
                 );
             } else {
                 throw new ResourceBookingException(
@@ -876,7 +881,9 @@ class Resource extends SimpleORMap implements StudipItem
                         $begin->format('d.m.Y H:i'),
                         $end->format('d.m.Y H:i'),
                         $e->getMessage()
-                    )
+                    ),
+                    0,
+                    $e->getRange()
                 );
             }
         } catch (Exception $e) {

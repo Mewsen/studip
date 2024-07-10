@@ -15,6 +15,8 @@
  * @since       4.5
  */
 
+use Studip\ResourceBookingOverlapException;
+
 
 /**
  * Resources_BookingController contains functionality for resource bookings.

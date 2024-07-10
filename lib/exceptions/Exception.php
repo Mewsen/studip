@@ -42,6 +42,14 @@ class Exception extends \Exception
     }
 
     /**
+     * @return \Range|null The range for the exception or null if the exception is not associated to a range.
+     */
+    public function getRange() : ?\Range
+    {
+        return $this->range;
+    }
+
+    /**
      * Converts the content of the exception into an Information object.
      *
      * @return Information An Information representation of the exception.

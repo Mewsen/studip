@@ -1,5 +1,7 @@
 <?php
 
+use Studip\ResourceBookingOverlapException;
+
 /**
  * ResourceBooking.php - model class for resource bookings
  *
@@ -520,6 +522,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 }
             );
         }
+        $last_course = null;
         foreach ($time_intervals as $time_interval) {
             foreach ($existing_deleted_intervals as $deleted_interval) {
                 if (
@@ -577,6 +580,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                                     $time_interval['end']->format('H:i'),
                                     $course->getFullName()
                                 );
+                            $last_course = $course;
                         } else {
                             $time_interval_overlaps[] = sprintf(
                                 _('Gebucht im Bereich vom %1$s bis %2$s'),
@@ -592,6 +596,7 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                                     $time_interval['end']->format('d.m.Y H:i'),
                                     $course->getFullName()
                                 );
+                            $last_course = $course;
                         } else {
                             $time_interval_overlaps[] = sprintf(
                                 _('Gebucht im Bereich vom %1$s bis zum %2$s'),
@@ -605,7 +610,9 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
         }
         if ($time_interval_overlaps) {
             throw new ResourceBookingOverlapException(
-                implode(', ', $time_interval_overlaps)
+                implode(', ', $time_interval_overlaps),
+                0,
+                $last_course
             );
         }
 
