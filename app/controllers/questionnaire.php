@@ -939,15 +939,18 @@ class QuestionnaireController extends AuthenticatedController
                 $anonymous_answer->store();
             }
             if (!$answered_before && !$this->questionnaire['anonymous'] && ($this->questionnaire['user_id'] !== $GLOBALS['user']->id)) {
-                $url = URLHelper::getURL("dispatch.php/questionnaire/evaluate/" . $this->questionnaire->getId(), [], true);
+                setTempLanguage($this->questionnaire->user_id);
+
                 PersonalNotifications::add(
-                    $this->questionnaire['user_id'],
-                    $url,
-                    sprintf(_("%s hat an der Befragung '%s' teilgenommen."), $GLOBALS['user']->getFullName(), $this->questionnaire['title']),
-                    "questionnaire_" . $this->questionnaire->getId(),
+                    $this->questionnaire->user_id,
+                    URLHelper::getURL('dispatch.php/questionnaire/evaluate/' . $this->questionnaire->id, [], true),
+                    sprintf(_("%s hat an der Befragung '%s' teilgenommen."), $GLOBALS['user']->getFullName(), $this->questionnaire->title),
+                    "questionnaire_" . $this->questionnaire->id,
                     Icon::create('vote'),
                     true
                 );
+
+                restoreLanguage();
             }
         }
 
