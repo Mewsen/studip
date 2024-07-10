@@ -1667,7 +1667,7 @@ class FileManager
      */
     public static function getInboxFolder(User $user)
     {
-        $top_folder = Folder::findTopFolder($user->id, 'user');
+        $top_folder = Folder::findTopFolder($user->id);
         if (!$top_folder) {
             return null;
         }
@@ -1710,7 +1710,7 @@ class FileManager
      */
     public static function getOutboxFolder(User $user)
     {
-        $top_folder = Folder::findTopFolder($user->id, 'user');
+        $top_folder = Folder::findTopFolder($user->id);
         if (!$top_folder) {
             return null;
         }
