@@ -60,8 +60,7 @@ class JsupdaterController extends AuthenticatedController
         $data = UpdateInformation::getInformation();
         $data = array_merge($data, $this->coreInformation());
 
-        $this->set_content_type('application/json;charset=utf-8');
-        $this->render_text(json_encode($data));
+        $this->render_json($data);
     }
 
     /**
@@ -111,15 +110,15 @@ class JsupdaterController extends AuthenticatedController
      */
     protected function coreInformation()
     {
-        $pageInfo = Request::getArray("page_info");
+        $pageInfo = Request::getArray('page_info');
         $data = [
-            'coursewareclipboard' => $this->getCoursewareClipboardUpdates($pageInfo),
-            'blubber' => $this->getBlubberUpdates($pageInfo),
-            'messages' => $this->getMessagesUpdates($pageInfo),
-            'personalnotifications' => $this->getPersonalNotificationUpdates($pageInfo),
-            'questionnaire' => $this->getQuestionnaireUpdates($pageInfo),
-            'wiki_page_content' => $this->getWikiPageContents($pageInfo),
-            'wiki_editor_status' => $this->getWikiEditorStatus($pageInfo),
+            'coursewareclipboard' => $this->getCoursewareClipboardUpdates($pageInfo['coursewareclipboard'] ?? null),
+            'blubber' => $this->getBlubberUpdates($pageInfo['blubber'] ?? null),
+            'messages' => $this->getMessagesUpdates($pageInfo['messages'] ?? null),
+            'personalnotifications' => $this->getPersonalNotificationUpdates(),
+            'questionnaire' => $this->getQuestionnaireUpdates($pageInfo['questionnaire'] ?? null),
+            'wiki_page_content' => $this->getWikiPageContents($pageInfo['wiki_page_content'] ?? null),
+            'wiki_editor_status' => $this->getWikiEditorStatus($pageInfo['wiki_editor_status'] ?? null),
         ];
 
         return array_filter($data);
@@ -128,9 +127,9 @@ class JsupdaterController extends AuthenticatedController
     private function getBlubberUpdates($pageInfo)
     {
         $data = [];
-        if (isset($pageInfo['blubber']['threads']) && is_array($pageInfo['blubber']['threads'])) {
+        if (isset($pageInfo['threads']) && is_array($pageInfo['threads'])) {
             $blubber_data = [];
-            foreach ($pageInfo['blubber']['threads'] as $thread_id) {
+            foreach ($pageInfo['threads'] as $thread_id) {
                 $thread = new BlubberThread($thread_id);
                 if ($thread->isReadable()) {
                     $comments = BlubberComment::findBySQL(
@@ -150,7 +149,7 @@ class JsupdaterController extends AuthenticatedController
                 FROM blubber_events_queue
                 WHERE blubber_events_queue.event_type = 'delete'
             ");
-            $statement->execute([$pageInfo['blubber']['threads']]);
+            $statement->execute([$pageInfo['threads']]);
             $comment_ids = $statement->fetchAll(PDO::FETCH_COLUMN, 0);
             if (count($comment_ids)) {
                 $data['removeDeletedComments'] = $comment_ids;
@@ -190,15 +189,15 @@ class JsupdaterController extends AuthenticatedController
         if (mb_stripos(Request::get("page"), "dispatch.php/messages") !== false) {
             $messages = Message::findNew(
                 $GLOBALS["user"]->id,
-                $pageInfo['messages']['received'],
-                $pageInfo['messages']['since'],
-                $pageInfo['messages']['tag']
+                $pageInfo['received'],
+                $pageInfo['since'],
+                $pageInfo['tag']
             );
             $templateFactory = $this->get_template_factory();
             foreach ($messages as $message) {
                 $attributes = [
                     'message' => $message,
-                    'received' => $pageInfo['messages']['received'],
+                    'received' => $pageInfo['received'],
                     'controller' => $this,
                 ];
                 $html = $templateFactory->open("messages/_message_row.php")
@@ -213,32 +212,29 @@ class JsupdaterController extends AuthenticatedController
     /**
      * @SuppressWarnings(UnusedFormalParameter)
      */
-    private function getPersonalNotificationUpdates($pageInfo)
+    private function getPersonalNotificationUpdates()
     {
         $data = [];
+
         if (PersonalNotifications::isActivated()) {
-            $notifications = PersonalNotifications::getMyNotifications();
-            if ($notifications && count($notifications)) {
-                $ret = [];
-                foreach ($notifications as $notification) {
+            $data['notifications'] = array_map(
+                function ($notification) {
                     $info = $notification->toArray();
                     $info['html'] = $notification->getLiElement();
-                    $ret[] = $info;
-                }
-                $data['notifications'] = $ret;
-            } else {
-                $data['notifications'] = [];
-            }
+                    return $info;
+                },
+                PersonalNotifications::getMyNotifications()
+            );
         }
 
-        return $data;
+        return array_filter($data);
     }
 
     private function getQuestionnaireUpdates($pageInfo)
     {
         if (
-            !isset($pageInfo['questionnaire']['questionnaire_ids'])
-            || !is_array($pageInfo['questionnaire']['questionnaire_ids'])
+            !isset($pageInfo['questionnaire_ids'])
+            || !is_array($pageInfo['questionnaire_ids'])
         ) {
             return [];
         }
@@ -246,17 +242,17 @@ class JsupdaterController extends AuthenticatedController
         $data = [];
         Questionnaire::findEachMany(
             function (Questionnaire $questionnaire) use ($pageInfo, &$data) {
-                if ($questionnaire->latestAnswerTimestamp() > $pageInfo['questionnaire']['last_update']) {
+                if ($questionnaire->latestAnswerTimestamp() > $pageInfo['last_update']) {
                     $template = $this->get_template_factory()->open('questionnaire/evaluate');
                     $template->questionnaire = $questionnaire;
-                    $template->filtered = $pageInfo['questionnaire']['filtered'] ?? [];
+                    $template->filtered = $pageInfo['filtered'] ?? [];
                     $template->set_layout(null);
                     $data[$questionnaire->id] = [
                         'html' => $template->render()
                     ];
                 }
             },
-            $pageInfo['questionnaire']['questionnaire_ids']
+            $pageInfo['questionnaire_ids']
         );
 
         return $data;
@@ -265,8 +261,8 @@ class JsupdaterController extends AuthenticatedController
     private function getWikiPageContents($pageInfo): array
     {
         $data = [];
-        if (!empty($pageInfo['wiki_page_content'])) {
-            foreach ($pageInfo['wiki_page_content'] as $page_id) {
+        if (!empty($pageInfo)) {
+            foreach ($pageInfo as $page_id) {
                 $page = WikiPage::find($page_id);
                 if ($page && $page->isReadable() && ($page->chdate >= Request::int('server_timestamp'))) {
                     $data['contents'][$page_id] = wikiReady($page->content, true, $page->range_id, $page->id);
@@ -279,9 +275,9 @@ class JsupdaterController extends AuthenticatedController
     private function getWikiEditorStatus($pageInfo): array
     {
         $data = [];
-        if (!empty($pageInfo['wiki_editor_status']['page_ids'])) {
+        if (!empty($pageInfo['page_ids'])) {
             $user = User::findCurrent();
-            foreach ((array) $pageInfo['wiki_editor_status']['page_ids'] as $page_id) {
+            foreach ((array) $pageInfo['page_ids'] as $page_id) {
                 WikiOnlineEditingUser::deleteBySQL(
                     "`page_id` = :page_id AND `chdate` < UNIX_TIMESTAMP() - :threshold",
                     [
@@ -293,11 +289,11 @@ class JsupdaterController extends AuthenticatedController
                 if ($page) {
                     if ($page->isEditable()) {
                         if (
-                            $pageInfo['wiki_editor_status']['focussed'] == $page_id
-                            && !empty($pageInfo['wiki_editor_status']['page_content'])
+                            $pageInfo['focussed'] == $page_id
+                            && !empty($pageInfo['page_content'])
                         ) {
                             $page->content = \Studip\Markup::markAsHtml(
-                                $pageInfo['wiki_editor_status']['page_content']
+                                $pageInfo['page_content']
                             );
                             if ($page->isDirty()) {
                                 $page['user_id'] = User::findCurrent()->id;
@@ -334,7 +330,7 @@ class JsupdaterController extends AuthenticatedController
                                 $online->editing         = 1;
                             }
                         } else {
-                            if ($pageInfo['wiki_editor_status']['focussed'] == $page_id) {
+                            if ($pageInfo['focussed'] == $page_id) {
                                 $online->editing = 1;
                             } else {
                                 $other_users = WikiOnlineEditingUser::countBySql("`page_id` = ? AND `user_id` != ?", [
@@ -368,7 +364,11 @@ class JsupdaterController extends AuthenticatedController
 
     private function getCoursewareClipboardUpdates($pageInfo)
     {
-        $counter = $pageInfo['coursewareclipboard']['counter'] ?? 0;
+        if (!isset($pageInfo['counter'])) {
+            return null;
+        }
+
+        $counter = $pageInfo['counter'] ?? 0;
         return \Courseware\Clipboard::countByUser_id($GLOBALS['user']->id) != $counter;
     }
 }
