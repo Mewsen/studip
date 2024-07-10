@@ -349,14 +349,15 @@ class Folder extends SimpleORMap implements FeedbackRange
      * Note that the range_id parameter is mandatory!
      *
      * @param string range_id The ID of the Stud.IP object whose top folder shall be found.
+     * @param string folder_type The expected folder type related to the Stud.IP object (defaults to RootFolder, use MessageFolder for the top folder of a message)
      *
      * @returns Folder|null Folder object on success or null, if no folder can be created.
      **/
-    public static function findTopFolder($range_id)
+    public static function findTopFolder($range_id, $folder_type = 'RootFolder')
     {
         $top_folder = self::findOneBySQL(
-            "range_id = ? AND parent_id=''",
-            [$range_id]
+            "range_id = ? AND folder_type = ? AND parent_id=''",
+            [$range_id, $folder_type]
         );
 
         //top_folder may not exist!
@@ -369,7 +370,7 @@ class Folder extends SimpleORMap implements FeedbackRange
                 return null;
             }
 
-            $top_folder = self::createTopFolder($range_id, $range_type);
+            $top_folder = self::createTopFolder($range_id, $range_type, $folder_type);
         }
 
         return $top_folder;
