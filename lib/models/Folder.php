@@ -370,7 +370,7 @@ class Folder extends SimpleORMap implements FeedbackRange
      * Note that the range_id parameter is mandatory!
      *
      * @param string range_id The ID of the Stud.IP object whose top folder shall be found.
-     * @param string folder_type The folder type with default value of 'RootFolder' of the Stud.IP object whose top folder shall be found.
+     * @param string folder_type The expected folder type related to the Stud.IP object (defaults to RootFolder)
      *
      * @returns Folder|null Folder object on success or null, if no folder can be created.
      **/
@@ -391,7 +391,7 @@ class Folder extends SimpleORMap implements FeedbackRange
                 return null;
             }
 
-            $top_folder = self::createTopFolder($range_id, $range_type);
+            $top_folder = self::createTopFolder($range_id, $range_type, $folder_type);
         }
 
         return $top_folder;
