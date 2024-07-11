@@ -20,8 +20,10 @@
                 {{ $gettext('Strg+Alt+T hält das automatische Ausblenden der Meldung an bzw. setzt es wieder fort.') }}
             </p>
             <details v-if="notification.details?.length > 0"
-                 class="system-notification-details">
-                <summary>
+                     class="system-notification-details"
+                     :open="showDetails"
+            >
+                <summary @click="toggleDetails()">
                     {{ $gettext('Details') }}
                 </summary>
                 <template v-if="Array.isArray(notification.details)">
@@ -76,6 +78,7 @@ export default {
     },
     data() {
         return {
+            showDetails: !this.notification.close_details,
             stopTimeout: false,
             timeout: null,
             windowIsBlurred: false,
@@ -135,6 +138,9 @@ export default {
                     this.visibleFor
                 );
             }
+        },
+        toggleDetails() {
+            this.showDetails = !this.showDetails;
         }
     },
     mounted() {

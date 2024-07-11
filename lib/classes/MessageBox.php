@@ -178,10 +178,11 @@ class MessageBox implements LayoutMessage, JsonSerializable
     public function jsonSerialize(): mixed
     {
         return [
-            'type'      => $this->class,
-            'message'   => $this->message,
-            'details'   => $this->details,
-            'closeable' => $this->isCloseable(),
+            'type'          => $this->class,
+            'message'       => $this->message,
+            'details'       => $this->details,
+            'close_details' => $this->close_details,
+            'closeable'     => $this->isCloseable(),
         ];
     }
 }

@@ -41,24 +41,25 @@ export default {
         }
     },
     methods: {
+        addNotification(notification) {
+            this.allNotifications.push({
+                key: this.counter++,
+                ...notification
+            });
+        },
         destroyNotification(notification) {
             this.allNotifications = this.allNotifications.filter(n => n !== notification);
         }
     },
     created() {
         if (Array.isArray(this.notifications)) {
-            this.allNotifications = [...this.notifications];
+            this.notifications.map(this.addNotification);
         } else {
-            this.allNotifications = Object.values(this.notifications);
+            Object.values(this.notifications).map(this.addNotification);
         }
     },
     mounted() {
-        this.globalOn('push-system-notification', notification => {
-            this.allNotifications.push({
-                key: this.counter++,
-                ...notification
-            });
-        });
+        this.globalOn('push-system-notification', this.addNotification);
 
         window.addEventListener('keydown', evt => {
             if (evt.altKey && evt.ctrlKey && evt.code === 'KeyT') {
