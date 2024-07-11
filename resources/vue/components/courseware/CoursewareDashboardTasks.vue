@@ -220,6 +220,7 @@ export default {
             this.currentTask = null;
         },
         async submitTask() {
+            const currentTaskGroup = this.getTaskGroupById({ id: this.currentTask.relationships['task-group'].data.id });
             this.showSubmitDialog = false;
             let attributes = {};
             attributes.submitted = true;
@@ -228,7 +229,7 @@ export default {
                 taskId: this.currentTask.id,
             });
             this.companionSuccess({
-                info: '"' + this.currentTask.attributes.title + '" ' + this.$gettext('wurde erfolgreich abgegeben.'),
+                info: '"' + currentTaskGroup.attributes.title + '" ' + this.$gettext('wurde erfolgreich abgegeben.'),
             });
             this.currentTask = null;
         },
