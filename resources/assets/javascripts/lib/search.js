@@ -180,7 +180,7 @@ const Search = {
         fullsearch,
         categoryBodyDiv
     ) {
-        var hasSubcourses   = (categoryName === 'GlobalSearchMyCourses' || categoryName === 'GlobalSearchCourses') && result.has_children;
+        var hasSubcourses   = categoryName === 'GlobalSearchCourses' && result.has_children;
 
         // Create single result entry.
         var single          = $('<section>');
