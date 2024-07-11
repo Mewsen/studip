@@ -59,7 +59,6 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
         }
 
         $visibility = '';
-        $seminaruser = '';
         $semester_join = '';
         $institute_condition = '';
         $seminar_type_condition = '';
@@ -68,11 +67,6 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
         // visibility
         if (!$GLOBALS['perm']->have_perm('admin')) {
             $visibility = "courses.`visible` = 1 AND ";
-            $seminaruser = " AND NOT EXISTS (
-                SELECT 1 FROM `seminar_user`
-                WHERE `seminar_id` = `courses`.`Seminar_id`
-                    AND `user_id` = " . DBManager::get()->quote($GLOBALS['user']->id) . "
-            ) ";
         }
 
         // generate SQL for the given sidebar filter (semester, institute, seminar_type)
@@ -120,7 +114,6 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
                         OR courses.`VeranstaltungsNummer` LIKE {$query}
                         OR CONCAT(a.`Nachname`, ', ', a.`Vorname`, ' ', a.`Nachname`) LIKE {$query}
                     )
-                {$seminaruser}
                 {$institute_condition}
                 {$seminar_type_condition}
                 {$semester_condition}
