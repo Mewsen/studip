@@ -949,6 +949,9 @@ class Admin_CoursesController extends AuthenticatedController
         if (count($filter_config) > 0) {
             $filter = AdminCourseFilter::get();
             PluginEngine::sendMessage(AdminCourseWidgetPlugin::class, 'applyFilters', $filter);
+            $filter->query->join('semester_courses', 'semester_courses', 'semester_courses.course_id = seminare.Seminar_id')
+                ->join('semester_data', 'semester_data', 'semester_data.semester_id = semester_courses.semester_id')
+                ->orderBy('semester_data.beginn, seminare.name');
             $courses = $filter->getCourses();
 
             $view_filters = $this->getViewFilters();
