@@ -38,58 +38,65 @@ STUDIP.ready(() => {
             };
         });
 
-        STUDIP.Vue.load().then(async ({createApp, store, Vue}) => {
+        STUDIP.Vue.load().then(({createApp, store, Vue}) => {
+            const promises = [Promise.resolve()];
+
             for (const [index, name] of Object.entries(config.stores)) {
-                import(`../../../vue/store/${name}.js`).then(storeConfig => {
-                    store.registerModule(index, storeConfig.default);
+                promises.push(
+                    import(`../../../vue/store/${name}.js`).then(storeConfig => {
+                        store.registerModule(index, storeConfig.default);
 
-                    const dataElement = document.getElementById(`vue-store-data-${index}`);
-                    if (dataElement) {
-                        const data = JSON.parse(dataElement.innerText);
-                        Object.keys(data).forEach(command => {
-                            store.commit(`${index}/${command}`, data[command]);
-                        });
+                        const dataElement = document.getElementById(`vue-store-data-${index}`);
+                        if (dataElement) {
+                            const data = JSON.parse(dataElement.innerText);
+                            Object.keys(data).forEach(command => {
+                                store.commit(`${index}/${command}`, data[command]);
+                            });
 
-                        dataElement.remove();
-                    }
-                });
+                            dataElement.remove();
+                        }
+                    })
+                );
             }
 
             for (const [plugin, filename] of Object.entries(config.plugins)) {
-                import(`../../../vue/plugins/${filename}.js`)
-                    .then((temp) => Vue.use(temp[plugin], { store }));
+                promises.push(
+                    import(`../../../vue/plugins/${filename}.js`)
+                    .then((temp) => Vue.use(temp[plugin], { store }))
+                );
             }
 
+            Promise.all(promises).then(() => {
+                createApp({
+                    components,
+                    store,
 
-            createApp({
-                components,
-                store,
-
-                beforeCreate() {
-                    STUDIP.Vue.emit('VueAppWillCreate', this);
-                },
-                created() {
-                    STUDIP.Vue.emit('VueAppDidCreate', this);
-                },
-                beforeMount() {
-                    STUDIP.Vue.emit('VueAppWillMount', this);
-                },
-                mounted() {
-                    STUDIP.Vue.emit('VueAppDidMount', this);
-                },
-                beforeUpdate() {
-                    STUDIP.Vue.emit('VueAppWillUpdate', this);
-                },
-                updated() {
-                    STUDIP.Vue.emit('VueAppDidUpdate', this);
-                },
-                beforeDestroy() {
-                    STUDIP.Vue.emit('VueAppWillDestroy', this);
-                },
-                destroyed() {
-                    STUDIP.Vue.emit('VueAppDidDestroy', this);
-                },
-            }).$mount(node);
+                    beforeCreate() {
+                        STUDIP.Vue.emit('VueAppWillCreate', this);
+                    },
+                    created() {
+                        STUDIP.Vue.emit('VueAppDidCreate', this);
+                    },
+                    beforeMount() {
+                        STUDIP.Vue.emit('VueAppWillMount', this);
+                    },
+                    mounted() {
+                        STUDIP.Vue.emit('VueAppDidMount', this);
+                    },
+                    beforeUpdate() {
+                        STUDIP.Vue.emit('VueAppWillUpdate', this);
+                    },
+                    updated() {
+                        STUDIP.Vue.emit('VueAppDidUpdate', this);
+                    },
+                    beforeDestroy() {
+                        STUDIP.Vue.emit('VueAppWillDestroy', this);
+                    },
+                    destroyed() {
+                        STUDIP.Vue.emit('VueAppDidDestroy', this);
+                    },
+                }).$mount(node);
+            });
         });
 
         node.dataset.vueAppCreated = 'true';

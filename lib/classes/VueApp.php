@@ -40,6 +40,7 @@ final class VueApp implements Stringable
 
     private array $plugins = [];
     private array $props = [];
+    private array $slots = [];
     private array $stores = [];
     private array $storeData = [];
 
@@ -86,8 +87,9 @@ final class VueApp implements Stringable
      */
     public function withSlot(string $name, string|Template $content): VueApp
     {
-        $this->slots[$name] = $content instanceof Template ? $content->render() : $content;
-        return $this;
+        $clone = clone $this;
+        $clone->slots[$name] = $content instanceof Template ? $content->render() : $content;
+        return $clone;
     }
 
     /**
@@ -139,7 +141,6 @@ final class VueApp implements Stringable
     {
         $clone = clone $this;
         $clone->plugins[$plugin] = $filename ?? $plugin;
-
         return $clone;
     }
 

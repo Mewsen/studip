@@ -4,7 +4,7 @@
              <template #content>
                 <ol class="clean">
                     <li v-for="user in users" :key="user.user_id">
-                        <img class="avatar-small" :src="user.avatar">
+                        <img class="avatar-small" :src="user.avatar" alt="">
                         {{ user.fullname }}
 
                         <span v-if="user.editing" :title="$gettext('Diese Person hat den Bearbeitungsmodus.')">
@@ -19,10 +19,13 @@
         </SidebarWidget>
     </MountingPortal>
 </template>
-
 <script>
+import SidebarWidget from "./SidebarWidget.vue";
+import StudipIcon from "./StudipIcon.vue";
+
 export default {
     name: 'WikiEditorOnlineUsers',
+    components: {StudipIcon, SidebarWidget},
     props: {
         users: Array
     },

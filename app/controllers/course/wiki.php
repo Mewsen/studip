@@ -446,16 +446,10 @@ class Course_WikiController extends AuthenticatedController
         }
         Navigation::activateItem('/course/wiki/start');
         $user = User::findCurrent();
-        WikiOnlineEditingUser::deleteBySQL(
-            "`page_id` = :page_id AND `chdate` < UNIX_TIMESTAMP() - :threshold",
-            [
-                'page_id' => $page->id,
-                'threshold' => WikiOnlineEditingUser::$threshold
-            ]
-        );
+        WikiOnlineEditingUser::purge($page);
         $pageData = [
             'page_id' => $page->id,
-            'user_id' => $user ? $user->id : null,
+            'user_id' => $user?->id,
         ];
         $online_user = WikiOnlineEditingUser::findOneBySQL(
             '`page_id` = :page_id AND `user_id` = :user_id',
@@ -466,11 +460,12 @@ class Course_WikiController extends AuthenticatedController
         }
         $editingUsers = WikiOnlineEditingUser::countBySQL(
             "`page_id` = ? AND `editing` = 1 AND `user_id` != ?",
-            [$page->id, $user ? $user->id : null]
+            [$page->id, $user?->id]
         );
-        $online_user->editing = $editingUsers === 0 ? 1 : 0;
+        $online_user->editing = $editingUsers === 0;
         $online_user->chdate = time();
         $online_user->store();
+
         $this->me_online = $online_user;
         $this->online_users = WikiOnlineEditingUser::findBySQL(
             "JOIN `auth_user_md5` USING (`user_id`)
@@ -478,11 +473,10 @@ class Course_WikiController extends AuthenticatedController
              ORDER BY Nachname, Vorname",
             [$page->id]
         );
-        $startPage = WikiPage::find($this->range->getConfiguration()->WIKI_STARTPAGE_ID);
         $this->contentbar = ContentBar::get()
             ->setTOC(CoreWiki::getTOC($page))
             ->setIcon(Icon::create('wiki'))
-            ->setInfo(_('Zuletzt gespeichert') .': '. '<studip-date-time :timestamp="Math.floor(lastSaveDate / 1000)" :relative="true"></studip-date-time>');
+            ->setInfo(_('Zuletzt gespeichert') .': '. '<span class="wiki-last-edited-' . $this->page->id . '"></span>');
     }
 
     public function apply_editing_action(WikiPage $page)
@@ -513,10 +507,35 @@ class Course_WikiController extends AuthenticatedController
         }
         $online_user->store();
         $output = [
-            'me_online' => $online_user->toArray(),
+            'me_online' => ['editing' => (bool) $online_user->editing],
             'users' => $page->getOnlineUsers()
         ];
         $this->render_json($output);
+    }
+
+    public function cancel_apply_editing_action(WikiPage $page)
+    {
+        if (!$page->isEditable() || !Request::isPost()) {
+            throw new AccessDeniedException();
+        }
+        $user = User::findCurrent();
+        $pageData = [
+            'page_id' => $page->id,
+            'user_id' => $user->id
+        ];
+        $online_user = WikiOnlineEditingUser::findOneBySQL(
+            '`page_id` = :page_id AND `user_id` = :user_id',
+            $pageData
+        );
+        if (!$online_user) {
+            $online_user = WikiOnlineEditingUser::build($pageData);
+        }
+        $online_user->editing_request = false;
+        $online_user->store();
+
+        $this->render_json([
+            'users' => $page->getOnlineUsers()
+        ]);
     }
 
     public function leave_editing_action(WikiPage $page)
@@ -554,6 +573,7 @@ class Course_WikiController extends AuthenticatedController
             $this->render_json([
                 'error' => 'not_in_edit_mode'
             ]);
+            return;
         }
         $online_user_them = WikiOnlineEditingUser::findOneBySQL(
             '`page_id` = :page_id AND `user_id` = :user_id',
@@ -566,11 +586,11 @@ class Course_WikiController extends AuthenticatedController
             return;
         }
 
-        $online_user_me->editing = 0;
+        $online_user_me->editing = false;
         $online_user_me->store();
 
-        $online_user_them->editing_request = 1; //that will be set to 0 by the user themself
-        $online_user_them->editing = 1;
+        $online_user_them->editing_request = true; //that will be set to 0 by the user themself
+        $online_user_them->editing = true;
         $online_user_them->store();
 
         $this->render_json([

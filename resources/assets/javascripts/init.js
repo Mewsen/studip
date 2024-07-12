@@ -81,7 +81,6 @@ import * as Gettext from './lib/gettext';
 import UserFilter from './lib/user_filter.js';
 import wysiwyg from './lib/wysiwyg.js';
 import ScrollToTop from './lib/scroll_to_top.js';
-import Wiki from './lib/wiki.js';
 
 const configURLHelper = _.get(window, 'STUDIP.URLHelper', {});
 const URLHelper = createURLHelper(configURLHelper);
@@ -173,5 +172,4 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     dialogReady,
     ScrollToTop,
     Vue,
-    Wiki
 });

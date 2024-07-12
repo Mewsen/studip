@@ -1,5 +1,4 @@
 <?php
-
 /**
  * WikiOnlineEditingUser.php
  *
@@ -13,14 +12,20 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  *
- * @property string page_id       database column
- * @property string user_id       database column
- * @property string id            alias column for user_id
- * @property string last_lifesign computed column read/write
+ * @property int    $id               pk
+ * @property string $user_id          database column
+ * @property int    $page_id          database column
+ * @property bool   $editing          database column
+ * @property bool   $editing_request  database column
+ * @property int    $chdate           database column
+ * @property int    $mkdate           database column
+ *
+ * @property WikiPage $page
+ * @property User $user
  */
 class WikiOnlineEditingUser extends SimpleORMap
 {
-    public static $threshold = 60 * 1;
+    public static int $threshold = 1 * 60;
 
     protected static function configure($config = [])
     {
@@ -34,5 +39,16 @@ class WikiOnlineEditingUser extends SimpleORMap
             'foreign_key' => 'user_id'
         ];
         parent::configure($config);
+    }
+
+    public static function purge(WikiPage $page): void
+    {
+        WikiOnlineEditingUser::deleteBySQL(
+            '`page_id` = :page_id AND `chdate` < UNIX_TIMESTAMP() - :threshold',
+            [
+                'page_id'   => $page->id,
+                'threshold' => self::$threshold
+            ]
+        );
     }
 }

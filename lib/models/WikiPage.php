@@ -11,7 +11,8 @@
  * @author    mlunzena
  * @copyright (c) Authors
  *
- * @property array $id alias for pk
+ * @property int $id alias for pk
+ * @property int $page_id database column
  * @property string $course_id database column
  * @property string|null $user_id database column
  * @property string $name database column
@@ -289,14 +290,9 @@ class WikiPage extends SimpleORMap implements PrivacyObject
      */
     public function getOnlineUsers(): array
     {
-        $users = [];
-        WikiOnlineEditingUser::deleteBySQL(
-            "`page_id` = :page_id AND `chdate` < UNIX_TIMESTAMP() - :threshold",
-            [
-                'page_id' => $this->id,
-                'threshold' => WikiOnlineEditingUser::$threshold
-            ]
-        );
+        WikiOnlineEditingUser::purge($this);
+        $this->resetRelation('onlineeditingusers');
+
         return $this->onlineeditingusers->map(function (WikiOnlineEditingUser $editing_user) {
             return [
                 'user_id' => $editing_user->user_id,

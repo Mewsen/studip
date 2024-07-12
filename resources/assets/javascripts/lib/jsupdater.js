@@ -84,7 +84,7 @@ function collectData() {
     for (const [index, handler] of Object.entries(registeredHandlers)) {
         if (handler.data) {
             const thisData = $.isFunction(handler.data) ? handler.data() : handler.data;
-            if (thisData !== null && !$.isEmptyObject(thisData)) {
+            if (thisData !== null && !(typeof thisData === 'object' && $.isEmptyObject(thisData))) {
                 data[index] = thisData;
             }
         }
