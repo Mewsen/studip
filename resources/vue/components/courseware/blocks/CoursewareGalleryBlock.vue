@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     <div v-if="currentLayout === 'grid'" class="cw-block-gallery-content">
-                        <div class="cw-block-gallery-grid">
+                        <div class="cw-block-gallery-grid formatted-content">
                             <figure v-for="image in files" :key="image.id" :style="{ 'max-width': gridWidth }">
                                 <img :src="image.meta['download-url']" :title="image?.attributes?.name" />
                                 <figcaption v-if="showDescription">
