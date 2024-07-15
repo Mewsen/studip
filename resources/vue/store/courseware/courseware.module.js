@@ -22,9 +22,7 @@ const getDefaultState = () => {
         userId: null,
         viewMode: 'read',
         dashboardViewMode: 'default',
-        userIsTeacher: false,
-        teacherStatusLoaded: false,
-
+        userIsTeacherInCourse: false,
         showStructuralElementEditDialog: false,
         showStructuralElementAddDialog: false,
         showStructuralElementAddChooserDialog: false,
@@ -181,11 +179,15 @@ const getters = {
     userId(state) {
         return state.userId;
     },
-    userIsTeacher(state) {
-        return state.userIsTeacher;
+    userIsTeacherInCourse(state) {
+        return state.userIsTeacherInCourse;
     },
-    teacherStatusLoaded(state) {
-        return state.teacherStatusLoaded;
+    userIsTeacher(state, getters) {
+        if (getters.courseware.attributes === undefined) {
+            return getters.userIsTeacherInCourse;
+        }
+
+        return getters.courseware.attributes['is-teacher'];
     },
     pluginManager(state) {
         return state.pluginManager;
@@ -1096,6 +1098,10 @@ export const actions = {
         commit('setAssistiveLiveContents', state);
     },
 
+    setUserIsTeacherInCourse({ commit }, state) {
+        commit('setUserIsTeacherInCourse', state);
+    },
+
     addBookmark({ dispatch, rootGetters }, structuralElement) {
         const cw = rootGetters['courseware'];
 
@@ -1298,65 +1304,6 @@ export const actions = {
                 return null;
             }
         );
-    },
-
-    async loadTeacherStatus({ dispatch, rootGetters, state, commit, getters }, userId) {
-        const user = rootGetters['users/byId']({ id: userId });
-
-        if (user.attributes.permission === 'root') {
-            commit('setUserIsTeacher', true);
-            return;
-        }
-        if (user.attributes.permission === 'admin') {
-            await dispatch('courses/loadById', { id: state.context.id });
-            const course = rootGetters['courses/byId']({id: state.context.id });
-            const instituteId = course.relationships.institute.data.id;
-
-            const parent = { type: 'users', id: `${userId}` };
-            const relationship = 'institute-memberships';
-            const options = {};
-            await dispatch('institute-memberships/loadRelated', { parent, relationship, options }, { root: true });
-            const instituteMemberships = rootGetters['institute-memberships/all'];
-            const instituteMembership = instituteMemberships.filter(membership => membership.relationships.institute.data.id === instituteId);
-
-            if (instituteMembership.length > 0 && instituteMembership[0].attributes.permission === 'admin') {
-                commit('setUserIsTeacher', true);
-                return;
-            }
-        }
-
-        const membershipId = `${state.context.id}_${userId}`;
-        try {
-            await dispatch('course-memberships/loadById', { id: membershipId });
-        } catch (error) {
-            console.error(`Could not find course membership for ${membershipId}.`);
-            commit('setUserIsTeacher', false);
-
-            return false;
-        }
-        const membership = rootGetters['course-memberships/byId']({ id: membershipId });
-        if (membership) {
-            let editingLevel = 'tutor';
-            if (getters.courseware.attributes) {
-                editingLevel = getters.courseware.attributes['editing-permission-level'];
-            }
-            const membershipPermission = membership.attributes.permission;
-
-            let isTeacher = false;
-            if (editingLevel === 'dozent') {
-                isTeacher = membershipPermission === 'dozent';
-            } else if (editingLevel === 'tutor') {
-                isTeacher = membershipPermission === 'dozent' || membershipPermission === 'tutor';
-            }
-            commit('setUserIsTeacher', isTeacher);
-
-            return true;
-        } else {
-            console.error(`Could not find course membership for ${membershipId}.`);
-            commit('setUserIsTeacher', false);
-
-            return false;
-        }
     },
 
     loadFeedback({ dispatch }, blockId) {
@@ -1632,11 +1579,6 @@ export const mutations = {
         state.userId = userId;
     },
 
-    setUserIsTeacher(state, isTeacher) {
-        state.teacherStatusLoaded = true;
-        state.userIsTeacher = isTeacher;
-    },
-
     setPluginManager(state, pluginManager) {
         state.pluginManager = pluginManager;
     },
@@ -1757,6 +1699,9 @@ export const mutations = {
     },
     setAssistiveLiveContents(state, text) {
         state.assistiveLiveContents = text;
+    },
+    setUserIsTeacherInCourse(state, isTeacher) {
+        state.userIsTeacherInCourse = isTeacher;
     },
     setProgresses(state, data) {
         state.progresses = data;
