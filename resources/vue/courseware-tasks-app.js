@@ -92,6 +92,7 @@ const mountApp = async (STUDIP, createApp, element) => {
     });
     let entry_id = null;
     let entry_type = null;
+    let isTeacher = false;
     let elem;
 
     if ((elem = document.getElementById(element.substring(1))) !== undefined) {
@@ -103,17 +104,21 @@ const mountApp = async (STUDIP, createApp, element) => {
             if (elem.attributes['entry-id'] !== undefined) {
                 entry_id = elem.attributes['entry-id'].value;
             }
+
+            if (elem.attributes['is-teacher'] !== undefined) {
+                isTeacher = JSON.parse(elem.attributes['is-teacher'].value);
+            }
         }
     }
 
     store.dispatch('setUserId', STUDIP.USER_ID);
     await store.dispatch('users/loadById', { id: STUDIP.USER_ID });
+    store.dispatch('setUserIsTeacherInCourse', isTeacher);
     store.dispatch('setHttpClient', httpClient);
     store.dispatch('coursewareContext', {
         id: entry_id,
         type: entry_type,
     });
-    await store.dispatch('loadTeacherStatus', STUDIP.USER_ID);
     await store.dispatch('tasks/loadTasksOfCourse', { cid: entry_id });
 
     const app = createApp({

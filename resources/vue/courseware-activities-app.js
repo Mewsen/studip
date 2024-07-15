@@ -77,7 +77,6 @@ const mountApp = async (STUDIP, createApp, element) => {
         id: entry_id,
         type: entry_type,
     });
-    await store.dispatch('loadTeacherStatus', STUDIP.USER_ID);
     await store.dispatch('loadCourseUnits', entry_id);
 
     const app = createApp({
