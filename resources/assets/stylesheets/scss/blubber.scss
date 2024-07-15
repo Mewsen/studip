@@ -50,7 +50,8 @@
     }
 
     .scrollable_area {
-        max-height: calc(100vh - 240px);
+        max-height: calc(100vh - 189px);
+        height: 100%;
         overflow: auto;
     }
 
@@ -167,7 +168,7 @@
 
         > :first-child {
             position: relative;
-            top: 30vh;
+            top: 70%;
         }
     }
 }

@@ -13,12 +13,11 @@
             :followed="threadFollowed"
             @subscribe-thread="onSubscribeThread"
         />
-        <div class="scrollable_area" :class="{ scrolled }" ref="scrollable">
+        <div v-if="emptyBlubber" class="empty_blubber_background">
+            <div>{{ $gettext('Starte die Konversation jetzt!') }}</div>
+        </div>
+        <div v-else class="scrollable_area" :class="{ scrolled }" ref="scrollable">
             <div class="all_content">
-                <div v-if="emptyBlubber" class="empty_blubber_background">
-                    <div>{{ $gettext('Starte die Konversation jetzt!') }}</div>
-                </div>
-
                 <ol class="comments" aria-live="polite">
                     <li class="more" v-if="moreCommentsUp">
                         <studip-asset-img file="loading-indicator.svg" width="20"></studip-asset-img>

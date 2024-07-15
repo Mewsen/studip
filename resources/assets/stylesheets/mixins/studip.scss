@@ -158,7 +158,6 @@
 
     }
 
-    padding-top: 100px;
     background-image: url(icon-path($icon));
     background-repeat: no-repeat;
     background-size: 140px;
@@ -169,7 +168,7 @@
     }
 
     text-align: center;
-    height: 40vh;
+    height: 100%;
     color: $content-color;
     font-size: 1.6em;
     position: relative;
