@@ -21,11 +21,6 @@ export default {
         CoursewareActivities,
         CoursewareActivitiesWidgetFilterType,
         CoursewareActivitiesWidgetFilterUnit
-    },
-    computed: {
-        ...mapGetters({
-            userIsTeacher: 'userIsTeacher',
-        }),
-    },
+    }
 }
 </script>

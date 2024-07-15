@@ -3,4 +3,6 @@
     entry-type="courses"
     entry-id="<?= Context::getId() ?>"
     licenses='<?= $licenses ?>'
+    feedback-settings='<?= htmlReady($feedback_settings) ?>'
+    is-teacher='<?= var_export($isTeacher) ?>'
 ></div>

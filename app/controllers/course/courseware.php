@@ -40,6 +40,11 @@ class Course_CoursewareController extends CoursewareController
 
     public function index_action(): void
     {
+        $this->isTeacher = $GLOBALS['perm']->have_studip_perm(
+            'tutor',
+            Context::getId(),
+            $GLOBALS['user']->id
+        );
         Navigation::activateItem('course/courseware/shelf');
         $this->setIndexSidebar();
     }
@@ -82,16 +87,17 @@ class Course_CoursewareController extends CoursewareController
 
     public function tasks_action(): void
     {
-        global $perm, $user;
-        $this->is_teacher = $perm->have_studip_perm('tutor', Context::getId(), $user->id);
+        $this->isTeacher = $GLOBALS['perm']->have_studip_perm(
+            'tutor',
+            Context::getId(),
+            $GLOBALS['user']->id
+        );
         Navigation::activateItem('course/courseware/tasks');
         $this->setTasksSidebar();
     }
 
     public function activities_action(): void
     {
-        global $perm, $user;
-        $this->is_teacher = $perm->have_studip_perm('tutor', Context::getId(), $user->id);
         Navigation::activateItem('course/courseware/activities');
         $this->setActivitiesSidebar();
     }
