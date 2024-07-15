@@ -11,8 +11,8 @@ use JsonApi\JsonApiController;
 
 class CoursesOfTreeNode extends JsonApiController
 {
+    protected $allowUnrecognizedParams = true;
     protected $allowedFilteringParameters = ['q', 'semester', 'semclass', 'recursive', 'ids'];
-
     protected $allowedIncludePaths = [
         'blubber-threads',
         'end-semester',

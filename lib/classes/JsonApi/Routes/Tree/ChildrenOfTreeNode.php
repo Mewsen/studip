@@ -9,6 +9,7 @@ use JsonApi\JsonApiController;
 
 class ChildrenOfTreeNode extends JsonApiController
 {
+    protected $allowUnrecognizedParams = true;
     protected $allowedFilteringParameters = ['visible'];
 
     protected $allowedIncludePaths = [
