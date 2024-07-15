@@ -30,6 +30,8 @@ const mountApp = async (STUDIP, createApp, element) => {
     let entry_id = null;
     let entry_type = null;
     let licenses = null;
+    let feedbackSettings = null;
+    let isTeacher = false;
 
     if ((elem = document.getElementById(element.substring(1))) !== undefined) {
         if (elem.attributes !== undefined) {
@@ -43,6 +45,12 @@ const mountApp = async (STUDIP, createApp, element) => {
 
             if (elem.attributes['licenses'] !== undefined) {
                 licenses = JSON.parse(elem.attributes['licenses'].value);
+            }
+            if (elem.attributes['feedback-settings'] !== undefined) {
+                feedbackSettings = JSON.parse(elem.attributes['feedback-settings'].value);
+            }
+            if (elem.attributes['is-teacher'] !== undefined) {
+                isTeacher = JSON.parse(elem.attributes['is-teacher'].value);
             }
         }
     }
@@ -90,7 +98,7 @@ const mountApp = async (STUDIP, createApp, element) => {
         type: entry_type,
     });
     if (entry_type === 'courses') {
-        await store.dispatch('loadTeacherStatus', STUDIP.USER_ID);
+        store.dispatch('setUserIsTeacher', isTeacher);
         await store.dispatch('loadCourseUnits', entry_id);
     } else {
         await store.dispatch('loadUserUnits', entry_id);

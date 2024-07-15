@@ -42,7 +42,8 @@ class Instance extends SchemaProvider
             'certificate-settings' => $resource->getCertificateSettings(),
             'reminder-settings' => $resource->getReminderSettings(),
             'reset-progress-settings' => $resource->getResetProgressSettings(),
-            'root-id' => $resource->getRoot()->id
+            'root-id' => $resource->getRoot()->id,
+            'is-teacher' => $GLOBALS['perm']->have_studip_perm($resource->getEditingPermissionLevel(), $resource->getRoot()->range_id)
         ];
     }
 
