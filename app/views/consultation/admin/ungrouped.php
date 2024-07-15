@@ -2,11 +2,10 @@
 /**
  * @var Consultation_AdminController $controller
  * @var int $page
- * @var int $count
- * @var int $limit
  * @var string $current_action
  * @var ConsultationBlock[] $blocks
  * @var ConsultationSlot[] $slots
+ * @var Pagination $pagination
  */
 ?>
 <? if (count($blocks) === 0): ?>
@@ -132,7 +131,16 @@
 </table>
 
 <table class="default consultation-overview slot-overview">
-    <caption><?= _('Termine') ?></caption>
+    <caption>
+        <div class="caption-container">
+            <div class="caption-content"><?= _('Termine') ?></div>
+            <div class="caption-actions">
+                <?= $pagination->asLinks(function ($page) use ($controller, $current_action) {
+                    return $controller->action_link($current_action, $page);
+                }) ?>
+            </div>
+        </div>
+    </caption>
     <colgroup>
         <col width="24px">
         <col width="15%">
@@ -272,7 +280,7 @@
                 ]) ?>
 
                 <div class="actions">
-                    <?= Pagination::create($count, $page, $limit)->asLinks(function ($page) use ($controller, $current_action) {
+                    <?= $pagination->asLinks(function ($page) use ($controller, $current_action) {
                         return $controller->action_link($current_action, $page);
                     }) ?>
                 </div>

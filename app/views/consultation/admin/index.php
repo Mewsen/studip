@@ -2,10 +2,9 @@
 /**
  * @var Consultation_AdminController $controller
  * @var int $page
- * @var int $count
- * @var int $limit
  * @var string $current_action
  * @var array<int, array{block: ConsultationBlock, slots: ConsultationSlot[]> $blocks
+ * @var Pagination $pagination
  */
 ?>
 <? if (count($blocks) === 0): ?>
@@ -40,8 +39,16 @@
             </th>
             <th><?= _('Uhrzeit') ?></th>
             <th><?= _('Status') ?></th>
-            <th><?= _('Informationen') ?></th>
-            <th></th>
+            <th colspan="2">
+                <div style="display: flex; justify-content: space-between">
+                    <span><?= _('Informationen') ?></span>
+                    <span>
+                        <?= $pagination->asLinks(function ($page) use ($controller, $current_action) {
+                            return $controller->action_link($current_action, $page);
+                        }) ?>
+                    </span>
+                </div>
+            </th>
         </tr>
     </thead>
 <? foreach ($blocks as $block): ?>
@@ -186,7 +193,7 @@
                 ]) ?>
 
                 <div class="actions">
-                    <?= Pagination::create($count, $page, $limit)->asLinks(function ($page) use ($controller, $current_action) {
+                    <?= $pagination->asLinks(function ($page) use ($controller, $current_action) {
                         return $controller->action_link($current_action, $page);
                     }) ?>
                 </div>

@@ -69,10 +69,10 @@ class Consultation_AdminController extends ConsultationController
 
     public function index_action($page = 0)
     {
-        $this->count = ConsultationSlot::countByRange($this->range);
-        $this->limit = Config::get()->ENTRIES_PER_PAGE;
+        $count = ConsultationSlot::countByRange($this->range);
+        $limit = Config::get()->ENTRIES_PER_PAGE;
 
-        if ($page >= ceil($this->count / $this->limit)) {
+        if ($page >= ceil($count / $limit)) {
             $page = 0;
         }
 
@@ -81,7 +81,7 @@ class Consultation_AdminController extends ConsultationController
         if ($GLOBALS['user']->cfg->CONSULTATION_SHOW_GROUPED) {
             $this->blocks = $this->groupSlots(ConsultationSlot::findByRange(
                 $this->range,
-                "ORDER BY start ASC LIMIT " . ($this->page * $this->limit) . ", {$this->limit}"
+                "ORDER BY start ASC LIMIT " . ($this->page * $limit) . ", {$limit}"
             ));
         } else {
             $this->blocks = ConsultationBlock::findByRange(
@@ -90,9 +90,11 @@ class Consultation_AdminController extends ConsultationController
             );
             $this->slots = ConsultationSlot::findByRange(
                 $this->range,
-                "ORDER BY start ASC LIMIT " . ($this->page * $this->limit) . ", {$this->limit}"
+                "ORDER BY start ASC LIMIT " . ($this->page * $limit) . ", {$limit}"
             );
         }
+
+        $this->pagination = Pagination::create($count, $this->page, $limit);
 
         $action = $GLOBALS['user']->cfg->CONSULTATION_SHOW_GROUPED ? 'index' : 'ungrouped';
         $this->render_action($action);
@@ -100,10 +102,10 @@ class Consultation_AdminController extends ConsultationController
 
     public function expired_action($page = 0)
     {
-        $this->count = ConsultationSlot::countByRange($this->range, true);
-        $this->limit = Config::get()->ENTRIES_PER_PAGE;
+        $count = ConsultationSlot::countByRange($this->range, true);
+        $limit = Config::get()->ENTRIES_PER_PAGE;
 
-        if ($page >= ceil($this->count / $this->limit)) {
+        if ($page >= ceil($count / $limit)) {
             $page = 0;
         }
 
@@ -112,7 +114,7 @@ class Consultation_AdminController extends ConsultationController
         if ($GLOBALS['user']->cfg->CONSULTATION_SHOW_GROUPED) {
             $this->blocks = $this->groupSlots(ConsultationSlot::findByRange(
                 $this->range,
-                "ORDER BY start DESC LIMIT " . ($this->page * $this->limit) . ", {$this->limit}",
+                "ORDER BY start DESC LIMIT " . ($this->page * $limit) . ", {$limit}",
                 true
             ));
         } else {
@@ -123,10 +125,12 @@ class Consultation_AdminController extends ConsultationController
             );
             $this->slots = ConsultationSlot::findByRange(
                 $this->range,
-                "ORDER BY start DESC LIMIT " . ($this->page * $this->limit) . ", {$this->limit}",
+                "ORDER BY start DESC LIMIT " . ($this->page * $limit) . ", {$limit}",
                 true
             );
         }
+
+        $this->pagination = Pagination::create($count, $this->page, $limit);
 
         $action = $GLOBALS['user']->cfg->CONSULTATION_SHOW_GROUPED ? 'index' : 'ungrouped';
         $this->render_action($action);
