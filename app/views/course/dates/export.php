@@ -19,18 +19,21 @@
         <?
         $all_semester = Semester::findAllVisible(false);
 
+        $grenze = 0;
         foreach ($dates as $date) :
             if ( ($grenze == 0) || ($grenze < $date['start']) ) {
                 foreach ($all_semester as $zwsem) {
-                    if ( ($zwsem['beginn'] < $date['start']) && ($zwsem['ende'] > $date['start']) ) {
-                        $grenze = $zwsem['ende'];
-                        ?>
-                        <tr>
-                            <td colspan="5">
-                                <h3><?= htmlReady($zwsem['name']) ?></h3>
-                            </td>
-                        </tr>
-                    <?
+                    if (!empty($zwsem['beginn'])) {
+                        if ( ($zwsem['beginn'] < $date['start']) && ($zwsem['ende'] > $date['start']) ) {
+                            $grenze = $zwsem['ende'];
+                            ?>
+                            <tr>
+                                <td colspan="5">
+                                    <h3><?= htmlReady($zwsem['name']) ?></h3>
+                                </td>
+                            </tr>
+                        <?
+                        }
                     }
                 }
             }
