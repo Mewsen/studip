@@ -20,8 +20,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-06 13:16+0100\n"
-"PO-Revision-Date: 2024-04-12 15:29+0000\n"
-"Last-Translator: Moritz Strohm <strohm@data-quest.de>\n"
+"PO-Revision-Date: 2024-07-18 14:29+0000\n"
+"Last-Translator: Oliver Oster <oster@zmml.uni-bremen.de>\n"
 "Language-Team: English <https://weblate.uni-vechta.de/projects/stud-ip/"
 "stud-ip-main/en/>\n"
 "Language: en\n"
@@ -22943,7 +22943,7 @@ msgstr "Show expired and unpublished announcements (%s)"
 
 #: app/views/news/display.php:66
 msgid "Abgelaufene und unveröffentlichte Ankündigungen ausblenden"
-msgstr "Show expired and unpublished announcements"
+msgstr "Hide expired and unpublished announcements"
 
 #: app/views/news/_comments.php:6
 #: lib/classes/exportdocument/ExportPDF.class.php:85
