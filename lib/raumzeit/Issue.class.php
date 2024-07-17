@@ -62,10 +62,10 @@ class Issue {
     function __construct($data = []) {
         global $user;
 
-        if ($data['issue_id']) {
+        if (!empty($data['issue_id'])) {
             $this->issue_id = $data['issue_id'];
             $this->restore();
-        } else if ($data['seminar_id']) {
+        } else if (!empty($data['seminar_id'])) {
             $this->issue_id = md5(uniqid('Issue'));
             $this->seminar_id = $data['seminar_id'];
             $this->mkdate = time();
@@ -190,7 +190,7 @@ class Issue {
         $this->mkdate = $data['mkdate'];
         $this->chdate = $data['chdate'];
         $this->priority = $data['priority'];
-        $this->file = ($data['range_id'] == '') ? FALSE : TRUE;
+        $this->file = !empty($data['range_id']);
         if ($this->file) {
             $this->folder_id = $data['folder_id'];
         }
