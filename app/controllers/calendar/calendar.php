@@ -456,13 +456,13 @@ class Calendar_CalendarController extends AuthenticatedController
         $full_semester_time_range = false;
 
         $slot_durations = $this->getUserCalendarSlotSettings();
-        $calendar_settings = $GLOBALS['user']->cfg->CALENDAR_SETTINGS ?? [];
+        $calendar_settings = User::findCurrent()->getConfiguration()->CALENDAR_SETTINGS ?? [];
 
         $this->fullcalendar = \Studip\Fullcalendar::create(
             _('Stundenplan'),
             [
-                'minTime' => '08:00',
-                'maxTime' => '20:00',
+                'minTime'     => sprintf('%02u:00', $calendar_settings['start'] ?? 8),
+                'maxTime'     => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
                 'allDaySlot' => false,
                 'header' => [
                     'left' => '',
