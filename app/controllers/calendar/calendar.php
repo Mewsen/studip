@@ -435,6 +435,63 @@ class Calendar_CalendarController extends AuthenticatedController
         );
     }
 
+    public function schedule_action()
+    {
+        PageLayout::setTitle(_('Stundenplan'));
+
+        if (Navigation::hasItem('/calendar/schedule')) {
+            Navigation::activateItem('/calendar/schedule');
+        }
+
+        $this->buildSidebar(true);
+
+        $semester = null;
+        if (Request::submitted('semester_id')) {
+            $semester = Semester::find(Request::get('semester_id'));
+        }
+        if (!$semester) {
+            $semester = Semester::findCurrent();
+        }
+
+        $full_semester_time_range = false;
+
+        $slot_durations = $this->getUserCalendarSlotSettings();
+        $calendar_settings = $GLOBALS['user']->cfg->CALENDAR_SETTINGS ?? [];
+
+        $this->fullcalendar = \Studip\Fullcalendar::create(
+            _('Stundenplan'),
+            [
+                'minTime' => '08:00',
+                'maxTime' => '20:00',
+                'allDaySlot' => false,
+                'header' => [
+                    'left' => '',
+                    'right' => ''
+                ],
+                'views' => [
+                    'timeGridWeek' => [
+                        'columnHeaderFormat' => ['weekday' => 'long'],
+                        'weekends'           => $calendar_settings['type_week'] === 'LONG',
+                        'slotDuration'       => $slot_durations['week']
+                    ]
+                ],
+                'defaultView' => 'timeGridWeek',
+                'defaultDate' => date('Y-m-d'),
+                'timeGridEventMinHeight' => 20,
+                'eventSources' => [
+                    [
+                        'url' => $this->url_for('calendar/calendar/schedule_data'),
+                        'method' => 'GET',
+                        'extraParams' => [
+                            'semester_id' => $semester->id,
+                            'full_semester_time_range' => $full_semester_time_range
+                        ]
+                    ]
+                ]
+            ]
+        );
+    }
+
     public function course_action($course_id)
     {
         PageLayout::setTitle(_('Veranstaltungskalender'));
@@ -684,6 +741,164 @@ class Calendar_CalendarController extends AuthenticatedController
             //Clean up the array keys:
             $this->render_json(array_values($result));
         }
+    }
+
+    public function schedule_data_action()
+    {
+        //Fullcalendar sets the week time range in which to put the course dates
+        //of the semester. Therefore, start and end are handled in here.
+        $begin = Request::getDateTime('start', \DateTime::RFC3339);
+        $end = Request::getDateTime('end', \DateTime::RFC3339);
+        if (!($begin instanceof \DateTime) || !($end instanceof \DateTime)) {
+            //No time range specified.
+            throw new InvalidArgumentException('Invalid parameters!');
+        }
+
+        $semester_id = Request::get('semester_id');
+        $semester = Semester::find($semester_id);
+        if (!$semester) {
+            $this->render_json([]);
+        }
+
+        //Get all regular course dates for that semester:
+        $cycle_dates = SeminarCycleDate::findBySql(
+            'INNER JOIN `termine` USING (`metadate_id`)
+            INNER JOIN `seminare` USING (`seminar_id`)
+            INNER JOIN `seminar_user` USING (`seminar_id`)
+            WHERE
+            `seminar_user`.`user_id` = :user_id
+            AND
+            (
+            `termine`.`date` BETWEEN :begin AND :end
+            OR `termine`.`end_time` BETWEEN :begin AND :end
+            )
+            GROUP BY `metadate_id`
+             ',
+            [
+                'user_id' => $GLOBALS['user']->id,
+                'begin' => $semester->beginn,
+                'end' => $semester->ende
+            ]
+        );
+
+        $result = [];
+
+        foreach ($cycle_dates as $cycle_date) {
+            //Calculate a fake begin and end that lies in the week
+            //fullcalendar has specified.
+            $fake_begin = clone $begin;
+            $fake_end = clone $begin;
+            if ($cycle_date->weekday > 1) {
+                $fake_begin = $fake_begin->add(new DateInterval('P' . ($cycle_date->weekday - 1) . 'D'));
+                $fake_end = $fake_end->add(new DateInterval('P' . ($cycle_date->weekday - 1) . 'D'));
+            }
+            $start_time_parts = explode(':', $cycle_date->start_time);
+            $end_time_parts = explode(':', $cycle_date->end_time);
+            $fake_begin->setTime(
+                intval($start_time_parts[0]),
+                intval($start_time_parts[1]),
+                intval($start_time_parts[2])
+            );
+            $fake_end->setTime(
+                intval($end_time_parts[0]),
+                intval($end_time_parts[1]),
+                intval($end_time_parts[2])
+            );
+
+            //Get the course colour:
+            $course_membership = CourseMember::findOneBySQL(
+                'seminar_id = :course_id AND user_id = :user_id',
+                [
+                    'course_id' => $cycle_date->seminar_id,
+                    'user_id' => $GLOBALS['user']->id
+                ]
+            );
+            $event_classes = [];
+            if ($course_membership) {
+                $event_classes[] = sprintf('course-color-%u', $course_membership->gruppe);
+            }
+
+            $event = new \Studip\Calendar\EventData(
+                $fake_begin,
+                $fake_end,
+                $cycle_date->course->getFullName(),
+                $event_classes,
+                '',
+                '',
+                false,
+                'SeminarCycleDate',
+                $cycle_date->id,
+                '',
+                '',
+                'course',
+                $cycle_date->seminar_id,
+                [
+                    'show' => $this->url_for('course/details', ['cid' => $cycle_date->seminar_id, 'link_to_course' => '1'])
+                ]
+            );
+
+            $result[] = $event->toFullcalendarEvent();
+        }
+
+        //Add all personal dates with weekly repetition to the result set:
+        $weekly_dates = CalendarDateAssignment::findBySQL(
+            "INNER JOIN `calendar_dates`
+            ON calendar_date_id = `calendar_dates`.`id`
+            WHERE
+            `calendar_date_assignments`.`range_id` = :user_id
+            AND
+            `calendar_dates`.`repetition_type` = 'WEEKLY'
+            AND
+            `calendar_dates`.`interval` = '1'
+            AND
+            (
+                `calendar_dates`.`begin` < :end AND
+                (
+                    `calendar_dates`.`end` > :begin
+                    OR
+                    `calendar_dates`.`repetition_end` > :begin
+                    OR
+                    `calendar_dates`.`end` + (7 * 86400 * `calendar_dates`.`number_of_dates`) > :begin
+                    OR
+                    `calendar_dates`.`repetition_end` = POW(2, 31) - 1
+                )
+            )
+            ORDER BY `calendar_dates`.`begin` ASC",
+            [
+                'user_id' => $GLOBALS['user']->id,
+                'begin'   => $semester->beginn,
+                'end'     => $semester->ende
+            ]
+        );
+        foreach ($weekly_dates as $date) {
+            $event_data = $date->toEventData($GLOBALS['user']->id);
+
+            //Calculate a fake begin and end that lies in the week
+            //fullcalendar has specified.
+            $fake_begin = clone $begin;
+            $fake_end = clone $begin;
+            $weekday = $event_data->begin->format('N');
+            if ($weekday > 1) {
+                $fake_begin = $fake_begin->add(new DateInterval('P' . ($weekday - 1) . 'D'));
+                $fake_end = $fake_end->add(new DateInterval('P' . ($weekday - 1) . 'D'));
+            }
+            $fake_begin->setTime(
+                intval($event_data->begin->format('H')),
+                intval($event_data->begin->format('i')),
+                intval($event_data->begin->format('s'))
+            );
+            $fake_end->setTime(
+                intval($event_data->end->format('H')),
+                intval($event_data->end->format('i')),
+                intval($event_data->end->format('s'))
+            );
+            $event_data->begin = $fake_begin;
+            $event_data->end   = $fake_end;
+
+            $result[] = $event_data->toFullcalendarEvent();
+        }
+
+        $this->render_json($result);
     }
 
     public function add_courses_action()
