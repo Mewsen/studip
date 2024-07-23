@@ -453,43 +453,8 @@ class Calendar_CalendarController extends AuthenticatedController
             $semester = Semester::findCurrent();
         }
 
-        $full_semester_time_range = false;
-
-        $slot_durations = $this->getUserCalendarSlotSettings();
-        $calendar_settings = User::findCurrent()->getConfiguration()->CALENDAR_SETTINGS ?? [];
-
-        $this->fullcalendar = \Studip\Fullcalendar::create(
-            _('Stundenplan'),
-            [
-                'minTime'     => sprintf('%02u:00', $calendar_settings['start'] ?? 8),
-                'maxTime'     => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
-                'allDaySlot' => false,
-                'header' => [
-                    'left' => '',
-                    'right' => ''
-                ],
-                'views' => [
-                    'timeGridWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'long'],
-                        'weekends'           => $calendar_settings['type_week'] === 'LONG',
-                        'slotDuration'       => $slot_durations['week']
-                    ]
-                ],
-                'defaultView' => 'timeGridWeek',
-                'defaultDate' => date('Y-m-d'),
-                'timeGridEventMinHeight' => 20,
-                'eventSources' => [
-                    [
-                        'url' => $this->url_for('calendar/calendar/schedule_data'),
-                        'method' => 'GET',
-                        'extraParams' => [
-                            'semester_id' => $semester->id,
-                            'full_semester_time_range' => $full_semester_time_range
-                        ]
-                    ]
-                ]
-            ]
-        );
+        $fullcalendar = \Studip\Calendar\Helper::getScheduleFullcalendar($semester->id);
+        $this->fullcalendar = $fullcalendar->render();
     }
 
     public function course_action($course_id)

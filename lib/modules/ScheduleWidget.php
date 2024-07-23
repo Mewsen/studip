@@ -39,45 +39,8 @@ class ScheduleWidget extends CorePlugin implements PortalPlugin
      */
     public function getPortalTemplate()
     {
-        $calendar_settings = User::findCurrent()->getConfiguration()->CALENDAR_SETTINGS ?? [];
-
-        $fullcalendar = \Studip\Fullcalendar::create(
-            _('Stundenplan'),
-            [
-                'editable'    => false,
-                'selectable'  => false,
-                'dialog_size' => 'auto',
-                'minTime'     => sprintf('%02u:00', $calendar_settings['start'] ?? 8),
-                'maxTime'     => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
-                'allDaySlot'  => false,
-                'header'      => [
-                    'left' => '',
-                    'right' => ''
-                ],
-                'views' => [
-                    'timeGridWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'long'],
-                        'weekends'           => $calendar_settings['type_week'] === 'LONG',
-                        'slotDuration'       => \Studip\Calendar\Helper::getCalendarSlotDuration('week'),
-                    ]
-                ],
-                'defaultView' => 'timeGridWeek',
-                'defaultDate' => date('Y-m-d'),
-                'timeGridEventMinHeight' => 20,
-                'eventSources' => [
-                    [
-                        'url' => URLHelper::getURL('dispatch.php/calendar/calendar/schedule_data'),
-                        'method' => 'GET',
-                        'extraParams' => [
-                            'semester_id' => Semester::findCurrent()->id ?? '',
-                            'full_semester_time_range' => false
-                        ]
-                    ]
-                ]
-            ]
-        );
         $template = $GLOBALS['template_factory']->open('start/schedule_widget');
-        $template->set_attribute('fullcalendar', $fullcalendar);
+        $template->set_attribute('fullcalendar', \Studip\Calendar\Helper::getScheduleFullcalendar());
         return $template;
     }
 }
