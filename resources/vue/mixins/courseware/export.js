@@ -134,7 +134,7 @@ export default {
                     root_element.children = children;
                 }
             }
-            root_element.imageId = await this.exportStructuralElementImage(root_element);
+            [root_element.imageId, root_element.imageType ] = await this.exportStructuralElementImage(root_element);
 
             delete root_element.relationships;
             delete root_element.links;
@@ -236,7 +236,7 @@ export default {
                     }
 
                     // export file data (if any)
-                    content.imageId = await this.exportStructuralElementImage(element);
+                    [content.imageId, content.imageType ] = await this.exportStructuralElementImage(element);
 
                     delete content.relationships;
                     content.children = new_childs;
@@ -249,25 +249,29 @@ export default {
         },
 
         async exportStructuralElementImage(element) {
-            let fileId = element.relationships.image?.data?.id;
-            if (fileId) {
-                await this.loadFileRefsById({id: fileId});
-                let fileRef = this.fileRefsById({id: fileId});
-                
-                let fileRefData = {};
-                fileRefData.id = fileRef.id;
-                fileRefData.attributes = fileRef.attributes;
-                fileRefData.related_element_id = element.id;
-                fileRefData.folder = null;
+            const fileId = element.relationships.image?.data?.id;
+            const fileType = element.relationships.image?.data?.type;
 
-                this.exportFiles.json.push(fileRefData);
-                this.exportFiles.download[fileRef.id] = {
-                    folder: null,
-                    url: fileRef.meta['download-url']
-                };
+            if (fileId) {
+                if (fileType === 'file-refs') {
+                    await this.loadFileRefsById({id: fileId});
+                    let fileRef = this.fileRefsById({id: fileId});
+                    
+                    let fileRefData = {};
+                    fileRefData.id = fileRef.id;
+                    fileRefData.attributes = fileRef.attributes;
+                    fileRefData.related_element_id = element.id;
+                    fileRefData.folder = null;
+    
+                    this.exportFiles.json.push(fileRefData);
+                    this.exportFiles.download[fileRef.id] = {
+                        folder: null,
+                        url: fileRef.meta['download-url']
+                    };
+                }
             }
 
-            return fileId;
+            return [fileId, fileType];
         },
 
         async exportContainer(container_ref) {

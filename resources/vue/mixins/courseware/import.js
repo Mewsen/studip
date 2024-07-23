@@ -152,7 +152,7 @@ export default {
             }
             // compare image
             if (element.imageId && root.relationships.image.data === null) {
-                await this.setStructuralElementImage(root, element.imageId, files);
+                await this.setStructuralElementImage(root, element, files);
             }
 
             // add children
@@ -187,7 +187,7 @@ export default {
                     
 
                     if (element[i].imageId) {
-                        await this.setStructuralElementImage(new_element, element[i].imageId, files);
+                        await this.setStructuralElementImage(new_element, element[i], files);
                     }
 
 
@@ -205,19 +205,27 @@ export default {
             }
         },
 
-        async setStructuralElementImage(new_element, imageId, files) {
-            let imageFile = files.find((file) => { return file.id === imageId});
-            let zip_filedata = await this.zip.file(imageFile.id).async('blob');
-            // create new blob with correct type
-            let filedata = zip_filedata.slice(0, zip_filedata.size, imageFile.attributes['mime-type']);
-            this.setImportStructuresState(this.$gettext('Lade Vorschaubild hoch'));
-            this.uploadImageForStructuralElement({
-                structuralElement: new_element,
-                file: filedata,
-            }).catch((error) => {
-                console.error(error);
-                this.currentImportErrors.push(this.$gettext('Fehler beim Hochladen des Vorschaubildes.'));
-            });
+        async setStructuralElementImage(new_element, element, files) {
+            const imageId = element.imageId;
+            const imageType = element.imageType ?? 'file-refs';
+            if (imageType === 'file-refs') {
+                const imageFile = files.find((file) => { return file.id === imageId});
+                if (!(imageFile)) {
+                    this.currentImportErrors.push(this.$gettext('Fehler beim Laden des Vorschaubildes.'));
+                    return;
+                }
+                let zip_filedata = await this.zip.file(imageFile.id).async('blob');
+                // create new blob with correct type
+                const filedata = zip_filedata.slice(0, zip_filedata.size, imageFile.attributes['mime-type']);
+                this.setImportStructuresState(this.$gettext('Lade Vorschaubild hoch'));
+                this.uploadImageForStructuralElement({
+                    structuralElement: new_element,
+                    file: filedata,
+                }).catch((error) => {
+                    console.error(error);
+                    this.currentImportErrors.push(this.$gettext('Fehler beim Hochladen des Vorschaubildes.'));
+                });
+            }
         },
 
         async importContainer(container, structuralElement, files) {
