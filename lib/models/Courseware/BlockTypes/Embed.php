@@ -52,20 +52,26 @@ class Embed extends BlockType
         $payload = $this->decodePayloadString($this->block['payload']);
 
         $oembedRequest = $this->buildOembedRequest($payload['source'], $payload['url']);
-        $payload['oembed_request'] = $oembedRequest;
+
+        $payload['oembed-request'] = $oembedRequest;
         $payload['oembed-unauthorized'] = false;
-        $payload['oembed-not-found'] = false;
-        $payload['oembed'] = '';
-        $payload['request'] = '';
-        $request = \FileManager::fetchURLMetadata($oembedRequest);
-        if ($request['response_code'] === 200) {
-            $payload['request'] = file_get_contents($oembedRequest, false, get_default_http_stream_context($oembedRequest));
-            $payload['oembed'] = json_decode($payload['request']);
-        } elseif ($request['response_code'] === 401) {
-            $payload['oembed_unauthorized'] = true;
-        } else {
-            $payload['oembed_not_found'] = true;
+        $payload['oembed-not-found'] = true;
+        $payload['oembed'] = null;
+        $payload['request'] = null;
+
+        if ($oembedRequest) {
+            $request = \FileManager::fetchURLMetadata($oembedRequest);
+            if ($request['response_code'] === 200) {
+                $payload['request'] = file_get_contents($oembedRequest, false, get_default_http_stream_context($oembedRequest));
+                $payload['oembed'] = json_decode($payload['request']);
+                $payload['oembed-not-found'] = false;
+            }
+            if ($request['response_code'] === 401) {
+                $payload['oembed-unauthorized'] = true;
+                $payload['oembed-not-found'] = false;
+            }
         }
+
         return $payload;
     }
 
@@ -92,7 +98,7 @@ class Embed extends BlockType
             'youtube' => 'https://www.youtube.com/oembed',
         ];
 
-        return $endPoints[$source].'?url='.rawurlencode($url).'&format=json';
+        return  array_key_exists($source, $endPoints) ? $endPoints[$source].'?url='.rawurlencode($url).'&format=json' : null;
     }
 
     public static function getCategories(): array
