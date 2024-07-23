@@ -1484,7 +1484,7 @@ class FileManager
 
         $url_parts = @parse_url($url);
         // filter out localhost and reserved or private IPs
-        if (mb_stripos($url_parts['host'], 'localhost') !== false
+        if (array_key_exists('host', $url_parts) && (mb_stripos($url_parts['host'], 'localhost') !== false
             || mb_stripos($url_parts['host'], 'loopback') !== false
             || (filter_var($url_parts['host'], FILTER_VALIDATE_IP) !== false
                 && (mb_strpos($url_parts['host'], '127') === 0
@@ -1495,13 +1495,13 @@ class FileManager
                         | FILTER_FLAG_NO_PRIV_RANGE
                         | FILTER_FLAG_NO_RES_RANGE
                     ) === false)
-               )
+            ))
         ) {
             return ['response' => 'HTTP/1.0 400 Bad Request', 'response_code' => 400];
         }
 
         // URL links to an ftp server
-        if ($url_parts['scheme'] === 'ftp') {
+        if (array_key_exists('scheme', $url_parts) && $url_parts['scheme'] === 'ftp') {
             if (preg_match('/[^a-z0-9_.-]/i', $url_parts['host'])) { // exists umlauts ?
                 $IDN = new Algo26\IdnaConvert\ToIdn();
                 $out = $IDN->convert($url_parts['host']); // false by error
@@ -1545,9 +1545,9 @@ class FileManager
         if (!empty($url_parts['query'])) {
             $documentpath .= '?' . $url_parts['query'];
         }
-        $host = $url_parts['host'];
+        $host = $url_parts['host'] ?? null;
         $port = $url_parts['port'] ?? null;
-        $scheme = mb_strtolower($url_parts['scheme']);
+        $scheme = array_key_exists('scheme',$url_parts) ? mb_strtolower($url_parts['scheme']) : null;
         if (!in_array($scheme, ['http', 'https']) || !$host) {
             return ['response' => 'HTTP/1.0 400 Bad Request', 'response_code' => 400];
         }
