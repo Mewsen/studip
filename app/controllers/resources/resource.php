@@ -27,7 +27,7 @@ class Resources_ResourceController extends AuthenticatedController
 
         $this->edit_global_permissions = false;
 
-        $this->resource_id_parameter = $args[0];
+        $this->resource_id_parameter = $args[0] ?? null;
 
         $this->resources = [];
         $this->resource_ids = [];
@@ -215,7 +215,7 @@ class Resources_ResourceController extends AuthenticatedController
 
     protected function addEditDeleteHandler($mode = 'add')
     {
-        $this->resource = $this->resources[0];
+        $this->resource = $this->resources[0] ?? null;
         $user = User::findCurrent();
 
         $this->show_form = false;
@@ -282,10 +282,11 @@ class Resources_ResourceController extends AuthenticatedController
             CSRFProtection::verifyUnsafeRequest();
             if (($mode == 'add') || ($mode == 'edit')) {
                 //Process submitted form:
-                $this->parent_id = $this->resource->parent_id;
                 if ($mode == 'add') {
                     $this->category_id = Request::get('category_id');
                     $this->parent_id = Request::get('parent_id', '');
+                } else {
+                    $this->parent_id = $this->resource->parent_id;
                 }
                 $this->name = Request::get('name');
                 $this->description = Request::get('description');

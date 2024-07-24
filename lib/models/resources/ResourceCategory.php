@@ -249,7 +249,8 @@ class ResourceCategory extends SimpleORMap
         ];
         $property_groups      = [];
         foreach ($definitions as $definition) {
-            if ($definition->group->name) {
+
+            if (!empty($definition->group->name)) {
                 $group_name = $definition->group->name;
                 if (!is_array($property_groups[$group_name])) {
                     $property_groups[$group_name] = [];

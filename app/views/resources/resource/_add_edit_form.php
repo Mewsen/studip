@@ -14,11 +14,11 @@
             <legend><?= _('Grunddaten') ?></legend>
             <label>
                 <?= _('Name') ?>
-                <input type="text" name="name" value="<?= htmlReady($name) ?>">
+                <input type="text" name="name" value="<?= !empty($name) ? htmlReady($name) : '' ?>">
             </label>
             <label>
                 <?= _('Beschreibungstext') ?>
-                <input type="text" name="description" value="<?= htmlReady($description) ?>">
+                <input type="text" name="description" value="<?= !empty($description) ? htmlReady($description) : '' ?>">
             </label>
             <? if ($GLOBALS['perm']->have_perm('root')): ?>
                 <label>
@@ -28,7 +28,7 @@
                 <label>
                     <?= _('Sortierposition') ?>
                     <input type="text" name="sort_position"
-                           value="<?= htmlReady($sort_position) ?>">
+                           value="<?= !empty($sort_position) ? htmlReady($sort_position) : '' ?>">
                 </label>
             <? endif ?>
         </fieldset>
