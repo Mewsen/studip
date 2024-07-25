@@ -453,7 +453,7 @@ class Calendar_CalendarController extends AuthenticatedController
             $semester = Semester::findCurrent();
         }
 
-        $fullcalendar = \Studip\Calendar\Helper::getScheduleFullcalendar($semester->id);
+        $fullcalendar = \Studip\Calendar\Helper::getScheduleFullcalendar($semester->id ?? '');
         $this->fullcalendar = $fullcalendar->render();
     }
 

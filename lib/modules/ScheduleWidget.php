@@ -40,7 +40,7 @@ class ScheduleWidget extends CorePlugin implements PortalPlugin
     public function getPortalTemplate()
     {
         $template = $GLOBALS['template_factory']->open('start/schedule_widget');
-        $template->set_attribute('fullcalendar', \Studip\Calendar\Helper::getScheduleFullcalendar());
+        $template->set_attribute('fullcalendar', \Studip\Calendar\Helper::getScheduleFullcalendar()->render());
         return $template;
     }
 }
