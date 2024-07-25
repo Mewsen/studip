@@ -1,3 +1,52 @@
+# 25.07.2024 v 5.4.4
+
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.4.4&state=all
+- Courseware: Aktionsmenü in "Merkliste" ist falsch plaziert [#3009]
+- Vorlesungsverzeichnis: HTML in Tooltips [#3050]
+- Veranstaltungsverzeichnis: Einträge ohne Namen sind nicht mehr bearbeitbar [#3489]
+- Courseware: öffentliche Links kaputt [#4351]
+- Bilder-Pool Dateipfad/URL nicht konfigurierbar [#4356]
+- VVZ: Kacheln laden teilweise nicht mehr nach [#4358]
+- PHP - Warnungen im PluginManager [#4363]
+- Stock Images: Fehler beim Upload, wenn das Bild nicht breit genug ist [#4377]
+- PHP8-Fehler beim StockImage-Upload [#4378]
+- search/courses lädt nicht, wenn in der URL der Parameter „cid“ steht [#4394]
+
+# 24.07.2024 v 5.3.7
+
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.3.7&state=all
+- Courseware: Aktionsmenü in der Contentbar ist falsch plaziert [#2557]
+- Courseware: Aktionsmenü in der Contentbar ist falsch plaziert [#3073]
+- Aktionsmenü sollte nicht mehr immer umgehängt werden [#3447]
+- Sprechstunden: Fehler beim Aufruf von "Termin reservieren" ohne Anmeldung [#3771]
+- PHP8-Warnungen [#4341]
+- Neues-Passwort-Mail ist falsch [#4368]
+- PHP8-Warnungen bei den MVV-Dateien [#4369]
+- XSS beim Namen des Autoren in Details eines OER-Materials [#4376]
+- PHP8-Warnung [#4381]
+
+# 24.07.2024 v 5.2.9
+
+https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.2.9&state=all
+- Fehler bei der Raumplanung (Errorlog) [#3676]
+- StudipFileCache::getStats() gibt Werte für den falschen Cache raus [#3699]
+- Tägliche Benachrichtigungen:  seminar_id statt range_id  in  notification_text.php [#3978]
+- Methode "Folder::findTopFolder()" prüft nicht auf Typ "RootFolder" [#4008]
+- Exception in OpenGraph::extract() bei null-String [#4319]
+- X-Icon zum Zurücksetzen der globalen Suche ist grau statt blau [#4326]
+- Fehler beim Anzeigen eines Tooltips im oberen Bereich [#4330]
+- Umbenennen von Funktionen/Gruppen löscht Übernahme der Standarddaten [#4331]
+- Typo im BIEST #4288 [#4333]
+- Fehlerhaftes Verhalten beim Bearbeiten von Terminen bei vorhandener Gruppenzuordnung [#4334]
+- Manuelles Eintragen von Personen: Beim Domänenfilter wird bei der Auswahl „Ohne Domain“ niemand gefunden [#4353]
+- CLI-Kommando "plugin:i18n:extract" aktualisiert nicht die .po-Dateien [#4360]
+- Dateibereich: Literaturangaben haben ungeklärte Lizenz [#4361]
+- Pluginverwaltung: Filter auf Plugintypen mit Namespace funktioniert nicht [#4364]
+- Falsche Fehlerbehandlung in Auth-Plugins [#4374]
+- Fragebögen: Benachrichtigung an den erstellenden Nutzer werden in der Sprache des teilnehmenden Nutzers verschickt [#4385]
+- Nachricht beim Abgeben einer Aufgabe enthält nicht den Aufgabentitel [#4389]
+
+
 # 18.06.2024 v 5.4.3
 
 https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.4.3&state=all
