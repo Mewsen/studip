@@ -35,6 +35,13 @@ class Calendar_CalendarController extends AuthenticatedController
 
         $actions = new ActionsWidget();
         if ($schedule) {
+            //Add the semester selector widget first:
+            $semester_widget = new SemesterSelectorWidget(
+                $this->url_for('calendar/calendar/schedule')
+            );
+            $sidebar->addWidget($semester_widget);
+
+            //Then add the actions for the action widget:
             $actions->addLink(
                 _('Neuer Eintrag'),
                 $this->url_for('calendar/calendar/add_schedule_entry'),
