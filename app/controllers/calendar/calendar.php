@@ -805,7 +805,7 @@ class Calendar_CalendarController extends AuthenticatedController
                 'course',
                 $cycle_date->seminar_id,
                 [
-                    'show' => $this->url_for('course/details', ['cid' => $cycle_date->seminar_id, 'link_to_course' => '1'])
+                    'show' => $this->url_for('calendar/calendar/schedule_course_info', ['course_id' => $cycle_date->seminar_id])
                 ]
             );
 
