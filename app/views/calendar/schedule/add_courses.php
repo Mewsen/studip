@@ -1,4 +1,4 @@
-<form class="default" method="post" action="<?= $controller->link_for('calendar/calendar/add_courses') ?>">
+<form class="default" method="post" action="<?= $controller->link_for('calendar/schedule/add_courses') ?>">
     <?= CSRFProtection::tokenTag() ?>
     <fieldset class="simplevue">
         <legend><?= _('Veranstaltungen für den Kalender auswählen') ?></legend>

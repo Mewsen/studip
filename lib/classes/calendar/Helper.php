@@ -149,7 +149,7 @@ class Helper
                 'timeGridEventMinHeight' => 20,
                 'eventSources' => [
                     [
-                        'url' => \URLHelper::getURL('dispatch.php/calendar/calendar/schedule_data'),
+                        'url' => \URLHelper::getURL('dispatch.php/calendar/schedule/data'),
                         'method' => 'GET',
                         'extraParams' => [
                             'semester_id' => $semester_id,
