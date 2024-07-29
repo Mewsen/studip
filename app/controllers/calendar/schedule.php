@@ -245,4 +245,9 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         $this->render_json($result);
     }
+
+    public function add_entry_action()
+    {
+
+    }
 }
