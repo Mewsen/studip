@@ -10,14 +10,14 @@ class Lti_ToolController extends AuthenticatedController
         $this->deployment = null;
         $this->tool_id    = '';
         $this->range_id   = '';
+        $this->user_may_edit_tool = false;
 
         if (in_array($action, ['index', 'add', 'edit', 'delete'])) {
             $this->range_id = $args[0];
             $this->tool_id  = $args[1] ?? '';
-            if (!$this->range_id || ($this->range_id === 'global' && !$GLOBALS['perm']->have_perm('root'))) {
-                throw new AccessDeniedException();
-            }
-            if ($this->range_id !== 'global' && !$GLOBALS['perm']->have_studip_perm('tutor', $this->range_id)) {
+            $this->user_may_edit_tool = ($this->range_id === 'global' && $GLOBALS['perm']->have_perm('root'))
+                || ($this->range_id !== 'global' && $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id));
+            if (!$this->user_may_edit_tool) {
                 throw new AccessDeniedException();
             }
             if ($action === 'add' && !$this->tool_id) {
@@ -49,16 +49,16 @@ class Lti_ToolController extends AuthenticatedController
     public function add_action($range_id, $tool_id = '')
     {
         //NOTE: The parameters are checked and processed in the before_filter.
-        $this->addEditHandler('add');
+        $this->addEditHandler();
     }
 
     public function edit_action($range_id, $tool_id)
     {
         //NOTE: The parameters are checked and processed in the before_filter.
-        $this->addEditHandler('edit');
+        $this->addEditHandler();
     }
 
-    protected function addEditHandler($mode)
+    protected function addEditHandler()
     {
         if (!$this->tool) {
             return;

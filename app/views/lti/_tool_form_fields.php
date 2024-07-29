@@ -23,7 +23,7 @@
                       placeholder="<?= _('Bitte machen Sie Angaben zu dem angebundenen Werkzeug, soweit sie ihnen bekannt sind. Wie ist der Name, wer bietet es an, wozu wird es eingesetzt und welche Daten werden übertragen? (Beispiel: „Tool XY wird zur Durchführung von Sprachtests genutzt und Testergebnisse und ggf. Noten gespeichert. Zur Anmeldung werden Name und Nutzerkennung übertragen.“)') ?>"><?= wysiwygReady($deployment->data_protection_notes) ?></textarea>
         </label>
     <? endif ?>
-    <? if (!$tool->is_global) : ?>
+    <? if ($user_may_edit_tool) : ?>
         <label>
             <?= _('URL zu den Nutzungsbedingungen des LTI-Tools (falls verfügbar)') ?>
             <input type="url" name="terms_of_use_url" value="<?= htmlReady($tool->terms_of_use_url) ?>">
@@ -36,7 +36,7 @@
 </fieldset>
 <fieldset>
     <legend><?= _('Konfiguration des LTI-Tools') ?></legend>
-    <? if (!$tool->is_global) : ?>
+    <? if ($user_may_edit_tool) : ?>
         <label class="studiprequired">
             <span class="textlabel"><?= _('LTI-Version') ?></span>
             <span class="asterisk">*</span>
@@ -64,7 +64,7 @@
                ) ?>">
     </label>
 
-    <? if (!$tool->is_global) : ?>
+    <? if ($user_may_edit_tool) : ?>
         <div class="lti13a-field">
             <label>
                 <?= _('OIDC Login-URL') ?>
