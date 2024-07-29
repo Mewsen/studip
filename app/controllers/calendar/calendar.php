@@ -442,8 +442,6 @@ class Calendar_CalendarController extends AuthenticatedController
         );
     }
 
-
-
     public function course_action($course_id)
     {
         PageLayout::setTitle(_('Veranstaltungskalender'));
@@ -692,6 +690,86 @@ class Calendar_CalendarController extends AuthenticatedController
         } else {
             //Clean up the array keys:
             $this->render_json(array_values($result));
+        }
+    }
+
+    public function add_courses_action()
+    {
+        $selected_semester_pseudo_id = Request::option('semester_id');
+        $this->selected_semester_id = '';
+        $this->available_semester_data = [];
+        $semesters = Semester::getAll();
+        foreach ($semesters as $semester) {
+            $this->available_semester_data[$semester['id']] = [
+                'id'   => $semester['id'],
+                'name' => $semester['name']
+            ];
+        }
+        $this->available_semester_data = array_reverse($this->available_semester_data);
+
+        if (!$selected_semester_pseudo_id) {
+            $selected_semester_pseudo_id = User::findCurrent()->getConfiguration()->MY_COURSES_SELECTED_CYCLE;
+            if (!Config::get()->MY_COURSES_ENABLE_ALL_SEMESTERS && $selected_semester_pseudo_id === 'all') {
+                $selected_semester_pseudo_id = 'next';
+            }
+            if (!$selected_semester_pseudo_id) {
+                $selected_semester_pseudo_id = Config::get()->MY_COURSES_DEFAULT_CYCLE;
+            }
+        }
+        if ($selected_semester_pseudo_id === 'next') {
+            $semester = Semester::findNext();
+            $this->selected_semester_id = $semester->id;
+        } elseif (in_array($selected_semester_pseudo_id, ['all', 'current'])) {
+            $semester = Semester::findCurrent();
+            $this->selected_semester_id = $semester->id;
+        } elseif ($selected_semester_pseudo_id === 'last') {
+            $semester = Semester::findPrevious();
+            $this->selected_semester_id = $semester->id;
+        } else {
+            $this->selected_semester_id = $selected_semester_pseudo_id ?? '';
+            if (!Semester::exists($this->selected_semester_id)) {
+                $semester = Semester::findCurrent();
+                $this->selected_semester_id = $semester->id;
+            }
+        }
+
+        $this->selected_course_ids = SimpleCollection::createFromArray(
+            CourseMember::findBySQL(
+                'user_id = :user_id AND bind_calendar = 1',
+                ['user_id' => User::findCurrent()->id]
+            )
+        )->pluck('seminar_id');
+
+        $this->semester_data = [];
+        $all_semesters = Semester::getAll();
+        foreach ($all_semesters as $semester) {
+            $data = [
+                'id' => $semester->id,
+                'name' => $semester->name,
+                'courses' => []
+            ];
+            $this->semester_data[] = $data;
+        }
+
+        if (Request::submitted('add')) {
+            CSRFProtection::verifyUnsafeRequest();
+
+            $course_ids = Request::getArray('courses_course_ids');
+            foreach ($course_ids as $course_id => $selected) {
+                $course_membership = CourseMember::findOneBySQL(
+                    'seminar_id = :course_id AND user_id = :user_id',
+                    [
+                        'course_id' => $course_id,
+                        'user_id'   => User::findCurrent()->id
+                    ]
+                );
+                if ($course_membership) {
+                    $course_membership->bind_calendar = $selected ? '1' : '0';
+                    $course_membership->store();
+                }
+            }
+            PageLayout::postSuccess(_('Die Zuordnung von Veranstaltungen zum Kalender wurde aktualisiert.'));
+            $this->redirect('calendar/schedule/index');
         }
     }
 
