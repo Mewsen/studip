@@ -37,11 +37,9 @@ class CalendarNavigation extends Navigation
      */
     public function initSubNavigation()
     {
-        global $perm, $atime;
-
         parent::initSubNavigation();
 
-        if (!$perm->have_perm('admin') && Config::get()->SCHEDULE_ENABLE) {
+        if (!$GLOBALS['perm']->have_perm('admin') && Config::get()->SCHEDULE_ENABLE) {
             $navigation = new Navigation(_('Stundenplan'), 'dispatch.php/calendar/schedule/index');
             $this->addSubNavigation('schedule', $navigation);
         }
