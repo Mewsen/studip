@@ -20,6 +20,7 @@ class AlterScheduleTable extends Migration
             CHANGE COLUMN start start_time SMALLINT(6) NOT NULL,
             CHANGE COLUMN end end_time SMALLINT(6) NOT NULL,
             CHANGE COLUMN day dow TINYINT(1) NOT NULL,
+            CHANGE COLUMN title label VARCHAR(255) NOT NULL DEFAULT '',
             CHANGE COLUMN content content TEXT,
             ADD COLUMN mkdate BIGINT(10) NOT NULL DEFAULT 0,
             ADD COLUMN chdate BIGINT(10) NOT NULL DEFAULT 0"

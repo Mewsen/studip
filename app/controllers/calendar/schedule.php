@@ -224,7 +224,7 @@ class Calendar_ScheduleController extends AuthenticatedController
             $this->entry->user_id = $GLOBALS['user']->id;
             if (!Request::submitted('save')) {
                 //Provide good default values:
-                $this->entry->day = Request::get('dow', date('N'));
+                $this->entry->dow = Request::get('dow', date('N'));
                 $this->entry->setFormattedStart(Request::get('start', date('H:00', time() + 3600)));
                 $this->entry->setFormattedEnd(Request::get('end', date('H:00', time() + 7200)));
             }
@@ -243,13 +243,13 @@ class Calendar_ScheduleController extends AuthenticatedController
         if (Request::submitted('save')) {
             CSRFProtection::verifyUnsafeRequest();
 
-            $this->entry->day = Request::get('dow', date('N'));
+            $this->entry->dow = Request::int('dow', intval(date('N')));
             $this->entry->setFormattedStart(Request::get('start'));
             $this->entry->setFormattedEnd(Request::get('end'));
-            $this->entry->title   = Request::get('title', '');
+            $this->entry->label   = Request::get('label', '');
             $this->entry->content = Request::get('content', '');
 
-            if (intval($this->entry->start) >= intval($this->entry->end)) {
+            if (intval($this->entry->start_time) >= intval($this->entry->end_time)) {
                 PageLayout::postError(_('Der Startzeitpunkt darf nicht nach dem Endzeitpunkt liegen!'));
                 return;
             }

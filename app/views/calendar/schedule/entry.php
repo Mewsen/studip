@@ -12,25 +12,25 @@
         <section class="flex-row">
         <label>
             <select name="dow">
-                <option value="1" <?php echo $entry->day === '1' ? 'selected' : '' ?>>
+                <option value="1" <?php echo $entry->dow === 1 ? 'selected' : '' ?>>
                     <?php echo _('Montag') ?>
                 </option>
-                <option value="2" <?php echo $entry->day === '2' ? 'selected' : '' ?>>
+                <option value="2" <?php echo $entry->dow === 2 ? 'selected' : '' ?>>
                     <?php echo _('Dienstag') ?>
                 </option>
-                <option value="3" <?php echo $entry->day === '3' ? 'selected' : '' ?>>
+                <option value="3" <?php echo $entry->dow === 3 ? 'selected' : '' ?>>
                     <?php echo _('Mittwoch') ?>
                 </option>
-                <option value="4" <?php echo $entry->day === '4' ? 'selected' : '' ?>>
+                <option value="4" <?php echo $entry->dow === 4 ? 'selected' : '' ?>>
                     <?php echo _('Donnerstag') ?>
                 </option>
-                <option value="5" <?php echo $entry->day === '5' ? 'selected' : '' ?>>
+                <option value="5" <?php echo $entry->dow === 5 ? 'selected' : '' ?>>
                     <?php echo _('Freitag') ?>
                 </option>
-                <option value="6" <?php echo $entry->day === '6' ? 'selected' : '' ?>>
+                <option value="6" <?php echo $entry->dow === 6 ? 'selected' : '' ?>>
                     <?php echo _('Samstag') ?>
                 </option>
-                <option value="7" <?php echo $entry->day === '7' ? 'selected' : '' ?>>
+                <option value="7" <?php echo $entry->dow === 7 ? 'selected' : '' ?>>
                     <?php echo _('Sonntag') ?>
                 </option>
             </select>
@@ -51,7 +51,7 @@
         <legend><?php echo _('Inhalt') ?></legend>
         <label>
             <?php echo _('Titel') ?>
-            <input type="text" name="title" value="<?= htmlReady($entry->title) ?>">
+            <input type="text" name="label" value="<?= htmlReady($entry->label) ?>">
         </label>
         <label>
             <?php echo _('Beschreibung') ?>

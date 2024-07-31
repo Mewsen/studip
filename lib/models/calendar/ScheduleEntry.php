@@ -20,19 +20,20 @@
  * displayed only in the schedule of a user.
  *
  * @property string id database column
- * @property string start database column
- * @property string end database column
- * @property string day database column
- * @property string title database column
+ * @property string start_time database column
+ * @property string end_time database column
+ * @property string dow database column
+ * @property string label database column
  * @property string content database column
- * @property string color database column
  * @property string user_id database column
+ * @property string mkdate database column
+ * @property string chdate database column
  */
 class ScheduleEntry extends SimpleORMap implements Event
 {
     protected static function configure($config = [])
     {
-        $config['db_table'] = 'schedule';
+        $config['db_table'] = 'schedule_entries';
         $config['belongs_to']['user'] = [
             'class_name'  => User::class,
             'foreign_key' => 'user_id'
@@ -50,7 +51,7 @@ class ScheduleEntry extends SimpleORMap implements Event
      */
     public function setFormattedStart(string $formatted_start) : void
     {
-        $this->start = implode('', explode(':', $formatted_start));
+        $this->start_time = implode('', explode(':', $formatted_start));
     }
 
     /**
@@ -63,7 +64,7 @@ class ScheduleEntry extends SimpleORMap implements Event
      */
     public function setFormattedEnd(string $formatted_end) : void
     {
-        $this->end = implode('', explode(':', $formatted_end));
+        $this->end_time = implode('', explode(':', $formatted_end));
     }
 
     /**
@@ -74,10 +75,10 @@ class ScheduleEntry extends SimpleORMap implements Event
      */
     public function getFormattedStart() : string
     {
-        if (strlen($this->start) === 3) {
-            return '0' . $this->start[0] . ':' . $this->start[1] . ':' . $this->start[2];
-        } elseif (strlen($this->start) === 4) {
-            return $this->start[0] . $this->start[1] . ':' . $this->start[2] . $this->start[3];
+        if (strlen($this->start_time) === 3) {
+            return '0' . substr($this->start_time, 0,1) . ':' . substr($this->start_time, 1, 2);
+        } elseif (strlen($this->start_time) === 4) {
+            return substr($this->start_time, 0,2) . ':' . substr($this->start_time, 2, 2);
         }
         //Invalid date format:
         return '';
@@ -91,10 +92,10 @@ class ScheduleEntry extends SimpleORMap implements Event
      */
     public function getFormattedEnd() : string
     {
-        if (strlen($this->end) === 3) {
-            return '0' . $this->end[0] . ':' . $this->end[1] . ':' . $this->end[2];
-        } elseif (strlen($this->end) === 4) {
-            return $this->end[0] . $this->end[1] . ':' . $this->end[2] . $this->end[3];
+        if (strlen($this->end_time) === 3) {
+            return '0' . substr($this->end_time, 0,1) . ':' . substr($this->end_time, 1, 2);
+        } elseif (strlen($this->end_time) === 4) {
+            return substr($this->end_time, 0,2) . ':' . substr($this->end_time, 2, 2);
         }
         //Invalid date format:
         return '';
@@ -133,7 +134,7 @@ class ScheduleEntry extends SimpleORMap implements Event
 
     public function getTitle(): string
     {
-        return $this->title;
+        return $this->label;
     }
 
     public function getBegin(): DateTime
@@ -141,8 +142,8 @@ class ScheduleEntry extends SimpleORMap implements Event
         //Map the entry to the current week:
         $date = new DateTime();
         $date->setTimestamp(strtotime('midnight this monday'));
-        if (intval($this->day) > 1) {
-            $days_to_add = intval($this->day) - 1;
+        if (intval($this->dow) > 1) {
+            $days_to_add = intval($this->dow) - 1;
             $date = $date->add(new DateInterval(sprintf('P%dD', $days_to_add)));
         }
         $time_parts = explode(':', $this->getFormattedStart());
@@ -155,8 +156,8 @@ class ScheduleEntry extends SimpleORMap implements Event
         //Map the entry to the current week:
         $date = new DateTime();
         $date->setTimestamp(strtotime('midnight this monday'));
-        if (intval($this->day) > 1) {
-            $days_to_add = intval($this->day) - 1;
+        if (intval($this->dow) > 1) {
+            $days_to_add = intval($this->dow) - 1;
             $date = $date->add(new DateInterval(sprintf('P%dD', $days_to_add)));
         }
         $time_parts = explode(':', $this->getFormattedEnd());
@@ -195,7 +196,7 @@ class ScheduleEntry extends SimpleORMap implements Event
 
     public function isAllDayEvent(): bool
     {
-        return $this->start === '000' && $this->end === '2359';
+        return $this->start_time === '000' && $this->end_time === '2359';
     }
 
     public function isWritable(string $user_id): bool
@@ -206,25 +207,23 @@ class ScheduleEntry extends SimpleORMap implements Event
 
     public function getCreationDate(): DateTime
     {
-        //The creation date is not supported.
         $date = new DateTime();
-        $date->setTimestamp(0);
+        $date->setTimestamp($this->mkdate);
         return $date;
     }
 
     public function getModificationDate(): DateTime
     {
-        //The modification date is not supported.
         $date = new DateTime();
-        $date->setTimestamp(0);
+        $date->setTimestamp($this->chdate);
         return $date;
     }
 
     public function getImportDate(): DateTime
     {
-        //The import date is not supported.
+        //The import date is not supported. Use mkdate instead.
         $date = new DateTime();
-        $date->setTimestamp(0);
+        $date->setTimestamp($this->mkdate);
         return $date;
     }
 
@@ -243,7 +242,7 @@ class ScheduleEntry extends SimpleORMap implements Event
         return new \Studip\Calendar\EventData(
             $this->getBegin(),
             $this->getEnd(),
-            $this->title,
+            $this->label,
             ['schedule-entry'],
             '#000000',
             '#ffffff',
