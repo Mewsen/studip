@@ -11,6 +11,7 @@
         <legend><?php echo _('Zeit') ?></legend>
         <section class="flex-row">
         <label>
+            <?php echo _('Wochentag') ?>
             <select name="dow">
                 <option value="1" <?php echo $entry->dow === 1 ? 'selected' : '' ?>>
                     <?php echo _('Montag') ?>
