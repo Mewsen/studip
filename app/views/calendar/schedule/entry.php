@@ -1,0 +1,49 @@
+<?php
+/**
+ * @var AuthenticatedController $controller
+ * @var ScheduleEntry $entry The schedule entry to be created/modified.
+ */
+?>
+<form class="default" method="post" action="<?= $controller->link_for('calendar/schedule/entry') ?>">
+    <?php echo CSRFProtection::tokenTag() ?>
+    <fieldset>
+        <legend><?php echo _('Zeit') ?></legend>
+        <section class="flex-row">
+        <label>
+            <select name="dow">
+                <option value="1" <?php echo $entry->day === '1' ? 'selected' : '' ?>>
+                    <?php echo _('Montag') ?>
+                </option>
+                <option value="2" <?php echo $entry->day === '2' ? 'selected' : '' ?>>
+                    <?php echo _('Dienstag') ?>
+                </option>
+                <option value="3" <?php echo $entry->day === '3' ? 'selected' : '' ?>>
+                    <?php echo _('Mittwoch') ?>
+                </option>
+                <option value="4" <?php echo $entry->day === '4' ? 'selected' : '' ?>>
+                    <?php echo _('Donnerstag') ?>
+                </option>
+                <option value="5" <?php echo $entry->day === '5' ? 'selected' : '' ?>>
+                    <?php echo _('Freitag') ?>
+                </option>
+                <option value="6" <?php echo $entry->day === '6' ? 'selected' : '' ?>>
+                    <?php echo _('Samstag') ?>
+                </option>
+                <option value="7" <?php echo $entry->day === '7' ? 'selected' : '' ?>>
+                    <?php echo _('Sonntag') ?>
+                </option>
+            </select>
+        </label>
+        <label>
+            <?php echo _('Startuhrzeit') ?>
+            <input type="text" class="has-time-picker" name="start"
+                   value="<?php echo htmlReady($entry->getFormattedStart()) ?>">
+        </label>
+        <label>
+            <?php echo _('Enduhrzeit') ?>
+            <input type="text" class="has-time-picker" name="end"
+                   value="<?php echo htmlReady($entry->getFormattedEnd()) ?>">
+        </label>
+        </section>
+    </fieldset>
+</form>

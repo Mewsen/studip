@@ -47,7 +47,7 @@ class Calendar_ScheduleController extends AuthenticatedController
         $actions = new ActionsWidget();
         $actions->addLink(
             _('Neuer Eintrag'),
-            $this->url_for('calendar/schedule/add_entry'),
+            $this->url_for('calendar/schedule/entry/add'),
             Icon::create('add'),
             ['data-dialog' => 'size=default']
         );
@@ -237,8 +237,18 @@ class Calendar_ScheduleController extends AuthenticatedController
         $this->render_json($result);
     }
 
-    public function add_entry_action()
+    public function entry_action(string $entry_id)
     {
+        $this->entry = null;
+        if ($entry_id = 'add') {
+            $this->entry        = new ScheduleEntry();
+            $this->entry->day   = Request::get('dow', date('N'));
+            $this->entry->start = Request::get('start', date('H00', time() + 3600));
+            $this->entry->end   = Request::get('end', date('H00', time() + 7200));
+        }
 
+        if (Request::submitted('save')) {
+            CSRFProtection::verifyUnsafeRequest();
+        }
     }
 }
