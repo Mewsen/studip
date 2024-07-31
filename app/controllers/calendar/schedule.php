@@ -275,7 +275,6 @@ class Calendar_ScheduleController extends AuthenticatedController
             $this->entry->setFormattedEnd(Request::get('end'));
             $this->entry->title   = Request::get('title', '');
             $this->entry->content = Request::get('content', '');
-            $this->entry->color   = Request::get('color', '');
 
             if (intval($this->entry->start) >= intval($this->entry->end)) {
                 PageLayout::postError(_('Der Startzeitpunkt darf nicht nach dem Endzeitpunkt liegen!'));
@@ -287,6 +286,11 @@ class Calendar_ScheduleController extends AuthenticatedController
                     PageLayout::postSuccess(_('Der Termin wurde hinzugefügt.'));
                 } else {
                     PageLayout::postSuccess(_('Der Termin wurde bearbeitet.'));
+                }
+                if (Request::isDialog()) {
+                    $this->response->add_header('X-Dialog-Close', '1');
+                } else {
+                    $this->redirect('calendar/schedule/index');
                 }
             } else {
                 if ($entry_id === 'add') {

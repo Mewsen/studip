@@ -4,7 +4,8 @@
  * @var ScheduleEntry $entry The schedule entry to be created/modified.
  */
 ?>
-<form class="default" method="post" action="<?= $controller->link_for('calendar/schedule/entry/' . $entry->isNew() ? 'add' : $entry->id) ?>">
+<form class="default" method="post" action="<?php echo $controller->link_for('calendar/schedule/entry/' . ($entry->isNew() ? 'add' : $entry->id)) ?>"
+      data-dialog="reload-on-close">
     <?php echo CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend><?php echo _('Zeit') ?></legend>
@@ -46,4 +47,19 @@
         </label>
         </section>
     </fieldset>
+    <fieldset>
+        <legend><?php echo _('Inhalt') ?></legend>
+        <label>
+            <?php echo _('Titel') ?>
+            <input type="text" name="title" value="<?= htmlReady($entry->title) ?>">
+        </label>
+        <label>
+            <?php echo _('Beschreibung') ?>
+            <textarea name="content"><?php echo htmlReady($entry->content) ?></textarea>
+        </label>
+    </fieldset>
+    <div data-dialog-button>
+        <?php echo \Studip\Button::create(_('Speichern'), 'save') ?>
+        <?php echo \Studip\Button::createCancel(_('Abbrechen')) ?>
+    </div>
 </form>
