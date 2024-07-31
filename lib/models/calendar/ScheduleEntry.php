@@ -28,7 +28,7 @@
  * @property string color database column
  * @property string user_id database column
  */
-class ScheduleEntry extends SimpleORMap
+class ScheduleEntry extends SimpleORMap implements Event
 {
     protected static function configure($config = [])
     {
@@ -98,5 +98,169 @@ class ScheduleEntry extends SimpleORMap
         }
         //Invalid date format:
         return '';
+    }
+
+    public static function getEvents(DateTime $begin, DateTime $end, string $range_id): array
+    {
+        return self::findBySQL(
+            "`user_id` = :range_id
+            AND `start` < :end AND `end` > :start
+            AND `day` >= :start_day AND day <= :end_day",
+            [
+                'range_id'  => $range_id,
+                'start'     => $begin->format('Hi'),
+                'end'       => $end->format('Hi'),
+                'start_day' => $begin->format('N'),
+                'end_day'   => $end->format('N')
+            ]
+        );
+    }
+
+    public function getObjectId(): string
+    {
+        return $this->id;
+    }
+
+    public function getPrimaryObjectID(): string
+    {
+        return $this->user_id;
+    }
+
+    public function getObjectClass(): string
+    {
+        return self::class;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getBegin(): DateTime
+    {
+        //Map the entry to the current week:
+        $date = new DateTime();
+        $date->setTimestamp(strtotime('midnight this monday'));
+        if (intval($this->day) > 1) {
+            $days_to_add = intval($this->day) - 1;
+            $date = $date->add(new DateInterval(sprintf('P%dD', $days_to_add)));
+        }
+        $time_parts = explode(':', $this->getFormattedStart());
+        $date->setTime(intval($time_parts[0]), intval($time_parts[1]));
+        return $date;
+    }
+
+    public function getEnd(): DateTime
+    {
+        //Map the entry to the current week:
+        $date = new DateTime();
+        $date->setTimestamp(strtotime('midnight this monday'));
+        if (intval($this->day) > 1) {
+            $days_to_add = intval($this->day) - 1;
+            $date = $date->add(new DateInterval(sprintf('P%dD', $days_to_add)));
+        }
+        $time_parts = explode(':', $this->getFormattedEnd());
+        $date->setTime(intval($time_parts[0]), intval($time_parts[1]));
+        return $date;
+    }
+
+    public function getDuration(): DateInterval
+    {
+        $begin = $this->getBegin();
+        $end   = $this->getEnd();
+        return $begin->diff($end);
+    }
+
+    public function getLocation(): string
+    {
+        //No location supported.
+        return '';
+    }
+
+    public function getUniqueId(): string
+    {
+        return sprintf('%1$s_%2$s_%3$s', Config::get()->STUDIP_INSTALLATION_ID, self::class, $this->id);
+    }
+
+    public function getDescription(): string
+    {
+        return $this->content;
+    }
+
+    public function getAdditionalDescriptions(): array
+    {
+        //No additional description supported.
+        return [];
+    }
+
+    public function isAllDayEvent(): bool
+    {
+        return $this->start === '000' && $this->end === '2359';
+    }
+
+    public function isWritable(string $user_id): bool
+    {
+        //Only the owner may edit the entry:
+        return $user_id === $this->user_id;
+    }
+
+    public function getCreationDate(): DateTime
+    {
+        //The creation date is not supported.
+        $date = new DateTime();
+        $date->setTimestamp(0);
+        return $date;
+    }
+
+    public function getModificationDate(): DateTime
+    {
+        //The modification date is not supported.
+        $date = new DateTime();
+        $date->setTimestamp(0);
+        return $date;
+    }
+
+    public function getImportDate(): DateTime
+    {
+        //The import date is not supported.
+        $date = new DateTime();
+        $date->setTimestamp(0);
+        return $date;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->user;
+    }
+
+    public function getEditor(): ?User
+    {
+        return $this->user;
+    }
+
+    public function toEventData(string $user_id): \Studip\Calendar\EventData
+    {
+        return new \Studip\Calendar\EventData(
+            $this->getBegin(),
+            $this->getEnd(),
+            $this->title,
+            ['schedule-entry'],
+            '#000000',
+            '#ffffff',
+            $this->isWritable($user_id),
+            self::class,
+            $this->id,
+            User::class,
+            $this->user_id,
+            User::class,
+            $this->user_id,
+            [
+                'show' => URLHelper::getURL('dispatch.php/calendar/schedule/entry/' . $this->id)
+            ],
+            [],
+            '',
+            '#000000',
+            $this->isAllDayEvent()
+        );
     }
 }

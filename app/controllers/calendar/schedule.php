@@ -176,36 +176,8 @@ class Calendar_ScheduleController extends AuthenticatedController
             $result[] = $event->toFullcalendarEvent();
         }
 
-        //Add all personal dates with weekly repetition to the result set:
-        $weekly_dates = CalendarDateAssignment::findBySQL(
-            "INNER JOIN `calendar_dates`
-            ON calendar_date_id = `calendar_dates`.`id`
-            WHERE
-            `calendar_date_assignments`.`range_id` = :user_id
-            AND
-            `calendar_dates`.`repetition_type` = 'WEEKLY'
-            AND
-            `calendar_dates`.`interval` = '1'
-            AND
-            (
-                `calendar_dates`.`begin` < :end AND
-                (
-                    `calendar_dates`.`end` > :begin
-                    OR
-                    `calendar_dates`.`repetition_end` > :begin
-                    OR
-                    `calendar_dates`.`end` + (7 * 86400 * `calendar_dates`.`number_of_dates`) > :begin
-                    OR
-                    `calendar_dates`.`repetition_end` = POW(2, 31) - 1
-                )
-            )
-            ORDER BY `calendar_dates`.`begin` ASC",
-            [
-                'user_id' => $GLOBALS['user']->id,
-                'begin'   => $semester->beginn,
-                'end'     => $semester->ende
-            ]
-        );
+        //Add all schedule entries to the result set:
+        $weekly_dates = ScheduleEntry::findByUser_id($GLOBALS['user']->id);
         foreach ($weekly_dates as $date) {
             $event_data = $date->toEventData($GLOBALS['user']->id);
 
@@ -248,7 +220,8 @@ class Calendar_ScheduleController extends AuthenticatedController
         $this->entry = null;
         if ($entry_id === 'add') {
             //Add mode
-            $this->entry        = new ScheduleEntry();
+            $this->entry          = new ScheduleEntry();
+            $this->entry->user_id = $GLOBALS['user']->id;
             if (!Request::submitted('save')) {
                 //Provide good default values:
                 $this->entry->day = Request::get('dow', date('N'));
