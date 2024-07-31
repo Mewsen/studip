@@ -52,15 +52,6 @@ class Calendar_ScheduleController extends AuthenticatedController
             ['data-dialog' => 'size=default']
         );
 
-        if (!$GLOBALS['perm']->have_perm('admin')) {
-            $actions->addLink(
-                _('Veranstaltung auswählen'),
-                $this->url_for('calendar/schedule/add_courses'),
-                Icon::create('add'),
-                ['data-dialog' => 'size=medium']
-            );
-        }
-
         $actions->addLink(
             _('Drucken'),
             'javascript:void(window.print());',
