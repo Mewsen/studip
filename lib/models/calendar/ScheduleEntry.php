@@ -141,7 +141,7 @@ class ScheduleEntry extends SimpleORMap implements Event
     {
         //Map the entry to the current week:
         $date = new DateTime();
-        $date->setTimestamp(strtotime('midnight this monday'));
+        $date->setTimestamp(strtotime('midnight this week'));
         if (intval($this->dow) > 1) {
             $days_to_add = intval($this->dow) - 1;
             $date = $date->add(new DateInterval(sprintf('P%dD', $days_to_add)));
@@ -155,7 +155,7 @@ class ScheduleEntry extends SimpleORMap implements Event
     {
         //Map the entry to the current week:
         $date = new DateTime();
-        $date->setTimestamp(strtotime('midnight this monday'));
+        $date->setTimestamp(strtotime('midnight this week'));
         if (intval($this->dow) > 1) {
             $days_to_add = intval($this->dow) - 1;
             $date = $date->add(new DateInterval(sprintf('P%dD', $days_to_add)));

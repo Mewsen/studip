@@ -180,29 +180,8 @@ class Calendar_ScheduleController extends AuthenticatedController
         $weekly_dates = ScheduleEntry::findByUser_id($GLOBALS['user']->id);
         foreach ($weekly_dates as $date) {
             $event_data = $date->toEventData($GLOBALS['user']->id);
-
-            //Calculate a fake begin and end that lies in the week
-            //fullcalendar has specified.
-            $fake_begin = clone $begin;
-            $fake_end = clone $begin;
-            $weekday = $event_data->begin->format('N');
-            if ($weekday > 1) {
-                $fake_begin = $fake_begin->add(new DateInterval('P' . ($weekday - 1) . 'D'));
-                $fake_end = $fake_end->add(new DateInterval('P' . ($weekday - 1) . 'D'));
-            }
-            $fake_begin->setTime(
-                intval($event_data->begin->format('H')),
-                intval($event_data->begin->format('i')),
-                intval($event_data->begin->format('s'))
-            );
-            $fake_end->setTime(
-                intval($event_data->end->format('H')),
-                intval($event_data->end->format('i')),
-                intval($event_data->end->format('s'))
-            );
-            $event_data->begin = $fake_begin;
-            $event_data->end   = $fake_end;
-
+            //Disable fullcalendar drag & drop actions:
+            $event_data->editable = false;
             $result[] = $event_data->toFullcalendarEvent();
         }
 
