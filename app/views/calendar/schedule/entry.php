@@ -4,7 +4,7 @@
  * @var ScheduleEntry $entry The schedule entry to be created/modified.
  */
 ?>
-<form class="default" method="post" action="<?= $controller->link_for('calendar/schedule/entry') ?>">
+<form class="default" method="post" action="<?= $controller->link_for('calendar/schedule/entry/' . $entry->isNew() ? 'add' : $entry->id) ?>">
     <?php echo CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend><?php echo _('Zeit') ?></legend>

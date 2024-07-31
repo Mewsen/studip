@@ -237,18 +237,64 @@ class Calendar_ScheduleController extends AuthenticatedController
         $this->render_json($result);
     }
 
+    /**
+     * This action handles adding and editing schedule entries.
+     *
+     * @param string $entry_id The ID of the entry to be modified. In case the ID is set to "add", a new entry
+     *     will be created. In all other cases, an existing entry will be loaded.
+     */
     public function entry_action(string $entry_id)
     {
         $this->entry = null;
-        if ($entry_id = 'add') {
+        if ($entry_id === 'add') {
+            //Add mode
             $this->entry        = new ScheduleEntry();
-            $this->entry->day   = Request::get('dow', date('N'));
-            $this->entry->start = Request::get('start', date('H00', time() + 3600));
-            $this->entry->end   = Request::get('end', date('H00', time() + 7200));
+            if (!Request::submitted('save')) {
+                //Provide good default values:
+                $this->entry->day = Request::get('dow', date('N'));
+                $this->entry->setFormattedStart(Request::get('start', date('H:00', time() + 3600)));
+                $this->entry->setFormattedEnd(Request::get('end', date('H:00', time() + 7200)));
+            }
+        } else {
+            //Edit mode
+            $this->entry = ScheduleEntry::find($entry_id);
+            if (!$this->entry) {
+                PageLayout::postError(_('Der Termin wurde nicht gefunden.'));
+            }
+            if ($this->entry->user_id !== $GLOBALS['user']->id) {
+                //"Hey, this is private! Mmmmmmm!" (moves flat hand away from body)
+                throw new AccessDeniedException(_('Sie dürfen diesen Termin nicht bearbeiten!'));
+            }
         }
 
         if (Request::submitted('save')) {
             CSRFProtection::verifyUnsafeRequest();
+
+            $this->entry->day = Request::get('dow', date('N'));
+            $this->entry->setFormattedStart(Request::get('start'));
+            $this->entry->setFormattedEnd(Request::get('end'));
+            $this->entry->title   = Request::get('title', '');
+            $this->entry->content = Request::get('content', '');
+            $this->entry->color   = Request::get('color', '');
+
+            if (intval($this->entry->start) >= intval($this->entry->end)) {
+                PageLayout::postError(_('Der Startzeitpunkt darf nicht nach dem Endzeitpunkt liegen!'));
+                return;
+            }
+
+            if ($this->entry->store() !== false) {
+                if ($entry_id === 'add') {
+                    PageLayout::postSuccess(_('Der Termin wurde hinzugefügt.'));
+                } else {
+                    PageLayout::postSuccess(_('Der Termin wurde bearbeitet.'));
+                }
+            } else {
+                if ($entry_id === 'add') {
+                    PageLayout::postError(_('Der Termin konnte nicht hinzugefügt werden.'));
+                } else {
+                    PageLayout::postError(_('Der Termin konnte nicht bearbeitet werden.'));
+                }
+            }
         }
     }
 }

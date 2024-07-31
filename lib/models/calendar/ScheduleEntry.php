@@ -41,6 +41,32 @@ class ScheduleEntry extends SimpleORMap
     }
 
     /**
+     * A helper method to set the content of the start attribute by a formatted date
+     * in the format HH:mm.
+     *
+     * @param string $formatted_start The formatted date in the format HH:mm.
+     *
+     * @return void
+     */
+    public function setFormattedStart(string $formatted_start) : void
+    {
+        $this->start = implode('', explode(':', $formatted_start));
+    }
+
+    /**
+     * A helper method to set the content of the end attribute by a formatted date
+     * in the format HH:mm.
+     *
+     * @param string $formatted_end The formatted date in the format HH:mm.
+     *
+     * @return void
+     */
+    public function setFormattedEnd(string $formatted_end) : void
+    {
+        $this->end = implode('', explode(':', $formatted_end));
+    }
+
+    /**
      * Formats the start time for human-readable output.
      *
      * @return string The start time in the format HH:mm or an empty string in case
