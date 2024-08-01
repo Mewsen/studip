@@ -90,90 +90,87 @@ class Calendar_ScheduleController extends AuthenticatedController
             throw new InvalidArgumentException('Invalid parameters!');
         }
 
-        $semester_id = Request::get('semester_id');
-        $semester = Semester::find($semester_id);
-        if (!$semester) {
-            $this->render_json([]);
-        }
-
-        //Get all regular course dates for that semester:
-        $cycle_dates = SeminarCycleDate::findBySql(
-            'INNER JOIN `termine` USING (`metadate_id`)
-            INNER JOIN `seminare` USING (`seminar_id`)
-            INNER JOIN `seminar_user` USING (`seminar_id`)
-            WHERE
-            `seminar_user`.`user_id` = :user_id
-            AND
-            (
-            `termine`.`date` BETWEEN :begin AND :end
-            OR `termine`.`end_time` BETWEEN :begin AND :end
-            )
-            GROUP BY `metadate_id`
-             ',
-            [
-                'user_id' => $GLOBALS['user']->id,
-                'begin' => $semester->beginn,
-                'end' => $semester->ende
-            ]
-        );
-
         $result = [];
 
-        foreach ($cycle_dates as $cycle_date) {
-            //Calculate a fake begin and end that lies in the week
-            //fullcalendar has specified.
-            $fake_begin = clone $begin;
-            $fake_end = clone $begin;
-            if ($cycle_date->weekday > 1) {
-                $fake_begin = $fake_begin->add(new DateInterval('P' . ($cycle_date->weekday - 1) . 'D'));
-                $fake_end = $fake_end->add(new DateInterval('P' . ($cycle_date->weekday - 1) . 'D'));
-            }
-            $start_time_parts = explode(':', $cycle_date->start_time);
-            $end_time_parts = explode(':', $cycle_date->end_time);
-            $fake_begin->setTime(
-                intval($start_time_parts[0]),
-                intval($start_time_parts[1]),
-                intval($start_time_parts[2])
-            );
-            $fake_end->setTime(
-                intval($end_time_parts[0]),
-                intval($end_time_parts[1]),
-                intval($end_time_parts[2])
-            );
-
-            //Get the course colour:
-            $course_membership = CourseMember::findOneBySQL(
-                'seminar_id = :course_id AND user_id = :user_id',
+        $semester_id = Request::get('semester_id');
+        $semester = Semester::find($semester_id);
+        if ($semester) {
+            //Get all regular course dates for that semester:
+            $cycle_dates = SeminarCycleDate::findBySql(
+                'INNER JOIN `termine` USING (`metadate_id`)
+                INNER JOIN `seminare` USING (`seminar_id`)
+                INNER JOIN `seminar_user` USING (`seminar_id`)
+                WHERE
+                `seminar_user`.`user_id` = :user_id
+                AND
+                (
+                `termine`.`date` BETWEEN :begin AND :end
+                OR `termine`.`end_time` BETWEEN :begin AND :end
+                )
+                GROUP BY `metadate_id`',
                 [
-                    'course_id' => $cycle_date->seminar_id,
-                    'user_id' => $GLOBALS['user']->id
-                ]
-            );
-            $event_classes = [];
-            if ($course_membership) {
-                $event_classes[] = sprintf('course-color-%u', $course_membership->gruppe);
-            }
-
-            $event = new \Studip\Calendar\EventData(
-                $fake_begin,
-                $fake_end,
-                $cycle_date->course->getFullName(),
-                $event_classes,
-                '',
-                '',
-                false,
-                'SeminarCycleDate',
-                $cycle_date->id,
-                '',
-                '',
-                'course',
-                $cycle_date->seminar_id,
-                [
-                    'show' => $this->url_for('calendar/schedule/course_info', ['course_id' => $cycle_date->seminar_id])
+                    'user_id' => $GLOBALS['user']->id,
+                    'begin' => $semester->beginn,
+                    'end' => $semester->ende
                 ]
             );
 
-            $result[] = $event->toFullcalendarEvent();
+            foreach ($cycle_dates as $cycle_date) {
+                //Calculate a fake begin and end that lies in the week
+                //fullcalendar has specified.
+                $fake_begin = clone $begin;
+                $fake_end = clone $begin;
+                if ($cycle_date->weekday > 1) {
+                    $fake_begin = $fake_begin->add(new DateInterval('P' . ($cycle_date->weekday - 1) . 'D'));
+                    $fake_end = $fake_end->add(new DateInterval('P' . ($cycle_date->weekday - 1) . 'D'));
+                }
+                $start_time_parts = explode(':', $cycle_date->start_time);
+                $end_time_parts = explode(':', $cycle_date->end_time);
+                $fake_begin->setTime(
+                    intval($start_time_parts[0]),
+                    intval($start_time_parts[1]),
+                    intval($start_time_parts[2])
+                );
+                $fake_end->setTime(
+                    intval($end_time_parts[0]),
+                    intval($end_time_parts[1]),
+                    intval($end_time_parts[2])
+                );
+
+                //Get the course colour:
+                $course_membership = CourseMember::findOneBySQL(
+                    'seminar_id = :course_id AND user_id = :user_id',
+                    [
+                        'course_id' => $cycle_date->seminar_id,
+                        'user_id' => $GLOBALS['user']->id
+                    ]
+                );
+                $event_classes = [];
+                if ($course_membership) {
+                    $event_classes[] = sprintf('course-color-%u', $course_membership->gruppe);
+                }
+
+                $event = new \Studip\Calendar\EventData(
+                    $fake_begin,
+                    $fake_end,
+                    $cycle_date->course->getFullName(),
+                    $event_classes,
+                    '',
+                    '',
+                    false,
+                    'SeminarCycleDate',
+                    $cycle_date->id,
+                    '',
+                    '',
+                    'course',
+                    $cycle_date->seminar_id,
+                    [
+                        'show' => $this->url_for('calendar/schedule/course_info', ['course_id' => $cycle_date->seminar_id])
+                    ]
+                );
+
+                $result[] = $event->toFullcalendarEvent();
+            }
         }
 
         //Add all schedule entries to the result set:
@@ -203,7 +200,7 @@ class Calendar_ScheduleController extends AuthenticatedController
             $this->entry->user_id = $GLOBALS['user']->id;
             if (!Request::submitted('save')) {
                 //Provide good default values:
-                $this->entry->dow = Request::get('dow', date('N'));
+                $this->entry->dow = Request::int('dow', intval(date('N')));
                 $this->entry->setFormattedStart(Request::get('start', date('H:00', time() + 3600)));
                 $this->entry->setFormattedEnd(Request::get('end', date('H:00', time() + 7200)));
             }
