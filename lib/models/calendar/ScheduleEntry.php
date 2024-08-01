@@ -262,4 +262,16 @@ class ScheduleEntry extends SimpleORMap implements Event
             $this->isAllDayEvent()
         );
     }
+
+    public function toString() : string
+    {
+        return studip_interpolate(
+            _('Termin jeden %{dow} von %{start_time} bis %{end_time} Uhr'),
+            [
+                'dow'        => getWeekday($this->dow === 7 ? 0 : $this->dow, false),
+                'start_time' => $this->getFormattedStart(),
+                'end_time'   => $this->getFormattedEnd()
+            ]
+        );
+    }
 }

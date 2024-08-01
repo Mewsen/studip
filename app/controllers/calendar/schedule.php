@@ -46,7 +46,7 @@ class Calendar_ScheduleController extends AuthenticatedController
         //Then add the actions for the action widget:
         $actions = new ActionsWidget();
         $actions->addLink(
-            _('Neuer Eintrag'),
+            _('Neuer Termin'),
             $this->url_for('calendar/schedule/entry/add'),
             Icon::create('add'),
             ['data-dialog' => 'size=default']
@@ -204,6 +204,8 @@ class Calendar_ScheduleController extends AuthenticatedController
                 $this->entry->setFormattedStart(Request::get('start', date('H:00', time() + 3600)));
                 $this->entry->setFormattedEnd(Request::get('end', date('H:00', time() + 7200)));
             }
+
+            PageLayout::setTitle(_('Neuer Termin'));
         } else {
             //Edit mode
             $this->entry = ScheduleEntry::find($entry_id);
@@ -214,6 +216,8 @@ class Calendar_ScheduleController extends AuthenticatedController
                 //"Hey, this is private! Mmmmmmm!" (moves flat hand away from body)
                 throw new AccessDeniedException(_('Sie dürfen diesen Termin nicht bearbeiten!'));
             }
+
+            PageLayout::setTitle($this->entry->toString());
         }
 
         if (Request::submitted('save')) {
@@ -248,6 +252,23 @@ class Calendar_ScheduleController extends AuthenticatedController
                     PageLayout::postError(_('Der Termin konnte nicht bearbeitet werden.'));
                 }
             }
+        } elseif (Request::submitted('delete')) {
+            CSRFProtection::verifyUnsafeRequest();
+            if ($this->entry->delete()) {
+                PageLayout::postSuccess(_('Der Termin wurde gelöscht.'));
+            } else {
+                PageLayout::postError(_('Der Termin konnte nicht gelöscht werden.'));
+            }
+            if (Request::isDialog()) {
+                $this->response->add_header('X-Dialog-Close', '1');
+            } else {
+                $this->redirect('calendar/schedule/index');
+            }
         }
+    }
+
+    public function course_info_action(string $seminar_id)
+    {
+
     }
 }

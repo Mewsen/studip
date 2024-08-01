@@ -61,6 +61,9 @@
     </fieldset>
     <div data-dialog-button>
         <?php echo \Studip\Button::create(_('Speichern'), 'save') ?>
+        <?php if (!$entry->isNew()) : ?>
+            <?php echo \Studip\Button::create(_('Löschen'), 'delete') ?>
+        <?php endif ?>
         <?php echo \Studip\Button::createCancel(_('Abbrechen')) ?>
     </div>
 </form>
