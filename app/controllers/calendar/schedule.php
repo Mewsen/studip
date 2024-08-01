@@ -165,7 +165,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                     'course',
                     $cycle_date->seminar_id,
                     [
-                        'show' => $this->url_for('calendar/schedule/course_info', ['course_id' => $cycle_date->seminar_id])
+                        'show' => $this->url_for('calendar/schedule/course_info/' . $cycle_date->seminar_id)
                     ]
                 );
 
@@ -269,6 +269,21 @@ class Calendar_ScheduleController extends AuthenticatedController
 
     public function course_info_action(string $seminar_id)
     {
-
+        $this->course = Course::find($seminar_id);
+        if (!$this->course) {
+            PageLayout::postError(_('Die Veranstaltung wurde nicht gefunden.'));
+            return;
+        }
+        $this->membership = CourseMember::findOneBySQL(
+            '`seminar_id` = :course_id AND `user_id` = :user_id',
+            [
+                'course_id' => $this->course->id,
+                'user_id'   => $GLOBALS['user']->id
+            ]
+        );
+        if (!$this->membership) {
+            throw new AccessDeniedException();
+        }
+        PageLayout::setTitle($this->course->getFullName());
     }
 }
