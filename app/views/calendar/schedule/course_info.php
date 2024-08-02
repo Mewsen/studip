@@ -1,47 +1,57 @@
-<?php
+<?
 /**
  * @var AuthenticatedController $controller
  * @var Course $course
  * @var CourseMember $membership
  */
 ?>
-<?php if ($course) : ?>
-    <h2><?php echo htmlReady($course->getFullName()) ?></h2>
-    <form class="default simplevue" method="post" data-dialog="reload-on-close"
-          action="<?php echo $controller->link_for('calendar/schedule/course_info/' . $course->id) ?>">
-        <?php echo CSRFProtection::tokenTag() ?>
+<? if ($course) : ?>
+    <h2><?= htmlReady($course->getFullName()) ?></h2>
+    <form class="default" method="post" data-dialog="reload-on-close"
+          action="<?= $controller->link_for('calendar/schedule/course_info/' . $course->id) ?>">
+        <?= CSRFProtection::tokenTag() ?>
         <fieldset>
-            <legend><?php _('Farbe') ?></legend>
-            TODO: Vue-Komponente für Farben.
+            <legend><?= _('Farbe') ?></legend>
+            <table class="default">
+                <tr>
+                    <?= $this->render_partial(
+                        'my_courses/group_selector',
+                        [
+                            'course_id'         => $course->id,
+                            'selected_group_id' => $membership->gruppe
+                        ]
+                    ) ?>
+                </tr>
+            </table>
         </fieldset>
         <fieldset>
-            <legend><?php _('Informationen') ?></legend>
+            <legend><?= _('Informationen') ?></legend>
             <section>
-                <h3><?php echo _('Veranstaltungsnummer') ?></h3>
-                <p><?php echo htmlReady($course->veranstaltungsnummer) ?></p>
-                <h3><?php echo _('Lehrende') ?></h3>
+                <h3><?= _('Veranstaltungsnummer') ?></h3>
+                <p><?= htmlReady($course->veranstaltungsnummer) ?></p>
+                <h3><?= _('Lehrende') ?></h3>
                 <ul class="default">
-                    <?php
+                    <?
                     $lecturers = CourseMember::findByCourseAndStatus($course->id, 'dozent');
                     ?>
-                    <?php foreach ($lecturers as $lecturer) : ?>
+                    <? foreach ($lecturers as $lecturer) : ?>
                         <li>
                             <a href="<?php echo URLHelper::getLink('dispatch.php/profile', ['username' => $lecturer->username]) ?>">
                                 <?php echo htmlReady($lecturer->user->getFullName()) ?>
                             </a>
                         </li>
-                    <?php endforeach ?>
+                    <? endforeach ?>
                 </ul>
-                <h3><?php echo _('Veranstaltungszeiten') ?></h3>
+                <h3><?= _('Veranstaltungszeiten') ?></h3>
                 <?= $course->getAllDatesInSemester()->toHtml() ?>
             </section>
         </fieldset>
         <div data-dialog-button>
-            <?php echo \Studip\LinkButton::create(
+            <?= \Studip\LinkButton::create(
                 _('Direkt zur Veranstaltung'),
                 URLHelper::getURL('dispatch.php/course/overview', ['cid' => $course->id])
             ) ?>
-            <?php echo \Studip\Button::create(_('Ausblenden'), 'hide') ?>
+            <?= \Studip\Button::create(_('Ausblenden'), 'hide') ?>
         </div>
     </form>
-<?php endif ?>
+<? endif ?>

@@ -55,20 +55,13 @@
                             <?= _('(versteckt)') ?>
                         <? endif; ?>
                     </td>
-                <? for ($i = 0; $i < 9; $i++): ?>
-                    <td class="gruppe<?= $i ?> mycourses-group-selector" onclick="this.querySelector('input').checked = true;">
-                        <input type="radio" name="gruppe[<?= $member['seminar_id'] ?>]" value="<?= $i ?>"
-                               aria-label="<?= sprintf(_('Gruppe %u zuordnen'), $i + 1) ?>"
-                               id="course-group-<?= htmlReady($member['seminar_id']) ?>-<?= $i ?>"
-                            <? if ($my_sem[$member['seminar_id']]['gruppe'] == $i) echo 'checked'; ?>>
-                        <label for="course-group-<?= htmlReady($member['seminar_id']) ?>-<?= $i ?>">
-                            <span class="group-number"><?= $i + 1 ?></span>
-                            <span class="checked-icon">
-                                <?= Icon::create('accept', Icon::ROLE_INFO)->asImg(20) ?>
-                            </span>
-                        </label>
-                    </td>
-                <? endfor; ?>
+                    <?= $this->render_partial(
+                        'my_courses/group_selector',
+                        [
+                            'course_id'         => $member['seminar_id'],
+                            'selected_group_id' => $my_sem[$member['seminar_id']]['gruppe']
+                        ]
+                    ) ?>
                 </tr>
             <? endforeach; ?>
             </tbody>
