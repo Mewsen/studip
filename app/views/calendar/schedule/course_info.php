@@ -33,14 +33,7 @@
                     <?php endforeach ?>
                 </ul>
                 <h3><?php echo _('Veranstaltungszeiten') ?></h3>
-                <?php
-                //TODO: replace with new code after the seminar class StEP is merged!
-                $sem = new Seminar($course);
-                echo $sem->getDatesTemplate(
-                    'dates/seminar_html_location',
-                    ['ort' => $course->ort]
-                );
-                ?>
+                <?= $course->getAllDatesInSemester()->toHtml() ?>
             </section>
         </fieldset>
         <div data-dialog-button>
