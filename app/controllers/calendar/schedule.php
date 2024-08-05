@@ -187,7 +187,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                         'show' => $this->url_for('calendar/schedule/course_info/' . $cycle_date->seminar_id)
                     ],
                     [],
-                    'tag'
+                    $schedule_course ? 'tag' : ''
                 );
 
                 $result[] = $event->toFullcalendarEvent();
