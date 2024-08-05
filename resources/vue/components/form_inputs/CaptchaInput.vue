@@ -1,6 +1,7 @@
 <template>
     <div class="formpart">
         <altcha-widget :challengeurl="challengeUrl" ref="widget"></altcha-widget>
+        {{ $gettext('An dieser Stelle prüfen wir automatisch, ob Sie ein Mensch sind.') }}
     </div>
 </template>
 <script>
