@@ -44,8 +44,16 @@ class PluginEngine
 
         // load course plugins
         if (Context::getId()) {
-            self::getPlugins(StudipModule::class);
-            self::getPlugins(StandardPlugin::class);
+            $modules = self::getPlugins(StudipModule::class, Context::getId());
+            $navigation = Navigation::getItem('/course');
+
+            foreach ($modules as $module) {
+                $tabs = $module->getTabNavigation(Context::getId());
+
+                if ($navigation && $tabs) {
+                    $navigation->addToolNavigation($module->getPluginId(), $tabs);
+                }
+            }
         }
 
         // load admin plugins

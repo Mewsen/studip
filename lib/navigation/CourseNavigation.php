@@ -47,60 +47,49 @@ class CourseNavigation extends Navigation
     }
 
     /**
-     * Initialize the subnavigation of this item. This method
-     * is called once before the first item is added or removed.
+     * Add an array of navigation items to the subnavigation of this
+     * object. The new items are inserted at the appropriate position
+     * for this tool according to the order defined in tools_activated.
+     *
+     * @param int   $plugin_id   id of the module
+     * @param array $navigations navigation items to add
      */
-    public function initSubNavigation()
+    public function addToolNavigation($plugin_id, array $navigations)
     {
-        parent::initSubNavigation();
+        $found = null;
+        $where = null;
 
-        $admin_plugin_ids = [];
-
-        $core_admin = PluginManager::getInstance()->getPlugin(CoreAdmin::class);
-        if ($core_admin) {
-            $admin_plugin_ids[] = $core_admin->getPluginId();
-        }
-
-        $core_studygroup_admin = PluginManager::getInstance()->getPlugin(CoreStudygroupAdmin::class);
-        if ($core_studygroup_admin) {
-            $admin_plugin_ids[] = $core_studygroup_admin->getPluginId();
-        }
-
-        $tools = $this->range->tools->getArrayCopy();
-        usort($tools, function ($a, $b) use ($admin_plugin_ids) {
-            if (in_array($a['plugin_id'], $admin_plugin_ids)) {
-                return -1;
-            }
-            if (in_array($b['plugin_id'], $admin_plugin_ids)) {
-                return 1;
-            }
-            return $a['position'] - $b['position'];
-        });
-
-        foreach ($tools as $tool) {
+        foreach ($this->range->tools as $tool) {
             if (
-                !($this->range instanceof Institute)
-                && !Seminar_Perm::get()->have_studip_perm($tool->getVisibilityPermission(), $this->range->id)
+                $found
+                && $tool->metadata['navigation']
+                && $tool->metadata['navigation'] !== 'admin'
             ) {
-                continue;
+                $where = $tool->metadata['navigation'];
+                break;
             }
 
-            $studip_module = $tool->getStudipModule();
-            if (!($studip_module instanceof StudipModule)) {
-                continue;
+            if ($tool->plugin_id == $plugin_id) {
+                $tool->metadata['navigation'] = key($navigations);
+                $found = $tool;
             }
+        }
 
-            $tool_nav = $studip_module->getTabNavigation($this->range->id) ?: [];
+        // always insert admin module in first position
+        if (key($navigations) === 'admin') {
+            $where = key($this->subnav);
+        }
 
-            foreach ($tool_nav as $nav_name => $navigation) {
-                if (!$nav_name || !$navigation instanceof Navigation) {
-                    continue;
+        foreach ($navigations as $key => $nav) {
+            if (
+                $this->range instanceof Institute
+                || Seminar_Perm::get()->have_studip_perm($found->getVisibilityPermission(), $this->range->id)
+            ) {
+                if (isset($found->metadata['displayname'])) {
+                    $nav->setTitle($found->getDisplayname());
                 }
 
-                if ($tool->metadata['displayname']) {
-                    $navigation->setTitle($tool->getDisplayname());
-                }
-                $this->addSubNavigation($nav_name, $navigation);
+                $this->insertSubNavigation($key, $nav, $where);
             }
         }
     }
