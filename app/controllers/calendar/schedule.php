@@ -294,8 +294,8 @@ class Calendar_ScheduleController extends AuthenticatedController
             } elseif (Request::submitted('save')) {
                 //Save the selected group.
                 $selected_groups = Request::getArray('gruppe');
-                if (!empty($selected_groups[$this->course->id])) {
-                    $this->membership->gruppe = $selected_groups[$this->course->id];
+                if (array_key_exists($this->course->id, $selected_groups)) {
+                    $this->membership->gruppe = $selected_groups[$this->course->id] ?? '0';
                 }
                 $success = $this->membership->store() !== false;
                 if ($success) {
