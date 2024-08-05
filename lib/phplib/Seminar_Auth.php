@@ -337,7 +337,7 @@ class Seminar_Auth
             unset($_SESSION['semi_logged_in']); // used by email activation
             $login_template = $GLOBALS['template_factory']->open('loginform');
             if (isset($this->auth['uname']) && $this->error_msg) {
-                PageLayout::postException(_('Bei der Anmeldung trat ein Fehler auf!'), $this->error_msg);
+                PageLayout::postError(_('Bei der Anmeldung trat ein Fehler auf!'), $this->error_msg);
             }
             $login_template->set_attribute('error_msg', $this->error_msg);
             $login_template->set_attribute('uname', (isset($this->auth["uname"]) ? $this->auth["uname"] : Request::username('loginname')));

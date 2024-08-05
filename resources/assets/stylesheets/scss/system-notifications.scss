@@ -1,11 +1,11 @@
+@use 'variables';
+
 #system-notifications {
     &.bottom-right {
-        bottom: 50px;
+        bottom: 40px;
         right: 15px;
 
         .system-notification {
-            box-shadow: 5px 5px var(--dark-gray-color-10);
-
             &.system-notification-slide-enter,
             &.system-notification-slide-leave-to {
                 opacity: 0;
@@ -17,16 +17,25 @@
                 opacity: 1;
                 transform: translateX(0);
             }
+
+            &.system-notification-slide-enter-active,
+            &.system-notification-slide-leave-active {
+                transition: all var(--transition-duration-superslow) ease-in-out;
+            }
         }
+
+        &:not(.system-notifications-login) {
+            position: fixed;
+            width: 400px;
+        }
+
     }
 
     &.top-center {
         left: calc(50% - 300px);
-        top: 0;
+        top: 41px;
 
         .system-notification {
-            box-shadow: 0 0 0 3px var(--dark-gray-color-10);
-
             &.system-notification-slide-enter,
             &.system-notification-slide-leave-to {
                 opacity: 0;
@@ -38,35 +47,39 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-    }
 
-    &:not(.system-notifications-login) {
-        position: fixed;
-        width: 600px;
+            &.system-notification-slide-enter-active,
+            &.system-notification-slide-leave-active {
+                transition: all var(--transition-duration-slow) ease-in-out;
+            }
+
+        }
+
+        &:not(.system-notifications-login) {
+            position: fixed;
+            width: 600px;
+        }
+
     }
 
     &.system-notifications-login {
         margin-bottom: 15px;
+        overflow: hidden;
     }
 
-    overflow: hidden;
-    z-index: 1001;
+    overflow: visible;
+    z-index: 1000;
 }
 
 .system-notification {
     background-color: var(--content-color-20);
-    border: thin solid var(--content-color-40);
-    color: var(--black);
+    color: var(--white);
     cursor: pointer;
     display: flex;
-    padding: 10px;
+    margin-bottom: 6px;
+    min-height: 60px;
+    padding: 5px;
     position: relative;
-
-    &.system-notification-slide-enter-active,
-    &.system-notification-slide-leave-active {
-        transition: all var(--transition-duration-slow) ease-in-out;
-    }
 
     .system-notification-icon {
         flex: 0;
@@ -88,6 +101,7 @@
 
     .system-notification-close {
         align-self: normal;
+        display: none;
         flex: 0;
         height: 20px;
         width: 20px;
@@ -127,52 +141,73 @@
     }
 
     a:not(.system-notification-message) {
+        color: var(--white);
+        text-decoration-line: underline;
+    }
+
+    a.system-notification-message {
+        color: var(--white);
+        text-decoration: unset;
+    }
+
+    &:hover {
+        .system-notification-close {
+            display: unset;
+        }
+    }
+
+}
+
+.system-notification-exception {
+    background-color: var(--red);
+    color: var(--white);
+
+    .system-notification-timeout {
+        background-color: var(--red-40);
+    }
+}
+
+.system-notification-error {
+    background-color: var(--red);
+    color: var(--white);
+
+    .system-notification-timeout {
+        background-color: var(--red-40);
+    }
+}
+
+.system-notification-warning {
+    background-color: var(--yellow);
+    color: var(--black);
+
+    .system-notification-timeout {
+        background-color: var(--yellow-40);
+    }
+
+    a:not(.system-notification-message) {
         color: var(--black);
         text-decoration-line: underline;
     }
 
     a.system-notification-message {
-        color: var(--text-color);
+        color: var(--white);
         text-decoration: unset;
     }
-}
 
-.system-notification-exception {
-    background-color: var(--red-40);
-
-    .system-notification-timeout {
-        background-color: var(--red);
-    }
-}
-
-.system-notification-error {
-    background-color: var(--red-20);
-
-    .system-notification-timeout {
-        background-color: var(--red-80);
-    }
-}
-
-.system-notification-warning {
-    background-color: var(--yellow-20);
-
-    .system-notification-timeout {
-        background-color: var(--yellow-80);
-    }
 }
 
 .system-notification-success {
-    background-color: var(--green-20);
+    background-color: var(--green);
 
     .system-notification-timeout {
-        background-color: var(--green-80);
+        background-color: var(--green-40);
     }
 }
 
 .system-notification-info {
-    background-color: var(--dark-violet-20);
+    background-color: var(--dark-violet);
 
     .system-notification-timeout {
-        background-color: var(--dark-violet-60);
+        background-color: var(--dark-violet-40);
     }
 }

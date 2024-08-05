@@ -8,6 +8,7 @@
         <system-notification v-for="notification in allNotifications"
                              :key="`message-${notification.key}`"
                              :notification="notification"
+                             :placement="placement"
                              @destroyMe="destroyNotification(notification)"
         ></system-notification>
     </transition-group>

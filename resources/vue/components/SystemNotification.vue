@@ -9,7 +9,7 @@
     >
         <div class="system-notification-icon">
             <studip-icon :shape="icon.shape"
-                         :size="48"
+                         :size="40"
                          :role="icon.color"
                          alt=""
                          title=""></studip-icon>
@@ -41,6 +41,7 @@
                 @keydown.space="destroyMe"
                 tabindex="0">
             <studip-icon shape="decline"
+                         :role="icon.color"
                          :size="20"
                          class="close-system-notification"/>
         </button>
@@ -74,6 +75,10 @@ export default {
         visibleFor: {
             type: Number,
             default: 5000
+        },
+        placement: {
+            type: String,
+            default: 'topcenter'
         }
     },
     data() {
@@ -97,25 +102,7 @@ export default {
         },
         icon() {
             let iconShape = 'info-circle';
-            let iconColor = 'info';
-            switch (this.type) {
-                case 'exception':
-                    iconShape = 'exclaim-circle';
-                    iconColor = 'info_alt';
-                    break;
-                case 'error':
-                    iconShape = 'exclaim-circle';
-                    iconColor = 'status-red';
-                    break;
-                case 'warning':
-                    iconShape = 'exclaim-circle';
-                    iconColor = 'status-yellow';
-                    break;
-                case 'success':
-                    iconShape = 'check-circle';
-                    iconColor = 'status-green';
-                    break;
-            }
+            let iconColor = this.notification.type === 'warning' ? 'info' : 'info_alt';
             return {shape: iconShape, color: iconColor};
         },
         isDisrupted() {
@@ -162,8 +149,29 @@ export default {
         this.globalOn('resume-system-notifications', this.initTimeout);
 
         if (!STUDIP.config?.PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED) {
-            const audio = new Audio(STUDIP.ASSETS_URL + '/sounds/blubb.mp3');
-            audio.play();
+            let audio = null;
+            switch (this.notification.type) {
+                case 'info':
+                    audio = new Audio(STUDIP.ASSETS_URL + '/sounds/notify-ok.mp3');
+                    break;
+                case 'success':
+                    audio = new Audio(STUDIP.ASSETS_URL + '/sounds/notify-good.mp3');
+                    break;
+                case 'warning':
+                case 'error':
+                case 'exception':
+                    audio = new Audio(STUDIP.ASSETS_URL + '/sounds/notify-bad.mp3');
+                    break;
+            }
+
+            let timing = 300;
+            if (this.placement === 'bottomright') {
+                timing = 750;
+            }
+
+            setTimeout(() => {
+                audio.play();
+            }, timing);
         }
     },
     destroyed() {
