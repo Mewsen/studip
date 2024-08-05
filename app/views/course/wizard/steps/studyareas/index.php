@@ -1,27 +1,27 @@
 <? if (!$stepnumber) : ?>
     <fieldset>
 <? endif ?>
-    <legend><?= _('Studienbereiche') ?></legend>
-    <div id="assigned">
-        <h2>
+<legend><?= _('Studienbereiche') ?></legend>
+<div id="assigned">
+    <h2>
         <span class="required">
             <?= _('Bereits zugewiesen') ?>
         </span>
-        </h2>
-        <ul class="css-tree">
-            <li class="sem-tree-assigned-root keep-node" data-id="root"<?=
-            $assigned ? ' class="hidden-no-js hidden-js"' : '' ?>>
-                <?= htmlReady(Config::get()->UNI_NAME_CLEAN) ?>
-                <ul>
-                    <?php foreach ($assigned as $element) : ?>
-                        <?= $this->render_partial('studyareas/_assigned_node',
-                            ['element' => $element, 'studyareas' => $values['studyareas']]) ?>
-                    <?php endforeach ?>
-                </ul>
-            </li>
-        </ul>
-    </div>
-    <? if (empty($values['locked'])) : ?>
+    </h2>
+    <ul class="css-tree">
+        <li class="sem-tree-assigned-root keep-node" data-id="root"<?=
+        $assigned ? ' class="hidden-no-js hidden-js"' : '' ?>>
+            <?= htmlReady(Config::get()->UNI_NAME_CLEAN) ?>
+            <ul>
+                <?php foreach ($assigned as $element) : ?>
+                    <?= $this->render_partial('studyareas/_assigned_node',
+                        ['element' => $element, 'studyareas' => $values['studyareas']]) ?>
+                <?php endforeach ?>
+            </ul>
+        </li>
+    </ul>
+</div>
+<? if (empty($values['locked'])) : ?>
     <div id="studyareas" data-ajax-url="<?= $ajax_url ?>"
          data-forward-url="<?= $no_js_url ?>"
          data-no-search-result="<?= _('Es wurde kein Suchergebnis gefunden.') ?>">
@@ -65,28 +65,26 @@
         <input type="hidden" name="open_node" value="<?= $values['open_node'] ?>"/>
     <?php endif ?>
     <div class="clear"></div>
-<? if (!$stepnumber) : ?>
-    </fieldset>
-<? endif ?>
-<? if (!$stepnumber && empty($values['locked'])) : ?>
-    <footer data-dialog-button class="hidden-no-js">
-        <?= Studip\Button::createAccept(_('Speichern'), 'save') ?>
-    </footer>
-<? endif ?>
-<script>
-    //<!--
-    $(function () {
-        let element = $('#sem-tree-search');
-        element.on('keypress', function (e) {
-            if (e.keyCode === 13) {
-                if (element.val() !== '') {
-                    return STUDIP.CourseWizard.searchTree();
-                } else {
-                    return STUDIP.CourseWizard.resetSearch();
+    <? if (!$stepnumber) : ?>
+        </fieldset>
+    <? endif ?>
+    <? if (!$stepnumber && empty($values['locked'])) : ?>
+        <footer data-dialog-button class="hidden-no-js">
+            <?= Studip\Button::createAccept(_('Speichern'), 'save') ?>
+        </footer>
+    <? endif ?>
+    <script>
+        $(function () {
+            let element = $('#sem-tree-search');
+            element.on('keypress', function (e) {
+                if (e.keyCode === 13) {
+                    if (element.val() !== '') {
+                        return STUDIP.CourseWizard.searchTree();
+                    } else {
+                        return STUDIP.CourseWizard.resetSearch();
+                    }
                 }
-            }
+            });
         });
-    });
-    //-->
-</script>
+    </script>
 <? endif ?>
