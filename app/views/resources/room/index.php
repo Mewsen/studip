@@ -50,7 +50,7 @@
         <header>
             <h1><?= _('Dateien') ?></h1>
         </header>
-        <table class="default sortable-table" data-sortlist="[[2, 0]]">
+        <table class="default sortable-table" data-sortlist="[[1, 0]]">
             <?= $this->render_partial('files/_files_thead') ?>
             <? foreach ($resource_folder->getFiles() as $file): ?>
                 <? if ($file->isVisible($GLOBALS['user']->id)) : ?>
