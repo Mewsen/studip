@@ -20,7 +20,7 @@
         </select>
     </label>
 
-    <table class="default">
+    <table class="default mvv-files-table">
     <? foreach($GLOBALS['MVV_LANGUAGES']['values'] as $key => $entry) : ?>
         <tr>
             <td rowspan="2">
@@ -89,7 +89,7 @@
                             <input type="hidden" name="document_id" id="document_id" value="<?= htmlReady($documents[$key]->fileref_id) ?>">
                             <span class="icon"><?= Icon::create('file', Icon::ROLE_INFO, ['class' => 'text-bottom']); ?></span>
                             <span class="name"><?= htmlReady($documents[$key]->filename) ?></span>
-                            <span class="size"></span>
+                            <span class="size"><?= relsize($documents[$key]->file_ref->size) ?></span>
                             <button class="refresh_attachment as-link" data-language="<?= htmlReady($key) ?>">
                                 <?= Icon::create('refresh')->asImg([
                                     'class' => 'text-bottom',

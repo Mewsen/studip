@@ -634,3 +634,30 @@ form.default .mvv-inst-chooser select {
     vertical-align: text-top;
     text-decoration: none;
 }
+
+li.stgfile {
+    display: flex;
+    max-width: 48em;
+
+    .size {
+        margin-left: 0.5ex;
+        &::before {
+            content: ' (';
+        }
+        &::after {
+            content: ')';
+        }
+    }
+
+    button:first-of-type {
+        flex: 1;
+        margin-left: auto;
+        text-align: right;
+    }
+}
+
+.mvv-files-table {
+    &.default > tbody:last-of-type > tr:last-child td {
+        border-bottom-color: var(--table-header-color);
+    }
+}
