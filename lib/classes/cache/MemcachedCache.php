@@ -34,15 +34,27 @@ class MemcachedCache extends Cache
         }
 
         $prefix = \Config::get()->STUDIP_INSTALLATION_ID;
-        $this->memcache = new Memcached('studip' . ($prefix ? '-' . $prefix : ''));
+        $this->memcache = new Memcached(md5(json_encode($servers)));
 
         if (count($this->memcache->getServerList()) === 0) {
-            foreach ($servers as $server) {
-                $status = $this->memcache->addServer($server['hostname'], (int) $server['port']);
+            // Set options (see https://www.php.net/manual/en/memcached.addservers.php#118940)
+            $this->memcache->setOption(Memcached::OPT_DISTRIBUTION, Memcached::DISTRIBUTION_CONSISTENT);
+            $this->memcache->setOption(Memcached::OPT_SERVER_FAILURE_LIMIT, 2);
+            $this->memcache->setOption(Memcached::OPT_REMOVE_FAILED_SERVERS, true);
+            $this->memcache->setOption(Memcached::OPT_RETRY_TIMEOUT, 1);
+            $this->memcache->setOption(Memcached::OPT_PREFIX_KEY, $prefix);
 
-                if (!$status) {
-                    throw new \Exception("Could not add server: {$server['hostname']} @ port {$server['port']}");
-                }
+            $status = $this->memcache->addServers(
+                array_map(
+                    function ($server) {
+                        return [$server['hostname'], (int) $server['port']];
+                    },
+                    $servers
+                )
+            );
+
+            if (!$status) {
+                throw new \Exception('Could not add memcached servers');
             }
         }
     }
