@@ -313,4 +313,34 @@ class Calendar_ScheduleController extends AuthenticatedController
             }
         }
     }
+
+    public function mark_course_action(string $course_id)
+    {
+        $course = Course::find($course_id);
+        if ($course->isStudygroup()) {
+            throw new AccessDeniedException();
+        }
+        $entry = ScheduleCourseDate::findOneBySQL(
+            '`course_id` = :course_id AND `user_id` = :user_id',
+            [
+                'course_id' => $course_id,
+                'user_id'   => $GLOBALS['user']->id
+            ]
+        );
+        if ($entry) {
+            PageLayout::postInfo(_('Die Veranstaltung wurde bereits zum Stundenplan hinzugefügt.'));
+        } else {
+            $entry = new ScheduleCourseDate();
+            $entry->course_id   = $course->id;
+            $entry->user_id     = $GLOBALS['user']->id;
+            $entry->metadate_id = '';
+            $entry->visible     = '1';
+            if ($entry->store() !== false) {
+                PageLayout::postSuccess(_('Die Veranstaltung wurde zum Stundenplan hinzugefügt.'));
+            } else {
+                PageLayout::postError(_('Die Veranstaltung konnte nicht zum Stundenplan hinzugefügt werden.'));
+            }
+        }
+        $this->redirect('calendar/schedule/index');
+    }
 }

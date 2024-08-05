@@ -255,14 +255,14 @@ class Course_DetailsController extends AuthenticatedController
                 ]);
                 if (!$penciled) {
                     $links->addLink(
-                        _('Nur im Stundenplan vormerken'),
-                        $this->url_for("calendar/schedule/addvirtual/{$this->course->id}"),
+                        _('Zum Stundenplan hinzufügen'),
+                        $this->url_for(sprintf('calendar/schedule/mark_course/%s', $this->course->id)),
                         Icon::create('info')
                     );
 
                     $this->links[] = [
-                        'label'      => _('Nur im Stundenplan vormerken'),
-                        'url'        => $this->url_for("calendar/schedule/addvirtual/{$this->course->id}"),
+                        'label'      => _('Zum Stundenplan hinzufügen'),
+                        'url'        => $this->url_for(sprintf('calendar/schedule/mark_course/%s', $this->course->id)),
                         'attributes' => [],
                     ];
                 }
