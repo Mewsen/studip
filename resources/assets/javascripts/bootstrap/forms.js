@@ -1,5 +1,5 @@
 import { $gettext, $gettextInterpolate } from '../lib/gettext';
-import Report from '../lib/report.js';
+import Report from '../lib/report.ts';
 
 // Allow fieldsets to collapse
 $(document).on(

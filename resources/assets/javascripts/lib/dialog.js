@@ -3,7 +3,7 @@ import parseOptions from './parse_options.js';
 import extractCallback from './extract_callback.js';
 import Overlay from './overlay.js';
 import PageLayout from './page_layout.js';
-import Report from './report.js';
+import Report from './report.ts';
 
 /**
  * Specialized dialog handler

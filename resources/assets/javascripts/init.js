@@ -61,7 +61,7 @@ import QuickSelection from './lib/quick_selection.js';
 import Raumzeit from './lib/raumzeit.js';
 import {ready, domReady, dialogReady} from './lib/ready.js';
 import register from './lib/register.js';
-import Report from './lib/report.js';
+import Report from './lib/report.ts';
 import Resources from './lib/resources.js';
 import Responsive from './lib/responsive.js';
 import Schedule from './lib/schedule.js';
