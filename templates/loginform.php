@@ -34,11 +34,13 @@ $show_hidden_login = !$show_login && StudipAuthAbstract::isLoginEnabled();
         <div>
             <div id="loginbox">
                 <header>
-                    <system-notification-manager
-                        id="system-notifications"
-                        class="system-notifications-login"
-                        :notifications='<?= htmlReady(json_encode(PageLayout::getMessages())) ?>'
-                        append-all-to="#loginbox"></system-notification-manager>
+                    <?= Studip\VueApp::create('SystemNotificationManager')
+                        ->withProps([
+                            'id'            => 'system-notifications',
+                            'class'         => 'system-notifications-login',
+                            'notifications' => PageLayout::getMessages(MessageBox::class),
+                            'append-all-to' => '#loginbox'
+                        ]) ?>
 
                     <h1><?= htmlReady(Config::get()->UNI_NAME_CLEAN) ?></h1>
                 </header>
