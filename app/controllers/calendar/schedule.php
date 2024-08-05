@@ -88,7 +88,10 @@ class Calendar_ScheduleController extends AuthenticatedController
             $semester = Semester::findCurrent();
         }
 
-        $fullcalendar = \Studip\Calendar\Helper::getScheduleFullcalendar($semester->id ?? '');
+        $fullcalendar = \Studip\Calendar\Helper::getScheduleFullcalendar(
+            $semester->id ?? '',
+            Request::int('show_hidden') === 1
+        );
         $this->fullcalendar = $fullcalendar->render();
     }
 
@@ -107,7 +110,7 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         $semester_id = Request::get('semester_id');
         $semester = Semester::find($semester_id);
-        $show_hidden = Request::bool('show_hidden', false);
+        $show_hidden = Request::int('show_hidden', 0);
 
         if ($semester) {
             //Get all regular course dates for that semester:
@@ -164,7 +167,8 @@ class Calendar_ScheduleController extends AuthenticatedController
                         'user_id' => $GLOBALS['user']->id
                     ]
                 );
-                if (!$show_hidden && ($schedule_course && $schedule_course->visible === '0')) {
+                $is_hidden = $schedule_course && $schedule_course->visible != '1';
+                if (!$show_hidden && $is_hidden) {
                     //The regular date belongs to a course that has been hidden in the schedule.
                     //The flag to include hidden courses is not set which means that the regular
                     //date shall not be included.
@@ -192,6 +196,14 @@ class Calendar_ScheduleController extends AuthenticatedController
                     );
                 }
 
+                $event_icon = '';
+                if ($schedule_course && !$course_membership) {
+                    $event_icon = 'tag';
+                } elseif ($show_hidden && $is_hidden) {
+                    $event_icon = 'visibility-invisible';
+                    $event_classes[] = 'hidden-course';
+                }
+
                 $event = new \Studip\Calendar\EventData(
                     $fake_begin,
                     $fake_end,
@@ -210,7 +222,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                         'show' => $this->url_for('calendar/schedule/course_info/' . $cycle_date->seminar_id)
                     ],
                     [],
-                    $schedule_course && !$course_membership ? 'tag' : ''
+                    $event_icon
                 );
 
                 $result[] = $event->toFullcalendarEvent();
