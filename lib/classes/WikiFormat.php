@@ -179,8 +179,9 @@ class WikiFormat extends StudipFormat
         if (!$page) {
             return sprintf('<a href="%s">%s(?)</a>',
                 URLHelper::getLink('dispatch.php/course/wiki/edit', [
-                    'keyword' => trim($keyword),
-                    'parent_id' => $markup->getPageId()
+                    'keyword'   => trim($keyword),
+                    'parent_id' => $markup->getPageId(),
+                    'cid'       => $range_id,
                 ]),
                 $display_page
             );
