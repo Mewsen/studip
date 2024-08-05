@@ -24,17 +24,14 @@ class ScheduleEntriesShowTest extends \Codeception\Test\Unit
     {
         $credentials = $this->tester->getCredentialsForTestAutor();
 
-        \CalendarScheduleModel::storeEntry(
-            [
-                'start' => 9,
-                'end' => 10,
-                'day' => 1,
-                'title' => 'test title',
-                'content' => 'test content',
-                'user_id' => $credentials['id'],
-                'color' => DEFAULT_COLOR_NEW
-            ]
+        $stmt = DBManager::get()->prepare(
+            "INSERT INTO schedule_entries
+            (start_time, end_time, dow, label, content, user_id, mkdate, chdate)
+            VALUES
+            (9, 10, 1, 'test title', 'test content', :user_id, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())"
         );
+        $stmt->execute(['user_id' => $credentials['id']]);
+
         $scheduleEntryId = \DBManager::get()->lastInsertId();
 
         $app = $this->tester->createApp($credentials, 'get', '/schedule-entries/{id}', ScheduleEntriesShow::class);

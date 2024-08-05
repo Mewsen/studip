@@ -442,7 +442,7 @@ class SeminarCycleDate extends SimpleORMap
         $result = parent::delete();
 
         if ($result) {
-            $stmt = DBManager::get()->prepare('DELETE FROM schedule_seminare WHERE metadate_id = :metadate_id');
+            $stmt = DBManager::get()->prepare('DELETE FROM schedule_courses WHERE metadate_id = :metadate_id');
             $stmt->execute(['metadate_id' => $metadate_id]);
 
             StudipLog::log('SEM_DELETE_CYCLE', $seminar_id, null, $cycle_info);

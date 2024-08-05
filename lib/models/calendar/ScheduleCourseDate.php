@@ -20,23 +20,24 @@
  * displayed in the schedule of a user.
  *
  * @property string user_id database column
- * @property string seminar_id database column
+ * @property string course_id database column
  * @property string metadate_id database_column
  * @property string visible database column
- * @property string color database column
+ * @property string mkdate database column
+ * @property string chdate database column
  */
 class ScheduleCourseDate extends SimpleORMap
 {
     protected static function configure($config = [])
     {
-        $config['db_table'] = 'schedule_seminare';
+        $config['db_table'] = 'schedule_courses';
         $config['belongs_to']['user'] = [
             'class_name'  => User::class,
             'foreign_key' => 'user_id',
         ];
         $config['belongs_to']['course'] = [
             'class_name'  => Course::class,
-            'foreign_key' => 'seminar_id',
+            'foreign_key' => 'course_id',
         ];
         $config['belongs_to']['regular_date'] = [
             'class_name'  => SeminarCycleDate::class,

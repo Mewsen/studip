@@ -334,7 +334,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             WikiPageConfig::deleteByRange_id($course->id);
 
             //Remove all entries of the course in calendars:
-            $query = 'DELETE FROM `schedule_seminare` WHERE `seminar_id` = ?';
+            $query = 'DELETE FROM `schedule_courses` WHERE `course_id` = ?';
             $statement = DBManager::get()->execute($query, [$course->id]);
 
             //Remove connections to other e-learning systems:
@@ -1168,7 +1168,13 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             }
 
             //Delete course entries in the schedule:
-            CalendarScheduleModel::deleteSeminarEntries($user->id, $this->id);
+            ScheduleCourseDate::deleteBySQL(
+                'user_id = :user_id AND course_id = :course_id',
+                [
+                    'user_id'   => $user->id,
+                    'course_id' => $this->id
+                ]
+            );
 
             //Log the event:
             StudipLog::log('SEM_USER_ADD', $this->id, $user->id, $permission_level, 'Wurde in die Veranstaltung eingetragen');

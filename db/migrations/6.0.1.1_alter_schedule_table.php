@@ -25,6 +25,15 @@ class AlterScheduleTable extends Migration
             ADD COLUMN mkdate BIGINT(10) NOT NULL DEFAULT 0,
             ADD COLUMN chdate BIGINT(10) NOT NULL DEFAULT 0"
         );
+
+        $db->exec("RENAME TABLE IF EXISTS `schedule_seminare` TO `schedule_courses`");
+        $db->exec(
+            "ALTER IGNORE TABLE IF EXISTS `schedule_courses`
+            DROP COLUMN color,
+            CHANGE COLUMN seminar_id course_id CHAR(32) NOT NULL,
+            ADD COLUMN mkdate BIGINT(10) NOT NULL DEFAULT 0,
+            ADD COLUMN chdate BIGINT(10) NOT NULL DEFAULT 0"
+        );
     }
 
     protected function down()

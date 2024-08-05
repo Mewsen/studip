@@ -285,5 +285,32 @@ class Calendar_ScheduleController extends AuthenticatedController
             throw new AccessDeniedException();
         }
         PageLayout::setTitle($this->course->getFullName());
+
+        if (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
+            $success = false;
+            if (Request::submitted('hide')) {
+                //Hide the course.
+            } elseif (Request::submitted('save')) {
+                //Save the selected group.
+                $selected_groups = Request::getArray('gruppe');
+                if (!empty($selected_groups[$this->course->id])) {
+                    $this->membership->gruppe = $selected_groups[$this->course->id];
+                }
+                $success = $this->membership->store() !== false;
+                if ($success) {
+                    PageLayout::postSuccess(_('Die Farbe der Veranstaltung wurde geändert.'));
+                } else {
+                    PageLayout::postError(_('Die Farbe der Veranstaltung konnte nicht geändert werden.'));
+                }
+            }
+            if ($success) {
+                if (Request::isDialog()) {
+                    $this->response->add_header('X-Dialog-Close', '1');
+                } else {
+                    $this->redirect('calendar/schedule/index');
+                }
+            }
+        }
     }
 }

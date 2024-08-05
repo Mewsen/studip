@@ -47,11 +47,12 @@
             </section>
         </fieldset>
         <div data-dialog-button>
+            <?= \Studip\Button::create(_('Speichern'), 'save') ?>
+            <?= \Studip\Button::create(_('Veranstaltung ausblenden'), 'hide') ?>
             <?= \Studip\LinkButton::create(
                 _('Direkt zur Veranstaltung'),
                 URLHelper::getURL('dispatch.php/course/overview', ['cid' => $course->id])
             ) ?>
-            <?= \Studip\Button::create(_('Ausblenden'), 'hide') ?>
         </div>
     </form>
 <? endif ?>

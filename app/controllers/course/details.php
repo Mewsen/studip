@@ -247,8 +247,8 @@ class Course_DetailsController extends AuthenticatedController
                 && count($this->course->cycles)
             ) {
                 $query = "SELECT 1
-                          FROM `schedule_seminare`
-                          WHERE `seminar_id` = ? AND `user_id` = ?";
+                          FROM `schedule_courses`
+                          WHERE `course_id` = ? AND `user_id` = ?";
                 $penciled = DBManager::Get()->fetchColumn($query, [
                     $this->course->id,
                     $GLOBALS['user']->id,
