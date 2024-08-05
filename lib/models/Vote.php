@@ -49,7 +49,7 @@ class Vote extends QuestionnaireQuestion implements QuestionType
         $answer = $this->getMyAnswer();
 
         $answers = Request::getArray('answers');
-        $userAnswer = 0;
+        $userAnswer = null;
         if (array_key_exists($this->getId(), $answers)) {
             $userAnswer = $answers[$this->getId()]['answerdata']['answers'];
             if (is_array($userAnswer)) {
