@@ -77,7 +77,7 @@ class CourseNavigation extends Navigation
 
         // always insert admin module in first position
         if (key($navigations) === 'admin') {
-            $where = key($this->subnav);
+            $where = key($this->getSubNavigation());
         }
 
         foreach ($navigations as $key => $nav) {
