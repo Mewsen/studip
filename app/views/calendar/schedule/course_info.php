@@ -3,6 +3,7 @@
  * @var AuthenticatedController $controller
  * @var Course $course
  * @var CourseMember $membership
+ * @var ScheduleCourseDate $schedule_course_entry
  */
 ?>
 <? if ($course) : ?>
@@ -50,7 +51,11 @@
         </fieldset>
         <div data-dialog-button>
             <?= \Studip\Button::create(_('Speichern'), 'save') ?>
-            <?= \Studip\Button::create(_('Veranstaltung ausblenden'), 'hide') ?>
+            <? if (($schedule_course_entry && $schedule_course_entry->visible === '1') || empty($schedule_course_entry)) : ?>
+                <?= \Studip\Button::create(_('Veranstaltung ausblenden'), 'hide') ?>
+            <? else : ?>
+                <?= \Studip\Button::create(_('Veranstaltung einblenden'), 'show') ?>
+            <? endif ?>
             <?= \Studip\LinkButton::create(
                 _('Direkt zur Veranstaltung'),
                 URLHelper::getURL('dispatch.php/course/overview', ['cid' => $course->id])

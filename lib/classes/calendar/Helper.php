@@ -115,9 +115,15 @@ class Helper
      * @param string $semester_id The ID of the semester to be used. Defaults to an empty string
      *     which in turn means that the current semester shall be used.
      *
+     * @param bool $show_hidden_courses Whether to include hidden courses in the schedule (true)
+     *     or not (false). Defaults to false.
+     *
      * @return \Studip\Fullcalendar A fullcalendar instance for the schedule of the current user.
      */
-    public static function getScheduleFullcalendar(string $semester_id = '') : \Studip\Fullcalendar
+    public static function getScheduleFullcalendar(
+        string $semester_id = '',
+        bool $show_hidden_courses = false
+    ) : \Studip\Fullcalendar
     {
         if (!$semester_id) {
             $semester_id = \Semester::findCurrent()->id ?? '';
@@ -149,7 +155,10 @@ class Helper
                 'timeGridEventMinHeight' => 20,
                 'eventSources' => [
                     [
-                        'url' => \URLHelper::getURL('dispatch.php/calendar/schedule/data'),
+                        'url' => \URLHelper::getURL(
+                            'dispatch.php/calendar/schedule/data',
+                            ['show_hidden' => $show_hidden_courses ? '1' : '0']
+                        ),
                         'method' => 'GET',
                         'extraParams' => [
                             'semester_id' => $semester_id,
