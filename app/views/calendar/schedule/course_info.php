@@ -51,10 +51,10 @@
         </fieldset>
         <div data-dialog-button>
             <?= \Studip\Button::create(_('Speichern'), 'save') ?>
-            <? if (($schedule_course_entry && $schedule_course_entry->visible === '1') || empty($schedule_course_entry)) : ?>
-                <?= \Studip\Button::create(_('Veranstaltung ausblenden'), 'hide') ?>
-            <? else : ?>
+            <? if ($schedule_course_entry && ($schedule_course_entry->visible === 0)) : ?>
                 <?= \Studip\Button::create(_('Veranstaltung einblenden'), 'show') ?>
+            <? else : ?>
+                <?= \Studip\Button::create(_('Veranstaltung ausblenden'), 'hide') ?>
             <? endif ?>
             <?= \Studip\LinkButton::create(
                 _('Direkt zur Veranstaltung'),

@@ -345,6 +345,14 @@ class Calendar_ScheduleController extends AuthenticatedController
                 'user_id'   => $GLOBALS['user']->id
             ]
         );
+        $this->schedule_course_entry = ScheduleCourseDate::findOneBySQL(
+            '`course_id` = :course_id AND `user_id` = :user_id',
+            [
+                'course_id' => $this->course->id,
+                'user_id'   => $GLOBALS['user']->id
+            ]
+        );
+
         PageLayout::setTitle($this->course->getFullName());
 
         if (Request::isPost()) {
@@ -372,7 +380,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                     $success = ScheduleCourseDate::deleteBySQL(
                         '`user_id` = :user_id AND `course_id` = :course_id',
                         ['user_id' => $GLOBALS['user']->id, 'course_id' => $this->course->id]
-                    ) !== false;
+                    ) > 0;
                 }
             } elseif (Request::submitted('show')) {
                 //Make a hidden course visible again.
