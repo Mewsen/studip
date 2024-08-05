@@ -33,13 +33,17 @@ class Calendar_ScheduleController extends AuthenticatedController
             Navigation::activateItem('/calendar/schedule');
         }
 
+        $show_hidden = Request::bool('show_hidden', false);
+
         //Build the sidebar:
 
         $sidebar = Sidebar::get();
 
         //Add the semester selector widget first:
         $semester_widget = new SemesterSelectorWidget(
-            $this->url_for('calendar/schedule/index')
+            $show_hidden
+                ? $this->url_for('calendar/schedule/index', ['show_hidden' => '1'])
+                : $this->url_for('calendar/schedule/index')
         );
         $sidebar->addWidget($semester_widget);
 
@@ -51,16 +55,20 @@ class Calendar_ScheduleController extends AuthenticatedController
             Icon::create('add'),
             ['data-dialog' => 'size=default']
         );
-        if (Request::bool('show_hidden', false)) {
+        if ($show_hidden) {
             $actions->addLink(
                 _('Ausgeblendete Veranstaltungen verstecken'),
-                $this->url_for('calendar/schedule/index', ['show_hidden' => '0']),
+                Request::submitted('semester_id')
+                    ? $this->url_for('calendar/schedule/index', ['semester_id' => Request::get('semester_id')])
+                    : $this->url_for('calendar/schedule/index'),
                 Icon::create('visibility-invisible')
             );
         } else {
             $actions->addLink(
                 _('Ausgeblendete Veranstaltungen anzeigen'),
-                $this->url_for('calendar/schedule/index', ['show_hidden' => '1']),
+                Request::submitted('semester_id')
+                    ? $this->url_for('calendar/schedule/index', ['show_hidden' => '1', 'semester_id' => Request::get('semester_id')])
+                    : $this->url_for('calendar/schedule/index', ['show_hidden' => '1']),
                 Icon::create('visibility-visible')
             );
         }
