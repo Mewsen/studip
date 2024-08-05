@@ -10,20 +10,22 @@
     <form class="default" method="post" data-dialog="reload-on-close"
           action="<?= $controller->link_for('calendar/schedule/course_info/' . $course->id) ?>">
         <?= CSRFProtection::tokenTag() ?>
-        <fieldset>
-            <legend><?= _('Farbe') ?></legend>
-            <table class="default">
-                <tr>
-                    <?= $this->render_partial(
-                        'my_courses/group_selector',
-                        [
-                            'course_id'         => $course->id,
-                            'selected_group_id' => $membership->gruppe
-                        ]
-                    ) ?>
-                </tr>
-            </table>
-        </fieldset>
+        <? if ($membership) : ?>
+            <fieldset>
+                <legend><?= _('Farbe') ?></legend>
+                <table class="default">
+                    <tr>
+                        <?= $this->render_partial(
+                            'my_courses/group_selector',
+                            [
+                                'course_id'         => $course->id,
+                                'selected_group_id' => $membership->gruppe
+                            ]
+                        ) ?>
+                    </tr>
+                </table>
+            </fieldset>
+        <? endif ?>
         <fieldset>
             <legend><?= _('Informationen') ?></legend>
             <section>

@@ -99,9 +99,14 @@ class Calendar_ScheduleController extends AuthenticatedController
             $cycle_dates = SeminarCycleDate::findBySql(
                 'INNER JOIN `termine` USING (`metadate_id`)
                 INNER JOIN `seminare` USING (`seminar_id`)
-                INNER JOIN `seminar_user` USING (`seminar_id`)
                 WHERE
-                `seminar_user`.`user_id` = :user_id
+                `seminar_id` IN (
+                    SELECT `seminar_id` FROM `seminar_user`
+                    WHERE `user_id` = :user_id
+                    UNION
+                    SELECT `course_id` FROM `schedule_courses`
+                    WHERE `user_id` = :user_id
+                )
                 AND
                 (
                 `termine`.`date` BETWEEN :begin AND :end
@@ -139,21 +144,35 @@ class Calendar_ScheduleController extends AuthenticatedController
 
                 //Get the course colour:
                 $course_membership = CourseMember::findOneBySQL(
-                    'seminar_id = :course_id AND user_id = :user_id',
+                    '`seminar_id` = :course_id AND `user_id` = :user_id',
+                    [
+                        'course_id' => $cycle_date->seminar_id,
+                        'user_id' => $GLOBALS['user']->id
+                    ]
+                );
+                $schedule_course = ScheduleCourseDate::findOneBySQL(
+                    '`course_id` = :course_id AND `user_id` = :user_id',
                     [
                         'course_id' => $cycle_date->seminar_id,
                         'user_id' => $GLOBALS['user']->id
                     ]
                 );
                 $event_classes = [];
+                $event_title = $cycle_date->course->getFullName();
                 if ($course_membership) {
                     $event_classes[] = sprintf('course-color-%u', $course_membership->gruppe);
+                } elseif ($schedule_course) {
+                    $event_classes[] = 'marked-course';
+                    $event_title = studip_interpolate(
+                        '%{course_name} (vorgemerkt)',
+                        ['course_name' => $cycle_date->course->getFullName()]
+                    );
                 }
 
                 $event = new \Studip\Calendar\EventData(
                     $fake_begin,
                     $fake_end,
-                    $cycle_date->course->getFullName(),
+                    $event_title,
                     $event_classes,
                     '',
                     '',
@@ -166,7 +185,9 @@ class Calendar_ScheduleController extends AuthenticatedController
                     $cycle_date->seminar_id,
                     [
                         'show' => $this->url_for('calendar/schedule/course_info/' . $cycle_date->seminar_id)
-                    ]
+                    ],
+                    [],
+                    'tag'
                 );
 
                 $result[] = $event->toFullcalendarEvent();
@@ -281,9 +302,6 @@ class Calendar_ScheduleController extends AuthenticatedController
                 'user_id'   => $GLOBALS['user']->id
             ]
         );
-        if (!$this->membership) {
-            throw new AccessDeniedException();
-        }
         PageLayout::setTitle($this->course->getFullName());
 
         if (Request::isPost()) {
@@ -291,7 +309,19 @@ class Calendar_ScheduleController extends AuthenticatedController
             $success = false;
             if (Request::submitted('hide')) {
                 //Hide the course.
+                if ($this->membership) {
+                    //Hide the course in the schedule.
+                } else {
+                    //Remove the entry of the marked course from the schedule.
+                    ScheduleCourseDate::deleteBySQL(
+                        '`user_id` = :user_id AND `course_id` = :course_id',
+                        ['user_id' => $GLOBALS['user']->id, 'course_id' => $this->course->id]
+                    );
+                }
             } elseif (Request::submitted('save')) {
+                if (!$this->membership) {
+                    throw new AccessDeniedException();
+                }
                 //Save the selected group.
                 $selected_groups = Request::getArray('gruppe');
                 if (array_key_exists($this->course->id, $selected_groups)) {
