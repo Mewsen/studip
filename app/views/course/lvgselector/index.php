@@ -1,8 +1,8 @@
 <? if (!$locked) : ?>
-<form action="<?= $controller->link_for('course/lvgselector/index/' . $course_id, $url_params ?? []) ?>"
-    <?= Request::isDialog() ? 'data-dialog' : '' ?>
-      method="post" class="default">
-    <? endif ?>
+    <form action="<?= $controller->link_for('course/lvgselector/index/' . $course_id, $url_params ?? []) ?>"
+        <?= Request::isDialog() ? 'data-dialog' : '' ?>
+          method="post" class="default">
+<? endif ?>
     <fieldset>
         <legend><?= _('Lehrveranstaltungsgruppen') ?></legend>
         <div id="assigned" data-ajax-url="<?= $ajax_url ?>" data-forward-url="<?= $no_js_url ?>">
@@ -34,11 +34,11 @@
                 <div>
                     <input type="text" style="width: auto;" size="40" name="search" id="lvgroup-tree-search">
                     <span id="lvgroup-tree-search-start">
-                <?= Icon::create('search')->asInput([
-                    'name'    => 'start_search',
-                    'onclick' => 'return STUDIP.MVV.CourseWizard.searchTree()',
-                ]) ?>
-            </span>
+                        <?= Icon::create('search')->asInput([
+                            'name'    => 'start_search',
+                            'onclick' => 'return STUDIP.MVV.CourseWizard.searchTree()',
+                        ]) ?>
+                    </span>
                 </div>
 
                 <div id="lvgsearchresults" style="display: none;">
@@ -70,11 +70,10 @@
                     </li>
                 </ul>
             </div>
-        <? if ($open_lvg_nodes) : ?>
-        <input type="hidden" name="open_nodes" value="<?= json_encode($open_lvg_nodes) ?>">
-        <? endif ?>
+            <? if ($open_lvg_nodes) : ?>
+                <input type="hidden" name="open_nodes" value="<?= json_encode($open_lvg_nodes) ?>">
+            <? endif ?>
             <script>
-                //<!--
                 $(function () {
                     let element = $('#lvgroup-tree-search');
                     element.on('keypress', function (e) {
@@ -87,13 +86,12 @@
                         }
                     });
                 });
-                //-->
             </script>
         <? endif ?>
     </fieldset>
-    <? if (!$locked) : ?>
-    <footer data-dialog-button class="hidden-no-js">
-        <?= Studip\Button::createAccept(_('Speichern'), 'save') ?>
-    </footer>
-</form>
+<? if (!$locked) : ?>
+        <footer data-dialog-button class="hidden-no-js">
+            <?= Studip\Button::createAccept(_('Speichern'), 'save') ?>
+        </footer>
+    </form>
 <? endif ?>
