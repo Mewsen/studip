@@ -251,7 +251,7 @@ class Course_StatusgroupsController extends AuthenticatedController
                     Icon::create('add')
                 )->asDialog('size=auto');
             }
-            
+
             if (Config::get()->EXPORT_ENABLE) {
                 $export = new ExportWidget();
                 $export->addLink(
@@ -296,7 +296,7 @@ class Course_StatusgroupsController extends AuthenticatedController
                 Icon::create('arr_1down')
             );
         }
-        
+
         $sidebar->addWidget($actions);
     }
 
@@ -940,11 +940,6 @@ class Course_StatusgroupsController extends AuthenticatedController
                     $singledates = array_filter($dates, function ($d) { return !((bool) $d->metadate_id); });
                     foreach ($singledates as $d) {
                         $name = $d->getFullName();
-
-                        // Append description to group title if applicable.
-                        if ($d->description) {
-                            $name .= ' ' . mila($d->description, 30);
-                        }
 
                         // Get room name and append to group title.
                         if ($room = $d->getRoomName()) {
