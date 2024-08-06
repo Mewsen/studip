@@ -26,6 +26,7 @@ const mountApp = async (STUDIP, createApp, element) => {
     let oer_enabled = null;
     let licenses = null;
     let elem;
+    let feedbackSettings = null;
 
     if ((elem = document.getElementById(element.substring(1))) !== undefined) {
         if (elem.attributes !== undefined) {
@@ -51,6 +52,10 @@ const mountApp = async (STUDIP, createApp, element) => {
             // we need a route for License SORM
             if (elem.attributes['licenses'] !== undefined) {
                 licenses = JSON.parse(elem.attributes['licenses'].value);
+            }
+
+            if (elem.attributes['feedback-settings'] !== undefined) {
+                feedbackSettings = JSON.parse(elem.attributes['feedback-settings'].value);
             }
         }
     }
