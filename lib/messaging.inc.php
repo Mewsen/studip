@@ -183,7 +183,7 @@ class messaging
         if ($snd_user_id != "____%system%____") {
             $sender = User::find($snd_user_id);
 
-            $snd_fullname = $sender->getFullName() . ' (' . $sender->username . ')';
+            $snd_fullname = $sender->getFullName();
             $reply_to = $sender->Email;
         }
         $attachments = [];
