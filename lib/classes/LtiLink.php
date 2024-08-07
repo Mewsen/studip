@@ -28,7 +28,7 @@ class LtiLink
     protected $launch_url;
     protected $consumer_key;
     protected $consumer_secret;
-    protected $oauth_signature_method;
+    protected $signature_method;
 
     // launch parameters and variables
     protected $parameters = [];
@@ -40,13 +40,14 @@ class LtiLink
      * @param string $launch_url       launch URL of external LTI tool
      * @param string $consumer_key     consumer key of the LTI link
      * @param string $consumer_secret  consumer secret of the LTI link
+     * @param string $signature_method signature method to use (optional)
      */
-    public function __construct($launch_url, $consumer_key, $consumer_secret, $oauth_signature_method = 'sha1')
+    public function __construct($launch_url, $consumer_key, $consumer_secret, $signature_method = 'sha1')
     {
         $this->launch_url = $launch_url;
         $this->consumer_key = $consumer_key;
         $this->consumer_secret = $consumer_secret;
-        $this->oauth_signature_method = $oauth_signature_method;
+        $this->signature_method = $signature_method;
 
         // Basic LTI uses OAuth to sign requests
         // OAuth Core 1.0 spec: http://oauth.net/core/1.0/
@@ -58,7 +59,7 @@ class LtiLink
             'oauth_version' => '1.0',
             'oauth_nonce' => uniqid('lti', true),
             'oauth_timestamp' => time(),
-            'oauth_signature_method' => 'HMAC-' . strtoupper($this->oauth_signature_method),
+            'oauth_signature_method' => 'HMAC-' . strtoupper($this->signature_method),
             'tool_consumer_info_product_family_code' => 'studip',
             'tool_consumer_info_version' => $GLOBALS['SOFTWARE_VERSION'],
             'tool_consumer_instance_guid' => Config::get()->STUDIP_INSTALLATION_ID,
@@ -126,6 +127,7 @@ class LtiLink
                 'context_type' => $this->variables['Context.type'],
                 'context_label' => $this->variables['Context.label'],
                 'context_title' => $this->variables['Context.title'],
+                'lis_course_section_sourcedid' => $this->variables['CourseSection.sourcedId'],
             ]);
         }
     }
@@ -320,7 +322,7 @@ class LtiLink
             $request->withQueryParams($launch_params),
             $this->consumer_secret,
             '',
-            $this->oauth_signature_method
+            $this->signature_method
         );
     }
 }
