@@ -17,6 +17,7 @@ class SearchWidget extends SidebarWidget
     protected $method = 'get';
     protected $id = null;
     protected $onsubmit = null;
+    protected ?string $onclear = null;
 
     /**
      * Constructor for the widget.
@@ -108,6 +109,11 @@ class SearchWidget extends SidebarWidget
         $this->onsubmit = $onsubmit;
     }
 
+    public function setOnClearHandler(string $onclear): void
+    {
+        $this->onclear = $onclear;
+    }
+
     /**
      * Renders the widget.
      *
@@ -171,6 +177,7 @@ class SearchWidget extends SidebarWidget
 
         $this->template_variables['has_data'] = $this->hasData();
         $this->template_variables['onsubmit'] = $this->onsubmit;
+        $this->template_variables['onclear'] = $this->onclear;
 
         return parent::render($variables);
     }

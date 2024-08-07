@@ -1751,6 +1751,7 @@ class Admin_CoursesController extends AuthenticatedController
             $GLOBALS['user']->cfg->ADMIN_COURSES_SEARCHTEXT
         );
         $search->setOnSubmitHandler("STUDIP.AdminCourses.App.changeFilter({search: $(this).find('input').val()}); return false;");
+        $search->setOnClearHandler("STUDIP.AdminCourses.App.changeFilter({search: ''});");
         $sidebar->addWidget($search, 'filter_search');
     }
 
