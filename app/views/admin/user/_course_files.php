@@ -1,7 +1,7 @@
 <?php
 /**
  * @var Admin_UserController $controller
- * @var array $course_files
+ * @var array<string, array<string, array{course: Course, files: int}>> $course_files
  * @var array $params
  * @var User $user
  */
@@ -12,8 +12,8 @@
             <?= _('Dateiübersicht Veranstaltungen') ?>
         </h1>
     </header>
-    <? foreach ($course_files as $semester_name => $file_date) : ?>
-        <article id="<?= $semester_name ?>" class="<?= ContentBoxHelper::classes($semester_name) ?>">
+    <? foreach ($course_files as $semester_name => $file_data) : ?>
+        <article id="<?= htmlReady($semester_name) ?>" class="<?= ContentBoxHelper::classes($semester_name) ?>">
             <header>
                 <h1>
                     <a href="<?= ContentBoxHelper::href($semester_name) ?>">
@@ -40,11 +40,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <? foreach ($file_date as $data): ?>
+                        <? foreach ($file_data as $data): ?>
                             <tr>
-                                <td><?= htmlReady($data['course']->veranstaltungsnummer) ?></td>
                                 <td>
-                                    <?= htmlReady($data['course']->name) ?>
+                                    <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $data['course']->id]) ?>">
+                                        <?= htmlReady($data['course']->veranstaltungsnummer) ?>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $data['course']->id]) ?>">
+                                        <?= htmlReady($data['course']->name) ?>
+                                    </a>
                                 </td>
                                 <td>
                                     <?= htmlReady($data['course']->getSemType()['name'])?>
@@ -57,23 +63,23 @@
                                     <? endif ?>
                                 </td>
                                 <td class="actions">
-                                    <? if ($data['files']) : ?>
-                                        <?
-                                        $actionMenu = ActionMenu::get()->setContext($data['course']->name);
-                                        $actionMenu->addLink($controller->url_for('admin/user/list_files/' . $user['user_id'] . '/' . $data['course']->id, $params),
-                                                _('Dateien auflisten'),
-                                                Icon::create('folder-full', 'clickable'),
-                                                ['data-dialog' => 'size=50%']);
-                                        $actionMenu->addLink($controller->url_for('admin/user/download_user_files/' . $user['user_id'] . '/' . $data['course']->id),
-                                                _('Dateien als ZIP herunterladen'),
-                                                Icon::create('download', 'clickable'));
-
-                                        ?>
-
-                                        <?= $actionMenu->render() ?>
-                                    <? endif ?>
+                                <? if ($data['files']) : ?>
+                                    <?= ActionMenu::get()
+                                        ->setContext($data['course']->name)
+                                        ->addLink(
+                                            $controller->list_filesURL($user->id, $data['course']->id, $params),
+                                            _('Dateien auflisten'),
+                                            Icon::create('folder-full'),
+                                            ['data-dialog' => 'size=50%']
+                                        )
+                                        ->addLink(
+                                            $controller->download_user_filesURL($user->id, $data['course']->id),
+                                            _('Dateien als ZIP herunterladen'),
+                                            Icon::create('download')
+                                        )
+                                    ?>
+                                <? endif ?>
                                 </td>
-
                             </tr>
                         <? endforeach; ?>
                     </tbody>
