@@ -33,7 +33,7 @@
                     <?= Icon::create('decline')->asInput([
                         'title' =>  _('Suche zurücksetzen'),
                         'class' => 'reset-search',
-                        'onclick' => "document.getElementById('needle-".$hash."').value = ''; this.remove();"
+                        'onclick' => "document.getElementById('needle-".$hash."').value = ''; this.remove();" . ($onclear ?? ''),
                     ]) ?>
                 <? else : ?>
                     <a class="reset-search" href="<?= $reset_link ?>" tabindex="0" role="button"
