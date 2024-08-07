@@ -10,9 +10,7 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
-                <pre v-show="currentContent !== ''" v-highlightjs="currentContent">
-                    <code ref="code" :class="[currentLang]"></code>
-                </pre>
+                <pre v-show="currentContent !== ''" v-highlightjs="currentContent"><code ref="code" :class="[currentLang]"></code></pre>
                 <div v-show="currentLang !== ''" class="code-lang">
                     <span>{{ currentLang }}</span>
                 </div>
@@ -115,6 +113,6 @@ export default {
     },
 };
 </script>
-<style scoped lang="scss">
+<style lang="scss">
 @import '../../../../assets/stylesheets/scss/courseware/blocks/code.scss';
 </style>
