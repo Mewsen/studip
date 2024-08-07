@@ -1,7 +1,7 @@
 <?php
 /**
  * @var Admin_UserController $controller
- * @var Institute[] $institutes
+ * @var array<int, array{Institut_id: string, Name: string, files: int}> $institutes
  * @var User $user
  * @var array $params
  */
@@ -32,30 +32,34 @@
                 <? foreach ($institutes as $institute): ?>
                     <tr>
                         <td>
-                            <?= htmlReady($institute['Name']) ?>
+                            <a href="<?= URLHelper::getLink('dispatch.php/institute/overview', ['auswahl' => $institute['Institut_id']]) ?>">
+                                <?= htmlReady($institute['Name']) ?>
+                            </a>
                         </td>
                         <td>
-                            <? if ((int)$institute['files']) : ?>
+                            <? if ($institute['files']) : ?>
                                 <?= sprintf('%u %s', $institute['files'], _('Dokumente')) ?>
                             <? else : ?>
                                 -
                             <? endif ?>
                         </td>
                         <td class="actions">
-                            <? if ($institute['files']) : ?>
-                                <?
-                                $actionMenu = ActionMenu::get()->setContext($institute['Name']);
-                                $actionMenu->addLink($controller->url_for('admin/user/list_files/' . $user['user_id'] . '/' . $institute['Institut_id'] , $params),
+                        <? if ($institute['files']) : ?>
+                            <?= ActionMenu::get()
+                                ->setContext($institute['Name'])
+                                ->addLink(
+                                    $controller->list_filesURL($user->id, $institute['Institut_id'], $params),
                                     _('Dateien auflisten'),
                                     Icon::create('folder-full'),
-                                    ['data-dialog' => 'size=50%']);
-                                $actionMenu->addLink($controller->url_for('admin/user/download_user_files/' . $user['user_id'] . '/' . $institute['Institut_id']),
+                                    ['data-dialog' => 'size=50%']
+                                )
+                                ->addLink(
+                                    $controller->download_user_filesURL($user->id, $institute['Institut_id']),
                                     _('Dateien als ZIP herunterladen'),
-                                    Icon::create('download'));
-
-                                ?>
-                                <?= $actionMenu->render() ?>
-                            <? endif ?>
+                                    Icon::create('download')
+                                )
+                            ?>
+                        <? endif ?>
                         </td>
                     </tr>
                 <? endforeach; ?>
