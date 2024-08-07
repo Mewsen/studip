@@ -1,6 +1,7 @@
 <?php
 namespace Studip;
 
+use DBManager;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use RuntimeException;
 
@@ -35,7 +36,7 @@ final class OAuth1
         return self::hash(
             $method,
             self::getSignatureBaseString($request),
-            self::urlencode($consumerSecret) . '&' . self::urlencode($tokenSecret)
+            rawurlencode($consumerSecret) . '&' . rawurlencode($tokenSecret)
         );
     }
 
@@ -51,18 +52,28 @@ final class OAuth1
     ): bool {
         $parameters = self::extractParameters($request);
 
-        $required = [
-            'oauth_consumer_key',
-            'oauth_nonce',
-            'oauth_signature',
-            'oauth_signature_method',
-            'oauth_timestamp',
-        ];
-
-        $missing = array_diff($required, array_keys($parameters));
-        if (count($missing) > 0) {
-            throw new RuntimeException('Missing oauth parameters ' . implode(', ', $missing));
+        if ($parameters['oauth_timestamp'] < time() - 3600) {
+            return false;
         }
+
+        if (!self::checkNonce($parameters['oauth_nonce'], $parameters['oauth_timestamp'])) {
+            return false;
+        }
+
+        return self::verifySignature($request, $consumerSecret, $tokenSecret);
+    }
+
+    /**
+     * Verifies an oauth request.
+     *
+     * @throws RuntimeException if any necessary oauth parameter is missing
+     */
+    public static function verifySignature(
+        Request $request,
+        string  $consumerSecret,
+        string  $tokenSecret
+    ): bool {
+        $parameters = self::extractParameters($request);
 
         $signatureToVerify = $parameters['oauth_signature'];
         unset($parameters['oauth_signature']);
@@ -80,9 +91,19 @@ final class OAuth1
     /**
      * Extracts the oauth parameters either from the Authorization header or
      * from the query string.
+     *
+     * @throws RuntimeException if any necessary oauth parameter is missing
      */
-    public static function extractParameters(Request $request): array
-    {
+    public static function extractParameters(
+        Request $request,
+        array $required = [
+            'oauth_consumer_key',
+            'oauth_nonce',
+            'oauth_signature',
+            'oauth_signature_method',
+            'oauth_timestamp',
+        ]
+    ): array {
         $parameters = $request->getQueryParams();
 
         $header = $request->getHeaderLine('Authorization');
@@ -93,8 +114,13 @@ final class OAuth1
             foreach ($chunks as $chunk) {
                 [$key, $value] = explode('=', $chunk, 2);
                 $value = trim($value, '"');
-                $parameters[$key] = self::urldecode($value);
+                $parameters[$key] = rawurldecode($value);
             }
+        }
+
+        $missing = array_diff($required, array_keys($parameters));
+        if (count($missing) > 0) {
+            throw new RuntimeException('Missing oauth parameters ' . implode(', ', $missing));
         }
 
         return $parameters;
@@ -118,7 +144,7 @@ final class OAuth1
         ksort($parameters);
 
         return implode('&', array_map(
-            self::urlencode(...),
+            rawurlencode(...),
             [
                 strtoupper($request->getMethod()),
                 (string) $request->getUri()->withQuery(''),
@@ -136,9 +162,9 @@ final class OAuth1
     {
         $method = strtolower($method);
         return match ($method) {
-            'hmac-sha1',   'sha1'   => base64_encode(hash_hmac('sha1', $text, $key, true)),
-            'hmac-sha256', 'sha256' => base64_encode(hash_hmac('sha256', $text, $key, true)),
-            'hmac-sha512', 'sha512' => base64_encode(hash_hmac('sha512', $text, $key, true)),
+            'hmac-sha1'   => base64_encode(hash_hmac('sha1', $text, $key, true)),
+            'hmac-sha256' => base64_encode(hash_hmac('sha256', $text, $key, true)),
+            'hmac-sha512' => base64_encode(hash_hmac('sha512', $text, $key, true)),
 
             'plaintext' => $key,
 
@@ -147,21 +173,29 @@ final class OAuth1
     }
 
     /**
-     * Urlencodes a given input
+     * Checks whether the combination of nonce and timestamp has already been
+     * used. If not, the combination will be stored for future checks.
      */
-    public static function urldecode(string $input): string
+    public static function checkNonce(string $nonce, int $timestamp): bool
     {
-        return rawurldecode($input);
-    }
+        // Remove all outdated entries from nonces table
+        $query = "DELETE FROM `oauth1_nonces`
+                  WHERE `timestamp` < NOW() - INTERVAL 5 MINUTE";
+        DBManager::get()->exec($query);
 
-    /**
-     * Urldecodes a given input
-     */
-    public static function urlencode(string $input): string
-    {
-        $encoded = rawurlencode($input);
-        return str_starts_with($encoded, '/%7E')
-            ? str_replace('/%7E', '/~', $encoded)
-            : $encoded;
+        // Query if the combination of nonce and timestamp has already been used
+        $query = "SELECT 1
+                  FROM `oauth1_nonces`
+                  WHERE `timestamp` = FROM_UNIXTIME(?)
+                    AND `nonce` = ?";
+        if (DBManager::get()->fetchColumn($query, [$nonce, $timestamp])) {
+            return false;
+        }
+
+        // Store combination of nonce and timestamp
+        $query = "INSERT INTO `oauth1_nonces` VALUES (FROM_UNIXTIME(?), ?)";
+        DBManager::get()->execute($query, [$timestamp, $nonce]);
+
+        return true;
     }
 }

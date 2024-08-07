@@ -40,12 +40,12 @@ final class OAuth1Test extends \Codeception\Test\Unit
     }
 
     /**
-     * @covers OAuth1::verifyRequest
+     * @covers OAuth1::verifySignature
      */
     public function testVerifyingARequest(): void
     {
         $this->assertTrue(
-            OAuth1::verifyRequest(
+            OAuth1::verifySignature(
                 $this->getDefaultTestRequest(['oauth_signature' => 'tR3+Ty81lMeYAr/Fid0kMTYa/WM=']),
                 'kd94hf93k423kf44',
                 'pfkkdhi9sl3r4s00'
@@ -54,7 +54,7 @@ final class OAuth1Test extends \Codeception\Test\Unit
     }
 
     /**
-     * @covers OAuth1::verifyRequest
+     * @covers OAuth1::verifySignature
      * @covers OAuth1::extractParameters
      */
     public function testVerifyingARequestFromAuthorizationHeader(): void
@@ -75,8 +75,19 @@ final class OAuth1Test extends \Codeception\Test\Unit
         );
 
         $this->assertTrue(
-            OAuth1::verifyRequest(
+            OAuth1::verifySignature(
                 $request,
+                'kd94hf93k423kf44',
+                'pfkkdhi9sl3r4s00'
+            )
+        );
+    }
+
+    public function testOutdatedTimestampOfRequest(): void
+    {
+        $this->assertFalse(
+            OAuth1::verifyRequest(
+                $this->getDefaultTestRequest(['oauth_signature' => 'tR3+Ty81lMeYAr/Fid0kMTYa/WM=']),
                 'kd94hf93k423kf44',
                 'pfkkdhi9sl3r4s00'
             )
