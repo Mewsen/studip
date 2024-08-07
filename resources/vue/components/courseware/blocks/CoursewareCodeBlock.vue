@@ -10,7 +10,7 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
-                <pre v-show="currentContent !== ''" v-highlightjs="currentContent"><code ref="code" :class="[currentLang]"></code></pre>
+                <pre v-show="currentContent !== ''"><code v-html="highlightContent" class="hljs"></code></pre>
                 <div v-show="currentLang !== ''" class="code-lang">
                     <span>{{ currentLang }}</span>
                 </div>
@@ -63,28 +63,9 @@ export default {
         lang() {
             return this.block?.attributes?.payload?.lang;
         },
-    },
-    directives: {
-        highlightjs: {
-            deep: true,
-            bind(el, binding) {
-                let targets = el.querySelectorAll('code');
-                targets.forEach((target) => {
-                    if (binding.value) {
-                        target.innerHTML = binding.value;
-                    }
-                    hljs.highlightBlock(target);
-                });
-            },
-            componentUpdated(el, binding) {
-                let targets = el.querySelectorAll('code');
-                targets.forEach((target) => {
-                    if (binding.value) {
-                        target.innerHTML = binding.value;
-                        hljs.highlightBlock(target);
-                    }
-                });
-            },
+        highlightContent() {
+            let language = this.currentLang !== '' ? [this.currentLang] : null;
+            return hljs.highlightAuto(this.currentContent, language).value;
         },
     },
     mounted() {
