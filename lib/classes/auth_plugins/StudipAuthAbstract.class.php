@@ -427,7 +427,7 @@ class StudipAuthAbstract
         if ($user && is_array($this->user_data_mapping)) {
             foreach ($this->user_data_mapping as $key => $value) {
                 $callback = null;
-                if (method_exists($this, $value['callback'])) {
+                if (is_string($value['callback']) && method_exists($this, $value['callback'])) {
                     $callback = [$this, $value['callback']];
                 } else if (is_callable($value['callback'])) {
                     $callback = $value['callback'];
