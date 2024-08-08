@@ -51,10 +51,10 @@ class Course_ContentmodulesController extends AuthenticatedController
                 $this->categories[] = $module['category'];
             }
             if (!$module['category']) {
-                if (!in_array(_('Sonstige'), $this->categories)) {
-                    $this->categories[] = _('Sonstige');
+                if (!in_array(_('Sonstiges'), $this->categories)) {
+                    $this->categories[] = _('Sonstiges');
                 }
-                $this->modules[$i]['category'] = _('Sonstige');
+                $this->modules[$i]['category'] = _('Sonstiges');
             }
         }
         sort($this->categories);
