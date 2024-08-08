@@ -1,7 +1,4 @@
 <?php
-
-require_once 'lib/bootstrap-api.php';
-
 class AddActivities extends Migration
 {
 
