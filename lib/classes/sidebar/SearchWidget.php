@@ -17,7 +17,7 @@ class SearchWidget extends SidebarWidget
     protected $method = 'get';
     protected $id = null;
     protected $onsubmit = null;
-    protected ?string $onclear = null;
+    protected $onclear = null;
 
     /**
      * Constructor for the widget.
