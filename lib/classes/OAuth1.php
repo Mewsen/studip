@@ -33,8 +33,14 @@ final class OAuth1
             throw new RuntimeException(self::class . ' only supports OAuth 1.0 requests');
         }
 
+        $allowed_replacements_methods = [
+            'sha1'   => 'hmac-sha1',
+            'sha256' => 'hmac-sha256',
+            'sha512' => 'hmac-sha512',
+        ];
+
         return self::hash(
-            $method,
+            $allowed_replacements_methods[$method] ?? $method,
             self::getSignatureBaseString($request),
             rawurlencode($consumerSecret) . '&' . rawurlencode($tokenSecret)
         );
@@ -52,11 +58,7 @@ final class OAuth1
     ): bool {
         $parameters = self::extractParameters($request);
 
-        if ($parameters['oauth_timestamp'] < time() - 3600) {
-            return false;
-        }
-
-        if (!self::checkNonce($parameters['oauth_nonce'], $parameters['oauth_timestamp'])) {
+        if ($parameters['oauth_timestamp'] < time() - 5 * 60) {
             return false;
         }
 
@@ -170,32 +172,5 @@ final class OAuth1
 
             default => throw new RuntimeException('Unsupported sigature method "' . $method . '"'),
         };
-    }
-
-    /**
-     * Checks whether the combination of nonce and timestamp has already been
-     * used. If not, the combination will be stored for future checks.
-     */
-    public static function checkNonce(string $nonce, int $timestamp): bool
-    {
-        // Remove all outdated entries from nonces table
-        $query = "DELETE FROM `oauth1_nonces`
-                  WHERE `timestamp` < NOW() - INTERVAL 5 MINUTE";
-        DBManager::get()->exec($query);
-
-        // Query if the combination of nonce and timestamp has already been used
-        $query = "SELECT 1
-                  FROM `oauth1_nonces`
-                  WHERE `timestamp` = FROM_UNIXTIME(?)
-                    AND `nonce` = ?";
-        if (DBManager::get()->fetchColumn($query, [$nonce, $timestamp])) {
-            return false;
-        }
-
-        // Store combination of nonce and timestamp
-        $query = "INSERT INTO `oauth1_nonces` VALUES (FROM_UNIXTIME(?), ?)";
-        DBManager::get()->execute($query, [$timestamp, $nonce]);
-
-        return true;
     }
 }
