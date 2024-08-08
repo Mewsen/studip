@@ -1,7 +1,6 @@
 <?php
 namespace Studip;
 
-use DBManager;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use RuntimeException;
 
