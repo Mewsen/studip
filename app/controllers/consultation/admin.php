@@ -199,22 +199,27 @@ class Consultation_AdminController extends ConsultationController
         try {
             $interval = Request::int('interval');
             $start = $this->getDateAndTime('start');
-            $end = $this->getDateAndTime($interval === 0 ? 'start' : 'end', 'end');
+            $end = $this->getDateAndTime($interval <= 0 ? 'start' : 'end', 'end');
 
             if (date('Hi', $end) <= date('Hi', $start)) {
                 throw new InvalidArgumentException(_('Die Endzeit liegt vor der Startzeit!'));
             }
 
             $dow = Request::int('day-of-week');
-            if ($interval === 0) {
+            if ($interval <= 0) {
                 $dow = date('w', $start);
             }
 
             // Determine duration of a slot and pause times
             $duration = Request::int('duration');
+
+            if ($duration === null && $interval === -1) {
+                $duration = (int) (($end - $start) / 60);
+            }
+
             $pause_time = Request::bool('pause') ? Request::int('pause_time') : null;
             $pause_duration = Request::bool('pause') ? Request::int('pause_duration') : null;
-            if ($pause_time && $pause_time < $duration) {
+            if ($interval >= 0 && $pause_time && $pause_time < $duration) {
                 throw new InvalidArgumentException(_('Die definierte Zeit bis zur Pause ist kleiner als die Dauer eines Termins.'));
             }
 
@@ -231,6 +236,7 @@ class Consultation_AdminController extends ConsultationController
                 $pause_time,
                 $pause_duration
             );
+
             if ($slot_count >= self::SLOT_COUNT_THRESHOLD && !Request::int('confirmed')) {
                 $this->flash['confirm-many'] = $slot_count;
                 throw new Exception('', -1);
@@ -257,7 +263,7 @@ class Consultation_AdminController extends ConsultationController
                 $block->lock_time         = Request::int('lock_time');
                 $block->consecutive       = Request::bool('consecutive', false);
 
-                $slots = $block->createSlots(Request::int('duration'), $pause_time, $pause_duration);
+                $slots = $block->createSlots($duration, $pause_time, $pause_duration);
                 if (count($slots) === 0) {
                     continue;
                 }

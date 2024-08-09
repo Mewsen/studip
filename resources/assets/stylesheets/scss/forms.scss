@@ -637,7 +637,10 @@ form.inline {
 
             > :not(footer[data-dialog-button]) {
                 flex: 0;
-                margin-bottom: auto;
+
+                &:last-of-type {
+                    margin-bottom: auto;
+                }
             }
 
             footer[data-dialog-button] {

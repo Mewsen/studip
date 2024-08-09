@@ -212,7 +212,7 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
                 );
             }
 
-            if (!$interval) {
+            if ($interval <= 0) {
                 break;
             }
 

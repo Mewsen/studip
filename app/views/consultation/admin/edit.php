@@ -45,7 +45,7 @@
         <? endif; ?>
 
         <label>
-            <?= _('Maximale Teilnehmerzahl') ?>
+            <?= _('Maximale Teilnehmendenzahl') ?>
             <?= tooltipIcon(_('Falls Sie mehrere Personen zulassen wollen (wie z.B. zu einer Klausureinsicht), so geben Sie hier die maximale Anzahl an Personen an, die sich anmelden dürfen.')) ?>
             <input required type="text" name="size" id="size"
                    min="1" max="50" value="<?= $block->size ?>">

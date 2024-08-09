@@ -31,8 +31,8 @@
             <label :class="{'col-3': !isSingleDay}">
                 <span class="required">{{ $gettext('Intervall') }}</span>
                 <select required name="interval" v-model.number="interval">
-                    <option v-for="(label, value) in intervals" :key="value" :value="value">
-                        {{ label }}
+                    <option v-for="item in intervals" :key="item.key" :value="item.key">
+                        {{ item.label }}
                     </option>
                 </select>
             </label>
@@ -71,7 +71,7 @@
                 ></Datepicker>
             </label>
 
-            <label for="start-time" class="col-3">
+            <label for="start-time" :class="{'col-3': !isSingleDate}">
                 <span class="required">{{ $gettext('Von') }}</span>
 
                 <Timepicker name="start-time"
@@ -80,7 +80,7 @@
                 ></Timepicker>
             </label>
 
-            <label for="ende_hour" class="col-3">
+            <label for="ende_hour" :class="{'col-3': !isSingleDate}">
                 <span class="required">{{ $gettext('Bis') }}</span>
 
                 <Timepicker name="end-time"
@@ -89,26 +89,26 @@
                 ></Timepicker>
             </label>
 
-            <label class="col-3">
+            <label class="col-3" v-if="!isSingleDate">
                 <span class="required">{{ $gettext('Dauer eines Termins in Minuten') }}</span>
                 <input required type="number" name="duration" min="1"
                        v-model="duration">
             </label>
 
-            <label class="col-3">
-                {{ $gettext('Maximale Teilnehmerzahl') }}
+            <label :class="{'col-3': !isSingleDate}">
+                {{ $gettext('Maximale Teilnehmendenzahl') }}
                 <StudipTooltipIcon :text="$gettext('Falls Sie mehrere Personen zulassen wollen (wie z.B. zu einer Klausureinsicht), so geben Sie hier die maximale Anzahl an Personen an, die sich anmelden dürfen.')"></StudipTooltipIcon>
                 <input required type="text" name="size" id="size" min="1" max="50"
                        v-model="size">
             </label>
 
-            <label>
+            <label v-if="!isSingleDate">
                 <input type="checkbox" name="pause" value="1"
                        v-model="pause">
                 {{ $gettext('Pausen zwischen den Terminen einfügen?') }}
             </label>
 
-            <label class="col-3" v-if="pause">
+            <label class="col-3" v-if="!isSingleDate && pause">
                 {{ $gettext('Eine Pause nach wie vielen Minuten einfügen?') }}
                 <input type="number" name="pause_time" min="1"
                        v-model="pauseTime">
@@ -123,16 +123,16 @@
             <label>
                 <input type="checkbox" name="lock" value="1"
                        v-model="lock">
-                {{ $gettext('Termine für Buchungen sperren?') }}
+                {{ isSingleDate ? $gettext('Termin für Buchungen sperren?') : $gettext('Termin für Buchungen sperren?') }}
             </label>
 
             <label v-if="lock">
-                {{ $gettext('Wieviele Stunden vor Beginn des Blocks sollen die Termine für Buchungen gesperrt werden?') }}
+                {{ isSingleDate ? $gettext('Wieviele Stunden vor Beginn des Blocks soll der Termin für Buchungen gesperrt werden?') : $gettext('Wieviele Stunden vor Beginn des Blocks sollen die Termine für Buchungen gesperrt werden?') }}
                 <input type="number" name="lock_time" min="1"
                        v-model="lockTime">
             </label>
 
-            <label>
+            <label v-if="!isSingleDate">
                 <input type="checkbox" name="consecutive" value="1"
                        v-model="consecutive">
                 {{ $gettext('Termine innerhalb der Blöcke nur fortlaufend vergeben') }}
@@ -204,14 +204,14 @@
             <legend>{{ $gettext('Weitere Einstellungen') }}</legend>
 
             <label>
-                {{ $gettext('Information zu den Terminen in diesem Block') }}
+                {{ isSingleDate ? $gettext('Information zu diesem Termin') : $gettext('Information zu den Terminen in diesem Block') }}
                 <textarea name="note" v-model="note"></textarea>
             </label>
 
             <label>
                 <input type="checkbox" name="calender-events" value="1"
                        v-model="calendarEvents">
-                {{ $gettext('Die freien Termine auch im Kalender markieren') }}
+                {{ isSingleDate ? $gettext('Den freien Termin auch im Kalender markieren') : $gettext('Die freien Termine auch im Kalender markieren') }}
             </label>
 
             <label v-if="isCourse">
@@ -370,13 +370,14 @@ export default {
             ];
         },
         intervals() {
-            return {
-                0: this.$gettext('einmalig (ohne Wiederholung)'),
-                1: this.$gettext('wöchentlich'),
-                2: this.$gettext('zweiwöchentlich'),
-                3: this.$gettext('dreiwöchentlich'),
-                4: this.$gettext('monatlich'),
-            };
+            return [
+                {key: -1, label: this.$gettext('Einzeltermin')},
+                {key: 0,  label: this.$gettext('einmalig (ohne Wiederholung)')},
+                {key: 1, label: this.$gettext('wöchentlich')},
+                {key: 2, label: this.$gettext('zweiwöchentlich')},
+                {key: 3, label: this.$gettext('dreiwöchentlich')},
+                {key: 4, label: this.$gettext('monatlich')},
+            ];
         },
         isCourse() {
             return this.rangeType === 'Course';
@@ -385,7 +386,11 @@ export default {
             return this.rangeType === 'Institute';
         },
         isSingleDay() {
-            return this.interval === 0;
+            return this.interval === 0
+                || this.interval === -1;
+        },
+        isSingleDate() {
+            return this.interval === -1;
         },
         needsConfirmation() {
             return this.slotCount > this.slotCountThreshold;
@@ -438,11 +443,11 @@ export default {
                 errors.push(this.$gettext('Die Endzeit liegt vor der Startzeit!'));
             }
 
-            if (this.interval > 0 && this.compareDates(this.startDate, this.endDate, '>')) {
+            if (!this.isSingleDay && this.compareDates(this.startDate, this.endDate, '>')) {
                 errors.push(this.$gettext('Das Enddatum liegt vor dem Startdatum!'));
             }
 
-            if (this.pauseTime && this.pauseTime < this.duration) {
+            if (!this.isSingleDate && this.pauseTime && this.pauseTime < this.duration) {
                 errors.push(this.$gettext('Die definierte Zeit bis zur Pause ist kleiner als die Dauer eines Termins.'));
             }
 
@@ -475,9 +480,19 @@ export default {
         }
     },
     watch: {
-        interval(current) {
-            if (current === 0) {
+        interval(current, previous) {
+            if (current === 0 || current === -1) {
                 this.endDate = new Date(this.startDate);
+            }
+
+            if (current === -1) {
+                const start = this.combineDateAndTime(this.startDate, this.startTime);
+                const end = this.combineDateAndTime(this.endDate, this.endTime);
+                this.duration = Math.floor((end - start) / 1000 / 60);
+            }
+
+            if (current !== -1 && previous === -1) {
+                this.duration = 15;
             }
         },
         recalculationProperty: {
