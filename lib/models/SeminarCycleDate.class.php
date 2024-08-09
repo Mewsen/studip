@@ -172,7 +172,10 @@ class SeminarCycleDate extends SimpleORMap
      */
     protected function setSws($value)
     {
-        $this->content['sws'] = round(str_replace(',', '.', $value), 1);
+        if (is_string($value)) {
+            $value = (float) str_replace(',', '.', $value);
+        }
+        $this->content['sws'] = round($value, 1);
     }
 
     /**
