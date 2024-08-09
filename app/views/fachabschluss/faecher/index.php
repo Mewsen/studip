@@ -61,7 +61,7 @@
                         $pagination->set_attribute('perPage', MVVController::$items_per_page);
                         $pagination->set_attribute('num_postings', $count);
                         $pagination->set_attribute('page', $page);
-                        $page_link = reset(explode('?', $controller->action_url('index'))) . '?page_faecher=%s';
+                        $page_link = explode('?', $controller->action_url('index'))[0] . '?page_faecher=%s';
                         $pagination->set_attribute('pagelink', $page_link);
                         echo $pagination->render('shared/pagechooser');
                         ?>
