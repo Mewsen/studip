@@ -1,9 +1,9 @@
 <? foreach ($module as $modul) : ?>
     <? $perm = MvvPerm::get($modul) ?>
-    <tbody class="<?= ($modul->count_modulteile ? '' : 'empty ') ?><?= ($modul_id === $modul->getId() ? 'not-collapsed' : 'collapsed') ?>">
+    <tbody class="<?= $modul->count_modulteile ? '' : 'empty ' ?><?= $modul_id === $modul->getId() ? 'not-collapsed' : 'collapsed' ?>">
         <? $ampel_icon = $GLOBALS['MVV_STUDIENGANG']['STATUS']['values'][$modul->stat]['icon'] ?>
         <? $ampelstatus = $GLOBALS['MVV_STUDIENGANG']['STATUS']['values'][$modul->stat]['name'] ?>
-        <tr class="header-row" id="modul_<?= $modul->getId() ?>">
+        <tr class="header-row <?= $modul_id === $modul->getId() ? 'selected' : '' ?>" id="modul_<?= $modul->getId() ?>">
             <? if ($modul->count_modulteile) : ?>
                 <td style="white-space:nowrap;" class="toggle-indicator">
                     <? $details_action = $details_action ?? 'details'; ?>
