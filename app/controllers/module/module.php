@@ -101,6 +101,7 @@ class Module_ModuleController extends MVVController
         $this->count = Modul::getCount($this->filter);
         $this->show_sidebar_search = true;
         $this->show_sidebar_filter = true;
+        $this->modul_id = Request::option('modul_id');
         $this->setSidebar();
     }
 
@@ -323,7 +324,7 @@ class Module_ModuleController extends MVVController
                         $success_message,
                         htmlReady($this->modul->getDisplayName())
                     ));
-                    $this->redirect($this->indexURL());
+                    $this->redirect($this->indexURL(['modul_id' => $this->modul->id]) . "#modul_{$this->modul->id}");
                     return;
                 }
             }
