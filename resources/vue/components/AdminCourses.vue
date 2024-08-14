@@ -9,6 +9,14 @@
                 {{ coursesCount + ' ' + $gettext('Veranstaltungen') }}
             </span>
         </caption>
+        <colgroup>
+            <col v-if="showComplete">
+            <col v-for="activeField in sortedActivatedFields"
+                 :key="`col-${activeField}`"
+                 :style="{width: activeField === 'contents' && contentWidth !== null ? `${contentWidth}px` : null}"
+            >
+            <col>
+        </colgroup>
         <thead>
             <tr class="sortable">
                 <th v-if="showComplete" :class="sort.by === 'completion' ? 'sort' + sort.direction.toLowerCase() : ''">
@@ -126,10 +134,25 @@ export default {
             },
             currentLine: null,
             open_children: [],
+            contentWidth: null,
         };
     },
     created() {
         this.loadCourses();
+    },
+    updated() {
+        const iconNavigations = this.$el.querySelectorAll('tbody .my-courses-navigation');
+
+        if (iconNavigations.length === 0) {
+            this.contentWidth = null;
+            return;
+        }
+
+        const iconCounts = Array.from(iconNavigations).map(node => {
+            return node.querySelectorAll('.my-courses-navigation-item').length;
+        });
+
+        this.contentWidth = Math.max(...iconCounts) * 26;
     },
     computed: {
         ...mapState('admincourses', [
