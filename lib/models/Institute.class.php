@@ -311,10 +311,11 @@ class Institute extends SimpleORMap implements Range
     public function isEditableByUser($user_id = null): bool
     {
         if ($user_id === null) {
-            $user_id = $GLOBALS['user']->id;
+            $user_id = User::findCurrent()->id;
         }
+
         $member = $this->members->findOneBy('user_id', $user_id);
-        return ($member && in_array($member->inst_perms, ['tutor', 'dozent', 'admin']))
+        return ($member && $member->inst_perms === 'admin')
             || User::find($user_id)->perms === 'root';
     }
 
