@@ -57,3 +57,44 @@ form.default .mycourses-group-selector {
         }
     }
 }
+
+$icon-padding: 3px;
+
+.my-courses-navigation {
+    list-style: none;
+    margin: 0 0 -10px;
+    padding: 0;
+
+    display: flex;
+    flex-wrap: wrap;
+}
+.my-courses-navigation-item {
+    margin: 0 3px 10px 0;
+
+    a {
+        display: inline-block;
+        padding: $icon-padding;
+    }
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    img {
+        vertical-align: bottom;
+    }
+
+    .empty-slot {
+        display: inline-block;
+        padding-left: $icon-padding;
+        padding-right: $icon-padding;
+    }
+}
+.my-courses-navigation-important {
+    $border-width: 1px;
+    border: $border-width solid var(--red);
+
+    a {
+        padding: $icon-padding - $border-width;
+    }
+}
