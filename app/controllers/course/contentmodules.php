@@ -100,13 +100,12 @@ class Course_ContentmodulesController extends AuthenticatedController
     public function trigger_action()
     {
         $context = Context::get();
-
-        $required_perm = $context->getRangeType() === 'course' ? 'tutor' : 'admin';
-        if (!$GLOBALS['perm']->have_studip_perm($required_perm, $context->id)) {
+        if (!$context->isEditableByUser()) {
             throw new AccessDeniedException();
         }
+
         if (Request::isPost()) {
-            if ($context->getRangeType() === 'course') {
+            if ($context instanceof Course) {
                 $sem_class = $context->getSemClass();
             } else {
                 $sem_class = SemClass::getDefaultInstituteClass($context->type);
@@ -128,6 +127,7 @@ class Course_ContentmodulesController extends AuthenticatedController
             $this->redirect("course/contentmodules/trigger", ['cid' => $context->getId(), 'plugin_id' => $module->getPluginId()]);
             return;
         }
+
         $active_tool = ToolActivation::find([$context->id, Request::int('plugin_id')]);
         $template = $GLOBALS['template_factory']->open('tabs.php');
         $template->navigation = Navigation::getItem('/course');
@@ -141,11 +141,10 @@ class Course_ContentmodulesController extends AuthenticatedController
     public function reorder_action()
     {
         $context = Context::get();
-
-        $required_perm = $context->getRangeType() === 'course' ? 'tutor' : 'admin';
-        if (!$GLOBALS['perm']->have_studip_perm($required_perm, $context->id)) {
+        if (!$context->isEditableByUser()) {
             throw new AccessDeniedException();
         }
+
         if (Request::isPost()) {
             $position = 0;
             foreach (Request::getArray('order') as $plugin_id) {
@@ -156,6 +155,7 @@ class Course_ContentmodulesController extends AuthenticatedController
             $this->redirect($this->reorderURL());
             return;
         }
+
         Navigation::getItem('/course/admin')->setActive(true);
         $template = $GLOBALS['template_factory']->open('tabs.php');
         $template->navigation = Navigation::getItem('/course');
@@ -169,12 +169,12 @@ class Course_ContentmodulesController extends AuthenticatedController
         if (!Request::isPost()) {
             throw new AccessDeniedException();
         }
-        $context = Context::get();
 
-        $required_perm = $context->getRangeType() === 'course' ? 'tutor' : 'admin';
-        if (!$GLOBALS['perm']->have_studip_perm($required_perm, $context->id)) {
+        $context = Context::get();
+        if (!$context->isEditableByUser()) {
             throw new AccessDeniedException();
         }
+
         $moduleclass = Request::get('moduleclass');
         $module = new $moduleclass;
 
@@ -207,15 +207,15 @@ class Course_ContentmodulesController extends AuthenticatedController
     public function rename_action($module_id)
     {
         $context = Context::get();
-
-        $required_perm = $context->getRangeType() === 'course' ? 'tutor' : 'admin';
-        if (!$GLOBALS['perm']->have_studip_perm($required_perm, $context->id)) {
+        if (!$context->isEditableByUser()) {
             throw new AccessDeniedException();
         }
+
         $this->module = PluginManager::getInstance()->getPluginById($module_id);
         $this->metadata = $this->module->getMetadata();
         PageLayout::setTitle(_('Werkzeug umbenennen'));
         $this->tool = ToolActivation::find([$context->id, $module_id]);
+
         if (Request::isPost()) {
             $metadata = $this->tool->metadata->getArrayCopy();
             if (!trim(Request::get('displayname')) || Request::submitted('delete')) {
@@ -358,8 +358,5 @@ class Course_ContentmodulesController extends AuthenticatedController
         } catch (Exception $e) {
             return null;
         }
-
-
-
     }
 }
