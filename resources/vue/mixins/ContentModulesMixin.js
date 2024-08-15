@@ -5,6 +5,9 @@ export default {
     components: {
         draggable,
     },
+    props: {
+        rangeType: String,
+    },
     data: () => ({
         order: [],
     }),
@@ -132,5 +135,10 @@ export default {
 
             return classes.join(' ');
         },
+        showVisibilityToggle(module) {
+            return this.rangeType !== 'Institute'
+                && module.active
+                && !module.mandatory;
+        }
     },
 };

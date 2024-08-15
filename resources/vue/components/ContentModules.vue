@@ -36,6 +36,7 @@
         <component :is="displayComponent"
                    :modules="modules"
                    :filtercategory="filterCategory"
+                   :range-type="rangeType"
         ></component>
 
         <MountingPortal mount-to="#tool-view-switch .sidebar-widget-content .widget-list" name="sidebar-switch">

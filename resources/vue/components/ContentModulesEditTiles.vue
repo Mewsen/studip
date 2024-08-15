@@ -61,7 +61,7 @@
                                     href="#"
                                     class="toggle_visibility"
                                     role="checkbox"
-                                    v-if="!module.mandatory"
+                                    v-if="showVisibilityToggle(module)"
                                     :aria-checked="module.visibility !== 'tutor' ? 'true' : 'false'"
                                     @click.prevent="toggleModuleVisibility(module)"
                                 >
