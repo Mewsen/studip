@@ -59,7 +59,7 @@
                 <td class="actions">
                     <a
                         href="#"
-                        v-if="module.active && !module.mandatory"
+                        v-if="showVisibilityToggle(module)"
                         role="checkbox"
                         :aria-checked="module.visibility !== 'tutor' ? 'true' : 'false'"
                         @click.prevent="toggleModuleVisibility(module)"
@@ -121,7 +121,6 @@ import ContentModulesMixin from '../mixins/ContentModulesMixin.js';
 
 export default {
     name: 'contentmodules-edit-table',
-
     mixins: [ContentModulesMixin],
 };
 </script>

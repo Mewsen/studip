@@ -85,6 +85,9 @@ class Course_ContentmodulesController extends AuthenticatedController
 
         $this->render_vue_app(
             Studip\VueApp::create('ContentModules')
+                ->withProps([
+                    'range-type' => get_class($this->sem),
+                ])
                 ->withStore('ContentModulesStore', 'contentmodules', [
                     'setCategories'  => $this->categories,
                     'setHighlighted' => $this->highlighted_modules,
