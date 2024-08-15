@@ -111,8 +111,7 @@ class AutoInsert
         foreach ($domains as $domain) {
 
             $key = $domain . '.' . $status;
-            if (is_array($this->settings[$key])) {
-                $id = key($this->settings[$key]);
+            if (isset($this->settings[$key]) && is_array($this->settings[$key])) {
                 foreach ($this->settings[$key] as $id => $value) {
                     $settings[$id] = $value;
                 }
