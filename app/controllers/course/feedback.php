@@ -85,26 +85,24 @@ class Course_FeedbackController extends AuthenticatedController
         if (!Feedback::hasRangeAccess($range_id, $range_type)) {
             throw new AccessDeniedException();
         } elseif ($this->create_perm) {
-            if (Request::bool('comment_only')) {
-                $mode = FeedbackElement::MODE_NO_RATING;
-                $commentable = 1;
-            } else {
-                $mode           = Request::int('mode', FeedbackElement::MODE_NO_RATING);
-                $commentable    = Request::bool('commentable');
+            $mode = FeedbackElement::MODE_NO_RATING;
+            $commentable = true;
+            if (!Request::bool('comment_only')) {
+                $mode = Request::int('mode', $mode);
+                $commentable = Request::bool('commentable', false);
             }
-            $feedback = FeedbackElement::build([
+            $feedback = FeedbackElement::create([
                 'range_id'          => $range_id,
                 'range_type'        => $range_type,
                 'user_id'           => $GLOBALS['user']->id,
                 'course_id'         => $this->course_id,
                 'question'          => trim(Request::get('question')),
                 'description'       =>  Studip\Markup::purifyHtml(Request::get('description')),
-                'results_visible'   => intval(Request::get('results_visible')),
+                'results_visible'   => Request::bool('results_visible', false),
                 'commentable'       => $commentable,
-                'anonymous_entries' => intval(Request::get('anonymous_entries')),
+                'anonymous_entries' => Request::bool('anonymous_entries', false),
                 'mode'              => $mode
             ]);
-            $feedback->store();
             PageLayout::postSuccess(_('Feedback-Element erfolgreich angelegt'));
         } else {
             PageLayout::postError(_('Sie haben keine Berechtigung, an dieser Stelle ein Feedback-Element anzulegen.'));
