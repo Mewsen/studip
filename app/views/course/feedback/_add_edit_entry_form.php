@@ -17,7 +17,7 @@
     <label class="star-rating undecorated <?= (isset($entry) && $i <= $entry->rating) || $i === 1 ? ' checked' : '' ?>">
         <input class="star-rating-input" name="rating" value="<?= $i ?>" type="radio"
                required
-               <? if (isset($entry) && $i == $entry->rating) echo 'selected'; ?>>
+               <? if (isset($entry) && $i == $entry->rating || $i === 1) echo 'checked'; ?>>
         <?= Icon::create('star') ?>
     </label>
     <? endfor; ?>
@@ -26,10 +26,17 @@
 <? if ($feedback->commentable) : ?>
 <label>
     <?= _('Kommentar') ?>
-    <textarea name="comment"><?= htmlReady(isset($entry) ? $entry->comment : '') ?></textarea>
+    <textarea name="comment"><?= htmlReady($entry->comment ?? '') ?></textarea>
 </label>
 <? endif; ?>
+
+<? if (Request::isDialog()): ?>
+<div data-dialog-button>
+    <?= Studip\Button::createAccept(_('Absenden'), 'add', ['class' => 'feedback-entry-submit']) ?>
+</div>
+<? else: ?>
 <div>
     <?= Studip\Button::createAccept(_('Absenden'), 'add', ['class' => 'feedback-entry-submit']) ?>
     <?= Studip\Button::createCancel(_('Abbrechen'), 'cancel', ['class' => 'feedback-entry-cancel']) ?>
 </div>
+<? endif; ?>
