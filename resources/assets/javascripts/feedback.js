@@ -125,12 +125,14 @@ STUDIP.Feedback = {
                 }
             );
         }
-        if ($('.feedback-entry-cancel').length) {
+        if ($('.feedback-entry-cancel').length > 0) {
             $('.feedback-entry-cancel').prop("onclick", null).off("click");
             $('.feedback-entry-cancel').click(function (event) {
                 event.preventDefault();
-                $(this).closest('form')[0].reset();
-                $(this).closest('form').find('.star-rating').removeClass('checked');
+                $(this).closest('form').each(function () {
+                    this.reset();
+                    $(this).find('.star-rating').removeClass('checked');
+                });
             });
         }
     }
