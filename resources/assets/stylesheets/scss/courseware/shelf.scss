@@ -1,4 +1,5 @@
 @use '../../mixins.scss' as *;
+@import '../variables.scss';
 
 .cw-contents-overview-teaser {
     max-width: 782px;
@@ -60,6 +61,23 @@
     .unit-ghost .cw-tile {
         opacity: 0;
         height: 416px;
+    }
+    .cw-unit-add-item {
+        height: calc($tile-height - 2px);
+        width: calc($tile-width - 2px);
+        border: solid thin var(--content-color-40);
+        color: var(--base-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+
+        &:hover {
+            border-color: var(--content-color);
+            font-weight: 700;
+        }
     }
 }
 

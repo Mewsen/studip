@@ -1,3 +1,5 @@
+@import '../variables.scss';
+
 .cw-tiles {
     list-style: none;
     display: flex;
@@ -8,8 +10,8 @@
 }
 .cw-tiles .tile,
 .cw-tile {
-    height: 420px;
-    width: 270px;
+    height: $tile-height;
+    width: $tile-width;
     margin: 0;
     background-color: var(--base-color);
     &:last-child {

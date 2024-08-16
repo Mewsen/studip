@@ -27,6 +27,8 @@ const getDefaultState = () => {
         importErrors: [],
 
         feedbackSettings: null,
+
+        lastElementId: null,
     };
 };
 
@@ -122,6 +124,14 @@ const getters = {
         const id = getters.userId;
         return rootGetters['users/byId']({ id });
     },
+
+    lastElementId(state) {
+        return state.lastElementId;
+    },
+    lastElement(state, getters, rootState, rootGetters) {
+        const id = getters.lastElementId;
+        return rootGetters['courseware-structural-elements/byId']({ id });
+    },
 };
 
 export const state = { ...initialState };
@@ -181,6 +191,9 @@ export const actions = {
     },
     setUserIsTeacher(context, isTeacher) {
         context.commit('setUserIsTeacher', isTeacher);
+    },
+    setLastElementId(context, id) {
+        context.commit('setLastElementId', id);
     },
 
     // other actions
@@ -694,6 +707,27 @@ export const actions = {
             data: null,
         });
     },
+
+    async loadCoursewareActivities({ dispatch, rootGetters }, { userId, courseId }) {
+        const parent = {
+            type: 'users',
+            id: userId,
+        };
+        const relationship = 'activitystream';
+
+        const options = {
+            'filter[context-type]': 'course',
+            'filter[context-id]': courseId,
+            'filter[object-type]': 'courseware',
+            include: 'actor, context, object',
+        };
+
+        await dispatch('users/loadRelated', { parent, relationship, options }, { root: true });
+
+        const activities = rootGetters['users/all'];
+
+        return activities.filter(({ type }) => type === 'activities');
+    },
 };
 
 export const mutations = {
@@ -771,6 +805,9 @@ export const mutations = {
 
     setFeedbackSettings(state, feedbackSettings) {
         state.feedbackSettings = feedbackSettings;
+    },
+    setLastElementId(state, id) {
+        state.lastElementId = id;
     }
 };
 

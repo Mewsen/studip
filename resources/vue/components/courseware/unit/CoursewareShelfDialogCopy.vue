@@ -267,7 +267,6 @@ export default {
     },
     methods: {
         ...mapActions({
-            companionSuccess: 'companionSuccess',
             loadCourseUnits: 'loadCourseUnits',
             loadUsersCourses: 'loadUsersCourses',
             loadSemester: 'semesters/loadById',
@@ -296,7 +295,6 @@ export default {
                         description: this.modifiedDescription !== '' ? this.modifiedDescription : this.selectedUnitDescription
                 }
                 await this.copyUnit({ unitId: this.selectedUnit.id, modified: modified });
-                this.companionSuccess({ info: this.$gettext('Lernmaterial kopiert.') });
                 this.close();
             }
         },

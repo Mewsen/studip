@@ -1,0 +1,47 @@
+.cw-panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    column-gap: 20px;
+
+    h2, h3 {
+        margin-top: 0;
+    }
+
+    .cw-panel-left {
+        max-width: 1100px;
+        flex-grow: 1;
+    }
+    .cw-panel-right {
+        max-width: 540px;
+        overflow-x: hidden;
+    }
+
+    .cw-panel-last-visit {
+        height: 210px;
+        margin-bottom: 2em;
+        margin-right: 5px;
+
+        .cw-panel-last-visit-unit {
+            display: flex;
+            flex-direction: row;
+            position: relative;
+
+            .cw-panel-last-visit-unit-description-img {
+                min-width: 270px;
+                height: 180px;
+                background-size: cover;
+                background-position: center;
+            }
+            .cw-panel-last-visit-unit-description-text {
+                width: 100%;
+                padding: 10px;
+            }
+            a.button {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+            }
+        }
+    }
+}

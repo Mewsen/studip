@@ -1,23 +1,35 @@
 <template>
     <div>
-        <div class="cw-shelf">
-            <courseware-unit-items />
-            <courseware-shared-items v-if="!inCourseContext" />
+        <div class="cw-panel">
+            <div class="cw-panel-left">
+                <CoursewarePanelLastVisit :structural-element="lastElement" />
+                <div class="cw-shelf">
+                    <CoursewareUnitItems />
+                    <CoursewareSharedItems v-if="!inCourseContext" />
+                </div>
+                <CoursewarePanelTasks v-if="inCourseContext" />
+            </div>
+            <div class="cw-panel-right">
+                <template v-if="inCourseContext">
+                    <CoursewarePanelComComments />
+                    <CoursewarePanelComActivities />
+                </template>
+                <template v-if="inContentContext">
+                    <CoursewarePanelBookmarks />
+                    <CoursewarePanelReleases />
+                </template>
+            </div>
         </div>
-        <courseware-shelf-dialog-add-chooser v-if="showUnitAddDialog"/>
+        <courseware-shelf-dialog-add-chooser v-if="showUnitAddDialog" />
         <courseware-shelf-dialog-add v-if="showUnitNewDialog" />
         <courseware-shelf-dialog-copy v-if="showUnitCopyDialog" />
         <courseware-shelf-dialog-import v-if="showUnitImportDialog" />
         <courseware-shelf-dialog-topics v-if="showUnitTopicsDialog" />
-        <MountingPortal v-if="userIsTeacher || !inCourseContext" mountTo="#courseware-action-widget" name="sidebar-actions">
-            <courseware-shelf-action-widget></courseware-shelf-action-widget>
-        </MountingPortal>
         <courseware-companion-overlay />
     </div>
 </template>
 
 <script>
-import CoursewareShelfActionWidget from './widgets/CoursewareShelfActionWidget.vue';
 import CoursewareShelfDialogAdd from './unit/CoursewareShelfDialogAdd.vue';
 import CoursewareShelfDialogAddChooser from './unit/CoursewareShelfDialogAddChooser.vue';
 import CoursewareShelfDialogCopy from './unit/CoursewareShelfDialogCopy.vue';
@@ -27,11 +39,17 @@ import CoursewareUnitItems from './unit/CoursewareUnitItems.vue';
 import CoursewareSharedItems from './unit/CoursewareSharedItems.vue';
 import CoursewareCompanionOverlay from './layouts/CoursewareCompanionOverlay.vue';
 
+import CoursewarePanelComActivities from './panel/CoursewarePanelComActivities.vue';
+import CoursewarePanelComComments from './panel/CoursewarePanelComComments.vue';
+import CoursewarePanelLastVisit from './panel/CoursewarePanelLastVisit.vue';
+import CoursewarePanelTasks from './panel/CoursewarePanelTasks.vue';
+import CoursewarePanelBookmarks from './panel/CoursewarePanelBookmarks.vue';
+import CoursewarePanelReleases from './panel/CoursewarePanelReleases.vue';
+
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
     components: {
-        CoursewareShelfActionWidget,
         CoursewareShelfDialogAdd,
         CoursewareShelfDialogAddChooser,
         CoursewareShelfDialogCopy,
@@ -40,11 +58,19 @@ export default {
         CoursewareUnitItems,
         CoursewareSharedItems,
         CoursewareCompanionOverlay,
+
+        CoursewarePanelComActivities,
+        CoursewarePanelComComments,
+        CoursewarePanelLastVisit,
+        CoursewarePanelTasks,
+        CoursewarePanelReleases,
+        CoursewarePanelBookmarks
+
     },
     data() {
         return {
-            rate: 0
-        }
+            rate: 0,
+        };
     },
     computed: {
         ...mapGetters({
@@ -55,14 +81,17 @@ export default {
             showUnitNewDialog: 'showUnitNewDialog',
             showUnitTopicsDialog: 'showUnitTopicsDialog',
             licenses: 'licenses',
-            context:'context',
+            context: 'context',
             userIsTeacher: 'userIsTeacher',
-            userId: 'userId'
+            userId: 'userId',
+            lastElement: 'lastElement'
         }),
         inCourseContext() {
             return this.context.type === 'courses';
+        },
+        inContentContext() {
+            return this.context.type === 'users';
         }
-
     },
-}
+};
 </script>

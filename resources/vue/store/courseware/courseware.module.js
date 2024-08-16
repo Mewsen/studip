@@ -372,27 +372,6 @@ export const actions = {
         return dispatch('user-data-field/loadRelated', { parent, relationship, options }, { root: true });
     },
 
-    async loadCoursewareActivities({ dispatch, rootGetters }, { userId, courseId }) {
-        const parent = {
-            type: 'users',
-            id: userId,
-        };
-        const relationship = 'activitystream';
-
-        const options = {
-            'filter[context-type]': 'course',
-            'filter[context-id]': courseId,
-            'filter[object-type]': 'courseware',
-            include: 'actor, context, object',
-        };
-
-        await dispatch('users/loadRelated', { parent, relationship, options }, { root: true });
-
-        const activities = rootGetters['users/all'];
-
-        return activities.filter(({ type }) => type === 'activities');
-    },
-
     async createFile(context, { file, filedata, folder }) {
         const termId = file?.relationships?.['terms-of-use']?.data?.id ?? null;
         const formData = new FormData();

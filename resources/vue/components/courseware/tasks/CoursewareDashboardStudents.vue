@@ -2,15 +2,24 @@
     <div class="cw-dashboard-students-wrapper">
         <CoursewareRibbon :isContentBar="true" :showToolbarButton="false">
             <template #buttons>
-                <router-link :to="{ name: 'task-groups-index' }">
-                    <StudipIcon shape="category-task" :size="24" />
-                </router-link>
+                <a :href="coursewarePanelUrl" :title="$gettext('Courseware Übersicht')">
+                    <StudipIcon shape="courseware" :size="24" />
+                </a>
             </template>
             <template #breadcrumbList>
                 <li>
                     {{ $gettext('Aufgaben') }}
                 </li>
             </template>
+            <template #menu>
+                    <StudipActionMenu
+                        :items="menuItems"
+                        class="cw-ribbon-action-menu"
+                        :context="$gettext('Courseware Aufgaben')"
+                        :collapseAt="3"
+                        @showsDistributeDialog="setShowTasksDistributeDialog(true)"
+                    />
+                </template>
         </CoursewareRibbon>
         <table class="default" v-if="taskGroups.length">
             <thead>
@@ -131,6 +140,15 @@ export default {
         taskGroups() {
             return this.taskGroupsByCid(this.context.id);
         },
+        menuItems() {
+            let menu = [
+                { id: 1, label: this.$gettext('Aufgabe verteilen'), icon: 'add', emit: 'showsDistributeDialog' },
+            ];
+            return menu;
+        },
+        coursewarePanelUrl() {
+            return STUDIP.URLHelper.getURL('dispatch.php/course/courseware/');
+        }
     },
     methods: {
         ...mapActions({

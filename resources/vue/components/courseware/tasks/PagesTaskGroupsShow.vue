@@ -7,9 +7,9 @@
         <div v-if="taskGroup" class="cw-tasks-list">
             <CoursewareRibbon :isContentBar="true" :showToolbarButton="false">
                 <template #buttons>
-                    <router-link :to="{ name: 'task-groups-index' }">
-                        <StudipIcon shape="category-task" :size="24" />
-                    </router-link>
+                    <a :href="coursewarePanelUrl" :title="$gettext('Courseware Übersicht')">
+                        <StudipIcon shape="courseware" :size="24" />
+                    </a>
                 </template>
                 <template #breadcrumbList>
                     <li>
@@ -18,6 +18,17 @@
                         </router-link>
                     </li>
                     <li>{{ taskGroup.attributes['title'] }}</li>
+                </template>
+                <template #menu>
+                    <StudipActionMenu
+                        :items="menuItems"
+                        class="cw-ribbon-action-menu"
+                        :context="taskGroup.attributes['title']"
+                        :collapseAt="1"
+                        @modifyDeadline="modifyDeadline(taskGroup)"
+                        @addSolvers="addSolvers(taskGroup)"
+                        @deleteTaskGroup="deleteTaskGroup(taskGroup)"
+                    />
                 </template>
             </CoursewareRibbon>
 
@@ -76,6 +87,7 @@ import TaskGroup from './TaskGroup.vue';
 import TaskGroupsAddSolversDialog from './TaskGroupsAddSolversDialog.vue';
 import TaskGroupsDeleteDialog from './TaskGroupsDeleteDialog.vue';
 import TaskGroupsModifyDeadlineDialog from './TaskGroupsModifyDeadlineDialog.vue';
+import StudipActionMenu from '../../StudipActionMenu.vue';
 
 export default {
     components: {
@@ -126,6 +138,22 @@ export default {
                 return memo;
             }, {});
         },
+        isBeforeEndDate() {
+            return this.taskGroup && new Date() < new Date(this.taskGroup.attributes['end-date']);
+        },
+        menuItems() {
+            let menu = [];
+            if (this.isBeforeEndDate) {
+                menu.push({ id: 1, label: this.$gettext('Bearbeitungszeit verlängern'), icon: 'date', emit: 'modifyDeadline' });
+                menu.push({ id: 2, label: this.$gettext('Teilnehmende hinzufügen'), icon: 'add', emit: 'addSolvers' });
+            }
+            menu.push({ id: 3, label: this.$gettext('Aufgabe löschen'), icon: 'trash', emit: 'deleteTaskGroup' });
+            
+            return menu;
+        },
+        coursewarePanelUrl() {
+            return STUDIP.URLHelper.getURL('dispatch.php/course/courseware/');
+        }
     },
     methods: {
         ...mapActions({
@@ -137,6 +165,9 @@ export default {
             loadTaskGroup: 'tasks/loadTaskGroup',
             updateTask: 'updateTask',
             updateTaskFeedback: 'updateTaskFeedback',
+            addSolvers: 'tasks/setShowTaskGroupsAddSolversDialog',
+            deleteTaskGroup: 'tasks/setShowTaskGroupsDeleteDialog',
+            modifyDeadline: 'tasks/setShowTaskGroupsModifyDeadlineDialog',
         }),
         closeDialogs() {
             this.showAddFeedbackDialog = false;

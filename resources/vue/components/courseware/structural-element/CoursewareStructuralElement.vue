@@ -19,6 +19,11 @@
                             <div v-else class="cw-ribbon-button cw-ribbon-button-next-disabled" :title="$gettext('Keine nächste Seite')"/>
                         </template>
                         <template #breadcrumbList>
+                            <li>
+                                <a :href="coursewarePanelUrl" :title="$gettext('Courseware Übersicht')">
+                                    <StudipIcon shape="courseware" :size="24" />
+                                </a>
+                            </li>
                             <li
                                 v-for="ancestor in ancestors"
                                 :key="ancestor.id"
@@ -1007,6 +1012,9 @@ export default {
             }
 
             return previous;
+        },
+        coursewarePanelUrl() {
+            return STUDIP.URLHelper.getURL('dispatch.php/course/courseware/');
         },
         nextElement() {
             const currentIndex = this.orderedStructuralElements.indexOf(this.structuralElement.id);

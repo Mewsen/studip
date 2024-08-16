@@ -1,5 +1,5 @@
 <template>
-    <li class="courseware-unit-item">
+    <li class="cw-unit-item">
         <courseware-tile
             tag="div"
             :color="color"
@@ -344,7 +344,6 @@ export default {
         },
         async copy() {
             await this.copyUnit({ unitId: this.unit.id, modified: null });
-            this.companionSuccess({ info: this.$gettext('Lernmaterial kopiert.') });
         },
     }
 }

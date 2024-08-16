@@ -47,17 +47,17 @@ export default {
             getCoursewareUnitById: 'courseware-units/byId',
             coursewareUnits: 'courseware-units/all',
 
-            typeFilter: 'typeFilter',
-            unitFilter: 'unitFilter'
+            // typeFilter: 'typeFilter',
+            // unitFilter: 'unitFilter'
         }),
         filteredActivitiesList() {
             let list = this.activitiesList.slice().sort((a,b) => b.timestamp - a.timestamp);
-            if (['edited', 'created', 'answered', 'interacted', 'voided',].includes(this.typeFilter)) {
-                list = list.filter(activity => activity.type === this.typeFilter);
-            }
-            if (this.unitFilter !== 'all') {
-                list = list.filter(activity => activity.unitId === this.unitFilter);
-            }
+            // if (['edited', 'created', 'answered', 'interacted', 'voided',].includes(this.typeFilter)) {
+            //     list = list.filter(activity => activity.type === this.typeFilter);
+            // }
+            // if (this.unitFilter !== 'all') {
+            //     list = list.filter(activity => activity.unitId === this.unitFilter);
+            // }
 
             return list;
         },

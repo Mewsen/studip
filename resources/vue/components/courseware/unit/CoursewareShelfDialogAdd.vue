@@ -209,7 +209,6 @@ export default {
         ...mapActions({
             companionError: 'companionError',
             companionInfo: 'companionInfo',
-            companionSuccess: 'companionSuccess',
             createCoursewareUnit: 'courseware-units/create',
             setShowUnitNewDialog: 'setShowUnitNewDialog',
             setStockImageForStructuralElement: 'setStockImageForStructuralElement',
@@ -282,7 +281,6 @@ export default {
             this.setShowUnitNewDialog(false);
 
             await this.createCoursewareUnit(unit, { root: true });
-            this.companionSuccess({ info: this.$gettext('Neues Lernmaterial angelegt.') });
             const newElementId = this.lastCreateCoursewareUnit.relationships['structural-element'].data.id
             await this.loadStructuralElementById({ id: newElementId });
             let newStructuralElement = this.structuralElementById({id: newElementId});

@@ -32,6 +32,7 @@ const mountApp = async (STUDIP, createApp, element) => {
     let licenses = null;
     let feedbackSettings = null;
     let isTeacher = false;
+    let lastElementId = null;
 
     if ((elem = document.getElementById(element.substring(1))) !== undefined) {
         if (elem.attributes !== undefined) {
@@ -52,6 +53,9 @@ const mountApp = async (STUDIP, createApp, element) => {
             if (elem.attributes['is-teacher'] !== undefined) {
                 isTeacher = JSON.parse(elem.attributes['is-teacher'].value);
             }
+            if (elem.attributes['last-element-id'] !== undefined) {
+                lastElementId = JSON.parse(elem.attributes['last-element-id'].value);
+            }
         }
     }
 
@@ -62,15 +66,20 @@ const mountApp = async (STUDIP, createApp, element) => {
             'courseware-shelf': CoursewareShelfModule,
             ...mapResourceModules({
                 names: [
+                    'activities',
                     'courses',
                     'course-memberships',
                     'courseware-blocks',
+                    'courseware-block-comments',
+                    'courseware-block-feedback',
                     'courseware-containers',
                     'courseware-instances',
                     'courseware-units',
                     'courseware-user-data-fields',
                     'courseware-user-progresses',
                     'courseware-structural-elements',
+                    'courseware-structural-element-comments',
+                    'courseware-structural-element-feedback',
                     'courseware-structural-elements-shared',
                     'feedback-elements',
                     'feedback-entries',
@@ -94,6 +103,7 @@ const mountApp = async (STUDIP, createApp, element) => {
     store.dispatch('setHttpClient', httpClient);
     store.dispatch('setLicenses', licenses);
     store.dispatch('setUserId', STUDIP.USER_ID);
+    store.dispatch('setLastElementId', lastElementId);
     await store.dispatch('users/loadById', {id: STUDIP.USER_ID});
     store.dispatch('setContext', {
         id: entry_id,

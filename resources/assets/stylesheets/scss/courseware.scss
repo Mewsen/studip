@@ -12,6 +12,7 @@
 @import './courseware/widgets.scss';
 @import './courseware/wizards.scss';
 
+@import './courseware/panel.scss';
 @import './courseware/shelf.scss';
 @import './courseware/structural-element.scss';
 @import './courseware/containers/default-container.scss';
@@ -32,3 +33,13 @@
 @import './courseware/layouts/talk-bubble.scss';
 @import './courseware/layouts/tile.scss';
 @import './courseware/layouts/tree.scss';
+
+
+#course-courseware-index {
+    #sidebar {
+        display: none;
+    }
+    #content-wrapper {
+        grid-column: 1/3;
+    }
+}

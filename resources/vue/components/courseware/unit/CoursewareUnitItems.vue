@@ -1,8 +1,9 @@
 <template>
     <div class="cw-unit-items">
         <h2 v-if="!inCourseContext && hasUnits">{{ $gettext('Persönliche Lernmaterialien') }}</h2>
+        <h2 v-if="inCourseContext && hasUnits">{{ $gettext('Lernmaterialien') }}</h2>
         <template v-if="hasUnits">
-            <ol v-if="(!userIsTeacher && inCourseContext) || units.length === 1" class="cw-tiles">
+            <ol v-if="!userIsTeacher && inCourseContext" class="cw-tiles">
                 <courseware-unit-item v-for="unit in units" :key="unit.id" :unit="unit" :handle="false"/>
             </ol>
             <template v-else>
@@ -17,6 +18,7 @@
                     v-bind="dragOptions"
                     handle=".cw-tile-handle"
                     group="units"
+                    draggable=".cw-unit-item"
                     @start="isDragging = true"
                     @end="dropUnit"
                     ref="sortables"
@@ -24,10 +26,15 @@
                 >
                     <courseware-unit-item
                         v-for="unit in unitList"
+                        :handle="units.length > 1"
                         :key="unit.id"
                         :unit="unit"
                         @unit-keydown="keyHandler($event, unit.id)"
                     />
+                    <li class="cw-unit-add-item" @click="setShowUnitAddDialog(true)">
+                        <StudipIcon :size="48" shape="add" />
+                        <p>{{ $gettext('Lernmaterial hinzufügen') }}</p>
+                    </li>
                 </draggable>
             </template>
         </template>
@@ -49,7 +56,7 @@
                             )
                         }}
                     </p>
-                    <button class="button" @click="setShowUnitNewDialog(true)">
+                    <button class="button" @click="setShowUnitAddDialog(true)">
                         {{ $gettext('Neues Lernmaterial anlegen') }}
                     </button>
                 </div>
@@ -66,7 +73,7 @@
                 <p>{{ $gettext('Erstellen und verwalten Sie hier Ihre eigenen persönlichen Lernmaterialien in Form von ePorfolios, ' +
                                'Vorlagen für Veranstaltungen oder einfach nur persönliche Inhalte für das Studium. ' +
                                'Entwickeln Sie Ihre eigenen (Lehr-)Materialien für Studium oder die Lehre und teilen diese mit anderen Nutzenden.') }}</p>
-                <button class="button" @click="setShowUnitNewDialog(true)">
+                <button class="button" @click="setShowUnitAddDialog(true)">
                     {{ $gettext('Neues Lernmaterial anlegen') }}
                 </button>
             </div>
@@ -77,6 +84,7 @@
 <script>
 import CoursewareCompanionBox from '../layouts/CoursewareCompanionBox.vue';
 import CoursewareUnitItem from './CoursewareUnitItem.vue';
+import StudipIcon from '../../StudipIcon.vue';
 import draggable from 'vuedraggable';
 import { mapActions, mapGetters } from 'vuex';
 
@@ -85,6 +93,7 @@ export default {
     components: {
         CoursewareCompanionBox,
         CoursewareUnitItem,
+        StudipIcon,
         draggable,
     },
     data() {

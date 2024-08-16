@@ -51,6 +51,8 @@ class Course_CoursewareController extends CoursewareController
             Context::getId(),
             $GLOBALS['user']->id
         );
+        $this->lastElementId = UserConfig::get($GLOBALS['user']->id)->getValue('COURSEWARE_LAST_ELEMENT')[Context::getId()];
+
         Navigation::activateItem('course/courseware/shelf');
         $this->setIndexSidebar();
     }
