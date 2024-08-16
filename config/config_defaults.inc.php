@@ -245,13 +245,14 @@ $_language_domain = "studip";  // the name of the language file. Should not be c
 ----------------------------------------------------------------
 the following plugins are available:
 Standard        authentication using the local Stud.IP database
-StandardExtern      authentication using an alternative Stud.IP database, e.g. another installation
+StandardExtern  authentication using an alternative Stud.IP database, e.g. another installation
 Ldap            authentication using an LDAP server, this plugin uses anonymous bind against LDAP to retrieve the user dn,
-            then it uses the submitted password to authenticate with this user dn
+                then it uses the submitted password to authenticate with this user dn
 LdapReader      authentication using an LDAP server, this plugin binds to the server using a given dn and a password,
-            this account must have read access to gather the attributes for the user who tries to authenticate.
-CAS         authentication using a central authentication server (CAS)
+                this account must have read access to gather the attributes for the user who tries to authenticate.
+CAS             authentication using a central authentication server (CAS)
 Shib            authentication using a Shibboleth identity provider (IdP)
+OAuth2          authentication using an OAuth2 identity provider
 
 If you write your own plugin put it in studip-htdocs/lib/classes/auth_plugins
 and enable it here. The name of the plugin is the classname excluding "StudipAuth".
@@ -267,6 +268,7 @@ $STUDIP_AUTH_PLUGIN[] = "Standard";
 // $STUDIP_AUTH_PLUGIN[] = "LTI";
 // $STUDIP_AUTH_PLUGIN[] = "Shib";
 // $STUDIP_AUTH_PLUGIN[] = "IP";
+// $STUDIP_AUTH_PLUGIN[] = 'OAuth2';
 
 $STUDIP_AUTH_CONFIG_STANDARD = ["error_head" => "intern"];
 
@@ -378,6 +380,26 @@ $STUDIP_AUTH_CONFIG_SHIB = array("session_initiator" => "https://sp.studip.de/Sh
 
 $STUDIP_AUTH_CONFIG_IP = array('allowed_users' =>
     array ('root' => array('127.0.0.1', '::1')));
+
+$STUDIP_AUTH_CONFIG_OAUTH2 = [
+    'client_id'                  => '',
+    'client_secret'              => '',
+    'redirect_uri'               => '',
+
+    'url_authorize'              => '',
+    'url_access_token'           => '',
+    'url_resource_owner_details' => '',
+
+    'login_description' => 'Login with OAuth2',
+
+    'user_data_mapping' => [
+        'auth_user_md5.username' => ['callback' => 'getUserData', 'map_args' => 'nickname'],
+        'auth_user_md5.password' => ['callback' => 'dummy', 'map_args' => ''],
+        'auth_user_md5.Vorname'  => ['callback' => 'getUserData', 'map_args' => 'given_name'],
+        'auth_user_md5.Nachname' => ['callback' => 'getUserData', 'map_args' => 'family_name'],
+        'auth_user_md5.EMail'    => ['callback' => 'getUserData', 'map_args' => 'email'],
+    ],
+];
 */
 
 //some additional authification-settings

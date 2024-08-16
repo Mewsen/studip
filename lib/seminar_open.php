@@ -158,6 +158,15 @@ if (Navigation::hasItem('/profile/edit')) {
 }
 
 if ($user_did_login) {
+    if (isset($_SESSION[StudipAuthOAuth2::class]['redirect'])) {
+        $redirect = $_SESSION[StudipAuthOAuth2::class]['redirect'];
+        unset($_SESSION[StudipAuthOAuth2::class]);
+
+        page_close();
+        header('Location: ' . $redirect);
+        die;
+    }
+
     NotificationCenter::postNotification('UserDidLogin', $user->id);
 }
 

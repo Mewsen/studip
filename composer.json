@@ -123,7 +123,8 @@
         "symfony/polyfill-php83": "1.30.0",
         "symfony/polyfill-php84": "1.30.0",
         "nyholm/psr7": "1.8.1",
-        "nyholm/psr7-server": "1.1.0"
+        "nyholm/psr7-server": "1.1.0",
+        "league/oauth2-client": "2.7.0"
     },
     "replace": {
         "symfony/polyfill-php73": "*",

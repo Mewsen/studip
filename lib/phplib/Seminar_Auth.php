@@ -125,7 +125,13 @@ class Seminar_Auth
                 # Check for user supplied automatic login procedure
                 if ($uid = $this->auth_preauth()) {
                     $this->auth["uid"] = $uid;
-                    $sess->regenerate_session_id(['auth', '_language', 'phpCAS', 'contrast']);
+                    $sess->regenerate_session_id([
+                        '_language',
+                        'auth',
+                        'contrast',
+                        'phpCAS',
+                        StudipAuthOAuth2::class
+                    ]);
                     $sess->freeze();
                     $GLOBALS['user'] = new Seminar_User($this->auth['uid']);
                     return true;
