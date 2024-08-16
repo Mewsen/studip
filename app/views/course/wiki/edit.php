@@ -13,7 +13,7 @@
     ->withProps([
         'cancel-url'   => $controller->leave_editingURL($page),
         'chdate'       => date('c', $page->chdate),
-        'page-content' => wikiReady($page->content, true, $page->range_id, $page->id),
+        'page-content' => $page->content,
         'editing'      => (bool) $me_online->editing,
         'page-id'      => (int) $page->id,
         'save-url'     => $controller->saveURL($page),
