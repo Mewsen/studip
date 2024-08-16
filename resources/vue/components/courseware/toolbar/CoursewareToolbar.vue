@@ -1,5 +1,5 @@
 <template>
-    <div class="cw-toolbar-wrapper">
+    <div v-show="!consumeMode" class="cw-toolbar-wrapper">
         <div id="cw-toolbar" class="cw-toolbar" :style="toolbarStyle">
             <div v-if="showTools" class="cw-toolbar-tools" :class="{ unfold: unfold, hd: isHd, wqhd: isWqhd }">
                 <div id="cw-toolbar-nav" class="cw-toolbar-button-wrapper">
@@ -102,6 +102,7 @@ export default {
     },
     computed: {
         ...mapGetters({
+            consumeMode: 'consumeMode',
             relatedContainers: 'courseware-containers/related',
             structuralElementById: 'courseware-structural-elements/byId',
             toolbarActive: 'toolbarActive',
@@ -158,6 +159,7 @@ export default {
         ...mapActions({
             toggleToolbarActive: 'toggleToolbarActive',
             toggleHideEditLayout: 'toggleHideEditLayout',
+            setHideEditLayout: 'setHideEditLayout',
         }),
         activateTool(tool) {
             this.activeTool = tool;
@@ -199,6 +201,9 @@ export default {
     },
 
     watch: {
+        consumeMode(newState) {
+            this.setHideEditLayout(newState);
+        },
         containers(newValue, oldValue) {
             if (newValue) {
                 this.resetAdderStorage();

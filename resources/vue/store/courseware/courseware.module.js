@@ -1503,6 +1503,9 @@ export const actions = {
     toggleHideEditLayout({ commit, rootGetters}) {
         commit('setHideEditLayout', !rootGetters['hideEditLayout']);
     },
+    setHideEditLayout({commit}, state) {
+        commit('setHideEditLayout', state);
+    },
     setFeedbackSettings(context, feedbackSettings) {
         context.commit('setFeedbackSettings', feedbackSettings);
     },
