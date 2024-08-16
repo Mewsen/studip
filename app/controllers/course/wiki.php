@@ -119,14 +119,19 @@ class Course_WikiController extends AuthenticatedController
             ->setTOC(CoreWiki::getTOC($this->page))
             ->setIcon(Icon::create('wiki'));
         if (!$this->page->isNew()) {
+            $author = _('unbekannt');
+            if ($this->page->user) {
+                $author = sprintf(
+                    '<a href="%s">%s</a>',
+                    URLHelper::getLink('dispatch.php/profile', ['username' => $this->page->user->username]),
+                    htmlReady($this->page->user->getFullName())
+                );
+            }
+
             $this->contentbar->setInfo(sprintf(
                 _('Version %1$s, geändert von %2$s <br> am %3$s'),
                 $this->page->versionnumber,
-                sprintf(
-                    '<a href="%s">%s</a>',
-                    URLHelper::getLink('dispatch.php/profile', ['username' => get_username($this->page['user_id'])]),
-                    htmlReady(get_fullname($this->page['user_id']))
-                ),
+                $author,
                 date('d.m.Y H:i:s', $this->page['chdate'])
             ));
             $action_menu = ActionMenu::get();
