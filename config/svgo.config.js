@@ -16,7 +16,7 @@ module.exports = {
         'cleanupAttrs',
         'mergeStyles',
         'minifyStyles',
-        'cleanupIDs',
+        'cleanupIds',
         'removeUselessDefs',
         'cleanupNumericValues',
         'convertColors',
