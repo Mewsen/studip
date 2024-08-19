@@ -329,10 +329,10 @@ class CalendarDateAssignment extends SimpleORMap implements Event
         $ts = $this->getNoonDate();
         $pos = 1;
         switch ($this->getRepetitionType()) {
-            case 'DAILY':
+            case CalendarDate::REPETITION_DAILY:
                 $pos = $cal_date->diff($ts)->days % $this->calendar_date->interval;
                 break;
-            case 'WEEKLY':
+            case CalendarDate::REPETITION_WEEKLY:
                 $cal_ts = $cal_date->modify('monday this week noon');
                 if ($cal_date >= $this->getBegin()) {
                     $pos = $cal_ts->diff($ts)->days % ($this->calendar_date->interval * 7);
@@ -344,7 +344,7 @@ class CalendarDateAssignment extends SimpleORMap implements Event
                     }
                 }
                 break;
-            case 'MONTHLY':
+            case CalendarDate::REPETITION_MONTHLY:
                 $cal_ts = $cal_date->modify('first day of this month noon');
                 $diff = $cal_ts->diff($ts);
                 $pos = ($diff->m + $diff->y * 12) % $this->calendar_date->interval;
@@ -361,7 +361,7 @@ class CalendarDateAssignment extends SimpleORMap implements Event
                     }
                 }
                 break;
-            case 'YEARLY':
+            case CalendarDate::REPETITION_YEARLY:
                 $cal_ts = $cal_date->modify('first day of this year noon');
                 $diff = $cal_ts->diff($ts);
                 $pos = $diff->y % $this->calendar_date->interval;
@@ -598,13 +598,13 @@ class CalendarDateAssignment extends SimpleORMap implements Event
     {
         $ts = DateTimeImmutable::createFromMutable($this->getBegin());
         switch ($this->calendar_date->repetition_type) {
-            case 'DAILY':
+            case CalendarDate::REPETITION_DAILY:
                 return $ts->modify('noon');
-            case 'WEEKLY':
+            case CalendarDate::REPETITION_WEEKLY:
                 return  $ts->modify('monday this week noon');
-            case 'MONTHLY':
+            case CalendarDate::REPETITION_MONTHLY:
                 return $ts->modify('first day of this month noon');
-            case 'YEARLY':
+            case CalendarDate::REPETITION_YEARLY:
                 return $ts->modify('first day of this year noon');
             default:
                 return $ts;

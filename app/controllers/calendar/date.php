@@ -436,17 +436,25 @@ class Calendar_DateController extends AuthenticatedController
             //Store the repetition information:
 
             $this->date->clearRepetitionFields();
-            $this->date->repetition_type = Request::get('repetition_type', '');
-            if (!in_array($this->date->repetition_type, ['', 'DAILY', 'WEEKLY', 'WORKDAYS', 'MONTHLY', 'YEARLY'])) {
+            $this->date->repetition_type = Request::get('repetition_type', CalendarDate::REPETITION_SINGLE);
+            if (
+                !in_array($this->date->repetition_type, [
+                    CalendarDate::REPETITION_SINGLE,
+                    CalendarDate::REPETITION_DAILY,
+                    CalendarDate::REPETITION_WEEKLY,
+                    CalendarDate::REPETITION_MONTHLY,
+                    CalendarDate::REPETITION_YEARLY,
+                    'WORKDAYS',
+                ])
+            ) {
                 $this->form_errors[_('Wiederholung')] = _('Bitte wählen Sie ein gültiges Wiederholungsintervall aus.');
-            }
-            if ($this->date->repetition_type !== '') {
+            } elseif ($this->date->repetition_type !== CalendarDate::REPETITION_SINGLE) {
                 $this->date->interval = '';
-                if (in_array($this->date->repetition_type, ['DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'])) {
-                    $this->date->interval = Request::get('repetition_interval');
+                if ($this->date->repetition_type !== 'WORKDAYS') {
+                    $this->date->interval = Request::int('repetition_interval');
                 }
 
-                if ($this->date->repetition_type === 'WEEKLY') {
+                if ($this->date->repetition_type === CalendarDate::REPETITION_WEEKLY) {
                     $dow = array_unique(Request::getArray('repetition_dow'));
                     foreach ($dow as $day) {
                         if ($day < 1 || $day > 7) {
@@ -457,29 +465,29 @@ class Calendar_DateController extends AuthenticatedController
                 } elseif ($this->date->repetition_type === 'WORKDAYS') {
                     //Special case: The "WORKDAYS" repetition type is a shorthand type
                     //for a weekly repetition from Monday to Friday.
-                    $this->date->repetition_type = 'WEEKLY';
+                    $this->date->repetition_type = CalendarDate::REPETITION_WEEKLY;
                     $this->date->days = '12345';
-                    $this->date->interval = '1';
-                } elseif ($this->date->repetition_type === 'MONTHLY') {
+                    $this->date->interval = 1;
+                } elseif ($this->date->repetition_type === CalendarDate::REPETITION_MONTHLY) {
                     $month_type = Request::get('repetition_month_type');
                     if ($month_type === 'dom') {
-                        $this->date->offset = Request::get('repetition_dom');
+                        $this->date->offset = Request::int('repetition_dom');
                     } elseif ($month_type === 'dow') {
                         $this->date->days = Request::get('repetition_dow');
-                        $this->date->offset = Request::get('repetition_dow_week');
+                        $this->date->offset = Request::int('repetition_dow_week');
                     }
-                } elseif ($this->date->repetition_type === 'YEARLY') {
-                    $month = Request::get('repetition_month');
+                } elseif ($this->date->repetition_type === CalendarDate::REPETITION_YEARLY) {
+                    $month = Request::int('repetition_month');
                     if ($month < 1 || $month > 12) {
                         $this->form_errors[_('Monat')] = _('Bitte wählen Sie einen Monat zwischen Januar und Dezember aus.');
                     }
                     $this->date->month = $month;
                     $month_type = Request::get('repetition_month_type');
                     if ($month_type === 'dom') {
-                        $this->date->offset = Request::get('repetition_dom');
+                        $this->date->offset = Request::int('repetition_dom');
                     } elseif ($month_type === 'dow') {
                         $this->date->days = Request::get('repetition_dow');
-                        $this->date->offset = Request::get('repetition_dow_week');
+                        $this->date->offset = Request::int('repetition_dow_week');
                     }
                 }
 
@@ -489,7 +497,7 @@ class Calendar_DateController extends AuthenticatedController
                     $end_date->setTime(23,59,59);
                     $this->date->repetition_end = $end_date->getTimestamp();
                 } elseif ($end_type === 'end_count') {
-                    $this->date->number_of_dates = Request::get('repetition_number_of_dates');
+                    $this->date->number_of_dates = Request::int('repetition_number_of_dates');
                 } else {
                     //Repetition never ends:
                     $this->date->repetition_end = CalendarDate::NEVER_ENDING;
