@@ -165,9 +165,10 @@ export default {
             await dispatch('loadCurrentUser');
 
             // if total is missing, there are more comments to fetch
-            const total = rootGetters['blubber-comments/lastMeta']?.page?.total;
-            const hasMore = total ?? true;
-            commit('setMoreOlder', { id, hasMore });
+            commit('setMoreOlder', {
+                id,
+                hasMore: !('total' in rootGetters['blubber-comments/lastMeta'].page)
+            });
         },
 
         async fetchThreads({ commit, dispatch, getters, rootGetters }, { search, more = false }) {
