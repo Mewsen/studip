@@ -76,7 +76,6 @@ class CalendarParser
                         $event = new EventData();
                         $event->author_id = $GLOBALS['user']->id;
                         $event->event_id = $event->getNewId();
-                        $event->uid = $component['UID'];
                         $calendar_event->range_id = $range_id;
                         $calendar_event->event_id = $event->event_id;
                         $calendar_event->event = $event;
