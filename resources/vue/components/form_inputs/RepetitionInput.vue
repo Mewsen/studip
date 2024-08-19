@@ -3,7 +3,7 @@
         <section>
             <label>{{ $gettext('Art der Wiederholung') }}
                 <select :name="name + '_type'" v-model="repetition_type_value">
-                    <option value="" :selected="!repetition_type_value">
+                    <option value="SINGLE" :selected="!repetition_type_value || repetition_type_value === 'SINGLE'">
                         {{ $gettext('Keine Wiederholung') }}
                     </option>
                     <option value="DAILY" :selected="repetition_type_value === 'DAILY'">
@@ -200,7 +200,7 @@
             </label>
         </section>
 
-        <section v-if="repetition_type_value">
+        <section v-if="repetition_type_value !== 'SINGLE'">
             <label>
                 {{ $gettext('Ende der Wiederholung') }}
                 <select :name="name + '_rep_end_type'"

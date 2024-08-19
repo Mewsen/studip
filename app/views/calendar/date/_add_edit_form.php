@@ -1,3 +1,19 @@
+<?php
+/**
+ * @var Calendar_DateController $controller
+ * @var string $form_post_link
+ * @var string|null $user_id
+ * @var string|null $group_id
+ * @var array $form_errors
+ * @var CalendarDate $date
+ * @var bool $all_day_event
+ * @var array<int, string> $category_options
+ * @var string[] $exceptions
+ * @var string $user_quick_search_type
+ * @var array $calendar_assignment_items
+ * @var string $owner_id
+ */
+?>
 <form class="default new-calendar-date-form" method="post" action="<?= $form_post_link ?>"
       data-dialog="reload-on-close">
     <?= CSRFProtection::tokenTag() ?>

@@ -52,6 +52,12 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
      */
     public const NEVER_ENDING = 2147483647;
 
+    public const REPETITION_SINGLE = 'SINGLE';
+    public const REPETITION_DAILY = 'DAILY';
+    public const REPETITION_WEEKLY = 'WEEKLY';
+    public const REPETITION_MONTHLY = 'MONTHLY';
+    public const REPETITION_YEARLY = 'YEARLY';
+
     protected static function configure($config = [])
     {
         $config['db_table'] = 'calendar_dates';
@@ -103,10 +109,10 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
      */
     public function getDefaultValue($field)
     {
-        if ($field == 'begin') {
+        if ($field === 'begin') {
             return time();
         }
-        if ($field == 'end' && $this->content['begin']) {
+        if ($field === 'end' && $this->content['begin']) {
             return $this->content['begin'] + 3600;
         }
         return parent::getDefaultValue($field);
@@ -305,19 +311,27 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
      */
     public function calculateExpiration()
     {
-        if (!in_array($this->repetition_type, ['DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'])) {
+        if (
+            !in_array($this->repetition_type, [
+                self::REPETITION_DAILY,
+                self::REPETITION_WEEKLY,
+                self::REPETITION_MONTHLY,
+                self::REPETITION_YEARLY,
+            ])
+        ) {
             //No repetition. Nothing to do.
             return;
         }
+
         if ($this->number_of_dates > 1) {
             //There is a certain amount of repetitions, so that the expiration date
             //has to be calculated by that.
             $expiration = new DateTime();
             $expiration->setTimestamp($this->begin);
             $interval_str = '';
-            if ($this->repetition_type === 'DAILY') {
+            if ($this->repetition_type === self::REPETITION_DAILY) {
                 $interval_str = sprintf('P%dD', ((int) $this->number_of_dates - 1) * $this->interval);
-            } elseif ($this->repetition_type === 'WEEKLY') {
+            } elseif ($this->repetition_type === self::REPETITION_WEEKLY) {
                 $days_length = mb_strlen($this->days);
                 if ($days_length > 0) {
                     $wday = $expiration->format('N');
@@ -334,9 +348,9 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                 } else {
                     $interval_str = sprintf('P%dW', ($this->number_of_dates - 1) * $this->interval);
                 }
-            } elseif ($this->repetition_type === 'MONTHLY') {
+            } elseif ($this->repetition_type === self::REPETITION_MONTHLY) {
                 $interval_str = sprintf('P%dM', ($this->number_of_dates - 1) * $this->interval);
-            } elseif ($this->repetition_type === 'YEARLY') {
+            } elseif ($this->repetition_type === self::REPETITION_YEARLY) {
                 $interval_str = sprintf('P%dY', ($this->number_of_dates - 1) * $this->interval);
             }
             try {
@@ -365,15 +379,15 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
      */
     public function getRepetitionInterval() : ?DateInterval
     {
-        if ($this->repetition_type === 'DAILY') {
+        if ($this->repetition_type === self::REPETITION_DAILY) {
             return new DateInterval(sprintf('P%uD', $this->interval));
         } elseif ($this->repetition_type === 'WORKDAYS') {
             return new DateInterval('P1W');
-        } elseif ($this->repetition_type === 'WEEKLY') {
+        } elseif ($this->repetition_type === self::REPETITION_WEEKLY) {
             return new DateInterval(sprintf('P%uW', $this->interval));
-        } elseif ($this->repetition_type === 'MONTHLY') {
+        } elseif ($this->repetition_type === self::REPETITION_MONTHLY) {
             return new DateInterval(sprintf('P%uM', $this->interval));
-        } elseif ($this->repetition_type === 'YEARLY') {
+        } elseif ($this->repetition_type === self::REPETITION_YEARLY) {
             return new DateInterval(sprintf('P%uY', $this->interval));
         }
         //No repetition: no interval.
@@ -387,13 +401,13 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
             return null;
         }
 
-        if ($this->repetition_type === 'MONTHLY') {
+        if ($this->repetition_type === self::REPETITION_MONTHLY) {
             if ($this->days_offset) {
                 return new DateInterval(sprintf('P%1$uM%2$uD', $this->offset, $this->days_offset));
             } else {
                 return new DateInterval(sprintf('P%uM', $this->offset));
             }
-        } elseif ($this->repetition_type === 'YEARLY') {
+        } elseif ($this->repetition_type === self::REPETITION_YEARLY) {
             return new DateInterval(sprintf('P%uM', $this->offset));
         }
         return null;
@@ -433,13 +447,13 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
      */
     public function clearRepetitionFields()
     {
-        $this->repetition_type = '';
-        $this->interval = '';
-        $this->offset = '';
+        $this->repetition_type = self::REPETITION_SINGLE;
+        $this->interval = 0;
+        $this->offset = 0;
         $this->days = '';
-        $this->month = '';
-        $this->number_of_dates = '1';
-        $this->repetition_end = '';
+        $this->month = null;
+        $this->number_of_dates = 1;
+        $this->repetition_end = 0;
     }
 
     public function getAccessAsString() : string
@@ -461,9 +475,9 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
 
         $repetition_string = '';
 
-        if ($this->repetition_type === 'SINGLE') {
+        if ($this->repetition_type === self::REPETITION_SINGLE) {
             $repetition_string = _('Keine Wiederholung');
-        } elseif ($this->repetition_type === 'DAILY') {
+        } elseif ($this->repetition_type === self::REPETITION_DAILY) {
             if ($this->interval > 0) {
                 if ($this->interval == '1') {
                     //Each day
@@ -502,7 +516,7 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                     }
                 }
             }
-        } elseif ($this->repetition_type === 'WEEKLY') {
+        } elseif ($this->repetition_type === self::REPETITION_WEEKLY) {
             $weekday_string = '';
             if (strlen($this->days) > 1) {
                 //Multiple days
@@ -567,7 +581,7 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                     );
                 }
             }
-        } elseif ($this->repetition_type === 'MONTHLY') {
+        } elseif ($this->repetition_type === self::REPETITION_MONTHLY) {
             if ($this->interval == '1') {
                 //Each month
                 if ($this->days) {
@@ -620,7 +634,7 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                     );
                 }
             }
-        } elseif ($this->repetition_type === 'YEARLY') {
+        } elseif ($this->repetition_type === self::REPETITION_YEARLY) {
             if ($this->interval == '1') {
                 //Each year
                 if ($this->days) {
