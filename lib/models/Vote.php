@@ -149,7 +149,9 @@ class Vote extends QuestionnaireQuestion implements QuestionType
                 } else {
                     $userId = _('unbekannt') . ' ' . ++$countNobodys;
                 }
-                $answerOption[$userId] = $options[$answerData['answers']];
+                if (!empty($options[$answerData['answers']])) {
+                    $answerOption[$userId] = $options[$answerData['answers']];
+                }
             }
 
             $question = strip_tags($this['questiondata']['description']);
