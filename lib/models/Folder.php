@@ -110,6 +110,16 @@ class Folder extends SimpleORMap implements FeedbackRange
      */
     public static function createTopFolder($range_id, $range_type, $folder_type = 'RootFolder')
     {
+        $creator_id = User::findCurrent()->id;
+
+        try {
+            $range = RangeFactory::createRange($range_type, $range_id);
+            if (!$range->isEditableByUser()) {
+                $creator_id = '';
+            }
+        } catch (Exception $e) {
+        }
+
         return self::create([
             'parent_id'    => '',
             'range_id'     => $range_id,
@@ -118,7 +128,7 @@ class Folder extends SimpleORMap implements FeedbackRange
             'name'         => '',
             'data_content' => '',
             'folder_type'  => $folder_type,
-            'user_id'      => $GLOBALS['user']->id
+            'user_id'      => $creator_id,
         ]);
     }
 
