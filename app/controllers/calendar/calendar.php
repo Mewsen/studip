@@ -815,7 +815,7 @@ class Calendar_CalendarController extends AuthenticatedController
             CSRFProtection::verifySecurityToken();
             $range_id = Context::getId() ?? User::findCurrent()->id;
             $calendar_import = new ICalendarImport($range_id);
-            $calendar_import->convertPublicToPrivate(Request::bool('import_as_private_imp'));
+            $calendar_import->convertPublicToPrivate(Request::bool('import_privat', false));
             $calendar_import->import(file_get_contents($_FILES['importfile']['tmp_name']));
             $import_count = $calendar_import->getCountEvents();
             PageLayout::postSuccess(sprintf(
