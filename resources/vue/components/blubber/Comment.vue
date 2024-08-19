@@ -28,14 +28,14 @@
                         </div>
                     </template>
                     <div v-else class="talk-bubble-edit">
-                    <textarea
-                        v-model="localText"
-                        ref="textarea"
-                        @input="setTextareaSize"
-                        @focus="setTextareaSize"
-                        @keydown.enter.exact.prevent="saveComment"
-                        @keyup.escape.exact="doneEditing"
-                    ></textarea>
+                        <textarea
+                            v-model="localText"
+                            ref="textarea"
+                            @input="setTextareaSize"
+                            @focus="setTextareaSize"
+                            @keydown.enter.exact.prevent="saveComment"
+                            @keyup.escape.exact="doneEditing"
+                        ></textarea>
                         <button @click="saveComment" :title="$gettext('Speichern')">
                             <studip-icon shape="accept" />
                         </button>
@@ -121,8 +121,11 @@ export default {
         },
         setTextareaSize() {
             const textarea = this.$refs.textarea;
+            const style = getComputedStyle(textarea);
+            const height = textarea.scrollHeight - parseInt(style.paddingTop, 10) - parseInt(style.paddingBottom, 10);
+
             textarea.style.width = this.commentWidth + 'px';
-            textarea.style.height = textarea.scrollHeight + 'px';
+            textarea.style.height = height + 'px';
         }
     },
     mounted() {
