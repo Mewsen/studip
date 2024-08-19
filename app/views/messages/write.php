@@ -4,13 +4,33 @@
     <input type="hidden" name="message_id" id="message_id" value="<?= htmlReady($default_message->id) ?>">
     <input type="hidden" name="answer_to" value="<?= htmlReady($answer_to) ?>">
 
+    <article aria-live="assertive"
+             class="validation_notes studip">
+        <header>
+            <h1>
+                <?= Icon::create('info-circle', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom validation_notes_icon']) ?>
+                <?= _('Hinweise zum Ausfüllen des Formulars') ?>
+            </h1>
+        </header>
+        <div class="required_note">
+            <div aria-hidden="true">
+                <?= _('Pflichtfelder sind mit Sternchen gekennzeichnet.') ?>
+            </div>
+            <div class="sr-only">
+                <?= _('Dieses Formular enthält Pflichtfelder.') ?>
+            </div>
+        </div>
+    </article>
+
     <fieldset>
         <legend><?= _('Neue Nachricht') ?></legend>
     <div class="message-user-list">
-        <label>
-            <span class="required">
-                <?= _("An") ?>
-            </span>
+        <?
+        $quick_search = QuickSearch::get('user_id', new StandardSearch('user_id'));
+        ?>
+        <label class="studiprequired" for="<?= htmlReady($quick_search->getId()) ?>">
+            <?= _("An") ?>
+            <span class="asterisk" title="<?= _('Dies ist ein Pflichtfeld') ?>" aria-hidden="true">*</span>
         </label>
         <ul class="list-csv" id="adressees">
             <li id="template_adressee" style="display: none;" class="adressee">
@@ -29,8 +49,7 @@
             <? endforeach ?>
         </ul>
         <div class="message-search-wrapper">
-        <?= QuickSearch::get('user_id', new StandardSearch('user_id'))
-            ->fireJSFunctionOnSelect('STUDIP.Messages.add_adressee')
+        <?= $quick_search->fireJSFunctionOnSelect('STUDIP.Messages.add_adressee')
             ->setAttributes(['data-context' => ''])
             ->withButton()
             ->render();
@@ -54,10 +73,9 @@
         </script>
     </div>
     <div>
-        <label>
-            <span class="required">
-                <?= _("Betreff") ?>
-            </span>
+        <label class="studiprequired">
+            <?= _("Betreff") ?>
+            <span class="asterisk" title="<?= _('Dies ist ein Pflichtfeld') ?>" aria-hidden="true">*</span>
             <input type="text" name="message_subject" required value="<?= htmlReady($default_message['subject']) ?>">
         </label>
     </div>
