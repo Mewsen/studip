@@ -352,7 +352,6 @@ class ICalendarImport
         $date->access = $properties['CLASS'] ?? 'PRIVATE';
         $date->user_category = $properties['CATEGORIES'];
         $date->category = $properties['STUDIP_CATEGORY'] ?: 1;
-        $date->priority = $properties['PRIORITY'] ?? '';
         $date->location = $properties['LOCATION'];
         if (is_array($properties['EXDATE'])) {
             foreach ($properties['EXDATE'] as $exdate) {
