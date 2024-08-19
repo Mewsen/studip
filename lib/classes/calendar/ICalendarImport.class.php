@@ -367,7 +367,6 @@ class ICalendarImport
             $date->chdate = $date->mkdate;
         }
         $date->import_date = $this->import_time;
-        $date->unique_id = $properties['UID'];
 
         $this->setRecurrenceRule($date, $properties['RRULE']);
         $date->store();
