@@ -8,7 +8,12 @@
         <nav>
         <? if ($admin): ?>
             <a href="<?= URLHelper::getLink('admin_evaluation.php', ['rangeID' => $range_id]) ?>">
-                <?= Icon::create('edit', 'clickable')->asImg(); ?>
+                <?= Icon::create('edit', 'clickable')->asImg(
+                    [
+                        'title'      => _('Bearbeiten'),
+                        'aria-label' => _('Bearbeiten')
+                    ]
+                ) ?>
             </a>
         <? endif; ?>
         </nav>
@@ -16,7 +21,7 @@
 
     <? if (!$evaluations): ?>
         <section>
-            <?= _('Keine Evaluationen vorhanden. Um neue Umfragen zu erstellen, klicken Sie rechts auf das Bearbeiten-Zeichen.') ?>
+            <?= _('Es sind keine Evaluationen vorhanden. Um eine neue Evaluation zu erstellen, können Sie die Aktion "Bearbeiten" nutzen.') ?>
         </section>
     <? else: ?>
         <? foreach ($evaluations as $evaluation): ?>
