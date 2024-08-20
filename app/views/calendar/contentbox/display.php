@@ -28,9 +28,9 @@
 <? else: ?>
     <section>
     <? if ($isProfile): ?>
-        <?= _('Es sind keine aktuellen Termine vorhanden. Um neue Termine zu erstellen, klicken Sie rechts auf das Plus.') ?>
+        <?= _('Es sind keine aktuellen Termine vorhanden. Um neue Termine zu erstellen, können Sie die Aktion "Neuen Termin anlegen" benutzen.') ?>
     <? else: ?>
-        <?= _('Es sind keine aktuellen Termine vorhanden. Um neue Termine zu erstellen, klicken Sie rechts auf die Zahnräder.') ?>
+        <?= _('Es sind keine aktuellen Termine vorhanden. Um neue Termine zu erstellen, können Sie die Aktion "Neuen Termin anlegen" benutzen.') ?>
     <? endif; ?>
     </section>
   <? endif; ?>
