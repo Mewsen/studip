@@ -95,6 +95,7 @@
                                 @deactivateComments="menuAction('deactivateComments')"
                                 @showFeedback="menuAction('showFeedback')"
                                 @showFeedbackCreate="menuAction('showFeedbackCreate')"
+                                @showNote="menuAction('showNote')"
                             />
                         </template>
                     </courseware-ribbon>
@@ -1186,7 +1187,7 @@ export default {
                                 id: 3,
                                 label: this.$gettext('Anmerkungen aktivieren'),
                                 icon: 'exclaim-circle',
-                                emit: 'showFeedback'
+                                emit: 'showNote'
                             });
                         }
                     }
@@ -1535,6 +1536,8 @@ export default {
                 case 'showFeedbackCreate':
                     this.showStructuralElementFeedbackCreateDialog(true);
                     break;
+                case 'showNote':
+                    this.displayFeedback = true;
             }
         },
         async closeEditDialog() {
