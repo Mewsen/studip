@@ -34,7 +34,7 @@
                 </div>
             </form>
 
-            <div class="filterpanel">
+            <div id="filterpanel" class="filterpanel">
                 <span class="sr-only">{{ $gettext('Kategorien-Filter') }}</span>
                 <button
                     v-for="category in blockCategories"
@@ -142,7 +142,8 @@ export default {
             ];
         },
         toolContentStyle() {
-            const height = this.toolbarContentHeight - 115;
+            const filterPanelHeight = document.getElementById("filterpanel")?.offsetHeight ?? 75;
+            const height = this.toolbarContentHeight - filterPanelHeight - 40;
 
             return {
                 height: height + 'px',
