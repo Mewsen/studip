@@ -5,7 +5,7 @@ namespace JsonApi\Routes\Schedule;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
-use JsonApi\Models\ScheduleEntry;
+use \ScheduleEntry;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 

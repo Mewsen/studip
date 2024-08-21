@@ -5,7 +5,7 @@ namespace JsonApi\Routes\Schedule;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
-use JsonApi\Models\ScheduleEntry;
+use \ScheduleEntry;
 use JsonApi\Routes\Users\Authority;
 use Neomerx\JsonApi\Schema\Link;
 use Psr\Http\Message\ResponseInterface as Response;
