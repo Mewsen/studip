@@ -97,6 +97,9 @@ class ScheduleEntry extends SimpleORMap implements Event
         return '';
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function getEvents(DateTime $begin, DateTime $end, string $range_id): array
     {
         return self::findBySQL(
@@ -113,26 +116,41 @@ class ScheduleEntry extends SimpleORMap implements Event
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getObjectId(): string
     {
         return $this->id;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getPrimaryObjectID(): string
     {
         return $this->user_id;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getObjectClass(): string
     {
         return self::class;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getTitle(): string
     {
         return $this->label;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getBegin(): DateTime
     {
         //Map the entry to the current week:
@@ -147,6 +165,9 @@ class ScheduleEntry extends SimpleORMap implements Event
         return $date;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getEnd(): DateTime
     {
         //Map the entry to the current week:
@@ -161,17 +182,26 @@ class ScheduleEntry extends SimpleORMap implements Event
         return $date;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getDuration(): DateInterval
     {
         return $this->getEnd()->diff($this->getBegin());
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getLocation(): string
     {
         //No location supported.
         return '';
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getUniqueId(): string
     {
         return implode('_', [
@@ -181,28 +211,43 @@ class ScheduleEntry extends SimpleORMap implements Event
         ]);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getDescription(): string
     {
         return $this->content;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getAdditionalDescriptions(): array
     {
         //No additional description supported.
         return [];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function isAllDayEvent(): bool
     {
         return $this->start_time === '000' && $this->end_time === '2359';
     }
 
+    /**
+     * @inheritDoc
+     */
     public function isWritable(string $user_id): bool
     {
         //Only the owner may edit the entry:
         return $user_id === $this->user_id;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getCreationDate(): DateTime
     {
         $date = new DateTime();
@@ -210,6 +255,9 @@ class ScheduleEntry extends SimpleORMap implements Event
         return $date;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getModificationDate(): DateTime
     {
         $date = new DateTime();
@@ -217,6 +265,9 @@ class ScheduleEntry extends SimpleORMap implements Event
         return $date;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getImportDate(): DateTime
     {
         //The import date is not supported. Use mkdate instead.
@@ -225,16 +276,25 @@ class ScheduleEntry extends SimpleORMap implements Event
         return $date;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getAuthor(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getEditor(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function toEventData(string $user_id): \Studip\Calendar\EventData
     {
         return new \Studip\Calendar\EventData(
@@ -261,6 +321,11 @@ class ScheduleEntry extends SimpleORMap implements Event
         );
     }
 
+    /**
+     * Creates a string representation of the schedule entry.
+     *
+     * @return string A human-readable string describing the schedule entry.
+     */
     public function toString() : string
     {
         return studip_interpolate(
