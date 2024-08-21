@@ -433,7 +433,7 @@ class ExternModuleTemplateLecturedetails extends ExternModule {
         }
         $dateform = $this->config->getValue('Main', 'dateformat');
 
-        $news = StudipNews::GetNewsByRange($this->seminar_id, TRUE);
+        $news = StudipNews::GetNewsByRange($this->seminar_id, true, true);
         if (!count($news)) {
             $content['NEWS']['NO-NEWS']['NEWS_NO-NEWS-TEXT'] = $this->config->getValue('Main', 'nodatatext');
         } else {

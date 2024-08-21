@@ -588,7 +588,7 @@ class ExternModuleTemplatePersondetails extends ExternModule {
     private function getContentNews () {
         $dateform = $this->config->getValue('Main', 'dateformat');
 
-        $news = StudipNews::GetNewsByRange($this->user_id, TRUE);
+        $news = StudipNews::GetNewsByRange($this->user_id, true, true);
         if (!count($news)) {
             $content['NEWS']['NO-NEWS']['NEWS_NO-NEWS-TEXT'] = $this->config->getValue('Main', 'nodatatext');
         } else {
