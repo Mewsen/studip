@@ -14,7 +14,7 @@
         <? if ($membership) : ?>
             <fieldset>
                 <legend><?= _('Farbe') ?></legend>
-                <table class="default">
+                <table class="default mycourses-group-selector">
                     <tr>
                         <?= $this->render_partial(
                             'my_courses/group_selector',

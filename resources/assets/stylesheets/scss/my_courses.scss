@@ -9,7 +9,16 @@
     background: var(--white);
 }
 
-form.default .mycourses-group-selector {
+form.default table.mycourses-group-selector {
+    table-layout: fixed;
+    width: unset;
+
+    td {
+        width: 2em;
+    }
+}
+
+form.default td.mycourses-group-selector {
     position: relative;
 
     background-clip: padding-box;
