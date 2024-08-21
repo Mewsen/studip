@@ -154,9 +154,4 @@ class CoreScm extends CorePlugin implements StudipModule
         // TODO: Implement getInfoTemplate() method.
         return null;
     }
-
-    function deleteContent($course_id)
-    {
-
-    }
 }
