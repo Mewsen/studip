@@ -25,8 +25,8 @@ class UserScheduleShowTest extends \Codeception\Test\Unit
         $credentials = $this->tester->getCredentialsForTestAutor();
 
         $stmt = \DBManager::get()->prepare(
-            "INSERT INTO schedule (start, end, day, title, content, color, user_id)
-             VALUES (?, ?, ?, ?, ?, ?, ?)"
+            "INSERT INTO schedule_entries (start_time, end_time, dow, label, content, user_id, mkdate, chdate)
+             VALUES (?, ?, ?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())"
         );
         $stmt->execute([
             1000,
@@ -34,8 +34,7 @@ class UserScheduleShowTest extends \Codeception\Test\Unit
             1,
             'a title',
             'some content',
-            1,
-            $credentials['id'],
+            $credentials['id']
         ]);
         $scheduleId = \DBManager::get()->lastInsertId();
 
