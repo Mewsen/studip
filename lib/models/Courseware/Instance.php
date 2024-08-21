@@ -195,7 +195,7 @@ class Instance
             return $rootLayout;
         }
 
-        return 'default';
+        return 'classic';
     }
 
     /**
