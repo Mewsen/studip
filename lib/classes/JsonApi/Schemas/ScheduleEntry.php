@@ -20,14 +20,14 @@ class ScheduleEntry extends SchemaProvider
     public function getAttributes($entry, ContextInterface $context): iterable
     {
         return [
-            'title' => $entry->title,
+            'title' => $entry->label,
             'description' => mb_strlen(trim($entry->content)) ? $entry->content : null,
 
-            'start' => $this->formatTime($entry->start),
-            'end' => $this->formatTime($entry->end),
-            'weekday' => (int) $entry->day,
+            'start' => $this->formatTime($entry->start_time),
+            'end' => $this->formatTime($entry->end_time),
+            'weekday' => (int) $entry->dow,
 
-            'color' => $entry->color,
+            'color' => '',
         ];
     }
 
