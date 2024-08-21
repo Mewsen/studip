@@ -12,10 +12,10 @@ class AlterScheduleTable extends Migration
     {
         $db = DBManager::get();
 
-        $db->exec("RENAME TABLE IF EXISTS `schedule` TO `schedule_entries`");
+        $db->exec("RENAME TABLE `schedule` TO `schedule_entries`");
 
         $db->exec(
-            "ALTER IGNORE TABLE IF EXISTS `schedule_entries`
+            "ALTER TABLE `schedule_entries`
             DROP COLUMN color,
             CHANGE COLUMN start start_time SMALLINT(6) NOT NULL,
             CHANGE COLUMN end end_time SMALLINT(6) NOT NULL,
@@ -26,9 +26,9 @@ class AlterScheduleTable extends Migration
             ADD COLUMN chdate BIGINT(10) NOT NULL DEFAULT 0"
         );
 
-        $db->exec("RENAME TABLE IF EXISTS `schedule_seminare` TO `schedule_courses`");
+        $db->exec("RENAME TABLE `schedule_seminare` TO `schedule_courses`");
         $db->exec(
-            "ALTER IGNORE TABLE IF EXISTS `schedule_courses`
+            "ALTER TABLE `schedule_courses`
             DROP COLUMN color,
             CHANGE COLUMN seminar_id course_id CHAR(32) NOT NULL,
             ADD COLUMN mkdate BIGINT(10) NOT NULL DEFAULT 0,
