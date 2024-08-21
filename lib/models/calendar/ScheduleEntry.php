@@ -241,8 +241,9 @@ class ScheduleEntry extends SimpleORMap implements Event
      */
     public function isWritable(string $user_id): bool
     {
-        //Only the owner may edit the entry:
-        return $user_id === $this->user_id;
+        //Only the owner and root may edit the entry:
+        return $user_id === $this->user_id
+            || $GLOBALS['perm']->have_perm('root', $user_id);
     }
 
     /**
