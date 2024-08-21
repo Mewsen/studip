@@ -58,7 +58,7 @@ class UserScheduleShow extends JsonApiController
         // get all virtually added seminars
         $stmt = \DBManager::get()->prepare(
             'SELECT c.course_id FROM schedule_courses as c
-             LEFT JOIN seminare ON seminare.seminar_id = schedule_courses.course_id
+             LEFT JOIN seminare ON seminare.seminar_id = c.course_id
              WHERE user_id = ? AND start_time = ?'
         );
         $stmt->execute([$user->id, $semester['beginn']]);
