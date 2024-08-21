@@ -129,7 +129,7 @@ class BasicDataWizardStep implements CourseWizardStep
         if (!empty($values['studygroup']) || count($institutes) > 0) {
             $tpl->set_attribute('institutes', $institutes);
             if (empty($values['institute'])) {
-                if ($GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT && Request::isXhr()) {
+                if ($GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT !== 'all' && Request::isXhr()) {
                     $values['institute'] = $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT;
                 } else {
                     $values['institute'] = InstituteMember::getDefaultInstituteIdForUser($GLOBALS['user']->id);
