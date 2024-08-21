@@ -252,7 +252,7 @@ const containerMixin = {
         resetAdderStorage() {
             // choose the last container and its last section as the default adder slot
             // for adding blocks and containers via click
-            if (this.containers) {
+            if (this.containers && this.containers.length > 0) {
                 const lastContainer = this.containers[this.containers.length - 1];
                 const section = lastContainer.activeSection ?? 0;
                 this.setAdderStorage({
