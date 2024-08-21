@@ -6,7 +6,7 @@ class ScheduleEntry extends \SimpleORMap
 {
     protected static function configure($config = array())
     {
-        $config['db_table'] = 'schedule';
+        $config['db_table'] = 'schedule_entries';
 
         $config['belongs_to']['user'] = array(
             'class_name' => 'User',
