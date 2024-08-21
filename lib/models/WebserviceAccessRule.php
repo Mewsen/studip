@@ -99,18 +99,34 @@ class WebserviceAccessRule extends SimpleORMap
      */
     function checkIpInRange($check_ip)
     {
-        if (!ip2long($check_ip)) {
-            return false;
-        }
+        $ip_addr = inet_pton($check_ip);
+
         if (!count($this->ip_range)) {
             return true;
         }
-        foreach($this->ip_range as $range) {
-            list($ip, $mask) = explode('/', $range);
-            if (!$mask) {
-                $mask = 32;
+        foreach ($this->ip_range as $range) {
+            if (strpos($range, '/') !== false) {
+                list($range, $bits) = explode('/', $range);
+                $range = inet_pton($range) ?: '';
+                $mask = str_repeat(chr(0), strlen($range));
+
+                for ($i = 0; $i < strlen($mask); ++$i) {
+                    if ($bits >= 8) {
+                        $bits -= 8;
+                    } else {
+                        $mask[$i] = chr((1 << 8 - $bits) - 1);
+                        $bits = 0;
+                    }
+                }
+
+                $ip_start = $range & ~$mask;
+                $ip_end = $range | $mask;
+            } else {
+                $ip_start = inet_pton($range);
+                $ip_end = inet_pton($range);
             }
-            if ( (ip2long($check_ip) & ~((1 << (32 - $mask)) - 1)) == ip2long($ip)) {
+
+            if (strcmp($ip_start, $ip_addr) <= 0 && strcmp($ip_addr, $ip_end) <= 0) {
                 return true;
             }
         }
