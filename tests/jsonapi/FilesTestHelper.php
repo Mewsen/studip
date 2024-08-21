@@ -15,12 +15,15 @@ trait FilesTestHelper
         $this->assertNotNull($course);
 
         $oldUser = $GLOBALS['user'];
+        $oldPerm = $GLOBALS['perm'];
         $GLOBALS['user'] = new \Seminar_User($credentials['id']);
+        $GLOBALS['perm'] = \Seminar_Perm::get();
 
         $rootFolder = Folder::createTopFolder($course->id, 'course');
         $this->assertNotNull($rootFolder);
 
         $GLOBALS['user'] = $oldUser;
+        $GLOBALS['perm'] = $oldPerm;
 
         return $rootFolder;
     }
