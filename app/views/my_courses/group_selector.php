@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @var string $course_id
  * @var string $selected_group_id

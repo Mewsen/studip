@@ -12,12 +12,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  * @since       6.0
- */
-
-
-/**
- * The ScheduleCourseDate represents regular course dates that are
- * displayed in the schedule of a user.
  *
  * @property string user_id database column
  * @property string course_id database column

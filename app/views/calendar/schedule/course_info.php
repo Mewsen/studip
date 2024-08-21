@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @var AuthenticatedController $controller
  * @var Course $course
@@ -39,8 +39,8 @@
                     ?>
                     <? foreach ($lecturers as $lecturer) : ?>
                         <li>
-                            <a href="<?php echo URLHelper::getLink('dispatch.php/profile', ['username' => $lecturer->username]) ?>">
-                                <?php echo htmlReady($lecturer->user->getFullName()) ?>
+                            <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $lecturer->username]) ?>">
+                                <?= htmlReady($lecturer->user->getFullName()) ?>
                             </a>
                         </li>
                     <? endforeach ?>
@@ -51,7 +51,7 @@
         </fieldset>
         <div data-dialog-button>
             <?= \Studip\Button::create(_('Speichern'), 'save') ?>
-            <? if ($schedule_course_entry && ($schedule_course_entry->visible === 0)) : ?>
+            <? if ($schedule_course_entry && !$schedule_course_entry->visible) : ?>
                 <?= \Studip\Button::create(_('Veranstaltung einblenden'), 'show') ?>
             <? else : ?>
                 <?= \Studip\Button::create(_('Veranstaltung ausblenden'), 'hide') ?>

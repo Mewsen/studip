@@ -4,66 +4,66 @@
  * @var ScheduleEntry $entry The schedule entry to be created/modified.
  */
 ?>
-<form class="default" method="post" action="<?php echo $controller->link_for('calendar/schedule/entry/' . ($entry->isNew() ? 'add' : $entry->id)) ?>"
+<form class="default" method="post" action="<?= $controller->link_for('calendar/schedule/entry/' . ($entry->isNew() ? 'add' : $entry->id)) ?>"
       data-dialog="reload-on-close">
-    <?php echo CSRFProtection::tokenTag() ?>
+    <?= CSRFProtection::tokenTag() ?>
     <fieldset>
-        <legend><?php echo _('Zeit') ?></legend>
+        <legend><?= _('Zeit') ?></legend>
         <section class="flex-row">
         <label>
-            <?php echo _('Wochentag') ?>
+            <?= _('Wochentag') ?>
             <select name="dow">
-                <option value="1" <?php echo $entry->dow === 1 ? 'selected' : '' ?>>
-                    <?php echo _('Montag') ?>
+                <option value="1" <?= $entry->dow === 1 ? 'selected' : '' ?>>
+                    <?= _('Montag') ?>
                 </option>
-                <option value="2" <?php echo $entry->dow === 2 ? 'selected' : '' ?>>
-                    <?php echo _('Dienstag') ?>
+                <option value="2" <?= $entry->dow === 2 ? 'selected' : '' ?>>
+                    <?= _('Dienstag') ?>
                 </option>
-                <option value="3" <?php echo $entry->dow === 3 ? 'selected' : '' ?>>
-                    <?php echo _('Mittwoch') ?>
+                <option value="3" <?= $entry->dow === 3 ? 'selected' : '' ?>>
+                    <?= _('Mittwoch') ?>
                 </option>
-                <option value="4" <?php echo $entry->dow === 4 ? 'selected' : '' ?>>
-                    <?php echo _('Donnerstag') ?>
+                <option value="4" <?= $entry->dow === 4 ? 'selected' : '' ?>>
+                    <?= _('Donnerstag') ?>
                 </option>
-                <option value="5" <?php echo $entry->dow === 5 ? 'selected' : '' ?>>
-                    <?php echo _('Freitag') ?>
+                <option value="5" <?= $entry->dow === 5 ? 'selected' : '' ?>>
+                    <?= _('Freitag') ?>
                 </option>
-                <option value="6" <?php echo $entry->dow === 6 ? 'selected' : '' ?>>
-                    <?php echo _('Samstag') ?>
+                <option value="6" <?= $entry->dow === 6 ? 'selected' : '' ?>>
+                    <?= _('Samstag') ?>
                 </option>
-                <option value="7" <?php echo $entry->dow === 7 ? 'selected' : '' ?>>
-                    <?php echo _('Sonntag') ?>
+                <option value="7" <?= $entry->dow === 7 ? 'selected' : '' ?>>
+                    <?= _('Sonntag') ?>
                 </option>
             </select>
         </label>
         <label>
-            <?php echo _('Startuhrzeit') ?>
+            <?= _('Startuhrzeit') ?>
             <input type="text" class="has-time-picker" name="start"
-                   value="<?php echo htmlReady($entry->getFormattedStart()) ?>">
+                   value="<?= htmlReady($entry->getFormattedStart()) ?>">
         </label>
         <label>
-            <?php echo _('Enduhrzeit') ?>
+            <?= _('Enduhrzeit') ?>
             <input type="text" class="has-time-picker" name="end"
-                   value="<?php echo htmlReady($entry->getFormattedEnd()) ?>">
+                   value="<?= htmlReady($entry->getFormattedEnd()) ?>">
         </label>
         </section>
     </fieldset>
     <fieldset>
-        <legend><?php echo _('Inhalt') ?></legend>
+        <legend><?= _('Inhalt') ?></legend>
         <label>
-            <?php echo _('Titel') ?>
+            <?= _('Titel') ?>
             <input type="text" name="label" value="<?= htmlReady($entry->label) ?>">
         </label>
         <label>
-            <?php echo _('Beschreibung') ?>
-            <textarea name="content"><?php echo htmlReady($entry->content) ?></textarea>
+            <?= _('Beschreibung') ?>
+            <textarea name="content"><?= htmlReady($entry->content) ?></textarea>
         </label>
     </fieldset>
     <div data-dialog-button>
-        <?php echo \Studip\Button::create(_('Speichern'), 'save') ?>
-        <?php if (!$entry->isNew()) : ?>
-            <?php echo \Studip\Button::create(_('Löschen'), 'delete') ?>
-        <?php endif ?>
-        <?php echo \Studip\Button::createCancel(_('Abbrechen')) ?>
+        <?= \Studip\Button::create(_('Speichern'), 'save') ?>
+        <? if (!$entry->isNew()) : ?>
+            <?= \Studip\Button::create(_('Löschen'), 'delete') ?>
+        <? endif ?>
+        <?= \Studip\Button::createCancel(_('Abbrechen')) ?>
     </div>
 </form>

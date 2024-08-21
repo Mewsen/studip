@@ -127,11 +127,11 @@
         }
 
         &.marked-course {
-            border-color: $black;
-            background-color: $white;
+            border-color: var(--black);
+            background-color: var(--white);
 
             .fc-time {
-                border-bottom: 1px solid $black;
+                border-bottom: 1px solid var(--black);
             }
         }
 

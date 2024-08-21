@@ -12,12 +12,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  * @since       6.0
- */
-
-
-/**
- * The ScheduleEntry model represents regular dates that are
- * displayed only in the schedule of a user.
  *
  * @property string id database column
  * @property string start_time database column
@@ -46,8 +40,6 @@ class ScheduleEntry extends SimpleORMap implements Event
      * in the format HH:mm.
      *
      * @param string $formatted_start The formatted date in the format HH:mm.
-     *
-     * @return void
      */
     public function setFormattedStart(string $formatted_start) : void
     {
@@ -59,8 +51,6 @@ class ScheduleEntry extends SimpleORMap implements Event
      * in the format HH:mm.
      *
      * @param string $formatted_end The formatted date in the format HH:mm.
-     *
-     * @return void
      */
     public function setFormattedEnd(string $formatted_end) : void
     {
@@ -76,10 +66,13 @@ class ScheduleEntry extends SimpleORMap implements Event
     public function getFormattedStart() : string
     {
         if (strlen($this->start_time) === 3) {
-            return '0' . substr($this->start_time, 0,1) . ':' . substr($this->start_time, 1, 2);
-        } elseif (strlen($this->start_time) === 4) {
-            return substr($this->start_time, 0,2) . ':' . substr($this->start_time, 2, 2);
+            return '0' . substr($this->start_time, 0, 1) . ':' . substr($this->start_time, 1, 2);
         }
+
+        if (strlen($this->start_time) === 4) {
+            return substr($this->start_time, 0, 2) . ':' . substr($this->start_time, 2, 2);
+        }
+
         //Invalid date format:
         return '';
     }
@@ -93,10 +86,13 @@ class ScheduleEntry extends SimpleORMap implements Event
     public function getFormattedEnd() : string
     {
         if (strlen($this->end_time) === 3) {
-            return '0' . substr($this->end_time, 0,1) . ':' . substr($this->end_time, 1, 2);
-        } elseif (strlen($this->end_time) === 4) {
-            return substr($this->end_time, 0,2) . ':' . substr($this->end_time, 2, 2);
+            return '0' . substr($this->end_time, 0, 1) . ':' . substr($this->end_time, 1, 2);
         }
+
+        if (strlen($this->end_time) === 4) {
+            return substr($this->end_time, 0, 2) . ':' . substr($this->end_time, 2, 2);
+        }
+
         //Invalid date format:
         return '';
     }
@@ -142,12 +138,12 @@ class ScheduleEntry extends SimpleORMap implements Event
         //Map the entry to the current week:
         $date = new DateTime();
         $date->setTimestamp(strtotime('midnight this week'));
-        if (intval($this->dow) > 1) {
-            $days_to_add = intval($this->dow) - 1;
+        if ($this->dow > 1) {
+            $days_to_add = $this->dow - 1;
             $date = $date->add(new DateInterval(sprintf('P%dD', $days_to_add)));
         }
         $time_parts = explode(':', $this->getFormattedStart());
-        $date->setTime(intval($time_parts[0]), intval($time_parts[1]));
+        $date->setTime($time_parts[0], $time_parts[1]);
         return $date;
     }
 
@@ -156,20 +152,18 @@ class ScheduleEntry extends SimpleORMap implements Event
         //Map the entry to the current week:
         $date = new DateTime();
         $date->setTimestamp(strtotime('midnight this week'));
-        if (intval($this->dow) > 1) {
-            $days_to_add = intval($this->dow) - 1;
+        if ($this->dow > 1) {
+            $days_to_add = $this->dow - 1;
             $date = $date->add(new DateInterval(sprintf('P%dD', $days_to_add)));
         }
         $time_parts = explode(':', $this->getFormattedEnd());
-        $date->setTime(intval($time_parts[0]), intval($time_parts[1]));
+        $date->setTime($time_parts[0],$time_parts[1]);
         return $date;
     }
 
     public function getDuration(): DateInterval
     {
-        $begin = $this->getBegin();
-        $end   = $this->getEnd();
-        return $begin->diff($end);
+        return $this->getEnd()->diff($this->getBegin());
     }
 
     public function getLocation(): string
@@ -180,7 +174,11 @@ class ScheduleEntry extends SimpleORMap implements Event
 
     public function getUniqueId(): string
     {
-        return sprintf('%1$s_%2$s_%3$s', Config::get()->STUDIP_INSTALLATION_ID, self::class, $this->id);
+        return implode('_', [
+            Config::get()->STUDIP_INSTALLATION_ID,
+            self::class,
+            $this->id,
+        ]);
     }
 
     public function getDescription(): string

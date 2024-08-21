@@ -1,1 +1,1 @@
-<?php echo $fullcalendar ?>
+<?= $fullcalendar ?>

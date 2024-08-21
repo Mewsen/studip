@@ -126,7 +126,7 @@ class Helper
     ) : \Studip\Fullcalendar
     {
         if (!$semester_id) {
-            $semester_id = \Semester::findCurrent()->id ?? '';
+            $semester_id = \Semester::findCurrent()?->id ?? '';
         }
         $calendar_settings = \User::findCurrent()->getConfiguration()->CALENDAR_SETTINGS ?? [];
 
