@@ -74,7 +74,7 @@ class ExternModuleNewsticker extends ExternModule {
         $out .= "newsticker_tl = new textlist(";
 
         $topics = [];
-        foreach(StudipNews::GetNewsByRange($this->config->range_id, true) as $news_content){
+        foreach(StudipNews::GetNewsByRange($this->config->range_id, true, true) as $news_content){
             $topics[] = "'" . addslashes((string) $news_content->topic) . "'";
         }
         if (!count($topics)) {
