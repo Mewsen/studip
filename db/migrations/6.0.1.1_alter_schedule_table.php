@@ -38,8 +38,28 @@ class AlterScheduleTable extends Migration
 
     protected function down()
     {
-        //Oh no! No! I'm too young to die! I'm too young and too handsome!
-        //(looks into mirror)
-        //Ny-aah! ... Well, I'm too young!
+        $db = DBManager::get();
+
+        $db->exec(
+            "ALTER TABLE `schedule_courses`
+            ADD COLUMN color TINYINT(4) NULL DEFAULT NULL,
+            CHANGE COLUMN course_id seminar_id CHAR(32) NOT NULL,
+            DROP COLUMN mkdate,
+            DROP COLUMN chdate"
+        );
+        $db->exec("RENAME TABLE `schedule_courses` TO `schedule_seminare`");
+
+        $db->exec(
+            "ALTER TABLE `schedule_entries`
+            ADD COLUMN color TINYINT(4) NULL DEFAULT NULL,
+            CHANGE COLUMN start_time start SMALLINT(6) NOT NULL,
+            CHANGE COLUMN end_time end SMALLINT(6) NOT NULL,
+            CHANGE COLUMN dow day TINYINT(1) NOT NULL,
+            CHANGE COLUMN label title VARCHAR(255) NOT NULL,
+            CHANGE COLUMN content content VARCHAR(255) NOT NULL,
+            DROP COLUMN mkdate,
+            DROP COLUMN chdate"
+        );
+        $db->exec("RENAME TABLE `schedule_entries` TO `schedule`");
     }
 }
