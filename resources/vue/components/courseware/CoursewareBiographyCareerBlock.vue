@@ -11,7 +11,7 @@
         >
             <template #content>
                 <ol class="cw-timeline">
-                    <li 
+                    <li
                         v-for="(item, index) in sortedItems"
                         :key="index"
                         class="cw-timeline-item"
@@ -27,15 +27,16 @@
                             <h3>{{ item.date ? getReadableDate(item.date) : ''}}{{ item.enddate ? ' - ' + getReadableDate(item.enddate) : '' }}</h3>
                             <article>
                                 <header>{{ getItemTypeName(item.type) }}</header>
-                                <div v-if="item.type === 'school'">
-                                    <p><translate>Bezeichnung der Qualifikation</translate>: {{ item.qualification }}</p>
-                                    <p><translate>Hauptfächer / Schwerpunkt</translate>: {{ item.focus }}</p>
-                                    <p><translate>berufliche Fähigkeiten</translate>: {{ item.skills }}</p>
-                                </div>
-                                <div v-if="item.type === 'experience'">
-                                    <p><translate>Name des Arbeitgebers</translate>: {{ item.employer }}</p>
-                                    <p><translate>Beruf / Funktion</translate>: {{ item.job }}</p>
-                                </div>
+                                <template v-if="item.type === 'school'">
+                                    <p>{{ $gettext('Bezeichnung der Qualifikation') }}: {{ item.qualification }}</p>
+                                    <p>{{ $gettext('Hauptfächer / Schwerpunkt') }}: {{ item.focus }}</p>
+                                    <p>{{ $gettext('berufliche Fähigkeiten') }}: {{ item.skills }}</p>
+                                </template>
+                                <template v-if="item.type === 'experience'">
+                                    <p>{{ $gettext('Name des Arbeitgebers') }}: {{ item.employer }}</p>
+                                    <p>{{ $gettext('Beruf / Funktion') }}: {{ item.job }}</p>
+                                </template>
+                                <p>{{ item.description }}</p>
                             </article>
                         </div>
                     </li>
