@@ -27,7 +27,7 @@
  */
 class AdminCourseFilter
 {
-    static protected $instance = null;
+    protected static $instance = null;
 
     /** @var SQLQuery|null  */
     public $query = null;
@@ -38,11 +38,14 @@ class AdminCourseFilter
      * returns an AdminCourseFilter singleton object
      * @return AdminCourseFilter or derived-class object
      */
-    static public function get($reset_settings = false)
+    public static function get($reset_settings = false)
     {
+        if ($reset_settings) {
+            return new static($reset_settings);
+        }
+
         if (!self::$instance) {
-            $class = get_called_class();
-            self::$instance = new $class($reset_settings);
+            self::$instance = new static($reset_settings);
         }
         return self::$instance;
     }
@@ -50,12 +53,12 @@ class AdminCourseFilter
     /**
      * Constructor of the singleton-object.
      */
-    public function __construct()
+    public function __construct(bool $reset_settings = false)
     {
-        $this->initSettings();
+        $this->initSettings($reset_settings);
     }
 
-    protected function initSettings()
+    protected function initSettings(bool $reset_settings = false): void
     {
         $this->query = SQLQuery::table('seminare');
         $this->query->join('sem_types', 'sem_types', 'sem_types.id = seminare.status');
@@ -63,7 +66,7 @@ class AdminCourseFilter
         $this->query->where("sem_classes.studygroup_mode = '0'");
         $this->query->groupBy('seminare.Seminar_id');
 
-        if ($GLOBALS['user']->cfg->ADMIN_COURSES_SEARCHTEXT) {
+        if (!$reset_settings && $GLOBALS['user']->cfg->ADMIN_COURSES_SEARCHTEXT) {
             $this->query->join('teachers_su', 'seminar_user', "teachers_su.Seminar_id = seminare.Seminar_id AND teachers_su.status = 'dozent'");
             $this->query->join('teachers', 'auth_user_md5', 'teachers.user_id = teachers_su.user_id');
             $this->query->where(
@@ -72,7 +75,7 @@ class AdminCourseFilter
                 ['search' => '%'.$GLOBALS['user']->cfg->ADMIN_COURSES_SEARCHTEXT.'%']
             );
         }
-        if (Request::option('course_id')) {
+        if (!$reset_settings && Request::option('course_id')) {
             $this->query->where('course_id', 'seminare.Seminar_id = :course_id', ['course_id' => Request::option('course_id')]);
         }
         $inst_ids = [];
@@ -114,7 +117,10 @@ class AdminCourseFilter
             ]);
         }
 
-        if ($GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER && $GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER !== 'all') {
+        if (
+            $GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER &&
+            $GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER !== 'all'
+        ) {
             if (str_contains($GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER, '_')) {
                 list($sem_class_id, $sem_type_id) = explode('_', $GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER);
                 $this->query->where('course_type', 'seminare.status = :course_type', ['course_type' => $sem_type_id]);
@@ -149,16 +155,16 @@ class AdminCourseFilter
             );
         }
 
-
-
-        $datafields_filters = $GLOBALS['user']->cfg->ADMIN_COURSES_DATAFIELDS_FILTERS;
-        foreach ($datafields_filters as $datafield_id => $value) {
-            $this->query->join('de_'.$datafield_id, 'datafields_entries', 'de_'.$datafield_id.'.range_id = seminare.Seminar_id AND `de_'.$datafield_id.'`.datafield_id = :de_'.$datafield_id.'_id');
-            $this->query->where('de_' . $datafield_id . '_contents', 'de_' . $datafield_id . '.`content` LIKE :de_' . $datafield_id . '_content',
-                [
-                    'de_' . $datafield_id . '_id' => $datafield_id,
-                    'de_' . $datafield_id . '_content' => '%' . $value . '%'
-                ]);
+        if (!$reset_settings) {
+            $datafields_filters = $GLOBALS['user']->cfg->ADMIN_COURSES_DATAFIELDS_FILTERS;
+            foreach ($datafields_filters as $datafield_id => $value) {
+                $this->query->join('de_'.$datafield_id, 'datafields_entries', 'de_'.$datafield_id.'.range_id = seminare.Seminar_id AND `de_'.$datafield_id.'`.datafield_id = :de_'.$datafield_id.'_id');
+                $this->query->where('de_' . $datafield_id . '_contents', 'de_' . $datafield_id . '.`content` LIKE :de_' . $datafield_id . '_content',
+                    [
+                        'de_' . $datafield_id . '_id' => $datafield_id,
+                        'de_' . $datafield_id . '_content' => '%' . $value . '%'
+                    ]);
+            }
         }
     }
 
