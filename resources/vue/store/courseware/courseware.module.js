@@ -105,7 +105,7 @@ const getters = {
     },
     currentElementBlocked(state, getters, rootState, rootGetters) {
         const elemData = getters.currentStructuralElement?.relationships?.['edit-blocker']?.data;
-        return elemData !== null && elemData !== '';
+        return elemData !== null && elemData !== '' && getters.currentStructuralElement;
     },
     currentElementBlockerId(state, getters) {
         return getters.currentElementBlocked ? getters.currentStructuralElement?.relationships?.['edit-blocker']?.data?.id : null;
