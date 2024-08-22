@@ -431,6 +431,11 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
             $params[':email'] = self::searchParam($attributes['email']);
         }
 
+        if (!empty($attributes['matriculation_number'])) {
+            $where[] = "au.`matriculation_number` LIKE :matriculation_number";
+            $params[':matriculation_number'] = self::searchParam($attributes['matriculation_number']);
+        }
+
         //permissions
         if (!empty($attributes['perm']) && $attributes['perm'] !== 'alle') {
             $where[] = "au.`perms` = :perms";

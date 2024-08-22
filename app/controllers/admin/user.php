@@ -100,11 +100,12 @@ class Admin_UserController extends AuthenticatedController
                 }
             }
 
-            $request['username']   = trim($request['username']);
-            $request['email']      = trim($request['email']);
-            $request['vorname']    = trim($request['vorname']);
-            $request['nachname']   = trim($request['nachname']);
-            $request['inaktiv']    = $inaktiv;
+            $request['username'] = trim($request['username']);
+            $request['email'] = trim($request['email']);
+            $request['matriculation_number'] = trim($request['matriculation_number']);
+            $request['vorname'] = trim($request['vorname']);
+            $request['nachname'] = trim($request['nachname']);
+            $request['inaktiv'] = $inaktiv;
             $request['datafields'] = $search_datafields;
 
             $_SESSION['admin']['user'] = $request;
@@ -135,6 +136,7 @@ class Admin_UserController extends AuthenticatedController
                 'vorname',
                 'nachname',
                 'email',
+                'matriculation_number',
                 'inaktiv',
                 'locked',
                 'show_only_not_lectures',
@@ -162,16 +164,16 @@ class Admin_UserController extends AuthenticatedController
                 PageLayout::postInfo(_('Sie haben keine Suchkriterien ausgewählt!'));
             } elseif (count($this->users) < 1 && Request::submitted('search')) {
                 PageLayout::postInfo(_('Es wurden keine Personen mit diesen Suchkriterien gefunden.'));
-            } else {
+            } elseif (!Request::submitted('export')) {
                 $_SESSION['admin']['user']['results'] = true;
                 PageLayout::postInfo(sprintf(_('Es wurden %s Personen mit diesen Suchkriterien gefunden.'), count($this->users)));
             }
             if (is_array($this->users) && Request::submitted('export')) {
-                $tmpname  = md5(uniqid('tmp'));
                 $captions = ['username',
                              'vorname',
                              'nachname',
                              'email',
+                             'matriculation_number',
                              'status',
                              'authentifizierung',
                              'domänen',
@@ -189,11 +191,12 @@ class Admin_UserController extends AuthenticatedController
                         $u['Vorname'],
                         $u['Nachname'],
                         $u['Email'],
+                        $u['matriculation_number'],
                         $u['perms'],
                         $u['auth_plugin'],
-                        join(';', $userdomains),
+                        implode(';', $userdomains),
                         $u['mkdate'] ? strftime('%x', $u['mkdate']) : '',
-                        $u->online->last_lifesign ? strftime('%x', $u->online->last_lifesign) : ''
+                        isset($u->online->last_lifesign) ? strftime('%x', $u->online->last_lifesign) : ''
                     ];
                     foreach ($this->datafields as $datafield) {
                         $df = new DatafieldEntryModel(
@@ -207,14 +210,15 @@ class Admin_UserController extends AuthenticatedController
                     }
                     return $data;
                 };
-                if (array_to_csv(array_map($mapper, $this->users), $GLOBALS['TMP_PATH'] . '/' . $tmpname, $captions)) {
-                    $this->redirect(
-                        FileManager::getDownloadURLForTemporaryFile(
-                            $tmpname,
-                            'nutzer-export.csv'
-                        )
-                    );
-                }
+
+                $this->render_csv(
+                    array_merge(
+                        [$captions],
+                        array_map($mapper, $this->users),
+                    ),
+                    'nutzer-export.csv'
+                );
+                return;
             }
         }
 
