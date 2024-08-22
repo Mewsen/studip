@@ -27,15 +27,16 @@
                             <h3>{{ item.date ? getReadableDate(item.date) : ''}}{{ item.enddate ? ' - ' + getReadableDate(item.enddate) : '' }}</h3>
                             <article>
                                 <header>{{ getItemTypeName(item.type) }}</header>
-                                <div v-if="item.type === 'school'">
+                                <template v-if="item.type === 'school'">
                                     <p>{{ $gettext('Bezeichnung der Qualifikation') }}: {{ item.qualification }}</p>
                                     <p>{{ $gettext('Hauptfächer / Schwerpunkt') }}: {{ item.focus }}</p>
                                     <p>{{ $gettext('berufliche Fähigkeiten') }}: {{ item.skills }}</p>
-                                </div>
-                                <div v-if="item.type === 'experience'">
+                                </template>
+                                <template v-if="item.type === 'experience'">
                                     <p>{{ $gettext('Name des Arbeitgebers') }}: {{ item.employer }}</p>
                                     <p>{{ $gettext('Beruf / Funktion') }}: {{ item.job }}</p>
-                                </div>
+                                </template>
+                                <p>{{ item.description }}</p>
                             </article>
                         </div>
                     </li>
