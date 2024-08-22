@@ -301,10 +301,10 @@ class Calendar_ScheduleController extends AuthenticatedController
         $this->entry->label   = Request::get('label', '');
         $this->entry->content = Request::get('content', '');
 
-            if ($this->entry->start_time >= $this->entry->end_time) {
-                PageLayout::postError(_('Der Startzeitpunkt darf nicht nach dem Endzeitpunkt liegen!'));
-                return;
-            }
+        if ($this->entry->start_time >= $this->entry->end_time) {
+            PageLayout::postError(_('Der Startzeitpunkt darf nicht nach dem Endzeitpunkt liegen!'));
+            return;
+        }
 
         if ($this->entry->store() !== false) {
             if ($entry_id === 'add') {
