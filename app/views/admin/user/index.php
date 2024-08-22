@@ -21,14 +21,19 @@ use Studip\Button;
     <fieldset>
         <legend><?= _('Benutzerverwaltung') ?></legend>
 
-        <label class="col-3">
+        <label class="col-2">
             <?= _('Benutzername') ?>
             <input name="username" type="text" value="<?= htmlReady($request['username'] ?? '') ?>">
         </label>
 
-        <label class="col-3">
+        <label class="col-2">
             <?= _('E-Mail') ?>
             <input name="email" type="text" value="<?= htmlReady($request['email'] ?? '') ?>">
+        </label>
+
+        <label class="col-2">
+            <?= _('Matrikelnummer') ?>
+            <input name="matriculation_number" type="text" value="<?= htmlReady($request['matriculation_number'] ?? '') ?>">
         </label>
 
         <label class="col-3">
