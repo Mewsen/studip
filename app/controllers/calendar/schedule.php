@@ -96,7 +96,7 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         $fullcalendar = \Studip\Calendar\Helper::getScheduleFullcalendar(
             $semester->id ?? '',
-            Request::bool('show_hidden')
+            Request::bool('show_hidden', false)
         );
         $this->fullcalendar = $fullcalendar->render();
     }
