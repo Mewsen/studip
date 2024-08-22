@@ -278,54 +278,68 @@ class Calendar_ScheduleController extends AuthenticatedController
                 //"Hey, this is private! Mmmmmmm!" (moves flat hand away from body)
                 throw new AccessDeniedException(_('Sie dürfen diesen Termin nicht bearbeiten!'));
             }
-
             PageLayout::setTitle($this->entry->toString());
         }
 
         if (Request::submitted('save')) {
             CSRFProtection::verifyUnsafeRequest();
+            $this->saveEntry($entry_id);
+        } elseif (Request::submitted('delete')) {
+            CSRFProtection::verifyUnsafeRequest();
+            $this->deleteEntry();
+        }
+    }
 
-            $this->entry->dow = Request::int('dow', date('N'));
-            $this->entry->setFormattedStart(Request::get('start'));
-            $this->entry->setFormattedEnd(Request::get('end'));
-            $this->entry->label   = Request::get('label', '');
-            $this->entry->content = Request::get('content', '');
+    /**
+     * Handles storing a schedule entry.
+     */
+    protected function saveEntry(string $entry_id)
+    {
+        $this->entry->dow = Request::int('dow', date('N'));
+        $this->entry->setFormattedStart(Request::get('start'));
+        $this->entry->setFormattedEnd(Request::get('end'));
+        $this->entry->label   = Request::get('label', '');
+        $this->entry->content = Request::get('content', '');
 
             if ($this->entry->start_time >= $this->entry->end_time) {
                 PageLayout::postError(_('Der Startzeitpunkt darf nicht nach dem Endzeitpunkt liegen!'));
                 return;
             }
 
-            if ($this->entry->store() !== false) {
-                if ($entry_id === 'add') {
-                    PageLayout::postSuccess(_('Der Termin wurde hinzugefügt.'));
-                } else {
-                    PageLayout::postSuccess(_('Der Termin wurde bearbeitet.'));
-                }
-                if (Request::isDialog()) {
-                    $this->response->add_header('X-Dialog-Close', '1');
-                } else {
-                    $this->redirect('calendar/schedule/index');
-                }
+        if ($this->entry->store() !== false) {
+            if ($entry_id === 'add') {
+                PageLayout::postSuccess(_('Der Termin wurde hinzugefügt.'));
             } else {
-                if ($entry_id === 'add') {
-                    PageLayout::postError(_('Der Termin konnte nicht hinzugefügt werden.'));
-                } else {
-                    PageLayout::postError(_('Der Termin konnte nicht bearbeitet werden.'));
-                }
-            }
-        } elseif (Request::submitted('delete')) {
-            CSRFProtection::verifyUnsafeRequest();
-            if ($this->entry->delete()) {
-                PageLayout::postSuccess(_('Der Termin wurde gelöscht.'));
-            } else {
-                PageLayout::postError(_('Der Termin konnte nicht gelöscht werden.'));
+                PageLayout::postSuccess(_('Der Termin wurde bearbeitet.'));
             }
             if (Request::isDialog()) {
                 $this->response->add_header('X-Dialog-Close', '1');
             } else {
                 $this->redirect('calendar/schedule/index');
             }
+        } else {
+            if ($entry_id === 'add') {
+                PageLayout::postError(_('Der Termin konnte nicht hinzugefügt werden.'));
+            } else {
+                PageLayout::postError(_('Der Termin konnte nicht bearbeitet werden.'));
+            }
+        }
+    }
+
+    /**
+     * Handles deleting a schedule entry.
+     */
+    protected function deleteEntry()
+    {
+        if ($this->entry->delete()) {
+            PageLayout::postSuccess(_('Der Termin wurde gelöscht.'));
+        } else {
+            PageLayout::postError(_('Der Termin konnte nicht gelöscht werden.'));
+        }
+        if (Request::isDialog()) {
+            $this->response->add_header('X-Dialog-Close', '1');
+        } else {
+            $this->redirect('calendar/schedule/index');
         }
     }
 
