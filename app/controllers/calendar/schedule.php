@@ -266,7 +266,6 @@ class Calendar_ScheduleController extends AuthenticatedController
                 $this->entry->setFormattedStart(Request::get('start', date('H:00', strtotime('+1 hour'))));
                 $this->entry->setFormattedEnd(Request::get('end', date('H:00', strtotime('+2 hours'))));
             }
-
             PageLayout::setTitle(_('Neuer Termin'));
         } else {
             //Edit mode
@@ -274,8 +273,7 @@ class Calendar_ScheduleController extends AuthenticatedController
             if (!$this->entry) {
                 PageLayout::postError(_('Der Termin wurde nicht gefunden.'));
             }
-            if ($this->entry->user_id !== $GLOBALS['user']->id) {
-                //"Hey, this is private! Mmmmmmm!" (moves flat hand away from body)
+            if (!$this->entry->isWritable($GLOBALS['user']->id)) {
                 throw new AccessDeniedException(_('Sie dürfen diesen Termin nicht bearbeiten!'));
             }
             PageLayout::setTitle($this->entry->toString());
@@ -293,8 +291,26 @@ class Calendar_ScheduleController extends AuthenticatedController
     /**
      * Handles storing a schedule entry.
      */
-    protected function saveEntry(string $entry_id)
+    protected function save_entry_action(string $entry_id)
     {
+        $this->entry = null;
+        if ($entry_id === 'add') {
+            //Add mode
+            $this->entry = new ScheduleEntry();
+            $this->entry->user_id = $GLOBALS['user']->id;
+            PageLayout::setTitle(_('Neuer Termin'));
+        } else {
+            //Edit mode
+            $this->entry = ScheduleEntry::find($entry_id);
+            if (!$this->entry) {
+                PageLayout::postError(_('Der Termin wurde nicht gefunden.'));
+            }
+            if (!$this->entry->isWritable($GLOBALS['user']->id)) {
+                throw new AccessDeniedException(_('Sie dürfen diesen Termin nicht bearbeiten!'));
+            }
+            PageLayout::setTitle($this->entry->toString());
+        }
+
         $this->entry->dow = Request::int('dow', date('N'));
         $this->entry->setFormattedStart(Request::get('start'));
         $this->entry->setFormattedEnd(Request::get('end'));
@@ -303,6 +319,7 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         if ($this->entry->start_time >= $this->entry->end_time) {
             PageLayout::postError(_('Der Startzeitpunkt darf nicht nach dem Endzeitpunkt liegen!'));
+            $this->redirect('calendar/schedule/entry/' . $entry_id);
             return;
         }
 
@@ -323,14 +340,24 @@ class Calendar_ScheduleController extends AuthenticatedController
             } else {
                 PageLayout::postError(_('Der Termin konnte nicht bearbeitet werden.'));
             }
+            $this->redirect('calendar/schedule/entry/' . $entry_id);
         }
+        $this->render_nothing();
     }
 
     /**
      * Handles deleting a schedule entry.
      */
-    protected function deleteEntry()
+    protected function delete_entry_action(string $entry_id)
     {
+        CSRFProtection::verifyUnsafeRequest();
+        $this->entry = ScheduleEntry::find($entry_id);
+        if (!$this->entry) {
+            PageLayout::postError(_('Der Termin wurde nicht gefunden.'));
+        }
+        if (!$this->entry->isWritable($GLOBALS['user']->id)) {
+            throw new AccessDeniedException(_('Sie dürfen diesen Termin nicht bearbeiten!'));
+        }
         if ($this->entry->delete()) {
             PageLayout::postSuccess(_('Der Termin wurde gelöscht.'));
         } else {
@@ -341,6 +368,7 @@ class Calendar_ScheduleController extends AuthenticatedController
         } else {
             $this->redirect('calendar/schedule/index');
         }
+        $this->render_nothing();
     }
 
     public function course_info_action(string $seminar_id)

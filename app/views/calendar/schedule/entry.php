@@ -60,9 +60,17 @@
         </label>
     </fieldset>
     <div data-dialog-button>
-        <?= \Studip\Button::create(_('Speichern'), 'save') ?>
+        <?= \Studip\Button::create(
+            _('Speichern'),
+            'save',
+            ['formaction' => $controller->url_for('calendar/schedule/save_entry/' . ($entry->isNew() ? 'add' : $entry->id))]
+        ) ?>
         <? if (!$entry->isNew()) : ?>
-            <?= \Studip\Button::create(_('Löschen'), 'delete') ?>
+            <?= \Studip\Button::create(
+                _('Löschen'),
+                'delete',
+                ['formaction' => $controller->url_for('calendar/schedule/delete_entry/' . $entry->id)]
+            ) ?>
         <? endif ?>
         <?= \Studip\Button::createCancel(_('Abbrechen')) ?>
     </div>
