@@ -156,14 +156,14 @@ class Calendar_ScheduleController extends AuthenticatedController
                 $start_time_parts = explode(':', $cycle_date->start_time);
                 $end_time_parts = explode(':', $cycle_date->end_time);
                 $fake_begin->setTime(
-                    intval($start_time_parts[0]),
-                    intval($start_time_parts[1]),
-                    intval($start_time_parts[2])
+                    $start_time_parts[0],
+                    $start_time_parts[1],
+                    $start_time_parts[2]
                 );
                 $fake_end->setTime(
-                    intval($end_time_parts[0]),
-                    intval($end_time_parts[1]),
-                    intval($end_time_parts[2])
+                    $end_time_parts[0],
+                    $end_time_parts[1],
+                    $end_time_parts[2]
                 );
 
                 $schedule_course = ScheduleCourseDate::findOneBySQL(
