@@ -50,11 +50,23 @@
             </section>
         </fieldset>
         <div data-dialog-button>
-            <?= \Studip\Button::create(_('Speichern'), 'save') ?>
+            <?= \Studip\Button::create(
+                _('Speichern'),
+                'save',
+                ['formaction' => $controller->url_for('calendar/schedule/save_course_info/' . $course->id)]
+            ) ?>
             <? if ($schedule_course_entry && !$schedule_course_entry->visible) : ?>
-                <?= \Studip\Button::create(_('Veranstaltung einblenden'), 'show') ?>
+                <?= \Studip\Button::create(
+                    _('Veranstaltung einblenden'),
+                    'show',
+                    ['formaction' => $controller->url_for('calendar/schedule/show_course/' . $course->id)]
+                ) ?>
             <? else : ?>
-                <?= \Studip\Button::create(_('Veranstaltung ausblenden'), 'hide') ?>
+                <?= \Studip\Button::create(
+                    _('Veranstaltung ausblenden'),
+                    'hide',
+                    ['formaction' => $controller->url_for('calendar/schedule/hide_course/' . $course->id)]
+                ) ?>
             <? endif ?>
             <?= \Studip\LinkButton::create(
                 _('Direkt zur Veranstaltung'),
