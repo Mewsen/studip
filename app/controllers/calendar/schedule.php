@@ -56,7 +56,7 @@ class Calendar_ScheduleController extends AuthenticatedController
         if ($show_hidden) {
             $actions->addLink(
                 _('Ausgeblendete Veranstaltungen verstecken'),
-                $this->indexURL(['semester_id' => Request::get('semester_id')])
+                $this->indexURL(['semester_id' => Request::get('semester_id')]),
                 Icon::create('visibility-invisible')
             );
         } else {
