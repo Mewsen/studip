@@ -157,7 +157,7 @@ class Helper
                     [
                         'url' => \URLHelper::getURL(
                             'dispatch.php/calendar/schedule/data',
-                            ['show_hidden' => $show_hidden_courses ? '1' : '0']
+                            ['show_hidden' => $show_hidden_courses]
                         ),
                         'method' => 'GET',
                         'extraParams' => [

@@ -41,9 +41,7 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         //Add the semester selector widget first:
         $semester_widget = new SemesterSelectorWidget(
-            $show_hidden
-                ? $this->url_for('calendar/schedule/index', ['show_hidden' => '1'])
-                : $this->url_for('calendar/schedule/index')
+            $this->indexURL(['show_hidden' => $show_hidden ?: null])
         );
         $sidebar->addWidget($semester_widget);
 
@@ -53,30 +51,30 @@ class Calendar_ScheduleController extends AuthenticatedController
             _('Neuer Termin'),
             $this->url_for('calendar/schedule/entry/add'),
             Icon::create('add'),
-            ['data-dialog' => 'size=default']
+            ['data-dialog' => '']
         );
         if ($show_hidden) {
             $actions->addLink(
                 _('Ausgeblendete Veranstaltungen verstecken'),
-                Request::submitted('semester_id')
-                    ? $this->url_for('calendar/schedule/index', ['semester_id' => Request::get('semester_id')])
-                    : $this->url_for('calendar/schedule/index'),
+                $this->indexURL(['semester_id' => Request::get('semester_id')])
                 Icon::create('visibility-invisible')
             );
         } else {
             $actions->addLink(
                 _('Ausgeblendete Veranstaltungen anzeigen'),
-                Request::submitted('semester_id')
-                    ? $this->url_for('calendar/schedule/index', ['show_hidden' => '1', 'semester_id' => Request::get('semester_id')])
-                    : $this->url_for('calendar/schedule/index', ['show_hidden' => '1']),
+                $this->indexURL([
+                    'show_hidden' => true,
+                    'semester_id' => Request::get('semester_id'),
+                ]),
                 Icon::create('visibility-visible')
             );
         }
 
         $actions->addLink(
             _('Drucken'),
-            'javascript:void(window.print());',
-            Icon::create('print')
+            '#',
+            Icon::create('print'),
+            ['onclick' => 'window.print(); return false;']
         );
         $actions->addLink(
             _('Einstellungen'),
@@ -90,7 +88,7 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         $semester = null;
         if (Request::submitted('semester_id')) {
-            $semester = Semester::find(Request::get('semester_id'));
+            $semester = Semester::find(Request::option('semester_id'));
         }
         if (!$semester) {
             $semester = Semester::findCurrent();
@@ -98,7 +96,7 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         $fullcalendar = \Studip\Calendar\Helper::getScheduleFullcalendar(
             $semester->id ?? '',
-            Request::int('show_hidden') === 1
+            Request::bool('show_hidden')
         );
         $this->fullcalendar = $fullcalendar->render();
     }
@@ -116,15 +114,15 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         $result = [];
 
-        $semester_id = Request::get('semester_id');
+        $semester_id = Request::option('semester_id');
         $semester = Semester::find($semester_id);
-        $show_hidden = Request::int('show_hidden', 0);
+        $show_hidden = Request::bool('show_hidden', false);
 
         if ($semester) {
             //Get all regular course dates for that semester:
             $cycle_dates = SeminarCycleDate::findBySql(
-                'INNER JOIN `termine` USING (`metadate_id`)
-                INNER JOIN `seminare` USING (`seminar_id`)
+                'JOIN `termine` USING (`metadate_id`)
+                 JOIN `seminare` USING (`seminar_id`)
                 WHERE
                 `seminar_id` IN (
                     SELECT `seminar_id` FROM `seminar_user`
@@ -175,7 +173,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                         'user_id' => $GLOBALS['user']->id
                     ]
                 );
-                $is_hidden = $schedule_course && $schedule_course->visible != '1';
+                $is_hidden = $schedule_course && !$schedule_course->visible;
                 if (!$show_hidden && $is_hidden) {
                     //The regular date belongs to a course that has been hidden in the schedule.
                     //The flag to include hidden courses is not set which means that the regular
@@ -199,7 +197,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                 } elseif ($schedule_course) {
                     $event_classes[] = 'marked-course';
                     $event_title = studip_interpolate(
-                        '%{course_name} (vorgemerkt)',
+                        _('%{course_name} (vorgemerkt)'),
                         ['course_name' => $cycle_date->course->getFullName()]
                     );
                 }
@@ -260,13 +258,13 @@ class Calendar_ScheduleController extends AuthenticatedController
         $this->entry = null;
         if ($entry_id === 'add') {
             //Add mode
-            $this->entry          = new ScheduleEntry();
+            $this->entry = new ScheduleEntry();
             $this->entry->user_id = $GLOBALS['user']->id;
             if (!Request::submitted('save')) {
                 //Provide good default values:
-                $this->entry->dow = Request::int('dow', intval(date('N')));
-                $this->entry->setFormattedStart(Request::get('start', date('H:00', time() + 3600)));
-                $this->entry->setFormattedEnd(Request::get('end', date('H:00', time() + 7200)));
+                $this->entry->dow = Request::int('dow', date('N'));
+                $this->entry->setFormattedStart(Request::get('start', date('H:00', strtotime('+1 hour'))));
+                $this->entry->setFormattedEnd(Request::get('end', date('H:00', strtotime('+2 hours'))));
             }
 
             PageLayout::setTitle(_('Neuer Termin'));
@@ -287,13 +285,13 @@ class Calendar_ScheduleController extends AuthenticatedController
         if (Request::submitted('save')) {
             CSRFProtection::verifyUnsafeRequest();
 
-            $this->entry->dow = Request::int('dow', intval(date('N')));
+            $this->entry->dow = Request::int('dow', date('N'));
             $this->entry->setFormattedStart(Request::get('start'));
             $this->entry->setFormattedEnd(Request::get('end'));
             $this->entry->label   = Request::get('label', '');
             $this->entry->content = Request::get('content', '');
 
-            if (intval($this->entry->start_time) >= intval($this->entry->end_time)) {
+            if ($this->entry->start_time >= $this->entry->end_time) {
                 PageLayout::postError(_('Der Startzeitpunkt darf nicht nach dem Endzeitpunkt liegen!'));
                 return;
             }
@@ -373,7 +371,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                         $entry->course_id   = $this->course->id;
                         $entry->metadate_id = '';
                     }
-                    $entry->visible   = '0';
+                    $entry->visible = false;
                     $success = $entry->store() !== false;
                 } else {
                     //Remove the entry of the marked course from the schedule.
@@ -389,7 +387,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                     ['user_id' => $GLOBALS['user']->id, 'course_id' => $this->course->id]
                 );
                 if ($entry) {
-                    $entry->visible = '1';
+                    $entry->visible = true;
                     $success = $entry->store() !== false;
                 } else {
                     $success = true;
@@ -442,7 +440,7 @@ class Calendar_ScheduleController extends AuthenticatedController
             $entry->course_id   = $course->id;
             $entry->user_id     = $GLOBALS['user']->id;
             $entry->metadate_id = '';
-            $entry->visible     = '1';
+            $entry->visible     = true;
             if ($entry->store() !== false) {
                 PageLayout::postSuccess(_('Die Veranstaltung wurde zum Stundenplan hinzugefügt.'));
             } else {
