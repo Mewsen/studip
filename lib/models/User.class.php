@@ -1350,6 +1350,92 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
                                                                AND range_type = 'user'";
         DBManager::get()->execute($query, [$new_id, $old_id]);
 
+        // Courseware
+        $query = "UPDATE IGNORE cw_blocks SET owner_id = ? WHERE owner_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_blocks SET editor_id = ? WHERE editor_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_blocks SET edit_blocker_id = ? WHERE edit_blocker_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+
+        $query = "UPDATE IGNORE cw_block_comments SET user_id = ? WHERE user_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_block_feedbacks SET user_id = ? WHERE user_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_bookmarks SET user_id = ? WHERE user_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_certificates SET user_id = ? WHERE user_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_clipboards SET user_id = ? WHERE user_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+
+        $query = "UPDATE IGNORE cw_containers SET owner_id = ? WHERE owner_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_containers SET editor_id = ? WHERE editor_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_containers SET edit_blocker_id = ? WHERE edit_blocker_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+
+        $query = "UPDATE IGNORE cw_public_links SET user_id = ? WHERE user_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+
+        $query = "UPDATE IGNORE cw_structural_elements SET range_id = ? WHERE range_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_structural_elements SET owner_id = ? WHERE owner_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_structural_elements SET editor_id = ? WHERE editor_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_structural_elements SET edit_blocker_id = ? WHERE edit_blocker_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+
+        $query = "UPDATE IGNORE cw_structural_element_comments SET user_id = ? WHERE user_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_structural_element_feedbacks SET user_id = ? WHERE user_id = ?";
+        $statement = DBManager::get()->prepare($query);
+
+        $query = "UPDATE IGNORE cw_tasks SET solver_id = ? WHERE solver_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_task_feedbacks SET lecturer_id = ? WHERE lecturer_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_task_groups SET lecturer_id = ? WHERE lecturer_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+
+        $query = "UPDATE IGNORE cw_units SET range_id = ? WHERE range_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+        $query = "UPDATE IGNORE cw_units SET creator_id = ? WHERE creator_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+
+        $query = "UPDATE IGNORE cw_user_data_fields SET user_id = ? WHERE user_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+
+        $query = "UPDATE IGNORE cw_user_progresses SET user_id = ? WHERE user_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute([$new_id, $old_id]);
+
+
         NotificationCenter::postNotification('UserDidMigrate', $old_id, $new_id);
 
         $messages[] = _('Dateien, Termine, Adressbuch, Nachrichten und weitere Daten wurden migriert.');
