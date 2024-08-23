@@ -122,8 +122,8 @@
         <template v-slot:edit>
             <form v-if="selectedUnit" class="default" @submit.prevent="">
                 <label>
-                    <span>{{$gettext('Titel')}}</span><span aria-hidden="true" class="wizard-required">*</span>
-                    <input type="text" v-model="modifiedTitle" :placeholder="selectedUnitTitle" name="title" required />
+                    {{$gettext('Titel')}}
+                    <input type="text" v-model="modifiedTitle" :placeholder="selectedUnitTitle" name="title" />
                 </label>
                 <label>
                     {{$gettext('Farbe')}}
@@ -153,8 +153,8 @@
                     </studip-select>
                 </label>
                 <label>
-                    <span>{{$gettext('Beschreibung')}}</span><span aria-hidden="true" class="wizard-required">*</span>
-                    <textarea v-model="modifiedDescription" :placeholder="selectedUnitDescription" required />
+                    {{$gettext('Beschreibung')}}
+                    <textarea v-model="modifiedDescription" :placeholder="selectedUnitDescription" />
                 </label>
             </form>
             <courseware-companion-box
