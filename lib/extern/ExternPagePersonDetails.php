@@ -135,29 +135,24 @@ class ExternPagePersonDetails extends ExternPage
     {
         $grouped_courses = [];
         $semesters = $this->getSemesters();
-        $query = "
-            SELECT
-                IFNULL(`semester_courses`.`semester_id`, '-1') AS `group_id`,
-                `seminare`.*
-            FROM
-                `seminare`
-                LEFT JOIN `semester_courses`
+        $query = "SELECT IFNULL(`semester_courses`.`semester_id`, '-1') AS `group_id`,
+                         `seminare`.*
+                  FROM `seminare`
+                  LEFT JOIN `semester_courses`
                     ON `semester_courses`.`course_id` = `seminare`.`Seminar_id`
-                LEFT JOIN `seminar_user` USING(`seminar_id`)
-                LEFT JOIN `sem_types`
-                    ON `sem_types`.`id` = `seminare`.`status`
-            WHERE `seminare`.`visible` = 1
-                AND `semester_courses`.`semester_id` IN (:semester_ids) OR ISNULL(`semester_id`)
-                AND `seminar_user`.`user_id` = :user_id
-                AND `seminar_user`.`status` = 'dozent'
-                AND `sem_types`.`class` IN (:semclasses)";
+                  JOIN `seminar_user` USING(`seminar_id`)
+                  JOIN `sem_types` ON `sem_types`.`id` = `seminare`.`status`
+                  WHERE `seminare`.`visible` = 1
+                    AND (`semester_courses`.`semester_id` IN (:semester_ids) OR ISNULL(`semester_id`))
+                    AND `seminar_user`.`user_id` = :user_id
+                    AND `seminar_user`.`status` = 'dozent'
+                    AND `sem_types`.`class` IN (:semclasses)";
 
-        $grouped_results = DBManager::get()->fetchGrouped($query,
-            [
-                'semester_ids' => $semesters,
-                'semclasses'   => (array) $this->semclass,
-                'user_id'      => $user->id
-            ]);
+        $grouped_results = DBManager::get()->fetchGrouped($query, [
+            'semester_ids' => $semesters,
+            'semclasses'   => (array) $this->semclass,
+            'user_id'      => $user->id
+        ]);
 
         // handle unlimited courses
         if (isset($grouped_results['-1'])) {
@@ -171,9 +166,9 @@ class ExternPagePersonDetails extends ExternPage
             unset($grouped_results['-1']);
         }
         foreach ($grouped_results as $group_id => $group_result) {
-            $grouped_courses[$group_id] =
-                SimpleORMapCollection::createFromArray(
-                    Course::findMany($group_result));
+            $grouped_courses[$group_id] = SimpleORMapCollection::createFromArray(
+                Course::findMany($group_result)
+            );
         }
         return $grouped_courses;
     }
