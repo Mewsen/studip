@@ -397,7 +397,17 @@ export default {
             let attributes = {};
             attributes.renewal = this.currentDialogTask.attributes.renewal;
             if (attributes.renewal === 'granted') {
-                attributes['renewal-date'] = new Date(this.currentDialogTask.attributes['renewal-date'] || Date.now()).toISOString();
+                let renewalDate = new Date();
+
+                const date = new Date(this.currentDialogTask.attributes['renewal-date']);
+                if (!isNaN(date)) {
+                    date.setHours(23);
+                    date.setMinutes(59);
+                    date.setSeconds(59);
+                    date.setMilliseconds(999);
+                    renewalDate = date;
+                }
+                attributes['renewal-date'] = renewalDate.toISOString();
             }
 
             this.updateTask({
