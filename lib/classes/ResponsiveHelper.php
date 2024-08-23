@@ -281,20 +281,6 @@ class ResponsiveHelper
             ];
         }
 
-        // Move admin page to the end
-        if (count($result) > 0) {
-            $first_path = array_keys($result)[0];
-            if (str_ends_with($first_path, '/admin')) {
-                $admin_navigation = array_slice(array_values($result), 0, 1)[0];
-                $admin_navigation['title'] = _('Verwaltung');
-                $admin_navigation['icon'] = Icon::create('add', Icon::ROLE_INFO_ALT)->asImagePath();
-                $result = array_merge(
-                    array_slice($result, 1),
-                    [$path_prefix . '/admin' => $admin_navigation]
-                );
-            }
-        }
-
         return $result;
     }
 }
