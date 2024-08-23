@@ -259,7 +259,14 @@ export default {
             this.currentHeight = data.height;
             this.left = data.left;
             this.top = data.top;
+            this.handleResizeBlur();
         },
+        handleResizeBlur() {
+            let el = this.$refs.resizableComponent.$el.querySelector(':focus');
+            if (el) {
+                el.blur();
+            }
+        }
     },
     filters: {
         checkEmpty(value) {
