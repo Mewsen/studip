@@ -54,7 +54,7 @@ const Wiki = {
                             lastSaveDate: new Date(edit_container.dataset.chdate * 1000),
                             lastChangeDate: 0,
                             lastFocussedDate: 0,
-                            autosave: true
+                            autosave: false
                         };
                     },
                     methods: {
