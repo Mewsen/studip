@@ -115,7 +115,7 @@ export default {
     },
     data() {
         return {
-            autosave: true,
+            autosave: false,
             content: this.pageContent,
             editor: null,
             isChanged: false,
