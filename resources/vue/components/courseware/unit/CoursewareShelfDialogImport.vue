@@ -32,7 +32,7 @@
                 <form v-if="hasValidFile" class="default" @submit.prevent="">
                     <label>
                         {{ text.title }}
-                        <input type="text" v-model="modifiedData.title" :placeholder="loadedTitle" required />
+                        <input type="text" v-model="modifiedData.title" :placeholder="loadedTitle" />
                     </label>
                     <label>
                         {{ text.color }}
@@ -63,7 +63,7 @@
                     </label>
                     <label>
                         {{ text.description }}
-                        <textarea v-model="modifiedData.description" :placeholder="loadedDescription" required />
+                        <textarea v-model="modifiedData.description" :placeholder="loadedDescription" />
                     </label>
                 </form>
                 <courseware-companion-box
