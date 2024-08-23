@@ -73,7 +73,8 @@ abstract class AbstractRangeIndex extends JsonApiController
             if ($topFolder->isVisible($userId)) {
                 $folders[$topFolder->getId()] = $topFolder;
                 if ($topFolder->isReadable($userId)) {
-                    array_walk($topFolder->getSubFolders(), $arrayWalker);
+                    $subfolders = $topFolder->getSubFolders();
+                    array_walk($subfolders, $arrayWalker);
                 }
             }
         };
