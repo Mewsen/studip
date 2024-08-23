@@ -370,7 +370,7 @@ class SingleDate
 
         if (!$name) {
             $holy_type = holiday($this->date);
-            $name = $holy_type['name'];
+            $name = $holy_type ? $holy_type['name'] : null;
         }
 
         if ($name) {
