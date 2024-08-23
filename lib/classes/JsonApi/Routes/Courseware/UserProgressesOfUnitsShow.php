@@ -115,9 +115,11 @@ class UserProgressesOfUnitsShow extends NonJsonApiController
 
         $usersCounter = count($courseMemberIds);
         foreach ($blks as $blk) {
-            $progresses = $userProgresses[$blk];
-            $usersProgress = $progresses['count'] ? (float) $progresses['grade'] : 0;
-            $data['progress'] += $usersCounter > 0 ? $usersProgress / $usersCounter : 0;
+            if (isset($userProgresses[$blk])) {
+                $progresses = $userProgresses[$blk];
+                $usersProgress = $progresses['count'] ? (float) $progresses['grade'] : 0;
+                $data['progress'] += $usersCounter > 0 ? $usersProgress / $usersCounter : 0;
+            }
         }
 
         return $data;
