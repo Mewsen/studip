@@ -69,7 +69,7 @@
                             :items="getTaskMenuItems(task, status, element)"
                             @submitTask="displaySubmitDialog(task)"
                             @renewalRequest="renewalRequest(task)"
-                            @copyContent="copyContent(element)"
+                            @copyContent="copyContent(taskGroup, element)"
                         />
                     </td>
                 </tr>
@@ -147,6 +147,7 @@ export default {
             getElementById: 'courseware-structural-elements/byId',
             getFeedbackById: 'courseware-task-feedback/byId',
             getTaskGroupById: 'courseware-task-groups/byId',
+            lastCreateCoursewareUnit: 'courseware-units/lastCreated',
         }),
         tasks() {
             return this.allTasks.map((task) => {
@@ -173,6 +174,7 @@ export default {
             copyStructuralElement: 'copyStructuralElement',
             companionSuccess: 'companionSuccess',
             companionError: 'companionError',
+            createCoursewareUnit: 'courseware-units/create',
         }),
         getTaskMenuItems(task, status, element) {
             let menuItems = [];
@@ -195,7 +197,7 @@ export default {
                 });
             }
             if (task.attributes.submitted) {
-                menuItems.push({ id: 4, label: this.$gettext('Inhalt kopieren'), icon: 'export', emit: 'copyContent' });
+                menuItems.push({ id: 4, label: this.$gettext('Inhalt auf Arbeitsplatz kopieren'), icon: 'export', emit: 'copyContent' });
             }
 
             return menuItems;
@@ -233,28 +235,43 @@ export default {
             });
             this.currentTask = null;
         },
-        async copyContent(element) {
-            let ownCoursewareInstance = await this.loadRemoteCoursewareStructure({
-                rangeId: this.userId,
-                rangeType: 'users',
+        async copyContent(taskGroup, element) {
+            const unit = {
+                attributes: {
+                    title: taskGroup.attributes.title,
+                    purpose: 'content',
+                    payload: {
+                        description: '',
+                        color: 'studip-blue',
+                        license_type: '',
+                        required_time: '',
+                        difficulty_start: '',
+                        difficulty_end: ''
+                    },
+                    settings: {
+                        'root-layout': 'classic'
+                    }
+                },
+                relationships: {
+                    range: {
+                        data: {
+                            type: 'users',
+                            id: this.userId
+                        }
+                    }
+                }
+            };
+            await this.createCoursewareUnit(unit, { root: true });
+            const newElementId = this.lastCreateCoursewareUnit.relationships['structural-element'].data.id
+            await this.copyStructuralElement({
+                parentId: newElementId,
+                elementId: element.id,
+                removeType: false,
+                migrate: true,
             });
-            if (ownCoursewareInstance !== null) {
-                await this.copyStructuralElement({
-                    parentId: ownCoursewareInstance.relationships.root.data.id,
-                    elementId: element.id,
-                    removeType: true,
-                    migrate: false,
-                });
-                this.companionSuccess({
-                    info: this.$gettext('Die Inhalte wurden zu Ihren persönlichen Lernmaterialien hinzugefügt.'),
-                });
-            } else {
-                this.companionError({
-                    info: this.$gettext(
-                        'Die Inhalte konnten nicht zu Ihren persönlichen Lernmaterialien hinzugefügt werden.'
-                    ),
-                });
-            }
+            this.companionSuccess({
+                info: this.$gettext('Die Inhalte wurden zu Ihren persönlichen Lernmaterialien hinzugefügt.'),
+            });
         },
         displayFeedback(feedback) {
             this.showFeedbackDialog = true;
