@@ -105,6 +105,7 @@ export default {
     },
     computed: {
         ...mapGetters({
+            userId: 'userId',
             blockById: 'courseware-blocks/byId',
             containerById: 'courseware-containers/byId',
             viewMode: 'viewMode',
