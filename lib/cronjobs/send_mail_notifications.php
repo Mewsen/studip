@@ -120,7 +120,7 @@ class SendMailNotificationsJob extends CronJob
 
                     $ok = StudipMail::sendMessage(
                         $user->email,
-                        "[" . Config::get()->UNI_NAME_CLEAN . "] " . _('Tägliche Benachrichtigung'),
+                        "[" . (!empty(Config::get()->UNI_NAME_SHORT) ? Config::get()->UNI_NAME_SHORT : Config::get()->UNI_NAME_CLEAN) . "] " . _('Tägliche Benachrichtigung'),
                         $mailmessage['text'],
                         $user->config->MAIL_AS_HTML ? $mailmessage['html'] : null
                     );

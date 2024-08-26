@@ -49,7 +49,7 @@ class NewPasswordController extends StudipController
             // there are mutliple accounts with this mail addresses!
             $subject = sprintf(
                 _("[Stud.IP - %s] Passwortänderung angefordert"),
-                Config::get()->UNI_NAME_CLEAN
+                !empty(Config::get()->UNI_NAME_SHORT) ? Config::get()->UNI_NAME_SHORT : Config::get()->UNI_NAME_CLEAN
             );
 
             $mailbody = sprintf(
