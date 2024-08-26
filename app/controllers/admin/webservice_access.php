@@ -97,7 +97,7 @@ class Admin_WebserviceAccessController extends AuthenticatedController
                     continue;
                 }
                 list($ip_address, $mask) = explode('/', $ip);
-                if (!ip2long($ip_address) || ($mask && ($mask < 8 || $mask > 30))) {
+                if (!inet_pton($ip_address) || ($mask && ($mask < 0 || $mask > 128))) {
                     $msg['error'][] = sprintf(_("Der IP Bereich %s ist ungültig."), htmlready($ip));
                     unset($rule->ip_range[$key]);
                 }
