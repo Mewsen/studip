@@ -126,6 +126,13 @@ $is_exTermin = $termin instanceof CourseExDate;
             Icon::create('edit'),
             ['data-dialog' => '']
         ) ?>
+        <? if (!$termin->metadate_id): ?>
+            <? $actionMenu->addLink(
+                $controller->url_for('course/timesrooms/cloneDate/' . $termin->id, $linkAttributes),
+                _('Termin duplizieren'),
+                Icon::create('copy')
+            ) ?>
+        <? endif ?>
         <? $actionMenu
                 ->conditionAll(Config::get()->RESOURCES_ENABLE && Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS)
                 ->condition((bool) $room_request)

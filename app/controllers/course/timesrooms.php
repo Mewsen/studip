@@ -364,6 +364,33 @@ class Course_TimesroomsController extends AuthenticatedController
 
 
     /**
+     * Clone an existing date
+     *
+     * @param $termin_id
+     */
+    public function cloneDate_action($termin_id)
+    {
+        $date = CourseDate::find($termin_id);
+
+        if ($date) {
+            $termin = CourseDate::build($date);
+            $termin->setId($termin->getNewId());
+
+            $termin->dozenten = $date->dozenten;
+            $termin->statusgruppen = $date->statusgruppen;
+            $termin->store();
+
+            PageLayout::postSuccess(sprintf(
+                _('Der Termin "%s" wurde dupliziert.'),
+                htmlReady($termin->getFullName())
+            ));
+        }
+
+        $this->redirect('course/timesrooms/index');
+    }
+
+
+    /**
      * Save date-information
      *
      * @param $termin_id
