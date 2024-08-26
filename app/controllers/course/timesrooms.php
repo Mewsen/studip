@@ -535,7 +535,7 @@ class Course_TimesroomsController extends AuthenticatedController
                             $message_links = [];
 
                             if ($course instanceof Course) {
-                                if ($course->isEditableByUser($GLOBALS['user']->id)) {
+                                if ($course->isEditableByUser()) {
                                     //Link to the times/rooms page:
                                     $link = new LinkElement(
                                         _('Direkt zur Veranstaltung'),
@@ -543,7 +543,7 @@ class Course_TimesroomsController extends AuthenticatedController
                                         Icon::create('link-intern')
                                     );
                                     $message_links[] = $link->render();
-                                } elseif ($course->isAccessibleToUser($GLOBALS['user']->id)) {
+                                } elseif ($course->isAccessibleToUser()) {
                                     //Link to the details page:
                                     $link = new LinkElement(
                                         _('Direkt zur Veranstaltung'),
