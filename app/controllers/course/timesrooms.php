@@ -532,7 +532,7 @@ class Course_TimesroomsController extends AuthenticatedController
                             $failure = !$termin->bookRoom($room, $preparation_time ?: 0);
                         } catch (ResourceBookingException|ResourceBookingOverlapException $e) {
                             $course = $e->getRange();
-                            $link = null;
+                            $message_links = [];
 
                             if ($course instanceof Course) {
                                 if ($course->isEditableByUser($GLOBALS['user']->id)) {
@@ -542,6 +542,7 @@ class Course_TimesroomsController extends AuthenticatedController
                                         URLHelper::getURL('dispatch.php/course/timesrooms/index', ['cid' => $course->id]),
                                         Icon::create('link-intern')
                                     );
+                                    $message_links[] = $link->render();
                                 } elseif ($course->isAccessibleToUser($GLOBALS['user']->id)) {
                                     //Link to the details page:
                                     $link = new LinkElement(
@@ -549,7 +550,15 @@ class Course_TimesroomsController extends AuthenticatedController
                                         URLHelper::getURL('course/details/index', ['cid' => $course->id]),
                                         Icon::create('link-intern')
                                     );
+                                    $message_links[] = $link->render();
                                 }
+                            }
+                            if ($room->userHasBookingRights(User::findCurrent())) {
+                                $room_link = new LinkElement(
+                                    _('Zum Belegungsplan'),
+                                    $room->getActionURL('booking_plan')
+                                );
+                                $message_links[] = $room_link->render();
                             }
                             if ($e instanceof ResourceBookingException) {
                                 PageLayout::postError(
@@ -558,7 +567,7 @@ class Course_TimesroomsController extends AuthenticatedController
                                         '<strong>' . htmlReady($termin->getFullName()) . '</strong>',
                                         $e->getMessage()
                                     ),
-                                    $link ? [$link->render()] : []
+                                    $message_links
                                 );
                             } else {
                                 //$e is a ResourceBookingOverlapException
@@ -571,7 +580,8 @@ class Course_TimesroomsController extends AuthenticatedController
                                                 'date'        => $termin->getFullName(),
                                                 'course_name' => $course->name
                                             ]
-                                        )
+                                        ),
+                                        $message_links
                                     );
                                 } else {
                                     PageLayout::postError(
@@ -581,7 +591,8 @@ class Course_TimesroomsController extends AuthenticatedController
                                                 'room_name'   => $room->name,
                                                 'date'        => $termin->getFullName()
                                             ]
-                                        )
+                                        ),
+                                        $message_links
                                     );
                                 }
                             }
