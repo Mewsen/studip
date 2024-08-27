@@ -152,19 +152,7 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
         height: 100%;
         margin: 0 0 0.75em 0;
         padding: 0;
-        background-color: $forum_light;
-        a {
-            word-break: break-all;
-
-            &.link-extern,
-            &.link-intern {
-                display: inline-block;
-                max-width: 50vw;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                vertical-align: top;
-            }
-        }
+        background-color: var(--content-color-20);
     }
 
     .real_posting {
@@ -187,6 +175,7 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
         padding: 0pt 5px;
         margin: 5px 0 0 0;
         flex: 1;
+        min-width: 0;
         text-align: left;
     }
 
