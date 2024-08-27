@@ -228,7 +228,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                         'show' => $this->url_for('calendar/schedule/course_info/' . $cycle_date->seminar_id)
                     ],
                     [],
-                    $event_icon ? sprintf('../black/%s', $event_icon) : ''
+                    $event_icon ?: ''
                 );
 
                 $result[] = $event->toFullcalendarEvent();
