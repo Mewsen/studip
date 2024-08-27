@@ -60,11 +60,7 @@ class CourseNavigation extends Navigation
         $where = null;
 
         foreach ($this->range->tools as $tool) {
-            if (
-                $found
-                && $tool->metadata['navigation']
-                && $tool->metadata['navigation'] !== 'admin'
-            ) {
+            if ($found && $tool->metadata['navigation']) {
                 $where = $tool->metadata['navigation'];
                 break;
             }
@@ -73,11 +69,6 @@ class CourseNavigation extends Navigation
                 $tool->metadata['navigation'] = key($navigations);
                 $found = $tool;
             }
-        }
-
-        // always insert admin module in first position
-        if (key($navigations) === 'admin') {
-            $where = key($this->getSubNavigation());
         }
 
         foreach ($navigations as $key => $nav) {
