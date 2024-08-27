@@ -27,19 +27,7 @@
 
 .formatted-content {
     display: flow-root;
-
-    a {
-        word-break: break-all;
-
-        &.link-extern,
-        &.link-intern {
-            display: inline-block;
-            max-width: 90%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            vertical-align: top;
-        }
-    }
+    overflow-wrap: break-word;
 
     img {
         height: auto;
