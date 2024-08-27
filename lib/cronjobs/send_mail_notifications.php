@@ -118,9 +118,14 @@ class SendMailNotificationsJob extends CronJob
                 if ($mailmessage) {
                     setTempLanguage('', $user->preferred_language);
 
+                    $subject = sprintf(
+                        _("%s Tägliche Benachrichtigung"),
+                        Config::get()->UNI_NAME_CLEAN ? '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . '] ' : Config::get()->MAIL_SUBJECT_PREFIX
+                    );
+
                     $ok = StudipMail::sendMessage(
                         $user->email,
-                        "[" . (!empty(Config::get()->UNI_NAME_SHORT) ? Config::get()->UNI_NAME_SHORT : Config::get()->UNI_NAME_CLEAN) . "] " . _('Tägliche Benachrichtigung'),
+                        $subject,
                         $mailmessage['text'],
                         $user->config->MAIL_AS_HTML ? $mailmessage['html'] : null
                     );
