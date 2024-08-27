@@ -26,6 +26,8 @@
                     <?
                     sort($pagedata['versions'], SORT_NUMERIC);
                     $pagedata['versions'] = array_reverse($pagedata['versions']);
+                    $content = '';
+                    $version = null;
                     if ($pagedata['is_in_content']) {
                         $content = $pagedata['page']->content;
                     } else if ($pagedata['is_in_history']) {
