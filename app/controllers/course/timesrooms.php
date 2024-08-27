@@ -562,7 +562,8 @@ class Course_TimesroomsController extends AuthenticatedController
     {
         PageLayout::setTitle(Course::findCurrent()->getFullName() . " - " . _('Einzeltermin anlegen'));
         $this->restoreRequest(
-            words('date start_time end_time room related_teachers related_statusgruppen freeRoomText dateType fromDialog course_type')
+            words('date start_time end_time room related_teachers related_statusgruppen freeRoomText dateType fromDialog course_type'),
+            $_SESSION['last_single_date'] ?? null
         );
 
         if (Config::get()->RESOURCES_ENABLE) {
@@ -642,6 +643,8 @@ class Course_TimesroomsController extends AuthenticatedController
             );
         }
 
+        // store last created date in session
+        $_SESSION['last_single_date'] = Request::getInstance();
 
         if ($start_time < $this->course->filterStart || $end_time > $this->course->filterEnd) {
             $this->course->setFilter('all');
@@ -1652,9 +1655,9 @@ class Course_TimesroomsController extends AuthenticatedController
     /**
      * Restores a previously stored request from trails' flash object
      */
-    private function restoreRequest(array $fields)
+    private function restoreRequest(array $fields, $request = null)
     {
-        $request = $this->flash['request'];
+        $request = $this->flash['request'] ?? $request;
 
         if ($request) {
             foreach ($fields as $field) {
