@@ -1154,7 +1154,7 @@ class Course_MembersController extends AuthenticatedController
             // insert admission user to autorlist
             $msgs = $this->setMemberStatus($users, $status, $next_status, 'upgrade');
 
-            if ($msgs['success']) {
+            if (!empty($msgs['success'])) {
                 PageLayout::postSuccess(sprintf(
                     _('Das Hochstufen auf den Status  %s von %s wurde erfolgreich durchgeführt'),
                     htmlReady($this->decoratedStatusGroups[$next_status]),
@@ -1162,7 +1162,7 @@ class Course_MembersController extends AuthenticatedController
                 ));
             }
 
-            if ($msgs['no_tutor']) {
+            if (!empty($msgs['no_tutor'])) {
                 PageLayout::postError(sprintf(
                     _('Das Hochstufen auf den Status %s von %s konnte nicht durchgeführt werden, weil die globale Rechtestufe "tutor" fehlt.') . ' ' . _('Bitte wenden Sie sich an den Support.'),
                     htmlReady($this->decoratedStatusGroups[$next_status]),
@@ -1207,7 +1207,7 @@ class Course_MembersController extends AuthenticatedController
         if (!empty($users)) {
             $msgs = $this->setMemberStatus($users, $status, $next_status, 'downgrade');
 
-            if ($msgs['success']) {
+            if (!empty($msgs['success'])) {
                 PageLayout::postSuccess(sprintf(
                     _('Der/die %s %s wurde auf den Status %s heruntergestuft.'),
                     htmlReady($this->decoratedStatusGroups[$status]),
@@ -1967,12 +1967,15 @@ class Course_MembersController extends AuthenticatedController
         }
     }
 
-    private function setMemberStatus($members, $status, $next_status, $direction)
+    private function setMemberStatus($members, $status, $next_status, $direction): array
     {
-        $msgs = [];
+        $msgs = [
+            'success'   => [],
+            'no_tutor'  => []
+        ];
         foreach ($members as $user_id) {
             $temp_user = User::find($user_id);
-            if ($next_status == 'tutor' && !$GLOBALS['perm']->have_perm('tutor', $user_id)) {
+            if ($next_status === 'tutor' && !$GLOBALS['perm']->have_perm('tutor', $user_id)) {
                 $msgs['no_tutor'][$user_id] = $temp_user->getFullName();
             } else {
                 if ($temp_user) {
@@ -2013,11 +2016,7 @@ class Course_MembersController extends AuthenticatedController
             }
         }
 
-        if (!empty($msgs)) {
-            return $msgs;
-        } else {
-            return false;
-        }
+        return $msgs;
     }
 
     public function addMember(string $user_id, bool $accepted = false, bool $consider_contingent = null, &$msg = []): bool
