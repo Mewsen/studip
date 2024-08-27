@@ -228,7 +228,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                         'show' => $this->url_for('calendar/schedule/course_info/' . $cycle_date->seminar_id)
                     ],
                     [],
-                    $event_icon
+                    $event_icon ? sprintf('../black/%s', $event_icon) : ''
                 );
 
                 $result[] = $event->toFullcalendarEvent();
@@ -371,6 +371,11 @@ class Calendar_ScheduleController extends AuthenticatedController
         $this->render_nothing();
     }
 
+    /**
+     * Displays information about a course in the schedule.
+     *
+     * @param string $course_id The ID of the course.
+     */
     public function course_info_action(string $course_id)
     {
         $this->course = Course::find($course_id);
@@ -396,41 +401,49 @@ class Calendar_ScheduleController extends AuthenticatedController
         PageLayout::setTitle($this->course->getFullName());
     }
 
+    /**
+     * Hides a course in the schedule.
+     *
+     * @param string $course_id The ID of the course.
+     */
     public function hide_course_action(string $course_id)
     {
         CSRFProtection::verifyUnsafeRequest();
         $success = false;
 
-        $this->membership = CourseMember::findOneBySQL(
-            '`seminar_id` = :course_id AND `user_id` = :user_id',
-            [
-                'course_id' => $this->course->id,
-                'user_id' => $GLOBALS['user']->id
-            ]
-        );
-
-        //Hide the course.
-        if ($this->membership) {
-            //Hide the course in the schedule by creating a new schedule course entry
-            //with the visibility set to 0:
-            $entry = ScheduleCourseDate::findOneBySQL(
-                '`user_id` = :user_id AND `course_id` = :course_id',
-                ['user_id' => $GLOBALS['user']->id, 'course_id' => $course_id]
+        $course = Course::find($course_id);
+        if ($course) {
+            $this->membership = CourseMember::findOneBySQL(
+                '`seminar_id` = :course_id AND `user_id` = :user_id',
+                [
+                    'course_id' => $course->id,
+                    'user_id' => $GLOBALS['user']->id
+                ]
             );
-            if (!$entry) {
-                $entry = new ScheduleCourseDate();
-                $entry->user_id     = $GLOBALS['user']->id;
-                $entry->course_id   = $course_id;
-                $entry->metadate_id = '';
-            }
-            $entry->visible = false;
-            $success = $entry->store() !== false;
-        } else {
-            //Remove the entry of the marked course from the schedule.
-            $success = ScheduleCourseDate::deleteBySQL(
+
+            //Hide the course.
+            if ($this->membership) {
+                //Hide the course in the schedule by creating a new schedule course entry
+                //with the visibility set to 0:
+                $entry = ScheduleCourseDate::findOneBySQL(
                     '`user_id` = :user_id AND `course_id` = :course_id',
-                    ['user_id' => $GLOBALS['user']->id, 'course_id' => $course_id]
-                ) > 0;
+                    ['user_id' => $GLOBALS['user']->id, 'course_id' => $course->id]
+                );
+                if (!$entry) {
+                    $entry = new ScheduleCourseDate();
+                    $entry->user_id = $GLOBALS['user']->id;
+                    $entry->course_id = $course->id;
+                    $entry->metadate_id = '';
+                }
+                $entry->visible = false;
+                $success = $entry->store() !== false;
+            } else {
+                //Remove the entry of the marked course from the schedule.
+                $success = ScheduleCourseDate::deleteBySQL(
+                        '`user_id` = :user_id AND `course_id` = :course_id',
+                        ['user_id' => $GLOBALS['user']->id, 'course_id' => $course->id]
+                    ) > 0;
+            }
         }
         if ($success) {
             if (Request::isDialog()) {
@@ -442,25 +455,32 @@ class Calendar_ScheduleController extends AuthenticatedController
         $this->render_nothing();
     }
 
+    /**
+     * Makes a hidden course visible again in the schedule.
+     *
+     * @param string $course_id The ID of the course.
+     */
     public function show_course_action(string $course_id)
     {
         CSRFProtection::verifyUnsafeRequest();
         $success = false;
 
-        //Make a hidden course visible again.
-        $entry = ScheduleCourseDate::findOneBySQL(
-            '`user_id` = :user_id AND `course_id` = :course_id',
-            ['user_id' => $GLOBALS['user']->id, 'course_id' => $course_id]
-        );
-        if ($entry) {
-            $entry->visible = true;
-            $success = $entry->store() !== false;
-        } else {
-            $success = true;
+        $course = Course::find($course_id);
+        if ($course) {
+            //Make a hidden course visible again.
+            $entry = ScheduleCourseDate::findOneBySQL(
+                '`user_id` = :user_id AND `course_id` = :course_id',
+                ['user_id' => $GLOBALS['user']->id, 'course_id' => $course_id]
+            );
+            if ($entry) {
+                $entry->visible = true;
+                $success = $entry->store() !== false;
+            } else {
+                $success = true;
+            }
+            //In case no entry exists, the course is not hidden since an entry in schedule_courses
+            //must exist with its visible set to zero to make a course disappear from the schedule.
         }
-        //In case no entry exists, the course is not hidden since an entry in schedule_courses
-        //must exist with its visible set to zero to make a course disappear from the schedule.
-
         if ($success) {
             if (Request::isDialog()) {
                 $this->response->add_header('X-Dialog-Close', '1');
@@ -471,27 +491,36 @@ class Calendar_ScheduleController extends AuthenticatedController
         $this->render_nothing();
     }
 
-
+    /**
+     * Saves the data that are specific to displaying a course in the schedule.
+     * Currently, this means saving only the colour of the course.
+     *
+     * @param string $course_id The ID of the course.
+     */
     public function save_course_info_action(string $course_id)
     {
         CSRFProtection::verifyUnsafeRequest();
         $success = false;
-        $this->membership = CourseMember::findOneBySQL(
-            '`seminar_id` = :course_id AND `user_id` = :user_id',
-            [
-                'course_id' => $course_id,
-                'user_id' => $GLOBALS['user']->id
-            ]
-        );
-        if (!$this->membership) {
-            throw new AccessDeniedException();
+
+        $course = Course::find($course_id);
+        if ($course) {
+            $this->membership = CourseMember::findOneBySQL(
+                '`seminar_id` = :course_id AND `user_id` = :user_id',
+                [
+                    'course_id' => $course->id,
+                    'user_id' => $GLOBALS['user']->id
+                ]
+            );
+            if (!$this->membership) {
+                throw new AccessDeniedException();
+            }
+            //Save the selected group.
+            $selected_groups = Request::getArray('gruppe');
+            if (array_key_exists($course->id, $selected_groups)) {
+                $this->membership->gruppe = $selected_groups[$course->id] ?? '0';
+            }
+            $success = $this->membership->store() !== false;
         }
-        //Save the selected group.
-        $selected_groups = Request::getArray('gruppe');
-        if (array_key_exists($this->course->id, $selected_groups)) {
-            $this->membership->gruppe = $selected_groups[$this->course->id] ?? '0';
-        }
-        $success = $this->membership->store() !== false;
         if ($success) {
             PageLayout::postSuccess(_('Die Farbe der Veranstaltung wurde geändert.'));
         } else {
