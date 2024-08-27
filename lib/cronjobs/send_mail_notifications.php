@@ -120,7 +120,7 @@ class SendMailNotificationsJob extends CronJob
 
                     $subject = sprintf(
                         _("%s Tägliche Benachrichtigung"),
-                        Config::get()->UNI_NAME_CLEAN ? '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . '] ' : Config::get()->MAIL_SUBJECT_PREFIX
+                        !empty(Config::get()->MAIL_SUBJECT_PREFIX) ? Config::get()->MAIL_SUBJECT_PREFIX : '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . ']'
                     );
 
                     $ok = StudipMail::sendMessage(

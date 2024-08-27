@@ -130,7 +130,7 @@ class StudipMail
     {
         $mail_localhost = $GLOBALS['MAIL_LOCALHOST'] ?: $_SERVER['SERVER_NAME'];
         $this->setSenderEmail($GLOBALS['MAIL_ENV_FROM'] ?: "wwwrun@{$mail_localhost}");
-        $this->setSenderName($GLOBALS['MAIL_FROM'] ?: (Config::get()->UNI_NAME_CLEAN ? '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . '] ' : Config::get()->MAIL_SUBJECT_PREFIX));
+        $this->setSenderName($GLOBALS['MAIL_FROM'] ?: (!empty(Config::get()->MAIL_SUBJECT_PREFIX) ? Config::get()->MAIL_SUBJECT_PREFIX : '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . ']'));
 
         if ($data) {
             $this->setData($data);

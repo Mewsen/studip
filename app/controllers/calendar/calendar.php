@@ -947,7 +947,7 @@ class Calendar_CalendarController extends AuthenticatedController
             if (preg_match($email_reg_exp, Request::get('email')) !== 0) {
                 $subject = sprintf(
                     _("%s Exportadresse für Ihre Termine"),
-                    Config::get()->UNI_NAME_CLEAN ? '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . '] ' : Config::get()->MAIL_SUBJECT_PREFIX
+                    !empty(Config::get()->MAIL_SUBJECT_PREFIX) ? Config::get()->MAIL_SUBJECT_PREFIX : '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . ']'
                 );
                 $text .= _('Diese Email wurde vom Stud.IP-System verschickt. Sie können auf diese Nachricht nicht antworten.') . "\n\n";
                 $text .= _('Über diese Adresse erreichen Sie den Export für Ihre Termine:') . "\n\n";

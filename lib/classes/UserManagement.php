@@ -690,7 +690,7 @@ class UserManagement
         if ($new) {
             $subject = sprintf(
                 _("%s Es wurde ein Zugang für sie erstellt - Setzen sie ein Passwort"),
-                Config::get()->UNI_NAME_CLEAN ? '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . '] ' : Config::get()->MAIL_SUBJECT_PREFIX
+                !empty(Config::get()->MAIL_SUBJECT_PREFIX) ? Config::get()->MAIL_SUBJECT_PREFIX : '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . ']'
             );
 
             $mailbody = sprintf(
@@ -721,7 +721,7 @@ class UserManagement
             // inform user, that their password cannot be reset via mail
             $subject = sprintf(
                 _("%s Passwortänderung angefordert"),
-                Config::get()->UNI_NAME_CLEAN ? '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . '] ' : Config::get()->MAIL_SUBJECT_PREFIX
+                !empty(Config::get()->MAIL_SUBJECT_PREFIX) ? Config::get()->MAIL_SUBJECT_PREFIX : '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . ']'
             );
 
             $mailbody = sprintf(
@@ -741,7 +741,7 @@ class UserManagement
 
             $subject = sprintf(
                 _("%s Neues Passwort setzen"),
-                Config::get()->UNI_NAME_CLEAN ? '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . '] ' : Config::get()->MAIL_SUBJECT_PREFIX
+                !empty(Config::get()->MAIL_SUBJECT_PREFIX) ? Config::get()->MAIL_SUBJECT_PREFIX : '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . ']'
             );
 
             $mailbody = sprintf(
@@ -1328,7 +1328,7 @@ class UserManagement
 
         $subject = sprintf(
             _("%s Passwortänderung"),
-            Config::get()->UNI_NAME_CLEAN ? '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . '] ' : Config::get()->MAIL_SUBJECT_PREFIX
+            !empty(Config::get()->MAIL_SUBJECT_PREFIX) ? Config::get()->MAIL_SUBJECT_PREFIX : '[Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . ']'
         );
 
         $mailbody = sprintf(
