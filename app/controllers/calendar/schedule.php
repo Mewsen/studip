@@ -83,17 +83,20 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         // check, if the hidden seminar-entries shall be shown
         $show_hidden = Request::int('show_hidden', 0);
+
         // load semester-data and current semester
         $this->semesters = array_reverse(Semester::findAllVisible(false));
-        if (Request::option('semester_id')) {
-            $this->current_semester = Semester::find(Request::option('semester_id'));
-            $schedule_settings['semester_id'] = Request::option('semester_id');
-            UserConfig::get($GLOBALS['user']->id)->store('SCHEDULE_SETTINGS',
-                $schedule_settings);
-        } else {
-            $this->current_semester = !empty($schedule_settings['semester_id']) ?
-                Semester::find($schedule_settings['semester_id']) :
-                Semester::findCurrent();
+        $this->current_semester = Semester::findCurrent();
+
+        $semester_id = Request::option('semester_id', $schedule_settings['semester_id'] ?? null);
+        if ($semester_id && Semester::exists($semester_id)) {
+            $this->current_semester = Semester::find($semester_id);
+
+            $schedule_settings['semester_id'] = $this->current_semester->id;
+            User::findCurrent()->getConfiguration()->store(
+                'SCHEDULE_SETTINGS',
+                $schedule_settings
+            );
         }
 
         // check type-safe if days is false otherwise sunday (0) cannot be chosen
