@@ -443,7 +443,16 @@ class CourseMember extends SimpleORMap implements PrivacyObject
         $user = $this->user;
         $studycourse = [];
         $user->studycourses->map(function($sc) use (&$studycourse) {
-            $studycourse[]= $sc->studycourse->name .  ',' . $sc->degree->name . ',' . $sc->semester;
+            $result = [];
+            if ($sc->studycourse) {
+                $result[] = $sc->studycourse->name;
+            }
+            if ($sc->degree) {
+                $result[] = $sc->degree->name;
+            }
+            $result[] = $sc->semester;
+
+            $studycourse[]= implode(',', $result);
         });
         return [
             'status' => $this->status,
