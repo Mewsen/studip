@@ -76,6 +76,10 @@ const Wiki = {
                             this.$nextTick(() => {
                                 this.editor.editing.view.focus();
                             });
+                        },
+                        securityHandler(event) {
+                            event.preventDefault();
+                            event.returnValue = true;
                         }
                     },
                     mounted() {
@@ -86,7 +90,7 @@ const Wiki = {
                                 editor.editing.view.focus();
                             }
                             editor.model.document.on('change:data',() => {
-                                this.isChanged = true;
+                                this.isChanged = editor.getData() !== this.content;
                                 this.lastChangeDate = new Date();
                             });
                             this.editor = editor;
@@ -97,6 +101,15 @@ const Wiki = {
                             return this.users
                                 .filter(u => u.editing_request)
                                 .sort((a, b) => a.fullname.localeCompare(b.fullname));
+                        }
+                    },
+                    watch: {
+                        isChanged(current) {
+                            if (current) {
+                                window.addEventListener('beforeunload', this.securityHandler);
+                            } else {
+                                window.removeEventListener('beforeunload', this.securityHandler);
+                            }
                         }
                     },
                     components: { WikiEditorOnlineUsers }
