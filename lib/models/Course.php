@@ -1869,18 +1869,18 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      * @param bool $with_cancelled_dates Whether to include cancelled dates (true) or not (false).
      *     Defaults to false.
      *
-     * @return CourseDateCollection A collection of irregular and regular course dates.
+     * @return CourseDateList A collection of irregular and regular course dates.
      *
      * @throws \Studip\Exception In case that the end semester is before the start semester.
      */
-    public function getAllDatesInSemester(?Semester $start_semester = null, ?Semester $end_semester = null, bool $with_cancelled_dates = false) : CourseDateCollection
+    public function getAllDatesInSemester(?Semester $start_semester = null, ?Semester $end_semester = null, bool $with_cancelled_dates = false) : CourseDateList
     {
         $all_dates_of_course = false;
         if (!$start_semester && !$end_semester) {
             $all_dates_of_course = true;
         }
         if ($all_dates_of_course) {
-            $collection = new CourseDateCollection();
+            $collection = new CourseDateList();
             foreach ($this->cycles as $regular_date) {
                 $collection->addRegularDate($regular_date);
             }
@@ -1897,7 +1897,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             return $collection;
         } else {
             if (!$start_semester) {
-                return new CourseDateCollection();
+                return new CourseDateList();
             }
             $beginning = $start_semester->beginn;
             $end = $start_semester->ende;
@@ -1911,7 +1911,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                 $end = $end_semester->ende;
             }
 
-            $collection = new CourseDateCollection();
+            $collection = new CourseDateList();
 
             SeminarCycleDate::findEachBySQL(
                 function ($date) use ($collection) {
