@@ -14,7 +14,7 @@
  * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
-class StudipArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Countable
+class StudipArrayObject implements IteratorAggregate, ArrayAccess, Countable
 {
     /**
      * Properties of the object have their normal functionality
@@ -147,6 +147,8 @@ class StudipArrayObject implements IteratorAggregate, ArrayAccess, Serializable,
      */
     public function __unserialize(array $data): void
     {
+        $this->protectedProperties = array_keys(get_object_vars($this));
+
         foreach ($data as $k => $v) {
             switch ($k) {
                 case 'flag':
@@ -345,16 +347,6 @@ class StudipArrayObject implements IteratorAggregate, ArrayAccess, Serializable,
     }
 
     /**
-     * Serialize an ArrayObject
-     *
-     * @return string
-     */
-    public function serialize()
-    {
-        return serialize(get_object_vars($this));
-    }
-
-    /**
      * Sets the behavior flags
      *
      * @param  int  $flags
@@ -414,37 +406,6 @@ class StudipArrayObject implements IteratorAggregate, ArrayAccess, Serializable,
     {
         if (is_callable($function)) {
             uksort($this->storage, $function);
-        }
-    }
-
-    /**
-     * Unserialize an ArrayObject
-     *
-     * @param  string $data
-     * @return void
-     */
-    public function unserialize($data)
-    {
-        $ar = unserialize($data);
-        $this->setFlags($ar['flag']);
-        $this->exchangeArray($ar['storage']);
-        $this->setIteratorClass($ar['iteratorClass']);
-        foreach ($ar as $k => $v) {
-            switch ($k) {
-                case 'flag':
-                    $this->setFlags($v);
-                    break;
-                case 'storage':
-                    $this->exchangeArray($v);
-                    break;
-                case 'iteratorClass':
-                    $this->setIteratorClass($v);
-                    break;
-                case 'protectedProperties':
-                    break;
-                default:
-                    $this->__set($k, $v);
-            }
         }
     }
 
