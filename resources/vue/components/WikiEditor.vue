@@ -182,12 +182,17 @@ export default {
                 online: this.isOnlineAndEditing
             };
 
-            if (this.isChanged) {
+            if (this.autosave && this.isChanged) {
                 data.content = this.editor.getData();
                 this.isChanged = false;
             }
 
             return data;
+        },
+        securityHandler(event) {
+            event.preventDefault();
+
+            event.returnValue = true;
         }
     },
     mounted() {
@@ -195,9 +200,7 @@ export default {
 
         STUDIP.wysiwyg.replace(textarea).then((editor) => {
             editor.model.document.on('change:data', () => {
-                if (this.autosave) {
-                    this.isChanged = true;
-                }
+                this.isChanged = editor.getData() !== this.content;
             });
 
             if (this.isEditing) {
@@ -227,6 +230,15 @@ export default {
             },
             () => this.getUpdaterData()
         )
+    },
+    watch: {
+        isChanged(current) {
+            if (current) {
+                window.addEventListener('beforeunload', this.securityHandler);
+            } else {
+                window.removeEventListener('beforeunload', this.securityHandler);
+            }
+        }
     }
 }
 </script>
