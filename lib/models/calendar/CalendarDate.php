@@ -94,16 +94,6 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
 
     }
 
-    public static function garbageCollect()
-    {
-        DBManager::get()->query(
-            'DELETE `calendar_dates`
-            FROM `calendar_date_assignments`
-            LEFT JOIN `calendar_dates` ON (`calendar_dates`.`id` = `calendar_date_assignments`.`calendar_date_id`)
-            WHERE `range_id` IS NULL'
-        );
-    }
-
     /**
      * @deprecated
      */
