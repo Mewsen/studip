@@ -21,6 +21,8 @@ class FileRefsCreateTest extends \Codeception\Test\Unit
     protected function _before()
     {
         \DBManager::getInstance()->setConnection('studip', $this->getModule('\\Helper\\StudipDb')->dbh);
+        $GLOBALS['SEM_TYPE']  = SemType::getTypes();
+        $GLOBALS['SEM_CLASS'] = SemClass::getClasses();
     }
 
     protected function _after()
