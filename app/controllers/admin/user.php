@@ -1108,7 +1108,7 @@ class Admin_UserController extends AuthenticatedController
      */
     public function store_user_institute_action($user_id, $institute_id)
     {
-        CSRFProtection::verifyRequest();
+        CSRFProtection::verifyUnsafeRequest();
 
         $inst_membership = InstituteMember::findOneBySQL('user_id = ? AND institut_id = ?', [$user_id, $institute_id]);
 

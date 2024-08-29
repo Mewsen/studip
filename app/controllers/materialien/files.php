@@ -415,7 +415,7 @@ class Materialien_FilesController extends MVVController
 
     public function delete_range_action($mvvfile_id, $range_id)
     {
-        CSRFProtection::verifyRequest();
+        CSRFProtection::verifyUnsafeRequest();
 
         if ($mvvfile_range = MvvFileRange::find([$mvvfile_id, $range_id])) {
             $vacant = $mvvfile_range->position;
@@ -440,36 +440,9 @@ class Materialien_FilesController extends MVVController
         }
     }
 
-    public function delete_fileref_action($mvvfile_id, $fileref_id)
-    {
-        CSRFProtection::verifyRequest();
-
-        if ($mvv_file = MvvFile::find($mvvfile_id)) {
-            $vacant = $mvv_file->position;
-            $range_id = $mvv_file->range_id;
-            if ($mvv_file->delete()) {
-                foreach (MvvFile::findBySQL('range_id = ? ORDER BY position ASC',[$range_id]) as $other_file) {
-                    if ($other_file->position > $vacant) {
-                        $tmp = $other_file->position;
-                        $other_file->position = $vacant;
-                        $other_file->store();
-                        $vacant = $tmp;
-                    }
-                }
-                PageLayout::postSuccess(_('Das Dokument wurde gelöscht.'));
-            }
-        }
-        $this->range_id = $range_id;
-        if (Request::isXhr()) {
-            $this->response->add_header('X-Dialog-Execute', 'STUDIP.MVV.Document.reload_documenttable("' . $range_id . '")');
-            $this->response->add_header('X-Dialog-Close', 1);
-            $this->render_nothing();
-        }
-    }
-
     public function delete_all_dokument_action($mvvfile_id)
     {
-        CSRFProtection::verifyRequest();
+        CSRFProtection::verifyUnsafeRequest();
 
         MvvFile::deleteBySQL('mvvfile_id =?', [$mvvfile_id]);
         MvvFileRange::deleteBySQL('mvvfile_id =?', [$mvvfile_id]);

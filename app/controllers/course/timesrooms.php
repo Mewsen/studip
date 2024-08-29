@@ -1239,7 +1239,8 @@ class Course_TimesroomsController extends AuthenticatedController
      */
     public function saveCycle_action()
     {
-        CSRFProtection::verifyRequest();
+        CSRFProtection::verifyUnsafeRequest();
+
         $start = strtotime(Request::get('start_time'));
         $end   = strtotime(Request::get('end_time'));
 
@@ -1390,7 +1391,8 @@ class Course_TimesroomsController extends AuthenticatedController
      */
     public function deleteCycle_action($cycle_id)
     {
-        CSRFProtection::verifyRequest();
+        CSRFProtection::verifyUnsafeRequest();
+
         $cycle = SeminarCycleDate::find($cycle_id);
         if ($cycle === null) {
             $message = sprintf(_('Es gibt keinen regelmäßigen Eintrag "%s".'), $cycle_id);

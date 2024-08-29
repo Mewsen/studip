@@ -101,7 +101,7 @@ class Settings_DeputiesController extends Settings_SettingsController
 
     public function add_member_action()
     {
-        CSRFProtection::verifyRequest();
+        CSRFProtection::verifyUnsafeRequest();
 
         $mp = MultiPersonSearch::load('settings_add_deputy');
         $msg = [

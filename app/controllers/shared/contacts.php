@@ -599,7 +599,7 @@ class Shared_ContactsController extends MVVController
 
     public function delete_all_ranges_action($contact_id = null)
     {
-        CSRFProtection::verifyRequest();
+        CSRFProtection::verifyUnsafeRequest();
 
         $contact = MvvContact::find($contact_id);
         if (!($contact && MvvPerm::get($contact)->haveFieldPerm('ranges', MvvPerm::PERM_CREATE))) {
@@ -620,7 +620,7 @@ class Shared_ContactsController extends MVVController
 
     public function delete_extern_contact_action($user_id = null)
     {
-        CSRFProtection::verifyRequest();
+        CSRFProtection::verifyUnsafeRequest();
 
         if ($mvv_ext_contact = MvvExternContact::find($user_id)) {
             $mvv_ext_contact->delete();

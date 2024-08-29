@@ -322,9 +322,8 @@ class Form extends Part
      */
     public function store()
     {
-        if (!\CSRFProtection::verifyRequest()) {
-            throw new \AccessDeniedException();
-        }
+        \CSRFProtection::verifyUnsafeRequest();
+
         \NotificationCenter::postNotification('FormWillStore', $this);
 
         $stored = 0;
