@@ -122,7 +122,7 @@ class CSRFProtection
      *
      * @returns boolean  returns true if the request is valid
      */
-    public static function verifyRequest()
+    private static function verifyRequest()
     {
         return Request::isGet() || self::checkSecurityToken();
     }
