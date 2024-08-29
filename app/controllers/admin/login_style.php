@@ -64,7 +64,8 @@ class Admin_LoginStyleController extends AuthenticatedController
      */
     public function add_pic_action()
     {
-        CSRFProtection::verifyRequest();
+        CSRFProtection::verifyUnsafeRequest();
+
         $success = 0;
         foreach ($_FILES['pictures']['name'] as $index => $filename) {
             if ($_FILES['pictures']['error'][$index] !== UPLOAD_ERR_OK) {
@@ -174,7 +175,7 @@ class Admin_LoginStyleController extends AuthenticatedController
 
     public function store_faq_action(LoginFaq $entry = null)
     {
-        CSRFProtection::verifyRequest();
+        CSRFProtection::verifyUnsafeRequest();
 
         $entry->setData([
             'title' => Request::i18n('title'),
@@ -190,7 +191,7 @@ class Admin_LoginStyleController extends AuthenticatedController
 
     public function delete_faq_action(LoginFaq $entry)
     {
-        CSRFProtection::verifyRequest();
+        CSRFProtection::verifyUnsafeRequest();
 
         if ($entry->delete()) {
             PageLayout::postSuccess(_('Der Hinweistext wurde gelöscht.'));

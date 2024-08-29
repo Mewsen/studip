@@ -299,9 +299,12 @@ class Course_WikiController extends AuthenticatedController
 
     public function delete_action(WikiPage $page)
     {
-        if (!Request::isPost() || !$page->isEditable() || !CSRFProtection::verifyRequest()) {
+        CSRFProtection::verifyUnsafeRequest();
+
+        if (!$page->isEditable()) {
             throw new AccessDeniedException();
         }
+
         $name = $page->name;
         $page->delete();
         PageLayout::postSuccess(sprintf(_('Die Seite %s wurde gelöscht.'), htmlReady($name)));
@@ -310,7 +313,9 @@ class Course_WikiController extends AuthenticatedController
 
     public function deleteversion_action(WikiPage $page)
     {
-        if (!Request::isPost() || !$page->isEditable() || !CSRFProtection::verifyRequest()) {
+        CSRFProtection::verifyUnsafeRequest();
+
+        if (!$page->isEditable()) {
             throw new AccessDeniedException();
         }
 
