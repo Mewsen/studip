@@ -166,7 +166,7 @@ class ContactController extends AuthenticatedController
             $this->group->owner_id = User::findCurrent()->id;
         }
         if (Request::submitted('store')) {
-            CSRFProtection::verifyRequest();
+            CSRFProtection::verifyUnsafeRequest();
             $this->group->name = Request::get('name');
             $this->group->store();
             $this->redirect('contact/index/' . $this->group->id);
@@ -175,7 +175,7 @@ class ContactController extends AuthenticatedController
 
     public function deleteGroup_action()
     {
-        CSRFProtection::verifyRequest();
+        CSRFProtection::verifyUnsafeRequest();
         $this->group->delete();
         $this->redirect('contact/index');
     }
