@@ -33,7 +33,10 @@
         </div>
 
         <div data-dialog-button="">
-            <button class="button" :title="isChanged ? '<?= _('Den aktuellen Stand speichern.') ?>' : '<?= _('Der aktuelle Stand wurde bereits gespeichert.') ?>'">
+            <button class="button"
+                    :title="isChanged ? '<?= _('Den aktuellen Stand speichern.') ?>' : '<?= _('Der aktuelle Stand wurde bereits gespeichert.') ?>'"
+                    @click="toggleSecurityHandler(false)"
+            >
                 <?= _('Speichern') ?>
             </button>
             <?= \Studip\LinkButton::create(_('Verlassen'), $controller->leave_editing($page))?>

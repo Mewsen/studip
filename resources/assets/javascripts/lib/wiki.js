@@ -77,6 +77,13 @@ const Wiki = {
                                 this.editor.editing.view.focus();
                             });
                         },
+                        toggleSecurityHandler(state = true) {
+                            if (state) {
+                                window.addEventListener('beforeunload', this.securityHandler);
+                            } else {
+                                window.removeEventListener('beforeunload', this.securityHandler);
+                            }
+                        },
                         securityHandler(event) {
                             event.preventDefault();
                             event.returnValue = true;
@@ -105,11 +112,7 @@ const Wiki = {
                     },
                     watch: {
                         isChanged(current) {
-                            if (current) {
-                                window.addEventListener('beforeunload', this.securityHandler);
-                            } else {
-                                window.removeEventListener('beforeunload', this.securityHandler);
-                            }
+                            this.toggleSecurityHandler(current);
                         }
                     },
                     components: { WikiEditorOnlineUsers }
