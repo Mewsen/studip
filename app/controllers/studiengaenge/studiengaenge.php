@@ -288,17 +288,13 @@ class Studiengaenge_StudiengaengeController extends MVVController
         $studiengang = Studiengang::find($studiengang_id);
         if (!$studiengang) {
              PageLayout::postError(_('Unbekannter Studiengang'));
-        } else {
-            if (Request::isPost()) {
-                if (Request::submitted('delete')) {
-                    CSRFProtection::verifyRequest();
-                    PageLayout::postSuccess(sprintf(
-                        _('Studiengang "%s" gelöscht!'),
-                        htmlReady($studiengang->name)
-                    ));
-                    $studiengang->delete();
-                }
-            }
+        } else if (Request::submitted('delete')) {
+            CSRFProtection::verifyUnsafeRequest();
+            PageLayout::postSuccess(sprintf(
+                _('Studiengang "%s" gelöscht!'),
+                htmlReady($studiengang->name)
+            ));
+            $studiengang->delete();
         }
         $this->redirect($this->action_url('index'));
     }
@@ -538,23 +534,21 @@ class Studiengaenge_StudiengaengeController extends MVVController
             if ($this->stg_stgteil->isNew()) {
                 PageLayout::postError(_('Unbekannter Studiengangteil'));
             } else {
-                if (Request::isPost()) {
-                    CSRFProtection::verifyRequest();
-                    if (!MvvPerm::haveFieldPermStudiengangteile($studiengang, MvvPerm::PERM_CREATE)) {
-                        throw new Trails_Exception(403);
-                    }
-                    $stgteil_name = $this->stg_stgteil->stgteil_name;
-                    $stgbez_name = $this->stg_stgteil->stgbez_name;
-                    if ($this->stg_stgteil->delete()) {
-                        PageLayout::postSuccess(sprintf(
-                            _('Die Zuordnung des Studiengangteils "%s" als "%s" zum Studiengang "%s" wurde gelöscht.'),
-                            htmlReady($stgteil_name),
-                            htmlReady($stgbez_name),
-                            htmlReady($studiengang->name)
-                        ));
-                    } else {
-                        PageLayout::postError(_('Der Studiengangteil konnte nicht gelöscht werden.'));
-                    }
+                CSRFProtection::verifyUnsafeRequest();
+                if (!MvvPerm::haveFieldPermStudiengangteile($studiengang, MvvPerm::PERM_CREATE)) {
+                    throw new Trails_Exception(403);
+                }
+                $stgteil_name = $this->stg_stgteil->stgteil_name;
+                $stgbez_name = $this->stg_stgteil->stgbez_name;
+                if ($this->stg_stgteil->delete()) {
+                    PageLayout::postSuccess(sprintf(
+                        _('Die Zuordnung des Studiengangteils "%s" als "%s" zum Studiengang "%s" wurde gelöscht.'),
+                        htmlReady($stgteil_name),
+                        htmlReady($stgbez_name),
+                        htmlReady($studiengang->name)
+                    ));
+                } else {
+                    PageLayout::postError(_('Der Studiengangteil konnte nicht gelöscht werden.'));
                 }
             }
             $this->redirect(
