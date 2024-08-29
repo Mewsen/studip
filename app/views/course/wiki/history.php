@@ -45,16 +45,6 @@
                 <a href="<?= $controller->versiondiff($page) ?>" data-dialog>
                     <?= Icon::create('log')->asImg(['class' => 'text-bottom']) ?>
                 </a>
-                <? if ($page->isEditable()) : ?>
-                    <form action="<?= $controller->deleteversion($page) ?>"
-                          method="post"
-                          class="inline"
-                          title="<?= _('Version löschen') ?>"
-                          data-confirm="<?= _('Wirklich diese Version löschen?') ?>">
-                        <?= CSRFProtection::tokenTag() ?>
-                        <?= Icon::create('trash')->asInput() ?>
-                    </form>
-                <? endif ?>
             </td>
         </tr>
         <? foreach ($page->versions as $i => $version) : ?>
@@ -79,16 +69,6 @@
                 <a href="<?= $controller->versiondiff($page, $version->id) ?>" data-dialog>
                     <?= Icon::create('log')->asImg(['class' => 'text-bottom']) ?>
                 </a>
-                <? if ($page->isEditable()) : ?>
-                    <form action="<?= $controller->deleteversion($page, $version->id) ?>"
-                          method="post"
-                          class="inline"
-                          title="<?= _('Version löschen') ?>"
-                          data-confirm="<?= _('Wirklich diese Version löschen?') ?>">
-                        <?= CSRFProtection::tokenTag() ?>
-                        <?= Icon::create('trash')->asInput() ?>
-                    </form>
-                <? endif ?>
             </td>
         </tr>
         <? endforeach ?>

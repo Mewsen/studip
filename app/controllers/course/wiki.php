@@ -308,29 +308,24 @@ class Course_WikiController extends AuthenticatedController
         $this->redirect($this->allpagesURL());
     }
 
-    public function deleteversion_action(WikiPage $page, $version_id = null)
+    public function deleteversion_action(WikiPage $page)
     {
         if (!Request::isPost() || !$page->isEditable() || !CSRFProtection::verifyRequest()) {
             throw new AccessDeniedException();
         }
-        if ($version_id === null) {
-            $version = $page->versions[0];
-            if ($version) {
-                $page['name'] = $version['name'];
-                $page['content'] = $version['content'];
-                $page['user_id'] = $version['user_id'];
-                $page['chdate'] = $version['mkdate'];
-                $page->store();
-                $version->delete();
-            } else {
-                $page->delete();
-            }
+
+        $version = $page->versions[0];
+        if ($version) {
+            $page['name'] = $version['name'];
+            $page['content'] = $version['content'];
+            $page['user_id'] = $version['user_id'];
+            $page['chdate'] = $version['mkdate'];
+            $page->store();
+            $version->delete();
         } else {
-            $version = WikiVersion::find($version_id);
-            if ($version['page_id'] === $page->id) {
-                $version->delete();
-            }
+            $page->delete();
         }
+
         PageLayout::postSuccess(_('Version wurde gelöscht.'));
         if (Request::get('redirect_to') === 'page') {
             $this->redirect($this->page($page));
