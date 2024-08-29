@@ -368,9 +368,12 @@ class QuestionnaireController extends AuthenticatedController
 
     public function reset_action(Questionnaire $questionnaire)
     {
-        if (!Request::isPost() || !$questionnaire->isEditable() || !CSRFProtection::verifyRequest()) {
+        CSRFProtection::verifyUnsafeRequest();
+
+        if (!$questionnaire->isEditable()) {
             throw new AccessDeniedException();
         }
+
         foreach ($questionnaire->anonymousanswers as $anonymous) {
             $anonymous->delete();
         }
