@@ -23,7 +23,10 @@
             </div>
 
             <div data-dialog-button="">
-                <button class="button" :title="isChanged ? $gettext('Den aktuellen Stand speichern.') : $gettext('Der aktuelle Stand wurde bereits gespeichert.')">
+                <button class="button"
+                        :title="isChanged ? $gettext('Den aktuellen Stand speichern.') : $gettext('Der aktuelle Stand wurde bereits gespeichert.')"
+                        @click="toggleSecurityHandler(false)"
+                >
                     {{ $gettext('Speichern') }}
                 </button>
                 <a :href="cancelUrl" class="button">
@@ -189,6 +192,13 @@ export default {
 
             return data;
         },
+        toggleSecurityHandler(state = true) {
+            if (state) {
+                window.addEventListener('beforeunload', this.securityHandler);
+            } else {
+                window.removeEventListener('beforeunload', this.securityHandler);
+            }
+        },
         securityHandler(event) {
             event.preventDefault();
 
@@ -233,11 +243,7 @@ export default {
     },
     watch: {
         isChanged(current) {
-            if (current) {
-                window.addEventListener('beforeunload', this.securityHandler);
-            } else {
-                window.removeEventListener('beforeunload', this.securityHandler);
-            }
+            this.toggleSecurityHandler(current);
         }
     }
 }
