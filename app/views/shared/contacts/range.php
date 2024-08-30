@@ -56,13 +56,14 @@
                     );
                 }
                 if ($perm_contacts >= MvvPerm::PERM_CREATE) {
-                    $actions->addLink(
-                        $controller->url_for('shared/contacts/delete_range', $mvv_contact->id),
+                    $actions->addButton(
+                        'delete_range',
                         _('Ansprechpartner-Zuordnung löschen'),
                         Icon::create('trash'),
                         [
                             'data-confirm' => _('Wollen Sie die Zuordnung des Ansprechpartners wirklich entfernen?'),
-                            'data-dialog' => 'size=auto'
+                            'data-dialog'  => 'size=auto',
+                            'formaction'   => $controller->url_for('shared/contacts/delete_range', $mvv_contact->id),
                         ]
                     );
                 }

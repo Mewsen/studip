@@ -149,17 +149,16 @@ class BlubberController extends AuthenticatedController
 
     public function delete_action($thread_id)
     {
+        CSRFProtection::verifyUnsafeRequest();
+
         $this->thread = BlubberThread::find($thread_id);
         if (!$this->thread->isWritable()) {
             throw new AccessDeniedException();
         }
-        if (Request::isPost()) {
-            CSRFProtection::verifySecurityToken();
-            $this->thread->delete();
-            PageLayout::postSuccess(_('Der Blubber wurde gelöscht.'));
-        }
+
+        $this->thread->delete();
+        PageLayout::postSuccess(_('Der Blubber wurde gelöscht.'));
         $this->redirect('blubber/index');
-        return;
     }
 
     public function write_to_action($user_id = null)

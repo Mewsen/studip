@@ -158,7 +158,7 @@ class HelpContentController extends AuthenticatedController
      */
     public function store_action($id = '')
     {
-        CSRFProtection::verifySecurityToken();
+        CSRFProtection::verifyUnsafeRequest();
 
         $content_id         = md5(uniqid('help_content', 1));
         $create_new_content = false;
@@ -244,14 +244,16 @@ class HelpContentController extends AuthenticatedController
      */
     public function delete_action($id)
     {
-        CSRFProtection::verifySecurityToken();
         PageLayout::setTitle(_('Hilfe-Text löschen'));
 
         $this->help_content = HelpContent::GetContentByID($id);
         if (is_object($this->help_content)) {
             if (Request::submitted('delete_help_content')) {
-                PageLayout::postMessage(MessageBox::success(sprintf(_('Der Hilfe-Text zur Route "%s" wurde gelöscht.'), htmlReady($this->help_content->route))));
+                CSRFProtection::verifyUnsafeRequest();
+
                 $this->help_content->delete();
+                PageLayout::postSuccess(sprintf(_('Der Hilfe-Text zur Route "%s" wurde gelöscht.'), htmlReady($this->help_content->route)));
+
                 $this->response->add_header('X-Dialog-Close', 1);
                 $this->render_nothing();
                 return;
