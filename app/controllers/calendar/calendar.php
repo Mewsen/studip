@@ -812,7 +812,7 @@ class Calendar_CalendarController extends AuthenticatedController
     public function import_file_action()
     {
         if (Request::submitted('import')) {
-            CSRFProtection::verifySecurityToken();
+            CSRFProtection::verifyUnsafeRequest();
             $range_id = Context::getId() ?? User::findCurrent()->id;
             $calendar_import = new ICalendarImport($range_id);
             $calendar_import->convertPublicToPrivate(Request::bool('import_privat', false));
@@ -928,13 +928,13 @@ class Calendar_CalendarController extends AuthenticatedController
     {
         $this->short_id = null;
         if (Request::submitted('delete_id')) {
-            CSRFProtection::verifySecurityToken();
+            CSRFProtection::verifyUnsafeRequest();
             IcalExport::deleteKey(User::findCurrent()->id);
             PageLayout::postSuccess(_('Die Adresse, unter der Ihre Termine abrufbar sind, wurde gelöscht'));
         }
 
         if (Request::submitted('new_id')) {
-            CSRFProtection::verifySecurityToken();
+            CSRFProtection::verifyUnsafeRequest();
             $this->short_id = IcalExport::setKey(User::findCurrent()->id);
             PageLayout::postSuccess(_('Eine Adresse, unter der Ihre Termine abrufbar sind, wurde erstellt.'));
         } else {

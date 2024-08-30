@@ -211,7 +211,7 @@ class TourController extends AuthenticatedController
         }
         // delete tour
         if (Request::option('confirm_delete_tour')) {
-            CSRFProtection::verifySecurityToken();
+            CSRFProtection::verifyUnsafeRequest();
             $this->delete_tour(Request::option('tour_id'));
         }
         // load tours
@@ -370,7 +370,7 @@ class TourController extends AuthenticatedController
 
         $this->tour = new HelpTour($tour_id);
         if (Request::submitted('yes')) {
-            CSRFProtection::verifySecurityToken();
+            CSRFProtection::verifyUnsafeRequest();
             $this->response->add_header('X-Action', 'complete');
             $this->tour->delete();
         } elseif (Request::submitted('no')) {
@@ -401,7 +401,7 @@ class TourController extends AuthenticatedController
         }
 
         if (Request::submitted('yes')) {
-            CSRFProtection::verifySecurityToken();
+            CSRFProtection::verifyUnsafeRequest();
             $this->response->add_header('X-Action', 'complete');
             $this->tour->deleteStep($step_nr);
         } elseif (Request::submitted('no')) {
@@ -484,7 +484,7 @@ class TourController extends AuthenticatedController
         }
         // save step
         if ($mode === 'save') {
-            CSRFProtection::verifySecurityToken();
+            CSRFProtection::verifyUnsafeRequest();
             if (Request::option('tour_step_editmode') == 'new') {
                 $this->tour = new HelpTour($tour_id);
                 if ($tour_id && $this->tour->isNew()) {
@@ -696,7 +696,7 @@ class TourController extends AuthenticatedController
         }
 
         if (Request::submitted('save_tour_details')) {
-            CSRFProtection::verifySecurityToken();
+            CSRFProtection::verifyUnsafeRequest();
             $this->tour->name        = trim(Request::get('tour_name'));
             $this->tour->description = trim(Request::get('tour_description'));
             if (Request::option('tour_language')) {

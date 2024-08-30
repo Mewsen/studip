@@ -242,7 +242,7 @@ class Admin_StatusgroupsController extends AuthenticatedController
         $this->check('edit');
         $this->group = new Statusgruppen($group_id);
         if (Request::submitted('confirm')) {
-            CSRFProtection::verifySecurityToken();
+            CSRFProtection::verifyUnsafeRequest();
 
             // move all subgroups to the parent
             $children = SimpleORMapCollection::createFromArray($this->group->children);
@@ -268,7 +268,7 @@ class Admin_StatusgroupsController extends AuthenticatedController
         $this->check('edit');
         $this->group = new Statusgruppen($group_id);
         if (Request::submitted('confirm')) {
-            CSRFProtection::verifySecurityToken();
+            CSRFProtection::verifyUnsafeRequest();
             $this->group->sortMembersAlphabetic();
             $this->redirect('admin/statusgroups/index#group-' . $group_id);
         }
