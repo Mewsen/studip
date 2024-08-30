@@ -506,7 +506,7 @@ class Course_GroupingController extends AuthenticatedController
      */
     public function add_members_action()
     {
-        CSRFProtection::verifySecurityToken();
+        CSRFProtection::verifyUnsafeRequest();
 
         $fail = [];
         // Iterate over selected courses...

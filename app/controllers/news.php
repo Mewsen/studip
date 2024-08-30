@@ -97,8 +97,8 @@ class NewsController extends StudipController
         }
 
         // Check if user wrote a comment
-        if (Request::submitted('accept') && trim(Request::get('comment_content')) && Request::isPost()) {
-            CSRFProtection::verifySecurityToken();
+        if (Request::submitted('accept') && trim(Request::get('comment_content'))) {
+            CSRFProtection::verifyUnsafeRequest();
 
             $news_id = Request::get('comsubmit');
             $comment = StudipComment::create([
