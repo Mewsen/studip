@@ -138,14 +138,14 @@ $message_types = ['msg' => "success", 'error' => "error", 'info' => "info"];
                     <td class="actions">
                 <? if ($perm_dozent && !$dozent_is_locked): ?>
                     <? if ($num > 0) : ?>
-                        <a href="<?= $controller->link_for('course/basicdata/priorityupfor', $course_id, $dozent['user_id'], 'dozent') ?>" <?= $dialog_attr ?>>
+                        <button class="as-link" formaction="<?= $controller->link_for('course/basicdata/priorityupfor', $course_id, $dozent['user_id'], 'dozent') ?>" <?= $dialog_attr ?>>
                             <?= Icon::create('arr_2up', Icon::ROLE_SORT)->asImg(['class' => 'middle']) ?>
-                        </a>
+                        </button>
                     <? endif; ?>
                     <? if ($num < count($dozenten) - 1): ?>
-                        <a href="<?= $controller->link_for('course/basicdata/prioritydownfor', $course_id, $dozent['user_id'], 'dozent') ?>" <?= $dialog_attr ?>>
+                        <button class="as-link" formaction="<?= $controller->link_for('course/basicdata/prioritydownfor', $course_id, $dozent['user_id'], 'dozent') ?>" <?= $dialog_attr ?>>
                             <?= Icon::create('arr_2down', Icon::ROLE_SORT)->asImg(['class' => 'middle']) ?>
-                        </a>
+                        </button>
                     <? endif; ?>
                         <?= Icon::create('trash')->asInput([
                             'formaction'   => $controller->url_for('course/basicdata/deletedozent', $course_id, $dozent['user_id']),
@@ -275,14 +275,14 @@ $message_types = ['msg' => "success", 'error' => "error", 'info' => "info"];
                     <td class="actions">
                 <? if ($perm_dozent && !$tutor_is_locked): ?>
                     <? if ($num > 0) : ?>
-                        <a href="<?= $controller->link_for('course/basicdata/priorityupfor', $course_id, $tutor['user_id'], 'tutor') ?>" <?= $dialog_attr ?>>
+                        <button class="as-link" formaction="<?= $controller->link_for('course/basicdata/priorityupfor', $course_id, $tutor['user_id'], 'tutor') ?>" <?= $dialog_attr ?>>
                             <?= Icon::create('arr_2up', Icon::ROLE_SORT)->asImg(['class' => 'middle']) ?>
-                        </a>
+                        </button>
                     <? endif; ?>
                     <? if ($num < count($tutoren) - 1) : ?>
-                        <a href="<?= $controller->link_for('course/basicdata/prioritydownfor', $course_id, $tutor['user_id'], 'tutor') ?>" <?= $dialog_attr ?>>
+                        <button class="as-link" formaction="<?= $controller->link_for('course/basicdata/prioritydownfor', $course_id, $tutor['user_id'], 'tutor') ?>" <?= $dialog_attr ?>>
                             <?= Icon::create('arr_2down', Icon::ROLE_SORT)->asImg(['class' => 'middle']) ?>
-                        </a>
+                        </button>
                     <? endif; ?>
                         <?= Icon::create('trash')->asInput([
                             'formaction'   => $controller->url_for('course/basicdata/deletetutor', $course_id, $tutor['user_id']),
