@@ -330,7 +330,7 @@ class Oer_MarketController extends StudipController
 
         $this->contentbar = ContentBar::get()
             ->setTOC(new TOCItem($this->material['name']))
-            ->setInfo(htmlReady($infotext))
+            ->setInfoHTML(htmlReady($infotext))
             ->setIcon(Icon::create('oer-campus'));
     }
 

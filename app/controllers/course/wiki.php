@@ -128,7 +128,7 @@ class Course_WikiController extends AuthenticatedController
                 );
             }
 
-            $this->contentbar->setInfo(sprintf(
+            $this->contentbar->setInfoHTML(sprintf(
                 _('Version %1$s, geändert von %2$s <br> am %3$s'),
                 $this->page->versionnumber,
                 $author,
@@ -481,7 +481,7 @@ class Course_WikiController extends AuthenticatedController
         $this->contentbar = ContentBar::get()
             ->setTOC(CoreWiki::getTOC($page))
             ->setIcon(Icon::create('wiki'))
-            ->setInfo(_('Zuletzt gespeichert') .': '. '<span class="wiki-last-edited-' . $this->page->id . '"></span>');
+            ->setInfoHTML(_('Zuletzt gespeichert') .': '. '<span class="wiki-last-edited-' . $this->page->id . '"></span>');
     }
 
     public function apply_editing_action(WikiPage $page)
@@ -711,7 +711,7 @@ class Course_WikiController extends AuthenticatedController
         $this->contentbar = ContentBar::get()
             ->setTOC(CoreWiki::getTOC($version->page))
             ->setIcon(Icon::create('wiki'))
-            ->setInfo(sprintf(
+            ->setInfoHTML(sprintf(
                 _('Version %1$s vom %2$s'),
                 $version->versionnumber,
                 date('d.m.Y H:i:s', $version['mkdate'])

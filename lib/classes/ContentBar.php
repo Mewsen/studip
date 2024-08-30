@@ -53,13 +53,24 @@ class ContentBar
     }
 
     /**
-     * Provide some info text.
+     * Provide some info text as html.
+     *
      * @param string $info
      * @return ContentBar $this Return current instance for method chaining.
+     *
+     * @deprecated since Stud.IP 6.0, use ContentBar::setInfoHTML() instead
      */
     public function setInfo(string $info)
     {
-        $this->infoText = $info;
+        return $this->setInfoHTML($info);
+    }
+
+    /**
+     * Provide some info as html.
+     */
+    public function setInfoHTML(string $html): static
+    {
+        $this->infoText = $html;
         return $this;
     }
 
