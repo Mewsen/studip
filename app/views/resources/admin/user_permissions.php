@@ -200,6 +200,9 @@
                 </thead>
                 <tbody>
                     <? foreach ($permissions as $permission): ?>
+                        <?
+                        $resource = $permission->resource->getDerivedClassInstance();
+                        ?>
                         <tr>
                             <td>
                                 <input type="checkbox" name="resource_ids[]"
@@ -207,7 +210,7 @@
                                        title="<?= htmlReady(sprintf(_('Berechtigung für %s auswählen'), $resource)) ?>">
                             </td>
                             <td>
-                                <?= htmlReady($permission->resource->getDerivedClassInstance()) ?>
+                                <?= htmlReady($resource) ?>
                             </td>
                             <td>
                                 <?= htmlReady($permission->perms) ?>
