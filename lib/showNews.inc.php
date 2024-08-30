@@ -85,8 +85,8 @@ function delete_news($delete_news_array)
     if (!is_array($delete_news_array)) {
         $delete_news_array = [$delete_news_array];
     }
-    if (Request::submitted('yes') && Request::isPost()) {
-        CSRFProtection::verifySecurityToken();
+    if (Request::submitted('yes')) {
+        CSRFProtection::verifyUnsafeRequest();
         $confirmed = true;
     }
     foreach ($delete_news_array as $news_id) {
@@ -160,8 +160,8 @@ function remove_news($remove_array)
     if (!is_array($remove_array)) {
         return '';
     }
-    if (Request::submitted('yes') && Request::isPost()) {
-        CSRFProtection::verifySecurityToken();
+    if (Request::submitted('yes')) {
+        CSRFProtection::verifyUnsafeRequest();
         $confirmed = true;
     }
     foreach ($remove_array as $news_id => $ranges) {

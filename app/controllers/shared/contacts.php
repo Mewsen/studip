@@ -443,7 +443,7 @@ class Shared_ContactsController extends MVVController
         $this->ext_contact = $ext_contact;
 
         if (Request::submitted('store_ansprechpartner')) {
-            CSRFProtection::verifySecurityToken();
+            CSRFProtection::verifyUnsafeRequest();
 
             if (!$user_id) {
                 if (Request::get('exansp_name')) {
@@ -543,7 +543,7 @@ class Shared_ContactsController extends MVVController
     }
 
     public function store_ansprechpartner_action ($contact_range_id, $origin = 'index') {
-        CSRFProtection::verifySecurityToken();
+        CSRFProtection::verifyUnsafeRequest();
 
         $contact_range = MvvContactRange::find($contact_range_id);
         if (!$contact_range) {
@@ -579,7 +579,7 @@ class Shared_ContactsController extends MVVController
 
     public function delete_range_action($contact_range_id)
     {
-        CSRFProtection::verifySecurityToken();
+        CSRFProtection::verifyUnsafeRequest();
 
         $range = MvvContactRange::find($contact_range_id);
         $contact = $range->contact;
