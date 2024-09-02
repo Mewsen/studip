@@ -18,7 +18,7 @@ class StudipAuthShib extends StudipAuthSSO
     public $local_domain;
     public $session_initiator;
     public $validate_url;
-    public ?string $logout_url = null;
+    public $logout_url = null;
     public $userdata;
     public $username_attribute = 'username';
 
