@@ -20,6 +20,9 @@ class AddPreventRootFolderUploadByStudentsInCoursesConfig extends Migration
             UNIX_TIMESTAMP(), UNIX_TIMESTAMP(),
             'Studierende können im Dateibereich einer Veranstaltung auf der Ebene des Hauptordners keine Dateien hochladen.')"
         );
+        //This migration initially had the number 5.9.1 when it went into the main branch.
+        //To fix this error, the migration branch must be deleted:
+        DBManager::get()->exec("DELETE FROM `schema_version` WHERE `branch` = '5.9'");
     }
 
     protected function down()
