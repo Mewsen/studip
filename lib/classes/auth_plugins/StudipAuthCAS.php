@@ -80,7 +80,7 @@ class StudipAuthCAS extends StudipAuthSSO
         return $this->userdata->getUserData($key, phpCAS::getUser());
     }
 
-    function logout()
+    public function logout(): void
     {
         // do a global cas logout
         phpCAS::client(CAS_VERSION_2_0, $this->host, $this->port, $this->uri, false);

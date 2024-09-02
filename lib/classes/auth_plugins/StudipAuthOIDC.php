@@ -68,7 +68,6 @@ class StudipAuthOIDC extends StudipAuthSSO
      */
     public function verifyUsername($username)
     {
-
         $this->oidc->authenticate();
         $this->userdata = (array)$this->oidc->requestUserInfo();
         if (isset($this->userdata['sub'])) {
@@ -108,5 +107,10 @@ class StudipAuthOIDC extends StudipAuthSSO
     public function getUserData($key)
     {
         return $this->userdata[$key];
+    }
+
+    public function logout(): void
+    {
+        $this->oidc->signOut($this->oidc->getIdToken(), null);
     }
 }
