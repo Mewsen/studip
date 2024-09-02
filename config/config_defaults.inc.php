@@ -366,15 +366,19 @@ $STUDIP_AUTH_CONFIG_LTI = [
     ]
 ];
 
-$STUDIP_AUTH_CONFIG_SHIB = array("session_initiator" => "https://sp.studip.de/Shibboleth.sso/WAYF/DEMO",
-                                        "validate_url" => "https://sp.studip.de/auth/studip-sp.php",
-                                        "local_domain" => "studip.de",
-                                        "user_data_mapping" =>
-                                                array(  "auth_user_md5.username" => array("callback" => "dummy", "map_args" => ""),
-                                                        "auth_user_md5.password" => array("callback" => "dummy", "map_args" => ""),
-                                                        "auth_user_md5.Vorname" => array("callback" => "getUserData", "map_args" => "givenname"),
-                                                        "auth_user_md5.Nachname" => array("callback" => "getUserData", "map_args" => "surname"),
-                                                        "auth_user_md5.Email" => array("callback" => "getUserData", "map_args" => "email")));
+$STUDIP_AUTH_CONFIG_SHIB = [
+    'session_initiator' => 'https://sp.studip.de/Shibboleth.sso/WAYF/DEMO',
+    'validate_url'      => 'https://sp.studip.de/auth/studip-sp.php',
+    'logout_url'        => 'https://sp.studip.de/Shibboleth.sso/Logout',
+    'local_domain'      => 'studip.de',
+    'user_data_mapping' => [
+        'auth_user_md5.username' => ['callback' => 'dummy', 'map_args' => ''],
+        'auth_user_md5.password' => ['callback' => 'dummy', 'map_args' => ''],
+        'auth_user_md5.Vorname'  => ['callback' => 'getUserData', 'map_args' => 'givenname'],
+        'auth_user_md5.Nachname' => ['callback' => 'getUserData', 'map_args' => 'surname'],
+        'auth_user_md5.Email'    => ['callback' => 'getUserData', 'map_args' => 'email']
+    ],
+];
 
 $STUDIP_AUTH_CONFIG_IP = array('allowed_users' =>
     array ('root' => array('127.0.0.1', '::1')));
