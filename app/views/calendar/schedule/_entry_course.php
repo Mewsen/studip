@@ -1,5 +1,5 @@
 <?php
-$sem = Seminar::getInstance($show_entry['id']);
+$course = Course::find($show_entry['id']);
 ?>
 <form class="default"
       action="<?= $controller->link_for('calendar/schedule/editseminar/' . $show_entry['id'] . '/' . $show_entry['cycle_id']) ?>"
@@ -23,21 +23,23 @@ $sem = Seminar::getInstance($show_entry['id']);
 
         <section>
             <strong><?= _('Veranstaltungsnummer') ?></strong><br>
-            <?= htmlReady($sem->getNumber()) ?>
+            <?= htmlReady($course->veranstaltungsnummer) ?>
         </section>
 
         <section>
             <strong><?= _('Name') ?></strong><br>
-            <?= htmlReady($sem->getName()) ?>
+            <?= htmlReady($course->name) ?>
         </section>
 
         <section>
             <strong><?= _('Lehrende') ?></strong><br>
-            <? $pos = 0;
-            foreach ($sem->getMembers('dozent') as $dozent) :?>
-                <?php if ($pos > 0) echo ', '; ?>
-                <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $dozent['username']]) ?>">
-                    <?= htmlReady($dozent['fullname']) ?>
+            <?
+            $pos = 0;
+            $lecturers = CourseMember::findByCourseAndStatus($course->id, 'dozent');
+            foreach ($lecturers as $lecturer) :?>
+                <?= $pos > 0 ? ', ' : '' ?>
+                <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $lecturer->user->username]) ?>">
+                    <?= htmlReady($lecturer->user->getFullName()) ?>
                 </a>
                 <? $pos++ ?>
             <? endforeach ?>
@@ -45,7 +47,7 @@ $sem = Seminar::getInstance($show_entry['id']);
 
         <section>
             <strong><?= _('Veranstaltungszeiten') ?></strong><br>
-            <?= $sem->getDatesHTML(['show_room' => true]) ?><br>
+            <?= $course->getAllDatesInSemester()->toHtml(true) ?><br>
         </section>
 
         <section>

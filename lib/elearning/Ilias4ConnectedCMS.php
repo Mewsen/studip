@@ -141,29 +141,28 @@ class Ilias4ConnectedCMS extends Ilias3ConnectedCMS
         $this->soap_client->clearCache();
 
         if ($crs_id == false) {
-            $seminar = Seminar::getInstance($seminar_id);
-            $home_institute = Institute::find($seminar->getInstitutId());
-            if ($home_institute) {
-                $ref_id = ObjectConnections::getConnectionModuleId($home_institute->getId(), "cat", $this->cms_type);
+            $course = Course::find($seminar_id);
+            if ($course->home_institut) {
+                $ref_id = ObjectConnections::getConnectionModuleId($course->institut_id, 'cat', $this->cms_type);
             }
             if ($ref_id < 1) {
                 // Kategorie für Heimateinrichtung anlegen
-                $object_data["title"] = sprintf("%s", $home_institute->name);
-                $object_data["description"] = sprintf(_("Hier befinden sich die Veranstaltungsdaten zur Stud.IP-Einrichtung \"%s\"."), $home_institute->name);
-                $object_data["type"] = "cat";
-                $object_data["owner"] =  $this->soap_client->LookupUser($ELEARNING_INTERFACE_MODULES[$this->cms_type]["soap_data"]["username"]);
+                $object_data['title'] = $course->home_institut->name;
+                $object_data['description'] = sprintf(_('Hier befinden sich die Veranstaltungsdaten zur Stud.IP-Einrichtung "%s".'), $course->home_institut->name);
+                $object_data['type'] = 'cat';
+                $object_data['owner'] =  $this->soap_client->LookupUser($ELEARNING_INTERFACE_MODULES[$this->cms_type]['soap_data']['username']);
                 $ref_id = $this->soap_client->addObject($object_data, $this->main_category_node_id);
-                ObjectConnections::setConnection($home_institute->getId(), $ref_id, "cat", $this->cms_type);
+                ObjectConnections::setConnection($course->institut_id, $ref_id, 'cat', $this->cms_type);
             }
             if ($ref_id < 1) {
                 $ref_id = $this->main_category_node_id;
             }
 
             // Kurs anlegen
-            $lang_array = explode("_", Config::get()->DEFAULT_LANGUAGE);
-            $course_data["language"] = $lang_array[0];
-            $course_data["title"] = "Stud.IP-Kurs " . $seminar->getName();
-            $course_data["description"] = "";
+            $lang_array = explode('_', Config::get()->DEFAULT_LANGUAGE);
+            $course_data['language'] = $lang_array[0];
+            $course_data['title'] = 'Stud.IP-Kurs ' . $course->name;
+            $course_data['description'] = '';
             $crs_id = $this->soap_client->addCourse($course_data, $ref_id);
             if ($crs_id == false) {
                 $messages["error"] .= _("Zuordnungs-Fehler: Kurs konnte nicht angelegt werden.");

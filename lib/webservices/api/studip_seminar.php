@@ -20,7 +20,7 @@ class StudipSeminarHelper
     {
         $seminar_id = preg_replace('/\W/', '', $seminar_id);
 
-        return Seminar::getInstance($seminar_id)->getName();
+        return Course::find($seminar_id)->name;
     }
 
     public static function validate_seminar_permission($ticket, $seminar_id, $permission)

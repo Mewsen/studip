@@ -890,8 +890,6 @@ class Course_StatusgroupsController extends AuthenticatedController
                         SeminarCycleDate::findBySeminar_id($this->course_id));
 
                     foreach ($cycles as $c) {
-                        $cd = new CycleData($c);
-
                         $name = $c->toString();
 
                         // Append description to group title if applicable.
@@ -900,15 +898,10 @@ class Course_StatusgroupsController extends AuthenticatedController
                         }
 
                         // Get name of most used room and append to group title.
-                        if ($rooms = $cd->getPredominantRoom()) {
-                            $room_keys = array_keys($rooms);
-                            $room_name = DBManager::get()->fetchOne(
-                                "SELECT `name` FROM `resources` WHERE `id` = ?",
-                                [array_pop($room_keys)]);
-                            $name .= ' (' . $room_name['name'] . ')';
+                        if ($room = $c->getMostBookedRoom()) {
+                            $name .= ' (' . $room->name . ')';
                         } else {
-                            $free_text_predominant_rooms = array_keys($cd->getFreeTextPredominantRoom());
-                            $room = trim(array_pop($free_text_predominant_rooms));
+                            $room = $c->getMostBookedFreetextRoom();
                             if ($room) {
                                 $name .= ' (' . $room . ')';
                             }
@@ -1439,13 +1432,41 @@ class Course_StatusgroupsController extends AuthenticatedController
         CSRFProtection::verifyUnsafeRequest();
 
         $members = Request::getArray('members');
-        $course = Seminar::GetInstance($this->course_id);
-        $removed_names = $course->cancelSubscription($members);
-
-        PageLayout::postSuccess(
-            _('Die folgenden Personen wurden aus der Veranstaltung ausgetragen'),
-            $removed_names
+        $course = Course::find($this->course_id);
+        $removed_users = [];
+        $errors = [];
+        User::findEachMany(
+            function (User $user) use ($course, &$errors, &$removed_users) {
+                try {
+                    $course->deleteMember($user, true);
+                    $removed_users = $user->getFullName();
+                } catch (Exception $e) {
+                    $errors[] = $e->getMessage();
+                }
+            
+            },
+            array_column($members, 'user_id')
         );
+
+        if (!empty($errors)) {
+            PageLayout::postError(
+                _('Die folgenden Fehler traten beim Austragen von Personen auf:'),
+                $errors
+            );
+        }
+        if (!empty($removed_users)) {
+            if (count($removed_users) <= 5) {
+                PageLayout::postSuccess(
+                    _('Die folgenden Personen wurden ausgetragen:'),
+                    $removed_users
+                );
+            } else {
+                PageLayout::postSuccess(
+                    _('%u Personen wurden ausgetragen.'),
+                    count($removed_users)
+                );
+            }
+        }
 
         $this->relocate('course/statusgroups');
     }

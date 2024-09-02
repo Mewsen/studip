@@ -202,12 +202,12 @@ class ContentTermsOfUse extends SimpleORMap
             //the group must also have a terminated signup deadline.
             if ($context_type === "course") {
                 //check where this range_id comes from:
-                $seminar = Seminar::GetInstance($context_id);
-                $timed_admission = $seminar->getAdmissionTimeFrame();
+                $course = Course::find($context_id);
+                $timed_admission = $course->getAdmissionTimeFrame();
 
-                if ($seminar->admission_prelim
-                    || $seminar->isPasswordProtected()
-                    || $seminar->isAdmissionLocked()
+                if ($course->admission_prelim
+                    || $course->isPasswordProtected()
+                    || $course->isAdmissionLocked()
                     || (is_array($timed_admission) && $timed_admission['end_time'] > 0 && $timed_admission['end_time'] < time())
                 ) {
                     return true;

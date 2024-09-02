@@ -124,13 +124,12 @@ class ExternPageCourseDetails extends ExternPage
      */
     protected function getContentCourse(Course $course): array
     {
-        $seminar = new Seminar($course);
         $content = [
             'TITLE'             => $course->name,
             'SUBTITLE'          => $course->untertitel,
             'FULLNAME'          => $course->getFullName(),
             'SEMESTER'          => $course->getTextualSemester(),
-            'CYCLE'             => $seminar->getDatesExport(),
+            'CYCLE'             => $course->getAllDatesInSemester(),
             'ROOM'              => $course->ort,
             'NUMBER'            => $course->veranstaltungsnummer,
             'PRELIM_DISCUSSION' => vorbesprechung($course->id, 'export'),
@@ -146,7 +145,7 @@ class ExternPageCourseDetails extends ExternPage
             'ORGA'              => $course->lernorga,
             'CERTIFICATE'       => $course->leistungsnachweis,
             'ECTS'              => $course->ects,
-            'FIRST_MEETING'     => $seminar->getFirstDate('export'),
+            'FIRST_MEETING'     => $course->getFirstDate(),
             'HOME_INST_NAME'    => $course->home_institut->name,
             'HOME_INST_ID'      => $course->home_institut->id,
             'COUNT_USER'        => count($course->members),

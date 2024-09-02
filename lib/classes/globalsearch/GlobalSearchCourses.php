@@ -149,11 +149,7 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
     public static function filter($data, $search)
     {
         $course = Course::buildExisting($data);
-        $seminar = new Seminar($course);
-        $turnus_string = $seminar->getDatesExport([
-            'short'  => true,
-            'shrink' => true,
-        ]);
+        $turnus_string = implode(' ', $course->getAllDatesInSemester()->toStringArray());
         //Shorten, if string too long (add link for details.php)
         if (mb_strlen($turnus_string) > 70) {
             $turnus_string = htmlReady(mb_substr($turnus_string, 0, mb_strpos(mb_substr($turnus_string, 70, mb_strlen($turnus_string)), ',') + 71));

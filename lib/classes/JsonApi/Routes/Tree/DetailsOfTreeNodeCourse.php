@@ -21,16 +21,13 @@ class DetailsOfTreeNodeCourse extends NonJsonApiController
         }
 
         // Get course dates in textual form
-        $dates = \Seminar::GetInstance($args['id'])->getDatesHTML([
-            'semester_id' => null,
-            'show_room'   => true,
-        ]);
+        $dates = $course->getAllDatesInSemester();
 
         $data = [
             'semester' => $course->semester_text,
             'lecturers' => [],
             'admissionstate' => null,
-            'dates' => $dates
+            'dates' => $dates->toHtml(false, true)
         ];
 
         // Get lecturers

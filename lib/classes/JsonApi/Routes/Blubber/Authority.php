@@ -4,7 +4,6 @@ namespace JsonApi\Routes\Blubber;
 
 use BlubberComment;
 use BlubberThread;
-use Seminar;
 use User;
 
 class Authority

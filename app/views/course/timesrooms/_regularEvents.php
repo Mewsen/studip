@@ -23,15 +23,28 @@
             <?= CSRFProtection::tokenTag() ?>
 
             <article id="<?= $metadate_id ?>" class="<?= ContentBoxHelper::classes($metadate_id) ?>">
-                <header class="<?= $course->getCycleColorClass($metadate_id) ?>">
+                <?
+                $booking_status_icon    = $cycle['cycle']->getIconForBookingStatus();
+                $booking_status_message = $cycle['cycle']->getMessageForBookingStatus();
+                $booking_status         = $cycle['cycle']->getBookingStatus();
+                $booking_status_class   = '';
+                if ($booking_status === SeminarCycleDate::BOOKING_STATUS_NOT_BOOKED) {
+                    $booking_status_class = 'red';
+                } elseif ($booking_status === SeminarCycleDate::BOOKING_STATUS_PARTIALLY_BOOKED) {
+                    $booking_status_class = 'yellow';
+                } elseif ($booking_status === SeminarCycleDate::BOOKING_STATUS_ALL_BOOKED) {
+                    $booking_status_class = 'green';
+                }
+                ?>
+                <header class="<?= htmlReady($booking_status_class) ?>">
                     <h1>
-                    <? if ($info = $course->getBookedRoomsTooltip($metadate_id)) : ?>
-                        <?= tooltipHtmlIcon($info) ?>
-                    <? elseif ($course->getCycleColorClass($metadate_id) === 'red'): ?>
-                        <?= tooltipIcon(_('Keine Raumbuchungen vorhanden')) ?>
-                    <? else: ?>
-                        <?= tooltipIcon(_('Keine offenen Raumbuchungen')) ?>
-                    <? endif ?>
+                        <span class="as-link tooltip"
+                              tabindex="0"
+                              data-tooltip
+                              aria-label="<?= htmlReady($booking_status_message) ?>">
+                            <?= $booking_status_icon->asImg(['class' => 'text-bottom']) ?>
+                            <span class="tooltip-content"><?= $booking_status_message ?></span>
+                        </span>
                         <a href="<?= ContentBoxHelper::href($metadate_id) ?>">
                             <?= htmlReady($cycle['cycle']->toString('long')) ?>
                         </a>

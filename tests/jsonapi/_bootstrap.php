@@ -27,8 +27,6 @@ $CACHING_ENABLE = false;
 
 date_default_timezone_set('Europe/Berlin');
 
-require_once __DIR__.'/../../composer/autoload.php';
-
 require 'config.inc.php';
 
 require 'lib/helpers.php';
@@ -59,5 +57,7 @@ class DB_Seminar extends DB_Sql
         parent::__construct($query);
     }
 }
+
+require_once __DIR__.'/../../composer/autoload.php';
 
 session_id("test-session");

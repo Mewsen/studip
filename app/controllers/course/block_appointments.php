@@ -242,8 +242,8 @@ class Course_BlockAppointmentsController extends AuthenticatedController
                         $result = $d->store();
                     } else {
                         $result = $d->store();
-                        $singledate = new SingleDate($d);
-                        $singledate->bookRoom(Request::option('room_id'));
+                        $room = Resource::find(Request::option('room_id'))?->getDerivedClassInstance();
+                        $d->bookRoom($room);
                     }
                     return $result ? $d->getFullName() : null;
                 }, $dates));

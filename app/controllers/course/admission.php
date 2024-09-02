@@ -138,14 +138,18 @@ class Course_AdmissionController extends AuthenticatedController
             if (Request::submittedSome('change_admission_prelim_no', 'change_admission_prelim_yes') || !$question) {
                 if ($this->course->admission_prelim == 1 && $this->course->getNumParticipants() && Request::submitted('change_admission_prelim_yes')) {
                     $num_moved = 0;
-                    $seminar = new Seminar($this->course_id);
-                    foreach ($this->course->members->findBy('status', ['user','autor'])->pluck('user_id') as $user_id) {
-                        $seminar->addPreliminaryMember($user_id);
-                        $num_moved += ($seminar->deleteMember($user_id) !== false);
-                        setTempLanguage($user_id);
+                    foreach ($this->course->members->findBy('status', ['user','autor'])->pluck('user') as $user) {
+                        $this->course->addPreliminaryMember($user);
+                        try {
+                            $this->course->deleteMember($user);
+                        } catch (\Studip\Exception $e) {
+                            continue;
+                        }
+                        $num_moved++;
+                        setTempLanguage($user->id);
                         $message_body = sprintf(_('Sie wurden in der Veranstaltung **%s** in den Status **vorläufig akzeptiert** befördert, da das Anmeldeverfahren geändert wurde.'), $this->course->name);
                         $message_title = sprintf(_("Statusänderung %s"), $this->course->name);
-                        messaging::sendSystemMessage($user_id, $message_title, $message_body);
+                        messaging::sendSystemMessage($user->id, $message_title, $message_body);
                         restoreLanguage();
                     }
                     if ($num_moved) {
@@ -158,9 +162,13 @@ class Course_AdmissionController extends AuthenticatedController
                 if ($this->course->admission_prelim == 0 && $this->course->getNumPrelimParticipants()) {
                     if (Request::submitted('change_admission_prelim_yes')) {
                         $num_moved = 0;
-                        $seminar = new Seminar($this->course_id);
-                        foreach ($this->course->admission_applicants->findBy('status', 'accepted')->pluck('user_id') as $user_id) {
-                            $num_moved += ($seminar->addMember($user_id, 'autor') !== false);
+                        foreach ($this->course->admission_applicants->findBy('status', 'accepted')->pluck('user') as $user) {
+                            try {
+                                $this->course->addMember($user, 'autor');
+                            } catch (\Studip\Exception $e) {
+                                continue;
+                            }
+                            $num_moved++;
                             setTempLanguage($user_id);
                             $message_body = sprintf(_('Sie wurden in der Veranstaltung **%s** in den Status **Autor** versetzt, da das Anmeldeverfahren geändert wurde.'), $this->course->name);
                             $message_title = sprintf(_("Statusänderung %s"), $this->course->name);

@@ -97,7 +97,7 @@ class Course_MembersController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        $sem                = Seminar::getInstance($this->course_id);
+        $course             = Course::find($this->course_id);
         $this->sort_by      = Request::option('sortby', 'nachname');
         $this->order        = Request::option('order', 'desc');
         $this->sort_status  = Request::get('sort_status', '');
@@ -154,12 +154,12 @@ class Course_MembersController extends AuthenticatedController
         // Check Seminar
         $this->waitingTitle = _('Warteliste (nicht aktiv)');
         $this->waiting_type = 'awaiting';
-        if ($this->is_tutor && $sem->isAdmissionEnabled()) {
-            $this->course = $sem;
-            $distribution_time = $sem->getCourseSet()->getSeatDistributionTime();
-            if ($sem->getCourseSet()->hasAlgorithmRun()) {
+        if ($this->is_tutor && $course->isAdmissionEnabled()) {
+            $this->course = $course;
+            $distribution_time = $course->getCourseSet()->getSeatDistributionTime();
+            if ($course->getCourseSet()->hasAlgorithmRun()) {
                 $this->waitingTitle = _("Warteliste");
-                if (!$sem->admission_disable_waitlist_move) {
+                if (!$course->admission_disable_waitlist_move) {
                     $this->waitingTitle .= ' (' . _("automatisches Nachrücken ist eingeschaltet") . ')';
                 } else {
                     $this->waitingTitle .= ' (' . _("automatisches Nachrücken ist ausgeschaltet") . ')';
@@ -185,8 +185,12 @@ class Course_MembersController extends AuthenticatedController
         $this->to_waitlist_actions = false;
         // Check for waitlist availability (influences available actions)
         // People can be moved to waitlist if waitlist available and no automatic moving up.
-        if (!$sem->admission_disable_waitlist && $sem->admission_disable_waitlist_move
-        && $sem->isAdmissionEnabled() && $sem->getCourseSet()->hasAlgorithmRun()) {
+        if (
+            !$course->admission_disable_waitlist
+            && $course->admission_disable_waitlist_move
+            && $course->isAdmissionEnabled()
+            && $course->getCourseSet()->hasAlgorithmRun()
+        ) {
             $this->to_waitlist_actions = true;
         }
     }
@@ -290,21 +294,44 @@ class Course_MembersController extends AuthenticatedController
 
         // load MultiPersonSearch object
         $mp = MultiPersonSearch::load("add_autor" . $this->course_id);
-
-        $countAdded = 0;
-        $msg = [];
-        foreach ($mp->getAddedUsers() as $a) {
-            if ($this->addMember($a, true, Request::bool('consider_contingent', false), $msg)) {
-                $countAdded++;
-            }
+        $course = Course::find($this->course_id);
+        if (!$course) {
+            PageLayout::postError(_('Die ausgewählte Veranstaltung wurde nicht gefunden!'));
+            $this->redirect($this->indexURL());
+            return;
         }
 
-        if ($countAdded == 1) {
-            $text = _('Es wurde eine neue Person hinzugefügt.');
-        } else {
-            $text = sprintf(_('Es wurden %s neue Personen hinzugefügt.'), $countAdded);
+        $added_c = 0;
+        $errors = [];
+        User::findEachMany(
+            function (User $user) use ($course, &$added_c, &$errors) {
+                try {
+                    $course->addMember($user);
+                    $added_c++;
+                } catch (\Studip\Exception $e) {
+                    $errors[] = $e->getMessage();
+                }
+            },
+            $mp->getAddedUsers()
+        );
+        if ($added_c > 0) {
+            PageLayout::postSuccess(
+                sprintf(
+                    ngettext(
+                        'Es wurde eine neue Person hinzugefügt.',
+                        'Es wurden %u neue Personen hinzugefügt.',
+                        $added_c
+                    ),
+                    $added_c
+                )
+            );
         }
-        PageLayout::postSuccess($text, $msg['success']);
+        if ($errors) {
+            PageLayout::postError(
+                _('Die folgenden Fehler traten beim Eintragen von Personen auf:'),
+                $errors
+            );
+        }
         $this->redirect($this->indexURL());
     }
 
@@ -321,22 +348,33 @@ class Course_MembersController extends AuthenticatedController
 
         // load MultiPersonSearch object
         $mp = MultiPersonSearch::load("add_dozent" . $this->course_id);
-        $sem = Seminar::GetInstance($this->course_id);
-        $countAdded = 0;
-        foreach ($mp->getAddedUsers() as $a) {
-            if($this->addDozent($a)) {
-                $countAdded++;
-            }
+        $course = Course::find($this->course_id);
+        $added_c = 0;
+        User::findEachMany(
+            function (User $user) use ($course, &$added_c) {
+                try {
+                    $course->addMember($user, 'dozent');
+                    $added_c++;
+                } catch (\Studip\Exception $e) {
+                    //Nothing here.
+                }
+            },
+            $mp->getAddedUsers()
+        );
+        if ($added_c > 0) {
+            $status = get_title_for_status('dozent', $added_c, $course->status);
+            PageLayout::postSuccess(
+                sprintf(
+                    ngettext(
+                        '%1$u %2$s wurde hinzugefügt.',
+                        '%1$u %2$s wurden hinzugefügt.',
+                        $added_c
+                    ),
+                    $added_c,
+                    htmlReady($status)
+                )
+            );
         }
-        if($countAdded > 0) {
-            $status = get_title_for_status('dozent', $countAdded, $sem->status);
-            if ($countAdded == 1) {
-                PageLayout::postSuccess(sprintf(_('Ein %s wurde hinzugefügt.'), htmlReady($status)));
-            } else {
-                PageLayout::postSuccess(sprintf(_("Es wurden %s %s Personen hinzugefügt."), $countAdded, htmlReady($status)));
-            }
-        }
-
         $this->redirect('course/members/index');
     }
 
@@ -353,59 +391,47 @@ class Course_MembersController extends AuthenticatedController
 
         // load MultiPersonSearch object
         $mp = MultiPersonSearch::load('add_waitlist' . $this->course_id);
-        $countAdded = 0;
-        $countFailed = 0;
-        foreach ($mp->getAddedUsers() as $a) {
-            if ($this->addToWaitlist($a)) {
-                $countAdded++;
-            } else {
-                $countFailed++;
-            }
-        }
+        $course = Course::find($this->course_id);
+        $added_c = 0;
+        $errors = [];
+        User::findEachMany(
+            function (User $user) use ($course, &$added_c, &$errors) {
+                try {
+                    $course->addMemberTowaitlist($user);
+                    $added_c++;
+                } catch (\Studip\Exception $e) {
+                    $errors[] = $e->getMessage();
+                }
+            },
+            $mp->getAddedUsers()
+        );
 
-        if ($countAdded) {
-            PageLayout::postSuccess(sprintf(ngettext('Es wurde %u neue Person auf der Warteliste hinzugefügt.',
-                'Es wurden %u neue Personen auf der Warteliste hinzugefügt.', $countAdded), $countAdded));
+        if ($added_c) {
+            PageLayout::postSuccess(
+                sprintf(
+                    ngettext(
+                        'Eine Person wurde zur Warteliste hinzugefügt.',
+                        '%u Personen wurden zur Warteliste hinzugefügt.',
+                        $added_c
+                    ),
+                    $added_c
+                )
+            );
         }
-        if ($countFailed) {
-            PageLayout::postError(sprintf(ngettext('%u Person konnte nicht auf die Warteliste eingetragen werden.',
-                '%u neue Personen konnten nicht auf die Warteliste eingetragen werden.', $countFailed),
-                $countFailed));
+        if ($errors) {
+            PageLayout::postError(
+                sprintf(
+                    ngettext(
+                        'Eine Person konnte nicht zur Warteliste hinzugefügt werden:',
+                        '%u Personen konnten nicht zur Warteliste hinzugefügt werden:',
+                        count($errors)
+                    ),
+                    count($errors)
+                ),
+                $errors
+            );
         }
         $this->redirect('course/members/index');
-    }
-
-    /**
-     * Helper function to add dozents to a seminar.
-     */
-    private function addDozent($dozent)
-    {
-        $sem = Seminar::GetInstance($this->course_id);
-        if ($sem->addMember($dozent, "dozent")) {
-            // Only applicable when globally enabled and user deputies enabled too
-            if (Config::get()->DEPUTIES_ENABLE) {
-                // Check whether chosen person is set as deputy
-                // -> delete deputy entry.
-                $deputy = Deputy::find([$this->course_id, $dozent]);
-                if ($deputy) {
-                    $deputy->delete();
-                }
-                // Add default deputies of the chosen lecturer...
-                if (Config::get()->DEPUTIES_DEFAULTENTRY_ENABLE) {
-                    $deputies = Deputy::findDeputies($dozent)->pluck('user_id');
-                    $lecturers = $sem->getMembers();
-                    foreach ($deputies as $deputy) {
-                        // ..but only if not already set as lecturer or deputy.
-                        if (!isset($lecturers[$deputy])) {
-                            Deputy::addDeputy($deputy, $this->course_id);
-                        }
-                    }
-                }
-            }
-           return true;
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -421,26 +447,34 @@ class Course_MembersController extends AuthenticatedController
 
         // load MultiPersonSearch object
         $mp = MultiPersonSearch::load("add_tutor" . $this->course_id);
-        $sem = Seminar::GetInstance($this->course_id);
-        $countAdded = 0;
-        foreach ($mp->getAddedUsers() as $a) {
-            if ($this->addTutor($a)) {
-                $countAdded++;
-            }
-        }
-        if($countAdded) {
-            PageLayout::postSuccess(sprintf(_('%s wurde hinzugefügt.'), htmlReady(get_title_for_status('tutor', $countAdded, $sem->status))));
+        $course = Course::find($this->course_id);
+        $added_c = 0;
+        User::findEachMany(
+            function (User $user) use ($course, &$added_c) {
+                try {
+                    $course->addMember($user, 'tutor');
+                    $added_c++;
+                } catch (\Studip\Exception $e) {
+                    //Nothing here.
+                }
+            },
+            $mp->getAddedUsers()
+        );
+        if($added_c > 0) {
+            $status = get_title_for_status('tutor', $added_c, $course->status);
+            PageLayout::postSuccess(
+                sprintf(
+                    ngettext(
+                        '%1$u %2$s wurde hinzugefügt.',
+                        '%1$u %2$s wurden hinzugefügt.',
+                        $added_c
+                    ),
+                    $added_c,
+                    $status
+                )
+            );
         }
         $this->redirect('course/members/index');
-    }
-
-    private function addTutor($tutor) {
-        $sem = Seminar::GetInstance($this->course_id);
-        if ($sem->addMember($tutor, "tutor")) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -634,6 +668,7 @@ class Course_MembersController extends AuthenticatedController
         if (Request::get('csv_import')) {
             // remove duplicate users from csv-import
             $csv_lines = array_unique($csv_request);
+            $course = Course::find($this->course_id);
             foreach ($csv_lines as $csv_line) {
                 $csv_name = preg_split('/[,\t]/', mb_substr($csv_line, 0, 100), -1, PREG_SPLIT_NO_EMPTY);
                 $csv_nachname = trim($csv_name[0]);
@@ -671,16 +706,19 @@ class Course_MembersController extends AuthenticatedController
                     $row = reset($csv_users);
                     if (!$row['is_present']) {
                         $consider_contingent = Request::option('consider_contingent_csv');
-
-                        if (CourseMember::insertCourseMember($this->course_id, $row['user_id'], 'autor', isset($consider_contingent), $consider_contingent)) {
-                            $csv_count_insert++;
-                            setTempLanguage($this->user_id);
-
-                            $message = sprintf(_('Sie wurden in die Veranstaltung **%s** eingetragen.'), $this->course_title);
-
-                            restoreLanguage();
-                            $messaging->insert_message($message, $row['username'], '____%system%____', FALSE, FALSE, '1', FALSE, sprintf('%s %s', _('Systemnachricht:'), _('Eintragung in Veranstaltung')), TRUE);
-                        } elseif (isset($consider_contingent)) {
+                        $user = User::find($row['user_id']);
+                        $failure = false;
+                        if ($user) {
+                            try {
+                                $course->addMember($user, 'autor', $consider_contingent);
+                                $csv_count_insert++;
+                            } catch (\Studip\Exception $e) {
+                                $failure = true;
+                            }
+                        } else {
+                            $failure = true;
+                        }
+                        if ($failure && isset($consider_contingent)) {
                             $csv_count_contingent_full++;
                         }
                     } else {
@@ -695,19 +733,17 @@ class Course_MembersController extends AuthenticatedController
         $selected_users = Request::getArray('selected_users');
 
         if (!empty($selected_users) && count($selected_users) > 0) {
+            $course = Course::find($this->course_id);
             foreach ($selected_users as $selected_user) {
-                if ($selected_user) {
-                    if (CourseMember::insertCourseMember($this->course_id, get_userid($selected_user), 'autor', isset($consider_contingent), $consider_contingent)) {
+                $user = User::findByUsername($selected_user);
+                if ($user) {
+                    try {
+                        $course->addMember($user, 'autor', $consider_contingent);
                         $csv_count_insert++;
-                        setTempLanguage($this->user_id);
-                        $message = sprintf(_('Sie wurden manu
-
-                        ell in die Veranstaltung **%s** eingetragen.'), $this->course_title);
-
-                        restoreLanguage();
-                        $messaging->insert_message($message, $selected_user, '____%system%____', FALSE, FALSE, '1', FALSE, sprintf('%s %s', _('Systemnachricht:'), _('Eintragung in Veranstaltung')), TRUE);
-                    } elseif (isset($consider_contingent)) {
-                        $csv_count_contingent_full++;
+                    } catch (\Studip\Exception $e) {
+                        if (isset($consider_contingent)) {
+                            $csv_count_contingent_full++;
+                        }
                     }
                 }
             }
@@ -998,11 +1034,8 @@ class Course_MembersController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        if (
-            !$this->is_dozent
-            && in_array($target_status, ['tutor', 'dozent'])
-        ) {
-            throw new AccessDeniedException(_('Sie dürfen keine Lehrenden oder Tutor/-innen in diese Veranstaltung eintragen.'));
+        if (!$this->is_dozent && in_array($target_status, ['tutor', 'dozent'])) {
+            throw new AccessDeniedException(_('Sie dürfen keine lehrenden Personen oder Hilfspersonen in diese Veranstaltung eintragen.'));
         }
 
         if (isset($this->flash['consider_contingent'])) {
@@ -1018,29 +1051,64 @@ class Course_MembersController extends AuthenticatedController
         }
 
         if ($users) {
-            $msgs = $this->insertAdmissionMember(
-                $users,
-                $target_status,
-                Request::bool('consider_contingent', false),
-                $status === 'accepted'
-            );
-            if ($msgs) {
-                if ($cmd === 'add_user') {
-                    $message = sprintf(_('%s wurde in die Veranstaltung mit dem Status <b>%s</b> eingetragen.'), htmlReady(join(',', $msgs)), $this->decoratedStatusGroups['autor']);
-                } else {
-                    if ($status === 'awaiting') {
-                        $message = sprintf(_('%s wurde aus der Anmelde bzw. Warteliste mit dem Status
-                            <b>%s</b> in die Veranstaltung eingetragen.'), htmlReady(join(', ', $msgs)), $this->decoratedStatusGroups[$target_status]);
-                    } else {
-                        $message = sprintf(_('%s wurde mit dem Status <b>%s</b> endgültig akzeptiert
-                            und damit in die Veranstaltung aufgenommen.'), htmlReady(join(', ', $msgs)), $this->decoratedStatusGroups[$target_status]);
+            $enrolled_user_names = [];
+            $errors = [];
+            $course = Course::find($this->course_id);
+            foreach ($users as $user_id => $value) {
+                if ($value) {
+                    $user = User::find($user_id);
+                    if ($user) {
+                        try {
+                            //Add the user but do not renumber the admission list. This is done manually
+                            //to avoid a mass of mails being sent.
+                            $course->addMember(
+                                $user,
+                                $target_status,
+                                Request::bool('consider_contingent', false),
+                                true,
+                                false
+                            );
+                            $enrolled_user_names[] = $user->getFullName();
+                        } catch (\Studip\Exception $e) {
+                            $errors[] = sprintf(
+                                '%1$s: %2$s',
+                                $user->getFullName(),
+                                $e->getMessage()
+                            );
+                        }
                     }
                 }
+            }
 
-                PageLayout::postSuccess($message);
+            //Renumber the admission list:
+            AdmissionApplication::renumberAdmission($this->course_id);
+
+            if ($enrolled_user_names) {
+                $message = sprintf(
+                    _('%1$s wurde in die Veranstaltung mit dem Status „%2$s“ eingetragen.'),
+                    htmlReady(join(',', $enrolled_user_names)),
+                    $this->decoratedStatusGroups['autor']
+                );
             } else {
-                $message = _("Es stehen keine weiteren Plätze mehr im Teilnehmendenkontingent zur Verfügung.");
-                PageLayout::postError($message);
+                if ($status === 'awaiting') {
+                    $message = sprintf(
+                        _('%1$s wurde aus der Anmelde- bzw. Warteliste mit dem Status "%2$s" in die Veranstaltung eingetragen.'),
+                        htmlReady(implode(', ', $enrolled_user_names)),
+                        $this->decoratedStatusGroups[$target_status]
+                    );
+                } else {
+                    $message = sprintf(_('%1$s wurde mit dem Status "%2$s" endgültig akzeptiert und damit in die Veranstaltung eingetragen.'),
+                        htmlReady(implode(', ', $enrolled_user_names)),
+                        $this->decoratedStatusGroups[$target_status]
+                    );
+                }
+                PageLayout::postSuccess($message);
+            }
+            if ($errors) {
+                PageLayout::postError(
+                    _('Es traten Fehler beim Hochstufen von Personen auf:'),
+                    $errors
+                );
             }
         } else {
             PageLayout::postError(_('Sie haben niemanden zum Hochstufen ausgewählt.'));
@@ -1062,7 +1130,7 @@ class Course_MembersController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        $course = Seminar::GetInstance($this->course_id);
+        $course = Course::find($this->course_id);
         if (!Request::submitted('no')) {
             if (Request::submitted('yes')) {
                 CSRFProtection::verifyUnsafeRequest();
@@ -1072,10 +1140,39 @@ class Course_MembersController extends AuthenticatedController
                     $this->validateTutorPermission($users, $this->course_id);
                 }
                 if (!empty($users)) {
+                    $removed_users = [];
+                    $errors = [];
                     if (in_array($status, words('accepted awaiting claiming'))) {
-                        $msgs = $course->cancelAdmissionSubscription($users, $status);
+                        foreach ($users as $user) {
+                            $course->removePreliminaryMember($user);
+                        }
                     } else {
-                        $msgs = $course->cancelSubscription($users);
+                        foreach ($users as $user) {
+                            try {
+                                $course->cancelSubscription($user);
+                                $removed_users[] = $user->getFullName();
+                            } catch (Exception $e) {
+                                $errors[] = $e->getMessage();
+                            }
+                        }
+                    }
+
+                    if (!empty($errors)) {
+                        PageLayout::postError(
+                            _('Die folgenden Fehler traten beim Austragen von Personen auf:'),
+                            $errors
+                        );
+                    }
+                    if (count($removed_users) > 5) {
+                        PageLayout::postSuccess(
+                            _('%u Personen wurden ausgetragen.'),
+                            count($removed_users)
+                        );
+                    } elseif (count($removed_users) > 0) {
+                        PageLayout::postSuccess(
+                            _('Die folgenden Personen wurden ausgetragen:'),
+                            $removed_users
+                        );
                     }
 
                     // deleted authors
@@ -1236,22 +1333,50 @@ class Course_MembersController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        $users = [];
+        $user_ids = [];
         if (!empty($this->flash['users'])) {
-            $users = array_keys(array_filter($this->flash['users']));
+            $user_ids = array_keys(array_filter($this->flash['users']));
         }
 
-        if (!empty($users)) {
-            $msg = $this->moveToWaitlist($users, $which_end);
-            if (count($msg['success'])) {
-                PageLayout::postSuccess(sprintf(_('%s Person(en) wurden auf die Warteliste verschoben.'),
-                    count($msg['success'])),
-                    count($msg['success']) <= 5 ? $msg['success'] : []);
+        if (!empty($user_ids)) {
+            $course    = Course::find($this->course_id);
+            $success_c = 0;
+            $errors    = [];
+            User::findEachMany(
+                function (User $user) use ($course, &$success_c, &$errors) {
+                    try {
+                        $course->moveMemberToWaitlist($user, true);
+                        $success_c++;
+                    } catch (\Studip\Exception $e) {
+                        $errors[] = $e->getMessage();
+                    }
+                },
+                $user_ids
+            );
+            if ($success_c > 0) {
+                PageLayout::postSuccess(
+                    studip_interpolate(
+                        ngettext(
+                            'Eine Person wurden auf die Warteliste verschoben.',
+                            '%{number} Personen wurden auf die Warteliste verschoben.',
+                            $success_c
+                        ),
+                    ['number' => $success_c]
+                    )
+                );
             }
-            if (count($msg['error'])) {
-                PageLayout::postError(sprintf(_('%s Person(en) konnten nicht auf die Warteliste verschoben werden.'),
-                    count($msg['error'])),
-                    count($msg['error']) <= 5 ? $msg['error'] : []);
+            if (count($errors)) {
+                PageLayout::postError(
+                    studip_interpolate(
+                        ngettext(
+                            'Eine Person konnten nicht auf die Warteliste verschoben werden:',
+                            '%{number} Personen konnten nicht auf die Warteliste verschoben werden:',
+                            count($errors)
+                        ),
+                        count($errors)
+                    ),
+                    $errors
+                );
             }
         } else {
             PageLayout::postError(_('Sie haben keine Personen zum Verschieben auf die Warteliste ausgewählt'));
@@ -1402,7 +1527,7 @@ class Course_MembersController extends AuthenticatedController
      */
     private function getSubject()
     {
-        $result = Seminar::GetInstance($this->course_id)->getNumber();
+        $result = Course::find($this->course_id)->veranstaltungsnummer;
 
         return ($result == '') ? sprintf('[%s]', $this->course_title) :
                 sprintf(_('[%s: %s]'), $result, $this->course_title);
@@ -1410,7 +1535,6 @@ class Course_MembersController extends AuthenticatedController
 
     private function createSidebar($filtered_members)
     {
-        $sem = Seminar::GetInstance($this->course_id);
         $course = Course::find($this->course_id);
 
         $sidebar = Sidebar::get();
@@ -1441,9 +1565,9 @@ class Course_MembersController extends AuthenticatedController
             }
             if ($this->is_dozent) {
                 if (!$this->dozent_is_locked) {
-                    $sem_institutes = $sem->getInstitutes();
+                    $institute_ids = $course->institutes->pluck('id');
 
-                    if (SeminarCategories::getByTypeId($sem->status)->only_inst_user) {
+                    if (SeminarCategories::getByTypeId($course->status)->only_inst_user) {
                         $search_template = 'user_inst_not_already_in_sem';
                     } else {
                         $search_template = 'user_not_already_in_sem';
@@ -1454,12 +1578,12 @@ class Course_MembersController extends AuthenticatedController
                         $search_template,
                         sprintf(
                             _('%s suchen'),
-                            get_title_for_status('dozent', 1, $sem->status)
+                            get_title_for_status('dozent', 1, $course->status)
                         ),
                         'user_id',
                         [
                             'permission' => 'dozent',
-                            'institute'  => $sem_institutes,
+                            'institute'  => $institute_ids,
                             'seminar_id' => $course->id,
                         ]
                     );
@@ -1476,10 +1600,10 @@ class Course_MembersController extends AuthenticatedController
 
                     // add "add dozent" to infobox
                     $mp = MultiPersonSearch::get("add_dozent{$this->course_id}")
-                        ->setLinkText(sprintf(_('%s eintragen'), get_title_for_status('dozent', 1, $sem->status)))
+                        ->setLinkText(sprintf(_('%s eintragen'), get_title_for_status('dozent', 1, $course->status)))
                         ->setDefaultSelectedUser($filtered_members['dozent']->pluck('user_id'))
                         ->setLinkIconPath("")
-                        ->setTitle(sprintf(_('%s eintragen'), get_title_for_status('dozent', 1, $sem->status)))
+                        ->setTitle(sprintf(_('%s eintragen'), get_title_for_status('dozent', 1, $course->status)))
                         ->setExecuteURL($this->url_for('course/members/execute_multipersonsearch_dozent'))
                         ->setSearchObject($searchtype)
                         ->addQuickfilter(
@@ -1498,9 +1622,9 @@ class Course_MembersController extends AuthenticatedController
                     $widget->addElement($element);
                 }
                 if (!$this->tutor_is_locked) {
-                    $sem_institutes = $sem->getInstitutes();
+                    $institute_ids = $course->institutes->pluck('id');
 
-                    if (SeminarCategories::getByTypeId($sem->status)->only_inst_user) {
+                    if (SeminarCategories::getByTypeId($course->status)->only_inst_user) {
                         $search_template = 'user_inst_not_already_in_sem';
                     } else {
                         $search_template = 'user_not_already_in_sem';
@@ -1511,12 +1635,12 @@ class Course_MembersController extends AuthenticatedController
                         $search_template,
                         sprintf(
                             _('%s suchen'),
-                            get_title_for_status('tutor', 1, $sem->status)
+                            get_title_for_status('tutor', 1, $course->status)
                         ),
                         'user_id',
                         [
                             'permission' => ['dozent', 'tutor'],
-                            'institute'  => $sem_institutes,
+                            'institute'  => $institute_ids,
                             'seminar_id' => $course->id,
                         ]
                     );
@@ -1533,10 +1657,10 @@ class Course_MembersController extends AuthenticatedController
 
                     // add "add tutor" to infobox
                     $mp = MultiPersonSearch::get("add_tutor{$this->course_id}")
-                        ->setLinkText(sprintf(_('%s eintragen'), get_title_for_status('tutor', 1, $sem->status)))
+                        ->setLinkText(sprintf(_('%s eintragen'), get_title_for_status('tutor', 1, $course->status)))
                         ->setDefaultSelectedUser($filtered_members['tutor']->pluck('user_id'))
                         ->setLinkIconPath('')
-                        ->setTitle(sprintf(_('%s eintragen'), get_title_for_status('tutor', 1, $sem->status)))
+                        ->setTitle(sprintf(_('%s eintragen'), get_title_for_status('tutor', 1, $course->status)))
                         ->setExecuteURL($this->url_for('course/members/execute_multipersonsearch_tutor'))
                         ->setSearchObject($searchType)
                         ->addQuickfilter(
@@ -1571,7 +1695,7 @@ class Course_MembersController extends AuthenticatedController
                     'user_not_already_in_sem',
                     sprintf(
                         _('%s suchen'),
-                        get_title_for_status('autor', 1, $sem->status)
+                        get_title_for_status('autor', 1, $course->status)
                     ),
                     'user_id',
                     [
@@ -1593,10 +1717,10 @@ class Course_MembersController extends AuthenticatedController
 
                 // add "add autor" to infobox
                 $mp = MultiPersonSearch::get("add_autor{$this->course_id}")
-                    ->setLinkText(sprintf(_('%s eintragen'), get_title_for_status('autor', 1, $sem->status)))
+                    ->setLinkText(sprintf(_('%s eintragen'), get_title_for_status('autor', 1, $course->status)))
                     ->setDefaultSelectedUser($filtered_members['autor']->pluck('user_id'))
                     ->setLinkIconPath('')
-                    ->setTitle(sprintf(_('%s eintragen'), get_title_for_status('autor', 1, $sem->status)))
+                    ->setTitle(sprintf(_('%s eintragen'), get_title_for_status('autor', 1, $course->status)))
                     ->setExecuteURL($this->url_for('course/members/execute_multipersonsearch_autor'))
                     ->setSearchObject($searchType)
                     ->addQuickfilter(
@@ -1619,10 +1743,10 @@ class Course_MembersController extends AuthenticatedController
 
                 // add "add person to waitlist" to sidebar
                 if (
-                    $sem->isAdmissionEnabled()
-                    && $sem->getCourseSet()->hasAlgorithmRun()
-                    && !$sem->admission_disable_waitlist
-                    && (!$sem->getFreeSeats() || $sem->admission_disable_waitlist_move)
+                    $course->isAdmissionEnabled()
+                    && $course->getCourseSet()->hasAlgorithmRun()
+                    && !$course->admission_disable_waitlist
+                    && (!$course->getFreeSeats() || $course->admission_disable_waitlist_move)
                 ) {
                     $ignore = array_merge(
                         $filtered_members['dozent']->pluck('user_id'),
@@ -1815,11 +1939,11 @@ class Course_MembersController extends AuthenticatedController
         $this->dozent_count = CourseMember::countBySql("seminar_id=? AND status=?" . $visibility_constraint, [$this->course_id, 'dozent']);
 
         //Use the correct names for thte four status groups:
-        $sem = Seminar::GetInstance($this->course_id);
-        $this->user_name = get_title_for_status('user', 0, $sem->status);
-        $this->autor_name = get_title_for_status('autor', 0, $sem->status);
-        $this->tutor_name = get_title_for_status('tutor', 0, $sem->status);
-        $this->dozent_name = get_title_for_status('dozent', 0, $sem->status);
+        $course = Course::find($this->course_id);
+        $this->user_name   = get_title_for_status('user', 0, $course->status);
+        $this->autor_name  = get_title_for_status('autor', 0, $course->status);
+        $this->tutor_name  = get_title_for_status('tutor', 0, $course->status);
+        $this->dozent_name = get_title_for_status('dozent', 0, $course->status);
 
         $this->default_subject = Request::get('default_subject');
 
@@ -2000,78 +2124,6 @@ class Course_MembersController extends AuthenticatedController
         return $msgs;
     }
 
-    public function addMember(string $user_id, bool $accepted = false, bool $consider_contingent = null, &$msg = []): bool
-    {
-        $user = User::find($user_id);
-        $messaging = new messaging;
-
-        $status = 'autor';
-        // insert
-        $copy_course = $accepted || $consider_contingent;
-        $admission_user = CourseMember::insertCourseMember($this->course_id, $user_id, $status, $copy_course, $consider_contingent, true);
-
-        if ($admission_user) {
-            setTempLanguage($user_id);
-            $message = sprintf(
-                _('Sie wurden in die Veranstaltung **%s** eingetragen.'),
-                $this->course_title
-            );
-            restoreLanguage();
-            $messaging->insert_message(
-                $message,
-                $user->username,
-                '____%system%____',
-                false,
-                false,
-                '1',
-                false,
-                sprintf('%s %s', _('Systemnachricht:'), _('Eintragung in Veranstaltung')),
-                true
-            );
-            $msg['success'][] = sprintf(
-                _('%1$s wurde in die Veranstaltung mit dem Status <b>%2$s</b> eingetragen.'),
-                $user->getFullName(),
-                $status
-            );
-        } else if ($consider_contingent) {
-            PageLayout::postError(_('Es stehen keine weiteren Plätze mehr im Teilnehmendenkontingent zur Verfügung.'));
-            return false;
-        } else {
-            PageLayout::postError(
-                _('Beim Eintragen ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder wenden Sie sich an die Administrierenden')
-            );
-            return false;
-        }
-        //Warteliste neu sortieren
-        AdmissionApplication::renumberAdmission($this->course_id);
-        return true;
-    }
-
-    /**
-     * Adds the given user to the waitlist of the current course and sends a
-     * corresponding message.
-     *
-     * @param String $user_id The user to add
-     * @return bool Successful operation?
-     */
-    private function addToWaitlist(string $user_id): bool
-    {
-        $course = Seminar::getInstance($this->course_id);
-        // Insert user in waitlist at current position.
-        if ($course->addToWaitlist($user_id, 'last')) {
-            setTempLanguage($user_id);
-            $message = sprintf(_('Sie wurden von einem/einer Veranstaltungsleiter/-in (%1$s) ' .
-                'oder einem/einer Administrator/-in auf die Warteliste der Veranstaltung **%2$s** gesetzt.'),
-                get_title_for_status('dozent', 1), $this->course_title);
-            restoreLanguage();
-            messaging::sendSystemMessage($user_id, sprintf('%s %s', _('Systemnachricht:'),
-                _('Auf Warteliste gesetzt')), $message);
-
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Adds the given users to the target course.
      * @param array $users users to add
@@ -2082,125 +2134,27 @@ class Course_MembersController extends AuthenticatedController
     private function sendToCourse(array $users, string $target_course_id, bool $move = false): array
     {
         $msg = [];
-        foreach ($users as $user) {
-            if (!CourseMember::exists([$target_course_id, $user])) {
-                $target_course = Seminar::GetInstance($target_course_id);
+        foreach ($users as $user_id) {
+            if (!CourseMember::exists([$target_course_id, $user_id])) {
+                $user = User::find($user_id);
+                if (!$user) {
+                    continue;
+                }
+                $target_course = Course::find($target_course_id);
                 if ($target_course->addMember($user)) {
                     if ($move) {
-                        $remove_from = Seminar::getInstance($this->course_id);
+                        $remove_from = Course::find($this->course_id);
                         $remove_from->deleteMember($user);
                     }
-                    $msg['success'][] = $user;
+                    $msg['success'][] = $user_id;
                 } else {
-                    $msg['failed'][] = $user;
+                    $msg['failed'][] = $user_id;
                 }
             } else {
-                $msg['existing'][] = $user;
+                $msg['existing'][] = $user_id;
             }
         }
         return $msg;
-    }
-
-    private function insertAdmissionMember(array $users, string $next_status, bool $consider_contingent, bool $accepted = false, string $cmd = 'add_user'): array
-    {
-        $messaging = new messaging;
-        $msgs = [];
-        foreach ($users as $user_id => $value) {
-            if ($value) {
-                $user = User::find($user_id);
-                if ($user) {
-                    $admission_user = CourseMember::insertCourseMember(
-                        $this->course_id,
-                        $user_id,
-                        $next_status,
-                        $accepted || $consider_contingent,
-                        $consider_contingent
-                    );
-
-                    // only if user was on the waiting list
-                    if ($admission_user) {
-                        setTempLanguage($user_id);
-                        restoreLanguage();
-
-                        if ($cmd === 'add_user') {
-                            $message = sprintf(
-                                _('Sie wurden in die Veranstaltung **%s** eingetragen.'),
-                                $this->course_title
-                            );
-                        } else {
-                            if (!$accepted) {
-                                $message = sprintf(
-                                    _('Sie wurden aus der Warteliste in die Veranstaltung **%s** aufgenommen und sind damit zugelassen.'),
-                                    $this->course_title
-                                );
-                            } else {
-                                $message = sprintf(
-                                    _('Sie wurden vom Status **vorläufig akzeptiert** auf **teilnehmend** in der Veranstaltung **%s** hochgestuft und sind damit zugelassen.'),
-                                    $this->course_title
-                                );
-                            }
-                        }
-
-                        $messaging->insert_message(
-                            $message,
-                            $user->username,
-                            '____%system%____',
-                            false,
-                            false,
-                            '1',
-                            false,
-                            sprintf('%s %s', _('Systemnachricht:'), _('Eintragung in Veranstaltung')),
-                            true
-                        );
-                        $msgs[] = $user->getFullName();
-                    }
-                }
-            }
-        }
-
-        // resort admissionlist
-        AdmissionApplication::renumberAdmission($this->course_id);
-
-        return $msgs;
-    }
-
-    /**
-     * Adds given users to the course waitlist, either at list beginning or end.
-     * System messages are sent to affected users.
-     *
-     * @param array $users array of user ids to add
-     * @param String $which_end 'last' or 'first': which list end to append to
-     * @return array Array of messages (stating success and/or errors)
-     */
-    public function moveToWaitlist($users, $which_end)
-    {
-        $course = Seminar::getInstance($this->course_id);
-        $msgs = [
-            'success' => [],
-            'error' => [],
-        ];
-        foreach ($users as $user_id) {
-            // Delete member from seminar
-            $temp_user = User::find($user_id);
-            if ($course->deleteMember($user_id)) {
-                setTempLanguage($user_id);
-                $message = sprintf(_('Sie wurden aus der Veranstaltung **%s** abgemeldet. '.
-                    'Sie wurden auf die Warteliste dieser Veranstaltung gesetzt.'),
-                    $this->course_title);
-                restoreLanguage();
-                messaging::sendSystemMessage($user_id, sprintf('%s %s', _('Systemnachricht:'),
-                    _('Anmeldung aufgehoben, auf Warteliste gesetzt')), $message);
-                if ($course->addToWaitlist($user_id, $which_end)) {
-                    $msgs['success'][] = $temp_user->getFullName('no_title');
-                } else {
-                    $msgs['error'][] = $temp_user->getFullName('no_title');
-                }
-                // Something went wrong on inserting the user in waitlist.
-            } else {
-                $msgs['error'][] = $temp_user->getFullName('no_title');
-            }
-        }
-        return $msgs;
     }
 
     /**

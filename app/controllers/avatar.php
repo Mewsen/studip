@@ -41,10 +41,9 @@ class AvatarController extends AuthenticatedController
             PageLayout::setTitle(Context::getHeaderLine() . ' - ' . _('Veranstaltungsbild ändern'));
 
             $has_perm = $GLOBALS['perm']->have_studip_perm('tutor', $id);
-            $sem = Seminar::getInstance($id);
-            $studygroup_mode = $sem->getSemClass()->offsetget('studygroup_mode');
-            if ($studygroup_mode) {
-                $class = StudygroupAvatar::class;
+            $course = Course::find($id);
+            if ($course->isStudygroup()) {
+                $class = 'StudygroupAvatar';
                 $this->cancel_link = $this->url_for('course/studygroup/edit?cid=' . $id);
             } else {
                 $class = CourseAvatar::class;
@@ -99,10 +98,9 @@ class AvatarController extends AuthenticatedController
             $redirect = 'institute/basicdata/index';
         } else {
             $has_perm = $GLOBALS['perm']->have_studip_perm('tutor', $id);
-            $sem = Seminar::getInstance($id);
-            $studygroup_mode = $sem->getSemClass()->offsetget('studygroup_mode');
-            if ($studygroup_mode) {
-                $class = StudygroupAvatar::class;
+            $course = Course::find($id);
+            if ($course->isStudygroup()) {
+                $class = 'StudygroupAvatar';
                 $redirect = 'course/studygroup/edit/?cid=' . $id;
             } else {
                 $class = CourseAvatar::class;
@@ -180,9 +178,8 @@ class AvatarController extends AuthenticatedController
             $redirect = 'institute/basicdata/index';
         } else {
             $has_perm = $GLOBALS['perm']->have_studip_perm('tutor', $id);
-            $sem = Seminar::getInstance($id);
-            $studygroup_mode = $sem->getSemClass()->offsetget('studygroup_mode');
-            if ($studygroup_mode) {
+            $course = Course::find($id);
+            if ($course->isStudygroup()) {
                 $class = 'StudygroupAvatar';
                 $redirect = 'course/studygroup/edit/?cid=' . $id;
             } else {

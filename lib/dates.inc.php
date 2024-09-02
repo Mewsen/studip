@@ -19,7 +19,6 @@
  **/
 
 require_once 'lib/calendar_functions.inc.php';
-require_once 'lib/raumzeit/raumzeit_functions.inc.php';
 
 /**
  * getWeekday liefert einen String mit einem Tagesnamen.
@@ -199,27 +198,24 @@ function vorbesprechung(string $seminar_id, string $type = 'standard'): false|st
         return false;
     }
 
-    $termin = new SingleDate($termin_id);
-    $ret    = $termin->toString();
-    if ($termin->getResourceID()) {
-        $ret .= ', ' . _("Ort:") . ' ';
+    $termin = new CourseDate($termin_id);
+    $ret = (string) $termin;
+    if (!empty($termin->room_booking->resource)) {
+        $ret .= ', '._("Ort:").' ';
         switch ($type) {
             case 'export':
-                $room = Room::find($termin->getResourceID());
-                $ret  .= $room->name;
+                $ret .= $termin->room_booking->resource->name;
                 break;
 
             case 'standard':
             default:
-                $resource = Resource::find($termin->getResourceID());
-                $ret      .= '<a href="' . $resource->getActionLink('show') . '" data-dialog="1">'
-                    . htmlReady($resource->name) . '</a>';
+                $ret .= '<a href="' . $termin->room_booking->resource->getActionLink('show') . '" data-dialog>'
+                    . htmlReady($termin->room_booking->resource->name) . '</a>';
                 break;
         }
     }
     return $ret;
 }
-
 
 /**
  * a small helper funktion to get the type query for "Sitzungstermine"
@@ -293,4 +289,37 @@ function getPlainRooms(array $rooms): array
     }
 
     return $room_list;
+}
+
+
+/**
+ * @param string $comment
+ * @param array $dates SingleDate
+ */
+function raumzeit_send_cancel_message($comment, $dates)
+{
+    if (!is_array($dates)) {
+        $dates = [$dates];
+    }
+    $course = Course::find($dates[0]->range_id);
+    if ($course) {
+        $subject = sprintf(_('[%s] Terminausfall'), $course->name);
+        $recipients = $course->members->pluck('username');
+        $lecturers = $course->members->findBy('status', 'dozent')->pluck('nachname');
+        $message = sprintf(
+            ngettext(
+                _('In der Veranstaltung %s fällt der folgende Termine aus:'),
+                _('In der Veranstaltung %s fallen die folgenden Termine aus:'),
+                count($dates)
+            ),
+            $course->name . ' (' . implode(',', $lecturers) . ') ' . $course->start_semester->name
+        );
+        $message .= "\n\n- ";
+        $message .= implode("\n- " , array_map(fn($a) => (string) $a, $dates));
+        if ($comment) {
+            $message .= "\n\n" . $comment;
+        }
+        $msg = new messaging();
+        return $msg->insert_message($message, $recipients, '____%system%____', '', '', '', '', $subject, true);
+    }
 }

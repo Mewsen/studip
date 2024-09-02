@@ -374,27 +374,34 @@ class RandomAlgorithm extends AdmissionAlgorithm
      * @param Course $course    course to add users to
      * @param int    $prio      user's priority for the given course
      */
-    private function addUsersToCourse($user_list, $course, $prio = null)
+    private function addUsersToCourse($user_list, Course $course, $prio = null)
     {
-        $seminar = new Seminar($course);
-        foreach ($user_list as $chosen_one) {
-            setTempLanguage($chosen_one);
-            $message_title = sprintf(_('Teilnahme an der Veranstaltung %s'), $seminar->getName());
-            if ($seminar->admission_prelim) {
-                if ($seminar->addPreliminaryMember($chosen_one)) {
-                    $message_body = sprintf (_('Sie haben bei der Platzvergabe der Veranstaltung **%s** einen vorläufigen Platz erhalten. Die endgültige Zulassung zu der Veranstaltung ist noch von weiteren Bedingungen abhängig, die Sie bitte der Veranstaltungsbeschreibung entnehmen.'),
-                            $seminar->getName());
+        foreach ($user_list as $user_id) {
+            $user = User::find($user_id);
+            setTempLanguage($user_id);
+            $message_title = sprintf(_('Teilnahme an der Veranstaltung %s'), $course->name);
+            if ($course->admission_prelim) {
+                try {
+                    $course->addPreliminaryMember($user);
+                } catch (\Studip\Exception $e) {
+                    //Nothing here.
                 }
+                $message_body = sprintf(
+                    _('Sie haben bei der Platzvergabe der Veranstaltung **%s** einen vorläufigen Platz erhalten. Die endgültige Zulassung zu der Veranstaltung ist noch von weiteren Bedingungen abhängig, die Sie bitte der Veranstaltungsbeschreibung entnehmen.'),
+                    $course->name
+                );
             } else {
-                if ($seminar->addMember($chosen_one, 'autor')) {
-                    $message_body = sprintf (_("Sie haben bei der Platzvergabe der Veranstaltung **%s** einen Platz erhalten. Damit sind Sie für die Teilnahme an der Veranstaltung zugelassen. Ab sofort finden Sie die Veranstaltung in der Übersicht Ihrer Veranstaltungen."),
-                            $seminar->getName());
+                if ($course->addMember($user_id, 'autor')) {
+                    $message_body = sprintf(
+                        _('Sie haben bei der Platzvergabe der Veranstaltung **%s** einen Platz erhalten. Damit sind Sie für die Teilnahme an der Veranstaltung zugelassen. Ab sofort finden Sie die Veranstaltung in der Übersicht Ihrer Veranstaltungen.'),
+                        $course->name
+                    );
                 }
             }
             if ($prio) {
-                $message_body .= "\n" . sprintf(_("Sie hatten für diese Veranstaltung die Priorität %s gewählt."), $prio[$chosen_one]);
+                $message_body .= "\n" . sprintf(_('Sie hatten für diese Veranstaltung die Priorität %s gewählt.'), $prio[$user_id]);
             }
-            messaging::sendSystemMessage($chosen_one, $message_title, $message_body);
+            messaging::sendSystemMessage($user_id, $message_title, $message_body);
             restoreLanguage();
         }
     }

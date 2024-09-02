@@ -29,9 +29,9 @@ class CourseAvatar extends Avatar
      */
     public function getDefaultTitle()
     {
-        return Seminar::GetInstance($this->user_id)->name;
+        return Course::find($this->user_id)->name;
     }
-    
+
     /**
      * Return if avatar is visible to the current user.
      * @return boolean: true if visible

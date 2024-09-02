@@ -156,9 +156,7 @@ class Admin_BannerController extends AuthenticatedController
                         }
                     break;
                     case 'seminar':
-                        try {
-                            Seminar::getInstance($target);
-                        } catch (Exception $e) {
+                        if (!Course::exists($target)) {
                             $errors[] =  _('Die angegebene Veranstaltung existiert nicht. '
                                         .'Bitte geben Sie eine gültige Veranstaltungs-ID ein.');
                         }
@@ -199,14 +197,14 @@ class Admin_BannerController extends AuthenticatedController
                             ->defaultValue($banner->target,$seminar_name['name'])
                             ->render();
             }
-    
+
             if ($banner->target_type == 'user') {
                 $this->user = QuickSearch::get('user', new StandardSearch('username'))
                             ->setInputStyle('width: 240px')
                             ->defaultValue($banner->target, $banner->target)
                             ->render();
             }
-    
+
             if ($banner->target_type == 'inst') {
                 $institut_name = get_object_name($banner->target, 'inst');
                 $this->institut = QuickSearch::get('institut', new StandardSearch('Institut_id'))

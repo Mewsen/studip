@@ -869,27 +869,26 @@ class UserManagement
             }
 
             foreach ($group_ids as $group_id) {
-                $sem = Seminar::GetInstance($group_id);
+                $course = Course::find($group_id);
                 if (StudygroupModel::countMembers($group_id) > 1) {
                     // check whether there are tutors or even autors that can be promoted
-                    $tutors = $sem->getMembers('tutor');
-                    $autors = $sem->getMembers('autor');
+                    $tutors = CourseMember::findByCourseAndStatus($course->id, 'tutor');
+                    $autors = CourseMember::findByCourseAndStatus($course->id, 'autor');
                     if (count($tutors) > 0) {
                         $new_founder = current($tutors);
-                        StudygroupModel::promote_user($new_founder['username'], $sem->getId(), 'dozent');
+                        StudygroupModel::promote_user($new_founder['username'], $course->id, 'dozent');
                         continue;
                     }
                     // if not promote an autor
                     elseif (count($autors) > 0) {
                         $new_founder = current($autors);
-                        StudygroupModel::promote_user($new_founder['username'], $sem->getId(), 'dozent');
+                        StudygroupModel::promote_user($new_founder['username'], $course->id, 'dozent');
                         continue;
                     }
                 // since no suitable successor was found, we are allowed to remove the studygroup
                 } else {
-                    $sem->delete();
+                    $course->delete();
                 }
-                unset($sem);
             }
         }
 

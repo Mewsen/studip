@@ -394,9 +394,9 @@ class StudipSemTreeViewAdmin extends TreeView
             if (($sem_aktion[0] == 'del' || $sem_aktion[1] == 'del') && count($marked_sem)){
                 $not_deleted = [];
                 foreach($marked_sem as $key => $seminar_id){
-                    $seminar = new Seminar($seminar_id);
-                    if(count($seminar->getStudyAreas()) == 1){
-                        $not_deleted[] = $seminar->getName();
+                    $course = Course::find($seminar_id);
+                    if (count($course->getStudyAreas()) === 1) {
+                        $not_deleted[] = $course->name;
                         unset($marked_sem[$key]);
                     }
                 }

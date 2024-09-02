@@ -163,30 +163,31 @@ class CalendarScheduleModel
             $filterEnd   = $semester['vorles_ende'];
         }
 
-        $sem = new Seminar($seminar_id);
-        foreach ($sem->getCycles() as $cycle) {
+        $course = Course::find($seminar_id);
+        $regular_dates = SeminarCycleDate::findBySeminar($seminar_id);
+        foreach ($regular_dates as $cycle) {
             if (!$cycle_id || $cycle->getMetaDateID() == $cycle_id) {
-                $entry = [];
 
+                $entry = [];
                 $entry['id'] = $seminar_id .'-'. $cycle->getMetaDateId();
                 $entry['cycle_id'] = $cycle->getMetaDateId();
-                $entry['start_formatted'] = sprintf("%02d", $cycle->getStartStunde()) .':'
-                    . sprintf("%02d", $cycle->getStartMinute());
-                $entry['end_formatted'] = sprintf("%02d", $cycle->getEndStunde()) .':'
-                    . sprintf("%02d", $cycle->getEndMinute());
+                $entry['start_formatted'] = preg_replace('/\:00$/', '', $cycle->start_time);
+                $entry['end_formatted'] = preg_replace('/\:00$/', '',  $cycle->end_time);
 
-                $entry['start']   = ((int)$cycle->getStartStunde() * 100) + ($cycle->getStartMinute());
-                $entry['end']     = ((int)$cycle->getEndStunde() * 100) + ($cycle->getEndMinute());
-                $entry['day']     = $cycle->getDay();
-                $entry['content'] = $sem->getNumber() . ' ' . $sem->getName();
+                $start_parts = explode(':', $cycle->start_time);
+                $end_parts   = explode(':', $cycle->end_time);
+                $entry['start']   = $start_parts[0] * 100 + $start_parts[1];
+                $entry['end']     = $end_parts[0] * 100 + $end_parts[1];
+                $entry['day']     = $cycle->weekday;
+                $entry['content'] = $course->veranstaltungsnummer . ' ' . $course->name;
 
-                $entry['title']   = $cycle->getDescription();
+                $entry['title']   = $cycle->description;
 
                 // check, if the date is assigned to a room
-                if ($rooms = $cycle->getPredominantRoom($filterStart, $filterEnd)) {
-                    $entry['title'] .= implode('', getPlainRooms(array_slice($rooms, 0, 1)))
-                                    . (sizeof($rooms) > 1 ? ', u.a.' : '');
+                if ($room = $cycle->getMostBookedRoom()) {
+                    $entry['title'] .= $room->getFullName();
                 } else if ($rooms = $cycle->getFreeTextPredominantRoom($filterStart, $filterEnd)) {
+                    //TODO: replace
                     unset($rooms['']);
                     if (!empty($rooms)) {
                         $entry['title'] .= '('. implode('), (', array_slice(array_keys($rooms), 0, 3)) .')';
@@ -194,14 +195,20 @@ class CalendarScheduleModel
                 }
 
                 // add the lecturer
-                $lecturers = [];
-                $members = $sem->getMembers('dozent');
+                $db = DBManager::get();
+                $stmt = $db->prepare(
+                    "SELECT `Nachname`
+                     FROM `auth_user_md5`
+                     JOIN `seminar_user` USING (`user_id`)
+                     WHERE `seminar_id` = :course_id
+                     ORDER BY `Nachname`
+                     LIMIT 4"
+                );
+                $stmt->execute(['course_id' => $course->id]);
+                $lecturers = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 
-                foreach ($members as $member) {
-                    $lecturers[] = $member['Nachname'];
-                }
                 $entry['content'] .= " (". implode(', ', array_slice($lecturers, 0, 3))
-                                  . (sizeof($members) > 3 ? ' et al.' : '').')';
+                                  . (count($lecturers) > 3 ? ' et al.' : '').')';
 
 
                 $entry['url']     = URLHelper::getLink('dispatch.php/calendar/schedule/entry/' . $seminar_id
@@ -213,11 +220,11 @@ class CalendarScheduleModel
 
 
                 // check the settings for this entry
-                $member = CourseMember::find([$sem->getId(), $user_id]);
+                $member = CourseMember::find([$course->id, $user_id]);
                 $entry['type'] = $member ? 'sem' : 'virtual';
 
-                $stmt = DBManager::get()->prepare('SELECT * FROM schedule_seminare WHERE seminar_id = ? AND user_id = ? AND metadate_id = ?');
-                $stmt->execute([$sem->getId(), $user_id, $cycle->getMetaDateId()]);
+                $stmt = $db->prepare('SELECT * FROM schedule_seminare WHERE seminar_id = ? AND user_id = ? AND metadate_id = ?');
+                $stmt->execute([$course->id, $user_id, $cycle->getMetaDateId()]);
                 $details = $stmt->fetch();
 
                 if ($entry['type'] === 'virtual') {
@@ -418,21 +425,27 @@ class CalendarScheduleModel
     /**
      * Returns the ID of the cycle of a course specified by start and end.
      *
-     * @param  Seminar $seminar  an instance of a Seminar
+     * @param  string $course_id The ID of a course.
      * @param  string  $start  the start of the cycle
      * @param  string  $end  the end of the cycle
      * @return string  $day  numeric day
      */
-    static function getSeminarCycleId(Seminar $seminar, $start, $end, $day)
+    static function getSeminarCycleId($course_id, $start, $end, $day)
     {
         $ret = [];
 
         $day = ($day + 1) % 7;
 
-        foreach ($seminar->getCycles() as $cycle) {
-            if (leadingZero($cycle->getStartStunde()) . leadingZero($cycle->getStartMinute()) == $start
-                && leadingZero($cycle->getEndStunde()) . leadingZero($cycle->getEndMinute()) == $end
-                && $cycle->getDay() == $day) {
+        $regular_dates = SeminarCyCleDate::findBySeminar($course_id);
+
+        foreach ($regular_dates as $cycle) {
+            $cycle_start = preg_replace('/\:00$/', '', $cycle->start_time);
+            $cycle_end = preg_replace('/\:00$/', '', $cycle->end_time);
+            if (
+                leadingZero($cycle_start) == $start
+                && leadingZero($cycle_end) == $end
+                && $cycle->weekday == $day
+            ) {
                 $ret[] = $cycle;
             }
         }

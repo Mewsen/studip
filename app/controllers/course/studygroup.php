@@ -75,7 +75,7 @@ class Course_StudygroupController extends AuthenticatedController
             $id = Context::getId();
         }
 
-        $studygroup = new Seminar($id);
+        $studygroup = Course::find($id);
         $this->sidebarActions = [];
         if (Request::isXhr()) {
             PageLayout::setTitle(_('Studiengruppendetails'));
@@ -365,15 +365,14 @@ class Course_StudygroupController extends AuthenticatedController
 
         // if we are permitted to edit the studygroup get some data...
         if ($id && $perm->have_studip_perm('dozent', $id)) {
-            $sem = Seminar::getInstance($id);
+            $this->course = Course::find($id);
 
             PageLayout::setTitle(Context::getHeaderLine() . ' - ' . _('Studiengruppe bearbeiten'));
             Navigation::activateItem('/course/admin/main');
 
-            $this->sem_id            = $id;
-            $this->sem               = $sem;
-            $this->sem_class         = $GLOBALS['SEM_CLASS'][$GLOBALS['SEM_TYPE'][$sem->status]['class']];
-            $this->tutors            = $sem->getMembers('tutor');
+            $this->course_id         = $id;
+            $this->sem_class         = $GLOBALS['SEM_CLASS'][$GLOBALS['SEM_TYPE'][$this->course->status]['class']];
+            $this->tutors            = CourseMember::findByCourseAndStatus($this->course->id, 'tutor');
             $this->founders          = StudygroupModel::getFounders($id);
 
             $actions = new ActionsWidget();
@@ -775,8 +774,8 @@ class Course_StudygroupController extends AuthenticatedController
             // save invite in database
             StudygroupModel::inviteMember($receiver, $id);
             // send invite message to user
-            $msg     = new messaging();
-            $sem     = new Seminar($id);
+            $msg        = new messaging();
+            $sem = Course::find($id);
             $message = sprintf(_("%s möchte Sie auf die Studiengruppe %s aufmerksam machen. Klicken Sie auf den folgenden Link, um direkt zur Studiengruppe zu gelangen.\n\n %s"),
                 get_fullname(), $sem->name, URLHelper::getlink("dispatch.php/course/studygroup/details/" . $id, ['cid' => null]));
             $subject = _("Sie wurden in eine Studiengruppe eingeladen");
@@ -823,14 +822,10 @@ class Course_StudygroupController extends AuthenticatedController
         if ($perm->have_studip_perm('dozent', $id)) {
 
             if ($approveDelete && check_ticket(Request::get('studip_ticket'))) {
-                $messages = [];
-                $sem      = new Seminar($id);
-                $sem->delete();
-                if ($messages = $sem->getStackedMessages()) {
-                    $this->flash['messages'] = $messages;
+                $course = Course::find($id);
+                if (!$course->delete()) {
+                    PageLayout::postError(_('Die Studiengruppe konnte nicht gelöscht werden.'));
                 }
-                unset($sem);
-
                 $this->redirect(URLHelper::getURL('dispatch.php/studygroup/browse', [], true));
                 return;
             } elseif (!$approveDelete) {
