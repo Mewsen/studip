@@ -18,6 +18,7 @@ class StudipAuthShib extends StudipAuthSSO
     public $local_domain;
     public $session_initiator;
     public $validate_url;
+    public ?string $logout_url = null;
     public $userdata;
     public $username_attribute = 'username';
 
@@ -135,5 +136,13 @@ class StudipAuthShib extends StudipAuthSSO
         $data = explode(';', $this->userdata[$key]);
 
         return $data[0];
+    }
+
+    public function logout(): void
+    {
+        if (!empty($this->logout_url)) {
+            header('Location: ' . URLHelper::getURL($this->logout_url, ['return' => Request::url()]));
+            exit();
+        }
     }
 }
