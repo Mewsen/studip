@@ -25,7 +25,7 @@ $additional_attributes['class'] = implode(' ', $css_classes);
     <div class="<?= $base_class ?>-widget-content">
         <?= $content_for_layout ?>
     </div>
-<? if ($title && isset($extra)): ?>
+<? if (!empty($title) && isset($extra)): ?>
     <div class="<?= $base_class ?>-widget-extra"><?= $extra ?></div>
 <? endif; ?>
 </div>
