@@ -42,12 +42,10 @@ if ($auth->auth["uid"]!="nobody") {
     $_language = $_SESSION['_language'];
     $contrast = UserConfig::get($GLOBALS['user']->id)->USER_HIGH_CONTRAST;
 
-    // TODO this needs to be generalized or removed
-    //erweiterung cas
-    if ($auth->auth["auth_plugin"] == "cas"){
-        $casauth = StudipAuthAbstract::GetInstance('cas');
-        $docaslogout = true;
-    }
+    // Get auth plugin of user before logging out since the $auth object will
+    // be modified by the logout
+    $auth_plugin = StudipAuthAbstract::getInstance($auth->auth['auth_plugin']);
+
     //Logout aus dem Sessionmanagement
     $auth->logout();
     $sess->delete();
@@ -58,9 +56,9 @@ if ($auth->auth["uid"]!="nobody") {
     $timeout=(time()-(15 * 60));
     $user->set_last_action($timeout);
 
-    //der logout() Aufruf fuer CAS (dadurch wird das Cookie (Ticket) im Browser zerstoert)
-    if (!empty($docaslogout)) {
-        $casauth->logout();
+    // Perform logout from auth plugin (if possible)
+    if ($auth_plugin instanceof StudipAuthSSO) {
+        $auth_plugin->logout();
     }
 } else {
     $sess->delete();
