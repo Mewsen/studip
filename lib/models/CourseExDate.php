@@ -261,7 +261,7 @@ class CourseExDate extends SimpleORMap implements PrivacyObject, Event
                    IFNULL(`ex_termine`.`metadate_id`, '') = ''
                    OR `ex_termine`.`metadate_id` NOT IN (
                        SELECT `metadate_id`
-                       FROM `schedule_seminare`
+                       FROM `schedule_courses`
                        WHERE `user_id` = :user_id
                          AND `visible` = 0
                    )

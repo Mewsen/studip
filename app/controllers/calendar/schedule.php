@@ -1,498 +1,568 @@
 <?php
-# Lifter010: TODO
 
 /**
- * This class displays a seminar-schedule for
- * users on a seminar-based view and for admins on an institute based view
+ * schedule.php - Calender schedule controller
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
  *
- * @author      Till Glöggler <tgloeggl@uos.de>
+ * @author      Moritz Strohm <strohm@data-quest.de>
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
- * @since      2.0
+ * @package     calender
+ * @since       6.0
  */
-
-// Needs to be required due to the use of constants
-require_once 'lib/classes/calendar/CalendarScheduleModel.php';
-
 class Calendar_ScheduleController extends AuthenticatedController
 {
-
-    /**
-     * Callback function being called before an action is executed. If this
-     * function does not return FALSE, the action will be called, otherwise
-     * an error will be generated and processing will be aborted. If this function
-     * already #rendered or #redirected, further processing of the action is
-     * withheld.
-     *
-     * @param string  Name of the action to perform.
-     * @param array   An array of arguments to the action.
-     *
-     */
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
-        $zoom = Request::int('zoom');
-        $this->my_schedule_settings = UserConfig::get($GLOBALS['user']->id)->SCHEDULE_SETTINGS;
-        // bind zoom, show_hidden and semester_id for all actions, even preserving them after redirect
-        if (isset($zoom)) {
-            URLHelper::addLinkParam('zoom', Request::int('zoom'));
-            $this->my_schedule_settings['zoom'] = Request::int('zoom');
-            UserConfig::get($GLOBALS['user']->id)->store('SCHEDULE_SETTINGS', $this->my_schedule_settings);
+
+        if (!Context::isCourse() && Navigation::hasItem('/calendar')) {
+            Navigation::activateItem('/calendar');
         }
-
-        URLHelper::bindLinkParam('semester_id', $this->current_semester['semester_id']);
-        URLHelper::bindLinkParam('show_hidden', $this->show_hidden);
-
-        PageLayout::setHelpKeyword('Basis.MyStudIPStundenplan');
-        PageLayout::setTitle(_('Mein Stundenplan'));
     }
 
-    /**
-     * this action is the main action of the schedule-controller, setting the environment
-     * for the timetable, accepting a comma-separated list of days.
-     *
-     * @param string $days a list of an arbitrary mix of the numbers 0-6, separated
-     *                        with a comma (e.g. 1,2,3,4,5 (for Monday to Friday, the default))
-     */
-    public function index_action($days = false)
+    public function index_action()
     {
-        $schedule_settings = CalendarScheduleModel::getScheduleSettings();
-        $inst_mode = false;
-        $institute_id = null;
-        if ($GLOBALS['perm']->have_perm('admin')) {
-            $inst_mode = true;
-        }
-        if ($inst_mode) {
-            // try to find the correct institute-id
-            $institute_id = Request::option('institute_id', Context::getId());
-            if (!$institute_id) {
-                $institute_id = UserConfig::get($GLOBALS['user']->id)->MY_INSTITUTES_DEFAULT;
-            }
-            if (!$institute_id || !in_array(get_object_type($institute_id), ['fak', 'inst'])) {
-                throw new Exception('Cannot display institute-calender. No valid ID given!');
-            }
-            Navigation::activateItem('/browse/my_courses/schedule');
-        } else {
+        PageLayout::setTitle(_('Stundenplan'));
+
+        if (Navigation::hasItem('/calendar/schedule')) {
             Navigation::activateItem('/calendar/schedule');
         }
 
-        // check, if the hidden seminar-entries shall be shown
-        $show_hidden = Request::int('show_hidden', 0);
+        $show_hidden = Request::bool('show_hidden', false);
 
-        // load semester-data and current semester
-        $this->semesters = array_reverse(Semester::findAllVisible(false));
-        $this->current_semester = Semester::findCurrent();
+        //Build the sidebar:
 
-        $semester_id = Request::option('semester_id', $schedule_settings['semester_id'] ?? null);
-        if ($semester_id && Semester::exists($semester_id)) {
-            $this->current_semester = Semester::find($semester_id);
+        $sidebar = Sidebar::get();
 
-            $schedule_settings['semester_id'] = $this->current_semester->id;
-            User::findCurrent()->getConfiguration()->store(
-                'SCHEDULE_SETTINGS',
-                $schedule_settings
+        //Add the semester selector widget first:
+        $semester_widget = new SemesterSelectorWidget(
+            $this->indexURL(['show_hidden' => $show_hidden ?: null])
+        );
+        $sidebar->addWidget($semester_widget);
+
+        //Then add the actions for the action widget:
+        $actions = new ActionsWidget();
+        $actions->addLink(
+            _('Neuer Termin'),
+            $this->url_for('calendar/schedule/entry/add'),
+            Icon::create('add'),
+            ['data-dialog' => '']
+        );
+        if ($show_hidden) {
+            $actions->addLink(
+                _('Ausgeblendete Veranstaltungen verstecken'),
+                $this->indexURL(['semester_id' => Request::get('semester_id')]),
+                Icon::create('visibility-invisible')
+            );
+        } else {
+            $actions->addLink(
+                _('Ausgeblendete Veranstaltungen anzeigen'),
+                $this->indexURL([
+                    'show_hidden' => true,
+                    'semester_id' => Request::get('semester_id'),
+                ]),
+                Icon::create('visibility-visible')
             );
         }
 
-        // check type-safe if days is false otherwise sunday (0) cannot be chosen
-        if ($days === false) {
-            if (Request::getArray('days')) {
-                $this->days = array_keys(Request::getArray('days'));
-            } else {
-                $this->days = CalendarScheduleModel::getDisplayedDays($schedule_settings['glb_days']);
-            }
-        } else {
-            $this->days = explode(',', $days);
+        $actions->addLink(
+            _('Drucken'),
+            '#',
+            Icon::create('print'),
+            ['onclick' => 'window.print(); return false;']
+        );
+        $actions->addLink(
+            _('Einstellungen'),
+            $this->url_for('settings/calendar'),
+            Icon::create('settings'),
+            ['data-dialog' => 'size=auto;reload-on-close']
+        );
+        $sidebar->addWidget($actions);
+
+        //Handle the selected semester and create a Fullcalendar instance.
+
+        $semester = null;
+        if (Request::submitted('semester_id')) {
+            $semester = Semester::find(Request::option('semester_id'));
+        }
+        if (!$semester) {
+            $semester = Semester::findCurrent();
         }
 
-        $this->controller = $this;
-
-        $this->calendar_view = $inst_mode
-            ? CalendarScheduleModel::getInstCalendarView($institute_id, $show_hidden, $this->current_semester, $this->days)
-            : CalendarScheduleModel::getUserCalendarView($GLOBALS['user']->id, $show_hidden, $this->current_semester, $this->days);;
-
-        // have we chosen an entry to display?
-        if (!empty($this->flash['entry'])) {
-            if ($inst_mode) {
-                $this->show_entry = $this->flash['entry'];
-            } else if ($this->flash['entry']['id'] == null) {
-                $this->show_entry = $this->flash['entry'];
-            } else {
-                foreach ($this->calendar_view->getColumns() as $entry_days) {
-                    foreach ($entry_days->getEntries() as $entry) {
-                        if ($this->flash['entry']['cycle_id']) {
-                            if ($this->flash['entry']['id'] . '-' . $this->flash['entry']['cycle_id'] == $entry['id']) {
-                                $this->show_entry = $entry;
-                                $entry_ids = explode('-', $this->show_entry['id']);
-                                $this->show_entry['id'] = reset($entry_ids);
-                            }
-                        } else {
-                            if ($entry['id'] == $this->flash['entry']['id']) {
-                                $this->show_entry = $entry;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        $style_parameters = [
-            'whole_height' => $this->calendar_view->getOverallHeight(),
-            'entry_height' => $this->calendar_view->getHeight()
-        ];
-
-        $factory = new Flexi\Factory($this->dispatcher->trails_root . '/views');
-        PageLayout::addStyle($factory->render('calendar/schedule/stylesheet', $style_parameters), 'screen, print');
-
-        if (Request::option('printview')) {
-            $this->calendar_view->setReadOnly();
-            PageLayout::addStylesheet('print.css');
-
-            // remove all stylesheets that are not used for printing to have a more reasonable printing preview
-            PageLayout::addHeadElement('script', [], "$('head link[media=screen]').remove();");
-        } else {
-            PageLayout::addStylesheet('print.css', ['media' => 'print']);
-        }
-
-        $this->show_hidden = $show_hidden;
-
-        $inst = get_object_name($institute_id, 'inst');
-        $this->inst_mode = $inst_mode;
-        $this->institute_name = $inst['name'];
-        $this->institute_id = $institute_id;
-        $this->show_settings = Request::bool('show_settings', false);
+        $fullcalendar = \Studip\Calendar\Helper::getScheduleFullcalendar(
+            $semester->id ?? '',
+            Request::bool('show_hidden', false)
+        );
+        $this->fullcalendar = $fullcalendar->render();
     }
 
-    public function new_entry_action()
+    public function data_action()
     {
-        $this->layout = null;
-
-        if (!Request::isXhr()) {
-            $this->render_nothing();
-        }
-    }
-
-    /**
-     * this action is called whenever a new entry shall be modified or added to the schedule
-     *
-     * @param string $id optional, if id given, the entry with this id is updated
-     */
-    public function addEntry_action($id = null)
-    {
-        if ($id) {
-            $data['id'] = $id;
+        //Fullcalendar sets the week time range in which to put the course dates
+        //of the semester. Therefore, start and end are handled in here.
+        $begin = Request::getDateTime('start', \DateTime::RFC3339);
+        $end = Request::getDateTime('end', \DateTime::RFC3339);
+        if (!($begin instanceof \DateTime) || !($end instanceof \DateTime)) {
+            //No time range specified.
+            throw new InvalidArgumentException('Invalid parameters!');
         }
 
-        $error = false;
-        $data['start'] = (int)str_replace(':', '', Request::get('entry_start'));
-        $data['end'] = (int)str_replace(':', '', Request::get('entry_end'));
-        $data['day'] = Request::int('entry_day');
+        $result = [];
 
-        if ($data['start'] >= $data['end']
-            || !Request::int('entry_day')
-            || !$this->validate_datetime(Request::get('entry_start'))
-            || !$this->validate_datetime(Request::get('entry_end'))) {
-            $error = true;
-        }
+        $semester_id = Request::option('semester_id');
+        $semester = Semester::find($semester_id);
+        $show_hidden = Request::bool('show_hidden', false);
 
-        if ($error) {
-            PageLayout::postError(
-                _('Eintrag konnte nicht gespeichert werden, da die Start- und/oder Endzeit ungültig ist!')
+        if ($semester) {
+            //Get all regular course dates for that semester:
+            $cycle_dates = SeminarCycleDate::findBySql(
+                'JOIN `termine` USING (`metadate_id`)
+                 JOIN `seminare` USING (`seminar_id`)
+                WHERE
+                `seminar_id` IN (
+                    SELECT `seminar_id` FROM `seminar_user`
+                    WHERE `user_id` = :user_id
+                    UNION
+                    SELECT `course_id` FROM `schedule_courses`
+                    WHERE `user_id` = :user_id
+                )
+                AND
+                (
+                `termine`.`date` BETWEEN :begin AND :end
+                OR `termine`.`end_time` BETWEEN :begin AND :end
+                )
+                GROUP BY `metadate_id`',
+                [
+                    'user_id' => $GLOBALS['user']->id,
+                    'begin' => $semester->beginn,
+                    'end' => $semester->ende
+                ]
             );
-        } else {
-            $data['title'] = Request::get('entry_title');
-            $data['content'] = Request::get('entry_content');
-            $data['user_id'] = $GLOBALS['user']->id;
-            if (Request::get('entry_color')) {
-                $data['color'] = Request::get('entry_color');
-            } else {
-                $data['color'] = DEFAULT_COLOR_NEW;
-            }
 
-            CalendarScheduleModel::storeEntry($data);
-        }
-
-        $this->redirect('calendar/schedule');
-    }
-
-
-    /**
-     * this action keeps the entry of the submitted_id and enables displaying of the entry-dialog.
-     * If no id is submitted, an empty entry_dialog is displayed.
-     *
-     * @param string $id the id of the entry to edit (if any), false otherwise.
-     * @param string $cycle_id an optional cycle's ID
-     */
-    public function entry_action($id = null, $cycle_id = null)
-    {
-        if (Request::isXhr()) {
-            $this->response->add_header('Content-Type', 'text/html; charset=utf-8');
-            $this->layout = null;
-
-            $this->entry = [
-                'id' => $id,
-                'cycle_id' => $cycle_id
-            ];
-
-            if ($cycle_id) {
-                $seminar_ids = CalendarScheduleModel::getSeminarEntry($id, $GLOBALS['user']->id, $cycle_id);
-                $this->show_entry = array_pop($seminar_ids);
-                $this->show_entry['id'] = $id;
-                $this->render_template('calendar/schedule/_entry_course');
-            } else if ($id) {
-                $entry_columns = CalendarScheduleModel::getScheduleEntries($GLOBALS['user']->id, 0, 0, $id);
-                if (count($entry_columns) > 0) {
-                    $entries = array_pop($entry_columns)->getEntries();
-                    $this->show_entry = array_pop($entries);
-                } else {
-                    $this->show_entry = null;
+            foreach ($cycle_dates as $cycle_date) {
+                //Calculate a fake begin and end that lies in the week
+                //fullcalendar has specified.
+                $fake_begin = clone $begin;
+                $fake_end = clone $begin;
+                if ($cycle_date->weekday > 1) {
+                    $fake_begin = $fake_begin->add(new DateInterval('P' . ($cycle_date->weekday - 1) . 'D'));
+                    $fake_end = $fake_end->add(new DateInterval('P' . ($cycle_date->weekday - 1) . 'D'));
                 }
-                $this->render_template('calendar/schedule/_entry_schedule');
+                $start_time_parts = explode(':', $cycle_date->start_time);
+                $end_time_parts = explode(':', $cycle_date->end_time);
+                $fake_begin->setTime(
+                    $start_time_parts[0],
+                    $start_time_parts[1],
+                    $start_time_parts[2]
+                );
+                $fake_end->setTime(
+                    $end_time_parts[0],
+                    $end_time_parts[1],
+                    $end_time_parts[2]
+                );
+
+                $schedule_course = ScheduleCourseDate::findOneBySQL(
+                    '`course_id` = :course_id AND `user_id` = :user_id',
+                    [
+                        'course_id' => $cycle_date->seminar_id,
+                        'user_id' => $GLOBALS['user']->id
+                    ]
+                );
+                $is_hidden = $schedule_course && !$schedule_course->visible;
+                if (!$show_hidden && $is_hidden) {
+                    //The regular date belongs to a course that has been hidden in the schedule.
+                    //The flag to include hidden courses is not set which means that the regular
+                    //date shall not be included.
+                    continue;
+                }
+
+                //Get the course colour:
+                $course_membership = CourseMember::findOneBySQL(
+                    '`seminar_id` = :course_id AND `user_id` = :user_id',
+                    [
+                        'course_id' => $cycle_date->seminar_id,
+                        'user_id' => $GLOBALS['user']->id
+                    ]
+                );
+
+                $event_classes = [];
+                $event_title = $cycle_date->course->getFullName();
+                if ($course_membership) {
+                    $event_classes[] = sprintf('course-color-%u', $course_membership->gruppe);
+                } elseif ($schedule_course) {
+                    $event_classes[] = 'marked-course';
+                    $event_title = studip_interpolate(
+                        _('%{course_name} (vorgemerkt)'),
+                        ['course_name' => $cycle_date->course->getFullName()]
+                    );
+                }
+
+                $event_icon = '';
+                if ($schedule_course && !$course_membership) {
+                    $event_icon = 'tag';
+                } elseif ($show_hidden && $is_hidden) {
+                    $event_icon = 'visibility-invisible';
+                    $event_classes[] = 'hidden-course';
+                }
+
+                $event = new \Studip\Calendar\EventData(
+                    $fake_begin,
+                    $fake_end,
+                    $event_title,
+                    $event_classes,
+                    '',
+                    '',
+                    false,
+                    'SeminarCycleDate',
+                    $cycle_date->id,
+                    '',
+                    '',
+                    'course',
+                    $cycle_date->seminar_id,
+                    [
+                        'show' => $this->url_for('calendar/schedule/course_info/' . $cycle_date->seminar_id)
+                    ],
+                    [],
+                    $event_icon ?: ''
+                );
+
+                $result[] = $event->toFullcalendarEvent();
+            }
+        }
+
+        //Add all schedule entries to the result set:
+        $weekly_dates = ScheduleEntry::findByUser_id($GLOBALS['user']->id);
+        foreach ($weekly_dates as $date) {
+            $event_data = $date->toEventData($GLOBALS['user']->id);
+            //Disable fullcalendar drag & drop actions:
+            $event_data->editable = false;
+            $result[] = $event_data->toFullcalendarEvent();
+        }
+
+        $this->render_json($result);
+    }
+
+    /**
+     * This action handles adding and editing schedule entries.
+     *
+     * @param string $entry_id The ID of the entry to be modified. In case the ID is set to "add", a new entry
+     *     will be created. In all other cases, an existing entry will be loaded.
+     */
+    public function entry_action(string $entry_id)
+    {
+        $this->entry = null;
+        if ($entry_id === 'add') {
+            //Add mode
+            $this->entry = new ScheduleEntry();
+            $this->entry->user_id = $GLOBALS['user']->id;
+            if (!Request::submitted('save')) {
+                //Provide good default values:
+                $this->entry->dow = Request::int('dow', date('N'));
+                $this->entry->setFormattedStart(Request::get('start', date('H:00', strtotime('+1 hour'))));
+                $this->entry->setFormattedEnd(Request::get('end', date('H:00', strtotime('+2 hours'))));
+            }
+            PageLayout::setTitle(_('Neuer Termin'));
+        } else {
+            //Edit mode
+            $this->entry = ScheduleEntry::find($entry_id);
+            if (!$this->entry) {
+                PageLayout::postError(_('Der Termin wurde nicht gefunden.'));
+            }
+            if (!$this->entry->isWritable($GLOBALS['user']->id)) {
+                throw new AccessDeniedException(_('Sie dürfen diesen Termin nicht bearbeiten!'));
+            }
+            PageLayout::setTitle($this->entry->toString());
+        }
+
+        if (Request::submitted('save')) {
+            CSRFProtection::verifyUnsafeRequest();
+            $this->saveEntry($entry_id);
+        } elseif (Request::submitted('delete')) {
+            CSRFProtection::verifyUnsafeRequest();
+            $this->deleteEntry();
+        }
+    }
+
+    /**
+     * Handles storing a schedule entry.
+     */
+    public function save_entry_action(string $entry_id)
+    {
+        $this->entry = null;
+        if ($entry_id === 'add') {
+            //Add mode
+            $this->entry = new ScheduleEntry();
+            $this->entry->user_id = $GLOBALS['user']->id;
+            PageLayout::setTitle(_('Neuer Termin'));
+        } else {
+            //Edit mode
+            $this->entry = ScheduleEntry::find($entry_id);
+            if (!$this->entry) {
+                PageLayout::postError(_('Der Termin wurde nicht gefunden.'));
+            }
+            if (!$this->entry->isWritable($GLOBALS['user']->id)) {
+                throw new AccessDeniedException(_('Sie dürfen diesen Termin nicht bearbeiten!'));
+            }
+            PageLayout::setTitle($this->entry->toString());
+        }
+
+        $this->entry->dow = Request::int('dow', date('N'));
+        $this->entry->setFormattedStart(Request::get('start'));
+        $this->entry->setFormattedEnd(Request::get('end'));
+        $this->entry->label   = Request::get('label', '');
+        $this->entry->content = Request::get('content', '');
+
+        if ($this->entry->start_time >= $this->entry->end_time) {
+            PageLayout::postError(_('Der Startzeitpunkt darf nicht nach dem Endzeitpunkt liegen!'));
+            $this->redirect('calendar/schedule/entry/' . $entry_id);
+            return;
+        }
+
+        if ($this->entry->store() !== false) {
+            if ($entry_id === 'add') {
+                PageLayout::postSuccess(_('Der Termin wurde hinzugefügt.'));
+            } else {
+                PageLayout::postSuccess(_('Der Termin wurde bearbeitet.'));
+            }
+            if (Request::isDialog()) {
+                $this->response->add_header('X-Dialog-Close', '1');
+            } else {
+                $this->redirect('calendar/schedule/index');
             }
         } else {
-            $this->flash['entry'] = [
-                'id' => $id,
-                'cycle_id' => $cycle_id
-            ];
-
-            $this->redirect('calendar/schedule/');
+            if ($entry_id === 'add') {
+                PageLayout::postError(_('Der Termin konnte nicht hinzugefügt werden.'));
+            } else {
+                PageLayout::postError(_('Der Termin konnte nicht bearbeitet werden.'));
+            }
+            $this->redirect('calendar/schedule/entry/' . $entry_id);
         }
+        $this->render_nothing();
     }
 
     /**
-     * Return an HTML fragment containing a form to edit an entry
-     *
-     * @param string  the ID of a course
-     * @param string  an optional cycle's ID
-     * @return void
+     * Handles deleting a schedule entry.
      */
-    public function entryajax_action($id, $cycle_id = null)
+    public function delete_entry_action(string $entry_id)
     {
-        $this->response->add_header('Content-Type', 'text/html; charset=utf-8');
-        if ($cycle_id) {
-            $seminar_ids = CalendarScheduleModel::getSeminarEntry($id, $GLOBALS['user']->id, $cycle_id);
-            $this->show_entry = array_pop($seminar_ids);
-            $this->show_entry['id'] = $id;
-            $this->render_template('calendar/schedule/_entry_course');
+        CSRFProtection::verifyUnsafeRequest();
+        $this->entry = ScheduleEntry::find($entry_id);
+        if (!$this->entry) {
+            PageLayout::postError(_('Der Termin wurde nicht gefunden.'));
+        }
+        if (!$this->entry->isWritable($GLOBALS['user']->id)) {
+            throw new AccessDeniedException(_('Sie dürfen diesen Termin nicht bearbeiten!'));
+        }
+        if ($this->entry->delete()) {
+            PageLayout::postSuccess(_('Der Termin wurde gelöscht.'));
         } else {
-            $entry_columns = CalendarScheduleModel::getScheduleEntries($GLOBALS['user']->id, 0, 0, $id);
-            $entries = array_pop($entry_columns)->getEntries();
-            $this->show_entry = array_pop($entries);
-            $this->render_template('calendar/schedule/_entry_schedule');
+            PageLayout::postError(_('Der Termin konnte nicht gelöscht werden.'));
         }
-    }
-
-    /**
-     * Returns an HTML fragment of a grouped entry in the schedule of an institute.
-     *
-     * @param string $start the start time of the group, e.g. "1000"
-     * @param string $end the end time of the group, e.g. "1200"
-     * @param string $course_ids the IDs of the courses
-     * @param string $day numeric day to show
-     *
-     * @return void
-     */
-    public function groupedentry_action($start, $end, $course_ids, $day)
-    {
-        $this->response->add_header('Content-Type', 'text/html; charset=utf-8');
-        $course_ids = explode(',', $course_ids);
-        foreach ($course_ids as $course_id) {
-            $zw = explode('-', $course_id);
-            $this->courses[$zw[0]] = Course::find($zw[0]);
-        }
-
-        $this->timespan = mb_substr($start, 0, 2) . ':' . mb_substr($start, 2, 2)
-            . ' - ' . mb_substr($end, 0, 2) . ':' . mb_substr($end, 2, 2);
-        $this->start = $start;
-        $this->end = $end;
-
-        $day_names = [
-            _('Montag'),
-            _('Dienstag'),
-            _('Mittwoch'),
-            _('Donnerstag'),
-            _('Freitag'),
-            _('Samstag'),
-            _('Sonntag')
-        ];
-
-        $this->day = (int)$day;
-        $this->day_name = $day_names[$this->day];
-
-
-        $this->render_template('calendar/schedule/_entry_inst');
-    }
-
-    /**
-     * delete the entry of the submitted id (only entry belonging to the current
-     * use can be deleted)
-     *
-     * @param string $id the id of the entry to delete
-     * @return void
-     */
-    public function delete_action($id)
-    {
-        CalendarScheduleModel::deleteEntry($id);
-        $this->redirect('calendar/schedule');
-    }
-
-    /**
-     * store the color-settings for the seminar
-     *
-     * @param string $seminar_id
-     * @param string $cycle_id
-     * @return void
-     */
-    public function editseminar_action($seminar_id, $cycle_id)
-    {
-        $data = [
-            'id' => $seminar_id,
-            'cycle_id' => $cycle_id,
-            'color' => Request::get('entry_color')
-        ];
-
-        CalendarScheduleModel::storeSeminarEntry($data);
-
-        $this->redirect('calendar/schedule');
-    }
-
-    /**
-     * Adds the appointments of a course to your schedule.
-     *
-     * @param string $seminar_id the ID of the course
-     * @return void
-     */
-    public function addvirtual_action($seminar_id)
-    {
-        $regular_dates = SeminarCycleDate::findBySeminar($seminar_id);
-        foreach ($regular_dates as $cycle) {
-            $data = [
-                'id' => $seminar_id,
-                'cycle_id' => $cycle->id,
-                'color' => false
-            ];
-
-            CalendarScheduleModel::storeSeminarEntry($data);
-        }
-
-        $this->redirect('calendar/schedule');
-    }
-
-
-    /**
-     * Set the visibility of the course.
-     *
-     * @param string $seminar_id the ID of the course
-     * @param string $cycle_id the ID of the cycle
-     * @param string $visible visibility; either '1' or '0'
-     * @param string $ajax if you give this optional param, it signals an Ajax request
-     * @return void
-     */
-    public function adminbind_action($seminar_id, $cycle_id, $visible, $ajax = null)
-    {
-        CalendarScheduleModel::adminBind($seminar_id, $cycle_id, $visible);
-
-        if (!$ajax) {
-            $this->redirect('calendar/schedule');
+        if (Request::isDialog()) {
+            $this->response->add_header('X-Dialog-Close', '1');
         } else {
-            $this->render_nothing();
+            $this->redirect('calendar/schedule/index');
         }
+        $this->render_nothing();
     }
 
     /**
-     * Hide the give appointment.
+     * Displays information about a course in the schedule.
      *
-     * @param string $seminar_id the ID of the course
-     * @param string $cycle_id the ID of the cycle
-     * @param string $ajax if you give this optional param, it signals an Ajax request
-     * @return void
+     * @param string $course_id The ID of the course.
      */
-    function unbind_action($seminar_id, $cycle_id = null, $ajax = null)
+    public function course_info_action(string $course_id)
     {
-        CalendarScheduleModel::unbind($seminar_id, $cycle_id);
+        $this->course = Course::find($course_id);
+        if (!$this->course) {
+            PageLayout::postError(_('Die Veranstaltung wurde nicht gefunden.'));
+            return;
+        }
+        $this->membership = CourseMember::findOneBySQL(
+            '`seminar_id` = :course_id AND `user_id` = :user_id',
+            [
+                'course_id' => $this->course->id,
+                'user_id' => $GLOBALS['user']->id
+            ]
+        );
+        $this->schedule_course_entry = ScheduleCourseDate::findOneBySQL(
+            '`course_id` = :course_id AND `user_id` = :user_id',
+            [
+                'course_id' => $this->course->id,
+                'user_id' => $GLOBALS['user']->id
+            ]
+        );
 
-        if (!$ajax) {
-            $this->redirect('calendar/schedule');
+        PageLayout::setTitle($this->course->getFullName());
+    }
+
+    /**
+     * Hides a course in the schedule.
+     *
+     * @param string $course_id The ID of the course.
+     */
+    public function hide_course_action(string $course_id)
+    {
+        CSRFProtection::verifyUnsafeRequest();
+        $success = false;
+
+        $course = Course::find($course_id);
+        if ($course) {
+            $this->membership = CourseMember::findOneBySQL(
+                '`seminar_id` = :course_id AND `user_id` = :user_id',
+                [
+                    'course_id' => $course->id,
+                    'user_id' => $GLOBALS['user']->id
+                ]
+            );
+
+            //Hide the course.
+            if ($this->membership) {
+                //Hide the course in the schedule by creating a new schedule course entry
+                //with the visibility set to 0:
+                $entry = ScheduleCourseDate::findOneBySQL(
+                    '`user_id` = :user_id AND `course_id` = :course_id',
+                    ['user_id' => $GLOBALS['user']->id, 'course_id' => $course->id]
+                );
+                if (!$entry) {
+                    $entry = new ScheduleCourseDate();
+                    $entry->user_id = $GLOBALS['user']->id;
+                    $entry->course_id = $course->id;
+                    $entry->metadate_id = '';
+                }
+                $entry->visible = false;
+                $success = $entry->store() !== false;
+            } else {
+                //Remove the entry of the marked course from the schedule.
+                $success = ScheduleCourseDate::deleteBySQL(
+                        '`user_id` = :user_id AND `course_id` = :course_id',
+                        ['user_id' => $GLOBALS['user']->id, 'course_id' => $course->id]
+                    ) > 0;
+            }
+        }
+        if ($success) {
+            if (Request::isDialog()) {
+                $this->response->add_header('X-Dialog-Close', '1');
+            } else {
+                $this->redirect('calendar/schedule/index');
+            }
+        }
+        $this->render_nothing();
+    }
+
+    /**
+     * Makes a hidden course visible again in the schedule.
+     *
+     * @param string $course_id The ID of the course.
+     */
+    public function show_course_action(string $course_id)
+    {
+        CSRFProtection::verifyUnsafeRequest();
+        $success = false;
+
+        $course = Course::find($course_id);
+        if ($course) {
+            //Make a hidden course visible again.
+            $entry = ScheduleCourseDate::findOneBySQL(
+                '`user_id` = :user_id AND `course_id` = :course_id',
+                ['user_id' => $GLOBALS['user']->id, 'course_id' => $course_id]
+            );
+            if ($entry) {
+                $entry->visible = true;
+                $success = $entry->store() !== false;
+            } else {
+                $success = true;
+            }
+            //In case no entry exists, the course is not hidden since an entry in schedule_courses
+            //must exist with its visible set to zero to make a course disappear from the schedule.
+        }
+        if ($success) {
+            if (Request::isDialog()) {
+                $this->response->add_header('X-Dialog-Close', '1');
+            } else {
+                $this->redirect('calendar/schedule/index');
+            }
+        }
+        $this->render_nothing();
+    }
+
+    /**
+     * Saves the data that are specific to displaying a course in the schedule.
+     * Currently, this means saving only the colour of the course.
+     *
+     * @param string $course_id The ID of the course.
+     */
+    public function save_course_info_action(string $course_id)
+    {
+        CSRFProtection::verifyUnsafeRequest();
+        $success = false;
+
+        $course = Course::find($course_id);
+        if ($course) {
+            $this->membership = CourseMember::findOneBySQL(
+                '`seminar_id` = :course_id AND `user_id` = :user_id',
+                [
+                    'course_id' => $course->id,
+                    'user_id' => $GLOBALS['user']->id
+                ]
+            );
+            if (!$this->membership) {
+                throw new AccessDeniedException();
+            }
+            //Save the selected group.
+            $selected_groups = Request::getArray('gruppe');
+            if (array_key_exists($course->id, $selected_groups)) {
+                $this->membership->gruppe = $selected_groups[$course->id] ?? '0';
+            }
+            $success = $this->membership->store() !== false;
+        }
+        if ($success) {
+            PageLayout::postSuccess(_('Die Farbe der Veranstaltung wurde geändert.'));
         } else {
-            $this->render_nothing();
+            PageLayout::postError(_('Die Farbe der Veranstaltung konnte nicht geändert werden.'));
         }
+        if ($success) {
+            if (Request::isDialog()) {
+                $this->response->add_header('X-Dialog-Close', '1');
+            } else {
+                $this->redirect('calendar/schedule/index');
+            }
+        }
+        $this->render_nothing();
     }
 
-    /**
-     * Show the given appointment.
-     *
-     * @param string $seminar_id the ID of the course
-     * @param string $cycle_id the ID of the cycle
-     * @param string $ajax if you give this optional param, it signals an Ajax request
-     * @return void
-     */
-    public function bind_action($seminar_id, $cycle_id, $ajax = null)
+    public function mark_course_action(string $course_id)
     {
-        CalendarScheduleModel::bind($seminar_id, $cycle_id);
-
-        if (!$ajax) {
-            $this->redirect('calendar/schedule');
+        $course = Course::find($course_id);
+        if ($course->isStudygroup()) {
+            throw new AccessDeniedException();
+        }
+        $entry = ScheduleCourseDate::findOneBySQL(
+            '`course_id` = :course_id AND `user_id` = :user_id',
+            [
+                'course_id' => $course_id,
+                'user_id'   => $GLOBALS['user']->id
+            ]
+        );
+        if ($entry) {
+            PageLayout::postInfo(_('Die Veranstaltung wurde bereits zum Stundenplan hinzugefügt.'));
         } else {
-            $this->render_nothing();
+            $entry = new ScheduleCourseDate();
+            $entry->course_id   = $course->id;
+            $entry->user_id     = $GLOBALS['user']->id;
+            $entry->metadate_id = '';
+            $entry->visible     = true;
+            if ($entry->store() !== false) {
+                PageLayout::postSuccess(_('Die Veranstaltung wurde zum Stundenplan hinzugefügt.'));
+            } else {
+                PageLayout::postError(_('Die Veranstaltung konnte nicht zum Stundenplan hinzugefügt werden.'));
+            }
         }
-    }
-
-    /**
-     * Show the settings' form.
-     *
-     * @return void
-     */
-    public function settings_action()
-    {
-        $this->settings = UserConfig::get($GLOBALS['user']->id)->SCHEDULE_SETTINGS;
-    }
-
-    /**
-     * Store the settings
-     *
-     * @param string  the start time of the calendar to show, e.g. "1000"
-     * @param string  the end time of the calendar to show, e.g. "1200"
-     * @param string  the days to show
-     * @param string  the ID of the semester
-     * @return void
-     */
-    public function storesettings_action($start_hour = false, $end_hour = false, $days = false, $semester_id = false)
-    {
-        if ($start_hour === false) {
-            $start_hour = Request::int('start_hour');
-            $end_hour = Request::int('end_hour');
-            $days = Request::getArray('days');
-        }
-
-        if ($start_hour > $end_hour) {
-            $end_hour = $start_hour + 1;
-            PageLayout::postError(_('Die Endzeit darf nicht vor der Startzeit liegen!'));
-        }
-
-        $this->my_schedule_settings = [
-            'glb_start_time' => $start_hour,
-            'glb_end_time'   => $end_hour,
-            'glb_days'       => $days,
-            'converted'      => true
-        ];
-
-        if ($semester_id) {
-            $this->my_schedule_settings['semester_id'] = $semester_id;
-        } else if ($semester = UserConfig::get($GLOBALS['user']->id)->SCHEDULE_SETTINGS['semester_id']) {
-            $this->my_schedule_settings['semester_id'] = $semester;
-        }
-
-        UserConfig::get($GLOBALS['user']->id)->store('SCHEDULE_SETTINGS', $this->my_schedule_settings);
-
-        if (Context::isInstitute()) {
-            $this->redirect('calendar/instschedule');
-        } else {
-            $this->redirect('calendar/schedule');
-        }
+        $this->redirect('calendar/schedule/index');
     }
 }

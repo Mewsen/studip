@@ -39,16 +39,8 @@ class ScheduleWidget extends CorePlugin implements PortalPlugin
      */
     public function getPortalTemplate()
     {
-        $view = CalendarScheduleModel::getUserCalendarView(
-            $GLOBALS['user']->id,
-            false,
-            false,
-            $days = [0, 1, 2, 3, 4]
-        );
-
-        $template = $GLOBALS['template_factory']->open('shared/string');
-        $template->content = CalendarWidgetView::createFromWeekView($view)->render();
-
+        $template = $GLOBALS['template_factory']->open('start/schedule_widget');
+        $template->fullcalendar = \Studip\Calendar\Helper::getScheduleFullcalendar()->render();
         return $template;
     }
 }

@@ -108,4 +108,65 @@ class Helper
 
         return $default_date;
     }
+
+    /**
+     * Constructs a Fullcalendar instance of the schedule for the current user.
+     *
+     * @param string $semester_id The ID of the semester to be used. Defaults to an empty string
+     *     which in turn means that the current semester shall be used.
+     *
+     * @param bool $show_hidden_courses Whether to include hidden courses in the schedule (true)
+     *     or not (false). Defaults to false.
+     *
+     * @return \Studip\Fullcalendar A fullcalendar instance for the schedule of the current user.
+     */
+    public static function getScheduleFullcalendar(
+        string $semester_id = '',
+        bool $show_hidden_courses = false
+    ) : \Studip\Fullcalendar
+    {
+        if (!$semester_id) {
+            $semester_id = \Semester::findCurrent()?->id ?? '';
+        }
+        $calendar_settings = \User::findCurrent()->getConfiguration()->CALENDAR_SETTINGS ?? [];
+
+        return new \Studip\Fullcalendar(
+            _('Stundenplan'),
+            [
+                'editable'    => false,
+                'selectable'  => false,
+                'dialog_size' => 'auto',
+                'minTime'     => sprintf('%02u:00', $calendar_settings['start'] ?? 8),
+                'maxTime'     => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
+                'allDaySlot'  => false,
+                'header'      => [
+                    'left' => '',
+                    'right' => ''
+                ],
+                'views' => [
+                    'timeGridWeek' => [
+                        'columnHeaderFormat' => ['weekday' => 'long'],
+                        'weekends'           => $calendar_settings['type_week'] === 'LONG',
+                        'slotDuration'       => self::getCalendarSlotDuration('week'),
+                    ]
+                ],
+                'defaultView' => 'timeGridWeek',
+                'defaultDate' => date('Y-m-d'),
+                'timeGridEventMinHeight' => 20,
+                'eventSources' => [
+                    [
+                        'url' => \URLHelper::getURL(
+                            'dispatch.php/calendar/schedule/data',
+                            ['show_hidden' => $show_hidden_courses]
+                        ),
+                        'method' => 'GET',
+                        'extraParams' => [
+                            'semester_id' => $semester_id,
+                            'full_semester_time_range' => false
+                        ]
+                    ]
+                ]
+            ]
+        );
+    }
 }

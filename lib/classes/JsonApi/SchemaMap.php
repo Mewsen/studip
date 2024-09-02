@@ -14,7 +14,7 @@ class SchemaMap
         return [
             \Slim\Routing\Route::class => Schemas\SlimRoute::class,
 
-            \JsonApi\Models\ScheduleEntry::class => Schemas\ScheduleEntry::class,
+            \ScheduleEntry::class => Schemas\ScheduleEntry::class,
 
             \Avatar::class => Schemas\Avatar::class,
 

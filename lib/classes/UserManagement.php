@@ -1203,7 +1203,7 @@ class UserManagement
             "DELETE FROM auto_insert_user WHERE user_id = ?",
             "DELETE FROM roles_user WHERE userid = ?",
             "DELETE FROM schedule WHERE user_id = ?",
-            "DELETE FROM schedule_seminare WHERE user_id = ?",
+            "DELETE FROM schedule_courses WHERE user_id = ?",
             "DELETE FROM termin_related_persons WHERE user_id = ?",
             "DELETE FROM priorities WHERE user_id = ?",
             "DELETE FROM help_tour_user WHERE user_id = ?",

@@ -24,7 +24,7 @@ class CalendarNavigation extends Navigation
         $main_url = URLHelper::getURL('dispatch.php/calendar/calendar', ['defaultDate' => date('Y-m-d')]);
         if (!$GLOBALS['perm']->have_perm('admin') && Config::get()->SCHEDULE_ENABLE) {
             $title = _('Stundenplan');
-            $main_url = URLHelper::getURL('dispatch.php/calendar/schedule');
+            $main_url = URLHelper::getURL('dispatch.php/calendar/schedule/index');
         }
         parent::__construct($title, $main_url);
 
@@ -37,12 +37,10 @@ class CalendarNavigation extends Navigation
      */
     public function initSubNavigation()
     {
-        global $perm, $atime;
-
         parent::initSubNavigation();
 
-        if (!$perm->have_perm('admin') && Config::get()->SCHEDULE_ENABLE) {
-            $navigation = new Navigation(_('Stundenplan'), 'dispatch.php/calendar/schedule');
+        if (!$GLOBALS['perm']->have_perm('admin') && Config::get()->SCHEDULE_ENABLE) {
+            $navigation = new Navigation(_('Stundenplan'), 'dispatch.php/calendar/schedule/index');
             $this->addSubNavigation('schedule', $navigation);
         }
 
