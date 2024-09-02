@@ -134,7 +134,10 @@
                                 <em><?= _('[versteckt]') ?></em>
                                 <? endif; ?>
                                 <? if (Config::get()->COURSE_SEARCH_SHOW_ADMISSION_STATE) : ?>
-                                    <? switch (SemBrowse::getStatusCourseAdmission($course->id, $course->admission_prelim)) :
+                                    <?
+                                    $admission_status = GlobalSearchCourses::getStatusCourseAdmission($course->id, $course->admission_prelim);
+                                    ?>
+                                    <? switch ($admission_status) :
                                         case 1:
                                             echo Icon::create('span-2quarter', Icon::ROLE_STATUS_YELLOW, [
                                                 'alt'   => _('Eingeschränkter Zugang'),

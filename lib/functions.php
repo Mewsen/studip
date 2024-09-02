@@ -425,28 +425,6 @@ function get_userid($username = "")
 
 
 /**
- * Return an array containing the nodes of the sem-tree-path
- *
- * @param string $seminar_id the seminar to get the path for
- * @param int    $depth      the depth
- * @param string $delimeter  a string to separate the path parts
- *
- * @return array
- */
-function get_sem_tree_path($seminar_id, $depth = false, $delimeter = ">")
-{
-    $the_tree = TreeAbstract::GetInstance("StudipSemTree");
-    $view = DbView::getView('sem_tree');
-    $ret = [];
-    $view->params[0] = $seminar_id;
-    $rs = $view->get_query("view:SEMINAR_SEM_TREE_GET_IDS");
-    while ($rs->next_record()){
-        $ret[$rs->f('sem_tree_id')] = $the_tree->getShortPath($rs->f('sem_tree_id'), null, $delimeter, $depth ? $depth - 1 : 0);
-    }
-    return $ret;
-}
-
-/**
  * check_and_set_date
  *
  * Checks if given date is valid and sets field in array accordingly.

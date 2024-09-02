@@ -89,9 +89,20 @@ class CoreOverview extends CorePlugin implements StudipModule
         $navigation->setActiveImage(Icon::create('seminar', Icon::ROLE_INFO));
         if ($object_type !== 'sem') {
             $navigation->addSubNavigation('info', new Navigation(_('Kurzinfo'), 'dispatch.php/institute/overview'));
-            $navigation->addSubNavigation('courses', new Navigation(_('Veranstaltungen'), 'show_bereich.php?level=s&id='.$course_id));
-            $navigation->addSubNavigation('schedule', new Navigation(_('Veranstaltungs-Stundenplan'), 'dispatch.php/institute/schedule/index/' . $course_id));
-
+            $range_tree_node = RangeTreeNode::findOneByStudip_object_id($course_id);
+            if ($range_tree_node) {
+                $navigation->addSubNavigation(
+                    'courses',
+                    new Navigation(_('Veranstaltungen'),
+                        'dispatch.php/search/courses',
+                        [
+                            'node_id' => 'RangeTreeNode_' . $range_tree_node->id,
+                            'type' => 'rangetree'
+                        ]
+                    )
+                );
+                $navigation->addSubNavigation('schedule', new Navigation(_('Veranstaltungs-Stundenplan'), 'dispatch.php/institute/schedule/index/' . $course_id));
+            }
             if ($GLOBALS['perm']->have_studip_perm('admin', $course_id)) {
                 $navigation->addSubNavigation('admin', new Navigation(_('Administration der Einrichtung'), 'dispatch.php/institute/basicdata/index?new_inst=TRUE'));
             }

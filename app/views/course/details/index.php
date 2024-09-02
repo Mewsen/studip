@@ -6,6 +6,7 @@
  * @var Course_DetailsController $controller
  * @var string $prelim_discussion
  * @var stdClass $id_sfx
+ * @var StudipStudyArea[] $study_areas
  */
 ?>
 <style>
@@ -351,6 +352,12 @@
 <? endif ?>
 
 <? if (isset($studyAreaTree) && $studyAreaTree->required_children) : ?>
+    <?
+    $semester_id = '';
+    if ($course->end_semester && $course->end_semester !== Semester::findCurrent()) {
+        $semester_id = $course->end_semester->id;
+    }
+    ?>
     <article class="studip">
         <header>
             <h1><?= _('Studienbereiche') ?></h1>
@@ -361,6 +368,7 @@
                     'study_area/tree.php',
                     [
                         'node' => $studyAreaTree,
+                        'semester_id' => $semester_id,
                         'open' => true,
                         'dont_open' => Config::get()->COURSE_SEM_TREE_CLOSED_LEVELS
                     ]
@@ -377,9 +385,18 @@
         </header>
         <section>
             <ul class="list-unstyled">
+                <?
+                $url_params = [];
+                if ($course->end_semester && $course->end_semester !== Semester::findCurrent()) {
+                    $url_params['semester'] = $course->end_semester->id;
+                }
+                ?>
                 <? foreach ($study_areas as $area) : ?>
+                    <?
+                    $url_params['node_id'] = 'StudipStudyArea_' . $area->id;
+                    ?>
                     <li>
-                        <a href="<?=URLHelper::getScriptLink('show_bereich.php?level=sbb&id=' . $area->id)?>">
+                        <a href="<?= URLHelper::getLink('dispatch.php/search/courses', $url_params, true) ?>">
                             <?= htmlReady($area->getPath(' > ')) ?>
                         </a>
                     </li>
