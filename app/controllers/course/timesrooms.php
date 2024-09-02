@@ -1,5 +1,8 @@
 <?php
 
+use Studip\ResourceBookingException;
+use Studip\ResourceBookingOverlapException;
+
 /**
  * @author  David Siegfried <david.siegfried@uni-vechta.de>
  * @license GPL2 or any later version
@@ -528,11 +531,71 @@ class Course_TimesroomsController extends AuthenticatedController
                         try {
                             $failure = !$termin->bookRoom($room, $preparation_time ?: 0);
                         } catch (ResourceBookingException|ResourceBookingOverlapException $e) {
-                            PageLayout::postError(sprintf(
-                                _('Der angegebene Raum konnte für den Termin %1$s nicht gebucht werden: %2$s'),
-                                '<strong>' . htmlReady($termin->getFullName()) . '</strong>',
-                                $e->getMessage()
-                            ));
+                            $course = $e->getRange();
+                            $message_links = [];
+
+                            if ($course instanceof Course) {
+                                if ($course->isEditableByUser()) {
+                                    //Link to the times/rooms page:
+                                    $link = new LinkElement(
+                                        _('Direkt zur Veranstaltung'),
+                                        URLHelper::getURL('dispatch.php/course/timesrooms/index', ['cid' => $course->id]),
+                                        Icon::create('link-intern')
+                                    );
+                                    $message_links[] = $link->render();
+                                } elseif ($course->isAccessibleToUser()) {
+                                    //Link to the details page:
+                                    $link = new LinkElement(
+                                        _('Direkt zur Veranstaltung'),
+                                        URLHelper::getURL('course/details/index', ['cid' => $course->id]),
+                                        Icon::create('link-intern')
+                                    );
+                                    $message_links[] = $link->render();
+                                }
+                            }
+                            if ($room->userHasBookingRights(User::findCurrent())) {
+                                $room_link = new LinkElement(
+                                    _('Zum Belegungsplan'),
+                                    $room->getActionURL('booking_plan')
+                                );
+                                $message_links[] = $room_link->render();
+                            }
+                            if ($e instanceof ResourceBookingException) {
+                                PageLayout::postError(
+                                    sprintf(
+                                        _('Der angegebene Raum konnte für den Termin %1$s nicht gebucht werden: %2$s'),
+                                        '<strong>' . htmlReady($termin->getFullName()) . '</strong>',
+                                        $e->getMessage()
+                                    ),
+                                    $message_links
+                                );
+                            } else {
+                                //$e is a ResourceBookingOverlapException
+                                if ($course instanceof Course) {
+                                    PageLayout::postError(
+                                        studip_interpolate(
+                                            _('Der Raum %{room_name} wird an dem Termin %{date} bereits durch die Veranstaltung %{course_name} belegt.'),
+                                            [
+                                                'room_name'   => $room->name,
+                                                'date'        => $termin->getFullName(),
+                                                'course_name' => $course->name
+                                            ]
+                                        ),
+                                        $message_links
+                                    );
+                                } else {
+                                    PageLayout::postError(
+                                        studip_interpolate(
+                                            _('Der Raum %{room_name} wird an dem Termin %{date} bereits durch eine andere Veranstaltung belegt.'),
+                                            [
+                                                'room_name'   => $room->name,
+                                                'date'        => $termin->getFullName()
+                                            ]
+                                        ),
+                                        $message_links
+                                    );
+                                }
+                            }
                         }
                     }
                     if ($failure) {
