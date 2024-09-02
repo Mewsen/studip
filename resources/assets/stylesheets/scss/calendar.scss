@@ -125,6 +125,22 @@
                 border-bottom: 1px solid $group-color-8;
             }
         }
+
+        &.marked-course {
+            border-color: var(--black);
+            background-color: var(--white);
+
+            .fc-time {
+                border-bottom: 1px solid var(--black);
+            }
+        }
+
+        &.marked-course,
+        &.hidden-course {
+            .fc-title > img {
+                filter: #{"invert()"};
+            }
+        }
     }
 }
 

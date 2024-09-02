@@ -5,7 +5,7 @@ namespace JsonApi\Routes\Schedule;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
-use JsonApi\Models\ScheduleEntry;
+use \ScheduleEntry;
 use JsonApi\Routes\Users\Authority;
 use Neomerx\JsonApi\Schema\Link;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -57,8 +57,8 @@ class UserScheduleShow extends JsonApiController
     {
         // get all virtually added seminars
         $stmt = \DBManager::get()->prepare(
-            'SELECT c.seminar_id FROM schedule_seminare as c
-             LEFT JOIN seminare USING (seminar_id)
+            'SELECT c.course_id FROM schedule_courses as c
+             LEFT JOIN seminare ON seminare.seminar_id = c.course_id
              WHERE user_id = ? AND start_time = ?'
         );
         $stmt->execute([$user->id, $semester['beginn']]);

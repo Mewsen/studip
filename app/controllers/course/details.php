@@ -247,22 +247,22 @@ class Course_DetailsController extends AuthenticatedController
                 && count($this->course->cycles)
             ) {
                 $query = "SELECT 1
-                          FROM `schedule_seminare`
-                          WHERE `seminar_id` = ? AND `user_id` = ?";
+                          FROM `schedule_courses`
+                          WHERE `course_id` = ? AND `user_id` = ?";
                 $penciled = DBManager::Get()->fetchColumn($query, [
                     $this->course->id,
                     $GLOBALS['user']->id,
                 ]);
                 if (!$penciled) {
                     $links->addLink(
-                        _('Nur im Stundenplan vormerken'),
-                        $this->url_for("calendar/schedule/addvirtual/{$this->course->id}"),
+                        _('Zum Stundenplan hinzufügen'),
+                        $this->url_for('calendar/schedule/mark_course', $this->course),
                         Icon::create('info')
                     );
 
                     $this->links[] = [
-                        'label'      => _('Nur im Stundenplan vormerken'),
-                        'url'        => $this->url_for("calendar/schedule/addvirtual/{$this->course->id}"),
+                        'label'      => _('Zum Stundenplan hinzufügen'),
+                        'url'        => $this->url_for('calendar/schedule/mark_course', $this->course),
                         'attributes' => [],
                     ];
                 }
