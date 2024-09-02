@@ -402,7 +402,6 @@ class BasicDataWizardStep implements CourseWizardStep
 
         // We only need our own stored values here.
         $values = $values[__CLASS__];
-        $seminar = new Seminar($course);
 
         if ($source_id && $copy_basic_data) {
             $this->copyBasicData(
@@ -418,7 +417,7 @@ class BasicDataWizardStep implements CourseWizardStep
         $course->start_semester = Semester::findByTimestamp($values['start_time']);
         $course->institut_id = $values['institute'];
 
-        $semclass = $seminar->getSemClass();
+        $semclass = $course->getSemClass();
         $course->visible = $semclass['visible'];
         $course->admission_prelim = $semclass['admission_prelim_default'];
         $course->lesezugriff = $semclass['default_read_level'] ?: 1;
@@ -447,19 +446,39 @@ class BasicDataWizardStep implements CourseWizardStep
         }
 
         StudipLog::log('SEM_CREATE', $course->id, null, 'Veranstaltung mit Assistent angelegt');
-        $institutes = [$values['institute']];
+        $institute_ids = [$values['institute']];
         if (isset($values['participating']) && is_array($values['participating'])) {
-            $institutes = array_merge($institutes, array_keys($values['participating']));
+            $institute_ids = array_merge($institute_ids, array_keys($values['participating']));
         }
-        $seminar->setInstitutes($institutes);
+        $institutes = Institute::findMany($institute_ids);
+        $course->institutes = $institutes;
+        if ($course->isDirty()) {
+            $course->store();
+        }
         if (isset($values['lecturers']) && is_array($values['lecturers'])) {
             foreach (array_keys($values['lecturers']) as $user_id) {
-                $seminar->addMember($user_id, 'dozent');
+                $user = User::find($user_id);
+                if (!$user) {
+                    continue;
+                }
+                try {
+                    $course->addMember($user, 'dozent');
+                } catch (\Studip\Exception $e) {
+                    //Nothing here.
+                }
             }
         }
         if (isset($values['tutors']) && is_array($values['tutors'])) {
             foreach (array_keys($values['tutors']) as $user_id) {
-                $seminar->addMember($user_id, 'tutor');
+                $user = User::find($user_id);
+                if (!$user) {
+                    continue;
+                }
+                try {
+                    $course->addMember($user, 'tutor');
+                } catch (\Studip\Exception $e) {
+                    //Nothing here.
+                }
             }
         }
         if (Config::get()->DEPUTIES_ENABLE && isset($values['deputies']) && is_array($values['deputies'])) {
@@ -472,10 +491,6 @@ class BasicDataWizardStep implements CourseWizardStep
             CourseSet::addCourseToSet($course_set_id, $course->id);
         }
 
-        if ($source_id  && ($copy_participants || $copy_groups || $copy_members)) {
-            self::copyParticipantsAndGroups($course, $source_id, $copy_participants, $copy_groups, $copy_members);
-        }
-
         return $course;
     }
 
@@ -484,7 +499,7 @@ class BasicDataWizardStep implements CourseWizardStep
      * to already given values. A good example are study areas which
      * are only needed for certain sem_classes.
      *
-     * @param array $values values specified from previous steps
+     * @param Array $values values specified from previous steps
      * @return bool Is the current step required for a new course?
      */
     public function isRequired($values)
@@ -495,7 +510,7 @@ class BasicDataWizardStep implements CourseWizardStep
     /**
      * Copy values for basic data wizard step from given course.
      * @param Course $course
-     * @param array $values
+     * @param Array $values
      */
     public function copy($course, $values)
     {
@@ -528,17 +543,17 @@ class BasicDataWizardStep implements CourseWizardStep
      * Fetches the default deputies for a given person if the necessary
      * config options are set.
      * @param $user_id user whose default deputies to get
-     * @return array Default deputy user_ids.
+     * @return Array Default deputy user_ids.
      */
     public function getDefaultDeputies($user_id)
     {
         if (Config::get()->DEPUTIES_ENABLE && Config::get()->DEPUTIES_DEFAULTENTRY_ENABLE) {
-            return Deputy::findDeputies($user_id)->map(function (Deputy $deputy): array {
+            return Deputy::findDeputies($user_id)->map(function($deputy) {
                 return ['id' => $deputy->user_id, 'name' => $deputy->getDeputyFullname()];
             });
+        } else {
+            return [];
         }
-
-        return [];
     }
 
     public function getSearch($course_type, $institute_ids, $exclude_lecturers = [],$exclude_tutors = [])
@@ -627,121 +642,10 @@ class BasicDataWizardStep implements CourseWizardStep
 
                 }
             }
-        } else {
-            foreach ($indices as $index) {
-                $values[$index] = $values[$index] ?? '';
-            }
+
         }
 
         return $values;
     }
 
-    private function copyBasicData(
-        Course $course,
-        string $source_id
-    ): void {
-        $source = Course::find($source_id);
-        $course->setData($source->toArray('untertitel ort sonstiges art teilnehmer vorrausetzungen lernorga leistungsnachweis ects admission_turnout modules'));
-        foreach ($source->datafields as $one) {
-            $df = $one->getTypedDatafield();
-            if ($df->isEditable()) {
-                $course->datafields->findOneBy('datafield_id', $one->datafield_id)->content = $one->content;
-            }
-        }
-    }
-
-    /**
-     * Copies participants and/or groups from one course to another.
-     */
-    public static function copyParticipantsAndGroups(
-        Course $course,
-        string $source_id,
-        bool $with_participants = true,
-        bool $with_groups = true,
-        bool $with_members = true,
-        bool|array $group_ids = false
-    ): void {
-        $source = Course::find($source_id);
-
-        if (!$with_participants && !$with_groups) {
-            return;
-        }
-
-        if ($with_participants || ($with_groups && $with_members)) {
-            $member_ids = false;
-            if (!$with_participants && $with_members) {
-                $member_ids = [];
-                $source->statusgruppen->filter(function (Statusgruppen $group) use ($group_ids): bool {
-                    return $group_ids === false
-                        || in_array($group->id, $group_ids);
-                })->each(function (Statusgruppen $group) use (&$member_ids): void {
-                    $group->members->each(function (StatusgruppeUser $member) use (&$member_ids): void {
-                        if (!in_array($member->user_id, $member_ids)) {
-                            $member_ids[] = $member->user_id;
-                        }
-                    });
-                });
-            }
-
-            $source->getMembersWithStatus(['user', 'autor', 'tutor'], true)
-                ->filter(function (CourseMember $member) use ($course, $member_ids): bool {
-                    return ($member_ids === false || in_array($member->user_id, $member_ids))
-                        && !CourseMember::exists([$course->id, $member->user_id]);
-                })->each(function (CourseMember $member) use ($course): void {
-                    CourseMember::insertCourseMember(
-                        $course->id,
-                        $member->user_id,
-                        $member->status,
-                    );
-                });
-        }
-
-        if (!$with_groups) {
-            return;
-        }
-
-        $source->statusgruppen->filter(function (Statusgruppen $group) use ($group_ids): bool {
-            return $group_ids === false
-                || in_array($group->id, $group_ids);
-        })->each(function (Statusgruppen $group) use ($course, $with_members, $group_ids): void {
-            $g = Statusgruppen::findOneBySQL(
-                'range_id = ? AND name = ?',
-                [$course->id, $group->name]
-            );
-
-            if (!$g) {
-                $g = Statusgruppen::createOrUpdate(
-                    null,
-                    $group->name,
-                    $group->position,
-                    $course->id,
-                    $group->size,
-                    $group->selfassign,
-                    $group->selfassign_start,
-                    $group->selfassign_end,
-                    $group->hasFolder(),
-                    null,
-                    $group->hasBlubber()
-                );
-            }
-
-            if (!$with_members) {
-                return;
-            }
-
-            $group->members->filter(function (StatusgruppeUser $member) use ($g): bool {
-                return !StatusgruppeUser::exists([$g->id, $member->user_id]);
-            })->each(function (StatusgruppeUser $member) use ($g): void {
-                StatusgruppeUser::create([
-                    'statusgruppe_id' => $g->id,
-                    ...$member->toArray([
-                        'user_id',
-                        'position',
-                        'visible',
-                        'inherit',
-                    ])
-                ]);
-            });
-        });
-    }
 }

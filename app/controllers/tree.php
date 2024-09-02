@@ -21,7 +21,6 @@ class TreeController extends AuthenticatedController
 
         $data = [];
         foreach ($courses as $course) {
-            $sem = Seminar::getInstance($course->id);
             $lecturers = SimpleCollection::createFromArray(
                 CourseMember::findByCourseAndStatus($course->id, 'dozent')
             )->orderBy('position, nachname, vorname');
@@ -37,7 +36,7 @@ class TreeController extends AuthenticatedController
                 $course->veranstaltungsnummer,
                 $course->getFullName('type-number-name'),
                 $course->getTextualSemester(),
-                $sem->getDatesExport(),
+                implode("\n", $course->getAllDatesInSemester()->toStringArray()),
                 implode(', ', $lecturersSorted)
             ];
         }

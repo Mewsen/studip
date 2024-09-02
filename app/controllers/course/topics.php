@@ -17,9 +17,9 @@ class Course_TopicsController extends AuthenticatedController
         Navigation::activateItem('/course/schedule/topics');
         PageLayout::setTitle(sprintf('%s - %s', Course::findCurrent()->getFullName(), _("Themen")));
 
-        $seminar = new Seminar(Course::findCurrent());
-        $this->forum_activated = $seminar->getSlotModule('forum');
-        $this->documents_activated = $seminar->getSlotModule('documents');
+        $course = Course::findCurrent();
+        $this->forum_activated = $course->isToolActive(CoreForum::class);
+        $this->documents_activated = $course->isToolActive(CoreDocuments::class);
 
         if ($action !== 'index' && !$GLOBALS['perm']->have_studip_perm('tutor', Context::getId())) {
             throw new AccessDeniedException();

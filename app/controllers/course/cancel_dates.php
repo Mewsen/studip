@@ -25,17 +25,17 @@ class Course_CancelDatesController extends AuthenticatedController
         parent::before_filter($action, $args);
 
         if (Request::get('termin_id')) {
-            $this->dates[0]  = new SingleDate(Request::option('termin_id'));
+            $this->dates[0]  = CourseDate::find(Request::option('termin_id'));
             $this->course_id = $this->dates[0]->range_id;
         }
 
         if (Request::get('issue_id')) {
             $this->issue_id  = Request::option('issue_id');
-            $this->dates     = array_values(array_map(function ($data) {
-                $d = new SingleDate();
-                $d->fillValuesFromArray($data);
-                return $d;
-            }, IssueDB::getDatesforIssue(Request::option('issue_id'))));
+            $this->dates = CourseDate::findBySQL(
+                "JOIN `themen_termine` USING (`termin_id`)
+                WHERE `issue_id` = :issue_id ORDER BY `date`",
+                ['issue_id' => Request::option('issue_id')]
+            );
             $this->course_id = $this->dates[0]->range_id;
         }
         if (!get_object_type($this->course_id, ['sem']) || !$perm->have_studip_perm("tutor", $this->course_id)) {
@@ -52,13 +52,13 @@ class Course_CancelDatesController extends AuthenticatedController
     public function store_action()
     {
         CSRFProtection::verifyUnsafeRequest();
-        $sem = Seminar::getInstance($this->course_id);
         $msg = '';
         foreach ($this->dates as $date) {
-            $sem->cancelSingleDate($date->getTerminId(), $date->getMetadateId());
-            $date->setComment(Request::get('cancel_dates_comment'));
-            $date->setExTermin(true);
-            $date->store();
+            $ex_date = $date->cancelDate();
+            if ($ex_date) {
+                $ex_date->content = Request::get('cancel_dates_comment');
+                $ex_date->store();
+            }
         }
         if (Request::int('cancel_dates_snd_message') && count($this->dates) > 0) {
             $snd_messages = raumzeit_send_cancel_message(Request::get('cancel_dates_comment'), $this->dates);
@@ -67,7 +67,7 @@ class Course_CancelDatesController extends AuthenticatedController
             }
         }
         PageLayout::postSuccess(_('Folgende Termine wurden abgesagt') . ($msg ? ' (' . $msg . '):' : ':'), array_map(function ($d) {
-            return $d->toString();
+            return $d->getFullName();
         }, $this->dates));
 
         $this->redirect($this->url_for('course/dates'));

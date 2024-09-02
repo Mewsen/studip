@@ -159,7 +159,7 @@ class Admin_AutoinsertController extends AuthenticatedController
             } elseif (!count($filters)) {
                 PageLayout::postError(_('Keine Filterkriterien gewählt'));
             } else {
-                $seminar = Seminar::GetInstance($seminar_id);
+                $course = Course::find($seminar_id);
 
                 $userlookup = new UserLookup();
                 foreach ($filters as $type => $values) {
@@ -170,8 +170,11 @@ class Admin_AutoinsertController extends AuthenticatedController
 
                 foreach ($user_ids as $user_id) {
                     if ($force || !AutoInsert::checkAutoInsertUser($seminar_id, $user_id)) {
-                        $real_users += $seminar->addMember($user_id) ? 1 : 0;
-                        AutoInsert::saveAutoInsertUser($seminar_id, $user_id);
+                        $user = User::find($user_id);
+                        if ($user) {
+                            $real_users += $course->addMember($user) ? 1 : 0;
+                            AutoInsert::saveAutoInsertUser($seminar_id, $user_id);
+                        }
                     }
                 }
 
@@ -182,9 +185,8 @@ class Admin_AutoinsertController extends AuthenticatedController
                     count($user_ids),
                     sprintf(
                         '<a href="%s">%s</a>',
-                        URLHelper::getLink('dispatch.php/course/details/', ['cid' => $seminar->getId()]),
-                        htmlReady($seminar->getName()
-                        )
+                        URLHelper::getLink('dispatch.php/course/details/', ['cid' => $course->id]),
+                        htmlReady($course->name)
                     )
                 );
                 $details = [_('Etwaige Abweichungen der Personenzahlen enstehen durch bereits vorhandene bzw. wieder ausgetragene Personen.')];

@@ -6,7 +6,7 @@
         </legend>
         <div style="padding: 5px; margin: 5px;font-weight: bold;">
             <? echo join(', ', array_map(function ($d) {
-                return $d->toString();
+                return $d->getFullName();
             }, $dates)); ?>
         </div>
 
@@ -21,9 +21,9 @@
         </label>
     </fieldset>
     <? if (!empty($issue_id)) : ?>
-        <input type="hidden" name="issue_id" value="<?= $issue_id ?>">
+        <input type="hidden" name="issue_id" value="<?= htmlReady($issue_id) ?>">
     <? else : ?>
-        <input type="hidden" name="termin_id" value="<?= $dates[0]->getTerminId() ?>">
+        <input type="hidden" name="termin_id" value="<?= htmlReady($dates[0]->id) ?>">
     <? endif ?>
     <footer data-dialog-button>
         <?= Studip\Button::createAccept(_('Speichern')) ?>

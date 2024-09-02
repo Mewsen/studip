@@ -185,14 +185,14 @@ class AdmissionApplication extends SimpleORMap implements PrivacyObject
         $messaging = new messaging;
 
         //Daten holen / Abfrage ob ueberhaupt begrenzt
-        $seminar = Seminar::GetInstance($seminar_id, true);
+        $course = Course::find($seminar_id, true);
 
-        if($seminar->isAdmissionEnabled()){
-            $sem_preliminary = ($seminar->admission_prelim == 1);
-            $cs = $seminar->getCourseSet();
+        if ($course->isAdmissionEnabled()) {
+            $sem_preliminary = $course->admission_prelim == 1;
+            $cs = $course->getCourseSet();
             //Veranstaltung einfach auffuellen (nach Lostermin und Ende der Kontingentierung)
-            if (!$seminar->admission_disable_waitlist_move && $cs->hasAlgorithmRun()) {
-                $count = (int)$seminar->getFreeAdmissionSeats();
+            if (!$course->admission_disable_waitlist_move && $cs->hasAlgorithmRun()) {
+                $count = $course->getFreeSeats();
                 $memberships = self::findBySQL(
                     "seminar_id = ? AND status = 'awaiting' ORDER BY position LIMIT {$count}",
                     [$seminar_id]
@@ -204,18 +204,22 @@ class AdmissionApplication extends SimpleORMap implements PrivacyObject
                     } else {
                         $membership->status = 'accepted';
                         $affected = $membership->store();
-                        StudipLog::log('SEM_USER_ADD', $seminar->getId(), $membership->user_id,'accepted', $log_message);
+                        StudipLog::log('SEM_USER_ADD', $course->id, $membership->user_id,'accepted', $log_message);
                     }
                     if ($affected) {
                         //User benachrichtigen
                         if ($send_message) {
                             setTempLanguage($membership->user_id);
                             if (!$sem_preliminary) {
-                                $message = sprintf (_('Sie sind in die Veranstaltung **%s (%s)** eingetragen worden, da für Sie ein Platz frei geworden ist. Damit sind Sie für die Teilnahme an der Veranstaltung zugelassen. Ab sofort finden Sie die Veranstaltung in der Übersicht Ihrer Veranstaltungen.'), $seminar->getName(), $seminar->getFormattedTurnus(true));
+                                $message = sprintf (_('Sie sind in die Veranstaltung **%s (%s)** eingetragen worden, da für Sie ein Platz frei geworden ist. Damit sind Sie für die Teilnahme an der Veranstaltung zugelassen. Ab sofort finden Sie die Veranstaltung in der Übersicht Ihrer Veranstaltungen.'), $course->getName(), $course->getFormattedTurnus(true));
                             } else {
-                                $message = sprintf (_('Sie haben den Status vorläufig akzeptiert in der Veranstaltung **%s (%s)** erhalten, da für Sie ein Platz frei geworden ist.'), $seminar->getName(), $seminar->getFormattedTurnus(true));
+                                $message = sprintf(
+                                    _('Sie haben den Status "vorläufig akzeptiert" in der Veranstaltung **%s (%s)** erhalten, da für Sie ein Platz frei geworden ist.'),
+                                    $course->name,
+                                    implode(', ', $course->getAllDatesInSemester()->toStringArray(true))
+                                );
                             }
-                            $subject = sprintf(_("Teilnahme an der Veranstaltung %s"), $seminar->getName());
+                            $subject = sprintf(_('Teilnahme an der Veranstaltung %s'), $course->name);
                             restoreLanguage();
 
                             $messaging->insert_message($message, $membership->username, '____%system%____', false, false, '1', false, $subject, true);
@@ -225,7 +229,7 @@ class AdmissionApplication extends SimpleORMap implements PrivacyObject
                 //Warteposition der restlichen User neu eintragen
                 AdmissionApplication::renumberAdmission($seminar_id, FALSE);
             }
-            $seminar->restore();
+            $course->restore();
         }
     }
 
@@ -235,14 +239,14 @@ class AdmissionApplication extends SimpleORMap implements PrivacyObject
      * @param bool $send_message
      * @return void
      */
-    public static function renumberAdmission (string $seminar_id, bool $send_message = true): void
+    public static function renumberAdmission(string $seminar_id, bool $send_message = true) : void
     {
         $messaging = new messaging;
-        $seminar = Seminar::GetInstance($seminar_id);
-        if ($seminar->isAdmissionEnabled()) {
+        $course = Course::find($seminar_id);
+        if ($course->isAdmissionEnabled()) {
             $admission_users = self::findBySQL(
                 "seminar_id = ? AND status = 'awaiting' ORDER BY position",
-                [$seminar->id]
+                [$course->id]
             );
             $position = 1;
             foreach ($admission_users as $admission) {
@@ -251,10 +255,10 @@ class AdmissionApplication extends SimpleORMap implements PrivacyObject
                     $username = $admission->user->username;
                     setTempLanguage($admission->user_id);
                     $message = sprintf(_('Sie sind auf der Warteliste der Veranstaltung **%s (%s)** hochgestuft worden. Sie stehen zur Zeit auf Position %s.'),
-                        $seminar->name,
-                        $seminar->getFormattedTurnus(),
+                        $course->name,
+                        implode(' ', $course->getAllDatesInSemester()->toStringArray()),
                         $position);
-                    $subject = sprintf(_('Ihre Position auf der Warteliste der Veranstaltung %s wurde verändert'), $seminar->name);
+                    $subject = sprintf(_('Ihre Position auf der Warteliste der Veranstaltung %s wurde verändert'), $course->name);
                     restoreLanguage();
 
                     $messaging->insert_message($message, $username, '____%system%____', FALSE, FALSE, '1', FALSE, $subject);

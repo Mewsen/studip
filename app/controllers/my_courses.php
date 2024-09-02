@@ -377,13 +377,13 @@ class MyCoursesController extends AuthenticatedController
      */
     public function decline_action($course_id, $waiting = null)
     {
-        $current_seminar = Seminar::getInstance($course_id);
+        $course = Course::find($course_id);
         $ticket_check    = Seminar_Session::check_ticket(Request::option('studipticket'));
         if (LockRules::Check($course_id, 'participants')) {
             $lockdata = LockRules::getObjectRule($course_id);
             PageLayout::postError(sprintf(
                 _('Sie können sich nicht von der Veranstaltung <b>%s</b> abmelden.'),
-                htmlReady($current_seminar->name)
+                htmlReady($course->name)
             ));
             if ($lockdata['description']) {
                 PageLayout::postInfo(formatLinks($lockdata['description']));
@@ -393,7 +393,6 @@ class MyCoursesController extends AuthenticatedController
         }
 
         // Ensure last teacher cannot leave course
-        $course = Course::find($course_id);
         $teacher = $course->members->findOneBy('user_id', User::findCurrent()->id);
         if (
             $teacher
@@ -402,7 +401,7 @@ class MyCoursesController extends AuthenticatedController
         ) {
             PageLayout::postError(sprintf(
                 _('Sie können sich nicht von der Veranstaltung <b>%s</b> abmelden.'),
-                htmlReady($current_seminar->name)
+                htmlReady($course->name)
             ));
             $this->redirect('my_courses/index');
             return;
@@ -414,45 +413,49 @@ class MyCoursesController extends AuthenticatedController
         }
 
         if (Request::option('cmd') != 'kill' && Request::option('cmd') != 'kill_admission') {
-            if ($current_seminar->admission_binding && Request::get('cmd') != 'suppose_to_kill_admission' && !LockRules::Check($current_seminar->getId(), 'participants')) {
+            if (
+                $course->admission_binding
+                && Request::get('cmd') != 'suppose_to_kill_admission'
+                && !LockRules::Check($course->id, 'participants')
+            ) {
                 PageLayout::postError(sprintf(_("Die Veranstaltung <b>%s</b> ist als <b>bindend</b> angelegt.
                     Wenn Sie sich abmelden wollen, müssen Sie sich an die Lehrende der Veranstaltung wenden."),
-                    htmlReady($current_seminar->name)));
+                    htmlReady($course->name)));
                 $this->redirect('my_courses/index');
                 return;
             }
 
             if (Request::get('cmd') == 'suppose_to_kill') {
                 // check course admission
-                list(,$admission_end_time) = @array_values($current_seminar->getAdmissionTimeFrame());
+                list(,$admission_end_time) = @array_values($course->getAdmissionTimeFrame());
 
-                $admission_enabled = $current_seminar->isAdmissionEnabled();
-                $admission_locked   = $current_seminar->isAdmissionLocked();
+                $admission_enabled = $course->isAdmissionEnabled();
+                $admission_locked   = $course->isAdmissionLocked();
 
-                if ($admission_enabled || $admission_locked || (int)$current_seminar->admission_prelim == 1) {
+                if ($admission_enabled || $admission_locked || (int) $course->admission_prelim === 1) {
                     $message = sprintf(
                         _('Wollen Sie sich von der teilnahmebeschränkten Veranstaltung "%s" wirklich abmelden? Sie verlieren damit die Berechtigung für die Veranstaltung und müssen sich ggf. neu anmelden!'),
-                        htmlReady($current_seminar->name)
+                        htmlReady($course->name)
                     );
                 } else if (isset($admission_end_time) && $admission_end_time < time()) {
                     $message = sprintf(
                         _('Wollen Sie sich von der teilnahmebeschränkten Veranstaltung "%s" wirklich abmelden? Der Anmeldezeitraum ist abgelaufen und Sie können sich nicht wieder anmelden!'),
-                        htmlReady($current_seminar->name)
+                        htmlReady($course->name)
                     );
                 } else {
-                    $message = sprintf(_('Wollen Sie sich von der Veranstaltung "%s" wirklich abmelden?'), htmlReady($current_seminar->name));
+                    $message = sprintf(_('Wollen Sie sich von der Veranstaltung "%s" wirklich abmelden?'), htmlReady($course->name));
                 }
                 $cmd = 'kill';
             } else {
                 if (AdmissionApplication::checkMemberPosition($GLOBALS['user']->id, $course_id) === false) {
                     $message = sprintf(
                         _('Wollen Sie sich von der Anmeldeliste der Veranstaltung "%s" wirklich abmelden?'),
-                        htmlReady($current_seminar->name)
+                        htmlReady($course->name)
                     );
                 } else {
                     $message = sprintf(
                         _('Wollen Sie sich von der Warteliste der Veranstaltung "%s" wirklich abmelden? Sie verlieren damit die bereits erreichte Position und müssen sich ggf. neu anmelden!'),
-                        htmlReady($current_seminar->name)
+                        htmlReady($course->name)
                     );
                 }
                 $cmd = 'kill_admission';
@@ -489,13 +492,13 @@ class MyCoursesController extends AuthenticatedController
                     AdmissionApplication::addMembers($course_id);
 
                     // If this course is a child of another course...
-                    if ($current_seminar->parent_course) {
+                    if ($course->parent) {
                         // ... check if user is member in another sibling ...
                         $other = CourseMember::findBySQL(
                             "`user_id` = :user AND `Seminar_id` IN (:courses) AND `Seminar_id` != :this",
                             [
                                 'user' => $GLOBALS['user']->id,
-                                'courses' => $current_seminar->parent->children->pluck('seminar_id'),
+                                'courses' => $course->parent->children->pluck('seminar_id'),
                                 'this' => $course_id
                             ]
                         );
@@ -503,7 +506,7 @@ class MyCoursesController extends AuthenticatedController
                         // ... and delete from parent course if this was the only
                         // course membership in this family.
                         if (count($other) == 0) {
-                            $m = CourseMember::find([$current_seminar->parent_course, $GLOBALS['user']->id]);
+                            $m = CourseMember::find([$course->parent_course, $GLOBALS['user']->id]);
                             if ($m) {
                                 $m->delete();
                             }
@@ -512,14 +515,14 @@ class MyCoursesController extends AuthenticatedController
 
                     PageLayout::postSuccess(sprintf(
                         _("Erfolgreich von Veranstaltung <b>%s</b> abgemeldet."),
-                        htmlReady($current_seminar->name)
+                        htmlReady($course->name)
                     ));
                 }
             } else {
                 // LOGGING
                 StudipLog::log('SEM_USER_DEL', $course_id, $GLOBALS['user']->id, 'Hat sich selbst aus der Warteliste ausgetragen');
-                if ($current_seminar->isAdmissionEnabled()) {
-                    $prio_delete = AdmissionPriority::unsetPriority($current_seminar->getCourseSet()->getId(), $GLOBALS['user']->id, $course_id);
+                if ($course->isAdmissionEnabled()) {
+                    $prio_delete = AdmissionPriority::unsetPriority($course->getCourseSet()->getId(), $GLOBALS['user']->id, $course_id);
                 }
                 NotificationCenter::postNotification('UserDidLeaveWaitingList', $course_id, $GLOBALS['user']->id);
                 $deleted = AdmissionApplication::deleteBySQL(
@@ -533,7 +536,7 @@ class MyCoursesController extends AuthenticatedController
                     AdmissionApplication::addMembers($course_id);
                     PageLayout::postSuccess(sprintf(
                         _("Der Eintrag in der Anmelde- bzw. Warteliste der Veranstaltung <b>%s</b> wurde aufgehoben. Wenn Sie an der Veranstaltung teilnehmen wollen, müssen Sie sich erneut bewerben."),
-                        htmlReady($current_seminar->name)
+                        htmlReady($course->name)
                     ));
                 }
             }

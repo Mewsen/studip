@@ -54,12 +54,6 @@ class Step25RaumzeitDbConversion extends Migration
         $STEP_SIZE= 300;
 
 
-        // include business logic
-        require_once('lib/classes/Seminar.php');
-        require_once('lib/resources/lib/VeranstaltungResourcesAssign.php');
-
-
-
         // lets go...
         fwrite($logfile_handle, "(". date("Y-m-d H:i:s T") .") Starting conversion of imported seminar dates.\n");
 

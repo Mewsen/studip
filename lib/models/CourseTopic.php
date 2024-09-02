@@ -93,8 +93,8 @@ class CourseTopic extends SimpleORMap
     public function connectWithDocumentFolder()
     {
         if ($this->seminar_id) {
-            $document_module = Seminar::getInstance($this->seminar_id)->getSlotModule('documents');
-            if ($document_module) {
+            $course = Course::find($this->seminar_id);
+            if ($course->isToolActive(CoreDocuments::class)) {
                 if (!$this->folders->count()) {
                     $folder = new Folder();
                     $folder['range_id'] = $this['seminar_id'];
@@ -118,10 +118,15 @@ class CourseTopic extends SimpleORMap
     public function connectWithForumThread()
     {
         if ($this->seminar_id) {
-            $forum_module = Seminar::getInstance($this->seminar_id)->getSlotModule('forum');
-            if ($forum_module instanceOf ForumModule) {
-                $forum_module->setThreadForIssue($this->id, $this->title, $this->description);
-                return true;
+            $course = Course::find($this->seminar_id);
+            try {
+                $forum_module = $course->getTool(CoreForum::class);
+                if ($forum_module instanceof ForumModule) {
+                    $forum_module->setThreadForIssue($this->id, $this->title, $this->description);
+                    return true;
+                }
+            } catch (\Studip\Exception $e) {
+                return false;
             }
         }
         return false;
@@ -130,9 +135,14 @@ class CourseTopic extends SimpleORMap
     public function getForumThreadURL()
     {
         if ($this->seminar_id) {
-            $forum_module = Seminar::getInstance($this->seminar_id)->getSlotModule('forum');
-            if ($forum_module instanceOf ForumModule) {
-                return html_entity_decode($forum_module->getLinkToThread($this->id));
+            $course = Course::find($this->seminar_id);
+            try {
+                $forum_module = $course->getTool(CoreForum::class);
+                if ($forum_module instanceof ForumModule) {
+                    return html_entity_decode($forum_module->getLinkToThread($this->id));
+                }
+            } catch (\Studip\Exception $e) {
+                return '';
             }
         }
         return '';

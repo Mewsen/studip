@@ -46,6 +46,27 @@ require_once 'lib/dates.inc.php';
 class SeminarCycleDate extends SimpleORMap
 {
     /**
+     * The booking status of the regular date cannot be determined
+     */
+    const BOOKING_STATUS_UNDEFINED        = 0;
+
+    /**
+     * None of the single dates of the regular date is booked.
+     */
+    const BOOKING_STATUS_NOT_BOOKED       = 1;
+
+    /**
+     * Only a part (at least one) of the single dates of the regular dates is booked.
+     */
+    const BOOKING_STATUS_PARTIALLY_BOOKED = 2;
+
+    /**
+     * All single dates of the regular date are booked.
+     */
+    const BOOKING_STATUS_ALL_BOOKED       = 3;
+
+
+    /**
      * Configures this model.
      *
      * @param Array $config Configuration array
@@ -181,35 +202,113 @@ class SeminarCycleDate extends SimpleORMap
     }
 
     /**
-     * returns a string for a date like '3. 9:00s - 10:45' (short and long)
-     * or '3. 9:00s - 10:45, , ab der 7. Semesterwoche, (Vorlesung)' with the week of the semester
-     * @param format string: "short"|"long"|"full"
-     * @return formatted string
+     * Generates a string for a regular date. Depending on the selected format, more or less information
+     * are present in the generated string:
+     * - short:      Only the weekday, beginning and end
+     * - long:       Weekday, beginning, end and the repetition interval
+     * - long-start: Same as long but with the start date.
+     * - full:       Same as long, but also with the start and end week of the regular date in the semester
+     *               and the description of the regular date, if provided.
+     *
+     * @param string $format The format string: "short", "long" or "full". Defaults to "short".
+     *
+     * @returns string The formatted string.
      */
-    public function toString($format = 'short')
+    public function toString(string $format = 'short') : string
     {
-        $template['short'] = '%s. %02s:%02s - %02s:%02s';
-        $template['long'] = '%s: %02s:%02s - %02s:%02s, %s';
-        $template['full'] = '%s: %02s:%02s - %02s:%02s, ' . _('%s, ab der %s. Semesterwoche');
-        if ($this->end_offset) {
-            $template['full'] .= ' bis zur %s. Semesterwoche';
-        } else {
-            $template['full'] .= '%s';
+        if (!in_array($format, ['short', 'long', 'long-start', 'full'])) {
+            //Invalid format:
+            return '';
         }
-        $template['full'] .= '%s';
-        $cycles = [_('wöchentlich'), _('zweiwöchentlich'), _('dreiwöchentlich')];
-        $day = getWeekDay($this->weekday, $format == 'short');
-        $result = sprintf($template[$format],
-            $day,
-            $this->start_hour,
-            $this->start_minute,
-            $this->end_hour,
-            $this->end_minute,
-            $cycles[(int)$this->cycle],
-            $this->week_offset + 1,
-            $this->end_offset ? $this->end_offset: '',
-            $this->description ? ' (' . $this->description . ')' : '');
-        return $result;
+
+        $parameters = [
+            'beginning' => sprintf('%02d:%02d', $this->start_hour, $this->start_minute),
+            'end'       => sprintf('%02d:%02d', $this->end_hour, $this->end_minute),
+        ];
+
+        if ($format === 'short') {
+            $parameters['weekday_short'] = getWeekday($this->weekday);
+            return studip_interpolate(
+                _('%{weekday_short}. %{beginning} - %{end}'),
+                $parameters
+            );
+        } else {
+            $parameters['weekday']  = getWeekday($this->weekday, false);
+            $cycles = [_('wöchentlich'), _('zweiwöchentlich'), _('dreiwöchentlich')];
+            $parameters['interval'] = $cycles[(int)$this->cycle];
+            if ($format === 'long') {
+                return studip_interpolate(
+                    _('%{weekday}, %{beginning} - %{end}, %{interval}'),
+                    $parameters
+                );
+            } elseif ($format === 'long-start') {
+                $text = _('%{weekday}, %{beginning} - %{end}, %{interval}');
+                $room = $this->getMostBookedRoom();
+                if ($room) {
+                    $parameters['room_name'] = sprintf(
+                        '<a href="%1$s" data-dialog="size=auto">%2$s</a>',
+                        $room->getActionLink(),
+                        htmlReady($room->name)
+                    );
+                }
+                $first_date = $this->getFirstDate();
+                if ($first_date) {
+                    $parameters['start_date'] = date('d.m.Y', $first_date->date);
+                }
+                if ($room && $first_date) {
+                    $text = _('%{weekday}, %{beginning} - %{end}, %{interval} (ab dem %{start_date} im Raum %{room_name})');
+                } elseif ($room) {
+                    $text = _('%{weekday}, %{beginning} - %{end}, %{interval} (im Raum %{room_name})');
+                } elseif ($first_date) {
+                    $text = _('%{weekday}, %{beginning} - %{end}, %{interval} (ab dem %{start_date})');
+                }
+                return studip_interpolate($text, $parameters);
+            } elseif ($format === 'full') {
+                $parameters['start_week'] = $this->week_offset + 1;
+                if ($this->description) {
+                    $parameters['description'] = $this->description;
+                }
+                if ($this->end_offset) {
+                    $parameters['end_week'] = $this->end_offset;
+                }
+                if ($this->description) {
+                    if ($this->end_offset) {
+                        return studip_interpolate(
+                            _('%{weekday}, %{beginning} - %{end}, %{interval}, von der %{start_week}. bis zur %{end_week}. Semesterwoche (%{description})'),
+                            $parameters
+                        );
+                    } else {
+                        return studip_interpolate(
+                            _('%{weekday}, %{beginning} - %{end}, %{interval}, ab der %{start_week}. Semesterwoche (%{description})'),
+                            $parameters
+                        );
+                    }
+                } else {
+                    if ($this->end_offset) {
+                        return studip_interpolate(
+                            _('%{weekday}, %{beginning} - %{end}, %{interval}, von der %{start_week}. bis zur %{end_week}. Semesterwoche'),
+                            $parameters
+                        );
+                    } else {
+                        return studip_interpolate(
+                            _('%{weekday}, %{beginning} - %{end}, %{interval}, ab der %{start_week}. Semesterwoche'),
+                            $parameters
+                        );
+                    }
+                }
+            }
+        }
+        return '';
+    }
+
+    /**
+     * Retrieves the first date of the regular date.
+     *
+     * @return CourseDate|null The first date or null if no such date exists.
+     */
+    public function getFirstDate() : ?CourseDate
+    {
+        return $this->dates->first();
     }
 
     /**
@@ -231,6 +330,103 @@ class SeminarCycleDate extends SimpleORMap
         });
 
         return $dates;
+    }
+
+    /**
+     * Retrieves the most booked room that is booked for this regular date.
+     *
+     * @return Room[] Either the most booked rooms for this regular date or an empty array
+     *     in case no such room exists.
+     */
+    public function getMostBookedRooms(int $start_time = 0, int $end_time = 0) : array
+    {
+        $sql = "SELECT `resource_id`, COUNT(`resource_id`) AS resource_c
+                FROM `termine`
+                JOIN `resource_bookings`
+                  ON (`termin_id` = `resource_bookings`.`range_id`) ";
+        if ($start_time && $end_time && $start_time < $end_time) {
+            $sql .= "JOIN `resource_booking_intervals`
+                       ON `resource_booking_intervals`.`booking_id` = `resource_bookings`.`id` ";
+        }
+        $sql .= "WHERE ";
+        $sql_params = ['regular_date_id' => $this->id];
+        if ($start_time && $end_time && $start_time < $end_time) {
+            $sql .= "`resource_booking_intervals`.`end` > :start AND `resource_booking_intervals`.`start` < :end AND ";
+            $sql_params['start'] = $start_time;
+            $sql_params['end']   = $end_time;
+        }
+        $sql .= "`termine`.`metadate_id` = :regular_date_id
+             AND `resource_id` <> ''
+             GROUP BY `resource_id`
+             ORDER BY resource_c DESC";
+        $db = DBManager::get();
+        $stmt = $db->prepare($sql);
+        $stmt->execute($sql_params);
+        $rooms = [];
+        while ($room_id = $stmt->fetchColumn() !== false) {
+            $room = Resource::find($room_id)?->getDerivedClassInstance();
+            if ($room instanceof Room) {
+                $rooms[] = $room;
+            }
+        }
+        return $rooms;
+    }
+
+    /**
+     * Retrieves the most booked room that is booked for this regular date.
+     *
+     * @return Room|null Either the most booked room for this regular date or null
+     *     in case no such room exists.
+     */
+    public function getMostBookedRoom() : ?Room
+    {
+        $rooms = $this->getMostBookedRooms();
+        return array_shift($rooms);
+    }
+
+    /**
+     * @param int $start_time
+     *
+     * @param int $end_time
+     *
+     * @return string[] A list of free text rooms ordered by the most used one.
+     *     In case no such rooms exist, an empty array is returned.
+     */
+    public function getMostUsedFreetextRoomNames(int $start_time = 0, int $end_time = 0) : array
+    {
+        $sql = "SELECT `raum`, COUNT(`raum`) AS room_name_c
+                FROM `termine`
+                WHERE ";
+        $sql_params = ['regular_date_id' => $this->id];
+        if ($start_time && $end_time && $start_time < $end_time) {
+            $sql .= "`termine`.`date` BETWEEN :start AND :end AND ";
+            $sql_params['start'] = $start_time;
+            $sql_params['end']   = $end_time;
+        }
+        $sql .= "`termine`.`metadate_id` = :regular_date_id
+             AND `termine`.`termin_id` NOT IN (SELECT `range_id` FROM `resource_bookings`)
+             GROUP BY `raum`
+             ORDER BY room_name_c DESC";
+        $db = DBManager::get();
+        $stmt = $db->prepare($sql);
+        $stmt->execute($sql_params);
+        $rooms = [];
+        while ($room_name = $stmt->fetchColumn() !== false) {
+            $rooms[] = $room_name;
+        }
+        return $rooms;
+    }
+
+    /**
+     * Retrieves the most booked free text room name that is used for this regular date.
+     *
+     * @return string|null Either the most used room name for this regular date or null
+     *     in case no such room exists.
+     */
+    public function getMostUsedFreetextRoomName() : ?string
+    {
+        $rooms = $this->getMostUsedFreetextRoomNames();
+        return array_shift($rooms);
     }
 
     /**
@@ -690,7 +886,7 @@ class SeminarCycleDate extends SimpleORMap
         $ids = $statement->fetchAll(PDO::FETCH_COLUMN);
 
         foreach ($ids as $id) {
-            $termin = new SingleDate($id);
+            $termin = new CourseDate($id);
             $termin->delete();
             unset($termin);
         }
@@ -818,5 +1014,102 @@ class SeminarCycleDate extends SimpleORMap
     {
         $data = $this->buildOpenRequestsForDatesQuery($include_metadate);
         return ResourceRequest::countBySql($data['sql'], $data['sql_params']);
+    }
+
+    /**
+     * Determines the booking status for the regular date and returns it as an integer that
+     * corresponds to defined class constants:
+     *
+     * - If the booking status cannot be determined, BOOKING_STATUS_UNDEFINED is returned.
+     * - If none of the single dates is booked, BOOKING_STATUS_NOT_BOOKED is returned.
+     * - If only a part of the single dates is booked, BOOKING_STATUS_PARTIALLY_BOOKED is returned.
+     * - If all single dates are booked, BOOKING_STATUS_ALL_BOOKED is returned.
+     *
+     * @returns int The booking status as integer.
+     */
+    public function getBookingStatus() : int
+    {
+        if (!Config::get()->RESOURCES_ENABLE || !Config::get()->RESOURCES_ENABLE_BOOKINGSTATUS_COLORING) {
+            return self::BOOKING_STATUS_UNDEFINED;
+        }
+
+        if (count($this->dates) === 0) {
+            //If there are no dates, the booking status cannot be determined.
+            return self::BOOKING_STATUS_UNDEFINED;
+        }
+
+        //Count the course dates by their booking status:
+        $booked_c = 0;
+
+        foreach ($this->dates as $course_date) {
+            if ($course_date->room_booking) {
+                $booked_c++;
+            }
+        }
+
+        //Check which status is the dominant one (highest ratio):
+        if ($booked_c === 0) {
+            return self::BOOKING_STATUS_NOT_BOOKED;
+        } elseif (count($this->dates) === $booked_c) {
+            return self::BOOKING_STATUS_ALL_BOOKED;
+        } elseif ($booked_c > 0) {
+            return self::BOOKING_STATUS_PARTIALLY_BOOKED;
+        }
+        return self::BOOKING_STATUS_UNDEFINED;
+    }
+
+    /**
+     * Generates the correct icon for the booking status of the regular date.
+     *
+     * @return Icon An icon representing the booking status of the regular date.
+     */
+    public function getIconForBookingStatus() : Icon
+    {
+        return match ($this->getBookingStatus()) {
+            self::BOOKING_STATUS_ALL_BOOKED =>
+                Icon::create('span-full', Icon::ROLE_STATUS_GREEN),
+            self::BOOKING_STATUS_PARTIALLY_BOOKED =>
+                Icon::create('span-2quarter', Icon::ROLE_STATUS_YELLOW),
+            self::BOOKING_STATUS_NOT_BOOKED =>
+                Icon::create('span-empty', Icon::ROLE_STATUS_RED),
+            default =>
+                Icon::create('exclaim-circle', Icon::ROLE_INACTIVE),
+        };
+    }
+
+    /**
+     * Generates a human-readable HTML text for the booking status of the regular date.
+     *
+     * @return string A HTML text for the booking status of the regular date.
+     */
+    public function getMessageForBookingStatus() : string
+    {
+        $booking_status = $this->getBookingStatus();
+        if ($booking_status === self::BOOKING_STATUS_ALL_BOOKED) {
+            return _('Alle Termine haben Raumbuchungen.');
+        } elseif ($booking_status === self::BOOKING_STATUS_NOT_BOOKED) {
+            return _('Alle Termine haben keine Raumbuchungen.');
+        } elseif ($booking_status === self::BOOKING_STATUS_PARTIALLY_BOOKED) {
+            //List the dates that have no room booking:
+            $unbooked_dates = [];
+            foreach ($this->dates as $course_date) {
+                if (!$course_date->room_booking) {
+                    $unbooked_dates[] = $course_date;
+                }
+            }
+            uasort($unbooked_dates, function(CourseDate $a, CourseDate $b) {
+                return $a->date - $b->date
+                    ?: $a->end_time - $b->end_time;
+            });
+
+            $unbooked_dates_text = [
+                _('Die folgenden Termine haben keine Raumbuchungen:')
+            ];
+            foreach ($unbooked_dates as $date) {
+                $unbooked_dates_text[] = htmlReady($date->getFullName());
+            }
+            return implode('<br>', $unbooked_dates_text);
+        }
+        return _('Es sind keine Informationen zu Buchungen verfügbar.');
     }
 }

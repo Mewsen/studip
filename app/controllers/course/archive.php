@@ -165,9 +165,8 @@ class Course_ArchiveController extends AuthenticatedController
 
             $course = Course::find($courseId);
             if ($course) {
-                $seminar = new Seminar($course);
-                $coursename = $course->getFullName();
-                if ($seminar->delete()) {
+                $coursename = $course->getFullname();
+                if ($course->delete()) {
                     $this->deletedCourses[] = $courseId;
                     PageLayout::postSuccess(sprintf(
                         _('Die Veranstaltung %s wurde erfolgreich gelöscht.'),

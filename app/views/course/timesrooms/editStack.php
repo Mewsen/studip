@@ -133,8 +133,8 @@
                 <?= _('Lehrende') ?>
                 <select name="related_persons[]" id="related_persons" multiple>
                 <? foreach ($teachers as $teacher) : ?>
-                    <option value="<?= htmlReady($teacher['user_id']) ?>">
-                        <?= htmlReady($teacher['fullname']) ?>
+                    <option value="<?= htmlReady($teacher->user_id) ?>">
+                        <?= htmlReady($teacher->user->getFullName()) ?>
                     </option>
                 <? endforeach ?>
                 </select>

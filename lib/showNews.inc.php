@@ -205,11 +205,11 @@ function show_rss_news($range_id, $type)
             break;
         case 'sem':
             $studip_url = $GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/course/overview?cid=' . $range_id;
-            $sem_obj = Seminar::GetInstance($range_id);
-            if ($sem_obj->read_level > 0) {
+            $course = Course::find($range_id);
+            if ($course->lesezugriff > 0) {
                 $studip_url .= '&again=yes';
             }
-            $title = $sem_obj->getName() . ' (Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . ')';
+            $title = $course->name . ' (Stud.IP - ' . Config::get()->UNI_NAME_CLEAN . ')';
             $description = _('Neuigkeiten der Veranstaltung') . ' ' . $title;
 
             break;

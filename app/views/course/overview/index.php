@@ -10,38 +10,38 @@
                 <?= htmlReady(Context::get()->Untertitel) ?>
             </dd>
         <? endif ?>
-        <? if (!$studygroup_mode) : ?>
+        <? if (!$course->isStudygroup()) : ?>
             <dt><?= _('Zeit / Veranstaltungsort') ?></dt>
             <dd>
                 <?= $times_rooms ?: _('Die Zeiten der Veranstaltung stehen nicht fest.') ?>
             </dd>
             <? if ($next_date) : ?>
                 <dt><?= _('Nächster Termin') ?></dt>
-                <dd><?= $next_date ?></dd>
+                <dd><?= $next_date->getFullName('long') ?></dd>
             <? else : ?>
                 <dt><?= _('Erster Termin') ?></dt>
                 <dd>
                 <? if ($first_date) : ?>
-                    <?= $first_date ?>
+                    <?= $first_date->getFullName('long') ?>
                 <? else : ?>
                     <?= _('Die Zeiten der Veranstaltung stehen nicht fest.') ?>
                 <? endif ?>
                 </dd>
             <? endif ?>
-            <dt><?= htmlReady(get_title_for_status('dozent', $num_dozenten)) ?></dt>
-            <dd><?= implode(', ', $show_dozenten) ?> </dd>
+            <dt><?= htmlReady(get_title_for_status('dozent', $num_lecturers)) ?></dt>
+            <dd><?= implode(', ', $lecturer_html) ?> </dd>
         <? else : ?>
-            <? if ($sem->description) : ?>
+            <? if ($course->beschreibung) : ?>
                 <dt><?= _('Beschreibung') ?></dt>
-                <dd><?= formatLinks($sem->description) ?></dd>
+                <dd><?= formatLinks($course->beschreibung) ?></dd>
             <? endif ?>
             <dt><?= _('Moderiert von') ?></dt>
             <dd>
                 <ul class="list-csv">
                 <? foreach ($all_mods as $mod) : ?>
                     <li>
-                        <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $mod['username']]) ?>">
-                            <?= htmlready($mod['fullname']) ?>
+                        <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $mod->user->username]) ?>">
+                            <?= htmlready($mod->user->getFullName()) ?>
                         </a>
                     </li>
                 <? endforeach ?>

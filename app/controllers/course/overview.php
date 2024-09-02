@@ -29,10 +29,6 @@ class Course_OverviewController extends AuthenticatedController
         PageLayout::setHelpKeyword('Basis.InVeranstaltungKurzinfo');
         PageLayout::setTitle(Context::getHeaderLine() . ' - ' . _('Kurzinfo'));
         Navigation::activateItem('/course/main/info');
-
-        $this->sem             = Seminar::getInstance($this->course_id);
-        $sem_class             = $this->sem->getSemClass();
-        $this->studygroup_mode = $sem_class['studygroup_mode'];
     }
 
     /**
@@ -63,26 +59,27 @@ class Course_OverviewController extends AuthenticatedController
         }
 
 
-        if (!$this->studygroup_mode) {
+        if (!$this->course->isStudygroup()) {
             $this->avatar = CourseAvatar::getAvatar($this->course_id);
             // Fetch dates
             $response          = $this->relay("calendar/contentbox/display/{$this->course_id}/1210000");
             $this->dates       = $response->body;
-            $this->next_date   = $this->sem->getNextDate();
-            $this->first_date  = $this->sem->getFirstDate();
+            $this->next_date   = $this->course->getNextDate();
+            $this->first_date  = $this->course->getFirstDate();
             $show_link         = $GLOBALS["perm"]->have_studip_perm('autor', $this->course_id) && $this->course->isToolActive('schedule');
-            $this->times_rooms = $this->sem->getDatesTemplate('dates/seminar_html', ['link_to_dates' => $show_link, 'show_room' => true]);
+            $this->times_rooms = implode('<br>', $this->course->getAllDatesInSemester()->toStringArray());
 
-            // Fettch teachers
-            $dozenten      = $this->sem->getMembers('dozent');
-            $this->num_dozenten  = count($dozenten);
-            $show_dozenten = [];
-            foreach ($dozenten as $dozent) {
-                $show_dozenten[] = '<a href="' . URLHelper::getLink('dispatch.php/profile', ['username' => $dozent['username']]) . '">'
-                    . htmlready($this->num_dozenten > 10 ? get_fullname($dozent['user_id'], 'no_title_short') : $dozent['fullname'])
-                    . '</a>';
+            //Load lecturers:
+            $lecturers = $this->course->getMembersWithStatus('dozent');
+            $this->num_lecturers  = count($lecturers);
+            $this->lecturer_html = [];
+            foreach ($lecturers as $lecturer) {
+                $this->lecturer_html[] = sprintf(
+                    '<a href="%s">%s</a>',
+                    URLHelper::getLink('dispatch.php/profile', ['username' => $lecturer->user->username], true),
+                    htmlReady($lecturer->user->getFullName($this->num_lecturers > 10 ? 'no_title_short' : 'default'))
+                );
             }
-            $this->show_dozenten = $show_dozenten;
 
             // Check lock rules
             if (!$GLOBALS['perm']->have_studip_perm('dozent', $this->course_id)) {
@@ -107,7 +104,7 @@ class Course_OverviewController extends AuthenticatedController
                 }
             }
         } else {
-            $this->all_mods = $this->sem->getMembers('dozent') + $this->sem->getMembers('tutor');
+            $this->all_mods = $this->course->getMembersWithStatus(['dozent', 'tutor']);
             $this->avatar   = StudygroupAvatar::getAvatar($this->course_id);
         }
 
@@ -129,7 +126,7 @@ class Course_OverviewController extends AuthenticatedController
         }
 
         $share = new ShareWidget();
-        if ($this->studygroup_mode) {
+        if ($this->course->isStudygroup()) {
             $share->addCopyableLink(
                 _('Link zu dieser Studiengruppe kopieren'),
                 $this->url_for('course/studygroup/details/' . $this->course->id, [

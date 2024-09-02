@@ -87,7 +87,7 @@ class StudygroupModel
             );
 
             // Post equivalent notifications to a regular course
-            $seminar = Seminar::getInstance($sem_id);
+            $seminar = Course::find($sem_id);
             NotificationCenter::postNotification(
                 'CourseDidGetMember', $seminar, $accept_user_id
             );
@@ -154,7 +154,7 @@ class StudygroupModel
         );
 
         // Post equivalent notifications to a regular course
-        $seminar = Seminar::getInstance($sem_id);
+        $seminar = Course::find($sem_id);
         NotificationCenter::postNotification('CourseDidChangeMember', $seminar, $user->id);
         NotificationCenter::postNotification('UserDidLeaveCourse', $sem_id, $user->id);
     }
@@ -514,30 +514,37 @@ class StudygroupModel
      */
     public static function applicationNotice($sem_id, $user_id)
     {
-        $sem        = new Seminar($sem_id);
-        $dozenten   = $sem->getMembers();
-        $tutors     = $sem->getMembers('tutor');
-        $recipients = [];
-        $msging     = new messaging();
+        $course = Course::find($sem_id);
+        $msging = new messaging();
 
-        foreach (array_merge($dozenten, $tutors) as $uid => $user) {
-            $recipients[] = $user['username'];
+        //Get all those with tutor and dozent status to inform them
+        //about the application:
+        $stmt = DBManager::get()->prepare(
+            "SELECT `username`
+             FROM `auth_user_md5`
+             JOIN `seminar_user` USING (`user_id`)
+             WHERE `seminar_user`.`seminar_id` = :course_id
+               AND `seminar_user`.`status` IN ('dozent', 'tutor')"
+        );
+        $stmt->execute(['course_id' => $course->id]);
+        $recipients = $stmt->fetchAll();
+
+        //Limit the subject prefix size in case of a long course name:
+        if (mb_strlen($course->name) > 32) {
+            $subject = sprintf(_('[Studiengruppe: %s...]'), mb_substr($course->name, 0, 30));
+        } else {
+            $subject = sprintf(_('[Studiengruppe: %s]'), $course->name);
         }
-
-        if (mb_strlen($sem->getName()) > 32) //cut subject if to long
-            $subject = sprintf(_('[Studiengruppe: %s...]'), mb_substr($sem->getName(), 0, 30));
-        else
-            $subject = sprintf(_('[Studiengruppe: %s]'), $sem->getName());
 
         if (StudygroupModel::isInvited($user_id, $sem_id)) {
             $subject .= ' ' . _('Einladung akzeptiert');
             $message = sprintf(
                 _("%s hat die Einladung zur Studiengruppe %s akzeptiert. Klicken Sie auf den folgenden Link, um direkt zur Studiengruppe zu gelangen.\n\n [Direkt zur Studiengruppe]%s"),
                 get_fullname($user_id),
-                $sem->getName(),
+                $course->name,
                 URLHelper::getlink(
-                    "{$GLOBALS['ABSOLUTE_URI_STUDIP']}dispatch.php/course/studygroup/members/?cid={$sem->id}",
-                    ['cid' => $sem->id]
+                    "{$GLOBALS['ABSOLUTE_URI_STUDIP']}dispatch.php/course/studygroup/members",
+                    ['cid' => $course->id]
                 )
             );
         } else {
@@ -545,10 +552,10 @@ class StudygroupModel
             $message = sprintf(
                 _("%s möchte der Studiengruppe %s beitreten. Klicken Sie auf den folgenden Link, um direkt zur Studiengruppe zu gelangen.\n\n [Direkt zur Studiengruppe]%s"),
                 get_fullname($user_id),
-                $sem->getName(),
+                $course->name,
                 URLHelper::getlink(
-                    "{$GLOBALS['ABSOLUTE_URI_STUDIP']}dispatch.php/course/studygroup/members/?cid={$sem->id}",
-                    ['cid' => $sem->id]
+                    "{$GLOBALS['ABSOLUTE_URI_STUDIP']}dispatch.php/course/studygroup/members",
+                    ['cid' => $course->id]
                 )
             );
         }

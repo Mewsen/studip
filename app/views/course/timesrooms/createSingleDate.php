@@ -67,13 +67,13 @@
                     <select id="related_teachers" name="related_teachers[]" multiple class="multiple">
                         <? foreach ($teachers as $dozent) : ?>
                             <option <?= in_array($dozent['user_id'], Request::getArray('related_teachers')) ? 'selected' : '' ?>
-                                value="<?= $dozent['user_id'] ?>"><?= htmlReady($dozent['fullname']) ?></option>
+                                value="<?= $dozent['user_id'] ?>"><?= htmlReady($dozent->user->getFullName()) ?></option>
                         <? endforeach ?>
                     </select>
                 <? else : ?>
                     <p style="margin-left: 15px">
                         <? $dozent = array_pop($teachers) ?>
-                        <?= htmlReady($dozent['fullname']) ?>
+                        <?= htmlReady($dozent->getUserFullname()) ?>
                     </p>
                 <? endif ?>
             </label>

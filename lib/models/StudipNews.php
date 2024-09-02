@@ -500,7 +500,7 @@ class StudipNews extends SimpleORMap implements PrivacyObject
                 if ($operation === 'view'
                     && ($type !== 'sem'
                         || $GLOBALS['perm']->have_studip_perm('user', $range_id)
-                        || (Config::get()->ENABLE_FREE_ACCESS && Seminar::getInstance($range_id)->read_level == 0)
+                        || (Config::get()->ENABLE_FREE_ACCESS && Course::find($range_id)->lesezugriff == 0)
                         )) {
                         return $news_range_perm_cache[$user_id.$range_id.$operation] = true;
                     }

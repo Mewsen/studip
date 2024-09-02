@@ -70,7 +70,6 @@ class Course_DetailsController extends AuthenticatedController
         $this->prelim_discussion = vorbesprechung($this->course->id);
         $this->title             = $this->course->getFullName();
         $this->course_domains    = UserDomain::getUserDomainsForSeminar($this->course->id);
-        $this->sem = new Seminar($this->course);
         $this->links = [];
 
         //public folders
@@ -203,11 +202,12 @@ class Course_DetailsController extends AuthenticatedController
 
             $sidebar = Sidebar::Get();
 
+            $enrolment_info = null;
+
             if ($GLOBALS['SessionSeminar'] === $this->course->id) {
                 Navigation::activateItem('/course/main/details');
             } else {
-                $sidebarlink = true;
-                $enrolment_info = $this->sem->getEnrolmentInfo($GLOBALS['user']->id);
+                $enrolment_info = $this->course->getEnrolmentInformation($GLOBALS['user']->id);
             }
 
             $links = new ActionsWidget();
@@ -217,12 +217,12 @@ class Course_DetailsController extends AuthenticatedController
                 Icon::create('print'),
                 ['class' => 'print_action', 'target' => '_blank']
             );
-            if (isset($enrolment_info) && $enrolment_info['enrolment_allowed'] && $sidebarlink) {
-                if (in_array($enrolment_info['cause'], ['member', 'root', 'courseadmin'])) {
-                    $abo_msg = _('direkt zur Veranstaltung');
+            if ($enrolment_info && $enrolment_info->isEnrolmentAllowed()) {
+                if (in_array($enrolment_info->getCodeword(), ['already_member', 'root', 'course_admin'])) {
+                    $abo_msg = _('Direkt zur Veranstaltung');
                 } else {
                     $abo_msg = _('Zugang zur Veranstaltung');
-                    if ($this->sem->admission_binding) {
+                    if ($this->course->admission_binding) {
                         PageLayout::postInfo(_('Die Anmeldung ist verbindlich, Teilnehmende können sich nicht selbst austragen.'));
                     }
                 }
@@ -244,7 +244,7 @@ class Course_DetailsController extends AuthenticatedController
             if (Config::get()->SCHEDULE_ENABLE
                 && !$GLOBALS['perm']->have_studip_perm('user', $this->course->id)
                 && !$GLOBALS['perm']->have_perm('admin')
-                && $this->sem->getMetaDateCount()
+                && count($this->course->cycles)
             ) {
                 $query = "SELECT 1
                           FROM `schedule_seminare`
@@ -303,8 +303,8 @@ class Course_DetailsController extends AuthenticatedController
             );
             $sidebar->addWidget($share);
 
-            if (isset($enrolment_info) && $enrolment_info['description']) {
-                PageLayout::postInfo($enrolment_info['description']);
+            if ($enrolment_info) {
+                PageLayout::postMessage($enrolment_info->toMessageBox());
             }
         }
     }

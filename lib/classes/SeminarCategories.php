@@ -88,7 +88,7 @@ class SeminarCategories {
      * @return SeminarCategories
      */
     public static function GetBySeminarId($seminar_id){
-        return self::GetByTypeId(Seminar::GetInstance($seminar_id)->status);
+        return self::GetByTypeId(Course::find($seminar_id)->status);
     }
 
     /**

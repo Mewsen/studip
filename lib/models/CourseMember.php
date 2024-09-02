@@ -366,76 +366,30 @@ class CourseMember extends SimpleORMap implements PrivacyObject
      * @param string   $contingent   optional studiengang_id, if no id is given, no contingent is considered
      * @param string   $log_message  optional log-message. if no log-message is given a default one is used
      * @return bool
+     *
+     * @deprecated Use Course::addMember instead.
      */
     public static function insertCourseMember($seminar_id, $user_id, $status, $copy_studycourse = false, $contingent = false, $log_message = false): bool
     {
         if (!$user_id) {
             return false;
         }
-        // get the seminar-object
-        $sem = Seminar::GetInstance($seminar_id);
 
-        $admission_status = '';
-        $admission_comment = '';
-        $mkdate = time();
-
-        $admission_user = AdmissionApplication::find([$user_id, $seminar_id]);
-        if ($admission_user) {
-            $admission_status = $admission_user->status;
-            $admission_comment = $admission_user->comment ?? '';
-            $mkdate = $admission_user->mkdate;
-        }
-
-        // check if there are places left in the submitted contingent (if any)
-        //ignore if preliminary
-        if ($admission_status !== 'accepted' && $contingent && $sem->isAdmissionEnabled() && !$sem->getFreeAdmissionSeats()) {
+        $user = User::find($user_id);
+        if (!$user) {
             return false;
         }
 
-        // get coloured group as used on meine_seminare
-        $colour_group = $sem->getDefaultGroup();
-
-        // LOGGING
-        // if no log message is submitted use a default one
-        if (!$log_message) {
-            $log_message = 'Wurde in die Veranstaltung eingetragen, admission_status: '. $admission_status . ' Kontingent: ' . $contingent;
+        $course = Course::find($seminar_id);
+        if (!$course) {
+            return false;
         }
-        StudipLog::log('SEM_USER_ADD', $seminar_id, $user_id, $status, $log_message);
-        $membership = new self([$seminar_id, $user_id]);
-        $membership->setData([
-            'Seminar_id' => $seminar_id,
-            'user_id'    => $user_id,
-            'status'     => $status,
-            'comment'    => $admission_comment,
-            'gruppe'     => $colour_group,
-            'mkdate'     => $mkdate,
-        ]);
-        $membership->store();
-
-        NotificationCenter::postNotification('UserDidEnterCourse', $seminar_id, $user_id);
-
-        if ($admission_status) {
-            $admission_user->delete();
-
-            //renumber the waiting/accepted/lot list, a user was deleted from it
-            AdmissionApplication::renumberAdmission($seminar_id);
+        try {
+            $course->addMember($user, $status, $contingent);
+            return true;
+        } catch (\Studip\Exception $e) {
+            return false;
         }
-        $cs = $sem->getCourseSet();
-        if ($cs) {
-            AdmissionPriority::unsetPriority($cs->getId(), $user_id, $sem->getId());
-        }
-
-        CalendarScheduleModel::deleteSeminarEntries($user_id, $seminar_id);
-
-        // reload the seminar, the contingents have changed
-        $sem->restore();
-
-        // Check if a parent course exists and insert user there.
-        if ($sem->parent_course) {
-            self::insertCourseMember($sem->parent_course, $user_id, $status, $copy_studycourse, $contingent, $log_message);
-        }
-
-        return true;
     }
 
     public function getExportData(): array

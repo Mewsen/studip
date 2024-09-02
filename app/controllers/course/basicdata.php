@@ -21,17 +21,14 @@ class Course_BasicdataController extends AuthenticatedController
 
     /**
      * Set up the list of input fields. Some fields may be locked for
-     * some reasons (lock rules, insufficient permissions etc.). This
+     * some reason (lock rules, insufficient permissions etc.). This
      * method does not return anything, it just sets up $this->attributes
      * and $this->descriptions.
      *
-     * @param Seminar $sem
+     * @param Course $course
      */
-    private function setupInputFields($sem)
+    protected function setupInputFields(Course $course)
     {
-        $course_id = $sem->getId();
-        $data = $sem->getData();
-
         $this->attributes = [];
         $this->attributes[] = [
             'title' => _("Name der Veranstaltung"),
@@ -39,16 +36,16 @@ class Course_BasicdataController extends AuthenticatedController
             'must' => true,
             'type' => 'text',
             'i18n' => true,
-            'value' => $data['name'],
-            'locked' => LockRules::Check($course_id, 'Name')
+            'value' => $course->name,
+            'locked' => LockRules::Check($course->id, 'Name')
         ];
         $this->attributes[] = [
-            'title' => _("Untertitel der Veranstaltung"),
-            'name' => "course_subtitle",
+            'title' => _('Untertitel der Veranstaltung'),
+            'name' => 'course_untertitel',
             'type' => 'text',
             'i18n' => true,
-            'value' => $data['subtitle'],
-            'locked' => LockRules::Check($course_id, 'Untertitel')
+            'value' => $course->untertitel,
+            'locked' => LockRules::Check($course->id, 'Untertitel')
         ];
         $changable = true;
         $this->attributes[] = [
@@ -56,60 +53,60 @@ class Course_BasicdataController extends AuthenticatedController
             'name'      => 'course_status',
             'must'      => true,
             'type'      => 'select',
-            'value'     => $data['status'],
-            'locked'    => LockRules::Check($course_id, 'status'),
-            'choices'   => $this->_getTypes($sem, $data, $changable),
+            'value'     => $course->status,
+            'locked'    => LockRules::Check($course->id, 'status'),
+            'choices'   => $this->_getTypes($course, $changable),
             'changable' => $changable,
         ];
 
         $this->attributes[] = [
             'title' => _("Art der Veranstaltung"),
-            'name' => "course_form",
+            'name' => 'course_art',
             'type' => 'text',
             'i18n' => true,
-            'value' => $data['form'],
-            'locked' => LockRules::Check($course_id, 'art')
+            'value' => $course->art,
+            'locked' => LockRules::Check($course->id, 'art')
         ];
         $course_number_format_config = Config::get()->getMetadata('COURSE_NUMBER_FORMAT');
         $this->attributes[] = [
-            'title' => _("Veranstaltungsnummer"),
-            'name' => "course_seminar_number",
+            'title' => _('Veranstaltungsnummer'),
+            'name' => 'course_veranstaltungsnummer',
             'type' => 'text',
-            'value' => $data['seminar_number'],
-            'locked' => LockRules::Check($course_id, 'VeranstaltungsNummer'),
+            'value' => $course->veranstaltungsnummer,
+            'locked' => LockRules::Check($course->id, 'VeranstaltungsNummer'),
             'description' => $course_number_format_config['comment'],
             'pattern' => Config::get()->COURSE_NUMBER_FORMAT
         ];
         $this->attributes[] = [
-            'title' => _("ECTS-Punkte"),
-            'name' => "course_ects",
+            'title' => _('ECTS-Punkte'),
+            'name' => 'course_ects',
             'type' => 'text',
-            'value' => $data['ects'],
-            'locked' => LockRules::Check($course_id, 'ects')
+            'value' => $course->ects,
+            'locked' => LockRules::Check($course->id, 'ects')
         ];
         $this->attributes[] = [
-            'title' => _("max. Teilnehmendenzahl"),
-            'name' => "course_admission_turnout",
+            'title' => _('max. Teilnehmendenzahl'),
+            'name' => 'course_admission_turnout',
             'must' => false,
             'type' => 'number',
-            'value' => $data['admission_turnout'],
-            'locked' => LockRules::Check($course_id, 'admission_turnout'),
+            'value' => $course->admission_turnout,
+            'locked' => LockRules::Check($course->id, 'admission_turnout'),
             'min' => '0'
         ];
         $this->attributes[] = [
-            'title' => _("Beschreibung"),
-            'name' => "course_description",
+            'title' => _('Beschreibung'),
+            'name' => 'course_beschreibung',
             'type' => 'textarea',
             'i18n' => true,
-            'value' => $data['description'],
-            'locked' => LockRules::Check($course_id, 'Beschreibung')
+            'value' => $course->beschreibung,
+            'locked' => LockRules::Check($course->id, 'Beschreibung')
         ];
 
         $this->institutional = [];
         $my_institutes = Institute::getMyInstitutes();
         $institutes = Institute::getInstitutes();
         foreach ($institutes as $institute) {
-            if ($institute['Institut_id'] === $data['institut_id']) {
+            if ($institute['Institut_id'] === $course->institut_id) {
                 $found = false;
                 foreach ($my_institutes as $inst) {
                     if ($inst['Institut_id'] === $institute['Institut_id']) {
@@ -128,54 +125,54 @@ class Course_BasicdataController extends AuthenticatedController
             'name'    => 'course_institut_id',
             'must'    => true,
             'type'    => 'nested-select',
-            'value'   => $data['institut_id'],
+            'value'   => $course->institut_id,
             'choices' => $this->instituteChoices($my_institutes),
-            'locked'  => LockRules::Check($course_id, 'Institut_id')
+            'locked'  => LockRules::Check($course->id, 'Institut_id')
         ];
 
-        $sem_institutes = $sem->getInstitutes();
+        $institute_ids = $course->institutes->pluck('id');
         $this->institutional[] = [
             'title'    => _('beteiligte Einrichtungen'),
             'name'     => 'related_institutes[]',
             'type'     => 'nested-select',
-            'value'    => array_diff($sem_institutes, [$sem->institut_id]),
+            'value'    => $institute_ids,
             'choices'  => $this->instituteChoices($institutes),
-            'locked'   => LockRules::Check($course_id, 'seminar_inst'),
+            'locked'   => LockRules::Check($course->id, 'seminar_inst'),
             'multiple' => true,
         ];
 
         $this->descriptions = [];
         $this->descriptions[] = [
-            'title' => _("Teilnehmende"),
-            'name' => "course_participants",
+            'title' => _('Teilnehmende'),
+            'name' => 'course_teilnehmer',
             'type' => 'textarea',
             'i18n' => true,
-            'value' => $data['participants'],
-            'locked' => LockRules::Check($course_id, 'teilnehmer')
+            'value' => $course->teilnehmer,
+            'locked' => LockRules::Check($course->id, 'teilnehmer')
         ];
         $this->descriptions[] = [
-            'title' => _("Voraussetzungen"),
-            'name' => "course_requirements",
+            'title' => _('Voraussetzungen'),
+            'name' => 'course_vorrausetzungen',
             'type' => 'textarea',
             'i18n' => true,
-            'value' => $data['vorrausetzungen'],
-            'locked' => LockRules::Check($course_id, 'voraussetzungen')
+            'value' => $course->vorrausetzungen,
+            'locked' => LockRules::Check($course->id, 'voraussetzungen')
         ];
         $this->descriptions[] = [
-            'title' => _("Lernorganisation"),
-            'name' => "course_orga",
+            'title' => _('Lernorganisation'),
+            'name' => 'course_lernorga',
             'type' => 'textarea',
             'i18n' => true,
-            'value' => $data['orga'],
-            'locked' => LockRules::Check($course_id, 'lernorga')
+            'value' => $course->lernorga,
+            'locked' => LockRules::Check($course->id, 'lernorga')
         ];
         $this->descriptions[] = [
-            'title' => _("Leistungsnachweis"),
-            'name' => "course_leistungsnachweis",
+            'title' => _('Leistungsnachweis'),
+            'name' => 'course_leistungsnachweis',
             'type' => 'textarea',
             'i18n' => true,
-            'value' => $data['leistungsnachweis'],
-            'locked' => LockRules::Check($course_id, 'leistungsnachweis')
+            'value' => $course->leistungsnachweis,
+            'locked' => LockRules::Check($course->id, 'leistungsnachweis')
         ];
         $this->descriptions[] = [
             'title' => _("Ort") .
@@ -186,18 +183,18 @@ class Course_BasicdataController extends AuthenticatedController
                   "Angaben aus Zeiten oder Sitzungsterminen gemacht werden können.") .
                 "</span>",
             'i18n' => true,
-            'name' => "course_location",
+            'name' => 'course_ort',
             'type' => 'textarea',
-            'value' => $data['ort'],
-            'locked' => LockRules::Check($course_id, 'Ort')
+            'value' => $course->ort,
+            'locked' => LockRules::Check($course->id, 'Ort')
         ];
 
-        $datenfelder = DataFieldEntry::getDataFieldEntries($course_id, 'sem', $data["status"]);
+        $datenfelder = DataFieldEntry::getDataFieldEntries($course->id, 'sem', $course->status);
         if ($datenfelder) {
             foreach($datenfelder as $datenfeld) {
                 if ($datenfeld->isVisible()) {
                     $locked = !$datenfeld->isEditable()
-                              || LockRules::Check($course_id, $datenfeld->getID());
+                              || LockRules::Check($course->id, $datenfeld->getID());
                     $desc = $locked ? _('Diese Felder werden zentral durch die zuständigen Administratoren erfasst.') : $datenfeld->getDescription();
                     $this->descriptions[] = [
                         'title' => $datenfeld->getName(),
@@ -215,11 +212,11 @@ class Course_BasicdataController extends AuthenticatedController
             }
         }
         $this->descriptions[] = [
-            'title' => _("Sonstiges"),
-            'name' => "course_misc",
+            'title' => _('Sonstiges'),
+            'name' => 'course_sonstiges',
             'type' => 'textarea',
-            'value' => $data['misc'],
-            'locked' => LockRules::Check($course_id, 'Sonstiges')
+            'value' => $course->sonstiges,
+            'locked' => LockRules::Check($course->id, 'Sonstiges')
         ];
     }
 
@@ -291,22 +288,21 @@ class Course_BasicdataController extends AuthenticatedController
 
         //Daten sammeln:
         $course = Course::find($this->course_id);
-        $sem = new Seminar($course);
-        $data = $sem->getData();
+        $data = $course->toRawArray();
 
         //Erster, zweiter und vierter Reiter des Akkordions: Grundeinstellungen
-        $this->setupInputFields($sem);
+        $this->setupInputFields($course);
 
-        $sem_institutes = $sem->getInstitutes();
+        $sem_institutes = $course->institutes->pluck('id');
         $this->dozent_is_locked = LockRules::Check($this->course_id, 'dozent');
         $this->tutor_is_locked = LockRules::Check($this->course_id, 'tutor');
 
         //Dritter Reiter: Personal
-        $this->dozenten = $sem->getMembers('dozent');
-        $instUsers = new SimpleCollection(InstituteMember::findByInstituteAndStatus($sem->getInstitutId(), 'dozent'));
+        $this->dozenten = $course->getMembersWithStatus('dozent');
+        $instUsers = new SimpleCollection(InstituteMember::findByInstituteAndStatus($course->institut_id, 'dozent'));
         $this->lecturersOfInstitute = $instUsers->pluck('user_id');
 
-        if (SeminarCategories::getByTypeId($sem->status)->only_inst_user) {
+        if (SeminarCategories::getByTypeId($course->status)->only_inst_user) {
             $search_template = "user_inst_not_already_in_sem";
         } else {
             $search_template = "user_not_already_in_sem";
@@ -314,7 +310,7 @@ class Course_BasicdataController extends AuthenticatedController
 
         $this->dozentUserSearch = new PermissionSearch(
             $search_template,
-            sprintf(_("%s suchen"), get_title_for_status('dozent', 1, $sem->status)),
+            sprintf(_('%s suchen'), get_title_for_status('dozent', 1, $course->status)),
             "user_id",
             [
                 'permission' => 'dozent',
@@ -323,25 +319,25 @@ class Course_BasicdataController extends AuthenticatedController
                 'institute' => $sem_institutes
             ]
         );
-        $this->dozenten_title = get_title_for_status('dozent', 1, $sem->status);
+        $this->dozenten_title = get_title_for_status('dozent', 1, $course->status);
         $this->deputies_enabled = $deputies_enabled;
 
         if ($this->deputies_enabled) {
             $this->deputies = Deputy::findDeputies($this->course_id);
             $this->deputySearch = new PermissionSearch(
                 "user_not_already_in_sem_or_deputy",
-                sprintf(_("%s suchen"), get_title_for_status('deputy', 1, $sem->status)),
+                sprintf(_("%s suchen"), get_title_for_status('deputy', 1, $course->status)),
                 "user_id",
                 ['permission' => Deputy::getValidPerms(), 'seminar_id' => $this->course_id]
             );
 
-            $this->deputy_title = get_title_for_status('deputy', 1, $sem->status);
+            $this->deputy_title = get_title_for_status('deputy', 1, $course->status);
         }
-        $this->tutoren = $sem->getMembers('tutor');
+        $this->tutoren = $course->getMembersWithStatus('tutor');
 
         $this->tutorUserSearch = new PermissionSearch(
             $search_template,
-            sprintf(_("%s suchen"), get_title_for_status('tutor', 1, $sem->status)),
+            sprintf(_('%s suchen'), get_title_for_status('tutor', 1, $course->status)),
             "user_id",
             ['permission' => ['dozent','tutor'],
                   'seminar_id' => $this->course_id,
@@ -349,8 +345,8 @@ class Course_BasicdataController extends AuthenticatedController
                   'institute' => $sem_institutes
                  ]
         );
-        $this->tutor_title = get_title_for_status('tutor', 1, $sem->status);
-        $instUsers = new SimpleCollection(InstituteMember::findByInstituteAndStatus($sem->getInstitutId(), 'tutor'));
+        $this->tutor_title = get_title_for_status('tutor', 1, $course->status);
+        $instUsers = new SimpleCollection(InstituteMember::findByInstituteAndStatus($course->institut_id, 'tutor'));
         $this->tutorsOfInstitute = $instUsers->pluck('user_id');
         unset($instUsers);
 
@@ -464,15 +460,19 @@ class Course_BasicdataController extends AuthenticatedController
         CSRFProtection::verifyUnsafeRequest();
 
         $course_number_format = Config::get()->COURSE_NUMBER_FORMAT;
-        $sem = Seminar::getInstance($course_id);
-        $this->msg = [];
-        $old_settings = $sem->getSettings();
+        $course = Course::find($course_id);
+        $this->msg = [
+            'success' => '',
+            'errors'  => []
+        ];
+        $old_settings = $course->toRawArray();
+        unset($old_settings['config']);
         //Seminar-Daten:
-        if ($perm->have_studip_perm("tutor", $sem->getId())) {
-            $this->setupInputFields($sem);
+        if ($perm->have_studip_perm('tutor', $course_id)) {
+            $this->setupInputFields($course);
             $changemade = false;
             $invalid_datafields = [];
-            $all_fields_types = DataFieldEntry::getDataFieldEntries($sem->id, 'sem', $sem->status);
+            $all_fields_types = DataFieldEntry::getDataFieldEntries($course->id, 'sem', $course->status);
             $datafield_values = Request::getArray('datafields');
 
             foreach (array_merge($this->attributes, $this->institutional, $this->descriptions) as $field) {
@@ -490,8 +490,17 @@ class Course_BasicdataController extends AuthenticatedController
                         }
                     } else if ($field['name'] == 'related_institutes[]') {
                         // only related_institutes supported for now
-                        if ($sem->setInstitutes(Request::optionArray('related_institutes'))) {
-                            $changemade = true;
+                        $related_institute_ids = Request::optionArray('related_institutes');
+                        if (is_array($related_institute_ids)) {
+                            $institutes = Institute::findMany($related_institute_ids);
+                            if ($institutes) {
+                                $course->institutes = $institutes;
+                                $changemade = $course->store();
+                            } else {
+                                $this->msg['error'][] = _('Es muss mindestens ein Institut angegeben werden.');
+                            }
+                        } else {
+                            $this->msg['error'][] = _('Es muss mindestens ein Institut angegeben werden.');
                         }
                     } else {
                         // format of input element name is "course_xxx"
@@ -503,14 +512,14 @@ class Course_BasicdataController extends AuthenticatedController
                         }
 
                         if ($varname === "name" && !$req_value) {
-                            $this->msg[] = ["error", _("Name der Veranstaltung darf nicht leer sein.")];
+                            $this->msg['error'][] = _('Name der Veranstaltung darf nicht leer sein.');
                         } elseif ($varname === "seminar_number" && $req_value && $course_number_format &&
                                   !preg_match('/^' . $course_number_format . '$/', $req_value)) {
-                            $this->msg[] = ['error', _('Die Veranstaltungsnummer hat ein ungültiges Format.')];
+                            $this->msg['error'][] = _('Die Veranstaltungsnummer hat ein ungültiges Format.');
                         } else if ($field['type'] == 'select' && !in_array($req_value, array_flatten(array_values(array_map('array_keys', $field['choices']))))) {
                             // illegal value - just ignore this
-                        } else if ($sem->{$varname} != $req_value) {
-                            $sem->{$varname} = $req_value;
+                        } else if ($course->getValue($varname) != $req_value) {
+                            $course->setValue($varname, $req_value);
                             $changemade = true;
                         }
                     }
@@ -524,23 +533,25 @@ class Course_BasicdataController extends AuthenticatedController
                     count($invalid_datafields)
                 );
                 $message = sprintf($message, join(', ', array_map('htmlReady', $invalid_datafields)));
-                $this->msg[] = ['error',  $message];
+                $this->msg['error'][] = $message;
             }
 
-            $sem->store();
+            $course->store();
 
             // Logging
-            $before = array_diff_assoc($old_settings, $sem->getSettings());
-            $after  = array_diff_assoc($sem->getSettings(), $old_settings);
+            $current_settings = $course->toRawArray();
+            unset($current_settings['config']);
+            $before = array_diff_assoc($old_settings, $current_settings);
+            $after  = array_diff_assoc($current_settings, $old_settings);
 
             //update admission, if turnout was raised
             if (
                 !empty($after['admission_turnout'])
                 && !empty($before['admission_turnout'])
                 && $after['admission_turnout'] > $before['admission_turnout']
-                && $sem->isAdmissionEnabled()
+                && $course->isAdmissionEnabled()
             ) {
-                AdmissionApplication::addMembers($sem->getId());
+                AdmissionApplication::addMembers($course_id);
             }
 
             if (sizeof($before) && sizeof($after)) {
@@ -548,30 +559,30 @@ class Course_BasicdataController extends AuthenticatedController
                 foreach ($before as $k => $v) {
                     $log_message .= "$k: $v => " . $after[$k] . " \n";
                 }
-                StudipLog::log('CHANGE_BASIC_DATA', $sem->getId(), " ", $log_message);
-                NotificationCenter::postNotification('SeminarBasicDataDidUpdate', $sem->id , $GLOBALS['user']->id);
+                StudipLog::log('CHANGE_BASIC_DATA', $course_id, ' ', $log_message);
+                NotificationCenter::postNotification('SeminarBasicDataDidUpdate', $course->id , $GLOBALS['user']->id);
             }
             // end of logging
 
             if ($changemade) {
-                $this->msg[] = ["msg", _("Die Grunddaten der Veranstaltung wurden verändert.")];
+                $this->msg['success'] = _('Die Grunddaten der Veranstaltung wurden verändert.');
             }
 
         } else {
-            $this->msg[] = ["error", _("Sie haben keine Berechtigung diese Veranstaltung zu verändern.")];
+            $this->msg['error'][] = _('Sie haben keine Berechtigung diese Veranstaltung zu verändern.');
         }
 
         //Labels/Funktionen für Dozenten und Tutoren
-        if ($perm->have_studip_perm('dozent', $sem->getId())) {
+        if ($perm->have_studip_perm('dozent', $course_id)) {
             foreach (Request::getArray('label') as $user_id => $label) {
-                if ($GLOBALS['perm']->have_studip_perm('tutor', $sem->getId(), $user_id)) {
-                    $mb = CourseMember::findOneBySQL('user_id = ? AND Seminar_id = ?', [$user_id, $sem->getId()]);
+                if ($GLOBALS['perm']->have_studip_perm('tutor', $course_id, $user_id)) {
+                    $mb = CourseMember::findOneBySQL('user_id = ? AND Seminar_id = ?', [$user_id, $course_id]);
                     if ($mb) {
                         $mb->label = $label;
                         if ($mb->store()) {
                             NotificationCenter::postNotification(
                                 'CourseDidChangeMemberLabel',
-                                $sem,
+                                $course,
                                 $mb
                             );
                         }
@@ -580,21 +591,23 @@ class Course_BasicdataController extends AuthenticatedController
             }
         }
 
-        foreach($sem->getStackedMessages() as $key => $messages) {
-            foreach($messages['details'] as $message) {
-                $this->msg[] = [($key !== "success" ? $key : "msg"), $message];
-            }
+        if (!empty($this->msg['error'])) {
+            PageLayout::postError(
+                _('Die folgenden Fehler traten auf:'),
+                $this->msg['error']
+            );
+        } elseif ($this->msg['success']) {
+            PageLayout::postSuccess($this->msg['success']);
         }
-        $this->flash['msg'] = $this->msg;
+
         $this->flash['open'] = Request::get("open");
         if (Request::isDialog()) {
             $this->response->add_header('X-Dialog-Close', 1);
             $this->response->add_header('X-Dialog-Execute', 'STUDIP.AdminCourses.App.loadCourse');
             $this->render_text($course_id);
         } else {
-            $this->redirect($this->url_for('course/basicdata/view/' . $sem->getId()));
+            $this->redirect($this->url_for('course/basicdata/view/' . $course_id));
         }
-
     }
 
     public function add_member_action($course_id, $status = 'dozent')
@@ -627,8 +640,8 @@ class Course_BasicdataController extends AuthenticatedController
         }
         // Only show the success messagebox once
         if ($succeeded) {
-            $sem = Seminar::GetInstance($course_id);
-            $status_title = get_title_for_status($status, count($succeeded), $sem->status);
+            $course = Course::find($course_id);
+            $status_title = get_title_for_status($status, count($succeeded), $course->status);
             if (count($succeeded) > 1) {
                 $messagetext = sprintf(
                     _("%u %s wurden hinzugefügt."),
@@ -661,72 +674,28 @@ class Course_BasicdataController extends AuthenticatedController
         $this->redirect($this->url_for($redirect));
     }
 
-    private function addTutor($tutor, $course_id)
+    /**
+     * A helper method since the steps for removing someone are all the same in this controller.
+     * Only the actions differ.
+     *
+     * @param Course $course The course from which to remove a user.
+     * @param User $user The user to be removed.
+     * @return void
+     */
+    protected function deleteUserFromCourse(Course $course, User $user)
     {
-        //Tutoren hinzufügen:
-        if ($GLOBALS['perm']->have_studip_perm('tutor', $course_id)) {
-            $sem = Seminar::GetInstance($course_id);
-            if ($sem->addMember($tutor, 'tutor')) {
-                // Check if we need to add user to course parent as well.
-                if ($sem->parent_course) {
-                    $this->addTutor($tutor, $sem->parent_course);
-                }
-
-                return true;
-            }
+        try {
+            $course->deleteMember($user);
+        } catch (\Studip\Exception $e) {
+            PageLayout::postError(_('Ein Fehler ist aufgetreten.'), $e->getMessage());
+            return;
         }
-        return false;
-    }
-
-    private function addDeputy($user_id, $course_id)
-    {
-        //Vertretung hinzufügen:
-        if ($GLOBALS['perm']->have_studip_perm('dozent', $course_id)) {
-            $sem = Seminar::GetInstance($course_id);
-            if (Deputy::addDeputy($user_id, $sem->getId())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private function addTeacher($dozent, $course_id)
-    {
-        $deputies_enabled = Config::get()->DEPUTIES_ENABLE;
-        $sem = Seminar::GetInstance($course_id);
-        if ($GLOBALS['perm']->have_studip_perm('dozent', $course_id)) {
-            if ($sem->addMember($dozent, 'dozent')) {
-                // Check if we need to add user to course parent as well.
-                if ($sem->parent_course) {
-                    $this->addTeacher($dozent, $sem->parent_course);
-                }
-
-                // Only applicable when globally enabled and user deputies enabled too
-                if ($deputies_enabled) {
-                    // Check whether chosen person is set as deputy
-                    // -> delete deputy entry.
-                    $deputy = Deputy::find([$course_id, $dozent]);
-                    if ($deputy) {
-                        $deputy->delete();
-                    }
-
-                    // Add default deputies of the chosen lecturer...
-                    if (Config::get()->DEPUTIES_DEFAULTENTRY_ENABLE) {
-                        $deputies  = Deputy::findDeputies($dozent)->pluck('user_id');
-                        $lecturers = $sem->getMembers();
-                        foreach ($deputies as $deputy) {
-                            // ..but only if not already set as lecturer or deputy.
-                            if (!isset($lecturers[$deputy])) {
-                                Deputy::addDeputy($deputy, $course_id);
-                            }
-                        }
-                    }
-                }
-
-                return true;
-            }
-        }
-        return false;
+        PageLayout::postSuccess(
+            studip_interpolate(
+                _('%{name} wurde aus der Veranstaltung ausgetragen.'),
+                ['name' => $user->getFullName()]
+            )
+        );
     }
 
     /**
@@ -745,24 +714,10 @@ class Course_BasicdataController extends AuthenticatedController
         } elseif ($teacher_id === $GLOBALS['user']->id) {
             PageLayout::postError(_('Sie dürfen sich nicht selbst aus der Veranstaltung austragen.'));
         } else {
-            $sem = Seminar::getInstance($course_id);
-            $sem->deleteMember($teacher_id);
-
-            // Remove user from subcourses as well.
-            foreach ($sem->children as $child) {
-                $child->deleteMember($teacher_id);
-            }
-
-            $this->msg = [];
-            foreach ($sem->getStackedMessages() as $key => $messages) {
-                foreach ($messages['details'] as $message) {
-                    $this->msg[] = [
-                        $key !== 'success' ? $key : 'msg',
-                        $message
-                    ];
-                }
-            }
-            $this->flash['msg'] = $this->msg;
+            $this->deleteUserFromCourse(
+                Course::find($course_id),
+                User::find($teacher_id)
+            );
         }
 
         $this->flash['open'] = 'bd_personal';
@@ -785,23 +740,23 @@ class Course_BasicdataController extends AuthenticatedController
         } elseif ($deputy_id === $GLOBALS['user']->id) {
             PageLayout::postError(_('Sie dürfen sich nicht selbst aus der Veranstaltung austragen.'));
         } else {
-            $sem = Seminar::getInstance($course_id);
+            $course = Course::find($course_id);
             $deputy = Deputy::find([$course_id, $deputy_id]);
             if ($deputy && $deputy->delete()) {
                 // Remove user from subcourses as well.
-                if (count($sem->children)) {
-                    $children_ids = $sem->children->pluck('seminar_id');
+                if (count($course->children) > 0) {
+                    $children_ids = $course->children->pluck('seminar_id');
                     Deputy::deleteBySQL('user_id = ? AND range_id IN (?)', [$deputy_id, $children_ids]);
                 }
 
                 PageLayout::postSuccess(sprintf(
                     _('%s wurde entfernt.'),
-                    htmlReady(get_title_for_status('deputy', 1, $sem->status))
+                    htmlReady(get_title_for_status('deputy', 1, $course->status))
                 ));
             } else {
                 PageLayout::postError(sprintf(
                     _('%s konnte nicht entfernt werden.'),
-                    htmlReady(get_title_for_status('deputy', 1, $sem->status))
+                    htmlReady(get_title_for_status('deputy', 1, $course->status))
                 ));
             }
         }
@@ -824,24 +779,10 @@ class Course_BasicdataController extends AuthenticatedController
         if (!$GLOBALS['perm']->have_studip_perm('dozent', $course_id)) {
             PageLayout::postError( _('Sie haben keine Berechtigung diese Veranstaltung zu verändern.'));
         } else {
-            $sem = Seminar::getInstance($course_id);
-
-            $sem->deleteMember($tutor_id);
-            // Remove user from subcourses as well.
-            foreach ($sem->children as $child) {
-                $child->deleteMember($tutor_id);
-            }
-
-            $this->msg = [];
-            foreach ($sem->getStackedMessages() as $key => $messages) {
-                foreach ($messages['details'] as $message) {
-                    $this->msg[] = [
-                        $key !== 'success' ? $key : 'msg',
-                        $message
-                    ];
-                }
-            }
-            $this->flash['msg'] = $this->msg;
+            $this->deleteUserFromCourse(
+                Course::find($course_id),
+                User::find($teacher_id)
+            );
         }
 
         $this->flash['open'] = 'bd_personal';
@@ -849,77 +790,63 @@ class Course_BasicdataController extends AuthenticatedController
     }
 
     /**
-     * Falls eine Person in der >>Reihenfolge<< hochgestuft werden soll.
-     * Leitet danach weiter auf View und öffnet den Reiter Personal.
+     * Moves a course member up one position in the position list for the
+     * corresponding permission level in the course.
      *
-     * @param md5 $user_id
-     * @param string $status
+     * @param string $course_id The course where to increase the priority.
+     *
+     * @param string $user_id The user for whom to increase the priority.
+     *
+     * @param string $status The permission level. This is an unused parameter that is only kept
+     *     for compatibility reasons.
      */
-    public function priorityupfor_action($course_id, $user_id, $status = "dozent")
+    public function priorityupfor_action(string $course_id, string $user_id, string $status = 'dozent')
     {
-        global $perm;
-
         CSRFProtection::verifyUnsafeRequest();
 
-        $sem = Seminar::getInstance($course_id);
+        $course = Course::find($course_id);
+        $user = User::find($user_id);
         $this->msg = [];
-        if ($perm->have_studip_perm("dozent", $sem->getId())) {
-            $teilnehmer = $sem->getMembers($status);
-            $members = [];
-            foreach($teilnehmer as $key => $member) {
-                $members[] = $member["user_id"];
+        if ($GLOBALS['perm']->have_studip_perm('dozent', $course->id)) {
+            if ($course->moveMemberUp($user) < 0) {
+                $this->msg[] = ['error', _('Die Person konnte nicht nach oben verschoben werden.')];
             }
-            foreach($members as $key => $member) {
-                if ($key > 0 && $member == $user_id) {
-                    $temp_member = $members[$key-1];
-                    $members[$key-1] = $member;
-                    $members[$key] = $temp_member;
-                }
-            }
-            $sem->setMemberPriority($members);
         } else {
             $this->msg[] = ["error", _("Sie haben keine Berechtigung diese Veranstaltung zu verändern.")];
         }
         $this->flash['msg'] = $this->msg;
         $this->flash['open'] = "bd_personal";
-        $this->redirect($this->url_for('course/basicdata/view/' . $sem->getId()));
+        $this->redirect($this->url_for('course/basicdata/view/' . $course->id));
     }
 
     /**
-     * Falls eine Person in der >>Reihenfolge<< runtergestuft werden soll.
-     * Leitet danach weiter auf View und öffnet den Reiter Personal.
+     * Moves a course member down one position in the position list for the
+     * corresponding permission level in the course.
      *
-     * @param md5 $user_id
-     * @param string $status
+     * @param string $course_id The course where to decrease the priority.
+     *
+     * @param string $user_id The user for whom to decrease the priority.
+     *
+     * @param string $status The permission level. This is an unused parameter that is only kept
+     *     for compatibility reasons.
      */
-    public function prioritydownfor_action($course_id, $user_id, $status = "dozent")
+    public function prioritydownfor_action($course_id, $user_id, $status = 'dozent')
     {
-        global $perm;
-
         CSRFProtection::verifyUnsafeRequest();
 
-        $sem = Seminar::getInstance($course_id);
+        $course = Course::find($course_id);
+        $user = User::find($user_id);
         $this->msg = [];
-        if ($perm->have_studip_perm("dozent", $sem->getId())) {
-            $teilnehmer = $sem->getMembers($status);
-            $members = [];
-            foreach($teilnehmer as $key => $member) {
-                $members[] = $member["user_id"];
+        if ($GLOBALS['perm']->have_studip_perm('dozent', $course->id)) {
+            if ($course->moveMemberDown($user) < 0) {
+                $this->msg[] = ['error', _('Die Person konnte nicht nach unten verschoben werden.')];
             }
-            foreach($members as $key => $member) {
-                if ($key < count($members)-1 && $member == $user_id) {
-                    $temp_member = $members[$key+1];
-                    $members[$key+1] = $member;
-                    $members[$key] = $temp_member;
-                }
-            }
-            $sem->setMemberPriority($members);
         } else {
-            $this->msg[] = ["error", _("Sie haben keine Berechtigung diese Veranstaltung zu verändern.")];
+            $this->msg[] = ['error', _('Sie haben keine Berechtigung diese Veranstaltung zu verändern.')];
         }
         $this->flash['msg'] = $this->msg;
         $this->flash['open'] = "bd_personal";
-        $this->redirect($this->url_for('course/basicdata/view/' . $sem->getId()));
+        $this->redirect($this->url_for('course/basicdata/view/' . $course->id));
     }
 
     public function switchdeputy_action($course_id, $newstatus)
@@ -959,7 +886,7 @@ class Course_BasicdataController extends AuthenticatedController
         $this->redirect($this->url_for('course/basicdata/view/'.$course_id));
     }
 
-    private function _getTypes($sem, $data, &$changable = true)
+    private function _getTypes(Course $course, &$changable = true)
     {
         $sem_types = [];
 
@@ -971,10 +898,10 @@ class Course_BasicdataController extends AuthenticatedController
                 }
             }
         } else {
-            $sem_classes[] = $sem->getSemClass();
+            $sem_classes[] = $course->getSemClass();
         }
 
-        if (!$sem->isStudyGroup()) {
+        if (!$course->isStudyGroup()) {
             $sem_classes = array_filter($sem_classes, function (SemClass $sc) {
                 return !$sc['studygroup_mode'];
             });
@@ -985,13 +912,12 @@ class Course_BasicdataController extends AuthenticatedController
                 return $st['name'];
             }, $sc->getSemTypes());
         }
-
-        if (!in_array($data['status'], array_flatten(array_values(array_map('array_keys', $sem_types))))) {
-            $class_name = $sem->getSemClass()->offsetGet('name');
+        if (!in_array($course->status, array_flatten(array_values(array_map('array_keys', $sem_types))))) {
+            $class_name = $course->getSemClass()->offsetGet('name');
             if (!isset($sem_types[$class_name])) {
                 $sem_types[$class_name] = [];
             }
-            $sem_types[$class_name][] = $sem->getSemType()->offsetGet('name');
+            $sem_types[$class_name][] = $course->getSemType()->offsetGet('name');
 
             $changable = false;
         }

@@ -1,5 +1,4 @@
 <?php
-require_once 'lib/raumzeit/raumzeit_functions.inc.php';
 
 class Course_DatesController extends AuthenticatedController
 {
@@ -79,10 +78,10 @@ class Course_DatesController extends AuthenticatedController
                 Icon::create('add')
             )->asDialog();
         }
-
         if (
-            Seminar::setInstance(new Seminar(Course::findCurrent()))->getSlotModule('documents')
-            && CourseDateFolder::availableInRange(Course::findCurrent(), User::findCurrent() ? User::findCurrent()->id : null)
+            Course::exists(Context::getId())
+            && $this->course->isToolActive(CoreDocuments::class)
+            && CourseDateFolder::availableInRange($this->course, User::findCurrent()->id)
         ) {
             $actions->addLink(
                 _('Sitzungsordner anlegen'),
@@ -367,45 +366,42 @@ class Course_DatesController extends AuthenticatedController
 
     public function export_action()
     {
-        $sem = new Seminar($this->course);
-        $themen =& $sem->getIssues();
+        $themen = CourseTopic::findBySeminar_id($this->course->id);
 
-        $termine = getAllSortedSingleDates($sem);
+        $termine = $this->course->getAllDatesInSemester()->getSingleDates(true, true, true);
 
         $dates = [];
 
-        if (is_array($termine) && sizeof($termine) > 0) {
-            foreach ($termine as $singledate_id => $singledate) {
-                if (!$singledate->isExTermin()) {
-                    $tmp_ids = $singledate->getIssueIDs();
-                    $title = $description = '';
-                    if (is_array($tmp_ids)) {
-                        $title = trim(join("\n", array_map(function ($tid) use ($themen) {return $themen[$tid]->getTitle();}, $tmp_ids)));
-                        $description = trim(join("\n\n", array_map(function ($tid) use ($themen) {return $themen[$tid]->getDescription();}, $tmp_ids)));
-                    }
-
-                    $dates[] = [
-                        'date'  => $singledate->toString(),
-                        'title' => $title,
-                        'description' => $description,
-                        'start' => $singledate->getStartTime(),
-                        'related_persons' => $singledate->getRelatedPersons(),
-                        'groups' => $singledate->getRelatedGroups(),
-                        'room' => $singledate->getRoom() ?: $singledate->raum,
-                        'type' => $GLOBALS['TERMIN_TYP'][$singledate->getDateType()]['name']
-                    ];
-                } elseif ($singledate->getComment()) {
-                    $dates[] = [
-                        'date'  => $singledate->toString(),
-                        'title' => _('fällt aus') . ' (' . _('Kommentar:') . ' ' . $singledate->getComment() . ')',
-                        'description' => '',
-                        'start' => $singledate->getStartTime(),
-                        'related_persons' => [],
-                        'groups' => [],
-                        'room' => '',
-                        'type' => $GLOBALS['TERMIN_TYP'][$singledate->getDateType()]['name']
-                    ];
+        foreach ($termine as $singledate) {
+            if ($singledate instanceof CourseDate) {
+                $tmp_ids = $singledate->getIssueIDs();
+                $title = $description = '';
+                if (is_array($tmp_ids)) {
+                    $title = trim(join("\n", array_map(function ($tid) use ($themen) {return $themen[$tid]->getTitle();}, $tmp_ids)));
+                    $description = trim(join("\n\n", array_map(function ($tid) use ($themen) {return $themen[$tid]->getDescription();}, $tmp_ids)));
                 }
+
+                $dates[] = [
+                    'date'  => $singledate->toString(),
+                    'title' => $title,
+                    'description' => $description,
+                    'start' => $singledate->getStartTime(),
+                    'related_persons' => $singledate->getRelatedPersons(),
+                    'groups' => $singledate->getRelatedGroups(),
+                    'room' => $singledate->getRoom() ?: $singledate->raum,
+                    'type' => $GLOBALS['TERMIN_TYP'][$singledate->getDateType()]['name']
+                ];
+            } elseif ($singledate->getComment()) {
+                $dates[] = [
+                    'date'  => $singledate->toString(),
+                    'title' => _('fällt aus') . ' (' . _('Kommentar:') . ' ' . $singledate->getComment() . ')',
+                    'description' => '',
+                    'start' => $singledate->getStartTime(),
+                    'related_persons' => [],
+                    'groups' => [],
+                    'room' => '',
+                    'type' => $GLOBALS['TERMIN_TYP'][$singledate->getDateType()]['name']
+                ];
             }
         }
 
@@ -434,9 +430,12 @@ class Course_DatesController extends AuthenticatedController
      */
     public function export_csv_action()
     {
-        $sem = new Seminar($this->course);
-        $dates = getAllSortedSingleDates($sem);
-        $issues = $sem->getIssues();
+        $dates = $this->course->getAllDatesInSemester(true, true, true);
+        $raw_issues = CourseTopic::findBySeminar_id($this->course->id);
+        $issues = [];
+        foreach ($raw_issues as $issue) {
+            $issues[$issue->id] = $issue;
+        }
 
         $columns = [
             _('Wochentag'),
@@ -523,7 +522,7 @@ class Course_DatesController extends AuthenticatedController
             $data[] = $row;
         }
 
-        $filename = $sem->name . '-' . _('Ablaufplan') . '.csv';
+        $filename = $this->course->name . '-' . _('Ablaufplan') . '.csv';
         $this->render_csv($data, $filename);
     }
 

@@ -94,15 +94,11 @@ class SeminarCycleDate extends SchemaProvider
 
     private static function createLocation(\SeminarCycleDate $entry)
     {
-        $cycle = new \CycleData($entry);
-
         // check, if the date is assigned to a room
-        if ($rooms = $cycle->getPredominantRoom(0, 0)) {
+        if ($rooms = $entry->getMostBookedRooms()) {
             return array_unique(getPlainRooms($rooms));
-        } elseif ($rooms = $cycle->getFreeTextPredominantRoom(0, 0)) {
-            unset($rooms['']);
-
-            return array_keys($rooms);
+        } elseif ($rooms = $entry->getMostUsedFreetextRoomNames()) {
+            return $rooms;
         }
 
         return [];

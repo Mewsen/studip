@@ -40,7 +40,7 @@ class LectureTreeService extends AccessControlledService
 
           foreach($seminar_ids as $seminar_id)
         {
-            $sem_obj = new Seminar($seminar_id['seminar_id']);
+            $course = Course::find($seminar_id['seminar_id']);
 
             $lecturers = StudipSeminarHelper::get_participants($seminar_id['seminar_id'], 'dozent');
 
@@ -50,10 +50,15 @@ class LectureTreeService extends AccessControlledService
             }
 
             $seminar_info = new Studip_Seminar_Info();
-            $seminar_info->title = $sem_obj->getName();
+            $seminar_info->title = $course->name;
             $seminar_info->lecturers = $lecturers;
-            $seminar_info->turnus = $sem_obj->getDatesTemplate('dates/seminar_export', ['semester_id' => $term_id]);
-            $seminar_info->lecture_number = $sem_obj->seminar_number;
+            $semester = Semester::find($term_id);
+            if ($semester) {
+                $seminar_info->turnus = $course->getAllDatesInSemester($semester, $semester)->toStringArray(true);
+            } else {
+                $seminar_info->turnus = '';
+            }
+            $seminar_info->lecture_number = $course->veranstaltungsnummer;
 
             $seminar_infos [] = $seminar_info;
         }

@@ -1569,21 +1569,22 @@ class Admin_UserController extends AuthenticatedController
     {
         CSRFProtection::verifyUnsafeRequest();
 
+        $course_ids = [];
         if (Request::get('course_id')) {
-            $courses = [Request::get('course_id')];
+            $course_ids = [Request::option('course_id')];
         } else {
-            $courses = Request::getArray('courses');
+            $course_ids = Request::optionArray('courses');
         }
 
-        if (empty($courses)) {
+        if (empty($course_ids)) {
             PageLayout::postError(_('Sie haben keine Veranstaltungen ausgewählt.'));
         } else {
-            $courses = array_map('Seminar::GetInstance', $courses);
+            $courses = Course::findMany($course_ids);
             $successes = 0;
             $fails = 0;
 
             foreach ($courses as $course) {
-                if ($course->deleteMember($user->id)) {
+                if ($course->deleteMember($user)) {
                     $successes++;
                 } else {
                     $fails++;

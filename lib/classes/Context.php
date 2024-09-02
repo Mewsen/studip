@@ -222,8 +222,6 @@ class Context
         if (self::isCourse()) {
             $course = self::get();
 
-            Seminar::setInstance(new Seminar($course));
-
             // check if current user can access the object
             if (!$perm->get_studip_perm($course['Seminar_id'])) {
                 if ($course['lesezugriff'] > 0 || !Config::get()->ENABLE_FREE_ACCESS) {

@@ -246,6 +246,45 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
     }
 
     /**
+     * Books a room for the course date.
+     *
+     * @param Room $room Room The room to be booked.
+     * @param int $preparation_time int The preparation time for the booking.
+     * @return bool True, if the booking succeeded, false otherwise.
+     */
+    public function bookRoom(Room $room, int $preparation_time = 0) : bool
+    {
+        //Check the permissions: Is the current user allowed to book the room?
+        if (!$room->userHasBookingRights(User::findCurrent(), $this->date, $this->end_time)) {
+            return false;
+        }
+
+        //Clear the free text room field before booking the room:
+        $this->raum = '';
+        $this->store();
+
+        //If there is already a room assigned, "change" the booking.
+        //Otherwise, create a new one.
+        if ($this->room_booking instanceof ResourceBooking) {
+            $this->room_booking->resource_id      = $room->id;
+            $this->room_booking->preparation_time = $preparation_time;
+            $this->room_booking->store();
+        } else {
+            $room->createBooking(
+                User::findCurrent(),
+                $this->id,
+                [['begin' => $this->date, 'end' => $this->end_time]],
+                null,
+                0,
+                null,
+                $preparation_time
+            );
+        }
+
+        return true;
+    }
+
+    /**
      * Returns the name of the type of this date.
      *
      * @param String containing the type name
@@ -258,26 +297,46 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
     /**
      * Returns the full qualified name of this date.
      *
-     * @param String $format Optional format type (only 'default', 'include-room' and
-     *                       'verbose' are supported by now)
+     * @param String $format Optional format type. Only 'default', 'include-room', 'long',
+     *                       'long-include-room' and 'verbose' are supported by now.
      * @return String containing the full name of this date.
      */
     public function getFullName($format = 'default')
     {
-        if (!$this->date || !in_array($format, ['default', 'verbose', 'include-room'])) {
+        if (!$this->date || !in_array($format, ['default', 'verbose', 'long', 'long-include-room', 'include-room'])) {
             return '';
         }
 
-        $latter_template = $format === 'verbose' ? _('%R Uhr') : '%R';
+        require_once('lib/dates.inc.php');
 
-        if (($this->end_time - $this->date) / 60 / 60 > 23) {
-            $string = strftime('%a., %x (' . _('ganztägig') . ')' , $this->date);
+        $day_of_week = '';
+        if (in_array($format, ['long', 'long-include-room'])) {
+            $day_of_week = getWeekday(date('w', $this->date), false);
         } else {
-            $string =  strftime('%a., %x, %R', $this->date) . ' - '
-                . strftime($latter_template, $this->end_time);
+            $day_of_week = getWeekday(date('w', $this->date));
         }
 
-        if($format === 'include-room') {
+        if (($this->end_time - $this->date) / 60 / 60 > 23) {
+            $string = sprintf(
+                '%1$s, %2$s (%3$s)',
+                $day_of_week,
+                date('d.m.Y', $this->date),
+                _('ganztägig')
+            );
+        } else {
+            $formatted_end = sprintf(
+                in_array($format, ['verbose', 'long', 'long-include-room']) ? _('%s Uhr') : '%s',
+                date('H:i', $this->end_time)
+            );
+            $string = sprintf(
+                '%1$s, %2$s - %3$s',
+                $day_of_week,
+                date('d.m.Y H:i', $this->date),
+                $formatted_end
+            );
+        }
+
+        if (in_array($format, ['include-room', 'long-include-room'])) {
             $room = $this->getRoom();
             if($room) {
                 $string = sprintf('%s <a href="%s" target="_blank">%s</a>',

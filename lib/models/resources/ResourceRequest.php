@@ -1465,14 +1465,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 });
             }
         } elseif ($this->course_id) {
-            $course = new Seminar($this->course_id);
-            $strings[] = $course->getDatesTemplate('dates/seminar_html_roomplanning',
-                [
-                    'shrink'    => false,
-                    'show_room' => true,
-                    'with_past_intervals' => $with_past_intervals
-                ]
-            );
+            $strings = $this->course->getAllDatesInSemester()->toStringArray();
         } elseif ($this->begin && $this->end) {
             $begin_date = date('Ymd', $this->begin);
             $end_date   = date('Ymd', $this->end);

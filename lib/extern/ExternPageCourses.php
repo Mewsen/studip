@@ -451,7 +451,7 @@ class ExternPageCourses extends ExternPage
             'SEMESTER'        => $course->getFullName('sem-duration-name'),
             'FORM'            => $course->art,
             'ROOM'            => $course->ort,
-            'CYCLE'           => Seminar::getInstance($course->id)->getDatesExport(['show_room' => true]),
+            'CYCLE'           => implode("\n", $course->getAllDatesInSemester()->toStringArray(true)),
             'AVATAR_URL'      => $course->getItemAvatarURL(),
             'INFO_URL'        => $course->getItemURL(),
             'LECTURERS'       => $this->getContentMembers($course, 'dozent'),

@@ -4,7 +4,6 @@
  * @var Course $course
  * @var Course[] $siblings
  * @var Course_DetailsController $controller
- * @var Seminar $sem
  * @var string $prelim_discussion
  * @var stdClass $id_sfx
  */
@@ -72,7 +71,7 @@
             <tr>
                 <td>
                     <strong>
-                    <? if ($sem->isAdmissionEnabled()) : ?>
+                    <? if ($course->isAdmissionEnabled()) : ?>
                         <?= _('maximale Teilnehmendenanzahl') ?>
                     <? else : ?>
                         <?= _('erwartete Teilnehmendenanzahl') ?>
@@ -82,7 +81,7 @@
                 <td><?= htmlReady($course->admission_turnout) ?></td>
             </tr>
         <? endif ?>
-        <? if ($sem->isAdmissionEnabled() && $course->getNumWaiting()) : ?>
+        <? if ($course->isAdmissionEnabled() && $course->getNumWaiting()) : ?>
             <tr>
                 <td>
                     <strong><?= _('Wartelisteneinträge') ?></strong>
@@ -174,18 +173,18 @@
                 <td><?= $prelim_discussion ?></td>
             </tr>
         <? endif ?>
-        <? $next_date = $sem->getNextDate() ?>
+        <? $next_date = $course->getNextDate() ?>
         <? if ($next_date) : ?>
             <tr>
                 <td><strong><?= _('Nächster Termin') ?></strong></td>
-                <td><?= $next_date ?></td>
+                <td><?= htmlReady($next_date->getFullname()) ?></td>
             </tr>
         <? else : ?>
-            <? $firstTerm = $sem->getFirstDate() ?>
+            <? $firstTerm = $course->getFirstDate() ?>
             <? if ($firstTerm) : ?>
                 <tr>
                     <td><strong><?= _('Erster Termin') ?></strong></td>
-                    <td><?= $firstTerm ?></td>
+                    <td><?= htmlReady($firstTerm->getFullname()) ?></td>
                 </tr>
             <? endif ?>
         <? endif ?>
@@ -324,10 +323,7 @@
         <h1><?= _('Räume und Zeiten') ?></h1>
     </header>
     <section>
-        <?= $sem->getDatesTemplate(
-            'dates/seminar_html_location',
-            ['ort' => $course->ort]
-        ) ?>
+        <?= $course->getAllDatesInSemester()->toHtml(true) ?>
     </section>
 </article>
 <? if ($this->studymodules) : ?>
@@ -441,7 +437,7 @@ if (!empty($mvv_tree)) : ?>
     </article>
 <? endif ?>
 
-<? if ($courseset = $sem->getCourseSet()) : ?>
+<? if ($courseset = $course->getCourseSet()) : ?>
     <article class="studip">
         <header>
             <h1><?=_("Anmelderegeln")?></h1>

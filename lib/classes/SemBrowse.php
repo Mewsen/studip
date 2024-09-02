@@ -674,12 +674,10 @@ class SemBrowse {
                 && (empty($sem_data[key($sem_data[$seminar_id]['parent_course'])])
                         || $child)) {
             // create instance of seminar-object
-            $seminar_obj = new Seminar($seminar_id);
-            // is this sem a studygroup?
-            $studygroup_mode = SeminarCategories::GetByTypeId($seminar_obj->getStatus())->studygroup_mode;
+            $course = Course::find($seminar_id);
 
-            $sem_name = $seminar_obj->getFullName('type-name');
-            $seminar_number = key($sem_data[$seminar_id]['VeranstaltungsNummer']);
+            $sem_name = $course->getFullName('type-name');
+            $seminar_number = $course->veranstaltungsnummer;
 
             $visibleChildren = [];
 
@@ -690,12 +688,14 @@ class SemBrowse {
             }
             $row .= '>';
 
-            if ($studygroup_mode) {
+            if ($course->isStudygroup()) {
                 $sem_name .= ' (' . _('Studiengruppe');
-                if ($seminar_obj->admission_prelim) $sem_name .= ', ' . _('Zutritt auf Anfrage');
+                if ($course->admission_prelim) {
+                    $sem_name .= ', ' . _('Zutritt auf Anfrage');
+                }
                 $sem_name .= ')';
                 $row .= '<td width="1%" class="hidden-tiny-down">';
-                $row .= StudygroupAvatar::getAvatar($seminar_id)->getImageTag(Avatar::SMALL, ['title' => $seminar_obj->getName()]);
+                $row .= StudygroupAvatar::getAvatar($seminar_id)->getImageTag(Avatar::SMALL, ['title' => $course->name]);
                 $row .= '</td>';
             } else {
                 $sem_number_start = key($sem_data[$seminar_id]['sem_number']);
@@ -709,7 +709,7 @@ class SemBrowse {
                     $sem_name .= " (" . $this->search_obj->sem_dates[$sem_number_start]['name'] . ')';
                 }
                 $row .= '<td width="1%" class="hidden-tiny-down">';
-                $row .= CourseAvatar::getAvatar($seminar_id)->getImageTag(Avatar::SMALL, ['title' => $seminar_obj->getName()]);
+                $row .= CourseAvatar::getAvatar($seminar_id)->getImageTag(Avatar::SMALL, ['title' => $course->name]);
                 $row .= '</td>';
 
             }
@@ -724,10 +724,10 @@ class SemBrowse {
             $row .= '<td style="width: 66%" colspan="2">';
 
             // Show the "more" icon only if there are visible children.
-            if (count($seminar_obj->children) > 0) {
+            if (count($course->children) > 0) {
 
                 // If you are not root, perhaps not all available subcourses are visible.
-                $visibleChildren = $seminar_obj->children;
+                $visibleChildren = $course->children;
                 if (!$GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM)) {
                     $visibleChildren = $visibleChildren->filter(function($c) {
                         return $c->visible;
@@ -754,18 +754,12 @@ class SemBrowse {
             }
             $row .= htmlReady($sem_name) . '</a><br>';
             //create Turnus field
-            if ($studygroup_mode) {
+            if ($course->isStudygroup()) {
                 $row .= '<div style="font-size:smaller">'
-                        . htmlReady(mb_substr($seminar_obj->description, 0, 100))
+                        . htmlReady(mb_substr($course->description, 0, 100))
                         . '</div>';
             } else {
-                $temp_turnus_string = $seminar_obj->getDatesExport(
-                    [
-                        'short' => true,
-                        'shrink' => true,
-                        'semester_id' => ''
-                    ]
-                );
+                $temp_turnus_string = implode(" ", $course->getAllDatesInSemester()->toStringArray());
                 //Shorten, if string too long (add link for details.php)
                 if (mb_strlen($temp_turnus_string) > 70) {
                     $temp_turnus_string = htmlReady(mb_substr($temp_turnus_string, 0, mb_strpos(mb_substr($temp_turnus_string, 70, mb_strlen($temp_turnus_string)), ',') + 71));
@@ -777,7 +771,7 @@ class SemBrowse {
                     $row .= '<div style="margin-left:5px;font-size:smaller">' . htmlReady($seminar_number) . '</div>';
                 }
                 $row .= '<div style="margin-left:5px;font-size:smaller">' . $temp_turnus_string . '</div>';
-                if (count($seminar_obj->children) > 0 && count($visibleChildren) > 0) {
+                if (count($course->children) > 0 && count($visibleChildren) > 0) {
                     $row .= '<div style="margin-left:5px;font-size:smaller">';
                     $row .= sprintf(_('%u Unterveranstaltungen'), count($visibleChildren));
                     $row .= '</div>';
@@ -822,8 +816,7 @@ class SemBrowse {
                 $row .= ')</td>';
                 if (Config::get()->COURSE_SEARCH_SHOW_ADMISSION_STATE) {
                     $row .= '<td>';
-                    switch (self::getStatusCourseAdmission($seminar_id,
-                            $seminar_obj->admission_prelim)) {
+                    switch (self::getStatusCourseAdmission($seminar_id, $course->admission_prelim)) {
                         case 1:
                             $row .= Icon::create(
                                 'info-circle',
@@ -851,7 +844,7 @@ class SemBrowse {
             }
 
             // Process children.
-            foreach ($seminar_obj->children as $child) {
+            foreach ($course->children as $child) {
                 $row .= $this->printCourseRow($child->id, $sem_data, true);
             }
 

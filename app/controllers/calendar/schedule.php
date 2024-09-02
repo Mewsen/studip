@@ -292,18 +292,18 @@ class Calendar_ScheduleController extends AuthenticatedController
      *
      * @param string $start the start time of the group, e.g. "1000"
      * @param string $end the end time of the group, e.g. "1200"
-     * @param string $seminars the IDs of the courses
+     * @param string $course_ids the IDs of the courses
      * @param string $day numeric day to show
      *
      * @return void
      */
-    public function groupedentry_action($start, $end, $seminars, $day)
+    public function groupedentry_action($start, $end, $course_ids, $day)
     {
         $this->response->add_header('Content-Type', 'text/html; charset=utf-8');
-        $seminars = explode(',', $seminars);
-        foreach ($seminars as $seminar) {
-            $zw = explode('-', $seminar);
-            $this->seminars[$zw[0]] = Seminar::getInstance($zw[0]);
+        $course_ids = explode(',', $course_ids);
+        foreach ($course_ids as $course_id) {
+            $zw = explode('-', $course_id);
+            $this->courses[$zw[0]] = Course::find($zw[0]);
         }
 
         $this->timespan = mb_substr($start, 0, 2) . ':' . mb_substr($start, 2, 2)
@@ -369,11 +369,11 @@ class Calendar_ScheduleController extends AuthenticatedController
      */
     public function addvirtual_action($seminar_id)
     {
-        $sem = Seminar::getInstance($seminar_id);
-        foreach ($sem->getCycles() as $cycle) {
+        $regular_dates = SeminarCycleDate::findBySeminar($seminar_id);
+        foreach ($regular_dates as $cycle) {
             $data = [
                 'id' => $seminar_id,
-                'cycle_id' => $cycle->getMetaDateId(),
+                'cycle_id' => $cycle->id,
                 'color' => false
             ];
 

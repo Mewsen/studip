@@ -68,11 +68,11 @@ class ForumPerm {
         if ($user_id == 'nobody' || $status == false) {
             // which status has nobody - read only or read/write?
             if (get_object_type($seminar_id) == 'sem') {
-                $sem = Seminar::getInstance($seminar_id);
+                $course = Course::find($seminar_id);
 
-                if ($sem->write_level == 0) {
+                if ($course->schreibzugriff == 0) {
                     $status = 'nobody_write';
-                } else if ($sem->read_level == 0) {
+                } else if ($course->lesezugriff == 0) {
                     $status = 'nobody_read';
                 } else {
                     return false;

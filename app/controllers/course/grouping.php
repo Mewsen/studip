@@ -302,15 +302,16 @@ class Course_GroupingController extends AuthenticatedController
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        $source = Seminar::getInstance($source_id);
-        $target = Seminar::getInstance(Request::option('target'));
+        $source = Course::find($source_id);
+        $target = Course::find(Request::option('target'));
 
         $success = 0;
         $fail    = 0;
-        foreach (Request::getArray('users') as $user) {
-            $m = CourseMember::find([$source_id, $user]);
+        foreach (Request::getArray('users') as $user_id) {
+            $m = CourseMember::find([$source_id, $user_id]);
             $status = $m->status;
 
+            $user = User::find($user_id);
             if ($source->deleteMember($user)) {
                 $target->addMember($user, $status);
                 $success += 1;
@@ -336,20 +337,24 @@ class Course_GroupingController extends AuthenticatedController
      */
     public function remove_members_action($course_id, $user_id = null)
     {
-        $s = Seminar::getInstance($course_id);
+        $course = Course::find($course_id);
 
         $success = 0;
         $fail    = 0;
 
         $users = $user_id ? [$user_id] : $this->flash['users'];
 
-        foreach ($users as $user) {
-            if ($s->deleteMember($user)) {
-                $success += 1;
-            } else {
-                $fail += 1;
-            }
-        }
+        User::findEachMany(
+            function (User $user) use ($course, &$fail, &$success) {
+                try {
+                    $course->deleteMember($user);
+                    $success += 1;
+                } catch (\Studip\MembershipException $e) {
+                    $fail += 1;
+                }
+            },
+            $users
+        );
 
         if ($success > 0) {
             PageLayout::postSuccess(sprintf(_('%u Personen wurden entfernt.'), $success));
@@ -511,10 +516,11 @@ class Course_GroupingController extends AuthenticatedController
         $fail = [];
         // Iterate over selected courses...
         foreach (Request::optionArray('courses') as $course) {
-            $sem = Seminar::getInstance($course);
+            $course_obj = Course::find($course);
 
             // ... and selected users.
             foreach (Request::optionArray('users') as $user) {
+                $user_obj = User::find($user);
                 // Try to add deputies.
                 if (Request::option('permission') == 'deputy') {
                     // If not already deputy, create new entry.
@@ -524,20 +530,24 @@ class Course_GroupingController extends AuthenticatedController
                         $d->user_id = $user;
                         // Error on storing.
                         if (!$d->store()) {
-                            $fail[$sem->getFullName()][] = $user;
+                            $fail[$course_obj->getFullname()][] = $user;
                         // Check if new deputy was regular member before, remove entry.
                         } else {
                             $m = CourseMember::find([$course, $user]);
                             // Could not delete old course membership, remove deputy entry.
                             if ($m && !$m->delete()) {
                                 $d->delete();
-                                $fail[$sem->getFullName()][] = $user;
+                                $fail[$course_obj->getFullname()][] = $user;
                             }
                         }
                     }
                 // Add member with given permission.
-                } elseif (!$sem->addMember($user, Request::option('permission'))) {
-                    $fail[$sem->getFullName()][] = $user;
+                } else {
+                    try {
+                        $course_obj->addMember($user_obj, Request::option('permission'));
+                    } catch (\Studip\EnrolmentException $e) {
+                        $fail[$course_obj->getFullname()][] = $user;
+                    }
                 }
             }
         }
@@ -565,8 +575,9 @@ class Course_GroupingController extends AuthenticatedController
      */
     private function sync_users($parent_id, $child_id)
     {
-        $sem = Seminar::getInstance($parent_id);
-        $csem = Seminar::getInstance($child_id);
+        $parent_course = Course::find($parent_id);
+        $child_course  = Course::find($child_id);
+
         /*
          * Find users that are in current course but not in parent.
          */
@@ -582,11 +593,19 @@ class Course_GroupingController extends AuthenticatedController
                      )";
         $diff = DBManager::get()->prepare($query);
 
-        /*
-         * Before synchronizing the lecturers, we add all institutes
-         * from child course.
-         */
-        $sem->setInstitutes(array_merge($sem->getInstitutes(), $csem->getInstitutes()));
+        //Before synchronizing the lecturers, we add all institutes from the child course:
+        $parent_institute_ids = [$parent_course->institut_id];
+        foreach ($parent_course->institutes as $institute) {
+            $parent_institute_ids[] = $institute->id;
+        }
+
+        foreach ($child_course->institutes as $institute) {
+            if (!in_array($institute->id, $parent_institute_ids)) {
+                //Add the institute to the parent course:
+                $parent_course->institutes->append($institute);
+            }
+        }
+        $parent_course->store();
 
         /*
          * Synchronize all members (including lecturers, tutors
@@ -598,20 +617,24 @@ class Course_GroupingController extends AuthenticatedController
                 'status' => $permission,
                 'parent' => $parent_id
             ]);
-            foreach ($diff->fetchFirst() as $user) {
-                $sem->addMember($user, $permission);
+            foreach ($diff->fetchFirst() as $user_id) {
+                $user = User::find($user_id);
+                if (!$user) {
+                    continue;
+                }
+                $parent_course->addMember($user, $permission);
 
                 // Add default deputies of current user if applicable.
                 if ($permission === 'dozent' && Config::get()->DEPUTIES_ENABLE
                     && Config::get()->DEPUTIES_DEFAULTENTRY_ENABLE)
                 {
-                    foreach (Deputy::findByRange_id($user) as $deputy) {
+                    foreach (Deputy::findByRange_id($user_id) as $deputy) {
                         if (!Deputy::exists([$parent_id, $deputy->user_id]) &&
                                 !CourseMember::exists([$parent_id, $deputy->user_id]))
                         {
                             $d = new Deputy();
                             $d->range_id = $parent_id;
-                            $d->user_id = $user;
+                            $d->user_id = $user_id;
                             $d->store();
                         }
                     }
