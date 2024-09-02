@@ -479,6 +479,25 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
     }
 
     /**
+     * Retrieves all child nodes of this study area as a flat list.
+     *
+     * @param bool $only_visible Whether to include only visible nodes (true)
+     *     or all nodes (false). Defaults to false.
+     *
+     * @return StudipStudyArea[] A list of all child nodes of this node.
+     */
+    public function getAllChildNodes(bool $only_visible = false) : array
+    {
+        $result = [];
+        $children = $this->getChildNodes($only_visible);
+        foreach ($children as $child) {
+            $result[] = $child;
+            $result = array_merge($result, $child->getAllChildNodes($only_visible));
+        }
+        return $result;
+    }
+
+    /**
      * @see StudipTreeNode::countCourses()
      */
     public function countCourses(

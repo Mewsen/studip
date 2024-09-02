@@ -180,12 +180,13 @@ class ExternPageCourseDetails extends ExternPage
      */
     protected function getContentRangePaths(Course $course): array
     {
-        $content = [];
-        $paths = get_sem_tree_path($course->id, $this->rangepathlevel);
-        if (is_array($paths)) {
-            $content = array_values($paths);
+        $paths = [];
+        foreach ($course->study_areas as $study_area) {
+            $paths[] = $study_area->getPath();
         }
-        return ['RANGE_PATHS' => $content];
+        asort($paths);
+
+        return ['RANGE_PATHS' => $paths];
     }
 
     /**

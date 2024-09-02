@@ -22,7 +22,6 @@ require_once 'tests/unit/fakeserver.php';
 
 # needed by visual.inc.php
 require_once 'lib/classes/DbView.php';
-require_once 'lib/classes/TreeAbstract.php';
 
 # needed by Markup.php
 require_once 'lib/visual.inc.php';

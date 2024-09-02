@@ -20,16 +20,8 @@ function get_group_names(string $group_field, array $groups): array
             return (string) $all_semester[$key]['name'];
         };
     } elseif ($group_field === 'sem_tree_id') {
-        $the_tree = TreeAbstract::GetInstance(StudipSemTree::class, ['build_index' => true]);
-        $mapper = function ($key) use ($the_tree): string {
-            if (!empty($the_tree->tree_data[$key])) {
-                return implode(' > ', array_filter([
-                    $the_tree->getShortPath($the_tree->tree_data[$key]['parent_id']),
-                    $the_tree->tree_data[$key]['name'],
-                ]));
-            }
-
-            return _('keine Studienbereiche eingetragen');
+        $mapper = function ($key): string {
+            return StudipStudyArea::getNode($key)->getPath(' > ');
         };
     } elseif ($group_field === 'sem_status') {
         $mapper = function ($key): string {
@@ -82,8 +74,9 @@ function sort_groups($group_field, &$groups)
 
         case 'sem_tree_id':
             uksort($groups, function ($a, $b) {
-                $the_tree = TreeAbstract::GetInstance('StudipSemTree', ['build_index' => true]);
-                return $the_tree->tree_data[$a]['index'] - $the_tree->tree_data[$b]['index'];
+                $a_obj = StudipStudyArea::getNode($a);
+                $b_obj = StudipStudyArea::getNode($b);
+                return strcmp($a_obj->name, $b_obj->name);
             });
             break;
 

@@ -111,12 +111,23 @@ class StudipSemSearchHelper {
         $view->params = [];
 
         if ($this->params['scope_choose'] && $this->params['scope_choose'] != 'root'){
-            $sem_tree = TreeAbstract::GetInstance("StudipSemTree", false);
-            $view->params[0] = $sem_types ?: $sem_tree->sem_status;
-            $view->params[1] = $this->visible_only ? "c.visible=1" : "1";
+            $tree_node = StudipStudyArea::find($this->params['scope_choose']);
+            $sem_tree_ids = [];
+            if ($tree_node) {
+                $all_children = $tree_node->getAllChildNodes();
+                foreach ($all_children as $child) {
+                    $sem_tree_ids[] = $child->id;
+                }
+                $sem_tree_ids[] = $tree_node->id;
+            }
 
-            $view->params[2] = $sem_tree->getKidsKids($this->params['scope_choose']);
-            $view->params[2][] = $this->params['scope_choose'];
+            $all_sem_type_ids = [];
+            foreach (SemType::getTypes() as $sem_type) {
+                $all_sem_type_ids[] = $sem_type->id;
+            }
+            $view->params[0] = $sem_types ?: $all_sem_type_ids;
+            $view->params[1] = $this->visible_only ? "c.visible=1" : "1";
+            $view->params[2] = $sem_tree_ids;
             $view->params[3] = $clause;
             $snap = new DbSnapshot($view->get_query("view:SEM_TREE_GET_SEMIDS"));
             if ($snap->numRows){
@@ -128,9 +139,17 @@ class StudipSemSearchHelper {
         }
 
         if ($this->params['range_choose'] && $this->params['range_choose'] != 'root'){
-            $range_object = RangeTreeObject::GetInstance($this->params['range_choose']);
-            $view->params[0] = $range_object->getAllObjectKids();
-            $view->params[0][] = $range_object->item_data['studip_object_id'];
+            $range_node = RangeTreeNode::find($this->params['range_choose']);
+            $range_ids = [];
+            if ($range_node) {
+                $children = $range_node->getChildNodes();
+                foreach ($children as $child) {
+                    $range_ids[] = $child->studip_object_id;
+                }
+                $range_ids[] = $range_node->studip_object_id;
+            }
+
+            $view->params[0] = $range_ids;
             $view->params[1] = ($this->visible_only ? " AND c.visible=1 " : "");
             $view->params[2] = $clause;
             $snap = new DbSnapshot($view->get_query("view:SEM_INST_GET_SEM"));
@@ -216,10 +235,6 @@ class StudipSemSearchHelper {
             $this->found_rows = $this->search_result->numRows;
         }
         return $this->found_rows;
-    }
-
-    public function getSearchResultAsSnapshot(){
-        return $this->search_result;
     }
 
     public function getSearchResultAsArray(){

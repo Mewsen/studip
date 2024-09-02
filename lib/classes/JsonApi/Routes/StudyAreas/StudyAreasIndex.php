@@ -24,8 +24,9 @@ class StudyAreasIndex extends JsonApiController
      */
     public function __invoke(Request $request, Response $response, $args)
     {
-        $tree = \TreeAbstract::getInstance('StudipSemTree', ['visible_only' => 1]);
-        $studyAreas =  self::mapTree('root', $tree);
+        $root = \StudipStudyArea::getRootArea();
+        $studyAreas =  $this->mapTree($root);
+
         list($offset, $limit) = $this->getOffsetAndLimit();
 
         return $this->getPaginatedContentResponse(
@@ -34,17 +35,14 @@ class StudyAreasIndex extends JsonApiController
         );
     }
 
-    private function mapTree($parentId, &$tree)
+    private function mapTree(\StudipStudyArea $node)
     {
         $level = [];
-        $kids = $tree->getKids($parentId);
-        if (is_array($kids) && count($kids) > 0) {
-            foreach ($kids as $kid) {
-                $level[] = \StudipStudyArea::find($kid);
-                $level = array_merge($level, self::mapTree($kid, $tree));
-            }
+        $child_nodes = $node->getChildNodes();
+        foreach ($child_nodes as $child_node) {
+            $level[] = $child_node;
+            $level = array_merge($level, $this->mapTree($child_node));
         }
-
         return $level;
     }
 }
