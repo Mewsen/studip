@@ -29,6 +29,8 @@
  * @property string mkdate The creation date of the assignment.
  * @property string chdate The modification date of the assignment.
  * @property CalendarDate|null calendar_date The associated calendar date object.
+ * @property User|null $user
+ * @property Course|null $course
  */
 class CalendarDateAssignment extends SimpleORMap implements Event
 {

@@ -38,6 +38,11 @@
  * @property string mkdate database column
  * @property string chdate database column
  * @property string import_date database column
+ *
+ * @property User $author
+ * @property User $editor
+ * @property CalendarDateAssignment[]|SimpleORMapCollection $calendars
+ * @property CalendarDateException[]|SimpleORMapCollection $exceptions
  */
 class CalendarDate extends SimpleORMap implements PrivacyObject
 {
