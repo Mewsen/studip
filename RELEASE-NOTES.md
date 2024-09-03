@@ -63,6 +63,7 @@
 - Die Klassen `CalendarView`, `CalendarScheduleModel` sowie alle davon abhängigen Klassen wurden entfernt.  ([Issue #4421](https://gitlab.studip.de/studip/studip/-/issues/4421))
   - Anstelle von `CalendarView` sollte `\Studip\Fullcalendar` verwendet werden.
 - Das Datenbankschema des Stundenplans wurde geändert. ([Issue #4421](https://gitlab.studip.de/studip/studip/-/issues/4421))
+- Die Evaluationen wurden ausgebaut. Stattdessen sollte man nun die neuen Fragebögen verwenden ([Issue #3787]https://gitlab.studip.de/studip/studip/-/issues/3787)
 
 ## Security related issues
 
