@@ -60,6 +60,9 @@
 - Die Klasse `ProfileModel` wurde gelöscht. Die darin enthaltenen Methoden wurden in den `Profile_Controller` verschoben. ([Issue #4185]https://gitlab.studip.de/studip/studip/-/issues/4185))
 - Die Klasse `StudipTransformFormat` wurde ausgebaut ([Issue #4188](https://gitlab.studip.de/studip/studip/-/issues/4188))
 - Die REST-API (`public/api.php`) wurde zu Stud.IP 5.0 deprecated und nun mit Stud.IP 6.0 entfernt. Als Ersatz steht die JSONAPI zur Verfügung. ([Issue #2798](https://gitlab.studip.de/studip/studip/-/issues/2798))
+- Die Klassen `CalendarView`, `CalendarScheduleModel` sowie alle davon abhängigen Klassen wurden entfernt.  ([Issue #4421](https://gitlab.studip.de/studip/studip/-/issues/4421))
+  - Anstelle von `CalendarView` sollte `\Studip\Fullcalendar` verwendet werden.
+- Das Datenbankschema des Stundenplans wurde geändert. ([Issue #4421](https://gitlab.studip.de/studip/studip/-/issues/4421))
 
 ## Security related issues
 
