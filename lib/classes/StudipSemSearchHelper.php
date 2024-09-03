@@ -37,7 +37,6 @@ class StudipSemSearchHelper {
                         'scope' => _("Bereich")];
     }
 
-    private $search_result;
     private $found_rows = false;
     private $params = [];
     private $visible_only;
@@ -80,16 +79,24 @@ class StudipSemSearchHelper {
             return false;
         }
         $this->params = array_map('addslashes', $this->params);
-        $clause = "";
-        $and_clause = "";
-        $this->search_result = new DbSnapshot();
-        $combination = $this->params['combination'];
 
-        $view = DbView::getView('sem_tree');
+        $db = DBManager::get();
+        $join_sql   = [];
+        $where_sql  = [];
+        $sql_params = [];
 
-        if (isset($this->params['sem']) && $this->params['sem'] !== 'all'){
-            $sem_number = (int)$this->params['sem'];
-            $clause = " HAVING (sem_number <= $sem_number AND (sem_number_end >= $sem_number OR sem_number_end = -1)) ";
+        if (isset($this->params['sem']) && $this->params['sem'] !== 'all') {
+            $all_semesters = Semester::getAll();
+            if (array_key_exists($this->params['sem'], $all_semesters)) {
+                $semester = $all_semesters[$this->params['sem']];
+                //Use that semester for filtering courses:
+                $join_sql[]  = "LEFT JOIN `semester_courses` ON `seminare`.`seminar_id` = `semester_courses`.`course_id`";
+                $where_sql[] = "(`semester_courses`.`semester_id` IS NULL OR `semester_courses`.`semester_id` = :semester_id)";
+                $sql_params['semester_id'] = $semester->id;
+            } else {
+                //Nothing can be found when the semester is unknown:
+                return [];
+            }
         }
 
         $sem_types = [];
@@ -101,149 +108,84 @@ class StudipSemSearchHelper {
             }
         }
 
-        if (isset($this->params['type']) && $this->params['type'] != 'all'){
+        if (isset($this->params['type']) && $this->params['type'] !== 'all') {
             $sem_types = [$this->params['type']];
         }
         if ($sem_types) {
-            $clause = " AND c.status IN('" . join("','",$sem_types) . "') " . $clause;
+            $where_sql[] = "`seminare`.`status` IN ( :course_types )";
+            $sql_params['course_types'] = $sem_types;
         }
 
-        $view->params = [];
-
-        if ($this->params['scope_choose'] && $this->params['scope_choose'] != 'root'){
-            $tree_node = StudipStudyArea::find($this->params['scope_choose']);
-            $sem_tree_ids = [];
-            if ($tree_node) {
-                $all_children = $tree_node->getAllChildNodes();
-                foreach ($all_children as $child) {
-                    $sem_tree_ids[] = $child->id;
-                }
-                $sem_tree_ids[] = $tree_node->id;
-            }
-
-            $all_sem_type_ids = [];
-            foreach (SemType::getTypes() as $sem_type) {
-                $all_sem_type_ids[] = $sem_type->id;
-            }
-            $view->params[0] = $sem_types ?: $all_sem_type_ids;
-            $view->params[1] = $this->visible_only ? "c.visible=1" : "1";
-            $view->params[2] = $sem_tree_ids;
-            $view->params[3] = $clause;
-            $snap = new DbSnapshot($view->get_query("view:SEM_TREE_GET_SEMIDS"));
-            if ($snap->numRows){
-                $clause = " AND c.seminar_id IN('" . join("','",$snap->getRows("seminar_id")) ."')" . $clause;
-            } else {
-                return 0;
-            }
-            unset($snap);
+        if ($this->visible_only) {
+            //Visible courses only:
+            $where_sql[] = "`seminare`.`visible` = 1";
         }
 
-        if ($this->params['range_choose'] && $this->params['range_choose'] != 'root'){
-            $range_node = RangeTreeNode::find($this->params['range_choose']);
-            $range_ids = [];
-            if ($range_node) {
-                $children = $range_node->getChildNodes();
+        if (!empty($this->params['scope_choose']) && $this->params['scope_choose'] !== 'root') {
+            //Filter by study areas:
+            $study_area_ids = [];
+            $study_area = StudipStudyArea::find($this->params['scope_choose']);
+            if ($study_area) {
+                $children = $study_area->getChildren();
                 foreach ($children as $child) {
-                    $range_ids[] = $child->studip_object_id;
+                    $study_area_ids[] = $child->id;
+                    $grand_children = $child->getChildren();
+                    foreach ($grand_children as $grand_child) {
+                        $study_area_ids[] = $grand_child->id;
+                    }
                 }
-                $range_ids[] = $range_node->studip_object_id;
             }
 
-            $view->params[0] = $range_ids;
-            $view->params[1] = ($this->visible_only ? " AND c.visible=1 " : "");
-            $view->params[2] = $clause;
-            $snap = new DbSnapshot($view->get_query("view:SEM_INST_GET_SEM"));
-            if ($snap->numRows){
-                $clause = " AND c.seminar_id IN('" . join("','",$snap->getRows("Seminar_id")) ."')" . $clause;
-            } else {
-                return 0;
-            }
-            unset($snap);
-        }
-
-
-        if (isset($this->params['lecturer']) && mb_strlen($this->params['lecturer']) > 2){
-            $view->params[0] = "%" . $this->trim($this->params['lecturer']) . "%";
-            $view->params[1] = "%" . $this->trim($this->params['lecturer']) . "%";
-            $view->params[2] = "%" . $this->trim($this->params['lecturer']) . "%";
-            $view->params[3] = "%" . $this->trim($this->params['lecturer']) . "%";
-            $view->params[4] = "%" . $this->trim($this->params['lecturer']) . "%";
-            $result = $view->get_query("view:SEM_SEARCH_LECTURER");
-
-            $lecturers = [];
-            while ($result->next_record()) {
-                $lecturers[] = $result->f('user_id');
-            }
-
-            if (count($lecturers)) {
-                $view->params[0] = $this->visible_only ? "c.visible=1" : "1";
-                $view->params[1] = $lecturers;
-                $view->params[2] = $clause;
-                $snap = new DbSnapshot($view->get_query("view:SEM_SEARCH_LECTURER_ID"));
-                $this->search_result = $snap;
-                $this->found_rows = $this->search_result->numRows;
+            if (!empty($study_area_ids)) {
+                $join_sql[]  = "JOIN `seminar_sem_tree` USING (`seminar_id`)";
+                $where_sql[] = "`seminar_sem_tree`.`sem_tree_id` IN ( :study_area_ids )";
+                $sql_params['study_area_ids'] = $study_area_ids;
             }
         }
 
-
-        if ($combination == "AND" && $this->search_result->numRows){
-            $and_clause = " AND c.seminar_id IN('" . join("','",$this->search_result->getRows("seminar_id")) ."')";
-        }
-
-        if ((isset($this->params['title']) && mb_strlen($this->params['title']) > 2) ||
-            (isset($this->params['sub_title']) && mb_strlen($this->params['sub_title']) > 2) ||
-            (isset($this->params['number']) && mb_strlen($this->params['number']) > 2) ||
-            (isset($this->params['comment']) && mb_strlen($this->params['comment']) > 2)){
-
-            $toFilter = explode(" ", $this->params['title']);
-            $search_for = "(Name LIKE '%" . implode("%' AND Name LIKE '%", $toFilter) . "%')";
-            if (!array_key_exists(0, $view->params)) {
-                $view->params[0] = '';
+        if (!empty($this->params['range_choose']) && $this->params['range_choose'] !== 'root') {
+            //Filter by institutes:
+            $institute = Institute::find($this->params['range_choose']);
+            $institute_ids = [];
+            if ($institute) {
+                $institute_ids[] = $institute->id;
+                if ($institute->isFaculty()) {
+                    $institute_ids[] = array_merge(
+                        $institute_ids,
+                        $institute->sub_institutes->pluck('id')
+                    );
+                }
             }
-            $view->params[0] .= ($this->params['title']) ? $search_for . " " : " ";
-            $view->params[0] .= ($this->params['title'] && !empty($this->params['sub_title'])) ? $combination : " ";
-            $view->params[0] .= (!empty($this->params['sub_title'])) ? " Untertitel LIKE '%" . $this->trim($this->params['sub_title']) . "%' " : " ";
-            $view->params[0] .= (($this->params['title'] || !empty($this->params['sub_title'])) && !empty($this->params['comment'])) ? $combination : " ";
-            $view->params[0] .= (!empty($this->params['comment'])) ? " Beschreibung LIKE '%" . $this->trim($this->params['comment']) . "%' " : " ";
-            $view->params[0] .= (($this->params['title'] || !empty($this->params['sub_title']) || empty($this->params['comment'])) && $this->params['number']) ? $combination : " ";
-            $view->params[0] .= ($this->params['number']) ? " VeranstaltungsNummer LIKE '%" . $this->trim($this->params['number']) . "%' " : " ";
-            $view->params[0] = ($this->visible_only ? " c.visible=1 AND " : "") . "(" . $view->params[0] .")";
-            $view->params[1] =  $and_clause . $clause;
-            $snap = new DbSnapshot($view->get_query("view:SEM_SEARCH_SEM"));
-            if ($this->found_rows === false){
-                $this->search_result = $snap;
-            } else {
-                $this->search_result->mergeSnapshot($snap,"seminar_id",$combination);
+            if (empty($institute_ids)) {
+                //We cannot search for courses if the institutes they shall belong to cannot be found:
+                return [];
             }
-            $this->found_rows = $this->search_result->numRows;
+            $where_sql[] = "(`seminare`.`Institut_id` IN (:institute_ids) OR `seminar_inst`.`institut_id` IN (:institute_ids))";
+            $sql_params['institute_ids'] = $institute_ids;
         }
 
-        if ($combination == "AND" && $this->search_result->numRows){
-            $and_clause = " AND c.seminar_id IN('" . join("','",$this->search_result->getRows("seminar_id")) ."')";
+        if (isset($this->params['lecturer']) && mb_strlen($this->params['lecturer']) > 2) {
+            //Search for lecturers:
+            $join_sql[] = "JOIN `seminar_user` USING (`seminar_id`)";
+            $join_sql[] = "JOIN `auth_user_md5` USING (`user_id`)";
+            $where_sql[] = "(
+                CONCAT(`auth_user_md5`.`Nachname`, ', ', `auth_user_md5`.`Vorname`, ' ', `auth_user_md5`.`Nachname`) LIKE CONCAT('%', :lecturer_name, '%')
+                OR `auth_user_md5`.`username` LIKE CONCAT('%', :lecturer_name, '%')
+                )";
+            $sql_params['lecturer_name'] = $this->params['lecturer'];
         }
 
-        if (isset($this->params['scope']) && mb_strlen($this->params['scope']) > 2){
-            $view->params[0] = $this->visible_only ? "c.visible=1" : "1";
-            $view->params[1] = "%" . $this->trim($this->params['scope']) . "%";
-            $view->params[2] = $and_clause . $clause;
-            $snap = new DbSnapshot($view->get_query("view:SEM_TREE_SEARCH_SEM"));
-            if ($this->found_rows === false){
-                $this->search_result = $snap;
-            } else {
-                $this->search_result->mergeSnapshot($snap,"seminar_id",$combination);
-            }
-            $this->found_rows = $this->search_result->numRows;
-        }
-        return $this->found_rows;
+        $stmt = $db->prepare(
+            sprintf(
+                'SELECT `seminar_id` FROM `seminare` %s WHERE %s',
+                implode(' ', $join_sql),
+                implode(' AND ', $where_sql)
+            )
+        );
+        $stmt->execute($sql_params);
+        return $stmt->fetchAll();
     }
 
-    public function getSearchResultAsArray(){
-        if($this->search_result instanceof DBSnapshot && $this->search_result->numRows){
-            return array_unique($this->search_result->getRows('seminar_id'));
-        } else {
-            return [];
-        }
-    }
 
     private function trim($what)
     {

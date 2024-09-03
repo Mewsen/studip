@@ -127,8 +127,6 @@ class CoursesIndex extends JsonApiController
             ],
             $visibleOnly
         );
-        $searchHelper->doSearch();
-
-        return $searchHelper->getSearchResultAsArray();
+        return $searchHelper->doSearch();
     }
 }
