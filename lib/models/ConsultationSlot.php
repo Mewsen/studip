@@ -194,6 +194,10 @@ class ConsultationSlot extends SimpleORMap
         $calendar_event = new CalendarDateAssignment();
         $calendar_event->range_id         = $user->id;
         $calendar_event->calendar_date_id = $event->id;
+
+        // Suppress mails for users that do not want mails from the consultations
+        $calendar_event->suppress_mails = !$user->getConfiguration()->CONSULTATION_SEND_MESSAGES;
+
         $calendar_event->store();
 
         return $event;

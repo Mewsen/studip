@@ -29,6 +29,24 @@ class ConsultationEvent extends SimpleORMap
             'on_delete'         => 'delete',
         ];
 
+        $config['registered_callbacks'] = [
+            'before_delete' => [
+                function (ConsultationEvent $event) {
+                    // Suppress all mails from calendar for users that do not
+                    // want to receive emails about consultation bookings
+                    $event->event->calendars->each(function (CalendarDateAssignment $assignment) {
+                        if (
+                            $assignment->user
+                            && !$assignment->user->getConfiguration()->CONSULTATION_SEND_MESSAGES
+                        ) {
+                            $assignment->suppress_mails = true;
+                            $assignment->delete();
+                        }
+                    });
+                },
+            ],
+        ];
+
         parent::configure($config);
     }
 }
