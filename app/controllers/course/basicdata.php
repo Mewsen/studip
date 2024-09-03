@@ -535,7 +535,8 @@ class Course_BasicdataController extends AuthenticatedController
 
     public function add_member_action($course_id, $status = 'dozent')
     {
-        CSRFProtection::verifyUnsafeRequest();
+        // We don't need to check the csrf protection at this point since it
+        // is already checked by the multiperson search endpoint
 
         // load MultiPersonSearch object
         $mp = MultiPersonSearch::load("add_member_{$status}{$course_id}");
