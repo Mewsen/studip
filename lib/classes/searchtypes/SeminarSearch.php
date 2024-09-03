@@ -57,8 +57,7 @@ class SeminarSearch extends SearchType
              !(is_object($GLOBALS['perm'])
                  && $GLOBALS['perm']->have_perm(
                      Config::Get()->SEM_VISIBILITY_PERM)));
-         $search_helper->doSearch();
-         $result = $search_helper->getSearchResultAsArray();
+         $result = $search_helper->doSearch();
 
          if (empty($result)) {
              return [];
