@@ -1,5 +1,5 @@
 <form class="default" method="post" action="<?= $controller->link_for('contact/editGroup/' . $group->id) ?>">
-    <? CSRFProtection::tokenTag() ?>
+    <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend class="hide-in-dialog">
             <? if ($group->isNew()) : ?>
