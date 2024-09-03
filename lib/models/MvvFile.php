@@ -79,8 +79,8 @@ class MvvFile extends ModuleManagementModel
      */
     public function getDisplayName()
     {
-        if ($this->file_refs) {
-            return $this->file_refs[0]->name;
+        if (count($this->file_refs) > 0) {
+            return $this->file_refs->first()->name;
         }
         return '';
     }
