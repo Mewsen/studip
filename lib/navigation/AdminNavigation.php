@@ -197,10 +197,6 @@ class AdminNavigation extends Navigation
                 $navigation->addSubNavigation('elearning', new Navigation(_('Lernmodule'), 'admin_elearning_interface.php'));
             }
 
-            if (Config::get()->WEBSERVICES_ENABLE) {
-                $navigation->addSubNavigation('webservice_access', new Navigation(_('Webservices'), 'dispatch.php/admin/webservice_access'));
-            }
-
             if (Config::get()->CRONJOBS_ENABLE) {
                 $navigation->addSubNavigation('cronjobs', new Navigation(_('Cronjobs'), 'dispatch.php/admin/cronjobs/schedules'));
             }
