@@ -53,7 +53,7 @@ class ThreadsUpdate extends JsonApiController
         return $this->getContentResponse($thread);
     }
 
-    protected function validateResourceDocument($json)
+    protected function validateResourceDocument($json, $data)
     {
         if (self::arrayHas($json, 'data.attributes.visited-at')) {
             $visitedAt = self::arrayGet($json, 'data.attributes.visited-at');
