@@ -24,7 +24,7 @@
                 </label>
                 <label v-if="state === 'granted'">
                     {{ $gettext('neue Frist') }}
-                    <DateInput v-model="date" class="size-l" :min="submissionDate" />
+                    <DateInput v-model="date" class="size-l" />
                 </label>
             </form>
         </template>
@@ -34,7 +34,7 @@
 <script>
 import DateInput from '../layouts/CoursewareDateInput.vue';
 export default {
-    props: ['renewalState', 'submissionDate'],
+    props: ['renewalDate', 'renewalState'],
     components: {
         DateInput,
     },
@@ -44,7 +44,7 @@ export default {
     }),
     methods: {
         resetLocalVars() {
-            this.date = this.submissionDate ?? null;
+            this.date = this.renewalDate ?? null;
             this.state = this.renewalState;
         },
         updateRenewal() {
@@ -64,7 +64,7 @@ export default {
         this.resetLocalVars();
     },
     watch: {
-        submissionDate(newValue) {
+        renewalDate(newValue) {
             if (newValue !== this.date) {
                 this.resetLocalVars();
             }

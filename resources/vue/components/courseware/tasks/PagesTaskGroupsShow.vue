@@ -50,8 +50,8 @@
 
         <RenewalDialog
             v-if="renewalTask"
+            :renewalDate="renewalDate"
             :renewalState="renewalTask.attributes.renewal"
-            :submissionDate="renewalTask.attributes['submission-date']"
             @update="updateRenewal"
             @close="closeDialogs"
         />
