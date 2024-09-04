@@ -190,7 +190,7 @@ lint-css:
     - *mkdir-reports
     - npm install
       --no-save --no-audit --no-fund
-      --loglevel=error 
+      --loglevel=error
       stylelint@^14.9.1
       stylelint-config-standard@^26.0.0
       stylelint-formatter-gitlab
@@ -198,7 +198,7 @@ lint-css:
     - npx
       stylelint
       --cache --cache-location $CACHE_LOCATION
-      --custom-formatter=node_modules/stylelint-formatter-gitlab 
+      --custom-formatter=node_modules/stylelint-formatter-gitlab
       --output-file $STYLELINT_CODE_QUALITY_REPORT
       resources/assets/stylesheets
   artifacts:
@@ -223,12 +223,12 @@ phpstan:
     - *mkdir-caches
     - *mkdir-reports
     - *install-composer
-    - 'echo "includes:\n    - phpstan.neon.dist\n\nparameters:\n   tmpDir: $PHPSTAN_CACHE_PATH" > phpstan.neon'
+    - 'echo -e "includes:\n    - phpstan.neon.dist\n\nparameters:\n   tmpDir: $PHPSTAN_CACHE_PATH" > phpstan.neon'
   script:
     - php
-      composer/bin/phpstan analyse 
-      --memory-limit=1G 
-      --no-progress 
+      composer/bin/phpstan analyse
+      --memory-limit=1G
+      --no-progress
       --level=$PHPSTAN_LEVEL
       --error-format=gitlab > $PHPSTAN_CODE_QUALITY_REPORT
   after_script:
@@ -414,7 +414,7 @@ packaging:
     expire_in: never
 
 build_image:
-  image: 
+  image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   stage: build
