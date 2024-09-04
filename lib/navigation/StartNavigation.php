@@ -232,11 +232,6 @@ class StartNavigation extends Navigation
             $navigation->addSubNavigation('questionnaire', new Navigation(_('Ankündigungen'), 'dispatch.php/news/admin_news'));
         }
 
-        // elearning
-        if (Config::get()->ELEARNING_INTERFACE_ENABLE) {
-            $navigation->addSubNavigation('my_elearning', new Navigation(_('Lernmodule'), 'dispatch.php/elearning/my_accounts'));
-        }
-
         if (!$GLOBALS['perm']->have_perm('root') && $GLOBALS['user']->getAuthenticatedUser()->hasRole('Hilfe-Administrator(in)')) {
             $navigation->addSubNavigation('help_content', new Navigation(_('Hilfe-Texte und Touren'), 'dispatch.php/help_content/admin_overview'));
         }

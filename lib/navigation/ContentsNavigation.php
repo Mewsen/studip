@@ -124,14 +124,6 @@ class ContentsNavigation extends Navigation
             }
         }
 
-        // elearning
-        if (Config::get()->ELEARNING_INTERFACE_ENABLE) {
-            $elearning = new Navigation(_('Lernmodule'), 'dispatch.php/elearning/my_accounts');
-            $elearning->setImage(Icon::create('learnmodule'));
-            $elearning->setDescription(_('Zugang zu externen Lernmaterialien'));
-            $this->addSubNavigation('my_elearning', $elearning);
-        }
-
         if (!$GLOBALS['perm']->have_perm('root') && $GLOBALS['user']->getAuthenticatedUser()->hasRole('Hilfe-Administrator(in)')) {
             $help = new Navigation(_('Hilfe'), 'dispatch.php/help_content/admin_overview');
             $help->setImage(Icon::create('question-circle'));

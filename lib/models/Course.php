@@ -337,18 +337,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             $query = 'DELETE FROM `schedule_courses` WHERE `course_id` = ?';
             $statement = DBManager::get()->execute($query, [$course->id]);
 
-            //Remove connections to other e-learning systems:
-            if (Config::get()->ELEARNING_INTERFACE_ENABLE) {
-                $cms_types = ObjectConnections::GetConnectedSystems($course->id);
-                foreach ($cms_types as $system) {
-                    if (empty($GLOBALS['connected_cms'][$system])) {
-                        continue;
-                    }
-                    ELearningUtils::loadClass($system);
-                    $del_cms += $GLOBALS['connected_cms'][$system]->deleteConnectedModules($course->id);
-                }
-            }
-
             //Remove all entries in object_user_vists for the course:
             object_kill_visits(null, $course->id);
 

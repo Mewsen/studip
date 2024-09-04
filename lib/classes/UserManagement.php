@@ -1250,24 +1250,6 @@ class UserManagement
             $msg .= 'info§' . _('Bild gelöscht.') . '§';
         }
 
-        //delete connected users
-        if (Config::get()->ELEARNING_INTERFACE_ENABLE) {
-            if (ELearningUtils::initElearningInterfaces()) {
-                foreach ($GLOBALS['connected_cms'] as $cms){
-                    if ($cms->auth_necessary && $cms->user instanceOf ConnectedUser) {
-                        $user_auto_create = $cms->USER_AUTO_CREATE;
-                        $cms->USER_AUTO_CREATE = false;
-                        $userclass = mb_strtolower(get_class($cms->user));
-                        $connected_user = new $userclass($cms->cms_type, $user_id);
-                        if ($connected_user->deleteUser() && $connected_user->is_connected) {
-                            $msg .= 'info§' . sprintf(_('Der verknüpfte Nutzer %s wurde im System %s gelöscht.'), $connected_user->login, $connected_user->cms_type) . '§';
-                        }
-                        $cms->USER_AUTO_CREATE = $user_auto_create;
-                    }
-                }
-            }
-        }
-
         return $msg;
     }
 
