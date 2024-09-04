@@ -12,11 +12,8 @@
 class CoreDocuments extends CorePlugin implements StudipModule, OERModule
 {
 
-
     /**
-     * Determines if the StudipModule wants to handle the OERMaterial. Returns false if not.
-     * @param OERMaterial $material
-     * @return false|Icon
+     * {@inheritdoc}
      */
     static public function oerModuleWantsToUseMaterial(OERMaterial $material)
     {
@@ -24,9 +21,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
     }
 
     /**
-     * Returns an Icon class object with the given role.
-     * @param string $role
-     * @return null|Icon
+     * {@inheritdoc}
      */
     public function oerGetIcon($role = Icon::ROLE_CLICKABLE)
     {
@@ -34,11 +29,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
     }
 
     /**
-     * This function is triggered i a user chose to use this module as the target of the oermaterial.
-     * Now this module should put a copy of $material in its own area of the given course.
-     * @param OERMaterial $material
-     * @param Course $course
-     * @return array|FileType
+     * {@inheritdoc}
      */
     static public function oerModuleIntegrateMaterialToCourse(OERMaterial $material, Course $course)
     {
@@ -89,12 +80,24 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
             if (!$newfile) {
                 return [_('Daten konnten nicht kopiert werden!')];
             }
-            return $newfile;
+
+            return [
+                'type' => 'success',
+                'message' => _('Das Lernmaterial wurde kopiert.'),
+                'message_detail' => [],
+                'redirect_url' => URLHelper::getURL('dispatch.php/course/files', ['cid' => $course->id])
+            ];
         } else {
             if ($tmp_name) {
                 @unlink($tmp_name);
             }
-            return [_('Daten konnten nicht kopiert werden!')];
+
+            return [
+                'type' => 'error',
+                'message' => _('Beim Kopieren ist ein Fehler aufgetaucht.'),
+                'message_detail' => [_('Daten konnten nicht kopiert werden!')],
+                'redirect_url' => URLHelper::getURL('dispatch.php/oer/market/details/' . $material->id)
+            ];
         }
     }
 

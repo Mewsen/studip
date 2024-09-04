@@ -5,7 +5,7 @@ interface OERModule
     /**
      * Determines if the StudipModule wants to handle the OERMaterial. Returns false if not.
      * @param OERMaterial $material
-     * @return false|Icon
+     * @return false
      */
     public static function oerModuleWantsToUseMaterial(OERMaterial $material);
 
@@ -14,7 +14,7 @@ interface OERModule
      * Now this module should put a copy of $material in its own area of the given course.
      * @param OERMaterial $material
      * @param Course $course
-     * @return void
+     * @return array
      */
     public static function oerModuleIntegrateMaterialToCourse(OERMaterial $material, Course $course);
 
