@@ -148,10 +148,11 @@ class StudipFileCache implements StudipCache
      */
     public function write($arg, $content, $expire = self::DEFAULT_EXPIRATION)
     {
-        $key = $this->getCacheKey($arg);
+        $this->expire($arg);
 
-        $this->expire($key);
+        $key = $this->getCacheKey($arg);
         $file = $this->getPathAndFile($key, $expire);
+
         return @file_put_contents($file, serialize($content), LOCK_EX);
     }
 
