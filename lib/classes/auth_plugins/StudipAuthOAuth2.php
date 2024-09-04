@@ -18,6 +18,8 @@ final class StudipAuthOAuth2 extends StudipAuthSSO
     protected string $url_access_token;
     protected string $url_resource_owner_details;
 
+    protected ?string $logout_url = null;
+
     private GenericProvider $oauth2_provider;
 
     private ?array $user_data = null;
@@ -109,5 +111,16 @@ final class StudipAuthOAuth2 extends StudipAuthSSO
     private function getUsernameKey(): string
     {
         return $this->user_data_mapping['map_args']['auth_user_md5.username'] ?? 'nickname';
+    }
+
+    /**
+     * Perform logout if a logout url has been configured
+     */
+    public function logout(): void
+    {
+        if (!empty($this->logout_url)) {
+            header('Location: ' . $this->logout_url);
+            exit();
+        }
     }
 }
