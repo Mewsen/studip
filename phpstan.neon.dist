@@ -3,7 +3,6 @@ parameters:
     phpVersion: 80100 # PHP 8.1
     paths:
         - app/controllers
-        - app/routes
         - lib
         - tests/functional
         - tests/jsonapi
