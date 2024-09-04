@@ -307,6 +307,7 @@ $STUDIP_AUTH_CONFIG_OAUTH2 = [
     'client_id'                  => '',
     'client_secret'              => '',
     'redirect_uri'               => '',
+    'logout_url'                 => '',
 
     'url_authorize'              => '',
     'url_access_token'           => '',
