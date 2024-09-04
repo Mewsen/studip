@@ -193,10 +193,6 @@ class AdminNavigation extends Navigation
             }
             $navigation->addSubNavigation('help_content', new Navigation(_('Hilfe-Texte'), 'dispatch.php/help_content/admin_overview'));
 
-            if (Config::get()->ELEARNING_INTERFACE_ENABLE) {
-                $navigation->addSubNavigation('elearning', new Navigation(_('Lernmodule'), 'admin_elearning_interface.php'));
-            }
-
             if (Config::get()->CRONJOBS_ENABLE) {
                 $navigation->addSubNavigation('cronjobs', new Navigation(_('Cronjobs'), 'dispatch.php/admin/cronjobs/schedules'));
             }

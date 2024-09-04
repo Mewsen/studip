@@ -223,13 +223,10 @@ if (Config::get()->CALENDAR_ENABLE) {
     require_once 'lib/calendar_functions.inc.php';
 }
 
-if (Config::get()->SOAP_ENABLE) {
-    require_once 'lib/soap/StudipSoapClient' . (Config::get()->SOAP_USE_PHP5 ? '_PHP5' : '' ) . '.php';
-}
-
 if (Config::Get()->ILIAS_INTERFACE_ENABLE) {
     require_once 'lib/ilias_interface/IliasUserObserver.php';
     require_once 'lib/ilias_interface/IliasCourseObserver.php';
+    require_once 'lib/ilias_interface/StudipSoapClient.php';
 }
 
 // set dummy navigation until db is ready
