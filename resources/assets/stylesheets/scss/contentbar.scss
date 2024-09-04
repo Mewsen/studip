@@ -16,10 +16,9 @@
 
     .contentbar-wrapper-left {
         display: flex;
-        flex: auto;
+        max-width: calc(100% - 130px);
 
         .contentbar-breadcrumb {
-            display: flex;
             font-size: 1.25em;
             line-height: 1.5em;
             margin-right: 1em;
