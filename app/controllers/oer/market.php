@@ -423,18 +423,20 @@ class Oer_MarketController extends StudipController
                     $semclass = $this->course->getSemClass();
                     if ($semclass->isModuleAllowed($class)) {
                         //activate module in course ?
-                        $newfile = $class::oerModuleIntegrateMaterialToCourse(
+                        $response = $class::oerModuleIntegrateMaterialToCourse(
                             $this->material,
                             $this->course
                         );
-                        if (is_array($newfile)) {
-                            PageLayout::postError(_("Beim Kopieren ist ein Fehler aufgetaucht."), $newfile);
+
+                        if ($response['type'] === 'error') {
+                            PageLayout::postError($response['message'], $response['message_detail']);
                         } else {
-                            PageLayout::postSuccess(_("Das Lernmaterial wurde kopiert."));
+                            PageLayout::postSuccess($response['message'], $response['message_detail']);
                         }
-                        $this->response->add_header("X-Location", URLHelper::getURL("dispatch.php/course/files", array('cid' => $this->course->id)));
-                        $this->response->add_header("X-Dialog-Close", 1);
-                        $this->redirect(URLHelper::getURL("dispatch.php/course/files", array('cid' => $this->course->id)));
+
+                        $this->response->add_header('X-Dialog-Close', 1);
+                        $this->relocate($response['redirect_url']);
+
                         return;
                     }
                 }
