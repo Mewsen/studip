@@ -1,4 +1,5 @@
 @import '../mixins';
+@import "breakpoints";
 
 @mixin button() {
     background: var(--color--global-background);
@@ -31,6 +32,10 @@
 
     &.disabled,
     &[disabled] {
+        @media (max-width: ($major-breakpoint-small)) {
+            display: none;
+        }
+
         box-shadow: none;
         color: var(--color--font-inactive);
         background: var(--color--button-inactive-background);
