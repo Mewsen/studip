@@ -100,7 +100,7 @@ class Messages extends \RESTAPI\RouteMap
         }
 
         //we can get the top folder:
-        $top_folder = \Folder::findTopFolder($message->id, 'message');
+        $top_folder = \Folder::findTopFolder($message->id, 'MessageFolder');
 
         if($top_folder) {
             $file_system_api = new FileSystem();

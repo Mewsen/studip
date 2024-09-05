@@ -110,10 +110,7 @@ class Course extends \RESTAPI\RouteMap
      */
     public function getTopFolder($course_id)
     {
-        $top_folder = \Folder::findTopFolder(
-            $this->requireCourse($course_id)->id,
-            'course'
-        );
+        $top_folder = \Folder::findTopFolder($this->requireCourse($course_id)->id);
 
         if (!$top_folder) {
             $this->notFound("No folder found for course with id {$course_id}!");
