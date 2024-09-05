@@ -3,6 +3,7 @@
 namespace Studip\Cli\Commands\Make;
 
 use Nette\PhpGenerator\PhpFile;
+use Nette\PhpGenerator\PsrPrinter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -96,7 +97,7 @@ final class Migration extends Command
         $class->addMethod('up')->addBody('// Add content');
         $class->addMethod('down')->addBody('// Add content');
 
-        $printer       = new StudipClassPrinter();
+        $printer       = new PsrPrinter();
         $result        = $printer->printFile($file);
         $migrationName = $version . '_' . str_replace(' ', '_', lcfirst($name));
         $filename      = $path . '/' . $migrationName . '.php';
