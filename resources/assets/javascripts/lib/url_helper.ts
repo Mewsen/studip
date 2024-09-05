@@ -16,7 +16,7 @@ class URLHelper {
     base_url: string;
     parameters: Record<string, string>;
 
-    constructor(base_url = "", parameters = {}) {
+    constructor(base_url: string = "", parameters: any = {}) {
         //the base url for all links
         this.base_url = base_url;
 
@@ -33,7 +33,7 @@ class URLHelper {
      * @param ignore_params boolean: ignore previously bound parameters
      * @return: url with all necessary and additional parameters, encoded
      */
-    getURL(url: string, param_object: any, ignore_params: boolean): string {
+    getURL(url: string, param_object: any = {}, ignore_params: boolean = false): string {
         let result;
 
         if (url === '' || url.match(/^[?#]/)) {
@@ -44,9 +44,11 @@ class URLHelper {
 
         if (!ignore_params) {
             for (const key in this.parameters) {
-                if (!result.searchParams.has(key)) {
-                    result.searchParams.set(key, this.parameters[key]);
+                if (result.searchParams.has(key) || this.parameters[key] === null) {
+                    continue;
                 }
+
+                result.searchParams.set(key, this.parameters[key]);
             }
         }
 
