@@ -41,9 +41,11 @@ class URLHelper {
 
         if (!ignore_params) {
             for (let key in this.parameters) {
-                if (!result.searchParams.has(key)) {
-                    result.searchParams.set(key, this.parameters[key]);
+                if (result.searchParams.has(key) || this.parameters[key] === null) {
+                    continue;
                 }
+
+                result.searchParams.set(key, this.parameters[key]);
             }
         }
 
