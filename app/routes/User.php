@@ -238,7 +238,7 @@ class User extends \RESTAPI\RouteMap
             $this->error(403, 'You are not allowed to see another user\'s personal file area!');
         }
 
-        $top_folder = \Folder::findTopFolder($user->id, 'user');
+        $top_folder = \Folder::findTopFolder($user->id);
 
         if (!$top_folder) {
             $this->notFound("No folder found for user with id {$user_id}!");
