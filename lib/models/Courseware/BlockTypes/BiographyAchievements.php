@@ -23,6 +23,11 @@ class BiographyAchievements extends BlockType
         return _('Erfolge');
     }
 
+    public static function getIcon(): string
+    {
+        return 'medal';
+    }
+
     public static function getDescription(): string
     {
         return _('Zeigt verschiedene Arten von erreichten Erfolgen an.');

@@ -21,6 +21,10 @@ class KeyPoint extends BlockType
     {
         return _('Merksatz');
     }
+    public static function getIcon(): string
+    {
+        return 'exclaim-circle';
+    }
 
     public static function getDescription(): string
     {

@@ -21,6 +21,10 @@ class Typewriter extends BlockType
     {
         return _('Schreibmaschine');
     }
+    public static function getIcon(): string
+    {
+        return 'block-typewriter';
+    }
 
     public static function getDescription(): string
     {

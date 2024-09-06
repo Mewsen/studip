@@ -21,7 +21,10 @@ class Download extends BlockType
     {
         return _('Download');
     }
-
+    public static function getIcon(): string
+    {
+        return 'download';
+    }
     public static function getDescription(): string
     {
         return _('Stellt eine Datei aus dem Dateibereich zum Download bereit.');

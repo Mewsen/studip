@@ -22,6 +22,11 @@ class Canvas extends BlockType
         return _('Leinwand');
     }
 
+    public static function getIcon(): string
+    {
+        return 'block-canvas';
+    }
+
     public static function getDescription(): string
     {
         return _('Zeichnen und Schreiben auf einem Bild.');

@@ -21,6 +21,10 @@ class Timeline extends BlockType
     {
         return _('Zeitstrahl');
     }
+    public static function getIcon(): string
+    {
+        return 'date-cycle';
+    }
 
     public static function getDescription(): string
     {

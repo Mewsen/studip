@@ -22,6 +22,11 @@ class Error extends BlockType
         return _('Fehler');
     }
 
+    public static function getIcon(): string
+    {
+        return 'decline';
+    }
+
     public static function getDescription(): string
     {
         return _('Zeigt eine Fehlemeldung an.');

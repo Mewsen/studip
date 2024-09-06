@@ -1,0 +1,42 @@
+.cw-panel-tasks {
+    ul {
+        padding: 0 15px 0 0;
+        list-style: none;
+        max-height: 340px;
+        overflow-y: auto;
+
+        li {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            border-bottom: solid thin $color--table-border;
+            padding: 15px 0;
+
+            &:hover {
+                background-color: #f6f6f6;
+            }
+
+            &:last-child {
+                border: none;
+            }
+
+            img.cw-tasks-icon {
+                border: solid thin $color--tile-border;
+                border-radius: 8px;
+                padding: 8px;
+                margin-left: 10px;
+            }
+            .cw-tasks-title {
+                flex-grow: 1;
+                h3 {
+                    margin: 4px 0;
+                    color: var(--base-color);
+                }
+                p {
+                    color: $color--font-primary;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+}

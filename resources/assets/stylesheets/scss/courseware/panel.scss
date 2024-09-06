@@ -1,18 +1,25 @@
+@import'./panel/activities.scss';
+@import './panel/comments.scss';
+@import'./panel/tasks.scss';
+
 .cw-panel {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    column-gap: 20px;
+    column-gap: 15px;
 
     h2, h3 {
         margin-top: 0;
     }
 
     .cw-panel-left {
-        max-width: 1100px;
+        max-width: 1130px;
         flex-grow: 1;
     }
     .cw-panel-right {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
         max-width: 540px;
         overflow-x: hidden;
     }
@@ -35,12 +42,21 @@
             }
             .cw-panel-last-visit-unit-description-text {
                 width: 100%;
-                padding: 10px;
+                padding: 15px;
+                background-color: $color--tile-background;
+                border: solid thin $color--tile-border;
+                border-left: none;
+                p {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 4;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
             }
             a.button {
                 position: absolute;
-                bottom: 0;
-                right: 0;
+                bottom: 5px;
+                right: 5px;
             }
         }
     }

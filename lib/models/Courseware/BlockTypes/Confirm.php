@@ -22,6 +22,11 @@ class Confirm extends BlockType
         return _('Bestätigung');
     }
 
+    public static function getIcon(): string
+    {
+        return 'accept';
+    }
+
     public static function getDescription(): string
     {
         return _('Vom Lernenden bestätigen lassen, dass der Inhalt betrachtet wurde.');

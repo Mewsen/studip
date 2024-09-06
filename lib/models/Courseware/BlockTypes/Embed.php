@@ -21,6 +21,10 @@ class Embed extends BlockType
     {
         return _('Embed');
     }
+    public static function getIcon(): string
+    {
+        return 'code';
+    }
 
     public static function getDescription(): string
     {

@@ -22,6 +22,11 @@ class Code extends BlockType
         return _('Quelltext');
     }
 
+    public static function getIcon(): string
+    {
+        return 'computer';
+    }
+
     public static function getDescription(): string
     {
         return _('Quelltext wird seiner Syntax entsprechend farblich hervorgehoben.');

@@ -34,6 +34,16 @@ abstract class BlockType
     abstract public static function getTitle(): string;
 
     /**
+     * Returns an icon name which represents this type of block.
+     * 
+     * @return string icon name representing this block type
+     */
+    public static function getIcon(): string
+    {
+        return 'checkbox-unchecked';
+    }
+
+    /**
      * Returns the description of this type of blocks suitable to display it to the user.
      *
      * @return string the description of this type of blocks

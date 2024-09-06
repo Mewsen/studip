@@ -22,6 +22,11 @@ class Gallery extends BlockType
         return _('Galerie');
     }
 
+    public static function getIcon(): string
+    {
+        return 'block-gallery';
+    }
+
     public static function getDescription(): string
     {
         return _('Bilder aus einem Ordner im Dateibereich zeigen.');

@@ -21,7 +21,10 @@ class Lti extends BlockType
     {
         return _('LTI');
     }
-
+    public static function getIcon(): string
+    {
+        return 'plugin';
+    }
     public static function getDescription(): string
     {
         return _('Einbinden eines externen Tools.');

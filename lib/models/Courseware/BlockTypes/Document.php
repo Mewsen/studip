@@ -22,6 +22,11 @@ class Document extends BlockType
         return _('Dokument');
     }
 
+    public static function getIcon(): string
+    {
+        return 'file-text';
+    }
+
     public static function getDescription(): string
     {
         return _('Zeigt ein Dokument aus dem Dateibereich an.');

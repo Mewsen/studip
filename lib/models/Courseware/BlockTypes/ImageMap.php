@@ -21,6 +21,10 @@ class ImageMap extends BlockType
     {
         return _('Verweissensitive Grafik');
     }
+    public static function getIcon(): string
+    {
+        return 'block-imagemap';
+    }
 
     public static function getDescription(): string
     {

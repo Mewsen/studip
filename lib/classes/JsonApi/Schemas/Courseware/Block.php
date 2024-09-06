@@ -39,6 +39,7 @@ class Block extends SchemaProvider
             'position' => (int) $resource['position'],
             'block-type' => (string) $resource->getBlockType(),
             'title' => (string) $resource->type->getTitle(),
+            'icon'  => (string) $resource->type->getIcon(),
             'visible' => (bool) $resource['visible'],
             'commentable' => (bool) $resource['commentable'],
             'payload' => $resource->type->getPayload(),

@@ -1,7 +1,7 @@
 <template>
     <component :is="tag" class="cw-tile" :class="[color]">
         <studip-ident-image v-model="identimage" :baseColor="tileColor.hex" :pattern="title" />
-        <div class="preview-image" :style="previewImageStyle">
+        <div class="preview-image" :class="{'ident-image': !hasImage}" :style="previewImageStyle">
             <div
                 v-if="handle"
                 class="overlay-handle cw-tile-handle"
@@ -28,7 +28,7 @@
                 {{ title }}
             </header>
             <div v-if="displayProgress" :title="progressTitle" class="progress-wrapper">
-                <progress :value="progress" max="100">{{ progress }}</progress>
+                <progress :value="progress" max="100">{{ progress }}</progress><span class="progress-value">{{ progress }}%</span>
             </div>
             <div class="description-text-wrapper">
                 <p><slot name="description"></slot></p>

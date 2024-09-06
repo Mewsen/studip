@@ -63,7 +63,7 @@
         height: 416px;
     }
     .cw-unit-add-item {
-        height: calc($tile-height - 2px);
+        height: calc($tile-height + 5px - 2px);
         width: calc($tile-width - 2px);
         border: solid thin var(--content-color-40);
         color: var(--base-color);

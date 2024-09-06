@@ -21,7 +21,10 @@ class IFrame extends BlockType
     {
         return _('IFrame');
     }
-
+    public static function getIcon(): string
+    {
+        return 'door-enter';
+    }
     public static function getDescription(): string
     {
         return _('Einbetten von einer Website oder Datei.');

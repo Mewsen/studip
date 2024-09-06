@@ -21,6 +21,10 @@ class Link extends BlockType
     {
         return _('Link');
     }
+    public static function getIcon(): string
+    {
+        return 'permalink';
+    }
 
     public static function getDescription(): string
     {

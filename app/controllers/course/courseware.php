@@ -25,6 +25,7 @@ class Course_CoursewareController extends CoursewareController
         }
         PageLayout::setTitle(Context::get()->getFullName() . ' - ' . _('Courseware'));
         PageLayout::setHelpKeyword('Basis.Courseware');
+        PageLayout::disableSidebar();
 
         checkObject();
         if (!Context::isCourse()) {
@@ -46,12 +47,15 @@ class Course_CoursewareController extends CoursewareController
 
     public function index_action(): void
     {
+        $cid = Context::getId();
         $this->isTeacher = $GLOBALS['perm']->have_studip_perm(
             'tutor',
-            Context::getId(),
+            $cid,
             $GLOBALS['user']->id
         );
-        $this->lastElementId = UserConfig::get($GLOBALS['user']->id)->getValue('COURSEWARE_LAST_ELEMENT')[Context::getId()];
+        $lastElements = UserConfig::get($GLOBALS['user']->id)->getValue('COURSEWARE_LAST_ELEMENT');
+        
+        $this->lastElementId =  array_key_exists($cid, $lastElements) ? $lastElements[$cid] : null;
 
         Navigation::activateItem('course/courseware/shelf');
         $this->setIndexSidebar();

@@ -22,6 +22,11 @@ class Audio extends BlockType
         return _('Audio');
     }
 
+    public static function getIcon(): string
+    {
+        return 'audio';
+    }
+
     public static function getDescription(): string
     {
         return _('Spielt eine Audiodatei aus dem Dateibereich oder von ' .

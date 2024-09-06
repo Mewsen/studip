@@ -23,6 +23,11 @@ class BiographyGoals extends BlockType
         return _('Ziele');
     }
 
+    public static function getIcon(): string
+    {
+        return 'radar';
+    }
+
     public static function getDescription(): string
     {
         return _('Präsentiert eines Ihrer Ziele.');

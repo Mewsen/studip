@@ -23,6 +23,11 @@ class BiographyPersonalInformation extends BlockType
         return _('Persönliche Informationen');
     }
 
+    public static function getIcon(): string
+    {
+        return 'own-license';
+    }
+
     public static function getDescription(): string
     {
         return _('Zeigt persönliche Daten an.');

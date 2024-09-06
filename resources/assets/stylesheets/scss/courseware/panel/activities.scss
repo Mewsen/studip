@@ -1,0 +1,44 @@
+.cw-activities {
+    list-style: none;
+    padding: 0 15px 0 0;
+    max-height: 340px;
+    overflow-y: auto;
+
+    li.cw-activity-item {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        border-bottom: solid thin $color--table-border;
+        padding: 15px 0;
+
+        &:hover {
+            background-color: #f6f6f6;
+        }
+
+        &:last-child {
+            border: none;
+        }
+
+        img.cw-activity-avatar {
+            border: solid thin transparent;
+            border-radius: 24px;
+            margin-left: 10px;
+        }
+        .cw-activity-title {
+            flex-grow: 1;
+            h3 {
+                margin: 4px 0;
+            }
+            p {
+                color: $color--font-primary;
+                font-size: 12px;
+            }
+        }
+        div.cw-activity-buttons-wrapper {
+            margin: auto 10px auto 0;
+            img {
+                vertical-align: text-bottom;
+            }
+        }
+    }
+}

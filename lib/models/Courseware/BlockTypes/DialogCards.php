@@ -22,6 +22,11 @@ class DialogCards extends BlockType
         return _('Lernkarten');
     }
 
+    public static function getIcon(): string
+    {
+        return 'dialog-cards';
+    }
+
     public static function getDescription(): string
     {
         return _('Karten zum Umdrehen, auf beiden Seiten lässt sich ein Bild und Text darstellen.');

@@ -36,6 +36,13 @@ export default {
             type: Number,
             default: 8,
         },
+        backgroundAlpha: {
+            type: Number,
+            default: 1.0,
+            validator: value => {
+                return value >= 0.0 && value <= 1.0;
+            }
+        }
     },
     data() {
         return {
@@ -58,12 +65,12 @@ export default {
             const numShape = this.randint(this.shapesMin, this.shapesMax);
             const shapeSizes = [];
 
-            ctx.fillStyle = this.hexToRgbA(this.baseColor, 0.8);
+            ctx.fillStyle = this.hexToRgbA(this.baseColor, this.backgroundAlpha);
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             const curveStart = this.randint(10, 70)/100 * this.height;
             const curveEnd = this.randint(10, 70)/100 * this.height;
-            ctx.strokeStyle = `rgba(255, 255, 255, ${this.randint(50, 70) / 100})`;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${this.randint(70, 95) / 100})`;
             const curvedistance = this.randint(20, 40);
             const xFactor = this.randint(10, 45) / 100;
             const yFactor = this.randint(10, 45) / 100;

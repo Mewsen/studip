@@ -7,10 +7,10 @@
                     <CoursewareUnitItems />
                     <CoursewareSharedItems v-if="!inCourseContext" />
                 </div>
-                <CoursewarePanelTasks v-if="inCourseContext" />
             </div>
             <div class="cw-panel-right">
                 <template v-if="inCourseContext">
+                    <CoursewarePanelTasks />
                     <CoursewarePanelComComments />
                     <CoursewarePanelComActivities />
                 </template>

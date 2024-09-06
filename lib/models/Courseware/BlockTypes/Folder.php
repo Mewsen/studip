@@ -22,6 +22,11 @@ class Folder extends BlockType
         return _('Dateiordner');
     }
 
+    public static function getIcon(): string
+    {
+        return 'folder-full';
+    }
+
     public static function getDescription(): string
     {
         return _('Stellt einen Ordner aus dem Dateibereich zur Verfügung.');

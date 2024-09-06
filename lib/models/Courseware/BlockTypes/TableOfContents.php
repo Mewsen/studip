@@ -21,6 +21,10 @@ class TableOfContents extends BlockType
     {
         return _('Inhaltsverzeichnis');
     }
+    public static function getIcon(): string
+    {
+        return 'table-of-contents';
+    }
 
     public static function getDescription(): string
     {

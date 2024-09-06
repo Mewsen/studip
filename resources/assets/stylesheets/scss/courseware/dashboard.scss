@@ -60,36 +60,6 @@
     }
 }
 
-.cw-activities-wrapper {
-    max-width: $max-content-width;
-
-    .cw-companion-box {
-        margin: 10px;
-    }
-
-    .cw-activities {
-        list-style: none;
-        padding: 0;
-
-        .cw-activity-item {
-            border-bottom: solid thin var(--content-color-40);
-            padding: 0.5em;
-
-            &:last-child {
-                border: none;
-            }
-
-            p {
-                margin: 0 0 4px 0;
-                img {
-                    padding-right: 0.5em;
-                    vertical-align: text-bottom;
-                }
-            }
-        }
-    }
-}
-
 .cw-dashboard-box {
     .cw-dashboard-tasks-wrapper,
     .cw-dashboard-students-wrapper {

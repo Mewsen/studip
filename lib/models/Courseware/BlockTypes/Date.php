@@ -22,6 +22,10 @@ class Date extends BlockType
         return _('Termin');
     }
 
+    public static function getIcon(): string
+    {
+        return 'date';
+    }
     public static function getDescription(): string
     {
         return _('Zeigt einen Termin oder Countdown an.');

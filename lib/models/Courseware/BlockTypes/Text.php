@@ -21,6 +21,10 @@ class Text extends BlockType
     {
         return _('Text');
     }
+    public static function getIcon(): string
+    {
+        return 'edit';
+    }
 
     public static function getDescription(): string
     {

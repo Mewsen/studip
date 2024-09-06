@@ -23,7 +23,10 @@ class Headline extends BlockType
     {
         return _('Blickfang');
     }
-
+    public static function getIcon(): string
+    {
+        return 'block-eyecatcher';
+    }
     public static function getDescription(): string
     {
         return _('Erzeugt einen typografisch ansprechenden Text.');

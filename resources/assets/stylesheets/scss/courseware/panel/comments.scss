@@ -1,0 +1,49 @@
+.cw-block-comments-overview-wrapper {
+    ul {
+        padding: 0 15px 0 0;
+        list-style: none;
+        max-height: 340px;
+        overflow-y: auto;
+
+        li {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            border-bottom: solid thin $color--table-border;
+            padding: 15px 0;
+
+            &:hover {
+                background-color: #f6f6f6;
+            }
+
+            &:last-child {
+                border: none;
+            }
+
+            img.cw-comments-icon {
+                border: solid thin $color--tile-border;
+                border-radius: 16px 0 16px 0;
+                padding: 8px;
+                margin-left: 10px;
+            }
+            .cw-comments-title {
+                flex-grow: 1;
+                h3 {
+                    margin: 4px 0;
+                    color: var(--base-color);
+                }
+                p {
+                    color: $color--font-primary;
+                    font-size: 12px;
+                }
+            }
+            div.cw-comments-buttons-wrapper {
+                margin: auto 10px auto 0;
+                img {
+                    vertical-align: text-bottom;
+                }
+            }
+
+        }
+    }
+}

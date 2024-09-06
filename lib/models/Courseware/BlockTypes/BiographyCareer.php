@@ -23,6 +23,11 @@ class BiographyCareer extends BlockType
         return _('Karriere');
     }
 
+    public static function getIcon(): string
+    {
+        return 'ranking';
+    }
+
     public static function getDescription(): string
     {
         return _('Stellt die Stationen Ihrer schulischen, akademischen und beruflichen Qualifikationen, sowie Ihre Berufserfahrung dar.');

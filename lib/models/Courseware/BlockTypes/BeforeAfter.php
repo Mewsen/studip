@@ -22,6 +22,11 @@ class BeforeAfter extends BlockType
         return _('Bildvergleich');
     }
 
+    public static function getIcon(): string
+    {
+        return 'block-comparison';
+    }
+
     public static function getDescription(): string
     {
         return _('Vergleicht zwei Bilder mit einem Schieberegler.');

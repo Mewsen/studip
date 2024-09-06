@@ -11,7 +11,7 @@
                     :pattern="structuralElement.attributes.title"
                 />
             </template>
-            <div class="cw-panel-last-visit-unit-description-text" :style="descriptionStyle">
+            <div class="cw-panel-last-visit-unit-description-text">
                 <h3>{{ structuralElement.attributes.title }}</h3>
                 <p>
                     {{ structuralElement.attributes.payload.description }}
@@ -74,12 +74,6 @@ export default {
                 return c.class === elementColor;
             });
             return color.hex;
-        },
-        descriptionStyle() {
-            let style = {};
-            style.backgroundColor = this.bgColorHex + '20';
-
-            return style;
         },
         inCourseContext() {
             return this.context.type === 'courses';

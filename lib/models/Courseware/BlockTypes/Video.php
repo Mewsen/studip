@@ -21,6 +21,10 @@ class Video extends BlockType
     {
         return _('Video');
     }
+    public static function getIcon(): string
+    {
+        return 'video2';
+    }
 
     public static function getDescription(): string
     {

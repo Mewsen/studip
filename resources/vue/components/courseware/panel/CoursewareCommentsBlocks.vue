@@ -1,93 +1,18 @@
 <template>
     <div class="cw-block-comments-overview-wrapper">
-        <table class="default">
-            <caption>
-                {{
-                    $gettext('Blöcke')
-                }}
-            </caption>
-            <colgroup>
-                <col style="width: 16em" />
-                <col style="width: 16em" />
-                <col style="width: 8em" />
-                <col class="responsive-hidden" style="width: 8em" />
-                <col class="responsive-hidden" style="width: 8em" />
-                <col style="width: 2em" />
-            </colgroup>
-            <thead>
-                <tr class="sortable">
-                    <th :class="getSortClass('units')" @click="sort('units')">
-                        <a href="#">{{ $gettext('Lernmaterial') }}</a>
-                    </th>
-                    <th :class="getSortClass('structural-elements')" @click="sort('structural-elements')">
-                        <a href="#">{{ $gettext('Seite') }}</a>
-                    </th>
-                    <th :class="getSortClass('blocks')" @click="sort('blocks')">
-                        <a href="#">{{ $gettext('Blocktyp') }}</a>
-                    </th>
-                    <th class="responsive-hidden" :class="getSortClass('comments')" @click="sort('comments')">
-                        <a href="#">{{ $gettext('Kommentare') }}</a>
-                    </th>
-                    <th class="responsive-hidden" :class="getSortClass('feedback')" @click="sort('feedback')">
-                        <a href="#">{{ $gettext('Anmerkungen') }}</a>
-                    </th>
-                    <th class="actions">
-                        {{ $gettext('Aktionen') }}
-                    </th>
-                </tr>
-            </thead>
-            <tbody v-if="filteredBlocks.length > 0">
-                <tr v-for="block in filteredBlocks" :key="block.id">
-                    <td>{{ block.unitName }}</td>
-                    <td>
-                        <a :href="block.elementURL">
-                            {{ block.element.attributes.title }}
-                        </a>
-                    </td>
-                    <td>{{ block.attributes.title }}</td>
-                    <td class="responsive-hidden">
-                        <a href="#" @click.prevent="enableCommentsDialog(block)">
-                            {{
-                                $gettextInterpolate(
-                                    $ngettext('%{length} Kommentar', '%{length} Kommentare', block.comments.length),
-                                    { length: block.comments.length }
-                                )
-                            }}
-                        </a>
-                    </td>
-                    <td class="responsive-hidden">
-                        <a
-                            v-if="block.element.attributes['can-edit']"
-                            href="#"
-                            @click.prevent="enableFeedbackDialog(block)"
-                        >
-                            {{
-                                $gettextInterpolate(
-                                    $ngettext('%{length} Anmerkung', '%{length} Anmerkungen', block.feedbacks.length),
-                                    { length: block.feedbacks.length }
-                                )
-                            }}
-                        </a>
-                        <template v-else> - </template>
-                    </td>
-                    <td class="actions">
-                        <studip-action-menu
-                            :items="getMenuItems(block)"
-                            :context="$gettext('Blöcke')"
-                            @showComments="enableCommentsDialog(block)"
-                            @showFeedback="enableFeedbackDialog(block)"
-                        />
-                    </td>
-                </tr>
-            </tbody>
-            <tbody v-else>
-                <tr class="empty">
-                    <td colspan="6">
-                        {{ $gettext('Es wurden keine Kommentare oder Anmerkungen gefunden') }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <ul>
+            <li v-for="block in filteredBlocks" :key="block.id">
+                <StudipIcon class="cw-comments-icon" :shape="block.attributes.icon" role="info" :size="32" />
+                <a class="cw-comments-title" :href="block.elementURL">
+                    <h3>{{ block.element.attributes.title }}</h3>
+                    <p>{{ block.unitName }}</p>
+                </a>
+                <div class="cw-comments-buttons-wrapper">
+                    <a href="#" @click.prevent="enableCommentsDialog(block)">{{block.comments.length}} <StudipIcon shape="chat" /></a>
+                    <a v-if="block.feedbacks.length > 0" href="#" @click.prevent="enableFeedbackDialog(block)">{{block.feedbacks.length}} <StudipIcon shape="exclaim-circle" /></a>
+                </div>
+            </li>
+        </ul>
         <courseware-comments-overview-dialog
             v-if="showCommentsDialog"
             item-type="block"
@@ -110,6 +35,7 @@ import CoursewareCommentsOverviewDialog from '../CoursewareCommentsOverviewDialo
 import commentsOverviewMixin from '@/vue/mixins/courseware/comments-overview-helper.js';
 
 import { mapGetters } from 'vuex';
+import StudipIcon from '../../StudipIcon.vue';
 
 export default {
     name: 'courseware-block-comments-overview',

@@ -22,6 +22,11 @@ class Chart extends BlockType
         return _('Diagramm');
     }
 
+    public static function getIcon(): string
+    {
+        return 'vote';
+    }
+
     public static function getDescription(): string
     {
         return _('Präsentiert Datensätze in einem Diagramm.');

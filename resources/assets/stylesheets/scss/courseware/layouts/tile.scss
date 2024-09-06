@@ -5,7 +5,7 @@
     display: flex;
     flex-wrap: wrap;
     padding-left: 0;
-    gap: 5px;
+    gap: 15px;
     overflow: hidden;
 }
 .cw-tiles .tile,
@@ -13,25 +13,31 @@
     height: $tile-height;
     width: $tile-width;
     margin: 0;
-    background-color: var(--base-color);
+    background-color: $color--tile-background;
     &:last-child {
         margin-right: 0;
     }
 
     @each $name, $color in $tile-colors {
         &.#{'' + $name} {
-            background-color: $color;
+            border-bottom: solid 5px $color;
+            .preview-image:not(.ident-image) {
+                border-bottom: solid 5px $color;
+            }
         }
     }
 
     .preview-image {
         height: 180px;
         width: 100%;
-        background-size: 100% auto;
+        background-size: cover;
         background-repeat: no-repeat;
         background-color: var(--content-color-20);
         background-position: center;
-
+        border-bottom-width: 5px;
+        &:not(.ident-image) {
+            height: 175px;
+        }
         .overlay-handle {
             @extend .drag-handle;
             background-color: $white;
@@ -73,16 +79,19 @@
     }
 
     .description {
-        height: 220px;
-        padding: 14px;
-        color: var(--white);
+        height: calc(100% - 211px);
+        padding: 15px;
+        color: $color--font-primary;
         position: relative;
         display: block;
+        border: solid thin $color--tile-border;
+        border-top: none;
+        border-bottom: none;
 
         header {
-            font-size: 20px;
-            line-height: 22px;
-            color: var(--white);
+            font-size: 18px;
+            line-height: 20px;
+            color: $color--font-primary;
             border: none;
             width: 240px;
             overflow: hidden;
@@ -93,7 +102,7 @@
 
             @each $type, $icon in $element-icons {
                 &.description-icon-#{$type} {
-                    width: 212px;
+                    width: 210px;
                     padding-left: 28px;
                     @include background-icon(#{$icon}, info_alt, 22);
                 }
@@ -101,37 +110,44 @@
         }
 
         .progress-wrapper {
+            display: flex;
+            flex-direction: row;
             width: 100%;
-            padding: 8px 0;
+            padding: 4px 0;
             border: none;
             background: none;
 
             progress {
+                flex-grow: 1;
                 appearance: none;
                 display: block;
-                width: 100%;
-                height: 3px;
-                margin: 0;
+                height: 5px;
+                border-radius: 5px;
+                margin: 7px 10px 0 0px;
                 border: none;
-                background: rgba(0, 0, 0, 0.3);
+                background: $color--gray-5;
                 &::-webkit-progress-bar {
-                    background: rgba(0, 0, 0, 0.3);
+                    background: $color--gray-5;
                 }
                 &::-webkit-progress-value {
-                    background: white;
+                    background: $color--gray-2;
                 }
                 &::-moz-progress-bar {
-                    background: white;
+                    background: $color--gray-2;
                 }
+            }
+
+            .progress-value {
+
             }
         }
 
         .description-text-wrapper {
             overflow: hidden;
-            height: 10em;
-            margin-top: 4px;
+            height: 120px;
+            margin-top: 8px;
             display: -webkit-box;
-            -webkit-line-clamp: 7;
+            -webkit-line-clamp: 6;
             -webkit-box-orient: vertical;
             p {
                 text-align: left;
@@ -141,7 +157,7 @@
         footer {
             width: 242px;
             margin-top: 8px;
-            color: var(--white);
+            color: $color--font-primary;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -164,7 +180,7 @@
     a.description:visited,
     a.description:hover {
         height: 210px;
-        color: var(--white);
+        color: $color--font-primary;
         text-decoration: unset;
     }
 }
