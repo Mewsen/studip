@@ -44,7 +44,7 @@
         <? endif ?>
     </label>
     <label>
-        <span><?= _('Datenfeld (Name) mit Matrikelnummer (wenn leer, wird keine Matrikelnummer übergeben)') ?></span>
+        <span><?= _('Datenfeld (Name) mit Matrikelnummer (nur ausfüllen, wenn die Matrikelnummer in einem Datenfeld gespeichert wird)') ?></span>
         <input type="text" name="ilias_matriculation" size="50" maxlength="255" value="<?= htmlReady($ilias_config['matriculation']) ?>">
     </label>
     <label>

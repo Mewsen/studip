@@ -110,7 +110,7 @@ class IliasUser
     function getStudipUserData()
     {
         $query = "SELECT username, password, title_front, title_rear, Vorname,
-                         Nachname, Email, privatnr, privadr, geschlecht
+                         Nachname, Email, privatnr, privadr, geschlecht, matriculation_number
                   FROM auth_user_md5
                   LEFT JOIN  user_info USING (user_id)
                   WHERE user_id = ?";
@@ -145,6 +145,8 @@ class IliasUser
                     $this->matriculation = $entry->getDisplayValue();
                 }
             }
+        } else {
+            $this->matriculation = $data['matriculation_number'];
         }
 
         if ($this->title_front != '') {
