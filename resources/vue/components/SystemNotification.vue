@@ -174,7 +174,7 @@ export default {
             }, timing);
         }
     },
-    destroyed() {
+    unmounted() {
         this.globalOff('disrupt-system-notifications', this.disruptTimeout);
         this.globalOff('resume-system-notifications', this.initTimeout);
     }

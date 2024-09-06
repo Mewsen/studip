@@ -161,7 +161,7 @@ export default {
 
         this.contentWidth = Math.max(...iconCounts) * 26;
     },
-    destroyed() {
+    unmounted() {
         this.globalOff('AdminCourses/changeActionArea', this.changeActionArea.bind(this));
         this.globalOff('AdminCourses/changeFilter', this.changeFilter.bind(this));
         this.globalOff('AdminCourses/loadCourse', this.loadCourse.bind(this));
