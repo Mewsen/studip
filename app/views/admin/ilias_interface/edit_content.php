@@ -4,6 +4,7 @@
  * @var string $ilias_index
  * @var array $ilias_config
  * @var array $modules_available
+ * @var array $ilias_datafields
  */
 ?>
 <form class="default" action="<?= $controller->url_for('admin/ilias_interface/save/'.$ilias_index) ?>" method="post">
@@ -47,6 +48,26 @@
         <span><?= _('Datenfeld (Name) mit Matrikelnummer (wenn leer, wird keine Matrikelnummer übergeben)') ?></span>
         <input type="text" name="ilias_matriculation" size="50" maxlength="255" value="<?= htmlReady($ilias_config['matriculation']) ?>">
     </label>
+    <? if (count($ilias_datafields)) : ?>
+        <label>
+            <span><?= _('ILIAS-Datenfeld für Studiengang 1 (wenn leer, wird der Studiengang nicht übertragen)') ?></span>
+            <select name="ilias_discipline_1">
+            <option></option>
+            <? foreach ($ilias_datafields as $field) : ?>
+                <option value="<?=$field['id']?>" <?=$ilias_config['discipline_1']['id'] == $field['id'] ? 'selected' : ''?>><?=htmlReady($field['name'])?></option>
+            <? endforeach ?>
+            </select>
+        </label>
+        <label>
+            <span><?= _('ILIAS-Datenfeld für Studiengang 2 (wenn leer, wird der Studiengang nicht übertragen)') ?></span>
+            <select name="ilias_discipline_2">
+                <option></option>
+            <? foreach ($ilias_datafields as $field) : ?>
+                <option value="<?=$field['id']?>" <?=$ilias_config['discipline_2']['id'] == $field['id'] ? 'selected' : ''?>><?=htmlReady($field['name'])?></option>
+            <? endforeach ?>
+            </select>
+        </label>
+    <? endif ?>
     <label>
     <span class="required"><?= _('Struktur für angelegte Kurse') ?></span>
     </label>
@@ -82,11 +103,11 @@
         <span><?= _('Veranstaltungsname (Semester)') ?></span>
     </label>
     <label>
-        <input type="checkbox" name="ilias_course_veranstaltungsnummer" value="1" <?= $ilias_config['course_veranstaltungsnummer'] ? 'checked' : '' ?>>
+        <input type="checkbox" name="ilias_course_veranstaltungsnummer" value="1" <?= !empty($ilias_config['course_veranstaltungsnummer']) ? 'checked' : '' ?>>
         <span><?= _('Stud.IP-Veranstaltungsnummer im ILIAS-Kurstitel anzeigen') ?></span>
     </label>
     <label>
-        <input type="checkbox" name="ilias_delete_ilias_courses" value="1" <?= $ilias_config['delete_ilias_courses'] ? 'checked' : '' ?>>
+        <input type="checkbox" name="ilias_delete_ilias_courses" value="1" <?= !empty($ilias_config['delete_ilias_courses'] )? 'checked' : '' ?>>
         <span><?= _('Beim Löschen von Stud.IP-Veranstaltungen ILIAS-Kurse ebenfalls löschen (alle untergeordneten Objekte werden gelöscht!)') ?></span>
     </label>
     <label>
