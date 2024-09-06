@@ -34,6 +34,7 @@ $commands = [
     Commands\DB\MoveMatrikelnummer::class,
     Commands\Make\Migration::class,
     Commands\Make\Model::class,
+    Commands\Make\Plugin::class,
     Commands\DI\Reset::class,
     Commands\Files\Dump::class,
     Commands\Fix\Biest7789::class,

@@ -3,6 +3,7 @@
 namespace Studip\Cli\Commands\Make;
 
 use Nette\PhpGenerator\PhpFile;
+use Nette\PhpGenerator\PsrPrinter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -89,7 +90,7 @@ final class Model extends Command
         $method->addParameter('config', []);
 
 
-        $printer = new StudipClassPrinter();
+        $printer = new PsrPrinter();
         $result  = $printer->printFile($file);
 
         $modelName = str_replace(' ', '_', ucfirst($name));
