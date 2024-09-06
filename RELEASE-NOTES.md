@@ -67,8 +67,9 @@
 - Die Klassen `DbView`, `DbSnapshot` und die zugehörigen Dateien in `lib/dbviews` wurden ausgebaut. ([Issue #4390](https://gitlab.studip.de/studip/studip/-/issues/4390))
   - Als Ersatz dienen Datenbankabfragen mittels der `DBManager`-Klasse oder mittels `SimpleORMap`-Modellen.
 - Es wurden zwei neue CLI-Kommandos hinzugefügt, womit man Klassenrümpfe für SORM-Models und Migrationen erstellen kann. Bei den Migrationen wird die Versionsnummer für die jeweilige `domain` automatisch ermittelt.
-    - `cli/studip make:model` und `cli/studip make:migration`.
-
+  - `cli/studip make:model` und `cli/studip make:migration`.
+- Es wurde ein neues CLI-Kommando hinzugefügt, womit man auf einfache Weise ein Plugin-Grundgerüst erstellen kann.
+  - `cli/studip make:plugin`
 ## Security related issues
 
 -
