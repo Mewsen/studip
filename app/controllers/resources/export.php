@@ -327,12 +327,15 @@ class Resources_ExportController extends AuthenticatedController
 
         $booking_data = [
             [
+                _('Datum'),
                 _('Beginn'),
                 _('Ende'),
+                _('Wochentag'),
                 _('Rüstzeit'),
                 _('Raumname'),
                 _('Buchungstyp'),
                 _('Beschreibung'),
+                _('geplante Teilnehmendenzahl'),
                 _('Buchende Person'),
                 _('Belegende Person(en)'),
                 _('Interner Kommentar')
@@ -389,15 +392,19 @@ class Resources_ExportController extends AuthenticatedController
                     continue;
                 }
                 $description = $booking->description;
+                $turnout = 0;
                 if (!$booking->isSimpleBooking()) {
                     $course = $booking->assigned_course_date->course;
                     if ($course instanceof Course) {
                         $description = $course->getFullName();
+                        $turnout = $course->admission_turnout;
                     }
                 }
                 $booking_data[] = [
-                    date('d.m.Y H:i', ($interval->begin + $booking->preparation_time)),
-                    date('d.m.Y H:i', $interval->end),
+                    date('d.m.Y', $interval->begin),
+                    date('H:i', $interval->begin + $booking->preparation_time),
+                    date('H:i', $interval->end),
+                    strftime('%a', $interval->begin),
                     sprintf(
                         _('%u min.'),
                         intval($booking->preparation_time / 60)
@@ -417,6 +424,7 @@ class Resources_ExportController extends AuthenticatedController
                     )
                     ),
                     $description,
+                    $turnout,
                     $booking->booking_user ? $booking->booking_user->getFullName() : '',
                     implode(', ', $booking->getAssignedUsers()),
                     $booking->internal_comment
