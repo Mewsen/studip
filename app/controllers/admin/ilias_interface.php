@@ -32,11 +32,6 @@ class Admin_IliasInterfaceController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        // check SOAP status
-        if (!Config::get()->SOAP_ENABLE) {
-            PageLayout::postError(sprintf(_("Das Stud.IP-Modul für die SOAP-Schnittstelle ist nicht aktiviert. Dieses Modul wird für die Nutzung der ILIAS-Schnittstelle benötigt. Ändern Sie den entsprechenden Eintrag in der %sStud.IP-Konfiguration%s."), '<a href="'.$this->url_for('admin/configuration/configuration?needle=SOAP').'">', '</a>'));
-        }
-
         // check if interface is active
         if (!Config::Get()->ILIAS_INTERFACE_ENABLE ) {
             throw new AccessDeniedException(_('Ilias-Interface ist nicht aktiviert.'));
