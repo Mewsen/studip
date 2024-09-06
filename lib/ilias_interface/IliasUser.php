@@ -41,6 +41,7 @@ class IliasUser
     public $phone_home;
     public $fax;
     public $matriculation;
+    public $disciplines;
     public $email;
     public $type;
     public $is_connected;
@@ -156,6 +157,20 @@ class IliasUser
         if ($this->title_rear != '') {
             $this->title .= $this->title_rear;
         }
+
+        $disciplines = UserStudyCourse::findByUser($this->studip_id);
+        if (is_array($disciplines) && count($disciplines)) {
+            if ((array_key_exists('discipline_1', $this->ilias_config) && $this->ilias_config['discipline_1']) || (array_key_exists('discipline_2', $this->ilias_config) && $this->ilias_config['discipline_2'])) {
+                $discipline = reset($disciplines);
+                if ($discipline) {
+                    $this->disciplines[] = $discipline->studycourse_name . ' ' . $discipline->degree_name;
+                }
+                $discipline = next($disciplines);
+                if ($discipline) {
+                    $this->disciplines[] = $discipline->studycourse_name . ' ' . $discipline->degree_name;
+                }
+            }
+        }
         return true;
     }
 
@@ -187,6 +202,15 @@ class IliasUser
         $user_data['agree_date'] = date('Y-m-d H:i:s');
         $user_data['auth_mode'] = 'default';
         $user_data['external_account'] = '';
+        $user_data['UDF'] = [];
+        if (is_array($this->disciplines)) {
+            if (is_array($this->ilias_config) && array_key_exists('discipline_1', $this->ilias_config) && array_key_exists(0, $this->disciplines)) {
+                $user_data['UDF'][$this->ilias_config['discipline_1']['id']] = ['name' => $this->ilias_config['discipline_1']['name'], 'value' => $this->disciplines[0]];
+            }
+            if (is_array($this->ilias_config) && array_key_exists('discipline_2', $this->ilias_config) && array_key_exists(1, $this->disciplines)) {
+                $user_data['UDF'][$this->ilias_config['discipline_2']['id']] = ['name' => $this->ilias_config['discipline_2']['name'], 'value' => $this->disciplines[1]];
+            }
+        }
         return $user_data;
     }
 

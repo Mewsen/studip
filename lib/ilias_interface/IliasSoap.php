@@ -934,6 +934,11 @@ class IliasSoap extends StudipSoapClient
                         $user_array['email'] = (string)$user->Email;
                         $user_array['active'] = (string)$user->Active;
                         $user_array['authmode'] = (string)$user->AuthMode->attributes()->type;
+                        if (isset($user->UserDefinedField)) {
+                            foreach ($user->UserDefinedField as $field) {
+                                $user_array['udfs'][] = ['id' => (string)$field->attributes()->Id, 'name' => (string)$field->attributes()->Name];
+                            }
+                        }
                         return $user_array;
                     }
                 }
@@ -1021,7 +1026,9 @@ class IliasSoap extends StudipSoapClient
     {
         $this->clearCache();
         foreach($user_data as $key => $value) {
-            $user_data[$key] = htmlReady($user_data[$key]);
+            if (!is_array($value)) {
+                $user_data[$key] = htmlReady($user_data[$key]);
+            }
         }
         $update = $user_data["id"];
 
@@ -1050,8 +1057,13 @@ class IliasSoap extends StudipSoapClient
             $usr_xml .= "<Look Skin=\"".$user_data["user_skin"]."\" Style=\"".$user_data["user_style"]."\"/>";
         }
         $usr_xml .= "<AuthMode type=\"".$user_data["auth_mode"]."\"/>
-<ExternalAccount>".$user_data["external_account"]."</ExternalAccount>
-</User>
+<ExternalAccount>".$user_data["external_account"]."</ExternalAccount>";
+        if (array_key_exists('UDF', $user_data) && is_array($user_data['UDF'])) {
+            foreach ($user_data['UDF'] as $udf_id => $udf_content) {
+                $usr_xml .= "<UserDefinedField Id=\"{$udf_id}\" Name=\"".$udf_content['name']."\">".htmlReady($udf_content['value'])."</UserDefinedField>";
+            }
+        }
+        $usr_xml .= "</User>
 </Users>";
 
         $param = [

@@ -243,6 +243,15 @@ class Admin_IliasInterfaceController extends AuthenticatedController
     {
         $this->ilias_config = $this->ilias_configs[$index];
         $this->ilias_index = $index;
+        $this->ilias_datafields = [];
+
+        $connected_ilias = new ConnectedIlias($index);
+        if ($admin_id = $connected_ilias->soap_client->lookupUser($this->ilias_config['admin'])) {
+            $user = $connected_ilias->soap_client->getUser($admin_id);
+            if (array_key_exists('udfs', $user)) {
+                $this->ilias_datafields = $user['udfs'];
+            }
+        }
     }
 
     /**
@@ -314,6 +323,28 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                     }
                     if (Request::getInstance()->offsetExists('ilias_matriculation')) {
                         $this->ilias_configs[$index]['matriculation'] = Request::get('ilias_matriculation');
+                    }
+                    if (Request::getInstance()->offsetExists('ilias_discipline_1') && Request::getInstance()->offsetExists('ilias_discipline_2')) {
+                        if ($admin_id = $connected_ilias->soap_client->lookupUser($this->ilias_configs[$index]['admin'])) {
+                            $user = $connected_ilias->soap_client->getUser($admin_id);
+                            if (array_key_exists('udfs', $user)) {
+                                $this->ilias_datafields = $user['udfs'];
+                                foreach ($this->ilias_datafields as $field) {
+                                    if (Request::option('ilias_discipline_1') == $field['id']) {
+                                        $this->ilias_configs[$index]['discipline_1'] = ['id' => $field['id'], 'name' => $field['name']];
+                                    }
+                                    if (Request::option('ilias_discipline_2') == $field['id']) {
+                                        $this->ilias_configs[$index]['discipline_2'] = ['id' => $field['id'], 'name' => $field['name']];
+                                    }
+                                }
+                                if (!Request::option('ilias_discipline_1')) {
+                                    unset($this->ilias_configs[$index]['discipline_1']);
+                                }
+                                if (!Request::option('ilias_discipline_2')) {
+                                    unset($this->ilias_configs[$index]['discipline_2']);
+                                }
+                            }
+                        }
                     }
                     if (Request::getInstance()->offsetExists('ilias_cat_semester')) {
                         $this->ilias_configs[$index]['cat_semester'] = Request::get('ilias_cat_semester');
