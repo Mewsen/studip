@@ -16,8 +16,8 @@
 */
 class IliasUser
 {
-    const USER_TYPE_ORIGINAL= '1';
-    const USER_TYPE_CREATED= '0';
+    const USER_TYPE_ORIGINAL= 1;
+    const USER_TYPE_CREATED= 0;
 
     public $index;
     private $ilias_config;
