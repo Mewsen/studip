@@ -25,11 +25,11 @@
                     </courseware-companion-box>
                     <draggable
                         v-if="canEdit"
+                        v-bind="dragOptions"
                         class="cw-container-list-block-list cw-container-list-sort-mode"
                         tag="ol"
                         role="listbox"
                         v-model="blockList"
-                        v-bind="dragOptions"
                         handle=".cw-sortable-handle"
                         group="blocks"
                         @start="isDragging = true"
@@ -197,7 +197,7 @@ export default {
                         this.keyboardSelected = blockId;
                         const block = this.blockById({id: blockId});
                         const index = this.blockList.findIndex(b => b.id === block.id);
-                        this.assistiveLive = 
+                        this.assistiveLive =
                             this.$gettextInterpolate(
                                 this.$gettext('%{blockTitle} Block ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen.')
                                 , {blockTitle: block.attributes.title, pos: index + 1, listLength: this.blockList.length}
@@ -227,7 +227,7 @@ export default {
                 const block = this.blockById({id: blockId});
                 const newPos = currentIndex - 1;
                 this.blockList.splice(newPos, 0, this.blockList.splice(currentIndex, 1)[0]);
-                this.assistiveLive = 
+                this.assistiveLive =
                     this.$gettextInterpolate(
                         this.$gettext('%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.')
                         , {blockTitle: block.attributes.title, pos: newPos + 1, listLength: this.blockList.length}
@@ -240,7 +240,7 @@ export default {
                 const block = this.blockById({id: blockId});
                 const newPos = currentIndex + 1;
                 this.blockList.splice(newPos, 0, this.blockList.splice(currentIndex, 1)[0]);
-                this.assistiveLive = 
+                this.assistiveLive =
                     this.$gettextInterpolate(
                         this.$gettext('%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.')
                         , {blockTitle: block.attributes.title, pos: newPos + 1, listLength: this.blockList.length}
@@ -250,7 +250,7 @@ export default {
         abortKeyboardSorting(blockId) {
             const block = this.blockById({id: blockId});
             this.keyboardSelected = null;
-            this.assistiveLive = 
+            this.assistiveLive =
                 this.$gettextInterpolate(
                     this.$gettext('%{blockTitle} Block, Neuordnung abgebrochen.')
                     , {blockTitle: block.attributes.title}
@@ -261,7 +261,7 @@ export default {
             const block = this.blockById({id: blockId});
             const currentIndex = this.blockList.findIndex(block => block.id === blockId);
             this.keyboardSelected = null;
-            this.assistiveLive = 
+            this.assistiveLive =
                 this.$gettextInterpolate(
                     this.$gettext('%{blockTitle} Block, abgelegt. Endgültige Position in der Liste: %{pos} von %{listLength}.')
                     , {blockTitle: block.attributes.title, pos: currentIndex + 1, listLength: this.blockList.length}

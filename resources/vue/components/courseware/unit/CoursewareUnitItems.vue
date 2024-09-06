@@ -11,10 +11,10 @@
                     {{ $gettext('Drücken Sie die Leertaste oder Entertaste, um neu anzuordnen.') }}
                 </span>
                 <draggable
+                    v-bind="dragOptions"
                     tag="ol"
                     role="listbox"
                     v-model="unitList"
-                    v-bind="dragOptions"
                     handle=".cw-tile-handle"
                     group="units"
                     @start="isDragging = true"

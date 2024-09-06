@@ -51,12 +51,12 @@
                                 :msgCompanion="$gettext('Dieses Fach enthält keine Blöcke.')">
                             </courseware-companion-box>
                             <draggable
+                                v-bind="dragOptions"
                                 class="cw-container-tabs-block-list cw-container-tabs-sort-mode"
                                 :class="[section.blocks.length === 0 ? 'cw-container-tabs-sort-mode-empty' : '']"
                                 tag="ol"
                                 role="listbox"
                                 v-model="section.blocks"
-                                v-bind="dragOptions"
                                 handle=".cw-sortable-handle"
                                 group="blocks"
                                 @start="isDragging = true"

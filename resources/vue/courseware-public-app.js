@@ -3,11 +3,10 @@ import CoursewarePublicModule from './store/courseware/courseware-public.module'
 import PublicCoursewareStructuralElement from './components/courseware/structural-element/PublicCoursewareStructuralElement.vue';
 import CoursewarePublicStructureModule from './store/courseware/public-structure.module';
 import PluginManager from './components/courseware/plugin-manager.js';
-import VueRouter from 'vue-router';
+import { createRouter } from 'vue-router';
 import Vuex from 'vuex';
 import axios from 'axios';
 import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
-import _ from 'lodash';
 
 const mountApp = (STUDIP, createApp, element) => {
 
@@ -108,7 +107,7 @@ const mountApp = (STUDIP, createApp, element) => {
         },
     ];
 
-    const router = new VueRouter({
+    const router = createRouter({
         base: `${base.pathname}${base.search}`,
         routes,
     });

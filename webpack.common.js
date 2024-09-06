@@ -103,6 +103,7 @@ module.exports = {
                             MODE: 2,
                             ATTR_FALSE_VALUE: false,
                             OPTIONS_DESTROYED: false,
+                            COMPILER_V_BIND_OBJECT_ORDER: false,
                         }
                     }
                 }

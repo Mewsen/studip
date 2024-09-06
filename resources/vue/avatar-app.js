@@ -2,7 +2,7 @@ import AvatarApp from './components/avatar/AvatarApp.vue';
 import AvatarModule from './store/avatar.module';
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
+import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import axios from 'axios';
 
 const mountApp = async (STUDIP, createApp, element) => {

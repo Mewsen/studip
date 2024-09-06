@@ -89,11 +89,11 @@ STUDIP.ready(() => {
                     updated() {
                         STUDIP.Vue.emit('VueAppDidUpdate', this);
                     },
-                    beforeDestroy() {
-                        STUDIP.Vue.emit('VueAppWillDestroy', this);
+                    beforeUnmount() {
+                        STUDIP.Vue.emit('VueAppWillUnmount', this);
                     },
-                    destroyed() {
-                        STUDIP.Vue.emit('VueAppDidDestroy', this);
+                    unmounted() {
+                        STUDIP.Vue.emit('VueAppDidUnmount', this);
                     },
                 }).mount(node);
             });

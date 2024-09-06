@@ -83,12 +83,12 @@
         </ol>
         <draggable
             v-if="canEdit"
+            v-bind="dragOptions"
             :class="{ 'cw-tree-chapter-list-empty': nestedChildren.length === 0 }"
             tag="ol"
             :component-data="draggableData"
             class="cw-tree-draggable-list"
             handle=".cw-sortable-handle"
-            v-bind="dragOptions"
             :elementId="element.id"
             :list="nestedChildren"
             :group="{ name: 'g1' }"

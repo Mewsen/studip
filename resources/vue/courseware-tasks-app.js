@@ -1,7 +1,7 @@
 import TaskGroupsIndex from './components/courseware/tasks/PagesTaskGroupsIndex.vue';
 import TaskGroupsShow from './components/courseware/tasks/PagesTaskGroupsShow.vue';
 import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
-import VueRouter, { RouterView } from 'vue-router';
+import { createRouter, RouterView } from 'vue-router';
 import Vuex from 'vuex';
 import CoursewareModule from './store/courseware/courseware.module';
 import CoursewareTasksModule from './store/courseware/courseware-tasks.module';
@@ -40,7 +40,7 @@ const mountApp = async (STUDIP, createApp, element) => {
             true
         )
     );
-    const router = new VueRouter({
+    const router = createRouter({
         base: base.pathname,
         mode: 'history',
         routes,

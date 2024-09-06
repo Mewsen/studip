@@ -1,21 +1,21 @@
 <template>
     <input
         v-if="name"
+        v-bind="$attrs"
         type="image"
         :name="name"
         :src="url"
         :width="size"
         :height="size"
         :role="ariaRole"
-        v-bind="$attrs"
         :alt="$attrs.alt ?? ''"
     />
     <img v-else
+         v-bind="$attrs"
          :src="url"
          :width="size"
          :height="size"
          :role="ariaRole"
-         v-bind="$attrs"
          :alt="$attrs.alt ?? ''"
     />
 </template>

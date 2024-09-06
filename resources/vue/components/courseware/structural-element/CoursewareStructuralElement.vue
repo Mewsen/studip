@@ -194,11 +194,11 @@
                                         {{$gettext('Drücken Sie die Leertaste, um neu anzuordnen.')}}
                                     </span>
                                     <draggable
+                                        v-bind="dragOptions"
                                         class="cw-structural-element-list"
                                         tag="ol"
                                         role="listbox"
                                         v-model="containerList"
-                                        v-bind="dragOptions"
                                         handle=".cw-sortable-handle"
                                         @start="isDragging = true"
                                         @end="dropContainer"
@@ -440,30 +440,32 @@
                 >
                     <template v-slot:dialogContent>
                         <table class="cw-structural-element-info">
-                            <tr>
-                                <td><translate>Titel</translate>:</td>
-                                <td>{{ structuralElement.attributes.title }}</td>
-                            </tr>
-                            <tr>
-                                <td><translate>Beschreibung</translate>:</td>
-                                <td>{{ structuralElement.attributes.payload.description }}</td>
-                            </tr>
-                            <tr>
-                                <td><translate>Seite wurde erstellt von</translate>:</td>
-                                <td>{{ ownerName }}</td>
-                            </tr>
-                            <tr>
-                                <td><translate>Seite wurde erstellt am</translate>:</td>
-                                <td><iso-date :date="structuralElement.attributes.mkdate" /></td>
-                            </tr>
-                            <tr>
-                                <td><translate>Zuletzt bearbeitet von</translate>:</td>
-                                <td>{{ editorName }}</td>
-                            </tr>
-                            <tr>
-                                <td><translate>Zuletzt bearbeitet am</translate>:</td>
-                                <td><iso-date :date="structuralElement.attributes.chdate" /></td>
-                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td><translate>Titel</translate>:</td>
+                                    <td>{{ structuralElement.attributes.title }}</td>
+                                </tr>
+                                <tr>
+                                    <td><translate>Beschreibung</translate>:</td>
+                                    <td>{{ structuralElement.attributes.payload.description }}</td>
+                                </tr>
+                                <tr>
+                                    <td><translate>Seite wurde erstellt von</translate>:</td>
+                                    <td>{{ ownerName }}</td>
+                                </tr>
+                                <tr>
+                                    <td><translate>Seite wurde erstellt am</translate>:</td>
+                                    <td><iso-date :date="structuralElement.attributes.mkdate" /></td>
+                                </tr>
+                                <tr>
+                                    <td><translate>Zuletzt bearbeitet von</translate>:</td>
+                                    <td>{{ editorName }}</td>
+                                </tr>
+                                <tr>
+                                    <td><translate>Zuletzt bearbeitet am</translate>:</td>
+                                    <td><iso-date :date="structuralElement.attributes.chdate" /></td>
+                                </tr>
+                            </tbody>
                         </table>
                     </template>
                 </studip-dialog>
@@ -542,14 +544,16 @@
                         <p v-translate>Das folgende Courseware-Material wird %{ ownerName }
                             zur Veröffentlichung im OER Campus vorgeschlagen:</p>
                         <table class="cw-structural-element-info">
-                            <tr>
-                                <td><translate>Titel</translate>:</td>
-                                <td>{{ structuralElement.attributes.title }}</td>
-                            </tr>
-                            <tr>
-                                <td><translate>Beschreibung</translate>:</td>
-                                <td>{{ structuralElement.attributes.payload.description }}</td>
-                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td><translate>Titel</translate>:</td>
+                                    <td>{{ structuralElement.attributes.title }}</td>
+                                </tr>
+                                <tr>
+                                    <td><translate>Beschreibung</translate>:</td>
+                                    <td>{{ structuralElement.attributes.payload.description }}</td>
+                                </tr>
+                            </tbody>
                         </table>
                         <form class="default" @submit.prevent="">
                             <label>

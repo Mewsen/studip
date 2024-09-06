@@ -2,7 +2,7 @@
     <div class="formpart">
         <div class="sr-only" aria-live="polite" ref="list_message_field"></div>
         <ul>
-            <li v-for="date in selected_date_list" v-bind="selected_date_list" :key="getISODate(date)">
+            <li v-for="date in selected_date_list" :key="getISODate(date)">
                 <input type="hidden" :name="input_name + '[]'" :value="getISODate(date)">
                 <studip-date-time :timestamp="Math.floor(date.getTime() / 1000)" :date_only="true"></studip-date-time>
                 <studip-icon shape="trash" :title="$gettext('Löschen')" @click="removeDate(date)"

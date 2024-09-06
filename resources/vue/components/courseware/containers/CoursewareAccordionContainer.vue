@@ -41,13 +41,13 @@
                             :msgCompanion="$gettext('Dieses Fach enthält keine Blöcke.')">
                         </courseware-companion-box>
                         <draggable
+                            v-bind="dragOptions"
                             v-if="canEdit"
                             class="cw-container-accordion-block-list cw-container-accordion-sort-mode"
                             :class="[section.blocks.length === 0 ? 'cw-container-accordion-sort-mode-empty' : '']"
                             tag="ol"
                             role="listbox"
                             v-model="section.blocks"
-                            v-bind="dragOptions"
                             handle=".cw-sortable-handle"
                             group="blocks"
                             @start="isDragging = true"
@@ -418,7 +418,7 @@ export default {
         },
         currentSections: {
             handler(newSections, oldSections) {
-                if (oldSections.length > 0 && 
+                if (oldSections.length > 0 &&
                     newSections[oldSections.length -1].blocks.length > oldSections[oldSections.length - 1].blocks.length) {
                         this.$emit('blockAdded');
                         this.$nextTick(() => {

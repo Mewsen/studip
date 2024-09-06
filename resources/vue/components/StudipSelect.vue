@@ -1,7 +1,7 @@
 <template>
     <v-select ref="select"
-        @change="updateValue"
         v-bind="{...$props, ...$attrs}"
+        @change="updateValue"
         :calculate-position="withPopper"
         class="studip-v-select"
         append-to-body
