@@ -21,8 +21,8 @@
                     <input type="checkbox" name="widget_id[]" value="<?= $widget->getPluginId() ?>">
                     <?= htmlReady($widget->getPluginName()) ?>
                 </label>
-            <? if ($metadata['description']): ?>
-                <p><?= formatReady($metadata['description']) ?></p>
+            <? if ($widget->getPluginDescription()): ?>
+                <p><?= formatReady($widget->getPluginDescription()) ?></p>
             <? endif; ?>
             </li>
         <? endforeach; ?>
