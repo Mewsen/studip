@@ -309,7 +309,8 @@ class Resources_BookingController extends AuthenticatedController
         $repetition_interval = null,
         $notification_enabled = false,
         $included_room_parts = [],
-        $overwrite_bookings = false
+        $overwrite_bookings = false,
+        $weekdays = ''
     )
     {
         $result = [
@@ -352,7 +353,8 @@ class Resources_BookingController extends AuthenticatedController
                                 $booking_type == ResourceBooking::TYPE_LOCK
                                 ? $overwrite_bookings
                                 : false
-                            )
+                            ),
+                            $weekdays
                         );
                     } else {
                         $matching_bookings = ResourceBooking::findByResourceAndTimeRanges(
@@ -397,7 +399,8 @@ class Resources_BookingController extends AuthenticatedController
                                     $booking_type == ResourceBooking::TYPE_LOCK
                                     ? $overwrite_bookings
                                     : false
-                                )
+                                ),
+                                $weekdays
                             );
                         }
                     }
@@ -423,6 +426,7 @@ class Resources_BookingController extends AuthenticatedController
                     }
                     $a->repetition_interval = $repetition_interval->format('P%YY%MM%DD');
                     $a->repeat_end = $repetition_end->getTimestamp();
+                    $a->weekdays = $weekdays;
                 }
 
                 try {
@@ -466,7 +470,8 @@ class Resources_BookingController extends AuthenticatedController
                         $booking_type == ResourceBooking::TYPE_LOCK
                         ? $overwrite_bookings
                         : false
-                    )
+                    ),
+                    $weekdays
                 );
                 $result['bookings'] = [$booking];
             } catch (Exception $e) {
@@ -1033,8 +1038,12 @@ class Resources_BookingController extends AuthenticatedController
                     $this->repetition_style = 'monthly';
                     $this->repetition_interval = $interval->m;
                 } else if (($interval->d % 7) == 0) {
-                    $this->repetition_style = 'weekly';
-                    $this->repetition_interval = $interval->d / 7;
+                    $this->repetition_style = 'daily';
+                    if ($this->booking->weekdays === '12345') {
+                        $this->repetition_interval = 'workdays';
+                    } else {
+                        $this->repetition_interval = $interval->d / 7;
+                    }
                 } else {
                     $this->repetition_style = 'daily';
                     $this->repetition_interval = $interval->d;
@@ -1125,17 +1134,21 @@ class Resources_BookingController extends AuthenticatedController
                     intval($this->end->format('s'))
                 );
                 if ($this->repetition_style) {
-                    if ($this->repetition_style == 'daily' && $this->repetition_interval) {
-                        $this->repetition_date_interval = new DateInterval(
-                            'P' . intval($this->repetition_interval) . 'D'
-                        );
+                    if ($this->repetition_style === 'daily' && $this->repetition_interval) {
+                        if ($this->repetition_interval === 'workdays') {
+                            $this->repetition_date_interval = new DateInterval('P7D');
+                        } else {
+                            $this->repetition_date_interval = new DateInterval(
+                                'P' . intval($this->repetition_interval) . 'D'
+                            );
+                        }
                     }
-                    if ($this->repetition_style == 'weekly' && $this->repetition_interval) {
+                    if ($this->repetition_style === 'weekly' && $this->repetition_interval) {
                         $this->repetition_date_interval = new DateInterval(
                             'P' . intval($this->repetition_interval) . 'W'
                         );
                     }
-                    if ($this->repetition_style == 'monthly') {
+                    if ($this->repetition_style === 'monthly') {
                         $this->repetition_date_interval = new DateInterval(
                             'P1M'
                         );
@@ -1413,7 +1426,8 @@ class Resources_BookingController extends AuthenticatedController
                             ? $this->other_room_parts[$resource->id]
                             : []
                         ),
-                        $this->overwrite_bookings
+                        $this->overwrite_bookings,
+                        $this->repetition_interval === 'workdays' ? '12345' : ''
                     );
                     $errors = array_merge($errors, $results['errors']);
                     $room_part_errors = array_merge(

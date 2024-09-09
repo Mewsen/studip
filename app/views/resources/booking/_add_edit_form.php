@@ -374,6 +374,12 @@
                                         : '' ?>>
                                     <?= _('jeden sechsten Tag') ?>
                                 </option>
+                                <option value="workdays"
+                                    <?= $repetition_interval == 'workdays'
+                                        ? 'selected'
+                                        : '' ?>>
+                                    <?= _('jeden Werktag') ?>
+                                </option>
                             </select>
                         </div>
                         <label>

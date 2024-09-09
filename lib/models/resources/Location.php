@@ -379,7 +379,8 @@ class Location extends Resource
         $description = '',
         $internal_comment = '',
         $booking_type = ResourceBooking::TYPE_NORMAL,
-        $force_booking = false
+        $force_booking = false,
+        string $weekdays = ''
     )
     {
         return null;

@@ -41,6 +41,7 @@
  * @property int $booking_type database column
  * @property string $booking_user_id database column
  * @property string $repetition_interval database column
+ * @property string $weekdays database column
  * @property SimpleORMapCollection|ResourceBookingInterval[] $time_intervals has_many ResourceBookingInterval
  * @property Resource $resource belongs_to Resource
  * @property User $assigned_user belongs_to User
@@ -663,8 +664,13 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
 
                 $duration = $repetition_begin->diff($date_end);
 
+                $weekdays = [];
+                if (preg_match('/^1?2?3?4?5?6?7?$/', $this->weekdays)) {
+                    $weekdays = str_split($this->weekdays);
+                }
+
                 //Loop over all exceptions and check if they belong to
-                //one of the repetions:
+                //one of the repetitions:
 
                 $obsolete_exception_ids = [];
                 foreach ($exceptions as $exception) {
@@ -697,7 +703,13 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                             break;
                         }
 
-                        $current_repetition->add($repetition_interval);
+                        if ($weekdays) {
+                            while (!in_array($current_repetition->format('N'), $weekdays)) {
+                                $current_repetition = $current_repetition->add(new DateInterval('P1D'));
+                            }
+                        } else {
+                            $current_repetition->add($repetition_interval);
+                        }
                     }
 
                     if ($exception_obsolete) {
@@ -1280,8 +1292,19 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 //Check if end is later than begin to avoid
                 //infinite loops.
                 if ($repetition_end > $booking_begin) {
+                    $weekdays = [];
+                    if ($this->weekdays && preg_match('/^1?2?3?4?5?6?7?$/', $this->weekdays)) {
+                        $weekdays = str_split($this->weekdays);
+                    }
                     $current_begin = clone $booking_begin;
-                    $current_begin->add($repetition_interval);
+                    //Move to the first weekday of the booking or the next interval:
+                    if ($weekdays) {
+                        while (!in_array($current_begin->format('N'), $weekdays)) {
+                            $current_begin = $current_begin->add(new DateInterval('P1D'));
+                        }
+                    } else {
+                        $current_begin->add($repetition_interval);
+                    }
                     while ($current_begin < $repetition_end) {
                         $current_end = clone $current_begin;
                         $current_end->add($duration);
@@ -1297,7 +1320,15 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                                 : $current_end->getTimestamp()
                             )
                         ];
-                        $current_begin->add($repetition_interval);
+                        if ($weekdays) {
+                            //Move to the next weekday that is in the array of weekday numbers:
+                            do {
+                                $current_begin = $current_begin->add(new DateInterval('P1D'));
+                            } while (!in_array($current_begin->format('N'), $weekdays));
+                        } else {
+                            //Move to the next step according to the repetition interval:
+                            $current_begin->add($repetition_interval);
+                        }
                     }
                 } else {
                     //end timestamp is before begin timestamp:

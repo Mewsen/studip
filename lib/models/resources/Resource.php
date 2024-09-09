@@ -661,6 +661,10 @@ class Resource extends SimpleORMap implements StudipItem
      * @param bool $force_booking If this parameter is set to true,
      *     overlapping bookings are removed before storing this booking.
      *
+     * @param string $weekdays The weekdays (1 - 7) on which the booking
+     *     shall take place. This is only used when a booking with repetitions
+     *     shall only take place on some weekdays.
+     *
      * @return ResourceBooking object.
      * @throws InvalidArgumentException If no time ranges are specified
      *     or if there is an error regarding the time ranges.
@@ -684,7 +688,8 @@ class Resource extends SimpleORMap implements StudipItem
         $description = '',
         $internal_comment = '',
         $booking_type = ResourceBooking::TYPE_NORMAL,
-        $force_booking = false
+        $force_booking = false,
+        string $weekdays = ''
     )
     {
         if (!is_array($time_ranges)) {
@@ -843,6 +848,7 @@ class Resource extends SimpleORMap implements StudipItem
             }
 
             $booking->repetition_interval = $repetition_interval->format('P%YY%MM%DD');
+            $booking->weekdays = $weekdays;
         }
 
         if ($preparation_time) {
