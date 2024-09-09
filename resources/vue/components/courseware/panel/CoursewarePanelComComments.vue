@@ -2,7 +2,7 @@
     <div v-if="commentsLoaded" class="cw-panel-com-comments">
         <h2>{{ $gettext('Kommentare und Anmerkungen') }}</h2>
         <CoursewareCommentsBlocks />
-        <!-- <CoursewareCommentsStructuralElements /> -->
+        <CoursewareCommentsStructuralElements v-if="false"/>
     </div>
 </template>
 
