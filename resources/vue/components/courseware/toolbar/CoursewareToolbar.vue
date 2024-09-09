@@ -1,6 +1,6 @@
 <template>
     <div class="cw-toolbar-wrapper">
-        <div id="cw-toolbar" class="cw-toolbar" :style="toolbarStyle">
+        <div id="cw-toolbar" class="cw-toolbar" :class="{ 'cw-toolbar-sticky': stickyToolbar}" :style="stickyStyle">
             <div v-if="showTools" class="cw-toolbar-tools" :class="{ unfold: unfold, hd: isHd, wqhd: isWqhd }">
                 <div id="cw-toolbar-nav" class="cw-toolbar-button-wrapper">
                     <button
@@ -32,7 +32,7 @@
                         :title="$gettext('Werkzeugleiste einklappen')"
                         @click="toggleToolbarActive"
                     >
-                        <studip-icon shape="arr_2right" :size="24" />
+                        <studip-icon shape="arr_2left" :size="24" />
                     </button>
                 </div>
                 <div class="cw-toolbar-tool-wrapper">
@@ -49,13 +49,13 @@
                     />
                 </div>
             </div>
-            <div v-else class="cw-toolbar-folded-wrapper">
+            <div class="cw-toolbar-folded-wrapper" :style="foldedToolbarStyle">
                 <button
                     class="cw-toolbar-button"
                     :title="$gettext('Werkzeugleiste ausklappen')"
                     @click="toggleToolbarActive"
                 >
-                    <studip-icon shape="arr_2left" :size="24" />
+                    <studip-icon shape="arr_2right" :size="24" />
                 </button>
                 <button
                     class="cw-toolbar-button"
@@ -69,7 +69,6 @@
                     <studip-icon :shape="hideEditLayout ? 'visibility-checked' : 'visibility-invisible'" :size="24" />
                 </button>
             </div>
-            <div class="cw-toolbar-spacer-right"></div>
         </div>
     </div>
 </template>
@@ -93,9 +92,8 @@ export default {
         return {
             unfold: true,
             showTools: true,
-            toolbarTop: 0,
             activeTool: 'blockAdder',
-
+            stickyToolbar: false,
             windowWidth: window.outerWidth,
             windowInnerHeight: window.innerHeight,
         };
@@ -106,29 +104,10 @@ export default {
             structuralElementById: 'courseware-structural-elements/byId',
             toolbarActive: 'toolbarActive',
             hideEditLayout: 'hideEditLayout',
+            consumeMode: 'consumeMode',
         }),
         scrollTopStyles() {
             return window.getComputedStyle(document.getElementById('scroll-to-top'));
-        },
-        toolbarHeight() {
-            const scrollTopHeight =
-                parseInt(this.scrollTopStyles['height'], 10) +
-                parseInt(this.scrollTopStyles['padding-top'], 10) +
-                parseInt(this.scrollTopStyles['padding-bottom'], 10) +
-                parseInt(this.scrollTopStyles['margin-bottom'], 10);
-            return parseInt(
-                Math.min(this.windowInnerHeight * 0.9, this.windowInnerHeight - this.toolbarTop - scrollTopHeight)
-            );
-        },
-        toolbarContentHeight() {
-            return this.toolbarHeight - 55;
-        },
-        toolbarStyle() {
-            return {
-                height: this.toolbarHeight + 'px',
-                minHeight: this.toolbarHeight + 'px',
-                top: this.toolbarTop + 'px',
-            };
         },
         containers() {
             return this.relatedContainers({
@@ -153,6 +132,19 @@ export default {
         isWqhd() {
             return this.windowWidth >= 2560;
         },
+
+        foldedToolbarStyle() {
+            const top = this.stickyToolbar ? 150 : 302;
+            return { height: (this.windowInnerHeight - top) + 'px' };
+        },
+
+        toolbarContentHeight() {
+            const top = this.stickyToolbar ? 210 : 360;
+            return this.windowInnerHeight - top;
+        },
+        stickyStyle() {
+            return this.stickyToolbar ? { top: '116px'} : {};
+        }
     },
     methods: {
         ...mapActions({
@@ -162,22 +154,11 @@ export default {
         activateTool(tool) {
             this.activeTool = tool;
         },
-        updateToolbarTop() {
-            const responsiveContentbar = document.getElementById('responsive-contentbar');
-            if (responsiveContentbar) {
-                const contentbarRect = responsiveContentbar.getBoundingClientRect();
-                this.toolbarTop = contentbarRect.bottom + 25;
-                return;
-            }
-
-            const ribbon = document.getElementById('cw-ribbon') ?? document.getElementById('contentbar');
-            if (ribbon) {
-                const contentbarRect = ribbon.getBoundingClientRect();
-                if (ribbon.classList.contains('cw-ribbon-sticky')) {
-                    this.toolbarTop = contentbarRect.bottom + 16;
-                } else {
-                    this.toolbarTop = contentbarRect.bottom + 15;
-                }
+        handleScroll() {
+            if (this.windowWidth > 767) {
+                this.stickyToolbar = window.scrollY > 128 && !this.consumeMode;
+            } else {
+                this.stickyToolbar = window.scrollY > 75 && !this.consumeMode;
             }
         },
         onResize() {
@@ -186,15 +167,13 @@ export default {
         },
     },
     mounted() {
-        this.updateToolbarTop();
+        window.addEventListener('scroll', this.handleScroll);
         this.$nextTick(() => {
-            window.addEventListener('scroll', this.updateToolbarTop);
             window.addEventListener('resize', this.onResize);
         });
         this.resetAdderStorage();
     },
     beforeDestroy() {
-        window.removeEventListener('scroll', this.updateToolbarTop);
         window.removeEventListener('resize', this.onResize);
     },
 

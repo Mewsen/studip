@@ -1,6 +1,5 @@
 <template>
     <div :class="{ 'cw-ribbon-wrapper-consume': consumeMode }" :id="isContentBar ? 'contentbar' : null" >
-        <div v-show="stickyRibbon" class="cw-ribbon-sticky-top"></div>
         <header :id="isContentBar ? 'cw-ribbon' : null" class="cw-ribbon" :class="{ 'cw-ribbon-sticky': stickyRibbon, 'cw-ribbon-consume': consumeMode }">
             <div class="cw-ribbon-wrapper-left">
                 <nav class="cw-ribbon-nav" :class="buttonsClass">
@@ -88,9 +87,10 @@ export default {
         },
         toolbarHeight() {
             if (this.stickyRibbon) {
-                return parseInt(window.innerHeight * 0.75);
+                return parseInt(window.innerHeight - 130);
             } else {
-                return parseInt(Math.min(window.innerHeight * 0.75, window.innerHeight - 197));
+                return parseInt(window.innerHeight - 230);
+                // parseInt(Math.min(window.innerHeight * 0.75, window.innerHeight - 197));
             }
         }
     },

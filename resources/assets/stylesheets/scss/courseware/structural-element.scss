@@ -49,6 +49,12 @@
         }
     }
 
+    .cw-page-content {
+        margin: 0 auto;
+        max-width: $max-content-width;
+        width: calc(100% - 120px);
+    }
+
     .cw-structural-element-feedback-wrapper,
     .cw-structural-element-comments-wrapper {
         max-width: calc(1095px - 2px);
@@ -57,7 +63,7 @@
     }
 
     .cw-container-wrapper {
-        max-width: $max-content-width;
+        width: 100%;
         margin: 0;
         padding: 0;
         display: flex;

@@ -236,7 +236,7 @@
                                 <studip-progress-indicator v-if="processing" :description="$gettext('Vorgang wird bearbeitet...')" />
                             </div>
                         </div>
-                        <courseware-toolbar v-if="canVisit && canEdit && !isLink" />
+                        <!-- <courseware-toolbar v-if="canVisit && canEdit && !isLink" /> -->
                     </div>
                     <courseware-call-to-action-box
                         v-if="commentable"

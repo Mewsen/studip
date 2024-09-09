@@ -6,7 +6,11 @@
         &.cw-tree-root-list {
             padding-left: 0;
 
-            > li.cw-tree-item {
+            > li.cw-tree-item.cw-tree-item-adder {
+                margin-top: 28px;
+            }
+
+            > li.cw-tree-item:not(.cw-tree-item-adder) {
                 > .cw-tree-item-wrapper {
                     display: none;
                 }

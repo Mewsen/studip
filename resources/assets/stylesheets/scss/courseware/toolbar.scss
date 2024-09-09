@@ -1,15 +1,23 @@
+.cw-toolbar-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
 .cw-toolbar {
     z-index: 30;
     display: flex;
-    position: fixed;
-    top: 0;
-    flex-direction: row;
+    position: absolute;
+    top: 75px;
+    flex-direction: row-reverse;
     justify-content: flex-end;
-    right: 0;
-    margin-left: 4px;
-    height: 600px;
+    left: 0;
+
+    &.cw-toolbar-sticky {
+        position: fixed;
+    }
 
     .cw-toolbar-tools {
+        z-index: 31;
         width: 270px;
         min-height: 100%;
         border: solid thin var(--content-color-40);
@@ -18,18 +26,18 @@
         position: relative;
         padding: 0 4px;
         top: 0;
-        right: -270px;
-        transition: right 0.6s;
+        left: -270px;
+        transition: left 0.6s;
         &.hd {
             width: 480px;
-            right: -480px;
+            left: -480px;
         }
         &.wqhd {
             width: 558px;
-            right: -558px;
+            left: -558px;
         }
         &.unfold {
-            right: 0;
+            left: 0;
         }
 
         .cw-toolbar-tool-content {
@@ -108,8 +116,11 @@
         }
     }
     .cw-toolbar-folded-wrapper {
+        z-index: 32;
         display: flex;
         flex-direction: column;
+        background-color: #fbfbfc;
+        border: solid thin #ededed;
     }
     .cw-toolbar-button-wrapper {
         position: sticky;
@@ -126,7 +137,7 @@
         margin: 0 4px 0 4px;
         padding: 2px 8px 0 8px;
         border: none;
-        background-color: var(--white);
+        background-color: transparent;
         background-repeat: no-repeat;
         background-position: center center;
         cursor: pointer;
@@ -141,15 +152,6 @@
             border-bottom: solid 2px var(--base-color);
         }
     }
-    .cw-toolbar-spacer-right {
-        z-index: 39;
-        flex-shrink: 0;
-        position: relative;
-        background-color: var(--white);
-        width: 15px;
-        height: calc(100% + 2px);
-    }
-
     .cw-toolbar-tools.hd {
         .cw-toolbar-button-wrapper {
             .cw-toolbar-button {

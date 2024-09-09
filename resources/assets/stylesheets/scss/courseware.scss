@@ -8,6 +8,7 @@
 @import './courseware/content-courses.scss';
 @import './courseware/dashboard.scss';
 @import './courseware/sortable.scss';
+@import './courseware/editbar.scss';
 @import './courseware/toolbar.scss';
 @import './courseware/widgets.scss';
 @import './courseware/wizards.scss';
@@ -33,13 +34,3 @@
 @import './courseware/layouts/talk-bubble.scss';
 @import './courseware/layouts/tile.scss';
 @import './courseware/layouts/tree.scss';
-
-
-// #course-courseware-index {
-//     #sidebar {
-//         display: none;
-//     }
-//     #content-wrapper {
-//         grid-column: 1/3;
-//     }
-// }
