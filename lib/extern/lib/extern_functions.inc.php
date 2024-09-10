@@ -142,8 +142,12 @@ function update_generic_datafields (&$config, &$data_fields, &$field_names, $obj
     // setup the generic data fields if they exist or if there are any changes
     if ($generic_datafields = get_generic_datafields($object_type)) {
         $config_datafields = $config->getValue("Main", "genericdatafields");
-        if (!is_array($config_datafields))
+        if (!is_array($config_datafields)) {
             $config_datafields = [];
+        }
+        if (!is_array($data_fields)) {
+            $data_fields = [];
+        }
 
         $visible = (array) $config->getValue("Main", "visible");
         $order = (array) $config->getValue("Main", "order");
