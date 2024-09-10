@@ -58,8 +58,11 @@ class ExternEdit {
         $this->form_values = $form_values;
         $this->edit_element = $edit_element;
 
-        if (is_array($form_values))
+        if (is_array($form_values)) {
             $this->is_post_vars = TRUE;
+        } else {
+            $this->form_values = [];
+        }
 
         if ($faulty_values != "")
             $this->faulty_values = $faulty_values;
