@@ -70,6 +70,11 @@
   - `cli/studip make:model` und `cli/studip make:migration`.
 - Es wurde ein neues CLI-Kommando hinzugefügt, womit man auf einfache Weise ein Plugin-Grundgerüst erstellen kann.
   - `cli/studip make:plugin`
+- Die Klasse `Seminar`, sowie die Klassen in `lib/raumzeit` wurden ausgebaut. ([Issue #3209](https://gitlab.studip.de/studip/studip/-/issues/3209))
+  - Als Ersatz für viele Methoden der Seminar-Klasse dienen die Klassen `Course`, `CourseDate` und `SeminarCycleDate`, sowie die neue `CourseDateList`-Klasse.
+- Die Klassen `TreeAbstract`, `TreeView` und `SemBrowse` wurden ausgebaut. ([Issue #4392](https://gitlab.studip.de/studip/studip/-/issues/4392))
+  - Zur Anzeige von Baumstrukturen können als Ersatz die Implementierungen des `StudipTreeNode`-Interfaces genutzt werden.
+
 ## Security related issues
 
 -
