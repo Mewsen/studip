@@ -118,7 +118,12 @@ class URLHelper
      */
     static function getLinkParams ()
     {
-        return self::$params;
+        return array_filter(
+            self::$params,
+            function ($value): bool {
+                return isset($value);
+            }
+        );
     }
 
     /**
