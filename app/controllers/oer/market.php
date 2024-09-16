@@ -404,41 +404,32 @@ class Oer_MarketController extends StudipController
         if (Request::option("seminar_id") && $GLOBALS['perm']->have_studip_perm("autor", Request::option("seminar_id"))) {
             $this->course = new Course(Request::option("seminar_id"));
 
-            $this->classes = ["CoreDocuments"];
-            foreach (get_declared_classes() as $class) {
-                if (in_array('OERModule', class_implements($class))) {
-                    //check if module is even allowed in course
-                    $semclass = $this->course->getSemClass();
+            $this->classes = $this->course->tools->filter(function (ToolActivation $tool) {
+                $module = $tool->getStudipModule();
+                return $module instanceof OERModule
+                    && $module::oerModuleWantsToUseMaterial($this->material);
+            })->map(function (ToolActivation $tool): string {
+                return get_class($tool->getStudipModule());
+            });
 
-                    if ($semclass->isModuleAllowed($class)
-                            && $class::oerModuleWantsToUseMaterial($this->material)) {
-                        $this->classes[] = $class;
+            if (Request::get('class') || count($this->classes) === 1) {
+                $class = Request::get('class') ?: $this->classes[0];
+                if (class_exists($class) && in_array($class, $this->classes)) {
+                    $response = $class::oerModuleIntegrateMaterialToCourse(
+                        $this->material,
+                        $this->course
+                    );
+
+                    if ($response['type'] === 'error') {
+                        PageLayout::postError($response['message'], $response['message_detail']);
+                    } else {
+                        PageLayout::postSuccess($response['message'], $response['message_detail']);
                     }
-                }
-            }
 
-            if (Request::get("class") || count($this->classes) === 1) {
-                $class = Request::get("class") ?: $this->classes[0];
-                if (class_exists($class) && in_array('OERModule', class_implements($class))) {
-                    $semclass = $this->course->getSemClass();
-                    if ($semclass->isModuleAllowed($class)) {
-                        //activate module in course ?
-                        $response = $class::oerModuleIntegrateMaterialToCourse(
-                            $this->material,
-                            $this->course
-                        );
+                    $this->response->add_header('X-Dialog-Close', 1);
+                    $this->relocate($response['redirect_url']);
 
-                        if ($response['type'] === 'error') {
-                            PageLayout::postError($response['message'], $response['message_detail']);
-                        } else {
-                            PageLayout::postSuccess($response['message'], $response['message_detail']);
-                        }
-
-                        $this->response->add_header('X-Dialog-Close', 1);
-                        $this->relocate($response['redirect_url']);
-
-                        return;
-                    }
+                    return;
                 }
             } else {
                 $this->render_template("oer/market/add_to_course_select_class");
