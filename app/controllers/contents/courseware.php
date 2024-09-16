@@ -171,118 +171,6 @@ class Contents_CoursewareController extends CoursewareController
         $this->sem_courses  = $this->getCoursewareCourses($sem_key);
     }
 
-    /**
-     * Return list of coursewares grouped by semester_id
-     *
-     * @param  string $sem_key  currently selected semester or all (for all semesters)
-     *
-     * @return array
-     */
-    private function getCoursewareCourses($sem_key): array
-    {
-        $this->current_semester = Semester::findCurrent();
-
-        $courses = Course::findThru($this->user_id, [
-            'thru_table'        => 'seminar_user',
-            'thru_key'          => 'user_id',
-            'thru_assoc_key'    => 'seminar_id',
-            'assoc_foreign_key' => 'seminar_id'
-        ]);
-
-        if (Config::get()->DEPUTIES_ENABLE) {
-            $deputy_courses = Deputy::findDeputyCourses($GLOBALS['user']->id)->pluck('course');
-            if (!empty($deputy_courses)) {
-                $courses = array_merge($courses, $deputy_courses);
-            }
-        }
-
-        $courses = new SimpleCollection($courses);
-
-        if (!Config::get()->MY_COURSES_ENABLE_STUDYGROUPS) {
-            $courses = $courses->filter(function ($a) {
-                return !$a->isStudygroup();
-            });
-        }
-
-        if ($sem_key != 'all') {
-            $semester = Semester::find($sem_key);
-
-            $courses = $courses->filter(function ($a) use ($semester) {
-                if ($a->isInSemester($semester)) {
-                    return true;
-                }
-                return false;
-            });
-
-            $coursewares = [];
-
-            foreach ($courses as $course) {
-                $element = StructuralElement::getCoursewareCourse($course->id);
-                if (!empty($element) && $this->isCoursewareEnabled($course->id)) {
-                    $element['payload'] = json_decode($element['payload'], true);
-                    $coursewares[] = $element;
-                }
-            }
-
-            if (empty($coursewares)) {
-                return [];
-            }
-
-            return [$semester->id => [
-                'semester_name' => $semester->name,
-                'coursewares'   => $coursewares
-            ]];
-        } else {
-            $all_semesters    = Semester::getAll();
-            $sem_courses      = [];
-
-            foreach ($courses as $course) {
-                $element = StructuralElement::getCoursewareCourse($course->id);
-                if (!empty($element) && $this->isCoursewareEnabled($course->id)) {
-                    $element['payload'] = json_decode($element['payload'], true);
-
-                    if ($course->duration_time == -1) {
-                        $sem_courses[$this->current_semester->id]['coursewares'][] = $element;
-                    } else {
-                        $end_semester = $course->getEndSemester();
-                        $sem_courses[$end_semester->id]['coursewares'][] = $element;
-                    }
-                }
-            }
-
-            return $sem_courses;
-        }
-    }
-
-    /**
-     * Returns true if the courseware module is enabled for the passed course
-     *
-     * @param  string  $course_id  the course to check
-     * @return boolean             true if courseware is enabled, false otherwise
-     */
-    private function isCoursewareEnabled($course_id): bool
-    {
-        $studip_module = PluginManager::getInstance()->getPlugin('CoursewareModule');
-
-        if (!$studip_module || !$studip_module->isActivated($course_id)) {
-            return false;
-        }
-
-        return true;
-    }
-
-
-    private function getProjects($purpose): array
-    {
-        $elements = StructuralElement::findProjects($this->user->id, $purpose);
-        foreach($elements as &$element) {
-            $element['payload'] = json_decode($element['payload'], true);
-        }
-
-        return $elements;
-    }
-
-
     public function pdf_export_action($element_id, $with_children): void
     {
         $element = \Courseware\StructuralElement::findOneById($element_id);
@@ -322,4 +210,128 @@ class Contents_CoursewareController extends CoursewareController
 
         $this->setCoursewareSidebar();
     }
+
+    /**
+     * Return list of coursewares grouped by semester_id
+     *
+     * @param  string $sem_key  currently selected semester or all (for all semesters)
+     *
+     * @return array
+     */
+    private function getCoursewareCourses($sem_key): array
+    {
+        $this->current_semester = Semester::findCurrent();
+
+        $courses = Course::findThru($this->user_id, [
+            'thru_table'        => 'seminar_user',
+            'thru_key'          => 'user_id',
+            'thru_assoc_key'    => 'seminar_id',
+            'assoc_foreign_key' => 'seminar_id'
+        ]);
+
+        if (Config::get()->DEPUTIES_ENABLE) {
+            $deputy_courses = Deputy::findDeputyCourses($GLOBALS['user']->id)->pluck('course');
+            if (!empty($deputy_courses)) {
+                $courses = array_merge($courses, $deputy_courses);
+            }
+        }
+
+        $courses = new SimpleCollection($courses);
+
+        if (!Config::get()->MY_COURSES_ENABLE_STUDYGROUPS) {
+            $courses = $courses->filter(function (Course $course) {
+                return !$course->isStudygroup();
+            });
+        }
+
+        // Filter courses with enabled and visible courseware
+        $courses = $courses->filter(function (Course $course) {
+            return $this->isCoursewareEnabledAndVisible($course);
+        });
+
+        if ($sem_key !== 'all') {
+            $semester = Semester::find($sem_key);
+
+            $courses = $courses->filter(function ($a) use ($semester) {
+                if ($a->isInSemester($semester)) {
+                    return true;
+                }
+                return false;
+            });
+
+            $coursewares = [];
+
+            foreach ($courses as $course) {
+                $element = StructuralElement::getCoursewareCourse($course->id);
+                if (!$element || !$element->canRead(User::findCurrent())) {
+                    continue;
+                }
+
+                $element['payload'] = json_decode($element['payload'], true);
+                $coursewares[] = $element;
+            }
+
+            if (!$coursewares) {
+                return [];
+            }
+
+            return [$semester->id => [
+                'semester_name' => $semester->name,
+                'coursewares'   => $coursewares
+            ]];
+        } else {
+            $sem_courses = [];
+            foreach ($courses as $course) {
+                $element = StructuralElement::getCoursewareCourse($course->id);
+                if (!$element || !$element->canRead(User::findCurrent())) {
+                    continue;
+                }
+
+                $element['payload'] = json_decode($element['payload'], true);
+
+                if ($course->isOpenEnded()) {
+                    $sem_courses[$this->current_semester->id]['coursewares'][] = $element;
+                } else {
+                    $end_semester = $course->getEndSemester();
+                    $sem_courses[$end_semester->id]['coursewares'][] = $element;
+                }
+            }
+
+            return $sem_courses;
+        }
+    }
+
+    /**
+     * Returns true if the courseware module is enabled and visible for the
+     *  passed course and current user
+     *
+     * @param  Course  $course  the course to check
+     * @return boolean true if courseware is enabled and visible,
+     *                 false otherwise
+     */
+    private function isCoursewareEnabledAndVisible(Course $course): bool
+    {
+        // Check if courseware is globally enabled
+        $studip_module = PluginManager::getInstance()->getPlugin(CoursewareModule::class);
+        if (!$studip_module) {
+            return false;
+        }
+
+        // Check if courseware is enabled in course
+        $active_tool = ToolActivation::find([
+            $course->id,
+            $studip_module->getPluginId(),
+        ]);
+        if (!$active_tool) {
+            return false;
+        }
+
+        // Check visibility
+        return $GLOBALS['perm']->have_studip_perm(
+            $active_tool->getVisibilityPermission(),
+            $course->id,
+            User::findCurrent()->id
+        );
+    }
+
 }
