@@ -395,6 +395,7 @@ class Admin_UserController extends AuthenticatedController
 
         // Änderungen speichern
         if (Request::submitted('edit')) {
+            CSRFProtection::verifyUnsafeRequest();
             if (Request::get('auth_plugin') === 'preliminary') {
                 Request::set('auth_plugin', null);
             }
@@ -406,11 +407,19 @@ class Admin_UserController extends AuthenticatedController
             if (count($editPerms)) {
                 $editUser['auth_user_md5.perms'] = $editPerms[0];
             }
-            foreach (['Vorname', 'Nachname', 'matriculation_number', 'auth_plugin', 'visible'] as $param) {
-                if (Request::get($param)) $editUser['auth_user_md5.' . $param] = Request::get($param);
+            foreach (['Vorname', 'Nachname', 'auth_plugin', 'visible'] as $param) {
+                if (Request::get($param)) {
+                    $editUser['auth_user_md5.' . $param] = Request::get($param);
+                }
             }
+            if (Request::submitted('matriculation_number')) {
+                $editUser['auth_user_md5.matriculation_number'] = Request::get('matriculation_number');
+            }
+
             foreach (words('title_front title_rear geschlecht preferred_language') as $param) {
-                if (Request::get($param) !== null) $editUser['user_info.' . $param] = Request::get($param);
+                if (Request::submitted($param)) {
+                    $editUser['user_info.' . $param] = Request::get($param);
+                }
             }
             //change username
             if (Request::get('username') && $this->user['username'] !== Request::get('username')) {
