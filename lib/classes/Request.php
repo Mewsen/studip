@@ -174,6 +174,19 @@ class Request implements ArrayAccess, IteratorAggregate
     }
 
     /**
+     * Returns whether the request has a value for a certain parameter name.
+     *
+     * @param string $param parameter name
+     * @return bool True if the parameter is present, false otherwise
+     */
+    public static function has(string $param): bool
+    {
+        $request = self::getInstance();
+
+        return isset($request->params[$param]);
+    }
+
+    /**
      * Return the value of the selected query parameter as a string.
      *
      * @param string $param    parameter name
