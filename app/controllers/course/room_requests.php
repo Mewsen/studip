@@ -564,7 +564,10 @@ class Course_RoomRequestsController extends AuthenticatedController
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
 
-            $this->request->user_id = $this->current_user->id;
+            if ($this->request->isNew()) {
+                $this->request->user_id = $this->current_user->id;
+            }
+
             $this->preparation_time = Request::int('preparation_time', 0);
             $this->request->preparation_time = $this->preparation_time * 60;
             $this->request->comment = Request::get('comment');
@@ -579,6 +582,11 @@ class Course_RoomRequestsController extends AuthenticatedController
             $this->request->resource_id = $_SESSION[$request_id]['room_id'] ?: $this->request->resource_id;
             $this->request->course_id = Context::getId();
             $this->request->last_modified_by = $this->current_user->id;
+
+            if ($this->request->closed != ResourceRequest::STATE_OPEN) {
+                PageLayout::postInfo(_('Die Raumanfrage wurde wieder geöffnet und damit erneut gestellt.'));
+                $this->request->closed = ResourceRequest::STATE_OPEN;
+            }
 
             $this->request->store();
 
@@ -596,24 +604,6 @@ class Course_RoomRequestsController extends AuthenticatedController
 
             PageLayout::postSuccess(_('Die Anfrage wurde gespeichert!'));
             $this->relocate('course/timesrooms/');
-        }
-    }
-
-    /**
-     * Store a request and its properties
-     * @param string $request ID of the request
-     * @param array $properties desired properties
-     * @return void
-     */
-    private function storeRequest($request, $properties)
-    {
-        // once stored, we can delete the session data for this request
-        $request->store();
-        $_SESSION[$request->id] = [];
-
-        //Store the properties:
-        foreach ($properties as $name => $state) {
-            $request->setProperty($name, $state);
         }
     }
 
