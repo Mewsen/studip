@@ -253,37 +253,15 @@ class Contents_CoursewareController extends CoursewareController
         if ($sem_key !== 'all') {
             $semester = Semester::find($sem_key);
 
-            $courses = $courses->filter(function ($a) use ($semester) {
-                if ($a->isInSemester($semester)) {
-                    return true;
-                }
-                return false;
+            $courses = $courses->filter(function (Course $course) use ($semester) {
+                return $course->isInSemester($semester);
             });
-
-            $coursewares = [];
-
-            foreach ($courses as $course) {
-                $element = StructuralElement::getCoursewareCourse($course->id);
-                if (!$element || !$element->canRead(User::findCurrent())) {
-                    continue;
-                }
-
-                $element['payload'] = json_decode($element['payload'], true);
-                $coursewares[] = $element;
-            }
-
-            if (!$coursewares) {
-                return [];
-            }
-
-            return [$semester->id => [
-                'semester_name' => $semester->name,
-                'coursewares'   => $coursewares
-            ]];
-        } else {
-            $sem_courses = [];
-            foreach ($courses as $course) {
-                $element = StructuralElement::getCoursewareCourse($course->id);
+        } 
+        $sem_courses = [];
+        foreach ($courses as $course) {
+            $units = Unit::findCoursesUnits($course);
+            foreach ($units as $unit) {
+                $element = $unit->structural_element;
                 if (!$element || !$element->canRead(User::findCurrent())) {
                     continue;
                 }
@@ -297,9 +275,9 @@ class Contents_CoursewareController extends CoursewareController
                     $sem_courses[$end_semester->id]['coursewares'][] = $element;
                 }
             }
-
-            return $sem_courses;
         }
+
+        return $sem_courses;
     }
 
     /**
