@@ -25,7 +25,8 @@
                 <li class="tile <?= htmlReady($element['payload']['color'])?>">
                     <a href="<?= URLHelper::getLink('dispatch.php/course/courseware/?cid='.$element['range_id'].'#/structural_element/'.$element['id']) ?>">
                         <? if ($element->getImageUrl() === null) : ?>
-                            <div class="preview-image default-image"></div>
+                            <div class="preview-image default-image" style="<?= Icon::create('courseware')->asCSS(112) ?>">
+                            </div>
                         <? else : ?>
                             <div class="preview-image" style="background-image: url(<?= htmlReady($element->getImageUrl()) ?>)" ></div>
                         <? endif; ?>
@@ -36,7 +37,7 @@
                                     <?= htmlReady($element['payload']['description']) ?>
                                 </p>
                             </div>
-                            <footer>
+                            <footer style="margin-top: 24px;">
                                 <?= Icon::create('seminar', Icon::ROLE_INFO_ALT)?> <?= htmlReady($element['course']['name'])?>
                             </footer>
                         </div>
