@@ -556,7 +556,7 @@ class MyRealmModel
         $claiming = DBManager::get()->fetchAll($sql, [$user_id]);
         $csets    = [];
         foreach ($claiming as $k => $claim) {
-            if (!$csets[$claim['set_id']]) {
+            if (!isset($csets[$claim['set_id']])) {
                 $csets[$claim['set_id']] = new CourseSet($claim['set_id']);
             }
             $cs = $csets[$claim['set_id']];
