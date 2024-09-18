@@ -158,12 +158,18 @@ if (isset($flash['error'])) {
                 <?= sprintf(_("%s zugewiesene Veranstaltungen"), count($courseIds)) ?>
             <? else : ?>
             <?
-            Course::findEachMany(function($c) {
-                echo htmlReady($c->getFullName('number-name-semester'));
-                echo '<br>';
-            },
-                $courseIds,
-                'ORDER BY start_time,VeranstaltungsNummer,Name');
+            Course::findEachBySQL(
+                function($c) {
+                    echo htmlReady($c->getFullName('number-name-semester'));
+                    echo '<br>';
+                },
+                "JOIN `semester_courses`
+                ON `seminare`.`seminar_id` = `semester_courses`.`course_id`
+                JOIN `semester_data` USING (`semester_id`)
+                WHERE `seminare`.`seminar_id` IN ( :course_ids )
+                'ORDER BY `semester_data`.`beginn`, `VeranstaltungsNummer`, `Name`",
+                ['course_ids' => $courseIds],
+            )
             ?>
             <? endif ?>
         <? endif ?>

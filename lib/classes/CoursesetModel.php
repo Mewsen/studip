@@ -46,13 +46,11 @@ class CoursesetModel
                       INNER JOIN `seminare` s USING (`Seminar_id`)
                       LEFT JOIN semester_courses ON (semester_courses.course_id = s.Seminar_id)
                       WHERE s.status NOT IN(?)
-                        AND s.`start_time` <= ?
                         AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = ?)
                         AND su.`user_id` = ?
                       GROUP BY su.`Seminar_id`  ";
             $parameters = [
                 $excludeTypes,
-                $currentSemester->beginn,
                 $currentSemester->id,
                 $GLOBALS['user']->id
             ];
@@ -63,14 +61,13 @@ class CoursesetModel
                            FROM `seminare` s
                            INNER JOIN `deputies` d ON (s.`Seminar_id`=d.`range_id`)
                            LEFT JOIN semester_courses ON (semester_courses.course_id = s.Seminar_id)
-                           WHERE s.`start_time` <= ?
-                             AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = ?)
+                           WHERE (semester_courses.semester_id IS NULL OR semester_courses.semester_id = ?)
                              AND d.`user_id` = ?
                            GROUP BY s.`Seminar_id`
                              ";
                 $parameters = array_merge(
                     $parameters,
-                    [$currentSemester->beginn, $currentSemester->id, $GLOBALS['user']->id]
+                    [$currentSemester->id, $GLOBALS['user']->id]
                 );
             }
             $courses = $db->fetchFirst($query, $parameters);
@@ -88,7 +85,6 @@ class CoursesetModel
                       LEFT JOIN semester_courses ON (semester_courses.course_id = s.Seminar_id)
                       INNER JOIN auth_user_md5 aum USING (user_id)
                       WHERE s.status NOT IN (:exclude_types)
-                        AND s.start_time <= :sembegin
                         AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = :semester_id)
                         AND $sem_inst.Institut_id IN (:institutes)
                         AND (
@@ -98,7 +94,6 @@ class CoursesetModel
                         )";
             $courses = $db->fetchFirst($query, [
                 'exclude_types' => $excludeTypes,
-                'sembegin'      => $currentSemester->beginn,
                 'semester_id'   => $currentSemester->id,
                 'institutes'    => $instituteIds,
                 'filter'        => '%' . $filter .'%',
@@ -136,13 +131,15 @@ class CoursesetModel
                 'visible'              => $course->visible,
             ];
 
-            $query = "SELECT type
-                      FROM seminar_courseset
-                      INNER JOIN courseset_rule USING (set_id)
-                      WHERE type IN ('LockedAdmission','PasswordAdmission')
-                        AND seminar_id = ?";
+            $query = "SELECT `type`
+                      FROM `seminar_courseset`
+                      JOIN `courseset_rule` USING (`set_id`)
+                      LEFT JOIN `semester_courses` ON `seminar_courseset`.`seminar_id` = `semester_courses`.`course_id`
+                      LEFT JOIN `semester_data` USING (`semester_id`)
+                      WHERE `type` IN ('LockedAdmission','PasswordAdmission')
+                        AND `seminar_id` = ?";
             if ($coursesetId) {
-                $query .= "AND set_id <> ?";
+                $query .= "AND `set_id` <> ?";
             }
 
             $data[$course->id]['admission_type'] = DBManager::get()->fetchColumn(
@@ -151,7 +148,7 @@ class CoursesetModel
             );
 
         };
-        Course::findEachMany($callable, array_unique($courses),"ORDER BY start_time DESC, VeranstaltungsNummer ASC, Name ASC");
+        Course::findEachMany($callable, array_unique($courses),"ORDER BY `semester_data`.`beginn` DESC, `VeranstaltungsNummer` ASC, `Name` ASC");
 
         return $data;
     }
@@ -177,6 +174,7 @@ class CoursesetModel
                   LEFT JOIN courseset_rule cr ON c.set_id = cr.set_id
                   LEFT JOIN seminar_courseset sc ON c.set_id = sc.set_id
                   LEFT JOIN seminare s ON s.seminar_id = sc.seminar_id
+                  LEFT JOIN semester_courses ON s.seminar_id = semester_courses.course_id
                   WHERE ci.institute_id = ?";
         if ($filter['course_set_name']) {
             $query .= " AND c.name LIKE ?";
@@ -187,8 +185,8 @@ class CoursesetModel
             $parameters[] = $filter['rule_types'];
         }
         if ($filter['semester_id']) {
-            $query .= " AND s.start_time = ?";
-            $parameters[] = Semester::find($filter['semester_id'])->beginn;
+            $query .= " AND semester_courses.semester_id = ?";
+            $parameters[] = $filter['semester_id'];
         }
         $cs_count_statement = DBManager::get()->prepare($query);
         $query = str_replace('ci.institute_id', '1', $query);

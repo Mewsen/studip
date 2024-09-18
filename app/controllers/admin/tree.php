@@ -238,8 +238,8 @@ class Admin_TreeController extends AuthenticatedController
         $courseIds = Request::optionArray('assign_semtree');
 
         $order = Config::get()->IMPORTANT_SEMNUMBER
-            ? "ORDER BY `start_time` DESC, `VeranstaltungsNummer`, `Name`"
-            : "ORDER BY `start_time` DESC,  `Name`";
+            ? "ORDER BY `VeranstaltungsNummer`, `Name`"
+            : "ORDER BY `Name`";
         $this->courses = array_filter(
             Course::findMany($courseIds, $order),
             function (Course $course): bool {

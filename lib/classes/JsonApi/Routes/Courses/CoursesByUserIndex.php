@@ -98,9 +98,14 @@ class CoursesByUserIndex extends JsonApiController
      */
     private function findCoursesByUser(User $user, ?Semester $semester): array
     {
-        $courses = Course::findMany(
-            $user->course_memberships->pluck('seminar_id'),
-            'ORDER BY start_time, name'
+        $courses = Course::findBySQL(
+            'LEFT JOIN `semester_courses`
+            ON `seminare`.`seminar_id` = `semester_courses`.`course_id`
+            LEFT JOIN `semester_data` USING (`semester_id`)
+            WHERE
+            `seminare`.`seminar_id` IN ( :course_ids )
+            ORDER BY `semester_data`.`beginn`, `seminare`.`name`',
+            ['course_ids' => $user->course_memberships->pluck('seminar_id')]
         );
 
         if ($semester) {

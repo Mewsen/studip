@@ -52,7 +52,7 @@ class AutoInsert
 
     private function loadSettings()
     {
-        $query = "SELECT a.seminar_id, GROUP_CONCAT(a.status,IF(LENGTH(a.domain_id)=0,':keine',CONCAT(':',a.domain_id))) AS domain_status, s.Name, s.Schreibzugriff, s.start_time ";
+        $query = "SELECT a.seminar_id, GROUP_CONCAT(a.status,IF(LENGTH(a.domain_id)=0,':keine',CONCAT(':',a.domain_id))) AS domain_status, s.Name, s.Schreibzugriff ";
         $query .= "FROM auto_insert_sem a ";
         $query .= "JOIN seminare AS s USING (Seminar_id) ";
         $query .= "GROUP BY s.seminar_id ";
@@ -68,8 +68,7 @@ class AutoInsert
                     $key                                         = $array[1] . '.' . $array[0];
                     $this->settings[$key][$result['seminar_id']] = ['Seminar_id'     => $result['seminar_id'],
                                                                     'name'           => $result['Name'],
-                                                                    'Schreibzugriff' => $result['Schreibzugriff'],
-                                                                    'start_time'     => $result['start_time']];
+                                                                    'Schreibzugriff' => $result['Schreibzugriff']];
                 }
             }
         }
@@ -78,7 +77,7 @@ class AutoInsert
 
     private function getUserSeminars($user_id, $seminare)
     {
-        $statement = DBManager::get()->prepare("SELECT Seminar_id,s.name,s.Schreibzugriff,s.start_time,su.status
+        $statement = DBManager::get()->prepare("SELECT Seminar_id, s.name, s.Schreibzugriff, su.status
             FROM seminar_user su
             INNER JOIN seminare s USING(Seminar_id)
             WHERE user_id = ? AND Seminar_id IN(?)");
@@ -256,7 +255,7 @@ class AutoInsert
             $statement = DBManager::get()->query($query);
             $results   = $statement->fetchAll(PDO::FETCH_COLUMN);
         } else {
-            $query = "SELECT a.seminar_id, GROUP_CONCAT(a.status,IF(LENGTH(a.domain_id)=0,':keine',CONCAT(':',a.domain_id))) AS domain_status, s.Name, s.Schreibzugriff, s.start_time ";
+            $query = "SELECT a.seminar_id, GROUP_CONCAT(a.status,IF(LENGTH(a.domain_id)=0,':keine',CONCAT(':',a.domain_id))) AS domain_status, s.Name, s.Schreibzugriff ";
             $query .= "FROM auto_insert_sem a ";
             $query .= "JOIN seminare AS s USING (Seminar_id) ";
 

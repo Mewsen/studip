@@ -74,6 +74,9 @@
   - Als Ersatz für viele Methoden der Seminar-Klasse dienen die Klassen `Course`, `CourseDate` und `SeminarCycleDate`, sowie die neue `CourseDateList`-Klasse.
 - Die Klassen `TreeAbstract`, `TreeView` und `SemBrowse` wurden ausgebaut. ([Issue #4392](https://gitlab.studip.de/studip/studip/-/issues/4392))
   - Zur Anzeige von Baumstrukturen können als Ersatz die Implementierungen des `StudipTreeNode`-Interfaces genutzt werden.
+- Die Zuordnung von Veranstaltungen zu Semestern anhand von Timestamps wurde entfernt. In der Datenbank wurden die Spalten `start_time` und `duration_time` der Tabelle `seminare` entfernt. ([Issue #4391]https://gitlab.studip.de/studip/studip/-/issues/4391))
+  - Plugins, die Veranstaltungen anhand von Timestamps laden oder anderweitig verwenden, müssen angepasst werden!
+  - Das Mapping von Veranstaltungen zu Semestern findet nun ausschließlich anhand der Semester-ID über die Verknüpfungstabelle `semester_courses` statt.
 
 ## Security related issues
 

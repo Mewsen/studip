@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var Semester[] $semesters
+ */
+?>
 <legend>
     <?= _('Grunddaten') ?>
 </legend>
@@ -21,13 +26,18 @@
     <label for="wizard-start-time" class="required">
         <?= _('Semester') ?>
     </label>
-    <select name="start_time" id="wizard-start-time" >
-        <?php foreach (array_reverse($semesters) as $semester) { ?>
-            <? ($values['start_time'] < time()) ? (($semester->beginn <= time() && time() <= $semester->ende) ? $values['start_time'] = $semester->beginn : '' ): '' ?>
-            <option value="<?= $semester->beginn ?>"<?= $semester->beginn == $values['start_time'] ? ' selected="selected"' : '' ?>>
+    <select name="semester_id" id="wizard-start-time" >
+        <?php
+        $default_semester = Semester::findDefault();
+        if ($default_semester && empty($values['start_semester'])) {
+            $values['start_semester'] = $default_semester;
+        }
+        ?>
+        <?php foreach (array_reverse($semesters) as $semester) : ?>
+            <option value="<?= htmlReady($semester->id) ?>" <?= $semester->id == $values['start_semester'] ? ' selected' : '' ?>>
                 <?= htmlReady($semester->name) ?>
             </option>
-        <?php } ?>
+        <?php endforeach ?>
     </select>
 </section>
 <section>

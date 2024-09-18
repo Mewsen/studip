@@ -107,29 +107,29 @@ class Course extends SchemaProvider
 
     private function getStartSemester(\Course $course)
     {
-        if (!$semester = \Semester::findByTimestamp($course->start_time)) {
+        if (!$course->start_semester) {
             return null;
         }
 
         return [
             self::RELATIONSHIP_LINKS => [
-                Link::RELATED => $this->createLinkToResource($semester),
+                Link::RELATED => $this->createLinkToResource($course->start_semester),
             ],
-            self::RELATIONSHIP_DATA => $semester,
+            self::RELATIONSHIP_DATA => $course->start_semester,
         ];
     }
 
     private function getEndSemester(\Course $course)
     {
-        if (!$semester = \Semester::findByTimestamp($course->end_time)) {
+        if (!$course->end_semester) {
             return null;
         }
 
         return [
             self::RELATIONSHIP_LINKS => [
-                Link::RELATED => $this->createLinkToResource($semester),
+                Link::RELATED => $this->createLinkToResource($course->end_semester),
             ],
-            self::RELATIONSHIP_DATA => $semester,
+            self::RELATIONSHIP_DATA => $course->end_semester,
         ];
     }
 

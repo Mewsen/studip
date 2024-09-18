@@ -86,7 +86,7 @@ class ModulesNotification
         }
 
         $my_sem = [];
-        $query = "SELECT s.Seminar_id, s.Name, s.chdate, s.start_time, IFNULL(visitdate, :threshold) AS visitdate
+        $query = "SELECT s.Seminar_id, s.Name, s.chdate, IFNULL(visitdate, :threshold) AS visitdate
                   FROM seminar_user_notifications su
                   JOIN seminar_user USING (user_id, seminar_id)
                   JOIN seminare s USING (Seminar_id)
@@ -114,7 +114,6 @@ class ModulesNotification
             $my_sem[$seminar_id] = [
                 'name'         => $row['Name'],
                 'chdate'       => $row['chdate'],
-                'start_time'   => $row['start_time'],
                 'tools'        => new SimpleCollection($tools),
                 'visitdate'    => $row['visitdate'],
                 'notification' => $notification->notification_data->getArrayCopy(),

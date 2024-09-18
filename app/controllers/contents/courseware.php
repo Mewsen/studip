@@ -171,46 +171,6 @@ class Contents_CoursewareController extends CoursewareController
         $this->sem_courses  = $this->getCoursewareCourses($sem_key);
     }
 
-    public function pdf_export_action($element_id, $with_children): void
-    {
-        $element = \Courseware\StructuralElement::findOneById($element_id);
-
-        $this->render_pdf($element->pdfExport($this->user, $with_children), trim($element->title).'.pdf');
-    }
-
-    /**
-     * To display the shared courseware
-     *
-     * @param string $entry_element_id the shared struct element id
-     */
-    public function shared_content_courseware_action($entry_element_id): void
-    {
-        global $user;
-
-        $navigation = new Navigation(_('Geteiltes Lernmaterial'), 'dispatch.php/contents/courseware/shared_content_courseware/' . $entry_element_id);
-        Navigation::addItem('/contents/courseware/shared_content_courseware', $navigation);
-        Navigation::activateItem('/contents/courseware/shared_content_courseware');
-
-        $this->entry_element_id = $entry_element_id;
-
-        $struct = \Courseware\StructuralElement::findOneBySQL(
-            "id = ? AND range_type = 'user'",
-            [$this->entry_element_id]
-        );
-
-        if (!$struct) {
-            throw new Trails\Exception(404, _('Der geteilte Inhalt kann nicht gefunden werden.'));
-        }
-
-        if (!$struct->canRead($user) && !$struct->canEdit($user)) {
-            throw new AccessDeniedException();
-        }
-
-        $this->user_id = $struct->owner_id;
-
-        $this->setCoursewareSidebar();
-    }
-
     /**
      * Return list of coursewares grouped by semester_id
      *
@@ -255,7 +215,7 @@ class Contents_CoursewareController extends CoursewareController
             $courses = $courses->filter(function (Course $course) use ($semester) {
                 return $course->isInSemester($semester);
             });
-        } 
+        }
         $sem_courses = [];
         foreach ($courses as $course) {
             $units = Unit::findCoursesUnits($course);

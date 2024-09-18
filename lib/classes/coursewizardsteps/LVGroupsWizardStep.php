@@ -33,7 +33,7 @@ class LVGroupsWizardStep implements CourseWizardStep
                 ->classname;
 
         // store start time of semester selected in first step
-        $course_start_time = $values[$step_one_class]['start_time'];
+        $course_start_semester = $values[$step_one_class]['start_semester'];
 
         // We only need our own stored values here.
         $values = $values[__CLASS__] ?? [];
@@ -56,8 +56,8 @@ class LVGroupsWizardStep implements CourseWizardStep
         $selection_details = $values['lvgruppe_selection']['area_details'] ?? null;
 
         if (
-            isset($_SESSION[__CLASS__]['course_start_time'])
-            && $_SESSION[__CLASS__]['course_start_time'] != $course_start_time
+            isset($_SESSION[__CLASS__]['course_start_semester'])
+            && $_SESSION[__CLASS__]['course_start_semester'] != $course_start_semester
         ) {
             // don't store previously opened nodes
             // because we get in trouble if the semester has changed
@@ -66,7 +66,7 @@ class LVGroupsWizardStep implements CourseWizardStep
             $open_nodes = !empty($values['open_lvg_nodes']) ? $values['open_lvg_nodes'] : [];
         }
 
-        $_SESSION[__CLASS__]['course_start_time'] = $course_start_time;
+        $_SESSION[__CLASS__]['course_start_semester'] = $course_start_semester;
 
         $tpl->open_lvg_nodes = $open_nodes;
         $tpl->selection = $selection;
@@ -124,10 +124,10 @@ class LVGroupsWizardStep implements CourseWizardStep
 
         $course = Course::findCurrent();
         if ($course) {
-            $course_start = $course->start_time;
-            $course_end = ($course->end_time < 0 || is_null($course->end_time)) ? PHP_INT_MAX : $course->end_time;
+            $course_start = $course->start_semester?->beginn ?? 0;
+            $course_end   = $course->end_semester?->ende ?? PHP_INT_MAX;
         } else {
-            $semester = Semester::findByTimestamp($_SESSION[__CLASS__]['course_start_time']);
+            $semester = Semester::find($_SESSION[__CLASS__]['course_start_semester']);
             $course_start = $semester->beginn;
             $course_end = $semester->ende;
         }
@@ -192,10 +192,10 @@ class LVGroupsWizardStep implements CourseWizardStep
 
         $course = Course::findCurrent();
         if ($course) {
-            $course_start = $course->start_time;
-            $course_end = ($course->end_time < 0 || is_null($course->end_time)) ? PHP_INT_MAX : $course->end_time;
+            $course_start = $course->start_semester?->beginn ?? 0;
+            $course_end   = $course->end_semester?->ende ?? PHP_INT_MAX;
         } else {
-            $semester = Semester::findByTimestamp($_SESSION[__CLASS__]['course_start_time']);
+            $semester = Semester::find($_SESSION[__CLASS__]['course_start_semester']);
             $course_start = $semester->beginn;
             $course_end = $semester->ende;
         }
@@ -243,10 +243,10 @@ class LVGroupsWizardStep implements CourseWizardStep
 
         $course = Course::findCurrent();
         if ($course) {
-            $course_start = $course->start_time;
-            $course_end = ($course->end_time < 0 || is_null($course->end_time)) ? PHP_INT_MAX : $course->end_time;
+            $course_start = $course->start_semester?->beginn ?? 0;
+            $course_end   = $course->end_semester?->ende ?? PHP_INT_MAX;
         } else {
-            $semester = Semester::findByTimestamp($_SESSION[__CLASS__]['course_start_time']);
+            $semester = Semester::find($_SESSION[__CLASS__]['course_start_semester']);
             $course_start = $semester->beginn;
             $course_end = $semester->ende;
         }

@@ -100,10 +100,12 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
             }
         }
 
-        $sql = "SELECT SQL_CALC_FOUND_ROWS courses.`Seminar_id`, courses.`start_time`,
+        $sql = "SELECT SQL_CALC_FOUND_ROWS courses.`Seminar_id`,
                        {$language_name} AS `Name`,
                        courses.`VeranstaltungsNummer`, courses.`status`
                 FROM `seminare` AS courses
+                JOIN `semester_courses` ON courses.`seminar_id` = `semester_courses`.`course_id`
+                JOIN `semester` USING (`semester_id`)
                 {$language_join}
                 JOIN `seminar_user` u ON (u.`Seminar_id` = courses.`Seminar_id` AND u.`status` = 'dozent')
                 JOIN `auth_user_md5` a ON (a.`user_id` = u.`user_id`)
@@ -118,7 +120,7 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
                 {$seminar_type_condition}
                 {$semester_condition}
                 GROUP BY courses.Seminar_id
-                ORDER BY start_time DESC";
+                ORDER BY `semester`.`beginn` DESC";
 
         if (Config::get()->IMPORTANT_SEMNUMBER) {
             $sql .= ", courses.`VeranstaltungsNummer`";

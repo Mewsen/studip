@@ -41,11 +41,11 @@
                 <td style="white-space:nowrap" data-sort-value="<?= (int) $course['distribution_time']?>">
                     <?= htmlReady($course['distribution_time'] ? strftime('%x %R', $course['distribution_time']) : '-') ?>
                 </td>
-                <td style="white-space:nowrap" data-sort-value="<?= (int) ($course['start_time'] ?? null) ?>">
-                    <?= htmlReady(isset($course['start_time']) ? strftime('%x %R', $course['start_time']) : '-') ?>
+                <td style="white-space:nowrap" data-sort-value="<?= (int) ($course->start_semester->beginn ?? null) ?>">
+                    <?= htmlReady(($course->start_semester instanceof Semester) ? strftime('%x %R', $course->start_semester->beginn) : '-') ?>
                 </td>
-                <td style="white-space:nowrap" data-sort-value="<?= (int) ($course['end_time'] ?? null) ?>">
-                    <?= htmlReady(isset($course['end_time']) ? strftime('%x %R', $course['end_time']) : '-') ?>
+                <td style="white-space:nowrap" data-sort-value="<?= (int) ($course->end_semester->ende ?? null) ?>">
+                    <?= htmlReady(($course->end_semester instanceof Semester) ? strftime('%x %R', $course->end_semester->ende) : '-') ?>
                 </td>
             </tr>
         <? endforeach ?>

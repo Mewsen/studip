@@ -25,8 +25,6 @@
  * @property string|null $sonstiges database column
  * @property int $lesezugriff database column
  * @property int $schreibzugriff database column
- * @property int|null $start_time database column
- * @property int|null $duration_time database column
  * @property I18NString|null $art database column
  * @property I18NString|null $teilnehmer database column
  * @property I18NString|null $vorrausetzungen database column
@@ -82,6 +80,16 @@
 
 class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, FeedbackRange, Studip\Calendar\Owner
 {
+    /**
+     * @var Semester initial start semester.
+     */
+    protected $initial_start_semester;
+
+    /**
+     * @var Semester initial end semester.
+     */
+    protected $initial_end_semester;
+
     protected static function configure($config = [])
     {
         $config['db_table'] = 'seminare';
@@ -261,7 +269,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
 
         $config['default_values']['lesezugriff'] = 1;
         $config['default_values']['schreibzugriff'] = 1;
-        $config['default_values']['duration_time'] = 0;
 
         $config['additional_fields']['teachers'] = [
             'get' => 'getTeachers'
@@ -299,8 +306,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         $config['i18n_fields']['leistungsnachweis'] = true;
         $config['i18n_fields']['ort'] = true;
 
-        $config['registered_callbacks']['before_update'][] = 'logStore';
-        $config['registered_callbacks']['before_store'][] = 'cbSetStartAndDurationTime';
+        $config['registered_callbacks']['before_store'][] = 'logStore';
         $config['registered_callbacks']['after_create'][] = 'setDefaultTools';
         $config['registered_callbacks']['after_delete'][] = function ($course) {
             CourseAvatar::getAvatar($course->id)->reset();
@@ -367,6 +373,31 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         parent::configure($config);
     }
 
+    /**
+     * @param string $relation
+     */
+    public function initRelation($relation): void
+    {
+        if ($relation === 'semesters' && $this->relations[$relation] === null) {
+            parent::initRelation($relation);
+            $this->initial_start_semester = $this->getStartSemester();
+            $this->initial_end_semester = $this->getEndSemester();
+        }
+        parent::initRelation($relation);
+    }
+
+    /**
+     * Override of SimpleORMap::cbAfterInitialize for resetting the flags that indicate semester changes.
+     *
+     * @see SimpleORMap::cbAfterInitialize
+     */
+    protected function cbAfterInitialize($cb_type): void
+    {
+        parent::cbAfterInitialize($cb_type);
+        //Reset the flags for the start and end semester:
+        $this->initial_start_semester = null;
+        $this->initial_end_semester = null;
+    }
 
     /**
      * Returns the currently active course or false if none is active.
@@ -409,22 +440,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         return DBManager::get()->fetchAll($query, $parameters, function ($row) {
             return Modul::buildExisting($row);
         });
-    }
-
-    public function getEnd_Time()
-    {
-        return $this->duration_time == -1 ? -1 : $this->start_time + $this->duration_time;
-    }
-
-    public function setEnd_Time($value)
-    {
-        if ($value == -1) {
-            $this->duration_time = -1;
-        } elseif ($this->start_time > 0 && $value > $this->start_time) {
-            $this->duration_time = $value - $this->start_time;
-        } else {
-            $this->duration_time = 0;
-        }
     }
 
     public function _set_semester($field, $value)
@@ -497,11 +512,11 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      */
     public function getStartSemester()
     {
-        if (count($this->semesters) > 0) {
-            return $this->semesters->first();
-        } else {
-            return Semester::findCurrent();
+        //this is called by __get() and therefore using magic properties is not always safe
+        if ($this->relations['semesters'] === null) {
+            $this->initRelation('semesters');
         }
+        return $this->relations['semesters']->first() ?? Semester::findCurrent();
     }
 
     /**
@@ -512,9 +527,11 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      */
     public function getEndSemester()
     {
-        if (count($this->semesters) > 0) {
-            return $this->semesters->last();
+        //this is called by __get() and therefore using magic properties is not always safe
+        if ($this->relations['semesters'] === null) {
+            $this->initRelation('semesters');
         }
+        return $this->relations['semesters']->last();
     }
 
     /**
@@ -2133,85 +2150,65 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      */
     protected function logStore()
     {
-        if ($this->isFieldDirty('start_time')) {
-            //Log change of start semester:
-            StudipLog::log('SEM_SET_STARTSEMESTER', $this->id, isset($this->start_semester) ? $this->start_semester->name : _('unbegrenzt'));
-            NotificationCenter::postNotification('CourseDidChangeSchedule', $this);
-        }
-        if ($this->isFieldDirty('duration_time')) {
-            StudipLog::log('SEM_SET_ENDSEMESTER', $this->id, $this->getTextualSemester());
-            NotificationCenter::postNotification('CourseDidChangeSchedule', $this);
-        }
+        if (!$this->isNew()) {
+            if ($this->initial_start_semester?->id !== $this->start_semester?->id) {
+                //Log change of start semester:
+                StudipLog::log('SEM_SET_STARTSEMESTER', $this->id, isset($this->start_semester) ? $this->start_semester->name : _('unbegrenzt'));
+                NotificationCenter::postNotification('CourseDidChangeSchedule', $this);
+            }
+            if ($this->initial_end_semester?->id !== $this->end_semester?->id) {
+                StudipLog::log('SEM_SET_ENDSEMESTER', $this->id, $this->getTextualSemester());
+                NotificationCenter::postNotification('CourseDidChangeSchedule', $this);
+            }
 
-        $log = [];
-        if ($this->isFieldDirty('admission_prelim')) {
-            $log[] = $this->admission_prelim ?  _('Neuer Anmeldemodus: Vorläufiger Eintrag') : _('Neuer Anmeldemodus: Direkter Eintrag');
-        }
+            $log = [];
+            if ($this->isFieldDirty('admission_prelim')) {
+                $log[] = $this->admission_prelim ? _('Neuer Anmeldemodus: Vorläufiger Eintrag') : _('Neuer Anmeldemodus: Direkter Eintrag');
+            }
 
-        if ($this->isFieldDirty('admission_binding')) {
-            $log[] = $this->admission_binding? _('Anmeldung verbindlich') : _('Anmeldung unverbindlich');
-        }
+            if ($this->isFieldDirty('admission_binding')) {
+                $log[] = $this->admission_binding ? _('Anmeldung verbindlich') : _('Anmeldung unverbindlich');
+            }
 
-        if ($this->isFieldDirty('admission_turnout')) {
-            $log[] = sprintf(_('Neue Teilnehmerzahl: %s'), (int)$this->admission_turnout);
-        }
+            if ($this->isFieldDirty('admission_turnout')) {
+                $log[] = sprintf(_('Neue Teilnehmerzahl: %s'), (int)$this->admission_turnout);
+            }
 
-        if ($this->isFieldDirty('admission_disable_waitlist')) {
-            $log[] = $this->admission_disable_waitlist ? _('Warteliste aktiviert') : _('Warteliste deaktiviert');
-        }
+            if ($this->isFieldDirty('admission_disable_waitlist')) {
+                $log[] = $this->admission_disable_waitlist ? _('Warteliste aktiviert') : _('Warteliste deaktiviert');
+            }
 
-        if ($this->isFieldDirty('admission_waitlist_max')) {
-            $log[] = sprintf(_('Plätze auf der Warteliste geändert: %u'), (int)$this->admission_waitlist_max);
-        }
+            if ($this->isFieldDirty('admission_waitlist_max')) {
+                $log[] = sprintf(_('Plätze auf der Warteliste geändert: %u'), (int)$this->admission_waitlist_max);
+            }
 
-        if ($this->isFieldDirty('admission_disable_waitlist_move')) {
-            $log[] = $this->admission_disable_waitlist ? _('Nachrücken aktiviert') : _('Nachrücken deaktiviert');
-        }
+            if ($this->isFieldDirty('admission_disable_waitlist_move')) {
+                $log[] = $this->admission_disable_waitlist ? _('Nachrücken aktiviert') : _('Nachrücken deaktiviert');
+            }
 
-        if ($this->isFieldDirty('admission_prelim_txt')) {
-            if ($this->admission_prelim_txt) {
-                $log[] = sprintf(_('Neuer Hinweistext bei vorläufigen Eintragungen: %s'), strip_tags(kill_format($this->admission_prelim_txt)));
-            } else {
-                $log[] = _('Hinweistext bei vorläufigen Eintragungen wurde entfert');
+            if ($this->isFieldDirty('admission_prelim_txt')) {
+                if ($this->admission_prelim_txt) {
+                    $log[] = sprintf(_('Neuer Hinweistext bei vorläufigen Eintragungen: %s'), strip_tags(kill_format($this->admission_prelim_txt)));
+                } else {
+                    $log[] = _('Hinweistext bei vorläufigen Eintragungen wurde entfert');
+                }
+            }
+
+            if (!empty($log)) {
+                StudipLog::log(
+                    'SEM_CHANGED_ACCESS',
+                    $this->id,
+                    null,
+                    '',
+                    implode(' - ', $log)
+                );
+            }
+
+            if ($this->isFieldDirty('visible')) {
+                StudipLog::log($this->visible ? 'SEM_VISIBLE' : 'SEM_INVISIBLE', $this->id);
             }
         }
-
-        if (!empty($log)) {
-            StudipLog::log(
-                'SEM_CHANGED_ACCESS',
-                $this->id,
-                null,
-                '',
-                implode(' - ', $log)
-            );
-        }
-
-        if ($this->isFieldDirty('visible')) {
-            StudipLog::log($this->visible ? 'SEM_VISIBLE' : 'SEM_INVISIBLE', $this->id);
-        }
     }
-
-    /**
-     * Called directly before storing the object to edit the columns start_time and duration_time
-     * which are both deprecated but are still in use for older plugins.
-     */
-    public function cbSetStartAndDurationTime()
-    {
-        if ($this->isFieldDirty('start_time')) {
-            $this->setStartSemester(Semester::findByTimestamp($this->start_time));
-        }
-        if ($this->isFieldDirty('duration_time')) {
-            $this->setEndSemester($this->duration_time == -1 ? null : Semester::findByTimestamp($this->start_time + $this->duration_time));
-        }
-        if ($this->isOpenEnded()) {
-            $this->start_time = $this->start_time ?: Semester::findCurrent()->beginn ?? time();
-            $this->duration_time = -1;
-        } else {
-            $this->start_time = $this->getStartSemester()->beginn;
-            $this->duration_time = $this->getEndSemester()->beginn - $this->start_time;
-        }
-    }
-
 
     //StudipItem interface implementation:
 
@@ -2342,7 +2339,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             "LEFT JOIN semester_courses ON (semester_courses.course_id = seminare.Seminar_id)
              WHERE Seminar_id IN (?)
              GROUP BY seminare.Seminar_id
-             ORDER BY semester_courses.semester_id IS NULL DESC, start_time DESC, {$name_sort}",
+             ORDER BY semester_courses.semester_id IS NULL DESC, {$name_sort}",
             [$seminar_ids]
         );
     }

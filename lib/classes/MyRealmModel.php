@@ -272,7 +272,7 @@ class MyRealmModel
         $show_semester_name = UserConfig::get($GLOBALS['user']->id)->SHOWSEM_ENABLE;
         $sem_courses = [];
 
-        $param_array = 'name seminar_id visible veranstaltungsnummer start_time duration_time status visible ';
+        $param_array = 'name seminar_id visible veranstaltungsnummer status visible ';
         $param_array .= 'chdate admission_binding modules admission_prelim';
 
         // filtering courses
@@ -826,7 +826,7 @@ class MyRealmModel
             )
         );
 
-        $data_fields = 'name seminar_id visible veranstaltungsnummer start_time duration_time status visible '
+        $data_fields = 'name seminar_id visible veranstaltungsnummer status visible '
                      . 'chdate admission_binding admission_prelim';
         $studygroup_data = [];
         foreach ($studygroup_memberships as $membership) {

@@ -102,22 +102,18 @@ class Course_DatesController extends AuthenticatedController
         );
         $sidebar->addWidget($actions);
 
-        $course_end_time = $this->course->getEnd_Time();
-        if (($course_end_time == -1) || ($course_end_time > 0)) {
+        if (count($this->course->semesters) !== 1) {
             //The course has more than one semester:
             $semester_widget = new SemesterSelectorWidget(
                 $this->url_for('course/dates/index')
             );
-            $semester_end_range = $course_end_time;
-            if ($semester_end_range == -1) {
-                //The end semester is set to unlimited.
-                $semester_end_range = PHP_INT_MAX;
-            }
             $semester_widget->includeAll();
-            $semester_widget->setRange(
-                $this->course->start_time,
-                $semester_end_range
-            );
+            if ($this->course->start_semester && $this->course->end_semester) {
+                $semester_widget->setRange(
+                    $this->course->start_semester->beginn,
+                    $this->course->end_semester->ende
+                );
+            }
             $sidebar->addWidget($semester_widget);
         }
 

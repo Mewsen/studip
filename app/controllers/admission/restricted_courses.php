@@ -86,6 +86,7 @@ class Admission_RestrictedCoursesController extends AuthenticatedController
                     _("Endzeitpunkt")];
             $data = [];
             foreach ($this->courses as $course) {
+                $sorm_course = Course::find($course['seminare.seminar_id']);
                 $row = [];
                 $row[] = $course['cs_name'];
                 $row[] = $course['course_number'];
@@ -96,8 +97,8 @@ class Admission_RestrictedCoursesController extends AuthenticatedController
                 $row[] = (int)$course['count_prelim'];
                 $row[] = (int)$course['count_waiting'];
                 $row[] = $course['distribution_time'] ? strftime('%x %R', $course['distribution_time']) : '';
-                $row[] = isset($course['start_time']) ? strftime('%x %R', $course['start_time']) : '';
-                $row[] = isset($course['end_time']) ? strftime('%x %R', $course['end_time']) : '';
+                $row[] = $sorm_course?->getStartSemester()?->beginn ?? '';
+                $row[] = $sorm_course?->getEndSemester()?->ende ?? '';
                 $data[] = $row;
             }
 

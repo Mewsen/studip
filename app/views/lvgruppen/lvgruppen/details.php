@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var Course[] $courses
+ */
+?>
 <td colspan="6">
     <table class="default nohover">
         <colgroup>
@@ -80,7 +85,7 @@
                                     <? foreach ($courses[$semester->id] as $course) : ?>
                                         <li>
                                             <a href="<?= URLHelper::getLink('dispatch.php/course/details', ['sem_id' => $course['seminar_id']]) ?>">
-                                                <?= htmlReady(($course['VeranstaltungsNummer'] ? $course['VeranstaltungsNummer'] . ' - ' : '') . $course['Name']) ?>
+                                                <?= htmlReady($course->getFullName('number-name')) ?>
                                             </a>
                                         </li>
                                     <? endforeach; ?>
@@ -99,7 +104,7 @@
                                     <? foreach ($courses[$semester->id] as $course) : ?>
                                         <li>
                                             <a href="<?= URLHelper::getLink('dispatch.php/course/details', ['sem_id' => $course['seminar_id']]) ?>">
-                                                <?= htmlReady(($course['VeranstaltungsNummer'] ? $course['VeranstaltungsNummer'] . ' - ' : '') . $course['Name']) ?>
+                                                <?= htmlReady($course->getFullName('number-name')) ?>
                                             </a>
                                         </li>
                                     <? endforeach; ?>

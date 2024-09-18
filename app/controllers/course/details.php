@@ -98,11 +98,9 @@ class Course_DetailsController extends AuthenticatedController
 
         // Ausgabe der Modulzuordnung MVV
         if ($this->course->getSemClass()->offsetGet('module')) {
-            $course_start = $this->course->start_time;
-            $course_end = ($this->course->end_time < 0 || is_null($this->course->end_time))
-                    ? PHP_INT_MAX
-                    : $this->course->end_time;
-            // set filter to show only pathes with valid semester data
+            $course_start = $this->course->start_semester?->beginn ?? 0;
+            $course_end   = $this->course->end_semester?->ende ?? PHP_INT_MAX;
+            //Set the filter to show only paths with valid semester data:
             ModuleManagementModelTreeItem::setObjectFilter('Modul',
                 function ($modul) use ($course_start, $course_end) {
                     // check for public status

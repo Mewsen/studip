@@ -84,17 +84,17 @@ class BasicDataWizardStep implements CourseWizardStep
                 if ($GLOBALS['perm']->have_perm("admin")) {
                     if (
                         $s->id == $GLOBALS['user']->cfg->MY_COURSES_SELECTED_CYCLE
-                        && empty($values['start_time'])
+                        && empty($values['start_semester'])
                         && Request::isXhr()
                     ) {
-                        $values['start_time'] = $s->beginn;
+                        $values['start_semester'] = $s->id;
                     }
                 }
                 $semesters[] = $s;
             }
         }
-        if (empty($values['start_time'])) {
-            $values['start_time'] = Semester::findDefault()->beginn;
+        if (empty($values['start_semester'])) {
+            $values['start_semester'] = Semester::findDefault()->id;
         }
         if (!empty($values['studygroup']) && (!count($typestruct) || empty($values['institute'])) ) {
             $message = sprintf(_('Die Konfiguration der Studiengruppen ist unvollständig. ' .
@@ -107,8 +107,8 @@ class BasicDataWizardStep implements CourseWizardStep
         if (count($semesters) > 0) {
             $tpl->set_attribute('semesters', array_reverse($semesters));
             // If no semester is set, use current as selected default.
-            if (empty($values['start_time'])) {
-                $values['start_time'] = Semester::findCurrent()->beginn;
+            if (empty($values['start_semester'])) {
+                $values['start_semester'] = Semester::findCurrent()->id;
             }
         } else {
             $message = sprintf(_('Veranstaltungen können nur ' .
@@ -414,7 +414,7 @@ class BasicDataWizardStep implements CourseWizardStep
         $course->name = new I18NString($values['name'], $values['name_i18n'] ?? []);
         $course->veranstaltungsnummer = $values['number'] ?? null;
         $course->beschreibung = new I18NString($values['description'], $values['description_i18n'] ?? []);
-        $course->start_semester = Semester::findByTimestamp($values['start_time']);
+        $course->start_semester = Semester::find($values['start_semester']);
         $course->institut_id = $values['institute'];
 
         $semclass = $course->getSemClass();
@@ -426,7 +426,6 @@ class BasicDataWizardStep implements CourseWizardStep
         // Studygroups: access and description.
         if (in_array($values['coursetype'], studygroup_sem_types())) {
             $course->visible = 1;
-            $course->duration_time = -1;
             switch ($values['access']) {
                 case 'all':
                     $course->admission_prelim = 0;
@@ -516,7 +515,7 @@ class BasicDataWizardStep implements CourseWizardStep
     {
         $data = [
             'coursetype' => $course->status,
-            'start_time' => $course->start_time,
+            'start_semester' => $course->start_semester->id ?? '',
             'name' => $course->name,
             'name_i18n' => is_object($course->name) ? $course->name->toArray() : $course->name,
             'number' => $course->veranstaltungsnummer,

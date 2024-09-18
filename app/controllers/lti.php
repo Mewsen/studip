@@ -69,8 +69,10 @@ class LtiController extends AuthenticatedController
         ];
 
         $sql = "JOIN seminar_user USING(Seminar_id)
+                LEFT JOIN semester_courses sc ON seminare.seminar_id = sc.course_id
+                LEFT JOIN semester_data s USING (semester_id)
                 WHERE user_id = ? AND seminar_user.status IN ('dozent', 'tutor')
-                ORDER BY start_time DESC, Name";
+                ORDER BY s.beginn DESC, Name";
         $this->courses = Course::findBySQL($sql, [$GLOBALS['user']->id]);
     }
 

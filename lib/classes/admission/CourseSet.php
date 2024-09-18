@@ -375,6 +375,7 @@ class CourseSet
             LEFT JOIN courseset_rule cr ON cr.set_id=ci.set_id
             LEFT JOIN seminar_courseset sc ON c.set_id = sc.set_id
             LEFT JOIN seminare s ON s.seminar_id = sc.seminar_id
+            LEFT JOIN `semester_courses` ON s.`seminar_id` = `semester_courses`.`course_id`
             WHERE ci.`institute_id`=?";
         $parameters = [$instituteId];
         if (!$GLOBALS['perm']->have_perm('admin')) {
@@ -390,8 +391,8 @@ class CourseSet
             $parameters[] = $filter['rule_types'];
         }
         if (!empty($filter['semester_id'])) {
-            $query .= " AND s.start_time = ?";
-            $parameters[] = Semester::find($filter['semester_id'])->beginn;
+            $query .= " AND `semester_courses`.`semester_id` = ?";
+            $parameters[] = $filter['semester_id'];
         }
         if (!empty($filter['course_set_chdate'])) {
             $query .= " AND c.chdate > ?";
@@ -415,8 +416,11 @@ class CourseSet
             LEFT JOIN courseset_institute ci ON ci.`set_id`=c.`set_id`
             LEFT JOIN courseset_rule cr ON cr.set_id=ci.set_id
             LEFT JOIN seminar_courseset sc ON c.set_id = sc.set_id
-            LEFT JOIN seminare s ON s.seminar_id = sc.seminar_id
-            WHERE ci.institute_id IS NULL";
+            LEFT JOIN seminare s ON s.seminar_id = sc.seminar_id ";
+        if (!empty($filter['semester_id'])) {
+            $query .= "JOIN `semester_courses` ON s.`seminar_id` = `semester_courses`.`course_id` ";
+        }
+        $query .= "WHERE ci.institute_id IS NULL ";
         $parameters = [];
         $query .= " AND (c.`private`=0 OR c.`user_id`=?)";
         $parameters[] = $GLOBALS['user']->id;
@@ -429,8 +433,8 @@ class CourseSet
             $parameters[] = $filter['rule_types'];
         }
         if (!empty($filter['semester_id'])) {
-            $query .= " AND s.start_time = ?";
-            $parameters[] = Semester::find($filter['semester_id'])->beginn;
+            $query .= " AND `semester_courses`.`semester_id` = ?";
+            $parameters[] = $filter['semester_id'];
         }
         if (!empty($filter['course_set_chdate'])) {
             $query .= " AND c.chdate > ?";
@@ -1026,15 +1030,23 @@ class CourseSet
             $tpl->set_attribute('institutes', $institutes);
         }
         if (!$short || $this->hasAdmissionRule('LimitedAdmission')) {
-            $courses = Course::findAndMapMany(function($c) {
-                return [
-                    'id' => $c->id,
-                    'name' => $c->getFullName('number-name-semester'),
-                    'visible' => $c->visible
-                ];
-            },
-                array_keys($this->courses),
-                'ORDER BY start_time,VeranstaltungsNummer,Name');
+            $courses = Course::findAndMapBySQL(
+                function($c) {
+                    return [
+                        'id' => $c->id,
+                        'name' => $c->getFullName('number-name-semester'),
+                        'visible' => $c->visible
+                    ];
+                },
+             "LEFT JOIN `semester_courses` ON `seminare`.`seminar_id` = `semester_courses`.`course_id`
+                 LEFT JOIN `semester_data` USING (`semester_id`)
+                 WHERE
+                 `seminare`.`seminar_id` IN ( :course_ids )
+                 'ORDER BY `semester_data`.`beginn`, `VeranstaltungsNummer`, `Name`'",
+                [
+                    'course_ids' => array_keys($this->courses)
+                ]
+            );
             if (!$GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM)) {
                 $courses = array_filter($courses,
                     function ($c) {

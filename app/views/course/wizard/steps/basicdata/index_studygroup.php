@@ -71,9 +71,9 @@
     <?= _('Einverstanden') ?>
 </label>
 
-<input type="hidden" name="institute" value="<?= htmlReady($values['institute']) ?>">
-<input type="hidden" name="start_time" value="<?= htmlReady($values['start_time']) ?>">
+<input type="hidden" name="institute" value="<?= $values['institute'] ?>"/>
+<input type="hidden" name="start_semester" value="<?= htmlReady($values['start_semester']) ?>">
 <input type="hidden" name="studygroup" value="1"/>
 <?php foreach ($values['lecturers'] as $id => $assigned) : ?>
-    <input type="hidden" name="lecturers[<?= htmlReady($id) ?>]" value="1">
+    <input type="hidden" name="lecturers[<?= $id ?>]" value="1"/>
 <?php endforeach ?>

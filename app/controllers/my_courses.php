@@ -577,7 +577,7 @@ class MyCoursesController extends AuthenticatedController
                   LEFT JOIN archiv USING (seminar_id)
                   WHERE user_id = :user_id
                   GROUP BY seminar_id
-                  ORDER BY start_time DESC, :sortby";
+                  ORDER BY mkdate DESC, :sortby";
         $statement = DBManager::get()->prepare($query);
         $statement->bindValue(':user_id', $GLOBALS['user']->id);
         $statement->bindValue(':sortby', $sortby, StudipPDO::PARAM_COLUMN);

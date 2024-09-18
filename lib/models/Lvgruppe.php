@@ -126,14 +126,10 @@ class Lvgruppe extends ModuleManagementModelTreeItem
             $semester = Semester::find($semester_id);
             if ($semester) {
                 $filter_sql = trim($filter_sql) ? $filter_sql . ' AND' : $filter_sql . ' WHERE';
-                $filter_sql .= ' seminare.start_time <= :beginn '
-                        . 'AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = :semester_id) '
-                        . 'AND (start_sem.beginn <= :ende AND '
-                        . 'IF(ISNULL(end_sem.ende), 1, end_sem.ende >= :beginn)) ';
+                $filter_sql .= ' semester_courses.semester_id = :semester_id '
+                        . 'AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = :semester_id) ';
                 $params = [
-                    ':semester_id' => $semester->semester_id,
-                    ':beginn' => $semester->beginn,
-                    ':ende' => $semester->ende
+                    ':semester_id' => $semester->semester_id
                 ];
                 $semester_join = 'LEFT JOIN mvv_modul ON mvv_modul.modul_id = mvv_modulteil.modul_id '
                 . 'LEFT JOIN semester_data as start_sem ON start_sem.semester_id = mvv_modul.start '
@@ -197,14 +193,10 @@ class Lvgruppe extends ModuleManagementModelTreeItem
                 }
 
                 $filter_sql = trim($filter_sql) ? $filter_sql  : ' AND';
-                $filter_sql .= ' seminare.start_time <= :beginn '
-                        . 'AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = :semester_id) '
-                        . 'AND (start_sem.beginn <= :ende AND '
-                        . 'IF(ISNULL(end_sem.ende), 1, end_sem.ende >= :beginn)) ';
+                $filter_sql .= ' semester_courses.semester_id = :semester_id '
+                        . 'AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = :semester_id) ';
                 $params = [
-                    ':semester_id' => $semester->semester_id,
-                    ':beginn' => $semester->beginn,
-                    ':ende' => $semester->ende
+                    ':semester_id' => $semester->semester_id
                 ];
                 $semester_join = 'LEFT JOIN mvv_modul ON mvv_modul.modul_id = mvv_modulteil.modul_id '
                 . 'LEFT JOIN semester_data as start_sem ON start_sem.semester_id = mvv_modul.start '
@@ -517,48 +509,61 @@ class Lvgruppe extends ModuleManagementModelTreeItem
      *
      * @param bool $only_visible Return only visible courses.
      * @param string $semester_id Return only this semester.
-     * @return array All assigned courses grouped by semesters.
+     * @return Course[] All assigned courses grouped by semesters.
      */
     public function getAllAssignedCourses($only_visible = false, $semester_id = null)
     {
-        $sem_start_times = [];
-
+        $conditions_sql = '';
+        if ($only_visible) {
+            $conditions_sql .= " AND `seminare`.`visible` = '1'";
+        }
         if ($semester_id) {
             $semester = Semester::find($semester_id);
             if (!$semester) {
                 return [];
             }
-            $sem_start_times[$semester->id] = $semester->beginn;
+
+            //Find only courses that lie in that semester.
+            $courses = Course::findBySQL(
+                'LEFT JOIN `semester_courses` sc
+                 ON `seminare`.`seminar_id` = sc.`course_id`
+                 JOIN `mvv_lvgruppe_seminar` mls USING (`seminar_id`)
+                 WHERE
+                 mls.`lvgruppe_id` = :group_id
+                 AND (sc.`semester_id` = :semester_id OR sc.`semester_id` IS NULL)'
+                . $conditions_sql . '
+                ORDER BY `seminare`.`Name`',
+                [
+                    'group_id'    => $this->id,
+                    'semester_id' => $semester->id
+                ]
+            );
+            return [$semester->id => $courses];
         } else {
-            $sem_start_times = SimpleORMapCollection::createFromArray(
-                    Semester::getAll())->toGroupedArray('id', 'beginn');
-            $sem_start_times = array_map(
-                    function ($sem) { return $sem['beginn']; }
-                    , $sem_start_times);
-        }
-        $visible_sql = $only_visible ? ' AND visible = 1' : '';
-        $courses = [];
-        $stmt = DBManager::get()->prepare('SELECT seminar_id, Name, '
-                . 'VeranstaltungsNummer, visible, INTERVAL(start_time,'
-                . join(',', $sem_start_times)
-                . ') AS sem_number, '
-                . 'IF(duration_time=-1,' . count($sem_start_times)
-                . ',INTERVAL(start_time+duration_time,'
-                . join(',', $sem_start_times)
-                . ')) AS sem_number_end FROM seminare '
-                . 'INNER JOIN mvv_lvgruppe_seminar USING(seminar_id) '
-                . 'WHERE lvgruppe_id = ? ' . $visible_sql
-                . ' AND start_time <= ' . end($sem_start_times)
-                . ' ORDER BY sem_number DESC, Name');
-        $stmt->execute([$this->getId()]);
-        $sem_ids = array_keys($sem_start_times);
-        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $course) {
-            if ($course['sem_number'] == 0) $course['sem_number'] = 1;
-            for ($i = $course['sem_number']; $i <= $course['sem_number_end']; $i++) {
-                $courses[$sem_ids[$i-1]][] = $course;
+            //No semester specified. Find courses from all semesters.
+            $courses = Course::findBySQL(
+                'JOIN `mvv_lvgruppe_seminar` mls USING (`seminar_id`)
+                 WHERE
+                 mls.`lvgruppe_id` = :group_id '
+                . $conditions_sql . '
+                ORDER BY `seminare`.`Name`',
+                [
+                    'group_id'    => $this->id
+                ]
+            );
+            $data = [];
+            foreach ($courses as $course) {
+                if (!$course->start_semester) {
+                    //An invalid course that cannot be grouped by a semester.
+                    continue;
+                }
+                if (!array_key_exists($course->start_semester->id, $data)) {
+                    $data[$course->start_semester->id] = [];
+                }
+                $data[$course->start_semester->id][] = $course;
             }
+            return $data;
         }
-        return $courses;
     }
 
     /**

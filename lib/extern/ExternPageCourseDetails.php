@@ -205,14 +205,16 @@ class ExternPageCourseDetails extends ExternPage
                 if (!$GLOBALS['MVV_MODUL']['STATUS']['values'][$modul->stat]['public']) {
                     return false;
                 }
+                $course_start = $course->start_semester->beginn ?? 0;
+                $course_end   = $course->end_semester->ende ?? PHP_INT_MAX;
                 $modul_start = Semester::find($modul->start)->beginn ?: 0;
                 $modul_end = Semester::find($modul->end)->beginn ?: PHP_INT_MAX;
-                return ($course->start_time <= $modul_end)
+                return ($course_start <= $modul_end)
                     && (
-                        ($course->start_time >= $modul_start)
+                        ($course_start >= $modul_start)
                         || $course->isOpenEnded()
-                        || $course->getEndSemester()->ende <= $modul_end
-                        || $course->getEndSemester()->ende >= $modul_start
+                        || $course_end <= $modul_end
+                        || $course_end >= $modul_start
                     );
             });
             ModuleManagementModelTreeItem::setObjectFilter('StgteilVersion', function ($version) {
