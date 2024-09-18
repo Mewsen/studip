@@ -50,10 +50,11 @@
 
         <RenewalDialog
             v-if="renewalTask"
-            :renewalDate="renewalDate"
             :renewalState="renewalTask.attributes.renewal"
+            :submissionDate="renewalTask.attributes['submission-date']"
             @update="updateRenewal"
             @close="closeDialogs"
+            @nullDate="nullDate"
         />
 
         <TaskGroupsAddSolversDialog v-if="showTaskGroupsAddSolversDialog" :taskGroup="taskGroup" @newtask="reloadTasks" />
@@ -130,6 +131,7 @@ export default {
     methods: {
         ...mapActions({
             companionError: 'companionError',
+            companionWarning: 'companionWarning',
             companionSuccess: 'companionSuccess',
             createTaskFeedback: 'createTaskFeedback',
             deleteTaskFeedback: 'deleteTaskFeedback',
@@ -186,7 +188,15 @@ export default {
                 },
             });
         },
-        updateRenewal({ state, date }) {
+        updateRenewal({ state, date, warn }) {
+            if (warn) {
+                this.closeDialogs();
+                this.companionWarning({
+                    info: this.$gettext('Die Verlängerungsfrist darf nicht vor dem Abgabedatum liegen.')
+                });
+                return;
+            }
+
             const attributes = { renewal: state };
             if (date) {
                 attributes['renewal-date'] = date.toISOString();
@@ -210,6 +220,12 @@ export default {
             }
             this.closeDialogs();
         },
+        nullDate() {
+            this.closeDialogs();
+            this.companionError({
+                info: this.$gettext('Die Datumsangabe ist ungültig.')
+            });
+        }
     },
 };
 </script>

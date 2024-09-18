@@ -24,7 +24,7 @@
                 </label>
                 <label v-if="state === 'granted'">
                     {{ $gettext('neue Frist') }}
-                    <DateInput v-model="date" class="size-l" />
+                    <DateInput v-model="date" class="size-l" :min="submissionDate" @nullDate="nullDate = true" />
                 </label>
             </form>
         </template>
@@ -32,31 +32,43 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import DateInput from '../layouts/CoursewareDateInput.vue';
+
 export default {
-    props: ['renewalDate', 'renewalState'],
+    props: ['renewalState', 'submissionDate'],
     components: {
         DateInput,
     },
     data: () => ({
         date: null,
         state: null,
+        nullDate: false,
     }),
     methods: {
         resetLocalVars() {
-            this.date = this.renewalDate ?? null;
+            this.date = this.submissionDate ?? null;
             this.state = this.renewalState;
         },
         updateRenewal() {
+            if (this.nullDate) {
+                this.$emit('nullDate');
+                return;
+            }
+
             const date = new Date(this.date);
-            date.setHours(23);
-            date.setMinutes(59);
-            date.setSeconds(59);
-            date.setMilliseconds(999);
+
+            if (date > new Date(this.submissionDate)) {
+                date.setHours(23);
+                date.setMinutes(59);
+                date.setSeconds(59);
+                date.setMilliseconds(999);
+            }
 
             this.$emit('update', {
                 state: this.state,
                 date: this.state === 'granted' ? date || Date.now() : null,
+                warn: date < new Date(this.submissionDate)
             });
         },
     },
@@ -64,7 +76,7 @@ export default {
         this.resetLocalVars();
     },
     watch: {
-        renewalDate(newValue) {
+        submissionDate(newValue) {
             if (newValue !== this.date) {
                 this.resetLocalVars();
             }
