@@ -89,14 +89,14 @@ class Course_EnrolmentController extends AuthenticatedController
         }
         $msg_details = [];
         $msg = '';
-        $user_id = $GLOBALS['user']->id;
+        $user = User::findCurrent();
         $enrol_user = false;
         $courseset = CourseSet::getSetForCourse($this->course_id);
         if ($courseset) {
-            $errors = $courseset->checkAdmission($user_id, $this->course_id);
+            $errors = $courseset->checkAdmission($user->id, $this->course_id);
             if (count($errors)) {
                 $this->courseset_message = $courseset->toString(true);
-                $this->admission_error = MessageBox::error(_("Die Anmeldung war nicht erfolgreich."), $errors);
+                $this->admission_error = MessageBox::error(_('Die Anmeldung war nicht erfolgreich.'), $errors);
                 $admission_form = '';
                 foreach ($courseset->getAdmissionRules() as $rule) {
                     $admission_form .= $rule->getInput();
@@ -108,31 +108,34 @@ class Course_EnrolmentController extends AuthenticatedController
                 if ($courseset->isSeatDistributionEnabled()) {
                     if ($courseset->hasAlgorithmRun()) {
                         if ($courseset->getSeatDistributionTime()) {
-                            $msg = _("Die Plätze in dieser Veranstaltung wurden automatisch verteilt.");
+                            $msg = _('Die Plätze in dieser Veranstaltung wurden automatisch verteilt.');
                         }
                         if (StudipLock::get('enrolment' . $this->course_id)) {
                             $course = Course::find($this->course_id);
-                            $user = User::find($user_id);
                             if ($course->getFreeSeats() && !$course->getNumWaiting()) {
                                 $enrol_user = true;
                             } elseif ($user && $course->isWaitlistAvailable()) {
-                                $application = $course->addMemberToWaitlist($user, 'last');
-                                if ($application) {
+
+                                try {
+                                    $application = $course->addMemberToWaitlist($user, 'last');
                                     $msg = _('Diese Veranstaltung ist teilnahmebeschränkt.');
                                     $msg_details[] = sprintf(_('Alle Plätze sind belegt, Sie wurden daher auf Platz %s der Warteliste gesetzt.'), $application->position);
+                                } catch (Studip\Exception $e) {
+                                    $this->admission_error = MessageBox::error($e->getMessage());
                                 }
+
                             } elseif ($course->admission_disable_waitlist) {
-                                $this->admission_error = MessageBox::error(_("Die Anmeldung war nicht erfolgreich. Alle Plätze sind belegt und es steht keine Warteliste zur Verfügung."));
+                                $this->admission_error = MessageBox::error(_('Die Anmeldung war nicht erfolgreich. Alle Plätze sind belegt und es steht keine Warteliste zur Verfügung.'));
                             } else {
-                                $this->admission_error = MessageBox::error(_("Die Anmeldung war nicht erfolgreich. Alle Plätze sind belegt und es stehen keine Wartelistenplätze zur Verfügung, da die Warteliste voll ist."));
+                                $this->admission_error = MessageBox::error(_('Die Anmeldung war nicht erfolgreich. Alle Plätze sind belegt und es stehen keine Wartelistenplätze zur Verfügung, da die Warteliste voll ist.'));
                             }
                         } else {
-                            $this->admission_error = MessageBox::error(_("Die Anmeldung war wegen technischer Probleme nicht erfolgreich. Bitte versuchen Sie es später noch einmal."));
+                            $this->admission_error = MessageBox::error(_('Die Anmeldung war wegen technischer Probleme nicht erfolgreich. Bitte versuchen Sie es später noch einmal.'));
                         }
                     } else {
-                        $msg = _("Die Plätze in dieser Veranstaltung werden automatisch verteilt.");
+                        $msg = _('Die Plätze in dieser Veranstaltung werden automatisch verteilt.');
                         if ($limit = $courseset->getAdmissionRule('LimitedAdmission')) {
-                            $this->user_max_limit = $limit->getMaxNumberForUser($user_id);
+                            $this->user_max_limit = $limit->getMaxNumberForUser($user->id);
                             if (Config::get()->IMPORTANT_SEMNUMBER) {
                                 $order = "ORDER BY VeranstaltungsNummer, Name";
                             } else {
@@ -146,19 +149,19 @@ class Course_EnrolmentController extends AuthenticatedController
                                     }
                                 );
                             }
-                            $msg_details[] = sprintf(_("Diese Veranstaltung gehört zu einem Anmeldeset mit %s Veranstaltungen. Sie können maximal %s davon belegen. Bei der Verteilung werden die von Ihnen gewünschten Prioritäten berücksichtigt."), count($this->priocourses), $limit->getMaxNumber());
-                            $this->user_prio = AdmissionPriority::getPrioritiesByUser($courseset->getId(), $user_id);
+                            $msg_details[] = sprintf(_('Diese Veranstaltung gehört zu einem Anmeldeset mit %s Veranstaltungen. Sie können maximal %s davon belegen. Bei der Verteilung werden die von Ihnen gewünschten Prioritäten berücksichtigt.'), count($this->priocourses), $limit->getMaxNumber());
+                            $this->user_prio = AdmissionPriority::getPrioritiesByUser($courseset->getId(), $user->id);
                             $this->max_limit = $limit->getMaxNumber();
                             $this->prio_stats = AdmissionPriority::getPrioritiesStats($courseset->getId());
                             $this->already_claimed = count($this->user_prio);
                         } else {
                             $this->priocourses = Course::find($this->course_id);
-                            $this->already_claimed = array_key_exists($this->course_id, AdmissionPriority::getPrioritiesByUser($courseset->getId(), $user_id));
+                            $this->already_claimed = array_key_exists($this->course_id, AdmissionPriority::getPrioritiesByUser($courseset->getId(), $user->id));
                         }
-                        $msg_details[] = _("Zeitpunkt der automatischen Verteilung: ") . strftime("%x %X", $courseset->getSeatDistributionTime());
+                        $msg_details[] = _('Zeitpunkt der automatischen Verteilung: ') . strftime("%x %X", $courseset->getSeatDistributionTime());
                         $this->num_claiming = count(AdmissionPriority::getPrioritiesByCourse($courseset->getId(), $this->course_id));
                         if ($this->already_claimed) {
-                            $msg_details[] = _("Sie sind bereits für die Verteilung angemeldet.");
+                            $msg_details[] = _('Sie sind bereits für die Verteilung angemeldet.');
                         }
                     }
                     if ($msg) {
@@ -188,17 +191,17 @@ class Course_EnrolmentController extends AuthenticatedController
                     $admission_comment = '';
                 }
                 try {
-                    $course->addPreliminaryMember($user_id, $admission_comment);
+                    $course->addPreliminaryMember($user, $admission_comment);
                 } catch (Exception $e) {
                     PageLayout::postError($e->getMessage());
                     return;
                 }
                 if ($course->isStudygroup()) {
-                    if (StudygroupModel::isInvited($user_id, $this->course_id)) {
+                    if (StudygroupModel::isInvited($user->id, $this->course_id)) {
                         // an invitation exists, so accept the join request automatically
                         $status = 'autor';
-                        StudygroupModel::accept_user(get_username($user_id), $this->course_id);
-                        StudygroupModel::cancelInvitation(get_username($user_id), $this->course_id);
+                        StudygroupModel::accept_user($user->username, $this->course_id);
+                        StudygroupModel::cancelInvitation($user->username, $this->course_id);
                         $success = sprintf(
                             _('Sie wurden in die Veranstaltung %1$s als %2$s eingetragen.'),
                             htmlReady($course->getFullName()),
@@ -222,8 +225,8 @@ class Course_EnrolmentController extends AuthenticatedController
             } else {
                 $status = 'autor';
                 try {
-                    $course->addMember($user_id, $status);
-                } catch (Exception $e) {
+                    $course->addMember($user, $status);
+                } catch (Studip\Exception $e) {
                     PageLayout::postError($e->getMessage());
                 }
                 $success = sprintf(
@@ -233,9 +236,9 @@ class Course_EnrolmentController extends AuthenticatedController
                 );
                 PageLayout::postSuccess($success);
 
-                if (StudygroupModel::isInvited($user_id, $this->course_id)) {
+                if (StudygroupModel::isInvited($user->id, $this->course_id)) {
                     // delete an existing invitation
-                    StudygroupModel::cancelInvitation(get_username($user_id), $this->course_id);
+                    StudygroupModel::cancelInvitation($user->username, $this->course_id);
                 }
             }
             unset($this->courseset_message);

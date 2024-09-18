@@ -376,9 +376,10 @@ class RandomAlgorithm extends AdmissionAlgorithm
      */
     private function addUsersToCourse($user_list, Course $course, $prio = null)
     {
-        foreach ($user_list as $user_id) {
-            $user = User::find($user_id);
-            setTempLanguage($user_id);
+        $message_body = '';
+        $users = User::findMany($user_list);
+        foreach ($users as $user) {
+            setTempLanguage($user->id);
             $message_title = sprintf(_('Teilnahme an der Veranstaltung %s'), $course->name);
             if ($course->admission_prelim) {
                 try {
@@ -391,17 +392,20 @@ class RandomAlgorithm extends AdmissionAlgorithm
                     $course->name
                 );
             } else {
-                if ($course->addMember($user_id, 'autor')) {
+                try {
+                    $course->addMember($user);
                     $message_body = sprintf(
                         _('Sie haben bei der Platzvergabe der Veranstaltung **%s** einen Platz erhalten. Damit sind Sie für die Teilnahme an der Veranstaltung zugelassen. Ab sofort finden Sie die Veranstaltung in der Übersicht Ihrer Veranstaltungen.'),
                         $course->name
                     );
+                } catch (\Studip\Exception $e) {
+                    //Nothing here.
                 }
             }
-            if ($prio) {
-                $message_body .= "\n" . sprintf(_('Sie hatten für diese Veranstaltung die Priorität %s gewählt.'), $prio[$user_id]);
+            if (!empty($prio[$user->id])) {
+                $message_body .= "\n" . sprintf(_('Sie hatten für diese Veranstaltung die Priorität %s gewählt.'), $prio[$user->id]);
             }
-            messaging::sendSystemMessage($user_id, $message_title, $message_body);
+            messaging::sendSystemMessage($user->id, $message_title, $message_body);
             restoreLanguage();
         }
     }
