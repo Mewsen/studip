@@ -72,10 +72,16 @@ class Settings_NotificationController extends Settings_SettingsController
         $groups = [];
         $my_sem = [];
         foreach ($seminars as $seminar) {
-            $su = CourseMember::findOneBySQL(
-                'seminar_id = :course_id AND user_id = :user_id',
-                ['course_id' => $seminar->id, 'user_id' => $GLOBALS['user']->id]
-            );
+            $su = CourseMember::find([$seminar->id, User::findCurrent()->id]);
+
+            if (!$su && Config::get()->DEPUTIES_ENABLE) {
+                $su = Deputy::find([$seminar->id, User::findCurrent()->id]);
+            }
+
+            if (!$su) {
+                continue;
+            }
+
             $my_sem[$seminar['Seminar_id']] = [
                 'obj_type'       => "sem",
                 'sem_nr'         => $seminar->veranstaltungsnummer,
@@ -84,7 +90,7 @@ class Settings_NotificationController extends Settings_SettingsController
                 'gruppe'         => $su->gruppe,
                 'sem_status'     => $seminar->status,
                 'sem_number'     => Semester::getIndexById($seminar->start_semester->id),
-                'sem_number_end' => Semester::getIndexById($seminar->end_semester->id ?? '')
+                'sem_number_end' => Semester::getIndexById($seminar->end_semester->id ?? '') ?: '-1',
             ];
             if ($group_field) {
                 fill_groups($groups, Semester::getIndexById($seminar->start_semester->id), [

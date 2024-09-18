@@ -141,18 +141,11 @@ function correct_group_sem_number(&$groups, &$my_obj): bool
 {
     if (is_array($groups) && is_array($my_obj)) {
         $sem_data = Semester::findAllVisible();
-        //end($sem_data);
-        //$max_sem = key($sem_data);
         foreach ($sem_data as $sem_key => $one_sem){
             $current_sem = $sem_key;
             if (!$one_sem['past']) {
                 break;
             }
-        }
-        if (isset($sem_data[$current_sem + 1])){
-            $max_sem = $current_sem + 1;
-        } else {
-            $max_sem = $current_sem;
         }
         foreach ($my_obj as $seminar_id => $values){
             if ($values['obj_type'] == 'sem' && $values['sem_number'] != $values['sem_number_end']){
