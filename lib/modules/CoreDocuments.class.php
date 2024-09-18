@@ -42,6 +42,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
             'description' => $material['description']
         ];
         $url = $material->getDownloadUrl();
+        $tmp_name = null;
         if ($url) {
             if ($material['host_id']) {
                 $tmp_name = $GLOBALS['TMP_PATH'] . '/oer_' . $material->getId();
