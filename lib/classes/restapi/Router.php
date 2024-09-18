@@ -483,7 +483,7 @@ class Router
             $handler[0]->before($this, $handler, $parameters);
         }
 
-        $result = call_user_func_array($handler, $parameters);
+        $result = call_user_func_array($handler, array_values($parameters));
 
         if (is_object($result) && method_exists($result, 'toArray')) {
             $result = $result->toArray();
