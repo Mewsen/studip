@@ -52,25 +52,12 @@ class Settings_NotificationController extends Settings_SettingsController
     public function index_action()
     {
         $group_field = 'sem_number';
-
-        $dbv = DbView::getView('sem_tree');
-
-        $query = "SELECT seminare.VeranstaltungsNummer AS sem_nr, seminare.Name, seminare.Seminar_id,
-                         seminare.status AS sem_status, seminar_user.gruppe, seminare.visible,
-                         {$dbv->sem_number_sql} AS sem_number, {$dbv->sem_number_end_sql} AS sem_number_end
-                  FROM seminar_user
-                  LEFT JOIN seminare  USING (Seminar_id)
-                  WHERE seminar_user.user_id = ?";
-        if (Config::get()->DEPUTIES_ENABLE) {
-            $query .= " UNION " . Deputy::getMySeminarsQuery(
-                'notification', $dbv->sem_number_sql, $dbv->sem_number_end_sql, '', ''
-                );
-        }
-        $query .= " ORDER BY sem_nr ASC";
-
-        $statement = DBManager::get()->prepare($query);
-        $statement->execute([$this->user->user_id]);
-        $seminars = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $semesters = Semester::findAllVisible();
+        $seminars = MyRealmModel::getCourses(
+            array_key_first($semesters),
+            array_key_last($semesters),
+            ['deputies_enabled' => Config::get()->DEPUTIES_ENABLE]
+        );
 
         if (!count($seminars)) {
             $message = sprintf(_('Sie haben zur Zeit keine Veranstaltungen belegt. Bitte nutzen Sie %s<b>Veranstaltung suchen / hinzufügen</b>%s um sch für Veranstaltungen anzumdelden.'),
@@ -85,22 +72,26 @@ class Settings_NotificationController extends Settings_SettingsController
         $groups = [];
         $my_sem = [];
         foreach ($seminars as $seminar) {
+            $su = CourseMember::findOneBySQL(
+                'seminar_id = :course_id AND user_id = :user_id',
+                ['course_id' => $seminar->id, 'user_id' => $GLOBALS['user']->id]
+            );
             $my_sem[$seminar['Seminar_id']] = [
                 'obj_type'       => "sem",
-                'sem_nr'         => $seminar['sem_nr'],
+                'sem_nr'         => $seminar->veranstaltungsnummer,
                 'name'           => $seminar['Name'],
                 'visible'        => $seminar['visible'],
-                'gruppe'         => $seminar['gruppe'],
-                'sem_status'     => $seminar['sem_status'],
-                'sem_number'     => $seminar['sem_number'],
-                'sem_number_end' => $seminar['sem_number_end'],
+                'gruppe'         => $su->gruppe,
+                'sem_status'     => $seminar->status,
+                'sem_number'     => Semester::getIndexById($seminar->start_semester->id),
+                'sem_number_end' => Semester::getIndexById($seminar->end_semester->id ?? '')
             ];
             if ($group_field) {
-                fill_groups($groups, $seminar[$group_field], [
+                fill_groups($groups, Semester::getIndexById($seminar->start_semester->id), [
                     'seminar_id' => $seminar['Seminar_id'],
-                    'sem_nr'     => $seminar['sem_nr'],
+                    'sem_nr'     => $seminar->veranstaltungsnummer,
                     'name'       => $seminar['Name'],
-                    'gruppe'     => $seminar['gruppe'],
+                    'gruppe'     => $su->gruppe,
                 ]);
             }
         }
@@ -130,7 +121,7 @@ class Settings_NotificationController extends Settings_SettingsController
         $this->modules       = $enabled_modules;
         $this->groups        = $groups;
         $this->group_names   = $group_names;
-        $this->group_field   = $group_field;
+        $this->group_field   = 'sem_number';
         $this->open          = $open;
         $this->seminars      = $my_sem;
         $this->notifications = $notifications;
