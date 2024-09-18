@@ -225,15 +225,11 @@ class Course_StudygroupController extends AuthenticatedController
         // if we are permitted to edit the studygroup get some data...
         if ($perm->have_studip_perm('dozent', $id)) {
             $errors    = [];
-            $admin     = $perm->have_studip_perm('admin', $id);
-            $founders  = StudygroupModel::getFounders($id);
-            $sem       = new Seminar($id);
-            $sem_class = $GLOBALS['SEM_CLASS'][$GLOBALS['SEM_TYPE'][$sem->status]['class']];
+            $course    = Course::find($id);
 
             CSRFProtection::verifyUnsafeRequest();
 
             if (Request::submitted('replace_founder')) {
-
                 // retrieve old founder
                 $old_dozent = current(StudygroupModel::getFounder($id));
 
@@ -243,8 +239,6 @@ class Course_StudygroupController extends AuthenticatedController
                 // add new founder
                 $new_founder = Request::option('choose_founder');
                 StudygroupModel::promote_user(get_username($new_founder), $id, 'dozent');
-
-                //checks
             } else {
                 // test whether we have a group name...
                 if (!Request::get('groupname')) {
@@ -255,23 +249,22 @@ class Course_StudygroupController extends AuthenticatedController
                     $this->flash['edit']   = true;
                     // Everything seems fine, let's update the studygroup
                 } else {
-                    $sem->name        = Request::get('groupname');         // seminar-class quotes itself
-                    $sem->description = Request::get('groupdescription');  // seminar-class quotes itself
-                    $sem->read_level  = 1;
-                    $sem->write_level = 1;
-                    $sem->visible     = 1;
+                    $course->name           = Request::get('groupname');         // seminar-class quotes itself
+                    $course->beschreibung   = Request::get('groupdescription');  // seminar-class quotes itself
+                    $course->lesezugriff    = 1;
+                    $course->schreibzugriff = 1;
+                    $course->visible        = 1;
 
                     if (Request::get('groupaccess') == 'all') {
-                        $sem->admission_prelim = 0;
+                        $course->admission_prelim = 0;
                     } else {
-                        $sem->admission_prelim = 1;
+                        $course->admission_prelim = 1;
                         if (Config::get()->STUDYGROUPS_INVISIBLE_ALLOWED && Request::get('groupaccess') == 'invisible') {
-                            $sem->visible = 0;
+                            $course->visible = 0;
                         }
-                        $sem->admission_prelim_txt = _("Die ModeratorInnen der Studiengruppe können Ihren Aufnahmewunsch bestätigen oder ablehnen. Erst nach Bestätigung erhalten Sie vollen Zugriff auf die Gruppe.");
+                        $course->admission_prelim_txt = _('Die für die Moderation zuständigen Personen der Studiengruppe können Ihren Aufnahmewunsch bestätigen oder ablehnen. Erst nach Bestätigung erhalten Sie vollen Zugriff auf die Gruppe.');
                     }
-
-                    $sem->store();
+                    $course->store();
                 }
             }
         }
