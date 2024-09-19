@@ -1265,20 +1265,29 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * create new unique pk as md5 hash
-     * if pk consists of multiple columns, false is returned
-     * @return boolean|string
+     * Create new unique pk as md5 hash
+     *
+     * This will only work for said md5 hashes columns. An exception is thrown
+     * otherwise.
+     *
+     * @return string
      */
-    function getNewId()
+    public function getNewId()
     {
-        $id = false;
-        if (count($this->pk()) == 1) {
-            do {
-                $id = md5(uniqid($this->db_table(), 1));
-                $db = DBManager::get()->query("SELECT `{$this->pk()[0]}` FROM `{$this->db_table()}` "
-                . "WHERE `{$this->pk()[0]}` = '$id'");
-            } while($db->fetch());
+        if ($this->hasAutoIncrementColumn()) {
+            throw new Exception('You cannot retrieve the new id for an autoincrement column');
         }
+
+        if (count($this->pk()) !== 1) {
+            throw new Exception('You cannot retrieve a new id for a composite primary key');
+        }
+
+        do {
+            $id = md5(uniqid($this->db_table(), true));
+            $db = DBManager::get()->query("SELECT `{$this->pk()[0]}` FROM `{$this->db_table()}` "
+            . "WHERE `{$this->pk()[0]}` = '$id'");
+        } while ($db->fetch());
+
         return $id;
     }
 
