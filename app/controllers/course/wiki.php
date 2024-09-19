@@ -31,6 +31,7 @@ class Course_WikiController extends AuthenticatedController
         Navigation::activateItem('/course/wiki/start');
 
         $this->page = new WikiPage($page_id);
+        $this->validateWikiPage($this->page, $this->range);
 
         $sidebar = Sidebar::Get();
         if (!$this->page->isReadable()) {
@@ -176,9 +177,8 @@ class Course_WikiController extends AuthenticatedController
 
     public function pagesettings_action(WikiPage $page)
     {
-        if (!$page->isEditable()) {
-            throw new AccessDeniedException();
-        }
+        $this->validateWikiPage($page, $this->range, true);
+
         $options = [
             '' => _('Keine')
         ];
@@ -291,9 +291,8 @@ class Course_WikiController extends AuthenticatedController
 
     public function ask_deleting_action(WikiPage $page)
     {
-        if (!$page->isEditable()) {
-            throw new AccessDeniedException();
-        }
+        $this->validateWikiPage($page, $this->range, true);
+
         PageLayout::setTitle(_('Was genau soll gelöscht werden?'));
     }
 
@@ -301,9 +300,7 @@ class Course_WikiController extends AuthenticatedController
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        if (!$page->isEditable()) {
-            throw new AccessDeniedException();
-        }
+        $this->validateWikiPage($page, $this->range, true);
 
         $name = $page->name;
         $page->delete();
@@ -315,9 +312,7 @@ class Course_WikiController extends AuthenticatedController
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        if (!$page->isEditable()) {
-            throw new AccessDeniedException();
-        }
+        $this->validateWikiPage($page, $this->range, true);
 
         $version = $page->versions[0];
         if ($version) {
@@ -430,6 +425,8 @@ class Course_WikiController extends AuthenticatedController
 
     public function edit_action(WikiPage $page = null)
     {
+        $this->validateWikiPage($page, $this->range, true);
+
         if ($page->isNew() && Request::get('keyword')) {
             $name = trim(Request::get('keyword'));
             $page = WikiPage::findOneBySQL('`name` = :name AND `range_id` = :range_id', [
@@ -446,7 +443,7 @@ class Course_WikiController extends AuthenticatedController
             $this->redirect($this->editURL($page));
             return;
         }
-        if ($page->isNew() || !$page->isEditable()) {
+        if ($page->isNew()) {
             throw new AccessDeniedException();
         }
         Navigation::activateItem('/course/wiki/start');
@@ -492,8 +489,10 @@ class Course_WikiController extends AuthenticatedController
 
     public function apply_editing_action(WikiPage $page)
     {
-        if (!$page->isEditable() || !Request::isPost()) {
-            throw new AccessDeniedException();
+        $this->validateWikiPage($page, $this->range, true);
+
+        if (!Request::isPost()) {
+            throw new MethodNotAllowedException();
         }
         $user = User::findCurrent();
         $pageData = [
@@ -526,9 +525,8 @@ class Course_WikiController extends AuthenticatedController
 
     public function leave_editing_action(WikiPage $page)
     {
-        if (!$page->isEditable()) {
-            throw new AccessDeniedException();
-        }
+        $this->validateWikiPage($page, $this->range, true);
+
         $user = User::findCurrent();
         $pageData = [
             'page_id' => $page->id,
@@ -543,8 +541,10 @@ class Course_WikiController extends AuthenticatedController
 
     public function delegate_edit_mode_action(WikiPage $page, $user_id)
     {
-        if (!$page->isEditable() || !Request::isPost()) {
-            throw new AccessDeniedException();
+        $this->validateWikiPage($page, $this->range, true);
+
+        if (!Request::isPost()) {
+            throw new MethodNotAllowedException();
         }
         $user = User::findCurrent();
         $pageData = [
@@ -587,9 +587,7 @@ class Course_WikiController extends AuthenticatedController
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        if (!$page->isEditable()) {
-            throw new AccessDeniedException();
-        }
+        $this->validateWikiPage($page, $this->range, true);
 
         $page->content = \Studip\Markup::markAsHtml(trim(Request::get('content')));
         $user = User::findCurrent();
@@ -679,12 +677,16 @@ class Course_WikiController extends AuthenticatedController
 
     public function history_action(WikiPage $page)
     {
+        $this->validateWikiPage($page, $this->range);
+
         Navigation::activateItem('/course/wiki/start');
         Sidebar::Get()->addWidget($this->getViewsWidget($this->page, 'history'));
     }
 
     public function version_action(WikiVersion $version)
     {
+        $this->validateWikiPage($version->page, $this->range);
+
         Navigation::activateItem('/course/wiki/start');
         Sidebar::Get()->addWidget($this->getViewsWidget($version->page, 'history'));
         $startPage = WikiPage::find($this->range->getConfiguration()->WIKI_STARTPAGE_ID);
@@ -700,6 +702,8 @@ class Course_WikiController extends AuthenticatedController
 
     public function blame_action(WikiPage $page)
     {
+        $this->validateWikiPage($page, $this->range);
+
         Navigation::activateItem('/course/wiki/start');
         Sidebar::Get()->addWidget($this->getViewsWidget($page, 'blame'));
 
@@ -742,6 +746,8 @@ class Course_WikiController extends AuthenticatedController
 
     public function diff_action(WikiPage $page)
     {
+        $this->validateWikiPage($page, $this->range);
+
         Navigation::activateItem('/course/wiki/start');
         Sidebar::Get()->addWidget($this->getViewsWidget($page, 'diff'));
 
@@ -781,6 +787,8 @@ class Course_WikiController extends AuthenticatedController
 
     public function versiondiff_action (WikiPage $page, $version_id = null)
     {
+        $this->validateWikiPage($page, $this->range);
+
         if ($version_id !== null) {
             $this->version = WikiVersion::find($version_id);
         }
@@ -983,6 +991,8 @@ class Course_WikiController extends AuthenticatedController
 
     public function searchpage_action(WikiPage $page)
     {
+        $this->validateWikiPage($page, $this->range);
+
         if (!$page->isReadable()) {
             throw new AccessDeniedException();
         }
@@ -1007,6 +1017,8 @@ class Course_WikiController extends AuthenticatedController
 
     public function pdf_action(WikiPage $page)
     {
+        $this->validateWikiPage($page, $this->range);
+
         if (!$page->isReadable()) {
             throw new AccessDeniedException();
         }
@@ -1282,5 +1294,22 @@ class Course_WikiController extends AuthenticatedController
             $output[]          = '...' . $fragment . '...';
         }
         return implode('<br>', $output);
+    }
+
+    private function validateWikiPage(WikiPage $page, Range $context, bool $for_edit = false): void
+    {
+        if (
+            !$page->isNew()
+            && $page->range_id !== $context->id
+        ) {
+            throw new Exception(sprintf(
+                _('Diese Wikiseite gehört nicht zu dieser %s'),
+                $context->describeRange()
+            ));
+        }
+
+        if ($for_edit && !$page->isEditable()) {
+            throw new Exception(_('Sie dürfen diese Wikiseite nicht bearbeiten'));
+        }
     }
 }
