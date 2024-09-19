@@ -1,5 +1,17 @@
-<? if ($booking): ?>
-    <? if ($user_has_user_perms): ?>
+<?php
+/**
+ * @var ResourceBooking $booking
+ * @var bool $user_has_user_perms
+ * @var bool $user_may_see_course_data
+ * @var bool $make_comment_editable
+ * @var bool $show_internal_comment
+ * @var bool $hide_buttons
+ * @var User $current_user
+ * @var Resources_BookingController $controller
+ */
+?>
+<? if (!empty($booking)): ?>
+    <? if (!empty($user_has_user_perms)): ?>
         <p>
             <?= sprintf(
                 _('Letzte Änderung am %s'),
@@ -17,11 +29,11 @@
 
     <h3><?= _('Zeiträume') ?></h3>
     <?
-    $cycle_date = $booking->assigned_course_date->cycle;
-    $booking_has_metadate = ($cycle_date instanceof SeminarCycleDate);
+        $cycle_date = $booking->assigned_course_date->cycle;
+        $booking_has_metadate = ($cycle_date instanceof SeminarCycleDate);
+        $intervals = $booking->getTimeIntervals()
     ?>
-    <? $intervals = $booking->getTimeIntervals() ?>
-    <? if (count($intervals) == 1) : ?>
+    <? if (count($intervals) === 1) : ?>
         <div>
             <?= $intervals[0] ?>
         </div>
@@ -29,7 +41,7 @@
         <div><?= _('Diese Buchung ist Teil der folgenden Terminserie:') ?></div>
         <?= htmlReady($cycle_date->toString('full')) ?>
         <? endif ?>
-    <? elseif ($intervals): ?>
+    <? elseif (!empty($intervals)): ?>
         <ul>
             <? foreach ($intervals as $interval): ?>
                 <li>
@@ -42,7 +54,7 @@
     <? endif ?>
 
     <? if ($booking->booking_type == '2'): ?>
-        <? if ($user_has_user_perms): ?>
+        <? if (!empty($user_has_user_perms)): ?>
             <h3><?= _('Gesperrt für:') ?></h3>
             <?= htmlReady($booking->getAssignedUserName()) ?>
         <? endif ?>
@@ -51,7 +63,7 @@
           ? htmlReady($booking->booking_user->getFullName())
           : _('unbekannt') ?>
     <? elseif ($booking->booking_type == '1'): ?>
-        <? if ($user_has_user_perms): ?>
+        <? if (!empty($user_has_user_perms)): ?>
             <h3><?= _('Reserviert für:') ?></h3>
             <?= htmlReady($booking->getAssignedUserName()) ?>
         <? endif ?>
@@ -60,7 +72,7 @@
           ? htmlReady($booking->booking_user->getFullName())
           : _('unbekannt') ?>
     <? else: ?>
-        <? if ($user_has_user_perms): ?>
+        <? if (!empty($user_has_user_perms)): ?>
             <h3><?= _('Gebucht von:') ?></h3>
             <? if ($booking->booking_user) :?>
                 <a href="<?= URLHelper::getScriptLink(
@@ -73,19 +85,16 @@
                          'dispatch.php/messages/write',
                          ['rec_uname' => $booking->booking_user->username]
                          ) ?>" data-dialog="size=auto">
-                <?= Icon::create('mail')->asImg(20, ['class' => 'text-bottom']) ?>
+                <?= Icon::create('mail')->asImg(['class' => 'text-bottom']) ?>
                 </a>
             <? else :?>
                 <?= _('unbekannt') ?>
             <? endif ?>
         <? endif ?>
     <? endif ?>
-    <? if ($user_may_see_course_data): ?>
+    <? if (!empty($user_may_see_course_data)): ?>
         <h3><?= _('Gebucht für:') ?></h3>
-        <a href="<?= URLHelper::getLink(
-                 'dispatch.php/course/details/index/'
-                 . $booking->getAssignedUser()->id
-                 ) ?>" target="_blank">
+        <a href="<?= URLHelper::getLink('dispatch.php/course/details/index/' . $booking->getAssignedUser()->id) ?>" target="_blank">
             <?= htmlReady($booking->getAssignedUserName(), true, true) ?>
             <?= Icon::create(
                 'link-intern',
@@ -111,8 +120,8 @@
             </div>
         <? endif ?>
     <? elseif ($booking->getAssignedUserType() === 'user') : ?>
-        <? if (($booking->assigned_user->visible == 'yes') ||
-               ($booking->assigned_user->id == $GLOBALS['user']->id) ||
+        <? if (($booking->assigned_user->visible === 'yes') ||
+               ($booking->assigned_user->id === $GLOBALS['user']->id) ||
                $user_has_user_perms) : ?>
             <h3><?= _('Gebucht für:') ?></h3>
             <a href="<?= URLHelper::getScriptLink(
@@ -125,30 +134,30 @@
                      'dispatch.php/messages/write',
                      ['rec_uname' => $booking->assigned_user->username]
                      ) ?>" data-dialog="size=auto">
-                <?= Icon::create('mail')->asImg(20, ['class' => 'text-bottom']) ?>
+                <?= Icon::create('mail')->asImg(['class' => 'text-bottom']) ?>
             </a>
         <? endif ?>
     <? else : ?>
         <?= htmlReady($booking->description) ?>
     <? endif ?>
-    <? if ($make_comment_editable): ?>
+    <? if (!empty($make_comment_editable)): ?>
         <form class="default" method="post"
               action="<?= htmlReady(
                       $controller->link_for('resources/booking/index/' . $booking->id)
                       ) ?>" data-dialog="reload-on-close">
             <?= CSRFProtection::tokenTag() ?>
     <? endif ?>
-    <? if ($show_internal_comment): ?>
+    <? if (!empty($show_internal_comment)): ?>
         <h3><?= _('Interner Kommentar zur Buchung') ?>:</h3>
-        <? if ($make_comment_editable): ?>
+        <? if (!empty($make_comment_editable)): ?>
             <textarea name="internal_comment"><?= htmlReady($booking->internal_comment) ?></textarea>
         <? else: ?>
             <?= htmlReady($booking->internal_comment) ?>
         <? endif ?>
     <? endif ?>
-    <? if ((Request::isDialog() || $make_comment_editable) && !$hide_buttons): ?>
+    <? if ((Request::isDialog() || !empty($make_comment_editable)) && empty($hide_buttons)): ?>
         <div data-dialog-button>
-            <? if ($make_comment_editable): ?>
+            <? if (isset($make_comment_editable)): ?>
                 <?= \Studip\Button::create(_('Speichern'), 'save') ?>
                 <? if (!$booking->isReadOnlyForUser($current_user)): ?>
                     <?= \Studip\LinkButton::create(
@@ -169,7 +178,7 @@
             <? endif ?>
         </div>
     <? endif ?>
-    <? if ($make_comment_editable): ?>
+    <? if (!empty($make_comment_editable)): ?>
         </form>
     <? endif ?>
 <? endif ?>
