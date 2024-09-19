@@ -1,6 +1,6 @@
 <? if ($show_form): ?>
     <form class="default" method="post" action="<?= $form_action_link ?>" data-dialog="reload-on-close">
-        <input type="hidden" name="origin_url" value="<?= htmlReady($origin_url) ?>">
+        <input type="hidden" name="origin_url" value="<?= htmlReady($origin_url ?? '') ?>">
         <label>
             <input type="checkbox" <?= ($begin_date_str != $end_date_str) ? 'checked' : ''; ?>
                    onClick="$('#end_date_section').toggle();">
