@@ -910,9 +910,11 @@ class Course_TimesroomsController extends AuthenticatedController
     {
         $appointment_ids = [];
 
-        foreach ($_SESSION['_checked_dates'] as $appointment_id) {
-            if (CourseDate::exists($appointment_id)) {
-                $appointment_ids[] = $appointment_id;
+        if (!empty($_SESSION['_checked_dates'])) {
+            foreach ($_SESSION['_checked_dates'] as $appointment_id) {
+                if (CourseDate::exists($appointment_id)) {
+                    $appointment_ids[] = $appointment_id;
+                }
             }
         }
 
@@ -951,18 +953,20 @@ class Course_TimesroomsController extends AuthenticatedController
      */
     private function unDeleteStack($cycle_id = '')
     {
-        foreach ($_SESSION['_checked_dates'] as $id) {
-            $ex_termin = CourseExDate::find($id);
-            if ($ex_termin === null) {
-                continue;
-            }
-            $ex_termin->content = '';
-            $termin             = $ex_termin->unCancelDate();
-            if ($termin !== null) {
-                PageLayout::postSuccess(sprintf(
-                    _('Der Termin %s wurde wiederhergestellt!'),
-                    htmlReady($termin->getFullName())
-                ));
+        if (!empty($_SESSION['_checked_dates'])) {
+            foreach ($_SESSION['_checked_dates'] as $id) {
+                $ex_termin = CourseExDate::find($id);
+                if ($ex_termin === null) {
+                    continue;
+                }
+                $ex_termin->content = '';
+                $termin             = $ex_termin->unCancelDate();
+                if ($termin !== null) {
+                    PageLayout::postSuccess(sprintf(
+                        _('Der Termin %s wurde wiederhergestellt!'),
+                        htmlReady($termin->getFullName())
+                    ));
+                }
             }
         }
 
@@ -1007,10 +1011,12 @@ class Course_TimesroomsController extends AuthenticatedController
         $cancel_comment = trim(Request::get('cancel_comment'));
         $cancel_send_message = Request::int('cancel_send_message');
 
-        foreach ($_SESSION['_checked_dates'] as $id) {
-            $termin = CourseDate::find($id);
-            if ($termin) {
-                $deleted_dates[] = $this->deleteDate($termin, $cancel_comment);
+        if (!empty($_SESSION['_checked_dates'])) {
+            foreach ($_SESSION['_checked_dates'] as $id) {
+                $termin = CourseDate::find($id);
+                if ($termin) {
+                    $deleted_dates[] = $this->deleteDate($termin, $cancel_comment);
+                }
             }
         }
 
@@ -1037,7 +1043,7 @@ class Course_TimesroomsController extends AuthenticatedController
         $groups_changed  = false;
         $singledates     = [];
 
-        if (is_array($_SESSION['_checked_dates'])) {
+        if (!empty($_SESSION['_checked_dates'])) {
             foreach ($_SESSION['_checked_dates'] as $singledate_id) {
                 $singledate = CourseDate::find($singledate_id);
                 if (!isset($singledate)) {
@@ -1229,10 +1235,12 @@ class Course_TimesroomsController extends AuthenticatedController
         }
 
         $appointments = [];
-        foreach ($_SESSION['_checked_dates'] as $appointment_id) {
-            $appointment = CourseDate::find($appointment_id);
-            if ($appointment) {
-                $appointments[] = $appointment;
+        if (!empty($_SESSION['_checked_dates'])) {
+            foreach ($_SESSION['_checked_dates'] as $appointment_id) {
+                $appointment = CourseDate::find($appointment_id);
+                if ($appointment) {
+                    $appointments[] = $appointment;
+                }
             }
         }
 
