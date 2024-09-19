@@ -474,7 +474,7 @@ class Resources_RoomRequestController extends AuthenticatedController
             $end = new DateTime();
             $begin->setTimestamp($interval['begin']);
             $end->setTimestamp($interval['end']);
-            $availability[] = $room->isAvailable($begin, $end, $interval['booking_id'] ? [$interval['booking_id']] : []);
+            $availability[] = $room->isAvailable($begin, $end, !empty($interval['booking_id']) ? [$interval['booking_id']] : []);
         }
 
         return $availability;
@@ -759,7 +759,7 @@ class Resources_RoomRequestController extends AuthenticatedController
             $new_begin->setTime(
                 $begin_time_arr[0],
                 $begin_time_arr[1],
-                $begin_time_arr[2]
+                $begin_time_arr[2] ?? 0
             );
             $new_end = new DateTime();
             $new_end->setDate(
@@ -770,7 +770,7 @@ class Resources_RoomRequestController extends AuthenticatedController
             $new_end->setTime(
                 $end_time_arr[0],
                 $end_time_arr[1],
-                $end_time_arr[2]
+                $end_time_arr[2] ?? 0
             );
 
             try {
@@ -1435,7 +1435,7 @@ class Resources_RoomRequestController extends AuthenticatedController
         $booked_rooms = [];
         foreach($this->request_time_intervals as $key => $data) {
             foreach ($data['intervals'] as $timeslot) {
-                if (!isset($booked_rooms[$timeslot['booked_room']])) {
+                if (!empty($timeslot['booked_room']) && !isset($booked_rooms[$timeslot['booked_room']])) {
                     $room = Room::find($timeslot['booked_room']);
                     if ($room) {
                         $booked_rooms[$timeslot['booked_room']] = $room;
@@ -1739,7 +1739,7 @@ class Resources_RoomRequestController extends AuthenticatedController
         if ($save_only) {
             // redirect to reload all infos and showing the most current ones
             $this->redirect('resources/room_request/resolve/' . $request_id);
-        } elseif (Request::isDialog() && Context::get()->id) {
+        } elseif (Request::isDialog() && Context::get()) {
             $this->response->add_header('X-Dialog-Execute', '{"func": "STUDIP.AdminCourses.App.loadCourse", "payload": "' . Context::get()->id . '"}');
         }
     }

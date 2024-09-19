@@ -1,3 +1,21 @@
+<?php
+/**
+ * @var Room $room
+ * @var User $current_user
+ * @var array $time_intervals
+ * @var Resources_RoomPlanningController $controller
+ * @var string $underload
+ * @var array $room_availability_share
+ * @var array $unavailable_dates
+ * @var array $amount_of_dates
+ * @var array $metadate_availability_share
+ * @var array $selected_rooms
+ * @var array $unavailable_metadate_dates
+ * @var array $amount_of_metadate_dates
+ * @var array $room_availability
+ */
+?>
+
 <tr class="nohover">
     <td class="nowrap">
         <? if ($room->bookingPlanVisibleForUser($current_user)): ?>
@@ -21,7 +39,7 @@
         <? endif ?>
         <?= tooltipIcon($room->room_type) ?>
         – <?= htmlReady(sprintf('%d Sitzplätze', $room->seats)) ?>
-        <? if ($underload) : ?>
+        <? if (!empty($underload)) : ?>
             [<?= htmlReady($underload) ?>%]
         <? endif ?>
     </td>
@@ -71,15 +89,15 @@
                         $amount_of_metadate_dates[$room->id][$metadate_id]
                     )) ?>
                 <? endif ?>
-                <? $stats = 0; array_walk($data['intervals'], function(&$item, $key, $room_id) use (&$stats) {
-                    if ($item['booked_room'] == $room_id) {
+                <? $stats = 0; array_walk($data['intervals'], function($item, $key, $room_id) use (&$stats) {
+                    if ($item['booked_room'] === $room_id) {
                         $stats++;
                     }
                 }, $room->id) ?>
                 <? if ($stats > 0) : ?>
                     <?= tooltipIcon(sprintf(
                         _('%s von %s Terminen sind in diesem Raum'),
-                        $stats, sizeof($data['intervals'])
+                        $stats, count($data['intervals'])
                     ));
                     ?>
                 <? endif ?>
@@ -88,7 +106,7 @@
             <? $i = 0 ?>
             <? foreach($data['intervals'] as $interval) : ?>
                 <?
-                $available = $room_availability[$room->id][$metadate_id][$i];
+                $available = !empty($room_availability[$room->id][$metadate_id][$i]);
                 $range_index = $interval['range'] . '_' . $interval['range_id'];
                 $room_radio_name = 'selected_rooms[' . $range_index . ']';
                 ?>
@@ -97,8 +115,8 @@
                         <input type="radio" name="<?= htmlReady($room_radio_name) ?>"
                                class="text-bottom radio-<?= htmlReady($room->id) ?>"
                                value="<?= htmlReady($room->id) ?>"
-                               <?= ($selected_rooms[$range_index] == $room->id
-                                     || $interval['booked_room'] == $room->id)
+                               <?= (!empty($selected_rooms[$range_index]) && $selected_rooms[$range_index] === $room->id
+                                     || (!empty($interval['booked_room']) && $interval['booked_room'] === $room->id))
                                  ? 'checked="checked"'
                                  : ''?>>
                         <?= Icon::create('check-circle', Icon::ROLE_STATUS_GREEN)->asImg(['class' => 'text-bottom']) ?>
