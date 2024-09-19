@@ -187,7 +187,10 @@ class JsupdaterController extends AuthenticatedController
     private function getMessagesUpdates($pageInfo)
     {
         $data = [];
-        if (mb_stripos(Request::get("page"), "dispatch.php/messages") !== false) {
+        if (
+            isset($pageInfo['messages'])
+            && mb_stripos(Request::get("page"), "dispatch.php/messages") !== false
+        ) {
             $messages = Message::findNew(
                 $GLOBALS["user"]->id,
                 $pageInfo['messages']['received'],
