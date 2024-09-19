@@ -16,6 +16,8 @@
  * @property string page_id       database column
  * @property string id            alias column for user_id
  * @property string last_lifesign computed column read/write
+ *
+ * @property WikiPage $page
  */
 class WikiVersion extends SimpleORMap
 {
