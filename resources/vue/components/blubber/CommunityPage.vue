@@ -1,21 +1,19 @@
 <template>
-    <div>
-        <BlubberPanel :threadId="threadId" :search="search" v-if="threadId" />
+    <BlubberPanel :threadId="threadId" :search="search" v-if="threadId" />
 
-        <Teleport to="#blubber-search-widget" name="sidebar-blubber-search">
-            <BlubberSearchWidget :search="search" />
-        </Teleport>
-        <Teleport to="#blubber-threads-widget" name="sidebar-blubber-threads">
-            <BlubberThreadsWidget
-                :hasMoreThreads="hasMoreThreads"
-                :threadId="threadId"
-                :threads="threads"
-                @load-more-threads="onLoadMoreThreads"
-                @select-thread="onSelectThread"
-                class="blubber_threads_widget"
-            />
-        </Teleport>
-    </div>
+    <Teleport to="#blubber-search-widget" name="sidebar-blubber-search">
+        <BlubberSearchWidget :search="search" />
+    </Teleport>
+    <Teleport to="#blubber-threads-widget" name="sidebar-blubber-threads">
+        <BlubberThreadsWidget
+            :hasMoreThreads="hasMoreThreads"
+            :threadId="threadId"
+            :threads="threads"
+            @load-more-threads="onLoadMoreThreads"
+            @select-thread="onSelectThread"
+            class="blubber_threads_widget"
+        />
+    </Teleport>
 </template>
 
 <script>

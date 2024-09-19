@@ -7,24 +7,24 @@ import * as components from '../components/blubber/components.js';
 const JSONAPI_PATH = 'jsonapi.php/v1';
 
 export const BlubberPlugin = {
-    install(Vue, options = {}) {
+    install(app, options = {}) {
         if (!('store' in options)) {
             throw new Error('You must provide the vuex store via the options argument');
         }
 
         this.enhanceStore(options.store);
-        this.registerComponents(Vue);
+        this.registerComponents(app);
         this.registerUpdater(options.store);
     },
     enhanceStore(store) {
         const httpClient = getHttpClient(window.STUDIP.URLHelper.getURL(JSONAPI_PATH, {}, true));
         initializeStore(store, httpClient);
     },
-    registerComponents(Vue) {
+    registerComponents(app) {
         Object.entries(components).forEach(([name, component]) => {
-            const exists = Vue.component(name);
+            const exists = app.component(name);
             if (!exists) {
-                Vue.component(name, component);
+                app.component(name, component);
             }
         });
     },

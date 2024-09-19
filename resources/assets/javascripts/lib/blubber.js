@@ -1,3 +1,5 @@
+import { resolveComponent, h } from "vue";
+
 const Blubber = {
     init() {
         const blubberPage = document.querySelector('#blubber-index, #messenger-course, .blubber_panel.vueinstance');
@@ -18,12 +20,13 @@ const Blubber = {
         function connectBlubber(blubberPanel, componentName) {
             return Promise.all([window.STUDIP.Vue.load(), Blubber.plugin()]).then(
                 ([{ Vue, createApp, store }, BlubberPlugin]) => {
-                    Vue.use(BlubberPlugin, { store });
                     const { initialThreadId, search } = blubberPanel.dataset;
-                    return createApp({
-                        el: blubberPanel,
-                        render: (h) => h(Vue.component(componentName), { props: { initialThreadId, search } }),
+                    const app = createApp({
+                        render: () => h(resolveComponent(componentName), { initialThreadId, search }),
                     });
+                    app.use(BlubberPlugin, { store });
+                    app.mount(blubberPanel);
+                    return app;
                 }
             );
         }
