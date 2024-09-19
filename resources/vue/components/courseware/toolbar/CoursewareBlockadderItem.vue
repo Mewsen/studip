@@ -35,6 +35,7 @@ export default {
     data() {
         return {
             showInfo: false,
+            addInProgress: false,
         };
     },
     computed: {
@@ -77,13 +78,17 @@ export default {
             setAdderStorage: 'coursewareBlockAdder',
         }),
         async addBlock() {
-            this.setAdderStorage({ 
-                container: this.blockAdder.container, 
-                section: this.blockAdder.section, 
-                type: this.type ,
-                position: false
-            });
-            this.addNewBlock();
+            if (!this.addInProgress) {
+                this.addInProgress = true;
+                this.setAdderStorage({ 
+                    container: this.blockAdder.container, 
+                    section: this.blockAdder.section, 
+                    type: this.type ,
+                    position: false
+                });
+                await this.addNewBlock();
+                this.addInProgress = false;
+            }
         },
         toggleFavItem() {
             if (this.blockTypeIsFav) {
