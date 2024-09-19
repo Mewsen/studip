@@ -1295,11 +1295,11 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
         $statement->execute([$new_id, $old_id]);
 
         //Wiki
-        $query = "UPDATE IGNORE wiki SET user_id = ? WHERE user_id = ?";
+        $query = "UPDATE IGNORE wiki_pages SET user_id = ? WHERE user_id = ?";
         $statement = DBManager::get()->prepare($query);
         $statement->execute([$new_id, $old_id]);
 
-        $query = "UPDATE IGNORE wiki_locks SET user_id = ? WHERE user_id = ?";
+        $query = "UPDATE IGNORE wiki_versions SET user_id = ? WHERE user_id = ?";
         $statement = DBManager::get()->prepare($query);
         $statement->execute([$new_id, $old_id]);
 
