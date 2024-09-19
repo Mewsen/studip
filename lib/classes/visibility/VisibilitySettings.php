@@ -37,22 +37,22 @@ class VisibilitySettings
     ];
 
     /**
-     * @var array all visibilitystates 
+     * @var array all visibilitystates
      */
     public $states = [];
-    
-     /**
+
+    /**
      * @var array all names of all states
-     */   
+     */
     private $names = [];
-    
+
     /**
      * I/O is expensive. Therefore we make the whole class sessionwide singleton
      * to save some I/O.
-     * 
+     *
      * @return VisibilitySettings The sessionwide visibilitySettings
      */
-    static public function getInstance() 
+    static public function getInstance()
     {
         static $instance;
 
@@ -85,11 +85,11 @@ class VisibilitySettings
      * @param string $owner_id The owner of the visibility
      * @param int $visibility the visibilityID
      * @return boolean true if the user may see it, false if the user is not
-     * allowed to see 
+     * allowed to see
      */
     function verify($user_id, $owner_id, $visibility)
     {
-        return $this->states[$visibility] && $this->states[$visibility]->verify($owner_id, $user_id);
+        return !empty($this->states[$visibility]) && $this->states[$visibility]->verify($owner_id, $user_id);
     }
 
     /**
@@ -104,7 +104,7 @@ class VisibilitySettings
 
     /**
      * Returns all keys of states
-     * @return array all keys of states 
+     * @return array all keys of states
      */
     function getAllKeys()
     {
@@ -113,7 +113,7 @@ class VisibilitySettings
 
     /**
      * Returns all names of states
-     * @return array all names of states 
+     * @return array all names of states
      */
     function getAllNames()
     {
@@ -122,7 +122,7 @@ class VisibilitySettings
 
     /**
      * Returns the number of possible states
-     * @return type 
+     * @return int
      */
     function count()
     {
@@ -130,5 +130,3 @@ class VisibilitySettings
     }
 
 }
-
-?>
