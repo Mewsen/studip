@@ -185,8 +185,9 @@ class ContactController extends AuthenticatedController
         $charset  = 'utf-8';
         $filename = _('Kontakte');
         $this->set_layout(null);
+        $users = [];
         if (Request::submitted('user')) {
-            $user = User::findManyByUsername(Request::getArray('user'));
+            $users = User::findManyByUsername(Request::getArray('user'));
         }
         if ($group) {
             $group_object = Statusgruppen::find($group);
@@ -195,23 +196,23 @@ class ContactController extends AuthenticatedController
                 $this->render_nothing();
                 return;
             }
-            $user = User::findMany($group_object->members->pluck('user_id'));
+            $users = User::findMany($group_object->members->pluck('user_id'));
         }
-        if (!$user) {
+        if (empty($users)) {
             $user_object = User::findCurrent();
             if (!$user_object) {
                 $this->set_status(404);
                 $this->render_nothing();
                 return;
             }
-            $user = User::findCurrent()->contacts;
+            $users = User::findCurrent()->contacts;
         }
 
         header("Content-type: text/x-vCard;charset=" . $charset);
         header("Content-disposition: attachment; " . encode_header_parameter('filename', $filename . '.vcf'));
         header("Pragma: private");
 
-        $this->vCard = vCard::export($user);
+        $this->vCard = vCard::export($users);
     }
 
     private function initSidebar($active_id = null)
