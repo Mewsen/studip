@@ -20,7 +20,8 @@ class ForumLike {
      *
      * @param string $topic_id
      */
-    static function like($topic_id) {
+    public static function like($topic_id)
+    {
         $stmt = DBManager::get()->prepare("REPLACE INTO
             forum_likes (topic_id, user_id)
             VALUES (?, ?)");
@@ -28,10 +29,13 @@ class ForumLike {
 
         // get posting owner
         $data = ForumEntry::getConstraints($topic_id);
+        if (!$data) {
+            return;
+        }
 
         // notify owner of posting about the like
         setTempLanguage($data['user_id']);
-        $notification = get_fullname($GLOBALS['user']->id) . _(' gefällt einer deiner Forenbeiträge!');
+        $notification = $GLOBALS['user']->getFullName() . _(' gefällt einer deiner Forenbeiträge!');
         restoreLanguage();
 
         PersonalNotifications::add(
@@ -39,7 +43,7 @@ class ForumLike {
             URLHelper::getURL('dispatch.php/course/forum/index/index/' . $topic_id .'?highlight_topic='. $topic_id .'#'. $topic_id),
             $notification,
             $topic_id,
-            Icon::create('forum', 'clickable')
+            Icon::create('forum')
         );
     }
 
