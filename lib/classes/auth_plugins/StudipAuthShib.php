@@ -42,12 +42,14 @@ class StudipAuthShib extends StudipAuthSSO
 
             $this->userdata = json_decode($auth, true);
 
-            if ($this->username_attribute !== 'username') {
-                $this->userdata['username'] = $this->userdata[$this->username_attribute];
-            }
-            if (isset($this->local_domain)) {
-                $this->userdata['username'] =
-                    str_replace('@' . $this->local_domain, '', $this->userdata['username']);
+            if ($this->userdata) {
+                if ($this->username_attribute !== 'username') {
+                    $this->userdata['username'] = $this->userdata[$this->username_attribute];
+                }
+                if (isset($this->local_domain)) {
+                    $this->userdata['username'] =
+                        str_replace('@' . $this->local_domain, '', $this->userdata['username']);
+                }
             }
         }
     }
