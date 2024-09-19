@@ -77,7 +77,7 @@ class ForumAbo
     {
         // send message to all abo-users
         $db = DBManager::get();
-        $messaging = new ForumBulkMail();
+        $messaging = new messaging();
 
         // get all parent topic-ids, to find out which users to notify
         $path = ForumEntry::getPathToPosting($topic_id);
@@ -95,9 +95,11 @@ class ForumAbo
         // get details for topic
         $topic = ForumEntry::getConstraints($topic_id);
 
-        $template = $GLOBALS['template_factory']->open('mail/forum_notification');
+        if (!$topic) {
+            return;
+        }
 
-        // notify users
+        $template = $GLOBALS['template_factory']->open('mail/forum_notification');// notify users
         while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $user_id = $data['user_id'];
 
@@ -149,8 +151,6 @@ class ForumAbo
                 );
             }
         }
-
-        $messaging->bulkSend();
     }
 
     /**
