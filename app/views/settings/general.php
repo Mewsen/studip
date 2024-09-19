@@ -88,10 +88,11 @@ $start_pages = [
                    aria-describedby="personal_notifications_audio_activated_description" value="1"
                 <? if (PersonalNotifications::isAudioActivated($user->user_id)) echo 'checked'; ?>>
             <?= _('Audio-Feedback zu Benachrichtigungen') ?>
-            <?= tooltipIcon(_('Wenn eine neue Benachrichtigung für Sie reinkommt, ' .
-                'werden Sie mittels eines kleinen Plopps darüber in Kenntnis gesetzt ' .
-                '- auch wenn Sie gerade einen anderen Browsertab anschauen. Der Plopp ist ' .
-                'nur zu hören, wenn Sie die Benachrichtigungen über Javascript aktiviert haben.')) ?>
+            <?= tooltipIcon(_('Wenn Sie ein neue Benachrichtigung erhalten, kann Sie Stud.IP mittels eines ' .
+                    'Ton-Effekts drauf aufmerksam machen. Dies hilft, falls der aktuelle Browser-Tab gerade nicht ' .
+                    'Stud.IP zeigt oder eine Benachrichtigung aus anderen Gründen visuell nicht wahrgenommen ' .
+                    'werden kann. Ggf. müssen Sie Toneffekte in Ihrem Browser oder Betriebssystem noch aktivieren ' .
+                    'bzw. erlauben.')) ?>
         </label>
 
         <label>
