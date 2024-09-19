@@ -84,10 +84,9 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
                     $semester = Semester::findByTimestamp($filter['semester']);
                     $semester_ids = [$semester->id];
                 }
-                $semester_join = "LEFT JOIN semester_courses ON (courses.Seminar_id = semester_courses.course_id) ";
                 $semester_condition = "
                     AND (
-                        semester_courses.semester_id IS NULL OR semester_courses.semester_id IN (" . join(',', array_map([DBManager::get(), 'quote'], $semester_ids)) . ")
+                        semester_courses.semester_id IS NULL OR semester_courses.semester_id IN (" . implode(',', array_map([DBManager::get(), 'quote'], $semester_ids)) . ")
                     ) ";
             }
             if (!empty($filter['institute'])) {
@@ -104,12 +103,11 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
                        {$language_name} AS `Name`,
                        courses.`VeranstaltungsNummer`, courses.`status`
                 FROM `seminare` AS courses
-                JOIN `semester_courses` ON courses.`seminar_id` = `semester_courses`.`course_id`
-                JOIN `semester` USING (`semester_id`)
+                LEFT JOIN `semester_courses` ON courses.`seminar_id` = `semester_courses`.`course_id`
+                LEFT JOIN `semester_data` USING (`semester_id`)
                 {$language_join}
                 JOIN `seminar_user` u ON (u.`Seminar_id` = courses.`Seminar_id` AND u.`status` = 'dozent')
                 JOIN `auth_user_md5` a ON (a.`user_id` = u.`user_id`)
-                {$semester_join}
                 WHERE {$visibility}
                     (
                         {$language_name} LIKE {$query}
@@ -120,7 +118,7 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
                 {$seminar_type_condition}
                 {$semester_condition}
                 GROUP BY courses.Seminar_id
-                ORDER BY `semester`.`beginn` DESC";
+                ORDER BY MAX(`semester_data`.`beginn`) DESC";
 
         if (Config::get()->IMPORTANT_SEMNUMBER) {
             $sql .= ", courses.`VeranstaltungsNummer`";
