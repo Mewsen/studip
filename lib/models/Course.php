@@ -1215,10 +1215,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      */
     public function deleteMember(User $user, bool $send_mail = false) : void
     {
-        $membership = CourseMember::findOneBySQL(
-            'seminar_id = :course_id AND user_id = :user_id',
-            ['course_id' => $this->id, 'user_id' => $user->id]
-        );
+        $membership = CourseMember::find([$this->id, $user->id]);
         if (!$membership) {
             //The user is not a member of the course.
             throw new \Studip\MembershipException(
@@ -1262,9 +1259,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             );
         }
 
-        $removed_from_parent   = false;
-        $removed_from_children = false;
-
         if ($this->parent_course) {
             //This course has a parent course.
             //Delete the user from the parent course if they are not part of
@@ -1276,14 +1270,13 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                    AND `seminar_id` <> :this_course_id',
                 [
                     'user_id'          => $user->id,
-                    'parent_course_id' => $this->parent_course->id,
+                    'parent_course_id' => $this->parent->id,
                     'this_course_id'   => $this->id
                 ]
             );
             if ($other_memberships === 0) {
                 //No other memberships. We can delete the user from the parent course.
-                $this->parent_course->deleteMember($user, false);
-                $removed_from_parent = true;
+                $this->parent->deleteMember($user);
             }
         }
 
@@ -1294,7 +1287,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             foreach ($this->children as $child) {
                 $child->deleteMember($user);
             }
-            $removed_from_children = true;
         }
 
         if ($send_mail) {
@@ -1344,7 +1336,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                            AND `seminar_user`.`status` = 'dozent'",
                         ['deleted_user_id' => $user->id]
                     );
-                    if ($other_deputy_amount === 0 && $GLOBALS['user']->id != $deputy_duty->user_id) {
+                    if ($other_deputy_amount === 0 && $GLOBALS['user']->id !== $deputy_duty->user_id) {
                         Deputy::deleteBySQL(
                             '`range_id` = :course_id AND `user_id` = :deputy_id',
                             ['course_id' => $this->id, $deputy_duty->user_id]
@@ -1370,8 +1362,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         StudipLog::log('SEM_USER_DEL', $this->id, $user->id, 'Wurde aus der Veranstaltung entfernt');
 
         $this->resetRelation('members');
-
-        //At this point, removal is complete.
     }
 
     /**

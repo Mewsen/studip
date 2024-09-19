@@ -1119,12 +1119,9 @@ class Course_MembersController extends AuthenticatedController
 
     /**
      * Cancel the subscription of a selected user or group of users
-     * @param String $cmd
-     * @param String $status
-     * @param String $user_id
      * @throws AccessDeniedException
      */
-    public function cancel_subscription_action($cmd, $status, $user_id = null)
+    public function cancel_subscription_action(string $cmd, string $status, ?string $user_id = null)
     {
         if (!$this->is_tutor) {
             throw new AccessDeniedException();
@@ -1134,22 +1131,31 @@ class Course_MembersController extends AuthenticatedController
         if (!Request::submitted('no')) {
             if (Request::submitted('yes')) {
                 CSRFProtection::verifyUnsafeRequest();
-                $users = Request::getArray('users');
+
+                $user_ids = Request::optionArray('users');
 
                 if (!$this->is_dozent) {
-                    $this->validateTutorPermission($users, $this->course_id);
+                    $this->validateTutorPermission($user_ids, $this->course_id);
                 }
+
+                $users = User::findMany($user_ids);
+
                 if (!empty($users)) {
                     $removed_users = [];
                     $errors = [];
                     if (in_array($status, words('accepted awaiting claiming'))) {
                         foreach ($users as $user) {
-                            $course->removePreliminaryMember($user);
+                            try {
+                                $course->removePreliminaryMember($user);
+                                $removed_users[] = $user->getFullName();
+                            } catch (Exception $e) {
+                                $errors[] = $e->getMessage();
+                            }
                         }
                     } else {
                         foreach ($users as $user) {
                             try {
-                                $course->cancelSubscription($user);
+                                $course->deleteMember($user);
                                 $removed_users[] = $user->getFullName();
                             } catch (Exception $e) {
                                 $errors[] = $e->getMessage();
@@ -1164,32 +1170,15 @@ class Course_MembersController extends AuthenticatedController
                         );
                     }
                     if (count($removed_users) > 5) {
-                        PageLayout::postSuccess(
+                        PageLayout::postSuccess(sprintf(
                             _('%u Personen wurden ausgetragen.'),
                             count($removed_users)
-                        );
+                        ));
                     } elseif (count($removed_users) > 0) {
                         PageLayout::postSuccess(
                             _('Die folgenden Personen wurden ausgetragen:'),
                             $removed_users
                         );
-                    }
-
-                    // deleted authors
-                    if (!empty($msgs)) {
-                        if (count($msgs) <= 5) {
-                            PageLayout::postSuccess(sprintf(
-                                _("%s %s wurde aus der Veranstaltung ausgetragen."),
-                                htmlReady($this->status_groups[$status]),
-                                htmlReady(join(', ', $msgs))
-                            ));
-                        } else {
-                            PageLayout::postSuccess(sprintf(
-                                _("%u %s wurden aus der Veranstaltung entfernt."),
-                                count($msgs),
-                                htmlReady($this->status_groups[$status])
-                            ));
-                        }
                     }
                 } else {
                     PageLayout::postWarning(sprintf(
