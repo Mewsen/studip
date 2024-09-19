@@ -1,8 +1,4 @@
 <?php
-
-use Studip\ResourceBookingException;
-use Studip\ResourceBookingOverlapException;
-
 /**
  * @author  David Siegfried <david.siegfried@uni-vechta.de>
  * @license GPL2 or any later version
