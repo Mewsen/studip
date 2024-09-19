@@ -46,7 +46,7 @@ const mountApp = async (STUDIP, createApp, element) => {
         routes,
     });
     router.beforeEach((to, from, next) => {
-        if ('cid' in to?.query) {
+        if (to?.query?.cid !== undefined) {
             next();
         } else {
             next({ ...to, query: { ...to.query, cid: window.STUDIP.URLHelper.parameters.cid } });
