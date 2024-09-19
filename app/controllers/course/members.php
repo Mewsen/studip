@@ -1362,7 +1362,7 @@ class Course_MembersController extends AuthenticatedController
                             '%{number} Personen konnten nicht auf die Warteliste verschoben werden:',
                             count($errors)
                         ),
-                        count($errors)
+                        ['number' => count($errors)]
                     ),
                     $errors
                 );
