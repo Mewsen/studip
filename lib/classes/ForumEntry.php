@@ -124,7 +124,7 @@ class ForumEntry  implements PrivacyObject
      * Get author and time of an edited forum entry.
      *
      * @param string  $description  Database entry of forum entry's body.
-     * @return array    Associative array containing author and time.
+     * @return array|bool   Associative array containing author and time.
      *         boolean  False if edit tag was not found.
      */
     public static function getEditInfo($description) {
@@ -138,7 +138,7 @@ class ForumEntry  implements PrivacyObject
     /**
      * Remove all quote blocks AND the quoted text from a forum post.
      *
-     * @param String $string The string to remove the quote blocks from
+     * @param String $description The string to remove the quote blocks from
      * @return String the posting without the [quote]-blocks (not just tags!)
      */
     public static function removeQuotes($description)
@@ -191,14 +191,16 @@ class ForumEntry  implements PrivacyObject
      * returns the entry for the passed topic_id
      *
      * @param  string  $topic_id
-     * @return array   array('lft' => ..., 'rgt' => ..., seminar_id => ...)
+     * @return array | bool  array('lft' => ..., 'rgt' => ..., seminar_id => ...)
      *
      * @throws Exception
      */
     public static function getConstraints($topic_id)
     {
         //very bad performance if topic_id is 0 or false
-        if (!$topic_id) return false;
+        if (!$topic_id) {
+            return false;
+        }
 
         // look up the range of postings
         $range_stmt = DBManager::get()->prepare("SELECT *
@@ -206,7 +208,6 @@ class ForumEntry  implements PrivacyObject
         $range_stmt->execute([$topic_id]);
         if (!$data = $range_stmt->fetch(PDO::FETCH_ASSOC)) {
             return false;
-            // throw new Exception("Could not find entry with id >>$topic_id<< in forum_entries, " . __FILE__ . " on line " . __LINE__);
         }
 
         if ($data['depth'] == 1) {
@@ -243,10 +244,13 @@ class ForumEntry  implements PrivacyObject
     public static function getChildTopicIds($topic_id)
     {
         $constraints = ForumEntry::getConstraints($topic_id);
+        if (!$constraints) {
+            return [];
+        }
 
         $stmt = DBManager::get()->prepare("SELECT topic_id
-            FROM forum_entries WHERE lft >= ? AND rgt <= ?
-                AND seminar_id = ?");
+        FROM forum_entries WHERE lft >= ? AND rgt <= ?
+            AND seminar_id = ?");
         $stmt->execute([$constraints['lft'], $constraints['rgt'], $constraints['seminar_id']]);
 
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
@@ -268,13 +272,20 @@ class ForumEntry  implements PrivacyObject
             $constraint = ForumEntry::getConstraints($topic_id);
         }
 
+        if (!$constraint) {
+            return 0;
+        }
         // this calculation only works for postings
-        if ($constraint['depth'] <= 2) return ForumHelpers::getPage();
+        if ($constraint['depth'] <= 2) {
+            return ForumHelpers::getPage();
+        }
 
         if ($parent_id = ForumEntry::getParentTopicId($topic_id)) {
             $parent_constraint = ForumEntry::getConstraints($parent_id);
 
-            return ceil((($constraint['lft'] - $parent_constraint['lft'] + 3) / 2) / ForumEntry::POSTINGS_PER_PAGE);
+            if ($parent_constraint) {
+                return ceil((($constraint['lft'] - $parent_constraint['lft'] + 3) / 2) / ForumEntry::POSTINGS_PER_PAGE);
+            }
         }
 
         return 0;
@@ -289,6 +300,10 @@ class ForumEntry  implements PrivacyObject
     public static function getLastUnread($parent_id)
     {
         $constraint = ForumEntry::getConstraints($parent_id);
+
+        if (!$constraint) {
+            return null;
+        }
 
         // take users visitdate into account
         $visitdate = ForumVisit::getLastVisit($constraint['seminar_id']);
@@ -309,23 +324,21 @@ class ForumEntry  implements PrivacyObject
      * or false if the postings itself is the latest
      *
      * @param string $parent_id the node to lookup the childs in
-     * @return mixed the data for the latest postings or false
+     * @return array | bool the data for the latest postings or false
      */
     public static function getLatestPosting($parent_id)
     {
         $constraint = ForumEntry::getConstraints($parent_id);
-
-        // get last entry
-        $stmt = DBManager::get()->prepare("SELECT * FROM forum_entries
-            WHERE lft > ? AND rgt < ? AND seminar_id = ?
-            ORDER BY mkdate DESC LIMIT 1");
-        $stmt->execute([$constraint['lft'], $constraint['rgt'], $constraint['seminar_id']]);
-
-        if (!$data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if (!$constraint) {
             return false;
         }
 
-        return $data;
+        $stmt = DBManager::get()->prepare("SELECT * FROM forum_entries
+        WHERE lft > ? AND rgt < ? AND seminar_id = ?
+        ORDER BY mkdate DESC LIMIT 1");
+        $stmt->execute([$constraint['lft'], $constraint['rgt'], $constraint['seminar_id']]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
     }
 
     /**
@@ -339,20 +352,22 @@ class ForumEntry  implements PrivacyObject
     public static function getPathToPosting($topic_id)
     {
         $data = ForumEntry::getConstraints($topic_id);
+        if (!$data) {
+            return [];
+        }
+
         $ret = [];
 
         $stmt = DBManager::get()->prepare("SELECT * FROM forum_entries
-            WHERE lft <= ? AND rgt >= ? AND seminar_id = ? ORDER BY lft ASC");
+        WHERE lft <= ? AND rgt >= ? AND seminar_id = ? ORDER BY lft ASC");
         $stmt->execute([$data['lft'], $data['rgt'], $data['seminar_id']]);
 
         while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $ret[$data['topic_id']] = $data;
             $ret[$data['topic_id']]['id'] = $data['topic_id'];
         }
-
         // set the name of the first entry to the name of the category the entry is in
-        if (sizeof($ret) > 1) {
-            reset($ret);
+        if (count($ret) > 1) {
             $tmp = array_slice($ret, 1, 1);
             $area = array_pop($tmp);
             $top  = current($ret);
@@ -377,9 +392,7 @@ class ForumEntry  implements PrivacyObject
     {
         // use only the part of the path until the thread, no posting title
         $postings = array_slice(self::getPathToPosting($topic_id), 0, 3);
-
-        // var_dump($postings);
-
+        $ret = [];
         foreach ($postings as $post) {
             if ($post['name']) {
                 $ret[$post['id']] = $post['name'];
@@ -405,8 +418,6 @@ class ForumEntry  implements PrivacyObject
             $desc_short = ForumEntry::br2space(ForumEntry::killFormat($data['content']));
             if (mb_strlen($desc_short) > (ForumEntry::THREAD_PREVIEW_LENGTH + 2)) {
                 $desc_short = mb_substr($desc_short, 0, ForumEntry::THREAD_PREVIEW_LENGTH) . '...';
-            } else {
-                $desc_short = $desc_short;
             }
 
             $posting_list[$data['topic_id']] = [
@@ -475,6 +486,9 @@ class ForumEntry  implements PrivacyObject
         $sort_order = 'DESC', $start = 0, $limit = ForumEntry::POSTINGS_PER_PAGE)
     {
         $constraint = ForumEntry::getConstraints($parent_id);
+        if (!$constraint) {
+            return [];
+        }
         $seminar_id = $constraint['seminar_id'];
         $depth      = $constraint['depth'] + 1;
 
@@ -608,6 +622,10 @@ class ForumEntry  implements PrivacyObject
             case 'list':
                 $constraint = ForumEntry::getConstraints($parent_id);
 
+                if (!$constraint) {
+                    return [];
+                }
+
                 // purpose of the following query is to retrieve the threads
                 // for an area ordered by the mkdate of their latest posting
                 $stmt = DBManager::get()->prepare("SELECT SQL_CALC_FOUND_ROWS
@@ -636,6 +654,9 @@ class ForumEntry  implements PrivacyObject
 
             case 'newest':
                 $constraint = ForumEntry::getConstraints($parent_id);
+                if (!$constraint) {
+                    return [];
+                }
                 $last_visit_date = ForumVisit::getLastVisit($constraint['seminar_id']);
 
                 // get postings
@@ -684,6 +705,9 @@ class ForumEntry  implements PrivacyObject
 
             case 'dump':
                 $constraint = ForumEntry::getConstraints($parent_id);
+                if (!$constraint) {
+                    return [];
+                }
                 $seminar_id = $constraint['seminar_id'];
                 $depth      = $constraint['depth'] + 1;
 
@@ -699,7 +723,9 @@ class ForumEntry  implements PrivacyObject
 
             case 'flat':
                 $constraint = ForumEntry::getConstraints($parent_id);
-
+                if (!$constraint) {
+                    return [];
+                }
                 $stmt = DBManager::get()->prepare("SELECT SQL_CALC_FOUND_ROWS * FROM forum_entries
                     WHERE lft > ? AND rgt < ? AND seminar_id = ? AND depth = ?
                     ORDER BY name ASC");
@@ -715,8 +741,6 @@ class ForumEntry  implements PrivacyObject
                     $desc_short = ForumEntry::br2space(ForumEntry::killFormat($data['content']));
                     if (mb_strlen($desc_short) > (ForumEntry::THREAD_PREVIEW_LENGTH + 2)) {
                         $desc_short = mb_substr($desc_short, 0, ForumEntry::THREAD_PREVIEW_LENGTH) . '...';
-                    } else {
-                        $desc_short = $desc_short;
                     }
                     $posting_list[$data['topic_id']] = [
                         'author'          => $data['author'],
@@ -739,7 +763,9 @@ class ForumEntry  implements PrivacyObject
 
             case 'depth_to_large':
                 $constraint = ForumEntry::getConstraints($parent_id);
-
+                if (!$constraint) {
+                    return [];
+                }
                 $stmt = DBManager::get()->prepare("SELECT SQL_CALC_FOUND_ROWS * FROM forum_entries
                     WHERE lft > ? AND rgt < ? AND seminar_id = ? AND depth > 3
                     ORDER BY name ASC");
@@ -765,7 +791,9 @@ class ForumEntry  implements PrivacyObject
     public static function getLatestSince($parent_id, $start_date, $end_date)
     {
         $constraint = ForumEntry::getConstraints($parent_id);
-
+        if (!$constraint) {
+            return [];
+        }
         $stmt = DBManager::get()->prepare("SELECT SQL_CALC_FOUND_ROWS * FROM forum_entries
             WHERE lft > ? AND rgt < ? AND seminar_id = ?
                 AND mkdate BETWEEN ? AND ?
@@ -851,7 +879,7 @@ class ForumEntry  implements PrivacyObject
      * returns the entry for the passed topic_id
      *
      * @param string $topic_id
-     * @return array hash-array with the entries fields
+     * @return array | false hash-array with the entries fields
      */
     public static function getEntry($topic_id)
     {
@@ -868,6 +896,9 @@ class ForumEntry  implements PrivacyObject
     public static function countEntries($parent_id)
     {
         $data = ForumEntry::getConstraints($parent_id);
+        if (!$data) {
+            return 0;
+        }
         return max((($data['rgt'] - $data['lft'] - 1) / 2) + 1, 0);
     }
 
@@ -935,23 +966,27 @@ class ForumEntry  implements PrivacyObject
     {
         $constraint = ForumEntry::getConstraints($parent_id);
 
+        if (!$constraint) {
+            return;
+        }
+
         // #TODO: Zusammenfassen in eine Transaktion!!!
         DBManager::get()->exec('UPDATE forum_entries SET lft = lft + 2
-            WHERE lft > '. $constraint['rgt'] ." AND seminar_id = '". $constraint['seminar_id'] ."'");
+        WHERE lft > '. $constraint['rgt'] ." AND seminar_id = '". $constraint['seminar_id'] ."'");
         DBManager::get()->exec('UPDATE forum_entries SET rgt = rgt + 2
-            WHERE rgt >= '. $constraint['rgt'] ." AND seminar_id = '". $constraint['seminar_id'] ."'");
+        WHERE rgt >= '. $constraint['rgt'] ." AND seminar_id = '". $constraint['seminar_id'] ."'");
 
         $stmt = DBManager::get()->prepare("INSERT INTO forum_entries
-            (topic_id, seminar_id, user_id, name, content, mkdate, latest_chdate,
-                chdate, author, author_host, lft, rgt, depth, anonymous)
-            VALUES (? ,?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), ?, ?, ?, ?, ?, ?)");
+        (topic_id, seminar_id, user_id, name, content, mkdate, latest_chdate,
+            chdate, author, author_host, lft, rgt, depth, anonymous)
+        VALUES (? ,?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$data['topic_id'], $data['seminar_id'], $data['user_id'],
             $data['name'], $data['content'], $data['author'], $data['author_host'],
             $constraint['rgt'], $constraint['rgt'] + 1, $constraint['depth'] + 1, $data['anonymous'] ?? 0]);
 
         // update "latest_chdate" for easier sorting of actual threads
         DBManager::get()->exec("UPDATE forum_entries SET latest_chdate = UNIX_TIMESTAMP()
-            WHERE topic_id = '" . $constraint['topic_id'] . "'");
+        WHERE topic_id = '" . $constraint['topic_id'] . "'");
 
         NotificationCenter::postNotification('ForumAfterInsert', $data['topic_id'], $data);
     }
@@ -969,20 +1004,23 @@ class ForumEntry  implements PrivacyObject
     public static function update($topic_id, $name, $content)
     {
         $post = ForumEntry::getConstraints($topic_id);
+        if (!$post) {
+            return;
+        }
 
         if (time() - $post['mkdate'] > 5 * 60) {
             $content = ForumEntry::appendEdit($content);
         }
 
         $stmt = DBManager::get()->prepare("UPDATE forum_entries
-            SET name = ?, content = ?, chdate = UNIX_TIMESTAMP(), latest_chdate = UNIX_TIMESTAMP()
-            WHERE topic_id = ?");
+        SET name = ?, content = ?, chdate = UNIX_TIMESTAMP(), latest_chdate = UNIX_TIMESTAMP()
+        WHERE topic_id = ?");
         $stmt->execute([$name, $content, $topic_id]);
 
         // update "latest_chdate" for easier sorting of actual threads
         $parent_id = ForumEntry::getParentTopicId($topic_id);
         DBManager::get()->exec("UPDATE forum_entries SET latest_chdate = UNIX_TIMESTAMP()
-            WHERE topic_id = '" . $parent_id . "'");
+        WHERE topic_id = '" . $parent_id . "'");
 
         $post['name']    = $name;
         $post['content'] = $content;
@@ -999,57 +1037,64 @@ class ForumEntry  implements PrivacyObject
      */
     public static function delete($topic_id)
     {
-        $post   = ForumEntry::getConstraints($topic_id);
-        $parent = ForumEntry::getConstraints(ForumEntry::getParentTopicId($topic_id));
+        $post = ForumEntry::getConstraints($topic_id);
 
-        NotificationCenter::postNotification('ForumBeforeDelete', $topic_id, $post);
+        if ($post) {
+            NotificationCenter::postNotification('ForumBeforeDelete', $topic_id, $post);
 
-        // #TODO: Zusammenfassen in eine Transaktion!!!
-        // get all entry-ids to delete them from the category-reference-table
-        $stmt = DBManager::get()->prepare("SELECT topic_id FROM forum_entries
+            // #TODO: Zusammenfassen in eine Transaktion!!!
+            // get all entry-ids to delete them from the category-reference-table
+            $stmt = DBManager::get()->prepare("SELECT topic_id FROM forum_entries
             WHERE seminar_id = ? AND lft >= ? AND rgt <= ? AND depth = 1");
-        $stmt->execute([$post['seminar_id'], $post['lft'], $post['rgt']]);
-        $ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $stmt->execute([$post['seminar_id'], $post['lft'], $post['rgt']]);
+            $ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-        if ($ids != false && !is_array($ids)) $ids = [$ids];
+            if ($ids != false && !is_array($ids)) {
+                $ids = [$ids];
+            }
 
-        if (!empty($ids)) {
-            $stmt = DBManager::get()->prepare("DELETE FROM forum_categories_entries
+            if (!empty($ids)) {
+                $stmt = DBManager::get()->prepare("DELETE FROM forum_categories_entries
                 WHERE topic_id IN (:ids)");
-            $stmt->bindParam(':ids', $ids, StudipPDO::PARAM_ARRAY);
-            $stmt->execute();
-        }
+                $stmt->bindParam(':ids', $ids, StudipPDO::PARAM_ARRAY);
+                $stmt->execute();
+            }
 
-        // delete all entries
-        $stmt = DBManager::get()->prepare("DELETE FROM forum_entries
+            // delete all entries
+            $stmt = DBManager::get()->prepare("DELETE FROM forum_entries
             WHERE seminar_id = ? AND lft >= ? AND rgt <= ?");
 
-        $stmt->execute([$post['seminar_id'], $post['lft'], $post['rgt']]);
+            $stmt->execute([$post['seminar_id'], $post['lft'], $post['rgt']]);
 
-        // update lft and rgt
-        $diff = $post['rgt'] - $post['lft'] + 1;
-        $stmt = DBManager::get()->prepare("UPDATE forum_entries SET lft = lft - $diff
+            // update lft and rgt
+            $diff = $post['rgt'] - $post['lft'] + 1;
+            $stmt = DBManager::get()->prepare("UPDATE forum_entries SET lft = lft - $diff
             WHERE lft > ? AND seminar_id = ?");
-        $stmt->execute([$post['rgt'], $post['seminar_id']]);
+            $stmt->execute([$post['rgt'], $post['seminar_id']]);
 
-        $stmt = DBManager::get()->prepare("UPDATE forum_entries SET rgt = rgt - $diff
+            $stmt = DBManager::get()->prepare("UPDATE forum_entries SET rgt = rgt - $diff
             WHERE rgt > ? AND seminar_id = ?");
-        $stmt->execute([$post['rgt'], $post['seminar_id']]);
+            $stmt->execute([$post['rgt'], $post['seminar_id']]);
 
+        }
 
-        // set the latest_chdate to the latest child's chdate
-        $stmt = DBManager::get()->prepare("SELECT chdate FROM forum_entries
+        $parent = ForumEntry::getConstraints(ForumEntry::getParentTopicId($topic_id));
+
+        if ($parent) {
+            // set the latest_chdate to the latest child's chdate
+            $stmt = DBManager::get()->prepare("SELECT chdate FROM forum_entries
             WHERE lft > ? AND rgt < ? AND seminar_id = ?
             ORDER BY chdate DESC LIMIT 1");
-        $stmt->execute([$parent['lft'] ?? null, $parent['rgt'] ?? null, $parent['seminar_id'] ?? null]);
-        $chdate = $stmt->fetchColumn();
+            $stmt->execute([$parent['lft'] ?? null, $parent['rgt'] ?? null, $parent['seminar_id'] ?? null]);
+            $chdate = $stmt->fetchColumn();
 
-        $stmt_insert = DBManager::get()->prepare("UPDATE forum_entries
+            $stmt_insert = DBManager::get()->prepare("UPDATE forum_entries
             SET chdate = ? WHERE topic_id = ?");
-        if ($chdate) {
-            $stmt_insert->execute([$chdate, $parent['topic_id']]);
-        } else {
-            $stmt_insert->execute([$parent['chdate'], $parent['topic_id']]);
+            if ($chdate) {
+                $stmt_insert->execute([$chdate, $parent['topic_id']]);
+            } else {
+                $stmt_insert->execute([$parent['chdate'], $parent['topic_id']]);
+            }
         }
     }
 
@@ -1065,64 +1110,68 @@ class ForumEntry  implements PrivacyObject
     {
         // #TODO: Zusammenfassen in eine Transaktion!!!
         $constraints = ForumEntry::getConstraints($topic_id);
-
-        // move the affected entries "outside" the tree
-        $stmt = DBManager::get()->prepare("UPDATE forum_entries
+        if ($constraints) {
+            // move the affected entries "outside" the tree
+            $stmt = DBManager::get()->prepare("UPDATE forum_entries
             SET lft = lft * -1, rgt = rgt * -1
             WHERE seminar_id = ? AND lft >= ? AND rgt <= ?");
-        $stmt->execute([$constraints['seminar_id'], $constraints['lft'], $constraints['rgt']]);
+            $stmt->execute([$constraints['seminar_id'], $constraints['lft'], $constraints['rgt']]);
 
-        // update the lft and rgt values of the parent to reflect the "deletion"
-        $diff = $constraints['rgt'] - $constraints['lft'] + 1;
-        $stmt = DBManager::get()->prepare("UPDATE forum_entries SET lft = lft - ?
+            // update the lft and rgt values of the parent to reflect the "deletion"
+            $diff = $constraints['rgt'] - $constraints['lft'] + 1;
+            $stmt = DBManager::get()->prepare("UPDATE forum_entries SET lft = lft - ?
             WHERE lft > ? AND seminar_id = ?");
-        $stmt->execute([$diff, $constraints['rgt'], $constraints['seminar_id']]);
+            $stmt->execute([$diff, $constraints['rgt'], $constraints['seminar_id']]);
 
-        $stmt = DBManager::get()->prepare("UPDATE forum_entries SET rgt = rgt - ?
+            $stmt = DBManager::get()->prepare("UPDATE forum_entries SET rgt = rgt - ?
             WHERE rgt > ? AND seminar_id = ?");
-        $stmt->execute([$diff, $constraints['rgt'], $constraints['seminar_id']]);
+            $stmt->execute([$diff, $constraints['rgt'], $constraints['seminar_id']]);
 
-        // make some space by updating the lft and rgt values of the target node
-        $constraints_destination = ForumEntry::getConstraints($destination);
-        $size = $constraints['rgt'] - $constraints['lft'] + 1;
+            // make some space by updating the lft and rgt values of the target node
+            $constraints_destination = ForumEntry::getConstraints($destination);
 
-        $stmt = DBManager::get()->prepare("UPDATE forum_entries SET lft = lft + ?
+            if ($constraints_destination) {
+                $size = $constraints['rgt'] - $constraints['lft'] + 1;
+
+                $stmt = DBManager::get()->prepare("UPDATE forum_entries SET lft = lft + ?
             WHERE lft > ? AND seminar_id = ?");
-        $stmt->execute([$size, $constraints_destination['rgt'], $constraints_destination['seminar_id']]);
+                $stmt->execute([$size, $constraints_destination['rgt'], $constraints_destination['seminar_id']]);
 
-        $stmt = DBManager::get()->prepare("UPDATE forum_entries SET rgt = rgt + ?
+                $stmt = DBManager::get()->prepare("UPDATE forum_entries SET rgt = rgt + ?
             WHERE rgt >= ? AND seminar_id = ?");
-        $stmt->execute([$size, $constraints_destination['rgt'], $constraints_destination['seminar_id']]);
-
+                $stmt->execute([$size, $constraints_destination['rgt'], $constraints_destination['seminar_id']]);
+            }
+        }
         //move the entries from "outside" the tree to the target node
         $constraints_destination = ForumEntry::getConstraints($destination);
 
+        if ($constraints_destination) {
+            // update the depth to reflect the new position in the tree
+            // determine if we need to add, subtract or even do nothing to/from the depth
+            $depth_mod = $constraints_destination['depth'] - $constraints['depth'] + 1;
 
-        // update the depth to reflect the new position in the tree
-        // determine if we need to add, subtract or even do nothing to/from the depth
-        $depth_mod = $constraints_destination['depth'] - $constraints['depth'] + 1;
-
-        $stmt = DBManager::get()->prepare("UPDATE forum_entries
+            $stmt = DBManager::get()->prepare("UPDATE forum_entries
             SET depth = depth + ?
             WHERE seminar_id = ? AND lft < 0");
-        $stmt->execute([$depth_mod, $constraints_destination['seminar_id']]);
+            $stmt->execute([$depth_mod, $constraints_destination['seminar_id']]);
 
-        // if the depth is larger than 3, fix it
-        $stmt = DBManager::get()->prepare("UPDATE forum_entries
+            // if the depth is larger than 3, fix it
+            $stmt = DBManager::get()->prepare("UPDATE forum_entries
             SET depth = 3
             WHERE seminar_id = ? AND depth > 3 AND lft < 0");
-        $stmt->execute([$constraints_destination['seminar_id']]);
+            $stmt->execute([$constraints_destination['seminar_id']]);
 
-        // move the tree to its destination
-        $diff = ($constraints_destination['rgt'] - ($constraints['rgt'] - $constraints['lft'])) - 1 - $constraints['lft'];
+            // move the tree to its destination
+            $diff = ($constraints_destination['rgt'] - ($constraints['rgt'] - $constraints['lft'])) - 1 - $constraints['lft'];
 
-        $stmt = DBManager::get()->prepare("UPDATE forum_entries
+            $stmt = DBManager::get()->prepare("UPDATE forum_entries
             SET lft = (lft * -1) + ?, rgt = (rgt * -1) + ?
             WHERE seminar_id = ? AND lft < 0");
-        $stmt->execute([$diff, $diff, $constraints_destination['seminar_id']]);
+            $stmt->execute([$diff, $diff, $constraints_destination['seminar_id']]);
 
-        if ($depth_mod != 0) {
-            self::fix_ordering($topic_id);
+            if ($depth_mod != 0) {
+                self::fix_ordering($topic_id);
+            }
         }
     }
 
@@ -1131,11 +1180,14 @@ class ForumEntry  implements PrivacyObject
         $db = DBManager::get();
 
         $entry = ForumEntry::getConstraints($parent_id);
+        if (!$entry) {
+            return;
+        }
 
         $stmt= $db->prepare('SELECT topic_id FROM forum_entries
-                               WHERE lft > ? AND rgt < ? AND depth = 3
-                                    AND seminar_id = ?
-                               ORDER BY mkdate');
+                           WHERE lft > ? AND rgt < ? AND depth = 3
+                                AND seminar_id = ?
+                           ORDER BY mkdate');
 
         $stmt->execute([$entry['lft'], $entry['rgt'], $entry['seminar_id']]);
 
@@ -1143,7 +1195,7 @@ class ForumEntry  implements PrivacyObject
         $rgt = $lft + 1;
 
         $inner_stmt = $db->prepare("UPDATE forum_entries SET lft=?, rgt=?
-            WHERE topic_id = ?");
+        WHERE topic_id = ?");
         while ($topic_id = $stmt->fetchColumn()) {
             $inner_stmt->execute([$lft, $rgt, $topic_id]);
 

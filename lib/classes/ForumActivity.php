@@ -129,7 +129,7 @@ class ForumActivity
             $data['actor_id']   = '';
         }
 
-        $activity = Studip\Activity\Activity::create($data);
+        Studip\Activity\Activity::create($data);
     }
 
     /**
@@ -140,7 +140,7 @@ class ForumActivity
      */
     private static function getPostUsername($post)
     {
-        if ($post['anonymous']) {
+        if (!empty($post['anonymous'])) {
             return _('Anonym');
         }
 
