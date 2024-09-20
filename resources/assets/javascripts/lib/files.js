@@ -1,6 +1,7 @@
 import { $gettext } from './gettext';
 import Dialog from './dialog.js';
 import FilesTable from '../../../vue/components/FilesTable.vue';
+import { h } from 'vue';
 
 const Files = {
     init () {
@@ -8,8 +9,7 @@ const Files = {
             && jQuery("#files_table_form").length) {
 
             STUDIP.Vue.load().then(({createApp}) => {
-                this.filesapp = createApp({
-                    el: "#content",
+                const app = createApp({
                     data() {
                         return {
                             files: jQuery("#files_table_form").data("files") || [],
@@ -36,14 +36,17 @@ const Files = {
                             });
                         }
                     },
-                    components: { FilesTable, },
                     updated () {
                         this.onUpdated();
                     },
                     created () {
                         this.onUpdated();
-                    }
+                    },
                 });
+                app.component('files-table', FilesTable);
+                app.mount('#files_table_form');
+
+                this.filesapp = app;
             });
         }
 

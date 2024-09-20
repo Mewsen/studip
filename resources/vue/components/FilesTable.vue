@@ -46,7 +46,7 @@
                         data-sort="false"
                         :aria-label="$gettext('Ordner und Dateien auswählen')">
                         <studip-proxy-checkbox
-                            v-model="selectedIds"
+                            v-model:selected="selectedIds"
                             :total="allIds"
                             :title="$gettext('Alle Ordner und Dateien auswählen')"
                         ></studip-proxy-checkbox>
@@ -162,7 +162,7 @@
                         <studip-proxied-checkbox
                             name="ids[]"
                             :value="folder.id"
-                            v-model="selectedIds"
+                            v-model:selected="selectedIds"
                             :aria-label="getAriaLabelForFolder(folder)"
                         ></studip-proxied-checkbox>
                     </td>
@@ -219,7 +219,7 @@
                         <studip-proxied-checkbox
                             name="ids[]"
                             :value="file.id"
-                            v-model="selectedIds"
+                            v-model:selected="selectedIds"
                             :aria-label="getAriaLabelForFile(file)"
                         ></studip-proxied-checkbox>
                     </td>
@@ -533,23 +533,26 @@ export default {
         this.selectedIds = [];
     },
     watch: {
-        selectedIds (current) {
-            const activated = current.length > 0;
-            if (this.$refs.buttons) {
-                this.$nextTick(() => { // needs to be wrapped since we check the dom
-                    this.$refs.buttons.querySelectorAll('.multibuttons .button').forEach(element => {
-                        let condition = element.dataset.activatesCondition;
-                        if (!condition || !activated) {
-                            element.disabled = !activated;
-                        } else {
-                            condition = condition.replace(/:has\((.*?)\)/g, ' $1');
-                            condition = condition.replace(':checkbox', 'input[type="checkbox"]');
+        selectedIds: {
+            handler(current) {
+                const activated = current.length > 0;
+                if (this.$refs.buttons) {
+                    this.$nextTick(() => { // needs to be wrapped since we check the dom
+                        this.$refs.buttons.querySelectorAll('.multibuttons .button').forEach(element => {
+                            let condition = element.dataset.activatesCondition;
+                            if (!condition || !activated) {
+                                element.disabled = !activated;
+                            } else {
+                                condition = condition.replace(/:has\((.*?)\)/g, ' $1');
+                                condition = condition.replace(':checkbox', 'input[type="checkbox"]');
 
-                            element.disabled = this.$el.querySelector(condition) === null;
-                        }
+                                element.disabled = this.$el.querySelector(condition) === null;
+                            }
+                        });
                     });
-                });
-            }
+                }
+            },
+            deep: true,
         },
     }
 }
