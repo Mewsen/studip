@@ -81,6 +81,7 @@ class StudipMail
      */
     public static function getAbuseEmail()
     {
+        $mail_localhost = $GLOBALS['MAIL_LOCALHOST'] ?: $_SERVER['SERVER_NAME'];
         return $GLOBALS['MAIL_ABUSE'] ?: "abuse@{$mail_localhost}";
     }
 
@@ -166,7 +167,7 @@ class StudipMail
     }
 
     /**
-     * @return unknown_type
+     * @return string
      */
     public function getSenderName()
     {
@@ -184,7 +185,7 @@ class StudipMail
     }
 
     /**
-     * @return unknown_type
+     * @return string
      */
     public function getReplyToEmail()
     {
@@ -202,7 +203,7 @@ class StudipMail
     }
 
     /**
-     * @return unknown_type
+     * @return string
      */
     public function getReplyToName()
     {
@@ -220,7 +221,7 @@ class StudipMail
     }
 
     /**
-     * @return unknown_type
+     * @return string
      */
     public function getSubject()
     {
@@ -263,7 +264,7 @@ class StudipMail
 
     /**
      * @param $mail
-     * @return unknown_type
+     * @return bool
      */
     public function isRecipient($mail)
     {
@@ -343,7 +344,7 @@ class StudipMail
 
     /**
      * @param $name
-     * @return unknown_type
+     * @return bool
      */
     public function isAttachment($name)
     {
@@ -361,7 +362,7 @@ class StudipMail
     }
 
     /**
-     * @return unknown_type
+     * @return string
      */
     public function getBodyText()
     {
@@ -379,7 +380,7 @@ class StudipMail
     }
 
     /**
-     * @return unknown_type
+     * @return string
      */
     public function getBodyHtml()
     {
@@ -403,7 +404,7 @@ class StudipMail
      * send the mail using the given transporter object, or the
      * set default transporter
      *
-     * @param email_message_class $transporter
+     * @param email_message_class|null $transporter
      * @return bool
      */
     public function send(email_message_class $transporter = null)
@@ -420,10 +421,16 @@ class StudipMail
         if($this->getReplyToEmail()){
             $transporter->SetEncodedEmailHeader('Reply-To', $this->getReplyToEmail(), self::quoteString($this->getReplyToName()));
         }
+
+        $recipients_by_type = [];
         foreach($this->getRecipients() as $recipient) {
+            if (!isset($recipients_by_type[$recipient['type']])) {
+                $recipients_by_type[$recipient['type']] = [];
+            }
             $recipients_by_type[$recipient['type']][$recipient['mail']] = self::quoteString($recipient['name']);
         }
-        foreach($recipients_by_type as $type => $recipients){
+
+        foreach ($recipients_by_type as $type => $recipients){
             $transporter->SetMultipleEncodedEmailHeader($type, $recipients);
         }
         $transporter->SetEncodedHeader('Subject', $this->getSubject());
@@ -456,8 +463,8 @@ class StudipMail
         }
         foreach($this->getAttachments() as $attachment){
             $part = [
-                'FileName'     => $attachment['file_name'],
-                'Data'         => $attachment['data'],
+                'FileName'     => $attachment['file_name'] ?? null,
+                'Data'         => $attachment['data'] ?? null,
                 'Name'         => $attachment['name'],
                 'Content-Type' => $attachment['type'],
                 'Disposition'  => $attachment['disposition'],
