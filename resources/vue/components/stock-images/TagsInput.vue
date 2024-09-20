@@ -41,10 +41,7 @@ const fromSimpleTags = (array) => array.map((text) => ({ text }));
 const toSimpleTags = (tags) => tags.map(({ text }) => text);
 
 export default {
-    model: {
-        prop: 'tags',
-        event: 'change',
-    },
+    emits: ['update:tags'],
     props: {
         tags: {
             type: Array,
@@ -77,7 +74,7 @@ export default {
 
     methods: {
         onTagsChanged(newTags) {
-            this.$emit('change', toSimpleTags(newTags));
+            this.$emit('update:tags', toSimpleTags(newTags));
         },
     },
 

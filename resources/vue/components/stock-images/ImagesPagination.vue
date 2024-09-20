@@ -23,10 +23,7 @@ import StudipPagination from '../StudipPagination.vue';
 
 export default {
     components: { StudipPagination },
-    model: {
-        prop: 'page',
-        event: 'change',
-    },
+    emits: ['update:page'],
     props: {
         stockImages: {
             type: Array,
@@ -51,7 +48,7 @@ export default {
     },
     methods: {
         onUpdateOffset(offset) {
-            this.$emit('change', offset + 1);
+            this.$emit('update:page', offset + 1);
         },
     },
 };

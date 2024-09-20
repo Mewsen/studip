@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
     <div class="stock-images-page">
         <studip-message-box v-if="showZipUploadMessage" :type="zipUploadMessageType">
             {{ zipUploadMessage }}
@@ -9,6 +10,10 @@
             :stock-images="filteredStockImages"
             v-model="page"
         >
+=======
+    <div>
+        <ImagesPagination :per-page="perPage" :stock-images="filteredStockImages" v-model:page="page">
+>>>>>>> c1b5528101 (adjust stock images, re #3747)
             <ImagesList
                 :checked-images="checkedImages"
                 :page="page"
@@ -28,8 +33,8 @@
         </studip-progress-indicator>
         <Teleport to="#stock-images-widget" name="sidebar-stock-images">
             <SearchWidget :query="query" @search="onSearch" />
-            <OrientationFilterWidget v-model="filters" />
-            <ColorFilterWidget v-model="filters" />
+            <OrientationFilterWidget v-model:filters="filters" />
+            <ColorFilterWidget v-model:filters="filters" />
             <ActionsWidget @initiateUpload="onUploadDialogShow" @initiateZipUpload="onZipUploadDialogShow" />
         </Teleport>
         <EditDialog

@@ -18,7 +18,7 @@
         </label>
         <label>
             {{ $gettext('Tags') }}
-            <TagsInput v-model="tags" :suggestions="suggestedTags" />
+            <TagsInput v-model:tags="tags" :suggestions="suggestedTags" />
         </label>
     </div>
 </template>

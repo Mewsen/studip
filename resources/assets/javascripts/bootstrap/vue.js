@@ -59,15 +59,16 @@ STUDIP.ready(() => {
                 );
             }
 
+            const plugins = [];
             for (const [plugin, filename] of Object.entries(config.plugins)) {
                 promises.push(
                     import(`../../../vue/plugins/${filename}.js`)
-                    .then((temp) => Vue.use(temp[plugin], { store }))
+                    .then((temp) => plugins.push(temp[plugin]))
                 );
             }
 
             Promise.all(promises).then(() => {
-                createApp({
+                const app = createApp({
                     components,
                     store,
 
@@ -95,7 +96,9 @@ STUDIP.ready(() => {
                     unmounted() {
                         STUDIP.Vue.emit('VueAppDidUnmount', this);
                     },
-                }).mount(node);
+                });
+                plugins.forEach(plugin => app.use(plugin, { store }))
+                app.mount(node);
             });
         });
 

@@ -120,7 +120,7 @@ export default {
     }),
     computed: {
         allChecked() {
-            return this.paged.length && this.paged.every(({ id }) => this.checkedImages.includes(id));
+            return this.paged.length && this.paged.every(({ id }) => this.checkedImages.includes(id)) ? true : null;
         },
         caption() {
             const n = this.stockImages.length;
