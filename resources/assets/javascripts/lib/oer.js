@@ -233,6 +233,10 @@ const OER = {
                 }
             });
         });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7e3524b50b (adjustments to oer, re #3747)
     }
 };
 

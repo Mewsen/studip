@@ -55,16 +55,16 @@ STUDIP.ready(() => {
     if ($('.oercampus_editmaterial').length) {
 
         STUDIP.Vue.load().then(({createApp}) => {
-            STUDIP.OER.EditApp = createApp({
-                el: '.oercampus_editmaterial',
+            console.log($('.oercampus_editmaterial .logo_file').data("oldurl"));
+            const app = createApp({
                 data() {
                     return {
                         name: $('.oercampus_editmaterial input.oername').val(),
-                        logo_url: $('.oercampus_editmaterial .logo_file').data("oldurl"),
-                        customlogo: $('.oercampus_editmaterial .logo_file').data("customlogo"),
+                        logo_url: $('.oercampus_editmaterial .logo_file').data("oldurl") ?? null,
+                        customlogo: $('.oercampus_editmaterial .logo_file').data("customlogo") == '1',
                         filename: $('.oercampus_editmaterial .file.drag-and-drop').data("filename"),
                         filesize: $('.oercampus_editmaterial .file.drag-and-drop').data("filesize"),
-                        tags: $('.oercampus_editmaterial .oer_tags').data("defaulttags"),
+                        tags: $('.oercampus_editmaterial .oer_tags').data("defaulttags") ?? [],
                         minimumTags: 5
                     };
                 },
@@ -87,10 +87,9 @@ STUDIP.ready(() => {
                     },
                     editImage: function (event) {
                         let reader = new FileReader();
-                        let vue = this;
-                        reader.addEventListener("load", function () {
-                            vue.logo_url = reader.result;
-                            vue.customlogo = true;
+                        reader.addEventListener("load", () => {
+                            this.logo_url = reader.result;
+                            this.customlogo = true;
                         }, false);
                         reader.readAsDataURL(
                             event.target.files.length > 0
@@ -139,6 +138,9 @@ STUDIP.ready(() => {
                 },
                 components: { Quicksearch }
             });
+            app.component('Quicksearch', Quicksearch);
+            app.mount('.oercampus_editmaterial');
+            STUDIP.OER.EditApp = app;
         });
     }
 });

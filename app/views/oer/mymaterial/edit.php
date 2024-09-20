@@ -31,14 +31,15 @@
                         <header>
                             <h1>
                                 <studip-icon shape="file"
-                                             role="clickable"
                                              :size="20"
                                              class="text-bottom"></studip-icon>
                                 <div class="title">{{ name }}</div>
                             </h1>
                         </header>
                         <div class="image"
-                             :style="'background-image: url(' + logo_url + ');' + (!customlogo ? ' background-size: 60% auto;': '')"></div>
+                             :style="{
+                             backgroundImage: logo_url ? `url(${logo_url});` : null,
+                             backgroundSize: customlogo ? null : '60% auto;'}"></div>
                     </article>
                 </label>
 
