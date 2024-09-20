@@ -4,13 +4,13 @@ STUDIP.domReady(() => {
     avatarTypes.forEach((type) => {
         if (document.getElementById(`avatar-${type}-app`)) {
             Promise.all([
-                STUDIP.loadChunk('avatar'),
+                STUDIP.loadChunk('vue'),
                 import(
                     /* webpackChunkName: "avatar-app" */
                     '@/vue/avatar-app.js'
                 ),
-            ]).then(([{ createApp }, { default: mountApp }]) => {
-                return mountApp(STUDIP, createApp, `#avatar-${type}-app`);
+            ]).then(([{ createApp, store }, { default: mountApp }]) => {
+                return mountApp(STUDIP, createApp, store, `#avatar-${type}-app`);
             });
         }
     });

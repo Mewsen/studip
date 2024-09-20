@@ -31,16 +31,6 @@ export const loadChunk = function (chunk, { silent = false } = {}) {
             ]).then(([Vue]) => Vue);
             break;
 
-        case 'avatar':
-            promise = Promise.all([
-                STUDIP.loadChunk('vue'),
-                import(
-                    /* webpackChunkName: "avatar" */
-                    './chunks/avatar'
-                ),
-            ]).then(([Vue]) => Vue);
-            break;
-
         case 'code-highlight':
             promise = import(
                 /* webpackChunkName: "code-highlight" */
