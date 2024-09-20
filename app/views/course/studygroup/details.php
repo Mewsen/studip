@@ -20,10 +20,10 @@
             <dt><?= _('Moderiert von') ?></dt>
             <dd>
                 <ul class="list-csv">
-                <? foreach ($studygroup->getMembers(['dozent', 'tutor']) as $mod) : ?>
+                <? foreach ($studygroup->getMembersWithStatus(['dozent', 'tutor']) as $mod) : ?>
                     <li>
-                        <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $mod['username']]) ?>">
-                            <?= htmlready($mod['fullname']) ?>
+                        <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $mod->username]) ?>">
+                            <?= htmlReady($mod->user->getFullName()) ?>
                         </a>
                     </li>
                 <? endforeach ?>
