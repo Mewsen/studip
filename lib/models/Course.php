@@ -71,7 +71,6 @@
  * @property SimpleORMapCollection|Institute[] $institutes has_and_belongs_to_many Institute
  * @property SimpleORMapCollection|UserDomain[] $domains has_and_belongs_to_many UserDomain
  * @property-read mixed $teachers additional field
- * @property mixed $end_time additional field
  * @property mixed $start_semester additional field
  * @property mixed $end_semester additional field
  * @property-read mixed $semester_text additional field
@@ -273,7 +272,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         $config['additional_fields']['teachers'] = [
             'get' => 'getTeachers'
         ];
-        $config['additional_fields']['end_time'] = true;
 
         $config['additional_fields']['start_semester'] = [
             'get' => 'getStartSemester',

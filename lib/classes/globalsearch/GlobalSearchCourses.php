@@ -168,7 +168,7 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
             });
         }
         $result_children = [];
-        foreach($visibleChildren as $child) {
+        foreach ($visibleChildren as $child) {
             $result_children[] = self::filter($child, $search);
         }
 

@@ -589,7 +589,7 @@ class InstituteCalendarHelper
      *
      * @return string enriched course info string for tooltip
      */
-    private static function getCycleInfos($course, $cycle_date)
+    private static function getCycleInfos(Course $course, $cycle_date)
     {
 
         $info_string = $course->getFullName('number-name') . "\n";
@@ -615,20 +615,20 @@ class InstituteCalendarHelper
 
         if ($course->getSemClass()->offsetGet('module')) {
             $mvv_pathes = [];
-            $course_start = $course->start_time;
-            $course_end = ($course->end_time < 0 || is_null($course->end_time))
-                        ? PHP_INT_MAX
-                        : $course->end_time;
             // set filter to show only pathes with valid semester data
             ModuleManagementModelTreeItem::setObjectFilter('Modul',
-                function ($modul) use ($course_start, $course_end) {
+                function ($modul) use ($course) {
                     // check for public status
                     if (!$GLOBALS['MVV_MODUL']['STATUS']['values'][$modul->stat]['public']) {
                         return false;
                     }
                     $modul_start = Semester::find($modul->start)->beginn ?: 0;
                     $modul_end = Semester::find($modul->end)->ende ?: PHP_INT_MAX;
-                    return ($modul_start <= $course_end && $modul_end >= $course_start);
+                    return $modul_end >= $course->start_semester->beginn
+                        && (
+                            $course->isOpenEnded()
+                            || $modul_start <= $course->end_semester->ende
+                        );
                 }
             );
 
