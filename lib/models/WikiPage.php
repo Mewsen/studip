@@ -117,7 +117,7 @@ class WikiPage extends SimpleORMap implements PrivacyObject
 
     public static function findByName($range_id, $name)
     {
-        return self::findOneBySQL('name = :name AND range_id = :range_id', [
+        return self::findOneBySQL('BINARY name = :name AND range_id = :range_id', [
             'range_id' => $range_id,
             'name' => $name
         ]);
