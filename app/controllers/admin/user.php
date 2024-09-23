@@ -309,7 +309,18 @@ class Admin_UserController extends AuthenticatedController
                 $umanager->getFromDatabase($user_id);
 
                 //delete
-                if ($umanager->deleteUser($delete_documents, $delete_content_from_course, $delete_personal_documents, $delete_personal_content, $delete_names, $delete_memberships, !Request::bool('mail'), $delete_courseware)) {
+                if (
+                    $umanager->deleteUser(
+                        $delete_documents,
+                        $delete_content_from_course,
+                        $delete_personal_documents,
+                        $delete_personal_content,
+                        $delete_names,
+                        $delete_memberships,
+                        Request::bool('mail', false),
+                        $delete_courseware
+                    )
+                ) {
                     $details = explode('§', str_replace(['msg§', 'info§', 'error§'], '', mb_substr($umanager->msg, 0, -1)));
                     PageLayout::postSuccess(htmlReady(sprintf(_('"%s (%s)" wurde erfolgreich gelöscht.'), $user->getFullName(), $user->username)), $details);
                 } else {
@@ -346,7 +357,18 @@ class Admin_UserController extends AuthenticatedController
                     $umanager->getFromDatabase($_user_id);
 
                     //delete
-                    if ($umanager->deleteUser($delete_documents, $delete_content_from_course, $delete_personal_documents, $delete_personal_content, $delete_names, $delete_memberships, !Request::bool('mail'))) {
+                    if (
+                        $umanager->deleteUser(
+                            $delete_documents,
+                            $delete_content_from_course,
+                            $delete_personal_documents,
+                            $delete_personal_content,
+                            $delete_names,
+                            $delete_memberships,
+                            Request::bool('mail', false),
+                            $delete_courseware
+                        )
+                    ) {
                         $details = explode('§', str_replace(['msg§', 'info§', 'error§'], '', mb_substr($umanager->msg, 0, -1)));
                         PageLayout::postSuccess(htmlReady(sprintf(_('"%s (%s)" wurde erfolgreich gelöscht'), $users[$i]->getFullName(), $users[$i]->username)), $details);
                     } else {
