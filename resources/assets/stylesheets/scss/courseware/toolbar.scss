@@ -32,6 +32,11 @@
             right: 0;
         }
 
+        .cw-toolbar-tool-wrapper {
+            position: relative;
+            height: calc(100% - 50px);
+        }
+
         .cw-toolbar-tool-content {
             overflow-y: auto;
             padding-right: 8px;
@@ -100,7 +105,18 @@
             }
 
         }
+        
+        .cw-toolbar-containers {
+            position: relative;
+            height: 100%;
 
+            .cw-containeradder-item-list {
+                height: calc(100% - 120px);
+                overflow-y: auto;
+                padding-right: 10px;
+            }
+        }
+        
         .cw-toolbar-clipboard {
             .cw-collapsible {
                 margin-bottom: 4px;
