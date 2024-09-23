@@ -15,10 +15,12 @@
 
 <script>
 import { QuestionnaireComponent } from '../../mixins/QuestionnaireComponent';
+import StudipWysiwyg from "../StudipWysiwyg.vue";
 
 export default {
     name: 'questionnaire-info-edit',
-    mixins: [ QuestionnaireComponent ],
+    extends: QuestionnaireComponent,
+    components: {StudipWysiwyg},
     created() {
         this.setDefaultValues({
             url: '',

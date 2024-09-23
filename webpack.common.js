@@ -100,9 +100,10 @@ module.exports = {
                 options: {
                     compilerOptions: {
                         compatConfig: {
-                            MODE: 2,
+                            MODE: 3,
                             ATTR_FALSE_VALUE: false,
                             OPTIONS_DESTROYED: false,
+                            COMPONENT_ASYNC: false,
                             COMPILER_V_BIND_OBJECT_ORDER: false,
                         }
                     }

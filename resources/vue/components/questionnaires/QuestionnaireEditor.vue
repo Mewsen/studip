@@ -88,7 +88,8 @@
                 </div>
                 <div v-else>
                     <component :is="componentForQuestionIndex(indexForQuestion)"
-                               v-model="data.questions[indexForQuestion].questiondata"
+                               :model-value="data.questions[indexForQuestion].questiondata"
+                               @update:modelValue="(v) => data.questions[indexForQuestion].questiondata = v"
                                :question_id="data.questions[indexForQuestion].id"
                                :key="data.questions[indexForQuestion].id">
                     </component>
@@ -102,38 +103,47 @@
                     <span class="icon"><studip-icon shape="evaluation" :size="30" alt=""></studip-icon></span>
                     {{ $gettext('Einstellungen') }}
                 </a>
-                <draggable v-if="data.questions.length > 0" v-model="data.questions" handle=".drag-handle" group="questions" class="questions_container questions">
-                    <div v-for="question in data.questions"
-                         :key="question.id"
-                         @mouseenter="hoverTab = question.id"
-                         @mouseleave="hoverTab = null"
-                         :class="(activeTab === question.id || activeTab === 'meta_' + question.id ? 'active' : '') + (hoverTab === question.id ? ' hovered' : '')">
-                        <a href="#"
-                           @click.prevent="switchTab(question.id)">
-                            <span class="drag-handle"></span>
-                            <span class="icon type">
-                                <studip-icon :shape="questionTypes[question.questiontype].icon" :size="30" alt=""></studip-icon>
+                <draggable :list="data.questions"
+                           handle=".drag-handle"
+                           group="questions"
+                           class="questions_container questions"
+                           item-key="id"
+                >
+                    <template #item="{ element }">
+                        <div @mouseenter="hoverTab = element.id"
+                             @mouseleave="hoverTab = null"
+                             :class="{
+                                 active: activeTab === element.id || activeTab === 'meta_' + element.id,
+                                 hovered: hoverTab === element.id,
+                             }"
+                        >
+                            <a href="#"
+                               @click.prevent="switchTab(element.id)">
+                                <span class="drag-handle"></span>
+                                <span class="icon type">
+                                <studip-icon :shape="questionTypes[element.questiontype].icon" :size="30" alt=""></studip-icon>
                             </span>
 
-                            <div v-if="editInternalName !== question.id">{{ question.internal_name || questionTypes[question.questiontype].name}}</div>
-                            <div v-else class="inline_editing">
-                                <input type="text" ref="editInternalName" v-model="tempInternalName" class="inlineediting_internal_name">
-                                <button @click="saveInternalName(question.id)">
-                                    <studip-icon shape="accept" :size="20" :title="$gettext('Internen Namen speichern')"></studip-icon>
-                                </button>
-                                <button @click="editInternalName = null">
-                                    <studip-icon shape="decline" :size="20" :title="$gettext('Internen Namen nicht speichern')"></studip-icon>
-                                </button>
-                            </div>
-                        </a>
+                                <div v-if="editInternalName !== element.id">{{ element.internal_name || questionTypes[element.questiontype].name}}</div>
+                                <div v-else class="inline_editing">
+                                    <input type="text" ref="editInternalName" v-model="tempInternalName" class="inlineediting_internal_name">
+                                    <button @click="saveInternalName(element.id)">
+                                        <studip-icon shape="accept" :size="20" :title="$gettext('Internen Namen speichern')"></studip-icon>
+                                    </button>
+                                    <button @click="editInternalName = null">
+                                        <studip-icon shape="decline" :size="20" :title="$gettext('Internen Namen nicht speichern')"></studip-icon>
+                                    </button>
+                                </div>
+                            </a>
 
-                        <studip-action-menu :items="actionMenuItems"
-                                            @copy="duplicateQuestion(question.id)"
-                                            @rename="renameInternalName(question.id)"
-                                            @moveup="moveQuestionUp(question.id)"
-                                            @movedown="moveQuestionDown(question.id)"
-                                            @delete="deleteQuestion(question.id)"></studip-action-menu>
-                    </div>
+                            <studip-action-menu :items="actionMenuItems"
+                                                @copy="duplicateQuestion(element.id)"
+                                                @rename="renameInternalName(element.id)"
+                                                @moveup="moveQuestionUp(element.id)"
+                                                @movedown="moveQuestionDown(element.id)"
+                                                @delete="deleteQuestion(element.id)"></studip-action-menu>
+                        </div>
+                    </template>
                 </draggable>
                 <a :class="activeTab === 'add_question' ? 'add_question active' : 'add_question'"
                    href="#"
@@ -161,6 +171,11 @@ import md5 from 'md5';
 import StudipIcon from '../StudipIcon.vue';
 import StudipActionMenu from '../StudipActionMenu.vue';
 import Datetimepicker from '../Datetimepicker.vue';
+import {defineAsyncComponent} from 'vue';
+
+draggable.compatConfig = {
+    MODE: 3
+};
 
 const loadedComponents = {};
 
@@ -199,8 +214,8 @@ export default {
             const componentInfo = this.questionTypes[this.data.questions[index].questiontype].component;
             if (loadedComponents[componentInfo[0]] === undefined) {
                 loadedComponents[componentInfo[0]] = componentInfo[1] === ''
-                    ? () => import(`./${componentInfo[0]}.vue`)
-                    : () => import(/* webpackIgnore: true */componentInfo[1]);
+                    ? defineAsyncComponent(() => import(`./${componentInfo[0]}.vue`))
+                    : defineAsyncComponent(() => import(/* webpackIgnore: true */componentInfo[1]));
             }
 
             return loadedComponents[componentInfo[0]];
@@ -286,11 +301,11 @@ export default {
             this.$nextTick(function () {
                 if (this.$refs.autofocus !== undefined) {
                     if (Array.isArray(this.$refs.autofocus)) {
-                        if (typeof this.$refs.autofocus[0] !== "undefined") {
+                        if (this.$refs.autofocus[0] !== undefined) {
                             this.$refs.autofocus[0].focus();
                         }
                     } else {
-                        this.$refs.autofocus.focus();
+                        this.$refs.autofocus?.focus();
                     }
                 }
             });
@@ -341,14 +356,14 @@ export default {
             ];
         },
         activateFormSecure() {
-            return this.form_secured && !this.objectsEqual(this.oldData, this.data);
+            return this.form_secured && !this.objectsEqual(this.oldData, this.data) ? true : null;
         },
         indexForQuestion() {
             return this.getIndexForQuestion(this.activeTab);
         },
     },
     mounted() {
-        this.$refs.autofocus.focus();
+        this.$refs.autofocus?.focus();
     },
 }
 </script>

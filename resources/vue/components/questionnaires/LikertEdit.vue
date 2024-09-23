@@ -43,6 +43,7 @@
 import { $gettext } from '../../../assets/javascripts/lib/gettext';
 import InputArray from "./InputArray.vue";
 import { QuestionnaireComponent } from '../../mixins/QuestionnaireComponent';
+import StudipWysiwyg from "../StudipWysiwyg.vue";
 
 // This is necesssar since $gettext does not seem to work in data() or created()
 const default_values = () => ({
@@ -61,8 +62,8 @@ const default_values = () => ({
 
 export default {
     name: 'likert-edit',
-    components: { InputArray },
-    mixins: [ QuestionnaireComponent ],
+    extends: QuestionnaireComponent,
+    components: {StudipWysiwyg, InputArray },
     created() {
         this.setDefaultValues(default_values());
     },

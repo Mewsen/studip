@@ -26,11 +26,12 @@
 <script>
 import InputArray from "./InputArray.vue";
 import { QuestionnaireComponent } from '../../mixins/QuestionnaireComponent';
+import StudipWysiwyg from "../StudipWysiwyg.vue";
 
 export default {
+    extends: QuestionnaireComponent,
     name: 'vote-edit',
-    components: { InputArray },
-    mixins: [QuestionnaireComponent],
+    components: {StudipWysiwyg, InputArray },
     created() {
         this.setDefaultValues({
             description: '',

@@ -1,30 +1,22 @@
-<template>
-    <ckeditor
-        :editor="editor"
-        :config="editorConfig"
-        @ready="onReady"
-        v-model="currentText"
-        @input="onInput"
-    />
-</template>
-
 <script>
 import { ClassicEditor, BalloonEditor } from '../../assets/javascripts/chunks/wysiwyg.js';
+import {h, resolveComponent} from "vue";
 
 export default {
-    name: 'studip-wysiwyg',
-    model: {
-        prop: 'text',
-        event: 'input',
+    compatConfig: {
+        COMPONENT_V_MODEL: false,
+        RENDER_FUNCTION: false,
     },
+    name: 'studip-wysiwyg',
+    emits: ['update:modelValue'],
     props: {
-        text: {
+        modelValue: {
             type: String,
             required: true,
         },
         editorType: {
             type: String,
-            validator: function (value) {
+            validator(value) {
                 return ['classic', 'balloon'].includes(value);
             },
             default: 'classic',
@@ -54,7 +46,7 @@ export default {
     methods: {
         onReady(editor) {
             this.createdEditor = editor;
-            this.currentText = this.text;
+            this.currentText = this.modelValue;
 
             if (this.shouldFocus) {
                 this.focus();
@@ -62,7 +54,7 @@ export default {
         },
         onInput(value) {
             this.currentText = value;
-            this.$emit('input', value);
+            this.$emit('update:modelValue', value);
         },
         focus() {
             if (this.createdEditor) {
@@ -75,5 +67,18 @@ export default {
     created() {
         STUDIP.loadChunk('mathjax');
     },
+    render() {
+        return h(resolveComponent('ckeditor'), {
+            compatConfig: {
+                COMPONENT_V_MODEL: false,
+                RENDER_FUNCTION: false,
+            },
+            editor: this.editor,
+            config: this.editorConfig,
+            modelValue: this.modelValue,
+            onInput: this.onInput,
+            onReady: this.onReady,
+        })
+    }
 };
 </script>

@@ -14,10 +14,12 @@
 
 <script>
 import { QuestionnaireComponent } from '../../mixins/QuestionnaireComponent';
+import StudipWysiwyg from "../StudipWysiwyg.vue";
 
 export default {
+    extends: QuestionnaireComponent,
     name: 'freetext-edit',
-    mixins: [ QuestionnaireComponent ],
+    components: {StudipWysiwyg},
     created() {
         this.setDefaultValues({
             description: '',

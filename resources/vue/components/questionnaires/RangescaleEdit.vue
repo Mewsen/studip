@@ -52,11 +52,12 @@
 <script>
 import InputArray from './InputArray.vue';
 import { QuestionnaireComponent } from '../../mixins/QuestionnaireComponent';
+import StudipWysiwyg from "../StudipWysiwyg.vue";
 
 export default {
     name: 'rangescale-edit',
-    components: { InputArray },
-    mixins: [ QuestionnaireComponent ],
+    extends: QuestionnaireComponent,
+    components: {StudipWysiwyg, InputArray },
     created() {
         this.setDefaultValues({
             alternative_answer: '',

@@ -1,6 +1,6 @@
 <template>
     <span>
-        <input type="hidden" :name="name" :value="value">
+        <input type="hidden" :name="name" :value="modelValue">
         <input type="text"
                ref="visibleInput"
                class="visible_input"
@@ -11,14 +11,19 @@
 
 <script>
 export default {
+    compatConfig: {
+        COMPONENT_V_MODEL: false,
+    },
+
     name: 'datetimepicker',
+    emits: ['update:modelValue'],
     inheritAttrs: false,
     props: {
         name: {
             type: String,
             required: false
         },
-        value: {
+        modelValue: {
             required: false
         },
         mindate: {
@@ -34,14 +39,14 @@ export default {
             let date = formatted_date.match(/(\d+)/g);
             if (date) {
                 date = new Date(`${date[2]}-${date[1]}-${date[0]} ${date[3]}:${date[4]}`);
-                this.$emit('input', Math.floor(date / 1000));
+                this.$emit('update:modelValue', Math.floor(date / 1000));
             } else {
-                this.$emit('input', null);
+                this.$emit('update:modelValue', null);
             }
         }
     },
     mounted () {
-        let value = !isNaN(parseInt(this.value, 10)) ? parseInt(this.value, 10) : this.value;
+        let value = !isNaN(parseInt(this.modelValue, 10)) ? parseInt(this.modelValue, 10) : this.modelValue;
         if (Number.isInteger(value)) {
             let date = new Date(value * 1000);
             let formatted_date =
