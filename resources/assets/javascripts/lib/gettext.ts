@@ -31,8 +31,9 @@ const gettext = createGettext({
     defaultLanguage: state.locale,
     silent: false,
     translations: {
-        de_DE: {}
+        [DEFAULT_LANG]: {}
     },
+    mutedLanguages: [DEFAULT_LANG],
     setGlobalProperties: true,
     globalProperties: {
         language: ['$language'],
@@ -76,7 +77,7 @@ export async function setLocale(locale = getInitialLocale()) {
         const translations: Translation = await getTranslations(state.locale);
         state.translations[state.locale] = translations;
     }
-    
+
     updateTranslations();
 
     eventBus.emit('studip:set-locale', state.locale);

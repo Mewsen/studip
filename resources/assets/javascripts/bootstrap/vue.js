@@ -1,3 +1,5 @@
+import { defineAsyncComponent } from 'vue';
+
 STUDIP.ready(() => {
     document.querySelectorAll('[data-vue-app]:not([data-vue-app-created])').forEach((node) => {
         const config = Object.assign(
@@ -12,7 +14,7 @@ STUDIP.ready(() => {
         let components = {};
         config.components.forEach(component => {
             const name = component.split('/').reverse()[0];
-            components[name] = () => {
+            components[name] = defineAsyncComponent(() => {
                 // TODO: I wonder if this works with Vue3
 
                 const temp = import(`../../../vue/components/${component}.vue`);
@@ -35,7 +37,7 @@ STUDIP.ready(() => {
                     return c;
                 })
                 return temp;
-            };
+            });
         });
 
         STUDIP.Vue.load().then(({createApp, store, Vue}) => {
