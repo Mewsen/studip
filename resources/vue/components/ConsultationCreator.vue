@@ -41,7 +41,7 @@
                 <span class="required">{{ $gettext('Am Wochentag') }}</span>
 
                 <select required name="day-of-week" @change="evt => dayOfWeek = parseInt(evt.target.value, 10)">
-                    <option v-for="dow in daysOfTheWeek" :value="dow.key" :key="dow.key" :selected="dayOfWeek === dow.key">
+                    <option v-for="dow in daysOfTheWeek" :value="dow.key" :key="dow.key" :selected="dayOfWeek === dow.key ? true : null">
                         {{ dow.label }}
                     </option>
                 </select>
