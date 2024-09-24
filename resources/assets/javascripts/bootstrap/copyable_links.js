@@ -16,24 +16,8 @@ $(document).on('click', 'a.copyable-link', function (event) {
     document.execCommand('Copy');
     dummy.remove();
 
-    // Show visual hint using a deferred (this way we don't need to
-    // duplicate the functionality in the done() handler)
-    (new Promise((resolve, reject) => {
-        let confirmation = $('<div class="copyable-link-confirmation copyable-link-success">');
-        confirmation.text($gettext('Link wurde kopiert'));
-        confirmation.insertBefore('#content');
-
-        // Resolve deferred when animation has ended or after 2 seconds as a
-        // fail safe
-        let timeout = setTimeout(() => {
-            $(this).parent().off('animationend');
-            resolve(confirmation);
-        }, 1500);
-        $(this).parent().one('animationend', () => {
-            clearTimeout(timeout);
-            resolve(confirmation);
-        });
-    })).then((confirmation, parent) => {
-        confirmation.remove();
-    });
+    STUDIP.eventBus.emit(
+        'push-system-notification',
+        { type: 'success', message: $gettext('Link wurde kopiert') }
+    );
 });

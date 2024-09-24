@@ -9,12 +9,16 @@
 ?>
 <tr id="field-<?= htmlReady($field) ?>">
     <td>
+    <? if (!Config::get()->fromEnv($field)): ?>
         <a data-dialog href="<?= $controller->link_for($linkchunk, compact('field')) ?>">
             <?= htmlReady($field) ?>
         </a>
-        <? if (!empty($description)): ?>
-            <br><small><?= htmlReady($description) ?></small>
-        <? endif; ?>
+    <? else: ?>
+        <?= htmlReady($field) ?>
+    <? endif; ?>
+    <? if (!empty($description)): ?>
+        <br><small><?= htmlReady($description) ?></small>
+    <? endif; ?>
     </td>
     <td class="wrap-content">
         <? if ($type === 'string' || $type === 'i18n'): ?>
@@ -31,8 +35,14 @@
     </td>
     <td><?= htmlReady($type) ?></td>
     <td class="actions">
+    <? if (!Config::get()->fromEnv($field)): ?>
         <a data-dialog="size=auto" href="<?= $controller->link_for($linkchunk, compact('field')) ?>">
             <?= Icon::create('edit')->asImg(['title' => _('Konfigurationsparameter bearbeiten')]) ?>
         </a>
+    <? else: ?>
+        <?= Icon::create('ufo', Icon::ROLE_INFO)->asImg([
+            'title' => _('Wert wurde über eine Umgebungsvariable gesetzt und kann an dieser Stelle nicht verändert werden.'),
+        ]) ?>
+    <? endif; ?>
     </td>
 </tr>

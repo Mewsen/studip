@@ -28,7 +28,7 @@
         <?= $this->render_partial(
             'resources/resource/permissions',
             [
-                'custom_empty_list_message' => _('Es sind keine gemeinsamen Rechte für die oben aufgeführten Räume vorhanden.'),
+                'custom_empty_list_message' => _('Es sind keine gemeinsamen Rechte für die zuvor aufgelisteten Räume vorhanden.'),
                 'custom_save_button_text' => _('Zuweisen'),
                 'custom_form_action_link' => URLHelper::getLink('dispatch.php/resources/room_group/permissions/' . $clipboard->id),
                 'custom_hidden_fields' => [

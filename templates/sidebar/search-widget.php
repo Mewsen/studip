@@ -1,6 +1,7 @@
 <form action="<?= URLHelper::getLink($url) ?>"
       method="<?= $method ?>"
-      <? if (isset($id)) printf('id="%s"', htmlReady($id)); ?>
+      <? $id = $id ?? 'form-'.md5(uniqid()) ?>
+      <? printf('id="%s"', htmlReady($id)) ?>
       <?= $onsubmit ? 'onsubmit="'.htmlReady($onsubmit).'"' : '' ?>
       class="sidebar-search">
 <? foreach ($url_params as $key => $value): ?>
@@ -8,9 +9,10 @@
 <? endforeach; ?>
     <ul class="needles">
     <? foreach ($needles as $needle): ?>
+        <? $hash = md5($url . '|' . $needle['name']) ?>
         <li <? if ($needle['quick_search'] && $needle['quick_search']->hasExtendedLayout()) echo 'class="extendedLayout" id="' . $needle['quick_search']->getId() . '_frame"'; ?>>
             <div class="input-group files-search">
-                <label for="needle-<?= $hash = md5($url . '|' . $needle['name']) ?>" <? if ($needle['placeholder']) echo 'style="display:none;"'; ?>>
+                <label for="needle-<?= $hash ?>" <? if ($needle['placeholder']) echo 'class="sr-only"'; ?>>
                     <?= htmlReady($needle['label']) ?>
                 </label>
                 <? if ($needle['quick_search']): ?>
@@ -22,16 +24,24 @@
                        <? if ($needle['placeholder']) printf('placeholder="%s"', htmlReady($needle['label'])); ?>
                        <?= arrayToHtmlAttributes($needle['attributes']) ?>>
                 <? endif; ?>
-                <? if ($reset_link): ?>
-                    <a class="reset-search" href="<?= $reset_link ?>" tabindex="0" role="button"
-                       title="<?= _('Suche zurücksetzen') ?>">
-                        <?= Icon::create('decline')->asImg(20) ?>
-                    </a>
-                <? endif; ?>
                 <button type="submit" class="submit-search<?= $reset_link ? ' is-executed' : '' ?>"
                         title="<?= _('Suche ausführen') ?>">
                     <?= Icon::create('search')->asImg(20) ?>
                 </button>
+            <? if ($reset_link): ?>
+                <? if ($onsubmit) : ?>
+                    <?= Icon::create('decline')->asInput([
+                        'title' =>  _('Suche zurücksetzen'),
+                        'class' => 'reset-search',
+                        'onclick' => "document.getElementById('needle-".$hash."').value = ''; this.remove();"
+                    ]) ?>
+                <? else : ?>
+                    <a class="reset-search" href="<?= $reset_link ?>" tabindex="0" role="button"
+                       title="<?= _('Suche zurücksetzen') ?>">
+                        <?= Icon::create('decline')->asImg(20) ?>
+                    </a>
+                <? endif ?>
+            <? endif; ?>
         </li>
     <? endforeach; ?>
     </ul>

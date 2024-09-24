@@ -504,7 +504,7 @@ table.default {
     > thead {
         > tr > th {
             background-color: var(--content-color-20);
-            border-bottom: 1px solid fadeout($brand-color-lighter, 80%);
+            border-bottom: 1px solid fade-out($brand-color-lighter, 0.8);
             border-top: 1px solid var(--brand-color-darker);
             font-size: 1.0em;
         }
@@ -515,7 +515,7 @@ table.default {
             > th {
                 background-color: var(--content-color-20);
                 border-top: 1px solid var(--brand-color-darker);
-                border-bottom: 1px solid fadeout($brand-color-lighter, 80%);
+                border-bottom: 1px solid fade-out($brand-color-lighter, 0.8);
                 text-align: left;
             }
 
@@ -580,7 +580,7 @@ table.default {
 
     // Hover effect
     &:not(.nohover) > tbody:not(.nohover) > tr:not(.nohover):hover > td:not(.nohover) {
-        background-color: fadeout($light-gray-color, 80%);
+        background-color: fade-out($light-gray-color, 0.8);
     }
 
     &:not(.nohover) > tbody:not(.nohover) > tr.selected:not(.nohover):hover > td:not(.nohover) {
@@ -742,7 +742,7 @@ table.withdetails {
     }
 
     > tbody > tr.open > td {
-        background-color: fadeout($light-gray-color, 80%);
+        background-color: fade-out($light-gray-color, 0.8);
     }
 
     > tbody > tr.open > td:first-child {

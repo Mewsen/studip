@@ -83,7 +83,7 @@ class Studiengaenge_FaecherController extends Studiengaenge_StudiengangteileCont
             $this->stgteil = StudiengangTeil::get();
             $this->stgteil->assignFach($fach->getId());
         } else {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
         $this->perform_relayed('stgteil');
     }

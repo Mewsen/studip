@@ -2,7 +2,7 @@
     <section class="cw-block-edit">
         <header v-if="preview">{{ $gettext('Bearbeiten') }}</header>
         <div class="cw-block-features-content">
-            <div @click="deactivateToolbar(); exitHandler = true;">
+            <div @click="exitHandler = true;">
                 <slot name="edit" />
             </div>
             <div class="cw-button-box">
@@ -30,16 +30,6 @@ export default {
     },
     beforeMount() {
         this.originalBlock = this.block;
-    },
-    methods: {
-        ...mapActions({
-            coursewareBlockAdder: 'coursewareBlockAdder',
-            coursewareShowToolbar: 'coursewareShowToolbar'
-        }),
-        deactivateToolbar() {
-            this.coursewareBlockAdder({});
-            this.coursewareShowToolbar(false);
-        },
     },
     beforeDestroy() {
         if (this.exitHandler) {

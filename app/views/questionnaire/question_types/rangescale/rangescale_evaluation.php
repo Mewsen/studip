@@ -27,7 +27,7 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
         <tr>
             <th><?= _('Aussage') ?></th>
             <? for ($i = $vote->questiondata['minimum'] ?? 1; $i <= $vote->questiondata['maximum']; $i++) : ?>
-                <th class="rangescale_center"><?= htmlReady($i) ?></th>
+                <th class="option-cell"><?= htmlReady($i) ?></th>
             <? endfor ?>
         </tr>
     </thead>

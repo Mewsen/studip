@@ -10,8 +10,6 @@ require_once 'lib/user_visible.inc.php';
  */
 class Course_StudygroupController extends AuthenticatedController
 {
-
-    // see Trails_Controller#before_filter
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
@@ -596,6 +594,11 @@ class Course_StudygroupController extends AuthenticatedController
         global $perm;
 
         $id = Context::getId();
+
+        if (!$id) {
+            throw new CheckObjectException(_('Sie haben kein Objekt gewählt.'));
+        }
+
         $user = Request::username('user');
 
         if ($from_status === 'moderator') {
@@ -780,7 +783,7 @@ class Course_StudygroupController extends AuthenticatedController
             // send invite message to user
             $msg     = new messaging();
             $sem     = new Seminar($id);
-            $message = sprintf(_("%s möchte Sie auf die Studiengruppe %s aufmerksam machen. Klicken Sie auf den untenstehenden Link, um direkt zur Studiengruppe zu gelangen.\n\n %s"),
+            $message = sprintf(_("%s möchte Sie auf die Studiengruppe %s aufmerksam machen. Klicken Sie auf den folgenden Link, um direkt zur Studiengruppe zu gelangen.\n\n %s"),
                 get_fullname(), $sem->name, URLHelper::getlink("dispatch.php/course/studygroup/details/" . $id, ['cid' => null]));
             $subject = _("Sie wurden in eine Studiengruppe eingeladen");
             $msg->insert_message($message, get_username($receiver), '', '', '', '', '', $subject);
@@ -846,7 +849,7 @@ class Course_StudygroupController extends AuthenticatedController
                 return;
             }
         }
-        throw new Trails_Exception(401);
+        throw new Trails\Exception(401);
     }
 
 

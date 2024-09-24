@@ -86,7 +86,7 @@ class Admin_PluginController extends AuthenticatedController
      * update information is available, an error message is set in
      * this controller and an empty array is returned.
      *
-     * @param array     array of plugin meta data
+     * @param array $plugins array of plugin meta data
      */
     private function get_update_info($plugins)
     {
@@ -127,7 +127,6 @@ class Admin_PluginController extends AuthenticatedController
         }
 
         $plugin_manager = PluginManager::getInstance();
-        $plugin_filter = Request::option('plugin_filter', '');
 
         $plugins = $plugin_manager->getPluginInfos($this->plugin_filter);
 
@@ -200,7 +199,6 @@ class Admin_PluginController extends AuthenticatedController
                         _('Die Position von Plugin "%s" wurde verändert.'),
                         $plugin['name']
                     );
-                    $changed = true;
                 }
             }
         }
@@ -344,7 +342,7 @@ class Admin_PluginController extends AuthenticatedController
     /**
      * Ask for confirmation from the user before deleting a plugin.
      *
-     * @param integer   id of plugin to delete
+     * @param int $plugin_id id of plugin to delete
      */
     public function ask_delete_action($plugin_id)
     {
@@ -366,7 +364,7 @@ class Admin_PluginController extends AuthenticatedController
     /**
      * Completely delete a plugin from the system.
      *
-     * @param integer   id of plugin to delete
+     * @param int $plugin_id id of plugin to delete
      */
     public function delete_action($plugin_id)
     {
@@ -390,7 +388,7 @@ class Admin_PluginController extends AuthenticatedController
     /**
      * Download a ZIP file containing the given plugin.
      *
-     * @param integer   id of plugin to download
+     * @param int $plugin_id id of plugin to download
      */
     public function download_action($plugin_id)
     {
@@ -441,16 +439,16 @@ class Admin_PluginController extends AuthenticatedController
         $update_info = $this->plugin_admin->getUpdateInfo($plugins);
 
         $update = $this->flash['update'];
-        $update_status = [];
 
-        // update each plugin in turn
-        foreach ($update as $id) {
-            if (isset($update_info[$id]['update'])) {
-                try {
-                    $update_url = $update_info[$id]['update']['url'];
-                    $this->plugin_admin->installPluginFromURL($update_url);
-                } catch (PluginInstallationException $ex) {
-                    $update_errors[] = sprintf('%s: %s', $plugins[$id]['name'], $ex->getMessage());
+        if (!empty($update)) { // update each plugin in turn
+            foreach ($update as $id) {
+                if (isset($update_info[$id]['update'])) {
+                    try {
+                        $update_url = $update_info[$id]['update']['url'];
+                        $this->plugin_admin->installPluginFromURL($update_url);
+                    } catch (PluginInstallationException $ex) {
+                        $update_errors[] = sprintf('%s: %s', $plugins[$id]['name'], $ex->getMessage());
+                    }
                 }
             }
         }
@@ -473,6 +471,8 @@ class Admin_PluginController extends AuthenticatedController
     /**
      * Show a page describing this plugin's meta data and description,
      * if available.
+     *
+     * @param int $plugin_id if of plugin to show manifest
      */
     public function manifest_action($plugin_id)
     {
@@ -491,7 +491,7 @@ class Admin_PluginController extends AuthenticatedController
     /**
      * migrate a plugin to top version
      *
-     * @param integer   id of plugin to migrate
+     * @param int $plugin_id id of plugin to migrate
      */
     public function migrate_action($plugin_id)
     {
@@ -516,7 +516,7 @@ class Admin_PluginController extends AuthenticatedController
      * register a plugin in database when it
      * already exists in file system
      *
-     * @param integer   number of found plugin
+     * @param int $number number of found plugin
      */
     public function register_action($number)
     {

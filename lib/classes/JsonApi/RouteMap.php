@@ -5,8 +5,7 @@ namespace JsonApi;
 use JsonApi\Contracts\JsonApiPlugin;
 use JsonApi\Middlewares\Authentication;
 use JsonApi\Middlewares\DangerousRouteHandler;
-use JsonApi\Middlewares\JsonApi as JsonApiMiddleware;
-use JsonApi\Middlewares\StudipMockNavigation;
+use JsonApi\Routes\Consultations\SlotCreationCount;
 use JsonApi\Routes\Holidays\HolidaysShow;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -49,7 +48,6 @@ use Slim\Routing\RouteCollectorProxy;
  *
  *   $this->app->post('/article/{id}/comments', MeineRoute::class);
  *
- * @see \JsonApi\Middlewares\JsonApi
  * @see \JsonApi\Middlewares\Authentication
  * @see \JsonApi\Contracts\JsonApiPlugin
  * @see http://www.slimframework.com/docs/objects/router.html#how-to-create-routes
@@ -118,11 +116,12 @@ class RouteMap
         $group->get('/status-groups/{id}', Routes\StatusgroupShow::class);
 
         $this->addAuthenticatedBlubberRoutes($group);
+        $this->addAuthenticatedClipboardRoutes($group);
         $this->addAuthenticatedConsultationRoutes($group);
         $this->addAuthenticatedContactsRoutes($group);
         $this->addAuthenticatedCoursesRoutes($group);
 
-        if (\PluginManager::getInstance()->getPlugin('CoursewareModule')) {
+        if (\PluginManager::getInstance()->getPlugin(\CoursewareModule::class)) {
             $this->addAuthenticatedCoursewareRoutes($group);
         }
 
@@ -155,7 +154,7 @@ class RouteMap
 
         $group->get('/studip/properties', Routes\Studip\PropertiesIndex::class);
 
-        if (\PluginManager::getInstance()->getPlugin('CoursewareModule')) {
+        if (\PluginManager::getInstance()->getPlugin(\CoursewareModule::class)) {
             $group->get('/public/courseware/{link_id}/courseware-structural-elements/{id}', Routes\Courseware\PublicStructuralElementsShow::class);
             $group->get('/public/courseware/{link_id}/courseware-structural-elements', Routes\Courseware\PublicStructuralElementsIndex::class);
         }
@@ -205,8 +204,26 @@ class RouteMap
         );
     }
 
+    private function addAuthenticatedClipboardRoutes(RouteCollectorProxy $group): void
+    {
+        $group->post('/clipboards', Routes\Clipboards\ClipboardsCreate::class);
+        $group->patch('/clipboards/{id}', Routes\Clipboards\ClipboardsUpdate::class);
+        $group->delete('/clipboards/{id}', Routes\Clipboards\ClipboardsDelete::class);
+
+        $group->get('/clipboard-items/{id}', Routes\Clipboards\ClipboardItemsShow::class);
+        $group->post('/clipboards/{id}/items', Routes\Clipboards\ClipboardItemsCreate::class);
+        $group->delete('/clipboards/{id}/items', Routes\Clipboards\ClipboardItemsDelete::class);
+        $group->delete('/clipboards/{id}/items/{itemId}', Routes\Clipboards\ClipboardItemsDelete::class);
+
+        $group->post('/clipboard-items', Routes\Clipboards\ClipboardItemsCreate::class);
+        $group->delete('/clipboard-items/{id}', Routes\Clipboards\ClipboardItemsDelete::class);
+    }
+
     private function addAuthenticatedConsultationRoutes(RouteCollectorProxy $group): void
     {
+        // TODO: I know, not very JSONAPI-like but it's a NonJsonApiController ¯\_(ツ)_/¯
+        $group->get('/consultation-slots/count', SlotCreationCount::class);
+
         $group->get('/{type:courses|institutes|users}/{id}/consultations', Routes\Consultations\BlocksByRangeIndex::class);
 
         $group->get('/consultation-blocks/{id}', Routes\Consultations\BlockShow::class);

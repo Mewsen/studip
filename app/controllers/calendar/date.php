@@ -27,9 +27,8 @@ class Calendar_DateController extends AuthenticatedController
             $range_id = $range_and_id[1];
         }
         if (!$range) {
-            //Show the personal calendar of the current user:
+            $range_id = Request::option('user_id', $GLOBALS['user']->id);
             $range = 'user';
-            $range_id = $GLOBALS['user']->id;
         }
 
         $owner = null;
@@ -233,6 +232,14 @@ class Calendar_DateController extends AuthenticatedController
             $this->date->repetition_end = $this->date->end;
         } else {
             $time = new DateTime();
+            if (Request::submitted('timestamp')) {
+                $time->setTimestamp(Request::int('timestamp'));
+            } elseif (Request::submitted('defaultDate')) {
+                $date_parts = explode('-', Request::get('defaultDate'));
+                if (count($date_parts) === 3) {
+                    $time->setDate($date_parts[0], $date_parts[1], $date_parts[2]);
+                }
+            }
             $time = $time->add(new DateInterval('PT1H'));
             $time->setTime(intval($time->format('H')), 0, 0);
             $this->date->begin = $time->getTimestamp();
@@ -325,15 +332,12 @@ class Calendar_DateController extends AuthenticatedController
 
         if ($this->date->isNew()) {
             if (!($owner instanceof Course)) {
-                //Assign the date to the calendar of the current user by default:
-                $user = User::findCurrent();
-                if ($user) {
-                    $this->calendar_assignment_items[] = [
-                        'value'     => $user->id,
-                        'name'      => $user->getFullName(),
-                        'deletable' => true
-                    ];
-                }
+                //Assign the date to the calendar of the owner by default:
+                $this->calendar_assignment_items[] = [
+                    'value'     => $owner->id,
+                    'name'      => $owner->getFullName(),
+                    'deletable' => true
+                ];
             }
         } else {
             $exceptions = CalendarDateException::findBySql(

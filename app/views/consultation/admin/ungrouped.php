@@ -14,7 +14,7 @@
 <?= MessageBox::info(sprintf(
     implode('<br>', [
         _('Derzeit sind keine Termine eingetragen.'),
-        '<a href="%s" class="button" data-dialog="size=auto">%s</a>',
+        '<a href="%s" class="button" data-dialog="size=big">%s</a>',
     ]),
     $controller->create(),
     _('Terminblöcke anlegen')
@@ -183,9 +183,7 @@
                 </div>
             <? endif; ?>
             </td>
-            <td>
-                <?= htmlReady($block->room) ?>
-            </td>
+            <td><?= htmlReady($slot->block->room) ?></td>
             <td>
                 <?= $this->render_partial('consultation/slot-occupation.php', compact('slot')) ?>
             </td>

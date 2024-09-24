@@ -96,7 +96,7 @@ class CronjobExecute extends Command
                             if (strlen($value) && !ctype_digit($value)) {
                                 throw new \RuntimeException('Number is invalid.');
                             }
-                            return $value;
+                            return (int) $value;
                         });
                     }
                 }

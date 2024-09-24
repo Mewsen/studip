@@ -5,7 +5,7 @@ namespace Studip\OAuth2;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Response;
-use Trails_Response;
+use Trails\Response as TrailsResponse;
 
 trait NegotiatesWithPsr7
 {
@@ -19,9 +19,9 @@ trait NegotiatesWithPsr7
         return new Response();
     }
 
-    protected function convertPsrResponse(ResponseInterface $response): Trails_Response
+    protected function convertPsrResponse(ResponseInterface $response): TrailsResponse
     {
-        $trailsResponse = new Trails_Response((string) $response->getBody(), [], $response->getStatusCode());
+        $trailsResponse = new TrailsResponse((string) $response->getBody(), [], $response->getStatusCode());
         foreach ($response->getHeaders() as $key => $values) {
             foreach ($values as $value) {
                 $trailsResponse->add_header($key, $value);

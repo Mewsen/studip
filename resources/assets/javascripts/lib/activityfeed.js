@@ -6,13 +6,13 @@ const ActivityFeed = {
     maxheight: null,
     filter: null,
 
-    init: function() {
+    init() {
         STUDIP.ActivityFeed.maxheight = parseInt($('#stream-container').css('max-height').replace(/[^-\d.]/g, ''));
 
         STUDIP.ActivityFeed.loadFeed(STUDIP.ActivityFeed.filter);
 
-        $('#stream-container').scroll(function () {
-            var scrollBottom = $('#stream-container').scrollTop() + $('#stream-container').height() + 250;
+        $('#stream-container').scroll(() => {
+            const scrollBottom = $('#stream-container').scrollTop() + $('#stream-container').height() + 250;
 
             if ($('#stream-container').prop('scrollHeight') < scrollBottom) {
                 STUDIP.ActivityFeed.loadFeed(STUDIP.ActivityFeed.filter);
@@ -23,7 +23,7 @@ const ActivityFeed = {
         $(document).on('click', '.provider_circle', function () {
             $(this).parent().parent().children('.activity-content').toggle();
         }).on('click', '#toggle-all-activities,#toggle-user-activities', function () {
-            var toggled = $(this).is(':not(.toggled)');
+            const toggled = $(this).is(':not(.toggled)');
             $(this).toggleClass('toggled', toggled);
 
             STUDIP.ActivityFeed.setToggleStatus();
@@ -32,11 +32,11 @@ const ActivityFeed = {
         });
     },
 
-    getTemplate: _.memoize(function(name) {
-        return _.template($("script." + name).html());
+    getTemplate: _.memoize(name => {
+        return _.template($(`script.${name}`).html());
     }),
 
-    loadFeed: function(filtertype) {
+    loadFeed(filtertype) {
         if (STUDIP.ActivityFeed.user_id === null) {
             console.log('Could not retrieve activities, no valid user id found!');
             return false;
@@ -48,17 +48,18 @@ const ActivityFeed = {
 
         STUDIP.ActivityFeed.polling = true;
 
-        STUDIP.api.GET(['user', STUDIP.ActivityFeed.user_id, 'activitystream'], {
-            data: {
-                filtertype: JSON.stringify(filtertype),
-                scrollfrom: STUDIP.ActivityFeed.scrolledfrom
-            }
-        }).done(function (activities) {
-            var stream        = STUDIP.ActivityFeed.getTemplate('activity_stream');
-            var activity      = STUDIP.ActivityFeed.getTemplate('activity');
-            var activity_urls = STUDIP.ActivityFeed.getTemplate('activity-urls');
-            var num_entries   = Object.keys(activities).length;
-            var lastelem      = $(activities).last();
+        const url = STUDIP.URLHelper.getURL('dispatch.php/activityfeed/load', {
+            filtertype: JSON.stringify(filtertype),
+            scrollfrom: STUDIP.ActivityFeed.scrolledfrom,
+        });
+        fetch(url).then(
+            response => response.json(),
+        ).then(activities => {
+            const stream = STUDIP.ActivityFeed.getTemplate('activity_stream');
+            const activity = STUDIP.ActivityFeed.getTemplate('activity');
+            const activity_urls = STUDIP.ActivityFeed.getTemplate('activity-urls');
+            const num_entries = Object.keys(activities).length;
+            const lastelem = $(activities).last();
 
             if (lastelem[0]) {
                 STUDIP.ActivityFeed.scrolledfrom  = lastelem[0].mkdate;
@@ -79,15 +80,15 @@ const ActivityFeed = {
             if ($('#stream-container').height() < STUDIP.ActivityFeed.maxheight) {
                 STUDIP.ActivityFeed.loadFeed('');
             }
-        }).fail(function () {
-            var template = STUDIP.ActivityFeed.getTemplate('activity-load-error');
+        }).catch(() => {
+            const template = STUDIP.ActivityFeed.getTemplate('activity-load-error');
             STUDIP.ActivityFeed.writeToStream(template());
-        }).always(function () {
+        }).finally(() => {
             STUDIP.ActivityFeed.polling = false;
         });
     },
 
-    writeToStream: function (html) {
+    writeToStream(html) {
         if (STUDIP.ActivityFeed.initial) {
             // replace data in DOM
             $('#stream-container').html('');
@@ -98,9 +99,9 @@ const ActivityFeed = {
         $('#stream-container').append(html);
     },
 
-    setToggleStatus: function() {
-        var show_details = $('#toggle-all-activities').is('.toggled'),
-            show_own     = $('#toggle-user-activities').is('.toggled');
+    setToggleStatus() {
+        const show_details = $('#toggle-all-activities').is('.toggled');
+        const show_own = $('#toggle-user-activities').is('.toggled');
 
         // update toggle status fir activity contents
         $('.activity-content').toggle(show_details);
@@ -109,7 +110,7 @@ const ActivityFeed = {
         $('.activity:has(.provider_circle.right)').toggle(show_own);
     },
 
-    updateFilter: function(filter) {
+    updateFilter(filter) {
         STUDIP.ActivityFeed.filter = filter;
         STUDIP.ActivityFeed.initial = true;
         STUDIP.ActivityFeed.scrolledfrom = Math.floor(Date.now() / 1000);

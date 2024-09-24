@@ -16,13 +16,21 @@
         <? endif ?>
 
         <? if ($step === 1 || $step === 2) : ?>
-                <? if ($_SESSION[$request_id]['search_by'] !== 'category') : ?>
-                    <? \Studip\Button::create(_('Raum auswählen'), 'select_room') ?>
+            <? if (
+                !isset($_SESSION[$request_id]['search_by'])
+                || $_SESSION[$request_id]['search_by'] !== 'category'
+            ) : ?>
+                <? \Studip\Button::create(_('Raum auswählen'), 'select_room') ?>
             <? endif ?>
         <? endif ?>
 
-        <? if (($step === 1 && $_SESSION[$request_id]['room_category_id'] !== '0')
-            || $step === 2) : ?>
+        <? if (
+            (
+                $step === 1
+                && !empty($_SESSION[$request_id]['room_category_id'])
+            )
+            || $step === 2
+        ) : ?>
             <?= \Studip\Button::create(_('Weiter'), 'show_summary') ?>
         <? endif ?>
 

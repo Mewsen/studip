@@ -622,8 +622,13 @@ class Fullcalendar
                     $('.fc-slats tr:odd .fc-widget-content:not(.fc-axis)').remove();
                 }
 
-                STUDIP.api.GET(`semester/${timestamp}/week`).done((data) => {
+                if (document.getElementById('booking-plan-header-semname') === null) {
+                    return;
+                }
 
+                $.getJSON(
+                    STUDIP.URLHelper.getURL(`dispatch.php/resources/ajax/semester_week/${timestamp}`)
+                ).done((data) => {
                     if (data) {
                         $('#booking-plan-header-semname').text(data.semester_name);
                         if (data.sem_week) {
@@ -640,7 +645,7 @@ class Fullcalendar
                         $('#booking-plan-header-semrow').hide();
                         $('#booking-plan-header-semweek-part').hide();
                     }
-            })
+                });
             },
             resourceRender (renderInfo) {
                 if ($(renderInfo.view.context.calendar.el).hasClass('room-group-booking-plan')) {
@@ -731,11 +736,30 @@ class Fullcalendar
             //Get the timestamp:
             let timestamp = changedMoment.getTime() / 1000;
 
-            jQuery('a.resource-bookings-actions').each(function () {
+            jQuery('a.resource-bookings-actions, a.calendar-action').each(function () {
                 const url = new URL(this.href);
-                url.searchParams.set('timestamp', timestamp)
+                url.searchParams.set('timestamp', timestamp.toString())
                 url.searchParams.set('defaultDate', changed_date)
                 this.href = url.toString();
+            });
+            jQuery('.sidebar-widget.calendar-action').each(function() {
+                //Each sidebar widget is different. The placement of the defaultDate URL parameter
+                //has to reflect that.
+                jQuery(this).find('button[formaction]').each(function() {
+                    //Modify the formaction attribute:
+                    let url = new URL(jQuery(this).attr('formaction'));
+                    url.searchParams.set('defaultDate', changed_date);
+                    jQuery(this).attr('formaction', url.toString());
+                });
+                jQuery(this).find('form[action]').each(function() {
+                    //Add a hidden input with the defaultDate:
+                    let hidden_input = jQuery(this).find('input[name="defaultDate"]')[0];
+                    if (!hidden_input) {
+                        hidden_input = jQuery('<input type="hidden" name="defaultDate">');
+                        jQuery(this).append(hidden_input);
+                    }
+                    jQuery(hidden_input).val(changed_date);
+                });
             });
 
             // Now change the URL of the window.

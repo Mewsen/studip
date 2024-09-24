@@ -164,7 +164,7 @@ class Admin_LockrulesController extends AuthenticatedController
     {
         $this->lock_rule = LockRule::find($lock_rule_id);
         if (!(!$this->lock_rule->isNew() && ($GLOBALS['perm']->have_perm('root') || $this->lock_rule->user_id === $GLOBALS['user']->id))) {
-            throw new Trails_Exception(403);
+            throw new Trails\Exception(403);
         }
         CSRFProtection::verifyUnsafeRequest();
         if ($this->lock_rule->delete()) {

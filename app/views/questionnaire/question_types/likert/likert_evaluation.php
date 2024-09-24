@@ -27,7 +27,7 @@ $options = $vote->questiondata['options'];
         <tr>
             <th><?= _('Aussage') ?></th>
             <? foreach ($options as $option) : ?>
-                <th><?= htmlReady($option) ?></th>
+                <th class="option-cell"><?= htmlReady($option) ?></th>
             <? endforeach ?>
         </tr>
     </thead>

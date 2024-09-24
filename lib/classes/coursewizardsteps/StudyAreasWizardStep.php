@@ -28,9 +28,9 @@ class StudyAreasWizardStep implements CourseWizardStep
     public function getStepTemplate($values, $stepnumber, $temp_id)
     {
         // We only need our own stored values here.
-        $values = $values[get_class($this)];
+        $values = $values[get_class($this)] ?? [];
         // Load template from step template directory.
-        $factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'].'/app/views/course/wizard/steps');
+        $factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'].'/app/views/course/wizard/steps');
         $tpl = $factory->open('studyareas/index');
         if (!empty($values['studyareas'])) {
             $tree = $this->buildPartialSemTree(StudipStudyArea::backwards(StudipStudyArea::findMany($values['studyareas'])));

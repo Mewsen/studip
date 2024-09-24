@@ -25,14 +25,9 @@ class Course_WizardController extends AuthenticatedController
     public function before_filter (&$action, &$args)
     {
         parent::before_filter($action, $args);
-        global $perm;
-        if (Request::isXhr()) {
-            $this->dialog = true;
-        }
 
-        $sidebar = Sidebar::get();
-
-        $this->studygroup = Request::int('studygroup') ?: $this->flash['studygroup'];
+        $this->dialog = Request::isXhr();
+        $this->studygroup = Request::bool('studygroup', $this->flash['studygroup'] ?? false);
 
         if (!$this->studygroup) {
             PageLayout::setTitle(_('Neue Veranstaltung anlegen'));

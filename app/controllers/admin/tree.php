@@ -130,12 +130,15 @@ class Admin_TreeController extends AuthenticatedController
         $node->parent_id = Request::option('parent_id');
 
         $parent = $classname::getNode(Request::option('parent_id'));
-        $maxprio = max(array_map(
-            function ($c) {
-                return $c->priority;
-            },
-            $parent->getChildNodes()
-        ));
+        $children = $parent->getChildNodes();
+        $maxprio = !empty($children)
+            ? max(array_map(
+                function ($c) {
+                    return $c->priority;
+                },
+                $children
+            ))
+            : 0;
         $node->priority = $maxprio + 1;
 
         if (Request::option('studip_object_id')) {

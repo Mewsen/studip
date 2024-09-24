@@ -37,22 +37,17 @@ class ProfileController extends AuthenticatedController
             'username',
             $this->user ? $this->user->username : null
         ));
-        // get additional informations to selected user
-        $this->profile = new ProfileModel(
-            $this->current_user ? $this->current_user->id : null,
-            $this->user ? $this->user->id : null
-        );
 
         // set the page title depending on user selection
         if (
-            $this->user
+            isset($this->user, $this->current_user)
             && $this->current_user->id === $this->user->id
             && !$this->current_user->locked
         ) {
             PageLayout::setTitle(_('Mein Profil'));
             UserConfig::get($this->user->id)->store('PROFILE_LAST_VISIT', time());
         } elseif (
-            $this->current_user->id
+            !empty($this->current_user->id)
             && (
                 $this->perm->have_perm('root')
                 || (
@@ -106,11 +101,11 @@ class ProfileController extends AuthenticatedController
 
         // Additional user information
         $this->public_email = get_visible_email($this->current_user->user_id);
-        $this->motto        = $this->profile->getVisibilityValue('motto');
-        $this->private_nr   = $this->profile->getVisibilityValue('privatnr', 'private_phone');
-        $this->private_cell = $this->profile->getVisibilityValue('privatcell', 'private_cell');
-        $this->privadr      = $this->profile->getVisibilityValue('privadr', 'privadr');
-        $this->homepage     = $this->profile->getVisibilityValue('Home', 'homepage');
+        $this->motto        = $this->getVisibilityValue('motto');
+        $this->private_nr   = $this->getVisibilityValue('privatnr', 'private_phone');
+        $this->private_cell = $this->getVisibilityValue('privatcell', 'private_cell');
+        $this->privadr      = $this->getVisibilityValue('privadr', 'privadr');
+        $this->homepage     = $this->getVisibilityValue('Home', 'homepage');
 
         // skype informations
         $this->skype_name = '';
@@ -119,8 +114,8 @@ class ProfileController extends AuthenticatedController
         }
 
         // get generic datafield entries
-        $this->shortDatafields = $this->profile->getShortDatafields();
-        $this->longDatafields  = $this->profile->getLongDatafields();
+        $this->shortDatafields = $this->getShortDatafields();
+        $this->longDatafields  = $this->getLongDatafields();
 
         // get working station of an user (institutes)
         $this->institutes = $this->getInstitutInformation();
@@ -144,24 +139,20 @@ class ProfileController extends AuthenticatedController
         }
 
         // calendar
-        $this->dates = '';
-        if (Config::get()->CALENDAR_ENABLE) {
-            if (!in_array($this->current_user->perms, ['admin', 'root'])) {
-                if (Visibility::verify('termine', $this->current_user->user_id)) {
-                    $start = time();
-                    $end   = strtotime('+1 week 23:59:59');
+        if (
+            Config::get()->CALENDAR_ENABLE
+            && !in_array($this->current_user->perms, ['admin', 'root'])
+            && Visibility::verify('termine', $this->current_user->user_id)
+        ) {
+            $start = time();
+            $end   = strtotime('+1 week 23:59:59');
 
-                    $response    = $this->relay('calendar/contentbox/display/' . $this->current_user->user_id . '/' . ($end - $start));
-                    $this->dates = $response->body;
-                }
-            }
+            $response    = $this->relay('calendar/contentbox/display/' . $this->current_user->user_id . '/' . ($end - $start));
+            $this->dates = $response->body;
         }
 
         // include and show votes and tests
         if (Config::get()->VOTE_ENABLE && Visibility::verify('votes', $this->current_user->user_id)) {
-            $response          = $this->relay('evaluation/display/' . $this->current_user->user_id);
-            $this->evaluations = $response->body;
-
             $response             = $this->relay('questionnaire/widget/' . $this->current_user->user_id . "/user");
             $this->questionnaires = $response->body;
         }
@@ -209,11 +200,11 @@ class ProfileController extends AuthenticatedController
 
         // Anzeige der Seminare, falls User = dozent
         if ($this->current_user['perms'] == 'dozent') {
-            $this->seminare = array_filter($this->profile->getDozentSeminars());
+            $this->seminare = array_filter($this->getTeacherSeminars());
         }
 
         // Hompageplugins
-        $homepageplugins = PluginEngine::getPlugins('HomepagePlugin');
+        $homepageplugins = PluginEngine::getPlugins(HomepagePlugin::class);
 
         $render = '';
         $layout = $GLOBALS['template_factory']->open('shared/content_box');
@@ -223,7 +214,7 @@ class ProfileController extends AuthenticatedController
                 $template = $homepageplugin->getHomepageTemplate($this->current_user->user_id);
                 // create output of the plugins
                 if (!empty($template)) {
-                    $render .= $template->render(null, $layout);
+                    $render .= $template->render(layout: $layout);
                 }
                 $layout->clear_attributes();
             }
@@ -237,7 +228,7 @@ class ProfileController extends AuthenticatedController
         foreach ($category as $cat) {
             $head = $cat->name;
             $body = $cat->content;
-            $vis_text = "";
+            $vis_text = '';
 
             if ($this->user->user_id == $this->current_user->user_id) {
                 $vis_text .= ' (' . Visibility::getStateDescription('kat_' . $cat->kategorie_id) . ')';
@@ -523,5 +514,156 @@ class ProfileController extends AuthenticatedController
     {
         PageLayout::setTitle(sprintf(_('Profil von %s'), $external_user['name']));
         $this->user = $external_user;
+    }
+
+    /**
+     * Collect user datafield informations
+     *
+     * @return array
+     */
+    private function getDatafields(): array
+    {
+        $short_datafields = [];
+        $long_datafields  = [];
+        foreach (DataFieldEntry::getDataFieldEntries($this->current_user->user_id, 'user') as $entry) {
+            if ($entry->isVisible() && $entry->getDisplayValue()
+                && Visibility::verify($entry->getID(), $this->current_user->user_id))
+            {
+                if ($entry instanceof DataFieldTextareaEntry) {
+                    $long_datafields[] = $entry;
+                } else {
+                    $short_datafields[] = $entry;
+                }
+            }
+        }
+
+        return [
+            'long'  => $long_datafields,
+            'short' => $short_datafields,
+        ];
+    }
+
+    /**
+     * Filter long datafiels from the datafields
+     *
+     * @return array
+     */
+    private function getLongDatafields(): array
+    {
+        $datafields = $this->getDatafields();
+        $array      = [];
+
+        if (!empty($datafields)) {
+            foreach ($datafields['long'] as $entry) {
+                $array[(string)$entry->getName()] = [
+                    'content' => $entry->getDisplayValue(),
+                    'visible' => '(' . $entry->getPermsDescription() . ')',
+                ];
+            }
+        }
+
+        return $array;
+    }
+
+    /**
+     * Filter short datafiels from the datafields
+     *
+     * @return array
+     */
+    private function getShortDatafields(): array
+    {
+        $shortDatafields = $this->getDatafields();
+        $array = [];
+
+        if (!empty($shortDatafields)) {
+            foreach ($shortDatafields['short'] as $entry) {
+                $array[(string)$entry->getName()] = [
+                    'content' => $entry->getDisplayValue(),
+                    'visible' => '(' . $entry->getPermsDescription() . ')',
+                ];
+            }
+        }
+        return $array;
+    }
+
+    /**
+     * Creates an array with all seminars
+     *
+     * @return array
+     */
+    private function getTeacherSeminars(): array
+    {
+        $courses = [];
+        $semester = [];
+        $next_semester = Semester::findNext();
+        $current_semester = Semester::findCurrent();
+        $previous_semester = Semester::findPrevious();
+        if ($next_semester) {
+            $semester[$next_semester->id] = $next_semester;
+        }
+        if ($current_semester) {
+            $semester[$current_semester->id] = $current_semester;
+        }
+        if ($previous_semester) {
+            $semester[$previous_semester->id] = $previous_semester;
+        }
+        $field = 'name';
+        if (Config::get()->IMPORTANT_SEMNUMBER) {
+            $field = "veranstaltungsnummer,{$field}";
+        }
+        $allcourses = new SimpleCollection(
+            Course::findBySQL(
+                "INNER JOIN seminar_user USING(Seminar_id) WHERE user_id=? AND seminar_user.status='dozent' AND seminare.visible=1",
+                [
+                    $this->current_user->id
+                ]
+            )
+        );
+        foreach (array_filter($semester) as $one) {
+            $courses[(string) $one->name] = $allcourses->filter(function ($c) use ($one) {
+                if (Config::get()->HIDE_STUDYGROUPS_FROM_PROFILE && $c->isStudygroup()) {
+                    return false;
+                }
+                if (!$c->isOpenEnded()) {
+                    return $c->isInSemester($one);
+                } elseif ($one->isCurrent()) {
+                    return $c;
+                }
+                return false;
+            })->orderBy($field);
+
+            if (!$courses[(string) $one->name]->count()) {
+                unset($courses[(string) $one->name]);
+            }
+        }
+        return $courses;
+    }
+
+    /**
+     * Get the homepagevisibilities
+     *
+     * @return array
+     */
+    private function getHomepageVisibilities(): array
+    {
+        $visibilities = get_local_visibility_by_id(
+            $this->current_user ? $this->current_user->id : null,
+            'homepage'
+        );
+        if (is_array(json_decode($visibilities, true))) {
+            return json_decode($visibilities, true);
+        }
+        return [];
+    }
+
+    /**
+     * Returns the visibility value
+     */
+    private function getVisibilityValue(string $param, string $visibility = ''): mixed
+    {
+        if (Visibility::verify($visibility ?: $param, $this->current_user->user_id)) {
+            return $this->current_user->$param;
+        }
+        return false;
     }
 }

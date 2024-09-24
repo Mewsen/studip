@@ -1,4 +1,5 @@
 import { $gettext, $gettextInterpolate } from '../lib/gettext';
+import Report from '../lib/report.js';
 
 // Allow fieldsets to collapse
 $(document).on(
@@ -291,9 +292,12 @@ STUDIP.ready(function () {
                                         url: v.STUDIPFORM_AUTOSAVEURL,
                                         data: params,
                                         type: 'post',
-                                        success() {
-                                            if (v.STUDIPFORM_REDIRECTURL) {
-                                                window.location.href = v.STUDIPFORM_REDIRECTURL
+                                        success(output) {
+                                            if (output === 'STUDIPFORM_STORE_SUCCESS' && v.STUDIPFORM_REDIRECTURL) {
+                                                //The form has been stored successfully:
+                                                window.location.href = v.STUDIPFORM_REDIRECTURL;
+                                            } else if (output !== 'STUDIPFORM_STORE_SUCCESS') {
+                                                Report.error($gettext('Es ist ein Fehler aufgetreten'), output);
                                             }
                                         }
                                     });

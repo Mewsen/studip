@@ -3,7 +3,6 @@
 namespace Courseware\ContainerTypes;
 
 use Courseware\CoursewarePlugin;
-use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\Validator;
 
 /**
@@ -28,9 +27,9 @@ abstract class ContainerType
      * Returns the JSON schema which is used to validate the payload of
      * instances of this type of container.
      *
-     * @return Schema the JSON schema to be used
+     * @return string the JSON schema to be used
      */
-    abstract public static function getJsonSchema(): Schema;
+    abstract public static function getJsonSchema(): string;
 
     /**
      * Returns a short string describing this type of container.
@@ -150,10 +149,8 @@ abstract class ContainerType
      */
     public function validatePayload($payload): bool
     {
-        $schema = static::getJsonSchema();
         $validator = new Validator();
-        $result = $validator->schemaValidation($payload, $schema);
-
+        $result = $validator->validate($payload, static::getJsonSchema());
         return $result->isValid();
     }
 
@@ -199,7 +196,7 @@ abstract class ContainerType
             foreach ($section['blocks'] as &$block) {
                 $block = $block_map[$block] ?? null;
             }
-            $section['blocks'] = array_filter($section['blocks']);
+            $section['blocks'] = array_values(array_filter($section['blocks']));
         }
 
         return $payload;
@@ -252,9 +249,9 @@ abstract class ContainerType
      * It turns the classname into snakecase in order to find the
      * template file in templates/courseware/container_types.
      *
-     * @return mixed the \Flexi_Template instance if exists, otherwise null.
+     * @return \Flexi\Template|null the \Flexi\Template instance if exists, otherwise null.
      */
-    public function getPdfHtmlTemplate(): ?\Flexi_Template
+    public function getPdfHtmlTemplate(): ?\Flexi\Template
     {
         $template = null;
         try {

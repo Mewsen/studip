@@ -13,17 +13,17 @@ const wysiwyg = {
 
     isHtml: function isHtml(text) {
         // NOTE keep this function in sync with
-        // Markup::isHtml in Markup.class.php
+        // Markup::isHtml in Markup.php
         return this.hasHtmlMarker(text);
     },
     hasHtmlMarker: function hasHtmlMarker(text) {
         // NOTE keep this function in sync with
-        // Markup::hasHtmlMarker in Markup.class.php
+        // Markup::hasHtmlMarker in Markup.php
         return this.htmlMarkerRegExp.test(text);
     },
     markAsHtml: function markAsHtml(text) {
         // NOTE keep this function in sync with
-        // Markup::markAsHtml in Markup.class.php
+        // Markup::markAsHtml in Markup.php
         if (this.hasHtmlMarker(text) || text.trim() == '') {
             return text; // marker already set, don't set twice
         }

@@ -28,7 +28,7 @@ class BasicDataWizardStep implements CourseWizardStep
     public function getStepTemplate($values, $stepnumber, $temp_id)
     {
         // Load template from step template directory.
-        $factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views/course/wizard/steps');
+        $factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views/course/wizard/steps');
         if (!empty($values[__CLASS__]['studygroup'])) {
             $tpl = $factory->open('basicdata/index_studygroup');
             $values[__CLASS__]['lecturers'][$GLOBALS['user']->id] = 1;
@@ -356,9 +356,9 @@ class BasicDataWizardStep implements CourseWizardStep
                 htmlReady(get_title_for_status('dozent', 1, $values['coursetype']))
             );
         }
-        if (!$values['lecturers'][$GLOBALS['user']->id] && !$GLOBALS['perm']->have_perm('admin')) {
+        if (empty($values['lecturers'][$GLOBALS['user']->id]) && !$GLOBALS['perm']->have_perm('admin')) {
             if (Config::get()->DEPUTIES_ENABLE) {
-                if (!$values['deputies'][$GLOBALS['user']->id]) {
+                if (empty($values['deputies'][$GLOBALS['user']->id])) {
                     $errors[] = sprintf(
                         _('Sie selbst müssen entweder als %s oder als Vertretung eingetragen sein.'),
                         htmlReady(get_title_for_status('dozent', 1, $values['coursetype']))
@@ -620,7 +620,10 @@ class BasicDataWizardStep implements CourseWizardStep
 
                 }
             }
-
+        } else {
+            foreach ($indices as $index) {
+                $values[$index] = $values[$index] ?? '';
+            }
         }
 
         return $values;

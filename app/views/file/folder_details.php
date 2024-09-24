@@ -10,7 +10,7 @@ $folder_template = $folder->getDescriptionTemplate();
         <? if (!empty($folder_template)) : ?>
             <h3><?= _('Beschreibung') ?></h3>
             <article>
-            <? if ($folder_template instanceof Flexi_Template): ?>
+            <? if ($folder_template instanceof Flexi\Template): ?>
                 <?= $folder_template->render() ?>
             <? else: ?>
                 <?= $folder_template ?>

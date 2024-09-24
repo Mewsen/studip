@@ -52,7 +52,7 @@ class StructuralElementsShowTest extends \Codeception\Test\Unit
         $childIDs = $structuralElement->children->pluck('id');
         $this->assertCount(count($childIDs), $includedResources);
         foreach ($includedResources as $included) {
-            $this->assertContains($included->id(), $childIDs);
+            $this->assertContainsEquals($included->id(), $childIDs);
         }
     }
 

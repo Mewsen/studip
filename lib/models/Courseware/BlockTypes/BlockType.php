@@ -3,7 +3,6 @@
 namespace Courseware\BlockTypes;
 
 use Courseware\CoursewarePlugin;
-use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\Validator;
 
 /**
@@ -52,9 +51,9 @@ abstract class BlockType
      * Returns the JSON schema which is used to validate the payload of
      * instances of this type of block.
      *
-     * @return Schema the JSON schema to be used
+     * @return string the JSON schema to be used
      */
-    abstract public static function getJsonSchema(): Schema;
+    abstract public static function getJsonSchema(): string;
 
     /**
      * Returns a list of categories to which this type of block is associated.
@@ -192,10 +191,8 @@ abstract class BlockType
      */
     public function validatePayload($payload): bool
     {
-        $schema = static::getJsonSchema();
         $validator = new Validator();
-        $result = $validator->schemaValidation($payload, $schema);
-
+        $result = $validator->validate($payload, static::getJsonSchema());
         return $result->isValid();
     }
 
@@ -441,9 +438,9 @@ abstract class BlockType
      * It turns the classname into snakecase in order to find the
      * template file in templates/courseware/block_types.
      *
-     * @return mixed the \Flexi_Template instance if exists, otherwise null.
+     * @return \Flexi\Template|null the \Flexi\Template instance if exists, otherwise null.
      */
-    public function getPdfHtmlTemplate(): ?\Flexi_Template
+    public function getPdfHtmlTemplate(): ?\Flexi\Template
     {
         $template = null;
         try {

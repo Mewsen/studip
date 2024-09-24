@@ -50,7 +50,7 @@ class Resources
             jQuery(row_tds[user_td_index]).children('input').removeAttr('disabled');
 
             if (username) {
-                jQuery(row_tds[user_td_index]).append(username);
+                jQuery('<span>').text(username).appendTo(row_tds[user_td_index]);
             } else {
                 jQuery(row_tds[user_td_index]).append('ID ' + user_id);
             }
@@ -59,8 +59,6 @@ class Resources
                 return;
             }
             jQuery(user_id_input).val(user_id);
-
-            var perm_select = jQuery(row_tds[user_td_index + 1]).children()[0];
 
             if (temp_perms_row) {
                 //Set the time input fields to useful values:
@@ -134,22 +132,19 @@ class Resources
             jQuery(table_element).trigger('update');
         };
 
-        STUDIP.api.GET(
-            `user/${user_id}`
-        ).done(function (data) {
-            var username = data.name.family
-                + ', '
-                + data.name.given;
-            if (data.name.prefix) {
-                username += ', ' + data.name.prefix;
+        STUDIP.jsonapi.GET(`users/${user_id}`).done(data => {
+            const attributes = data.data.attributes;
+
+            let username = `${attributes['family-name']}, ${attributes['given-name']}`;
+            if (attributes['name-prefix']) {
+                username += `, ${attributes['name-prefix']}`;
             }
-            if (data.name.suffix) {
-                username += ' ' + data.name.suffix;
+            if (attributes['name-suffix']) {
+                username += ` ${attributes['name-suffix']}`;
             }
-            username += ' (' + data.name.username + ')'
-                + ' (' + data.perms + ')';
+            username += ` (${attributes.username}) (${attributes.permission})`;
             insert_function(user_id, username);
-        }).fail(function () {
+        }).fail(() => {
             insert_function(user_id);
         });
     }
@@ -160,23 +155,13 @@ class Resources
             return;
         }
 
-        STUDIP.api.GET(
-            `course/${course_id}/members`,
-            {
-                data: {
-                    //The limit '0' results in a division by zero.
-                    //Hopefully, the limit is set to a value high enough:
-                    limit: 1000000
-                }
-            }
-        ).done(function (data) {
-            for (var attribute in data.collection) {
-                var user_id = data.collection[attribute].member.id;
+        STUDIP.jsonapi.GET(`courses/${course_id}/memberships`, {data: {page: {limit: 1000000}}}).done(data => {
+            data.data.forEach(membership => {
                 STUDIP.Resources.addUserToPermissionList(
-                    user_id,
+                    membership.relationships.user.data.id,
                     table_element
                 );
-            }
+            });
         });
     }
 

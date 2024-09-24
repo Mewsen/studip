@@ -66,18 +66,12 @@ if ($navigation) {
                     'username' => $user->username,
                     'perm' => $GLOBALS['perm']->get_perm()
                 ];
-
-                $navWidget = Sidebar::get()->countWidgets(NavigationWidget::class);
-                $allWidgets = Sidebar::get()->countWidgets();
-                $hasSidebar = $allWidgets - $navWidget > 0;
                 ?>
             <? } else {
                 $me = ['username' => 'nobody'];
-                $hasSidebar = false;
             } ?>
             <responsive-navigation :me="<?= htmlReady(json_encode($me)) ?>"
                                    context="<?= htmlReady(Context::get() ? Context::get()->getFullName() : '') ?>"
-                                   :has-sidebar="<?= $hasSidebar ? 'true' : 'false' ?>"
                                    :navigation="<?= htmlReady(json_encode(ResponsiveHelper::getNavigationObject($_COOKIE['responsive-navigation-hash'] ?? null))) ?>"
             ></responsive-navigation>
         </div>
@@ -147,7 +141,8 @@ if ($navigation) {
                                     ngettext('%u Benachrichtigung', '%u Benachrichtigungen', count($notifications)),
                                     count($notifications)
                                 ) ?>" data-lastvisit="<?= $lastvisit ?>"
-                                <?= count($notifications) == 0 ? 'disabled' : '' ?>>
+                                <?= count($notifications) == 0 ? 'disabled' : '' ?> aria-controls="notification-list"
+                                aria-expanded="false">
                             <span class="count" aria-hidden="true"><?= count($notifications) ?></span>
                         </button>
                         <input type="checkbox" id="notification_checkbox">
@@ -221,7 +216,9 @@ if ($navigation) {
 
     <!-- Main navigation and right-hand logo -->
     <nav id="navigation-level-1" aria-label="<?= _('Hauptnavigation') ?>">
-        <? SkipLinks::addIndex(_('Hauptnavigation'), 'navigation-level-1', 2, false); ?>
+        <? if (!empty($header_nav['visible'])) : ?>
+            <? SkipLinks::addIndex(_('Hauptnavigation'), 'navigation-level-1', 2, false) ?>
+        <? endif ?>
         <ul id="navigation-level-1-items" <? if (count($header_nav['hidden']) > 0) echo 'class="overflown"'; ?>>
         <? foreach ($header_nav['visible'] as $path => $nav): ?>
             <?= $this->render_partial(
@@ -282,7 +279,8 @@ if ($navigation) {
                 <? $membership = CourseMember::find([Context::get()->id, $GLOBALS['user']->id]) ?>
                 <? if ($membership) : ?>
                     <a href="<?= URLHelper::getLink('dispatch.php/my_courses/groups') ?>"
-                       data-dialog
+                       data-dialog aria-label="<?= _('Gruppenzuordnung der Veranstaltung ändern') ?>"
+                       title="<?= _('Gruppenzuordnung der Veranstaltung ändern') ?>"
                        class="colorblock gruppe<?= $membership ? $membership['gruppe'] : 1 ?>"></a>
                 <? endif ?>
             <? endif ?>
@@ -301,10 +299,12 @@ if ($navigation) {
                 </div>
             <? endif ?>
 
-            <? SkipLinks::addIndex(_('Zweite Navigationsebene'), 'navigation-level-2', 910) ?>
             <nav id="navigation-level-2" aria-label="<?= _('Zweite Navigationsebene') ?>">
 
                 <? if (PageLayout::isHeaderEnabled() /*&& isset($navigation)*/) : ?>
+                    <? if (!empty($navigation)) : ?>
+                        <? SkipLinks::addIndex(_('Zweite Navigationsebene'), 'navigation-level-2', 910) ?>
+                    <? endif ?>
                     <?= $this->render_partial('tabs', compact('navigation')) ?>
                 <? endif; ?>
             </nav>

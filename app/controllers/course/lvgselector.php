@@ -17,15 +17,13 @@ require 'config/mvv_config.php';
 
 class Course_LvgselectorController extends AuthenticatedController
 {
-
-    // see Trails_Controller#before_filter
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
 
         $this->course = Course::findCurrent();
         if (!$this->course) {
-            throw new Trails_Exception(404, _('Es wurde keine Veranstaltung ausgewählt!'));
+            throw new Trails\Exception(404, _('Es wurde keine Veranstaltung ausgewählt!'));
         }
         $this->course_id = $this->course->id;
         if (!$GLOBALS['perm']->have_studip_perm('tutor', $this->course_id)) {
@@ -37,6 +35,11 @@ class Course_LvgselectorController extends AuthenticatedController
         $widget = new HelpbarWidget();
         $widget->addElement(new WidgetElement(_('Auf dieser Seite kann die Veranstaltung ausgewählten Lehrveranstaltungsgruppen zugeordnet werden.')));
         Helpbar::get()->addWidget($widget);
+
+        if ($GLOBALS['perm']->have_studip_perm('admin', $this->course_id)) {
+            $widget = new CourseManagementSelectWidget();
+            Sidebar::get()->addWidget($widget);
+        }
     }
 
     /**

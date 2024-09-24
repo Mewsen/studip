@@ -35,7 +35,7 @@ class ScheduleWidget extends CorePlugin implements PortalPlugin
     /**
      * Return the template for the widget.
      *
-     * @return Flexi_PhpTemplate The template containing the widget contents
+     * @return Flexi\PhpTemplate The template containing the widget contents
      */
     public function getPortalTemplate()
     {

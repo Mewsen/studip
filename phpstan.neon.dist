@@ -1,6 +1,6 @@
 parameters:
     level: 0
-    phpVersion: 70400 # PHP 7.4
+    phpVersion: 80100 # PHP 8.1
     paths:
         - app/controllers
         - app/routes
@@ -17,7 +17,7 @@ parameters:
     excludePaths:
         - lib/classes/ZipArchiveLegacyTrait.php
         - lib/elearning/studip_referrer.php
-        - lib/soap/StudipSoapClient_PHP5.class.php
+        - lib/soap/StudipSoapClient_PHP5.php
     tmpDir: .caches
     earlyTerminatingMethodCalls:
         RESTAPI\RouteMap:

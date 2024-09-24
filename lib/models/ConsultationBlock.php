@@ -25,6 +25,7 @@
  * @property string $note database column
  * @property int $size database column
  * @property int|null $lock_time database column
+ * @property bool $consecutive database column
  * @property int $mkdate database column
  * @property int $chdate database column
  * @property SimpleORMapCollection|ConsultationSlot[] $slots has_many ConsultationSlot
@@ -71,7 +72,7 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
             if ($block->range instanceof User) {
                 return $block->range->getFullName() . ' <' . $block->range->email . '>';
             }
-            if ($block->range instanceof Course || $block->range instanceof Institute) {
+            if ($block->range instanceof Course) {
                 return sprintf(_('Veranstaltung: %s'), $block->range->getFullName());
             }
 
@@ -211,6 +212,10 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
                 );
             }
 
+            if (!$interval) {
+                break;
+            }
+
             $current = strtotime("+{$interval} weeks", $current);
         }
 
@@ -274,9 +279,9 @@ class ConsultationBlock extends SimpleORMap implements PrivacyObject
             }
 
             $slots[] = ConsultationSlot::build([
-                'block_id'   => $this->id,
-                'start_time' => $now,
-                'end_time'   => strtotime("+{$duration} minutes", $now),
+                'block_id'      => $this->id,
+                'start_time'    => $now,
+                'end_time'      => strtotime("+{$duration} minutes", $now),
             ]);
 
             $now = strtotime("+{$duration} minutes", $now);

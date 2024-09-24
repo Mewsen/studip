@@ -27,15 +27,47 @@ STUDIP.domReady(() => {
     // Enlarge search input on focus and show hints.
     $('#globalsearch-input').on('focus', function() {
         STUDIP.GlobalSearch.toggleSearchBar(true, false);
-    });
-
-    // Start search on Enter
-    $('#globalsearch-input').on('keypress', function(e) {
-        if (e.which === 13) {
+    }).on('keypress', (e) => {
+        // Start search on Enter
+        if (e.key === 'Enter') {
             STUDIP.GlobalSearch.doSearch();
             return false;
         }
     });
+    $('#globalsearch-searchbar').on('keydown', function(e) {
+        if (!['ArrowDown', 'ArrowUp'].includes(e.key)) {
+            return;
+        }
+
+        e.preventDefault();
+
+        // Get all possible items
+        const items = $('#globalsearch-list [role=listitem]:visible');
+
+        // Find focussed element
+        const focussed = items.filter(':focus');
+
+        // Get index of focussed element in all items
+        let index = focussed.length > 0 ? items.index(focussed[0]) : null;
+
+        // Move focussed element up or down in items
+        if (e.key === 'ArrowDown') {
+            index = (index ?? -1) + 1;
+        } else {
+            index = (index ?? items.length) - 1;
+        }
+
+        // Clamp index to sane boundaries
+        if (index < 0) {
+            index = 0;
+        } else if (index > items.length - 1) {
+            index = items.length - 1;
+        }
+
+        // Focus new element by index
+        items.get(index).focus();
+    });
+
 
     // Close search on click on page.
     $('#navigation-level-1, #current-page-structure, #main-footer').on('click', function() {

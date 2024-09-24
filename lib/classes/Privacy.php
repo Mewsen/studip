@@ -59,7 +59,6 @@ class Privacy
             Courseware\UserProgress::class,
         ],
         'quest' => [
-            Evaluation::class,
             Questionnaire::class,
             QuestionnaireAnswer::class,
             QuestionnaireAnonymousAnswer::class,
@@ -115,7 +114,7 @@ class Privacy
         }
 
         if (!$section || $section === 'plugins') {
-            foreach (PluginEngine::getPlugins('PrivacyPlugin') as $plugin) {
+            foreach (PluginEngine::getPlugins(PrivacyPlugin::class) as $plugin) {
                 $plugin->exportUserData($storage);
             }
         }

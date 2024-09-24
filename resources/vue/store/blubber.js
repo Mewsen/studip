@@ -166,7 +166,7 @@ export default {
 
             // if total is missing, there are more comments to fetch
             const total = rootGetters['blubber-comments/lastMeta']?.page?.total;
-            const hasMore = !total;
+            const hasMore = total ?? true;
             commit('setMoreOlder', { id, hasMore });
         },
 

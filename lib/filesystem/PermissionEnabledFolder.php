@@ -118,6 +118,27 @@ class PermissionEnabledFolder extends StandardFolder
     }
 
     /**
+     * @return FileType[]
+     */
+    public function getFiles()
+    {
+        return array_filter(parent::getFiles(), function($file) {
+            return $this->isFileVisible($file->getFileRef(), $GLOBALS['user']->id);
+        });
+    }
+
+    /**
+     * Determines if a user may see the file.
+     * @param FileRef|string $fileref_or_id
+     * @param string $user_id
+     * @return bool
+     */
+    public function isFileVisible($fileref_or_id, $user_id)
+    {
+        return $this->isReadable($user_id);
+    }
+
+    /**
      * @param $fileref_or_id
      * @param $user_id
      * @return bool
@@ -127,7 +148,7 @@ class PermissionEnabledFolder extends StandardFolder
         $fileref = FileRef::toObject($fileref_or_id);
 
         if (is_object($fileref)) {
-            if ($this->isVisible($user_id) && $this->isReadable($user_id)) {
+            if ($this->isVisible($user_id) && $this->isFileVisible($fileref, $user_id)) {
                 return $fileref->terms_of_use->isDownloadable($this->range_id, $this->range_type, true, $user_id);
             }
         }

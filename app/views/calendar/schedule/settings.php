@@ -2,10 +2,9 @@
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend>
-            <?= _('Darstellung des Stundenplans ändern') ?>
+            <?= _('Angezeigter Zeitraum') ?>
         </legend>
         <section>
-            <?= _('Angezeigter Zeitraum') ?>
             <section class="hgroup">
                 <label>
                     <?= _('von') ?>
@@ -22,8 +21,12 @@
                 <?= _('Uhr') ?><br>
             </section>
         </section>
-        <section class='settings'>
+    </fieldset>
+    <fieldset>
+        <legend>
             <?= _('Angezeigte Wochentage') ?>
+        </legend>
+        <section class='settings'>
             <? foreach ([1, 2, 3, 4, 5, 6, 0] as $day) : ?>
                 <label>
                     <input type="checkbox" name="days[]" value="<?= $day ?>"

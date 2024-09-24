@@ -36,7 +36,7 @@
                            data-activates="#action_awaiting,button[name='submit_awaiting']">
                 </th>
             <? endif ?>
-                <th></th>
+                <th><p class="sr-only"><?= _('Nummer') ?></p></th>
                 <th <? if ($sort_by === 'nachname' && $sort_status === $waiting_type) printf('class="sort%s"', $order); ?>>
                     <a href="<?= URLHelper::getLink(sprintf(
                         "?sortby=nachname&sort_status={$waiting_type}&order=%s&toggle=%s#awaiting",
@@ -139,8 +139,8 @@
         <tfoot>
             <tr>
                 <td colspan="6">
-                    <select name="action_awaiting" id="action_awaiting" aria-label="<?= _('Aktion ausführen') ?>">
-                        <option value="">- <?= _('Aktion wählen') ?></option>
+                    <select name="action_awaiting" id="action_awaiting" aria-label="<?= _('Aktion auswählen') ?>">
+                        <option value="">- <?= _('Aktion auswählen') ?></option>
                         <option value="upgrade_autor">
                             <?= sprintf(_('Zu %s hochstufen'), htmlReady($status_groups['autor'])) ?>
                         </option>

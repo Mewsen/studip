@@ -18,7 +18,7 @@ class CleanupAdmissionRules extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        require_once 'lib/classes/admission/CourseSet.class.php';
+        require_once 'lib/classes/admission/CourseSet.php';
 
         $course_set = new \CourseSet();
 

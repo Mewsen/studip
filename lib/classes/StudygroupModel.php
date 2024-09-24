@@ -532,7 +532,7 @@ class StudygroupModel
         if (StudygroupModel::isInvited($user_id, $sem_id)) {
             $subject .= ' ' . _('Einladung akzeptiert');
             $message = sprintf(
-                _("%s hat die Einladung zur Studiengruppe %s akzeptiert. Klicken Sie auf den untenstehenden Link, um direkt zur Studiengruppe zu gelangen.\n\n [Direkt zur Studiengruppe]%s"),
+                _("%s hat die Einladung zur Studiengruppe %s akzeptiert. Klicken Sie auf den folgenden Link, um direkt zur Studiengruppe zu gelangen.\n\n [Direkt zur Studiengruppe]%s"),
                 get_fullname($user_id),
                 $sem->getName(),
                 URLHelper::getlink(
@@ -543,7 +543,7 @@ class StudygroupModel
         } else {
             $subject .= ' ' . _('Neuer Mitgliedsantrag');
             $message = sprintf(
-                _("%s möchte der Studiengruppe %s beitreten. Klicken Sie auf den untenstehenden Link, um direkt zur Studiengruppe zu gelangen.\n\n [Direkt zur Studiengruppe]%s"),
+                _("%s möchte der Studiengruppe %s beitreten. Klicken Sie auf den folgenden Link, um direkt zur Studiengruppe zu gelangen.\n\n [Direkt zur Studiengruppe]%s"),
                 get_fullname($user_id),
                 $sem->getName(),
                 URLHelper::getlink(

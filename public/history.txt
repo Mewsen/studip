@@ -18,8 +18,6 @@ __15.03.2024 V 5.5__
 - Courseware: Neue Sortierfunktionen für Lernmaterialien
 - Courseware: Seiten im Inhaltsverzeichnis anlegen und umbenennen
 - Courseware: Lerninhalte und Seiten hinzufügen, kopieren und importieren als eine Aktion
-- Unter der Haube: Parallelisierte Cronjobs
-- Unter der Haube: Integration Storybook.js
 - Unter der Haube: Mindestanforderung an PHP auf 7.4 angehoben
 - Unter der Haube: Mehr Bilder werden als WebP gespeichert
 

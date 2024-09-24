@@ -43,7 +43,7 @@ class CAS_PGTStorage_Cache extends CAS_PGTStorage_AbstractStorage
      */
     public function write($pgt, $pgt_iou)
     {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $cache_key = 'pgtiou/' . $pgt_iou;
         return $cache->write($cache_key, $pgt);
     }
@@ -58,7 +58,7 @@ class CAS_PGTStorage_Cache extends CAS_PGTStorage_AbstractStorage
      */
     public function read($pgt_iou)
     {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $cache_key = 'pgtiou/' . $pgt_iou;
         $pgt = $cache->read($cache_key);
         $cache->expire($cache_key);

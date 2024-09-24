@@ -190,12 +190,12 @@ article.studip.wiki {
      padding: 0;
      li {
          margin-bottom: 5px;
+         display: flex;
      }
      a {
          background-position: left top;
          background-repeat: no-repeat;
          background-size: var(--avatar-small);
-         display: block;
          min-height: var(--avatar-small);
          padding-left: calc(var(--avatar-small) + 1ex);
      }

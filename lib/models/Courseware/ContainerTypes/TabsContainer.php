@@ -2,8 +2,6 @@
 
 namespace Courseware\ContainerTypes;
 
-use Opis\JsonSchema\Schema;
-
 /**
  * This class represents the content of a Courseware tabs container stored in payload.
  *
@@ -54,10 +52,9 @@ class TabsContainer extends ContainerType
         $this->setPayload($payload);
     }
 
-    public static function getJsonSchema(): Schema
+    public static function getJsonSchema(): string
     {
         $schemaFile = __DIR__.'/TabsContainer.json';
-
-        return Schema::fromJsonString(file_get_contents($schemaFile));
+        return file_get_contents($schemaFile);
     }
 }

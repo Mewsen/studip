@@ -14,7 +14,7 @@ class Course_TimesroomsController extends AuthenticatedController
      * @param String $action Action to be executed
      * @param Array  $args Arguments passed to the action
      *
-     * @throws Trails_Exception when either no course was found or the user
+     * @throws Trails\Exception when either no course was found or the user
      *                          may not access this area
      */
     public function before_filter(&$action, &$args)
@@ -23,7 +23,7 @@ class Course_TimesroomsController extends AuthenticatedController
 
         // Try to find a valid course
         if (!Course::findCurrent()) {
-            throw new Trails_Exception(404, _('Es wurde keine Veranstaltung ausgewählt!'));
+            throw new Trails\Exception(404, _('Es wurde keine Veranstaltung ausgewählt!'));
         }
 
         if (!$GLOBALS['perm']->have_studip_perm('tutor', Course::findCurrent()->id)) {
@@ -250,7 +250,7 @@ class Course_TimesroomsController extends AuthenticatedController
     /**
      * Edit the start-semester of a course
      *
-     * @throws Trails_DoubleRenderError
+     * @throws Trails\Exceptions\DoubleRenderError
      */
     public function editSemester_action()
     {
@@ -331,11 +331,6 @@ class Course_TimesroomsController extends AuthenticatedController
         $this->date       = CourseDate::find($termin_id) ?: CourseExDate::find($termin_id);
         $this->attributes = [];
 
-        if ($request = RoomRequest::findByDate($this->date->id)) {
-            $this->params = ['request_id' => $request->getId()];
-        } else {
-            $this->params = ['new_room_request_type' => 'date_' . $this->date->id];
-        }
         $this->only_bookable_rooms = Request::submitted('only_bookable_rooms');
 
         if (Config::get()->RESOURCES_ENABLE) {
@@ -373,7 +368,7 @@ class Course_TimesroomsController extends AuthenticatedController
      *
      * @param $termin_id
      *
-     * @throws Trails_DoubleRenderError
+     * @throws Trails\Exceptions\DoubleRenderError
      */
     public function saveDate_action($termin_id)
     {
@@ -439,7 +434,7 @@ class Course_TimesroomsController extends AuthenticatedController
         }
 
         // Set assigned groups
-        $assigned_groups       = Request::optionArray('assigned_groups');
+        $assigned_groups       = Request::optionArray('assigned-groups');
         $termin->statusgruppen = Statusgruppen::findMany($assigned_groups);
 
         $termin->store();
@@ -449,7 +444,11 @@ class Course_TimesroomsController extends AuthenticatedController
         }
 
         // Set Room
-        $old_room_id = $termin->room_booking->resource_id;
+        if ($termin->room_booking) {
+            $old_room_id = $termin->room_booking->resource_id;
+        } else {
+            $old_room_id = null;
+        }
         $singledate = new SingleDate($termin);
         if ($singledate->setTime($date, $end_time)) {
             $singledate->store();
@@ -517,7 +516,7 @@ class Course_TimesroomsController extends AuthenticatedController
                 '<strong>' . htmlReady($singledate->toString()) . '</strong>'
             ));
         }
-        if ($singledate->messages['error']) {
+        if (!empty($singledate->messages['error'])) {
             PageLayout::postError(
                 _('Die folgenden Fehler traten beim Bearbeiten des Termins auf:'),
                 htmlReady($singledate->messages['error'])
@@ -549,7 +548,7 @@ class Course_TimesroomsController extends AuthenticatedController
     /**
      * Save Single Date
      *
-     * @throws Trails_DoubleRenderError
+     * @throws Trails\Exceptions\DoubleRenderError
      */
     public function saveSingleDate_action()
     {
@@ -1490,23 +1489,10 @@ class Course_TimesroomsController extends AuthenticatedController
         }
         Sidebar::Get()->addWidget($widget);
 
-        if ($GLOBALS['perm']->have_perm('admin')) {
-            $list = new SelectWidget(
-                _('Veranstaltungen'),
-                $this->indexURL(),
-                'cid'
-            );
 
-            foreach (AdminCourseFilter::get()->getCoursesForAdminWidget() as $seminar) {
-                $list->addElement(new SelectElement(
-                    $seminar['Seminar_id'],
-                    $seminar['Name'],
-                    $seminar['Seminar_id'] === Context::getId(),
-                    $seminar['VeranstaltungsNummer'] . ' ' . $seminar['Name']
-                ));
-            }
-            $list->size = 8;
-            Sidebar::Get()->addWidget($list);
+        if ($GLOBALS['perm']->have_studip_perm('admin', $this->course->id)) {
+            $widget = new CourseManagementSelectWidget();
+            Sidebar::get()->addWidget($widget);
         }
     }
 
@@ -1701,7 +1687,7 @@ class Course_TimesroomsController extends AuthenticatedController
             } else {
                 $user_rooms = RoomManager::getUserRooms($current_user);
                 foreach ($user_rooms as $room) {
-                    if ($room->userHasBookingRights($current_user, $begin, $end)) {
+                    if ($room->userHasBookingRights($current_user, $begin ?? null, $end ?? null)) {
                         $rooms_with_booking_permissions++;
                         if ($only_bookable_rooms) {
                             foreach ($all_time_intervals as $interval) {

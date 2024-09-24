@@ -6,8 +6,11 @@ STUDIP.domReady(() => {
     $(document).on('focus blur', '.studip-dialog .ck-editor__editable_inline', function(event) {
         let height = this.clientHeight;
         let editor = this.ckeditorInstance;
-        editor.editing.view.change(writer => {
-            writer.setStyle('height', height + 'px', editor.editing.view.document.getRoot());
+        // this is needed on Chrome, see https://gitlab.studip.de/studip/studip/-/issues/3510
+        setTimeout(() => {
+            editor.editing.view.change(writer => {
+                writer.setStyle('height', height + 'px', editor.editing.view.document.getRoot());
+            });
         });
     });
 

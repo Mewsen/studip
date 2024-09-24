@@ -1,21 +1,21 @@
-<form class="default" action="<?= $controller->action_link('add_dokument', $origin,  $range_type, $range_id, $mvvfile_id) ?>" method="post" data-dialog="size=auto">
-    <input type="hidden" name="mvvfile_id" id="mvvfile_id" value="<?= htmlReady($mvvfile_id) ?>">
-    <input type="hidden" name="range_id" id="range_id" value="<?= htmlReady($range_id) ?>">
-    <input type="hidden" name="range_type" id="range_type" value="<?= htmlReady($range_type) ?>">
-
-
+<form class="default" action="<?= $controller->action_link('add_dokument', $origin ?? null,  $range_type ?? null, $range_id ?? null, $mvvfile_id ?? null) ?>" method="post" data-dialog="size=auto">
+    <input type="hidden" name="mvvfile_id" id="mvvfile_id" value="<?= htmlReady($mvvfile_id ?? '') ?>">
+    <input type="hidden" name="range_id" id="range_id" value="<?= htmlReady($range_id ?? null) ?>">
+    <input type="hidden" name="range_type" id="range_type" value="<?= htmlReady($range_type ?? null) ?>">
 
     <label>
         <?= _('Jahr') ?>
-        <input name="doc_year" type="text" value="<?= htmlReady($doc_year) ?>"<?= $perm->disable('year') ?>>
+        <input name="doc_year" type="text" value="<?= htmlReady($doc_year ?? '') ?>"<?= $perm->disable('year') ?>>
     </label>
 
-    <input type="hidden" name="doc_type" value="<?= $doc_type ?>">
+    <input type="hidden" name="doc_type" value="<?= htmlReady($doc_type ?? '') ?>">
     <label>
         <?= _('Art der Datei') ?>
         <select name="doc_type"<?= $perm->haveFieldPerm('type') ? '' : ' disable' ?>>
         <? foreach ($GLOBALS['MVV_DOCUMENTS']['TYPE']['values'] as $key => $entry) : ?>
-            <option value="<?= $key ?>"<?= $key == $doc_type ? ' selected' : '' ?>><?= htmlReady($entry['name']) ?></option>
+            <option value="<?= htmlReady($key) ?>"<?= isset($doc_type) && $key == $doc_type ? ' selected' : '' ?>>
+                <?= htmlReady($entry['name']) ?>
+            </option>
         <? endforeach; ?>
         </select>
     </label>
@@ -35,7 +35,7 @@
         </tr>
         <tr>
             <td>
-                <div class="attachments" style="<?= (!$documents || !key_exists($key, $documents))  ? '' : 'display: none;'?>">
+                <div class="attachments" style="<?= (empty($documents) || !array_key_exists($key, $documents))  ? '' : 'display: none;'?>">
                     <span style="cursor:pointer;" onClick="$('#fileselector_<?= $key; ?>').toggle();$(this).toggle();">
                         <?= Icon::create('add', Icon::ROLE_CLICKABLE, ['title' => _("Datei hinzufügen"), 'class' => 'text-bottom']); ?>
                         <?= _("Datei hinzufügen") ?>
@@ -43,11 +43,22 @@
                     <div id="fileselector_<?= $key; ?>" style="display:none;">
                         <ul class="stgfiles list-unstyled">
                             <li style="display: none;" class="stgfile">
-                                <input type="hidden" name="document_id" id="document_id" value="<?= htmlReady($document_id) ?>">
+                                <input type="hidden" name="document_id" id="document_id" value="<?= htmlReady($document_id ?? '') ?>">
                                 <span class="icon"></span>
                                 <span class="name"></span>
                                 <span class="size"></span>
-                                <a class="remove_attachment"><?= Icon::create('trash', 'clickable')->asImg(['class' => "text-bottom"]) ?></a>
+                                <button class="refresh_attachment as-link" data-language="<?= htmlReady($key) ?>">
+                                    <?= Icon::create('refresh')->asImg([
+                                        'class' => 'text-bottom',
+                                        'title' => _('Datei aktualisieren'),
+                                    ]) ?>
+                                </button>
+                                <button class="remove_attachment as-link">
+                                    <?= Icon::create('trash')->asImg([
+                                        'class' => 'text-bottom',
+                                        'title' => _('Datei löschen'),
+                                    ]) ?>
+                                </button>
                             </li>
                         </ul>
                         <div id="statusbar_container">
@@ -79,7 +90,18 @@
                             <span class="icon"><?= Icon::create('file', Icon::ROLE_INFO, ['class' => 'text-bottom']); ?></span>
                             <span class="name"><?= htmlReady($documents[$key]->filename) ?></span>
                             <span class="size"></span>
-                            <a class="remove_attachment"><?= Icon::create('trash', 'clickable')->asImg(['class' => "text-bottom"]) ?></a>
+                            <button class="refresh_attachment as-link" data-language="<?= htmlReady($key) ?>">
+                                <?= Icon::create('refresh')->asImg([
+                                    'class' => 'text-bottom',
+                                    'title' => _('Datei aktualisieren'),
+                                ]) ?>
+                            </button>
+                            <button class="remove_attachment as-link">
+                                <?= Icon::create('trash')->asImg([
+                                    'class' => 'text-bottom',
+                                    'title' => _('Datei löschen'),
+                                ]) ?>
+                            </button>
                         </li>
                     <? endif; ?>
                     </ul>
@@ -93,7 +115,9 @@
         <?= _('Kategoriezuordnung') ?>
         <select name="doc_cat">
         <? foreach ($GLOBALS['MVV_DOCUMENTS']['CATEGORY']['values'] as $key => $entry) : ?>
-            <option value="<?= $key ?>"<?= $key == $doc_cat ? ' selected' : '' ?>><?= htmlReady($entry['name']) ?></option>
+            <option value="<?= htmlReady($key) ?>"<?= isset($doc_cat) && $key == $doc_cat ? ' selected' : '' ?>>
+                <?= htmlReady($entry['name']) ?>
+            </option>
         <? endforeach; ?>
         </select>
     </label>
@@ -103,13 +127,15 @@
         <select id="mvv-files-tags" multiple name="doc_tags[]">
             <option value=""></option>
         <? foreach ($GLOBALS['MVV_DOCUMENTS']['TAG']['values'] as $key => $entry) : ?>
-            <option value="<?= $key ?>"<?= $key == in_array($key, explode(';', $doc_tags))? ' selected' : '' ?>><?= htmlReady($entry['name']) ?></option>
+            <option value="<?= htmlReady($key) ?>"<?= $key == in_array($key, explode(';', $doc_tags ?? ''))? ' selected' : '' ?>>
+                <?= htmlReady($entry['name']) ?>
+            </option>
         <? endforeach; ?>
         </select>
     </label>
 
     <label>
-        <input name="doc_extvisible" type="checkbox" value="1" <?= $doc_extvisible?'checked':''; ?>>
+        <input name="doc_extvisible" type="checkbox" value="1" <?= !empty($doc_extvisible) ? 'checked' : '' ?>>
         <?= _('Sichtbarkeit nach außen') ?>
     </label>
 

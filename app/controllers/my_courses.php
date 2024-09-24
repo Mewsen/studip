@@ -131,26 +131,16 @@ class MyCoursesController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        $this->with_modules = Request::bool('modules');
-
-        $this->sem_data = Semester::getAllAsArray();
-
-        $this->group_field = 'sem_number';
-
-        // Needed parameters for selecting courses
-        $params = [
-            'group_field'         => $this->group_field,
+        $template = $this->get_template_factory()->open('my_courses/courseexport');
+        $template->sem_courses = MyRealmModel::getPreparedCourses('', [
+            'group_field'         => 'sem_number',
             'order_by'            => null,
             'order'               => 'asc',
             'studygroups_enabled' => Config::get()->MY_COURSES_ENABLE_STUDYGROUPS,
             'deputies_enabled'    => Config::get()->DEPUTIES_ENABLE,
-        ];
-
-        $this->sem_courses  = MyRealmModel::getPreparedCourses('all', $params);
-
-        $factory  = $this->get_template_factory();
-        $template = $factory->open('my_courses/courseexport');
-        $template->set_attributes($this->get_assigned_variables());
+        ]);
+        $template->sem_data = Semester::getAllAsArray();
+        $template->with_modules = Request::bool('modules');
         $template->image_style = 'height: 6px; width: 8px;';
 
         $doc = new ExportPDF();
@@ -200,7 +190,7 @@ class MyCoursesController extends AuthenticatedController
                            LEFT JOIN `mvv_lvgruppe` AS ml ON (mls.`lvgruppe_id` = ml.`lvgruppe_id`)
                            LEFT JOIN `mvv_lvgruppe_modulteil` AS mlm on(mls.`lvgruppe_id` = mlm.`lvgruppe_id`)
                            LEFT JOIN `mvv_modulteil` AS mmt ON (mlm.`modulteil_id` = mmt.`modulteil_id`)
-                           LEFT JOIN `mvv_modul` AS mm ON (mmt.`modul_id` = mm.`modul_id`)";
+                           LEFT JOIN `mvv_modul` AS mm ON (mmt.`modul_id` = mm.`modul_id` AND mm.`stat` = 'genehmigt')";
 
         }
 
@@ -354,7 +344,10 @@ class MyCoursesController extends AuthenticatedController
         $semesters   = MyRealmModel::getSelectedSemesters($sem);
         $min_sem_key = min($semesters);
         $max_sem_key = max($semesters);
-        $courses     = MyRealmModel::getCourses($min_sem_key, $max_sem_key, compact('deputies_enabled'));
+        $courses     = MyRealmModel::getCourses($min_sem_key, $max_sem_key, [
+            'deputies_enabled' => $deputies_enabled,
+            'exactly'          => $semesters,
+        ]);
         foreach ($courses as $index => $course) {
             MyRealmModel::setObjectVisits($course, $GLOBALS['user']->id, $timestamp);
         }
@@ -1178,6 +1171,7 @@ class MyCoursesController extends AuthenticatedController
             'future'      => _('Aktuelles und nächstes Semester'),
             'last'        => _('Aktuelles und letztes Semester'),
             'lastandnext' => _('Letztes, aktuelles, nächstes Semester'),
+            'lastbutone'  => _('Aktuelles und vorletztes Semester'),
         ];
 
         if (Config::get()->MY_COURSES_ENABLE_ALL_SEMESTERS) {

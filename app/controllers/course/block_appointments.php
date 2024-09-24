@@ -33,7 +33,7 @@ class Course_BlockAppointmentsController extends AuthenticatedController
             SeminarCategories::GetBySeminarId($this->course_id)->studygroup_mode ||
             !$GLOBALS['perm']->have_studip_perm("tutor", $this->course_id)
         ) {
-            throw new Trails_Exception(400);
+            throw new Trails\Exception(400);
         }
         PageLayout::setHelpKeyword('Basis.VeranstaltungenVerwaltenAendernVonZeitenUndTerminen');
         PageLayout::setTitle(Course::findCurrent()->getFullName() . " - " . _('Blockveranstaltungstermine anlegen'));

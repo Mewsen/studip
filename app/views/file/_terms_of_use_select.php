@@ -24,20 +24,20 @@ if (!$selected_terms_of_use_id) {
                aria-description="<?= htmlReady(kill_format($content_terms_of_use_entry->description)) ?>">
 
         <label for="content_terms_of_use-<?= htmlReady($content_terms_of_use_entry->id) ?>">
-            <div class="icon">
-            <? if ($content_terms_of_use_entry['icon']) : ?>
-                <? if (filter_var($content_terms_of_use_entry['icon'], FILTER_VALIDATE_URL)): ?>
-                    <img src="<?= htmlReady($content_terms_of_use_entry['icon']) ?>" width="32" height="32">
-                <? else : ?>
-                    <?= Icon::create($content_terms_of_use_entry['icon'], Icon::ROLE_CLICKABLE)->asImg(32) ?>
-                <? endif ?>
-            <? endif ?>
-            </div>
+            <?= Icon::create('radiobutton-unchecked')->asImg(24, ['class' => 'arrow']) ?>
+            <?= Icon::create('radiobutton-checked')->asImg(24, ['class' => 'check']) ?>
             <div class="text">
                 <?= htmlReady($content_terms_of_use_entry->name) ?>
             </div>
-            <?= Icon::create('arr_1down', Icon::ROLE_CLICKABLE)->asImg(24, ['class' => 'arrow']) ?>
-            <?= Icon::create('check-circle', Icon::ROLE_CLICKABLE)->asImg(32, ['class' => 'check']) ?>
+            <div class="icon">
+                <? if ($content_terms_of_use_entry['icon']) : ?>
+                    <? if (filter_var($content_terms_of_use_entry['icon'], FILTER_VALIDATE_URL)): ?>
+                        <img src="<?= htmlReady($content_terms_of_use_entry['icon']) ?>" width="32" height="32">
+                    <? else : ?>
+                        <?= Icon::create($content_terms_of_use_entry['icon'], Icon::ROLE_CLICKABLE)->asImg(32) ?>
+                    <? endif ?>
+                <? endif ?>
+            </div>
         </label>
 
         <? if (trim($content_terms_of_use_entry->description)): ?>

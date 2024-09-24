@@ -15,10 +15,10 @@ class TemplateWidget extends SidebarWidget
      * Constructor of the widget.
      *
      * @param String         $title     Title of the widget
-     * @param Flexi_Template $template  Template for the widget
+     * @param Flexi\Template $template  Template for the widget
      * @param array          $variables Associated variables for the template
      */
-    public function __construct($title, Flexi_Template $template, array $variables = [])
+    public function __construct($title, Flexi\Template $template, array $variables = [])
     {
         parent::__construct();
 

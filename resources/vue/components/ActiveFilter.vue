@@ -4,7 +4,7 @@
         <button
             @click="onRemoveActiveFilter"
             type="button"
-            :title="$gettextInterpolate($gettext('Filter \'%{name}\' entfernen'), { name })"
+            :title="$gettextInterpolate($gettext('Filter \'%{name}\' entfernen'), { name }, true)"
         >
             <StudipIcon class="text-bottom" shape="decline" role="presentation" alt="" />
         </button>

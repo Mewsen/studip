@@ -18,31 +18,13 @@ $inc_path .= PATH_SEPARATOR . __DIR__ . '/../..';
 $inc_path .= PATH_SEPARATOR . __DIR__ . '/../../config';
 ini_set('include_path', $inc_path);
 
-require 'lib/classes/StudipAutoloader.php';
+require 'lib/helpers.php';
 require 'lib/functions.php';
 require_once 'lib/language.inc.php';
 require 'lib/visual.inc.php';
 require 'lib/messaging.inc.php';
 
 $STUDIP_BASE_PATH = realpath(dirname(__FILE__) . '/../..');
-
-StudipAutoloader::register();
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/calendar', 'Studip\\Calendar');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/classes');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/classes', 'Studip');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/exceptions');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/exceptions/resources');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/filesystem');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/migrations');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/models');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/models/resources');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/phplib');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/raumzeit');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/resources');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/plugins/core');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/modules');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/plugins/db');
-StudipAutoloader::addAutoloadPath($STUDIP_BASE_PATH . '/lib/plugins/engine');
 
 // load config-variables
 $added_configs = [];
@@ -62,8 +44,7 @@ require 'vendor/email_message/email_message.php';
 require 'vendor/email_message/debug_message.php';
 StudipMail::setDefaultTransporter(new debug_message_class());
 
-require_once 'vendor/flexi/lib/flexi.php';
-$GLOBALS['template_factory'] = new Flexi_TemplateFactory(dirname(dirname(__DIR__)) . '/templates');
+$GLOBALS['template_factory'] = new Flexi\Factory(dirname(dirname(__DIR__)) . '/templates');
 
 // Disable caching to fallback to memory cache
 $GLOBALS['CACHING_ENABLE'] = false;
@@ -74,7 +55,7 @@ if (!class_exists('StudipTestHelper')) {
     {
         static function set_up_tables($tables)
         {
-            $cache = StudipCacheFactory::getCache(false);
+            $cache = \Studip\Cache\Factory::getCache(false);
 
             // second step, expire table scheme
             SimpleORMap::expireTableScheme();

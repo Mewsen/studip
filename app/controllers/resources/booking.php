@@ -242,9 +242,7 @@ class Resources_BookingController extends AuthenticatedController
             return true;
         }
 
-        $template_factory = new Flexi_TemplateFactory(
-            $GLOBALS['STUDIP_BASE_PATH'] . '/locale/'
-        );
+        $template_factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/locale/');
 
         $derived_resource = $booking->resource->getDerivedClassInstance();
         $system_lang = $_SESSION['_language'];
@@ -1354,7 +1352,7 @@ class Resources_BookingController extends AuthenticatedController
                     $resource,
                     $time_intervals,
                     [1, 3],
-                    ($this->booking->id ? [$this->booking->id] : [])
+                    isset($this->booking->id) ? [$this->booking->id] : []
                 );
                 $reservations_to_overwrite = array_merge(
                     $reservations_to_overwrite,

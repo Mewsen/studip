@@ -36,7 +36,7 @@ class AdvancedBasicDataWizardStep extends BasicDataWizardStep
         }
 
         // Load template from step template directory.
-        $factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'].'/app/views/course/wizard/steps');
+        $factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'].'/app/views/course/wizard/steps');
         $template = $factory->open('advancedbasicdata/index');
 
         $template = $this->setupTemplateAttributes($template, $values, $stepnumber, $temp_id);

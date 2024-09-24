@@ -78,7 +78,7 @@ use Studip\Button;
         <tfoot>
             <tr>
                 <td colspan="6">
-                    <select name="action" data-activates=".cronjobs button[name=bulk]">
+                    <select name="action" data-activates=".cronjobs button[name=bulk]" aria-label="<?= _('Aktion auswählen') ?>">
                         <option value="">- <?= _('Aktion auswählen') ?></option>
                         <option value="activate"><?= _('Aktivieren') ?></option>
                         <option value="deactivate"><?= _('Deaktivieren') ?></option>

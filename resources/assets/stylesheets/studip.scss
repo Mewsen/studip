@@ -32,7 +32,6 @@
 @import "scss/contents";
 @import "scss/content";
 @import "scss/comments";
-@import "scss/copyable-links";
 @import "scss/cronjobs";
 @import "scss/coursewizard";
 @import "scss/css_tree";
@@ -42,7 +41,6 @@
 @import "scss/documents";
 @import "scss/drag-handle";
 @import "scss/enrolment";
-@import "scss/evaluation";
 @import "scss/files";
 @import "scss/feedback";
 @import "scss/forms";
@@ -97,6 +95,7 @@
 @import "scss/studygroup";
 @import "scss/studip-overlay";
 @import "scss/studip-selection";
+@import "scss/system-notifications";
 @import "scss/table_of_contents";
 @import "scss/tables";
 @import "scss/tabs";
@@ -243,8 +242,6 @@ ol.clean {
     font-size: 16px;
     padding: 5px;
 }
-
-
 
 .minor {
     color: var(--black);

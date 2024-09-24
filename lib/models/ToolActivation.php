@@ -1,6 +1,6 @@
 <?php
 /**
- * ToolActivation.class.php
+ * ToolActivation.php
  * model class for table tools_activated
  *
  * This program is free software; you can redistribute it and/or

@@ -24,7 +24,7 @@
  * Bei Nutzung dieser Funktion unbedingt die Texte unter locale/de/LC_HELP/visibility_decision.php bzw.
  * locale/en/LC_HELP/visibility_decision.php an die lokalen Verhältnisse anpassen!
  */
-if (PageLayout::isHeaderEnabled()) //Einige Seiten benötigen keinen Header, sprich Navigation (Evaluation usw.)
+if (PageLayout::isHeaderEnabled()) //Einige Seiten benötigen keinen Header, sprich Navigation
 {
     $header_template = $GLOBALS['template_factory']->open('header');
     $header_template->current_page = PageLayout::getTitle();

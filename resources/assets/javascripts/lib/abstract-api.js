@@ -1,5 +1,20 @@
 import Overlay from './overlay.js';
 
+class APIError extends Error
+{
+    static createWithJqXhr(message, jqXhr) {
+        const error = new APIError(message);
+        error.setJqXhr(jqXhr);
+        return error;
+    }
+
+    jqXhr = null;
+
+    setJqXhr(jqXhr) {
+        this.jqXhr = jqXhr;
+    }
+}
+
 class AbstractAPI
 {
     static get supportedMethods() {
@@ -52,6 +67,8 @@ class AbstractAPI
 
         var deferred;
 
+        const request = this.#createRequest(url, options);
+
         if (options.async && this.request_count > 0) {
             // Request should be sent asynchronous after every other request
             // is finished. The configuration for this particular request is
@@ -73,10 +90,10 @@ class AbstractAPI
             this.total_requests += 1;
 
             // Actual request
-            deferred = $.ajax(STUDIP.URLHelper.getURL(`${this.base_url}/${url}`, {}, true), {
+            deferred = $.ajax(request.url, {
                 contentType: options.contentType || 'application/x-www-form-urlencoded; charset=UTF-8',
                 method: options.method.toUpperCase(),
-                data: this.encodeData(options.data, options.method.toUpperCase()),
+                data: this.encodeData(request.data, options.method.toUpperCase()),
                 headers: options.headers
             }).always(() => {
                 // Decrease request counter, remove overlay if neccessary
@@ -92,6 +109,54 @@ class AbstractAPI
                 this.queue.shift().resolve();
             }
         }).promise();
+    }
+
+    #createRequest(url, options) {
+        const hasBody = ['post', 'put', 'patch'].includes(options.method.toLowerCase());
+        const query = hasBody ? '' : `?${this.convertDataToRequestParameters(options.data)}`;
+
+        return {
+            url: STUDIP.URLHelper.getURL(`${this.base_url}/${url}${query}`, {}, true),
+            data: hasBody ? options.data : {},
+        };
+    }
+
+    convertDataToRequestParameters(data, prefix = '') {
+        return Object.entries(data).filter(([key, value]) => {
+            return value !== null;
+        }).map(([key, value]) => {
+            const name = prefix ? `${prefix}[${key}]` : `${key}`;
+            if (value.constructor?.name === 'Object') {
+                return this.convertDataToRequestParameters(value, name);
+            } else {
+                return `${name}=${value}`;
+            }
+        }).join('&');
+    }
+
+    withPromises() {
+        return new Proxy(this, {
+            get(target, prop, receiver) {
+                // This will allow http methods to be written as lowercase when called as methods
+                // (e.g. api.patch() instead of api.PATCH())
+                if (target[prop] === undefined && AbstractAPI.supportedMethods.includes(prop.toUpperCase())) {
+                    prop = prop.toUpperCase();
+                }
+
+                // Only handle calls to request methods
+                if (prop !== 'request') {
+                    return Reflect.get(target, prop, receiver);
+                }
+
+                // Return a wrapped promise that handles the deferred
+                return (url, options = {}) => new Promise((resolve, reject) => {
+                    target[prop].apply(target, [url, options]).then(
+                        (response) => resolve(response),
+                        (jqXhr, textStatus, errorThrown) => reject(APIError.createWithJqXhr(errorThrown || textStatus, jqXhr))
+                    );
+                });
+            }
+        })
     }
 }
 

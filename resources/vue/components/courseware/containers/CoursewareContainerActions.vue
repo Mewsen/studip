@@ -3,6 +3,7 @@
         <studip-action-menu
             :items="menuItems"
             :context="container.attributes.title"
+            :collapseAt="1"
             @editContainer="editContainer"
             @changeContainer="changeContainer"
             @deleteContainer="deleteContainer"

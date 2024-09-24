@@ -119,7 +119,11 @@ class ExternPageTimetable extends ExternPage
                 LEFT JOIN `seminar_inst`
                     ON `seminare`.`Seminar_id` = `seminar_inst`.`Seminar_id`";
         $query .= "
-            WHERE (`termine`.`date` >= :start AND `termine`.`date` <= :end) "
+            WHERE (
+                `seminare`.`visible` = 1
+                    AND termine`.`date` >= :start
+                    AND `termine`.`date` <= :end
+            )"
             . $this->getEventTypeSQL($params)
             . $this->getScopesSQL($params, $this->studyareas, (bool) $this->scope_kids)
             . $this->getInstitutesSQL($params)
@@ -162,7 +166,7 @@ class ExternPageTimetable extends ExternPage
         $time = new DateTime();
         switch ($this->date_offset) {
             case 'start_date':
-                $time = DateTime::createFromFormat('d.m.Y', $this->date);
+                $time = $this->date ? DateTime::createFromFormat('d.m.Y', $this->date) : $time;
                 break;
             case 'current_semester':
                 $semester = Semester::findCurrent();
@@ -228,6 +232,7 @@ class ExternPageTimetable extends ExternPage
     protected function getContent()
     {
         $count = 0;
+        $date_content = [];
         foreach ($this->getDates() as $date) {
             $day = new DateTime();
             $day->setTimestamp($date->date)->setTime(0, 0);

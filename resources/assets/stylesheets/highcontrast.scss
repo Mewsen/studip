@@ -1309,3 +1309,18 @@ form.default {
         border: 1px solid var(--black);
     }
 }
+
+.studip-tree-course {
+    .course-dates {
+        color: var(--black) !important;
+
+    }
+}
+
+div.avatar-widget {
+    .profile-avatar {
+        .avatar-overlay {
+            background-color: fade-out($base-color, 0.1);
+        }
+    }
+}

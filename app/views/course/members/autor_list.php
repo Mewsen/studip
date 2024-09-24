@@ -48,7 +48,7 @@
                            type="checkbox" name="all" value="1" data-proxyfor=":checkbox[name^=autor]">
                 </th>
             <? endif ?>
-                <th></th>
+                <th><p class="sr-only"><?= _('Nummer') ?></p></th>
                 <th <? if ($sort_by === 'nachname' && $sort_status === 'autor') printf('class="sort%s"', $order); ?>>
                     <? $order = $sort_status !== 'autor' ? 'desc' : $order; ?>
                     <a href="<?= URLHelper::getLink(sprintf(
@@ -183,8 +183,8 @@
         <tfoot>
             <tr>
                 <td colspan="<?= $cols_foot ?>">
-                    <select name="action_autor" id="action_autor" aria-label="<?= _('Aktion ausführen') ?>">
-                        <option value="">- <?= _('Aktion wählen') ?></option>
+                    <select name="action_autor" id="action_autor" aria-label="<?= _('Aktion auswählen') ?>">
+                        <option value="">- <?= _('Aktion auswählen') ?></option>
                     <? if($is_dozent) : ?>
                         <option value="upgrade">
                             <?= sprintf(_('Zu %s hochstufen'), htmlReady($status_groups['tutor'])) ?>

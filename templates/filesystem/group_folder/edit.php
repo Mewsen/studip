@@ -10,7 +10,7 @@ $groups = Statusgruppen::findBySeminar_id(Request::get('cid'));
         </option>
     <? endif; ?>
     <? foreach ($groups as $one_group): ?>
-        <option <?=(@$group->id === $one_group->id ? 'selected' : '')?> value="<?= htmlReady($one_group->id) ?>">
+        <option <?= isset($group) && $group->id === $one_group->id ? 'selected' : '' ?> value="<?= htmlReady($one_group->id) ?>">
             <?= htmlReady($one_group->name) ?>
         </option>
     <? endforeach; ?>

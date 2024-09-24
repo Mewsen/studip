@@ -32,7 +32,7 @@ class ExternPagePersBrowse extends ExternPage
 
     /**
      * @see ExternPage::getDataFields()
-     
+
      * @param array $classes
      * @return array
      */
@@ -343,6 +343,7 @@ class ExternPagePersBrowse extends ExternPage
                         LEFT JOIN auth_user_md5 aum ON su.user_id = aum.user_id
                     WHERE ui.Institut_id = ?
                         AND su.status = 'dozent'
+                        AND s.visible = 1
                         AND ui.externdefault = 1
                         AND " . get_ext_vis_query() . "
                         AND ui.inst_perms = 'dozent'

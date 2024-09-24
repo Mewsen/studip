@@ -164,7 +164,7 @@ class OERMaterial extends SimpleORMap
     public static function fetchRemoteSearch($text, $tag = false)
     {
         $cache_name = "oer_remote_searched_for_".md5($text)."_".($tag ? 1 : 0);
-        $already_searched = (bool) StudipCacheFactory::getCache()->read($cache_name);
+        $already_searched = (bool) \Studip\Cache\Factory::getCache()->read($cache_name);
         if (!$already_searched) {
             $hosts = OERHost::findBySQL("index_server = '1' AND allowed_as_index_server = '1' ORDER BY RAND()");
             foreach ($hosts as $host) {
@@ -172,7 +172,7 @@ class OERMaterial extends SimpleORMap
                     $host->fetchRemoteSearch($text, $tag);
                 }
             }
-            StudipCacheFactory::getCache()->read($cache_name, "1", 60);
+            \Studip\Cache\Factory::getCache()->write($cache_name, "1", 60);
         }
     }
 
@@ -198,7 +198,7 @@ class OERMaterial extends SimpleORMap
             return $output;
         }
 
-        $tf = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH']."/app/views");
+        $tf = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH']."/app/views");
         if ($material->hasValidPreviewUrl() || $material->isPDF()) {
             $template = $tf->open("oer/embed/url");
         } elseif ($material->isVideo()) {
@@ -703,7 +703,7 @@ class OERMaterial extends SimpleORMap
         $message = sprintf(
             _('%1$s hat soeben neues Material auf dem OER Campus zur verfügung gestellt. Viel Spaß! <br> %2$s'),
             $user_name,
-            URLHelper::getURL("dispatch.php/oer/market/details/".$this->getId())
+            URLHelper::getURL("dispatch.php/oer/market/details/".$this->getId(), [], true)
         );
         URLHelper::setBaseURL($oldbase);
         $messsaging->insert_message(

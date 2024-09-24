@@ -5,7 +5,7 @@
 # Lifter010: TODO
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
-// range_tree.view.class.php
+// range_tree.view.php
 // Database views used with "range_tree"
 //
 // Copyright (c) 2002 André Noack <noack@data-quest.de>

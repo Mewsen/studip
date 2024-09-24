@@ -42,7 +42,7 @@ abstract class OAuth2Controller extends StudipController
             return $this->convertPsrResponse($psrResponse);
         }
 
-        return new Trails_Response($exception->getMessage(), [], 500);
+        return new Trails\Response($exception->getMessage(), [], 500);
     }
 
     protected function getAuthorizationServer(): AuthorizationServer

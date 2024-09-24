@@ -67,7 +67,7 @@ class Studiengaenge_FachbereichestgteileController extends Studiengaenge_Studien
             $this->fachbereich = $fachbereich;
             $this->perform_relayed('stgteil');
         } else {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
     }
 }

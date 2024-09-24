@@ -14,13 +14,13 @@ use Psr\Container\ContainerInterface;
  * ```
  * $logger = app(LoggerInterface::class);
  * ```
- *
- * @param string|null $entryId    entry name or a class name
+ * @template T
+ * @param class-string<T>|string|null $entryId    entry name or a class name
  * @param array       $parameters Optional parameters to use to build the entry.
  *                                Use this to force specific parameters to specific values.
  *                                Parameters not defined in this array will be resolved using the container.
  *
- * @return ContainerInterface|mixed either the DI container or the entry associated to the $entryId
+ * @return T|ContainerInterface|mixed either the DI container or the entry associated to the $entryId
  */
 function app($entryId = null, $parameters = [])
 {

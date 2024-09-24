@@ -31,11 +31,11 @@ if (empty($_SESSION['_language'])) {
 
 $_language_path = init_i18n($_SESSION['_language']);
 
-$GLOBALS['template_factory'] = new Flexi_TemplateFactory('../templates/');
+$GLOBALS['template_factory'] = new Flexi\Factory('../templates/');
 
 # get plugin class from request
 $dispatch_to = Request::pathInfo() ?: '';
 
-$dispatcher = app(\Trails_Dispatcher::class);
+$dispatcher = app(\Trails\Dispatcher::class);
 $dispatcher->trails_uri = $_SERVER['SCRIPT_NAME'];
 $dispatcher->dispatch("web_migrate/{$dispatch_to}");

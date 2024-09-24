@@ -86,7 +86,7 @@ class RootFolder extends StandardFolder
     }
 
     /**
-     * @return Flexi_Template
+     * @return Flexi\Template
      */
     public function getEditTemplate()
     {

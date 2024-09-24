@@ -50,19 +50,18 @@
 </article>
 
 <?= $news ?>
-<?= $evaluations ?>
 <?= $questionnaires ?>
 
 <?
 // display plugins
-$plugins = PluginEngine::getPlugins('StandardPlugin', $institute_id);
+$plugins = PluginEngine::getPlugins(StandardPlugin::class, $institute_id);
 $layout = $GLOBALS['template_factory']->open('shared/index_box');
 
 foreach ($plugins as $plugin) {
     $template = $plugin->getInfoTemplate($institute_id);
 
     if ($template) {
-        echo $template->render(NULL, $layout);
+        echo $template->render(layout: $layout);
         $layout->clear_attributes();
     }
 }

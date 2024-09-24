@@ -114,10 +114,6 @@ class ProfileNavigation extends Navigation
                     $navigation->addSubNavigation('deputies', new Navigation(_('Standardvertretung'), 'dispatch.php/settings/deputies'));
                 }
 
-                if (Config::Get()->API_ENABLED) {
-                    $navigation->addSubNavigation('api', new Navigation(_('API-Berechtigungen'), 'dispatch.php/api/authorizations'));
-                }
-
                 if (TwoFactorAuth::isEnabledForUser()) {
                     $navigation->addSubNavigation('tfa', new Navigation(_('Zwei-Faktor-Authentifizierung'), 'dispatch.php/tfa'));
                 }
@@ -139,7 +135,7 @@ class ProfileNavigation extends Navigation
 
         // Add consultations if appropriate
         if (Config::get()->CONSULTATION_ENABLED) {
-            $plugin = PluginEngine::getPlugin('ConsultationModule');
+            $plugin = PluginEngine::getPlugin(ConsultationModule::class);
             if ($current_user && $plugin && PluginManager::getInstance()->isPluginActivatedForUser($plugin->getPluginId(), $current_user->id)) {
                 $this->addSubNavigation('consultation', new ConsultationNavigation($current_user));
             }

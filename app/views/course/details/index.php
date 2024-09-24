@@ -496,7 +496,7 @@ if (!empty($mvv_tree)) : ?>
     </article>
 <? endif ?>
 
-<? foreach (PluginManager::getInstance()->getPlugins('DetailspagePlugin') as $plugin) : ?>
+<? foreach (PluginManager::getInstance()->getPlugins(DetailspagePlugin::class) as $plugin) : ?>
     <? $template = $plugin->getDetailspageTemplate($course) ?>
     <? if ($template) : ?>
         <article class="studip">

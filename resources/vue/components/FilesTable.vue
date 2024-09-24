@@ -42,40 +42,83 @@
             </colgroup>
             <thead>
                 <tr class="sortable">
-                    <th v-if="show_bulk_actions" data-sort="false" :aria-label="$gettext('Ordner und Dateien auswählen')">
+                    <th v-if="show_bulk_actions"
+                        data-sort="false"
+                        :aria-label="$gettext('Ordner und Dateien auswählen')">
                         <studip-proxy-checkbox
                             v-model="selectedIds"
                             :total="allIds"
                             :title="$gettext('Alle Ordner und Dateien auswählen')"
                         ></studip-proxy-checkbox>
                     </th>
-                    <th @click="sort('mime_type')" :class="sortClasses('mime_type')">
-                        <a href="#" @click.prevent>
+                    <th @click="sort('mime_type')"
+                        :class="sortClasses('mime_type')"
+                        :aria-sort="getAriaSortString('mime_type')"
+                        :aria-label="getAriaSortLabel('mime_type', $gettext('Typ'))"
+                    >
+                        <a href="#"
+                           @click.prevent
+                           :title="$gettext('Nach Typ sortieren')">
                             {{ $gettext('Typ') }}
                         </a>
                     </th>
-                    <th @click="sort('name')" :class="sortClasses('name')">
-                        <a href="#" @click.prevent>
+                    <th @click="sort('name')"
+                        :class="sortClasses('name')"
+                        :aria-sort="getAriaSortString('name')"
+                        :aria-label="getAriaSortLabel('name', $gettext('Name'))"
+                    >
+                        <a href="#"
+                           @click.prevent
+                           :title="$gettext('Nach Name sortieren')">
                             {{ $gettext('Name') }}
                         </a>
                     </th>
-                    <th @click="sort('size')" class="responsive-hidden" :class="sortClasses('size')">
-                        <a href="#" @click.prevent>
+                    <th @click="sort('size')"
+                        class="responsive-hidden"
+                        :class="sortClasses('size')"
+                        :aria-sort="getAriaSortString('size')"
+                        :aria-label="getAriaSortLabel('size', $gettext('Größe'))"
+                    >
+                        <a href="#"
+                           @click.prevent
+                           :title="$gettext('Nach Größe sortieren')">
                             {{ $gettext('Größe') }}
                         </a>
                     </th>
-                    <th v-if="showdownloads" @click="sort('downloads')" class="responsive-hidden" :class="sortClasses('downloads')">
-                        <a href="#" @click.prevent>
+                    <th v-if="showdownloads"
+                        @click="sort('downloads')"
+                        class="responsive-hidden"
+                        :class="sortClasses('downloads')"
+                        :aria-sort="getAriaSortString('downloads')"
+                        :aria-label="getAriaSortLabel('downloads', $gettext('Downloads'))"
+                    >
+                        <a href="#"
+                           @click.prevent
+                           :title="$gettext('Nach Downloads sortieren')">
                             {{ $gettext('Downloads') }}
                         </a>
                     </th>
-                    <th class="responsive-hidden" @click="sort('author_name')" :class="sortClasses('author_name')">
-                        <a href="#" @click.prevent>
+                    <th class="responsive-hidden"
+                        @click="sort('author_name')"
+                        :class="sortClasses('author_name')"
+                        :aria-sort="getAriaSortString('author_name')"
+                        :aria-label="getAriaSortLabel('author_name', $gettext('Autor/-in'))"
+                    >
+                        <a href="#"
+                           @click.prevent
+                           :title="$gettext('Nach Autor/-in sortieren')">
                             {{ $gettext('Autor/-in') }}
                         </a>
                     </th>
-                    <th class="responsive-hidden" @click="sort('chdate')" :class="sortClasses('chdate')">
-                        <a href="#" @click.prevent>
+                    <th class="responsive-hidden"
+                        @click="sort('chdate')"
+                        :class="sortClasses('chdate')"
+                        :aria-sort="getAriaSortString('chdate')"
+                        :aria-label="getAriaSortLabel('chdate', $gettext('Datum'))"
+                    >
+                        <a href="#"
+                           @click.prevent
+                           :title="$gettext('Nach Datum sortieren')">
                             {{ $gettext('Datum') }}
                         </a>
                     </th>
@@ -83,11 +126,15 @@
                         :key="index"
                         @click="sort(index)"
                         class="responsive-hidden"
-                        :class="sortClasses(index)">
-                        <a href="#" @click.prevent>
+                        :class="sortClasses(index)"
+                        :aria-sort="getAriaSortString(name)"
+                        :aria-label="getAriaSortLabel(name, name)"
+                    >
+                        <a href="#"
+                           @click.prevent
+                           :title="$gettextInterpolate($gettext('Nach %{ colName } sortieren'), {colName: name}, true)">
                             {{name}}
                         </a>
-
                     </th>
                     <th class="actions" data-sort="false">{{ $gettext('Aktionen') }}</th>
                 </tr>
@@ -120,12 +167,17 @@
                         ></studip-proxied-checkbox>
                     </td>
                     <td class="document-icon">
-                        <a :href="folder.url" :id="`folder-${folder.id}`">
-                            <studip-icon :shape="folder.icon" :size="26" class="text-bottom"></studip-icon>
+                        <a :href="folder.url"
+                           :id="`folder-${folder.id}`"
+                           :title="$gettextInterpolate($gettext('Ordner %{foldername} öffnen'),
+                           { foldername: folder.name}, true)">
+                            <studip-icon :shape="folder.icon" :size="26" class="text-bottom" alt=""></studip-icon>
                         </a>
                     </td>
                     <td :class="{'filter-match': valueMatchesFilter(folder.name)}">
-                        <a :href="folder.url">
+                        <a :href="folder.url"
+                           :title="$gettextInterpolate($gettext('Ordner %{foldername} öffnen'),
+                           { foldername: folder.name}, true)">
                             <span v-html="highlightString(folder.name)"></span>
                         </a>
                     </td>
@@ -172,7 +224,11 @@
                         ></studip-proxied-checkbox>
                     </td>
                     <td class="document-icon">
-                        <a v-if="file.download_url" :href="file.download_url" target="_blank" rel="noopener noreferrer">
+                        <a v-if="file.download_url"
+                           :href="file.download_url"
+                           target="_blank" rel="noopener noreferrer"
+                           :title="$gettextInterpolate($gettext('Datei %{filename} herunterladen'),
+                            { filename: file.name }, true)">
                             <studip-icon :shape="file.icon" :size="24" class="text-bottom"></studip-icon>
                         </a>
                         <studip-icon v-else :shape="file.icon" :size="24"></studip-icon>
@@ -180,10 +236,16 @@
                         <a :href="file.download_url"
                            v-if="file.download_url && file.mime_type.indexOf('image/') === 0"
                            class="lightbox-image"
-                           data-lightbox="gallery"></a>
+                           data-lightbox="gallery"
+                           :title="$gettextInterpolate($gettext('Datei %{filename} anzeigen'),
+                            { filename: file.name }, true)"></a>
                     </td>
                     <td :class="{'filter-match': valueMatchesFilter(file.name)}">
-                        <a :href="file.details_url" data-dialog :id="`file-${file.id}`">
+                        <a :href="file.details_url"
+                           data-dialog
+                           :id="`file-${file.id}`"
+                           :title="$gettextInterpolate($gettext('Details zur Datei %{filename} anzeigen'),
+                            { filename: file.name }, true)">
                             <span v-html="highlightString(file.name)"></span>
                             <studip-icon v-if="file.isAccessible"
                                          shape="accessibility"
@@ -405,6 +467,20 @@ export default {
                 this.$gettext('Datei %{name} auswählen'),
                 {name: file.name}
             );
+        },
+        getAriaSortString(column) {
+            return column === this.sortedBy
+                ? (this.sortDirection === 'asc' ? 'ascending' : 'descending')
+                : null;
+        },
+        getAriaSortLabel(column, label) {
+            if (column !== this.sortedBy) {
+                return null;
+            }
+            const template = this.sortDirection === 'asc'
+                ? this.$gettext('Es wird aufsteigend nach der Spalte %{ label } sortiert.')
+                : this.$gettext('Es wird absteigend nach der Spalte %{ label } sortiert.');
+            return this.$gettextInterpolate(template, { label });
         }
     },
     computed: {

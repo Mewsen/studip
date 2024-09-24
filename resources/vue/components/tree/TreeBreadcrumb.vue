@@ -10,7 +10,7 @@
                     <a :href="nodeUrl(ancestor.classname + '_' + ancestor.id)" :ref="ancestor.id"
                        @click.prevent="openNode(ancestor.id, ancestor.classname)" tabindex="0"
                        :id="'tree-breadcrumb-' + ancestor.id"
-                       :title="$gettextInterpolate($gettext('%{ node } öffnen'), { node: ancestor.name})">
+                       :title="$gettextInterpolate($gettext('%{ node } öffnen'), { node: ancestor.name}, true)">
                         {{ ancestor.name }}
                     </a>
                     <template v-if="index !== node.attributes.ancestors.length - 1">

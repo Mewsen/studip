@@ -2,8 +2,6 @@
 
 namespace Courseware\BlockTypes;
 
-use Opis\JsonSchema\Schema;
-
 /**
  * This class represents the content of a Courseware audio block.
  *
@@ -42,11 +40,10 @@ class Audio extends BlockType
         ];
     }
 
-    public static function getJsonSchema(): Schema
+    public static function getJsonSchema(): string
     {
         $schemaFile = __DIR__.'/Audio.json';
-
-        return Schema::fromJsonString(file_get_contents($schemaFile));
+        return file_get_contents($schemaFile);
     }
 
     /**

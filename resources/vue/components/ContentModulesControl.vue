@@ -15,7 +15,7 @@
                @click.prevent="toggleModuleVisibility(module)">
                 <studip-icon :shape="module.visibility !== 'tutor' ? 'visibility-visible' : 'visibility-invisible'"
                              class="text-bottom"
-                             :title="$gettextInterpolate($gettext('Inhaltsmodul %{ name } für Teilnehmende unsichtbar bzw. sichtbar schalten'), { name: module.displayname})"></studip-icon>
+                             :title="$gettextInterpolate($gettext('Inhaltsmodul %{ name } für Teilnehmende unsichtbar bzw. sichtbar schalten'), { name: module.displayname}, true)"></studip-icon>
             </a>
         </div>
     </div>

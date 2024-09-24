@@ -51,7 +51,7 @@
                 <?= htmlReady(Institute::find($assignment['range_id'])->name) ?>
             <? else : ?>
                 <?
-                foreach (PluginManager::getInstance()->getPlugins("QuestionnaireAssignmentPlugin") as $plugin) {
+                foreach (PluginManager::getInstance()->getPlugins(QuestionnaireAssignmentPlugin::class) as $plugin) {
                     $name = $plugin->getQuestionnaireAssignmentName($assignment);
                     if ($name) {
                         echo htmlReady($name);

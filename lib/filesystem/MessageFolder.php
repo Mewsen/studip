@@ -1,6 +1,6 @@
 <?php
 /**
- * MessageFolder.class.php
+ * MessageFolder.php
  *
  * This is a FolderType implementation for message folders.
  * A message folder contains the attachments of a Stud.IP message.

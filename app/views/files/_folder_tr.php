@@ -61,7 +61,7 @@ if ($folder->isReadable($GLOBALS['user']->id)) {
             data-sort-value="<?= htmlReady($folder->getAdditionalColumnOrderWeigh($index)) ?>">
             <? $content = $folder->getContentForAdditionalColumn($index) ?>
             <? if ($content) : ?>
-                <?= is_a($content, "Flexi_Template") ? $content->render() : $content ?>
+                <?= $content instanceof Flexi\Template ? $content->render() : $content ?>
             <? endif ?>
         </td>
     <? endforeach ?>

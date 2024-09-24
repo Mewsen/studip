@@ -2,8 +2,6 @@
 
 namespace Courseware\BlockTypes;
 
-use Opis\JsonSchema\Schema;
-
 /**
  * This class represents the content of a Courseware folder block.
  *
@@ -55,7 +53,7 @@ class Folder extends BlockType
         if ($folder) {
             $typedFolder = $folder->getTypedFolder();
             $payload['folder-type'] = $typedFolder->folder_type;
-            if ($typedFolder->isReadable($user->id)) {   
+            if ($typedFolder->isReadable($user->id) || $typedFolder->folder_type === 'HomeworkFolder') {   
                 foreach ($typedFolder->getFiles() as $folderFile) {
                     $file['id'] = $folderFile->id;
                     $file['attributes'] = [
@@ -116,11 +114,10 @@ class Folder extends BlockType
         return $payload;
     }
 
-    public static function getJsonSchema(): Schema
+    public static function getJsonSchema(): string
     {
         $schemaFile = __DIR__.'/Folder.json';
-
-        return Schema::fromJsonString(file_get_contents($schemaFile));
+        return file_get_contents($schemaFile);
     }
 
     public static function getCategories(): array

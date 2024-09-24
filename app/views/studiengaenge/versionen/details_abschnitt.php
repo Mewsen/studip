@@ -59,7 +59,7 @@
                 </tr>
                 <? endif; ?>
             </tbody>
-        <? endforeach; TextHelper::reset_cycle(); ?>
+        <? endforeach; ?>
         <? if (MvvPerm::haveFieldPermModul_zuordnungen($abschnitt, MvvPerm::PERM_CREATE)) : ?>
             <tbody>
                 <tr>

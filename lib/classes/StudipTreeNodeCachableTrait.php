@@ -37,7 +37,7 @@ trait StudipTreeNodeCachableTrait
         return $config;
     }
 
-    protected function getDescendantIds(): array
+    public function getDescendantIds(): array
     {
         $cache = self::getDescendantsCacheArray();
 

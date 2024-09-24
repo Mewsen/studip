@@ -163,7 +163,7 @@ class Activity extends \SimpleORMap
         );
 
         //Expire Cache
-        \StudipCacheFactory::getCache()->expire('activity/oldest_activity');
+        \Studip\Cache\Factory::getCache()->expire('activity/oldest_activity');
     }
 
     /**
@@ -173,7 +173,7 @@ class Activity extends \SimpleORMap
      */
     public static function getOldestActivity()
     {
-        $cache = \StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         $cache_key = 'activity/oldest-activity';
 
         if (!$activity = unserialize($cache->read($cache_key))) {

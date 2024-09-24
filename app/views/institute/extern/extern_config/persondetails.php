@@ -85,7 +85,7 @@
             <select class="nested-select" name="semclass[]" multiple>
                 <? foreach ($GLOBALS['SEM_CLASS'] as $key => $sem_class) : ?>
                     <? if ($sem_class['show_browse']) : ?>
-                        <option value="<?= $key ?>"<?= in_array($key, $page->semclass) ? ' selected' : '' ?>>
+                        <option value="<?= $key ?>"<?= in_array($key, $page->semclass ?? []) ? ' selected' : '' ?>>
                             <?= htmlReady($sem_class['name']) ?>
                         </option>
                     <? endif ?>

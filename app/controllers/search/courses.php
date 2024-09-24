@@ -40,6 +40,7 @@ class Search_CoursesController extends AuthenticatedController
     public function index_action()
     {
         $nodeClass = '';
+        $title = _('Vorlesungsverzeichnis');
         if (Request::option('type', 'semtree') === 'semtree') {
             Navigation::activateItem('/search/courses/semtree');
             $nodeClass = StudipStudyArea::class;
@@ -52,22 +53,12 @@ class Search_CoursesController extends AuthenticatedController
             $this->treeTitle = _('Einrichtungen');
             $this->breadcrumbIcon = 'institute';
             $this->editUrl = $this->url_for('rangetree/edit');
+            $title = _('Einrichtungsverzeichnis');
         }
         $this->startId = Request::option('node_id', $nodeClass . '_root');
 
         $this->setupSidebar();
-    }
-
-    public function export_results_action()
-    {
-        $sem_browse_obj = new SemBrowse();
-        $tmpfile = basename($sem_browse_obj->create_result_xls());
-        if ($tmpfile) {
-            $this->redirect(FileManager::getDownloadURLForTemporaryFile(
-                    $tmpfile, _('ErgebnisVeranstaltungssuche.xls'), 4));
-        } else {
-            $this->render_nothing();
-        }
+        PageLayout::setTitle($title);
     }
 
     private function setupSidebar()
@@ -110,17 +101,7 @@ class Search_CoursesController extends AuthenticatedController
         }
 
         $sidebar->addWidget(new VueWidget('search-widget'));
+        $sidebar->addWidget(new VueWidget('views-widget'));
         $sidebar->addWidget(new VueWidget('export-widget'));
-
-        $views = new ViewsWidget();
-        $views->addLink(
-            _('Als Liste'),
-            $this->url_for('search/courses', array_merge($params, ['show_as' => 'list']))
-        )->setActive($this->show_as === 'list');
-        $views->addLink(
-            _('Als Tabelle'),
-            $this->url_for('search/courses', array_merge($params, ['show_as' => 'table']))
-        )->setActive($this->show_as === 'table');
-        $sidebar->addWidget($views);
     }
 }

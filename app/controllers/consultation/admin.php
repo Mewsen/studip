@@ -138,6 +138,7 @@ class Consultation_AdminController extends ConsultationController
 
         $this->room = '';
         $this->responsible = false;
+        $this->slot_count_threshold = self::SLOT_COUNT_THRESHOLD;
 
         // TODO: inst_default?
         if ($this->range instanceof User) {
@@ -155,6 +156,8 @@ class Consultation_AdminController extends ConsultationController
             $block->range = $this->range;
             $this->responsible = $block->getPossibleResponsibilites();
         }
+
+        $this->response->add_header('X-No-Buttons', '');
     }
 
     public function store_action()
@@ -186,7 +189,7 @@ class Consultation_AdminController extends ConsultationController
                 $end,
                 Request::int('day-of-week'),
                 Request::int('interval'),
-                Request::int('duration'),
+                $duration,
                 $pause_time,
                 $pause_duration
             );
@@ -214,6 +217,7 @@ class Consultation_AdminController extends ConsultationController
                 $block->note              = Request::get('note');
                 $block->size              = Request::int('size', 1);
                 $block->lock_time         = Request::int('lock_time');
+                $block->consecutive       = Request::bool('consecutive', false);
 
                 $slots = $block->createSlots(Request::int('duration'), $pause_time, $pause_duration);
                 if (count($slots) === 0) {
@@ -403,6 +407,7 @@ class Consultation_AdminController extends ConsultationController
         $this->block->mail_to_tutors = Request::bool('mail-to-tutors', false);
         $this->block->confirmation_text = trim(Request::get('confirmation-text'));
         $this->block->lock_time = Request::int('lock_time');
+        $this->block->consecutive = Request::bool('consecutive', false);
 
         foreach ($this->block->slots as $slot) {
             $slot->note = '';
@@ -535,7 +540,7 @@ class Consultation_AdminController extends ConsultationController
     public function toggle_action($what, $state, $expired = false)
     {
         if ($what === 'messages') {
-            // TODO: Applicable     everywhere?
+            // TODO: Applicable everywhere?
             $this->getUserConfig()->store(
                 'CONSULTATION_SEND_MESSAGES',
                 (bool) $state
@@ -808,7 +813,7 @@ class Consultation_AdminController extends ConsultationController
             _('Terminblöcke anlegen'),
             $this->createURL(),
             Icon::create('add')
-        )->asDialog('size=auto');
+        )->asDialog('size=big');
         $actions->addLink(
             _('Namen des Reiters ändern'),
             $this->tabURL($action === 'expired'),

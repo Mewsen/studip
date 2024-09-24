@@ -119,7 +119,7 @@ interface FolderType
     /**
      * returns description of the folder
      *
-     * @return Flexi_Template | string
+     * @return Flexi\Template | string
      */
     public function getDescriptionTemplate();
 
@@ -144,7 +144,7 @@ interface FolderType
     /**
      * returns template form, must not contain opening and closing <form> tags
      *
-     * @return Flexi_Template | string
+     * @return Flexi\Template | string
      */
     public function getEditTemplate();
 
@@ -243,10 +243,12 @@ interface FolderType
     public function getAdditionalColumns();
 
     /**
-     * Returns the content for that additional column, if it exists. You can return null a string
-     * or a Flexi_Template as the content.
+     * Returns the content for that additional column, if it exists. You can
+     * return null, a string or a Flexi\Template as the content.
+     *
      * @param string $column_index
-     * @return null|string|Flexi_Template
+     *
+     * @return null|string|Flexi\Template
      */
     public function getContentForAdditionalColumn($column_index);
 

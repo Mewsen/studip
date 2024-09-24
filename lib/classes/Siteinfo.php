@@ -281,7 +281,7 @@ class SiteinfoMarkupEngine {
 
     function __construct() {
         $this->db = DBManager::get();
-        $this->template_factory = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'].'/app/views/siteinfo/markup/');
+        $this->template_factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'].'/app/views/siteinfo/markup/');
         $this->siteinfoMarkup("/\(:version:\)/", [$this, 'version']);
         $this->siteinfoMarkup("/\(:uniname:\)/", [$this, 'uniName']);
         $this->siteinfoMarkup("/\(:unicontact:\)/", [$this, 'uniContact']);
@@ -419,7 +419,7 @@ class SiteinfoMarkupEngine {
     }
 
     function coregroup() {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         if (!($remotefile = $cache->read('coregroup'))) {
             $remotefile = file_get_contents('https://develop.studip.de/studip/extern.php?module=Persons&config_id=8d1dafc3afca2bce6125d57d4119b631&range_id=4498a5bc62d7974d0a0ac3e97aca5296', false, get_default_http_stream_context('https://develop.studip.de'));
             $cache->write('coregroup', $remotefile);
@@ -428,7 +428,7 @@ class SiteinfoMarkupEngine {
     }
 
     function toplist($item) {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         if ($found_in_cache = $cache->read(__METHOD__ . $item)) {
             return $found_in_cache;
         }
@@ -480,7 +480,7 @@ class SiteinfoMarkupEngine {
                 // get TopTen of seminars from all ForumModules and add up the
                 // count for seminars with more than one active ForumModule
                 // to get a combined toplist
-                foreach (PluginEngine::getPlugins('ForumModule') as $plugin) {
+                foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
                     $new_seminars = $plugin->getTopTenSeminars();
                     foreach ($new_seminars as $sem) {
                         if (!isset($seminars[$sem['seminar_id']])) {
@@ -531,7 +531,7 @@ class SiteinfoMarkupEngine {
     }
 
     function indicator($key) {
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         if ($found_in_cache = $cache->read(__METHOD__ . $key)) {
             return $found_in_cache;
         }
@@ -576,11 +576,7 @@ class SiteinfoMarkupEngine {
                                    "title" => _("Fragebögen"),
                                    "detail" => "",
                                    "constraint" => Config::get()->VOTE_ENABLE];
-        $indicator['evaluation'] = ["count" => ['count_table_rows','eval'],
-                                         "title" => _("Evaluationen"),
-                                         "detail" => "",
-                                         "constraint" => Config::get()->VOTE_ENABLE];
-        $indicator['wiki_pages'] = ["query" => "SELECT COUNT(DISTINCT keyword) AS count FROM wiki",
+        $indicator['wiki_pages'] = ["query" => "SELECT COUNT(*) AS count FROM wiki_pages",
                                          "title" => _("Wiki-Seiten"),
                                          "detail" => "",
                                          "constraint" => Config::get()->WIKI_ENABLE];
@@ -593,7 +589,7 @@ class SiteinfoMarkupEngine {
             $count = 0;
 
             // sum up number of postings for all availabe ForumModules
-            foreach (PluginEngine::getPlugins('ForumModule') as $plugin) {
+            foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
                 $count += $plugin->getNumberOfPostings();
             }
 
@@ -663,7 +659,7 @@ function language_filter($input) {
 }
 
 function stripforeignlanguage($language, $text) {
-    list($primary, $sub) = explode('_',$_SESSION['_language']);
+    [$primary, $sub] = explode('_',$_SESSION['_language']);
     if ($language === $primary || $language === $_SESSION['_language']) {
         return str_replace('\"', '"', $text);
     } else {

@@ -59,8 +59,7 @@
                     </tr>
                 <? endif; ?>
             </tbody>
-        <? endforeach;
-        TextHelper::reset_cycle(); ?>
+        <? endforeach; ?>
         <? if (count($version->abschnitte) > 0 && MvvPerm::haveFieldPermModul_zuordnungen('StgteilAbschnitt', MvvPerm::PERM_CREATE)
         ) : ?>
             <tbody>

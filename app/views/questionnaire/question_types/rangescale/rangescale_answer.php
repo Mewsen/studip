@@ -25,7 +25,7 @@ $responseData = $response['answerdata'] && $response['answerdata']['answers'] ? 
             <tr>
                 <th><?= _('Aussage') ?></th>
                 <? for ($i = $vote->questiondata['minimum'] ?? 1; $i <= $vote->questiondata['maximum']; $i++) : ?>
-                <th><?= htmlReady($i) ?></th>
+                <th class="option-cell"><?= htmlReady($i) ?></th>
                 <? endfor ?>
             </tr>
         </thead>
@@ -35,7 +35,7 @@ $responseData = $response['answerdata'] && $response['answerdata']['answers'] ? 
                 <? $html_id = md5(uniqid($index)) ?>
                 <td id="<?= $html_id ?>"><?= htmlReady($statements[$index]) ?></td>
                 <? for ($i = $vote->questiondata['minimum'] ?? 1; $i <= $vote->questiondata['maximum']; $i++) : ?>
-                    <td>
+                    <td class="option-cell">
                         <input type="radio"
                                title="<?= htmlReady($i) ?>"
                                aria-labelledby="<?= $html_id ?>"

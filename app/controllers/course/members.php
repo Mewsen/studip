@@ -232,7 +232,7 @@ class Course_MembersController extends AuthenticatedController
             $course_member = AdmissionApplication::find([$user_id, $this->course_id]);
         }
         if (is_null($course_member)) {
-            throw new Trails_Exception(400);
+            throw new Trails\Exception(400);
         }
         $this->comment = $course_member->comment;
         $this->user = User::find($user_id);
@@ -265,7 +265,7 @@ class Course_MembersController extends AuthenticatedController
             $course_member = AdmissionApplication::find([$user_id, $this->course_id]);
         }
         if (!Request::submitted('save') || is_null($course_member)) {
-            throw new Trails_Exception(400);
+            throw new Trails\Exception(400);
         }
         $course_member->comment = Request::get('comment');
 

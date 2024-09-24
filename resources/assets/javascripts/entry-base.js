@@ -16,6 +16,8 @@ import "./init.js"
 import "./bootstrap/responsive.js"
 import "./bootstrap/vue.js"
 
+import "./bootstrap/system-notifications.js"
+
 import "./bootstrap/my-courses.js";
 
 import "./studip-ui.js"
@@ -55,7 +57,6 @@ import "./bootstrap/article.js"
 import "./bootstrap/copyable_links.js"
 import "./bootstrap/selection.js"
 import "./bootstrap/data_secure.js"
-import "./bootstrap/tooltip.js"
 import "./bootstrap/lightbox.js"
 import "./bootstrap/application.js"
 import "./bootstrap/global_search.js"

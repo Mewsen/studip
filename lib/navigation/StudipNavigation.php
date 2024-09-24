@@ -40,7 +40,7 @@ class StudipNavigation extends Navigation
 
         // if a course is selected, the navigation for it will be loaded
         if (Context::getId()) {
-            $this->addSubNavigation('course', new CourseNavigation());
+            $this->addSubNavigation('course', new CourseNavigation(Context::get()));
         }
 
         try {

@@ -22,7 +22,7 @@ class BlubberThreadsCreateTest extends \Codeception\Test\Unit
         // Create global template factory if neccessary
         $has_template_factory = isset($GLOBALS['template_factory']);
         if (!$has_template_factory) {
-            $GLOBALS['template_factory'] = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/templates');
+            $GLOBALS['template_factory'] = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/templates');
         }
     }
 

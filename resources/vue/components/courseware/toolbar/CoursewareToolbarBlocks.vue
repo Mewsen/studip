@@ -1,85 +1,88 @@
 <template>
     <div class="cw-toolbar-blocks">
-        <form @submit.prevent="loadSearch">
-            <div class="input-group files-search search cw-block-search">
-                <input
-                    ref="searchBox"
-                    type="text"
-                    v-model="searchInput"
-                    @click.stop
-                    :label="$gettext('Geben Sie einen Suchbegriff mit mindestens 3 Zeichen ein.')"
-                />
-                <span class="input-group-append" @click.stop>
-                    <button
-                        v-if="searchInput"
-                        type="button"
-                        class="button reset-search"
-                        id="reset-search"
-                        :title="$gettext('Suche zurücksetzen')"
-                        @click="resetSearch"
-                    >
-                        <studip-icon shape="decline" :size="20"></studip-icon>
-                    </button>
-                    <button
-                        type="submit"
-                        class="button"
-                        id="search-btn"
-                        :title="$gettext('Suche starten')"
-                        @click="loadSearch"
-                    >
-                        <studip-icon shape="search" :size="20"></studip-icon>
-                    </button>
-                </span>
+        <div id="cw-toolbar-blocks-header" class="cw-toolbar-tool-header">
+            <form @submit.prevent="loadSearch">
+                <div class="input-group files-search search cw-block-search">
+                    <input
+                        ref="searchBox"
+                        type="text"
+                        v-model="searchInput"
+                        @click.stop
+                        :label="$gettext('Geben Sie einen Suchbegriff mit mindestens 3 Zeichen ein.')"
+                    />
+                    <span class="input-group-append" @click.stop>
+                        <button
+                            v-if="searchInput"
+                            type="button"
+                            class="button reset-search"
+                            id="reset-search"
+                            :title="$gettext('Suche zurücksetzen')"
+                            @click="resetSearch"
+                        >
+                            <studip-icon shape="decline" :size="20"></studip-icon>
+                        </button>
+                        <button
+                            type="submit"
+                            class="button"
+                            id="search-btn"
+                            :title="$gettext('Suche starten')"
+                            @click="loadSearch"
+                        >
+                            <studip-icon shape="search" :size="20"></studip-icon>
+                        </button>
+                    </span>
+                </div>
+            </form>
+
+            <div class="filterpanel">
+                <span class="sr-only">{{ $gettext('Kategorien-Filter') }}</span>
+                <button
+                    v-for="category in blockCategories"
+                    :key="category.type"
+                    class="button"
+                    :class="{ 'button-active': category.type === currentFilterCategory }"
+                    :aria-pressed="category.type === currentFilterCategory ? 'true' : 'false'"
+                    @click="selectCategory(category.type)"
+                >
+                    {{ category.title }}
+                </button>
             </div>
-        </form>
-
-        <div class="filterpanel">
-            <span class="sr-only">{{ $gettext('Kategorien-Filter') }}</span>
-            <button
-                v-for="category in blockCategories"
-                :key="category.type"
-                class="button"
-                :class="{ 'button-active': category.type === currentFilterCategory }"
-                :aria-pressed="category.type === currentFilterCategory ? 'true' : 'false'"
-                @click="selectCategory(category.type)"
-            >
-                {{ category.title }}
-            </button>
         </div>
-
-        <div v-if="filteredBlockTypes.length > 0" class="cw-blockadder-item-list">
-            <draggable
-                v-if="filteredBlockTypes.length > 0"
-                class="cw-blockadder-item-list"
-                tag="div"
-                role="listbox"
-                v-model="filteredBlockTypes"
-                handle=".cw-sortable-handle-blockadder"
-                :group="{ name: 'blocks', pull: 'clone', put: 'false' }"
-                :clone="cloneBlock"
-                :sort="false"
-                :emptyInsertThreshold="20"
-                @start="dragBlockStart($event)"
-                @end="dropNewBlock($event)"
-                ref="sortables"
-                sectionId="0"
-            >
-                <courseware-blockadder-item
-                    v-for="(block, index) in filteredBlockTypes"
-                    :key="index"
-                    :title="block.title"
-                    :type="block.type"
-                    :data-blocktype="block.type"
-                    :description="block.description"
-                    @blockAdded="$emit('blockAdded')"
-                />
-            </draggable>
+        <div class="cw-toolbar-tool-content" :style="toolContentStyle">
+            <div v-if="filteredBlockTypes.length > 0" class="cw-blockadder-item-list">
+                <draggable
+                    v-if="filteredBlockTypes.length > 0"
+                    class="cw-blockadder-item-list"
+                    tag="div"
+                    role="listbox"
+                    v-model="filteredBlockTypes"
+                    handle=".cw-sortable-handle-blockadder"
+                    :group="{ name: 'blocks', pull: 'clone', put: 'false' }"
+                    :clone="cloneBlock"
+                    :sort="false"
+                    :emptyInsertThreshold="20"
+                    @start="dragBlockStart($event)"
+                    @end="dropNewBlock($event)"
+                    ref="sortables"
+                    sectionId="0"
+                >
+                    <courseware-blockadder-item
+                        v-for="(block, index) in filteredBlockTypes"
+                        :key="index"
+                        :title="block.title"
+                        :type="block.type"
+                        :data-blocktype="block.type"
+                        :description="block.description"
+                        @blockAdded="$emit('blockAdded')"
+                    />
+                </draggable>
+            </div>
+            <courseware-companion-box
+                v-else
+                :msgCompanion="$gettext('Es wurden keine passenden Blöcke gefunden.')"
+                mood="pointing"
+            />
         </div>
-        <courseware-companion-box
-            v-else
-            :msgCompanion="$gettext('Es wurden keine passenden Blöcke gefunden.')"
-            mood="pointing"
-        />
     </div>
 </template>
 
@@ -98,6 +101,12 @@ export default {
         CoursewareBlockadderItem,
         CoursewareCompanionBox,
         draggable,
+    },
+    props: {
+        toolbarContentHeight: {
+            type: Number,
+            required: true,
+        },
     },
     data() {
         return {
@@ -131,6 +140,13 @@ export default {
                 { title: this.$gettext('Externe Inhalte'), type: 'external' },
                 { title: this.$gettext('Biografie'), type: 'biography' },
             ];
+        },
+        toolContentStyle() {
+            const height = this.toolbarContentHeight - 115;
+
+            return {
+                height: height + 'px',
+            };
         },
     },
     methods: {

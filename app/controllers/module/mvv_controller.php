@@ -77,7 +77,7 @@ abstract class MVVController extends AuthenticatedController
         PageLayout::setTitle(_('Module'));
 
         // Setup flash instance
-        $this->flash = Trails_Flash::instance();
+        $this->flash = Trails\Flash::instance();
 
         $this->me             = 'mvv';
         self::$items_per_page = Config::get()->getValue('ENTRIES_PER_PAGE');
@@ -218,7 +218,7 @@ abstract class MVVController extends AuthenticatedController
      * This action is used to show a select box instead of an input field
      * if the user has clicked on the magnifier icon of a quicksearch.
      *
-     * @throws Trails_Exception
+     * @throws Trails\Exception
      */
     public function qs_result_action()
     {
@@ -228,7 +228,7 @@ abstract class MVVController extends AuthenticatedController
                 Request::get('qs_term')
             ));
         } else {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
     }
 

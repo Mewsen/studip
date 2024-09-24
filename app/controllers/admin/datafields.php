@@ -94,15 +94,17 @@ class Admin_DatafieldsController extends AuthenticatedController
 
         if (Request::submitted('uebernehmen')) {
             if (Request::get('datafield_name')) {
-                $datafield->name          = Request::i18n('datafield_name');
-                if ($datafield->object_type === 'moduldeskriptor'
-                        || $datafield->object_type === 'modulteildeskriptor') {
+                $datafield->name = Request::i18n('datafield_name');
+                if (
+                    $datafield->object_type === 'moduldeskriptor'
+                    || $datafield->object_type === 'modulteildeskriptor'
+                ) {
                     $object_class = implode(',', Request::getArray('object_class'));
                     $datafield->object_class  = (trim($object_class) && $object_class != 'NULL') ? $object_class : null;
                 } elseif ($datafield->object_type === 'studycourse') {
                     $datafield->object_class  = trim(Request::option('object_class', 'all_settings'));
                 } else {
-                    $datafield->object_class  = array_sum(Request::getArray('object_class')) ?: null;
+                    $datafield->object_class  = array_sum(Request::intArray('object_class')) ?: null;
                 }
                 $datafield->edit_perms     = Request::get('edit_perms');
                 $datafield->view_perms     = Request::get('visibility_perms');

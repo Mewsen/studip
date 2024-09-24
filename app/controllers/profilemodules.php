@@ -106,7 +106,7 @@ class ProfileModulesController extends AuthenticatedController
         $plugins = [];
 
         // Get homepage plugins from database.
-        foreach (PluginEngine::getPlugins('HomepagePlugin') as $plugin) {
+        foreach (PluginEngine::getPlugins(HomepagePlugin::class) as $plugin) {
             if ($plugin->isActivatableForContext($this->user)) {
                 $plugins[$plugin->getPluginId()] = $plugin;
             }

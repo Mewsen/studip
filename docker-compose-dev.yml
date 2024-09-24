@@ -5,7 +5,7 @@ services:
     image: mariadb:10.4
     volumes:
       - db_data:/var/lib/mysql
-    command: mysqld --sql_mode=""
+      - ./docker/studip/my.cnf:/etc/mysql/conf.d/my.cnf:ro
     restart: always
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: 1

@@ -59,7 +59,6 @@
                 <li>news</li>
                 <li>vote</li>
                 <li>test</li>
-                <li>evaluation</li>
                 <li>wiki_pages</li>
                 <li>lernmodul</li>
                 <li>resource</li>

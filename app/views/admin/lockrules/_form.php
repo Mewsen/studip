@@ -85,12 +85,14 @@ use Studip\Button;
                         </td>
                         <td>
                             <input type="radio"
-                                   name="lockdata_attributes[<?= $attr ?>]" <?= ($lock_rule['attributes'][$attr] ? 'checked' : '') ?>
-                                   value="1"/>
+                                   name="lockdata_attributes[<?= $attr ?>]"
+                                   <?= !empty($lock_rule['attributes'][$attr]) ? 'checked' : '' ?>
+                                   value="1">
                         </td>
                         <td>
                             <input type="radio"
-                                   name="lockdata_attributes[<?= $attr ?>]" <?= (!$lock_rule['attributes'][$attr] ? 'checked' : '') ?>
+                                   name="lockdata_attributes[<?= $attr ?>]"
+                                   <?= empty($lock_rule['attributes'][$attr]) ? 'checked' : '' ?>
                                    value="0"/>
                         </td>
                     </tr>

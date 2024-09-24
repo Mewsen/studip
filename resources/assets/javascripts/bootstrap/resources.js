@@ -416,7 +416,7 @@ STUDIP.ready(function () {
                     $("#BookingEndDateInput").prop('defaultValue', $(this).val());
                     $("#BookingEndDateInput").val($(this).val()).trigger('change');
                 }
-                updateRepeatEndSemesterByTimestamp(Math.floor(d / 1000));
+                updateRepeatEndSemesterByTimestamp(d);
             } else if ($(this).attr('id') == 'BookingEndDateInput') {
                 $("#end_date-weekdays span").addClass('invisible');
                 $("#end_date-weekdays #" + day_numer).removeClass('invisible');
@@ -545,38 +545,41 @@ STUDIP.ready(function () {
         }
     );
 
-    function updateRepeatEndSemesterByTimestamp(timestamp, api_url = 'api.php/semesters') {
-        var semester = null;
-        jQuery.ajax(
-            STUDIP.URLHelper.getURL(api_url),
-            {
-                method: 'get',
-                dataType: 'json',
-                success: function (data) {
-                    if (data) {
-                        Object.values(data.collection).forEach(item => {
-                            if (timestamp >= item.begin && timestamp < item.end) {
-                                semester = item;
-                            }
-                        });
-                        if (semester) {
-                            $("#semester_course_name").text(semester.title);
-                            $(".semester-time-option").prop('disabled', false);
-                        } else {
-                            if (data.pagination && data.pagination.links.next != api_url) {
-                                semester = updateRepeatEndSemesterByTimestamp(timestamp, data.pagination.links.next);
-                            } else {
-                                $("#semester_course_name").text('außerhalb definierter Zeiten');
-                                $(".semester-time-option").prop('checked', false);
-                                $(".semester-time-option").prop('disabled', true);
-                                $(".manual-time-option").prop('checked', true);
-                                $(".manual-time-option").trigger('change');
-                            }
-                        }
-                    }
-                }
+    function updateRepeatEndSemesterByTimestamp(timestamp) {
+        (new Promise((resolve, reject) => {
+            const cache = STUDIP.Cache.getInstance('jsonapi');
+            if (cache.has('semesters')) {
+                resolve(cache.get('semesters'));
+            } else {
+                STUDIP.jsonapi.GET('semesters', { data: { page: { limit: 100000 }}})
+                    .done(({data}) => {
+                        cache.set('semesters', data);
+                        resolve(data)
+                    })
+                    .fail(() => {
+                        reject(new Error('Could not load semesters'));
+                    });
             }
-        );
+        })).then(semesters => {
+            const semester = semesters.find(({attributes}) => {
+                return new Date(attributes.start) <= timestamp
+                    && timestamp <= new Date(attributes.end);
+            });
+
+            if (semester) {
+                $('#semester_course_name').text(semester.attributes.title);
+                $('.semester-time-option').prop('disabled', false);
+            } else {
+                $('#semester_course_name').text('außerhalb definierter Zeiten');
+                $('.semester-time-option').prop({
+                    checked: false,
+                    disabled: true
+                });
+                $('.manual-time-option')
+                    .prop('checked', true)
+                    .trigger('change');
+            }
+        });
     }
 
     function updateViewURL(defaultView) {

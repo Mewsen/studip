@@ -32,7 +32,7 @@ class Course_DetailsController extends AuthenticatedController
 
         $this->course = Course::find($course_id);
         if (!$this->course) {
-            throw new Trails_Exception(
+            throw new Trails\Exception(
                 404,
                 _('Es konnte keine Veranstaltung gefunden werden')
             );

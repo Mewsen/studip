@@ -93,8 +93,7 @@
                                 ),
                                 _('Diese Anfrage selbst auflösen'),
                                 Icon::create('admin'),
-                                ['title' => _('Diese Anfrage selbst auflösen')],
-                                ['data-dialog' => '1']
+                                ['title' => _('Diese Anfrage selbst auflösen'), 'data-dialog' => '']
                             ) ?>
                         <? endif ?>
                         <? $actionMenu->addLink(

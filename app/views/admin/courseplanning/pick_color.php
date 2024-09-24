@@ -13,10 +13,12 @@
 
     <div id="event-color-picker"></div>
 
+<? if (!empty($semtype)): ?>
     <label>
         <input name="event_color_semtype" type="checkbox" value="1">
         <?= sprintf(_('Farbtyp für alle VA dieses Typs (%s) übernehmen'), htmlReady($semtype)) ?>
     </label>
+<? endif; ?>
 
     <div data-dialog-button>
         <?= Studip\Button::createAccept(_('Speichern'), 'save') ?>

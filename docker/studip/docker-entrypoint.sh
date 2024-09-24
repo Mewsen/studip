@@ -28,17 +28,22 @@ done
 
 sh $STUDIP/.gitlab/scripts/install_db.sh
 
-if [ ! -z $AUTO_MIGRATE ]; then
+if [[ -n $AUTO_MIGRATE ]]; then
     echo "Migrate Instance"
     # If migrate fails start instance anyway
-    php "$STUDIP/cli/studip migrate" || true
+    php "$STUDIP/cli/studip" migrate || true
     echo "Migration finished"
 fi
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
-	set -- apache2-foreground "$@"
+    set -- apache2-foreground "$@"
+fi
+
+# Set name of installation if set
+if [[ -n "$STUDIP_NAME" ]]; then
+    echo "Setting installation name"
+    php "$STUDIP/cli/studip" config:set UNI_NAME_CLEAN "$STUDIP_NAME"
 fi
 
 exec "$@"
-

@@ -114,14 +114,14 @@
                             <? foreach ($values[$type] as $key => $value): ?>
                                 <? if (is_array($value)): ?>
                                     <option value="<?= $key ?>"
-                                            class="nested-item-header" <?= in_array($key, (array)@$filter[$type]) ? 'selected="selected"' : '' ?>><?= htmlReady($value['name']) ?></option>
+                                            class="nested-item-header" <?= in_array($key, $filter[$type] ?? []) ? 'selected' : '' ?>><?= htmlReady($value['name']) ?></option>
                                     <? foreach ($value['values'] as $k => $v): ?>
                                         <option value="<?= $k ?>"
-                                                class="nested-item" <?= in_array($k, (array)@$filter[$type]) ? 'selected="selected"' : '' ?>><?= htmlReady($v) ?></option>
+                                                class="nested-item" <?= in_array($k, $filter[$type] ?? []) ? 'selected' : '' ?>><?= htmlReady($v) ?></option>
                                     <? endforeach; ?>
                                 <? else: ?>
                                     <option
-                                        value="<?= $key ?>" <?= in_array($key, (array)@$filter[$type]) ? 'selected="selected"' : '' ?>><?= htmlReady($value) ?></option>
+                                        value="<?= $key ?>" <?= in_array($key, $filter[$type] ?? []) ? 'selected' : '' ?>><?= htmlReady($value) ?></option>
                                 <? endif ?>
                             <? endforeach; ?>
                         </select>

@@ -25,7 +25,9 @@ STUDIP.domReady(function () {
 
     jQuery(document).on('click', '.clipboard-remove-button', function (event) {
         event.preventDefault();
-        STUDIP.Dialog.confirm($(this).data('confirm-message'), function() {
+
+        const message = $(this).data('confirm-message');
+        STUDIP.Dialog.confirm(message).done(() => {
             STUDIP.Clipboard.handleRemoveClick(event.target);
         });
     });
@@ -62,10 +64,11 @@ STUDIP.domReady(function () {
         });
     });
 
-    jQuery(document).on('submit', '.clipboard-widget .new-clipboard-form', function (event) {
-        event.preventDefault();
-        STUDIP.Clipboard.handleAddForm(event);
-    });
+    jQuery(document).on(
+        'submit',
+        '.clipboard-widget .new-clipboard-form',
+        STUDIP.Clipboard.handleAddForm
+    );
 
     jQuery(document).on('click', '.clipboard-add-item-button', function (event) {
         event.preventDefault();

@@ -25,7 +25,7 @@
         <thead>
             <tr>
                 <th><?= _('Veranstaltung') ?></th>
-                <th colspan="100%"><?= _('Gruppen/Farbe') ?></th>
+                <th colspan="100%"><?= _('Gruppe/Farbe') ?></th>
             </tr>
         </thead>
         <? foreach ($groups as $group_id => $group_members): ?>
@@ -58,11 +58,14 @@
                 <? for ($i = 0; $i < 9; $i++): ?>
                     <td class="gruppe<?= $i ?> mycourses-group-selector" onclick="this.querySelector('input').checked = true;">
                         <input type="radio" name="gruppe[<?= $member['seminar_id'] ?>]" value="<?= $i ?>"
-                               aria-label="<?= _('Zugeordnet zu Gruppe ') . ($i + 1) ?>"
+                               aria-label="<?= sprintf(_('Gruppe %u zuordnen'), $i + 1) ?>"
                                id="course-group-<?= htmlReady($member['seminar_id']) ?>-<?= $i ?>"
                             <? if ($my_sem[$member['seminar_id']]['gruppe'] == $i) echo 'checked'; ?>>
                         <label for="course-group-<?= htmlReady($member['seminar_id']) ?>-<?= $i ?>">
-                            <?= sprintf(_('Gruppe %u zuordnen'), $i + 1) ?>
+                            <span class="group-number"><?= $i + 1 ?></span>
+                            <span class="checked-icon">
+                                <?= Icon::create('accept', Icon::ROLE_INFO)->asImg(20) ?>
+                            </span>
                         </label>
                     </td>
                 <? endfor; ?>

@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var array|null $sem_courses
+ * @var array $sem_data
+ */
+?>
 <html>
     <head>
        <meta charset="UTF-8">

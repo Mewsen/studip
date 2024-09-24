@@ -215,14 +215,22 @@ class SQLQuery
     /**
      * Fetches the whole resultset as an array of associative arrays. If you define
      * a sorm_class the result will be an array of the sorm-objects.
-     * @param $sorm_class_or_column : column name, a class of SimpleORMap or null for associative array.
-     * @return array of arrays or array of objects or array of values.
+     *
+     * @template T of SimpleORMap
+     * @param class-string<T>|string|null $sorm_class_or_column : column name, a class of SimpleORMap or null for associative array.
+     * @param int|null $max_results Maximum number of results to return
+     * @return array[]|T[]|mixed[] arrays or array of objects or array of values.
+     *
+     * @throws OverflowException if number of found rows is greater than $max_results
      */
-    public function fetchAll($sorm_class_or_column = null)
+    public function fetchAll($sorm_class_or_column = null, ?int $max_results = null)
     {
         NotificationCenter::postNotification('SQLQueryWillExecute', $this);
 
-        if (is_string($sorm_class_or_column) && !is_subclass_of($sorm_class_or_column, "SimpleORMap")) {
+        if (
+            is_string($sorm_class_or_column)
+            && !is_subclass_of($sorm_class_or_column, SimpleORMap::class)
+        ) {
             $sql = "SELECT `{$this->settings['table']}`.`{$sorm_class_or_column}` ";
         } else {
             $sql = "SELECT `{$this->settings['table']}`.* ";
@@ -239,16 +247,31 @@ class SQLQuery
 
         NotificationCenter::postNotification('SQLQueryDidExecute', $this);
 
-        if (is_string($sorm_class_or_column) && !is_subclass_of($sorm_class_or_column, "SimpleORMap")) {
-            return $statement->fetchAll(PDO::FETCH_COLUMN, 0);
+        if (
+            is_string($sorm_class_or_column)
+            && !is_subclass_of($sorm_class_or_column, SimpleORMap::class)
+        ) {
+            return $statement->fetchAll(PDO::FETCH_COLUMN);
         }
 
-        $alldata = $statement->fetchAll(PDO::FETCH_ASSOC);
-        if (!$sorm_class_or_column) {
-            return $alldata;
+        $statement->setFetchMode(PDO::FETCH_ASSOC);
+
+        $result = [];
+        $count = 0;
+        foreach ($statement as $row) {
+            $result[$count++] = $sorm_class_or_column ? $sorm_class_or_column::buildExisting($row) : $row;
+
+            if ($max_results && $count > $max_results) {
+                // Count remaining rows
+                $statement->setFetchMode(PDO::FETCH_COLUMN, 0);
+                while ($statement->fetch()) {
+                    $count += 1;
+                }
+                throw new OverflowException($count);
+            }
         }
 
-        return array_map("{$sorm_class_or_column}::buildExisting", $alldata);
+        return $result;
     }
 
     /**

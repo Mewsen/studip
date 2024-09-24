@@ -42,17 +42,6 @@ $days_of_week = [
         </label>
 
         <label>
-            <?= _('Priorität') ?>
-            <select name="priority" id="priority">
-            <? foreach (CronjobSchedule::getPriorities() as $priority => $label): ?>
-                <option value="<?= $priority ?>" <? if ((!$schedule->priority && $priority === CronjobSchedule::PRIORITY_NORMAL) || $schedule->priority === $priority) echo 'selected'; ?>>
-                    <?= htmlReady($label) ?>
-                </option>
-            <? endforeach; ?>
-            </select>
-        </label>
-
-        <label>
             <?= _('Titel') ?>
             <input type="text" name="title" id="title" value="<?= htmlReady($schedule->title ?: '') ?>">
         </label>
@@ -117,14 +106,6 @@ $days_of_week = [
 
     <fieldset>
         <legend><?= _('Zeitplan') ?></legend>
-
-        <label>
-            <input type="radio" name="type" value="periodic"
-                   data-activates="[name^='periodic']"
-                   data-deactivates="[name^='once']"
-                   <? if ($schedule->type === 'periodic') echo 'checked'; ?>>
-            <?= _('Wiederholt') ?>
-        </label>
 
         <section>
             <table class="default">
@@ -218,26 +199,6 @@ $days_of_week = [
                 </tbody>
             </table>
         </section>
-
-        <label>
-            <input type="radio" name="type" value="once"
-                   data-activates="input[name^='once']"
-                   data-deactivates="[name^='periodic']"
-                   <? if ($schedule->type === 'once') echo 'checked'; ?>>
-            <?= _('Einmalig') ?>
-        </label>
-
-        <label class="col-1">
-            <?= _('Datum') ?>
-            <input type="text" name="once[date]" data-date-picker class="size-s"
-                   value="<? if ($schedule->type === 'once' && $schedule->next_execution) echo date('d.m.Y', $schedule->next_execution); ?>">
-        </label>
-
-        <label class="col-1">
-            <?= _('Uhrzeit') ?>
-            <input type="text" name="once[time]" data-time-picker class="size-s"
-                   value="<? if ($schedule->type === 'once' && $schedule->next_execution) echo date('H:i', $schedule->next_execution) ?>">
-        </label>
     </fieldset>
 
     <footer class="buttons">

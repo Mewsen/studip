@@ -310,12 +310,14 @@ class LtiLink
         // posted form data will always use CR LF
         $launch_params = preg_replace("/\r?\n/", "\r\n", $launch_params);
 
-        // In OAuth, request parameters must be sorted by name
-        ksort($launch_params);
-        $launch_params = http_build_query($launch_params, '', '&', PHP_QUERY_RFC3986);
-        $base_string = 'POST&' . rawurlencode($launch_url) . '&' . rawurlencode($launch_params);
-        $secret = rawurlencode($this->consumer_secret) . '&';
-
-        return base64_encode(hash_hmac($this->oauth_signature_method, $base_string, $secret, true));
+        return Studip\OAuth1::signRequest(
+            (new Slim\Psr7\Factory\ServerRequestFactory())->createServerRequest(
+                'POST',
+                $launch_url
+            )->withQueryParams($launch_params),
+            $this->consumer_secret,
+            '',
+            $this->oauth_signature_method
+        );
     }
 }

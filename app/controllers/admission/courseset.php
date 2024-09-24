@@ -23,18 +23,17 @@ class Admission_CoursesetController extends AuthenticatedController
     {
         parent::before_filter($action, $args);
 
-        if (!Request::isXhr()) {
-            PageLayout::setTitle(_('Anmeldesets'));
-            // Get only own courses if user doesn't have permission to edit institute-wide coursesets.
-            $this->onlyOwnCourses = true;
-            if ($GLOBALS['perm']->have_perm('admin') || ($GLOBALS['perm']->have_perm('dozent') && Config::get()->ALLOW_DOZENT_COURSESET_ADMIN)) {
-                // We have access to institute-wide course sets, so all courses may be assigned.
-                $this->onlyOwnCourses = false;
-                Navigation::activateItem('/browse/coursesets/sets');
-            } else {
-                throw new AccessDeniedException();
-            }
+        PageLayout::setTitle(_('Anmeldesets'));
+        // Get only own courses if user doesn't have permission to edit institute-wide coursesets.
+        $this->onlyOwnCourses = true;
+        if ($GLOBALS['perm']->have_perm('admin') || ($GLOBALS['perm']->have_perm('dozent') && Config::get()->ALLOW_DOZENT_COURSESET_ADMIN)) {
+            // We have access to institute-wide course sets, so all courses may be assigned.
+            $this->onlyOwnCourses = false;
+            Navigation::activateItem('/browse/coursesets/sets');
+        } else {
+            throw new AccessDeniedException();
         }
+
         PageLayout::addScript('studip-admission.js');
 
         $views = new ActionsWidget();
@@ -44,6 +43,7 @@ class Admission_CoursesetController extends AuthenticatedController
             Icon::create('add')
         )->setActive($action === 'configure');
         Sidebar::Get()->addWidget($views);
+
         if (!isset($this->instant_course_set_view)) {
             $this->instant_course_set_view = false;
         }
@@ -327,15 +327,19 @@ class Admission_CoursesetController extends AuthenticatedController
      *
      * @param String $coursesetId the course set to delete
      */
-    public function delete_action($coursesetId) {
+    public function delete_action($coursesetId)
+    {
         $this->courseset = new CourseSet($coursesetId);
-        if (Request::int('really')) {
+
+        if (!$this->courseset->isUserAllowedToEdit(User::findCurrent()->id)) {
+            throw new AccessDeniedException(_('Sie dürfen diese Anmelderegel nicht löschen.'));
+        }
+
+        if (Request::bool('really')) {
             $this->courseset->delete();
-            $this->redirect($this->url_for('admission/courseset'));
         }
-        if (Request::int('cancel')) {
-            $this->redirect($this->url_for('admission/courseset'));
-        }
+
+        $this->redirect($this->url_for('admission/courseset'));
     }
 
     /**
@@ -757,11 +761,17 @@ class Admission_CoursesetController extends AuthenticatedController
 
         $ids = Request::optionArray('ids');
         if (Request::submitted('delete')) {
+            $deleted = 0;
             foreach ($ids as $id) {
                 $courseset = new CourseSet($id);
-                $courseset->delete();
+                if ($courseset->isUserAllowedToEdit(User::findCurrent()->id)) {
+                    $courseset->delete();
+                    $deleted += 1;
+                }
             }
-            PageLayout::postSuccess(_('Die Anmeldesets wurden gelöscht.'));
+            if ($deleted > 0) {
+                PageLayout::postSuccess(_('Die Anmeldesets wurden gelöscht.'));
+            }
         }
 
         $this->redirect('admission/courseset');

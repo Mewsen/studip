@@ -42,7 +42,7 @@ class ContentsNavigation extends Navigation
 
         $this->addSubNavigation('overview', $overview);
 
-        if (PluginManager::getInstance()->getPlugin('CoursewareModule')) {
+        if (PluginManager::getInstance()->getPlugin(CoursewareModule::class)) {
             $courseware = new Navigation(_('Courseware'));
             $courseware->setDescription(_('Erstellen und Sammeln von Lernmaterialien'));
             $courseware->setImage(Icon::create('courseware'));
@@ -122,13 +122,6 @@ class ContentsNavigation extends Navigation
                 );
                 $questionnaire->addSubNavigation('assign', $sub_nav);
             }
-        }
-
-        if (Config::get()->EVAL_ENABLE) {
-            $eval = new Navigation(_('Evaluationen'), 'admin_evaluation.php', ['rangeID' => $GLOBALS['user']->username]);
-            $eval->setImage(Icon::create('test'));
-            $eval->setDescription(_('Erstellen Sie komplexe Befragungen'));
-            $this->addSubNavigation('evaluation', $eval);
         }
 
         // elearning

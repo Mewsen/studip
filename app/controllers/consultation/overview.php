@@ -71,6 +71,8 @@ class Consultation_OverviewController extends ConsultationController
 
             if ($this->slot->isOccupied()) {
                 PageLayout::postError(_('Dieser Termin ist bereits belegt.'));
+            } elseif (!$this->slot->isBookable()) {
+                PageLayout::postError(_('Dieser Termin ist für Buchungen gesperrt.'));
             } else {
                 $booking = new ConsultationBooking();
                 $booking->slot_id = $this->slot->id;

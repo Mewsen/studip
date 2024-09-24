@@ -116,10 +116,8 @@ class NewsProvider implements ActivityProvider
             .'</b><br>'. formatReady((string) $news->body);
 
         $url = self::getUrlForContext($news, $activity);
-        $route = \URLHelper::getURL('api.php/news/' . $news->id, NULL, true);
 
         $activity->object_url = $url;
-        $activity->object_route = $route;
 
         return true;
     }

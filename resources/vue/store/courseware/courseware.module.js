@@ -874,33 +874,23 @@ export const actions = {
     },
 
     async companionInfo({ dispatch }, { info }) {
-        await dispatch('coursewareStyleCompanionOverlay', 'default');
-        await dispatch('coursewareMsgCompanionOverlay', info);
-        return dispatch('coursewareShowCompanionOverlay', true);
+        STUDIP.eventBus.emit('push-system-notification', { type: 'info', message: info});
     },
 
     async companionSuccess({ dispatch }, { info }) {
-        await dispatch('coursewareStyleCompanionOverlay', 'happy');
-        await dispatch('coursewareMsgCompanionOverlay', info);
-        return dispatch('coursewareShowCompanionOverlay', true);
+        STUDIP.eventBus.emit('push-system-notification', { type: 'success', message: info});
     },
 
     async companionError({ dispatch }, { info }) {
-        await dispatch('coursewareStyleCompanionOverlay', 'sad');
-        await dispatch('coursewareMsgCompanionOverlay', info);
-        return dispatch('coursewareShowCompanionOverlay', true);
+        STUDIP.eventBus.emit('push-system-notification', { type: 'error', message: info});
     },
 
     async companionWarning({ dispatch }, { info }) {
-        await dispatch('coursewareStyleCompanionOverlay', 'alert');
-        await dispatch('coursewareMsgCompanionOverlay', info);
-        return dispatch('coursewareShowCompanionOverlay', true);
+        STUDIP.eventBus.emit('push-system-notification', { type: 'exception', message: info});
     },
 
     async companionSpecial({ dispatch }, { info }) {
-        await dispatch('coursewareStyleCompanionOverlay', 'special');
-        await dispatch('coursewareMsgCompanionOverlay', info);
-        return dispatch('coursewareShowCompanionOverlay', true);
+        STUDIP.eventBus.emit('push-system-notification', { type: 'warning', message: info});
     },
 
     // adds a favorite block type using the `type` of the BlockType

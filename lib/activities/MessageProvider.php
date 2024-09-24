@@ -30,13 +30,9 @@ class MessageProvider implements ActivityProvider
 
         $url = \URLHelper::getUrl("dispatch.php/messages/read/{$message->id}", ['cid' => null]);
 
-        $route = \URLHelper::getURL('api.php/message/' . $message->id, NULL, true);
-
         $activity->object_url = [
             $url => _('Zur Nachricht')
         ];
-
-        $activity->object_route = $route;
 
         return true;
     }

@@ -6,6 +6,10 @@
     <fieldset>
         <legend><?= _("URL zum Fragebogen") ?></legend>
         <input type="text" aria-label="<?= _("URL zum Fragebogen (nur lesbar)") ?>" readonly value="<?= htmlReady($GLOBALS['ABSOLUTE_URI_STUDIP']."dispatch.php/questionnaire/answer/".$questionnaire->getId()) ?>">
+        <a href="<?= htmlReady($GLOBALS['ABSOLUTE_URI_STUDIP'] . "dispatch.php/questionnaire/answer/" . $questionnaire->id) ?>"
+           data-qr-code title="<?= _('QR-Code zum Link anzeigen') ?>">
+            <?= Icon::create('code-qr')->asImg(['class' => 'text-bottom']) ?>
+        </a>
     </fieldset>
     <fieldset>
         <legend><?= _("Freigaben bearbeiten") ?></legend>
@@ -89,7 +93,7 @@
         <? endif ?>
 
         <?
-        foreach (PluginManager::getInstance()->getPlugins("QuestionnaireAssignmentPlugin") as $plugin) {
+        foreach (PluginManager::getInstance()->getPlugins(QuestionnaireAssignmentPlugin::class) as $plugin) {
             $template = $plugin->getQuestionnaireAssignmentEditTemplate($this->questionnaire);
             if ($template) {
                 echo $template->render();

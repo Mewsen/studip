@@ -13,9 +13,6 @@
  * @since       3.0
  */
 
-require_once 'app/controllers/authenticated_controller.php';
-
-
 class NotificationsController extends AuthenticatedController
 {
     /**

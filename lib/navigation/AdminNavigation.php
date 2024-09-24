@@ -75,9 +75,6 @@ class AdminNavigation extends Navigation
         $navigation->addSubNavigation('faculty', new Navigation(_('Mitarbeiter'), 'dispatch.php/institute/members?admin_view=1'));
         $navigation->addSubNavigation('groups', new Navigation(_('Funktionen / Gruppen'), 'dispatch.php/admin/statusgroups?type=inst'));
 
-        if (Config::get()->EVAL_ENABLE) {
-            $navigation->addSubNavigation('evaluation', new Navigation(_('Evaluationen'), 'admin_evaluation.php?view=eval_inst'));
-        }
 
         if (Config::get()->EXTERN_ENABLE) {
             $navigation->addSubNavigation('external', new Navigation(_('Externe Seiten'), 'dispatch.php/institute/extern'));
@@ -129,7 +126,7 @@ class AdminNavigation extends Navigation
                 $navigation->addSubNavigation('banner', new Navigation(_('Werbebanner'), 'dispatch.php/admin/banner'));
             }
 
-            if (PluginManager::getInstance()->getPlugin('CoursewareModule')) {
+            if (PluginManager::getInstance()->getPlugin(CoursewareModule::class)) {
                 $navigation->addSubNavigation(
                     'courseware',
                     new Navigation(
@@ -207,16 +204,7 @@ class AdminNavigation extends Navigation
                 $navigation->addSubNavigation('cronjobs', new Navigation(_('Cronjobs'), 'dispatch.php/admin/cronjobs/schedules'));
             }
 
-            if (Config::get()->PERSONALDOCUMENT_ENABLE) {
-                $navigation->addSubNavigation('document_area', new Navigation(_('Pers. Dateibereich'), 'dispatch.php/document/administration'));
-            }
-
-
             $navigation->addSubNavigation('admissionrules', new Navigation(_('Anmelderegeln'), 'dispatch.php/admission/ruleadministration'));
-
-            if (Config::get()->API_ENABLED) {
-                $navigation->addSubNavigation('api', new Navigation(_('API'), 'dispatch.php/admin/api'));
-            }
 
             $navigation->addSubNavigation('oauth2', new Navigation(_('OAuth2'), 'dispatch.php/admin/oauth2/index'));
 

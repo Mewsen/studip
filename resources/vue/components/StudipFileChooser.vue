@@ -128,7 +128,7 @@ export default {
     max-width: 48em;
     button {
         margin: 0.5ex 0 0.5ex 0;
-        min-width: 140px;
+        width: 150px;
     }
     span {
         box-sizing: border-box;
@@ -138,7 +138,7 @@ export default {
         font-size: 14px;
         line-height: 130%;
         min-width: 100px;
-        width: calc(100% - 140px);
+        width: calc(100% - 150px);
         overflow: hidden;
         text-overflow: ellipsis;
         padding: 5px 15px;

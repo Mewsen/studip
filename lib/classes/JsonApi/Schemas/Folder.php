@@ -169,14 +169,24 @@ class Folder extends SchemaProvider
         return $relationships;
     }
 
+    /**
+     * @param \FolderType $resource
+     */
     private function getFilesRelationship(array $relationships, $resource)
     {
+        $fileRefs = array_map(
+            function (\FileType $file): \FileRef {
+                return $file->getFileRef();
+            },
+            $resource->getFiles()
+        );
+
         $relationships[self::REL_FILE_REFS] = [
             self::RELATIONSHIP_LINKS => [
                 Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_FILE_REFS),
             ],
             self::RELATIONSHIP_META => [
-                'count' => count($resource->file_refs)
+                'count' => count($fileRefs),
             ],
         ];
 

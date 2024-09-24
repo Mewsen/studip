@@ -2,8 +2,6 @@
 
 namespace Courseware\BlockTypes;
 
-use Opis\JsonSchema\Schema;
-
 /**
  * This class represents the content of a Courseware canvas block.
  *
@@ -40,11 +38,11 @@ class Canvas extends BlockType
         ];
     }
 
-    public static function getJsonSchema(): Schema
+    public static function getJsonSchema(): string
     {
         $schemaFile = __DIR__.'/Canvas.json';
 
-        return Schema::fromJsonString(file_get_contents($schemaFile));
+        return file_get_contents($schemaFile);
     }
 
     /**

@@ -16,9 +16,6 @@
     <dt><?= _('Aktiv') ?></dt>
     <dd><?= $schedule->active ? _('Ja') : _('Nein') ?></dd>
 
-    <dt><?= _('Priorität') ?></dt>
-    <dd><?= CronjobSchedule::describePriority($schedule->priority) ?></dd>
-
 <? if (count($schedule->parameters) > 0): ?>
     <dt><?= _('Parameter') ?></dt>
     <dd>
@@ -33,23 +30,8 @@
     <dt><?= _('Aufgabe') ?></dt>
     <dd><?= htmlReady($schedule->task->name) ?></dd>
 
-    <dt><?= _('Typ') ?></dt>
-<? if ($schedule->type === 'once'): ?>
+    <dt><?= _('Ausführungsrhytmus') ?></dt>
     <dd>
-        <?= sprintf(_('Einmalig am %s um %s'), date('d.m.Y', $schedule->next_execution), date('H:i', $schedule->next_execution)) ?>
-    </dd>
-
-    <dt><?= _('Ausgeführt') ?>?</dt>
-    <dd>
-    <? if ($schedule->execution_count > 0): ?>
-        <?= _('Ja') ?>, <?= sprintf(_('am %s um %s'), date('d.m.Y', $schedule->last_execution), date('H:i:s', $schedule->last_execution)) ?>
-    <? else: ?>
-        <?= _('Nein') ?>
-    <? endif; ?>
-    </dd>
-<? else: ?>
-    <dd>
-        <?= _('Regelmässig') ?>
         <?= $this->render_partial('admin/cronjobs/schedules/periodic-schedule', $schedule->toArray()) ?>
     </dd>
 
@@ -68,8 +50,6 @@
         <dt><?= _('Letztes Ergebnis') ?></dt>
         <dd><code><?= htmlReady($schedule->last_result) ?></code></dd>
     <? endif; ?>
-
-<? endif; ?>
 </dl>
 
 <div data-dialog-button>

@@ -12,16 +12,20 @@ class Course_MessengerController extends AuthenticatedController
 
     public function course_action($thread_id = null)
     {
-        if (Context::get()) {
-            PageLayout::setTitle(Context::get()->getFullName() . ' - ' . _('Blubber'));
+        $context = Context::get();
+
+        if (!$context) {
+            throw new CheckObjectException(_('Sie haben kein Objekt gewählt.'));
         }
 
         if (Navigation::hasItem('/course/blubber')) {
             Navigation::activateItem('/course/blubber');
         }
 
+        PageLayout::setTitle($context->getFullName() . ' - ' . _('Blubber'));
+
         $this->search = '';
-        $this->threads = BlubberThread::findByContext(Context::get()->id, true, Context::getType());
+        $this->threads = BlubberThread::findByContext($context->id, true, Context::getType());
         $this->thread = null;
         $this->threads_more_down = 0;
 

@@ -26,7 +26,7 @@ class MyCoursesWidget extends CorePlugin implements PortalPlugin
     public function getPortalTemplate()
     {
         // get the MyCoursesController in order to prepare the correct data for the overview
-        $controller = app(MyCoursesController::class, ['dispatcher' => app(\Trails_Dispatcher::class)]);
+        $controller = app(MyCoursesController::class, ['dispatcher' => app(\Trails\Dispatcher::class)]);
         $data = $controller->getPortalWidgetData();
 
         // add the json data to the head so vue can grab it

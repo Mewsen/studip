@@ -64,7 +64,7 @@
                                                 <? if ($user) :?>
                                                     <?
                                                     $perms = [
-                                                        'show_global_admin_actions' => $show_global_admin_actions,
+                                                        'show_global_admin_actions' => $show_global_admin_actions ?? false,
                                                         'show_admin_actions'        => $resource->userHasPermission($user, 'admin'),
                                                         'show_tutor_actions'        => $resource->userHasPermission($user, 'tutor'),
                                                         'show_autor_actions'        => $resource->userHasPermission($user, 'autor'),

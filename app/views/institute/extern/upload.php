@@ -16,7 +16,7 @@
             <div style="font-size: smaller;">
                 (<?= _('Ohne Angabe wird der Name aus den importierten Daten genommen.') ?>)
             </div>
-            <input type="text" name="config_name" value="<?= htmlReady($config_name) ?>">
+            <input type="text" name="config_name" value="<?= htmlReady($config_name ?? '') ?>">
         </label>
         <label>
             <?= _('Konfigurationsdatei') ?>

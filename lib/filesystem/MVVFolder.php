@@ -82,7 +82,7 @@ class MVVFolder extends StandardFolder
         if ($folder) {
             $topfolder = $folder->getTypedFolder();
         }
-        return $topfolder ?: null;
+        return $topfolder ?? null;
     }
 
     /**

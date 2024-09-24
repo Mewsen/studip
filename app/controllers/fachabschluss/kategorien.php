@@ -114,7 +114,7 @@ class Fachabschluss_KategorienController extends MVVController
             if (Request::submitted('delete')) {
                 CSRFProtection::verifyUnsafeRequest();
                 if (!MvvPerm::get('AbschlussKategorie')->haveFieldPerm('position')) {
-                    throw new Trails_Exception(403);
+                    throw new Trails\Exception(403);
                 }
                 if (!count($abschluss_kategorie->abschluesse)) {
                     PageLayout::postSuccess(sprintf(
@@ -142,7 +142,7 @@ class Fachabschluss_KategorienController extends MVVController
         $orderedIds = Request::getArray('newOrder');
         if ($list === 'abschluss_kategorien') {
             if (!MvvPerm::get('AbschlussKategorie')->haveFieldPerm('position')) {
-                throw new Trails_Exception(403);
+                throw new Trails\Exception(403);
             }
             $kategorien = SimpleORMapCollection::createFromArray(
                 AbschlussKategorie::findBySql('1 ORDER BY position')
@@ -162,7 +162,7 @@ class Fachabschluss_KategorienController extends MVVController
             }
         } else {
             if (!MvvPerm::get('AbschlussZuord')->haveFieldPerm('position')) {
-                throw new Trails_Exception(403);
+                throw new Trails\Exception(403);
             }
             list(, $kategorie_id) = explode('_', $list);
             $abschluss_kategorie = AbschlussKategorie::find($kategorie_id);

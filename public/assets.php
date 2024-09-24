@@ -19,7 +19,7 @@ $uri = ltrim(Request::pathInfo(), '/');
 list($type, $id) = explode('/', $uri, 2);
 
 // Setup response
-$response = new Trails_Response();
+$response = new Trails\Response();
 
 // Create response
 if (!$type || !$id) {

@@ -38,7 +38,7 @@ import HeaderMagic from './lib/header_magic.js';
 import i18n from './lib/i18n.js';
 import Instschedule from './lib/instschedule.js';
 import InlineEditing from './lib/inline-editing.js';
-import JSONAPI, { jsonapi } from './lib/jsonapi.js';
+import JSONAPI, { jsonapi } from './lib/jsonapi.ts';
 import JSUpdater from './lib/jsupdater.js';
 import Lightbox from './lib/lightbox.js';
 import Markup from './lib/markup.js';
@@ -64,7 +64,6 @@ import register from './lib/register.js';
 import Report from './lib/report.js';
 import Resources from './lib/resources.js';
 import Responsive from './lib/responsive.js';
-import RESTAPI, { api } from './lib/restapi.js';
 import Schedule from './lib/schedule.js';
 import Screenreader from './lib/screenreader.js';
 import Scroll from './lib/scroll.js';
@@ -76,7 +75,6 @@ import Statusgroups from './lib/statusgroups.js';
 import study_area_selection from './lib/study_area_selection.js';
 import Table from './lib/table.js';
 import TableOfContents from './lib/table-of-contents.js';
-import Tooltip from './lib/tooltip.js';
 import Tour from './lib/tour.js';
 import * as Gettext from './lib/gettext';
 import UserFilter from './lib/user_filter.js';
@@ -93,7 +91,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     admin_sem_class,
     AdminCourses,
     Admission,
-    api,
     Arbeitsgruppen,
     Archive,
     Avatar,
@@ -152,7 +149,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     register,
     Report,
     Responsive,
-    RESTAPI,
     Schedule,
     Scroll,
     Screenreader,
@@ -164,7 +160,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     study_area_selection,
     Table,
     TableOfContents,
-    Tooltip,
     Tour,
     URLHelper,
     UserFilter,

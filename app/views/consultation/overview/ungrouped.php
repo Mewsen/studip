@@ -1,3 +1,14 @@
+<?php
+/**
+ * @var ConsultationBlock[] $blocks
+ * @var Consultation_OverviewController $controller
+ * @var int $count
+ * @var int $limit
+ * @var int $page
+ *
+ * @var callable $displayNote
+ */
+?>
 <? if (count($blocks) === 0): ?>
 
 <?= MessageBox::info(_('Aktuell werden keine Termine angeboten.'))->hideClose() ?>

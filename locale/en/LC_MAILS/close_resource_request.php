@@ -1,5 +1,5 @@
 A request <?= $request->course instanceof Course
-            ? 'for the course ' . $request->course->getFullName('number-name')
+            ? 'for the course [' .$request->course->getFullName('number-name') . ']' . $request->course->getItemURL()
             : '' ?> has been processed.
 
 <? if ($request->course): ?>
@@ -17,7 +17,9 @@ Booked rooms: <?= $booked_rooms ?>
 Request type: <?= $request->getTypeString() ?>
 
 
-The following time ranges have been booked:
+The following time ranges have been booked<?= $request->course->isToolActive('CoreSchedule')
+               ? ' and added to [Schedule]' . str_replace( 'details/index', 'dates', $request->course->getItemURL())
+               : '' ?>:
 <? foreach ($metadates as $metadate) : ?>
 
 - <?= $metadate->toString('full') ?>

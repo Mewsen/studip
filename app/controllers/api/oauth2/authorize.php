@@ -13,7 +13,7 @@ class Api_Oauth2_AuthorizeController extends OAuth2Controller
         parent::before_filter($action, $args);
 
         if ('index' !== $action) {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
 
         $action = $this->determineAction();
@@ -55,7 +55,7 @@ class Api_Oauth2_AuthorizeController extends OAuth2Controller
         if ('nobody' === $GLOBALS['user']->id && 'Standard' !== $authPlugin && !Request::option('sso')) {
             $queryParams = $psrRequest->getQueryParams();
             $queryParams['sso'] = strtolower($authPlugin);
-            $this->redirect($this->authorizeURL($queryParams));
+            $this->redirect($this->url_for('api/oauth2/authorize', $queryParams));
 
             return;
         } else {

@@ -136,7 +136,7 @@ export default {
             return this.shownColorPicker === course.id;
         },
         changeColor(course, index) {
-            STUDIP.jsonapi.PATCH(`course-memberships/${course.id}_${this.userid}`, {
+            STUDIP.jsonapi.withPromises().patch(`course-memberships/${course.id}_${this.userid}`, {
                 data: {
                     data: {
                         type: 'course-memberships',
@@ -145,9 +145,9 @@ export default {
                         }
                     }
                 }
-            }).done(() => {
+            }).then(() => {
                 course.group = index;
-            }).always(() => {
+            }).finally(() => {
                 this.shownColorPicker = null;
             });
         },

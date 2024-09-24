@@ -114,7 +114,7 @@ class Shared_ContactsController extends MVVController
         if ($this->contact_id) {
             $contact_range = MvvContactRange::findOneBySQL('contact_id=?', [$this->contact_id]);
             if (!$contact_range) {
-                throw new Trails_Exception(404);
+                throw new Trails\Exception(404);
             }
             $this->relations = $contact_range->getRelations($this->filter);
             $this->origin = 'index';
@@ -155,7 +155,7 @@ class Shared_ContactsController extends MVVController
     {
         $this->contact_range = MvvContactRange::findOneBySQL('contact_id = ?', [$contact_id]);
         if (!$this->contact_range) {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
 
         $this->relations = $this->contact_range->getRelations($this->filter);
@@ -725,7 +725,7 @@ class Shared_ContactsController extends MVVController
         $this->mvvcontact_id = $user_id;
 
         $this->selected_sem_end = $this->filter['end_sem.ende'];
-        $this->selected_inst = $this->filter['mvv_studiengang.institut_id'];
+        $this->selected_inst = $this->filter['mvv_studiengang.institut_id'] ?? null;
 
         if (Request::submitted('store')) {
             $selected = Request::getArray('ranges');
@@ -871,7 +871,7 @@ class Shared_ContactsController extends MVVController
         ));
         $filter = [
             'mvv_modul.stat'             => $stat,
-            'mvv_modul_inst.institut_id' => $this->filter['mvv_modul_inst.institut_id'],
+            'mvv_modul_inst.institut_id' => $this->filter['mvv_modul_inst.institut_id'] ?? '',
             'start_sem.beginn'           => $this->filter['start_sem.beginn'],
             'end_sem.ende'               => $this->filter['end_sem.ende']
         ];

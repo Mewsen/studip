@@ -8,18 +8,22 @@
         </h1>
         <nav>
         <? if ($perm): ?>
-            <a href="<?= $controller->link_for('news/edit_news/new/' . $range); ?>" data-dialog>
+            <a href="<?= $controller->link_for('news/edit_news/new/' . $range); ?>" data-dialog
+               title="<?= _('Hinzufügen') ?>" aria-label="<?= _('Hinzufügen') ?>">
                 <?= Icon::create('add') ?>
             </a>
         <? endif; ?>
         <? if ($perm && Config::get()->NEWS_RSS_EXPORT_ENABLE): ?>
-            <a data-dialog="size=auto;reload-on-close" title="<?=_('RSS-Feed konfigurieren') ?>" href="<?= $controller->link_for('news/rss_config/' . $range); ?>">
+            <a data-dialog="size=auto;reload-on-close" title="<?=_('RSS-Feed konfigurieren') ?>"
+               aria-label="<?=_('RSS-Feed konfigurieren') ?>"
+               href="<?= $controller->link_for('news/rss_config/' . $range); ?>">
                 <?= Icon::create('admin') ?>
             </a>
         <? endif; ?>
         <? if ($rss_id): ?>
-            <a href="<?= URLHelper::getLink('rss.php', ['id' => $rss_id]) ?>">
-                <?= Icon::create('rss')->asImg(['title' => _('RSS-Feed')]) ?>
+            <a href="<?= URLHelper::getLink('rss.php', ['id' => $rss_id]) ?>"
+               title="<?= _('RSS-Feed') ?>" aria-label="<?= _('RSS-Feed') ?>">
+                <?= Icon::create('rss') ?>
             </a>
         <? endif; ?>
         </nav>
@@ -49,7 +53,7 @@
     <? endforeach; ?>
     <? if (!$news): ?>
     <section>
-        <?= _('Es sind keine aktuellen Ankündigungen vorhanden. Um neue Ankündigungen zu erstellen, klicken Sie rechts auf das Plus-Zeichen.') ?>
+        <?= _('Es sind aktuell keine Ankündigungen vorhanden. Nutzen Sie die Funktion „Hinzufügen“, um eine neue Ankündigung zu erstellen.') ?>
     </section>
         <? if ($perm && $count_all_news) : ?>
             <footer>

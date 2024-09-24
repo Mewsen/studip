@@ -2608,6 +2608,9 @@ class email_message_class
 		if(IsSet($file['Cache'])
 		&& $file['Cache'])
 			$definition['Cache'] = 1;
+		if(IsSet($file['Content-ID'])
+		&& $file['Content-ID'])
+			$definition['Content-ID'] = $file['Content-ID'];
 		return("");
 	}
 

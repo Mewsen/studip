@@ -12,8 +12,12 @@ class Calendar_CalendarController extends AuthenticatedController
     }
 
 
-    protected function buildSidebar($schedule = false)
-    {
+    protected function buildSidebar(
+        bool $schedule = false,
+        string $user_id = '',
+        string $group_id = ''
+    ) {
+
         $sidebar = Sidebar::get();
 
         $actions = new ActionsWidget();
@@ -25,11 +29,17 @@ class Calendar_CalendarController extends AuthenticatedController
                 ['data-dialog' => 'size=default']
             );
         } else {
+            $params = [];
+            if ($user_id) {
+                $params['user_id'] = $user_id;
+            } elseif ($group_id) {
+                $params['group_id'] = $group_id;
+            }
             $actions->addLink(
                 _('Termin anlegen'),
-                $this->url_for('calendar/date/add'),
+                $this->url_for('calendar/date/add', $params),
                 Icon::create('add'),
-                ['data-dialog' => 'size=auto']
+                ['data-dialog' => 'size=auto', 'class' => 'calendar-action']
             );
         }
 
@@ -100,6 +110,8 @@ class Calendar_CalendarController extends AuthenticatedController
     public function index_action()
     {
         PageLayout::setTitle(_('Kalender'));
+
+        $default_date = \Studip\Calendar\Helper::getDefaultCalendarDate();
 
         if (Request::isPost()) {
             //In case the checkbox of the options widget is clicked, the resulting
@@ -181,7 +193,11 @@ class Calendar_CalendarController extends AuthenticatedController
             throw new AccessDeniedException(_('Sie dürfen diesen Kalender nicht sehen!'));
         }
 
-        $this->buildSidebar(false);
+        $this->buildSidebar(
+            false,
+            $calendar_owner ? $calendar_owner->id : '',
+            $selected_group ? $selected_group->id : ''
+        );
 
         $sidebar = Sidebar::get();
 
@@ -189,6 +205,7 @@ class Calendar_CalendarController extends AuthenticatedController
             if ($calendar_owner && $calendar_owner->id === User::findCurrent()->id) {
                 //The user is viewing their own calendar.
                 $options = new OptionsWidget();
+                $options->addLayoutCSSClass('calendar-action');
                 $options->addCheckbox(
                     _('Abgelehnte Termine anzeigen'),
                     Request::bool('show_declined'),
@@ -223,6 +240,7 @@ class Calendar_CalendarController extends AuthenticatedController
                         $this->url_for('calendar/calendar/index', ['view' => 'group']),
                         'group_id'
                     );
+                    $group_select->addLayoutCSSClass('calendar-action');
                     $options = [
                         '' => _('(bitte wählen)')
                     ];
@@ -249,6 +267,7 @@ class Calendar_CalendarController extends AuthenticatedController
                     $this->url_for('calendar/calendar'),
                     'user_id'
                 );
+                $calendar_select->addLayoutCSSClass('calendar-action');
                 $select_options = [
                     '' => _('(bitte wählen)'),
                     User::findCurrent()->id => _('Eigener Kalender')
@@ -321,7 +340,6 @@ class Calendar_CalendarController extends AuthenticatedController
         $slot_durations = $this->getUserCalendarSlotSettings();
 
         //Create the fullcalendar object:
-        $default_date = \Studip\Calendar\Helper::getDefaultCalendarDate();
 
         $data_url_params = [];
         if (Request::bool('show_declined')) {
@@ -432,7 +450,7 @@ class Calendar_CalendarController extends AuthenticatedController
             _('Termin anlegen'),
             $this->url_for('calendar/date/add/course_' . $course->id),
             Icon::create('add'),
-            ['data-dialog' => 'size=default']
+            ['data-dialog' => 'size=default', 'class' => 'calendar-action']
         );
         $actions->addLink(
             _('Drucken'),
@@ -564,20 +582,18 @@ class Calendar_CalendarController extends AuthenticatedController
             $course_dates = CalendarCourseDate::getEvents($begin, $end, $owner->id);
             foreach ($course_dates as $course_date) {
                 $event = $course_date->toEventData(User::findCurrent()->id);
-                $event->background_colour = '#ffffff';
+                $event->background_colour = '';
                 $event->text_colour = '#000000';
-                $event->border_colour = '#000000';
-                $event->event_classes = [];
+                $event->border_colour = '';
                 $result[] = $event->toFullcalendarEvent();
             }
             //Include relevant cancelled course dates:
             $cancelled_course_dates = CalendarCourseExDate::getEvents($begin, $end, $owner->id);
             foreach ($cancelled_course_dates as $cancelled_course_date) {
                 $event = $cancelled_course_date->toEventData(User::findCurrent()->id);
-                $event->background_colour = '#ffffff';
+                $event->background_colour = '';
                 $event->text_colour = '#000000';
-                $event->border_colour = '#000000';
-                $event->event_classes = [];
+                $event->border_colour = '';
                 $result[] = $event->toFullcalendarEvent();
             }
         }
@@ -660,7 +676,7 @@ class Calendar_CalendarController extends AuthenticatedController
     public function add_courses_action()
     {
         $selected_semester_pseudo_id = Request::option('semester_id');
-        $this->selected_semesters_id = '';
+        $this->selected_semester_id = '';
         $this->available_semester_data = [];
         $semesters = Semester::getAll();
         foreach ($semesters as $semester) {
@@ -691,8 +707,9 @@ class Calendar_CalendarController extends AuthenticatedController
             $this->selected_semester_id = $semester->id;
         } else {
             $this->selected_semester_id = $selected_semester_pseudo_id ?? '';
-            if (!Semester::exists($this->selected_semesters_id)) {
-                $this->selected_semester_id = '';
+            if (!Semester::exists($this->selected_semester_id)) {
+                $semester = Semester::findCurrent();
+                $this->selected_semester_id = $semester->id;
             }
         }
 
@@ -755,27 +772,39 @@ class Calendar_CalendarController extends AuthenticatedController
                 PageLayout::postError(_('Bitte wählen Sie aus, welche Termine exportiert werden sollen!'));
                 return;
             }
-            $ical = '';
-            $calendar_export = new ICalendarExport();
-            if ($this->dates_to_export === 'user') {
-                $ical = $calendar_export->exportCalendarDates(User::findCurrent()->id, $this->begin, $this->end);
-            } elseif ($this->dates_to_export === 'course') {
-                $ical = $calendar_export->exportCourseDates(User::findCurrent()->id, $this->begin, $this->end);
-                $ical .= $calendar_export->exportCourseExDates(User::findCurrent()->id, $this->begin, $this->end);
-            } elseif ($this->dates_to_export === 'all') {
-                $ical = $calendar_export->exportCalendarDates(User::findCurrent()->id, $this->begin, $this->end);
-                $ical .= $calendar_export->exportCourseDates(User::findCurrent()->id, $this->begin, $this->end);
-                $ical .= $calendar_export->exportCourseExDates(User::findCurrent()->id, $this->begin, $this->end);
-            }
-            $ical = $calendar_export->writeHeader() . $ical . $calendar_export->writeFooter();
-            $this->response->add_header('Content-Type', 'text/calendar;charset=utf-8');
-            $this->response->add_header('Content-Disposition', 'attachment; filename="studip.ics"');
-            $this->response->add_header('Content-Transfer-Encoding', 'binary');
-            $this->response->add_header('Pragma', 'public');
-            $this->response->add_header('Cache-Control', 'private');
-            $this->response->add_header('Content-Length', strlen($ical));
-            $this->render_text($ical);
+            $this->relocate($this->url_for('calendar/calendar/export_file', [
+                'begin' => $this->begin->format('d.m.Y'),
+                'end' => $this->end->format('d.m.Y'),
+                'dates_to_export' => $this->dates_to_export
+            ]));
         }
+    }
+
+    public function export_file_action()
+    {
+        $begin = Request::getDateTime('begin', 'd.m.Y');
+        $end = Request::getDateTime('end', 'd.m.Y');
+        $dates_to_export = Request::option('dates_to_export', 'user');
+        $ical = '';
+        $calendar_export = new ICalendarExport();
+        if ($dates_to_export === 'user') {
+            $ical = $calendar_export->exportCalendarDates(User::findCurrent()->id, $begin, $end);
+        } elseif ($dates_to_export === 'course') {
+            $ical = $calendar_export->exportCourseDates(User::findCurrent()->id, $begin, $end);
+            $ical .= $calendar_export->exportCourseExDates(User::findCurrent()->id, $begin, $end);
+        } elseif ($dates_to_export === 'all') {
+            $ical = $calendar_export->exportCalendarDates(User::findCurrent()->id, $begin, $end);
+            $ical .= $calendar_export->exportCourseDates(User::findCurrent()->id, $begin, $end);
+            $ical .= $calendar_export->exportCourseExDates(User::findCurrent()->id, $begin, $end);
+        }
+        $ical = $calendar_export->writeHeader() . $ical . $calendar_export->writeFooter();
+        $this->response->add_header('Content-Type', 'text/calendar;charset=utf-8');
+        $this->response->add_header('Content-Disposition', 'attachment; filename="studip.ics"');
+        $this->response->add_header('Content-Transfer-Encoding', 'binary');
+        $this->response->add_header('Pragma', 'public');
+        $this->response->add_header('Cache-Control', 'private');
+        $this->response->add_header('Content-Length', strlen($ical));
+        $this->render_text($ical);
     }
 
     public function import_action() {}

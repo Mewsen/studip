@@ -313,6 +313,7 @@ select.sidebar-selectlist {
                     flex: 1;
                     padding: .25em .5em;
                     width: 100%;
+                    order: 1;
                 }
 
                 .submit-search {
@@ -324,17 +325,22 @@ select.sidebar-selectlist {
                     cursor: pointer;
                     font: 0/0 a;
                     text-shadow: none;
+                    order: 3;
                 }
 
                 .reset-search {
-                    background-color: transparent;
-                    border: 1px solid var(--dark-gray-color-30);
-                    border-left: 0;
-                    border-right: 0;
+                    background: unset;
                     display: inline-block;
-                    padding-right: 5px;
-                    padding-top: 4px;
                     cursor: pointer;
+                    order: 2;
+                    height: 100%;
+                    box-sizing: border-box;
+                    margin-right: 2px;
+                    margin-left: -22px;
+
+                    img {
+                        padding-top: 4px;
+                    }
                 }
 
             }

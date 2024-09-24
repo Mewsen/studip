@@ -50,7 +50,7 @@ class Studiengaenge_AbschluesseController extends Studiengaenge_StudiengaengeCon
         $perm_institutes = MvvPerm::getOwnInstitutes();
         $abschluss = Abschluss::find($abschluss_id);
         if (!$abschluss) {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
         $this->abschluss_id = $abschluss->id;
         if (count($perm_institutes)) {
@@ -59,7 +59,7 @@ class Studiengaenge_AbschluesseController extends Studiengaenge_StudiengaengeCon
                 $perm_institutes
             );
             if (!count($institutes_abschluss)) {
-                throw new Trails_Exception(403);
+                throw new Trails\Exception(403);
             }
             $this->studiengaenge = SimpleORMapCollection::createFromArray(
                 Studiengang::findByAbschluss_id($this->abschluss_id)

@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <? foreach ($abschluesse as $abschluss) : ?>
-        <tbody class="<?= $abschluss->count_faecher ? '' : 'empty' ?> <?= ($abschluss_id ? 'not-collapsed' : 'collapsed') ?>">
+        <tbody class="<?= $abschluss->count_faecher ? '' : 'empty' ?> <?= !empty($abschluss_id) ? 'not-collapsed' : 'collapsed' ?>">
         <tr class="header-row">
             <td class="toggle-indicator">
                 <? if ($abschluss->count_faecher) : ?>
@@ -62,7 +62,7 @@
                         $pagination->set_attribute('page', $page);
                         $page_link = reset(explode('?', $controller->action_url('index'))) . '?page_abschluesse=%s';
                         $pagination->set_attribute('pagelink', $page_link);
-                        echo $pagination->render('shared/pagechooser');
+                        echo $pagination->render();
                     ?>
 
                     </td>

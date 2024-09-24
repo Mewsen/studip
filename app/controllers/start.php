@@ -53,10 +53,13 @@ class StartController extends AuthenticatedController
             }
         }
 
+        $this->widget_layout = $this->get_template_factory()->open('start/_widget.php');
+
         $sidebar = Sidebar::get();
 
         $nav = $sidebar->addWidget(new NavigationWidget());
         $nav->setTitle(_('Sprungmarken'));
+        $nav->setId('navigation-layer-3');
         foreach (array_merge(...$this->columns) as $widget) {
             $nav->addLink(
                 $widget->getPluginName(),
@@ -132,7 +135,7 @@ class StartController extends AuthenticatedController
      */
     private function getAvailableWidgets($user_id)
     {
-        $all_widgets = PluginEngine::getPlugins('PortalPlugin');
+        $all_widgets = PluginEngine::getPlugins(PortalPlugin::class);
         $user_widgets = WidgetUser::getWidgets($user_id);
         $used_widgets = array_merge(...$user_widgets);
         $available = [];
@@ -190,7 +193,7 @@ class StartController extends AuthenticatedController
 
         PageLayout::setTitle(sprintf(_('Standard-Startseite für "%s" bearbeiten'), ucfirst($permission)));
 
-        $this->widgets = PluginEngine::getPlugins('PortalPlugin');
+        $this->widgets = PluginEngine::getPlugins(PortalPlugin::class);
         $this->initial_widgets = WidgetDefault::getWidgets($permission);
         $this->permission = $permission;
     }

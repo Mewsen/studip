@@ -51,7 +51,7 @@ class Studiengaenge_FachbereicheController extends Studiengaenge_StudiengaengeCo
         $this->fachbereich_id = $fachbereich_id;
         if (count($perm_institutes)) {
             if (!in_array($this->fachbereich_id, $perm_institutes)) {
-                throw new Trails_Exception(403);
+                throw new Trails\Exception(403);
             }
         }
 

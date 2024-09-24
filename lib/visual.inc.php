@@ -290,31 +290,30 @@ function isLinkIntern($url) {
 }
 
 /**
-* convert links with 'umlauten' to punycode
-*
-* @access   public
-* @param    string  link to convert
-* @param    boolean  for mailadr = true and for other link = false
-* @return   string  link in punycode
-*/
-function idna_link($link, $mail = false) {
+ * convert links with 'umlauten' to punycode
+ *
+ * @param string $link link to convert
+ * @return string  link in punycode
+ *
+ * @throws \Algo26\IdnaConvert\Exception\AlreadyPunycodeException
+ * @throws \Algo26\IdnaConvert\Exception\InvalidCharacterException
+ */
+function idna_link(string $link) {
     if (!Config::get()->CONVERT_IDNA_URL) {
         return $link;
     }
-    $pu = @parse_url($link);
-    if (isset($pu['host']) && preg_match('/&\w+;/i', $pu['host'])) { //umlaute?  (html-coded)
+
+    $pu = parse_url($link);
+    if (
+        isset($pu['host'])
+        && preg_match('/&\w+;/i', $pu['host']) //umlaute?  (html-coded)
+        && preg_match('#^([^/]*)//([^/?]*)([/?].*)?$#i',$link, $matches)
+    ) {
         $IDN = new Algo26\IdnaConvert\ToIdn();
-        $out = false;
-        if ($mail){
-            if (preg_match('#^([^@]*)@(.*)$#i',$link, $matches)) {
-                $out = $IDN->convert(decodeHTML($matches[2], ENT_NOQUOTES)); // false by error
-                $out = $out ? $matches[1] . '@' . htmlReady($out) : $link;
-            }
-        } elseif (preg_match('#^([^/]*)//([^/?]*)(((/|\?).*$)|$)#i',$link, $matches)) {
-            $out = $IDN->convert(decodeHTML($matches[2], ENT_NOQUOTES)); // false by error
-            $out = $out ? $matches[1].'//'.htmlReady($out).$matches[3] : $link;
+        $out = $IDN->convert(decodeHTML($matches[2])); // false by error
+        if ($out) {
+            return $matches[1] . '//' . htmlReady($out) . ($matches[3] ?? '');
         }
-        return $out ?: $link;
     }
     return $link;
 }
@@ -597,7 +596,12 @@ function tooltipIcon($text, $important = false, $html = false): string
 
     // render tooltip
     $template = $GLOBALS['template_factory']->open('shared/tooltip');
-    return $template->render(compact('text', 'important', 'html'));
+    return $template->render([
+        'text'       => $text,
+        'important'  => $important,
+        'html'       => $html,
+        'tooltip_id' => md5($text)
+    ]);
 }
 
 /**
@@ -609,9 +613,13 @@ function tooltipIcon($text, $important = false, $html = false): string
 function tooltipHtmlIcon($text, $important = false)
 {
     // render tooltip
-    $html = true;
     $template = $GLOBALS['template_factory']->open('shared/tooltip');
-    return $template->render(compact('text', 'important', 'html'));
+    return $template->render([
+        'text'       => $text,
+        'important'  => $important,
+        'html'       => true,
+        'tooltip_id' => md5($text)
+    ]);
 }
 
 /**
@@ -640,7 +648,7 @@ function TransformInternalLinks($str){
             $domain_data['domains'] = preg_replace("'\|[^/|]*'", '$0[^/]*?', $domain_data['domains']);
             $domain_data['domains'] = mb_substr($domain_data['domains'], 1);
             $domain_data['user_domain'] = preg_replace("'^({$domain_data['domains']})(.*)$'i", "\\1", $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            $domain_data['user_domain_scheme'] = 'http' . (($_SERVER['HTTPS'] || $_SERVER['SERVER_PORT'] == 443) ? 's' : '') . '://';
+            $domain_data['user_domain_scheme'] = 'http' . ((!empty($_SERVER['HTTPS']) || $_SERVER['SERVER_PORT'] == 443) ? 's' : '') . '://';
             $GLOBALS['TransformInternalLinks_domainData'] = $domain_data;
         }
         $domain_data = $GLOBALS['TransformInternalLinks_domainData'];
@@ -687,8 +695,8 @@ function display_exception($exception, $as_html = false, $deep = false) {
  * @return String Icon path for the mime type
  */
 //DEPRECATED: replaced by FileManager::getIconNameForMimeType
-//TODO: test: lib/extern/modules/ExternModuleDownload.class.php
-//TODO: test: lib/extern/modules/ExternModuleTemplateDownload.class.php
+//TODO: test: lib/extern/modules/ExternModuleDownload.php
+//TODO: test: lib/extern/modules/ExternModuleTemplateDownload.php
 /*
 function get_icon_for_mimetype($mime_type)
 {

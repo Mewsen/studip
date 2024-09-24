@@ -228,7 +228,7 @@ class Search_StudiengaengeController extends MVVController
             } else {
                 $this->active_sem = Semester::find($this->sessGet('selected_semester', Semester::findCurrent()->id));
             }
-            $this->active_sem = $this->semesters[$this->active_sem->id] ? $this->active_sem : null;
+            $this->active_sem = !empty($this->semesters[$this->active_sem->id]) ? $this->active_sem : null;
             if (!$this->active_sem && count($this->semesters)) {
                 $active_sem = reset($this->semesters);
                 $this->active_sem = Semester::find($active_sem['semester_id']);
@@ -423,7 +423,7 @@ class Search_StudiengaengeController extends MVVController
     {
         $this->abschnitt = StgteilAbschnitt::find($abschnitt_id);
         if (!$this->abschnitt) {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
         $this->render_template('search/studiengaenge/kommentar', $this->layout);
     }

@@ -129,7 +129,7 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
                 return true;
             } else {
                 //now look through all plugin if this assignment is related to plugin contents:
-                foreach (PluginManager::getInstance()->getPlugins("QuestionnaireAssignmentPlugin") as $plugin) {
+                foreach (PluginManager::getInstance()->getPlugins(QuestionnaireAssignmentPlugin::class) as $plugin) {
                     if ($plugin->isQuestionnaireViewable($assignment)) {
                         return true;
                     }
@@ -172,7 +172,7 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
                     return true;
                 } else {
                     //now look through all plugin if this assignment is related to plugin contents:
-                    foreach (PluginManager::getInstance()->getPlugins("QuestionnaireAssignmentPlugin") as $plugin) {
+                    foreach (PluginManager::getInstance()->getPlugins(QuestionnaireAssignmentPlugin::class) as $plugin) {
                         if ($plugin->isQuestionnaireEditable($assignment)) {
                             return true;
                         }

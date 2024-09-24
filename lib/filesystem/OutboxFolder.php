@@ -1,6 +1,6 @@
 <?php
 /**
- * OutboxFolder.class.php
+ * OutboxFolder.php
  *
  * This is a FolderType implementation for file attachments of messages
  * that were sent by a user. It is a read-only folder.

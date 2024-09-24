@@ -149,10 +149,12 @@ class Lvgruppen_LvgruppenController extends MVVController
             $semester = Semester::find($this->semester_filter);
             if ($semester && $semester->isCurrent()) {
                 $this->next_sem = Semester::findNext();
-                $this->display_semesters[] = $this->next_sem;
-                $this->courses = array_merge($this->courses,
-                    $this->lvgruppe->getAllAssignedCourses(false, $this->next_sem->id)
-                );
+                if ($this->next_sem) {
+                    $this->display_semesters[] = $this->next_sem;
+                    $this->courses = array_merge($this->courses,
+                        $this->lvgruppe->getAllAssignedCourses(false, $this->next_sem->id)
+                    );
+                }
             }
             $this->current_sem = $semester;
             $this->display_semesters[] = $semester;
@@ -451,7 +453,7 @@ class Lvgruppen_LvgruppenController extends MVVController
         );
         $widget->class = 'nested-select';
         $widget->addElement(
-            new SelectElement('select-none', _('Alle'), $selected_abschlussh === '')
+            new SelectElement('select-none', _('Alle'), $selected_abschluss === '')
         );
         $abschluesse = Abschluss::findBySQL(' 1 ORDER BY `name`');
         foreach ($abschluesse as $abschluss) {
@@ -533,11 +535,12 @@ class Lvgruppen_LvgruppenController extends MVVController
     private function set_trails_filter($start, $end)
     {
         // show only pathes with modules valid in the selected semester
-        ModuleManagementModelTreeItem::setObjectFilter('Modulteil',
+        ModuleManagementModelTreeItem::setObjectFilter(
+            Modulteil::class,
             function ($mt) use ($start, $end) {
-                $modul_start = Semester::find($mt->modul->start)->beginn ?: 0;
-                $modul_end = Semester::find($mt->modul->end)->ende ?: PHP_INT_MAX;
-                return ($modul_start <= $end && $modul_end >= $start);
+                $modul_start = Semester::find($mt->modul->start)->beginn ?? 0;
+                $modul_end = Semester::find($mt->modul->end)->ende ?? PHP_INT_MAX;
+                return $modul_start <= $end && $modul_end >= $start;
             }
         );
     }

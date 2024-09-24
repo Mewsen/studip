@@ -45,7 +45,7 @@
                                     </td>
                                     <? if ($object_type === 'Studiengang') : ?>
                                     <td>
-                                        <?= htmlReady($GLOBALS['MVV_CONTACTS']['TYPE']['values'][$rel['type']]['name']); ?>
+                                        <?= htmlReady($GLOBALS['MVV_CONTACTS']['TYPE']['values'][$rel['type']]['name'] ?? ''); ?>
                                     </td>
                                     <? endif; ?>
                                     <td>

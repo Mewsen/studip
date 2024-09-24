@@ -30,7 +30,7 @@
         <? endif ?>
     <? endif ?>
     <footer data-dialog-button>
-        <? if ($prev_request) : ?>
+        <? if (!empty($prev_request)) : ?>
             <?= \Studip\LinkButton::create(
                 _('Vorherige Anfrage'),
                 $controller->declineURL($prev_request),
@@ -45,7 +45,7 @@
         <? if ($show_form) : ?>
             <?= \Studip\Button::createAccept($delete_mode ? _('Löschen') : _('Ablehnen'), 'confirm') ?>
         <? endif ?>
-        <? if ($next_request) : ?>
+        <? if (!empty($next_request)) : ?>
             <?= \Studip\LinkButton::create(
                 _('Nächste Anfrage'),
                 $controller->declineURL($next_request),

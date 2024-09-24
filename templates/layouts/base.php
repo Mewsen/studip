@@ -53,7 +53,9 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
                 'ACTIONMENU_THRESHOLD' => Config::get()->ACTION_MENU_THRESHOLD,
                 'ENTRIES_PER_PAGE'     => Config::get()->ENTRIES_PER_PAGE,
                 'OPENGRAPH_ENABLE'     => Config::get()->OPENGRAPH_ENABLE,
-                'COURSEWARE_CERTIFICATES_ENABLE' => Config::get()->COURSEWARE_CERTIFICATES_ENABLE
+                'COURSEWARE_CERTIFICATES_ENABLE' => Config::get()->COURSEWARE_CERTIFICATES_ENABLE,
+                'PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED' =>
+                    (bool) User::findCurrent()?->getConfiguration()->PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED,
             ]) ?>,
         }
     </script>
@@ -90,19 +92,28 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
                     <?= Icon::create('zoom-out2')->asImg(24) ?>
                 </button>
             <? endif; ?>
-            <?= implode(PageLayout::getMessages()) ?>
             <?= $content_for_layout ?>
         </div>
+        <system-notification-manager
+            id="system-notifications"
+            :notifications='<?= htmlReady(json_encode(PageLayout::getMessages())) ?>'
+            placement="<?= User::findCurrent()?->getConfiguration()->SYSTEM_NOTIFICATIONS_PLACEMENT ?? 'topcenter' ?>"></system-notification-manager>
     </main>
     <!-- End main content -->
 
-    <a id="scroll-to-top" class="hide">
+    <a id="scroll-to-top" class="hide" tabindex="0" title="<?= _('Zurück zum Seitenanfang') ?>">
         <?= Icon::create('arr_1up', 'info_alt')->asImg(24, ['class' => '']) ?>
     </a>
 
-    <?= $this->render_partial('footer', ['link_params' => $header_template->link_params]); ?>
+    <?= $this->render_partial('footer', ['link_params' => $header_template->link_params ?? null]); ?>
     <?= SkipLinks::getHTML() ?>
     <section class="sr-only" id="notes_for_screenreader" aria-live="polite"></section>
+
+<?php
+if (Studip\Debug\DebugBar::isActivated()) {
+    echo app()->get(\DebugBar\DebugBar::class)->getJavascriptRenderer()->render();
+}
+?>
 </body>
 </html>
 <?php NotificationCenter::postNotification('PageDidRender', PageLayout::getBodyElementId());

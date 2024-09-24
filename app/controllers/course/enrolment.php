@@ -37,7 +37,7 @@ class Course_EnrolmentController extends AuthenticatedController
             return false;
         }
         if (!get_object_type($this->course_id, ['sem'])) {
-            throw new Trails_Exception(400);
+            throw new Trails\Exception(400);
         }
         $course = Seminar::GetInstance($this->course_id);
         $enrolment_info = $course->getEnrolmentInfo($GLOBALS['user']->id);

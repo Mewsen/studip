@@ -150,12 +150,17 @@ abstract class Input
     }
 
     /**
-     * Returns the value of this input.
-     * @return null
+     * Returns the value of this input. If $this->value is a callable this->getValue() returns the computed result.
+     * @return mixed
      */
     public function getValue()
     {
-        return $this->value;
+        if (is_callable($this->value)) {
+            $callable = $this->value;
+            return $callable();
+        } else {
+            return $this->value;
+        }
     }
 
     /**

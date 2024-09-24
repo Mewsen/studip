@@ -10,7 +10,7 @@
  * the License, or (at your option) any later version.
  */
 
-require_once 'lib/classes/Avatar.class.php';
+require_once 'lib/classes/Avatar.php';
 
 class Step120Userpic extends Migration {
 

@@ -82,24 +82,24 @@ export default {
          * @param event
          */
         getCacheConfig (event) {
-            fetch(STUDIP.URLHelper.getURL(`dispatch.php/admin/cache/get_config/${this.selectedCacheType}`))
-                .then((response) => {
-                    if (!response.ok) {
-                        throw response
-                    }
+            const url = STUDIP.URLHelper.getURL(
+                'dispatch.php/admin/cache/get_config',
+                {cache: this.selectedCacheType},
+                true
+            );
+            fetch(url).then((response) => {
+                if (!response.ok) {
+                    throw response
+                }
 
-                    response.json()
-                        .then((json) => {
-                            this.configComponent = json.component
-                            this.configProps = json.props
-                        }).catch((error) => {
-                            console.error(error)
-                            console.error(error.status + ': ', error.statusText)
-                        })
-                }).catch((error) => {
-                    console.error(error)
-                    console.error(error.status + ': ', error.statusText)
-                })
+                response.json().then((json) => {
+                    this.configComponent = json.component
+                    this.configProps = json.props
+                });
+            }).catch((error) => {
+                console.error(error)
+                console.error(error.status + ': ', error.statusText)
+            })
         },
         validateConfig () {
             if (this.configComponent == null || this.isValid) {

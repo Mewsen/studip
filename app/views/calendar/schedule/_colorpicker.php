@@ -4,8 +4,11 @@
     <? for ($index = 1; $index <= 18; $index++): ?>
         <span>
             <input type="radio" name="entry_color" value="<?= $index ?>" id="color-<?= $index ?>"
-                   <? if ($index == $selected) echo 'checked'; ?>>
-            <label class="undecorated schedule-category<?= $index ?>" for="color-<?= $index ?>"></label>
+                   <?= $index === $selected ? 'checked' : '' ?>>
+            <label class="undecorated schedule-category<?= $index ?> enter-accessible"
+                   for="color-<?= $index ?>"
+                   aria-label="<?= sprintf(_('Farbe %u zuordnen'), $index) ?>"
+                   title="<?= sprintf(_('Farbe %u zuordnen'), $index) ?>"></label>
         </span>
     <? endfor; ?>
     </div>

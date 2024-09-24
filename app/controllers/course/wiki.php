@@ -18,7 +18,7 @@ class Course_WikiController extends AuthenticatedController
         parent::before_filter($action, $args);
         object_set_visit_module('wiki');
         $this->range = Context::get();
-        $this->plugin = PluginManager::getInstance()->getPlugin('CoreWiki');
+        $this->plugin = PluginManager::getInstance()->getPlugin(CoreWiki::class);
 
         PageLayout::setTitle(Navigation::getItem('/course/wiki')->getTitle());
     }
@@ -117,8 +117,9 @@ class Course_WikiController extends AuthenticatedController
         $startPage = WikiPage::find($this->range->getConfiguration()->WIKI_STARTPAGE_ID);
         $this->contentbar = ContentBar::get()
             ->setTOC(CoreWiki::getTOC($this->page))
-            ->setIcon(Icon::create('wiki'))
-            ->setInfo(sprintf(
+            ->setIcon(Icon::create('wiki'));
+        if (!$this->page->isNew()) {
+            $this->contentbar->setInfo(sprintf(
                 _('Version %1$s, geändert von %2$s <br> am %3$s'),
                 $this->page->versionnumber,
                 sprintf(
@@ -128,33 +129,44 @@ class Course_WikiController extends AuthenticatedController
                 ),
                 date('d.m.Y H:i:s', $this->page['chdate'])
             ));
-        $action_menu = ActionMenu::get();
-        if ($this->page->isEditable()) {
+            $action_menu = ActionMenu::get();
+            if ($this->page->isEditable()) {
+                $action_menu->addLink(
+                    $this->editURL($this->page),
+                    _('Bearbeiten'),
+                    Icon::create('edit')
+                );
+                $action_menu->addLink(
+                    $this->pagesettingsURL($this->page->id),
+                    _('Seiteneinstellungen'),
+                    Icon::create('settings'),
+                    ['data-dialog' => 'width=700']
+                );
+                if (count($this->page->versions) > 0) {
+                    $action_menu->addLink(
+                        $this->ask_deletingURL($this->page),
+                        _('Seite / Version löschen'),
+                        Icon::create('trash'),
+                        ['data-dialog' => 'size=auto']
+                    );
+                } else {
+                    $action_menu->addButton(
+                        'delete',
+                        _('Seite löschen'),
+                        Icon::create('trash'),
+                        ['data-confirm' => _('Wollen Sie wirklich die komplette Seite löschen?'), 'form' => 'delete_page']
+                    );
+                }
+            }
             $action_menu->addLink(
-                $this->editURL($this->page),
-                _('Bearbeiten'),
-                Icon::create('edit')
+                '#',
+                _('Als Vollbild anzeigen'),
+                Icon::create('screen-full'),
+                ['class' => 'fullscreen-trigger hidden-medium-down']
             );
-            $action_menu->addLink(
-                $this->pagesettingsURL($this->page->id),
-                _('Seiteneinstellungen'),
-                Icon::create('settings'),
-                ['data-dialog' => 'width=700']
-            );
-            $action_menu->addButton(
-                'delete',
-                _('Seite löschen'),
-                Icon::create('trash'),
-                ['data-confirm' => _('Wollen Sie wirklich die komplette Seite löschen?'), 'form' => 'delete_page']
-            );
+            $this->contentbar->setActionMenu($action_menu);
         }
-        $action_menu->addLink(
-            '#',
-            _('Als Vollbild anzeigen'),
-            Icon::create('screen-full'),
-            ['class' => 'fullscreen-trigger hidden-medium-down']
-        );
-        $this->contentbar->setActionMenu($action_menu);
+
     }
 
     public function pagesettings_action(WikiPage $page)
@@ -253,7 +265,10 @@ class Course_WikiController extends AuthenticatedController
                     "[[ " . $values['name'],
                     $p2['content']
                 );
-                $p2->store();
+                if ($p2->isDirty()) {
+                    $p2['user_id'] = User::findCurrent()->id;
+                    $p2->store();
+                }
             }
         })->validate();
         if (Request::isPost()) {
@@ -269,9 +284,17 @@ class Course_WikiController extends AuthenticatedController
         $this->render_form($this->form);
     }
 
+    public function ask_deleting_action(WikiPage $page)
+    {
+        if (!$page->isEditable()) {
+            throw new AccessDeniedException();
+        }
+        PageLayout::setTitle(_('Was genau soll gelöscht werden?'));
+    }
+
     public function delete_action(WikiPage $page)
     {
-        if (!Request::isPost() || !CSRFProtection::verifyRequest()) {
+        if (!Request::isPost() || !$page->isEditable() || !CSRFProtection::verifyRequest()) {
             throw new AccessDeniedException();
         }
         $name = $page->name;
@@ -280,13 +303,52 @@ class Course_WikiController extends AuthenticatedController
         $this->redirect($this->allpagesURL());
     }
 
+    public function deleteversion_action(WikiPage $page, $version_id = null)
+    {
+        if (!Request::isPost() || !$page->isEditable() || !CSRFProtection::verifyRequest()) {
+            throw new AccessDeniedException();
+        }
+        if ($version_id === null) {
+            $version = $page->versions[0];
+            if ($version) {
+                $page['name'] = $version['name'];
+                $page['content'] = $version['content'];
+                $page['user_id'] = $version['user_id'];
+                $page['chdate'] = $version['mkdate'];
+                $page->store();
+                $version->delete();
+            } else {
+                $page->delete();
+            }
+        } else {
+            $version = WikiVersion::find($version_id);
+            if ($version['page_id'] === $page->id) {
+                $version->delete();
+            }
+        }
+        PageLayout::postSuccess(_('Version wurde gelöscht.'));
+        if (Request::get('redirect_to') === 'page') {
+            $this->redirect($this->page($page));
+        } else {
+            $this->redirect($this->history($page));
+        }
+
+    }
+
     public function allpages_action()
     {
-        Navigation::activateItem('/course/wiki/allpages');
         $this->pages = WikiPage::findBySQL(
             "`range_id` = ? ORDER BY `name` ASC",
             [$this->range->id]
         );
+
+        if (count($this->pages) === 0) {
+            $this->redirect($this->pageURL());
+            return;
+        }
+
+        Navigation::activateItem('/course/wiki/allpages');
+
         if ($GLOBALS['perm']->have_studip_perm('tutor', $this->range->id)) {
             $actions = new ActionsWidget();
             $actions->addLink(
@@ -379,7 +441,7 @@ class Course_WikiController extends AuthenticatedController
             $this->redirect($this->editURL($page));
             return;
         }
-        if (!$page->isEditable()) {
+        if ($page->isNew() || !$page->isEditable()) {
             throw new AccessDeniedException();
         }
         Navigation::activateItem('/course/wiki/start');
@@ -393,7 +455,7 @@ class Course_WikiController extends AuthenticatedController
         );
         $pageData = [
             'page_id' => $page->id,
-            'user_id' => $user->id
+            'user_id' => $user ? $user->id : null,
         ];
         $online_user = WikiOnlineEditingUser::findOneBySQL(
             '`page_id` = :page_id AND `user_id` = :user_id',
@@ -404,7 +466,7 @@ class Course_WikiController extends AuthenticatedController
         }
         $editingUsers = WikiOnlineEditingUser::countBySQL(
             "`page_id` = ? AND `editing` = 1 AND `user_id` != ?",
-            [$page->id, $user->id]
+            [$page->id, $user ? $user->id : null]
         );
         $online_user->editing = $editingUsers === 0 ? 1 : 0;
         $online_user->chdate = time();
@@ -501,6 +563,7 @@ class Course_WikiController extends AuthenticatedController
             $this->render_json([
                 'error' => 'user_not_requested_edit_mode'
             ]);
+            return;
         }
 
         $online_user_me->editing = 0;
@@ -524,7 +587,19 @@ class Course_WikiController extends AuthenticatedController
         }
 
         $page->content = \Studip\Markup::markAsHtml(trim(Request::get('content')));
-        $page->store();
+        $user = User::findCurrent();
+        if ($page->isDirty()) {
+            $page['user_id'] = $user->id;
+            $page->store();
+        }
+        $pageData = [
+            'page_id' => $page->id,
+            'user_id' => $user->id
+        ];
+        WikiOnlineEditingUser::deleteBySQL(
+            '`page_id` = :page_id AND `user_id` = :user_id',
+            $pageData
+        );
         PageLayout::postSuccess(_('Die Seite wurde gespeichert.'));
         $this->redirect($this->pageURL($page));
     }
@@ -560,7 +635,7 @@ class Course_WikiController extends AuthenticatedController
         $statement->execute([
             'range_id' => $this->range->id,
             'threshold' => $this->last_visit,
-            'me' => User::findCurrent()->id
+            'me' => User::findCurrent() ? User::findCurrent()->id : null
         ]);
         $this->num_entries = $statement->fetch(PDO::FETCH_COLUMN);
         $this->pagenumber = Request::int('page', 0);
@@ -754,6 +829,10 @@ class Course_WikiController extends AuthenticatedController
                         'type' => 'no',
                         'mapper' => function () { return $this->range->id; }
                     ],
+                    'user_id' => [
+                        'type' => 'no',
+                        'mapper' => function () { return User::findCurrent()->id; }
+                    ],
                     'name' => [
                         'required' => true,
                         'label' => _('Name der Seite'),
@@ -808,7 +887,10 @@ class Course_WikiController extends AuthenticatedController
                             '[[ ' . $values['name'] . ' ]]',
                             $page->content
                         );
-                        $page->store();
+                        if ($page->isDirty()) {
+                            $page['user_id'] = User::findCurrent()->id;
+                            $page->store();
+                        }
                     }
                 }
             }
@@ -884,6 +966,30 @@ class Course_WikiController extends AuthenticatedController
         } else {
             $this->redirect($this->pageURL());
         }
+
+        $search = new SearchWidget($this->searchURL());
+        $search->addNeedle(
+            _('Im Wiki suchen'),
+            'search',
+            true
+        );
+        Sidebar::Get()->addWidget($search);
+    }
+
+    public function searchpage_action(WikiPage $page)
+    {
+        if (!$page->isReadable()) {
+            throw new AccessDeniedException();
+        }
+        Navigation::activateItem('/course/wiki/allpages');
+        if (!Request::get('search')) {
+            throw new Exception('No search text.');
+        }
+        $search = str_replace(['\\', '_', '%'], ['\\\\', '\\_', '\\%'], Request::get('search'));
+        $this->versions = WikiVersion::findBySQL("`page_id` = :page_id AND (`wiki_versions`.`content` LIKE :searchterm OR `wiki_versions`.`name` LIKE :searchterm) ORDER BY `mkdate` DESC ", [
+            'page_id' => $page->id,
+            'searchterm' => '%' . $search . '%'
+        ]);
 
         $search = new SearchWidget($this->searchURL());
         $search->addNeedle(
@@ -1134,5 +1240,42 @@ class Course_WikiController extends AuthenticatedController
         );
 
         return $from_end ? mb_strlen($str0) - $length : $length;
+    }
+
+    public function findTextualHits($text, $search, $length = 80)
+    {
+        $content = Studip\Markup::removeHtml($text);
+        $offset  = 0;
+        $output  = [];
+
+        // find all occurences
+        while ($offset < mb_strlen($content)) {
+            $pos = mb_stripos($content, Request::get('search'), $offset);
+            if ($pos === false) {
+                break;
+            }
+            $offset = $pos + 1;
+
+            // show max 200 chars
+            $fragment       = '';
+            $split_fragment = preg_split(
+                '/(' . preg_quote(Request::get('search'), '/') . ')/i',
+                mb_substr($content, max(0, $pos - floor($length / 2)), $length),
+                -1,
+                PREG_SPLIT_DELIM_CAPTURE
+            );
+            for ($i = 0; $i < count($split_fragment); ++$i) {
+                if ($i % 2) {
+                    $fragment .= '<span class="wiki_highlight">';
+                    $fragment .= htmlready($split_fragment[$i], false);
+                    $fragment .= '</span>';
+                } else {
+                    $fragment .= htmlready($split_fragment[$i], false);
+                }
+            }
+            $found_in_fragment = (count($split_fragment) - 1) / 2; // number of hits in fragment
+            $output[]          = '...' . $fragment . '...';
+        }
+        return implode('<br>', $output);
     }
 }

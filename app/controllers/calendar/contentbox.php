@@ -78,21 +78,29 @@ class Calendar_ContentboxController extends StudipController
         if ($this->admin) {
             $this->isProfile = $this->single && $this->userRange;
         }
+
+        // Sort dates
+        usort($this->termine, function ($a, $b) {
+            [$a_begin, $a_end] = $this->parseBeginAndEndFromDate($a);
+            [$b_begin, $b_end] = $this->parseBeginAndEndFromDate($b);
+
+            return $a_begin - $b_begin
+                ?: $a_end - $b_end;
+        });
     }
 
     private function parseSeminar($id)
     {
-        $course = Course::find($id);
-        $this->termine = $course->getDatesWithExdates()->findBy('end_time', [$this->start, $this->start + $this->timespan], '><');
-        foreach ($this->termine as $course_date) {
-            if ($this->course_range) {
-                //Display only date and time:
-                $this->titles[$course_date->id] = $course_date->getFullName('include-room');
-            } else {
-                //Include the course title:
-                $this->titles[$course_date->id] = $course_date->getFullName('verbose');
-            }
-        }
+        // Display only date and time if in course range, include course title
+        // otherwise
+        $date_format = $this->course_range ? 'include-room' : 'verbose';
+
+        $this->termine = Course::find($id)->getDatesWithExdates()
+            ->findBy('end_time', [$this->start, $this->start + $this->timespan], '><')
+            ->map(function ($course_date) use ($date_format) {
+                $this->titles[$course_date->id] = $course_date->getFullName($date_format);
+                return $course_date;
+            });
     }
 
     private function parseUser($id)
@@ -169,5 +177,24 @@ class Calendar_ContentboxController extends StudipController
             // Store for view
             $this->termine[] = $assignment;
         }
+    }
+
+    private function parseBeginAndEndFromDate($date): array
+    {
+        if ($date instanceof CalendarDateAssignment) {
+            return [
+                $date->calendar_date->begin,
+                $date->calendar_date->end,
+            ];
+        }
+
+        if ($date instanceof CourseDate || $date instanceof CourseExDate) {
+            return [
+                $date->date,
+                $date->end_time,
+            ];
+        }
+
+        throw new Exception('Invalid date type passed: ' . get_class($date));
     }
 }

@@ -17,25 +17,33 @@
         </li>
     </ul>
 </div>
-<? if (!$values['locked']) : ?>
+<? if (empty($values['locked'])) : ?>
 
-	<div id="lvgroup-tree-open-nodes">
-	<? foreach ($open_lvg_nodes as $opennode) : ?>
-		<input type="hidden" name="open_lvg_nodes[]" value="<?= $opennode; ?>">
-	<? endforeach; ?>
-	</div>
+    <div id="lvgroup-tree-open-nodes">
+    <? foreach ($open_lvg_nodes as $opennode) : ?>
+        <input type="hidden" name="open_lvg_nodes[]" value="<?= $opennode; ?>">
+    <? endforeach; ?>
+    </div>
 
     <div id="studyareas" data-ajax-url="<?= $ajax_url ?>"
         data-forward-url="<?= $no_js_url ?>" data-no-search-result="<?=_('Es wurde kein Suchergebnis gefunden.') ?>">
         <h2><?= _('Lehrveranstaltungsgruppen Suche') ?></h2>
         <div>
             <input type="text" size="40" style="width: auto;" name="search" id="lvgroup-tree-search"
-                   value="<?= $values['searchterm'] ?>">
+                   value="<?= htmlReady($values['searchterm'] ?? '') ?>">
             <span id="lvgroup-tree-search-start">
-                <?= Icon::create('search', 'clickable')->asInput(["name" => 'start_search', "onclick" => "return STUDIP.MVV.CourseWizard.searchTree()", "class" => $search_result?'hidden-no-js':'']) ?>
+                <?= Icon::create('search')->asInput([
+                    'name'    => 'start_search',
+                    'onclick' => 'return STUDIP.MVV.CourseWizard.searchTree()',
+                    'class'   => !empty($search_result) ? 'hidden-no-js' : '',
+                ]) ?>
             </span>
             <span id="lvgroup-tree-search-reset" class="hidden-js">
-                <?= Icon::create('refresh', 'clickable')->asInput(["name" => 'reset_search', "onclick" => "return STUDIP.MVV.CourseWizard.resetSearch()", "class" => $search_result?'':' hidden-no-js']) ?>
+                <?= Icon::create('refresh')->asInput([
+                    'name'    => 'reset_search',
+                    'onclick' => 'return STUDIP.MVV.CourseWizard.resetSearch()',
+                    'class'   => !empty($search_result) ? '' : ' hidden-no-js',
+                ]) ?>
             </span>
         </div>
 
@@ -56,23 +64,25 @@
                 <? $pos_id = 1; ?>
                 <? foreach ((array) $tree as $node) : ?>
                     <? $children = $node->getChildren() ?>
-                    <? if (count($children)) : ?>
-                    <?= $this->render_partial('lvgroups/_node',
-                        ['node' => $node, 'pos_id' => $pos_id++,
-                            'open_nodes' => $open_lvg_nodes ?: [],
-                            'search_result' => $search_result ?: [],
-                            'children' => $node->getChildren()]) ?>
+                    <? if (count($children) > 0) : ?>
+                    <?= $this->render_partial('lvgroups/_node', [
+                        'node'          => $node,
+                        'pos_id'        => $pos_id++,
+                        'open_nodes'    => $open_lvg_nodes ?: [],
+                        'search_result' => $search_result ?? [],
+                        'children'      => $node->getChildren(),
+                    ]) ?>
                     <? endif ?>
                 <? endforeach; ?>
                 </ul>
             </li>
         </ul>
     </div>
-    <? if ($values['open_lvg_nodes']) : ?>
+    <? if (!empty($values['open_lvg_nodes'])) : ?>
     <input type="hidden" name="open_nodes" value="<?= json_encode($values['open_lvg_nodes']) ?>"/>
     <? endif; ?>
-    <? if ($values['searchterm']) : ?>
-    <input type="hidden" name="searchterm" value="<?= $values['searchterm'] ?>"/>
+    <? if (!empty($values['searchterm'])) : ?>
+    <input type="hidden" name="searchterm" value="<?= htmlReady($values['searchterm']) ?>">
     <? endif; ?>
     <script>
     //<!--

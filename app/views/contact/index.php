@@ -106,7 +106,7 @@
         <tfoot>
             <tr>
                 <td colspan="5">
-                    <select name="action_contact" id="contact_action" aria-label="<?= _('Aktion ausführen') ?>">
+                    <select name="action_contact" id="contact_action" aria-label="<?= _('Aktion auswählen') ?>">
                         <option value="">- <?= _('Aktion auswählen') ?></option>
                         <option value="remove"><?= $filter ? _('Kontakte aus Gruppe entfernen') : _('Kontakte entfernen') ?></option>
                     </select>

@@ -135,7 +135,7 @@ use Studip\Button, Studip\LinkButton;
         <tfoot>
         <tr>
             <td colspan="6">
-                <select name="action" data-activates="button[name=bulk]">
+                <select name="action" data-activates="button[name=bulk]" aria-label="<?= _('Aktion auswählen') ?>">
                     <option value="">- <?= _('Aktion auswählen') ?></option>
                     <option value="delete"><?= _('Löschen') ?></option>
                 </select>

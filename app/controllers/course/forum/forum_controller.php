@@ -23,7 +23,7 @@ abstract class ForumController extends StudipController {
 
         parent::before_filter($action, $args);
 
-        $this->flash = Trails_Flash::instance();
+        $this->flash = Trails\Flash::instance();
 
         // Set help keyword for Stud.IP's user-documentation and page title
         PageLayout::setHelpKeyword('Basis.Forum');

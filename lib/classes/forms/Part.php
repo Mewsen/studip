@@ -139,7 +139,7 @@ abstract class Part
 
     /**
      * Recursively returns all Input elements attached to this Part object or any child Parts.
-     * @return array
+     * @return Input[]
      */
     public function getAllInputs()
     {

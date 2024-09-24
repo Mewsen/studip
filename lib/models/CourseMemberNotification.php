@@ -1,6 +1,6 @@
 <?php
 /**
- * CourseMemberNotification.class.php
+ * CourseMemberNotification.php
  * model class for table seminar_user_notification
  *
  * This program is free software; you can redistribute it and/or

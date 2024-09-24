@@ -52,7 +52,7 @@ export default {
                 attributes: { value: view === 'tiles' }
             };
 
-            return STUDIP.jsonapi.PATCH(`config-values/${documentId}`, { data: { data } }) ;
+            return STUDIP.jsonapi.withPromises().patch(`config-values/${documentId}`, { data: { data } }) ;
         },
         exchangeModules({ commit, state }, modules) {
             const order = modules.filter(module => module.active)

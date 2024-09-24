@@ -258,7 +258,7 @@ class Course_Gradebook_LecturersController extends AuthenticatedController
     public function edit_custom_definition_action($definitionId)
     {
         if (!$this->definition = Definition::findOneBySQL('id = ? AND course_id = ?', [$definitionId, \Context::getId()])) {
-            throw new \Trails_Exception(404);
+            throw new \Trails\Exception(404);
         }
 
         // show template
@@ -271,7 +271,7 @@ class Course_Gradebook_LecturersController extends AuthenticatedController
     {
         CSRFProtection::verifyUnsafeRequest();
         if (!$definition = Definition::findOneBySQL('id = ? AND course_id = ?', [$definitionId, \Context::getId()])) {
-            throw new \Trails_Exception(404);
+            throw new \Trails\Exception(404);
         }
 
         $name = trim(\Request::get('name', ''));

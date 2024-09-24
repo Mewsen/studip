@@ -36,6 +36,11 @@ class PageLayout
     private static $help_keyword;
 
     /**
+     * current help URL (or null if unset)
+     */
+    private static ?string $help_url = null;
+
+    /**
      * base item path for tab view (defaults to active item in top nav)
      */
     private static $tab_navigation_path = false;
@@ -134,6 +139,21 @@ class PageLayout
         self::addScript('studip-wysiwyg.js?v=' . $v);
 
         self::addStylesheet('print.css?v=' . $v, ['media' => 'print']);
+
+        if (Studip\Debug\DebugBar::isActivated()) {
+            $old_base = URLHelper::setBaseURL($GLOBALS['ABSOLUTE_URI_STUDIP']);
+
+            self::addHeadElement('link', [
+                'href' => URLHelper::getURL('dispatch.php/debugbar/css'),
+                'rel' => 'stylesheet',
+                'type' => 'text/css',
+            ]);
+            self::addHeadElement('script', [
+                'src' => URLHelper::getURL('dispatch.php/debugbar/js'),
+            ], '');
+
+            URLHelper::setBaseURL($old_base);
+        }
     }
 
     /**
@@ -179,7 +199,24 @@ class PageLayout
      */
     public static function getHelpKeyword()
     {
-        return isset(self::$help_keyword) ? self::$help_keyword : 'Basis.Allgemeines';
+        return self::$help_keyword ?? 'Basis.Allgemeines';
+    }
+
+    /**
+     * Set the help URL in the help bar. Pass null to fall back to the help keyword.
+     */
+    public static function setHelpUrl(?string $url): void
+    {
+        self::$help_url = $url;
+    }
+
+    /**
+     * Get the current help URL. If no URL is set explicitly, the URL for
+     * the help keyword is used.
+     */
+    public static function getHelpUrl(): ?string
+    {
+        return self::$help_url ?? format_help_url(self::getHelpKeyword());
     }
 
     /**
@@ -562,10 +599,18 @@ class PageLayout
         if (!isset($_SESSION['messages'])) {
             $_SESSION['messages'] = [];
         }
+
+        $structure = [
+            'type' => $message->class,
+            'message' => $message->message,
+            'details' => $message->details,
+            'closeable' => $message->isCloseable()
+        ];
+
         if ($id === null ) {
-            $_SESSION['messages'][] = $message;
+            $_SESSION['messages'][] = $structure;
         } else {
-            $_SESSION['messages'][$id] = $message;
+            $_SESSION['messages'][$id] = $structure;
         }
     }
 

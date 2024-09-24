@@ -93,35 +93,6 @@ class MyRealmModel
             }
         }
 
-        $sql = "SELECT COUNT(a.eval_id) as count,
-                       COUNT(IF((chdate > IFNULL(b.visitdate, :threshold) AND d.author_id !=:user_id ), a.eval_id, NULL)) AS neue,
-                       MAX(IF ((chdate > IFNULL(b.visitdate, :threshold) AND d.author_id != :user_id), chdate, 0)) AS last_modified
-                FROM eval_range a
-                INNER JOIN eval d
-                  ON (a.eval_id = d.eval_id AND d.startdate < UNIX_TIMESTAMP() AND (d.stopdate > UNIX_TIMESTAMP() OR d.startdate + d.timespan > UNIX_TIMESTAMP() OR (d.stopdate IS NULL AND d.timespan IS NULL)))
-                LEFT JOIN object_user_visits b
-                  ON (b.object_id = a.eval_id AND b.user_id = :user_id AND b.plugin_id = :plugin_id)
-                WHERE a.range_id = :course_id
-                GROUP BY a.range_id";
-
-        $statement = DBManager::get()->prepare($sql);
-        $statement->bindValue(':user_id', $user_id);
-        $statement->bindValue(':course_id', $object_id);
-        $statement->bindValue(':threshold', object_get_visit_threshold());
-        $statement->bindValue(':plugin_id', -2);
-        $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if (!empty($result)) {
-            $count += $result['count'];
-            $neue += $result['neue'];
-            if (isset($my_obj['last_modified'], $result['last_modified']) && $result['last_modified']) {
-                if ($my_obj['last_modified'] < $result['last_modified']) {
-                    $my_obj['last_modified'] = $result['last_modified'];
-                }
-            }
-        }
-
-
         if ($neue || $count > 0) {
             $nav = new Navigation('vote', '#vote');
             if ($neue) {
@@ -163,16 +134,22 @@ class MyRealmModel
     public static function getCourses($min_sem_key, $max_sem_key, $params = [])
     {
         // init
-        $order_by          = $params['order_by'] ?? null;
-        $order             = $params['order'] ?? null;
-        $deputies_enabled  = $params['deputies_enabled'];
+        $order_by         = $params['order_by'] ?? null;
+        $order            = $params['order'] ?? null;
+        $deputies_enabled = $params['deputies_enabled'];
 
         $sem_data = Semester::getAllAsArray();
 
         $semester_ids = [];
         if (is_numeric($min_sem_key) && is_numeric($max_sem_key)) {
             foreach ($sem_data as $index => $data) {
-                if ($index >= $min_sem_key && $index <= $max_sem_key) {
+                if (
+                    $index >= $min_sem_key && $index <= $max_sem_key
+                    && (
+                        !isset($params['exactly'])
+                        || in_array($index, $params['exactly'])
+                    )
+                ) {
                     $semester_ids[] = $data['semester_id'] ?? '';
                 }
             }
@@ -232,7 +209,9 @@ class MyRealmModel
         $current_sem = null;
         foreach ($sem_data as $sem_key => $one_sem) {
             $current_sem = $sem_key;
-            if (!$one_sem['past']) break;
+            if (!$one_sem['past']) {
+                break;
+            }
         }
 
         if (isset($sem_data[$current_sem + 1])) {
@@ -242,7 +221,7 @@ class MyRealmModel
         }
 
         // Get the needed semester
-        if (!in_array($sem, ['', 'current', 'future', 'last', 'lastandnext'])) {
+        if (!in_array($sem, ['', 'current', 'future', 'last', 'lastandnext','lastbutone'])) {
             $semesters[] = Semester::getIndexById($sem);
         } else {
             switch ($sem) {
@@ -261,6 +240,10 @@ class MyRealmModel
                     $semesters[] = $current_sem - 1;
                     $semesters[] = $current_sem;
                     $semesters[] = $max_sem;
+                    break;
+                case 'lastbutone':
+                    $semesters[] = $current_sem - 2;
+                    $semesters[] = $current_sem;
                     break;
                 default:
                     $semesters = array_keys($sem_data);
@@ -281,11 +264,11 @@ class MyRealmModel
     public static function getPreparedCourses($sem = '', $params = [])
     {
         $semesters   = self::getSelectedSemesters($sem);
-        $current_semester_nr = Semester::getIndexById(@Semester::findCurrent()->id);
+        $current_semester_nr = Semester::getIndexById(Semester::findCurrent()->id ?? null);
         $min_sem_key = min($semesters);
         $max_sem_key = max($semesters);
         $group_field = $params['group_field'];
-        $courses     = self::getCourses($min_sem_key, $max_sem_key, $params);
+        $courses     = self::getCourses($min_sem_key, $max_sem_key, $params + ['exactly' => $semesters]);
         $show_semester_name = UserConfig::get($GLOBALS['user']->id)->SHOWSEM_ENABLE;
         $sem_courses = [];
 
@@ -332,7 +315,7 @@ class MyRealmModel
             $_course['visitdate']      = $visits[$course->id][0]['visitdate'];
             $_course['user_status']    = $user_status;
             $_course['gruppe']         = !$is_deputy ? $member_ships[$course->id]['gruppe'] ?? null : ($deputy ? $deputy->gruppe : null);
-            $_course['sem_number_end'] = $course->isOpenEnded() ? $max_sem_key : Semester::getIndexById($course->end_semester->id);
+            $_course['sem_number_end'] = $course->isOpenEnded() ? $max_sem_key : Semester::getIndexById($course->end_semester->id ?? null);
             $_course['sem_number']     = Semester::getIndexById($course->start_semester->id);
             $_course['tools']          = $course->tools;
             $_course['name']           = $course->name;
@@ -492,18 +475,14 @@ class MyRealmModel
     public static function setObjectVisits($object, $user_id, $timestamp = null)
     {
         // load plugins, so they have a chance to register themselves as observers
-        PluginEngine::getPlugins('StandardPlugin');
+        PluginEngine::getPlugins(StandardPlugin::class);
 
-        // Update news, votes and evaluations
+        // Update news and votes
         $query = "INSERT INTO object_user_visits
                     (object_id, user_id, plugin_id, visitdate, last_visitdate)
                   (
                     SELECT questionnaire_id, :user_id, '-1', :timestamp, 0
                     FROM questionnaire_assignments
-                    WHERE range_id = :id
-                  ) UNION (
-                    SELECT eval_id, :user_id, '-2', :timestamp, 0
-                    FROM eval_range
                     WHERE range_id = :id
                   ) UNION (
                     SELECT `news_id`, :user_id, `pluginid`, :timestamp, 0
@@ -786,7 +765,7 @@ class MyRealmModel
         foreach ($sem_courses as $sem_key => $collection) {
             $_tmp_courses[$sem_key] = [];
             foreach ($collection as $course) {
-                $modules = Course::getMVVModulesForCourseId($course['seminar_id']);
+                $modules = Course::getMVVModulesForCourseId($course['seminar_id'], ['genehmigt']);
                 if ($modules) {
                     $modules = array_map(function (Modul $module) {
                         return $module->getDisplayName();

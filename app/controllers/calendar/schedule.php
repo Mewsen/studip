@@ -143,7 +143,7 @@ class Calendar_ScheduleController extends AuthenticatedController
             'entry_height' => $this->calendar_view->getHeight()
         ];
 
-        $factory = new Flexi_TemplateFactory($this->dispatcher->trails_root . '/views');
+        $factory = new Flexi\Factory($this->dispatcher->trails_root . '/views');
         PageLayout::addStyle($factory->render('calendar/schedule/stylesheet', $style_parameters), 'screen, print');
 
         if (Request::option('printview')) {

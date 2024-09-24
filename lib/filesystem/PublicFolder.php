@@ -160,7 +160,7 @@ class PublicFolder extends StandardFolder
     /**
      * Returns the edit template for this folder type.
      *
-     * @return Flexi_Template
+     * @return Flexi\Template
      */
     public function getEditTemplate()
     {

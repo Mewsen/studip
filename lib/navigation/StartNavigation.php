@@ -222,7 +222,7 @@ class StartNavigation extends Navigation
         // contents
         $navigation = new Navigation(_('Mein Arbeitsplatz'), 'dispatch.php/contents/overview');
 
-        if (PluginManager::getInstance()->getPlugin('CoursewareModule')) {
+        if (PluginManager::getInstance()->getPlugin(CoursewareModule::class)) {
             $navigation->addSubNavigation('courseware',
                 new Navigation(_('Courseware'), 'dispatch.php/contents/courseware'));
         }
@@ -230,9 +230,6 @@ class StartNavigation extends Navigation
 
         if (Config::get()->VOTE_ENABLE) {
             $navigation->addSubNavigation('questionnaire', new Navigation(_('Ankündigungen'), 'dispatch.php/news/admin_news'));
-        }
-        if (Config::get()->EVAL_ENABLE) {
-            $navigation->addSubNavigation('evaluation', new Navigation(_('Evaluationen'), 'admin_evaluation.php', ['rangeID' => $auth->auth['uname']]));
         }
 
         // elearning

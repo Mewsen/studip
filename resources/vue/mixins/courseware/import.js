@@ -53,7 +53,6 @@ export default {
             this.elementCounter = await this.countImportElements([element]);
             this.setImportStructuresState('');
             this.importElementCounter = 0;
-            this.setImportErrors([]);
 
             if (importBehavior === 'default') {
                 await this.importStructuralElement([element], rootId, files);
@@ -286,8 +285,14 @@ export default {
                     let new_file = this.file_mapping[files[i].id].new;
                     let payload = JSON.stringify(block.attributes.payload);
 
-                    payload = payload.replaceAll(old_file.id, new_file.id);
-                    payload = payload.replaceAll(old_file.folder.id, new_file.relationships.parent.data.id);
+                    if (new_file) {
+                        payload = payload.replaceAll(old_file.id, new_file.id);
+                        payload = payload.replaceAll(old_file.folder.id, new_file.relationships.parent.data.id);
+                    } else {
+                        payload = payload.replaceAll(old_file.id, '');
+                        payload = payload.replaceAll(old_file.folder.id, '');
+                    }
+                    
 
                     block.attributes.payload = JSON.parse(payload);
                 }
@@ -395,13 +400,20 @@ export default {
 
                         // create new blob with correct type
                         let filedata = zip_filedata.slice(0, zip_filedata.size, files[i].attributes['mime-type']);
-
-                        let file = await this.createFile({
-                            file: files[i],
-                            filedata: filedata,
-                            folder: folders[files[i].folder.id]
-                        });
-                        this.setImportFilesState(this.$gettext('Erzeuge Datei') + ': ' + files[i].attributes.name);
+                        let file = null;
+                        try {
+                            file = await this.createFile({
+                                file: files[i],
+                                filedata: filedata,
+                                folder: folders[files[i].folder.id]
+                            });
+                        } catch (error) {
+                            this.currentImportErrors.push(this.$gettext('Import einer Datei fehlgeschlagen.'));
+                            this.setImportFilesState(this.$gettext('Fehler beim Anlegen der Datei'));
+                        }
+                        if (file !== null) {
+                            this.setImportFilesState(this.$gettext('Erzeuge Datei') + ': ' + files[i].attributes.name);
+                        }
                         this.setImportFilesProgress(parseInt(i / files.length * 100));
 
                         //file mapping

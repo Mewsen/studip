@@ -1,6 +1,6 @@
 <template>
     <img :src="url"
-         :width="width">
+         :width="width" alt="">
 </template>
 
 <script>

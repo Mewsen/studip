@@ -1440,15 +1440,11 @@ class Admin_UserController extends AuthenticatedController
         ];
         $queries[] = [
             'desc'  => _("Anzahl der Wikiseiten"),
-            'query' => "SELECT COUNT(*) FROM wiki WHERE user_id = ? GROUP BY user_id",
+            'query' => "SELECT COUNT(*) FROM `wiki_pages` WHERE `user_id` = ? GROUP BY `user_id`",
         ];
         $queries[] = [
             'desc'  => _("Anzahl der Umfragen"),
             'query' => "SELECT COUNT(*) FROM questionnaires WHERE user_id = ? GROUP BY user_id",
-        ];
-        $queries[] = [
-            'desc'  => _("Anzahl der Evaluationen"),
-            'query' => "SELECT COUNT(*) FROM eval WHERE author_id = ? GROUP BY author_id",
         ];
         $queries[] = [
             'desc'    => _("Anzahl der Dateien in Veranstaltungen und Einrichtungen"),
@@ -1478,7 +1474,7 @@ class Admin_UserController extends AuthenticatedController
             'details' => "files",
         ];
 
-        foreach (PluginEngine::getPlugins('ForumModule') as $plugin) {
+        foreach (PluginEngine::getPlugins(ForumModule::class) as $plugin) {
             $table     = $plugin->getEntryTableInfo();
             $queries[] = [
                 'desc'  => $plugin->getPluginName() . ' - ' . _("Anzahl der Postings"),
@@ -1723,7 +1719,7 @@ class Admin_UserController extends AuthenticatedController
         )->asDialog();
         $actions->addLink(
             _('Konten zusammenführen'),
-            $this->url_for('admin/user/migrate/' . ((!empty($this->user) && is_array($this->user)) ? $this->user['user_id'] : '')),
+            $this->url_for('admin/user/migrate/' . (!empty($this->user['user_id']) ? $this->user['user_id'] : '')),
             Icon::create('community')
         );
 

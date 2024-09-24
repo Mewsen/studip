@@ -31,7 +31,7 @@ class Api_Oauth2_ApplicationsController extends AuthenticatedController
         $this->application = $this->formatApplication($accessToken);
 
         if (!$this->application) {
-            throw new Trails_Exception(500, 'Error finding client.');
+            throw new Trails\Exception(500, 'Error finding client.');
         }
     }
 
@@ -42,7 +42,7 @@ class Api_Oauth2_ApplicationsController extends AuthenticatedController
         $user = User::findCurrent();
         $accessToken = AccessToken::find(Request::option('application'));
         if (!$accessToken) {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
         if ($accessToken['user_id'] !== $user->id) {
             throw new AccessDeniedException();

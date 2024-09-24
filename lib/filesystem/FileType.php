@@ -177,10 +177,12 @@ interface FileType
     public function convertToStandardFile();
 
     /**
-     * Returns the content for that additional column, if it exists. You can return null a string
-     * or a Flexi_Template as the content.
+     * Returns the content for that additional column, if it exists. You can
+     * return null, a string or a Flexi\Template as the content.
+     *
      * @param string $column_index
-     * @return null|string|Flexi_Template
+     *
+     * @return null|string|Flexi\Template
      */
     public function getContentForAdditionalColumn($column_index);
 
@@ -194,14 +196,14 @@ interface FileType
 
 
     /**
-     * Generates a Flexi_Template containing additional information that are
+     * Generates a Flexi\Template containing additional information that are
      * displayes in the information dialog of a file.
      *
      * @param bool $include_downloadable_infos Whether to include information
      *     like file previews that can be downloaded (true) or to not
      *     include them (false). Defaults to false.
      *
-     * @returns Flexi_Template|null Either a Flexi_Template containing
+     * @returns Flexi\Template|null Either a Flexi\Template containing
      *     additional information or null if no such information shall be
      *     displayed in the information dialog.
      */

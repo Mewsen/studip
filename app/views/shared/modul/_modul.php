@@ -46,7 +46,7 @@
             <td><strong><?= _('Semester der erstmaligen Durchführung') ?></strong></td>
             <td data-mvv-field="mvv_modul.start"><?= htmlReady($startSemester['name'] ?? '') ?></td>
         </tr>
-        <? if ($instituteName) : ?>
+        <? if (!empty($instituteName)) : ?>
         <tr>
             <td><strong><?= _('Fachbereich/Institut') ?></strong></td>
             <td data-mvv-field="mvv_modul_inst"><?= htmlReady($instituteName) ?></td>
@@ -135,7 +135,7 @@
             <td><strong><?= _('Modulinhalte') ?></strong></td>
             <td data-mvv-field="mvv_modul_deskriptor.inhalte"><?= formatReady($modulDeskriptor->inhalte) ?></td>
         </tr>
-        <? if ($type !== 3) : ?>
+        <? if (!isset($type) || $type !== 3) : ?>
         <tr>
             <td><strong><?= ngettext('Lehrveranstaltungsform', 'Lehrveranstaltungsformen', count($modul->modulteile)) ?></strong></td>
             <td data-mvv-field="mvv_modulteil_deskriptor.lernlehrform">
@@ -171,7 +171,7 @@
         </tr>
         <tr>
             <td><strong><?= _('Prüfungsebene') ?></strong></td>
-            <td data-mvv-field="mvv_modul.pruef_ebene"><?= htmlReady($pruefungsEbene) ?></td>
+            <td data-mvv-field="mvv_modul.pruef_ebene"><?= htmlReady($pruefungsEbene ?? '') ?></td>
         </tr>
         <tr>
             <td><strong><?= _('Credit-Points') ?></strong></td>
@@ -180,7 +180,7 @@
         <tr>
             <td><strong><?= _('Modulabschlussnote') ?></strong></td>
             <td>
-                <? if ($type !== 3) : ?>
+                <? if (!isset($type) || $type !== 3) : ?>
                     <? $nummer_modulteil = 1; ?>
                     <? $note = []; ?>
                     <? foreach ($modul->modulteile as $modulteil): ?>

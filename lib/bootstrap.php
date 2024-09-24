@@ -9,8 +9,16 @@
  * the License, or (at your option) any later version.
  */
 
+// Include composer's autoload
+require __DIR__ . '/../composer/autoload.php';
+
+// Load enviroment
+$dot_env_path = __DIR__ . '/..';
+$dotenv = \Dotenv\Dotenv::createImmutable($dot_env_path);
+$dotenv->safeLoad();
+
 // Default environment, do not change. Change in config/config_local.inc.php.
-const DEFAULT_ENV = 'production';
+define('DEFAULT_ENV',  $_ENV['STUDIP_ENV'] ?? 'production');
 
 //software version - please leave it as it is!
 $SOFTWARE_VERSION = '6.0.alpha';
@@ -46,7 +54,7 @@ $ABSOLUTE_URI_STUDIP = "";
 if (isset($_SERVER['SERVER_NAME'])) {
     // work around possible bug in lighttpd
     if (mb_strpos($_SERVER['SERVER_NAME'], ':') !== false) {
-        list($_SERVER['SERVER_NAME'], $_SERVER['SERVER_PORT']) =
+        [$_SERVER['SERVER_NAME'], $_SERVER['SERVER_PORT']] =
             explode(':', $_SERVER['SERVER_NAME']);
     }
 
@@ -61,31 +69,37 @@ if (isset($_SERVER['SERVER_NAME'])) {
     $ABSOLUTE_URI_STUDIP .= $CANONICAL_RELATIVE_PATH_STUDIP;
 }
 
-// default ASSETS_URL and ASSETS_PATH, customize if required
-$GLOBALS['ASSETS_URL'] = $ABSOLUTE_URI_STUDIP . 'assets/';
-$GLOBALS['ASSETS_PATH'] = $ABSOLUTE_PATH_STUDIP . 'assets/';
-
-require __DIR__ . '/classes/StudipFileloader.php';
-
-$added_configs = [];
-
-StudipFileloader::load('config_defaults.inc.php config_local.inc.php', $added_configs, compact('STUDIP_BASE_PATH', 'ABSOLUTE_URI_STUDIP', 'ASSETS_URL', 'CANONICAL_RELATIVE_PATH_STUDIP'), true);
-
-foreach($added_configs as $key => $value) {
-    $GLOBALS[$key] = $value;
-}
-
-// If no ENV setting was found in the config files, assume ENV=production
-if (!defined('Studip\ENV')) {
-    define('Studip\ENV', DEFAULT_ENV);
-}
-
+// Check if instance is configured; redirect to install script if not
 if (!file_exists($GLOBALS['STUDIP_BASE_PATH'] . '/config/config_local.inc.php') && php_sapi_name() !== 'cli') {
     require_once __DIR__ . '/classes/URLHelper.php';
 
     URLHelper::setBaseUrl($GLOBALS['ABSOLUTE_URI_STUDIP']);
     header('Location: ' . URLHelper::getURL('install.php'));
     die;
+}
+
+// Load configuration
+require __DIR__ . '/classes/StudipFileloader.php';
+
+$added_configs = [];
+
+StudipFileloader::load('config_defaults.inc.php config_local.inc.php', $added_configs, compact('STUDIP_BASE_PATH', 'ABSOLUTE_URI_STUDIP', 'CANONICAL_RELATIVE_PATH_STUDIP'), true);
+
+foreach($added_configs as $key => $value) {
+    $GLOBALS[$key] = $value;
+}
+
+// create ASSETS_URL and ASSETS_PATH if not customized in config_local.inc.php
+if (!isset($GLOBALS['ASSETS_URL'])) {
+    $GLOBALS['ASSETS_URL'] = $ABSOLUTE_URI_STUDIP . 'assets/';
+}
+if (!isset($GLOBALS['ASSETS_PATH'])) {
+    $GLOBALS['ASSETS_PATH'] = $ABSOLUTE_PATH_STUDIP . 'assets/';
+}
+
+// If no ENV setting was found in the config files, assume ENV=production
+if (!defined('Studip\ENV')) {
+    define('Studip\ENV', DEFAULT_ENV);
 }
 
 require __DIR__ . '/bootstrap-autoload.php';
@@ -111,18 +125,14 @@ Assets::set_assets_url($GLOBALS['ASSETS_URL']);
 Assets::set_assets_path($GLOBALS['ASSETS_PATH']);
 
 // globale template factory anlegen
-require_once 'vendor/flexi/lib/flexi.php';
-$GLOBALS['template_factory'] = new Flexi_TemplateFactory("{$STUDIP_BASE_PATH}/templates");
+$GLOBALS['template_factory'] = new Flexi\Factory("{$STUDIP_BASE_PATH}/templates");
 
 // set default pdo connection
 try {
-    DBManager::getInstance()
-        ->setConnection('studip',
-            'mysql:host=' . $GLOBALS['DB_STUDIP_HOST'] .
-            ';dbname=' . $GLOBALS['DB_STUDIP_DATABASE'] .
-            ';charset=utf8mb4',
-            $GLOBALS['DB_STUDIP_USER'],
-            $GLOBALS['DB_STUDIP_PASSWORD']);
+    DBManager::getInstance()->setConnection(
+        'studip',
+        app(StudipPDO::class)
+    );
 } catch (PDOException $exception) {
     if (Studip\ENV === 'development') {
         throw $exception;
@@ -160,7 +170,7 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
 // bootstrap because the stud.ip cache needs to have a db conenction)
 if ($GLOBALS['CACHING_ENABLE']) {
     $lookup_hash = null;
-    $cached = StudipCacheFactory::getCache()->read('STUDIP#autoloader-classes');
+    $cached = \Studip\Cache\Factory::getCache()->read('STUDIP#autoloader-classes');
     if ($cached) {
         $class_lookup = json_decode($cached, true);
         if (is_array($class_lookup)) {
@@ -172,7 +182,7 @@ if ($GLOBALS['CACHING_ENABLE']) {
     register_shutdown_function(function () use ($lookup_hash) {
         $cached = json_encode(StudipAutoloader::$class_lookup, JSON_UNESCAPED_UNICODE);
         if (md5($cached) !== $lookup_hash) {
-            StudipCacheFactory::getCache()->write(
+            \Studip\Cache\Factory::getCache()->write(
                 'STUDIP#autoloader-classes',
                 $cached,
                 7 * 24 * 60 * 60
@@ -214,7 +224,7 @@ if (Config::get()->CALENDAR_ENABLE) {
 }
 
 if (Config::get()->SOAP_ENABLE) {
-    require_once 'lib/soap/StudipSoapClient' . (Config::get()->SOAP_USE_PHP5 ? '_PHP5' : '' ) . '.class.php';
+    require_once 'lib/soap/StudipSoapClient' . (Config::get()->SOAP_USE_PHP5 ? '_PHP5' : '' ) . '.php';
 }
 
 if (Config::Get()->ILIAS_INTERFACE_ENABLE) {

@@ -2,7 +2,7 @@
 namespace Studip\Cli\Commands\Twillo;
 
 use Config;
-use EduSharingHelper;
+use \EduSharingApiClient\EduSharingHelper;
 use Studip\Cli\Commands\AbstractCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,13 +32,13 @@ final class PrivateKeys extends AbstractCommand
             $key = EduSharingHelper::generateKeyPair();
             $success = file_put_contents(
                 $properties,
-                EduSharingHelper::generateEduAppXMLData($appId, $key['publickey'])
+                EduSharingHelper::generateEduAppXMLData($appId, $key['publicKey'])
             );
 
             if ($success !== false) {
                 file_put_contents(
                     $privateKey,
-                    $key['privatekey']
+                    $key['privateKey']
                 );
                 Config::get()->store('OERCAMPUS_TWILLO_APPID', $appId);
 

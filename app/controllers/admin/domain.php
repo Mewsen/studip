@@ -70,7 +70,7 @@ class Admin_DomainController extends AuthenticatedController
     {
         foreach ($args as $arg) {
             if ($arg && !preg_match('/' . UserDomain::REGEXP . '/', $arg)) {
-                throw new Trails_Exception(400);
+                throw new Trails\Exception(400);
             }
         }
 

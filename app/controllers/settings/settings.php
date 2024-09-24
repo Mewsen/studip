@@ -46,11 +46,11 @@ abstract class Settings_SettingsController extends AuthenticatedController
             $exception = new AccessDeniedException(_('Sie dürfen dieses Profil nicht bearbeiten'));
             $exception->setDetails([
                 _("Wahrscheinlich ist Ihre Session abgelaufen. Bitte "
-                 ."nutzen Sie in diesem Fall den untenstehenden Link, "
+                 ."nutzen Sie in diesem Fall den folgenden Link, "
                  ."um zurück zur Anmeldung zu gelangen.\n\n"
                  ."Eine andere Ursache kann der Versuch des Zugriffs "
                  ."auf Userdaten, die Sie nicht bearbeiten dürfen, sein. "
-                 ."Nutzen Sie den untenstehenden Link, um zurück auf "
+                 ."Nutzen Sie den folgenden Link, um zurück auf "
                  ."die Startseite zu gelangen."),
             ]);
             throw $exception;
@@ -121,7 +121,7 @@ abstract class Settings_SettingsController extends AuthenticatedController
     public function get_default_template($action)
     {
         $class = get_class($this);
-        $controller_name = Trails_Inflector::underscore(mb_substr($class, 0, -10));
+        $controller_name = Trails\Inflector::underscore(mb_substr($class, 0, -10));
         return file_exists($this->dispatcher->trails_root . '/views/' . $controller_name . '.php')
             ? $controller_name
             : $controller_name . '/' . $action;

@@ -86,7 +86,7 @@ const Questionnaire = {
                             }
                             $.post(STUDIP.URLHelper.getURL('dispatch.php/questionnaire/store/' + (this.data.id || '')), {
                                 questionnaire: data,
-                                questions_data: questions,
+                                questions_data: JSON.stringify(questions),
                                 range_type: this.range_type,
                                 range_id: this.range_id
                             }).done(() => {
@@ -112,7 +112,7 @@ const Questionnaire = {
                                 id: id,
                                 questiontype: this.questions[i].questiontype,
                                 internal_name: this.questions[i].internal_name,
-                                questiondata: Object.assign({}, this.questions[i].questiondata)
+                                questiondata: JSON.parse(JSON.stringify(this.questions[i].questiondata)),
                             });
                             this.activeTab = id;
                         },

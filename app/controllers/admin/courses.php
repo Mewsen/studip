@@ -22,6 +22,7 @@
  * @category    Stud.IP
  * @since       3.1
  */
+
 require_once 'lib/meine_seminare_func.inc.php';
 require_once 'lib/object.inc.php';
 require_once 'lib/archiv.inc.php'; //for lastActivity in getCourses() method
@@ -293,7 +294,7 @@ class Admin_CoursesController extends AuthenticatedController
         PageLayout::setTitle(_('Verwaltung von Veranstaltungen und Einrichtungen'));
         // Add admission functions.
         PageLayout::addScript('studip-admission.js');
-        $this->max_show_courses = 500;
+        $this->max_show_courses = Config::get()->MAX_SHOW_ADMIN_COURSES;
     }
 
     /**
@@ -322,6 +323,9 @@ class Admin_CoursesController extends AuthenticatedController
         $institut_id = $configuration->MY_INSTITUTES_DEFAULT && $configuration->MY_INSTITUTES_DEFAULT !== 'all'
                      ? $configuration->MY_INSTITUTES_DEFAULT
                      : null;
+        if ($configuration->MY_INSTITUTES_INCLUDE_CHILDREN) {
+            $institut_id .= '_withinst';
+        }
 
         $filters = array_merge(
             array_merge(...PluginEngine::sendMessage(AdminCourseWidgetPlugin::class, 'getFilters')),
@@ -375,14 +379,14 @@ class Admin_CoursesController extends AuthenticatedController
         }
         PluginEngine::sendMessage(AdminCourseWidgetPlugin::class, 'applyFilters', $filter);
 
-        $count = $filter->countCourses();
-        if ($count > $this->max_show_courses && !Request::submitted('without_limit')) {
-            $this->render_json([
-                'count' => $count
-            ]);
+        try {
+            $courses = $filter->fetchCourses(
+                Request::bool('without_limit') ? null: $this->max_show_courses
+            );
+        } catch (OverflowException $e) {
+            $this->render_json(['count' => (int) $e->getMessage()]);
             return;
         }
-        $courses = AdminCourseFilter::get()->getCourses();
 
         $data = [
             'data' => []
@@ -417,7 +421,7 @@ class Admin_CoursesController extends AuthenticatedController
                 }
             }
         }
-        $tf = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views');
+        $tf = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views');
         switch ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA) {
             case 1:
             case 2:
@@ -487,12 +491,12 @@ class Admin_CoursesController extends AuthenticatedController
                     ]);
                 break;
             default:
-                foreach (PluginManager::getInstance()->getPlugins('AdminCourseAction') as $plugin) {
+                foreach (PluginManager::getInstance()->getPlugins(AdminCourseAction::class) as $plugin) {
                     if ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA === get_class($plugin)) {
                         $multimode = $plugin->useMultimode();
                         if ($multimode) {
                             $data['buttons_top'] = '<label>'._('Alle auswählen').'<input type="checkbox" data-proxyfor=".course-admin td:last-child :checkbox"></label>';
-                            if ($multimode instanceof Flexi_Template) {
+                            if ($multimode instanceof Flex\Template) {
                                 $data['buttons_bottom'] = $multimode->render();
                             } elseif ($multimode instanceof \Studip\Button) {
                                 $data['buttons_bottom'] = (string) $multimode;
@@ -531,12 +535,58 @@ class Admin_CoursesController extends AuthenticatedController
             'institut_id'    => 'MY_INSTITUTES_DEFAULT',
         ];
 
+        if (!empty($filters['institut_id'])) {
+            $config->store(
+                'MY_INSTITUTES_INCLUDE_CHILDREN',
+                str_contains($filters['institut_id'], '_') ? 1 : 0
+            );
+            if ($config->MY_INSTITUTES_INCLUDE_CHILDREN) {
+                $filters['institut_id'] = substr($filters['institut_id'], 0, strpos($filters['institut_id'], '_'));
+            }
+        }
+
         foreach ($mapping as $key => $field) {
             if (isset($filters[$key])) {
                 $config->store($field, $filters[$key]);
             }
-
             unset($filters[$key]);
+        }
+
+        if ($config->ADMIN_COURSES_TEACHERFILTER) {
+            if (!$config->MY_INSTITUTES_DEFAULT) {
+                $config->delete('ADMIN_COURSES_TEACHERFILTER');
+            } else {
+                $include_children = $GLOBALS['user']->cfg->MY_INSTITUTES_INCLUDE_CHILDREN ? ' OR Institute.fakultaets_id = :institut_id ' : '';
+
+                $exists = InstituteMember::countBySQL("INNER JOIN `Institute` USING (`Institut_id`) WHERE `user_inst`.`user_id` = :user_id AND (`Institute`.`Institut_id` = :institut_id $include_children) AND `user_inst`.`inst_perms` = 'dozent' ", [
+                    'user_id' => $config->ADMIN_COURSES_TEACHERFILTER,
+                    'institut_id' => $config->MY_INSTITUTES_DEFAULT
+                ]) > 0;
+                if (!$exists) {
+                    $config->delete('ADMIN_COURSES_TEACHERFILTER');
+                }
+            }
+        }
+        if ($config->MY_COURSES_SELECTED_STGTEIL) {
+            if (!$config->MY_INSTITUTES_DEFAULT) {
+                $config->delete('MY_COURSES_SELECTED_STGTEIL');
+            } else {
+                $statement = DBManager::get()->prepare("
+                    SELECT 1
+                    FROM `mvv_stg_stgteil`
+                        INNER JOIN `mvv_studiengang` ON (`mvv_stg_stgteil`.`studiengang_id` = `mvv_studiengang`.`studiengang_id`)
+                    WHERE `mvv_studiengang`.`institut_id` = :institut_id
+                        AND `mvv_stg_stgteil`.`stgteil_id` = :stgteil_id
+                ");
+                $statement->execute([
+                    'institut_id' => $config->MY_INSTITUTES_DEFAULT,
+                    'stgteil_id' => $config->MY_COURSES_SELECTED_STGTEIL
+                ]);
+                $exists = (bool) $statement->fetch(PDO::FETCH_COLUMN);
+                if (!$exists) {
+                    $config->delete('MY_COURSES_SELECTED_STGTEIL');
+                }
+            }
         }
 
         // Datafield filters
@@ -576,19 +626,19 @@ class Admin_CoursesController extends AuthenticatedController
         if (in_array('name', $activated_fields)) {
             $params = tooltip2(_('Veranstaltungsdetails anzeigen'));
             $params['style'] = 'cursor: pointer';
-            $d['name'] = '<a href="'.URLHelper::getLink('seminar_main.php', ['auswahl' => $course->id]).'">'
+            $d['name'] = '<a href="'.URLHelper::getLink('dispatch.php/course/basicdata/view', ['cid' => $course->id]).'">'
                 . htmlReady($course->name)
                 .'</a> '
                 .'<a href="'.URLHelper::getLink('dispatch.php/course/details/index/'. $course->id).'" data-dialog><button class="undecorated">'.Icon::create('info-circle', Icon::ROLE_INACTIVE)->asImg($params).'</button></a> '
                 .(!$course->visible ? _('(versteckt)') : '');
         }
         if (in_array('number', $activated_fields)) {
-            $d['number'] = '<a href="'.URLHelper::getLink('seminar_main.php', ['auswahl' => $course->id]).'">'
+            $d['number'] = '<a href="'.URLHelper::getLink('dispatch.php/course/basicdata/view', ['cid' => $course->id]).'">'
                 .$course->veranstaltungsnummer
                 .'</a>';
         }
         if (in_array('avatar', $activated_fields)) {
-            $d['avatar'] = '<a href="'.URLHelper::getLink('seminar_main.php', ['auswahl' => $course->id]).'">'
+            $d['avatar'] = '<a href="'.URLHelper::getLink('dispatch.php/course/basicdata/view', ['cid' => $course->id]).'">'
                 .CourseAvatar::getAvatar($course->getId())->getImageTag(Avatar::SMALL, ['title' => $course->name])
                 ."</a>";
         }
@@ -604,6 +654,7 @@ class Admin_CoursesController extends AuthenticatedController
         }
         if (in_array('semester', $activated_fields)) {
             $d['semester'] = $course->semester_text;
+            $d['semester_sort'] = $course->start_semester ? $course->start_semester->beginn : 0;
         }
         if (in_array('institute', $activated_fields)) {
             $d['institute'] = $course->home_institut ? $course->home_institut->name : $course->institute;
@@ -620,7 +671,7 @@ class Admin_CoursesController extends AuthenticatedController
         }
         if (in_array('members', $activated_fields)) {
             $d['members'] = '<a href="'.URLHelper::getLink('dispatch.php/course/members', ['cid' => $course->id]).'">'
-                .$course->getNumParticipants()
+                .$course->countMembersWithStatus('user autor')
                 .'</a>';
         }
         if (in_array('waiting', $activated_fields)) {
@@ -663,15 +714,18 @@ class Admin_CoursesController extends AuthenticatedController
             $d['last_activity_raw'] = $last_activity;
         }
 
-        foreach (PluginManager::getInstance()->getPlugins('AdminCourseContents') as $plugin) {
+        foreach (PluginManager::getInstance()->getPlugins(AdminCourseContents::class) as $plugin) {
             foreach ($plugin->adminAvailableContents() as $index => $label) {
                 if (in_array($plugin->getPluginId() . '_' . $index, $activated_fields)) {
                     $content = $plugin->adminAreaGetCourseContent($course, $index);
-                    $d[$plugin->getPluginId()."_".$index] = $content instanceof Flexi_Template ? $content->render() : $content;
+                    if ($content instanceof Flexi\Template) {
+                        $content = $content->render();
+                    }
+                    $d[$plugin->getPluginId()."_".$index] = $content;
                 }
             }
         }
-        $tf = new Flexi_TemplateFactory($GLOBALS['STUDIP_BASE_PATH'].'/app/views');
+        $tf = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'].'/app/views');
 
         switch ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA) {
             case 1:
@@ -789,10 +843,13 @@ class Admin_CoursesController extends AuthenticatedController
                 $d['action'] = $template->render();
                 break;
             default:
-                foreach (PluginManager::getInstance()->getPlugins('AdminCourseAction') as $plugin) {
+                foreach (PluginManager::getInstance()->getPlugins(AdminCourseAction::class) as $plugin) {
                     if ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA === get_class($plugin)) {
                         $output = $plugin->getAdminCourseActionTemplate($course->getId());
-                        $d['action'] = $output instanceof Flexi_Template ? $output->render() : (string) $output;
+                        if ($output instanceof Flexi\Template) {
+                            $output = $output->render();
+                        }
+                        $d['action'] = (string) $output;
                         break;
                     }
                 }
@@ -981,14 +1038,14 @@ class Admin_CoursesController extends AuthenticatedController
                     $row['institute'] = $course->home_institut ? (string) $course->home_institut['name'] : $course['institut_id'];
                 }
 
-                foreach (PluginManager::getInstance()->getPlugins('AdminCourseContents') as $plugin) {
+                foreach (PluginManager::getInstance()->getPlugins(AdminCourseContents::class) as $plugin) {
                     foreach ($plugin->adminAvailableContents() as $index => $label) {
                         if (in_array($plugin->getPluginId() . "_" . $index, $filter_config)) {
                             $content = $plugin->adminAreaGetCourseContent($course, $index);
-                            $row[$plugin->getPluginId() . "_" . $index] = strip_tags(is_a($content, 'Flexi_Template')
-                                ? $content->render()
-                                : $content
-                            );
+                            if ($content instanceof Flexi\Template) {
+                                $content = $content->render();
+                            }
+                            $row[$plugin->getPluginId() . "_" . $index] = strip_tags($content);
                         }
                     }
                 }
@@ -1000,7 +1057,7 @@ class Admin_CoursesController extends AuthenticatedController
             foreach ($filter_config as $index) {
                 $captions[$index] = $view_filters[$index];
             }
-            foreach (PluginManager::getInstance()->getPlugins('AdminCourseContents') as $plugin) {
+            foreach (PluginManager::getInstance()->getPlugins(AdminCourseContents::class) as $plugin) {
                 foreach ($plugin->adminAvailableContents() as $index => $label) {
                     if (in_array($plugin->getPluginId() . "_" . $index, $filter_config)) {
                         $captions[$plugin->getPluginId() . "_" . $index] = $label;
@@ -1398,7 +1455,7 @@ class Admin_CoursesController extends AuthenticatedController
 
         ksort($actions);
 
-        foreach (PluginManager::getInstance()->getPlugins('AdminCourseAction') as $plugin) {
+        foreach (PluginManager::getInstance()->getPlugins(AdminCourseAction::class) as $plugin) {
             $actions[get_class($plugin)] = [
                 'name'      => $plugin->getPluginName(),
                 'title'     => $plugin->getPluginName(),
@@ -1438,7 +1495,7 @@ class Admin_CoursesController extends AuthenticatedController
             'contents'      => _('Inhalt'),
             'last_activity' => _('Letzte Aktivität'),
         ];
-        foreach (PluginManager::getInstance()->getPlugins('AdminCourseContents') as $plugin) {
+        foreach (PluginManager::getInstance()->getPlugins(AdminCourseContents::class) as $plugin) {
             foreach ($plugin->adminAvailableContents() as $index => $label) {
                 $views[$plugin->getPluginId() . "_" . $index] = $label;
             }
@@ -1446,169 +1503,6 @@ class Admin_CoursesController extends AuthenticatedController
         return $views;
     }
 
-    /**
-     * Returns all courses matching set criteria.
-     *
-     * @param array $params Additional parameters
-     * @param bool $display_all : boolean should we show all courses or check for a limit of 500 courses?
-     * @return array of courses
-     */
-    private function getCourses($params = [], $display_all = false)
-    {
-        // Init
-        if ($GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT === "all") {
-            $inst = new SimpleCollection($this->insts);
-            $inst->filter(function ($a) use (&$inst_ids) {
-                $inst_ids[] = $a->Institut_id;
-            });
-        } else {
-            //We must check, if the institute ID belongs to a faculty
-            //and has the string _i appended to it.
-            //In that case we must display the courses of the faculty
-            //and all its institutes.
-            //Otherwise we just display the courses of the faculty.
-
-            $inst_id = $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT;
-
-            $institut = new Institute($inst_id);
-
-            if (!$institut->isFaculty() || $GLOBALS['user']->cfg->MY_INSTITUTES_INCLUDE_CHILDREN) {
-                // If the institute is not a faculty or the child insts are included,
-                // pick the institute IDs of the faculty/institute and of all sub-institutes.
-                $inst_ids[] = $inst_id;
-                if ($institut->isFaculty()) {
-                    foreach ($institut->sub_institutes->pluck('Institut_id') as $institut_id) {
-                        $inst_ids[] = $institut_id;
-                    }
-                }
-            } else {
-                // If the institute is a faculty and the child insts are not included,
-                // pick only the institute id of the faculty:
-                $inst_ids[] = $inst_id;
-            }
-        }
-
-        $active_elements = $this->getActiveElements();
-
-        $filter = AdminCourseFilter::get(true);
-
-        if ($params['datafields']) {
-            foreach ($params['datafields'] as $field_id => $value) {
-                $datafield = DataField::find($field_id);
-                if ($datafield) {
-                    //enable filtering by datafield values:
-                    //and use the where-clause for each datafield:
-                    $filter->settings['query']['joins']['de_'.$field_id] = [
-                        'table' => "datafields_entries",
-                        'join' => "LEFT JOIN",
-                        'on' => "seminare.seminar_id = de_".$field_id.".range_id"
-                    ];
-                    $filter->where("(de_".$field_id.".datafield_id = :fieldId_".$field_id." "
-                        . "AND de_".$field_id.".content = :fieldValue_".$field_id.") "
-                        . ($datafield['default_value'] == $value ? " OR (de_".$field_id.".content IS NULL)" : "")." ",
-                        [
-                            'fieldId_'.$field_id => $field_id,
-                            'fieldValue_'.$field_id => $value
-                        ]
-                    );
-                }
-            }
-        }
-
-        $filter->where("sem_classes.studygroup_mode = '0'");
-
-        // Get only children of given course
-        if (!empty($params['parent_course'])) {
-            $filter->where("parent_course = :parent",
-                [
-                    'parent' => $params['parent_course']
-                ]
-            );
-        }
-
-        if ($active_elements['semester'] && is_object($this->semester)) {
-            $filter->filterBySemester($this->semester->getId());
-        }
-        if ($active_elements['courseType'] && $params['typeFilter'] && $params['typeFilter'] !== "all") {
-            $parts = explode('_', $params['typeFilter']);
-            $class_filter = $parts[0];
-            $type_filter = $parts[1] ?? null;
-            if (!$type_filter && !empty($GLOBALS['SEM_CLASS'][$class_filter])) {
-                $type_filter = array_keys($GLOBALS['SEM_CLASS'][$class_filter]->getSemTypes());
-            }
-            $filter->filterByType($type_filter);
-        }
-        if ($active_elements['search'] && $GLOBALS['user']->cfg->ADMIN_COURSES_SEARCHTEXT) {
-            $filter->filterBySearchString($GLOBALS['user']->cfg->ADMIN_COURSES_SEARCHTEXT);
-        }
-        if ($active_elements['teacher'] && $GLOBALS['user']->cfg->ADMIN_COURSES_TEACHERFILTER && ($GLOBALS['user']->cfg->ADMIN_COURSES_TEACHERFILTER !== "all")) {
-            $filter->filterByDozent($GLOBALS['user']->cfg->ADMIN_COURSES_TEACHERFILTER);
-        }
-        if ($active_elements['institute']) {
-            $filter->filterByInstitute($inst_ids);
-        }
-        if ($GLOBALS['user']->cfg->MY_COURSES_SELECTED_STGTEIL && $GLOBALS['user']->cfg->MY_COURSES_SELECTED_STGTEIL !== 'all') {
-            $filter->filterByStgTeil($GLOBALS['user']->cfg->MY_COURSES_SELECTED_STGTEIL);
-        }
-        if ($params['sortby'] === "status") {
-            $filter->orderBy(sprintf('sem_classes.name %s, sem_types.name %s, VeranstaltungsNummer %s', $params['sortFlag'], $params['sortFlag'], $params['sortFlag']), $params['sortFlag']);
-        } elseif ($params['sortby'] === 'institute') {
-            $filter->orderBy('Institute.Name', $params['sortFlag']);
-        } elseif ($params['sortby']) {
-            $filter->orderBy($params['sortby'], $params['sortFlag']);
-        }
-        $filter->storeSettings();
-        $this->count_courses = $filter->countCourses();
-        if ($this->count_courses && ($this->count_courses <= $filter->max_show_courses || $display_all)) {
-            $courses = $filter->getCourses();
-        } else {
-            return [];
-        }
-
-        $seminars = [];
-        if (!empty($courses)) {
-            foreach ($courses as $seminar_id => $seminar) {
-                $seminars[$seminar_id] = $seminar[0];
-                $seminars[$seminar_id]['seminar_id'] = $seminar_id;
-                $seminars[$seminar_id]['obj_type'] = 'sem';
-                $dozenten = $this->getTeacher($seminar_id);
-                $seminars[$seminar_id]['dozenten'] = $dozenten;
-
-                if (in_array('contents', $params['view_filter'])) {
-                    $tools = new SimpleCollection(ToolActivation::findbyRange_id($seminar_id, "ORDER BY position"));
-                    $visit_data = get_objects_visits([$seminar_id], 0, null, null, $tools->pluck('plugin_id'));
-                    $seminars[$seminar_id]['visitdate'] = $visit_data[$seminar_id][0]['visitdate'];
-                    $seminars[$seminar_id]['last_visitdate'] = $visit_data[$seminar_id][0]['last_visitdate'];
-                    $seminars[$seminar_id]['tools'] = $tools;
-                    $seminars[$seminar_id]['navigation'] = MyRealmModel::getAdditionalNavigations(
-                        $seminar_id,
-                        $seminars[$seminar_id],
-                        $seminars[$seminar_id]['sem_class'] ?? null,
-                        $GLOBALS['user']->id,
-                        $visit_data[$seminar_id]
-                    );
-                }
-                //add last activity column:
-                if (in_array('last_activity', $params['view_filter'])) {
-                    $seminars[$seminar_id]['last_activity'] = lastActivity($seminar_id);
-                }
-                if ((int)$this->selected_action === 17) {
-                    $seminars[$seminar_id]['admission_locked'] = false;
-                    if ($seminar[0]['course_set']) {
-                        $set = new CourseSet($seminar[0]['course_set']);
-                        if (!is_null($set) && $set->hasAdmissionRule('LockedAdmission')) {
-                            $seminars[$seminar_id]['admission_locked'] = 'locked';
-                        } else {
-                            $seminars[$seminar_id]['admission_locked'] = 'disable';
-                        }
-                        unset($set);
-                    }
-                }
-            }
-        }
-
-        return $seminars;
-    }
 
     /**
      * Returns the teacher for a given cours
@@ -1650,6 +1544,7 @@ class Admin_CoursesController extends AuthenticatedController
                     $institut['Institut_id'],
                     (!$institut['is_fak'] ? ' ' : '') . $institut['Name'],
                     $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT === $institut['Institut_id']
+                        && !$GLOBALS['user']->cfg->MY_INSTITUTES_INCLUDE_CHILDREN
                 );
 
             //check if the institute is a faculty.
@@ -1662,7 +1557,8 @@ class Admin_CoursesController extends AuthenticatedController
                     new SelectElement(
                         $institut['Institut_id'] . '_withinst', //_withinst = with institutes
                         ' ' . $institut['Name'] . ' +' . _('Institute'),
-                        ($GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT === $institut['Institut_id'] && $GLOBALS['user']->cfg->MY_INSTITUTES_INCLUDE_CHILDREN)
+                        $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT === $institut['Institut_id']
+                            && $GLOBALS['user']->cfg->MY_INSTITUTES_INCLUDE_CHILDREN
                     );
             }
         }
@@ -1695,6 +1591,9 @@ class Admin_CoursesController extends AuthenticatedController
     private function getStgteilSelector($institut_id = null)
     {
         $institut_id = $institut_id ?: $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT;
+        if (str_contains($institut_id, '_')) {
+            $institut_id = substr($institut_id, 0, strpos($institut_id, '_'));
+        }
         $stgteile = StudiengangTeil::getAllEnriched('fach_name', 'ASC', ['mvv_fach_inst.institut_id' => $institut_id]);
         $list = [];
         if (!$institut_id || $institut_id === 'all') {
@@ -1782,27 +1681,42 @@ class Admin_CoursesController extends AuthenticatedController
      */
     private function getTeacherWidget($institut_id = null)
     {
-        $institut_id = $institut_id ?: $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT;
-        $teachers = DBManager::get()->fetchAll("
+        if ($institut_id) {
+            if (str_contains($institut_id, '_')) {
+                $institut_id = substr($institut_id, 0, strpos($institut_id, '_'));
+                $GLOBALS['user']->cfg->store('MY_INSTITUTES_INCLUDE_CHILDREN', 1);
+            } else {
+                $GLOBALS['user']->cfg->store('MY_INSTITUTES_INCLUDE_CHILDREN', 0);
+            }
+        } else {
+            $institut_id = $GLOBALS['user']->cfg->MY_INSTITUTES_DEFAULT;
+        }
+
+        $teachers = [];
+        $include_children = $GLOBALS['user']->cfg->MY_INSTITUTES_INCLUDE_CHILDREN ? ' OR Institute.fakultaets_id = :institut_id ' : '';
+
+        if ($institut_id) {
+            $teachers = DBManager::get()->fetchAll("
                 SELECT auth_user_md5.*, user_info.*
                 FROM auth_user_md5
                     LEFT JOIN user_info ON (auth_user_md5.user_id = user_info.user_id)
                     INNER JOIN user_inst ON (user_inst.user_id = auth_user_md5.user_id)
                     INNER JOIN Institute ON (Institute.Institut_id = user_inst.Institut_id)
-                WHERE (Institute.Institut_id = :institut_id OR Institute.fakultaets_id = :institut_id)
-                    AND auth_user_md5.perms = 'dozent'
+                WHERE (Institute.Institut_id = :institut_id $include_children)
+                    AND user_inst.inst_perms = 'dozent'
+                GROUP BY auth_user_md5.user_id
                 ORDER BY auth_user_md5.Nachname ASC, auth_user_md5.Vorname ASC
             ", [
                 'institut_id' => $institut_id
             ],
-            function ($data) {
-                $ret['user_id'] = $data['user_id'];
-                unset($data['user_id']);
-                $ret['fullname'] = User::build($data)->getFullName("full_rev");
-                return $ret;
-            }
-        );
-
+                function ($data) {
+                    $ret['user_id'] = $data['user_id'];
+                    unset($data['user_id']);
+                    $ret['fullname'] = User::build($data)->getFullName("full_rev");
+                    return $ret;
+                }
+            );
+        }
 
         $list = [];
         if (!$institut_id || $institut_id === 'all') {

@@ -51,7 +51,7 @@
                     <?= htmlReady($number) ?>
                 </td>
                 <td>
-                    <?= htmlReady(get_class($migration)) ?>
+                    <?= htmlReady($migration->getName()) ?>
                 </td>
                 <td>
                 <? if ($migration->description()): ?>

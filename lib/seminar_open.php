@@ -216,13 +216,21 @@ if (is_object($GLOBALS['user'])
     if (!Request::isXhr()) {
         header('Location: ' . URLHelper::getURL('dispatch.php/terms', ['return_to' => $_SERVER['REQUEST_URI'], 'redirect_token' => Token::create(600)], true));
     } else {
-        throw new Trails_Exception(400);
+        throw new Trails\Exception(400);
     }
     page_close();
     die;
 }
 
-if (Config::get()->USER_VISIBILITY_CHECK && is_object($GLOBALS['user']) && $GLOBALS['user']->id !== 'nobody') {
+if (
+    Config::get()->USER_VISIBILITY_CHECK
+    && is_object($GLOBALS['user'])
+    && $GLOBALS['user']->id !== 'nobody'
+    && !(
+        Config::get()->DOZENT_ALWAYS_VISIBLE
+        && $perm->get_perm() === 'dozent'
+    )
+) {
     require_once('lib/user_visible.inc.php');
     first_decision($GLOBALS['user']->id);
 }

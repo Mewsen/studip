@@ -16,7 +16,6 @@
  */
 class Course_ChangeViewController extends AuthenticatedController
 {
-    // see Trails_Controller#before_filter
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
@@ -28,7 +27,7 @@ class Course_ChangeViewController extends AuthenticatedController
      * Sets the current course into participant view.
      * Only available for tutor upwards.
      *
-     * @throws Trails_Exception Someone with unfitting rights tried to call here.
+     * @throws Trails\Exception Someone with unfitting rights tried to call here.
      */
     public function set_changed_view_action()
     {
@@ -43,7 +42,7 @@ class Course_ChangeViewController extends AuthenticatedController
      * Resets a course currently in participant view to normal view
      * with real rights.
      *
-     * @throws Trails_Exception Someone with unfitting rights tried to call here.
+     * @throws Trails\Exception Someone with unfitting rights tried to call here.
      */
     public function reset_changed_view_action()
     {

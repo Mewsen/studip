@@ -249,33 +249,23 @@ export const actions = {
         }
     },
     async companionInfo({ dispatch }, { info }) {
-        await dispatch('setStyleCompanionOverlay', 'default');
-        await dispatch('setMsgCompanionOverlay', info);
-        return dispatch('setShowCompanionOverlay', true);
+        STUDIP.eventBus.emit('push-system-notification', { type: 'info', message: info});
     },
 
     async companionSuccess({ dispatch }, { info }) {
-        await dispatch('setStyleCompanionOverlay', 'happy');
-        await dispatch('setMsgCompanionOverlay', info);
-        return dispatch('setShowCompanionOverlay', true);
+        STUDIP.eventBus.emit('push-system-notification', { type: 'success', message: info});
     },
 
     async companionError({ dispatch }, { info }) {
-        await dispatch('setStyleCompanionOverlay', 'sad');
-        await dispatch('setMsgCompanionOverlay', info);
-        return dispatch('setShowCompanionOverlay', true);
+        STUDIP.eventBus.emit('push-system-notification', { type: 'error', message: info});
     },
 
     async companionWarning({ dispatch }, { info }) {
-        await dispatch('setStyleCompanionOverlay', 'alert');
-        await dispatch('setMsgCompanionOverlay', info);
-        return dispatch('setShowCompanionOverlay', true);
+        STUDIP.eventBus.emit('push-system-notification', { type: 'warning', message: info});
     },
 
     async companionSpecial({ dispatch }, { info }) {
-        await dispatch('setStyleCompanionOverlay', 'special');
-        await dispatch('setMsgCompanionOverlay', info);
-        return dispatch('setShowCompanionOverlay', true);
+        STUDIP.eventBus.emit('push-system-notification', { type: 'info', message: info});
     },
     coursewareShowCompanionOverlay({dispatch}, { data }) {
         return dispatch('setShowCompanionOverlay', data);
@@ -310,7 +300,7 @@ export const actions = {
 
         return dispatch(loadUnits, state.context.id);
     },
-    
+
     async sortUnits({ dispatch, state }, data) {
         let loadUnits = null;
         if (state.context.type === 'courses') {
@@ -321,7 +311,7 @@ export const actions = {
         }
 
         await state.httpClient.post(`${state.context.type}/${state.context.id}/courseware-units/sort`, {data: data});
-        
+
         return dispatch(loadUnits, state.context.id);
     },
 

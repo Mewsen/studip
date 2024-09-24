@@ -29,7 +29,10 @@ use Studip\Button, Studip\LinkButton;
     <? if ($user->locked): ?>
         <br>
         <span style="color: red">
-            (<?= sprintf(_('gesperrt von %s'), htmlReady(get_fullname($user->locked_by))) ?>
+            (<?= htmlReady(sprintf(
+                _('gesperrt von %s'),
+                $user->locked_by ? get_fullname($user->locked_by) : _('unbekannt')
+             )) ?>
         <? if ($user->lock_comment): ?>
             , <?= _('Kommentar') ?>: <?= htmlReady($user->lock_comment) ?>
         <? endif; ?>
@@ -341,7 +344,7 @@ use Studip\Button, Studip\LinkButton;
 
             <br>
 
-            <? if ($user->online->last_lifesign): ?>
+            <? if (!empty($user->online->last_lifesign)): ?>
                 <abbr title="<?= strftime('%x %X', $user->online->last_lifesign) ?>">
                     <?= reltime($user->online->last_lifesign, true, 2) ?>
                 </abbr>
@@ -431,7 +434,7 @@ use Studip\Button, Studip\LinkButton;
                     <?= sprintf(
                         '%s, %s, %s. %s',
                         htmlReady($usc->studycourse->name),
-                        htmlReady($usc->degree->name),
+                        htmlReady($usc->degree->name ?? _('Unbekannt')),
                         htmlReady($usc->semester),
                         _('Fachsemester')
                     ) ?>

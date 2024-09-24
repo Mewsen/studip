@@ -186,7 +186,7 @@ class Sidebar extends WidgetContainer
         static $actions_widget_added = false;
 
 
-        if ($widget instanceof NavigationWidget && !$navigation_widget_added) {
+        if ($widget instanceof NavigationWidget && !$navigation_widget_added && $widget->hasElements()) {
             SkipLinks::addIndex(
                 _('Dritte Navigationsebene'),
                 $widget->getId(),
@@ -197,7 +197,7 @@ class Sidebar extends WidgetContainer
             $navigation_widget_added = true;
         }
 
-        if ($widget instanceof ActionsWidget && !$actions_widget_added) {
+        if ($widget instanceof ActionsWidget && !$actions_widget_added && $widget->hasElements()) {
             if (!$widget->getId()) {
                 $widget->setId('sidebar-actions');
             }

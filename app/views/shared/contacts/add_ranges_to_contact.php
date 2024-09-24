@@ -16,7 +16,7 @@
         <select style="display: inline-block;" name="ansp_typ">
             <option value=""<?= empty($ansp_typ) ? ' selected' : '' ?>></option>
         <? foreach ($GLOBALS['MVV_CONTACTS']['TYPE']['values'] as $key => $entry) : ?>
-            <option value="<?= $key ?>"<?= $key == $ansp_typ ? ' selected' : '' ?>><?= htmlReady($entry['name']) ?></option>
+            <option value="<?= $key ?>"<?= isset($ansp_typ) && $key == $ansp_typ ? ' selected' : '' ?>><?= htmlReady($entry['name']) ?></option>
         <? endforeach; ?>
         </select>
     </label>
@@ -26,7 +26,7 @@
         <?= _('Kategorie') ?>
         <select style="display: inline-block;" name="ansp_kat">
         <? foreach (MvvContactRange::getCategoriesByRangetype($range_type) as $key => $entry) : ?>
-            <option value="<?= $key ?>"<?= $key == $ansp_kat ? ' selected' : '' ?>><?= htmlReady($entry['name']) ?></option>
+            <option value="<?= $key ?>"<?= isset($ansp_kat) && $key == $ansp_kat ? ' selected' : '' ?>><?= htmlReady($entry['name']) ?></option>
         <? endforeach; ?>
         </select>
     </label>

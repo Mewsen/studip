@@ -56,7 +56,7 @@ class NewsRangesSearch extends SearchType
                                    LEFT JOIN `semester_courses` AS sc ON s.`Seminar_id` = sc.`course_id`
                                    LEFT JOIN `semester_data` USING (`semester_id`)
                                    WHERE {$sem_inst}.`institut_id` IN (:institutes)
-                                     AND `name` LIKE :input
+                                     AND s.`name` LIKE :input
                                    GROUP BY s.`Seminar_id`
                                    ORDER BY s.`start_time` DESC
                                ) AS course_select";

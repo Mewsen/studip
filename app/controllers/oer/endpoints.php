@@ -45,7 +45,7 @@ class Oer_EndpointsController extends StudipController
         $this->render_json([
             'name' => Config::get()->UNI_NAME_CLEAN,
             'public_key' => $host['public_key'],
-            'url' => $GLOBALS['OER_PREFERRED_URI'] ?: $GLOBALS['ABSOLUTE_URI_STUDIP']."dispatch.php/oer/endpoints/",
+            'url' => ($GLOBALS['OER_PREFERRED_URI'] ?? $GLOBALS['ABSOLUTE_URI_STUDIP']) . 'dispatch.php/oer/endpoints/',
             'index_server' => $host['index_server']
         ]);
     }
@@ -254,7 +254,7 @@ class Oer_EndpointsController extends StudipController
                     'description' => $material['description'],
                     'content_type' => $material['content_type'],
                     'front_image_content_type' => $material['front_image_content_type'],
-                    'url' => ($GLOBALS['OER_PREFERRED_URI'] ?: $GLOBALS['ABSOLUTE_URI_STUDIP'])."dispatch.php/oer/market/download/".$item_id,
+                    'url' => ($GLOBALS['OER_PREFERRED_URI'] ?? $GLOBALS['ABSOLUTE_URI_STUDIP']) . 'dispatch.php/oer/market/download/' . $item_id,
                     'player_url' => $material['player_url'],
                     'tool' => $material['tool'],
                     'structure' => ($material['structure'] ? $material['structure']->getArrayCopy() : null),
@@ -374,7 +374,7 @@ class Oer_EndpointsController extends StudipController
 
         header("Expires: Mon, 12 Dec 2001 08:00:00 GMT");
         header("Last-Modified: " . gmdate ("D, d M Y H:i:s") . " GMT");
-        if ($_SERVER['HTTPS'] == "on") {
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
             header("Pragma: public");
             header("Cache-Control: private");
         } else {
@@ -410,7 +410,7 @@ class Oer_EndpointsController extends StudipController
             $this->response->add_header('Content-Length', filesize($this->material->getFrontImageFilePath()));
             $this->render_text(file_get_contents($this->material->getFrontImageFilePath()));
         } else {
-            throw new Trails_Exception(404);
+            throw new Trails\Exception(404);
         }
     }
 

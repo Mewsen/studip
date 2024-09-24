@@ -12,19 +12,14 @@ use Studip\Button, Studip\LinkButton;
  */
 
 $dialog_attr = Request::isXhr() ? ' data-dialog="size=50%"' : '';
-
-$message_types = ['msg' => "success", 'error' => "error", 'info' => "info"];
 ?>
-
-<? if (is_array($flash['msg'])) foreach ($flash['msg'] as $msg) : ?>
-    <?= MessageBox::{$message_types[$msg[0]]}($msg[1]) ?>
-<? endforeach ?>
 
 <form name="course-details" name="details" method="post" action="<?= $controller->link_for('course/basicdata/set', $course_id) ?>" <?= $dialog_attr ?> class="default collapsable">
     <?= CSRFProtection::tokenTag() ?>
     <input id="open_variable" type="hidden" name="open" value="<?= $flash['open'] ?>">
     <?= Studip\Button::createAccept(_('Speichern'), 'store', ['style' => 'display: none;']) ?>
-    <fieldset <?= isset($flash['open']) && $flash['open'] != 'bd_basicsettings' ? 'class="collapsed"' : ''?> data-open="bd_basicsettings">
+    <fieldset <?= isset($flash['open']) && $flash['open'] != 'bd_basicsettings' ? 'class="collapsed"' : ''?> data-open="bd_basicsettings"
+            aria-expanded="<?= isset($flash['open']) && $flash['open'] === 'bd_basicsettings' ? 'true' : 'false' ?>">
         <legend><?= _('Grundeinstellungen') ?></legend>
 
 <? if (!$attributes): ?>
@@ -55,7 +50,8 @@ $message_types = ['msg' => "success", 'error' => "error", 'info' => "info"];
         </label>
     </fieldset>
 
-    <fieldset <?= !isset($flash['open']) || $flash['open'] != 'inset' ? 'class="collapsed"' : ''?> data-open="bd_inst">
+    <fieldset <?= !isset($flash['open']) || $flash['open'] != 'inset' ? 'class="collapsed"' : ''?> data-open="bd_inst"
+            aria-expanded="<?= isset($flash['open']) && $flash['open'] === 'inset' ? 'true' : 'false' ?>">
         <legend><?= _('Einrichtungen') ?></legend>
 
 <? if (!$institutional): ?>
@@ -78,7 +74,8 @@ $message_types = ['msg' => "success", 'error' => "error", 'info' => "info"];
 <? endif; ?>
     </fieldset>
 
-    <fieldset <?= !isset($flash['open']) || $flash['open'] != 'bd_personal' ? 'class="collapsed"' : ''?>>
+    <fieldset <?= !isset($flash['open']) || $flash['open'] != 'bd_personal' ? 'class="collapsed"' : ''?>
+        aria-expanded="<?= isset($flash['open']) && $flash['open'] === 'bd_personal' ? 'true' : 'false' ?>">
         <legend><?= _('Personal') ?></legend>
 
         <table class="default">
@@ -293,7 +290,8 @@ $message_types = ['msg' => "success", 'error' => "error", 'info' => "info"];
             </tbody>
         </table>
     </fieldset>
-    <fieldset <?= !isset($flash['open']) || $flash['open'] != 'bd_description' ? 'class="collapsed"' : ''?> data-open="bd_description">
+    <fieldset <?= !isset($flash['open']) || $flash['open'] != 'bd_description' ? 'class="collapsed"' : ''?> data-open="bd_description"
+            aria-expanded="<?= isset($flash['open']) && $flash['open'] === 'bd_description' ? 'true' : 'false' ?>">
         <legend><?= _('Weitere Angaben') ?></legend>
 
 <? if (!$descriptions): ?>

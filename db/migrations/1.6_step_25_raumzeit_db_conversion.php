@@ -55,8 +55,8 @@ class Step25RaumzeitDbConversion extends Migration
 
 
         // include business logic
-        require_once('lib/classes/Seminar.class.php');
-        require_once('lib/resources/lib/VeranstaltungResourcesAssign.class.php');
+        require_once('lib/classes/Seminar.php');
+        require_once('lib/resources/lib/VeranstaltungResourcesAssign.php');
 
 
 

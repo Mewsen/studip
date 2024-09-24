@@ -10,7 +10,7 @@
     </thead>
     <? foreach ($fachbereiche as $fachbereich): ?>
         <? if ($fachbereich['faecher']) : ?>
-            <tbody class="<?= ($fachbereich_id === $fachbereich['institut_id'] ? 'not-collapsed' : 'collapsed') ?>">
+            <tbody class="<?= isset($fachbereich_id) && $fachbereich_id === $fachbereich['institut_id'] ? 'not-collapsed' : 'collapsed' ?>">
                 <tr class="header-row">
                     <td class="toggle-indicator">
                         <a class="mvv-load-in-new-row"
@@ -18,7 +18,7 @@
                     </td>
                     <td style="text-align: center;" class="dont-hide"><?= htmlReady($fachbereich['faecher']) ?> </td>
                 </tr>
-                <? if ($fachbereich_id === $fachbereich['institut_id']) : ?>
+                <? if (isset($fachbereich_id) && $fachbereich_id === $fachbereich['institut_id']): ?>
                     <tr class="loaded-details nohover">
                         <?= $this->render_partial('fachabschluss/faecher/details_fachbereich', compact('fach')) ?>
                     </tr>

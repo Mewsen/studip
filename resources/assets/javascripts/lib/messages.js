@@ -252,6 +252,8 @@ const Messages = {
         if (jQuery('#' + name).is(':visible')) {
             jQuery('#' + name)[0].scrollIntoView(false);
         }
+        jQuery('#toggle-' + name)
+            .attr('aria-expanded', jQuery('#toggle-' + name).attr('aria-expanded') !== 'true');
     }
 };
 

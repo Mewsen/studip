@@ -541,7 +541,7 @@ class Studiengaenge_StudiengaengeController extends MVVController
                 if (Request::isPost()) {
                     CSRFProtection::verifyRequest();
                     if (!MvvPerm::haveFieldPermStudiengangteile($studiengang, MvvPerm::PERM_CREATE)) {
-                        throw new Trails_Exception(403);
+                        throw new Trails\Exception(403);
                     }
                     $stgteil_name = $this->stg_stgteil->stgteil_name;
                     $stgbez_name = $this->stg_stgteil->stgbez_name;
@@ -588,7 +588,7 @@ class Studiengaenge_StudiengaengeController extends MVVController
                 if (Request::isPost()) {
                     CSRFProtection::verifyUnsafeRequest();
                     if (!MvvPerm::haveFieldPermStudiengangteile($studiengang, MvvPerm::PERM_CREATE)) {
-                        throw new Trails_Exception(403);
+                        throw new Trails\Exception(403);
                     }
                     $stgteil_name = $stg_stgteil->stgteil_name;
                     $stgbez_name = $stg_stgteil->stgbez_name;

@@ -130,10 +130,6 @@ export default {
             type: String,
             default: ''
         },
-        hasSidebar: {
-            type: Boolean,
-            default: true
-        },
         navigation: {
             type: Object,
             required: true,
@@ -162,6 +158,7 @@ export default {
             classObserver: null,
             dialogObserver: null,
             hasSkiplinks: document.querySelector('#skiplink_list') !== null,
+            hasSidebar: false,
             hasContentbar: false,
             contentbarTitle: ''
         }
@@ -494,6 +491,8 @@ export default {
         }
     },
     mounted() {
+        this.hasSidebar = document.querySelectorAll('#sidebar .sidebar-widget:not(#sidebar-navigation)').length > 0;
+
         const cache = STUDIP.Cache.getInstance('responsive.');
         const fullscreen = cache.get('fullscreen-mode') ?? false;
         const fullscreenDocument = document.documentElement.classList.contains('fullscreen-mode');
@@ -564,18 +563,6 @@ export default {
             attributeFilter: ['class']
         });
 
-        // Check for closed dialog, re-mounting the Vue component.
-        this.dialogObserver = new MutationObserver(mutations => {
-            if (mutations[0].removedNodes.length > 0 &&
-                    mutations[0].removedNodes[0].classList.contains('ui-widget-overlay')) {
-                document.getElementById('responsive-menu').replaceChildren(this.$el);
-            }
-        });
-
-        this.dialogObserver.observe(document.body, {
-            childList: true
-        });
-
         this.globalOn('has-contentbar', value => {
             this.hasContentbar = value;
             if (value && this.isFullscreen) {
@@ -594,6 +581,9 @@ export default {
                 attributeFilter: ['class']
             })
         });
+
+        // Check initial state after load
+        this.headerMagic = document.querySelector('body').classList.contains('fixed');
     },
     beforeDestroy() {
         this.classObserver.disconnect();

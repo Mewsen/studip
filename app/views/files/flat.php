@@ -13,7 +13,7 @@ $vue_topFolder = [
     'description' => $topFolder->getDescriptionTemplate(),
     'additionalColumns' => $topFolder->getAdditionalColumns(),
 ];
-if (is_a($vue_topFolder['description'], "Flexi_Template")) {
+if ($vue_topFolder['description'] instanceof Flexi\Template) {
     $vue_topFolder['description'] = $vue_topFolder['description']->render();
 }
 $vue_topFolder['buttons'] = '<span class="multibuttons">';

@@ -30,7 +30,7 @@ page_open(["sess" => "Seminar_Session", "auth" => "Seminar_Default_Auth", "perm"
 require_once 'lib/messaging.inc.php';
 
 //nur wenn wir angemeldet sind sollten wir dies tun!
-if ($auth->auth["uid"]!="nobody") {
+if ($auth->auth['uid'] !== 'nobody') {
     $my_messaging_settings = $GLOBALS['user']->cfg->MESSAGING_SETTINGS;
 
     //Wenn Option dafuer gewaehlt, alle ungelsesenen Nachrichten als gelesen speichern
@@ -38,13 +38,13 @@ if ($auth->auth["uid"]!="nobody") {
         Message::markAllAs();
     }
 
-    $logout_user=$user->id;
+    $logout_user = $user->id;
     $_language = $_SESSION['_language'];
     $contrast = UserConfig::get($GLOBALS['user']->id)->USER_HIGH_CONTRAST;
 
     // TODO this needs to be generalized or removed
     //erweiterung cas
-    if ($auth->auth["auth_plugin"] == "cas"){
+    if ($auth->auth['auth_plugin'] === 'cas') {
         $casauth = StudipAuthAbstract::GetInstance('cas');
         $docaslogout = true;
     }
@@ -67,9 +67,14 @@ if ($auth->auth["uid"]!="nobody") {
     if ($contrast) {
         $_SESSION['contrast'] = $contrast;
     }
+
+    PageLayout::postSuccess(
+        _('Sie sind nun aus dem System abgemeldet.'),
+        array_filter([$GLOBALS['UNI_LOGOUT_ADD']])
+    );
 } else {
     $sess->delete();
     page_close();
 }
 
-header("Location:" . URLHelper::getURL("index.php?logout=true"));
+header('Location: ' . URLHelper::getURL('index.php'));

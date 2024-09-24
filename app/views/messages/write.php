@@ -7,7 +7,11 @@
     <fieldset>
         <legend><?= _('Neue Nachricht') ?></legend>
     <div class="message-user-list">
-        <label><?= _("An") ?></label>
+        <label>
+            <span class="required">
+                <?= _("An") ?>
+            </span>
+        </label>
         <ul class="list-csv" id="adressees">
             <li id="template_adressee" style="display: none;" class="adressee">
                 <input type="hidden" name="message_to[]" value="">
@@ -32,9 +36,7 @@
             ->render();
 
         $mps = MultiPersonSearch::get('add_adressees')
-           ->setLinkText(_('Mehrere Adressaten hinzufügen'))
-            //->setDefaultSelectedUser($defaultSelectedUser)
-            ->setTitle(_('Mehrere Adressaten hinzufügen'))
+            ->setLinkText(_('Mehrere Adressaten hinzufügen'))
             ->setExecuteURL($controller->url_for('messages/write'))
             ->setJSFunctionOnSubmit('STUDIP.Messages.add_adressees')
             ->setSearchObject($this->mp_search_object);
@@ -53,7 +55,9 @@
     </div>
     <div>
         <label>
-            <?= _("Betreff") ?>
+            <span class="required">
+                <?= _("Betreff") ?>
+            </span>
             <input type="text" name="message_subject" required value="<?= htmlReady($default_message['subject']) ?>">
         </label>
     </div>
@@ -67,22 +71,26 @@
         <ul class="message-options">
         <? if ($GLOBALS['ENABLE_EMAIL_ATTACHMENTS']): ?>
             <li>
-                <a href="" onClick="STUDIP.Messages.toggleSetting('attachments'); return false;">
-                    <?= Icon::create('staple', 'clickable')->asImg(40) ?>
+                <a href="" onClick="STUDIP.Messages.toggleSetting('attachments'); return false;" aria-expanded="false"
+                   role="button" title="<?= _('Anhänge verwalten') ?>" aria-controls="attachments"
+                   id="toggle-attachments">
+                    <?= Icon::create('staple')->asImg(40) ?>
                     <br>
                     <strong><?= _("Anhänge") ?></strong>
                 </a>
             </li>
         <? endif; ?>
             <li>
-                <a href="" onClick="STUDIP.Messages.toggleSetting('tags'); return false;">
-                    <?= Icon::create('star', 'clickable')->asImg(40) ?>
+                <a href="" onClick="STUDIP.Messages.toggleSetting('tags'); return false;" aria-expanded="false"
+                   role="button" title="<?= _('Schlagworte verwalten') ?>" aria-controls="tags" id="toggle-tags">
+                    <?= Icon::create('star')->asImg(40) ?>
                     <br>
                     <strong><?= _("Schlagworte") ?></strong>
                 </a>
             </li>
             <li>
-                <a href="" onClick="STUDIP.Messages.toggleSetting('settings'); return false;">
+                <a href="" onClick="STUDIP.Messages.toggleSetting('settings'); return false;" aria-expanded="false"
+                   role="button" title="<?= _('Optionen') ?>" aria-controls="settings" id="toggle-settings">
                     <?= Icon::create('admin', 'clickable')->asImg(40) ?>
                     <br>
                     <strong><?= _("Optionen") ?></strong>

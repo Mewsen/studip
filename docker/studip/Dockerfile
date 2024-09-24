@@ -1,5 +1,5 @@
 # Setup php, apache and stud.ip
-FROM php:7.4-apache as base
+FROM php:8.1-apache as base
 
 # Install system requirements
 RUN apt update && apt install -y --no-install-recommends \
@@ -11,14 +11,22 @@ RUN apt update && apt install -y --no-install-recommends \
         libonig-dev \
         libzip-dev \
         libicu-dev \
+        libwebp-dev \
+        locales \
         vim \
     && rm -rf /var/lib/apt/lists/*
 
-# Install php extensions
-RUN docker-php-ext-configure gd --with-jpeg
-RUN docker-php-ext-install pdo gettext curl gd mbstring zip pdo pdo_mysql mysqli intl json
+# Install locales
+RUN sed -i -e 's/# en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8/' /etc/locale.gen \
+    && sed -i -e 's/# de_DE.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/' /etc/locale.gen \
+    && dpkg-reconfigure --frontend=noninteractive locales \
+    && update-locale
 
-FROM node:16 as nodejs
+# Install php extensions
+RUN docker-php-ext-configure gd --with-jpeg --with-webp
+RUN docker-php-ext-install gettext gd zip pdo_mysql mysqli intl
+
+FROM node:18 as nodejs
 
 # Install node modules
 COPY . /studip
@@ -59,5 +67,6 @@ COPY ./docker/studip/docker-entrypoint.sh /usr/local/bin/
 RUN chmod u+x /usr/local/bin/docker-entrypoint.sh
 
 # Set start parameters
+ENV AUTO_MIGRATE 1
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["apache2-foreground"]

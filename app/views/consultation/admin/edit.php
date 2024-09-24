@@ -41,8 +41,8 @@
         </label>
 
         <? if ($responsible): ?>
-        <?= $this->render_partial('consultation/admin/block-responsibilities.php', compact('responsible', 'block')) ?>
-    <? endif; ?>
+            <?= $this->render_partial('consultation/admin/block-responsibilities.php', compact('responsible', 'block')) ?>
+        <? endif; ?>
 
         <label>
             <?= _('Maximale Teilnehmerzahl') ?>
@@ -69,6 +69,12 @@
             <input type="checkbox" name="show-participants" value="1"
                 <? if ($block->show_participants) echo 'checked'; ?>>
             <?= _('Namen der buchenden Personen sind öffentlich sichtbar') ?>
+        </label>
+
+        <label>
+            <input type="checkbox" name="consecutive" value="1"
+                   <? if ($block->consecutive) echo 'checked'; ?>>
+            <?= _('Termine innerhalb dieses Blocks nur fortlaufend vergeben') ?>
         </label>
 
         <label>

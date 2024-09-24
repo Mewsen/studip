@@ -46,7 +46,7 @@ class Course_RoomRequestsController extends AuthenticatedController
             SeminarCategories::GetBySeminarId($this->course_id)->studygroup_mode ||
             !$GLOBALS['perm']->have_studip_perm("tutor", $this->course_id)
         ) {
-            throw new Trails_Exception(400);
+            throw new Trails\Exception(400);
         }
 
         PageLayout::setHelpKeyword('Basis.VeranstaltungenVerwaltenAendernVonZeitenUndTerminen');
@@ -143,25 +143,15 @@ class Course_RoomRequestsController extends AuthenticatedController
         // a single date or whole course
         $this->request_range_id = Request::get('range_id', Context::getId());
 
-        if (!isset($_SESSION[$this->request_id])) {
-            $_SESSION[$this->request_id] = [];
-        }
+        $this->init_session();
         $_SESSION[$this->request_id]['range'] = $this->request_range ?: $_SESSION[$this->request_id]['range'] ?? null;
         $_SESSION[$this->request_id]['range_ids'] = $this->request_range_ids ?: [$this->request_range_id];
-        $_SESSION[$this->request_id]['search_by'] = '';
-        $_SESSION[$this->request_id]['room_category_id'] = '';
-        $_SESSION[$this->request_id]['room_id'] = '';
-        $_SESSION[$this->request_id]['room_name'] = '';
-        $_SESSION[$this->request_id]['selected_properties'] = [];
-
-        $this->request = null;
 
         // look for existing request or create a new one
         $this->request = new RoomRequest($this->request_id);
         // time ranges (start date, end date)
         $this->request->setRangeFields($_SESSION[$this->request_id]['range'], $_SESSION[$this->request_id]['range_ids']);
         $this->request_time_intervals = $this->request->getTimeIntervals();
-
     }
 
     /**
@@ -211,7 +201,6 @@ class Course_RoomRequestsController extends AuthenticatedController
                 );
             }
         }
-
     }
 
     /**
@@ -227,7 +216,6 @@ class Course_RoomRequestsController extends AuthenticatedController
                 _('Das Erstellen von Raumanfragen ist nicht erlaubt!')
             );
         }
-
         $this->request_id = $request_id;
         $this->step = (int)$step;
         $this->room_name = $_SESSION[$request_id]['room_name'];
@@ -266,15 +254,17 @@ class Course_RoomRequestsController extends AuthenticatedController
         $this->selected_room = Resource::find($_SESSION[$request_id]['room_id'] ?: $this->request->resource_id);
 
         $this->selected_room_category_id = $this->selected_room->category_id ?? $_SESSION[$request_id]['room_category_id'] ?? null;
+        $this->category = $this->selected_room_category_id ? ResourceCategory::find($this->selected_room_category_id) : null;
 
         $_SESSION[$request_id]['room_category_id'] = $_SESSION[$request_id]['room_category_id'] ?? $this->selected_room->category_id ?? null;
 
         // after selecting a room, go to next step or stay here if no room was selected at all
         if (Request::submitted('select_room')) {
             $this->selected_room_id = Request::get('selected_room_id');
+            $room = Room::find($this->selected_room_id);
             $_SESSION[$request_id]['room_id'] = $this->selected_room_id;
+            $_SESSION[$request_id]['room_category_id'] = $room->category_id;
             $_SESSION[$request_id]['select_room'] = true;
-
             $this->redirect(
                 'course/room_requests/request_check_properties/' . $this->request_id
             );
@@ -289,8 +279,6 @@ class Course_RoomRequestsController extends AuthenticatedController
             );
             return;
         }
-
-        // or we filter via category
         else if (Request::get('category_id') && Request::submitted('select_properties')) {
             $_SESSION[$request_id]['search_by'] = 'category';
             $_SESSION[$request_id]['room_category_id'] = Request::get('category_id');
@@ -299,74 +287,35 @@ class Course_RoomRequestsController extends AuthenticatedController
             );
             return;
         } else if (Request::submitted('reset_category')) {
-            //Delete all selected properties from the session since the category is reset
-            $_SESSION[$request_id]['selected_properties'] = [];
-            $_SESSION[$request_id]['room_category_id'] = '';
-            $_SESSION[$request_id]['room_name'] = '';
-            $_SESSION[$request_id]['room_id'] = '';
-            $this->redirect('course/room_requests/request_find_available_properties/' . $this->request_id . '/1');
+            $this->init_session();
+            $this->redirect('course/room_requests/new_request');
             return;
         }
 
         // for step 2: after choosing a specific room OR searching via properties
         if ($this->step === 2) {
-            if ($_SESSION[$request_id]['search_by'] == 'roomname') {
-                // find category via room
-                $this->category = ResourceCategory::find($this->selected_room_category_id);
-                if ($this->category) {
-                    $this->available_properties = $this->category->getRequestableProperties();
-                }
-
-                $this->selected_properties = $_SESSION[$request_id]['selected_properties'];
-                $this->room = Room::find($_SESSION[$request_id]['room_id']);
-                $this->selected_properties['seats'] = $_SESSION[$request_id]['selected_properties']['seats']
-                    ?: $this->course->admission_turnout
-                    ?: Config::get()->RESOURCES_ROOM_REQUEST_DEFAULT_SEATS;
-                $_SESSION[$request_id]['selected_properties']['seats'] = $this->selected_properties['seats'];
-            } else if ($_SESSION[$request_id]['search_by'] === 'category') {
-                $this->room = Room::find($_SESSION[$request_id]['room_id']);
-                if ($this->room) {
-                    $this->grouped_properties = $this->room->getGroupedProperties();
-                    foreach ($this->grouped_properties as $properties) {
-                        foreach ($properties as $property) {
-                            $this->selected_properties[$property->name] = $property->state;
-                        }
-                    }
-                }
-
-            }
-
-            // find rooms fitting to category and properties
-            if (Request::submitted('search_rooms')) {
+            if (!empty(Request::getArray('selected_properties'))) {
                 $this->selected_properties = Request::getArray('selected_properties');
-                $_SESSION[$request_id]['selected_properties'] = $this->selected_properties;
-                // no min number of seats
-                if (
-                    (!$_SESSION[$request_id]['selected_properties']['seats'] || $_SESSION[$request_id]['selected_properties']['seats'] < 1)
-                    && $_SESSION[$request_id]['search_by'] === 'category'
-                ) {
-                    PageLayout::postError(
-                        _('Die Mindestanzahl der Sitzplätze beträgt 1!')
-                    );
-                    $this->redirect(
-                        'course/room_requests/request_find_matching_rooms/' . $request_id . '/' . $this->step
-                    );
-                    return;
-                } else {
-                    $this->redirect(
-                        'course/room_requests/request_find_matching_rooms/' . $request_id . '/' . $this->step
-                    );
-                    return;
+            } else {
+                $this->selected_properties =  $_SESSION[$request_id]['selected_properties'];
+            }
+            $_SESSION[$request_id]['selected_properties'] = $this->selected_properties;
+            if ($_SESSION[$request_id]['search_by'] === 'roomname') {
+                $this->selected_properties = $_SESSION[$request_id]['selected_properties'] ?? null;
+                $this->room = Room::find($_SESSION[$request_id]['room_id']);
+                if (!isset($_SESSION[$request_id]['selected_properties']['seats'])) {
+                    $this->selected_properties['seats'] = $this->course->admission_turnout ?? Config::get()->RESOURCES_ROOM_REQUEST_DEFAULT_SEATS;
                 }
+                $_SESSION[$request_id]['selected_properties']['seats'] = $this->selected_properties['seats'];
+                $_SESSION[$request_id]['room_category_id'] = $this->selected_room_category_id;
+            } else {
+                // let's find all the properties belonging to the selected category
+                $this->room_category_id = $_SESSION[$request_id]['room_category_id'];
             }
 
-            // let's find all the properties belonging to the selected category
-            $this->room_category_id = $_SESSION[$request_id]['room_category_id'];
-            $this->category = ResourceCategory::find($this->room_category_id);
-            $this->available_properties = $this->category->getRequestableProperties();
-
-            // properties, like 'Sitzplätze', 'behindertengerecht' etc
-            $this->selected_properties = $_SESSION[$request_id]['selected_properties'] ?? null;
+            if ($this->category) {
+                $this->available_properties = $this->category->getRequestableProperties();
+            }
             $this->preparation_time = $_SESSION[$request_id]['preparation_time'] ?? null;
             $this->comment = $_SESSION[$request_id]['comment'] ?? null;
             $this->request->category_id = $_SESSION[$request_id]['room_category_id'];
@@ -375,7 +324,10 @@ class Course_RoomRequestsController extends AuthenticatedController
             if (Request::submitted('show_summary')) {
                 $this->selected_room_id = Request::get('selected_room_id');
                 $_SESSION[$request_id]['room_id'] = $this->selected_room_id;
-                $_SESSION[$request_id]['selected_properties'] = Request::getArray('selected_properties');
+                $room = Room::find($this->selected_room_id);
+                if ($room) {
+                    $_SESSION[$request_id]['room_category_id'] = $room->category_id;
+                }
                 $this->redirect('course/room_requests/request_show_summary/' . $this->request_id );
             }
         }
@@ -394,16 +346,18 @@ class Course_RoomRequestsController extends AuthenticatedController
                 _('Das Erstellen von Raumanfragen ist nicht erlaubt!')
             );
         }
-
         $this->request_id = $request_id;
         $this->step = (int)$step;
 
         $this->request = new RoomRequest($this->request_id);
-        $this->request->setRangeFields($_SESSION[$this->request_id]['range'], $_SESSION[$this->request_id]['range_ids']);
+        $this->request->setRangeFields(
+            $_SESSION[$this->request_id]['range'] ?? null,
+            $_SESSION[$this->request_id]['range_ids'] ?? null
+        );
 
         // let's find all the properties belonging to the selected category
         $this->room_category_id = $_SESSION[$request_id]['room_category_id'] ?: $this->request->category_id;
-        $this->room_name = $_SESSION[$request_id]['room_name'];
+        $this->room_name = $_SESSION[$request_id]['room_name'] ?? '';
         $this->selected_room = Resource::find($_SESSION[$request_id]['room_id'] ?: $this->request->resource_id);
         $this->category = $this->room_category_id ? ResourceCategory::find($this->room_category_id) : '';
         $this->available_properties = $this->room_category_id ? $this->category->getRequestableProperties() : '';
@@ -418,7 +372,10 @@ class Course_RoomRequestsController extends AuthenticatedController
         $this->comment = $_SESSION[$request_id]['comment'] ?? null;
 
         // when searching for a room name, list found room
-        if ($_SESSION[$request_id]['room_name'] !== '') {
+        if (
+            isset($_SESSION[$request_id]['room_name'])
+            && $_SESSION[$request_id]['room_name'] !== ''
+        ) {
             $search_properties['room_category_id'] = $this->room_category_id;
             $search_properties['seats'] = [
                 1,
@@ -455,11 +412,13 @@ class Course_RoomRequestsController extends AuthenticatedController
         }
 
         $this->request_id = $request_id;
-
+        $this->selected_properties = Request::getArray('selected_properties');
         // select a room, search for a room name or search for rooms matching properties
         if (Request::submitted('select_room')) {
             $this->selected_room_id = Request::get('selected_room_id');
+            $room = Room::find($this->selected_room_id);
             $_SESSION[$request_id]['room_id'] = $this->selected_room_id;
+            $_SESSION[$request_id]['room_category_id'] = $room->category_id;
             $_SESSION[$request_id]['select_room'] = true;
             $this->step = 2;
             $this->request = new RoomRequest($this->request_id);
@@ -467,7 +426,6 @@ class Course_RoomRequestsController extends AuthenticatedController
                 'course/room_requests/request_find_matching_rooms/' . $this->request_id . '/' . $this->step
             );
         } else if (Request::get('room_name') && Request::submitted('search_by_name')) {
-            $this->selected_properties = Request::getArray('selected_properties');
             $this->category_id = Request::get('category_id');
             $_SESSION[$request_id]['selected_properties'] = $this->selected_properties;
             $_SESSION[$request_id]['room_category_id'] = $this->category_id;
@@ -479,7 +437,6 @@ class Course_RoomRequestsController extends AuthenticatedController
             );
 
         } else if (Request::submitted('search_rooms')) {
-            $this->selected_properties = Request::getArray('selected_properties');
             $this->category_id = Request::get('category_id');
             $_SESSION[$request_id]['room_category_id'] = $this->category_id;
             $_SESSION[$request_id]['selected_properties'] = $this->selected_properties;
@@ -506,8 +463,7 @@ class Course_RoomRequestsController extends AuthenticatedController
             }
         } else if (Request::submitted('reset_category')) {
             //Delete all selected properties from the session since the category is reset
-            $_SESSION[$request_id]['selected_properties'] = [];
-            $_SESSION[$request_id]['room_category_id'] = '';
+            $this->init_session();
             $this->redirect('course/room_requests/request_find_available_properties/' . $this->request_id . '/1');
         } else if (Request::submitted('search_by_category')) {
             if (Request::get('category_id') === '0') {
@@ -521,12 +477,11 @@ class Course_RoomRequestsController extends AuthenticatedController
             );
         } else if (Request::submitted('show_summary')) {
             $this->request = new RoomRequest($this->request_id);
-            $this->selected_properties = Request::getArray('selected_properties');
-
-            $_SESSION[$request_id]['selected_properties'] = $this->selected_properties;
             $this->selected_room_id = Request::get('selected_room_id');
+            $room = Room::find($this->selected_room_id);
             $_SESSION[$request_id]['room_id'] = $this->selected_room_id;
-
+            $_SESSION[$request_id]['room_category_id'] = $room->category_id ?? $_SESSION[$request_id]['room_category_id'];
+            $_SESSION[$request_id]['selected_properties'] = $this->selected_properties;
             $this->redirect('course/room_requests/request_show_summary/' . $this->request_id  );
         } else {
             $room = Room::find($_SESSION[$request_id]['room_id']);
@@ -569,7 +524,6 @@ class Course_RoomRequestsController extends AuthenticatedController
         );
 
         $this->selected_room_category = ResourceCategory::find($_SESSION[$request_id]['room_category_id'] ?? $this->request->category_id);
-
         $this->selected_room = Resource::find($_SESSION[$request_id]['room_id'] ?? $this->request->resource_id);
 
         $this->room_id = $_SESSION[$request_id]['room_id'] ?? $this->request->resource_id;
@@ -592,7 +546,7 @@ class Course_RoomRequestsController extends AuthenticatedController
 
         $_SESSION[$request_id]['search_by'] = $this->selected_room ? 'roomname' : 'category';
         $_SESSION[$request_id]['room_category_id'] = $this->selected_room_category->id;
-        $_SESSION[$request_id]['room_id'] = $this->selected_room->id;
+        $_SESSION[$request_id]['room_id'] = $this->selected_room ? $this->selected_room->id : '';
     }
 
     public function store_request_action($request_id)
@@ -629,8 +583,12 @@ class Course_RoomRequestsController extends AuthenticatedController
             $this->request->store();
 
             //Store the properties:
-            foreach ($_SESSION[$request_id]['selected_properties'] as $name => $state) {
-                $this->request->setProperty($name, $state);
+            if (isset($_SESSION[$request_id]['selected_properties'])) {
+                foreach ($_SESSION[$request_id]['selected_properties'] as $name => $state) {
+                    if (!empty($state)) {
+                        $this->request->setProperty($name, $state);
+                    }
+                }
             }
 
             // once stored, we can delete the session data for this request
@@ -707,7 +665,7 @@ class Course_RoomRequestsController extends AuthenticatedController
     {
         $request = RoomRequest::find($request_id);
         if (!$request) {
-            throw new Trails_Exception(403);
+            throw new Trails\Exception(403);
         }
         if (Request::isGet()) {
             PageLayout::postQuestion(sprintf(
@@ -722,5 +680,20 @@ class Course_RoomRequestsController extends AuthenticatedController
             }
         }
         $this->redirect('course/timesrooms/index');
+    }
+
+    private function init_session()
+    {
+        $_SESSION[$this->request_id] = array_merge(
+            $_SESSION[$this->request_id] ?? [],
+            [
+                'search_by'           => '',
+                'room_category_id'    => '',
+                'room_id'             => '',
+                'room_name'           => '',
+                'select_room'         => false,
+                'selected_properties' => [],
+            ]
+        );
     }
 }

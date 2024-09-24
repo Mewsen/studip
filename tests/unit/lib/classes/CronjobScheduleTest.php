@@ -26,68 +26,14 @@ class CronjobScheduleTest extends \Codeception\Test\Unit
         StudipTestHelper::tear_down_tables();
     }
 
-    function testOnceSchedule()
-    {
-        $schedule = new CronjobSchedule();
-        $schedule->type = 'once';
-
-        $this->assertEquals('once', $schedule->type);
-
-        return $schedule;
-    }
-
-    /**
-     * @depends testOnceSchedule
-     */
-    function testNextExecutionOncePast($schedule)
-    {
-        $now  = strtotime('10.11.2013 01:02:00');
-        $then = strtotime('-2 weeks', $now);
-
-        $schedule->next_execution = $then;
-        $schedule->calculateNextExecution();
-
-        $this->assertEquals($then, $schedule->next_execution);
-    }
-
-    /**
-     * @depends testOnceSchedule
-     */
-    function testNextExecutionOncePresent($schedule)
-    {
-        $now = strtotime('10.11.2013 01:02:00');
-
-        $schedule->next_execution = $now;
-        $schedule->calculateNextExecution();
-
-        $this->assertEquals($now, $schedule->next_execution);
-    }
-
-    /**
-     * @depends testOnceSchedule
-     */
-    function testNextExecutionOnceFuture(CronjobSchedule $schedule)
-    {
-        $now  = strtotime('10.11.2013 01:02:00');
-        $then = strtotime('+2 weeks', $now);
-
-        $schedule->next_execution = $then;
-        $schedule->calculateNextExecution($now);
-
-        $this->assertEquals($then, $schedule->next_execution);
-    }
-
     function testPeriodicSchedule()
     {
         $schedule = new CronjobSchedule();
-        $schedule->type        = 'periodic';
         $schedule->minute      = null;
         $schedule->hour        = null;
         $schedule->day         = null;
         $schedule->month       = null;
         $schedule->day_of_week = null;
-
-        $this->assertEquals('periodic', $schedule->type);
 
         return $schedule;
     }

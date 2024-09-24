@@ -375,12 +375,12 @@ class JsonApiController
      *
      * @param Request $request Request der eingehende Request
      *
-     * @return mixed entweder null oder das User-Objekt des
-     *               "eingeloggten" Nutzers
+     * @return null|\User entweder null oder das User-Objekt des "eingeloggten"
+     *                    Nutzers
      */
     public function getUser(Request $request)
     {
-        return $request->getAttribute(Authentication::USER_KEY, null);
+        return $request->getAttribute(Authentication::USER_KEY);
     }
 
     /**

@@ -1,6 +1,4 @@
 <?php
-require_once 'lib/classes/QuestionType.interface.php';
-
 /**
  * @license GPL2 or any later version
  *
@@ -53,7 +51,7 @@ class LikertScale extends QuestionnaireQuestion implements QuestionType
 
     public function getDisplayTemplate()
     {
-        $factory = new Flexi_TemplateFactory(realpath(__DIR__.'/../../app/views'));
+        $factory = new Flexi\Factory(realpath(__DIR__.'/../../app/views'));
         $template = $factory->open('questionnaire/question_types/likert/likert_answer');
         $template->set_attribute('vote', $this);
         return $template;
@@ -73,7 +71,7 @@ class LikertScale extends QuestionnaireQuestion implements QuestionType
     public function getUserIdsOfFilteredAnswer($answer_option)
     {
         $user_ids = [];
-        list($statement_key, $options_key) = explode('_', $answer_option);
+        [$statement_key, $options_key] = explode('_', $answer_option);
         foreach ($this->answers as $answer) {
             $answerData = $answer['answerdata']->getArrayCopy();
             if ($answerData['answers'][$statement_key] == $options_key) {
@@ -93,7 +91,7 @@ class LikertScale extends QuestionnaireQuestion implements QuestionType
                 }
             }
         }
-        $factory = new Flexi_TemplateFactory(realpath(__DIR__.'/../../app/views'));
+        $factory = new Flexi\Factory(realpath(__DIR__.'/../../app/views'));
         $template = $factory->open('questionnaire/question_types/likert/likert_evaluation');
         $template->set_attribute('vote', $this);
         $template->set_attribute('answers', $answers);

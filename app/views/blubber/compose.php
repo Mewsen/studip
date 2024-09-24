@@ -1,68 +1,79 @@
-<form class="default" action="<?= $controller->compose($thread ? $thread->getId() : null) ?>" method="post">
+<?php
+/**
+ * @var BlubberController $controller
+ * @var BlubberThread $thread
+ * @var Contact[] $contacts
+ */
+?>
+
+<form class="default" action="<?= $controller->compose($thread ? $thread->getId() : null) ?>" method="post" data-dialog>
 
     <?= CSRFProtection::tokenTag() ?>
 
-    <div <?= !$thread ? "" : 'style="display: none;"' ?>>
-        <div class="file_select_possibilities">
-
-            <a href="#" onclick="jQuery('.file_select_possibilities').hide(); jQuery('.private_blubber_composer').show(); return false;">
+    <div class="file_select_possibilities" <?= !$thread ? "" : 'style="display: none;"' ?>>
+        <div>
+            <a href="#"
+               onclick="$('.file_select_possibilities').hide(); $('.private_blubber_composer').show(); return false;">
                 <?= Icon::create('group3')->asImg(50) ?>
                 <?= _('Kontakte') ?>
             </a>
 
-            <a href="<?= $controller->link_for("blubber/index/global") ?>">
+            <a href="<?= $controller->link_for('blubber/index/global') ?>">
                 <?= Icon::create('globe')->asImg(50) ?>
                 <?= _('Öffentlich') ?>
             </a>
 
             <? if (!$GLOBALS['perm']->have_perm('admin')) : ?>
-                <a href="#" onclick="jQuery('.file_select_possibilities').hide(); jQuery('.course_blubber_composer').show(); return false;">
+                <a href="#"
+                   onclick="$('.file_select_possibilities').hide(); $('.course_blubber_composer').show(); return false;">
                     <?= Icon::create('seminar')->asImg(50) ?>
                     <?= _('Veranstaltung') ?>
                 </a>
             <? endif ?>
-
         </div>
     </div>
 
     <div class="course_blubber_composer" style="display: none;">
-    <? if (!$GLOBALS['perm']->have_perm("admin")) : ?>
-        <ul class="clean">
-        <? foreach (CourseMember::findBySQL("INNER JOIN seminare USING (Seminar_id) WHERE user_id = ? ORDER BY seminare.name ASC", [$GLOBALS['user']->id]) as $member) : ?>
-            <li>
-                <a href="<?= $controller->to_course($member['seminar_id']) ?>">
-                    <?= CourseAvatar::getAvatar($member['seminar_id'])->getImageTag(Avatar::SMALL) ?>
-                    <?= htmlReady($member->course['name']) ?>
-                </a>
-            </li>
-        <? endforeach ?>
-        </ul>
-    <? endif ?>
+        <? if (!$GLOBALS['perm']->have_perm('admin')) : ?>
+            <ul class="clean">
+                <? foreach (CourseMember::findBySQL("INNER JOIN seminare USING (Seminar_id) WHERE user_id = ? ORDER BY seminare.name ASC", [$GLOBALS['user']->id]) as $member) : ?>
+                    <li>
+                        <a href="<?= $controller->to_course($member['seminar_id']) ?>">
+                            <?= CourseAvatar::getAvatar($member['seminar_id'])->getImageTag(Avatar::SMALL) ?>
+                            <?= htmlReady($member->course['name']) ?>
+                        </a>
+                    </li>
+                <? endforeach ?>
+            </ul>
+        <? endif ?>
     </div>
 
     <div class="private_blubber_composer" style="display: none;">
-        <label for="blubber_contacts">
-            <?= _('Kontakte') ?>
-        </label>
-        <div class="blubber_composer_select_container">
+
+        <? if (!empty($contacts)) : ?>
+            <div class="blubber_composer_select_container">
             <span class="container">
-                <select name="user_ids[]" class="select2" id="blubber_contacts" multiple>
+                <label>
+                    <?= _('Kontakte') ?>
+                    <select name="user_ids[]" class="select2" id="blubber_contacts" multiple>
                     <? foreach ($contacts as $contact) : ?>
-                        <option value="<?= htmlReady($contact['user_id']) ?>" data-avatar="<?= htmlReady(Avatar::getAvatar($contact['user_id'])->getImageTag(Avatar::SMALL)) ?>">
+                        <option value="<?= htmlReady($contact->user_id) ?>"
+                                data-avatar="<?= htmlReady(Avatar::getAvatar($contact['user_id'])->getImageTag(Avatar::SMALL)) ?>">
                             <?= htmlReady($contact->friend->getFullName()) ?>
                         </option>
                     <? endforeach ?>
                 </select>
+                </label>
             </span>
 
-            <a href="" onClick="$('#blubber_contacts').focus().select2('open'); return false;">
-                <?= Icon::create("search", "clickable")->asImg(20, ['class' => "text-bottom"]) ?>
-            </a>
-            <a href="" onClick="$('#blubber_contacts').val(null).trigger('change'); return false;">
-                <?= Icon::create("decline", "clickable")->asImg(20, ['class' => "text-bottom"]) ?>
-            </a>
-        </div>
-
+                <a href="" onClick="$('#blubber_contacts').trigger('focus').select2('open'); return false;">
+                    <?= Icon::create('search')->asImg(['class' => 'text-bottom']) ?>
+                </a>
+                <a href="" onClick="$('#blubber_contacts').val(null).trigger('change'); return false;">
+                    <?= Icon::create('decline',)->asImg(['class' => "text-bottom"]) ?>
+                </a>
+            </div>
+        <? endif ?>
         <script>
             jQuery(function ($) {
                 let format = function (state) {
@@ -83,7 +94,6 @@
                 STUDIP.Blubber.Composer.init();
             });
         </script>
-
         <div class=".more_persons">
             <?= _('Weitere Personen') ?>
 
@@ -92,19 +102,21 @@
                     <input type="hidden" name="user_ids[]" :value="user.user_id">
                     <span>{{ user.name }}</span>
                     <a href="#" @click.prevent="removeUser">
-                        <studip-icon shape="trash" :size="20" role="clickable"></studip-icon>
+                        <studip-icon shape="trash"></studip-icon>
                     </a>
                 </li>
             </ul>
+            <quicksearch :searchtype="quicksearch" name="qs" @input="addRange" :placeholder="$gettext('Suchen')"></quicksearch>
             <div class="blubber_composer_select_container">
                 <?= QuickSearch::get('search_user_id', new StandardSearch('user_id'))
-                        ->fireJSFunctionOnSelect('STUDIP.Blubber.Composer.vue.addUser')->render() ?>
+                    ->setInputStyle('width: 90%')
+                    ->fireJSFunctionOnSelect('STUDIP.Blubber.Composer.vue.addUser')->render() ?>
 
-                <a href="" onClick="$('input[name=search_user_id_parameter]').focus(); return false;">
-                    <?= Icon::create("search", "clickable")->asImg(20, ['class' => "text-bottom"]) ?>
+                <a href="" onClick="$('input[name=search_user_id_parameter]').trigger('focus'); return false;">
+                    <?= Icon::create('search')->asImg(['class' => "text-bottom"]) ?>
                 </a>
                 <a href="" onClick="STUDIP.Blubber.Composer.vue.clearUsers(); return false;">
-                    <?= Icon::create("decline", "clickable")->asImg(20, ['class' => "text-bottom"]) ?>
+                    <?= Icon::create('decline')->asImg(['class' => "text-bottom"]) ?>
                 </a>
             </div>
         </div>

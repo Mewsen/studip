@@ -1,7 +1,5 @@
 <?php
 
-require_once 'lib/classes/QuestionType.interface.php';
-
 class QuestionnaireController extends AuthenticatedController
 {
     protected $allow_nobody = true; //nobody is allowed
@@ -48,11 +46,24 @@ class QuestionnaireController extends AuthenticatedController
     public function courseoverview_action()
     {
         $this->range_id = Context::getId();
+
+        if (!$this->range_id) {
+            throw new CheckObjectException(_('Sie haben kein Objekt gewählt.'));
+        }
         $this->range_type = Context::getType();
         if (!$GLOBALS['perm']->have_studip_perm("tutor", $this->range_id)) {
             throw new AccessDeniedException("Only for logged in users.");
         }
+
         Navigation::activateItem("/course/admin/questionnaires");
+        if ($GLOBALS['perm']->have_studip_perm('admin', $this->range_id)) {
+            // Ensure the select widget is added last
+            NotificationCenter::on('SidebarWillRender', function () {
+                $widget = new CourseManagementSelectWidget();
+                Sidebar::get()->addWidget($widget);
+            });
+        }
+
         $this->statusgruppen = Statusgruppen::findByRange_id($this->range_id);
         $this->questionnaires = Questionnaire::findBySQL(
             "INNER JOIN questionnaire_assignments USING (questionnaire_id) WHERE (questionnaire_assignments.range_id = ? AND questionnaire_assignments.range_type = ?) OR (questionnaire_assignments.range_id IN (?) AND questionnaire_assignments.range_type = 'statusgruppe') ORDER BY questionnaires.chdate DESC",
@@ -148,7 +159,7 @@ class QuestionnaireController extends AuthenticatedController
             : null;
 
         $this->questionnaire['user_id'] = User::findCurrent()->id;
-        $questions_data = Request::getArray('questions_data');
+        $questions_data = json_decode(Request::get('questions_data'), true);
         $questions = [];
         foreach ($questions_data as $index => $question_data) {
             $class = $question_data['questiontype'];
@@ -480,7 +491,7 @@ class QuestionnaireController extends AuthenticatedController
                 $course_assignment['user_id'] = $GLOBALS['user']->id;
                 $course_assignment->store();
             }
-            foreach (PluginManager::getInstance()->getPlugins("QuestionnaireAssignmentPlugin") as $plugin) {
+            foreach (PluginManager::getInstance()->getPlugins(QuestionnaireAssignmentPlugin::class) as $plugin) {
                 $plugin->storeQuestionnaireAssignments($this->questionnaire);
             }
 
@@ -584,8 +595,8 @@ class QuestionnaireController extends AuthenticatedController
         }
         $this->statusgruppen_ids = [];
         if (in_array($this->range_type, ["course", "institute"])) {
-            if ($GLOBALS['perm']->have_studip_perm("tutor", $this->range_id)) {
-                $statusgruppen = Statusgruppen::findByRange_id(Context::get()->id);
+            if ($this->range_id && $GLOBALS['perm']->have_studip_perm("tutor", $this->range_id)) {
+                $statusgruppen = Statusgruppen::findByRange_id($this->range_id);
             } else {
                 $statusgruppen = Statusgruppen::findBySQL("INNER JOIN statusgruppe_user USING (statusgruppe_id) WHERE statusgruppen.range_id = ? AND statusgruppe_user.user_id = ? ", [
                     Context::get()->id,
@@ -634,6 +645,7 @@ class QuestionnaireController extends AuthenticatedController
             object_set_visit($questionnaire['questionnaire_id'], 'vote');
         }
         if (in_array($this->range_type, ["course", "institute"])
+                && $this->range_id
                 && !$GLOBALS['perm']->have_studip_perm("tutor", $this->range_id)
                 && !($stopped_visible || count($this->questionnaire_data))) {
             $this->render_nothing();

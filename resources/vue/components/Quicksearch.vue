@@ -119,6 +119,7 @@ export default {
             this.results = [];
 
             this.$emit('input', this.returnValue, this.inputValue);
+            this.inputValue = '';
         },
         selectUp () {
             if (this.selected > 0) {

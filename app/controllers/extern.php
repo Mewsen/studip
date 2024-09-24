@@ -21,7 +21,7 @@ class ExternController extends StudipController
      * Action shows rendered external page.
      *
      * @param string $config_id The id of the configuration of the external page to show.
-     * @throws Trails_DoubleRenderError
+     * @throws Trails\Exceptions\DoubleRenderError
      */
     public function index_action(string $config_id)
     {

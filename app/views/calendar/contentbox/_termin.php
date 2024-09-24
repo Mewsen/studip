@@ -13,19 +13,19 @@
             </span>
             <? if ($admin && $isProfile && $termin->getObjectClass() === 'CalendarDateAssignment') : ?>
                 <a href="<?= URLHelper::getLink('dispatch.php/calendar/calendar') ?>"
-                   title="<?= _('Zum Kalender') ?>">
+                   title="<?= _('Zum Kalender') ?>" aria-label="<?= _('Zum Kalender') ?>">
                     <?= Icon::create('schedule')->asImg(['class' => 'text-bottom']) ?>
                 </a>
                 <? if ($termin->calendar_date->isWritable($GLOBALS['user']->id)) : ?>
                     <a href="<?= URLHelper::getLink('dispatch.php/calendar/date/edit/' . $termin->getPrimaryObjectId()) ?>"
-                       title="<?= _('Termin bearbeiten') ?>"
+                       title="<?= _('Termin bearbeiten') ?>" aria-label="<?= _('Termin bearbeiten') ?>"
                        data-dialog>
                         <?= Icon::create('edit')->asImg(['class' => 'text-bottom']) ?>
                     </a>
                 <? endif ?>
             <? elseif (!$course_range && in_array($termin->getObjectClass(), ['CourseDate', 'CourseExDate'])) : ?>
                 <a href="<?= URLHelper::getLink('dispatch.php/course/dates', ['cid' => $termin->getPrimaryObjectId()]) ?>"
-                   title="<?= _('Zur Veranstaltung') ?>">
+                   title="<?= _('Zur Veranstaltung') ?>" aria-label="<?= _('Zur Veranstaltung') ?>">
                     <?= Icon::create('seminar')->asImg(['class'=> 'text-bottom']) ?>
                 </a>
             <? endif ?>

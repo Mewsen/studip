@@ -1,6 +1,6 @@
 <?php
 /**
- * InboxFolder.class.php
+ * InboxFolder.php
  *
  * This is a FolderType implementation for file attachments of messages
  * that were received by a user. It is a read-only folder.

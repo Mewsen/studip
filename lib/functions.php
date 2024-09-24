@@ -504,64 +504,6 @@ function check_and_set_date($tag, $monat, $jahr, $stunde, $minute, &$arr, $field
     return $check;
 }
 
-/**
- * reset the order-positions for the lecturers in the passed seminar,
- * starting at the passed position
- *
- * @param string $s_id     the seminar to work on
- * @param int    $position the position to start with
- * @deprecated since Stud.IP 5.3
- *
- * @return void
- */
-function re_sort_dozenten($s_id, $position)
-{
-    $query = "UPDATE seminar_user
-              SET position = position - 1
-              WHERE Seminar_id = ? AND status = 'dozent' AND position > ?";
-    $statement = DBManager::get()->prepare($query);
-    $statement->execute([$s_id, $position]);
-}
-
-/**
- * reset the order-positions for the tutors in the passed seminar,
- * starting at the passed position
- *
- * @param string $s_id     the seminar to work on
- * @param int    $position the position to start with
- * @deprecated since Stud.IP 5.3
- *
- * @return void
- */
-function re_sort_tutoren($s_id, $position)
-{
-    $query = "UPDATE seminar_user
-              SET position = position - 1
-              WHERE Seminar_id = ? AND status = 'tutor' AND position > ?";
-    $statement = DBManager::get()->prepare($query);
-    $statement->execute([$s_id, $position]);
-}
-
-/**
- * return the highest position-number increased by one for the
- * passed user-group in the passed seminar
- *
- * @param string $status     can be on of 'tutor', 'dozent', ...
- * @param string $seminar_id the seminar to work on
- * @deprecated since Stud.IP 5.3
- *
- * @return int  the next available position
- */
-function get_next_position($status, $seminar_id)
-{
-    $query = "SELECT MAX(position) + 1
-              FROM seminar_user
-              WHERE Seminar_id = ? AND status = ?";
-    $statement = DBManager::get()->prepare($query);
-    $statement->execute([$seminar_id, $status]);
-
-    return $statement->fetchColumn() ?: 0;
-}
 
 /**
  * converts a string to a float, depending on the locale
@@ -694,7 +636,7 @@ function get_users_online($active_time = 5, $name_format = 'full_rev')
  */
 function get_users_online_count($active_time = 10)
 {
-    $cache = StudipCacheFactory::getCache();
+    $cache = \Studip\Cache\Factory::getCache();
     $online_count = $cache->read("online_count/{$active_time}");
     if ($online_count === false) {
         $query = "SELECT COUNT(*) FROM user_online
@@ -907,7 +849,7 @@ function search_range($search_str = false, $search_user = false, $show_sem = tru
             }
         }
     } elseif ($GLOBALS['perm']->have_perm('tutor') || $GLOBALS['perm']->have_perm('autor')) {
-        // autors my also have evaluations and news in studygroups with proper rights
+        // autors my also have news in studygroups with proper rights
         $_hidden = _('(versteckt)');
         $query = "SELECT s.Seminar_id, IF(s.visible = 0, CONCAT(s.Name, ' {$_hidden}'), s.Name) AS Name %s
                   FROM seminar_user AS a
@@ -1377,7 +1319,7 @@ function get_route($route = '')
         $route = 'plugins.php/' . $pieces[0] . (!empty($pieces[1]) ? '/' . $pieces[1] : '') . (!empty($pieces[2]) ? '/' . $pieces[2] : '');
     } elseif (mb_strpos($route, 'dispatch.php/') !== false) {
         $trails = explode('dispatch.php/', $route);
-        $dispatcher = app(\Trails_Dispatcher::class);
+        $dispatcher = app(\Trails\Dispatcher::class);
         $pieces = explode('/', $trails[1]);
         $trail = '';
         foreach ($pieces as $index => $piece) {
@@ -1457,7 +1399,7 @@ function studip_default_exception_handler($exception) {
     } elseif ($exception instanceof LoginException) {
         $GLOBALS['auth']->login_if(true);
     } else {
-        if ($exception instanceOf Trails_Exception) {
+        if ($exception instanceOf Trails\Exception) {
             $status = $exception->getCode();
         } else {
             $status = 500;
@@ -1513,6 +1455,19 @@ function strtocamelcase($string, $ucfirst = false) {
     }
 
     return implode($chunks);
+}
+
+/**
+ * Converts a string to PascalCase.
+ *
+ * @param String $string  The string that should be converted
+ * @return String containing the converted input string
+ */
+function strtopascalcase(string $string): string {
+    return strtocamelcase(
+        str_replace('_', ' ', $string),
+        true
+    );
 }
 
 /**
@@ -1858,4 +1813,35 @@ function xml_escape($string)
 {
     $string = preg_replace('/[\x00-\x08\x0b\x0c\x0e-\x1f]/', '', $string);
     return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+}
+
+/**
+ * This function mimics the functionality of the $gettextInterpolate function in JavaScript.
+ * This makes it easier to format text in translatable strings.
+ *
+ * Note that the behavior of this function is simplified in comparison with $gettextInterpolate:
+ * - All placeholders that have a value are replaced with the string value of that value.
+ *   Numbers must be pre-formatted before added to the parameters.
+ * - All placeholders that have no replacements in the parameters array are output.
+ *
+ * @param string $gettext_string The translation string to be interpolated.
+ *
+ * @param array $parameters The parameters that replace the placeholders in the translation string.
+ *     Array keys are the names of the placeholders while array values are the values that are
+ *     placed inside the string.
+ *
+ * @return string The interpolated translation string.
+ */
+function studip_interpolate(string $gettext_string, array $parameters) : string
+{
+    return preg_replace_callback(
+        '/%\{\s*(\w+)\s*\}/',
+        function ($match) use ($parameters): string {
+            if (!isset($parameters[$match[1]])) {
+                throw new Exception('The parameter for the placeholder ' . $match[1] . ' is missing.');
+            }
+            return $parameters[$match[1]];
+        },
+        $gettext_string
+    );
 }

@@ -7,6 +7,7 @@
 
     .cw-blockadder-item-wrapper {
         display: flex;
+        position: relative;
         border: solid thin var(--content-color-40);
         max-width: 268px;
 
@@ -54,6 +55,7 @@
 }
 
 .cw-containeradder-item-wrapper {
+    position: relative;
     border: solid thin var(--content-color-40);
     margin-bottom: 4px;
     .cw-sortable-handle {
@@ -136,7 +138,7 @@
 }
 .cw-element-inserter-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     grid-auto-rows: auto;
     grid-gap: 4px;
     margin-bottom: 8px;

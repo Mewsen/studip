@@ -64,11 +64,6 @@ if (!empty($dates)) {
     echo $dates;
 }
 
-// Anzeige von Umfragen
-if (!empty($evaluations)) {
-    echo $evaluations;
-}
-
 if (!empty($questionnaires)) {
     echo $questionnaires;
 }
@@ -81,7 +76,7 @@ if (!empty($plugins)) {
         $template = $plugin->getInfoTemplate($course_id);
 
         if ($template) {
-            echo $template->render(null, $layout);
+            echo $template->render(layout: $layout);
             $layout->clear_attributes();
         }
     }

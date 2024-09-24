@@ -2,6 +2,7 @@
 
 namespace JsonApi\Routes\Files;
 
+use FileRef;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\AuthorizationFailedException;
@@ -28,8 +29,14 @@ class SubfilerefsIndex extends JsonApiController
             throw new AuthorizationFailedException();
         }
 
-        $fileRefs = $folder->file_refs->getArrayCopy();
-        list($offset, $limit) = $this->getOffsetAndLimit();
+        $fileRefs = array_map(
+            function (\FileType $file): FileRef {
+                return $file->getFileRef();
+            },
+            $folder->getFiles()
+        );
+
+        [$offset, $limit] = $this->getOffsetAndLimit();
 
         return $this->getPaginatedContentResponse(
             array_slice($fileRefs, $offset, $limit),

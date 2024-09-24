@@ -17,7 +17,7 @@ const scroll = function(scrolltop) {
 const HeaderMagic = {
     enable() {
         fold = $('#navigation-level-1').height();
-        Scroll.addHandler('header', scroll);
+        Scroll.addHandler('header', scroll, true);
     },
     disable() {
         Scroll.removeHandler('header');

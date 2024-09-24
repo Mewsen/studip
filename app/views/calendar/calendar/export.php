@@ -7,8 +7,8 @@
  * @var DateTimeImmutable $end
  */
 ?>
-<form class="default" method="post"
-      action="<?= $controller->link_for('calendar/calendar/export/' . $user_id) ?>">
+<form class="default" method="post" data-dialog="size=auto"
+      action="<?= $controller->link_for('calendar/calendar/export', $user_id ?? null) ?>">
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend><?= _('Termine exportieren') ?></legend>

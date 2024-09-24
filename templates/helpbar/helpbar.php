@@ -1,13 +1,23 @@
+<?php
+/**
+ * @var bool $open
+ * @var Widget[] $widgets
+ */
+?>
 <div class="helpbar-container">
-    <?= SkipLinks::addIndex(_('Tipps & Hilfe'), 'helpbar_icon', 920) ?>
-    <a id="helpbar_icon" href="#" class="helpbar-toggler" data-toggles=".helpbar" title="<?= _('Hilfelasche anzeigen/verstecken') ?>">
+    <? SkipLinks::addIndex(_('Tipps & Hilfe'), 'helpbar_icon', 920) ?>
+    <a id="helpbar_icon" href="#" class="helpbar-toggler" data-toggles=".helpbar" role="button"
+       title="<?= _('Hilfelasche anzeigen/verstecken') ?>" aria-controls="helpbar-content"
+       aria-expanded="<?= $open ? 'true' : 'false' ?>">
         <?= Icon::create('question-circle')->asImg(24, ['alt' => '']) ?>
     </a>
-    <div class="helpbar" <? if (!$open) echo 'style="display: none"'; ?>>
+    <div class="helpbar" id="helpbar-content" <? if (!$open) echo 'style="display: none"'; ?>>
 
         <h2 class="helpbar-title">
             <?= _('Tipps & Hilfe') ?>
-            <a href="#" class="helpbar-toggler" data-toggles=".helpbar" aria-hidden="true" title="<?= _('Hilfelasche verstecken') ?>">
+            <a href="#" class="helpbar-toggler" data-toggles=".helpbar" aria-hidden="true" role="button"
+               title="<?= _('Hilfelasche verstecken') ?>" aria-controls="helpbar-content"
+               aria-expanded="<?= $open ? 'true' : 'false' ?>">
                 <?= Icon::create('decline-circle', Icon::ROLE_INFO_ALT)->asImg(24, ['alt' => '']) ?>
             </a>
         </h2>
@@ -37,7 +47,7 @@
         </ul>
     </div>
 </div>
-<? if ($tour_data['active_tour_id']) : ?>
+<? if (!empty($tour_data['active_tour_id'])) : ?>
     <script>
         STUDIP.Tour.init('<?=$tour_data['active_tour_id']?>', '<?=$tour_data['active_tour_step_nr']?>')
     </script>

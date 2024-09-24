@@ -98,8 +98,8 @@ class Step00349 extends Migration
             'participants' => 'CoreParticipants',
             'courseware' => 'CoursewareModule'
         ];
-        PluginManager::getInstance()->getPlugin('CoreForum');
-        PluginManager::getInstance()->getPlugin('Blubber');
+        PluginManager::getInstance()->getPlugin(CoreForum::class);
+        PluginManager::getInstance()->getPlugin(Blubber::class);
 
         foreach ($core_plugins as $plugin) {
             try {

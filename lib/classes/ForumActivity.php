@@ -124,7 +124,7 @@ class ForumActivity
             'mkdate'       => $post['mkdate'] ?? time()
         ];
 
-        if ($post['anonymous']) {
+        if (!empty($post['anonymous'])) {
             $data['actor_type'] = 'anonymous';
             $data['actor_id']   = '';
         }

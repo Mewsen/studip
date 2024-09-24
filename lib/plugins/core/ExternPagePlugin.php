@@ -42,10 +42,10 @@ interface ExternPagePlugin
     public function getExternPage(ExternPageConfig $config): ExternPage;
 
     /**
-     * Returns a Flexi_Template or a path to the template file. This template contains the form
+     * Returns a Flexi\Template or a path to the template file. This template contains the form
      * to configure the external page.
      *
-     * @return string|Flexi_Template
+     * @return string|Flexi\Template
      */
     public function getConfigurationFormTemplate();
 

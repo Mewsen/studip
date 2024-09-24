@@ -39,7 +39,7 @@
                            type="checkbox" name="all" value="1" data-proxyfor=":checkbox[name^=accepted]">
                 </th>
             <? endif ?>
-                <th></th>
+                <th><p class="sr-only"><?= _('Nummer') ?></p></th>
                 <th <?if ($sort_by === 'nachname' && $sort_status === 'accepted') printf('class="sort%s"', $order); ?>>
                     <? $order = $sort_status !== 'accepted' ? 'desc' : $order; ?>
                     <a href="<?= URLHelper::getLink(sprintf(
@@ -153,7 +153,7 @@
         <tfoot>
             <tr>
                 <td class="printhead" colspan="6">
-                    <select name="action_accepted" id="action_accepted" aria-label="<?= _('Aktion ausführen') ?>">
+                    <select name="action_accepted" id="action_accepted" aria-label="<?= _('Aktion wählen') ?>">
                         <option value="">- <?= _('Aktion wählen') ?></option>
                         <option value="upgrade"><?= _('Akzeptieren') ?></option>
                         <option value="remove"><?= _('Austragen') ?></option>
