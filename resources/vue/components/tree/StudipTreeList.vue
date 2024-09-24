@@ -31,19 +31,26 @@
             <h1>
                 {{ $gettext('Unterebenen') }}
             </h1>
-            <draggable v-model="children" handle=".drag-handle" :animation="300" tag="ul"
-                       class="studip-tree-children" @end="dropChild">
-                <li v-for="(child, index) in children" :key="index" class="studip-tree-child">
-                    <a v-if="editable && children.length > 1" class="drag-link"
-                       tabindex="0"
-                       :title="$gettextInterpolate($gettext('Sortierelement für Element %{node}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.'), {node: child.attributes.name}, true)"
-                       @keydown="keyHandler($event, index)"
-                       :ref="'draghandle-' + index">
-                        <span class="drag-handle"></span>
-                    </a>
-                    <tree-node-tile :node="child" :semester="withCourses ? semester : 'all'" :sem-class="semClass"
-                                    :url="nodeUrl(child.id, semester !== 'all' ? semester : null)"></tree-node-tile>
-                </li>
+            <draggable v-model="children"
+                       handle=".drag-handle"
+                       :animation="300"
+                       tag="ul"
+                       class="studip-tree-children"
+                       item-key="id"
+                       @end="dropChild">
+                <template #item="{element, index}">
+                    <li class="studip-tree-child">
+                        <a v-if="editable && children.length > 1" class="drag-link"
+                           tabindex="0"
+                           :title="$gettextInterpolate($gettext('Sortierelement für Element %{node}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.'), {node: child.attributes.name}, true)"
+                           @keydown="keyHandler($event, index)"
+                           :ref="'draghandle-' + index">
+                            <span class="drag-handle"></span>
+                        </a>
+                        <tree-node-tile :node="element" :semester="withCourses ? semester : 'all'" :sem-class="semClass"
+                                        :url="nodeUrl(element.id, semester !== 'all' ? semester : null)"></tree-node-tile>
+                    </li>
+                </template>
             </draggable>
         </nav>
         <section v-else-if="withChildren && !currentNode.attributes['has-children']"  class="studip-tree-node-no-children">

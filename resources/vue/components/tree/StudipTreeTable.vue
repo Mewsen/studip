@@ -73,66 +73,25 @@
                     <th>{{ $gettext('Information') }}</th>
                 </tr>
             </thead>
-            <draggable v-model="children" handle=".drag-handle" :animation="300"
-                       @end="dropChild" tag="tbody" role="listbox">
-                <tr v-for="(child, index) in children" :key="index" class="studip-tree-child">
-                    <td>
-                        <a v-if="editable && children.length > 1" class="drag-link" role="option"
-                           tabindex="0"
-                           :title="$gettextInterpolate($gettext('Sortierelement für Element %{node}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.'), {node: child.attributes.name}, true)"
-                           @keydown="keyHandler($event, index)"
-                           :ref="'draghandle-' + index">
-                            <span class="drag-handle"></span>
-                        </a>
-                    </td>
-                    <td>
-                        <a :href="nodeUrl(child.id, semester !== 'all' ? semester : null)" tabindex="0"
-                           @click.prevent="openNode(child)"
-                           :title="$gettextInterpolate($gettext('Unterebene %{ node } öffnen'),
-                                { node: node.attributes.name }, true)">
-                            <studip-icon :shape="child.attributes['has-children'] ? 'folder-full' : 'folder-empty'"
-                                         :size="26"></studip-icon>
-                        </a>
-                    </td>
-                    <td>
-                        <a :href="nodeUrl(child.id, semester !== 'all' ? semester : null)" tabindex="0"
-                           @click.prevent="openNode(child)"
-                           :title="$gettextInterpolate($gettext('Unterebene %{ node } öffnen'),
-                                { node: node.attributes.name }, true)">
-                            {{ child.attributes.name }}
-                        </a>
-                    </td>
-                    <td>
-                        <tree-node-course-info v-if="node.attributes.ancestors.length > 2"
-                                               :node="child"
-                                               :semester="semester"
-                                               :sem-class="semClass"
-                        ></tree-node-course-info>
-                    </td>
-                </tr>
-                <tr v-for="(course) in courses" :key="course.id" class="studip-tree-child studip-tree-course">
-                    <td></td>
-                    <td>
-                        <studip-icon shape="seminar" :size="26"></studip-icon>
-                    </td>
-                    <td>
-                        <a :href="courseUrl(course.id)" tabindex="0"
-                           :title="$gettextInterpolate(
-                               $gettext('Zur Veranstaltung %{ title }'),
-                               { title: course.attributes.title },
-                               true
-                           )">
-                            <template v-if="course.attributes['course-number']">
-                                {{ course.attributes['course-number'] }}
-                            </template>
-                            {{ course.attributes.title }}
-                        </a>
-                        <div :id="'course-dates-' + course.id" class="course-dates"></div>
-                    </td>
-                    <td :colspan="editable ? 2 : null">
-                        <tree-course-details :course="course.id"></tree-course-details>
-                    </td>
-                </tr>
+            <draggable v-model="children"
+                       handle=".drag-handle"
+                       :animation="300"
+                       @end="dropChild"
+                       tag="tbody"
+                       item-key="id"
+                       role="listbox"
+            >
+                <template #item="{element, index}">
+                    <StudipTreeTableRows :element="element"
+                                         :editable="editable"
+                                         :children="children"
+                                         :courses="courses"
+                                         :index="index"
+                                         :semester="semester"
+                                         :node="node"
+                                         @open:node="element => openNode(element)"
+                    ></StudipTreeTableRows>
+                </template>
             </draggable>
             <tfoot v-if="totalCourseCount > limit">
                 <tr>
@@ -166,10 +125,18 @@ import StudipIcon from '../StudipIcon.vue';
 import TreeNodeCourseInfo from './TreeNodeCourseInfo.vue';
 import TreeCourseDetails from "./TreeCourseDetails.vue";
 import AssignLinkWidget from "./AssignLinkWidget.vue";
+import StudipPagination from "../StudipPagination.vue";
+import StudipTreeTableRows from "./StudipTreeTableRows.vue";
+
+draggable.compatConfig = {
+    MODE: 3
+};
 
 export default {
     name: 'StudipTreeTable',
     components: {
+        StudipTreeTableRows,
+        StudipPagination,
         draggable, TreeExportWidget, TreeCourseDetails, StudipIcon, StudipProgressIndicator, TreeBreadcrumb,
         TreeNodeCourseInfo, AssignLinkWidget
     },
