@@ -121,8 +121,7 @@
         <? endif ?>
     <? elseif ($booking->getAssignedUserType() === 'user') : ?>
         <? if (($booking->assigned_user->visible === 'yes') ||
-               ($booking->assigned_user->id === $GLOBALS['user']->id) ||
-               $user_has_user_perms) : ?>
+               ($booking->assigned_user->id === $GLOBALS['user']->id) || !empty($user_has_user_perms)) : ?>
             <h3><?= _('Gebucht für:') ?></h3>
             <a href="<?= URLHelper::getScriptLink(
                      'dispatch.php/profile',
