@@ -163,9 +163,12 @@ export default {
         },
     },
     watch: {
-        checkedImages({ length }) {
-            this.$refs.checkAll.indeterminate = 0 < length && length < this.paged.length;
-        },
+        checkedImages: {
+            handler({length}) {
+                this.$refs.checkAll.indeterminate = 0 < length && length < this.paged.length;
+            },
+            deep: true
+        }
     },
 };
 </script>

@@ -2,7 +2,7 @@
     <tr @click="onSelect">
         <td>
             <label>
-                <input type="checkbox" :checked="isChecked" @change="onCheckboxChange" />
+                <input type="checkbox" :checked="isChecked ? true : null" @change="onCheckboxChange" />
                 <span class="sr-only">{{
                     $gettextInterpolate($gettext('%{context} auswählen'), { context: stockImage.attributes.title })
                 }}</span>
