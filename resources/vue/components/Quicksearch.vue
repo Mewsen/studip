@@ -30,7 +30,11 @@
 
 <script>
 export default {
+    compatConfig: {
+        COMPONENT_V_MODEL: false,
+    },
     name: 'quicksearch',
+    emits: ['update:modelValue'],
     props: {
         searchtype: {
             type: String,
@@ -40,7 +44,7 @@ export default {
             type: String,
             required: false
         },
-        value: {
+        modelValue: {
             type: String,
             required: false,
             default: ''
@@ -118,7 +122,7 @@ export default {
             }
             this.results = [];
 
-            this.$emit('input', this.returnValue, this.inputValue);
+            this.$emit('update:modelValue', this.returnValue, this.inputValue);
             this.inputValue = '';
         },
         selectUp () {
@@ -159,8 +163,8 @@ export default {
     },
     created () {
         this.initialize(
-            this.value,
-            this.autocomplete ? this.value : this.needle
+            this.modelValue,
+            this.autocomplete ? this.modelValue : this.needle
         );
     },
     computed: {
