@@ -72,10 +72,6 @@
 import Draggable from 'vuedraggable';
 import { $gettext } from '../../../assets/javascripts/lib/gettext';
 
-Draggable.compatConfig = {
-    MODE: 3
-};
-
 export default {
     compatConfig: {
         COMPONENT_V_MODEL: false,

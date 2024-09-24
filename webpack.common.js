@@ -133,6 +133,7 @@ module.exports = {
     resolve: {
         alias: {
             vue: '@vue/compat',
+            vuedraggable$: path.resolve(__dirname, 'resources/vuedraggable-compat.js'),
             'jquery-ui/data': 'jquery-ui/ui/data',
             'jquery-ui/disable-selection': 'jquery-ui/ui/disable-selection',
             'jquery-ui/focusable': 'jquery-ui/ui/focusable',
@@ -153,7 +154,7 @@ module.exports = {
             'jquery-ui/widgets/draggable': 'jquery-ui/ui/widgets/draggable',
             'jquery-ui/widgets/droppable': 'jquery-ui/ui/widgets/droppable',
             'jquery-ui/widgets/resizable': 'jquery-ui/ui/widgets/resizable',
-            '@': path.resolve(__dirname, 'resources')
+            '@': path.resolve(__dirname, 'resources'),
         },
         extensions: ['.ts', '.vue', '.js'],
         fallback: {

@@ -125,17 +125,13 @@ import AssignLinkWidget from "./AssignLinkWidget.vue";
 import StudipPagination from "../StudipPagination.vue";
 import StudipTreeTableRows from "./StudipTreeTableRows.vue";
 
-draggable.compatConfig = {
-    MODE: 3
-};
-
 export default {
     name: 'StudipTreeTable',
     components: {
         StudipTreeTableRows,
         StudipPagination,
-        draggable, TreeExportWidget, TreeCourseDetails, StudipIcon, StudipProgressIndicator, TreeBreadcrumb,
-        TreeNodeCourseInfo, AssignLinkWidget
+        draggable, TreeExportWidget, StudipProgressIndicator, TreeBreadcrumb,
+        AssignLinkWidget
     },
     mixins: [ TreeMixin ],
     props: {

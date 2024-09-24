@@ -173,10 +173,6 @@ import StudipActionMenu from '../StudipActionMenu.vue';
 import Datetimepicker from '../Datetimepicker.vue';
 import {defineAsyncComponent} from 'vue';
 
-draggable.compatConfig = {
-    MODE: 3
-};
-
 const loadedComponents = {};
 
 export default {
