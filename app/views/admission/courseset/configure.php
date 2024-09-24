@@ -167,7 +167,7 @@ if (isset($flash['error'])) {
                 ON `seminare`.`seminar_id` = `semester_courses`.`course_id`
                 JOIN `semester_data` USING (`semester_id`)
                 WHERE `seminare`.`seminar_id` IN ( :course_ids )
-                'ORDER BY `semester_data`.`beginn`, `VeranstaltungsNummer`, `Name`",
+                ORDER BY `semester_data`.`beginn`, `VeranstaltungsNummer`, `Name`",
                 ['course_ids' => $courseIds],
             )
             ?>
