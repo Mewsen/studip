@@ -667,17 +667,17 @@ class RoomManager
                         //Furthermore we must check if only minimum or maximum are
                         //set or if both are set. Depending on that condition,
                         //the conditions are different.
-                        if ($state[0] && $state[1]) {
+                        if (!empty($state[0]) && !empty($state[1])) {
                             //Minimum and maximum are specified:
                             if ($room_prop_state >= $state[0] && $room_prop_state <= $state[1]) {
                                 $room_property_match++;
                             }
-                        } elseif ($state[0]) {
+                        } elseif (!empty($state[0])) {
                             //Only a minimum is given:
                             if ($room_prop_state >= $state[0]) {
                                 $room_property_match++;
                             }
-                        } elseif ($state[1]) {
+                        } elseif (!empty($state[1])) {
                             //Only a maximum is given:
                             if ($room_prop_state <= $state[1]) {
                                 $room_property_match++;

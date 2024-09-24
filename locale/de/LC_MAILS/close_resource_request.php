@@ -8,8 +8,9 @@ Lehrende Person(en): <?= $lecturer_names ?>
 
 <? endif ?>
 
+<? if ($request->resource) : ?>
 Angefragter Raum: <?= $request->resource->name ?>
-
+<? endif ?>
 
 Gebuchte Räume: <?= $booked_rooms ?>
 
