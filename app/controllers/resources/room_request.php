@@ -1267,7 +1267,6 @@ class Resources_RoomRequestController extends AuthenticatedController
         } else {
             //If no room is selected, it cannot be declared fully available.
             $this->requested_room_fully_available = false;
-            $this->room_availability_share[$selected_room->id] = 0.0;
         }
 
         //Load the room groups of the current user:
@@ -1423,7 +1422,8 @@ class Resources_RoomRequestController extends AuthenticatedController
         $deduplicated = [];
 
         foreach ($this->alternative_rooms as $room) {
-            if ($room->id != $this->request_resource->id
+            if (
+                (!$this->request_resource || $room->id !== $this->request_resource->id)
                 && !isset($deduplicated[$room->id])
             ) {
                 $deduplicated[$room->id] = $room;
@@ -1527,7 +1527,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                         return;
                     }
 
-                    if ($course_date->room_booking->resource_id != $room_id) {
+                    if ($course_date->room_booking && $course_date->room_booking->resource_id !== $room_id) {
                         try {
                             $booking = $room->createBooking(
                                 $this->current_user,
@@ -1545,7 +1545,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                             );
                             if ($booking instanceof ResourceBooking) {
                                 $bookings[] = $booking;
-                                if ($this->booked_room_infos[$room->id]) {
+                                if (!empty($this->booked_room_infos[$room->id])) {
                                     if ($this->booked_room_infos[$room->id]['first_booking_date'] > $booking->begin) {
                                         $this->booked_room_infos[$room->id]['first_booking_date'] = $booking->begin;
                                     }
