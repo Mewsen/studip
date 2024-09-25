@@ -235,7 +235,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
     /**
      * Returns the assigned room for this date as an object.
      *
-     * @return Room Either the object or null if no room is assigned
+     * @return Resource Either the object or null if no room is assigned
      */
     public function getRoom()
     {

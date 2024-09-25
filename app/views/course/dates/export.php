@@ -1,5 +1,9 @@
-<?
-# Lifter010: TODO
+<?php
+/**
+ * @var array<int, array{date: string, description: string, type: string, start: int, groups: Statusgruppen[], related_persons: User[]}> $dates
+ * @var int $lecturer_count
+ * @var int $group_count
+ */
 ?>
 <html>
 <head>
@@ -7,7 +11,7 @@
 </head>
 <body>
 
-<? if (sizeof($dates)) : ?>
+<? if (count($dates) > 0) : ?>
     <table cellspacing="0" cellpadding="0" border="1" width="100%">
 
         <tr>
@@ -45,18 +49,18 @@
                 <td width="20%"><?= htmlReady($date['title']) ?></td>
                 <td width="20%">
                     <? if (count($date['related_persons']) != $lecturer_count) : ?>
-                        <? foreach ($date['related_persons'] as $key => $user_id) {
-                            echo ($key > 0 ? ", " : "").htmlReady(get_fullname($user_id));
+                        <? foreach ($date['related_persons'] as $key => $user) {
+                            echo ($key > 0 ? ", " : "").htmlReady($user->getFullName());
                         } ?>
                     <? endif ?>
                 </td>
                 <td width="20%">
                     <? if (count($date['groups']) && count($date['groups']) < $group_count) : ?>
-                        <? foreach ($date['groups'] as $key => $statusgruppe_id) {
-                            echo ($key > 0 ? ", " : "").htmlReady(Statusgruppen::find($statusgruppe_id)->name);
+                        <? foreach ($date['groups'] as $key => $statusgruppe) {
+                            echo ($key > 0 ? ", " : "").htmlReady($statusgruppe->name);
                         } ?>
                     <? else : ?>
-                        <?= _("alle") ?>
+                        <?= _('alle') ?>
                     <? endif ?>
                 </td>
                 <td width="20%"><?= htmlReady($date['room']) ?></td>

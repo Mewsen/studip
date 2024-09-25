@@ -362,52 +362,59 @@ class Course_DatesController extends AuthenticatedController
 
     public function export_action()
     {
-        $themen = CourseTopic::findBySeminar_id($this->course->id);
-
         $termine = $this->course->getAllDatesInSemester()->getSingleDates(true, true, true);
 
         $dates = [];
-
         foreach ($termine as $singledate) {
             if ($singledate instanceof CourseDate) {
-                $tmp_ids = $singledate->getIssueIDs();
-                $title = $description = '';
-                if (is_array($tmp_ids)) {
-                    $title = trim(join("\n", array_map(function ($tid) use ($themen) {return $themen[$tid]->getTitle();}, $tmp_ids)));
-                    $description = trim(join("\n\n", array_map(function ($tid) use ($themen) {return $themen[$tid]->getDescription();}, $tmp_ids)));
-                }
+                $title = trim(implode(
+                    "\n",
+                    $singledate->topics->filter(function (CourseTopic $topic): bool {
+                        return trim($topic->title) !== '';
+                    })->map(function (CourseTopic $topic): string {
+                        return trim($topic->title);
+                    })
+                ));
+                $description = trim(implode(
+                    "\n\n",
+                    $singledate->topics->filter(function (CourseTopic $topic): bool {
+                        return trim($topic->description) !== '';
+                    })->map(function (CourseTopic $topic): string {
+                        return trim($topic->description);
+                    })
+                ));
 
                 $dates[] = [
-                    'date'  => $singledate->toString(),
-                    'title' => $title,
-                    'description' => $description,
-                    'start' => $singledate->getStartTime(),
-                    'related_persons' => $singledate->getRelatedPersons(),
-                    'groups' => $singledate->getRelatedGroups(),
-                    'room' => $singledate->getRoom() ?: $singledate->raum,
-                    'type' => $GLOBALS['TERMIN_TYP'][$singledate->getDateType()]['name']
+                    'date'            => (string) $singledate,
+                    'title'           => $title,
+                    'description'     => $description,
+                    'start'           => $singledate->date,
+                    'related_persons' => $singledate->dozenten,
+                    'groups'          => $singledate->statusgruppen,
+                    'room'            => (string) ($singledate->getRoom() ?? $singledate->raum),
+                    'type'            => $GLOBALS['TERMIN_TYP'][$singledate->date_typ]['name'],
                 ];
-            } elseif ($singledate->getComment()) {
+            } elseif ($singledate instanceof CourseExDate && $singledate->content) {
                 $dates[] = [
-                    'date'  => $singledate->toString(),
-                    'title' => _('fällt aus') . ' (' . _('Kommentar:') . ' ' . $singledate->getComment() . ')',
-                    'description' => '',
-                    'start' => $singledate->getStartTime(),
+                    'date'            => (string) $singledate,
+                    'title'           => _('fällt aus') . ' (' . _('Kommentar:') . ' ' . $singledate->content . ')',
+                    'description'     => '',
+                    'start'           => $singledate->date,
                     'related_persons' => [],
-                    'groups' => [],
-                    'room' => '',
-                    'type' => $GLOBALS['TERMIN_TYP'][$singledate->getDateType()]['name']
+                    'groups'          => [],
+                    'room'            => '',
+                    'type'            => $GLOBALS['TERMIN_TYP'][$singledate->date_typ]['name'],
                 ];
             }
         }
 
         $factory = $this->get_template_factory();
         $template = $factory->open($this->get_default_template('export'));
-
-        $template->set_attribute('dates', $dates);
-        $template->lecturer_count = $this->course->countMembersWithStatus('dozent');
-        $template->group_count = count($this->course->statusgruppen);
-        $content = $template->render();
+        $content = $template->render([
+            'dates'          => $dates,
+            'lecturer_count' => $this->course->countMembersWithStatus('dozent'),
+            'group_count'    => count($this->course->statusgruppen),
+        ]);
 
         $content = mb_encode_numericentity($content, [0x80, 0xffff, 0, 0xffff], 'utf-8');
         $filename = FileManager::cleanFileName($this->course['name'] . '-' . _('Ablaufplan') . '.doc');
@@ -426,13 +433,6 @@ class Course_DatesController extends AuthenticatedController
      */
     public function export_csv_action()
     {
-        $dates = $this->course->getAllDatesInSemester(true, true, true);
-        $raw_issues = CourseTopic::findBySeminar_id($this->course->id);
-        $issues = [];
-        foreach ($raw_issues as $issue) {
-            $issues[$issue->id] = $issue;
-        }
-
         $columns = [
             _('Wochentag'),
             _('Termin'),
@@ -450,9 +450,10 @@ class Course_DatesController extends AuthenticatedController
 
         $data = [$columns];
 
+        $dates = $this->course->getAllDatesInSemester()->getSingleDates(true, true, true);
         foreach ($dates as $date) {
             // FIXME this should not be necessary, see https://develop.studip.de/trac/ticket/8101
-            if ($date->isExTermin() && $date->getComment() == '') {
+            if ($date instanceof CourseExDate && trim($date->content) === '') {
                 continue;
             }
 
@@ -463,49 +464,37 @@ class Course_DatesController extends AuthenticatedController
             $row[] = strftime('%H:%M', $date->end_time);
             $row[] = $date->getTypeName();
 
-            if ($date->isExTermin()) {
-                $row[] = $date->getComment();
+            if ($date instanceof CourseExDate) {
+                $row[] = trim($date->content);
                 $row[] = '';
             } else {
                 $issue = $descr = '';
 
-                foreach ((array) $date->getIssueIDs() as $id) {
-                    $issue .= $issues[$id]->getTitle() . "\n";
-                    $descr .= kill_format($issues[$id]->getDescription()) . "\n";
+                foreach ($date->topics as $topic) {
+                    $issue .= trim($topic->title) . "\n";
+                    $descr .= kill_format($topic->description) . "\n";
                 }
 
                 $row[] = trim($issue);
                 $row[] = trim($descr);
             }
 
-            $related_persons = '';
+            $row[] = implode(
+                "\n",
+                $date->dozenten->map(function (User $user) {
+                    return $user->getFullName();
+                })
+            );
 
-            if ($date->related_persons) {
-                foreach ($date->related_persons as $user_id) {
-                    $related_persons .= User::find($user_id)->getFullName() . "\n";
-                }
-            }
+            $row[] = implode(
+                "\n",
+                $date->statusgruppen->map(function (Statusgruppen $group) {
+                    return $group->name;
+                })
+            );
 
-            $row[] = trim($related_persons);
-
-            $related_groups = '';
-
-            if ($date->related_groups) {
-                foreach ($date->related_groups as $group_id) {
-                    $related_groups .= Statusgruppen::find($group_id)->name . "\n";
-                }
-            }
-
-            $row[] = trim($related_groups);
-
-            $room = null;
-            if ($date->resource_id) {
-                $resource_object = Resource::find($date->resource_id);
-                if ($resource_object) {
-                    $room = $resource_object->getDerivedClassInstance();
-                }
-            }
-            if ($room instanceof Room) {
+            $room = $date->getRoom();
+            if ($room) {
                 $row[] = $room->name;
                 $row[] = $room->description;
                 $row[] = $room->seats;

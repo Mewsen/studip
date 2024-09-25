@@ -138,40 +138,38 @@ class CourseDateList implements Stringable
         return $this->regular_dates;
     }
 
+    /**
+     * @param bool $include_regular_dates
+     * @param bool $include_cancelled_dates
+     * @param bool $sorted
+     * @return CourseDate[]|CourseExDate[]
+     */
     public function getSingleDates(
         bool $include_regular_dates = false,
         bool $include_cancelled_dates = false,
         bool $sorted = false
     ): array {
+        $all_single_dates = [];
+
         if ($include_regular_dates) {
-            $all_single_dates = [];
             foreach ($this->regular_dates as $regular_date) {
                 foreach ($regular_date->dates as $date) {
                     $all_single_dates[] = $date;
                 }
             }
-            $all_single_dates = array_merge($all_single_dates, $this->single_dates);
-            if ($include_cancelled_dates) {
-                $all_single_dates = array_merge($all_single_dates, $this->cancelled_dates);
-            }
-            if ($sorted) {
-                uasort($all_single_dates, self::compareSingleDatesOrCancelledDates(...));
-            }
-            return $all_single_dates;
-        } else {
-            if ($include_cancelled_dates || $sorted) {
-                $all_single_dates = $this->single_dates;
-                if ($include_cancelled_dates) {
-                    $all_single_dates = array_merge($all_single_dates, $this->cancelled_dates);
-                }
-                if ($sorted) {
-                    uasort($all_single_dates, self::compareSingleDatesOrCancelledDates(...));
-                }
-                return $all_single_dates;
-            } else {
-                return $this->single_dates;
-            }
         }
+
+        $all_single_dates = array_merge($all_single_dates, $this->single_dates);
+
+        if ($include_cancelled_dates) {
+            $all_single_dates = array_merge($all_single_dates, $this->cancelled_dates);
+        }
+
+        if ($sorted) {
+            uasort($all_single_dates, self::compareSingleDatesOrCancelledDates(...));
+        }
+
+        return $all_single_dates;
     }
 
     public function getCancelledDates() : array

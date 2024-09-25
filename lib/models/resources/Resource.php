@@ -2817,7 +2817,7 @@ class Resource extends SimpleORMap implements StudipItem
     /**
      * Converts a Resource object to an object of a specialised resource class.
      *
-     * @return Resource|other An object of a specialised resource class
+     * @return Resource An object of a specialised resource class
      *     or a Resource object, if the resource is a standard resource
      *     with the class_name 'Resource' in its resource category.
      *     If the derived resource class is not available, an instance of
