@@ -34,6 +34,9 @@ const mountApp = async (STUDIP, createApp, store, element) => {
     await store.dispatch('loadAvatar');
 
     const app =  createApp({
+        compatConfig: {
+            RENDER_FUNCTION: false,
+        },
         render: () => h(AvatarApp),
         store,
     });
