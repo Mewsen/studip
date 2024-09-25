@@ -6,7 +6,7 @@
 
 ?>
 
-<? if (empty($waiting_list)) : ?>
+<? if (!empty($waiting_list)) : ?>
     <table class="default collapsable" id="my_waitlists">
         <caption>
             <?= _('Anmelde- und Wartelisteneinträge') ?>
