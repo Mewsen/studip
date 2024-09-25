@@ -39,7 +39,9 @@
                    :range-type="rangeType"
         ></component>
 
-        <Teleport to="#tool-view-switch .sidebar-widget-content .widget-list" name="sidebar-switch">
+        <Teleport to="#tool-view-switch .sidebar-widget-content .widget-list"
+                  name="sidebar-switch"
+        >
             <ul class="widget-list widget-links sidebar-views">
                 <li :class="{ active: view === 'tiles' }">
                     <a href="#" @click.prevent="changeView('tiles')">
@@ -54,7 +56,9 @@
             </ul>
         </Teleport>
 
-        <Teleport to="#tool-filter-category .sidebar-widget-content .widget-list" name="sidebar-filter">
+        <Teleport to="#tool-filter-category .sidebar-widget-content .widget-list"
+                  name="sidebar-filter"
+        >
             <ul class="widget-list widget-options">
                 <li>
                     <a class="options-radio"
@@ -114,6 +118,10 @@ export default {
             'setFilterCategory',
         ]),
     },
+    beforeMount() {
+        document.querySelector('#tool-view-switch .sidebar-widget-content .widget-list').innerHTML = '';
+        document.querySelector('#tool-filter-category .sidebar-widget-content .widget-list').innerHTML = '';
+    }
 };
 </script>
 <style lang="scss">
