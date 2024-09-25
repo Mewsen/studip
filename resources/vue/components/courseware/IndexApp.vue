@@ -39,6 +39,9 @@ import StudipProgressIndicator from '../StudipProgressIndicator.vue';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
+    compatConfig: {
+        WATCH_ARRAY: false,
+    },
     components: {
         CoursewareStructuralElement,
         CoursewareSearchResults,
@@ -128,12 +131,15 @@ export default {
             this.selectStructuralElement(selectedId);
             window.scrollTo({ top: 0 });
         },
-        async structuralElements(newElements, oldElements) {
-            // compute order of structural elements once more
-            await this.buildStructure();
+        structuralElements: {
+            async handler(newElements, oldElements) {
+                // compute order of structural elements once more
+                await this.buildStructure();
 
-            // throw away stale cache
-            this.invalidateStructureCache();
+                // throw away stale cache
+                this.invalidateStructureCache();
+            },
+            deep: true
         },
     },
 };

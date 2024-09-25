@@ -3,6 +3,7 @@ import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import Vuex from 'vuex';
 import CoursewareAdminModule from './store/courseware/courseware-admin.module';
 import axios from 'axios';
+import {h} from "vue";
 
 const mountApp = (STUDIP, createApp, element) => {
     const getHttpClient = () =>
@@ -30,7 +31,10 @@ const mountApp = (STUDIP, createApp, element) => {
     store.dispatch('courseware-templates/loadAll');
 
     const app = createApp({
-        render: (h) => h(AdminApp),
+        compatConfig: {
+            RENDER_FUNCTION: false,
+        },
+        render: () => h(AdminApp),
     });
     app.use(store);
     app.mount(element);

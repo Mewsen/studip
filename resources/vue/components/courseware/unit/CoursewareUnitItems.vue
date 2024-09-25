@@ -21,13 +21,14 @@
                     @end="dropUnit"
                     ref="sortables"
                     class="cw-tiles"
+                    item-key="id"
                 >
-                    <courseware-unit-item
-                        v-for="unit in unitList"
-                        :key="unit.id"
-                        :unit="unit"
-                        @unit-keydown="keyHandler($event, unit.id)"
-                    />
+                    <template #item="{element}">
+                        <courseware-unit-item
+                            :unit="element"
+                            @unit-keydown="keyHandler($event, element.id)"
+                        />
+                    </template>
                 </draggable>
             </template>
         </template>
@@ -81,6 +82,9 @@ import draggable from 'vuedraggable';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
+    compatConfig: {
+        WATCH_ARRAY: false,
+    },
     name: 'courseware-unit-items',
     components: {
         CoursewareCompanionBox,
@@ -243,9 +247,12 @@ export default {
         this.initCurrentData();
     },
     watch: {
-        units(newState) {
-            this.initCurrentData();
+        units: {
+            handler(newState) {
+                this.initCurrentData();
+            },
+            deep: true
         },
-    },
+    }
 };
 </script>

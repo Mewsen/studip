@@ -7,6 +7,7 @@ import { createRouter } from 'vue-router';
 import Vuex from 'vuex';
 import axios from 'axios';
 import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
+import {h} from "vue";
 
 const mountApp = (STUDIP, createApp, element) => {
 
@@ -113,7 +114,10 @@ const mountApp = (STUDIP, createApp, element) => {
     });
 
     const app = createApp({
-        render: (h) => h(PublicApp),
+        compatConfig: {
+            RENDER_FUNCTION: false,
+        },
+        render: () => h(PublicApp),
         router,
     });
     app.use(store);

@@ -7,6 +7,7 @@ import CoursewareModule from './store/courseware/courseware.module';
 import CoursewareTasksModule from './store/courseware/courseware-tasks.module';
 import CoursewareStructureModule from './store/courseware/structure.module';
 import axios from 'axios';
+import {h} from "vue";
 
 const mountApp = async (STUDIP, createApp, element) => {
     const getHttpClient = () =>
@@ -122,7 +123,10 @@ const mountApp = async (STUDIP, createApp, element) => {
     await store.dispatch('tasks/loadTasksOfCourse', { cid: entry_id });
 
     const app = createApp({
-        render: (h) => h(RouterView),
+        compatConfig: {
+            RENDER_FUNCTION: false,
+        },
+        render: () => h(RouterView),
         router,
     });
     app.use(store);

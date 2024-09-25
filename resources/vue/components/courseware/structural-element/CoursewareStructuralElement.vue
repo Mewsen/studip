@@ -202,32 +202,33 @@
                                         handle=".cw-sortable-handle"
                                         @start="isDragging = true"
                                         @end="dropContainer"
+                                        item-key="id"
                                     >
-                                        <li
-                                            v-for="container in containerList"
-                                            :key="container.id"
-                                            class="cw-container-item-sortable"
-                                        >
-                                            <span
-                                                :class="{ 'cw-sortable-handle-dragging': isDragging }"
-                                                class="cw-sortable-handle"
-                                                tabindex="0"
-                                                role="option"
-                                                aria-describedby="operation"
-                                                :ref="'sortableHandle' + container.id"
-                                                @keydown="keyHandler($event, container.id)"
-                                            ></span>
-                                            <component
-                                                :is="containerComponent(container)"
-                                                :container="container"
-                                                :canEdit="canEdit"
-                                                :canAddElements="canAddElements"
-                                                :isTeacher="userIsTeacher"
-                                                class="cw-container-item"
-                                                ref="containers"
-                                                :class="{ 'cw-container-item-selected': keyboardSelected === container.id}"
-                                            />
-                                        </li>
+                                        <template #item="{element}">
+                                            <li
+                                                class="cw-container-item-sortable"
+                                            >
+                                                <span
+                                                    :class="{ 'cw-sortable-handle-dragging': isDragging }"
+                                                    class="cw-sortable-handle"
+                                                    tabindex="0"
+                                                    role="option"
+                                                    aria-describedby="operation"
+                                                    :ref="'sortableHandle' + element.id"
+                                                    @keydown="keyHandler($event, element.id)"
+                                                ></span>
+                                                <component
+                                                    :is="containerComponent(element)"
+                                                    :container="element"
+                                                    :canEdit="canEdit"
+                                                    :canAddElements="canAddElements"
+                                                    :isTeacher="userIsTeacher"
+                                                    class="cw-container-item"
+                                                    ref="containers"
+                                                    :class="{ 'cw-container-item-selected': keyboardSelected === element.id}"
+                                                />
+                                            </li>
+                                        </template>
                                     </draggable>
                                 </template>
                                 <studip-progress-indicator v-if="processing" :description="$gettext('Vorgang wird bearbeitet...')" />
@@ -694,6 +695,9 @@ import containerMixin from '@/vue/mixins/courseware/container.js';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
+    compatConfig: {
+        WATCH_ARRAY: false,
+    },
     name: 'courseware-structural-element',
     components: Object.assign(StructuralElementComponents, {
         CoursewareRootContent,
@@ -2011,17 +2015,23 @@ export default {
             },
             deep: true
         },
-        containers() {
-            this.containerList = this.containers;
+        containers: {
+            handler() {
+                this.containerList = this.containers;
+            },
+            deep: true
         },
-        containerList() {
-            if (this.keyboardSelected) {
-                this.$nextTick(() => {
-                    const selected = this.$refs['sortableHandle' + this.keyboardSelected][0];
-                    selected.focus();
-                    selected.scrollIntoView({behavior: "smooth", block: "center"});
-                });
-            }
+        containerList: {
+            handler() {
+                if (this.keyboardSelected) {
+                    this.$nextTick(() => {
+                        const selected = this.$refs['sortableHandle' + this.keyboardSelected][0];
+                        selected.focus();
+                        selected.scrollIntoView({behavior: "smooth", block: "center"});
+                    });
+                }
+            },
+            deep: true
         },
         consumeMode(newState) {
             this.consumModeTrap = newState;

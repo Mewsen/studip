@@ -82,6 +82,9 @@ import containerMixin from '@/vue/mixins/courseware/container.js';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
+    compatConfig: {
+        WATCH_ARRAY: false,
+    },
     name: 'courseware-toolbar',
     mixins: [containerMixin],
     components: {
@@ -204,10 +207,13 @@ export default {
         consumeMode(newState) {
             this.setHideEditLayout(newState);
         },
-        containers(newValue, oldValue) {
-            if (newValue) {
-                this.resetAdderStorage();
-            }
+        containers: {
+            handler(newValue) {
+                if (newValue) {
+                    this.resetAdderStorage();
+                }
+            },
+            deep: true,
         },
         toolbarActive(newState, oldState) {
             let view = this;

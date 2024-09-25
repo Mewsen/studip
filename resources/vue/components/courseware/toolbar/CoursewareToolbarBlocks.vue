@@ -65,16 +65,17 @@
                     @end="dropNewBlock($event)"
                     ref="sortables"
                     sectionId="0"
+                    item-key="id"
                 >
-                    <courseware-blockadder-item
-                        v-for="(block, index) in filteredBlockTypes"
-                        :key="index"
-                        :title="block.title"
-                        :type="block.type"
-                        :data-blocktype="block.type"
-                        :description="block.description"
-                        @blockAdded="$emit('blockAdded')"
-                    />
+                    <template #item="{element}">
+                        <courseware-blockadder-item
+                            :title="element.title"
+                            :type="element.type"
+                            :data-blocktype="element.type"
+                            :description="element.description"
+                            @blockAdded="$emit('blockAdded')"
+                        />
+                    </template>
                 </draggable>
             </div>
             <courseware-companion-box

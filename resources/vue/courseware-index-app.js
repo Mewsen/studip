@@ -8,6 +8,7 @@ import PluginManager from './components/courseware/plugin-manager.js';
 import axios from 'axios';
 import { StockImagesPlugin } from './plugins/stock-images.js';
 import { createRouter, createWebHashHistory } from 'vue-router';
+import {h} from "vue";
 
 const mountApp = async (STUDIP, c, element) => {
     // get id of parent structural element
@@ -125,7 +126,10 @@ const mountApp = async (STUDIP, c, element) => {
     );
 
     const app = createApp({
-        render: (h) => h(IndexApp),
+        compatConfig: {
+            RENDER_FUNCTION: false,
+        },
+        render: () => h(IndexApp),
     });
 
     app.use(router);

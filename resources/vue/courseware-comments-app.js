@@ -3,6 +3,7 @@ import CommentsApp from './components/courseware/CommentsApp.vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
+import {h} from "vue";
 
 const mountApp = async (STUDIP, createApp, element) => {
     const getHttpClient = () =>
@@ -104,7 +105,10 @@ const mountApp = async (STUDIP, createApp, element) => {
     );
 
     const app = createApp({
-        render: (h) => h(CommentsApp),
+        compatConfig: {
+            RENDER_FUNCTION: false,
+        },
+        render: () => h(CommentsApp),
     });
     app.use(store);
     app.mount(element);

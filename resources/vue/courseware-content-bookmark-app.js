@@ -3,6 +3,7 @@ import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import Vuex from 'vuex';
 import CoursewareModule from './store/courseware/courseware.module';
 import axios from 'axios';
+import {h} from "vue";
 
 const mountApp = (STUDIP, createApp, element) => {
     const getHttpClient = () =>
@@ -70,7 +71,10 @@ const mountApp = (STUDIP, createApp, element) => {
     });
 
     const app = createApp({
-        render: (h) => h(ContentBookmarkApp),
+        compatConfig: {
+            RENDER_FUNCTION: false,
+        },
+        render: () => h(ContentBookmarkApp),
     });
     app.use(store);
     app.mount(element);

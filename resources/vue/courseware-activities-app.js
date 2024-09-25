@@ -5,6 +5,7 @@ import CoursewareModule from './store/courseware/courseware.module';
 import CoursewareActivitiesModule from './store/courseware/courseware-activities.module';
 import CoursewareStructureModule from './store/courseware/structure.module';
 import axios from 'axios';
+import {h} from "vue";
 
 const mountApp = async (STUDIP, createApp, element) => {
     const getHttpClient = () =>
@@ -80,7 +81,10 @@ const mountApp = async (STUDIP, createApp, element) => {
     await store.dispatch('loadCourseUnits', entry_id);
 
     const app = createApp({
-        render: (h) => h(ActivitiesApp),
+        compatConfig: {
+            RENDER_FUNCTION: false,
+        },
+        render: () => h(ActivitiesApp),
     });
     app.use(store);
     app.mount(element);

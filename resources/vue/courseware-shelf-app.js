@@ -2,6 +2,7 @@ import CoursewareShelfModule from './store/courseware/courseware-shelf.module';
 import ShelfApp from './components/courseware/ShelfApp.vue';
 import { resourceModule } from '@/assets/javascripts/lib/reststate-vuex.js';
 import { StockImagesPlugin } from './plugins/stock-images.js';
+import { h } from 'vue';
 
 const mountApp = async (STUDIP, c, element) => {
     // handle studip 5.0 to 5.2 urls
@@ -73,7 +74,10 @@ const mountApp = async (STUDIP, c, element) => {
     }
 
     const app = createApp({
-        render: (h) => h(ShelfApp),
+        compatConfig: {
+            RENDER_FUNCTION: false,
+        },
+        render: () => h(ShelfApp),
     });
     app.use(StockImagesPlugin, { store });
     app.mount(element);

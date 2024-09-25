@@ -1,9 +1,13 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import {h} from "vue";
 
 export default {
+    compatConfig: {
+        RENDER_FUNCTION: false,
+    },
     name: 'courseware-companion-overlay',
-    render(createElement) {
+    render() {
         return null;
     },
     computed: {

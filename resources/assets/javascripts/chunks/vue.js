@@ -37,7 +37,7 @@ const createStore = () => {
 const store = createStore();
 
 // Define createApp function
-function createApp(options, ...args) {
+function createApp(options = {}, ...args) {
     const app = vueCreateApp({ store, ...options }, ...args);
 
     app.config.compilerOptions.whitespace = 'condense';

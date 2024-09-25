@@ -3,6 +3,7 @@ import CoursewareModule from './store/courseware/courseware.module';
 import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import Vuex from 'vuex';
 import axios from 'axios';
+import {h} from "vue";
 
 const mountApp = (STUDIP, createApp, element) => {
     const getHttpClient = () =>
@@ -61,7 +62,10 @@ const mountApp = (STUDIP, createApp, element) => {
     store.dispatch('courseware-structural-elements-released/loadAll', {});
 
     const app = createApp({
-        render: (h) => h(ContentReleasesApp),
+        compatConfig: {
+            RENDER_FUNCTION: false,
+        },
+        render: () => h(ContentReleasesApp),
     });
     app.use(store);
     app.mount(element);
