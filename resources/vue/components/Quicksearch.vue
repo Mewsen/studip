@@ -181,3 +181,49 @@ export default {
     }
 }
 </script>
+<style lang="scss">
+.quicksearch_container {
+    align-items: center;
+    display: inline-flex;
+    flex-direction: row-reverse;
+    width: 100%;
+
+    .dropdownmenu {
+        max-width: 0;
+        max-height: 0;
+        overflow: visible;
+        position: relative;
+        top: 31px;
+        z-index: 99999;
+
+        .autocomplete__results {
+            list-style-type: none;
+            padding: 1px;
+            border: 1px solid var(--light-gray-color-40);
+            background-color: var(--white);
+            max-height: 275px;
+            width: 600px;
+            overflow-x: auto;
+            overflow-y: hidden;
+
+            > li {
+                padding: 5px;
+                cursor: pointer;
+                display: flex;
+                align-items: flex-start;
+
+                &:hover, &.autocomplete__result--selected {
+                    background-color: var(--base-color);
+                    color: var(--white);
+                }
+
+                img {
+                    max-width: 40px;
+                    max-height: 40px;
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
+}
+</style>

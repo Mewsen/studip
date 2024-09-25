@@ -55,10 +55,17 @@ class OERMaterial extends SimpleORMap
             'class_name' => License::class,
             'foreign_key' => 'license_identifier'
         ];
+
+        $config['default_values'] = [
+            'license_identifier' => License::findDefault()->id,
+        ];
+
         $config['serialized_fields']['structure'] = JSONArrayObject::class;
         $config['serialized_fields']['data'] = JSONArrayObject::class;
+
         $config['registered_callbacks']['before_store'][] = "cbHashURI";
         $config['registered_callbacks']['before_delete'][] = "cbDeleteFile";
+
         parent::configure($config);
     }
 
@@ -240,7 +247,7 @@ class OERMaterial extends SimpleORMap
         $statement = DBManager::get()->prepare("
             SELECT oer_tags.*
             FROM oer_tags
-                INNER JOIN oer_tags_material ON (oer_tags_material.tag_hash = oer_tags.tag_hash)
+            JOIN oer_tags_material ON (oer_tags_material.tag_hash = oer_tags.tag_hash)
             WHERE oer_tags_material.material_id = :material_id
             ORDER BY oer_tags.name ASC
         ");
@@ -250,6 +257,9 @@ class OERMaterial extends SimpleORMap
 
     public function setTopics($tags)
     {
+        $tags = array_map('trim', $tags);
+        $tags = array_filter($tags);
+
         $statement = DBManager::get()->prepare("
             DELETE FROM oer_tags_material
             WHERE material_id = :material_id
