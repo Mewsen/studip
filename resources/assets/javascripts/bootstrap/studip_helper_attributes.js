@@ -7,7 +7,7 @@ import { $gettext } from '../lib/gettext';
 var proxy_elements_selector = ':checkbox[data-proxyfor], :radio[data-proxyfor]';
 var proxied_elements_selector = ':checkbox[data-proxiedby], :radio[data-proxiedby]';
 
-function connectProxyAndProxied(event) {
+function connectProxyAndProxied() {
     $(proxy_elements_selector).each(function () {
         const proxy = $(this);
         const proxyId = proxy.uniqueId().attr('id');
@@ -15,7 +15,9 @@ function connectProxyAndProxied(event) {
         // The following seems like a hack but works perfectly fine.
         $(proxied).each(function () {
             const proxiedBy = ($(this).attr('data-proxiedby') || '').split(',').filter(a => a.length > 0);
-            proxiedBy.push(`#${proxyId}`);
+            if (!proxiedBy.includes(`#${proxyId}`)) {
+                proxiedBy.push(`#${proxyId}`);
+            }
 
             $(this)
                 .attr('data-proxiedby', proxiedBy.join(','))
@@ -40,9 +42,10 @@ $(document).on('change', proxy_elements_selector, function (event, force) {
                 $(proxiedBy)
                     .filter((idx, item) => item !== this)
                     .trigger('update.proxy');
-            })
-            .filter('[data-proxyfor]')
-            .trigger('change', [true]);
+
+                const event = new Event('change');
+                element.dispatchEvent(event);
+            });
     }
 }).on('update.proxy', proxy_elements_selector, function () {
     const proxied = $(this).data('proxyfor');
@@ -63,12 +66,12 @@ $(document).on('change', proxy_elements_selector, function (event, force) {
     //button in the group, if the proxy is another element
     //than the proxy for "this" element.
     if ($(this).is(':radio')) {
-        var proxy = $(this).data('proxiedby');
-        var name = $(this).attr('name');
-        var radio_button_group = $(`:radio[name="${name}"]`);
+        const proxy = $(this).data('proxiedby');
+        const name = $(this).attr('name');
+        const radio_button_group = $(`:radio[name="${name}"]`);
         $(radio_button_group).each(function () {
-            var button_proxy = $(this).data('proxiedby');
-            if (button_proxy != proxy) {
+            const button_proxy = $(this).data('proxiedby');
+            if (button_proxy !== proxy) {
                 $(button_proxy).trigger('update.proxy');
             }
         });
@@ -256,7 +259,7 @@ $(document).on('change', 'input[data-must-equal]', function() {
 //Generalisation: The enter-accessible class allows an element to be accessible via keyboard
 //by triggering the click event when the enter key is pressed.
 $(document).on('keydown', '.enter-accessible', function(event) {
-    if (event.code == 'Enter') {
+    if (event.code === 'Enter') {
         //The enter key has been pressed.
         event.preventDefault();
         $(this).trigger('click');
