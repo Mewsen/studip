@@ -1,11 +1,9 @@
 import ContentBookmarkApp from './components/courseware/ContentBookmarkApp.vue';
-import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
-import Vuex from 'vuex';
 import CoursewareModule from './store/courseware/courseware.module';
 import axios from 'axios';
-import {h} from "vue";
+import { h } from "vue";
 
-const mountApp = (STUDIP, createApp, element) => {
+const mountApp = (STUDIP, createApp, store, element) => {
     const getHttpClient = () =>
     axios.create({
         baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
@@ -16,35 +14,8 @@ const mountApp = (STUDIP, createApp, element) => {
 
     const httpClient = getHttpClient();
 
-    const store = new Vuex.Store({
-        modules: {
-            courseware: CoursewareModule,
-            ...mapResourceModules({
-                names: [
-                    'activities',
-                    'file-refs',
-                    'courses',
-                    'course-memberships',
-                    'courseware-blocks',
-                    'courseware-block-comments',
-                    'courseware-block-feedback',
-                    'courseware-containers',
-                    'courseware-instances',
-                    'courseware-structural-elements',
-                    'courseware-units',
-                    'courseware-user-data-fields',
-                    'courseware-user-progresses',
-                    'institutes',
-                    'semesters',
-                    'sem-classes',
-                    'sem-types',
-                    'status-groups',
-                    'users',
-                ],
-                httpClient,
-            }),
-        },
-    });
+    store.registerModule('courseware', CoursewareModule);
+
     let entry_id = null;
     let entry_type = null;
     let elem;

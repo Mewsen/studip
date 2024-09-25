@@ -4,7 +4,7 @@ import { resourceModule } from '@/assets/javascripts/lib/reststate-vuex.js';
 import { StockImagesPlugin } from './plugins/stock-images.js';
 import { h } from 'vue';
 
-const mountApp = async (STUDIP, c, element) => {
+const mountApp = async (STUDIP, c, store, element) => {
     // handle studip 5.0 to 5.2 urls
     const elemId = window.location.hash.match(/structural_element\/(\d+)/);
 
@@ -45,7 +45,7 @@ const mountApp = async (STUDIP, c, element) => {
         }
     }
 
-    const { createApp, store, httpClient } = await STUDIP.Vue.load();
+    const { createApp, httpClient } = await STUDIP.Vue.load();
     store.registerModule('courseware-shelf', CoursewareShelfModule);
     store.registerModule(
         'courseware-structural-elements-shared',

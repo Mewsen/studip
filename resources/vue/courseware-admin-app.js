@@ -1,32 +1,9 @@
 import AdminApp from './components/courseware/AdminApp.vue';
-import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
-import Vuex from 'vuex';
 import CoursewareAdminModule from './store/courseware/courseware-admin.module';
-import axios from 'axios';
-import {h} from "vue";
+import { h } from "vue";
 
-const mountApp = (STUDIP, createApp, element) => {
-    const getHttpClient = () =>
-    axios.create({
-        baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
-        headers: {
-            'Content-Type': 'application/vnd.api+json',
-        },
-    });
-
-    const httpClient = getHttpClient();
-
-    const store = new Vuex.Store({
-        modules: {
-            courseware: CoursewareAdminModule,
-            ...mapResourceModules({
-                names: [
-                    'courseware-templates',
-                ],
-                httpClient,
-            }),
-        },
-    });
+const mountApp = (STUDIP, createApp, store, element) => {
+    store.registerModule('courseware', CoursewareAdminModule);
 
     store.dispatch('courseware-templates/loadAll');
 

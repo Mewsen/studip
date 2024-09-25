@@ -1,11 +1,9 @@
 import CoursewareCommentsModule from './store/courseware/courseware-comments.module';
 import CommentsApp from './components/courseware/CommentsApp.vue';
-import Vuex from 'vuex';
 import axios from 'axios';
-import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
-import {h} from "vue";
+import { h } from "vue";
 
-const mountApp = async (STUDIP, createApp, element) => {
+const mountApp = async (STUDIP, createApp, store, element) => {
     const getHttpClient = () =>
         axios.create({
             baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
@@ -31,28 +29,8 @@ const mountApp = async (STUDIP, createApp, element) => {
 
     const httpClient = getHttpClient();
 
-    const store = new Vuex.Store({
-        modules: {
-            'courseware-comments': CoursewareCommentsModule,
-            ...mapResourceModules({
-                names: [
-                    'courseware-blocks',
-                    'courseware-block-comments',
-                    'courseware-block-feedback',
-                    'courseware-containers',
-                    'courseware-units',
-                    'courseware-structural-elements',
-                    'courseware-structural-element-comments',
-                    'courseware-structural-element-feedback',
-                    'users',
-                    'course-memberships',
-                    'institutes',
-                    'institute-memberships',
-                ],
-                httpClient,
-            }),
-        },
-    });
+    store.registerModule('courseware-comments', CoursewareCommentsModule);
+
     store.dispatch('setHttpClient', httpClient);
     store.dispatch('setContext', {
         id: entry_id,

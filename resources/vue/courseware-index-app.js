@@ -5,12 +5,11 @@ import CoursewareStructuralElement from './components/courseware/structural-elem
 import CoursewareTasksModule from './store/courseware/courseware-tasks.module';
 import IndexApp from './components/courseware/IndexApp.vue';
 import PluginManager from './components/courseware/plugin-manager.js';
-import axios from 'axios';
 import { StockImagesPlugin } from './plugins/stock-images.js';
 import { createRouter, createWebHashHistory } from 'vue-router';
-import {h} from "vue";
+import { h } from "vue";
 
-const mountApp = async (STUDIP, c, element) => {
+const mountApp = async (STUDIP, c, store, element) => {
     // get id of parent structural element
     let elem_id = null;
     let entry_id = null;
@@ -49,8 +48,7 @@ const mountApp = async (STUDIP, c, element) => {
         }
     }
 
-    const { createApp, store, httpClient } = await STUDIP.Vue.load();
-
+    const { createApp, httpClient } = await STUDIP.Vue.load();
 
     let base = new URL(
         STUDIP.URLHelper.parameters.cid
