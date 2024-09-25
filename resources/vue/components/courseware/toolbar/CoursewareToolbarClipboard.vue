@@ -16,13 +16,14 @@
                         @end="dropClipboardBlock($event)"
                         ref="clipboardSortables"
                         sectionId="0"
+                        item-key="id"
                     >
-                        <courseware-clipboard-item
-                            v-for="(clipboard, index) in clipboardBlocks"
-                            :key="index"
-                            :clipboard="clipboard"
-                            @inserted="$emit('blockAdded')"
-                        />
+                        <template #item="{element}">
+                            <courseware-clipboard-item
+                                :clipboard="element"
+                                @inserted="$emit('blockAdded')"
+                            />
+                        </template>
                     </draggable>
                 </div>
                 <button class="button trash" @click="clearClipboard('courseware-blocks')">
@@ -50,12 +51,13 @@
                         :clone="cloneClipboardContainer"
                         @end="dropNewContainer($event)"
                         ref="clipboardContainerSortables"
+                        item-key="id"
                     >
-                        <courseware-clipboard-item
-                            v-for="(clipboard, index) in clipboardContainers"
-                            :key="index"
-                            :clipboard="clipboard"
-                        />
+                        <template #item="{element}">
+                            <courseware-clipboard-item
+                                :clipboard="element"
+                            />
+                        </template>
                     </draggable>
                 </div>
                 <button class="button trash" @click="clearClipboard('courseware-containers')">

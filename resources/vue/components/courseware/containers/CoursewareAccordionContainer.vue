@@ -54,26 +54,29 @@
                             @end="dropBlock"
                             :containerId="container.id"
                             :sectionId="index"
+                            item-key="id"
                         >
-                            <li v-for="block in section.blocks" :key="block.id" class="cw-block-item cw-block-item-sortable">
-                                <span
-                                    :class="{ 'cw-sortable-handle-dragging': isDragging }"
-                                    class="cw-sortable-handle"
-                                    tabindex="0"
-                                    role="button"
-                                    aria-describedby="operation"
-                                    :ref="'sortableHandle' + block.id"
-                                    @keydown="keyHandler($event, block.id, index)"
-                                ></span>
-                                <component
-                                    :is="component(block)"
-                                    :block="block"
-                                    :canEdit="canEdit"
-                                    :isTeacher="isTeacher"
-                                    :class="{ 'cw-block-item-selected': keyboardSelected === block.id}"
-                                    :blockId="block.id"
-                                />
-                            </li>
+                            <template #item="{element, index}">
+                                <li class="cw-block-item cw-block-item-sortable">
+                                    <span
+                                        :class="{ 'cw-sortable-handle-dragging': isDragging }"
+                                        class="cw-sortable-handle"
+                                        tabindex="0"
+                                        role="button"
+                                        aria-describedby="operation"
+                                        :ref="'sortableHandle' + element.id"
+                                        @keydown="keyHandler($event, element.id, index)"
+                                    ></span>
+                                    <component
+                                        :is="component(element)"
+                                        :block="element"
+                                        :canEdit="canEdit"
+                                        :isTeacher="isTeacher"
+                                        :class="{ 'cw-block-item-selected': keyboardSelected === element.id}"
+                                        :blockId="element.id"
+                                    />
+                                </li>
+                            </template>
                         </draggable>
                     </template>
                     <div v-else class="progress-wrapper">

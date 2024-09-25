@@ -34,18 +34,19 @@
             @start="dragContainerStart($event)"
             @end="dropNewContainer($event)"
             ref="containerSortables"
+            item-key="type"
         >
-            <courseware-container-adder-item
-                v-for="container in containerTypes"
-                :key="container.type"
-                :title="container.title"
-                :type="container.type"
-                :colspan="selectedContainerStyle"
-                :description="container.description"
-                :firstSection="firstSection"
-                :secondSection="secondSection"
-                :newPosition="newContainerPosition"
-            ></courseware-container-adder-item>
+            <template #item="{element}">
+                <courseware-container-adder-item
+                    :title="element.title"
+                    :type="element.type"
+                    :colspan="selectedContainerStyle"
+                    :description="element.description"
+                    :firstSection="firstSection"
+                    :secondSection="secondSection"
+                    :newPosition="newContainerPosition"
+                ></courseware-container-adder-item>
+            </template>
         </draggable>
     </div>
 </template>
@@ -85,8 +86,8 @@ export default {
         },
         containers() {
             return this.relatedContainers({
-                parent: this.structuralElementById({id: this.$route.params.id}), 
-                relationship: 'containers'    
+                parent: this.structuralElementById({id: this.$route.params.id}),
+                relationship: 'containers'
             });
         },
         newContainerPosition() {

@@ -63,26 +63,29 @@
                                 @end="dropBlock"
                                 :containerId="container.id"
                                 :sectionId="index"
+                                item-key="id"
                             >
-                                <li v-for="block in section.blocks" :key="block.id" class="cw-block-item cw-block-item-sortable">
-                                    <span
-                                        :class="{ 'cw-sortable-handle-dragging': isDragging }"
-                                        class="cw-sortable-handle"
-                                        tabindex="0"
-                                        role="button"
-                                        aria-describedby="operation"
-                                        :ref="'sortableHandle' + block.id"
-                                        @keydown="keyHandler($event, block.id, index)"
-                                    ></span>
-                                    <component
-                                        :is="component(block)"
-                                        :block="block"
-                                        :canEdit="canEdit"
-                                        :isTeacher="isTeacher"
-                                        :class="{ 'cw-block-item-selected': keyboardSelected === block.id}"
-                                        :blockId="block.id"
-                                    />
-                                </li>
+                                <template #item="{element, index}">
+                                    <li class="cw-block-item cw-block-item-sortable">
+                                        <span
+                                            :class="{ 'cw-sortable-handle-dragging': isDragging }"
+                                            class="cw-sortable-handle"
+                                            tabindex="0"
+                                            role="button"
+                                            aria-describedby="operation"
+                                            :ref="'sortableHandle' + element.id"
+                                            @keydown="keyHandler($event, element.id, index)"
+                                        ></span>
+                                        <component
+                                            :is="component(element)"
+                                            :block="element"
+                                            :canEdit="canEdit"
+                                            :isTeacher="isTeacher"
+                                            :class="{ 'cw-block-item-selected': keyboardSelected === element.id}"
+                                            :blockId="element.id"
+                                        />
+                                    </li>
+                                </template>
                             </draggable>
                         </template>
                     </template>
@@ -138,6 +141,7 @@ import CoursewareTabs from '../layouts/CoursewareTabs.vue';
 import CoursewareTab from '../layouts/CoursewareTab.vue';
 import containerMixin from '@/vue/mixins/courseware/container.js';
 import contentIconsMixin from '@/vue/mixins/courseware/content-icons.js';
+import draggable from "vuedraggable";
 
 import { mapGetters, mapActions } from 'vuex';
 
@@ -147,6 +151,7 @@ export default {
     components: Object.assign(ContainerComponents, {
         CoursewareTabs,
         CoursewareTab,
+        draggable
     }),
     props: {
         container: Object,

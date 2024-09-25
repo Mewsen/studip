@@ -93,25 +93,26 @@
             :list="nestedChildren"
             :group="{ name: 'g1' }"
             @end="endDrag"
+            item-key="id"
         >
-            <courseware-tree-item
-                v-for="el in nestedChildren"
-                :key="el.id"
-                :element="el"
-                :currentElement="currentElement"
-                :depth="depth + 1"
-                :newPos="el.newPos"
-                :newParentId="el.newParentId"
-                :siblingCount="nestedChildren.length"
-                class="cw-tree-item"
-                :elementid="el.id"
-                @sort="sort"
-                @moveItemUp="moveItemUp"
-                @moveItemDown="moveItemDown"
-                @moveItemPrevLevel="moveItemPrevLevel"
-                @moveItemNextLevel="moveItemNextLevel"
-                @childrenUpdated="$emit('childrenUpdated')"
-            />
+            <template #item="{element}">
+                <courseware-tree-item
+                    :element="element"
+                    :currentElement="currentElement"
+                    :depth="depth + 1"
+                    :newPos="element.newPos"
+                    :newParentId="element.newParentId"
+                    :siblingCount="nestedChildren.length"
+                    class="cw-tree-item"
+                    :elementid="element.id"
+                    @sort="sort"
+                    @moveItemUp="moveItemUp"
+                    @moveItemDown="moveItemDown"
+                    @moveItemPrevLevel="moveItemPrevLevel"
+                    @moveItemNextLevel="moveItemNextLevel"
+                    @childrenUpdated="$emit('childrenUpdated')"
+                />
+            </template>
         </draggable>
         <ol
             v-if="canEdit && isFirstLevel"
