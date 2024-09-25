@@ -586,13 +586,13 @@ class Admin_PluginController extends AuthenticatedController
                     'label' => _('Standardbeschreibung des Plugins'),
                     'type' => 'info',
                     'value' => $this->metadata['descriptionlong'] ?? $this->metadata['description'],
-                    'if' => "STUDIPFORM_SELECTEDLANGUAGES.description === 'de_DE'"
+                    'if' => "i18n.description === 'de_DE'"
                 ],
                 'manifest_info_en' => [
                     'label' => sprintf(_('Standardbeschreibung des Plugins (%s)'), _('Englisch')),
                     'type' => 'info',
                     'value' => $this->metadata['descriptionlong_en'] ?? $this->metadata['description_en'] ?? null,
-                    'if' => "STUDIPFORM_SELECTEDLANGUAGES.description === 'en_GB'"
+                    'if' => "i18n.description === 'en_GB'"
                 ],
                 'description_mode' => [
                     'label' => _('Modus der neuen Beschreibung'),

@@ -19,7 +19,29 @@ foreach ($allinputs as $input) {
     }
 }
 $form_id = md5(uniqid());
-?><form v-cloak
+
+$vueApp = Studip\VueApp::create('StudipForm');
+foreach ($form->getParts() as $index => $part) {
+    $vueApp->withSlot('part' . $index, $part->renderWithCondition());
+}
+echo $vueApp->withProps([
+    'form'=> [
+        'autosave'         => $form->isAutoStoring(),
+        'values'           => $inputs,
+        'required'         => $required_inputs,
+        'serverValidation' => $server_validation,
+        'url'              => $form->getURL() ?? false,
+    ],
+
+    'debug-mode'     => $form->getDebugMode(),
+    'is-collapsable' => $form->isCollapsable(),
+    'is-secure'      => $form->getDataSecure(),
+    'request-url'    => $_SERVER['REQUEST_URI'],
+    'slots'          => array_keys($vueApp->getSlots()),
+]);
+?>
+
+<form v-cloak
       method="post"
       <? if (!$form->isAutoStoring()) : ?>
           action="<?= htmlReady($form->getURL()) ?>"
