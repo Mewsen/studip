@@ -40,7 +40,6 @@ const mountApp = (STUDIP, createApp, store, element) => {
         },
         render: () => h(ContentReleasesApp),
     });
-    app.use(store);
     app.mount(element);
 
     return app;

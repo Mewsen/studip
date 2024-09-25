@@ -51,7 +51,6 @@ const mountApp = async (STUDIP, createApp, store, element) => {
         },
         render: () => h(ActivitiesApp),
     });
-    app.use(store);
     app.mount(element);
 
     return app;

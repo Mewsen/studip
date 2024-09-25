@@ -86,7 +86,6 @@ const mountApp = (STUDIP, createApp, store, element) => {
         render: () => h(PublicApp),
         router,
     });
-    app.use(store);
     app.mount(element);
 
     return app;

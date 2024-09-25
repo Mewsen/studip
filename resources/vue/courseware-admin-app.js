@@ -13,7 +13,6 @@ const mountApp = (STUDIP, createApp, store, element) => {
         },
         render: () => h(AdminApp),
     });
-    app.use(store);
     app.mount(element);
 
     return app;

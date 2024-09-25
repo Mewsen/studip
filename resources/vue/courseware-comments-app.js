@@ -88,7 +88,6 @@ const mountApp = async (STUDIP, createApp, store, element) => {
         },
         render: () => h(CommentsApp),
     });
-    app.use(store);
     app.mount(element);
 };
 
