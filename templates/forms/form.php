@@ -19,74 +19,89 @@ foreach ($allinputs as $input) {
     }
 }
 $form_id = md5(uniqid());
-?><form v-cloak
-      method="post"
-      <? if (!$form->isAutoStoring()) : ?>
-          action="<?= htmlReady($form->getURL()) ?>"
-      <? else : ?>
-          data-autosave="<?= htmlReady($_SERVER['REQUEST_URI']) ?>"
-          data-url="<?= htmlReady($form->getURL()) ?>"
-      <? endif ?>
-      @submit="submit"
-      @cancel=""
-      novalidate
-      <?= $form->getDataSecure() ? 'data-secure' : '' ?>
-      id="<?= htmlReady($form_id) ?>"
-      data-inputs="<?= htmlReady(json_encode($inputs)) ?>"
-      data-debugmode="<?= htmlReady(json_encode($form->getDebugMode())) ?>"
-      data-required="<?= htmlReady(json_encode($required_inputs)) ?>"
-      data-server_validation="<?= $server_validation ? 1 : 0?>"
-      data-validation_url="<?= htmlReady($_SERVER['REQUEST_URI']) ?>"
-      class="default studipform<?= $form->isCollapsable() ? ' collapsable' : '' ?>">
+?>
+<div v-cloak
+     class="studipform"
+     data-inputs="<?= htmlReady(json_encode($inputs)) ?>"
+     data-debugmode="<?= htmlReady(json_encode($form->getDebugMode())) ?>"
+     data-required="<?= htmlReady(json_encode($required_inputs)) ?>"
+     data-server_validation="<?= $server_validation ? 1 : 0 ?>"
+     data-validation_url="<?= htmlReady($_SERVER['REQUEST_URI']) ?>"
+<? if (!$form->isAutoStoring()) : ?>
+     data-autosave="<?= htmlReady($_SERVER['REQUEST_URI']) ?>"
+     data-url="<?= htmlReady($form->getURL()) ?>"
+ <? endif; ?>
+>
+    <form method="post"
+        <? if (!$form->isAutoStoring()) : ?>
+            action="<?= htmlReady($form->getURL()) ?>"
+        <? endif ?>
+          @submit="submit"
+          @cancel=""
+          novalidate
+        <?= $form->getDataSecure() ? 'data-secure' : '' ?>
+          id="<?= htmlReady($form_id) ?>"
+          class="default <?= $form->isCollapsable() ? ' collapsable' : '' ?>">
 
-    <?= CSRFProtection::tokenTag(['ref' => 'securityToken']) ?>
+        <?= CSRFProtection::tokenTag(['ref' => 'securityToken']) ?>
 
-    <article aria-live="assertive"
-             class="validation_notes studip"
-             v-if="STUDIPFORM_REQUIRED.length > 0 || STUDIPFORM_VALIDATIONNOTES.length > 0">
-        <header>
-            <h1>
-                <?= Icon::create('info-circle', Icon::ROLE_INFO)->asImg(17, ['class' => "text-bottom validation_notes_icon"]) ?>
-                <?= _('Hinweise zum Ausfüllen des Formulars') ?>
-            </h1>
-        </header>
-        <div class="required_note" v-if="STUDIPFORM_REQUIRED.length > 0">
-            <div aria-hidden="true">
-                <?= _('Pflichtfelder sind mit Sternchen gekennzeichnet.') ?>
+        <article aria-live="assertive"
+                 class="validation_notes studip"
+                 v-if="STUDIPFORM_REQUIRED.length > 0 || STUDIPFORM_VALIDATIONNOTES.length > 0">
+            <header>
+                <h1>
+                    <?= Icon::create('info-circle', Icon::ROLE_INFO)->asImg(17, ['class' => 'text-bottom validation_notes_icon']) ?>
+                    <?= _('Hinweise zum Ausfüllen des Formulars') ?>
+                </h1>
+            </header>
+            <div class="required_note" v-if="STUDIPFORM_REQUIRED.length > 0">
+                <div aria-hidden="true">
+                    <?= _('Pflichtfelder sind mit Sternchen gekennzeichnet.') ?>
+                </div>
+                <div class="sr-only">
+                    <?= _('Dieses Formular enthält Pflichtfelder.') ?>
+                </div>
+
             </div>
-            <div class="sr-only">
-                <?= _('Dieses Formular enthält Pflichtfelder.') ?>
+            <div v-if="STUDIPFORM_DISPLAYVALIDATION && (STUDIPFORM_VALIDATIONNOTES.length > 0)">
+                <?= _('Folgende Angaben müssen korrigiert werden, um das Formular abschicken zu können:') ?>
+                <ul>
+                    <li v-for="note in ordererValidationNotes" :aria-describedby="note.describedby">
+                        {{ note.label.trim() + ": " + note.description }}
+                    </li>
+                </ul>
             </div>
+        </article>
 
-        </div>
-        <div v-if="STUDIPFORM_DISPLAYVALIDATION && (STUDIPFORM_VALIDATIONNOTES.length > 0)">
-            <?= _('Folgende Angaben müssen korrigiert werden, um das Formular abschicken zu können:') ?>
-            <ul>
-                <li v-for="note in ordererValidationNotes" :aria-describedby="note.describedby">{{ note.label.trim() + ": " + note.description }}</li>
-            </ul>
-        </div>
-    </article>
-
-    <div aria-live="polite">
-    <? foreach ($form->getParts() as $part) : ?>
-        <?= $part->renderWithCondition() ?>
-    <? endforeach ?>
-    </div>
-    <? if (!Request::isDialog()) : ?>
-        <footer>
-            <?= \Studip\Button::createAccept($form->getSaveButtonText(), $form->getSaveButtonName(), ['form' => $form_id]) ?>
-            <?= \Studip\LinkButton::createCancel($form->getCancelButtonText(), $form->getCancelButtonName()) ?>
-        </footer>
-    <? endif ?>
-</form>
-<? if (Request::isDialog()) : ?>
-    <footer data-dialog-button>
-        <?= \Studip\Button::create($form->getSaveButtonText(), $form->getSaveButtonName(), ['form' => $form_id]) ?>
-        <? foreach ($form->getButtons() as $button) : ?>
+        <div aria-live="polite">
             <?
-            $button->attributes['form'] = $form_id;
-            echo $button;
-            ?>
-        <? endforeach ?>
-    </footer>
-<? endif ?>
+            foreach ($form->getParts() as $part) : ?>
+                <?= $part->renderWithCondition() ?>
+            <?
+            endforeach ?>
+        </div>
+        <?
+        if (!Request::isDialog()) : ?>
+            <footer>
+                <?= \Studip\Button::createAccept($form->getSaveButtonText(), $form->getSaveButtonName(), ['form' => $form_id]) ?>
+                <?= \Studip\LinkButton::createCancel($form->getCancelButtonText(), $form->getCancelButtonName()) ?>
+            </footer>
+        <?
+        endif ?>
+    </form>
+    <?
+    if (Request::isDialog()) : ?>
+        <footer data-dialog-button>
+            <?= \Studip\Button::create($form->getSaveButtonText(), $form->getSaveButtonName(), ['form' => $form_id]) ?>
+            <?
+            foreach ($form->getButtons() as $button) : ?>
+                <?
+                $button->attributes['form'] = $form_id;
+                echo $button;
+                ?>
+            <?
+            endforeach ?>
+        </footer>
+    <?
+    endif ?>
+</div>

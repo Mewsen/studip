@@ -16,6 +16,9 @@
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css'
 export default {
+    compatConfig: {
+        WATCH_ARRAY: false,
+    },
     name: 'multiselect',
     components: {
         vSelect,

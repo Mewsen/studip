@@ -16,13 +16,17 @@
 
 <script>
 export default {
+    compatConfig: {
+        COMPONENT_V_MODEL: false,
+    },
     name: 'range-input',
+    emits: ['update:modelValue'],
     props: {
         name: {
             type: String,
             required: true
         },
-        value: {
+        modelValue: {
             required: false,
             default: 1
         },
@@ -48,7 +52,7 @@ export default {
         };
     },
     mounted () {
-        this.myValue = this.value > this.min ? this.value : this.min;
+        this.myValue = this.modelValue > this.min ? this.modelValue : this.min;
         if (this.myValue > this.max) {
             this.myValue = this.max;
         }
@@ -56,8 +60,8 @@ export default {
     inheritAttrs: false,
     watch: {
         myValue: {
-            handler(newValue, oldValue) {
-                this.$emit('input', newValue);
+            handler(newValue) {
+                this.$emit('update:modelValue', newValue);
             },
             deep: true
         }

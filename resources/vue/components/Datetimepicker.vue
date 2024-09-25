@@ -1,11 +1,11 @@
 <template>
     <span>
         <input type="hidden" :name="name" :value="modelValue">
-        <input type="text"
+        <input v-bind="$attrs"
+               type="text"
                ref="visibleInput"
                class="visible_input"
-               @change="setUnixTimestamp"
-               v-bind="$attrs">
+               @change="setUnixTimestamp">
     </span>
 </template>
 
@@ -14,7 +14,6 @@ export default {
     compatConfig: {
         COMPONENT_V_MODEL: false,
     },
-
     name: 'datetimepicker',
     emits: ['update:modelValue'],
     inheritAttrs: false,
@@ -63,10 +62,9 @@ export default {
         } else {
             this.$refs.visibleInput.value = value;
         }
-        let v = this;
         let params = {
-            onSelect () {
-                v.setUnixTimestamp();
+            onSelect: () => {
+                this.setUnixTimestamp();
             }
         };
         if (this.mindate) {
@@ -78,10 +76,10 @@ export default {
         $(this.$refs.visibleInput).datetimepicker(params);
     },
     watch: {
-        mindat (new_data, old_data) {
+        mindat (new_data) {
             $(this.$refs.visibleInput).datetimepicker('option', 'minDate', new Date(new_data * 1000));
         },
-        maxdate (new_data, old_data) {
+        maxdate (new_data) {
             $(this.$refs.visibleInput).datetimepicker('option', 'maxDate', new Date(new_data * 1000));
         }
     }

@@ -1,6 +1,6 @@
-import Vue, { createApp as vueCreateApp } from 'vue';
+import { createApp as vueCreateApp } from 'vue';
 import { createStore as vuexCreateStore } from 'vuex';
-import eventBus from '../lib/event-bus.ts';
+import eventBus from '../lib/event-bus';
 import gettext from '../lib/gettext';
 import PortalVue from 'portal-vue';
 import BaseComponents from '../../../vue/base-components.js';
@@ -33,17 +33,11 @@ const createStore = () => {
     return store;
 }
 
-// Setup gettext
-eventBus.on('studip:set-locale', (locale) => {
-    Vue.config.language = locale;
-})
-
 // Setup store
 const store = createStore();
 
 // Define createApp function
 function createApp(options, ...args) {
-//    Vue.config.language = getLocale();
     const app = vueCreateApp({ store, ...options }, ...args);
 
     app.config.compilerOptions.whitespace = 'condense';

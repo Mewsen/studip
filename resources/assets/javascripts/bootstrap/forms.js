@@ -242,12 +242,16 @@ function createSelect2(element) {
 }
 
 STUDIP.ready(function () {
-    let forms = window.document.querySelectorAll('form.default.studipform:not(.vueified)');
+    let forms = window.document.querySelectorAll('.studipform:not(.vueified)');
     if (forms.length > 0) {
         STUDIP.Vue.load().then(({createApp}) => {
             forms.forEach(f => {
-                createApp({
-                    el: f,
+                f.classList.add('vueified');
+
+                const app = createApp({
+                    compatConfig: {
+                        COMPONENT_V_MODEL: false,
+                    },
                     data() {
                         let params = JSON.parse(f.dataset.inputs);
                         params.STUDIPFORM_REQUIRED = f.dataset.required ? JSON.parse(f.dataset.required) : [];
@@ -418,11 +422,9 @@ STUDIP.ready(function () {
                             }
                             return orderedNotes;
                         }
-                    },
-                    mounted () {
-                        $(this.$el).addClass("vueified");
                     }
                 });
+                app.mount(f);
             });
         });
     }
@@ -435,12 +437,8 @@ STUDIP.ready(function () {
     if (simple_vue_items.length > 0) {
         STUDIP.Vue.load().then(({createApp}) => {
             simple_vue_items.forEach(f => {
-                createApp({
-                    el: f,
-                    mounted() {
-                        this.$el.classList.add('vueified');
-                    }
-                });
+                f.classList.add('vueified');
+                createApp().mount(f);
             });
         });
     }

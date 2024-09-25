@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import StudipIcon from './StudipIcon.vue';
 export default {
     props: {
         name: {
