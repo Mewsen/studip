@@ -1,9 +1,23 @@
 import ContentReleasesApp from './components/courseware/ContentReleasesApp.vue';
 import CoursewareModule from './store/courseware/courseware.module';
 import { h } from "vue";
+import {mapResourceModules} from "../assets/javascripts/lib/reststate-vuex";
+import axios from "axios";
 
 const mountApp = (STUDIP, createApp, store, element) => {
+    const getHttpClient = () =>
+        axios.create({
+            baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+        });
+
     store.registerModule('courseware', CoursewareModule);
+    Object.entries(mapResourceModules({
+        names: ['courseware-structural-elements-released'],
+        httpClient: getHttpClient()
+    })).forEach(([name, module]) => store.registerModule(name, module));
 
     let entry_id = null;
     let entry_type = null;
