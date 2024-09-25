@@ -36,6 +36,9 @@
 </template>
 <script>
 export default {
+    compatConfig: {
+        WATCH_ARRAY: false,
+    },
     name: 'MemcachedCacheConfig',
     props: {
         servers: {

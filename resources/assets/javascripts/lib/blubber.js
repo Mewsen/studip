@@ -22,6 +22,9 @@ const Blubber = {
                 ([{ Vue, createApp, store }, BlubberPlugin]) => {
                     const { initialThreadId, search } = blubberPanel.dataset;
                     const app = createApp({
+                        compatConfig: {
+                            RENDER_FUNCTION: false,
+                        },
                         render: () => h(resolveComponent(componentName), { initialThreadId, search }),
                     });
                     app.use(BlubberPlugin, { store });
