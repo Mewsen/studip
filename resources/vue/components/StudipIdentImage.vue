@@ -4,9 +4,6 @@
 
 <script>
 export default {
-    compatConfig: {
-        COMPONENT_V_MODEL: false,
-    },
     name: 'studip-ident-image',
     emits: ['update:modelValue'],
     props: {

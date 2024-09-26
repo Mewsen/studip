@@ -11,9 +11,6 @@
 
 <script>
 export default {
-    compatConfig: {
-        COMPONENT_V_MODEL: false,
-    },
     name: 'datetimepicker',
     emits: ['update:modelValue'],
     inheritAttrs: false,

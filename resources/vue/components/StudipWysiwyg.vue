@@ -3,10 +3,6 @@ import { ClassicEditor, BalloonEditor } from '../../assets/javascripts/chunks/wy
 import {h, resolveComponent} from "vue";
 
 export default {
-    compatConfig: {
-        COMPONENT_V_MODEL: false,
-        RENDER_FUNCTION: false,
-    },
     name: 'studip-wysiwyg',
     emits: ['update:modelValue'],
     props: {
@@ -69,10 +65,6 @@ export default {
     },
     render() {
         return h(resolveComponent('ckeditor'), {
-            compatConfig: {
-                COMPONENT_V_MODEL: false,
-                RENDER_FUNCTION: false,
-            },
             editor: this.editor,
             config: this.editorConfig,
             modelValue: this.modelValue,

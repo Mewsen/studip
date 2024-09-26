@@ -13,9 +13,6 @@
 import RestrictedDatesHelper from '../../assets/javascripts/lib/RestrictedDatesHelper';
 
 export default {
-    compatConfig: {
-        COMPONENT_V_MODEL: false,
-    },
     name: 'Datepicker',
     inheritAttrs: false,
     emits: ['update:modelValue'],

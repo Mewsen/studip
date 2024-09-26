@@ -88,9 +88,6 @@ const mountApp = async (STUDIP, createApp, store, element) => {
     await store.dispatch('tasks/loadTasksOfCourse', { cid: entry_id });
 
     const app = createApp({
-        compatConfig: {
-            RENDER_FUNCTION: false,
-        },
         render: () => h(RouterView),
         router,
     });

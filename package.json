@@ -69,7 +69,6 @@
         "@types/jquery": "^3.5.16",
         "@types/jqueryui": "^1.12.16",
         "@types/lodash": "^4.14.191",
-        "@vue/compat": "^3.5.6",
         "@vue/compiler-sfc": "^3.5.6",
         "@vue/eslint-config-typescript": "^13.0.0",
         "altcha": "^0.3.2",

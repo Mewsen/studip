@@ -42,9 +42,6 @@ const mountApp = (STUDIP, createApp, store, element) => {
     });
 
     const app = createApp({
-        compatConfig: {
-            RENDER_FUNCTION: false,
-        },
         render: () => h(ContentBookmarkApp),
     });
     app.mount(element);

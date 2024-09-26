@@ -80,9 +80,6 @@ const mountApp = (STUDIP, createApp, store, element) => {
     });
 
     const app = createApp({
-        compatConfig: {
-            RENDER_FUNCTION: false,
-        },
         render: () => h(PublicApp),
         router,
     });

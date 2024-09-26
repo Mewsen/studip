@@ -46,9 +46,6 @@ const mountApp = async (STUDIP, createApp, store, element) => {
     await store.dispatch('loadCourseUnits', entry_id);
 
     const app = createApp({
-        compatConfig: {
-            RENDER_FUNCTION: false,
-        },
         render: () => h(ActivitiesApp),
     });
     app.mount(element);

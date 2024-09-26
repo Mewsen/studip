@@ -97,17 +97,6 @@ module.exports = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
-                options: {
-                    compilerOptions: {
-                        compatConfig: {
-                            MODE: 3,
-                            ATTR_FALSE_VALUE: false,
-                            OPTIONS_DESTROYED: false,
-                            COMPONENT_ASYNC: false,
-                            COMPILER_V_BIND_OBJECT_ORDER: false,
-                        }
-                    }
-                }
             }
         ]
     },
@@ -132,8 +121,6 @@ module.exports = {
     ],
     resolve: {
         alias: {
-            vue: '@vue/compat',
-            vuedraggable$: path.resolve(__dirname, 'resources/vuedraggable-compat.js'),
             'jquery-ui/data': 'jquery-ui/ui/data',
             'jquery-ui/disable-selection': 'jquery-ui/ui/disable-selection',
             'jquery-ui/focusable': 'jquery-ui/ui/focusable',

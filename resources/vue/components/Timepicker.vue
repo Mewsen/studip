@@ -11,10 +11,6 @@
 
 <script>
 export default {
-    compatConfig: {
-        COMPONENT_V_MODEL: false,
-    },
-
     name: 'Timepicker',
     emits: ['update:modelValue'],
     inheritAttrs: false,

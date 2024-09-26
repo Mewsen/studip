@@ -16,9 +16,6 @@
 
 <script>
 export default {
-    compatConfig: {
-        COMPONENT_V_MODEL: false,
-    },
     name: 'range-input',
     emits: ['update:modelValue'],
     props: {

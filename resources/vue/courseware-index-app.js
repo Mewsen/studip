@@ -124,9 +124,6 @@ const mountApp = async (STUDIP, c, store, element) => {
     );
 
     const app = createApp({
-        compatConfig: {
-            RENDER_FUNCTION: false,
-        },
         render: () => h(IndexApp),
     });
 

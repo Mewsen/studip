@@ -19,9 +19,6 @@ import { createPopper } from '@popperjs/core'
 import 'vue-select/dist/vue-select.css'
 
 export default {
-    compatConfig: {
-        COMPONENT_V_MODEL: false,
-    },
     name: 'studip-select',
     emits: ['update:modelValue'],
     inheritAttrs: false,

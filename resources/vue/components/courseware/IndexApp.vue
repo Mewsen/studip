@@ -39,9 +39,6 @@ import StudipProgressIndicator from '../StudipProgressIndicator.vue';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
-    compatConfig: {
-        WATCH_ARRAY: false,
-    },
     components: {
         CoursewareStructuralElement,
         CoursewareSearchResults,

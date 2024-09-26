@@ -82,9 +82,6 @@ import draggable from 'vuedraggable';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
-    compatConfig: {
-        WATCH_ARRAY: false,
-    },
     name: 'courseware-unit-items',
     components: {
         CoursewareCompanionBox,

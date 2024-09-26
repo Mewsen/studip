@@ -156,9 +156,6 @@ import { mapState } from 'vuex';
 import ContentModulesMixin from '../mixins/ContentModulesMixin.js';
 
 export default {
-    compatConfig: {
-        WATCH_ARRAY: false
-    },
     name: 'ContentModules',
     mixins: [ContentModulesMixin],
     data: () => ({

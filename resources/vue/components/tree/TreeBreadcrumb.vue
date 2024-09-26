@@ -55,9 +55,6 @@ import StudipTreeNode from './StudipTreeNode.vue';
 import axios from 'axios';
 
 export default {
-    compatConfig: {
-        ATTR_FALSE_VALUE: false
-    },
     name: 'TreeBreadcrumb',
     components: { StudipIcon, StudipTreeNode },
     mixins: [ TreeMixin ],

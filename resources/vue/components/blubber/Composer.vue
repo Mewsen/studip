@@ -26,9 +26,6 @@
 </template>
 <script>
 export default {
-    compatConfig: {
-        COMPONENT_V_MODEL: false,
-    },
     name: 'blubber-composer',
     emits: ['update:modelValue', 'add-posting', 'pick-files', 'edit-previous'],
     props: {

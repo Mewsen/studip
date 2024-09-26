@@ -695,9 +695,6 @@ import containerMixin from '@/vue/mixins/courseware/container.js';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
-    compatConfig: {
-        WATCH_ARRAY: false,
-    },
     name: 'courseware-structural-element',
     components: Object.assign(StructuralElementComponents, {
         CoursewareRootContent,

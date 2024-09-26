@@ -73,9 +73,6 @@ import Draggable from 'vuedraggable';
 import { $gettext } from '../../../assets/javascripts/lib/gettext';
 
 export default {
-    compatConfig: {
-        COMPONENT_V_MODEL: false,
-    },
     name: 'input-array',
     emits: ['update:modelValue'],
     components: { Draggable },

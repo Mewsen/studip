@@ -49,9 +49,6 @@ const mountApp = (STUDIP, createApp, store, element) => {
     store.dispatch('courseware-structural-elements-released/loadAll', {});
 
     const app = createApp({
-        compatConfig: {
-            RENDER_FUNCTION: false,
-        },
         render: () => h(ContentReleasesApp),
     });
     app.mount(element);

@@ -249,9 +249,6 @@ STUDIP.ready(function () {
                 f.classList.add('vueified');
 
                 const app = createApp({
-                    compatConfig: {
-                        COMPONENT_V_MODEL: false,
-                    },
                     data() {
                         let params = JSON.parse(f.dataset.inputs);
                         params.STUDIPFORM_REQUIRED = f.dataset.required ? JSON.parse(f.dataset.required) : [];

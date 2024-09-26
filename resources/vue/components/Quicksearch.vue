@@ -30,9 +30,6 @@
 
 <script>
 export default {
-    compatConfig: {
-        COMPONENT_V_MODEL: false,
-    },
     name: 'quicksearch',
     emits: ['update:modelValue'],
     props: {
