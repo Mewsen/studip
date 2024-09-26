@@ -179,12 +179,16 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
         if ($semester_id !== 'all') {
             $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)
                   LEFT JOIN `semester_courses` sc ON (i.`seminar_id` = sc.`course_id`)
+                  LEFT JOIN `semester_data` sd ON (sd.`semester_id` = sc.`semester_id`)
                   WHERE sc.`semester_id` = :semester";
             $parameters = [
                 'semester' => $semester_id
             ];
         } else {
-            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)";
+            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)
+                  LEFT JOIN `semester_courses` sc ON (t.`seminar_id` = sc.`course_id`)
+                  LEFT JOIN `semester_data` sd ON (sd.`semester_id` = sc.`semester_id`)
+                  WHERE 1";
             $parameters = [];
         }
 
@@ -226,9 +230,9 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
         }
 
         if (Config::get()->IMPORTANT_SEMNUMBER) {
-            $query .= " ORDER BY s.`start_time`, s.`VeranstaltungsNummer`, s.`Name`";
+            $query .= " ORDER BY sd.`beginn`, s.`VeranstaltungsNummer`, s.`Name`";
         } else {
-            $query .= " ORDER BY s.`start_time`, s.`Name`";
+            $query .= " ORDER BY sd.`beginn`, s.`Name`";
         }
 
         return DBManager::get()->fetchAll($query, $parameters, 'Course::buildExisting');

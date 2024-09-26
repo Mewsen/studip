@@ -21,7 +21,7 @@ export default {
     mixins: [ TreeMixin ],
     props: {
         node: {
-            type: String,
+            type: Object,
             required: true
         },
         courses: {

@@ -41,13 +41,10 @@
             </span>
         </section>
 
-        <table v-if="currentNode.attributes['has-children'] || courses.length > 0" class="default">
+        <table v-if="currentNode.attributes['has-children']" class="default">
             <caption class="studip-tree-node-info">
                 <span v-if="withChildren && children.length > 0">
                     {{ $gettextInterpolate($gettext('%{ count } Unterebenen'), { count: children.length }) }}
-                </span>
-                <span v-if="withChildren && children.length > 0 && withCourses && courses.length > 0">
-                    ,
                 </span>
             </caption>
             <colgroup>
@@ -57,15 +54,6 @@
                 <col style="width: 40%">
             </colgroup>
             <thead>
-                <tr v-if="totalCourseCount > limit">
-                    <td colspan="4">
-                        <studip-pagination :items-per-page="limit"
-                                           :total-items="totalCourseCount"
-                                           :current-offset="offset"
-                                           @updateOffset="updateOffset"
-                        />
-                    </td>
-                </tr>
                 <tr>
                     <th></th>
                     <th>{{ $gettext('Typ') }}</th>
@@ -85,14 +73,65 @@
                     <StudipTreeTableRows :element="element"
                                          :editable="editable"
                                          :children="children"
-                                         :courses="courses"
                                          :index="index"
                                          :semester="semester"
+                                         :sem-class="semClass"
                                          :node="node"
                                          @open:node="element => openNode(element)"
                     ></StudipTreeTableRows>
                 </template>
             </draggable>
+        </table>
+
+        <table v-if="courses.length > 0" class="default">
+            <colgroup>
+                <col style="width: 20px">
+                <col style="width: 30px">
+                <col>
+                <col style="width: 40%">
+            </colgroup>
+            <thead>
+            <tr v-if="totalCourseCount > limit">
+                <td colspan="4">
+                    <studip-pagination :items-per-page="limit"
+                                       :total-items="totalCourseCount"
+                                       :current-offset="offset"
+                                       @updateOffset="updateOffset"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <th>{{ $gettext('Typ') }}</th>
+                <th>{{ $gettext('Name') }}</th>
+                <th>{{ $gettext('Information') }}</th>
+            </tr>
+            </thead>
+            <tbody role="listbox">
+                <tr v-for="(course) in courses" :key="course.id" class="studip-tree-child studip-tree-course">
+                    <td></td>
+                    <td>
+                        <studip-icon shape="seminar" :size="26"></studip-icon>
+                    </td>
+                    <td>
+                        <a :href="courseUrl(course.id)" tabindex="0"
+                           :title="$gettextInterpolate(
+                                       $gettext('Zur Veranstaltung %{ title }'),
+                                       { title: course.attributes.title },
+                                       true
+                                   )">
+                            <template v-if="course.attributes['course-number']">
+                                {{ course.attributes['course-number'] }}
+                            </template>
+                            {{ course.attributes.title }}
+                        </a>
+                        <div :id="'course-dates-' + course.id" class="course-dates"></div>
+                    </td>
+                    <td :colspan="editable ? 2 : null">
+                        <tree-course-details :course="course.id"></tree-course-details>
+                    </td>
+                </tr>
+            </tbody>
             <tfoot v-if="totalCourseCount > limit">
                 <tr>
                     <td colspan="4">
@@ -105,6 +144,7 @@
                 </tr>
             </tfoot>
         </table>
+
         <Teleport v-if="showExport" to="#export-widget" name="sidebar-export">
             <tree-export-widget v-if="courses.length > 0" :title="$gettext('Download des Ergebnisses')" :url="exportUrl()"
                                 :export-data="courses"></tree-export-widget>
@@ -124,10 +164,13 @@ import StudipProgressIndicator from '../StudipProgressIndicator.vue';
 import AssignLinkWidget from "./AssignLinkWidget.vue";
 import StudipPagination from "../StudipPagination.vue";
 import StudipTreeTableRows from "./StudipTreeTableRows.vue";
+import TreeCourseDetails from "./TreeCourseDetails.vue";
+import StudipIcon from "../StudipIcon.vue";
 
 export default {
     name: 'StudipTreeTable',
     components: {
+        StudipIcon, TreeCourseDetails,
         StudipTreeTableRows,
         StudipPagination,
         draggable, TreeExportWidget, StudipProgressIndicator, TreeBreadcrumb,
