@@ -48,7 +48,7 @@
                 <tr>
                     <td>
                         <a href="<?= URLHelper::getLink('seminar_main.php?auswahl=' . $member['seminar_id']) ?>">
-                            <?= htmlReady(Config::get()->IMPORTANT_SEMNUMBER ? $my_sem[$member['seminar_id']]['sem_nr'] : '') ?>
+                            <?= htmlReady(Config::get()->IMPORTANT_SEMNUMBER ? $my_sem[$member['seminar_id']]['veranstaltungsnummer'] : '') ?>
                             <?= htmlReady($my_sem[$member['seminar_id']]['name']) ?>
                         </a>
                         <? if (!$my_sem[$member['seminar_id']]['visible']): ?>

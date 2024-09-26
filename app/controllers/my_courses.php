@@ -174,71 +174,27 @@ class MyCoursesController extends AuthenticatedController
 
         $group_field = $this->getGroupField();
 
-        $groups     = [];
-        $add_fields = '';
-        $add_query  = '';
+        $temp = MyRealmModel::getPreparedCourses('', [
+            'group_field'         => $group_field,
+            'order_by'            => null,
+            'order'               => 'asc',
+            'studygroups_enabled' => Config::get()->MY_COURSES_ENABLE_STUDYGROUPS,
+            'deputies_enabled'    => Config::get()->DEPUTIES_ENABLE,
+        ]);
 
-        if ($group_field === 'sem_tree_id') {
-            $add_fields = ', sem_tree_id';
-            $add_query  = "LEFT JOIN seminar_sem_tree sst ON (sst.seminar_id=seminare.Seminar_id)";
-        } elseif ($group_field === 'dozent_id') {
-            $add_fields = ', su1.user_id as dozent_id';
-            $add_query  = "LEFT JOIN seminar_user as su1 ON (su1.seminar_id=seminare.Seminar_id AND su1.status='dozent')";
-        } elseif ($group_field === 'mvv') {
-            $add_fields = ', mm.`modul_id` AS mvv';
-            $add_query  = "LEFT JOIN `mvv_lvgruppe_seminar` AS mls ON (mls.`seminar_id` = seminare.`Seminar_id`)
-                           LEFT JOIN `mvv_lvgruppe` AS ml ON (mls.`lvgruppe_id` = ml.`lvgruppe_id`)
-                           LEFT JOIN `mvv_lvgruppe_modulteil` AS mlm on(mls.`lvgruppe_id` = mlm.`lvgruppe_id`)
-                           LEFT JOIN `mvv_modulteil` AS mmt ON (mlm.`modulteil_id` = mmt.`modulteil_id`)
-                           LEFT JOIN `mvv_modul` AS mm ON (mmt.`modul_id` = mm.`modul_id` AND mm.`stat` = 'genehmigt')";
-
-        }
-
-        $dbv = DbView::getView('sem_tree');
-
-        $query = "SELECT seminare.VeranstaltungsNummer AS sem_nr, seminare.Name, seminare.Seminar_id,
-                         seminare.status AS sem_status, seminar_user.gruppe, seminare.visible,
-                         {$dbv->sem_number_sql} AS sem_number,
-                         {$dbv->sem_number_end_sql} AS sem_number_end {$add_fields}
-                  FROM seminar_user
-                  JOIN semester_data sd
-                  LEFT JOIN seminare USING (Seminar_id)
-                  {$add_query}
-                  WHERE seminar_user.user_id = ?";
-        if (Config::get()->MY_COURSES_ENABLE_STUDYGROUPS && !$studygroups) {
-            $studygroup_types = DBManager::get()->quote(studygroup_sem_types());
-            $query .= " AND seminare.status NOT IN ({$studygroup_types})";
-        } elseif ($studygroups) {
-            $studygroup_types = DBManager::get()->quote(studygroup_sem_types());
-            $query .= " AND seminare.status IN ({$studygroup_types})";
-        }
-
-        if (Config::get()->DEPUTIES_ENABLE) {
-            $query .= " UNION "
-                . Deputy::getMySeminarsQuery('gruppe', $dbv->sem_number_sql, $dbv->sem_number_end_sql, $add_fields, $add_query);
-        }
-        $query .= " ORDER BY sem_nr ASC";
-
-        $statement = DBManager::get()->prepare($query);
-        $statement->execute([$GLOBALS['user']->id]);
-        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-            $my_sem[$row['Seminar_id']] = [
-                'obj_type'       => 'sem',
-                'sem_nr'         => $row['sem_nr'],
-                'name'           => $row['Name'],
-                'visible'        => $row['visible'],
-                'gruppe'         => $row['gruppe'],
-                'sem_status'     => $row['sem_status'],
-                'sem_number'     => $row['sem_number'],
-                'sem_number_end' => $row['sem_number_end'],
-            ];
-            if ($group_field) {
-                fill_groups($groups, $row[$group_field], [
-                    'seminar_id' => $row['Seminar_id'],
-                    'sem_nr'     => $row['sem_nr'],
-                    'name'       => $row['Name'],
-                    'gruppe'     => $row['gruppe']
-                ]);
+        $groups = [];
+        $my_sem = [];
+        foreach ($temp as $courses) {
+            foreach ($courses as $course) {
+                $my_sem[$course['seminar_id']] = $course;
+                if ($group_field) {
+                    fill_groups($groups, $course[$group_field], [
+                        'seminar_id' => $course['seminar_id'],
+                        'sem_nr'     => $course['veranstaltungsnummer'],
+                        'name'       => $course['name'],
+                        'gruppe'     => $course['gruppe']
+                    ]);
+                }
             }
         }
 
