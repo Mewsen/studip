@@ -14,8 +14,6 @@
  * @since       3.2
  */
 
-require_once 'lib/webservices/api/studip_lecture_tree.php';
-
 class Course_StudyAreasController extends AuthenticatedController
 {
     public function before_filter(&$action, &$args)
