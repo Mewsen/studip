@@ -172,6 +172,7 @@
         display: flex;
         border: solid thin var(--content-color-40);
         max-width: 248px;
+        position: relative;
 
         .cw-sortable-handle {
             opacity: 0;
