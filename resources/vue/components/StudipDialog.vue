@@ -1,5 +1,5 @@
 <template>
-    <MountingPortal mountTo="body" append>
+    <Teleport to="body">
         <focus-trap v-model="trap">
             <div class="studip-dialog" @keydown.esc="closeDialog">
                 <transition name="dialog-fade">
@@ -103,7 +103,7 @@
                 </transition>
             </div>
         </focus-trap>
-    </MountingPortal>
+    </Teleport>
 </template>
 
 <script>
@@ -266,11 +266,6 @@ export default {
             if (el) {
                 el.blur();
             }
-        }
-    },
-    filters: {
-        checkEmpty(value) {
-            return typeof value !== "number" ? 0 : value;
         }
     },
     mounted() {
