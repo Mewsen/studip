@@ -1010,7 +1010,7 @@ class Course_TimesroomsController extends AuthenticatedController
                         continue;
                     }
                     if (Request::option('room_id')) {
-                        if (Request::option('room_id') != $singledate->room_booking->resource_id) {
+                        if (!$singledate->room_booking || Request::option('room_id') != $singledate->room_booking->resource_id) {
                             if ($date->bookRoom(Request::option('room_id'), $preparation_time)) {
                                 $messages = $date->getMessages();
                                 $this->course->appendMessages($messages);
