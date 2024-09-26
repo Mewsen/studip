@@ -402,8 +402,8 @@ class SingleDate
         $this->raum = $daten['raum'];
         $this->content = $daten['content'];
         $this->update = true;
-        $this->related_persons = is_array($daten['related_persons']) ? $daten['related_persons'] : [];
-        $this->related_groups = is_array($daten['related_groups']) ? $daten['related_groups'] : [];
+        $this->related_persons = isset($daten['related_persons']) && is_array($daten['related_persons']) ? $daten['related_persons'] : [];
+        $this->related_groups = isset($daten['related_groups']) && is_array($daten['related_groups']) ? $daten['related_groups'] : [];
 
         return true;
     }

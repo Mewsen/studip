@@ -261,7 +261,7 @@ class SemBrowse {
     public function get_sem_range($item_id, $with_kids)
     {
         if (!is_object($this->sem_tree)) {
-            $sem_status = (is_array($this->sem_browse_data['sem_status'])) ? $this->sem_browse_data['sem_status'] : false;
+            $sem_status = $this->sem_browse_data['sem_status'] ?? false;
             $this->sem_tree = new StudipSemTreeViewSimple(
                     $this->sem_browse_data['start_item_id'],
                     $this->sem_number,
@@ -440,7 +440,7 @@ class SemBrowse {
                         echo htmlReady($this->search_obj->sem_dates[$group_field]['name'] ?? '');
                         break;
                     case 1:
-                        if ($the_tree->tree_data[$group_field]) {
+                        if (!empty($the_tree->tree_data[$group_field])) {
                             echo htmlReady($the_tree->getShortPath($group_field));
                             if (is_object($this->sem_tree)){
                                 echo $this->sem_tree->getInfoIcon($group_field);
@@ -676,9 +676,15 @@ class SemBrowse {
                 $the_tree = $this->sem_tree->tree;
             }
             $sem_tree_query = '';
-            if ($this->sem_browse_data['start_item_id'] != 'root'
-                    && ($this->sem_browse_data['level'] == 'vv'
-                    || $this->sem_browse_data['level'] == 'sbb')) {
+            if (
+                (
+                    !isset($this->sem_browse_data['start_item_id'])
+                    || $this->sem_browse_data['start_item_id'] != 'root'
+                ) && (
+                    $this->sem_browse_data['level'] == 'vv'
+                    || $this->sem_browse_data['level'] == 'sbb'
+                )
+            ) {
                 $allowed_ranges = $the_tree->getKidsKids($this->sem_browse_data['start_item_id']);
                 $allowed_ranges[] = $this->sem_browse_data['start_item_id'];
                 $sem_tree_query = " AND sem_tree_id IN('" . join("','", $allowed_ranges) . "') ";
