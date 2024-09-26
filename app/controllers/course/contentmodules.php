@@ -215,7 +215,7 @@ class Course_ContentmodulesController extends AuthenticatedController
         $this->module = PluginManager::getInstance()->getPluginById($module_id);
         $this->metadata = $this->module->getMetadata();
 
-        $this->original_name = $this->metadata['diplayname'] ?? $this->module->getPluginName();
+        $this->original_name = $this->metadata['diplayname'] ?? $this->module->getMetadata()['displayname'];
 
         PageLayout::setTitle(_('Werkzeug umbenennen'));
         $this->tool = ToolActivation::find([$context->id, $module_id]);
