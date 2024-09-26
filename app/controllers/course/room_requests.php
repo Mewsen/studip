@@ -583,9 +583,9 @@ class Course_RoomRequestsController extends AuthenticatedController
             $this->request->course_id = Context::getId();
             $this->request->last_modified_by = $this->current_user->id;
 
-            if ($this->request->closed != ResourceRequest::STATE_OPEN) {
+            if ($this->request->closed != 0) {
                 PageLayout::postInfo(_('Die Raumanfrage wurde wieder geöffnet und damit erneut gestellt.'));
-                $this->request->closed = ResourceRequest::STATE_OPEN;
+                $this->request->closed = 0;
             }
 
             $this->request->store();
