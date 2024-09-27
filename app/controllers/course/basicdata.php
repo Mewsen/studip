@@ -782,7 +782,7 @@ class Course_BasicdataController extends AuthenticatedController
         } else {
             $this->deleteUserFromCourse(
                 Course::find($course_id),
-                User::find($teacher_id)
+                User::find($tutor_id)
             );
         }
 

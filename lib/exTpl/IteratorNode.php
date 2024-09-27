@@ -38,6 +38,9 @@ class IteratorNode extends ArrayNode
         $result = '';
 
         if (is_array($values) && is_int(key($values))) {
+            $key = null;
+            $value = null;
+
             $bindings = [$this->key_name => &$key, $this->val_name => &$value];
             $context  = new Context($bindings, $context);
 

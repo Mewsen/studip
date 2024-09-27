@@ -14,6 +14,6 @@ class TemplateParserException extends Exception
         $type  = $scanner->tokenType();
         $value = is_int($type) ? $scanner->tokenValue() : $type;
 
-        return parent::__construct("$message at \"$value\"");
+        parent::__construct("$message at \"$value\"");
     }
 }

@@ -426,7 +426,7 @@ class Institute_BasicdataController extends AuthenticatedController
 
             // delete all configuration files for the "extern modules"
             if (Config::get()->EXTERN_ENABLE) {
-                $counts = ExternConfig::DeleteAllConfigurations($i_id);
+                $counts = ExternPageConfig::deleteBySQL('range_id = ?', [$i_id]);
                 if ($counts) {
                     $details[] = sprintf(_('%u Konfigurationsdateien für externe Seiten gelöscht.'), $counts);
                 }

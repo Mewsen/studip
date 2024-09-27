@@ -8,6 +8,7 @@
  */
 abstract class CorePlugin
 {
+    abstract public function getMetadata();
 
     /**
      * plugin meta data

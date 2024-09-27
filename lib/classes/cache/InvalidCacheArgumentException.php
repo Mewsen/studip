@@ -22,7 +22,7 @@ namespace Studip\Cache;
  * The InvalidCacheArgumentException is an implementation of the InvalidArgumentException interface
  *  of PSR-6 that behaves like a StudipException.
  */
-class InvalidCacheArgumentException extends \StudipException implements \Psr\Cache\InvalidArgumentException
+class InvalidCacheArgumentException extends \Studip\Exception implements \Psr\Cache\InvalidArgumentException
 {
     //Nothing here, since there is nothing to implement.
 }

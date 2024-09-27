@@ -1,5 +1,5 @@
 <?php
-final class DebugbarController extends Trails_Controller
+final class DebugbarController extends Trails\Controller
 {
     public function __construct(
         Trails\Dispatcher $dispatcher,

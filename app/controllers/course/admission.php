@@ -169,10 +169,10 @@ class Course_AdmissionController extends AuthenticatedController
                                 continue;
                             }
                             $num_moved++;
-                            setTempLanguage($user_id);
+                            setTempLanguage($user->id);
                             $message_body = sprintf(_('Sie wurden in der Veranstaltung **%s** in den Status **Autor** versetzt, da das Anmeldeverfahren geändert wurde.'), $this->course->name);
                             $message_title = sprintf(_("Statusänderung %s"), $this->course->name);
-                            messaging::sendSystemMessage($user_id, $message_title, $message_body);
+                            messaging::sendSystemMessage($user, $message_title, $message_body);
                             restoreLanguage();
                         }
                         if ($num_moved) {

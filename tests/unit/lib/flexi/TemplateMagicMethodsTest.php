@@ -6,6 +6,7 @@ use Flexi\Template;
 final class TemplateMagicMethodsTestCase extends \Codeception\Test\Unit
 {
     private Factory $factory;
+    private Template $template;
 
     public function setUp(): void
     {

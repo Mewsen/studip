@@ -184,7 +184,7 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
             $this->image_id = $image->getId();
             $this->image_type = \StockImage::class;
         } else {
-            throw \BadMethodCallException('Invalid argument to method ' . __METHOD__);
+            throw new \BadMethodCallException('Invalid argument to method ' . __METHOD__);
         }
     }
 
@@ -1219,7 +1219,7 @@ SQL;
         if ($this->range_type === 'user') {
             return 'contents/courseware/courseware/' . $unit->id . '#/structural_element/' . $this->id;
         }
- 
+
         return 'course/courseware/courseware/' . $unit->id . '?cid=' . $this->range_id . '#/structural_element/' . $this->id;
     }
 

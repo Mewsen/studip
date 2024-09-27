@@ -11,8 +11,9 @@
 */
 class StudipSoapClient
 {
-    var $soap_client;
-    var $error;
+    public $soap_client;
+    public $error;
+    public $faultstring;
 
     function __construct($path)
     {
@@ -30,7 +31,7 @@ class StudipSoapClient
             $this->faultstring = "";
             try {
                 $result = $this->soap_client->__soapCall($method, $params);
-            } catch  (SoapFault $fault) {
+            } catch (SoapFault $fault) {
                 $this->faultstring = $fault->faultstring;
                 if (!in_array(mb_strtolower($this->faultstring), ["session not valid","session invalid", "session idled"])) {
                     unset($params['password']);

@@ -48,7 +48,7 @@ class MvvFileRange extends ModuleManagementModel
     /**
      * Returns the rangetype of the document based on its foldertype.
      *
-     * @return bool|string Returns false on failure, otherwise the name of the range.
+     * @return string Returns false on failure, otherwise the name of the range.
      */
     public function getRangeType()
     {

@@ -1,4 +1,7 @@
 <?php
+
+use Studip\Cache\Cache;
+
 /**
  * Model for a stored cache operation.
  *
@@ -38,9 +41,9 @@ class StudipCacheOperation extends SimpleORMap
      * The operations are applied in chronological order and are deleted
      * from the database after they have been applied.
      *
-     * @param StudipCache $cache The cache object to apply the operations to
+     * @param Cache $cache The cache object to apply the operations to
      */
-    public static function apply(StudipCache $cache)
+    public static function apply(Cache $cache)
     {
         self::findEachBySQL(function (StudipCacheOperation $item) use ($cache): void {
             $parameters = unserialize($item->parameters);

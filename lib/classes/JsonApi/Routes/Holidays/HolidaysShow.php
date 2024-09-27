@@ -96,7 +96,7 @@ final class HolidaysShow extends NonJsonApiController
         $errors = new ErrorCollection();
 
         // Get filters
-        $filters = $this->query_parser->getFilteringParameters();
+        $filters = $this->queryParser->getFilteringParameters();
 
         // Validate allowed filters
         foreach ($filters as $key => $value) {

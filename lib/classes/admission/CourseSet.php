@@ -559,7 +559,7 @@ class CourseSet
     /**
      * Gets the course sets the given course belongs to.
      *
-     * @param  String courseId
+     * @param  string $courseId
      * @return CourseSet
      */
     public static function getSetForCourse($courseId)

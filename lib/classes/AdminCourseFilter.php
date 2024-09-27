@@ -53,7 +53,7 @@ class AdminCourseFilter
     /**
      * Constructor of the singleton-object.
      */
-    public function __construct(bool $reset_settings = false)
+    final public function __construct(bool $reset_settings = false)
     {
         $this->initSettings($reset_settings);
     }

@@ -13,6 +13,7 @@ use JsonApi\Schemas\Courseware\TaskGroup as TaskGroupSchema;
 use JsonApi\Schemas\StatusGroup as StatusGroupSchema;
 use JsonApi\Schemas\User as UserSchema;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use RuntimeException;
 use Statusgruppen;
 use User;
 

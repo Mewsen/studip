@@ -306,7 +306,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
 
         $config['registered_callbacks']['before_store'][] = 'logStore';
         $config['registered_callbacks']['after_create'][] = 'setDefaultTools';
-        $config['registered_callbacks']['after_delete'][] = function ($course) {
+        $config['registered_callbacks']['after_delete'][] = function (Course $course) {
             CourseAvatar::getAvatar($course->id)->reset();
             FeedbackElement::deleteBySQL('course_id = ?', [$course->id]);
             // Remove subcourse relations, leaving subcourses intact.
@@ -351,7 +351,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             AutoInsert::deleteSeminar($course->id);
 
             //Remove assignments to admission sets:
-            $cs = $this->getCourseSet();
+            $cs = $course->getCourseSet();
             if ($cs) {
                 CourseSet::removeCourseFromSet($cs->getId(), $course->id);
                 $cs->load();
@@ -605,7 +605,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      */
     public function hasCourseSet() : bool
     {
-        return CourseSet::countBySeminar_id($this->id) > 0;
+        return $this->getCourseSet() !== null;
     }
 
     /**

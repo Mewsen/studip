@@ -2,14 +2,11 @@
 class ICalendarImport
 {
     private $range_id;
-
     private $count = 0;
-
-    private $dates = [];
-
     private $import_time;
-
     private $convert_to_private = false;
+
+    private $client_identifier = '';
 
     public function __construct($range_id)
     {
@@ -94,10 +91,11 @@ class ICalendarImport
                     $params = [];
 
                     // skip seminar events
-                    if ((!$this->import_sem) && $tag == 'UID') {
-                        if (mb_strpos($value, 'Stud.IP-SEM') === 0) {
-                            continue 2;
-                        }
+                    if (
+                        $tag == 'UID'
+                        && mb_strpos($value, 'Stud.IP-SEM') === 0
+                    ) {
+                        continue 2;
                     }
 
                     if (!empty($parts[2])) {
@@ -312,8 +310,7 @@ class ICalendarImport
 
                 $this->createDateFromProperties($properties);
             } else {
-                // _("Die Datei ist keine gültige iCalendar-Datei!")
-                throw new InvalidValuesException();
+                throw new InvalidValuesException(_('Die Datei ist keine gültige iCalendar-Datei!'));
             }
             $this->count++;
         }
@@ -471,7 +468,7 @@ class ICalendarImport
             }
             return $time;
         }
-        throw new InvalidValuesException();
+        throw new InvalidValuesException(_('Die Zeitangabe ist ungültig'));
     }
 
     /**
@@ -486,7 +483,7 @@ class ICalendarImport
             $date['mday'] = $matches[3];
             return $date;
         }
-        throw new InvalidValuesException();
+        throw new InvalidValuesException(_('Die Datumsangabe ist ungültig'));
     }
 
     /**
@@ -650,13 +647,12 @@ class ICalendarImport
 
     private function parseClientIdentifier(&$data)
     {
-        global $_calendar_error;
-
         if ($this->client_identifier == '') {
-            if (!preg_match('/PRODID((;[\W\w]*)*):([\W\w]+?)(\r\n|\r|\n)/', $data, $matches)
-                || !trim($matches[3])) {
-                // _("Die Datei ist keine gültige iCalendar-Datei!")
-                throw new InvalidValuesException();
+            if (
+                !preg_match('/PRODID((;[\W\w]*)*):([\W\w]+?)(\r\n|\r|\n)/', $data, $matches)
+                || !trim($matches[3])
+            ) {
+                throw new InvalidValuesException(_('Die Datei ist keine gültige iCalendar-Datei!'));
             } else {
                 $this->client_identifier = trim($matches[3]);
             }

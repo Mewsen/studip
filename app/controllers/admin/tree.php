@@ -192,9 +192,9 @@ class Admin_TreeController extends AuthenticatedController
         }
 
         if ($node->store() !== false) {
-            Pagelayout::postSuccess(_('Die Daten wurden gespeichert.'));
+            PageLayout::postSuccess(_('Die Daten wurden gespeichert.'));
         } else {
-            Pagelayout::postError(_('Die Daten konnten nicht gespeichert werden.'));
+            PageLayout::postError(_('Die Daten konnten nicht gespeichert werden.'));
         }
 
         $this->relocate(Request::get('from'));

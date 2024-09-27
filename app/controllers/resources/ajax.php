@@ -778,7 +778,7 @@ class Resources_AjaxController extends AuthenticatedController
         $semester = \Semester::findByTimestamp($timestamp);
         if (!$semester) {
             $this->notFound('No semester found for given timestamp');
-            throw new RecordNotFoundException();
+            return;
         }
 
         $timestamp = strtotime('today', $timestamp);

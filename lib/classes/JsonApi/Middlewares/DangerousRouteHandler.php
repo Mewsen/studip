@@ -24,8 +24,7 @@ class DangerousRouteHandler
         if (\Config::get()->getValue('JSONAPI_DANGEROUS_ROUTES_ALLOWED')) {
             return $handler->handle($request);
         }
-        $response = new Response();
 
-        return $response->withStatus(503)->write('Service Unavailable.');
+        throw new \AccessDeniedException('Service unavailable');
     }
 }

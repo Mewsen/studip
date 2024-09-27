@@ -21,7 +21,7 @@ namespace Studip\Cache;
  * The CacheException class is an implementation of the CacheException interface
  * of PSR-6 that behaves like a StudipException.
  */
-class Exception extends \StudipException implements \Psr\Cache\CacheException
+class Exception extends \Studip\Exception implements \Psr\Cache\CacheException
 {
     //Nothing here, since there is nothing to implement.
 }

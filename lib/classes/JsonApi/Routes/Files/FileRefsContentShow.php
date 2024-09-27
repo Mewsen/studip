@@ -6,6 +6,7 @@ use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\InternalServerError;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\NonJsonApiController;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -72,7 +73,7 @@ class FileRefsContentShow extends NonJsonApiController
                 );
             }
 
-            list($done, $response) = $this->handleEtag($request, $response, $fileRef);
+            [$done, $response] = $this->handleEtag($request, $response, $fileRef);
             if ($done) {
                 return $response;
             }

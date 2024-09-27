@@ -1,5 +1,5 @@
 <?php
-class FeatureDisabledException extends StudipException
+class FeatureDisabledException extends Studip\Exception
 {
     public function __construct($message = '', $code = 0, Exception $previous = null)
     {

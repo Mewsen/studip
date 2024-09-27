@@ -197,7 +197,7 @@ class Avatar
      * @param string $user_id  the user's id
      * @param string $username the user's username (optional)
      */
-    protected function __construct($user_id, $username = null)
+    final protected function __construct($user_id, $username = null)
     {
         $this->user_id = $user_id;
         $this->username = $username;

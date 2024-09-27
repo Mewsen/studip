@@ -72,7 +72,6 @@ class Course_FeedbackController extends AuthenticatedController
             'results_visible'   => 1,
             'commentable'       => 1,
             'mode'              => FeedbackElement::MODE_5STAR_RATING,
-            'mode'              => 1,
             'anonymous_entries' => 1,
         ]);
     }

@@ -217,7 +217,7 @@ class SQLQuery
      * a sorm_class the result will be an array of the sorm-objects.
      *
      * @template T of SimpleORMap
-     * @param class-string<T>|string|null $sorm_class_or_column : column name, a class of SimpleORMap or null for associative array.
+     * @param T|class-string<T>|string|null $sorm_class_or_column : column name, a class of SimpleORMap or null for associative array.
      * @param int|null $max_results Maximum number of results to return
      * @return array[]|T[]|mixed[] arrays or array of objects or array of values.
      *

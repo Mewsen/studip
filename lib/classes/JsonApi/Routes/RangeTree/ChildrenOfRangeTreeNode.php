@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
+use RangeTreeNode;
 
 class ChildrenOfRangeTreeNode extends JsonApiController
 {
@@ -27,7 +28,7 @@ class ChildrenOfRangeTreeNode extends JsonApiController
             throw new RecordNotFoundException();
         }
 
-        list($offset, $limit) = $this->getOffsetAndLimit();
+        [$offset, $limit] = $this->getOffsetAndLimit();
         $total = \RangeTreeNode::countByParent_id($args['id']);
         $children = \RangeTreeNode::findByParent_id(
             $args['id'],

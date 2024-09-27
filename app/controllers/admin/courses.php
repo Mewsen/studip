@@ -490,7 +490,7 @@ class Admin_CoursesController extends AuthenticatedController
                         $multimode = $plugin->useMultimode();
                         if ($multimode) {
                             $data['buttons_top'] = '<label>'._('Alle auswählen').'<input type="checkbox" data-proxyfor=".course-admin td:last-child :checkbox"></label>';
-                            if ($multimode instanceof Flex\Template) {
+                            if ($multimode instanceof Flexi\Template) {
                                 $data['buttons_bottom'] = $multimode->render();
                             } elseif ($multimode instanceof \Studip\Button) {
                                 $data['buttons_bottom'] = (string) $multimode;

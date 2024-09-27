@@ -253,7 +253,6 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      * Logs all changes of this object.
      *
      * @param string $action new, update or delete
-     * @return boolean Return true if logging was successful.
      */
     protected function logChanges ($action = null) {
 
@@ -367,7 +366,7 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
                 $num_index = 1;
                 break;
             default:
-                return false;
+                return;
         }
 
         if ($logging) {
@@ -389,7 +388,7 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
                     $debuginfo = $this->getDisplayName();
                     break;
                 default:
-                    return false;
+                    return;
             }
 
             $id_array = $this->getId();
@@ -407,7 +406,7 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
                     $debuginfo = $id_array[2];
                     break;
                 default:
-                    return false;
+                    return;
             }
 
             if ($action == 'update') {
@@ -424,9 +423,9 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
                 StudipLog::log($logging, $aff, $coaff, $this->db_table(), $debuginfo);
             }
 
-            return true;
+            return;
         }
-        return false;
+        return;
     }
 
     /**
@@ -927,7 +926,7 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      */
     protected static function formatDisplayName(
         string $template,
-        array $placeholders, 
+        array $placeholders,
         array $replacements
     ): string {
         if (mb_strlen($template) === 0) {

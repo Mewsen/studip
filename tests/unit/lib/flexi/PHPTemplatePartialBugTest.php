@@ -4,6 +4,8 @@ use Flexi\Factory;
 
 final class PhpTemplatePartialBugTestCase extends Codeception\Test\Unit
 {
+    private Factory $factory;
+
     public function setUp(): void
     {
         $this->setUpFS();

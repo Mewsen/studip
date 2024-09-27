@@ -5,6 +5,7 @@ namespace Studip\OAuth2;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Trails\Controller;
 use Trails\Response as TrailsResponse;
 
 trait NegotiatesWithPsr7
@@ -33,6 +34,10 @@ trait NegotiatesWithPsr7
 
     protected function renderPsrResponse(ResponseInterface $response): void
     {
+        if (!($this instanceof Controller)) {
+            throw new \Exception('Can only render responses on trails controllers');
+        }
+
         $this->set_status($response->getStatusCode());
         $this->render_text((string) $response->getBody());
         foreach ($response->getHeaders() as $key => $values) {

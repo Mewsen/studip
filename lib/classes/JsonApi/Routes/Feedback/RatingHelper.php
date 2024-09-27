@@ -3,6 +3,7 @@
 namespace JsonApi\Routes\Feedback;
 
 use FeedbackElement;
+use InvalidArgumentException;
 
 trait RatingHelper
 {

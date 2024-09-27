@@ -35,9 +35,10 @@ class ICalendarExport
      */
     private $time = 0;
 
+    public string $format;
+
     public function __construct()
     {
-        $this->default_filename_suffix = "ics";
         $this->format = "iCalendar";
     }
 
