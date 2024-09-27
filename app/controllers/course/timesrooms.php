@@ -59,14 +59,21 @@ class Course_TimesroomsController extends AuthenticatedController
 
         PageLayout::setTitle($title);
 
-        $dates_in_time_range = CourseDate::countBySql(
-            "`range_id` = :course_id AND `date` BETWEEN :beginning AND :end",
-            [
-                'course_id' => $this->course->id,
-                'beginning' => $this->course->start_semester->beginn,
-                'end'       => $this->course->end_semester->vorles_ende
-            ]
-        ) > 0;
+        $parameters = [
+            ':course_id' => $this->course->id,
+            ':beginning' => $this->course->start_semester->beginn,
+        ];
+        if ($this->course->isOpenEnded()) {
+            $condition_in = '`range_id` = :course_id AND `date` >= :beginning';
+            $condition_out = '`range_id` = :course_id AND `date` < :beginning';
+        } else {
+            $condition_in = '`range_id` = :course_id AND `date` BETWEEN :beginning AND :end';
+            $condition_out = '`range_id` = :course_id AND `date` NOT BETWEEN :beginning AND :end';
+            $parameters[':end'] = $this->course->end_semester->vorles_ende;
+        }
+
+        $dates_in_time_range = CourseDate::countBySql($condition_in, $parameters) > 0;
+        $dates_outside_of_time_range = CourseDate::countBySql($condition_out, $parameters) > 0;
 
         URLHelper::bindLinkParam('semester_filter', $this->semester_filter);
 
@@ -83,15 +90,6 @@ class Course_TimesroomsController extends AuthenticatedController
         } else {
             $selectable_semesters = $this->course->semesters->toArray();
         }
-
-        $dates_outside_of_time_range = CourseDate::countBySql(
-            "`range_id` = :course_id AND `date` NOT BETWEEN :beginning AND :end",
-            [
-                'course_id' => $this->course->id,
-                'beginning' => $this->course->start_semester->beginn,
-                'end'       => $this->course->end_semester->vorles_ende
-            ]
-        ) > 0;
 
         if (count($selectable_semesters) > 1 || (count($selectable_semesters) == 1 && $dates_outside_of_time_range)) {
             $selectable_semesters[] = ['name' => _('Alle Semester'), 'semester_id' => 'all'];
