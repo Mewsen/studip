@@ -90,7 +90,6 @@ class Course_FilesController extends AuthenticatedController
             Icon::create('file-pic'),
             [
                 'onClick' => "STUDIP.Files.openGallery(); return false;",
-                'style'   => 'display: none',
             ]
         );
 
@@ -174,7 +173,6 @@ class Course_FilesController extends AuthenticatedController
             Icon::create('file-pic'),
             [
                 'onClick' => "STUDIP.Files.openGallery(); return false;",
-                'style'   => 'display: none',
             ]
         );
         if ($GLOBALS['user']->id !== 'nobody') {

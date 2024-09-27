@@ -342,8 +342,6 @@
             padding-left: 0px;
 
             li {
-                border-bottom: thin solid var(--content-color-40);
-
                 height: 50px;
                 max-height: 50px;
                 overflow: hidden;
@@ -351,12 +349,10 @@
                 cursor: pointer;
                 color: var(--base-color);
                 font-weight: bold;
-                &:last-child {
-                    border-bottom: none;
-                }
+                border-left: solid 4px transparent;
 
                 &.unseen {
-                    border-left: 3px solid var(--active-color);
+                    border-color: var(--active-color);
                     padding-left: 7px;
                 }
 
@@ -371,31 +367,9 @@
                     justify-content: center;
                 }
 
-                &.active {
-                    background-color: var(--yellow-40);
-
-                    &::before {
-                        content: '';
-                        position: absolute;
-                        height: 0px;
-                        width: 0px;
-                        border-top: 35px transparent solid;
-                        border-bottom: 35px transparent solid;
-                        border-left: 10px var(--content-color-40) solid;
-                        right: -2px;
-                        margin-top: -10px;
-                    }
-                    &::after {
-                        content: '';
-                        position: absolute;
-                        height: 0px;
-                        width: 0px;
-                        border-top: 35px transparent solid;
-                        border-bottom: 35px transparent solid;
-                        border-left: 10px var(--yellow-40) solid;
-                        right: -1px;
-                        margin-top: -70px;
-                    }
+                &.active, &:hover {
+                    background-color: var(--color--sidebar-active);
+                    border-color: var(--color--sidebar-marker-active);
                 }
 
                 a {

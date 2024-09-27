@@ -1,3 +1,5 @@
+$icon-size: 16px;
+
 #sidebar {
     background: var(--white);
     border-left: 0;
@@ -49,31 +51,51 @@
     }
     .sidebar-widget,
     .sidebar-widget-placeholder {
-        background: var(--white);
-        border: 1px solid var(--content-color-40);
+        background-color: var(--white);
+        border: none;
         margin: 15px 0 0;
-        width: $sidebar-width - 5px;
+        width: $sidebar-width;
     }
-    .sidebar-widget-header,
-    .sidebar-widget-extra {
-        background: var(--content-color-20);
-        color: var(--base-color);
+    .sidebar-widget-header {
+        background-color: var(--white);
+        color: var(--black);
         font-weight: bold;
         padding: 4px;
         word-break: break-word;
     }
 
+    .sidebar-widget-extra {
+        background-color: var(--white);
+        a {
+            display: inline-block;
+            height: $icon-size;
+            width: $icon-size;
+            padding: 4px;
+            border: solid thin var(--base-color);
+            border-radius: 5px;
+            margin-bottom: 4px;
+
+            &:hover {
+                background-color: var(--base-color);
+
+                img {
+                    filter: brightness(100);
+                }
+            }
+        }
+    }
+
     // Links inside the sidebar
     a.link-intern {
-        @include icon(before, link-intern, clickable, 16px, 2px);
+        @include icon(before, link-intern, clickable, $icon-size, 2px);
     }
     a.link-extern {
-        @include icon(before, link-extern, clickable, 16px, 2px);
+        @include icon(before, link-extern, clickable, $icon-size, 2px);
     }
 
     // Prevent selects from growing too large
     select {
-        max-width: 100%;
+        max-width: calc(100% - 1ex);
     }
 }
 
@@ -83,16 +105,52 @@ ul.widget-list {
     padding: 0;
     > li {
         background-repeat: no-repeat;
-        background-position: 0 1px;
-        background-size: 16px 16px;
-        padding-left: 20px;
+        background-position: 2px center;
+        background-size: $icon-size $icon-size;
         word-wrap: break-word;
+        margin-left: -4px;
+        padding: 2px 0;
+        background-color: var(--white);
+        border-left: solid 4px var(--white);
+
+        > *:not(label) {
+            padding: 4px 0 4px 24px;
+            line-height: $icon-size + 1;            
+        }
+
+        &:has(>button:not(.options-radio, .options-checkbox)), &:has(>a):not(:last-child) {
+            border-bottom: solid thin  var(--color--sidebar-divider);
+        }
+
+        &:last-child {
+            button, a {
+                border-bottom: none;
+            }
+        }
+
+        &:hover {
+            background-color: var(--color--sidebar-active);
+            border-left: solid 4px var(--color--sidebar-marker-active);
+
+            a, button {
+                color: var(--color--font-primary);
+            }
+        }
+
+        &:has(>hr) {
+            margin-left: -10px;
+            &:hover {
+                background-color: transparent;
+                border-color: transparent;
+            }
+        }
     }
 
     hr {
         border-style: none;
-        border-top: thin solid var(--content-color-40);
-        margin: 4px 0px 4px -20px;
+        border-top: 2px solid var(--white);
+        margin: 4px 0px;
+        margin-top: -3px;
     }
 
     button {
@@ -100,13 +158,17 @@ ul.widget-list {
         text-align: left;
         width: 100%;
     }
+
+    &.sidebar-navigation,
+    &.sidebar-views {
+        > li a {
+            padding: 4px 0;
+        }
+    }
 }
 div#sidebar-navigation {
     div.sidebar-widget-header {
         display: none;
-    }
-    div.sidebar-widget-content {
-        border-top: 0px;
     }
 }
 .widget-links {
@@ -128,20 +190,22 @@ div#sidebar-navigation {
         font-weight: lighter;
     }
     &.sidebar-navigation > li.active {
-        background-color: var(--base-color);
+        background-color: var(--color--sidebar-active);
+        border-left: solid 4px var(--color--sidebar-marker-active);
         margin-left: -4px;
-        //#arrow > .right-border(14px, $content-color-20, 1px, $content-color-40, -5px);
-        @include arrow-right-border(14px, $base-color, 1px, $base-color, -5px);
+        padding-left: 1px;
+
         a {
-            color: var(--white);
+            color: var(--black);
             padding-left: 4px;
         }
     }
     &.sidebar-views > li.active {
-        background: var(--activity-color-40);
-        margin-left: -5px;
-        box-shadow: inset 0 0 0 1px var(--activity-color);
-        @include arrow-right-border(14px, $activity-color-40, 1px, $activity-color, -5px);
+        background-color: var(--color--sidebar-active);
+        border-left: solid 4px var(--color--sidebar-marker-active);
+        margin-left: -4px;
+        padding-left: 1px;
+
         a, button {
             color: var(--base-color);
             padding-left: 5px;
@@ -150,23 +214,6 @@ div#sidebar-navigation {
     &.sidebar-navigation > li,
     &.sidebar-views > li {
         padding-left: 5px;
-
-        &.active {
-
-            line-height: 2em;
-            &:before, &:after {
-                margin-left: -1px;
-            }
-            display: block;
-
-            // Obtuse angle looks kinda ugly with borders
-            &:before {
-                border-left-width: floor(calc(14px * 2 / 3));
-            }
-            &:after {
-                border-left-width: floor(calc(14px * 2 / 3 - 1px));
-            }
-        }
     }
 }
 
@@ -197,16 +244,15 @@ div#sidebar-navigation {
         padding: 0;
 
         > li {
-            line-height: 1.5em;
             margin-left: 0;
-            padding-left: 0;
+            padding-left: 2px;
         }
 
         .options-checkbox {
             background-repeat: no-repeat;
-            background-position: left 2px;
+            background-position: 2px center;
             display: block;
-            padding-left: 20px;
+            padding-left: 24px;
 
             &.options-checked {
                 @include background-icon(checkbox-checked);
@@ -214,13 +260,16 @@ div#sidebar-navigation {
             &.options-unchecked {
                 @include background-icon(checkbox-unchecked);
             }
+            &:hover {
+                color: var(--color--font-primary);
+            }
         }
 
         .options-radio {
             background-repeat: no-repeat;
-            background-position: left 2px;
+            background-position: 2px center;
             display: block;
-            padding-left: 20px;
+            padding-left: 24px;
 
             &.options-checked {
                 @include background-icon(radiobutton-checked);
@@ -228,13 +277,16 @@ div#sidebar-navigation {
             &.options-unchecked {
                 @include background-icon(radiobutton-unchecked);
             }
+            &:hover {
+                color: var(--color--font-primary);
+            }
         }
     }
 }
 .sidebar-widget-content {
-    border-top: 1px solid var(--content-color-40);
     overflow-wrap: break-word;
-    padding: 4px;
+    padding: 0;
+    margin-left: 4px;
     transition: all 0.5s;
 }
 

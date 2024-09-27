@@ -202,8 +202,7 @@ button.button[disabled]:hover {
 
 /* SIDEBAR AND WIDGETS */
 
-.studip-widget .widget-header,
-.sidebar-widget-header {
+.studip-widget .widget-header {
     background-color: $black !important;
     color: $white !important;
 }
@@ -249,16 +248,14 @@ button.button[disabled]:hover {
 
 
 .widget-links.sidebar-navigation > li.active {
-    background-color: $black !important;
-    color: $white !important;
-    box-shadow: unset;
-
+    background-color: var(--black);
+    border-color: var(--black);
 }
 
 
 .widget-links.sidebar-navigation > li.active,
 .widget-links.sidebar-navigation > li.active a {
-
+    color: var(--white);
     &::before,
     &::after {
         border-left-color: $black;
@@ -272,6 +269,7 @@ button.button[disabled]:hover {
     box-shadow: unset;
     border-top: 2px solid $black;
     border-bottom: 2px solid $black;
+    border-left: solid 4px $medium-gray;
 
     a {
         color: $black;

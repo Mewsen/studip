@@ -144,7 +144,6 @@ class FilesController extends AuthenticatedController
             Icon::create('file-pic'),
             [
                 'onClick' => "STUDIP.Files.openGallery(); return false;",
-                'style'   => 'display: none',
             ]
         );
 
@@ -617,7 +616,6 @@ class FilesController extends AuthenticatedController
             Icon::create('file-pic'),
             [
                 'onClick' => "STUDIP.Files.openGallery(); return false;",
-                'style'   => 'display: none',
             ]
         );
         $sidebar->addWidget($actions);

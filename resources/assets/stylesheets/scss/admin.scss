@@ -1,17 +1,27 @@
 .drag-and-drop { display: none; }
+.drag-and-drop-wrapper {
+    background-color: var(--color--tile-background);
+    border: solid thin var(--color--tile-border);
+    border-radius: 5px;
+    padding: 5px;
+
+    &:hover {
+        background-color: var(--color--tile-background-hover);
+        border-color: var(--color--tile-border-hover);
+    }
+}
 .js .drag-and-drop {
     display: block;
-    margin: 5px;
+    margin: 0;
     overflow: hidden;
-    padding: 10px;
-    padding-left: 0px;
+    padding: 15px 15px 15px 80px;
     position: relative;
-    text-align: center;
-    background-color: var(--content-color-20);
-    @include background-icon(upload, clickable, 50);
+    text-align: left;
+    background-color: transparent;
+    border: solid thin transparent;
+    @include background-icon(upload, clickable, 48);
     background-repeat: no-repeat;
-    background-position: center 10px;
-    padding-top: 70px;
+    background-position: 15px center;
     color: var(--base-color);
     cursor: pointer;
 
@@ -26,10 +36,9 @@
         top: 0;
     }
 
-    &.hovered {
-        background-color: var(--base-color);
-        @include background-icon(upload, info_alt, 50);
-        color: var(--white);
+    &:hover {
+        border: dashed thin var(--color--tile-border-hover);
+        border-radius: 5px;
     }
 }
 .js .widget-links .drag-and-drop {

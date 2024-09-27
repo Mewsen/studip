@@ -59,7 +59,9 @@ class Course_WikiController extends AuthenticatedController
                 $widget->setExtra($extra);
             }
             $element = new WidgetElement($toc_content_empty ? _('Keine QuickLinks vorhanden') : $toc_content);
-            $element->icon = Icon::create('link-intern');
+            if (!$toc_content_empty) {
+                $element->icon = Icon::create('link-intern');
+            }
             $widget->addElement($element);
         }
 
@@ -83,6 +85,7 @@ class Course_WikiController extends AuthenticatedController
                     ['data-dialog' => 'width=700']
                 );
             }
+            $actions->addSeparator();
             if ($GLOBALS['perm']->have_studip_perm('tutor', $this->range->id)) { //minimum perm tutor necessary
                 $actions->addLink(
                     _('Seiten aus Veranstaltung importieren'),
@@ -91,6 +94,7 @@ class Course_WikiController extends AuthenticatedController
                     ['data-dialog' => 'width=700']
                 );
             }
+            $actions->addLink('foo',$this->new_pageURL($this->page->id), Icon::create('export') );
             $sidebar->addWidget($actions);
         }
 

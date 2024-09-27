@@ -1,13 +1,13 @@
 <template>
-    <div class="sidebar-widget">
+    <div class="sidebar-widget" :class="{'sidebar-widget-has-extra' : this.$slots.actions }">
         <div class="sidebar-widget-header" v-if="title">
             {{ title }}
-            <div class="actions" v-if="this.$slots.actions">
-                <slot name="actions"></slot>
-            </div>
         </div>
         <div class="sidebar-widget-content" ref="scrollable">
             <slot name="content" />
+        </div>
+        <div class="sidebar-widget-extra" v-if="this.$slots.actions">
+            <slot name="actions"></slot>
         </div>
     </div>
 </template>

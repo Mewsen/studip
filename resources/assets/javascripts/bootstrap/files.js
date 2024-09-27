@@ -17,9 +17,9 @@ function searchMoreFiles (button) {
     return false;
 }
 
-STUDIP.eventBus.on('files-vue-app-updated', ({hasImages}) => {
-    $('#sidebar-actions a[onclick*="Files.openGallery"]').toggle(hasImages);
-});
+STUDIP.eventBus.on("files-vue-app-updated", ({ hasImages }) => {
+    $('#sidebar-actions a[onclick*="Files.openGallery"]').parent().toggle(hasImages);
+  });
 
 STUDIP.domReady(() => {
 
