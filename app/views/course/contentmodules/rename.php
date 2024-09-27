@@ -3,7 +3,6 @@
  * @var Course_ContentmodulesController $controller
  * @var StudipModule $module
  * @var string $original_name
- * @var array $metadata
  * @var ToolActivation $tool
  */
 ?>
@@ -16,7 +15,7 @@
             <?= _('Neuer Name des Werkzeugs') ?>
             <input type="text"
                    name="displayname"
-                   value="<?= htmlReady($tool['metadata']['displayname'] ?? '') ?>"
+                   value="<?= htmlReady($tool->metadata['displayname'] ?? '') ?>"
                    placeholder="<?= htmlReady($original_name) ?>">
         </label>
 
@@ -26,7 +25,7 @@
     </fieldset>
     <div data-dialog-button>
         <?= \Studip\Button::create(_('Speichern'))?>
-        <? if (!empty($tool['metadata']['displayname'])) : ?>
+        <? if (!empty($tool->metadata['displayname'])) : ?>
             <?= \Studip\Button::create(_('Namen löschen'), 'delete') ?>
         <? endif ?>
     </div>
