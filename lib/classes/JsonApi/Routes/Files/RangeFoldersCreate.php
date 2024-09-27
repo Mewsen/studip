@@ -2,6 +2,7 @@
 
 namespace JsonApi\Routes\Files;
 
+use JsonApi\Schemas\Folder as FolderSchema;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\AuthorizationFailedException;
@@ -13,7 +14,7 @@ use JsonApi\Routes\ValidationTrait;
 
 class RangeFoldersCreate extends JsonApiController
 {
-    use RangeHelperTrait, RoutesHelperTrait, ValidationTrait;
+    use RangeHelperTrait, ValidationTrait;
 
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameters)
@@ -53,9 +54,37 @@ class RangeFoldersCreate extends JsonApiController
      */
     protected function validateResourceDocument($json, $data)
     {
-        if ($err = $this->validateFolderResourceObject($json, null, true)) {
-            return $err;
+        if (!self::arrayHas($json, 'data.attributes')) {
+            return 'Missing `attributes` member of document´s `data`.';
         }
+
+        if (!self::arrayHas($json, 'data.attributes.name')) {
+            return 'Missing `data.name`.';
+        }
+
+        // Attribute: name must not be empty if present
+        if (self::arrayHas($json, 'data.attributes.name')
+            && !mb_strlen(trim(self::arrayGet($json, 'data.attributes.name', '')))) {
+            return '`name` must not be empty.';
+        }
+
+        // Relationship: parent
+        if (self::arrayHas($json, 'data.relationships.parent')) {
+            $parent = self::arrayGet($json, 'data.relationships.parent');
+            if (!self::arrayHas($parent, 'data')) {
+                return 'Missing `data` member at document´s top level.';
+            }
+
+            // type
+            if (self::arrayGet($parent, 'data.type') !== FolderSchema::TYPE) {
+                return 'Missing `type` member of document´s `data`.';
+            }
+
+        } else {
+            return 'Missing `parent` relationship.';
+        }
+
+        return '';
     }
 
     protected function validateAndCreateSubfolder(
