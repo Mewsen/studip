@@ -1770,6 +1770,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             'number-name-semester' => '%3$s %1$s (%4$s)',
             'number-type-name'     => '%3$s %2$s: %1$s',
             'sem-duration-name'    => '%4$s',
+            'type'                 => '%2$s',
             'type-name'            => '%2$s: %1$s',
             'type-number-name'     => '%2$s: %3$s %1$s',
         ];

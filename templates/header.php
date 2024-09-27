@@ -275,25 +275,24 @@ if ($navigation) {
         <? endif ?>
 
         <? if (Context::get() || PageLayout::isHeaderEnabled()): ?>
-            <? if (is_object($GLOBALS['perm']) && !$GLOBALS['perm']->have_perm('admin') && $contextable) : ?>
-                <? $membership = CourseMember::find([Context::get()->id, $GLOBALS['user']->id]) ?>
-                <? if ($membership) : ?>
-                    <a href="<?= URLHelper::getLink('dispatch.php/my_courses/groups') ?>"
-                       data-dialog aria-label="<?= _('Gruppenzuordnung der Veranstaltung ändern') ?>"
-                       title="<?= _('Gruppenzuordnung der Veranstaltung ändern') ?>"
-                       class="colorblock gruppe<?= $membership ? $membership['gruppe'] : 1 ?>"></a>
-                <? endif ?>
-            <? endif ?>
             <? if ($contextable) : ?>
                 <div id="context-title">
+                <? if (is_object($GLOBALS['perm']) && !$GLOBALS['perm']->have_perm('admin')) : ?>
+                        <? $membership = CourseMember::find([Context::get()->id, $GLOBALS['user']->id]) ?>
+                        <? if ($membership) : ?>
+                            <a href="<?= URLHelper::getLink('dispatch.php/my_courses/groups') ?>"
+                            data-dialog
+                            class="colorblock gruppe<?= $membership ? $membership['gruppe'] : 1 ?>"></a>
+                        <? endif ?>
+                    <? endif ?>
                     <? if (Context::isCourse()) : ?>
-                        <?= Icon::create('seminar', Icon::ROLE_INFO)->asImg(20, ['class' => 'context_icon']) ?>
-                        <?= htmlReady(Context::get()->getFullName()) ?>
+                        <?= CourseAvatar::getAvatar(Context::get()->id)->getImageTag(Avatar::NORMAL, ['class' => 'context-avatar']) ?>
+                        <span class="course-type"><?= htmlReady(Context::get()->getFullName('type')) ?>:</span> <span class="course-name"><?= htmlReady(Context::get()->getFullName('name')) ?></span>
                         <? if ($GLOBALS['user']->config->SHOWSEM_ENABLE && !Context::get()->isOpenEnded()): ?>
-                            (<?= htmlReady(Context::get()->getTextualSemester()) ?>)
+                            <span class="course-semester">(<?= htmlReady(Context::get()->getTextualSemester()) ?>)</span>
                         <? endif ?>
                     <? elseif (Context::isInstitute()) : ?>
-                        <?= Icon::create('institute', Icon::ROLE_INFO)->asImg(20, ['class' => 'context_icon']) ?>
+                        <?= InstituteAvatar::getAvatar(Context::get()->id)->getImageTag(Avatar::SMALL, ['class' => 'context-avatar']) ?>
                         <?= htmlReady(Context::get()->name) ?>
                     <? endif ?>
                 </div>

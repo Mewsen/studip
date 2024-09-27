@@ -31,8 +31,13 @@ div.clear
     .quiet img { opacity: 0.25; }
 
     li {
+        margin: 0 8px;
+        &:first-child {
+            margin-left: 0;
+        }
         &:last-child {
             border-right: none;
+            margin-right: 0;
         }
         &.current {
             color: var(--base-color);
@@ -57,7 +62,6 @@ div.clear
 
         padding: 5px 8px;
         white-space: nowrap;
-        height: 23px;
     }
 }
 
