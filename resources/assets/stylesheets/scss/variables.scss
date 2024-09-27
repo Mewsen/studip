@@ -180,6 +180,72 @@ $grid-gap: 0;
     #{"--"}transition-duration-slow: $transition-duration-slow;
     #{"--"}transition-duration-superslow: $transition-duration-superslow;
 
+    #{"--"}color--blue-1: $color--blue-1;
+    #{"--"}color--gray-1: $color--gray-1;
+    #{"--"}color--gray-2: $color--gray-2;
+    #{"--"}color--gray-3: $color--gray-3;
+    #{"--"}color--gray-4: $color--gray-4;
+    #{"--"}color--gray-5: $color--gray-5;
+    #{"--"}color--gray-6: $color--gray-6;
+    #{"--"}color--gray-7: $color--gray-7;
+    #{"--"}color--green-1: $color--green-1;
+    #{"--"}color--red-1: $color--red-1;
+    #{"--"}color--white: $color--white;
+    #{"--"}color--yellow-1: $color--yellow-1;
+
+    #{"--"}color--global-background: $color--global-background;
+
+    #{"--"}color--brand-primary: $color--brand-primary;
+    #{"--"}color--brand-secondary: $color--brand-secondary;
+
+    #{"--"}color--font-primary: $color--font-primary;
+    #{"--"}color--font-secondary: $color--font-secondary;
+    #{"--"}color--font-inactive: $color--font-inactive;
+    #{"--"}color--font-inverted: $color--font-inverted;
+
+    #{"--"}color--main-navigation-background: $color--main-navigation-background;
+    #{"--"}color--main-navigation-border: $color--main-navigation-border;
+
+    #{"--"}color--sidebar-marker-focus: $color--sidebar-marker-focus;
+    #{"--"}color--sidebar-marker-hover: $color--sidebar-marker-hover;
+    #{"--"}color--sidebar-focus: $color--sidebar-focus;
+    #{"--"}color--sidebar-hover: $color--sidebar-hover;
+
+    #{"--"}color--dialog-overlay: $color--dialog-overlay;
+
+    #{"--"}color--tile-border-focus: $color--tile-border-focus;
+    #{"--"}color--tile-border-hover: $color--tile-border-hover;
+    #{"--"}color--tile-border: $color--tile-border;
+    #{"--"}color--tile-background: $color--tile-background;
+    #{"--"}color--tile-background-focus: $color--tile-background-focus;
+    #{"--"}color--tile-background-hover: $color--tile-background-hover;
+
+    #{"--"}color--content-box-border: $color--content-box-border;
+    #{"--"}color--content-box-background: $color--content-box-background;
+
+    #{"--"}color--table-header: $color--table-header;
+    #{"--"}color--table-border: $color--table-border;
+    #{"--"}color--table-focus: $color--table-focus;
+    #{"--"}color--table-hover: $color--table-hover;
+
+    #{"--"}color--button-background: $color--button-background;
+    #{"--"}color--button-border: $color--button-border;
+    #{"--"}color--button-focus: $color--button-focus;
+    #{"--"}color--button-hover: $color--button-hover;
+
+    #{"--"}color--input-field-border: $color--input-field-border;
+    #{"--"}color--input-field-background: $color--input-field-background;
+
+    #{"--"}color--divider: $color--divider;
+    #{"--"}color--line: $color--line;
+
+    #{"--"}color--shadow: $color--shadow;
+    #{"--"}color--focus: $color--focus;
+
+    #{"--"}color--warning: $color--warning;
+    #{"--"}color--attention: $color--attention;
+    #{"--"}color--good: $color--good;
+
     @media (prefers-reduced-motion) {
         #{"--"}transition-duration: 0s;
         #{"--"}transition-duration-slow: 0s;
