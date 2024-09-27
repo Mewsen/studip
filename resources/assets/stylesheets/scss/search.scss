@@ -42,21 +42,7 @@ label.inactive-settings-category {
         }
 
         article {
-            border: 1px solid var(--content-color-40);
-            margin-bottom: 8px;
-            margin-top: 8px;
-
             > header {
-                background-color: var(--content-color-20);
-                color: var(--base-color);
-
-                display: flex;
-                flex-direction: row;
-                flex-wrap: nowrap;
-
-                font-weight: bold;
-                padding: 3px;
-
                 div.search-category {
                     flex: auto;
                 }

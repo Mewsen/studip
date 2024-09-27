@@ -60,11 +60,10 @@ $consum_ribbon_width: calc(100% - 58px);
     flex-wrap: wrap;
     height: auto;
     min-height: 30px;
-    border: solid thin var(--dark-gray-color-30);
     margin-bottom: 15px;
     padding: 1em;
     justify-content: space-between;
-    background-color: var(--dark-gray-color-5);
+    background-color: var(--dark-gray-color-10);
 
     &.cw-ribbon-sticky {
         position: fixed;
@@ -279,7 +278,6 @@ $consum_ribbon_width: calc(100% - 58px);
 
                     > button {
                         padding: 18px 8px 4px 8px;
-                        margin-top: 2px;
                         max-width: unset;
                         flex-grow: 0.5;
                         &::after {

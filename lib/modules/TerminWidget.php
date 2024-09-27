@@ -32,7 +32,7 @@ class TerminWidget extends CorePlugin implements PortalPlugin
         $template->content = $response->body;
 
         $navigation = new Navigation('', 'dispatch.php/calendar/date/add');
-        $navigation->setImage(Icon::create('add', Icon::ROLE_CLICKABLE, ['title' => _('Neuen Termin anlegen')]));
+        $navigation->setImage(Icon::create('add', Icon::ROLE_CLICKABLE, ['title' => _('Neuen Termin anlegen'), 'size' => 20]));
         $navigation->setLinkAttributes(['data-dialog' => 'reload-on-close']);
         $template->icons = [$navigation];
 

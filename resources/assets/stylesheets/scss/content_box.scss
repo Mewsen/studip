@@ -1,8 +1,5 @@
 section.contentbox {
-    border-color: var(--content-color-40);
-    border-style: solid;
-    border-width: 1px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     transition: all var(--transition-duration) ease 0s;
 
     header {
@@ -12,7 +9,7 @@ section.contentbox {
         justify-content: space-between;
 
         padding: 2px;
-        background-color: var(--content-color-20);
+        background-color: var(--dark-gray-color-10);
 
         span.title {
             font-size: medium;
@@ -36,11 +33,13 @@ section.contentbox {
 
         h1 {
             flex: 1 0 0;
-            padding: 5px;
+            padding: 10px;
             margin: 0;
-            color: var(--base-color);
+            color: var(--black);
             border-bottom: none;
-            font-size: medium;
+            font-size: $font-size-h3;
+            font-weight: 400;
+            line-height: 24px;
 
             > a {
                 img, svg {
@@ -60,6 +59,10 @@ section.contentbox {
             > *:not(:first-child) {
                 padding-left: 0.25em;
             }
+        }
+
+        > .action-menu {
+            margin: auto 0;
         }
     }
 

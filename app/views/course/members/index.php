@@ -16,7 +16,6 @@
 <? endif ?>
 
 <? if (count($tutoren) > 0) : ?>
-    <br />
     <?= $this->render_partial('course/members/tutor_list') ?>
 <? endif ?>
 
@@ -31,12 +30,10 @@
 <? endif ?>
 
 <? if (count($autoren) > 0) : ?>
-    <br />
     <?= $this->render_partial('course/members/autor_list') ?>
 <? endif ?>
 
 <? if (count($users) > 0) : ?>
-    <br />
     <?= $this->render_partial('course/members/user_list') ?>
 <? endif ?>
 

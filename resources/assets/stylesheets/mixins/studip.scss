@@ -120,13 +120,14 @@
     img { display: none; }
 
     display: inline-block;
+    vertical-align: bottom;
 
-    @include background-icon($default-icon-name, clickable);
+    @include background-icon($default-icon-name, clickable, 20);
     @include hide-text();
-    @include square(16px);
+    @include square(20px);
 
     &.toggled {
-        @include background-icon($toggled-icon-name, clickable);
+        @include background-icon($toggled-icon-name, clickable, 20);
     }
 }
 

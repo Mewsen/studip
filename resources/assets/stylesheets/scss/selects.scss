@@ -203,3 +203,10 @@ select {
         font-weight: bold;
     }
 }
+
+.groupactions {
+    select:not([multiple]):not([size]) {
+        vertical-align: middle;
+        height: 40px;
+    }
+}

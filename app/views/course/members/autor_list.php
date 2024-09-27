@@ -182,7 +182,7 @@
     <? if ($is_tutor && !$is_locked && count($autoren) > 0) : ?>
         <tfoot>
             <tr>
-                <td colspan="<?= $cols_foot ?>">
+                <td colspan="<?= $cols_foot ?>" class="groupactions">
                     <select name="action_autor" id="action_autor" aria-label="<?= _('Aktion auswählen') ?>">
                         <option value="">- <?= _('Aktion auswählen') ?></option>
                     <? if($is_dozent) : ?>

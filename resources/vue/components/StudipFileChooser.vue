@@ -128,6 +128,7 @@ export default {
     max-width: 48em;
     button {
         margin: 0.5ex 0 0.5ex 0;
+        padding: 5px 15px;
         width: 150px;
     }
     span {

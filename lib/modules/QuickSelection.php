@@ -31,7 +31,7 @@ class QuickSelection extends CorePlugin implements PortalPlugin
         $template->navigation = $this->getFilteredNavigation($names);
 
         $navigation = new Navigation('', 'dispatch.php/quickselection/configuration');
-        $navigation->setImage(Icon::create('edit', 'clickable', ["title" => _('Konfigurieren')]), ['data-dialog'=>'size=auto']);
+        $navigation->setImage(Icon::create('edit', 'clickable', ["title" => _('Konfigurieren'), 'size' => 20]), ['data-dialog'=>'size=auto']);
 
         $template->icons = [$navigation];
 

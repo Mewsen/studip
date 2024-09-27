@@ -1,18 +1,18 @@
 /* --- Tabellen ------------------------------------------------------------- */
 table.header, .table_header { //normale Tabellenheader
     background-color: var(--table-header-color);
-    border-bottom: 1px solid var(--dark-gray-color-80);
+    border-bottom: 1px solid var(--color--table-border);
     color: var(--black);
     padding: 4px;
 
 }
 
 .table_header_bold { //formerly known as topic(-header)
-    background-color: var(--brand-color-lighter);
-    border-color: var(--brand-color-darker);
+    background-color: var(--color--table-header);
+    border-color: var(--color--table-border);
     border-style: solid;
     border-width: 0 0 1px 0;
-    color: var(--white);
+    color: var(--color--font-inverted);
     font-size: 12pt;
     padding: 3px 5px;
 
@@ -29,7 +29,7 @@ table.header, .table_header { //normale Tabellenheader
         @include vertical-three-colors(#cdd9ed, #e3eaf6, 40%, #e3eaf6);
     }
 
-    border-top: 1px solid var(--brand-color-lighter);
+    border-top: 1px solid var(--color--table-border);
     line-height: 17pt;
     height: 25px;
 
@@ -78,7 +78,7 @@ table.blank,
 td.blank,
 td.onlineinfo,
 td.blanksmall {
-    background-color: var(--white);
+    background-color: var(--color--global-background);
 }
 
 td.tree-indent {
@@ -222,11 +222,11 @@ td.tree-elbow-line, td.tree-elbow-end {
 }
 
 .grey {
-    background: var(--dark-gray-color-40) none;
+    background: var(--color--table-header) none;
 }
 
 .white {
-    background: var(--white) none;
+    background: var(--color--global-background) none;
 }
 
 .red_gradient {
@@ -250,13 +250,13 @@ table {
 
     td.printhead2 {
         background-image: url("#{$image-path}/content_object_arr-right.png");
-        border-top: 1px solid var(--brand-color-lighter);
+        border-top: 1px solid var(--color--table-border);
         padding: 0;
     }
 
     td.printhead3 {
         background-image: url("#{$image-path}/content_object_arr-down.png");
-        border-top: 1px solid var(--brand-color-lighter);
+        border-top: 1px solid var(--color--table-border);
         padding: 0;
     }
 }
@@ -333,8 +333,8 @@ tr.sortable {
 
     td:first-child[colspan], .divider > th, .divider > td {
         background-color: lighten($brand-color-lighter, 20%);
-        border-bottom: 1px solid var(--base-gray);
-        border-top: 1px solid var(--base-gray);
+        border-bottom: 1px solid var(--color--table-border);
+        border-top: 1px solid var(--color--table-border);
         color: var(--black);
         font-weight: bold;
         text-align: center;
@@ -386,11 +386,11 @@ tr.sortable {
 
     .bordered {
         &.left {
-            border-left: 1px solid var(--brand-color-lighter);
+            border-left: 1px solid var(--color--table-border);
         }
 
         &.right {
-            border-right: 1px solid var(--brand-color-lighter);
+            border-right: 1px solid var(--color--table-border);
         }
     }
 }
@@ -419,22 +419,22 @@ table.tree {
     }
 
     td.blank {
-        background: var(--white);
+        background: var(--color--global-background);
         border: 0;
     }
 
     td.in-between {
-        background: var(--white) url("#{$image-path}/tree-line.gif") center repeat-y;
+        background: var(--color--global-background) url("#{$image-path}/tree-line.gif") center repeat-y;
         border: 0;
     }
 
     td.leaf {
-        background: var(--white) url("#{$image-path}/tree-leaf.gif") center no-repeat;
+        background: var(--color--global-background) url("#{$image-path}/tree-leaf.gif") center no-repeat;
         border: 0;
     }
 
     td.end {
-        background: var(--white) url("#{$image-path}/tree-end.gif") center no-repeat;
+        background: var(--color--global-background) url("#{$image-path}/tree-end.gif") center no-repeat;
         border: 0;
     }
 
@@ -449,14 +449,14 @@ table.tree {
 }
 
 .table_footer, .table_footer td {
-    background-color: var(--dark-gray-color-10);
-    border-top: 1px solid var(--dark-gray-color-30);
+    background-color: var(--color--table-header);
+    border-top: 1px solid var(--color--table-border);
 }
 
 // New table definition
 table.default {
     border-collapse: collapse;
-    margin-bottom: 1em;
+    margin-bottom: 2em;
     width: 100%;
 
     .wrap-content {
@@ -467,21 +467,32 @@ table.default {
         font-size: 1.1em;
     }
 
-    th, td, caption {
+    th, td {
         &.nowrap {
             white-space: nowrap;
         }
 
-        padding: 5px;
+        padding: 10px 5px;
         text-align: left;
+
+        &:first-child {
+            padding-left: 10px;
+        }
+        &:last-child {
+            padding-right: 10px;
+        }
     }
 
     > caption {
         background-color: transparent;
-        padding-top: 0;
+        padding: 0 5px 5px 5px;
         color: var(--headings-color);
-        font-size: 1.4em;
+        font-size: $font-size-caption;
         text-align: left;
+
+        &.nowrap {
+            white-space: nowrap;
+        }
 
         header {
             > h2 {
@@ -503,9 +514,8 @@ table.default {
 
     > thead {
         > tr > th {
-            background-color: var(--content-color-20);
-            border-bottom: 1px solid fade-out($brand-color-lighter, 0.8);
-            border-top: 1px solid var(--brand-color-darker);
+            background-color: var(--color--table-header);
+            border-bottom: 2px solid var(--color--global-background);
             font-size: 1.0em;
         }
     }
@@ -513,25 +523,23 @@ table.default {
     > tbody {
         > tr {
             > th {
-                background-color: var(--content-color-20);
-                border-top: 1px solid var(--brand-color-darker);
-                border-bottom: 1px solid fade-out($brand-color-lighter, 0.8);
+                background-color: var(--color--table-header);
                 text-align: left;
             }
 
             > td {
-                border-bottom: 1px solid var(--table-header-color);
+                border-bottom: 1px solid var(--color--table-border);
                 transition: background-color 0.3s;
             }
 
             &.dragover > td {
-                background-color: var(--yellow-20);
+                background-color: var(--color--table-header);
             }
         }
     }
 
     > tbody > tr.selected > td {
-        background-color: var(--yellow-20);
+        background-color: var(--color--table-header);
 
         &:first-child {
             position: relative;
@@ -545,7 +553,7 @@ table.default {
                 bottom: 0;
                 left: 0;
                 width: 2px;
-                background-color: var(--light-gray-color);
+                background-color: color--table-header;
             }
         }
     }
@@ -575,24 +583,20 @@ table.default {
     }
 
     > tbody:last-of-type > tr:last-child > td {
-        border-bottom: 1px solid var(--brand-color-darker);
+        border-bottom: 1px solid var(--color--table-border);
     }
 
     // Hover effect
     &:not(.nohover) > tbody:not(.nohover) > tr:not(.nohover):hover > td:not(.nohover) {
-        background-color: fade-out($light-gray-color, 0.8);
-    }
-
-    &:not(.nohover) > tbody:not(.nohover) > tr.selected:not(.nohover):hover > td:not(.nohover) {
-        background-color: var(--yellow-40);
+        background-color: var(--color--table-header);
     }
 
     > tfoot {
         > tr > td {
-            background-color: var(--content-color-20);
-            border-top: 1px solid var(--brand-color-darker);
-            padding-left: 10px;
-            padding-right: 10px;
+            background-color: var(--color--table-header);
+            border-top: 2px solid var(--color--global-background);
+            padding-top: 5px;
+            padding-bottom: 5px;
         }
     }
 
@@ -612,8 +616,8 @@ table.default {
 
     > caption .actions {
         font-size: $font-size-base;
-        border-left: 1px solid var(--brand-color-darker);
-        margin-bottom: -5px;
+        border-left: 1px solid var(--color--table-border);
+        margin-bottom: -2px;
         min-height: 26px;
         padding-bottom: 3px;
         padding-left: 0.5em;
@@ -629,12 +633,16 @@ table.default {
             display: flex;
             align-items: stretch;
             justify-content: space-between;
-            margin-bottom: -5px;
+            margin-bottom: 5px;
+
+            img.text-bottom {
+                vertical-align: bottom;
+            }
         }
 
         .caption-content {
             flex-grow: 1;
-            border-right: 1px solid var(--brand-color-darker);
+            border-right: 1px solid var(--color--table-border);
             padding-bottom: 5px;
             padding-right: 0.5em;
             margin-right: 0.5em;
@@ -702,6 +710,7 @@ table.default {
         // Fix button and select alignment
         select {
             vertical-align: middle;
+            min-width: 24em;
         }
 
         // Adjust button margins
@@ -742,7 +751,7 @@ table.withdetails {
     }
 
     > tbody > tr.open > td {
-        background-color: fade-out($light-gray-color, 0.8);
+        background-color: var(--color--table-header);
     }
 
     > tbody > tr.open > td:first-child {
@@ -769,9 +778,9 @@ table.withdetails {
 
             > .detailscontainer {
                 padding: 5px;
-                border: 1px solid var(--table-header-color);
+                border: 1px solid var(--color--table-border);
                 margin-top: -1px;
-                border-top-color: var(--white);
+                border-top-color: var(--color--global-background);
             }
         }
     }
@@ -840,7 +849,7 @@ table#schedule_data {
             td {
                 text-align: center;
                 vertical-align: top;
-                background-color: var(--content-color-20);
+                background-color: var(--color--table-header);
                 padding: 0;
 
                 &:first-child {
@@ -860,7 +869,7 @@ table#schedule_data {
         td:first-child {
             text-align: right;
             vertical-align: top;
-            background-color: var(--content-color-20);
+            background-color: var(--color--table-header);
             padding: 0px;
         }
     }
@@ -876,14 +885,14 @@ table.course-search {
     $max-width-s: 8em;
     $max-width-m: 48em;
     $max-width-l: 100%;
-    border: 1px solid var(--content-color-40);
+    border: 1px solid var(--color--table-border);
     padding: 0;
     border-top: 0;
 
     caption.legend {
         box-sizing: border-box;
         background-color: $fieldset-header;
-        border: 1px solid var(--content-color-40);
+        border: 1px solid var(--color--table-border);
         border-bottom: 0;
         color: var(--brand-color-dark);
         font-size: 12pt;
@@ -901,7 +910,7 @@ table.show-tree {
     padding: 0 10px 10px 10px;
 
     td.b-top-va-center {
-        border-top: 1px solid var(--content-color-40);
+        border-top: 1px solid var(--color--table-border);
         padding-top: 10px;
         vertical-align: middle;
     }

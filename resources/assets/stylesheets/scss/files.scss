@@ -384,13 +384,17 @@ form.default {
     fieldset.select_terms_of_use,
     fieldset.select_oer_upload {
         > legend {
-            margin: 0;
             width: 100%;
+            margin: 0;
         }
         border: none;
         padding: 0;
         margin-left: 0;
         margin-right: 0;
+
+        > :not(legend) {
+            margin: 0;
+        }
 
         > input[type=radio] {
             opacity: 0;
@@ -407,7 +411,7 @@ form.default {
             justify-content: space-between;
             align-items: center;
             padding: 0 10px 0;
-            margin-bottom: 0;
+            margin: 0;
             border-top: none;
             > .text {
                 width: 100%;

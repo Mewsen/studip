@@ -30,7 +30,7 @@
     <header>
         <h1><?= _('Allgemeine Informationen') ?></h1>
     </header>
-    <table class="default">
+    <table class="default nohover">
         <colgroup>
             <col style="width: 40%">
             <col style="width: 60%">

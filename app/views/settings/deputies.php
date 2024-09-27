@@ -2,6 +2,9 @@
     <form method="post" action="<?= $controller->link_for('settings/deputies/store') ?>" class="default">
         <?= CSRFProtection::tokenTag() ?>
         <table class="default no-hover">
+        <caption>
+            <?= _('Standardvertretung')?>
+        </caption>
             <colgroup>
                 <col>
                 <? if ($edit_about_enabled): ?>

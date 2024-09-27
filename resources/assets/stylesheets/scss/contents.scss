@@ -43,14 +43,14 @@
 
     .content-item {
         align-items: stretch;
-        background-color: var(--dark-gray-color-5);
-        border: solid thin var(--light-gray-color-40);
+        background-color: var(--color--tile-background);
+        border: solid thin var(--color--tile-border);
         display: flex;
         min-height: 150px;
         justify-content: stretch;
 
         .content-item-link {
-            color: unset;
+            color: var(--color--font-primary);
             display: grid;
             flex: 1;
             grid-template-columns: 74px auto;
@@ -64,7 +64,7 @@
 
             .content-item-text {
                 .content-item-title {
-                    color: var(--base-color);
+                    color: var(--color--brand-primary);
                     font-size: 1.3em;
                     width: 100%;
                     max-width: 160px;
@@ -77,7 +77,8 @@
         }
 
         &:hover {
-            background-color: var(--white);
+            background-color: var(--color--tile-background-hover);
+            border: solid thin var(--color--tile-border-hover);
             color: unset;
 
             .content-item-link {

@@ -126,7 +126,7 @@ export default {
         },
         height: {
             type: String,
-            default: '640'
+            default: '660'
         },
         width: {
             type: String,

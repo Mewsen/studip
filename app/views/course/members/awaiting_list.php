@@ -138,7 +138,7 @@
     <? if (!$is_locked) : ?>
         <tfoot>
             <tr>
-                <td colspan="6">
+                <td colspan="6" class="groupactions">
                     <select name="action_awaiting" id="action_awaiting" aria-label="<?= _('Aktion auswählen') ?>">
                         <option value="">- <?= _('Aktion auswählen') ?></option>
                         <option value="upgrade_autor">

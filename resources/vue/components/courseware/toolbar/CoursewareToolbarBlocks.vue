@@ -40,7 +40,7 @@
                     v-for="category in blockCategories"
                     :key="category.type"
                     class="button"
-                    :class="{ 'button-active': category.type === currentFilterCategory }"
+                    :class="{ 'active': category.type === currentFilterCategory }"
                     :aria-pressed="category.type === currentFilterCategory ? 'true' : 'false'"
                     @click="selectCategory(category.type)"
                 >

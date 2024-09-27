@@ -1,6 +1,5 @@
 .contentbar {
-    background-color: var(--dark-gray-color-5);
-    border: solid thin var(--dark-gray-color-30);
+    background-color: var(--dark-gray-color-10);
     display: flex;
     flex-wrap: nowrap;
     height: auto;
@@ -8,7 +7,7 @@
     justify-content: flex-start;
     margin-bottom: 15px;
     min-height: 30px;
-    padding: 1em 2em;
+    padding: 1em;
 
     .contentbar-nav {
         display: flex;
@@ -23,7 +22,7 @@
         .contentbar-breadcrumb {
             font-size: 1.25em;
             line-height: 1.5em;
-            margin-right: 1em;
+            margin: auto 1em;
             min-width: 0;
 
             .contentbar-icon {

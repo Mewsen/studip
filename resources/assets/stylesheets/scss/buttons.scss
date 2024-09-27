@@ -1,11 +1,11 @@
 @import '../mixins';
 
 @mixin button() {
-    background: var(--white);
-    border: 1px solid var(--base-color);
+    background: var(--color--button-background);
+    border: 1px solid var(--color--button-border);
     border-radius: 0;
     box-sizing: border-box;
-    color: var(--base-color);
+    color: var(--color--button-border);
     cursor: pointer;
     display: inline-block;
     font-family: $font-family-base;
@@ -14,7 +14,7 @@
     margin: 0.8em 0.6em 0.8em 0;
     min-width: 100px;
     overflow: visible;
-    padding: 5px 15px;
+    padding: 10px 20px;
     position: relative;
     text-align: center;
     text-decoration: none;
@@ -23,21 +23,19 @@
     width: auto;
 
     &:hover,
-    &:active  {
-        background: var(--base-color);
-        color: var(--white);
+    &:active,
+    &.active  {
+        background: var(--color--button-focus);
+        color: var(--color--font-inverted);
     }
 
     &.disabled,
     &[disabled] {
         box-shadow: none;
-        background: var(--light-gray-color-20);
-        cursor: default;
-        opacity: 0.65;
-
-        &:hover {
-            color: var(--base-color);
-        }
+        color: var(--color--font-inactive);
+        background: var(--color--button-inactive-background);
+        border: 1px solid var(--color--button-inactive-border);
+        cursor: not-allowed;
     }
 
     transition: none;
@@ -56,7 +54,7 @@ button.button {
         content: " ";
         float: left;
         height: 16px;
-        margin: 1px 5px 0 -8px;
+        margin: 1px 10px 0 -5px;
         width: 16px;
     }
 }
@@ -79,44 +77,35 @@ button.button {
     }
 }
 
-.button.accept {
-    @include button-with-icon(accept, clickable, info_alt);
-}
-.button.cancel {
-    @include button-with-icon(decline, clickable, info_alt);
-}
-.button.edit {
-    @include button-with-icon(edit, clickable, info_alt);
-}
-.button.move-up {
-    @include button-with-icon(arr_1up, clickable, info_alt);
-}
-.button.move-down {
-    @include button-with-icon(arr_1down, clickable, info_alt);
-}
-.button.add {
-    @include button-with-icon(add, clickable, info_alt);
-}
-.button.trash {
-    @include button-with-icon(trash, clickable, info_alt);
-}
-.button.download {
-    @include button-with-icon(download, clickable, info_alt);
-}
-.button.search {
-    @include button-with-icon(search, clickable, info_alt);
-}
-.button.arr_left {
-    @include button-with-icon(arr_1left, clickable, info_alt);
-}
-.button.refresh {
-    @include button-with-icon(refresh, clickable, info_alt);
+$button-icons: (
+    accept: accept,
+    cancel: decline,
+    edit: edit,
+    move-up: arr_1up,
+    move-down: arr_1down,
+    add: add,
+    trash: trash,
+    download: download,
+    search: search,
+    arr_left: arr_1left,
+    arr_right: arr_1right,
+    refresh: refresh,
+);
+
+@each $class, $icon in $button-icons {
+    .button {
+        &.#{'' + $class} {
+            @include button-with-icon($icon, clickable, info_alt);
+            &.disabled, &[disabled] {
+                @include button-with-icon($icon, info_alt, info_alt);
+            }
+        }
+    }
 }
 .button.arr_right {
-    @include button-with-icon(arr_1right, clickable, info_alt);
     &::before {
         float: right;
-        margin: 1px -8px 0 5px;
+        margin: 1px -10px 0 5px;
     }
 }
 

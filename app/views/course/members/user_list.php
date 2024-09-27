@@ -153,7 +153,7 @@
     <? if ($is_tutor) : ?>
         <tfoot>
             <tr>
-                <td colspan="6">
+                <td colspan="6" class="groupactions">
                     <select name="action_user" id="user_action" aria-label="<?= _('Aktion auswählen') ?>">
                         <option value="">- <?= _('Aktion auswählen') ?></option>
                         <option value="upgrade">

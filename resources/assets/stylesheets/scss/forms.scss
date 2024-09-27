@@ -200,24 +200,21 @@ form.default {
 
     fieldset {
         box-sizing: border-box;
+        border: none;
         border: solid 1px var(--content-color-40);
-        margin: 0 0 10px;
+        margin: 0 0 15px;
         min-width: auto;
-        padding: $gap 10px 10px;
+        padding: 0 0 10px 0;
 
         > legend {
             box-sizing: border-box;
             background-color: var(--fieldset-header);
-            border: 1px solid var(--content-color-40);
+            border: solid 1px var(--content-color-40);
             border-bottom: 0;
-            color: var(--brand-color-dark);
-            font-size: 12pt;
-            font-weight: bold;
-            line-height: 2em;
-            margin: 0 -11px;
-            padding: 0;
-            text-indent: 10px;
-            width: calc(100% + 22px);
+            font-size: $font-size-h3;
+            padding: 10px;
+            margin: 0 0 10px -1px;
+            width: calc(100% + 2px);
         }
 
         // Insert invisible element that corrects double padding/margin at the
@@ -226,6 +223,11 @@ form.default {
             content: '';
             display: block;
             margin-top: -$gap;
+        }
+
+        > :not(legend) {
+            margin-left: 10px;
+            margin-right: 10px;
         }
     }
 
@@ -260,8 +262,7 @@ form.default {
     }
 
     footer {
-        background-color: var(--content-color-20);
-        border-top: 1px solid var(--brand-color-darker);
+        background-color: var(--dark-gray-color-10);
         clear: both;
         margin-left: 0;
         padding: 5px 10px;
@@ -399,7 +400,7 @@ form.default {
             background-position: 6px center;
             background-repeat: no-repeat;
             cursor: pointer;
-            padding-left: 20px;
+            padding-left: 30px;
         }
 
         &.collapsed {

@@ -1,7 +1,4 @@
 <div class="contents-widget">
-    <p>
-        <?= _('Erstellen und finden Sie persönliche Materialien zum Teilen mit anderen.') ?>
-    </p>
     <ul class="content-items">
         <? foreach ($tiles as $key => $navigation): ?>
             <? if ($navigation->isVisible() && $key !== 'overview'): ?>

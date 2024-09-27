@@ -4,6 +4,9 @@
     <input type="hidden" name="studip_ticket" value="<?= get_ticket() ?>">
 
     <table class="default" id="settings-notifications">
+        <caption>
+            <?= _('Benachrichtigung über neue Inhalte anpassen')?>
+        </caption>
         <colgroup>
             <col width="7px">
             <col width="100%">

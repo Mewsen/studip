@@ -108,7 +108,7 @@ $dark-green-60: mix($dark-green, #fff, 60%); // #66b570
 $dark-green-40: mix($dark-green, #fff, 40%); // #99cea0
 $dark-green-20: mix($dark-green, #fff, 20%); // #cce6cf
 
-$petrol: #129c94;
+$petrol: #0E817B; // old #129c94;
 $petrol-80: mix($petrol, #fff, 80%); // #41afaa
 $petrol-60: mix($petrol, #fff, 60%); // #70c3bf
 $petrol-40: mix($petrol, #fff, 40%); // #a0d7d4
@@ -120,7 +120,8 @@ $brown-60: mix($brown, #fff, 60%); // #ca9eaf
 $brown-40: mix($brown, #fff, 40%); // #dcbeb4
 $brown-20: mix($brown, #fff, 20%); // #edded9
 
-$fieldset-header: $content-color-20;
+// $fieldset-header: $content-color-20;
+$fieldset-header: $dark-gray-color-10;
 $fieldset-border: $base-color-20;
 
 // contrast colors
@@ -238,7 +239,7 @@ $color--brand-secondary: $color--gray-2;
 
 $color--font-primary: $color--gray-1;
 $color--font-secondary: $color--gray-3;
-$color--font-inactive: $color--gray-4;
+$color--font-inactive: $color--gray-3;
 $color--font-inverted: $color--white;
 
 $color--main-navigation-background: $color--gray-7;
@@ -262,6 +263,7 @@ $color--tile-background-focus: $color--gray-6;
 $color--tile-background-hover: $color--gray-6;
 
 $color--content-box-border: $color--gray-5;
+$color--content-box-header: $color--gray-6;
 $color--content-box-background: $color--white;
 
 $color--table-header: $color--gray-6;
@@ -269,10 +271,12 @@ $color--table-border: $color--gray-6;
 $color--table-focus: $color--gray-6;
 $color--table-hover: $color--gray-6;
 
-$color--button-background:$color--white;
+$color--button-background: $color--white;
 $color--button-border: $color--blue-1;
 $color--button-focus: $color--blue-1;
 $color--button-hover: $color--blue-1;
+$color--button-inactive-background: $color--gray-7;
+$color--button-inactive-border: $color--gray-5;
 
 $color--input-field-border: $color--gray-5;
 $color--input-field-background: $color--white;

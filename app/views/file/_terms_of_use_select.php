@@ -24,8 +24,8 @@ if (!$selected_terms_of_use_id) {
                aria-description="<?= htmlReady(kill_format($content_terms_of_use_entry->description)) ?>">
 
         <label for="content_terms_of_use-<?= htmlReady($content_terms_of_use_entry->id) ?>">
-            <?= Icon::create('radiobutton-unchecked')->asImg(24, ['class' => 'arrow']) ?>
-            <?= Icon::create('radiobutton-checked')->asImg(24, ['class' => 'check']) ?>
+            <?= Icon::create('radiobutton-unchecked')->asImg(20, ['class' => 'arrow']) ?>
+            <?= Icon::create('radiobutton-checked')->asImg(20, ['class' => 'check']) ?>
             <div class="text">
                 <?= htmlReady($content_terms_of_use_entry->name) ?>
             </div>
