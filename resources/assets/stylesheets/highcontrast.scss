@@ -202,11 +202,6 @@ button.button[disabled]:hover {
 
 /* SIDEBAR AND WIDGETS */
 
-#sidebar .sidebar-image {
-    background-image: unset;
-    background: $black;
-}
-
 .studip-widget .widget-header,
 .sidebar-widget-header {
     background-color: $black !important;

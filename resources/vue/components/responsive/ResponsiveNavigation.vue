@@ -510,7 +510,7 @@ export default {
             if (this.isResponsive || (this.isFullscreen && !this.isFocusMode)) {
                 this.moveHelpbar();
 
-                this.contentbarTitle = document.querySelector('.sidebar-image .sidebar-title')?.textContent;
+                this.contentbarTitle = document.querySelector('.sidebar-title')?.textContent;
                 const siteTitle = document.getElementById('site-title');
                 if (siteTitle) {
                     siteTitle.dataset.originalTitle = siteTitle.textContent.trim();
