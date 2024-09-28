@@ -15,14 +15,14 @@ class URLFile extends StandardFile
 
         $file = new File();
         $file['name'] = $data['name'] ?: ($meta['filename'] ?: 'unknown');
-        $file['size'] = $meta['Content-Length'] ?: '0';
-        $file['mime_type'] = $meta['Content-Type'] ? mb_strstr($meta['Content-Type'], ';', true) : get_mime_type($file['name']);
+        $file['size'] = $meta['Content-Length'] ?? '0';
+        $file['mime_type'] = !empty($meta['Content-Type']) ? mb_strstr($meta['Content-Type'], ';', true) : get_mime_type($file['name']);
         $file['metadata'] = [
             'url' => $data['url'],
-            'access_type' => $data['access_type'] ?: "redirect"
+            'access_type' => $data['access_type'] ?? "redirect"
         ];
         $file['user_id'] = $user_id;
-        $file['author_name'] = $data['author_name'] ?: get_fullname($file['user_id']);
+        $file['author_name'] = $data['author_name'] ?? get_fullname($file['user_id']);
         $file['filetype'] = get_called_class();
         $file->store();
 
@@ -30,8 +30,8 @@ class URLFile extends StandardFile
         $fileref['file_id'] = $file->getId();
         $fileref['name'] = $file['name'];
         $fileref['downloads'] = 0;
-        $fileref['description'] = $data['description'] ?: "";
-        $fileref['content_terms_of_use_id'] = $data['content_terms_of_use_id'] ?: ContentTermsOfUse::findDefault()->id;
+        $fileref['description'] = $data['description'] ?? '';
+        $fileref['content_terms_of_use_id'] = $data['content_terms_of_use_id'] ?? ContentTermsOfUse::findDefault()->id;
         $fileref['user_id'] = $user_id;
 
         return new static($fileref);
