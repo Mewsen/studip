@@ -312,7 +312,7 @@ class MessagesController extends AuthenticatedController {
                     $params['status'] = explode(',', Request::get('who', ''));
                 }
                 if ($filter === 'all' || $filter === 'send_sms_to_all') {
-                    if ($params['status']) {
+                    if (!empty($params['status'])) {
                         $additional .= ' AND seminar_user.status IN ( :status )';
                     }
                     $query = "SELECT user_id, 'rec' AS snd_rec

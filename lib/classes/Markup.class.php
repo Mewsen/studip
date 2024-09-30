@@ -383,8 +383,7 @@ class Markup
         // avoid <img src="evil_CSRF_stuff">
         $def = $config->getHTMLDefinition(true);
         $img = $def->addBlankElement('img');
-        $img->attr_transform_post[]
-            = new MarkupPrivate\Purifier\AttrTransform_Image_Source();
+        $img->attr_transform_post[] = new MarkupPrivate\Purifier\AttrTransform_Image_Source();
 
         $def->addElement('audio', 'Inline', 'Flow', 'Common', [
               'src*' => 'URI',
@@ -536,6 +535,10 @@ class AttrTransform_Image_Source extends \HTMLPurifier_AttrTransform
      */
     function transform($attr, $config, $context)
     {
+        if (!isset($attr['src'])) {
+            return $attr;
+        }
+
         try {
             $attr['src'] = MediaProxy\getMediaUrl($attr['src']);
         } catch (MediaProxy\InvalidInternalLinkException $e) {

@@ -94,7 +94,7 @@ if (Request::get('to_folder_id')) {
                 <? if ($subfolder->isReadable($GLOBALS['user']->id)) : ?>
                     <a href="<?= $controller->link_for('file/choose_file/' . $subfolder->id, $options) ?>" data-dialog>
                 <? endif ?>
-                <? if ($is_empty): ?>
+                <? if (!empty($is_empty)): ?>
                     <?= Icon::create('folder-empty')->asImg(24) ?>
                 <? else: ?>
                     <?= Icon::create('folder-full')->asImg(24) ?>

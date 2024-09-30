@@ -375,7 +375,7 @@ class SeminarCycleDate extends SimpleORMap
                 //check for calculatable holidays
                 if ($date instanceof CourseDate || $date instanceof CourseExDate) {
                     $holy_type = SemesterHoliday::isHoliday($date->date, false);
-                    if ($holy_type["col"] == 3) {
+                    if ($holy_type && $holy_type['col'] == 3) {
                         $holiday_date = true;
                     }
                 }

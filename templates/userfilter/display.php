@@ -8,7 +8,7 @@ foreach ($filter->getFields() as $field) {
     $valueNames = $field->getValidValues();
     $ops = $field->getValidCompareOperators();
     $fieldText .= htmlReady($field->getName()." ".$field->getCompareOperatorAsText().
-        " " . (count($valueNames) ? $valueNames[$field->getValue()] : $field->getValue()));
+        " " . ($valueNames[$field->getValue()] ?? $field->getValue()));
     $i++;
 
 }
@@ -21,4 +21,3 @@ if ($filter->show_user_count) {
     $fieldText .= ')';
 }
 echo $fieldText;
-?>

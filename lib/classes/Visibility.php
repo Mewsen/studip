@@ -377,7 +377,9 @@ class Visibility
         $stmt = $db->prepare($sql);
         $stmt->execute();
         $lastState = $stmt->fetch(PDO::FETCH_ASSOC);
-        $lastState = $lastState['state'];
+        if (is_array($lastState)) {
+            $lastState = $lastState['state'];
+        }
 
         // now delete the value
         $sql = "DELETE FROM user_visibility_settings $where";

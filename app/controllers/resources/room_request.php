@@ -975,7 +975,7 @@ class Resources_RoomRequestController extends AuthenticatedController
             $new_begin->setTime(
                 $begin_time_arr[0],
                 $begin_time_arr[1],
-                $begin_time_arr[2]
+                $begin_time_arr[2] ?? 0
             );
             $new_end = new DateTime();
             $new_end->setDate(
@@ -986,7 +986,7 @@ class Resources_RoomRequestController extends AuthenticatedController
             $new_end->setTime(
                 $end_time_arr[0],
                 $end_time_arr[1],
-                $end_time_arr[2]
+                $end_time_arr[2] == 0
             );
 
             $this->request->begin = $new_begin->getTimestamp();
@@ -1606,7 +1606,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                     if ($metadate->dates) {
                         $overlap_messages = [];
                         foreach ($metadate->dates as $date) {
-                            if ($date->room_booking->resource_id != $room_id) {
+                            if (!$date->room_booking || $date->room_booking->resource_id != $room_id) {
                                 try {
                                     $booking = $room->createBooking(
                                         $this->current_user,
@@ -1619,7 +1619,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                                         ],
                                         null,
                                         0,
-                                        $course_date->end_time,
+                                        $date->end_time,
                                         $this->request->preparation_time
                                     );
                                     if ($booking instanceof ResourceBooking) {
@@ -1642,7 +1642,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                     }
                 } elseif ($range_data[0] == 'User') {
                     $user = User::find($range_data[1]);
-                    if (!($user instanceof User)) {
+                    if (!$user) {
                         PageLayout::postError(
                             sprintf(
                                 _('Die Person mit der ID %s wurde nicht gefunden!'),
@@ -1837,19 +1837,19 @@ class Resources_RoomRequestController extends AuthenticatedController
     {
         $pos = array_search($this->filter['filter_request_id'], $request_ids);
         $max = count($request_ids);
-        if($pos === 0) {
-            $prev_pos = $max-1;
-            $next_pos = $pos+1;
+        if ($pos === 0) {
+            $prev_pos = $max - 1;
+            $next_pos = $pos + 1;
         } else {
-            $prev_pos = $pos-1;
-            $next_pos = $pos+1;
+            $prev_pos = $pos - 1;
+            $next_pos = $pos + 1;
 
-            if($next_pos === $max) {
+            if ($next_pos === $max) {
                 $next_pos = 0;
             }
         }
-        $this->prev_request = $request_ids[$prev_pos];
-        $this->next_request = $request_ids[$next_pos];
+        $this->prev_request = $request_ids[$prev_pos] ?? null;
+        $this->next_request = $request_ids[$next_pos] ?? null;
     }
 
     protected function getSingleDateDataForExportRow(CourseDate $date)

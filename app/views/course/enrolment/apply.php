@@ -1,5 +1,5 @@
 <?= $admission_error ?>
-<? if ($courseset_message) : ?>
+<? if (!empty($courseset_message)) : ?>
 <p>
     <?= $courseset_message ?>
 </p>
