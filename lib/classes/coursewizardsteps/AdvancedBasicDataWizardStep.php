@@ -31,7 +31,7 @@ class AdvancedBasicDataWizardStep extends BasicDataWizardStep
         $values = $this->adjustValues($values);
 
        // We only need our own stored values here.
-        if ($values[__CLASS__]['studygroup']) {
+        if (!empty($values[__CLASS__]['studygroup'])) {
             return parent::getStepTemplate($values, $stepnumber, $temp_id);
         }
 
@@ -44,7 +44,7 @@ class AdvancedBasicDataWizardStep extends BasicDataWizardStep
             return '';
         }
 
-        $values = $this->makeI18N($values[__CLASS__], ['name', 'description', 'subtitle', 'kind']);
+        $values = $this->makeI18N($values[__CLASS__] ?? [], ['name', 'description', 'subtitle', 'kind']);
 
         $template->set_attribute('values', array_merge($template->values, $values));
 
@@ -83,7 +83,7 @@ class AdvancedBasicDataWizardStep extends BasicDataWizardStep
         }
 
         // Studygroup? -> nothing to do here
-        if ($values[__CLASS__]['studygroup']) {
+        if (!empty($values[__CLASS__]['studygroup'])) {
             return $course;
         }
 
@@ -117,7 +117,7 @@ class AdvancedBasicDataWizardStep extends BasicDataWizardStep
         if (!isset($values[__CLASS__]) && isset($values[$parent_class])) {
             $values[__CLASS__] = $values[$parent_class];
         } else {
-            $values[$parent_class] = $values[__CLASS__];
+            $values[$parent_class] = $values[__CLASS__] ?? [];
         }
 
         return $values;

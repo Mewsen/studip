@@ -1,7 +1,7 @@
 <tbody style="vertical-align: top;">
 <? if ($th_title): ?>
     <tr>
-        <th colspan="<?= 1 + count($structure) - ($structure['actions'] ? 1 : 0) ?>">
+        <th colspan="<?= 1 + count($structure) - (!empty($structure['actions']) ? 1 : 0) ?>">
             <?= htmlReady($th_title) ?>
         </th>
     <? if (!empty($structure['actions'])): ?>

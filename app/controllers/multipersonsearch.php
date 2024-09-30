@@ -31,7 +31,7 @@ class MultipersonsearchController extends AuthenticatedController
         if (mb_strlen($searchterm) >= 3) {
             $mp = MultiPersonSearch::load($name);
             $searchObject = $mp->getSearchObject();
-            if (isset($searchObject)) {
+            if (isset($searchObject) && !is_bool($searchObject)) {
                 $result = array_map(function ($r) {
                     return $r['user_id'];
                 }, $searchObject->getResults($searchterm, [], 50));

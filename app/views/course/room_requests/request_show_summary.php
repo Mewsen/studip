@@ -15,7 +15,7 @@
             <label>
                 <?= _('Ausgewählte Raumkategorie') ?>
                 <input type="hidden" name="selected_room_id"
-                       value="<?= htmlReady($selected_room->id) ?>">
+                       value="<?= htmlReady($selected_room->id ?? '') ?>">
                 <br>
 
                 <strong><?= htmlReady($selected_room_category->name) ?></strong>

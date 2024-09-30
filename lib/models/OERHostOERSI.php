@@ -54,7 +54,7 @@ class OERHostOERSI extends OERHost
                     $material['draft'] = '0';
                     $material['filename'] = '';
                     $material['short_description'] = '';
-                    $material['description'] = $material_data['_source']['description'] ?: '';
+                    $material['description'] = trim($material_data['_source']['description'] ?? '');
                     $material['difficulty_start'] = 0;
                     $material['difficulty_end'] = 12;
                     $material['uri'] = $material_data['_source']['id'];

@@ -85,7 +85,7 @@ class Admission_CoursesetController extends AuthenticatedController
         $filter['semester_id'] = $this->current_semester_id != 'all' ? $this->current_semester_id : null;
         $filter['rule_types'] = array_keys($this->current_rule_types);
         $this->myInstitutes = CoursesetModel::getInstitutes($filter);
-        if (!$this->current_institut_id) {
+        if (!$this->current_institut_id && count($this->myInstitutes) > 0) {
             if (!isset($this->myInstitutes['all']['count']) || $this->myInstitutes['all']['count'] < 100) {
                 $this->current_institut_id = 'all';
             } else {
@@ -105,7 +105,7 @@ class Admission_CoursesetController extends AuthenticatedController
         }
 
         foreach ($institutes as $one) {
-            if ($this->myInstitutes[$one]['count']) {
+            if (!empty($this->myInstitutes[$one]['count'])) {
                 $sets = CourseSet::getCoursesetsByInstituteId($one, $filter);
                 foreach ($sets as $set) {
                     $courseset = new CourseSet($set['set_id']);

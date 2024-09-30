@@ -27,10 +27,10 @@ use Studip\Button, Studip\LinkButton;
             <?= _('Status') ?>
             <select name="filter[status]" id="status" class="submit-upon-select">
                 <option value=""><?= _('Alle Logeinträge anzeigen') ?></option>
-                <option value="passed" <? if ($filter['status'] === 'passed') echo 'selected'; ?>>
+                <option value="passed" <? if (isset($filter['status']) && $filter['status'] === 'passed') echo 'selected'; ?>>
                     <?= _('Nur fehlerfreie Logeinträge anzeigen') ?>
                 </option>
-                <option value="failed" <? if ($filter['status'] === 'failed') echo 'selected'; ?>>
+                <option value="failed" <? if (isset($filter['status']) && $filter['status'] === 'failed') echo 'selected'; ?>>
                     <?= _('Nur fehlerhafte Logeinträge anzeigen') ?>
                 </option>
             </select>
@@ -41,7 +41,7 @@ use Studip\Button, Studip\LinkButton;
             <select name="filter[schedule_id]" id="schedule_id" class="submit-upon-select">
                 <option value=""><?= _('Alle Logeinträge anzeigen') ?></option>
                 <? foreach ($schedules as $schedule): ?>
-                    <option value="<?= $schedule->schedule_id ?>" <? if ($filter['schedule_id'] === $schedule->schedule_id) echo 'selected'; ?>>
+                    <option value="<?= $schedule->schedule_id ?>" <? if (isset($filter['schedule_id']) && $filter['schedule_id'] === $schedule->schedule_id) echo 'selected'; ?>>
                         <?= htmlReady($schedule->title) ?>
                     </option>
                 <? endforeach; ?>
@@ -53,7 +53,7 @@ use Studip\Button, Studip\LinkButton;
             <select name="filter[task_id]" id="task_id" class="submit-upon-select">
                 <option value=""><?= _('Alle Aufgaben anzeigen') ?></option>
                 <? foreach ($tasks as $task): ?>
-                    <option value="<?= $task->task_id ?>" <? if ($filter['task_id'] === $task->task_id) echo 'selected'; ?>>
+                    <option value="<?= $task->task_id ?>" <? if (isset($filter['task_id']) && $filter['task_id'] === $task->task_id) echo 'selected'; ?>>
                         <?= htmlReady($task->name) ?>
                     </option>
                 <? endforeach; ?>

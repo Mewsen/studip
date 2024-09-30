@@ -36,7 +36,7 @@
         <?= Studip\Button::createAccept(_('Speichern'), 'store') ?>
         <?= Studip\LinkButton::createCancel(
             _('Zurück'),
-            $controller->action_url('add_files_window/' . Request::option('to_folder_id'), $options),
+            $controller->action_url('add_files_window/' . Request::option('to_folder_id'), $options ?? []),
             ['data-dialog' => '']
         ) ?>
     </footer>

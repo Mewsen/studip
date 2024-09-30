@@ -259,6 +259,9 @@ class Institute_MembersController extends AuthenticatedController
 
             // Find members
             $institut_members = $this->institute->members->filter(function ($member) use ($group) {
+                if (!$member->user) {
+                    return false;
+                }
                 if ($member->inst_perms === 'user') {
                     return false;
                 }

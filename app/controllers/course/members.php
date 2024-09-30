@@ -2224,16 +2224,11 @@ class Course_MembersController extends AuthenticatedController
 
     /**
      * Get the position out of the database
-     * @param String $user_id
-     * @return int
      */
-    private function getPosition($user_id): ?int
+    private function getPosition(string $user_id): int
     {
-        $membership = CourseMember::findByUser($user_id);
-        if ($membership) {
-            return (int)$membership->position;
-        }
-        return 0;
+        $membership = CourseMember::find([$this->course_id, $user_id]);
+        return $membership->position ?? 0;
     }
 
     private function getLogLevel($direction, $status)
