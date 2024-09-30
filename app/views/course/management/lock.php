@@ -12,7 +12,7 @@
                 <?= _('Sperrebene') ?>
                 <select name="lock_sem" id="lock_sem" aria-labelledby="<?= _('Sperrebene auswählen')?>">
                 <? foreach ($all_lock_rules as $lock_rule) : ?>
-                    <option value="<?= $lock_rule['lock_id'] ?>" <?= $current_lock_rule->id == $lock_rule['lock_id'] ? 'selected' : '' ?>>
+                    <option value="<?= $lock_rule['lock_id'] ?>" <?= $current_lock_rule && $current_lock_rule->id == $lock_rule['lock_id'] ? 'selected' : '' ?>>
                         <?= htmlReady($lock_rule['name']) ?>
                     </option>
                 <? endforeach ?>

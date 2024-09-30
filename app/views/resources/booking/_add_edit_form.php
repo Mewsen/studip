@@ -184,9 +184,7 @@
                     <label class="separable-room-booking">
                         <input type="checkbox" name="book_other_room_parts"
                                value="1"
-                            <?= $book_other_room_parts
-                                ? 'checked="checked"'
-                                : '' ?>>
+                        <?= !empty($book_other_room_parts) ? 'checked' : '' ?>>
                         <span data-booking_type="2"
                               <?= $booking_type == '2' ? '' : 'style="display:none;"' ?>>
                             <?= _('Alle anderen Teilräume ebenfalls sperren.') ?>

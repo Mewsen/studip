@@ -72,7 +72,7 @@ class AdmissionPriority
      *
      * @param  String $courseSetId
      * @param  String $userId
-     * @return An array containing all priorities.
+     * @return array containing all priorities.
      */
     public static function getPrioritiesByUser($courseSetId, $userId)
     {
@@ -89,6 +89,18 @@ class AdmissionPriority
             $priorities[$current['seminar_id']] = $current['priority'];
         }
         return $priorities;
+    }
+
+    /**
+     * Returns the mkdate for a priority entry.
+     */
+    public static function getMkdateForCourseAndUser($course_id, $course_set_id, $user_id)
+    {
+        $query = "SELECT p.`mkdate`
+                  FROM `priorities` AS p
+                  JOIN `seminare` AS s ON (p.`seminar_id` = s.`Seminar_id`)
+                  WHERE p.`seminar_id` = ? AND p.`set_id` = ? AND p.`user_id` = ?";
+        return DBManager::get()->fetchColumn($query, [$course_id, $course_set_id, $user_id]);
     }
 
     /**

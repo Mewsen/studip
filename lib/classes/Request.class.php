@@ -768,10 +768,9 @@ class Request implements ArrayAccess, IteratorAggregate
             $extract[] = array_values(array_filter(array_map('trim', explode(' ', $one))));
         }
         foreach ($extract as $one) {
-            [$param, $func] = $one;
-            if (!$func) {
-                $func = 'get';
-            }
+            $param = $one[0];
+            $func = $one[1] ?? 'get';
+
             $value = self::$func($param);
             if ($value !== null) {
                 $return[$param] = $value;

@@ -70,7 +70,10 @@ class GlobalSearchCourses extends GlobalSearchModule implements GlobalSearchFull
         }
 
         // generate SQL for the given sidebar filter (semester, institute, seminar_type)
-        if ($filter['category'] === self::class || $filter['category'] === 'show_all_categories') {
+        if (
+            !empty($filter['category'])
+            && in_array($filter['category'], [self::class, 'show_all_categories'])
+        ) {
             if (!empty($filter['semester'])) {
                 if ($filter['semester'] === 'future') {
                     $semester = Semester::findCurrent();

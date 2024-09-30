@@ -29,8 +29,8 @@
 
     <h3><?= _('Zeiträume') ?></h3>
     <?
-        $cycle_date = $booking->assigned_course_date->cycle;
-        $booking_has_metadate = ($cycle_date instanceof SeminarCycleDate);
+        $cycle_date = $booking->assigned_course_date->cycle ?? null;
+        $booking_has_metadate = $cycle_date instanceof SeminarCycleDate;
         $intervals = $booking->getTimeIntervals()
     ?>
     <? if (count($intervals) === 1) : ?>
