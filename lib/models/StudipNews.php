@@ -251,10 +251,10 @@ class StudipNews extends SimpleORMap implements PrivacyObject
                 break;
             case 'sem':
                 $select_querypart   = 'CONCAT(news_id, "_", range_id) AS idx, range_id, seminare.Name AS title, '
-                    .'seminare.start_time AS start, news.*, seminare.start_time, sd1.name AS startsem, '
-                    .'IFNULL((SELECT semester_data.name FROM semester_data INNER JOIN semester_courses USING (semester_id) WHERE semester_courses.course_id = seminare.Seminar_id ORDER BY semester_data.beginn DESC LIMIT 1), "'._("unbegrenzt").'") AS endsem ';
-                $from_querypart     = 'news INNER JOIN news_range USING(news_id) INNER JOIN seminare ON Seminar_id = range_id '
-                    .'LEFT JOIN semester_data sd1 ON (start_time BETWEEN sd1.beginn AND sd1.ende) ';
+                    .'news.*, '
+                    .'IFNULL((SELECT semester_data.name FROM semester_data JOIN semester_courses USING (semester_id) WHERE semester_courses.course_id = seminare.Seminar_id ORDER BY semester_data.beginn ASC LIMIT 1), "'._('unbegrenzt').'") AS startsem, '
+                    .'IFNULL((SELECT semester_data.name FROM semester_data JOIN semester_courses USING (semester_id) WHERE semester_courses.course_id = seminare.Seminar_id ORDER BY semester_data.beginn DESC LIMIT 1), "'._('unbegrenzt').'") AS endsem ';
+                $from_querypart     = 'news INNER JOIN news_range USING(news_id) INNER JOIN seminare ON Seminar_id = range_id ';
                 if (Config::get()->SORT_NEWS_BY_CHDATE) {
                     $order_querypart = 'seminare.Name, news.chdate DESC, news.date DESC';
                 } else {

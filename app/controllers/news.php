@@ -493,7 +493,7 @@ class NewsController extends StudipController
             $this->news_enddate   = $this->getTimeStamp(Request::get('news_enddate'), 'end') ?: time();
         }
         // fetch news list
-        $this->news_items = StudipNews::getNewsRangesByFilter($GLOBALS['user']->id, $this->area_type, $this->news_searchterm, $this->news_startdate, $this->news_enddate, true, $limit+1);
+        $this->news_items = StudipNews::GetNewsRangesByFilter($GLOBALS['user']->id, $this->area_type, $this->news_searchterm, $this->news_startdate, $this->news_enddate, true, $limit+1);
         // build area and filter description
         if ($this->news_searchterm && $this->area_type && $this->area_type !== 'all') {
             if ($this->news_startdate && $this->news_enddate) {
