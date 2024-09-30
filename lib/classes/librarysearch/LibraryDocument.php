@@ -179,7 +179,7 @@ class LibraryDocument
      */
     public function getIssueDate($year_only = false): string
     {
-        if (!$this->csl_data['issued']) {
+        if (empty($this->csl_data['issued'])) {
             return '';
         }
         if ($year_only) {

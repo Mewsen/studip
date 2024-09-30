@@ -46,9 +46,9 @@ class LibraryFile extends StandardFile
         $file->size = '0';
         $file->mime_type = '';
         $file->metadata = $document->toJson();
-        $file->user_id = $user_id ? $user_id : $GLOBALS['user']->id;
+        $file->user_id = $user_id ?: $GLOBALS['user']->id;
         $file->filetype = get_called_class();
-        if ($document->csl_data['URL'] || $document->opac_link) {
+        if (!empty($document->csl_data['URL']) || $document->opac_link) {
             $file->metadata['url'] = $document->opac_link ?: $document->csl_data['URL'];
             $file->metadata['access_type'] = 'redirect';
         }
@@ -56,10 +56,10 @@ class LibraryFile extends StandardFile
 
         $file_ref = new FileRef();
         $file_ref->file_id = $file->id;
-        $file_ref->folder_id = $folder_id ? $folder_id : '';
+        $file_ref->folder_id = $folder_id ?: '';
         $file_ref->name = $file->name;
         $file_ref->downloads = 0;
-        $file_ref->description = $document->csl_data['description'] ? $document->csl_data['description'] : '';
+        $file_ref->description = trim($document->csl_data['description'] ?? '');
         $file_ref->content_terms_of_use_id = ContentTermsOfUse::findDefault()->id;
         $file_ref->user_id = $file->user_id;
         $file_ref->store();

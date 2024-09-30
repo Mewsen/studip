@@ -79,7 +79,7 @@
             <? endif ?>
                 <td style="text-align: right"><?= sprintf('%02d', ++$nr) ?></td>
                 <td>
-                    <a href="<?= $controller->url_for('profile?username=' . $waiting['username']) ?>" <? if ($waiting['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
+                    <a href="<?= $controller->link_for('profile', ['username' => $waiting['username']]) ?>" <? if ($waiting['mkdate'] >= $last_visitdate) echo 'class="new-member"'; ?>>
                         <?= Avatar::getAvatar($waiting['user_id'], $waiting['username'])->getImageTag(Avatar::SMALL, [
                             'style' => 'margin-right: 5px',
                             'title' => $fullname,

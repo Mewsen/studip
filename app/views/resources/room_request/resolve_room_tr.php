@@ -74,8 +74,8 @@
                        class="text-bottom radio-<?= htmlReady($room->id) ?>"
                        value="<?= htmlReady($room->id) ?>"
                     <?= $availability <= 0.0 ? 'disabled="disabled"' : '' ?>
-                <?= ($availability > 0 && $selected_rooms[$range_index] == $room->id)
-                    ? 'checked="checked"'
+                <?= ($availability > 0 && isset($selected_rooms[$range_index]) && $selected_rooms[$range_index] == $room->id)
+                    ? 'checked'
                     : ''?>>
                 <? if ($availability >= 1.0) : ?>
                     <?= Icon::create('check-circle', Icon::ROLE_STATUS_GREEN)->asImg(['class' => 'text-bottom']) ?>

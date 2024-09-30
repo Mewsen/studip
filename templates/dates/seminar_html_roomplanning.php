@@ -47,7 +47,7 @@ if (!empty($dates['regular']['turnus_data']) || !empty($dates['irregular'])) :
   $irregular_rooms = [];
   $irregular = [];
 
-  if (is_array($dates['irregular'])):
+  if (isset($dates['irregular']) && is_array($dates['irregular'])):
     foreach ($dates['irregular'] as $date) :
         if (empty($with_past_intervals) && $date->end_time < $now) {
             continue;

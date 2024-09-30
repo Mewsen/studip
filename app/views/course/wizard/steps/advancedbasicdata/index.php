@@ -1,4 +1,4 @@
-<?= $this->render_partial('basicdata/index.php', ['value' => $value]) ?>
+<?= $this->render_partial('basicdata/index.php', ['values' => $values]) ?>
 
 <section>
     <label for="wizard-subtitle">
@@ -16,11 +16,11 @@
     <label for="wizard-ects">
         <?= _('ECTS-Punkte') ?>
     </label>
-    <input type="text" name="ects" id="wizard-ects" size="20" maxlength="32" value="<?= htmlReady($values['ects']) ?>"/>
+    <input type="text" name="ects" id="wizard-ects" size="20" maxlength="32" value="<?= htmlReady($values['ects'] ?? '') ?>"/>
 </section>
 <section>
     <label for="wizard-maxmembers">
         <?= _('max. Teilnehmendenzahl') ?>
     </label>
-    <input type="number" name="maxmembers" id="wizard-maxmember" min="0" value="<?= htmlReady($values['maxmembers']) ?>"/>
+    <input type="number" name="maxmembers" id="wizard-maxmember" min="0" value="<?= htmlReady($values['maxmembers'] ?? '') ?>"/>
 </section>

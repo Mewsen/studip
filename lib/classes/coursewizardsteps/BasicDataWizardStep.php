@@ -556,9 +556,10 @@ class BasicDataWizardStep implements CourseWizardStep
         return [];
     }
 
-    public function getSearch($course_type, $institute_ids, $exclude_lecturers = [],$exclude_tutors = [])
+    public function getSearch($course_type)
     {
-        if (SeminarCategories::getByTypeId($course_type)->only_inst_user) {
+        $category = SeminarCategories::getByTypeId($course_type);
+        if ($category && $category->only_inst_user) {
             $search = 'user_inst';
         } else {
             $search = 'user';

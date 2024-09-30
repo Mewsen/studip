@@ -22,7 +22,7 @@ class URLFile extends StandardFile
             'access_type' => $data['access_type'] ?? "redirect"
         ];
         $file['user_id'] = $user_id;
-        $file['author_name'] = $data['author_name'] ?? get_fullname($file['user_id']);
+        $file['author_name'] = trim($data['author_name'] ?? '') ?: get_fullname($file['user_id']);
         $file['filetype'] = get_called_class();
         $file->store();
 
@@ -30,7 +30,7 @@ class URLFile extends StandardFile
         $fileref['file_id'] = $file->getId();
         $fileref['name'] = $file['name'];
         $fileref['downloads'] = 0;
-        $fileref['description'] = $data['description'] ?? '';
+        $fileref['description'] = trim($data['description'] ?? '');
         $fileref['content_terms_of_use_id'] = $data['content_terms_of_use_id'] ?? ContentTermsOfUse::findDefault()->id;
         $fileref['user_id'] = $user_id;
 

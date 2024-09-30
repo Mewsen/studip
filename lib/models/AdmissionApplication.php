@@ -127,6 +127,7 @@ class AdmissionApplication extends SimpleORMap implements PrivacyObject
                 $data['position'] = $cs->hasAdmissionRule('LimitedAdmission') ? $p : '-';
                 $data['visible'] = 'unknown';
                 $data['status'] = 'claiming';
+                $data['mkdate'] = AdmissionPriority::getMkdateForCourseAndUser($course_id, $cs->getId(), $user_id);
                 $claiming[] = $data;
             }
         }

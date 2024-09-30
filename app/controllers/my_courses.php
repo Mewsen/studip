@@ -383,7 +383,7 @@ class MyCoursesController extends AuthenticatedController
 
             if (Request::get('cmd') == 'suppose_to_kill') {
                 // check course admission
-                list(,$admission_end_time) = @array_values($course->getAdmissionTimeFrame());
+                $admission_end_time = $course->getAdmissionTimeFrame()['end_time'] ?? null;
 
                 $admission_enabled = $course->isAdmissionEnabled();
                 $admission_locked   = $course->isAdmissionLocked();

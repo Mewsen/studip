@@ -1059,10 +1059,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                                     'end'   => $date->end_time
                                 ];
                             }
-                            $interval['range']                         = 'CourseDate';
-                            $interval['range_id']                      = $date->id;
-                            $interval['booked_room']                   = $date->room_booking->resource_id;
-                            $interval['booking_id']                    = $date->room_booking->id;
+                            $interval['range'] = CourseDate::class;
+                            $interval['range_id'] = $date->id;
+                            $interval['booked_room'] = $date->room_booking->resource_id ?? null;
+                            $interval['booking_id'] = $date->room_booking->id ?? null;
                             $time_intervals[$cycle->id]['intervals'][] = $interval;
                         }
                     }
