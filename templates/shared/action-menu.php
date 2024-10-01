@@ -49,7 +49,7 @@
                 </a>
             <? elseif ($action['type'] === 'button'): ?>
                 <? if ($action['icon']): ?>
-                    <label class="undecorated">
+                    <label class="undecorated" tabindex="0">
                         <?= $action['icon']->asInput(false, $action['attributes'] + [
                             'class' => 'action-menu-item-icon',
                             'name'  => $action['name'],
