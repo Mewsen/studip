@@ -1,7 +1,7 @@
 <template>
-    <div class="cw-companion-box" :class="[mood]">
+    <div class="cw-companion-box" :class="[mood, border ? '' : 'borderless' ]">
         <div>
-            <p v-html="msgCompanion"></p>
+            <p class="cw-companion-message" v-html="msgCompanion"></p>
             <slot name="companionActions"></slot>
         </div>
     </div>
@@ -18,6 +18,10 @@ export default {
             validator: value => {
                 return ['default','unsure', 'special', 'sad', 'pointing', 'curious'].includes(value);
             }
+        },
+        border: {
+            type: Boolean,
+            default: true
         }
     }
 };

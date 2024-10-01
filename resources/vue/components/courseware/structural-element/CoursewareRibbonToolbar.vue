@@ -21,6 +21,15 @@
                                 id="cw-ribbon-tool-contents"
                             />
                         </courseware-tab>
+                        <courseware-tab
+                            :name="$gettext('Lernmaterialien')"
+                            :selected="showUnits"
+                            alias="units"
+                            ref="units"
+                            :index="1"
+                        >
+                            <CoursewareToolsUnits />
+                        </courseware-tab>
                     </courseware-tabs>
                     <button
                         :title="$gettext('schließen')"
@@ -37,6 +46,7 @@
 import CoursewareTabs from '../layouts/CoursewareTabs.vue';
 import CoursewareTab from '../layouts/CoursewareTab.vue';
 import CoursewareToolsContents from './CoursewareToolsContents.vue';
+import CoursewareToolsUnits from './CoursewareToolsUnits.vue';
 import { FocusTrap } from 'focus-trap-vue';
 import { mapActions, mapGetters } from 'vuex';
 
@@ -46,6 +56,7 @@ export default {
         CoursewareTabs,
         CoursewareTab,
         CoursewareToolsContents,
+        CoursewareToolsUnits,
         FocusTrap,
     },
     props: {
@@ -67,7 +78,7 @@ export default {
     data() {
         return {
             showContents: true,
-            showBlockAdder: false,
+            showUnits: false,
             trap: false,
             initialFocusElement: null
         };
@@ -94,7 +105,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            coursewareContainerAdder: 'coursewareContainerAdder'
+            coursewareContainerAdder: 'coursewareContainerAdder',
         }),
         scrollToCurrent() {
             setTimeout(() => {

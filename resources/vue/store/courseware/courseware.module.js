@@ -103,6 +103,13 @@ const getters = {
         const id = getters.currentElement;
         return rootGetters['courseware-structural-elements/byId']({ id });
     },
+    currentUnit(state, getters, rootState, rootGetters) {
+        const id = getters.currentStructuralElement.relationships?.unit?.data?.id;
+        if (id) {
+            return rootGetters['courseware-units/byId']({ id });
+        }
+        return null;
+    },
     currentElementBlocked(state, getters, rootState, rootGetters) {
         const elemData = getters.currentStructuralElement?.relationships?.['edit-blocker']?.data;
         return elemData !== null && elemData !== '' && getters.currentStructuralElement;

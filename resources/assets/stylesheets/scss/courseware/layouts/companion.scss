@@ -84,7 +84,12 @@ $companion-types: (
         margin-top: 8px;
     }
 
-    p {
+    &.borderless {
+        border: none;
+    }
+
+    .cw-companion-message {
         margin: 0 1em 10px 0;
+        color: var(--black);
     }
 }
