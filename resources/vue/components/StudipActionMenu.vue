@@ -33,7 +33,7 @@
                         <span v-else class="action-menu-no-icon"></span>
                         {{ item.label }}
                     </a>
-                    <label v-else-if="item.icon" class="undecorated" v-on="linkEvents(item)">
+                    <label v-else-if="item.icon" class="undecorated" v-on="linkEvents(item)" tabindex="0">
                         <studip-icon :shape="item.icon"
                                      :name="item.name"
                                      class="action-menu-item-icon"
