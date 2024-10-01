@@ -649,6 +649,7 @@ class RouteMap
         $group->delete('/stock-images/{id}', Routes\StockImages\StockImagesDelete::class);
 
         $group->post('/stock-images/{id}/blob', Routes\StockImages\StockImagesUpload::class);
+        $group->post('/stock-images/zip', Routes\StockImages\StockImagesZipUpload::class);
     }
 
     private function addAuthenticatedAvatarRoutes(RouteCollectorProxy $group): void

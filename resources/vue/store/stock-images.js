@@ -42,6 +42,14 @@ const actions = {
         return dispatch('stock-images/loadById', created, { root: true });
     },
 
+    async createFromZip({ dispatch, rootGetters, state }, [file]) {
+        const formData = new FormData();
+        formData.append('zip', file);
+        const resp =  await state.httpClient.post(`stock-images/zip`, formData);
+
+        return resp;
+    },
+
     async update({ dispatch, rootGetters, state }, { stockImage, attributes }) {
         console.debug('stockImage', stockImage);
         stockImage.attributes = { ...stockImage.attributes, ...attributes };

@@ -10,7 +10,12 @@
     >
         <template #dialogContent>
             <form id="stock-images-upload-form" class="default" @submit.prevent="onSubmit">
-                <UploadBox v-if="state === STATES.IDLE" @upload="onUpload" />
+                <UploadBox
+                    v-if="state === STATES.IDLE"
+                    type="image"
+                    :text="$gettext('Bild auswählen oder per Drag & Drop hierher ziehen')"
+                    @upload="onUpload"
+                />
                 <MetadataBox
                     v-if="state === STATES.UPLOADED"
                     :file="file"

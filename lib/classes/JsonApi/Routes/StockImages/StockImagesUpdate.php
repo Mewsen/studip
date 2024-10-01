@@ -30,9 +30,9 @@ class StockImagesUpdate extends JsonApiController
             throw new RecordNotFoundException();
         }
 
-        $json = $this->validate($request, $resource);
+        $json = $this->validate($request);
         $user = $this->getUser($request);
-        if (!Authority::canUpdateStockImage($user, $resource)) {
+        if (!Authority::canUpdateStockImage($user)) {
             throw new AuthorizationFailedException();
         }
         $resource = $this->updateResource($resource, $json);

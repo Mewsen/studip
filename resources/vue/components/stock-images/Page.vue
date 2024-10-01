@@ -1,6 +1,14 @@
 <template>
-    <div>
-        <ImagesPagination :per-page="perPage" :stock-images="filteredStockImages" v-model="page">
+    <div class="stock-images-page">
+        <studip-message-box v-if="showZipUploadMessage" :type="zipUploadMessageType">
+            {{ zipUploadMessage }}
+        </studip-message-box>
+        <ImagesPagination
+            v-show="!showUploadIndicator"
+            :per-page="perPage"
+            :stock-images="filteredStockImages"
+            v-model="page"
+        >
             <ImagesList
                 :checked-images="checkedImages"
                 :page="page"
@@ -12,11 +20,17 @@
                 @select="onSelectImage"
             />
         </ImagesPagination>
+        <studip-progress-indicator
+            v-show="showUploadIndicator"
+            class="image-upload-indicator"
+            :description="$gettext('Bilder werden hochgeladen...')"
+        >
+        </studip-progress-indicator>
         <MountingPortal mountTo="#stock-images-widget" name="sidebar-stock-images">
             <SearchWidget :query="query" @search="onSearch" />
             <OrientationFilterWidget v-model="filters" />
             <ColorFilterWidget v-model="filters" />
-            <ActionsWidget @initiateUpload="onUploadDialogShow" />
+            <ActionsWidget @initiateUpload="onUploadDialogShow" @initiateZipUpload="onZipUploadDialogShow" />
         </MountingPortal>
         <EditDialog
             :stock-image="selectedImage"
@@ -30,6 +44,11 @@
             @confirm="onUploadDialogConfirm"
             @cancel="showUpload = false"
         />
+        <ZipUploadDialog
+            :show="showZipUpload"
+            @confirm="onZipUploadDialogConfirm"
+            @cancel="showZipUpload = false"
+        ></ZipUploadDialog>
     </div>
 </template>
 
@@ -43,7 +62,11 @@ import ImagesPagination from './ImagesPagination.vue';
 import OrientationFilterWidget from './OrientationFilterWidget.vue';
 import SearchWidget from './SearchWidget.vue';
 import UploadDialog from './UploadDialog.vue';
+import ZipUploadDialog from './ZipUploadDialog.vue';
+import StudipMessageBox from '../StudipMessageBox.vue';
+import StudipProgressIndicator from '../StudipProgressIndicator.vue';
 import { searchFilterAndSortImages } from './filters.js';
+import { $gettext } from '../../../assets/javascripts/lib/gettext';
 
 export default {
     components: {
@@ -55,6 +78,9 @@ export default {
         OrientationFilterWidget,
         SearchWidget,
         UploadDialog,
+        ZipUploadDialog,
+        StudipMessageBox,
+        StudipProgressIndicator,
     },
     data: () => ({
         checkedImages: [],
@@ -67,6 +93,11 @@ export default {
         query: '',
         selectedImage: null,
         showUpload: false,
+        showZipUpload: false,
+        showZipUploadMessage: false,
+        zipUploadMessage: '',
+        zipUploadMessageType: 'success',
+        showUploadIndicator: false,
     }),
     computed: {
         ...mapGetters({
@@ -81,6 +112,7 @@ export default {
     methods: {
         ...mapActions({
             createStockImage: 'studip/stockImages/create',
+            createStockImagesFromZip: 'studip/stockImages/createFromZip',
             loadStockImages: 'stock-images/loadWhere',
             updateStockImage: 'studip/stockImages/update',
         }),
@@ -110,8 +142,43 @@ export default {
                     console.error('Could not create stock image', error);
                 });
         },
+        onZipUploadDialogConfirm({ file }) {
+            this.showZipUpload = false;
+            this.showUploadIndicator = true;
+            this.createStockImagesFromZip([file])
+                .then((resp) => {
+                    this.showUploadIndicator = false;
+                    this.showZipUploadMessage = true;
+                    this.zipUploadMessageType = 'success';
+                    this.zipUploadMessage = this.$gettextInterpolate(
+                        this.$ngettext(
+                            '%{length} Bild wurde hinzugefügt',
+                            '%{length} Bilder wurden hinzugefügt',
+                            resp.data['image-count']
+                        ),
+                        {
+                            length: resp.data['image-count'],
+                        }
+                    );
+                    this.$nextTick(() => {
+                        this.fetchStockImages();
+                    });
+                })
+                .catch((error) => {
+                    this.showUploadIndicator = false;
+                    this.showZipUploadMessage = true;
+                    this.zipUploadMessageType = 'error';
+                    this.zipUploadMessage = this.$gettext('Beim importieren der Bilder ist ein Fehler aufgetreten.');
+                    this.fetchStockImages();
+                });
+        },
         onUploadDialogShow() {
             this.showUpload = true;
+        },
+        onZipUploadDialogShow() {
+            this.showZipUpload = true;
+            this.showZipUploadMessage = false;
+            this.zipUploadMessage = '';
         },
         async fetchStockImages() {
             const loadLimit = 30;
@@ -152,3 +219,13 @@ export default {
     },
 };
 </script>
+<style lang="scss">
+.stock-images-page {
+    height: 100%;
+
+    .image-upload-indicator {
+        top: 40%;
+        position: relative;
+    }
+}
+</style>

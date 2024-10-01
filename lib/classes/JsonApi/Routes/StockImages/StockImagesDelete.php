@@ -22,7 +22,7 @@ class StockImagesDelete extends JsonApiController
             throw new RecordNotFoundException();
         }
 
-        if (!Authority::canDeleteStockImage($this->getUser($request), $resource)) {
+        if (!Authority::canDeleteStockImage($this->getUser($request))) {
             throw new AuthorizationFailedException();
         }
         $resource->delete();

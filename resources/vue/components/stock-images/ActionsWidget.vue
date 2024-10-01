@@ -6,6 +6,10 @@
                     <studip-icon shape="upload" class="widget-action-icon" />
                     <button @click="onUploadClick">{{ $gettext('Bild hinzufügen') }}</button>
                 </li>
+                <li>
+                    <studip-icon shape="import" class="widget-action-icon" />
+                    <button @click="onZipUploadClick">{{ $gettext('Bildersammlung importieren') }}</button>
+                </li>
             </ul>
         </template>
     </SidebarWidget>
@@ -21,6 +25,9 @@ export default {
         onUploadClick() {
             this.$emit('initiateUpload');
         },
+        onZipUploadClick() {
+            this.$emit('initiateZipUpload');
+        }
     },
 };
 </script>

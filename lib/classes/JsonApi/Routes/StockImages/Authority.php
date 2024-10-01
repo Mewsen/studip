@@ -34,7 +34,7 @@ class Authority
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public static function canUpdateStockImage(User $user, StockImage $resource): bool
+    public static function canUpdateStockImage(User $user): bool
     {
         return self::canCreateStockImage($user);
     }
@@ -42,7 +42,7 @@ class Authority
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public static function canUploadStockImage(User $user, StockImage $resource): bool
+    public static function canUploadStockImage(User $user): bool
     {
         return self::canCreateStockImage($user);
     }
@@ -50,7 +50,7 @@ class Authority
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public static function canDeleteStockImage(User $user, StockImage $resource): bool
+    public static function canDeleteStockImage(User $user): bool
     {
         return self::canCreateStockImage($user);
     }

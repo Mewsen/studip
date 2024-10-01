@@ -5,9 +5,9 @@
                 <div class="icon-upload">
                     <studip-icon shape="upload" :size="100" alt="" :role="dragging ? 'info_alt' : 'clickable' "/>
                 </div>
-                <strong>{{ $gettext('Bild auswählen oder per Drag & Drop hierher ziehen') }}</strong>
+                <strong>{{ text }}</strong>
                 <div class="upload-button-holder">
-                    <input type="file" name="file" tabindex="-1" accept="image/*" ref="upload"
+                    <input type="file" name="file" tabindex="-1" :accept="acceptedFileType" ref="upload"
                            @change="onUpload"
                            @dragenter="setDragging(true)"
                            @dragleave="setDragging(false)"
@@ -20,9 +20,30 @@
 
 <script>
 export default {
+    props: {
+        type: {
+            type: String,
+            required: true,
+            validator: (type) => {
+                return ['image', '.zip'].includes(type);
+            },
+        },
+        text: {
+            type: String,
+            required: true,
+        }
+    },
     data: () => ({
         dragging: false,
     }),
+    computed: {
+        acceptedFileType() {
+            if (this.type === 'image') {
+                return 'image/gif, image/jpeg, image/png, image/webp';
+            }
+            return this.type;
+        }
+    },
     methods: {
         onUpload() {
             const files = this.$refs.upload.files;
