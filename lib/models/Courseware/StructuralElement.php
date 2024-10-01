@@ -391,6 +391,19 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
                         return true;
                     }
 
+                    if ($task->isSubmitted()) {
+                        if ($task->visible) {
+                            return true;
+                        }
+                        $solvers = $task->getTaskGroup()->getSolvers();
+                        foreach ($solvers as $solver) {
+                            if ($solver->id === $user->id) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+
                     return $task->userIsASolver($user);
                 }
 
@@ -1239,5 +1252,10 @@ SQL;
             'range_id = ? AND range_type = ?',
             [$this->id, self::class]
         );
+    }
+
+    public function isTaskVisible(): bool
+    {
+        return $this->payload['task-visibility'];
     }
 }

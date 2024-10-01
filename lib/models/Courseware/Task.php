@@ -21,6 +21,7 @@ use User;
  * @property int $submitted database column
  * @property string|null $renewal database column
  * @property int $renewal_date database column
+ * @property int $visible database column
  * @property int|null $feedback_id database column
  * @property int $mkdate database column
  * @property int $chdate database column
@@ -90,6 +91,11 @@ class Task extends \SimpleORMap
         parent::configure($config);
     }
 
+    public function getTaskGroup(): TaskGroup
+    {
+        return $this->task_group;
+    }
+
     /**
      * Returns the structural element of this task.
      * This structural element and all its children are part of the task.
@@ -130,6 +136,16 @@ class Task extends \SimpleORMap
                 if ($this->solver_id === $user->id) {
                     return true;
                 }
+
+                if ($this->visible) {
+                    $solvers = $this->getTaskGroup()->getSolvers();
+                    foreach ($solvers as $solver) {
+                        if ($solver->id === $user->id) {
+                            return true;
+                        }
+                    }
+                }
+
                 break;
 
             case 'group':
@@ -232,6 +248,12 @@ class Task extends \SimpleORMap
     {
         $this->renewal = 'granted';
         $this->renewal_date = $renewalDate->getTimestamp();
+        $this->store();
+    }
+
+    public function setVisibility(bool $visibility): void
+    {
+        $this->visible = (int) $visibility;
         $this->store();
     }
 

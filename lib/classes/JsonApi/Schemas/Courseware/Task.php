@@ -36,6 +36,7 @@ class Task extends SchemaProvider
             'submitted' => (bool) $resource['submitted'],
             'renewal' => empty($resource['renewal']) ? null : (string) $resource['renewal'],
             'renewal-date' => date('c', $resource['renewal_date']),
+            'visible' => (bool) $resource['visible'],
             'mkdate' => date('c', $resource['mkdate']),
             'chdate' => date('c', $resource['chdate']),
         ];

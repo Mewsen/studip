@@ -324,7 +324,7 @@ class Authority
 
     public static function canShowTask(User $user, Task $resource): bool
     {
-        return self::canUpdateTask($user, $resource);
+        return self::canUpdateTask($user, $resource) || $resource->visible;
     }
 
     public static function canIndexTasks(User $user): bool

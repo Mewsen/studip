@@ -81,6 +81,10 @@ class TasksUpdate extends JsonApiController
             $resource->requestRenewal();
         }
 
+        if (self::arrayHas($json, 'data.attributes.visible')) {
+            $resource->setVisibility(self::arrayGet($json, 'data.attributes.visible'));
+        }
+
         return $resource;
     }
 

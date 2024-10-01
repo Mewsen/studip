@@ -2,7 +2,15 @@
     <div class="cw-dashboard-tasks-wrapper">
         <table v-if="tasks.length > 0" class="default">
             <colgroup>
-                <col />
+                <col style="width: 5%" />
+                <col style="width: 20%" />
+                <col style="width: 10%" />
+                <col style="width: 10%" />
+                <col style="width: 5%" />
+                <col style="width: 15%" />
+                <col style="width: 15%" />
+                <col style="width: 15%" />
+                <col style="width: 5%" />
             </colgroup>
             <thead>
                 <tr>
@@ -12,6 +20,7 @@
                     <th>{{ $gettext('Abgabefrist') }}</th>
                     <th>{{ $gettext('Abgabe') }}</th>
                     <th class="responsive-hidden">{{ $gettext('Verlängerungsanfrage') }}</th>
+                    <th class="responsive-hidden">{{ $gettext('Für Teilnehmende freigeben') }}</th>
                     <th class="responsive-hidden">{{ $gettext('Anmerkung') }}</th>
                     <th class="actions">{{ $gettext('Aktionen') }}</th>
                 </tr>
@@ -52,6 +61,23 @@
                         </span>
                         <span v-show="task.attributes.renewal === 'granted'">
                             {{ $gettext('verlängert bis') }}: {{ getReadableDate(task.attributes['renewal-date']) }}
+                        </span>
+                    </td>
+                    <td class="responsive-hidden">
+                        <span v-if="task.attributes.submitted">
+                            <button
+                                class="button"
+                                v-if="!task.attributes.visible"
+                                @click="toggleVisibilityOn(task)"
+                            >
+                                {{ $gettext('Freigeben') }}
+                            </button>
+                            <button
+                                class="button"
+                                v-if="task.attributes.visible"
+                                @click="toggleVisibilityOff(task)">
+                                {{ $gettext('Freigabe widerrufen') }}
+                            </button>
                         </span>
                     </td>
                     <td class="responsive-hidden">
@@ -166,6 +192,13 @@ export default {
                 return result;
             });
         },
+        taskVisibilities() {
+            let visibilities = [];
+            for (const task of this.tasks) {
+                visibilities[`${task.task.id}`] = task.element.attributes.payload['task-visibility'];
+            }
+            return visibilities;
+        }
     },
     methods: {
         ...mapActions({
@@ -175,6 +208,7 @@ export default {
             companionSuccess: 'companionSuccess',
             companionError: 'companionError',
             createCoursewareUnit: 'courseware-units/create',
+            loadStructuralElement: 'courseware-structural-elements/loadById'
         }),
         getTaskMenuItems(task, status, element) {
             let menuItems = [];
@@ -277,6 +311,37 @@ export default {
             this.showFeedbackDialog = true;
             this.currentTaskFeedback = feedback.attributes.content;
         },
+        toggleVisibilityOn(task) {
+            let attributes = task.attributes;
+            attributes['visible'] = true;
+            this.toggleVisibility(task, attributes);
+        },
+        toggleVisibilityOff(task) {
+            let attributes = task.attributes;
+            attributes['visible'] = false;
+            this.toggleVisibility(task, attributes);
+        },
+        async toggleVisibility(task, attributes) {
+            await this.updateTask({
+                attributes: attributes,
+                taskId: task.id,
+            });
+
+            const taskGroup = this.getTaskGroupById({ id: task.relationships['task-group'].data.id });
+            const taskTitle = taskGroup.attributes.title;
+
+            if (attributes.visible) {
+                this.companionSuccess({
+                    info: this.$gettextInterpolate(this.$gettext('"%{ title }" wurde freigegeben.'),
+                    { title: taskTitle }),
+                });
+            } else {
+                this.companionSuccess({
+                    info: this.$gettextInterpolate(this.$gettext('Die Freigabe für %{ "title }" wurde zurückgenommen.'),
+                    { title: taskTitle }),
+                });
+            }
+        }
     },
 };
 </script>
