@@ -891,7 +891,7 @@ table.course-search {
 
     caption.legend {
         box-sizing: border-box;
-        background-color: $fieldset-header;
+        background-color: var(--color--table-header);
         border: 1px solid var(--color--table-border);
         border-bottom: 0;
         color: var(--brand-color-dark);
@@ -962,7 +962,7 @@ table.show-tree {
             }
 
             a:hover {
-                background-color: $fieldset-header !important;
+                background-color: var(--color--table-header) !important;
                 color: var(--base-color) !important;
             }
         }

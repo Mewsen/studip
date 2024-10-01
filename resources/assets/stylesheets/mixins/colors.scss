@@ -120,10 +120,6 @@ $brown-60: mix($brown, #fff, 60%); // #ca9eaf
 $brown-40: mix($brown, #fff, 40%); // #dcbeb4
 $brown-20: mix($brown, #fff, 20%); // #edded9
 
-// $fieldset-header: $content-color-20;
-$fieldset-header: $dark-gray-color-10;
-$fieldset-border: $base-color-20;
-
 // contrast colors
 $contrast-content-white: text-contrast($content-color, #ffffff, #000000);
 $contrast-content-gray: text-contrast($content-color, $dark-gray-color, #000000 , 67);
@@ -270,6 +266,9 @@ $color--table-header: $color--gray-6;
 $color--table-border: $color--gray-6;
 $color--table-focus: $color--gray-6;
 $color--table-hover: $color--gray-6;
+
+$color--fieldset-header: $color--gray-6;
+$color--fieldset-border: $color--gray-5;
 
 $color--button-background: $color--white;
 $color--button-border: $color--blue-1;

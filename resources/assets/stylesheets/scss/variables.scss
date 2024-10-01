@@ -123,8 +123,6 @@ $grid-gap: 0;
     #{"--"}dark-violet-40: $dark-violet-40;
     #{"--"}dark-violet-60: $dark-violet-60;
     #{"--"}dark-violet-80: $dark-violet-80;
-    #{"--"}fieldset-border: $fieldset-border;
-    #{"--"}fieldset-header: $fieldset-header;
     #{"--"}green: $green;
     #{"--"}green-20: $green-20;
     #{"--"}green-40: $green-40;
@@ -235,6 +233,9 @@ $grid-gap: 0;
     #{"--"}color--table-border: $color--table-border;
     #{"--"}color--table-focus: $color--table-focus;
     #{"--"}color--table-hover: $color--table-hover;
+
+    #{"--"}color--fieldset-border: $color--fieldset-border;
+    #{"--"}color--fieldset-header: $color--fieldset-header;
 
     #{"--"}color--button-background: $color--button-background;
     #{"--"}color--button-border: $color--button-border;

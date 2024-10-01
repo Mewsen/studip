@@ -201,15 +201,15 @@ form.default {
     fieldset {
         box-sizing: border-box;
         border: none;
-        border: solid 1px var(--content-color-40);
+        border: solid 1px var(--color--fieldset-border);
         margin: 0 0 15px;
         min-width: auto;
         padding: 0 0 10px 0;
 
         > legend {
             box-sizing: border-box;
-            background-color: var(--fieldset-header);
-            border: solid 1px var(--content-color-40);
+            background-color: var(--color--fieldset-header);
+            border: solid 1px var(--color--fieldset-border);
             border-bottom: 0;
             font-size: $font-size-h3;
             padding: 10px;
