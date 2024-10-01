@@ -121,7 +121,26 @@ class ActionMenu
                 this.position = false;
             }
         }
+
+        this.attachEventHandlers();
+
         this.update();
+    }
+
+    // Close all action menus when the escape key is pressed and rotate through all its items
+    // when TAB or SHIFT + TAB is pressed.
+    attachEventHandlers() {
+        this.menu[0].addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                this.close(true);
+            } else if (event.key === 'Tab' && this.is_open) {
+                this.tabThroughItems(event.shiftKey);
+                event.preventDefault();
+            } else if (event.key === 'Enter' && event.target.matches('label')) {
+                event.target.querySelector('button,input').click();
+                event.preventDefault();
+            }
+        });
     }
 
     toggleScrollHandler(active) {
@@ -169,17 +188,21 @@ class ActionMenu
     /**
      * Toggle the menus display state. Pass a state to enforce it.
      */
-    toggle(state = null) {
+    toggle(state = null, focus = false) {
         this.is_open = state === null ? !this.is_open : state;
 
         this.update();
 
         if (this.is_open) {
             this.reposition();
-            this.menu.find('.action-menu-icon').focus();
             ActionMenu.openMenus.push(this);
         } else {
             ActionMenu.openMenus = ActionMenu.openMenus.filter(menu => menu !== this);
+        }
+
+        // Always focus the toggle element
+        if (this.is_open || focus) {
+            this.menu.find('.action-menu-icon').focus();
         }
 
         this.toggleScrollHandler(ActionMenu.openMenus.filter(menu => menu.position).length > 0);
@@ -236,36 +259,28 @@ class ActionMenu
      * Handles the rotation through the action menu items when the first
      * or last element of the menu has been reached.
      *
-     * @param menu The menu whose items shall be rotated through.
-     *
      * @param reverse Whether to rotate in reverse (true) or not (false).
      *     Defaults to false.
      */
-    static tabThroughItems(menu, reverse = false) {
-        if (reverse) {
-            //Put the focus on the last link in the menu, if the first link has the focus:
-            if (jQuery(menu).find('a:first:focus').length > 0) {
-                //Put the focus on the action menu button:
-                jQuery(menu).find('button.action-menu-icon').focus();
-                return true;
-            } else if (jQuery(menu).find('button.action-menu-icon:focus').length > 0) {
-                //Put the focus on the last action menu item:
-                jQuery(menu).find('a:last').focus();
-                return true;
-            }
-        } else {
-            //Put the focus on the first link in the menu, if the last link has the focus:
-            if (jQuery(menu).find('a:last:focus').length > 0) {
-                //Put the focus on the action menu button:
-                jQuery(menu).find('button.action-menu-icon').focus();
-                return true;
-            }  else if (jQuery(menu).find('button.action-menu-icon:focus').length > 0) {
-                //Put the focus on the first action menu item:
-                jQuery(menu).find('a:first').focus();
-                return true;
-            }
+    tabThroughItems(reverse = false) {
+        const items = Array.from(this.menu[0].querySelectorAll([
+            '.action-menu-icon',
+            '.action-menu-item:not(.action-menu-item-disabled) a',
+            '.action-menu-item:not(.action-menu-item-disabled) button',
+            '.action-menu-item:not(.action-menu-item-disabled) label',
+        ].join(',')));
+
+        // Get index of currently focussed element
+        let index = items.findIndex(element => element === document.activeElement);
+        if (index === -1) {
+            index = 0;
         }
-        return false;
+
+        // Get new index based on direction
+        index = (index + (reverse ? -1 : 1) + items.length) % items.length;
+
+        // Focus element
+        items[index].focus();
     }
 }
 
