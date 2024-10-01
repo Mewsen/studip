@@ -84,8 +84,7 @@
             </td>
             <td>
                 <?= $semester->absolute_seminars_count ?>
-                <?= sprintf(_('(+%u implizit)'),
-                            $semester->continuous_seminars_count + $semester->duration_seminars_count) ?>
+                <?= sprintf(_('(+%u implizit)'), $semester->continuous_seminars_count) ?>
             </td>
             <td class="actions" nowrap>
 

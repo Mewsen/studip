@@ -33,7 +33,6 @@
  * @property-read mixed $past additional field
  * @property-read mixed $short_name additional field
  * @property mixed $absolute_seminars_count additional field
- * @property mixed $duration_seminars_count additional field
  * @property mixed $continuous_seminars_count additional field
  */
 class Semester extends SimpleORMap
@@ -56,10 +55,6 @@ class Semester extends SimpleORMap
         };
 
         $config['additional_fields']['absolute_seminars_count'] = [
-            'get' => 'seminarCounter',
-            'set' => false,
-        ];
-        $config['additional_fields']['duration_seminars_count'] = [
             'get' => 'seminarCounter',
             'set' => false,
         ];
@@ -320,17 +315,15 @@ class Semester extends SimpleORMap
         if ($this->seminar_counts === null) {
             $query = "
                 SELECT SUM(IF(semester_courses.semester_id IS NULL, 1, 0)) AS continuous,
-                       0 AS duration,
                        SUM(IF(semester_courses.semester_id IS NOT NULL, 1, 0)) AS absolute
                 FROM seminare
-                    LEFT JOIN semester_courses ON (seminare.Seminar_id = semester_courses.course_id)
-                WHERE start_time <= :beginn
-                    AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = :semester_id)
-            ";
+                LEFT JOIN semester_courses ON (seminare.Seminar_id = semester_courses.course_id)
+                WHERE semester_courses.semester_id IS NULL
+                   OR semester_courses.semester_id = :semester_id";
             $statement = DBManager::get()->prepare($query);
-            $statement->bindValue(':beginn', $this['beginn']);
-            $statement->bindValue(':semester_id', $this['semester_id']);
+            $statement->bindValue(':semester_id', $this->id);
             $statement->execute();
+
             $this->seminar_counts = $statement->fetch(PDO::FETCH_ASSOC);
         }
 
