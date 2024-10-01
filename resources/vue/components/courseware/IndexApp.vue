@@ -9,9 +9,6 @@
                 :ordered-structural-elements="orderedStructuralElements"
                 @select="selectStructuralElement"
             ></courseware-structural-element>
-            <MountingPortal mountTo="#courseware-action-widget" name="sidebar-actions">
-                <courseware-action-widget v-if="!showSearchResults && canEditSelected" :structural-element="selected"></courseware-action-widget>
-            </MountingPortal>
             <MountingPortal mountTo="#courseware-search-widget" name="sidebar-search">
                 <courseware-search-widget v-if="selected !== null"></courseware-search-widget>
             </MountingPortal>
@@ -35,7 +32,6 @@ import CoursewareStructuralElement from './structural-element/CoursewareStructur
 import CoursewareSearchResults from './structural-element/CoursewareSearchResults.vue';
 import CoursewareCompanionBox from './layouts/CoursewareCompanionBox.vue';
 import CoursewareCompanionOverlay from './layouts/CoursewareCompanionOverlay.vue';
-import CoursewareActionWidget from './widgets/CoursewareActionWidget.vue';
 import CoursewareSearchWidget from './widgets/CoursewareSearchWidget.vue';
 
 import StudipProgressIndicator from '../StudipProgressIndicator.vue';
@@ -46,7 +42,6 @@ export default {
     components: {
         CoursewareStructuralElement,
         CoursewareSearchResults,
-        CoursewareActionWidget,
         CoursewareCompanionBox,
         StudipProgressIndicator,
         CoursewareSearchWidget,
@@ -81,13 +76,6 @@ export default {
                     return this.$gettext('Beim Laden der Seite ist ein Fehler aufgetreten.');
             }
         },
-        canEditSelected() {
-            if (this.selected) {
-                return this.selected.attributes['can-edit'];
-            }
-
-            return false;
-        }
     },
     methods: {
         ...mapActions({

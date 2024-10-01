@@ -84,6 +84,7 @@
                                 :context="structuralElement.attributes.title"
                                 @editCurrentElement="menuAction('editCurrentElement')"
                                 @addElement="menuAction('addElement')"
+                                @exportElement="menuAction('exportElement')"
                                 @deleteCurrentElement="menuAction('deleteCurrentElement')"
                                 @showInfo="menuAction('showInfo')"
                                 @setBookmark="menuAction('setBookmark')"
@@ -1128,54 +1129,34 @@ export default {
         },
 
         menuItems() {
-            let menu = [
-                { id: 5, label: this.$gettext('Informationen anzeigen'), icon: 'info', emit: 'showInfo' },
-                { id: 6, label: this.$gettext('Lesezeichen setzen'), icon: 'star', emit: 'setBookmark' },
-            ];
-            if (this.isFeedbackActivated) {
-                if (this.canCreateFeedbackElement && !this.hasFeedbackElement) {
-                    menu.push({
-                        id: 7,
-                        label: this.$gettext('Feedback aktivieren'),
-                        icon: 'feedback',
-                        emit: 'showFeedbackCreate',
-                    });
-                }
-                if (this.hasFeedbackElement) {
-                    menu.push({
-                        id: 7,
-                        label: this.$gettext('Feedback anzeigen'),
-                        icon: 'feedback',
-                        emit: 'showFeedback',
-                    });
-                }
-            }
+            let menu = [];
 
-            if (this.oerEnableSuggestions && this.inCourse && this.userId !== this.structuralElement.relationships.owner.data.id) {
-                menu.push(
-                    { id: 8, label: this.$gettext('Seite für OER Campus vorschlagen'), icon: 'oer-campus',
-                        emit: 'showSuggest' }
-                );
-            }
 
-            if (!document.documentElement.classList.contains('responsive-display')) {
-                menu.push(
-                    { id: 9, label: this.$gettext('Als Vollbild anzeigen'), icon: 'screen-full',
-                        emit: 'activateFullscreen'},
-                );
-            }
 
             if (this.canEdit) {
+                menu.push({ id: 1, label: this.$gettext('Seite hinzufügen'), icon: 'add', emit: 'addElement' });
+                menu.push({ id: 2, label: this.$gettext('Seite exportieren'), icon: 'export', emit: 'exportElement' });
+                menu.push({ id: 3, type: 'separator'});
+
+                if (this.blockedByAnotherUser && this.userIsTeacher) {
+                    menu.push({
+                        id: 4,
+                        label: this.textRemoveLock.title,
+                        icon: 'lock-unlocked',
+                        emit: 'removeLock',
+                    });
+                }
                 if (!this.blockedByAnotherUser) {
                     menu.push({
-                        id: 1,
+                        id: 5,
                         label: this.$gettext('Seiteneinstellungen'),
                         icon: 'settings',
                         emit: 'editCurrentElement',
                     });
                     if (this.userIsTeacher) {
+                        menu.push({ id: 7, type: 'separator'});
                         menu.push({
-                            id: 2,
+                            id: 8,
                             label: this.commentable
                                     ? this.$gettext('Kommentare abschalten')
                                     : this.$gettext('Kommentare aktivieren'),
@@ -1184,35 +1165,64 @@ export default {
                         });
                         if (!this.hasFeedback && !this.displayFeedback) {
                             menu.push({
-                                id: 3,
+                                id: 9,
                                 label: this.$gettext('Anmerkungen aktivieren'),
                                 icon: 'exclaim-circle',
                                 emit: 'showNote'
                             });
                         }
                     }
+                    menu.push({ id: 11, type: 'separator'});
                 }
-                if (this.blockedByAnotherUser && this.userIsTeacher) {
+
+                if (this.deletable && this.canEdit && !this.isTask && !this.blocked) {
                     menu.push({
-                        id: 1,
-                        label: this.textRemoveLock.title,
-                        icon: 'lock-unlocked',
-                        emit: 'removeLock',
+                        id: 6,
+                        label: this.$gettext('Seite löschen'),
+                        icon: 'trash',
+                        emit: 'deleteCurrentElement',
                     });
                 }
-                menu.push({ id: 4, label: this.$gettext('Seite hinzufügen'), icon: 'add', emit: 'addElement' });
             }
+            if (this.isFeedbackActivated) {
+                if (this.canCreateFeedbackElement && !this.hasFeedbackElement) {
+                    menu.push({
+                        id: 10,
+                        label: this.$gettext('Feedback aktivieren'),
+                        icon: 'feedback',
+                        emit: 'showFeedbackCreate',
+                    });
+                }
+                if (this.hasFeedbackElement) {
+                    menu.push({
+                        id: 10,
+                        label: this.$gettext('Feedback anzeigen'),
+                        icon: 'feedback',
+                        emit: 'showFeedback',
+                    });
+                }
+            }
+            menu.push({ id: 12, label: this.$gettext('Lesezeichen setzen'), icon: 'star', emit: 'setBookmark' });
+
+            if (this.oerEnableSuggestions && this.inCourse && this.userId !== this.structuralElement.relationships.owner.data.id) {
+                menu.push(
+                    { id: 13, label: this.$gettext('Seite für OER Campus vorschlagen'), icon: 'oer-campus',
+                        emit: 'showSuggest' }
+                );
+            }
+
             if (this.context.type === 'users') {
-                menu.push({ id: 10, label: this.$gettext('Öffentlichen Link erzeugen'), icon: 'group', emit: 'linkElement' });
+                menu.push({ id: 14, label: this.$gettext('Öffentlichen Link erzeugen'), icon: 'group', emit: 'linkElement' });
             }
-            if (this.deletable && this.canEdit && !this.isTask && !this.blocked) {
-                menu.push({
-                    id: 11,
-                    label: this.$gettext('Seite löschen'),
-                    icon: 'trash',
-                    emit: 'deleteCurrentElement',
-                });
+
+            if (!document.documentElement.classList.contains('responsive-display')) {
+                menu.push({ id: 15, type: 'separator'});
+                menu.push(
+                    { id: 16, label: this.$gettext('Als Vollbild anzeigen'), icon: 'screen-full',
+                        emit: 'activateFullscreen'},
+                );
             }
+
             menu.sort((a, b) => a.id - b.id);
 
             return menu;
@@ -1429,6 +1439,7 @@ export default {
             showElementEditDialog: 'showElementEditDialog',
             showElementAddDialog: 'showElementAddDialog',
             showElementAddChooserDialog: 'showElementAddChooserDialog',
+            showElementExportChooserDialog: 'showElementExportChooserDialog',
             showElementExportDialog: 'showElementExportDialog',
             showElementPdfExportDialog: 'showElementPdfExportDialog',
             showElementInfoDialog: 'showElementInfoDialog',
@@ -1493,6 +1504,9 @@ export default {
                 case 'addElement':
                     this.errorEmptyChapterName = false;
                     this.showElementAddChooserDialog(true);
+                    break;
+                case 'exportElement':
+                    this.showElementExportChooserDialog(true);
                     break;
                 case 'deleteCurrentElement':
                     await this.loadStructuralElement(this.currentId);
