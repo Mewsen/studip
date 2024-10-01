@@ -437,7 +437,7 @@ class JsonApiController
         $request = $this->container->get('request');
         if ($this->doesRequestHaveBody($request)) {
             $contentType = $request->getHeader(HeaderParametersParserInterface::HEADER_CONTENT_TYPE);
-            if (count($contentType)) {
+            if (count($contentType) > 0) {
                 $mediaType = $this->factory->createMediaType(
                     MediaTypeInterface::JSON_API_TYPE,
                     MediaTypeInterface::JSON_API_SUB_TYPE
@@ -453,11 +453,6 @@ class JsonApiController
 
     private function doesRequestHaveBody(Request $request): bool
     {
-        if (count($request->getHeader('Transfer-Encoding'))) {
-            return true;
-        }
-        $contentLength = $request->getHeader('Content-Length');
-
-        return count($contentLength) && $contentLength[0] > 0;
+        return in_array($request->getMethod(), ['POST', 'PATCH']);
     }
 }
