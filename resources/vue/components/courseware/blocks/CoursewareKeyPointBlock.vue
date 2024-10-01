@@ -11,7 +11,9 @@
         >
             <template #content>
                 <div class="cw-keypoint-content" :class="['cw-keypoint-' + currentColor]">
-                    <studip-icon v-if="currentIcon" :size="48" :shape="currentIcon" :role="currentRole" />
+                    <div class="cw-keypoint-icon-wrapper">
+                        <StudipIcon v-if="currentIcon" :size="48" :shape="currentIcon" role="info" class="cw-keypoint-icon" />
+                    </div>
                     <p class="cw-keypoint-sentence">{{ currentText }}</p>
                 </div>
             </template>
@@ -112,9 +114,17 @@ export default {
             return this.contentIcons;
         },
         colors() {
-            return this.mixinColors.filter(
-                (color) => color.icon && color.class !== 'white' && color.class !== 'studip-lightblue'
+             let colors = this.mixinColors.filter(
+                (color) => (color.icon && color.class !== 'white' && color.class !== 'studip-lightblue') 
+                || color.class === 'royal-purple' || color.class === 'apple-green' || color.class === 'pumpkin' || color.class === 'verdigris' || color.class === 'mulberry'
             );
+
+            return colors.map((color) => {
+                if (!color.icon) {
+                     color.icon = color.class;
+                }
+                return color;
+            });
         },
         text() {
             return this.block?.attributes?.payload?.text;

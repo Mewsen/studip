@@ -2,99 +2,147 @@
 @import '../variables.scss';
 
 .cw-keypoint-content {
-    display: flex;
-    min-height: 52px;
-    padding: 1.5em 2.5em 1.5em 2.5em;
-    border-style: solid;
-    border-width: 2px;
-    align-items: center;
-}
+    position: relative;
+    min-height: 75px;
 
-.cw-keypoint-content > img {
-    flex-shrink: 0;
+    .cw-keypoint-icon-wrapper {
+        position: absolute;
+        top: -16px;
+        left: 0;
+        height: 48px;
+        width: 48px;
+        background-color: var(--white);
+        border: solid 4px var(--black);
+        border-radius: 64px;
+        padding: 16px;
+        margin: 1px 0;
+    }
+    
+    .cw-keypoint-sentence {
+        display: block;
+        background-color: var(--dark-gray-color-20);
+        margin: 16px 0 0 16px;
+        padding: 16px 16px 16px 96px;
+        width: calc(100% - 128px);
+        font-size: 20px;
+    }
 }
 
 .cw-keypoint-red {
-    border-color: map-get($icon-colors, 'icon-red');
+    .cw-keypoint-icon-wrapper {
+        border-color: var(--red);
+    }
+    .cw-keypoint-icon {
+        filter: brightness(0) saturate(100%) invert(8%) sepia(95%) saturate(6904%) hue-rotate(1deg) brightness(95%) contrast(109%);
+    }
+    .cw-keypoint-sentence {
+        background-color: var(--red-20);
+    }
 }
 
 .cw-keypoint-blue {
-    border-color: map-get($icon-colors, 'icon-blue');
+    .cw-keypoint-icon-wrapper {
+        border-color: var(--base-color);
+    }
+    .cw-keypoint-icon {
+        filter: brightness(0) saturate(100%) invert(26%) sepia(19%) saturate(1783%) hue-rotate(177deg) brightness(96%) contrast(93%);
+    }
+    .cw-keypoint-sentence {
+        background-color: var(--base-color-20);
+    }
 }
 
 .cw-keypoint-green {
-    border-color: map-get($icon-colors, 'icon-green');
+    .cw-keypoint-icon-wrapper {
+        border-color: var(--dark-green);
+    }
+    .cw-keypoint-icon {
+        filter: brightness(0) saturate(100%) invert(27%) sepia(85%) saturate(1531%) hue-rotate(109deg) brightness(95%) contrast(101%);
+    }
+    .cw-keypoint-sentence {
+        background-color: var(--dark-green-20);
+    }
 }
 
+.cw-keypoint-grey,
 .cw-keypoint-gray {
-    border-color: map-get($icon-colors, 'icon-gray');
+    .cw-keypoint-icon-wrapper {
+        border-color: var(--light-gray-color);
+    }
+    .cw-keypoint-icon {
+        filter: brightness(0) saturate(100%) invert(46%) sepia(1%) saturate(2621%) hue-rotate(169deg) brightness(87%) contrast(87%);
+    }
+    .cw-keypoint-sentence {
+        background-color: var(--light-gray-color-20);
+    }
 }
 
 .cw-keypoint-yellow {
-    border-color: map-get($icon-colors, 'icon-yellow');
-}
-
-.cw-keypoint-sentence {
-    display: inline;
-    font-size: 1.25em;
-    padding-left: 1.5em;
-    margin-top: 10px;
-}
-
-.cw-keypoint-label-color {
-    width: 32px !important;
-    min-width: 32px !important;
-    height: 32px;
-    padding: 5px !important;
-
-    > .cw-keypoint-input-color {
-        visibility: hidden;
-        position: absolute;
+    .cw-keypoint-icon-wrapper {
+        border-color: var(--yellow);
     }
-
-    > .cw-keypoint-input-color + div {
-        cursor: pointer;
-        border: 2px solid transparent;
-        height: 32px;
-        width: 32px;
+    .cw-keypoint-icon {
+        filter: brightness(0) saturate(100%) invert(94%) sepia(14%) saturate(7314%) hue-rotate(330deg) brightness(103%) contrast(101%);
     }
-
-    > .cw-keypoint-input-color:checked + div {
-        /* (RADIO CHECKED) IMAGE STYLES */
-        @include background-icon(accept, info_alt, 24);
-        background-repeat: no-repeat;
-        background-position: center;
+    .cw-keypoint-sentence {
+        background-color: var(--yellow-20);
     }
 }
 
-label[for='cw-keypoint-color'] {
-    vertical-align: top;
+
+.cw-keypoint-royal-purple {
+    .cw-keypoint-icon-wrapper {
+        border-color: var(--dark-violet);
+    }
+    .cw-keypoint-icon {
+        filter: brightness(0) saturate(100%) invert(35%) sepia(43%) saturate(658%) hue-rotate(234deg) brightness(100%) contrast(87%);
+    }
+    .cw-keypoint-sentence {
+        background-color: var(--dark-violet-20);
+    }
+}
+.cw-keypoint-apple-green {
+    .cw-keypoint-icon-wrapper {
+        border-color: var(--green-80);
+    }
+    .cw-keypoint-icon {
+        filter: brightness(0) saturate(100%) invert(74%) sepia(9%) saturate(1885%) hue-rotate(76deg) brightness(86%) contrast(88%);
+    }
+    .cw-keypoint-sentence {
+        background-color: var(--green-20);
+    }
+}
+.cw-keypoint-pumpkin {
+    .cw-keypoint-icon-wrapper {
+        border-color: var(--orange);
+    }
+    .cw-keypoint-icon {
+        filter: brightness(0) saturate(100%) invert(38%) sepia(86%) saturate(1993%) hue-rotate(13deg) brightness(104%) contrast(108%);
+    }
+    .cw-keypoint-sentence {
+        background-color: var(--orange-20);
+    }
+}
+.cw-keypoint-verdigris {
+    .cw-keypoint-icon-wrapper {
+        border-color: var(--petrol-80);
+    }
+    .cw-keypoint-icon {
+        filter: brightness(0) saturate(100%) invert(64%) sepia(11%) saturate(4959%) hue-rotate(131deg) brightness(103%) contrast(49%);
+    }
+    .cw-keypoint-sentence {
+        background-color: var(--petrol-20);
+    }
 }
 
-.cw-keypoint-label-color {
-    display: inline-block !important;
-}
-
-.cw-keypoint-icons {
-    background-color: var(--white);
-}
-
-.cw-keypoint-bg-red {
-    background-color: map-get($icon-colors, 'icon-red');
-}
-
-.cw-keypoint-bg-blue {
-    background-color: map-get($icon-colors, 'icon-blue');
-}
-
-.cw-keypoint-bg-green {
-    background-color: map-get($icon-colors, 'icon-green');
-}
-
-.cw-keypoint-bg-gray {
-    background-color: map-get($icon-colors, 'icon-gray');
-}
-
-.cw-keypoint-bg-yellow {
-    background-color: map-get($icon-colors, 'icon-yellow');
+.cw-keypoint-mulberry {
+    .cw-keypoint-icon-wrapper {
+        border-color: var(--violet-80);
+    }
+    .cw-keypoint-icon {
+        filter: brightness(0) saturate(100%) invert(49%) sepia(16%) saturate(1665%) hue-rotate(271deg) brightness(88%) contrast(95%);
+    }
+    .cw-keypoint-sentence {
+        background-color: var(--violet-20);
+    }
 }
