@@ -49,7 +49,7 @@ jQuery(function ($) {
                         <?= CourseAvatar::getAvatar($course->id)->getImageTag(Avatar::MEDIUM, ['style' => 'width: 20px; height: 20px;']) ?>
                     </button>
                 </td>
-                <td data-sort-value="<?= htmlReady($course->start_semester->beginn) ?>">
+                <td data-sort-value="<?= htmlReady($course->start_semester->beginn ?? '') ?>">
                     <!-- neu -->
                     <button formaction="<?= $controller->link_for('file/choose_folder_from_course') ?>"
                             name="course_id"
