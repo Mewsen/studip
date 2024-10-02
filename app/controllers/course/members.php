@@ -303,7 +303,7 @@ class Course_MembersController extends AuthenticatedController
         } else {
             $text = sprintf(_('Es wurden %s neue Personen hinzugefügt.'), $countAdded);
         }
-        PageLayout::postSuccess($text, $msg['success']);
+        PageLayout::postSuccess($text, $msg['success'] ?? []);
         $this->redirect($this->indexURL());
     }
 
