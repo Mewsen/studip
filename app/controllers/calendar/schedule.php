@@ -483,8 +483,8 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         if ($semester_id) {
             $this->my_schedule_settings['semester_id'] = $semester_id;
-        } else if ($semester = UserConfig::get($GLOBALS['user']->id)->SCHEDULE_SETTINGS['semester_id']) {
-            $this->my_schedule_settings['semester_id'] = $semester;
+        } else if (!empty(UserConfig::get($GLOBALS['user']->id)->SCHEDULE_SETTINGS['semester_id'])) {
+            $this->my_schedule_settings['semester_id'] = UserConfig::get($GLOBALS['user']->id)->SCHEDULE_SETTINGS['semester_id'];
         }
 
         UserConfig::get($GLOBALS['user']->id)->store('SCHEDULE_SETTINGS', $this->my_schedule_settings);
