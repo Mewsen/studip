@@ -688,10 +688,8 @@ class UserManagement
 
         // new users alawys receive a link to generate a password
         if ($new) {
-            $subject = sprintf(
-                _("[Stud.IP - %s] Es wurde ein Zugang für sie erstellt - Setzen sie ein Passwort"),
-                Config::get()->UNI_NAME_CLEAN
-            );
+            $prefix = ltrim(Config::get()->MAIL_SUBJECT_PREFIX . ' ');
+            $subject = $prefix . _('Es wurde ein Zugang für sie erstellt - Setzen sie ein Passwort');
 
             $mailbody = sprintf(
                 _("Dies ist eine Bestätigungsmail des Stud.IP-Systems\n"
@@ -719,10 +717,8 @@ class UserManagement
         if ($user->auth_plugin !== 'standard') {
 
             // inform user, that their password cannot be reset via mail
-            $subject = sprintf(
-                _("[Stud.IP - %s] Passwortänderung angefordert"),
-                Config::get()->UNI_NAME_CLEAN
-            );
+            $prefix = ltrim(Config::get()->MAIL_SUBJECT_PREFIX . ' ');
+            $subject = $prefix . _('Passwortänderung angefordert');
 
             $mailbody = sprintf(
                 _("Dies ist eine Informationsmail des Stud.IP-Systems\n"
@@ -739,10 +735,8 @@ class UserManagement
 
         } else {
 
-            $subject = sprintf(
-                _("[Stud.IP - %s] Neues Passwort setzen"),
-                Config::get()->UNI_NAME_CLEAN
-            );
+            $prefix = ltrim(Config::get()->MAIL_SUBJECT_PREFIX . ' ');
+            $subject = $prefix . _('Neues Passwort setzen');
 
             $mailbody = sprintf(
                 _("Dies ist eine Bestätigungsmail des Stud.IP-Systems\n"
@@ -1307,10 +1301,8 @@ class UserManagement
         // include language-specific subject and mailbody
         setTempLanguage($this->user_data['auth_user_md5.user_id']);
 
-        $subject = sprintf(
-            _("[Stud.IP - %s] Passwortänderung"),
-            Config::get()->UNI_NAME_CLEAN
-        );
+        $prefix = ltrim(Config::get()->MAIL_SUBJECT_PREFIX . ' ');
+        $subject = $prefix . _('Passwortänderung');
 
         $mailbody = sprintf(
             _("Dies ist eine Informationsmail des Stud.IP-Systems\n"

@@ -47,10 +47,8 @@ class NewPasswordController extends StudipController
             setTempLanguage($users[0]->id);
 
             // there are mutliple accounts with this mail addresses!
-            $subject = sprintf(
-                _("[Stud.IP - %s] Passwortänderung angefordert"),
-                Config::get()->UNI_NAME_CLEAN
-            );
+            $prefix = ltrim(Config::get()->MAIL_SUBJECT_PREFIX . ' ');
+            $subject = $prefix . _('Passwortänderung angefordert');
 
             $mailbody = sprintf(
                 _("Dies ist eine Informationsmail des Stud.IP-Systems\n"
