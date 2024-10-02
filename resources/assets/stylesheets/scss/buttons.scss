@@ -97,7 +97,7 @@ $button-icons: (
         &.#{'' + $class} {
             @include button-with-icon($icon, clickable, info_alt);
             &.disabled, &[disabled] {
-                @include button-with-icon($icon, info_alt, info_alt);
+                @include button-with-icon($icon, inactive, inactive);
             }
         }
     }
