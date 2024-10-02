@@ -672,7 +672,7 @@ class Course_MembersController extends AuthenticatedController
             foreach ($csv_lines as $csv_line) {
                 $csv_name = preg_split('/[,\t]/', mb_substr($csv_line, 0, 100), -1, PREG_SPLIT_NO_EMPTY);
                 $csv_nachname = trim($csv_name[0]);
-                $csv_vorname = trim($csv_name[1]);
+                $csv_vorname = trim($csv_name[1] ?? '');
 
                 if (!$csv_nachname) {
                     continue;
@@ -751,7 +751,7 @@ class Course_MembersController extends AuthenticatedController
 
         // no results
         if (empty($csv_lines) && empty($selected_users)) {
-            PageLayout::postError(_("Niemanden gefunden!"));
+            PageLayout::postError(_('Niemanden gefunden!'));
         }
 
         if ($csv_count_insert) {
@@ -1228,6 +1228,7 @@ class Course_MembersController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
+        $users = [];
         // create a usable array
         if(!empty($this->flash['users'])) {
             foreach ($this->flash['users'] as $user => $val) {
@@ -1282,7 +1283,7 @@ class Course_MembersController extends AuthenticatedController
         if ($next_status !== 'user' && !$this->is_dozent) {
             throw new AccessDeniedException();
         }
-
+        $users = [];
         if (!empty($this->flash['users'])) {
             foreach ($this->flash['users'] as $user => $val) {
                 if ($val) {
