@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
     <div class="stock-images-page">
         <studip-message-box v-if="showZipUploadMessage" :type="zipUploadMessageType">
             {{ zipUploadMessage }}
@@ -8,12 +7,8 @@
             v-show="!showUploadIndicator"
             :per-page="perPage"
             :stock-images="filteredStockImages"
-            v-model="page"
+            v-model:page="page"
         >
-=======
-    <div>
-        <ImagesPagination :per-page="perPage" :stock-images="filteredStockImages" v-model:page="page">
->>>>>>> c1b5528101 (adjust stock images, re #3747)
             <ImagesList
                 :checked-images="checkedImages"
                 :page="page"
