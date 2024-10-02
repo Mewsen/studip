@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var Message $message
+ */
+?>
 <tr id="message_<?= $message->getId() ?>" class="<?= $message->isRead() || $message['autor_id'] === $GLOBALS['user']->id ? "" : "unread" ?>">
     <td class="hidden-small-down"><input type="checkbox" name="bulk[]" value="<?= htmlReady($message->getId()) ?>"></td>
     <td class="title">
@@ -15,8 +20,10 @@
                 <? $num_recipients = $message->getNumRecipients() ?>
                 <? if ($num_recipients > 1) : ?>
                     <?= sprintf(_("%s Personen"), $num_recipients) ?>
-                <? else : ?>
-                     <?= htmlReady(get_fullname($message->receivers[0]['user_id'])) ?>
+                <? elseif (isset($message->receivers->first()->user)): ?>
+                     <?= htmlReady($message->receivers->first()->user->getFullName()) ?>
+                <? else: ?>
+                    <?= _('unbekannt') ?>
                 <? endif ?>
             <? else: ?>
                     <?= htmlReady(get_fullname($message['autor_id'])) ?>
@@ -24,20 +31,22 @@
         </p>
     </td>
     <td class="hidden-small-down">
-    <? if ($message['autor_id'] == "____%system%____") : ?>
+    <? if ($message['autor_id'] === "____%system%____") : ?>
         <?= _("Systemnachricht") ?>
     <? elseif (isset($received) && !$received): ?>
         <? $num_recipients = $message->getNumRecipients() ?>
         <? if ($num_recipients > 1) : ?>
             <?= sprintf(_("%s Personen"), $num_recipients) ?>
-        <? else : ?>
-        <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' =>  get_username($message->receivers[0]['user_id'])]) ?>">
-            <?= htmlReady(get_fullname($message->receivers[0]['user_id'])) ?>
+        <? elseif (isset($message->receivers->first()->user)): ?>
+        <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $message->receivers->first()->user->username]) ?>">
+            <?= htmlReady($message->receivers->first()->user->getFullName()) ?>
         </a>
+        <? else: ?>
+        <?= _('unbekannt') ?>
         <? endif ?>
     <? else: ?>
-        <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' =>  get_username($message['autor_id'])]) ?>">
-            <?= htmlReady(get_fullname($message['autor_id'])) ?>
+        <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $message->author->username]) ?>">
+            <?= htmlReady($message->author->getFullName()) ?>
         </a>
     <? endif; ?>
     </td>
