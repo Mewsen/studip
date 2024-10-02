@@ -39,7 +39,7 @@ class BlocksEditBlocker extends RelationshipsController
             }
         }
 
-        $related->edit_blocker_id = $editor->id;
+        $related->edit_blocker_id = $editor->id ?? null;
         $related->store();
 
         return $this->getCodeResponse(204);
