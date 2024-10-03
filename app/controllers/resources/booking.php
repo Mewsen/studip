@@ -1885,29 +1885,27 @@ class Resources_BookingController extends AuthenticatedController
     {
         PageLayout::setTitle(_('Buchung löschen'));
 
-        if ($this->booking->isReadOnlyForUser($this->current_user)) {
+        $booking = ResourceBooking::find($booking_id) ?? $this->booking;
+        if (!$booking) {
+            throw new InvalidArgumentException(_('Diese Buchung existiert nicht'));
+        }
+
+        if ($booking->isReadOnlyForUser($this->current_user)) {
             //The user must not delete this booking!
             throw new AccessDeniedException();
         }
 
-        $this->show_details = true;
-        if (Request::submitted('hide_details')) {
-            $this->show_details = false;
-        }
+        $this->show_details = !Request::submitted('hide_details');
         $this->show_question = true;
 
         if (Request::submitted('confirm')) {
             CSRFProtection::verifyUnsafeRequest();
 
-            if ($this->booking->delete()) {
+            if ($booking->delete()) {
                 $this->show_question = false;
-                PageLayout::postSuccess(
-                    _('Die Buchung wurde gelöscht!')
-                );
+                PageLayout::postSuccess(_('Die Buchung wurde gelöscht!'));
             } else {
-                PageLayout::postError(
-                    _('Fehler beim Löschen der Buchung!')
-                );
+                PageLayout::postError(_('Fehler beim Löschen der Buchung!'));
             }
         }
     }
