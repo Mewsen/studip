@@ -475,6 +475,7 @@ class MyCoursesController extends AuthenticatedController
                     ));
                 }
             } else {
+                $prio_delete = false;
                 // LOGGING
                 StudipLog::log('SEM_USER_DEL', $course_id, $GLOBALS['user']->id, 'Hat sich selbst aus der Warteliste ausgetragen');
                 if ($course->isAdmissionEnabled()) {
