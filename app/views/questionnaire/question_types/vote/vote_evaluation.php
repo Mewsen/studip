@@ -80,7 +80,12 @@ rsort($ordered_results);
 
 <table class="default nohover">
     <tbody>
-        <? $countAnswers = $vote->questionnaire->countAnswers() ?>
+        <?php
+            $countAnswers = 0;
+            if ($vote->questionnaire) {
+                $countAnswers = $vote->questionnaire->countAnswers();
+            }
+        ?>
         <? foreach ($options as $key => $answer) : ?>
         <tr>
             <? $percentage = ($countAnswers && isset($results[$key])) ? round((int) $results[$key] / $countAnswers * 100) : 0 ?>
