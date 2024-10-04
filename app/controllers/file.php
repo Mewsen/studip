@@ -1473,7 +1473,7 @@ class FileController extends AuthenticatedController
                 }
                 $payload = [
                     'html'     => FilesystemVueDataManager::getFileVueData($newfile, $this->current_folder),
-                    'redirect' => $redirects[0],
+                    'redirect' => $redirects[0] ?? '',
                     'url'      => $this->generateFilesUrl($this->current_folder, $newfile),
                 ];
 
