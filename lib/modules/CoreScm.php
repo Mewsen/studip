@@ -80,6 +80,83 @@ class CoreScm extends CorePlugin implements StudipModule
         return $nav;
     }
 
+
+    public function getManyIconNavigation($course_ids, $visits, $user_id)
+    {
+        if (!Config::get()->SCM_ENABLE) {
+            return [];
+        }
+        $navs = [];
+        $sql = "SELECT scm_id, range_id,
+                  SUM(IF(content != '', 1, 0)) AS count,
+                  SUM(IF((chdate > IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold) AND scm.user_id !=:user_id), IF(content != '', 1, 0), NULL)) AS neue
+           FROM scm
+           LEFT JOIN object_user_visits AS ouv
+             ON ouv.object_id = scm.range_id
+                AND ouv.user_id = :user_id
+                AND ouv.plugin_id = :plugin_id
+           WHERE scm.range_id IN (:course_ids)
+           GROUP BY scm.range_id";
+        $results = DBManager::get()->fetchAll($sql, [
+            ':user_id' => $user_id,
+            ':course_ids' => $course_ids,
+            ':threshold' => object_get_visit_threshold(),
+            ':plugin_id' => $this->getPluginId(),
+        ]);
+
+        if (empty($results)) {
+            return [];
+        }
+
+        $entries = [];
+        StudipScmEntry::findAndMapMany(
+            function ($scm) use (&$entries) {
+                return $entries[$scm->scm_id] = $scm;
+            },
+            array_column($results, 'scm_id')
+        );
+
+        foreach ($results as $result) {
+            $scm = $entries[$result['scm_id']];
+
+            $nav = new Navigation((string)$scm->tab_name, 'dispatch.php/course/scm');
+
+            if ($result['count']) {
+                if ($result['neue']) {
+                    $image = Icon::create('infopage', Icon::ROLE_NEW);
+                    $nav->setBadgeNumber($result['neue']);
+                    if ($result['count'] == 1) {
+                        $title = $scm->tab_name . _(' (geändert)');
+                    } else {
+                        $title = sprintf(
+                            _('%1$d Einträge insgesamt, %2$d neue'),
+                            $result['count'],
+                            $result['neue']
+                        );
+                    }
+                } else {
+                    $image = Icon::create('infopage', Icon::ROLE_CLICKABLE);
+                    if ($result['count'] == 1) {
+                        $title = $scm->tab_name;
+                    } else {
+                        $title = sprintf(
+                            ngettext(
+                                '%d Eintrag',
+                                '%d Einträge',
+                                $result['count']
+                            ),
+                            $result['count']
+                        );
+                    }
+                }
+                $nav->setImage($image, ['title' => $title]);
+            }
+            $navs[$result['range_id']] = $nav;
+        }
+
+        return $navs;
+    }
+
     /**
      * {@inheritdoc}
      */
