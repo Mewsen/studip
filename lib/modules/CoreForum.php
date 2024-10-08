@@ -71,6 +71,33 @@ class CoreForum extends CorePlugin implements ForumModule
         return $navigation;
     }
 
+
+    /* interface method */
+    public function getManyIconNavigation($course_ids, $visits, $user_id)
+    {
+
+        $num_entries_plural = ForumVisit::getCounts($course_ids, $visits, $user_id, $this->getPluginId());
+
+        $navs = [];
+        foreach ($num_entries_plural as $course_id => $num_entries) {
+            $count = 0;
+            if ($GLOBALS['perm']->have_studip_perm('user', $course_id)) {
+                $count = $num_entries;
+                $text = ForumHelpers::getVisitText($count, $course_id);
+            } else {
+                $text = 'Forum';
+            }
+
+            $navigation = new Navigation('forum', 'dispatch.php/course/forum/index/enter_seminar');
+            $navigation->setBadgeNumber($count);
+            $icon_role = $count > 0 ? Icon::ROLE_ATTENTION : Icon::ROLE_CLICKABLE;
+            $navigation->setImage(Icon::create('forum', $icon_role, ['title' => $text]));
+            $navs[$course_id] = $navigation;
+        }
+
+        return $navs;
+    }
+
     /**
      * This method is called, whenever an user clicked to clear the visit timestamps
      * and set everything as visited

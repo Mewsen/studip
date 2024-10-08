@@ -627,7 +627,8 @@ class ForumEntry  implements PrivacyObject
                 $stmt->bindParam(':seminar_id', $constraint['seminar_id']);
                 $stmt->bindParam(':left', $constraint['lft'], PDO::PARAM_INT);
                 $stmt->bindParam(':right', $constraint['rgt'], PDO::PARAM_INT);
-                $stmt->bindParam(':user_id', $GLOBALS['user']->id);
+                $user_id = $GLOBALS['user']->id;
+                $stmt->bindParam(':user_id', $user_id);
                 $stmt->execute();
 
                 $postings = $stmt->fetchAll(PDO::FETCH_ASSOC);

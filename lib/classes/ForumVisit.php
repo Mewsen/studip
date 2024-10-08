@@ -57,6 +57,39 @@ class ForumVisit {
         return $stmt->fetchColumn();
     }
 
+    static function getCounts($topic_ids, $visits, $user_id, $plugin_id)
+    {
+        if (empty($topic_ids)) {
+            return false;
+        }
+        $visit_dates = [];
+        foreach ($topic_ids as $course_id) {
+            $visitdate = $visits[$course_id][$plugin_id]['visitdate'];
+            if ($visitdate < time() - ForumVisit::LAST_VISIT_MAX) {
+                $visitdate = time() - ForumVisit::LAST_VISIT_MAX;
+            }
+            $visit_dates[$course_id] = $visitdate;
+        }
+
+        $entries = DBManager::get()->fetchAll(
+            "SELECT seminar_id, topic_id, chdate
+            FROM forum_entries
+            WHERE user_id != :user_id
+              AND seminar_id IN (:seminar_ids)
+              AND topic_id != seminar_id",
+            ['user_id' => $user_id, ':seminar_ids' => $topic_ids]
+        );
+
+        $counts = array_fill_keys($topic_ids, 0);
+        foreach ($entries as $entry) {
+            if ($entry['chdate'] > $visit_dates[$entry['seminar_id']]) {
+                $counts[$entry['seminar_id']]++;
+            }
+        }
+
+        return $counts;
+    }
+
     /**
      * Set the seminar denoted by the passed id as visited by the currently
      * logged in user
