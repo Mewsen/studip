@@ -44,10 +44,12 @@
         <? else: ?>
         <?= _('unbekannt') ?>
         <? endif ?>
-    <? else: ?>
+    <? elseif ($message->author instanceof User): ?>
         <a href="<?= URLHelper::getLink('dispatch.php/profile', ['username' => $message->author->username]) ?>">
             <?= htmlReady($message->author->getFullName()) ?>
         </a>
+    <? else: ?>
+        <?= _('unbekannt') ?>
     <? endif; ?>
     </td>
     <td><?= strftime('%x %R', $message['mkdate']) ?></td>
