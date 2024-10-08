@@ -980,4 +980,35 @@ html:not(.responsive-display):not(.fullscreen-mode) {
         min-width: 20vw;
         max-width: 100vw;
     }
+
+    #system-notifications.bottom-right {
+        bottom: unset;
+        left: 0;
+        right: unset;
+        top: 0;
+
+        &:not(.system-notifications-login) {
+            width: 100%;
+        }
+
+        .system-notification {
+            &.system-notification-slide-enter,
+            &.system-notification-slide-leave-to {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+
+            &.system-notification-slide-leave,
+            &.system-notification-slide-enter-to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            &.system-notification-slide-enter-active,
+            &.system-notification-slide-leave-active {
+                transition: all var(--transition-duration-slow) ease-in-out;
+            }
+
+        }
+    }
 }
