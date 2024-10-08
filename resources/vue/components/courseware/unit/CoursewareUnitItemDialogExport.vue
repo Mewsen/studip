@@ -63,7 +63,7 @@ export default {
     computed: {
         ...mapGetters({
             context: 'context',
-            exportProgress: 'exportProgress',
+            exportProgressRaw: 'exportProgress',
             exportState: 'exportState',
             instanceById: 'courseware-instances/byId',
             structuralElementById: 'courseware-structural-elements/byId',
@@ -86,6 +86,9 @@ export default {
         title() {
             return  this.unitElement?.attributes?.title ?? '';
         },
+        exportProgress() {
+            return this.exportProgressRaw > 100 ? 100 : this.exportProgressRaw;
+        }
     },
     methods: {
         ...mapActions({

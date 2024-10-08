@@ -106,6 +106,9 @@ export default {
 
             // load whole courseware nonetheless, only export relevant elements
             let elements = await this.allStructuralElements;
+            // TODO all struct elements are somehow wrong
+            console.log(root_element);
+
             this.exportElementCounter = 0;
             if (withChildren) {
                 this.elementCounter = this.countElements(elements);
