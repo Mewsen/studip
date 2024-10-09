@@ -56,8 +56,8 @@ class BlubberController extends AuthenticatedController
                 sprintf(
                     _('Wollen Sie ein Avatar-Bild nutzen? %sLaden Sie jetzt ein Bild hoch%s.'),
                     '<a href="' .
-                        URLHelper::getLink('dispatch.php/avatar/update/user/' . $GLOBALS['user']->id) .
-                        '" data-dialog>',
+                        URLHelper::getLink('dispatch.php/settings/avatar/') .
+                        '" >',
                     '</a>'
                 )
             );
