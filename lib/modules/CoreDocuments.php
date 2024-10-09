@@ -140,6 +140,50 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
         return $navigation;
     }
 
+    public function getManyIconNavigation($course_ids, $visits, $user_id)
+    {
+        // TODO extend for institute
+        //$range_type = get_object_type($course_id, ['sem', 'inst']) === 'sem' ? 'course' : 'institute';
+        $range_type = 'course';
+        $condition = "INNER JOIN folders ON (folders.id = file_refs.folder_id)
+                      WHERE folders.range_type = :range_type
+                        AND folders.range_id IN (:context_ids)
+                        AND file_refs.user_id != :me";
+        $file_refs = FileRef::findBySQL($condition, [
+            'me'         => $user_id,
+            'context_ids' => $course_ids,
+            'range_type' => $range_type
+        ]);
+
+
+        $navs = [];
+        $plugin_id = $this->getPluginId();
+        foreach ($file_refs as $fileref) {
+            $c_id = $fileref->folder->range_id;
+            if (!isset($navs[$c_id]) && $fileref->chdate >= $visits[$fileref->folder->range_id][$plugin_id]['visitdate']) {
+                $foldertype = $fileref->folder->getTypedFolder();
+                $nav = new Navigation(_('Dateibereich'), "dispatch.php/{$range_type}/files");
+                if ($foldertype->isFileDownloadable($fileref->getId(), $user_id)) {
+                    $nav->setImage(Icon::create('files', Icon::ROLE_ATTENTION), [
+                        'title' => _('Es gibt neue Dateien.'),
+                    ]);
+                    $nav->setURL("dispatch.php/{$range_type}/files/flat", ['select' => 'new']);
+                }
+                $navs[$c_id] = $nav;
+            }
+        }
+
+        $default_navigation = new Navigation(_('Dateibereich'), "dispatch.php/{$range_type}/files");
+        $default_navigation->setImage(Icon::create('files', Icon::ROLE_CLICKABLE, ['title' => _('Dateien')]));
+        foreach ($course_ids as $course_id) {
+            if (!isset($navs[$course_id])) {
+                $navs[$course_id] = $default_navigation;
+            }
+        }
+
+        return $navs;
+    }
+
     /**
      * {@inheritdoc}
      */
