@@ -13,6 +13,11 @@
 
         .cw-link-title {
             margin-left: 3em;
+            &.unit {
+                header {
+                    font-size: 16px;
+                }
+            }
         }
 
         &:hover {
@@ -66,6 +71,36 @@
                 .cw-link-og-description {
                     color: var(--base-color-80);
                     text-align: justify;
+                }
+            }
+        }
+
+        &.unit {
+            height: unset;
+            display: flex;
+
+            .cw-unit-link {
+                background-repeat: no-repeat;
+                background-size: 270px 180px;
+                background-position: center;
+                min-width: 270px;
+                height: 180px;
+            }
+
+            .cw-link-title {
+                p {
+                    color: var(--black);
+                }
+            }
+
+            &:hover {
+                background-color: unset;
+                border: solid thin var(--base-color);
+                .cw-link-title {
+                    header {
+                        color: var(--active-color);
+                    }
+                   
                 }
             }
         }

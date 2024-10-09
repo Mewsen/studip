@@ -1,0 +1,83 @@
+.cw-tree-units {
+    .cw-tree-unit-title {
+        border-bottom: solid thin var(--content-color-40);
+        color: var(--black);
+        font-size: 16px;
+    }
+    ol {
+        list-style: none;
+        padding-left: 0;
+    }
+    .button.trash {
+        margin: 0;
+        min-width: unset;
+        height: 30px;
+        width: 30px;
+        border: none;
+    }
+}
+
+.cw-tree-unit-link {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: space-between;
+    margin: 0.5em 0;
+
+    .cw-tree-units-header {
+        display: flex;
+        flex-direction: row;
+        height: 100px;
+        margin-top: 8px;
+        .cw-tree-units-header-image {
+            height: 100px;
+            width: 150px;
+            min-width: 150px;
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: var(--content-color-20);
+        }
+
+        .cw-tree-units-header-details {
+            margin: 0 8px;
+            display: -webkit-box;
+            overflow: hidden;
+            height: 100px;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            header {
+                margin: 0 0 6px 0;
+                font-size: 16px;
+                line-height: 16px;
+            }
+            p {
+                margin: 0;
+                color: var(--black);
+            }
+        }
+    }
+}
+
+.cw-tree-units-adder {
+    .add-element {
+        border: none;
+        cursor: pointer;
+        background-color: transparent;
+        height: 34px;
+    }
+    .cw-tree-units-adder-form {
+        display: flex;
+
+        label {
+            flex-grow: 1;
+        }
+        .button.cancel {
+            min-width: unset;
+            height: 30px;
+            width: 30px;
+            margin: 2px 0 0 5px;
+            border: none;
+        }
+    }
+}

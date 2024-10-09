@@ -306,6 +306,16 @@ $consum_ribbon_width: calc(100% - 58px);
                             overflow: hidden;
                             padding: 0;
                         }
+
+                        .cw-tools-contents {
+                            display: flex;
+                            flex-direction: column;
+                            height: 100%;
+
+                            .cw-tree {
+                                flex-grow: 1;
+                            }
+                        }
                     }
                 }
             }

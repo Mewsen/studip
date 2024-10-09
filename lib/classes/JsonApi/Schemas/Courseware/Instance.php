@@ -46,7 +46,8 @@ class Instance extends SchemaProvider
             'reminder-settings' => $resource->getReminderSettings(),
             'reset-progress-settings' => $resource->getResetProgressSettings(),
             'root-id' => $resource->getRoot()->id,
-            'is-teacher' => $GLOBALS['perm']->have_studip_perm($resource->getEditingPermissionLevel(), $resource->getRoot()->range_id)
+            'is-teacher' => $GLOBALS['perm']->have_studip_perm($resource->getEditingPermissionLevel(), $resource->getRoot()->range_id),
+            'linked-units' => $resource->getLinkedUnits()
         ];
     }
 

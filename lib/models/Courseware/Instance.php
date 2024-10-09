@@ -585,4 +585,37 @@ class Instance
         return $data;
     }
 
+   /* 
+    *
+    *  LINKED UNITS
+    *
+    */
+    public function getLinkedUnits(): array
+    {
+        $config = $this->unit->config->getArrayCopy();
+        if (array_key_exists('linked_units', $config)) {
+            return $config['linked_units'];
+        }
+
+        return [];
+    }
+
+    public function setLinkedUnits(array $units): void
+    {
+        $this->validateLinkedUnits($units);
+        $this->unit->config['linked_units'] = $units;
+    }
+
+    public function isValidLinkedUnits($units): bool
+    {
+        return is_array($units);
+    }
+
+    private function validateLinkedUnits($units): void
+    {
+        if (!$this->isValidLinkedUnits($units)) {
+            throw new \InvalidArgumentException('Invalid linked units for courseware.');
+        }
+    }
+
 }

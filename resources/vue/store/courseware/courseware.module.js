@@ -96,6 +96,10 @@ const getters = {
     rootId(state, getters) {
         return getters.courseware?.relationships?.root?.data?.id;
     },
+    currentRootElement(state, getters, rootState, rootGetters) {
+        const id = getters.rootId;
+        return rootGetters['courseware-structural-elements/byId']({ id });
+    },
     currentElement(state) {
         return state.currentElement;
     },
@@ -711,7 +715,7 @@ export const actions = {
 
         return updatedBlock;
     },
-
+    
     async storeCoursewareSettings({ dispatch, getters },
                                   { permission, progression, certificateSettings, reminderSettings,
                                       resetProgressSettings }) {
@@ -721,6 +725,13 @@ export const actions = {
         courseware.attributes['certificate-settings'] = certificateSettings;
         courseware.attributes['reminder-settings'] = reminderSettings;
         courseware.attributes['reset-progress-settings'] = resetProgressSettings;
+
+        return dispatch('courseware-instances/update', courseware, { root: true });
+    },
+
+    async storeCoursewareLinkedUnits({ dispatch, getters }, { linkedUnits }) {
+        const courseware = getters.courseware;
+        courseware.attributes['linked-units'] = linkedUnits;
 
         return dispatch('courseware-instances/update', courseware, { root: true });
     },

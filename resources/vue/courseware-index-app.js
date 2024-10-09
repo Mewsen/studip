@@ -156,6 +156,7 @@ const mountApp = async (STUDIP, createApp, element) => {
     if (entry_type === 'courses') {
         store.dispatch('loadProgresses');
         await store.dispatch('setFeedbackSettings', feedbackSettings);
+        await store.dispatch('courseware-units/loadById', { id: unit_id, options: {include: 'structural-element'} });
     }
 
     store.dispatch('coursewareCurrentElement', elem_id);

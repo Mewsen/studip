@@ -8,6 +8,9 @@
         "target": {
             "type": "string"
         },
+        "unit-target": {
+            "type": "string"
+        },
         "url": {
             "type": "string"
         },

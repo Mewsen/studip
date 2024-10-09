@@ -14,11 +14,13 @@
             </div>
         </component>
         <courseware-tree v-if="structuralElements.length" />
+        <courseware-tree-units v-if="context.type === 'courses'" />
     </div>
 </template>
 
 <script>
 import CoursewareTree from './CoursewareTree.vue';
+import CoursewareTreeUnits from './CoursewareTreeUnits.vue';
 import colorMixin from '@/vue/mixins/courseware/colors.js';
 import StudipIdentImage from './../../StudipIdentImage.vue';
 import { mapGetters } from 'vuex';
@@ -29,6 +31,7 @@ export default {
     components: {
         CoursewareTree,
         StudipIdentImage,
+        CoursewareTreeUnits,
     },
     data() {
         return {
@@ -38,6 +41,7 @@ export default {
     computed: {
         ...mapGetters({
             courseware: 'courseware',
+            context: 'context',
             relatedStructuralElement: 'courseware-structural-elements/related',
             rootLayout: 'rootLayout',
             structuralElements: 'courseware-structural-elements/all',

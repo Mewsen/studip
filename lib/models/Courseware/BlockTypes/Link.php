@@ -30,8 +30,9 @@ class Link extends BlockType
     public function initialPayload(): array
     {
         return [
-            'type' => '',
+            'type' => 'external',
             'target' => '',
+            'unit-target' => '',
             'url' => '',
             'title' => '',
         ];
@@ -61,9 +62,21 @@ class Link extends BlockType
     public static function getTags(): array
     {
         return [
-            _('URL'), _('Verlinkung'), _('Webseite'), _('extern'), _('weiterleiten'),
-            _('Material'), _('Zusatz'), _('Weiterleitung'), _('intern'), _('Verweis'),
-            _('Index'), _('Hyperlink'), _('Quellenangabe'), _('Linkliste'), _('Linksammlung')
+            _('URL'),
+            _('Verlinkung'),
+            _('Webseite'),
+            _('extern'),
+            _('weiterleiten'),
+            _('Material'),
+            _('Zusatz'),
+            _('Weiterleitung'),
+            _('intern'),
+            _('Verweis'),
+            _('Index'),
+            _('Hyperlink'),
+            _('Quellenangabe'),
+            _('Linkliste'),
+            _('Linksammlung')
         ];
     }
 }
