@@ -572,8 +572,10 @@ export default {
             let input = this.$refs.textInputField;
             input.value = '';
             input.style.position = 'absolute';
-            input.style.top = this.$refs.canvas.offsetTop + y + 'px';
-            input.style.left = 320 + x + 'px';
+            const maxBottom = this.$refs.canvas.offsetTop + this.$refs.canvas.offsetHeight - 100;
+            input.style.top = y < maxBottom ? this.$refs.canvas.offsetTop + y + 'px' : maxBottom + 'px';
+            const leftMax = this.$refs.canvas.offsetLeft + this.$refs.canvas.offsetWidth - 320;
+            input.style.left = x < leftMax ? x + 'px' : leftMax + 'px';
             input.style.lineHeight = fontsize + 'px';
             input.style.fontSize = fontsize + 'px';
             input.style.width = '300px';
