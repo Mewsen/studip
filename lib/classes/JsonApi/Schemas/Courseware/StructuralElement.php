@@ -61,6 +61,7 @@ class StructuralElement extends SchemaProvider
             'content-approval' => $resource['content_approval']->getIterator(),
             'copy-approval' => $resource['copy_approval']->getIterator(),
             'can-edit' => $resource->canEdit($user),
+            'can-read-sequential' => $resource->canReadSequential($user),
             'can-visit' => $resource->canVisit($user),
             'is-link' => (int) $resource['is_link'],
             'commentable' => (bool) $resource['commentable'],
@@ -160,8 +161,6 @@ class StructuralElement extends SchemaProvider
 
     private function addAncestorsRelationship(array $relationships, $resource, $includeData)
     {
-        $user = $this->currentUser;
-
         $relation = [
             self::RELATIONSHIP_LINKS => [
                 Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_ANCESTORS),
@@ -172,10 +171,6 @@ class StructuralElement extends SchemaProvider
             $related = $resource->findAncestors();
             $relation[self::RELATIONSHIP_DATA] = $related;
         }
-
-        $relation[self::RELATIONSHIP_META] = [
-            'can-read-sequential' => $resource->canReadSequential($user),
-        ];
 
         $relationships[self::REL_ANCESTORS] = $relation;
 
