@@ -28,7 +28,7 @@
             </template>
             <template v-if="canEdit" #edit>
                 <courseware-tabs>
-                    <courseware-tab :index="0" :name="$gettext('Grunddaten')" :selected="true">
+                    <courseware-tab :name="$gettext('Grunddaten')">
                         <form class="default" @submit.prevent="">
                             <label>
                                 {{ $gettext('Titel') }}
@@ -110,7 +110,7 @@
                             </div>
                         </form>
                     </courseware-tab>
-                    <courseware-tab :index="1" :name="$gettext('Zusätzliche Einstellungen')">
+                    <courseware-tab :name="$gettext('Zusätzliche Einstellungen')">
                         <form class="default" @submit.prevent="">
                             <label>
                                 {{ $gettext('Höhe') }}

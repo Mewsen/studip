@@ -10,7 +10,7 @@
             @closeEdit="initCurrentData"
         >
             <template #content>
-                <TwentyTwenty v-if="!isEmpty" :before="currentBeforeUrl" :after="currentAfterUrl" />
+                <ImageCompare v-if="!isEmpty" :image1="currentBeforeUrl" :image2="currentAfterUrl" />
                 <courseware-companion-box
                     v-if="isEmpty && canEdit"
                     :msgCompanion="$gettext('Bitte wählen Sie ein Vorher- und ein Nachher-Bild aus.')"
@@ -19,7 +19,7 @@
             </template>
             <template v-if="canEdit" #edit>
                 <courseware-tabs>
-                    <courseware-tab :index="0" :name="$gettext('Vorher')" :selected="true">
+                    <courseware-tab :name="$gettext('Vorher')">
                         <form class="default" @submit.prevent="">
                             <label>
                                 {{ $gettext('Quelle') }}
@@ -34,12 +34,19 @@
                             </label>
                             <label v-if="currentBeforeSource === 'studip'">
                                 {{ $gettext('Bilddatei') }}
-                                <studip-file-chooser v-model="currentBeforeFileId" selectable="file" :courseId="context.id" :userId="userId" :isImage="true" :excludedCourseFolderTypes="excludedCourseFolderTypes"/>
+                                <studip-file-chooser
+                                    v-model="currentBeforeFileId"
+                                    selectable="file"
+                                    :courseId="context.id"
+                                    :userId="userId"
+                                    :isImage="true"
+                                    :excludedCourseFolderTypes="excludedCourseFolderTypes"
+                                />
                             </label>
                         </form>
                     </courseware-tab>
-                    <courseware-tab :index="1" :name="$gettext('Nachher')">
-                        <form class="default" @submit.prevent="">
+                    <courseware-tab :name="$gettext('Nachher')">
+                        <form class="default" @submit.prevent="onSubmit">
                             <label>
                                 {{ $gettext('Quelle') }}
                                 <select v-model="currentAfterSource">
@@ -53,7 +60,13 @@
                             </label>
                             <label v-if="currentAfterSource === 'studip'">
                                 {{ $gettext('Bilddatei') }}
-                                <studip-file-chooser v-model="currentAfterFileId" selectable="file" :courseId="context.id" :userId="userId" :isImage="true"/>
+                                <studip-file-chooser
+                                    v-model="currentAfterFileId"
+                                    selectable="file"
+                                    :courseId="context.id"
+                                    :userId="userId"
+                                    :isImage="true"
+                                />
                             </label>
                         </form>
                     </courseware-tab>
@@ -67,15 +80,14 @@
 <script>
 import BlockComponents from './block-components.js';
 import blockMixin from '@/vue/mixins/courseware/block.js';
-import TwentyTwenty from 'vue-twentytwenty';
-import 'vue-twentytwenty/dist/vue-twentytwenty.css';
 import { mapActions, mapGetters } from 'vuex';
+import ImageCompare from './ImageCompare.vue';
 
 export default {
     name: 'courseware-before-after-block',
     mixins: [blockMixin],
     components: Object.assign(BlockComponents, {
-        TwentyTwenty,
+        ImageCompare,
     }),
     props: {
         block: Object,
@@ -154,12 +166,12 @@ export default {
                 }
 
                 this.currentBeforeFile = this.beforeFile;
-                this.currentAfterFile  = this.afterFile;
+                this.currentAfterFile = this.afterFile;
             });
 
             this.loadImages();
         }
-        
+
         this.initCurrentData();
     },
     methods: {
@@ -260,25 +272,7 @@ export default {
             if (newId) {
                 this.currentAfterFile = this.fileRefById({ id: newId });
             }
-        }
-    }
+        },
+    },
 };
 </script>
-<style scoped lang="scss">
-.cw-block-before-after {
-    .twentytwenty-container {
-        width: 100% !important;
-        z-index: 19;
-        .twentytwenty-handle {
-            z-index: 18;
-        }
-        .twentytwenty-overlay {
-            z-index: 17;
-        }
-        img {
-            width: 100%;
-            z-index: 16;
-        }
-    }
-}
-</style>

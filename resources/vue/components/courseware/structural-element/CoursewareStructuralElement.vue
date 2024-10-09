@@ -1645,7 +1645,7 @@ export default {
 
             await this.updateStructuralElement({ element, id: this.currentId});
             await this.unlockObject({ id: this.currentId, type: 'courseware-structural-elements' });
-            this.$emit('select', this.currentId);
+            this.$emit('select-element', this.currentId);
             this.storing = false;
             this.initCurrent();
         },
@@ -1681,7 +1681,7 @@ export default {
                 structuralElement: this.structuralElement,
                 containers: this.containerList,
             });
-            this.$emit('select', this.currentId);
+            this.$emit('select-element', this.currentId);
 
             clearTimeout(timeout);
             this.setProcessing(false);
@@ -1886,7 +1886,7 @@ export default {
                     this.$gettext('%{containerTitle} Abschnitt, Neuordnung abgebrochen.')
                     , {containerTitle: container.attributes.title}
                 );
-            this.$emit('select', this.currentId);
+            this.$emit('select-element', this.currentId);
         },
         storeKeyboardSorting(containerId) {
             const container = this.containerById({id: containerId});

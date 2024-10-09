@@ -75,7 +75,7 @@
             </template>
             <template v-if="canEdit" #edit>
                 <courseware-tabs>
-                    <courseware-tab :index="0" :name="$gettext('Einstellungen')" :selected="true">
+                    <courseware-tab :name="$gettext('Einstellungen')">
                         <form class="default" @submit.prevent="">
                             <label>
                                 {{ $gettext('Layout') }}
@@ -104,7 +104,7 @@
                             </label>
                         </form>
                     </courseware-tab>
-                    <courseware-tab :index="1" :name="$gettext('Beschreibung')">
+                    <courseware-tab :name="$gettext('Beschreibung')">
                         <form class="default" @submit.prevent="">
                             <label>
                                 {{ $gettext('Dateinamen anzeigen') }}
@@ -136,7 +136,7 @@
                             </label>
                         </form>
                     </courseware-tab>
-                    <courseware-tab v-if="currentLayout === 'carousel'" :index="2" :name="$gettext('Autoplay')">
+                    <courseware-tab v-if="currentLayout === 'carousel'" :name="$gettext('Autoplay')">
                         <form class="default" @submit.prevent="">
                             <label>
                                 {{ $gettext('Autoplay') }}

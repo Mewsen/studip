@@ -1,5 +1,5 @@
 <template>
-    <focus-trap v-model="trap" :initial-focus="() => initialFocusElement" :clickOutsideDeactivates="true" :fallbackFocus ="() => fallbackFocusElement">
+    <focus-trap v-model="trap" :clickOutsideDeactivates="false" :fallbackFocus ="() => fallbackFocusElement">
         <div
             class="cw-ribbon-tools"
             :class="{ unfold: toolsActive, 'cw-ribbon-tools-consume': consumeMode }"
@@ -12,7 +12,6 @@
                     >
                         <courseware-tab
                             :name="$gettext('Inhaltsverzeichnis')"
-                            :selected="showContents"
                             alias="contents"
                             ref="contents"
                             :index="0"
@@ -80,7 +79,6 @@ export default {
             showContents: true,
             showUnits: false,
             trap: false,
-            initialFocusElement: null
         };
     },
     computed: {
@@ -122,10 +120,8 @@ export default {
     },
     watch: {
         toolsActive(newValue) {
-            const focusElement = this.$refs.tabs.getTabButtonByAlias(this.selectedToolbarItem);
-            if (newValue && focusElement) {
+            if (newValue) {
                 setTimeout(() => {
-                    this.initialFocusElement = focusElement;
                     this.trap = true;
                 }, 300);
             }

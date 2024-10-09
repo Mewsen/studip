@@ -24,14 +24,12 @@
                     {{ $gettext('Drücken Sie die Leertaste, um neu anzuordnen.') }}
                 </span>
             </template>
-            <courseware-tabs @selectTab="selectTabHandler">
+            <courseware-tabs v-if="!processing" v-model="selectedTab">
                 <courseware-tab
-                    v-for="(section, index) in currentSections"
-                    :key="index"
-                    :index="index"
+                    v-for="(section, sectionIndex) in currentSections"
+                    :key="sectionIndex"
                     :name="section.name"
                     :icon="section.icon"
-                    :selected="sortInTab === index"
                 >
                     <ul v-if="!canEdit || currentElementisLink" class="cw-container-tabs-block-list">
                         <li v-for="block in section.blocks" :key="block.id" class="cw-block-item">
@@ -62,7 +60,7 @@
                                 @start="isDragging = true"
                                 @end="dropBlock"
                                 :containerId="container.id"
-                                :sectionId="index"
+                                :sectionId="sectionIndex"
                                 item-key="id"
                             >
                                 <template #item="{element, index}">
@@ -74,7 +72,7 @@
                                             role="button"
                                             aria-describedby="operation"
                                             :ref="'sortableHandle' + element.id"
-                                            @keydown="keyHandler($event, element.id, index)"
+                                            @keydown="keyHandler($event, element.id, sectionIndex)"
                                         ></span>
                                         <component
                                             :is="component(element)"
@@ -177,7 +175,7 @@ export default {
             },
             processing: false,
             keyboardSelected: null,
-            sortInTab: 0,
+            selectedTab: 0,
             assistiveLive: '',
             showDeleteDialog: false,
             currentSection: null,
@@ -214,7 +212,6 @@ export default {
         }),
         initCurrentData() {
             this.currentContainer = _.cloneDeep(this.container);
-
             let view = this;
             let sections = this.currentContainer.attributes.payload.sections;
 
@@ -281,7 +278,8 @@ export default {
             this.closeDeleteDialog();
         },
         async storeContainer() {
-            const timeout = setTimeout(() => this.processing = true, 800);
+            this.processing = true;
+            await this.$nextTick();
             this.currentContainer.attributes.payload.sections = this.currentContainer.attributes.payload.sections.filter(section => !section.locked);
             this.currentContainer.attributes.payload.sections.forEach(section => {
                 section.blocks = section.blocks.map((block) => {return block.id;});
@@ -294,7 +292,6 @@ export default {
             await this.unlockObject({ id: this.container.id, type: 'courseware-containers' });
             await this.loadContainer({id : this.container.id });
             this.initCurrentData();
-            clearTimeout(timeout);
             this.processing = false;
         },
         async storeSort() {
@@ -367,7 +364,7 @@ export default {
                     );
             } else if (sectionIndex !== 0) {
                 const newSectionIndex = sectionIndex - 1;
-                this.sortInTab = newSectionIndex;
+                this.selectedTab = newSectionIndex;
                 this.currentSections[newSectionIndex].blocks.push(this.currentSections[sectionIndex].blocks.splice(currentIndex, 1)[0]);
             }
         },
@@ -384,7 +381,7 @@ export default {
                     );
             } else if (this.currentSections.length - 1 > sectionIndex) {
                 const newSectionIndex = sectionIndex + 1;
-                this.sortInTab = newSectionIndex;
+                this.selectedTab = newSectionIndex;
                 this.currentSections[newSectionIndex].blocks.splice(0, 0, this.currentSections[sectionIndex].blocks.splice(currentIndex, 1)[0]);
             }
         },
@@ -409,15 +406,14 @@ export default {
                 );
             this.storeSort();
         },
-        selectTabHandler(event) {
-            const tabIndex = event.index;
+        selectTabHandler() {
             let container = _.cloneDeep(this.container);
-            container.activeSection = tabIndex;
+            container.activeSection = this.selectedTab;
             this.storeContainerRecord(container);
             if (this.blockAdder.container.id === this.container.id) {
                 this.setAdderStorage({
                     container: this.container,
-                    section: tabIndex
+                    section: this.selectedTab
                 });
             }
         }
@@ -450,6 +446,9 @@ export default {
                 });
             },
             deep: true
+        },
+        selectedTab() {
+            this.selectTabHandler();
         }
     }
 };

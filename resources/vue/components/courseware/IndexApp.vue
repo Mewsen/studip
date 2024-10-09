@@ -7,7 +7,7 @@
                 :canVisit="canVisit"
                 :structural-element="selected"
                 :ordered-structural-elements="orderedStructuralElements"
-                @select="selectStructuralElement"
+                @select-element="selectStructuralElement"
             ></courseware-structural-element>
             <Teleport to="#courseware-search-widget" name="sidebar-search">
                 <courseware-search-widget v-if="selected !== null"></courseware-search-widget>

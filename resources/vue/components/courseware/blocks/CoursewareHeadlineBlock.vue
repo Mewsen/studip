@@ -49,9 +49,7 @@
             <template v-if="canEdit" #edit>
                 <courseware-tabs>
                     <courseware-tab
-                        :index="0"
                         :name="$gettext('Layout')"
-                        :selected="true"
                     >
                         <form class="default" @submit.prevent="">
                             <label>
@@ -77,7 +75,6 @@
                         </form>
                     </courseware-tab>
                     <courseware-tab
-                        :index="1"
                         :name="$gettext('Inhalt')"
                     >
                         <form class="default" @submit.prevent="">
@@ -184,7 +181,6 @@
                         </form>
                     </courseware-tab>
                     <courseware-tab
-                        :index="2"
                         :name="$gettext('Hintergrund')"
                     >
                         <form class="default" @submit.prevent="">
