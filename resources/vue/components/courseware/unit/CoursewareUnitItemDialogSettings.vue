@@ -56,37 +56,39 @@
                         <studip-tooltip-icon :text="$gettext('Erreicht eine Person in diesem Lernmaterial den ' +
                             'hier eingestellten Fortschritt, so erhält Sie ein PDF-Zertifikat per E-Mail.')"/>
                     </label>
-                    <label v-if="makeCert">
-                        <span>
-                            {{ $gettext('Erforderlicher Fortschritt (in Prozent)') }}
-                        </span>
-                        <input type="number" min="1" max="100" v-model="certThreshold">
-                    </label>
-                    <label v-if="makeCert">
-                        <span>
-                            {{ $gettext('Bild wählen') }}
-                        </span>
-                        <studip-tooltip-icon :text="$gettext('Wählen Sie hier ein Bild, das auf ' +
-                            'dem Zertifikat in der linken oberen Ecke in Originalgröße angezeigt wird. Wenn Sie das ' +
-                            'Bild als Hintergrund des Zertifikats verwenden möchten, muss es nur die passende Größe ' +
-                            'haben, um die ganze Seite auszufüllen.')"></studip-tooltip-icon>
-                        <courseware-file-chooser :isImage="true" v-model="certImage" @selectFile="updateCertImage" />
-                    </label>
-                    <label v-if="makeCert" class="col-3">
-                        <span>
-                            {{ $gettext('Titel') }}
-                            <input type="text" v-model="certTitle">
-                        </span>
-                    </label>
-                    <label v-if="makeCert">
-                        <span>
-                            {{ $gettext('Text') }}
-                            <studip-wysiwyg v-model="certText"></studip-wysiwyg>
-                        </span>
-                    </label>
-                    <button v-if="makeCert" type="button" class="button" @click.prevent="previewCertificate">
-                        {{ $gettext('Vorschau') }}
-                    </button>
+                    <template v-if="makeCert">
+                        <label>
+                            <span>
+                                {{ $gettext('Erforderlicher Fortschritt (in Prozent)') }}
+                            </span>
+                            <input type="number" min="1" max="100" v-model="certThreshold">
+                        </label>
+                        <label>
+                            <span>
+                                {{ $gettext('Bild wählen') }}
+                            </span>
+                            <studip-tooltip-icon :text="$gettext('Wählen Sie hier ein Bild, das auf ' +
+                                'dem Zertifikat in der linken oberen Ecke in Originalgröße angezeigt wird. Wenn Sie das ' +
+                                'Bild als Hintergrund des Zertifikats verwenden möchten, muss es nur die passende Größe ' +
+                                'haben, um die ganze Seite auszufüllen.')"></studip-tooltip-icon>
+                            <courseware-file-chooser :isImage="true" v-model="certImage" @selectFile="updateCertImage" />
+                        </label>
+                        <label>
+                            <span>
+                                {{ $gettext('Titel') }}
+                                <input type="text" v-model="certTitle">
+                            </span>
+                        </label>
+                        <label for="cert-text">
+                            <span>
+                                {{ $gettext('Text') }}
+                            </span>
+                        </label>
+                        <studip-wysiwyg v-model="certText" id="cert-text"></studip-wysiwyg>
+                        <button type="button" class="button" @click.prevent="previewCertificate">
+                            {{ $gettext('Vorschau') }}
+                        </button>
+                    </template>
                 </fieldset>
                 <fieldset v-if="certificatesRemindersEnabled">
                     <legend>
@@ -101,50 +103,51 @@
                             'Teilnehmenden verschickt werden, um z.B. an die Bearbeitung dieses Lernmaterials ' +
                             'zu erinnern.')"/>
                     </label>
-
-                    <label v-if="sendReminders">
-                        <span>
-                            {{ $gettext('Zeitraum zwischen Erinnerungen') }}
-                        </span>
-                        <select v-model="reminderInterval">
-                            <option value="7">
-                                {{ $gettext('wöchentlich') }}
-                            </option>
-                            <option value="14">
-                                {{ $gettext('14-tägig') }}
-                            </option>
-                            <option value="30">
-                                {{ $gettext('monatlich') }}
-                            </option>
-                            <option value="90">
-                                {{ $gettext('vierteljährlich') }}
-                            </option>
-                            <option value="180">
-                                {{ $gettext('halbjährlich') }}
-                            </option>
-                            <option value="365">
-                                {{ $gettext('jährlich') }}
-                            </option>
-                        </select>
-                    </label>
-                    <label v-if="sendReminders" class="col-3">
-                        <span>
-                            {{ $gettext('Erstmalige Erinnerung am') }}
-                            <input type="date" v-model="reminderStartDate">
-                        </span>
-                    </label>
-                    <label v-if="sendReminders" class="col-3">
-                        <span>
-                            {{ $gettext('Letztmalige Erinnerung am') }}
-                            <input type="date" v-model="reminderEndDate">
-                        </span>
-                    </label>
-                    <label v-if="sendReminders">
-                        <span>
-                            {{ $gettext('Text der Erinnerungsmail') }}
-                            <studip-wysiwyg v-model="reminderMailText"></studip-wysiwyg>
-                        </span>
-                    </label>
+                    <template v-if="sendReminders">
+                        <label>
+                            <span>
+                                {{ $gettext('Zeitraum zwischen Erinnerungen') }}
+                            </span>
+                            <select v-model="reminderInterval">
+                                <option value="7">
+                                    {{ $gettext('wöchentlich') }}
+                                </option>
+                                <option value="14">
+                                    {{ $gettext('14-tägig') }}
+                                </option>
+                                <option value="30">
+                                    {{ $gettext('monatlich') }}
+                                </option>
+                                <option value="90">
+                                    {{ $gettext('vierteljährlich') }}
+                                </option>
+                                <option value="180">
+                                    {{ $gettext('halbjährlich') }}
+                                </option>
+                                <option value="365">
+                                    {{ $gettext('jährlich') }}
+                                </option>
+                            </select>
+                        </label>
+                        <label class="col-3">
+                            <span>
+                                {{ $gettext('Erstmalige Erinnerung am') }}
+                                <input type="date" v-model="reminderStartDate">
+                            </span>
+                        </label>
+                        <label class="col-3">
+                            <span>
+                                {{ $gettext('Letztmalige Erinnerung am') }}
+                                <input type="date" v-model="reminderEndDate">
+                            </span>
+                        </label>
+                        <label for="reminder-text">
+                            <span>
+                                {{ $gettext('Text der Erinnerungsmail') }}
+                            </span>
+                        </label>
+                        <studip-wysiwyg v-model="reminderMailText" id="reminder-text"></studip-wysiwyg>
+                    </template>
                 </fieldset>
                 <fieldset v-if="certificatesRemindersEnabled">
                     <legend>
@@ -158,46 +161,48 @@
                         <studip-tooltip-icon :text="$gettext('Hier kann eingestellt werden, den Fortschritt ' +
                             'aller Teilnehmenden periodisch auf 0 zurückzusetzen.')"/>
                     </label>
-                    <label v-if="resetProgress">
-                        <span>
-                            {{ $gettext('Zeitraum zum Rücksetzen des Fortschritts') }}
-                        </span>
-                        <select v-model="resetProgressInterval">
-                            <option value="14">
-                                {{ $gettext('14-tägig') }}
-                            </option>
-                            <option value="30">
-                                {{ $gettext('monatlich') }}
-                            </option>
-                            <option value="90">
-                                {{ $gettext('vierteljährlich') }}
-                            </option>
-                            <option value="180">
-                                {{ $gettext('halbjährlich') }}
-                            </option>
-                            <option value="365">
-                                {{ $gettext('jährlich') }}
-                            </option>
-                        </select>
-                    </label>
-                    <label v-if="resetProgress" class="col-3">
-                        <span>
-                            {{ $gettext('Erstmaliges Zurücksetzen am') }}
-                            <input type="date" v-model="resetProgressStartDate">
-                        </span>
-                    </label>
-                    <label v-if="resetProgress" class="col-3">
-                        <span>
-                            {{ $gettext('Letztmaliges Zurücksetzen am') }}
-                            <input type="date" v-model="resetProgressEndDate">
-                        </span>
-                    </label>
-                    <label v-if="resetProgress">
-                        <span>
-                            {{ $gettext('Text der Rücksetzungsmail') }}
-                            <studip-wysiwyg v-model="resetProgressMailText"></studip-wysiwyg>
-                        </span>
-                    </label>
+                    <template v-if="resetProgress">
+                        <label>
+                            <span>
+                                {{ $gettext('Zeitraum zum Rücksetzen des Fortschritts') }}
+                            </span>
+                            <select v-model="resetProgressInterval">
+                                <option value="14">
+                                    {{ $gettext('14-tägig') }}
+                                </option>
+                                <option value="30">
+                                    {{ $gettext('monatlich') }}
+                                </option>
+                                <option value="90">
+                                    {{ $gettext('vierteljährlich') }}
+                                </option>
+                                <option value="180">
+                                    {{ $gettext('halbjährlich') }}
+                                </option>
+                                <option value="365">
+                                    {{ $gettext('jährlich') }}
+                                </option>
+                            </select>
+                        </label>
+                        <label class="col-3">
+                            <span>
+                                {{ $gettext('Erstmaliges Zurücksetzen am') }}
+                                <input type="date" v-model="resetProgressStartDate">
+                            </span>
+                        </label>
+                        <label class="col-3">
+                            <span>
+                                {{ $gettext('Letztmaliges Zurücksetzen am') }}
+                                <input type="date" v-model="resetProgressEndDate">
+                            </span>
+                        </label>
+                        <label for="reset-text">
+                            <span>
+                                {{ $gettext('Text der Rücksetzungsmail') }}
+                            </span>
+                        </label>
+                        <studip-wysiwyg v-model="resetProgressMailText" id="reset-text"></studip-wysiwyg>
+                    </template>
                 </fieldset>
             </form>
             <studip-progress-indicator v-else :description="$gettext('Lade Einstellungen…')"/>
@@ -288,23 +293,23 @@ export default {
             this.makeCert = typeof(this.certSettings) === 'object' &&
                 Object.keys(this.certSettings).length > 0;
             this.certThreshold = this.certSettings.threshold;
-            this.certImage = this.certSettings.image;
+            this.certImage = this.certSettings.image ?? '';
             this.certTitle = this.certSettings.title;
-            this.certText = this.certSettings.text;
+            this.certText = this.certSettings.text ?? '';
             this.reminderSettings = this.currentInstance.attributes['reminder-settings'];
             this.sendReminders = typeof(this.reminderSettings) === 'object' &&
                 Object.keys(this.reminderSettings).length > 0;
             this.reminderInterval = this.reminderSettings.interval;
             this.reminderStartDate = this.reminderSettings.startDate;
             this.reminderEndDate = this.reminderSettings.endDate;
-            this.reminderMailText = this.reminderSettings.mailText;
+            this.reminderMailText = this.reminderSettings.mailText ?? '';
             this.resetProgressSettings = this.currentInstance.attributes['reset-progress-settings'];
             this.resetProgress = typeof(this.resetProgressSettings) === 'object' &&
                 Object.keys(this.resetProgressSettings).length > 0;
             this.resetProgressInterval = this.resetProgressSettings.interval;
             this.resetProgressStartDate = this.resetProgressSettings.startDate;
             this.resetProgressEndDate = this.resetProgressSettings.endDate;
-            this.resetProgressMailText = this.resetProgressSettings.mailText;
+            this.resetProgressMailText = this.resetProgressSettings.mailText ?? '';
         },
         storeSettings() {
             this.$emit('close');
