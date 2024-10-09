@@ -62,7 +62,7 @@ class StructuralElement extends SchemaProvider
             'copy-approval' => $resource['copy_approval']->getIterator(),
             'can-edit' => $resource->canEdit($user),
             // 'can-read-sequential' => $resource->canReadSequential($user),
-            'can-read-sequential' => 42,
+            'test' => (bool) $resource->canReadSequential($user),
             'can-visit' => $resource->canVisit($user),
             'is-link' => (int) $resource['is_link'],
             'commentable' => (bool) $resource['commentable'],
