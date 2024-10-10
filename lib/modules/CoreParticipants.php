@@ -121,6 +121,134 @@ class CoreParticipants extends CorePlugin implements StudipModule
         return $navigation;
     }
 
+
+    public function getManyIconNavigation($course_ids, $visits, $user_id)
+    {
+        if ($user_id === 'nobody') {
+            return [];
+        }
+
+
+        // Filter courses that are auto-insert-seminars, to not show any icon
+        $course_ids = array_filter($course_ids, function ($course_id) use ($user_id) {
+            $auto_insert_perm = Config::get()->AUTO_INSERT_SEM_PARTICIPANTS_VIEW_PERM;
+            $is_auto_insert =
+                AutoInsert::checkSeminar($course_id)
+                && (
+                    ($GLOBALS['perm']->have_perm('admin', $user_id) && !$GLOBALS['perm']->have_perm($auto_insert_perm, $user_id))
+                    || !$GLOBALS['perm']->have_studip_perm($auto_insert_perm, $course_id, $user_id)
+                );
+            return !$is_auto_insert;
+        });
+
+        $courses = Course::findMany($course_ids);
+        $navs = [];
+        $urls = [];
+        foreach ($courses as $course) {
+            assert($course instanceof Course);
+            $is_student = !$GLOBALS['perm']->have_studip_perm('tutor', $course->seminar_id, $user_id);
+
+            // Is the participants page hidden for students?
+            if ($is_student && $course->config->COURSE_MEMBERS_HIDE) {
+                // Studenten AND Versteckt
+                $tab_navigation = $this->getTabNavigation($course->seminar_id);
+                if ($tab_navigation && count($tab_navigation['members']->getSubNavigation()) > 0) {
+                    $sub_nav = $tab_navigation['members']->getSubNavigation();
+                    $first_nav = reset($sub_nav);
+
+                    $navigation = new Navigation($first_nav->getTitle(), $first_nav->getURL());
+                    $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
+                    $navs[$course->seminar_id] = $navigation;
+                } else {
+                    $navs[$course->seminar_id] = null;
+                }
+                continue;
+            }
+
+            // Determine url to redirect to
+            if (!$course->getSemClass()->isGroup()) {
+                $urls[$course->seminar_id] = 'dispatch.php/course/members/index';
+            } elseif ($is_student) {
+                $navs[$course->seminar_id] = null;
+                continue;
+            } else {
+                $urls[$course->seminar_id] = 'dispatch.php/course/grouping/members';
+            }
+
+            $navigation = new Navigation(_('Teilnehmende'), $urls[$course->seminar_id]);
+            $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
+
+            // Check permission, show no indicator if not at least tutor
+            if ($is_student) {
+                $navs[$course->seminar_id] = $navigation;
+            }
+        }
+
+        // For the remaining courses, show if there are new users
+        $remaining_course_ids = array_diff($course_ids, array_keys($navs));
+        $query = "SELECT seminar_users.seminar_id as seminar_id,
+                         COUNT(seminar_users.user_id) as count,
+                         COUNT(IF((seminar_users.mkdate > IFNULL(b.visitdate, :threshold) AND seminar_users.user_id != :user_id), seminar_users.user_id, NULL)) AS neue
+                  FROM (
+                      SELECT user_id, seminar_id, mkdate
+                      FROM admission_seminar_user
+                      WHERE seminar_id IN (:course_ids)
+
+                      UNION ALL
+
+                      SELECT user_id, seminar_id, mkdate
+                      FROM seminar_user
+                      WHERE seminar_id IN (:course_ids)
+                  ) AS seminar_users
+                  LEFT JOIN object_user_visits AS b
+                    ON b.object_id IN (:course_ids)
+                       AND b.user_id = :user_id
+                       AND b.plugin_id = :plugin_id
+                  GROUP BY seminar_users.seminar_id";
+        $users_per_course = DBManager::get()->fetchAll($query, [
+            ':course_ids' => $remaining_course_ids,
+            ':user_id' => $user_id,
+            ':threshold' => object_get_visit_threshold(),
+            ':plugin_id' => $this->getPluginId(),
+        ]);
+
+        foreach ($users_per_course as $result) {
+            $navigation = new Navigation(_('Teilnehmende'), $urls[$result['seminar_id']]);
+            $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
+
+            if ($result['neue']) {
+                $navigation->setImage(Icon::create('persons', Icon::ROLE_ATTENTION), [
+                    'title' => sprintf(
+                        ngettext(
+                            '%1$d Teilnehmende/r, %2$d neue/r',
+                            '%1$d Teilnehmende, %2$d neue',
+                            $result['count']
+                        ),
+                        $result['count'],
+                        $result['neue']
+                    )
+                ]);
+                $navigation->setBadgeNumber($result['neue']);
+            } elseif ($result['count']) {
+                $navigation->setLinkAttributes([
+                    'title' => sprintf(
+                        ngettext(
+                            '%d Teilnehmende/r',
+                            '%d Teilnehmende',
+                            $result['count']
+                        ),
+                        $result['count']
+                    )
+                ]);
+            }
+
+            $navs[$result['seminar_id']] = $navigation;
+        }
+
+        return $navs;
+    }
+
+
     /**
      * {@inheritdoc}
      */

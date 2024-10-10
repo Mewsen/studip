@@ -487,6 +487,7 @@ class MyRealmModel
         }
         // -- 2. Fetch the Navigation per StudipModule
         $navigation = [];
+        // TODO check if call can be removed because all plugins fetch it themselves eitherway, they basically only need threshold
         $visits = get_objects_visits($all_course_ids, 0, null, null, array_keys($activated_tools));
         foreach ($activated_tools as $plugin_id => $plugin_data) {
             if (!Config::get()->VOTE_ENABLE && $plugin_id === 'vote') {
