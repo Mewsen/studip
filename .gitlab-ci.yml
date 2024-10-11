@@ -211,9 +211,7 @@ phpstan:
   variables:
     CACHE_LOCATION: $CACHE_DIR/phpstan
     PHPSTAN_CODE_QUALITY_REPORT: $REPORT_DIR/phpstan-codequality.json
-  allow_failure: true
   interruptible: true
-  when: manual
   cache:
    - *composer-cache
    - key: "$CO_JOB_NAME_SLUG:$CI_COMMIT_REF_SLUG"
