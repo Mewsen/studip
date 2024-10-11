@@ -108,12 +108,11 @@ if ($navigation) {
                 <? else: ?>
                     <? SkipLinks::addIndex(_('Suche'), 'globalsearch-input', 910, false) ?>
                     <li id="quicksearch_item">
-                        <script>
-                            var selectSem = function (seminar_id, name) {
-                                document.location = "<?= URLHelper::getURL("dispatch.php/course/details/", ["send_from_search" => 1, "send_from_search_page" => URLHelper::getURL("dispatch.php/search/courses?keep_result_set=1")])  ?>&sem_id=" + seminar_id;
-                            };
-                        </script>
-                        <?= $GLOBALS['template_factory']->render('globalsearch/searchbar') ?>
+                        <?= Studip\VueApp::create('GlobalSearchBar')
+                            ->withProps([
+                                'max-results-per-type' => (int) Config::get()->GLOBALSEARCH_MAX_RESULT_OF_TYPE,
+                                'source-url'           => URLHelper::getURL('dispatch.php/globalsearch/find', [], true),
+                            ]) ?>
                     </li>
                 <? endif; ?>
             <? endif; ?>

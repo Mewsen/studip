@@ -98,7 +98,7 @@ const GlobalSearch = {
                 $.each(value.content, function(index, result) {
                     // Which result types should be opened via dialog?
                     const openInDialog = ['GlobalSearchFiles', 'GlobalSearchMessages'];
-                    var dataDialog = (openInDialog.indexOf(name) >= 0 ? dataDialog = 'data-dialog' : dataDialog = '');
+                    var dataDialog = openInDialog.includes(name) ? 'data-dialog' : '';
 
                     // Create single result entry.
                     var single = $(`<a href="${result.url}" role="listitem" ${dataDialog}>`),
