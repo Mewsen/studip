@@ -45,6 +45,10 @@ $(document).on('change', proxy_elements_selector, function (event, force) {
 
                 const event = new Event('change');
                 element.dispatchEvent(event);
+
+                if (element.matches('[data-proxyfor]')) {
+                    $(element).trigger('change', [true]);
+                }
             });
     }
 }).on('update.proxy', proxy_elements_selector, function () {
