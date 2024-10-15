@@ -120,12 +120,10 @@ class CoreScm extends CorePlugin implements StudipModule
             $scm = $entries[$result['scm_id']];
             $title = $scm->tab_name;
             $image = Icon::create('infopage', Icon::ROLE_CLICKABLE);
-            $params = [];
             $badge = 0;
 
             if ($result['count']) {
                 if ($result['neue']) {
-                    $image = Icon::create('infopage', Icon::ROLE_NEW);
                     $badge = $result['neue'];
                     if ($result['count'] == 1) {
                         $title = $scm->tab_name . _(' (geändert)');
@@ -136,21 +134,20 @@ class CoreScm extends CorePlugin implements StudipModule
                             $result['neue']
                         );
                     }
-                } else {
-                    if ($result['count'] > 1) {
-                        $title = sprintf(
-                            ngettext(
-                                '%d Eintrag',
-                                '%d Einträge',
-                                $result['count']
-                            ),
+                    $image = Icon::create('infopage', Icon::ROLE_ATTENTION, ['title' => $title]);
+                } else if ($result['count'] > 1) {
+                    $title = sprintf(
+                        ngettext(
+                            '%d Eintrag',
+                            '%d Einträge',
                             $result['count']
-                        );
-                    }
+                        ),
+                        $result['count']
+                    );
+                    $image = Icon::create('infopage', Icon::ROLE_CLICKABLE, ['title' => $title]);
                 }
-                $params['title'] = $title;
             }
-            $nav = new Navigation($title, 'dispatch.php/course/scm', $params);
+            $nav = new Navigation($title, 'dispatch.php/course/scm');
             $nav->setBadgeNumber($badge);
             $nav->setImage($image);
             $navs[$result['range_id']] = $nav;

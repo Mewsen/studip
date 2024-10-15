@@ -86,32 +86,31 @@ class CoreSchedule extends CorePlugin implements StudipModule
 
         $navs = array_fill_keys($course_ids, null);
         foreach ($results as $result) {
-            $image = Icon::create('schedule', Icon::ROLE_CLICKABLE);
-            $params = [];
+            $nav = new Navigation(_('Ablaufplan'), 'dispatch.php/course/dates');
             $badge = 0;
             if ($result['neue']) {
-                $image = Icon::create('schedule', Icon::ROLE_ATTENTION);
                 $badge = $result['neue'];
-                $params['title'] = sprintf(
-                        ngettext(
-                            '%1$d Termin, %2$d neuer',
-                            '%1$d Termine, %2$d neue',
-                            $result['count']
-                        ),
-                        $result['count'],
-                        $result['neue']
-                    );
+                $params = ['title' => sprintf(
+                    ngettext(
+                        '%1$d Termin, %2$d neuer',
+                        '%1$d Termine, %2$d neue',
+                        $result['count']
+                    ),
+                    $result['count'],
+                    $result['neue']
+                )];
+                $image = Icon::create('schedule', Icon::ROLE_ATTENTION, $params);
             } else {
-                $params['title'] = sprintf(
+                $params = ['title' => sprintf(
                     ngettext(
                         '%d Termin',
                         '%d Termine',
                         $result['count']
                     ),
                     $result['count']
-                );
+                )];
+                $image = Icon::create('schedule', Icon::ROLE_CLICKABLE, $params);
             }
-            $nav = new Navigation(_('Ablaufplan'), 'dispatch.php/course/dates', $params);
             $nav->setImage($image);
             $nav->setBadgeNumber($badge);
             $navs[$result['range_id']] = $nav;
