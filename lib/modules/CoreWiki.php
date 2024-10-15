@@ -102,6 +102,87 @@ class CoreWiki extends CorePlugin implements StudipModule
         return $nav;
     }
 
+    public function getManyIconNavigation($course_ids, $visits, $user_id)
+    {
+        if (!Config::get()->WIKI_ENABLE) {
+            return [];
+        }
+        $perm = $GLOBALS['perm']->get_perm($user_id);
+        if (in_array($perm, ['admin', 'root'])) {
+            $perm = 'dozent';
+        }
+
+        $query = "SELECT wiki_pages.range_id,
+                    COUNT(page_id) AS count,
+                    COUNT(IF((wiki_pages.chdate > IFNULL(ouv.visitdate, :threshold) AND wiki_pages.user_id != :user_id), page_id, NULL)) AS neue
+            FROM wiki_pages
+            LEFT JOIN statusgruppe_user ON (statusgruppe_user.statusgruppe_id = wiki_pages.read_permission)
+            LEFT JOIN object_user_visits AS ouv
+              ON ouv.object_id = wiki_pages.range_id
+                AND ouv.user_id = :user_id
+                AND ouv.plugin_id = :plugin_id
+            WHERE wiki_pages.range_id IN (:range_ids)
+              AND (
+                wiki_pages.read_permission = 'all'
+                OR statusgruppe_user.user_id = :user_id
+                OR wiki_pages.read_permission = :perm
+                OR (wiki_pages.read_permission = 'tutor' AND :perm = 'dozent')
+              )
+            GROUP BY wiki_pages.range_id;";
+        $results = DBManager::get()->fetchAll($query, [
+            ':range_ids' => $course_ids,
+            ':user_id' => $user_id,
+            ':perm' => $perm,
+            ':plugin_id' => $this->getPluginId(),
+            ':threshold' => object_get_visit_threshold(),
+        ]);
+        if (empty($results)) {
+            return [];
+        }
+
+        $navs = array_fill_keys($course_ids, null);
+        foreach ($results as $result) {
+            $nav = new Navigation(_('Wiki'));
+            if ($result['neue']) {
+                $nav->setURL('dispatch.php/course/wiki/newpages');
+                $nav->setImage(Icon::create('wiki', Icon::ROLE_ATTENTION, [
+                    'title' => sprintf(
+                            ngettext(
+                                '%d Wiki-Seite',
+                                '%d Wiki-Seiten',
+                                $result['count']
+                            ),
+                            $result['count']
+                        )
+                        . ', '
+                        . sprintf(
+                            ngettext(
+                                '%d Änderung',
+                                '%d Änderungen',
+                                $result['neue']
+                            ),
+                            $result['neue']
+                        )
+                ]));
+                $nav->setBadgeNumber($result['neue']);
+            } else {
+                $nav->setURL('dispatch.php/course/wiki/page');
+                $nav->setImage(Icon::create('wiki', Icon::ROLE_CLICKABLE, [
+                    'title' => sprintf(
+                        ngettext(
+                            '%d Wiki-Seite',
+                            '%d Wiki-Seiten',
+                            $result['count']
+                        ),
+                        $result['count']
+                    )
+                ]));
+            }
+            $navs[$result['range_id']] = $nav;
+        }
+        return $navs;
+    }
+
     /**
      * {@inheritdoc}
      */
