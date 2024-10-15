@@ -217,7 +217,7 @@ class CoreParticipants extends CorePlugin implements StudipModule
             $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
 
             if ($result['neue']) {
-                $navigation->setImage(Icon::create('persons', Icon::ROLE_ATTENTION), [
+                $navigation->setImage(Icon::create('persons', Icon::ROLE_ATTENTION, [
                     'title' => sprintf(
                         ngettext(
                             '%1$d Teilnehmende/r, %2$d neue/r',
@@ -227,10 +227,10 @@ class CoreParticipants extends CorePlugin implements StudipModule
                         $result['count'],
                         $result['neue']
                     )
-                ]);
+                ]));
                 $navigation->setBadgeNumber($result['neue']);
             } elseif ($result['count']) {
-                $navigation->setLinkAttributes([
+                $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE, [
                     'title' => sprintf(
                         ngettext(
                             '%d Teilnehmende/r',
@@ -239,7 +239,7 @@ class CoreParticipants extends CorePlugin implements StudipModule
                         ),
                         $result['count']
                     )
-                ]);
+                ]));
             }
 
             $navs[$result['seminar_id']] = $navigation;

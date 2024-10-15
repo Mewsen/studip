@@ -171,9 +171,9 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
                 $foldertype = $folder->getTypedFolder();
                 $nav = new Navigation(_('Dateibereich'), "dispatch.php/{$range_type}/files");
                 if ($foldertype->isFileDownloadable($fileref->getId(), $user_id)) {
-                    $nav->setImage(Icon::create('files', Icon::ROLE_ATTENTION), [
+                    $nav->setImage(Icon::create('files', Icon::ROLE_ATTENTION, [
                         'title' => _('Es gibt neue Dateien.'),
-                    ]);
+                    ]));
                     $nav->setURL("dispatch.php/{$range_type}/files/flat", ['select' => 'new']);
                 }
                 $navs[$c_id] = $nav;
