@@ -118,13 +118,15 @@ class CoreScm extends CorePlugin implements StudipModule
 
         foreach ($results as $result) {
             $scm = $entries[$result['scm_id']];
-
-            $nav = new Navigation((string)$scm->tab_name, 'dispatch.php/course/scm');
+            $title = $scm->tab_name;
+            $image = Icon::create('infopage', Icon::ROLE_CLICKABLE);
+            $params = [];
+            $badge = 0;
 
             if ($result['count']) {
                 if ($result['neue']) {
                     $image = Icon::create('infopage', Icon::ROLE_NEW);
-                    $nav->setBadgeNumber($result['neue']);
+                    $badge = $result['neue'];
                     if ($result['count'] == 1) {
                         $title = $scm->tab_name . _(' (geändert)');
                     } else {
@@ -135,10 +137,7 @@ class CoreScm extends CorePlugin implements StudipModule
                         );
                     }
                 } else {
-                    $image = Icon::create('infopage', Icon::ROLE_CLICKABLE);
-                    if ($result['count'] == 1) {
-                        $title = $scm->tab_name;
-                    } else {
+                    if ($result['count'] > 1) {
                         $title = sprintf(
                             ngettext(
                                 '%d Eintrag',
@@ -149,8 +148,11 @@ class CoreScm extends CorePlugin implements StudipModule
                         );
                     }
                 }
-                $nav->setImage($image, ['title' => $title]);
+                $params['title'] = $title;
             }
+            $nav = new Navigation($title, 'dispatch.php/course/scm', $params);
+            $nav->setBadgeNumber($badge);
+            $nav->setImage($image);
             $navs[$result['range_id']] = $nav;
         }
 
