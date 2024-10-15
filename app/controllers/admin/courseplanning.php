@@ -12,9 +12,11 @@ class Admin_CourseplanningController extends AuthenticatedController
     {
         parent::before_filter($action, $args);
 
-        if ($GLOBALS['perm']->have_perm('admin')) {
-            Navigation::activateItem('/browse/my_courses/schedule');
+        if (!$GLOBALS['perm']->have_perm('admin')) {
+            throw new AccessDeniedException();
         }
+
+        Navigation::activateItem('/browse/my_courses/schedule');
 
         $this->insts = Institute::getMyInstitutes($GLOBALS['user']->id);
 
