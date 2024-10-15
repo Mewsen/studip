@@ -150,7 +150,7 @@ class InstituteCalendarHelper
         $df = DatafieldEntryModel::findByModel($course, self::COLUMN_DATAFIELD_ID);
         if ($df[0]) {
             $event_columns = self::getCourseEventcolumns($course);
-            if (!is_array($event_columns[$event_id])) {
+            if (isset($event_columns[$event_id]) && !is_array($event_columns[$event_id])) {
                 unset($event_columns[$event_id]);
             }
             $event_columns[$event_id][$institut_id] = $column;
