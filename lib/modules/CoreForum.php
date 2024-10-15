@@ -75,7 +75,7 @@ class CoreForum extends CorePlugin implements ForumModule
     /* interface method */
     public function getManyIconNavigation($course_ids, $visits, $user_id)
     {
-        $num_entries_plural = ForumVisit::getCounts($course_ids, $visits, $user_id, $this->getPluginId());
+        $num_entries_plural = ForumVisit::getCounts($course_ids, $user_id, $this->getPluginId());
 
         $navs = [];
         foreach ($num_entries_plural as $course_id => $num_entries) {

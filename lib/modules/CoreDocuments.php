@@ -152,7 +152,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
                         AND ouv.plugin_id = :plugin_id
                       WHERE folders.range_type = :range_type
                         AND folders.range_id IN (:context_ids)
-                        AND file_refs.chdate >= IF(ouv.last_visitdate > :threshold, ouv.last_visitdate, :threshold)
+                        AND file_refs.chdate >= IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold)
                         AND file_refs.user_id != :me";
         $file_refs = FileRef::findBySQL($condition, [
             ':me'         => $user_id,

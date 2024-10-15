@@ -57,34 +57,40 @@ class ForumVisit {
         return $stmt->fetchColumn();
     }
 
-    static function getCounts($topic_ids, $visits, $user_id, $plugin_id)
+    static function getCounts($topic_ids, $user_id, $plugin_id)
     {
         if (empty($topic_ids)) {
             return false;
         }
-        $visit_dates = [];
-        foreach ($topic_ids as $course_id) {
-            $visitdate = $visits[$course_id][$plugin_id]['visitdate'];
-            if ($visitdate < time() - ForumVisit::LAST_VISIT_MAX) {
-                $visitdate = time() - ForumVisit::LAST_VISIT_MAX;
-            }
-            $visit_dates[$course_id] = $visitdate;
-        }
 
         $entries = DBManager::get()->fetchAll(
-            "SELECT seminar_id, topic_id, chdate
+            "SELECT forum_entries.seminar_id, COUNT(*) as count
             FROM forum_entries
-            WHERE user_id != :user_id
-              AND seminar_id IN (:seminar_ids)
-              AND topic_id != seminar_id",
-            ['user_id' => $user_id, ':seminar_ids' => $topic_ids]
+            LEFT JOIN object_user_visits AS ouv
+             ON ouv.object_id = forum_entries.seminar_id
+               AND ouv.user_id = :user_id
+               AND ouv.plugin_id = :plugin_id
+            WHERE forum_entries.user_id != :user_id
+              AND forum_entries.seminar_id IN (:seminar_ids)
+              AND forum_entries.topic_id != forum_entries.seminar_id
+              AND forum_entries.chdate > IF(
+                IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold) < :forum_visit_max,
+                :forum_visit_max,
+                IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold)
+              )
+            GROUP BY forum_entries.seminar_id",
+            [
+                ':user_id' => $user_id,
+                ':seminar_ids' => $topic_ids,
+                ':plugin_id' => $plugin_id,
+                ':forum_visit_max' => time() - ForumVisit::LAST_VISIT_MAX,
+                ':threshold' => object_get_visit_threshold()
+            ]
         );
 
         $counts = array_fill_keys($topic_ids, 0);
         foreach ($entries as $entry) {
-            if ($entry['chdate'] > $visit_dates[$entry['seminar_id']]) {
-                $counts[$entry['seminar_id']]++;
-            }
+            $counts[$entry['seminar_id']] = $entry['count'];
         }
 
         return $counts;
