@@ -42,6 +42,10 @@
         left: (-$list-width);
         right: 0;
         height: $arrow-height;
+
+        // The following transformations eliminates a bug that would expand
+        // the #top-bar when the container is hovered
+        transform: translate3d(0, 0, 0);
     }
     &:hover::after {
         content: "";
