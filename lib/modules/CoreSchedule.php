@@ -65,6 +65,61 @@ class CoreSchedule extends CorePlugin implements StudipModule
         return $nav;
     }
 
+    public function getManyIconNavigation($course_ids, $visits, $user_id)
+    {
+        $query = "SELECT termine.range_id,
+                    COUNT(termin_id) AS count,
+                    COUNT(IF((chdate > IFNULL(ouv.visitdate, :threshold) AND autor_id != :user_id), termin_id, NULL)) AS neue
+                  FROM termine
+                  LEFT JOIN object_user_visits AS ouv
+                    ON ouv.object_id = termine.range_id
+                       AND ouv.user_id = :user_id
+                       AND ouv.plugin_id = :plugin_id
+                  WHERE termine.range_id IN (:course_ids)
+                  GROUP BY termine.range_id ";
+        $results = DBManager::get()->fetchAll($query, [
+            ':user_id' => $user_id,
+            ':course_ids' => $course_ids,
+            ':threshold' => object_get_visit_threshold(),
+            ':plugin_id' => $this->getPluginId(),
+        ],PDO::FETCH_ASSOC);
+
+        $navs = array_fill_keys($course_ids, null);
+        foreach ($results as $result) {
+            $image = Icon::create('schedule', Icon::ROLE_CLICKABLE);
+            $params = [];
+            $badge = 0;
+            if ($result['neue']) {
+                $image = Icon::create('schedule', Icon::ROLE_ATTENTION);
+                $badge = $result['neue'];
+                $params['title'] = sprintf(
+                        ngettext(
+                            '%1$d Termin, %2$d neuer',
+                            '%1$d Termine, %2$d neue',
+                            $result['count']
+                        ),
+                        $result['count'],
+                        $result['neue']
+                    );
+            } else {
+                $params['title'] = sprintf(
+                    ngettext(
+                        '%d Termin',
+                        '%d Termine',
+                        $result['count']
+                    ),
+                    $result['count']
+                );
+            }
+            $nav = new Navigation(_('Ablaufplan'), 'dispatch.php/course/dates', $params);
+            $nav->setImage($image);
+            $nav->setBadgeNumber($badge);
+            $navs[$result['range_id']] = $nav;
+        }
+
+        return $navs;
+    }
+
     /**
      * {@inheritdoc}
      */
