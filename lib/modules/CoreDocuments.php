@@ -146,22 +146,29 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
         //$range_type = get_object_type($course_id, ['sem', 'inst']) === 'sem' ? 'course' : 'institute';
         $range_type = 'course';
         $condition = "INNER JOIN folders ON (folders.id = file_refs.folder_id)
+                      LEFT JOIN object_user_visits AS ouv
+                        ON ouv.object_id = folders.range_id
+                        AND ouv.user_id = :me
+                        AND ouv.plugin_id = :plugin_id
                       WHERE folders.range_type = :range_type
                         AND folders.range_id IN (:context_ids)
+                        AND file_refs.chdate >= IF(ouv.last_visitdate > :threshold, ouv.last_visitdate, :threshold)
                         AND file_refs.user_id != :me";
         $file_refs = FileRef::findBySQL($condition, [
-            'me'         => $user_id,
-            'context_ids' => $course_ids,
-            'range_type' => $range_type
+            ':me'         => $user_id,
+            ':plugin_id' => $this->getPluginId(),
+            ':threshold' => object_get_visit_threshold(),
+            ':context_ids' => $course_ids,
+            ':range_type' => $range_type
         ]);
 
 
         $navs = [];
-        $plugin_id = $this->getPluginId();
         foreach ($file_refs as $fileref) {
-            $c_id = $fileref->folder->range_id;
-            if (!isset($navs[$c_id]) && $fileref->chdate >= $visits[$fileref->folder->range_id][$plugin_id]['visitdate']) {
-                $foldertype = $fileref->folder->getTypedFolder();
+            $folder = $fileref->folder;
+            $c_id = $folder->range_id;
+            if (!isset($navs[$c_id])) {
+                $foldertype = $folder->getTypedFolder();
                 $nav = new Navigation(_('Dateibereich'), "dispatch.php/{$range_type}/files");
                 if ($foldertype->isFileDownloadable($fileref->getId(), $user_id)) {
                     $nav->setImage(Icon::create('files', Icon::ROLE_ATTENTION), [
