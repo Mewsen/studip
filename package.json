@@ -115,6 +115,7 @@
         "mp3tag.js": "3.7.1",
         "multiselect": "0.9.12",
         "pdfjs-dist": "^2.6.347",
+        "pinia": "^2.2.4",
         "portal-vue": "^3.0.0",
         "postcss": "^8.1.8",
         "postcss-loader": "4.1.0",
