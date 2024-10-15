@@ -23,7 +23,6 @@
             ],
             "Trails\\": "lib/trails/",
             "": [
-                "lib/calendar/",
                 "lib/classes/",
                 "lib/classes/admission/",
                 "lib/classes/admission/userfilter/",
@@ -41,7 +40,6 @@
                 "lib/classes/sidebar/",
                 "lib/classes/visibility/",
                 "lib/classes/wiki/",
-                "lib/elearning/",
                 "lib/exceptions/",
                 "lib/exceptions/resources/",
                 "lib/extern/",
@@ -57,7 +55,6 @@
                 "lib/plugins/core/",
                 "lib/plugins/db/",
                 "lib/plugins/engine/",
-                "lib/raumzeit/",
                 "lib/resources/"
             ]
         },
