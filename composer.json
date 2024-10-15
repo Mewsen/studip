@@ -99,6 +99,7 @@
         "ext-pdo": "*",
         "ext-mbstring": "*",
         "ext-dom": "*",
+        "ext-iconv": "*",
         "opis/json-schema": "2.3.0",
         "slim/slim": "4.13.0",
         "php-di/php-di": "7.0.0",
