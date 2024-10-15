@@ -83,7 +83,6 @@
 
     #top-logo {
         flex: 0 1 auto;
-        margin: -13px 12px 0 20px;
 
         &.studip-logo {
             @include hide-text();
@@ -94,7 +93,6 @@
             background-position: left;
             display: block;
             width: 130px;
-            height: 81px;
             margin-right: 30px;
         }
     }
@@ -111,6 +109,7 @@
     align-items: stretch;
     justify-content: flex-start;
     flex-grow: 1;
+    background-color: var(--color--main-navigation-background);
 
     &.oversized {
         overflow: visible;
@@ -134,6 +133,7 @@
         color: var(--color--font-primary);
         height: 30px;
         padding: 10px 15px 5px 15px;
+        margin-bottom: 10px;
         max-height: 30px;
         overflow: hidden;
         background-color: var(--color--main-navigation-background);
@@ -159,7 +159,7 @@
     .tabs_wrapper {
         display: flex;
         flex-direction: row;
-        align-items: stretch;
+        align-items: center;
         justify-content: space-between;
         background-color: var(--color--main-navigation-background);
         font-size: 0.9em;
@@ -167,7 +167,7 @@
         min-height: 2.3em;
         border-bottom: 1px solid var(--color--main-navigation-border);
         padding-left: $page-margin;
-        padding-top: 10px;
+        padding-right: $page-margin;
     }
 
     #tabs {
