@@ -100,6 +100,90 @@ class Blubber extends CorePlugin implements StudipModule
         return $icon;
     }
 
+    public function AgetManyIconNavigation($course_ids, $visits, $user_id = null)
+    {
+        $user_id || $user_id = $GLOBALS['user']->id;
+        $threshold = object_get_visit_threshold();
+        $blubber_plugin_id = $this->getPluginId();
+
+        // check if there are comments newer than the last visit of blubber
+        $condition = "INNER JOIN blubber_threads USING (thread_id)
+                      LEFT JOIN object_user_visits AS ouv
+                        ON ouv.object_id = blubber_threads.context_id
+                          AND ouv.user_id = :me
+                          AND ouv.plugin_id = :plugin_id
+                      WHERE blubber_threads.context_type = 'course'
+                        AND blubber_threads.context_id IN (:course_ids)
+                        AND blubber_comments.mkdate >= IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold)
+                        AND blubber_comments.user_id != :me
+                        AND blubber_threads.visible_in_stream = 1";
+        $params = [
+            ':course_ids' => $course_ids,
+            ':threshold' => $threshold,
+            ':me' => $user_id,
+            ':plugin_id' => $blubber_plugin_id,
+        ];
+        $threads = [];
+        BlubberComment::findAndMapBySQL(function ($comment) use (&$threads) {
+            $threads[$comment->thread_id][] = $comment;
+        } , $condition, $params);
+
+        $navs = [];
+        foreach ($threads as $thread_id => $comments) {
+            $thread = $comments[0]->thread;
+            if (isset($navs[$thread->context_id])) {
+                continue;
+            }
+            // check if there are comments that are newer thant the last visit of the blubber thread(!)
+            if ($thread->isReadable() && $thread->getLatestActivity() > $thread->getLastVisit()) {
+                $nav = new Navigation(_('Blubber'), 'dispatch.php/course/messenger/course', ['thread' => 'new']);
+                $nav->setImage(Icon::create('blubber', Icon::ROLE_NEW, ['title' => _('Es gibt neue Blubber')]));
+                $nav->setTitle(_('Es gibt neue Blubber'));
+                $nav->setBadgeNumber(count($comments));
+                $navs[$thread->context_id] = $nav;
+            }
+        }
+
+        // Check for the remaining Courses, if new threads were created
+        $remaining_courses = array_diff($course_ids, array_keys($navs));
+        $condition = "LEFT JOIN object_user_visits AS ouv
+                        ON ouv.object_id = blubber_threads.thread_id
+                          AND ouv.user_id = :me
+                          AND ouv.plugin_id = :plugin_id
+                      WHERE blubber_threads.context_type = 'course'
+                        AND blubber_threads.context_id = (:course_ids)
+                        AND blubber_threads.mkdate >= IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold)
+                        AND blubber_threads.user_id != :me
+                        AND blubber_threads.visible_in_stream = 1
+                        AND (
+                            blubber_threads.display_class IS NOT NULL
+                            OR blubber_threads.content IS NOT NULL
+                        )";
+        $threads = BlubberThread::findBySQL($condition, [
+            ':course_ids'  => $remaining_courses,
+            ':threshold' => $threshold,
+            ':me' => $user_id,
+            ':plugin_id' => $blubber_plugin_id,
+        ]);
+        foreach ($threads as $thread) {
+            if ($thread->isReadable()) {
+                $nav = new Navigation(_('Blubber'), 'dispatch.php/course/messenger/course');
+                $nav->setImage(Icon::create('blubber', Icon::ROLE_ATTENTION, ['title' => _('Es gibt neue Blubber')]));
+                $nav->setTitle(_('Es gibt neue Blubber'));
+                $navs[$thread->context_id] = $nav;
+            }
+        }
+
+        $default_navigation = new Navigation(_('Blubber'), 'dispatch.php/course/messenger/course');
+        $default_navigation->setImage(Icon::create('blubber', Icon::ROLE_CLICKABLE, ['title' => _('Blubber-Messenger')]));
+        foreach ($course_ids as $course_id) {
+            if (!isset($navs[$course_id])) {
+                $navs[$course_id] = $default_navigation;
+            }
+        }
+        return $navs;
+    }
+
     /**
      * Returns no template, because this plugin doesn't want to insert an
      * info-template in the course-overview.
