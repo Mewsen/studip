@@ -162,9 +162,8 @@
         align-items: center;
         justify-content: space-between;
         background-color: var(--color--main-navigation-background);
-        font-size: 0.9em;
         color: var(--color--font-primary);
-        min-height: 2.3em;
+        min-height: ceil($font-size-navigation2 * 2.25); // 16px * 2.25 = 36px
         border-bottom: 1px solid var(--color--main-navigation-border);
         padding-left: $page-margin;
         padding-right: $page-margin;
@@ -174,7 +173,6 @@
         transition: margin-left;
         transition-duration: var(--transition-duration);
         transition-delay: 500ms;
-        font-size: 1.25em;
     }
 
     > ul {
