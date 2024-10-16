@@ -151,7 +151,7 @@ class Blubber extends CorePlugin implements StudipModule
                           AND ouv.user_id = :me
                           AND ouv.plugin_id = :plugin_id
                       WHERE blubber_threads.context_type = 'course'
-                        AND blubber_threads.context_id = (:course_ids)
+                        AND blubber_threads.context_id IN (:course_ids)
                         AND blubber_threads.mkdate >= IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold)
                         AND blubber_threads.user_id != :me
                         AND blubber_threads.visible_in_stream = 1
