@@ -109,9 +109,9 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
         $new = $statement->fetchColumn();
 
         $nav = new Navigation(_('Courseware'), 'dispatch.php/course/courseware');
-        $nav->setImage(Icon::create('courseware', Icon::ROLE_CLICKABLE), [
+        $nav->setImage(Icon::create('courseware', Icon::ROLE_CLICKABLE, [
             'title' => _('Courseware'),
-        ]);
+        ]));
 
         if ($new > 0) {
             if ($new === 1) {
@@ -120,9 +120,9 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
             } else {
                 $text =  _('neue Seiten');
             }
-            $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION), [
+            $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION, [
                 'title' => $new . ' ' . $text,
-            ]);
+            ]));
             $nav->setBadgeNumber("$new");
         }
 
