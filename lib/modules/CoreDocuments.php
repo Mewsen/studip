@@ -145,7 +145,9 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
         // TODO extend for institute
         //$range_type = get_object_type($course_id, ['sem', 'inst']) === 'sem' ? 'course' : 'institute';
         $range_type = 'course';
-        $condition = "INNER JOIN folders ON (folders.id = file_refs.folder_id)
+        $condition = "SELECT folders.range_id, file_refs.id
+                      FROM file_refs
+                      INNER JOIN folders ON (folders.id = file_refs.folder_id)
                       LEFT JOIN object_user_visits AS ouv
                         ON ouv.object_id = folders.range_id
                         AND ouv.user_id = :me
@@ -154,41 +156,35 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
                         AND folders.range_id IN (:context_ids)
                         AND file_refs.chdate >= IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold)
                         AND file_refs.user_id != :me";
-        $file_refs = FileRef::findBySQL($condition, [
-            ':me'         => $user_id,
-            ':plugin_id' => $this->getPluginId(),
-            ':threshold' => object_get_visit_threshold(),
+        $file_refs = DBManager::get()->fetchGrouped($condition, [
+            ':me'          => $user_id,
+            ':plugin_id'   => $this->getPluginId(),
+            ':threshold'   => object_get_visit_threshold(),
             ':context_ids' => $course_ids,
-            ':range_type' => $range_type
+            ':range_type'  => $range_type
         ]);
 
-
         $navs = [];
-        foreach ($file_refs as $fileref) {
-            $folder = $fileref->folder;
-            $c_id = $folder->range_id;
-            if (!isset($navs[$c_id])) {
-                $foldertype = $folder->getTypedFolder();
+        foreach ($file_refs as $range_id => $file_refs) {
+            $file_ref_objs = FileRef::findMany($file_refs);
+            foreach ($file_ref_objs as $file_ref_obj) {
+                $foldertype = $file_ref_obj->folder->getTypedFolder();
                 $nav = new Navigation(_('Dateibereich'), "dispatch.php/{$range_type}/files");
-                if ($foldertype->isFileDownloadable($fileref->getId(), $user_id)) {
+                if ($foldertype->isFileDownloadable($file_ref_obj->getId(), $user_id)) {
                     $nav->setImage(Icon::create('files', Icon::ROLE_ATTENTION, [
                         'title' => _('Es gibt neue Dateien.'),
                     ]));
                     $nav->setURL("dispatch.php/{$range_type}/files/flat", ['select' => 'new']);
+                    $navs[$range_id] = $nav;
+                    break;
                 }
-                $navs[$c_id] = $nav;
             }
         }
 
         $default_navigation = new Navigation(_('Dateibereich'), "dispatch.php/{$range_type}/files");
         $default_navigation->setImage(Icon::create('files', Icon::ROLE_CLICKABLE, ['title' => _('Dateien')]));
-        foreach ($course_ids as $course_id) {
-            if (!isset($navs[$course_id])) {
-                $navs[$course_id] = $default_navigation;
-            }
-        }
-
-        return $navs;
+        $remaining_courses = array_diff($course_ids, array_keys($navs));
+        return array_merge($navs, array_fill_keys($remaining_courses, $default_navigation));
     }
 
     /**
