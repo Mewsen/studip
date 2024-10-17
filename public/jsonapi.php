@@ -1,12 +1,13 @@
 <?php
 
-use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 
 require '../lib/bootstrap.php';
-require '../composer/autoload.php';
 
 \StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'] . DIRECTORY_SEPARATOR . 'vendor/oauth-php/library/');
+
+// Set base url for URLHelper class
+URLHelper::setBaseUrl($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP']);
 
 page_open([
     'sess' => 'Seminar_Session',
@@ -14,9 +15,6 @@ page_open([
     'perm' => 'Seminar_Perm',
     'user' => 'Seminar_User',
 ]);
-
-// Set base url for URLHelper class
-URLHelper::setBaseUrl($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP']);
 
 // Instantiate the app
 $container = app();
