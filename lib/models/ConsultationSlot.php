@@ -176,12 +176,13 @@ class ConsultationSlot extends SimpleORMap
      * Creates a Stud.IP calendar event relating to the slot.
      *
      * @param  User $user User object to create the event for
+     * @param string $type Create an event for which type (slot or booking)
      * @return CalendarDate Created event
      */
-    public function createEvent(User $user) : CalendarDate
+    public function createEvent(User $user, string $type = 'slot') : CalendarDate
     {
         $event = new CalendarDate();
-        $event->unique_id = $this->createEventId($user);
+        $event->unique_id = $this->createEventId($user, $type);
         $event->author_id = $user->id;
         $event->editor_id = $user->id;
         $event->begin     = $this->start_time;
@@ -206,12 +207,11 @@ class ConsultationSlot extends SimpleORMap
     /**
      * Returns a unique event id.
      *
-     * @param  User $user [description]
      * @return string unique event id
      */
-    protected function createEventId(User $user): string
+    protected function createEventId(User $user, string $type): string
     {
-        return self::EVENT_PREFIX . "{$this->id}:{$user->id}";
+        return self::EVENT_PREFIX . "{$this->id}:{$user->id}:{$type}";
     }
 
     /**
