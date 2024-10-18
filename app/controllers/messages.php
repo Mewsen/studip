@@ -563,7 +563,7 @@ class MessagesController extends AuthenticatedController {
         }
 
         // Create search object for multi person search
-        $vis_query = get_vis_query();
+        $vis_query = get_vis_query('auth_user_md5', 'search');
         $query = "SELECT DISTINCT
                     auth_user_md5.user_id,
                     {$GLOBALS['_fullname_sql']['full_rev']} AS fullname,
