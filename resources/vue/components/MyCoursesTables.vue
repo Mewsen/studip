@@ -166,6 +166,13 @@ table.mycourses {
         }
     }
 
+    th,
+    td {
+        &:first-child {
+            padding-left: 0;
+        }
+    }
+
     .special_nav {
         float: right;
     }
