@@ -615,7 +615,8 @@ class Course_WikiController extends AuthenticatedController
 
         $this->validateWikiPage($page, $this->range, true);
 
-        $page->content = \Studip\Markup::markAsHtml(trim(Request::get('content')));
+        $page->content = Studip\Markup::markAsHtml(trim(Request::get('content')));
+        $page->content = Studip\Markup::purifyHtml($page->content);
         $user = User::findCurrent();
         if ($page->isDirty()) {
             $page['user_id'] = $user->id;
