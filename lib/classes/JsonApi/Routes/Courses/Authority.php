@@ -16,15 +16,16 @@ class Authority
     public static function canShowCourse(User $user, Course $course, $scope)
     {
         switch ($scope) {
-        case self::SCOPE_BASIC:
-            return
-                // visible
-                ((int) $course->visible) || $GLOBALS['perm']->have_perm(\Config::get()->SEM_VISIBILITY_PERM)
-                // member
-                || $GLOBALS['perm']->have_studip_perm('user', $course->id, $user->id);
+            case self::SCOPE_BASIC:
+                return
+                    // visible
+                    $course->visible
+                    || $GLOBALS['perm']->have_perm(\Config::get()->SEM_VISIBILITY_PERM)
+                    // member
+                    || $GLOBALS['perm']->have_studip_perm('user', $course->id, $user->id);
 
-        case self::SCOPE_EXTENDED:
-            return $GLOBALS['perm']->have_studip_perm('user', $course->id, $user->id);
+            case self::SCOPE_EXTENDED:
+                return $GLOBALS['perm']->have_studip_perm('user', $course->id, $user->id);
         }
 
         return false;
@@ -48,7 +49,7 @@ class Authority
 
     public static function canIndexMemberships(User $user, Course $course)
     {
-        return self::canShowCourse($user, $course, self::SCOPE_EXTENDED);
+        return self::canShowCourse($user, $course, self::SCOPE_BASIC);
     }
 
     public static function canIndexMembershipsOfUser(User $observer, User $user)
