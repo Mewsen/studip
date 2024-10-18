@@ -156,7 +156,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
                         AND folders.range_id IN (:context_ids)
                         AND file_refs.chdate >= IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold)
                         AND file_refs.user_id != :me";
-        $file_refs = DBManager::get()->fetchGrouped($condition, [
+        $file_refs_by_range = DBManager::get()->fetchGroupedPairs($condition, [
             ':me'          => $user_id,
             ':plugin_id'   => $this->getPluginId(),
             ':threshold'   => object_get_visit_threshold(),
@@ -165,7 +165,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
         ]);
 
         $navs = [];
-        foreach ($file_refs as $range_id => $file_refs) {
+        foreach ($file_refs_by_range as $range_id => $file_refs) {
             $file_ref_objs = FileRef::findMany($file_refs);
             foreach ($file_ref_objs as $file_ref_obj) {
                 $foldertype = $file_ref_obj->folder->getTypedFolder();
