@@ -1524,13 +1524,15 @@ class User extends AuthUserMd5 implements Range, PrivacyObject, Studip\Calendar\
      */
     public function isAccessibleToUser($user_id = null)
     {
-        // TODO: Visibility checks
         if ($user_id === null) {
-            $user_id = $GLOBALS['user']->id;
+            $user_id = self::findCurrent()->id;
         }
+
         return $user_id === $this->user_id
             || static::find($user_id)->perms === 'root'
-            || !in_array(static::find($this->user_id)->visible, ['no', 'never']);
+            || !in_array($this->visible, ['no', 'never'])
+            || (Config::get()->getValue('USER_VISIBILITY_UNKNOWN') && $this->visible === 'unknown')
+            || ($this->perms === 'dozent' && Config::get()->getValue('DOZENT_ALWAYS_VISIBLE'));
     }
 
     /**
