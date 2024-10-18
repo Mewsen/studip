@@ -3,33 +3,37 @@
         <article v-for="(server, index) in serverConfig" :key="index" class="memcached-server">
             <header>
                 <h3>
-                    <translate>Memcached-Server</translate> {{ index + 1 }}
-                    <studip-icon shape="trash" class="remove-server" @click.prevent="removeServer($event, index)"
+                    {{ $gettext('Memcached-Server') }} {{ index + 1 }}
+                    <studip-icon shape="trash" class="remove-server"
+                                 @click.prevent="removeServer(index)"
                                  :size="24"></studip-icon>
                 </h3>
             </header>
             <section class="col-4">
-                <label :for="'hostname-' + index">
-                    <translate>Hostname</translate>
+                <label>
+                    {{ $gettext('Hostname') }}
+                    <input type="text"
+                           :name="`servers[${index}][hostname]`"
+                           placeholder="localhost"
+                           v-model.trim="server.hostname">
                 </label>
-                <input type="text" :name="'servers[' + index + '][hostname]'" :id="'hostname-' + index"
-                       placeholder="localhost" :value="server.hostname">
             </section>
             <section class="col-2">
-                <label :for="'port-' + index">
-                    <translate>Port</translate>
+                <label>
+                    {{ $gettext('Port') }}
+                    <input type="text"
+                           :name="`servers[${index}][port]`"
+                           placeholder="11211"
+                           v-model.number="server.port">
                 </label>
-                <input type="text" :name="'servers[' + index + '][port]'" :id="'port-' + index"
-                       placeholder="11211" :value="server.port">
             </section>
         </article>
-        <label class="add-server" @click="addServer">
+        <label class="add-server" @click="addServer()">
             <studip-icon shape="add" :size="20"></studip-icon>
-            <translate>Server hinzufügen</translate>
+            {{ $gettext('Server hinzufügen') }}
         </label>
     </div>
 </template>
-
 <script>
 export default {
     name: 'MemcachedCacheConfig',
@@ -41,17 +45,19 @@ export default {
     },
     data () {
         return {
-            serverConfig: this.servers
+            serverConfig: this.servers.concat([])
         }
     },
     methods: {
         addServer () {
             this.serverConfig.push({ hostname: 'localhost', port: 11211 })
         },
-        removeServer (event, index) {
+        removeServer (index) {
             this.serverConfig.splice(index, 1)
-        },
-        isValid () {
+        }
+    },
+    computed: {
+        isValid() {
             return this.serverConfig.length > 0
                 && this.serverConfig.every(server => {
                     return server.hostname.length > 0
@@ -60,16 +66,16 @@ export default {
         }
     },
     watch: {
-        servers: {
-            handler (current) {
-                this.$emit('is-valid', this.isValid());
+        serverConfig: {
+            handler () {
+                this.$emit('is-valid', this.isValid);
             },
+            deep: true,
             immediate: true
         }
     }
 }
 </script>
-
 <style lang="scss" scoped>
 .memcached-server {
     .remove-server {
