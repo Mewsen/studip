@@ -206,10 +206,14 @@
         </label>
 
         <label>
+            <input type="checkbox" id="admission_turnout_mandatory" value="1" <?= $sem_class['admission_turnout_mandatory'] ?  'checked' : '' ?>>
+            <?= _('Geplante Teilnehmendenzahl muss angegeben werden') ?>
+        </label>
+
+        <label>
             <?= _('Kurzer Beschreibungstext zum Anlegen einer Veranstaltung') ?>
             <textarea id="create_description" maxlength="200" style="width: 100%"><?= htmlReady($sem_class['create_description']) ?></textarea>
         </label>
-
     </fieldset>
 
     <fieldset class="attribute_table">

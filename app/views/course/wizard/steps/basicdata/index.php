@@ -56,6 +56,12 @@
     <input type="text" name="number" id="wizard-number" size="20" maxlength="99" value="<?= htmlReady($values['number'] ?? '') ?>"
      <? if ($course_number_format) : ?>pattern="<?= htmlReady($course_number_format) ?>" <? endif ?>/>
 </section>
+<section data-mandatory="<?=htmlready(json_encode($admission_turnout_mandatory_types))?>" <?=in_array($values['coursetype'],$admission_turnout_mandatory_types) ? '' : 'style="display: none"' ?>>
+    <label for="wizard-maxmembers" class="required">
+        <?= _('max. Teilnehmendenzahl') ?>
+    </label>
+    <input type="number" name="maxmembers" id="wizard-maxmember" min="0" value="<?= htmlReady($values['maxmembers'] ?? '') ?>"/>
+</section>
 <section>
     <label for="wizard-description">
         <?= _('Beschreibung') ?>

@@ -48,6 +48,7 @@ class BasicDataWizardStep implements CourseWizardStep
         $values = $values[__CLASS__] ?? [];
         // Get all available course types and their categories.
         $typestruct = [];
+        $admission_turnout_mandatory_types = [];
         foreach (SemType::getTypes() as $type) {
             $class = $type->getClass();
             // Creates a studygroup.
@@ -62,10 +63,14 @@ class BasicDataWizardStep implements CourseWizardStep
             } else {
                 if (!$class['course_creation_forbidden'] && !$class['studygroup_mode']) {
                     $typestruct[$class['name']][] = $type;
+                    if ($class['admission_turnout_mandatory']) {
+                        $admission_turnout_mandatory_types[] = $type['id'];
+                    }
                 }
             }
         }
         $tpl->set_attribute('types', $typestruct);
+        $tpl->set_attribute('admission_turnout_mandatory_types', $admission_turnout_mandatory_types);
         // Select a default type if none is given.
         if (empty($values['coursetype'])) {
             if ($GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER && Request::isXhr()) {
@@ -376,6 +381,11 @@ class BasicDataWizardStep implements CourseWizardStep
                 $errors[] = _('Sie müssen die Nutzungsbedingungen akzeptieren.');
             }
         }
+        $sem_type = new SemType((int)$values['coursetype']);
+        $sem_class = $sem_type->getClass();
+        if ($sem_class['admission_turnout_mandatory'] && !$values['maxmembers']) {
+            $errors[] = _('Sie müssen die maximale Teilnehmendenzahl angeben');
+        }
         if ($errors) {
             $ok = false;
             PageLayout::postError(_('Bitte beheben Sie erst folgende Fehler, bevor Sie fortfahren:'), $errors);
@@ -422,6 +432,7 @@ class BasicDataWizardStep implements CourseWizardStep
         $course->admission_prelim = $semclass['admission_prelim_default'];
         $course->lesezugriff = $semclass['default_read_level'] ?: 1;
         $course->schreibzugriff = $semclass['default_write_level'] ?: 1;
+        $course->admission_turnout = $values['maxmembers'];
 
         // Studygroups: access and description.
         if (in_array($values['coursetype'], studygroup_sem_types())) {
@@ -523,7 +534,8 @@ class BasicDataWizardStep implements CourseWizardStep
             'institute' => $course->institut_id,
             'description' => $course->beschreibung,
             'description_i18n' => is_object($course->beschreibung) ?
-                $course->beschreibung->toArray() : $course->beschreibung
+                $course->beschreibung->toArray() : $course->beschreibung,
+            'maxmembers' => $course->getSemClass()->offsetGet('admission_turnout_mandatory') ? $course->admission_turnout : '',
         ];
         $lecturers = $course->members->findBy('status', 'dozent')->pluck('user_id');
         $data['lecturers'] = array_flip($lecturers);
