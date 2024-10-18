@@ -1,5 +1,9 @@
 section.contentbox {
-    margin-bottom: 30px;
+    border-color: var(--color--content-box-border);
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 15px;
+
     transition: all var(--transition-duration) ease 0s;
 
     header {
@@ -9,7 +13,7 @@ section.contentbox {
         justify-content: space-between;
 
         padding: 2px;
-        background-color: var(--dark-gray-color-10);
+        background-color: var(--color--content-box-header);
 
         span.title {
             font-size: medium;
@@ -72,7 +76,7 @@ section.contentbox {
 
     footer {
         text-align: center;
-        border-color: var(--content-color-40);
+        border-color: var(--color--content-box-border);
         border-top-style: solid;
         border-width: 1px;
         background-color: var(--white);
@@ -92,7 +96,7 @@ section.contentbox {
     }
 
     > article {
-        border-color: var(--content-color-40);
+        border-color: var(--color--content-box-border);
         border-style: solid;
         border-width: 1px;
         margin: 10px;
@@ -135,7 +139,7 @@ section.contentbox {
                 }
             }
 
-            > article {
+            > article, > table, > form {
                 padding: 5px;
             }
 
@@ -186,7 +190,7 @@ section.contentbox {
 
         footer {
             text-align: center;
-            border-color: var(--content-color-40);
+            border-color: var(--color--content-box-border);
             border-top-style: none;
             border-width: 1px;
             background-color: var(--white);
@@ -248,10 +252,6 @@ section.contentbox {
 
         &.indented {
             margin-left: calc(10px + 1em);
-
-            > header {
-                background-color: mix($content-color, $white, 10%);
-            }
         }
     }
 }
