@@ -263,7 +263,8 @@ class Fullcalendar
                                 resource_id: drop_resource_id,
                                 begin: this.toRFC3339String(info.event.start.setHours(0, 0, 0)),
                                 end: this.toRFC3339String(info.event.start.setHours(23, 59, 59))
-                            }
+                            },
+                            size: 'auto'
                         }
                     );
                 } else {
@@ -289,7 +290,8 @@ class Fullcalendar
                                 resource_id: drop_resource_id,
                                 begin: this.toRFC3339String(info.event.start),
                                 end: this.toRFC3339String(real_end)
-                            }
+                            },
+                            size: 'auto'
                         }
                     );
                 } else {
@@ -312,7 +314,8 @@ class Fullcalendar
                                 resource_id: drop_resource_id,
                                 begin: this.toRFC3339String(info.event.start),
                                 end: this.toRFC3339String(info.event.end)
-                            }
+                            },
+                            size: 'auto'
                         }
                     );
                 } else {
