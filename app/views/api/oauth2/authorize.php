@@ -48,13 +48,16 @@
             htmlReady($GLOBALS['user']->getFullName()),
             htmlReady($GLOBALS['user']->username)
             ) ?><br>
-        <small>
-            <a href="<?= URLHelper::getLink('logout.php') ?>">
+    </p>
+
+    <form action="<?= URLHelper::getLink('logout.php') ?>" method="post">
+        <button class="as-link">
+            <small>
                 <?= sprintf(
                     _('Sind sie nicht <strong>%s</strong>, so melden Sie sich bitte ab und versuchen es erneut.'),
                     htmlReady($GLOBALS['user']->getFullName())
                 ) ?>
-            </a>
-        </small>
-    </p>
+            </small>
+        </button>
+    </form>
 </section>

@@ -29,11 +29,11 @@
             <? elseif ($action['type'] === 'button'): ?>
                 <label>
                 <? if ($action['icon']): ?>
-                    <?= $action['icon']->asInput(false, [
+                    <?= $action['icon']->asInput(false, array_merge($action['attributes'], [
                         'class' => 'action-menu-item-icon',
                         'name'  => $action['name'],
                         'title' => $action['label'],
-                    ]) ?>
+                    ])) ?>
                 <? else: ?>
                     <span class="action-menu-no-icon"></span>
                     <button type="submit" name="<?= htmlReady($action['name']) ?>" style="display: none;"></button>
