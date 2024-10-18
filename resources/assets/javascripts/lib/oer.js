@@ -66,7 +66,7 @@ const OER = {
                     clearAllFilters: function (keep_results) {
                         this.clearCategory();
                         this.clearDifficulty();
-                        if (this.searchtext != '') {
+                        if (this.searchtext.length !== 0) {
                             this.searchtext = '';
                         }
                         $(".oer_search input[name=search]").val('');
@@ -75,10 +75,9 @@ const OER = {
                         }
                     },
                     clearDifficulty: function () {
-                        if ((this.difficulty[0] != 1) && (this.difficulty[1] != 12)) {
-                            this.difficulty = [1, 12];
-                        }
-                        jQuery("#difficulty_slider").slider("values", this.difficulty);
+                        this.difficulty[0] = 1;
+                        this.difficulty[1] = 12;
+                        jQuery('#difficulty_slider').slider('values', this.difficulty);
                     },
                     clearCategory: function () {
                         if (this.category != null) {
@@ -201,7 +200,7 @@ const OER = {
                         }
                     }
                 },
-                mounted: function () {
+                mounted() {
                     this.results = $(this.$el).data('searchresults');
                     if (this.results !== false) {
                         $("#new_ones").hide();
@@ -209,8 +208,14 @@ const OER = {
                     if ($(this.$el).data('filteredcategory')) {
                         this.category = $(this.$el).data('filteredcategory');
                     }
+
+                    document.addEventListener('click', (event) => {
+                        if (event.closest('.searchform') === null) {
+                            this.hideFilterPanel();
+                        }
+                    })
                 },
-                updated: function () {
+                updated() {
                     this.$nextTick(function () {
                         if (!jQuery("#difficulty_slider.ui-slider").length) { //to prevent an endless loop
                             let v = this;
@@ -228,14 +233,6 @@ const OER = {
                 }
             });
         });
-
-
-        jQuery(document).on("click", function (evnt) {
-            if (!jQuery(evnt.target).is(".searchform *") && STUDIP.OER.Search) {
-                STUDIP.OER.Search.hideFilterPanel();
-            }
-        });
-
     }
 };
 

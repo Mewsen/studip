@@ -20,28 +20,28 @@
                 -
                 <span>{{ difficulty[1] }}</span>
                 <a href="#"
-                   @click.prevent="clearDifficulty"
+                   @click.prevent="clearDifficulty()"
                    class="erasefilter"
                    title="<?= _('Filter des Niveaus entfernen') ?>">
-                    <studip-icon shape="decline" role="clickable" :size="16" class="text-bottom"></studip-icon>
+                    <studip-icon shape="decline" class="text-bottom"></studip-icon>
                 </a>
             </span>
 
             <input type="text"
                    name="search"
-                   @focus="showFilterPanel"
-                   @keyup="sync_search_text"
-                   @keydown.enter.prevent="search">
+                   @focus="showFilterPanel()"
+                   @keyup="sync_search_text()"
+                   @keydown.enter.prevent="search()">
 
             <button v-if="difficulty[0] != 1 || difficulty[1] != 12 || (category != null) || (searchtext.length > 0)"
                     class="erase"
                     type="button"
                     title="<?= _('Suchformular zurücksetzen') ?>"
-                    @click="clearAllFilters">
+                    @click="clearAllFilters()">
                 <studip-icon shape="decline" role="clickable"></studip-icon>
             </button>
 
-            <button @click="triggerFilterPanel"
+            <button @click="triggerFilterPanel()"
                     type="button"
                     title="<?= _('Suchfilter einstellen') ?>"
                     :class="activeFilterPanel ? 'active' : ''">
