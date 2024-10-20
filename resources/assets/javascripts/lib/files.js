@@ -4,7 +4,7 @@ import FilesTable from '../../../vue/components/FilesTable.vue';
 
 const Files = {
     init () {
-        if ($('#files-index, #files-system, #course-files-index, #institute-files-index, #files-flat, #course-files-flat, #institute-files-flat, #files-overview').length
+        if ($('#files-system, #course-files-index, #institute-files-index, #course-files-flat, #institute-files-flat, #files-overview').length
             && jQuery("#files_table_form").length) {
 
             STUDIP.Vue.load().then(({createApp}) => {
@@ -45,28 +45,6 @@ const Files = {
                     }
                 });
             });
-        }
-
-        //The following is only for (read only) vue file tables where multiple
-        //tables are displayed in one page.
-        var tables = jQuery('.vue-file-table');
-        if (tables.length) {
-            for (let table of tables) {
-                STUDIP.Vue.load().then(({createApp}) => {
-                    createApp({
-                        el: table,
-                        data() {
-                            return {
-                                files: jQuery(table).data("files") || [],
-                                folders: jQuery(table).data("folders") || [],
-                                topfolder: jQuery(table).data("topfolder"),
-                                breadcrumbs: jQuery(table).data("breadcrumbs") || []
-                            };
-                        },
-                        components: { FilesTable, },
-                    });
-                });
-            }
         }
     },
 

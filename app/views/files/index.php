@@ -87,23 +87,20 @@
         </form>
     <? endif ?>
 
-    <form method="post"
-          id="files_table_form"
-          action="<?= $controller->link_for('file/bulk/' . $topFolder->getId()) ?>"
-          data-files="<?= htmlReady(json_encode($vue_files)) ?>"
-          data-folders="<?= htmlReady(json_encode((array) $vue_folders)) ?>"
-          data-breadcrumbs="<?= htmlReady(json_encode((array) array_reverse($vue_breadcrumbs))) ?>"
-          data-topfolder="<?= htmlReady(json_encode((array) $vue_topFolder)) ?>">
+    <form method="post" action="<?= $controller->link_for('file/bulk/' . $topFolder->getId()) ?>">
         <?= CSRFProtection::tokenTag() ?>
         <input type="hidden" name="parent_folder_id" value="<?= $topFolder->getId() ?>">
-        <files-table :showdownloads="<?= $show_downloads ? "true" : "false" ?>"
-                     :breadcrumbs="breadcrumbs"
-                     :files="files"
-                     :folders="folders"
-                     :topfolder="topfolder"
-        ></files-table>
+
+        <?= Studip\VueApp::create('FilesTable')
+                ->withProps([
+                    'breadcrumbs'   => $vue_breadcrumbs,
+                    'files'         => $vue_files,
+                    'folders'       => $vue_folders,
+                    'showdownloads' => $show_downloads,
+                    'topfolder'     => $vue_topFolder,
+                ]) ?>
     </form>
-    <? if ($GLOBALS['user']->id !== 'nobody') : ?>
+    <? if (User::findCurrent()) : ?>
 
         <?= $this->render_partial('file/upload_window.php') ?>
         <?= $this->render_partial('file/add_files_window.php', [

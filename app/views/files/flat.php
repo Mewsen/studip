@@ -43,22 +43,18 @@ foreach ($topFolder->getAdditionalActionButtons() as $button) {
     $vue_topFolder['buttons'] .= $button;
 }
 ?>
-<form id="files_table_form"
-      method="post"
-      action="<?= htmlReady($form_action ?? '') ?>"
-      data-files="<?= htmlReady(json_encode($vue_files)) ?>"
-      data-topfolder="<?= htmlReady(json_encode((array) $vue_topFolder)) ?>">
+<form method="post" action="<?= htmlReady($form_action ?? '') ?>">
     <?= CSRFProtection::tokenTag() ?>
-    <files-table :showdownloads="<?= $show_downloads ? "true" : "false" ?>"
-                 :breadcrumbs="breadcrumbs"
-                 :files="files"
-                 :folders="folders"
-                 :topfolder="topfolder"
-                 :allow_filter="<?= json_encode(!empty($enable_table_filter)) ?>"
-                 table_title="<?= htmlReady($table_title ?? '') ?>"
-                 pagination="<?= htmlReady($pagination_html ?? '') ?>"
-                 :initial_sort="{sortedBy:'chdate',sortDirection:'desc'}"
-    ></files-table>
+    <?= Studip\VueApp::create('FilesTable')
+            ->withProps([
+                    'allow_filter'  => !empty($enable_table_filter),
+                    'files'         => $vue_files,
+                    'initial_sort'  => ['sortedBy' => 'chdate', 'sortDirection' => 'desc'],
+                    'pagination'    => $pagination_html ?? '',
+                    'showdownloads' => $show_downloads,
+                    'table_title'   => $table_title ?? '',
+                    'topfolder'     => $vue_topFolder,
+            ]) ?>
 </form>
 <?
 if (!empty($show_default_sidebar)) {
