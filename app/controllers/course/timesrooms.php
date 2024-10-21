@@ -1743,7 +1743,7 @@ class Course_TimesroomsController extends AuthenticatedController
 
         CourseDate::findEachBySQL(
             function (CourseDate $date) use (&$valid) {
-                if ($date->range_id === $this->course_id) {
+                if ($date->range_id === $this->course->id) {
                     $valid[] = $date->id;
                 }
             },
@@ -1753,7 +1753,7 @@ class Course_TimesroomsController extends AuthenticatedController
 
         CourseExDate::findEachBySQL(
             function (CourseExDate $date) use (&$valid) {
-                if ($date->range_id === $this->course_id) {
+                if ($date->range_id === $this->course->id) {
                     $valid[] = $date->id;
                 }
             },
