@@ -1,21 +1,34 @@
 <template>
-    <div :class="classNames" v-if="!closed">
-        <div class="messagebox_buttons">
-            <a v-if="hideDetails" class="details" href="" :title="$gettext('Detailanzeige umschalten')" @click.prevent.stop="closedDetails = !closedDetails">
-                <span>{{ $gettext('Detailanzeige umschalten') }}</span>
-            </a>
-            <a v-if="!hideClose" class="close" href="" :title="$gettext('Nachrichtenbox schließen')" @click.prevent="close()">
-                <span>{{ $gettext('Nachrichtenbox schließen') }}</span>
-            </a>
+    <div v-if="!closed" :class="classNames" role="region" :aria-label="label" :aria-describedby="'messagebox-' + id">
+        <div class="messagebox-icon"></div>
+        <div class="messagebox-content" role="status" :id="'messagebox-' + id">
+            <p class="messagebox-message">
+                <slot></slot>
+            </p>
+            <button
+                v-if="hasDetails"
+                class="messagebox-button messagebox-details-toggle"
+                href="#"
+                :title="$gettext('Detailanzeige umschalten')"
+                @click.prevent.stop="closedDetails = !closedDetails"
+            >
+                {{ $gettext('Details') }}
+            </button>
+            <div v-if="showDetails" class="messagebox-details">
+                <slot name="details">
+                    <ul>
+                        <li v-for="(detail, index) in details" v-html="detail" :key="index"></li>
+                    </ul>
+                </slot>
+            </div>
         </div>
-        <slot></slot>
-        <div v-if="showDetails" class="messagebox_details">
-            <slot name="details">
-                <ul>
-                    <li v-for="(detail, index) in details" v-html="detail" :key="index"></li>
-                </ul>
-            </slot>
-        </div>
+        <button
+            v-if="!hideClose"
+            class="messagebox-button messagebox-close"
+            role="button"
+            :title="$gettext('Nachrichtenbox schließen')"
+            @click.prevent="close()"
+        ></button>
     </div>
 </template>
 
@@ -26,9 +39,9 @@ export default {
         type: {
             type: String, // exception, error, success, info, warning
             default: 'info',
-            validator (type) {
+            validator(type) {
                 return ['exception', 'error', 'warning', 'success', 'info'].indexOf(type) !== -1;
-            }
+            },
         },
         details: {
             type: Array,
@@ -36,7 +49,7 @@ export default {
         },
         hideDetails: {
             type: Boolean,
-            default: false
+            default: false,
         },
         hideClose: {
             type: Boolean,
@@ -56,20 +69,38 @@ export default {
         },
         showDetails() {
             return this.hasDetails && !this.closedDetails;
-        }
+        },
+        label() {
+            switch (this.type) {
+                case 'exception':
+                    return this.$gettext('Systemfehler');
+                case 'error':
+                    return this.$gettext('Fehler');
+                case 'warning':
+                    return this.$gettext('Warnung');
+                case 'info':
+                    return this.$gettext('Hinweis');
+                case 'success':
+                    return this.$gettext('Erfolg');
+            }
+        },
     },
     methods: {
         close() {
             this.closed = true;
 
             this.$emit('close');
-        }
+        },
     },
     data() {
         return {
             closed: false,
             closedDetails: this.hideDetails,
+            id: null,
         };
+    },
+    mounted() {
+        this.id = this._uid;
     },
 };
 </script>

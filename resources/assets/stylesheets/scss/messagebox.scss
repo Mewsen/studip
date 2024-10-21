@@ -1,74 +1,86 @@
 /* --- MessageBoxes --------------------------------------------------------- */
-div.messagebox {
-    background: no-repeat 10px 10px;
-    border: 2px solid;
-    font-size: 12pt;
-    font-weight: bold;
-    margin: 5px 0;
-    padding: 15px 15px 15px 55px;
-    position: relative;
-    text-align: left;
+.messagebox {
+    display: grid;
+    grid-template-columns: 32px auto 16px; 
+    gap: 16px;
+    grid-auto-rows: min-content;
+    background-color: #ccc;
+    border-top: solid 2px #888;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-top: 2px solid;
 
-    &:first-child {
-        margin-top: 0;
+    .messagebox-icon {
+        background-repeat: no-repeat;
     }
 
-    .messagebox_buttons {
-        position: absolute;
-        right: 3px;
-        top: 3px;
+    .messagebox-button {
+        background: transparent no-repeat center center;
+        background-size: 16px 16px;
+        border: none;
+        display: inline-block;
+        margin: 1px;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
 
-        a {
-            background: transparent no-repeat center center;
-            background-size: 16px 16px;
-
-            display: inline-block;
-            margin: 1px;
-            width: 16px;
-            height: 16px;
-
-            &.close,
-            &.details {
-                span { display: none; }
-            }
-            &.close {
-                @include background-icon(decline);
-            }
-            &.details {
-                @include background-icon(arr_eol-down);
-            }
+        &.messagebox-close {
+            @include background-icon(decline);
+            vertical-align: top;
+        }
+        &.messagebox-details-toggle {
+            @include background-icon(arr_1down);
+            background-position: left center;
+            padding-left: 16px;
+            line-height: 16px;
         }
     }
-
     &.details_hidden {
-        .messagebox_buttons a.details {
-            @include background-icon(arr_eol-up);
+        .messagebox-button.messagebox-details-toggle {
+            @include background-icon(arr_1right);
         }
-        .messagebox_details { height: 0; }
+        .messagebox-details { height: 0; visibility: hidden;}
     }
-}
 
-div.messagebox_details {
-    font-weight: normal;
-    overflow: hidden;
+    .messagebox-content {
+        text-align: left;
+
+        .messagebox-message {
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 32px;
+            margin-bottom: 0;
+        }
+    }
 }
 
 // Messagebox definitions
-@mixin messagebox ($name, $color, $background-color, $border-color: $color, $image: $name) {
+@mixin messagebox ($name, $color, $background-color, $main-color: $color, $image: $name, $full-border: false) {
     div.messagebox_#{$name} {
         color: $color;
         background-color: $background-color;
-        background-image: url("#{$image-path}/messagebox/#{$image}.png");
-        background-size: 32px 32px;
-        border-color: $border-color;
+        border-color: $main-color;
+
+        @if $full-border {
+            border: solid 2px $main-color;
+        }
+        .messagebox-icon {
+            height: 32px;
+            width: 32px;
+            border-radius: 16px;
+            @include background-icon(#{$image}, info_alt);
+            background-color: $main-color;
+            background-size: 20px 20px;
+            background-position: center;
+        }
     }
 }
 
-@include messagebox(info, var(--black), var(--white), var(--base-color));
-@include messagebox(success, var(--black), var(--white), var(--dark-green));
-@include messagebox(error, var(--black), var(--white), var(--red));
-@include messagebox(exception, var(--red), var(--red-20), var(--red));
-@include messagebox(warning, var(--black), var(--white), var(--yellow-60), advice);
+@include messagebox(info, var(--black), var(--content-color-20), var(--base-color), info);
+@include messagebox(success, var(--black), var(--green-20), var(--dark-green), accept);
+@include messagebox(error, var(--black), var(--red-20), var(--red), decline);
+@include messagebox(exception, var(--black), var(--red-20), var(--red), decline, true);
+@include messagebox(warning, var(--black), var(--yellow-20), var(--yellow), exclaim);
 
 // Define modal messagebox
 .modaloverlay {

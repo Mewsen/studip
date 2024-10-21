@@ -54,16 +54,26 @@ import eventBus from "../lib/event-bus.ts";
 /* ------------------------------------------------------------------------
  * messages boxes
  * ------------------------------------------------------------------------ */
-jQuery(document).on('click', '.messagebox .messagebox_buttons a', function () {
-    if (jQuery(this).is('.details')) {
-        jQuery(this).closest('.messagebox').toggleClass('details_hidden');
-    } else if (jQuery(this).is('.close')) {
-        jQuery(this).closest('.messagebox').hide('blind', 'fast', function () {
-            jQuery(this).remove();
-        });
+document.addEventListener('click', function (event) {
+    if (event.target.closest('.messagebox .messagebox-button')) {
+        const button = event.target.closest('.messagebox-button');
+        
+        if (button.classList.contains('messagebox-details-toggle')) {
+            const messagebox = button.closest('.messagebox');
+            messagebox.classList.toggle('details_hidden');
+        }
+        else if (button.classList.contains('messagebox-close')) {
+            const messagebox = button.closest('.messagebox');
+            messagebox.style.transition = 'all 0.2s ease';
+            messagebox.style.opacity = '0';
+            setTimeout(() => {
+                messagebox.remove();
+            }, 200);
+        }
+        return false;
     }
-    return false;
 });
+
 
 STUDIP.ready(function() {
     //Set the focus on the modal overlay dialog, if any:
