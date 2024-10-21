@@ -1758,9 +1758,9 @@ class Course_TimesroomsController extends AuthenticatedController
     /**
      * Restores a previously stored request from trails' flash object
      */
-    private function restoreRequest(array $fields)
+    private function restoreRequest(array $fields, $request = null)
     {
-        $request = $this->flash['request'];
+        $request = $this->flash['request'] ?? $request;
 
         if ($request) {
             foreach ($fields as $field) {
