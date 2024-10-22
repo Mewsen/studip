@@ -1556,7 +1556,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                         return;
                     }
 
-                    if ($course_date->room_booking && $course_date->room_booking->resource_id !== $room_id) {
+                    if (!$course_date->room_booking || $course_date->room_booking->resource_id !== $room_id) {
                         try {
                             $booking = $room->createBooking(
                                 $this->current_user,
