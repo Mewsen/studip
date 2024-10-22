@@ -344,6 +344,7 @@ class FilesController extends AuthenticatedController
                     if ($this->begin > $this->end) {
                         $this->begin = clone $this->end;
                     }
+
                     if ($this->begin instanceof DateTime) {
                         $this->begin->setTime(0,0,0);
                     }
@@ -351,7 +352,7 @@ class FilesController extends AuthenticatedController
                         $this->end->setTime(23,59,59);
                     }
 
-                    if (!is_array($_SESSION['files_overview'])) {
+                    if (!isset($_SESSION['files_overview'])) {
                         $_SESSION['files_overview'] = [];
                     }
                     $_SESSION['files_overview']['begin'] = $this->begin;
@@ -360,7 +361,7 @@ class FilesController extends AuthenticatedController
                 if (Request::submitted('course_id')) {
                     $course_did_change = true;
                     $this->course_id = Request::get('course_id');
-                    if (!is_array($_SESSION['files_overview'])) {
+                    if (!isset($_SESSION['files_overview'])) {
                         $_SESSION['files_overview'] = [];
                     }
                     $_SESSION['files_overview']['course_id'] = $this->course_id;

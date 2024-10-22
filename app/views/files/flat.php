@@ -56,9 +56,14 @@ foreach ($topFolder->getAdditionalActionButtons() as $button) {
                  :topfolder="topfolder"
                  :allow_filter="<?= json_encode(!empty($enable_table_filter)) ?>"
                  table_title="<?= htmlReady($table_title ?? '') ?>"
-                 pagination="<?= htmlReady($pagination_html ?? '') ?>"
                  :initial_sort="{sortedBy:'chdate',sortDirection:'desc'}"
-    ></files-table>
+    >
+    <? if (!empty($pagination_html)): ?>
+        <template #pagination>
+            <?= $pagination_html ?>
+        </template>
+    <? endif; ?>
+    </files-table>
 </form>
 <?
 if (!empty($show_default_sidebar)) {
