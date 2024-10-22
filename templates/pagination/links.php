@@ -43,11 +43,4 @@
         </a>
     </li>
 <? endif; ?>
-
-    <li class="divider--template">
-        <a class="pagination--link" href="<?= $link_for('{{value}}') ?>" <? if ($dialog !== null) echo "data-dialog=\"{$dialog}\""; ?>>
-            <span class="audible"><?= _('Seite') ?></span>
-            {{label}}
-        </a>
-    </li>
 </ul>
