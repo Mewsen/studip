@@ -986,7 +986,7 @@ class Resources_RoomRequestController extends AuthenticatedController
             $new_end->setTime(
                 $end_time_arr[0],
                 $end_time_arr[1],
-                $end_time_arr[2] == 0
+                $end_time_arr[2] ?? 0
             );
 
             $this->request->begin = $new_begin->getTimestamp();
