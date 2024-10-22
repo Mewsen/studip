@@ -357,6 +357,10 @@ class PluginManager
 
         require_once $pluginfile;
 
+        // Restore variable $class that might have been overwritten by the
+        // previous require
+        $class = func_get_arg(0);
+
         return new ReflectionClass($class);
     }
 
