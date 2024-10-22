@@ -37,6 +37,6 @@ export default {
 }
 .widget-action-icon {
     position: absolute;
-    left: 0;
+    left: -22px;
 }
 </style>
