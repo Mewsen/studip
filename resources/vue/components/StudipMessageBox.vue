@@ -83,6 +83,8 @@ export default {
                 case 'success':
                     return this.$gettext('Erfolg');
             }
+
+            return '';
         },
     },
     methods: {
