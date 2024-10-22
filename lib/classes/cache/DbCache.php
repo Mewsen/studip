@@ -137,7 +137,7 @@ class DbCache extends Cache
 
         return DBManager::get()->execute(
             'REPLACE INTO `cache` VALUES (?, ?, ?)',
-            [$item->getKey(), serialize($item->get()), $expiration]
+            [$item->getKey(), serialize($item->get()), time() + $expiration]
         );
     }
 }
