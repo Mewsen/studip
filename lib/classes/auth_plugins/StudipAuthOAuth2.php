@@ -20,7 +20,7 @@ final class StudipAuthOAuth2 extends StudipAuthSSO
 
     protected ?string $logout_url = null;
 
-    private GenericProvider $oauth2_provider;
+    private ?GenericProvider $client = null;
 
     private ?array $user_data = null;
 
@@ -31,8 +31,11 @@ final class StudipAuthOAuth2 extends StudipAuthSSO
         if (!isset($this->plugin_fullname)) {
             $this->plugin_fullname = _('OAuth2');
         }
+    }
 
-        if (Request::option('sso') === $this->plugin_name) {
+    private function getProvider(): GenericProvider
+    {
+        if ($this->client === null) {
             $options = [
                 'clientId' => $this->client_id,
                 'clientSecret' => $this->client_secret,
@@ -47,8 +50,10 @@ final class StudipAuthOAuth2 extends StudipAuthSSO
                 $options['verify'] = false;
             }
 
-            $this->oauth2_provider = new GenericProvider($options);
+            $this->client = new GenericProvider($options);
         }
+
+        return $this->client;
     }
 
     public function getUser()
@@ -63,10 +68,10 @@ final class StudipAuthOAuth2 extends StudipAuthSSO
         }
 
         if (!Request::get('code')) {
-            $authorizationUrl = $this->oauth2_provider->getAuthorizationUrl(['scope' => 'profile email']);
+            $authorizationUrl = $this->getProvider()->getAuthorizationUrl(['scope' => 'profile email']);
 
             $_SESSION[self::class] = [
-                'state' => $this->oauth2_provider->getState(),
+                'state' => $this->getProvider()->getState(),
                 'redirect' => Request::url(),
             ];
 
@@ -82,11 +87,11 @@ final class StudipAuthOAuth2 extends StudipAuthSSO
                 unset($_SESSION[self::class]);
             }
         } else {
-            $accessToken = $this->oauth2_provider->getAccessToken('authorization_code', [
+            $accessToken = $this->getProvider()->getAccessToken('authorization_code', [
                 'code' => Request::get('code'),
             ]);
 
-            $resourceOwner = $this->oauth2_provider->getResourceOwner($accessToken);
+            $resourceOwner = $this->getProvider()->getResourceOwner($accessToken);
 
             $this->user_data = $resourceOwner->toArray();
 

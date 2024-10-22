@@ -17,7 +17,7 @@ class StudipAuthOIDC extends StudipAuthSSO
     /**
      * @var OpenIDConnectClient
      */
-    private $oidc;
+    private $oidc = null;
 
     /**
      * @var string
@@ -32,14 +32,9 @@ class StudipAuthOIDC extends StudipAuthSSO
      */
     public $client_secret;
 
-
-    /**
-     * @param array $config
-     */
-    public function __construct($config = [])
+    private function getClient(): OpenIDConnectClient
     {
-        parent::__construct($config);
-        if (Request::get('sso') === $this->plugin_name) {
+        if ($this->oidc === null) {
             $this->oidc = new OpenIDConnectClient($this->provider_url, $this->client_id, $this->client_secret);
             if (isset($this->ssl_options)) {
                 foreach ($this->ssl_options as $option_key => $option_value) {
@@ -47,14 +42,18 @@ class StudipAuthOIDC extends StudipAuthSSO
                         $this->oidc->{'set' . $option_key}($option_value);
                     }
                 }
-                if (Config::get()->HTTP_PROXY) {
-                    $this->oidc->setHttpProxy(Config::get()->HTTP_PROXY);
-                }
-                $return_url = URLHelper::getScriptURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'index.php', ['sso' => $this->plugin_name, 'again' => 'yes']);
-                $this->oidc->setRedirectURL($return_url);
-                $this->oidc->addScope(['openid', 'email', 'profile']);
             }
+
+            if (Config::get()->HTTP_PROXY) {
+                $this->oidc->setHttpProxy(Config::get()->HTTP_PROXY);
+            }
+
+            $return_url = URLHelper::getScriptURL($GLOBALS['ABSOLUTE_URI_STUDIP'] . 'index.php', ['sso' => $this->plugin_name, 'again' => 'yes']);
+            $this->oidc->setRedirectURL($return_url);
+            $this->oidc->addScope(['openid', 'email', 'profile']);
         }
+
+        return $this->oidc;
     }
 
     /**
@@ -68,8 +67,8 @@ class StudipAuthOIDC extends StudipAuthSSO
      */
     public function verifyUsername($username)
     {
-        $this->oidc->authenticate();
-        $this->userdata = (array)$this->oidc->requestUserInfo();
+        $this->getClient()->authenticate();
+        $this->userdata = (array) $this->getClient()->requestUserInfo();
         if (isset($this->userdata['sub'])) {
             return $this->userdata['username'] = $this->userdata['sub'] . '@' . $this->domain;
         } else {
@@ -82,7 +81,7 @@ class StudipAuthOIDC extends StudipAuthSSO
      */
     public function getUser()
     {
-        return $this->userdata['username'];
+        return $this->getUserData('username');
     }
 
     /**
@@ -100,8 +99,7 @@ class StudipAuthOIDC extends StudipAuthSSO
      *
      * @see https://openid.net/specs/openid-connect-basic-1_0.html#StandardClaims
      *
-     * @param string  key
-     *
+     * @param string  $key
      * @return  string  parameter value (null if not set)
      */
     public function getUserData($key)
@@ -111,6 +109,9 @@ class StudipAuthOIDC extends StudipAuthSSO
 
     public function logout(): void
     {
-        $this->oidc->signOut($this->oidc->getIdToken(), null);
+        $this->getClient()->signOut(
+            $this->getClient()->getIdToken(),
+            null
+        );
     }
 }
