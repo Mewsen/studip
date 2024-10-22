@@ -69,13 +69,13 @@
             <label class="studiprequired">
                 <?= _('Beginn') ?>
                 <span class="asterisk" title="<?= _('Dies ist ein Pflichtfeld') ?>" aria-hidden="true">*</span>
-                <input type="text" name="begin" class="begin-input" data-datetime-picker
+                <input type="text" name="begin_str" class="begin-input" data-datetime-picker
                        required="required" value="<?= date('d.m.Y H:i', $date->begin) ?>">
             </label>
             <label class="studiprequired">
                 <?= _('Ende') ?>
                 <span class="asterisk" title="<?= _('Dies ist ein Pflichtfeld') ?>" aria-hidden="true">*</span>
-                <input type="text" name="end" class="end-input" data-datetime-picker
+                <input type="text" name="end_str" class="end-input" data-datetime-picker
                        required="required" value="<?= date('d.m.Y H:i', $date->end) ?>">
             </label>
         </div>
