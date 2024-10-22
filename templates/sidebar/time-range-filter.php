@@ -2,13 +2,16 @@
     <?= CSRFProtection::tokenTag() ?>
     <label>
         <?= _('Dateien neuer als') ?>:
-        <input type="text" name="begin" value="<?= htmlReady($begin ?? '') ?>"
-               class="hasDatePicker">
+        <input type="text" name="begin" id="begin"
+               value="<?= htmlReady($begin ?? '') ?>"
+               data-date-picker="<?= htmlReady(json_encode(['<=' => '#end'])) ?>">
     </label>
     <label>
         <?= _('Dateien älter als') ?>:
-        <input type="text" name="end" value="<?= htmlReady($end ?? '') ?>"
-               class="hasDatePicker submit-on-change">
+        <input type="text" name="end" id="end"
+               value="<?= htmlReady($end ?? '') ?>"
+               data-date-picker="<?= htmlReady(json_encode(['>=' => '#begin'])) ?>"
+               onchange="this.closest('form').submit()">
     </label>
     <? if (!empty($course_options)) : ?>
         <label>
