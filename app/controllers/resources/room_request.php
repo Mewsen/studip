@@ -1303,7 +1303,7 @@ class Resources_RoomRequestController extends AuthenticatedController
 
         $this->clipboards = Clipboard::getClipboardsForUser($this->current_user->id, ['Room']);
 
-        $this->selected_clipboard_id = Request::get('selected_clipboard_id');
+        $this->selected_clipboard_id = Request::int('selected_clipboard_id');
         if (!$this->selected_clipboard_id) {
             if (count($this->clipboards) > 0) {
                 $this->selected_clipboard_id = $this->clipboards[0]->id;

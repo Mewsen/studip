@@ -132,7 +132,7 @@ class Resources_PrintController extends AuthenticatedController
         //clipboard, the selected date and the selected schedule type.
         //Furthermore a date and the type of schedule has been selected.
         // Also check for booking types to export.
-        $this->selected_clipboard_id = Request::get('clipboard_id');
+        $this->selected_clipboard_id = Request::int('clipboard_id');
         $this->schedule_type = Request::get('schedule_type');
         $this->selected_date_string = Request::get('date');
         $this->selected_booking_types = Request::intArray('bookingtypes') ?:

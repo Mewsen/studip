@@ -84,7 +84,7 @@ class ClipboardWidget extends SidebarWidget
         if (Request::submitted('clipboard_update_session_special_action')) {
             CSRFProtection::verifyUnsafeRequest();
 
-            $_SESSION['selected_clipboard_id'] = Request::get('selected_clipboard_id');
+            $_SESSION['selected_clipboard_id'] = Request::int('selected_clipboard_id');
         }
     }
 
