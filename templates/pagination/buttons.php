@@ -41,11 +41,4 @@
         </button>
     </li>
 <? endif; ?>
-
-    <li class="divider--template">
-        <button class="pagination--link" name="<?= htmlReady($name) ?>" value="{{value}}" <? if ($dialog !== null) echo "data-dialog=\"{$dialog}\""; ?>>
-            <span class="audible"><?= _('Seite') ?></span>
-            {{label}}
-        </button>
-    </li>
 </ul>

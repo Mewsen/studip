@@ -305,7 +305,9 @@
                             <span v-if="tfoot_link" :colspan="(topfolder.buttons && show_bulk_actions ? 1 : numberOfColumns)">
                                 <a :href="tfoot_link.href">{{tfoot_link.text}}</a>
                             </span>
-                            <span v-if="pagination" v-html="pagination" class="pagination"></span>
+                            <slot name="pagination">
+                                <span v-if="pagination" v-html="pagination" class="pagination"></span>
+                            </slot>
                         </div>
                     </td>
                 </tr>
