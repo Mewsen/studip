@@ -38,7 +38,7 @@ class CoreSchedule extends CorePlugin implements StudipModule
 
         $nav = new Navigation(_('Ablaufplan'), 'dispatch.php/course/dates');
         if ($result['neue']) {
-            $nav->setImage(Icon::create('schedule', Icon::ROLE_ATTENTION), [
+            $nav->setImage(Icon::create('schedule', Icon::ROLE_ATTENTION, [
                 'title' => sprintf(
                     ngettext(
                         '%1$d Termin, %2$d neuer',
@@ -48,10 +48,10 @@ class CoreSchedule extends CorePlugin implements StudipModule
                     $result['count'],
                     $result['neue']
                 )
-            ]);
+            ]));
             $nav->setBadgeNumber($result['neue']);
         } else {
-            $nav->setImage(Icon::create('schedule', Icon::ROLE_CLICKABLE), [
+            $nav->setImage(Icon::create('schedule', Icon::ROLE_CLICKABLE, [
                 'title' => sprintf(
                     ngettext(
                         '%d Termin',
@@ -60,7 +60,7 @@ class CoreSchedule extends CorePlugin implements StudipModule
                     ),
                     $result['count']
                 )
-            ]);
+            ]));
         }
         return $nav;
     }

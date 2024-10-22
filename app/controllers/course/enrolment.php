@@ -285,16 +285,7 @@ class Course_EnrolmentController extends AuthenticatedController
                 if ($admission_user_limit && $admission_user_limit <= $limit->getMaxNumber()) {
                     $limit->setCustomMaxNumber($user_id, $admission_user_limit);
                 }
-                $admission_prio = Request::getArray('admission_prio');
-                $max_prio = $admission_prio ? max($admission_prio) : 0;
-                $admission_prio = array_map(function ($a) use (&$max_prio) {
-                    return $a > 0 ? $a : ++$max_prio;
-                }, $admission_prio);
-                if (count(array_unique($admission_prio)) != count(Request::getArray('admission_prio'))) {
-                    PageLayout::postInfo(
-                        _('Sie dürfen jede Priorität nur einmal auswählen. Überprüfen Sie bitte Ihre Auswahl!')
-                    );
-                }
+                $admission_prio = $this->getPrioritiesFromRequest();
                 $old_prio_count = AdmissionPriority::unsetAllPrioritiesForUser($courseset->getId(), $user_id);
                 if ($order_up = key(Request::getArray('admission_prio_order_up'))) {
                     $prio_to_move = $admission_prio[$order_up];
@@ -343,5 +334,34 @@ class Course_EnrolmentController extends AuthenticatedController
             }
         }
         $this->redirect($this->action_url("apply/{$this->course_id}{$anchor}"));
+    }
+
+    /**
+     * Get the priorities from the request. This will discard all defined
+     * priorities and set them according to their position.
+     */
+    private function getPrioritiesFromRequest(): array
+    {
+        $admission_prio = Request::getArray('admission_prio');
+        if (count($admission_prio) === 0) {
+            return [];
+        }
+
+        // Ensure all items have a positive priority that is not zero
+        $max_prio = max($admission_prio);
+        foreach ($admission_prio as $course_id => $prio) {
+            if ($prio <= 0) {
+                $admission_prio[$course_id] = ++$max_prio;
+            }
+        }
+
+        // Sort the array by the defined priories
+        asort($admission_prio);
+
+        // Set the priorities according to their position
+        return array_combine(
+            array_keys($admission_prio),
+            range(1, count($admission_prio))
+        );
     }
 }

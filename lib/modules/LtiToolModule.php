@@ -49,7 +49,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
               : Icon::create('link-extern', Icon::ROLE_CLICKABLE);
 
         $navigation = new Navigation($title, 'dispatch.php/course/lti');
-        $navigation->setImage($icon, ['title' => $title]);
+        $navigation->setImage($icon->copyWithAttributes(['title' => $title]));
 
         return $navigation;
     }

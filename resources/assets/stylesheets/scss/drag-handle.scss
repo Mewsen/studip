@@ -4,7 +4,7 @@
     background-repeat: no-repeat;
     background-size: auto 24px;
     cursor: move;
-    padding-left: 12px;
+    padding-left: 16px !important;
 
     &:hover {
         background-image: url("#{$image-path}/grabber_blue.svg");

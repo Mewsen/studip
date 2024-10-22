@@ -32,6 +32,7 @@ class TermsController extends AuthenticatedController
                 $GLOBALS['user']->cfg->store('TERMS_ACCEPTED', 1);
                 $this->redirectUser();
             } else {
+                $_SESSION['logout_ticket'] = get_ticket();
                 $this->redirectUser('logout.php');
             }
         } elseif (Request::get('action') === 'denied') {

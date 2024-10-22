@@ -47,7 +47,7 @@ class ConsultationBooking extends SimpleORMap implements PrivacyObject
         $config['registered_callbacks']['before_create'][] = function (ConsultationBooking $booking) {
             setTempLanguage($booking->user_id);
 
-            $event = $booking->slot->createEvent($booking->user);
+            $event = $booking->slot->createEvent($booking->user, 'booking');
             $event->category = 1;
             $event->title = sprintf(
                 _('Termin bei %s'),

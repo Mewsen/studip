@@ -220,7 +220,8 @@ if ($seminar_open_redirected) {
 // Show terms on first login
 if (is_object($GLOBALS['user'])
     && $GLOBALS['user']->needsToAcceptTerms()
-    && !match_route('dispatch.php/terms'))
+    && !match_route('dispatch.php/terms')
+    && !match_route('dispatch.php/siteinfo/*'))
 {
     if (!Request::isXhr()) {
         header('Location: ' . URLHelper::getURL('dispatch.php/terms', ['return_to' => $_SERVER['REQUEST_URI'], 'redirect_token' => Token::create(600)], true));
@@ -239,6 +240,7 @@ if (
         Config::get()->DOZENT_ALWAYS_VISIBLE
         && $perm->get_perm() === 'dozent'
     )
+    && !match_route('dispatch.php/siteinfo/*')
 ) {
     require_once('lib/user_visible.inc.php');
     first_decision($GLOBALS['user']->id);

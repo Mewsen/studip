@@ -200,7 +200,6 @@ form.default {
 
     fieldset {
         box-sizing: border-box;
-        border: none;
         border: solid 1px var(--color--fieldset-border);
         margin: 0 0 15px;
         min-width: auto;
@@ -228,6 +227,7 @@ form.default {
         > :not(legend) {
             margin-left: 10px;
             margin-right: 10px;
+            max-width: calc(100% - 20px);
         }
     }
 

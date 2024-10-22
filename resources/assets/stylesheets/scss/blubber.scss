@@ -345,15 +345,18 @@
                 height: 50px;
                 max-height: 50px;
                 overflow: hidden;
-                padding: 10px;
+                padding: 10px 5px 10px 10px;
                 cursor: pointer;
                 color: var(--base-color);
-                font-weight: bold;
+                font-weight: 400;
                 border-left: solid 4px transparent;
 
                 &.unseen {
-                    border-color: var(--active-color);
-                    padding-left: 7px;
+                    font-weight: 700;
+
+                   .info time {
+                        font-weight: 700;
+                   }
                 }
 
                 &[v-if],
@@ -389,10 +392,30 @@
                         flex-direction: column;
                         height: 60px;
                         max-height: 60px;
+                        width: 100%;
                         overflow: hidden;
-                        .name {
+
+                        .title {
                             max-height: 40px;
                             overflow: hidden;
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: space-between;
+
+                            .thread-name {
+                                flex-grow: 1;
+                            }
+                            .unseen-comments-counter {
+                                width: 20px;
+                                height: 20px;
+                                line-height: 20px;
+                                text-align: center;
+                                background-color: var(--color--red-1);
+                                font-size: 12px;
+                                font-weight: normal;
+                                border-radius: 10px;
+                                color: var(--color--font-inverted);
+                            }
                         }
                         time {
                             font-size: 0.8em;

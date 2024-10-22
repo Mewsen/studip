@@ -69,7 +69,7 @@ class GradebookModule extends CorePlugin implements SystemPlugin, StudipModule
               : Icon::create('assessment', Icon::ROLE_CLICKABLE);
 
         $navigation = new Navigation($title, 'dispatch.php/course/gradebook/overview');
-        $navigation->setImage($icon, ['title' => $title]);
+        $navigation->setImage($icon->copyWithAttributes(['title' => $title]));
 
         return $navigation;
     }

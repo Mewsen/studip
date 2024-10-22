@@ -48,6 +48,7 @@ class AvatarNavigation extends Navigation
         // Link to logout
         $navigation = new Navigation(_('Logout'), 'logout.php');
         $navigation->setImage(Icon::create('door-leave'));
+        $navigation->setRenderAsButton();
         $this->addSubNavigation('logout', $navigation);
     }
 }

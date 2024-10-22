@@ -66,7 +66,8 @@ const admin_sem_class = {
                 admission_type_default: jQuery('#admission_type_default').val(),
                 show_raumzeit: jQuery('#show_raumzeit').is(':checked') ? 1 : 0,
                 is_group: jQuery('#is_group').is(':checked') ? 1 : 0,
-                unlimited_forbidden: jQuery('#unlimited_forbidden').is(':checked') ? 1 : 0
+                unlimited_forbidden: jQuery('#unlimited_forbidden').is(':checked') ? 1 : 0,
+                admission_turnout_mandatory: jQuery('#admission_turnout_mandatory').is(':checked') ? 1 : 0
             },
             type: 'POST',
             dataType: 'json',

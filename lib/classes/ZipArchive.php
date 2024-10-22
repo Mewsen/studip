@@ -1,12 +1,6 @@
 <?php
 namespace Studip;
 
-if (version_compare(phpversion('zip'), '1.18') < 0) {
-    require_once __DIR__ . '/ZipArchiveLegacyTrait.php';
-} else {
-    require_once __DIR__ . '/ZipArchiveTrait.php';
-}
-
 /**
  * Custom derived ZipArchive class with convenience methods for
  * zip archive handling.
@@ -19,8 +13,6 @@ if (version_compare(phpversion('zip'), '1.18') < 0) {
  */
 class ZipArchive extends \ZipArchive
 {
-    use ZipArchiveTrait;
-
     /**
      * @var string encoding for filenames in zip
      */
@@ -47,7 +39,7 @@ class ZipArchive extends \ZipArchive
      *     shall have the .zip file extension (true) or not (false).
      *     Defaults to false.
      *
-     * @return Studip\ZipArchive
+     * @return static
      */
     public static function create($filename, $force_zip_extension = false)
     {
@@ -141,8 +133,8 @@ class ZipArchive extends \ZipArchive
      * Adds all files from a certain path.
      *
      * @param String $path Path name to add
-     * @return Array of local filenames
-     * @uses Studip\ZipArchive::addFile
+     * @return array of local filenames
+     * @uses ZipArchive::addFile
      */
     public function addFromPath($path, $folder = '')
     {
@@ -155,11 +147,32 @@ class ZipArchive extends \ZipArchive
                     $result,
                     $this->addFromPath($file, $folder . basename($file) . '/')
                 );
-            } else {
-                $result[] = $this->addFile($file, $folder . basename($file));
+            } elseif ($this->addFile($file, $folder . basename($file))) {
+                $result[] = $this->convertLocalFilename($folder . basename($file));
             }
         }
         return array_filter($result);
+    }
+
+    /**
+     * Adds a single file.
+     *
+     * @param string $filepath  Name of the file to add
+     * @param ?string $entryname Name of the file inside the archive,
+     *                           will default to $filename
+     * @param int    $start     Unused but required (according to php doc)
+     * @param int    $length    Unused but required (according to php doc)
+     * @param int    $flags     Bitmask (see https://php.net/ziparchive.addfile)
+     */
+    public function addFile(
+        string $filepath,
+        string $entryname = null,
+        int $start = 0,
+        int $length = 0,
+        int $flags = self::FL_OVERWRITE
+    ): bool {
+        $localname = $this->convertLocalFilename($entryname ?: basename($filepath));
+        return parent::addFile($filepath, $localname, $start, $length, $flags);
     }
 
     /**
@@ -171,7 +184,7 @@ class ZipArchive extends \ZipArchive
      */
     public function convertLocalFilename($filename)
     {
-        if ($this->output_encoding != 'UTF-8') {
+        if ($this->output_encoding !== 'UTF-8') {
             return iconv('UTF-8', $this->output_encoding . '//TRANSLIT', $filename);
         } else {
             return $filename;

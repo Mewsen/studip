@@ -416,7 +416,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     {
         if (self::$schemes === null) {
             $cache = \Studip\Cache\Factory::getCache();
-            self::$schemes = unserialize($cache->read('DB_TABLE_SCHEMES'));
+            self::$schemes = unserialize($cache->read('DB_TABLE_SCHEMES')) ?: [];
         }
         if (!isset(self::$schemes[$db_table])) {
             $db = DBManager::get()->query("SHOW COLUMNS FROM $db_table");

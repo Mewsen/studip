@@ -71,11 +71,11 @@ label.inactive-settings-category {
                 }
 
                 &:not(:first-child) {
-                    border-top: 1px solid var(--content-color-40);
+                    border-top: 1px solid var(--color--content-box-border);
                 }
 
                 &:hover {
-                    background-color: var(--light-gray-color-20);
+                    background-color: var(--color--tile-background-hover);
                 }
 
                 &.search-extended-result {
@@ -117,7 +117,7 @@ label.inactive-settings-category {
                     }
 
                     .search-result-details {
-                        color: var(--black);
+                        color: var(--color--font-primary);
                         font-size: $font-size-small;
                     }
                 }
@@ -131,7 +131,7 @@ label.inactive-settings-category {
 
 
                     .search-result-time {
-                        color: var(--dark-gray-color-80);
+                        color: var(--color--font-secondary);
                         flex: 1;
                         font-size: $font-size-small;
                         text-align: right;
@@ -139,7 +139,7 @@ label.inactive-settings-category {
                     }
 
                     .search-result-additional {
-                        color: var(--dark-gray-color-80);
+                        color: var(--color--font-secondary);
                         font-size: $font-size-small;
                         text-align: right;
                     }

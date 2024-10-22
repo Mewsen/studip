@@ -12,8 +12,8 @@
     "author": "",
     "license": "GPL-2.0",
     "repository": {
-        "type": "svn",
-        "url": "https://develop.studip.de/svn/studip"
+        "type": "git",
+        "url": "https://gitlab.studip.de/studip/studip.git"
     },
     "engines": {
         "node": ">=18"

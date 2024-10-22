@@ -48,6 +48,8 @@ class Navigation implements IteratorAggregate
     protected $title;
     protected $url;
 
+    protected $render_as_button = false;
+
     /**
      * Mark the navigation item at the given path as active.
      * This is just a shortcut for doing:
@@ -455,6 +457,22 @@ class Navigation implements IteratorAggregate
     public function setBadgeTimestamp($badgeTimestamp)
     {
         $this->badgeTimestamp = $badgeTimestamp;
+    }
+
+    /**
+     * Sets whether the navigation should be rendered as a button or not
+     */
+    public function setRenderAsButton(bool $state = true): void
+    {
+        $this->render_as_button = $state;
+    }
+
+    /**
+     * Return whether the navigation should be rendered as a button or not
+     */
+    public function getRenderAsButton(): bool
+    {
+        return $this->render_as_button;
     }
 
     /**

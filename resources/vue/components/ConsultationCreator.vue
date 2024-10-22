@@ -447,7 +447,7 @@ export default {
                 errors.push(this.$gettext('Das Enddatum liegt vor dem Startdatum!'));
             }
 
-            if (!this.isSingleDate && this.pauseTime && this.pauseTime < this.duration) {
+            if (!this.isSingleDate && this.pause && this.pauseTime < this.duration) {
                 errors.push(this.$gettext('Die definierte Zeit bis zur Pause ist kleiner als die Dauer eines Termins.'));
             }
 

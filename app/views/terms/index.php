@@ -23,10 +23,9 @@
     <? endif; ?>
     <footer style="text-align: center">
     <? if ($denial_message): ?>
-        <?= Studip\LinkButton::createAccept(
-            _('Verstanden'),
-            URLHelper::getURL('logout.php')
-        ) ?>
+        <form action="<?= URLHelper::getLink('logout.php') ?>" method="post">
+            <?= Studip\Button::createAccept(_('Verstanden')) ?>
+        </form>
     <? else: ?>
         <?= Studip\Button::createAccept(_('Ich erkenne die Nutzungsbedingungen an'), 'accept') ?>
 

@@ -169,7 +169,7 @@ if ($navigation) {
                 <? endif; ?>
 
                 <? if (Navigation::hasItem('/avatar')): ?>
-                    <div id="avatar-menu">
+                    <form id="avatar-menu" method="post">
                     <?php
                     $action_menu = ContentGroupMenu::get();
                     $action_menu->addCSSClass('avatar-menu');
@@ -182,17 +182,29 @@ if ($navigation) {
                     );
 
                     foreach (Navigation::getItem('/avatar') as $subnav) {
-                        $action_menu->addLink(
-                            URLHelper::getURL($subnav->getURL(), [], true),
-                            $subnav->getTitle(),
-                            $subnav->getImage(),
-                            $subnav->getLinkAttributes()
-                        );
+                        if ($subnav->getRenderAsButton()) {
+                            $action_menu->addButton(
+                                'logout',
+                                $subnav->getTitle(),
+                                $subnav->getImage(),
+                                array_merge(
+                                    $subnav->getLinkAttributes(),
+                                    ['formaction' => URLHelper::getURL($subnav->getURL(), [], true)]
+                                )
+                            );
+                        } else {
+                            $action_menu->addLink(
+                                URLHelper::getURL($subnav->getURL(), [], true),
+                                $subnav->getTitle(),
+                                $subnav->getImage(),
+                                $subnav->getLinkAttributes()
+                            );
+                        }
                     }
                     SkipLinks::addIndex(_('Profilmenü'), 'header_avatar_image_link', 1, false);
                     ?>
                     <?= $action_menu->render(); ?>
-                    </div>
+                    </form>
                 <? endif; ?>
                 </li>
             <? endif; ?>

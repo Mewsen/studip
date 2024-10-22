@@ -32,7 +32,8 @@ class NewsWidget extends CorePlugin implements PortalPlugin
         $icons = [];
         if (StudipNews::CountUnread() > 0) {
             $navigation = new Navigation('', 'dispatch.php/news/visit_all');
-            $navigation->setImage(Icon::create('refresh', Icon::ROLE_CLICKABLE, ['title' => _('Alle als gelesen markieren'), 'size' => 20]), ['class' => 'visit-all']);
+            $navigation->setImage(Icon::create('refresh', Icon::ROLE_CLICKABLE, ['title' => _('Alle als gelesen markieren'), 'size' => 20]));
+            $navigation->setLinkAttributes(['class' => 'visit-all']);
             $icons[] = $navigation;
         }
 
@@ -46,7 +47,9 @@ class NewsWidget extends CorePlugin implements PortalPlugin
 
         if ($GLOBALS['perm']->have_perm('root')) {
             $navigation = new Navigation('', 'dispatch.php/news/edit_news/new/studip');
-            $navigation->setImage(Icon::create('add', Icon::ROLE_CLICKABLE, ['title' => _('Ankündigungen bearbeiten'), 'size' => 20]), ['data-dialog' => '1']);
+            $navigation->setImage(Icon::create('add', Icon::ROLE_CLICKABLE, ['title' => _('Ankündigungen bearbeiten'), 'size' => 20]));
+            $navigation->setLinkAttributes(['data-dialog' => '']);
+
             $icons[] = $navigation;
             if (Config::get()->NEWS_RSS_EXPORT_ENABLE) {
                 $navigation = new Navigation('', 'dispatch.php/news/rss_config/studip');
@@ -56,8 +59,8 @@ class NewsWidget extends CorePlugin implements PortalPlugin
                         Icon::ROLE_CLICKABLE,
                         ['title' => _('RSS-Feed konfigurieren')]
                     ),
-                    ['data-dialog' => 'size=auto']
                 );
+                $navigation->setLinkAttributes(['data-dialog' => 'size=auto']);
                 $icons[] = $navigation;
             }
         }

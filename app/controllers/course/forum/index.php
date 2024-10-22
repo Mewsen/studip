@@ -561,6 +561,10 @@ class Course_Forum_IndexController extends ForumController
      */
     function like_action($topic_id)
     {
+        if (!Request::isPost()) {
+            throw new MethodNotAllowedException();
+        }
+
         ForumPerm::check('like_entry', $this->getId(), $topic_id);
 
         ForumLike::like($topic_id);
@@ -580,6 +584,10 @@ class Course_Forum_IndexController extends ForumController
      */
     function dislike_action($topic_id)
     {
+        if (!Request::isPost()) {
+            throw new MethodNotAllowedException();
+        }
+
         ForumPerm::check('like_entry', $this->getId(), $topic_id);
 
         ForumLike::dislike($topic_id);

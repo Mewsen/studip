@@ -14,8 +14,9 @@
                         <a :href="link(thread.id)">
                             <div class="avatar" :style="{ backgroundImage: 'url(' + thread.avatar + ')' }"></div>
                             <div class="info">
-                                <div class="name">
-                                    {{ thread.name }}
+                                <div class="title">
+                                    <span class="thread-name">{{ thread.name }}</span>
+                                    <span v-if="thread.unseenComments > 0" class="unseen-comments-counter">{{ thread.unseenComments }}</span>
                                 </div>
                                 <studip-date-time
                                     :timestamp="threadLatestActivity(thread)"
@@ -33,7 +34,7 @@
 
         <template #actions>
             <a :href="urlCompose" data-dialog="width=600;height=300">
-                <studip-icon shape="add" class="text-bottom" />
+                <studip-icon shape="add" />
             </a>
         </template>
     </SidebarWidget>

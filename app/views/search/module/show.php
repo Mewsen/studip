@@ -1,8 +1,13 @@
 <table class="mvv-modul-details">
+    <colgroup>
+        <col style="width: 30%">
+        <col style="width: 30%">
+        <col style="width: 40%">
+    </colgroup>
     <tr>
-        <th class="mvv-modul-details-head" width="30%"><?= $modul->code ?></td>
-        <th class="mvv-modul-details-head" width="30%"><?= $institut->name ?></td>
-        <th class="mvv-modul-details-head" width="40%"><?= sprintf("%d CP", $modul->kp) ?> </td>
+        <th class="mvv-modul-details-head"><?= $modul->code ?></th>
+        <th class="mvv-modul-details-head"><?= $institut->name ?></th>
+        <th class="mvv-modul-details-head"><?= sprintf("%d CP", $modul->kp) ?> </th>
     </tr>
     <tr>
         <td colspan="2">
@@ -91,15 +96,15 @@
             <? endif; ?>
             <th <? if ($type === 2): ?> colspan="3" <? endif; ?> ><?= _('Semesterveranstaltungen') ?></th>
             <? if ($type === 1): ?>
-                <th><?= _('Prüfungsleistung') ?></th>    
+                <th><?= _('Prüfungsleistung') ?></th>
             <? endif; ?>
         </tr>
 
         <? foreach ($modulTeile as $lvGruppe): ?>
             <tr>
                 <? if ($type === 1): ?>
-                    <td>  
-                        <b> <?= $lvGruppe['name'] ?> </b> 
+                    <td>
+                        <b> <?= $lvGruppe['name'] ?> </b>
                         <? if (mb_strlen($lvGruppe['kommentar']) > 0): ?>
                             (<?= htmlReady($lvGruppe['kommentar']) ?>)
                         <? endif; ?>
@@ -119,7 +124,7 @@
                         <? if (mb_strlen($gruppe['alt_texte']) > 0): ?>
                             <b><?= formatReady($gruppe['alt_texte']) ?></b>
                         <? endif; ?>
-                        <ul>  
+                        <ul>
                             <? foreach ($gruppe['courses'] as $seminar_id => $course): ?>
                                 <li>
                                     <a href="<?= URLHelper::getLink('dispatch.php/course/details', ['sem_id' => $seminar_id]) ?>">

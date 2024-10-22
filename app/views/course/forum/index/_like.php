@@ -36,12 +36,13 @@ shuffle($likes);
 endif ?>
 
 <!-- like/dislike links -->
-<? if (!in_array($GLOBALS['user']->id, $likes)) : ?>
-    <a href="<?= $controller->link_for('course/forum/index/like/'. $topic_id) ?>" onClick="jQuery('#like_<?= $topic_id ?>').load('<?= $controller->link_for('course/forum/index/like/'. $topic_id) ?>'); return false;">
-        <?= _('Gefällt mir!'); ?>
-    </a>
-<? else : ?>
-    <a href="<?= $controller->link_for('course/forum/index/dislike/'. $topic_id) ?>" onClick="jQuery('#like_<?= $topic_id ?>').load('<?= $controller->link_for('course/forum/index/dislike/'. $topic_id) ?>'); return false;">
-        <?= _('Gefällt mir nicht mehr!'); ?>
-    </a>
-<? endif ?>
+<?php $has_liked = in_array($GLOBALS['user']->id, $likes); ?>
+<button class="as-link"
+        onclick="$.post('<?= $controller->action_link($has_liked ? 'dislike' : 'like', $topic_id) ?>').done(response => $('#like_<?= htmlReady($topic_id) ?>').html(response));return false;"
+>
+<? if ($has_liked) : ?>
+    <?= _('Gefällt mir nicht mehr!'); ?>
+<? else: ?>
+    <?= _('Gefällt mir!'); ?>
+<? endif; ?>
+</button>

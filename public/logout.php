@@ -29,6 +29,20 @@ page_open(["sess" => "Seminar_Session", "auth" => "Seminar_Default_Auth", "perm"
 
 require_once 'lib/messaging.inc.php';
 
+// Redirect to index page if request is not a post request or logout ticket is
+// missing
+if (
+    !Request::isPost()
+    && !(
+        isset($_SESSION['logout_ticket'])
+        && check_ticket($_SESSION['logout_ticket'])
+    )
+) {
+    header('Location: ' . URLHelper::getURL('index.php'));
+    page_close();
+    die;
+}
+
 //nur wenn wir angemeldet sind sollten wir dies tun!
 if ($auth->auth['uid'] !== 'nobody') {
     $my_messaging_settings = $GLOBALS['user']->cfg->MESSAGING_SETTINGS;
@@ -56,11 +70,6 @@ if ($auth->auth['uid'] !== 'nobody') {
     $timeout=(time()-(15 * 60));
     $user->set_last_action($timeout);
 
-    // Perform logout from auth plugin (if possible)
-    if ($auth_plugin instanceof StudipAuthSSO) {
-        $auth_plugin->logout();
-    }
-
     $sess->start();
     $_SESSION['_language'] = $_language;
     if ($contrast) {
@@ -71,6 +80,11 @@ if ($auth->auth['uid'] !== 'nobody') {
         _('Sie sind nun aus dem System abgemeldet.'),
         array_filter([$GLOBALS['UNI_LOGOUT_ADD']])
     );
+
+    // Perform logout from auth plugin (if possible)
+    if ($auth_plugin instanceof StudipAuthSSO) {
+        $auth_plugin->logout();
+    }
 } else {
     $sess->delete();
     page_close();

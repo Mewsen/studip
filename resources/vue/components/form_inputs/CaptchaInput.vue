@@ -1,7 +1,7 @@
 <template>
     <div class="formpart">
+        <p>{{ $gettext('An dieser Stelle prüfen wir automatisch, ob Sie ein Mensch sind.') }}</p>
         <altcha-widget :challengeurl="challengeUrl" ref="widget"></altcha-widget>
-        {{ $gettext('An dieser Stelle prüfen wir automatisch, ob Sie ein Mensch sind.') }}
     </div>
 </template>
 <script>
@@ -25,17 +25,12 @@ export default {
             validator: (value) => ['onfocus', 'onload', 'onsubmit'].includes(value),
         }
     },
-    data() {
-        return {};
-    },
-    methods: {
-    },
     mounted() {
         this.$nextTick(() => {
             this.$refs.widget.configure({
                 auto: this.auto,
                 name: this.name,
-                hidefooter: false,
+                hidefooter: true,
                 hidelogo: false,
                 strings: {
                     error: $gettext('Überprüfung fehlgeschlagen. Versuchen Sie es später erneut.'),
@@ -67,5 +62,8 @@ export default {
     --altcha-color-error-text: var(--red);
     --altcha-color-footer-bg: none;
     --altcha-max-width: auto;
+}
+.altcha-main {
+    padding: 0 !important;
 }
 </style>

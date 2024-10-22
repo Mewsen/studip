@@ -771,7 +771,8 @@ class Course_TimesroomsController extends AuthenticatedController
     public function stack_action($cycle_id = '')
     {
         $_SESSION['_checked_dates'] = Request::optionArray('single_dates');
-        if (empty($_SESSION['_checked_dates']) && isset($_SESSION['_checked_dates'])) {
+        $_SESSION['_checked_dates'] = $this->validateDateIds($_SESSION['_checked_dates']);
+        if (count($_SESSION['_checked_dates']) === 0) {
             PageLayout::postError(_('Sie haben keine Termine ausgewählt!'));
             $this->redirect('course/timesrooms/index', ['contentbox_open' => $cycle_id]);
 
@@ -1757,9 +1758,9 @@ class Course_TimesroomsController extends AuthenticatedController
     /**
      * Restores a previously stored request from trails' flash object
      */
-    private function restoreRequest(array $fields)
+    private function restoreRequest(array $fields, $request = null)
     {
-        $request = $this->flash['request'];
+        $request = $this->flash['request'] ?? $request;
 
         if ($request) {
             foreach ($fields as $field) {
@@ -1873,5 +1874,36 @@ class Course_TimesroomsController extends AuthenticatedController
                 }
             }
         }
+    }
+
+    private function validateDateIds(array $date_ids): array
+    {
+        if (count($date_ids) === 0) {
+            return [];
+        }
+
+        $valid = [];
+
+        CourseDate::findEachBySQL(
+            function (CourseDate $date) use (&$valid) {
+                if ($date->range_id === $this->course->id) {
+                    $valid[] = $date->id;
+                }
+            },
+            'range_id = ? AND termin_id IN (?)',
+            [$this->course->id, $date_ids]
+        );
+
+        CourseExDate::findEachBySQL(
+            function (CourseExDate $date) use (&$valid) {
+                if ($date->range_id === $this->course->id) {
+                    $valid[] = $date->id;
+                }
+            },
+            'range_id = ? AND termin_id IN (?)',
+            [$this->course->id, $date_ids]
+        );
+
+        return $valid;
     }
 }

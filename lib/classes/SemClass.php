@@ -386,6 +386,7 @@ class SemClass implements ArrayAccess
                 "show_raumzeit = :show_raumzeit, " .
                 "is_group = :is_group, " .
                 "unlimited_forbidden = :unlimited_forbidden, " .
+                "admission_turnout_mandatory = :admission_turnout_mandatory," .
                 "chdate = UNIX_TIMESTAMP() " .
             "WHERE id = :id ".
         "");
@@ -430,6 +431,7 @@ class SemClass implements ArrayAccess
             'show_raumzeit' => (int) $this->data['show_raumzeit'],
             'is_group' => (int) $this->data['is_group'],
             'unlimited_forbidden' => (int) $this->data['unlimited_forbidden'],
+            'admission_turnout_mandatory' => (int) $this->data['admission_turnout_mandatory'],
         ]);
     }
 

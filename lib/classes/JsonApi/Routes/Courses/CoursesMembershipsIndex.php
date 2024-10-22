@@ -45,19 +45,36 @@ class CoursesMembershipsIndex extends JsonApiController
     {
         $memberships = $course->members;
 
-        $visibleMemberships = Authority::canEditCourse($user, $course)
-            ? $memberships
-            : $memberships->filter(function ($membership) use ($user) {
-                return $membership['user_id'] == $user->id ||
-                    !in_array($membership['status'], ['autor', 'user']) ||
-                    'no' != $membership['visible'];
+        // Filter by permission?
+        if (isset($filters['permission'])) {
+            $memberships = $memberships->filter(function (\CourseMember $membership) use ($filters) {
+                return $membership->status === $filters['permission'];
             });
+        }
 
-        return isset($filters['permission'])
-            ? $visibleMemberships->filter(function ($membership) use ($filters) {
-                return $membership['status'] === $filters['permission'];
-            })
-            : $visibleMemberships;
+        // Filter out invisible members if not teacher
+        if (!Authority::canEditCourse($user, $course)) {
+            $memberships = $memberships->filter(function (\CourseMember $membership) use ($user) {
+                return $membership->user->isAccessibleToUser($user->id)
+                    && (
+                        $membership->user_id === $user->id
+                        || $membership->visible !== 'no'
+                    );
+            });
+        }
+
+        // Filter out students if not in course
+        if (!Authority::canShowCourse($user, $course, Authority::SCOPE_EXTENDED)) {
+            $memberships = $memberships->filter(function (\CourseMember $membership) use ($user) {
+                return $membership->user->isAccessibleToUser($user->id)
+                    && (
+                        $membership->user_id === $user->id
+                        || !in_array($membership->status, ['autor', 'user'])
+                    );
+            });
+        }
+
+        return $memberships;
     }
 
     private function validateFilters()
