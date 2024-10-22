@@ -489,6 +489,7 @@ class MyRealmModel
         $navigation = [];
         // TODO check if call can be removed because all plugins fetch it themselves eitherway, they basically only need threshold
         $visits = get_objects_visits($all_course_ids, 0, null, null, array_keys($activated_tools));
+        $cache = StudipCacheFactory::getCache();
         foreach ($activated_tools as $plugin_id => $plugin_data) {
             if (!Config::get()->VOTE_ENABLE && $plugin_id === 'vote') {
                 continue;
@@ -498,8 +499,12 @@ class MyRealmModel
                 //$navigation[$plugin_id] = self::checkVote($my_obj_values, $user_id, $object_id);
             } elseif ($c_ids = $plugin_data['courses']) {
                 if (method_exists($plugin_data['studip_module'], 'getManyIconNavigation')) {
-                    $m_nav = $plugin_data['studip_module']->getManyIconNavigation($c_ids, $visits, $user_id);
-                    foreach ($m_nav as $c_id => $nav) {
+                    $cached_nav = unserialize($cache->read(StudipModule::ICON_NAV_CACHE_PATH . $user_id . '/' . $plugin_id));
+                    if (empty($cached_nav)) {
+                        $cached_nav = $plugin_data['studip_module']->getManyIconNavigation($c_ids, $visits, $user_id);
+                        $cache->write(StudipModule::ICON_NAV_CACHE_PATH . $user_id . '/' . $plugin_id, serialize($cached_nav));
+                    }
+                    foreach ($cached_nav as $c_id => $nav) {
                         $navigation[$c_id][$plugin_id] = $nav;
                     }
                 } else {
