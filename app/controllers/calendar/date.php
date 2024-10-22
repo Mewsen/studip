@@ -230,6 +230,12 @@ class Calendar_DateController extends AuthenticatedController
             $this->date->begin = Request::get('begin');
             $this->date->end = Request::get('end');
             $this->date->repetition_end = $this->date->end;
+        } elseif (Request::submitted('begin_str') && Request::submitted('end_str')) {
+            //Assume the textual format d.m.Y H:i:
+            $begin = Request::getDateTime('begin_str', 'd.m.Y H:i');
+            $end   = Request::getDateTime('end_str', 'd.m.Y H:i');
+            $this->date->begin = $begin->getTimestamp();
+            $this->date->end   = $end->getTimestamp();
         } else {
             $time = new DateTime();
             if (Request::submitted('timestamp')) {
@@ -393,8 +399,8 @@ class Calendar_DateController extends AuthenticatedController
             }
             $this->date->editor_id = $GLOBALS['user']->id;
 
-            $begin = Request::getDateTime('begin', 'd.m.Y H:i');
-            $end = Request::getDateTime('end', 'd.m.Y H:i');
+            $begin = Request::getDateTime('begin_str', 'd.m.Y H:i');
+            $end = Request::getDateTime('end_str', 'd.m.Y H:i');
             if (Request::get('all_day') === '1') {
                 $this->all_day_event = true;
                 $begin->setTime(0,0,0);
