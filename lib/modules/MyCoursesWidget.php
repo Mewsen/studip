@@ -27,11 +27,13 @@ class MyCoursesWidget extends CorePlugin implements PortalPlugin
     {
         // get the MyCoursesController in order to prepare the correct data for the overview
         $controller = app(MyCoursesController::class, ['dispatcher' => app(\Trails\Dispatcher::class)]);
-        $data = $controller->getPortalWidgetData();
 
-        // add the json data to the head so vue can grab it
-        PageLayout::addHeadElement('script', [], 'STUDIP.MyCoursesData = ' . json_encode($data) . ';');
-
-        return $GLOBALS['template_factory']->open('start/my_courses');
+        return Studip\VueApp::create('MyCourses')
+            ->withStore(
+                'MyCoursesStore',
+                'mycourses',
+                $controller->getPortalWidgetData()
+            )
+            ->getTemplate();
     }
 }
