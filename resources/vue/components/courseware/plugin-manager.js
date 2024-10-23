@@ -1,3 +1,7 @@
+import { useBlockCategoryManager } from '../../composables/courseware/useBlockCategoryManager.js';
+
+const { addCategory } = useBlockCategoryManager();
+
 class PluginManager {
     constructor() {
         this.blocks = [];
@@ -7,6 +11,11 @@ class PluginManager {
     addBlock(name, block) {
         this.blocks[name] = block;
     }
+
+    addCategory(title, type) {
+        addCategory(title, type);
+    }
+
     addContainer(name, container) {
         this.containers[name] = container;
     }
