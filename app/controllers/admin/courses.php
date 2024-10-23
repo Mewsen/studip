@@ -150,11 +150,16 @@ class Admin_CoursesController extends AuthenticatedController
             Now draw the configurable elements according
             to the values inside the visibleElements array.
         */
+        $institute_id = null;
+
         if (!empty($visibleElements['search'])) {
             $this->setSearchWiget();
         }
         if (!empty($visibleElements['institute'])) {
-            $this->setInstSelector();
+            $inst_selector = $this->setInstSelector();
+            if (count($inst_selector->getElements()) === 1) {
+                $institute_id = $this->insts[0]['Institut_id'];
+            }
         }
         if (!empty($visibleElements['semester'])) {
             $this->setSemesterSelector();
@@ -166,7 +171,7 @@ class Admin_CoursesController extends AuthenticatedController
             $this->setCourseTypeWidget();
         }
         if (!empty($visibleElements['teacher'])) {
-            Sidebar::Get()->addWidget($this->getTeacherWidget(), 'filter_teacher');
+            Sidebar::Get()->addWidget($this->getTeacherWidget($institute_id), 'filter_teacher');
         }
 
         //if there are datafields in the list, draw their input fields, too:
@@ -1580,6 +1585,8 @@ class Admin_CoursesController extends AuthenticatedController
         $list->setOnSubmitHandler("STUDIP.AdminCourses.changeFiltersDependendOnInstitute($(this).find('select').val()); return false;");
 
         $sidebar->addWidget($list, 'filter_institute');
+
+        return $list;
     }
 
     /**
