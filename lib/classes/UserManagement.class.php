@@ -1210,8 +1210,9 @@ class UserManagement
             "DELETE FROM questionnaire_assignments WHERE user_id = ?",
             "DELETE etask_assignment_attempts FROM etask_assignment_attempts LEFT JOIN etask_assignments ea ON (`assignment_id` = ea.id) WHERE ea.range_type = 'user' AND user_id = ?",
             "DELETE etask_responses FROM etask_responses LEFT JOIN etask_assignments ea ON (`assignment_id` = ea.id) WHERE ea.range_type = 'user' AND user_id = ?",
-            "DELETE etask_tasks FROM etask_tasks LEFT JOIN etask_test_tasks tt ON (etask_tasks.id = tt.task_id) LEFT JOIN etask_assignments ea ON (tt.`test_id` = ea.test_id) WHERE ea.range_type = 'user' AND  user_id = ?",
-            "DELETE etask_tests FROM etask_tests LEFT JOIN etask_assignments ea ON (`test_id` = ea.test_id) WHERE ea.range_type = 'user' AND user_id = ?",
+            "DELETE etask_tasks, tt, ea FROM etask_tasks LEFT JOIN etask_test_tasks tt ON (etask_tasks.id = tt.task_id) LEFT JOIN etask_assignments ea ON (tt.`test_id` = ea.test_id) WHERE ea.range_type = 'user' AND  user_id = ?",
+            "DELETE etask_tests, ea FROM etask_tests LEFT JOIN etask_assignments ea ON (`test_id` = ea.test_id) WHERE ea.range_type = 'user' AND user_id = ?",
+            "DELETE FROM etask_assignments WHERE range_type = 'user' AND range_id = ?",
 
             "UPDATE forum_entries SET author = '' WHERE user_id = ?",
             "UPDATE auth_user_md5 SET visible = 'never' WHERE user_id = ?",
