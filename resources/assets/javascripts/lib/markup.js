@@ -29,7 +29,7 @@ const Markup = {
             });
         },
         codehighlight: function (element) {
-            $('pre.usercode:not(.hljs)', element).each(function (index, block) {
+            $('pre code[class^="language-"]:not(.hljs)', element).each(function (index, block) {
                 STUDIP.loadChunk('code-highlight').then((hljs) => {
                     hljs.highlightBlock(block);
                 });

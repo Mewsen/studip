@@ -501,9 +501,11 @@ class StudipCoreFormat extends TextFormat
             $codetype = " ".decodeHTML(trim(mb_substr($matches[1], 1)), ENT_QUOTES);
         }
         $code = decodeHTML(trim($matches[2]), ENT_QUOTES);
-        return sprintf('<pre class="usercode %1$s"><code class="%1$s">%2$s</code></pre>',
-                       htmlReady($codetype),
-                       htmlReady($code));
+        return sprintf(
+            '<pre><code class="%s">%s</code></pre>',
+            $codetype ? htmlReady("language-{$codetype}") : '',
+            htmlReady($code)
+        );
     }
 
     /**
