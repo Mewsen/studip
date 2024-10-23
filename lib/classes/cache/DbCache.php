@@ -112,6 +112,34 @@ class DbCache extends Cache
         return $item;
     }
 
+    public function getItems(array $keys = []): array
+    {
+        $query = "SELECT `cache_key`, `content`, `expires`
+                  FROM `cache`
+                  WHERE `cache_key` IN (:keys)
+                    AND `expires` > UNIX_TIMESTAMP()";
+        $results = DBManager::get()->fetchAll($query, [':keys' => $keys]);
+        $items = [];
+        foreach ($results as $result) {
+            $item = new Item($result['cache_key']);
+            $item->setHit();
+            if ($result['content']) {
+                $item->set(unserialize($result['content']));
+            }
+            if ($result['expires']) {
+                $expiration = new \DateTime();
+                $expiration->setTimestamp($result['expires']);
+                $item->expiresAt($expiration);
+            }
+            $items[$result['cache_key']] = $item;
+        }
+        // Don't return null, fill remaining keys
+        foreach (array_diff($keys, array_keys($items)) as $remaining_key) {
+            $items[$remaining_key] = new Item($remaining_key);
+        }
+        return $items;
+    }
+
     /**
      * @inheritDoc
      */
