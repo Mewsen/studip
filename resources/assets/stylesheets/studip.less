@@ -379,7 +379,14 @@ h1:hover, h2:hover, h3:hover, h4:hover {
     color: #444;
 }
 
-pre.usercode {
+pre {
+    &:has(code[class^="language-"]),
+    &.usercode {
+        margin: 0 0 10px;
+    }
+}
+pre code[class^="language-"],
+pre.usercode code {
     padding: 5px;
     background-color: rgba(255, 255, 255, 0.5);
     border: hsla(0, 0%, 0%, 0.1) 5px solid;
