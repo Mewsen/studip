@@ -171,11 +171,16 @@ class Admin_CoursesController extends AuthenticatedController
             Now draw the configurable elements according
             to the values inside the visibleElements array.
         */
+        $institute_id = null;
+
         if (!empty($visibleElements['search'])) {
             $this->setSearchWiget();
         }
         if (!empty($visibleElements['institute'])) {
-            $filter->addElement($this->getInstSelector());
+            $inst_selector = $filter->addElement($this->getInstSelector());
+            if (count($inst_selector->getOptions()) === 1) {
+                $institute_id = $this->insts[0]['Institut_id'];
+            }
         }
         if (!empty($visibleElements['semester'])) {
             $filter->addElement($this->getSemesterSelector());
@@ -187,7 +192,7 @@ class Admin_CoursesController extends AuthenticatedController
             $filter->addElement($this->getCourseTypeWidget());
         }
         if (!empty($visibleElements['teacher'])) {
-            $filter->addElement($this->getTeacherWidget());
+            $filter->addElement($this->getTeacherWidget($institute_id));
         }
 
         $sidebar->addWidget($filter, 'filter');

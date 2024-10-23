@@ -8,7 +8,7 @@
                         type="text"
                         v-model="searchInput"
                         @click.stop
-                        :label="$gettext('Geben Sie einen Suchbegriff mit mindestens 3 Zeichen ein.')"
+                        :aria-label="$gettext('Geben Sie einen Suchbegriff mit mindestens 3 Zeichen ein.')"
                     />
                     <span class="input-group-append" @click.stop>
                         <button
@@ -35,17 +35,26 @@
             </form>
 
             <div id="filterpanel" class="filterpanel">
-                <span class="sr-only">{{ $gettext('Kategorien-Filter') }}</span>
-                <button
-                    v-for="category in blockCategories"
-                    :key="category.type"
-                    class="button"
-                    :class="{ 'active': category.type === currentFilterCategory }"
-                    :aria-pressed="category.type === currentFilterCategory ? 'true' : 'false'"
-                    @click="selectCategory(category.type)"
-                >
-                    {{ category.title }}
-                </button>
+                <form class="default">
+                  <span class="sr-only">{{ $gettext('Kategorien-Filter') }}</span>
+                  <studip-select
+                      :clearable="true"
+                      label="title"
+                      :options="blockCategories"
+                      :placeholder="$gettext('Blockkategorien')"
+                      :reduce="(category) => category.type"
+                      v-model="currentFilterCategory"
+                      >
+                      <template #open-indicator="selectAttributes">
+                          <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
+                      </template>
+                      <template #no-options>
+                          {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
+                      </template>
+                      <template #selected-option="{ title }"><span>{{ title }}</span></template>
+                      <template #option="{ title }"><span>{{ title }}</span></template>
+                  </studip-select>
+                </form>
             </div>
         </div>
         <div class="cw-toolbar-tool-content" :style="toolContentStyle">
@@ -91,6 +100,7 @@ import CoursewareBlockadderItem from './CoursewareBlockadderItem.vue';
 import CoursewareCompanionBox from '../layouts/CoursewareCompanionBox.vue';
 import containerMixin from '@/vue/mixins/courseware/container.js';
 import draggable from 'vuedraggable';
+import { useBlockCategoryManager } from '../../../composables/courseware/useBlockCategoryManager.js';
 
 import { mapActions, mapGetters } from 'vuex';
 
@@ -108,6 +118,11 @@ export default {
             required: true,
         },
     },
+    setup() {
+        const { categories } = useBlockCategoryManager();
+
+        return { categories };
+    },
     data() {
         return {
             searchInput: '',
@@ -124,21 +139,12 @@ export default {
             favoriteBlockTypes: 'favoriteBlockTypes',
         }),
         blockTypes() {
-            let blockTypes = JSON.parse(JSON.stringify(this.unorderedBlockTypes));
-            blockTypes.sort((a, b) => {
-                return a.title > b.title ? 1 : b.title > a.title ? -1 : 0;
-            });
-            return blockTypes;
+            return _.sortBy(JSON.parse(JSON.stringify(this.unorderedBlockTypes)), ['title']);
         },
         blockCategories() {
             return [
                 { title: this.$gettext('Favoriten'), type: 'favorite' },
-                { title: this.$gettext('Texte'), type: 'text' },
-                { title: this.$gettext('Multimedia'), type: 'multimedia' },
-                { title: this.$gettext('Interaktion'), type: 'interaction' },
-                { title: this.$gettext('Gestaltung'), type: 'layout' },
-                { title: this.$gettext('Externe Inhalte'), type: 'external' },
-                { title: this.$gettext('Biografie'), type: 'biography' },
+                ..._.sortBy(this.categories, ['title']),
             ];
         },
         toolContentStyle() {
@@ -215,21 +221,6 @@ export default {
                 return false;
             });
         },
-        selectCategory(type) {
-            if (this.currentFilterCategory !== type) {
-                this.currentFilterCategory = type;
-            } else {
-                this.resetCategory();
-            }
-        },
-        resetCategory() {
-            this.currentFilterCategory = '';
-            if (!this.searchInput) {
-                this.filteredBlockTypes = this.blockTypes;
-            } else {
-                this.loadSearch();
-            }
-        },
         resetSearch() {
             this.filteredBlockTypes = this.blockTypes;
             this.searchInput = '';
@@ -301,9 +292,15 @@ export default {
                 }
             }
         },
-        currentFilterCategory(newValue) {
+        currentFilterCategory(newValue, oldValue) {
             if (newValue) {
                 this.loadSearch();
+            } else {
+                if (!this.searchInput) {
+                    this.filteredBlockTypes = this.blockTypes;
+                } else {
+                    this.loadSearch();
+                }
             }
         },
     },

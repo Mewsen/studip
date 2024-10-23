@@ -149,10 +149,7 @@ abstract class Cache implements CacheItemPoolInterface
     {
         $items = [];
         foreach ($keys as $key) {
-            $item = $this->getItem($key);
-            if ($item instanceof Item) {
-                $items[] = $item;
-            }
+            $items[$key] = $this->getItem($key);
         }
         return $items;
     }

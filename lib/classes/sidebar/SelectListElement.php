@@ -30,6 +30,11 @@ class SelectListElement extends WidgetElement implements ArrayAccess
         $this->options = $options;
     }
 
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
     public function render()
     {
         $option_content = '';

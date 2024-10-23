@@ -29,6 +29,13 @@ class ChangePassword extends Command
             InputArgument::REQUIRED,
             'The username of the user whose password will be changed.'
         );
+        $this->addOption(
+            'confirmation',
+            null,
+            InputOption::VALUE_NEGATABLE,
+            'Enter password twice to confirm it',
+            true
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -41,17 +48,8 @@ class ChangePassword extends Command
             return Command::FAILURE;
         }
 
-        $helper = $this->getHelper('question');
-
-        $question = new Question('New password: ', '');
-        $question->setHidden(true);
-        $password = $helper->ask($input, $output, $question);
-
-        $question2 = new Question('Re-type password: ', '');
-        $question2->setHidden(true);
-        $password2 = $helper->ask($input, $output, $question2);
-
-        $status = $this->changePassword($user, $password, $password2);
+        $passwords = $this->askPassword($input, $output);
+        $status = $this->changePassword($user, ...$passwords);
         if (isset($status)) {
             $output->writeln('<error>' . $status . '</error>');
 
@@ -59,6 +57,24 @@ class ChangePassword extends Command
         }
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * @return array{string,string} a pair of strings containing the password and its confirmation
+     */
+    private function askPassword(InputInterface $input, OutputInterface $output): array
+    {
+        $helper = $this->getHelper('question');
+
+        $question = new Question('New password: ', '');
+        $question->setHidden(true);
+        $question2 = new Question('Re-type password: ', '');
+        $question2->setHidden(true);
+
+        $password = $helper->ask($input, $output, $question);
+        $password2 = $input->getOption('confirmation') ? $helper->ask($input, $output, $question2) : $password;
+
+        return [$password, $password2];
     }
 
     private function changePassword(\User $user, string $password, string $password2): ?string
@@ -87,8 +103,6 @@ class ChangePassword extends Command
         if (!$changed) {
             return 'The password could not be set.';
         }
-
-        StudipLog::USER_NEWPWD($user->id, null, 'Passwort neu gesetzt', null, $user->id);
 
         return null;
     }
