@@ -24,7 +24,7 @@ final class Plugin extends Command
         \AdministrationPlugin::class,
         \DetailspagePlugin::class,
         \ExternPagePlugin::class,
-        \FileSystemPlugin::class,
+        \FilesystemPlugin::class,
         \FileUploadHook::class,
         \ForumModule::class,
         \HomepagePlugin::class,
@@ -369,6 +369,6 @@ final class Plugin extends Command
             return [$controllers => ['index']];
         }
 
-        return $controllers;
+        return $controllers ?: [];
     }
 }
