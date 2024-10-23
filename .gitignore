@@ -50,3 +50,6 @@ playwright-report/*
 .idea
 /config/oauth2/*.key
 /config/oauth2/encryption_key.php
+
+*storybook.log
+storybook-static

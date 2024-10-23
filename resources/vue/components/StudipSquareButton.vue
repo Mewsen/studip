@@ -1,13 +1,17 @@
 <template>
     <button class="square-button" @click="$emit('click')">
-        <studip-icon :shape="icon" :size="50" />
+        <StudipIcon :shape="icon" :size="50" />
         <span>{{ title }}</span>
     </button>
 </template>
 
 <script>
+import StudipIcon from './StudipIcon.vue';
 export default {
-    name: 'studip-square-button',
+    name: 'StudipSquareButton',
+    components: {
+        StudipIcon
+    },
     props: {
         icon: {
             type: String,
