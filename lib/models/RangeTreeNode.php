@@ -132,7 +132,8 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
                 'semester' => $semester_id
             ];
         } else {
-            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)";
+            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)
+                  WHERE 1";
             $parameters = [];
         }
 
@@ -175,16 +176,18 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
     ): array
     {
         $query = "SELECT DISTINCT s.* FROM `seminar_inst` i";
+        $order_by = [];
 
         if ($semester_id !== 'all') {
             $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)
                   LEFT JOIN `semester_courses` sc ON (i.`seminar_id` = sc.`course_id`)
-                  WHERE sc.`semester_id` = :semester";
-            $parameters = [
-                'semester' => $semester_id
-            ];
+                  LEFT JOIN `semester_data` sd USING (`semester_id`)
+                  WHERE sc.`semester_id` = :semester)";
+            $parameters = ['semester' => $semester_id];
+            $order_by[] = 'sd.`beginn`';
         } else {
-            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)";
+            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)
+                  WHERE 1";
             $parameters = [];
         }
 
@@ -226,10 +229,11 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
         }
 
         if (Config::get()->IMPORTANT_SEMNUMBER) {
-            $query .= " ORDER BY s.`start_time`, s.`VeranstaltungsNummer`, s.`Name`";
-        } else {
-            $query .= " ORDER BY s.`start_time`, s.`Name`";
+            $order_by[] = 's.`VeranstaltungsNummer`';
         }
+        $order_by[] = 's.`Name`';
+
+        $query .= " ORDER BY " . implode(', ', $order_by);
 
         return DBManager::get()->fetchAll($query, $parameters, 'Course::buildExisting');
     }

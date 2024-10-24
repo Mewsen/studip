@@ -516,7 +516,8 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
                 'semester' => $semester_id
             ];
         } else {
-            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = t.`seminar_id`)";
+            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = t.`seminar_id`)
+                  WHERE 1";
             $parameters = [];
         }
 
@@ -557,16 +558,18 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
     ): array
     {
         $query = "SELECT DISTINCT s.* FROM `seminar_sem_tree` t";
+        $order_by = [];
 
         if ($semester_id !== 'all') {
             $query .= " JOIN `seminare` s ON (s.`Seminar_id` = t.`seminar_id`)
                   LEFT JOIN `semester_courses` sc ON (t.`seminar_id` = sc.`course_id`)
+                  LEFT JOIN `semester_data` sd USING (`semester_id`)
                   WHERE sc.`semester_id` = :semester";
-            $parameters = [
-                'semester' => $semester_id
-            ];
+            $parameters = ['semester' => $semester_id];
+            $order_by = 'sd.`beginn`';
         } else {
-            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = t.`seminar_id`)";
+            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = t.`seminar_id`)
+                  WHERE 1";
             $parameters = [];
         }
 
@@ -606,10 +609,11 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
         }
 
         if (Config::get()->IMPORTANT_SEMNUMBER) {
-            $query .= " ORDER BY s.`start_time`, s.`VeranstaltungsNummer`, s.`Name`";
-        } else {
-            $query .= " ORDER BY s.`start_time`, s.`Name`";
+            $order_by[] = 's.`VeranstaltungsNummer`';
         }
+        $order_by[] = 's.`Name`';
+
+        $query .= " ORDER BY " . implode(', ', $order_by);
 
         return DBManager::get()->fetchAll($query, $parameters, 'Course::buildExisting');
     }
