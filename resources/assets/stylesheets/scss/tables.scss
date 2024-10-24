@@ -488,6 +488,7 @@ table.default {
         padding: 0 5px 5px 5px;
         color: var(--headings-color);
         font-size: $font-size-caption;
+        line-height: $font-size-caption;
         text-align: left;
 
         &.nowrap {
@@ -636,7 +637,7 @@ table.default {
             margin-bottom: 5px;
 
             img.text-bottom {
-                vertical-align: bottom;
+                vertical-align: middle;
             }
         }
 

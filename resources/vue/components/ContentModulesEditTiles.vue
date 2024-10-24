@@ -193,7 +193,6 @@ export default {
     flex-direction: row;
     background-color: var(--white);
     border-left: 1px solid var(--dark-gray-color-60);
-    margin: 2px 0;
 
     &.visibility-visible {
         border-left-color: var(--green);
