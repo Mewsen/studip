@@ -164,7 +164,7 @@ class Semester extends SimpleORMap
     public static function findAllVisible($with_before_first = true): array
     {
         return array_values(
-            array_filter(self::getAllAsArray(), function ($semester, $key) use($with_before_first) {
+            array_filter(self::getAllAsArray($with_before_first), function ($semester, $key) use($with_before_first) {
                 return $GLOBALS['perm']->have_perm('admin') || !empty($semester['visible']) || ((int)$key === 0 && $with_before_first);
             }, ARRAY_FILTER_USE_BOTH)
         );
