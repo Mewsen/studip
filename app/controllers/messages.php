@@ -552,6 +552,7 @@ class MessagesController extends AuthenticatedController {
                     perms
                   FROM auth_user_md5
                   LEFT JOIN user_info USING (user_id)
+                  LEFT JOIN user_visibility USING (user_id)
                   WHERE (
                       username LIKE :input
                       OR CONCAT(Vorname, ' ', Nachname) LIKE :input
