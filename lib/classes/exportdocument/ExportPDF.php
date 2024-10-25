@@ -319,21 +319,19 @@ class ExportPDF extends TCPDF implements ExportDocument
                 } catch (Exception $e) {
                     $convurl = '';
                 }
-            } else if (mb_stripos($url, 'dispatch.php/document/download') !== false) {
-                if (preg_match('#([a-f0-9]{32})#', $url, $matches)) {
-                    $file_ref = FileRef::find($matches[1]);
-                    $folder = $file_ref->folder->getTypedFolder();
-                    if($folder->isFileDownloadable($file_ref->id, $GLOBALS['user']->id)) {
-                        $convurl = $file_ref->file->getPath();
-                    }
-                }
-            } else if (mb_stripos($url, 'download') !== false
-                    || mb_stripos($url, 'sendfile.php') !== false) {
+            } elseif (
+                mb_stripos($url, 'dispatch.php/document/download') !== false
+                || mb_stripos($url, 'download') !== false
+                || mb_stripos($url, 'sendfile.php') !== false
+            ) {
                 //// get file id
                 if (preg_match('#([a-f0-9]{32})#', $url, $matches)) {
                     $file_ref = FileRef::find($matches[1]);
-                    $folder = $file_ref->folder->getTypedFolder();
-                    if($folder->isFileDownloadable($file_ref->id, $GLOBALS['user']->id)) {
+                    $folder = isset($file_ref->folder) ? $file_ref->folder->getTypedFolder() : null;
+                    if (
+                        isset($folder)
+                        && $folder->isFileDownloadable($file_ref->id, $GLOBALS['user']->id)
+                    ) {
                         $convurl = $file_ref->file->getPath();
                     } else {
                         $convurl = Assets::image_path('messagebox/exception.png');
