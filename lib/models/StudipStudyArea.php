@@ -566,7 +566,7 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
                   LEFT JOIN `semester_data` sd USING (`semester_id`)
                   WHERE sc.`semester_id` = :semester";
             $parameters = ['semester' => $semester_id];
-            $order_by = 'sd.`beginn`';
+            $order_by[] = 'sd.`beginn`';
         } else {
             $query .= " JOIN `seminare` s ON (s.`Seminar_id` = t.`seminar_id`)
                   WHERE 1";
