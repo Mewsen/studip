@@ -237,7 +237,6 @@ class SimpleORMapCollection extends SimpleCollection
      */
     public function merge(SimpleCollection $a_collection, string $mode = 'ignore')
     {
-        $mode = func_get_arg(1);
         foreach ($a_collection as $element) {
             try {
                 /**
