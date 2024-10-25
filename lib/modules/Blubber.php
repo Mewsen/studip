@@ -12,7 +12,7 @@
  * Class Blubber - the Blubber-plugin
  * This is only used to manage blubber within a course.
  */
-class Blubber extends CorePlugin implements StudipModule
+class Blubber extends CorePlugin implements StudipModuleExtended
 {
     /**
      * Returns a navigation for the tab displayed in the course.
@@ -100,7 +100,7 @@ class Blubber extends CorePlugin implements StudipModule
         return $icon;
     }
 
-    public function getManyIconNavigation($course_ids, $visits, $user_id = null)
+    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
     {
         $user_id || $user_id = $GLOBALS['user']->id;
         $threshold = object_get_visit_threshold();
@@ -216,5 +216,10 @@ class Blubber extends CorePlugin implements StudipModule
                 ]
             ]
         ];
+    }
+
+    public function initializeUpdateObserver()
+    {
+        // TODO: Implement initializeUpdateObserver() method.
     }
 }

@@ -9,7 +9,7 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreScm extends CorePlugin implements StudipModule
+class CoreScm extends CorePlugin implements StudipModuleExtended
 {
     /**
      * {@inheritdoc}
@@ -80,13 +80,12 @@ class CoreScm extends CorePlugin implements StudipModule
         return $nav;
     }
 
-
-    public function getManyIconNavigation($course_ids, $visits, $user_id)
+    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
     {
         if (!Config::get()->SCM_ENABLE) {
             return [];
         }
-        $navs = [];
+        $navs = array_fill_keys($course_ids, null);
         $sql = "SELECT scm_id, range_id,
                   SUM(IF(content != '', 1, 0)) AS count,
                   SUM(IF((chdate > IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold) AND scm.user_id !=:user_id), IF(content != '', 1, 0), NULL)) AS neue
@@ -105,7 +104,7 @@ class CoreScm extends CorePlugin implements StudipModule
         ]);
 
         if (empty($results)) {
-            return [];
+            return $navs;
         }
 
         $entries = [];
@@ -230,5 +229,10 @@ class CoreScm extends CorePlugin implements StudipModule
     {
         // TODO: Implement getInfoTemplate() method.
         return null;
+    }
+
+    public function initializeUpdateObserver()
+    {
+        // TODO: Implement initializeUpdateObserver() method.
     }
 }

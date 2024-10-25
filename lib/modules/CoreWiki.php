@@ -9,7 +9,7 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreWiki extends CorePlugin implements StudipModule
+class CoreWiki extends CorePlugin implements StudipModuleExtended
 {
     /**
      * {@inheritdoc}
@@ -102,7 +102,7 @@ class CoreWiki extends CorePlugin implements StudipModule
         return $nav;
     }
 
-    public function getManyIconNavigation($course_ids, $visits, $user_id)
+    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
     {
         if (!Config::get()->WIKI_ENABLE) {
             return [];
@@ -136,11 +136,11 @@ class CoreWiki extends CorePlugin implements StudipModule
             ':plugin_id' => $this->getPluginId(),
             ':threshold' => object_get_visit_threshold(),
         ]);
-        if (empty($results)) {
-            return [];
-        }
 
         $navs = array_fill_keys($course_ids, null);
+        if (empty($results)) {
+            return $navs;
+        }
         foreach ($results as $result) {
             $nav = new Navigation(_('Wiki'));
             if ($result['neue']) {
@@ -283,4 +283,8 @@ class CoreWiki extends CorePlugin implements StudipModule
         return $root;
     }
 
+    public function initializeUpdateObserver()
+    {
+        // TODO: Implement initializeUpdateObserver() method.
+    }
 }

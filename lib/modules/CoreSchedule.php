@@ -9,7 +9,7 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreSchedule extends CorePlugin implements StudipModule
+class CoreSchedule extends CorePlugin implements StudipModuleExtended
 {
     /**
      * {@inheritdoc}
@@ -65,7 +65,7 @@ class CoreSchedule extends CorePlugin implements StudipModule
         return $nav;
     }
 
-    public function getManyIconNavigation($course_ids, $visits, $user_id)
+    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
     {
         $query = "SELECT termine.range_id,
                     COUNT(termin_id) AS count,
@@ -180,5 +180,10 @@ class CoreSchedule extends CorePlugin implements StudipModule
     public function isActivatableForContext(Range $context)
     {
         return $context->getRangeType() === 'course';
+    }
+
+    public function initializeUpdateObserver()
+    {
+        // TODO: Implement initializeUpdateObserver() method.
     }
 }

@@ -487,7 +487,6 @@ class MyRealmModel
         }
         // -- 2. Fetch the Navigation per StudipModule
         $navigation = [];
-        // TODO check if call can be removed because all plugins fetch it themselves anyway, they basically only need threshold
         $visits = get_objects_visits($all_course_ids, 0, null, null, array_keys($activated_tools));
         $cache = StudipCacheFactory::getCache();
         foreach ($activated_tools as $plugin_id => $plugin_data) {
@@ -498,7 +497,7 @@ class MyRealmModel
             if ($plugin_data['studip_module'] === 'vote') {
                 //$navigation[$plugin_id] = self::checkVote($my_obj_values, $user_id, $object_id);
             } elseif ($c_ids = $plugin_data['courses']) {
-                $cache_locs = array_map(fn ($c_id) => StudipModule::ICON_NAV_CACHE_PATH . "$user_id/$plugin_id/$c_id", $c_ids);
+                $cache_locs = array_map(fn ($c_id) => StudipModuleExtended::ICON_NAV_CACHE_PATH . "$user_id/$plugin_id/$c_id", $c_ids);
                 $cached_navs = $cache->getItems($cache_locs);
                 $to_fetch = [];
                 foreach ($cached_navs as $key => $cached_item) {
@@ -510,10 +509,10 @@ class MyRealmModel
                     }
                 }
                 if ($to_fetch) {
-                    if (method_exists($plugin_data['studip_module'], 'getManyIconNavigation')) {
+                    if ($plugin_data['studip_module'] instanceof StudipModuleExtended) {
                         $fetched_navs = $plugin_data['studip_module']->getManyIconNavigation($to_fetch, $visits, $user_id);
                         foreach ($fetched_navs as $fetched_c_id => $fetched_nav) {
-                            $cache->write(StudipModule::ICON_NAV_CACHE_PATH . "$user_id/$plugin_id/$fetched_c_id", serialize($fetched_nav));
+                            $cache->write(StudipModuleExtended::ICON_NAV_CACHE_PATH . "$user_id/$plugin_id/$fetched_c_id", serialize($fetched_nav));
                             $navigation[$fetched_c_id][$plugin_id] = $fetched_nav;
                         }
                     } else {

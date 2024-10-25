@@ -9,7 +9,7 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreDocuments extends CorePlugin implements StudipModule, OERModule
+class CoreDocuments extends CorePlugin implements StudipModuleExtended, OERModule
 {
 
     /**
@@ -140,7 +140,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
         return $navigation;
     }
 
-    public function getManyIconNavigation($course_ids, $visits, $user_id)
+    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
     {
         // TODO extend for institute
         //$range_type = get_object_type($course_id, ['sem', 'inst']) === 'sem' ? 'course' : 'institute';
@@ -252,5 +252,10 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
     {
         // TODO: Implement getInfoTemplate() method.
         return null;
+    }
+
+    public function initializeUpdateObserver()
+    {
+        // TODO: Implement initializeUpdateObserver() method.
     }
 }

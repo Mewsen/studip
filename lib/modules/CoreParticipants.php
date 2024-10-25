@@ -9,7 +9,7 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreParticipants extends CorePlugin implements StudipModule
+class CoreParticipants extends CorePlugin implements StudipModuleExtended
 {
     /**
      * {@inheritdoc}
@@ -122,10 +122,11 @@ class CoreParticipants extends CorePlugin implements StudipModule
     }
 
 
-    public function getManyIconNavigation($course_ids, $visits, $user_id)
+    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
     {
+        $navs = array_fill_keys($course_ids, null);
         if ($user_id === 'nobody') {
-            return [];
+            return $navs;
         }
 
 
@@ -142,7 +143,6 @@ class CoreParticipants extends CorePlugin implements StudipModule
         });
 
         $courses = Course::findMany($course_ids);
-        $navs = [];
         $urls = [];
         foreach ($courses as $course) {
             assert($course instanceof Course);
@@ -348,5 +348,10 @@ class CoreParticipants extends CorePlugin implements StudipModule
     public function isActivatableForContext(Range $context)
     {
         return $context->getRangeType() === 'course';
+    }
+
+    public function initializeUpdateObserver()
+    {
+        // TODO: Implement initializeUpdateObserver() method.
     }
 }
