@@ -1906,17 +1906,25 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      */
     public function getDatesWithExdates($range_begin = 0, $range_end = 0)
     {
-        $dates = [];
-        if (($range_begin > 0) && ($range_end > 0) && ($range_end > $range_begin)) {
-            $ex_dates = $this->ex_dates->findBy('content', '', '<>')
-                          ->findBy('date', $range_begin, '>=')
-                          ->findBy('end_time', $range_end, '<=');
-            $dates = $this->dates->findBy('date', $range_begin, '>=')
-                          ->findBy('end_time', $range_end, '<=');
-            $dates->merge($ex_dates);
+        $dates = SimpleCollection::createFromArray([]);
+        if (
+            $range_begin > 0
+            && $range_end > 0
+            && $range_end > $range_begin
+        ) {
+            $dates->merge(
+                $this->dates->findBy('date', $range_begin, '>=')
+                     ->findBy('end_time', $range_end, '<=')
+            );
+
+            $dates->merge(
+                $this->ex_dates->findBy('content', '', '<>')
+                     ->findBy('date', $range_begin, '>=')
+                     ->findBy('end_time', $range_end, '<=')
+            );
         } else {
-            $dates = $this->ex_dates->findBy('content', '', '<>');
             $dates->merge($this->dates);
+            $dates->merge($this->ex_dates->findBy('content', '', '<>'));
         }
         $dates->uasort(function($a, $b) {
             return $a->date - $b->date
