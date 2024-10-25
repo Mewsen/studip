@@ -317,6 +317,7 @@ class Course_AdmissionController extends AuthenticatedController
         } else {
             $this->request = $request;
             $this->button_yes = 'change_admission_turnout_yes';
+            $this->button_no = 'change_admission_turnout_no';
             PageLayout::postInfo($question);
             $this->render_template('course/admission/_change_admission.php');
         }
@@ -405,6 +406,7 @@ class Course_AdmissionController extends AuthenticatedController
         } else {
             $this->request = ['change_course_set_unassign' => 1];
             $this->button_yes = 'change_course_set_unassign_yes';
+            $this->button_no = 'change_course_set_unassign_no';
             PageLayout::postInfo($question);
             $this->render_template('course/admission/_change_admission.php');
         }
