@@ -1,4 +1,16 @@
-<? $modulDeskriptor = $modul->getDeskriptor($display_language ?? null); ?>
+<?php
+/**
+ * @var Modul $modul
+ * @var ModulDeskriptor $modulDeskriptor
+ * @var string $affect_id
+ * @var array $modulVerantwortung
+ * @var int $type
+ * @var int $nummer_modulteil
+ * @var array $note
+ * @var string $num_bezeichnung
+ */
+$modulDeskriptor = $modul->getDeskriptor($display_language ?? null);
+?>
 <table class="mvv-modul-details default nohover" data-mvv-id="<?= $modul->getId(); ?>" data-mvv-type="modul">
     <colgroup>
         <col width="30%">
@@ -9,26 +21,15 @@
             <th class="mvv-modul-details-head" data-mvv-field="mvv_modul.code"><?= htmlReady($modul->code) ?></th>
             <th class="mvv-modul-details-head" data-mvv-field="mvv_modul.kp" style="text-align: right;"><?= sprintf("%d CP", $modul->kp) ?></th>
         </tr>
-    <? if (!empty($show_synopse) || $modul->fassung_nr): ?>
+    <? if ($modul->fassung_nr): ?>
         <tr>
             <th colspan="2" style="font-weight: normal;">
-                <? if ($show_synopse) : ?>
-                <?=
-                sprintf(_('In der Fassung des <b>%s</b>. Beschlusses vom <b>%s</b> (<b>%s</b>) / Version <b>%s</b>.'),
-                    '<span data-mvv-field="mvv_modul.fassung_nr">' . htmlReady($modul->fassung_nr) . '</span>',
-                    '<span data-mvv-field="mvv_modul.beschlussdatum">' . date('d.m.Y', $modul->beschlussdatum) . '</span>',
-                    '<span data-mvv-field="mvv_modul.fassung_typ">' . htmlReady($GLOBALS['MVV_MODUL']['FASSUNG_TYP'][$modul->fassung_typ]['name']) . '</span>',
-                    '<span data-mvv-field="mvv_modul.version">' . htmlReady($modul->version) . '</span>'
-                )
-                ?>
-            <? elseif ($modul->fassung_nr) : ?>
                 <?=
                 sprintf(_('In der Fassung des <b>%s</b>. Beschlusses vom <b>%s</b>.'),
                     '<span data-mvv-field="mvv_modul.fassung_nr">' . htmlReady($modul->fassung_nr) . '</span>',
                     '<span data-mvv-field="mvv_modul.beschlussdatum">' . date('d.m.Y', $modul->beschlussdatum) . '</span>'
                 )
                 ?>
-                <? endif; ?>
             </th>
         </tr>
     <? endif; ?>
@@ -152,9 +153,9 @@
         </tr>
         <? endif; ?>
         <tr>
-            <td><strong><?= ngettext('Unterrichtssprache', 'Unterrichtsprachen', sizeof($modul->languages)) ?></strong></td>
+            <td><strong><?= ngettext('Unterrichtssprache', 'Unterrichtsprachen', count($modul->languages)) ?></strong></td>
             <td data-mvv-field="mvv_modul_language">
-                <?= htmlReady(implode(', ', $modul->languages->map(function ($m) { return $m->getDisplayName(); }))); ?>
+                <?= htmlReady(implode(', ', $modul->languages->map(function (ModulLanguage $m) { return $m->getDisplayName(); }))); ?>
             </td>
         </tr>
         <tr>
