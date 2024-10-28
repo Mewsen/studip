@@ -50,20 +50,21 @@ class Fach extends ModuleManagementModelTreeItem implements PrivacyObject
             'on_delete' => 'delete'
         ];
 
-        $config['additional_fields']['count_abschluesse']['get'] =
-            function($fach) { return $fach->count_abschluesse; };
-        $config['additional_fields']['count_abschluesse']['set'] = false;
-        $config['additional_fields']['count_user']['get'] =
-            function($fach) { return $fach->count_user; };
-        $config['additional_fields']['count_user']['set'] = false;
-        $config['additional_fields']['count_sem']['get'] =
-            function($fach) { return $fach->count_sem; };
-        $config['additional_fields']['count_sem']['set'] = false;
-        $config['additional_fields']['count_stgteile']['get'] =
-            function($fach) { return $fach->count_stgteile; };
-        $config['additional_fields']['count_stgteile']['set'] = false;
-        $config['additional_fields']['count_module']['get'] =
-            function($fach) { return $fach->count_module; };
+        $config['additional_fields']['count_abschluesse']['get'] = function ($fach) {
+            return $fach->count_abschluesse;
+        };
+        $config['additional_fields']['count_user']['get'] = function ($fach) {
+            return $fach->count_user;
+        };
+        $config['additional_fields']['count_sem']['get'] = function ($fach) {
+            return $fach->count_sem;
+        };
+        $config['additional_fields']['count_stgteile']['get'] = function ($fach) {
+            return $fach->count_stgteile;
+        };
+        $config['additional_fields']['count_module']['get'] = function ($fach) {
+            return $fach->count_module;
+        };
 
         $config['i18n_fields']['name'] = true;
         $config['i18n_fields']['name_kurz'] = true;

@@ -98,7 +98,6 @@ class Block extends \SimpleORMap implements \PrivacyObject
             'get' => function ($block) {
                 return BlockTypes\BlockType::factory($block);
             },
-            'set' => false,
         ];
 
         $config['additional_fields']['files'] = [
@@ -238,6 +237,6 @@ class Block extends \SimpleORMap implements \PrivacyObject
         if ($blocks) {
             $storage->addTabularData(_('Courseware Blöcke'), 'cw_blocks', $blocks);
         }
-        
+
     }
 }

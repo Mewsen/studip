@@ -97,14 +97,15 @@ class Modul extends ModuleManagementModelTreeItem
             'on_store' => 'store'
         ];
 
-        $config['additional_fields']['count_modulteile']['get'] =
-                function ($modul) { return $modul->count_modulteile; };
-        $config['additional_fields']['count_modulteile']['set'] = false;
-        $config['additional_fields']['languagesofinstruction']['get'] =
-                function ($modul) { return $modul->languages; };
-        $config['additional_fields']['languagesofinstruction']['set'] = false;
-        $config['additional_fields']['display_name']['get'] =
-                function ($modul) { return $modul->getDisplayName(); };
+        $config['additional_fields']['count_modulteile']['get'] = function ($modul) {
+            return $modul->count_modulteile;
+        };
+        $config['additional_fields']['languagesofinstruction']['get'] = function ($modul) {
+            return $modul->languages;
+        };
+        $config['additional_fields']['display_name']['get'] = function ($modul) {
+            return $modul->getDisplayName();
+        };
 
         $config['alias_fields']['flexnow_id'] = 'flexnow_modul';
 

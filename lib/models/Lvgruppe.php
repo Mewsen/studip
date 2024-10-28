@@ -39,18 +39,18 @@ class Lvgruppe extends ModuleManagementModelTreeItem
             'on_store' => 'store'
         ];
 
-        $config['additional_fields']['count_seminare']['get'] =
-            function($lvgruppe) { return $lvgruppe->count_seminare; };
-        $config['additional_fields']['count_seminare']['set'] = false;
-        $config['additional_fields']['count_archiv']['get'] =
-            function($lvgruppe) { return $lvgruppe->count_archiv; };
-        $config['additional_fields']['count_archiv']['set'] = false;
-        $config['additional_fields']['count_modulteile']['get'] =
-            function($lvgruppe) { return $lvgruppe->count_modulteile; };
-        $config['additional_fields']['count_modulteile']['set'] = false;
-        $config['additional_fields']['count_semester']['get'] =
-            function($lvgruppe) { return $lvgruppe->count_semester; };
-        $config['additional_fields']['count_semester']['set'] = false;
+        $config['additional_fields']['count_seminare']['get'] = function ($lvgruppe) {
+            return $lvgruppe->count_seminare;
+        };
+        $config['additional_fields']['count_archiv']['get'] = function ($lvgruppe) {
+            return $lvgruppe->count_archiv;
+        };
+        $config['additional_fields']['count_modulteile']['get'] = function ($lvgruppe) {
+            return $lvgruppe->count_modulteile;
+        };
+        $config['additional_fields']['count_semester']['get'] = function ($lvgruppe) {
+            return $lvgruppe->count_semester;
+        };
 
         $config['i18n_fields']['alttext'] = true;
 

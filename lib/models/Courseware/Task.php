@@ -76,7 +76,6 @@ class Task extends \SimpleORMap
 
         $config['additional_fields']['solver'] = [
             'get' => 'getSolver',
-            'set' => false,
         ];
 
         parent::configure($config);

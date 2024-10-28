@@ -47,9 +47,9 @@ class StgteilAbschnitt extends ModuleManagementModelTreeItem
             'on_store' => 'store'
         ];
 
-        $config['additional_fields']['count_module']['get'] =
-            function($fach) { return $fach->count_module; };
-        $config['additional_fields']['count_module']['set'] = false;
+        $config['additional_fields']['count_module']['get'] = function ($fach) {
+            return $fach->count_module;
+        };
 
         $config['i18n_fields']['name'] = true;
         $config['i18n_fields']['kommentar'] = true;
