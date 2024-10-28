@@ -149,6 +149,7 @@
                                 class="cw-container-wrapper"
                                 :class="{
                                     'cw-container-wrapper-consume': consumeMode,
+                                    'cw-colspan-full-hd': fullHD,
                                 }"
                             >
                                 <component
@@ -168,6 +169,7 @@
                                 class="cw-container-wrapper"
                                 :class="{
                                     'cw-container-wrapper-consume': consumeMode,
+                                    'cw-colspan-full-hd': fullHD,
                                 }"
                             >
                                 <div v-if="canEdit" class="cw-companion-box-wrapper">
@@ -786,6 +788,7 @@ export default {
             showRatingPopup: false,
             ratingPopupFeedbackElement: null,
             storing: false,
+            fullHD: false
         };
     },
 
@@ -853,6 +856,8 @@ export default {
 
             currentUser: 'currentUser',
             processing: 'processing',
+
+            fullHDEnabled: 'fullHDEnabled'
         }),
 
         currentId() {
@@ -2021,6 +2026,13 @@ export default {
         },
         consumeMode(newState) {
             this.consumModeTrap = newState;
+        },
+        fullHDEnabled(newState) {
+            if (newState) {
+                this.fullHD = true;
+            } else {
+                this.fullHD = false;
+            }
         },
     },
 

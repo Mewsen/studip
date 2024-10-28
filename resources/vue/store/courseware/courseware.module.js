@@ -68,6 +68,8 @@ const getDefaultState = () => {
         hideEditLayout: false,
         feedbackSettings: null,
         processing: false,
+
+        fullHDEnabled: false
     };
 };
 
@@ -331,6 +333,9 @@ const getters = {
     canEditFeedbackElement(state, getters) {
         return getters.feedbackSettings?.adminPerm ?? false;
     },
+    fullHDEnabled(state) {
+        return state.fullHDEnabled;
+    }
 };
 
 export const state = { ...initialState };
@@ -1517,6 +1522,9 @@ export const actions = {
     setFeedbackSettings(context, feedbackSettings) {
         context.commit('setFeedbackSettings', feedbackSettings);
     },
+    toggleFullHD({ commit, rootGetters }) {
+        commit('setFullHD', !rootGetters['fullHDEnabled']);
+    }
 };
 
 /* eslint no-param-reassign: ["error", { "props": false }] */
@@ -1728,6 +1736,9 @@ export const mutations = {
     },
     setProcessing(state, processing) {
         state.processing = processing;
+    },
+    setFullHD(state, enabled) {
+        state.fullHDEnabled = enabled;
     }
 };
 

@@ -10,6 +10,32 @@
     }
 }
 
+#content-wrapper.cw-colspan-full-hd {
+    max-width: 1920px;
+
+    .cw-structural-element .cw-container-wrapper {
+        max-width: 1920px;
+
+        &.cw-container-wrapper-edit {
+            max-width: $max-content-width;
+        }
+    }
+}
+
+.cw-colspan-full-hd {
+    .cw-root-content.cw-colspan-full-hd {
+        max-width: unset;
+    }
+}
+
+.cw-structural-element .cw-container-wrapper.cw-colspan-full-hd {
+    max-width: 1920px;
+
+    >.cw-container.cw-container-item.cw-container-colspan-full.cw-container-list {
+        max-width: unset;
+    }
+}
+
 .cw-structural-element {
     &.cw-structural-element-consumemode {
         position: fixed;

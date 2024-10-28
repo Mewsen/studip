@@ -16,6 +16,10 @@
             margin: auto;
         }
     }
+    &.cw-container-colspan-full-hd {
+        max-width: 1920px;
+        width: 100%;
+    }
 
     .cw-container-header {
         background-color: var(--content-color-20);

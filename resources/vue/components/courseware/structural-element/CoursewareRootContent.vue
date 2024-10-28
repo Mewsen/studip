@@ -15,7 +15,7 @@
         </courseware-companion-box>
     </div>
     <div v-else class="cw-root-content-wrapper">
-        <div class="cw-root-content" :class="['cw-root-content-' + rootLayout]">
+        <div class="cw-root-content" :class="['cw-root-content-' + rootLayout, isFullHD ? 'cw-colspan-full-hd' : '']">
             <div class="cw-root-content-img" :style="bgImage">
                 <section class="cw-root-content-description" :style="bgColor">
                     <div class="cw-root-content-description-img" :src="imageURL" :style="image"></div>
@@ -98,6 +98,7 @@ export default {
         return {
             identImage: '',
             identBgImage: '',
+            isFullHD: false,
         };
     },
     computed: {
@@ -106,6 +107,8 @@ export default {
             childrenById: 'courseware-structure/children',
             structuralElementById: 'courseware-structural-elements/byId',
             context: 'context',
+            fullHDEnabled: 'fullHDEnabled',
+            hideEditLayout: 'hideEditLayout',
         }),
         imageURL() {
             return this.structuralElement.relationships?.image?.meta?.['download-url'];
@@ -175,6 +178,15 @@ export default {
             this.showElementAddDialog(true);
         },
     },
+    watch: {
+        hideEditLayout(newState) {
+            if (this.fullHDEnabled && newState) {
+                this.isFullHD = true;
+            } else {
+                this.isFullHD = false;
+            }
+        }
+    }
 };
 </script>
 <style scoped lang="scss">

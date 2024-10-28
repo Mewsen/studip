@@ -231,6 +231,7 @@ abstract class ContainerType
     public function getContainerWidth(): string
     {
         $width = [
+            'full-hd' => _('Bildschirmbreite'),
             'full' => _('volle Breite'),
             'half' => _('halbe Breite'),
             'half-center' => _('halbe Breite (zentriert)'),
