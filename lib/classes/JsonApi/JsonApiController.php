@@ -418,6 +418,8 @@ class JsonApiController
 
     private function doesRequestHaveBody(Request $request): bool
     {
-        return in_array($request->getMethod(), ['POST', 'PATCH']);
+        return in_array($request->getMethod(), ['POST', 'PATCH'])
+            && $request->getBody()->isReadable()
+            && $request->getBody()->getSize() > 0;
     }
 }
