@@ -72,7 +72,6 @@ class Container extends \SimpleORMap implements \PrivacyObject
             'get' => function ($container) {
                 return ContainerTypes\ContainerType::factory($container);
             },
-            'set' => false,
         ];
 
         parent::configure($config);
@@ -183,7 +182,7 @@ class Container extends \SimpleORMap implements \PrivacyObject
         if ($containers) {
             $storage->addTabularData(_('Courseware Abschnitte'), 'cw_containers', $containers);
         }
-        
+
     }
 
     public static function createFromData(User $user, $data, StructuralElement $element): Container

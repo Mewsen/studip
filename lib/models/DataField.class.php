@@ -60,7 +60,6 @@ class DataField extends SimpleORMap implements PrivacyObject
                 }
                 return $institution;
             },
-            'set' => false,
         );
 
         $config['i18n_fields']['name'] = true;
