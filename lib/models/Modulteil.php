@@ -103,7 +103,6 @@ class Modulteil extends ModuleManagementModelTreeItem
         $config['additional_fields']['count_lvgruppen']['get'] = function ($mt) {
             return $mt->count_lvgruppen;
         };
-        $config['additional_fields']['count_lvgruppen']['set'] = false;
 
         parent::configure($config);
     }

@@ -32,12 +32,12 @@ class StgteilBezeichnung extends ModuleManagementModel
     {
         $config['db_table'] = 'mvv_stgteil_bez';
 
-        $config['additional_fields']['count_stgteile']['get'] =
-            function($stg_bez) { return $stg_bez->count_stgteile; };
-        $config['additional_fields']['count_stgteile']['set'] = false;
-        $config['additional_fields']['count_studiengaenge']['get'] =
-            function($stg_bez) { return $stg_bez->count_studiengaenge; };
-        $config['additional_fields']['count_studiengaenge']['set'] = false;
+        $config['additional_fields']['count_stgteile']['get'] = function ($stg_bez) {
+            return $stg_bez->count_stgteile;
+        };
+        $config['additional_fields']['count_studiengaenge']['get'] = function ($stg_bez) {
+            return $stg_bez->count_studiengaenge;
+        };
 
         $config['i18n_fields']['name'] = true;
         $config['i18n_fields']['name_kurz'] = true;

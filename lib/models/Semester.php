@@ -56,11 +56,9 @@ class Semester extends SimpleORMap
 
         $config['additional_fields']['absolute_seminars_count'] = [
             'get' => 'seminarCounter',
-            'set' => false,
         ];
         $config['additional_fields']['continuous_seminars_count'] = [
             'get' => 'seminarCounter',
-            'set' => false,
         ];
 
         $config['alias_fields']['token'] = 'semester_token';

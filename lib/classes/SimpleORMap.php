@@ -1543,7 +1543,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                  } else {
                      $ret = ($this->content[$field] = $value);
                  }
-             } elseif (isset($this->additional_fields()[$field]['set'])) {
+             } elseif (!empty($this->additional_fields()[$field]['set'])) {
                  if ($this->additional_fields()[$field]['set'] instanceof Closure) {
                      return call_user_func_array($this->additional_fields()[$field]['set'], [$this, $field, $value]);
                  } else {
