@@ -30,6 +30,7 @@
 class RangeTreeNode extends SimpleORMap implements StudipTreeNode
 {
     use StudipTreeNodeCachableTrait;
+    use StudipTreeNodeCourseTrait;
 
     protected static function configure($config = [])
     {
@@ -122,20 +123,17 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
      */
     public function countCourses($semester_id = '', $semclass = 0, $with_children = false): int
     {
-        $query = "SELECT COUNT(DISTINCT i.`seminar_id`) FROM `seminar_inst` i";
-
-        if ($semester_id !== 'all') {
-            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)
-                  LEFT JOIN `semester_courses` sc ON (i.`seminar_id` = sc.`course_id`)
-                  WHERE sc.`semester_id` = :semester";
-            $parameters = [
-                'semester' => $semester_id
-            ];
-        } else {
-            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)
-                  WHERE 1";
-            $parameters = [];
+        if (!$this->institute && !$with_children) {
+            return 0;
         }
+
+        [$condition, $parameters] = $this->getCoursesCondition(
+            'i',
+            $semester_id,
+            $semclass
+        );
+
+        $query = "SELECT COUNT(DISTINCT i.`seminar_id`) FROM `seminar_inst` i {$condition}";
 
         if ($with_children) {
             $query .= " AND i.`institut_id` IN (
@@ -147,24 +145,7 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
             $parameters['id'] = $this->studip_object_id;
         }
 
-        if (!$GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM)) {
-            $query .= " AND s.`visible` = 1";
-        }
-
-        if ($semclass !== 0) {
-            $query .= "  AND s.`status` IN (:types)";
-            $parameters['types'] = array_map(
-                function ($type) {
-                    return $type['id'];
-                },
-                array_filter(
-                    SemType::getTypes(),
-                    function ($t) use ($semclass) { return $t['class'] === $semclass; }
-                )
-            );
-        }
-
-        return !$this->institute && !$with_children ? 0 : DBManager::get()->fetchColumn($query, $parameters);
+        return DBManager::get()->fetchColumn($query, $parameters);
     }
 
     public function getCourses(
@@ -175,21 +156,15 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
         array $courses = []
     ): array
     {
-        $query = "SELECT DISTINCT s.* FROM `seminar_inst` i";
-        $order_by = [];
+        [$condition, $parameters, $order_by] = $this->getCoursesCondition(
+            'i',
+            $semester_id,
+            $semclass,
+            $searchterm,
+            $courses
+        );
 
-        if ($semester_id !== 'all') {
-            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)
-                  LEFT JOIN `semester_courses` sc ON (i.`seminar_id` = sc.`course_id`)
-                  LEFT JOIN `semester_data` sd USING (`semester_id`)
-                  WHERE sc.`semester_id` = :semester)";
-            $parameters = ['semester' => $semester_id];
-            $order_by[] = 'sd.`beginn`';
-        } else {
-            $query .= " JOIN `seminare` s ON (s.`Seminar_id` = i.`seminar_id`)
-                  WHERE 1";
-            $parameters = [];
-        }
+        $query = "SELECT DISTINCT s.* FROM `seminar_inst` AS i {$condition}";
 
         if ($with_children) {
             $query .= " AND i.`institut_id` IN (
@@ -200,38 +175,6 @@ class RangeTreeNode extends SimpleORMap implements StudipTreeNode
             $query .= " AND i.`institut_id` = :id";
             $parameters['id'] = $this->studip_object_id;
         }
-
-        if (!$GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM)) {
-            $query .= " AND s.`visible` = 1";
-        }
-
-        if ($semclass !== 0) {
-            $query .= "  AND s.`status` IN (:types)";
-            $parameters['types'] = array_map(
-                function ($type) {
-                    return $type['id'];
-                },
-                array_filter(
-                    SemType::getTypes(),
-                    function ($t) use ($semclass) { return $t['class'] === $semclass; }
-                )
-            );
-        }
-
-        if ($searchterm) {
-            $query .= " AND s.`Name` LIKE :searchterm";
-            $parameters['searchterm'] = '%' . trim($searchterm) . '%';
-        }
-
-        if ($courses) {
-            $query .= " AND t.`seminar_id` IN (:courses)";
-            $parameters['courses'] = $courses;
-        }
-
-        if (Config::get()->IMPORTANT_SEMNUMBER) {
-            $order_by[] = 's.`VeranstaltungsNummer`';
-        }
-        $order_by[] = 's.`Name`';
 
         $query .= " ORDER BY " . implode(', ', $order_by);
 
