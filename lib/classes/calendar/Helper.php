@@ -133,8 +133,8 @@ class Helper
         return new \Studip\Fullcalendar(
             _('Stundenplan'),
             [
-                'editable'    => false,
-                'selectable'  => false,
+                'editable'    => true,
+                'selectable'  => true,
                 'dialog_size' => 'auto',
                 'minTime'     => sprintf('%02u:00', $calendar_settings['start'] ?? 8),
                 'maxTime'     => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
@@ -165,6 +165,9 @@ class Helper
                             'full_semester_time_range' => false
                         ]
                     ]
+                ],
+                'studip_urls' => [
+                    'add' => \URLHelper::getURL('dispatch.php/calendar/schedule/entry/add')
                 ]
             ]
         );

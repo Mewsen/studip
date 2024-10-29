@@ -125,108 +125,14 @@ td.rahmen_table_row_odd {
     }
 }
 
-/* --- print-style for calendar api------------------------------------------ */
-#schedule {
-    width: 100%;
-    height: 100%;
-
-    #schedule_headings {
-        margin-left: 41pt;
-        background: none;
-    }
-
-    #schedule_data {
-        width: 100%;
-        table-layout: fixed;
-
-        thead td {
-            text-align: center;
-        }
-
-        th:first-child, td:first-child {
-            width: 40px;
-        }
-
-        td {
-            vertical-align: top;
-        }
-    }
-
-    div.schedule_entry {
-        position: absolute;
-        margin: 0;
-        padding: 0;
-        font-size: 11pt;
-        color: var(--black);
-
-        dl {
-            height: 100%;
-            margin: 0;
-            color: var(--black) ! important;
-            background-color: var(--white);
-            border: 1px solid var(--light-gray-color-60);
-            overflow: hidden;
-
-            dd {
-                margin: 0;
-                overflow: hidden;
-                word-wrap: break-word;
-            }
-
-            dt {
-                background-color: transparent ! important;
-            }
-
-            a:hover {
-                text-decoration: underline;
-            }
-        }
-    }
-
-    div.schedule_day {
-        border-left: 1pt solid var(--black);
-        position: relative;
-    }
-
-    div.schedule_hours {
-        border-top: 1px solid #ddd;
-        padding-bottom: 1px;
-    }
-
-    div.snatch {
-        position: absolute;
-        bottom: 4pt;
-        text-align: center;
-        width: 100%;
-        cursor: ns-resize;
-        padding-bottom: 2pt;
-    }
-
-    #new_entry {
-        position: absolute;
-        border: 2pt solid #E0E0F0;
-        width: 400pt;
-        height: 230pt;
-        background-color: #E8EEF7;
-        font-size: 12pt;
-    }
-
-    div.new_entry {
-        position: absolute;
-        left: 50%;
-        top: 180pt;
-        margin-left: -25%;
-        height: 320pt;
-        width: 50%;
-        font-size: 12pt;
-        background-color: #E8EEF7;
-        border: 2pt solid #E0E0F0;
-    }
-
-    div.schedule_marker {
-        border-bottom: 1px dotted #ddd;
-        border-top: 1px solid #ddd;
-        padding: 0;
+/* course date entries in the schedule need to be styled for print view: */
+.fc-event.schedule {
+    &.course-color-1, &.course-color-2, &.course-color-3, &.course-color-4,
+    &.course-color-5, &.course-color-6, &.course-color-7, &.course-color-8,
+    &.course-color-9 {
+        color: $black;
+        background-color: $white;
+        border-color: $black;
     }
 }
 
