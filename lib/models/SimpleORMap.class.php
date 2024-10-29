@@ -2343,7 +2343,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                 $order_options = (array) $options['order_by_php'];
                 $this->relations[$relation]->orderBy(
                     $options['order_by_php'][0],
-                    $options['order_by_php'][1] ?? SORT_LOCALE_STRING,
+                    $options['order_by_php'][1] ?? SORT_LOCALE_STRING
                 );
 
             }
