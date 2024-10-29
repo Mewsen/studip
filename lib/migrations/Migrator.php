@@ -202,6 +202,22 @@ class Migrator
             return;
         }
 
+        // Trigger update news as this is a new update run.
+        if (
+            !Config::get()->MIGRATION_START_VERSION
+            || Config::get()->MIGRATION_START_VERSION < StudipVersion::getStudipVersion(true)
+        ) {
+            if (isset(Config::get()->UPDATE_NEWS_SEEN)) {
+                Config::get()->store('UPDATE_NEWS_SEEN', false);
+            }
+            if (isset(Config::get()->MIGRATION_START_TIME)) {
+                Config::get()->store('MIGRATION_START_TIME', time());
+            }
+            if (isset(Config::get()->MIGRATION_START_VERSION)) {
+                Config::get()->store('MIGRATION_START_VERSION', StudipVersion::getStudipVersion(true));
+            }
+        }
+
         $this->log(
             'Currently at version %d. Now migrating %s to %d.',
             $this->schema_version->get($target_branch),
@@ -210,7 +226,7 @@ class Migrator
         );
 
         foreach ($migrations as $number => $migration) {
-            list($branch, $version) = $this->migrationBranchAndVersion($number);
+            [$branch, $version] = $this->migrationBranchAndVersion($number);
 
             $action = $this->isUp($branch) ? 'Migrating' : 'Reverting';
             $migration->announce("{$action} %s", $number);

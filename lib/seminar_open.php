@@ -213,6 +213,24 @@ if (!Request::isXhr() && $perm->have_perm('root')) {
     }
 }
 
+if (
+    Config::get()->MIGRATION_START_VERSION
+    && Config::get()->MIGRATION_START_VERSION < StudipVersion::getStudipVersion(true)
+    && !Config::get()->UPDATE_NEWS_SEEN
+) {
+    $message = MessageBox::info(
+        _('Sie haben ein Stud.IP-Update durchgeführt.'),
+        [
+            sprintf(
+                _('Zu den %sRelease-Notes%s'),
+                '<a class="link-intern" href="' . URLHelper::getLink('dispatch.php/root_assistant') . '" data-dialog>',
+                '</a>'
+            ),
+        ]
+    );
+    PageLayout::postMessage($message, 'release-notes');
+}
+
 if ($seminar_open_redirected) {
     startpage_redirect(UserConfig::get($user->id)->PERSONAL_STARTPAGE);
 }
