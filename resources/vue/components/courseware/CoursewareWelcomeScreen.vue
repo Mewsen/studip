@@ -72,7 +72,7 @@ export default {
             this.coursewareViewMode('edit');
             this.coursewareConsumeMode(false);
             this.companionSuccess({
-                info: this.$gettext('Das Elemente für Ihren ersten Inhalt wurde angelegt.'),
+                info: this.$gettext('Das Element für Ihren ersten Inhalt wurde angelegt.'),
             });
             const newBlock = this.lastCreatedBlocks;
             newContainer.attributes.payload.sections[0].blocks.push(newBlock.id);
