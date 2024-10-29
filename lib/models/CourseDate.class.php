@@ -57,11 +57,11 @@ class CourseDate extends SimpleORMap implements PrivacyObject
             'on_store'   => 'store'
         ];
         $config['has_and_belongs_to_many']['statusgruppen'] = [
-            'class_name' => Statusgruppen::class,
-            'thru_table' => 'termin_related_groups',
-            'order_by'   => 'ORDER BY position',
-            'on_delete'  => 'delete',
-            'on_store'   => 'store'
+            'class_name'   => Statusgruppen::class,
+            'thru_table'   => 'termin_related_groups',
+            'order_by_php' => ['position', SORT_NUMERIC],
+            'on_delete'    => 'delete',
+            'on_store'     => 'store'
         ];
         $config['has_and_belongs_to_many']['dozenten'] = [
             'class_name'  => User::class,
