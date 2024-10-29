@@ -786,6 +786,9 @@ export default {
             showRatingPopup: false,
             ratingPopupFeedbackElement: null,
             storing: false,
+
+            handleDebouncedScroll: null,
+            scrollHasBeenPerformed: false,
         };
     },
 
@@ -1968,7 +1971,70 @@ export default {
         submitFeedback() {
             this.showRatingPopup = false;
             this.companionSuccess({ info: this.$gettext('Feedback wurde abgegeben.') });
-        }
+        },
+
+        handleScroll() {
+            this.handleContainersScroll();
+        },
+
+        handleContainersScroll() {
+            let containerItems = document.querySelectorAll('.cw-container-item');
+            if (containerItems && containerItems?.length) {
+                let lastInView = null;
+                for (let container of containerItems) {
+                    const rect = container.getBoundingClientRect();
+                    let isInView = (
+                        rect.top >= 0 &&
+                        rect.left >= 0 &&
+                        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                    );
+                    if (isInView) {
+                        lastInView = container;
+                    }
+                }
+
+                if (lastInView) {
+                    let containerId = lastInView.getAttribute('id');
+                    this.addRemoveRouteContainerHash(containerId);
+                }
+            }
+        },
+
+        addRemoveRouteContainerHash(hash_id = null) {
+            let current_url = window.location.href;
+            let hash_list = current_url.split('#');
+            let last_hash = hash_list.pop();
+            if (last_hash && last_hash.includes('cw_container')) {
+                current_url = current_url.replace('#' + last_hash, '');
+            }
+            this.$router.hash = hash_id;
+            let new_href = current_url;
+            if (hash_id) {
+                new_href += '#' + hash_id;
+            }
+            window.history.replaceState({}, null, new_href);
+        },
+
+        scrollToContainerHash() {
+            this.$nextTick(() => {
+                if (!this.scrollHasBeenPerformed) {
+                    let current_url = window.location.href;
+                    let hash_list = current_url.split('#');
+                    let last_hash = hash_list.pop();
+                    if (last_hash && last_hash.includes('cw_container')) {
+                    let containerElement = document.getElementById(last_hash);
+                    if (containerElement) {
+                            containerElement.scrollIntoView({ behavior: 'smooth', block: "start", inline: "nearest" });
+                            this.scrollHasBeenPerformed = true;
+                            setTimeout(() => {
+                                this.addRemoveRouteContainerHash(last_hash);
+                            }, 250);
+                        }
+                    }
+                }
+            });
+        },
     },
     created() {
         this.pluginManager.registerComponentsLocally(this);
@@ -2009,6 +2075,7 @@ export default {
         },
         containers() {
             this.containerList = this.containers;
+            this.scrollToContainerHash();
         },
         containerList() {
             if (this.keyboardSelected) {
@@ -2029,5 +2096,17 @@ export default {
         containerComponents: ContainerComponents,
         coursewarePluginComponents: CoursewarePluginComponents,
     }),
+
+    mounted () {
+        this.handleDebouncedScroll = _.debounce(this.handleScroll, 250);
+        window.addEventListener('scroll', this.handleDebouncedScroll);
+    },
+
+    beforeDestroy() {
+        if (this.handleDebouncedScroll) {
+            window.removeEventListener('scroll', this.handleDebouncedScroll);
+        }
+        this.addRemoveRouteContainerHash();
+    },
 };
 </script>

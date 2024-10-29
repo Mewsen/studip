@@ -1,5 +1,6 @@
 <template>
     <div
+        :id="'cw_container_' + container.id"
         class="cw-container"
         :class="['cw-container-colspan-' + colSpan, showEditMode && canEdit ? 'cw-container-active' : '', containerClass]"
     >
