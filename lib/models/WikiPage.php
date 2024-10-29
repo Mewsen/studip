@@ -217,9 +217,12 @@ class WikiPage extends SimpleORMap implements PrivacyObject
         }
 
         $page = new WikiPage();
-        $page->content = _('Dieses Wiki ist noch leer.');
+        $page->setValue('content', _('Dieses Wiki ist noch leer.'));
         if ($page->isEditable()) {
-            $page->content .=  ' ' . _("Bearbeiten Sie es!\nNeue Seiten oder Links werden einfach durch Eingeben von [nop][[Wikinamen]][/nop] in doppelten eckigen Klammern angelegt.");
+            $page->setValue(
+                'content',
+                $page->getValue('content') .  ' ' . _("Bearbeiten Sie es!\nNeue Seiten oder Links werden einfach durch Eingeben von [nop][[Wikinamen]][/nop] in doppelten eckigen Klammern angelegt.")
+            );
         }
         return $page;
     }
