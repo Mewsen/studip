@@ -26,7 +26,7 @@
     <label for="wizard-start-time" class="required">
         <?= _('Semester') ?>
     </label>
-    <select name="semester_id" id="wizard-start-time" >
+    <select name="start_semester" id="wizard-start-time">
         <?php
         $default_semester = Semester::findDefault();
         if ($default_semester && empty($values['start_semester'])) {
