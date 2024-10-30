@@ -94,7 +94,6 @@
         </draggable>
         <tbody>
             <tr v-for="module in inactiveModules" :key="module.id" :class="getModuleCSSClasses(module)" v-cloak>
-                <td></td>
                 <td>
                     <input
                         type="checkbox"
