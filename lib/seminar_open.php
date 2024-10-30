@@ -214,7 +214,8 @@ if (!Request::isXhr() && $perm->have_perm('root')) {
 }
 
 if (
-    Config::get()->MIGRATION_START_VERSION
+    $GLOBALS['perm']->have_perm('root')
+    && Config::get()->MIGRATION_START_VERSION
     && Config::get()->MIGRATION_START_VERSION < StudipVersion::getStudipVersion(true)
     && !Config::get()->UPDATE_NEWS_SEEN
 ) {
