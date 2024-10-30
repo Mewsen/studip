@@ -210,7 +210,7 @@ const OER = {
                     }
 
                     document.addEventListener('click', (event) => {
-                        if (event.closest('.searchform') === null) {
+                        if (event.target.closest('.searchform') === null) {
                             this.hideFilterPanel();
                         }
                     })
