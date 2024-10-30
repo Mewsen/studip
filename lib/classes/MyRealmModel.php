@@ -488,7 +488,7 @@ class MyRealmModel
         // -- 2. Fetch the Navigation per StudipModule
         $navigation = [];
         $visits = get_objects_visits($all_course_ids, 0, null, null, array_keys($activated_tools));
-        $cache = StudipCacheFactory::getCache();
+        $cache = \Studip\Cache\Factory::getCache();
         foreach ($activated_tools as $plugin_id => $plugin_data) {
             if (!Config::get()->VOTE_ENABLE && $plugin_id === 'vote') {
                 continue;

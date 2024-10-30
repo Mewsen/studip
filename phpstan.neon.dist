@@ -21,3 +21,5 @@ parameters:
         -
             message: '#Unsafe usage of new static\(\)\.#'
             path: lib/classes/SimpleORMap.php
+    bootstrapFiles:
+        - lib/bootstrap-autoload.php
