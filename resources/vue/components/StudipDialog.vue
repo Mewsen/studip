@@ -120,12 +120,12 @@ export default {
     },
     props: {
         height: {
-            type: String,
-            default: '300'
+            type: [String, Number],
+            default: 300
         },
         width: {
-            type: String,
-            default: '450'
+            type: [String, Number],
+            default: 450
         },
         title: String,
         confirmText: String,
