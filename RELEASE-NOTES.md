@@ -6,6 +6,7 @@
 
 - Der Stud.IP-Cache ist nun kompatibel zu PSR-6. ([TIC #3701](https://gitlab.studip.de/studip/studip/-/issues/3701))
 - Das `User`-Model hat die Methode `hasPermissionLevel()` erhalten, um einfach abfragen zu können, ob eine Person einen bestimmten Berechtigungsstatus hat. ([Issue #3453](https://gitlab.studip.de/studip/studip/-/issues/3453))
+- In der Standort-Verwaltung können nun nicht nur Ferien sondern auch Feiertage konfiguriert werden. Dies erlaubt das Markieren von Feiertagen als gesetzliche Feiertage, da diese je nach Bundesland variieren können. ([Issue #2795](https://gitlab.studip.de/studip/studip/-/issues/2795))
 
 ## Breaking changes
 

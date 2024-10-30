@@ -35,7 +35,7 @@ class Admin_HolidaysController extends AuthenticatedController
             URLHelper::addLinkParam('filter', $this->filter);
         }
 
-        $this->setSidebar();
+        $this->setSidebar($action);
     }
 
     /**
@@ -123,13 +123,33 @@ class Admin_HolidaysController extends AuthenticatedController
         $this->redirect('admin/holidays');
     }
 
+    public function holidays_action(): void
+    {
+        $this->holidays = Holidays::getHolidays(true, true);
+        $this->customized = Config::get()->CUSTOMIZED_HOLIDAYS;
+    }
+
+    public function store_holidays_action(): void
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        Config::get()->store(
+            'CUSTOMIZED_HOLIDAYS',
+            Request::intArray('holidays')
+        );
+
+        PageLayout::postSuccess(_('Die Änderungen wurden gespeichert.'));
+
+        $this->redirect($this->holidaysURL());
+    }
+
     /**
      * Checks a string if it is a valid date and returns the according
      * unix timestamp if valid.
      *
      * @param string $name  Parameter name to extract from request
      * @param string $time Optional time segment
-     * @return mixed Unix timestamp or false if not valid
+     * @return int|false Unix timestamp or false if not valid
      */
     private function getTimeStamp($name, $time = '0:00:00')
     {
@@ -146,27 +166,46 @@ class Admin_HolidaysController extends AuthenticatedController
     /**
      * Adds the content to sidebar
      */
-    private function setSidebar()
+    private function setSidebar(string $action): void
     {
         $sidebar = Sidebar::Get();
 
-        $views = new ViewsWidget();
-        $views->addLink(_('Alle Einträge'),
-                        $this->url_for('admin/holidays', ['filter' => null]))
-              ->setActive(!$this->filter);
-        $views->addLink(_('Aktuelle/zukünftige Einträge'),
-                        $this->url_for('admin/holidays', ['filter' => 'current']))
-              ->setActive($this->filter === 'current');
-        $views->addLink(_('Vergangene Einträge'),
-                        $this->url_for('admin/holidays', ['filter' => 'past']))
-              ->setActive($this->filter === 'past');
-        $sidebar->addWidget($views);
+        $is_vacation_view = !in_array($action, ['holidays', 'store_holidays']);
 
-        $links = new ActionsWidget();
-        $links->addLink(_('Neue Ferien anlegen'),
-                        $this->url_for('admin/holidays/edit', ['filter' => null]),
-                        Icon::create('add', 'clickable'))
-              ->asDialog('size=auto');
-        $sidebar->addWidget($links);
+        $views = $sidebar->addWidget(new ViewsWidget());
+        $views->addLink(
+            _('Ferien'),
+            $this->indexURL()
+        )->setActive($is_vacation_view);
+        $views->addLink(
+            _('Feiertage'),
+            $this->holidaysURL()
+        )->setActive(!$is_vacation_view);
+
+        if (!$is_vacation_view) {
+            return;
+        }
+
+        $views = $sidebar->addWidget(new ViewsWidget());
+        $views->setTitle(_('Ansichtseinstellungen'));
+        $views->addLink(
+            _('Alle Einträge'),
+            $this->indexURL(['filter' => null])
+        )->setActive(!$this->filter);
+        $views->addLink(
+            _('Aktuelle/zukünftige Einträge'),
+            $this->indexURL(['filter' => 'current'])
+        )->setActive($this->filter === 'current');
+        $views->addLink(
+            _('Vergangene Einträge'),
+            $this->indexURL(['filter' => 'past'])
+        )->setActive($this->filter === 'past');
+
+        $links = $sidebar->addWidget(new ActionsWidget());
+        $links->addLink(
+            _('Neue Ferien anlegen'),
+            $this->editURL(['filter' => null]),
+            Icon::create('add')
+        )->asDialog('size=auto');
     }
 }

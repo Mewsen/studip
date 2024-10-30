@@ -36,112 +36,17 @@
 // +---------------------------------------------------------------------------+
 
 
-// Hier jezt die ultimative Feiertags-"Berechnung"
-// Zurueckgegeben wird ein Array mit Namen des Feiertages ("name") und
-// Faerbungsgrad ("col", 0 bis 2).
-
-function holiday ($tmstamp, $mod = "") {
-    // erstmal brauchen wir den Ostersonntag fuer die meisten kirchlichen Feiertage
-//  $easterday = easter_date(date("Y", $tmstamp)); // geht leider nicht
-    // Berechnung nach Carters Algorithmus (gueltig von 1900 - 2099)
-    $tmstamp = mktime(0,0,0,date("n",$tmstamp),date("j",$tmstamp),date("Y",$tmstamp));
-    $year = date("Y", $tmstamp);
-    $b = 225 - 11 * ($year % 19);
-    $d = (($b - 21) % 30) + 21;
-    if ($d > 48)
-        $d--;
-    $e = ($year + abs($year / 4) + $d + 1) % 7;
-    $q = $d + 7 - $e;
-    if ($q < 32)
-        $easterday = date("z", mktime(0, 0, 0, 3, $q, $year)) + 1;
-    else
-        $easterday = date("z", mktime(0, 0, 0, 4, $q - 31, $year)) + 1;
-
-    $name = '';
-    // Differenz in Tagen zu Ostertag berechnen
-    $doy = date("z", $tmstamp) + 1;
-    $dif = $doy - $easterday;
-    switch ($dif) {
-        case -48: $name = _("Rosenmontag"); $col = 1; break;
-        case -47: $name = _("Fastnacht"); $col = 1; break;
-        case -46: $name = _("Aschermittwoch"); $col = 1; break;
-    //  case -8: $name = _("Palmsonntag"); $col = 1; break;
-        case  -2: $name = _("Karfreitag"); $col = 3; break;
-        case   0: $name = _("Ostersonntag"); $col = 3; break;
-        case   1: $name = _("Ostermontag"); $col = 3; break;
-        case  39: $name = _("Christi Himmelfahrt"); $col = 3; break;
-        case  49: $name = _("Pfingstsonntag"); $col = 3; break;
-        case  50: $name = _("Pfingstmontag"); $col = 3; break;
-        case  60: $name = _("Fronleichnam"); $col = 1; break;
-    }
-
-    // die unveraenderlichen Feiertage
-    switch ($doy) {
-        case   1: $name = _("Neujahr"); $col = 3; break;
-        case   6: $name = _("Hl. Drei Könige"); $col = 1; break;
-    }
-
-    // Schaltjahre nicht vergessen
-    if (date("L", $tmstamp))
-        $doy--;
-    switch ($doy) {
-        case  79: $name = _("Frühlingsanfang"); $col = 1; break;
-        case 121: $name = _("Maifeiertag"); $col = 3; break;
-//      case 125: $name = _("Europatag"); $col = 1; break;
-        case 172: $name = _("Sommeranfang"); $col = 1; break;
-        case 266: $name = _("Herbstanfang"); $col = 1; break;
-        case 276: $name = _("Tag der deutschen Einheit"); $col = 3; break;
-        case 304: $name = _("Reformationstag"); $col = $year == 2017 ? 3 : 2; break;
-        case 305: $name = _("Allerheiligen"); $col = 1; break;
-        case 315: $name = _("Martinstag"); $col = 1; break;
-        case 340: $name = _("Nikolaus"); $col = 1; break;
-        case 355: $name = _("Winteranfang"); $col = 1; break;
-        case 358: $name = _("Hl. Abend"); $col = 1; break;
-        case 359: $name = _("1. Weihnachtstag"); $col = 3; break;
-        case 360: $name = _("2. Weihnachtstag"); $col = 3; break;
-        case 365: $name = _("Silvester"); $col = 1; break;
-    }
-
-    // Die Sonntagsfeiertage
-    if (date("w", $tmstamp) == 0) {
-        if ($doy > 127 && $doy < 135) {
-            $name = _("Muttertag");
-            $col = 1;
-        }
-        else if ($doy > 266 && $doy < 274) {
-            $name = _("Erntedank");
-            $col = 1;
-        }
-        else if ($doy > 316 && $doy < 324) {
-            $name = _("Volkstrauertag");
-            $col = 2;
-        }
-        else if ($doy > 323 && $doy < 331) {
-            $name = _("Totensonntag");
-            $col = 1;
-        }
-        else if ($doy > 330 && $doy < 338) {
-            $name = _("1. Advent");
-            $col = 2;
-        }
-        else if ($doy > 337 && $doy < 345) {
-            $name = _("2. Advent");
-            $col = 2;
-        }
-        else if ($doy > 344 && $doy < 352) {
-            $name = _("3. Advent");
-            $col = 2;
-        }
-        else if ($doy > 351 && $doy < 359) {
-            $name = _("4. Advent");
-            $col = 2;
-        }
-    }
-
-    if ($name)
-        return ["name" => $name, "col" => $col];
-
-    return FALSE;
+/**
+ * Hier jezt die ultimative Feiertags-"Berechnung"
+ * Zurueckgegeben wird ein Array mit Namen des Feiertages ("name") und
+ * Faerbungsgrad ("col", 1 bis 3; 3 bedeutet Termin fällt aus).
+ *
+ * @param $tmstamp
+ * @return array{name: string, col: int}|false
+ * @see Holidays::isHoliday()
+ */
+function holiday ($tmstamp) {
+    return Holidays::isHoliday($tmstamp);
 }
 
 // ueberprueft eine Datumsangabe, die in einen Timestamp gewandelt werden soll
