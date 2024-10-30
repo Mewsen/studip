@@ -226,6 +226,15 @@
         </div>
     </fieldset>
 <? endif ?>
+<? if (Config::get()->ENABLE_NUMBER_OF_PARTICIPANTS) : ?>
+    <fieldset>
+        <legend><?= _('Teilnehmende') ?></legend>
+        <label>
+            <?=_('Anzahl der Teilnehmenden')?>
+            <input type="number" min="0" name="number_of_participants" value="<?= htmlReady($date->number_of_participants) ?>">
+        </label>
+    </fieldset>
+<? endif ?>
 
     <footer data-dialog-button>
         <?= Studip\Button::createAccept(_('Speichern'), 'save_dates') ?>

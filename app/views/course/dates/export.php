@@ -29,7 +29,7 @@
                 foreach ($all_semester as $zwsem) {
                     if (!empty($zwsem['beginn'])) {
                         if ( ($zwsem['beginn'] < $date['start']) && ($zwsem['ende'] > $date['start']) ) {
-                            $grenze = $zwsem['ende'];
+                            $grenze = $zwsem['ende'] ?? null;
                             ?>
                             <tr>
                                 <td colspan="5">

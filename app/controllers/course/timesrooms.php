@@ -490,6 +490,10 @@ class Course_TimesroomsController extends AuthenticatedController
         $assigned_groups       = Request::optionArray('assigned-groups');
         $termin->statusgruppen = Statusgruppen::findMany($assigned_groups);
 
+        if (Config::get()->ENABLE_NUMBER_OF_PARTICIPANTS) {
+            $termin->number_of_participants = strlen(Request::get('number_of_participants')) && Request::int('number_of_participants') >= 0 ? Request::int('number_of_participants') : null;
+        }
+
         $termin->store();
 
         if ($time_changed) {
