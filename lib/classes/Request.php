@@ -223,6 +223,8 @@ class Request implements ArrayAccess, IteratorAggregate
      * @param string $default  default value if parameter is not set
      *
      * @return string  parameter value as string (if set), else NULL
+     *
+     * @deprecated since Stud.IP 6.0
      */
     public static function quoted($param, $default = NULL)
     {
@@ -480,6 +482,7 @@ class Request implements ArrayAccess, IteratorAggregate
      * @param string $param    parameter name
      *
      * @return array  parameter value as array (if set), else an empty array
+     * @deprecated since Stud.IP 6.0
      */
     public static function quotedArray($param)
     {
