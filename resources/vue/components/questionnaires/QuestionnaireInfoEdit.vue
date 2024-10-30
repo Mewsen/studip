@@ -2,7 +2,7 @@
     <div class="vote_edit">
         <label>
             {{ $gettext('Link eines Videos oder einer anderen Informationsseite (optional)') }}
-            <input type="url" v-model="val_clone.url" ref="infoUrl"
+            <input type="url" v-model="val_clone.url" v-autofocus ref="infoUrl"
                    @input="checkValidity()">
         </label>
 
@@ -26,7 +26,6 @@ export default {
         });
     },
     mounted() {
-        this.$refs.infoUrl.focus();
         this.checkValidity();
     },
     methods: {
