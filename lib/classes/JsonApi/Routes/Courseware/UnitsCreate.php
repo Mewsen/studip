@@ -92,8 +92,8 @@ class UnitsCreate extends JsonApiController
             'owner_id' => $user->id,
             'editor_id' => $user->id,
             'edit_blocker_id' => '',
-            'title' => self::arrayGet($json, 'data.attributes.title', ''),
-            'purpose' => self::arrayGet($json, 'data.attributes.purpose', ''),
+            'title' => self::arrayGet($json, 'data.attributes.title', 'neues Lernmaterial'),
+            'purpose' => self::arrayGet($json, 'data.attributes.purpose', 'content'),
             'payload' => self::arrayGet($json, 'data.attributes.payload', ''),
             'position' => 0
         ]);
