@@ -87,7 +87,7 @@
             </label>
         </section>
         <footer data-dialog-button>
-            <?= Studip\Button::createAccept(_('Schließen'), 'close', ['data-dialog' => 'reload-on-close']) ?>
+            <?= Studip\Button::createCancel(_('Schließen'), 'close', ['data-dialog' => 'reload-on-close']) ?>
         </footer>
     </section>
 </form>
