@@ -1,17 +1,15 @@
 <?php
 /**
- * @var Course $course
  * @var SimpleCollection $all_lock_rules
  */
 ?>
 <label><?= _('Für alle Veranstaltungen') ?>
     <select name="lock_sem_all" style="max-width: 200px">
-        <? for ($i = 0; $i < count($all_lock_rules); $i++) : ?>
-            <option value="<?= $all_lock_rules[$i]["lock_id"] ?>"
-                <?= $all_lock_rules[$i]['lock_id'] === $course->lock_rule ? 'selected' : '' ?>>
-                <?= htmlReady($all_lock_rules[$i]["name"]) ?>
+        <? foreach ($all_lock_rules as $lock_rule): ?>
+            <option value="<?= htmlReady($lock_rule->id) ?>">
+                <?= htmlReady($lock_rule->name) ?>
             </option>
-        <? endfor ?>
+        <? endforeach ?>
     </select>
 </label>
 
