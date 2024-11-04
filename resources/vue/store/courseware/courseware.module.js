@@ -39,6 +39,7 @@ const getDefaultState = () => {
         showStructuralElementRemoveLockDialog: false,
         showStructuralElementFeedbackDialog: false,
         showStructuralElementFeedbackCreateDialog: false,
+        showStructuralElementPermissionsDialog: false,
 
         showSuggestOerDialog: false,
 
@@ -250,6 +251,9 @@ const getters = {
     },
     showStructuralElementFeedbackCreateDialog(state) {
         return state.showStructuralElementFeedbackCreateDialog;
+    },
+    showStructuralElementPermissionsDialog(state) {
+        return state.showStructuralElementPermissionsDialog;
     },
     showOverviewElementAddDialog(state) {
         return state.showOverviewElementAddDialog;
@@ -1041,7 +1045,7 @@ export const actions = {
         context.commit('setShowStructuralElementInfoDialog', bool);
     },
 
-    showElementOerDialog(context, bool) {
+    showElementOerExportDialog(context, bool) {
         context.commit('setShowStructuralElementOerDialog', bool);
     },
 
@@ -1066,6 +1070,9 @@ export const actions = {
     },
     showStructuralElementFeedbackCreateDialog(context, bool) {
         context.commit('setShowStructuralElementFeedbackCreateDialog', bool);
+    },
+    showStructuralElementPermissionsDialog(context, bool) {
+        context.commit('setShowStructuralElementPermissionsDialog', bool);
     },
 
     setShowOverviewElementAddDialog(context, bool) {
@@ -1663,6 +1670,9 @@ export const mutations = {
     },
     setShowStructuralElementFeedbackCreateDialog(state, showFeedbackCreate) {
         state.showStructuralElementFeedbackCreateDialog = showFeedbackCreate;
+    },
+    setShowStructuralElementPermissionsDialog(state, showPermissionsDialog) {
+        state.showStructuralElementPermissionsDialog = showPermissionsDialog;
     },
 
     setImportFilesState(state, importFilesState) {

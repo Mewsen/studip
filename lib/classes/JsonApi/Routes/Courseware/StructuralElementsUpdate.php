@@ -6,6 +6,7 @@ use Courseware\StructuralElement;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
+use JsonApi\Routes\TimestampTrait;
 use JsonApi\Routes\ValidationTrait;
 use JsonApi\Schemas\Courseware\StructuralElement as StructuralElementSchema;
 use JsonApi\Schemas\FileRef as FileRefSchema;
@@ -19,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class StructuralElementsUpdate extends JsonApiController
 {
     use EditBlockAwareTrait;
+    use TimestampTrait;
     use ValidationTrait;
 
     /**
@@ -26,7 +28,8 @@ class StructuralElementsUpdate extends JsonApiController
      */
     public function __invoke(Request $request, Response $response, $args)
     {
-        if (!($resource = StructuralElement::find($args['id']))) {
+        $resource = StructuralElement::find($args['id']);
+        if (!$resource) {
             throw new RecordNotFoundException();
         }
         $json = $this->validate($request, $resource);
@@ -105,7 +108,7 @@ class StructuralElementsUpdate extends JsonApiController
         }
         $parentId = self::arrayGet($json, 'data.relationships.parent.data.id');
 
-        return \Courseware\StructuralElement::find($parentId);
+        return StructuralElement::find($parentId);
     }
 
     private function updateStructuralElement(\User $user, StructuralElement $resource, array $json): StructuralElement
@@ -118,11 +121,13 @@ class StructuralElementsUpdate extends JsonApiController
                 'position',
                 'public',
                 'purpose',
-                'read-approval',
-                'release-date',
                 'title',
-                'withdraw-date',
-                'write-approval',
+                'permission-type',
+                'visible',
+                'writable',
+                'visible-approval',
+                'writable-approval',
+                'content-approval',
             ];
 
             foreach ($attributes as $jsonKey) {
@@ -131,13 +136,43 @@ class StructuralElementsUpdate extends JsonApiController
                     $resource->$sormKey = $val;
                 }
             }
-
-            if (isset($json['data']['attributes']['release-date'])) {
-                $resource->release_date = $json['data']['attributes']['release-date'];
+            if (self::arrayHas($json, 'data.attributes.visible-all')) {
+                $resource->visible_all = self::arrayGet($json, 'data.attributes.visible-all');
             }
-
-            if (isset($json['data']['attributes']['withdraw-date'])) {
-                $resource->withdraw_date = $json['data']['attributes']['withdraw-date'];
+            if (self::arrayHas($json, 'data.attributes.writable-all')) {
+                $resource->writable_all = self::arrayGet($json, 'data.attributes.writable-all');
+            }
+            if (self::arrayHas($json, 'data.attributes.visible-start-date')) {
+                $visibleStartDate = self::arrayGet($json, 'data.attributes.visible-start-date');
+                if ($visibleStartDate) {
+                    $visibleStartDate = self::fromISO8601($visibleStartDate);
+                    $visibleStartDate = $visibleStartDate->getTimestamp();
+                }
+                $resource->visible_start_date = $visibleStartDate;
+            }
+            if (self::arrayHas($json, 'data.attributes.visible-end-date')) {
+                $visibleEndDate = self::arrayGet($json, 'data.attributes.visible-end-date');
+                if ($visibleEndDate) {
+                    $visibleEndDate = self::fromISO8601($visibleEndDate);
+                    $visibleEndDate = $visibleEndDate->getTimestamp();
+                }
+                $resource->visible_end_date = $visibleEndDate;
+            }
+            if (self::arrayHas($json, 'data.attributes.writable-start-date')) {
+                $writableStartDate = self::arrayGet($json, 'data.attributes.writable-start-date');
+                if ($writableStartDate) {
+                    $writableStartDate = self::fromISO8601($writableStartDate);
+                    $writableStartDate = $writableStartDate->getTimestamp();
+                }
+                $resource->writable_start_date = $writableStartDate;
+            }
+            if (self::arrayHas($json, 'data.attributes.writable-end-date')) {
+                $writableEndDate = self::arrayGet($json, 'data.attributes.writable-end-date');
+                if ($writableEndDate) {
+                    $writableEndDate = self::fromISO8601($writableEndDate);
+                    $writableEndDate = $writableEndDate->getTimestamp();
+                }
+                $resource->writable_end_date = $writableEndDate;
             }
 
             if (isset($json['data']['attributes']['commentable'])) {

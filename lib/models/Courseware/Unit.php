@@ -20,8 +20,18 @@ use User;
  * @property string $content_type database column
  * @property int $public database column
  * @property string|null $creator_id database column
- * @property int|null $release_date database column
- * @property int|null $withdraw_date database column
+ * @property string $permission_scope database column
+ * @property string $permission_type database column
+ * @property string $visible database column
+ * @property bool $visible_all database column
+ * @property int|null $visible_start_date database column
+ * @property int|null $visible_end_date database column
+ * @property string $writable database column
+ * @property bool $writable_all database column
+ * @property int|null $writable_start_date database column
+ * @property int|null $writable_end_date database column
+ * @property \JSONArrayObject $writable_approval database column
+ * @property \JSONArrayObject $visible_approval database column
  * @property \JSONArrayObject $config database column
  * @property int $mkdate database column
  * @property int $chdate database column
@@ -38,6 +48,8 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
         $config['db_table'] = 'cw_units';
 
         $config['serialized_fields']['config'] = JSONArrayObject::class;
+        $config['serialized_fields']['visible_approval'] = JSONArrayObject::class;
+        $config['serialized_fields']['writable_approval'] = JSONArrayObject::class;
 
         $config['has_one']['structural_element'] = [
             'class_name' => StructuralElement::class,
@@ -45,7 +57,7 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
             'on_delete' => 'delete',
         ];
         $config['belongs_to']['course'] = [
-            'class_name'  => \Course::class,
+            'class_name' => \Course::class,
             'foreign_key' => 'range_id',
             'assoc_foreign_key' => 'seminar_id',
         ];
@@ -75,26 +87,116 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
         return self::findBySQL('range_id = ? AND range_type = ?', [$course->id, 'course']);
     }
 
-    public static function findUsersUnits(\User $user): array
+    public static function findUsersUnits(User $user): array
     {
         return self::findBySQL('range_id = ? AND range_type = ?', [$user->id, 'user']);
     }
 
-    public function canRead(\User $user): bool
+    public function canRead(User $user): bool
     {
-        return $this->structural_element->canRead($user);
+        if ($this->canEdit($user) || $this->canEditContent($user)) {
+            return true;
+        }
+        if ($this->permission_scope === 'unit') {
+            if ($this->permission_type === 'all' || $this->visible_all) {
+                if ($this->isVisible()) {
+                    return true;
+                }
+                return false;
+            }
+            if ($this->permission_type === 'users') {
+                return in_array($user->id, json_decode($this->visible_approval)) && $this->isVisible();
+            }
+            if ($this->permission_type === 'groups') {
+                $groups = json_decode($this->visible_approval);
+                foreach ($groups as $groupId) {
+                    $group = \Statusgruppen::find($groupId);
+                    if ($group && $group->isMember($user->id)) {
+                        return $this->isVisible();
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
-    public function canEdit(\User $user): bool
+    private function isVisible(): bool
     {
-        return $this->structural_element->canEdit($user);;
+        if ($this->visible === 'always') {
+            return true;
+        }
+        if ($this->visible === 'never') {
+            return false;
+        }
+
+        return
+            (empty($this->visible_start_date) || $this->visible_start_date < strtotime('today'))
+            && (empty($this->visible_end_date) || $this->visible_end_date >= strtotime('today'));
     }
 
-    public function copy(\User $user, string $rangeId, string $rangeType, array $modified = null): Unit
+    public function canEdit(User $user): bool
     {
+        if ($user->id === $this->range_id) {
+            return true;
+        }
+
+        return $GLOBALS['perm']->have_perm('root', $user->id) || $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user->id);
+    }
+
+    public function canEditContent(User $user): bool
+    {
+        if ($this->canEdit($user)) {
+            return true;
+        }
+        if ($this->permission_scope === 'unit') {
+            if ($this->permission_type === 'all' || $this->writable_all) {
+                if ($this->isWritable()) {
+                    return true;
+                }
+                return false;
+            }
+            if ($this->permission_type === 'users') {
+                return in_array($user->id, json_decode($this->writable_approval)) && $this->isWritable();
+            }
+            if ($this->permission_type === 'groups') {
+                $groups = json_decode($this->writable_approval);
+                foreach ($groups as $groupId) {
+                    $group = \Statusgruppen::find($groupId);
+                    if ($group && $group->isMember($user->id)) {
+                        return $this->isWritable();
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private function isWritable(): bool
+    {
+        if ($this->writable === 'always') {
+            return true;
+        }
+        if ($this->writable === 'never') {
+            return false;
+        }
+
+        return
+            (empty($this->writable_start_date) || $this->writable_start_date < strtotime('today'))
+            && (empty($this->writable_end_date) || $this->writable_end_date >= strtotime('today'));
+    }
+
+    public function copy(
+        User $user,
+        string $rangeId,
+        string $rangeType,
+        array $modified = null,
+        bool $duplicate = false
+    ): Unit {
         $sourceUnitElement = $this->structural_element;
 
-        $newElement = $sourceUnitElement->copyToRange($user, $rangeId, $rangeType);
+        $newElement = $sourceUnitElement->copyToRange($user, $rangeId, $rangeType, '', $duplicate);
 
         if ($modified !== null) {
             $newElement->title = $modified['title'] ?? $newElement->title;
@@ -108,10 +210,21 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
             'range_type' => $rangeType,
             'structural_element_id' => $newElement->id,
             'content_type' => 'courseware',
+            'position' => $this->getNewPosition($rangeId),
             'creator_id' => $user->id,
             'public' => '',
-            'release_date' => null,
-            'withdraw_date' => null,
+            'permission_scope' => $duplicate ? $this->permission_scope : 'unit',
+            'permission_type' => $duplicate ? $this->permission_type : 'all',
+            'visible' => $duplicate ? $this->visible : 'always',
+            'visible_all' => $duplicate ? $this->visible_all : 0,
+            'visible_start_date' => $duplicate ? $this->visible_start_date : null,
+            'visible_end_date' => $duplicate ? $this->visible_end_date : null,
+            'visible_approval' => $duplicate ? $this->visible_approval : '',
+            'writable' => $duplicate ? $this->writable : 'never',
+            'writable_all' => $duplicate ? $this->writable_all : 0,
+            'writable_start_date' => $duplicate ? $this->writable_start_date : null,
+            'writable_end_date' => $duplicate ? $this->writable_end_date : null,
+            'writable_approval' => $duplicate ? $this->writable_approval : '',
         ]);
 
         $newUnit->store();
@@ -133,7 +246,7 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
         if ($units) {
             $storage->addTabularData(_('Courseware Lernmaterialien'), 'cw_units', $units);
         }
-        
+
     }
 
     public static function getNewPosition($range_id): int
@@ -148,16 +261,18 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
         }
 
         $db = \DBManager::get();
-        $stmt = $db->prepare(sprintf(
-            'UPDATE
+        $stmt = $db->prepare(
+            sprintf(
+                'UPDATE
               %s
             SET
               position = position - 1
             WHERE
               range_id = :range_id AND
               position > :position',
-            'cw_units'
-        ));
+                'cw_units'
+            )
+        );
         $stmt->bindValue(':range_id', $this->range_id);
         $stmt->bindValue(':position', $this->position);
         $stmt->execute();
@@ -173,7 +288,8 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
                 position = FIND_IN_SET(id, ?) - 1
             WHERE
                 range_id = ?',
-            'cw_units');
+            'cw_units'
+        );
         $args = array(join(',', $positions), $range->id);
         $stmt = $db->prepare($query);
         $stmt->execute($args);
@@ -226,7 +342,7 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
     public function getRangeUrl(): string
     {
         if ($this->structural_element->range_type === 'user') {
-            return 'contents/courseware/';   
+            return 'contents/courseware/';
         }
 
         return 'course/courseware/' . '?cid=' . $this->range_id;
@@ -234,7 +350,7 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
 
     public function isRangeAccessible(string $user_id = null): bool
     {
-        $user =  \User::find($user_id);
+        $user = \User::find($user_id);
         if ($user) {
             return $this->canRead($user);
         }
@@ -248,5 +364,10 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
             'range_id = ? AND range_type = ?',
             [$this->id, self::class]
         );
+    }
+
+    public function getRange()
+    {
+        return $this->range_type::find($this->range_id);
     }
 }

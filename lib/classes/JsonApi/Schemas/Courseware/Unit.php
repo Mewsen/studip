@@ -28,15 +28,30 @@ class Unit extends SchemaProvider
      */
     public function getAttributes($resource, ContextInterface $context): iterable
     {
+        $user = $this->currentUser;
+
         return [
             'content-type' => (string) $resource['content_type'],
             'position' => (int) $resource['position'],
             'public' => (int) $resource['public'],
-            'release-date' => $resource['release_date'] ? date('c', $resource['release_date']) : null,
-            'withdraw-date' => $resource['withdraw_date'] ? date('c', $resource['withdraw_date']) : null,
+            'permission-scope' => (string) $resource['permission_scope'],
+            'permission-type' => (string) $resource['permission_type'],
+            'visible' => (string) $resource['visible'],
+            'visible-all' => (bool) $resource['visible_all'],
+            'visible-start-date' => $resource['visible_start_date'] ? date('c', $resource['visible_start_date']) : null,
+            'visible-end-date' => $resource['visible_end_date'] ? date('c', $resource['visible_end_date']) : null,
+            'writable' => (string) $resource['writable'],
+            'writable-all' => (bool) $resource['writable_all'],
+            'writable-start-date' => $resource['writable_start_date'] ? date('c', $resource['writable_start_date']) : null,
+            'writable-end-date' => $resource['writable_end_date'] ? date('c', $resource['writable_end_date']) : null,
+            'visible-approval' => json_decode($resource['visible_approval']),
+            'writable-approval' => json_decode($resource['writable_approval']),
             'config' => json_decode($resource['config']),
-            'mkdate'    => date('c', $resource['mkdate']),
-            'chdate'    => date('c', $resource['chdate']),
+            'can-read' => $resource->canRead($user),
+            'can-edit' => $resource->canEdit($user),
+            'can-edit-content' => $resource->canEditContent($user),
+            'mkdate' => date('c', $resource['mkdate']),
+            'chdate' => date('c', $resource['chdate']),
         ];
     }
 

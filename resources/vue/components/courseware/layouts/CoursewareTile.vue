@@ -11,11 +11,14 @@
                 :id="handleId"
                 @keydown="$emit('handle-keydown', $event)"
             ></div>
+            <div class="overlay-action-menu" v-if="hasImageOverlayWithActionMenu">
+                <slot name="image-overlay-with-action-menu"></slot>
+            </div>
             <div class="overlay-text" v-if="hasImageOverlay">
                 <slot name="image-overlay"></slot>
             </div>
-            <div class="overlay-action-menu" v-if="hasImageOverlayWithActionMenu">
-                <slot name="image-overlay-with-action-menu"></slot>
+            <div class="overlay-text-bottom" v-if="hasImageOverlayBottom">
+                <slot name="image-overlay-bottom"></slot>
             </div>
         </div>
         <component
@@ -24,7 +27,8 @@
             :title="descriptionTitle"
             class="description"
         >
-            <header :class="[icon ? 'description-icon-' + icon : '']">
+            <header>
+                <studip-icon v-if="icon" class="title-icon" :shape="icon" role="info_alt" :size="24" />
                 {{ title }}
             </header>
             <div v-if="displayProgress" :title="progressTitle" class="progress-wrapper">
@@ -132,6 +136,9 @@ export default {
         },
         hasImageOverlay() {
             return this.$slots['image-overlay'] !== undefined;
+        },
+        hasImageOverlayBottom() {
+            return this.$slots['image-overlay-bottom'] !== undefined;
         },
         hasImageOverlayWithActionMenu() {
             return this.$slots['image-overlay-with-action-menu'] !== undefined;

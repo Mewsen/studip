@@ -295,7 +295,8 @@ export default {
                         color: this.modifiedColor,
                         description: this.modifiedDescription !== '' ? this.modifiedDescription : this.selectedUnitDescription
                 }
-                await this.copyUnit({ unitId: this.selectedUnit.id, modified: modified });
+                const duplicate = (this.source === 'self'  && this.context.type === 'courses') || (this.source === 'users'  && this.context.type === 'users')
+                await this.copyUnit({ unitId: this.selectedUnit.id, modified: modified, duplicate: duplicate });
                 this.companionSuccess({ info: this.$gettext('Lernmaterial kopiert.') });
                 this.close();
             }

@@ -283,7 +283,7 @@ export const actions = {
         }
     },
 
-    async copyUnit({ dispatch, state }, { unitId, modified }) {
+    async copyUnit({ dispatch, state }, { unitId, modified, duplicate }) {
         let rangeType = null;
         let loadUnits = null;
         if (state.context.type === 'courses') {
@@ -297,7 +297,7 @@ export const actions = {
         if(!rangeType)  {
             return false;
         }
-        const copy = { data: { rangeId: state.context.id, rangeType: rangeType, modified: modified } };
+        const copy = { data: { rangeId: state.context.id, rangeType: rangeType, modified: modified, duplicate: duplicate} };
         await state.httpClient.post(`courseware-units/${unitId}/copy`, copy);
 
         return dispatch(loadUnits, state.context.id);

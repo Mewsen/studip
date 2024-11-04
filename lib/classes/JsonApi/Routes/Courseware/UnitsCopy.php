@@ -31,6 +31,7 @@ class UnitsCopy extends NonJsonApiController
         $rangeId = $data['rangeId'];
         $rangeType = $data['rangeType'];
         $modified = $data['modified'];
+        $duplicate = $data['duplicate'];
 
         try {
             $range = \RangeFactory::createRange($rangeType, $rangeId);
@@ -42,7 +43,7 @@ class UnitsCopy extends NonJsonApiController
             throw new AuthorizationFailedException();
         }
 
-        $newUnit = $sourceUnit->copy($user, $rangeId, $rangeType, $modified);
+        $newUnit = $sourceUnit->copy($user, $rangeId, $rangeType, $modified, $duplicate);
 
         $response = $response->withHeader('Content-Type', 'application/json');
         $response->getBody()->write((string) json_encode($newUnit));

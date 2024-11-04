@@ -36,18 +36,14 @@
                 <span
                     v-if="hasReleaseOrWithdrawDate"
                     class="cw-tree-item-flag-date"
-                    :title="$gettext('Diese Seite hat eine zeitlich beschränkte Sichtbarkeit')"
+                    :title="visibleStartEndDate"
                 ></span>
                 <span
                     v-if="hasWriteApproval"
                     class="cw-tree-item-flag-write"
-                    :title="$gettext('Diese Seite kann von Teilnehmenden bearbeitet werden')"
+                    :title="canWriteFlagTitle"
                 ></span>
-                <span
-                    v-if="hasNoReadApproval"
-                    class="cw-tree-item-flag-cant-read"
-                    :title="$gettext('Diese Seite kann von Teilnehmenden nicht gesehen werden')"
-                ></span>
+                <span v-if="hasNoReadApproval" class="cw-tree-item-flag-cant-read" :title="cantReadFlagTitle"></span>
                 <template v-if="!userIsTeacher && inCourse">
                     <span
                         v-if="complete"
@@ -113,10 +109,7 @@
                 @childrenUpdated="$emit('childrenUpdated')"
             />
         </draggable>
-        <ol
-            v-if="canEdit && isFirstLevel"
-            class="cw-tree-adder-list"
-        >
+        <ol v-if="canEdit && isFirstLevel" class="cw-tree-adder-list">
             <courseware-tree-item-adder :parentId="element.id" />
         </ol>
     </li>
@@ -180,8 +173,23 @@ export default {
             courseware: 'courseware',
             progressData: 'progresses',
             userIsTeacher: 'userIsTeacher',
-            showRootElement: 'showRootElement'
+            showRootElement: 'showRootElement',
+            relatedCourseMemberships: 'course-memberships/related',
+            relatedCourseStatusGroups: 'status-groups/related',
         }),
+        autorMembersCount() {
+            // course-memberships are loaded in parent!
+            const parent = { type: 'courses', id: this.context.id };
+            const relationship = 'memberships';
+            const memberships = this.relatedCourseMemberships({ parent, relationship }) ?? [];
+            return memberships.filter(m => m.attributes.permission === 'autor').length
+        },
+        statusGroupsCount() {
+            // status-groups are loaded in parent!
+            const parent = { type: 'courses', id: this.context.id };
+            const relationship = 'status-groups';
+            return this.relatedCourseStatusGroups({ parent, relationship }).length;
+        },
         draggableData() {
             return {
                 attrs: {
@@ -218,32 +226,131 @@ export default {
             return this.element.id === this.currentElement?.id;
         },
         hasReleaseOrWithdrawDate() {
-            return (
-                this.element.attributes?.['release-date'] !== null ||
-                this.element.attributes?.['withdraw-date'] !== null
-            );
+            return this.element.attributes?.visible === 'period';
+        },
+        visibleStartEndDate() {
+            if (this.hasReleaseOrWithdrawDate) {
+                const startDate = STUDIP.DateTime.getStudipDate(
+                    new Date(this.element.attributes?.['visible-start-date']),
+                    false,
+                    true
+                );
+                const endDate = STUDIP.DateTime.getStudipDate(
+                    new Date(this.element.attributes?.['visible-end-date']),
+                    false,
+                    true
+                );
+                let persons = '';
+                switch (this.element.attributes?.['permission-type']) {
+                    case 'all':
+                        persons = this.$gettext('alle');
+                        break;
+                    case 'users': {
+                        const users = this.element.attributes['visible-approval'].length;
+                        persons = this.$gettextInterpolate(
+                            this.$ngettext('einen Studierenden', '%{count} Studierende', users),
+                            { count: users }
+                        );
+                        break;
+                    }
+                    case 'groups': {
+                        const groups = this.element.attributes['visible-approval'].length;
+                        persons = this.$gettextInterpolate(this.$ngettext('eine Gruppe', '%{count} Gruppen', groups), {
+                            count: groups,
+                        });
+                        break;
+                    }
+                }
+
+                return this.$gettextInterpolate(
+                    this.$gettext('Diese Seite ist vom %{start} bis zum %{end} für %{persons} sichtbar'),
+                    { start: startDate, end: endDate, persons: persons }
+                );
+            }
+
+            return '';
         },
         hasWriteApproval() {
-            const writeApproval = this.element.attributes?.['write-approval'];
-
-            if (!writeApproval || Object.keys(writeApproval).length === 0) {
-                return false;
+            if (this.element.attributes?.['permission-type'] === 'all') {
+                return this.element.attributes?.writable !== 'never';
             }
-            return (
-                (writeApproval.all || writeApproval.groups.length > 0 || writeApproval.users.length > 0) &&
-                this.element.attributes?.['can-edit']
-            );
+
+            if (this.element.attributes?.['writable-all']) {
+                return true;
+            }
+
+            const writableApproval = this.element?.attributes?.['writable-approval'] ?? [];
+            return writableApproval.length !== 0;
+        },
+        canWriteFlagTitle() {
+            if (this.element.attributes?.['writable-all'] || this.element.attributes?.['permission-type'] === 'all') {
+                return this.$gettext('Diese Seite kann von allen Studierenden bearbeitet werden');
+            }
+            let persons = '';
+            const writableApproval = this.element?.attributes?.['writable-approval'] ?? [];
+            const count = writableApproval.length;
+            switch (this.element.attributes?.['permission-type']) {
+                case 'users':
+                    persons = this.$gettextInterpolate(this.$ngettext('einem Studierendem', '%{count} Studierenden', count), {
+                        count: count,
+                    });
+                    break;
+                case 'groups':
+                    persons = this.$gettextInterpolate(this.$ngettext('einer Gruppe', '%{count} Gruppen', count), {
+                        count: count,
+                    });
+                    break;
+            }
+
+            return this.$gettextInterpolate(
+                    this.$gettext('Diese Seite kann von %{persons} bearbeitet werden'),
+                    { persons: persons }
+                );
         },
         hasNoReadApproval() {
-            if (this.context.type === 'users') {
+            if (this.context.type === 'users' || this.element.attributes?.['visible-all']) {
                 return false;
             }
-            const readApproval = this.element.attributes?.['read-approval'];
+            const visibleApproval = this.element?.attributes?.['visible-approval'] ?? [];
+            switch (this.element.attributes?.['permission-type']) {
+                case 'all':
+                    return this.element.attributes?.visible === 'never';
+                case 'users':
+                    return this.autorMembersCount !== visibleApproval.length;
+                case 'groups':
+                    return  this.statusGroupsCount !== visibleApproval.length; 
+            }
 
-            if (!readApproval || Object.keys(readApproval).length === 0 || this.hasWriteApproval) {
-                return false;
+            return true;            
+        },
+        cantReadFlagTitle() {
+            if (!this.hasNoReadApproval) {
+                return '';
             }
-            return !readApproval.all && readApproval.groups.length === 0 && readApproval.users.length === 0;
+            const visibleApproval = this.element?.attributes?.['visible-approval'] ?? [];
+            let persons = '';
+            let count = 0;
+            switch (this.element.attributes?.['permission-type']) {
+                case 'all':
+                    return this.$gettext('Diese Seite kann von Studierenden nicht gesehen werden');
+                case 'users':
+                    count = this.autorMembersCount - visibleApproval.length;
+                    persons = this.$gettextInterpolate(this.$ngettext('einem Studierendem', '%{count} Studierenden', count), {
+                        count: count,
+                    });
+                    break;
+                case 'groups':
+                    count = this.statusGroupsCount - visibleApproval.length
+                    persons = this.$gettextInterpolate(this.$ngettext('einer Gruppe', '%{count} Gruppen', count), {
+                        count: count,
+                    });
+                    break;
+            }
+
+            return this.$gettextInterpolate(
+                    this.$gettext('Diese Seite kann von %{persons} nicht gesehen werden'),
+                    { persons: persons }
+                );
         },
         hasPurposeClass() {
             return this.purposeClass !== '';

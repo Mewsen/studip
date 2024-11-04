@@ -7,16 +7,28 @@
                 class="cw-structural-element"
             >
                 <div v-if="structuralElement" class="cw-structural-element-content">
-                    <courseware-ribbon :canEdit="canEdit && canAddElements" :isContentBar="true" @blockAdded="updateContainerList">
+                    <courseware-ribbon
+                        :canEdit="canEdit && canAddElements"
+                        :isContentBar="true"
+                        @blockAdded="updateContainerList"
+                    >
                         <template #buttons>
                             <router-link v-if="prevElement" :to="'/structural_element/' + prevElement.id">
-                                <div class="cw-ribbon-button cw-ribbon-button-prev" :title="textRibbon.perv" />
+                                <div class="cw-ribbon-button cw-ribbon-button-prev" :title="$gettext('zurück')" />
                             </router-link>
-                            <div v-else class="cw-ribbon-button cw-ribbon-button-prev-disabled" :title="$gettext('Keine vorherige Seite')"/>
+                            <div
+                                v-else
+                                class="cw-ribbon-button cw-ribbon-button-prev-disabled"
+                                :title="$gettext('Keine vorherige Seite')"
+                            />
                             <router-link v-if="nextElement" :to="'/structural_element/' + nextElement.id">
-                                <div class="cw-ribbon-button cw-ribbon-button-next" :title="textRibbon.next" />
+                                <div class="cw-ribbon-button cw-ribbon-button-next" :title="$gettext('weiter')" />
                             </router-link>
-                            <div v-else class="cw-ribbon-button cw-ribbon-button-next-disabled" :title="$gettext('Keine nächste Seite')"/>
+                            <div
+                                v-else
+                                class="cw-ribbon-button cw-ribbon-button-next-disabled"
+                                :title="$gettext('Keine nächste Seite')"
+                            />
                         </template>
                         <template #breadcrumbList>
                             <li
@@ -26,14 +38,16 @@
                                 class="cw-ribbon-breadcrumb-item"
                             >
                                 <span>
-                                    <router-link :to="'/structural_element/' + ancestor.id">{{ ancestor.attributes.title || "–" }}</router-link>
+                                    <router-link :to="'/structural_element/' + ancestor.id">{{
+                                        ancestor.attributes.title || '–'
+                                    }}</router-link>
                                 </span>
                             </li>
                             <li
                                 class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
                                 :title="structuralElement.attributes.title"
                             >
-                                <span>{{ structuralElement.attributes.title || "–" }}</span>
+                                <span>{{ structuralElement.attributes.title || '–' }}</span>
                                 <span v-if="isTask">[ {{ solverName }} ]</span>
                                 <template v-if="!userIsTeacher && inCourse">
                                     <studip-icon
@@ -44,10 +58,11 @@
                                     />
                                     <span
                                         v-else
-                                        :title="$gettextInterpolate(
-                                                    $gettext('Fortschritt: %{progress} %'),
-                                                    {progress: elementProgress}
-                                                )"
+                                        :title="
+                                            $gettextInterpolate($gettext('Fortschritt: %{progress} %'), {
+                                                progress: elementProgress,
+                                            })
+                                        "
                                     >
                                         ({{ elementProgress }} %)
                                     </span>
@@ -58,11 +73,11 @@
                                     :size="16"
                                     :role="hasFeedbackAverage ? 'status-yellow' : 'inactive'"
                                     :title="
-                                    hasFeedbackAverage ?
-                                        $gettextInterpolate($gettext('Seite wurde mit %{avg} Sternen bewertet'), {
-                                            avg: feedbackAverage,
-                                        }) :
-                                        $gettext('Seite wurde noch nicht bewertet')
+                                        hasFeedbackAverage
+                                            ? $gettextInterpolate($gettext('Seite wurde mit %{avg} Sternen bewertet'), {
+                                                  avg: feedbackAverage,
+                                              })
+                                            : $gettext('Seite wurde noch nicht bewertet')
                                     "
                                     @click="menuAction('showFeedback')"
                                 />
@@ -97,6 +112,7 @@
                                 @showFeedback="menuAction('showFeedback')"
                                 @showFeedbackCreate="menuAction('showFeedbackCreate')"
                                 @showNote="menuAction('showNote')"
+                                @showPermissions="menuAction('showPermissions')"
                             />
                         </template>
                     </courseware-ribbon>
@@ -126,7 +142,14 @@
                                 />
                                 <courseware-companion-box
                                     v-if="blockedByAnotherUser"
-                                    :msgCompanion="$gettextInterpolate($gettext('Die Einstellungen dieser Seite werden im Moment von %{blockingUserName} bearbeitet.'), {blockingUserName: blockingUserName})"
+                                    :msgCompanion="
+                                        $gettextInterpolate(
+                                            $gettext(
+                                                'Die Einstellungen dieser Seite werden im Moment von %{blockingUserName} bearbeitet.'
+                                            ),
+                                            { blockingUserName: blockingUserName }
+                                        )
+                                    "
                                     mood="pointing"
                                 >
                                     <template #companionActions>
@@ -142,7 +165,11 @@
                                 />
                             </div>
 
-                            <courseware-root-content v-if="showRootLayout" :structuralElement="currentElement" :canEdit="canEdit" />
+                            <courseware-root-content
+                                v-if="showRootLayout"
+                                :structuralElement="currentElement"
+                                :canEdit="canEdit"
+                            />
 
                             <div
                                 v-if="canVisit && (!canEdit || hideEditLayout ) && !isLink && !hideRootContent"
@@ -172,7 +199,14 @@
                             >
                                 <div v-if="canEdit" class="cw-companion-box-wrapper">
                                     <courseware-companion-box
-                                        :msgCompanion="$gettextInterpolate($gettext('Dieser Inhalt ist aus den persönlichen Lernmaterialien von %{ ownerName } verlinkt und kann nur dort bearbeitet werden.'), { ownerName: ownerName })"
+                                        :msgCompanion="
+                                            $gettextInterpolate(
+                                                $gettext(
+                                                    'Dieser Inhalt ist aus den persönlichen Lernmaterialien von %{ ownerName } verlinkt und kann nur dort bearbeitet werden.'
+                                                ),
+                                                { ownerName: ownerName }
+                                            )
+                                        "
                                         mood="pointing"
                                     />
                                 </div>
@@ -191,7 +225,7 @@
                                 <template v-if="!processing">
                                     <span aria-live="assertive" class="assistive-text">{{ assistiveLive }}</span>
                                     <span id="operation" class="assistive-text">
-                                        {{$gettext('Drücken Sie die Leertaste, um neu anzuordnen.')}}
+                                        {{ $gettext('Drücken Sie die Leertaste, um neu anzuordnen.') }}
                                     </span>
                                     <draggable
                                         class="cw-structural-element-list"
@@ -225,12 +259,17 @@
                                                 :isTeacher="userIsTeacher"
                                                 class="cw-container-item"
                                                 ref="containers"
-                                                :class="{ 'cw-container-item-selected': keyboardSelected === container.id}"
+                                                :class="{
+                                                    'cw-container-item-selected': keyboardSelected === container.id,
+                                                }"
                                             />
                                         </li>
                                     </draggable>
                                 </template>
-                                <studip-progress-indicator v-if="processing" :description="$gettext('Vorgang wird bearbeitet...')" />
+                                <studip-progress-indicator
+                                    v-if="processing"
+                                    :description="$gettext('Vorgang wird bearbeitet...')"
+                                />
                             </div>
                         </div>
                         <courseware-toolbar v-if="canVisit && canEdit && !isLink" />
@@ -246,323 +285,16 @@
                         :open="false"
                     >
                         <template #content>
-                            <courseware-structural-element-comments
-                                :structuralElement="structuralElement"
-                            />
+                            <courseware-structural-element-comments :structuralElement="structuralElement" />
                         </template>
                     </courseware-call-to-action-box>
                 </div>
-                <studip-dialog
-                    v-if="showEditDialog"
-                    :title="textEdit.title"
-                    :confirmText="textEdit.confirm"
-                    confirmClass="accept"
-                    :closeText="textEdit.close"
-                    closeClass="cancel"
-                    height="500"
-                    :width="inContent ? '720' : '500'"
-                    class="studip-dialog-with-tab"
-                    @close="closeEditDialog"
-                    @confirm="storeCurrentElement"
-                >
-                    <template v-slot:dialogContent>
-                        <courseware-tabs class="cw-tab-in-dialog">
-                            <courseware-tab :name="textEdit.basic" :selected="true" :index="0">
-                                <form class="default" @submit.prevent="">
-                                    <label>
-                                        <translate>Titel</translate>
-                                        <input type="text" v-model="currentElement.attributes.title" />
-                                    </label>
-                                    <label>
-                                        <translate>Beschreibung</translate>
-                                        <textarea
-                                            v-model="currentElement.attributes.payload.description"
-                                            class="cw-structural-element-description"
-                                        />
-                                    </label>
-                                </form>
-                            </courseware-tab>
-                            <courseware-tab :name="textEdit.meta" :index="1">
-                                <form class="default" @submit.prevent="">
-                                    <label>
-                                        <translate>Farbe</translate>
-                                        <studip-select
-                                            v-model="currentElement.attributes.payload.color"
-                                            :options="colors"
-                                            :reduce="(color) => color.class"
-                                            label="class"
-                                            class="cw-vs-select"
-                                        >
-                                            <template #open-indicator="selectAttributes">
-                                                <span v-bind="selectAttributes"
-                                                    ><studip-icon shape="arr_1down" :size="10"
-                                                /></span>
-                                            </template>
-                                            <template #no-options>
-                                                <translate>Es steht keine Auswahl zur Verfügung</translate>.
-                                            </template>
-                                            <template #selected-option="{ name, hex }">
-                                                <span class="vs__option-color" :style="{ 'background-color': hex }"></span
-                                                ><span>{{ name }}</span>
-                                            </template>
-                                            <template #option="{ name, hex }">
-                                                <span class="vs__option-color" :style="{ 'background-color': hex }"></span
-                                                ><span>{{ name }}</span>
-                                            </template>
-                                        </studip-select>
-                                    </label>
-                                    <label>
-                                        <translate>Art des Lernmaterials</translate>
-                                        <select v-model="currentElement.attributes.purpose">
-                                            <option value="content"><translate>Inhalt</translate></option>
-                                            <option v-if="!inCourse"  value="template"><translate>Aufgabenvorlage</translate></option>
-                                            <option value="oer"><translate>OER-Material</translate></option>
-                                            <option value="portfolio"><translate>ePortfolio</translate></option>
-                                            <option value="draft"><translate>Entwurf</translate></option>
-                                            <option value="other"><translate>Sonstiges</translate></option>
-                                        </select>
-                                    </label>
-                                    <template v-if="currentElement.attributes.purpose === 'oer'">
-                                        <label>
-                                            <translate>Lizenztyp</translate>
-                                            <select v-model="currentElement.attributes.payload.license_type">
-                                                <option v-for="license in licenses" :key="license.id" :value="license.id">
-                                                    {{ license.name }}
-                                                </option>
-                                            </select>
-                                        </label>
-                                        <label>
-                                            <translate>Geschätzter zeitlicher Aufwand</translate>
-                                            <input type="text" v-model="currentElement.attributes.payload.required_time" />
-                                        </label>
-                                        <label>
-                                            <translate>Niveau</translate><br />
-                                            <translate>von</translate>
-                                            <select v-model="currentElement.attributes.payload.difficulty_start">
-                                                <option value="">-</option>
-                                                <option
-                                                    v-for="difficulty_start in 12"
-                                                    :key="difficulty_start"
-                                                    :value="difficulty_start"
-                                                >
-                                                    {{ difficulty_start }}
-                                                </option>
-                                            </select>
-                                            <translate>bis</translate>
-                                            <select v-model="currentElement.attributes.payload.difficulty_end">
-                                                <option value="">-</option>
-                                                <option
-                                                    v-for="difficulty_end in 12"
-                                                    :key="difficulty_end"
-                                                    :value="difficulty_end"
-                                                >
-                                                    {{ difficulty_end }}
-                                                </option>
-                                            </select>
-                                        </label>
-                                    </template>
-                                </form>
-                            </courseware-tab>
-                            <courseware-tab :name="textEdit.image" :index="2">
-                                <form class="default" @submit.prevent="">
-                                    <template v-if="hasImage">
-                                        <img
-                                            :src="image"
-                                            class="cw-structural-element-image-preview"
-                                            :alt="$gettext('Vorschaubild')"
-                                            />
-                                        <label>
-                                            <button class="button" @click="deleteImage" v-translate>Bild löschen</button>
-                                        </label>
-                                    </template>
-
-                                    <div v-else class="cw-structural-element-image-preview-placeholder"></div>
-
-                                    <div v-if="uploadFileError" class="messagebox messagebox_error">
-                                        {{ uploadFileError }}
-                                    </div>
-
-                                    <div v-show="!hasImage">
-                                        <label>
-                                            {{ $gettext('Bild hochladen') }}
-                                            <input class="cw-file-input" ref="upload_image" type="file" accept="image/*" @change="checkUploadFile" />
-                                        </label>
-                                        {{ $gettext('oder') }}
-                                        <br>
-                                        <button class="button" type="button" @click="showStockImageSelector = true">
-                                            {{ $gettext('Aus dem Bilderpool auswählen') }}
-                                        </button>
-                                        <StockImageSelector v-if="showStockImageSelector" @close="showStockImageSelector = false" @select="onSelectStockImage" />
-                                    </div>
-                                </form>
-                            </courseware-tab>
-                            <courseware-tab v-if="(inCourse && !isTask) || inContent" :name="textEdit.approval" :index="3">
-                                <courseware-structural-element-permissions
-                                    v-if="inCourse"
-                                    :element="currentElement"
-                                    @updateReadApproval="updateReadApproval"
-                                    @updateWriteApproval="updateWriteApproval"
-                                />
-                                <courseware-content-permissions
-                                    v-if="inContent"
-                                    :element="currentElement"
-                                    @updateReadApproval="updateReadApproval"
-                                    @updateWriteApproval="updateWriteApproval"
-                                />
-                            </courseware-tab>
-                            <courseware-tab v-if="inCourse && !isTask" :name="textEdit.visible" :index="4">
-                                <form class="default" @submit.prevent="">
-                                    <label>
-                                        <translate>Sichtbar ab</translate>
-                                        <input type="date" v-model="currentElement.attributes['release-date']" />
-                                    </label>
-                                    <label>
-                                        <translate>Unsichtbar ab</translate>
-                                        <input type="date" v-model="currentElement.attributes['withdraw-date']" />
-                                    </label>
-                                </form>
-                            </courseware-tab>
-                        </courseware-tabs>
-                    </template>
-                </studip-dialog>
                 <courseware-structural-element-dialog-add
                     v-if="showAddDialog"
                     :structuralElement="structuralElement"
                     :isRoot="isRoot"
                     :canEditParent="canEditParent"
                 />
-                <studip-dialog
-                    v-if="showInfoDialog"
-                    :title="textInfo.title"
-                    :closeText="textInfo.close"
-                    closeClass="cancel"
-                    @close="showElementInfoDialog(false)"
-                >
-                    <template v-slot:dialogContent>
-                        <table class="cw-structural-element-info">
-                            <tr>
-                                <td><translate>Titel</translate>:</td>
-                                <td>{{ structuralElement.attributes.title }}</td>
-                            </tr>
-                            <tr>
-                                <td><translate>Beschreibung</translate>:</td>
-                                <td>{{ structuralElement.attributes.payload.description }}</td>
-                            </tr>
-                            <tr>
-                                <td><translate>Seite wurde erstellt von</translate>:</td>
-                                <td>{{ ownerName }}</td>
-                            </tr>
-                            <tr>
-                                <td><translate>Seite wurde erstellt am</translate>:</td>
-                                <td><iso-date :date="structuralElement.attributes.mkdate" /></td>
-                            </tr>
-                            <tr>
-                                <td><translate>Zuletzt bearbeitet von</translate>:</td>
-                                <td>{{ editorName }}</td>
-                            </tr>
-                            <tr>
-                                <td><translate>Zuletzt bearbeitet am</translate>:</td>
-                                <td><iso-date :date="structuralElement.attributes.chdate" /></td>
-                            </tr>
-                        </table>
-                    </template>
-                </studip-dialog>
-
-                <studip-dialog
-                    v-if="showOerDialog"
-                    height="600"
-                    width="600"
-                    :title="textOer.title"
-                    :confirmText="textOer.confirm"
-                    confirmClass="accept"
-                    :closeText="textOer.close"
-                    closeClass="cancel"
-                    @close="showElementOerDialog(false)"
-                    @confirm="publishCurrentElement"
-                >
-                    <template v-slot:dialogContent>
-                        <form v-show="!oerExportRunning" class="default" @submit.prevent="">
-                            <fieldset>
-                                <legend><translate>Grunddaten</translate></legend>
-                                <label>
-                                    <p><translate>Vorschaubild</translate>:</p>
-                                    <img
-                                        v-if="currentElement.relationships.image.data"
-                                        :src="currentElement.relationships.image.meta['download-url']"
-                                        width="400"
-                                    />
-                                </label>
-                                <label>
-                                    <p><translate>Beschreibung</translate>:</p>
-                                    <p>{{ currentElement.attributes.payload.description }}</p>
-                                </label>
-                                <label>
-                                    <translate>Niveau</translate>:
-                                    <p>
-                                        {{ currentElement.attributes.payload.difficulty_start }} -
-                                        {{ currentElement.attributes.payload.difficulty_end }}
-                                    </p>
-                                </label>
-                                <label>
-                                    <translate>Lizenztyp</translate>:
-                                    <p>{{ currentLicenseName }}</p>
-                                </label>
-                                <label>
-                                    <translate>Sie können diese Daten unter "Seiteneinstellungen" verändern.</translate>
-                                </label>
-                            </fieldset>
-                            <fieldset>
-                                <legend><translate>Einstellungen</translate></legend>
-                                <label>
-                                    <translate>Unterseiten veröffentlichen</translate>
-                                    <input type="checkbox" v-model="oerChildren" />
-                                </label>
-                            </fieldset>
-                        </form>
-                        <courseware-companion-box
-                            v-show="oerExportRunning"
-                            :msgCompanion="$gettext('Export läuft, bitte haben sie einen Moment Geduld...')"
-                            mood="pointing"
-                        />
-                    </template>
-                </studip-dialog>
-                <studip-dialog
-                    v-if="showSuggestOerDialog"
-                    height="600"
-                    width="600"
-                    :title="textSuggestOer.title"
-                    :confirmText="textSuggestOer.confirm"
-                    confirmClass="accept"
-                    :closeText="textSuggestOer.close"
-                    closeClass="cancel"
-                    @close="updateShowSuggestOerDialog(false)"
-                    @confirm="sendOerSuggestion"
-                >
-                    <template v-slot:dialogContent>
-                        <p v-translate>Das folgende Courseware-Material wird %{ ownerName }
-                            zur Veröffentlichung im OER Campus vorgeschlagen:</p>
-                        <table class="cw-structural-element-info">
-                            <tr>
-                                <td><translate>Titel</translate>:</td>
-                                <td>{{ structuralElement.attributes.title }}</td>
-                            </tr>
-                            <tr>
-                                <td><translate>Beschreibung</translate>:</td>
-                                <td>{{ structuralElement.attributes.payload.description }}</td>
-                            </tr>
-                        </table>
-                        <form class="default" @submit.prevent="">
-                            <label>
-                                <translate>Ihr Vorschlag wird anonym versendet. Falls gewünscht, können Sie
-                                    zusätzlich eine Nachricht verfassen:</translate>
-                                <textarea
-                                    v-model="additionalText"
-                                    class="cw-structural-element-description"
-                                />
-                            </label>
-                        </form>
-                    </template>
-                </studip-dialog>
                 <studip-dialog
                     v-if="showDeleteDialog"
                     :title="textDelete.title"
@@ -571,30 +303,7 @@
                     @confirm="deleteCurrentElement"
                     @close="closeDeleteDialog"
                 ></studip-dialog>
-                <studip-dialog
-                    v-if="showPublicLinkDialog && inContent"
-                    :title="$gettext('Öffentlichen Link für Seite erzeugen')"
-                    :confirmText="$gettext('Erstellen')"
-                    confirmClass="accept"
-                    :closeText="$gettext('Abbrechen')"
-                    closeClass="cancel"
-                    class="cw-structural-element-dialog"
-                    @close="closePublicLinkDialog"
-                    @confirm="createElementPublicLink"
-                >
-                    <template v-slot:dialogContent>
-                        <form class="default" @submit.prevent="">
-                            <label>
-                                <translate>Passwort</translate>
-                                <input type="password" v-model="publicLink.password" />
-                            </label>
-                            <label>
-                                <translate>Ablaufdatum</translate>
-                                <input v-model="publicLink['expire-date']" type="date" class="size-l" />
-                            </label>
-                        </form>
-                    </template>
-                </studip-dialog>
+
                 <studip-dialog
                     v-if="showRemoveLockDialog"
                     :title="textRemoveLock.title"
@@ -604,14 +313,69 @@
                     @confirm="executeRemoveLock"
                     @close="showElementRemoveLockDialog(false)"
                 ></studip-dialog>
+                <courseware-structural-element-dialog-settings
+                    v-if="showEditDialog"
+                    :structuralElement="currentElement"
+                    @close="closeEditDialog"
+                    @store="selectCurrent"
+                />
+                <template v-if="showPermissionsDialog && !isTask && !inContent">
+                    <studip-dialog
+                        v-if="showPermissionScopeDialog"
+                        :title="$gettext('Rechte und Sichtbarkeit')"
+                        :confirm-text="$gettext('Wechseln')"
+                        confirm-class="accept"
+                        :close-text="$gettext('Abbrechen')"
+                        close-class="cancel"
+                        :question="$gettext('Sie haben bereits die Rechte und Sichtbarkeit für das gesamte Lernmaterial eingestellt. Möchten Sie nun die Rechte für einzelne Seiten anpassen? Die bereits festgelegten Rechte werden beibehalten.')"
+                        height="250"
+                        @close="closeEditDialog"
+                        @confirm="switchPermissionScope"
+                    >
 
-                <courseware-structural-element-dialog-import v-if="showImportDialog"/>
+                    </studip-dialog>
+                    <courseware-structural-element-dialog-permissions
+                        v-if="showPermissionSettingsDialog"
+                        :structuralElement="currentElement"
+                        @close="closeEditDialog"
+                        @store="selectCurrent"
+                    />
+                </template>
+                <courseware-structural-element-dialog-import v-if="showImportDialog" />
                 <courseware-structural-element-dialog-copy v-if="showCopyDialog" />
-                <courseware-structural-element-dialog-link v-if="showLinkDialog"/>
-                <courseware-structural-element-dialog-export-chooser v-if="showExportChooserDialog" :canEdit="canEdit" :canVisit="canVisit" />
-                <courseware-structural-element-dialog-export v-if="showExportDialog" :structuralElement="currentElement" />
-                <courseware-structural-element-dialog-export-pdf v-if="showPdfExportDialog" :structuralElement="currentElement" />
+                <courseware-structural-element-dialog-link v-if="showLinkDialog" />
+                <courseware-structural-element-dialog-export-chooser
+                    v-if="showExportChooserDialog"
+                    :canEdit="canEdit"
+                    :canVisit="canVisit"
+                />
+                <courseware-structural-element-dialog-export
+                    v-if="showExportDialog"
+                    :structuralElement="currentElement"
+                />
+                <courseware-structural-element-dialog-export-pdf
+                    v-if="showPdfExportDialog"
+                    :structuralElement="currentElement"
+                />
+                <courseware-structural-element-dialog-export-oer
+                    v-if="showOerExportDialog"
+                    :structuralElement="currentElement"
+                />
+                <courseware-structural-element-dialog-oer-suggest
+                    v-if="showSuggestOerDialog"
+                    :structuralElement="structuralElement"
+                    :ownerName="ownerName"
+                />
                 <courseware-structural-element-dialog-add-chooser v-if="showAddChooserDialog" />
+                <courseware-structural-element-dialog-info
+                    v-if="showInfoDialog"
+                    :structuralElement="currentElement"
+                    :ownerName="ownerName"
+                />
+                <courseware-structural-element-dialog-public-link
+                    v-if="showPublicLinkDialog && inContent"
+                    :structuralElement="structuralElement"
+                />
                 <feedback-dialog
                     v-if="showFeedbackDialog"
                     :feedbackElementId="parseInt(feedbackElementId)"
@@ -637,10 +401,10 @@
             <div v-else>
                 <courseware-companion-box
                     v-if="currentElement !== ''"
-                    :msgCompanion="textCompanionWrongContext"
+                    :msgCompanion="$gettext('Die angeforderte Seite ist nicht Teil dieser Courseware.')"
                     mood="sad"
                 >
-                    <template v-slot:companionActions >
+                    <template v-slot:companionActions>
                         <a class="button" :href="unitRootUrl">{{ $gettext('Lernmaterial neu laden') }}</a>
                         <a class="button" :href="shelfURL">{{ $gettext('Zurück zur Lernmaterialübersicht') }}</a>
                     </template>
@@ -666,22 +430,25 @@ import CoursewareStructuralElementDialogImport from './CoursewareStructuralEleme
 import CoursewareStructuralElementDialogLink from './CoursewareStructuralElementDialogLink.vue';
 import CoursewareStructuralElementDialogExportChooser from './CoursewareStructuralElementDialogExportChooser.vue';
 import CoursewareStructuralElementDialogExport from './CoursewareStructuralElementDialogExport.vue';
+import CoursewareStructuralElementDialogExportOer from './CoursewareStructuralElementDialogExportOer.vue';
 import CoursewareStructuralElementDialogExportPdf from './CoursewareStructuralElementDialogExportPdf.vue';
+import CoursewareStructuralElementDialogOerSuggest from './CoursewareStructuralElementDialogOerSuggest.vue';
+import CoursewareStructuralElementDialogSettings from './CoursewareStructuralElementDialogSettings.vue';
+import CoursewareStructuralElementDialogPermissions from './CoursewareStructuralElementDialogPermissions.vue';
+import CoursewareStructuralElementDialogInfo from './CoursewareStructuralElementDialogInfo.vue';
+import CoursewareStructuralElementDialogPublicLink from './CoursewareStructuralElementDialogPublicLink.vue';
 import CoursewareStructuralElementDiscussion from './CoursewareStructuralElementDiscussion.vue';
-import CoursewareStructuralElementPermissions from './CoursewareStructuralElementPermissions.vue';
-import CoursewareContentPermissions from '../CoursewareContentPermissions.vue';
+
 import CoursewareWelcomeScreen from './CoursewareWelcomeScreen.vue';
 import CoursewareExport from '@/vue/mixins/courseware/export.js';
-import CoursewareOerMessage from '@/vue/mixins/courseware/oermessage.js';
+
 import colorMixin from '@/vue/mixins/courseware/colors.js';
 import wizardMixin from '@/vue/mixins/courseware/wizard.js';
 import CoursewareCallToActionBox from '../layouts/CoursewareCallToActionBox.vue';
 import CoursewareDateInput from '../layouts/CoursewareDateInput.vue';
-import StockImageSelector from '../../stock-images/SelectorDialog.vue';
 import StudipDialog from '../../StudipDialog.vue';
 import { FocusTrap } from 'focus-trap-vue';
-import IsoDate from '../layouts/IsoDate.vue';
-import FeedbackDialog from '../../feedback/FeedbackDialog.vue'
+import FeedbackDialog from '../../feedback/FeedbackDialog.vue';
 import FeedbackCreateDialog from '../../feedback/FeedbackCreateDialog.vue';
 import StudipFiveStars from '../../feedback/StudipFiveStars.vue';
 import StudipProgressIndicator from '../../StudipProgressIndicator.vue';
@@ -702,10 +469,14 @@ export default {
         CoursewareStructuralElementDialogLink,
         CoursewareStructuralElementDialogExport,
         CoursewareStructuralElementDialogExportChooser,
+        CoursewareStructuralElementDialogExportOer,
         CoursewareStructuralElementDialogExportPdf,
+        CoursewareStructuralElementDialogOerSuggest,
+        CoursewareStructuralElementDialogSettings,
+        CoursewareStructuralElementDialogPermissions,
+        CoursewareStructuralElementDialogInfo,
+        CoursewareStructuralElementDialogPublicLink,
         CoursewareStructuralElementDiscussion,
-        CoursewareStructuralElementPermissions,
-        CoursewareContentPermissions,
         CoursewareWelcomeScreen,
         CoursewareCallToActionBox,
         CoursewareDateInput,
@@ -714,51 +485,21 @@ export default {
         FeedbackCreateDialog,
         StudipFiveStars,
         FocusTrap,
-        IsoDate,
-        StockImageSelector,
         StudipDialog,
         StudipProgressIndicator,
         draggable,
     }),
     props: ['canVisit', 'orderedStructuralElements', 'structuralElement'],
 
-    mixins: [CoursewareExport, CoursewareOerMessage, colorMixin, wizardMixin, containerMixin],
+    mixins: [CoursewareExport, colorMixin, wizardMixin, containerMixin],
 
     data() {
         return {
             currentElement: '',
-            uploadFileError: '',
-            textCompanionWrongContext: this.$gettext('Die angeforderte Seite ist nicht Teil dieser Courseware.'),
-            textEdit: {
-                title: this.$gettext('Seiteneinstellungen'),
-                confirm: this.$gettext('Speichern'),
-                close: this.$gettext('Schließen'),
-                basic: this.$gettext('Grunddaten'),
-                image: this.$gettext('Bild'),
-                meta: this.$gettext('Metadaten'),
-                approval: this.$gettext('Rechte'),
-                visible: this.$gettext('Sichtbarkeit'),
-            },
-            textInfo: {
-                title: this.$gettext('Informationen zur Seite'),
-                close: this.$gettext('Schließen'),
-            },
-            textAdd: {
-                title: this.$gettext('Seite hinzufügen'),
-                confirm: this.$gettext('Erstellen'),
-                close: this.$gettext('Schließen'),
-            },
-            textRibbon: {
-                perv: this.$gettext('zurück'),
-                next: this.$gettext('weiter'),
-            },
             textRemoveLock: {
                 title: this.$gettext('Sperre aufheben'),
                 alert: this.$gettext('Möchten Sie die Sperre der Seite wirklich aufheben?'),
             },
-            oerExportRunning: false,
-            oerChildren: true,
-            pdfExportChildren: false,
             containerList: [],
             isDragging: false,
             dragOptions: {
@@ -769,26 +510,18 @@ export default {
             },
             errorEmptyChapterName: false,
             consumModeTrap: false,
-            additionalText: '',
-
-            publicLink: {
-                passsword: '',
-                'expire-date': ''
-            },
-            deletingPreviewImage: false,
             keyboardSelected: null,
             assistiveLive: '',
-            uploadImageURL: null,
-            showStockImageSelector: false,
-            selectedStockImage: null,
             displayFeedback: false,
-
             showRatingPopup: false,
             ratingPopupFeedbackElement: null,
             storing: false,
 
             handleDebouncedScroll: null,
             scrollHasBeenPerformed: false,
+
+            showPermissionScopeDialog: false,
+            showPermissionSettingsDialog: false,
         };
     },
 
@@ -796,6 +529,7 @@ export default {
         ...mapGetters({
             courseware: 'courseware',
             rootId: 'rootId',
+            currentUnit: 'currentUnit',
             context: 'context',
             consumeMode: 'consumeMode',
             containerById: 'courseware-containers/byId',
@@ -819,17 +553,17 @@ export default {
             showPdfExportDialog: 'showStructuralElementPdfExportDialog',
             showInfoDialog: 'showStructuralElementInfoDialog',
             showDeleteDialog: 'showStructuralElementDeleteDialog',
-            showOerDialog: 'showStructuralElementOerDialog',
+            showOerExportDialog: 'showStructuralElementOerDialog',
             showSuggestOerDialog: 'showSuggestOerDialog',
             showPublicLinkDialog: 'showStructuralElementPublicLinkDialog',
             showRemoveLockDialog: 'showStructuralElementRemoveLockDialog',
             showFeedbackDialog: 'showStructuralElementFeedbackDialog',
             showFeedbackCreateDialog: 'showStructuralElementFeedbackCreateDialog',
+            showPermissionsDialog: 'showStructuralElementPermissionsDialog',
             oerCampusEnabled: 'oerCampusEnabled',
             oerEnableSuggestions: 'oerEnableSuggestions',
             licenses: 'licenses',
             userId: 'userId',
-            viewMode: 'viewMode',
             taskById: 'courseware-tasks/byId',
             userById: 'users/byId',
             lastCreatedElement: 'courseware-structural-elements/lastCreated',
@@ -869,22 +603,6 @@ export default {
             return 0;
         },
 
-        textOer() {
-            return {
-                title: this.$gettext('Seite auf dem OER Campus veröffentlichen'),
-                confirm: this.$gettext('Veröffentlichen'),
-                close: this.$gettext('Abbrechen'),
-            };
-        },
-
-        textSuggestOer() {
-            return {
-                title: this.$gettext('Seite für den OER Campus vorschlagen'),
-                confirm: this.$gettext('Vorschlagen'),
-                close: this.$gettext('Abbrechen'),
-            };
-        },
-
         inCourse() {
             return this.context.type === 'courses';
         },
@@ -899,11 +617,10 @@ export default {
             textDelete.title = this.$gettext('Seite unwiderruflich löschen');
             textDelete.alert = this.$gettext('Möchten Sie die Seite wirklich löschen?');
             if (this.structuralElementLoaded) {
-                textDelete.alert =
-                    this.$gettextInterpolate(
-                        this.$gettext('Möchten Sie die Seite %{ pageTitle } und alle ihre Unterseiten wirklich löschen?'),
-                        {pageTitle: this.structuralElement.attributes.title}
-                    );
+                textDelete.alert = this.$gettextInterpolate(
+                    this.$gettext('Möchten Sie die Seite %{ pageTitle } und alle ihre Unterseiten wirklich löschen?'),
+                    { pageTitle: this.structuralElement.attributes.title }
+                );
             }
 
             return textDelete;
@@ -942,30 +659,11 @@ export default {
                 }
             }
 
-
             return false;
         },
 
-        image() {
-            if (this.selectedStockImage) {
-                return this.selectedStockImage.attributes['download-urls'].small
-            }
-            if (this.uploadImageURL) {
-                return this.uploadImageURL;
-            }
-            return this.structuralElement.relationships?.image?.meta?.['download-url'] ?? null;
-        },
-
-        imageType() {
-            return this.structuralElement.relationships?.image?.data?.type ?? null;
-        },
-
-        hasImage() {
-            return (this.image || this.selectedStockImage ) && this.deletingPreviewImage === false;
-        },
-
         structuralElementLoaded() {
-            return this.structuralElement !== null && this.structuralElement !== {};
+            return this.structuralElement !== null;
         },
 
         ancestors() {
@@ -1099,19 +797,6 @@ export default {
             return true;
         },
 
-        editor() {
-            const editor = this.relatedUsers({
-                parent: this.structuralElement,
-                relationship: 'editor',
-            });
-
-            return editor ?? null;
-        },
-
-        editorName() {
-            return this.editor?.attributes['formatted-name'] ?? '?';
-        },
-
         feedbackElementId() {
             return this.currentElement?.relationships?.['feedback-element']?.data?.id;
         },
@@ -1134,8 +819,6 @@ export default {
         menuItems() {
             let menu = [];
 
-
-
             if (this.canEdit) {
                 menu.push({ id: 1, label: this.$gettext('Seite hinzufügen'), icon: 'add', emit: 'addElement' });
                 menu.push({ id: 2, label: this.$gettext('Seite exportieren'), icon: 'export', emit: 'exportElement' });
@@ -1157,30 +840,38 @@ export default {
                         emit: 'editCurrentElement',
                     });
                     if (this.userIsTeacher) {
-                        menu.push({ id: 7, type: 'separator'});
+                        if (!this.isTask && !this.inContent && !this.isRoot) {
+                            menu.push({
+                                id: 6,
+                                label: this.$gettext('Rechte & Sichtbarkeit'),
+                                icon: 'lock-unlocked',
+                                emit: 'showPermissions'
+                            });
+                        }
+                        menu.push({ id: 8, type: 'separator'});
                         menu.push({
-                            id: 8,
+                            id: 9,
                             label: this.commentable
-                                    ? this.$gettext('Kommentare abschalten')
-                                    : this.$gettext('Kommentare aktivieren'),
-                                icon: 'comment2',
-                                emit: this.commentable ? 'deactivateComments' : 'activateComments',
+                                ? this.$gettext('Kommentare abschalten')
+                                : this.$gettext('Kommentare aktivieren'),
+                            icon: 'comment2',
+                            emit: this.commentable ? 'deactivateComments' : 'activateComments',
                         });
                         if (!this.hasFeedback && !this.displayFeedback) {
                             menu.push({
-                                id: 9,
+                                id: 10,
                                 label: this.$gettext('Anmerkungen aktivieren'),
                                 icon: 'exclaim-circle',
                                 emit: 'showNote'
                             });
                         }
                     }
-                    menu.push({ id: 11, type: 'separator'});
+                    menu.push({ id: 12, type: 'separator'});
                 }
 
                 if (this.deletable && this.canEdit && !this.isTask && !this.blocked) {
                     menu.push({
-                        id: 6,
+                        id: 7,
                         label: this.$gettext('Seite löschen'),
                         icon: 'trash',
                         emit: 'deleteCurrentElement',
@@ -1190,7 +881,7 @@ export default {
             if (this.isFeedbackActivated) {
                 if (this.canCreateFeedbackElement && !this.hasFeedbackElement) {
                     menu.push({
-                        id: 10,
+                        id: 11,
                         label: this.$gettext('Feedback aktivieren'),
                         icon: 'feedback',
                         emit: 'showFeedbackCreate',
@@ -1198,30 +889,35 @@ export default {
                 }
                 if (this.hasFeedbackElement) {
                     menu.push({
-                        id: 10,
+                        id: 11,
                         label: this.$gettext('Feedback anzeigen'),
                         icon: 'feedback',
                         emit: 'showFeedback',
                     });
                 }
             }
-            menu.push({ id: 12, label: this.$gettext('Lesezeichen setzen'), icon: 'star', emit: 'setBookmark' });
+            menu.push({ id: 13, label: this.$gettext('Lesezeichen setzen'), icon: 'star', emit: 'setBookmark' });
 
             if (this.oerEnableSuggestions && this.inCourse && this.userId !== this.structuralElement.relationships.owner.data.id) {
                 menu.push(
-                    { id: 13, label: this.$gettext('Seite für OER Campus vorschlagen'), icon: 'oer-campus',
+                    { id: 14, label: this.$gettext('Seite für OER Campus vorschlagen'), icon: 'oer-campus',
                         emit: 'showSuggest' }
                 );
             }
 
             if (this.context.type === 'users') {
-                menu.push({ id: 14, label: this.$gettext('Öffentlichen Link erzeugen'), icon: 'group', emit: 'linkElement' });
+                menu.push({
+                    id: 15,
+                    label: this.$gettext('Öffentlichen Link erzeugen'),
+                    icon: 'group',
+                    emit: 'linkElement',
+                });
             }
 
             if (!document.documentElement.classList.contains('responsive-display')) {
-                menu.push({ id: 15, type: 'separator'});
+                menu.push({ id: 16, type: 'separator'});
                 menu.push(
-                    { id: 16, label: this.$gettext('Als Vollbild anzeigen'), icon: 'screen-full',
+                    { id: 17, label: this.$gettext('Als Vollbild anzeigen'), icon: 'screen-full',
                         emit: 'activateFullscreen'},
                 );
             }
@@ -1231,20 +927,12 @@ export default {
             return menu;
         },
         colors() {
-            return this.mixinColors.filter(color => color.darkmode);
+            return this.mixinColors.filter((color) => color.darkmode);
         },
-        currentLicenseName() {
-            for (let i = 0; i < this.licenses.length; i++) {
-                if (this.licenses[i]['id'] == this.currentElement.attributes.payload.license_type) {
-                    return this.licenses[i]['name'];
-                }
-            }
 
-            return '';
-        },
         blockingUser() {
             if (this.blockedByAnotherUser) {
-                return this.userById({id: this.blockerId});
+                return this.userById({ id: this.blockerId });
             }
 
             return null;
@@ -1318,7 +1006,7 @@ export default {
 
         linkedElement() {
             if (this.isLink) {
-                return this.structuralElementById({ id: this.structuralElement.attributes['target-id']});
+                return this.structuralElementById({ id: this.structuralElement.attributes['target-id'] });
             }
 
             return null;
@@ -1330,13 +1018,12 @@ export default {
 
             if (relatedContainers) {
                 for (const container of relatedContainers) {
-                    containers.push(this.containerById({ id: container.id}));
+                    containers.push(this.containerById({ id: container.id }));
                 }
             }
 
             return containers;
         },
-
         owner() {
             const owner = this.relatedUsers({
                 parent: this.structuralElement,
@@ -1362,16 +1049,12 @@ export default {
             return '';
         },
         shelfURL() {
-            return STUDIP.URLHelper.getURL(
-                'dispatch.php/course/courseware/',
-                {cid: this.context.id}
-            );
+            return STUDIP.URLHelper.getURL('dispatch.php/course/courseware/', { cid: this.context.id });
         },
         unitRootUrl() {
-            return STUDIP.URLHelper.getURL(
-                'dispatch.php/course/courseware/courseware/' + this.context.unit,
-                {cid: this.context.id}
-            );
+            return STUDIP.URLHelper.getURL('dispatch.php/course/courseware/courseware/' + this.context.unit, {
+                cid: this.context.id,
+            });
         },
         commentable() {
             return this.currentElement?.attributes?.commentable ?? false;
@@ -1401,7 +1084,8 @@ export default {
                     '%{length} Anmerkungen zur Seite (Nur für Nutzende mit Schreibrechten sichtbar)',
                     this.feedbackCounter
                 ),
-            { length: this.feedbackCounter });
+                { length: this.feedbackCounter }
+            );
         },
         comments() {
             const parent = {
@@ -1416,18 +1100,14 @@ export default {
         },
         callToActionTitleComments() {
             return this.$gettextInterpolate(
-                this.$ngettext(
-                    '%{length} Kommentar zur Seite',
-                    '%{length} Kommentare zur Seite',
-                    this.commentsCounter
-                ),
-            { length: this.commentsCounter });
+                this.$ngettext('%{length} Kommentar zur Seite', '%{length} Kommentare zur Seite', this.commentsCounter),
+                { length: this.commentsCounter }
+            );
         },
     },
 
     methods: {
         ...mapActions({
-            updateStructuralElement: 'updateStructuralElement',
             deleteStructuralElement: 'deleteStructuralElement',
             lockObject: 'lockObject',
             unlockObject: 'unlockObject',
@@ -1436,9 +1116,6 @@ export default {
             companionWarning: 'companionWarning',
             companionError: 'companionError',
             companionSuccess: 'companionSuccess',
-            uploadImageForStructuralElement: 'uploadImageForStructuralElement',
-            deleteImageForStructuralElement: 'deleteImageForStructuralElement',
-            setStockImageForStructuralElement: 'setStockImageForStructuralElement',
             showElementEditDialog: 'showElementEditDialog',
             showElementAddDialog: 'showElementAddDialog',
             showElementAddChooserDialog: 'showElementAddChooserDialog',
@@ -1447,18 +1124,17 @@ export default {
             showElementPdfExportDialog: 'showElementPdfExportDialog',
             showElementInfoDialog: 'showElementInfoDialog',
             showElementDeleteDialog: 'showElementDeleteDialog',
-            showElementOerDialog: 'showElementOerDialog',
             showElementPublicLinkDialog: 'showElementPublicLinkDialog',
             showElementRemoveLockDialog: 'showElementRemoveLockDialog',
             updateShowSuggestOerDialog: 'updateShowSuggestOerDialog',
             showStructuralElementFeedbackDialog: 'showStructuralElementFeedbackDialog',
             showStructuralElementFeedbackCreateDialog: 'showStructuralElementFeedbackCreateDialog',
+            showStructuralElementPermissionsDialog: 'showStructuralElementPermissionsDialog',
             updateContainer: 'updateContainer',
             createContainer: 'createContainer',
             sortContainersInStructualElements: 'sortContainersInStructualElements',
             loadTask: 'loadTask',
             loadStructuralElement: 'loadStructuralElement',
-            createLink: 'createLink',
             setCurrentElementId: 'coursewareCurrentElement',
             loadProgresses: 'loadProgresses',
             activateStructuralElementComments: 'activateStructuralElementComments',
@@ -1467,24 +1143,17 @@ export default {
             createFeedback: 'feedback-elements/create',
             loadFeedbackElement: 'feedback-elements/loadById',
             setProcessing: 'setProcessing',
+            updateUnit: 'courseware-units/update',
+            loadUnit: 'courseware-units/loadById',
         }),
 
         initCurrent() {
-            if (!this.storing) {
-                this.currentElement = _.cloneDeep(this.structuralElement);
-                this.uploadFileError = '';
-                this.deletingPreviewImage = false;
-                this.uploadImageURL = null;
-                this.loadFeedback();
-            }
+            this.currentElement = _.cloneDeep(this.structuralElement);
+            this.loadFeedback();
         },
         async menuAction(action) {
-            switch (action) {
-                case 'removeLock':
-                    this.displayRemoveLockDialog();
-                    break;
-                case 'editCurrentElement':
-                    await this.loadStructuralElement(this.currentId);
+            if (['editCurrentElement', 'showPermissions'].includes(action)) {
+                await this.loadStructuralElement(this.currentId);
                     if (this.blockedByAnotherUser) {
                         this.companionInfo({ info: this.$gettext('Diese Seite wird bereits bearbeitet.') });
 
@@ -1492,7 +1161,7 @@ export default {
                     }
                     try {
                         await this.lockObject({ id: this.currentId, type: 'courseware-structural-elements' });
-                    } catch(error) {
+                    } catch (error) {
                         if (error.status === 409) {
                             this.companionInfo({ info: this.$gettext('Diese Seite wird bereits bearbeitet.') });
                         } else {
@@ -1501,8 +1170,16 @@ export default {
 
                         return false;
                     }
-                    this.initCurrent();
+            }
+            switch (action) {
+                case 'removeLock':
+                    this.displayRemoveLockDialog();
+                    break;
+                case 'editCurrentElement':
                     this.showElementEditDialog(true);
+                    break;
+                case 'showPermissions':
+                    this.showStructuralElementPermissionsDialog(true);
                     break;
                 case 'addElement':
                     this.errorEmptyChapterName = false;
@@ -1517,8 +1194,8 @@ export default {
                         this.companionInfo({
                             info: this.$gettextInterpolate(
                                 this.$gettext('Löschen nicht möglich, da %{blockingUserName} die Seite bearbeitet.'),
-                                {blockingUserName: this.blockingUserName}
-                            )
+                                { blockingUserName: this.blockingUserName }
+                            ),
                         });
 
                         return false;
@@ -1555,99 +1232,38 @@ export default {
                     break;
                 case 'showNote':
                     this.displayFeedback = true;
+                    break;
             }
         },
+        selectCurrent() {
+            this.$emit('select', this.currentId);
+        },
         async closeEditDialog() {
-            await this.loadStructuralElement(this.currentElement.id);
             if (this.blockedByThisUser) {
                 await this.unlockObject({ id: this.currentId, type: 'courseware-structural-elements' });
                 await this.loadStructuralElement(this.currentElement.id);
             }
+            this.showPermissionScopeDialog = false;
+            this.showPermissionSettingsDialog = false;
             this.showElementEditDialog(false);
-            this.initCurrent();
+            this.showStructuralElementPermissionsDialog(false);
+        },
+        async switchPermissionScope() {
+            const unit = {
+                id: this.currentUnit.id,
+                type: 'courseware-units',
+                attributes: {
+                    'permission-scope': 'structural_element',
+                },
+            };
+            await this.updateUnit(unit);
+            await this.loadUnit({ id: this.currentUnit.id });
+            this.showPermissionScopeDialog = false;
+            this.showPermissionSettingsDialog = true;
         },
         closeAddDialog() {
             this.showElementAddDialog(false);
         },
-        checkUploadFile() {
-            const file = this.$refs?.upload_image?.files[0];
-            this.uploadImageURL = null;
-            this.uploadFileError = this.checkUploadImageFile(this.$refs?.upload_image?.files[0]);
-            if (this.uploadFileError === '') {
-                this.deletingPreviewImage = false;
-                this.uploadImageURL = window.URL.createObjectURL(file);
-            }
-        },
-        deleteImage() {
-            if (!this.deletingPreviewImage) {
-                this.deletingPreviewImage = true;
-            }
-        },
-        async storeCurrentElement() {
-            this.storing = true;
-            await this.loadStructuralElement(this.currentElement.id);
-            if (this.blockedByAnotherUser) {
-                this.companionWarning({
-                    info: this.$gettextInterpolate(
-                        this.$gettext('Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.'),
-                        {blockingUserName: this.blockingUserName}
-                    )
-                });
-                this.showElementEditDialog(false);
-                this.storing = false;
-                return false;
-            }
-            if (!this.blocked) {
-                await this.lockObject({ id: this.currentId, type: 'courseware-structural-elements' });
-            }
-
-            const file = this.$refs?.upload_image?.files[0];
-            try {
-                this.uploadFileError = '';
-                if (file) {
-                    await this.uploadImageForStructuralElement({
-                        structuralElement: this.currentElement,
-                        file,
-                    });
-                } else if (this.selectedStockImage) {
-                    await this.setStockImageForStructuralElement({
-                        structuralElement: this.currentElement,
-                        stockImage: this.selectedStockImage,
-                    })
-                } else if (this.deletingPreviewImage) {
-                    await this.deleteImageForStructuralElement(this.currentElement);
-                }
-
-                this.loadStructuralElement(this.currentElement.id);
-            } catch(error) {
-                console.error(error);
-                this.uploadFileError = this.$gettext('Das Bild für das neue Lernmaterial konnte nicht gespeichert werden.');
-            }
-
-            this.showElementEditDialog(false);
-            if (this.currentElement.attributes['release-date'] !== '') {
-                this.currentElement.attributes['release-date'] =
-                    new Date(this.currentElement.attributes['release-date']).getTime() / 1000;
-            }
-
-            if (this.currentElement.attributes['withdraw-date'] !== '') {
-                this.currentElement.attributes['withdraw-date'] =
-                    new Date(this.currentElement.attributes['withdraw-date']).getTime() / 1000;
-            }
-
-            const element = {
-                id: this.currentElement.id,
-                type: this.currentElement.type,
-                attributes: this.currentElement.attributes,
-            };
-
-            await this.updateStructuralElement({ element, id: this.currentId});
-            await this.unlockObject({ id: this.currentId, type: 'courseware-structural-elements' });
-            this.$emit('select', this.currentId);
-            this.storing = false;
-            this.initCurrent();
-        },
-
         dropContainer() {
             this.isDragging = false;
             this.storeSort();
@@ -1679,22 +1295,10 @@ export default {
                 structuralElement: this.structuralElement,
                 containers: this.containerList,
             });
-            this.$emit('select', this.currentId);
+            this.selectCurrent();
 
             clearTimeout(timeout);
             this.setProcessing(false);
-        },
-
-
-
-        async publishCurrentElement() {
-            if (this.oerExportRunning) {
-                return;
-            }
-            this.oerExportRunning = true;
-            await this.exportToOER(this.currentElement, { withChildren: this.oerChildren });
-            this.oerExportRunning = false;
-            this.showElementOerDialog(false);
         },
 
         async closeDeleteDialog() {
@@ -1708,7 +1312,7 @@ export default {
             await this.loadStructuralElement(this.currentElement.id);
             if (!this.deletable) {
                 this.companionWarning({
-                        info: this.$gettext('Diese Seite darf nicht gelöscht werden')
+                    info: this.$gettext('Diese Seite darf nicht gelöscht werden'),
                 });
                 this.showElementDeleteDialog(false);
                 return false;
@@ -1717,8 +1321,8 @@ export default {
                 this.companionWarning({
                     info: this.$gettextInterpolate(
                         this.$gettext('Löschen nicht möglich, da %{blockingUserName} die Bearbeitung übernommen hat.'),
-                        {blockingUserName: this.blockingUserName}
-                    )
+                        { blockingUserName: this.blockingUserName }
+                    ),
                 });
                 this.showElementDeleteDialog(false);
                 return false;
@@ -1730,13 +1334,13 @@ export default {
                 id: this.currentId,
                 parentId: this.structuralElement.relationships.parent.data.id,
             })
-            .then(response => {
-                this.$router.push(redirect_id);
-                this.companionInfo({ info: this.$gettext('Die Seite wurde gelöscht.') });
-            })
-            .catch(error => {
-                this.companionError({ info: this.$gettext('Die Seite konnte nicht gelöscht werden.') });
-            });
+                .then((response) => {
+                    this.$router.push(redirect_id);
+                    this.companionInfo({ info: this.$gettext('Die Seite wurde gelöscht.') });
+                })
+                .catch((error) => {
+                    this.companionError({ info: this.$gettext('Die Seite konnte nicht gelöscht werden.') });
+                });
         },
         containerComponent(container) {
             return 'courseware-' + container.attributes['container-type'] + '-container';
@@ -1744,46 +1348,6 @@ export default {
         setBookmark() {
             this.addBookmark(this.structuralElement);
             this.companionInfo({ info: this.$gettext('Das Lesezeichen wurde gesetzt.') });
-        },
-        updateReadApproval(approval) {
-            this.currentElement.attributes['read-approval'] = approval;
-        },
-        updateWriteApproval(approval) {
-            this.currentElement.attributes['write-approval'] = approval;
-        },
-        sendOerSuggestion() {
-            this.suggestViaAction(this.currentElement, this.additionalText);
-            this.updateShowSuggestOerDialog(false);
-        },
-        async createElementPublicLink() {
-            const date = this.publicLink['expire-date'];
-            const publicLink = {
-                attributes: {
-                    password: this.publicLink.password,
-                    'expire-date': date === '' ? new Date(0).toISOString() : new Date(date).toISOString()
-                },
-                relationships: {
-                    'structural-element': {
-                        data: {
-                            id: this.currentElement.id,
-                            type: 'courseware-structural-elements'
-                        }
-                    }
-                }
-            }
-
-            await this.createLink({ publicLink });
-            this.companionSuccess({
-                info: this.$gettext('Öffentlicher Link wurde angelegt. Unter Freigaben finden Sie alle Ihre öffentlichen Links.'),
-            });
-            this.closePublicLinkDialog();
-        },
-        closePublicLinkDialog() {
-            this.publicLink = {
-                passsword: '',
-                'expire-date': ''
-            };
-            this.showElementPublicLinkDialog(false);
         },
         displayRemoveLockDialog() {
             this.showElementRemoveLockDialog(true);
@@ -1824,13 +1388,18 @@ export default {
                         this.storeKeyboardSorting(containerId);
                     } else {
                         this.keyboardSelected = containerId;
-                        const container = this.containerById({id: containerId});
-                        const index = this.containerList.findIndex(c => c.id === container.id);
-                        this.assistiveLive =
-                            this.$gettextInterpolate(
-                                this.$gettext('%{containerTitle} Abschnitt ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen.')
-                                , {containerTitle: container.attributes.title, pos: index + 1, listLength: this.containerList.length}
-                            );
+                        const container = this.containerById({ id: containerId });
+                        const index = this.containerList.findIndex((c) => c.id === container.id);
+                        this.assistiveLive = this.$gettextInterpolate(
+                            this.$gettext(
+                                '%{containerTitle} Abschnitt ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen.'
+                            ),
+                            {
+                                containerTitle: container.attributes.title,
+                                pos: index + 1,
+                                listLength: this.containerList.length,
+                            }
+                        );
                     }
                     break;
             }
@@ -1851,60 +1420,67 @@ export default {
             }
         },
         moveItemUp(containerId) {
-            const currentIndex = this.containerList.findIndex(container => container.id === containerId);
+            const currentIndex = this.containerList.findIndex((container) => container.id === containerId);
             if (currentIndex !== 0) {
-                const container = this.containerById({id: containerId});
+                const container = this.containerById({ id: containerId });
                 const newPos = currentIndex - 1;
                 this.containerList.splice(newPos, 0, this.containerList.splice(currentIndex, 1)[0]);
-                this.assistiveLive =
-                    this.$gettextInterpolate(
-                        this.$gettext('%{containerTitle} Abschnitt. Aktuelle Position in der Liste: %{pos} von %{listLength}.')
-                        , {containerTitle: container.attributes.title, pos: newPos + 1, listLength: this.containerList.length}
-                    );
+                this.assistiveLive = this.$gettextInterpolate(
+                    this.$gettext(
+                        '%{containerTitle} Abschnitt. Aktuelle Position in der Liste: %{pos} von %{listLength}.'
+                    ),
+                    {
+                        containerTitle: container.attributes.title,
+                        pos: newPos + 1,
+                        listLength: this.containerList.length,
+                    }
+                );
             }
         },
         moveItemDown(containerId) {
-            const currentIndex = this.containerList.findIndex(container => container.id === containerId);
+            const currentIndex = this.containerList.findIndex((container) => container.id === containerId);
             if (this.containerList.length - 1 > currentIndex) {
-                const container = this.containerById({id: containerId});
+                const container = this.containerById({ id: containerId });
                 const newPos = currentIndex + 1;
                 this.containerList.splice(newPos, 0, this.containerList.splice(currentIndex, 1)[0]);
-                this.assistiveLive =
-                    this.$gettextInterpolate(
-                        this.$gettext('%{containerTitle} Abschnitt. Aktuelle Position in der Liste: %{pos} von %{listLength}.')
-                        , {containerTitle: container.attributes.title, pos: newPos + 1, listLength: this.containerList.length}
-                    );
+                this.assistiveLive = this.$gettextInterpolate(
+                    this.$gettext(
+                        '%{containerTitle} Abschnitt. Aktuelle Position in der Liste: %{pos} von %{listLength}.'
+                    ),
+                    {
+                        containerTitle: container.attributes.title,
+                        pos: newPos + 1,
+                        listLength: this.containerList.length,
+                    }
+                );
             }
         },
         abortKeyboardSorting(containerId) {
-            const container = this.containerById({id: containerId});
+            const container = this.containerById({ id: containerId });
             this.keyboardSelected = null;
-            this.assistiveLive =
-                this.$gettextInterpolate(
-                    this.$gettext('%{containerTitle} Abschnitt, Neuordnung abgebrochen.')
-                    , {containerTitle: container.attributes.title}
-                );
-            this.$emit('select', this.currentId);
+            this.assistiveLive = this.$gettextInterpolate(
+                this.$gettext('%{containerTitle} Abschnitt, Neuordnung abgebrochen.'),
+                { containerTitle: container.attributes.title }
+            );
+            this.selectCurrent();
         },
         storeKeyboardSorting(containerId) {
-            const container = this.containerById({id: containerId});
-            const currentIndex = this.containerList.findIndex(container => container.id === containerId);
+            const container = this.containerById({ id: containerId });
+            const currentIndex = this.containerList.findIndex((container) => container.id === containerId);
             this.keyboardSelected = null;
-            this.assistiveLive =
-                this.$gettextInterpolate(
-                    this.$gettext('%{containerTitle} Abschnitt, abgelegt. Entgültige Position in der Liste: %{pos} von %{listLength}.')
-                    , {containerTitle: container.attributes.title, pos: currentIndex + 1, listLength: this.containerList.length}
-                );
+            this.assistiveLive = this.$gettextInterpolate(
+                this.$gettext(
+                    '%{containerTitle} Abschnitt, abgelegt. Entgültige Position in der Liste: %{pos} von %{listLength}.'
+                ),
+                {
+                    containerTitle: container.attributes.title,
+                    pos: currentIndex + 1,
+                    listLength: this.containerList.length,
+                }
+            );
             this.storeSort();
         },
-        onSelectStockImage(stockImage) {
-            if (this.$refs?.upload_image) {
-                this.$refs.upload_image.value = null;
-            }
-            this.selectedStockImage = stockImage;
-            this.showStockImageSelector = false;
-            this.deletingPreviewImage = false;
-        },
+
         activateFeedback() {
             const data = {
                 attributes: {
@@ -1932,12 +1508,12 @@ export default {
             let showRatingPopup = false;
             let ratingPopupFeedbackElement = null;
             const toId = to.params.id;
-            const toElem = this.structuralElementById({id: toId});
+            const toElem = this.structuralElementById({ id: toId });
             if (toId === this.nextElement?.id && toElem.relationships.parent.data.id === this.rootId) {
                 const firstLevelElement = await this.findFirstLevelParent(this.currentElement);
                 const feedbackElementId = firstLevelElement?.relationships?.['feedback-element']?.data?.id;
                 if (feedbackElementId) {
-                    await this.loadFeedbackElement({ id: feedbackElementId, options: { include: 'entries' }});
+                    await this.loadFeedbackElement({ id: feedbackElementId, options: { include: 'entries' } });
                     ratingPopupFeedbackElement = this.getFeedbackElementById({ id: feedbackElementId });
                     const hasUserEntry = this.feedbackEntries.filter(
                         (entry) =>
@@ -2047,7 +1623,7 @@ export default {
                     this.showFeedbackPopup(to, from);
                 }
             },
-            deep: true
+            deep: true,
         },
         structuralElement: {
             async handler() {
@@ -2071,7 +1647,7 @@ export default {
                     this.loadFeedbackElement({ id: this.feedbackElementId });
                 }
             },
-            deep: true
+            deep: true,
         },
         containers() {
             this.containerList = this.containers;
@@ -2082,13 +1658,24 @@ export default {
                 this.$nextTick(() => {
                     const selected = this.$refs['sortableHandle' + this.keyboardSelected][0];
                     selected.focus();
-                    selected.scrollIntoView({behavior: "smooth", block: "center"});
+                    selected.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 });
             }
         },
         consumeMode(newState) {
             this.consumModeTrap = newState;
         },
+        showPermissionsDialog(newVal) {
+            if (newVal) {
+                if (this.currentUnit.attributes['permission-scope'] !== 'structural_element') {
+                    this.showPermissionScopeDialog = true;
+                    this.showPermissionSettingsDialog = false;
+                } else {
+                    this.showPermissionScopeDialog = false;
+                    this.showPermissionSettingsDialog = true;
+                }
+            }
+        }
     },
 
     // this line provides all the components to courseware plugins

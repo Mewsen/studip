@@ -65,7 +65,7 @@
                 @close="closeChange"
                 @confirm="storeChange"
                 height="520"
-                width="480"
+                width="440"
             >
                 <template v-slot:dialogContent>
                     <form class="default" @submit.prevent="">
@@ -81,7 +81,7 @@
                                     <input type="radio" :id="'type-' + container.type" :value="container.type" v-model="changeType" name="container-type"/>
                                     <label :for="'type-' + container.type" >
                                         <div class="label-icon" :class="[container.type, container.type === changeType ? 'selected' : '']"></div>
-                                        <p>{{ container.title }}</p>
+                                        <div class="label-text"><span>{{ container.title }}</span></div>
                                     </label>
 
                                 </div>
@@ -99,7 +99,7 @@
                                     <input type="radio" :id="'change-style-' + style.colspan" :value="style.colspan" v-model="changeStyle" name="change-container-style"/>
                                     <label :for="'change-style-' + style.colspan">
                                         <div class="label-icon" :class="[style.colspan, style.colspan === changeStyle ? 'selected' : '']"></div>
-                                        <p>{{ style.title }}</p>
+                                        <div class="label-text"><span>{{ style.title }}</span></div>
                                     </label>
                                 </div>
                             </div>

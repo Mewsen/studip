@@ -97,7 +97,10 @@ class UnitsCreate extends JsonApiController
             'purpose' => self::arrayGet($json, 'data.attributes.purpose', 'content'),
             'payload' => self::arrayGet($json, 'data.attributes.payload', ''),
             'position' => 0,
-            'commentable' => 0
+            'commentable' => 0,
+            'permission_type' =>  self::arrayGet($json, 'data.attributes.permission-type', 'all'),
+            'visible' => self::arrayGet($json, 'data.attributes.visible', 'always'),
+            'writable' =>  self::arrayGet($json, 'data.attributes.writable', 'never'),
         ]);
 
         \Courseware\Container::create([
@@ -114,7 +117,7 @@ class UnitsCreate extends JsonApiController
             ]),
         ]);
 
-        $unit = \Courseware\Unit::create([
+        $unit = Unit::create([
             'range_id' => $range->getRangeId(),
             'range_type' => $range->getRangeType(),
             'structural_element_id' => $struct->id,
@@ -122,8 +125,9 @@ class UnitsCreate extends JsonApiController
             'position' => Unit::getNewPosition($range->getRangeId()),
             'creator_id' => $user->id,
             'public' => self::arrayGet($json, 'data.attributes.public', '0'),
-            'release_date' => self::arrayGet($json, 'data.attributes.release-date'),
-            'withdraw_date' => self::arrayGet($json, 'data.attributes.withdraw-date'),
+            'permission_type' =>  self::arrayGet($json, 'data.attributes.permission-type', 'all'),
+            'visible' => self::arrayGet($json, 'data.attributes.visible', 'always'),
+            'writable' =>  self::arrayGet($json, 'data.attributes.writable', 'never'),
         ]);
 
         $instance = new \Courseware\Instance($struct);

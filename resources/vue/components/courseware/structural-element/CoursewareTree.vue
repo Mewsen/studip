@@ -57,7 +57,7 @@ export default {
             childrenById: 'courseware-structure/children',
             viewMode: 'viewMode',   
             structuralElements: 'courseware-structural-elements/all',
-            assistiveLive: 'assistiveLiveContents'
+            assistiveLive: 'assistiveLiveContents',
         }),
         currentElement() {
             const id = this.$route?.params?.id;
@@ -94,6 +94,8 @@ export default {
             loadStructuralElement: 'loadStructuralElement',
             setAssistiveLiveContents: 'setAssistiveLiveContents',
             companionError: 'companionError',
+            loadCourseMemberships: 'course-memberships/loadRelated',
+            loadCourseStatusGroups: 'status-groups/loadRelated',
          }),
         updateNestedChildren() {
             this.nestedChildren = this.getNestedChildren(this.rootElement);
@@ -241,6 +243,9 @@ export default {
     },
     mounted() {
         this.updateNestedChildren();
+        const parent = { type: 'courses', id: this.context.id };
+        this.loadCourseMemberships({ parent, relationship: 'memberships', options: {'page[limit]': 10000 } });
+        this.loadCourseStatusGroups({ parent, relationship: 'status-groups' });
     },
     watch: {
         structuralElements() {

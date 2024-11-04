@@ -39,9 +39,15 @@ class CoursesUnitsIndex extends JsonApiController
         }
 
         $resources = Unit::findCoursesUnits($course);
-        $total = count($resources);
+        $readable_resources = [];
+        foreach ($resources as $resource) {
+            if ($resource->canRead($user)) {
+               $readable_resources[] = $resource;
+            }
+        }
+        $total = count($readable_resources);
         [$offset, $limit] = $this->getOffsetAndLimit();
 
-        return $this->getPaginatedContentResponse(array_slice($resources, $offset, $limit), $total);
+        return $this->getPaginatedContentResponse(array_slice($readable_resources, $offset, $limit), $total);
     }
 }

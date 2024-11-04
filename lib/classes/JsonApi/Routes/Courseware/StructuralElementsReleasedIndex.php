@@ -49,7 +49,7 @@ class StructuralElementsReleasedIndex extends JsonApiController
         );
 
         foreach ($contents as $content) {
-            if ((count($content->read_approval) && count($content->read_approval['users']) > 0) || (count($content->write_approval) && count($content->write_approval['users']) > 0)) {
+            if (count($content->content_approval) && count($content->content_approval['users']) > 0) {
                 $resources[] = $content;
             }
         }

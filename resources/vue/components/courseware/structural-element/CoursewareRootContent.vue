@@ -24,7 +24,7 @@
                             class="cw-root-content-description-img"
                             v-model="identImage"
                             :baseColor="bgColorHex"
-                            :pattern="structuralElement.attributes.title"
+                            :pattern="structuralElement.attributes?.title ?? '-'"
                         />
                         <studip-ident-image
                             v-model="identBgImage"
@@ -32,13 +32,13 @@
                             :width="4380"
                             :height="withTOC ? 1200 : 1920"
                             :baseColor="bgColorHex"
-                            :pattern="structuralElement.attributes.title"
+                            :pattern="structuralElement.attributes?.title ?? '-'"
                         />
                     </template>
                     <div class="cw-root-content-description-text">
-                        <h1>{{ structuralElement.attributes.title }}</h1>
+                        <h1>{{ structuralElement.attributes?.title ?? '-' }}</h1>
                         <p>
-                            {{ structuralElement.attributes.payload.description }}
+                            {{ structuralElement.attributes?.payload?.description ?? '-' }}
                         </p>
                     </div>
                 </section>
@@ -134,6 +134,7 @@ export default {
             const color = this.mixinColors.find((c) => {
                 return c.class === elementColor;
             });
+
             return color.hex;
         },
         bgColor() {

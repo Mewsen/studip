@@ -55,6 +55,19 @@
             text-align: right;
         }
 
+        .overlay-text-bottom {
+            padding: 6px 7px;
+            margin: 146px -33px 4px 4px; 
+            background-color: rgba(255, 255, 255, 0.8);
+            width: fit-content;
+            max-width: 100%;
+            height: 1.25em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            float: right;
+            text-align: right;
+        }
+
         .overlay-action-menu {
             padding: 0;
             margin: 0.25em;
@@ -89,12 +102,8 @@
             background-repeat: no-repeat;
             background-position: 0 0;
 
-            @each $type, $icon in $element-icons {
-                &.description-icon-#{$type} {
-                    width: 212px;
-                    padding-left: 28px;
-                    @include background-icon(#{$icon}, info_alt, 22);
-                }
+            .title-icon {
+                vertical-align: bottom;
             }
         }
 
@@ -126,10 +135,10 @@
 
         .description-text-wrapper {
             overflow: hidden;
-            height: 10em;
+            height: 7em;
             margin-top: 4px;
             display: -webkit-box;
-            -webkit-line-clamp: 7;
+            -webkit-line-clamp: 5;
             -webkit-box-orient: vertical;
             p {
                 text-align: left;
@@ -137,16 +146,16 @@
         }
 
         footer {
-            width: 242px;
-            margin-top: 8px;
+            display: table-cell;
+            height: 5em;
             color: var(--white);
-            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            vertical-align: bottom;
 
+            p {
+                margin: 0;
+            }
             img {
                 vertical-align: text-bottom;
             }
