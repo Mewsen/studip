@@ -31,12 +31,12 @@ const containerMixin = {
             containerUpdate: 'courseware-containers/update'
         }),
         dropBlock(e) {
-            this.isDragging = false; // implemented bei echt container type
+            this.isDragging = false; // implemented by each container type
             let data = {};
             data.originContainerId = e.from.__vue__.$attrs.containerId;
             data.targetContainerId = e.to.__vue__.$attrs.containerId;
             if (data.originContainerId === data.targetContainerId) {
-                this.storeSort(); // implemented bei echt container type
+                this.storeSort(); // implemented by each container type
             } else {
                 data.originSectionId = e.from.__vue__.$attrs.sectionId;
                 data.originSectionBlockList = e.from.__vue__.$children.map(b => { return b.$attrs.blockId; });
@@ -45,7 +45,7 @@ const containerMixin = {
                 data.blockId = e.item._underlying_vm_.id;
                 data.newPos = e.newIndex;
                 const indexInBlockList = data.targetSectionBlockList.findIndex(b => b === data.blockId);
-                data.targetSectionBlockList.splice(data.newPos, 0, data.targetSectionBlockList.splice(indexInBlockList,1));
+                data.targetSectionBlockList.splice(data.newPos, 0, data.targetSectionBlockList.splice(indexInBlockList,1)[0]); // move block id to new position
                 this.storeInAnotherContainer(data);
             }
         },
