@@ -68,7 +68,11 @@ class BasicDataWizardStep implements CourseWizardStep
         $tpl->set_attribute('types', $typestruct);
         // Select a default type if none is given.
         if (empty($values['coursetype'])) {
-            if ($GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER && Request::isXhr()) {
+            if (
+                $GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER
+                && $GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER !== 'all'
+                && Request::isXhr()
+            ) {
                 $values['coursetype'] = $GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER;
             } else {
                 $values['coursetype'] = 1;
