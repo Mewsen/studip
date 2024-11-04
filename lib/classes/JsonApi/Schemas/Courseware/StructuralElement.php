@@ -61,7 +61,6 @@ class StructuralElement extends SchemaProvider
             'content-approval' => $resource['content_approval']->getIterator(),
             'copy-approval' => $resource['copy_approval']->getIterator(),
             'can-edit' => $resource->canEdit($user),
-            'can-read-sequential' => $resource->canReadSequential($user),
             'can-visit' => $resource->canVisit($user),
             'is-link' => (int) $resource['is_link'],
             'commentable' => (bool) $resource['commentable'],
@@ -451,5 +450,18 @@ class StructuralElement extends SchemaProvider
         self::$memo['user' . $rangeId] = $link;
 
         return $link;
+    }
+
+    public function hasResourceMeta($resource): bool
+    {
+        return true;
+    }
+    public function getResourceMeta($resource): Array
+    {
+        $user = $this->currentUser;
+
+        return [
+            'can-read-sequential' => $resource->canReadSequential($user)
+        ];
     }
 }

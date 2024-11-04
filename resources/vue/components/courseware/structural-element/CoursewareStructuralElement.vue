@@ -1184,7 +1184,7 @@ export default {
                     return { msg: this.$gettext('Sie können die Aufgabe erst nach Abgabe betrachten.'), mood: 'pointing' };
                 }
 
-                if (!this.structuralElement.attributes['can-read-sequential']) {
+                if (!this.structuralElement.meta['can-read-sequential']) {
                     return { msg: this.$gettext('Bitte bearbeiten Sie alle Inhalte der vorhergehenden Seite, um diese Seite freizuschalten.'), mood: 'pointing' };
                 }
                 
