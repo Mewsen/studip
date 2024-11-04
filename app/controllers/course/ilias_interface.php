@@ -292,7 +292,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
             if ($mode === 'search') {
                 $this->keep_dialog = true;
                 // perform search
-                $this->ilias_search = Request::quoted('ilias_search');
+                $this->ilias_search = Request::get('ilias_search');
                 if (mb_strlen($this->ilias_search) > 2) {
                     $this->ilias_modules = $this->ilias->searchModules($this->ilias_search);
                     foreach ($this->ilias_modules as $search_module_id => $search_module_object) {

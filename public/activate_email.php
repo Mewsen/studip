@@ -41,7 +41,7 @@ function reenter_mail() {
 function mail_explain() {
     echo '<form action="' . URLHelper::getLink() . '" method="post" class="default">';
     echo '<fieldset>';
-    echo '<legend>' .  _('Sie haben Ihre E-Mail-Adresse geändert. 
+    echo '<legend>' .  _('Sie haben Ihre E-Mail-Adresse geändert.
     Um diese frei zu schalten müssen Sie den Ihnen an Ihre neue Adresse zugeschickten Aktivierungs Schlüssel im unten stehenden Eingabefeld eintragen.') . '</legend>';
     echo CSRFProtection::tokenTag();
     echo '<label>' . _('Aktivierungs Schlüssel')
@@ -71,8 +71,8 @@ if(Request::get('key') !== null) {
     $sth->execute([$uid]);
     $result = $sth->fetch();
     $key = $result['validation_key'];
-    
-    if(Request::quoted('key') == $key) {
+
+    if(Request::get('key') == $key) {
         $sth = $db->prepare("UPDATE auth_user_md5 SET validation_key='' WHERE user_id=?");
         $sth->execute([$uid]);
         unset($_SESSION['semi_logged_in']);
@@ -102,10 +102,10 @@ if(Request::get('key') !== null) {
     if(Request::get('email1') == Request::get('email2')) {
         // change mail
         $tmp_user = User::find(Request::option('uid'));
-        if($tmp_user && $tmp_user->changeEmail(Request::quoted('email1'), true)) {
+        if($tmp_user && $tmp_user->changeEmail(Request::get('email1'), true)) {
             $_SESSION['semi_logged_in'] = False;
         }
-        
+
     } else {
         PageLayout::postError(_('Die eingegebenen E-Mail-Adressen stimmen nicht überein. Bitte überprüfen Sie Ihre Eingabe.'));
     }

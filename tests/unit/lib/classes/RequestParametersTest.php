@@ -74,7 +74,6 @@ class RequestParametersTest extends Codeception\Test\Unit
 
     /**
      * @covers Request::get
-     * @covers Request::quoted
      */
     public function testStringParam ()
     {
@@ -85,11 +84,6 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame(Request::get('c'), '-23');
         $this->assertSame(Request::get('d'), '12.7');
         $this->assertNull(Request::get('v2'));
-
-        $this->assertNull(Request::quoted('null'));
-        $this->assertSame(Request::quoted('null', 'foo'), 'foo');
-        $this->assertSame(Request::quoted('b'), '\\\\h1\\"');
-        $this->assertNull(Request::quoted('v2'));
     }
 
     /**
@@ -159,7 +153,6 @@ class RequestParametersTest extends Codeception\Test\Unit
 
     /**
      * @covers Request::getArray
-     * @covers Request::quotedArray
      */
     public function testStringArrayParam ()
     {
@@ -167,11 +160,6 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame(Request::getArray('b'), []);
         $this->assertSame(Request::getArray('v1'), ['1', '2.4', '3,7']);
         $this->assertSame(Request::getArray('v2'), ['on\'e', 'two', 'thr33']);
-
-        $this->assertSame(Request::quotedArray('null'), []);
-        $this->assertSame(Request::quotedArray('b'), []);
-        $this->assertSame(Request::quotedArray('v1'), ['1', '2.4', '3,7']);
-        $this->assertSame(Request::quotedArray('v2'), ['on\\\'e', 'two', 'thr33']);
     }
 
     /**

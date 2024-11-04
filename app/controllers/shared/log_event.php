@@ -26,7 +26,7 @@ class Shared_LogEventController extends MVVController
         $event_log = new EventLog();
 
         $this->start = (int) Request::int('start');
-        $this->format = Request::quoted('format');
+        $this->format = Request::option('format');
         $this->num_entries = 0;
         $this->log_events = [];
 

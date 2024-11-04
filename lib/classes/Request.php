@@ -216,28 +216,6 @@ class Request implements ArrayAccess, IteratorAggregate
     }
 
     /**
-     * Return the value of the selected query parameter as a string.
-     * The contents of the string is quoted with addslashes().
-     *
-     * @param string $param    parameter name
-     * @param string $default  default value if parameter is not set
-     *
-     * @return string  parameter value as string (if set), else NULL
-     *
-     * @deprecated since Stud.IP 6.0
-     */
-    public static function quoted($param, $default = NULL)
-    {
-        $value = self::get($param, $default);
-
-        if (isset($value)) {
-            $value = addslashes($value);
-        }
-
-        return $value;
-    }
-
-    /**
      * Return the value of the selected query parameter as an alphanumeric
      * string (consisting of only digits, letters and underscores).
      *
@@ -476,22 +454,6 @@ class Request implements ArrayAccess, IteratorAggregate
     }
 
     /**
-     * Return the value of the selected query parameter as a string array.
-     * The contents of each element is quoted with addslashes().
-     *
-     * @param string $param    parameter name
-     *
-     * @return array  parameter value as array (if set), else an empty array
-     * @deprecated since Stud.IP 6.0
-     */
-    public static function quotedArray($param)
-    {
-        $array = self::getArray($param);
-
-        return self::addslashes($array);
-    }
-
-    /**
      * Return the value of the selected query parameter as an array of
      * alphanumeric strings (consisting of only digits, letters and
      * underscores).
@@ -643,27 +605,6 @@ class Request implements ArrayAccess, IteratorAggregate
             }
         }
         return FALSE;
-    }
-
-    /**
-     * Quote a given string or array using addslashes(). If the parameter
-     * is an array, the quoting is applied recursively.
-     *
-     * @param mixed $value    string or array value to be quoted
-     *
-     * @return mixed  quoted string or array
-     */
-    public static function addslashes($value)
-    {
-        if (is_array($value)) {
-            foreach ($value as $key => $val) {
-                $value[$key] = self::addslashes($val);
-            }
-        } else {
-            $value = addslashes($value);
-        }
-
-        return $value;
     }
 
     /**
