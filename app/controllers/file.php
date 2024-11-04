@@ -1331,6 +1331,9 @@ class FileController extends AuthenticatedController
             $folder = $filetype->getFolderType();
         } else {
             $file_ref = FileRef::find($file_ref_id);
+            if (!$file_ref) {
+                throw new Trails\Exception(404, _('Datei nicht gefunden.'));
+            }
             $folder = $file_ref->foldertype;
             $filetype = $file_ref->getFileType();
         }
