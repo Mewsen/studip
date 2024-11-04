@@ -34,10 +34,10 @@ require_once 'lib/raumzeit/raumzeit_functions.inc.php'; // Helper-Funktionen
  */
 function getWeekday($day_num, $short = true): string
 {
-    if ($day_num < 0 || $day_num > 6) {
+    if ($day_num < 0 || $day_num > 7) {
         throw new Exception('Invalid day number');
     }
-    switch ($day_num) {
+    switch ($day_num % 7) {
         case 0:
             $day = $short ? _("So") : _("Sonntag");
             break;
