@@ -31,12 +31,15 @@ class HTTP extends Base
             || isset($_SERVER['HTTP_AUTHORIZATION'])
         ) {
             $user_id = false;
-
+            $username = '';
+            $password = '';
             if (isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
                 $username = $_SERVER['PHP_AUTH_USER'];
                 $password = $_SERVER['PHP_AUTH_PW'];
             } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
-                list($username, $password) = explode(':', base64_decode(mb_substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
+                $chunks = explode(':', base64_decode(mb_substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
+                $username = $chunks[0] ?? '';
+                $password = $chunks[1] ?? '';
             }
 
             $check = StudipAuthAbstract::CheckAuthentication($username, $password);

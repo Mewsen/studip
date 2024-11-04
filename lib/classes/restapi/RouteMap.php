@@ -878,13 +878,13 @@ abstract class RouteMap
             $this->contentType(get_mime_type($path));
         }
 
-        if ($opts['disposition'] === 'attachment' || isset($opts['filename'])) {
+        if ((isset($opts['disposition']) && $opts['disposition'] === 'attachment') || isset($opts['filename'])) {
             $this->response['Content-Disposition'] = 'attachment; ';
             $filename = $opts['filename'] ?: $path;
             $this->response['Content-Disposition'] .= encode_header_parameter('filename', basename($filename));
         }
 
-        elseif ($opts['disposition'] === 'inline') {
+        elseif (isset($opts['disposition']) && $opts['disposition'] === 'inline') {
             $this->response['Content-Disposition'] = 'inline';
         }
 
