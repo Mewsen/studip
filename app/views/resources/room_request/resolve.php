@@ -1,3 +1,28 @@
+<?php
+/**
+ * @var Resources_RoomRequestController $controller
+ * @var RoomRequest $request
+ * @var Resource|Room $request_resource
+ * @var array $booked_room_infos
+ * @var array $clipboards
+ * @var array $request_time_intervals
+ * @var array $room_availability
+ * @var array $alternative_rooms
+ * @var bool $show_info
+ * @var bool $show_form
+ * @var bool $user_is_global_autor
+ * @var bool $expand_metadates
+ * @var bool $show_force_resolve_button
+ * @var string $request_semester_string
+ * @var string $alternatives_selection
+ * @var string $selected_clipboard_id
+ * @var string $notification_settings
+ * @var QuickSearch $room_search
+ * @var Config $config
+ * @var User $current_user
+ */
+?>
+
 <form id="resolve-request" class="default" method="post"
       data-dialog="size=big;<?= Request::submitted('reload-on-close') ? 'reload-on-close' : ''; ?>"
       action="<?= $controller->link_for('resources/room_request/resolve/' . $request->id) ?>">
