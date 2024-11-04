@@ -30,10 +30,10 @@ require_once 'lib/calendar_functions.inc.php';
  */
 function getWeekday(int $day_num, bool $short = true): string
 {
-    if ($day_num < 0 || $day_num > 6) {
+    if ($day_num < 0 || $day_num > 7) {
         throw new Exception('Invalid day number');
     }
-    return match($day_num) {
+    return match($day_num % 7) {
         0 => $short ? _('So') : _('Sonntag'),
         1 => $short ? _('Mo') : _('Montag'),
         2 => $short ? _('Di') : _('Dienstag'),
