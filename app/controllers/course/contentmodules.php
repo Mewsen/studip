@@ -259,7 +259,7 @@ class Course_ContentmodulesController extends AuthenticatedController
         }
         if (isset($this->metadata['screenshots'])) {
             foreach ($this->metadata['screenshots']['pictures'] as $picture) {
-                $title  = $picture['title'];
+                $title  = $picture['title'] ?? '';
                 $source = "{$this->plugin->getPluginURL()}/{$this->metadata['screenshots']['path']}/{$picture['source']}";
                 $this->screenshots[] = compact('title', 'source');
             }

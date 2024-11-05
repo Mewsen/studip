@@ -1030,8 +1030,8 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 }
                 $interval['range']                                 = 'CourseDate';
                 $interval['range_id']                              = $date->id;
-                $interval['booked_room']                           = $date->room_booking->resource_id;
-                $interval['booking_id']                            = $date->room_booking->id;
+                $interval['booked_room']                           = $date->room_booking->resource_id ?? null;
+                $interval['booking_id']                            = $date->room_booking->id ?? null;
                 $time_intervals[$this->metadate_id]['intervals'][] = $interval;
             }
             return $time_intervals;
@@ -1094,8 +1094,8 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                     }
                     $interval['range']                 = 'CourseDate';
                     $interval['range_id']              = $date->id;
-                    $interval['booked_room']           = $date->room_booking->resource_id;
-                    $interval['booking_id']            = $date->room_booking->id;
+                    $interval['booked_room']           = $date->room_booking->resource_id ?? null;
+                    $interval['booking_id']            = $date->room_booking->id ?? null;
                     $time_intervals['']['intervals'][] = $interval;
                 }
 
