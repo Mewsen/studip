@@ -134,7 +134,7 @@ class IliasUser
         switch($data['geschlecht']) {
             case 1: $this->gender   = 'm'; break;
             case 2: $this->gender   = 'f'; break;
-            default: $this->gender  = 'f';
+            default: $this->gender  = 'n';
         }
 
         $this->matriculation = '';
