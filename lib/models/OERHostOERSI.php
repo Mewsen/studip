@@ -60,7 +60,7 @@ class OERHostOERSI extends OERHost
                     $material['uri'] = $material_data['_source']['id'];
                     $material['source_url'] = $material_data['_source']['id'];
                     $material['content_type'] = $material_data['_source']['encoding'][0]['encodingFormat'] ?? '';
-                    $material['license_identifier'] = $this->getLicenseID($material_data['_source']['license']['id']) ?: '';
+                    $material['license_identifier'] = !empty($material_data['_source']['license']['id']) ? $this->getLicenseID($material_data['_source']['license']['id']): '';
                     if (!$material['category']) {
                         $material['category'] = $material->autoDetectCategory();
                     }
@@ -134,7 +134,7 @@ class OERHostOERSI extends OERHost
                 $data['uri'] = $output['encoding'][0]['contentUrl'] ?? '';
                 $data['source_url'] = $output['id'];
                 $data['content_type'] = $output['encoding'][0]['encodingFormat'] ?? '';
-                $data['license_identifier'] = $this->getLicenseID($output['license']['id']) ?: '';
+                $data['license_identifier'] = !empty($output['license']['id']) ? $this->getLicenseID($output['license']['id']) : '';
                 if (empty($data['category'])) {
                     $data['category'] = $material->autoDetectCategory();
                 }
@@ -161,7 +161,7 @@ class OERHostOERSI extends OERHost
     /**
      * Tries to match the CC-license URL from OERSI to an spdx-identifier, which is used in Stud.IP
      * @param $license : an URL
-     * @return string|null
+     * @return string
      */
     protected function getLicenseID($license)
     {
@@ -172,7 +172,7 @@ class OERHostOERSI extends OERHost
                 return $spdx_id;
             }
         }
-        return null;
+        return '';
     }
 
     public function isReviewable()

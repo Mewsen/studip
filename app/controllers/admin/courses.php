@@ -739,7 +739,7 @@ class Admin_CoursesController extends AuthenticatedController
                     $course = Course::find($course_id);
 
                     if ($course->isOpenEnded() || $course->end_semester->visible) {
-                        $visibility = $visibilites[$course_id] ?: 0;
+                        $visibility = $visibilites[$course_id] ?? 0;
 
                         if ($course->visible == $visibility) {
                             continue;

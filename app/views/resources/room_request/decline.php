@@ -25,7 +25,7 @@
         <? if (!$delete_mode): ?>
             <fieldset>
                 <legend><?= _('Kommentar zur Ablehnung der Anfrage') ?></legend>
-                <textarea name="reply_comment"><?= $reply_comment ?></textarea>
+                <textarea name="reply_comment"><?= htmlReady($reply_comment ?? '') ?></textarea>
             </fieldset>
         <? endif ?>
     <? endif ?>

@@ -272,10 +272,6 @@ class BlubberController extends AuthenticatedController
 
         $output = [];
         foreach ($_FILES as $file) {
-            $newfile = null; //is filled below
-            $file_ref = null; //is also filled below
-
-
             if ($file['size']) {
                 $document['user_id'] = $GLOBALS['user']->id;
                 $document['filesize'] = $file['size'];
@@ -362,7 +358,7 @@ class BlubberController extends AuthenticatedController
                     if ($type) {
                         $output['inserts'][] = "[{$type}]{$url}";
                     } else {
-                        $output['inserts'][] = "[{$file_ref['name']}]{$url}";
+                        $output['inserts'][] = "[{$file['name']}]{$url}";
                     }
                 }
             }

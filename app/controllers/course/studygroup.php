@@ -306,6 +306,9 @@ class Course_StudygroupController extends AuthenticatedController
     public function members_action()
     {
         $sem = Context::get();
+        if (!$sem) {
+            throw new CheckObjectException(_('Sie haben kein Objekt gewählt.'));
+        }
         $id = $sem->id;
 
         PageLayout::setTitle(Context::getHeaderLine() . ' - ' . _('Teilnehmende'));

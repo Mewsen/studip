@@ -14,7 +14,7 @@
  * @var string[] $selected_lecturer_ids
  */
 ?>
-<form method="post" action="<?= $controller->url_for('course/timesrooms/saveStack/' . $cycle_id, $linkAttributes) ?>"
+<form method="post" action="<?= $controller->link_for('course/timesrooms/saveStack/' . $cycle_id, $linkAttributes ?? []) ?>"
       class="default collapsable" data-dialog="size=big">
     <?= CSRFProtection::tokenTag()?>
     <input type="hidden" name="method" value="edit">
