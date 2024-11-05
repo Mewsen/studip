@@ -273,10 +273,14 @@ class EvaluationExportManagerCSV extends EvaluationExportManager {
             /* Questiontype: pol or likert scale --------------------------- */
             if ($type == EVALQUESTION_TYPE_LIKERT ||
                 $type == EVALQUESTION_TYPE_POL) {
-               $hasResidual = $this->evalquestions_residual[$evalquestion->getObjectID()];
+               $hasResidual = $this->evalquestions_residual[$evalquestion->getObjectID()] ?? '';
                $entry       = "";
                $residual    = 0;
-               if ($answer = $answers[$evalquestion->getObjectID()][$userID]) {
+               $answer = [];
+               if ($evalquestion->getObjectID() && !empty($answers[$evalquestion->getObjectID()])) {
+                   $answer = $answers[$evalquestion->getObjectID()][$userID];
+               }
+               if (!empty($answer)) {
                    if ($answer['residual']) {
                        $residual = 1;
                    } else {
@@ -295,7 +299,12 @@ class EvaluationExportManagerCSV extends EvaluationExportManager {
             /* Questiontype: multiple chioice ------------------------------ */
             elseif ($type == EVALQUESTION_TYPE_MC) {
                 if ($evalquestion->isMultiplechoice ()) {
-                    $mc_answers = explode(',', $answers[$evalquestion->getObjectID()][$userID]['evalanswer_id']);
+                    if ($evalquestion->getObjectID()) {
+                        $mc_answers = $answers[$evalquestion->getObjectID()][$userID]['evalanswer_id'] ?? [];
+                    } else {
+                        $mc_answers = [];
+                    }
+                    $mc_answers = explode(',', $mc_answers);
                     while ($answer = &$evalquestion->getNextChild ()) {
                         $this->addCol ((int)in_array($answer->getObjectID(), $mc_answers));
                     }

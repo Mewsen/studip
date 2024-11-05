@@ -145,7 +145,7 @@ class Sidebar extends WidgetContainer
                 $this->setContextAvatar($avatar);
             }
             if ($main_navigation === 'profile') {
-                if ($keys[1] !== "index") {
+                if (!empty($keys[1]) && $keys[1] !== 'index') {
                     $user = Request::get("username")
                         ? User::findByUsername(Request::get("username"))
                         : User::findCurrent();

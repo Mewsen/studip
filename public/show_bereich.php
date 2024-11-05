@@ -47,7 +47,7 @@ if (Request::option('select_sem')) {
     $_SESSION['_default_sem'] = Request::option('select_sem');
 }
 
-$show_semester = Request::option('select_sem', $_SESSION['_default_sem']);
+$show_semester = Request::option('select_sem', $_SESSION['_default_sem'] ?? '');
 $sem_browse_obj = new SemBrowse(['group_by' => 0]);
 $sem_browse_obj->sem_browse_data['default_sem'] = "all";
 $sem_browse_obj->sem_number = false;

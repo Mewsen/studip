@@ -676,6 +676,17 @@ class CalendarScheduleModel
             $schedule_settings['converted'] = true;
         }
 
+        if (empty($schedule_settings['glb_days'])) {
+            $schedule_settings['glb_days'] = [1, 2, 3, 4, 5];
+        }
+
+        if (empty($settings['glb_start_time'])) {
+            $schedule_settings['glb_start_time'] = 8;
+        }
+        if (empty($settings['glb_end_time'])) {
+            $schedule_settings['glb_end_time'] = 19;
+        }
+
         return $schedule_settings;
     }
 
