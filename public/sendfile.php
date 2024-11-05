@@ -135,7 +135,7 @@ switch ($type) {
             //Get the file type:
             if ($file->hasFileAttached()) {
                 $path_file = $file->getPath();
-            } elseif ($file->hasURL()) {
+            } elseif ($file->hasURL() && !empty($file->metadata['url'])) {
                 $path_file = $file->metadata['url'];
             }
         } else {

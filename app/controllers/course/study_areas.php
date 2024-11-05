@@ -144,7 +144,7 @@ class Course_StudyAreasController extends AuthenticatedController
             }
         }
 
-        if (!$msg) {
+        if (empty($msg)) {
             PageLayout::postSuccess(_('Die Studienbereichszuordnung wurde übernommen.'));
         } else {
             PageLayout::postError($msg);

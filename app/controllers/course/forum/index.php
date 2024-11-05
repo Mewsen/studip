@@ -199,8 +199,8 @@ class Course_Forum_IndexController extends ForumController
         $this->visitdate = ForumVisit::getLastVisit($this->getId());
 
         $list = ForumEntry::getList('newest', $this->topic_id);
-        $this->postings          = $list['list'];
-        $this->number_of_entries = $list['count'];
+        $this->postings          = $list['list'] ?? [];
+        $this->number_of_entries = $list['count'] ?? 0;
         $this->show_full_path    = true;
 
         if (empty($this->postings)) {

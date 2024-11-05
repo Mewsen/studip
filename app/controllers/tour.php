@@ -64,7 +64,7 @@ class TourController extends AuthenticatedController
         }
 
         $this->user_visit = new HelpTourUser([$tour_id, $GLOBALS['user']->user_id]);
-        if ($this->user_visit->step_nr > 1 && !$_SESSION['active_tour']['step_nr'] && $this->tour->type === 'tour') {
+        if ($this->user_visit->step_nr > 1 && empty($_SESSION['active_tour']['step_nr']) && $this->tour->type === 'tour') {
             $data['last_run']      = sprintf(_('Wollen Sie die Tour "%s" an der letzten Position fortsetzen?'), $this->tour->name);
             $data['last_run_step'] = $this->user_visit->step_nr;
             $data['last_run_href'] = URLHelper::getURL($this->tour->steps[$this->user_visit->step_nr - 1]->route, null, true);

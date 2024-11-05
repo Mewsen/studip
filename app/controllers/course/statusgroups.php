@@ -510,7 +510,10 @@ class Course_StatusgroupsController extends AuthenticatedController
                 $endtime = 0;
             }
         }
-        $position = Statusgruppen::find($group_id)->position;
+        $position = 1;
+        if (Statusgruppen::exists($group_id)) {
+            $position = Statusgruppen::find($group_id)->position;
+        }
         $selfassign = Request::int('selfassign', 0);
         // Exclusive entry makes sense only when selfassign is set in general.
         if ($selfassign !== 0) {
