@@ -504,13 +504,10 @@ class IliasSoap extends StudipSoapClient
 
         $xml = "<!DOCTYPE Objects SYSTEM \"http://www.ilias.uni-koeln.de/download/dtd/ilias_object_0_1.dtd\">
 <Objects>
-  <Object type=\"$type\" obj_id=\"\" >
-    <Title>
-    $title
-    </Title>
-    <Description>
-    $description
-    </Description>
+  <Object type=\"$type\" obj_id=\"\" offline=\"\" >
+    <Title>$title</Title>
+    <Description>$description</Description>
+    <ImportId></ImportId>
   </Object>
 </Objects>";
 
