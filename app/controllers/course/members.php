@@ -2101,7 +2101,11 @@ class Course_MembersController extends AuthenticatedController
      */
     private function sendToCourse(array $users, string $target_course_id, bool $move = false): array
     {
-        $msg = [];
+        $msg = [
+            'succes' => [],
+            'failed' => [],
+            'existing' => [],
+        ];
         foreach ($users as $user) {
             if (!CourseMember::exists([$target_course_id, $user])) {
                 $target_course = Seminar::GetInstance($target_course_id);
