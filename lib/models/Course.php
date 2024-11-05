@@ -1567,6 +1567,36 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             );
         }
 
+        //Check if the user has root or admin permissions:
+
+        $user = User::find($user_id);
+
+        if ($GLOBALS['perm']->have_perm('root', $user_id)) {
+            return new \Studip\EnrolmentInformation(
+                _('Sie haben root-Rechte und dürfen damit alles in Stud.IP.'),
+                \Studip\Information::INFO,
+                'root',
+                true
+            );
+        }
+
+        if ($GLOBALS['perm']->have_studip_perm('admin', $this->id, $user_id)) {
+            return new \Studip\EnrolmentInformation(
+                _('Sie verwalten diese Veranstaltung.'),
+                \Studip\Information::INFO,
+                'course_admin',
+                true
+            );
+        }
+        if ($GLOBALS['perm']->have_perm('admin', $user_id)) {
+            return new \Studip\EnrolmentInformation(
+                _('Als administrierende Person dürfen Sie sich nicht in eine Veranstaltung eintragen.'),
+                \Studip\Information::INFO,
+                'admin',
+                false
+            );
+        }
+
         //Check the course set and if the user is on an admission list:
 
         if ($course_set = $this->getCourseSet()) {
@@ -1622,9 +1652,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             );
         }
 
-        //Check the permissions of the user:
-
-        $user = User::find($user_id);
+        //Check the permissions of users that are not root or admin:
 
         if (!$user) {
             return new \Studip\EnrolmentInformation(
@@ -1639,30 +1667,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                 _('Sie haben keine ausreichende Berechtigung, um sich in die Veranstaltung einzutragen.'),
                 \Studip\Information::INFO,
                 'user',
-                false
-            );
-        }
-        if ($GLOBALS['perm']->have_perm('root', $user_id)) {
-            return new \Studip\EnrolmentInformation(
-                _('Sie haben root-Rechte und dürfen damit alles in Stud.IP.'),
-                \Studip\Information::INFO,
-                'root',
-                true
-            );
-        }
-        if ($GLOBALS['perm']->have_studip_perm('admin', $this->id, $user_id)) {
-            return new \Studip\EnrolmentInformation(
-                _('Sie verwalten diese Veranstaltung.'),
-                \Studip\Information::INFO,
-                'course_admin',
-                true
-            );
-        }
-        if ($GLOBALS['perm']->have_perm('admin', $user_id)) {
-            return new \Studip\EnrolmentInformation(
-                _('Als administrierende Person dürfen Sie sich nicht in eine Veranstaltung eintragen.'),
-                \Studip\Information::INFO,
-                'admin',
                 false
             );
         }
