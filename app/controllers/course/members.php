@@ -2127,7 +2127,11 @@ class Course_MembersController extends AuthenticatedController
      */
     private function sendToCourse(array $users, string $target_course_id, bool $move = false): array
     {
-        $msg = [];
+        $msg = [
+            'succes' => [],
+            'failed' => [],
+            'existing' => [],
+        ];
         foreach ($users as $user_id) {
             if (!CourseMember::exists([$target_course_id, $user_id])) {
                 $user = User::find($user_id);
