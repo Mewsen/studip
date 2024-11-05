@@ -234,10 +234,14 @@ class EvaluationExportManager extends AuthorObject
             $file = $GLOBALS['TMP_PATH'] . "/" . $file;
             $part = pathinfo($file);
 
-            if (filemtime($file) < (time() - EVALEXPORT_LIFETIME) &&
-                $part["extension"] == $this->extension &&
-                mb_substr($part["basename"], 0, mb_strlen(EVALEXPORT_PREFIX)) == EVALEXPORT_PREFIX)
+            if (
+                filemtime($file) < (time() - EVALEXPORT_LIFETIME)
+                && isset($part['extension'])
+                && $part['extension'] === $this->extension
+                && mb_substr($part['basename'], 0, mb_strlen(EVALEXPORT_PREFIX)) == EVALEXPORT_PREFIX
+            ) {
                 unlink($file);
+            }
         }
         $dirhandle->close();
     }
@@ -266,4 +270,3 @@ class EvaluationExportManager extends AuthorObject
     }
 
 }
-

@@ -141,7 +141,10 @@ function do_graph($data, $evalquestion_id)
     );
 
     if(!empty($data)) {
-        $max_x = max(array_map('next',$data));
+        array_walk($data, function($d) use (&$_data) {
+            $_data[] = next($d);
+        });
+        $max_x = max($_data);
         $graph->SetPlotAreaWorld(NULL, 0); // y-achse bei 0 starten
         $graph->SetPrecisionY(0); //anzahl kommastellen y-achse
         $graph->SetYTickIncrement($max_x < 10 ? 1 : round($max_x/10));
@@ -172,7 +175,7 @@ function freetype_answers ($parent_id, $anz_nutzer) {
               ORDER BY position";
     $statement = DBManager::get()->prepare($query);
     $statement->execute([$parent_id]);
-
+    $counter = 0;
     while ($answer = $statement->fetchColumn()) {
         $counter++;
         fputs($fo_file,"                <fo:table-row>\n");

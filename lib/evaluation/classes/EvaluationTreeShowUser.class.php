@@ -507,7 +507,7 @@ class EvaluationTreeShowUser
                                     ? "checked"
                                     : "";
                             else
-                                $checked = (is_array($answers[$question->getObjectID()]) &&
+                                $checked = (!empty($answers[$question->getObjectID()]) &&
                                     in_array($answer->getObjectID(), $answers[$question->getObjectID()]))
                                     ? "checked"
                                     : "";

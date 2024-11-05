@@ -126,8 +126,12 @@ class AvatarController extends AuthenticatedController
                 $imgdata = Request::get('cropped-image');
 
                 // Extract actual image data (prepended by mime type and meta data)
-                list($type, $imgdata) = explode(';', $imgdata);
-                list(, $imgdata) = explode(',', $imgdata);
+                $chunks = explode(';', $imgdata);
+                $type = $chunks[0];
+                $imgdata = $chunks[1] ?? '';
+
+                $chunks = explode(',', $imgdata);
+                $imgdata = $chunks[1] ?? '';
                 $imgdata = base64_decode($imgdata);
                 // Write data to file.
                 $filename = $GLOBALS['TMP_PATH'] . '/avatar-' . $id . '.png';

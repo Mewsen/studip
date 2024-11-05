@@ -240,7 +240,7 @@ page_close();
            ( is_array($answers) &&
          ! in_array($item->getObjectID(), array_keys($answers)) )
            ) &&
-         trim($freetexts[$item->getObjectID()]) == ''
+         empty($freetexts[$item->getObjectID()])
          )
          {
              $mandatories[] = $item->getObjectID();

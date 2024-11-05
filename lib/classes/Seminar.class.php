@@ -1278,7 +1278,8 @@ class Seminar
             $_SESSION['raumzeitFilter'] = 'all';
             $this->applyTimeFilter(0, 0);
         } else {
-            $filterSemester = Semester::findByTimestamp($timestamp);
+            $filterSemester = Semester::findByTimestamp($timestamp)
+                           ?? Semester::findCurrent();
             $_SESSION['raumzeitFilter'] = $filterSemester->beginn;
             $this->applyTimeFilter($filterSemester->beginn, $filterSemester->ende);
         }
