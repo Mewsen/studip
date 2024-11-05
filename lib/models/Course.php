@@ -1597,6 +1597,17 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             );
         }
 
+        //Check the course membership:
+
+        if ($GLOBALS['perm']->have_studip_perm('user', $this->id, $user_id)) {
+            return new \Studip\EnrolmentInformation(
+                _('Sie sind bereits in der Veranstaltung eingetragen.'),
+                \Studip\Information::INFO,
+                'already_member',
+                true
+            );
+        }
+
         //Check the course set and if the user is on an admission list:
 
         if ($course_set = $this->getCourseSet()) {
@@ -1668,17 +1679,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                 \Studip\Information::INFO,
                 'user',
                 false
-            );
-        }
-
-        //Check the course membership:
-
-        if ($GLOBALS['perm']->have_studip_perm('user', $this->id, $user_id)) {
-            return new \Studip\EnrolmentInformation(
-                _('Sie sind bereits in der Veranstaltung eingetragen.'),
-                \Studip\Information::INFO,
-                'already_member',
-                true
             );
         }
 
