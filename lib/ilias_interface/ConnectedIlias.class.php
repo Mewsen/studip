@@ -451,7 +451,11 @@ class ConnectedIlias
         $this->soap_client->setCachingStatus(false);
         $this->soap_client->clearCache();
         if ($delete_user->isConnected() && $delete_user->id && $this->soap_client->lookupUser($delete_user->login)) {
-            $deleted = $this->soap_client->deleteUser($delete_user->id);
+            if (!empty($this->ilias_config['delete_ilias_users'])) {
+                $deleted = $this->soap_client->deleteUser($delete_user->id);
+            } else {
+                $deleted = true;
+            }
             if ($deleted) {
                 $query = "DELETE FROM auth_extern WHERE studip_user_id = ? AND external_user_system_type = ?";
                 $statement = DBManager::get()->prepare($query);
@@ -486,7 +490,11 @@ class ConnectedIlias
 
         $this->soap_client->setCachingStatus(false);
         $this->soap_client->clearCache();
-        $deleted = $this->soap_client->deleteObject($crs_id);
+        if (!empty($this->ilias_config['delete_ilias_courses'])) {
+            $deleted = $this->soap_client->deleteObject($crs_id);
+        } else {
+            $deleted = true;
+        }
         if ($deleted) {
             IliasObjectConnections::DeleteAllConnections($course->id, $this->index);
             return true;
