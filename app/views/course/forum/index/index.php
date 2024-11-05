@@ -130,7 +130,7 @@ $pagechooser = null;
 <?= $this->render_partial('course/forum/index/_breadcrumb') ?>
 
 <!-- Seitenwähler (bei Bedarf) am oberen Rand anzeigen -->
-<? if ($number_of_entries > ForumEntry::POSTINGS_PER_PAGE) : ?>
+<? if (!empty($number_of_entries) && $number_of_entries > ForumEntry::POSTINGS_PER_PAGE) : ?>
 <div data-type="page_chooser" id="page-chooser">
     <? if (!isset($constraint) || $constraint['depth'] > 0) : ?>
     <?= $pagechooser = $GLOBALS['template_factory']->render('shared/pagechooser', [
@@ -150,7 +150,7 @@ $pagechooser = null;
     <?= $this->render_partial('course/forum/messages') ?>
 </div>
 
-<? if ($no_entries) : ?>
+<? if (!empty($no_entries)) : ?>
     <?= MessageBox::info(_('In dieser Ansicht befinden sich zur Zeit keine Beiträge.')) ?>
 <? endif ?>
 

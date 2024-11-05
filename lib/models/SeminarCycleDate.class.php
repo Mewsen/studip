@@ -311,11 +311,12 @@ class SeminarCycleDate extends SimpleORMap
         if (!parent::store()) {
             return false;
         }
-
-        if ($this->start_time != $old_cycle->start_time
-                || $this->end_time != $old_cycle->end_time
-                || $old_cycle->weekday != $this->weekday )
-        {
+        $update_count = 0;
+        if (
+            $this->start_time != $old_cycle->start_time
+            || $this->end_time != $old_cycle->end_time
+            || $old_cycle->weekday != $this->weekday
+        ) {
             $update_count = $this->updateExistingDates($old_cycle);
         }
 

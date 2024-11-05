@@ -52,7 +52,7 @@
     <? endif; ?>
         <?= Studip\LinkButton::createCancel(
             _('Abbrechen'),
-            $controller->indexURL($page ?? null, "#block-{$block->id}")
+            $controller->indexURL($page ?? null, isset($block) ?"#block-{$block->id}" : '')
         ) ?>
     </footer>
 </form>

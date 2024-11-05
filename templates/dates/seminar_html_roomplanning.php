@@ -49,7 +49,7 @@ if (!empty($dates['regular']['turnus_data']) || !empty($dates['irregular'])) :
 
   if (isset($dates['irregular']) && is_array($dates['irregular'])):
     foreach ($dates['irregular'] as $date) :
-        if (empty($with_past_intervals) && $date->end_time < $now) {
+        if (empty($with_past_intervals) && $date['end_time'] < $now) {
             continue;
         }
         $irregular[] = $date;

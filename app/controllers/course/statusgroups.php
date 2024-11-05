@@ -573,7 +573,10 @@ class Course_StatusgroupsController extends AuthenticatedController
                 $endtime = 0;
             }
         }
-        $position = Statusgruppen::find($group_id)->position;
+        $position = 1;
+        if (Statusgruppen::exists($group_id)) {
+            $position = Statusgruppen::find($group_id)->position;
+        }
         $selfassign = Request::int('selfassign', 0);
         // Exclusive entry makes sense only when selfassign is set in general.
         if ($selfassign !== 0) {
@@ -1421,7 +1424,7 @@ class Course_StatusgroupsController extends AuthenticatedController
         $members = Request::getArray('members');
         $course = Seminar::GetInstance($this->course_id);
         $removed_names = $course->cancelSubscription($members);
-
+        
         PageLayout::postSuccess(
             _('Die folgenden Personen wurden aus der Veranstaltung ausgetragen'),
             $removed_names

@@ -119,10 +119,8 @@ class Settings_PrivacyController extends Settings_SettingsController
                 'name'       => $entry['name'],
                 'visibility' => $new_visibility,
             ];
-            if ($entry['extern']) {
-                $new_data[$key]['extern'] = true;
-            }
-            $new_data[$key]['category'] = $entry['category'];
+            $new_data[$key]['extern'] = !empty($entry['extern']);
+            $new_data[$key]['category'] = $entry['category'] ?? '';
 
             $db_result[$key] = $new_visibility;
         }
