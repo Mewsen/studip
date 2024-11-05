@@ -83,7 +83,7 @@ function sort_groups($group_field, &$groups)
         case 'sem_tree_id':
             uksort($groups, function ($a, $b) {
                 $the_tree = TreeAbstract::GetInstance('StudipSemTree', ['build_index' => true]);
-                return $the_tree->tree_data[$a]['index'] - $the_tree->tree_data[$b]['index'];
+                return ($the_tree->tree_data[$a]['index'] ?? 0) - ($the_tree->tree_data[$b]['index'] ?? 0);
             });
             break;
 

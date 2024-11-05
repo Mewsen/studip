@@ -1210,15 +1210,15 @@ class EvaluationTreeEditView
                             $no_answers++;
                     }
                     if ($no_answers == 1) {
-                        if ($this->msg[$this->itemID])
+                        if (!empty($this->msg[$this->itemID]))
                             $this->msg[$this->itemID] .= "<br>" . _("Einer Frage wurden noch keine Antwortenmöglichkeiten zugewiesen.");
                         else
-                            $this->msg[$this->itemID] .= "info§" . _("Einer Frage  wurden noch keine Antwortenmöglichkeiten zugewiesen.");
+                            $this->msg[$this->itemID] = "info§" . _("Einer Frage  wurden noch keine Antwortenmöglichkeiten zugewiesen.");
                     } elseif ($no_answers > 1) {
-                        if ($this->msg[$this->itemID])
+                        if (!empty($this->msg[$this->itemID]))
                             $this->msg[$this->itemID] .= "<br>" . sprintf(_("%s Fragen wurden noch keine Antwortenmöglichkeiten zugewiesen."), $no_answers);
                         else
-                            $this->msg[$this->itemID] .= "info§" . sprintf(_("%s Fragen wurden noch keine Antwortenmöglichkeiten zugewiesen."), $no_answers);
+                            $this->msg[$this->itemID] = "info§" . sprintf(_("%s Fragen wurden noch keine Antwortenmöglichkeiten zugewiesen."), $no_answers);
                     }
 
                 }
@@ -1507,6 +1507,7 @@ class EvaluationTreeEditView
         $qgroup = &$this->tree->getGroupObject($this->itemID);
         $questionsDB = $qgroup->getChildren();
         $cmd = Request::optionArray('cmd');
+        $delete_empty_questions = 0;
         if (!empty($cmd))
             if (key($cmd) == "UpdateItem")
                 $delete_empty_questions = 1;
