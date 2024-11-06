@@ -138,6 +138,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             $config['registered_callbacks']['before_store'][] = 'validate';
         }
         $config['registered_callbacks']['after_create'][] = 'cbLogNewRequest';
+        $config['registered_callbacks']['before_store'][] = 'cbBeforeStore';
         $config['registered_callbacks']['after_store'][] = 'cbAfterStore';
         $config['registered_callbacks']['after_delete'][] = 'cbAfterDelete';
 
@@ -542,6 +543,18 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
     {
         $this->sendNewRequestMail();
         StudipLog::log('RES_REQUEST_NEW', $this->course_id, $this->resource_id, $this->getLoggingInfoText());
+    }
+
+    /**
+     * A callback method that sets the users connection before store.
+     */
+    public function cbBeforeStore()
+    {
+        if ($this->isNew() && !$this->user_id) {
+            $this->user_id = User::findCurrent()->id;
+        }
+
+        $this->last_modified_by = User::findCurrent()->id;
     }
 
     /**
