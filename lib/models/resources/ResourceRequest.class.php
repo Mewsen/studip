@@ -988,8 +988,8 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             $date = CourseDate::find($this->termin_id);
             $interval['range']       = 'CourseDate';
             $interval['range_id']    = $this->termin_id;
-            $interval['booked_room'] = $date->room_booking->resource_id;
-            $interval['booking_id']  = $date->room_booking->id;
+            $interval['booked_room'] = $date->room_booking->resource_id ?? null;
+            $interval['booking_id']  = $date->room_booking->id ?? null;
 
             if (!empty($interval)) {
                 return [
