@@ -100,7 +100,7 @@ class CourseTopicFolder extends PermissionEnabledFolder implements FolderType
         if ($topic === null) {
             return MessageBox::error(_('Es wurde kein Thema ausgewählt.'));
         } else {
-            if ($topic->id === $this->getTopic()->id) {
+            if ($this->getTopic() && $topic->id === $this->getTopic()->id) {
                 if (!$request['name']) {
                     return MessageBox::error(_('Die Bezeichnung des Ordners fehlt.'));
                 }
