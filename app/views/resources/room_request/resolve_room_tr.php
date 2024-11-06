@@ -111,7 +111,7 @@
                 $room_radio_name = 'selected_rooms[' . $range_index . ']';
                 ?>
                 <td>
-                    <? if ($available || $interval['booked_room'] == $room->id): ?>
+                    <? if ($available || (!empty($interval['booked_room']) && $interval['booked_room'] == $room->id)): ?>
                         <input type="radio" name="<?= htmlReady($room_radio_name) ?>"
                                class="text-bottom radio-<?= htmlReady($room->id) ?>"
                                value="<?= htmlReady($room->id) ?>"

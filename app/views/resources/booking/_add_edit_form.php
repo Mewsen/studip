@@ -1,7 +1,7 @@
 <? if ($show_form): ?>
     <form class="default create-booking-form" method="post"
           name="create_booking"
-          action="<?= ($booking !== null) && ($mode == 'edit')
+          action="<?= (isset($booking) && $mode === 'edit')
               ? $controller->link_for('resources/booking/edit/' . $booking->id)
               : $controller->link_for('resources/booking/add/' . $resource_or_clipboard_id . '/' . $booking_type);
           ?>"
@@ -430,7 +430,7 @@
         <div class="fieldset-row">
             <fieldset>
                 <legend><?= _('Personen') ?></legend>
-                <? if ($booking && $booking->assigned_user instanceof User): ?>
+                <? if (isset($booking->assigned_user)): ?>
                     <p>
                         <a href="<?= $controller->link_for(
                             'profile',
@@ -470,7 +470,7 @@
                         </div>
                     </label>
                 <? endif ?>
-                <? if ($booking && $booking->booking_user): ?>
+                <? if (isset($booking->booking_user)): ?>
                     <p style="margin-top:1em;margin-bottom:0;">
                         <?= htmlReady(
                             _('Gebucht von:')
@@ -539,7 +539,7 @@
                     <?= _('Vorhandene Buchungen überschreiben') ?>
                 </label>
             </fieldset>
-            <? if ($booking): ?>
+            <? if (isset($booking)): ?>
                 <? $intervals = $booking->getTimeIntervals(); ?>
                 <? if (count($intervals) > 1): ?>
                     <fieldset class="singledates">
