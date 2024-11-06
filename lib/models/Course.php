@@ -996,9 +996,9 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             $stmt = $db->prepare(
                 "SELECT 1
                  FROM `user_inst`
-                 JOIN `seminar_inst` USING (`institute_id`)
+                 JOIN `seminar_inst` USING (`institut_id`)
                  WHERE `user_inst`.`user_id` = :user_id
-                   AND `seminar_inst`.`seminar_id` = :course_id"
+                 AND `seminar_inst`.`seminar_id` = :course_id"
             );
             $stmt->execute([
                 'course_id' => $this->id,
