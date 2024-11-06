@@ -696,11 +696,9 @@ class Fullcalendar
 
     static submitDatePicker() {
         let picked_date = jQuery('#booking-plan-jmpdate').val();
-        let booking_plan_datepicker = true;
         if (!picked_date) {
             //Not a booking plan date selector.
             picked_date = jQuery('#date_select').val();
-            booking_plan_datepicker = false;
         }
         let iso_date_string = '';
         if (picked_date) {
@@ -718,9 +716,7 @@ class Fullcalendar
             jQuery('[data-fullcalendar="1"],[data-resources-fullcalendar="1"]').each(function () {
                 this.calendar.gotoDate(iso_date_string);
             });
-            if (booking_plan_datepicker) {
-                Fullcalendar.updateDateURL();
-            }
+            Fullcalendar.updateDateURL();
         }
     }
 
