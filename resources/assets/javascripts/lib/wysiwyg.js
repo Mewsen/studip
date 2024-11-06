@@ -187,6 +187,13 @@ function enhanceEditor($textarea, ckeditor) {
         ckeditor.focus();
     }
 
+    // catch and prevent invalid event for required textareas and trigger on the ckeditor
+    $textarea.on('invalid', function (e) {
+        e.preventDefault()
+        ckeditor.focus();
+        alert('wyswiyg befüllen!') // TODO better notification
+    })
+
     ckeditor.ui.focusTracker.on('change:isFocused', (evt, name, isFocused) => {
         if (!isFocused) {
             ckeditor.sourceElement.value = wysiwyg.markAsHtml(ckeditor.getData());
