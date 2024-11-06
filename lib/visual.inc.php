@@ -627,7 +627,7 @@ function TransformInternalLinks($str){
     if (!$str) {
         return '';
     }
-    
+
     if (mb_strpos($str, 'http') !== 0) {
         if ($str[0] === '#' || preg_match('/^[a-z][a-z0-9+.-]*:/i', $str)) {
             return $str;
@@ -683,60 +683,6 @@ function display_exception($exception, $as_html = false, $deep = false) {
 
     return $as_html ? nl2br(htmlReady($result)) : $result;
 }
-
-/**
- * Returns the appropriate stud.ip icon for a given mime type.
- *
- * @param String $mime_type Mime type to get the icon for
- * @return String Icon path for the mime type
- */
-//DEPRECATED: replaced by FileManager::getIconNameForMimeType
-//TODO: test: lib/extern/modules/ExternModuleDownload.php
-//TODO: test: lib/extern/modules/ExternModuleTemplateDownload.php
-/*
-function get_icon_for_mimetype($mime_type)
-{
-
-    $icons_application = [
-        'file-pdf' => ['pdf'],
-        'file-ppt' => ['powerpoint','presentation'],
-        'file-excel' => ['excel', 'spreadsheet', 'csv'],
-        'file-word' => ['word', 'wordprocessingml', 'opendocument.text', 'rtf'],
-        'file-archive' => ['zip', 'rar', 'arj', '7z' ]
-        ];
-    list($type, $subtype) = explode('/', $mime_type);
-    switch ($type) {
-        case 'image':
-            $ret = 'file-pic';
-        break;
-        case 'audio':
-            $ret = 'file-audio';
-            break;
-        case 'video':
-            $ret = 'file-video';
-            break;
-        case 'text':
-            $ret = 'file-text';
-            if (preg_match('/csv|comma-separated-values/i', $subtype)) {
-                $ret = 'file-excel';
-            }
-            break;
-        case 'application':
-            $ret = 'file-generic';
-            foreach($icons_application as $icon => $marker) {
-                if (preg_match('/' . join('|', array_map('preg_quote', $marker)) . '/i', $subtype)) {
-                    $ret = $icon;
-                    break;
-                }
-            }
-            break;
-        default:
-            $ret = 'file-generic';
-    }
-
-    return $ret;
-}
-*/
 
 /**
  * Converts an array of attributes to an html attribute string.
