@@ -81,34 +81,16 @@ class StudipCacheFactory
      */
     public static function getCache($apply_proxied_operations = true)
     {
-        if (is_null(self::$cache)) {
-            $proxied = false;
+        if (self::$cache === null) {
+            $proxied = !$GLOBALS['CACHING_ENABLE']
+                && isset($GLOBALS['GLOBAL_CACHING_ENABLE'])
+                && $GLOBALS['GLOBAL_CACHING_ENABLE'];
 
-            if (!$GLOBALS['CACHING_ENABLE']) {
-                self::$cache = new StudipMemoryCache();
+            self::$cache = self::loadSystemCache();
 
-                // Proxy cache operations if CACHING_ENABLE is different from the globally set
-                // caching value. This should only be the case in cli mode.
-                if (isset($GLOBALS['GLOBAL_CACHING_ENABLE']) && $GLOBALS['GLOBAL_CACHING_ENABLE']) {
-                    $proxied = true;
-                }
-            } else {
-                try {
-                    $class = self::loadCacheClass();
-                    $args = self::retrieveConstructorArguments();
-
-                    self::$cache = self::instantiateCache($class, $args);
-                } catch (Exception $e) {
-                    error_log(__METHOD__ . ': ' . $e->getMessage());
-                    PageLayout::addBodyElements(MessageBox::error(__METHOD__ . ': ' . $e->getMessage()));
-                    $class = self::DEFAULT_CACHE_CLASS;
-                    self::$cache = new $class();
-                }
-            }
-
-            // If proxy should be used, inject it. Otherwise apply pending
-            // operations, if any.
             if ($proxied) {
+                // If proxy should be used, inject it. Otherwise apply pending
+                // operations, if any.
                 self::$cache = new StudipCacheProxy(self::$cache);
             } elseif ($GLOBALS['CACHING_ENABLE'] && $apply_proxied_operations) {
                 // Even if the above condition will try to eliminate most
@@ -126,6 +108,34 @@ class StudipCacheFactory
         return self::$cache;
     }
 
+    /**
+     * Loads the system's configured cache.
+     *
+     * @param bool $enforce_configured_cache Define whether the cache should
+     *                                       be loaded regardless of global
+     *                                       activation
+     */
+    public static function loadSystemCache(bool $enforce_configured_cache = false): StudipCache
+    {
+        if (!$GLOBALS['CACHING_ENABLE'] && !$enforce_configured_cache) {
+            return new StudipMemoryCache();
+        }
+
+        try {
+            $class = self::loadCacheClass();
+            $args = self::retrieveConstructorArguments();
+
+            $cache = self::instantiateCache($class, $args);
+        } catch (\Exception $e) {
+            error_log(__METHOD__ . ': ' . $e->getMessage());
+            PageLayout::addBodyElements(MessageBox::error(__METHOD__ . ': ' . $e->getMessage()));
+
+            $class = self::DEFAULT_CACHE_CLASS;
+            $cache = new $class();
+        }
+
+        return $cache;
+    }
 
     /**
      * Load configured cache class and return its name.
@@ -143,7 +153,7 @@ class StudipCacheFactory
             $version = new DBSchemaVersion();
             if ($version->get(1) < 224) {
                 // db cache is not yet available, use StudipMemoryCache
-                return 'StudipMemoryCache';
+                return StudipMemoryCache::class;
             }
 
             return self::DEFAULT_CACHE_CLASS;
