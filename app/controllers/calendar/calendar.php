@@ -49,7 +49,9 @@ class Calendar_CalendarController extends AuthenticatedController
                 ['data-dialog' => 'size=default']
             );
         } else {
-            $params = [];
+            $params = [
+                'timestamp' => time()
+            ];
             if ($user_id) {
                 $params['user_id'] = $user_id;
             } elseif ($group_id) {
@@ -74,9 +76,9 @@ class Calendar_CalendarController extends AuthenticatedController
         if (!$schedule) {
             $actions->addLink(
                 _('Termine exportieren'),
-                $this->url_for('calendar/calendar/export'),
+                $this->url_for('calendar/calendar/export', ['timestamp' => time()]),
                 Icon::create('export'),
-                ['data-dialog' => 'size=auto']
+                ['data-dialog' => 'size=auto', 'class' => 'calendar-action']
             );
             $actions->addLink(
                 _('Termine importieren'),
@@ -777,6 +779,9 @@ class Calendar_CalendarController extends AuthenticatedController
     {
         PageLayout::setTitle(_('Termine exportieren'));
         $this->begin = new DateTimeImmutable();
+        if (Request::submitted('timestamp')) {
+            $this->begin = $this->begin->setTimestamp(Request::int('timestamp'));
+        }
         $this->end = $this->begin->add(new DateInterval('P1Y'));
         $this->dates_to_export = 'user';
         if (Request::submitted('export')) {
