@@ -56,13 +56,13 @@ class StructuralElementsSharedIndex extends JsonApiController
             $add_content = false;
 
             foreach ($content->read_approval['users'] as $listedUserPerm) {
-                if ($listedUserPerm['id'] == $user->id && $listedUserPerm['read']) {
+                if ($listedUserPerm['id'] == $user->id && !empty($listedUserPerm['read'])) {
                     $add_content = true;
                 }
             }
 
             foreach ($content->write_approval['users'] as $listedUserPerm) {
-                if ($listedUserPerm['id'] == $user->id && $listedUserPerm['read']) {
+                if ($listedUserPerm['id'] == $user->id && !empty($listedUserPerm['read'])) {
                     $add_content = true;
                 }
             }
