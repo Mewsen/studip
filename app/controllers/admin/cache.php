@@ -47,16 +47,14 @@ class Admin_CacheController extends AuthenticatedController
 
         $this->sidebar->addWidget($views);
 
-        if ($this->enabled) {
-            $actions = new ActionsWidget();
-            $actions->addLink(
-                _('Cache leeren'),
-                $this->url_for('admin/cache/flush'),
-                Icon::create('decline'),
-                ['data-confirm' => _('Soll der gesamte Inhalt des Caches wirklich gelöscht werden?')]
-            );
-            $this->sidebar->addWidget($actions);
-        }
+        $actions = new ActionsWidget();
+        $actions->addLink(
+            _('Cache leeren'),
+            $this->url_for('admin/cache/flush'),
+            Icon::create('decline'),
+            ['data-confirm' => _('Soll der gesamte Inhalt des Caches wirklich gelöscht werden?')]
+        );
+        $this->sidebar->addWidget($actions);
     }
 
     /**
@@ -64,19 +62,19 @@ class Admin_CacheController extends AuthenticatedController
      */
     public function settings_action()
     {
-        if ($this->enabled) {
-            $this->types = CacheType::findAndMapBySQL(function (CacheType $type) {
-                return $type->toArray();
-            }, "1 ORDER BY `cache_id`");
-
-            $currentCache = Config::get()->SYSTEMCACHE;
-            $currentCacheClass = CacheType::findOneByClass_name($currentCache['type']);
-            $this->cache = $currentCacheClass->class_name;
-            $this->config = $currentCacheClass->class_name::getConfig();
-        } else {
+        if (!$this->enabled) {
             PageLayout::postWarning(
-                _('Caching ist systemweit ausgeschaltet, daher kann hier nichts konfiguriert werden.'));
+                _('Caching ist systemweit ausgeschaltet.'));
         }
+
+        $this->types = CacheType::findAndMapBySQL(function (CacheType $type) {
+            return $type->toArray();
+        }, "1 ORDER BY `cache_id`");
+
+        $currentCache = Config::get()->SYSTEMCACHE;
+        $currentCacheClass = CacheType::findOneByClass_name($currentCache['type']);
+        $this->cache = $currentCacheClass->class_name;
+        $this->config = $currentCacheClass->class_name::getConfig();
     }
 
     /**
@@ -122,7 +120,7 @@ class Admin_CacheController extends AuthenticatedController
      */
     public function flush_action()
     {
-        $cache = StudipCacheFactory::getCache();
+        $cache = StudipCacheFactory::loadSystemCache(true);
         $cache->flush();
 
         PageLayout::postSuccess(_('Die Inhalte des Caches wurden gelöscht.'));
