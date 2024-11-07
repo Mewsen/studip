@@ -131,6 +131,10 @@ class CalendarScheduleModel
             $entry['onClick']      = "function (id) { STUDIP.Schedule.showScheduleDetails('". $entry['id'] ."'); }";
             $entry['visible']      = true;
 
+            if (!isset($GLOBALS['PERS_TERMIN_KAT'][$entry['color']])) {
+                $entry['color'] = DEFAULT_COLOR_NEW;
+            }
+
             $day_number = ($entry['day']-1) % 7;
             if (!isset($ret[$day_number])) {
                 $ret[$day_number] = CalendarColumn::create($day_number);

@@ -301,12 +301,6 @@ $PERS_TERMIN_KAT = [
         'border_color' => '#8bbd40',
         'bgcolor'      => '#8bbd40',
         'fgcolor'      => '#000000'
-    ],
-    '255' => [
-        'name'         => _('Sonstige'),
-        'border_color' => '#A7ABAF',
-        'bgcolor'      => '#A7ABAF',
-        'fgcolor'      => '#000000'
     ]
     //More categories can be added here.
 ];

@@ -11,9 +11,6 @@ class Calendar_DateController extends AuthenticatedController
         foreach ($GLOBALS['PERS_TERMIN_KAT'] as $key => $data) {
             $options[$key] = $data['name'];
         }
-        if (!array_key_exists(255, $options)) {
-            $options[255] = _('Sonstige');
-        }
         return $options;
     }
 
