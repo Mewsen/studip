@@ -670,7 +670,7 @@ class Course_RoomRequestsController extends AuthenticatedController
         return $_SESSION[$this->request_id][$key] ?? $defaults[$key] ?? null;
     }
 
-    private function toSession(array|string $data, mixed $value = null): void
+    private function toSession($data, mixed $value = null): void
     {
         if (!isset($this->request_id)) {
             throw new RuntimeException('Request ID not set.');
