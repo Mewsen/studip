@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var RootAssistantController $controller
+ * @var array $release_notes
+ */
+?>
 <form action="<?= $controller->seen() ?>" data-dialog="size=auto" method="post">
     <section class="contentbox">
         <h2>
@@ -86,8 +92,8 @@
                 <?= _('Für alle Roots als gelesen kennzeichnen und nicht mehr anzeigen') ?>
             </label>
         </section>
-        <footer data-dialog-button>
-            <?= Studip\Button::createCancel(_('Schließen'), 'close', ['data-dialog' => 'reload-on-close']) ?>
-        </footer>
     </section>
+    <footer data-dialog-button>
+        <?= Studip\Button::createCancel(_('Schließen'), 'close', ['data-dialog' => 'reload-on-close']) ?>
+    </footer>
 </form>

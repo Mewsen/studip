@@ -172,6 +172,7 @@ Dialog.handlers.header['X-Title'] = function(title, options) {
 // Handler for HTTP header X-No-Buttons: Decide whether to show dialog buttons
 Dialog.handlers.header['X-No-Buttons'] = function(value, options) {
     options.buttons = false;
+    options.dialogClass = 'no-default-buttons';
 };
 // Handler for HTTP header X-Dialog-Size: Adjust the size of the dialog
 Dialog.handlers.header['X-Dialog-Size'] = function (value, options) {

@@ -17,6 +17,8 @@ class RootAssistantController extends AuthenticatedController
     {
         $this->release_notes = $this->fetchReleaseNotes();
         $this->configurations = $this->fetchNewConfiguration();
+
+        $this->response->add_header('X-No-Buttons', 1);
     }
 
     public function seen_action()
