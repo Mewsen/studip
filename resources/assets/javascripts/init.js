@@ -36,7 +36,6 @@ import Fullscreen from './lib/fullscreen.js';
 import GlobalSearch from './lib/global_search.js';
 import HeaderMagic from './lib/header_magic.js';
 import i18n from './lib/i18n.js';
-import Instschedule from './lib/instschedule.js';
 import InlineEditing from './lib/inline-editing.js';
 import JSONAPI, { jsonapi } from './lib/jsonapi.ts';
 import JSUpdater from './lib/jsupdater.js';
@@ -64,7 +63,6 @@ import register from './lib/register.js';
 import Report from './lib/report.ts';
 import Resources from './lib/resources.js';
 import Responsive from './lib/responsive.js';
-import Schedule from './lib/schedule.js';
 import Screenreader from './lib/screenreader.js';
 import Scroll from './lib/scroll.js';
 import Search from './lib/search.js';
@@ -120,7 +118,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     GlobalSearch,
     HeaderMagic,
     i18n,
-    Instschedule,
     InlineEditing,
     jsonapi,
     JSONAPI,
@@ -149,7 +146,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     register,
     Report,
     Responsive,
-    Schedule,
     Scroll,
     Screenreader,
     Search,

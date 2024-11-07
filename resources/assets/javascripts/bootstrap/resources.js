@@ -179,7 +179,7 @@ STUDIP.ready(function () {
 
     jQuery(document).on(
         'dragenter',
-        '.individual-booking-plan .appointment-booking-plan .schedule_entry',
+        '.individual-booking-plan .appointment-booking-plan',
         function (event) {
             jQuery(event.target).css('opacity', '0.7');
         }
@@ -187,7 +187,7 @@ STUDIP.ready(function () {
 
     jQuery(document).on(
         'dragleave',
-        '.individual-booking-plan .appointment-booking-plan .schedule_entry',
+        '.individual-booking-plan .appointment-booking-plan',
         function (event) {
             jQuery(event.target).css('opacity', '1.0');
         }
@@ -203,35 +203,6 @@ STUDIP.ready(function () {
                     'left': '0px'
                 }
             );
-        }
-    );
-
-    jQuery('.schedule_entry').droppable(
-        {
-            drop: function (event, ui_element) {
-                event.preventDefault();
-
-                var booking_plan_entry = event.target;
-                var new_background_colour = jQuery(
-                    ui_element.helper
-                ).css('background-color');
-
-                jQuery(booking_plan_entry).css(
-                    'background-color',
-                    new_background_colour
-                );
-
-                jQuery(booking_plan_entry).find('dl').css(
-                    {
-                        backgroundColor: new_background_colour,
-                        borderColor: new_background_colour
-                    }
-                );
-                jQuery(booking_plan_entry).find('dt').css(
-                    'background-color',
-                    new_background_colour
-                );
-            }
         }
     );
 

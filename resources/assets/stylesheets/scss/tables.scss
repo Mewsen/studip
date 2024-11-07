@@ -840,42 +840,6 @@ table.withdetails {
     }
 }
 
-// Schedule table
-table#schedule_data {
-    width: 100%;
-    table-layout: fixed;
-
-    thead {
-        tr {
-            td {
-                text-align: center;
-                vertical-align: top;
-                background-color: var(--color--table-header);
-                padding: 0;
-
-                &:first-child {
-                    width: 40px;
-                }
-            }
-
-            &:first-child {
-                td:first-child {
-                    background-color: inherit;
-                }
-            }
-        }
-    }
-
-    tbody {
-        td:first-child {
-            text-align: right;
-            vertical-align: top;
-            background-color: var(--color--table-header);
-            padding: 0px;
-        }
-    }
-}
-
 // Responsive helper
 .table-scrollbox-horizontal {
     @include scrollbox-horizontal();
