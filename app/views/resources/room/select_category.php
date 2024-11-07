@@ -1,5 +1,12 @@
+<?php
+/**
+ * @var ResourceCategory[] $categories
+ * @var Resources_RoomController $controller
+ */
+
+?>
 <? if ($categories) : ?>
-    <form method="get" action="<?= $controller->url_for('resources/room/add/') ?>" class="default"
+    <form method="get" action="<?= $controller->add() ?>" class="default"
           data-dialog="size=auto">
         <label>
             <?= _('Raumkategorie') ?>

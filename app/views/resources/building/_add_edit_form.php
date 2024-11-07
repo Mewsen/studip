@@ -1,7 +1,25 @@
+<?php
+/**
+ * @var Resources_BuildingController $controller
+ * @var bool $show_form
+ * @var string $mode
+ * @var string $name
+ * @var string $category_id
+ * @var string $description
+ * @var string $parent_id
+ * @var string $number
+ * @var string $address
+ * @var int $sort_position
+ * @var Building $building
+ * @var Building[] $possible_parents
+ * @var array $grouped_defined_properties
+ * @var array $property_data
+ */
+?>
 <? if ($show_form): ?>
-    <? $url = ($mode == 'add')
-        ? $controller->link_for('resources/building/add', ['category_id' => $category_id])
-        : $controller->link_for('resources/building/edit/' . $building->id) ?>
+    <? $url = $mode === 'add'
+        ? $controller->add(['category_id' => $category_id])
+        : $controller->edit($building->id) ?>
     <form class="default" method="post" action="<?= $url ?>"
           data-dialog="reload-on-close">
 
@@ -10,11 +28,11 @@
             <legend><?= _('Grunddaten') ?></legend>
             <label>
                 <?= _('Name des Gebäudes') ?>
-                <input type="text" name="name" value="<?= htmlReady($name) ?>">
+                <input type="text" name="name" value="<?= htmlReady($name ?? '') ?>">
             </label>
             <label>
                 <?= _('Beschreibungstext') ?>
-                <input type="text" name="description" value="<?= htmlReady($description) ?>">
+                <input type="text" name="description" value="<?= htmlReady($description ?? '') ?>">
             </label>
             <label>
                 <?= _('Standort / Hierarchie') ?>
@@ -22,7 +40,7 @@
                     <option value=""><?= _('Bitte wählen') ?></option>
                     <? foreach ($possible_parents as $resource): ?>
                         <option value="<?= htmlReady($resource->id) ?>"
-                            <?= $parent_id == $resource->id ? 'selected="selected"' : '' ?>>
+                            <?= $parent_id === $resource->id ? 'selected' : '' ?>>
                             <?= htmlReady('/' . implode('/', ResourceManager::getHierarchyNames($resource))) ?>
                         </option>
                     <? endforeach ?>
@@ -30,16 +48,16 @@
             </label>
             <label>
                 <?= _('Gebäudenummer') ?>
-                <input type="text" name="number" value="<?= htmlReady($number) ?>">
+                <input type="text" name="number" value="<?= htmlReady($number ?? '') ?>">
             </label>
             <label>
                 <?= _('Adresse') ?>
-                <input type="text" name="address" value="<?= htmlReady($address) ?>">
+                <input type="text" name="address" value="<?= htmlReady($address ?? '') ?>">
             </label>
             <? if ($GLOBALS['perm']->have_perm('root')): ?>
                 <label>
                     <?= _('Sortierposition') ?>
-                    <input type="text" name="sort_position" value="<?= htmlReady($sort_position) ?>">
+                    <input type="text" name="sort_position" value="<?= htmlReady($sort_position ?? '') ?>">
                 </label>
             <? endif ?>
 
@@ -53,12 +71,12 @@
                 ]
             ) ?>
         </fieldset>
-        <? if ($grouped_defined_properties): ?>
+        <? if (!empty($grouped_defined_properties)): ?>
             <?= $this->render_partial(
                 'resources/resource/_standard_properties_form_part.php',
                 [
                     'grouped_defined_properties' => $grouped_defined_properties,
-                    'property_data'              => $property_data
+                    'property_data'              => $property_data ?? []
                 ]
             ) ?>
         <? endif ?>
