@@ -14,7 +14,7 @@ class CoreScm extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         if (!Config::get()->SCM_ENABLE) {
             return null;
@@ -83,10 +83,10 @@ class CoreScm extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         if (!Config::get()->SCM_ENABLE) {
-            return null;
+            return [];
         }
 
         $temp = StudipScmEntry::findByRange_id($course_id, 'ORDER BY position ASC');
@@ -110,7 +110,7 @@ class CoreScm extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary' => _('Die Lehrenden bestimmen, wie Titel und Inhalt dieser Seite aussehen.'),
@@ -150,7 +150,7 @@ class CoreScm extends CorePlugin implements StudipModule
         ];
     }
 
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         // TODO: Implement getInfoTemplate() method.
         return null;

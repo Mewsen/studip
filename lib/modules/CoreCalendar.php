@@ -14,7 +14,7 @@ class CoreCalendar extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         if (!Config::get()->CALENDAR_GROUP_ENABLE) {
             return null;
@@ -28,10 +28,10 @@ class CoreCalendar extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         if (!Config::get()->CALENDAR_GROUP_ENABLE) {
-            return null;
+            return [];
         }
 
         $navigation = new Navigation(_('Kalender'), 'dispatch.php/calendar/calendar/course/' . $course_id);
@@ -43,7 +43,7 @@ class CoreCalendar extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary' => _('Kalender'),
@@ -58,7 +58,7 @@ class CoreCalendar extends CorePlugin implements StudipModule
         return Config::get()->CALENDAR_GROUP_ENABLE && $context->getRangeType() === 'course';
     }
 
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         return null;
     }

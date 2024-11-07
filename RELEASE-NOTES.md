@@ -78,6 +78,7 @@
 - Die Zuordnung von Veranstaltungen zu Semestern anhand von Timestamps wurde entfernt. In der Datenbank wurden die Spalten `start_time` und `duration_time` der Tabelle `seminare` entfernt. ([Issue #4391]https://gitlab.studip.de/studip/studip/-/issues/4391))
   - Plugins, die Veranstaltungen anhand von Timestamps laden oder anderweitig verwenden, müssen angepasst werden!
   - Das Mapping von Veranstaltungen zu Semestern findet nun ausschließlich anhand der Semester-ID über die Verknüpfungstabelle `semester_courses` statt.
+- Im Rahmen von [Tic #4043](https://gitlab.studip.de/studip/studip/-/issues/4043) wurde das Interface `StudipModule` um Return Type Hints erweitert. Davon ist dann auch die Klasse `StandardPlugin` betroffen. Betroffene Plugins müssen die entsprechenden Return Type Hints übernehmen.
 
 ## Security related issues
 

@@ -35,7 +35,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         if ($user_id === 'nobody') {
             return null;
@@ -57,7 +57,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         if ($GLOBALS['user']->id === 'nobody') {
             return [];
@@ -81,7 +81,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
     /**
      * {@inheritdoc}
      */
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         return null;
     }
@@ -100,7 +100,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary' => _('Verlinkung auf Inhalte in externen Anwendungen (LTI-Tool)'),

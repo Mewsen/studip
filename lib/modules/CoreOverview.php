@@ -14,7 +14,7 @@ class CoreOverview extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         $sql = "SELECT COUNT(nw.news_id) AS count,
                        COUNT(IF((nw.chdate > IFNULL(b.visitdate, :threshold) AND nw.user_id !=:user_id), nw.news_id, NULL)) AS neue
@@ -73,7 +73,7 @@ class CoreOverview extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         $object_type = get_object_type($course_id, ['sem', 'inst']);
         if ($object_type === 'sem') {
@@ -118,7 +118,7 @@ class CoreOverview extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'displayname' => _('Übersicht'),
@@ -128,7 +128,7 @@ class CoreOverview extends CorePlugin implements StudipModule
         ];
     }
 
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         // TODO: Implement getInfoTemplate() method.
         return null;

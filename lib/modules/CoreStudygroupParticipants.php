@@ -14,7 +14,7 @@ class CoreStudygroupParticipants extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         $navigation = new Navigation(_('Teilnehmende'), "dispatch.php/course/studygroup/members/{$course_id}");
         $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
@@ -27,7 +27,7 @@ class CoreStudygroupParticipants extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         $navigation = new Navigation(_('Teilnehmende'), "dispatch.php/course/studygroup/members/".$course_id);
         $navigation->setImage(Icon::create('persons', Icon::ROLE_INFO_ALT));
@@ -38,7 +38,7 @@ class CoreStudygroupParticipants extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary' => _('Liste aller Teilnehmenden einschließlich Nachrichtenfunktionen'),
@@ -48,7 +48,7 @@ class CoreStudygroupParticipants extends CorePlugin implements StudipModule
         ];
     }
 
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         // TODO: Implement getInfoTemplate() method.
         return null;

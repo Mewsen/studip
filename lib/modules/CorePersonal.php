@@ -10,12 +10,12 @@
 
 class CorePersonal extends CorePlugin implements StudipModule
 {
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         return null;
     }
 
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         if ($GLOBALS['user']->id != 'nobody') {
             $navigation = new Navigation(_('Personal'));
@@ -41,7 +41,7 @@ class CorePersonal extends CorePlugin implements StudipModule
     /**
      * @see StudipModule::getMetadata()
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary'          => _('Liste aller MitarbeiterInnen'),
@@ -53,7 +53,7 @@ class CorePersonal extends CorePlugin implements StudipModule
         ];
     }
 
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         // TODO: Implement getInfoTemplate() method.
         return null;

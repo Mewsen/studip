@@ -14,7 +14,7 @@ class CoreWiki extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($range_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         if (!Config::get()->WIKI_ENABLE) {
             return null;
@@ -38,7 +38,7 @@ class CoreWiki extends CorePlugin implements StudipModule
         ");
 
         $statement->execute([
-            'range_id' => $range_id,
+            'range_id' => $course_id,
             'user_id' => $user_id,
             'perm' => $perm
         ]);
@@ -47,7 +47,7 @@ class CoreWiki extends CorePlugin implements StudipModule
             return null;
         }
 
-        $visit_date = object_get_visit($range_id, $this->getPluginId(), 'visitdate') ?? $last_visit;
+        $visit_date = object_get_visit($course_id, $this->getPluginId(), 'visitdate') ?? $last_visit;
 
         $statement = DBManager::get()->prepare("
             SELECT COUNT(*) AS `neue`
@@ -105,10 +105,10 @@ class CoreWiki extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($range_id)
+    public function getTabNavigation(string $course_id): array
     {
         if (!Config::get()->WIKI_ENABLE) {
-            return null;
+            return [];
         }
 
         $navigation = new Navigation(_('Wiki'));
@@ -116,7 +116,7 @@ class CoreWiki extends CorePlugin implements StudipModule
         $navigation->setActiveImage(Icon::create('wiki', Icon::ROLE_INFO));
 
         $navigation->addSubNavigation('start', new Navigation(_('Wiki-Startseite'), 'dispatch.php/course/wiki/page'));
-        if (WikiPage::countBySQL('`range_id` = ?', [$range_id]) > 0) {
+        if (WikiPage::countBySQL('`range_id` = ?', [$course_id]) > 0) {
             $navigation->addSubNavigation('listnew', new Navigation(_('Neue Seiten'), 'dispatch.php/course/wiki/newpages'));
             $navigation->addSubNavigation('allpages', new Navigation(_('Alle Seiten'), 'dispatch.php/course/wiki/allpages'));
         }
@@ -126,7 +126,7 @@ class CoreWiki extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary' => _('Gemeinsames Erstellen und Bearbeiten von Texten'),
@@ -171,7 +171,7 @@ class CoreWiki extends CorePlugin implements StudipModule
         ];
     }
 
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         return null;
     }

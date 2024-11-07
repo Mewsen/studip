@@ -36,7 +36,7 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function getInfoTemplate($courseId)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         return null;
     }
@@ -44,7 +44,7 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($courseId)
+    public function getTabNavigation(string $course_id): array
     {
         if ($GLOBALS['user']->id === 'nobody') {
             return [];
@@ -52,28 +52,28 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
 
         $navigation = new Navigation(
             _('Courseware'),
-            URLHelper::getURL('dispatch.php/course/courseware/?cid='.$courseId)
+            URLHelper::getURL('dispatch.php/course/courseware/?cid='.$course_id)
         );
         $navigation->setImage(Icon::create('courseware', Icon::ROLE_INFO_ALT));
         $navigation->addSubNavigation(
             'shelf',
-            new Navigation(_('Lernmaterialien'), 'dispatch.php/course/courseware/?cid=' . $courseId)
+            new Navigation(_('Lernmaterialien'), 'dispatch.php/course/courseware/?cid=' . $course_id)
         );
         $navigation->addSubNavigation(
             'unit',
-            new Navigation(_('Inhalt'), 'dispatch.php/course/courseware/courseware?cid=' . $courseId)
+            new Navigation(_('Inhalt'), 'dispatch.php/course/courseware/courseware?cid=' . $course_id)
         );
         $navigation->addSubNavigation(
             'activities',
-            new Navigation(_('Aktivitäten'), 'dispatch.php/course/courseware/activities?cid=' . $courseId)
+            new Navigation(_('Aktivitäten'), 'dispatch.php/course/courseware/activities?cid=' . $course_id)
         );
         $navigation->addSubNavigation(
             'tasks',
-            new Navigation(_('Aufgaben'), 'dispatch.php/course/courseware/tasks?cid=' . $courseId)
+            new Navigation(_('Aufgaben'), 'dispatch.php/course/courseware/tasks?cid=' . $course_id)
         );
         $navigation->addSubNavigation(
             'comments',
-            new Navigation(_('Kommentare und Anmerkungen'), 'dispatch.php/course/courseware/comments_overview?cid=' . $courseId)
+            new Navigation(_('Kommentare und Anmerkungen'), 'dispatch.php/course/courseware/comments_overview?cid=' . $course_id)
         );
 
         return ['courseware' => $navigation];
@@ -82,7 +82,7 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($courseId, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
         if ($user_id === 'nobody') {
             return null;
@@ -101,7 +101,7 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
         ");
 
         $statement->execute([
-            'range_id' => $courseId,
+            'range_id' => $course_id,
             'last_visit' => $last_visit,
             'user_id' => $user_id
         ]);
@@ -132,7 +132,7 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary' => _('Lerninhalte erstellen, verteilen und erleben'),

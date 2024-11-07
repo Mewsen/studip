@@ -91,17 +91,15 @@ class ConsultationModule extends CorePlugin implements StudipModule, SystemPlugi
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation(string $course_id, int $last_visit, string $user_id): ?Navigation
     {
-        // TODO
-
         return null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation(string $course_id): array
     {
         if ($GLOBALS['user']->id !== 'nobody') {
             $navigation = new ConsultationNavigation(RangeFactory::find($course_id));
@@ -115,7 +113,7 @@ class ConsultationModule extends CorePlugin implements StudipModule, SystemPlugi
     /**
      * {@inheritdoc}
      */
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         return null;
     }
@@ -132,7 +130,7 @@ class ConsultationModule extends CorePlugin implements StudipModule, SystemPlugi
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'summary'     => _('Generische Terminvergabe'),

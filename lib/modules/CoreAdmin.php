@@ -12,7 +12,7 @@ class CoreAdmin extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getIconNavigation($course_id, $last_visit, $user_id)
+    public function getIconNavigation($course_id, $last_visit, $user_id): ?Navigation
     {
         $navigation = new Navigation(_('Verwaltung'), 'dispatch.php/course/management');
         $navigation->setImage(Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => _('Verwaltung')]));
@@ -22,7 +22,7 @@ class CoreAdmin extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getTabNavigation($course_id)
+    public function getTabNavigation($course_id): array
     {
         $range = RangeFactory::find($course_id);
 
@@ -134,7 +134,7 @@ class CoreAdmin extends CorePlugin implements StudipModule
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'displayname' => _('Verwaltung'),
@@ -144,7 +144,7 @@ class CoreAdmin extends CorePlugin implements StudipModule
         ];
     }
 
-    public function getInfoTemplate($course_id)
+    public function getInfoTemplate($course_id): ?Flexi_Template
     {
         // TODO: Implement getInfoTemplate() method.
         return null;
