@@ -17,7 +17,7 @@ function get_group_names(string $group_field, array $groups): array
     if ($group_field === 'sem_number') {
         $all_semester = Semester::findAllVisible();
         $mapper = function ($key) use ($all_semester): string {
-            return (string) $all_semester[$key]['name'];
+            return (string) ($all_semester[$key]['name'] ?? _('unbekanntes Semester'));
         };
     } elseif ($group_field === 'sem_tree_id') {
         $the_tree = TreeAbstract::GetInstance(StudipSemTree::class, ['build_index' => true]);
