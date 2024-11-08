@@ -14,7 +14,7 @@ use Grading\Instance;
  * @author      <mlunzena@uos.de>
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  */
-class GradebookModule extends CorePlugin implements SystemPlugin, StudipModule
+class GradebookModule extends CorePlugin implements SystemPlugin, StudipModuleExtended
 {
     public function __construct()
     {
@@ -72,6 +72,54 @@ class GradebookModule extends CorePlugin implements SystemPlugin, StudipModule
         $navigation->setImage($icon->copyWithAttributes(['title' => $title]));
 
         return $navigation;
+    }
+
+    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    {
+        if ($user_id === 'nobody') {
+            return [];
+        }
+        // split courses in student-perms and tutor-perms
+        $tutor_c_ids = [];
+        foreach ($course_ids as $course_id) {
+            if ($GLOBALS['perm']->have_studip_perm('tutor', $course_id, $user_id)) {
+                $tutor_c_ids[$course_id] = $course_id;
+            }
+        }
+        $results = DBManager::get()->fetchGrouped("SELECT gd.course_id, gi.user_id
+            FROM grading_instances gi
+            INNER JOIN grading_definitions gd ON(gd.id = definition_id)
+            LEFT JOIN object_user_visits AS ouv
+              ON ouv.object_id = gd.course_id
+                AND ouv.user_id = :user_id
+                AND ouv.plugin_id = :plugin_id
+            WHERE gd.course_id IN (:course_ids) AND gi.chdate > IFNULL(ouv.visitdate, :threshold)",
+            [
+                ':user_id' => $user_id,
+                ':plugin_id' => $this->getPluginId(),
+                ':course_ids' => $course_ids,
+                ':threshold' => object_get_visit_threshold(),
+            ]
+        );
+
+        $title = _('Gradebook');
+        $navs = [];
+        foreach ($course_ids as $course_id) {
+            if (isset($tutor_c_ids[$course_id])) {
+                $changed = empty($results[$course_id]) ? 0 : count($results[$course_id]);
+            } else {
+                $filtered_results = array_filter($results[$course_id], fn ($fetched_user_id) => $fetched_user_id === $user_id);
+                $changed = empty($filtered_results) ? 0 : count($filtered_results);
+            }
+            $icon = $changed
+                ? Icon::create('assessment', Icon::ROLE_NEW)
+                : Icon::create('assessment', Icon::ROLE_CLICKABLE);
+            $navigation = new Navigation($title, 'dispatch.php/course/gradebook/overview');
+            $navigation->setImage($icon->copyWithAttributes(['title' => $title]));
+            $navs[$course_id] = $navigation;
+        }
+
+        return $navs;
     }
 
     /**
