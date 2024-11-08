@@ -342,6 +342,11 @@ class Resources_ExportController extends AuthenticatedController
             ]
         ];
 
+        if (Config::get()->ENABLE_NUMBER_OF_PARTICIPANTS) {
+            $number_of_participants = null;
+            $booking_data[0][] = _('Anzahl der Teilnehmenden');
+        }
+
         foreach ($resources as $resource) {
             //Retrieve the bookings in the specified time range:
             $intervals = ResourceBookingInterval::findBySql(
@@ -398,9 +403,12 @@ class Resources_ExportController extends AuthenticatedController
                     if ($course instanceof Course) {
                         $description = $course->getFullName();
                         $turnout = $course->admission_turnout;
+                        if (Config::get()->ENABLE_NUMBER_OF_PARTICIPANTS) {
+                            $number_of_participants = $booking->assigned_course_date->number_of_participants;
+                        }
                     }
                 }
-                $booking_data[] = [
+                $row = [
                     date('d.m.Y', $interval->begin),
                     date('H:i', $interval->begin + $booking->preparation_time),
                     date('H:i', $interval->end),
@@ -429,6 +437,12 @@ class Resources_ExportController extends AuthenticatedController
                     implode(', ', $booking->getAssignedUsers()),
                     $booking->internal_comment
                 ];
+
+                if (Config::get()->ENABLE_NUMBER_OF_PARTICIPANTS) {
+                    $row[] = $number_of_participants;
+                }
+
+                $booking_data[] = $row;
             }
         }
 

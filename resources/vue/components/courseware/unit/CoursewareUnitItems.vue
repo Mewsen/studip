@@ -3,7 +3,9 @@
         <h2 v-if="!inCourseContext && hasUnits">{{ $gettext('Persönliche Lernmaterialien') }}</h2>
         <template v-if="hasUnits">
             <ol v-if="(!userIsTeacher && inCourseContext) || units.length === 1" class="cw-tiles">
-                <courseware-unit-item v-for="unit in units" :key="unit.id" :unit="unit" :handle="false"/>
+                <template v-for="unit in units">
+                    <courseware-unit-item :key="unit.id" :unit="unit" :handle="false"/>
+                </template>
             </ol>
             <template v-else>
                 <span aria-live="assertive" class="assistive-text">{{ assistiveLive }}</span>

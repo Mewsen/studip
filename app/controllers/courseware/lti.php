@@ -11,7 +11,7 @@ class Courseware_LtiController extends AuthenticatedController
     public function iframe_action($block_id)
     {
         $cw_block = \Courseware\Block::find($block_id);
-        if (!$cw_block->container->structural_element->canRead($GLOBALS['user']->id)) {
+        if (!$cw_block->container->structural_element->canRead(User::findCurrent())) {
             throw new AccessDeniedException();
         }
 

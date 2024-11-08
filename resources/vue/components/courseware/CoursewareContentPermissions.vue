@@ -8,7 +8,7 @@
         </studip-message-box>
         <table class="default">
             <caption>
-                <translate>Personen</translate>
+                {{ $gettext('Personen') }}
             </caption>
             <colgroup>
                 <col style="width:35%">
@@ -19,17 +19,17 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th><translate>Name</translate></th>
-                    <th><translate>Leserechte</translate></th>
-                    <th><translate>Lese- und Schreibrechte</translate></th>
-                    <th><translate>Ablaufdatum</translate></th>
-                    <th class="actions"><translate>Aktion</translate></th>
+                    <th>{{ $gettext('Name') }}</th>
+                    <th>{{ $gettext('Leserechte') }}</th>
+                    <th>{{ $gettext('Lese- und Schreibrechte') }}</th>
+                    <th>{{ $gettext('Ablaufdatum') }}</th>
+                    <th class="actions">{{ $gettext('Aktion') }}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-if="listEmpty" class="empty">
                     <td colspan="5">
-                        <translate>Es wurden noch keine Freigaben erteilt</translate>
+                        {{ $gettext('Es wurden noch keine Freigaben erteilt') }}
                     </td>
                 </tr>
                 <tr v-for="(user_perm, index) of userPermsList" :key="index">
@@ -69,7 +69,7 @@
                             :min="minDate"
                             :id="`${user_perm.id}_expiry`"
                             v-model="userPermsList[index]['expiry']"
-                            @change="refreshReadWriteApproval"
+                            @change="refreshContentApproval"
                         />
                     </td>
                     <td class="actions">
@@ -87,7 +87,7 @@
                     <td colspan="5">
                         <span class="multibuttons">
                             <button class="button add cw-add-persons" @click.prevent="showAddMultiPersonDialog = true">
-                                <translate>Personen hinzufügen</translate>
+                                {{ $gettext('Personen hinzufügen') }}
                             </button>
                             <button
                                 class="button"
@@ -95,7 +95,7 @@
                                 :disabled="listEmpty"
                                 @click.prevent="setAllPerms('read')"
                             >
-                                <translate>Allen Leserechte geben</translate>
+                                {{ $gettext('Allen Leserechte geben') }}
                             </button>
                             <button
                                 class="button"
@@ -103,7 +103,7 @@
                                 :disabled="listEmpty"
                                 @click.prevent="setAllPerms('write')"
                             >
-                                <translate>Allen Lese- und Schreibrechte geben</translate>
+                                {{ $gettext('Allen Lese- und Schreibrechte geben') }}
                             </button>
                         </span>
                     </td>
@@ -149,10 +149,7 @@ export default {
             showAddMultiPersonDialog: null,
             userPermsList: [],
             selectedUsers:[],
-            userPermsReadAll: false,
-            userPermsWriteAll: false,
-            userPermsReadUsers: [],
-            userPermsWriteUsers: [],
+            contentApprovalUsers: [],
             message: false,
             showDeleteDialog: false,
             deleteUserPermIndex: -1
@@ -160,16 +157,6 @@ export default {
     },
 
     mounted() {
-        if (this.element.attributes['read-approval'].all !== undefined) {
-            this.userPermsReadAll = this.element.attributes['read-approval'].all;
-        } else {
-            this.userPermsReadAll = false;
-        }
-        if (this.element.attributes['write-approval'].all !== undefined) {
-            this.userPermsWriteAll = this.element.attributes['write-approval'].all;
-        } else {
-            this.userPermsWriteAll = false;
-        }
         this.initUserPermsList();
     },
 
@@ -182,19 +169,9 @@ export default {
             return this.userPermsList.length === 0;
         },
 
-        readApproval() {
+        contentApproval() {
             return {
-                all: this.userPermsReadAll,
-                users: this.userPermsReadUsers,
-                groups: []
-            };
-        },
-
-        writeApproval() {
-            return {
-                all: this.userPermsWriteAll,
-                users: this.userPermsWriteUsers,
-                groups: []
+                users: this.contentApprovalUsers,
             };
         },
 
@@ -231,22 +208,17 @@ export default {
 
         async initUserPermsList() {
 
-            if (this.element.attributes['read-approval'].users !== undefined) {
-                this.userPermsReadUsers = this.element.attributes['read-approval'].users;
-            }
-
-            if (this.element.attributes['write-approval'].users !== undefined) {
-                this.userPermsWriteUsers = this.element.attributes['write-approval'].users;
+            if (this.element.attributes['content-approval'].users !== undefined) {
+                this.contentApprovalUsers = this.element.attributes['content-approval'].users;
             }
 
             /* eslint-disable no-await-in-loop */
-            for (const user_perm_obj of this.userPermsReadUsers) {
+            for (const user_perm_obj of this.contentApprovalUsers) {
                 let userObj = await this.getUser(user_perm_obj.id);
-                let writePerm = this.userPermsWriteUsers.some(user_write_perm => user_write_perm.id === user_perm_obj.id) ? true : false;
                 this.userPermsList.push({
                     'id' : user_perm_obj.id,
                     'read': user_perm_obj.read,
-                    'write': writePerm,
+                    'write': user_perm_obj.write,
                     'expiry': user_perm_obj.expiry ? new Date(user_perm_obj.expiry).toISOString().split('T')[0] : '',
                     'formatted-name': userObj.attributes['formatted-name'],
                     'username': userObj.attributes['username'],
@@ -272,7 +244,7 @@ export default {
                             'username': selected_user.username,
                         };
                         this.userPermsList.push(newUserPerm);
-                        this.refreshReadWriteApproval();
+                        this.refreshContentApproval();
                     } else {
                         duplicatedUsers.push(selected_user);
                     }
@@ -305,7 +277,7 @@ export default {
         performDeleteUserPerm() {
             if (this.deleteUserPermIndex !== -1) {
                 this.userPermsList.splice(this.deleteUserPermIndex, 1);
-                this.refreshReadWriteApproval();
+                this.refreshContentApproval();
             }
             this.clearDeleteUserPerm();
         },
@@ -328,7 +300,7 @@ export default {
 
             this.userPermsList[index]['read'] = read;
             this.userPermsList[index]['write'] = write;
-            this.refreshReadWriteApproval();
+            this.refreshContentApproval();
         },
 
         setAllPerms(permtype) {
@@ -344,54 +316,21 @@ export default {
                 return true;
             });
 
-            this.refreshReadWriteApproval();
+            this.refreshContentApproval();
         },
 
-        refreshReadWriteApproval() {
-            this.refreshReadApproval();
-            this.refreshWriteApproval();
-        },
-
-        refreshReadApproval() {
-            this.userPermsReadUsers = [];
+        refreshContentApproval() {
+            this.contentApprovalUsers = [];
             for (const user_perm_obj of this.userPermsList) {
                 let readRight = user_perm_obj.write ? true : user_perm_obj.read;
-                this.userPermsReadUsers.push({
+                this.contentApprovalUsers.push({
                     'id': user_perm_obj.id,
                     'read': readRight,
                     'write': user_perm_obj.write,
                     'expiry': user_perm_obj.expiry ? new Date(user_perm_obj.expiry).toISOString() : ''
                 });
             }
-            this.$emit('updateReadApproval', this.readApproval);
-        },
-
-        refreshWriteApproval() {
-            this.userPermsWriteUsers = [];
-            for (const user_perm_obj of this.userPermsList) {
-                if (user_perm_obj.write) {
-                    this.userPermsWriteUsers.push({
-                        'id': user_perm_obj.id,
-                        'expiry': user_perm_obj.expiry ? new Date(user_perm_obj.expiry).toISOString() : ''
-                    });
-                }
-            }
-            this.$emit('updateWriteApproval', this.writeApproval);
-        }
-    },
-
-    watch: {
-        userPermsReadAll(newVal, oldVal) {
-            this.$emit('updateReadApproval', this.readApproval);
-            if (newVal === true) {
-                this.userPermsWriteAll = false;
-            }
-        },
-        userPermsWriteAll(newVal, oldVal) {
-            this.$emit('updateWriteApproval', this.writeApproval);
-            if (newVal === true) {
-                this.userPermsReadAll = false;
-            }
+            this.$emit('updateContentApproval', this.contentApproval);
         },
     },
 };

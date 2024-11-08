@@ -585,7 +585,8 @@ abstract class StudipController extends Trails\Controller
 
     public function render_form(\Studip\Forms\Form $form)
     {
-        $this->render_text($form->render());
+        \NotificationCenter::postNotification('FormWillRender', $form);
+        $this->render_template($form->getTemplate(), $this->layout);
     }
 
     /**

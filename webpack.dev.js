@@ -11,7 +11,7 @@ const statusesPaths = {
 
 module.exports = merge(common, {
     mode: 'development',
-    devtool: 'eval-cheap-module-source-map',
+    devtool: false,
     plugins: [
         new webpack.WatchIgnorePlugin({
             paths:[
@@ -27,6 +27,11 @@ module.exports = merge(common, {
             hint: process.platform === 'linux' ? 'int:transient:1' : undefined,
             excludeWarnings: true,
             contentImage: statusesPaths,
+        }),
+        new webpack.SourceMapDevToolPlugin({
+            test: /\.css$/i,
+            filename: null,
+            append: '/*# sourceMappingURL=[url] */',
         }),
     ],
 });

@@ -1,8 +1,8 @@
 <template>
-    <StudipMessageBox v-if="!enabled" type="warning" :hide-close="true">
-        {{ $gettext('Caching ist systemweit ausgeschaltet, daher kann hier nichts konfiguriert werden.') }}
-    </StudipMessageBox>
-    <form v-else class="default" :action="actionUrl" method="post" ref="configForm">
+    <form class="default" :action="actionUrl" method="post" ref="configForm">
+        <StudipMessageBox v-if="!enabled" type="warning" :hide-close="true">
+            {{ $gettext('Caching ist systemweit ausgeschaltet.') }}
+        </StudipMessageBox>
         <fieldset>
             <legend>
                 <translate>Cachetyp</translate>

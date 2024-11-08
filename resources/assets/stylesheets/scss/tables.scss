@@ -488,6 +488,7 @@ table.default {
         padding: 0 5px 5px 5px;
         color: var(--headings-color);
         font-size: $font-size-caption;
+        line-height: $font-size-caption;
         text-align: left;
 
         &.nowrap {
@@ -636,7 +637,7 @@ table.default {
             margin-bottom: 5px;
 
             img.text-bottom {
-                vertical-align: bottom;
+                vertical-align: middle;
             }
         }
 
@@ -836,42 +837,6 @@ table.withdetails {
 
     .tablesorter-headerUnSorted:not(.sorter-false) .tablesorter-header-inner {
         margin-right: 15px;
-    }
-}
-
-// Schedule table
-table#schedule_data {
-    width: 100%;
-    table-layout: fixed;
-
-    thead {
-        tr {
-            td {
-                text-align: center;
-                vertical-align: top;
-                background-color: var(--color--table-header);
-                padding: 0;
-
-                &:first-child {
-                    width: 40px;
-                }
-            }
-
-            &:first-child {
-                td:first-child {
-                    background-color: inherit;
-                }
-            }
-        }
-    }
-
-    tbody {
-        td:first-child {
-            text-align: right;
-            vertical-align: top;
-            background-color: var(--color--table-header);
-            padding: 0px;
-        }
     }
 }
 

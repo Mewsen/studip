@@ -73,7 +73,11 @@ class BasicDataWizardStep implements CourseWizardStep
         $tpl->set_attribute('admission_turnout_mandatory_types', $admission_turnout_mandatory_types);
         // Select a default type if none is given.
         if (empty($values['coursetype'])) {
-            if ($GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER && Request::isXhr()) {
+            if (
+                $GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER
+                && $GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER !== 'all'
+                && Request::isXhr()
+            ) {
                 $values['coursetype'] = $GLOBALS['user']->cfg->MY_COURSES_TYPE_FILTER;
             } else {
                 $values['coursetype'] = 1;
@@ -346,7 +350,7 @@ class BasicDataWizardStep implements CourseWizardStep
         $values = $values[__CLASS__];
         $ok = true;
         $errors = [];
-        if (!trim($values['name'])) {
+        if (empty($values['name'])) {
             $errors[] = _('Bitte geben Sie den Namen der Veranstaltung an.');
         }
         if (isset($values['number']) && $values['number'] != '') {
@@ -358,7 +362,7 @@ class BasicDataWizardStep implements CourseWizardStep
         if (empty($values['lecturers'])) {
             $errors[] = sprintf(
                 _('Bitte tragen Sie mindestens eine Person als %s ein.'),
-                htmlReady(get_title_for_status('dozent', 1, $values['coursetype']))
+                htmlReady(get_title_for_status('dozent', 1, $values['coursetype'] ?? null))
             );
         }
         if (empty($values['lecturers'][$GLOBALS['user']->id]) && !$GLOBALS['perm']->have_perm('admin')) {
@@ -366,13 +370,13 @@ class BasicDataWizardStep implements CourseWizardStep
                 if (empty($values['deputies'][$GLOBALS['user']->id])) {
                     $errors[] = sprintf(
                         _('Sie selbst müssen entweder als %s oder als Vertretung eingetragen sein.'),
-                        htmlReady(get_title_for_status('dozent', 1, $values['coursetype']))
+                        htmlReady(get_title_for_status('dozent', 1, $values['coursetype'] ?? null))
                     );
                 }
             } else {
                 $errors[] = sprintf(
                     _('Sie müssen selbst als %s eingetragen sein.'),
-                    htmlReady(get_title_for_status('dozent', 1, $values['coursetype']))
+                    htmlReady(get_title_for_status('dozent', 1, $values['coursetype'] ?? null))
                 );
             }
         }

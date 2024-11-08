@@ -32,10 +32,18 @@ use User;
  * @property \JSONArrayObject $payload database column
  * @property int $public database column
  * @property int $commentable database column
- * @property int $release_date database column
- * @property int $withdraw_date database column
- * @property \JSONArrayObject $read_approval database column
- * @property \JSONArrayObject $write_approval database column
+ * @property string $permission_type database column
+ * @property string $visible database column
+ * @property bool $visible_all database column
+ * @property int $visible_start_date database column
+ * @property int $visible_end_date database column
+ * @property string $writable database column
+ * @property bool $writable_all database column
+ * @property int|null $writable_start_date database column
+ * @property int|null $writable_end_date database column
+ * @property \JSONArrayObject $visible_approval database column
+ * @property \JSONArrayObject $writable_approval database column
+ * @property \JSONArrayObject $content_approval database column
  * @property \JSONArrayObject $copy_approval database column
  * @property \JSONArrayObject $external_relations database column
  * @property int $mkdate database column
@@ -60,8 +68,9 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
         $config['db_table'] = 'cw_structural_elements';
 
         $config['serialized_fields']['payload'] = JSONArrayObject::class;
-        $config['serialized_fields']['read_approval'] = JSONArrayObject::class;
-        $config['serialized_fields']['write_approval'] = JSONArrayObject::class;
+        $config['serialized_fields']['visible_approval'] = JSONArrayObject::class;
+        $config['serialized_fields']['writable_approval'] = JSONArrayObject::class;
+        $config['serialized_fields']['content_approval'] = JSONArrayObject::class;
         $config['serialized_fields']['copy_approval'] = JSONArrayObject::class;
         $config['serialized_fields']['external_relations'] = JSONArrayObject::class;
 
@@ -276,36 +285,41 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
                 if ($this->range_id === $user->id) {
                     return true;
                 }
-
-                return $this->hasWriteApproval($user);
+                
+                return $this->hasWriteContentApproval($user);
 
             case 'course':
-                $hasEditingPermission = $this->hasEditingPermission($user);
-                if ($this->isTask()) {
-                    $task = $this->task;
-                    if (!$task) {
-                        $task = $this->findParentTask();
+                $unit = $this->findUnit();
+                if ($unit->permission_scope === 'unit') {
+                    return $unit->canEditContent($user);
+                } else {
+                    $hasEditingPermission = $this->hasEditingPermission($user, $unit);
+                    if ($this->isTask()) {
+                        $task = $this->task;
                         if (!$task) {
+                            $task = $this->findParentTask();
+                            if (!$task) {
+                                return false;
+                            }
+                        }
+
+                        if ($hasEditingPermission) {
                             return false;
                         }
+
+                        if ($task->isSubmitted()) {
+                            return false;
+                        }
+
+                        return $task->userIsASolver($user);
                     }
 
                     if ($hasEditingPermission) {
-                        return false;
+                        return true;
                     }
 
-                    if ($task->isSubmitted()) {
-                        return false;
-                    }
-
-                    return $task->userIsASolver($user);
+                    return $this->hasWriteApproval($user);
                 }
-
-                if ($hasEditingPermission) {
-                    return true;
-                }
-
-                return $this->hasWriteApproval($user);
 
             default:
                 throw new \InvalidArgumentException('Unknown range type.');
@@ -337,21 +351,22 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
                     return true;
                 }
 
-                return $this->hasReadApproval($user);
+                return $this->hasReadContentApproval($user);
             case 'course':
-                if (!$GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user->id)) {
-                    return false;
-                }
+                $unit = $this->findUnit();
+                if ($unit->permission_scope === 'unit') {
+                    return $unit->canRead($user);
+                } else {
+                    if (!$GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user->id)) {
+                        return false;
+                    }
 
-                if ($this->canEdit($user)) {
-                    return true;
-                }
+                    if ($this->canEdit($user)) {
+                        return true;
+                    }
 
-                if (!$this->releasedForReaders($this)) {
-                    return false;
+                    return $this->hasReadApproval($user);
                 }
-
-                return $this->hasReadApproval($user);
 
             default:
                 throw new \InvalidArgumentException('Unknown range type.');
@@ -371,7 +386,7 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
                     return true;
                 }
 
-                return $this->hasReadApproval($user);
+                return $this->hasReadContentApproval($user);
 
             case 'course':
                 if (!$GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user->id)) {
@@ -411,10 +426,6 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
                     return true;
                 }
 
-                if (!$this->releasedForReaders($this)) {
-                    return false;
-                }
-
                 return $this->hasReadApproval($user) && $this->canReadSequential($user);
 
             default:
@@ -425,9 +436,11 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
     /**
      * @param \User|\Seminar_User $user
      */
-    public function hasEditingPermission($user): bool
+    public function hasEditingPermission(User $user, Unit $unit = null): bool
     {
-        $unit = $this->findUnit();
+        if (!isset($unit)) {
+            $unit = $this->findUnit();
+        }
         return $GLOBALS['perm']->have_perm('root', $user->id)
             || $GLOBALS['perm']->have_studip_perm(
                 $unit->config['editing_permission'] ?? 'tutor',
@@ -438,34 +451,21 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
 
     private function hasReadApproval($user): bool
     {
-        // this property is shared between all range types.
-        if ($this->read_approval['all']) {
-            return true;
-        }
-
-        // now we also check against the perms for contents.
-        if ($this->range_type === 'user') {
-            return $this->hasUserReadApproval($user);
-        } else {
-            if (!count($this->read_approval)) {
+        if ($this->permission_type === 'all' || $this->visible_all) {
+            if ($this->isVisible()) {
                 return true;
             }
-
-            // find user in users
-            $users = $this->read_approval['users'];
-            foreach ($users as $approvedUserId) {
-                if ($approvedUserId === $user->id) {
-                    return true;
-                }
-            }
-
-            // find user in groups
-            $groups = $this->read_approval['groups'];
+            return false;
+        }
+        if ($this->permission_type === 'users') {
+            return in_array($user->id, json_decode($this->visible_approval)) && $this->isVisible();
+        }
+        if ($this->permission_type === 'groups') {
+            $groups = json_decode($this->visible_approval);
             foreach ($groups as $groupId) {
-                /** @var ?\Statusgruppen $group */
                 $group = \Statusgruppen::find($groupId);
                 if ($group && $group->isMember($user->id)) {
-                    return true;
+                    return $this->isVisible();
                 }
             }
         }
@@ -473,28 +473,38 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
         return false;
     }
 
-    private function hasUserReadApproval($user): bool
+    private function isVisible(): bool
     {
-        if (!count($this->read_approval)) {
+        if ($this->visible === 'always') {
+            return true;
+        }
+        if ($this->visible === 'never') {
+            return false;
+        }
+
+        return
+            (empty($this->visible_start_date) || $this->visible_start_date < strtotime('today'))
+            && (empty($this->visible_end_date) || $this->visible_end_date >= strtotime('today'));
+    }
+
+    private function hasReadContentApproval($user): bool
+    {
+        if (count($this->content_approval) === 0) {
             if ($this->isRootNode()) {
                 return false;
             }
-            return $this->parent->hasUserReadApproval($user);
+            return $this->parent->hasReadContentApproval($user);
         }
 
         // find user in users
-        $users = $this->read_approval['users'];
+        $users = $this->content_approval['users'];
         foreach ($users as $listedUserPerm) {
-            // now for contents, there is an expiry date defined.
             if (!empty($listedUserPerm['expiry']) && strtotime($listedUserPerm['expiry']) < strtotime('today')) {
                 if ($this->isRootNode()) {
                     return false;
                 }
-                return $this->parent->hasUserReadApproval($user);
+                return $this->parent->hasReadContentApproval($user);
             }
-            // In order to have a record of the users in the perms list of contents,
-            // we keep a full perm record in read_approval column, and set read property to true or false,
-            // this won't apply to write_approval column.
             if ($listedUserPerm['id'] == $user->id && $listedUserPerm['read'] == true) {
                 return true;
             }
@@ -505,33 +515,22 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
 
     private function hasWriteApproval($user): bool
     {
-        // this property is shared between all range types.
-        if ($this->write_approval['all']) {
-            return true;
+        if ($this->permission_type === 'all' || $this->writable_all) {
+            if ($this->isWritable()) {
+                return true;
+            }
+            return false;
+        }
+        if ($this->permission_type === 'users') {
+            return in_array($user->id, json_decode($this->writable_approval)) && $this->isWritable();
         }
 
-        // now we also check against the perms for contents.
-        if ($this->range_type === 'user') {
-            return $this->hasUserWriteApproval($user);
-        } else {
-            if (!count($this->write_approval)) {
-                return false;
-            }
-
-            if ($this->write_approval['all']) {
-                return true;
-            }
-
-            // find user in users
-            $users = $this->write_approval['users']->getArrayCopy();
-            if (in_array($user->id, $users)) {
-                return true;
-            }
-
-            // find user in groups
-            foreach (\Statusgruppen::findMany($this->write_approval['groups']->getArrayCopy()) as $group) {
-                if ($group->isMember($user->id)) {
-                    return true;
+        if ($this->permission_type === 'groups') {
+            $groups = json_decode($this->writable_approval);
+            foreach ($groups as $groupId) {
+                $group = \Statusgruppen::find($groupId);
+                if ($group && $group->isMember($user->id)) {
+                    return $this->isWritable();
                 }
             }
         }
@@ -539,26 +538,39 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
         return false;
     }
 
-    private function hasUserWriteApproval($user): bool
+    private function isWritable(): bool
     {
-        if (!count($this->write_approval)) {
+        if ($this->writable === 'always') {
+            return true;
+        }
+        if ($this->writable === 'never') {
+            return false;
+        }
+
+        return
+            (empty($this->writable_start_date) || $this->writable_start_date < strtotime('today'))
+            && (empty($this->writable_end_date) || $this->writable_end_date >= strtotime('today'));
+    }
+
+    private function hasWriteContentApproval($user): bool
+    {
+        if (!count($this->content_approval)) {
             if ($this->isRootNode()) {
                 return false;
             }
-            return $this->parent->hasUserWriteApproval($user);
+            return $this->parent->hasWriteContentApproval($user);
         }
 
         // find user in users
-        $users = $this->write_approval['users'];
+        $users = $this->content_approval['users'];
         foreach ($users as $listedUserPerm) {
-            // now for contents, there is an expiry date defined.
             if (!empty($listedUserPerm['expiry']) && strtotime($listedUserPerm['expiry']) < strtotime('today')) {
                 if ($this->isRootNode()) {
                     return false;
                 }
-                return $this->parent->hasUserWriteApproval($user);
+                return $this->parent->hasWriteContentApproval($user);
             }
-            if ($listedUserPerm['id'] == $user->id) {
+            if ($listedUserPerm['id'] == $user->id && $listedUserPerm['write']) {
                 return true;
             }
         }
@@ -566,7 +578,7 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
         if ($this->isRootNode()) {
             return false;
         }
-        return $this->parent->hasUserWriteApproval($user);
+        return $this->parent->hasWriteContentApproval($user);
     }
 
     /**
@@ -584,30 +596,6 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
         }
 
         return $this->previousProgressAchieved($user);
-    }
-
-    /**
-     * @return bool true if the user may read this instance in time interval
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    private function releasedForReaders(StructuralElement $element): bool
-    {
-        $released = false;
-        if (!$element->release_date || $element->release_date <= time()) {
-            $released = true;
-        }
-
-        if ($element->withdraw_date && $element->withdraw_date <= time()) {
-            $released = false;
-        }
-
-        $parent_released = true;
-        if (!$element->isRootNode()) {
-            $parent_released = $this->releasedForReaders($element->parent);
-        }
-
-        return $released && $parent_released;
     }
 
     /**
@@ -839,13 +827,18 @@ SQL;
     /**
      * Copies this instance into another course oder users contents.
      *
-     * @param User              $user   this user will be the owner of the copy
-     * @param Range $parent the target where to copy this instance
+     * @param User $user   this user will be the owner of the copy
+     * @param \Range $parent the target where to copy this instance
      *
      * @return StructuralElement the copy of this instance
      */
-    public function copyToRange(User $user, string $rangeId, string $rangeType, string $purpose = ''): StructuralElement
-    {
+    public function copyToRange(
+        User $user,
+        string $rangeId,
+        string $rangeType,
+        string $purpose = '',
+        bool $duplicate = false
+    ): StructuralElement {
         $element = self::build([
             'parent_id' => null,
             'range_id' => $rangeId,
@@ -857,7 +850,19 @@ SQL;
             'purpose' => $purpose ?: $this->purpose,
             'position' => 0,
             'payload' => $this->payload,
-            'commentable' => 0
+            'commentable' => $duplicate ? $this->commentable : 0,
+            'permission_type' => $duplicate ? $this->permission_type : 'all',
+            'visible' => $duplicate ? $this->visible : 'always',
+            'visible_all' => $duplicate ? $this->visible_all : 0,
+            'visible_start_date' => $duplicate ? $this->visible_start_date : null,
+            'visible_end_date' => $duplicate ? $this->visible_end_date : null,
+            'visible_approval' => $duplicate ? $this->visible_approval : '',
+            'writable' => $duplicate ? $this->writable : 'never',
+            'writable_all' => $duplicate ? $this->writable_all : 0,
+            'writable_start_date' => $duplicate ? $this->writable_start_date : null,
+            'writable_end_date' => $duplicate ? $this->writable_end_date : null,
+            'writable_approval' => $duplicate ? $this->writable_approval : '',
+            'content_approval' => $duplicate ? $this->content_approval : '',
         ]);
 
         $element->store();
@@ -869,7 +874,7 @@ SQL;
 
         $this->copyContainers($user, $element);
 
-        $this->copyChildren($user, $element, $purpose);
+        $this->copyChildren($user, $element, $purpose, '', $duplicate);
 
         return $element;
     }
@@ -877,15 +882,20 @@ SQL;
     /**
      * Copies this instance as a child into another structural element.
      *
-     * @param User              $user   this user will be the owner of the copy
+     * @param User $user   this user will be the owner of the copy
      * @param StructuralElement $parent the target where to copy this instance
      * @param string $purpose the purpose of copying this instance
      * @param string $recursiveId the optional mapping id for copying child structural elements upon recursive call to this function
      *
      * @return StructuralElement the copy of this instance
      */
-    public function copy(User $user, StructuralElement $parent, string $purpose = '', string $recursiveId = ''): StructuralElement
-    {
+    public function copy(
+        User $user,
+        StructuralElement $parent,
+        string $purpose = '',
+        string $recursiveId = '',
+        bool $duplicate = false
+    ): StructuralElement {
         $ancestorIds = array_column($parent->findAncestors(), 'id');
         $ancestorIds[] = $parent->id;
         if (in_array($this->id, $ancestorIds)) {
@@ -908,9 +918,19 @@ SQL;
             'payload' => $this->payload,
             'image_id' => $image_id,
             'image_type' => $this->image_type,
-            'read_approval' => $parent->read_approval,
-            'write_approval' => $parent->write_approval,
-            'commentable' => 0
+            'permission_type' => $duplicate ? $this->permission_type : 'all',
+            'visible' => $duplicate ? $this->visible : 'always',
+            'visible_all' => $duplicate ? $this->visible_all : 0,
+            'visible_start_date' => $duplicate ? $this->visible_start_date : null,
+            'visible_end_date' => $duplicate ? $this->visible_end_date : null,
+            'visible_approval' => $duplicate ? $this->visible_approval : '',
+            'writable' => $duplicate ? $this->writable : 'never',
+            'writable_all' => $duplicate ? $this->writable_all : 0,
+            'writable_start_date' => $duplicate ? $this->writable_start_date : null,
+            'writable_end_date' => $duplicate ? $this->writable_end_date : null,
+            'writable_approval' => $duplicate ? $this->writable_approval : '',
+            'content_approval' => $duplicate ? $this->content_approval : '',
+            'commentable' => $duplicate ? $this->commentable : 0,
         ]);
 
         $element->store();
@@ -1027,10 +1047,15 @@ SQL;
         return [$containerMap, $blockMap];
     }
 
-    private function copyChildren(User $user, StructuralElement $newElement, string $purpose = '', string $recursiveId = ''): void
-    {
+    private function copyChildren(
+        User $user,
+        StructuralElement $newElement,
+        string $purpose = '',
+        string $recursiveId = '',
+        bool $duplicate = false
+    ): void {
         foreach ($this->children as $child) {
-            $child->copy($user, $newElement, $purpose, $recursiveId);
+            $child->copy($user, $newElement, $purpose, $recursiveId, $duplicate);
         }
     }
 
@@ -1049,8 +1074,16 @@ SQL;
             'purpose' => $this->purpose,
             'position' => $parent->countChildren(),
             'payload' => $this->payload,
-            'read_approval' => $parent->read_approval,
-            'write_approval' => $parent->write_approval,
+            'permission_type'=> $parent->permission_type,
+            'visible' => $parent->visible,
+            'visible_start_date' => $parent->visible_start_date,
+            'visible_end_date' => $parent->visible_end_date,
+            'writable' => $parent->writable,
+            'writable_start_date' => $parent->writable_start_date,
+            'writable_end_date' => $parent->writable_end_date,
+            'visible_approval' => $parent->visible_approval,
+            'writable_approval' => $parent->writable_approval,
+            'content_approval' => $parent->content_approval,
             'commentable' => 0
         ]);
 

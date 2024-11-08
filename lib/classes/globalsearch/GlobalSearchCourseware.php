@@ -118,7 +118,7 @@ class GlobalSearchCourseware extends GlobalSearchModule implements GlobalSearchF
     {
         $structural_element = StructuralElement::find($data['id']);
         $unit = $structural_element->findUnit();
-        if ($unit && $structural_element->canRead($GLOBALS['user'])) {
+        if ($unit && $structural_element->canRead(User::findCurrent())) {
             $description = '';
             if ($data['type'] === 'cw_structural_elements') {
                 $description = self::mark($structural_element->payload['description'], $search, true);

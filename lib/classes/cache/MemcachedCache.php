@@ -133,7 +133,7 @@ class MemcachedCache extends Cache
         if ($this->memcache->getResultCode() !== Memcached::RES_NOTFOUND) {
             // Set the value, even if it is the boolean value false:
             $item->setHit();
-            $item->set($value);
+            $item->set(unserialize($value));
         }
         return $item;
     }
@@ -158,6 +158,6 @@ class MemcachedCache extends Cache
         }
 
         $real_key = $this->getCacheKey($item->getKey());
-        return $this->memcache->set($real_key, $item->get(), $expiration);
+        return $this->memcache->set($real_key, serialize($item->get()), $expiration);
     }
 }

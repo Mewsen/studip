@@ -5,6 +5,7 @@ StudipAutoloader::register();
 
 class_alias(\Studip\Cache\Factory::class, 'StudipCacheFactory');
 class_alias(\Studip\Cache\Cache::class, 'StudipCache');
+class_alias(\Studip\Cache\DbCache::class, 'StudipDbCache');
 class_alias(Flexi\PhpTemplate::class, 'Flexi_PhpTemplate');
 class_alias(Flexi\Template::class, 'Flexi_Template');
 class_alias(Flexi\Factory::class, 'Flexi_TemplateFactory');

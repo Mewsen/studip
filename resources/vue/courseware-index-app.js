@@ -152,7 +152,7 @@ const mountApp = async (STUDIP, createApp, element) => {
         type: entry_type,
         unit: unit_id
     });
-
+    store.dispatch('courseware-units/loadById', { id: unit_id });
     if (entry_type === 'courses') {
         store.dispatch('loadProgresses');
         await store.dispatch('setFeedbackSettings', feedbackSettings);

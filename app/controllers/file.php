@@ -1331,6 +1331,9 @@ class FileController extends AuthenticatedController
             $folder = $filetype->getFolderType();
         } else {
             $file_ref = FileRef::find($file_ref_id);
+            if (!$file_ref) {
+                throw new Trails\Exception(404, _('Datei nicht gefunden.'));
+            }
             $folder = $file_ref->foldertype;
             $filetype = $file_ref->getFileType();
         }
@@ -2116,8 +2119,7 @@ class FileController extends AuthenticatedController
             //collect file area objects by looking at their IDs:
             $file_area_objects = [];
             foreach ($ids as $id) {
-
-                if (Request::get("from_plugin")) {
+                if (Request::get('from_plugin')) {
                     $fa_object = $plugin->getFolder($id);
                     if (!$fa_object) {
                         $fa_object = $plugin->getPreparedFile($id, true);
@@ -2208,7 +2210,7 @@ class FileController extends AuthenticatedController
                     }
                 }
 
-                if ($file_ref) {
+                if (!empty($file_ref)) {
                     $current_folder = $file_ref->getFolderType();
                     $result = $current_folder ? $current_folder->deleteFile($element) : false;
                     if ($result && !is_array($result)) {
@@ -2224,7 +2226,7 @@ class FileController extends AuthenticatedController
                         $count_folders += $folder_subfolders;
                     }
                 }
-                if (is_array($result)) {
+                if (!empty($result) && is_array($result)) {
                     $errors = array_merge($errors, $result);
                 }
             }

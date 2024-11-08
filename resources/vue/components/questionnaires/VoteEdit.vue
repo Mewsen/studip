@@ -1,6 +1,6 @@
 <template>
     <div class="vote_edit">
-        <div class="formpart" tabindex="0" ref="autofocus">
+        <div class="formpart" tabindex="0">
             {{ $gettext('Frage') }}
             <StudipWysiwyg v-model="val_clone.description" />
         </div>
@@ -39,9 +39,6 @@ export default {
             options: ['', '', '', ''],
             randomize: '0',
         });
-    },
-    mounted() {
-        this.$refs.autofocus.focus();
     }
 }
 </script>

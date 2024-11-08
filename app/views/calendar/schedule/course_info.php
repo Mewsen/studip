@@ -68,10 +68,20 @@
                     ['formaction' => $controller->url_for('calendar/schedule/hide_course/' . $course->id)]
                 ) ?>
             <? endif ?>
-            <?= \Studip\LinkButton::create(
-                _('Direkt zur Veranstaltung'),
-                URLHelper::getURL('dispatch.php/course/overview', ['cid' => $course->id])
-            ) ?>
+            <?php
+            $enrolment_info = $course->getEnrolmentInformation($GLOBALS['user']->id);
+            ?>
+            <? if ($enrolment_info->isEnrolmentAllowed()) : ?>
+                <?= \Studip\LinkButton::create(
+                    _('Direkt zur Veranstaltung'),
+                    URLHelper::getURL('dispatch.php/course/overview', ['cid' => $course->id])
+                ) ?>
+            <? else : ?>
+                <?= \Studip\LinkButton::create(
+                    _('Direkt zur Veranstaltung'),
+                    URLHelper::getURL('dispatch.php/course/details', ['sem_id' => $course->id])
+                ) ?>
+            <? endif ?>
         </div>
     </form>
 <? endif ?>

@@ -38,6 +38,9 @@ class RequestParametersTest extends Codeception\Test\Unit
         $_GET['datetime'] = '2025-03-25 17:39:04';
         $_GET['invalid_date'] = 'foobar';
 
+        $_POST['localized'] = 'abc';
+        $_POST['localized_i18n']['en_GB'] = 'def';
+
         $testconfig = new Config([
             'USERNAME_REGULAR_EXPRESSION' => '/^([a-zA-Z0-9_@.-]{4,})$/',
         ]);
@@ -71,7 +74,6 @@ class RequestParametersTest extends Codeception\Test\Unit
 
     /**
      * @covers Request::get
-     * @covers Request::quoted
      */
     public function testStringParam ()
     {
@@ -82,11 +84,6 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame(Request::get('c'), '-23');
         $this->assertSame(Request::get('d'), '12.7');
         $this->assertNull(Request::get('v2'));
-
-        $this->assertNull(Request::quoted('null'));
-        $this->assertSame(Request::quoted('null', 'foo'), 'foo');
-        $this->assertSame(Request::quoted('b'), '\\\\h1\\"');
-        $this->assertNull(Request::quoted('v2'));
     }
 
     /**
@@ -156,7 +153,6 @@ class RequestParametersTest extends Codeception\Test\Unit
 
     /**
      * @covers Request::getArray
-     * @covers Request::quotedArray
      */
     public function testStringArrayParam ()
     {
@@ -164,11 +160,6 @@ class RequestParametersTest extends Codeception\Test\Unit
         $this->assertSame(Request::getArray('b'), []);
         $this->assertSame(Request::getArray('v1'), ['1', '2.4', '3,7']);
         $this->assertSame(Request::getArray('v2'), ['on\'e', 'two', 'thr33']);
-
-        $this->assertSame(Request::quotedArray('null'), []);
-        $this->assertSame(Request::quotedArray('b'), []);
-        $this->assertSame(Request::quotedArray('v1'), ['1', '2.4', '3,7']);
-        $this->assertSame(Request::quotedArray('v2'), ['on\\\'e', 'two', 'thr33']);
     }
 
     /**
@@ -282,6 +273,29 @@ class RequestParametersTest extends Codeception\Test\Unit
     {
         $invalid_date = Request::getDateTime('invalid_date');
         $this->assertFalse($invalid_date);
+    }
+
+    /**
+     * @covers Request::i18n
+     */
+    public function testRequestI18n()
+    {
+        $i18n = Request::i18n('localized');
+        $this->assertEquals('abc', $i18n->original());
+        $this->assertEquals('def', $i18n->localized('en_GB'));
+        $this->assertNull($i18n->localized('no_LANG'));
+    }
+
+    /**
+     * @covers Request::i18n
+     */
+    public function testRequestI18nWithDefault()
+    {
+        $default = new I18NString('foo', ['en_GB' => 'bar']);
+
+        $i18n = Request::i18n('unknown', $default);
+        $this->assertEquals('foo', $i18n->original());
+        $this->assertEquals('bar', $i18n->localized('en_GB'));
     }
 
     public function tearDown(): void

@@ -71,16 +71,18 @@ class CourseNavigation extends Navigation
             }
         }
 
-        foreach ($navigations as $key => $nav) {
-            if (
-                $this->range instanceof Institute
-                || Seminar_Perm::get()->have_studip_perm($found->getVisibilityPermission(), $this->range->id)
-            ) {
-                if (isset($found->metadata['displayname'])) {
-                    $nav->setTitle($found->getDisplayname());
-                }
+        if ($found) {
+            foreach ($navigations as $key => $nav) {
+                if (
+                    $this->range instanceof Institute
+                    || Seminar_Perm::get()->have_studip_perm($found->getVisibilityPermission(), $this->range->id)
+                ) {
+                    if (isset($found->metadata['displayname'])) {
+                        $nav->setTitle($found->getDisplayname());
+                    }
 
-                $this->insertSubNavigation($key, $nav, $where);
+                    $this->insertSubNavigation($key, $nav, $where);
+                }
             }
         }
     }

@@ -682,8 +682,12 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         $db_table = static::db_table();
 
         $sql = "SELECT `$db_table`.* FROM `$thru_table`
-        INNER JOIN `$db_table` ON `$thru_table`.`$thru_assoc_key` = `$db_table`.`$assoc_foreign_key`
-        WHERE `$thru_table`.`$thru_key` = ? " . ($options['order_by'] ?? '');
+                JOIN `$db_table` ON `$thru_table`.`$thru_assoc_key` = `$db_table`.`$assoc_foreign_key`
+                WHERE `$thru_table`.`$thru_key` = ? ";
+        if (empty($options['order_by_php']) && !empty($options['order_by'])) {
+            $sql .= $options['order_by'];
+        }
+
         $st = DBManager::get()->prepare($sql);
         $st->execute([$foreign_key_value]);
 
@@ -1180,11 +1184,17 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
      *                           or callback to invoke before record gets deleted
      * 'on_store':               contains simply 'store' to indicate that related records should be stored
      *                           or callback to invoke after record gets stored
+     * 'order_by':               optional ordering of relation items
+     * 'order_by_php':           optional order performed on the collection and not in sql
+     *                           this may either be a string containing the columns and directions (e.g. 'foo desc, bar')
+     *                           or an array with the described string and a sort option flag (e.g. ['foo', SORT_NUMERIC])
+     *
+     * Note: Defining order_by_php will disable any set order_by option.
      *
      * @param string $relation name of relation
      * @return array assoc array containing options
      */
-    function getRelationOptions($relation)
+    public function getRelationOptions($relation)
     {
         $options = [];
         foreach(['has_many', 'belongs_to', 'has_one', 'has_and_belongs_to_many'] as $type) {
@@ -1543,7 +1553,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                  } else {
                      $ret = ($this->content[$field] = $value);
                  }
-             } elseif (isset($this->additional_fields()[$field]['set'])) {
+             } elseif (!empty($this->additional_fields()[$field]['set'])) {
                  if ($this->additional_fields()[$field]['set'] instanceof Closure) {
                      return call_user_func_array($this->additional_fields()[$field]['set'], [$this, $field, $value]);
                  } else {
@@ -2272,25 +2282,54 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         }
         if ($this->relations[$relation] === null) {
             $options = $this->getRelationOptions($relation);
+
             $to_call = [$options['class_name'], $options['assoc_func']];
             if (!is_callable($to_call)) {
                 throw new RuntimeException('assoc_func: ' . join('::', $to_call) . ' is not callable.' );
             }
+
             $params = $options['assoc_func_params_func'];
             if ($options['type'] === 'has_many') {
-                $records = function($record) use ($to_call, $params, $options) {
-                    $p = (array)$params($record);
-                    return call_user_func_array($to_call, array_merge(count($p) ? $p : [null], [$options['order_by'] ?? null]));
+                $records = function ($record) use ($to_call, $params, $options) {
+                    $p = (array) $params($record);
+                    return call_user_func_array(
+                        $to_call,
+                        array_merge(
+                            count($p) ? $p : [null],
+                            [empty($options['order_by_php']) ? $options['order_by'] ?? null : null]
+                        )
+                    );
                 };
                 $this->relations[$relation] = new SimpleORMapCollection($records, $options, $this);
             } elseif ($options['type'] === 'has_and_belongs_to_many') {
-                $records = function($record) use ($to_call, $params, $options) {$p = (array)$params($record); return call_user_func_array($to_call, array_merge(count($p) ? $p : [null], [$options]));};
+                $records = function ($record) use ($to_call, $params, $options) {
+                    $p = (array) $params($record);
+                    return call_user_func_array(
+                        $to_call,
+                        array_merge(
+                            count($p) ? $p : [null],
+                            [$options]
+                        )
+                    );
+                };
                 $this->relations[$relation] = new SimpleORMapCollection($records, $options, $this);
             } else {
-                $p = (array)$params($this);
+                $p = (array) $params($this);
                 $records = call_user_func_array($to_call, count($p) ? $p : [null]);
                 $result = is_array($records) ? ($records[0] ?? null) : $records;
                 $this->relations[$relation] = $result;
+            }
+
+            if (
+                !empty($options['order_by_php'])
+                && $this->relations[$relation] instanceof SimpleORMapCollection
+            ) {
+                $order_options = (array) $options['order_by_php'];
+                $this->relations[$relation]->orderBy(
+                    $options['order_by_php'][0],
+                    $options['order_by_php'][1] ?? SORT_LOCALE_STRING,
+                );
+
             }
         }
     }

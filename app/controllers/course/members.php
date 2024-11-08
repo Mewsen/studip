@@ -655,7 +655,11 @@ class Course_MembersController extends AuthenticatedController
 
         if (Request::get('csv_import_format') && !in_array(Request::get('csv_import_format'), words('realname username email'))) {
             foreach (DataField::getDataFields('user', 1 | 2 | 4 | 8, true) as $df) {
-                if ($df->accessAllowed() && in_array($df->getId(), $GLOBALS['TEILNEHMER_IMPORT_DATAFIELDS']) && $df->getId() == Request::quoted('csv_import_format')) {
+                if (
+                    $df->accessAllowed()
+                    && in_array($df->getId(), $GLOBALS['TEILNEHMER_IMPORT_DATAFIELDS'])
+                    && $df->getId() == Request::get('csv_import_format')
+                ) {
                     $datafield_id = $df->getId();
                     break;
                 }
@@ -2123,7 +2127,11 @@ class Course_MembersController extends AuthenticatedController
      */
     private function sendToCourse(array $users, string $target_course_id, bool $move = false): array
     {
-        $msg = [];
+        $msg = [
+            'succes' => [],
+            'failed' => [],
+            'existing' => [],
+        ];
         foreach ($users as $user_id) {
             if (!CourseMember::exists([$target_course_id, $user_id])) {
                 $user = User::find($user_id);

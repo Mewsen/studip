@@ -94,7 +94,6 @@ class Course_WikiController extends AuthenticatedController
                     ['data-dialog' => 'width=700']
                 );
             }
-            $actions->addLink('foo',$this->new_pageURL($this->page->id), Icon::create('export') );
             $sidebar->addWidget($actions);
         }
 

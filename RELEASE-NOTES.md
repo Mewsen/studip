@@ -6,6 +6,7 @@
 
 - Der Stud.IP-Cache ist nun kompatibel zu PSR-6. ([TIC #3701](https://gitlab.studip.de/studip/studip/-/issues/3701))
 - Das `User`-Model hat die Methode `hasPermissionLevel()` erhalten, um einfach abfragen zu können, ob eine Person einen bestimmten Berechtigungsstatus hat. ([Issue #3453](https://gitlab.studip.de/studip/studip/-/issues/3453))
+- In der Standort-Verwaltung können nun nicht nur Ferien sondern auch Feiertage konfiguriert werden. Dies erlaubt das Markieren von Feiertagen als gesetzliche Feiertage, da diese je nach Bundesland variieren können. ([Issue #2795](https://gitlab.studip.de/studip/studip/-/issues/2795))
 
 ## Breaking changes
 
@@ -77,6 +78,7 @@
 - Die Zuordnung von Veranstaltungen zu Semestern anhand von Timestamps wurde entfernt. In der Datenbank wurden die Spalten `start_time` und `duration_time` der Tabelle `seminare` entfernt. ([Issue #4391]https://gitlab.studip.de/studip/studip/-/issues/4391))
   - Plugins, die Veranstaltungen anhand von Timestamps laden oder anderweitig verwenden, müssen angepasst werden!
   - Das Mapping von Veranstaltungen zu Semestern findet nun ausschließlich anhand der Semester-ID über die Verknüpfungstabelle `semester_courses` statt.
+- Die ELearning-Schnittstelle wurde ausgebaut. In diesem Rahmen wurden auch die Methoden `printhead()` und `printcontent()` ersatzlos entfernt. ([Issue #4109](https://gitlab.studip.de/studip/studip/-/issues/4109))
 
 ## Security related issues
 

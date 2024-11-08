@@ -1,7 +1,7 @@
 <template>
     <div class="rangescale_edit">
 
-        <div class="formpart" tabindex="0" ref="autofocus">
+        <div class="formpart" tabindex="0">
             {{ $gettext('Einleitungstext') }}
             <StudipWysiwyg v-model="val_clone.description" />
         </div>
@@ -67,9 +67,6 @@ export default {
             randomize: 0,
             statements: ['', '', '', '']
         });
-    },
-    mounted() {
-        this.$refs.autofocus.focus();
     },
     computed: {
         options() {

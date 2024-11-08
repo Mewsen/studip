@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var Course_AdmissionController $controller
+ * @var array $request
+ * @var string $button_yes
+ * @var string $button_no
+ */
+?>
+
 <? foreach(PageLayout::getMessages() as $pm) : ?>
     <?= $pm ?>
 <? endforeach; ?>
@@ -7,7 +16,7 @@
     <?= addHiddenFields($k, $v) ?>
 <? endforeach ?>
 <footer data-dialog-button>
-    <?= Studip\Button::create(_("Ja"), $button_yes, ['data-dialog' => ''])?>
-    <?= Studip\Button::create(_("Nein"), $button_no, ['data-dialog' => ''])?>
+    <?= Studip\Button::create(_('Ja'), $button_yes, ['data-dialog' => ''])?>
+    <?= Studip\Button::create(_('Nein'), $button_no, ['data-dialog' => ''])?>
 </footer>
 </form>

@@ -87,7 +87,7 @@ class File extends SimpleORMap
      */
     public function deleteDataFile()
     {
-        return @unlink($this->getPath());
+        return file_exists($this->getPath()) && unlink($this->getPath());
     }
 
     /**
@@ -107,7 +107,7 @@ class File extends SimpleORMap
             if (!@move_uploaded_file($path_to_file, $newpath)) {
                 return false;
             }
-        } else if (!@copy($path_to_file, $newpath)) {
+        } else if (!file_exists($path_to_file) || !@copy($path_to_file, $newpath)) {
             return false;
         }
         $this->size = filesize($newpath);

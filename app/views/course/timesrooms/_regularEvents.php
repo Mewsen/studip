@@ -57,7 +57,7 @@
                             <? elseif (Config::get()->RESOURCES_ALLOW_ROOM_REQUESTS) : ?>
                                 <? if (count($cycle['cycle']->room_requests) > 0): ?>
                                     <? $room_request = $cycle['cycle']->room_requests[0] ?>
-                                    <? if ($room_request->closed <= '1'): ?>
+                                    <? if ($room_request->closed <= '1' && !empty($cycle['cycle']->room_requests[0]->room)): ?>
                                         <strong>
                                             <?= sprintf(
                                                 _('Raum %s angefragt'),

@@ -1,11 +1,4 @@
 <?php
-if (!defined('SORT_NATURAL')) {
-    define('SORT_NATURAL', 6);
-}
-if (!defined('SORT_FLAG_CASE')) {
-    define('SORT_FLAG_CASE', 8);
-}
-
 /**
  * SimpleCollection.php
  * collection of assoc arrays with convenience
@@ -386,7 +379,7 @@ class SimpleCollection extends StudipArrayObject
      */
     public function findBy($key, $values, $op = '==')
     {
-        $comp_func = self::getCompFunc($op, $values);
+        $comp_func = static::getCompFunc($op, $values);
         return $this->filter(function ($record) use ($comp_func, $key) {
             return $comp_func($record[$key]);
         });
@@ -404,7 +397,7 @@ class SimpleCollection extends StudipArrayObject
      */
     public function findOneBy($key, $values, $op = '==')
     {
-        $comp_func = self::getCompFunc($op, $values);
+        $comp_func = static::getCompFunc($op, $values);
         return $this->filter(function ($record) use ($comp_func, $key) {
             return $comp_func($record[$key]);
         }, 1)->first();
@@ -462,7 +455,7 @@ class SimpleCollection extends StudipArrayObject
                 }
             }
         }
-        return self::createFromArray($results);
+        return static::createFromArray($results);
     }
 
     /**
@@ -621,7 +614,7 @@ class SimpleCollection extends StudipArrayObject
     public function unsetBy($key, $values, $op = '==')
     {
         $ret = false;
-        $comp_func = self::getCompFunc($op, $values);
+        $comp_func = static::getCompFunc($op, $values);
         foreach ($this->storage as $k => $record) {
             if ($comp_func($record[$key])) {
                 $this->offsetunset($k);
@@ -737,7 +730,7 @@ class SimpleCollection extends StudipArrayObject
             $offset = $arg1;
             $row_count = $arg2;
         }
-        return self::createFromArray(array_slice($this->storage, $offset, $row_count, true));
+        return static::createFromArray(array_slice($this->storage, $offset, $row_count, true));
     }
 
      /**

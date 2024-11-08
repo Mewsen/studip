@@ -1,9 +1,9 @@
 <template>
     <studip-dialog
         :title="$gettext('Seite exportieren')"
-        :confirmText="this.$gettext('Erstellen')"
+        :confirmText="$gettext('Erstellen')"
         confirmClass="accept"
-        :closeText="this.$gettext('Schließen')"
+        :closeText="$gettext('Abbrechen')"
         closeClass="cancel"
         height="350"
         @close="showElementPdfExportDialog(false)"
@@ -29,7 +29,7 @@
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
-    name: 'courseware-structural-element-dialog-export',
+    name: 'courseware-structural-element-dialog-export-pdf',
     props: {
         structuralElement: Object,
     },

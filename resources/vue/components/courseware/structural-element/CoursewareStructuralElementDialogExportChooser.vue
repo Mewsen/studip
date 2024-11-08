@@ -89,7 +89,7 @@ export default {
             showElementExportDialog: 'showElementExportDialog',
             showElementExportChooserDialog: 'showElementExportChooserDialog',
             showElementPdfExportDialog: 'showElementPdfExportDialog',
-            showElementOerDialog: 'showElementOerDialog',
+            showElementOerExportDialog: 'showElementOerExportDialog',
         }),
         selectType(type) {
             switch (type) {
@@ -100,7 +100,7 @@ export default {
                     this.showElementPdfExportDialog(true);
                     break;
                 case 'oer':
-                    this.showElementOerDialog(true);
+                    this.showElementOerExportDialog(true);
                     break;
             }
             this.showElementExportChooserDialog(false);

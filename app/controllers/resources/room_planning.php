@@ -374,6 +374,19 @@ class Resources_RoomPlanningController extends AuthenticatedController
             ]
         );
 
+        $actions->addLink(
+            _('QR-Code zur Eingabe der Anzahl'),
+            URLHelper::getURL(
+                'dispatch.php/resources/room_planning/courses/' . $this->resource->id
+            ),
+            Icon::create('code-qr'),
+            [
+                'data-qr-code'       => '',
+                'data-qr-code-print' => '1',
+                'data-qr-title'      => _('Zur Eingabe der Anzahl')
+            ]
+        );
+
         if ($this->user instanceof User) {
             //No check necessary here: This part of the controller is only called
             //when a room has been selected before.
@@ -776,5 +789,31 @@ class Resources_RoomPlanningController extends AuthenticatedController
                     ];
             }
         }
+    }
+
+    public function courses_action($resourceId)
+    {
+        $query = DBManager::get()->prepare("
+            SELECT
+                `seminare`.`Seminar_id`,
+                `seminare`.`Name`
+            FROM
+                `resource_bookings`
+           JOIN `termine` ON (`resource_bookings`.`range_id` = `termine`.`termin_id` AND `termine`.`date` > :begin_of_day AND `termine`.`end_time` < :end_of_day)
+           JOIN `seminare` ON `seminare`.`Seminar_id` = `termine`.`range_id`
+            WHERE
+                `resource_bookings`.`resource_id` = :resource_id
+            GROUP BY `seminare`.`Seminar_id`
+        ");
+
+        $query->execute([
+            'resource_id' => $resourceId,
+            'begin_of_day' => strtotime('today 00:00:00'),
+            'end_of_day' => strtotime('today 23:59:59'),
+        ]);
+
+        $this->resourceId = $resourceId;
+
+        $this->courses = $query->fetchAll(PDO::FETCH_ASSOC);
     }
 }

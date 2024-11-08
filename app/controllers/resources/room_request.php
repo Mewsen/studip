@@ -1183,7 +1183,8 @@ class Resources_RoomRequestController extends AuthenticatedController
         }
 
         $this->show_info = true;
-
+        $this->booked_room_infos = [];
+        $this->request_semester_string = '';
         if ($this->request->closed > 0) {
             if ($this->request->closed == '3') {
                 PageLayout::setTitle(_('Abgelehnte Anfrage'));
@@ -1223,7 +1224,6 @@ class Resources_RoomRequestController extends AuthenticatedController
             $this->request_time_intervals = $this->request->getGroupedTimeIntervals(true, false);
         }
 
-        $this->request_semester_string = '';
         $request_start_semester = $this->request->getStartSemester();
         $request_end_semester = $this->request->getEndSemester();
         if ($request_start_semester && $request_end_semester && $request_start_semester->id != $request_end_semester->id && $request_end_semester->id) {
@@ -1816,7 +1816,6 @@ class Resources_RoomRequestController extends AuthenticatedController
                 $this->reply_comment = Request::get('reply_comment');
                 $this->request->reply_comment = $this->reply_comment;
                 $this->request->closed = '3';
-                $this->request->last_modified_by = $this->current_user->id;
                 if ($this->request->isDirty()) {
                     if ($this->request->store()) {
                         $this->show_form = false;

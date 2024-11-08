@@ -571,7 +571,10 @@ class Course_StatusgroupsController extends AuthenticatedController
                 $endtime = 0;
             }
         }
-        $position = Statusgruppen::find($group_id)->position;
+        $position = 1;
+        if (Statusgruppen::exists($group_id)) {
+            $position = Statusgruppen::find($group_id)->position;
+        }
         $selfassign = Request::int('selfassign', 0);
         // Exclusive entry makes sense only when selfassign is set in general.
         if ($selfassign !== 0) {
@@ -1439,11 +1442,11 @@ class Course_StatusgroupsController extends AuthenticatedController
             function (User $user) use ($course, &$errors, &$removed_users) {
                 try {
                     $course->deleteMember($user, true);
-                    $removed_users = $user->getFullName();
+                    $removed_users[] = $user->getFullName();
                 } catch (Exception $e) {
                     $errors[] = $e->getMessage();
                 }
-            
+
             },
             array_column($members, 'user_id')
         );

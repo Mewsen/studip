@@ -47,16 +47,14 @@ class Admin_CacheController extends AuthenticatedController
 
         $this->sidebar->addWidget($views);
 
-        if ($this->enabled) {
-            $actions = new ActionsWidget();
-            $actions->addLink(
-                _('Cache leeren'),
-                $this->url_for('admin/cache/flush'),
-                Icon::create('decline'),
-                ['data-confirm' => _('Soll der gesamte Inhalt des Caches wirklich gelöscht werden?')]
-            );
-            $this->sidebar->addWidget($actions);
-        }
+        $actions = new ActionsWidget();
+        $actions->addLink(
+            _('Cache leeren'),
+            $this->url_for('admin/cache/flush'),
+            Icon::create('decline'),
+            ['data-confirm' => _('Soll der gesamte Inhalt des Caches wirklich gelöscht werden?')]
+        );
+        $this->sidebar->addWidget($actions);
     }
 
     /**
@@ -123,7 +121,7 @@ class Admin_CacheController extends AuthenticatedController
      */
     public function flush_action()
     {
-        $cache = \Studip\Cache\Factory::getCache();
+        $cache = \Studip\Cache\Factory::loadSystemCache(true);
         $cache->flush();
 
         PageLayout::postSuccess(_('Die Inhalte des Caches wurden gelöscht.'));

@@ -428,11 +428,15 @@ class BlubberThread extends SimpleORMap implements PrivacyObject
             return mb_substr($names, 0, 60);
         }
 
-        if($this['context_type'] === 'course') {
+        if ($this['context_type'] === 'course') {
             if ($this['content']) {
                 return mb_substr((string) Course::find($this['context_id'])->name . ': ' . $this['content'], 0, 50) . ' ...';
             } else {
-                return (string) Course::find($this['context_id'])->name;
+                if ($course = Course::find($this['context_id'])) {
+                    return (string) $course->name;
+                } else {
+                    return _('unbekannt');
+                }
             }
         }
 

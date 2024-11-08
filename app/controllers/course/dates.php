@@ -54,6 +54,7 @@ class Course_DatesController extends AuthenticatedController
         $this->assignLockRulesToTemplate();
 
         $this->last_visitdate = object_get_visit($this->course->id, $this->studip_module->getPluginId());
+
         $semester_id = Request::get('semester_id');
         $semester = null;
         if ($semester_id != 'all') {
@@ -100,6 +101,16 @@ class Course_DatesController extends AuthenticatedController
             $this->url_for('course/dates/export_csv'),
             Icon::create('file-excel')
         );
+
+        if (Config::get()->ENABLE_NUMBER_OF_PARTICIPANTS) {
+            $actions->addLink(
+                _('Laufende Termine'),
+                $this->url_for('course/dates/current_day_dates'),
+                Icon::create('date')
+            )->asDialog();
+        }
+
+
         $sidebar->addWidget($actions);
 
         if (count($this->course->semesters) !== 1) {
@@ -127,6 +138,42 @@ class Course_DatesController extends AuthenticatedController
         }
     }
 
+    public function current_day_dates_action()
+    {
+        if (!$this->hasAccess() || !Config::get()->ENABLE_NUMBER_OF_PARTICIPANTS) {
+            throw new AccessDeniedException();
+        }
+
+        if (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
+
+            foreach (Request::getArray('termin_id') as $index => $terminId) {
+                $numberOfParticipants = Request::intArray('number_of_participants')[$index];
+                if ($numberOfParticipants < 0) {
+                    continue;
+                }
+
+                $courseDate = CourseDate::find($terminId);
+                $courseDate->number_of_participants = $numberOfParticipants;
+                $courseDate->store();
+            }
+
+            PageLayout::postSuccess(_('Die Anzahl der Teilnehmenden wurde gespeichert.'));
+
+            $this->redirect($this->indexURL());
+        }
+
+        $beginOfDay = strtotime('today 00:00:00');
+        $endOfDay = strtotime('today 23:59:59');
+        $this->dates = $this->course->getDatesWithExdates($beginOfDay, $endOfDay);
+
+        $resourceId = Request::option('resource_id');
+        if ($resourceId) {
+            $this->dates = $this->dates->filter(function ($date) use ($resourceId) {
+                return $date->room_booking->resource_id === $resourceId;
+            });
+        }
+    }
 
     /**
      * This method is called to show the dialog to edit a date for a course.
@@ -246,6 +293,10 @@ class Course_DatesController extends AuthenticatedController
         $termin = CourseDate::find($date_id);
         if ($termin) {
             $termin->date_typ = Request::get('dateType');
+
+            if (Config::get()->ENABLE_NUMBER_OF_PARTICIPANTS) {
+                $termin->number_of_participants = strlen(Request::get('number_of_participants')) && Request::int('number_of_participants') >= 0 ? Request::int('number_of_participants') : null;
+            }
 
             // Assign teachers
             $assigned_teachers = Request::optionArray('assigned_teachers');
@@ -445,7 +496,8 @@ class Course_DatesController extends AuthenticatedController
             _('Gruppen'),
             _('Raum'),
             _('Raumbeschreibung'),
-            _('Sitzplätze')
+            _('Sitzplätze'),
+            _('Teilnehmende')
         ];
 
         $data = [$columns];
@@ -503,6 +555,8 @@ class Course_DatesController extends AuthenticatedController
                 $row[] = '';
                 $row[] = '';
             }
+
+            $row[] = $date->number_of_participants;
 
             $data[] = $row;
         }

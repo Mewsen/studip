@@ -189,7 +189,11 @@ class Seminar_Perm
             return $status;
         }
 
-        if (Config::get()->DEPUTIES_ENABLE && Deputy::isDeputy($user_id, $range_id)) {
+        if (
+            Config::get()->DEPUTIES_ENABLE
+            && isset($range_id)
+            && Deputy::isDeputy($user_id, $range_id)
+        ) {
             $status = 'dozent';
         } else {
             $st = $db->prepare("SELECT status FROM seminar_user

@@ -28,6 +28,8 @@ $CACHING_ENABLE = false;
 date_default_timezone_set('Europe/Berlin');
 
 require 'config.inc.php';
+require_once __DIR__ . '/../../lib/bootstrap-autoload.php';
+
 
 require 'lib/helpers.php';
 require 'lib/functions.php';
@@ -58,6 +60,6 @@ class DB_Seminar extends DB_Sql
     }
 }
 
-require_once __DIR__.'/../../composer/autoload.php';
+require_once __DIR__ . '/../../composer/autoload.php';
 
 session_id("test-session");

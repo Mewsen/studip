@@ -325,7 +325,7 @@ class RouteMap
         $group->get('/tree-node/{id}', Routes\Tree\TreeShow::class);
 
         $group->get('/tree-node/{id}/children', Routes\Tree\ChildrenOfTreeNode::class);
-        $group->get('/tree-node/{id}/courseinfo', Routes\Tree\CourseinfoOfTreeNode::class);
+        $group->get('/tree-node/{id}/courseinfo', Routes\Tree\CourseInfoOfTreeNode::class);
         $group->get('/tree-node/{id}/courses', Routes\Tree\CoursesOfTreeNode::class);
         $group->get('/tree-node/course/pathinfo/{classname}/{id}', Routes\Tree\PathinfoOfTreeNodeCourse::class);
         $group->get('/tree-node/course/details/{id}', Routes\Tree\DetailsOfTreeNodeCourse::class);

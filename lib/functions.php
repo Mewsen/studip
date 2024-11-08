@@ -1540,22 +1540,31 @@ function xml_escape($string)
 
 /**
  * This function mimics the functionality of the $gettextInterpolate function in JavaScript.
- * This makes it easier to format text in translatable strings.
+ * This makes it easier to format text in strings, whether they are translatable using gettext
+ * or regular strings with named placeholders.
+ *
+ * Placeholders must be in the same format as in $gettextInterpolate: %{name}
+ * In the parameters array, the replacement of the placeholder must have the same string value as
+ * index as the placeholder. If the placeholder in the source string is %{name}, the index in the
+ * parameters array must be called "name" so that the placeholder can be replaced.
  *
  * Note that the behavior of this function is simplified in comparison with $gettextInterpolate:
  * - All placeholders that have a value are replaced with the string value of that value.
  *   Numbers must be pre-formatted before added to the parameters.
- * - All placeholders that have no replacements in the parameters array are output.
+ * - If a placeholder has no replacement in the parameters array, an exception will be thrown.
  *
- * @param string $gettext_string The translation string to be interpolated.
+ * @param string $source_string The string to be interpolated.
  *
- * @param array $parameters The parameters that replace the placeholders in the translation string.
+ * @param array $parameters The parameters that replace the placeholders in the source string.
  *     Array keys are the names of the placeholders while array values are the values that are
  *     placed inside the string.
  *
- * @return string The interpolated translation string.
+ * @return string The interpolated string with its placeholders replaced.
+ *
+ * @throws Exception In case a placeholder is not present in the parameters array and therefore
+ *     cannot be replaced.
  */
-function studip_interpolate(string $gettext_string, array $parameters) : string
+function studip_interpolate(string $source_string, array $parameters) : string
 {
     return preg_replace_callback(
         '/%\{\s*(\w+)\s*\}/',
@@ -1565,6 +1574,6 @@ function studip_interpolate(string $gettext_string, array $parameters) : string
             }
             return $parameters[$match[1]];
         },
-        $gettext_string
+        $source_string
     );
 }

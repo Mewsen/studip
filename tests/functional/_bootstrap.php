@@ -38,6 +38,7 @@ foreach($added_configs as $key => $value) {
     $GLOBALS[$key] = $value;
 }
 require 'config/config.inc.php';
+require_once __DIR__ . '/../../lib/bootstrap-autoload.php';
 
 // Do not send mails of any kind during tests
 require 'vendor/email_message/email_message.php';

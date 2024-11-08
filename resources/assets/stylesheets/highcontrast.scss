@@ -243,7 +243,7 @@ button.button[disabled]:hover {
 .widget-links.sidebar-views > li:hover button,
 .widget-links.sidebar-views > li:hover a {
     color: $black;
-    background-color: $medium-gray;
+    background-color: $darkergray;
 }
 
 
@@ -533,181 +533,6 @@ a .hidden-tiny-down {
 
     &:hover {
         background-color: $black;
-    }
-}
-
-
-/* Calendar categories */
-
-div.schedule_entry {
-    dl {
-        &.hover:hover { opacity: unset; }
-
-        &.schedule-category1 {
-            background-color: $white;
-            border: 1px solid $calendar-category-1;
-            dt {
-                background-color: $calendar-category-1;
-                color: text-contrast($calendar-category-1, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category2 {
-            background-color: $white;
-            border: 1px solid $calendar-category-2;
-            dt {
-                background-color: $calendar-category-2;
-                color: text-contrast($calendar-category-2, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category3 {
-            background-color: $white;
-            border: 1px solid $calendar-category-3;
-            dt {
-                background-color: $calendar-category-3;
-                color: text-contrast($calendar-category-3, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category4 {
-            background-color: $white;
-            border: 1px solid $calendar-category-4;
-            dt {
-                background-color: $calendar-category-4;
-                color: text-contrast($calendar-category-4, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category5 {
-            background-color: $white;
-            border: 1px solid $calendar-category-5;
-            dt {
-                background-color: $calendar-category-5;
-                color: text-contrast($calendar-category-5, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category6 {
-            background-color: $white;
-            border: 1px solid $calendar-category-6;
-            dt {
-                background-color: $calendar-category-6;
-                color: text-contrast($calendar-category-6, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category7 {
-            background-color: $white;
-            border: 1px solid $calendar-category-7;
-            dt {
-                background-color: $calendar-category-7;
-                color: text-contrast($calendar-category-7, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category8 {
-            background-color: $white;
-            border: 1px solid $calendar-category-8;
-            dt {
-                background-color: $calendar-category-8;
-                color: text-contrast($calendar-category-8, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category9 {
-            background-color: $white;
-            border: 1px solid $calendar-category-9;
-            dt {
-                background-color: $calendar-category-9;
-                color: text-contrast($calendar-category-9, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category10 {
-            background-color: $white;
-            border: 1px solid $calendar-category-10;
-            dt {
-                background-color: $calendar-category-10;
-                color: text-contrast($calendar-category-10, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category11 {
-            background-color: $white;
-            border: 1px solid $calendar-category-11;
-            dt {
-                background-color: $calendar-category-11;
-                color: text-contrast($calendar-category-11, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category12 {
-            background-color: $white;
-            border: 1px solid $calendar-category-12;
-            dt {
-                background-color: $calendar-category-12;
-                color: text-contrast($calendar-category-12, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category13 {
-            background-color: $white;
-            border: 1px solid $calendar-category-13;
-            dt {
-                background-color: $calendar-category-13;
-                color: text-contrast($calendar-category-13, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category14 {
-            background-color: $white;
-            border: 1px solid $calendar-category-14;
-            dt {
-                background-color: $calendar-category-14;
-                color: text-contrast($calendar-category-14, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
-        &.schedule-category15 {
-            background-color: $white;
-            border: 1px solid $calendar-category-15;
-            dt {
-                background-color: $calendar-category-15;
-                color: text-contrast($calendar-category-15, $black, $white);
-            }
-            dd {
-                color: $black;
-            }
-        }
     }
 }
 
@@ -1101,18 +926,6 @@ section.course-statusgroups footer,
 
 #wikifooter {
     border-top: 2px solid $black;
-}
-
-div#schedule_day {
-    border-right: 2px double $black;
-}
-
-table#schedule_data thead tr td {
-    border-bottom: 2px solid $darkergray;
-}
-
-table#schedule_data tbody td:first-child {
-    border-right: 2px solid $darkergray;
 }
 
 /* Skiplink box */

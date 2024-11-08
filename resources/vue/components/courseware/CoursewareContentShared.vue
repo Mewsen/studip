@@ -65,8 +65,7 @@
             <template v-slot:dialogContent>
                 <courseware-content-permissions
                     :element="selectedElement"
-                    @updateReadApproval="updateReadApproval"
-                    @updateWriteApproval="updateWriteApproval"
+                    @updateContentApproval="updateContentApproval"
                 />
             </template>
         </studip-dialog>
@@ -123,11 +122,8 @@ export default {
         getElementUrl(element) {
             return STUDIP.URLHelper.base_url + 'dispatch.php/contents/courseware/courseware#/structural_element/' + element.id;
         },
-        updateReadApproval(approval) {
-            this.selectedElement.attributes['read-approval'] = approval;
-        },
-        updateWriteApproval(approval) {
-            this.selectedElement.attributes['write-approval'] = approval;
+        updateContentApproval(approval) {
+            this.selectedElement.attributes['content-approval'] = approval;
         },
         displayEditReleases(element) {
             this.selectedElement = element;

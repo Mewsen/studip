@@ -134,6 +134,7 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             $config['registered_callbacks']['before_store'][] = 'validate';
         }
         $config['registered_callbacks']['after_create'][] = 'cbLogNewRequest';
+        $config['registered_callbacks']['before_store'][] = 'cbBeforeStore';
         $config['registered_callbacks']['after_store'][] = 'cbAfterStore';
         $config['registered_callbacks']['after_delete'][] = 'cbAfterDelete';
 
@@ -544,6 +545,18 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
     {
         $this->sendNewRequestMail();
         StudipLog::log('RES_REQUEST_NEW', $this->course_id, $this->resource_id, $this->getLoggingInfoText());
+    }
+
+    /**
+     * A callback method that sets the users connection before store.
+     */
+    public function cbBeforeStore()
+    {
+        if ($this->isNew() && !$this->user_id) {
+            $this->user_id = User::findCurrent()->id;
+        }
+
+        $this->last_modified_by = User::findCurrent()->id;
     }
 
     /**
@@ -993,8 +1006,8 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             $date = CourseDate::find($this->termin_id);
             $interval['range']       = 'CourseDate';
             $interval['range_id']    = $this->termin_id;
-            $interval['booked_room'] = $date->room_booking->resource_id;
-            $interval['booking_id']  = $date->room_booking->id;
+            $interval['booked_room'] = $date->room_booking->resource_id ?? null;
+            $interval['booking_id']  = $date->room_booking->id ?? null;
 
             if (!empty($interval)) {
                 return [
@@ -1030,8 +1043,8 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                 }
                 $interval['range']                                 = 'CourseDate';
                 $interval['range_id']                              = $date->id;
-                $interval['booked_room']                           = $date->room_booking->resource_id;
-                $interval['booking_id']                            = $date->room_booking->id;
+                $interval['booked_room']                           = $date->room_booking->resource_id ?? null;
+                $interval['booking_id']                            = $date->room_booking->id ?? null;
                 $time_intervals[$this->metadate_id]['intervals'][] = $interval;
             }
             return $time_intervals;
@@ -1094,8 +1107,8 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
                     }
                     $interval['range']                 = 'CourseDate';
                     $interval['range_id']              = $date->id;
-                    $interval['booked_room']           = $date->room_booking->resource_id;
-                    $interval['booking_id']            = $date->room_booking->id;
+                    $interval['booked_room']           = $date->room_booking->resource_id ?? null;
+                    $interval['booking_id']            = $date->room_booking->id ?? null;
                     $time_intervals['']['intervals'][] = $interval;
                 }
 

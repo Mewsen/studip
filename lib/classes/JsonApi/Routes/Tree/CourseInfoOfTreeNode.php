@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\NonJsonApiController;
 
-class CourseinfoOfTreeNode extends NonJsonApiController
+class CourseInfoOfTreeNode extends NonJsonApiController
 {
     protected $allowedFilteringParameters = ['q', 'semester', 'semclass', 'recursive'];
 

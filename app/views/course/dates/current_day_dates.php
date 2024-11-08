@@ -1,0 +1,49 @@
+<form class="default" action="<?= $controller->current_day_dates() ?>" method="post">
+    <?= CSRFProtection::tokenTag() ?>
+    <table class="dates default sortable-table" data-sortlist="[[0, 0]]" data-table-id="<?= htmlReady($course->id) ?>">
+        <thead>
+            <tr>
+                <th data-sort="htmldata"><?= _('Zeit') ?></th>
+                <th data-sort="text"><?= _('Raum') ?></th>
+                <th data-sort="htmldata"><?= _('Anzahl der Teilnehmenden') ?></th>
+            </tr>
+        </thead>
+        <tbody>
+        <? foreach ($dates as $date): ?>
+            <tr>
+                <td data-sort-value="<?= htmlReady($date->date) ?>" class="date_name">
+                    <?= Icon::create('date')->asImg(['class' => 'text-bottom']) ?>
+                    <?= htmlReady($date->getFullName(CourseDate::FORMAT_VERBOSE)) ?>
+                </td>
+                <td>
+                    <? $room = $date->getRoom(); ?>
+                    <? if ($room): ?>
+                        <a href="<?= $room->getActionLink('show') ?>" data-dialog>
+                            <?= htmlReady($room->name) ?>
+                        </a>
+                    <? else: ?>
+                        <?= htmlReady($date->raum) ?>
+                    <? endif ?>
+                </td>
+                <td data-sort-value="<?= htmlReady($date->number_of_participants) ?>">
+                    <input type="hidden" name="termin_id[]" value="<?= htmlReady($date->termin_id) ?>">
+                    <input type="number" min="0" name="number_of_participants[]" value="<?= htmlReady($date->number_of_participants) ?>">
+                </td>
+            </tr>
+        <? endforeach; ?>
+        <?if (count($dates) === 0) : ?>
+            <tr>
+                <td colspan="3">
+                    <?= _('Es sind noch keine laufenden Termine vorhanden.') ?>
+                </td>
+            </tr>
+        <? endif ?>
+        </tbody>
+    </table>
+
+    <footer data-dialog-button>
+        <?= Studip\Button::createAccept(_('Speichern')) ?>
+        <?= Studip\LinkButton::createCancel(_('Abbrechen'), $controller->indexURL()) ?>
+    </footer>
+</form>
+

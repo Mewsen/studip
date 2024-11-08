@@ -191,18 +191,18 @@ class Request implements ArrayAccess, IteratorAggregate
     /**
      * Return the value of the selected query parameter as an I18NString.
      *
-     * @param string   $param    parameter name
-     * @param string   $default  default value if parameter is not set
-     * @param Callable $op       Operation to perform on each text string
+     * @param string                 $param   parameter name
+     * @param I18NString|string|null $default default value if parameter is not set
+     * @param callable|null          $op      Operation to perform on each text string
      *
      * @return I18NString  parameter value as string (if set), else NULL
      */
-    public static function i18n($param, $default = NULL, Callable $op = null)
+    public static function i18n(string $param, $default = null, Callable $op = null)
     {
-        $value = self::get($param, $default);
+        $value = self::get($param, $default instanceof I18NString ? $default->original() : $default);
 
         if (isset($value)) {
-            $lang = self::getArray($param . '_i18n');
+            $lang = self::getArray($param . '_i18n') ?: ($default instanceof I18NString ? $default->toArray() : []);
 
             if ($op) {
                 $value = $op($value);
@@ -210,26 +210,6 @@ class Request implements ArrayAccess, IteratorAggregate
             }
 
             $value = new I18NString($value, $lang);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Return the value of the selected query parameter as a string.
-     * The contents of the string is quoted with addslashes().
-     *
-     * @param string $param    parameter name
-     * @param string $default  default value if parameter is not set
-     *
-     * @return string  parameter value as string (if set), else NULL
-     */
-    public static function quoted($param, $default = NULL)
-    {
-        $value = self::get($param, $default);
-
-        if (isset($value)) {
-            $value = addslashes($value);
         }
 
         return $value;
@@ -474,21 +454,6 @@ class Request implements ArrayAccess, IteratorAggregate
     }
 
     /**
-     * Return the value of the selected query parameter as a string array.
-     * The contents of each element is quoted with addslashes().
-     *
-     * @param string $param    parameter name
-     *
-     * @return array  parameter value as array (if set), else an empty array
-     */
-    public static function quotedArray($param)
-    {
-        $array = self::getArray($param);
-
-        return self::addslashes($array);
-    }
-
-    /**
      * Return the value of the selected query parameter as an array of
      * alphanumeric strings (consisting of only digits, letters and
      * underscores).
@@ -640,27 +605,6 @@ class Request implements ArrayAccess, IteratorAggregate
             }
         }
         return FALSE;
-    }
-
-    /**
-     * Quote a given string or array using addslashes(). If the parameter
-     * is an array, the quoting is applied recursively.
-     *
-     * @param mixed $value    string or array value to be quoted
-     *
-     * @return mixed  quoted string or array
-     */
-    public static function addslashes($value)
-    {
-        if (is_array($value)) {
-            foreach ($value as $key => $val) {
-                $value[$key] = self::addslashes($val);
-            }
-        } else {
-            $value = addslashes($value);
-        }
-
-        return $value;
     }
 
     /**

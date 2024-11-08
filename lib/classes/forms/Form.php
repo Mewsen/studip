@@ -2,6 +2,8 @@
 
 namespace Studip\Forms;
 
+use Flexi\Template;
+
 class Form extends Part
 {
 
@@ -495,12 +497,20 @@ class Form extends Part
      * @return string
      * @throws \Flexi\TemplateNotFoundException
      */
-    public function render()
+    public function render(string|Template $layout = null)
     {
         \NotificationCenter::postNotification('FormWillRender', $this);
+        return $this->getTemplate()->render([], $layout);
+    }
+
+    /**
+     * Returns the template used for this form populated with this form object.
+     */
+    public function getTemplate(): Template
+    {
         $template = $GLOBALS['template_factory']->open('forms/form');
         $template->form = $this;
-        return $template->render();
+        return $template;
     }
 
     /**

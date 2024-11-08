@@ -35,6 +35,26 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         $show_hidden = Request::bool('show_hidden', false);
 
+        //Handle the selected semester and create a Fullcalendar instance.
+
+        $this->semester = null;
+        if (Request::submitted('semester_id')) {
+            $this->semester = Semester::find(Request::option('semester_id'));
+            if ($this->semester) {
+                //Store the new semester-ID in the session:
+                $_SESSION['schedule_semester_id'] = $this->semester->id;
+            }
+        }
+        if (!$this->semester) {
+            //Load the semester from the session:
+            $semester_id = $_SESSION['schedule_semester_id'] ?? '';
+            if ($semester_id) {
+                $this->semester = Semester::find($semester_id);
+            } else {
+                $this->semester = Semester::findCurrent();
+            }
+        }
+
         //Build the sidebar:
 
         $sidebar = Sidebar::get();
@@ -43,6 +63,7 @@ class Calendar_ScheduleController extends AuthenticatedController
         $semester_widget = new SemesterSelectorWidget(
             $this->indexURL(['show_hidden' => $show_hidden ?: null])
         );
+        $semester_widget->setSelection($semester->id ?? '');
         $sidebar->addWidget($semester_widget);
 
         //Then add the actions for the action widget:
@@ -83,16 +104,6 @@ class Calendar_ScheduleController extends AuthenticatedController
             ['data-dialog' => 'size=auto;reload-on-close']
         );
         $sidebar->addWidget($actions);
-
-        //Handle the selected semester and create a Fullcalendar instance.
-
-        $semester = null;
-        if (Request::submitted('semester_id')) {
-            $semester = Semester::find(Request::option('semester_id'));
-        }
-        if (!$semester) {
-            $semester = Semester::findCurrent();
-        }
 
         $fullcalendar = \Studip\Calendar\Helper::getScheduleFullcalendar(
             $semester->id ?? '',
@@ -190,7 +201,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                     ]
                 );
 
-                $event_classes = [];
+                $event_classes = ['schedule'];
                 $event_title = $cycle_date->course->getFullName();
                 if ($course_membership) {
                     $event_classes[] = sprintf('course-color-%u', $course_membership->gruppe);
@@ -262,9 +273,21 @@ class Calendar_ScheduleController extends AuthenticatedController
             $this->entry->user_id = $GLOBALS['user']->id;
             if (!Request::submitted('save')) {
                 //Provide good default values:
-                $this->entry->dow = Request::int('dow', date('N'));
-                $this->entry->setFormattedStart(Request::get('start', date('H:00', strtotime('+1 hour'))));
-                $this->entry->setFormattedEnd(Request::get('end', date('H:00', strtotime('+2 hours'))));
+                if (Request::submitted('start')) {
+                    //String format
+                    $this->entry->dow = Request::int('dow', date('N'));
+                    $this->entry->setFormattedStart(Request::get('start', date('H:00', strtotime('+1 hour'))));
+                    $this->entry->setFormattedEnd(Request::get('end', date('H:00', strtotime('+2 hours'))));
+                } elseif (Request::submitted('begin')) {
+                    //Fullcalendar: Timestamps
+                    $begin = Request::get('begin');
+                    $end   = Request::get('end');
+                    if ($begin && $end) {
+                        $this->entry->dow = date('N', $begin);
+                        $this->entry->setFormattedStart(date('H:i', $begin));
+                        $this->entry->setFormattedEnd(date('H:i', $end));
+                    }
+                }
             }
             PageLayout::setTitle(_('Neuer Termin'));
         } else {

@@ -39,7 +39,7 @@
                             <span class="textlabel">{{ $gettext('Titel des Fragebogens') }}</span>
                             <span title="Dies ist ein Pflichtfeld" aria-hidden="true" class="asterisk">*</span>
                         </label>
-                        <input type="text" id="questionnaire_title" v-model="data.title" ref="autofocus">
+                        <input type="text" id="questionnaire_title" v-model="data.title" v-autofocus>
                     </div>
 
                     <div class="hgroup">
@@ -77,7 +77,6 @@
                 <div class="add_question file_select_possibilities" v-else-if="activeTab === 'add_question'">
                     <div>
                         <button v-for="(questiontype, key) in questionTypes" :key="key"
-                                :ref="key == Object.keys(questionTypes)[0] ? 'autofocus' : ''"
                                 href=""
                                 @click.prevent="addQuestion(questiontype.type)"
                         >
@@ -283,17 +282,6 @@ export default {
         },
         switchTab(tab_id) {
             this.activeTab = tab_id;
-            this.$nextTick(function () {
-                if (this.$refs.autofocus !== undefined) {
-                    if (Array.isArray(this.$refs.autofocus)) {
-                        if (typeof this.$refs.autofocus[0] !== "undefined") {
-                            this.$refs.autofocus[0].focus();
-                        }
-                    } else {
-                        this.$refs.autofocus.focus();
-                    }
-                }
-            });
         },
         objectsEqual(obj1, obj2) {
             return _.isEqual(obj1, obj2);
@@ -346,9 +334,6 @@ export default {
         indexForQuestion() {
             return this.getIndexForQuestion(this.activeTab);
         },
-    },
-    mounted() {
-        this.$refs.autofocus.focus();
     },
 }
 </script>

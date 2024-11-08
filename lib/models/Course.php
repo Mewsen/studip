@@ -996,9 +996,9 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             $stmt = $db->prepare(
                 "SELECT 1
                  FROM `user_inst`
-                 JOIN `seminar_inst` USING (`institute_id`)
+                 JOIN `seminar_inst` USING (`institut_id`)
                  WHERE `user_inst`.`user_id` = :user_id
-                   AND `seminar_inst`.`seminar_id` = :course_id"
+                 AND `seminar_inst`.`seminar_id` = :course_id"
             );
             $stmt->execute([
                 'course_id' => $this->id,
@@ -1567,6 +1567,47 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             );
         }
 
+        //Check if the user has root or admin permissions:
+
+        $user = User::find($user_id);
+
+        if ($GLOBALS['perm']->have_perm('root', $user_id)) {
+            return new \Studip\EnrolmentInformation(
+                _('Sie haben root-Rechte und dürfen damit alles in Stud.IP.'),
+                \Studip\Information::INFO,
+                'root',
+                true
+            );
+        }
+
+        if ($GLOBALS['perm']->have_studip_perm('admin', $this->id, $user_id)) {
+            return new \Studip\EnrolmentInformation(
+                _('Sie verwalten diese Veranstaltung.'),
+                \Studip\Information::INFO,
+                'course_admin',
+                true
+            );
+        }
+        if ($GLOBALS['perm']->have_perm('admin', $user_id)) {
+            return new \Studip\EnrolmentInformation(
+                _('Als administrierende Person dürfen Sie sich nicht in eine Veranstaltung eintragen.'),
+                \Studip\Information::INFO,
+                'admin',
+                false
+            );
+        }
+
+        //Check the course membership:
+
+        if ($GLOBALS['perm']->have_studip_perm('user', $this->id, $user_id)) {
+            return new \Studip\EnrolmentInformation(
+                _('Sie sind bereits in der Veranstaltung eingetragen.'),
+                \Studip\Information::INFO,
+                'already_member',
+                true
+            );
+        }
+
         //Check the course set and if the user is on an admission list:
 
         if ($course_set = $this->getCourseSet()) {
@@ -1622,9 +1663,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             );
         }
 
-        //Check the permissions of the user:
-
-        $user = User::find($user_id);
+        //Check the permissions of users that are not root or admin:
 
         if (!$user) {
             return new \Studip\EnrolmentInformation(
@@ -1640,41 +1679,6 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
                 \Studip\Information::INFO,
                 'user',
                 false
-            );
-        }
-        if ($GLOBALS['perm']->have_perm('root', $user_id)) {
-            return new \Studip\EnrolmentInformation(
-                _('Sie haben root-Rechte und dürfen damit alles in Stud.IP.'),
-                \Studip\Information::INFO,
-                'root',
-                true
-            );
-        }
-        if ($GLOBALS['perm']->have_studip_perm('admin', $this->id, $user_id)) {
-            return new \Studip\EnrolmentInformation(
-                _('Sie verwalten diese Veranstaltung.'),
-                \Studip\Information::INFO,
-                'course_admin',
-                true
-            );
-        }
-        if ($GLOBALS['perm']->have_perm('admin', $user_id)) {
-            return new \Studip\EnrolmentInformation(
-                _('Als administrierende Person dürfen Sie sich nicht in eine Veranstaltung eintragen.'),
-                \Studip\Information::INFO,
-                'admin',
-                false
-            );
-        }
-
-        //Check the course membership:
-
-        if ($GLOBALS['perm']->have_studip_perm('user', $this->id, $user_id)) {
-            return new \Studip\EnrolmentInformation(
-                _('Sie sind bereits in der Veranstaltung eingetragen.'),
-                \Studip\Information::INFO,
-                'already_member',
-                true
             );
         }
 
@@ -1906,17 +1910,25 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      */
     public function getDatesWithExdates($range_begin = 0, $range_end = 0)
     {
-        $dates = [];
-        if (($range_begin > 0) && ($range_end > 0) && ($range_end > $range_begin)) {
-            $ex_dates = $this->ex_dates->findBy('content', '', '<>')
-                          ->findBy('date', $range_begin, '>=')
-                          ->findBy('end_time', $range_end, '<=');
-            $dates = $this->dates->findBy('date', $range_begin, '>=')
-                          ->findBy('end_time', $range_end, '<=');
-            $dates->merge($ex_dates);
+        $dates = SimpleCollection::createFromArray([]);
+        if (
+            $range_begin > 0
+            && $range_end > 0
+            && $range_end > $range_begin
+        ) {
+            $dates->merge(
+                $this->dates->findBy('date', $range_begin, '>=')
+                     ->findBy('end_time', $range_end, '<=')
+            );
+
+            $dates->merge(
+                $this->ex_dates->findBy('content', '', '<>')
+                     ->findBy('date', $range_begin, '>=')
+                     ->findBy('end_time', $range_end, '<=')
+            );
         } else {
-            $dates = $this->ex_dates->findBy('content', '', '<>');
             $dates->merge($this->dates);
+            $dates->merge($this->ex_dates->findBy('content', '', '<>'));
         }
         $dates->uasort(function($a, $b) {
             return $a->date - $b->date

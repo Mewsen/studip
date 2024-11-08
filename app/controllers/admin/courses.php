@@ -429,7 +429,6 @@ class Admin_CoursesController extends AuthenticatedController
                 break;
             case 8: //Sperrebenen
                 $template = $tf->open('admin/courses/lock_preselect');
-                $template->course = $course;
                 $template->all_lock_rules = new SimpleCollection(array_merge(
                     [[
                         'name'    => '--' . _('keine Sperrebene') . '--',
@@ -446,7 +445,6 @@ class Admin_CoursesController extends AuthenticatedController
                 break;
             case 10: //Zusatzangaben
                 $template = $tf->open('admin/courses/aux_preselect');
-                $template->course = $course;
                 $template->aux_lock_rules = AuxLockRule::findBySQL('1 ORDER BY name ASC');
                 $data['buttons_top'] = $template->render();
                 $data['buttons_bottom'] = (string) \Studip\Button::createAccept(_('Zusatzangaben'), 'aux_button', ['formaction' => URLHelper::getURL('dispatch.php/admin/courses/set_aux_lockrule')]);
@@ -1190,7 +1188,7 @@ class Admin_CoursesController extends AuthenticatedController
                     $course = Course::find($course_id);
 
                     if ($course->isOpenEnded() || $course->end_semester->visible) {
-                        $visibility = $visibilites[$course_id] ?: 0;
+                        $visibility = $visibilites[$course_id] ?? 0;
 
                         if ($course->visible == $visibility) {
                             continue;
