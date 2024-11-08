@@ -253,9 +253,4 @@ class CoreDocuments extends CorePlugin implements StudipModuleExtended, OERModul
         // TODO: Implement getInfoTemplate() method.
         return null;
     }
-
-    public function initializeUpdateObserver()
-    {
-        // TODO: Implement initializeUpdateObserver() method.
-    }
 }

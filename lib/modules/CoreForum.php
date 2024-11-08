@@ -233,9 +233,4 @@ class CoreForum extends CorePlugin implements ForumModule
             ]
         ];
     }
-
-    public function initializeUpdateObserver()
-    {
-        // TODO: Implement initializeUpdateObserver() method.
-    }
 }

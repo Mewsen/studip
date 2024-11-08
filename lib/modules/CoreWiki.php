@@ -282,9 +282,4 @@ class CoreWiki extends CorePlugin implements StudipModuleExtended
 
         return $root;
     }
-
-    public function initializeUpdateObserver()
-    {
-        // TODO: Implement initializeUpdateObserver() method.
-    }
 }

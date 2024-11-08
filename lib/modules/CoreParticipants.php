@@ -349,9 +349,4 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
     {
         return $context->getRangeType() === 'course';
     }
-
-    public function initializeUpdateObserver()
-    {
-        // TODO: Implement initializeUpdateObserver() method.
-    }
 }

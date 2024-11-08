@@ -217,9 +217,4 @@ class Blubber extends CorePlugin implements StudipModuleExtended
             ]
         ];
     }
-
-    public function initializeUpdateObserver()
-    {
-        // TODO: Implement initializeUpdateObserver() method.
-    }
 }

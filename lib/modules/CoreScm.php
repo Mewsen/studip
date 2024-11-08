@@ -230,9 +230,4 @@ class CoreScm extends CorePlugin implements StudipModuleExtended
         // TODO: Implement getInfoTemplate() method.
         return null;
     }
-
-    public function initializeUpdateObserver()
-    {
-        // TODO: Implement initializeUpdateObserver() method.
-    }
 }
