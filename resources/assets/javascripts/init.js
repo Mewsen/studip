@@ -59,7 +59,6 @@ import QuickSearch from './lib/quick_search.js';
 import QuickSelection from './lib/quick_selection.js';
 import Raumzeit from './lib/raumzeit.js';
 import {ready, domReady, dialogReady} from './lib/ready.js';
-import register from './lib/register.js';
 import Report from './lib/report.ts';
 import Resources from './lib/resources.js';
 import Responsive from './lib/responsive.js';
@@ -143,7 +142,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     QuickSearch,
     QuickSelection,
     Raumzeit,
-    register,
     Report,
     Responsive,
     Scroll,
