@@ -3,7 +3,7 @@
 use Courseware\Instance;
 use Courseware\StructuralElement;
 
-class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
+class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModuleExtended
 {
     /**
      * {@inheritdoc}
@@ -127,6 +127,62 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
         }
 
         return $nav;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    {
+        if ($user_id === 'nobody') {
+            return [];
+        }
+
+        $results = DBManager::get()->fetchGroupedPairs(
+            "SELECT elem.range_id,
+                    COUNT(IF((blocks.chdate > IFNULL(ouv.visitdate, :threshold) AND blocks.editor_id != :user_id), elem.id, NULL)) AS neue
+                FROM `cw_structural_elements` AS elem
+                INNER JOIN `cw_containers` as container ON (elem.id = container.structural_element_id)
+                INNER JOIN `cw_blocks` as blocks ON (container.id = blocks.container_id)
+                LEFT JOIN object_user_visits AS ouv
+                  ON ouv.object_id = elem.range_id
+                     AND ouv.user_id = :user_id
+                     AND ouv.plugin_id = :plugin_id
+                WHERE elem.range_type = 'course'
+                AND elem.range_id IN (:range_ids)
+                AND blocks.payload != ''
+                AND blocks.editor_id != :user_id
+                GROUP BY elem.range_id",
+            [
+                'user_id' => $user_id,
+                'range_ids' => $course_ids,
+                'threshold' => object_get_visit_threshold(),
+                'plugin_id' => $this->getPluginId(),
+            ]
+        );
+
+        $navs = [];
+        foreach ($course_ids as $course_id) {
+            $nav = new Navigation(_('Courseware'), 'dispatch.php/course/courseware');
+            $nav->setImage(Icon::create('courseware', Icon::ROLE_CLICKABLE, [
+                'title' => _('Courseware'),
+            ]));
+
+            if (!empty($results[$course_id])) {
+                if ($results[$course_id] === 1) {
+                    $text =  _('neue Seite');
+                } else {
+                    $text =  _('neue Seiten');
+                }
+                $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION, [
+                    'title' => $new . ' ' . $text,
+                ]));
+                $nav->setBadgeNumber("$new");
+            }
+
+            $navs[$course_id] = $nav;
+        }
+        return $navs;
     }
 
     /**
