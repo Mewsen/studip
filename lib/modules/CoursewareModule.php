@@ -168,16 +168,16 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModuleE
                 'title' => _('Courseware'),
             ]));
 
-            if (!empty($results[$course_id])) {
-                if ($results[$course_id] === 1) {
+            if (!empty($results[$course_id]['neue'])) {
+                if ($results[$course_id]['neue'] === 1) {
                     $text =  _('neue Seite');
                 } else {
                     $text =  _('neue Seiten');
                 }
                 $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION, [
-                    'title' => $results[$course_id] . ' ' . $text,
+                    'title' => $results[$course_id]['neue'] . ' ' . $text,
                 ]));
-                $nav->setBadgeNumber("$results[$course_id]");
+                $nav->setBadgeNumber($results[$course_id]['neue']);
             }
 
             $navs[$course_id] = $nav;
