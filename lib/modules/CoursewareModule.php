@@ -138,7 +138,7 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModuleE
             return [];
         }
 
-        $results = DBManager::get()->fetchGroupedPairs(
+        $results = DBManager::get()->fetchGrouped(
             "SELECT elem.range_id,
                     COUNT(IF((blocks.chdate > IFNULL(ouv.visitdate, :threshold) AND blocks.editor_id != :user_id), elem.id, NULL)) AS neue
                 FROM `cw_structural_elements` AS elem
