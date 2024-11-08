@@ -175,9 +175,9 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModuleE
                     $text =  _('neue Seiten');
                 }
                 $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION, [
-                    'title' => $new . ' ' . $text,
+                    'title' => $results[$course_id] . ' ' . $text,
                 ]));
-                $nav->setBadgeNumber("$new");
+                $nav->setBadgeNumber("$results[$course_id]");
             }
 
             $navs[$course_id] = $nav;
