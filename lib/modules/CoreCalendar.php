@@ -9,7 +9,7 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreCalendar extends CorePlugin implements StudipModule
+class CoreCalendar extends CorePlugin implements StudipModuleExtended
 {
     /**
      * {@inheritdoc}
@@ -23,6 +23,20 @@ class CoreCalendar extends CorePlugin implements StudipModule
         $navigation = new Navigation(_('Kalender'), URLHelper::getURL('dispatch.php/calendar/calendar/course/' . $course_id));
         $navigation->setImage(Icon::create('schedule', Icon::ROLE_CLICKABLE));
         return $navigation;
+    }
+
+    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    {
+        if (!Config::get()->CALENDAR_GROUP_ENABLE) {
+            return [];
+        }
+        $navs = [];
+        foreach ($course_ids as $course_id) {
+            $navigation = new Navigation(_('Kalender'), URLHelper::getURL('dispatch.php/calendar/calendar/course/' . $course_id));
+            $navigation->setImage(Icon::create('schedule', Icon::ROLE_CLICKABLE));
+            $navs[$course_id] = $navigation;
+        }
+        return $navs;
     }
 
     /**
