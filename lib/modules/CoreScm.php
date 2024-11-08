@@ -86,9 +86,9 @@ class CoreScm extends CorePlugin implements StudipModuleExtended
             return [];
         }
         $navs = array_fill_keys($course_ids, null);
-        $sql = "SELECT scm_id, range_id,
+        $sql = "SELECT range_id, tab_name,
                   SUM(IF(content != '', 1, 0)) AS count,
-                  SUM(IF((chdate > IF(ouv.visitdate > :threshold, ouv.visitdate, :threshold) AND scm.user_id !=:user_id), IF(content != '', 1, 0), NULL)) AS neue
+                  SUM(IF((chdate > IFNULL(ouv.visitdate, :threshold) AND scm.user_id !=:user_id), IF(content != '', 1, 0), NULL)) AS neue
            FROM scm
            LEFT JOIN object_user_visits AS ouv
              ON ouv.object_id = scm.range_id
@@ -107,17 +107,8 @@ class CoreScm extends CorePlugin implements StudipModuleExtended
             return $navs;
         }
 
-        $entries = [];
-        StudipScmEntry::findAndMapMany(
-            function ($scm) use (&$entries) {
-                return $entries[$scm->scm_id] = $scm;
-            },
-            array_column($results, 'scm_id')
-        );
-
         foreach ($results as $result) {
-            $scm = $entries[$result['scm_id']];
-            $title = $scm->tab_name;
+            $title = $result['tab_name'];
             $image = Icon::create('infopage', Icon::ROLE_CLICKABLE);
             $badge = 0;
 
@@ -125,7 +116,7 @@ class CoreScm extends CorePlugin implements StudipModuleExtended
                 if ($result['neue']) {
                     $badge = $result['neue'];
                     if ($result['count'] == 1) {
-                        $title = $scm->tab_name . _(' (geändert)');
+                        $title .= _(' (geändert)');
                     } else {
                         $title = sprintf(
                             _('%1$d Einträge insgesamt, %2$d neue'),
