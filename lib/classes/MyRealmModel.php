@@ -488,7 +488,6 @@ class MyRealmModel
         // -- 2. Fetch the Navigation per StudipModule
         $navigation = [];
         $visits = get_objects_visits($all_course_ids, 0, null, null, array_keys($activated_tools));
-        $cache = \Studip\Cache\Factory::getCache();
         foreach ($activated_tools as $plugin_id => $plugin_data) {
             if (!Config::get()->VOTE_ENABLE && $plugin_id === 'vote') {
                 continue;
@@ -497,33 +496,18 @@ class MyRealmModel
             if ($plugin_data['studip_module'] === 'vote') {
                 //$navigation[$plugin_id] = self::checkVote($my_obj_values, $user_id, $object_id);
             } elseif ($c_ids = $plugin_data['courses']) {
-                $cache_locs = array_map(fn ($c_id) => StudipModuleExtended::ICON_NAV_CACHE_PATH . "$user_id/$plugin_id/$c_id", $c_ids);
-                $cached_navs = $cache->getItems($cache_locs);
-                $to_fetch = [];
-                foreach ($cached_navs as $key => $cached_item) {
-                    $c_id = explode('/', $key)[3];
-                    if ($cached_item->isHit()) {
-                        $navigation[$c_id][$plugin_id] = unserialize($cached_item->get());
-                    } else {
-                        $to_fetch[] = $c_id;
+                if ($plugin_data['studip_module'] instanceof StudipModuleExtended) {
+                    $fetched_navs = $plugin_data['studip_module']->getManyIconNavigation($c_ids, $visits, $user_id);
+                    foreach ($fetched_navs as $fetched_c_id => $fetched_nav) {
+                        $navigation[$fetched_c_id][$plugin_id] = $fetched_nav;
                     }
-                }
-                if ($to_fetch) {
-                    if ($plugin_data['studip_module'] instanceof StudipModuleExtended) {
-                        $fetched_navs = $plugin_data['studip_module']->getManyIconNavigation($to_fetch, $visits, $user_id);
-                        foreach ($fetched_navs as $fetched_c_id => $fetched_nav) {
-                            $cache->write(StudipModuleExtended::ICON_NAV_CACHE_PATH . "$user_id/$plugin_id/$fetched_c_id", serialize($fetched_nav));
-                            $navigation[$fetched_c_id][$plugin_id] = $fetched_nav;
-                        }
-                    } else {
-                        // don't cache the icons, because we don't know if the plugin ever expires them
-                        foreach ($to_fetch as $c_id) {
-                            $navigation[$c_id][$plugin_id] = $plugin_data['studip_module']->getIconNavigation(
-                                $c_id,
-                                $visits[$c_id][$plugin_id]['visitdate'],
-                                $user_id
-                            );
-                        }
+                } else {
+                    foreach ($c_ids as $c_id) {
+                        $navigation[$c_id][$plugin_id] = $plugin_data['studip_module']->getIconNavigation(
+                            $c_id,
+                            $visits[$c_id][$plugin_id]['visitdate'],
+                            $user_id
+                        );
                     }
                 }
             }

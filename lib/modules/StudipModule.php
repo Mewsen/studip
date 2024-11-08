@@ -11,8 +11,6 @@
 interface StudipModule
 {
 
-    public const ICON_NAV_CACHE_PATH = 'modules_icon/';
-
     /**
      * Return a navigation object representing this plugin in the
      * course overview table or return NULL if you want to display
