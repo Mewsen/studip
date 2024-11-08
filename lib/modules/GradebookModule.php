@@ -105,11 +105,13 @@ class GradebookModule extends CorePlugin implements SystemPlugin, StudipModuleEx
         $title = _('Gradebook');
         $navs = [];
         foreach ($course_ids as $course_id) {
-            if (isset($tutor_c_ids[$course_id])) {
-                $changed = empty($results[$course_id]) ? 0 : count($results[$course_id]);
+            if (empty($results[$course_id])) {
+                $changed = false;
+            } elseif (isset($tutor_c_ids[$course_id])) {
+                $changed = count($results[$course_id]);
             } else {
                 $filtered_results = array_filter($results[$course_id], fn ($fetched_user_id) => $fetched_user_id === $user_id);
-                $changed = empty($filtered_results) ? 0 : count($filtered_results);
+                $changed = !empty($filtered_results) ? count($filtered_results) : 0;
             }
             $icon = $changed
                 ? Icon::create('assessment', Icon::ROLE_NEW)
