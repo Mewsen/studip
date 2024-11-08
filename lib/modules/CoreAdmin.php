@@ -7,7 +7,7 @@
  *  published by the Free Software Foundation; either version 2 of
  *  the License, or (at your option) any later version.
  */
-class CoreAdmin extends CorePlugin implements StudipModule
+class CoreAdmin extends CorePlugin implements StudipModuleExtended
 {
     /**
      * {@inheritdoc}
@@ -17,6 +17,16 @@ class CoreAdmin extends CorePlugin implements StudipModule
         $navigation = new Navigation(_('Verwaltung'), 'dispatch.php/course/management');
         $navigation->setImage(Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => _('Verwaltung')]));
         return $navigation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    {
+        $navigation = new Navigation(_('Verwaltung'), 'dispatch.php/course/management');
+        $navigation->setImage(Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => _('Verwaltung')]));
+        return array_fill_keys($course_ids, $navigation);
     }
 
     /**

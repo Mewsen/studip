@@ -86,7 +86,8 @@ class GradebookModule extends CorePlugin implements SystemPlugin, StudipModuleEx
                 $tutor_c_ids[$course_id] = $course_id;
             }
         }
-        $results = DBManager::get()->fetchGrouped("SELECT gd.course_id, gi.user_id
+        $results = DBManager::get()->fetchGrouped(
+            "SELECT gd.course_id, gi.user_id
             FROM grading_instances gi
             INNER JOIN grading_definitions gd ON(gd.id = definition_id)
             LEFT JOIN object_user_visits AS ouv

@@ -11,7 +11,7 @@
  * @author      Nils Gehrke <nils.gehrke@uni-goettingen.de>
  * @license     https://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  */
-class FeedbackModule extends CorePlugin implements StudipModule, SystemPlugin
+class FeedbackModule extends CorePlugin implements StudipModuleExtended, SystemPlugin
 {
     /**
      * {@inheritdoc}
@@ -27,6 +27,14 @@ class FeedbackModule extends CorePlugin implements StudipModule, SystemPlugin
     public function getIconNavigation($course_id, $last_visit, $user_id)
     {
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    {
+      return [];
     }
 
     /**

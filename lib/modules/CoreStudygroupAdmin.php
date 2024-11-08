@@ -9,7 +9,7 @@
  *  the License, or (at your option) any later version.
  */
 
-class CoreStudygroupAdmin extends CorePlugin implements StudipModule
+class CoreStudygroupAdmin extends CorePlugin implements StudipModuleExtended
 {
 
     /**
@@ -20,6 +20,16 @@ class CoreStudygroupAdmin extends CorePlugin implements StudipModule
         $navigation = new Navigation(_('Verwaltung'), "dispatch.php/course/studygroup/edit/?cid={$course_id}");
         $navigation->setImage(Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => _('Verwaltung')]));
         return $navigation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    {
+        $navigation = new Navigation(_('Verwaltung'), "dispatch.php/course/studygroup/edit");
+        $navigation->setImage(Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => _('Verwaltung')]));
+        return array_fill_keys($course_ids, $navigation);
     }
 
     /**
