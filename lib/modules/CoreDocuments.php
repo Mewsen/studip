@@ -140,11 +140,13 @@ class CoreDocuments extends CorePlugin implements StudipModuleExtended, OERModul
         return $navigation;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getManyIconNavigation(array $course_ids, string $user_id = null): array
     {
-        // TODO extend for institute
-        //$range_type = get_object_type($course_id, ['sem', 'inst']) === 'sem' ? 'course' : 'institute';
-        $range_type = 'course';
+        // Assume that either courses or institutes will be fetched, but not a mix of them
+        $range_type = get_object_type($course_ids[0], ['sem', 'inst']) === 'sem' ? 'course' : 'institute';
         $condition = "SELECT folders.range_id, file_refs.id
                       FROM file_refs
                       INNER JOIN folders ON (folders.id = file_refs.folder_id)
