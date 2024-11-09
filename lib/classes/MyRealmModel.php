@@ -463,11 +463,11 @@ class MyRealmModel
     private static function getManyAdditionalNavigations(array &$sem_courses, $user_id)
     {
         $activated_tools = [];
-        $all_course_ids = [];
+        $all_courses = [];
         $navigation = [];
         $default_modules = self::getDefaultModules();
-        if (!Config::get()->VOTE_ENABLE && isset($default_modules['vote'])) {
-            unset($default_modules['vote']);
+        if (!Config::get()->VOTE_ENABLE && isset($default_modules[-1])) {
+            unset($default_modules[-1]);
         }
         // -- 1. Calculate all the relevant courses for each StudipModule
         foreach ($sem_courses as $sem => $courses) {
@@ -489,33 +489,38 @@ class MyRealmModel
                     if (Seminar_Perm::get()->have_studip_perm($tool->getVisibilityPermission(), $c_id, $user_id)) {
                         $activated_tools[$tool['plugin_id']]['studip_module'] = $studip_module;
                         $activated_tools[$tool['plugin_id']]['courses'][$c_id] = $c_id;
-                        $all_course_ids[$c_id] = $c_id;
+                        $all_courses[$c_id] = $course;
                     }
                 }
             }
         }
         // -- 2. Fetch the Navigation per StudipModule
-        $visits = get_objects_visits($all_course_ids, 0, null, null, array_keys($activated_tools));
+        $visits = get_objects_visits(array_keys($all_courses), 0, null, null, array_keys($activated_tools));
         foreach ($activated_tools as $plugin_id => $plugin_data) {
-            if (!Config::get()->VOTE_ENABLE && $plugin_id === 'vote') {
+            if (!Config::get()->VOTE_ENABLE && $plugin_id === -1) {
                 continue;
             }
 
-            if ($plugin_id === 'vote') {
-                //$navigation[$plugin_id] = self::checkVote($my_obj_values, $user_id, $object_id);
-            } elseif ($c_ids = $plugin_data['courses']) {
-                if ($plugin_data['studip_module'] instanceof StudipModuleExtended) {
-                    $fetched_navs = $plugin_data['studip_module']->getManyIconNavigation($c_ids, $user_id);
-                    foreach ($fetched_navs as $fetched_c_id => $fetched_nav) {
-                        $navigation[$fetched_c_id][$plugin_id] = $fetched_nav;
+            if ($c_ids = $plugin_data['courses']) {
+                if ($plugin_id === -1) {
+                    foreach ($c_ids as $c_id) {
+                        // TODO test vote
+                        $navigation[$c_id][$plugin_id] = self::checkVote($all_courses[$c_id], $user_id, $c_id);
                     }
                 } else {
-                    foreach ($c_ids as $c_id) {
-                        $navigation[$c_id][$plugin_id] = $plugin_data['studip_module']->getIconNavigation(
-                            $c_id,
-                            $visits[$c_id][$plugin_id]['visitdate'],
-                            $user_id
-                        );
+                    if ($plugin_data['studip_module'] instanceof StudipModuleExtended) {
+                        $fetched_navs = $plugin_data['studip_module']->getManyIconNavigation($c_ids, $user_id);
+                        foreach ($fetched_navs as $fetched_c_id => $fetched_nav) {
+                            $navigation[$fetched_c_id][$plugin_id] = $fetched_nav;
+                        }
+                    } else {
+                        foreach ($c_ids as $c_id) {
+                            $navigation[$c_id][$plugin_id] = $plugin_data['studip_module']->getIconNavigation(
+                                $c_id,
+                                $visits[$c_id][$plugin_id]['visitdate'],
+                                $user_id
+                            );
+                        }
                     }
                 }
             }
