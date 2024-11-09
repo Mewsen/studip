@@ -326,7 +326,7 @@ class MyRealmModel
             }
             $_course['is_group'] = $course->getSemClass()->isGroup();
 
-            // add the the course to the correct semester
+            // add the course to the correct semester
 
             if (empty($_course['parent_course'])) {
                 if ($course->isOpenEnded()) {
@@ -462,35 +462,41 @@ class MyRealmModel
 
     private static function getManyAdditionalNavigations(array &$sem_courses, $user_id)
     {
-        $activated_tools = [];
+        // -- 0. Extract all courses: semester is irrelevant and flatten for children
         $all_courses = [];
+        foreach ($sem_courses as $sem => &$courses) {
+            foreach ($courses as $c_id => &$course) {
+                $all_courses[$c_id] = &$course;
+                foreach ($course['children'] as $child) {
+                    $all_courses[$child['seminar_id']] = &$child;
+                }
+            }
+        }
+
+        // -- 1. Calculate all the relevant courses for each StudipModule
         $navigation = [];
+        $activated_tools = [];
         $default_modules = self::getDefaultModules();
         if (!Config::get()->VOTE_ENABLE && isset($default_modules[-1])) {
             unset($default_modules[-1]);
         }
-        // -- 1. Calculate all the relevant courses for each StudipModule
-        foreach ($sem_courses as $sem => $courses) {
-            foreach ($courses as $c_id => $course) {
-                // TODO include children of the courses
-                foreach ($default_modules as $plugin_id => $plugin) {
-                    // add every default module with null, so there will be blank spaces in the nav
-                    $navigation[$c_id][$plugin_id] = null;
+        foreach ($all_courses as $course_id => $course) {
+            foreach ($default_modules as $plugin_id => $plugin) {
+                // add every default module with null, so there will be blank spaces in the nav
+                $navigation[$course_id][$plugin_id] = null;
+            }
+            foreach ($course['tools'] as $tool) {
+                $studip_module = $tool->getStudipModule();
+                if (
+                    !$studip_module
+                    || get_class($studip_module)  === 'CoreAdmin'
+                    || get_class($studip_module)  === 'CoreStudygroupAdmin'
+                ) {
+                    continue;
                 }
-                foreach ($course['tools'] as $tool) {
-                    $studip_module = $tool->getStudipModule();
-                    if (
-                        !$studip_module
-                        || get_class($studip_module)  === 'CoreAdmin'
-                        || get_class($studip_module)  === 'CoreStudygroupAdmin'
-                    ) {
-                        continue;
-                    }
-                    if (Seminar_Perm::get()->have_studip_perm($tool->getVisibilityPermission(), $c_id, $user_id)) {
-                        $activated_tools[$tool['plugin_id']]['studip_module'] = $studip_module;
-                        $activated_tools[$tool['plugin_id']]['courses'][$c_id] = $c_id;
-                        $all_courses[$c_id] = $course;
-                    }
+                if (Seminar_Perm::get()->have_studip_perm($tool->getVisibilityPermission(), $course_id, $user_id)) {
+                    $activated_tools[$tool['plugin_id']]['studip_module'] = $studip_module;
+                    $activated_tools[$tool['plugin_id']]['courses'][$course_id] = $course_id;
                 }
             }
         }
@@ -527,12 +533,10 @@ class MyRealmModel
         }
 
         // -- 3. Assign the data to the original object
-        foreach ($sem_courses as $sem => $courses) {
-            foreach ($courses as $c_id => $course) {
-                $sem_courses[$sem][$c_id]['navigation'] = $navigation[$c_id];
-                $sem_courses[$sem][$c_id]['last_visitdate'] = $visits[$c_id][0]['last_visitdate'];
-                $sem_courses[$sem][$c_id]['visitdate'] = $visits[$c_id][0]['visitdate'];
-            }
+        foreach ($all_courses as $c_id => $course) {
+            $all_courses[$c_id]['navigation'] = $navigation[$c_id];
+            $all_courses[$c_id]['visitdate'] = $visits[$c_id][0]['visitdate'];
+            $all_courses[$c_id]['last_visitdate'] = $visits[$c_id][0]['last_visitdate'];
         }
     }
 
