@@ -25,7 +25,7 @@ class CoreStudygroupAdmin extends CorePlugin implements StudipModuleExtended
     /**
      * {@inheritdoc}
      */
-    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
     {
         $navigation = new Navigation(_('Verwaltung'), "dispatch.php/course/studygroup/edit");
         $navigation->setImage(Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => _('Verwaltung')]));

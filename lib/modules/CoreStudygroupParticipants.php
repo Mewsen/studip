@@ -24,7 +24,7 @@ class CoreStudygroupParticipants extends CorePlugin implements StudipModuleExten
         return $navigation;
     }
 
-    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
     {
         $results = DBManager::get()->fetchAll(
             "SELECT seminar_user.Seminar_id, COUNT(seminar_user.user_id) as neue

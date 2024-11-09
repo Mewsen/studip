@@ -140,7 +140,7 @@ class CoreDocuments extends CorePlugin implements StudipModuleExtended, OERModul
         return $navigation;
     }
 
-    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
     {
         // TODO extend for institute
         //$range_type = get_object_type($course_id, ['sem', 'inst']) === 'sem' ? 'course' : 'institute';

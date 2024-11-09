@@ -100,7 +100,7 @@ class Blubber extends CorePlugin implements StudipModuleExtended
         return $icon;
     }
 
-    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
     {
         $user_id || $user_id = $GLOBALS['user']->id;
         $threshold = object_get_visit_threshold();

@@ -102,7 +102,7 @@ class CoreWiki extends CorePlugin implements StudipModuleExtended
         return $nav;
     }
 
-    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
     {
         if (!Config::get()->WIKI_ENABLE) {
             return [];

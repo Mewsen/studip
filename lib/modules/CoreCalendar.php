@@ -25,7 +25,7 @@ class CoreCalendar extends CorePlugin implements StudipModuleExtended
         return $navigation;
     }
 
-    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
     {
         if (!Config::get()->CALENDAR_GROUP_ENABLE) {
             return [];

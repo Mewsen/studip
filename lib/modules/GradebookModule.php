@@ -74,7 +74,7 @@ class GradebookModule extends CorePlugin implements SystemPlugin, StudipModuleEx
         return $navigation;
     }
 
-    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
     {
         if ($user_id === 'nobody') {
             return [];

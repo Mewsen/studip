@@ -15,7 +15,7 @@ class CorePersonal extends CorePlugin implements StudipModuleExtended
         return null;
     }
 
-    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
     {
         return [];
     }

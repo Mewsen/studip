@@ -122,7 +122,7 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
     }
 
 
-    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
     {
         $navs = array_fill_keys($course_ids, null);
         if ($user_id === 'nobody') {

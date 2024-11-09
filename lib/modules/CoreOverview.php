@@ -70,7 +70,7 @@ class CoreOverview extends CorePlugin implements StudipModuleExtended
         return $nav;
     }
 
-    public function getManyIconNavigation(array $course_ids, array $visits, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
     {
         $sql = "SELECT news_r.range_id,
                        COUNT(news.news_id) AS count,
