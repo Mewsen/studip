@@ -464,10 +464,19 @@ class MyRealmModel
     {
         $activated_tools = [];
         $all_course_ids = [];
+        $navigation = [];
+        $default_modules = self::getDefaultModules();
+        if (!Config::get()->VOTE_ENABLE && isset($default_modules['vote'])) {
+            unset($default_modules['vote']);
+        }
         // -- 1. Calculate all the relevant courses for each StudipModule
         foreach ($sem_courses as $sem => $courses) {
             foreach ($courses as $c_id => $course) {
                 // TODO include children of the courses
+                foreach ($default_modules as $plugin_id => $plugin) {
+                    // add every default module with null, so there will be blank spaces in the nav
+                    $navigation[$c_id][$plugin_id] = null;
+                }
                 foreach ($course['tools'] as $tool) {
                     $studip_module = $tool->getStudipModule();
                     if (
@@ -479,25 +488,24 @@ class MyRealmModel
                     }
                     if (Seminar_Perm::get()->have_studip_perm($tool->getVisibilityPermission(), $c_id, $user_id)) {
                         $activated_tools[$tool['plugin_id']]['studip_module'] = $studip_module;
-                        $activated_tools[$tool['plugin_id']]['courses'][] = $c_id;
-                        $all_course_ids[] = $c_id;
+                        $activated_tools[$tool['plugin_id']]['courses'][$c_id] = $c_id;
+                        $all_course_ids[$c_id] = $c_id;
                     }
                 }
             }
         }
         // -- 2. Fetch the Navigation per StudipModule
-        $navigation = [];
         $visits = get_objects_visits($all_course_ids, 0, null, null, array_keys($activated_tools));
         foreach ($activated_tools as $plugin_id => $plugin_data) {
             if (!Config::get()->VOTE_ENABLE && $plugin_id === 'vote') {
                 continue;
             }
 
-            if ($plugin_data['studip_module'] === 'vote') {
+            if ($plugin_id === 'vote') {
                 //$navigation[$plugin_id] = self::checkVote($my_obj_values, $user_id, $object_id);
             } elseif ($c_ids = $plugin_data['courses']) {
                 if ($plugin_data['studip_module'] instanceof StudipModuleExtended) {
-                    $fetched_navs = $plugin_data['studip_module']->getManyIconNavigation($c_ids, $visits, $user_id);
+                    $fetched_navs = $plugin_data['studip_module']->getManyIconNavigation($c_ids, $user_id);
                     foreach ($fetched_navs as $fetched_c_id => $fetched_nav) {
                         $navigation[$fetched_c_id][$plugin_id] = $fetched_nav;
                     }
