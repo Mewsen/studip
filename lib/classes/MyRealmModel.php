@@ -480,7 +480,7 @@ class MyRealmModel
         if (!Config::get()->VOTE_ENABLE && isset($default_modules[-1])) {
             unset($default_modules[-1]);
         }
-        foreach ($all_courses as $course_id => $course) {
+        foreach ($all_courses as $course_id => &$course) { // Somehow the `&` is necessary here, otherwise some courses will be missing
             foreach ($default_modules as $plugin_id => $plugin) {
                 // add every default module with null, so there will be blank spaces in the nav
                 $navigation[$course_id][$plugin_id] = null;
@@ -501,7 +501,8 @@ class MyRealmModel
             }
         }
         // -- 2. Fetch the Navigation per StudipModule
-        $visits = get_objects_visits(array_keys($all_courses), 0, null, null, array_keys($activated_tools));
+        $all_course_ids = array_keys($all_courses);
+        $visits = get_objects_visits($all_course_ids, 0, null, null, array_keys($activated_tools));
         foreach ($activated_tools as $plugin_id => $plugin_data) {
             if (!Config::get()->VOTE_ENABLE && $plugin_id === -1) {
                 continue;
@@ -533,7 +534,7 @@ class MyRealmModel
         }
 
         // -- 3. Assign the data to the original object
-        foreach ($all_courses as $c_id => $course) {
+        foreach ($all_course_ids as $c_id) {
             $all_courses[$c_id]['navigation'] = $navigation[$c_id];
             $all_courses[$c_id]['visitdate'] = $visits[$c_id][0]['visitdate'];
             $all_courses[$c_id]['last_visitdate'] = $visits[$c_id][0]['last_visitdate'];
