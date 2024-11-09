@@ -150,7 +150,7 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
 
             // Is the participants page hidden for students?
             if ($is_student && $course->config->COURSE_MEMBERS_HIDE) {
-                // Studenten AND Versteckt
+                // Student AND hidden
                 $tab_navigation = $this->getTabNavigation($course->seminar_id);
                 if ($tab_navigation && count($tab_navigation['members']->getSubNavigation()) > 0) {
                     $sub_nav = $tab_navigation['members']->getSubNavigation();
@@ -185,7 +185,7 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
         }
 
         // For the remaining courses, show if there are new users
-        $remaining_course_ids = array_diff($course_ids, array_keys($navs));
+        $remaining_course_ids = array_filter($course_ids, fn ($nav) => !empty($nav));
         $query = "SELECT seminar_users.seminar_id as seminar_id,
                          COUNT(seminar_users.user_id) as count,
                          COUNT(IF((seminar_users.mkdate > IFNULL(b.visitdate, :threshold) AND seminar_users.user_id != :user_id), seminar_users.user_id, NULL)) AS neue
