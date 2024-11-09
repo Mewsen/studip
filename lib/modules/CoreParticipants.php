@@ -129,7 +129,6 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
             return $navs;
         }
 
-
         // Filter courses that are auto-insert-seminars, to not show any icon
         $course_ids = array_filter($course_ids, function ($course_id) use ($user_id) {
             $auto_insert_perm = Config::get()->AUTO_INSERT_SEM_PARTICIPANTS_VIEW_PERM;
@@ -160,7 +159,7 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
                     $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
                     $navs[$course->seminar_id] = $navigation;
                 } else {
-                    $navs[$course->seminar_id] = null;
+                    $navs[$course->seminar_id] = 0;
                 }
                 continue;
             }
@@ -169,7 +168,7 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
             if (!$course->getSemClass()->isGroup()) {
                 $urls[$course->seminar_id] = 'dispatch.php/course/members/index';
             } elseif ($is_student) {
-                $navs[$course->seminar_id] = null;
+                $navs[$course->seminar_id] = 0;
                 continue;
             } else {
                 $urls[$course->seminar_id] = 'dispatch.php/course/grouping/members';
@@ -185,7 +184,9 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
         }
 
         // For the remaining courses, show if there are new users
-        $remaining_course_ids = array_filter($course_ids, fn ($nav) => !empty($nav));
+        $remaining_course_ids = array_filter($course_ids, function ($c_id) use ($navs) {
+            return is_null($navs[$c_id]);
+        });
         $query = "SELECT seminar_users.seminar_id as seminar_id,
                          COUNT(seminar_users.user_id) as count,
                          COUNT(IF((seminar_users.mkdate > IFNULL(b.visitdate, :threshold) AND seminar_users.user_id != :user_id), seminar_users.user_id, NULL)) AS neue
@@ -244,8 +245,8 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
 
             $navs[$result['seminar_id']] = $navigation;
         }
-
-        return $navs;
+        // map the zeros to null;
+        return array_map(fn ($nav) => $nav === 0 ? null : $nav, $navs);
     }
 
 
