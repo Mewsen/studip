@@ -1,4 +1,9 @@
-<?= $contentbar ?>
+<?php
+/**
+ * @var Studip\VueApp $contentBarVueApp
+ */
+?>
+<?= $contentBarVueApp->render() ?>
 
 <? $url = $material->getDownloadUrl() ?>
 

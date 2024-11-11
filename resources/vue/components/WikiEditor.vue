@@ -1,5 +1,14 @@
 <template>
     <div>
+        <ContentBar isContentBar icon="wiki" :toc="toc">
+            <template #info-text>
+                {{ $gettext('Zuletzt gespeichert') }}:
+                <studip-date-time :timestamp="Math.floor(lastSaveDate / 1000)"
+                                  :relative="true"
+                />
+            </template>
+            <template #breadcrumb-list><content-bar-breadcrumbs :toc="toc"/></template>
+        </ContentBar>
         <form :action="saveUrl" method="post" class="default" v-show="isEditing">
             <input type="hidden" :name="csrf.name" :value="csrf.value">
 
@@ -67,21 +76,18 @@
 
         <wiki-editor-online-users :users="onlineUsers"></wiki-editor-online-users>
 
-        <mounting-portal :mount-to="`.wiki-last-edited-${pageId}`">
-            <studip-date-time :timestamp="Math.floor(lastSaveDate / 1000)"
-                              :relative="true"
-            ></studip-date-time>
-        </mounting-portal>
     </div>
 </template>
 <script>
 import WikiEditorOnlineUsers from "./WikiEditorOnlineUsers.vue";
 import StudipDateTime from "./StudipDateTime.vue";
 import JSUpdater from "@/assets/javascripts/lib/jsupdater";
+import ContentBar from "./ContentBar.vue";
+import ContentBarBreadcrumbs from "./ContentBarBreadcrumbs.vue";
 
 export default {
     name: 'wiki-editor',
-    components: {StudipDateTime, WikiEditorOnlineUsers },
+    components: { ContentBarBreadcrumbs, ContentBar, StudipDateTime, WikiEditorOnlineUsers },
     props: {
         cancelUrl: {
             type: String,
@@ -114,6 +120,10 @@ export default {
         users: {
             type: Array,
             default: () => []
+        },
+        toc: {
+            type: Object,
+            required: true
         }
     },
     data() {

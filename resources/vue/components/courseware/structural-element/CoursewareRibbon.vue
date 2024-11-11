@@ -1,168 +1,99 @@
 <template>
-    <div :class="{ 'cw-ribbon-wrapper-consume': consumeMode }" :id="isContentBar ? 'contentbar' : null" >
-        <div v-show="stickyRibbon" class="cw-ribbon-sticky-top"></div>
-        <header :id="isContentBar ? 'cw-ribbon' : null" class="cw-ribbon" :class="{ 'cw-ribbon-sticky': stickyRibbon, 'cw-ribbon-consume': consumeMode }">
-            <div class="cw-ribbon-wrapper-left">
-                <nav class="cw-ribbon-nav" :class="buttonsClass">
-                    <slot name="buttons" />
-                </nav>
-                <nav class="cw-ribbon-breadcrumb">
-                    <ul>
-                        <slot v-if="breadcrumbFallback" name="breadcrumbFallback" />
-                        <slot v-else name="breadcrumbList" />
-                    </ul>
-                </nav>
-            </div>
-            <div class="cw-ribbon-wrapper-right">
-                <button
-                    v-if="showToolbarButton"
-                    class="cw-ribbon-button cw-ribbon-button-menu"
-                    :title="textRibbon.toolbar"
-                    @click.prevent="activeToolbar"
-                >
-                </button>
-                <slot name="menu" />
-            </div>
-            <div v-if="consumeMode" class="cw-ribbon-consume-bottom"></div>
-            <courseware-ribbon-toolbar
-                v-if="showTools"
-                :toolsActive="unfold"
-                :stickyRibbon="stickyRibbon"
-                :class="{ 'cw-ribbon-tools-sticky': stickyRibbon }"
-                :style="{ height: toolbarHeight + 'px' }"
-                :canEdit="canEdit"
-                @deactivate="deactivateToolbar"
-                @blockAdded="$emit('blockAdded')"
-            />
-        </header>
-        <div v-if="stickyRibbon" class="cw-ribbon-sticky-bottom"></div>
-        <div v-if="stickyRibbon" class="cw-ribbon-sticky-spacer"></div>
-    </div>
+    <content-bar is-content-bar @stickyRibbonChange="onStickyRibbonChange">
+        <template #buttons-right>
+            <button
+                class="cw-ribbon-button cw-ribbon-button-menu"
+                :title="strings.toolbar"
+                @click.prevent="activateToolbar"
+            ></button>
+        </template>
+        <template #other>
+            <transition name="cw-ribbon-slide">
+                <courseware-ribbon-toolbar
+                    ref="toolbar"
+                    v-show="showToolbar"
+                    :stickyRibbon="stickyRibbon"
+                    :class="{ 'cw-ribbon-tools-sticky': stickyRibbon }"
+                    :style="{ height: toolbarHeight + 'px' }"
+                    @deactivate="deactivateToolbar"
+                    @blockAdded="$emit('blockAdded')"
+                />
+            </transition>
+        </template>
+        <!--  Pass these slots through to the ContentBar. -->
+        <template #menu><slot name="menu" /></template>
+        <template #buttons-left><slot name="buttons-left" /></template>
+        <template #breadcrumb-list><slot name="breadcrumb-list" /></template>
+        <template #breadcrumb-fallback><slot name="breadcrumb-fallback" /></template>
+        <template #info-text><slot name="info-text"/></template>
+    </content-bar>
 </template>
 
-<script>
+<script lang="ts">
+import ContentBar from '../../ContentBar.vue';
+import { mapActions, mapGetters, mapState } from 'vuex';
+import Vue from 'vue';
 import CoursewareRibbonToolbar from './CoursewareRibbonToolbar.vue';
-import { mapActions, mapGetters } from 'vuex';
+import { store } from '../../../../assets/javascripts/chunks/vue';
 
-export default {
-    name: 'courseware-ribbon',
-    components: {
-        CoursewareRibbonToolbar,
-    },
-    props: {
-        canEdit: Boolean,
-        showToolbarButton: {
-            default: true,
-            type: Boolean
-        },
-        showModeSwitchButton: {
-            default: true,
-            type: Boolean
-        },
-        buttonsClass: String,
-        isContentBar: {
-            type: Boolean,
-            default: false
-        }
-    },
+export default Vue.extend({
+    name: 'CoursewareRibbon',
+    components: { CoursewareRibbonToolbar, ContentBar },
     data() {
         return {
-            readModeActive: false,
+            // This value is derived from stickyRibbonChange events emitted by
+            // the ContentBar component (see template).
             stickyRibbon: false,
-            textRibbon: {
-                toolbar: this.$gettext('Inhaltsverzeichnis'),
-                fullscreen_on: this.$gettext('Fokusmodus einschalten'),
-                fullscreen_off: this.$gettext('Fokusmodus ausschalten'),
-            },
-            unfold: false,
-            showTools: false,
         };
     },
     computed: {
         ...mapGetters({
-            consumeMode: 'consumeMode',
-            toolsActive: 'showToolbar'
+            showToolbar: 'showToolbar',
         }),
-        breadcrumbFallback() {
-            return window.outerWidth < 1200;
+        consumeMode(): boolean {
+            // TODO ensure that there is only one global StudipStore / 'studip' store module
+            //  across Courseware and chunks/vue.js.
+            // Currently, the 'studip' module of the courseware store is deceivingly named.
+            // It is a completely different store than the one in chunks/vue.js.
+            // It just happens to have a module with the same name, 'studip'.
+            // So, to access the global studipStore, we have to import it and access it like this.
+            return store.state.studip.consumeMode;
+        },
+        strings() {
+            return {
+                toolbar: this.$gettext('Inhaltsverzeichnis'),
+            };
         },
         toolbarHeight() {
             if (this.stickyRibbon) {
-                return parseInt(window.innerHeight * 0.75);
+                return window.innerHeight * 0.75;
             } else {
-                return parseInt(Math.min(window.innerHeight * 0.75, window.innerHeight - 197));
-            }
-        }
-    },
-    methods: {
-        ...mapActions({
-            coursewareConsumeMode: 'coursewareConsumeMode',
-            coursewareViewMode: 'coursewareViewMode',
-            coursewareShowToolbar: 'coursewareShowToolbar'
-
-        }),
-        toggleConsumeMode() {
-            STUDIP.eventBus.emit('toggle-focus-mode', !this.consumeMode);
-            if (!this.consumeMode) {
-                document.body.classList.add('consuming_mode');
-                this.coursewareConsumeMode(true);
-                this.coursewareViewMode('read');
-            } else {
-                this.coursewareConsumeMode(false);
-                document.body.classList.remove('consuming_mode');
+                return Math.min(window.innerHeight * 0.75, window.innerHeight - 197);
             }
         },
-        activeToolbar() {
+    },
+    watch: {
+        consumeMode(newState: boolean) {
+            if (newState) {
+                console.log('consumeMode watcher ', newState, 'setting coursewareViewMode "read"');
+                this.coursewareViewMode('read');
+            }
+        },
+    },
+    methods: {
+        onStickyRibbonChange(value: boolean) {
+            this.stickyRibbon = value;
+        },
+        ...mapActions({
+            coursewareViewMode: 'coursewareViewMode',
+            coursewareShowToolbar: 'coursewareShowToolbar',
+        }),
+        activateToolbar() {
             this.coursewareShowToolbar(true);
         },
         deactivateToolbar() {
             this.coursewareShowToolbar(false);
         },
-        handleScroll() {
-            if (window.outerWidth > 767) {
-                this.stickyRibbon = window.scrollY > 128 && !this.consumeMode;
-            } else {
-                this.stickyRibbon = window.scrollY > 75 && !this.consumeMode;
-            }
-        },
     },
-    mounted() {
-        window.addEventListener('scroll', this.handleScroll);
-        if (this.isContentBar) {
-            STUDIP.eventBus.emit('courseware-contentbar-mounted', this);
-        }
-
-        this.globalOn('switch-focus-mode', (state) => {
-            if (state !== this.consumeMode) {
-                this.toggleConsumeMode();
-            }
-        });
-    },
-    beforeDestroy() {
-        STUDIP.eventBus.off('switch-focus-mode');
-    },
-    watch: {
-        toolsActive(newState, oldState) {
-            let view = this;
-            if(newState) {
-                this.showTools = true;
-                setTimeout(() => {view.unfold = true}, 10);
-            } else {
-                this.unfold = false;
-                setTimeout(() => {
-                    if(!view.toolsActive) {
-                        view.showTools = false;
-                    }
-                }, 800);
-            }
-        },
-        consumeMode(newState) {
-            if (newState) {
-                document.body.classList.add('consuming_mode');
-            } else {
-                document.body.classList.remove('consuming_mode');
-            }
-        }
-    }
-};
+});
 </script>

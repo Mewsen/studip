@@ -2,7 +2,7 @@
     <focus-trap v-model="trap" :initial-focus="() => initialFocusElement" :clickOutsideDeactivates="true" :fallbackFocus ="() => fallbackFocusElement">
         <div
             class="cw-ribbon-tools"
-            :class="{ unfold: toolsActive, 'cw-ribbon-tools-consume': consumeMode }"
+            :class="{ 'cw-ribbon-tools-consume': consumeMode }"
         >
             <div class="cw-ribbon-tool-content">
                 <div class="cw-ribbon-tool-content-nav">
@@ -49,6 +49,7 @@ import CoursewareToolsContents from './CoursewareToolsContents.vue';
 import CoursewareToolsUnits from './CoursewareToolsUnits.vue';
 import { FocusTrap } from 'focus-trap-vue';
 import { mapActions, mapGetters } from 'vuex';
+import { store } from "../../../../assets/javascripts/chunks/vue";
 
 export default {
     name: 'courseware-ribbon-toolbar',
@@ -60,16 +61,6 @@ export default {
         FocusTrap,
     },
     props: {
-        toolsActive: Boolean,
-        canEdit: Boolean,
-        disableSettings: {
-            type: Boolean,
-            default: false,
-        },
-        disableAdder: {
-            type: Boolean,
-            default: false,
-        },
         stickyRibbon: {
             type: Boolean,
             default: false,
@@ -84,9 +75,11 @@ export default {
         };
     },
     computed: {
+        consumeMode() {
+          return store.state.studip.consumeMode;
+        },
         ...mapGetters({
             userIsTeacher: 'userIsTeacher',
-            consumeMode: 'consumeMode',
             containerAdder: 'containerAdder',
             adderStorage: 'blockAdder',
             viewMode: 'viewMode',
@@ -108,28 +101,25 @@ export default {
             coursewareContainerAdder: 'coursewareContainerAdder',
         }),
         scrollToCurrent() {
-            setTimeout(() => {
-                let contents = this.$refs.contents.$el; 
-                let current = contents.querySelector('.cw-tree-item-link-current');
-                if (current) {
-                    contents.scroll({ top: current.offsetTop - 4, behavior: 'smooth' });
-                }
-            }, 360);
-        },
-    },
-    mounted () {
-        this.scrollToCurrent();
-    },
-    watch: {
-        toolsActive(newValue) {
-            const focusElement = this.$refs.tabs.getTabButtonByAlias(this.selectedToolbarItem);
-            if (newValue && focusElement) {
-                setTimeout(() => {
-                    this.initialFocusElement = focusElement;
-                    this.trap = true;
-                }, 300);
+            let contents = this.$refs.contents.$el;
+            let current = contents.querySelector('.cw-tree-item-link-current');
+            if (current) {
+                contents.scroll({ top: current.offsetTop - 4, behavior: 'smooth' });
             }
         },
+        activate() {
+            const focusElement = this.$refs.tabs.getTabButtonByAlias(this.selectedToolbarItem);
+            if (focusElement) {
+                this.initialFocusElement = focusElement;
+                this.trap = true;
+            }
+        },
+    },
+    mounted() {
+        this.$nextTick(() => {
+            this.activate();
+            this.$nextTick(() => this.scrollToCurrent());
+        });
     },
 };
 </script>

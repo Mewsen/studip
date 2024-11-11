@@ -5,13 +5,13 @@
         </MountingPortal>
 
         <div v-if="taskGroup" class="cw-tasks-list">
-            <CoursewareRibbon :isContentBar="true" :showToolbarButton="false">
-                <template #buttons>
+            <ContentBar isContentBar>
+                <template #buttons-left>
                     <router-link :to="{ name: 'task-groups-index' }">
                         <StudipIcon shape="category-task" :size="24" />
                     </router-link>
                 </template>
-                <template #breadcrumbList>
+                <template #breadcrumb-list>
                     <li>
                         <router-link :to="{ name: 'task-groups-index' }">
                             {{ $gettext('Aufgaben') }}
@@ -19,7 +19,7 @@
                     </li>
                     <li>{{ taskGroup.attributes['title'] }}</li>
                 </template>
-            </CoursewareRibbon>
+            </ContentBar>
 
             <TaskGroup
                 :taskGroup="taskGroup"
@@ -67,7 +67,6 @@
 import { mapActions, mapGetters } from 'vuex';
 import AddFeedbackDialog from './AddFeedbackDialog.vue';
 import CompanionBox from '../layouts/CoursewareCompanionBox.vue';
-import CoursewareRibbon from '../structural-element/CoursewareRibbon.vue';
 import CoursewareTasksActionWidget from '../widgets/CoursewareTasksActionWidget.vue';
 import CoursewareTasksDialogDistribute from './CoursewareTasksDialogDistribute.vue';
 import EditFeedbackDialog from './EditFeedbackDialog.vue';
@@ -76,12 +75,13 @@ import TaskGroup from './TaskGroup.vue';
 import TaskGroupsAddSolversDialog from './TaskGroupsAddSolversDialog.vue';
 import TaskGroupsDeleteDialog from './TaskGroupsDeleteDialog.vue';
 import TaskGroupsModifyDeadlineDialog from './TaskGroupsModifyDeadlineDialog.vue';
+import ContentBar from "../../ContentBar.vue";
 
 export default {
     components: {
+        ContentBar,
         AddFeedbackDialog,
         CompanionBox,
-        CoursewareRibbon,
         CoursewareTasksActionWidget,
         CoursewareTasksDialogDistribute,
         EditFeedbackDialog,
@@ -215,10 +215,4 @@ export default {
 </script>
 
 <style scoped>
-.cw-tasks-wrapper >>> .cw-ribbon-nav {
-    min-width: 24px;
-    padding: 0 1em;
-    height: 24px;
-    margin-top: 2px;
-}
 </style>

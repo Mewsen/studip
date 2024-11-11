@@ -103,7 +103,11 @@ class ActionMenu
 
         // Reposition the menu?
         if (position) {
-            let parents = getScrollableParents(this.element, menu_width, menu_height);
+            let parents = getScrollableParents(this.element, menu_width, menu_height)
+                // Prevent us from appending the actionmenu outside of the <body>.
+                // (If it's appended outside of <body>, some CSS rules will not
+                // be applied, and the Z-ordering will be incorrect.)
+                .filter(parent => parent !== document.documentElement);
             if (parents.length > 0) {
                 const form = this.element.closest('form');
                 if (form) {

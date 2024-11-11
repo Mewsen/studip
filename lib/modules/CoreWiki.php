@@ -178,28 +178,45 @@ class CoreWiki extends CorePlugin implements StudipModule
 
 
     /**
-     * Generates a page hierarchy for table of contents/breadcrumbs.
-     * @return TOCItem
+     * Generates a TOCItem tree containing all pages in the currently opened wiki
+     * for use in table of contents/breadcrumbs.
+     * To prevent cyclic data references, the TOCItems in the tree do not contain
+     * references to their parent pages.
+     * This allows the resultant TOCItem to be serialized via json_decode for
+     * use in Vue.
+     *
+     * @param $activePage WikiPage The page that the user has currently navigated to.
+     * @return TOCItem A TOCItem for the root of the wiki and all of its descendants.
      */
-    public static function getTOC($page, $first = true): TOCItem
+    public static function getTOC(WikiPage $activePage): TOCItem
     {
-        $root = new TOCItem(
-            ($page && ($page->isNew() || $page->name === 'WikiWikiWeb'))
-            ? _('Wiki-Startseite')
-            : $page->name
-        );
-        $root->setURL(URLHelper::getURL('dispatch.php/course/wiki/page/'.$page->id));
-        if ($page->name == 'WikiWikiWeb' || $page->id == CourseConfig::get($page->range_id)->WIKI_STARTPAGE_ID) {
-            $root->setIcon(Icon::create('wiki'));
-        }
-        $root->setActive($first);
+        $rootId = CourseConfig::get(Context::getId())->WIKI_STARTPAGE_ID;
+        $rootPage = WikiPage::find($rootId) ?: $activePage;
 
-        if ($page->parent) {
-            $parent = self::getTOC($page->parent, false);
-            $root->setParent($parent);
-        }
+        $rootToc = self::getTOCRecursive($rootPage, $activePage->page_id);
+        $rootToc->setTitle(_('Wiki-Startseite'));
+        $rootToc->setIcon(Icon::create('wiki'));
+        return $rootToc;
+    }
 
-        return $root;
+    /**
+     * Using a recursive depth-first traversal of the wiki page hierarchy,
+     * create a TOCItem tree starting at the given $page.
+     *
+     * @param WikiPage $page The currently visited page in the traversal.
+     * @param int|null $active_page_id The id of the page that the user has navigated to.
+     * @return TOCItem A TOCItem for the given $page and all of its descendants
+     */
+    private static function getTOCRecursive(WikiPage $page, int|null $active_page_id): TOCItem
+    {
+        $toc = new TOCItem($page->isNew() ? _('Wiki-Startseite') : $page->name);
+        $toc->setURL($page->isNew() ? URLHelper::getURL('dispatch.php/course/wiki/page') : URLHelper::getURL('dispatch.php/course/wiki/page/' . $page->id));
+        $toc->setActive($page->page_id === $active_page_id);
+        foreach ($page->children as $child) {
+            $childToc = self::getTOCRecursive($child, $active_page_id);
+            $toc->children[] = $childToc;
+        }
+        return $toc;
     }
 
 }

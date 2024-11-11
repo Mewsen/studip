@@ -172,7 +172,7 @@ export default {
                 return;
             }
 
-            const ribbon = document.getElementById('cw-ribbon') ?? document.getElementById('contentbar');
+            const ribbon = document.getElementById('cw-ribbon');
             if (ribbon) {
                 const contentbarRect = ribbon.getBoundingClientRect();
                 if (ribbon.classList.contains('cw-ribbon-sticky')) {

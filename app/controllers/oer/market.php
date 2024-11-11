@@ -328,10 +328,11 @@ class Oer_MarketController extends StudipController
             }
         }
 
-        $this->contentbar = ContentBar::get()
-            ->setTOC(new TOCItem($this->material['name']))
-            ->setInfoHTML(htmlReady($infotext))
-            ->setIcon(Icon::create('oer-campus'));
+        $this->contentBarVueApp = \Studip\VueApp::create('ContentBar')->withProps([
+            'title' => $this->material['name'],
+            'icon' => 'oer-campus',
+            'isContentBar' => true,
+        ])->withSlot('info-text', htmlReady($infotext));
     }
 
     public function embed_action($material_id)

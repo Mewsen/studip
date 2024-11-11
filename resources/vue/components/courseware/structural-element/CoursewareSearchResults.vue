@@ -1,14 +1,10 @@
 <template>
     <div role="region" id="search" aria-live="polite">
-        <courseware-ribbon
-            :showToolbarButton="false"
-            :showModeSwitchButton="false"
-            buttonsClass="single-icon"
-        >
-            <template #buttons>
+        <ContentBar>
+            <template #buttons-left>
                 <studip-icon shape="search" :size="24" />
             </template>
-            <template #breadcrumbList>
+            <template #breadcrumb-list>
                 <translate>Suchergebnisse</translate>
             </template>
             <template #menu>
@@ -16,7 +12,7 @@
                     <studip-icon shape="decline" :size="24"/>
                 </button>
             </template>
-        </courseware-ribbon>
+        </ContentBar>
         <div id="search-results">
             <article v-if="searchResults.length > 0">
                 <section v-for="result in searchResults" :key="result['structural-element-id']">
@@ -49,15 +45,15 @@
 </template>
 
 <script>
-import CoursewareRibbon from './CoursewareRibbon.vue';
 import CoursewareCompanionBox from '../layouts/CoursewareCompanionBox.vue';
 import StudipIcon from '../../StudipIcon.vue';
 import { mapActions, mapGetters } from 'vuex';
+import ContentBar from "../../ContentBar.vue";
 
 export default {
     name: 'courseware-search-results',
     components: {
-        CoursewareRibbon,
+        ContentBar,
         CoursewareCompanionBox,
         StudipIcon
     },

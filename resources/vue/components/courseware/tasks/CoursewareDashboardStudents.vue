@@ -1,17 +1,17 @@
 <template>
     <div class="cw-dashboard-students-wrapper">
-        <CoursewareRibbon :isContentBar="true" :showToolbarButton="false">
-            <template #buttons>
+        <ContentBar isContentBar>
+            <template #buttons-left>
                 <router-link :to="{ name: 'task-groups-index' }">
                     <StudipIcon shape="category-task" :size="24" />
                 </router-link>
             </template>
-            <template #breadcrumbList>
+            <template #breadcrumb-list>
                 <li>
                     {{ $gettext('Aufgaben') }}
                 </li>
             </template>
-        </CoursewareRibbon>
+        </ContentBar>
         <table class="default" v-if="taskGroups.length">
             <thead>
                 <tr class="sortable">
@@ -79,7 +79,6 @@
 import _ from 'lodash';
 import { mapActions, mapGetters } from 'vuex';
 import CompanionBox from '../layouts/CoursewareCompanionBox.vue';
-import CoursewareRibbon from '../structural-element/CoursewareRibbon.vue';
 import CoursewareTasksDialogDistribute from './CoursewareTasksDialogDistribute.vue';
 import StudipActionMenu from '../../StudipActionMenu.vue';
 import StudipDate from '../../StudipDate.vue';
@@ -88,12 +87,13 @@ import TaskGroupsAddSolversDialog from './TaskGroupsAddSolversDialog.vue';
 import TaskGroupsDeleteDialog from './TaskGroupsDeleteDialog.vue';
 import TaskGroupsModifyDeadlineDialog from './TaskGroupsModifyDeadlineDialog.vue';
 import { getStatus } from './task-groups-helper.js';
+import ContentBar from "../../ContentBar.vue";
 
 export default {
     name: 'courseware-dashboard-students',
     components: {
+        ContentBar,
         CompanionBox,
-        CoursewareRibbon,
         CoursewareTasksDialogDistribute,
         StudipActionMenu,
         StudipDate,
@@ -207,12 +207,6 @@ export default {
 </script>
 
 <style scoped>
-.cw-dashboard-students-wrapper >>> .cw-ribbon-nav {
-    min-width: 24px;
-    padding: 0 1em;
-    height: 24px;
-    margin-top: 2px;
-}
 th {
     cursor: pointer;
 }

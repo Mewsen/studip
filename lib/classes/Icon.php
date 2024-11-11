@@ -9,7 +9,7 @@
  * @license   GPL2 or any later version
  * @since     3.2
  */
-class Icon
+class Icon implements JsonSerializable
 {
     const SVG = 1;
     const CSS_BACKGROUND = 4;
@@ -194,6 +194,11 @@ class Icon
     public function __toString()
     {
         return $this->asImg();
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return get_object_vars($this);
     }
 
     /**

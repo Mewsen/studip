@@ -196,6 +196,7 @@ export default {
             formData.append("data[difficulty_start]", difficulty_start);
             formData.append("data[difficulty_end]", difficulty_end);
             formData.append("data[category]", 'elearning');
+            formData.append(STUDIP.CSRF_TOKEN.name, STUDIP.CSRF_TOKEN.value);
 
             axios({
                 method: 'post',
@@ -256,13 +257,13 @@ export default {
                 if (fileType === 'file-refs') {
                     await this.loadFileRefsById({id: fileId});
                     let fileRef = this.fileRefsById({id: fileId});
-                    
+
                     let fileRefData = {};
                     fileRefData.id = fileRef.id;
                     fileRefData.attributes = fileRef.attributes;
                     fileRefData.related_element_id = element.id;
                     fileRefData.folder = null;
-    
+
                     this.exportFiles.json.push(fileRefData);
                     this.exportFiles.download[fileRef.id] = {
                         folder: null,

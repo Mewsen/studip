@@ -63,6 +63,22 @@ export default {
         }
     },
     methods: {
+        onCoursewareContentbarMounted(vueInstance) {
+            STUDIP.eventBus.emit('has-contentbar', true);
+
+            this.realContentbar = vueInstance.$refs.header;
+            this.realContentbarSource = vueInstance.$refs.headerContainer;
+            this.realContentbarIconContainer = '.cw-ribbon-nav';
+            this.realContentbarType = 'courseware';
+            this.adjustExistingContentbar(true);
+
+            document.querySelectorAll('.sidebar-widget button span').forEach(item => {
+                item.addEventListener('click', () => this.toggleSidebar());
+            });
+        },
+        onCoursewareContentbarBeforeDestroy(vueInstance) {
+            this.adjustExistingContentbar(false);
+        },
         toggleSidebar() {
 
             const sidebar = document.getElementById('sidebar');
@@ -75,8 +91,8 @@ export default {
 
                 if (document.documentElement.classList.contains('responsive-display')
                         && !document.documentElement.classList.contains('fullscreen-mode')) {
-                    content.style.display = '';
-                    pageTitle.style.display = '';
+                    content.style.visibility = '';
+                    pageTitle.style.visibility = '';
                 }
 
                 if (!document.documentElement.classList.contains('responsive-display')) {
@@ -95,8 +111,8 @@ export default {
                     && !document.documentElement.classList.contains('fullscreen-mode')) {
                     // Set a timeout here so that the content "disappears" after slide-in aninmation is finished.
                     setTimeout(() => {
-                        content.style.display = 'none';
-                        pageTitle.style.display = 'none';
+                        content.style.visibility = 'hidden';
+                        pageTitle.style.visibility = 'hidden';
                     }, 300);
                 }
 
@@ -134,11 +150,9 @@ export default {
                     const contentbarContainer = document.getElementById('responsive-contentbar-container');
 
                     contentbarContainer.prepend(this.realContentbar);
-
-                    document.getElementById('content-wrapper').style.marginTop = `${contentbarContainer.clientHeight}px`;
                 } else {
-                    this.realContentbar.id = 'contentbar';
-                    document.getElementById('toggle-sidebar').remove();
+                    this.realContentbar.id = 'cw-ribbon';
+                    document.getElementById('toggle-sidebar')?.remove();
 
                     if (this.realContentbarType === 'courseware') {
                         this.realContentbar.classList.remove('contentbar');
@@ -148,9 +162,7 @@ export default {
                             .classList.remove('contentbar-wrapper-right');
                     }
 
-                    document.querySelector(this.realContentbarSource).prepend(this.realContentbar);
-
-                    document.getElementById('content-wrapper').style.marginTop = 'initial';
+                    this.realContentbarSource.append(this.realContentbar);
                 }
             }
         },
@@ -196,7 +208,7 @@ export default {
                     STUDIP.eventBus.emit('has-contentbar', true);
 
                     this.realContentbar = cwContentbar;
-                    this.realContentbarSource = '.cw-structural-element-content > div';
+                    this.realContentbarSource = cwContentbar.parentElement;
                     this.realContentbarIconContainer = '.cw-ribbon-nav';
                     this.realContentbarType = 'courseware';
                     this.adjustExistingContentbar(true);
@@ -210,35 +222,16 @@ export default {
         })
 
         // Use courseware contentbar instead of this Vue component.
-        this.globalOn('courseware-contentbar-mounted', element => {
-            STUDIP.eventBus.emit('has-contentbar', true);
-
-            this.realContentbar = element.$el.querySelector('header');
-            this.realContentbarSource = '.cw-structural-element-content > div';
-            this.realContentbarIconContainer = '.cw-ribbon-nav';
-            this.realContentbarType = 'courseware';
-            this.adjustExistingContentbar(true);
-
-            document.querySelectorAll('.sidebar-widget button span').forEach(item => {
-                item.addEventListener('click', () => this.toggleSidebar());
-            });
-        })
-
-        this.globalOn('toggle-focus-mode', (state) => {
-            const html = document.querySelector('html');
-            if (html.classList.contains('responsive-display') || html.classList.contains('fullscreen-mode')) {
-                this.adjustExistingContentbar(!state);
-            }
-        });
-
+        this.globalOn('courseware-contentbar-mounted', this.onCoursewareContentbarMounted)
+        this.globalOn('courseware-contentbar-before-destroy', this.onCoursewareContentbarBeforeDestroy);
     },
     beforeDestroy() {
+        this.globalOff('courseware-contentbar-mounted', this.onCoursewareContentbarMounted);
+        this.globalOff('courseware-contentbar-before-destroy', this.onCoursewareContentbarBeforeDestroy);
         if (this.realContentbar) {
             this.adjustExistingContentbar(false);
         }
 
-        STUDIP.eventBus.off('toggle-focus-mode');
-        STUDIP.eventBus.off('courseware-contentbar-mounted');
     }
 }
 </script>

@@ -2,7 +2,6 @@
     background-color: var(--dark-gray-color-10);
     display: flex;
     flex-wrap: nowrap;
-    height: auto;
     align-items: center;
     justify-content: flex-start;
     margin-bottom: 15px;
@@ -85,6 +84,9 @@
             margin: 0 7px;
 
             @-moz-document url-prefix() {
+                &.contentbar-toc-wrapper {
+                    margin-top: -4px;
+                }
                 &.contentbar-action-menu-wrapper {
                     margin-top: 2px;
                 }

@@ -202,32 +202,6 @@ class WikiPage extends SimpleORMap implements PrivacyObject
 
 
     /**
-     * Returns the start page of a wiki for a given course. The start page has
-     * the keyword 'WikiWikiWeb'.
-     *
-     * @param  string $range_id Course id
-     * @return WikiPage
-     */
-    public static function getStartPage($range_id): WikiPage
-    {
-        $page_id = CourseConfig::get($range_id)->WIKI_STARTPAGE_ID;
-
-        if ($page_id) {
-            return self::find($page_id);
-        }
-
-        $page = new WikiPage();
-        $page->setValue('content', _('Dieses Wiki ist noch leer.'));
-        if ($page->isEditable()) {
-            $page->setValue(
-                'content',
-                $page->getValue('content') .  ' ' . _("Bearbeiten Sie es!\nNeue Seiten oder Links werden einfach durch Eingeben von [nop][[Wikinamen]][/nop] in doppelten eckigen Klammern angelegt.")
-            );
-        }
-        return $page;
-    }
-
-    /**
      * Export available data of a given user into a storage object
      * (an instance of the StoredUserData class) for that user.
      *

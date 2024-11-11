@@ -22,3 +22,24 @@ export interface InstalledLanguage {
     picture: string;
     selected: boolean;
 }
+
+enum iconTypes {
+    'accept',
+    'attention',
+    'clickable',
+    'inactive',
+    'info',
+    'info_alt',
+    'navigation',
+    'new',
+    'sort',
+    'status-green',
+    'status-red',
+    'status-yellow'
+}
+
+export interface Icon {
+    role: iconTypes;
+    shape: string;
+    attributes: Record<string, unknown>;
+}

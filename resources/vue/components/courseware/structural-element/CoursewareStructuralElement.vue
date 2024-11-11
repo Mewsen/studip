@@ -8,11 +8,8 @@
             >
                 <div v-if="structuralElement" class="cw-structural-element-content">
                     <courseware-ribbon
-                        :canEdit="canEdit && canAddElements"
-                        :isContentBar="true"
-                        @blockAdded="updateContainerList"
-                    >
-                        <template #buttons>
+                        @blockAdded="updateContainerList">
+                        <template #buttons-left>
                             <router-link v-if="prevElement" :to="'/structural_element/' + prevElement.id">
                                 <div class="cw-ribbon-button cw-ribbon-button-prev" :title="$gettext('zurück')" />
                             </router-link>
@@ -30,66 +27,68 @@
                                 :title="$gettext('Keine nächste Seite')"
                             />
                         </template>
-                        <template #breadcrumbList>
-                            <li
-                                v-for="ancestor in ancestors"
-                                :key="ancestor.id"
-                                :title="ancestor.attributes.title"
-                                class="cw-ribbon-breadcrumb-item"
-                            >
-                                <span>
-                                    <router-link :to="'/structural_element/' + ancestor.id">{{
-                                        ancestor.attributes.title || '–'
-                                    }}</router-link>
-                                </span>
-                            </li>
-                            <li
-                                class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
-                                :title="structuralElement.attributes.title"
-                            >
-                                <span>{{ structuralElement.attributes.title || '–' }}</span>
-                                <span v-if="isTask">[ {{ solverName }} ]</span>
-                                <template v-if="!userIsTeacher && inCourse">
-                                    <studip-icon
-                                        v-if="complete"
-                                        shape="accept"
-                                        role="info"
-                                        :title="$gettext('Diese Seite wurde von Ihnen vollständig bearbeitet')"
-                                    />
-                                    <span
-                                        v-else
-                                        :title="
-                                            $gettextInterpolate($gettext('Fortschritt: %{progress} %'), {
-                                                progress: elementProgress,
-                                            })
-                                        "
-                                    >
-                                        ({{ elementProgress }} %)
+                        <template #breadcrumb-list>
+                            <ul>
+                                <li
+                                    v-for="ancestor in ancestors"
+                                    :key="ancestor.id"
+                                    :title="ancestor.attributes.title"
+                                    class="cw-ribbon-breadcrumb-item"
+                                >
+                                    <span>
+                                        <router-link :to="'/structural_element/' + ancestor.id">{{ ancestor.attributes.title || '–' }}</router-link>
                                     </span>
-                                </template>
-                                <studip-five-stars
-                                    v-if="showFeedbackInContentbar && hasFeedbackElement"
-                                    :amount="hasFeedbackAverage ? feedbackAverage : 5"
-                                    :size="16"
-                                    :role="hasFeedbackAverage ? 'status-yellow' : 'inactive'"
-                                    :title="
+                                </li>
+                                <li
+                                    class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
+                                    :title="structuralElement.attributes.title"
+                                >
+                                    <span>{{ structuralElement.attributes.title || '–' }}</span>
+                                    <span v-if="isTask">[ {{ solverName }} ]</span>
+                                    <template v-if="!userIsTeacher && inCourse">
+                                        <studip-icon
+                                            v-if="complete"
+                                            shape="accept"
+                                            role="info"
+                                            :title="$gettext('Diese Seite wurde von Ihnen vollständig bearbeitet')"
+                                        />
+                                        <span
+                                            v-else
+                                            :title="$gettextInterpolate(
+                                                        $gettext('Fortschritt: %{progress} %'),{
+                                                        progress: elementProgress,
+                                            })
+                                                    "
+                                        >
+                                            ({{ elementProgress }} %)
+                                        </span>
+                                    </template>
+                                    <studip-five-stars
+                                        v-if="showFeedbackInContentbar && hasFeedbackElement"
+                                        :amount="hasFeedbackAverage ? feedbackAverage : 5"
+                                        :size="16"
+                                        :role="hasFeedbackAverage ? 'status-yellow' : 'inactive'"
+                                        :title="
                                         hasFeedbackAverage
-                                            ? $gettextInterpolate($gettext('Seite wurde mit %{avg} Sternen bewertet'), {
-                                                  avg: feedbackAverage,
-                                              })
-                                            : $gettext('Seite wurde noch nicht bewertet')
-                                    "
-                                    @click="menuAction('showFeedback')"
-                                />
-                            </li>
+                                            ?$gettextInterpolate($gettext('Seite wurde mit %{avg} Sternen bewertet'), {
+                                                avg: feedbackAverage,
+                                            })
+                                            :$gettext('Seite wurde noch nicht bewertet')
+                                        "
+                                        @click="menuAction('showFeedback')"
+                                    />
+                                </li>
+                            </ul>
                         </template>
-                        <template #breadcrumbFallback>
-                            <li
-                                class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
-                                :title="structuralElement.attributes.title"
-                            >
-                                <span>{{ structuralElement.attributes.title }}</span>
-                            </li>
+                        <template #breadcrumb-fallback>
+                            <ul>
+                                <li
+                                    class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
+                                    :title="structuralElement.attributes.title"
+                                >
+                                    <span>{{ structuralElement.attributes.title }}</span>
+                                </li>
+                            </ul>
                         </template>
                         <template #menu>
                             <studip-action-menu
@@ -440,6 +439,7 @@ import CoursewareStructuralElementDialogPublicLink from './CoursewareStructuralE
 import CoursewareStructuralElementDiscussion from './CoursewareStructuralElementDiscussion.vue';
 
 import CoursewareWelcomeScreen from './CoursewareWelcomeScreen.vue';
+import CoursewareRibbon from "./CoursewareRibbon.vue";
 import CoursewareExport from '@/vue/mixins/courseware/export.js';
 
 import colorMixin from '@/vue/mixins/courseware/colors.js';
@@ -455,6 +455,7 @@ import StudipProgressIndicator from '../../StudipProgressIndicator.vue';
 import draggable from 'vuedraggable';
 import containerMixin from '@/vue/mixins/courseware/container.js';
 import { mapActions, mapGetters } from 'vuex';
+import { store } from "../../../../assets/javascripts/chunks/vue";
 
 export default {
     name: 'courseware-structural-element',
@@ -488,6 +489,7 @@ export default {
         StudipDialog,
         StudipProgressIndicator,
         draggable,
+        CoursewareRibbon,
     }),
     props: ['canVisit', 'orderedStructuralElements', 'structuralElement'],
 
@@ -526,12 +528,14 @@ export default {
     },
 
     computed: {
+        consumeMode() {
+            return store.state.studip.consumeMode;
+        },
         ...mapGetters({
             courseware: 'courseware',
             rootId: 'rootId',
             currentUnit: 'currentUnit',
             context: 'context',
-            consumeMode: 'consumeMode',
             containerById: 'courseware-containers/byId',
             relatedContainers: 'courseware-containers/related',
             relatedStructuralElements: 'courseware-structural-elements/related',

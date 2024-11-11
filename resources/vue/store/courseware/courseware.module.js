@@ -989,10 +989,6 @@ export const actions = {
         context.commit('coursewareStyleCompanionOverlaySet', companion_overlay_style);
     },
 
-    coursewareConsumeMode(context, mode) {
-        context.commit('coursewareConsumeModeSet', mode);
-    },
-
     setHttpClient({ commit }, httpClient) {
         commit('setHttpClient', httpClient);
     },
@@ -1579,10 +1575,6 @@ export const mutations = {
 
     coursewareStyleCompanionOverlaySet(state, data) {
         state.styleCompanionOverlay = data;
-    },
-
-    coursewareConsumeModeSet(state, data) {
-        state.consumeMode = data;
     },
 
     setHttpClient(state, httpClient) {

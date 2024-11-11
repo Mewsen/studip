@@ -25,7 +25,6 @@ export default {
     name: 'courseware-welcome-screen',
     computed: {
         ...mapGetters({
-            consumeMode: 'consumeMode',
             lastCreatedBlocks: 'courseware-blocks/lastCreated',
             lastCreatedContainers: 'courseware-containers/lastCreated'
         }),
@@ -40,13 +39,11 @@ export default {
             lockObject: 'lockObject',
             unlockObject: 'unlockObject',
 
-            coursewareConsumeMode: 'coursewareConsumeMode',
             coursewareContainerAdder: 'coursewareContainerAdder',
             coursewareShowToolbar: 'coursewareShowToolbar'
 
         }),
         addContainer() {
-            this.coursewareConsumeMode(false);
             this.coursewareShowToolbar(true);
             this.$nextTick(() => {
                 this.coursewareContainerAdder(true);
@@ -67,7 +64,6 @@ export default {
                 section: 0,
                 blockType: 'text',
             });
-            this.coursewareConsumeMode(false);
             this.companionSuccess({
                 info: this.$gettext('Das Elemente für Ihren ersten Inhalt wurde angelegt.'),
             });
@@ -76,7 +72,7 @@ export default {
             const structuralElementId = this.$route.params.id
             await this.updateContainer({ container: newContainer, structuralElementId: structuralElementId });
             await this.unlockObject({ id: newContainer.id, type: 'courseware-containers' });
-            
+
 
         }
     }

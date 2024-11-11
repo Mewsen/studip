@@ -14,17 +14,13 @@ $consum_ribbon_width: calc(100% - 58px);
 }
 
 .cw-ribbon-wrapper-consume {
-    position: fixed;
-    padding-top: 15px;
+    padding-top: 7px;
     padding-bottom: 15px;
     background-color: var(--white);
-    width: $consum_ribbon_width;
-    height: 46px;
     z-index: 42;
 }
 
 .cw-ribbon-consume-bottom {
-    position: fixed;
     top: 75px;
     height: 15px;
     left: 0;
@@ -56,38 +52,46 @@ $consum_ribbon_width: calc(100% - 58px);
 }
 
 .cw-ribbon {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
-    height: auto;
-    min-height: 30px;
+    align-items: center;
+    height: 60px;
+    min-height: 60px;
     margin-bottom: 15px;
-    padding: 1em;
+    padding: 0 2em;
     justify-content: space-between;
     background-color: var(--dark-gray-color-10);
 
     &.cw-ribbon-sticky {
         position: fixed;
         top: 50px;
-        width: calc(100% - 346px);
+        width: calc(100% - 375px);
         z-index: 40;
     }
 
     &.cw-ribbon-consume {
         width: $consum_ribbon_width;
-        position: fixed;
         margin-bottom: 0;
     }
 
     .cw-ribbon-wrapper-left {
         display: flex;
-        max-width: calc(100% - 106px);
+        gap: 1em;
+        min-width: 0;
+        width: 100%;
+        flex: 1;
 
         .cw-ribbon-nav {
             display: flex;
-            min-width: 75px;
+            align-items: center;
 
-            &.single-icon {
-                min-width: 45px;
+            .contentbar-icon {
+                margin: 0 15px 0 10px;
+
+                img {
+                    vertical-align: middle;
+                }
             }
         }
 
@@ -138,11 +142,18 @@ $consum_ribbon_width: calc(100% - 58px);
                     }
                 }
             }
+
+            .cw-ribbon-info-text {
+                font-size: small;
+                line-height: 1em;
+            }
         }
     }
 
     .cw-ribbon-wrapper-right {
         display: flex;
+        gap: 0.5em;
+        align-items: center;
 
         button {
             border: none;
@@ -174,7 +185,7 @@ $consum_ribbon_width: calc(100% - 58px);
 
         &.cw-ribbon-button-next {
             @include background-icon(arr_1right, clickable, 24);
-            margin: 0 1em 0 0;
+            margin: 0 0.5em 0 0;
         }
 
         &.cw-ribbon-button-prev-disabled {
@@ -185,15 +196,13 @@ $consum_ribbon_width: calc(100% - 58px);
 
         &.cw-ribbon-button-next-disabled {
             @include background-icon(arr_1right, inactive, 24);
-            margin: 0 1em 0 0;
+            margin: 0 0.5em 0 0;
             cursor: default;
         }
     }
 }
 
 .cw-ribbon-action-menu {
-    vertical-align: text-top;
-    margin: 2px 0 0 2px;
     &.is-open {
         z-index: 32;
     }
@@ -204,26 +213,25 @@ $consum_ribbon_width: calc(100% - 58px);
     border: solid thin var(--content-color-40);
     box-shadow: 2px 2px var(--dark-gray-color-30);
     position: absolute;
-    right: -570px;
-    top: 15px;
+    right: 0;
+    top: 0;
     height: 100%;
     max-width: calc(100% - 28px);
     display: flex;
     flex-flow: row;
-    transition: right 0.8s;
     z-index: 42;
 
-    &.unfold {
-        right: 0px;
-        margin-right: 15px;
+    &.cw-ribbon-tools-consume {
+        right: 15px;
     }
 
-    &.cw-ribbon-tools-consume {
-        position: fixed;
-
-        &.unfold {
-            right: 15px;
-        }
+    &.cw-ribbon-slide-enter-active,
+    &.cw-ribbon-slide-leave-active {
+        transition: transform var(--transition-duration-superslow);
+    }
+    &.cw-ribbon-slide-enter,
+    &.cw-ribbon-slide-leave-to {
+        transform: translateX(calc(100% + 30px));
     }
 
     &.cw-ribbon-tools-sticky {
@@ -274,6 +282,7 @@ $consum_ribbon_width: calc(100% - 58px);
 
                 > .cw-tabs-nav {
                     border: none;
+                    height: 57px;
                     width: calc(100% - 48px);
 
                     > button {
@@ -281,7 +290,7 @@ $consum_ribbon_width: calc(100% - 58px);
                         max-width: unset;
                         flex-grow: 0.5;
                         &::after {
-                            margin-top: 16px;
+                            margin-top: 20px;
                         }
                     }
                 }
@@ -348,7 +357,7 @@ $consum_ribbon_width: calc(100% - 58px);
 
 .cw-structural-element-consumemode {
     .cw-ribbon-tools {
-        top: 25px;
+        top: 18px;
     }
 }
 
@@ -368,5 +377,50 @@ $consum_ribbon_width: calc(100% - 58px);
 
     .cw-ribbon-sticky-spacer {
         height: 75px;
+    }
+}
+
+// Rules extracted from PHP contentbar for use in ContentBar.vue
+.contentbar-button-wrapper {
+    height: 24px;
+    margin: 0 7px;
+
+    @-moz-document url-prefix() {
+        &.contentbar-toc-wrapper {
+            margin-top: -4px;
+        }
+        &.contentbar-action-menu-wrapper {
+            margin-top: 2px;
+        }
+    }
+
+    .contentbar-button,
+    .cw-ribbon-button {
+        background-color: transparent;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 24px;
+        border: none;
+        cursor: pointer;
+        display: inline-block;
+        height: 24px;
+        width: 24px;
+
+        &.contentbar-button-menu,
+        &.cw-ribbon-button-menu {
+            @include background-icon(table-of-contents, clickable, 24);
+        }
+
+        &.contentbar-button-zoom::before {
+            left: -5px;
+            position: relative;
+            top: -2px;
+        }
+
+        @-moz-document url-prefix() {
+            &.contentbar-button-zoom::before {
+                top: -3px;
+            }
+        }
     }
 }

@@ -30,7 +30,7 @@ class Course_WikiController extends AuthenticatedController
         }
         Navigation::activateItem('/course/wiki/start');
 
-        $this->page = new WikiPage($page_id);
+        $this->page = WikiPage::find($page_id) ?: new WikiPage();
         $this->validateWikiPage($this->page, $this->range);
 
         $sidebar = Sidebar::Get();
@@ -97,6 +97,13 @@ class Course_WikiController extends AuthenticatedController
             $sidebar->addWidget($actions);
         }
 
+        $contentbarProps = [
+            'icon' => 'wiki',
+            'isContentBar' => true
+        ];
+
+        $toc = CoreWiki::getTOC($this->page);
+
         if (!$this->page->isNew()) {
             //then the wiki is not empty
             $search = new SearchWidget($this->searchURL());
@@ -116,12 +123,18 @@ class Course_WikiController extends AuthenticatedController
                 Icon::create('file-pdf')
             );
             $sidebar->addWidget($exports);
+
+            $contentbarProps['toc'] = $toc;
         }
 
-        $startPage = WikiPage::find($this->range->getConfiguration()->WIKI_STARTPAGE_ID);
-        $this->contentbar = ContentBar::get()
-            ->setTOC(CoreWiki::getTOC($this->page))
-            ->setIcon(Icon::create('wiki'));
+        // Content bar
+        $this->contentBarVueApp = \Studip\VueApp::create('ContentBar')
+            ->withProps($contentbarProps)
+            ->withComponent('ContentBarBreadcrumbs')
+            ->withSlot('breadcrumb-list',
+                sprintf("<content-bar-breadcrumbs :toc='%s'/>", json_encode($toc))
+            );
+
         if (!$this->page->isNew()) {
             $author = _('unbekannt');
             if ($this->page->user) {
@@ -132,8 +145,8 @@ class Course_WikiController extends AuthenticatedController
                 );
             }
 
-            $this->contentbar->setInfoHTML(sprintf(
-                _('Version %1$s, geändert von %2$s <br> am %3$s'),
+            $this->contentBarVueApp = $this->contentBarVueApp->withSlot('info-text', sprintf(
+                _('Version %1$s, geändert von %2$s am %3$s'),
                 $this->page->versionnumber,
                 $author,
                 date('d.m.Y H:i:s', $this->page['chdate'])
@@ -167,13 +180,7 @@ class Course_WikiController extends AuthenticatedController
                     );
                 }
             }
-            $action_menu->addLink(
-                '#',
-                _('Als Vollbild anzeigen'),
-                Icon::create('screen-full'),
-                ['class' => 'fullscreen-trigger hidden-medium-down']
-            );
-            $this->contentbar->setActionMenu($action_menu);
+            $this->contentBarVueApp = $this->contentBarVueApp->withSlot('menu', $action_menu->render());
         }
 
     }
@@ -478,10 +485,6 @@ class Course_WikiController extends AuthenticatedController
              ORDER BY Nachname, Vorname",
             [$page->id]
         );
-        $this->contentbar = ContentBar::get()
-            ->setTOC(CoreWiki::getTOC($page))
-            ->setIcon(Icon::create('wiki'))
-            ->setInfoHTML(_('Zuletzt gespeichert') .': '. '<span class="wiki-last-edited-' . $this->page->id . '"></span>');
     }
 
     public function apply_editing_action(WikiPage $page)
@@ -715,15 +718,24 @@ class Course_WikiController extends AuthenticatedController
 
         Navigation::activateItem('/course/wiki/start');
         Sidebar::Get()->addWidget($this->getViewsWidget($version->page, 'history'));
-        $startPage = WikiPage::find($this->range->getConfiguration()->WIKI_STARTPAGE_ID);
-        $this->contentbar = ContentBar::get()
-            ->setTOC(CoreWiki::getTOC($version->page))
-            ->setIcon(Icon::create('wiki'))
-            ->setInfoHTML(sprintf(
+
+        $toc = CoreWiki::getTOC($version->page);
+        $this->contentBarVueApp = \Studip\VueApp::create('ContentBar')
+            ->withProps([
+                'icon' => 'wiki',
+                'isContentBar' => true,
+                'toc' => $toc,
+            ])
+            ->withSlot('info-text', sprintf(
                 _('Version %1$s vom %2$s'),
                 $version->versionnumber,
                 date('d.m.Y H:i:s', $version['mkdate'])
-            ));
+            ))
+            ->withComponent('ContentBarBreadcrumbs')
+            ->withSlot('breadcrumb-list', sprintf(
+                "<content-bar-breadcrumbs :toc='%s'/>",
+                json_encode($toc))
+            );
     }
 
     public function blame_action(WikiPage $page)
