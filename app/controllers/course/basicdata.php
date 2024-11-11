@@ -612,36 +612,46 @@ class Course_BasicdataController extends AuthenticatedController
 
     public function add_member_action($course_id, $status = 'dozent')
     {
+        if (!$GLOBALS['perm']->have_studip_perm('dozent', $course_id)) {
+            throw new AccessDeniedException();
+        }
+
         // We don't need to check the csrf protection at this point since it
         // is already checked by the multiperson search endpoint
 
         // load MultiPersonSearch object
         $mp = MultiPersonSearch::load("add_member_{$status}{$course_id}");
 
-        switch($status) {
-            case 'tutor' :
-                $func = 'addTutor';
-                break;
-            case 'deputy':
-                $func = 'addDeputy';
-                break;
-            default:
-                $func = 'addTeacher';
-                break;
-        }
+        $course = Course::find($course_id);
+
         $succeeded = [];
-        $failed = [];
+        $failed    = [];
         foreach ($mp->getAddedUsers() as $a) {
-            $result = $this->$func($a, $course_id);
-            if ($result !== false) {
-                $succeeded[] = User::find($a)->getFullName('no_title_rev');
+            $user   = User::find($a);
+            $result = false;
+            if ($status === 'deputy') {
+                $result = Deputy::addDeputy($user->id, $course->id) > 0;
             } else {
-                $failed[] = User::find($a)->getFullName('no_title_rev');
+                try {
+                    $course->addMember(
+                        $user,
+                        $status === 'tutor' ? 'tutor' : 'dozent'
+                    );
+                    $result = true;
+                } catch (\Studip\EnrolmentException $e) {
+                    $result = $e->getMessage();
+                }
+            }
+            if ($result === true) {
+                $succeeded[] = $user->getFullName('no_title_rev');
+            } elseif (is_string($result)) {
+                $failed[] = [$user->getFullName('no_title_rev'), $result];
+            } else {
+                $failed[] = [$user->getFullName('no_title_rev')];
             }
         }
         // Only show the success messagebox once
         if ($succeeded) {
-            $course = Course::find($course_id);
             $status_title = get_title_for_status($status, count($succeeded), $course->status);
             if (count($succeeded) > 1) {
                 $messagetext = sprintf(
@@ -664,9 +674,17 @@ class Course_BasicdataController extends AuthenticatedController
 
         // only show an error messagebox once with list of errors!
         if ($failed) {
+            $messages = [];
+            foreach ($failed as $fail) {
+                if (is_array($fail)) {
+                    $messages[] = sprintf('%s: %s', $fail[0], $fail[1]);
+                } else {
+                    $messages[] = $fail;
+                }
+            }
             PageLayout::postError(
                 _('Bei den folgenden Nutzer/-innen ist ein Fehler aufgetreten') ,
-                array_map('htmlReady', $failed)
+                array_map('htmlReady', $messages)
             );
         }
         $this->flash['open'] = 'bd_personal';
