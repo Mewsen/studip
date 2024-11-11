@@ -655,7 +655,7 @@ class Calendar_DateController extends AuthenticatedController
             throw new InvalidArgumentException();
         }
 
-        if ($this->date->repetition_type) {
+        if ($this->date->repetition_type !== 'SINGLE') {
             PageLayout::setTitle(_('Verschieben eines Termins aus einer Terminserie'));
             //Show the dialog to decide what shall be done with the repetition.
             if (Request::submitted('move')) {
