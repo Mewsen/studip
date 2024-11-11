@@ -1207,7 +1207,9 @@ class Course_StatusgroupsController extends AuthenticatedController
                 $g->selfassign,
                 $g->selfassign_start,
                 $g->selfassign_end,
-                false
+                $g->hasFolder(),
+                null,
+                $g->hasBlubber()
             );
         }
         PageLayout::postSuccess(_('Die Einstellungen der ausgewählten Gruppen wurden gespeichert.'));
@@ -1247,7 +1249,9 @@ class Course_StatusgroupsController extends AuthenticatedController
                 $selfassign,
                 $selfassign_start,
                 $selfassign_end,
-                false
+                $g->hasFolder(),
+                null,
+                $g->hasBlubber()
             );
         }
         PageLayout::postSuccess(_('Die Einstellungen der ausgewählten Gruppen wurden gespeichert.'));
