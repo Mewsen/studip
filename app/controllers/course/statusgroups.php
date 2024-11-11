@@ -1201,7 +1201,9 @@ class Course_StatusgroupsController extends AuthenticatedController
                 $g->selfassign,
                 $g->selfassign_start,
                 $g->selfassign_end,
-                false
+                $g->hasFolder(),
+                null,
+                $g->hasBlubber()
             );
         }
         PageLayout::postSuccess(_('Die Einstellungen der ausgewählten Gruppen wurden gespeichert.'));
@@ -1232,10 +1234,19 @@ class Course_StatusgroupsController extends AuthenticatedController
         }
 
         foreach ($groups as $g) {
-            Statusgruppen::createOrUpdate($g->id, $g->name,
-                $g->position, $this->course_id, $g->size,
-                $selfassign, $selfassign_start, $selfassign_end,
-                false);
+            Statusgruppen::createOrUpdate(
+                $g->id,
+                $g->name,
+                $g->position,
+                $this->course_id,
+                $g->size,
+                $selfassign,
+                $selfassign_start,
+                $selfassign_end,
+                $g->hasFolder(),
+                null,
+                $g->hasBlubber()
+            );
         }
         PageLayout::postSuccess(_('Die Einstellungen der ausgewählten Gruppen wurden gespeichert.'));
         $this->relocate('course/statusgroups');
@@ -1424,7 +1435,7 @@ class Course_StatusgroupsController extends AuthenticatedController
         $members = Request::getArray('members');
         $course = Seminar::GetInstance($this->course_id);
         $removed_names = $course->cancelSubscription($members);
-        
+
         PageLayout::postSuccess(
             _('Die folgenden Personen wurden aus der Veranstaltung ausgetragen'),
             $removed_names
