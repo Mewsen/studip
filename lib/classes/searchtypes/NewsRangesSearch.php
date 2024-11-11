@@ -42,7 +42,7 @@ class NewsRangesSearch extends SearchType
                                    LEFT JOIN `semester_data` USING (`semester_id`)
                                    WHERE s.`name` LIKE :input
                                    GROUP BY s.`Seminar_id`
-                                   ORDER BY s.`start_time` DESC
+                                   ORDER BY `semester_data`.`beginn` DESC
                                ) AS course_select";
         } elseif ($GLOBALS['perm']->have_perm('admin')) {
             $sem_inst = Config::get()->ALLOW_ADMIN_RELATED_INST ? 'si' : 's';
@@ -58,7 +58,7 @@ class NewsRangesSearch extends SearchType
                                    WHERE {$sem_inst}.`institut_id` IN (:institutes)
                                      AND s.`name` LIKE :input
                                    GROUP BY s.`Seminar_id`
-                                   ORDER BY s.`start_time` DESC
+                                   ORDER BY `semester_data`.`beginn` DESC
                                ) AS course_select";
 
             $parameters[':institutes'] = $this->getAdminInstitutes($user);
@@ -68,14 +68,14 @@ class NewsRangesSearch extends SearchType
                                    SELECT CONCAT(s.`Seminar_id`, '__seminar') AS `range_id`,
                                           TRIM(CONCAT({$number_sql} s.`name`, {$semester_sql})) AS `name`
                                    FROM `seminare` AS s
-                                   JOIN `seminar_user` AS su USING (`Seminar_id`) 
+                                   JOIN `seminar_user` AS su USING (`Seminar_id`)
                                    LEFT JOIN `semester_courses` AS sc ON s.`Seminar_id` = sc.`course_id`
                                    LEFT JOIN `semester_data` USING (`semester_id`)
                                    WHERE s.`name` LIKE :input
                                      AND su.`user_id` = :user_id
                                      AND su.`status` IN ('tutor', 'dozent')
                                    GROUP BY s.`Seminar_id`
-                                   ORDER BY s.`start_time` DESC
+                                   ORDER BY `semester_data`.`start_time` DESC
                                ) AS course_select ";
             $parameters[':user_id'] = $user->id;
         }
@@ -209,8 +209,8 @@ class NewsRangesSearch extends SearchType
     {
         $query = "SELECT DISTINCT i.`Institut_id`
                   FROM `user_inst` AS ui
-                  JOIN `Institute` AS i 
-                    ON ui.`Institut_id` IN (i.`Institut_id`, i.`fakultaets_id`)   
+                  JOIN `Institute` AS i
+                    ON ui.`Institut_id` IN (i.`Institut_id`, i.`fakultaets_id`)
                   WHERE ui.`user_id` = :user_id
                     AND ui.`inst_perms` = 'admin'";
         return DBManager::get()->fetchFirst($query, [

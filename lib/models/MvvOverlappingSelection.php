@@ -168,7 +168,6 @@ class MvvOverlappingSelection extends SimpleORMap
                         AND ((`start_sem`.`beginn` < :sem_end OR ISNULL(`start_sem`.`beginn`))
                             AND (`end_sem`.`ende` > :sem_start OR ISNULL(`end_sem`.`ende`)))
                         AND `seminare`.`status` IN (:typ)
-                        AND `seminare`.`start_time` <= :sem_end
                         AND (`semester_courses`.`semester_id` IS NULL OR `semester_courses`.`semester_id` = :semester_id)
                 ) AS `sembase` ON (`sembase`.`seminar_id` = `cbase`.`seminar_id`)
                 INNER JOIN `seminar_cycle_dates` AS `ccomp`
@@ -194,7 +193,8 @@ class MvvOverlappingSelection extends SimpleORMap
                     FROM `mvv_stgteilabschnitt`
                         INNER JOIN `mvv_stgteilabschnitt_modul` USING (`abschnitt_id`)
                         INNER JOIN `mvv_modul` USING (`modul_id`)
-                        INNER JOIN `mvv_modulteil` USING (`modul_id`)
+                        INNER JOIN `mv" .
+            "v_modulteil` USING (`modul_id`)
                         INNER JOIN `mvv_lvgruppe_modulteil` USING (`modulteil_id`)
                         INNER JOIN `mvv_lvgruppe_seminar` USING (`lvgruppe_id`)
                         INNER JOIN `seminare` USING (`seminar_id`)
@@ -213,7 +213,6 @@ class MvvOverlappingSelection extends SimpleORMap
                         AND ((`start_sem`.`beginn` < :sem_end OR ISNULL(`start_sem`.`beginn`))
                             AND (`end_sem`.`ende` > :sem_start OR ISNULL(`end_sem`.`ende`)))
                         AND `seminare`.`status` IN (:typ)
-                        AND `seminare`.`start_time` <= :sem_end
                         AND (`semester_courses`.`semester_id` IS NULL OR `semester_courses`.`semester_id` = :semester_id)
                 ) AS `semcomp` ON (`semcomp`.`seminar_id` = `ccomp`.`seminar_id`)
                 INNER JOIN `mvv_modulteil_stgteilabschnitt` AS `mms1`

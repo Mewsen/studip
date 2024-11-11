@@ -25,8 +25,6 @@
  * @property string|null $sonstiges database column
  * @property int $lesezugriff database column
  * @property int $schreibzugriff database column
- * @property int|null $start_time database column
- * @property int|null $duration_time database column
  * @property string|null $art database column
  * @property string|null $teilnehmer database column
  * @property string|null $vorrausetzungen database column
