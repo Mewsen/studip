@@ -155,7 +155,7 @@ label.inactive-settings-category {
                     margin: 20px 0 0 -32px;
 
                     a {
-                        @include background-icon(arr_1right, clickable, 24);
+                        @include background-icon(arr_1right, $size: 24px);
                         @include square(24px);
                         display: inline-block;
                     }
@@ -210,13 +210,13 @@ div#div-search-input {
                 background-repeat: no-repeat;
                 content: " ";
                 float: right;
-                height: 16px;
-                width: 16px;
-                @include background-icon(trash, clickable);
+                height: var(--icon-size-default);
+                width: var(--icon-size-default);
+                @include background-icon(trash);
             }
 
             &:hover::before {
-                @include background-icon(trash, clickable);
+                @include background-icon(trash);
             }
         }
     }

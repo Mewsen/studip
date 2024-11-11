@@ -548,7 +548,7 @@ class Admin_RoleController extends AuthenticatedController
         $actions->addLink(
             _('Neue Rolle anlegen'),
             $this->url_for('admin/role/add'),
-            Icon::create('add', 'clickable')
+            Icon::create('add')
         )->asDialog('size=auto');
     }
 

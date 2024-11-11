@@ -90,6 +90,11 @@
 <script>
 import MyCoursesMixin from '../mixins/MyCoursesMixin.js';
 
+const defaultIconSize = parseInt(
+    getComputedStyle(document.body).getPropertyValue('--icon-size-default'),
+    10
+);
+
 export default {
     name: 'MyCoursesTables',
     mixins: [MyCoursesMixin],
@@ -97,7 +102,7 @@ export default {
         iconSize: {
             type: Number,
             required: false,
-            default: 16
+            default: defaultIconSize
         }
     },
     data () {

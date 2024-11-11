@@ -20,7 +20,7 @@
         <? foreach ($categories as $category): ?>
             <tr>
                 <td>
-                    <?= $category->getIcon()->asImg(20) ?>
+                    <?= $category->getIcon() ?>
                 </td>
                 <td><?= htmlReady($category->name) ?></td>
                 <td><?= htmlReady($category->class_name) ?></td>

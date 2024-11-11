@@ -27,22 +27,22 @@
         }
 
         &.internal {
-            @include background-icon(link-intern, clickable, 28);
+            @include background-icon(link-intern, $size: 28px);
             background-position: 1em 50%;
             background-repeat: no-repeat;
 
             &:hover {
-                @include background-icon(link-intern, info-alt, 28);
+                @include background-icon(link-intern, info-alt, 28px);
             }
         }
 
         &.external {
-            @include background-icon(link-extern, clickable, 28);
+            @include background-icon(link-extern, $size: 28px);
             background-position: 1em 50%;
             background-repeat: no-repeat;
 
             &:hover {
-                @include background-icon(link-extern, info-alt, 28);
+                @include background-icon(link-extern, info-alt, 28px);
             }
 
             .cw-link-og-image {
@@ -100,7 +100,7 @@
                     header {
                         color: var(--active-color);
                     }
-                   
+
                 }
             }
         }

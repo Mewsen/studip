@@ -241,15 +241,15 @@
                             <div class="stars">
                                 <? $rating = round($review['metadata']['rating'], 1) ?>
                                 <? $v = $rating >= 0.75 ? "" : ($rating >= 0.25 ? "-halffull" : "-empty") ?>
-                                <?= Icon::create("star$v", Icon::ROLE_INFO)->asImg(16) ?>
+                                <?= Icon::create("star$v", Icon::ROLE_INFO) ?>
                                 <? $v = $rating >= 1.75 ? "" : ($rating >= 1.25 ? "-halffull" : "-empty") ?>
-                                <?= Icon::create("star$v", Icon::ROLE_INFO)->asImg(16) ?>
+                                <?= Icon::create("star$v", Icon::ROLE_INFO) ?>
                                 <? $v = $rating >= 2.75 ? "" : ($rating >= 2.25 ? "-halffull" : "-empty") ?>
-                                <?= Icon::create("star$v", Icon::ROLE_INFO)->asImg(16) ?>
+                                <?= Icon::create("star$v", Icon::ROLE_INFO) ?>
                                 <? $v = $rating >= 3.75 ? "" : ($rating >= 3.25 ? "-halffull" : "-empty") ?>
-                                <?= Icon::create("star$v", Icon::ROLE_INFO)->asImg(16) ?>
+                                <?= Icon::create("star$v", Icon::ROLE_INFO) ?>
                                 <? $v = $rating >= 4.75 ? "" : ($rating >= 4.25 ? "-halffull" : "-empty") ?>
-                                <?= Icon::create("star$v", Icon::ROLE_INFO)->asImg(16) ?>
+                                <?= Icon::create("star$v", Icon::ROLE_INFO) ?>
 
                                 <? if ($GLOBALS['perm']->have_perm("autor") && !count($review->comments)) : ?>
                                     <a href="<?= $controller->link_for("oer/market/discussion/".$review->getId()) ?>" style="font-size: 0.8em;">
@@ -260,12 +260,12 @@
                             <div class="comments center">
                                 <? if (count($review->comments)) : ?>
                                     <a href="<?= $controller->link_for("oer/market/discussion/".$review->getId()) ?>">
-                                        <?= Icon::create("comment", Icon::ROLE_CLICKABLE)->asImg(16, ['class' => "text-bottom"]) ?>
+                                        <?= Icon::create("comment")->asImg(['class' => "text-bottom"]) ?>
                                         <?= sprintf(_('%s Kommentare dazu'), count($review->comments)) ?>
                                     </a>
                                 <? elseif ($material->isMine()) : ?>
                                     <a href="<?= $controller->link_for("oer/market/discussion/".$review->getId()) ?>">
-                                        <?= Icon::create("comment", Icon::ROLE_CLICKABLE)->asImg(16, ['class' => "text-bottom"]) ?>
+                                        <?= Icon::create("comment")->asImg(['class' => "text-bottom"]) ?>
                                         <?= _('Dazu einen Kommentar schreiben') ?>
                                     </a>
                                 <? endif ?>

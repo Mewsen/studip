@@ -62,14 +62,14 @@ class FilesystemVueDataManager
         $actionMenu->addLink(
             URLHelper::getURL('dispatch.php/file/details/' . $folder->getId()),
             _('Info'),
-            Icon::create('info-circle', 'clickable', ['size' => 20]),
+            Icon::create('info-circle'),
             ['data-dialog' => '1']
         );
         if ($folder->isEditable($GLOBALS['user']->id)) {
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/edit_folder/' . $folder->getId()),
                 _('Ordner bearbeiten'),
-                Icon::create('edit', 'clickable', ['size' => 20]),
+                Icon::create('edit'),
                 ['data-dialog' => '1']
             );
         }
@@ -77,26 +77,26 @@ class FilesystemVueDataManager
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/download_folder/' . $folder->getId()),
                 _('Ordner herunterladen'),
-                Icon::create('download', 'clickable', ['size' => 20])
+                Icon::create('download')
             );
         }
         if ($folder->isEditable($GLOBALS['user']->id)) {
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/choose_destination/move/' . $folder->getId(), ['isfolder' => 1]),
                 _('Ordner verschieben'),
-                Icon::create('arr_1right', 'clickable', ['size' => 20]),
+                Icon::create('arr_1right'),
                 ['data-dialog' => 'size=auto']
             );
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/choose_destination/copy/' . $folder->getId(), ['isfolder' => 1]),
                 _('Ordner kopieren'),
-                Icon::create('clipboard', 'clickable', ['size' => 20]),
+                Icon::create('clipboard'),
                 ['data-dialog' => 'size=auto']
             );
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/delete_folder/' . $folder->getId()),
                 _('Ordner löschen'),
-                Icon::create('trash', 'clickable', ['size' => 20]),
+                Icon::create('trash'),
                 ['onclick' => "return STUDIP.Dialog.confirmAsPost('" . sprintf(_('Soll der Ordner "%s" wirklich gelöscht werden?'), htmlReady($folder->name)) . "', this.href);"]
             );
         }

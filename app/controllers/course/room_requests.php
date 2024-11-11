@@ -85,7 +85,7 @@ class Course_RoomRequestsController extends AuthenticatedController
         $actions->addLink(
             _('Neue Raumanfrage erstellen'),
             $this->url_for('course/room_requests/new'),
-            Icon::create('add', 'clickable')
+            Icon::create('add')
         );
         Sidebar::get()->addWidget($actions);
 

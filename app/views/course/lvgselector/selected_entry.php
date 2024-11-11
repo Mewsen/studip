@@ -8,7 +8,7 @@ $_id = htmlReady(implode('_', (array) $area->getId()));
         style="vertical-align: text-top;"
         type="image"
         name="lvgruppe_selection[remove][<?= $_id ?>]"
-        src="<?= Icon::create('trash', 'clickable')->asImagePath(); ?>">
+        src="<?= Icon::create('trash')->asImagePath(); ?>">
 <? endif; ?>
     <span class="lvgruppe_selection_expand">
     <?= htmlReady($area->getDisplayName()) ?>
@@ -17,7 +17,7 @@ $_id = htmlReady(implode('_', (array) $area->getId()));
             style="vertical-align: text-top;"
             type="image"
             name="lvgruppe_selection[details][<?= $_id ?>]"
-            src="<?= Icon::create('info', 'clickable')->asImagePath() ?>">
+            src="<?= Icon::create('info')->asImagePath() ?>">
     </span>
     <ul>
     <? if (Request::isXhr()) : ?>

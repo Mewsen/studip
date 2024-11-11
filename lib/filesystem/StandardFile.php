@@ -236,7 +236,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
         $actionMenu->addLink(
             URLHelper::getURL("dispatch.php/file/details/{$this->fileref->id}/1"),
             _('Info'),
-            Icon::create('info-circle', Icon::ROLE_CLICKABLE, ['size' => 20]),
+            Icon::create('info-circle'),
             ['data-dialog' => ''],
             'file-display-info'
         );
@@ -244,14 +244,14 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/edit/' . $this->fileref->id),
                 _('Datei bearbeiten'),
-                Icon::create('edit', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                Icon::create('edit'),
                 ['data-dialog' => ''],
                 'file-edit'
             );
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/update/' . $this->fileref->id),
                 _('Datei aktualisieren'),
-                Icon::create('refresh', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                Icon::create('refresh'),
                 ['data-dialog' => ''],
                 'file-update'
             );
@@ -260,7 +260,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/choose_destination/move/' . $this->fileref->id),
                 _('Datei verschieben'),
-                Icon::create('arr_1right', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                Icon::create('arr_1right'),
                 ['data-dialog' => 'size=auto'],
                 'file-move'
             );
@@ -269,7 +269,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/choose_destination/copy/' . $this->fileref->id),
                 _('Datei kopieren'),
-                Icon::create('files', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                Icon::create('files'),
                 ['data-dialog' => 'size=auto'],
                 'file-copy'
             );
@@ -314,7 +314,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
                 $actionMenu->addLink(
                     URLHelper::getURL('dispatch.php/course/feedback/create_form/'. $this->fileref->id . '/FileRef'),
                     _('Neues Feedback-Element'),
-                    Icon::create('star', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                    Icon::create('star'),
                     ['data-dialog' => '1']
                 );
             }
@@ -323,7 +323,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
             $actionMenu->addButton(
                 'delete',
                 _('Datei löschen'),
-                Icon::create('trash', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                Icon::create('trash'),
                 [
                     'formaction'   => URLHelper::getURL("dispatch.php/file/delete/{$this->fileref->id}"),
                     'data-confirm' => sprintf(_('Soll die Datei "%s" wirklich gelöscht werden?'), $this->fileref->name),

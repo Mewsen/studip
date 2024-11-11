@@ -27,12 +27,13 @@
     cursor: help;
     display: inline-block;
     position: relative;
+    vertical-align: text-bottom;
 
     &.tooltip-icon {
-        @include icon(before, info-circle, inactive);
+        @include icon(before, info-circle, inactive, $icon-size-inline);
     }
     &.tooltip-important {
-        @include icon(before, info-circle, attention);
+        @include icon(before, info-circle, attention, $icon-size-inline);
     }
 
     .tooltip-content {

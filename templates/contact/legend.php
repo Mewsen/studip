@@ -2,34 +2,34 @@
     <?= _('Bedienung:') ?>
     <ul>
         <li>
-            <?= Icon::create('mail', 'clickable')->asImg() ?>
+            <?= Icon::create('mail') ?>
             <?= _('Nachricht an Kontakt') ?>
         </li>
     <? if ($open): ?>
         <li>
-            <?= Icon::create('arr_1up', 'clickable')->asImg() ?>
+            <?= Icon::create('arr_1up') ?>
             <?= _('Kontakt zuklappen') ?>
         </li>
         <li>
-            <?= Icon::create('person', 'clickable')->asImg() ?>
+            <?= Icon::create('person') ?>
             <?= _('Buddystatus') ?>
         </li>
         <li>
-            <?= Icon::create('edit', 'clickable')->asImg() ?>
+            <?= Icon::create('edit') ?>
             <?= _('Eigene Rubriken') ?>
         </li>
         <li>
-            <?= Icon::create('trash', 'clickable')->asImg() ?>
+            <?= Icon::create('trash') ?>
             <?= _('Kontakt löschen') ?>
         </li>
     <? else: ?>
         <li>
-            <?= Icon::create('arr_1down', 'clickable')->asImg() ?>
+            <?= Icon::create('arr_1down') ?>
             <?= _('Kontakt aufklappen') ?>
         </li>
     <? endif; ?>
 
-    <? if ($open || $contact['view'] == 'gruppen'): ?>
+    <? if ($open || $contact['view'] === 'gruppen'): ?>
         <li>
             <?= Icon::create('export') ?>
             <?= _('als vCard exportieren') ?>

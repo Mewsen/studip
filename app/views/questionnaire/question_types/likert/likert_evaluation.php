@@ -9,7 +9,7 @@ $options = $vote->questiondata['options'];
 
 <div class="description_container">
     <div class="icon_container">
-        <?= Icon::create('question-likert', Icon::ROLE_INFO)->asImg(20) ?>
+        <?= Icon::create('question-likert', Icon::ROLE_INFO) ?>
     </div>
     <div class="description">
         <?= formatReady(isset($vote->questiondata) && isset($vote->questiondata['description']) ? $vote->questiondata['description'] : '') ?>
@@ -98,7 +98,7 @@ $options = $vote->questiondata['options'];
                                         <?= htmlReady($hits) ?>
                                     </div>
                                 </div>
-                                <?= Icon::create('filter2', Icon::ROLE_CLICKABLE)->asImg(16, ['class' => 'text-bottom']) ?>
+                                <?= Icon::create('filter2')->asImg(['class' => 'text-bottom']) ?>
                                 <?= round(100 * $hits / $countAnswers) ?>%
                             </a>
                         <? else : ?>

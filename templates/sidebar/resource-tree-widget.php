@@ -21,37 +21,30 @@
                 <? if ($resource_path && !in_array($resource->id, $resource_path)): ?>
                     <a href="<?= $link ?>">
                 <? endif; ?>
-                <?= Icon::create('arr_1right', Icon::ROLE_CLICKABLE, [
-                'class'   => (
-                in_array($resource->id, $resource_path) || (!$resource_path && $resource->level < $max_open_depth)
-                    ? 'rotated'
-                    : ''
-                ),
-                'style'   =>
-                    (in_array($resource->id, $resource_path) || (!$resource_path && $resource->level < $max_open_depth)
+                <?= Icon::create('arr_1right')->asImg([
+                    'class' => in_array($resource->id, $resource_path) || (!$resource_path && $resource->level < $max_open_depth)
+                        ? 'rotated'
+                        : '',
+                    'style' => in_array($resource->id, $resource_path) || (!$resource_path && $resource->level < $max_open_depth)
                         ? 'transform: rotate(90deg)'
-                        : ''
-                    ),
-                'onClick' =>
-                    (!$resource_path || in_array($resource->id, $resource_path)
+                        : '',
+                    'onClick' => !$resource_path || in_array($resource->id, $resource_path)
                         ? 'STUDIP.Resources.toggleTreeNode($(this).parent());'
                         : ''
-                    )]) ?>
-                
+                ]) ?>
+
                 <? if ($resource_path && !in_array($resource->id, $resource_path)): ?>
                     </a>
                 <? endif; ?>
-            
+
             <? endif ?>
             <a href="<?= $link ?>" <?= !$resource_path ? 'data-dialog' : ''; ?>
                <?= $selected
                    ? 'class="selected-resource"'
                    : '' ?>>
-                <?= $resource->getIcon($selected ? Icon::ROLE_INFO_ALT : Icon::ROLE_CLICKABLE)->asImg(
-                    [
-                        'class' => 'text-bottom'
-                    ]
-                ) ?>
+                <?= $resource->getIcon($selected ? Icon::ROLE_INFO_ALT : Icon::ROLE_CLICKABLE)->asImg([
+                    'class' => 'text-bottom'
+                ]) ?>
                 <?= htmlReady($resource->name) ?>
             </a>
             <? if ($resource->children): ?>

@@ -31,7 +31,7 @@
                             URLHelper::getLink('seminar_main.php',
                                 ['auswahl'     => $group['seminar_id'],
                                       'redirect_to' => $nav->getURL()]) ?>" <?= $nav->hasBadgeNumber() ? 'class="badge" data-badge-number="' . intval($nav->getBadgeNumber()) . '"' : '' ?>>
-                                <?= $nav->getImage()->asImg(20, $nav->getLinkAttributes()) ?>
+                                <?= $nav->getImage()->asImg($nav->getLinkAttributes()) ?>
                             </a>
                         </li>
                     <? elseif (is_string($key)) : ?>
@@ -51,18 +51,18 @@
                 <? endif ?>
                 <? if ($adminnavigation) : ?>
                     <a href="<?= URLHelper::getLink($adminnavigation->getURL(), ['cid' => $group['seminar_id']]) ?>">
-                        <?= $adminnavigation->getImage()->asImg(20, $adminnavigation->getLinkAttributes())?>
+                        <?= $adminnavigation->getImage()->asImg($adminnavigation->getLinkAttributes())?>
                     </a>
                 <? endif ?>
 
             <? elseif (!empty($group['binding'])) : ?>
                 <a href="<?= URLHelper::getLink('', ['auswahl' => $group['seminar_id'], 'cmd' => 'no_kill']) ?>">
-                    <?= Icon::create('door-leave', 'inactive', ['title' => _("Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden.")])->asImg(20) ?>
+                    <?= Icon::create('door-leave', Icon::ROLE_INACTIVE)->asImg(['title' => _('Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden.')]) ?>
                 </a>
             <?
             else : ?>
                 <a href="<?= URLHelper::getLink("dispatch.php/my_courses/decline/{$group['seminar_id']}", ['cmd' => 'suppose_to_kill']) ?>">
-                    <?= Icon::create('door-leave', 'inactive', ['title' => _("aus der Studiengruppe abmelden")])->asImg(20) ?>
+                    <?= Icon::create('door-leave', Icon::ROLE_INACTIVE)->asImg(['title' => _('aus der Studiengruppe abmelden')]) ?>
                 </a>
             <? endif ?>
         </td>

@@ -10,4 +10,4 @@ if (Request::isDialog()) {
     $input_attr['data-dialog'] = 'size=big';
 }
 ?>
-<?= Icon::create('room-request')->asInput(20, $input_attr) ?>
+<?= Icon::create('room-request')->asInput($input_attr) ?>

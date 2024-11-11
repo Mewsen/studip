@@ -43,19 +43,19 @@
 }
 
 .cw-block-gallery-prev {
-    @include background-icon(arr_1left, clickable, 24);
+    @include background-icon(arr_1left, $size: 24px);
 
     &:hover {
-        @include background-icon(arr_1left, info-alt, 24);
+        @include background-icon(arr_1left, info-alt, 24px);
     }
 }
 
 .cw-block-gallery-next {
     right: 0;
-    @include background-icon(arr_1right, clickable, 24);
+    @include background-icon(arr_1right, $size: 24px);
 
     &:hover {
-        @include background-icon(arr_1right, info-alt, 24);
+        @include background-icon(arr_1right, info-alt, 24px);
     }
 }
 

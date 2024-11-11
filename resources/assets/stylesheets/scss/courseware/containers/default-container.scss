@@ -30,7 +30,7 @@
             color: var(--base-color);
             font-weight: 700;
             line-height: 2em;
-            font-size: 1.1em;
+            font-size: 16px;
 
             &.cw-default-container-blocker-warning {
                 font-weight: 400;
@@ -38,7 +38,8 @@
         }
 
         img {
-            vertical-align: text-bottom;
+            vertical-align: middle;
+            margin-bottom: 2px;
         }
 
         .cw-container-actions {

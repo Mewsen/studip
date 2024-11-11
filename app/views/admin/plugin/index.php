@@ -101,15 +101,19 @@ use Studip\Button, Studip\LinkButton;
                             <? $actionMenu->addLink(
                                 $controller->url_for('admin/role/assign_plugin_role/' . $pluginid),
                                 _('Zugriffsrechte bearbeiten'),
-                                Icon::create('edit', 'clickable', ['title' => _('Zugriffsrechte bearbeiten')])
+                                Icon::create('edit'),
+                                ['title' => _('Zugriffsrechte bearbeiten')]
                             ) ?>
                             <?
                             if (in_array('StudipModule', $plugin['type'])) {
                                 $actionMenu->addLink(
                                     $controller->url_for('admin/plugin/edit_description/' . $pluginid),
                                     _('Beschreibung und Hervorhebung'),
-                                    Icon::create('infopage', Icon::ROLE_CLICKABLE, ['title' => _('Beschreibung und Hervorhebung')]),
-                                    ['data-dialog' => 'size=big']
+                                    Icon::create('infopage'),
+                                    [
+                                        'data-dialog' => 'size=big',
+                                        'title' => _('Beschreibung und Hervorhebung'),
+                                    ]
                                 );
                             }
                             ?>
@@ -118,24 +122,27 @@ use Studip\Button, Studip\LinkButton;
                                 <? $actionMenu->addLink(
                                     $controller->url_for('admin/plugin/edit_automaticupdate/' . $pluginid),
                                     $plugin['automatic_update_url'] ? _('Automatisches Update verwalten (eingerichtet)') : _('Automatisches Update verwalten'),
-                                    Icon::create('install', $plugin['automatic_update_url'] ? 'attention' : 'clickable', [
+                                    Icon::create('install', $plugin['automatic_update_url'] ? Icon::ROLE_ATTENTION : Icon::ROLE_CLICKABLE),
+                                    [
                                         'title' => $plugin['automatic_update_url']
                                                  ? _('Automatisches Update verwalten (eingerichtet)')
-                                                 : _('Automatisches Update verwalten')
-                                    ]),
-                                    ['data-dialog' => 'size=auto;reload-on-close']
+                                                 : _('Automatisches Update verwalten'),
+                                        'data-dialog' => 'size=auto;reload-on-close'
+                                    ]
                                 ) ?>
                                 <? $actionMenu->addLink(
                                     $controller->url_for('admin/plugin/download/' . $pluginid),
                                     _('Herunterladen'),
-                                    Icon::create('download', 'clickable', ['title' => _('Herunterladen')])
+                                    Icon::create('download'),
+                                    ['title' => _('Herunterladen')]
                                 ) ?>
                             <? endif ?>
                             <? if (!$plugin['depends'] && !$plugin['core']): ?>
                                 <? $actionMenu->addLink(
                                     $controller->url_for('admin/plugin/ask_delete/' . $pluginid),
                                     _('Deinstallieren'),
-                                    Icon::create('trash', 'clickable', ['title' => _('Deinstallieren')])
+                                    Icon::create('trash'),
+                                    ['title' => _('Deinstallieren')]
                                 ) ?>
                             <? endif ?>
                             <?= $actionMenu->render() ?>

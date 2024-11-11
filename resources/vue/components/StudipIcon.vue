@@ -4,18 +4,18 @@
         type="image"
         :name="name"
         :src="url"
-        :width="size"
-        :height="size"
+        :style="{ width: realSize + 'px', height: realSize + 'px' }"
         :role="ariaRole"
+        :class="cssClass"
         v-bind="$attrs"
         v-on="$listeners"
         :alt="$attrs.alt ?? ''"
     />
     <img v-else
          :src="url"
-         :width="size"
-         :height="size"
+         :style="{ width: realSize + 'px', height: realSize + 'px' }"
          :role="ariaRole"
+         :class="cssClass"
          v-bind="$attrs"
          v-on="$listeners"
          :alt="$attrs.alt ?? ''"
@@ -24,6 +24,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
+
+function getCSSVariableValue(property: string): Number {
+    const value = getComputedStyle(document.body).getPropertyValue(property);
+    return parseInt(value, 10);
+}
+
+const defaultIconSize: Number = getCSSVariableValue('--icon-size-default');
+const inlineIconSize: Number = getCSSVariableValue('--icon-size-inline');
 
 export default Vue.extend({
     name: 'studip-icon',
@@ -45,10 +53,20 @@ export default Vue.extend({
         size: {
             type: Number,
             required: false,
-            default: 16,
+            default: defaultIconSize,
         },
+        inline: {
+            type: Boolean,
+            default: false
+        }
     },
     computed: {
+        realSize(): Number | undefined {
+            if (this.inline) {
+                return inlineIconSize;
+            }
+            return Number(this.size) !== defaultIconSize ? this.size : undefined;
+        },
         url(): string {
             if (this.shape.indexOf('http') === 0) {
                 return this.shape;
@@ -86,6 +104,14 @@ export default Vue.extend({
                     return 'blue';
             }
         },
+        cssClass(): Array<string> {
+            return [
+                'studip-icon',
+                this.inline ? 'studip-icon-inline' : '',
+                `icon-role-${this.role}`,
+                `icon-shape-${this.shape}`,
+            ];
+        }
     },
 });
 </script>

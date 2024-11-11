@@ -271,11 +271,11 @@ tr.sortable {
     }
 
     th.sortasc {
-        @include icon('after', 'arr_1up', 'clickable');
+        @include icon('after', 'arr_1up', 'clickable', $icon-size-inline);
     }
 
     th.sortdesc {
-        @include icon('after', 'arr_1down', 'clickable');
+        @include icon('after', 'arr_1down', 'clickable', $icon-size-inline);
     }
 }
 
@@ -669,10 +669,10 @@ table.default {
             @include hide-text();
             @include background-icon(arr_1down);
             display: inline-block;
-            height: 16px;
+            height: $icon-size-inline;
             text-align: center;
             vertical-align: top;
-            width: 16px;
+            width: $icon-size-inline;
         }
     }
 
@@ -796,11 +796,11 @@ table.withdetails {
         background-repeat: no-repeat;
         content: ' ';
         display: inline-block;
-        height: 16px;
+        height: $icon-size-inline;
         margin-left: 0;
-        @include background-icon('arr_1#{$direction}');
+        @include background-icon('arr_1#{$direction}', clickable, $icon-size-inline);
         vertical-align: text-bottom;
-        width: 16px;
+        width: $icon-size-inline;
     }
 }
 
@@ -817,11 +817,11 @@ table.withdetails {
         }
 
         &.tablesorter-headerDesc:hover .tablesorter-header-inner::after {
-            @include background-icon(arr_1down, status-red);
+            @include background-icon(arr_1down, status-red, $icon-size-inline);
         }
 
         &.tablesorter-headerAsc:hover .tablesorter-header-inner::after {
-            @include background-icon(arr_1up, status-red);
+            @include background-icon(arr_1up, status-red, $icon-size-inline);
         }
     }
 

@@ -25,7 +25,7 @@
                 @keydown.prevent.enter="moveTo(item.path)"
                 @keydown.prevent.space="moveTo(item.path)"
             >
-                <studip-icon shape="arr_1right" role="info_alt" :size="20" alt=""></studip-icon>
+                <studip-icon shape="arr_1right" role="info_alt" alt=""></studip-icon>
             </button>
         </template>
         <div v-else class="navigation-title">

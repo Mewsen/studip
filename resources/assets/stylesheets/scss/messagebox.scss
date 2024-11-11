@@ -20,12 +20,12 @@ div.messagebox {
 
         a {
             background: transparent no-repeat center center;
-            background-size: 16px 16px;
+            background-size: var(--icon-size-default) var(--icon-size-default);
 
             display: inline-block;
             margin: 1px;
-            width: 16px;
-            height: 16px;
+            width: var(--icon-size-default);
+            height: var(--icon-size-default);
 
             &.close,
             &.details {

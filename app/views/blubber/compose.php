@@ -70,7 +70,7 @@
                     <?= Icon::create('search')->asImg(['class' => 'text-bottom']) ?>
                 </a>
                 <a href="" onClick="$('#blubber_contacts').val(null).trigger('change'); return false;">
-                    <?= Icon::create('decline',)->asImg(['class' => "text-bottom"]) ?>
+                    <?= Icon::create('decline')->asImg(['class' => 'text-bottom']) ?>
                 </a>
             </div>
         <? endif ?>
@@ -113,10 +113,10 @@
                     ->fireJSFunctionOnSelect('STUDIP.Blubber.Composer.vue.addUser')->render() ?>
 
                 <a href="" onClick="$('input[name=search_user_id_parameter]').trigger('focus'); return false;">
-                    <?= Icon::create('search')->asImg(['class' => "text-bottom"]) ?>
+                    <?= Icon::create('search')->asImg(['class' => 'text-bottom']) ?>
                 </a>
                 <a href="" onClick="STUDIP.Blubber.Composer.vue.clearUsers(); return false;">
-                    <?= Icon::create('decline')->asImg(['class' => "text-bottom"]) ?>
+                    <?= Icon::create('decline')->asImg(['class' => 'text-bottom']) ?>
                 </a>
             </div>
         </div>

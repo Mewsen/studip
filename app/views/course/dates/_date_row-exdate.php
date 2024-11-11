@@ -1,6 +1,6 @@
 <tr id="date_<?= $date->id ?>" class="ausfall" data-termin-id="<?= htmlReady($date->id) ?>">
     <td data-sort-value="<?= htmlReady($date->date) ?>" class="date_name">
-        <?= Icon::create('date', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom']) ?>
+        <?= Icon::create('date', Icon::ROLE_INFO)->asImg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>
         <?= htmlReady($date->getFullName()) ?>
         <?= tooltipIcon($date->content) ?>
     <? if (count($date->dozenten) > 0): ?>

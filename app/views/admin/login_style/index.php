@@ -41,34 +41,32 @@
                 </td>
                 <td>
                     <?= Icon::create('computer', $pic->desktop ? Icon::ROLE_CLICKABLE : Icon::ROLE_INACTIVE)->asInput(
-                        32,
+                        Icon::SIZE_LARGE,
                         [
                             'title' => $pic->mobile
                                 ? _('Bild nicht mehr für die Mobilansicht verwenden')
                                 : _('Bild für die Mobilansicht verwenden'),
                             'formaction' => $controller->activationURL($pic->id, 'desktop', (int) !$pic->desktop)
                         ]
-                    )?>
+                    ) ?>
 
                     <?= Icon::create('cellphone', $pic->mobile ? Icon::ROLE_CLICKABLE : Icon::ROLE_INACTIVE)->asInput(
-                        32,
+                        Icon::SIZE_LARGE,
                         [
                             'title' => $pic->mobile
                                 ? _('Bild nicht mehr für die Mobilansicht verwenden')
                                 : _('Bild für die Mobilansicht verwenden'),
                             'formaction' => $controller->activationURL($pic->id, 'mobile', (int) !$pic->mobile)
                         ]
-                    )?>
+                    ) ?>
                 </td>
                 <td class="actions">
                     <? if (!$pic->in_release): ?>
-                        <?= Icon::create('trash')->asInput(
-                            [
-                                'title'        => _('Bild löschen'),
-                                'data-confirm' => _('Soll das Bild wirklich gelöscht werden?'),
-                                'formaction' => $controller->delete_picURL($pic->id)
-                            ]
-                        )?>
+                        <?= Icon::create('trash')->asInput([
+                            'title'        => _('Bild löschen'),
+                            'data-confirm' => _('Soll das Bild wirklich gelöscht werden?'),
+                            'formaction' => $controller->delete_picURL($pic->id),
+                        ]) ?>
                     <? endif ?>
                 </td>
             </tr>

@@ -697,7 +697,7 @@ class Admin_CoursesController extends AuthenticatedController
             foreach ($icons as $icon) {
                 $d['contents'] .= '<li class="my-courses-navigation-item '. ($icon->getImage()->signalsAttention() ? 'my-courses-navigation-important' : '').'">
                         <a href="'. URLHelper::getLink('seminar_main.php', ['auswahl' => $course->id, 'redirect_to' => $icon->getURL()]).'"'. ($icon->getTitle() ? ' title="'.htmlReady($icon->getTitle()).'"' : '') .'>
-                            '. $icon->getImage()->asImg(20) .'
+                            '. $icon->getImage()->asImg() .'
                         </a>
                     </li>';
             }

@@ -36,7 +36,7 @@
     }
 
     .read_more_link {
-        @include icon(before, add, clickable);
+        @include icon(before, add);
 
         span {
             vertical-align: middle;

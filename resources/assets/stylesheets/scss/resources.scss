@@ -361,8 +361,8 @@ ul.resource-tree {
     a.request-marking-icon {
         background-repeat: no-repeat;
         display: block;
-        width: 16px;
-        height: 16px;
+        width: var(--icon-size-default);
+        height: var(--icon-size-default);
         @include background-icon(radiobutton-unchecked);
 
         &[data-marked="1"] {

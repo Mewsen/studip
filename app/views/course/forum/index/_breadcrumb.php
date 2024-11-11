@@ -2,7 +2,7 @@
 <div id="tutorBreadcrumb">
     <? $path = ForumEntry::getPathToPosting($topic_id) ?>
     <a href="<?= $controller->link_for('course/forum/index') ?>" title="<?= _('Übersicht') ?>">
-        <?= Icon::create('forum', 'clickable') ?>
+        <?= Icon::create('forum') ?>
     </a>
 
     <? foreach ($path as $path_part) : ?>

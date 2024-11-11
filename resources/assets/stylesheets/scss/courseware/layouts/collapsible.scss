@@ -5,7 +5,7 @@
     margin-bottom: -1px;
 
     .cw-collapsible-title {
-        @include background-icon(arr_1right, clickable);
+        @include background-icon(arr_1right);
         background-position: 6px center;
         background-repeat: no-repeat;
         background-color: var(--content-color-20);
@@ -16,7 +16,7 @@
         cursor: pointer;
 
         &.cw-collapsible-open {
-            @include background-icon(arr_1down, clickable);
+            @include background-icon(arr_1down);
 
             .cw-container-list-sort-mode {
                 margin-top: 8px;

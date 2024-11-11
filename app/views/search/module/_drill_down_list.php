@@ -6,31 +6,8 @@
     </a>
 </div>
 <? endif; ?>
-<? /* 
-<dl style="margin:0;">
-<? foreach ($lists as $list) : ?>
-    <? if (count($list['objects'])) : ?>
-    <dt style="font-weight:bold;margin:5px 0;"><?= $list['name'] ?></dt>
-    <dd>
-        <ul style="list-style-type:none; margin:0; padding:0;">
-            <? foreach ($list['objects'] as $object) : ?>
-            <li style="margin:5px 0;">
-                <a href="<?= $controller->url_for('search/module/drilldown', array('type' => get_class($object), 'id' => $object->getId())) ?>">
-                <?= htmlReady($object->getDisplayName()) . ' (' . /*$object->count_module .*/ ')' ?>
- <? /*                <? if ($object->getId() == $drill_down_id) : ?>
-                    <?= Icon::create('accept', 'clickable', array('title' => _('Bereich ausgewählt')))->asImg(); ?>
-                <? endif; ?>
-                </a>
-            </li>
-            <? endforeach; ?>
-        </ul>
-    </dd>
-    <? endif; ?>
-<? endforeach; ?>
-</dl>
- */ ?>
- 
- 
+
+
 <form action="<?= $controller->action_link('index') ?>" method="post">
     <select name="actlist" style="margin:0;" class="submit-upon-select">
     <? foreach ($lists as $lname => $list) : ?>

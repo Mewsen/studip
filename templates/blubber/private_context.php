@@ -13,8 +13,8 @@
                 <? $user = User::find($mention['user_id']) ?>
                 <? if ($user) : ?>
                     <? if ($user->getId() !== $GLOBALS['user']->id && count($mentions) > 2) : ?>
-                        <a class="float_right" href="<?= URLHelper::getLink("dispatch.php/blubber/write_to/". $user->getId()) ?>" data-dialog title="<?= _("Anblubbern") ?>">
-                            <?= Icon::create("blubber", "clickable")->asImg(20, ['class' => "text-bottom"]) ?>
+                        <a class="float_right" href="<?= URLHelper::getLink("dispatch.php/blubber/write_to/" . $user->getId()) ?>" data-dialog title="<?= _("Anblubbern") ?>">
+                            <?= Icon::create('blubber')->asImg(['class' => 'text-bottom']) ?>
                         </a>
                     <? endif ?>
                     <? if ($user->getId() === $GLOBALS['user']->id) : ?>

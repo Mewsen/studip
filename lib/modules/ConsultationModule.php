@@ -143,7 +143,7 @@ class ConsultationModule extends CorePlugin implements StudipModule, SystemPlugi
             'keywords'    => _('Terminvergabe, Sprechstunden'),
             'displayname' => _('Terminvergabe'),
             'icon'        => Icon::create('consultation', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('consultation', Icon::ROLE_CLICKABLE),
+            'icon_clickable' => Icon::create('consultation'),
              'screenshots' => [
                  'path'     => 'assets/images/plus/screenshots/Terminvergabe',
                  'pictures' => [

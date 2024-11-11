@@ -9,7 +9,7 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
 
 <div class="description_container">
     <div class="icon_container">
-        <?= Icon::create('question-rangescale', Icon::ROLE_INFO)->asImg(20) ?>
+        <?= Icon::create('question-rangescale', Icon::ROLE_INFO) ?>
     </div>
     <div class="description">
         <?= formatReady($vote->questiondata['description']) ?>
@@ -99,7 +99,7 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
                                         <?= htmlReady($hits) ?>
                                     </div>
                                 </div>
-                                <?= Icon::create('filter2', Icon::ROLE_CLICKABLE)->asImg(16, ['class' => 'text-bottom']) ?>
+                                <?= Icon::create('filter2')->asImg(['class' => 'text-bottom']) ?>
                                 <?= round(100 * $hits / $countAnswers) ?>%
                             </a>
                         <? else : ?>

@@ -12,7 +12,7 @@
         <? foreach ($dates as $date): ?>
             <tr>
                 <td data-sort-value="<?= htmlReady($date->date) ?>" class="date_name">
-                    <?= Icon::create('date')->asImg(['class' => 'text-bottom']) ?>
+                    <?= Icon::create('date')->asImg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>
                     <?= htmlReady($date->getFullName(CourseDate::FORMAT_VERBOSE)) ?>
                 </td>
                 <td>

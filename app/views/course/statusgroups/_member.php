@@ -37,46 +37,49 @@
         <? $actions = ActionMenu::get()->setContext($user_fullname);
            if ($is_tutor || $m->user_id !== $GLOBALS['user']->id) {
                $actions->addLink(
-            $controller->url_for('messages/write', [
-                'rec_uname'       => $m->username,
-                'default_subject' => $course_title,
-            ]),
-            _('Nachricht schicken'),
-            Icon::create('mail', 'clickable', [
-                'title' => sprintf(_('Nachricht an %s schicken'), $user_fullname),
-            ]),
-            ['data-dialog' => 'size=auto']
+                    $controller->url_for('messages/write', [
+                        'rec_uname'       => $m->username,
+                        'default_subject' => $course_title,
+                    ]),
+                    _('Nachricht schicken'),
+                    Icon::create('mail'),
+                    [
+                        'data-dialog' => 'size=auto',
+                        'title' => sprintf(_('Nachricht an %s schicken'), $user_fullname),
+                    ]
                 );
            }
            if ($is_tutor && !$is_locked) {
                 $actions->addLink(
-            $controller->url_for('course/statusgroups/move_member', $m->user_id, $group->id),
-            _('In eine andere Gruppe verschieben'),
-            Icon::create('arr_1right', 'clickable', [
-                'title' => sprintf(
-                    _('%s in eine andere Gruppe verschieben'),
+                    $controller->url_for('course/statusgroups/move_member', $m->user_id, $group->id),
+                    _('In eine andere Gruppe verschieben'),
+                    Icon::create('arr_1right'),
+                    [
+                        'data-dialog' => 'size=auto',
+                        'title' => sprintf(
+                            _('%s in eine andere Gruppe verschieben'),
                             $user_fullname
-                ),
-            ]),
-            ['data-dialog' => 'size=auto']
+                        ),
+                    ]
                 );
            }
            if ($group->id !== 'nogroup' && !$is_locked && ($is_tutor || ($m->user_id === $GLOBALS['user']->id && $group->userMayLeave($GLOBALS['user']->id)))) {
                 $actions->addLink(
-            $controller->url_for('course/statusgroups/delete_member', $m->user_id, $group->id),
-            _('Aus der Gruppe entfernen'),
-            Icon::create('trash', 'clickable', [
-                'title' => sprintf(
-                    _('%s aus Gruppe %s entfernen'),
-                    $user_fullname,
-                    $group->name
-                ),
-            ]),
-            ['data-confirm' => sprintf(
-                _('Soll %s wirklich aus der Gruppe %s entfernt werden?'),
-                $user_fullname,
-                $group->name
-                )]
+                    $controller->url_for('course/statusgroups/delete_member', $m->user_id, $group->id),
+                    _('Aus der Gruppe entfernen'),
+                    Icon::create('trash'),
+                    [
+                        'title' => sprintf(
+                            _('%s aus Gruppe %s entfernen'),
+                            $user_fullname,
+                            $group->name
+                        ),
+                        'data-confirm' => sprintf(
+                            _('Soll %s wirklich aus der Gruppe %s entfernt werden?'),
+                            $user_fullname,
+                            $group->name
+                        )
+                    ]
                 );
            }
            echo $actions;

@@ -52,7 +52,7 @@ rsort($ordered_results);
 
 <div class="description_container">
     <div class="icon_container">
-        <?= Icon::create('vote', Icon::ROLE_INFO)->asImg(20) ?>
+        <?= Icon::create('vote', Icon::ROLE_INFO) ?>
     </div>
     <div class="description">
         <?= formatReady($vote->questiondata['description']) ?>
@@ -102,7 +102,7 @@ rsort($ordered_results);
                     <a href=""
                        title="<?= _('Zeige wieder alle Ergebnisse ohne Filterung an.') ?>"
                        onclick="STUDIP.Questionnaire.removeFilter('<?= htmlReady($vote['questionnaire_id']) ?>'); return false;">
-                        <?= Icon::create('filter2', Icon::ROLE_CLICKABLE)->asImg(16, ['class' => 'text-bottom']) ?>
+                        <?= Icon::create('filter2')->asImg(['class' => 'text-bottom']) ?>
                         (<?= $percentage ?>% | <?= (int) ($results[$key] ?? 0) ?>/<?= $countAnswers ?>)
                     </a>
                 <? else : ?>

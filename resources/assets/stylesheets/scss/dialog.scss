@@ -38,7 +38,7 @@
             padding: 0;
         }
         .ui-icon {
-            @include square(16px);
+            @include square($icon-size-default);
             @include background-icon(decline, info_alt);
             background-position: 0;
             display:inline-block;
@@ -113,7 +113,7 @@
     }
 }
 .ui-dialog-titlebar-wiki {
-    @include background-icon(question-circle, info_alt, 24);
+    @include background-icon(question-circle, info_alt, 24px);
     background-position: center;
     background-repeat: no-repeat;
     display: inline-block;
@@ -151,7 +151,7 @@
         border: 0;
 
         .ui-icon, .ui-icon:hover {
-            @include background-icon(decline, clickable);
+            @include background-icon(decline);
             background-position: 0;
         }
     }
@@ -215,7 +215,7 @@
             left: 0;
             right: 50%;
 
-            @include icon(before, arr_1left, clickable, $arrow-size);
+            @include icon(before, arr_1left, $size: $arrow-size);
             &::before {
                 position: absolute;
                 left: $arrow-distance;
@@ -243,7 +243,7 @@
             right: 0;
             left: 50%;
 
-            @include icon(before, arr_1right, clickable, $arrow-size);
+            @include icon(before, arr_1right, $size: $arrow-size);
             &::before {
                 position: absolute;
                 right: $arrow-distance;
@@ -306,7 +306,7 @@ h2.dialog-subtitle {
     margin-bottom: 0.25em;
 }
 
-/* * * * * * * * * 
+/* * * * * * * * *
 v u e  d i a l o g
 * * * * * * * * */
 
@@ -395,7 +395,7 @@ v u e  d i a l o g
             background: var(--active-color) none repeat scroll 0 0;
         }
         .studip-dialog-content {
-            @include background-icon(question-circle-full, attention, 32);
+            @include background-icon(question-circle-full, attention, 32px);
         }
     }
     &.studip-dialog-warning {
@@ -404,12 +404,12 @@ v u e  d i a l o g
             background: var(--activity-color) none repeat scroll 0 0;
         }
         .studip-dialog-close-button {
-            @include background-icon(decline, clickable);
+            @include background-icon(decline);
             border: none;
             background-color: transparent;
         }
         .studip-dialog-content {
-            @include background-icon(question-circle-full, status-yellow, 32);
+            @include background-icon(question-circle-full, status-yellow, 32px);
         }
     }
 

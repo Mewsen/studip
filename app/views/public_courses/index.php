@@ -69,10 +69,10 @@
                 }
             ?>
                 <a href="<?= URLHelper::getLink('seminar_main.php?auswahl='. $id . '&redirect_to=' . str_replace('?', '&', $navigation->getURL())) ?>"<?= $badge ?>>
-                    <?= $navigation->getImage()->asImg(20, $navigation->getLinkAttributes()) ?>
+                    <?= $navigation->getImage()->asImg($navigation->getLinkAttributes()) ?>
                 </a>
             <? else: ?>
-                <?= Assets::img('blank.gif', ['width' => 20, 'height' => 20]) ?>
+                <?= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT, 'height' => Icon::SIZE_DEFAULT]) ?>
             <? endif; ?>
         <? endforeach; ?>
             </td>

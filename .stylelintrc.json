@@ -18,6 +18,7 @@
         "color-no-invalid-hex": null,
         "comment-empty-line-before": null,
         "comment-whitespace-inside": null,
+        "custom-property-empty-line-before": null,
         "declaration-bang-space-after": null,
         "declaration-bang-space-before": null,
         "declaration-block-no-duplicate-properties": null,

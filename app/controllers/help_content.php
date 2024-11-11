@@ -289,7 +289,8 @@ class HelpContentController extends AuthenticatedController
             $widget->addLink(
                 _('Hilfe-Text erstellen'),
                 $this->url_for('help_content/add'),
-                Icon::create('add', 'clickable'), ['data-dialog' => 'size=auto;reload-on-close', 'target' => '_blank']
+                Icon::create('add'),
+                ['data-dialog' => 'size=auto;reload-on-close', 'target' => '_blank']
             );
             $sidebar->addWidget($widget);
             $search = new SearchWidget('?apply_help_content_filter=1');

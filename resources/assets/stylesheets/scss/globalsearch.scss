@@ -16,8 +16,9 @@
 
     // Defines the clear icon for the input
     #globalsearch-clear {
-        @include square(16px);
-        margin-left: -22px;
+        @include square(var(--icon-size-default));
+        margin-left: -28px;
+        margin-top: -5px;
         vertical-align: middle;
     }
     &:not(.has-value) #globalsearch-clear {
@@ -95,8 +96,7 @@
 
             header {
                 color: var(--base-color);
-                margin: 5px;
-                margin-bottom: 0;
+                margin: 5px 5px 0;
             }
 
             p {
@@ -238,7 +238,7 @@
                     margin: 20px 0 0 -32px;
 
                     a {
-                        @include background-icon(arr_1right, clickable, 24);
+                        @include background-icon(arr_1right, $size: 24px);
                         @include square(24px);
                         display: inline-block;
                     }

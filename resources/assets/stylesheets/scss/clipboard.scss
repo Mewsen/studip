@@ -44,11 +44,9 @@ table.clipboard-area {
         }
         td {
             padding: 2px 5px;
-            &.item-name {
-                max-width: 160px;
-            }
-            &.action {
+            &.actions {
                 vertical-align: top;
+                white-space: nowrap;
             }
         }
     }

@@ -34,14 +34,14 @@
     <h3><?=_("Suche:")?></h3>
 
     <input type="text" name="lvgruppe_selection[search_key]" value="<?= htmlReady($this->selection->getSearchKey()) ?>">
-    <?= Icon::create('search', 'clickable')->asInput(false, ['name' => 'lvgruppe_selection[search_button]']); ?>
+    <?= Icon::create('search')->asInput(false, ['name' => 'lvgruppe_selection[search_button]']); ?>
 
     <? if ($selection->searched()) : ?>
       <a href="<?= URLHelper::getLink(isset($url) ? $url : '',
                       ['lvgruppe_selection[rewind_button]' => 1,
                             'lvgruppe_selection[last_selected]' => $selected,
                            'lvgruppe_selection[showall]' => (int) $selection->getShowAll()]) ?>">
-        <?= Icon::create('refresh', 'clickable', [])->asImg(); ?>
+        <?= Icon::create('refresh') ?>
       </a>
 
       <? if (!sizeof($selection->getSearchResult())) : ?>

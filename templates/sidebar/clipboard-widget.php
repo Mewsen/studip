@@ -35,13 +35,11 @@
         <input type="text" name="name" placeholder="<?= _('Name des neuen Merkzettels') ?>">
     </label>
 
-    <?= Icon::create(
-        'add',
-        Icon::ROLE_CLICKABLE,
-        [   'title' => _('Hinzufügen')])->asInput([
-            'name'   => 'save',
-            'id' => 'add-clipboard-button',
-            'class' => 'middle',
-            'disabled' => 'disabled'
-        ]) ?>
+    <?= Icon::create('add')->asInput([
+        'name'   => 'save',
+        'id' => 'add-clipboard-button',
+        'class' => 'middle',
+        'disabled' => 'disabled',
+        'title' => _('Hinzufügen'),
+    ]) ?>
 </form>

@@ -15,10 +15,10 @@
                 <a v-if="editable && currentNode.attributes.id !== 'root'"
                    :href="editUrl + '/' + currentNode.attributes.id"
                    @click.prevent="editNode(editUrl, currentNode.id)" data-dialog="size=medium"
-                   :title="$gettextInterpolate($gettext('%{name} bearbeiten'), {name: currentNode.attributes.name}, true)">
-                    <studip-icon shape="edit" :size="20"></studip-icon>
+                   :title="$gettextInterpolate($gettext('%{name} bearbeiten'), {name: currentNode.attributes.name}, true)"
+                >
+                    <studip-icon shape="edit"></studip-icon>
                 </a>
-
             </h1>
             <p v-if="currentNode.attributes.description?.trim() !== ''" class="studip-tree-node-info"
                v-html="currentNode.attributes['description-formatted']">

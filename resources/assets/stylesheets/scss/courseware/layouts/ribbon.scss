@@ -175,27 +175,27 @@ $consum_ribbon_width: calc(100% - 58px);
         cursor: pointer;
 
         &.cw-ribbon-button-menu {
-            @include background-icon(table-of-contents, clickable, 24);
+            @include background-icon(table-of-contents, $size: 24px);
         }
 
         &.cw-ribbon-button-prev {
-            @include background-icon(arr_1left, clickable, 24);
+            @include background-icon(arr_1left, $size: 24px);
             margin: 0 0.5em 0 0;
         }
 
         &.cw-ribbon-button-next {
-            @include background-icon(arr_1right, clickable, 24);
+            @include background-icon(arr_1right, $size: 24px);
             margin: 0 0.5em 0 0;
         }
 
         &.cw-ribbon-button-prev-disabled {
-            @include background-icon(arr_1left, inactive, 24);
+            @include background-icon(arr_1left, inactive, 24px);
             margin: 0 0.5em 0 0;
             cursor: default;
         }
 
         &.cw-ribbon-button-next-disabled {
-            @include background-icon(arr_1right, inactive, 24);
+            @include background-icon(arr_1right, inactive, 24px);
             margin: 0 0.5em 0 0;
             cursor: default;
         }
@@ -269,7 +269,7 @@ $consum_ribbon_width: calc(100% - 58px);
                 right: 0;
                 top: 12px;
                 cursor: pointer;
-                @include background-icon(decline, clickable, 24);
+                @include background-icon(decline, $size: 24px);
                 background-repeat: no-repeat;
                 background-size: 24px;
                 background-position: center right;

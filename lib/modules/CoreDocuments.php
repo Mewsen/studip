@@ -25,7 +25,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
      */
     public function oerGetIcon($role = Icon::ROLE_CLICKABLE)
     {
-        return Icon::create("file", $role);
+        return Icon::create('file', $role);
     }
 
     /**
@@ -113,7 +113,8 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
             _('Dateibereich'),
             "dispatch.php/{$range_type}/files"
         );
-        $navigation->setImage(Icon::create('files', Icon::ROLE_CLICKABLE, ['title' => _('Dateien')]));
+        $navigation->setImage(Icon::create('files'));
+        $navigation->setLinkAttributes(['title' => _('Dateien')]);
 
         $condition = "INNER JOIN folders ON (folders.id = file_refs.folder_id)
                       WHERE folders.range_type = :range_type
@@ -187,7 +188,7 @@ class CoreDocuments extends CorePlugin implements StudipModule, OERModule
                 'können Im Dateibereich bestimmte Rechte (r, w, x, f) für Studierende, wie z.B. das ' .
                 'Leserecht (r), festgelegt werden.'),
             'icon'             => Icon::create('files', Icon::ROLE_INFO),
-            'icon_clickable'   => Icon::create('files', Icon::ROLE_CLICKABLE),
+            'icon_clickable'   => Icon::create('files'),
             'screenshots'      => [
                 'path'     => 'assets/images/plus/screenshots/Dateibereich_-_Dateiordnerberechtigung',
                 'pictures' => [

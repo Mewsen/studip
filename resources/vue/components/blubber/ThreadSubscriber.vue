@@ -7,8 +7,8 @@
             :class="{ unfollowed: !followed }"
             :title="$gettext('Benachrichtigungen für diese Konversation abstellen.')"
         >
-            <StudipIcon v-if="!followed" shape="decline" :size="20" class="text-bottom"></StudipIcon>
-            <StudipIcon v-else shape="notification2" :size="20" class="text-bottom"></StudipIcon>
+            <StudipIcon v-if="!followed" shape="decline" class="text-bottom"></StudipIcon>
+            <StudipIcon v-else shape="notification2" class="text-bottom"></StudipIcon>
             {{ $gettext('Benachrichtigungen aktiviert') }}
         </a>
     </div>

@@ -10,8 +10,8 @@
        aria-pressed="<?= $unfollowed ? 'false' : 'true' ?>"
        role="button"
        data-thread_id="global">
-        <?= Icon::create("decline")->asImg(20, ['class' => "follow text-bottom"]) ?>
-        <?= Icon::create("notification2")->asImg(20, ['class' => "unfollow text-bottom"]) ?>
+        <?= Icon::create('decline')->asImg(['class' => 'follow text-bottom']) ?>
+        <?= Icon::create('notification2')->asImg(['class' => 'unfollow text-bottom']) ?>
         <?= _("Benachrichtigungen aktiviert") ?>
     </a>
 </div>

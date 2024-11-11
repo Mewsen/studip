@@ -54,11 +54,11 @@
             }
 
             .cw-dialogcards-front-no-image {
-                @include background-icon(question, navigation, 150);
+                @include background-icon(question, navigation, 150px);
             }
 
             .cw-dialogcards-back-no-image {
-                @include background-icon(exclaim, navigation, 150);
+                @include background-icon(exclaim, navigation, 150px);
             }
 
             .cw-dialogcards-front-no-image,
@@ -80,14 +80,14 @@
         }
 
         .card__face--front {
-            @include background-icon(arr_1right, clickable);
+            @include background-icon(arr_1right);
             background-color: var(--white);
             background-repeat: no-repeat;
             background-position: 95% 95%;
         }
 
         .card__face--back {
-            @include background-icon(arr_1left, clickable);
+            @include background-icon(arr_1left);
             background-color: var(--white);
             background-repeat: no-repeat;
             background-position: 5% 95%;
@@ -111,11 +111,11 @@
         cursor: pointer;
 
         &.cw-dialogcards-prev {
-            @include background-icon(arr_1left, info-alt, 24);
+            @include background-icon(arr_1left, info-alt, 24px);
         }
 
         &.cw-dialogcards-next {
-            @include background-icon(arr_1right, info-alt, 24);
+            @include background-icon(arr_1right, info-alt, 24px);
             right: 0;
         }
 

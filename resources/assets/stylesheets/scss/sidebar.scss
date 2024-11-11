@@ -1,4 +1,4 @@
-$icon-size: 16px;
+$icon-size: 20px;
 
 #sidebar {
     background: var(--white);
@@ -87,10 +87,10 @@ $icon-size: 16px;
 
     // Links inside the sidebar
     a.link-intern {
-        @include icon(before, link-intern, clickable, $icon-size, 2px);
+        @include icon(before, link-intern, $padding: 2px);
     }
     a.link-extern {
-        @include icon(before, link-extern, clickable, $icon-size, 2px);
+        @include icon(before, link-extern, $padding: 2px);
     }
 
     // Prevent selects from growing too large
@@ -114,8 +114,8 @@ ul.widget-list {
         border-left: solid 4px var(--white);
 
         > *:not(label) {
-            padding: 4px 0 4px 24px;
-            line-height: $icon-size + 1;            
+            padding: 4px 0 4px 28px;
+            line-height: $icon-size;
         }
 
         &:has(>button:not(.options-radio, .options-checkbox)), &:has(>a):not(:last-child) {
@@ -130,7 +130,7 @@ ul.widget-list {
 
         &:hover {
             background-color: var(--color--sidebar-active);
-            border-left: solid 4px var(--color--sidebar-marker-active);
+            border-left-color: var(--color--sidebar-marker-active);
 
             a, button {
                 color: var(--color--font-primary);
@@ -245,14 +245,19 @@ div#sidebar-navigation {
 
         > li {
             margin-left: 0;
-            padding-left: 2px;
+            padding-left: 0;
+            border: none;
+
+            &:hover {
+                background-color: unset;
+            }
         }
 
         .options-checkbox {
             background-repeat: no-repeat;
             background-position: 2px center;
             display: block;
-            padding-left: 24px;
+            padding-left: 28px;
 
             &.options-checked {
                 @include background-icon(checkbox-checked);
@@ -269,7 +274,7 @@ div#sidebar-navigation {
             background-repeat: no-repeat;
             background-position: 2px center;
             display: block;
-            padding-left: 24px;
+            padding-left: 28px;
 
             &.options-checked {
                 @include background-icon(radiobutton-checked);

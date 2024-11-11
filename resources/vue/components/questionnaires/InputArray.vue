@@ -39,7 +39,6 @@
                     <td class="actions">
                         <StudipIcon name="delete"
                                      shape="trash"
-                                     :size="20"
                                      @click.prevent="deleteOption(index)"
                                      :title="$gettextInterpolate($gettext('%{label} löschen'), {label}, true)"
                         />
@@ -52,7 +51,7 @@
                         <button class="as-link"
                                 :title="$gettextInterpolate($gettext('%{label} hinzufügen'),  {label}, true)"
                                 @click.prevent="addOption()">
-                            <StudipIcon shape="add" :size="20" alt="" />
+                            <StudipIcon shape="add" alt="" />
                         </button>
                     </td>
                 </tr>

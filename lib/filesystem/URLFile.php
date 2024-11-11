@@ -81,7 +81,7 @@ class URLFile extends StandardFile
         $actionMenu->addLink(
             URLHelper::getURL('dispatch.php/file/edit_urlfile/' . $this->fileref->id),
             _('Datei bearbeiten'),
-            Icon::create('edit', Icon::ROLE_CLICKABLE, ['size' => 20]),
+            Icon::create('edit'),
             ['data-dialog' => ''],
             'file-edit'
         );

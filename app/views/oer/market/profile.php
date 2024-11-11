@@ -14,7 +14,7 @@
     <section class="contentbox">
         <header>
             <h1>
-                <?= Icon::create("service", Icon::ROLE_CLICKABLE)->asImg("16px") ?>
+                <?= Icon::create('service') ?>
                 <?= _('Lernmaterialien') ?>
             </h1>
         </header>
@@ -23,4 +23,3 @@
         </section>
     </section>
 <? endif ?>
-

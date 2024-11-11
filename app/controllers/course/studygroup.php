@@ -101,7 +101,7 @@ class Course_StudygroupController extends AuthenticatedController
                 $send_from_search_page = Request::get('send_from_search_page');
             }
 
-            $icon = Icon::create('door-enter', 'clickable');
+            $icon = Icon::create('door-enter');
             if ($GLOBALS['perm']->have_studip_perm('autor', $studygroup->id) || $membership_requested) {
                 $action = _('Persönlicher Status:');
                 if ($membership_requested) {
@@ -358,7 +358,7 @@ class Course_StudygroupController extends AuthenticatedController
                                     ->setNavigationItem('/course/members')
                                     ->render();
 
-            $element = LinkElement::fromHTML($mp, Icon::create('add', 'clickable'));
+            $element = LinkElement::fromHTML($mp, Icon::create('add'));
             $actions->addElement($element);
         }
 

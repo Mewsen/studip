@@ -206,7 +206,7 @@ class LibraryFile extends StandardFile
         $action_menu->addLink(
             URLHelper::getURL(sprintf('dispatch.php/file/details/%s/1', $this->fileref->id)),
             _('Info'),
-            Icon::create('info-circle', Icon::ROLE_CLICKABLE, ['size' => 20]),
+            Icon::create('info-circle'),
             ['data-dialog' => ''],
             'file-display-info'
         );
@@ -237,14 +237,14 @@ class LibraryFile extends StandardFile
                 $action_menu->addLink(
                     URLHelper::getURL('dispatch.php/library_file/edit/' . $this->fileref->id),
                     _('Bearbeiten'),
-                    Icon::create('edit', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                    Icon::create('edit'),
                     ['data-dialog' => 'size=auto']
                 );
             }
             $action_menu->addButton(
                 'delete',
                 _('Datei löschen'),
-                Icon::create('trash', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                Icon::create('trash'),
                 [
                     'formaction'   => URLHelper::getURL("dispatch.php/file/delete/{$this->fileref->id}"),
                     'data-confirm' => sprintf(_('Soll die Datei "%s" wirklich gelöscht werden?'), $this->fileref->name),

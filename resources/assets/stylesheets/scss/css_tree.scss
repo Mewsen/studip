@@ -52,7 +52,7 @@ $css-tree-border: 1px solid var(--light-gray-color-80);
     input[type=checkbox] {
         display: none;
         + label {
-            @include icon(before, arr_1right, clickable);
+            @include icon(before, arr_1right);
             cursor: pointer;
 
             &:before {

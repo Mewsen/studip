@@ -32,14 +32,14 @@
             border: none;
             background-color: var(--white);
             padding: 64px 10px 4px 10px;
-            @include background-icon(unit-test, clickable, 48);
+            @include background-icon(unit-test, $size: 48px);
             background-position: 16px 10px;
             background-repeat: no-repeat;
             cursor: pointer;
 
             @each $item, $icon in $blockadder-items {
                 &.cw-blockadder-item-#{$item} {
-                    @include background-icon($icon, clickable, 48);
+                    @include background-icon($icon, $size: 48px);
                 }
             }
             .cw-blockadder-item-title {
@@ -87,7 +87,7 @@
         background-color: var(--white);
         min-height: 5em;
         padding: 1em 1em 1em 6em;
-        @include background-icon(unit-test, clickable, 48);
+        @include background-icon(unit-test, $size: 48px);
         background-position: 16px center;
         background-repeat: no-repeat;
         text-align: left;
@@ -96,7 +96,7 @@
 
         @each $item, $icon in $containeradder-items {
             &.cw-containeradder-item-#{$item} {
-                @include background-icon($icon, clickable, 48);
+                @include background-icon($icon, $size: 48px);
             }
         }
 
@@ -127,13 +127,13 @@
         cursor: pointer;
 
         &.full {
-            @include background-icon(column-full, clickable, 32);
+            @include background-icon(column-full, $size: 32px);
         }
         &.half {
-            @include background-icon(column-half, clickable, 32);
+            @include background-icon(column-half, $size: 32px);
         }
         &.half-center {
-            @include background-icon(column-half-centered, clickable, 32);
+            @include background-icon(column-half-centered, $size: 32px);
         }
         &:hover {
             color: var(--active-color);
@@ -189,7 +189,7 @@
         .cw-clipboard-item {
             width: calc(100% - 36px);
             padding: 64px 10px 4px 10px;
-            @include background-icon(unit-test, clickable, 48);
+            @include background-icon(unit-test, $size: 48px);
             background-position: 16px 10px;
             background-repeat: no-repeat;
             cursor: pointer;
@@ -200,12 +200,12 @@
 
             @each $item, $icon in $blockadder-items {
                 &.cw-clipboard-item-#{$item} {
-                    @include background-icon($icon, clickable, 48);
+                    @include background-icon($icon, $size: 48px);
                 }
             }
             @each $item, $icon in $containeradder-items {
                 &.cw-clipboard-item-#{$item} {
-                    @include background-icon($icon, clickable, 48);
+                    @include background-icon($icon, $size: 48px);
                 }
             }
 

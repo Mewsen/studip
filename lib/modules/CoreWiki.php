@@ -88,7 +88,8 @@ class CoreWiki extends CorePlugin implements StudipModule
             $nav->setBadgeNumber($new_pages);
         } else {
             $nav->setURL('dispatch.php/course/wiki/page');
-            $nav->setImage(Icon::create('wiki', Icon::ROLE_CLICKABLE, [
+            $nav->setImage(Icon::create('wiki'));
+            $nav->setLinkAttributes([
                 'title' => sprintf(
                     ngettext(
                         '%d Wiki-Seite',
@@ -97,7 +98,7 @@ class CoreWiki extends CorePlugin implements StudipModule
                     ),
                     count($wiki_page_ids)
                 )
-            ]));
+            ]);
         }
         return $nav;
     }
@@ -161,7 +162,7 @@ class CoreWiki extends CorePlugin implements StudipModule
                                     'PDF-Datei ist integriert.'),
             'category' => _('Kommunikation und Zusammenarbeit'),
             'icon' => Icon::create('wiki', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('wiki', Icon::ROLE_CLICKABLE),
+            'icon_clickable' => Icon::create('wiki'),
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Wiki-Web',
                 'pictures' => [

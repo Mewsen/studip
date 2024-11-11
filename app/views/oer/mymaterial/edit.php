@@ -31,8 +31,6 @@
                         <header>
                             <h1>
                                 <studip-icon shape="file"
-                                             role="clickable"
-                                             :size="20"
                                              class="text-bottom"></studip-icon>
                                 <div class="title">{{ name }}</div>
                             </h1>
@@ -204,13 +202,13 @@
                         <a href="#"
                            @click.prevent="removeTag(index)"
                            title="<?= _('Thema aus der Liste streichen') ?>">
-                            <studip-icon shape="trash" role="clickable" :size="20" class="text-bottom"></studip-icon>
+                            <studip-icon shape="trash" class="text-bottom"></studip-icon>
                         </a>
 
                     </li>
                 </ul>
                 <a href="#" @click.prevent="addTag">
-                    <studip-icon shape="add" role="clickable" :size="20" class="text-bottom"></studip-icon>
+                    <studip-icon shape="add" class="text-bottom"></studip-icon>
                     <?= _('Thema hinzufügen') ?>
                 </a>
             </div>

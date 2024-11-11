@@ -32,8 +32,8 @@
                                 <? $actionMenu->addLink(
                                     $controller->action_url('abschnitt/' . $abschnitt->id),
                                     _('Studiengangteil-Abschnitt bearbeiten'),
-                                    Icon::create('edit', Icon::ROLE_CLICKABLE, tooltip2(_('Studiengangteil-Abschnitt bearbeiten'))),
-                                    ['data-dialog' => true])
+                                    Icon::create('edit'),
+                                    tooltip2(_('Studiengangteil-Abschnitt bearbeiten')) + ['data-dialog' => true])
                                 ?>
                             <? endif; ?>
                             <? if (MvvPerm::haveFieldPermAbschnitte($version, MvvPerm::PERM_CREATE)) : ?>
@@ -41,8 +41,8 @@
                                     <? $actionMenu->addButton(
                                         'delete',
                                         _('Studiengangteil-Abschnitt löschen'),
-                                        Icon::create('trash', Icon::ROLE_CLICKABLE, tooltip2(_('Studiengangteil-Abschnitt löschen'))),
-                                        [
+                                        Icon::create('trash'),
+                                        tooltip2(_('Studiengangteil-Abschnitt löschen')) + [
                                             'formaction'   => $controller->action_url('delete_abschnitt/' . $abschnitt->id),
                                             'data-confirm' => sprintf(_('Wollen Sie den Studiengangteil-Abschnitt "%s" wirklich löschen?'), $abschnitt->getDisplayName())
                                         ]

@@ -7,7 +7,7 @@
     <article v-else class="studip-tree-table">
         <table v-if="courses.length > 0" class="default studip-tree-table">
             <caption>
-                <studip-icon shape="search" :size="20"></studip-icon>
+                <studip-icon shape="search"></studip-icon>
                 {{ $gettextInterpolate($ngettext('Ein Eintrag für den Begriff "%{searchterm}" gefunden',
                     '%{count} Einträge für den Begriff "%{searchterm}" gefunden', courses.length),
                     { count: courses.length, searchterm: searchConfig.searchterm}) }}

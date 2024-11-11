@@ -109,7 +109,8 @@ class MyRealmModel
                 ]));
                 $nav->setBadgeNumber($neue);
             } else if ($count) {
-                $nav->setImage(Icon::create('vote', Icon::ROLE_CLICKABLE, [
+                $nav->setImage(Icon::create('vote'));
+                $nav->setLinkAttributes([
                     'title' => sprintf(
                         ngettext(
                             '%u Fragebogen',
@@ -118,7 +119,7 @@ class MyRealmModel
                         ),
                         $count
                     )
-                ]));
+                ]);
             }
             return $nav;
         }

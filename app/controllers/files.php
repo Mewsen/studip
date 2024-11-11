@@ -66,7 +66,7 @@ class FilesController extends AuthenticatedController
         $sources->addLink(
             _("Stud.IP-Dateien"),
             $this->url_for("files/index"),
-            Icon::create("files", "clickable")
+            Icon::create('files')
         );
         foreach (PluginManager::getInstance()->getPlugins(FilesystemPlugin::class) as $plugin) {
             if ($plugin->isPersonalFileArea()) {
@@ -87,24 +87,23 @@ class FilesController extends AuthenticatedController
             $actions->addLink(
                 _('Ordner bearbeiten'),
                 $this->url_for('file/edit_folder/'.$folder->getId()),
-                Icon::create("edit", "clickable"),
-                ['data-dialog' => 1]
-            );
+                Icon::create('edit')
+            )->asDialog();
         }
 
         if ($folder->isSubfolderAllowed($GLOBALS['user']->id)) {
             $actions->addLink(
                 _('Neuer Ordner'),
                 URLHelper::getUrl('dispatch.php/file/new_folder/' . $folder->getId()),
-                Icon::create('folder-empty', 'clickable'), ['data-dialog' => 1]
-            );
+                Icon::create('folder-empty')
+            )->asDialog();
         }
 
         if ($folder->isWritable($GLOBALS['user']->id)) {
             $actions->addLink(
                 _('Dokument hinzufügen'),
                 '#',
-                Icon::create('add', 'clickable'),
+                Icon::create('add'),
                 ['onClick' => "STUDIP.Files.openAddFilesWindow(); return false;"]
             );
         }
@@ -127,7 +126,7 @@ class FilesController extends AuthenticatedController
                 $actions->addLink(
                     _('Dateibereiche konfigurieren'),
                     $this->url_for('files/configure'),
-                    Icon::create('admin', 'clickable')
+                    Icon::create('admin')
                 )->asDialog();
             } else {
                 $actions->addLink(

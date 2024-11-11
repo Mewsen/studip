@@ -49,8 +49,8 @@
                     background-position: left bottom;
 
                     display: inline-block;
-                    height: 16px;
-                    width: 16px;
+                    height: var(--icon-size-inline);
+                    width: var(--icon-size-inline);
                     margin-bottom: -2px;
                     padding-left: 4px;
                     content: '';
@@ -71,7 +71,7 @@
                     width: 24px;
                     content: '';
 
-                    @include background-icon($icon, clickable, 24);
+                    @include background-icon($icon, $size: 24px);
                     background-repeat: no-repeat;
                     background-position: center;
                 }
@@ -79,7 +79,7 @@
             &.is-active.cw-tabs-nav-icon-solo-#{$icon},
             &.cw-tabs-nav-icon-solo-#{$icon}:hover {
                 &::before {
-                    @include background-icon($icon, info);
+                    @include background-icon($icon, info, 24px);
                 }
             }
         }

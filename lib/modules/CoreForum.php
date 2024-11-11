@@ -61,11 +61,12 @@ class CoreForum extends CorePlugin implements ForumModule
 
         $navigation = new Navigation('forum', 'dispatch.php/course/forum/index/enter_seminar');
         $navigation->setBadgeNumber($num_entries);
+        $navigation->setLinkAttributes(['title' => $text]);
 
         if ($num_entries > 0) {
-            $navigation->setImage(Icon::create('forum', Icon::ROLE_ATTENTION, ['title' => $text]));
+            $navigation->setImage(Icon::create('forum', Icon::ROLE_ATTENTION));
         } else {
-            $navigation->setImage(Icon::create('forum', Icon::ROLE_CLICKABLE, ['title' => $text]));
+            $navigation->setImage(Icon::create('forum'));
         }
 
         return $navigation;
@@ -196,7 +197,7 @@ class CoreForum extends CorePlugin implements ForumModule
             'category' => _('Kommunikation und Zusammenarbeit'),
             'keywords' => _('Möglichkeit zum intensiven, nachhaltigen textbasierten Austausch; (nachträgliche) Strukturierung der Beiträge; Editierfunktion für Lehrende'),
             'icon' => Icon::create('forum', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('forum', Icon::ROLE_CLICKABLE),
+            'icon_clickable' => Icon::create('forum'),
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Forum',
                 'pictures' => [

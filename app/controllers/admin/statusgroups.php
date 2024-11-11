@@ -68,14 +68,16 @@ class Admin_StatusgroupsController extends AuthenticatedController
         $sidebar = Sidebar::get();
         if ($this->tutor) {
             $widget = new ActionsWidget();
-            $widget->addLink(_('Neue Gruppe anlegen'),
-                             $this->url_for('admin/statusgroups/editGroup'),
-                             Icon::create('add', 'clickable'))
-                   ->asDialog('size=auto');
-            $widget->addLink(_('Gruppenreihenfolge ändern'),
-                             $this->url_for('admin/statusgroups/sortGroups'),
-                             Icon::create('arr_2down', 'clickable'))
-                   ->asDialog();
+            $widget->addLink(
+                _('Neue Gruppe anlegen'),
+                $this->url_for('admin/statusgroups/editGroup'),
+                Icon::create('add')
+            )->asDialog('size=auto');
+            $widget->addLink(
+                _('Gruppenreihenfolge ändern'),
+                $this->url_for('admin/statusgroups/sortGroups'),
+                Icon::create('arr_2down')
+            )->asDialog();
             $sidebar->addWidget($widget);
         }
         // Collect all groups

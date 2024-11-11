@@ -74,7 +74,7 @@
                 <?=$ldap_options;?>
                 </select><br>
                 <?=_("Authentifizierungsplugin (nur LDAP/Shibboleth) beim Anlegen von externen Accounts übernehmen.");?>
-                <?=Icon::create('info-circle', 'inactive', ['title' => _("Wählen Sie hier ein Authentifizierungsplugin, damit neu angelegte ILIAS-Accounts den entsprechenden Authentifizierungsmodus erhalten, wenn dieser Modus auch für den vorhandenen Stud.IP-Account gilt. Andernfalls erhalten alle ILIAS-Accounts den default-Modus")])->asImg(16);?>
+                <?=Icon::create('info-circle', Icon::ROLE_INACTIVE)->asImg(['title' => _("Wählen Sie hier ein Authentifizierungsplugin, damit neu angelegte ILIAS-Accounts den entsprechenden Authentifizierungsmodus erhalten, wenn dieser Modus auch für den vorhandenen Stud.IP-Account gilt. Andernfalls erhalten alle ILIAS-Accounts den default-Modus")]);?>
             <? else : ?>
                 <br><?=_("(Um diese Einstellung zu nutzen muss zumindest ein Authentifizierungsplugin aktiviert sein.)");?>
                 <input type="hidden" name="ilias_ldap_enable" value="">

@@ -325,38 +325,3 @@ export default {
     },
 };
 </script>
-<style lang="scss">
-@import '../../assets/stylesheets/mixins.scss';
-
-.course-admin {
-    .course-completion {
-        @include hide-text();
-        @include square(16px);
-        background-repeat: no-repeat;
-        display: block;
-    }
-
-    th .course-completion {
-        @include background-icon(radiobutton-checked, clickable);
-    }
-
-    td .course-completion {
-        @include background-icon(span-empty, status-red);
-
-        &[data-course-completion="1"] {
-            @include background-icon(span-2quarter, status-yellow);
-        }
-        &[data-course-completion="2"] {
-            @include background-icon(span-full, status-green);
-        }
-
-        &.ajaxing {
-            background-image: url("#{$image-path}/loading-indicator.svg");
-        }
-    }
-    > tbody.loading > tr > td {
-        opacity: 0.5;
-    }
-}
-
-</style>

@@ -53,26 +53,26 @@ button.button {
         background-repeat: no-repeat;
         content: " ";
         float: left;
-        height: 16px;
+        height: var(--icon-size-button);
         margin: 1px 10px 0 0;
-        width: 16px;
+        width: var(--icon-size-button);
     }
 }
 
 @mixin button-with-icon($icon, $role, $roleOnHover) {
     @extend .button-with-empty-icon;
     &::before {
-        @include background-icon($icon, $role);
+        @include background-icon($icon, $role, $icon-size-button);
     }
 
     &:hover::before {
-        @include background-icon($icon, $roleOnHover);
+        @include background-icon($icon, $roleOnHover, $icon-size-button);
     }
 
     &.disabled,
     &[disabled] {
         &:hover::before {
-            @include background-icon($icon, $role);
+            @include background-icon($icon, $role, $icon-size-button);
         }
     }
 }
@@ -95,7 +95,7 @@ $button-icons: (
 @each $class, $icon in $button-icons {
     .button {
         &.#{'' + $class} {
-            padding-right: 20px;
+            padding-right: ($icon-size-button + 4px);
             @include button-with-icon($icon, clickable, info_alt);
             &.disabled, &[disabled] {
                 @include button-with-icon($icon, inactive, inactive);

@@ -47,11 +47,11 @@ $password_tooltip_text = (string)Config::get()->PASSWORD_TOOLTIP_TEXT;
             >
 
             <i id="password-toggle" tabindex="0" role="button" class="enter-accessible">
-                <?= Icon::create('visibility-checked')->asImg(20, [
+                <?= Icon::create('visibility-checked')->asImg([
                     'id   ' => 'visible-password',
                     'title' => _('Passwort anzeigen'),
                 ]) ?>
-                <?= Icon::create('visibility-invisible')->asImg(20, [
+                <?= Icon::create('visibility-invisible')->asImg([
                     'id'    => 'invisible-password',
                     'style' => 'display: none',
                     'title' => _('Passwort verstecken'),

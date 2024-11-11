@@ -27,7 +27,7 @@
     <a href="<?= URLHelper::getURL('dispatch.php/userfilter/filter/configure/prefadmission_conditions') ?>"
        onclick="return STUDIP.UserFilter.configureCondition('condition', '<?=
             URLHelper::getLink('dispatch.php/userfilter/filter/configure/prefadmission_conditions') ?>')">
-        <?= Icon::create('add', 'clickable', ['title' => _('Bedingung hinzufügen')])->asImg(16, ["alt" => _('Bedingung hinzufügen')]) ?>
+        <?= Icon::create('add')->asImg(['title' => _('Bedingung hinzufügen'), 'alt' => _('Bedingung hinzufügen')]) ?>
         <?= _('Bedingung hinzufügen') ?>
     </a>
 </div>

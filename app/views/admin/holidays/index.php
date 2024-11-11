@@ -58,9 +58,10 @@
             </td>
             <td class="actions">
                 <a data-dialog="size=auto" href="<?= $controller->url_for('admin/holidays/edit/' . $holiday->id) ?>">
-                    <?= Icon::create('edit', 'clickable', ['title' => _('Ferienangaben bearbeiten')])->asImg() ?>
+                    <?= Icon::create('edit')->asImg(['title' => _('Ferienangaben bearbeiten')]) ?>
                 </a>
-                <?= Icon::create('trash', 'clickable', ['title' => _('Ferien löschen')])->asInput([
+                <?= Icon::create('trash')->asInput([
+                    'title' => _('Ferien löschen'),
                     'formaction'   => $controller->url_for('admin/holidays/delete/' . $holiday->id),
                     'data-confirm' => _('Sollen die Ferien wirklich gelöscht werden?'),
                     'class' => 'text-bottom',

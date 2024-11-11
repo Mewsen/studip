@@ -15,16 +15,16 @@
         <? endif ?>
 
         <a href="javascript:STUDIP.Forum.cut('<?= $area['topic_id'] ?>');" data-role="cut">
-        <?= Icon::create('export', 'clickable')->asImg() ?>
+        <?= Icon::create('export') ?>
         </a>
 
 
         <a href="javascript:STUDIP.Forum.cancelCut('<?= $area['topic_id'] ?>');" data-role="cancel_cut" style="display: none">
-        <?= Icon::create('export', 'attention')->asImg() ?>
+        <?= Icon::create('export', Icon::ROLE_ATTENTION) ?>
         </a>
 
         <a href="javascript:STUDIP.Forum.paste('<?= $area['topic_id'] ?>');" data-role="paste" style="display: none">
-        <?= Icon::create('arr_2left', 'sort')->asImg() ?>
+        <?= Icon::create('arr_2left', Icon::ROLE_SORT) ?>
         </a>
     </li>
 </ul>

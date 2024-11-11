@@ -15,7 +15,7 @@
             <? if (Request::get("tag")) : ?>
                 <?= ', ' . _('Schlagwort') . ': ' . htmlReady(ucfirst(Request::get('tag'))) ?>
                 <button onClick="STUDIP.Dialog.confirmAsPost('<?=_('Schlagwort wirklich löschen?')?>', '<?=$controller->link_for('messages/delete_tag', ['tag' => Request::get('tag')])?>');return false;" style="background: none; border: none; cursor: pointer;" title="<?= _("Schlagwort von allen Nachrichten entfernen.") ?>">
-                    <?= Icon::create('trash', 'clickable')->asImg(20) ?>
+                    <?= Icon::create('trash') ?>
                 </button>
             <? endif ?>
         </caption>
@@ -90,7 +90,7 @@
 
 
 <div style="display: none; background-color: rgba(255,255,255, 0.3); padding: 3px; border-radius: 5px; border: thin solid black;" id="move_handle">
-    <?= Icon::create('mail', 'clickable')->asImg(20, ['class' => "text-bottom"]) ?>
+    <?= Icon::create('mail')->asImg(['class' => "text-bottom"]) ?>
     <span class="title"></span>
 </div>
 

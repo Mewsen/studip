@@ -35,13 +35,13 @@
         <?= tooltipIcon(_('Geben Sie bitte einen Namen ein und klicken Sie auf das Plus-Symbol um eine neue Raumgruppe zu erstellen.')) ?>
         <input type="text" name="name" placeholder="<?= _('Name der neuen Raumgruppe') ?>">
 
-        <?= Icon::create('add', Icon::ROLE_CLICKABLE,
-            [   'title' => _('Hinzufügen')])->asInput([
-                'name'   => 'save',
-                'id' => 'add-clipboard-button',
-                'class' => 'middle',
-                'disabled' => 'disabled'
-            ]) ?>
+        <?= Icon::create('add')->asInput([
+            'name'   => 'save',
+            'id' => 'add-clipboard-button',
+            'class' => 'middle',
+            'disabled' => 'disabled',
+            'title' => _('Hinzufügen'),
+        ]) ?>
     </label>
 
 </form>

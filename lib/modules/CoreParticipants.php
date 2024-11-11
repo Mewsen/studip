@@ -42,7 +42,7 @@ class CoreParticipants extends CorePlugin implements StudipModule
                 $first_nav = reset($sub_nav);
 
                 $navigation = new Navigation($first_nav->getTitle(), $first_nav->getURL());
-                $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
+                $navigation->setImage(Icon::create('persons'));
                 return $navigation;
 
             }
@@ -59,7 +59,7 @@ class CoreParticipants extends CorePlugin implements StudipModule
         }
 
         $navigation = new Navigation(_('Teilnehmende'), $url);
-        $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
+        $navigation->setImage(Icon::create('persons'));
 
         // Check permission, show no indicator if not at least tutor
         if (!$GLOBALS['perm']->have_studip_perm('tutor', $course_id, $user_id)) {
@@ -186,7 +186,7 @@ class CoreParticipants extends CorePlugin implements StudipModule
                                    'bzw. einzelne Teilnehmende separat anzuschreiben.'),
             'category' => _('Lehr- und Lernorganisation'),
             'icon' => Icon::create('persons', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('persons', Icon::ROLE_CLICKABLE),
+            'icon_clickable' => Icon::create('persons'),
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/TeilnehmerInnen',
                 'pictures' => [

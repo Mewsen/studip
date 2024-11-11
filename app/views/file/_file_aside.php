@@ -49,7 +49,7 @@
             <tr>
                 <td colspan="2">
                     <h3><?=_('Hinweis zur Nutzung und Weitergabe:')?></h3>
-                    <?= Icon::create($content_terms_of_use->icon, Icon::ROLE_INFO)->asImg(20) ?>
+                    <?= Icon::create($content_terms_of_use->icon, Icon::ROLE_INFO) ?>
                     <article><?= htmlReady($content_terms_of_use->student_description) ?></article>
 
                     <? if ($content_terms_of_use->download_condition) : ?>

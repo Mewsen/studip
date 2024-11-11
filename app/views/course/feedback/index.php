@@ -103,13 +103,13 @@
                         $actionMenu->addLink(
                             $controller->link_for('course/feedback/edit_form/' . $feedback->id),
                             _('Bearbeiten'),
-                            Icon::create('edit', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                            Icon::create('edit'),
                             ['data-dialog' => '']
                         );
                         $actionMenu->addLink(
                             $controller->link_for('course/feedback/delete/' . $feedback->id),
                             _('Löschen'),
-                            Icon::create('trash', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                            Icon::create('trash'),
                             ['onclick' => "return STUDIP.Dialog.confirmAsPost('" . _('Feedback-Element und dazugehörige Einträge löschen?') . "', this.href);"]
                         );
                     ?>

@@ -79,7 +79,7 @@ form.default {
     }
 
     input[list] {
-        @include background-icon(arr_1down, clickable);
+        @include background-icon(arr_1down);
 
         background-repeat: no-repeat;
         background-position: center right 4px;
@@ -276,7 +276,7 @@ form.default {
     //Special inputs
 
     label.file-upload {
-        @include background-icon(upload, clickable);
+        @include background-icon(upload);
 
         background-repeat: no-repeat;
         background-position: top left;
@@ -396,7 +396,7 @@ form.default {
     fieldset.collapsable {
         > legend {
             box-sizing: border-box;
-            @include background-icon(arr_1down, clickable, 20);
+            @include background-icon(arr_1down);
             background-position: 6px center;
             background-repeat: no-repeat;
             cursor: pointer;
@@ -405,7 +405,7 @@ form.default {
 
         &.collapsed {
             > legend {
-                @include background-icon(arr_1right, clickable, 20);
+                @include background-icon(arr_1right);
                 margin-bottom: 0;
             }
             padding-bottom: 0;
@@ -510,7 +510,7 @@ form.default {
 
     &.show_validation_hints {
         :invalid, .invalid {
-           @include icon(before, exclaim-circle, attention, 16px, 5px);
+           @include icon(before, exclaim-circle, attention, $padding: 5px);
             display: inline-block;
         }
         textarea:invalid, input[type=text]:invalid {

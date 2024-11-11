@@ -46,10 +46,11 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
 
         $icon = $changed
               ? Icon::create('link-extern', Icon::ROLE_NEW)
-              : Icon::create('link-extern', Icon::ROLE_CLICKABLE);
+              : Icon::create('link-extern');
 
         $navigation = new Navigation($title, 'dispatch.php/course/lti');
-        $navigation->setImage($icon->copyWithAttributes(['title' => $title]));
+        $navigation->setImage($icon);
+        $navigation->setLinkAttributes(['title' => $title]);
 
         return $navigation;
     }
@@ -112,7 +113,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
             'category' => _('Kommunikation und Zusammenarbeit'),
             'keywords' => _('Einbindung von LTI-Tools (Version 1.x)'),
             'icon' => Icon::create('link-extern', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('link-extern', Icon::ROLE_CLICKABLE),
+            'icon_clickable' => Icon::create('link-extern'),
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Lti',
                 'pictures' => [

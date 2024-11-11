@@ -51,7 +51,7 @@
             <? if (count($themen)) : ?>
                 <? foreach ($themen as $thema) : ?>
                     <h3>
-                        <?= Icon::create('topic', Icon::ROLE_INFO)->asImg(20, ['class' => "text-bottom"]) ?>
+                        <?= Icon::create('topic', Icon::ROLE_INFO)->asImg(['class' => "text-bottom"]) ?>
                         <?= htmlReady($thema['title']) ?>
                     </h3>
                     <div>

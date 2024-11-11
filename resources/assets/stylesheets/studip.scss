@@ -590,7 +590,7 @@ a.new-member {
  */
 details.studip {
     summary {
-        @include icon(before, arr_1right, clickable);
+        @include icon(before, arr_1right);
         cursor: pointer;
 
         &::before {
@@ -606,7 +606,7 @@ details.studip {
 
     &[open] {
         summary {
-            @include icon(before, arr_1down, clickable);
+            @include icon(before, arr_1down);
         }
     }
 
@@ -614,4 +614,14 @@ details.studip {
 
 mark {
     background-color: var(--activity-color-60);
+}
+
+.studip-icon {
+    width: var(--icon-size-default);
+    height: var(--icon-size-default);
+}
+
+.studip-icon-inline {
+    width: var(--icon-size-inline);
+    height: var(--icon-size-inline);
 }

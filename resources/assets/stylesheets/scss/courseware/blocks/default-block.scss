@@ -32,7 +32,8 @@
     }
 
     img {
-        vertical-align: text-bottom;
+        vertical-align: middle;
+        margin-bottom: 2px;
     }
 
     .cw-block-actions {
@@ -99,7 +100,7 @@
 }
 
 .cw-file-empty {
-    @include background-icon(file, info, 96);
+    @include background-icon(file, info, 96px);
     border: solid thin var(--content-color-40);
     background-position: center 1em;
     background-repeat: no-repeat;

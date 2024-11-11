@@ -8,7 +8,7 @@
 
 a.message-tag {
     white-space: nowrap;
-    @include icon(before, tag, clickable);
+    @include icon(before, tag);
 }
 
 #statusbar_container {

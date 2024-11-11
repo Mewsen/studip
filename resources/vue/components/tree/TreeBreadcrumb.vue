@@ -40,7 +40,7 @@
             </div>
             <button v-if="assignable" type="submit" class="assign-button"
                     :title="$gettext('Diesen Eintrag zuweisen')">
-                <studip-icon shape="arr_2right" :size="20"></studip-icon>
+                <studip-icon shape="arr_2right"></studip-icon>
             </button>
             <studip-action-menu v-if="editable" :items="actionMenuItems()"
                                 @add-tree-node="addNode" @edit-tree-node="editNode" @delete-tree-node="deleteNode"/>

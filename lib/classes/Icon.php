@@ -11,37 +11,41 @@
  */
 class Icon implements JsonSerializable
 {
-    const SVG = 1;
-    const CSS_BACKGROUND = 4;
-    const INPUT = 256;
+    public const SVG = 1;
+    public const CSS_BACKGROUND = 4;
+    public const INPUT = 256;
 
-    const DEFAULT_SIZE = 16;
-    const DEFAULT_COLOR = 'blue';
-    const DEFAULT_ROLE = 'clickable';
+    public const SIZE_DEFAULT = 20;
+    public const SIZE_INLINE = 16;
+    public const SIZE_BUTTON = self::SIZE_INLINE;
+    public const SIZE_FILES_TABLE = 26;
+    public const SIZE_LARGE = 32;
 
-    const ROLE_INFO          = 'info';
-    const ROLE_CLICKABLE     = 'clickable';
-    const ROLE_ACCEPT        = 'accept';
-    const ROLE_STATUS_GREEN  = 'status-green';
-    const ROLE_INACTIVE      = 'inactive';
-    const ROLE_NAVIGATION    = 'navigation';
-    const ROLE_NEW           = 'new';
-    const ROLE_ATTENTION     = 'attention';
-    const ROLE_STATUS_RED    = 'status-red';
-    const ROLE_INFO_ALT      = 'info_alt';
-    const ROLE_SORT          = 'sort';
-    const ROLE_STATUS_YELLOW = 'status-yellow';
+    public const DEFAULT_COLOR = 'blue';
+    public const DEFAULT_ROLE = 'clickable';
 
+    public const ROLE_INFO          = 'info';
+    public const ROLE_CLICKABLE     = 'clickable';
+    public const ROLE_ACCEPT        = 'accept';
+    public const ROLE_STATUS_GREEN  = 'status-green';
+    public const ROLE_INACTIVE      = 'inactive';
+    public const ROLE_NAVIGATION    = 'navigation';
+    public const ROLE_NEW           = 'new';
+    public const ROLE_ATTENTION     = 'attention';
+    public const ROLE_STATUS_RED    = 'status-red';
+    public const ROLE_INFO_ALT      = 'info_alt';
+    public const ROLE_SORT          = 'sort';
+    public const ROLE_STATUS_YELLOW = 'status-yellow';
 
-    protected $shape;
-    protected $role;
-    protected $attributes = [];
+    protected string $shape;
+    protected string $role;
+    protected array $attributes = [];
 
 
     /**
      * This is the magical Role to Color mapping.
      */
-    private static $roles_to_colors = [
+    private static array $roles_to_colors = [
         self::ROLE_INFO          => 'black',
         self::ROLE_CLICKABLE     => 'blue',
         self::ROLE_ACCEPT        => 'green',
@@ -213,7 +217,7 @@ class Icon implements JsonSerializable
     public function asImg($size = null, $view_attributes = [])
     {
         if (is_array($size)) {
-            list($view_attributes, $size) = [$size, null];
+            [$view_attributes, $size] = [$size, null];
         }
         return sprintf(
             '<img %s>',
@@ -235,7 +239,7 @@ class Icon implements JsonSerializable
     public function asInput($size = null, $view_attributes = [])
     {
         if (is_array($size)) {
-            list($view_attributes, $size) = [$size, null];
+            [$view_attributes, $size] = [$size, null];
         }
         return sprintf(
             '<input type="image" %s>',
@@ -253,18 +257,20 @@ class Icon implements JsonSerializable
      */
     public function asCSS($size = null)
     {
+        $size = $this->get_size($size);
+
         if (self::isStatic($this->shape)) {
             return sprintf(
                 'background-image:url(%1$s);background-size:%2$upx %2$upx;',
                 $this->shapeToPath($this->shape),
-                $this->get_size($size)
+                $size
             );
         }
 
         return sprintf(
-            'background-image:url(%1$s);background-size:%2$upx %2$upx;',
+            'background-image:url(%1$s);background-size:%2$s %2$s;',
             $this->get_asset_svg(),
-            $this->get_size($size)
+            $size === self::SIZE_DEFAULT ? 'var(--icon-size-default)' : "{$size}px"
         );
     }
 
@@ -322,33 +328,36 @@ class Icon implements JsonSerializable
      * @param array $attributes Additional attributes
      * @return Array containing the merged attributes
      */
-    private function prepareHTMLAttributes($size, $attributes)
+    private function prepareHTMLAttributes($size, array $attributes)
     {
-        $dimensions = [];
+        $html_attributes = HTMLAttributes::merge($this->attributes, $attributes);
+
         if ($size !== false) {
             $size = $this->get_size($size);
-            $dimensions = ['width'  => $size, 'height' => $size];
+            if ($size !== self::SIZE_DEFAULT && $size !== self::SIZE_INLINE) {
+                $html_attributes['style'] = "width: {$size}px; height: {$size}px";
+            }
         }
 
-        $result = array_merge($this->attributes, $attributes, $dimensions, [
-            'src' => self::isStatic($this->shape) ? $this->shape : $this->get_asset_svg(),
-        ]);
+        $html_attributes['src'] = self::isStatic($this->shape) ? $this->shape : $this->get_asset_svg();
 
-        if (!isset($result['alt']) && !isset($result['title'])) {
+        if (!isset($html_attributes['alt']) && !isset($html_attributes['title'])) {
             //Add an empty alt attribute to prevent screen readers from
             //reading the URL of the icon:
-            $result['alt'] = '';
+            $html_attributes['alt'] = '';
         }
 
-        $classNames = 'icon-role-' . $this->role;
+        $html_attributes['class'] = ['studip-icon', "icon-role-{$this->role}"];
+
+        if ((int)$size === self::SIZE_INLINE) {
+            $html_attributes['class'] = 'studip-icon-inline';
+        }
 
         if (!self::isStatic($this->shape)) {
-            $classNames .= ' icon-shape-' . $this->shapeToPath($this->shape);
+            $html_attributes['class'] = 'icon-shape-' . $this->shapeToPath($this->shape);
         }
 
-        $result['class'] = isset($result['class']) ? $result['class'] . ' ' . $classNames : $classNames;
-
-        return $result;
+        return $html_attributes->getAttributes();
     }
 
     /**
@@ -371,7 +380,7 @@ class Icon implements JsonSerializable
      */
     protected function get_size($size)
     {
-        $size = $size ?: Icon::DEFAULT_SIZE;
+        $size = $size ?: Icon::SIZE_DEFAULT;
         if (isset($this->attributes['size'])) {
             $parts =  explode('@', $this->attributes['size'], 2);
             $size = $parts[0];

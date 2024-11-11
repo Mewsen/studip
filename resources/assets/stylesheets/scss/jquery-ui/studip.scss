@@ -158,6 +158,8 @@ textarea.ui-resizable-handle.ui-resizable-s {
 
 .ui-datepicker-header .ui-icon {
     background-image: url(../images/vendor/jquery-ui/ui-icons_ffffff_256x240.png);
+    height: $icon-size-inline;
+    width: $icon-size-inline;
 }
 
 .ui-datepicker-calendar .ui-state-active {
@@ -176,7 +178,7 @@ textarea.ui-resizable-handle.ui-resizable-s {
 .has-date-picker,
 [data-datetime-picker],
 .has-datetime-picker {
-    @include background-icon(schedule, clickable, 20px);
+    @include background-icon(schedule);
     background-position: right 3px center;
     background-repeat: no-repeat;
     min-width: 12ex;
@@ -188,7 +190,7 @@ textarea.ui-resizable-handle.ui-resizable-s {
 .hasTimepicker,
 [data-time-picker],
 .has-time-picker {
-    @include background-icon(date, clickable, 20px);
+    @include background-icon(date);
     background-position: right 3px center;
     background-repeat: no-repeat;
     min-width: 10ex;

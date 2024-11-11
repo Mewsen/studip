@@ -956,7 +956,7 @@ class MessagesController extends AuthenticatedController {
             $actions->addLink(
                 _('Alle als gelesen markieren'),
                 $this->url_for('messages/overview', ['read_all' => 1]),
-                Icon::create('accept', 'clickable')
+                Icon::create('accept')
             );
         }
 

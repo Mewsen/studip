@@ -123,11 +123,8 @@
                         <? $actionMenu->addLink(
                             $controller->url_for('course/members/cancel_subscription/singleuser/' . $waiting_type . '/' . $waiting['user_id']),
                             _('Aus Veranstaltung austragen'),
-                            Icon::create(
-                                'door-leave',
-                                'clickable',
-                                ['title' => sprintf(_('%s austragen'), $fullname)]
-                            )
+                            Icon::create('door-leave'),
+                            ['title' => sprintf(_('%s austragen'), $fullname)]
                         ) ?>
                     <? endif ?>
                     <?= $actionMenu->render() ?>

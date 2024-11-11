@@ -48,8 +48,18 @@
             </select>
         </td>
         <td>
-        <?= Icon::create('accept', 'accept', ['title' => _('Änderungen speichern')])->asInput(["type" => "image", "class" => "middle", "name" => "ok"]) ?>
-        <?= Icon::create('decline', 'attention', ['title' => _('Abbrechen')])->asInput(['type' => "image", 'class' => "middle", 'name' => "cancel"]) ?>
+            <?= Icon::create('accept', Icon::ROLE_ACCEPT)->asInput([
+                'title' => _('Änderungen speichern'),
+                'type'  => 'image',
+                'class' => 'middle',
+                'name'  => 'ok',
+            ]) ?>
+            <?= Icon::create('decline', Icon::ROLE_ATTENTION)->asInput([
+                'title' => _('Abbrechen'),
+                'type'  => 'image',
+                'class' => 'middle',
+                'name' => 'cancel',
+            ]) ?>
         </td>
     <? else : ?>
         <td>
@@ -66,10 +76,10 @@
         </td>
         <td>
           <a href="<?= $controller->url_for('admin/webservice_access/edit/'.$rule->id.'#edit') ?>">
-            <?= Icon::create('edit', 'clickable', ['title' => _('bearbeiten')])->asImg() ?>
+            <?= Icon::create('edit')->asImg(['title' => _('bearbeiten')]) ?>
           </a>
           <a href="<?= $controller->url_for('admin/webservice_access/delete/'.$rule->id) ?>">
-              <?= Icon::create('trash', 'clickable', ['title' => _('löschen')])->asImg() ?>
+              <?= Icon::create('trash')->asImg(['title' => _('löschen')]) ?>
           </a>
         </td>
     <? endif;?>
@@ -81,7 +91,15 @@
 $sidebar = Sidebar::Get();
 
 $actions = new ActionsWidget();
-$actions->addLink(_('Regeln testen'),$controller->url_for('admin/webservice_access/test'), Icon::create('unit-test', 'clickable'));
-$actions->addLink(_('Neue Zugriffsregel anlegen'),$controller->url_for('admin/webservice_access/new'), Icon::create('add', 'clickable'));
+$actions->addLink(
+    _('Regeln testen'),
+    $controller->url_for('admin/webservice_access/test'),
+    Icon::create('unit-test')
+);
+$actions->addLink(
+    _('Neue Zugriffsregel anlegen'),
+    $controller->url_for('admin/webservice_access/new'),
+    Icon::create('add')
+);
 
 $sidebar->addWidget($actions);

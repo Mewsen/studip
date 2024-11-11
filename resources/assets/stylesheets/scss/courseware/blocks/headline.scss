@@ -3,9 +3,9 @@
 @import '../variables.scss';
 
 $big-icon-size: 196;
-$big-icon-size-px: $big-icon-size + px;
+$big-icon-size-px: $big-icon-size * 1px;
 $large-icon-size: 128;
-$large-icon-size-px: $large-icon-size + px;
+$large-icon-size-px: $large-icon-size * 1px;
 
 .cw-block-headline {
     .cw-block-headline-content {
@@ -66,25 +66,25 @@ $large-icon-size-px: $large-icon-size + px;
 
                 @each $icon in $icons {
                     &.icon-black-#{$icon} {
-                        @include background-icon($icon, info, $big-icon-size);
+                        @include background-icon($icon, info, $big-icon-size-px);
                     }
                     &.icon-white-#{$icon} {
-                        @include background-icon($icon, info-alt, $big-icon-size);
+                        @include background-icon($icon, info-alt, $big-icon-size-px);
                     }
                     &.icon-studip-blue-#{$icon} {
-                        @include background-icon($icon, clickable, $big-icon-size);
+                        @include background-icon($icon, $size: $big-icon-size-px);
                     }
                     &.icon-studip-red-#{$icon} {
-                        @include background-icon($icon, status-red, $big-icon-size);
+                        @include background-icon($icon, status-red, $big-icon-size-px);
                     }
                     &.icon-studip-yellow-#{$icon} {
-                        @include background-icon($icon, status-yellow, $big-icon-size);
+                        @include background-icon($icon, status-yellow, $big-icon-size-px);
                     }
                     &.icon-studip-green-#{$icon} {
-                        @include background-icon($icon, status-green, $big-icon-size);
+                        @include background-icon($icon, status-green, $big-icon-size-px);
                     }
                     &.icon-studip-gray-#{$icon} {
-                        @include background-icon($icon, inactive, $big-icon-size);
+                        @include background-icon($icon, inactive, $big-icon-size-px);
                     }
                 }
 
@@ -155,25 +155,25 @@ $large-icon-size-px: $large-icon-size + px;
 
                 @each $icon in $icons {
                     &.icon-black-#{$icon} {
-                        @include background-icon($icon, info, $big-icon-size);
+                        @include background-icon($icon, info, $big-icon-size-px);
                     }
                     &.icon-white-#{$icon} {
-                        @include background-icon($icon, info-alt, $big-icon-size);
+                        @include background-icon($icon, info-alt, $big-icon-size-px);
                     }
                     &.icon-studip-blue-#{$icon} {
-                        @include background-icon($icon, clickable, $big-icon-size);
+                        @include background-icon($icon, $size: $big-icon-size-px);
                     }
                     &.icon-studip-red-#{$icon} {
-                        @include background-icon($icon, status-red, $big-icon-size);
+                        @include background-icon($icon, status-red, $big-icon-size-px);
                     }
                     &.icon-studip-yellow-#{$icon} {
-                        @include background-icon($icon, status-yellow, $big-icon-size);
+                        @include background-icon($icon, status-yellow, $big-icon-size-px);
                     }
                     &.icon-studip-green-#{$icon} {
-                        @include background-icon($icon, status-green, $big-icon-size);
+                        @include background-icon($icon, status-green, $big-icon-size-px);
                     }
                     &.icon-studip-gray-#{$icon} {
-                        @include background-icon($icon, inactive, $big-icon-size);
+                        @include background-icon($icon, inactive, $big-icon-size-px);
                     }
                 }
 
@@ -377,25 +377,25 @@ $large-icon-size-px: $large-icon-size + px;
 
                     @each $icon in $icons {
                         &.icon-black-#{$icon} {
-                            @include background-icon($icon, info, 128);
+                            @include background-icon($icon, info, 128px);
                         }
                         &.icon-white-#{$icon} {
-                            @include background-icon($icon, info-alt, 128);
+                            @include background-icon($icon, info-alt, 128px);
                         }
                         &.icon-studip-blue-#{$icon} {
-                            @include background-icon($icon, clickable, 128);
+                            @include background-icon($icon, $size: 128px);
                         }
                         &.icon-studip-red-#{$icon} {
-                            @include background-icon($icon, status-red, 128);
+                            @include background-icon($icon, status-red, 128px);
                         }
                         &.icon-studip-yellow-#{$icon} {
-                            @include background-icon($icon, status-yellow, 128);
+                            @include background-icon($icon, status-yellow, 128px);
                         }
                         &.icon-studip-green-#{$icon} {
-                            @include background-icon($icon, status-green, 128);
+                            @include background-icon($icon, status-green, 128px);
                         }
                         &.icon-studip-gray-#{$icon} {
-                            @include background-icon($icon, inactive, 128);
+                            @include background-icon($icon, inactive, 128px);
                         }
                     }
 
@@ -511,25 +511,25 @@ $large-icon-size-px: $large-icon-size + px;
 
                     @each $icon in $icons {
                         &.icon-black-#{$icon} {
-                            @include background-icon($icon, info, 98);
+                            @include background-icon($icon, info, 98px);
                         }
                         &.icon-white-#{$icon} {
-                            @include background-icon($icon, info-alt, 98);
+                            @include background-icon($icon, info-alt, 98px);
                         }
                         &.icon-studip-blue-#{$icon} {
-                            @include background-icon($icon, clickable, 98);
+                            @include background-icon($icon, $size: 98px);
                         }
                         &.icon-studip-red-#{$icon} {
-                            @include background-icon($icon, status-red, 98);
+                            @include background-icon($icon, status-red, 98px);
                         }
                         &.icon-studip-yellow-#{$icon} {
-                            @include background-icon($icon, status-yellow, 98);
+                            @include background-icon($icon, status-yellow, 98px);
                         }
                         &.icon-studip-green-#{$icon} {
-                            @include background-icon($icon, status-green, 98);
+                            @include background-icon($icon, status-green, 98px);
                         }
                         &.icon-studip-gray-#{$icon} {
-                            @include background-icon($icon, inactive, 98);
+                            @include background-icon($icon, inactive, 98px);
                         }
                     }
 
@@ -565,25 +565,25 @@ $large-icon-size-px: $large-icon-size + px;
                     background-position: 0 center;
                     @each $icon in $icons {
                         &.icon-black-#{$icon} {
-                            @include background-icon($icon, info, 92);
+                            @include background-icon($icon, info, 92px);
                         }
                         &.icon-white-#{$icon} {
-                            @include background-icon($icon, info-alt, 92);
+                            @include background-icon($icon, info-alt, 92px);
                         }
                         &.icon-studip-blue-#{$icon} {
-                            @include background-icon($icon, clickable, 92);
+                            @include background-icon($icon, $size: 92px);
                         }
                         &.icon-studip-red-#{$icon} {
-                            @include background-icon($icon, status-red, 92);
+                            @include background-icon($icon, status-red, 92px);
                         }
                         &.icon-studip-yellow-#{$icon} {
-                            @include background-icon($icon, status-yellow, 92);
+                            @include background-icon($icon, status-yellow, 92px);
                         }
                         &.icon-studip-green-#{$icon} {
-                            @include background-icon($icon, status-green, 92);
+                            @include background-icon($icon, status-green, 92px);
                         }
                         &.icon-studip-gray-#{$icon} {
-                            @include background-icon($icon, inactive, 92);
+                            @include background-icon($icon, inactive, 92px);
                         }
                     }
                 }

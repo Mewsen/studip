@@ -658,7 +658,7 @@ class Fullcalendar
                         $('<a>').attr('href', url).text(renderInfo.resource.title)
                     );
                 } else if ($("*[data-fullcalendar='1']").hasClass('institute-plan') && renderInfo.resource.id > 0) {
-                    let icon = '<img class="text-bottom icon-role-clickable icon-shape-edit" width="16" height="16" src="' + STUDIP.URLHelper.getURL('assets/images/icons/blue/edit.svg') + '" alt="edit">';
+                    let icon = '<img class="text-bottom icon-role-clickable icon-shape-edit" width="20" height="20" src="' + STUDIP.URLHelper.getURL('assets/images/icons/blue/edit.svg') + '" alt="edit">';
                     $(renderInfo.el).append(
                         '<a href="'
                         + STUDIP.URLHelper.getURL('dispatch.php/admin/courseplanning/rename_column/'

@@ -50,11 +50,11 @@
     }
 
     .studip-selection-selected .studip-selection-label {
-        @include icon(before, radiobutton-checked, clickable);
+        @include icon(before, radiobutton-checked);
     }
 
     .studip-selection-selectable .studip-selection-label {
-        @include icon(before, radiobutton-unchecked, clickable);
+        @include icon(before, radiobutton-unchecked);
     }
 
     .studip-selection-image + .studip-selection-label {
@@ -66,14 +66,14 @@
     .studip-selection-selected li:hover {
         .studip-selection-image,
         .studip-selection-label::before {
-            @include background-icon(remove-circle-full, clickable);
+            @include background-icon(remove-circle-full);
         }
     }
 
     .studip-selection-selectable li:hover {
         .studip-selection-image,
         .studip-selection-label::before {
-            @include background-icon(add-circle-full, clickable);
+            @include background-icon(add-circle-full);
         }
     }
 

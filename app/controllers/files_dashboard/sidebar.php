@@ -23,7 +23,7 @@ trait Sidebar
         $actions->addLink(
             _('Datei hinzufügen'),
             $this->url_for('file/choose_destination/upload'),
-            \Icon::create('add', 'clickable'),
+            \Icon::create('add'),
             ['data-dialog' => 'size=auto']
         );
 

@@ -116,7 +116,7 @@ class PublicCoursesController extends AuthenticatedController
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
             if (isset($seminars[$row['range_id']]['navigations']['CoreDocuments'])) {
                 $nav = new Navigation('files', 'dispatch.php/course/files/index');
-                $nav->setImage(Icon::create('files', Icon::ROLE_CLICKABLE, ["title" => sprintf(_('%s Dokumente'), $row['count'])]));
+                $nav->setImage(Icon::create('files', attributes: ['title' => sprintf(_('%s Dokumente'), $row['count'])]));
                 $seminars[$row['range_id']]['navigations']['CoreDocuments'] = $nav;
             }
         }
@@ -133,7 +133,7 @@ class PublicCoursesController extends AuthenticatedController
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
             if (isset($seminars[$row['range_id']]['navigations']['CoreOverview'])) {
                 $nav = new Navigation('news', '');
-                $nav->setImage(Icon::create('news', Icon::ROLE_CLICKABLE, ["title" => sprintf(_('%s Ankündigungen'),$row['count'])]));
+                $nav->setImage(Icon::create('news', attributes: ['title' => sprintf(_('%s Ankündigungen'), $row['count'])]));
                 $seminars[$row['range_id']]['navigations']['CoreOverview'] = $nav;
             }
         }
@@ -148,7 +148,7 @@ class PublicCoursesController extends AuthenticatedController
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
             if (isset($seminars[$row['range_id']]['navigations']['CoreScm'])) {
                 $nav = new Navigation('scm', 'dispatch.php/course/scm');
-                $nav->setImage(Icon::create('infopage', Icon::ROLE_CLICKABLE, ["title" => sprintf(_('%s Einträge'), $row['count'])]));
+                $nav->setImage(Icon::create('infopage', attributes: ['title' => sprintf(_('%s Einträge'), $row['count'])]));
                 $seminars[$row['range_id']]['navigations']['CoreScm'] = $nav;
             }
         }
@@ -163,7 +163,7 @@ class PublicCoursesController extends AuthenticatedController
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
             if (isset($seminars[$row['range_id']]['navigations']['CoreSchedule'])) {
                 $nav = new Navigation('schedule', 'dispatch.php/course/dates');
-                $nav->setImage(Icon::create('schedule', Icon::ROLE_CLICKABLE, ["title" => sprintf(_('%s Termine'), $row['count'])]));
+                $nav->setImage(Icon::create('schedule', attributes: ['title' => sprintf(_('%s Termine'), $row['count'])]));
                 $seminars[$row['range_id']]['navigations']['CoreSchedule'] = $nav;
             }
         }
@@ -183,7 +183,7 @@ class PublicCoursesController extends AuthenticatedController
                         'wiki',
                         URLHelper::getURL('dispatch.php/course/wiki/page', ['cid' => $row['range_id']])
                     );
-                    $nav->setImage(Icon::create('wiki', Icon::ROLE_CLICKABLE, ["title" => sprintf(_('%s WikiSeiten'), $row['count'])]));
+                    $nav->setImage(Icon::create('wiki', attributes: ['title' => sprintf(_('%s WikiSeiten'), $row['count'])]));
                     $seminars[$row['range_id']]['navigations']['CoreWiki'] = $nav;
                 }
             }
@@ -202,7 +202,7 @@ class PublicCoursesController extends AuthenticatedController
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
                 if (isset($seminars[$row['range_id']]['navigations']['vote'])) {
                     $nav = new Navigation('vote', '#vote');
-                    $nav->setImage(Icon::create('vote', Icon::ROLE_CLICKABLE, ["title" => sprintf(_('%s Umfrage(n)'), $row['count'])]));
+                    $nav->setImage(Icon::create('vote', attributes: ['title' => sprintf(_('%s Umfrage(n)'), $row['count'])]));
                     $seminars[$row['range_id']]['navigations']['vote'] = $nav;
                 }
             }

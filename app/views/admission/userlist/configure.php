@@ -92,7 +92,7 @@ Helpbar::get()->addPlainText(_('Info'), "Stellen Sie hier ein, wie die Chancen b
                                 $userlist_id, $u->id) ?>" class="userlist-delete-user"
                                 data-confirm="<?= sprintf(_('Soll %s wirklich von der Liste entfernt werden?'),
                                     htmlReady($u->getFullName())) ?>">
-                                <?= Icon::create('trash', 'clickable') ?>
+                                <?= Icon::create('trash') ?>
                             </a>
                         </td>
                     </tr>

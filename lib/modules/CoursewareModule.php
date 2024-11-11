@@ -109,9 +109,8 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
         $new = $statement->fetchColumn();
 
         $nav = new Navigation(_('Courseware'), 'dispatch.php/course/courseware');
-        $nav->setImage(Icon::create('courseware', Icon::ROLE_CLICKABLE, [
-            'title' => _('Courseware'),
-        ]));
+        $nav->setImage(Icon::create('courseware'));
+        $nav->setLinkAttributes(['title' => _('Courseware')]);
 
         if ($new > 0) {
             if ($new === 1) {
@@ -120,10 +119,9 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
             } else {
                 $text =  _('neue Seiten');
             }
-            $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION, [
-                'title' => $new . ' ' . $text,
-            ]));
-            $nav->setBadgeNumber("$new");
+            $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION));
+            $nav->setLinkAttributes(['title' => $new . ' ' . $text]);
+            $nav->setBadgeNumber($new);
         }
 
         return $nav;
@@ -149,7 +147,7 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModule
             'displayname' => _('Courseware'),
             'category' => _('Lehr- und Lernorganisation'),
             'icon' => Icon::create('courseware', 'info'),
-            'icon_clickable' => Icon::create('courseware', Icon::ROLE_CLICKABLE),
+            'icon_clickable' => Icon::create('courseware'),
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Courseware',
                 'pictures' => [

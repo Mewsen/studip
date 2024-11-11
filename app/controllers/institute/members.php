@@ -605,9 +605,8 @@ class Institute_MembersController extends AuthenticatedController
                 $actions->addLink(
                     _('Stud.IP Rundmail'),
                     $this->url_for('messages/write', ['inst_id' => $this->institute->id, 'emailrequest' => 1]),
-                    Icon::create('mail', 'clickable'),
-                    ['data-dialog' => 'size=50%']
-                );
+                    Icon::create('mail')
+                )->asDialog('size=50%');
             }
 
             $sidebar->addWidget($actions);

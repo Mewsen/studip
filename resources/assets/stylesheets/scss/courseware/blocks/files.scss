@@ -30,7 +30,7 @@
     }
 
     .cw-block-folder-download-icon {
-        @include background-icon(download, clickable, 24);
+        @include background-icon(download, $size: 24px);
         background-repeat: no-repeat;
         float: right;
         height: 24px;
@@ -52,7 +52,7 @@
 
 // for folder and download block
 .cw-block-file-info {
-    @include background-icon(file, clickable, 24);
+    @include background-icon(file, $size: 24px);
     background-repeat: no-repeat;
     display: block;
     padding: 16px 16px 16px 40px;
@@ -64,91 +64,91 @@
 
     &.cw-block-file-icon-empty {
         color: var(--black);
-        @include background-icon(folder-empty, info, 24);
+        @include background-icon(folder-empty, info, 24px);
     }
 
     &.cw-block-file-icon-none {
         color: var(--black);
-        @include background-icon(file, info, 24);
+        @include background-icon(file, info, 24px);
     }
 
     &.cw-block-file-icon-audio {
-        @include background-icon(file-audio, clickable, 24);
+        @include background-icon(file-audio, $size: 24px);
 
         &.download-disabled {
-            @include background-icon(file-audio, info, 24);
+            @include background-icon(file-audio, info, 24px);
         }
     }
 
     &.cw-block-file-icon-pic {
-        @include background-icon(file-pic, clickable, 24);
+        @include background-icon(file-pic, $size: 24px);
 
         &.download-disabled {
-            @include background-icon(file-pic, info, 24);
+            @include background-icon(file-pic, info, 24px);
         }
     }
 
     &.cw-block-file-icon-video {
-        @include background-icon(file-video, clickable, 24);
+        @include background-icon(file-video, $size: 24px);
 
         &.download-disabled {
-            @include background-icon(file-video, info, 24);
+            @include background-icon(file-video, info, 24px);
         }
     }
 
     &.cw-block-file-icon-pdf {
-        @include background-icon(file-pdf, clickable, 24);
+        @include background-icon(file-pdf, $size: 24px);
 
         &.download-disabled {
-            @include background-icon(file-pdf, info, 24);
+            @include background-icon(file-pdf, info, 24px);
         }
     }
 
     &.cw-block-file-icon-word {
-        @include background-icon(file-word, clickable, 24);
+        @include background-icon(file-word, $size: 24px);
 
         &.download-disabled {
-            @include background-icon(file-word, info, 24);
+            @include background-icon(file-word, info, 24px);
         }
     }
 
     &.cw-block-file-icon-spreadsheet {
-        @include background-icon(file-excel, clickable, 24);
+        @include background-icon(file-excel, $size: 24px);
 
         &.download-disabled {
-            @include background-icon(file-excel, info, 24);
+            @include background-icon(file-excel, info, 24px);
         }
     }
 
     &.cw-block-file-icon-text {
-        @include background-icon(file-text, clickable, 24);
+        @include background-icon(file-text, $size: 24px);
 
         &.download-disabled {
-            @include background-icon(file-text, info, 24);
+            @include background-icon(file-text, info, 24px);
         }
     }
 
     &.cw-block-file-icon-ppt {
-        @include background-icon(file-ppt, clickable, 24);
+        @include background-icon(file-ppt, $size: 24px);
 
         &.download-disabled {
-            @include background-icon(file-ppt, info, 24);
+            @include background-icon(file-ppt, info, 24px);
         }
     }
 
     &.cw-block-file-icon-archive {
-        @include background-icon(file-archive, clickable, 24);
+        @include background-icon(file-archive, $size: 24px);
 
         &.download-disabled {
-            @include background-icon(file-archive, info, 24);
+            @include background-icon(file-archive, info, 24px);
         }
     }
 
     &.cw-block-file-icon-file {
-        @include background-icon(file, clickable, 24);
+        @include background-icon(file, $size: 24px);
 
         &.download-disabled {
-            @include background-icon(file, info, 24);
+            @include background-icon(file, info, 24px);
         }
     }
 }
@@ -181,7 +181,7 @@
             }
 
             .cw-block-download-download-icon {
-                @include background-icon(download, clickable, 24);
+                @include background-icon(download, $size: 24px);
                 background-repeat: no-repeat;
                 float: right;
                 height: 24px;

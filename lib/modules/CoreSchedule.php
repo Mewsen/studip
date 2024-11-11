@@ -51,7 +51,8 @@ class CoreSchedule extends CorePlugin implements StudipModule
             ]));
             $nav->setBadgeNumber($result['neue']);
         } else {
-            $nav->setImage(Icon::create('schedule', Icon::ROLE_CLICKABLE, [
+            $nav->setImage(Icon::create('schedule'));
+            $nav->setLinkAttributes([
                 'title' => sprintf(
                     ngettext(
                         '%d Termin',
@@ -60,7 +61,7 @@ class CoreSchedule extends CorePlugin implements StudipModule
                     ),
                     $result['count']
                 )
-            ]));
+            ]);
         }
         return $nav;
     }
@@ -106,7 +107,7 @@ class CoreSchedule extends CorePlugin implements StudipModule
                                     'inhaltlichen Einstimmung der Studierenden können Lehrende den Terminen ' .
                                     'Themen hinzufügen, die z. B. eine Kurzbeschreibung der Inhalte darstellen.'),
             'icon' => Icon::create('schedule', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('schedule', Icon::ROLE_CLICKABLE),
+            'icon_clickable' => Icon::create('schedule'),
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Ablaufplan',
                 'pictures' => [

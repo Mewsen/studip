@@ -49,7 +49,7 @@ class CoreScm extends CorePlugin implements StudipModule
 
         if ($result['count']) {
             if ($result['neue']) {
-                $image = Icon::create('infopage', Icon::ROLE_NEW);
+                $nav->setImage(Icon::create('infopage', Icon::ROLE_NEW));
                 $nav->setBadgeNumber($result['neue']);
                 if ($result['count'] == 1) {
                     $title = $scm->tab_name . _(' (geändert)');
@@ -61,7 +61,7 @@ class CoreScm extends CorePlugin implements StudipModule
                     );
                 }
             } else {
-                $image = Icon::create('infopage', Icon::ROLE_CLICKABLE);
+                $nav->setImage(Icon::create('infopage'));
                 if ($result['count'] == 1) {
                     $title = $scm->tab_name;
                 } else {
@@ -75,7 +75,7 @@ class CoreScm extends CorePlugin implements StudipModule
                     );
                 }
             }
-            $nav->setImage($image, ['title' => $title]);
+            $nav->setLinkAttributes(['title' => $title]);
         }
         return $nav;
     }
@@ -139,7 +139,7 @@ class CoreScm extends CorePlugin implements StudipModule
                                     'Literatur. Sie kann aber auch für andere beliebige Zusatzinformationen (Links, Protokolle '.
                                     'etc.) verwendet werden.'),
             'icon' => Icon::create('infopage', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('infopage', Icon::ROLE_CLICKABLE),
+            'icon_clickable' => Icon::create('infopage'),
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Freie_Informationsseite',
                 'pictures' => [

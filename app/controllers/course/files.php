@@ -54,16 +54,15 @@ class Course_FilesController extends AuthenticatedController
             $actions->addLink(
                 _("Ordner bearbeiten"),
                 $this->url_for("file/edit_folder/".$this->topFolder->getId()),
-                Icon::create("edit", "clickable"),
-                ['data-dialog' => 1]
-            );
+                Icon::create('edit')
+            )->asDialog();
         }
 
         if ($this->topFolder && $this->topFolder->isSubfolderAllowed($GLOBALS['user']->id)) {
             $actions->addLink(
                 _('Neuer Ordner'),
                 URLHelper::getUrl('dispatch.php/file/new_folder/' . $this->topFolder->getId()),
-                Icon::create('folder-empty', 'clickable')
+                Icon::create('folder-empty')
             )->asDialog();
 
         }
@@ -71,7 +70,7 @@ class Course_FilesController extends AuthenticatedController
             $actions->addLink(
                 _('Dokument hinzufügen'),
                 '#',
-                Icon::create('add', 'clickable'),
+                Icon::create('add'),
                 ['onclick' => "STUDIP.Files.openAddFilesWindow(); return false;"]
             );
         }
@@ -164,7 +163,7 @@ class Course_FilesController extends AuthenticatedController
         $actions->addLink(
             _('Neue Dateien herunterladen'),
             $this->url_for('course/files/newest_files'),
-            Icon::create('download', 'clickable'),
+            Icon::create('download'),
             ['cid' => $this->course->id]
         );
         $actions->addLink(

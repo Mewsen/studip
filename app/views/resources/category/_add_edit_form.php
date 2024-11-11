@@ -76,7 +76,7 @@
                                         ) ?>
                                     <? else : ?>
                                         <a title="<?= _('Löschen') ?>" class="delete-action">
-                                            <?= Icon::create('trash')->asImg(20) ?>
+                                            <?= Icon::create('trash') ?>
                                         </a>
                                     <? endif ?>
                                 </td>
@@ -103,7 +103,7 @@
                                 </td>
                                 <td class="actions">
                                     <a title="<?= _('Löschen') ?>" class="delete-action">
-                                        <?= Icon::create('trash')->asImg(20) ?>
+                                        <?= Icon::create('trash') ?>
                                     </a>
                                 </td>
                             </tr>
@@ -127,7 +127,7 @@
                         </td>
                         <td class="actions">
                             <a title="<?= _('Löschen') ?>" class="delete-action">
-                                <?= Icon::create('trash')->asImg(20) ?>
+                                <?= Icon::create('trash') ?>
                             </a>
                         </td>
                     </tr>
@@ -143,7 +143,7 @@
                                     </option>
                                 <? endforeach ?>
                             </select>
-                            <?= Icon::create('add')->asImg(20, ['class' => 'add-action']) ?>
+                            <?= Icon::create('add')->asImg(['class' => 'add-action']) ?>
                         </td>
                     </tr>
                 </tfoot>

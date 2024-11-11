@@ -6,7 +6,7 @@
 ?>
 <div class="description_container">
     <div class="icon_container">
-        <?= Icon::create('guestbook', Icon::ROLE_INFO)->asImg(20) ?>
+        <?= Icon::create('guestbook', Icon::ROLE_INFO) ?>
     </div>
     <div class="description">
         <?= formatReady($vote->questiondata['description']) ?>

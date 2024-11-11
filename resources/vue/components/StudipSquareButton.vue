@@ -40,9 +40,8 @@ $size: 130px;
     cursor: pointer;
 
     img {
-        width: 100%;
         height: 50px;
-        margin-bottom: 8px;
+        margin: 0 auto 8px auto;
     }
     span {
         color: var(--base-color);

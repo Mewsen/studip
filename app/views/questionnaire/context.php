@@ -41,7 +41,7 @@
                             <a href="<?= URLHelper::getLink("seminar_main.php", ['auswahl' => $course->getId()]) ?>">
                                 <?= htmlReady((Config::get()->IMPORTANT_SEMNUMBER ? $course->veranstaltungsnummer." " : "").$course->name. ' ('.$course->semester_text.')') ?>
                             </a>
-                            <?= Icon::create("trash", "clickable")->asimg("20px", ['class' => "text-bottom", 'title' => _("Zuweisung zur Veranstaltung aufheben.")]) ?>
+                            <?= Icon::create('trash')->asimg(['class' => 'text-bottom', 'title' => _('Zuweisung zur Veranstaltung aufheben.')]) ?>
                         </span>
                     </label>
                 </li>
@@ -63,7 +63,7 @@
                                 <a href="<?= URLHelper::getLink("seminar_main.php", ['auswahl' => $statusgruppe->getId()]) ?>">
                                     <?= htmlReady($statusgruppe->course['name'].": ".$statusgruppe->name) ?>
                                 </a>
-                                <?= Icon::create("trash", "clickable")->asimg("20px", ['class' => "text-bottom", 'title' => _("Zuweisung zur Veranstaltung aufheben.")]) ?>
+                                <?= Icon::create('trash')->asimg(['class' => 'text-bottom', 'title' => _('Zuweisung zur Veranstaltung aufheben.')]) ?>
                             </span>
                         </label>
                     </li>

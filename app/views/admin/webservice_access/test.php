@@ -38,7 +38,15 @@ use Studip\Button, Studip\LinkButton;
 $sidebar = Sidebar::Get();
 
 $actions = new ActionsWidget();
-$actions->addLink(_('Liste der Zugriffsregeln'),$controller->url_for('admin/webservice_access'), Icon::create('add', 'clickable'));
-$actions->addLink(_('Neue Zugriffsregel anlegen'),$controller->url_for('admin/webservice_access/new'), Icon::create('add', 'clickable'));
+$actions->addLink(
+    _('Liste der Zugriffsregeln'),
+    $controller->url_for('admin/webservice_access'),
+    Icon::create('add')
+);
+$actions->addLink(
+    _('Neue Zugriffsregel anlegen'),
+    $controller->url_for('admin/webservice_access/new'),
+    Icon::create('add')
+);
 
 $sidebar->addWidget($actions);

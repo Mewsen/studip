@@ -15,7 +15,7 @@
                 <th colspan="2" nowrap align="center">
                     <a href="<?= URLHelper::getLink('dispatch.php/my_courses/groups/all/true') ?>"
                        data-dialog="size=normal">
-                        <?= Icon::create('group', 'clickable', ['title' => _('Gruppe ändern'), 'class' => 'middle'])->asImg(20) ?>
+                        <?= Icon::create('group')->asImg(['title' => _('Gruppe ändern'), 'class' => 'middle']) ?>
                     </a>
                 </th>
                 <th><?= _('Name') ?></th>

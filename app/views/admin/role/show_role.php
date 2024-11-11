@@ -155,7 +155,7 @@ use Studip\Button;
                         htmlReady($role->getRolename())) ?>
             <div class="actions">
                 <a href="<?= $controller->url_for('admin/role/add_plugin/' . $roleid) ?>" data-dialog="size=auto">
-                    <?= Icon::create('add', 'clickable') ?>
+                    <?= Icon::create('add') ?>
                     <?= _('Plugins hinzufügen') ?>
                 </a>
             </div>
@@ -203,10 +203,11 @@ use Studip\Button;
                 </td>
                 <td><?= implode(', ', $plugin['type']) ?></td>
                 <td class="actions">
-                    <?= Icon::create('trash', 'clickable', ['title' => _('Rolle entziehen')])
-                            ->asInput([
-                                "data-confirm" => _('Soll diesem Plugin wirklich die Rolle entzogen werden?'),
-                                "formaction" => $controller->url_for('admin/role/remove_plugin/'.$roleid.'/'.$plugin['id'])]) ?>
+                    <?= Icon::create('trash')->asInput([
+                        'title'        => _('Rolle entziehen'),
+                        'data-confirm' => _('Soll diesem Plugin wirklich die Rolle entzogen werden?'),
+                        'formaction'   => $controller->url_for('admin/role/remove_plugin/'.$roleid.'/'. $plugin['id'])
+                    ]) ?>
                 </td>
             </tr>
         <? endforeach; ?>
@@ -217,7 +218,7 @@ use Studip\Button;
                 <td colspan="6">
                     <?= _('Alle markierten Einträge') ?>
                     <?= Studip\Button::create(_('Löschen'), 'delete', [
-                            'data-confirm' => _('Sollen den markierten Plugins wirklich die Rolle entzogen werden?'),
+                        'data-confirm' => _('Sollen den markierten Plugins wirklich die Rolle entzogen werden?'),
                     ]) ?>
                 </td>
             </tr>

@@ -64,7 +64,7 @@ div.at_least_one_teacher {
 
             // Show visual toggle indicator
             header h1 a {
-                @include icon(before, arr_1right, clickable);
+                @include icon(before, arr_1right);
             }
 
             &.open {

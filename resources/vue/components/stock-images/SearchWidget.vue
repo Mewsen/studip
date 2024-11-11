@@ -17,7 +17,7 @@
                                 class="reset-search as-link"
                                 :title="$gettext('Suchformular zurücksetzen')"
                             >
-                                <studip-icon shape="decline" :size="20" role="presentation" alt="" />
+                                <studip-icon shape="decline" role="presentation" alt="" />
                             </button>
                             <button
                                 type="submit"
@@ -26,7 +26,7 @@
                                 class="submit-search"
                                 :title="$gettext('Suche starten')"
                             >
-                                <studip-icon shape="search" :size="20" role="presentation" alt="" />
+                                <studip-icon shape="search" role="presentation" alt="" />
                             </button>
                         </div>
                     </li>

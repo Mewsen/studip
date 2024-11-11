@@ -109,12 +109,13 @@
                     $actionMenu->addButton(
                         'unlock',
                         _('Semester entsperren'),
-                        Icon::create('lock-locked', Icon::ROLE_CLICKABLE, [
+                        Icon::create('lock-locked'),
+                        [
                             'title'        => _('Semester entsperren'),
                             'formaction'   => $controller->url_for("admin/semester/unlock/{$semester->id}"),
                             'data-confirm' => _('Soll das Semester wirklich entsperrt werden? Anmelderegeln und Sperrebenen werden nicht verändert.'),
                             'style'        => 'vertical-align: text-bottom'
-                        ])
+                        ]
                     );
                 }
 
@@ -135,12 +136,13 @@
                     $actionMenu->addButton(
                         'delete',
                         _('Semester löschen'),
-                        Icon::create('trash', Icon::ROLE_CLICKABLE, [
+                        Icon::create('trash'),
+                        [
                             'title'        => _('Semester löschen'),
                             'formaction'   => $controller->url_for("admin/semester/delete/{$semester->id}"),
                             'data-confirm' => _('Soll das Semester wirklich gelöscht werden?'),
                             'style'        => 'vertical-align: text-bottom'
-                        ])
+                        ]
                     );
                 }
 

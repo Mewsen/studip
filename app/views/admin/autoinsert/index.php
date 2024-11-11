@@ -93,11 +93,10 @@
                 <?= $this->render_partial("admin/autoinsert/_status.php", ['status' => 'autor', 'auto_sem' => $auto_sem, 'domains' => $userdomains]) ?>
                 <td class="actions">
                     <a href="<?= $controller->delete($auto_sem['seminar_id'] ) ?>">
-                        <?= Icon::create(
-                            'trash',
-                            Icon::ROLE_CLICKABLE,
-                            ['title' => _('Veranstaltung entfernen'), 'class' => 'text-top']
-                        ) ?>
+                        <?= Icon::create('trash')->asImg([
+                            'title' => _('Veranstaltung entfernen'),
+                            'class' => 'text-top',
+                        ]) ?>
                     </a>
                 </td>
             </tr>

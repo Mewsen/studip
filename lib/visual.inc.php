@@ -521,19 +521,5 @@ function display_exception($exception, $as_html = false, $deep = false) {
  * @todo Nested attribute definitions?
  */
 function arrayToHtmlAttributes(array $attributes) {
-    // Filter empty attributes
-    $attributes = array_filter($attributes, function ($value) {
-        return isset($value) && $value !== false;
-    });
-
-    // Actual conversion
-    $result = [];
-    foreach ($attributes as $key => $value) {
-        if ($value === true) {
-            $result[] = htmlReady($key);
-        } else {
-            $result[] = sprintf('%s="%s"', htmlReady($key), htmlReady($value));
-        }
-    }
-    return implode(' ', $result);
+    return (string) HTMLAttributes::from($attributes);
 }

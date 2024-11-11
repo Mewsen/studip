@@ -24,7 +24,7 @@
     }
     @media (prefers-reduced-motion) {
         .progress-indicator {
-            @include background-icon(refresh, info, 32);
+            @include background-icon(refresh, info, 32px);
         }
         .progress-indicator-description-default {
             display: block;

@@ -8,7 +8,7 @@
         }
 
         .cw-block-lti-icon-tool {
-            @include background-icon(plugin, info, 24);
+            @include background-icon(plugin, info, 24px);
             background-repeat: no-repeat;
             display: block;
             padding: 16px 16px 16px 40px;

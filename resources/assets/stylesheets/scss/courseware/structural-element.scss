@@ -168,7 +168,7 @@
     background-size: 100% auto;
     background-repeat: no-repeat;
     background-position: center;
-    @include background-icon(courseware, clickable, 128);
+    @include background-icon(courseware, $size: 128px);
     margin-bottom: 1em;
 }
 
@@ -197,7 +197,7 @@
         height: 24px;
         border: none;
         background-color: transparent;
-        @include background-icon(trash, clickable);
+        @include background-icon(trash);
         background-repeat: no-repeat;
         cursor: pointer;
     }

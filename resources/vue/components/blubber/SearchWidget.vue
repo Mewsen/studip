@@ -22,11 +22,11 @@
                                 role="button"
                                 :title="$gettext('Suche zurücksetzen')"
                             >
-                                <studip-icon shape="decline" :size="20" alt="" />
+                                <studip-icon shape="decline" alt="" />
                             </a>
 
                             <button type="submit" class="submit-search" :title="$gettext('Suche ausführen')">
-                                <studip-icon shape="search" :size="20" alt="" />
+                                <studip-icon shape="search" alt="" />
                             </button>
                         </div>
                     </li>

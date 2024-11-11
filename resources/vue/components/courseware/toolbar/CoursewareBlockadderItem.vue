@@ -14,7 +14,7 @@
             :title="favButtonTitle"
             @click="toggleFavItem()"
         >
-            <studip-icon :shape="blockTypeIsFav ? 'star' : 'star-empty'" :size="20" />
+            <studip-icon :shape="blockTypeIsFav ? 'star' : 'star-empty'" />
         </button>
     </div>
 </template>
