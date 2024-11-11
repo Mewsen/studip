@@ -2,7 +2,7 @@
 <article class="studip questionnaire_widget" id="questionnaire_area">
     <header>
         <h1>
-            <?= Icon::create('evaluation', Icon:ROLE_INFO)->asimg(['class' => 'text-bottom']) ?>
+            <?= Icon::create('evaluation', Icon::ROLE_INFO)->asimg(['class' => 'text-bottom']) ?>
             <?= _('Fragebögen') ?>
         </h1>
         <nav>
