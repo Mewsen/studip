@@ -18,7 +18,7 @@
     </a>
 </div>
 <? endif; ?>
-<form id="index_filter" action="<?= $action ?>" method="post">
+<form class="default" id="index_filter" action="<?= $action ?>" method="post">
     <? if (!empty($name_search)) : ?>
         <label class="mvv-name-search">
             <?= $name_caption ?: _('Name') ?>
