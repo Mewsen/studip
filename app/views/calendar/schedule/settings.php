@@ -9,13 +9,13 @@
                 <label>
                     <?= _('von') ?>
                     <input type="text" name="start_hour" id="start-hour" class="size-s"
-                           value="<?= sprintf('%02u:00', $settings['glb_start_time']) ?>"
+                           value="<?= sprintf('%02u:00', $settings['glb_start_time'] ?? 8) ?>"
                            data-time-picker>
                 </label>
                 <label>
                     <?= _('bis') ?>
                     <input type="text" name="end_hour" id="end-hour" class="size-s"
-                           value="<?= sprintf('%02u:00', $settings['glb_end_time']) ?>"
+                           value="<?= sprintf('%02u:00', $settings['glb_end_time'] ?? 19) ?>"
                            data-time-picker>
                 </label>
                 <?= _('Uhr') ?><br>
