@@ -25,6 +25,12 @@ class EventData
     public $border_colour;
     public $all_day;
 
+    /**
+     * @var string The ID in this field is used to group events when displayed
+     * in Fullcalendar so that they can be moved together.
+     */
+    public string $group_id;
+
     public function __construct(
         \DateTime $begin,
         \DateTime $end,
@@ -43,7 +49,8 @@ class EventData
         Array $api_urls = [],
         string $icon = '',
         string $border_colour = '',
-        bool $all_day = false
+        bool $all_day = false,
+        string $group_id = ''
     )
     {
         $this->begin = $begin;
@@ -64,6 +71,7 @@ class EventData
         $this->icon = $icon;
         $this->border_colour = $border_colour ?: $background_colour;
         $this->all_day = $all_day;
+        $this->group_id = $group_id;
     }
 
 
@@ -109,6 +117,6 @@ class EventData
             'studip_view_urls' => $this->view_urls,
             'studip_api_urls' => $this->api_urls,
             'icon' => $this->icon
-        ];
+        ] + ($this->group_id ? ['groupId' => $this->group_id] : []);
     }
 }

@@ -676,11 +676,12 @@ class CalendarDateAssignment extends SimpleORMap implements Event
             ],
             [
                 'resize_dialog' => URLHelper::getURL('dispatch.php/calendar/date/move/' . $this->calendar_date_id),
-                'move_dialog'   => URLHelper::getURL('dispatch.php/calendar/date/move/' . $this->calendar_date_id)
+                'move_dialog'   => URLHelper::getURL('dispatch.php/calendar/date/move/' . $this->calendar_date_id, ['original_date' => $begin->format('Y-m-d')])
             ],
             $this->participation === 'DECLINED' ? 'decline-circle-full' : '',
             $border_colour,
-            $all_day
+            $all_day,
+            $this->calendar_date_id
         );
     }
 
