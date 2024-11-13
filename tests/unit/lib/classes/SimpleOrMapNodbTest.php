@@ -25,8 +25,6 @@ class auth_user_md5 extends SimpleORMap
         $config['serialized_fields']['jsondata'] = 'JSONArrayObject';
         $config['notification_map']['after_store'] = 'auth_user_md5DidCreateOrUpdate';
 
-        $config['i18n_fields'] = ['i18n_field'];
-
         parent::configure($config);
     }
 
@@ -366,7 +364,14 @@ class SimpleOrMapNodbTest extends \Codeception\Test\Unit
         self::setupFixture();
 
         $result = [
-            'definition as list' => [new auth_user_md5()],
+            'definition as list' => [new class extends SimpleORMap {
+                protected static function configure($config = [])
+                {
+                    $config['db_table'] = 'auth_user_md5';
+                    $config['i18n_fields'] = ['i18n_field'];
+                    parent::configure($config);
+                }
+            }],
             'definition as associative array' => [new class extends SimpleORMap {
                 protected static function configure($config = [])
                 {
