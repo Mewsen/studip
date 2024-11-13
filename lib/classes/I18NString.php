@@ -202,8 +202,8 @@ class I18NString implements JsonSerializable
      * Sets the translation for the given language. If the given language is
      * the default language, sets the original.
      *
-     * @param type $text The translated or original value.
-     * @param type $lang The additional or default language.
+     * @param string $text The translated or original value.
+     * @param string $lang The additional or default language.
      * @return string The translated or original value.
      * @throws InvalidArgumentException
      */
