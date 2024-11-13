@@ -269,10 +269,11 @@ class I18NString implements JsonSerializable
                 throw new RuntimeException('store not possible, metadata is missing');
             }
             /* Replace translations */
-            $deleted = $db->execute("DELETE FROM i18n WHERE object_id = ? AND `table` = ? AND field = ?", [$object_id, $table, $field]);
+            $db->execute("DELETE FROM i18n WHERE object_id = ? AND `table` = ? AND field = ?", [$object_id, $table, $field]);
+
             $i18nSQL = $db->prepare("INSERT INTO `i18n` (`object_id`, `table`, `field`, `lang`, `value`) VALUES (?,?,?,?,?)");
             foreach ($this->lang as $lang => $value) {
-                if (mb_strlen($value)) {
+                if (mb_strlen($value) && $value !== $this->base) {
                     $i18nSQL->execute([$object_id, $table, $field, $lang, (string) $value]);
                 }
             }
