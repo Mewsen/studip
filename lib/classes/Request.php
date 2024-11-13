@@ -77,6 +77,8 @@ class Request implements ArrayAccess, IteratorAggregate
 
     /**
      * IteratorAggregate: Create iterator for request parameters.
+     *
+     * @return ArrayIterator
      */
     public function getIterator(): Traversable
     {
