@@ -91,6 +91,7 @@ class Request implements ArrayAccess, IteratorAggregate
      * IteratorAggregate: Create interator for request parameters.
      *
      * @todo Add Traversable return type when Stud.IP requires PHP8 minimal
+     * @return ArrayIterator
      */
     #[ReturnTypeWillChange]
     public function getIterator()
