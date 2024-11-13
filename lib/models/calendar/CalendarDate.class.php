@@ -177,13 +177,15 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                 }
             } elseif ($assignment->user instanceof User) {
                 if ($assignment->user->isCalendarReadable($range_id)) {
-                    return true;
+                    //The date is only readable if it isn't confidential:
+                    return $this->access !== 'CONFIDENTIAL';
                 }
             }
         }
 
-        //In case the date is not in a calendar of the user or a course
-        //where the user has access to, it is only visible when it is public.
+        //In case the date is not in a calendar of a user or a course
+        //where the user has read access to, the date is only visible
+        //when it is public.
         return $this->access === 'PUBLIC';
     }
 
