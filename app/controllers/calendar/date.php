@@ -789,7 +789,11 @@ class Calendar_DateController extends AuthenticatedController
             );
             $this->render_nothing();
         }
-        $this->date_has_repetitions = !empty($this->date->repetition_type);
+        if (!$this->date->isWritable($GLOBALS['user']->id)) {
+            throw new AccessDeniedException(_('Sie sind nicht berechtigt, diesen Termin zu löschen.'));
+        }
+
+        $this->date_has_repetitions = $this->date->repetition_type !== CalendarDate::REPETITION_SINGLE;
         $this->selected_date = null;
         if ($this->date_has_repetitions) {
             $this->selected_date = Request::getDateTime('selected_date');
@@ -832,7 +836,8 @@ class Calendar_DateController extends AuthenticatedController
                     $delete_whole_date = true;
                 }
             } else {
-                $delete_whole_date = $this->multiple_calendar_handling === 'delete_all';
+                $delete_whole_date = !$this->date_is_in_multiple_calendars
+                    || $this->multiple_calendar_handling === 'delete_all';
             }
             if ($delete_whole_date) {
                 if ($this->date->delete()) {
