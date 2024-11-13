@@ -656,7 +656,7 @@ class Course_RoomRequestsController extends AuthenticatedController
     }
 
 
-    private function fromSession(string $key): mixed
+    private function fromSession(string $key)
     {
         if (!isset($this->request_id)) {
             throw new RuntimeException('Request ID not set.');
