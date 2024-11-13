@@ -1,17 +1,27 @@
+<?php
+/**
+ * @var string    $__nonce
+ * @var int       $waittime
+ * @var string    $text
+ * @var TFASecret $secret
+ * @var bool|int  $global
+ * @var int       $duration
+ */
+?>
 <form action="<?= htmlReady(Request::url()) ?>" method="post" class="default">
     <input type="hidden" name="tfa-nonce" value="<?= htmlReady($__nonce) ?>">
     <fieldset>
         <legend><?= _('Zwei-Faktor-Authentifizierung') ?></legend>
 
-<? if ($blocked): ?>
+<? if ($waittime): ?>
     <?= MessageBox::warning(_('Sie haben zu viele ungültige Versuche'), [sprintf(
         _('Versuchen Sie es in %u Minute(n) erneut'),
-        ceil((time() - $blocked) / 60)
+        $waittime
     )])->hideClose() ?>
 <? else: ?>
         <p><?= htmlReady($text ?: _('Bitte geben Sie ein gültiges Token ein')) ?></p>
     <? if ($secret->type === 'app' && !$secret->confirmed): ?>
-        <?= formatReady(Config::get()->TFA_TEXT_APP) ?>
+        <?= formatReady(Config::get()->getValue('TFA_TEXT_APP')) ?>
         <p>
             <?= _('Scannen Sie diesen Code mit Ihrer App ein und geben Sie '
                 . 'anschliessend ein gültiges Token ein.') ?>
