@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var ResourceRequest $request
+ */
+?>
 <dl>
     <dt><?= _('Termine') ?>:</dt>
     <dd><?= $request->getDateString() ?></dd>
