@@ -113,7 +113,7 @@ class Course_ContentmodulesController extends AuthenticatedController
             }
             $moduleclass = Request::get('moduleclass');
             $active = Request::bool('active', false);
-            $module = new $moduleclass;
+            $module = PluginEngine::getPlugin($moduleclass);
             if ($module->isActivatableForContext($context)) {
                 PluginManager::getInstance()->setPluginActivated($module->getPluginId(), $context->getId(), $active);
             }
@@ -177,7 +177,7 @@ class Course_ContentmodulesController extends AuthenticatedController
         }
 
         $moduleclass = Request::get('moduleclass');
-        $module = new $moduleclass;
+        $module = PluginEngine::getPlugin($moduleclass);
 
         $active_tool = ToolActivation::find([$context->id, $module->getPluginId()]);
         $metadata = $active_tool->metadata->getArrayCopy();
