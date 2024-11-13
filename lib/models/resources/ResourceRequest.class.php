@@ -1434,17 +1434,31 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
         $now = time();
         $strings = [];
         $resource_name = '';
-        if (count($this->appointments)) {
-            $parts  = [];
-            foreach ($this->appointments as $rra) {
-                if (!$with_past_intervals && $rra->appointment->end_time < $now) {
-                    continue;
+        if (count($this->appointments) > 0) {
+            // Filter invalid/not matching items
+            $appointments = $this->appointments->filter(
+                function (ResourceRequestAppointment $appointment) use ($with_past_intervals, $now): bool {
+                    if (!$appointment->appointment) {
+                        return false;
+                    }
+                    return $with_past_intervals
+                        || $appointment->appointment->end_time > $now;
                 }
-                if ($rra->appointment) {
-                    $parts[] = $rra->appointment->getFullname('include-room');
+            );
+
+            // Sort by appointment date
+            $appointments->uasort(
+                function (ResourceRequestAppointment $a, ResourceRequestAppointment $b): int {
+                    return $a->appointment->date - $b->appointment->date;
                 }
-            }
-            $strings[] = implode('; ', $parts);
+            );
+
+            // Get readable string for each appointment
+            $strings = $appointments->map(
+                function (ResourceRequestAppointment $appointment): string {
+                    return $appointment->appointment->getFullName('include-room');
+                },
+            );
         } elseif ($this->termin_id) {
             if ($this->date) {
                 if ($with_past_intervals || $this->date->end_time >= $now) {
@@ -1453,10 +1467,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             }
         } elseif ($this->metadate_id) {
             if ($this->cycle) {
-                $this->cycle->dates->filter(function($date) use($with_past_intervals, $now) {
+                $strings = $this->cycle->dates->filter(function ($date) use($with_past_intervals, $now) {
                     return $with_past_intervals || $date->end_time >= $now;
-                })->map(function($date) use(&$strings) {
-                    $strings[] = $date->getFullname('include-room');
+                })->map(function($date) {
+                    return $date->getFullName('include-room');
                 });
             }
         } elseif ($this->course_id) {
