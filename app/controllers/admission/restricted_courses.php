@@ -56,10 +56,10 @@ class Admission_RestrictedCoursesController extends AuthenticatedController
         }
         $semester = Semester::find($this->current_semester_id);
         $sem_condition .= "
-            AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = " . DBManager::get()->quote($semester->getId()) . ")
+            AND (`semester_courses`.`semester_id` IS NULL OR `semester_courses`.`semester_id` = " . DBManager::get()->quote($semester->getId()) . ")
         ";
         if ($this->sem_name_prefix) {
-            $sem_condition .= sprintf('AND (seminare.Name LIKE %1$s OR seminare.VeranstaltungsNummer LIKE %1$s) ', DBManager::get()->quote($this->sem_name_prefix . '%'));
+            $sem_condition .= sprintf('AND (`seminare`.`Name` LIKE %1$s OR `seminare`.`VeranstaltungsNummer` LIKE %1$s) ', DBManager::get()->quote($this->sem_name_prefix . '%'));
         }
         if ($GLOBALS['perm']->have_perm('dozent')) {
             $this->my_inst = $this->get_institutes($sem_condition);
@@ -72,6 +72,7 @@ class Admission_RestrictedCoursesController extends AuthenticatedController
         foreach (words('current_institut_id sem_name_prefix') as $param) {
             $_SESSION[get_class($this)][$param] = $this->$param;
         }
+        $this->additional_data = [];
         if (Request::get('csv')) {
             $captions = [_("Anmeldeset"),
                     _("Nummer"),
@@ -86,19 +87,34 @@ class Admission_RestrictedCoursesController extends AuthenticatedController
                     _("Endzeitpunkt")];
             $data = [];
             foreach ($this->courses as $course) {
-                $sorm_course = Course::find($course['seminare.seminar_id']);
+                $additional_data = $this->getAdditionalCourseData($course);
+
+                $start_time = '';
+
+                $start_semester = $course->getStartSemester();
+                if ($start_semester) {
+                    $start_time = date('d.m.Y H:i', $start_semester->beginn);
+                }
+
+                $end_time = '';
+
+                $end_semester = $course->getEndSemester();
+                if ($end_semester) {
+                    $end_time = date('d.m.Y H:i', $end_semester->ende);
+                }
+
                 $row = [];
-                $row[] = $course['cs_name'];
-                $row[] = $course['course_number'];
-                $row[] = $course['course_name'];
-                $row[] = (int)$course['admission_turnout'];
-                $row[] = $course['count_teilnehmer'] + $course['count_prelim'];
-                $row[] = (int)$course['count_claiming'];
-                $row[] = (int)$course['count_prelim'];
-                $row[] = (int)$course['count_waiting'];
-                $row[] = $course['distribution_time'] ? strftime('%x %R', $course['distribution_time']) : '';
-                $row[] = $sorm_course?->getStartSemester()?->beginn ?? '';
-                $row[] = $sorm_course?->getEndSemester()?->ende ?? '';
+                $row[] = $additional_data['courseset_name'];
+                $row[] = $course->veranstaltungsnummer;
+                $row[] = $course->name;
+                $row[] = (int)$course->admission_turnout ?: '';
+                $row[] = $additional_data['participant_count'] + $additional_data['accepted_count'];
+                $row[] = (int)$additional_data['claiming_count'];
+                $row[] = (int)$additional_data['accepted_count'];
+                $row[] = (int)$additional_data['awaiting_count'];
+                $row[] = $additional_data['distribution_time'] ? date('d.m.Y H:i', $additional_data['distribution_time']) : '';
+                $row[] = $start_time;
+                $row[] = $end_time;
                 $data[] = $row;
             }
 
@@ -112,7 +128,14 @@ class Admission_RestrictedCoursesController extends AuthenticatedController
                 );
                 return;
             }
+        } else {
+            //We need to loop over each course and fetch additional data to fill the
+            //not_distributed_coursesets attribute before showing the view.
+            foreach ($this->courses as $course) {
+                $this->additional_data[$course->id] = $this->getAdditionalCourseData($course);
+            }
         }
+
         if (is_array($this->not_distributed_coursesets)) {
             PageLayout::postInfo(
                 _("Es existieren Anmeldesets, die zum Zeitpunkt der Platzverteilung nicht gelost wurden. Stellen Sie sicher, dass der Cronjob \"Losverfahren überprüfen\" ausgeführt wird."),
@@ -120,83 +143,92 @@ class Admission_RestrictedCoursesController extends AuthenticatedController
         }
     }
 
-    function get_courses($seminare_condition)
+    /**
+     * Fetches additional data for a course and sets the not_distributed_coursesets
+     * attribute in some cases.
+     *
+     * @param Course $course The course to fetch data for.
+     *
+     * @return array An associative array with additional data.
+     */
+    protected function getAdditionalCourseData(Course $course) : array
+    {
+        $data = [];
+
+        $courseset = $course->getCourseSet();
+        if ($courseset) {
+            $data['courseset_id']   = $courseset->getId();
+            $data['courseset_name'] = $courseset->getName();
+            if ($courseset->hasAlgorithmRun()) {
+                $data['claiming_count'] = 0;
+            } else {
+                $data['claiming_count'] = count(AdmissionPriority::getPrioritiesByCourse($courseset->getId(), $course->id));
+            }
+            $data['distribution_time']  = $courseset->getSeatDistributionTime();
+            if (
+                $data['distribution_time'] < time() - 1000
+                && !$courseset->hasAlgorithmRun()
+            ) {
+                $this->not_distributed_coursesets[] = $courseset->getName();
+            }
+
+            $timed_admission = $courseset->getAdmissionRule(TimedAdmission::class);
+            if ($timed_admission) {
+                $data['admission_start_time'] = $timed_admission->getStartTime();
+                $data['admission_end_time']   = $timed_admission->getEndTime();
+            }
+        } else {
+            $data['courseset_id']         = '';
+            $data['courseset_name']       = '';
+            $data['claiming_count']       = 0;
+            $data['distribution_time']    = 0;
+            $data['admission_start_time'] = '';
+            $data['admission_end_time']   = '';
+        }
+        $data['participant_count'] = CourseMember::countByCourseAndStatus($course->id, ['user', 'autor']);
+        $data['accepted_count']    = AdmissionApplication::countBySql(
+            "`seminar_id` = :course_id AND `status` = 'accepted'",
+            ['course_id' => $course->id]
+        );
+        $data['awaiting_count']    = AdmissionApplication::countBySql(
+            "`seminar_id` = :course_id AND `status` = 'awaiting'",
+            ['course_id' => $course->id]
+        );
+
+        return $data;
+    }
+
+    protected function get_courses($seminare_condition)
     {
         $chunks = explode('_', $this->current_institut_id);
         $institut_id = $chunks[0];
         $all = $chunks[1] ?? null;
-        // Prepare count statements
-        $query = "SELECT count(*)
-                  FROM seminar_user
-                  WHERE seminar_id = ? AND status IN ('user', 'autor')";
-        $count0_statement = DBManager::get()->prepare($query);
-
-        $query = "SELECT SUM(status = 'accepted') AS count2,
-                     SUM(status = 'awaiting') AS count3
-                  FROM admission_seminar_user
-                  WHERE seminar_id = ?
-                  GROUP BY seminar_id";
-        $count1_statement = DBManager::get()->prepare($query);
 
         $parameters = [];
 
-        $sql = "SELECT seminare.seminar_id,seminare.Name as course_name,seminare.VeranstaltungsNummer as course_number,
-                admission_prelim, admission_turnout,seminar_courseset.set_id
-                FROM seminar_courseset
-                INNER JOIN courseset_rule csr ON csr.set_id=seminar_courseset.set_id AND csr.type='ParticipantRestrictedAdmission'
-                INNER JOIN seminare ON seminar_courseset.seminar_id=seminare.seminar_id
-                LEFT JOIN semester_courses ON (seminare.Seminar_id = semester_courses.course_id)
+        $sql = "JOIN `seminar_courseset`
+                    USING (`seminar_id`)
+                JOIN `courseset_rule` csr
+                    ON csr.`set_id` = `seminar_courseset`.`set_id`
+                    AND csr.`type` = 'ParticipantRestrictedAdmission'
+                LEFT JOIN `semester_courses`
+                    ON `seminare`.`Seminar_id` = `semester_courses`.`course_id`
                 ";
         if ($institut_id === 'all' && $GLOBALS['perm']->have_perm('root')) {
             $sql .= "WHERE 1 {$seminare_condition} ";
         } elseif ($all == 'all') {
             $sql .= "INNER JOIN Institute USING (Institut_id)
-                    WHERE Institute.fakultaets_id = ? {$seminare_condition}
+                    WHERE Institute.fakultaets_id = :faculty_id {$seminare_condition}
                     ";
-            $parameters[] = $institut_id;
+            $parameters['faculty_id'] = $institut_id;
         } else {
-            $sql .= "WHERE seminare.Institut_id = ? {$seminare_condition}
+            $sql .= "WHERE seminare.Institut_id = :institute_id {$seminare_condition}
                     ";
-            $parameters[] = $institut_id;
+            $parameters['institute_id'] = $institut_id;
         }
-        $sql .= "GROUP BY seminare.Seminar_id ORDER BY seminar_courseset.set_id, seminare.Name";
+        $sql .= "GROUP BY `seminare`.`Seminar_id` ORDER BY `seminar_courseset`.`set_id`, `seminare`.`Name`";
 
-        $statement = DBManager::get()->prepare($sql);
-        $statement->execute($parameters);
-        $csets = [];
-        $ret = [];
-        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-            $seminar_id = $row['seminar_id'];
-            $ret[$seminar_id] = $row;
-
-            $count0_statement->execute([$seminar_id]);
-            $count = $count0_statement->fetchColumn();
-
-            $ret[$seminar_id]['count_teilnehmer']     = $count;
-
-            $count1_statement->execute([$seminar_id]);
-            $counts = $count1_statement->fetch(PDO::FETCH_ASSOC);
-
-            $ret[$seminar_id]['count_prelim'] = (int) ($counts['count2'] ?? 0);
-            $ret[$seminar_id]['count_waiting']  = (int) ($counts['count3'] ?? 0);
-            if (!isset($csets[$row['set_id']])) {
-                $csets[$row['set_id']] = new CourseSet($row['set_id']);
-            }
-            $cs = $csets[$row['set_id']];
-            $ret[$seminar_id]['cs_name'] = $cs->getName();
-            $ret[$seminar_id]['distribution_time'] = $cs->getSeatDistributionTime();
-            if ($ret[$seminar_id]['distribution_time'] < (time() - 1000) && !$cs->hasAlgorithmRun()) {
-                $this->not_distributed_coursesets[] = $cs->getName();
-            }
-            if ($ta = $cs->getAdmissionRule('TimedAdmission')) {
-                $ret[$seminar_id]['start_time'] = $ta->getStartTime();
-                $ret[$seminar_id]['end_time'] = $ta->getEndTime();
-            }
-            if (!$cs->hasAlgorithmRun()) {
-                $ret[$seminar_id]['count_claiming'] = count(AdmissionPriority::getPrioritiesByCourse($row['set_id'], $seminar_id));
-            }
-        }
-        return $ret;
+        return Course::findBySql($sql, $parameters);
     }
 
     function get_institutes($seminare_condition)
