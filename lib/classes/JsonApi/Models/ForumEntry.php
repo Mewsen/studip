@@ -2,11 +2,11 @@
 
 namespace JsonApi\Models;
 
-/*
- * @property string category_id string primary key
- * @property string seminar_id string foreign key
- * @property string entry_name string database_column
- * @property string pos int
+/**
+ * @property string $category_id primary key
+ * @property string $seminar_id foreign key
+ * @property string $entry_name database_column
+ * @property string $pos
  */
 
 class ForumEntry extends \SimpleORMap
@@ -18,15 +18,18 @@ class ForumEntry extends \SimpleORMap
             'forum_entries.lft <= ? AND forum_entries.rgt >= ? AND forum_entries.seminar_id = ? AND forum_entries.depth = 1 ORDER BY forum_entries.lft ASC',
             [(int) $targetEntry['lft'], (int) $targetEntry['rgt'], $targetEntry['seminar_id']]
         );
-        $category = ForumCat::findBySQL(
-            'LEFT JOIN forum_categories_entries AS fce USING (category_id)
+
+        if (count($parentEntries) > 0) {
+            $category = ForumCat::findOneBySQL(
+                'LEFT JOIN forum_categories_entries AS fce USING (category_id)
             WHERE fce.topic_id = ?',
-            [$parentEntries[0]->id]
-        );
+                [$parentEntries[0]->id]
+            );
+        }
 
         if (empty($category)) {
-            $category = ForumCat::findBySql(
-                "seminar_id = ? AND entry_name = 'Allgemein'",
+            $category = ForumCat::findOneBySql(
+                "seminar_id = ? AND category_id = seminar_id",
                 [$targetEntry->seminar_id]
             );
         }
