@@ -2252,6 +2252,14 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         if ($this->content[$field] === null || $this->content_db[$field] === null) {
             return $this->content[$field] !== $this->content_db[$field];
         } else if ($this->content[$field] instanceof I18NString || $this->content_db[$field] instanceof I18NString) {
+            // Trigger loading of translations
+            if ($this->content[$field] instanceof I18NString) {
+                $this->content[$field]->toArray();
+            }
+            if ($this->content_db[$field] instanceof I18NString) {
+                $this->content_db[$field]->toArray();
+            }
+
             return $this->content[$field] != $this->content_db[$field];
         } else {
             return (string)$this->content[$field] !== (string)$this->content_db[$field];
