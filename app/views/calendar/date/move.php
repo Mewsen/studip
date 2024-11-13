@@ -9,12 +9,8 @@
         <?= _('Der Termin soll aus der Terminserie herausgelöst werden.') ?>
     </label>
     <label>
-        <input type="radio" name="repetition_handling" value="change_times">
-        <?= _('Start- und Enduhrzeit der gesamten Terminserie soll geändert werden.') ?>
-    </label>
-    <label>
         <input type="radio" name="repetition_handling" value="change_all">
-        <?= _('Die gesamte Terminserie soll verschoben werden und erst am gewählten Datum beginnen.') ?>
+        <?= _('Die gesamte Terminserie soll verschoben werden.') ?>
     </label>
     <div data-dialog-button>
         <?= \Studip\Button::create(_('Verschieben'), 'move') ?>
