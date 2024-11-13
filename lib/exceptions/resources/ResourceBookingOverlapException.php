@@ -18,7 +18,7 @@
  * This exception is thrown when a resource booking overlaps with
  * other resource bookings or with a resource lock.
  */
-class ResourceBookingOverlapException extends InvalidArgumentException
+class ResourceBookingOverlapException extends \Studip\Exception
 {
 
 }

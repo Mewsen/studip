@@ -584,7 +584,7 @@ class Course_TimesroomsController extends AuthenticatedController
                                 } else {
                                     PageLayout::postError(
                                         studip_interpolate(
-                                            _('Der Raum %{room_name} wird an dem Termin %{date} bereits durch eine andere Veranstaltung belegt.'),
+                                            _('Der Raum %{room_name} wird an dem Termin %{date} bereits anderweitig belegt.'),
                                             [
                                                 'room_name'   => $room->name,
                                                 'date'        => $termin->getFullName()
@@ -1123,6 +1123,7 @@ class Course_TimesroomsController extends AuthenticatedController
         }
 
         if (in_array(Request::get('action'), ['room', 'freetext', 'noroom']) || Request::get('course_type')) {
+            $success_cases = 0;
             $errors = [];
             foreach ($singledates as $singledate) {
                 if ($singledate instanceof CourseExDate) {
@@ -1147,12 +1148,32 @@ class Course_TimesroomsController extends AuthenticatedController
                             $failure = false;
                             try {
                                 $failure = !$singledate->bookRoom($room, intval($preparation_time));
-                            } catch (ResourceBookingException|ResourceBookingOverlapException $e) {
+                            } catch (ResourceBookingException $e) {
                                 $errors[] = sprintf(
                                     _('Der angegebene Raum konnte für den Termin %1$s nicht gebucht werden: %2$s'),
                                     '<strong>' . htmlReady($singledate->getFullName()) . '</strong>',
                                     $e->getMessage()
                                 );
+                            } catch (ResourceBookingOverlapException $e) {
+                                $course = $e->getRange();
+                                if ($course instanceof Course) {
+                                    $errors[] = studip_interpolate(
+                                        _('Der Raum %{room_name} wird an dem Termin %{date} bereits durch die Veranstaltung %{course_name} belegt.'),
+                                        [
+                                            'room_name'   => $room->name,
+                                            'date'        => $singledate->getFullName(),
+                                            'course_name' => $course->name
+                                        ]
+                                    );
+                                } else {
+                                    $errors[] = studip_interpolate(
+                                        _('Der Raum %{room_name} wird an dem Termin %{date} bereits anderweitig belegt.'),
+                                        [
+                                            'room_name'   => $room->name,
+                                            'date'        => $singledate->getFullName()
+                                        ]
+                                    );
+                                }
                             }
                             if ($failure) {
                                 $errors[] = sprintf(
@@ -1160,10 +1181,7 @@ class Course_TimesroomsController extends AuthenticatedController
                                     '<strong>' . htmlReady($singledate->getFullName()) . '</strong>'
                                 );
                             } else {
-                                PageLayout::postSuccess(sprintf(
-                                    _('Die Änderungen am Termin %s wurden gespeichert.'),
-                                    $singledate->getFullName()
-                                ));
+                                $success_cases++;
                             }
                         }
                     } else if (Request::get('room_id_parameter')) {
@@ -1200,6 +1218,15 @@ class Course_TimesroomsController extends AuthenticatedController
                         _('Die Art des Termins %s wurde geändert.'),
                         '<strong>' . htmlReady($singledate) . '</strong>'
                     ));
+                }
+            }
+            if ($success_cases > 0) {
+                if (!$errors) {
+                    //Everything went well.
+                    PageLayout::postSuccess(_('Die Änderungen wurden gespeichert.'));
+                } else {
+                    //Not everything went well.
+                    PageLayout::postWarning(_('Es konnten nicht alle Termine geändert werden.'));
                 }
             }
             if ($errors) {

@@ -521,6 +521,9 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                 }
             );
         }
+
+        $course = null;
+
         foreach ($time_intervals as $time_interval) {
             foreach ($existing_deleted_intervals as $deleted_interval) {
                 if (
@@ -563,7 +566,6 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
                         [self::TYPE_NORMAL, self::TYPE_LOCK],
                         [$this->id]
                     );
-                    $course = null;
                     if (
                         count($other_booking) >= 1
                         && !empty($other_booking[0]->assigned_course_date->course)
@@ -606,7 +608,9 @@ class ResourceBooking extends SimpleORMap implements PrivacyObject, Studip\Calen
         }
         if ($time_interval_overlaps) {
             throw new ResourceBookingOverlapException(
-                implode(', ', $time_interval_overlaps)
+                implode(', ', $time_interval_overlaps),
+                0,
+                $course
             );
         }
 

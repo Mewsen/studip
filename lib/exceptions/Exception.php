@@ -55,4 +55,12 @@ class Exception extends \Exception
             $this->range
         );
     }
+
+    /**
+     * @return \Range|null The range of the exception.
+     */
+    public function getRange() : ?\Range
+    {
+        return $this->range;
+    }
 }
