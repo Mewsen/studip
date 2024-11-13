@@ -517,9 +517,11 @@ class Course_StatusgroupsController extends AuthenticatedController
         if ($selfassign !== 0) {
             $selfassign += Request::int('exclusive', 0);
         // Selfassign is not set but exclusive selfassign or some timeframe -> show warning message
-        } else if (Request::int('exclusive', 0) !== 0
-                || Request::get('selfassign_start', null) !== null
-                || Request::get('selfassign_end', null) !== null) {
+        } else if (
+            Request::bool('exclusive')
+            || Request::get('selfassign_start')
+            || Request::get('selfassign_end')
+        ) {
             PageLayout::postWarning(_('Einstellungen zum Eintrag in eine Gruppe oder zum Eintragszeitraum können ' .
                 'nur gespeichert werden, wenn der Selbsteintrag aktiviert ist.'));
         }
