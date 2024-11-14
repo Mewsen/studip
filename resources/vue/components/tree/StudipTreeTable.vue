@@ -283,9 +283,9 @@ export default {
 
             // Update browser history.
             if (pushState) {
-                const nodeId = node.id;
-                const url = STUDIP.URLHelper.getURL('', {node_id: nodeId});
-                window.history.pushState({nodeId}, '', url);
+                const url = new URL(location.href);
+                url.searchParams.set('node_id', node.id);
+                window.history.pushState({nodeId: node.id}, '', url);
             }
 
             // Update node_id for semester selector.
