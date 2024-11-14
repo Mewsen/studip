@@ -21,31 +21,40 @@ var dialog_margin = 0;
 
 /**
  * Extract buttons from given element.
+ *
+ * @param {Element} element
+ * @param {function|null} callback
  */
-function extractButtons(element) {
-    var buttons = {};
+function extractButtons(element, callback = null) {
+    const buttons = [];
     $('[data-dialog-button]', element)
         .hide()
         .find('a,button')
         .addBack()
         .filter('a,button')
         .each(function() {
-            var label = $(this).text();
-            var cancel = $(this).is('.cancel');
-            var index = cancel ? 'cancel' : label;
-            var classes = $(this).attr('class') || '';
-            var name = $(this).attr('name') || '';
-            var disabled = $(this).is(':disabled');
+            const id = $(this).uniqueId().attr('id');
+            const label = $(this).text();
+            const cancel = $(this).is('.cancel');
+            const index = cancel ? 'cancel' : label;
+            let classes = $(this).attr('class') || '';
+            const name = $(this).attr('name') || '';
+            const disabled = $(this).is(':disabled');
 
             classes = classes.replace(/\bbutton\b/, '').trim();
 
-            buttons[index] = {
+            buttons.push({
+                id: id,
                 text: label,
                 class: classes,
                 name: name,
                 disabled: disabled,
                 click: () => this.click()
-            };
+            });
+
+            if (callback !== null) {
+                callback(this, index);
+            }
         });
 
     return buttons;
@@ -403,13 +412,6 @@ Dialog.show = function(content, options = {}) {
             $('head').append(scripts);
 
             $(options.origin || document).trigger('dialog-open', { dialog: this, options: options });
-
-            // Transfer defined classes from options to actual displayed buttons
-            // This should work natively, but it kinda does not
-            Object.keys(dialog_options.buttons).forEach(function(label, index) {
-                var classes = dialog_options.buttons[label]['class'];
-                $(buttons.get(index)).addClass(classes);
-            });
         },
         close: function(event) {
             $(options.origin || document).trigger('dialog-close', { dialog: this, options: options });
@@ -425,17 +427,41 @@ Dialog.show = function(content, options = {}) {
         options.buttons === undefined
         || (options.buttons && !$.isPlainObject(options.buttons))
     ) {
-        dialog_options.buttons = extractButtons.call(this, instance.element);
+        // Create observer to detect changes on disabled attribute
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                const id = mutation.target.id;
+                const buttonIndex = dialog_options.buttons.findIndex(button => button.id === id);
+
+                if (mutation.attributeName === 'disabled') {
+                    dialog_options.buttons[buttonIndex].disabled = mutation.target.disabled;
+                } else if (mutation.attributeName === 'class') {
+                    const classes = mutation.target.classList.toString();
+                    dialog_options.buttons[buttonIndex].class = classes.replace(/\bbutton\b/, '');
+                }
+
+                instance.element.dialog('option', 'buttons', dialog_options.buttons);
+            });
+        });
+
+        dialog_options.buttons = extractButtons(instance.element, (button) => {
+            observer.observe(button, {
+                attributes: true,
+                attributeFilter: ['class', 'disabled'],
+            });
+        });
+
         // Create 'close' button
-        if (dialog_options.buttons.cancel === undefined) {
-            dialog_options.buttons.cancel = {
+        const cancelButton = dialog_options.buttons.find(button => button.class.split(' ').includes('cancel'));
+        if (!cancelButton) {
+            dialog_options.buttons.push({
                 text: $gettext('Schließen'),
-                'class': 'cancel'
-            };
+                class: 'cancel',
+                click: () => Dialog.close(options),
+            });
+        } else {
+            cancelButton.click = () => Dialog.close(options);
         }
-        dialog_options.buttons.cancel.click = function() {
-            Dialog.close(options);
-        };
     }
 
     // Create/update dialog
