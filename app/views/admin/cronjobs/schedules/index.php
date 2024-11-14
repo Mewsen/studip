@@ -67,7 +67,7 @@ use Studip\Button, Studip\LinkButton;
             <col style="width: 30px">
             <col style="width: 30px">
             <col style="width: 30px">
-            <col style="width: 90px">
+            <col style="width: 106px">
         </colgroup>
         <thead>
         <tr>
