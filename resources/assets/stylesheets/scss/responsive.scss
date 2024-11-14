@@ -216,7 +216,8 @@ $sidebarOut: -330px;
         color: var(--white);
         flex: 1;
 
-        > a {
+        > a,
+        button {
             display: inline-block;
             padding: 10px 10px 10px 5px;
             text-align: left;

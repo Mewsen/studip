@@ -53,7 +53,8 @@ class ResponsiveHelper
                 'parent'   => '/',
                 'path'     => $path,
                 'visible'  => $forceVisibility ? true : $nav->isVisible(true),
-                'active'   => $nav->isActive()
+                'active'   => $nav->isActive(),
+                'button'   => $nav->getRenderAsButton(),
             ];
 
             if ($nav->isActive()) {
@@ -130,7 +131,8 @@ class ResponsiveHelper
                 'parent'  => $path,
                 'path'    => $subpath,
                 'visible' => $subnav->isVisible(),
-                'active'  => $subnav->isActive()
+                'active'  => $subnav->isActive(),
+                'button'  => $subnav->getRenderAsButton(),
             ];
 
             if ($subnav->isActive()) {

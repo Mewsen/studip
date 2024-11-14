@@ -554,6 +554,8 @@ class Navigation implements IteratorAggregate
 
     /**
      * Return the list of subnavigation items of this object.
+     *
+     * @return Navigation[]
      */
     public function getSubNavigation()
     {

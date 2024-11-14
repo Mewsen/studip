@@ -10,7 +10,7 @@
                 >
                     <span class="navigation-icon">
                         <studip-icon v-if="isCourse" shape="seminar" role="info_alt" :size="24" alt=""></studip-icon>
-                        <img v-if="item.icon" :src="iconUrl" width="24" alt="" :class="{avatar: item.avatar}"/>
+                        <img v-else-if="item.icon" :src="iconUrl" width="24" alt="" :class="{avatar: item.avatar}"/>
                     </span>
                     <span class="navigation-text">
                         {{ item.title }}
@@ -29,14 +29,28 @@
             </button>
         </template>
         <div v-else class="navigation-title">
-            <a
+            <form v-if="item.button"
+                  :action="item.url"
+                  method="post"
+            >
+                <button class="as-link"
+                        tabindex="0"
+                        :title="navigateToText(item.title)"
+                        :aria-label="navigateToText(item.title)"
+                >
+                    <studip-icon v-if="isCourse" shape="seminar" role="info_alt" :size="24" alt=""></studip-icon>
+                    <img v-else-if="item.icon" :src="iconUrl" width="24" alt="" :class="{avatar: item.avatar}"/>
+                    {{ item.title }}
+                </button>
+            </form>
+            <a v-else
                 :href="item.url"
                 tabindex="0"
                 :title="navigateToText(item.title)"
                 :aria-label="navigateToText(item.title)"
             >
                 <studip-icon v-if="isCourse" shape="seminar" role="info_alt" :size="24" alt=""></studip-icon>
-                <img v-if="item.icon" :src="iconUrl" width="24" alt="" :class="{avatar: item.avatar}"/>
+                <img v-else-if="item.icon" :src="iconUrl" width="24" alt="" :class="{avatar: item.avatar}"/>
                 {{ item.title }}
             </a>
         </div>

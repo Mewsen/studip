@@ -1049,7 +1049,8 @@ button.skiplink {
     }
 
     // list elements when hovering
-    a {
+    a,
+    button {
         &:hover {
             background-color: $lightgray;
             color: $black;
