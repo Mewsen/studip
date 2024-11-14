@@ -1816,6 +1816,7 @@ class Resources_RoomRequestController extends AuthenticatedController
                 $this->reply_comment = Request::get('reply_comment');
                 $this->request->reply_comment = $this->reply_comment;
                 $this->request->closed = '3';
+                $this->request->last_modified_by = $this->current_user->id;
                 if ($this->request->isDirty()) {
                     if ($this->request->store()) {
                         $this->show_form = false;
