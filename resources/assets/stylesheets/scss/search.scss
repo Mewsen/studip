@@ -186,6 +186,10 @@ div#div-search-input {
 
 }
 
+.button.seach-button {
+    border-radius: 0;
+}
+
 #search-active-filters {
     display: flex;
     flex-direction: row;
