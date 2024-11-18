@@ -1,3 +1,16 @@
+<?php
+/**
+ * @var Course_RoomRequestsController $controller
+ * @var string $request_id
+ * @var int $step
+ * @var ResourceCategory[] $available_room_categories
+ * @var string $room_category_id
+ * @var ResourceCategory|null $category
+ * @var ResourcePropertyDefinition[] $available_properties
+ * @var string $room_name
+ * @var Icon[] $available_room_icons
+ */
+?>
 <form method="post" name="room_request" class="default"
       action="<?= $controller->link_for('course/room_requests/request_check_properties/' . $request_id . '/' . $this->step) ?>"
     <?= Request::isXhr() ? 'data-dialog="size=big"' : ''?>>
@@ -92,26 +105,26 @@
             <? if (!empty($available_rooms)) : ?>
                 <label>
                     <strong><?= _('Passende Räume') ?></strong>
-                    <section class="selectbox" id="room_select">
-                        <? foreach ($available_rooms as $room): ?>
-                            <div class="flex-row">
-                                <label class="horizontal">
-                                    <?= $available_room_icons[$room->id] ?>
-                                    <input type="radio" name="selected_room_id"
-                                           data-activates="button[type='submit'][name='select_room']"
-                                           value="<?= htmlReady($room->id) ?>"
-                                        <? if ($_SESSION[$request_id]['room_id'] === $room->id) echo 'checked' ?>>
-                                    <?= htmlReady(mila($room->name, 50)) . ' (' . $room['category']->name . ')'?>
-                                    <? if ($room->properties): ?>
-                                        <? $property_names = $room->getInfolabelProperties()
-                                            ->pluck('fullname') ?>
-                                        <?= tooltipIcon(implode("\n", $property_names)) ?>
-                                    <? endif ?>
-                                </label>
-                            </div>
-                        <? endforeach ?>
-                    </section>
                 </label>
+                <section class="selectbox" id="room_select">
+                <? foreach ($available_rooms as $room): ?>
+                    <div class="flex-row">
+                        <label class="horizontal">
+                            <?= $available_room_icons[$room->id] ?>
+                            <input type="radio" name="selected_room_id"
+                                   data-activates="button[type='submit'][name='select_room']"
+                                   value="<?= htmlReady($room->id) ?>"
+                                <? if (isset($_SESSION[$request_id]['room_id']) && $_SESSION[$request_id]['room_id'] === $room->id) echo 'checked' ?>>
+                            <?= htmlReady(mila($room->name, 50)) . ' (' . $room['category']->name . ')'?>
+                            <? if ($room->properties): ?>
+                                <? $property_names = $room->getInfolabelProperties()
+                                    ->pluck('fullname') ?>
+                                <?= tooltipIcon(implode("\n", $property_names)) ?>
+                            <? endif ?>
+                        </label>
+                    </div>
+                <? endforeach ?>
+                </section>
                 <?= \Studip\Button::create(_('Raum auswählen'), 'select_room') ?>
             <? endif ?>
             </fieldset>
