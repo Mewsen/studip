@@ -408,7 +408,7 @@ $consum_ribbon_width: calc(100% - 58px);
 
         &.contentbar-button-menu,
         &.cw-ribbon-button-menu {
-            @include background-icon(table-of-contents, clickable, 24);
+            @include background-icon(table-of-contents, $size: 24px);
         }
 
         &.contentbar-button-zoom::before {
