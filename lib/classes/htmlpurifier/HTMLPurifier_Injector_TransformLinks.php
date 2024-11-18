@@ -10,7 +10,11 @@ class HTMLPurifier_Injector_TransformLinks extends HTMLPurifier_Injector
 
     public function handleElement(&$token)
     {
-        if ($token->name === 'a' && isset($token->attr['class']) && $token->attr['class'] === 'link-intern') {
+        if (
+            $token->name === 'a'
+            && isset($token->attr['href'], $token->attr['class'])
+            && $token->attr['class'] === 'link-intern'
+        ) {
             $token->attr['href'] = TransformInternalLinks($token->attr['href']);
         }
     }
