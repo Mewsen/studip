@@ -203,7 +203,7 @@ form.default {
         border: solid 1px var(--color--fieldset-border);
         margin: 0 0 15px;
         min-width: auto;
-        padding: 0 0 10px 0;
+        padding: 0 10px 10px 10px;
 
         > legend {
             box-sizing: border-box;
@@ -212,8 +212,8 @@ form.default {
             border-bottom: 0;
             font-size: $font-size-h3;
             padding: 10px;
-            margin: 0 0 10px -1px;
-            width: calc(100% + 2px);
+            margin: 0 0 10px -11px;
+            width: calc(100% + 22px);
         }
 
         // Insert invisible element that corrects double padding/margin at the
@@ -225,8 +225,6 @@ form.default {
         }
 
         > :not(legend) {
-            margin-left: 10px;
-            margin-right: 10px;
             max-width: calc(100% - 20px);
         }
     }
