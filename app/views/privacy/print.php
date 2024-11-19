@@ -18,7 +18,7 @@
                         <? if ($tabledata['table_name'] === 'log_events' && $key === 'readable_entry') : ?>
                             <?= $value ?>
                         <? else: ?>
-                            <?= htmlReady($value) ?>
+                            <?= \Studip\Markup::isHtml($value) ? formatReady($value) : htmlReady($value) ?>
                         <? endif; ?>
                         </td>
                     </tr>
