@@ -15,6 +15,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import Responsive from "./responsive";
 
 Date.prototype.getWeekNumber = function () {
     var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
@@ -395,14 +396,20 @@ class Fullcalendar
             return;
         }
 
-        var config = $(node).data('config');
+        let config = $(node).data('config');
+
+        let defaultView = 'timeGridWeek';
+        if (Responsive.isResponsive() && config.responsiveDefaultView !== undefined) {
+            defaultView = config.responsiveDefaultView;
+        } else if (config.defaultView !== undefined) {
+            defaultView = config.defaultView;
+        }
 
         //Make sure the default values are set, if they are not found
         //in the additional_config object:
         config = $.extend({
             plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, resourceCommonPlugin, resourceTimeGridPlugin, resourceTimelinePlugin ],
             schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-            defaultView: 'timeGridWeek',
             header: {
                 left: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
@@ -695,6 +702,8 @@ class Fullcalendar
         }
 
         config = $.extend({}, config, additional_config);
+
+        config.defaultView = defaultView;
 
         return this.init(node, config);
     }

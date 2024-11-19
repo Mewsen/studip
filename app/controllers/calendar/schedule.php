@@ -109,6 +109,7 @@ class Calendar_ScheduleController extends AuthenticatedController
             $semester->id ?? '',
             Request::bool('show_hidden', false)
         );
+        $fullcalendar->setResponsiveDefaultView('timeGridDay');
         $this->fullcalendar = $fullcalendar->render();
     }
 
