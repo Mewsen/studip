@@ -28,6 +28,8 @@
 
 class DatafieldEntryModelI18N extends DatafieldEntryModel
 {
+    protected string $i18n_class = I18NStringDatafield::class;
+
     protected static function configure($config = [])
     {
         $config['i18n_fields']['content'] = true;
