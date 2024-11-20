@@ -253,7 +253,7 @@ class SeminarCycleDate extends SimpleORMap
                 }
                 $first_date = $this->getFirstDate();
                 if ($first_date) {
-                    $parameters['start_date'] = date('d.m.Y', $first_date->date);
+                    $parameters['start_date'] = date('d.m.y', $first_date->date);
                 }
                 if ($room && $first_date) {
                     $text = _('%{weekday}, %{beginning} - %{end}, %{interval} (ab dem %{start_date} im Raum %{room_name})');

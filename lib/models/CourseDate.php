@@ -331,7 +331,7 @@ class CourseDate extends SimpleORMap implements PrivacyObject, Event
             $string = sprintf(
                 '%1$s, %2$s - %3$s',
                 $day_of_week,
-                date('d.m.Y H:i', $this->date),
+                date('d.m.y, H:i', $this->date),
                 $formatted_end
             );
         }
