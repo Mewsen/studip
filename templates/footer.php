@@ -12,26 +12,22 @@
     </div>
 <? endif; ?>
 
-<? if (Navigation::hasItem('/footer')) : ?>
-    <nav id="main-footer-navigation" aria-label="<?= _('Fußzeilennavigation') ?>">
-        <ul>
-        <? foreach (Navigation::getItem('/footer') as $nav): ?>
-            <? if ($nav->isVisible()): ?>
-                <li>
-                <a
-                <? if (is_internal_url($url = $nav->getURL())) : ?>
-                    href="<?= URLHelper::getLink($url, $link_params ?? null) ?>"
-                <? else: ?>
-                    href="<?= htmlReady($url) ?>" target="_blank" rel="noopener noreferrer"
-                <? endif ?>
-                    <?= arrayToHtmlAttributes($nav->getLinkAttributes()) ?>
-                ><?= htmlReady($nav->getTitle()) ?></a>
-                </li>
-            <? endif; ?>
-        <? endforeach; ?>
-        </ul>
-    </nav>
-<? endif; ?>
-</footer>
+        <? if (Navigation::hasItem('/footer')): ?>
+            <nav id="main-footer-navigation" aria-label="<?= _('Fußzeilennavigation') ?>">
+                <ul>
+                    <? foreach (Navigation::getItem('/footer') as $nav): ?>
+                        <? if ($nav->isVisible()): ?>
+                            <li>
+                                <a <? if (is_internal_url($url = $nav->getURL())): ?>
+                                        href="<?= URLHelper::getLink($url, $link_params ?? null) ?>" <? else: ?>
+                                        href="<?= htmlReady($url) ?>" target="_blank" rel="noopener noreferrer" <? endif ?>
+                                    <?= arrayToHtmlAttributes($nav->getLinkAttributes()) ?>><?= htmlReady($nav->getTitle()) ?></a>
+                            </li>
+                        <? endif; ?>
+                    <? endforeach; ?>
+                </ul>
+            </nav>
+        <? endif; ?>
+    </footer>
 <? endif; ?>
 <!-- Ende Footer -->

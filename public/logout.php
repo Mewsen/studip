@@ -90,4 +90,4 @@ if ($auth->auth['uid'] !== 'nobody') {
     page_close();
 }
 
-header('Location: ' . URLHelper::getURL('index.php'));
+header('Location: ' . URLHelper::getURL('index.php?logout=1'));

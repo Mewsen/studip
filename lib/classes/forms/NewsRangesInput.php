@@ -12,6 +12,7 @@ class NewsRangesInput extends Input
         $items = [];
         $icons = [
             'global' => 'home',
+            'login'  => 'door-enter',
             'sem'    => 'seminar',
             'inst'   => 'institute',
             'user'   => 'person'
@@ -114,6 +115,10 @@ class NewsRangesInput extends Input
             $options[] = [
                 'value' => 'studip__home',
                 'name'  => _('Stud.IP-Startseite'),
+            ];
+            $options[] = [
+                'value' => 'login',
+                'name'  => _('Stud.IP-Loginseite'),
             ];
         }
 

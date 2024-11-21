@@ -111,6 +111,7 @@ body {
 }
 
 #main-footer-navigation {
+    flex-grow: 1;
     ul {
         display: flex;
         flex: 1;

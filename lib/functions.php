@@ -200,6 +200,10 @@ function get_object_type($id, $check_only = [])
         return 'global';
     }
 
+    if ($id === 'login') {
+        return 'login';
+    }
+
     // Initialize cache array
     if ($cache === null) {
         $cache = new StudipCachedArray('Studip/ObjectTypes');

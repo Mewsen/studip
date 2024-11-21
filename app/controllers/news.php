@@ -40,6 +40,10 @@ class NewsController extends StudipController
                 'title' => _('Stud.IP (systemweit)'),
                 'icon'  => 'home',
             ],
+            'login' => [
+                'title' => _('Stud.IP (login)'),
+                'icon' => 'door-enter',
+            ],
             'inst' => [
                 'title' => _('Einrichtungen'),
                 'icon'  => 'institute',

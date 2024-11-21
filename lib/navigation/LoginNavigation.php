@@ -45,21 +45,5 @@ class LoginNavigation extends Navigation
                 $this->addSubNavigation('login_' . $auth_plugin->plugin_name, $navigation);
             }
         }
-
-        if (Config::get()->ENABLE_SELF_REGISTRATION) {
-            $navigation = new Navigation(_('Registrieren'), 'dispatch.php/registration');
-            $navigation->setDescription(_('um das System erstmalig zu nutzen'));
-            $this->addSubNavigation('registration', $navigation);
-        }
-
-        if (Config::get()->ENABLE_FREE_ACCESS) {
-            $navigation = new Navigation(_('Freier Zugang'), 'dispatch.php/public_courses');
-            $navigation->setDescription(_('ohne Registrierung'));
-            $this->addSubNavigation('browse', $navigation);
-        }
-
-        $navigation = new Navigation(_('Hilfe'), format_help_url('Basis.Allgemeines'));
-        $navigation->setDescription(_('zu Bedienung und Funktionsumfang'));
-        $this->addSubNavigation('help', $navigation);
     }
 }

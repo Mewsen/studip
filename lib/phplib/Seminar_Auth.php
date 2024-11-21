@@ -316,15 +316,13 @@ class Seminar_Auth
                 $_SESSION['contrast'] = 1;
             }
 
-
             foreach (array_keys($GLOBALS['INSTALLED_LANGUAGES']) as $language_key) {
-                if (Request::submitted('set_language_' . $language_key)) {
+                if (Request::get('set_language') === $language_key) {
                     $_SESSION['forced_language'] = $language_key;
                     $_SESSION['_language'] = $language_key;
                 }
             }
         }
-
         $this->check_environment();
 
         PageLayout::setBodyElementId('login');
@@ -340,6 +338,7 @@ class Seminar_Auth
             page_close();
             die();
         } else {
+            $news_entries = StudipNews::GetNewsByRange('login', true, false);
             unset($_SESSION['semi_logged_in']); // used by email activation
             $login_template = $GLOBALS['template_factory']->open('loginform');
             if (isset($this->auth['uname']) && $this->error_msg) {
@@ -348,13 +347,9 @@ class Seminar_Auth
             $login_template->set_attribute('error_msg', $this->error_msg);
             $login_template->set_attribute('uname', (isset($this->auth["uname"]) ? $this->auth["uname"] : Request::username('loginname')));
             $login_template->set_attribute('self_registration_activated', Config::get()->ENABLE_SELF_REGISTRATION);
-
-            $query = "SHOW TABLES LIKE 'login_faq'";
-            $result = DBManager::get()->query($query);
-
-            if ($result && $result->rowCount() > 0) {
-                $login_template->set_attribute('faq_entries', LoginFaq::findBySQL("1"));
-            }
+            $login_template->set_attribute('logout', Request::bool('logout', false));
+            $login_template->set_attribute('faq_entries', LoginFaq::findBySQL("1"));
+            $login_template->set_attribute('news_entries', array_values($news_entries));
         }
         PageLayout::setHelpKeyword('Basis.AnmeldungLogin');
         $header_template = $GLOBALS['template_factory']->open('header');

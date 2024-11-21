@@ -63,8 +63,9 @@
     }
 
     &.system-notifications-login {
-        margin-bottom: 15px;
-        overflow: hidden;
+        min-height: 100px;
+        width: 404px;
+        margin: auto;
     }
 
     overflow: visible;

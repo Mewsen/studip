@@ -35,6 +35,12 @@
     &.tooltip-important {
         @include icon(before, info-circle, attention, $icon-size-inline);
     }
+    &.tooltip-info-alt {
+        @include icon(before, info-circle, info-alt);
+        &::before {
+            vertical-align: middle;
+        }
+    }
 
     .tooltip-content {
         @extend %tooltip;

@@ -82,7 +82,6 @@ if ($navigation) {
         <!-- Dynamische Links ohne Icons -->
         <div id="header-links">
             <ul>
-
             <? if (Navigation::hasItem('/links')): ?>
                 <? foreach (Navigation::getItem('/links') as $nav): ?>
                     <? if ($nav->isVisible()) : ?>
@@ -207,6 +206,26 @@ if ($navigation) {
                     </form>
                 <? endif; ?>
                 </li>
+            <? else: ?>
+                <li>
+                    <form method="post" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => null]) ?>">
+                        <?= CSRFProtection::tokenTag() ?>
+                        <input type="hidden" name="user_config_submitted" value="1">
+                        <div id="contrast">
+                            <? if (!empty($_SESSION['contrast'])): ?>
+                                <?= Icon::create('accessibility', Icon::ROLE_INFO_ALT)->asImg(24) ?>
+                                <button class="as-link" name="unset_contrast"><?= _('Normalen Kontrast aktivieren') ?></button>
+                                <?= tooltipIcon(_('Aktiviert standardmäßige, nicht barrierefreie Kontraste.'), false, false, true); ?>
+                            <? else: ?>
+                                <?= Icon::create('accessibility', Icon::ROLE_INFO_ALT)->asImg(24) ?>
+                                <button class="as-link" name="set_contrast"><?= _('Hohen Kontrast aktivieren') ?></button>
+                                <?= tooltipIcon(_('Aktiviert einen hohen Kontrast gemäß WCAG 2.1. Diese Einstellung wird nach dem Login übernommen. 
+                                Sie können sie in Ihren persönlichen Einstellungen ändern.'), false, false, true); ?>
+                            <? endif ?>
+                        </div>
+                    </form>
+                </li>
+                <li><?= $this->render_partial('login/_header_languages') ?></li>
             <? endif; ?>
 
                 <li id="responsive-toggle-fullscreen">
@@ -225,7 +244,6 @@ if ($navigation) {
         </div>
     </div>
     <!-- End top bar -->
-
     <!-- Main navigation and right-hand logo -->
     <nav id="navigation-level-1" aria-label="<?= _('Hauptnavigation') ?>">
         <? if (!empty($header_nav['visible'])) : ?>
