@@ -246,6 +246,10 @@ $grid-gap: 0;
     --color--tile-background: #{$color--tile-background};
     --color--tile-background-focus: #{$color--tile-background-focus};
     --color--tile-background-hover: #{$color--tile-background-hover};
+    --color--tile-marker-inactive: #{$color--tile-marker-inactive};
+    --color--tile-marker-active: #{$color--tile-marker-active};
+    --color--tile-marker-attention: #{$color--tile-marker-attention};
+    --color--tile-title-background: #{$color--tile-title-background};
 
     --color--content-box-border: #{$color--content-box-border};
     --color--content-box-header: #{$color--content-box-header};

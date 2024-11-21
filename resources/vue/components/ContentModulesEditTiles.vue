@@ -192,18 +192,18 @@ export default {
     display: flex;
     flex-direction: row;
     background-color: var(--white);
-    border-left: 1px solid var(--dark-gray-color-60);
+    border-left: 1px solid var(--color--tile-marker-inactive);
 
     &.visibility-visible {
-        border-left-color: var(--green);
+        border-left-color: var(--color--tile-marker-active);
         > div {
-            border-left-color: var(--green);
+            border-left-color: var(--color--tile-marker-active);
         }
     }
     &.visibility-invisible {
         border-left-color: var(--yellow);
         > div {
-            border-left-color: var(--yellow);
+            border-left-color: var(--color--tile-marker-attention);
         }
     }
 
@@ -243,7 +243,7 @@ export default {
         flex-direction: column;
         justify-content: space-between;
         transition: all var(--transition-duration) ease;
-        border-left: 10px solid var(--dark-gray-color-60);
+        border-left: 10px solid var(--color--tile-marker-inactive);
         min-height: 150px;
         width: 100%;
 
@@ -262,7 +262,7 @@ export default {
             }
         }
         > .down_part {
-            background-color: var(--content-color-20);
+            background-color: var(--color--tile-title-background);
             display: flex;
             justify-content: space-between;
             align-items: center;
