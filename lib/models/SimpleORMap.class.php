@@ -87,7 +87,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Defines which variant of the I18NString class should be used
      */
-    protected string $i18n_class = I18NString::class;
+    protected $i18n_class = I18NString::class;
 
     /**
      * name of db table
