@@ -56,6 +56,9 @@ $transition-duration: .3s;
 $transition-duration-slow: .5s;
 $transition-duration-superslow: 1s;
 
+// Border radius:
+$border-radius: 4px;
+
 // Layout
 $page-margin: 15px;
 
@@ -228,6 +231,12 @@ $grid-gap: 0;
     --color--sidebar-focus: #{$color--sidebar-focus};
     --color--sidebar-hover: #{$color--sidebar-hover};
     --color--sidebar-divider: #{$color--sidebar-divider};
+
+    --color--action-menu-border: #{$color--action-menu-border};
+    --color--action-menu-divider: #{$color--action-menu-divider};
+    --color--action-menu-hover: #{$color--action-menu-hover};
+    --color--action-menu-marker-hover: #{$color--action-menu-marker-hover};
+    --color--action-menu-shadow: #{$color--action-menu-shadow};
 
     --color--dialog-overlay: #{$color--dialog-overlay};
 

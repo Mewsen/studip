@@ -1,4 +1,4 @@
-$action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
+$action-menu-shadow: 2px 2px 0 var(--color--action-menu-shadow);
 
 .action-menu {
     display: inline-block;
@@ -25,13 +25,14 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
 
     .action-menu-content {
         position: absolute;
-        top: -4px;
-        right: -4px;
+        top: -10px;
+        right: -10px;
 
-        padding: 4px 8px;
+        padding: 10px 10px 10px 5px;
 
         background: var(--white);
-        border: thin solid var(--dark-gray-color-45);
+        border: thin solid var(--color--action-menu-border);
+        border-radius: $border-radius;
         box-shadow: $action-menu-shadow;
         font-weight: normal;
         text-align: left;
@@ -81,29 +82,30 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
 
     .action-menu-title {
         font-weight: bold;
-        margin: 0.2em 0 0.3em;
+        margin: 0 0 0 10px;
     }
 
     .action-menu-list {
         list-style: none;
         margin: 0;
-        padding: 0;
+        padding: 20px 0 0 0;
     }
 
     .action-menu-item {
-        line-height: 1;
-        padding: 0;
+        line-height: 24px;
+        padding: 0 0 0 5px;
+        border-left: solid 4px transparent;
 
         > a,
         > label {
             margin: 0;
-            padding: 3px 0;
+            padding: 2px 30px 2px 0;
             display: block;
         }
 
         .action-menu-item-icon {
             display: inline-block;
-            margin: 0 0.25em;
+            margin: 0 0.5em 0.25em 0;
             vertical-align: middle;
 
             width: var(--icon-size-action-menu);
@@ -129,8 +131,8 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
 
         > hr {
             border-style: none;
-            border-top: thin solid var(--dark-gray-color-45);
-            margin: 4px 0;
+            border-top: thin solid var(--color--action-menu-divider);
+            margin: 7px 0 7px -5px;
         }
 
         &.action-menu-item-disabled {
@@ -142,6 +144,14 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
                 &:hover {
                     color: var(--dark-gray-color-80);
                 }
+            }
+        }
+
+        &:hover {
+            background-color: var(--color--action-menu-hover);
+            border-color: var(--color--action-menu-marker-hover);
+            a, a:hover {
+                color: var(--color--font-primary);
             }
         }
     }
