@@ -316,6 +316,7 @@ $sidebarOut: -330px;
     #sidebar {
         background-color: var(--white);
         max-height: calc(100vh - 100px);
+        margin-top: 60px;
         left: 15px;
         position: absolute;
         top: 116px;
@@ -487,7 +488,9 @@ $sidebarOut: -330px;
     }
 
     #sidebar {
+        border-right: none;
         height: calc(100% - 100px);
+        margin-top: 0;
         overflow-y: auto;
         position: fixed;
         transform: translateX($sidebarOut);
@@ -496,7 +499,7 @@ $sidebarOut: -330px;
         z-index: 100;
 
         &.responsive-show {
-            width: 100%;
+            width: calc(100% - 15px);
 
             .sidebar-widget {
                 width: calc(100% - 30px);
@@ -543,7 +546,7 @@ $sidebarOut: -330px;
             grid-template-columns: ($sidebar-width + $sidebar-padding) calc(100vw - $sidebar-width - $sidebar-padding - 35px);
 
             #content-wrapper {
-                max-width: 100%;
+                max-width: calc(100% - $sidebar-padding);
             }
         }
 

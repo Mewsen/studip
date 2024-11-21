@@ -2,14 +2,15 @@ $icon-size: 20px;
 
 #sidebar {
     background: var(--white);
-    border-left: 0;
+    border-right: solid thin var(--color--sidebar-divider);
     display: inline-block;
     height: max-content;
     margin-bottom: $page-margin + 35px;
-    padding: 0 5px 7px 15px;
+    padding: 0 15px 7px 15px;
     position: sticky;
     text-align: left;
     top: 50px;
+    height: calc(100% - 20px);
     width: $sidebar-width;
     z-index: 2;
 
