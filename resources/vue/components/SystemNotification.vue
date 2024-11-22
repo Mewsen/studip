@@ -170,7 +170,7 @@ export default {
             }
 
             setTimeout(() => {
-                audio.play();
+                audio.play().catch(error => {});
             }, timing);
         }
     },

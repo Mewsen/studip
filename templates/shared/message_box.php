@@ -5,11 +5,6 @@
             <span><?= _('Detailanzeige umschalten') ?></span>
         </a>
     <? endif ?>
-    <? if (!$hide_close): ?>
-        <a class="close" role="button" href="#" title="<?= _('Nachrichtenbox schließen') ?>">
-            <span><?= _('Nachrichtenbox schließen') ?></span>
-        </a>
-    <? endif; ?>
     </div>
     <div role="status" id="messagebox-<?= $counter ?>">
     <?= $message ?>

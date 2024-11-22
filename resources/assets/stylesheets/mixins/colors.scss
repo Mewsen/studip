@@ -215,7 +215,9 @@ $calendar-category-255-aux: $light-gray-color-20;
  6.x  C O L O R S
  * * * * * * * * * * */
 
+$color--black: #000;
 $color--blue-1: #28497c;
+$color--blue-2: #36598f;
 $color--gray-1: #101010;
 $color--gray-2: #3c454e;
 $color--gray-3: #676767;
@@ -299,5 +301,10 @@ $color--shadow: $color--gray-4;
 $color--focus: $color--gray-4;
 
 $color--warning: $color--red-1;
+$color--warning-alternative: mix($color--warning, $color--white, 20%);
 $color--attention: $color--yellow-1;
+$color--attention-alternative: mix($color--attention, $color--white, 20%);
 $color--good: $color--green-1;
+$color--good-alternative: mix($color--good, $color--white, 20%);
+$color--info: $color--blue-2;
+$color--info-alternative: mix($color--info, $color--white, 20%);

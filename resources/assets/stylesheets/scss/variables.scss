@@ -196,7 +196,9 @@ $grid-gap: 0;
     --transition-duration-slow: #{$transition-duration-slow};
     --transition-duration-superslow: #{$transition-duration-superslow};
 
+    --color--black: #{$color--black};
     --color--blue-1: #{$color--blue-1};
+    --color--blue-2: #{$color--blue-2};
     --color--gray-1: #{$color--gray-1};
     --color--gray-2: #{$color--gray-2};
     --color--gray-3: #{$color--gray-3};
@@ -280,8 +282,13 @@ $grid-gap: 0;
     --color--focus: #{$color--focus};
 
     --color--warning: #{$color--warning};
+    --color--warning-alternative: #{$color--warning-alternative};
     --color--attention: #{$color--attention};
+    --color--attention-alternative: #{$color--attention-alternative};
     --color--good: #{$color--good};
+    --color--good-alternative: #{$color--good-alternative};
+    --color--info: #{$color--info};
+    --color--info-alternative: #{$color--info-alternative};
 
     @media (prefers-reduced-motion) {
         #{"--"}transition-duration: 0s;
