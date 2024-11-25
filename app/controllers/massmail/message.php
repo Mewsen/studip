@@ -48,28 +48,29 @@ class Massmail_MessageController extends \AuthenticatedController
                         'if' => 'target === "students"',
                         'context' => 'MassMail',
                         'target' => 'students',
-                        ':key' => 'NaN',
                         'store' => function($value, $input) {
-                            $filters = [];
-                            foreach ($value as $one) {
-                                $filter = new UserFilter($one['id'] ?? '');
-                                $filter->fields = [];
-                                foreach ($one['attributes']['fields'] as $field) {
-                                    $classname = $field['attributes']['type'];
-                                    $f = new $classname();
-                                    if (!empty($fiele['id'])) {
-                                        $f->setId($field['id']);
+                            if ($input->getContextObject()->target === 'students') {
+                                $filters = [];
+                                foreach ($value as $one) {
+                                    $filter = new UserFilter($one['id'] ?? '');
+                                    $filter->fields = [];
+                                    foreach ($one['attributes']['fields'] as $field) {
+                                        $classname = $field['attributes']['type'];
+                                        $f = new $classname();
+                                        if (!empty($fiele['id'])) {
+                                            $f->setId($field['id']);
+                                        }
+                                        $f->setCompareOperator($field['attributes']['compare-operator']);
+                                        $f->setValue($field['attributes']['value']);
+                                        $filter->addField($f);
                                     }
-                                    $f->setCompareOperator($field['attributes']['compare-operator']);
-                                    $f->setValue($field['attributes']['value']);
-                                    $filter->addField($f);
+                                    $filter->store();
+                                    $connection = new \MassMail\MassMailFilter();
+                                    $connection->filter_id = $filter->getId();
+                                    $filters[] = $connection;
                                 }
-                                $filter->store();
-                                $connection = new \MassMail\MassMailFilter();
-                                $connection->filter_id = $filter->getId();
-                                $filters[] = $connection;
+                                $input->getContextObject()->filters = $filters;
                             }
-                            $input->getContextObject()->filters = $filters;
                         }
                     ],
                     'employee_filters' => [
@@ -78,28 +79,29 @@ class Massmail_MessageController extends \AuthenticatedController
                         'if' => 'target === "employees"',
                         'context' => 'MassMail',
                         'target' => 'employees',
-                        ':key' => 'NaN',
                         'store' => function($value, $input) {
-                            $filters = [];
-                            foreach ($value as $one) {
-                                $filter = new UserFilter($one['id'] ?? '');
-                                $filter->fields = [];
-                                foreach ($one['attributes']['fields'] as $field) {
-                                    $classname = $field['attributes']['type'];
-                                    $f = new $classname();
-                                    if (!empty($fiele['id'])) {
-                                        $f->setId($field['id']);
+                            if ($input->getContextObject()->target === 'employees') {
+                                $filters = [];
+                                foreach ($value as $one) {
+                                    $filter = new UserFilter($one['id'] ?? '');
+                                    $filter->fields = [];
+                                    foreach ($one['attributes']['fields'] as $field) {
+                                        $classname = $field['attributes']['type'];
+                                        $f = new $classname();
+                                        if (!empty($fiele['id'])) {
+                                            $f->setId($field['id']);
+                                        }
+                                        $f->setCompareOperator($field['attributes']['compare-operator']);
+                                        $f->setValue($field['attributes']['value']);
+                                        $filter->addField($f);
                                     }
-                                    $f->setCompareOperator($field['attributes']['compare-operator']);
-                                    $f->setValue($field['attributes']['value']);
-                                    $filter->addField($f);
+                                    $filter->store();
+                                    $connection = new \MassMail\MassMailFilter();
+                                    $connection->filter_id = $filter->getId();
+                                    $filters[] = $connection;
                                 }
-                                $filter->store();
-                                $connection = new \MassMail\MassMailFilter();
-                                $connection->filter_id = $filter->getId();
-                                $filters[] = $connection;
+                                $input->getContextObject()->filters = $filters;
                             }
-                            $input->getContextObject()->filters = $filters;
                         }
                     ],
                     'semester' => [

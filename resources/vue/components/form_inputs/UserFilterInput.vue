@@ -126,6 +126,11 @@ export default {
             this.$emit('input', this.stringified);
         }
     },
+    watch: {
+        target() {
+            this.filters = [];
+        }
+    },
     mounted() {
         if (this.value) {
             this.filters = JSON.parse(this.value);
