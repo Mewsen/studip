@@ -81,6 +81,7 @@
                         );
                     }
                     $actions->addButton(
+                        'delete',
                         _('Dokument löschen'),
                         Icon::create('trash'),
                         [
