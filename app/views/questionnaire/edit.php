@@ -13,6 +13,7 @@ foreach (get_declared_classes() as $class) {
     if (
         is_subclass_of($class, QuestionType::class)
         && !isset($questiontypes[$class])
+        && isset($class::getEditingComponent()[0])
     ) {
         $questiontypes[$class] = [
             'name' => $class::getName(),

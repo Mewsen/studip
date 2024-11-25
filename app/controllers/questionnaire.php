@@ -18,6 +18,7 @@ class QuestionnaireController extends AuthenticatedController
         class_exists('LikertScale');
         class_exists('RangeScale');
         class_exists('QuestionnaireInfo');
+        class_exists('QuestionnaireAutomatedData');
         PageLayout::setHelpKeyword('Basis/Votings');
     }
 

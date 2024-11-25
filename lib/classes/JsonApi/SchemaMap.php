@@ -35,6 +35,7 @@ class SchemaMap
             \CourseMember::class => Schemas\CourseMember::class,
             \CourseDate::class => Schemas\CourseEvent::class,
             \CourseExDate::class => Schemas\CourseEvent::class,
+            \DataField::class => Schemas\Datafield::class,
             \Degree::class => Schemas\Degree::class,
             \FeedbackElement::class => Schemas\FeedbackElement::class,
             \FeedbackEntry::class => Schemas\FeedbackEntry::class,
