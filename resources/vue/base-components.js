@@ -6,12 +6,15 @@ const BaseComponents = {
     Datetimepicker: () => import('./components/Datetimepicker.vue'),
     DayOfWeekSelect: () => import('./components/form_inputs/DayOfWeekSelect.vue'),
     EditableList: () => import("./components/EditableList.vue"),
+    FileUpload: () => import('./components/form_inputs/FileUpload.vue'),
     I18nTextarea: () => import("./components/I18nTextarea.vue"),
     Multiselect: () => import('./components/Multiselect.vue'),
     MyCoursesColouredTable: () => import('./components/form_inputs/MyCoursesColouredTable.vue'),
     Quicksearch: () => import('./components/Quicksearch.vue'),
+    QuicksearchListInput: () => import('./components/form_inputs/QuicksearchListInput.vue'),
     RangeInput: () => import('./components/RangeInput.vue'),
     RepetitionInput: () => import("./components/form_inputs/RepetitionInput.vue"),
+    SerialTextMarkers: () => import('./components/form_inputs/SerialTextMarkers.vue'),
     SidebarWidget: () => import('./components/SidebarWidget.vue'),
     StudipActionMenu: () => import('./components/StudipActionMenu.vue'),
     StudipAssetImg: () => import('./components/StudipAssetImg.vue'),
@@ -27,6 +30,7 @@ const BaseComponents = {
     StudipSelect: () => import('./components/StudipSelect.vue'),
     StudipTooltipIcon: () => import('./components/StudipTooltipIcon.vue'),
     StudipWysiwyg: () => import("./components/StudipWysiwyg.vue"),
+    UserFilterInput: () => import('./components/form_inputs/UserFilterInput.vue')
 };
 
 export default BaseComponents;

@@ -65,6 +65,14 @@ export default {
         filter: {
             type: Array,
             default: () => []
+        },
+        context: {
+            type: String,
+            default: ''
+        },
+        target: {
+            type: String,
+            default: ''
         }
     },
     data() {
@@ -119,7 +127,17 @@ export default {
         }
     },
     created() {
-        STUDIP.jsonapi.withPromises().get('user-filter-fields').then(response => {
+        STUDIP.jsonapi.withPromises().get(
+            'user-filter-fields',
+            {
+                data: {
+                    filter: {
+                        context: this.context,
+                        target: this.target
+                    }
+                }
+            }
+        ).then(response => {
             this.availableFields = response.data;
             this.addField();
         });

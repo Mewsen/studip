@@ -2,8 +2,6 @@
 
 namespace JsonApi;
 
-use JsonApi\Schemas\Clipboard;
-
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
@@ -37,6 +35,7 @@ class SchemaMap
             \CourseMember::class => Schemas\CourseMember::class,
             \CourseDate::class => Schemas\CourseEvent::class,
             \CourseExDate::class => Schemas\CourseEvent::class,
+            \Degree::class => Schemas\Degree::class,
             \FeedbackElement::class => Schemas\FeedbackElement::class,
             \FeedbackEntry::class => Schemas\FeedbackEntry::class,
             \JsonApi\Models\ForumCat::class => Schemas\ForumCategory::class,
@@ -44,6 +43,8 @@ class SchemaMap
             \Institute::class => Schemas\Institute::class,
             \InstituteMember::class => Schemas\InstituteMember::class,
             \LtiTool::class => Schemas\LtiTool::class,
+            \MassMail\MassMailMessage::class => Schemas\MassMailMessage::class,
+            \MassMail\MassMailPermission::class => Schemas\MassMailPermission::class,
             \Message::class => Schemas\Message::class,
             \SemClass::class => Schemas\SemClass::class,
             \Semester::class => Schemas\Semester::class,
@@ -64,7 +65,6 @@ class SchemaMap
             \FolderType::class => Schemas\Folder::class,
             \UserFilter::class => Schemas\UserFilter::class,
             \UserFilterField::class => Schemas\UserFilterField::class,
-
             \Courseware\Block::class => Schemas\Courseware\Block::class,
             \Courseware\BlockComment::class => Schemas\Courseware\BlockComment::class,
             \Courseware\BlockFeedback::class => Schemas\Courseware\BlockFeedback::class,

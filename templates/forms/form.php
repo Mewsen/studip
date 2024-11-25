@@ -37,6 +37,7 @@ $form_id = md5(uniqid());
       data-required="<?= htmlReady(json_encode($required_inputs)) ?>"
       data-server_validation="<?= $server_validation ? 1 : 0?>"
       data-validation_url="<?= htmlReady($_SERVER['REQUEST_URI']) ?>"
+      <?= $form->hasFileInput() ? ' enctype="application/x-www-form-urlencoded"' : '' ?>
       class="default studipform<?= $form->isCollapsable() ? ' collapsable' : '' ?>">
 
     <?= CSRFProtection::tokenTag(['ref' => 'securityToken']) ?>

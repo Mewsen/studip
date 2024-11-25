@@ -1,4 +1,5 @@
 <?php
+
 /**
  * StgteilVersionCondition.php
  *
@@ -13,7 +14,9 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  */
-class StgteilVersionCondition extends UserFilterField
+namespace UserFilterFields;
+
+class StgteilVersionCondition extends \UserFilterField
 {
     // --- ATTRIBUTES ---
     public $valuesDbTable = 'mvv_stgteilversion';
@@ -22,14 +25,14 @@ class StgteilVersionCondition extends UserFilterField
     public $userDataDbTable = 'user_studiengang';
     public $userDataDbField = 'version_id';
 
-    public $sortOrder = 5;
+    public static $sortOrder = 5;
 
     public static $isParameterized = true;
 
     public static function getParameterizedTypes()
     {
-        if (Config::get()->DISPLAY_STGTEILVERSION_USERFILTER) {
-            $filter = new StgteilVersionCondition;
+        if (\Config::get()->DISPLAY_STGTEILVERSION_USERFILTER) {
+            $filter = new StgteilVersionCondition();
             $fields['StgteilVersionCondition'] = $filter->getName();
             return $fields;
         } else {
@@ -48,13 +51,13 @@ class StgteilVersionCondition extends UserFilterField
         ];
         if ($this->valuesDbNameField) {
             // Get all available values from database.
-            $stmt = DBManager::get()->query(
+            $stmt = \DBManager::get()->query(
                 "SELECT DISTINCT `version_id`, `fach`.`name` ".
                  "FROM `mvv_stgteilversion` LEFT JOIN mvv_stgteil USING (stgteil_id)".
                  "LEFT JOIN fach USING (fach_id)".
                  "WHERE `mvv_stgteilversion`.`stat` = 'genehmigt' ORDER BY `fach`.`name` ASC");
 
-            while ($current = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            while ($current = $stmt->fetch(\PDO::FETCH_ASSOC)) {
                 $this->validValues[$current[$this->valuesDbIdField]] = $current[$this->valuesDbNameField];
             }
         }
@@ -66,7 +69,7 @@ class StgteilVersionCondition extends UserFilterField
         }
 
         foreach ($this->validValues as $version_id => $name) {
-            $stgteilversion = StgteilVersion::find($version_id);
+            $stgteilversion = \StgteilVersion::find($version_id);
             $this->validValues[$version_id] = $stgteilversion->getDisplayName();
         }
     }

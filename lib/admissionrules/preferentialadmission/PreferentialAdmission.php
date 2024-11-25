@@ -487,6 +487,7 @@ class PreferentialAdmission extends AdmissionRule
         $parameters = [];
         if ($this->conditions) {
             foreach ($this->conditions as $condition) {
+                $condition->setRange(CourseSet::class, $this->courseSetId);
                 // Store each condition...
                 $condition->store();
                 $queries[] = "(?, ?, ?)";

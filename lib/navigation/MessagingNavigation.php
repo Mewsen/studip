@@ -31,7 +31,7 @@ class MessagingNavigation extends Navigation
         parent::initItem();
         $my_messaging_settings = UserConfig::get($user->id)->MESSAGING_SETTINGS;
         $lastVisitedTimestamp = isset($my_messaging_settings['last_box_visit'])?(int)$my_messaging_settings['last_box_visit']:0;
-        
+
         $query = "SELECT SUM(mkdate > :time AND readed = 0) AS num_new,
                          SUM(readed = 0) AS num_unread,
                          SUM(readed = 1) AS num_read
@@ -42,7 +42,7 @@ class MessagingNavigation extends Navigation
         $statement->bindValue(':user_id', $GLOBALS['user']->id);
         $statement->execute();
         list($neux, $neum, $altm) = $statement->fetch(PDO::FETCH_NUM);
-        
+
         $this->setBadgeNumber($neum);
 
         if ($neux > 0) {
@@ -69,12 +69,35 @@ class MessagingNavigation extends Navigation
     public function initSubNavigation()
     {
         parent::initSubNavigation();
-        
+
         $messages = new Navigation(_('Nachrichten'), 'dispatch.php/messages/overview');
         $inbox = new Navigation(_('Eingang'), 'dispatch.php/messages/overview');
         $messages->addSubNavigation('inbox', $inbox);
         $messages->addSubNavigation('sent', new Navigation(_('Gesendet'), 'dispatch.php/messages/sent'));
         $this->addSubNavigation('messages', $messages);
-        
+
+        if ($GLOBALS['perm']->have_perm('tutor') && \MassMail\MassMailPermission::has(User::findCurrent()->id)) {
+            $massmail = new Navigation(_('Nachrichten an Zielgruppen'), 'dispatch.php/massmail/message');
+            $massmail->addSubNavigation(
+                'message',
+                new Navigation(_('Nachricht schreiben'), 'dispatch.php/massmail/message')
+            );
+            $massmail->addSubNavigation(
+                'overview',
+                new Navigation(_('Nachrichtenübersicht'), 'dispatch.php/massmail/overview')
+            );
+            if (\MassMail\MassMailPermission::has(User::findCurrent()->id, true)) {
+                $massmail->addSubNavigation(
+                    'permissions',
+                    new Navigation(_('Berechtigungen'), 'dispatch.php/massmail/permissions')
+                );
+                $massmail->addSubNavigation(
+                    'settings',
+                    new Navigation(_('Einstellungen'), 'dispatch.php/massmail/settings')
+                );
+            }
+            $this->addSubNavigation('massmail', $massmail);
+        }
+
     }
 }

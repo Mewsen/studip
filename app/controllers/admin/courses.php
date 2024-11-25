@@ -487,6 +487,16 @@ class Admin_CoursesController extends AuthenticatedController
                         'data-dialog' => 'size=big'
                     ]);
                 break;
+            case 23: // Mass mail to selected courses
+                $data['buttons_top'] = '<label>' . _('Alle auswählen') .
+                    '<input type="checkbox" data-proxyfor=".course-admin td:last-child :checkbox"></label>';
+                $data['buttons_bottom'] = (string) \Studip\Button::createAccept(
+                    _('Nachricht an ausgewählte Veranstaltungen'), 'massmail',
+                    [
+                        'formaction' => URLHelper::getURL('dispatch.php/massmail/quick/courses'),
+                        'data-dialog' => 'size=big'
+                    ]);
+                break;
             default:
                 foreach (PluginManager::getInstance()->getPlugins(AdminCourseAction::class) as $plugin) {
                     if ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA === get_class($plugin)) {
@@ -834,6 +844,11 @@ class Admin_CoursesController extends AuthenticatedController
                 break;
             case 22: //Masssenexport Teilnehmendendaten
                 $template = $tf->open('admin/courses/batch_export_members');
+                $template->course = $course;
+                $d['action'] = $template->render();
+                break;
+            case 23: //Masssenexport Teilnehmendendaten
+                $template = $tf->open('admin/courses/massmail');
                 $template->course = $course;
                 $d['action'] = $template->render();
                 break;
@@ -1435,6 +1450,14 @@ class Admin_CoursesController extends AuthenticatedController
                 'partial'    => 'batch_export_members.php'
 
             ],
+            23 => [
+                'name'       => _('Nachricht schreiben'),
+                'title'      => _('Nachricht schreiben'),
+                'url'        => 'dispatch.php/massmail/quick/courses',
+                'dialogform' => true,
+                'multimode'  => true,
+                'partial'    => 'massmail.php'
+            ]
         ];
 
         if (!$GLOBALS['perm']->have_perm('admin')) {

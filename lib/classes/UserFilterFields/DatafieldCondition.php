@@ -12,22 +12,24 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  */
-class DatafieldCondition extends UserFilterField
+namespace UserFilterFields;
+
+class DatafieldCondition extends \UserFilterField
 {
     public static $isParameterized = true;
 
     public $datafield_id, $null_yields, $datafield_name;
 
-    public $sortOrder = 6;
+    public static $sortOrder = 6;
 
     public static function getParameterizedTypes()
     {
         $ret = [];
         try {
-            foreach (DataField::findBySQL("object_type='user' AND (object_class & (1|2|4|8) OR object_class IS NULL) AND is_userfilter = 1 ORDER BY priority") as $df) {
+            foreach (\DataField::findBySQL("object_type='user' AND (object_class & (1|2|4|8) OR object_class IS NULL) AND is_userfilter = 1 ORDER BY priority") as $df) {
                 $ret[__CLASS__ . '_' . $df->id] = utf8_encode(chr(160)) . _("Datenfeld") . ': ' . $df->name;
             }
-        } catch (PDOException $e) {} //migration 128 chokes on this...
+        } catch (\PDOException $e) {} //migration 128 chokes on this...
         return $ret;
     }
     /**
@@ -49,26 +51,26 @@ class DatafieldCondition extends UserFilterField
             $this->datafield_id = $typeparam;
         }
 
-        $df = DataField::find($this->datafield_id);
+        $df = \DataField::find($this->datafield_id);
         if ($df) {
             $this->datafield_name = $df->name;
         } else {
-            throw new UnexpectedValueException('datafield not found, id: ' . $typeparam);
+            throw new \UnexpectedValueException('datafield not found, id: ' . $typeparam);
         }
-        $typed_df = DataFieldEntry::createDataFieldEntry($df);
-        if ($typed_df instanceof DataFieldBoolEntry) {
+        $typed_df = \DataFieldEntry::createDataFieldEntry($df);
+        if ($typed_df instanceof \DataFieldBoolEntry) {
             $this->validValues = [1 => _('Ja'), 0 => _('Nein')];
             unset($this->validCompareOperators['>=']);
             unset($this->validCompareOperators['<=']);
             unset($this->validCompareOperators['!=']);
             $this->null_yields = 0;
-        } else if ($typed_df instanceof DataFieldSelectboxEntry) {
+        } else if ($typed_df instanceof \DataFieldSelectboxEntry) {
             list($valid_values, $is_assoc) = $typed_df->getParameters();
             if (!$is_assoc) {
                 $valid_values = array_combine($valid_values, $valid_values);
             }
             $this->validValues = $valid_values;
-            $this->null_yields = $typed_df instanceof DataFieldSelectboxMultipleEntry ? '' : key($valid_values);
+            $this->null_yields = $typed_df instanceof \DataFieldSelectboxMultipleEntry ? '' : key($valid_values);
         } else {
             $this->null_yields = '';
         }
@@ -87,7 +89,7 @@ class DatafieldCondition extends UserFilterField
 
     public function getUsers($restrictions = [])
     {
-        $db = DBManager::get();
+        $db = \DBManager::get();
         // Standard query getting the values without respecting other values.
         $select = "SELECT user_id FROM
                     auth_user_md5 LEFT JOIN
@@ -107,7 +109,7 @@ class DatafieldCondition extends UserFilterField
      */
     public function getUserValues($userId, $additional = null)
     {
-        $result = DBManager::get()->fetchColumn(
+        $result = \DBManager::get()->fetchColumn(
             "SELECT content FROM datafields_entries
             WHERE datafield_id = ? AND range_id = ?", [$this->datafield_id, $userId]);
         return [$result === null || $result === false ? $this->null_yields : $result];
@@ -118,10 +120,10 @@ class DatafieldCondition extends UserFilterField
      */
     public function load()
     {
-        $stmt = DBManager::get()->prepare(
+        $stmt = \DBManager::get()->prepare(
             "SELECT * FROM `userfilter_fields` WHERE `field_id`=? LIMIT 1");
         $stmt->execute([$this->id]);
-        if ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if ($data = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $this->conditionId = $data['filter_id'];
             $this->value = $data['value'];
             $this->compareOperator = $data['compare_op'];
@@ -152,7 +154,7 @@ class DatafieldCondition extends UserFilterField
             $this->id = $this->generateId();
         }
         // Store field data.
-        $stmt = DBManager::get()->prepare("INSERT INTO `userfilter_fields`
+        $stmt = \DBManager::get()->prepare("INSERT INTO `userfilter_fields`
             (`field_id`, `filter_id`, `type`, `value`, `compare_op`,
             `mkdate`, `chdate`)  VALUES (?, ?, ?, ?, ?, ?, ?)
             ON DUPLICATE KEY UPDATE `filter_id`=VALUES(`filter_id`),

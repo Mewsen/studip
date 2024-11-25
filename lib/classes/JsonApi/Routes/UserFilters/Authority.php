@@ -2,17 +2,12 @@
 
 namespace JsonApi\Routes\UserFilters;
 
-use Config;
-use User;
+use Config, User, UserFilter;
 
 class Authority
 {
-    public static function canEditUserFilters(User $user): bool
+    public static function canEditUserFilters(User $user, UserFilter $filter): bool
     {
-        return $GLOBALS['perm']->have_perm('admin', $user->id)
-            || (
-                Config::get()->ALLOW_DOZENT_COURSESET_ADMIN
-                && $GLOBALS['perm']->have_perm('dozent', $user->id)
-            );
+        return $filter->canEdit($user);
     }
 }

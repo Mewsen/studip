@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SemesterOfStudyCondition.php
  *
@@ -13,7 +14,9 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  */
-class SemesterOfStudyCondition extends UserFilterField
+namespace UserFilterFields;
+
+class SemesterOfStudyCondition extends \UserFilterField
 {
     // --- ATTRIBUTES ---
     public $valuesDbTable = 'user_studiengang';
@@ -21,7 +24,7 @@ class SemesterOfStudyCondition extends UserFilterField
     public $userDataDbTable = 'user_studiengang';
     public $userDataDbField = 'semester';
 
-    public $sortOrder = 4;
+    public static $sortOrder = 4;
 
     // --- OPERATIONS ---
 
@@ -54,9 +57,9 @@ class SemesterOfStudyCondition extends UserFilterField
             // Initialize to some value in case there are no semester numbers.
             $maxsem = 15;
             // Calculate the maximal available semester.
-                $stmt = DBManager::get()->query("SELECT MAX(" . $this->valuesDbIdField . ") AS maxsem " .
+                $stmt = \DBManager::get()->query("SELECT MAX(" . $this->valuesDbIdField . ") AS maxsem " .
                     "FROM `" . $this->valuesDbTable . "`");
-            if ($current = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            if ($current = $stmt->fetch(\PDO::FETCH_ASSOC)) {
                 if ($current['maxsem']) {
                     $maxsem = $current['maxsem'];
                 }

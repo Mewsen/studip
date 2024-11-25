@@ -59,6 +59,8 @@ export default {
             if (this.shouldFocus) {
                 this.focus();
             }
+
+            STUDIP.eventBus.emit('editor-loaded', this.createdEditor);
         },
         onInput(value) {
             this.currentText = value;

@@ -1,6 +1,6 @@
 <?php
 /**
- * SubjectCondition.php
+ * SubjectConditionAny.php
  *
  * All conditions concerning the study subject in Stud.IP can be specified here.
  *
@@ -13,16 +13,16 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  */
-class SubjectCondition extends UserFilterField
+
+namespace UserFilterFields;
+
+class SubjectConditionAny extends \UserFilterField
 {
     // --- ATTRIBUTES ---
-    public $valuesDbTable = 'fach';
-    public $valuesDbIdField = 'fach_id';
-    public $valuesDbNameField = 'name';
     public $userDataDbTable = 'user_studiengang';
     public $userDataDbField = 'fach_id';
 
-    public $sortOrder = 2;
+    public static $sortOrder = 3;
 
     // --- OPERATIONS ---
 
@@ -32,12 +32,10 @@ class SubjectCondition extends UserFilterField
     public function __construct($fieldId = '')
     {
         parent::__construct($fieldId);
-        $this->relations = [
-            'DegreeCondition' => [
-                'local_field' => 'abschluss_id',
-                'foreign_field' => 'abschluss_id'
-                ]
+        $this->validCompareOperators = [
+            '!=' => ' '
         ];
+        $this->validValues = ['' => ' '];
     }
 
     /**
@@ -47,6 +45,6 @@ class SubjectCondition extends UserFilterField
      */
     public function getName()
     {
-        return _('Studienfach');
+        return _('Alle Studienfächer');
     }
 }

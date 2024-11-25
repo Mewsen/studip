@@ -151,7 +151,9 @@ class Form extends Part
 
         //Now initializing the fieldset:
         $fieldset = new Fieldset($params['legend'] ?: _("Daten"));
-        $fieldset->setContextObject($object);
+        $fieldset->setContextObject($object)
+            ->setCollapsable($params['collapsable'] ?? false)
+            ->setCollapsed($params['collapsed'] ?? false);
         $this->addPart($fieldset);
 
         foreach ($fields as $fieldname => $fielddata) {
@@ -578,4 +580,20 @@ class Form extends Part
         }
         return $value;
     }
+
+    /**
+     * Checks whether this form has a file input and thus needs its enctype set.
+     * @return bool
+     */
+    public function hasFileInput()
+    {
+        foreach ($this->getAllInputs() as $input) {
+            if (get_class($input) === FileInput::class) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

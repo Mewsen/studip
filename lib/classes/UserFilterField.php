@@ -16,7 +16,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  */
-
 class UserFilterField
 {
     // --- ATTRIBUTES ---
@@ -55,7 +54,7 @@ class UserFilterField
      * Provide some kind of sort order for filter fields. By default,
      * all subclasses without an explicitly given order will be sorted at the end.
      */
-    public $sortOrder = 99;
+    public static $sortOrder = 99;
 
     public static $isParameterized = false;
 
@@ -80,6 +79,24 @@ class UserFilterField
 
     }
 
+    /**
+     * Which targets are allowed for this filter field?
+     * An empty array means: no restrictions
+     * @return array
+     */
+    public static function getTargets()
+    {
+        return [];
+    }
+
+    /**
+     * Indicates whether this filter field is active.
+     * @return true
+     */
+    public static function isActive()
+    {
+        return true;
+    }
 
     /**
      * Standard constructor.
@@ -100,8 +117,8 @@ class UserFilterField
             } else {
                 // Get all available values from database.
                 $stmt = DBManager::get()->query(
-                        "SELECT DISTINCT `" . $this->valuesDbIdField . "`, `" . $this->valuesDbNameField . "` " .
-                        "FROM `" . $this->valuesDbTable . "` ORDER BY `" . $this->valuesDbNameField . "` ASC");
+                    "SELECT DISTINCT `" . $this->valuesDbIdField . "`, `" . $this->valuesDbNameField . "` " .
+                    "FROM `" . $this->valuesDbTable . "` ORDER BY `" . $this->valuesDbNameField . "` ASC");
                 while ($current = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $this->validValues[$current[$this->valuesDbIdField]] = $current[$this->valuesDbNameField];
                 }
@@ -121,7 +138,7 @@ class UserFilterField
      * value is compared to the currently selected value by using the
      * currently selected compare operator.
      *
-     * @param  Array values
+     * @param Array values
      * @return Boolean
      */
     public function checkValue($values)
@@ -177,12 +194,12 @@ class UserFilterField
     /**
      * Generate a new unique ID.
      *
-     * @param  String tableName
+     * @param String tableName
      */
     public function generateId()
     {
         do {
-            $newid = md5(uniqid(get_class($this).microtime(), true));
+            $newid = md5(uniqid(get_class($this) . microtime(), true));
             $id = DBManager::get()->fetchColumn("SELECT `field_id`
                 FROM `userfilter_fields` WHERE `field_id`=?", [$newid]);
         } while ($id);
@@ -192,23 +209,46 @@ class UserFilterField
     /**
      * Reads all available UserFilterField subclasses and loads their definitions.
      */
-    public static function getAvailableFilterFields()
+    public static function getAvailableFilterFields(string $context = '', string $target = '')
     {
         if (self::$available_filter_fields === null) {
             $fields = [];
             $i = new FileSystemIterator(
-                $GLOBALS['STUDIP_BASE_PATH'] . '/lib/classes/admission/userfilter',
+                $GLOBALS['STUDIP_BASE_PATH'] . '/lib/classes/UserFilterFields' . ($context !== '' ? '/' . $context : ''),
                 FileSystemIterator::SKIP_DOTS
             );
 
             foreach ($i as $class) {
-                require_once $class;
+                if ($class->isFile()) {
+                    require_once $class;
+                }
             }
 
+            // Get all classes in given context.
             $classes = array_filter(
                 get_declared_classes(),
-                fn($c) => is_subclass_of($c, UserFilterField::class)
+                function ($c) use ($context) {
+                    $reflection_class = new \ReflectionClass($c);
+                    $namespace = $reflection_class->getNamespaceName();
+                    return is_subclass_of($c, UserFilterField::class)
+                        && $namespace === 'UserFilterFields' . ($context !== '' ? '\\' . $context : '')
+                        && $c::isActive();
+                }
             );
+
+            usort($classes, fn ($a, $b) => $a::$sortOrder - $b::$sortOrder);
+
+            // If a target is given, return only matching classes
+            if ($target !== '') {
+                $classes = array_filter(
+                    $classes,
+                    function ($c) use ($target) {
+                        $targets = $c::getTargets();
+                        return count($targets) === 0 || in_array($target, $targets);
+                    }
+                );
+            }
+
             foreach ($classes as $class) {
                 if ($class::$isParameterized) {
                     $fields = array_merge($fields, $class::getParameterizedTypes());
@@ -217,7 +257,6 @@ class UserFilterField
                     $fields[$class] = $filter->getName();
                 }
             }
-            asort($fields);
             self::$available_filter_fields = $fields;
         }
         return self::$available_filter_fields;
@@ -281,10 +320,10 @@ class UserFilterField
         $db = DBManager::get();
         $users = [];
         // Standard query getting the values without respecting other values.
-        $select = "SELECT DISTINCT `".$this->userDataDbTable."`.`user_id` ";
-        $from = "FROM `".$this->userDataDbTable."` ";
-        $where = "WHERE `".$this->userDataDbTable."`.`".$this->userDataDbField.
-            "`".$this->compareOperator."?";
+        $select = "SELECT DISTINCT `" . $this->userDataDbTable . "`.`user_id` ";
+        $from = "FROM `" . $this->userDataDbTable . "` ";
+        $where = "WHERE `" . $this->userDataDbTable . "`.`" . $this->userDataDbField .
+            "`" . $this->compareOperator . "?";
         $parameters = [$this->value];
         $joinedTables = [
             $this->userDataDbTable => true
@@ -296,20 +335,20 @@ class UserFilterField
                 // Do we need to join in another table?
                 if (!$joinedTables[$restriction['table']]) {
                     $joinedTables[$restriction['table']] = true;
-                    $from .= " INNER JOIN `".$restriction['table']."` ON (`".
-                        $this->userDataDbTable."`.`".
-                        $this->relations[$otherField]['local_field']."`=`".
-                        $restriction['table']."`.`".
-                        $this->relations[$otherField]['foreign_field']."`)";
+                    $from .= " INNER JOIN `" . $restriction['table'] . "` ON (`" .
+                        $this->userDataDbTable . "`.`" .
+                        $this->relations[$otherField]['local_field'] . "`=`" .
+                        $restriction['table'] . "`.`" .
+                        $this->relations[$otherField]['foreign_field'] . "`)";
                 }
                 // Expand WHERE statement with the value from restriction.
-                $where .= " AND `".$restriction['table']."`.`".
-                    $restriction['field']."`".$restriction['compare']."?";
+                $where .= " AND `" . $restriction['table'] . "`.`" .
+                    $restriction['field'] . "`" . $restriction['compare'] . "?";
                 $parameters[] = $restriction['value'];
             }
         }
         // Get all the users that fulfill the condition.
-        $stmt = $db->prepare($select.$from.$where);
+        $stmt = $db->prepare($select . $from . $where);
         $stmt->execute($parameters);
         while ($current = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $users[] = $current['user_id'];
@@ -323,15 +362,15 @@ class UserFilterField
      * for the user. These can then be compared with the required degrees
      * whether they fit.
      *
-     * @param  String $userId User to check.
-     * @param  array $additional conditions that are required for check.
+     * @param String $userId User to check.
+     * @param array $additional conditions that are required for check.
      * @return array The value(s) for this user.
      */
     public function getUserValues($userId, $additional = null)
     {
         $result = [];
-        $query = "SELECT DISTINCT `".$this->userDataDbField."` ".
-            "FROM `".$this->userDataDbTable."` ".
+        $query = "SELECT DISTINCT `" . $this->userDataDbField . "` " .
+            "FROM `" . $this->userDataDbTable . "` " .
             "WHERE `user_id`=?";
         $parameters = [$userId];
         // Additional requirements given...
@@ -342,7 +381,7 @@ class UserFilterField
 
             foreach ($additional as $a_condition) {
                 if ($a_condition->id != $this->id && $this->userDataDbTable == $a_condition->userDataDbTable &&
-                        !in_array($a_condition->userDataDbField, $usedFields)) {
+                    !in_array($a_condition->userDataDbField, $usedFields)) {
                     $query .= " AND `" . $a_condition->userDataDbField . "` " . $a_condition->compareOperator . "?";
                     $parameters[] = $a_condition->value;
                 }
@@ -406,7 +445,7 @@ class UserFilterField
     /**
      * Sets a new selected compare operator
      *
-     * @param  String newOperator
+     * @param String newOperator
      * @return UserFilterField
      */
     public function setCompareOperator($newOperator)
@@ -422,7 +461,7 @@ class UserFilterField
     /**
      * Connects the current field to a UserFilter.
      *
-     * @param  String $id ID of a UserFilter object.
+     * @param String $id ID of a UserFilter object.
      * @return UserFilterField
      */
     public function setConditionId($id)
@@ -434,7 +473,7 @@ class UserFilterField
     /**
      * Sets a new selected value.
      *
-     * @param  String newValue
+     * @param String newValue
      * @return UserFilterField
      */
     public function setValue($newValue)
@@ -450,7 +489,7 @@ class UserFilterField
     /**
      * Stores data to DB.
      *
-     * @param  String conditionId The condition this field belongs to.
+     * @param String conditionId The condition this field belongs to.
      */
     public function store()
     {

@@ -446,6 +446,7 @@ class ConditionalAdmission extends AdmissionRule
         $groupqueries = [];
         $groupparameters = [];
         foreach ($this->ungrouped_conditions as $condition) {
+            $condition->setRange(CourseSet::class, $this->courseSetId);
             // Store each ungrouped condition...
             $condition->store();
             $queries[] = "(?, ?, ?, ?)";
@@ -460,6 +461,7 @@ class ConditionalAdmission extends AdmissionRule
             $groupparameters[] = $conditiongroup_id;
             $groupparameters[] = $this->quota[$conditiongroup_id];
             foreach ($conditions as $condition) {
+                $condition->setRange(CourseSet::class, $this->courseSetId);
                 // Store each group of conditions...
                 $condition->store();
                 $queries[] = "(?, ?, ?, ?)";

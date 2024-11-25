@@ -21,21 +21,21 @@ class UserFiltersUpdate extends JsonApiController
      */
     public function __invoke(Request $request, Response $response, $args)
     {
-        $user = $this->getUser($request);
-
-        if (!Authority::canEditUserFilters($user)) {
-            throw new AuthorizationFailedException();
-        }
-
         $filter = new \UserFilter($args['id']);
 
         if ($filter['id'] !== $args['id']) {
             throw new RecordNotFoundException();
         }
 
+        $user = $this->getUser($request);
+
+        if (!Authority::canEditUserFilters($user, $filter)) {
+            throw new AuthorizationFailedException();
+        }
+
         $json = $this->validate($request);
 
-        $fields = $filter->getFields();
+        $filter->fields = [];
 
         foreach (self::arrayGet($json, 'data.attributes.filters') as $one) {
             $classname = '\\' . $one['attributes']['type'];

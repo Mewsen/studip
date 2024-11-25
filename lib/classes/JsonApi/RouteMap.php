@@ -133,6 +133,7 @@ class RouteMap
         $this->addAuthenticatedForumRoutes($group);
         $this->addAuthenticatedInstitutesRoutes($group);
         $this->addAuthenticatedLtiRoutes($group);
+        $this->addAuthenticatedMassMailRoutes($group);
         $this->addAuthenticatedMessagesRoutes($group);
         $this->addAuthenticatedNewsRoutes($group);
         $this->addAuthenticatedStockImagesRoutes($group);
@@ -303,6 +304,14 @@ class RouteMap
     {
         $group->get('/lti-tools/{id}', Routes\Lti\LtiToolsShow::class);
         $group->get('/lti-tools', Routes\Lti\LtiToolsIndex::class);
+    }
+
+
+    private function addAuthenticatedMassMailRoutes(RouteCollectorProxy $group): void
+    {
+        $group->get('/mass-mails/messages', Routes\MassMail\MassMailMessagesIndex::class);
+        $group->get('/mass-mails/permissions', Routes\MassMail\MassMailPermissionsIndex::class);
+        $group->get('/mass-mails/permissions/{id}', Routes\MassMail\MassMailPermissionsShow::class);
     }
 
     private function addAuthenticatedNewsRoutes(RouteCollectorProxy $group): void

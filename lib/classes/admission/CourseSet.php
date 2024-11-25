@@ -15,7 +15,7 @@
  * @category    Stud.IP
  */
 
-class CourseSet
+class CourseSet implements UserFilterRange
 {
     // --- ATTRIBUTES ---
 
@@ -969,6 +969,7 @@ class CourseSet
         }
         // Store all rules.
         foreach ($this->admissionRules as $rule) {
+            $rule->courseSetId = $this->id;
             // Store each rule...
             $rule->store();
             // ... and its connection to the current course set.
@@ -1192,6 +1193,49 @@ class CourseSet
             $cloned_rules[$dolly->id] = $dolly;
         }
         $this->admissionRules = $cloned_rules;
+    }
+
+    /**
+     * @see UserFilterRange::canEdit()
+     */
+    public function canEditFilter(User $user, UserFilter $filter): bool
+    {
+        if ($GLOBALS['perm']->have_perm('root', $user->id)) {
+            return true;
+        }
+
+        // Check general permissions on course set creation/editing.
+        $permission = $GLOBALS['perm']->have_perm('admin', $user->id)
+            || (
+                Config::get()->ALLOW_DOZENT_COURSESET_ADMIN
+                && $GLOBALS['perm']->have_perm('dozent', $user->id)
+            );
+
+        // Get all rules where filter can be present.
+        $ruleTypes = array_filter(
+            $this->getAdmissionRules(),
+            fn($rule) => in_array(get_class($rule), [ConditionalAdmission::class, PreferentialAdmission::class])
+        );
+
+        // Get my institute's IDs.
+        $institutes = array_map(
+            fn ($i) => $i['Institut_id'],
+            Institute::getMyInstitutes($user->id)
+        );
+        $matchingInstitutes = array_intersect(array_keys($this->institutes), $institutes);
+
+        /*
+         * Check whether:
+         * - this course set has rules than can have UserFilter objects
+         * - the given user is allowed to create/edit course sets at all
+         * - this course set belongs to the given user or is not private and belongs to one of this user's institutes
+         */
+        return $permission
+            && count($ruleTypes) > 0
+            && (
+                $this->user_id === $user->id
+                || !$this->private && count($matchingInstitutes) > 0
+            );
     }
 
 } /* end of class CourseSet */

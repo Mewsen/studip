@@ -20,15 +20,15 @@ class UserFiltersCreate extends JsonApiController
      */
     public function __invoke(Request $request, Response $response, $args)
     {
+        $filter = new \UserFilter();
+        $filter->show_user_count = true;
+
         $json = $this->validate($request);
         $user = $this->getUser($request);
 
-        if (!Authority::canEditUserFilters($user)) {
+        if (!Authority::canEditUserFilters($user, $filter)) {
             throw new AuthorizationFailedException();
         }
-
-        $filter = new \UserFilter();
-        $filter->show_user_count = true;
 
         foreach (self::arrayGet($json, 'data.attributes.filters') as $one) {
             $classname = '\\' . $one['attributes']['type'];

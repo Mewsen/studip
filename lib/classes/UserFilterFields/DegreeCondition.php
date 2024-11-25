@@ -1,4 +1,5 @@
 <?php
+
 /**
  * DegreeCondition.php
  *
@@ -13,7 +14,9 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  */
-class DegreeCondition extends UserFilterField
+namespace UserFilterFields;
+
+class DegreeCondition extends \UserFilterField
 {
     // --- ATTRIBUTES ---
     public $valuesDbTable = 'abschluss';
@@ -22,7 +25,7 @@ class DegreeCondition extends UserFilterField
     public $userDataDbTable = 'user_studiengang';
     public $userDataDbField = 'abschluss_id';
 
-    public $sortOrder = 1;
+    public static $sortOrder = 1;
 
     /**
      * @see UserFilterField::__construct
