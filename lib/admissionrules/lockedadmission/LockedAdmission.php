@@ -2,7 +2,7 @@
 
 /**
  * LockedAdmission.php
- * 
+ *
  * Represents a rule for completely locking courses for admission.
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ class LockedAdmission extends AdmissionRule
     {
         parent::__construct($ruleId, $courseSetId);
         $this->default_message = _('Die Anmeldung ist gesperrt.');
-        
+
         if ($ruleId) {
             $this->load();
         } else {
@@ -44,13 +44,13 @@ class LockedAdmission extends AdmissionRule
     public function delete() {
         parent::delete();
         // Delete rule data.
-        $stmt = DBManager::get()->prepare("DELETE FROM `lockedadmissions` 
+        $stmt = DBManager::get()->prepare("DELETE FROM `lockedadmissions`
             WHERE `rule_id`=?");
         $stmt->execute([$this->id]);
     }
 
     /**
-     * Gets some text that describes what this AdmissionRule (or respective 
+     * Gets some text that describes what this AdmissionRule (or respective
      * subclass) does.
      */
     public static function getDescription() {
@@ -68,12 +68,12 @@ class LockedAdmission extends AdmissionRule
 
     /**
      * Gets the template that provides a configuration GUI for this rule.
-     * 
+     *
      * @return String
      */
     public function getTemplate() {
         $factory = new Flexi\Factory(dirname(__FILE__).'/templates/');
-        // Now open specific template for this rule and insert base template. 
+        // Now open specific template for this rule and insert base template.
         $tpl = $factory->open('configure');
         $tpl->set_attribute('rule', $this);
         return $tpl->render();
@@ -86,13 +86,16 @@ class LockedAdmission extends AdmissionRule
         $stmt = DBManager::get()->prepare("SELECT * FROM `lockedadmissions`
             WHERE `rule_id`=? LIMIT 1");
         $stmt->execute([$this->id]);
-        if ($current = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $current = $stmt->fetchOne();
+        if ($current) {
             $this->message = $current['message'];
+        } else {
+            $this->id = $this->generateId('lockedadmissions');
         }
     }
 
     /**
-     * Does the current rule allow the given user to register as participant 
+     * Does the current rule allow the given user to register as participant
      * in the given course? Never happens here as admission is completely
      * locked.
      *

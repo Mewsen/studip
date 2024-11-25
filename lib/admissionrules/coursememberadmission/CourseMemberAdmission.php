@@ -88,10 +88,13 @@ class CourseMemberAdmission extends AdmissionRule
         $tpl = $GLOBALS['template_factory']->open('admission/rules/configure');
         $tpl->set_attribute('rule', $this);
 
+        $search = new StandardSearch('Seminar_id');
+
         return $this->getTemplateFactory()->render('configure', [
             'rule'    => $this,
             'tpl'     => $tpl->render(),
             'courses' => $this->getDecodedCourses(),
+            'search'  => $search
         ]);
     }
 
@@ -104,12 +107,15 @@ class CourseMemberAdmission extends AdmissionRule
         $stmt = DBManager::get()->prepare("SELECT *
             FROM `coursememberadmissions` WHERE `rule_id`=? LIMIT 1");
         $stmt->execute([$this->id]);
-        if ($current = $stmt->fetchOne()) {
+        $current = $stmt->fetchOne();
+        if ($current) {
             $this->message = $current['message'];
             $this->startTime = $current['start_time'];
             $this->endTime = $current['end_time'];
             $this->courses_to_add = $current['courses'];
             $this->modus = (int) $current['modus'];
+        } else {
+            $this->id = $this->generateId('coursememberadmissions');
         }
     }
 
@@ -154,10 +160,8 @@ class CourseMemberAdmission extends AdmissionRule
      */
     public function setAllData($data)
     {
-        parent::setAllData($data);
-
         $this->modus = (int) $data['modus'];
-        $this->courses_to_add = json_encode(array_keys($data['courses_to_add']));
+        $this->courses_to_add = json_encode(array_map(fn ($course) => $course['id'], $data['courses']));
         return $this;
     }
 
@@ -257,4 +261,23 @@ class CourseMemberAdmission extends AdmissionRule
     {
         return new Flexi\Factory(__DIR__ . '/templates/');
     }
+
+    /**
+     * Get fields and settings defining this admission rule as array.
+     */
+    public function getPayload(): array
+    {
+        return array_merge(
+            parent::getPayload(),
+            [
+                'courses' => array_map(
+                    fn ($course) => ['id' => $course->id, 'name' => $course->getFullname()],
+                    $this->getDecodedCourses()
+                ),
+                'modus' => $this->modus,
+                'search' => (string) new StandardSearch('Seminar_id')
+            ]
+        );
+    }
+
 }

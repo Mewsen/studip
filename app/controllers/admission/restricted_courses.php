@@ -50,7 +50,7 @@ class Admission_RestrictedCoursesController extends AuthenticatedController
             $this->current_institut_id = 'all';
         }
         if (!$this->current_semester_id) {
-            $this->current_semester_id = $_SESSION['_default_sem'];
+            $this->current_semester_id = $_SESSION['_default_sem'] ?? Semester::findDefault()->id;
         } else {
             $_SESSION['_default_sem'] = $this->current_semester_id;
         }

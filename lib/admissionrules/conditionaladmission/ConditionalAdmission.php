@@ -225,7 +225,8 @@ class ConditionalAdmission extends AdmissionRule
         $stmt = DBManager::get()->prepare("SELECT *
             FROM `conditionaladmissions` WHERE `rule_id`=? LIMIT 1");
         $stmt->execute([$this->id]);
-        if ($current = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $current = $stmt->fetchOne();
+        if ($current) {
             $this->message = $current['message'];
             $this->startTime = $current['start_time'];
             $this->endTime = $current['end_time'];
@@ -243,6 +244,8 @@ class ConditionalAdmission extends AdmissionRule
                     $this->ungrouped_conditions[$condition['filter_id']] = $currentCondition;
                 }
             }
+        } else {
+            $this->id = $this->generateId('conditionaladmissions');
         }
     }
 
@@ -352,26 +355,50 @@ class ConditionalAdmission extends AdmissionRule
     {
         UserFilterField::getAvailableFilterFields();
         parent::setAllData($data);
+
         $this->conditions = [];
         $this->ungrouped_conditions = [];
         $this->conditiongroups = [];
         $this->quota = [];
-        foreach ($data['conditions'] as $ser_con) {
-            $condition = ObjectBuilder::build($ser_con, 'UserFilter');
+        foreach ($data['conditions'] as $con) {
+            $condition = new UserFilter();
+            foreach ($con['attributes']['fields'] as $field) {
+                $classname = $field['attributes']['type'];
+                $obj = !empty($field['attributes']['typeparam'])
+                    ? new $classname($field['attributes']['typeparam'])
+                    : new $classname();
+                $obj->setCompareOperator($field['attributes']['compare-operator']);
+                $obj->setValue($field['attributes']['value']);
+                $condition->addField($obj);
+            }
             $this->addCondition($condition, $data['conditiongroup_'.$condition->getId()], $data['quota_'.$data['conditiongroup_'.$condition->getId()]] ?? 0);
         }
-        foreach ($this->getConditiongroups() as $conditiongroup_id => $conditions) {
-            if (mb_strlen($conditiongroup_id) < 32) {
-                $group = md5(uniqid('conditiongroups' . microtime(), true));
 
-                $this->conditiongroups[$group] = $this->conditiongroups[$conditiongroup_id];
-                unset($this->conditiongroups[$conditiongroup_id]);
+        foreach ($data['grouped-conditions'] as $group) {
+            if ($group['id'] === '') {
+                $id = $group['id'] ?: md5(uniqid('conditiongroups' . microtime(), true));
+            }
 
-                $this->quota[$group] = $this->quota[$conditiongroup_id];
-                unset($this->quota[$conditiongroup_id]);
+            $this->conditiongroups[$id] = [];
+            $this->quota[$id] = $group['quota'];
+
+            foreach ($group['conditions'] as $con) {
+                $condition = new UserFilter();
+                foreach ($con['attributes']['fields'] as $field) {
+                    $classname = $field['attributes']['type'];
+                    $obj = !empty($field['attributes']['typeparam'])
+                        ? new $classname($field['attributes']['typeparam'])
+                        : new $classname();
+                    $obj->setCompareOperator($field['attributes']['compare-operator']);
+                    $obj->setValue($field['attributes']['value']);
+                    $condition->addField($obj);
+                }
+
+                $this->conditiongroups[$id][] = $condition;
             }
         }
-        if (count($this->getConditiongroups()) && $data['conditiongroups_allowed']) {
+
+        if (count($this->conditiongroups) && $data['conditiongroups_allowed']) {
             $this->conditiongroups_allowed = true;
         }
 
@@ -559,5 +586,76 @@ class ConditionalAdmission extends AdmissionRule
     {
         parent::setSiblings($siblings);
         $this->conditiongroups_allowed = null;
+    }
+
+    /**
+     * Get fields and settings defining this admission rule as array.
+     */
+    public function getPayload(): array
+    {
+        $ungrouped = [];
+        foreach ($this->getUngroupedConditions() as $one) {
+
+            $fields = [];
+            foreach ($one->getFields() as $field) {
+                $fields[] = [
+                    'attributes' => [
+                        'type' => get_class($field),
+                        'id' => $field->getId(),
+                        'compare-operator' => $field->getCompareOperator(),
+                        'value' => $field->getValue()
+                    ]
+                ];
+            }
+
+            $ungrouped[] = [
+                'attributes' => [
+                    'text' => $one->toString(),
+                    'fields' => $fields
+                ]
+            ];
+        }
+
+        $groups = [];
+
+        foreach ($this->getConditionGroups() as $id => $conditions) {
+            $group = [
+                'id' => $id,
+                'quota' => $this->getQuota($id),
+                'conditions' => []
+            ];
+            foreach ($conditions as $one) {
+                $fields = [];
+                foreach ($one->getFields() as $field) {
+                    $fields[] = [
+                        'attributes' => [
+                            'type' => get_class($field),
+                            'id' => $field->getId(),
+                            'compare-operator' => $field->getCompareOperator(),
+                            'value' => $field->getValue()
+                        ]
+                    ];
+                }
+
+                $group['conditions'][] = [
+                    'attributes' => [
+                        'text' => $one->toString(),
+                        'fields' => $fields
+                    ]
+                ];
+            }
+
+            $groups[] = $group;
+        }
+
+        return array_merge(
+            parent::getPayload(),
+            [
+                'quota' => $this->quota,
+                'conditiongroups-allowed' => $this->conditiongroups_allowed ? 'true' : 'false',
+                'conditions' => $ungrouped,
+                'grouped-conditions' => $groups
+            ]
+        );
     }
 }

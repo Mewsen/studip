@@ -32,6 +32,7 @@ class UserFilter
     public $id = '';
 
     public $show_user_count = false;
+
     // --- OPERATIONS ---
 
     /**

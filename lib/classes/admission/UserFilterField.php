@@ -195,23 +195,29 @@ class UserFilterField
     public static function getAvailableFilterFields()
     {
         if (self::$available_filter_fields === null) {
-        $fields = [];
-        // Load all PHP class files found in the condition field folder.
-        foreach (glob(realpath(dirname(__FILE__).'/userfilter').'/*.php') as $file) {
-            require_once($file);
-            // Try to auto-calculate class name from file name.
-            $className = mb_substr(basename($file), 0, mb_strpos(basename($file), '.php'));
-            // Check if class is right.
-            if (is_subclass_of($className, 'UserFilterField')) {
-                if ($className::$isParameterized) {
-                    $fields = array_merge($fields, $className::getParameterizedTypes());
+            $fields = [];
+            $i = new FileSystemIterator(
+                $GLOBALS['STUDIP_BASE_PATH'] . '/lib/classes/admission/userfilter',
+                FileSystemIterator::SKIP_DOTS
+            );
+
+            foreach ($i as $class) {
+                require_once $class;
+            }
+
+            $classes = array_filter(
+                get_declared_classes(),
+                fn($c) => is_subclass_of($c, UserFilterField::class)
+            );
+            foreach ($classes as $class) {
+                if ($class::$isParameterized) {
+                    $fields = array_merge($fields, $class::getParameterizedTypes());
                 } else {
-                    $filter = new $className();
-                    $fields[$className] = $filter->getName();
+                    $filter = new $class();
+                    $fields[$class] = $filter->getName();
                 }
             }
-        }
-        asort($fields);
+            asort($fields);
             self::$available_filter_fields = $fields;
         }
         return self::$available_filter_fields;
@@ -235,7 +241,7 @@ class UserFilterField
      */
     public function getCompareOperatorAsText()
     {
-        return $this->getValidCompareOperators()[$this->compareOperator];
+        return $this->getValidCompareOperators()[$this->compareOperator] ?? '';
     }
 
     /**

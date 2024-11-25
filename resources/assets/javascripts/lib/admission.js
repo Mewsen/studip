@@ -5,6 +5,22 @@ import { $gettext } from './gettext';
 import Dialog from './dialog.js';
 
 const Admission = {
+
+    /**
+     * All registered rule types with their corresponding Vue components
+     */
+    availableRules: {
+        ConditionalAdmission: 'ConditionalAdmission.vue',
+        CourseMemberAdmission: 'CourseMemberAdmission.vue',
+        LimitedAdmission: 'LimitedAdmission.vue',
+        LockedAdmission: 'LockedAdmission.vue',
+        ParticipantRestrictedAdmission: 'ParticipantRestrictedAdmission.vue',
+        PasswordAdmission: 'PasswordAdmission.vue',
+        PreferentialAdmission: 'PreferentialAdmission.vue',
+        TermsAdmission: 'TermsAdmission.vue',
+        TimedAdmission: 'TimedAdmission.vue'
+    },
+
     getCourses: function(targetUrl) {
         var courseFilter = $('input[name="course_filter"]').val();
         if (courseFilter == '') {

@@ -115,6 +115,7 @@ class RouteMap
 
         $group->get('/status-groups/{id}', Routes\StatusgroupShow::class);
 
+        $this->addAuthenticatedAdmissionRoutes($group);
         $this->addAuthenticatedBlubberRoutes($group);
         $this->addAuthenticatedClipboardRoutes($group);
         $this->addAuthenticatedConsultationRoutes($group);
@@ -136,6 +137,7 @@ class RouteMap
         $this->addAuthenticatedNewsRoutes($group);
         $this->addAuthenticatedStockImagesRoutes($group);
         $this->addAuthenticatedStudyAreasRoutes($group);
+        $this->addAuthenticatedUserFilterRoutes($group);
         $this->addAuthenticatedWikiRoutes($group);
     }
 
@@ -166,6 +168,20 @@ class RouteMap
     private function getAuthenticator(): callable
     {
         return $this->app->getContainer()->get('studip-authenticator');
+    }
+
+    private function addAuthenticatedAdmissionRoutes(RouteCollectorProxy $group): void {
+        $group->post('/course-sets', Routes\Admission\CourseSetsCreate::class);
+        $group->get('/course-sets/{id}', Routes\Admission\CourseSetsShow::class);
+        $group->patch('/course-sets/{id}', Routes\Admission\CourseSetsUpdate::class);
+        $group->delete('/course-sets/{id}', Routes\Admission\CourseSetsDelete::class);
+        $group->post('/admission/available-courses', Routes\Admission\AvailableCoursesIndex::class);
+        $group->get('/admission/rule-compatibility', Routes\Admission\RuleCompatibilityIndex::class);
+        $group->get('/admission-rules', Routes\Admission\AdmissionRulesIndex::class);
+        $group->post('/admission-rules/{type}', Routes\Admission\AdmissionRulesCreate::class);
+        $group->get('/admission-rules/{id}', Routes\Admission\AdmissionRulesShow::class);
+        $group->patch('/admission-rules/{id}', Routes\Admission\AdmissionRulesUpdate::class);
+        $group->delete('/admission-rules/{id}', Routes\Admission\AdmissionRulesDelete::class);
     }
 
     private function addAuthenticatedBlubberRoutes(RouteCollectorProxy $group): void
@@ -658,6 +674,16 @@ class RouteMap
         $group->delete('/{type:courses|institutes|users}/{id}/avatar', Routes\Avatar\AvatarofRangeDelete::class);
 
         $group->post('/{type:courses|institutes|users}/{id}/avatar', Routes\Avatar\AvatarUpload::class);
+    }
+
+    private function addAuthenticatedUserFilterRoutes(RouteCollectorProxy $group): void
+    {
+        $group->get('/user-filters/{id}', Routes\UserFilters\UserFiltersShow::class);
+        $group->post('/user-filters', Routes\UserFilters\UserFiltersCreate::class);
+        $group->patch('/user-filters/{id}', Routes\UserFilters\UserFiltersUpdate::class);
+        $group->delete('/user-filters/{id}', Routes\UserFilters\UserFiltersDelete::class);
+        $group->get('/user-filter-fields', Routes\UserFilters\UserFilterFieldsIndex::class);
+        $group->get('/user-filter-fields/{id}', Routes\UserFilters\UserFilterFieldsShow::class);
     }
 
     private function addRelationship(RouteCollectorProxy $group, string $url, string $handler): void

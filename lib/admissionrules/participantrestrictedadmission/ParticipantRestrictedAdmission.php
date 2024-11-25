@@ -51,7 +51,7 @@ class ParticipantRestrictedAdmission extends AdmissionRule
         }
     }
 
-    public function isFCFSallowed()
+    public function isFCFSAllowed()
     {
         return $this->first_come_first_served_allowed;
     }
@@ -123,12 +123,15 @@ class ParticipantRestrictedAdmission extends AdmissionRule
         $stmt = DBManager::get()->prepare("SELECT *
             FROM `participantrestrictedadmissions` WHERE `rule_id`=? LIMIT 1");
         $stmt->execute([$this->id]);
-        if ($current = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $current = $stmt->fetchOne();
+        if ($current) {
             $this->message = $current['message'];
             $this->distributionTime = $current['distribution_time'];
             if ($current['distribution_time'] > 0) {
                 $this->prio_exists = DBManager::get()->fetchColumn("SELECT 1 FROM courseset_rule INNER JOIN priorities USING(set_id) WHERE rule_id = ? LIMIT 1", [$this->id]);
             }
+        } else {
+            $this->id = $this->generateId('participantrestrictedadmissions');
         }
     }
 
@@ -143,14 +146,11 @@ class ParticipantRestrictedAdmission extends AdmissionRule
     public function setAllData($data)
     {
         parent::setAllData($data);
-        if (!empty($data['distributiondate'])) {
-            if (!$data['distributiontime']) {
-                $data['distributiontime'] = '23:59';
-            }
-            $ddate = strtotime($data['distributiondate'] . ' ' . $data['distributiontime']);
-            $this->setDistributionTime($ddate);
+
+        if (!empty($data['distribution-time'])) {
+            $this->setDistributionTime($data['distribution-time']);
         }
-        if (!empty($data['enable_FCFS'])) {
+        if (!empty($data['fcfs'])) {
             $this->setDistributionTime(0);
         }
         if (!empty($data['startdate'])) {
@@ -227,4 +227,19 @@ class ParticipantRestrictedAdmission extends AdmissionRule
         }
         return $errors;
     }
+
+    /**
+     * Get fields and settings defining this admission rule as array.
+     */
+    public function getPayload(): array
+    {
+        return array_merge(
+            parent::getPayload(),
+            [
+                'distribution-time' => $this->getDistributionTime(),
+                'fcfs-allowed' => $this->isFCFSAllowed()
+            ]
+        );
+    }
+
 }

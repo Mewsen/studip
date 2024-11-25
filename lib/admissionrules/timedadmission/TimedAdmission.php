@@ -116,10 +116,13 @@ class TimedAdmission extends AdmissionRule
         $stmt = DBManager::get()->prepare("SELECT *
             FROM `timedadmissions` WHERE `rule_id`=? LIMIT 1");
         $stmt->execute([$this->id]);
-        if ($current = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $current = $stmt->fetchOne();
+        if ($current) {
             $this->message = $current['message'];
             $this->startTime = $current['start_time'];
             $this->endTime = $current['end_time'];
+        } else {
+            $this->id = $this->generateId('timedadmissions');
         }
     }
 
@@ -148,22 +151,11 @@ class TimedAdmission extends AdmissionRule
      */
     public function setAllData($data) {
         parent::setAllData($data);
-        if ($data['startdate']) {
-            $sdate = $data['startdate'];
-            $stime = $data['starttime'];
-            $parsed = date_parse($sdate.' '.$stime);
-            $timestamp = mktime($parsed['hour'], $parsed['minute'], 0, $parsed['month'], $parsed['day'], $parsed['year']);
-            $this->setStartTime($timestamp);
+        if ($data['starttime']) {
+            $this->setStartTime($data['starttime']);
         }
-        if ($data['enddate']) {
-            $edate = $data['enddate'];
-            $etime = $data['endtime'];
-            if (!$etime) {
-                $etime = '23:59';
-            }
-            $parsed = date_parse($edate.' '.$etime);
-            $timestamp = mktime($parsed['hour'], $parsed['minute'], 0, $parsed['month'], $parsed['day'], $parsed['year']);
-            $this->setEndTime($timestamp);
+        if ($data['endtime']) {
+            $this->setEndTime($data['endtime']);
         }
         return $this;
     }
@@ -229,13 +221,27 @@ class TimedAdmission extends AdmissionRule
     public function validate($data)
     {
         $errors = parent::validate($data);
-        if (!$data['startdate'] && !$data['enddate']) {
+        if (!$data['starttime'] && !$data['endtime']) {
             $errors[] = _('Bitte geben Sie entweder ein Start- oder Enddatum an.');
         }
-        if ($data['startdate'] && $data['enddate'] && strtotime($data['enddate'] . ' ' . $data['endtime']) < strtotime($data['startdate']. ' ' . $data['starttime'])) {
+        if ($data['starttime'] && $data['endtime'] && $data['endtime'] < $data['starttime']) {
             $errors[] = _('Das Enddatum darf nicht vor dem Startdatum liegen.');
         }
         return $errors;
+    }
+
+    /**
+     * Get fields and settings defining this admission rule as array.
+     */
+    public function getPayload(): array
+    {
+        return array_merge(
+            parent::getPayload(),
+            [
+                'starttime' => $this->getStartTime(),
+                'endtime' => $this->getEndTime()
+            ]
+        );
     }
 
 } /* end of class TimedAdmission */

@@ -18,6 +18,8 @@ class SchemaMap
 
             \Avatar::class => Schemas\Avatar::class,
 
+            \AdmissionRule::class => Schemas\AdmissionRule::class,
+
             \BlubberComment::class => Schemas\BlubberComment::class,
             \BlubberStatusgruppeThread::class => Schemas\BlubberStatusgruppeThread::class,
             \BlubberThread::class => Schemas\BlubberThread::class,
@@ -29,6 +31,7 @@ class SchemaMap
             \ConsultationBooking::class => Schemas\ConsultationBooking::class,
             \ConsultationSlot::class => Schemas\ConsultationSlot::class,
             \ConfigValue::class => Schemas\ConfigValue::class,
+            \CourseSet::class => Schemas\CourseSet::class,
             \ContentTermsOfUse::class => Schemas\ContentTermsOfUse::class,
             \Course::class => Schemas\Course::class,
             \CourseMember::class => Schemas\CourseMember::class,
@@ -59,6 +62,8 @@ class SchemaMap
             \File::class => Schemas\File::class,
             \FileRef::class => Schemas\FileRef::class,
             \FolderType::class => Schemas\Folder::class,
+            \UserFilter::class => Schemas\UserFilter::class,
+            \UserFilterField::class => Schemas\UserFilterField::class,
 
             \Courseware\Block::class => Schemas\Courseware\Block::class,
             \Courseware\BlockComment::class => Schemas\Courseware\BlockComment::class,

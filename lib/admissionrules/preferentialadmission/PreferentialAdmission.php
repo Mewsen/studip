@@ -352,7 +352,8 @@ class PreferentialAdmission extends AdmissionRule
         $stmt = DBManager::get()->prepare("SELECT *
             FROM `prefadmissions` WHERE `rule_id`=? LIMIT 1");
         $stmt->execute([$this->id]);
-        if ($current = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $current = $stmt->fetchOne();
+        if ($current) {
             $this->favorSemester = $current['favor_semester'];
             // Retrieve conditions.
             $stmt = DBManager::get()->prepare("SELECT *
@@ -363,6 +364,8 @@ class PreferentialAdmission extends AdmissionRule
                 $currentCondition = new UserFilter($condition['condition_id']);
                 $this->conditions[$condition['condition_id']] = $currentCondition;
             }
+        } else {
+            $this->id = $this->generateId('prefadmissions');
         }
     }
 
@@ -402,13 +405,20 @@ class PreferentialAdmission extends AdmissionRule
      */
     public function setAllData($data)
     {
-        UserFilterField::getAvailableFilterFields();
         parent::setAllData($data);
-        $this->favorSemester = (bool) $data['favor_semester'];
+        $this->favorSemester = (bool) $data['favor-semester'];
         $this->conditions = [];
         if ($data['conditions']) {
-            foreach ($data['conditions'] as $condition) {
-                $this->addCondition(ObjectBuilder::build($condition, 'UserFilter'));
+            foreach ($data['conditions'] as $con) {
+                $condition = new UserFilter();
+                foreach ($con['attributes']['fields'] as $field) {
+                    $classname = $field['attributes']['type'];
+                    $obj = new $classname();
+                    $obj->setCompareOperator($field['attributes']['compare-operator']);
+                    $obj->setValue($field['attributes']['value']);
+                    $condition->addField($obj);
+                }
+                $this->addCondition($condition);
             }
         }
         return $this;
@@ -516,7 +526,7 @@ class PreferentialAdmission extends AdmissionRule
     public function validate($data)
     {
         $errors = parent::validate($data);
-        if (!$data['conditions'] && !$data['favor_semester']) {
+        if (!$data['conditions'] && !$data['favor-semester']) {
             $errors[] = _('Es muss mindestens eine Auswahlbedingung angegeben werden.');
         }
         return $errors;
@@ -532,6 +542,43 @@ class PreferentialAdmission extends AdmissionRule
             $cloned_conditions[$dolly->id] = $dolly;
         }
         $this->conditions = $cloned_conditions;
+    }
+
+    /**
+     * Get fields and settings defining this admission rule as array.
+     */
+    public function getPayload(): array
+    {
+        // Build everything as plain array.
+        $conditions = [];
+        foreach ($this->getConditions() as $one) {
+            $fields = [];
+            foreach ($one->getFields() as $field) {
+                $fields[] = [
+                    'attributes' => [
+                        'type' => get_class($field),
+                        'id' => $field->getId(),
+                        'compare-operator' => $field->getCompareOperator(),
+                        'value' => $field->getValue()
+                    ]
+                ];
+            }
+
+            $conditions[] = [
+                'attributes' => [
+                    'text' => $one->toString(),
+                    'fields' => $fields
+                ]
+            ];
+        }
+
+        return array_merge(
+            parent::getPayload(),
+            [
+                'conditions' => $conditions,
+                'favor-semester' => $this->getFavorSemester()
+            ]
+        );
     }
 
 } /* end of class PreferentialAdmission */
