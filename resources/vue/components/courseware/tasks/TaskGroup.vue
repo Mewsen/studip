@@ -1,14 +1,5 @@
 <template>
     <div>
-        <CompanionBox :msgCompanion="statusMessage">
-            <template #companionActions>
-                <span>
-                    {{ $gettext('Bearbeitungszeit') }}
-                    <StudipDate :date="startDate" /> - <StudipDate :date="endDate" />
-                </span>
-            </template>
-        </CompanionBox>
-
         <section v-if="tasks.length > 0">
             <table class="default">
                 <caption>
@@ -48,12 +39,10 @@
 <script>
 import { mapGetters } from 'vuex';
 import CompanionBox from '../layouts/CoursewareCompanionBox.vue';
-import StudipDate from '../../StudipDate.vue';
 import TaskItem from './TaskGroupTaskItem.vue';
-import { getStatus } from './task-groups-helper.js';
 
 export default {
-    components: { CompanionBox, StudipDate, TaskItem },
+    components: { CompanionBox, TaskItem },
     props: ['taskGroup', 'tasks'],
     computed: {
         ...mapGetters({
@@ -63,21 +52,6 @@ export default {
             return this.$gettextInterpolate(this.$gettext('Courseware-Aufgabe "%{ taskGroup }"'), {
                 taskGroup: this.taskGroup.attributes.title,
             });
-        },
-        endDate() {
-            return new Date(this.taskGroup.attributes['end-date']);
-        },
-        isAfter() {
-            return new Date() > this.endDate;
-        },
-        startDate() {
-            return new Date(this.taskGroup.attributes['start-date']);
-        },
-        status() {
-            return getStatus(this.taskGroup);
-        },
-        statusMessage() {
-            return this.status.description;
         },
     },
 };

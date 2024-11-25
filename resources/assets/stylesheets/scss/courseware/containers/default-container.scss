@@ -18,7 +18,7 @@
     }
 
     .cw-container-header {
-        background-color: var(--content-color-20);
+        background-color: var(--color--content-box-header);
         padding: 4px 10px 4px 22px;
 
         .cw-container-header-toggle {
@@ -64,7 +64,7 @@
             }
         }
         .cw-container-content {
-            border: solid thin var(--content-color-40);
+            border: solid thin var(--color--content-box-border);
         }
     }
 
@@ -102,5 +102,6 @@ form.cw-container-dialog-edit-form {
 
     fieldset {
         max-width: 200px;
+        padding-top: 10px;
     }
 }

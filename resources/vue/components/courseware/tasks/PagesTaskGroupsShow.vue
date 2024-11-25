@@ -12,13 +12,22 @@
                     </router-link>
                 </template>
                 <template #breadcrumb-list>
-                    <li>
-                        <router-link :to="{ name: 'task-groups-index' }">
-                            {{ $gettext('Aufgaben') }}
-                        </router-link>
-                    </li>
-                    <li>{{ taskGroup.attributes['title'] }}</li>
+                    <ul>
+                        <li>
+                            <router-link :to="{ name: 'task-groups-index' }">
+                                {{ $gettext('Aufgaben') }}
+                            </router-link>
+                        </li>
+                        <li>{{ taskGroup.attributes['title'] }}</li>
+                    </ul>
                 </template>
+                <template #info-text>
+                    <span>{{ statusMessage }}</span>
+                <span>
+                    {{ $gettext('Bearbeitungszeit') }}
+                    <StudipDate :date="startDate" /> - <StudipDate :date="endDate" />
+                </span>
+            </template>
             </ContentBar>
 
             <TaskGroup
@@ -76,6 +85,8 @@ import TaskGroupsAddSolversDialog from './TaskGroupsAddSolversDialog.vue';
 import TaskGroupsDeleteDialog from './TaskGroupsDeleteDialog.vue';
 import TaskGroupsModifyDeadlineDialog from './TaskGroupsModifyDeadlineDialog.vue';
 import ContentBar from "../../ContentBar.vue";
+import StudipDate from '../../StudipDate.vue';
+import { getStatus } from './task-groups-helper.js';
 
 export default {
     components: {
@@ -86,6 +97,7 @@ export default {
         CoursewareTasksDialogDistribute,
         EditFeedbackDialog,
         RenewalDialog,
+        StudipDate,
         TaskGroup,
         TaskGroupsAddSolversDialog,
         TaskGroupsDeleteDialog,
@@ -125,6 +137,18 @@ export default {
 
                 return memo;
             }, {});
+        },
+        status() {
+            return getStatus(this.taskGroup);
+        },
+        statusMessage() {
+            return this.status.description;
+        },
+        startDate() {
+            return new Date(this.taskGroup.attributes['start-date']);
+        },
+        endDate() {
+            return new Date(this.taskGroup.attributes['end-date']);
         },
     },
     methods: {

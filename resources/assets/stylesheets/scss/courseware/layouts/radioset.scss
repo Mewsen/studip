@@ -10,7 +10,7 @@ $radio-icons: (
     groups: group2
 );
 
-.cw-radioset {
+form.default .cw-radioset {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -21,7 +21,7 @@ $radio-icons: (
         height: 128px;
         text-align: center;
         margin-right: 8px;
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--tile-border);
         label {
             height: 100%;
             width: 100%;
@@ -69,7 +69,7 @@ $radio-icons: (
 
         &.selected {
             border-color: var(--base-color);
-            background-color: var(--content-color-20);
+            background-color: var(--color--tile-background-active);
             label {
                 @include background-icon(check-circle);
                 .label-icon {

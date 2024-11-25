@@ -8,7 +8,7 @@
     .cw-blockadder-item-wrapper {
         display: flex;
         position: relative;
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--tile-border);
         background-color: var(--white);
         max-width: 268px;
 
@@ -68,7 +68,7 @@
 
 .cw-containeradder-item-wrapper {
     position: relative;
-    border: solid thin var(--content-color-40);
+    border: solid thin var(--color--tile-border);
     margin-bottom: 4px;
     .cw-sortable-handle {
         opacity: 0;
@@ -117,7 +117,7 @@
     margin-bottom: 8px;
 
     label {
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--tile-border);
         padding: calc(0.5em + 32px) 1em 0.5em 1em;
         color: var(--base-color);
         text-align: center;
@@ -170,7 +170,7 @@
     .cw-clipboard-item-wrapper {
         background-color: var(--white);
         display: flex;
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--tile-border);
         max-width: 248px;
         position: relative;
 

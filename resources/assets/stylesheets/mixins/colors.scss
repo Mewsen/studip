@@ -265,6 +265,7 @@ $color--tile-border-focus: $color--gray-4;
 $color--tile-border-hover: $color--gray-4;
 $color--tile-border: $color--gray-5;
 $color--tile-background: $color--gray-7;
+$color--tile-background-active: $color--gray-6;
 $color--tile-background-focus: $color--gray-6;
 $color--tile-background-hover: $color--gray-6;
 $color--tile-marker-inactive: $color--gray-4;
@@ -291,6 +292,10 @@ $color--button-hover: $color--blue-1;
 $color--button-inactive-background: $color--gray-7;
 $color--button-inactive-border: $color--gray-5;
 
+$color--radiobuttonset-background: $color--white;
+$color--radiobuttonset-background-selected: $color--gray-6;
+$color--radiobuttonset-border: $color--gray-6;
+
 $color--input-field-border: $color--gray-5;
 $color--input-field-background: $color--white;
 
@@ -308,3 +313,5 @@ $color--good: $color--green-1;
 $color--good-alternative: mix($color--good, $color--white, 20%);
 $color--info: $color--blue-2;
 $color--info-alternative: mix($color--info, $color--white, 20%);
+
+$color-image-placeholder-background: $color--gray-6;

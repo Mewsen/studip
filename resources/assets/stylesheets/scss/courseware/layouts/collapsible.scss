@@ -1,14 +1,14 @@
 @use '../../../mixins.scss' as *;
 
 .cw-collapsible {
-    border: solid thin var(--content-color-40);
+    border: solid thin var(--color--content-box-border);
     margin-bottom: -1px;
 
     .cw-collapsible-title {
         @include background-icon(arr_1right);
         background-position: 6px center;
         background-repeat: no-repeat;
-        background-color: var(--content-color-20);
+        background-color: var(--color--content-box-header);
         padding: 0.5em 2em;
         margin: 0;
         font-weight: 600;

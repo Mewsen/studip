@@ -7,9 +7,11 @@
                 </router-link>
             </template>
             <template #breadcrumb-list>
-                <li>
-                    {{ $gettext('Aufgaben') }}
-                </li>
+                <ul>
+                    <li>
+                        {{ $gettext('Aufgaben') }}
+                    </li>
+                </ul>
             </template>
         </ContentBar>
         <table class="default" v-if="taskGroups.length">

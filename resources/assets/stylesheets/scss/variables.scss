@@ -246,6 +246,7 @@ $grid-gap: 0;
     --color--tile-border-hover: #{$color--tile-border-hover};
     --color--tile-border: #{$color--tile-border};
     --color--tile-background: #{$color--tile-background};
+    --color--tile-background-active: #{$color--tile-background-active};
     --color--tile-background-focus: #{$color--tile-background-focus};
     --color--tile-background-hover: #{$color--tile-background-hover};
     --color--tile-marker-inactive: #{$color--tile-marker-inactive};
@@ -272,6 +273,10 @@ $grid-gap: 0;
     --color--button-inactive-background: #{$color--button-inactive-background};
     --color--button-inactive-border: #{$color--button-inactive-border};
 
+    --color--radiobuttonset-background: #{$color--radiobuttonset-background};
+    --color--radiobuttonset-background-selected: #{$color--radiobuttonset-background-selected};
+    --color--radiobuttonset-border: #{$color--radiobuttonset-border};
+
     --color--input-field-border: #{$color--input-field-border};
     --color--input-field-background: #{$color--input-field-background};
 
@@ -289,6 +294,8 @@ $grid-gap: 0;
     --color--good-alternative: #{$color--good-alternative};
     --color--info: #{$color--info};
     --color--info-alternative: #{$color--info-alternative};
+
+    --color-image-placeholder-background: #{$color-image-placeholder-background};
 
     @media (prefers-reduced-motion) {
         #{"--"}transition-duration: 0s;
