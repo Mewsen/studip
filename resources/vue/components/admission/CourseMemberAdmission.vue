@@ -81,13 +81,13 @@ export default {
             this.courseList = data.attributes.payload.courses;
             this.theMode = data.attributes.payload.modus;
         },
-    },
-    validate() {
-        if (this.courseList.length === 0) {
-            this.invalidData.push(this.$gettext('Bitte geben Sie mindestens eine Veranstaltung an.'));
-        }
+        validate() {
+            if (this.courseList.length === 0) {
+                this.invalidData.push(this.$gettext('Bitte geben Sie mindestens eine Veranstaltung an.'));
+            }
 
-        return this.invalidData.length === 0;
+            return this.invalidData.length === 0;
+        },
     },
     mounted() {
         // Get a new rule instance so we can use quicksearch.
