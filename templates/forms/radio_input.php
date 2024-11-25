@@ -1,5 +1,16 @@
+<?php
+/**
+ * @var string $id
+ * @var string $name
+ * @var string $value
+ * @var string|null $orientation
+ * @var bool $required
+ * @var array $options
+ * @var string $attributes
+ */
+?>
 <div class="formpart">
-    <section <?= $this->orientation == 'horizontal' ? 'class="hgroup"' : '' ?> id="<?= htmlReady($id) ?>">
+    <section <?= $orientation == 'horizontal' ? 'class="hgroup"' : '' ?> id="<?= htmlReady($id) ?>">
     <span class="textlabel<?= $required ? ' studiprequired' : '' ?> ">
         <?= htmlReady($this->title) ?>
         <? if ($required) : ?>

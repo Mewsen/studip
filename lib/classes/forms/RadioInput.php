@@ -15,7 +15,7 @@ class RadioInput extends Input
         $template->required = $this->required;
         $template->options = $options;
         $template->attributes = arrayToHtmlAttributes($this->attributes);
-        $template->orientation = $this->attributes['orientation'];
+        $template->orientation = $this->attributes['orientation'] ?? null;
         return $template->render();
 
     }

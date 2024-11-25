@@ -143,14 +143,14 @@ class Form extends Part
         foreach ((array) $params['types'] as $fieldname => $type) {
             $params['fields'][$fieldname]['type'] = $type;
         }
-        //respect the without param:
+        // respect the without param:
         foreach ((array) $params['without'] as $fieldname) {
             unset($params['fields'][$fieldname]);
         }
         $fields = $params['fields'];
 
-        //Now initializing the fieldset:
-        $fieldset = new Fieldset($params['legend'] ?: _("Daten"));
+        // Now initializing the fieldset:
+        $fieldset = new Fieldset($params['legend'] ?? _('Daten'));
         $fieldset->setContextObject($object)
             ->setCollapsable($params['collapsable'] ?? false)
             ->setCollapsed($params['collapsed'] ?? false);

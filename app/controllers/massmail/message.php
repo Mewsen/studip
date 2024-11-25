@@ -19,7 +19,7 @@ class Massmail_MessageController extends \AuthenticatedController
 
         $message = new \MassMail\MassMailMessage($id);
 
-        $temp_id = $id ?: uniqid(md5(time()));
+        $temp_id = $id ?: md5(uniqid(time()));
         $folder = $message->findFolder($temp_id);
 
         // SearchType needed for course selection
