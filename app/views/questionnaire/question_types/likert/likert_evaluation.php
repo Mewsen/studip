@@ -43,10 +43,16 @@ $options = $vote->questiondata['options'];
                 <?
             $average = 0;
             if (count($answers) > 0) {
+                $countableAnswers = 0;
                 foreach ($answers as $answer) {
                     $average += $answer['answerdata']['answers'][$key];
+                    if ($answer['answerdata']['answers'][$key] !== null) {
+                        $countableAnswers++;
+                    }
                 }
-                $average /= count($answers);
+                if ($countableAnswers > 0) {
+                    $average /= $countableAnswers;
+                }
             }
             ?>
 
@@ -55,7 +61,7 @@ $options = $vote->questiondata['options'];
                     $hits = 0;
                     $names = [];
                     foreach ($answers as $answer) {
-                        if ($answer['answerdata']['answers'][$key] == $option_index) {
+                        if ($answer['answerdata']['answers'][$key] === $option_index) {
                             $hits++;
                             if ($answer['user_id'] && $answer['user_id'][0] !== 'q' && $answer['user_id'][0] !== 'n') {
                                 $names[] = $answer->user->getFullName('full');
@@ -64,7 +70,7 @@ $options = $vote->questiondata['options'];
                     }
                     ?>
                 <td <?= count($names) > 0 ? 'title="'.htmlReady(implode(', ', $names)).'"' : ''?>>
-                    <? if ($option_index === 0 && count($answers)) : ?>
+                    <? if ($option_index === 0 && count($answers) && $average > 0) : ?>
                         <div class="average" style="margin-left: <?=  80 * $average + 34 ?>px;">
                             Ø<?= htmlReady(str_replace('.', ',', (string) round($average, 2) + 1)) ?>
                         </div>
