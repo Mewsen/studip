@@ -98,7 +98,7 @@ $options = $vote->questiondata['options'];
                                         <?= htmlReady($hits) ?>
                                     </div>
                                 </div>
-                                <?= Icon::create('filter2')->asImg(['class' => 'text-bottom']) ?>
+                                <?= Icon::create('filter2')->asImg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>
                                 <?= round(100 * $hits / $countAnswers) ?>%
                             </a>
                         <? else : ?>
