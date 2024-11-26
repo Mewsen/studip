@@ -641,7 +641,7 @@ class Admin_CoursesController extends AuthenticatedController
         }
         if (in_array('number', $activated_fields)) {
             $d['number'] = '<a href="'.URLHelper::getLink('dispatch.php/course/basicdata/view', ['cid' => $course->id]).'">'
-                .$course->veranstaltungsnummer
+                . htmlReady($course->veranstaltungsnummer)
                 .'</a>';
         }
         if (in_array('avatar', $activated_fields)) {
@@ -651,18 +651,19 @@ class Admin_CoursesController extends AuthenticatedController
         }
         if (in_array('type', $activated_fields)) {
             $semtype = $course->getSemType();
-            $d['type'] = $semtype['name'];
+            $d['type'] = htmlReady($semtype['name']);
         }
         if (in_array('room_time', $activated_fields)) {
             $strings = $course->getAllDatesInSemester()->toStringArray();
+            $strings = array_map('htmlReady', $strings);
             $d['room_time'] = implode('<br>', $strings) ?: _('nicht angegeben');
         }
         if (in_array('semester', $activated_fields)) {
-            $d['semester'] = $course->semester_text;
+            $d['semester'] = htmlReady($course->semester_text);
             $d['semester_sort'] = $course->start_semester ? $course->start_semester->beginn : 0;
         }
         if (in_array('institute', $activated_fields)) {
-            $d['institute'] = $course->home_institut ? $course->home_institut->name : $course->institute;
+            $d['institute'] = htmlReady($course->home_institut ? $course->home_institut->name : $course->institute);
         }
         if (in_array('requests', $activated_fields)) {
             $d['requests'] = '<a href="'.URLHelper::getLink('dispatch.php/course/room_requests', ['cid' => $course->id]).'">'.count($course->room_requests)."</a>";
