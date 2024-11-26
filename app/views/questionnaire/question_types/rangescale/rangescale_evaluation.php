@@ -42,10 +42,16 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
             <?
             $average = 0;
             if (count($answers) > 0) {
+                $countableAnswers = 0;
                 foreach ($answers as $answer) {
                     $average += $answer['answerdata']['answers'][$key];
+                    if ($answer['answerdata']['answers'][$key] !== null) {
+                        $countableAnswers++;
+                    }
                 }
-                $average /= count($answers);
+                if ($countableAnswers > 0) {
+                    $average /= $countableAnswers;
+                }
                 $average = round($average, 2);
             }
             ?>
@@ -64,7 +70,7 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
                 }
                 ?>
                 <td style="white-space: nowrap;"<?= count($names) > 0 ? 'title="'.htmlReady(implode(', ', $names)).'"' : ''?>>
-                    <? if ($option_index === 0 && count($answers) > 0) : ?>
+                    <? if ($option_index === 0 && count($answers) > 0 && $average > 0) : ?>
                         <div class="average" style="margin-left: <?= (count($options) * 80) * $average / $vote->questiondata['maximum'] - $vote->questiondata['minimum'] * 80 + 34 ?>px;">
                             Ø<?= htmlReady(str_replace('.', ',', (string) round($average, 2))) ?>
                         </div>
