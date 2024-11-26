@@ -436,7 +436,7 @@ class BasicDataWizardStep implements CourseWizardStep
         $course->admission_prelim = $semclass['admission_prelim_default'];
         $course->lesezugriff = $semclass['default_read_level'] ?: 1;
         $course->schreibzugriff = $semclass['default_write_level'] ?: 1;
-        $course->admission_turnout = $values['maxmembers'];
+        $course->admission_turnout = $values['maxmembers'] ?: null;
 
         // Studygroups: access and description.
         if (in_array($values['coursetype'], studygroup_sem_types())) {
