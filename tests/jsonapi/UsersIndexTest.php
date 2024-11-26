@@ -28,7 +28,9 @@ class UsersIndexTest extends \Codeception\Test\Unit
         $response = $this->getUsers($credentials);
         $this->tester->assertTrue($response->isSuccessfulDocument([200]));
 
-        $numberOfAllUsers = \User::countBySQL();
+        $vis_query = get_vis_query(context: 'search');
+        $condition = "LEFT JOIN user_visibility ON (user_visibility.user_id = auth_user_md5.user_id) WHERE {$vis_query}";
+        $numberOfAllUsers = \User::countBySQL($condition);
         $this->tester->assertSame($numberOfAllUsers, count($response->document()->primaryResources()));
 
         $this->assertValidResourceObject($response, 'users');
