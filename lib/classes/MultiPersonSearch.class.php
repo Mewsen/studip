@@ -34,6 +34,7 @@ class MultiPersonSearch {
     private $additionalHMTL = "";
     private $navigationItem = "";
     private $dataDialogStatus = false;
+    private $verified = null;
 
     /**
      * restores a MultiPersonSearch object.
@@ -480,9 +481,29 @@ class MultiPersonSearch {
     }
 
     /**
+     * Mark the search as verified/posted correctly.
+     */
+    public function verifySearch(): void
+    {
+        $this->verified = get_ticket();
+
+        $_SESSION['multipersonsearch'][$this->name]['verified'] = $this->verified;
+    }
+
+    /**
+     * Returns whether the search is verified / has been posted correctly.
+     */
+    public function isVerified(): bool
+    {
+        return isset($this->verified)
+            && check_ticket($this->verified);
+    }
+
+    /**
      * stores the internal data to a session.
      */
-    public function storeToSession() {
+    public function storeToSession()
+    {
         $_SESSION['multipersonsearch'][$this->name]['title'] = $this->title;
         $_SESSION['multipersonsearch'][$this->name]['description'] = $this->description;
         $_SESSION['multipersonsearch'][$this->name]['additionalHMTL'] = $this->additionalHMTL;
@@ -500,7 +521,8 @@ class MultiPersonSearch {
     /**
      * restores the internal data from a session.
      */
-    public function restoreFromSession() {
+    public function restoreFromSession()
+    {
         if (isset($_SESSION['multipersonsearch'][$this->name])) {
             $this->title = $_SESSION['multipersonsearch'][$this->name]['title'] ?? '';
             $this->description = $_SESSION['multipersonsearch'][$this->name]['description'] ?? '';
@@ -514,6 +536,7 @@ class MultiPersonSearch {
             $this->searchObject = unserialize($_SESSION['multipersonsearch'][$this->name]['searchObject'] ?? null);
             $this->navigationItem = $_SESSION['multipersonsearch'][$this->name]['navigationItem'] ?? null;
             $this->dataDialogStatus = $_SESSION['multipersonsearch'][$this->name]['dataDialogStatus'] ?? '';
+            $this->verified = $_SESSION['multipersonsearch'][$this->name]['verified'] ?? null;
         }
     }
 
