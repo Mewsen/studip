@@ -33,7 +33,24 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
                 <strong><?= htmlReady($statement) ?></strong>
             </td>
 
-            <? foreach($options as $option) : ?>
+            <?
+            $average = 0;
+            $countableAnswers = 0;
+            if (count($answers) > 0) {
+                foreach ($answers as $answer) {
+                    $average += $answer['answerdata']['answers'][$key];
+                    if ($answer['answerdata']['answers'][$key] !== null) {
+                        $countableAnswers++;
+                    }
+                }
+                if ($countableAnswers > 0) {
+                    $average /= $countableAnswers;
+                }
+                $average = round($average, 2);
+            }
+            ?>
+
+            <? foreach($options as $option_index => $option) : ?>
             <? if ($countAnswers) : ?>
                 <?
                 $hits = 0;
@@ -46,7 +63,7 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
                         }
                     }
                 }
-                $color = 'hsl(0 0% '.round(70 + (30 * (1 - ($hits / $countAnswers)) )).'%)';
+                $color = $countableAnswers > 0 ? 'hsl(0 0% '.round(70 + (30 * (1 - ($hits / $countableAnswers)) )).'%)' : 'transparent';
                 ?>
                 <td style="background-color: <?= $color ?>;" style="white-space: nowrap;"<?= count($names) > 0 ? 'title="'.htmlReady(implode(', ', $names)).'"' : ''?>>
                     <? if ($filtered !== null && $filtered == ($key.'_'.$option)) : ?>
@@ -60,7 +77,7 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
                         <a href=""
                            onclick="STUDIP.Questionnaire.addFilter('<?= htmlReady($vote['questionnaire_id']) ?>', '<?= htmlReady($vote->getId()) ?>', '<?= $key.'_'.$option ?>'); return false;"
                            title="<?= _('Zeige nur Ergebnisse von Personen an, die diese Option gewählt haben.') ?>">
-                            <?= round(100 * $hits / $countAnswers) ?>%
+                            <?= $countableAnswers > 0 ? round(100 * $hits / $countableAnswers) : 0  ?>%
                         </a>
                     <? endif ?>
                 </td>
