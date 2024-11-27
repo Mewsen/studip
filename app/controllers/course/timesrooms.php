@@ -1810,7 +1810,7 @@ class Course_TimesroomsController extends AuthenticatedController
         if (Request::int('fromDialog')) {
             $this->redirect(...func_get_args());
         } else {
-            call_user_func_array('parent::relocate', func_get_args());
+            parent::relocate(...func_get_args());
         }
     }
 
