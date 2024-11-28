@@ -318,8 +318,8 @@ class ConnectedIlias
             return false;
         }
 
-        // if an ID was entered, check for it; else check for title
-        if (!is_numeric($this->ilias_config['author_role'])) {
+        // if an ID was entered, simply use it; else check for title
+        if (!is_numeric($this->ilias_config['author_role_name'])) {
 
             $role_template = $this->soap_client->getObjectByTitle( $this->ilias_config['author_role_name'], "rolt" );
 
@@ -333,6 +333,10 @@ class ConnectedIlias
                 $this->storeSettings();
             }
             return true;
+        } else {
+            $this->ilias_config['author_role'] = $this->ilias_config['author_role_name'];
+            $this->storeSettings();
+            return  true;
         }
 
     }
