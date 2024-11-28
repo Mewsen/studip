@@ -2211,41 +2211,53 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
      */
     public function sendRequestDeniedMail()
     {
+        $users = [];
         //Get the user who made the request:
-        $user = $this->user;
-        if (!($user instanceof User)) {
+        if ($this->user) {
+            $users[$this->user->id] = $this->user->username;
+        }
+        $range_object = $this->getRangeObject();
+        if ($range_object instanceof Course && $this->reply_recipients === ResourceRequest::REPLY_LECTURER) {
+            foreach ($range_object->getMembersWithStatus('dozent') as $lecturer) {
+                $users[$lecturer->user_id] = $lecturer->username;
+            }
+        }
+        if (count($users) === 0) {
             //No mail to send.
             return;
         }
 
-        //Load the mail template:
-        $factory = new Flexi\Factory(
-            $GLOBALS['STUDIP_BASE_PATH'] . '/locale/'
-        );
-        $user_lang_path = getUserLanguagePath($user->id);
-        $template       = $factory->open(
-            $user_lang_path . '/LC_MAILS/request_denied_mail.inc.php'
-        );
-
-        $range_object = $this->getRangeObject();
         $mail_title = _('Raumanfrage wurde abgelehnt');
-        if($range_object instanceof Course) {
+        if ($range_object instanceof Course) {
             $mail_title .= ': ' . $range_object->getFullName();
         }
-        $mail_text  = $template->render(
-            [
-                'request' => $this,
-                'range_object' => $range_object
-            ]
-        );
 
-        //Send the mail:
-        Message::send(
-            User::findCurrent()->id,
-            $user->username,
-            $mail_title,
-            $mail_text
-        );
+        foreach ($users as $user_id => $username) {
+            //Load the mail template:
+            $factory = new Flexi\Factory(
+                $GLOBALS['STUDIP_BASE_PATH'] . '/locale/'
+            );
+            $user_lang_path = getUserLanguagePath($user_id);
+            $template       = $factory->open(
+                $user_lang_path . '/LC_MAILS/request_denied_mail.inc.php'
+            );
+
+            $mail_text  = $template->render(
+                [
+                    'request' => $this,
+                    'range_object' => $range_object
+                ]
+            );
+
+            //Send the mail:
+            Message::send(
+                User::findCurrent()->id,
+                $username,
+                $mail_title,
+                $mail_text
+            );
+        }
+
     }
 
 
