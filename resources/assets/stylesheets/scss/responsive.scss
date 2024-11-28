@@ -680,6 +680,11 @@ html:not(.responsive-display):not(.fullscreen-mode) {
             margin-top: -5px;
             width: 100%;
         }
+
+        // See https://github.com/ckeditor/ckeditor5/issues/5465 why this is necessary
+        .ck .ck-sticky-panel .ck-sticky-panel__content_sticky {
+            top: 120px !important;
+        }
     }
 
 }
