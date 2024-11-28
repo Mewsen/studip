@@ -11,13 +11,23 @@
     <?= CSRFProtection::tokenTag() ?>
     <input type="hidden" name="ilias_content_settings" size="50" maxlength="255" value="1">
     <label>
-        <span class="required"><?= _('Wurzelkategorie für Stud.IP-Daten') ?></span>
-        <? if ($ilias_config['root_category']) : ?>
-            <div><?=htmlReady($ilias_config['root_category_name']).' (ID '.htmlReady($ilias_config['root_category']).')'?></div>
+        <span><?= _('Name der Wurzelkategorie für Stud.IP-Daten') ?></span>
+        <? if ($ilias_config['root_category_name']) : ?>
+            <div><?=htmlReady($ilias_config['root_category_name'])?></div>
         <? else : ?>
-            <input type="text" name="ilias_root_category_name" size="50" maxlength="255" value="<?= htmlReady($ilias_config['root_category_name']) ?>" required>
+            <input type="text" name="ilias_root_category_name" size="50" maxlength="255" value="<?= htmlReady($ilias_config['root_category_name']) ?>">
         <? endif ?>
     </label>
+    <label>
+        <span><?= _('ID der Wurzelkategorie für Stud.IP-Daten (optional)') ?></span>
+        <? if ($ilias_config['root_category']) : ?>
+            <div><?=htmlReady($ilias_config['root_category'])?></div>
+        <? else : ?>
+            <input type="text" name="ilias_root_category_id" size="50" maxlength="255" value="<?= htmlReady($ilias_config['root_category']) ?>">
+        <? endif ?>
+    </label>
+
+    <!-- TODO Konfigurationsmoeglichkeit, ob Kategorie automatisch erzeugt wird -->
     <? if ($ilias_config['user_data_category']) : ?>
     <label>
         <span class="required"><?= _('Kategorie mit User-Daten') ?></span>
