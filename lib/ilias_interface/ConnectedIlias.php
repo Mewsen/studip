@@ -258,9 +258,9 @@ class ConnectedIlias
             // if an ID was entered, simply use it; else get the ID by title/name
             if ($this->ilias_config['root_category_name'] !== null)
             {
-                if ($this->ilias_config['root_category'])
+                if (is_numeric($this->ilias_config['root_category_name']))
                 {
-                    $category = $this->ilias_config['root_category'];
+                    $category = $this->ilias_config['root_category_name'];
                 } else {
                     $category = $this->soap_client->getReferenceByTitle($this->ilias_config['root_category_name'], 'cat');
                 }

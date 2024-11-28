@@ -11,19 +11,11 @@
     <?= CSRFProtection::tokenTag() ?>
     <input type="hidden" name="ilias_content_settings" size="50" maxlength="255" value="1">
     <label>
-        <span><?= _('Name der Wurzelkategorie für Stud.IP-Daten') ?></span>
+        <span class="required"><?= _('Name oder ID der Wurzelkategorie für Stud.IP-Daten') ?></span>
         <? if ($ilias_config['root_category_name']) : ?>
             <div><?=htmlReady($ilias_config['root_category_name'])?></div>
         <? else : ?>
-            <input type="text" name="ilias_root_category_name" size="50" maxlength="255" value="<?= htmlReady($ilias_config['root_category_name']) ?>">
-        <? endif ?>
-    </label>
-    <label>
-        <span><?= _('ID der Wurzelkategorie für Stud.IP-Daten (optional)') ?></span>
-        <? if ($ilias_config['root_category']) : ?>
-            <div><?=htmlReady($ilias_config['root_category'])?></div>
-        <? else : ?>
-            <input type="text" name="ilias_root_category_id" size="50" maxlength="255" value="<?= htmlReady($ilias_config['root_category']) ?>">
+            <input type="text" name="ilias_root_category_name" size="50" maxlength="255" value="<?= htmlReady($ilias_config['root_category_name']) ?>" required>
         <? endif ?>
     </label>
 

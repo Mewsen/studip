@@ -315,10 +315,6 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                     if (Request::get('ilias_root_category_name')) {
                         $this->ilias_configs[$index]['root_category_name'] = Request::get('ilias_root_category_name');
                     }
-                    if (Request::get('ilias_root_category_id')) {
-                        $this->ilias_configs[$index]['root_category'] = Request::get('ilias_root_category_id');
-                    }
-
                     if (Request::getInstance()->offsetExists('ilias_user_prefix')) {
                         $this->ilias_configs[$index]['user_prefix'] = Request::get('ilias_user_prefix');
                     }
