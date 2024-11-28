@@ -375,14 +375,7 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                 if (Request::getInstance()->offsetExists('ilias_author_role_name')) {
 
                     //when entering an ID, use this
-                    if (is_numeric(Request::get('ilias_author_role_name'))) {
-                        $this->ilias_configs[$index]['author_role']         = Request::get('ilias_author_role_name');
-                        $this->ilias_configs[$index]['author_role_name']    = "object_id_" . Request::get('ilias_author_role_name');
-
-                    } else {
-                        $this->ilias_configs[$index]['author_role_name'] = Request::get('ilias_author_role_name');
-                    }
-
+                    $this->ilias_configs[$index]['author_role_name'] = Request::get('ilias_author_role_name');
                     $this->ilias_configs[$index]['author_perm'] = Request::get('ilias_author_perm');
                     $this->ilias_configs[$index]['allow_change_account'] = Request::get('ilias_allow_change_account');
 

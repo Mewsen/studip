@@ -334,7 +334,7 @@ class ConnectedIlias
             }
             return true;
         } else {
-            $this->ilias_config['author_role'] = $this->ilias_config['author_role_name'];
+            $this->ilias_config['author_role'] = "object_id_" . $this->ilias_config['author_role_name'];
             $this->storeSettings();
             return  true;
         }
