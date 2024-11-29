@@ -42,7 +42,7 @@ class CourseInfoOfTreeNode extends NonJsonApiController
 
     private function validateFilters($request)
     {
-        $filtering = $request->getQueryParams()['filter'] ?: [];
+        $filtering = $request->getQueryParams()['filter'] ?? [];
 
         // keyword aka q
         if (isset($filtering['q']) && mb_strlen($filtering['q']) < 3) {
@@ -75,7 +75,7 @@ class CourseInfoOfTreeNode extends NonJsonApiController
             'recursive' => false
         ];
 
-        $filtering = $request->getQueryParams()['filter'] ?: [];
+        $filtering = $request->getQueryParams()['filter'] ?? [];
 
         return array_merge($defaults, $filtering);
     }

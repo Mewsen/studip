@@ -416,7 +416,7 @@ function tooltip2($text, $with_alt = TRUE, $with_popup = FALSE) {
  * @param bool $important render icon in "important" style
  * @param bool $html tooltip text is HTML content
  */
-function tooltipIcon($text, $important = false, $html = false, bool $alt_info= false): string
+function tooltipIcon(string $text, bool $important = false, bool $html = false, bool $alt_info= false): string
 {
     if (!trim($text)) {
         return '';
@@ -433,12 +433,9 @@ function tooltipIcon($text, $important = false, $html = false, bool $alt_info= f
  * @param string $text tooltip text, html is rendered as is
  * @param bool $important render icon in "important" style
  */
-function tooltipHtmlIcon($text, $important = false)
+function tooltipHtmlIcon(string $text, bool $important = false)
 {
-    // render tooltip
-    $html = true;
-    $template = $GLOBALS['template_factory']->open('shared/tooltip');
-    return $template->render(compact('text', 'important', 'html'));
+    return tooltipIcon($text, true, $important);
 }
 
 /**

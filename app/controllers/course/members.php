@@ -1496,6 +1496,9 @@ class Course_MembersController extends AuthenticatedController
     private function getUserVisibility()
     {
         $member = CourseMember::find([$this->course_id, $this->user_id]);
+        if (!$member) {
+            return ['iam_visible' => false, 'visible_mode' => false];
+        }
 
         $visibility = $member->visible;
         $status = $member->status;

@@ -13,9 +13,9 @@ class FileInput extends Input
         $template->folder = $this->value;
         $template->id = md5(uniqid());
         $template->uploadUrl = $this->attributes['upload_url'];
-        $template->multiple = $this->attributes['multiple'] ?? '';
+        $template->multiple = $this->attributes['multiple'] ?? false;
         $template->accept = $this->attributes['accept'] ?? '*/*';
-        $template->required = $this->attributes['required'] ?? '';
+        $template->required = $this->attributes['required'] ?? false;
 
         return $template->render();
     }

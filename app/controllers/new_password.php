@@ -69,7 +69,7 @@ class NewPasswordController extends StudipController
             restoreLanguage();
         }
 
-        if ($user) {
+        if (isset($user)) {
             // spam/abuse-protection
             // if there are more than 5 tokens present, do NOT send another mail
 
