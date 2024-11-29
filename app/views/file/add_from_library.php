@@ -1,4 +1,4 @@
-<? if ($search_id && !$result_set) : ?>
+<? if (!empty($search_id) && empty($result_set)) : ?>
     <? if ($library_plugins) : ?>
         <?= MessageBox::info(_('Zu Ihrer Suche wurden keine Ergebnisse gefunden! Sie können ihre letzte Suchanfrage mit einer Mitteilung an die Bibliothek zur Klärung und Anfrage von Unterstützung senden.')) ?>
     <? else : ?>
@@ -17,29 +17,29 @@
             <div class="column">
                 <label>
                     <?= _('Titel') ?>
-                    <input type="text" name="title" value="<?= htmlReady($title) ?>">
+                    <input type="text" name="title" value="<?= htmlReady($title ?? '') ?>">
                 </label>
                 <label>
                     <?= _('Autor') ?>
-                    <input type="text" name="author" value="<?= htmlReady($author) ?>">
+                    <input type="text" name="author" value="<?= htmlReady($author ?? '') ?>">
                 </label>
                 <label>
                     <?= _('Jahr') ?>
-                    <input type="text" name="year" value="<?= htmlReady($year) ?>">
+                    <input type="text" name="year" value="<?= htmlReady($year ?? '') ?>">
                 </label>
             </div>
             <div class="column">
                 <label>
                     <?= _('Nummer (ISBN/ISSN/...)') ?>
-                    <input type="text" name="number" value="<?= htmlReady($number) ?>">
+                    <input type="text" name="number" value="<?= htmlReady($number ?? '') ?>">
                 </label>
                 <label>
                     <?= _('Zeitschrift') ?>
-                    <input type="text" name="publication" value="<?= htmlReady($publication) ?>">
+                    <input type="text" name="publication" value="<?= htmlReady($publication ?? '') ?>">
                 </label>
                 <label>
                     <?= _('Signatur') ?>
-                    <input type="text" name="signature" value="<?= htmlReady($signature) ?>">
+                    <input type="text" name="signature" value="<?= htmlReady($signature ?? '') ?>">
                 </label>
             </div>
         </div>
@@ -60,8 +60,8 @@
         </div>
     </fieldset>
 </form>
-<? if ($result_set): ?>
-    <? $last_result_number = (($page + 1) * $page_size);
+<? if (!empty($result_set)): ?>
+    <? $last_result_number = ($page + 1) * $page_size;
     if ($last_result_number > $total_results) {
         $last_result_number = $total_results;
     }
@@ -154,7 +154,7 @@
         </div>
     </form>
 <? endif ?>
-<? if ($library_plugins) : ?>
+<? if (!empty($library_plugins)) : ?>
     <section class="big-help-box">
         <?= Icon::create('support')->asImg(96, ['class' => 'icon']) ?>
         <div class="text">

@@ -47,8 +47,8 @@ class Course_IliasInterfaceController extends AuthenticatedController
         $this->seminar_id = Context::getId();
         $this->edit_permission = $GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id);
         $this->author_permission = false;
-        $this->change_course_permission = $GLOBALS['auth']->auth["perm"] == "root" || ($GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id) && $this->ilias_interface_config['allow_change_course']);
-        $this->add_own_course_permission = $GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id) && $this->ilias_interface_config['allow_add_own_course'];
+        $this->change_course_permission = $GLOBALS['auth']->auth["perm"] == "root" || ($GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id) && !empty($this->ilias_interface_config['allow_change_course']));
+        $this->add_own_course_permission = $GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id) && !empty($this->ilias_interface_config['allow_add_own_course']);
         $this->course_permission = $GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id);
 
         $this->sidebar = Sidebar::get();
@@ -166,7 +166,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
 
         if ($this->author_permission || $this->edit_permission) {
             $widget = new ActionsWidget();
-            if ($this->edit_permission && $this->ilias_interface_config['add_statusgroups']) {
+            if ($this->edit_permission && !empty($this->ilias_interface_config['add_statusgroups'])) {
                 $widget->addLink(
                     _('Gruppen übertragen'),
                     $this->url_for('course/ilias_interface/add_groups'),
@@ -180,7 +180,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
                     Icon::create('person')
                 );
             }
-            if ($this->edit_permission && $this->ilias_interface_config['edit_moduletitle']) {
+            if ($this->edit_permission && !empty($this->ilias_interface_config['edit_moduletitle'])) {
                 $widget->addLink(
                     _('Seite umbenennen'),
                     $this->url_for('course/ilias_interface/edit_moduletitle'),

@@ -465,7 +465,7 @@ class PluginAdministration
         $pluginid = $plugin_manager->registerPlugin($manifest['pluginname'], $pluginclass, $pluginpath);
 
         // register additional plugin classes in this package
-        $additionalclasses = $manifest['additionalclasses'];
+        $additionalclasses = $manifest['additionalclasses'] ?? null;
 
         if (is_array($additionalclasses)) {
             foreach ($additionalclasses as $class) {
