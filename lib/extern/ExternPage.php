@@ -313,14 +313,16 @@ abstract class ExternPage
                 $start_semester = Semester::find($this->startsem) ?: Semester::findCurrent();
         }
 
-        $semesters = SimpleORMapCollection::createFromArray(
-            Semester::findBySQL('`beginn` >= :sem_start AND `visible` = 1 ORDER BY `beginn` LIMIT :sem_count',
-                [
-                    'sem_start'  => $start_semester->beginn,
-                    'sem_count'  => $this->semcount ?: 1
-                ]
-            )
-        )->pluck('id');
+        $semesters = Semester::findAndMapBySQL(
+            function (Semester $semester): string {
+                return $semester->id;
+            },
+            '`beginn` >= :sem_start AND `visible` = 1 ORDER BY `beginn` LIMIT :sem_count',
+            [
+                'sem_start'  => $start_semester->beginn,
+                'sem_count'  => $this->semcount ?: 1
+            ]
+        );
         return $semesters;
     }
 
@@ -347,7 +349,7 @@ abstract class ExternPage
                     $scopes = array_merge($scopes, [$study_area->id], $study_area->getDescendantIds());
                 }
             } else {
-                $scopes = SimpleORMapCollection::createFromArray($study_areas)->pluck('id');
+                $scopes = array_column($study_areas, 'id');
             }
             $params[':sem_tree_ids'] = $scopes;
             return ' AND `seminar_sem_tree`.`sem_tree_id` IN (:sem_tree_ids) ';

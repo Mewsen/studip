@@ -166,9 +166,7 @@ class ExternPagePersonDetails extends ExternPage
             unset($grouped_results['-1']);
         }
         foreach ($grouped_results as $group_id => $group_result) {
-            $grouped_courses[$group_id] = SimpleORMapCollection::createFromArray(
-                Course::findMany($group_result)
-            );
+            $grouped_courses[$group_id] = Course::findMany($group_result);
         }
         return $grouped_courses;
     }
