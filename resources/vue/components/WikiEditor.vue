@@ -24,14 +24,14 @@
                 <input type="checkbox" v-model="autosave">
                 {{ $gettext('Automatisches Speichern aktivieren.') }}
             </label>
-            <div>
+            <p class="last-save-date">
                 {{ $gettext('Zuletzt gespeichert') }}:
                 <studip-date-time :timestamp="Math.floor(lastSaveDate / 1000)"
                                   :relative="true"
                 ></studip-date-time>
-            </div>
+            </p>
 
-            <div data-dialog-button="">
+            <footer data-dialog-button="">
                 <button class="button"
                         :title="isChanged ? $gettext('Den aktuellen Stand speichern.') : $gettext('Der aktuelle Stand wurde bereits gespeichert.')"
                         @click="toggleSecurityHandler(false)"
@@ -48,7 +48,7 @@
                 >
                     {{ $gettextInterpolate($gettext('Schreibmodus an %{name} übergeben'), { name: user.fullname }, true) }}
                 </button>
-            </div>
+            </footer>
         </form>
 
         <div v-if="!isEditing">
