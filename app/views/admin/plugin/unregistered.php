@@ -4,16 +4,16 @@
  * @var array $unknown_plugins
  */
 ?>
-<table class="default">
+<table class="default sortable-table" data-sortlist="[[0, 0]]">
     <caption>
         <?= _('Im Pluginverzeichnis vorhandene Plugins registrieren') ?>
     </caption>
     <thead>
         <tr>
-            <th><?= _('Name') ?></th>
-            <th><?= _('Pluginklasse') ?></th>
-            <th><?= _('Version') ?></th>
-            <th><?= _('Ursprung') ?></th>
+            <th data-sort="text"><?= _('Name') ?></th>
+            <th data-sort="text"><?= _('Pluginklasse') ?></th>
+            <th data-sort="digit"><?= _('Version') ?></th>
+            <th data-sort="text"><?= _('Ursprung') ?></th>
             <th><?= _('Registrieren') ?></th>
         </tr>
     </thead>

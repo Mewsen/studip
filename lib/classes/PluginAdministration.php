@@ -405,9 +405,12 @@ class PluginAdministration
         $basepath = Config::get()->PLUGINS_PATH;
         $plugin_manager = PluginManager::getInstance();
         $iterator = new RegexIterator(
-                        new RecursiveIteratorIterator(
-                            new RecursiveDirectoryIterator($basepath, FilesystemIterator::FOLLOW_SYMLINKS | FilesystemIterator::UNIX_PATHS)),
-                        '/plugin\.manifest$/', RecursiveRegexIterator::MATCH);
+            new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($basepath, FilesystemIterator::FOLLOW_SYMLINKS | FilesystemIterator::UNIX_PATHS)
+            ),
+            '/plugin\.manifest$/',
+            RegexIterator::MATCH
+        );
         foreach ($iterator as $manifest_file) {
             $manifest = $plugin_manager->getPluginManifest($manifest_file->getPath());
             if (!isset($manifest['pluginclassname'])) {

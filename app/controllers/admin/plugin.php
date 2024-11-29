@@ -509,7 +509,11 @@ class Admin_PluginController extends AuthenticatedController
 
     public function unregistered_action()
     {
-        $this->unknown_plugins = $this->plugin_admin->scanPluginDirectory();
+        $plugins = $this->plugin_admin->scanPluginDirectory();
+        usort($plugins, function ($a, $b) {
+            return $a['pluginname'] <=> $b['pluginname'];
+        });
+        $this->unknown_plugins = $plugins;
     }
 
     /**
