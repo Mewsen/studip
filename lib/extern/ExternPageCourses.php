@@ -330,7 +330,7 @@ class ExternPageCourses extends ExternPage
             $group = $this->getGroupingData($group_id);
             $grouped_courses[$group['order_by']] = [
                 'group'   => $group['data'],
-                'courses' => SimpleORMapCollection::createFromArray(
+                'courses' => SimpleCollection::createFromArray(
                     Course::findMany($group_result)
                 )->orderBy($this->getOrderBy()['field']),
             ];
