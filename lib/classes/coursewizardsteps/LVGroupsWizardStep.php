@@ -491,8 +491,8 @@ class LVGroupsWizardStep implements CourseWizardStep
 
         // the id of the home institute
         // get the institute from the first step (normally "BasicDataWizardStep")
-        $inst_id = reset($values)['institute'];
-        if ($access_right == 'fakadmin') {
+        $inst_id = reset($values)['institute'] ?? null;
+        if ($access_right === 'fakadmin') {
             // is fakadmin at faculty of given home institute
             $db = DBManager::get();
             $st = $db->prepare("SELECT a.Institut_id FROM user_inst a
@@ -501,7 +501,7 @@ class LVGroupsWizardStep implements CourseWizardStep
                 WHERE a.user_id = ? AND a.inst_perms='admin' AND NOT ISNULL(b.Institut_id)
                 AND c.Institut_id = ? LIMIT 1");
             $st->execute([$GLOBALS['user']->id, $inst_id]);
-            return !((bool) $st->fetchColumn());
+            return !$st->fetchColumn();
         }
         return !$perm->have_studip_perm($access_right, $inst_id);
 

@@ -568,7 +568,8 @@ class StudipCoreFormat extends TextFormat
 
         $intern = false;
         if (
-            in_array($pu['scheme'], ['http', 'https'])
+            isset($pu['scheme'])
+            && in_array($pu['scheme'], ['http', 'https'])
             && (
                 !isset($pu['host'])
                 || $pu['host'] === $_SERVER['HTTP_HOST']
