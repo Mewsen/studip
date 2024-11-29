@@ -135,7 +135,7 @@
         <legend><?= _('Ausnahmen') ?></legend>
         <date-list-input name="exceptions" :selected_dates="<?= htmlReady(json_encode($exceptions)) ?>"></date-list-input>
     </fieldset>
-    <? if (Config::get()->CALENDAR_GROUP_ENABLE && $user_quick_search_type) : ?>
+    <? if (Config::get()->CALENDAR_GROUP_ENABLE && isset($user_quick_search_type)) : ?>
         <fieldset class="simplevue">
             <legend><?= _('Teilnehmende Personen') ?></legend>
             <editable-list

@@ -635,12 +635,9 @@ function tooltipIcon($text, $important = false, $html = false): string
  * @param string $text tooltip text, html is rendered as is
  * @param bool $important render icon in "important" style
  */
-function tooltipHtmlIcon($text, $important = false)
+function tooltipHtmlIcon(string $text, bool $important = false)
 {
-    // render tooltip
-    $html = true;
-    $template = $GLOBALS['template_factory']->open('shared/tooltip');
-    return $template->render(compact('text', 'important', 'html'));
+    return tooltipIcon($text, true, $important);
 }
 
 /**
@@ -657,7 +654,7 @@ function TransformInternalLinks($str){
     if (!$str) {
         return '';
     }
-    
+
     if (mb_strpos($str, 'http') !== 0) {
         if ($str[0] === '#' || preg_match('/^[a-z][a-z0-9+.-]*:/i', $str)) {
             return $str;

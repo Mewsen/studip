@@ -413,7 +413,7 @@ class Oer_MarketController extends StudipController
             });
 
             if (Request::get('class') || count($this->classes) === 1) {
-                $class = Request::get('class') ?: $this->classes[0];
+                $class = Request::get('class') ?? $this->classes[0] ?? '';
                 if (class_exists($class) && in_array($class, $this->classes)) {
                     $response = $class::oerModuleIntegrateMaterialToCourse(
                         $this->material,
