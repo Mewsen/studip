@@ -119,7 +119,6 @@ export default {
             this.results = [];
 
             this.$emit('input', this.returnValue, this.inputValue);
-            this.inputValue = '';
         },
         selectUp () {
             if (this.selected > 0) {
@@ -176,6 +175,9 @@ export default {
         inputValue (needle, oldneedle) {
             if (oldneedle !== null && (oldneedle !== needle) && needle.length > 2) {
                 this.search(needle);
+            }
+            if (this.autocomplete) {
+                this.$emit('input', this.inputValue, this.inputValue);
             }
         }
     }
