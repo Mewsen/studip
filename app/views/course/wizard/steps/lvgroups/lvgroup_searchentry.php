@@ -1,4 +1,10 @@
 <?php
+/**
+ * @var ModuleManagementModelTreeItem $area
+ * @var array|null $values
+ * @var string $course_id
+ */
+
 $_id = htmlReady(implode('_', (array) $area->getId()));
 ?>
 <li id="lvgruppe_search_<?= $_id ?>">
@@ -6,7 +12,7 @@ $_id = htmlReady(implode('_', (array) $area->getId()));
    <?= Icon::create('arr_2left', Icon::ROLE_SORT)->asInput([
        'name'    => "assign[{$_id}]",
        'onclick' => "return STUDIP.MVV.CourseWizard.assignNode('{$_id}')",
-       'class'   => in_array($_id, $values['studyareas'] ?: []) ? 'hidden-no-js' : '',
+       'class'   => in_array($_id, $values['studyareas'] ?? []) ? 'hidden-no-js' : '',
    ]) ?>
 
     <?= htmlReady($area->getDisplayName()) ?>
