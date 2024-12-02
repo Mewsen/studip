@@ -26,10 +26,12 @@
         <div><?= _('User_daten').' (ID '.htmlReady($ilias_config['user_data_category']).')'?></div>
     </label>
     <? endif ?>
+    <? if ($ilias_interface_config['create_category']) : ?>
     <label>
         <input type="checkbox" name="ilias_category_create_on_add_module" value="1" <?= $ilias_config['category_create_on_add_module'] ? 'checked' : '' ?>>
         <span><?= _('Persönliche ILIAS-Kategorie erst erzeugen, wenn Lernobjekte angelegt werden') ?></span>
     </label>
+    <? endif ?>
     <? if (array_key_exists('version', $ilias_config) && (ConnectedIlias::getIntVersion($ilias_config['version']) >= 50400) && (ConnectedIlias::getIntVersion($ilias_config['version']) < 60000)) : ?>
         <label>
             <input type="checkbox" name="ilias_category_to_desktop" value="1" <?= $ilias_config['category_to_desktop'] ? 'checked' : '' ?>>

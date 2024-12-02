@@ -93,6 +93,8 @@ class Admin_IliasInterfaceController extends AuthenticatedController
     public function save_interface_settings_action()
     {
         if (Request::submitted('submit')) {
+            $this->ilias_interface_config['create_category'] = (boolean)Request::get('ilias_interface_create_category');
+            $this->ilias_interface_config['create_objects'] = (boolean)Request::get('ilias_interface_create_objects');
             $this->ilias_interface_config['edit_moduletitle'] = (boolean)Request::get('ilias_interface_edit_moduletitle');
             $this->ilias_interface_config['show_offline'] = (boolean)Request::get('ilias_interface_show_offline');
             $this->ilias_interface_config['search_active'] = (boolean)Request::get('ilias_interface_search_active');
