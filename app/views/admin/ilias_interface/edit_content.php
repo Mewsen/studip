@@ -18,8 +18,6 @@
             <input type="text" name="ilias_root_category_name" size="50" maxlength="255" value="<?= htmlReady($ilias_config['root_category_name']) ?>" required>
         <? endif ?>
     </label>
-
-    <!-- TODO Konfigurationsmoeglichkeit, ob Kategorie automatisch erzeugt wird -->
     <? if ($ilias_config['user_data_category']) : ?>
     <label>
         <span class="required"><?= _('Kategorie mit User-Daten') ?></span>
@@ -27,10 +25,10 @@
     </label>
     <? endif ?>
     <? if ($ilias_interface_config['create_category']) : ?>
-    <label>
-        <input type="checkbox" name="ilias_category_create_on_add_module" value="1" <?= $ilias_config['category_create_on_add_module'] ? 'checked' : '' ?>>
-        <span><?= _('Persönliche ILIAS-Kategorie erst erzeugen, wenn Lernobjekte angelegt werden') ?></span>
-    </label>
+        <label>
+            <input type="checkbox" name="ilias_category_create_on_add_module" value="1" <?= $ilias_config['category_create_on_add_module'] ? 'checked' : '' ?>>
+            <span><?= _('Persönliche ILIAS-Kategorie erst erzeugen, wenn Lernobjekte angelegt werden') ?></span>
+        </label>
     <? endif ?>
     <? if (array_key_exists('version', $ilias_config) && (ConnectedIlias::getIntVersion($ilias_config['version']) >= 50400) && (ConnectedIlias::getIntVersion($ilias_config['version']) < 60000)) : ?>
         <label>
@@ -120,17 +118,19 @@
         <input type="checkbox" name="ilias_delete_ilias_courses" value="1" <?= !empty($ilias_config['delete_ilias_courses'] )? 'checked' : '' ?>>
         <span><?= _('Beim Löschen von Stud.IP-Veranstaltungen ILIAS-Kurse ebenfalls löschen (alle untergeordneten Objekte werden gelöscht!)') ?></span>
     </label>
-    <label>
-    <span>  <?= _('Module') ?></span>
-    </label>
-    <label>
-        <? foreach ($modules_available as $module_index => $module_name) : ?>
+    <? if ($ilias_interface_config['create_objects']) : ?>
         <label>
-            <input type="checkbox" name="ilias_modules_<?=$module_index?>" value="1" <?=$ilias_config['modules'][$module_index] ? ' checked':''?>>
-            <?=htmlReady($module_name)?>
+        <span>  <?= _('Module') ?></span>
         </label>
-        <? endforeach ?>
-    </label>
+        <label>
+            <? foreach ($modules_available as $module_index => $module_name) : ?>
+            <label>
+                <input type="checkbox" name="ilias_modules_<?=$module_index?>" value="1" <?=$ilias_config['modules'][$module_index] ? ' checked':''?>>
+                <?=htmlReady($module_name)?>
+            </label>
+            <? endforeach ?>
+        </label>
+    <? endif ?>
     <footer data-dialog-button>
         <?= Studip\Button::createAccept(_('Speichern'), 'submit') ?>
         <?= Studip\Button::createCancel(_('Abbrechen'), 'cancel', ['data-dialog' => 'close']) ?>

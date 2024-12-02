@@ -1150,7 +1150,7 @@ class ConnectedIlias
                 if (is_array($admin_user_exists)) {
                     $this->user->unsetConnection(true);
                     if ($this->newUser()) {
-                        PageLayout::postSuccess(_("Neue Verknüpfung zu ILIAS-User angelegt."));
+                        PageLayout::postSuccess(sprintf(_('Neues Konto in %s angelegt und mit Stud.IP-Konto verknüpft.'), htmlReady($ilias->getName())));
                     }
                 }
             } else return true;

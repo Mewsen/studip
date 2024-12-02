@@ -17,7 +17,7 @@
     </label>
     <label>
         <input type="checkbox" name="ilias_interface_create_objects" value="1" <?= !empty($ilias_interface_config['create_objects']) ? 'checked' : '' ?>>
-        <span><?= _('Auch Lernobjekte aus ILIAS verknüpfbar') ?></span>
+        <span><?= _('Lernobjekte anlegbar') ?></span>
     </label>
     <label>
         <input type="checkbox" name="ilias_interface_edit_moduletitle" value="1" <?= !empty($ilias_interface_config['edit_moduletitle']) ? 'checked' : '' ?>>

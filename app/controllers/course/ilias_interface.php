@@ -90,9 +90,17 @@ class Course_IliasInterfaceController extends AuthenticatedController
 
         if (($this->module_count == 0) && (!$this->courses)) {
             if (Context::isInstitute()) {
-                PageLayout::postInfo(_('Momentan sind dieser Einrichtung keine Lernobjekte zugeordnet.'));
+                if ($this->ilias_interface_config['create_objects']) {
+                    PageLayout::postInfo(_('Momentan sind dieser Einrichtung keine Lernobjekte zugeordnet.'));
+                } else {
+                    PageLayout::postInfo(_('Momentan sind dieser Einrichtung kein ILIAS-Kurs zugeordnet.'));
+                }
             } else {
-                PageLayout::postInfo(_('Momentan sind dieser Veranstaltung keine Lernobjekte zugeordnet.'));
+                if ($this->ilias_interface_config['create_objects']) {
+                    PageLayout::postInfo(_('Momentan sind dieser Veranstaltung keine Lernobjekte zugeordnet.'));
+                } else {
+                    PageLayout::postInfo(_('Momentan ist dieser Veranstaltung kein ILIAS-Kurs zugeordnet.'));
+                }
             }
         }
 
@@ -106,7 +114,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
                     Icon::create('add')
                 )->asDialog();
             }
-            if ($this->author_permission) {
+            if ($this->author_permission && $ilias_interface_config['create_objects']) {
                 $widget->addLink(
                     _('Meine Lernobjekte'),
                     $this->url_for('course/ilias_interface/add_object/my_modules'),
@@ -242,7 +250,11 @@ class Course_IliasInterfaceController extends AuthenticatedController
      */
     public function add_object_action($mode = 'search', $index = '')
     {
-        PageLayout::setTitle(_('Lernobjekt hinzufügen'));
+        if ($this->ilias_interface_config['create_objects']) {
+            PageLayout::setTitle(_('Lernobjekt hinzufügen'));
+        } else {
+            PageLayout::setTitle(_('Neuen ILIAS-Kurs anlegen'));
+        }
 
         if (!$this->edit_permission) {
             throw new AccessDeniedException();
