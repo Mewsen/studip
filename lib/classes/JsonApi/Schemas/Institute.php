@@ -16,6 +16,7 @@ class Institute extends SchemaProvider
     const REL_MEMBERSHIPS = 'memberships';
     const REL_STATUS_GROUPS = 'status-groups';
     const REL_SUB_INSTITUTES = 'sub-institutes';
+    const REL_COURSES_OF_STUDY = 'courses-of-study';
 
     /**
      * @param \Institute $institute
@@ -95,6 +96,12 @@ class Institute extends SchemaProvider
             $this->shouldInclude($context, self::REL_SUB_INSTITUTES)
         );
 
+        $relationships = $this->getCoursesOfStudyRelationship(
+            $relationships,
+            $resource,
+            $this->shouldInclude($context, self::REL_COURSES_OF_STUDY)
+        );
+
         return $relationships;
     }
 
@@ -156,6 +163,30 @@ class Institute extends SchemaProvider
         return array_merge($relationships, [self::REL_STATUS_GROUPS => $relation]);
     }
 
+    private function getCoursesOfStudyRelationship(
+        array $relationships,
+        $resource,
+        $includeData
+    ): array {
+        $relation = [
+            self::RELATIONSHIP_LINKS => [
+                Link::RELATED => $this->getRelationshipRelatedLink($resource, self::REL_COURSES_OF_STUDY),
+            ],
+        ];
+
+        if ($includeData) {
+            $relation[self::RELATIONSHIP_DATA] = $resource->courses_of_study;
+        } else {
+            $relation[self::RELATIONSHIP_DATA] = $resource->courses_of_study->map(function (\Studiengang $cos): \Studiengang {
+                return \Studiengang::build(['id' => $cos->id]);
+            });
+        }
+
+        $relationships[self::REL_COURSES_OF_STUDY] = $relation;
+
+        return $relationships;
+    }
+
     public function hasResourceMeta($resource): bool
     {
         return true;
@@ -168,6 +199,7 @@ class Institute extends SchemaProvider
     {
         return [
             'sub-institutes-count' => count($resource->sub_institutes),
+            'courses-of-study-count' => count($resource->courses_of_study),
         ];
     }
 }

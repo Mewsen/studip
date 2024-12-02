@@ -28,6 +28,7 @@ $CACHING_ENABLE = false;
 date_default_timezone_set('Europe/Berlin');
 
 require 'config.inc.php';
+require 'mvv_config.php';
 require_once __DIR__ . '/../../lib/bootstrap-autoload.php';
 
 

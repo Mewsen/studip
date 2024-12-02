@@ -67,6 +67,14 @@ class StgteilVersion extends ModuleManagementModelTreeItem
             'on_delete' => 'delete',
             'on_store' => 'store'
         ];
+        $config['belongs_to']['start_semester'] = [
+            'class_name'  => Semester::class,
+            'foreign_key' => 'start_sem',
+        ];
+        $config['belongs_to']['end_semester'] = [
+            'class_name'  => Semester::class,
+            'foreign_key' => 'end_sem',
+        ];
 
         $config['additional_fields']['count_abschnitte']['get'] =
             function($version) { return $version->count_abschnitte; };

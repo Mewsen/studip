@@ -10,7 +10,7 @@ use JsonApi\JsonApiController;
 
 class CoursesIndex extends JsonApiController
 {
-    protected $allowedFilteringParameters = ['q', 'fields', 'semester', 'category', 'scope_choose', 'range_choose'];
+    protected $allowedFilteringParameters = ['q', 'fields', 'semester', 'category', 'scope_choose', 'range_choose', 'df'];
 
     protected $allowedIncludePaths = [
         'blubber-threads',
@@ -51,7 +51,7 @@ class CoursesIndex extends JsonApiController
         list($offset, $limit) = $this->getOffsetAndLimit();
 
         return $this->getPaginatedContentResponse(
-            \Course::findMany(array_slice($courseIds, $offset, $limit)),
+            $this->getCourses(array_slice($courseIds, $offset, $limit)),
             count($courseIds)
         );
     }
@@ -80,6 +80,16 @@ class CoursesIndex extends JsonApiController
                 return 'Invalid "semester".';
             }
         }
+
+        // data fields
+        if (isset($filtering['df']) && is_array($filtering['df'])) {
+            $accepted_dfs = $this->getAcceptedDataFields();
+            foreach (array_keys($filtering['df']) as $df) {
+                if (!in_array($df, $accepted_dfs)) {
+                    return 'Invalid data field as filtering parameter.';
+                }
+            }
+        }
     }
 
     private function getContextFilters()
@@ -97,6 +107,47 @@ class CoursesIndex extends JsonApiController
         $filtering = $this->getQueryParameters()->getFilteringParameters() ?: [];
 
         return array_merge($defaults, $filtering);
+    }
+
+    private function getCourses(array $course_ids): array
+    {
+        $filtering = $this->getQueryParameters()->getFilteringParameters() ?: [];
+        if (isset($filtering['df']) && is_array($filtering['df'])) {
+            $df_where = [];
+            $params = [
+                $course_ids
+            ];
+            foreach ($filtering['df'] as $id => $value) {
+                $df_where[] = ' (`datafields_entries`.`datafield_id` = ? AND `datafields_entries`.`content` = ?) ';
+                $params[] = $id;
+                $params[] = $value;
+            }
+            return \Course::findBySQL("JOIN `datafields_entries`
+                ON `seminare`.`seminar_id` = `datafields_entries`.`range_id`
+                WHERE `seminare`.`seminar_id` IN (?)
+                AND " .
+                implode('AND', $df_where),
+                $params);
+        } else {
+            return \Course::findMany($course_ids);
+        }
+    }
+
+    /**
+     * Get ids of accepted datafields for current user.
+     * Only simple types of bool, textline, selectbox and radio with global
+     * visibility for all users are accepted.
+     *
+     * @return array
+     */
+    private function getAcceptedDataFields(): array
+    {
+        $data_fields = \DataField::findAndMapBySQL(
+            fn(\DataField $data_field) => $data_field->id,
+            "`object_type` = 'sem' AND `view_perms` = 'user'
+                AND `type` IN('bool', 'textline', 'selectbox', 'radio')"
+        );
+        return $data_fields;
     }
 
     /**

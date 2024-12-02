@@ -127,6 +127,7 @@ class RouteMap
         }
 
         $this->addAuthenticatedAvatarRoutes($group);
+        $this->addAuthenticatedMvvRoutes($group);
         $this->addAuthenticatedEventsRoutes($group);
         $this->addAuthenticatedFeedbackRoutes($group);
         $this->addAuthenticatedFilesRoutes($group);
@@ -393,6 +394,8 @@ class RouteMap
         $group->get('/sem-classes/{id}/sem-types', Routes\Courses\SemTypesBySemClassIndex::class);
         $group->get('/sem-types', Routes\Courses\SemTypesIndex::class);
         $group->get('/sem-types/{id}', Routes\Courses\SemTypesShow::class);
+
+        $group->get('/module-components/{id}/courses', Routes\Courses\CoursesByModuleComponentsIndex::class);
     }
 
     private function addAuthenticatedCoursewareRoutes(RouteCollectorProxy $group): void
@@ -695,6 +698,28 @@ class RouteMap
         $group->delete('/user-filters/{id}', Routes\UserFilters\UserFiltersDelete::class);
         $group->get('/user-filter-fields', Routes\UserFilters\UserFilterFieldsIndex::class);
         $group->get('/user-filter-fields/{id}', Routes\UserFilters\UserFilterFieldsShow::class);
+    }
+
+    private function addAuthenticatedMvvRoutes(RouteCollectorProxy $group): void
+    {
+        $group->get('/courses-of-study', Routes\Mvv\CoursesOfStudyIndex::class);
+        $group->get('/courses-of-study/{id}', Routes\Mvv\CoursesOfStudyShow::class);
+        $group->get('/courses-of-study/{id}/components', Routes\Mvv\ComponentsByCoursesOfStudyIndex::class);
+        $group->get('/course-of-study-components/{id}/versions', Routes\Mvv\VersionsByCourseOfStudyComponentsIndex::class);
+        $group->get('/course-of-study-components/{id}/subject', Routes\Mvv\SubjectsByCourseOfStudyComponentsShow::class);
+        $group->get('/courses-of-study/{id}/degree', Routes\Mvv\DegreesByCoursesOfStudyShow::class);
+        $group->get('/degrees', Routes\Mvv\DegreesIndex::class);
+        $group->get('/degrees/{id}', Routes\Mvv\DegreesShow::class);
+        $group->get('/subjects',Routes\Mvv\SubjectsIndex::class);
+        $group->get('/subjects/{id}',Routes\Mvv\SubjectsShow::class);
+        $group->get('/component-versions/{id}', Routes\Mvv\ComponentVersionsShow::class);
+        $group->get('/modules', Routes\Mvv\ModulesIndex::class);
+        $group->get('/modules/{id}', Routes\Mvv\ModulesShow::class);
+        $group->get('/modules/{id}/module-components', Routes\Mvv\ModuleComponentsByModuleIndex::class);
+        $group->get('/module-components/{id}', Routes\Mvv\ModuleComponentsShow::class);
+        // not a JSON:API route
+        $group->get('/component-version-deep/{id}', Routes\Mvv\ComponentVersionsDeep::class);
+
     }
 
     private function addRelationship(RouteCollectorProxy $group, string $url, string $handler): void

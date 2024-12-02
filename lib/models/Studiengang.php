@@ -171,7 +171,7 @@ class Studiengang extends ModuleManagementModelTreeItem
         $config['i18n_fields']['name_kurz']    = true;
         $config['i18n_fields']['beschreibung'] = true;
 
-        $config['default_values']['enroll'] = $GLOBALS['MVV_STUDIENGANG']['ENROLL']['default'];
+        $config['default_values']['enroll'] = Config::get()->MVV_STUDIENGANG['ENROLL']['default'];
 
         parent::configure($config);
     }
@@ -648,7 +648,7 @@ class Studiengang extends ModuleManagementModelTreeItem
         $result = [];
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $status) {
             $result[$status['stat']] = [
-                'name' => $GLOBALS['MVV_STUDIENGANG']['STATUS']['values'][$status['stat']]['name'] ?? _('Undefinierter Status'),
+                'name' => Config::get()->MVV_STUDIENGANG['STATUS']['values'][$status['stat']]['name'] ?? _('Undefinierter Status'),
                 'count_objects' => $status['count_objects']
             ];
         }
@@ -845,7 +845,7 @@ class Studiengang extends ModuleManagementModelTreeItem
     {
         $assigned_languages = array();
         $languages_flipped = array_flip($languages);
-        foreach ($GLOBALS['MVV_STUDIENGANG']['SPRACHE']['values'] as $key => $language) {
+        foreach (Config::get()->MVV_STUDIENGANG['SPRACHE']['values'] as $key => $language) {
             if (isset($languages_flipped[$key])) {
                 $language = StudycourseLanguage::find([$this->id, $key]);
                 if (!$language) {

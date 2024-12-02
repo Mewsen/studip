@@ -18,6 +18,7 @@ class InstitutesShow extends JsonApiController
         InstituteSchema::REL_FACULTY,
         InstituteSchema::REL_STATUS_GROUPS,
         InstituteSchema::REL_SUB_INSTITUTES,
+        InstituteSchema::REL_COURSES_OF_STUDY,
     ];
 
     /**

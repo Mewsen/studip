@@ -379,11 +379,11 @@ class Modulteil extends ModuleManagementModelTreeItem
     /**
      * Retrieves all courses this Modulteil is assigned by its LV-Gruppen.
      * Filtered by a given semester considering the global visibility or the
-     * the visibility for a given user.
+     * visibility for a given user.
      *
      * @param string $semester_id The id of a semester.
      * @param mixed $only_visible Boolean true retrieves only visible courses, false
-     * retrieves all courses. If $only_visible is an user id it depends on the users
+     * retrieves all courses. If $only_visible is a user id it depends on the users
      * status which courses will be retrieved.
      * @return array An array of course data.
      */
