@@ -1782,6 +1782,7 @@ class Course_TimesroomsController extends AuthenticatedController
             [$this->course->id, $date_ids]
         );
 
-        return $valid;
+        // Using array_intersect() preserves order of date ids
+        return array_intersect($date_ids, $valid);
     }
 }
