@@ -18,9 +18,11 @@
             <input type="checkbox" name="import_privat" value="1" checked>
             <?= _('Öffentliche Termine als "privat" importieren') ?>
         </label>
-        <label>
+        <label style="cursor: pointer;">
+            <input required type="file" id="fileupload" name="importfile" accept=".ics,.ifb,.iCal,.iFBf"
+                   style="display: none">
+            <?= Icon::create('upload', Icon::ROLE_CLICKABLE, ['title' => _('Datei hochladen'), 'class' => 'text-bottom']) ?>
             <span class="required"><?= _('Datei zum Importieren wählen') ?></span>
-            <input required type="file" name="importfile" accept=".ics,.ifb,.iCal,.iFBf">
         </label>
     </fieldset>
     <footer data-dialog-button>

@@ -86,6 +86,9 @@
         </label>
         <label>
             <?= _('Zugriff') ?>
+            <?= tooltipIcon(
+                _('Öffentliche Termine sind systemweit sichtbar. Private Termine sind für Personen, denen der Kalender freigegeben wurde, sichtbar. Vertrauliche Termine sind hingegen nur für einen selbst sichtbar.')
+            ) ?>
             <div class="flex-row">
                 <select name="access">
                     <option value="PUBLIC" <?= $date->access === 'PUBLIC' ? 'selected' : '' ?>>
@@ -98,9 +101,6 @@
                         <?= _('Vertraulich') ?>
                     </option>
                 </select>
-                <?= tooltipIcon(
-                    _('Öffentliche Termine sind systemweit sichtbar. Private Termine sind für Personen, denen der Kalender freigegeben wurde, sichtbar. Vertrauliche Termine sind hingegen nur für einen selbst sichtbar.')
-                ) ?>
             </div>
         </label>
         <label>
