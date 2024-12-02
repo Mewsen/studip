@@ -425,6 +425,11 @@ class Fullcalendar
             locales: [enLocale, deLocale ],
             locale:  String.locale === 'de-DE' ? 'de' : 'en-gb',
             timeFormat: 'H:mm',
+            slotLabelFormat: {
+                hour: 'numeric',
+                minute: '2-digit',
+                omitZeroMinute: false
+            },
             nowIndicator: true,
             timeZone: 'local',
             studip_functions: [],

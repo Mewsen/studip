@@ -69,7 +69,7 @@ class Calendar_CalendarController extends AuthenticatedController
             $actions->addLink(
                 _('Veranstaltung auswählen'),
                 $this->url_for('calendar/calendar/add_courses'),
-                Icon::create('add'),
+                Icon::create('seminar'),
                 ['data-dialog' => 'size=medium']
             );
         }

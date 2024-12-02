@@ -145,7 +145,7 @@
                     <div class="progresstext">0%</div>
                 </div>
             </div>
-            <label style="cursor: pointer;">
+            <label >
                 <input type="file" id="fileupload" multiple onChange="STUDIP.Messages.upload_from_input(this);" style="display: none;">
                 <?= Icon::create('upload')->asImg(['title' => _('Datei hochladen'), 'class' => 'text-bottom']) ?>
                 <?= _("Datei hochladen") ?>
