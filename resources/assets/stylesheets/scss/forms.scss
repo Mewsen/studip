@@ -224,7 +224,7 @@ form.default {
             margin-top: -$gap;
         }
 
-        > :not(legend) {
+        > :not(legend, table) {
             max-width: calc(100% - 20px);
         }
     }
