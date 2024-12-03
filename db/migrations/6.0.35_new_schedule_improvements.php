@@ -3,6 +3,8 @@
 
 class NewScheduleImprovements extends Migration
 {
+    use DatabaseMigrationTrait;
+
     public function description()
     {
         return 'A bugfix migration to add colours to personal schedule entries again and to migrate schedule configurations.';
@@ -11,10 +13,12 @@ class NewScheduleImprovements extends Migration
     protected function up()
     {
         $db = DBManager::get();
-        $db->exec(
-            "ALTER TABLE `schedule_entries`
-            ADD COLUMN IF NOT EXISTS `colour_id` TINYINT(3) NOT NULL DEFAULT 0"
-        );
+        if (!$this->columnExists('schedule_entries', 'colour_id')) {
+            $db->exec(
+                "ALTER TABLE `schedule_entries`
+                ADD COLUMN `colour_id` TINYINT(3) NOT NULL DEFAULT 0"
+            );
+        }
 
         //Migrate the content of schedule configuration entries:
 
