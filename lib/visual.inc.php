@@ -435,7 +435,7 @@ function tooltipIcon(string $text, bool $important = false, bool $html = false, 
  */
 function tooltipHtmlIcon(string $text, bool $important = false)
 {
-    return tooltipIcon($text, true, $important);
+    return tooltipIcon($text, $important, true);
 }
 
 /**
