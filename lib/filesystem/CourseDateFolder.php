@@ -12,7 +12,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category  Stud.IP
  */
-class CourseDateFolder extends PermissionEnabledFolder implements FolderType
+class CourseDateFolder extends PermissionEnabledFolder
 {
     public static $sorter = 1;
 

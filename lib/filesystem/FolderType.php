@@ -272,4 +272,17 @@ interface FolderType
      * @return array
      */
     public function copySettings();
+
+    /**
+     * Returns whether the downloads in this folder should be counted or not.
+     * @return bool
+     */
+    public function countDownloads(): bool;
+
+    /**
+     * This method decides whether downloads should be displayed.
+     *
+     * @return bool
+     */
+    public function displayDownloads(): bool;
 }

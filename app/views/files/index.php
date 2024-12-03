@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var FolderType $topFolder
+ * @var StudipController $controller
+ * @var int $last_visitdate
+ */
+?>
 <? if ($topFolder): ?>
     <?php
     if (empty($controllerpath)) {
@@ -8,7 +15,7 @@
     }
 
     $show_downloads = Config::get()->DISPLAY_DOWNLOAD_COUNTER === 'always'
-                   && !($topFolder instanceof HomeworkFolder);
+        && $topFolder->displayDownloads();
     $vue_breadcrumbs = [];
     $folder = $topFolder;
     do {

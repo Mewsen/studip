@@ -144,4 +144,14 @@ class HomeworkFolder extends PermissionEnabledFolder
     {
         return  $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id);
     }
+
+    public function countDownloads(): bool
+    {
+        return false;
+    }
+
+    public function displayDownloads(): bool
+    {
+        return false;
+    }
 }

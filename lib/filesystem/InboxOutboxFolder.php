@@ -309,5 +309,14 @@ class InboxOutboxFolder implements FolderType
     {
         return ['description' => $this->description];
     }
+    
+    public function countDownloads(): bool
+    {
+        return true;
+    }
 
+    public function displayDownloads(): bool
+    {
+        return true;
+    }
 }

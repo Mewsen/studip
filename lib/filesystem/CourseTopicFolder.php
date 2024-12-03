@@ -12,7 +12,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category  Stud.IP
  */
-class CourseTopicFolder extends PermissionEnabledFolder implements FolderType
+class CourseTopicFolder extends PermissionEnabledFolder
 {
 
     public static $sorter = 1;
@@ -144,4 +144,14 @@ class CourseTopicFolder extends PermissionEnabledFolder implements FolderType
         return ['description' => $this->description];
     }
 
+
+    public function countDownloads(): bool
+    {
+        return true;
+    }
+
+    public function displayDownloads(): bool
+    {
+        return true;
+    }
 }

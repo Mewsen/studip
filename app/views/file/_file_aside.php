@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var FileType $file
+ */
+?>
 <aside id="file_aside">
     <div class="file-icon">
         <?= $file->getIcon(Icon::ROLE_INFO) ?>
@@ -11,10 +16,12 @@
                 <? $size = $file->getSize() ?>
                 <td><?= $size !== null ? relSize($file->getSize(), false) : "-" ?></td>
             </tr>
+        <? if ($file->getFolderType()->displayDownloads()): ?>
             <tr>
                 <td><?= _('Downloads') ?></td>
                 <td><?= htmlReady($file->getDownloads()) ?></td>
             </tr>
+        <? endif; ?>
             <tr>
                 <td><?= _('Erstellt') ?></td>
                 <td><?= date('d.m.Y H:i', $file->getMakeDate()) ?></td>

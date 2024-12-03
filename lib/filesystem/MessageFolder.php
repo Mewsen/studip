@@ -15,7 +15,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category  Stud.IP
  */
-class MessageFolder extends StandardFolder implements FolderType
+class MessageFolder extends StandardFolder
 {
     protected $folder;
 
@@ -355,5 +355,4 @@ class MessageFolder extends StandardFolder implements FolderType
     {
         return ['description' => $this->description];
     }
-
 }
