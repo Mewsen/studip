@@ -16,7 +16,7 @@ class AlterScheduleTable extends Migration
 
         $db->exec(
             "ALTER TABLE `schedule_entries`
-            DROP COLUMN color,
+            RENAME COLUMN color TO colour_id,
             CHANGE COLUMN start start_time SMALLINT(6) NOT NULL,
             CHANGE COLUMN end end_time SMALLINT(6) NOT NULL,
             CHANGE COLUMN day dow TINYINT(1) NOT NULL,
@@ -51,7 +51,7 @@ class AlterScheduleTable extends Migration
 
         $db->exec(
             "ALTER TABLE `schedule_entries`
-            ADD COLUMN color TINYINT(4) NULL DEFAULT NULL,
+            RENAME COLUMN colour_id TO color,
             CHANGE COLUMN start_time start SMALLINT(6) NOT NULL,
             CHANGE COLUMN end_time end SMALLINT(6) NOT NULL,
             CHANGE COLUMN dow day TINYINT(1) NOT NULL,

@@ -72,13 +72,13 @@ class Calendar_ScheduleController extends AuthenticatedController
             _('Neuer Termin'),
             $this->url_for('calendar/schedule/entry/add'),
             Icon::create('add'),
-            ['data-dialog' => '']
+            ['data-dialog' => 'size=auto']
         );
         if ($show_hidden) {
             $actions->addLink(
                 _('Ausgeblendete Veranstaltungen verstecken'),
                 $this->indexURL(['semester_id' => Request::get('semester_id')]),
-                Icon::create('visibility-invisible')
+                Icon::create('visibility-visible')
             )->asButton();
         } else {
             $actions->addLink(
@@ -87,7 +87,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                     'show_hidden' => true,
                     'semester_id' => Request::get('semester_id'),
                 ]),
-                Icon::create('visibility-visible')
+                Icon::create('visibility-invisible')
             )->asButton();
         }
 
@@ -99,11 +99,39 @@ class Calendar_ScheduleController extends AuthenticatedController
         );
         $actions->addLink(
             _('Einstellungen'),
-            $this->url_for('settings/calendar'),
+            $this->url_for('calendar/schedule/settings'),
             Icon::create('settings'),
             ['data-dialog' => 'size=auto;reload-on-close']
         );
         $sidebar->addWidget($actions);
+
+        $schedule_settings = UserConfig::get()->getValue('SCHEDULE_SETTINGS');
+        $size = $schedule_settings['size'] ?? 'medium';
+        if (Request::submitted('size')) {
+            $size = Request::option('size');
+            if (in_array($size, ['small', 'medium', 'large'])) {
+                //Set the new size in the schedule settings:
+                $schedule_settings['size'] = $size;
+                UserConfig::get()->store('SCHEDULE_SETTINGS', $schedule_settings);
+            } else {
+                $size = 'medium';
+            }
+        }
+        $views = new ViewsWidget();
+        $views->setTitle(_('Größe'));
+        $views->addLink(
+            _('Klein'),
+            $this->url_for('calendar/schedule/index', ['size' => 'small'])
+        )->setActive($size === 'small');
+        $views->addLink(
+            _('Mittel'),
+            $this->url_for('calendar/schedule/index', ['size' => 'medium'])
+        )->setActive($size === 'medium');
+        $views->addLink(
+            _('Groß'),
+            $this->url_for('calendar/schedule/index', ['size' => 'large'])
+        )->setActive($size === 'large');
+        $sidebar->addWidget($views);
 
         $fullcalendar = \Studip\Calendar\Helper::getScheduleFullcalendar(
             $semester->id ?? '',
@@ -203,9 +231,23 @@ class Calendar_ScheduleController extends AuthenticatedController
                 );
 
                 $event_classes = ['schedule'];
-                $event_title = $cycle_date->course->getFullName();
+                $event_title   = $cycle_date->course->getFullName('number-name');
+
                 if ($course_membership) {
                     $event_classes[] = sprintf('course-color-%u', $course_membership->gruppe);
+
+                    $lecturer_names = array_map(
+                        fn($lecturer) => $lecturer->user->nachname,
+                        CourseMember::findByCourseAndStatus($course_membership->seminar_id, 'dozent')
+                    );
+                    sort($lecturer_names);
+                    $event_title = studip_interpolate(
+                        '%{course_name} (%{lecturer_names})',
+                        [
+                            'course_name'    => $cycle_date->course->getFullName('number-name'),
+                            'lecturer_names' => implode(', ', $lecturer_names)
+                        ]
+                    );
                 } elseif ($schedule_course) {
                     $event_classes[] = 'marked-course';
                     $event_title = studip_interpolate(
@@ -274,9 +316,10 @@ class Calendar_ScheduleController extends AuthenticatedController
             $this->entry->user_id = $GLOBALS['user']->id;
             if (!Request::submitted('save')) {
                 //Provide good default values:
+                $this->entry->colour_id = 1;
                 if (Request::submitted('start')) {
                     //String format
-                    $this->entry->dow = Request::int('dow', date('N'));
+                    $this->entry->dow = Request::int('dow',date('N'));
                     $this->entry->setFormattedStart(Request::get('start', date('H:00', strtotime('+1 hour'))));
                     $this->entry->setFormattedEnd(Request::get('end', date('H:00', strtotime('+2 hours'))));
                 } elseif (Request::submitted('begin')) {
@@ -284,10 +327,16 @@ class Calendar_ScheduleController extends AuthenticatedController
                     $begin = Request::get('begin');
                     $end   = Request::get('end');
                     if ($begin && $end) {
-                        $this->entry->dow = date('N', $begin);
+                        $this->entry->dow = intval(date('N', $begin));
                         $this->entry->setFormattedStart(date('H:i', $begin));
                         $this->entry->setFormattedEnd(date('H:i', $end));
                     }
+                } else {
+                    $begin = time() + 3600;
+                    $end   = $begin + 3600;
+                    $this->entry->dow = intval(date('N', $begin));
+                    $this->entry->setFormattedStart(date('H:00', $begin));
+                    $this->entry->setFormattedEnd(date('H:00', $end));
                 }
             }
             PageLayout::setTitle(_('Neuer Termin'));
@@ -338,6 +387,7 @@ class Calendar_ScheduleController extends AuthenticatedController
         $this->entry->dow = Request::int('dow', date('N'));
         $this->entry->setFormattedStart(Request::get('start'));
         $this->entry->setFormattedEnd(Request::get('end'));
+        $this->entry->colour_id = Request::get('colour_id') ?? '';
         $this->entry->label   = Request::get('label', '');
         $this->entry->content = Request::get('content', '');
 
@@ -588,5 +638,77 @@ class Calendar_ScheduleController extends AuthenticatedController
             }
         }
         $this->redirect('calendar/schedule/index');
+    }
+
+    /**
+     * Shows the settings dialog for the schedule.
+     */
+    public function settings_action()
+    {
+        $user_config = UserConfig::get($GLOBALS['user']->id);
+        $this->schedule_settings = $user_config->getValue('SCHEDULE_SETTINGS');
+
+        //Provide good defaults:
+        $default_config = [
+            'start_time'   => '08:00',
+            'end_time'     => '20:00',
+            'weekdays'     => 5,
+            'visible_days' => [1, 2, 3, 4, 5]
+        ];
+        if (
+            empty($this->schedule_settings['start_time'])
+            && empty($this->schedule_settings['end_time'])
+            && empty($this->schedule_settings['weekdays'])
+            && empty($this->schedule_settings['visible_days'])
+        ) {
+            //Use the defaults:
+            $this->schedule_settings = $default_config;
+        }
+    }
+
+    /**
+     * Saves the schedule settings from the settings dialog.
+     */
+    public function save_settings_action()
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $start_time       = Request::get('start_time', '08:00');
+        $end_time         = Request::get('end_time', '20:00');
+        $weekdays         = Request::int('weekdays', 5);
+        $visible_days    = Request::intArray('visible_days');
+        if ($start_time >= $end_time) {
+            PageLayout::postError(_('Die Startuhrzeit muss vor der Enduhrzeit liegen.'));
+            $this->redirect('calendar/schedule/settings');
+            return;
+        }
+        if (!in_array($weekdays, [5, 7])) {
+            PageLayout::postError(_('Der Stundenplan kann nur 5 oder 7 Tage anzeigen.'));
+            $this->redirect('calendar/schedule/settings');
+            return;
+        }
+        if (empty($visible_days)) {
+            PageLayout::postError(_('Es wurde kein Wochentag ausgewählt.'));
+            $this->redirect('calendar/schedule/settings');
+            return;
+        }
+
+
+        $schedule_settings = [
+            'start_time'   => $start_time,
+            'end_time'     => $end_time,
+            'weekdays'     => $weekdays,
+            'visible_days' => $visible_days
+        ];
+
+        UserConfig::get($GLOBALS['user']->id)->store('SCHEDULE_SETTINGS', $schedule_settings);
+
+        PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
+        if (Request::isDialog()) {
+            $this->response->add_header('X-Dialog-Close', '1');
+        } else {
+            $this->redirect('calendar/schedule/index');
+        }
+        $this->render_nothing();
     }
 }

@@ -17,6 +17,7 @@
  * @property string $start_time database column
  * @property string $end_time database column
  * @property string $dow database column
+ * @property string $colour_id database column
  * @property string $label database column
  * @property string $content database column
  * @property string $user_id database column
@@ -216,7 +217,7 @@ class ScheduleEntry extends SimpleORMap implements Event
      */
     public function getDescription(): string
     {
-        return $this->content;
+        return $this->getValue('content');
     }
 
     /**
@@ -298,13 +299,24 @@ class ScheduleEntry extends SimpleORMap implements Event
      */
     public function toEventData(string $user_id): \Studip\Calendar\EventData
     {
+        $title = $this->label;
+
+        $description = $this->getDescription();
+        if ($description) {
+            if ($this->label) {
+                $title = $this->label . ': ' . $description;
+            } else {
+                $title = $description;
+            }
+        }
+        $event_classes = ['schedule-entry'];
         return new \Studip\Calendar\EventData(
             $this->getBegin(),
             $this->getEnd(),
-            $this->label,
-            ['schedule-entry'],
-            '#000000',
-            '#ffffff',
+            $title,
+            $event_classes,
+            $GLOBALS['PERS_TERMIN_KAT'][$this->colour_id]['fgcolor'] ?? '#000000',
+            $GLOBALS['PERS_TERMIN_KAT'][$this->colour_id]['bgcolor'] ?? '#ffffff',
             $this->isWritable($user_id),
             self::class,
             $this->id,
@@ -317,7 +329,7 @@ class ScheduleEntry extends SimpleORMap implements Event
             ],
             [],
             '',
-            '#000000',
+            $GLOBALS['PERS_TERMIN_KAT'][$this->colour_id]['border_color'] ?? '#000000',
             $this->isAllDayEvent()
         );
     }

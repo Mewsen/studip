@@ -1,0 +1,17 @@
+form.default.schedule-entry {
+
+    section.nowrap {
+        flex-wrap: nowrap;
+    }
+
+    table.colour-selector td.colour {
+        label {
+            width: 1.5em;
+            height: 1.5em;
+
+            .studip-icon {
+                height: 1.5em;
+            }
+        }
+    }
+}
