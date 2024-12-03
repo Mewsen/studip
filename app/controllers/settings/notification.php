@@ -89,8 +89,8 @@ class Settings_NotificationController extends Settings_SettingsController
                 'visible'        => $seminar['visible'],
                 'gruppe'         => $su->gruppe,
                 'sem_status'     => $seminar->status,
-                'sem_number'     => Semester::getIndexById($seminar->start_semester->id),
-                'sem_number_end' => Semester::getIndexById($seminar->end_semester->id ?? '') ?: '-1',
+                'sem_number'     => Semester::getIndexById($seminar->start_semester->id, true, true),
+                'sem_number_end' => Semester::getIndexById($seminar->end_semester->id ?? '', true, true) ?: '-1',
             ];
             if ($group_field) {
                 fill_groups($groups, Semester::getIndexById($seminar->start_semester->id), [
