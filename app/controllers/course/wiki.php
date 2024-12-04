@@ -164,20 +164,22 @@ class Course_WikiController extends AuthenticatedController
                     Icon::create('settings'),
                     ['data-dialog' => 'width=700']
                 );
-                if (count($this->page->versions) > 0) {
-                    $action_menu->addLink(
-                        $this->ask_deletingURL($this->page),
-                        _('Seite / Version löschen'),
-                        Icon::create('trash'),
-                        ['data-dialog' => 'size=auto']
-                    );
-                } else {
-                    $action_menu->addButton(
-                        'delete',
-                        _('Seite löschen'),
-                        Icon::create('trash'),
-                        ['data-confirm' => _('Wollen Sie wirklich die komplette Seite löschen?'), 'form' => 'delete_page']
-                    );
+                if ($this->page->isDeletable()) {
+                    if (count($this->page->versions) > 0) {
+                        $action_menu->addLink(
+                            $this->ask_deletingURL($this->page),
+                            _('Seite / Version löschen'),
+                            Icon::create('trash'),
+                            ['data-dialog' => 'size=auto']
+                        );
+                    } else {
+                        $action_menu->addButton(
+                            'delete',
+                            _('Seite löschen'),
+                            Icon::create('trash'),
+                            ['data-confirm' => _('Wollen Sie wirklich die komplette Seite löschen?'), 'form' => 'delete_page']
+                        );
+                    }
                 }
             }
             $this->contentBarVueApp = $this->contentBarVueApp->withSlot('menu', $action_menu->render());
