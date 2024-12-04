@@ -1,9 +1,29 @@
+<?php
+/**
+ * @var Module_ModuleController $controller
+ * @var Modul $modul
+ * @var ModulDeskriptor $deskriptor
+ * @var string $display_language
+ * @var boolean $def_lang
+ * @var QuickSearch $search_modul
+ * @var string $qs_id_module
+ * @var Semester[] $semester
+ * @var QuickSearch $search_responsible
+ * @var string $qs_id_responsible
+ * @var QuickSearch $search_institutes
+ * @var string $qs_id_institutes
+ * @var SimpleORMapCollection $contacts
+ * @var array $translations
+ * @var string $cancel_url
+ */
+?>
+
 <? use Studip\Button, Studip\LinkButton; ?>
 <?= $controller->jsUrl() ?>
 <?
 $perm   = MvvPerm::get($modul);
 $perm_d = MvvPerm::get($deskriptor);
-if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] != $display_language) {
+if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] !== $display_language) {
     $perm_d->setVariant($display_language);
 }
 ?>
@@ -144,12 +164,12 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] != $display_language) {
                 <?= _('Beschlussdatum:') ?>
                 <? if ($perm->haveFieldPerm('beschlussdatum')) : ?>
                     <input type="text" name="beschlussdatum"
-                           value="<?= ($modul->beschlussdatum ? strftime('%d.%m.%Y', $modul->beschlussdatum) : '') ?>"
+                           value="<?= $modul->beschlussdatum ? date('d.m.Y', $modul->beschlussdatum) : '' ?>"
                            placeholder="<?= _('TT.MM.JJJJ') ?>" class="with-datepicker">
                 <? else : ?>
-                    <?= ($modul->beschlussdatum ? strftime('%d.%m.%Y', $modul->beschlussdatum) : '') ?>
+                    <?= $modul->beschlussdatum ? date('d.m.Y', $modul->beschlussdatum) : '' ?>
                     <input type="hidden" name="beschlussdatum"
-                           value="<?= ($modul->beschlussdatum ? strftime('%d.%m.%Y', $modul->beschlussdatum) : '') ?>">
+                           value="<?= $modul->beschlussdatum ? date('d.m.Y', $modul->beschlussdatum) : '' ?>">
                 <? endif; ?>
             </label>
             <label for="mvv-field-modul-fassung_nr"><?= _('Fassung:') ?>
@@ -196,7 +216,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] != $display_language) {
             </div>
             <div id="mvv-field-modul-beschlussdatum">
                 <? printf(_('Beschlussdatum: %s'),
-                    $modul->beschlussdatum ? strftime('%d.%m.%Y', $modul->beschlussdatum) : _('nicht angegeben')) ?>
+                    $modul->beschlussdatum ? date('d.m.Y', $modul->beschlussdatum) : _('nicht angegeben')) ?>
             </div>
             <div id="mvv-field-modul-fassung_nr">
                 <?
@@ -444,6 +464,17 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] != $display_language) {
         <? endif; ?>
         </label>
 
+        <? if ($def_lang && !$modul->isNew()) : ?>
+            <label id="mvv-field-modul-original_language"><?= _('Originalsprache der Modulbeschreibung') ?>
+                <select name="original_language" id="original_language">
+                <? foreach (Config::get()->CONTENT_LANGUAGES as $language_code => $content_language) : ?>
+                    <option value="<?= htmlReady($language_code) ?>"<?= $modul->original_language === $language_code ? ' selected' : '' ?>>
+                        <?= htmlReady($content_language['name']) ?>
+                    </option>
+                <? endforeach ?>
+                </select>
+            </label>
+        <? endif ?>
     </fieldset>
 
     <fieldset class="collapsable collapsed" id="mvv-field-modul-assigned_users">
@@ -657,7 +688,7 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] != $display_language) {
                             $entry->datafield_id,
                             $entry->range_id,
                             $entry->sec_range_id,
-                            $language == 'de_DE' ? '' : $language
+                            $display_language === Config::get()->MVV_DEFAULT_LANGUAGE ? '' : $display_language
                         ]); ?>
                 <? else : ?>
                     <? $df = $entry; ?>
@@ -694,6 +725,6 @@ if ($GLOBALS['MVV_MODUL']['SPRACHE']['default'] != $display_language) {
 </form>
 <? if (!$def_lang) : ?>
     <script>
-        jQuery('#modul_form').find('textarea, input[type=text]').after('<div style="padding-top:10px;"><a href="#" title="<?= _('Originalfassung anzeigen') ?>" class="mvv-show-original" data-type="modul"><?= Assets::img(MVV::getContentLanguageImagePath($modul->getDefaultLanguage()), ['alt' => _('Originalfassung'), 'size' => 24]) ?></a></div>');
+        jQuery('#modul_form').find('textarea, input[type=text]').after('<div style="padding-top:10px;"><a href="#" title="<?= _('Originalfassung anzeigen') ?>" class="mvv-show-original" data-type="modul"><?= Assets::img(MVV::getContentLanguageImagePath($modul->original_language), ['alt' => _('Originalfassung'), 'size' => 24]) ?></a></div>');
     </script>
 <? endif; ?>

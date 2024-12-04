@@ -140,12 +140,13 @@ class ModulDeskriptor extends ModuleManagementModel
      * @see ModuleManagementModel::getVariant()
      * @return string The language identifier.
      */
-    public function getVariant()
+    public function getVariant(): string
     {
-        if (self::getLanguage() == $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['default']) {
+        if (self::getLanguage() === Config::get()->MVV_DESCRIPTOR_DEFAULT_LANGUAGE) {
             return '';
         }
-        return self::getLanguage();
+        $splitted_code = explode('_', self::getLanguage());
+        return mb_strtoupper($splitted_code[0] ?? '');
     }
 
     /**
@@ -156,7 +157,6 @@ class ModulDeskriptor extends ModuleManagementModel
      */
     public function deleteTranslation($language)
     {
-        $locale = $GLOBALS['MVV_LANGUAGES']['values'][$language]['locale'];
-        return I18NString::removeAllTranslations($this->id, 'mvv_modul_deskriptor', $locale);
+        return I18NString::removeAllTranslations($this->id, 'mvv_modul_deskriptor', $language);
     }
 }

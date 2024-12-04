@@ -1,3 +1,15 @@
+<?php
+/**
+ * @var Modul $modul
+ * @var Institute $institut
+ * @var ModulDeskriptor $deskriptor
+ * @var array $modulteile
+ * @var Semester $semester
+ * @var string $pruef_ebene
+ * @var int $type
+ */
+?>
+
 <table class="default mvv-modul-details nohover">
     <tr>
         <th class="mvv-modul-details-head" style="width: 30%"><?= htmlReady($modul->code) ?></th>
@@ -34,10 +46,10 @@
     <tr>
         <td colspan="4" style="padding: 0;">
             <table class="default nohover">
-                <? if (mb_strlen($teilnahmeVoraussetzung) > 0): ?>
+                <? if (mb_strlen($deskriptor->voraussetzung) > 0): ?>
                     <tr>
                         <td style="width: 20%; font-weight: bold;"><?= _('Teilnahmevoraussetzungen') ?></td>
-                        <td ><?= formatReady($teilnahmeVoraussetzung) ?></td>
+                        <td ><?= formatReady($deskriptor->voraussetzung) ?></td>
                     </tr>
                 <? endif; ?>
                 <? if (mb_strlen($deskriptor->kommentar)) : ?>
@@ -104,7 +116,7 @@
                 <th><?= _('Prüfungsleistung') ?></th>
             <? endif; ?>
         </tr>
-        <? foreach ($modulTeile as $modul_teil): ?>
+        <? foreach ($modulteile as $modul_teil): ?>
             <tr>
                 <? if ($type === 1): ?>
                 <td>

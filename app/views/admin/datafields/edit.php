@@ -71,7 +71,7 @@ use Studip\Button, Studip\LinkButton;
 
             <select multiple name="object_class[]" id="object_class" required>
                 <option value="NULL" <? if ($item->object_class === null) echo 'selected'; ?>><?= _('alle (mehrsprachige Eingabe bei Feldtyp textline, textarea, textmarkup)') ?></option>
-            <? foreach ((array) $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'] as $key => $value) : ?>
+            <? foreach (Config::get()->CONTENT_LANGUAGES as $key => $value) : ?>
                 <option value="<?= htmlReady($key) ?>" <? if (mb_strpos($item->object_class, $key) !== false) echo 'selected'; ?>>
                     <?= htmlReady($value['name']) ?>
                 </option>
@@ -82,7 +82,7 @@ use Studip\Button, Studip\LinkButton;
 
             <select multiple name="object_class[]" id="object_class" required>
                 <option value="NULL" <? if ($item->object_class === null) echo 'selected'; ?>><?= _('alle (mehrsprachige Eingabe)') ?></option>
-            <? foreach ((array) $GLOBALS['MVV_MODULTEIL_DESKRIPTOR']['SPRACHE']['values'] as $key => $value) : ?>
+            <? foreach (Config::get()->CONTENT_LANGUAGES as $key => $value) : ?>
                 <option value="<?= htmlReady($key) ?>" <? if (mb_strpos($item->object_class, $key) !== false) echo 'selected'; ?>>
                     <?= htmlReady($value['name']) ?>
                 </option>
@@ -90,7 +90,7 @@ use Studip\Button, Studip\LinkButton;
             </select>
         <? elseif ($item->object_type === 'studycourse'): ?>
             <?= _('Typ/Abschnitt') ?>
-            
+
             <select name="object_class" required>
                 <option value="all_settings"<?= mb_strpos($item->object_class, 'all_settings') !== false ? ' selected' : '' ?>><?= _('alle (Abschnitt "Einstellungen")') ?></option>
                 <option value="all_info"<?= mb_strpos($item->object_class, 'all_info') !== false ? ' selected' : '' ?>><?= _('alle (Abschnitt "Inhalte und Informationen")') ?></option>
