@@ -130,12 +130,11 @@ class Course_BasicdataController extends AuthenticatedController
             'locked'  => LockRules::Check($course->id, 'Institut_id')
         ];
 
-        $institute_ids = $course->institutes->pluck('id');
         $this->institutional[] = [
             'title'    => _('beteiligte Einrichtungen'),
             'name'     => 'related_institutes[]',
             'type'     => 'nested-select',
-            'value'    => $institute_ids,
+            'value'    => array_diff($course->institutes->pluck('id'), [$course->institut_id]),
             'choices'  => $this->instituteChoices($institutes),
             'locked'   => LockRules::Check($course->id, 'seminar_inst'),
             'multiple' => true,
@@ -488,19 +487,18 @@ class Course_BasicdataController extends AuthenticatedController
                         } else {
                             $invalid_datafields[] = $datafield->getName();
                         }
-                    } else if ($field['name'] == 'related_institutes[]') {
+                    } else if ($field['name'] === 'related_institutes[]') {
                         // only related_institutes supported for now
                         $related_institute_ids = Request::optionArray('related_institutes');
-                        if (is_array($related_institute_ids)) {
-                            $institutes = Institute::findMany($related_institute_ids);
-                            if ($institutes) {
-                                $course->institutes = $institutes;
-                                $changemade = $course->store();
-                            } else {
-                                $this->msg['error'][] = _('Es muss mindestens ein Institut angegeben werden.');
-                            }
-                        } else {
-                            $this->msg['error'][] = _('Es muss mindestens ein Institut angegeben werden.');
+                        $current_institute_ids = $course->institutes->pluck('id');
+                        $current_institute_ids = array_diff($current_institute_ids, [$course->institut_id]);
+
+                        $institutes_changed = count($related_institute_ids) !== count($current_institute_ids)
+                                           || count(array_diff($current_institute_ids, $related_institute_ids)) > 0;
+
+                        if ($institutes_changed) {
+                            $course->institutes = Institute::findMany($related_institute_ids);
+                            $changemade = true;
                         }
                     } else {
                         // format of input element name is "course_xxx"

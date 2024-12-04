@@ -89,6 +89,11 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      */
     protected $initial_end_semester;
 
+    /**
+     * @var array|null Currently assigned institutes, used for tracking changes
+     */
+    protected $currently_assigned_institutes = null;
+
     protected static function configure($config = [])
     {
         $config['db_table'] = 'seminare';
@@ -305,6 +310,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         $config['i18n_fields']['ort'] = true;
 
         $config['registered_callbacks']['before_store'][] = 'logStore';
+        $config['registered_callbacks']['before_store'][] = 'handleInstitutes';
         $config['registered_callbacks']['after_create'][] = 'setDefaultTools';
         $config['registered_callbacks']['after_delete'][] = function (Course $course) {
             CourseAvatar::getAvatar($course->id)->reset();
@@ -377,6 +383,12 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             parent::initRelation($relation);
             $this->initial_start_semester = $this->getStartSemester();
             $this->initial_end_semester = $this->getEndSemester();
+        } elseif ($relation === 'institutes' && $this->currently_assigned_institutes === null) {
+            parent::initRelation($relation);
+            $this->currently_assigned_institutes = array_filter(
+                $this->relations['institutes']->pluck('id'),
+                fn($inst_id) => $inst_id !== $this->getPristineValue('institut_id')
+            );
         }
         parent::initRelation($relation);
     }
@@ -392,6 +404,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         //Reset the flags for the start and end semester:
         $this->initial_start_semester = null;
         $this->initial_end_semester = null;
+        $this->currently_assigned_institutes = null;
     }
 
     /**
@@ -2139,6 +2152,79 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             1 => _('in Bearbeitung'),
             2 => _('fertig'),
         ][$this->completion] ?? _('undefiniert');
+    }
+
+    public function setValue($field, $value)
+    {
+        if (strtolower($field) === 'institut_id') {
+            $this->institutes = $this->institutes->filter(function (Institute $institute) {
+                return $institute->id !== $this->institut_id;
+            });
+        } elseif (strtolower($field) === 'institutes') {
+            $this->initRelation($field);
+        }
+
+        return parent::setValue($field, $value);
+    }
+
+    /**
+     * Handle all things related to storing the institutes
+     */
+    protected function handleInstitutes(): void
+    {
+        if ($this->isFieldDirty('institut_id')) {
+            StudipLog::log(
+                'CHANGE_INSTITUTE_DATA',
+                $this->id,
+                $this->institut_id,
+                "Die Heimateinrichtung wurde zu \"{$this->home_institut->name}\" geändert."
+            );
+        }
+
+        if ($this->currently_assigned_institutes !== null) {
+            $assigned_ids = $this->institutes->pluck('id');
+
+            // Deleted
+            $deleted_ids = array_diff($this->currently_assigned_institutes, $assigned_ids);
+            Institute::findEachMany(
+                function (Institute $institute) {
+                    StudipLog::log(
+                        'CHANGE_INSTITUTE_DATA',
+                        $this->id,
+                        $institute->id,
+                        "Die beteiligte Einrichtung \"{$institute->name}\" wurde gelöscht."
+                    );
+                    NotificationCenter::postNotification('SeminarInstitutionDidDelete', $institute->id, $this->id);
+                },
+                $deleted_ids
+            );
+
+            // Added
+            $added_ids = array_diff($assigned_ids, $this->currently_assigned_institutes);
+            Institute::findEachMany(
+                function (Institute $institute) {
+                    StudipLog::log(
+                        'CHANGE_INSTITUTE_DATA',
+                        $this->id,
+                        $institute->id,
+                        "Die beteiligte Einrichtung \"{$institute->name}\" wurde hinzugefügt."
+                    );
+                    NotificationCenter::postNotification('SeminarInstitutionDidCreate', $institute->id, $this->id);
+                },
+                $added_ids
+            );
+
+            if (count($deleted_ids) > 0 || count($added_ids) > 0) {
+                NotificationCenter::postNotification('CourseDidChangeInstitutes', $this);
+            }
+        }
+
+        if (
+            $this->institut_id
+            && !$this->institutes->find($this->institut_id)
+        ) {
+            $this->institutes[] = $this->home_institut;
+        }
     }
 
     /**
