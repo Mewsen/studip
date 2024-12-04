@@ -297,6 +297,8 @@ $grid-gap: 0;
 
     --color-image-placeholder-background: #{$color-image-placeholder-background};
 
+    --border-radius-default: #{$border-radius};
+
     @media (prefers-reduced-motion) {
         #{"--"}transition-duration: 0s;
         #{"--"}transition-duration-slow: 0s;
