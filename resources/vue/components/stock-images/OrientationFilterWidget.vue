@@ -17,10 +17,7 @@ import SidebarWidget from '../SidebarWidget.vue';
 import { orientations } from './filters.js';
 
 export default {
-    model: {
-        prop: 'filters',
-        event: 'change',
-    },
+    emits: ['update:filters'],
     props: {
         filters: {
             type: Object,
@@ -36,7 +33,7 @@ export default {
                 return this.filters.orientation;
             },
             set(orientation) {
-                this.$emit('change', { ...this.filters, orientation });
+                this.$emit('update:filters', { ...this.filters, orientation });
             }
         },
         orientations() {

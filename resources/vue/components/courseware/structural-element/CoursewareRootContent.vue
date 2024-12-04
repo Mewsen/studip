@@ -60,8 +60,10 @@
                             <template #footer>
                                 <p class="cw-root-content-toc-tile-footer">
                                 {{
-                                    $gettextInterpolate(
-                                        $ngettext('%{pages} Seite', '%{pages} Seiten', countChildChildren(child)),
+                                    $ngettext(
+                                        '%{pages} Seite',
+                                        '%{pages} Seiten',
+                                        countChildChildren(child),
                                         { pages: countChildChildren(child) }
                                     )
                                 }}

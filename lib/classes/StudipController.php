@@ -586,6 +586,9 @@ abstract class StudipController extends Trails\Controller
     public function render_form(\Studip\Forms\Form $form)
     {
         \NotificationCenter::postNotification('FormWillRender', $form);
+        if (\Request::isDialog()) {
+            $this->response->add_header('X-No-Buttons', 1);
+        }
         $this->render_template($form->getTemplate(), $this->layout);
     }
 

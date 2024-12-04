@@ -37,15 +37,12 @@
                                         {{ child.attributes.payload.description }}
                                     </template>
                                     <template #footer>
-                                        {{
-                                            $gettextInterpolate(
-                                                $ngettext(
-                                                    '%{length} Seite',
-                                                    '%{length} Seiten',
-                                                    countChildChildren(child)
-                                                ),
-                                                { length: countChildChildren(child) })
-                                        }}
+                                        {{ $ngettext(
+                                            '%{length} Seite',
+                                            '%{length} Seiten',
+                                            countChildChildren(child),
+                                            { length: countChildChildren(child) }
+                                        ) }}
                                     </template>
                                 </courseware-tile>
                             </router-link>

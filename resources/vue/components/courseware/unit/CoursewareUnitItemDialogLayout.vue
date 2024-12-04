@@ -75,7 +75,7 @@
                             label="class"
                             class="cw-vs-select"
                         >
-                            <template #open-indicator="selectAttributes">
+                            <template #open-indicator="{ selectAttributes }">
                                 <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
                             </template>
                             <template #no-options> {{ $gettext('Es steht keine Auswahl zur Verfügung') }}. </template>
@@ -112,6 +112,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-unit-item-dialog-layout',
+    emits: ['close'],
     components: {
         CoursewareCompanionBox,
         StockImageSelector,

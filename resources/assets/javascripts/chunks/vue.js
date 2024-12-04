@@ -1,70 +1,89 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import Router from "vue-router";
-import eventBus from '../lib/event-bus.ts';
-import GetTextPlugin from 'vue-gettext';
-import { getLocale, getVueConfig } from '../lib/gettext';
+import { createApp as vueCreateApp } from 'vue';
+import { createStore as vuexCreateStore } from 'vuex';
+import eventBus from '../lib/event-bus';
+import gettext from '../lib/gettext';
 import PortalVue from 'portal-vue';
 import BaseComponents from '../../../vue/base-components.js';
 import BaseDirectives from "../../../vue/base-directives.js";
 import StudipStore from "../../../vue/store/StudipStore.js";
-import CKEditor from '@ckeditor/ckeditor5-vue2';
+import { resourceModule } from '@/assets/javascripts/lib/reststate-vuex.js';
+import axios from 'axios';
 
-// Setup gettext
-Vue.use(GetTextPlugin, getVueConfig());
-eventBus.on('studip:set-locale', (locale) => {
-    Vue.config.language = locale;
-})
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
-// Register global components and directives
-registerGlobalComponents();
-registerGlobalDirectives();
-
-// Setup store and default Stud.IP store
-Vue.use(Vuex);
-const store = new Vuex.Store({});
-
-store.registerModule('studip', StudipStore);
-
-// Setup router and PortalVue
-Vue.use(Router);
-Vue.use(PortalVue);
-
-// Define our own global mixin for Vue
-Vue.mixin({
-    methods: {
-        globalEmit(...args) {
-            eventBus.emit(...args);
+const getHttpClient = () =>
+    axios.create({
+        baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
+        headers: {
+            'Content-Type': 'application/vnd.api+json',
         },
-        globalOn(...args) {
-            eventBus.on(...args);
-        },
-        globalOff(...args) {
-            eventBus.off(...args);
-        },
-        getStudipConfig: store.getters['studip/getConfig']
-    },
-});
+    });
 
-Vue.use(CKEditor);
+const httpClient = getHttpClient();
+
+const createStore = () => {
+    const store = vuexCreateStore({});
+
+    store.registerModule('studip', StudipStore);
+
+    STUDIP.jsonapi_schemas.forEach((name) => {
+        store.registerModule(name, resourceModule({ name, httpClient }));
+    });
+
+    return store;
+}
+
+// Setup store
+const store = createStore();
 
 // Define createApp function
-function createApp(options, ...args) {
-    Vue.config.language = getLocale();
-    return new Vue({ store, ...options }, ...args);
+function createApp(options = {}, ...args) {
+    const app = vueCreateApp({ store, ...options }, ...args);
+
+    app.config.compilerOptions.whitespace = 'condense';
+
+    // Define our own global mixin for Vue
+    app.mixin({
+        methods: {
+            globalEmit(...args) {
+                eventBus.emit(...args);
+            },
+            globalOn(...args) {
+                eventBus.on(...args);
+            },
+            globalOff(...args) {
+                eventBus.off(...args);
+            },
+            getStudipConfig: store.getters['studip/getConfig']
+        },
+    });
+
+    app.use(CKEditor);
+    app.use(gettext);
+    app.use(PortalVue);
+    app.use(store);
+
+    // Register global components and directives
+    registerGlobalComponents(app);
+    registerGlobalDirectives(app);
+
+    if (options.el) {
+        app.mount(options.el);
+    }
+    return app;
 }
 
 // Define global registration functions for components and directives
-function registerGlobalComponents() {
+function registerGlobalComponents(app) {
     for (const [name, component] of Object.entries(BaseComponents)) {
-        Vue.component(name, component);
+        app.component(name, component);
     }
 }
 
-function registerGlobalDirectives() {
+function registerGlobalDirectives(app) {
     for (const [name, directive] of Object.entries(BaseDirectives)) {
-        Vue.directive(name, directive);
+        app.directive(name, directive);
     }
 }
 
-export { Vue, createApp, eventBus, store };
+export { createApp, eventBus, store, httpClient };

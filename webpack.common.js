@@ -1,7 +1,6 @@
-const webpack = require("webpack");
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
 
@@ -98,9 +97,6 @@ module.exports = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
-                options: {
-                    compiler: require('vue-template-babel-compiler')
-                }
             }
         ]
     },
@@ -125,7 +121,6 @@ module.exports = {
     ],
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.esm.js',
             'jquery-ui/data': 'jquery-ui/ui/data',
             'jquery-ui/disable-selection': 'jquery-ui/ui/disable-selection',
             'jquery-ui/focusable': 'jquery-ui/ui/focusable',
@@ -146,7 +141,7 @@ module.exports = {
             'jquery-ui/widgets/draggable': 'jquery-ui/ui/widgets/draggable',
             'jquery-ui/widgets/droppable': 'jquery-ui/ui/widgets/droppable',
             'jquery-ui/widgets/resizable': 'jquery-ui/ui/widgets/resizable',
-            '@': path.resolve(__dirname, 'resources')
+            '@': path.resolve(__dirname, 'resources'),
         },
         extensions: ['.ts', '.vue', '.js'],
         fallback: {

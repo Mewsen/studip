@@ -1,21 +1,27 @@
 <template>
     <div class="studip-tree-child-description">
         <studip-loading-skeleton v-if="isLoading" />
-        <div v-else v-translate="{ count: courseCount }" :translate-n="courseCount"
-             translate-plural="<strong>%{count}</strong> Veranstaltungen">
-            <strong>Eine</strong> Veranstaltung
-        </div>
+        <div v-else
+             v-html="$ngettext(
+                 '<strong>Eine</strong> Veranstaltung',
+                 '<strong>%{count}</strong> Veranstaltungen',
+                 courseCount,
+                 { count: courseCount }
+             )"
+        ></div>
     </div>
 </template>
 
 <script>
 import { TreeMixin } from '../../mixins/TreeMixin';
 import StudipLoadingSkeleton from '../StudipLoadingSkeleton.vue';
+import {$ngettext} from "../../../assets/javascripts/lib/gettext";
 
 export default {
     name: 'TreeNodeCourseInfo',
     components: { StudipLoadingSkeleton },
     mixins: [ TreeMixin ],
+    emits: ['showAllCourses'],
     props: {
         node: {
             type: Object,
@@ -42,6 +48,7 @@ export default {
         }
     },
     methods: {
+        $ngettext,
         showAllCourses(state) {
             this.showingAllCourses = state;
             this.$emit('showAllCourses', state);

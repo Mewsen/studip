@@ -61,6 +61,7 @@
 <script>
 export default {
     name: 'StudipUserFilter',
+    emits: ['close', 'submit'],
     props: {
         filter: {
             type: Array,

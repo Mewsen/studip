@@ -55,6 +55,7 @@ export default {
     components: {
         StudipIdentImage
     },
+    emits: ['handle-keydown', 'showProgress'],
     props: {
         tag: {
             type: String,
@@ -146,15 +147,15 @@ export default {
         previewImageStyle() {
             if (this.hasImage) {
                 return { 'background-image': 'url(' + this.imageUrl + ')' };
-            } 
+            }
 
             return { 'background-image': 'url(' + this.identimage + ')' };
         },
         progressTitle() {
             if (this.userIsTeacher) {
-                return this.$gettextInterpolate(this.$gettext("Fortschritt aller Teilnehmenden: %{progress}%"), { progress: this.progress });    
+                return this.$gettext("Fortschritt aller Teilnehmenden: %{progress}%", { progress: this.progress });
             }
-            return this.$gettextInterpolate(this.$gettext("Mein Fortschritt: %{progress}%"), { progress: this.progress });
+            return this.$gettext("Mein Fortschritt: %{progress}%", { progress: this.progress });
         },
         hasDescriptionLink() {
             return this.descriptionLink !== '';

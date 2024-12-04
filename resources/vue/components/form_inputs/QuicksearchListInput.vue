@@ -2,7 +2,7 @@
     <div>
         <quicksearch :searchtype="searchtype"
                      :autocomplete="autocomplete"
-                     @input="addElement"></quicksearch>
+                     @update:model-value="addElement"></quicksearch>
         <table v-if="elements.length > 0" ref="results" class="default">
             <tbody>
                 <tr v-for="(element, index) in elements"
@@ -52,7 +52,7 @@ export default {
     },
     data() {
         return {
-            elements: []
+            elements: [],
         }
     },
     computed: {

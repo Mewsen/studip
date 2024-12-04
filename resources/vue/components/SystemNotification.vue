@@ -59,6 +59,7 @@
 <script>
 export default {
     name: 'SystemNotification',
+    emits: ['destroyMe'],
     props: {
         allowClosing: {
             type: Boolean,
@@ -174,7 +175,7 @@ export default {
             }, timing);
         }
     },
-    destroyed() {
+    unmounted() {
         this.globalOff('disrupt-system-notifications', this.disruptTimeout);
         this.globalOff('resume-system-notifications', this.initTimeout);
     }

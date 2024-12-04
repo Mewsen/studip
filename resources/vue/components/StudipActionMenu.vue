@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import { $gettext } from '../../assets/javascripts/lib/gettext';
+
 export default {
     name: 'studip-action-menu',
     props: {
@@ -86,7 +88,7 @@ export default {
         title: {
             type: String,
             default() {
-                return this.$gettext('Aktionen');
+                return $gettext('Aktionen');
             }
         }
     },
@@ -144,7 +146,7 @@ export default {
             return Number.parseInt(collapseAt) <= this.items.filter((item) => item.type !== 'separator').length;
         },
         tooltip () {
-            return this.context ? this.$gettextInterpolate(this.$gettext('%{title} für %{context}'), {title: this.title, context: this.context}) : this.title;
+            return this.context ? this.$gettext('%{title} für %{context}', {title: this.title, context: this.context}) : this.title;
         }
     }
 }

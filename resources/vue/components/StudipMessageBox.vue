@@ -22,6 +22,7 @@
 <script>
 export default {
     name: 'studip-message-box',
+    emits: ['close'],
     props: {
         type: {
             type: String, // exception, error, success, info, warning

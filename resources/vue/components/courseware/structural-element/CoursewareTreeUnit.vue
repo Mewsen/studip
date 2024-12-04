@@ -31,6 +31,7 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'CoursewareTreeUnit',
     mixins: [colorMixin],
+    emits: ['removeUnitLink'],
     components: {
         StudipIdentImage,
     },

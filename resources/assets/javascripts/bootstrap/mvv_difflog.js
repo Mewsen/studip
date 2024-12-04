@@ -1,4 +1,4 @@
-import { $gettext, $gettextInterpolate } from  '../lib/gettext';
+import { $gettext } from  '../lib/gettext';
 
 STUDIP.domReady(() => {
     $('del.diffdel').each(function() {
@@ -44,8 +44,8 @@ STUDIP.domReady(() => {
                     senddata,
                     function(data) {
                         if (data) {
-                            var info = $gettextInterpolate(
-                                $gettext('Entfernt von %{user} am %{time}'),
+                            var info = $gettext(
+                                'Entfernt von %{user} am %{time}',
                                 data
                             );
                             del.attr('title', info);
@@ -140,8 +140,8 @@ STUDIP.domReady(() => {
                     senddata,
                     function(data) {
                         if (data) {
-                            var info = $gettextInterpolate(
-                                $gettext('Änderung durch %{user} am %{time}'),
+                            var info = $gettext(
+                                'Änderung durch %{user} am %{time}',
                                 data
                             );
                             ins.attr('title', info);
@@ -175,8 +175,8 @@ STUDIP.domReady(() => {
                 );
                 function onSuccess(data) {
                     if (data) {
-                        var info = $gettextInterpolate(
-                            $gettext('Hinzugefügt von %{user} am %{time}'),
+                        var info = $gettext(
+                            'Hinzugefügt von %{user} am %{time}',
                             data
                         );
                         curtable.attr('title', info);
@@ -210,8 +210,8 @@ STUDIP.domReady(() => {
                 );
                 function onSuccess(data) {
                     if (data) {
-                        var info = $gettextInterpolate(
-                            $gettext('Entfernt von %{user} am %{time}'),
+                        var info = $gettext(
+                            'Entfernt von %{user} am %{time}',
                             data
                         );
                         curtable.attr('title', info);

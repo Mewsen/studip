@@ -44,7 +44,6 @@
                     <quicksearch v-if="instituteSearch"
                                  :searchtype="instituteSearch"
                                  name="institute"
-                                 :key="NaN"
                                  id="isearch"
                                  @input="addInstitute"
                                  :aria-label="$gettext('Geben Sie einen Suchbegriff mit mehr als 3 Zeichen ein, um nach Einrichtungen zu suchen')"
@@ -79,14 +78,14 @@
                                 </td>
                                 <td class="actions">
                                     <button v-if="myInstitutes?.length !== 1"
-                                            :title="$gettextInterpolate(
-                                                $gettext('Zuordnung der Einrichtung %{name} entfernen'),
+                                            :title="$gettext(
+                                                'Zuordnung der Einrichtung %{name} entfernen',
                                                 { name: institute.name }
-                                                )"
-                                            :aria-label="$gettextInterpolate(
-                                                $gettext('Zuordnung der Einrichtung %{name} entfernen'),
+                                            )"
+                                            :aria-label="$gettext(
+                                                'Zuordnung der Einrichtung %{name} entfernen',
                                                 { name: institute.name }
-                                                )"
+                                            )"
                                             class="as-link delete-assignment"
                                             tabindex="0"
                                             @click.prevent="removeInstitute(index)">
@@ -139,8 +138,10 @@
                     <table v-if="availableCourses?.length > 0"
                            class="default">
                         <caption>
-                            {{ $gettextInterpolate($gettext('Veranstaltungen im %{semester}'),
-                                { semester: allSemesters[selectedSemester].name }) }}
+                            {{ $gettext(
+                                'Veranstaltungen im %{semester}',
+                                { semester: allSemesters[selectedSemester].name }
+                            ) }}
                         </caption>
                         <colgroup>
                             <col style="width: 15px">
@@ -160,8 +161,10 @@
                                         <input type="checkbox"
                                                :value="course.id"
                                                v-model="checkedCourses"
-                                               :title="$gettextInterpolate($gettext('Veranstaltung %{coursename} dem Anmeldeset zuordnen'),
-                                                { coursename: course.attributes.title })">
+                                               :title="$gettext(
+                                                   'Veranstaltung %{coursename} dem Anmeldeset zuordnen',
+                                                   { coursename: course.attributes.title }
+                                               )">
                                         <template v-if="course.attributes['course-number']">
                                             {{ course.attributes['course-number'] }}
                                         </template>
@@ -195,12 +198,14 @@
                                 {{ course.attributes.title }}
                             </td>
                             <td class="actions">
-                                <button :title="$gettextInterpolate(
-                                            $gettext('Zuordnung der Veranstaltung %{name} entfernen'),
-                                            { name: course.attributes.title })"
-                                        :aria-label="$gettextInterpolate(
-                                            $gettext('Zuordnung der Veranstaltung %{name} entfernen'),
-                                            { name: course.attributes.title })"
+                                <button :title="$gettext(
+                                            'Zuordnung der Veranstaltung %{name} entfernen',
+                                            { name: course.attributes.title }
+                                        )"
+                                        :aria-label="$gettext(
+                                            'Zuordnung der Veranstaltung %{name} entfernen',
+                                            { name: course.attributes.title }
+                                        )"
                                         class="as-link delete-assignment"
                                         tabindex="0"
                                         @click.prevent="removeCourse(index)">
@@ -218,9 +223,10 @@
                 <button v-if="numApplicants > 0"
                         class="button"
                         @click.prevent="getApplicants">
-                    {{ $gettextInterpolate(
-                        $gettext('Liste der Anmeldungen (%{number} Personen)'),
-                        { number: numApplicants }) }}
+                    {{ $gettext(
+                        'Liste der Anmeldungen (%{number} Personen)',
+                        { number: numApplicants }
+                    ) }}
                 </button>
                 <button v-if="numApplicants > 0"
                         class="button"
@@ -244,27 +250,27 @@
                             >
                                 <td v-html="rule.attributes.ruletext"></td>
                                 <td class="actions">
-                                    <button :title="$gettextInterpolate(
-                                                $gettext('Regel %{name} bearbeiten'),
+                                    <button :title="$gettext(
+                                                'Regel %{name} bearbeiten',
                                                 { name: rule.attributes.name }
-                                                )"
-                                            :aria-label="$gettextInterpolate(
-                                                $gettext('Regel %{name} bearbeiten'),
+                                            )"
+                                            :aria-label="$gettext(
+                                                'Regel %{name} bearbeiten',
                                                 { name: rule.attributes.name }
-                                                )"
+                                            )"
                                             class="as-link edit-assignment"
                                             tabindex="0"
                                             @click.prevent="configureRule(rule.attributes.type, rule, index)">
                                         <studip-icon shape="edit" :size="16"></studip-icon>
                                     </button>
-                                    <button :title="$gettextInterpolate(
-                                                $gettext('Regel %{name} entfernen'),
+                                    <button :title="$gettext(
+                                                'Regel %{name} entfernen',
                                                 { name: rule.attributes.name }
-                                                )"
-                                            :aria-label="$gettextInterpolate(
-                                                $gettext('Regel %{name} entfernen'),
+                                            )"
+                                            :aria-label="$gettext(
+                                                'Regel %{name} entfernen',
                                                 { name: rule.attributes.name }
-                                                )"
+                                            )"
                                             class="as-link delete-assignment"
                                             tabindex="0"
                                             data-confirm="$gettext('Soll die Regel wirklich entfernt werden?')"
@@ -630,12 +636,9 @@ export default {
                 && (rule?.length > 0 ? rule[0].attributes.payload['distribution-time'] > 0 : false);
         },
         userListText(factor, count) {
-            return this.$gettextInterpolate(
-                factor < 1
-                ? this.$gettext('%{number} Personen werden nachrangig eingetragen')
-                    : this.$gettext('%{number} Personen werden bevorzugt'),
-                { number: count }
-            );
+            return factor < 1
+                ? this.$gettext('%{number} Personen werden nachrangig eingetragen', { number: count })
+                : this.$gettext('%{number} Personen werden bevorzugt', { number: count });
         },
         openUserListUsers() {
             STUDIP.Dialog.fromURL(

@@ -61,6 +61,7 @@ export default {
             required: true,
         },
     },
+    emits: ['search'],
     components: {
         StudipIcon,
     },

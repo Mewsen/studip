@@ -10,6 +10,7 @@ import { $gettext } from '../../../assets/javascripts/lib/gettext';
 
 export default {
     name: 'CaptchaInput',
+    emits: ['update:model-value'],
     props: {
         name: {
             type: String,
@@ -44,7 +45,7 @@ export default {
 
             this.$refs.widget.addEventListener('statechange', (ev) => {
                 if (ev.detail.state === 'verified') {
-                    this.$emit('input', ev.detail.payload);
+                    this.$emit('update:model-value', ev.detail.payload);
                 }
             })
         });

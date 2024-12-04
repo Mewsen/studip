@@ -165,7 +165,7 @@ export default {
             this.recalculateContentHeight(data);
         });
     },
-    destroyed() {
+    unmounted() {
         window.removeEventListener('resize', this.calcContentHeight);
     },
     methods: {
@@ -185,7 +185,7 @@ export default {
             }
         },
         recalculateContentHeight(data) {
-            if (this.$parent._uid === data.uid) {
+            if (this.$parent._.uid === data.uid) {
                 if (this.oembedData) {
                     this.calcContentHeight();
                 }

@@ -21,7 +21,7 @@
                 {{ $gettext('Eine Datei gewählt') }}
             </template>
             <template v-else>
-                {{ $gettextInterpolate($gettext('%{number} Dateien gewählt'), { number: selectedFiles.length }) }}
+                {{ $gettext('%{number} Dateien gewählt', { number: selectedFiles.length }) }}
             </template>
         </div>
         <input type="file"
@@ -142,19 +142,19 @@ export default {
             }
         },
         getTextualFileSize(bytes) {
-            let unit = '';
-            let context = {size: bytes};
             if (bytes < 1024) {
-                unit = this.$gettext('%{size} B');
-            } else if (bytes < 1024 * 1024) {
-                unit = this.$gettext('%{size} KB');
-                context.size = (bytes / 1024).toFixed(2);
-            } else {
-                unit = this.$gettext('%{size} MB');
-                context.size = (bytes / (1024 * 1024)).toFixed(2);
+                return this.$gettext('%{size} B', {size: bytes});
             }
 
-            return this.$gettextInterpolate(unit, context);
+            if (bytes < 1024 * 1024) {
+                return this.$gettext('%{size} KB', {
+                    size: (bytes / 1024).toFixed(2)
+                });
+            }
+
+            return this.$gettext('%{size} MB', {
+                size: (bytes / (1024 * 1024)).toFixed(2)
+            });
         },
         openFileSelect() {
             this.$refs.files.click();

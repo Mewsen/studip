@@ -1,5 +1,5 @@
 <template>
-    <focus-trap v-model="trap" :initial-focus="() => initialFocusElement" :clickOutsideDeactivates="true" :fallbackFocus ="() => fallbackFocusElement">
+    <focus-trap v-model="trap" :clickOutsideDeactivates="false" :fallbackFocus ="() => fallbackFocusElement">
         <div
             class="cw-ribbon-tools"
             :class="{ 'cw-ribbon-tools-consume': consumeMode }"
@@ -12,7 +12,6 @@
                     >
                         <courseware-tab
                             :name="$gettext('Inhaltsverzeichnis')"
-                            :selected="showContents"
                             alias="contents"
                             ref="contents"
                             :index="0"
@@ -53,6 +52,7 @@ import { store } from "../../../../assets/javascripts/chunks/vue";
 
 export default {
     name: 'courseware-ribbon-toolbar',
+    emits: ['deactivate'],
     components: {
         CoursewareTabs,
         CoursewareTab,
@@ -71,7 +71,6 @@ export default {
             showContents: true,
             showUnits: false,
             trap: false,
-            initialFocusElement: null
         };
     },
     computed: {
@@ -113,7 +112,7 @@ export default {
                 this.initialFocusElement = focusElement;
                 this.trap = true;
             }
-        },
+        }
     },
     mounted() {
         this.$nextTick(() => {

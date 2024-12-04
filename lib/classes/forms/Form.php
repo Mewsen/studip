@@ -502,6 +502,9 @@ class Form extends Part
     public function render(string|Template $layout = null)
     {
         \NotificationCenter::postNotification('FormWillRender', $this);
+        if (\Request::isDialog()) {
+            header('X-No-Buttons: 1');
+        }
         return $this->getTemplate()->render([], $layout);
     }
 

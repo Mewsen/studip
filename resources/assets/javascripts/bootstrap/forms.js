@@ -1,5 +1,6 @@
-import { $gettext, $gettextInterpolate } from '../lib/gettext';
+import { $gettext } from '../lib/gettext';
 import Report from '../lib/report.ts';
+import Dialog from "../lib/dialog";
 
 // Allow fieldsets to collapse
 $(document).on(
@@ -242,12 +243,13 @@ function createSelect2(element) {
 }
 
 STUDIP.ready(function () {
-    let forms = window.document.querySelectorAll('form.default.studipform:not(.vueified)');
+    let forms = window.document.querySelectorAll('.studipform:not(.vueified)');
     if (forms.length > 0) {
         STUDIP.Vue.load().then(({createApp}) => {
             forms.forEach(f => {
-                createApp({
-                    el: f,
+                f.classList.add('vueified');
+
+                const app = createApp({
                     data() {
                         let params = JSON.parse(f.dataset.inputs);
                         params.STUDIPFORM_REQUIRED = f.dataset.required ? JSON.parse(f.dataset.required) : [];
@@ -343,9 +345,9 @@ STUDIP.ready(function () {
                                             note.description = $(this).data('validation_requirement');
                                         }
                                         if (this.validity.tooShort) {
-                                            note.description = $gettextInterpolate(
-                                                $gettext('Geben Sie mindestens %{min} Zeichen ein.'),
-                                                {min: this.minLength}
+                                            note.description = $gettext(
+                                                'Geben Sie mindestens %{min} Zeichen ein.',
+                                                { min: this.minLength }
                                             );
                                         }
                                         if (this.validity.valueMissing) {
@@ -353,9 +355,9 @@ STUDIP.ready(function () {
                                                 note.description = $gettext('Dieses Feld muss ausgewählt sein.');
                                             } else {
                                                 if (this.minLength > 0) {
-                                                    note.description = $gettextInterpolate(
-                                                        $gettext('Hier muss ein Wert mit mindestens %{min} Zeichen eingetragen werden.'),
-                                                        {min: this.minLength}
+                                                    note.description = $gettext(
+                                                        'Hier muss ein Wert mit mindestens %{min} Zeichen eingetragen werden.',
+                                                        { min: this.minLength }
                                                     );
                                                 } else {
                                                     note.description = $gettext('Hier muss ein Wert eingetragen werden.');
@@ -419,10 +421,19 @@ STUDIP.ready(function () {
                             return orderedNotes;
                         }
                     },
-                    mounted () {
-                        $(this.$el).addClass("vueified");
+                    mounted() {
+                        if (this.$el.closest('.ui-dialog')) {
+                            const cancelButton = this.$el.querySelector('footer .button.cancel:last-of-type');
+                            if (cancelButton) {
+                                cancelButton.addEventListener('click', (e) => {
+                                    Dialog.close();
+                                    e.preventDefault();
+                                })
+                            }
+                        }
                     }
                 });
+                app.mount(f);
             });
         });
     }
@@ -435,12 +446,8 @@ STUDIP.ready(function () {
     if (simple_vue_items.length > 0) {
         STUDIP.Vue.load().then(({createApp}) => {
             simple_vue_items.forEach(f => {
-                createApp({
-                    el: f,
-                    mounted() {
-                        this.$el.classList.add('vueified');
-                    }
-                });
+                f.classList.add('vueified');
+                createApp().mount(f);
             });
         });
     }

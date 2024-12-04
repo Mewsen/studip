@@ -72,6 +72,7 @@ export default {
         FileChooserToolbar,
         StudipProgressIndicator,
     },
+    emits: ['selectId'],
     props: {
         excludedFolderTypes: { type: Array, default: () => [] },
     },

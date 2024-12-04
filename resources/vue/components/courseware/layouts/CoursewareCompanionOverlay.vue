@@ -3,7 +3,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-companion-overlay',
-    render(createElement) {
+    render() {
         return null;
     },
     computed: {

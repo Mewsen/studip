@@ -46,6 +46,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'file-chooser-toolbar',
+    emits: ['fileAdded', 'folderAdded'],
     data() {
         return {
             showFolderAdder: false,

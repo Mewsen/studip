@@ -126,7 +126,7 @@ export default defineComponent({
             }
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         if (this.isContentBar) {
             window.STUDIP.eventBus.emit('courseware-contentbar-before-destroy', this);
         }

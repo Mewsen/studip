@@ -5,7 +5,7 @@
                 <studip-icon shape="search" :size="24" />
             </template>
             <template #breadcrumb-list>
-                <translate>Suchergebnisse</translate>
+                {{ $gettext('Suchergebnisse') }}
             </template>
             <template #menu>
                 <button :title="$gettext('Suchergebnisse schließen')" @click="closeResults">
@@ -18,7 +18,7 @@
                 <section v-for="result in searchResults" :key="result['structural-element-id']">
                     <router-link
                         :to="'/structural_element/' + result['structural-element-id']"
-                        @click.native="closeResults"
+                        @click="closeResults"
                     >
                         <div v-show="result.img !== null" class="search-result-img hidden-tiny-down">
                             <img :src="result.img" />

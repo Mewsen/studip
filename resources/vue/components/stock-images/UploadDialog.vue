@@ -21,7 +21,7 @@
                     :file="file"
                     :metadata="metadata"
                     :suggested-tags="suggestedTags"
-                    @change="onChangeMetadata"
+                    @change="metadata => onChangeMetadata(metadata)"
                 />
             </form>
         </template>
@@ -48,6 +48,7 @@ const STATES = { IDLE: 'idle', UPLOADED: 'uploaded' };
 export default {
     props: ['show', 'suggestedTags'],
     components: { MetadataBox, UploadBox },
+    emits: ['cancel', 'confirm'],
     data: () => ({
         file: null,
         metadata: {

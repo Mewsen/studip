@@ -272,7 +272,7 @@ export default {
             }
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         STUDIP.eventBus.off('sort-tree-children');
     }
 }

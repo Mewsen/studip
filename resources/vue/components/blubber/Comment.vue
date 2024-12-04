@@ -52,6 +52,7 @@
 <script>
 export default {
     name: 'BlubberComment',
+    emits: ['answer-comment', 'change-comment', 'edit-comment', 'remove-comment'],
     data: () => ({
         localText: '',
         commentWidth: 0,

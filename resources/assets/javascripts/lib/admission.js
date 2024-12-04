@@ -23,7 +23,7 @@ const Admission = {
 
     getCourses: function(targetUrl) {
         var courseFilter = $('input[name="course_filter"]').val();
-        if (courseFilter == '') {
+        if (courseFilter === '') {
             courseFilter = '%%%';
         }
         var data = {

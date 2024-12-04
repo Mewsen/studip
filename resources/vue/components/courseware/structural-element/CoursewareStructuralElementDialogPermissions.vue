@@ -261,6 +261,7 @@ import axios from 'axios';
 import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'courseware-structural-element-dialog-permissions',
+    emits: ['close', 'store'],
     components: {
         CoursewareCompanionBox,
         Datepicker,
@@ -437,10 +438,8 @@ export default {
             await this.loadStructuralElement(this.structuralElement.id);
             if (this.blockedByAnotherUser) {
                 this.companionWarning({
-                    info: this.$gettextInterpolate(
-                        this.$gettext(
-                            'Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.'
-                        ),
+                    info: this.$gettext(
+                        'Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.',
                         { blockingUserName: this.blockingUserName }
                     ),
                 });

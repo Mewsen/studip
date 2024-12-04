@@ -22,6 +22,7 @@
 <script>
 export default {
     name: 'RedisCacheConfig',
+    emits: ['is-valid'],
     props: {
         hostname: {
             type: String,

@@ -32,6 +32,7 @@ import CompanionBox from '../layouts/CoursewareCompanionBox.vue';
 
 export default {
     props: ['content'],
+    emits: ['close', 'update'],
     components: {
         CompanionBox,
     },

@@ -1,4 +1,4 @@
-import { $gettext, $gettextInterpolate } from "./gettext.ts";
+import { $gettext } from "./gettext.ts";
 
 
 const DateTime = {
@@ -43,8 +43,8 @@ const DateTime = {
                 return $gettext('Jetzt');
             }
             if (now - date < 2 * 60 * 60 * 1000) {
-                return $gettextInterpolate(
-                    $gettext('Vor %{ minutes } Minuten'),
+                return $gettext(
+                    'Vor %{ minutes } Minuten',
                     {minutes: Math.floor((now - date) / (1000 * 60))}
                 );
             }

@@ -3,8 +3,8 @@
         <h2 v-if="!inCourseContext && hasUnits">{{ $gettext('Persönliche Lernmaterialien') }}</h2>
         <template v-if="hasUnits">
             <ol v-if="(!userIsTeacher && inCourseContext) || units.length === 1" class="cw-tiles">
-                <template v-for="unit in units">
-                    <courseware-unit-item :key="unit.id" :unit="unit" :handle="false"/>
+                <template v-for="unit in units" :key="unit.id">
+                    <courseware-unit-item :unit="unit" :handle="false"/>
                 </template>
             </ol>
             <template v-else>
@@ -13,23 +13,24 @@
                     {{ $gettext('Drücken Sie die Leertaste oder Entertaste, um neu anzuordnen.') }}
                 </span>
                 <draggable
+                    v-bind="dragOptions"
                     tag="ol"
                     role="listbox"
                     v-model="unitList"
-                    v-bind="dragOptions"
                     handle=".cw-tile-handle"
                     group="units"
                     @start="isDragging = true"
                     @end="dropUnit"
                     ref="sortables"
                     class="cw-tiles"
+                    item-key="id"
                 >
-                    <courseware-unit-item
-                        v-for="unit in unitList"
-                        :key="unit.id"
-                        :unit="unit"
-                        @unit-keydown="keyHandler($event, unit.id)"
-                    />
+                    <template #item="{element}">
+                        <courseware-unit-item
+                            :unit="element"
+                            @unit-keydown="keyHandler($event, element.id)"
+                        />
+                    </template>
                 </draggable>
             </template>
         </template>
@@ -159,13 +160,15 @@ export default {
                     } else {
                         this.keyboardSelected = { id: unitId, title: this.getUnitTitle(unitId) };
                         const index = this.unitList.findIndex((unit) => unit.id === unitId);
-                        this.assistiveLive = this.$gettextInterpolate(
-                            this.$gettext(
-                                'Lernmaterial %{unitTitle} ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. ' +
-                                    'Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste oder ' +
-                                    'Entertaste zum Ablegen, die Escape-Taste zum Abbrechen.'
-                            ),
-                            { unitTitle: this.keyboardSelected.title, pos: index + 1, listLength: this.unitList.length }
+                        this.assistiveLive = this.$gettext(
+                            'Lernmaterial %{unitTitle} ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. ' +
+                                'Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste oder ' +
+                                'Entertaste zum Ablegen, die Escape-Taste zum Abbrechen.',
+                            {
+                                unitTitle: this.keyboardSelected.title,
+                                pos: index + 1,
+                                listLength: this.unitList.length
+                            }
                         );
                     }
                     break;
@@ -189,8 +192,8 @@ export default {
             }
         },
         abortKeyboardSorting() {
-            this.assistiveLive = this.$gettextInterpolate(
-                this.$gettext('Lernmaterial %{unitTitle}, Neuordnung abgebrochen.'),
+            this.assistiveLive = this.$gettext(
+                'Lernmaterial %{unitTitle}, Neuordnung abgebrochen.',
                 { unitTitle: this.keyboardSelected.title }
             );
             this.keyboardSelected = null;
@@ -198,11 +201,13 @@ export default {
         },
         storeKeyboardSorting() {
             const index = this.unitList.findIndex((unit) => unit.id === this.keyboardSelected.id);
-            this.assistiveLive = this.$gettextInterpolate(
-                this.$gettext(
-                    'Lernmaterial %{unitTitle}, abgelegt. Endgültige Position in der Liste: %{pos} von %{listLength}.'
-                ),
-                { unitTitle: this.keyboardSelected.title, pos: index + 1, listLength: this.unitList.length }
+            this.assistiveLive = this.$gettext(
+                'Lernmaterial %{unitTitle}, abgelegt. Endgültige Position in der Liste: %{pos} von %{listLength}.',
+                {
+                    unitTitle: this.keyboardSelected.title,
+                    pos: index + 1,
+                    listLength: this.unitList.length
+                }
             );
             this.keyboardSelected = null;
             this.dropUnit();
@@ -213,11 +218,13 @@ export default {
                 const newPos = currentIndex - 1;
                 this.unitList.splice(newPos, 0, this.unitList.splice(currentIndex, 1)[0]);
                 this.focusHandle(unitId);
-                this.assistiveLive = this.$gettextInterpolate(
-                    this.$gettext(
-                        'Lernmaterial %{unitTitle}. Aktuelle Position in der Liste: %{pos} von %{listLength}.'
-                    ),
-                    { unitTitle: this.keyboardSelected.title, pos: newPos + 1, listLength: this.unitList.length }
+                this.assistiveLive = this.$gettext(
+                    'Lernmaterial %{unitTitle}. Aktuelle Position in der Liste: %{pos} von %{listLength}.',
+                    {
+                        unitTitle: this.keyboardSelected.title,
+                        pos: newPos + 1,
+                        listLength: this.unitList.length
+                    }
                 );
             }
         },
@@ -227,11 +234,13 @@ export default {
                 const newPos = currentIndex + 1;
                 this.unitList.splice(newPos, 0, this.unitList.splice(currentIndex, 1)[0]);
                 this.focusHandle(unitId);
-                this.assistiveLive = this.$gettextInterpolate(
-                    this.$gettext(
-                        'Lernmaterial %{unitTitle}. Aktuelle Position in der Liste: %{pos} von %{listLength}.'
-                    ),
-                    { unitTitle: this.keyboardSelected.title, pos: newPos + 1, listLength: this.unitList.length }
+                this.assistiveLive = this.$gettext(
+                    'Lernmaterial %{unitTitle}. Aktuelle Position in der Liste: %{pos} von %{listLength}.',
+                    {
+                        unitTitle: this.keyboardSelected.title,
+                        pos: newPos + 1,
+                        listLength: this.unitList.length
+                    }
                 );
             }
         },
@@ -245,9 +254,12 @@ export default {
         this.initCurrentData();
     },
     watch: {
-        units(newState) {
-            this.initCurrentData();
+        units: {
+            handler(newState) {
+                this.initCurrentData();
+            },
+            deep: true
         },
-    },
+    }
 };
 </script>

@@ -7,7 +7,7 @@
             v-show="!showUploadIndicator"
             :per-page="perPage"
             :stock-images="filteredStockImages"
-            v-model="page"
+            v-model:page="page"
         >
             <ImagesList
                 :checked-images="checkedImages"
@@ -26,12 +26,12 @@
             :description="$gettext('Bilder werden hochgeladen...')"
         >
         </studip-progress-indicator>
-        <MountingPortal mountTo="#stock-images-widget" name="sidebar-stock-images">
+        <Teleport to="#stock-images-widget" name="sidebar-stock-images">
             <SearchWidget :query="query" @search="onSearch" />
-            <OrientationFilterWidget v-model="filters" />
-            <ColorFilterWidget v-model="filters" />
+            <OrientationFilterWidget v-model:filters="filters" />
+            <ColorFilterWidget v-model:filters="filters" />
             <ActionsWidget @initiateUpload="onUploadDialogShow" @initiateZipUpload="onZipUploadDialogShow" />
-        </MountingPortal>
+        </Teleport>
         <EditDialog
             :stock-image="selectedImage"
             :suggested-tags="suggestedTags"
@@ -150,15 +150,11 @@ export default {
                     this.showUploadIndicator = false;
                     this.showZipUploadMessage = true;
                     this.zipUploadMessageType = 'success';
-                    this.zipUploadMessage = this.$gettextInterpolate(
-                        this.$ngettext(
-                            '%{length} Bild wurde hinzugefügt',
-                            '%{length} Bilder wurden hinzugefügt',
-                            resp.data['image-count']
-                        ),
-                        {
-                            length: resp.data['image-count'],
-                        }
+                    this.zipUploadMessage = this.$ngettext(
+                        '%{length} Bild wurde hinzugefügt',
+                        '%{length} Bilder wurden hinzugefügt',
+                        resp.data['image-count'],
+                        { length: resp.data['image-count'] }
                     );
                     this.$nextTick(() => {
                         this.fetchStockImages();

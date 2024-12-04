@@ -70,6 +70,7 @@ import StudipDialog from '../StudipDialog.vue';
 
 export default {
     name: 'AdmissionRuleTypeSelector',
+    emits: ['close', 'configureRule'],
     components: { StudipProgressIndicator, StudipDialog },
     props: {
         assignedRuleTypes: {

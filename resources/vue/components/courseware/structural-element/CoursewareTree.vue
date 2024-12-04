@@ -1,11 +1,9 @@
 <template>
     <div class="cw-tree" ref="tree">
-        <template>
-                <span aria-live="assertive" class="assistive-text">{{ assistiveLive }}</span>
-                <span id="operation" class="assistive-text">
-                    {{$gettext('Drücken Sie die Leertaste, um neu anzuordnen.')}}
-                </span>
-        </template>
+        <span aria-live="assertive" class="assistive-text">{{ assistiveLive }}</span>
+        <span id="operation" class="assistive-text">
+            {{ $gettext('Drücken Sie die Leertaste, um neu anzuordnen.') }}
+        </span>
         <ol v-if="!processing" class="cw-tree-root-list" role="listbox">
             <courseware-tree-item
                 class="cw-tree-item"
@@ -21,7 +19,7 @@
             <courseware-tree-item-adder v-if="canEditRoot" :parentId="rootElement.id"/>
         </ol>
         <studip-progress-indicator
-            v-else 
+            v-else
             :description="$gettext('Vorgang wird bearbeitet...')"
         />
     </div>
@@ -35,7 +33,7 @@ import StudipProgressIndicator from '../../StudipProgressIndicator.vue';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
-    components: { 
+    components: {
         CoursewareTreeItem,
         CoursewareTreeItemAdder,
         StudipProgressIndicator
@@ -55,7 +53,7 @@ export default {
             relatedStructuralElement: 'courseware-structural-elements/related',
             structuralElementById: 'courseware-structural-elements/byId',
             childrenById: 'courseware-structure/children',
-            viewMode: 'viewMode',   
+            viewMode: 'viewMode',
             structuralElements: 'courseware-structural-elements/all',
             assistiveLive: 'assistiveLiveContents',
         }),
@@ -188,9 +186,14 @@ export default {
                 element.nestedChildren[newPos].sortArray = element.nestedChildren.map(c => {return {id: c.id, type: 'courseware-structural-elements'}});
                 element.nestedChildren[newPos].moveDirection = data.direction;
 
-                const assistiveLive = this.$gettextInterpolate(
-                    this.$gettext('%{elementTitle} eine Ebene nach oben bewegt. Übergeordnete Seite: %{parentTitle}. Aktuelle Position in der Liste: %{pos} von %{listLength}'), 
-                    { elementTitle: data.element.attributes.title, parentTitle: element.attributes.title, pos: newPos + 1, listLength: element.nestedChildren[newPos].sortArray.length }
+                const assistiveLive = this.$gettext(
+                    '%{elementTitle} eine Ebene nach oben bewegt. Übergeordnete Seite: %{parentTitle}. Aktuelle Position in der Liste: %{pos} von %{listLength}',
+                    {
+                        elementTitle: data.element.attributes.title,
+                        parentTitle: element.attributes.title,
+                        pos: newPos + 1,
+                        listLength: element.nestedChildren[newPos].sortArray.length
+                    }
                 );
                 this.setAssistiveLiveContents(assistiveLive);
             }
@@ -206,9 +209,13 @@ export default {
                         element.nestedChildren[newPos].sortArray = element.nestedChildren.map(c => {return {id: c.id, type: 'courseware-structural-elements'}});
                         element.nestedChildren[newPos].moveDirection = data.direction;
 
-                        const assistiveLive = this.$gettextInterpolate(
-                            this.$gettext('%{elementTitle} bewegt. Aktuelle Position in der Liste: %{pos} von %{listLength}'), 
-                            { elementTitle: data.element.attributes.title, pos: newPos + 1, listLength: element.nestedChildren[newPos].sortArray.length }
+                        const assistiveLive = this.$gettext(
+                            '%{elementTitle} bewegt. Aktuelle Position in der Liste: %{pos} von %{listLength}',
+                            {
+                                elementTitle: data.element.attributes.title,
+                                pos: newPos + 1,
+                                listLength: element.nestedChildren[newPos].sortArray.length
+                            }
                         );
                         this.setAssistiveLiveContents(assistiveLive);
                     }
@@ -225,9 +232,14 @@ export default {
                         element.nestedChildren[newParentIndex].nestedChildren[newPos].newParentId = parseInt(newParentId);
                         element.nestedChildren[newParentIndex].nestedChildren[newPos].sortArray = element.nestedChildren[newParentIndex].nestedChildren.map(c => {return {id: c.id, type: 'courseware-structural-elements'}});
 
-                        const assistiveLive = this.$gettextInterpolate(
-                            this.$gettext('%{elementTitle} eine Ebene nach unten bewegt. Übergeordnete Seite: %{parentTitle}. Aktuelle Position in der Liste: %{pos} von %{listLength}'), 
-                            { elementTitle: data.element.attributes.title, parentTitle: element.nestedChildren[newParentIndex].attributes.title, pos: newPos + 1, listLength: element.nestedChildren[newParentIndex].nestedChildren[newPos].sortArray.length }
+                        const assistiveLive = this.$gettext(
+                            '%{elementTitle} eine Ebene nach unten bewegt. Übergeordnete Seite: %{parentTitle}. Aktuelle Position in der Liste: %{pos} von %{listLength}',
+                            {
+                                elementTitle: data.element.attributes.title,
+                                parentTitle: element.nestedChildren[newParentIndex].attributes.title,
+                                pos: newPos + 1,
+                                listLength: element.nestedChildren[newParentIndex].nestedChildren[newPos].sortArray.length
+                            }
                         );
                         this.setAssistiveLiveContents(assistiveLive);
                     }

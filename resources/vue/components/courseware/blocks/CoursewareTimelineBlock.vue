@@ -74,7 +74,7 @@
                                 <input type="text" v-model="item.title" />
                             </label>
                             <label class="col-4">
-                            
+
                                 {{ $gettext('Beschreibung') }}
                                 <textarea v-model="item.description" />
                             </label>
@@ -88,7 +88,7 @@
                                     :reduce="option => option.class"
                                     v-model="item.color"
                                 >
-                                    <template #open-indicator="selectAttributes">
+                                    <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"><studip-icon shape="arr_1down" size="10"/></span>
                                     </template>
                                     <template #no-options>
@@ -105,7 +105,7 @@
                             <label class="col-2">
                                 {{ $gettext('Icon') }}
                                 <studip-select :options="icons" :clearable="false" v-model="item.icon">
-                                    <template #open-indicator="selectAttributes">
+                                    <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"><studip-icon shape="arr_1down" size="10"/></span>
                                     </template>
                                     <template #no-options>

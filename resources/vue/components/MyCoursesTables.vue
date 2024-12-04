@@ -43,8 +43,8 @@
                 <tr v-for="course in getOrderedCourses(subgroup.ids)" :data-course-id="course.id" :class="getCourseClasses(course)" :key="course.id">
                     <td :class="`gruppe${course.group}`">
                         <span class="sr-only">
-                            {{ $gettextInterpolate(
-                                $gettext('Diese Veranstaltung gehört zur Farbgruppe %{group}'),
+                            {{ $gettext(
+                                'Diese Veranstaltung gehört zur Farbgruppe %{group}',
                                 course
                             ) }}
                         </span>

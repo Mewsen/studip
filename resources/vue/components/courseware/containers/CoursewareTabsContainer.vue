@@ -24,14 +24,12 @@
                     {{ $gettext('Drücken Sie die Leertaste, um neu anzuordnen.') }}
                 </span>
             </template>
-            <courseware-tabs @selectTab="selectTabHandler">
+            <courseware-tabs v-if="!processing" v-model="selectedTab">
                 <courseware-tab
-                    v-for="(section, index) in currentSections"
-                    :key="index"
-                    :index="index"
+                    v-for="(section, sectionIndex) in currentSections"
+                    :key="sectionIndex"
                     :name="section.name"
                     :icon="section.icon"
-                    :selected="sortInTab === index"
                 >
                     <ul v-if="!canEdit || currentElementisLink" class="cw-container-tabs-block-list">
                         <li v-for="block in section.blocks" :key="block.id" class="cw-block-item">
@@ -51,38 +49,41 @@
                                 :msgCompanion="$gettext('Dieses Fach enthält keine Blöcke.')">
                             </courseware-companion-box>
                             <draggable
+                                v-bind="dragOptions"
                                 class="cw-container-tabs-block-list cw-container-tabs-sort-mode"
                                 :class="[section.blocks.length === 0 ? 'cw-container-tabs-sort-mode-empty' : '']"
                                 tag="ol"
                                 role="listbox"
                                 v-model="section.blocks"
-                                v-bind="dragOptions"
                                 handle=".cw-sortable-handle"
                                 group="blocks"
                                 @start="isDragging = true"
                                 @end="dropBlock"
                                 :containerId="container.id"
-                                :sectionId="index"
+                                :sectionId="sectionIndex"
+                                item-key="id"
                             >
-                                <li v-for="block in section.blocks" :key="block.id" class="cw-block-item cw-block-item-sortable">
-                                    <span
-                                        :class="{ 'cw-sortable-handle-dragging': isDragging }"
-                                        class="cw-sortable-handle"
-                                        tabindex="0"
-                                        role="button"
-                                        aria-describedby="operation"
-                                        :ref="'sortableHandle' + block.id"
-                                        @keydown="keyHandler($event, block.id, index)"
-                                    ></span>
-                                    <component
-                                        :is="component(block)"
-                                        :block="block"
-                                        :canEdit="canEdit"
-                                        :isTeacher="isTeacher"
-                                        :class="{ 'cw-block-item-selected': keyboardSelected === block.id}"
-                                        :blockId="block.id"
-                                    />
-                                </li>
+                                <template #item="{element}">
+                                    <li class="cw-block-item cw-block-item-sortable">
+                                        <span
+                                            :class="{ 'cw-sortable-handle-dragging': isDragging }"
+                                            class="cw-sortable-handle"
+                                            tabindex="0"
+                                            role="button"
+                                            aria-describedby="operation"
+                                            :ref="'sortableHandle' + element.id"
+                                            @keydown="keyHandler($event, element.id, sectionIndex)"
+                                        ></span>
+                                        <component
+                                            :is="component(element)"
+                                            :block="element"
+                                            :canEdit="canEdit"
+                                            :isTeacher="isTeacher"
+                                            :class="{ 'cw-block-item-selected': keyboardSelected === element.id}"
+                                            :blockId="element.id"
+                                        />
+                                    </li>
+                                </template>
                             </draggable>
                         </template>
                     </template>
@@ -103,7 +104,7 @@
                     <label>
                         {{ $gettext('Symbol') }}
                         <studip-select :options="icons" v-model="section.icon">
-                            <template #open-indicator="selectAttributes">
+                            <template #open-indicator="{ selectAttributes }">
                                 <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
                             </template>
                             <template #no-options>
@@ -138,6 +139,7 @@ import CoursewareTabs from '../layouts/CoursewareTabs.vue';
 import CoursewareTab from '../layouts/CoursewareTab.vue';
 import containerMixin from '@/vue/mixins/courseware/container.js';
 import contentIconsMixin from '@/vue/mixins/courseware/content-icons.js';
+import draggable from "vuedraggable";
 
 import { mapGetters, mapActions } from 'vuex';
 
@@ -147,6 +149,7 @@ export default {
     components: Object.assign(ContainerComponents, {
         CoursewareTabs,
         CoursewareTab,
+        draggable
     }),
     props: {
         container: Object,
@@ -172,7 +175,7 @@ export default {
             },
             processing: false,
             keyboardSelected: null,
-            sortInTab: 0,
+            selectedTab: 0,
             assistiveLive: '',
             showDeleteDialog: false,
             currentSection: null,
@@ -209,7 +212,6 @@ export default {
         }),
         initCurrentData() {
             this.currentContainer = _.cloneDeep(this.container);
-
             let view = this;
             let sections = this.currentContainer.attributes.payload.sections;
 
@@ -276,7 +278,8 @@ export default {
             this.closeDeleteDialog();
         },
         async storeContainer() {
-            const timeout = setTimeout(() => this.processing = true, 800);
+            this.processing = true;
+            await this.$nextTick();
             this.currentContainer.attributes.payload.sections = this.currentContainer.attributes.payload.sections.filter(section => !section.locked);
             this.currentContainer.attributes.payload.sections.forEach(section => {
                 section.blocks = section.blocks.map((block) => {return block.id;});
@@ -289,7 +292,6 @@ export default {
             await this.unlockObject({ id: this.container.id, type: 'courseware-containers' });
             await this.loadContainer({id : this.container.id });
             this.initCurrentData();
-            clearTimeout(timeout);
             this.processing = false;
         },
         async storeSort() {
@@ -325,11 +327,14 @@ export default {
                         this.keyboardSelected = blockId;
                         const block = this.blockById({id: blockId});
                         const currentIndex = this.currentSections[sectionIndex].blocks.findIndex(block => block.id === blockId);
-                        this.assistiveLive =
-                            this.$gettextInterpolate(
-                                this.$gettext('%{blockTitle} Block ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen.')
-                                , {blockTitle: block.attributes.title, pos: currentIndex + 1, listLength: this.currentSections[sectionIndex].blocks.length}
-                            );
+                        this.assistiveLive = this.$gettext(
+                            '%{blockTitle} Block ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen.',
+                            {
+                                blockTitle: block.attributes.title,
+                                pos: currentIndex + 1,
+                                listLength: this.currentSections[sectionIndex].blocks.length
+                            }
+                        );
                     }
                     break;
             }
@@ -355,14 +360,17 @@ export default {
             if (currentIndex !== 0) {
                 const newPos = currentIndex - 1;
                 this.currentSections[sectionIndex].blocks.splice(newPos, 0, this.currentSections[sectionIndex].blocks.splice(currentIndex, 1)[0]);
-                this.assistiveLive =
-                    this.$gettextInterpolate(
-                        this.$gettext('%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.')
-                        , {blockTitle: block.attributes.title, pos: newPos + 1, listLength: this.currentSections[sectionIndex].blocks.length}
-                    );
+                this.assistiveLive = this.$gettext(
+                    '%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.',
+                    {
+                        blockTitle: block.attributes.title,
+                        pos: newPos + 1,
+                        listLength: this.currentSections[sectionIndex].blocks.length
+                    }
+                );
             } else if (sectionIndex !== 0) {
                 const newSectionIndex = sectionIndex - 1;
-                this.sortInTab = newSectionIndex;
+                this.selectedTab = newSectionIndex;
                 this.currentSections[newSectionIndex].blocks.push(this.currentSections[sectionIndex].blocks.splice(currentIndex, 1)[0]);
             }
         },
@@ -372,47 +380,51 @@ export default {
             if (this.currentSections[sectionIndex].blocks.length - 1 > currentIndex) {
                 const newPos = currentIndex + 1;
                 this.currentSections[sectionIndex].blocks.splice(newPos, 0, this.currentSections[sectionIndex].blocks.splice(currentIndex, 1)[0]);
-                this.assistiveLive =
-                    this.$gettextInterpolate(
-                        this.$gettext('%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.')
-                        , {blockTitle: block.attributes.title, pos: newPos + 1, listLength: this.currentSections[sectionIndex].blocks.length}
-                    );
+                this.assistiveLive = this.$gettext(
+                    '%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.',
+                    {
+                        blockTitle: block.attributes.title,
+                        pos: newPos + 1,
+                        listLength: this.currentSections[sectionIndex].blocks.length
+                    }
+                );
             } else if (this.currentSections.length - 1 > sectionIndex) {
                 const newSectionIndex = sectionIndex + 1;
-                this.sortInTab = newSectionIndex;
+                this.selectedTab = newSectionIndex;
                 this.currentSections[newSectionIndex].blocks.splice(0, 0, this.currentSections[sectionIndex].blocks.splice(currentIndex, 1)[0]);
             }
         },
         abortKeyboardSorting(blockId, sectionIndex) {
             const block = this.blockById({id: blockId});
             this.keyboardSelected = null;
-            this.assistiveLive =
-                this.$gettextInterpolate(
-                    this.$gettext('%{blockTitle} Block, Neuordnung abgebrochen.')
-                    , {blockTitle: block.attributes.title}
-                );
+            this.assistiveLive = this.$gettext(
+                '%{blockTitle} Block, Neuordnung abgebrochen.',
+                { blockTitle: block.attributes.title }
+            );
             this.initCurrentData();
         },
         storeKeyboardSorting(blockId, sectionIndex) {
             const block = this.blockById({id: blockId});
             const currentIndex = this.currentSections[sectionIndex].blocks.findIndex(block => block.id === blockId);
             this.keyboardSelected = null;
-            this.assistiveLive =
-                this.$gettextInterpolate(
-                    this.$gettext('%{blockTitle} Block, abgelegt. Endgültige Position in der Liste: %{pos} von %{listLength}.')
-                    , {blockTitle: block.attributes.title, pos: currentIndex + 1, listLength: this.currentSections[sectionIndex].blocks.length}
-                );
+            this.assistiveLive = this.$gettext(
+                '%{blockTitle} Block, abgelegt. Endgültige Position in der Liste: %{pos} von %{listLength}.',
+                {
+                    blockTitle: block.attributes.title,
+                    pos: currentIndex + 1,
+                    listLength: this.currentSections[sectionIndex].blocks.length
+                }
+            );
             this.storeSort();
         },
-        selectTabHandler(event) {
-            const tabIndex = event.index;
+        selectTabHandler() {
             let container = _.cloneDeep(this.container);
-            container.activeSection = tabIndex;
+            container.activeSection = this.selectedTab;
             this.storeContainerRecord(container);
             if (this.blockAdder.container.id === this.container.id) {
                 this.setAdderStorage({
                     container: this.container,
-                    section: tabIndex
+                    section: this.selectedTab
                 });
             }
         }
@@ -445,6 +457,9 @@ export default {
                 });
             },
             deep: true
+        },
+        selectedTab() {
+            this.selectTabHandler();
         }
     }
 };

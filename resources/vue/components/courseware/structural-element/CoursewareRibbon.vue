@@ -31,14 +31,33 @@
 
 <script lang="ts">
 import ContentBar from '../../ContentBar.vue';
-import { mapActions, mapGetters, mapState } from 'vuex';
-import Vue from 'vue';
+import { mapActions, mapGetters } from 'vuex';
 import CoursewareRibbonToolbar from './CoursewareRibbonToolbar.vue';
 import { store } from '../../../../assets/javascripts/chunks/vue';
+import { defineComponent } from "vue";
 
-export default Vue.extend({
+export default defineComponent({
     name: 'CoursewareRibbon',
-    components: { CoursewareRibbonToolbar, ContentBar },
+    components: {
+        CoursewareRibbonToolbar, ContentBar
+    },
+    emits: ['blockAdded'],
+    props: {
+        canEdit: Boolean,
+        showToolbarButton: {
+            default: true,
+            type: Boolean
+        },
+        showModeSwitchButton: {
+            default: true,
+            type: Boolean
+        },
+        buttonsClass: String,
+        isContentBar: {
+            type: Boolean,
+            default: false
+        }
+    },
     data() {
         return {
             // This value is derived from stickyRibbonChange events emitted by
@@ -81,13 +100,13 @@ export default Vue.extend({
         },
     },
     methods: {
-        onStickyRibbonChange(value: boolean) {
-            this.stickyRibbon = value;
-        },
         ...mapActions({
             coursewareViewMode: 'coursewareViewMode',
             coursewareShowToolbar: 'coursewareShowToolbar',
         }),
+        onStickyRibbonChange(value: boolean) {
+            this.stickyRibbon = value;
+        },
         activateToolbar() {
             this.coursewareShowToolbar(true);
         },

@@ -5,9 +5,10 @@
         :options="transformed_options"
         :reduce="(option) => option.id"
         v-bind="$attrs"
-        v-on="$listeners"
     >
-        <div slot="no-options"><translate>Keine Auswahlmöglichkeiten</translate></div>
+        <template v-slot:no-options>
+            {{ $gettext('Keine Auswahlmöglichkeiten') }}
+        </template>
     </v-select>
 </template>
 
@@ -19,11 +20,15 @@ export default {
     components: {
         vSelect,
     },
+    emits: ['update:model-value'],
     inheritAttrs: false,
     props: {
         name: {
             type: String,
             required: false
+        },
+        modelValue: {
+            required: false,
         },
         value: {
             required: false
@@ -56,7 +61,7 @@ export default {
     watch: {
         selected: {
             handler(newValue, oldValue) {
-                this.$emit('input', newValue);
+                this.$emit('update:model-value', newValue);
             },
             deep: true
         }

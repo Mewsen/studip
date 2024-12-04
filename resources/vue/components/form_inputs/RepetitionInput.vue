@@ -237,6 +237,18 @@
 <script>
 export default {
     name: "repetition-input",
+    emits: [
+        'input_number_of_dates',
+        'input_repetition_dom',
+        'input_repetition_dow',
+        'input_repetition_dow_week',
+        'input_repetition_end_date',
+        'input_repetition_end_type',
+        'input_repetition_interval',
+        'input_repetition_month',
+        'input_repetition_month_type',
+        'input_repetition_type',
+    ],
     props: {
         name: {
             type: String,

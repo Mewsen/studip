@@ -2,7 +2,7 @@
   <ul class="widget-list widget-links sidebar-views cw-view-widget">
         <li :class="{ active: templatesView }">
             <a href="#" @click.prevent="setTemplatesView">
-                <translate>Vorlagen</translate>
+                {{ $gettext('Vorlagen') }}
             </a>
         </li>
   </ul>

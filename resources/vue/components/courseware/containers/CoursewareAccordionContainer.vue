@@ -41,39 +41,42 @@
                             :msgCompanion="$gettext('Dieses Fach enthält keine Blöcke.')">
                         </courseware-companion-box>
                         <draggable
+                            v-bind="dragOptions"
                             v-if="canEdit"
                             class="cw-container-accordion-block-list cw-container-accordion-sort-mode"
                             :class="[section.blocks.length === 0 ? 'cw-container-accordion-sort-mode-empty' : '']"
                             tag="ol"
                             role="listbox"
                             v-model="section.blocks"
-                            v-bind="dragOptions"
                             handle=".cw-sortable-handle"
                             group="blocks"
                             @start="isDragging = true"
                             @end="dropBlock"
                             :containerId="container.id"
                             :sectionId="index"
+                            item-key="id"
                         >
-                            <li v-for="block in section.blocks" :key="block.id" class="cw-block-item cw-block-item-sortable">
-                                <span
-                                    :class="{ 'cw-sortable-handle-dragging': isDragging }"
-                                    class="cw-sortable-handle"
-                                    tabindex="0"
-                                    role="button"
-                                    aria-describedby="operation"
-                                    :ref="'sortableHandle' + block.id"
-                                    @keydown="keyHandler($event, block.id, index)"
-                                ></span>
-                                <component
-                                    :is="component(block)"
-                                    :block="block"
-                                    :canEdit="canEdit"
-                                    :isTeacher="isTeacher"
-                                    :class="{ 'cw-block-item-selected': keyboardSelected === block.id}"
-                                    :blockId="block.id"
-                                />
-                            </li>
+                            <template #item="{element, index}">
+                                <li class="cw-block-item cw-block-item-sortable">
+                                    <span
+                                        :class="{ 'cw-sortable-handle-dragging': isDragging }"
+                                        class="cw-sortable-handle"
+                                        tabindex="0"
+                                        role="button"
+                                        aria-describedby="operation"
+                                        :ref="'sortableHandle' + element.id"
+                                        @keydown="keyHandler($event, element.id, index)"
+                                    ></span>
+                                    <component
+                                        :is="component(element)"
+                                        :block="element"
+                                        :canEdit="canEdit"
+                                        :isTeacher="isTeacher"
+                                        :class="{ 'cw-block-item-selected': keyboardSelected === element.id}"
+                                        :blockId="element.id"
+                                    />
+                                </li>
+                            </template>
                         </draggable>
                     </template>
                     <div v-else class="progress-wrapper">
@@ -104,7 +107,7 @@
                     <label>
                         {{ $gettext('Symbol')}}
                         <studip-select :options="icons" v-model="section.icon">
-                            <template #open-indicator="selectAttributes">
+                            <template #open-indicator="{ selectAttributes }">
                                 <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
                             </template>
                             <template #no-options>
@@ -147,6 +150,7 @@ export default {
     components: Object.assign(ContainerComponents, {
         CoursewareCollapsibleBox,
     }),
+    emits: ['blockAdded'],
     props: {
         container: Object,
         canEdit: Boolean,
@@ -324,11 +328,14 @@ export default {
                         this.keyboardSelected = blockId;
                         const block = this.blockById({id: blockId});
                         const currentIndex = this.currentSections[sectionIndex].blocks.findIndex(block => block.id === blockId);
-                        this.assistiveLive =
-                            this.$gettextInterpolate(
-                                this.$gettext('%{blockTitle} Block ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen.')
-                                , {blockTitle: block.attributes.title, pos: currentIndex + 1, listLength: this.currentSections[sectionIndex].blocks.length}
-                            );
+                        this.assistiveLive = this.$gettext(
+                            '%{blockTitle} Block ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen.',
+                            {
+                                blockTitle: block.attributes.title,
+                                pos: currentIndex + 1,
+                                listLength: this.currentSections[sectionIndex].blocks.length
+                            }
+                        );
                     }
                     break;
             }
@@ -354,11 +361,14 @@ export default {
             if (currentIndex !== 0) {
                 const newPos = currentIndex - 1;
                 this.currentSections[sectionIndex].blocks.splice(newPos, 0, this.currentSections[sectionIndex].blocks.splice(currentIndex, 1)[0]);
-                this.assistiveLive =
-                    this.$gettextInterpolate(
-                        this.$gettext('%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.')
-                        , {blockTitle: block.attributes.title, pos: newPos + 1, listLength: this.currentSections[sectionIndex].blocks.length}
-                    );
+                this.assistiveLive = this.$gettext(
+                    '%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.',
+                    {
+                        blockTitle: block.attributes.title,
+                        pos: newPos + 1,
+                        listLength: this.currentSections[sectionIndex].blocks.length
+                    }
+                );
             } else if (sectionIndex !== 0) {
                 const newSectionIndex = sectionIndex - 1;
                 if (!this.sortInSlots.includes(newSectionIndex)) {
@@ -373,11 +383,14 @@ export default {
             if (this.currentSections[sectionIndex].blocks.length - 1 > currentIndex) {
                 const newPos = currentIndex + 1;
                 this.currentSections[sectionIndex].blocks.splice(newPos, 0, this.currentSections[sectionIndex].blocks.splice(currentIndex, 1)[0]);
-                this.assistiveLive =
-                    this.$gettextInterpolate(
-                        this.$gettext('%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.')
-                        , {blockTitle: block.attributes.title, pos: newPos + 1, listLength: this.currentSections[sectionIndex].blocks.length}
-                    );
+                this.assistiveLive = this.$gettext(
+                    '%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.',
+                    {
+                        blockTitle: block.attributes.title,
+                        pos: newPos + 1,
+                        listLength: this.currentSections[sectionIndex].blocks.length
+                    }
+                );
             } else if (this.currentSections.length - 1 > sectionIndex) {
                 const newSectionIndex = sectionIndex + 1;
                 if (!this.sortInSlots.includes(newSectionIndex)) {
@@ -389,22 +402,24 @@ export default {
         abortKeyboardSorting(blockId, sectionIndex) {
             const block = this.blockById({id: blockId});
             this.keyboardSelected = null;
-            this.assistiveLive =
-                this.$gettextInterpolate(
-                    this.$gettext('%{blockTitle} Block, Neuordnung abgebrochen.')
-                    , {blockTitle: block.attributes.title}
-                );
+            this.assistiveLive = this.$gettext(
+                '%{blockTitle} Block, Neuordnung abgebrochen.',
+                { blockTitle: block.attributes.title }
+            );
             this.initCurrentData();
         },
         storeKeyboardSorting(blockId, sectionIndex) {
             const block = this.blockById({id: blockId});
             const currentIndex = this.currentSections[sectionIndex].blocks.findIndex(block => block.id === blockId);
             this.keyboardSelected = null;
-            this.assistiveLive =
-                this.$gettextInterpolate(
-                    this.$gettext('%{blockTitle} Block, abgelegt. Endgültige Position in der Liste: %{pos} von %{listLength}.')
-                    , {blockTitle: block.attributes.title, pos: currentIndex + 1, listLength: this.currentSections[sectionIndex].blocks.length}
-                );
+            this.assistiveLive = this.$gettext(
+                '%{blockTitle} Block, abgelegt. Endgültige Position in der Liste: %{pos} von %{listLength}.',
+                {
+                    blockTitle: block.attributes.title,
+                    pos: currentIndex + 1,
+                    listLength: this.currentSections[sectionIndex].blocks.length
+                }
+            );
             this.storeSort();
         }
     },
@@ -418,7 +433,7 @@ export default {
         },
         currentSections: {
             handler(newSections, oldSections) {
-                if (oldSections.length > 0 && 
+                if (oldSections.length > 0 &&
                     newSections[oldSections.length -1].blocks.length > oldSections[oldSections.length - 1].blocks.length) {
                         this.$emit('blockAdded');
                         this.$nextTick(() => {
@@ -436,7 +451,7 @@ export default {
         currentContainer: {
             handler() {
                 this.editDataValid = true;
-                this.currentContainer.attributes.payload.sections.forEach(section => {
+                this.currentContainer.attributes.payload.sections?.forEach(section => {
                     if (!section.icon && !section.name) {
                         this.editDataValid = false;
                     }

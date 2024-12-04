@@ -26,6 +26,17 @@ export default {
     components: {
         StudipActionMenu,
     },
+    emits: [
+        'activateComments',
+        'copyToClipboard',
+        'deactivateComments',
+        'deleteBlock',
+        'editBlock',
+        'removeLock',
+        'showExportOptions',
+        'showFeedback',
+        'showInfo',
+    ],
     props: {
         canEdit: Boolean,
         deleteOnly: {
@@ -98,9 +109,9 @@ export default {
                     if (!this.blocked || this.blockedByThisUser) {
                         menuItems.push({
                             id: 9,
-                            label: this.$gettext('Block löschen'), 
+                            label: this.$gettext('Block löschen'),
                             icon: 'trash',
-                            emit: 'deleteBlock' 
+                            emit: 'deleteBlock'
                         });
                     }
                     menuItems.push({

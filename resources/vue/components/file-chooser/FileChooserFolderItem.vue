@@ -77,9 +77,12 @@ export default {
         },
         folderSize() {
             const length = this.folderSubfolderCounter + this.folderFilesCounter;
-            return this.$gettextInterpolate(this.$ngettext('%{length} Objekt', '%{length} Objekte', length), {
-                length: length,
-            });
+            return this.$ngettext(
+                '%{length} Objekt',
+                '%{length} Objekte',
+                length,
+                { length: length }
+            );
         },
     },
     methods: {

@@ -112,7 +112,9 @@
                                 :alt="$gettext('Vorschaubild')"
                             />
                             <label>
-                                <button class="button" @click="deleteImage" v-translate>Bild löschen</button>
+                                <button class="button" @click="deleteImage">
+                                    {{ $gettext('Bild löschen') }}
+                                </button>
                             </label>
                         </template>
 
@@ -167,6 +169,7 @@ import StockImageSelector from '../../stock-images/SelectorDialog.vue';
 import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'courseware-structural-element-dialog-settings',
+    emits: ['close', 'store'],
     mixins: [colorMixin, wizardMixin],
     components: {
         CoursewareContentPermissions,
@@ -280,10 +283,8 @@ export default {
             await this.loadStructuralElement(this.currentElement.id);
             if (this.blockedByAnotherUser) {
                 this.companionWarning({
-                    info: this.$gettextInterpolate(
-                        this.$gettext(
-                            'Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.'
-                        ),
+                    info: this.$gettext(
+                        'Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.',
                         { blockingUserName: this.blockingUserName }
                     ),
                 });

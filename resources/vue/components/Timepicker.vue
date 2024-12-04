@@ -12,13 +12,14 @@
 <script>
 export default {
     name: 'Timepicker',
+    emits: ['update:modelValue'],
     inheritAttrs: false,
     props: {
         name: {
             type: String,
             required: false
         },
-        value: String,
+        modelValue: String,
         mintime: String,
         maxtime: String,
         placeholder: String,
@@ -26,10 +27,10 @@ export default {
     computed: {
         timeValue: {
             get() {
-                return this.value;
+                return this.modelValue;
             },
             set(value) {
-                this.$emit('input', value);
+                this.$emit('update:modelValue', value);
             }
         }
     }

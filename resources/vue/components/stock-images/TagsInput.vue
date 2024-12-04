@@ -3,7 +3,7 @@
         <span class="sr-only">{{
             $gettext('Um einen Tag zu erstellen, schließen Sie Ihre Eingabe mit der Eingabetaste ab.')
         }}</span>
-        <TagsInput
+        <VueTagsInput
             v-model="tag"
             :add-on-key="[13, ';']"
             :autocomplete-items="filteredItems"
@@ -31,20 +31,17 @@
                     :title="$gettext('Tag entfernen')"
                 />
             </template>
-        </TagsInput>
+        </VueTagsInput>
     </div>
 </template>
 <script>
-import TagsInput from '@johmun/vue-tags-input';
+import { VueTagsInput } from '@vojtechlanka/vue-tags-input';
 
 const fromSimpleTags = (array) => array.map((text) => ({ text }));
 const toSimpleTags = (tags) => tags.map(({ text }) => text);
 
 export default {
-    model: {
-        prop: 'tags',
-        event: 'change',
-    },
+    emits: ['update:tags'],
     props: {
         tags: {
             type: Array,
@@ -56,7 +53,7 @@ export default {
         },
     },
 
-    components: { TagsInput },
+    components: { VueTagsInput },
 
     data: () => ({
         tag: '',
@@ -77,7 +74,7 @@ export default {
 
     methods: {
         onTagsChanged(newTags) {
-            this.$emit('change', toSimpleTags(newTags));
+            this.$emit('update:tags', toSimpleTags(newTags));
         },
     },
 

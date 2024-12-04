@@ -3,13 +3,10 @@ import CoursewarePublicModule from './store/courseware/courseware-public.module'
 import PublicCoursewareStructuralElement from './components/courseware/structural-element/PublicCoursewareStructuralElement.vue';
 import CoursewarePublicStructureModule from './store/courseware/public-structure.module';
 import PluginManager from './components/courseware/plugin-manager.js';
-import VueRouter from 'vue-router';
-import Vuex from 'vuex';
-import axios from 'axios';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
-import _ from 'lodash';
+import { createRouter } from 'vue-router';
+import { h } from "vue";
 
-const mountApp = (STUDIP, createApp, element) => {
+const mountApp = (STUDIP, createApp, store, element) => {
 
     let elem_id = null;
     let link_id = null;
@@ -37,43 +34,12 @@ const mountApp = (STUDIP, createApp, element) => {
         }
     }
 
-    const getHttpClient = () =>
-    axios.create({
-        baseURL: STUDIP.URLHelper.getURL('jsonapi.php/v1/public/courseware/'  + link_id, {}, true),
-        headers: {
-            'Content-Type': 'application/vnd.api+json',
-        },
-    });
-
     let base = new URL(
         STUDIP.URLHelper.getURL('dispatch.php/courseware/public', { link: link_id }, true)
     );
 
-    const httpClient = getHttpClient();
-
-    const store = new Vuex.Store({
-        modules: {
-            // courseware: CoursewareModule,
-            'courseware-public': CoursewarePublicModule,
-            'courseware-structure': CoursewarePublicStructureModule,
-            ...mapResourceModules({
-                names: [
-                    'courseware-blocks',
-                    'courseware-containers',
-                    'courseware-instances',
-                    'courseware-structural-elements',
-                    'courseware-user-data-fields',
-                    'courseware-user-progresses',
-                    'files',
-                    'file-refs',
-                    'folders',
-                    'users',
-                ],
-                httpClient,
-            }),
-        },
-    });
-
+    store.registerModule('courseware-public', CoursewarePublicModule);
+    store.registerModule('courseware-structure', CoursewarePublicStructureModule);
     store.dispatch('setContext', {
         id: link_id,
         type: entry_type,
@@ -108,18 +74,16 @@ const mountApp = (STUDIP, createApp, element) => {
         },
     ];
 
-    const router = new VueRouter({
+    const router = createRouter({
         base: `${base.pathname}${base.search}`,
         routes,
     });
 
     const app = createApp({
-        render: (h) => h(PublicApp),
+        render: () => h(PublicApp),
         router,
-        store
     });
-
-    app.$mount(element);
+    app.mount(element);
 
     return app;
 }

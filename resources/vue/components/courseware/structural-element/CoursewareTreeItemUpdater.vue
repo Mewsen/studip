@@ -11,6 +11,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-tree-item-adder',
+    emits: ['childrenUpdated', 'close'],
     props: {
         structuralElement: {
             type: Object,
@@ -61,10 +62,8 @@ export default {
                 await this.loadUser({ id: blockerData.id });
                 const blocker = this.userById({ id: blockerData.id });
                 this.companionWarning({
-                    info: this.$gettextInterpolate(
-                        this.$gettext(
-                            'Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.'
-                        ),
+                    info: this.$gettext(
+                        'Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.',
                         { blockingUserName: blocker.attributes['formatted-name'] }
                     ),
                 });

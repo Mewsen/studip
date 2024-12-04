@@ -18,6 +18,7 @@
 <script>
 export default {
     name: 'studip-multi-person-search',
+    emits: ['update:model-value'],
     props: {
         name: String,
         withDetail: {
@@ -42,7 +43,7 @@ export default {
     },
     computed: {
         id() {
-            return this._uid;
+            return this._.uid;
         },
         count_text_id() {
             return this.id + '_count';
@@ -71,9 +72,9 @@ export default {
             });
             let selection_header = document.createElement('div');
             selection_header.setAttribute('id', this.count_text_id);
-            selection_header.innerText = this.$gettextInterpolate(
-                this.$gettext('Sie haben %{ count } Personen ausgewählt'),
-                {count: this.count}
+            selection_header.innerText = this.$gettext(
+                'Sie haben %{ count } Personen ausgewählt',
+                { count: this.count }
             );
 
             $('#' + this.select_box_id).multiSelect({
@@ -108,9 +109,9 @@ export default {
                     if (searchcount === 0) {
                         view.append(
                             '--',
-                            view.$gettextInterpolate(
-                                view.$gettext('Es wurden keine neuen Ergebnisse für "%{ needle }" gefunden.'),
-                                {needle: view.searchTerm}
+                            view.$gettext(
+                                'Es wurden keine neuen Ergebnisse für "%{ needle }" gefunden.',
+                                { needle: view.searchTerm }
                             ),
                             true
                         );
@@ -164,9 +165,9 @@ export default {
 
         updateCount(){
             this.count = $('#' + this.select_box_id + ' option:enabled:selected').length;
-            $('#' + this.count_text_id).text(this.$gettextInterpolate(
-                this.$gettext('Sie haben %{ count } Personen ausgewählt'),
-                {count: this.count}
+            $('#' + this.count_text_id).text(this.$gettext(
+                'Sie haben %{ count } Personen ausgewählt',
+                { count: this.count }
             ));
         },
 
@@ -192,7 +193,7 @@ export default {
             } else {
                 return_value = user_ids;
             }
-            this.$emit('input', return_value);
+            this.$emit('update:model-value', return_value);
         }
     },
 }

@@ -1,7 +1,7 @@
 import Favico from 'favico.js';
 import Cache from './cache.js';
 import PageLayout from './page_layout.js';
-import { $gettextInterpolate, $ngettext } from './gettext';
+import { $ngettext } from './gettext';
 
 var stack = {};
 var audio_notification = false;
@@ -189,8 +189,13 @@ const PersonalNotifications = {
         }
         if (old_count !== count) {
             $('#notification_marker .count').text(count);
-            let notification_text = $ngettext('%{ count } Benachrichtigung', '%{ count } Benachrichtigungen', count);
-            $('#notification_marker').attr('title', $gettextInterpolate(notification_text, {count: count}));
+            let notification_text = $ngettext(
+                '%{ count } Benachrichtigung',
+                '%{ count } Benachrichtigungen',
+                count,
+                { count }
+            );
+            $('#notification_marker').attr('title', notification_text);
             updateFavicon(count);
             $('#notification-container .mark-all-as-read').toggleClass('invisible', count < 2);
         }

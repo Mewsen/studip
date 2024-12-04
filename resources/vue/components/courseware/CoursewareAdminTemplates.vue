@@ -2,13 +2,13 @@
     <div class="cw-admin-templates">
         <table class="default">
             <caption>
-                <translate>Vorlagen</translate>
+                {{ $gettext('Vorlagen') }}
             </caption>
             <thead>
                 <tr>
-                    <th><translate>Art des Lernmaterials</translate></th>
-                    <th><translate>Name</translate></th>
-                    <th class="actions"><translate>Aktionen</translate></th>
+                    <th>{{ $gettext('Art des Lernmaterials') }}</th>
+                    <th>{{ $gettext('Name') }}</th>
+                    <th class="actions">{{ $gettext('Aktionen') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,27 +40,27 @@
             <template v-slot:dialogContent>
                 <form class="default" @submit.prevent="">
                     <label>
-                        <translate>Name der neuen Vorlage</translate>
+                        {{ $gettext('Name der neuen Vorlage') }}}
                         <input v-model="newTemplateName" type="text" />
                     </label>
                     <label>
-                        <translate>Art des Lernmaterials</translate>
+                        {{ $gettext('Art des Lernmaterials') }}
                         <select v-model="newElementPurpose">
-                            <option value="content"><translate>Inhalt</translate></option>
-                            <option value="template"><translate>Aufgabenvorlage</translate></option>
-                            <option value="oer"><translate>OER-Material</translate></option>
-                            <option value="portfolio"><translate>ePortfolio</translate></option>
-                            <option value="draft"><translate>Entwurf</translate></option>
-                            <option value="other"><translate>Sonstiges</translate></option>
+                            <option value="content">{{ $gettext('Inhalt') }}</option>
+                            <option value="template">{{ $gettext('Aufgabenvorlage') }}</option>
+                            <option value="oer">{{ $gettext('OER-Material') }}</option>
+                            <option value="portfolio">{{ $gettext('ePortfolio') }}</option>
+                            <option value="draft">{{ $gettext('Entwurf') }}</option>
+                            <option value="other">{{ $gettext('Sonstiges') }}</option>
                         </select>
                     </label>
                     <label>
-                        <translate>Vorlage</translate><br>
+                        {{ $gettext('Vorlage') }}<br>
                         <button
                             class="button"
                             @click.prevent="chooseFile"
                         >
-                            <translate>Vorlage-Archiv auswählen</translate>
+                            {{ $gettext('Vorlage-Archiv auswählen') }}
                         </button>
                         <div v-if="importZip" class="cw-import-zip">
                             <header>{{ importZip.name }}</header>
@@ -84,18 +84,18 @@
             <template v-slot:dialogContent>
                 <form class="default" @submit.prevent="">
                     <label>
-                        <translate>Name der neuen Vorlage</translate>
+                        {{ $gettext('Name der neuen Vorlage') }}
                         <input v-model="currentTemplate.attributes.name" type="text" />
                     </label>
                     <label>
-                        <translate>Art des Lernmaterials</translate>
+                        {{ $gettext('Art des Lernmaterials') }}
                         <select v-model="currentTemplate.attributes.purpose">
-                            <option value="content"><translate>Inhalt</translate></option>
-                            <option value="template"><translate>Aufgabenvorlage</translate></option>
-                            <option value="oer"><translate>OER-Material</translate></option>
-                            <option value="portfolio"><translate>ePortfolio</translate></option>
-                            <option value="draft"><translate>Entwurf</translate></option>
-                            <option value="other"><translate>Sonstiges</translate></option>
+                            <option value="content">{{ $gettext('Inhalt') }}</option>
+                            <option value="template">{{ $gettext('Aufgabenvorlage') }}</option>
+                            <option value="oer">{{ $gettext('OER-Material') }}</option>
+                            <option value="portfolio">{{ $gettext('ePortfolio') }}</option>
+                            <option value="draft">{{ $gettext('Entwurf') }}</option>
+                            <option value="other">{{ $gettext('Sonstiges') }}</option>
                         </select>
                     </label>
                 </form>

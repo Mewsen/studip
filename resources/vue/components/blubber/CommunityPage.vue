@@ -1,21 +1,19 @@
 <template>
-    <div>
-        <BlubberPanel :threadId="threadId" :search="search" v-if="threadId" />
+    <BlubberPanel :threadId="threadId" :search="search" v-if="threadId" />
 
-        <MountingPortal mountTo="#blubber-search-widget" name="sidebar-blubber-search">
-            <BlubberSearchWidget :search="search" />
-        </MountingPortal>
-        <MountingPortal mountTo="#blubber-threads-widget" name="sidebar-blubber-threads">
-            <BlubberThreadsWidget
-                :hasMoreThreads="hasMoreThreads"
-                :threadId="threadId"
-                :threads="threads"
-                @load-more-threads="onLoadMoreThreads"
-                @select-thread="onSelectThread"
-                class="blubber_threads_widget"
-            />
-        </MountingPortal>
-    </div>
+    <Teleport to="#blubber-search-widget" name="sidebar-blubber-search">
+        <BlubberSearchWidget :search="search" />
+    </Teleport>
+    <Teleport to="#blubber-threads-widget" name="sidebar-blubber-threads">
+        <BlubberThreadsWidget
+            :hasMoreThreads="hasMoreThreads"
+            :threadId="threadId"
+            :threads="threads"
+            @load-more-threads="onLoadMoreThreads"
+            @select-thread="onSelectThread"
+            class="blubber_threads_widget"
+        />
+    </Teleport>
 </template>
 
 <script>
@@ -82,7 +80,7 @@ export default {
             }
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.globalOff('studip:select-blubber-thread', this.handleSelectBlubberThread);
     },
 };

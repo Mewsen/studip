@@ -47,21 +47,25 @@
                         <a
                             href="#"
                             @click.prevent="enableCommentsDialog(block)">
-                            {{ $gettextInterpolate(
-                                $ngettext('%{length} Kommentar', '%{length} Kommentare', block.comments.length),
-                                {length: block.comments.length}
+                            {{ $ngettext(
+                                '%{length} Kommentar',
+                                '%{length} Kommentare',
+                                block.comments.length,
+                                { length: block.comments.length }
                             ) }}
                         </a>
                     </td>
                     <td class="responsive-hidden">
-                        <a 
+                        <a
                             v-if="block.element.attributes['can-edit']"
                             href="#"
                             @click.prevent="enableFeedbackDialog(block)"
                             >
-                            {{ $gettextInterpolate(
-                                $ngettext('%{length} Anmerkung', '%{length} Anmerkungen', block.feedbacks.length),
-                                {length: block.feedbacks.length}
+                            {{ $ngettext(
+                                '%{length} Anmerkung',
+                                '%{length} Anmerkungen',
+                                block.feedbacks.length,
+                                { length: block.feedbacks.length }
                             ) }}
                         </a>
                         <template v-else>

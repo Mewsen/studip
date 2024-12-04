@@ -1,5 +1,5 @@
 <template>
-    <a 
+    <a
         href="#"
         class="cw-unit-progress-item"
         :title="name"
@@ -19,6 +19,7 @@ import CoursewareProgressCircle from './CoursewareProgressCircle.vue';
 
 export default {
     name: 'courseware-unit-progress-item',
+    emits: ['selectChapter'],
     components: {
         CoursewareProgressCircle,
     },

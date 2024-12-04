@@ -20,6 +20,7 @@
 
 <script>
 export default {
+    emits: ['upload'],
     props: {
         type: {
             type: String,

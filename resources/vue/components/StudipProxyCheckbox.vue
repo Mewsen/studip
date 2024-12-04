@@ -1,12 +1,12 @@
 <script>
+import { h } from 'vue';
+
 let uuid = 0;
 export default {
     name: 'studip-proxy-checkbox',
-    model: {
-        prop: 'selected',
-        event: 'change',
-    },
+    emits: ['update:selected'],
     props: {
+        name: String,
         id: String,
         total: {
             type: Array,
@@ -15,11 +15,11 @@ export default {
        selected: {
             type: Array,
             required: true,
-        }
+        },
     },
     methods: {
         changeProxy () {
-            this.$emit('change', this.checked ? [] : [...this.total] );
+            this.$emit('update:selected', this.checked ? [] : [...this.total] );
         }
     },
     computed: {
@@ -33,23 +33,15 @@ export default {
             return this.selected.length > 0 && this.selected.length !== this.total.length;
         }
     },
-    render (createElement) {
-        const checkbox = createElement('input', {
-            attrs: {
-                type: 'checkbox',
-                name: this.name,
-                id: this.proxyId
-            },
-            domProps: {
-                checked: this.checked,
-                indeterminate: this.indeterminate,
-            },
-            on: {
-                change: this.changeProxy,
-            }
+    render () {
+        return h('input', {
+            type: 'checkbox',
+            name: this.name,
+            id: this.proxyId,
+            checked: this.checked ? true : null,
+            indeterminate: this.indeterminate ? true : null,
+            onChange: this.changeProxy,
         });
-
-        return checkbox;
     }
 };
 </script>

@@ -11,7 +11,7 @@
             />
         </div>
         <div>
-            <AttributesFieldset :metadata="metadata" :suggested-tags="suggestedTags" @change="onChange" />
+            <AttributesFieldset :metadata="metadata" :suggested-tags="suggestedTags" @change="metadata => onChange(metadata)" />
         </div>
     </div>
 </template>
@@ -26,6 +26,8 @@ export default {
 
     components: { AttributesFieldset, ThumbnailCard },
 
+    emits: ['change'],
+
     data: () => ({
         fileURL: null,
         height: null,
@@ -39,7 +41,7 @@ export default {
                 return this.metadata.tags;
             },
             set(tags) {
-                this.$set(this.metadata, 'tags', tags);
+                this.$emit('change', { ...this.metadata, tags });
             },
         },
     },
@@ -58,10 +60,10 @@ export default {
             this.width = target.width;
         };
         this.image.src = this.fileURL;
-        this.$set(this.metadata, 'title', this.file.name);
+        this.$emit('change', { ...this.metadata, title: this.file.name });
     },
 
-    beforeDestroy() {
+    beforeUnmount() {
         if (this.fileURL) {
             URL.revokeObjectURL(this.fileURL);
         }

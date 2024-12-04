@@ -8,7 +8,8 @@ const toISO8601 = (date) => date.toISOString();
 const pad = (what, length = 2) => `00000000${what}`.substr(-length);
 
 export default {
-    props: ['value'],
+    emits: ['update:model-value'],
+    props: ['model-value'],
     data: () => ({
         date: new Date(),
     }),
@@ -20,14 +21,14 @@ export default {
     methods: {
         onInput({ target }) {
             const newValue = toISO8601(target.valueAsDate);
-            if (newValue !== this.value) {
-                this.$emit('input', newValue);
+            if (newValue !== this.modelValue) {
+                this.$emit('update:model-value', newValue);
             }
         },
     },
-    beforeMount() {
-        if (this.value) {
-            this.date = fromISO8601(this.value);
+    created() {
+        if (this.model-value) {
+            this.date = fromISO8601(this.modelValue);
         }
     },
 };

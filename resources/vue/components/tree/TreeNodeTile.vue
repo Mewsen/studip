@@ -1,11 +1,17 @@
 <template>
-    <a :href="url" @click.prevent="openNode" :title="$gettextInterpolate($gettext('Unterebene %{ node } öffnen'),
-                                { node: node.attributes.name }, true)">
+    <a :href="url"
+       @click.prevent="openNode"
+       :title="$gettext(
+           'Unterebene %{ node } öffnen',
+           { node: node.attributes.name },
+           true
+       )"
+    >
         <p class="studip-tree-child-title">
             {{ node.attributes.name }}
         </p>
 
-        <tree-node-course-info v-if="node.attributes.ancestors.length > 2" 
+        <tree-node-course-info v-if="node.attributes.ancestors.length > 2"
                                :node="node"
                                :semester="semester"
                                :sem-class="semClass"

@@ -255,6 +255,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-unit-item-dialog-permissions',
+    emits: ['close'],
     components: {
         CoursewareCompanionBox,
         Datepicker,

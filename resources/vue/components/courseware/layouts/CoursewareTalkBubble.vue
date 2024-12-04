@@ -34,6 +34,7 @@ import { mapGetters } from 'vuex';
 export default {
     name: 'courseware-talk-bubble',
     components: { IsoDate },
+    emits: ['delete'],
     props: {
         payload: Object,
     },

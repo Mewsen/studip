@@ -111,7 +111,7 @@
                                     v-model="shape.data.color"
                                     @input="drawScreen"
                                 >
-                                    <template #open-indicator="selectAttributes">
+                                    <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"
                                             ><studip-icon shape="arr_1down" :size="10"
                                         /></span>
@@ -139,7 +139,7 @@
                                     v-model="shape.data.textcolor"
                                     @input="drawScreen"
                                 >
-                                    <template #open-indicator="selectAttributes">
+                                    <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"
                                             ><studip-icon shape="arr_1down" :size="10"
                                         /></span>
@@ -263,7 +263,7 @@
 <script>
 import BlockComponents from './block-components.js';
 import blockMixin from '@/vue/mixins/courseware/block.js';
-import VueResizeable from 'vrp-vue-resizable';
+import VueResizeable from 'vue-resizable';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {

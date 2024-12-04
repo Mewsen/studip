@@ -219,6 +219,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-unit-item-dialog-settings',
+    emits: ['close'],
     components: {
         CoursewareFileChooser,
         StudipProgressIndicator,

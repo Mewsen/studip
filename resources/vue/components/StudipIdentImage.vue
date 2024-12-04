@@ -5,8 +5,9 @@
 <script>
 export default {
     name: 'studip-ident-image',
+    emits: ['update:modelValue'],
     props: {
-        value: {
+        modelValue: {
             type: String,
         },
         showCanvas: {
@@ -109,7 +110,7 @@ export default {
                 ctx.fill();
             });
 
-            this.$emit('input', canvas.toDataURL());
+            this.$emit('update:modelValue', canvas.toDataURL());
         },
         createPointInEllipse(ctx) {
             const x = this.random();

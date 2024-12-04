@@ -26,13 +26,13 @@
                 </td>
                 <td>
                     <div v-if="permission.meta['allowed-degrees-count'] > 0">
-                        {{ $gettextInterpolate($gettext('%{degrees} Abschlüsse'), { degrees: permission.meta['allowed-degrees-count']}) }}
+                        {{ $gettext('%{degrees} Abschlüsse', { degrees: permission.meta['allowed-degrees-count']}) }}
                     </div>
                     <div v-if="permission.meta['allowed-subjects-count'] > 0">
-                        {{ $gettextInterpolate($gettext('%{subjects} Fächer'), { subjects: permission.meta['allowed-subjects-count']}) }}
+                        {{ $gettext('%{subjects} Fächer', { subjects: permission.meta['allowed-subjects-count']}) }}
                     </div>
                     <div v-if="permission.meta['allowed-institutes-count'] > 0">
-                        {{ $gettextInterpolate($gettext('%{institutes} Einrichtungen'), { institutes: permission.meta['allowed-institutes-count']}) }}
+                        {{ $gettext('%{institutes} Einrichtungen', { institutes: permission.meta['allowed-institutes-count']}) }}
                     </div>
                 </td>
                 <td>

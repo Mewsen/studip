@@ -43,7 +43,7 @@
                             :clearable="false"
                             label="class"
                         >
-                            <template #open-indicator="selectAttributes">
+                            <template #open-indicator="{ selectAttributes }">
                                 <span v-bind="selectAttributes"
                                     ><studip-icon shape="arr_1down" :size="10"
                                 /></span>

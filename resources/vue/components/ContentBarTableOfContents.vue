@@ -8,7 +8,7 @@
             <article v-if="tocOpen" id="toc">
                 <header id="toc_header">
                     <h1 id="toc_h1">
-                        {{ $gettextInterpolate('Inhalt (%{count} Elemente)', { count: tocItemsCount }) }}
+                        {{ $gettext('Inhalt (%{count} Elemente)', {count: tocItemsCount.toString()}) }}
                     </h1>
                     <button class="toc-hide-button"
                             :title="$gettext('Inhaltsverzeichnis schließen')"

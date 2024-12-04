@@ -195,7 +195,7 @@ export default {
         });
         this.resetAdderStorage();
     },
-    beforeDestroy() {
+    beforeUnmount() {
         window.removeEventListener('scroll', this.updateToolbarTop);
         window.removeEventListener('resize', this.onResize);
     },
@@ -204,10 +204,13 @@ export default {
         consumeMode(newState) {
             this.setHideEditLayout(newState);
         },
-        containers(newValue, oldValue) {
-            if (newValue) {
-                this.resetAdderStorage();
-            }
+        containers: {
+            handler(newValue) {
+                if (newValue) {
+                    this.resetAdderStorage();
+                }
+            },
+            deep: true,
         },
         toolbarActive(newState, oldState) {
             let view = this;

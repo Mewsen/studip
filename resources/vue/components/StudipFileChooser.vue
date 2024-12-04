@@ -14,7 +14,7 @@ export default {
     components: {
         FileChooserDialog,
     },
-
+    emits: ['select'],
     props: {
         selectable: {
             type: String,
@@ -76,17 +76,20 @@ export default {
                 if (this.selectedId === '') {
                     return this.$gettext('Kein Ordner ausgewählt');
                 }
-                return this.$gettextInterpolate(this.$gettext('Ordner "%{folderName}" ausgewählt'), {
-                    folderName: this.folderById({ id: this.selectedId })?.attributes?.name ?? '-',
-                });
+                return this.$gettext(
+                    'Ordner "%{folderName}" ausgewählt'
+                    ,
+                    { folderName: this.folderById({ id: this.selectedId })?.attributes?.name ?? '-' }
+                );
             }
 
             if (this.selectedId === '') {
                 return this.$gettext('Keine Datei ausgewählt');
             }
-            return this.$gettextInterpolate(this.$gettext('Datei "%{fileName}" ausgewählt'), {
-                fileName: this.fileById({ id: this.selectedId })?.attributes?.name ?? '-',
-            });
+            return this.$gettext(
+                'Datei "%{fileName}" ausgewählt',
+                { fileName: this.fileById({ id: this.selectedId })?.attributes?.name ?? '-' }
+            );
         },
     },
     methods: {

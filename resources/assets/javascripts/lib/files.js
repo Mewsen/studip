@@ -1,6 +1,7 @@
 import { $gettext } from './gettext';
 import Dialog from './dialog.js';
 import FilesTable from '../../../vue/components/FilesTable.vue';
+import { h } from 'vue';
 
 const Files = {
     init () {
@@ -8,8 +9,7 @@ const Files = {
             && jQuery("#files_table_form").length) {
 
             STUDIP.Vue.load().then(({createApp}) => {
-                this.filesapp = createApp({
-                    el: "#content",
+                const app = createApp({
                     data() {
                         return {
                             files: jQuery("#files_table_form").data("files") || [],
@@ -27,6 +27,9 @@ const Files = {
                             }
                             return false;
                         },
+                        pushFile(file) {
+                            this.files.push(file);
+                        },
                         removeFile(id) {
                             this.files = this.files.filter(file => file.id != id)
                         },
@@ -36,14 +39,15 @@ const Files = {
                             });
                         }
                     },
-                    components: { FilesTable, },
                     updated () {
                         this.onUpdated();
                     },
                     created () {
                         this.onUpdated();
-                    }
+                    },
                 });
+                app.component('files-table', FilesTable);
+                this.filesapp = app.mount('#files_table_form');
             });
         }
 
@@ -258,7 +262,7 @@ const Files = {
                 }
             }
             if (insert) {
-                STUDIP.Files.filesapp.files.push(value);
+                STUDIP.Files.filesapp.pushFile(value);
             }
         });
         $(document).trigger('refresh-handlers');

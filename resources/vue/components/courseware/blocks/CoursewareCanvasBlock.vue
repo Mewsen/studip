@@ -106,9 +106,7 @@
             <template v-if="canEdit" #edit>
                 <courseware-tabs>
                     <courseware-tab
-                        :index="0"
                         :name="$gettext('Grunddaten')"
-                        :selected="true"
                     >
                         <form class="default" @submit.prevent="">
                             <label>
@@ -136,7 +134,6 @@
                         </form>
                     </courseware-tab>
                     <courseware-tab
-                        :index="1"
                         :name="$gettext('Einstellungen')"
                     >
                         <form class="default" @submit.prevent="">

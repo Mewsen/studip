@@ -12,13 +12,13 @@
             <template v-slot:dialogContent>
                 <courseware-companion-box
                     v-show="!exportRunning"
-                    :msgCompanion="$gettextInterpolate($gettext('Export des Lernmaterials: %{title}'), {title: title})"
+                    :msgCompanion="$gettext('Export des Lernmaterials: %{title}', { title })"
                     mood="curious"
                 />
 
                 <courseware-companion-box
                     v-show="exportRunning"
-                    :msgCompanion="$gettextInterpolate($gettext('%{title} wird exportiert, bitte haben sie einen Moment Geduld...'), {title: title})"
+                    :msgCompanion="$gettext('%{title} wird exportiert, bitte haben sie einen Moment Geduld...', { title })"
                     mood="pointing"
                 />
                 <div v-show="exportRunning" class="cw-import-zip">
@@ -48,6 +48,7 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'courseware-unit-item-dialog-export',
     mixins: [CoursewareExport],
+    emits: ['close'],
     components: {
         CoursewareCompanionBox,
     },
@@ -67,7 +68,7 @@ export default {
             exportState: 'exportState',
             instanceById: 'courseware-instances/byId',
             structuralElementById: 'courseware-structural-elements/byId',
-            userIsTeacher: 'userIsTeacher', 
+            userIsTeacher: 'userIsTeacher',
         }),
         instance() {
             if (this.inCourseContext) {
@@ -75,7 +76,7 @@ export default {
             } else {
                 return this.instanceById({id: 'user_' + this.context.id + '_' + this.unit.id});
             }
-            
+
         },
         inCourseContext() {
             return this.context.type === 'courses';
@@ -103,7 +104,7 @@ export default {
             }
 
             this.exportRunning = true;
-            
+
             this.setExportState(this.$gettext('Lade Einstellungen'));
             await this.loadUnitInstance();
             this.setExportState('');

@@ -16,13 +16,14 @@
                         @end="dropClipboardBlock($event)"
                         ref="clipboardSortables"
                         sectionId="0"
+                        item-key="id"
                     >
-                        <courseware-clipboard-item
-                            v-for="(clipboard, index) in clipboardBlocks"
-                            :key="index"
-                            :clipboard="clipboard"
-                            @inserted="$emit('blockAdded')"
-                        />
+                        <template #item="{element}">
+                            <courseware-clipboard-item
+                                :clipboard="element"
+                                @inserted="$emit('blockAdded')"
+                            />
+                        </template>
                     </draggable>
                 </div>
                 <button class="button trash" @click="clearClipboard('courseware-blocks')">
@@ -50,12 +51,13 @@
                         :clone="cloneClipboardContainer"
                         @end="dropNewContainer($event)"
                         ref="clipboardContainerSortables"
+                        item-key="id"
                     >
-                        <courseware-clipboard-item
-                            v-for="(clipboard, index) in clipboardContainers"
-                            :key="index"
-                            :clipboard="clipboard"
-                        />
+                        <template #item="{element}">
+                            <courseware-clipboard-item
+                                :clipboard="element"
+                            />
+                        </template>
                     </draggable>
                 </div>
                 <button class="button trash" @click="clearClipboard('courseware-containers')">
@@ -101,6 +103,7 @@ export default {
         StudipDialog,
         draggable,
     },
+    emits: ['blockAdded'],
     props: {
         toolbarContentHeight: {
             type: Number,
@@ -185,7 +188,7 @@ export default {
             return original;
         },
         async dropClipboardBlock(e) {
-            const target = e.to.__vue__.$attrs;
+            const target = e.to.__vnode.ctx.attrs;
             // only execute if dropped in destined list
             if (!target.containerId) {
                 return;
@@ -196,7 +199,7 @@ export default {
                 section: target.sectionId,
                 position: e.newIndex,
             });
-            await this.insertItem(e.item.__vue__._data.currentClipboard);
+            await this.insertItem(e.item.__vnode.ctx.data.currentClipboard);
             this.resetAdderStorage();
         },
         cloneClipboardContainer(original) {
@@ -222,7 +225,7 @@ export default {
 
             // if the container is from the clipboard, insert it via clipboard mixin, else add it via container mixin
             if (item.clipContainer) {
-                this.insertItem(e.item.__vue__._data.currentClipboard, e.newIndex);
+                this.insertItem(e.item.__vnode.ctx.data.currentClipboard, e.newIndex);
             } else {
                 const data = {
                     type: item.attributes['container-type'],

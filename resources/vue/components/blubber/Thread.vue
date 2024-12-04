@@ -67,6 +67,15 @@ export default {
         BlubberComposer,
         ThreadSubscriber,
     },
+    emits: [
+        'add-posting',
+        'change-comment',
+        'load-newer',
+        'load-older',
+        'pick-files',
+        'remove-comment',
+        'subscribe-thread',
+    ],
     props: {
         comments: {
             type: Array,
@@ -218,7 +227,7 @@ export default {
             }
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.$refs.scrollable.removeEventListener('scroll', this.handleDebouncedScroll);
     },
     beforeUpdate() {

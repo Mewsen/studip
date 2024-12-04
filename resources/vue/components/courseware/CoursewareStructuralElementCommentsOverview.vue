@@ -47,9 +47,11 @@
                             :title="$gettext('Kommentare anzeigen')"
                             @click.prevent="enableCommentsDialog(element)"
                         >
-                            {{ $gettextInterpolate(
-                                $ngettext('%{length} Kommentar', '%{length} Kommentare', element.comments.length),
-                                {length: element.comments.length}
+                            {{ $ngettext(
+                                '%{length} Kommentar',
+                                '%{length} Kommentare',
+                                element.comments.length,
+                                { length: element.comments.length }
                             ) }}
                         </a>
                     </td>
@@ -60,8 +62,10 @@
                             :title="$gettext('Anmerkungen anzeigen')"
                             @click.prevent="enableFeedbackDialog(element)"
                         >
-                            {{ $gettextInterpolate(
-                                $ngettext('%{length} Anmerkung', '%{length} Anmerkungen', element.feedbacks.length),
+                            {{ $ngettext(
+                                '%{length} Anmerkung',
+                                '%{length} Anmerkungen',
+                                element.feedbacks.length,
                                 {length: element.feedbacks.length}
                             ) }}
                         </a>

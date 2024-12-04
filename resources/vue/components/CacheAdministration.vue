@@ -5,10 +5,10 @@
         </StudipMessageBox>
         <fieldset>
             <legend>
-                <translate>Cachetyp</translate>
+                {{ $gettext('Cachetyp') }}
             </legend>
             <label>
-                <translate>Cachetyp auswählen</translate>
+                {{ $gettext('Cachetyp auswählen') }}
 
                 <select name="cachetype" v-model="selectedCacheType" @change="getCacheConfig">
                     <option v-for="(type) in cacheTypes" :key="type.cache_id" :value="type.class_name">
@@ -24,12 +24,12 @@
                 <component :is="configComponent" v-bind="configProps" ref="cacheConfig" @is-valid="setValid"></component>
             </template>
             <template v-else>
-                <translate>Für diesen Cachetyp ist keine Konfiguration erforderlich.</translate>
+                {{ $gettext('Für diesen Cachetyp ist keine Konfiguration erforderlich.') }}
             </template>
         </fieldset>
         <footer data-dialog-button>
             <button class="button accept" @click.prevent="validateConfig" :disabled="!isValid">
-                <translate>Speichern</translate>
+                {{ $gettext('Speichern') }}
             </button>
         </footer>
     </form>

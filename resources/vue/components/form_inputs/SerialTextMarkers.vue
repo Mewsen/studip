@@ -67,7 +67,7 @@ export default {
             }
         });
     },
-    destroyed() {
+    unmounted() {
         STUDIP.eventBus.off('editor-loaded');
     }
 }

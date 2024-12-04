@@ -43,15 +43,17 @@ import TaskItem from './TaskGroupTaskItem.vue';
 
 export default {
     components: { CompanionBox, TaskItem },
+    emits: ['add-feedback', 'edit-feedback', 'solve-renewal'],
     props: ['taskGroup', 'tasks'],
     computed: {
         ...mapGetters({
             coursewareContext: 'context',
         }),
         actionMenuContext() {
-            return this.$gettextInterpolate(this.$gettext('Courseware-Aufgabe "%{ taskGroup }"'), {
-                taskGroup: this.taskGroup.attributes.title,
-            });
+            return this.$gettext(
+                'Courseware-Aufgabe "%{ taskGroup }"',
+                { taskGroup: this.taskGroup.attributes.title }
+            );
         },
     },
 };

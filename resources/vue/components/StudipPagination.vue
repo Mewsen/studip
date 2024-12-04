@@ -10,18 +10,18 @@
                     {{ $gettext('zurück') }}
                 </button>
             </li>
-            <template v-for="offset of offsets">
-                <li :key="'end-dots-' + offset" class="divider"
+            <template v-for="offset of offsets" :key="offset">
+                <li class="divider"
                     v-if="offset === (total_offsets - 1) && currentOffset < (total_offsets - 1) - (range + 1)">
                     &hellip;
                 </li>
-                <li :key="'offset-' + offset" :class="{'current': offset === currentOffset, 'no-divider': offset === 0}">
+                <li :class="{'current': offset === currentOffset, 'no-divider': offset === 0}">
                     <button class="pagination--link" @click.prevent="goTo(offset)">
                         <span class="audible">{{ $gettext('Seite') }}</span>
                         {{ offset + 1 }}
                     </button>
                 </li>
-                <li :key="'start-dots' + offset" class="divider"
+                <li class="divider"
                     v-if="offset === 0 && currentOffset > range + 1">
                     &hellip;
                 </li>
@@ -39,6 +39,7 @@
 <script>
 export default {
     name: 'studip-pagination',
+    emits: ['updateOffset'],
     props: {
         currentOffset: {
             type: Number,
@@ -60,11 +61,10 @@ export default {
     },
     computed: {
         pagination_id() {
-            return 'pagination-label-' + this._uid;
+            return 'pagination-label-' + this._.uid;
         },
         total_offsets() {
-            let total = Math.ceil(this.totalItems / this.itemsPerPage);
-            return total;
+            return Math.ceil(this.totalItems / this.itemsPerPage);
         },
         offsets() {
             let offsets = [0, this.currentOffset, (this.total_offsets - 1)];

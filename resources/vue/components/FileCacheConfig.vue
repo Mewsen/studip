@@ -1,7 +1,7 @@
 <template>
     <label class="col-4">
         <span class="required">
-            <translate>Dateipfad</translate>
+            {{ $gettexdt('Dateipfad') }}
         </span>
         <input required type="text" name="path" v-model="thePath">
     </label>
@@ -10,6 +10,7 @@
 <script>
 export default {
     name: 'FileCacheConfig',
+    emits: ['is-valid'],
     props: {
         path: {
             type: String,

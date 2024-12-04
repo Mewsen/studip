@@ -8,6 +8,7 @@
 <script>
 export default {
     name: 'studip-square-button',
+    emits: ['click'],
     props: {
         icon: {
             type: String,

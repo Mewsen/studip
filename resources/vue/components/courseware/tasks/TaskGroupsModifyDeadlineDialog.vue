@@ -14,7 +14,7 @@
                     {{ $gettext('Aktuelle Bearbeitungszeit:') }} <StudipDate :date="startDate" /> - <StudipDate
                         :date="endDate"
                     />
-                    ({{ $gettextInterpolate($gettext('%{ count } Tage'), { count: oldDuration }) }})
+                    ({{ $gettext('%{ count } Tage', { count: oldDuration }) }})
                 </p>
                 <div class="formpart">
                     <label class="studiprequired">
@@ -35,7 +35,7 @@
                     {{ $gettext('Verlängerte Bearbeitungszeit:') }} <StudipDate :date="startDate" /> - <StudipDate
                         :date="newEndDate"
                     />
-                    ({{ $gettextInterpolate($gettext('%{ count } Tage'), { count: newDuration }) }})
+                    ({{ $gettext('%{ count } Tage', { count: newDuration }) }})
                 </p>
             </form>
         </template>

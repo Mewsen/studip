@@ -5,7 +5,6 @@
                ref="visibleInput"
                class="visible_input"
                v-bind="$attrs"
-               v-on="$listeners"
                :placeholder="placeholder">
     </span>
 </template>
@@ -16,12 +15,13 @@ import RestrictedDatesHelper from '../../assets/javascripts/lib/RestrictedDatesH
 export default {
     name: 'Datepicker',
     inheritAttrs: false,
+    emits: ['update:modelValue'],
     props: {
+        modelValue: [Date, String, Number],
         name: {
             type: String,
             required: false
         },
-        value: [Date, String, Number],
         mindate: [Date, Number, String],
         maxdate: [Date, Number, String],
         placeholder: String,
@@ -69,14 +69,14 @@ export default {
         },
         returnValue() {
             if (this.returnAs === 'unix') {
-                return this.convertInputToUnixTimestamp(this.value);
+                return this.convertInputToUnixTimestamp(this.modelValue);
             }
 
             if (this.returnAs === 'iso') {
-                return this.convertInputToNativeDate(this.value).toISOString();
+                return this.convertInputToNativeDate(this.modelValue).toISOString();
             }
 
-            return this.convertInputToNativeDate(this.value).toLocaleDateString(String.locale);
+            return this.convertInputToNativeDate(this.modelValue).toLocaleDateString(String.locale);
         }
     },
     methods: {
@@ -104,11 +104,11 @@ export default {
         },
         setUnixTimestamp () {
             let date = this.input.datepicker('getDate');
-            this.$emit('input', this.emitDate ? date : Math.floor(date.getTime() / 1000));
+            this.$emit('update:modelValue', this.emitDate ? date : Math.floor(date.getTime() / 1000));
         }
     },
     mounted () {
-        let value = this.convertInputToUnixTimestamp(this.value);
+        let value = this.convertInputToUnixTimestamp(this.modelValue);
 
         if (Number.isInteger(value)) {
             let date = new Date(value * 1000);

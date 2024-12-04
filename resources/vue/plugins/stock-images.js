@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
+import { mapResourceModules } from '@/assets/javascripts/lib/reststate-vuex.js';
 import stockImagesModule from '../store/stock-images.js';
 import * as components from '../components/stock-images/components.js';
 

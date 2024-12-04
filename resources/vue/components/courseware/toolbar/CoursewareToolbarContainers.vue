@@ -2,9 +2,8 @@
     <div class="cw-toolbar-containers">
         <div class="cw-container-style-selector" role="group" aria-labelledby="cw-containeradder-style">
             <p class="sr-only" id="cw-containeradder-style">{{ $gettext('Abschnitt-Stil') }}</p>
-            <template v-for="style in containerStyles">
+            <template v-for="style in containerStyles" :key="style.key + '-input'">
                 <input
-                    :key="style.key + '-input'"
                     type="radio"
                     name="container-style"
                     :id="'style-' + style.colspan"
@@ -12,7 +11,6 @@
                     :value="style.colspan"
                 />
                 <label
-                    :key="style.key + '-label'"
                     :for="'style-' + style.colspan"
                     :class="[
                         selectedContainerStyle === style.colspan ? 'cw-container-style-selector-active' : '',
@@ -36,18 +34,19 @@
             @start="dragContainerStart($event)"
             @end="dropNewContainer($event)"
             ref="containerSortables"
+            item-key="type"
         >
-            <courseware-container-adder-item
-                v-for="container in containerTypes"
-                :key="container.type"
-                :title="container.title"
-                :type="container.type"
-                :colspan="selectedContainerStyle"
-                :description="container.description"
-                :firstSection="firstSection"
-                :secondSection="secondSection"
-                :newPosition="newContainerPosition"
-            ></courseware-container-adder-item>
+            <template #item="{element}">
+                <courseware-container-adder-item
+                    :title="element.title"
+                    :type="element.type"
+                    :colspan="selectedContainerStyle"
+                    :description="element.description"
+                    :firstSection="firstSection"
+                    :secondSection="secondSection"
+                    :newPosition="newContainerPosition"
+                ></courseware-container-adder-item>
+            </template>
         </draggable>
     </div>
 </template>
@@ -87,8 +86,8 @@ export default {
         },
         containers() {
             return this.relatedContainers({
-                parent: this.structuralElementById({id: this.$route.params.id}), 
-                relationship: 'containers'    
+                parent: this.structuralElementById({id: this.$route.params.id}),
+                relationship: 'containers'
             });
         },
         newContainerPosition() {
@@ -141,7 +140,7 @@ export default {
 
             // if the container is from the clipboard, insert it via clipboard mixin, else add it via container mixin
             if (item.clipContainer) {
-                this.insertItem(e.item.__vue__._data.currentClipboard, e.newIndex);
+                this.insertItem(e.item.__node.ctx.data.currentClipboard, e.newIndex);
             } else {
                 const data = {
                 type: item.attributes['container-type'],

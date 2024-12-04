@@ -1,5 +1,5 @@
 <template>
-    <focus-trap v-model="consumModeTrap">
+    <focus-trap v-model:active="consumModeTrap">
         <div>
             <div
                 v-if="validContext"
@@ -54,11 +54,10 @@
                                         />
                                         <span
                                             v-else
-                                            :title="$gettextInterpolate(
-                                                        $gettext('Fortschritt: %{progress} %'),{
-                                                        progress: elementProgress,
-                                            })
-                                                    "
+                                            :title="$gettext(
+                                                'Fortschritt: %{progress} %',
+                                                {progress: elementProgress}
+                                            )"
                                         >
                                             ({{ elementProgress }} %)
                                         </span>
@@ -69,11 +68,12 @@
                                         :size="16"
                                         :role="hasFeedbackAverage ? 'status-yellow' : 'inactive'"
                                         :title="
-                                        hasFeedbackAverage
-                                            ?$gettextInterpolate($gettext('Seite wurde mit %{avg} Sternen bewertet'), {
-                                                avg: feedbackAverage,
-                                            })
-                                            :$gettext('Seite wurde noch nicht bewertet')
+                                            hasFeedbackAverage
+                                                ? $gettext(
+                                                    'Seite wurde mit %{avg} Sternen bewertet',
+                                                    { avg: feedbackAverage }
+                                                  )
+                                                : $gettext('Seite wurde noch nicht bewertet')
                                         "
                                         @click="menuAction('showFeedback')"
                                     />
@@ -142,10 +142,8 @@
                                 <courseware-companion-box
                                     v-if="blockedByAnotherUser"
                                     :msgCompanion="
-                                        $gettextInterpolate(
-                                            $gettext(
-                                                'Die Einstellungen dieser Seite werden im Moment von %{blockingUserName} bearbeitet.'
-                                            ),
+                                        $gettext(
+                                            'Die Einstellungen dieser Seite werden im Moment von %{blockingUserName} bearbeitet.',
                                             { blockingUserName: blockingUserName }
                                         )
                                     "
@@ -199,10 +197,8 @@
                                 <div v-if="canEdit" class="cw-companion-box-wrapper">
                                     <courseware-companion-box
                                         :msgCompanion="
-                                            $gettextInterpolate(
-                                                $gettext(
-                                                    'Dieser Inhalt ist aus den persönlichen Lernmaterialien von %{ ownerName } verlinkt und kann nur dort bearbeitet werden.'
-                                                ),
+                                            $gettext(
+                                                'Dieser Inhalt ist aus den persönlichen Lernmaterialien von %{ ownerName } verlinkt und kann nur dort bearbeitet werden.',
                                                 { ownerName: ownerName }
                                             )
                                         "
@@ -227,42 +223,41 @@
                                         {{ $gettext('Drücken Sie die Leertaste, um neu anzuordnen.') }}
                                     </span>
                                     <draggable
+                                        v-bind="dragOptions"
                                         class="cw-structural-element-list"
                                         tag="ol"
                                         role="listbox"
                                         v-model="containerList"
-                                        v-bind="dragOptions"
                                         handle=".cw-sortable-handle"
                                         @start="isDragging = true"
                                         @end="dropContainer"
+                                        item-key="id"
                                     >
-                                        <li
-                                            v-for="container in containerList"
-                                            :key="container.id"
-                                            class="cw-container-item-sortable"
-                                        >
-                                            <span
-                                                :class="{ 'cw-sortable-handle-dragging': isDragging }"
-                                                class="cw-sortable-handle"
-                                                tabindex="0"
-                                                role="option"
-                                                aria-describedby="operation"
-                                                :ref="'sortableHandle' + container.id"
-                                                @keydown="keyHandler($event, container.id)"
-                                            ></span>
-                                            <component
-                                                :is="containerComponent(container)"
-                                                :container="container"
-                                                :canEdit="canEdit"
-                                                :canAddElements="canAddElements"
-                                                :isTeacher="userIsTeacher"
-                                                class="cw-container-item"
-                                                ref="containers"
-                                                :class="{
-                                                    'cw-container-item-selected': keyboardSelected === container.id,
-                                                }"
-                                            />
-                                        </li>
+                                        <template #item="{element}">
+                                            <li class="cw-container-item-sortable">
+                                                <span
+                                                    :class="{ 'cw-sortable-handle-dragging': isDragging }"
+                                                    class="cw-sortable-handle"
+                                                    tabindex="0"
+                                                    role="option"
+                                                    aria-describedby="operation"
+                                                    :ref="'sortableHandle' + element.id"
+                                                    @keydown="keyHandler($event, element.id)"
+                                                ></span>
+                                                <component
+                                                    :is="containerComponent(element)"
+                                                    :container="element"
+                                                    :canEdit="canEdit"
+                                                    :canAddElements="canAddElements"
+                                                    :isTeacher="userIsTeacher"
+                                                    class="cw-container-item"
+                                                    ref="containers"
+                                                    :class="{
+                                                        'cw-container-item-selected': keyboardSelected === element.id,
+                                                    }"
+                                                />
+                                            </li>
+                                        </template>
                                     </draggable>
                                 </template>
                                 <studip-progress-indicator
@@ -495,6 +490,8 @@ export default {
 
     mixins: [CoursewareExport, colorMixin, wizardMixin, containerMixin],
 
+    emits: ['select'],
+
     data() {
         return {
             currentElement: '',
@@ -621,8 +618,8 @@ export default {
             textDelete.title = this.$gettext('Seite unwiderruflich löschen');
             textDelete.alert = this.$gettext('Möchten Sie die Seite wirklich löschen?');
             if (this.structuralElementLoaded) {
-                textDelete.alert = this.$gettextInterpolate(
-                    this.$gettext('Möchten Sie die Seite %{ pageTitle } und alle ihre Unterseiten wirklich löschen?'),
+                textDelete.alert = this.$gettext(
+                    'Möchten Sie die Seite %{ pageTitle } und alle ihre Unterseiten wirklich löschen?',
                     { pageTitle: this.structuralElement.attributes.title }
                 );
             }
@@ -681,11 +678,12 @@ export default {
                     return null;
                 }
                 const element = this.structuralElementById({ id: parentId });
-                if (element.relationships.parent.data === null && !this.showRootElement) {
-                    return null;
-                }
                 if (!element) {
                     console.error(`CoursewareStructuralElement#ancestors: Could not find parent by ID: "${parentId}".`);
+                    return null;
+                }
+                if (element.relationships.parent.data === null && !this.showRootElement) {
+                    return null;
                 }
 
                 return element;
@@ -1082,12 +1080,10 @@ export default {
             return true;
         },
         callToActionTitleFeedback() {
-            return this.$gettextInterpolate(
-                this.$ngettext(
-                    '%{length} Anmerkung zur Seite (Nur für Nutzende mit Schreibrechten sichtbar)',
-                    '%{length} Anmerkungen zur Seite (Nur für Nutzende mit Schreibrechten sichtbar)',
-                    this.feedbackCounter
-                ),
+            return this.$ngettext(
+                '%{length} Anmerkung zur Seite (Nur für Nutzende mit Schreibrechten sichtbar)',
+                '%{length} Anmerkungen zur Seite (Nur für Nutzende mit Schreibrechten sichtbar)',
+                this.feedbackCounter,
                 { length: this.feedbackCounter }
             );
         },
@@ -1103,8 +1099,10 @@ export default {
             return this.comments?.length ?? 0;
         },
         callToActionTitleComments() {
-            return this.$gettextInterpolate(
-                this.$ngettext('%{length} Kommentar zur Seite', '%{length} Kommentare zur Seite', this.commentsCounter),
+            return this.$ngettext(
+                '%{length} Kommentar zur Seite',
+                '%{length} Kommentare zur Seite',
+                this.commentsCounter,
                 { length: this.commentsCounter }
             );
         },
@@ -1196,8 +1194,8 @@ export default {
                     await this.loadStructuralElement(this.currentId);
                     if (this.blockedByAnotherUser) {
                         this.companionInfo({
-                            info: this.$gettextInterpolate(
-                                this.$gettext('Löschen nicht möglich, da %{blockingUserName} die Seite bearbeitet.'),
+                            info: this.$gettext(
+                                'Löschen nicht möglich, da %{blockingUserName} die Seite bearbeitet.',
                                 { blockingUserName: this.blockingUserName }
                             ),
                         });
@@ -1323,8 +1321,8 @@ export default {
             }
             if (this.blockedByAnotherUser) {
                 this.companionWarning({
-                    info: this.$gettextInterpolate(
-                        this.$gettext('Löschen nicht möglich, da %{blockingUserName} die Bearbeitung übernommen hat.'),
+                    info: this.$gettext(
+                        'Löschen nicht möglich, da %{blockingUserName} die Bearbeitung übernommen hat.',
                         { blockingUserName: this.blockingUserName }
                     ),
                 });
@@ -1394,10 +1392,8 @@ export default {
                         this.keyboardSelected = containerId;
                         const container = this.containerById({ id: containerId });
                         const index = this.containerList.findIndex((c) => c.id === container.id);
-                        this.assistiveLive = this.$gettextInterpolate(
-                            this.$gettext(
-                                '%{containerTitle} Abschnitt ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen.'
-                            ),
+                        this.assistiveLive = this.$gettext(
+                            '%{containerTitle} Abschnitt ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen.',
                             {
                                 containerTitle: container.attributes.title,
                                 pos: index + 1,
@@ -1429,10 +1425,8 @@ export default {
                 const container = this.containerById({ id: containerId });
                 const newPos = currentIndex - 1;
                 this.containerList.splice(newPos, 0, this.containerList.splice(currentIndex, 1)[0]);
-                this.assistiveLive = this.$gettextInterpolate(
-                    this.$gettext(
-                        '%{containerTitle} Abschnitt. Aktuelle Position in der Liste: %{pos} von %{listLength}.'
-                    ),
+                this.assistiveLive = this.$gettext(
+                    '%{containerTitle} Abschnitt. Aktuelle Position in der Liste: %{pos} von %{listLength}.',
                     {
                         containerTitle: container.attributes.title,
                         pos: newPos + 1,
@@ -1447,10 +1441,8 @@ export default {
                 const container = this.containerById({ id: containerId });
                 const newPos = currentIndex + 1;
                 this.containerList.splice(newPos, 0, this.containerList.splice(currentIndex, 1)[0]);
-                this.assistiveLive = this.$gettextInterpolate(
-                    this.$gettext(
-                        '%{containerTitle} Abschnitt. Aktuelle Position in der Liste: %{pos} von %{listLength}.'
-                    ),
+                this.assistiveLive = this.$gettext(
+                    '%{containerTitle} Abschnitt. Aktuelle Position in der Liste: %{pos} von %{listLength}.',
                     {
                         containerTitle: container.attributes.title,
                         pos: newPos + 1,
@@ -1462,8 +1454,8 @@ export default {
         abortKeyboardSorting(containerId) {
             const container = this.containerById({ id: containerId });
             this.keyboardSelected = null;
-            this.assistiveLive = this.$gettextInterpolate(
-                this.$gettext('%{containerTitle} Abschnitt, Neuordnung abgebrochen.'),
+            this.assistiveLive = this.$gettext(
+                '%{containerTitle} Abschnitt, Neuordnung abgebrochen.',
                 { containerTitle: container.attributes.title }
             );
             this.selectCurrent();
@@ -1472,10 +1464,8 @@ export default {
             const container = this.containerById({ id: containerId });
             const currentIndex = this.containerList.findIndex((container) => container.id === containerId);
             this.keyboardSelected = null;
-            this.assistiveLive = this.$gettextInterpolate(
-                this.$gettext(
-                    '%{containerTitle} Abschnitt, abgelegt. Entgültige Position in der Liste: %{pos} von %{listLength}.'
-                ),
+            this.assistiveLive = this.$gettext(
+                '%{containerTitle} Abschnitt, abgelegt. Entgültige Position in der Liste: %{pos} von %{listLength}.',
                 {
                     containerTitle: container.attributes.title,
                     pos: currentIndex + 1,
@@ -1653,18 +1643,24 @@ export default {
             },
             deep: true,
         },
-        containers() {
-            this.containerList = this.containers;
-            this.scrollToContainerHash();
+        containers: {
+            handler() {
+                this.containerList = this.containers;
+                this.scrollToContainerHash();
+            },
+            deep: true
         },
-        containerList() {
-            if (this.keyboardSelected) {
-                this.$nextTick(() => {
-                    const selected = this.$refs['sortableHandle' + this.keyboardSelected][0];
-                    selected.focus();
-                    selected.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                });
-            }
+        containerList: {
+            handler() {
+                if (this.keyboardSelected) {
+                    this.$nextTick(() => {
+                        const selected = this.$refs['sortableHandle' + this.keyboardSelected][0];
+                        selected.focus();
+                        selected.scrollIntoView({behavior: 'smooth', block: 'center'});
+                    });
+                }
+            },
+            deep: true
         },
         consumeMode(newState) {
             this.consumModeTrap = newState;
@@ -1693,7 +1689,7 @@ export default {
         window.addEventListener('scroll', this.handleDebouncedScroll);
     },
 
-    beforeDestroy() {
+    beforeUnmount() {
         if (this.handleDebouncedScroll) {
             window.removeEventListener('scroll', this.handleDebouncedScroll);
         }

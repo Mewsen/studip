@@ -18,7 +18,7 @@
         </label>
         <label>
             {{ $gettext('Tags') }}
-            <TagsInput v-model="tags" :suggestions="suggestedTags" />
+            <TagsInput v-model:tags="tags" :suggestions="suggestedTags" />
         </label>
     </div>
 </template>
@@ -28,6 +28,7 @@ import TagsInput from './TagsInput.vue';
 export default {
     props: ['metadata', 'suggestedTags'],
     components: { TagsInput },
+    emits: ['change'],
     computed: {
         author: {
             get() {

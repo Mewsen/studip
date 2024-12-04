@@ -15,6 +15,7 @@
 <script>
 export default {
     name: 'sidebar-widget',
+    emits: ['scroll'],
     props: {
         title: String,
     },
@@ -27,7 +28,7 @@ export default {
         this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
         this.$refs.scrollable.addEventListener('scroll', this.handleDebouncedScroll);
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.$refs.scrollable.removeEventListener('scroll', this.handleDebouncedScroll);
     },
 };

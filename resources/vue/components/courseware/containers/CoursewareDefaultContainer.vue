@@ -11,7 +11,7 @@
                     <span>{{ container.attributes.title }} ({{container.attributes.width}})</span>
                     <studip-icon v-if="blockedByAnotherUser" shape="lock-locked" />
                     <span v-if="blockedByAnotherUser" class="cw-default-container-blocker-warning">
-                        {{ $gettextInterpolate($gettext('Wird im Moment von %{ userName } bearbeitet'), { userName: this.blockingUserName }) }}
+                        {{ $gettext('Wird im Moment von %{ userName } bearbeitet', { userName: this.blockingUserName }) }}
                     </span>
                 </a>
                 <courseware-container-actions
@@ -144,6 +144,7 @@ export default {
         CoursewareContainerActions,
         StudipDialog,
     },
+    emits: ['closeEdit', 'showEdit', 'storeContainer'],
     props: {
         containerClass: String,
         container: Object,
@@ -263,9 +264,9 @@ export default {
             this.closeChange();
             if (this.blockedByAnotherUser) {
                 this.companionWarning({
-                    info: this.$gettextInterpolate(
-                        this.$gettext('Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.'),
-                        {blockingUserName: this.blockingUserName}
+                    info: this.$gettext(
+                        'Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.',
+                        { blockingUserName: this.blockingUserName }
                     )
                 });
                 return;
@@ -308,9 +309,9 @@ export default {
             }
             if (this.blockedByAnotherUser) {
                 this.companionWarning({
-                    info: this.$gettextInterpolate(
-                        this.$gettext('Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.'),
-                        {blockingUserName: this.blockingUserName}
+                    info: this.$gettext(
+                        'Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.',
+                        { blockingUserName: this.blockingUserName }
                     )
                 });
                 this.$emit('closeEdit');
@@ -331,9 +332,9 @@ export default {
                     this.showDeleteDialog = true;
                 } else {
                     this.companionInfo({
-                        info: this.$gettextInterpolate(
-                            this.$gettext('Löschen nicht möglich, da %{blockingUserName} den Abschnitt bearbeitet.'),
-                            {blockingUserName: this.blockingUserName}
+                        info: this.$gettext(
+                            'Löschen nicht möglich, da %{blockingUserName} den Abschnitt bearbeitet.',
+                            { blockingUserName: this.blockingUserName }
                         )
                     });
                 }
@@ -350,9 +351,9 @@ export default {
             await this.loadContainer({ id: this.container.id, options: { include: 'edit-blocker' } });
             if (this.blockedByAnotherUser) {
                 this.companionInfo({
-                    info: this.$gettextInterpolate(
-                        this.$gettext('Löschen nicht möglich, da %{blockingUserName} die Bearbeitung übernommen hat.'),
-                        {blockingUserName: this.blockingUserName}
+                    info: this.$gettext(
+                        'Löschen nicht möglich, da %{blockingUserName} die Bearbeitung übernommen hat.',
+                        { blockingUserName: this.blockingUserName }
                     )
                 });
                 return false;

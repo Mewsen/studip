@@ -46,7 +46,7 @@
                         @click.prevent="delegateEditMode(user.user_id)"
                         class="button"
                 >
-                    {{ $gettextInterpolate($gettext('Schreibmodus an %{name} übergeben'), { name: user.fullname }, true) }}
+                    {{ $gettext('Schreibmodus an %{name} übergeben', { name: user.fullname }, true) }}
                 </button>
             </footer>
         </form>
@@ -75,7 +75,6 @@
         </div>
 
         <wiki-editor-online-users :users="onlineUsers"></wiki-editor-online-users>
-
     </div>
 </template>
 <script>
@@ -84,6 +83,7 @@ import StudipDateTime from "./StudipDateTime.vue";
 import JSUpdater from "@/assets/javascripts/lib/jsupdater";
 import ContentBar from "./ContentBar.vue";
 import ContentBarBreadcrumbs from "./ContentBarBreadcrumbs.vue";
+import {markRaw} from "vue";
 
 export default {
     name: 'wiki-editor',
@@ -227,7 +227,7 @@ export default {
                 this.focusEditor();
             }
 
-            this.editor = editor;
+            this.editor = markRaw(editor);
         });
 
         JSUpdater.register(

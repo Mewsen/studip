@@ -58,10 +58,10 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import { defineComponent } from 'vue';
 import StudipIcon from '../StudipIcon.vue';
 
-export default Vue.extend({
+export default defineComponent({
     name: 'NavigationItem',
     components: { StudipIcon },
     props: {
@@ -96,13 +96,17 @@ export default Vue.extend({
         hasChildren() {
             return this.item.children && Object.keys(this.item.children).length > 0;
         },
-        navigateToText(itemTitle: string) {
-            return this.$gettextInterpolate(this.$gettext('Navigiere zu %{ title }'), { title: itemTitle });
+        navigateToText(title: string) {
+            return this.$gettext(
+                'Navigiere zu %{title}',
+                { title }
+            );
         },
-        openNavigationText(itemTitle: string): string {
-            return this.$gettextInterpolate(this.$gettext('Unternavigation zu %{ title } öffnen'), {
-                title: itemTitle,
-            });
+        openNavigationText(title: string): string {
+            return this.$gettext(
+                'Unternavigation zu %{title} öffnen',
+                { title }
+            );
         },
     },
 });

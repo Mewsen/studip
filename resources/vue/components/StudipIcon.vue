@@ -1,29 +1,27 @@
 <template>
     <input
         v-if="name"
+        v-bind="$attrs"
         type="image"
         :name="name"
         :src="url"
         :style="{ width: realSize + 'px', height: realSize + 'px' }"
         :role="ariaRole"
         :class="cssClass"
-        v-bind="$attrs"
-        v-on="$listeners"
         :alt="$attrs.alt ?? ''"
     />
     <img v-else
+         v-bind="$attrs"
          :src="url"
          :style="{ width: realSize + 'px', height: realSize + 'px' }"
          :role="ariaRole"
          :class="cssClass"
-         v-bind="$attrs"
-         v-on="$listeners"
          :alt="$attrs.alt ?? ''"
     />
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
 function getCSSVariableValue(property: string): Number {
     const value = getComputedStyle(document.body).getPropertyValue(property);
@@ -33,7 +31,7 @@ function getCSSVariableValue(property: string): Number {
 const defaultIconSize: Number = getCSSVariableValue('--icon-size-default');
 const inlineIconSize: Number = getCSSVariableValue('--icon-size-inline');
 
-export default Vue.extend({
+export default defineComponent({
     name: 'studip-icon',
     props: {
         ariaRole: {
@@ -49,7 +47,10 @@ export default Vue.extend({
             required: false,
             default: 'clickable',
         },
-        shape: String,
+        shape: {
+            type: String,
+            required: true,
+        },
         size: {
             type: Number,
             required: false,

@@ -28,8 +28,11 @@
 </template>
 
 <script>
+import {shallowRef} from "vue";
+
 export default {
     name: 'AdmissionRuleConfig',
+    emits: ['cancel', 'submit'],
     props: {
         type: {
             type: String,
@@ -75,9 +78,8 @@ export default {
     },
     created() {
         const file = STUDIP.Admission.availableRules[this.type];
-        let components = {};
         import(`@/vue/components/admission/${file}`).then((module) => {
-            this.component = module.default;
+            this.component = shallowRef(module.default);
             this.props = {
                 id: this.theRule?.id,
                 ruleData: this.theRule,

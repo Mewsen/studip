@@ -58,6 +58,7 @@ export default {
         fileChooserFileItem,
         fileChooserFolderItem,
     },
+    emits: ['selectId'],
     props: {
         files: {
             type: Array,

@@ -19,8 +19,13 @@ export default {
             'modules',
             'view',
         ]),
-        activeModules() {
-            return this.sortedModules.filter(module => module.active);
+        activeModules: {
+            get() {
+                return this.sortedModules.filter(module => module.active);
+            },
+            set(modules) {
+                this.sortedModules = modules;
+            }
         },
         inactiveModules() {
             return this.sortedModules.filter(module => !module.active);

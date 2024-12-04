@@ -591,7 +591,8 @@ button.ui-button::-moz-focus-inner {
 .ui-dialog .ui-dialog-content {
 	position: relative;
 	border: 0;
-	padding: .5em 1em;
+	padding: .5em 1em 0;
+    margin-bottom: .5em;
 	background: none;
 	overflow: auto;
 }

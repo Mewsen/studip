@@ -1,6 +1,6 @@
-import 'expose-loader?exposes[]=$&exposes[]=jQuery!jquery';
+import $ from 'expose-loader?exposes=$,jQuery!jquery';
 
-import { setLocale } from './lib/gettext';
+ import { setLocale } from './lib/gettext';
 
 import 'jquery-ui/ui/widget.js';
 import 'jquery-ui/ui/position.js';

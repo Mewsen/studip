@@ -12,7 +12,7 @@
                     <studip-icon v-if="item.icon" :shape="item.icon" role="info" class="text-bottom" alt=""></studip-icon>
                     <input v-if="name" type="hidden" :name="name + '[]'" :value="item.value">
                     <span>{{item.name}}</span>
-                    <button v-if="item.deletable" @click.prevent="deleteItem(item)" :title="$gettextInterpolate($gettext('%{ name } löschen'), {name: item.name}, true)" class="undecorated">
+                    <button v-if="item.deletable" @click.prevent="deleteItem(item)" :title="$gettext('%{ name } löschen', {name: item.name}, true)" class="undecorated">
                         <studip-icon shape="trash" class="text-bottom"></studip-icon>
                     </button>
                 </li>
@@ -21,17 +21,17 @@
         </div>
 
         <label v-if="selectable">
-            <translate>Oder aus Liste auswählen:</translate>
+            {{ $gettext('Oder aus Liste auswählen:') }}
             <select @change="quickselect" @keydown="navigate_or_select">
-                <option value=""><translate>Direkt auswählen ...</translate></option>
+                <option value="">{{ $gettext('Direkt auswählen ...') }}</option>
                 <template v-for="(opt, idx) in selectable">
                     <optgroup v-if="opt.label && opt.options" :label="opt.label" :key="idx">
-                        <option v-for="(option, index) in opt.options" :disabled="isSelected(option.value)" :value="JSON.stringify({value: option.value, name: option.name})" :key="index">
+                        <option v-for="(option, index) in opt.options" :disabled="isSelected(option.value)" :value="JSON.stringify({value: option.value, name: option.name})" :key="`group-${index}`">
                             {{ option.name + (isSelected(option.value) ? ' ✓' : '') }}
                         </option>
                     </optgroup>
-                    <option v-else :disabled="isSelected(opt.value)" @click="quicksearch" :value="JSON.stringify({value: opt.value, name: opt.name})" :key="idx">
-                        {{ opt.name + (isSelected(option.value) ? ' ✓' : '') }}
+                    <option v-else :disabled="isSelected(opt.value)" @click="quicksearch" :value="JSON.stringify({value: opt.value, name: opt.name})" :key="`opt-${idx}`">
+                        {{ opt.name + (isSelected(opt.value) ? ' ✓' : '') }}
                     </option>
                 </template>
             </select>
@@ -43,6 +43,7 @@
 <script>
 export default {
     name: 'editable-list',
+    emits: ['input', 'items'],
     props: {
         name: {
             type: String,

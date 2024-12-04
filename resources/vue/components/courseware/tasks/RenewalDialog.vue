@@ -38,6 +38,7 @@ export default {
     components: {
         DateInput,
     },
+    emits: ['close', 'update'],
     data: () => ({
         date: null,
         state: null,

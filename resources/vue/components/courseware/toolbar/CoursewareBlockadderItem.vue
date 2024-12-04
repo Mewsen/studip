@@ -51,16 +51,16 @@ export default {
         },
         favButtonTitle() {
             if (this.blockTypeIsFav) {
-                return this.$gettextInterpolate(
-                    this.$gettext('%{ blockName } Block aus den Favoriten entfernen'),
+                return this.$gettext(
+                    '%{ blockName } Block aus den Favoriten entfernen',
                     { blockName: this.title }
                 );
             }
 
-            return this.$gettextInterpolate(
-                this.$gettext('%{ blockName } Block zu Favoriten hinzufügen'),
+            return this.$gettext(
+                '%{ blockName } Block zu Favoriten hinzufügen',
                 { blockName: this.title }
-            );   
+            );
         }
     },
     methods: {
@@ -80,9 +80,9 @@ export default {
         async addBlock() {
             if (!this.addInProgress) {
                 this.addInProgress = true;
-                this.setAdderStorage({ 
-                    container: this.blockAdder.container, 
-                    section: this.blockAdder.section, 
+                this.setAdderStorage({
+                    container: this.blockAdder.container,
+                    section: this.blockAdder.section,
                     type: this.type ,
                     position: false
                 });

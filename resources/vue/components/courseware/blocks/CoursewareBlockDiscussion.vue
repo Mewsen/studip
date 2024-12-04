@@ -88,13 +88,12 @@ export default {
             return ((this.canEdit || this.userIsTeacher) && this.hasFeedback) || this.displayFeedback;
         },
         callToActionTitleFeedback() {
-            return this.$gettextInterpolate(
-                this.$ngettext(
-                    '%{length} Anmerkung (Nur für Nutzende mit Schreibrechten sichtbar)',
-                    '%{length} Anmerkungen (Nur für Nutzende mit Schreibrechten sichtbar)',
-                    this.feedbackCounter
-                ),
-            { length: this.feedbackCounter });
+            return this.$ngettext(
+                '%{length} Anmerkung (Nur für Nutzende mit Schreibrechten sichtbar)',
+                '%{length} Anmerkungen (Nur für Nutzende mit Schreibrechten sichtbar)',
+                this.feedbackCounter,
+                { length: this.feedbackCounter }
+            );
         },
         comments() {
             const { id, type } = this.block;
@@ -105,13 +104,12 @@ export default {
             return this.comments?.length ?? 0;
         },
         callToActionTitleComments() {
-            return this.$gettextInterpolate(
-                this.$ngettext(
-                    '%{length} Kommentar',
-                    '%{length} Kommentare',
-                    this.commentsCounter
-                ),
-            { length: this.commentsCounter });
+            return this.$ngettext(
+                '%{length} Kommentar',
+                '%{length} Kommentare',
+                this.commentsCounter,
+                { length: this.commentsCounter }
+            );
         },
     },
 };

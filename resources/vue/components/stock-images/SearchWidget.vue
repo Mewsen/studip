@@ -39,6 +39,7 @@
 import SidebarWidget from '../SidebarWidget.vue';
 
 export default {
+    emits: ['search'],
     props: {
         query: {
             type: String,

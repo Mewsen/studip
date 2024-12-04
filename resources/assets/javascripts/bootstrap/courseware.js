@@ -6,8 +6,8 @@ STUDIP.domReady(() => {
                 /* webpackChunkName: "courseware-shelf-app" */
                 '@/vue/courseware-shelf-app.js'
             ),
-        ]).then(([{ createApp }, { default: mountApp }]) => {
-            return mountApp(STUDIP, createApp, '#courseware-shelf-app');
+        ]).then(([{ createApp, store }, { default: mountApp }]) => {
+            return mountApp(STUDIP, createApp, store, '#courseware-shelf-app');
         });
     }
 
@@ -18,8 +18,8 @@ STUDIP.domReady(() => {
                 /* webpackChunkName: "courseware-index-app" */
                 '@/vue/courseware-index-app.js'
             ),
-        ]).then(([{ createApp }, { default: mountApp }]) => {
-            return mountApp(STUDIP, createApp, '#courseware-index-app');
+        ]).then(([{ createApp, store }, { default: mountApp }]) => {
+            return mountApp(STUDIP, createApp, store, '#courseware-index-app');
         });
     }
 
@@ -30,8 +30,8 @@ STUDIP.domReady(() => {
                 /* webpackChunkName: "courseware-activities-app" */
                 '@/vue/courseware-activities-app.js'
                 ),
-        ]).then(([{ createApp }, { default: mountApp }]) => {
-            return mountApp(STUDIP, createApp, '#courseware-activities-app');
+        ]).then(([{ createApp, store }, { default: mountApp }]) => {
+            return mountApp(STUDIP, createApp, store, '#courseware-activities-app');
         });
     }
 
@@ -42,8 +42,8 @@ STUDIP.domReady(() => {
                 /* webpackChunkName: "courseware-tasks-app" */
                 '@/vue/courseware-tasks-app.js'
             ),
-        ]).then(([{ createApp }, { default: mountApp }]) => {
-            return mountApp(STUDIP, createApp, '#courseware-tasks-app');
+        ]).then(([{ createApp, store }, { default: mountApp }]) => {
+            return mountApp(STUDIP, createApp, store, '#courseware-tasks-app');
         });
     }
 
@@ -54,8 +54,8 @@ STUDIP.domReady(() => {
                 /* webpackChunkName: "courseware-content-bookmark-app" */
                 '@/vue/courseware-content-bookmark-app.js'
             ),
-        ]).then(([{ createApp }, { default: mountApp }]) => {
-            return mountApp(STUDIP, createApp, '#courseware-content-bookmark-app');
+        ]).then(([{ createApp, store }, { default: mountApp }]) => {
+            return mountApp(STUDIP, createApp, store, '#courseware-content-bookmark-app');
         });
     }
 
@@ -66,8 +66,8 @@ STUDIP.domReady(() => {
                 /* webpackChunkName: "courseware-content-bookmark-app" */
                 '@/vue/courseware-admin-app.js'
             ),
-        ]).then(([{ createApp }, { default: mountApp }]) => {
-            return mountApp(STUDIP, createApp, '#courseware-admin-app');
+        ]).then(([{ createApp, store }, { default: mountApp }]) => {
+            return mountApp(STUDIP, createApp, store, '#courseware-admin-app');
         });
     }
 
@@ -78,8 +78,8 @@ STUDIP.domReady(() => {
                 /* webpackChunkName: "courseware-public-app" */
                 '@/vue/courseware-public-app.js'
             ),
-        ]).then(([{ createApp }, { default: mountApp }]) => {
-            return mountApp(STUDIP, createApp, '#courseware-public-app');
+        ]).then(([{ createApp, store }, { default: mountApp }]) => {
+            return mountApp(STUDIP, createApp, store, '#courseware-public-app');
         });
     }
 
@@ -90,8 +90,8 @@ STUDIP.domReady(() => {
                 /* webpackChunkName: "courseware-content-releases-app" */
                 '@/vue/courseware-content-releases-app.js'
             ),
-        ]).then(([{ createApp }, { default: mountApp }]) => {
-            return mountApp(STUDIP, createApp, '#courseware-content-releases-app');
+        ]).then(([{ createApp, store }, { default: mountApp }]) => {
+            return mountApp(STUDIP, createApp, store, '#courseware-content-releases-app');
         });
     }
 
@@ -102,8 +102,8 @@ STUDIP.domReady(() => {
                 /* webpackChunkName: "courseware-comments-app" */
                 '@/vue/courseware-comments-app.js'
             ),
-        ]).then(([{ createApp }, { default: mountApp }]) => {
-            return mountApp(STUDIP, createApp, '#courseware-comments-app');
+        ]).then(([{ createApp, store }, { default: mountApp }]) => {
+            return mountApp(STUDIP, createApp, store, '#courseware-comments-app');
         });
     }
 

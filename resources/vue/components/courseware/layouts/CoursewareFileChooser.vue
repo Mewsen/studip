@@ -1,17 +1,17 @@
 <template>
     <div class="cw-file-chooser">
-        <span v-translate>Ordner-Filter</span>
+        <span>{{ $gettext('Ordner-Filter') }}</span>
         <courseware-folder-chooser allowUserFolders unchoose v-model="selectedFolderId" />
-        <span v-translate>Datei</span>
+        <span>{{ $gettext('Datei') }}</span>
         <select v-model="currentValue" @change="selectFile">
             <option v-show="canBeEmpty" value="">
-                <translate>Keine Auswahl</translate>
+                {{ $gettext('Keine Auswahl') }}
             </option>
             <option v-for="(file, index) in files" :key="index" :value="file.id">
                 {{ file.name }}
             </option>
             <option v-show="files.length === 0" disabled>
-                <translate>Keine Dateien vorhanden</translate>
+                {{ $gettext('Keine Dateien vorhanden') }}
             </option>
         </select>
     </div>
@@ -25,6 +25,7 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'courseware-file-chooser',
     components: { CoursewareFolderChooser },
+    emits: ['selectFile'],
     props: {
         value: String,
         mimeType: { type: String, default: '' },

@@ -34,6 +34,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-structural-element-feedback',
+    emits: ['hasFeedback'],
     components: {
         CoursewareCompanionBox,
         CoursewareTalkBubble,

@@ -27,6 +27,7 @@
 <script>
 export default {
     name: 'ZipUploadDialog',
+    emits: ['cancel', 'confirm'],
     props: {
         show: {
             type: Boolean,

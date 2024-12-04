@@ -37,6 +37,7 @@
 <script>
 export default {
     name: 'MemcachedCacheConfig',
+    emits: ['is-valid'],
     props: {
         servers: {
             type: Array,

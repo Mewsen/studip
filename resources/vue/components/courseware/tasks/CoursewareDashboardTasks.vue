@@ -332,13 +332,17 @@ export default {
 
             if (attributes.visible) {
                 this.companionSuccess({
-                    info: this.$gettextInterpolate(this.$gettext('"%{ title }" wurde freigegeben.'),
-                    { title: taskTitle }),
+                    info: this.$gettext(
+                        '"%{ title }" wurde freigegeben.',
+                        { title: taskTitle }
+                    ),
                 });
             } else {
                 this.companionSuccess({
-                    info: this.$gettextInterpolate(this.$gettext('Die Freigabe für %{ "title }" wurde zurückgenommen.'),
-                    { title: taskTitle }),
+                    info: this.$gettext(
+                        'Die Freigabe für %{ "title }" wurde zurückgenommen.',
+                        { title: taskTitle }
+                    ),
                 });
             }
         }

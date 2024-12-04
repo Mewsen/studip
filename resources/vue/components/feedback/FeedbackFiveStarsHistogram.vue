@@ -7,11 +7,12 @@
             </p>
             <studip-five-stars :amount="average" />
             <p class="total">
-                {{
-                    $gettextInterpolate($ngettext('%{n} Bewertung', '%{n} Bewertungen', entries.length), {
-                        n: entries.length,
-                    })
-                }}
+                {{ $ngettext(
+                    '%{n} Bewertung',
+                    '%{n} Bewertungen',
+                    entries.length,
+                    { n: entries.length }
+                ) }}
             </p>
         </div>
         <div class="five-stars-histogram-chart" v-if="ratings">

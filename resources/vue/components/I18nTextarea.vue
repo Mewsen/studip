@@ -10,12 +10,10 @@
                    v-model="currentText"
                    :required="required && defaultLanguage === selectedLanguage.id"
                    v-bind="$attrs"
-                   v-on="$listeners"
                    v-if="type === 'text'">
             <textarea :name="nameOfInput(selectedLanguage.id)"
                       ref="inputfield"
                       v-bind="$attrs"
-                      v-on="$listeners"
                       v-model="currentText"
                       :required="required && defaultLanguage === selectedLanguage.id"
                       v-else-if="type === 'textarea'"></textarea>
@@ -23,7 +21,6 @@
                             ref="inputfield"
                             v-model="currentText"
                             v-bind="$attrs"
-                            v-on="$listeners"
                             :required="required && defaultLanguage === selectedLanguage.id"
                             v-else></studip-wysiwyg>
         </div>
@@ -49,21 +46,18 @@
                :name="name"
                v-model="currentText"
                v-bind="$attrs"
-               v-on="$listeners"
                :required="required"
                v-if="type === 'text'">
         <textarea :name="name"
                   ref="inputfield"
                   v-model="currentText"
                   v-bind="$attrs"
-                  v-on="$listeners"
                   :required="required"
                   v-else-if="type === 'textarea'"></textarea>
         <studip-wysiwyg :name="name"
                         ref="inputfield"
                         v-model="currentText"
                         v-bind="$attrs"
-                        v-on="$listeners"
                         :required="required"
                         v-else></studip-wysiwyg>
     </div>
@@ -76,6 +70,7 @@ export default {
     components: {
         StudipWysiwyg
     },
+    emits: ['allinputs', 'input', 'selectlanguage'],
     props: {
         name: {
             type: String,

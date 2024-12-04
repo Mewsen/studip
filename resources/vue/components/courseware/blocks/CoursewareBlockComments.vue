@@ -12,7 +12,7 @@
             </div>
             <div class="cw-block-comment-create">
                 <textarea v-model="createComment" :placeholder="placeHolder" spellcheck="true"></textarea>
-                <button class="button" @click="postComment"><translate>Senden</translate></button>
+                <button class="button" @click="postComment">{{ $gettext('Senden') }}</button>
             </div>
         </div>
     </section>
@@ -24,6 +24,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-block-comments',
+    emits: ['hasComments'],
     components: {
         CoursewareTalkBubble,
     },

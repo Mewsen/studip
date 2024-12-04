@@ -28,19 +28,20 @@
                     <td>
                         <input type="checkbox" :name="name + '_write_permissions[]'" :value="user.id"
                                v-model="user.write_permissions"
-                               :aria-label="$gettextInterpolate(
-                                   $gettext('Schreibzugriff für %{name}'),
+                               :aria-label="$gettext(
+                                   'Schreibzugriff für %{name}',
                                    {name: user.name},
                                    true
                                )">
                     </td>
                     <td class="actions">
                         <studip-icon shape="trash" aria-role="button" @click="removeContact(user.id)"
-                                     :title="$gettextInterpolate(
-                                         $gettext('Kalender nicht mehr mit %{name} teilen'),
+                                     :title="$gettext(
+                                         'Kalender nicht mehr mit %{name} teilen',
                                          {name: user.name},
                                          true
-                                     )"></studip-icon>
+                                     )"
+                        ></studip-icon>
                     </td>
                 </tr>
             </tbody>

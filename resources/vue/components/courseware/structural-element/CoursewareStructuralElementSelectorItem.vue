@@ -14,7 +14,7 @@
                 <studip-icon v-if="selected" shape="radiobutton-checked" />
                 <studip-icon v-else shape="radiobutton-unchecked" />
             </template>
-            <studip-icon v-else shape="decline" role="inactive" />    
+            <studip-icon v-else shape="decline" role="inactive" />
         </span>
         <template v-if="hasChildren">
             <a href="#" :aria-expanded="isOpen ? 'true' : 'false'" @click.prevent="toggleChildrenVisibility">
@@ -58,6 +58,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
     name: 'courseware-structural-element-selector-item',
+    emits: ['focus', 'input', 'selectable'],
     props: {
         element: {
             type: Object
@@ -75,7 +76,7 @@ export default {
         rootId: {
             type: String,
             required: true
-        },  
+        },
         validateAncestors: {
             type: Boolean,
             default: false
@@ -171,7 +172,7 @@ export default {
                         return element.id;
                 } else {
                     return this.siblings[index].id;
-                } 
+                }
             } else {
                 return this.$parent.element.id;
             }
@@ -229,7 +230,7 @@ export default {
                 case 38: // arrow up
                     event.preventDefault();
                     if (this.previousElementId !== null) {
-                        this.$emit('focus', this.previousElementId);    
+                        this.$emit('focus', this.previousElementId);
                     }
                     break;
                 case 39: // arrow right

@@ -1,28 +1,31 @@
 <template>
     <div class="content-modules-wrapper">
-        <draggable v-model="sortedModules" handle=".dragarea">
-            <transition-group
-                name="admin_contentmodules"
-                class="admin_contentmodules studip-grid"
-                tag="div"
-                role="listbox"
-            >
+        <draggable v-model="activeModules"
+                   handle=".dragarea"
+                   :component-data="{
+                        name:'admin_contentmodules',
+                        type: 'transition-group',
+                        tag: 'div',
+                   }"
+                   item-key="id"
+                   class="admin_contentmodules studip-grid"
+                   role="listbox"
+        >
+            <template #item="{element}">
                 <div
-                    v-for="module in activeModules"
-                    :key="module.id"
                     role="option"
                     class="studip-grid-element"
-                    :class="getModuleCSSClasses(module, activated[module.id])"
+                    :class="getModuleCSSClasses(element, activated[element.id])"
                     v-cloak
                 >
                     <div>
-                        <a class="upper_part dragarea" :href="getDescriptionURL(module)" data-dialog>
+                        <a class="upper_part dragarea" :href="getDescriptionURL(element)" data-dialog>
                             <div>
-                                <img :src="module.icon" width="40" height="40" v-if="module.icon" />
+                                <img :src="element.icon" width="40" height="40" v-if="element.icon" />
                             </div>
                             <div>
-                                <h3>{{ module.displayname }}</h3>
-                                {{ module.summary }}
+                                <h3>{{ element.displayname }}</h3>
+                                {{ element.summary }}
                             </div>
                         </a>
                         <div class="down_part">
@@ -31,26 +34,24 @@
                                     class="dragarea"
                                     tabindex="0"
                                     :aria-label="
-                                        $gettextInterpolate(
-                                            $gettext(
-                                                'Sortierelement für Werkzeug %{module}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.'
-                                            ),
-                                            { module: module.displayname },
+                                        $gettext(
+                                            'Sortierelement für Werkzeug %{module}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.',
+                                            { module: element.displayname },
                                             true
                                         )
                                     "
-                                    @keydown="keyboardHandler($event, module)"
+                                    @keydown="keyboardHandler($event, element)"
                                     v-if="filterCategory === null"
-                                    :ref="`draghandle-${module.id}`"
+                                    :ref="`draghandle-${element.id}`"
                                 >
                                     <span class="drag-handle"></span>
                                 </a>
-                                <label v-if="!module.mandatory">
+                                <label v-if="!element.mandatory">
                                     <input
                                         type="checkbox"
-                                        :checked="activated[module.id]"
-                                        @click="toggleModule(module)"
-                                        :ref="'checkbox_' + module.id"
+                                        :checked="activated[element.id]"
+                                        @click="toggleModule(element)"
+                                        :ref="'checkbox_' + element.id"
                                     />
                                     {{ $gettext('Werkzeug ist aktiv') }}
                                 </label>
@@ -61,38 +62,34 @@
                                     href="#"
                                     class="toggle_visibility"
                                     role="checkbox"
-                                    v-if="showVisibilityToggle(module)"
-                                    :aria-checked="module.visibility !== 'tutor' ? 'true' : 'false'"
-                                    @click.prevent="toggleModuleVisibility(module)"
+                                    v-if="showVisibilityToggle(element)"
+                                    :aria-checked="element.visibility !== 'tutor' ? 'true' : 'false'"
+                                    @click.prevent="toggleModuleVisibility(element)"
                                 >
                                     <studip-icon
                                         :shape="
-                                            module.visibility !== 'tutor'
+                                            element.visibility !== 'tutor'
                                                 ? 'visibility-visible'
                                                 : 'visibility-invisible'
                                         "
                                         class="text-bottom"
                                         :title="
-                                            $gettextInterpolate(
-                                                $gettext(
-                                                    'Inhaltsmodul %{ name } für Teilnehmende unsichtbar bzw. sichtbar schalten'
-                                                ),
-                                                { name: module.displayname },
+                                            $gettext(
+                                                'Inhaltsmodul %{ name } für Teilnehmende unsichtbar bzw. sichtbar schalten',
+                                                { name: element.displayname },
                                                 true
                                             )
                                         "
                                     ></studip-icon>
                                 </a>
-                                <a :href="getRenameURL(module)" data-dialog="size=medium">
+                                <a :href="getRenameURL(element)" data-dialog="size=medium">
                                     <studip-icon
                                         shape="edit"
                                         class="text-bottom"
                                         :title="
-                                            $gettextInterpolate(
-                                                $gettext(
-                                                    'Umbenennen des Inhaltsmoduls %{ name }'
-                                                ),
-                                                { name: module.displayname },
+                                            $gettext(
+                                                'Umbenennen des Inhaltsmoduls %{ name }',
+                                                { name: element.displayname },
                                                 true
                                             )
                                         "
@@ -102,7 +99,7 @@
                         </div>
                     </div>
                 </div>
-            </transition-group>
+            </template>
         </draggable>
         <transition-group
             name="admin_contentmodules"
@@ -164,15 +161,16 @@ export default {
     },
     methods: {
         toggleModule(module) {
-            Vue.set(this.activated, module.id, !this.activated[module.id]);
+            this.activated[module.id] = !this.activated[module.id];
             this.toggleModuleActivation(module);
         },
     },
     watch: {
         modules: {
             immediate: true,
+            deep: true,
             handler(current) {
-                current.forEach((module) => Vue.set(this.activated, module.id, module.active));
+                current.forEach((module) => this.activated[module.id] = module.active);
             },
         },
     },
