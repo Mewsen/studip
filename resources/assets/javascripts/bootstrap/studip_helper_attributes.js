@@ -46,7 +46,7 @@ $(document).on('change', proxy_elements_selector, function (event, force) {
                 const event = new Event('change');
                 element.dispatchEvent(event);
 
-                if (element.matches('[data-proxyfor]')) {
+                if (element.matches('[data-proxyfor],[data-activates],[data-deactivates],[data-hides],[data-shows]')) {
                     $(element).trigger('change', [true]);
                 }
             });
