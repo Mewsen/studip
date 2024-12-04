@@ -442,7 +442,7 @@ class Seminar_Auth
 
         // init of output via I18N
         $_language_path = init_i18n($_SESSION['_language']);
-        include 'config.inc.php';
+        include $GLOBALS['STUDIP_BASE_PATH'] . '/config/config.inc.php';
 
         if (!empty($_SESSION['contrast'])) {
             PageLayout::addStylesheet('accessibility.css');

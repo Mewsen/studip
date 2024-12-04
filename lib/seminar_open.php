@@ -125,7 +125,7 @@ if (!empty($_SESSION['contrast']) || UserConfig::get($GLOBALS['user']->id)->USER
 // init of output via I18N
 $_language_path = init_i18n($_SESSION['_language']);
 //force reload of config to get translated data
-include 'config.inc.php';
+include $GLOBALS['STUDIP_BASE_PATH'] . '/config/config.inc.php';
 
 // Try to select the course or institute given by the parameter 'cid'
 // in the current request.

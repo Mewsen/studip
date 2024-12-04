@@ -1781,26 +1781,28 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
     public function getFullName($format = 'default')
     {
         $template = [
-            'name'                 => '%1$s',
-            'name-semester'        => '%1$s (%4$s)',
-            'number-name'          => '%3$s %1$s',
-            'number-name-semester' => '%3$s %1$s (%4$s)',
-            'number-type-name'     => '%3$s %2$s: %1$s',
-            'sem-duration-name'    => '%4$s',
-            'type'                 => '%2$s',
-            'type-name'            => '%2$s: %1$s',
-            'type-number-name'     => '%2$s: %3$s %1$s',
+            'name'                 => '%{name}',
+            'name-semester'        => '%{name} (%{semester})',
+            'number-name'          => '%{number} %{name}',
+            'number-name-semester' => '%{number} %{name} (%{semester})',
+            'number-type-name'     => '%{number} %{type}: %{name}',
+            'sem-duration-name'    => '%{semester}',
+            'type'                 => '%{type}',
+            'type-name'            => '%{type}: %{name}',
+            'type-number-name'     => '%{type}: %{number} %{name}',
         ];
 
         if ($format === 'default' || !isset($template[$format])) {
            $format = Config::get()->IMPORTANT_SEMNUMBER ? 'type-number-name' : 'type-name';
         }
         $sem_type = $this->getSemType();
-        $data[0] = $this->name;
-        $data[1] = $sem_type['name'];
-        $data[2] = $this->veranstaltungsnummer;
-        $data[3] = $this->getTextualSemester();
-        return trim(vsprintf($template[$format], array_map('trim', $data)));
+        $data = array_map('trim', [
+            'name'     => $this->name,
+            'type'     => $sem_type['name'],
+            'number'   => $this->veranstaltungsnummer,
+            'semester' => $this->getTextualSemester(),
+        ]);
+        return trim(studip_interpolate($template[$format], $data));
     }
 
     /**

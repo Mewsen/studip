@@ -112,7 +112,7 @@ if ($GLOBALS['ASSETS_URL'][0] === '/') {
     $GLOBALS['ASSETS_URL'] = $GLOBALS['ABSOLUTE_URI_STUDIP'] . $GLOBALS['ASSETS_URL'];
 }
 
-require 'config.inc.php';
+require $GLOBALS['STUDIP_BASE_PATH'] . '/config/config.inc.php';
 
 require 'lib/helpers.php';
 require 'lib/phplib/page_open.php';
