@@ -42,7 +42,7 @@
             $description = $termin->content;
         } elseif ($termin instanceof CourseDate && isset($termin->cycle)) {
             $description = $termin->cycle->description;
-        } else {
+        } elseif (empty($themen)) {
             $description = $termin->getDescription();
         }
         ?>
