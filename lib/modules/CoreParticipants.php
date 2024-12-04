@@ -34,21 +34,6 @@ class CoreParticipants extends CorePlugin implements StudipModule
 
         $course = Course::find($course_id);
 
-        // Is the participants page hidden for students?
-        if (!$GLOBALS['perm']->have_studip_perm('tutor', $course_id, $user_id) && $course->config->COURSE_MEMBERS_HIDE) {
-            $tab_navigation = $this->getTabNavigation($course_id);
-            if ($tab_navigation && count($tab_navigation['members']->getSubNavigation()) > 0) {
-                $sub_nav = $tab_navigation['members']->getSubNavigation();
-                $first_nav = reset($sub_nav);
-
-                $navigation = new Navigation($first_nav->getTitle(), $first_nav->getURL());
-                $navigation->setImage(Icon::create('persons'));
-                return $navigation;
-
-            }
-            return null;
-        }
-
         // Determine url to redirect to
         if (!$course->getSemClass()->isGroup()) {
             $url = 'dispatch.php/course/members/index';
@@ -138,14 +123,10 @@ class CoreParticipants extends CorePlugin implements StudipModule
 
         // Only courses without children have a regular member list and statusgroups.
         if (!$course->getSemClass()->isGroup()) {
-            if ($GLOBALS['perm']->have_studip_perm('tutor', $course_id) || !$course->config->COURSE_MEMBERS_HIDE) {
-                $navigation->addSubNavigation('view', new Navigation(_('Teilnehmende'), 'dispatch.php/course/members'));
-                $navigation->addSubNavigation('statusgroups', new Navigation(_('Gruppen'), 'dispatch.php/course/statusgroups'));
-            }
-        } else {
-            if ($GLOBALS['perm']->have_studip_perm('tutor', $course_id)) {
-                $navigation->addSubNavigation('children', new Navigation(_('Teilnehmende in Unterveranstaltungen'), 'dispatch.php/course/grouping/members'));
-            }
+            $navigation->addSubNavigation('view', new Navigation(_('Teilnehmende'), 'dispatch.php/course/members'));
+            $navigation->addSubNavigation('statusgroups', new Navigation(_('Gruppen'), 'dispatch.php/course/statusgroups'));
+        } elseif ($GLOBALS['perm']->have_studip_perm('tutor', $course_id)) {
+            $navigation->addSubNavigation('children', new Navigation(_('Teilnehmende in Unterveranstaltungen'), 'dispatch.php/course/grouping/members'));
         }
 
         if ($course->aux_lock_rule) {
