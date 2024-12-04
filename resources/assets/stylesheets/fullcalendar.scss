@@ -39,6 +39,13 @@ a.fc-event, td.fc-event {
     }
 }
 
+/* Put the year in a new line in the mobile view: */
+html.responsive-display .fc .fc-view:not(.fc-timeGridDay-view) .fc-day-header {
+    span.dow, span.year {
+        display: block;
+    }
+}
+
 
 .fc-button-primary:not(:disabled):active,
 .fc-button-primary:not(:disabled).fc-button-active,
