@@ -1,19 +1,8 @@
-<?php
-/**
- * @var Modul $modul
- * @var string $modulteil_id
- * @var string $display_language
- * @var Module_ModuleController $controller
- * @var string $institut_id
- */
-?>
-
 <td colspan="6">
     <table class="default collapsable sortable" id="<?= $modul->id ?>">
         <colgroup>
             <col>
-            <col style="width: 150px;">
-            <col style="width: 70px;">
+            <col span="2" style="width: 150px;">
         </colgroup>
         <? foreach ($modul->modulteile as $modulteil) : ?>
             <? $perm = MvvPerm::get($modulteil) ?>
@@ -31,8 +20,8 @@
                     </td>
                     <td class="dont-hide actions" style="white-space: nowrap; text-align: center;">
                         <? if ($perm->havePermWrite()) : ?>
-                            <? foreach ($modulteil->deskriptoren->getAvailableTranslations($modulteil->modul->original_language) as $language) : ?>
-                                <? $lang = Config::get()->CONTENT_LANGUAGES[$language]; ?>
+                            <? foreach ($modulteil->deskriptoren->getAvailableTranslations() as $language) : ?>
+                                <? $lang = $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$language]; ?>
                                 <a href="<?= $controller->action_link('modulteil/' . join('/', [$modulteil->id, $institut_id]), ['display_language' => $language]) ?>">
                                     <?= Assets::img(MVV::getContentLanguageImagePath($language), ['alt' => $lang['name'], 'size' => 24]) ?>
                                 </a>

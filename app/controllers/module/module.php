@@ -105,20 +105,6 @@ class Module_ModuleController extends MVVController
         $this->setSidebar();
     }
 
-    public function select_module_language_action()
-    {
-        $this->languages = [];
-        foreach (Config::get()->CONTENT_LANGUAGES as $language_code => $language) {
-            $code = strtok($language_code, '_');
-            $this->languages[] = [
-                'name' => $language['name'],
-                'code' => $language_code,
-                'picture' => "lang_{$code}_text.svg",
-            ];
-        };
-        PageLayout::setTitle(_('Sprache wählen'));
-    }
-
     public function modul_action($modul_id = null, $institut_id = null)
     {
         $own_institutes = MvvPerm::getOwnInstitutes();
@@ -147,20 +133,13 @@ class Module_ModuleController extends MVVController
         if ($this->modul->isNew()) {
             PageLayout::setTitle(_('Neues Modul anlegen'));
             $success_message = ('Das Modul "%s" wurde angelegt.');
-            $language = Request::option('display_language');
-            $content_languages = Config::get()->CONTENT_LANGUAGES;
-            if (!empty($content_languages[$language])) {
-                $this->display_language = $language;
-            } else {
-                $this->display_language = Config::get()->MVV_DEFAULT_LANGUAGE;
-            }
-            $this->modul->original_language = $this->display_language;
-            $this->deskriptor = $this->modul->getDeskriptor();
+            $this->display_language = $this->modul->getDefaultLanguage();
+            $this->deskriptor = $this->modul->getDeskriptor($this->display_language, true);
             $this->reset_search('Modul');
             if (!$modul_id) {
                 PageLayout::postInfo(sprintf(
-                    _('Sie legen ein neues Modul an. Das Modul wird zunächst in der Ausgabesprache <em>%s</em> angelegt (Originalsprache).'),
-                    Config::get()->CONTENT_LANGUAGES[$this->display_language]['name']
+                    _('Sie legen ein neues Modul an. Das Modul muss zunächst in der Ausgabesprache <em>%s</em> angelegt werden.'),
+                    $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$this->display_language]['name']
                 ));
             }
             // set default language of instruction
@@ -172,17 +151,17 @@ class Module_ModuleController extends MVVController
         } else {
             $this->display_language = Request::option(
                 'display_language',
-                $this->modul->original_language
+                $this->modul->getDefaultLanguage()
             );
 
-            $this->deskriptor = $this->modul->getDeskriptor();
-            $this->translations = $this->deskriptor->getAvailableTranslations($this->modul->original_language);
+            $this->deskriptor = $this->modul->getDeskriptor($this->display_language, true);
+            $this->translations = $this->deskriptor->getAvailableTranslations();
             if (!in_array($this->display_language, $this->translations)) {
                 PageLayout::setTitle(
                     sprintf(
                         _('Modul: <em>%s</em> in der Ausgabesprache <em>%s</em> neu anlegen.'),
                         $this->modul->getDisplayName(),
-                        Config::get()->CONTENT_LANGUAGE[$this->display_language]['name']
+                        $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$this->display_language]['name']
                     )
                 );
             } else {
@@ -194,18 +173,15 @@ class Module_ModuleController extends MVVController
             $success_message = _('Das Modul "%s" wurde geändert.');
             // language selector as sidebar widget
             $template_factory = $this->get_template_factory();
-            $sidebar_template = $template_factory->render(
-                'shared/deskriptor_language',
-                [
-                    'original_language' => $this->modul->original_language,
-                    'display_language' => $this->display_language,
-                    'descriptor' => $this->modul->deskriptoren,
-                    'link' => $this->modulURL($this->modul->id, $this->institut_id),
-                ]
+            $sidebar_template = $template_factory->render('shared/deskriptor_language', [
+                'modul'   => $this->modul,
+                'sprache' => $this->display_language,
+                'link'    => $this->modulURL($this->modul->id, $this->institut_id),
+                'url'     => $this->url]
             );
 
             $widget  = new SidebarWidget();
-            $widget->setTitle(_('Ausgabesprache wählen'));
+            $widget->setTitle(_('Ausgabesprache'));
             $widget->addElement(new WidgetElement($sidebar_template));
             $sidebar->addWidget($widget, 'language');
 
@@ -259,11 +235,9 @@ class Module_ModuleController extends MVVController
                 $sidebar->addWidget($widget, 'variants');
             }
         }
-
         $this->semester = array_reverse(Semester::getAll());
-        $this->def_lang = $this->display_language === $this->modul->original_language;
-        I18NString::setDefaultLanguage($this->modul->original_language);
-        I18NString::setContentLanguage($this->display_language);
+        $this->def_lang = $this->display_language === $this->modul->getDefaultLanguage();
+        ModuleManagementModel::setContentLanguage($this->display_language);
         if (!$this->def_lang) {
             $action_widget = $sidebar->getWidget('actions');
             $action_widget->addLink(
@@ -273,6 +247,7 @@ class Module_ModuleController extends MVVController
             );
         }
 
+        $this->language = $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$this->display_language]['content_language'];
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
             $stored = false;
@@ -304,13 +279,6 @@ class Module_ModuleController extends MVVController
                 $this->modul->fassung_typ = Request::option('fassung_typ');
                 $this->modul->version = trim(Request::get('version'));
                 $this->modul->verantwortlich = trim(Request::get('verantwortlich'));
-                // change original language
-                if (
-                    !$this->modul->isNew()
-                    && $this->modul->original_language !== Request::option('original_language')
-                ) {
-                    $this->setOriginalLanguage($this->modul, Request::option('original_language'));
-                }
             }
 
             $deskriptor_fields = ['bezeichnung', 'verantwortlich',
@@ -322,16 +290,10 @@ class Module_ModuleController extends MVVController
 
             foreach ($deskriptor_fields as $deskriptor_field) {
                 if ($this->deskriptor->isI18nField($deskriptor_field)) {
-                    if ($this->display_language === $this->modul->original_language) {
-                        $this->deskriptor->$deskriptor_field->setOriginal(
-                            trim(Request::get($deskriptor_field))
-                        );
-                    } else {
-                        $this->deskriptor->$deskriptor_field->setLocalized(
-                            trim(Request::get($deskriptor_field)),
-                            $this->display_language
-                        );
-                    }
+                    $this->deskriptor->$deskriptor_field->setLocalized(
+                        trim(Request::get($deskriptor_field)),
+                        $this->language
+                    );
                 } else {
                     $this->deskriptor->setValue(
                         $deskriptor_field,
@@ -345,7 +307,7 @@ class Module_ModuleController extends MVVController
                 $df = $this->deskriptor->datafields->findOneBy('datafield_id', $df_key);
                 if ($df) {
                     $tdf = $df->getTypedDatafield();
-                    $tdf->setContentLanguage($this->display_language);
+                    $tdf->setContentLanguage($this->language);
                     $tdf->setValueFromSubmit($df_value);
                     $tdf->store();
                 }
@@ -690,31 +652,29 @@ class Module_ModuleController extends MVVController
         if ($this->modulteil->isNew()) {
             PageLayout::setTitle(_('Neuen Modulteil anlegen'));
             $success_message = ('Der Modulteil "%s" wurde angelegt.');
-            $this->display_language = Request::option(
-                'display_language',
-                $this->modul->original_language
-            );
-            $this->deskriptor = $this->modulteil->getDeskriptor();
+            $this->display_language = $this->modulteil->getDefaultLanguage();
+            $this->deskriptor = $this->modulteil->getDeskriptor($this->display_language, true);
             PageLayout::postInfo(sprintf(
                 _('Sie legen einen neuen Modulteil für das Modul <em>%s</em> an. Der Modulteil muss zunächst in der Ausgabesprache <em>%s</em> angelegt werden.'),
                 htmlReady($this->modul->getDisplayName()),
-                htmlReady(Config::get()->MVV_MODUL_DESKRIPTOR['SPRACHE']['values'][$this->display_language]['name'])
+                htmlReady($GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$this->display_language]['name'])
             ));
             // set default language of instruction
-            if (Config::get()->MVV_MODULTEIL['SPRACHE']['default']) {
+            if ($GLOBALS['MVV_MODULTEIL']['SPRACHE']['default']) {
                 $this->modulteil->assignLanguagesOfInstruction([
-                    Config::get()->MVV_MODULTEIL['SPRACHE']['default']
+                    $GLOBALS['MVV_MODULTEIL']['SPRACHE']['default']
                 ]);
             }
         } else {
-            $this->display_language = Request::option('display_language', $this->modul->original_language);
-            $this->deskriptor = $this->modulteil->getDeskriptor();
-            $this->translations = $this->deskriptor->getAvailableTranslations($this->modul->original_language);
+            $this->display_language = Request::option('display_language', $this->modulteil->getDefaultLanguage());
+            $this->deskriptor = $this->modulteil->getDeskriptor($this->display_language, true);
+            $this->translations = $this->deskriptor->getAvailableTranslations();
+
             if (!in_array($this->display_language, $this->translations)) {
                 PageLayout::setTitle(sprintf(
                     _('Modulteil: "%s" in der Ausgabesprache "%s" neu anlegen.'),
                     $this->modulteil->getDisplayName(),
-                    Config::get()->CONTENT_LANGUAGES[$this->display_language]['name']
+                    $GLOBALS['MVV_MODULTEIL_DESKRIPTOR']['SPRACHE']['values'][$this->display_language]['name']
                 ));
             } else {
                 PageLayout::setTitle(sprintf(_('Modulteil: %s'), htmlReady($this->modulteil->getDisplayName())));
@@ -728,10 +688,10 @@ class Module_ModuleController extends MVVController
             $widget_element = new WidgetElement(
                 $template_factory->render('shared/deskriptor_language',
                     [
-                        'descriptor' => $this->modulteil->deskriptoren,
-                        'display_language' => $this->display_language,
-                        'original_language' => $this->modul->original_language,
-                        'link' => $this->modulteilURL($this->modulteil->id),
+                        'modul'   => $this->modulteil,
+                        'sprache' => $this->display_language,
+                        'link'    => $this->modulteilURL($this->modulteil->id),
+                        'url'     => $this->url
                     ]
                 )
             );
@@ -739,9 +699,7 @@ class Module_ModuleController extends MVVController
             $sidebar->addWidget($widget, 'languages');
         }
 
-        $this->def_lang = $this->display_language === $this->modul->original_language;
-        I18NString::setDefaultLanguage($this->modul->original_language);
-        I18NString::setContentLanguage($this->display_language);
+        $this->def_lang = $this->display_language === $this->modulteil->getDefaultLanguage();
 
         if (!$this->def_lang) {
             $action_widget = $sidebar->getWidget('actions');
@@ -753,6 +711,7 @@ class Module_ModuleController extends MVVController
             );
         }
 
+        $this->language = $GLOBALS['MVV_MODULTEIL_DESKRIPTOR']['SPRACHE']['values'][$this->display_language]['content_language'];
         if (Request::submitted('store')) {
             CSRFProtection::verifyUnsafeRequest();
             $stored = false;
@@ -789,21 +748,12 @@ class Module_ModuleController extends MVVController
 
             foreach ($deskriptor_fields as $deskriptor_field) {
                 if ($this->deskriptor->isI18nField($deskriptor_field)) {
-                    if ($this->display_language === $this->modul->original_language) {
-                        $this->deskriptor->$deskriptor_field->setOriginal(
-                            trim(Request::get($deskriptor_field))
-                        );
-                    } else {
-                        $this->deskriptor->$deskriptor_field->setLocalized(
-                            trim(Request::get($deskriptor_field)),
-                            $this->display_language
-                        );
-                    }
-                } else {
-                    $this->deskriptor->setValue(
-                        $deskriptor_field,
-                        trim(Request::get($deskriptor_field))
+                    $this->deskriptor->$deskriptor_field->setLocalized(
+                        trim(Request::get($deskriptor_field)),
+                        $this->language
                     );
+                } else {
+                    $this->deskriptor->setValue($deskriptor_field, trim(Request::get($deskriptor_field)));
                 }
             }
 
@@ -812,7 +762,7 @@ class Module_ModuleController extends MVVController
                 $df = $this->deskriptor->datafields->findOneBy('datafield_id', $df_key);
                 if ($df) {
                     $tdf = $df->getTypedDatafield();
-                    $tdf->setContentLanguage($this->display_language);
+                    $tdf->setContentLanguage($this->language);
                     $tdf->setValueFromSubmit($df_value);
                     $tdf->store();
                 }
@@ -845,11 +795,11 @@ class Module_ModuleController extends MVVController
                 return;
             }
         }
-        if ($this->display_language !== $this->modul->original_language && $this->deskriptor->isNew()) {
+        if ($this->display_language !== $this->modulteil->getDefaultLanguage() && $this->deskriptor->isNew()) {
             PageLayout::postInfo(sprintf(
                 _('Neue Beschreibung zum Modulteil "%s" in der Ausgabesprache %s anlegen.'),
                 htmlReady($this->modulteil->getDisplayName()),
-                htmlReady(Config::get()->CONTENT_LANGUAGES[$this->display_language]['name'])
+                htmlReady($GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$this->display_language]['name'])
             ));
         }
         $this->cancel_url = $this->detailsURL($this->modulteil->modul_id);
@@ -878,7 +828,7 @@ class Module_ModuleController extends MVVController
         if (is_null($deskriptor)) {
             throw new Trails\Exception(404, _('Unbekannter Deskriptor'));
         }
-        $def_lang = $deskriptor->modulteil->modul->original_language;
+        $def_lang = $deskriptor->modulteil->getDefaultLanguage();
         if ($language === $def_lang) {
             throw new Trails\Exception(403, _('Ein Deskriptor in der Original-Sprache kann nicht gelöscht werden.'));
         }
@@ -1398,9 +1348,9 @@ class Module_ModuleController extends MVVController
         if (MvvPerm::havePermCreate('Modul')) {
             $widget->addLink(
                 _('Neues Modul anlegen'),
-                $this->select_module_languageURL(),
+                $this->modulURL(),
                 Icon::create('add')
-            )->asDialog('size=600x300');
+            );
         }
         $sidebar->addWidget($widget, 'actions');
 
@@ -1622,41 +1572,5 @@ class Module_ModuleController extends MVVController
                   JOIN `mvv_studiengang` USING (`studiengang_id`)
                   WHERE `mvv_studiengang`.`abschluss_id` = ?";
         return DBManager::get()->fetchFirst($query, [$abschluss_id]);
-    }
-
-    private function setOriginalLanguage(Modul $module, string $original_language): void
-    {
-        $content_language = Config::get()->CONTENT_LANGUAGES[$original_language];
-        if (empty($content_language)) {
-            throw new InvalidArgumentException("Original language $original_language is not defined");
-        }
-        if ($module->deskriptoren) {
-            $current_language = $module->original_language;
-            $module->original_language = $original_language;
-            DBManager::get()->execute("
-                UPDATE `i18n`
-                SET `lang` = ?
-                WHERE `object_id` = ?
-                  AND `table` = 'mvv_modul_deskriptor'
-                  AND `lang` = ?",
-                [
-                    $original_language,
-                    $module->deskriptoren->id,
-                    $current_language
-                ]);
-            $module->modulteile->each(fn($component) => DBManager::get()->execute("
-                    UPDATE `i18n`
-                    SET `lang` = ?
-                    WHERE `object_id` IN (?)
-                      AND `table` = 'mvv_modulteil_deskriptor'
-                      AND `lang` = ?",
-                    [
-                        $original_language,
-                        $module->deskriptoren->id,
-                        $current_language
-                    ]
-                )
-            );
-        }
     }
 }

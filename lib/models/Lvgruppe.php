@@ -583,7 +583,9 @@ class Lvgruppe extends ModuleManagementModelTreeItem
         $modul = Modul::find($modul_id);
         if ($modul) {
             $name = $modul->responsible_institute->institute->getShortName();
-            $short_name_modul = $modul->getDeskriptor()->bezeichnung_kurz;
+            $short_name_modul = $modul->getDeskriptor(
+                    $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['default'])
+                    ->bezeichnung_kurz;
             $name .= $short_name_modul ? ' ' . $short_name_modul : '';
         }
          *
@@ -592,6 +594,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
         $modulteil = Modulteil::findCached($modulteil_id);
         if ($modulteil) {
             $name = $modulteil->getDeskriptor()->bezeichnung;
+            //$name = $name_modulteil ? ' ' . $name_modulteil : '';
         }
         return $name;
     }
