@@ -430,6 +430,7 @@ class Fullcalendar
                 minute: '2-digit',
                 omitZeroMinute: false
             },
+            columnHeaderHtml: STUDIP.Fullcalendar.renderDateForColumn,
             nowIndicator: true,
             timeZone: 'local',
             studip_functions: [],
@@ -800,6 +801,12 @@ class Fullcalendar
                 sessionStorage.setItem('booking_plan_date', changed_date);
             }
         }
+    }
+
+    static renderDateForColumn(date) {
+        let format = new Intl.DateTimeFormat(String.locale, {weekday: 'short'});
+        let date_html = STUDIP.DateTime.getStudipDate(date, false, true, true);
+        return '<span class="dow">' + format.format(date) + '.</span> ' + date_html;
     }
 }
 
