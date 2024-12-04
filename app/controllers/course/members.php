@@ -92,10 +92,6 @@ class Course_MembersController extends AuthenticatedController
 
     public function index_action()
     {
-        if (!$this->is_tutor && $this->config->COURSE_MEMBERS_HIDE) {
-            throw new AccessDeniedException();
-        }
-
         $sem                = Seminar::getInstance($this->course_id);
         $this->sort_by      = Request::option('sortby', 'nachname');
         $this->order        = Request::option('order', 'desc');
@@ -1727,7 +1723,7 @@ class Course_MembersController extends AuthenticatedController
             $options = new OptionsWidget();
             $options->addCheckbox(
                 _('Diese Seite für Studierende verbergen'),
-                $this->config->COURSE_MEMBERS_HIDE,
+                $this->getToolActivation()->getVisibilityPermission() === 'tutor',
                 $this->url_for('course/members/course_members_hide/1'),
                 $this->url_for('course/members/course_members_hide/0'),
                 ['title' => _('Über diese Option können Sie die Teilnehmendenliste für Studierende der Veranstaltung unsichtbar machen')]
@@ -1818,7 +1814,13 @@ class Course_MembersController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        $this->config->store('COURSE_MEMBERS_HIDE', $state);
+        $tool_activation = $this->getToolActivation();
+        if ($state) {
+            $tool_activation->setVisibilityPermission(ToolActivation::VISIBILITY_PERMISSION_TEACHERS);
+        } else {
+            $tool_activation->setVisibilityPermission(ToolActivation::VISIBILITY_PERMISSION_STUDENTS);
+        }
+        $tool_activation->store();
 
         $this->redirect($this->indexURL());
     }
@@ -2259,7 +2261,6 @@ class Course_MembersController extends AuthenticatedController
         return sprintf('%s %s', $directionString, $log_level);
     }
 
-
     /**
      * Checks whether a tutor is attempting to add or remove tutors or
      * instructors.
@@ -2278,4 +2279,15 @@ class Course_MembersController extends AuthenticatedController
         }
     }
 
+    private function getToolActivation(): ToolActivation
+    {
+        return ToolActivation::findOneBySQL(
+            "range_id = ? AND range_type = 'course' AND plugin_id IN (
+                SELECT pluginid
+                FROM plugins
+                WHERE pluginclassname = 'CoreParticipants'
+            )",
+            [$this->course_id]
+        );
+    }
 }

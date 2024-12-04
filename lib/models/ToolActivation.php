@@ -23,6 +23,9 @@
  */
 class ToolActivation extends SimpleORMap
 {
+    public const VISIBILITY_PERMISSION_STUDENTS = 'students';
+    public const VISIBILITY_PERMISSION_TEACHERS = 'teachers';
+
     protected static function configure($config = [])
     {
         $config['db_table'] = 'tools_activated';
@@ -87,12 +90,28 @@ class ToolActivation extends SimpleORMap
         }
     }
 
-    public function getVisibilityPermission()
+    public function setVisibilityPermission(string $permission)
     {
-        if ($this->metadata['visibility'] === 'tutor') {
-            return 'tutor';
+        if (!in_array($permission, [self::VISIBILITY_PERMISSION_STUDENTS, self::VISIBILITY_PERMISSION_TEACHERS])) {
+            throw new InvalidArgumentException("Invalid permission setting {$permission}");
+        }
+
+        if ($permission === self::VISIBILITY_PERMISSION_STUDENTS) {
+            unset($this->metadata['visibility']);
         } else {
+            $this->metadata['visibility'] = 'tutors';
+        }
+    }
+
+    public function getVisibilityPermission(): string
+    {
+        if (
+            empty($this->metadata['visibility'])
+            || $this->metadata['visibility'] !== 'tutor'
+        ) {
             return 'nobody';
         }
+
+        return 'tutor';
     }
 }
