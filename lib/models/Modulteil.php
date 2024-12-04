@@ -114,7 +114,11 @@ class Modulteil extends ModuleManagementModelTreeItem
     {
         parent::__construct($id);
         $this->object_real_name = _('Modulteil');
-        $this->default_language = $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['default'];
+        if ($this->modul) {
+            $this->default_language = $this->modul->original_language;
+        } else {
+            $this->default_language = Config::get()->MVV_DESCRIPTOR_DEFAULT_LANGUAGE;
+        }
     }
 
     /**
@@ -165,7 +169,7 @@ class Modulteil extends ModuleManagementModelTreeItem
 
     public function getDisplayName()
     {
-        $deskriptor = $this->getDeskriptor(self::getLanguage());
+        $deskriptor = $this->getDeskriptor();
         $template = Config::get()->MVV_TEMPLATE_NAME_MODULTEIL;
         if (trim($template)) {
             $placeholders = [
@@ -210,19 +214,12 @@ class Modulteil extends ModuleManagementModelTreeItem
     }
 
     /**
-     * Returns the Deskriptor in the given language. A Modul has always a
-     * Deskriptor in the default language. If the given language is unknown, the
-     * method returns the deskriptor in the default language.
+     * Returns the descriptor. If this component has no descriptor already
+     * a new one is created and returned.
      *
-     * @param string $language The id of the language
-     * @param bool If true returns always a new descriptor
-     * @return object The Deskriptor.
+     * @return ModulteilDeskriptor The descriptor.
      */
-    public function getDeskriptor($language = null, $force_new = false) {
-        if (!isset($GLOBALS['MVV_MODULTEIL_DESKRIPTOR']['SPRACHE']['values'][$language])) {
-            $language = $this->default_language;
-        }
-
+    public function getDeskriptor() {
         if (!$this->deskriptoren) {
             // the module is new and has no descriptor
             // return a new descriptor in the default language

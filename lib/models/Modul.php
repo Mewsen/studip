@@ -36,6 +36,7 @@
  * @property string|null $stat database column
  * @property string|null $kommentar_status database column
  * @property string|null $verantwortlich database column
+ * @property string $original_language database column
  * @property string $author_id database column
  * @property string $editor_id database column
  * @property int $mkdate database column
@@ -383,14 +384,12 @@ class Modul extends ModuleManagementModelTreeItem
      * previously set by ApplicationSimpleORMap::setLanguage() or the one
      * defined as default in mvv_config.php.
      */
-    private function setDefaultLanguage()
+    private function setDefaultLanguage(): void
     {
-        if (isset($GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values']
-                [ModuleManagementModel::getLanguage()])) {
-            $this->default_language = ModuleManagementModel::getLanguage();
+        if ($this->isNew()) {
+            $this->default_language = Config::get()->MVV_DESCRIPTOR_DEFAULT_LANGUAGE;
         } else {
-            $this->default_language =
-                    $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['default'];
+            $this->default_language = $this->original_language;
         }
     }
 
@@ -405,18 +404,13 @@ class Modul extends ModuleManagementModelTreeItem
     }
 
     /**
-     * Returns the Deskriptor in the given language. A Modul has always a
-     * Deskriptor in the default language. If the given language is unknown, the
-     * method returns the deskriptor in the default language.
+     * Returns the descriptor. If this component has no descriptor already
+     * a new one is created and returned.
      *
-     * @param string $language The id of the language
-     * @param bool If true returns always a new descriptor
-     * @return object The Deskriptor.
+     * @return ModulDeskriptor The descriptor.
      */
-    public function getDeskriptor($language = null, $force_new = false) {
-        if (!isset($GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$language])) {
-            $language = $this->default_language;
-        }
+    public function getDeskriptor()
+    {
         if (!$this->deskriptoren) {
             // the module is new and has no descriptor
             // return a new descriptor in the default language
@@ -481,7 +475,7 @@ class Modul extends ModuleManagementModelTreeItem
     /**
      * Assignes languages of instruction to this part-module.
      *
-     * @param type $languages An array of language keys defined in mvv_config.php.
+     * @param array $languages An array of language keys defined in mvv_config.php.
      */
     public function assignLanguagesOfInstruction($languages)
     {
