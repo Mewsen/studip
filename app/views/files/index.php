@@ -7,7 +7,8 @@
         }
     }
 
-    $show_downloads = Config::get()->DISPLAY_DOWNLOAD_COUNTER === 'always';
+    $show_downloads = Config::get()->DISPLAY_DOWNLOAD_COUNTER === 'always'
+                   && !($topFolder instanceof HomeworkFolder);
     $vue_breadcrumbs = [];
     $folder = $topFolder;
     do {
