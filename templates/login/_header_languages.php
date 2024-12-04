@@ -19,7 +19,7 @@
                 return state.text;
             }
             let flagUrl = $(state.element).data('flag');
-            let flag = $(`<img src="${flagUrl}" style="vertical-align: text-top;">`);
+            let flag = $(`<img src="${flagUrl}" style="vertical-align: middle; max-height: 20px; max-width: 20px;">`);
             let span = $('<span>');
             span.text(state.text);
             $(flag).prependTo(span);
@@ -27,7 +27,7 @@
         };
         $('#languages').select2({
             minimumResultsForSearch: -1,
-            width: '100%',
+            width: '120px',
             templateResult: format,
             templateSelection: format
         });
