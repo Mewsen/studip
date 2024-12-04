@@ -123,18 +123,21 @@ if ($navigation) {
                           && Navigation::getItem('/profile')->isActive();
                 ?>
 
-                <!-- User-Avatar -->
-                <li class="header_avatar_container <? if ($active) echo 'active'; ?>" id="avatar-menu-container">
+                
 
                 <? if (is_object($GLOBALS['perm']) && PersonalNotifications::isActivated() && $GLOBALS['perm']->have_perm('autor')) : ?>
+                
                     <? $notifications = PersonalNotifications::getMyNotifications() ?>
                     <? $lastvisit = (int)UserConfig::get($GLOBALS['user']->id)->getValue('NOTIFICATIONS_SEEN_LAST_DATE') ?>
-                    <div id="notification-container"<?= count($notifications) > 0 ? ' class="hoverable"' : '' ?>>
-                        <? foreach ($notifications as $notification) {
-                            if ($notification['mkdate'] > $lastvisit) {
-                                $alert = true;
-                            }
-                        } ?>
+                    <? foreach ($notifications as $notification) {
+                        if ($notification['mkdate'] > $lastvisit) {
+                            $alert = true;
+                        }
+                    } ?>
+                <!-- User-Avatar -->
+                <li class="header_avatar_container <?= !empty($alert) ? 'alert' : '' ?> <? if ($active) echo 'active'; ?>" id="avatar-menu-container">
+                    <div id="notification-container"  <?= count($notifications) > 0 ? ' class="hoverable"' : '' ?>>
+                        
                         <button id="notification_marker" data-toggles="#notification_checkbox" <?= !empty($alert) ? ' class="alert"' : "" ?>
                                 title="<?= sprintf(
                                     ngettext('%u Benachrichtigung', '%u Benachrichtigungen', count($notifications)),

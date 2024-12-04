@@ -58,6 +58,7 @@ $transition-duration-superslow: 1s;
 
 // Border radius:
 $border-radius: 4px;
+$border-radius-avatar-menu: 7px;
 
 // Layout
 $page-margin: 15px;
@@ -298,6 +299,7 @@ $grid-gap: 0;
     --color-image-placeholder-background: #{$color-image-placeholder-background};
 
     --border-radius-default: #{$border-radius};
+    --border-radius-avatar-menu: #{$border-radius-avatar-menu};
 
     @media (prefers-reduced-motion) {
         #{"--"}transition-duration: 0s;

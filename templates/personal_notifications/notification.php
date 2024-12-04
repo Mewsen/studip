@@ -7,7 +7,7 @@
             <?= htmlReady($notification['text']) ?>
         </a>
         <button class="options mark_as_read">
-            <?= Icon::create('decline')->asImg(12, ['title' => _('Als gelesen markieren')]) ?>
+            <?= Icon::create('decline')->asImg(14, ['title' => _('Als gelesen markieren')]) ?>
         </button>
     </div>
     <? if ($notification->more_unseen > 0): ?>
