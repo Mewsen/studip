@@ -412,11 +412,13 @@ function tooltip2($text, $with_alt = TRUE, $with_popup = FALSE) {
 /**
  * returns a html-snippet with an icon and a tooltip on it
  *
- * @param string $text tooltip text, html gets encoded
- * @param bool $important render icon in "important" style
- * @param bool $html tooltip text is HTML content
+ * @param string|null $text      tooltip text, html gets encoded
+ * @param bool        $important render icon in "important" style
+ * @param bool        $html      tooltip text is HTML content
+ * @param bool        $alt_info
+ * @return string
  */
-function tooltipIcon(string $text, bool $important = false, bool $html = false, bool $alt_info= false): string
+function tooltipIcon(?string $text, bool $important = false, bool $html = false, bool $alt_info= false): string
 {
     if (!trim($text)) {
         return '';
@@ -430,10 +432,11 @@ function tooltipIcon(string $text, bool $important = false, bool $html = false, 
 /**
  * returns a html-snippet with an icon and a tooltip on it
  *
- * @param string $text tooltip text, html is rendered as is
- * @param bool $important render icon in "important" style
+ * @param string|null $text      tooltip text, html is rendered as is
+ * @param bool        $important render icon in "important" style
+ * @return string
  */
-function tooltipHtmlIcon(string $text, bool $important = false)
+function tooltipHtmlIcon(?string $text, bool $important = false)
 {
     return tooltipIcon($text, $important, true);
 }
