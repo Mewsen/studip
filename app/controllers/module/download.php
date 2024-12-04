@@ -10,14 +10,15 @@ class Module_DownloadController extends MVVController
 
     public function details_action($modul_id, $language = null)
     {
-        $language = Request::get('display_language', $language);
-        ModuleManagementModel::setLanguage($language);
-
         $modul = Modul::find($modul_id);
         if (!$modul) {
             throw new Exception(_('Ungültiges Modul'));
         }
-        $this->getDetails($modul_id, $language);
+        $language = Request::get('display_language', $language) ?? $modul->original_language;
+        I18NString::setDefaultLanguage($modul->original_language);
+        I18NString::setContentLanguage($language);
+
+        $this->getDetails($modul_id);
         $this->download = true;
         $as_pdf = Request::int('pdf');
 
@@ -51,7 +52,7 @@ class Module_DownloadController extends MVVController
         }
     }
 
-    private function getDetails($id, $language = null)
+    private function getDetails($id)
     {
         $modul = Modul::find($id);
         if (!$modul) {
@@ -81,7 +82,7 @@ class Module_DownloadController extends MVVController
         $modulTeilData = [];
 
         foreach ($modul->modulteile as $modulTeil) {
-            $deskriptor = $modulTeil->getDeskriptor($language);
+            $deskriptor = $modulTeil->getDeskriptor();
             $num_bezeichnung = $GLOBALS['MVV_MODULTEIL']['NUM_BEZEICHNUNG']['values'][$modulTeil->num_bezeichnung]['name'] ?? '';
 
             $name_kurz = sprintf('%s %d', $num_bezeichnung, $modulTeil->nummer);
@@ -134,7 +135,7 @@ class Module_DownloadController extends MVVController
         $this->semesterSelector = Semester::GetSemesterSelector(null, $currentSemester->getId(), 'semester_id', false);
         $this->modul = $modul;
         $this->pruefungsEbene = $GLOBALS['MVV_MODUL']['PRUEF_EBENE']['values'][$modul->pruef_ebene]['name'] ?? null;
-        $this->modulDeskriptor = $modul->getDeskriptor($language);
+        $this->modulDeskriptor = $modul->getDeskriptor();
         $this->startSemester = Semester::find($modul->start);
         if ($modul->responsible_institute->institute) {
             $this->instituteName = $modul->responsible_institute->getDisplayName();

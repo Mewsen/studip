@@ -725,25 +725,26 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      */
     public static function setContentLanguage($language)
     {
-        if (!is_array($GLOBALS['MVV_LANGUAGES']['values'][$language])) {
+        if (!is_array(Config::get()->CONTENT_LAGUAGES[$language])) {
             throw new InvalidArgumentException();
         }
-        $locale = $GLOBALS['MVV_LANGUAGES']['values'][$language]['locale'];
-        I18NString::setContentLanguage($locale);
+        I18NString::setContentLanguage($language);
         self::$language = $language;
     }
 
-    public function getAvailableTranslations()
+    public function getAvailableTranslations(string $original_language): array
     {
-        $translations[] = $GLOBALS['MVV_LANGUAGES']['default'];
+        $translations = [];
         $stmt = DBManager::get()->prepare('SELECT DISTINCT `lang` '
                 . 'FROM i18n '
                 . 'WHERE `object_id` = ? AND `table` = ?');
         $stmt->execute([$this->id, $this->db_table()]);
-        foreach ($stmt->fetchAll() as $locale) {
-            $language = mb_strtoupper(mb_strstr($locale['lang'], '_', true));
-            if (is_array($GLOBALS['MVV_LANGUAGES']['values'][$language])) {
-                $translations[] = $language;
+        $languages = array_merge([$original_language],
+            $stmt->fetchAll(PDO::FETCH_COLUMN));
+        $content_languages = Config::get()->CONTENT_LANGUAGES;
+        foreach ($languages as $code) {
+            if (is_array($content_languages[$code])) {
+                $translations[] = $code;
             }
         }
         return $translations;
