@@ -15,23 +15,24 @@
  * @property int $page_id database column
  * @property string $range_id database column
  * @property string $name database column
- * @property string|null $content database column
- * @property int|null $parent_id database column
+ * @property string $content database column
+ * @property string|null $parent_id database column
  * @property string $read_permission database column
  * @property string $write_permission database column
  * @property string $user_id database column
  * @property int|null $locked_since database column
  * @property string|null $locked_by_user_id database column
- * @property int $chdate database column
- * @property int $mkdate database column
- * @property SimpleORMapCollection|WikiVersion[] $versions has_many WikiVersion
- * @property SimpleORMapCollection|WikiOnlineEditingUser[] $onlineeditingusers has_many WikiOnlineEditingUser
- * @property User $user belongs_to User
+ * @property int|null $mkdate database column
+ * @property int|null $chdate database column
+ *
+ * @property User|null $user belongs_to User
  * @property Course $course belongs_to Course
- * @property-read mixed $parent additional field
- * @property-read mixed $children additional field
- * @property-read mixed $predecessor additional field
- * @property-read mixed $versionnumber additional field
+ * @property WikiVersion[]|SimpleORMapCollection $versions
+ * @property WikiOnlineEditingUser[]|SimpleORMapCollection $onlineeditingusers
+ * @property-read WikiPage|null $parent additional field
+ * @property-read WikiPage[] $children additional field
+ * @property-read WikiVersion|null $predecessor additional field
+ * @property-read int $versionnumber additional field
  */
 class WikiPage extends SimpleORMap implements PrivacyObject
 {
@@ -182,16 +183,18 @@ class WikiPage extends SimpleORMap implements PrivacyObject
         if ($user_id === null && User::findCurrent()) {
             $user_id = User::findCurrent()->id;
         }
-        if ($GLOBALS['perm']->have_studip_perm(
-            'dozent',
-            $this->range_id,
-            $user_id
-        )) {
-            return true;
+
+        if (
+            !$user_id
+            || !$GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user_id)
+        ) {
+            return false;
         }
+
         if ($this->write_permission === 'all') {
             return true;
         }
+
         if (in_array($this->write_permission, ['tutor', 'dozent'])) {
             return $GLOBALS['perm']->have_studip_perm(
                 $this->write_permission,
@@ -203,6 +206,37 @@ class WikiPage extends SimpleORMap implements PrivacyObject
         }
     }
 
+    public function isDeletable(?string $user_id = null): bool
+    {
+        if ($user_id === null && User::findCurrent()) {
+            $user_id = User::findCurrent()->id;
+        }
+
+        if (!$user_id) {
+            return false;
+        }
+
+        $permission  = $this->write_permission;
+        if ($permission === 'all') {
+            $permission = 'tutor';
+        }
+
+        if (
+            in_array($permission, ['tutor', 'dozent'])
+            && $GLOBALS['perm']->have_studip_perm(
+                $this->write_permission,
+                $this->range_id,
+                $user_id
+            )
+        ) {
+            return true;
+        }
+
+        return $this->user_id === $user_id
+            && $this->versions->every(function (WikiVersion $version) use ($user_id): bool {
+                return $version->user_id === $user_id;
+            });
+    }
 
     /**
      * Returns the start page of a wiki for a given course. The start page has
