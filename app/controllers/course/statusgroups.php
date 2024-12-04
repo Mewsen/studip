@@ -40,11 +40,6 @@ class Course_StatusgroupsController extends AuthenticatedController
         $this->is_tutor  = $GLOBALS['perm']->have_studip_perm('tutor', $this->course_id);
         $this->is_autor  = $GLOBALS['perm']->have_studip_perm('autor', $this->course_id);
 
-        // Hide groups page?
-        if (!$this->is_tutor && $this->config->COURSE_MEMBERS_HIDE) {
-            throw new AccessDeniedException();
-        }
-
         // Check lock rules
         $this->is_locked = LockRules::Check($this->course_id, 'groups');
         $this->is_participants_locked = LockRules::Check($this->course_id, 'participants');
