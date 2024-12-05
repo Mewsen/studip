@@ -341,7 +341,7 @@ class Search_StudiengaengeController extends MVVController
             // add links to export Modulhandbücher as PDF
             $widget = new ActionsWidget();
             $widget->setTitle(_('Aktuelle Modulhandbücher'));
-            $avl_lang = array_keys(Config::get()->CONTENT_LANGUAGES);
+            $avl_lang = array_keys($GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values']);
 
             foreach ($avl_lang as $language) {
                 if ($language === $GLOBALS['MVV_LANGUAGES']['default']) {

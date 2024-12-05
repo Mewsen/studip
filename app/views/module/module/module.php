@@ -1,9 +1,3 @@
-<?php
-/**
- * @var Modul[] $module
- */
-?>
-
 <? foreach ($module as $modul) : ?>
     <? $perm = MvvPerm::get($modul) ?>
     <tbody class="<?= $modul->count_modulteile ? '' : 'empty ' ?><?= $modul_id === $modul->getId() ? 'not-collapsed' : 'collapsed' ?>">
@@ -35,13 +29,13 @@
                     <? endif;?>
                 </td>
             <? else : ?>
-                <td style="white-space:nowrap; font-weight: 700; padding-left: 20px;">
+                <td style="white-space:nowrap;">
                     <? if ($ampel_icon) : ?>
                         <?= $ampel_icon->asImg(['title' => $ampelstatus, 'style' => 'vertical-align: text-top;']) ?>
                     <? endif; ?>
                     <?= htmlReady($modul->code) ?>
                 </td>
-                <td class="dont-hide" style="font-weight: 700;">
+                <td class="dont-hide" style="font-weight: bold;">
                     <?= htmlReady($modul->getDisplayName()) ?>
                 </td>
             <? endif; ?>
@@ -49,12 +43,11 @@
             <td style="text-align: center;" class="dont-hide"><?= $modul->count_modulteile ?></td>
             <td class="dont-hide actions" style="text-align: center;">
                 <? if ($perm->havePermRead()) : ?>
-                    <? $languages = $modul->deskriptoren->getAvailableTranslations($modul->original_language); ?>
-                    <? $content_languages = Config::get()->CONTENT_LANGUAGES ?>
+                    <? $languages = $modul->deskriptoren->getAvailableTranslations(); ?>
                     <? foreach ($languages as $language) : ?>
+                        <? $lang = $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$language]; ?>
                         <a href="<?= $controller->action_link('modul/' . $modul->id . '/', ['display_language' => $language]) ?>">
-                            <?= Assets::img(MVV::getContentLanguageImagePath($language),
-                                ['alt' => $content_languages[$language]['name'], 'size' => 24]) ?>
+                            <?= Assets::img(MVV::getContentLanguageImagePath($language), ['alt' => $lang['name'], 'size' => 24]) ?>
                         </a>
                     <? endforeach; ?>
                 <? endif; ?>

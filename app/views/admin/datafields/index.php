@@ -108,7 +108,7 @@
                 <?=  $val->object_class !== null ? htmlReady($GLOBALS['INST_TYPE'][$val->object_class]['name']) : _('alle')?>
             <? elseif ($key === 'moduldeskriptor' || $key === 'modulteildeskriptor') : ?>
                 <?=  $val->object_class !== null ? htmlReady(implode(', ', array_map(function ($class) {
-                    return Config::get()->CONTENT_LANGUAGES[$class]['name'];
+                    return $GLOBALS['MVV_MODULTEIL_DESKRIPTOR']['SPRACHE']['values'][$class]['name'];
                 }, explode(',', $val->object_class)))) : _('alle')?>
             <? elseif ($key === 'studycourse'): ?>
                 <? $object_classes =

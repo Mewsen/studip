@@ -1,21 +1,11 @@
-<?php
-/**
- * @var ModulDeskriptor|ModulteilDeskriptor $descriptor
- * @var string $original_language
- * @var string $display_language
- * @var string $link
- */
-?>
-
-<? $languages = $descriptor->getAvailableTranslations($original_language) ?>
-<? $content_languages = array_merge(array_flip($languages), Config::get()->CONTENT_LANGUAGES) ?>
-<? foreach ($content_languages as $code => $language) : ?>
+<? $table = get_class($modul) == 'Modul' ? 'mvv_modul_deskriptor' : 'mvv_modulteil_deskriptor'; ?>
+<? $languages = $modul->deskriptoren->getAvailableTranslations(); ?>
+<? foreach ($GLOBALS[strtoupper($table)]['SPRACHE']['values'] as $lang => $value) : ?>
 <div style="padding-top:10px;">
-    <a href="<?= URLHelper::getLink($link, ['display_language' => $code]) ?>">
-        <?= Assets::img(MVV::getContentLanguageImagePath($code), ['alt' => $language['name'], 'size' => 24]) ?>
-        <?= $language['name'] ?> (<?= ($code === $original_language ? 'Originalfassung, ' : '')
-            . (in_array($code, $languages) ? 'bearbeiten' : 'neu anlegen') ?>)
-        <?= $code === $display_language ? Icon::create('accept', Icon::ROLE_ACCEPT) : '' ?>
+    <a href="<?= URLHelper::getLink($link, ['display_language' => $lang]) ?>">
+        <?= Assets::img(MVV::getContentLanguageImagePath($lang), ['alt' => $value['name'], 'size' => 24]) ?>
+        <?= $value['name'] ?> (<?= in_array($lang, $languages) ? 'bearbeiten' : 'neu anlegen' ?>)
+        <?= $lang == $sprache ? Icon::create('accept', 'accept', [])->asImg() : '' ?>
     </a>
 </div>
-<? endforeach ?>
+<? endforeach; ?>
