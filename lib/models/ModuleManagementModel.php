@@ -756,10 +756,9 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
      *
      * @return string The currently selected language.
      */
-    public static final function getLanguage()
+    final public static function getLanguage()
     {
-        $language = self::$language ?: $GLOBALS['MVV_LANGUAGES']['default'];
-        return $language;
+        return self::$language;
     }
 
     /**
