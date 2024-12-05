@@ -114,7 +114,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
                     Icon::create('add')
                 )->asDialog();
             }
-            if ($this->author_permission && $ilias_interface_config['create_objects']) {
+            if ($this->author_permission && $this->ilias_interface_config['create_objects']) {
                 $widget->addLink(
                     _('Meine Lernobjekte'),
                     $this->url_for('course/ilias_interface/add_object/my_modules'),

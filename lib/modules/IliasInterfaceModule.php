@@ -140,13 +140,13 @@ class IliasInterfaceModule extends CorePlugin implements StudipModule, SystemPlu
         $navigation->setActiveImage(Icon::create('learnmodule', Icon::ROLE_INFO));
         if ($GLOBALS['perm']->have_studip_perm('tutor', $course_id) || ($GLOBALS['perm']->have_studip_perm('autor', $course_id) && IliasObjectConnections::isCourseConnected($course_id))) {
             if (get_object_type($course_id, ['inst'])) {
-                if ($this->ilias_interface_config['create_objects']) {
+                if ($ilias_interface_config['create_objects']) {
                     $navigation->addSubNavigation('view', new Navigation(_('Lernobjekte dieser Einrichtung'), 'dispatch.php/course/ilias_interface/index/' . $course_id));
                 } else {
                     $navigation->addSubNavigation('view', new Navigation(_('ILIAS-Kurs zu dieser Einrichtung'), 'dispatch.php/course/ilias_interface/index/' . $course_id));
                 }
             } else {
-                if ($this->ilias_interface_config['create_objects']) {
+                if ($ilias_interface_config['create_objects']) {
                     $navigation->addSubNavigation('view', new Navigation(_('Lernobjekte dieser Veranstaltung'), 'dispatch.php/course/ilias_interface/index/' . $course_id));
                 } else {
                     $navigation->addSubNavigation('view', new Navigation(_('ILIAS-Kurs zu dieser Veranstaltung'), 'dispatch.php/course/ilias_interface/index/' . $course_id));
