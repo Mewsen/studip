@@ -80,8 +80,6 @@
         }
 
         .contentbar-button-wrapper {
-            height: 24px;
-            margin: 0 7px;
 
             @-moz-document url-prefix() {
                 &.contentbar-toc-wrapper {
@@ -97,15 +95,16 @@
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: 24px;
-                border: none;
+                border: solid thin var(--color--button-border);
+                border-radius: var(--border-radius-default);
                 cursor: pointer;
                 display: inline-block;
-                height: 24px;
-                width: 24px;
+                height: 32px;
+                width: 32px;
 
                 &.contentbar-button-menu,
                 &.cw-ribbon-button-menu {
-                    @include background-icon(table-of-contents, $size: 24px);
+                    @include background-icon(table-of-contents);
                 }
 
                 &.contentbar-button-zoom::before {

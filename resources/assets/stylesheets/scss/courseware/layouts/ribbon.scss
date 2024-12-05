@@ -75,6 +75,45 @@ $consum_ribbon_width: calc(100% - 58px);
         margin-bottom: 0;
     }
 
+    .cw-ribbon-button {
+        height: 24px;
+        width: 24px;
+        margin: 0 7px;
+        padding: 1px 2px;
+        border: none;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 24px;
+        cursor: pointer;
+
+        &.cw-ribbon-button-menu {
+            @include background-icon(table-of-contents);
+        }
+
+        &.cw-ribbon-button-prev {
+            @include background-icon(arr_1left, $size: 24px);
+            margin: 0 0.5em 0 0;
+        }
+
+        &.cw-ribbon-button-next {
+            @include background-icon(arr_1right, $size: 24px);
+            margin: 0 0.5em 0 0;
+        }
+
+        &.cw-ribbon-button-prev-disabled {
+            @include background-icon(arr_1left, inactive, 24px);
+            margin: 0 0.5em 0 0;
+            cursor: default;
+        }
+
+        &.cw-ribbon-button-next-disabled {
+            @include background-icon(arr_1right, inactive, 24px);
+            margin: 0 0.5em 0 0;
+            cursor: default;
+        }
+    }
+
     .cw-ribbon-wrapper-left {
         display: flex;
         gap: 1em;
@@ -155,49 +194,60 @@ $consum_ribbon_width: calc(100% - 58px);
         gap: 0.5em;
         align-items: center;
 
-        button {
-            border: none;
+        .contentbar-toc-wrapper {
+            margin-top: 4px;
+            @-moz-document url-prefix() {
+                &.contentbar-toc-wrapper {
+                    margin-top: 0;
+                }
+            }
+        }
+
+        button:not(.action-menu-icon) {
+            height: 32px;
+            width: 32px;
+            border-radius: var(--border-radius-default);
+            border: solid thin var(--color--button-border);
             background-color: transparent;
             cursor: pointer;
-        }
-    }
 
-    .cw-ribbon-button {
-        height: 24px;
-        width: 24px;
-        margin: 0 7px;
-        padding: 1px 2px;
-        border: none;
-        background-color: transparent;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 24px;
-        cursor: pointer;
+            &:hover,
+            &:active,
+            &.active {
+                background: var(--color--button-focus);
+                color: var(--color--font-inverted);
+            }
 
-        &.cw-ribbon-button-menu {
-            @include background-icon(table-of-contents, $size: 24px);
-        }
+            &.cw-ribbon-button-menu {
+                @include background-icon(table-of-contents);
+                background-repeat: no-repeat;
+                background-position: center;
 
-        &.cw-ribbon-button-prev {
-            @include background-icon(arr_1left, $size: 24px);
-            margin: 0 0.5em 0 0;
+                &:hover,
+                &:active,
+                &.active {
+                    @include background-icon(table-of-contents, info_alt);
+                }
+            }
         }
 
-        &.cw-ribbon-button-next {
-            @include background-icon(arr_1right, $size: 24px);
-            margin: 0 0.5em 0 0;
-        }
+        .action-menu:not(.is-open) {
+            border: solid thin var(--color--button-border);
+            border-radius: var(--border-radius-default);
+            padding: 5px;
 
-        &.cw-ribbon-button-prev-disabled {
-            @include background-icon(arr_1left, inactive, 24px);
-            margin: 0 0.5em 0 0;
-            cursor: default;
-        }
+            &:hover,
+            &:active,
+            &.active {
+                background: var(--color--button-focus);
 
-        &.cw-ribbon-button-next-disabled {
-            @include background-icon(arr_1right, inactive, 24px);
-            margin: 0 0.5em 0 0;
-            cursor: default;
+                .action-menu-icon span {
+                    background-color: var(--color--font-inverted);
+                }
+            }
+        }
+        .action-menu.is-open .action-menu-icon {
+            margin: 6px;
         }
     }
 }
@@ -382,13 +432,7 @@ $consum_ribbon_width: calc(100% - 58px);
 
 // Rules extracted from PHP contentbar for use in ContentBar.vue
 .contentbar-button-wrapper {
-    height: 24px;
-    margin: 0 7px;
-
     @-moz-document url-prefix() {
-        &.contentbar-toc-wrapper {
-            margin-top: -4px;
-        }
         &.contentbar-action-menu-wrapper {
             margin-top: 2px;
         }
