@@ -189,12 +189,12 @@ export default {
 
         getExpiryTitle(userName, date) {
             if (date) {
-                return this.$this.$gettext(
+                return this.$gettext(
                     'Die Berechtigungen für %{ userName } laufen am folgendem Datum ab: %{ dateStr }',
                     { userName: userName, dateStr: new Date(date).toLocaleDateString() }
                 );
             } else {
-                return this.$this.$gettext(
+                return this.$gettext(
                     'Das Ablaufdatum der Berechtigungen für %{ userName }',
                     { userName: userName }
                 );

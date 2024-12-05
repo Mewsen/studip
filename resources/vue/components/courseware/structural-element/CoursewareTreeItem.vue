@@ -376,7 +376,7 @@ export default {
                     break;
             }
 
-            return this.$this.$gettext(
+            return this.$gettext(
                 'Diese Seite kann von %{persons} nicht gesehen werden',
                 { persons: persons }
             );
