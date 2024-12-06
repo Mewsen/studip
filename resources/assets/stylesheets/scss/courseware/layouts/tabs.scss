@@ -1,5 +1,5 @@
-@use '../../../mixins.scss' as *;
-@import '../variables.scss';
+@use '../../../mixins' as *;
+@import '../variables';
 
 .cw-tabs-nav {
     display: flex;

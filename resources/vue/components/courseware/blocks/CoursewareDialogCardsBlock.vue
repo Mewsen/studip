@@ -298,5 +298,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/dialog-cards.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/dialog-cards';
 </style>

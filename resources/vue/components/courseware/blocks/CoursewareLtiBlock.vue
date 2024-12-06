@@ -296,5 +296,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/lti.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/lti';
 </style>

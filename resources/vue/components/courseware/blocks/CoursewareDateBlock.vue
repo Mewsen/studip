@@ -201,5 +201,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/date.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/date';
 </style>

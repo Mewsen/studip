@@ -10,7 +10,7 @@
         min-height: 1.5em;
         width: 40px;
         z-index: 1;
-    
+
         > a, ul {
             background-color: var(--white);
             padding: 5px;
@@ -28,7 +28,7 @@
                 flex-direction: column-reverse;
             }
         }
-    
+
         ul {
             display: none;
             list-style: none;
@@ -54,7 +54,7 @@
 
 .document-dialog {
     $info-width: 150px;
-    @include clearfix();
+    @include clearfix;
     > aside {
         float: left;
         width: $info-width;

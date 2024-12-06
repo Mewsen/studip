@@ -20,7 +20,7 @@
                     opacity var(--transition-duration);
     }
 }
-@mixin border-shrink() {
+@mixin border-shrink {
     left: 50%;
     right: 50%;
     opacity: 0;
@@ -33,12 +33,12 @@ body:not(.fixed) #navigation-level-1-items {
     > li:not(.active) {
         @include border-beneath(var(--dark-gray-color-40));
         &:not(:hover)::after {
-            @include border-shrink();
+            @include border-shrink;
         }
     }
 
     &:hover > li:not(:hover)::after {
-        @include border-shrink();
+        @include border-shrink;
     }
 
     .action-menu-icon {
@@ -64,7 +64,7 @@ body:not(.fixed) #navigation-level-1-items {
         &:not(.current) {
             @include border-beneath(var(--dark-gray-color-40), -2px, 3px);
             &:not(:hover)::after {
-                @include border-shrink();
+                @include border-shrink;
             }
         }
     }

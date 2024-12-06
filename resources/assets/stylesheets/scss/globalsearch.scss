@@ -1,3 +1,5 @@
+@use "sass:color";
+
 #quicksearch_item {
     align-self: flex-start;
 }
@@ -323,7 +325,7 @@ html:not(.size-large) {
             right: -1px;
             bottom: -1px;
             left: -1px;
-            background: mix($base-color, rgba(255,0,0,0), 50%);
+            background: color.mix($base-color, rgba(255,0,0,0), 50%);
             z-index: 5;
             pointer-events: none;
         }

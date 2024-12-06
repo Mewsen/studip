@@ -19,7 +19,7 @@
     }
 }
 
-@include media-breakpoint-tiny-down(){
+@include media-breakpoint-tiny-down{
 
     table.settings-privacy {
         &, thead, tbody, th, td, tr {
@@ -80,7 +80,7 @@
     border-bottom: 1px solid var(--table-header-color);
 }
 
-@include media-breakpoint-small-up(){
+@include media-breakpoint-small-up {
     #select_fach_abschluss tbody {
         td::before {
             display: none;

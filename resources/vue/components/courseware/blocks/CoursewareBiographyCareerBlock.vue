@@ -11,7 +11,7 @@
         >
             <template #content>
                 <ol class="cw-timeline">
-                    <li 
+                    <li
                         v-for="(item, index) in sortedItems"
                         :key="index"
                         class="cw-timeline-item"
@@ -254,6 +254,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-    @import "../../../../assets/stylesheets/scss/courseware/blocks/timeline.scss";
-    @import "../../../../assets/stylesheets/scss/courseware/blocks/biography.scss";
+    @import "../../../../assets/stylesheets/scss/courseware/blocks/timeline";
+    @import "../../../../assets/stylesheets/scss/courseware/blocks/biography";
 </style>

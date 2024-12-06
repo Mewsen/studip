@@ -204,5 +204,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/table-of-contents.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/table-of-contents';
 </style>

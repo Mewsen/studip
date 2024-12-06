@@ -59,6 +59,6 @@ export default {
 };
 </script>
 <style lang="scss">
-@import url('./../../../assets/stylesheets/scss/courseware/layouts/input-file.scss');
+@import './../../../assets/stylesheets/scss/courseware/layouts/input-file';
 
 </style>

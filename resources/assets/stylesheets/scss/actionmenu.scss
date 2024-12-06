@@ -235,7 +235,7 @@ $action-menu-shadow: 2px 2px 0 var(--color--action-menu-shadow);
                 opacity: 0;
                 transform: rotateX(180deg);
             }
-            to {
+            100% {
                 opacity: 1;
                 transform: rotateX(0);
             }
@@ -257,7 +257,7 @@ $action-menu-shadow: 2px 2px 0 var(--color--action-menu-shadow);
                 opacity: 1;
                 transform: rotateX(0);
             }
-            to {
+            100% {
                 opacity: 0;
                 transform: rotateX(180deg);
             }

@@ -134,7 +134,7 @@ fieldset.attribute_table {
 
 .course-admin {
     .course-completion {
-        @include hide-text();
+        @include hide-text;
         @include square($icon-size-default);
         background-repeat: no-repeat;
         display: block;

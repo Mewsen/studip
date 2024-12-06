@@ -1,6 +1,6 @@
-@use '../../../mixins.scss' as *;
-@import '../gradients.scss';
-@import '../variables.scss';
+@use '../../../mixins' as *;
+@import '../gradients';
+@import '../variables';
 
 $big-icon-size: 196;
 $big-icon-size-px: $big-icon-size * 1px;

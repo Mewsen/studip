@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .plus {
     .element_header {
         display: inline-block;
@@ -45,8 +47,8 @@
         width: 250px;
         text-align: center;
         background-color: $content-color-20;
-        border-top: 1px solid mix($brand-color-lighter, $white, 80%);
-        border-bottom: 1px solid mix($brand-color-lighter, $white, 80%);
+        border-top: 1px solid color.mix($brand-color-lighter, $white, 80%);
+        border-bottom: 1px solid color.mix($brand-color-lighter, $white, 80%);
     }
 
     .descriptionbox {

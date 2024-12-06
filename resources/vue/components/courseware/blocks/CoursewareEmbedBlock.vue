@@ -248,5 +248,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/embed.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/embed';
 </style>

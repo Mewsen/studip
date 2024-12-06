@@ -282,5 +282,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/files.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/files';
 </style>

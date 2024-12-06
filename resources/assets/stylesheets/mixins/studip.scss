@@ -1,3 +1,7 @@
+@use "sass:color";
+@use "sass:math";
+@use "sass:string";
+
 /**
  * studip-mixins.less
  *
@@ -45,8 +49,8 @@
 }
 
 @function icon-path($icon, $role: clickable) {
-    $icon: unquote($icon);
-    $role: unquote($role);
+    $icon: string.unquote($icon);
+    $role: string.unquote($role);
 
     $color: 'blue';
     @if $role == info {
@@ -67,7 +71,7 @@
 }
 
 @function icon-size($size) {
-    @if unitless($size) {
+    @if math.is-unitless($size) {
         @warn "Assuming icon size to be in pixels";
         $size: $size * 1px;
     }
@@ -105,7 +109,7 @@
 }
 
 @mixin icon($position, $icon, $role: clickable, $size: $icon-size-default, $padding: 0, $inline: false) {
-    $position: unquote($position);
+    $position: $position;
 
     @if $inline {
         $size: $icon-size-inline;
@@ -138,7 +142,7 @@
     vertical-align: bottom;
 
     @include background-icon($default-icon-name, $size: $icon-size-default);
-    @include hide-text();
+    @include hide-text;
     @include square($icon-size-default);
 
     &.toggled {
@@ -179,8 +183,8 @@
     background-size: 140px;
     background-position: calc(50% - 100px) calc(50% + 40px);
 
-    @if ($background-color) {
-        background-color: mix($background-color, rgba(255, 255, 255, 0), 70%);
+    @if $background-color {
+        background-color: color.mix($background-color, rgba(255, 255, 255, 0), 70%);
     }
 
     text-align: center;
@@ -233,7 +237,7 @@
 // Define action icons for widgets
 @mixin widget-action($action, $icon: $action, $role: clickable) {
     .widget-action[data-action="#{$action}"] {
-        @include hide-text();
+        @include hide-text;
 
         width: var(--icon-size-default);
         height: var(--icon-size-default);
@@ -247,30 +251,4 @@
 
         @content;
     }
-}
-
-@mixin scrollbox-horizontal() {
-    overflow: auto;
-
-    background:
-        /* Shadow covers */
-        linear-gradient(90deg, white 30%, rgba(255,255,255,0)),
-        linear-gradient(90deg, rgba(255,255,255,0), white 70%) 100% 0,
-
-            /* Shadows */
-        radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.2), rgba(0,0,0,0)),
-        radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.2), rgba(0,0,0,0)) 100% 0;
-    background:
-        /* Shadow covers */
-        linear-gradient(90deg, white 30%, rgba(255,255,255,0)),
-        linear-gradient(90deg, rgba(255,255,255,0), white 70%) 100% 0,
-
-            /* Shadows */
-        radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.2), rgba(0,0,0,0)),
-        radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.2), rgba(0,0,0,0)) 100% 0;
-    background-repeat: no-repeat;
-    background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
-
-    /* Opera doesn't support this in the shorthand */
-    background-attachment: local, local, scroll, scroll;
 }

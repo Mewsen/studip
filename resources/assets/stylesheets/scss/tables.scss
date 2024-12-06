@@ -1,5 +1,10 @@
+@use "sass:color";
+
 /* --- Tabellen ------------------------------------------------------------- */
-table.header, .table_header { //normale Tabellenheader
+
+// normale Tabellenheader
+table.header,
+.table_header {
     background-color: var(--table-header-color);
     border-bottom: 1px solid var(--color--table-border);
     color: var(--black);
@@ -7,7 +12,8 @@ table.header, .table_header { //normale Tabellenheader
 
 }
 
-.table_header_bold { //formerly known as topic(-header)
+// formerly known as topic(-header)
+.table_header_bold {
     background-color: var(--color--table-header);
     border-color: var(--color--table-border);
     border-style: solid;
@@ -52,7 +58,7 @@ table.toolbar {
 
 td.toolbar,
 td.printhead {
-    @include gradient-bar();
+    @include gradient-bar;
 }
 
 td {
@@ -332,7 +338,7 @@ tr.sortable {
     }
 
     td:first-child[colspan], .divider > th, .divider > td {
-        background-color: lighten($brand-color-lighter, 20%);
+        background-color: color.adjust($brand-color-lighter, $lightness: 20%);
         border-bottom: 1px solid var(--color--table-border);
         border-top: 1px solid var(--color--table-border);
         color: var(--black);
@@ -397,7 +403,7 @@ tr.sortable {
 
 table.tree {
     .header > td {
-        @include gradient-bar();
+        @include gradient-bar;
 
         a.link {
             padding-left: 5px;
@@ -666,7 +672,7 @@ table.default {
         }
 
         .toggle-switch {
-            @include hide-text();
+            @include hide-text;
             @include background-icon(arr_1down);
             display: inline-block;
             height: $icon-size-inline;
@@ -842,10 +848,10 @@ table.withdetails {
 
 // Responsive helper
 .table-scrollbox-horizontal {
-    @include scrollbox-horizontal();
+    @include scrollbox-horizontal;
 }
 
-//New table form for Course Search
+// New table form for Course Search
 table.course-search {
     $max-width-s: 8em;
     $max-width-m: 48em;
@@ -869,7 +875,7 @@ table.course-search {
     }
 }
 
-//Show Tree Table
+// Show Tree Table
 table.show-tree {
     width: 100%;
     padding: 0 10px 10px 10px;

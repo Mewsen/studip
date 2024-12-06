@@ -1,4 +1,4 @@
-@use "../mixins/colors.scss";
+@use "../mixins/colors";
 @import "breakpoints";
 @import "buttons";
 @import "sidebar";
@@ -691,7 +691,7 @@ html:not(.responsive-display):not(.fullscreen-mode) {
 
 /* content from old responsive.less */
 .responsive-display {
-    @include media-breakpoint-small-down() {
+    @include media-breakpoint-small-down {
         #navigation-level-1,
         #navigation-level1-items,
         .current_page,
@@ -855,7 +855,7 @@ html:not(.responsive-display):not(.fullscreen-mode) {
         }
     }
 
-    @include media-breakpoint-tiny-down() {
+    @include media-breakpoint-tiny-down {
         #index,
         #login,
         #request_new_password,

@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .fc-body {
     .fc-event {
 
@@ -11,10 +13,10 @@
 
         &.course-color-0 {
             border-color: $group-color-0;
-            background-color: lighten($group-color-0, 45%);
+            background-color: color.adjust($group-color-0, $lightness: 45%);
 
             &:hover {
-                background-color: lighten($group-color-0, 50%);
+                background-color: color.adjust($group-color-0, $lightness: 50%);
             }
 
             .fc-time {
@@ -24,10 +26,10 @@
 
         &.course-color-1 {
             border-color: $group-color-1;
-            background-color: lighten($group-color-1, 45%);
+            background-color: color.adjust($group-color-1, $lightness: 45%);
 
             &:hover {
-                background-color: lighten($group-color-1, 50%);
+                background-color: color.adjust($group-color-1, $lightness: 50%);
             }
 
             .fc-time {
@@ -37,10 +39,10 @@
 
         &.course-color-2 {
             border-color: $group-color-2;
-            background-color: lighten($group-color-2, 45%);
+            background-color: color.adjust($group-color-2, $lightness: 45%);;
 
             &:hover {
-                background-color: lighten($group-color-2, 50%);
+                background-color: color.adjust($group-color-2, $lightness: 50%);;
             }
 
             .fc-time {
@@ -50,10 +52,10 @@
 
         &.course-color-3 {
             border-color: $group-color-3;
-            background-color: lighten($group-color-3, 45%);
+            background-color: color.adjust($group-color-3, $lightness: 45%);;
 
             &:hover {
-                background-color: lighten($group-color-3, 50%);
+                background-color: color.adjust($group-color-3, $lightness: 50%);;
             }
 
             .fc-time {
@@ -63,10 +65,10 @@
 
         &.course-color-4 {
             border-color: $group-color-4;
-            background-color: lighten($group-color-4, 45%);
+            background-color: color.adjust($group-color-4, $lightness: 45%);;
 
             &:hover {
-                background-color: lighten($group-color-4, 50%);
+                background-color: color.adjust($group-color-4, $lightness: 50%);;
             }
 
             .fc-time {
@@ -76,10 +78,10 @@
 
         &.course-color-5 {
             border-color: $group-color-5;
-            background-color: lighten($group-color-5, 45%);
+            background-color: color.adjust($group-color-5, $lightness: 45%);;
 
             &:hover {
-                background-color: lighten($group-color-5, 50%);
+                background-color: color.adjust($group-color-5, $lightness: 50%);;
             }
 
             .fc-time {
@@ -89,10 +91,10 @@
 
         &.course-color-6 {
             border-color: $group-color-6;
-            background-color: lighten($group-color-6, 45%);
+            background-color: color.adjust($group-color-6, $lightness: 45%);;
 
             &:hover {
-                background-color: lighten($group-color-6, 50%);
+                background-color: color.adjust($group-color-6, $lightness: 50%);;
             }
 
             .fc-time {
@@ -102,10 +104,10 @@
 
         &.course-color-7 {
             border-color: $group-color-7;
-            background-color: lighten($group-color-7, 45%);
+            background-color: color.adjust($group-color-7, $lightness: 45%);;
 
             &:hover {
-                background-color: lighten($group-color-7, 50%);
+                background-color: color.adjust($group-color-7, $lightness: 50%);;
             }
 
             .fc-time {
@@ -115,10 +117,10 @@
 
         &.course-color-8 {
             border-color: $group-color-8;
-            background-color: lighten($group-color-8, 45%);
+            background-color: color.adjust($group-color-8, $lightness: 45%);;
 
             &:hover {
-                background-color: lighten($group-color-8, 50%);
+                background-color: color.adjust($group-color-8, $lightness: 50%);;
             }
 
             .fc-time {

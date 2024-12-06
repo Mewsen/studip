@@ -241,7 +241,7 @@ form.default fieldset.radiobutton-set {
     }
 }
 
-@include media-breakpoint-small-down() {
+@include media-breakpoint-small-down {
     .wizard-wrapper {
 
         .wizard-meta {
@@ -260,7 +260,7 @@ form.default fieldset.radiobutton-set {
     }
 }
 
-@include media-breakpoint-tiny-down() {
+@include media-breakpoint-tiny-down {
     .wizard-wrapper {
         .wizard-meta {
             display: none;

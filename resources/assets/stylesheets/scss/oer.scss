@@ -459,7 +459,7 @@ ul.reviews, ol.reviews {
 }
 
 @keyframes oer-filter-panel-appears {
-    from {
+    0% {
         max-height: 0;
         border-bottom-width: 0;
         overflow: hidden;
@@ -469,7 +469,7 @@ ul.reviews, ol.reviews {
         overflow: hidden;
         border-bottom-width: 10px;
     }
-    to {
+    100% {
         max-height: 183px;
         overflow: hidden;
         border-bottom-width: 10px;
@@ -478,12 +478,12 @@ ul.reviews, ol.reviews {
 
 
 @keyframes oer-tag-appears {
-    from {
+    0% {
         opacity: 0;
         transform: scale(0.5);
         filter: blur(4px);
     }
-    to {
+    100% {
         transform: scale(1);
         opacity: 1;
         filter: blur(0px);

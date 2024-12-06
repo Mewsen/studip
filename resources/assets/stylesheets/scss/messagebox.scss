@@ -54,7 +54,7 @@ div.messagebox_details {
 }
 
 // Messagebox definitions
-@mixin messagebox ($name, $color, $background-color, $border-color: $color, $image: $name) {
+@mixin messagebox($name, $color, $background-color, $border-color: $color, $image: $name) {
     div.messagebox_#{$name} {
         color: $color;
         background-color: $background-color;

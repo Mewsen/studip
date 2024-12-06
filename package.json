@@ -7,7 +7,8 @@
         "webpack-dev": "webpack --config webpack.dev.js --mode development",
         "webpack-prod": "webpack --config webpack.prod.js --mode production",
         "webpack-watch": "webpack --config webpack.dev.js --mode development --watch",
-        "test": "jest tests/jest/"
+        "test": "jest tests/jest/",
+        "lint-css": "stylelint \"resources/assets/**/*.{css,scss,vue}\""
     },
     "author": "",
     "license": "GPL-2.0",
@@ -127,6 +128,9 @@
         "sprintf-js": "^1.0.3",
         "stream-browserify": "^3.0.0",
         "style-loader": "^4.0.0",
+        "stylelint": "^15.11.0",
+        "stylelint-config-standard-scss": "^11.1.0",
+        "stylelint-formatter-gitlab": "^1.0.2",
         "svgo": "3.3.2",
         "tablesorter": "2.31.3",
         "ts-loader": "^9.5.1",

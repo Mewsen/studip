@@ -68,7 +68,7 @@
             white-space: nowrap;
         }
         .ui-button {
-            @include button(); // Include button mixin
+            @include button; // Include button mixin
             font-weight: normal;
 
             &.accept,

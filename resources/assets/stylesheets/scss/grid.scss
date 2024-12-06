@@ -18,12 +18,12 @@ $grid-element-width: 270px;
 }
 
 // Responsive displays
-@include media-breakpoint-small-down() {
+@include media-breakpoint-small-down {
     .studip-grid {
         grid-template-columns: 1fr 1fr;
     }
 }
-@include media-breakpoint-tiny-down() {
+@include media-breakpoint-tiny-down {
     .studip-grid {
         grid-template-columns: 100%;
     }

@@ -132,5 +132,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-    @import "../../../../assets/stylesheets/scss/courseware/blocks/biography.scss";
+    @import "../../../../assets/stylesheets/scss/courseware/blocks/biography";
 </style>

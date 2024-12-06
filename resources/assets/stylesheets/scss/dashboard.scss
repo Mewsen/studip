@@ -57,13 +57,13 @@
 .document-range, .document-size {
     display: none;
 
-    @include media-breakpoint-medium-up() {
+    @include media-breakpoint-medium-up {
         display: inline;
     }
 }
 
 // small: nur volle breite
-@include media-breakpoint-small-up() {
+@include media-breakpoint-small-up {
     .grid-stack-one-column-mode {
         .document-range, .document-size {
             display: inline;
@@ -157,12 +157,12 @@ form div.files-search {
 
     .input-group-append a.button.reset {
         @include button-with-icon(refresh, clickable, clickable);
-        @include hide-text();
+        @include hide-text;
         top: 2px;
     }
 }
 
-@include media-breakpoint-tiny-down() {
+@include media-breakpoint-tiny-down {
 
     .files-search-search {
         margin-bottom: 0;
@@ -176,22 +176,22 @@ form div.files-search {
 
 .files-search-active-filters {
     li:first-child {
-        @include hidden-tiny-down();
+        @include hidden-tiny-down;
     }
 }
 
 .files-search-results {
     caption span {
-        @include hidden-tiny-down();
+        @include hidden-tiny-down;
     }
 
     th:nth-child(3), td:nth-child(3) {
-        @include hidden-tiny-down();
+        @include hidden-tiny-down;
     }
 
     th:nth-child(1), td:nth-child(1),
     th:nth-child(5), td:nth-child(5),
     th:nth-child(6), td:nth-child(6) {
-        @include hidden-small-down();
+        @include hidden-small-down;
     }
 }

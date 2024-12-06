@@ -629,5 +629,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-    @import "../../../../assets/stylesheets/scss/courseware/blocks/headline.scss";
+@import "../../../../assets/stylesheets/scss/courseware/blocks/headline";
 </style>

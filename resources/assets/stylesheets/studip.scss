@@ -19,7 +19,7 @@
 @import "scss/avatar";
 @import "scss/badges";
 @import "scss/big-image-handler";
-@import "scss/blockquote.scss";
+@import "scss/blockquote";
 @import "scss/blubber";
 @import "scss/buttons";
 @import "scss/calendar";
@@ -56,7 +56,7 @@
 @import "scss/globalsearch";
 @import "scss/links";
 @import "scss/lists";
-@import "scss/loading-skeleton.scss";
+@import "scss/loading-skeleton";
 @import "scss/messages";
 @import "scss/messagebox";
 @import "scss/my_courses";
@@ -71,7 +71,7 @@
 @import "scss/personal-notifications";
 @import "scss/plugins";
 @import "scss/plus";
-@import "scss/progress_indicator.scss";
+@import "scss/progress_indicator";
 @import "scss/profile";
 @import "scss/qrcode";
 @import "scss/questionnaire";
@@ -287,7 +287,7 @@ td.index_box_cell {
     .buttons {
         font-size: 0.75em;
 
-        @include clearfix();
+        @include clearfix;
         margin: 0 !important;  // Locked since .buttons is pretty generic
         padding: 0 !important; // and other styles could easily interfere
 
@@ -526,7 +526,7 @@ div.info { padding-left: 1%; }
         flex-basis: 300px;
         margin-left: 10px;
         &:first-child {
-            margin-left: 0px;
+            margin-left: 0;
         }
     }
 }

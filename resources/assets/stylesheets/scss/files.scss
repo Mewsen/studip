@@ -277,7 +277,7 @@ table.documents tfoot {
 
 
 /* for file/edit and folder/edit only: */
-@include media-breakpoint-small-down() {
+@include media-breakpoint-small-down {
     /* mobile view: */
     #file_aside,
     #folder_aside {
@@ -340,7 +340,7 @@ table.documents tfoot {
     }
 }
 
-@include media-breakpoint-small-up() {
+@include media-breakpoint-small-up {
     /* desktop view: */
 
     #file_aside,

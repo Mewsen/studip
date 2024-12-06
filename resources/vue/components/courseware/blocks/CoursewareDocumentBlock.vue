@@ -832,5 +832,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/document.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/document';
 </style>

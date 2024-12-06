@@ -158,10 +158,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '../../assets/stylesheets/mixins.scss';
-@use '../../assets/stylesheets/scss/breakpoints.scss' as *;
-@use '../../assets/stylesheets/scss/variables.scss';
-@import '../../assets/stylesheets/scss/visibility.scss'; // Needs to be imported (breakpoint variables are missing)
+@use '../../assets/stylesheets/mixins';
+@use '../../assets/stylesheets/scss/breakpoints' as *;
+@use '../../assets/stylesheets/scss/variables';
+@import '../../assets/stylesheets/scss/visibility'; // Needs to be imported (breakpoint variables are missing)
 
 $tile-border-width: 1px;
 $tile-color-width: 15px;

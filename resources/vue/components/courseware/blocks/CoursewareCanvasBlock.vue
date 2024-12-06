@@ -706,5 +706,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/canvas.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/canvas';
 </style>

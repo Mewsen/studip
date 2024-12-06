@@ -209,7 +209,7 @@ export default {
             let empty = false;
             let info = '';
             let defaultTitle = '';
-                
+
             switch (this.currentType) {
                 case 'external':
                     info = this.$gettext('Bitte wählen Sie eine URL als Ziel aus.');
@@ -218,7 +218,7 @@ export default {
                     this.currentUnitTarget = '';
                     this.currentTitle = this.currentTitle || this.currentUrl;
                     break;
-                case 'internal': 
+                case 'internal':
                     info = this.$gettext('Bitte wählen Sie eine Seite als Ziel aus.');
                     empty = this.currentTarget === '';
                     if (!empty) {
@@ -288,5 +288,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/link.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/link';
 </style>

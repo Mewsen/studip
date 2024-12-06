@@ -120,14 +120,14 @@ form.settings-avatar {
         color: initial;
     }
 
-    @include media-breakpoint-small-up() {
+    @include media-breakpoint-small-up {
         .form-group {
             display: flex;
             align-items: normal;
         }
     }
 
-    @include media-breakpoint-small-down() {
+    @include media-breakpoint-small-down {
         .file-upload {
             position: initial;
             left: 0;

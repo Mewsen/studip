@@ -43,7 +43,7 @@
 
 a.button,
 button.button {
-    @include button();
+    @include button;
 }
 
 .button-with-empty-icon {

@@ -20,3 +20,6 @@ block_comment_start = /*
 block_comment_end = */
 line_comment = //
 quote_type = single
+
+[*.yml]
+indent_size = 2

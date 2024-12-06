@@ -281,5 +281,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/iframe.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/iframe';
 </style>

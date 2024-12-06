@@ -271,7 +271,7 @@ form.default {
         }
     }
 
-    //Special inputs
+    // Special inputs
 
     label.file-upload {
         @include background-icon(upload);
@@ -468,7 +468,7 @@ form.default {
         margin-top: 0.5ex;
     }
 
-    //hidden radio buttons with icon:
+    // hidden radio buttons with icon:
 
     input[type="radio"].hidden-checkbox, input[type="checkbox"].hidden-checkbox {
         display:none;
@@ -516,7 +516,7 @@ form.default {
         }
     }
 
-    //designing vue-select in studipform:
+    // designing vue-select in studipform:
     .vs__dropdown-toggle {
         border-radius: 0;
     }
@@ -574,7 +574,7 @@ form.narrow {
 }
 
 // give forms some optimized styling for very narrow screen sizes
-@include media-breakpoint-tiny-down(){
+@include media-breakpoint-tiny-down{
     form.default {
         label.col-1, div.col-1, section.col-1,
         label.col-2, div.col-2, section.col-2,
