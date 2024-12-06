@@ -21,6 +21,7 @@ class Calendar_CalendarController extends AuthenticatedController
         $sidebar = Sidebar::get();
 
         $actions = new ActionsWidget();
+        $export  = new ExportWidget();
         if ($schedule) {
             $actions->addLink(
                 _('Neuer Eintrag'),
@@ -47,20 +48,20 @@ class Calendar_CalendarController extends AuthenticatedController
 
         if (!$GLOBALS['perm']->have_perm('admin')) {
             $actions->addLink(
-                _('Veranstaltung auswählen'),
+                _('Veranstaltungen auswählen'),
                 $this->url_for('calendar/calendar/add_courses'),
                 Icon::create('seminar'),
                 ['data-dialog' => 'size=medium']
             );
         }
         if (!$schedule) {
-            $actions->addLink(
+            $export->addLink(
                 _('Termine exportieren'),
                 $this->url_for('calendar/calendar/export', ['timestamp' => time()]),
                 Icon::create('export'),
                 ['data-dialog' => 'size=auto', 'class' => 'calendar-action']
             );
-            $actions->addLink(
+            $export->addLink(
                 _('Termine importieren'),
                 $this->url_for('calendar/calendar/import'),
                 Icon::create('import'),
@@ -78,7 +79,7 @@ class Calendar_CalendarController extends AuthenticatedController
                 Icon::create('group2')
             );
         }
-        $actions->addLink(
+        $export->addLink(
             _('Drucken'),
             'javascript:void(window.print());',
             Icon::create('print')
@@ -90,6 +91,7 @@ class Calendar_CalendarController extends AuthenticatedController
             ['data-dialog' => 'size=auto;reload-on-close']
         );
         $sidebar->addWidget($actions);
+        $sidebar->addWidget($export);
 
         if (!$schedule) {
             $date = new DateSelectWidget();
