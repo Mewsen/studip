@@ -95,9 +95,7 @@ class StudipMemcachedCache implements StudipCache
     public function read($arg)
     {
         $key = $this->getCacheKey($arg);
-        $result = $this->memcache->get($key);
-
-        return ($result === null) ? null : unserialize($result);
+        return $this->memcache->get($key);
     }
 
     /**
@@ -113,7 +111,7 @@ class StudipMemcachedCache implements StudipCache
     public function write($arg, $content, $expire = self::DEFAULT_EXPIRATION)
     {
         $key = $this->getCacheKey($arg);
-        return $this->memcache->set($key, serialize($content), $expire);
+        return $this->memcache->set($key, $content, $expire);
     }
 
     /**
