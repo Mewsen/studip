@@ -86,7 +86,7 @@
         <label>
             <?= _('Zugriff') ?>
             <?= tooltipIcon(
-                _('Öffentliche Termine sind systemweit sichtbar. Private Termine sind für Personen, denen der Kalender freigegeben wurde, sichtbar. Vertrauliche Termine sind hingegen nur für einen selbst sichtbar.')
+                _('Öffentliche Termine sind systemweit sichtbar. Private Termine sind für Personen, denen der Kalender freigegeben wurde, sichtbar. Vertrauliche Termine sind hingegen nur für Sie selbst sichtbar.')
             ) ?>
             <div class="flex-row">
                 <select name="access">

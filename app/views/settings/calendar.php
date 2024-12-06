@@ -66,22 +66,22 @@ $cal_step_weeks = [
 
         <div class="hgroup">
             <label>
-                <?= _('Startuhrzeit') ?>
+                <?= _('Beginn') ?>
                 <select name="cal_start" aria-label="<?= _('Startzeit der Tages- und Wochenansicht') ?>" class="size-s">
                     <? for ($i = 0; $i < 24; $i += 1): ?>
                         <option value="<?= $i ?>" <? if ($start == $i) echo 'selected'; ?>>
-                            <?= sprintf(_('%02u:00 Uhr'), $i) ?>
+                            <?= sprintf('%02u:00', $i) ?>
                         </option>
                     <? endfor; ?>
                 </select>
             </label>
 
             <label>
-                <?= _('Enduhrzeit') ?>
+                <?= _('Ende') ?>
                 <select name="cal_end" aria-label="<?= _('Endzeit der Tages- und Wochenansicht') ?>" class="size-s">
                     <? for ($i = 1; $i < 25; $i += 1): ?>
                         <option value="<?= $i ?>" <? if ($end == $i) echo 'selected'; ?>>
-                            <?= sprintf(_('%02u:00 Uhr'), $i) ?>
+                            <?= sprintf('%02u:00', $i) ?>
                         </option>
                     <? endfor; ?>
                 </select>
