@@ -69,6 +69,9 @@ import './studip-jquery-tweaks.js';
 import './studip-jquery.multi-select.tweaks.js';
 import './studip-jquery-selection-helper.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import select2 from 'select2/dist/js/select2.full.js';
+
 import 'blueimp-file-upload';
 import 'blueimp-file-upload/js/jquery.iframe-transport.js';
 
