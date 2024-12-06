@@ -1285,7 +1285,7 @@ export const actions = {
 
          return items
             .filter(({ membership, course }) => {
-                return course.relationships.courseware.data;
+                return course.relationships['courseware-units'].data.length > 0;
             })
             .map(({ course }) => course);
 
