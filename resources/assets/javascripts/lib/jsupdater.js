@@ -58,7 +58,7 @@ function process(json) {
 function registerNextPoll() {
     // Calculate smallest registered polling interval (but no more than 60 seconds)
     let interval = 60000;
-    for (const [index, handler] of Object.entries(registeredHandlers)) {
+    for (const handler of Object.values(registeredHandlers)) {
         if (handler.interval < interval) {
             interval = handler.interval;
         }

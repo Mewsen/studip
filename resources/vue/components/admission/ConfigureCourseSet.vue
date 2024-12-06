@@ -592,7 +592,7 @@ export default {
                 STUDIP.jsonapi.withPromises().post(
                     'course-sets',
                     { data: data }
-                ).then(response => {
+                ).then(() => {
                     this.$refs.courseSetForm.dataset.secure = 'false';
                     window.location = STUDIP.URLHelper.getURL('dispatch.php/admission/courseset');
                 });
@@ -602,7 +602,7 @@ export default {
                 STUDIP.jsonapi.withPromises().patch(
                     'course-sets/' + this.courseSetId,
                     { data: data}
-                ).then(response => {
+                ).then(() => {
                     this.$refs.courseSetForm.dataset.secure = 'false';
                     window.location = STUDIP.URLHelper.getURL('dispatch.php/admission/courseset');
                 });
@@ -680,7 +680,7 @@ export default {
         }
 
         if (!this.selectedSemester) {
-            for (const [key, value] of Object.entries(this.allSemesters)) {
+            for (const value of Object.values(this.allSemesters)) {
                 if (value.current) {
                     this.selectedSemester = value.id;
                 }

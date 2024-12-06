@@ -6,14 +6,14 @@ import "tablesorter/dist/js/jquery.tablesorter.widgets.js"
 
 jQuery.tablesorter.addParser({
     id: 'htmldata',
-    is: function (s, table, cell, $cell) {
-        var c = table.config,
-            p = c.parserMetadataName || 'sortValue';
+    is(s, table, cell) {
+        const c = table.config;
+        const p = c.parserMetadataName || 'sortValue';
         return $(cell).data(p) !== undefined;
     },
-    format: function (s, table, cell) {
-        var c = table.config,
-            p = c.parserMetadataName || 'sortValue';
+    format(s, table, cell) {
+        const c = table.config;
+        const p = c.parserMetadataName || 'sortValue';
         return $(cell).data(p);
     },
     type: 'text'

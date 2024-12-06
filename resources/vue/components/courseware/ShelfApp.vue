@@ -27,7 +27,7 @@ import CoursewareUnitItems from './unit/CoursewareUnitItems.vue';
 import CoursewareSharedItems from './unit/CoursewareSharedItems.vue';
 import CoursewareCompanionOverlay from './layouts/CoursewareCompanionOverlay.vue';
 
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
     components: {

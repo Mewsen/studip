@@ -74,7 +74,7 @@ domReady(() => {
                     evtSource.close();
                     reject(event.data || 'Fehler beim Installieren');
                 });
-                evtSource.addEventListener('close', (event) => {
+                evtSource.addEventListener('close', () => {
                     evtSource.close();
                     resolve();
                 });
@@ -99,7 +99,7 @@ domReady(() => {
             });
         }
 
-        promise.then(response => {
+        promise.then(() => {
             current.element.classList.add('succeeded');
             next();
         }).catch(error => {

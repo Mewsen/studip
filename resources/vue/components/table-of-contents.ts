@@ -13,7 +13,7 @@ export interface TOCItem {
 // Depth-first traversal of a TOCItem hierachy starting at its root.
 export function traverse(tocRoot: TOCItem, callback: (item: TOCItem) => void) {
     callback(tocRoot);
-    for (let tocItem of tocRoot.children) {
+    for (const tocItem of tocRoot.children) {
         traverse(tocItem, callback);
     }
 }

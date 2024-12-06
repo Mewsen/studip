@@ -19,7 +19,7 @@ const Blubber = {
 
         function connectBlubber(blubberPanel, componentName) {
             return Promise.all([window.STUDIP.Vue.load(), Blubber.plugin()]).then(
-                ([{ Vue, createApp, store }, BlubberPlugin]) => {
+                ([{ createApp, store }, BlubberPlugin]) => {
                     const { initialThreadId, search } = blubberPanel.dataset;
                     const app = createApp({
                         render: () => h(resolveComponent(componentName), { initialThreadId, search }),

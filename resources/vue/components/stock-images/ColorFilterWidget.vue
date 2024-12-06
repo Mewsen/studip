@@ -23,7 +23,6 @@
 <script>
 import { colors as selectableColors } from './colors.js';
 import SidebarWidget from '../SidebarWidget.vue';
-import { orientations } from './filters.js';
 
 export default {
     emits: ['update:filters'],
@@ -53,7 +52,7 @@ export default {
     },
     watch: {
         filters: {
-            handler(newValue) {
+            handler() {
                 this.selectedColors = this.selectableColors.filter(({ hex }) => this.filters.colors.includes(hex));
             },
             deep: true,

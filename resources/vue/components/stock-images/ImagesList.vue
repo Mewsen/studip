@@ -152,7 +152,11 @@ export default {
                 .forEach((image) => this.$emit('checked', image));
         },
         onCheckedAllChange() {
-            this.allChecked ? this.checkNone() : this.checkAll();
+            if (this.allChecked) {
+                this.checkNone();
+            } else {
+                this.checkAll();
+            }
         },
         onDelete() {
             const checkedImages = [...this.checkedImages];

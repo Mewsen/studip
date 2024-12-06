@@ -3,7 +3,7 @@ STUDIP.domReady(() => {
     replaceVisibleTextareas();
 
     // update the height of the editor view on focus changes in dialogs
-    $(document).on('focus blur', '.studip-dialog .ck-editor__editable_inline', function(event) {
+    $(document).on('focus blur', '.studip-dialog .ck-editor__editable_inline', function() {
         let height = this.clientHeight;
         let editor = this.ckeditorInstance;
         // this is needed on Chrome, see https://gitlab.studip.de/studip/studip/-/issues/3510

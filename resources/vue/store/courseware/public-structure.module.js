@@ -19,7 +19,7 @@ const getters = {
 
 export const mutations = {
     reset(state) {
-        state = getDefaultState();
+        Object.assign(state, getDefaultState());
     },
     setChildren(state, children) {
         state.children = children;
@@ -48,7 +48,7 @@ const actions = {
             children[key].sort((childA, childB) => childA[1] - childB[1]);
             children[key] = children[key].map(([id]) => id);
         }
-        
+
         commit('setChildren', children);
 
         const ordered = [...visitTree(children, context.rootId)];

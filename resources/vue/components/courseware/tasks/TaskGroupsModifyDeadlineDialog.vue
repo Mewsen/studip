@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import StudipDate from '../../StudipDate.vue';
 
 const midnight = (_date) => {

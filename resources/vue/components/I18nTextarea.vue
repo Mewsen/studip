@@ -110,7 +110,7 @@ export default {
         let jsonvalue = false;
         try {
             jsonvalue = JSON.parse(this.value);
-        } catch (except) {
+        } catch {
             // No fallback
         }
         if (jsonvalue !== false) {
@@ -177,7 +177,7 @@ export default {
     inheritAttrs: false,
     watch: {
         values: {
-            handler(newValue, oldValue) {
+            handler(newValue) {
                 this.$emit('input', newValue[this.defaultLanguage]);
                 let input_all = {};
                 for (let i in this.languages) {

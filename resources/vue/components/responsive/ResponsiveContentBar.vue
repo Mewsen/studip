@@ -76,7 +76,7 @@ export default {
                 item.addEventListener('click', () => this.toggleSidebar());
             });
         },
-        onCoursewareContentbarBeforeDestroy(vueInstance) {
+        onCoursewareContentbarBeforeDestroy() {
             this.adjustExistingContentbar(false);
         },
         toggleSidebar() {

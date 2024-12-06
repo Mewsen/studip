@@ -125,7 +125,11 @@ export default {
         },
 
         structuralElementLoaded() {
-            return this.structuralElement !== null && this.structuralElement !== {};
+            return this.structuralElement !== null
+                && !(
+                    this.structuralElement.constructor === Object
+                    && Object.keys(this.structuralElement).length === 0
+                );
         },
 
         ancestors() {

@@ -430,7 +430,7 @@ export default {
                 .then((response) => {
                     this.currentSemester = response.data.data[0];
                 })
-                .catch((error) => {
+                .catch(() => {
                     this.currentSemester = null;
                 });
         },

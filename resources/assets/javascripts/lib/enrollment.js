@@ -61,7 +61,7 @@ export default function enrollment() {
             ui.helper.width('auto');
             ui.item.removeClass('visible');
         },
-        update: function(event, ui) {
+        update: function() {
             // Adjust priority and add neccessary elements if missing
             $(this).find('li:not(.empty)').each(function (index) {
                 var id = $(this).data().id,

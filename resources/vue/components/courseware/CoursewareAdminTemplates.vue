@@ -168,12 +168,11 @@ export default {
             this.$refs.importFile.click();
         },
         async createNewTemplate() {
-            let view = this;
             let data = null;
             this.zip = new JSZip();
 
-            await this.zip.loadAsync(this.importZip).then(async function () {
-                data = await view.zip.file('courseware.json').async('string');
+            await this.zip.loadAsync(this.importZip).then(async () => {
+                data = await this.zip.file('courseware.json').async('string');
             });
 
             this.createTemplate({

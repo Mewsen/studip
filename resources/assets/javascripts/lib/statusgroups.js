@@ -1,25 +1,25 @@
 const Statusgroups = {
     ajax_endpoint: false,
-    apply: function() {
+    apply() {
         $('.movable tbody').sortable({
             axis: 'y',
             handle: '.drag-handle',
-            helper: function(event, ui) {
-                ui.children().each(function() {
+            helper(event, ui) {
+                ui.children().each(function () {
                     $(this).width($(this).width());
                 });
                 return ui;
             },
-            start: function(event, ui) {
+            start() {
                 $(this)
                     .closest('table')
                     .addClass('nohover');
             },
-            stop: function(event, ui) {
-                var table = $(this).closest('table'),
-                    group = table.attr('id'),
-                    user = ui.item.data('userid'),
-                    position = $(ui.item).prevAll().length;
+            stop(event, ui) {
+                const table = $(this).closest('table');
+                const group = table.attr('id');
+                const user = ui.item.data('userid');
+                const position = $(ui.item).prevAll().length;
 
                 table.removeClass('nohover');
 
@@ -27,9 +27,9 @@ const Statusgroups = {
                     type: 'POST',
                     url: Statusgroups.ajax_endpoint,
                     dataType: 'html',
-                    data: { group: group, user: user, pos: position },
+                    data: {group: group, user: user, pos: position},
                     async: false
-                }).done(function(data) {
+                }).done(function (data) {
                     $('tbody', table).html(data);
                     Statusgroups.apply();
                 });
@@ -37,10 +37,10 @@ const Statusgroups = {
         });
     },
 
-    initInputs: function() {
-        $('input[name="numbering_type"]').on('click', function() {
-            var type = $('input[name="numbering_type"]:checked').val(),
-                disabled = parseInt(type, 10) === 2;
+    initInputs() {
+        $('input[name="numbering_type"]').on('click', () => {
+            const type = $('input[name="numbering_type"]:checked').val();
+            const disabled = parseInt(type, 10) === 2;
 
             $('input[name="startnumber"]')
                 .prop('disabled', disabled)

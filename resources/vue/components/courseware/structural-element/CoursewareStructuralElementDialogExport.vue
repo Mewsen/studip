@@ -76,7 +76,7 @@ export default {
         ...mapActions({
             showElementExportDialog: 'showElementExportDialog',
         }),
-        async exportStructuralElementAction(data) {
+        async exportStructuralElementAction() {
             if (this.exportRunning) {
                 return;
             }

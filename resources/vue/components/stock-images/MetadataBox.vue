@@ -19,7 +19,6 @@
 <script>
 import ThumbnailCard from './ThumbnailCard.vue';
 import AttributesFieldset from './AttributesFieldset.vue';
-import { getFormat } from './format.js';
 
 export default {
     props: ['file', 'metadata', 'suggestedTags'],

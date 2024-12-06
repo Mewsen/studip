@@ -137,7 +137,7 @@
     </div>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     name: 'courseware-content-permissions',
@@ -203,8 +203,7 @@ export default {
 
         async getUser(userId) {
             await this.loadUser({id: userId});
-            const user = this.userById({id: userId});
-            return user;
+            return this.userById({id: userId});
         },
 
         async initUserPermsList() {
@@ -213,7 +212,6 @@ export default {
                 this.contentApprovalUsers = this.element.attributes['content-approval'].users;
             }
 
-            /* eslint-disable no-await-in-loop */
             for (const user_perm_obj of this.contentApprovalUsers) {
                 let userObj = await this.getUser(user_perm_obj.id);
                 this.userPermsList.push({

@@ -97,7 +97,7 @@ class ActionMenu
         this.is_open = false;
         this.position = position;
 
-        const additionalClasses = Object.values({ ...this.element[0].classList }).filter((item) => item != 'action-menu');
+        const additionalClasses = Object.values({ ...this.element[0].classList }).filter((item) => item !== 'action-menu');
         const menu_width  = this.content.width();
         const menu_height = this.content.height();
 
@@ -241,7 +241,7 @@ class ActionMenu
         //Show visual hint using a deferred. This way we don't need to
         //duplicate the functionality in the done() handler.
         //(code copied from copyable_link.js and modified)
-        (new Promise((resolve, reject) => {
+        (new Promise((resolve) => {
             let confirmation = $('<div class="js-action-confirmation">');
             confirmation.text = jQuery(element).data('confirmation_text');
             confirmation.insertBefore(element);
@@ -254,7 +254,7 @@ class ActionMenu
                 clearTimeout(timeout);
                 resolve(confirmation);
             });
-        })).then((confirmation, parent) => {
+        })).then((confirmation) => {
             confirmation.remove();
             jQuery(element).parent().removeClass('js-action-confirm-animation');
         });

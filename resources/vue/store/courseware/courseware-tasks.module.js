@@ -79,7 +79,7 @@ export const actions = {
         return dispatch('courseware-task-groups/update', taskGroup, { root: true });
     },
 
-    addSolversToTaskGroup({ dispatch, rootGetters }, { taskGroup, solvers }) {
+    addSolversToTaskGroup({ rootGetters }, { taskGroup, solvers }) {
         return rootGetters.httpClient.post(`courseware-task-groups/${+taskGroup.id}/relationships/solvers`, {
             data: solvers,
         });

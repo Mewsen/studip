@@ -385,7 +385,7 @@ export default {
                 slot.valid = true;
             }
         },
-        templatePurpose(newPurpose) {
+        templatePurpose() {
             this.selectedTemplate = null;
         },
     },

@@ -25,7 +25,7 @@
 import BlockComponents from './block-components.js';
 import blockMixin from '@/vue/mixins/courseware/block.js';
 import FindAndReplace from '@ckeditor/ckeditor5-find-and-replace/src/findandreplace';
-import { ClassicEditor, BalloonEditor } from '@/assets/javascripts/chunks/wysiwyg';
+import { ClassicEditor } from '@/assets/javascripts/chunks/wysiwyg';
 import { mapActions } from 'vuex';
 
 export default {
@@ -92,7 +92,6 @@ export default {
         },
         loadMathjax() {
             let mathjaxP;
-            let view = this;
 
             if (window.MathJax && window.MathJax.Hub) {
                 mathjaxP = Promise.resolve(window.MathJax);
@@ -100,14 +99,15 @@ export default {
                 mathjaxP = window.STUDIP.loadChunk('mathjax');
             }
 
-            mathjaxP &&
+            if (mathjaxP) {
                 mathjaxP
-                    .then(({ Hub }) => {
-                        Hub.Queue(['Typeset', Hub, view.$refs.content]);
+                    .then(({Hub}) => {
+                        Hub.Queue(['Typeset', Hub, this.$refs.content]);
                     })
                     .catch(() => {
                         console.log('Warning: Could not load MathJax.');
                     });
+            }
         },
     },
 };

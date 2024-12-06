@@ -27,7 +27,7 @@ export default {
         },
     },
     created() {
-        if (this.model-value) {
+        if (this.modelValue) {
             this.date = fromISO8601(this.modelValue);
         }
     },

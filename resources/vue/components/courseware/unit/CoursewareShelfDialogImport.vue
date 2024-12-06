@@ -239,7 +239,7 @@ export default {
             if (!filesError) {
                 try {
                     this.zip = await JSZip.loadAsync(this.importZipFile);
-                } catch(error) {
+                } catch {
                     this.zip = null;
                     this.archiveErrors.push(this.$gettext('Beim laden des Archivs ist ein Fehler aufgetreten. Vermutlich ist das Archiv beschädigt.'));
                     filesError = true;

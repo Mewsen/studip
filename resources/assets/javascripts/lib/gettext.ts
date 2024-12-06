@@ -1,4 +1,4 @@
-import { createGettext, LanguageData } from 'vue3-gettext';
+import {createGettext, LanguageData} from 'vue3-gettext';
 import * as defaultTranslations from '../../../../locale/de/LC_MESSAGES/js-resources.json';
 import eventBus from './event-bus';
 
@@ -52,12 +52,11 @@ setLocale(state.locale);
 export default gettext;
 
 async function updateTranslations() {
-    let translations: Translations = {};
+    const translations: Translations = {};
 
-    for (const [key, value] of Object.entries(getAvailableLanguages())) {
+    for (const key of Object.keys(getAvailableLanguages())) {
         if (state.locale === key) {
-            const translation = await getTranslations(key);
-            translations[key] = translation;
+            translations[key] = await getTranslations(key);
         }
     }
     gettext.translations = translations;
@@ -74,8 +73,7 @@ export async function setLocale(locale = getInitialLocale()) {
 
     state.locale = locale;
     if (state.translations[state.locale] === null) {
-        const translations: Translation = await getTranslations(state.locale);
-        state.translations[state.locale] = translations;
+        state.translations[state.locale] = await getTranslations(state.locale);
     }
 
     updateTranslations();
@@ -122,9 +120,7 @@ function getInstalledLanguages(): InstalledLanguages {
 async function getTranslations(locale: string): Promise<Translation> {
     try {
         const language = locale.split(/[_-]/)[0];
-        const translation = await import(`../../../../locale/${language}/LC_MESSAGES/js-resources.json`);
-
-        return translation;
+        return await import(`../../../../locale/${language}/LC_MESSAGES/js-resources.json`);
     } catch (exception) {
         console.error('Could not load locale: "' + locale + '"', exception);
 

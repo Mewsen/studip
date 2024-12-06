@@ -45,6 +45,7 @@ class AbstractAPI
         this.base_url = base_url;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     encodeData (data, method) {
         if (data instanceof Function) {
             data = data();
@@ -122,7 +123,7 @@ class AbstractAPI
     }
 
     convertDataToRequestParameters(data, prefix = '') {
-        return Object.entries(data).filter(([key, value]) => {
+        return Object.entries(data).filter(([, value]) => {
             return value !== null;
         }).map(([key, value]) => {
             const name = prefix ? `${prefix}[${key}]` : `${key}`;

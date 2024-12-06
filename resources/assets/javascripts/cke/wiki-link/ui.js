@@ -54,9 +54,6 @@ export default class WikiLinkUI extends Plugin {
     }
 
     _setupDropdownButton(dropdown) {
-        const editor = this.editor;
-        const t = editor.locale.t;
-
         dropdown.buttonView.set({
             icon: wikiIcon,
             label: $gettext('Link auf Wikiseite einfügen'),

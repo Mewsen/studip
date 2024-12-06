@@ -31,7 +31,7 @@ const Overlapping = {
         $('#semtype-select').select2({
             placeholder: $gettext('Veranstaltungstyp auswählen (optional)')
         });
-        $('#base-version-select').on('select2:select', function (e) {
+        $('#base-version-select').on('select2:select', function () {
             $('#comp-versions-select').val(null).trigger('change');
             $.ajax({
                 url: STUDIP.URLHelper.getURL('dispatch.php/admin/overlapping/comp_versions'),
@@ -65,8 +65,8 @@ const Overlapping = {
         });
 
         $('span.mvv-overlapping-exclude').on('click', function () {
-            var course_id = $(this).data('mvv-ovl-course');
-            var selection_id = $(this).data('mvv-ovl-selection');
+            const course_id = $(this).data('mvv-ovl-course');
+            const selection_id = $(this).data('mvv-ovl-selection');
             $.ajax({
                 method: 'post',
                 url: STUDIP.URLHelper.getURL('dispatch.php/admin/overlapping/set_exclude'),
@@ -75,7 +75,7 @@ const Overlapping = {
                     'course_id': course_id,
                     'selection_id': selection_id
                 },
-                success: function(data, textStatus, jqXHR) {
+                success() {
                     $('.mvv-overlapping-exclude').each(function () {
                         if ($(this).data('mvv-ovl-course') == course_id) {
                             $(this).toggleClass('mvv-overlapping-invisible');

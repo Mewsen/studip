@@ -156,12 +156,10 @@ export default {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            let response = null;
             try {
-                response = await httpClient.get(request.headers.location);
+                await httpClient.get(request.headers.location);
             } catch (e) {
                 console.debug(e);
-                response = null;
             }
 
             await this.loadFolderFiles({ folderId: this.activeFolderId });
@@ -170,7 +168,7 @@ export default {
         },
     },
     watch: {
-        activeFolderId(newId) {
+        activeFolderId() {
             this.closeAddFolder();
             this.closeAddFile();
         },

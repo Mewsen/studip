@@ -24,11 +24,11 @@
                 <col>
             </colgroup>
             <thead>
-            <tr>
-                <th></th>
-                <th>{{ $gettext('Name') }}</th>
-                <th>{{ $gettext('Information') }}</th>
-            </tr>
+                <tr>
+                    <th></th>
+                    <th>{{ $gettext('Name') }}</th>
+                    <th>{{ $gettext('Information') }}</th>
+                </tr>
             </thead>
             <tbody>
                 <tr v-for="(course) in courses" :key="course.id" class="studip-tree-child studip-tree-course">

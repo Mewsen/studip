@@ -14,7 +14,7 @@
 declare class URLHelper {
     base_url: string;
     parameters: Record<string, string>;
-    constructor(base_url?: string, parameters?: {});
+    constructor(base_url?: string, parameters?: object);
     /**
      * returns a readily encoded URL with the mandatory parameters and additionally passed
      * parameters.
@@ -24,7 +24,7 @@ declare class URLHelper {
      * @param ignore_params boolean: ignore previously bound parameters
      * @return: url with all necessary and additional parameters, encoded
      */
-    getURL(url: string, param_object: any, ignore_params: boolean): string;
+    getURL(url: string, param_object: object, ignore_params: boolean): string;
 }
 export declare function createURLHelper(config: {
     base_url?: string;

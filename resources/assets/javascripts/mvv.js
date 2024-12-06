@@ -1,4 +1,4 @@
-import { $gettext } from './lib/gettext';
+import {$gettext} from './lib/gettext';
 
 jQuery(function ($) {
     $(document).on('click', 'a.mvv-load-in-new-row', function () {
@@ -56,17 +56,17 @@ jQuery(function ($) {
         return false;
     });
 
-    $(document).on('click', 'a.mvv-new-tab', function(event) {
+    $(document).on('click', 'a.mvv-new-tab', function () {
         STUDIP.MVV.Diff.openNewTab(this);
         return false;
     });
 
-    $(document).on('click', 'input.mvv-qs-button', function($event) {
+    $(document).on('click', 'input.mvv-qs-button', function () {
         STUDIP.MVV.Search.addSelect($(this));
         return false;
     });
 
-    $(document).on('click', '.stgfile .remove_attachment', function($event) {
+    $(document).on('click', '.stgfile .remove_attachment', function () {
         STUDIP.Dialog.confirm($gettext('Soll die Datei wirklich gelöscht werden?')).done(() => {
             STUDIP.MVV.Document.remove_attachment(this);
         });
@@ -81,8 +81,8 @@ jQuery(function ($) {
     STUDIP.dialogReady(
         function() {
 
-            var contactSearchParams = $('#search-contact-params');
-            var contactSearchSelect = $('#search-contact-select');
+            const contactSearchParams = $('#search-contact-params');
+            const contactSearchSelect = $('#search-contact-select');
             if (contactSearchParams) {
                 contactSearchSelect.select2({
                     placeholder: contactSearchSelect.data('placeholder'),
@@ -90,13 +90,12 @@ jQuery(function ($) {
                     ajax: {
                         url: STUDIP.URLHelper.getURL('dispatch.php/shared/contacts/search_'
                                 + contactSearchSelect.data('search_type')),
-                        data: function (params) {
-                            var query = {
+                        data(params) {
+                            return {
                                 term: params.term,
                                 _type: params._type,
                                 contact_id: contactSearchParams.data('contact')
-                            }
-                            return query;
+                            };
                         },
                         dataType: 'json'
                     }
@@ -149,23 +148,23 @@ window.STUDIP.MVV = window.STUDIP.MVV || {};
 STUDIP.MVV.Search = {
     qs_input : null,
     qs_selected_name : null,
-    getFocus: function (item_id, item_name) {
-        var qs_input = jQuery(STUDIP.MVV.Search.qs_input),
-            qs_item = jQuery('#'+qs_input.attr('id'));
-        if (item_id == '') {
+    getFocus(item_id) {
+        const qs_input = jQuery(STUDIP.MVV.Search.qs_input);
+        const qs_item = jQuery('#' + qs_input.attr('id'));
+        if (item_id === '') {
             STUDIP.MVV.Search.addSelect(qs_item);
         } else {
             qs_input.closest('form')
-            .find('.mvv-submit')
-            .show()
-            .focus();
+                .find('.mvv-submit')
+                .show()
+                .focus();
         }
         return true;
     },
-    addButton: function (item_id, item_name) {
-        var qs_input = jQuery(STUDIP.MVV.Search.qs_input),
-            qs_item = jQuery('#'+qs_input.attr('id'));
-        if (item_id == '') {
+    addButton(item_id) {
+        const qs_input = jQuery(STUDIP.MVV.Search.qs_input);
+        const qs_item = jQuery('#' + qs_input.attr('id'));
+        if (item_id === '') {
             STUDIP.MVV.Search.addSelect(qs_item);
         } else {
             STUDIP.MVV.Search.addTheButton(qs_item);
@@ -173,26 +172,26 @@ STUDIP.MVV.Search = {
         return true;
     },
 
-    addTheButton: function (qs_item) {
-        var add_button = jQuery('<a href="#" />').addClass('mvv-add-item'),
-            qs_name = qs_item.attr('id'),
-            target_name = qs_name.slice(0, qs_name.lastIndexOf('_')),
-            item_id = jQuery('#'+qs_name+'_realvalue').val();
+    addTheButton(qs_item) {
+        const add_button = jQuery('<a href="#" />').addClass('mvv-add-item');
+        const qs_name = qs_item.attr('id');
+        const target_name = qs_name.slice(0, qs_name.lastIndexOf('_'));
+        const item_id = jQuery('#' + qs_name + '_realvalue').val();
         jQuery('<img src="' + STUDIP.ASSETS_URL
             + 'images/icons/yellow/arr_2down.svg">')
             .attr('alt', $gettext("hinzufügen"))
             .appendTo(add_button);
-        if (item_id == '') {
+        if (item_id === '') {
             qs_item.siblings('.mvv-add-button').find('.mvv-add-item')
-                    .fadeOut('slow', function () {
-                qs_item.val('').focus();
-                jQuery(this).remove();
-            });
+                .fadeOut('slow', function () {
+                    qs_item.val('').focus();
+                    jQuery(this).remove();
+                });
         } else {
-            add_button.click(function() {
+            add_button.click(function () {
                     if (_.isNull(STUDIP.MVV.Search.qs_selected_name)) {
                         STUDIP.MVV.Content.addItem(target_name, item_id,
-                        qs_item.val());
+                            qs_item.val());
                     } else {
                         STUDIP.MVV.Content.addItem(target_name, item_id,
                             STUDIP.MVV.Search.qs_selected_name);
@@ -201,9 +200,9 @@ STUDIP.MVV.Search = {
                         qs_item.val('').focus();
                         jQuery(this).remove();
                     });
-                    jQuery('#select_'+qs_name).fadeOut('fast', function(){
+                    jQuery('#select_' + qs_name).fadeOut('fast', function () {
                         jQuery(this).next('.mvv-search-reset').fadeOut();
-                        jQuery('#'+qs_name).fadeIn();
+                        jQuery('#' + qs_name).fadeIn();
                         jQuery(this).remove();
                     });
                     return false;
@@ -215,7 +214,7 @@ STUDIP.MVV.Search = {
             add_button.fadeIn('slow');
             qs_item.siblings('.mvv-select-group').fadeIn();
             add_button.focus();
-            qs_item.focus(function() {
+            qs_item.focus(function () {
                 add_button.fadeOut();
                 qs_item.siblings('.mvv-select-group').fadeOut();
             });
@@ -286,25 +285,27 @@ STUDIP.MVV.Search = {
         });
     },
 
-    submitSelected: function (item_id, item_name) {
+    submitSelected() {
         jQuery(this).closest('form').submit();
     },
 
-    addSelected: function (item_id, item_name) {
-        var strip_tags = /<\w+(\s+("[^"]*"|'[^']*'|[^>])+)?>|<\/\w+>/gi;
-        var that = jQuery(this),
-        qs_name = that.attr('name'),
-            //QUICKSEARCHTODO
+    addSelected(item_id, item_name) {
+        const strip_tags = /<\w+(\s+("[^"]*"|'[^']*'|[^>])+)?>|<\/\w+>/gi;
+        const qs_name = $(this).attr('name');
+        //QUICKSEARCHTODO
         //target_name = qs_id.slice(0, qs_id.lastIndexOf('_'));
-        target_name = qs_name.split('_')[0];
-        STUDIP.MVV.Content.addItem(target_name, item_id,
-            jQuery('<div/>').html(item_name.replace(strip_tags, '')).text());
+        const target_name = qs_name.split('_')[0];
+        STUDIP.MVV.Content.addItem(
+            target_name,
+            item_id,
+            jQuery('<div/>').html(item_name.replace(strip_tags, '')).text()
+        );
     },
 
-   insertFachName: function (item_id, item_name) {
+    insertFachName(item_id) {
         $.get(STUDIP.URLHelper.getURL(STUDIP.MVV.CONTROLLER_URL + 'fach_data'), {
             fach_id: item_id
-        }).done(function(d) {
+        }).done(d => {
             if (_.isNull(d.name)) {
                 $('input[name="name"]').attr(
                     'placeholder',
@@ -347,29 +348,30 @@ STUDIP.MVV.Search = {
 
 STUDIP.MVV.Sort = {
     i: null,
-    start: function(event, ui) {
+    start(event, ui) {
         STUDIP.MVV.Sort.i = jQuery(ui.item).index();
     },
-    stop: function(event, ui) {
+    stop(event, ui) {
         var i = jQuery(ui.item).index();
-        if(STUDIP.MVV.Sort.i !== i){
+        if (STUDIP.MVV.Sort.i !== i) {
             var newOrder = jQuery(this).sortable('toArray');
             var tableID = jQuery(this).closest('.sortable').attr('id');
             STUDIP.MVV.Sort.save(newOrder, tableID);
         }
     },
-    save: function(newOrder, tableID) {
+    save(newOrder, tableID) {
         jQuery.ajax({
             url: STUDIP.URLHelper.getURL(STUDIP.MVV.CONTROLLER_URL + 'sort'),
-            data:{
-                'list_id':tableID,
-                'newOrder':newOrder
+            data: {
+                'list_id': tableID,
+                'newOrder': newOrder
             },
-            type:'POST',
-            success: function() {}
+            type: 'POST',
+            success: function () {
+            }
         });
     },
-    init: function(target) {
+    init(target) {
         target.sortable({
             items: '> .sort_items',
             cursor: 'move',
@@ -383,15 +385,15 @@ STUDIP.MVV.Sort = {
 };
 
 STUDIP.MVV.Chooser = {
-    create: function (element) {
+    create(element) {
         var parent = element.closest('form');
         jQuery('#mvv-load-content').fadeOut().html('');
         jQuery.ajax({
             url: STUDIP.URLHelper.getURL(parent.attr('action')),
             data: parent.serializeArray(),
-            type:'POST',
-            success: function(data) {
-                var next = parent.nextAll();
+            type: 'POST',
+            success(data) {
+                const next = parent.nextAll();
                 if (jQuery(data).is('form')) {
                     if (next.length !== 0) {
                         jQuery('.mvv-version-content').nextAll().fadeOut().remove();
@@ -408,23 +410,23 @@ STUDIP.MVV.Chooser = {
 };
 
 STUDIP.MVV.LanguageChooser = {
-    showButtons: function (element) {
-        var chooser = element.closest('.mvv-inst-chooser');
-        var sel = chooser.find(':selected');
+    showButtons(element) {
+        const chooser = element.closest('.mvv-inst-chooser');
+        const sel = chooser.find(':selected');
         chooser.find('.mvv-inst-add-button img').fadeOut();
         if (!sel.hasClass('mvv-inst-chooser-level')) {
-            var button = chooser.find('.mvv-inst-add-button img');
+            const button = chooser.find('.mvv-inst-add-button img');
             button.fadeIn('fast').unbind('click');
-            jQuery(button).click(function() {
+            jQuery(button).click(function () {
                 if (sel.data('fb') === '') {
                     STUDIP.MVV.Content.addItem(
                         chooser.find('select').attr('name'),
-                            sel.val(), sel.text());
+                        sel.val(), sel.text());
                 } else {
                     STUDIP.MVV.Content.addItem(
                         chooser.find('select').attr('name'),
-                            sel.val(),
-                            sel.data('fb') + ' - ' + sel.text());
+                        sel.val(),
+                        sel.data('fb') + ' - ' + sel.text());
                 }
             });
         }
@@ -434,16 +436,16 @@ STUDIP.MVV.LanguageChooser = {
 STUDIP.MVV.Content = {
     deskriptor_data: null,
 
-    get: function (id) {
+    get(id) {
         jQuery('#mvv-load-content').load(
-                STUDIP.URLHelper.getURL(STUDIP.MVV.CONTROLLER_URL+'content/'+id), function() {
-            jQuery('#mvv-load-content').fadeIn();
-        });
+            STUDIP.URLHelper.getURL(STUDIP.MVV.CONTROLLER_URL + 'content/' + id), function () {
+                jQuery('#mvv-load-content').fadeIn();
+            });
     },
-    addItem: function (target_name, item_id, item_name) {
-        var target = jQuery('#' + target_name + '_target'),
-            group_id = '',
-            li_id = item_id;
+    addItem(target_name, item_id, item_name) {
+        let target = jQuery('#' + target_name + '_target');
+        let group_id = '';
+        let li_id = item_id;
         if (target.hasClass('mvv-assign-group')) {
             group_id = target.siblings('.mvv-select-group').find(':selected').val();
             li_id = target_name + '_' + group_id + '_' + li_id;
@@ -469,7 +471,7 @@ STUDIP.MVV.Content = {
             } else {
                 if (target.hasClass('mvv-assign-group')) {
                     jQuery('<input type="hidden" />')
-                        .attr('name', target_name+'_items_'+group_id+'[]')
+                        .attr('name', target_name + '_items_' + group_id + '[]')
                         .val(item_id).appendTo(item);
                 } else {
                     jQuery('<input type="hidden" />')
@@ -477,30 +479,30 @@ STUDIP.MVV.Content = {
                         .val(item_id).appendTo(item);
                 }
             }
-            var button_list = jQuery('<div ' + 'class="mvv-item-list-buttons"/>')
+            const button_list = jQuery('<div ' + 'class="mvv-item-list-buttons"/>')
                 .append('<a href="#" class="mvv-item-remove"><img alt="Trash" src="'
-                + STUDIP.ASSETS_URL
-                + 'images/icons/blue/trash.svg"></a>');
+                    + STUDIP.ASSETS_URL
+                    + 'images/icons/blue/trash.svg"></a>');
             button_list.appendTo(item);
             if (target.is('.mvv-with-annotations')) {
-                var text_area = jQuery('<textarea/>').attr('name',
+                const text_area = jQuery('<textarea/>').attr('name',
                     target_name + '_' + 'annotations[' + item_id + ']');
                 jQuery('<div/>').append(text_area).appendTo(item);
             }
             if (target.hasClass('mvv-with-properties')) {
-                var prop_input = jQuery('<div/>').addClass('mvv-item-list-properties');
+                const prop_input = jQuery('<div/>').addClass('mvv-item-list-properties');
                 jQuery('<img src="' + STUDIP.ASSETS_URL + 'images/languages/lang_de.gif"/>')
-                        .appendTo(prop_input);
+                    .appendTo(prop_input);
                 jQuery('<textarea name="kommentar[' + item_id + ']"/>').appendTo(prop_input);
                 jQuery('<img src="' + STUDIP.ASSETS_URL + 'images/languages/lang_en.gif"/>')
-                        .appendTo(prop_input);
+                    .appendTo(prop_input);
                 jQuery('<textarea name="kommentar_en[' + item_id + ']"/>').appendTo(prop_input);
                 prop_input.appendTo(item);
             }
             if (target.hasClass('mvv-assign-group')) {
-                target = target.find('#'+target_name+'_'+group_id);
+                target = target.find('#' + target_name + '_' + group_id);
                 target.append(item);
-                target.parent().fadeIn('fast', function() {
+                target.parent().fadeIn('fast', function () {
                     item.effect('highlight', {color: '#55ff55'}, 1500);
                 });
             } else {
@@ -510,11 +512,11 @@ STUDIP.MVV.Content = {
         }
     },
 
-    addItemFromDialog: function (data) {
+    addItemFromDialog(data) {
         STUDIP.MVV.Content.addItem(data.target, data.item_id, data.item_name);
     },
 
-    removeItem: function (this_button) {
+    removeItem(this_button) {
         var item = jQuery(this_button).closest('li');
         if (item.closest('.mvv-assigned-items').hasClass('mvv-assign-group')) {
             if (item.siblings().length == 0) {
@@ -531,7 +533,7 @@ STUDIP.MVV.Content = {
         }
         item.remove();
     },
-    editAnnotation: function (button) {
+    editAnnotation(button) {
         var this_button = jQuery(button),
             item = this_button.closest('li'),
             target_id = item.attr('id'),
@@ -543,15 +545,15 @@ STUDIP.MVV.Content = {
             jQuery('<textarea/>').attr('name', target_name + '_annotations['
                 + item_id + ']').text(content.text()).hide().appendTo(annotation)
                 .fadeIn();
-                this_button.fadeOut();
+            this_button.fadeOut();
         });
     },
-    editProperties: function (button) {
+    editProperties(button) {
         var this_button = jQuery(button),
             item = this_button.closest('li');
         STUDIP.MVV.EditForm.openRef(item);
     },
-    loadRow: function (element) {
+    loadRow(element) {
         if (element.data('busy')) {
             return false;
         }
@@ -575,7 +577,7 @@ STUDIP.MVV.Content = {
         element.closest('tbody').toggleClass('collapsed not-collapsed');
         return false;
     },
-    showOriginal: function (element) {
+    showOriginal(element) {
         if (element.data('hasData')) {
             element.next().slideToggle('fast');
             return false;
@@ -584,7 +586,7 @@ STUDIP.MVV.Content = {
             jQuery.ajax({
                 url: STUDIP.URLHelper.getURL(STUDIP.MVV.CONTROLLER_URL + 'show_original/'),
                 data: {
-                    'id'  : STUDIP.MVV.PARENT_ID,
+                    'id': STUDIP.MVV.PARENT_ID,
                     'type': element.data('type')
                 },
                 type: 'POST',
@@ -597,10 +599,10 @@ STUDIP.MVV.Content = {
             });
         }
         if (!_.isNull(STUDIP.MVV.Content.deskriptor_data)) {
-            var field_id = element.closest('label')
+            const field_id = element.closest('label')
                 .find('textarea, input[type=text]')
                 .attr('id');
-            var item = jQuery('<div/>').addClass('mvv-orig-lang');
+            const item = jQuery('<div/>').addClass('mvv-orig-lang');
             if (!_.isUndefined(STUDIP.MVV.Content.deskriptor_data[field_id])) {
                 if (STUDIP.MVV.Content.deskriptor_data[field_id]['empty']) {
                     item.css({
@@ -622,7 +624,7 @@ STUDIP.MVV.Content = {
         }
         return false;
     },
-    showAllOriginal: function () {
+    showAllOriginal() {
         jQuery('.mvv-show-original').each(function () {
             if ($(this).next(':visible').length === 0) {
                 $(this).click();
@@ -633,11 +635,11 @@ STUDIP.MVV.Content = {
 };
 
 STUDIP.MVV.Diff = {
-    openNewTab: function (item) {
-        var url_to_open = null,
-            new_id = null,
-            old_id = null;
-        var source = jQuery(item);
+    "openNewTab": function (item) {
+        let url_to_open = null;
+        let new_id = null;
+        let old_id = null;
+        const source = jQuery(item);
         if (source.is('a')) {
             url_to_open = item.href;
             window.open(STUDIP.URLHelper.getURL(url_to_open));
@@ -653,18 +655,18 @@ STUDIP.MVV.Diff = {
 };
 
 STUDIP.MVV.Document = {
-    reload_documenttable: function(range_id, range_type) {
-        setTimeout(function() {
+    reload_documenttable(range_id, range_type) {
+        setTimeout(() => {
             jQuery.ajax({
-                url: STUDIP.ABSOLUTE_URI_STUDIP + 'dispatch.php/materialien/files/' + (typeof range_id != 'undefined' ?  'range' : 'index'),
+                url: STUDIP.ABSOLUTE_URI_STUDIP + 'dispatch.php/materialien/files/' + (typeof range_id != 'undefined' ? 'range' : 'index'),
                 data: {
                     'range_id': range_id,
                     'range_type': range_type
                 },
                 type: 'POST',
-                success: function (data) {
-                    jQuery(data).each(function(){
-                        jQuery('#'+ jQuery(this).attr("id")).html(jQuery(this).html());
+                success(data) {
+                    jQuery(data).each(function () {
+                        jQuery('#' + jQuery(this).attr("id")).html(jQuery(this).html());
                     });
                 }
             })
@@ -721,11 +723,11 @@ STUDIP.MVV.Document = {
         input.value = '';
     },
     fileIDQueue: 1,
-    upload_files: function(files, file_language) {
-        for (var i = 0; i < files.length; i++) {
-            var fd = new FormData();
+    upload_files(files, file_language) {
+        for (let i = 0; i < files.length; i++) {
+            const fd = new FormData();
             fd.append('file', files[i], files[i].name);
-            var statusbar = jQuery('#statusbar_container .statusbar')
+            const statusbar = jQuery('#statusbar_container .statusbar')
                 .first()
                 .clone()
                 .show();
@@ -809,8 +811,8 @@ STUDIP.MVV.Document = {
                 });
 
                 resolve();
-            }).fail(function(jqxhr, status, errorThrown) {
-                var error = jqxhr.responseJSON.error;
+            }).fail(function(jqxhr) {
+                const error = jqxhr.responseJSON.error;
 
                 statusbar
                     .find('.progress')
@@ -831,8 +833,8 @@ STUDIP.MVV.Document = {
 
 
 STUDIP.MVV.Contact = {
-    reload_contacttable: function(range_id, range_type) {
-        setTimeout(function() {
+    reload_contacttable(range_id, range_type) {
+        setTimeout(() => {
             jQuery.ajax({
                 url: STUDIP.ABSOLUTE_URI_STUDIP + 'dispatch.php/shared/contacts/' + (typeof range_id != 'undefined' ? 'range' : 'index'),
                 data: {
@@ -840,9 +842,9 @@ STUDIP.MVV.Contact = {
                     'range_type': range_type
                 },
                 type: 'POST',
-                success: function (data) {
-                    jQuery(data).each(function(){
-                        jQuery('#'+ jQuery(this).attr("id")).html(jQuery(this).html());
+                success(data) {
+                    jQuery(data).each(function () {
+                        jQuery('#' + jQuery(this).attr("id")).html(jQuery(this).html());
                     });
                 }
             })
@@ -851,13 +853,13 @@ STUDIP.MVV.Contact = {
 };
 
 STUDIP.MVV.Aufbaustg = {
-    create: function(df) {
-        setTimeout(function() {
+    create(df) {
+        setTimeout(() => {
             $.ajax({
                 url: STUDIP.URLHelper.getURL('dispatch.php/studiengaenge/studiengaenge/aufbaustg_store'),
                 data: $(df).serialize(),
                 type: 'POST',
-                success: function (data) {
+                success(data) {
                     $('#mvv-aufbaustg-table').html($(data).html()).find('.sortable-table').each((index, element) => {
                         STUDIP.Table.enhanceSortableTable(element);
                     });
@@ -865,12 +867,12 @@ STUDIP.MVV.Aufbaustg = {
             })
         }, 100);
     },
-    loadTable: function(stg_id) {
-        setTimeout(function() {
+    loadTable(stg_id) {
+        setTimeout(() => {
             $.ajax({
                 url: STUDIP.URLHelper.getURL('dispatch.php/studiengaenge/studiengaenge/aufbaustg_table/' + stg_id),
                 type: 'GET',
-                success: function (data) {
+                success(data) {
                     $('#mvv-aufbaustg-table').html($(data).html()).find('.sortable-table').each((index, element) => {
                         STUDIP.Table.enhanceSortableTable(element);
                     });

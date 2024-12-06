@@ -420,12 +420,11 @@ export default {
             this.redraw();
         },
         redraw() {
-            let view = this;
-            let context = view.canvasContext;
+            let context = this.canvasContext;
             context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
             context.fillStyle = '#ffffff';
             context.fillRect(0, 0, context.canvas.width, context.canvas.height); // set background
-            if (view.currentImage === 'true') {
+            if (this.currentImage === 'true') {
                 let outlineImage = new Image();
                 outlineImage.src = this.currentUrl;
                 context.drawImage(outlineImage, 0, 0, context.canvas.width, context.canvas.height);
@@ -433,21 +432,21 @@ export default {
 
             context.lineJoin = 'round';
             let ownCanvasDraw = {
-                clickX: view.clickX,
-                clickY: view.clickY,
-                clickDrag: view.clickDrag,
-                clickColor: view.clickColor,
-                clickSize: view.clickSize,
-                clickTool: view.clickTool,
-                Text: view.Text
+                clickX: this.clickX,
+                clickY: this.clickY,
+                clickDrag: this.clickDrag,
+                clickColor: this.clickColor,
+                clickSize: this.clickSize,
+                clickTool: this.clickTool,
+                Text: this.Text
             }
             let canvasDraws = [ownCanvasDraw];
             if (this.currentUserView === 'all') {
-                canvasDraws = [ ...canvasDraws, ...view.allCanvasDraws ];
+                canvasDraws = [ ...canvasDraws, ...this.allCanvasDraws ];
             }
 
             for (let draw of canvasDraws) {
-                for (var j = 0; j < draw.clickX.length; j++) {
+                for (let j = 0; j < draw.clickX.length; j++) {
                     if (draw.clickTool[j] === 'pen') {
                         context.beginPath();
                         if (draw.clickDrag[j] && j) {
@@ -472,10 +471,9 @@ export default {
         },
         mouseDown(e) {
             if (this.write) {
-                let view = this;
                 this.$refs.textInputField.focus();
                 window.setTimeout(function () {
-                    view.$refs.textInputField.focus();
+                    this.$refs.textInputField.focus();
                 }, 0);
                 return;
             }
@@ -495,7 +493,7 @@ export default {
                 this.redraw();
             }
         },
-        mouseUp(e) {
+        mouseUp() {
             this.storeDraw();
             this.paint = false;
         },
@@ -506,12 +504,12 @@ export default {
             }
             let canvas = this.$refs.canvas;
             let mousePos = this.getTouchPos(canvas, e);
-            if(this.currentTool == 'pen') {
+            if (this.currentTool === 'pen') {
                 this.paint = true;
                 this.addClick(mousePos.x, mousePos.y, false);
                 this.redraw();
             }
-            if(this.currentTool == 'text') {
+            if (this.currentTool === 'text') {
                 this.write = true;
                 this.addClick(mousePos.x, mousePos.y, false);
             }
@@ -526,7 +524,7 @@ export default {
                 this.redraw();
             }
         },
-        touchEnd(e) {
+        touchEnd() {
             this.storeDraw();
             this.paint = false;
         },
@@ -570,7 +568,6 @@ export default {
             this.redraw();
         },
         enableTextInput(x, y) {
-            let view = this;
             let fontsize = this.currentSize * 6;
             this.textInput = true;
             let input = this.$refs.textInputField;
@@ -584,7 +581,7 @@ export default {
             input.style.fontSize = fontsize + 'px';
             input.style.width = '300px';
             window.setTimeout(function () {
-                view.$refs.textInputField.focus();
+                this.$refs.textInputField.focus();
             }, 0);
         },
         textInputKeyUp(e) {

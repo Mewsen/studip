@@ -34,7 +34,7 @@ $(document).on('click', '.toggle-subcourses', function(event) {
         row.addClass('has-subcourses');
     } else {
         $.ajax($(this).data('get-subcourses-url'), {
-            beforeSend: function(xhr, settings) {
+            beforeSend() {
                 $('<div class="loading" style="padding: 10px">')
                     .html(
                         $('<img>')
@@ -44,13 +44,13 @@ $(document).on('click', '.toggle-subcourses', function(event) {
                     )
                     .insertAfter(row);
             },
-            success: function(data, status, xhr) {
+            success(data) {
                 $(row)
                     .siblings('div.loading')
                     .remove();
                 $(data).insertAfter(row);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error(jqXHR, textStatus, errorThrown) {
                 alert('Status: ' + textStatus + '\nError: ' + errorThrown);
             }
         });

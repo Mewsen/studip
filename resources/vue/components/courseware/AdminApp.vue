@@ -15,7 +15,7 @@
 import CoursewareAdminActionWidget from './widgets/CoursewareAdminActionWidget.vue';
 import CoursewareAdminTemplates from './CoursewareAdminTemplates.vue';
 import CoursewareAdminViewWidget from './widgets/CoursewareAdminViewWidget.vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
     components: {

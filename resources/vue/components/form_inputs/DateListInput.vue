@@ -46,9 +46,7 @@ export default {
         };
     },
     mounted() {
-
         //Set up the datepicker for the date selector input:
-        let v = this;
         jQuery(this.$refs.date_select_input).datepicker({
             onSelect: () => {
                 this.selected_date_value = this.$refs.date_select_input.value;

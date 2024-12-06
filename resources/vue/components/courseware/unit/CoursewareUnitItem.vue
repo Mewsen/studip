@@ -503,7 +503,7 @@ export default {
                     .then((response) => {
                         this.certificate = response.data;
                     })
-                    .catch((error) => {});
+                    .catch(() => {});
             }
         },
         executeDelete() {

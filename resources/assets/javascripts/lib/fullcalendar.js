@@ -605,7 +605,7 @@ class Fullcalendar
                     );
                 }
             },
-            eventSourceSuccess: function(content, xhr) {
+            eventSourceSuccess: function(content) {
                 if ($(node).hasClass('semester-plan')) {
                     $(content).each(function(i, event_data){
                         STUDIP.Fullcalendar.convertSemesterEvents(event_data, config.defaultDate);

@@ -330,7 +330,6 @@ export default {
             this.loadingCourses = false;
         },
         loadSemesterMap() {
-            let view = this;
             let semesters = [];
             this.courses.every(course => {
                 let semId = course.relationships['start-semester'].data.id;
@@ -340,9 +339,9 @@ export default {
                 return true;
             });
             semesters.every(semester => {
-                view.loadSemester({id: semester}).then( () => {
-                    view.semesterMap.push(view.semesterById({id: semester}));
-                    view.semesterMap.sort((a, b) => new Date(b.attributes.start) - new Date(a.attributes.start));
+                this.loadSemester({id: semester}).then( () => {
+                    this.semesterMap.push(this.semesterById({id: semester}));
+                    this.semesterMap.sort((a, b) => new Date(b.attributes.start) - new Date(a.attributes.start));
                 });
                 return true;
             });
@@ -372,35 +371,34 @@ export default {
             this.modifiedDescription = '';
         },
         copyElement() {
-            let view = this;
             this.copyStructuralElement({
                     parentId: this.currentElement,
                     elementId: this.selectedElement.id,
                     migrate: false,
                     modifications: {
-                        title: view.modifiedTitle,
-                        color: view.modifiedColor,
-                        description: view.modifiedDescription
+                        title: this.modifiedTitle,
+                        color: this.modifiedColor,
+                        description: this.modifiedDescription
                     }
             })
             .then( () => {
-                view.companionSuccess({
-                    info: view.$gettext(
+                this.companionSuccess({
+                    info: this.$gettext(
                         'Die Seite %{ pageTitle } wurde erfolgreich kopiert.',
-                        { pageTitle: view.selectedElementTitle }
+                        { pageTitle: this.selectedElementTitle }
                     )
                 });
             })
-            .catch(error => {
-                view.companionError({
-                    info: view.$gettext(
+            .catch(() => {
+                this.companionError({
+                    info: this.$gettext(
                         'Die Seite %{ pageTitle } konnte nicht kopiert werden.',
-                        { pageTitle: view.selectedElementTitle }
+                        { pageTitle: this.selectedElementTitle }
                     )
                 });
             })
             .finally(() => {
-                view.showElementCopyDialog(false);
+                this.showElementCopyDialog(false);
             });
         },
         validateSelection() {
@@ -468,7 +466,7 @@ export default {
                     break;
             }
         },
-        selectedSemester(newSemester) {
+        selectedSemester() {
             this.selectedRange = '';
         }
     }

@@ -57,7 +57,7 @@ export default {
 
             if (this.configureTime) {
                 this.startTime = this.start !== 0 ? this.start : Math.floor(Date.now() / 1000);
-                this.endTime = this.end !== 0 ? this.end : nMath.floor(Date.now() / 1000 + 7 * 86400);
+                this.endTime = this.end !== 0 ? this.end : Math.floor(Date.now() / 1000 + 7 * 86400);
             } else {
                 this.startTime = 0;
                 this.endTime = 0;

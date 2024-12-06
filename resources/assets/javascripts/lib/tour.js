@@ -19,13 +19,13 @@ import { $gettext } from './gettext';
  */
 
 const Tour = {
-    show_helpcenter: function() {
+    show_helpcenter() {
         jQuery('#helpbar-sticky').prop('checked', true);
     },
-    hide_helpcenter: function() {
+    hide_helpcenter() {
         jQuery('#helpbar-sticky').prop('checked', false);
     },
-    init: function(tour_id, step_nr) {
+    init(tour_id, step_nr) {
         Tour.direction = 'f';
         if (!Tour.started && !Tour.pending_ajax_request) {
             Tour.pending_ajax_request = true;
@@ -33,9 +33,9 @@ const Tour = {
             jQuery.ajax({
                 url: STUDIP.ABSOLUTE_URI_STUDIP + 'dispatch.php/tour/get_data/' + tour_id + '/' + step_nr,
                 type: 'POST',
-                data: { route: window.location.href },
+                data: {route: window.location.href},
                 dataType: 'json',
-                success: function(json) {
+                success: function (json) {
                     jQuery(document).trigger('tourstart.studip');
 
                     Tour.pending_ajax_request = false;
@@ -61,7 +61,7 @@ const Tour = {
                         jQuery('#tour_prev').hide();
                         jQuery('#tour_controls').show();
                         jQuery('#tour_reset').show();
-                        jQuery('#tour_reset').on('click', function() {
+                        jQuery('#tour_reset').on('click', function () {
                             jQuery.ajax({
                                 url: STUDIP.ABSOLUTE_URI_STUDIP + 'dispatch.php/tour/set_status/' + Tour.id + '/1/on'
                             });
@@ -71,7 +71,7 @@ const Tour = {
                             Tour.next();
                         });
                         jQuery('#tour_proceed').show();
-                        jQuery('#tour_proceed').on('click', function() {
+                        jQuery('#tour_proceed').on('click', function () {
                             if (Tour.options.last_run_href) {
                                 jQuery.ajax({
                                     url:
@@ -81,7 +81,7 @@ const Tour = {
                                         '/' +
                                         Tour.options.last_run_step +
                                         '/on',
-                                    success: function() {
+                                    success: function () {
                                         window.location.href = STUDIP.URLHelper.getURL(Tour.options.last_run_href);
                                     }
                                 });
@@ -99,7 +99,7 @@ const Tour = {
                         }
                     }
                 },
-                fail: function() {
+                fail: function () {
                     Tour.pending_ajax_request = false;
                     alert($gettext('Fehler beim Aufruf des Tour-Controllers'));
                 }
@@ -107,7 +107,7 @@ const Tour = {
         }
     },
 
-    showControlButtons: function() {
+    showControlButtons() {
         jQuery('#tour_tip').hide();
         jQuery('#tour_tip_interactive').hide();
         jQuery('.tour_focus_box').removeClass('tour_focus_box');
@@ -127,7 +127,7 @@ const Tour = {
         jQuery('#tour_controls').show();
     },
 
-    next: function() {
+    next() {
         Tour.direction = 'f';
         Tour.step++;
 
@@ -146,7 +146,7 @@ const Tour = {
         }
     },
 
-    prev: function() {
+    prev() {
         Tour.direction = 'b';
         Tour.step--;
 
@@ -159,7 +159,7 @@ const Tour = {
                     '/' +
                     (Tour.options.route_step_nr - 1) +
                     '/on',
-                success: function() {
+                success: function () {
                     window.location.href = STUDIP.URLHelper.getURL(Tour.options.back_link);
                 }
             });
@@ -172,9 +172,9 @@ const Tour = {
         }
     },
 
-    setTooltip: function(stepData) {
+    setTooltip(stepData) {
         jQuery('.tour_focus_box').removeClass('tour_focus_box');
-        var tip_id = 'tour_tip';
+        let tip_id = 'tour_tip';
         if (stepData.interactive) {
             if (
                 Tour.step === Tour.steps - 1 &&
@@ -186,11 +186,11 @@ const Tour = {
         }
         jQuery('#tour_title').html(
             Tour.options.tour_title +
-                ' (' +
-                (parseInt(Tour.options.route_step_nr, 10) + Tour.step) +
-                '/' +
-                Tour.options.step_count +
-                ')'
+            ' (' +
+            (parseInt(Tour.options.route_step_nr, 10) + Tour.step) +
+            '/' +
+            Tour.options.step_count +
+            ')'
         );
         if (stepData.controlsPosition) {
             Tour.setControlsPosition(stepData.controlsPosition);
@@ -199,7 +199,7 @@ const Tour = {
             jQuery('#' + tip_id + ' #tour_tip_title').html(stepData.title);
             jQuery('#' + tip_id + ' #tour_tip_content').html(stepData.tip);
 
-            var tooltipPos = typeof stepData.orientation === 'undefined' ? 'B' : stepData.orientation;
+            const tooltipPos = typeof stepData.orientation === 'undefined' ? 'B' : stepData.orientation;
             Tour.setTooltipPosition(tooltipPos, stepData.element, tip_id);
             if (stepData.interactive && stepData.element) {
                 jQuery(stepData.element).addClass('tour_focus_box');
@@ -207,22 +207,22 @@ const Tour = {
         }
     },
 
-    setControlsPosition: function(pos) {
-        var position = Tour.getControlPosition(pos);
+    setControlsPosition(pos) {
+        const position = Tour.getControlPosition(pos);
         jQuery('#tour_controls').css(position);
     },
 
-    setTooltipPosition: function(pos, element, tip_id) {
+    setTooltipPosition(pos, element, tip_id) {
         jQuery('.tourArrow').remove();
         if (element && !jQuery(element).length) {
             //alert('Das Element wurde nicht gefunden, Tooltip konnte nicht positioniert werden.');
             element = '';
         }
-        var tw =
+        const tw =
             jQuery('#' + tip_id).width() +
             parseInt(jQuery('#' + tip_id).css('padding-left'), 10) +
             parseInt(jQuery('#' + tip_id).css('padding-right'), 10);
-        var th =
+        const th =
             jQuery('#' + tip_id).height() +
             parseInt(jQuery('#' + tip_id).css('padding-top'), 10) +
             parseInt(jQuery('#' + tip_id).css('padding-bottom'), 10);
@@ -232,29 +232,29 @@ const Tour = {
                 jQuery('#tour_edit').attr(
                     'href',
                     STUDIP.ABSOLUTE_URI_STUDIP +
-                        'dispatch.php/tour/edit_step/' +
-                        Tour.id +
-                        '/' +
-                        (parseInt(Tour.options.route_step_nr, 10) + Tour.step) +
-                        '?hide_route=1'
+                    'dispatch.php/tour/edit_step/' +
+                    Tour.id +
+                    '/' +
+                    (parseInt(Tour.options.route_step_nr, 10) + Tour.step) +
+                    '?hide_route=1'
                 );
                 jQuery('#tour_new_step').attr(
                     'href',
                     STUDIP.ABSOLUTE_URI_STUDIP +
-                        'dispatch.php/tour/edit_step/' +
-                        Tour.id +
-                        '/' +
-                        (parseInt(Tour.options.route_step_nr, 10) + Tour.step + 1) +
-                        '/new?hide_route=1'
+                    'dispatch.php/tour/edit_step/' +
+                    Tour.id +
+                    '/' +
+                    (parseInt(Tour.options.route_step_nr, 10) + Tour.step + 1) +
+                    '/new?hide_route=1'
                 );
                 jQuery('#tour_new_page').attr(
                     'href',
                     STUDIP.ABSOLUTE_URI_STUDIP +
-                        'dispatch.php/tour/edit_step/' +
-                        Tour.id +
-                        '/' +
-                        (parseInt(Tour.options.route_step_nr, 10) + Tour.step + 1) +
-                        '/new'
+                    'dispatch.php/tour/edit_step/' +
+                    Tour.id +
+                    '/' +
+                    (parseInt(Tour.options.route_step_nr, 10) + Tour.step + 1) +
+                    '/new'
                 );
             }
         }
@@ -267,113 +267,113 @@ const Tour = {
             jQuery('#' + tip_id).show('fast');
             return;
         }
-        var ew = jQuery(element).outerWidth();
-        var eh = jQuery(element).outerHeight();
-        var el = jQuery(element).offset().left;
-        var et = jQuery(element).offset().top;
+        const ew = jQuery(element).outerWidth();
+        const eh = jQuery(element).outerHeight();
+        const el = jQuery(element).offset().left;
+        const et = jQuery(element).offset().top;
 
-        var tbg = jQuery('#' + tip_id).css('background-color');
-        var $upArrow = $('<div class="tourArrow"></div>').css({
+        const tbg = jQuery('#' + tip_id).css('background-color');
+        const $upArrow = $('<div class="tourArrow"></div>').css({
             'border-left': '16px solid transparent',
             'border-right': '16px solid transparent',
             'border-bottom': '16px solid ' + tbg
         });
-        var $downArrow = $('<div class="tourArrow"></div>').css({
+        const $downArrow = $('<div class="tourArrow"></div>').css({
             'border-left': '16px solid transparent',
             'border-right': '16px solid transparent',
             'border-top': '16px solid ' + tbg
         });
-        var $rightArrow = $('<div class="tourArrow"></div>').css({
+        const $rightArrow = $('<div class="tourArrow"></div>').css({
             'border-top': '16px solid transparent',
             'border-bottom': '16px solid transparent',
             'border-left': '16px solid ' + tbg
         });
-        var $leftArrow = $('<div class="tourArrow"></div>').css({
+        const $leftArrow = $('<div class="tourArrow"></div>').css({
             'border-top': '16px solid transparent',
             'border-bottom': '16px solid transparent',
             'border-right': '16px solid ' + tbg
         });
-        var position;
+        let position;
         switch (pos) {
             case 'BL':
-                position = { left: el - 10, top: et + eh + 20 };
-                $upArrow.css({ top: '-16px', left: '10px' });
+                position = {left: el - 10, top: et + eh + 20};
+                $upArrow.css({top: '-16px', left: '10px'});
                 jQuery('#' + tip_id).prepend($upArrow);
                 break;
 
             case 'BR':
-                position = { left: el + ew - tw + 10, top: et + eh + 20 };
-                $upArrow.css({ top: '-16px', right: '10px' });
+                position = {left: el + ew - tw + 10, top: et + eh + 20};
+                $upArrow.css({top: '-16px', right: '10px'});
                 jQuery('#' + tip_id).prepend($upArrow);
                 break;
 
             case 'TL':
-                position = { left: el - 10, top: et - th - 20 };
-                $downArrow.css({ top: th, left: '10px' });
+                position = {left: el - 10, top: et - th - 20};
+                $downArrow.css({top: th, left: '10px'});
                 jQuery('#' + tip_id).append($downArrow);
                 break;
 
             case 'TR':
-                position = { left: el + ew - tw + 10, top: et - th - 20 };
-                $downArrow.css({ top: th, right: '10px' });
+                position = {left: el + ew - tw + 10, top: et - th - 20};
+                $downArrow.css({top: th, right: '10px'});
                 jQuery('#' + tip_id).append($downArrow);
                 break;
 
             case 'RT':
-                position = { left: el + ew + 20, top: et - 10 };
-                $leftArrow.css({ left: '-16px' });
+                position = {left: el + ew + 20, top: et - 10};
+                $leftArrow.css({left: '-16px'});
                 jQuery('#' + tip_id).prepend($leftArrow);
                 break;
 
             case 'RB':
-                position = { left: el + ew + 20, top: et + eh - th + 10 };
-                $leftArrow.css({ left: '-16px' });
+                position = {left: el + ew + 20, top: et + eh - th + 10};
+                $leftArrow.css({left: '-16px'});
                 jQuery('#' + tip_id).prepend($leftArrow);
                 break;
 
             case 'LT':
-                position = { left: el - tw - 20, top: et - 10 };
-                $rightArrow.css({ right: '-16px' });
+                position = {left: el - tw - 20, top: et - 10};
+                $rightArrow.css({right: '-16px'});
                 jQuery('#' + tip_id).prepend($rightArrow);
                 break;
 
             case 'LB':
-                position = { left: el - tw - 20, top: et + eh - th + 10 };
-                $rightArrow.css({ right: '-16px' });
+                position = {left: el - tw - 20, top: et + eh - th + 10};
+                $rightArrow.css({right: '-16px'});
                 jQuery('#' + tip_id).prepend($rightArrow);
                 break;
 
             case 'B':
-                position = { left: el + ew / 2 - tw / 2, top: et + eh + 20 };
-                $upArrow.css({ top: '-16px', left: tw / 2 - 16 + 'px' });
+                position = {left: el + ew / 2 - tw / 2, top: et + eh + 20};
+                $upArrow.css({top: '-16px', left: tw / 2 - 16 + 'px'});
                 jQuery('#' + tip_id).prepend($upArrow);
                 break;
 
             case 'T':
-                position = { left: el + ew / 2 - tw / 2, top: et - th - 20 };
-                $downArrow.css({ top: th, left: tw / 2 - 16 + 'px' });
+                position = {left: el + ew / 2 - tw / 2, top: et - th - 20};
+                $downArrow.css({top: th, left: tw / 2 - 16 + 'px'});
                 jQuery('#' + tip_id).append($downArrow);
                 break;
 
             case 'L':
-                position = { left: el - tw - 20, top: et + eh / 2 - th / 2 };
-                $rightArrow.css({ right: '-16px', top: th / 2 - 16 + 'px' });
+                position = {left: el - tw - 20, top: et + eh / 2 - th / 2};
+                $rightArrow.css({right: '-16px', top: th / 2 - 16 + 'px'});
                 jQuery('#' + tip_id).prepend($rightArrow);
                 break;
 
             case 'R':
-                position = { left: el + ew + 20, top: et + eh / 2 - th / 2 };
-                $leftArrow.css({ left: '-16px', top: th / 2 - 16 + 'px' });
+                position = {left: el + ew + 20, top: et + eh / 2 - th / 2};
+                $leftArrow.css({left: '-16px', top: th / 2 - 16 + 'px'});
                 jQuery('#' + tip_id).prepend($leftArrow);
                 break;
         }
 
-        jQuery('#' + tip_id).css({ top: position.top + 'px', left: position.left + 'px', position: 'absolute' });
+        jQuery('#' + tip_id).css({top: position.top + 'px', left: position.left + 'px', position: 'absolute'});
         jQuery('#' + tip_id).show('fast');
-        jQuery.scrollTo(jQuery('#' + tip_id), 400, { offset: -100 });
+        jQuery.scrollTo(jQuery('#' + tip_id), 400, {offset: -100});
     },
 
-    destroy: function() {
+    destroy() {
         jQuery(document).trigger('tourend.studip');
 
         jQuery('#tour_overlay').remove();
@@ -400,7 +400,7 @@ const Tour = {
         Tour.started = false;
     },
 
-    setSelectorOverlay: function() {
+    setSelectorOverlay() {
         if (jQuery(Tour.options.data[Tour.step].element).length) {
             jQuery('#tour_selector_overlay').css({
                 display: 'block',
@@ -414,8 +414,8 @@ const Tour = {
         }
     },
 
-    getSelector: function(target) {
-        var element = jQuery(target).prop('tagName');
+    getSelector(target) {
+        let element = jQuery(target).prop('tagName');
         if (jQuery(target).attr('id')) {
             element = '#' + jQuery(target).attr('id');
         } else if (jQuery(target).attr('name')) {
@@ -429,14 +429,14 @@ const Tour = {
         return element;
     },
 
-    deleteStep: function(tour_id, step_nr, button) {
+    deleteStep(tour_id, step_nr, button) {
         button = typeof button !== 'undefined' ? button : 'question';
         if (!Tour.pending_ajax_request) {
             Tour.pending_ajax_request = true;
             jQuery.ajax({
                 url: STUDIP.ABSOLUTE_URI_STUDIP + 'dispatch.php/tour/delete_step/' + tour_id + '/' + step_nr,
                 data: jQuery('.modaloverlay form').serialize() + '&' + button + '=1',
-                success: function(html, status, xhr) {
+                success(html, status, xhr) {
                     Tour.pending_ajax_request = false;
                     if (xhr.getResponseHeader('X-Action') === 'question') {
                         if (Tour.started) {
@@ -460,10 +460,10 @@ const Tour = {
 
                             $('.modaloverlay').remove();
                         });
-                        jQuery('.modaloverlay form').on('click', function(event) {
+                        jQuery('.modaloverlay form').on('click', function (event) {
                             jQuery(this).data('clicked', jQuery(event.target));
                         });
-                        jQuery('.modaloverlay form').on('submit', function(event) {
+                        jQuery('.modaloverlay form').on('submit', function (event) {
                             event.preventDefault();
 
                             Tour.deleteStep(
@@ -486,7 +486,7 @@ const Tour = {
                         }
                     }
                 },
-                fail: function() {
+                fail() {
                     Tour.pending_ajax_request = false;
                     alert('Fehler beim Aufruf des Tour-Controllers');
                 }
@@ -494,7 +494,7 @@ const Tour = {
         }
     },
 
-    saveStep: function(tour_id, step_nr) {
+    saveStep(tour_id, step_nr) {
         if (!Tour.pending_ajax_request) {
             Tour.pending_ajax_request = true;
             jQuery.ajax({
@@ -502,7 +502,7 @@ const Tour = {
                 type: 'POST',
                 data: jQuery('#edit_tour_form').serialize(),
                 dataType: 'html',
-                success: function(html, status, xhr) {
+                success: function (html, status, xhr) {
                     Tour.pending_ajax_request = false;
                     if (xhr.getResponseHeader('X-Action') === 'close') {
                         jQuery('#edit_tour_step')
@@ -518,7 +518,7 @@ const Tour = {
                         jQuery('#edit_tour_step').replaceWith(html);
                     }
                 },
-                fail: function() {
+                fail: function () {
                     Tour.pending_ajax_request = false;
                     alert('Fehler beim Aufruf des Tour-Controllers');
                 }
@@ -526,7 +526,7 @@ const Tour = {
         }
     },
 
-    saveStepPosition: function(tour_id, step_nr, element, mode) {
+    saveStepPosition(tour_id, step_nr, element, mode) {
         mode = typeof mode !== 'undefined' ? mode : 'save_position';
         Tour.options.data[Tour.step].element = element;
         if (!Tour.pending_ajax_request) {
@@ -534,11 +534,11 @@ const Tour = {
             jQuery.ajax({
                 url: STUDIP.ABSOLUTE_URI_STUDIP + 'dispatch.php/tour/edit_step/' + tour_id + '/' + step_nr + '/' + mode,
                 type: 'POST',
-                data: { position: element },
-                success: function(html, status, xhr) {
+                data: {position: element},
+                success() {
                     Tour.pending_ajax_request = false;
                 },
-                fail: function() {
+                fail() {
                     Tour.pending_ajax_request = false;
                     alert('Fehler beim Aufruf des Tour-Controllers');
                 }
@@ -546,7 +546,7 @@ const Tour = {
         }
     },
 
-    startEditor: function() {
+    startEditor() {
         jQuery('#tour_editor').show();
         if (Tour.options.step_count > 1) {
             jQuery('#tour_delete_step').show();
@@ -554,12 +554,12 @@ const Tour = {
             jQuery('#tour_delete_step').hide();
         }
 
-        jQuery('#tour_delete_step').on('click', function(event) {
+        jQuery('#tour_delete_step').on('click', function (event) {
             Tour.deleteStep(Tour.id, parseInt(Tour.options.route_step_nr, 10) + Tour.step);
             event.preventDefault();
         });
 
-        jQuery('#tour_no_css').on('click', function() {
+        jQuery('#tour_no_css').on('click', function () {
             jQuery('#tour_selector_overlay').hide();
             if (jQuery('#tour_overlay').length) {
                 jQuery('#tour_overlay').hide();
@@ -568,7 +568,7 @@ const Tour = {
             Tour.setTooltip(Tour.options.data[Tour.step]);
         });
 
-        jQuery('#tour_select_css').on('click', function() {
+        jQuery('#tour_select_css').on('click', function () {
             jQuery('#tour_controls').hide();
             jQuery('#tour_tip').hide();
             jQuery('#tour_tip_interactive').hide();
@@ -579,7 +579,7 @@ const Tour = {
             Tour.options.edit_mode = 'select_css';
         });
 
-        jQuery('#tour_select_action_next').on('click', function() {
+        jQuery('#tour_select_action_next').on('click', function () {
             jQuery('#tour_controls').hide();
             jQuery('#tour_tip').hide();
             jQuery('#tour_tip_interactive').hide();
@@ -590,7 +590,7 @@ const Tour = {
             Tour.options.edit_mode = 'select_action_next';
         });
 
-        jQuery('#tour_select_action_prev').on('click', function() {
+        jQuery('#tour_select_action_prev').on('click', function () {
             jQuery('#tour_controls').hide();
             jQuery('#tour_tip').hide();
             jQuery('#tour_tip_interactive').hide();
@@ -604,8 +604,8 @@ const Tour = {
         if (!jQuery('#tour_selector_overlay').length) {
             jQuery('body').prepend('<div id="tour_selector_overlay" style="z-index:20000;"></div>');
         }
-        jQuery('body').on('click', function(event) {
-            var clicked_element;
+        jQuery('body').on('click', function (event) {
+            let clicked_element;
             if (Tour.options.edit_mode === 'select_css') {
                 clicked_element = Tour.getSelector(event.target);
                 event.preventDefault();

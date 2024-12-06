@@ -269,6 +269,7 @@ import {
     EventBus,
 } from 'pdfjs-dist/web/pdf_viewer.js';
 // pdfjsWorker must be imported!
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
 import { dragscroll } from 'vue-dragscroll';
 
@@ -382,7 +383,7 @@ export default {
             container.style.overflow = overflow;
             this.currentScale = newValue;
         },
-        pageNum(newValue) {
+        pageNum() {
             this.resetPdfViewer();
         },
         showPdfSearchBox() {
@@ -418,31 +419,30 @@ export default {
         },
         initPdfTask() {
             if (this.currentUrl) {
-                let view = this;
-                view.pdfEventBus = new EventBus();
-                view.pdfLoadingTask = getDocument({ url: this.currentUrl, verbosity: 0 }).promise;
-                view.pdfLoadingTask.__PDFDocumentLoadingTask = true;
+                this.pdfEventBus = new EventBus();
+                this.pdfLoadingTask = getDocument({ url: this.currentUrl, verbosity: 0 }).promise;
+                this.pdfLoadingTask.__PDFDocumentLoadingTask = true;
                 // Link Service
-                view.pdfLinkService = new PDFLinkService({
-                    eventBus: view.pdfEventBus,
+                this.pdfLinkService = new PDFLinkService({
+                    eventBus: this.pdfEventBus,
                 });
                 // Find Controller
-                view.pdfFindController = new PDFFindController({
-                    eventBus: view.pdfEventBus,
-                    linkService: view.pdfLinkService,
+                this.pdfFindController = new PDFFindController({
+                    eventBus: this.pdfEventBus,
+                    linkService: this.pdfLinkService,
                 });
                 // Annotation Layer
-                view.pdfAnnotationLayer = new DefaultAnnotationLayerFactory();
+                this.pdfAnnotationLayer = new DefaultAnnotationLayerFactory();
                 // Text Layer
-                view.pdfTextLayer = new DefaultTextLayerFactory();
+                this.pdfTextLayer = new DefaultTextLayerFactory();
                 // Load Pdf Document
-                view.loadPdfDocument();
+                this.loadPdfDocument();
 
                 // Handle search results.
-                view.pdfEventBus.on('updatetextlayermatches', ({ source, pageIndex }) => {
-                    if (view.pdfViewer.pdfPage._pageIndex == pageIndex) {
+                this.pdfEventBus.on('updatetextlayermatches', ({ pageIndex }) => {
+                    if (this.pdfViewer.pdfPage._pageIndex == pageIndex) {
                         setTimeout(() => {
-                            view.handleSearchMatches();
+                            this.handleSearchMatches();
                         }, 260);
                     }
                 });
@@ -450,74 +450,71 @@ export default {
         },
         loadPdfDocument() {
             if (this.pdfLoadingTask) {
-                let view = this;
-                view.pdfLoadingTask.then((pdfDocument) => {
-                    view.pdfDoc = pdfDocument;
-                    view.pageCount = pdfDocument.numPages;
+                this.pdfLoadingTask.then((pdfDocument) => {
+                    this.pdfDoc = pdfDocument;
+                    this.pageCount = pdfDocument.numPages;
                     // get table of contents if any.
-                    view.loadPdfTOC();
+                    this.loadPdfTOC();
                     // Rendering PDF viewer
-                    view.loadPdfViewer();
-                    view.pdfLinkService.setDocument(view.pdfDoc, null);
-                    view.pdfFindController.setDocument(view.pdfDoc);
+                    this.loadPdfViewer();
+                    this.pdfLinkService.setDocument(this.pdfDoc, null);
+                    this.pdfFindController.setDocument(this.pdfDoc);
                 });
             }
         },
         loadPdfTOC() {
             if (this.pdfDoc) {
-                let view = this;
-                view.pdfTOC = [];
+                this.pdfTOC = [];
                 // Get the tree outline
-                view.pdfDoc.getOutline().then((outline) => {
+                this.pdfDoc.getOutline().then((outline) => {
                     if (outline) {
-                        view.pdfTOC = outline;
+                        this.pdfTOC = outline;
                     }
                 });
             }
         },
         loadPdfViewer() {
             if (this.pdfDoc) {
-                let view = this;
                 this.pdfError = false;
                 let container = this.$refs.container;
                 let outerContainer = this.$refs.outerContainer;
                 let fakeContainer = this.$refs.fakeContainer;
                 this.pdfDoc
-                    .getPage(parseInt(view.pageNum))
+                    .getPage(parseInt(this.pageNum, 10))
                     .then((pdfPage) => {
-                        view.pdfPage = pdfPage;
+                        this.pdfPage = pdfPage;
                         const width = outerContainer.offsetWidth;
                         let pdfWidth = pdfPage.view[2];
                         if (pdfPage.rotate === 90 || pdfPage.rotate === 270) {
                             pdfWidth = pdfPage.view[3];
                         }
-                        view.baseScale = (width / pdfWidth / 1.33).toFixed(2);
-                        view.scale = view.baseScale;
+                        this.baseScale = (width / pdfWidth / 1.33).toFixed(2);
+                        this.scale = this.baseScale;
                         // Creating the page view with default parameters.
                         let defaultViewport = pdfPage.getViewport({
                             scale: 1.0,
                         });
 
-                        view.pdfBasePage = new PDFViewer({
+                        this.pdfBasePage = new PDFViewer({
                             container: fakeContainer,
-                            eventBus: view.pdfEventBus,
-                            findController: view.pdfFindController,
+                            eventBus: this.pdfEventBus,
+                            findController: this.pdfFindController,
                         });
 
                         let pdfPageViewOptions = {
                             container: container,
-                            id: view.pageNum,
-                            scale: view.scale,
+                            id: this.pageNum,
+                            scale: this.scale,
                             defaultViewport: defaultViewport,
-                            eventBus: view.pdfEventBus,
-                            findController: view.pdfFindController,
-                            textHighlighterFactory: view.pdfBasePage,
-                            xfaLayerFactory: view.pdfDoc.isPureXfa ? new DefaultXfaLayerFactory() : null,
+                            eventBus: this.pdfEventBus,
+                            findController: this.pdfFindController,
+                            textHighlighterFactory: this.pdfBasePage,
+                            xfaLayerFactory: this.pdfDoc.isPureXfa ? new DefaultXfaLayerFactory() : null,
                             structTreeLayerFactory: new DefaultStructTreeLayerFactory(),
                         };
-                        if (view.pdfHandTool === false) {
-                            pdfPageViewOptions.textLayerFactory = view.pdfTextLayer;
-                            pdfPageViewOptions.annotationLayerFactory = view.pdfAnnotationLayer;
+                        if (this.pdfHandTool === false) {
+                            pdfPageViewOptions.textLayerFactory = this.pdfTextLayer;
+                            pdfPageViewOptions.annotationLayerFactory = this.pdfAnnotationLayer;
                         } else {
                             pdfPageViewOptions.textLayerMode = 0;
                             pdfPageViewOptions.annotationMode = 0;
@@ -527,17 +524,17 @@ export default {
                             pdfPageViewOptions.annotationLayerFactory = null;
                             pdfPageViewOptions.annotationMode = 0;
                         }
-                        view.pdfViewer = new PDFPageView(pdfPageViewOptions);
+                        this.pdfViewer = new PDFPageView(pdfPageViewOptions);
                         // Associates the actual page with the view, and drawing it
-                        view.pdfViewer.setPdfPage(view.pdfPage);
+                        this.pdfViewer.setPdfPage(this.pdfPage);
                         // Set LinkService viewer
-                        view.pdfLinkService.setViewer(view.pdfViewer);
-                        view.renderPage();
+                        this.pdfLinkService.setViewer(this.pdfViewer);
+                        this.renderPage();
                     })
                     .catch((err) => {
                         console.log(err);
                         outerContainer.style.minHeight = '350px';
-                        view.pdfError = true;
+                        this.pdfError = true;
                     });
             }
         },
@@ -593,7 +590,6 @@ export default {
             this.pageNum = pageNum;
         },
         tocPageNav(dest) {
-            let view = this;
             let destObj = dest.find(
                 (ref) =>
                     typeof ref === 'object' &&
@@ -604,8 +600,8 @@ export default {
                     ref.gen >= 0
             );
             if (destObj) {
-                view.pdfDoc.getPageIndex(destObj).then((pageIndex) => {
-                    view.goToPage(pageIndex + 1);
+                this.pdfDoc.getPageIndex(destObj).then((pageIndex) => {
+                    this.goToPage(pageIndex + 1);
                 });
             }
         },
@@ -669,13 +665,12 @@ export default {
             }
         },
         handleSearchMatches() {
-            let view = this;
-            let allMatches = view.pdfFindController.pageMatches;
+            let allMatches = this.pdfFindController.pageMatches;
             let totalMatches = 0;
             let searchSelectIndex = 0;
             let matchesPageCount = 0;
-            view.pdfSearchMatchesMapping = [];
-            for (let pageIndex = 0; pageIndex < view.pageCount; pageIndex++) {
+            this.pdfSearchMatchesMapping = [];
+            for (let pageIndex = 0; pageIndex < this.pageCount; pageIndex++) {
                 let pageNum = pageIndex + 1;
                 let pageMatches = allMatches[pageIndex];
                 totalMatches += pageMatches.length;
@@ -689,25 +684,25 @@ export default {
                         matchIndex: matchIndex,
                         pageNum: pageNum,
                     };
-                    view.pdfSearchMatchesMapping.push(mappingObj);
+                    this.pdfSearchMatchesMapping.push(mappingObj);
                     searchSelectIndex++;
                 }
             }
             // Find next match if there the current page has nothing.
             if (
-                view.pdfSearchFoundSelectedIndex === 0 &&
-                view.pdfViewer.pdfPage._pageIndex > 0 &&
-                matchesPageCount > 0
+                this.pdfSearchFoundSelectedIndex === 0
+                && this.pdfViewer.pdfPage._pageIndex > 0
+                && matchesPageCount > 0
             ) {
-                let nextMapped = view.pdfSearchMatchesMapping.filter(
-                    (map) => map.pageNum >= view.pdfViewer.pdfPage._pageIndex + 1
+                let nextMapped = this.pdfSearchMatchesMapping.filter(
+                    (map) => map.pageNum >= this.pdfViewer.pdfPage._pageIndex + 1
                 );
                 if (nextMapped.length) {
-                    view.pdfSearchFoundSelectedIndex = nextMapped[0].selectIndex;
+                    this.pdfSearchFoundSelectedIndex = nextMapped[0].selectIndex;
                 }
             }
-            view.pdfSearchFoundNums = totalMatches;
-            view.pdfSearchDisplayHandler();
+            this.pdfSearchFoundNums = totalMatches;
+            this.pdfSearchDisplayHandler();
         },
         doSearchInPdf() {
             let findObj = {
@@ -772,7 +767,7 @@ export default {
                     if (textSpan?.children) {
                         let children = [...textSpan.children];
                         for (let child of children) {
-                            if (child.nodeName == 'SPAN' && child.classList.contains('highlight')) {
+                            if (child.nodeName === 'SPAN' && child.classList.contains('highlight')) {
                                 child.classList.remove('selected');
                                 highlightedSpans.push(child);
                             }

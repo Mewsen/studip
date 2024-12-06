@@ -1336,11 +1336,11 @@ export default {
                 id: this.currentId,
                 parentId: this.structuralElement.relationships.parent.data.id,
             })
-                .then((response) => {
+                .then(() => {
                     this.$router.push(redirect_id);
                     this.companionInfo({ info: this.$gettext('Die Seite wurde gelöscht.') });
                 })
-                .catch((error) => {
+                .catch(() => {
                     this.companionError({ info: this.$gettext('Die Seite konnte nicht gelöscht werden.') });
                 });
         },
@@ -1498,7 +1498,7 @@ export default {
                 this.loadStructuralElement(this.currentElement.id);
             });
         },
-        async showFeedbackPopup(to, from) {
+        async showFeedbackPopup(to) {
             let showRatingPopup = false;
             let ratingPopupFeedbackElement = null;
             const toId = to.params.id;

@@ -54,11 +54,11 @@ const MultiPersonSearch = {
         });
     },
 
-    loadQuickfilter: function(title) {
+    loadQuickfilter(title) {
         MultiPersonSearch.removeAllNotSelected();
 
         var count = 0;
-        $('#' + this.name + '_quickfilter_' + title + ' option').each(function() {
+        $('#' + this.name + '_quickfilter_' + title + ' option').each(function () {
             count += MultiPersonSearch.append(
                 $(this).val(),
                 $(this).text(),
@@ -67,14 +67,14 @@ const MultiPersonSearch = {
             );
         });
 
-        if (count == 0) {
+        if (count === 0) {
             MultiPersonSearch.append('--', $gettext(' Dieser Filter enthält keine (neuen) Personen.'), null, true);
         }
 
         MultiPersonSearch.refresh();
     },
 
-    isAlreadyMember: function(user_id) {
+    isAlreadyMember(user_id) {
         if ($('#' + this.name + '_selectbox_default option[value="' + user_id + '"]').length > 0) {
             return true;
         } else {
@@ -83,11 +83,10 @@ const MultiPersonSearch = {
     },
 
     search: function() {
-        var searchterm = $('#' + this.name + '_searchinput').val(),
-            name = this.name,
-            not_found_template = _.template(
-                $gettext('Es wurden keine neuen Ergebnisse für "<%= needle %>" gefunden.')
-            );
+        const searchterm = $('#' + this.name + '_searchinput').val();
+        const not_found_template = _.template(
+            $gettext('Es wurden keine neuen Ergebnisse für "<%= needle %>" gefunden.')
+        );
         $.getJSON(
             STUDIP.URLHelper.getURL('dispatch.php/multipersonsearch/ajax_search/' + this.name, { s: searchterm }),
             function(data) {

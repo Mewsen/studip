@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 import { mapActions, mapGetters } from 'vuex';
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
@@ -37,15 +36,14 @@ export default {
         },
         async sendExportZip(root_id = null, options) {
             this.initData();
-            let view = this;
             let zip = await this.createExportFile(root_id, options);
             this.setExportState(this.$gettext('Erstelle Zip-Archiv'));
             this.setExportProgress(0);
-            await zip.generateAsync({ type: 'blob' }, function updateCallback(metadata) {
-                view.setExportProgress(metadata.percent.toFixed(0));
-            }).then(function (content) {
-                view.setExportState('');
-                view.setExportProgress(0);
+            await zip.generateAsync({ type: 'blob' }, metadata => {
+                this.setExportProgress(metadata.percent.toFixed(0));
+            }).then((content)=> {
+                this.setExportState('');
+                this.setExportProgress(0);
                 FileSaver.saveAs(content, 'courseware-export-' + new Date().toISOString().slice(0, 10) + '.zip');
             });
         },
@@ -115,7 +113,7 @@ export default {
 
             root_element.containers = [];
             if (root_element.relationships.containers?.data?.length) {
-                for (var j = 0; j < root_element.relationships.containers.data.length; j++) {
+                for (let j = 0; j < root_element.relationships.containers.data.length; j++) {
                     root_element.containers.push(
                         await this.exportContainer(
                             this.containerById({
@@ -127,7 +125,7 @@ export default {
                 }
             }
 
-            if (withChildren && elements !== []) {
+            if (withChildren && elements.length > 0) {
                 let children = await this.exportStructuralElement(root_id, elements);
 
                 if (children?.length) {
@@ -205,7 +203,7 @@ export default {
                 headers: { "Content-Type": "multipart/form-data"}
             }).then( () => {
                 this.companionInfo({ info: this.$gettext('Die Seite wurde an den OER Campus gesendet.') });
-            }).catch(error => {
+            }).catch(() => {
                 this.companionError({ info: this.$gettext('Beim Veröffentlichen der Seite ist ein Fehler aufgetreten.') });
             });
         },
@@ -316,7 +314,7 @@ export default {
             let refs =  []
             try {
                 refs = await this.loadFileRefs(block_id);
-            } catch(e) {
+            } catch {
                 //TODO: Companion explains error
             }
 
@@ -345,7 +343,7 @@ export default {
                 try {
                     await this.loadFolder(folderId);
                     folder = this.folderById({id: folderId});
-                } catch(e) {
+                } catch {
                     //TODO: Companion explains error
                 }
 

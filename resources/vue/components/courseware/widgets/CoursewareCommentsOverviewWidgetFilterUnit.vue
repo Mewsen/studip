@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import SidebarWidget from '../../SidebarWidget.vue';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {

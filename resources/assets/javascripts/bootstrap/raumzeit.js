@@ -61,7 +61,6 @@ $(document).on('click', '.bookable_rooms_action', function(event) {
                 checked_dates = $("input[name='checked_dates']")
                     .val()
                     .split(',');
-                var ndate = [];
             } else {
                 checked_dates = [singleDate];
                 var startDate = $("input[name='date']").val();

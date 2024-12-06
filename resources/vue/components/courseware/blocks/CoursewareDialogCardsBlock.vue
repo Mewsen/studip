@@ -251,13 +251,12 @@ export default {
             event.currentTarget.classList.toggle('is-flipped');
         },
         nextCard() {
-            let view = this;
             this.currentCards.every((card, index) => {
                 if (card.active) {
-                    if (view.currentCards.length > index + 1) {
+                    if (this.currentCards.length > index + 1) {
                         card.active = false;
-                        view.currentCards[index + 1].active = true;
-                        view.setCardTab = index + 1;
+                        this.currentCards[index + 1].active = true;
+                        this.setCardTab = index + 1;
                     }
                     return false; // end every
                 } else {
@@ -266,13 +265,12 @@ export default {
             });
         },
         prevCard() {
-            let view = this;
             this.currentCards.every((card, index) => {
                 if (card.active) {
                     if (index > 0) {
                         card.active = false;
-                        view.currentCards[index - 1].active = true;
-                        view.setCardTab = index - 1;
+                        this.currentCards[index - 1].active = true;
+                        this.setCardTab = index - 1;
                     }
                     return false; // end every
                 } else {
@@ -287,11 +285,7 @@ export default {
                 return false;
             }
             this.currentCards.forEach((card, index) => {
-                if (index === selectedIndex) {
-                    card.active = true;
-                } else {
-                    card.active = false;
-                }
+                card.active = index === selectedIndex;
             });
         },
     },

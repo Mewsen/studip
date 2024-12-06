@@ -88,9 +88,8 @@ export default {
     methods: {
         /**
          * Fetches configuration template for selected cache
-         * @param event
          */
-        getCacheConfig (event) {
+        getCacheConfig() {
             const url = STUDIP.URLHelper.getURL(
                 'dispatch.php/admin/cache/get_config',
                 {cache: this.selectedCacheType},

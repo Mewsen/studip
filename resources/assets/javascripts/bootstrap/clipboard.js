@@ -37,7 +37,7 @@ STUDIP.domReady(function () {
         STUDIP.Clipboard.switchClipboard(event);
     });
 
-    jQuery(document).on('dragend', '.clipboard-draggable-item', function (event) {
+    jQuery(document).on('dragend', '.clipboard-draggable-item', function () {
         jQuery(this).css({
             'top': '0px', 'left': '0px'
         });

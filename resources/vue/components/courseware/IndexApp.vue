@@ -129,7 +129,7 @@ export default {
             window.scrollTo({ top: 0 });
         },
         structuralElements: {
-            async handler(newElements, oldElements) {
+            async handler() {
                 // compute order of structural elements once more
                 await this.buildStructure();
 

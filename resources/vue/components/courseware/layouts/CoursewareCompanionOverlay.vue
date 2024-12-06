@@ -42,10 +42,9 @@ export default {
     },
     watch: {
         showCompanion(newValue, oldValue) {
-            let view = this;
             if (newValue === true && oldValue === false) {
                 setTimeout(() => {
-                    view.hideCompanion();
+                    this.hideCompanion();
                 }, 4000);
             }
         },

@@ -7,7 +7,7 @@ import Dialog from './dialog.js';
 const UserFilter = {
     new_group_nr: 1,
 
-    configureCondition: function(targetId, targetUrl) {
+    configureCondition(targetId, targetUrl) {
         Dialog.fromURL(targetUrl, {
             title: $gettext('Bedingung konfigurieren'),
             size: Math.min(Math.round(0.9 * $(window).width()), 850) + 'x400',
@@ -19,13 +19,10 @@ const UserFilter = {
 
     /**
      * Adds a new user filter to the list of set filters.
-     * @param String containerId
-     * @param String targetUrl
      */
-    addCondition: function(containerId, targetUrl) {
-        var children = $('.conditionfield');
-        var query = '';
-        $('.conditionfield').each(function() {
+    addCondition(containerId, targetUrl) {
+        let query = '';
+        $('.conditionfield').each(function () {
             query +=
                 '&field[]=' +
                 encodeURIComponent(
@@ -51,7 +48,7 @@ const UserFilter = {
             url: targetUrl,
             data: query,
             dataType: 'html',
-            success: function(data, textStatus, jqXHR) {
+            success(data) {
                 var result = '';
                 if ($('#' + containerId).children('.nofilter:visible').length > 0) {
                     $('#' + containerId)
@@ -73,15 +70,15 @@ const UserFilter = {
                 $('.userfilter .group_conditions').show();
             }
         });
-        Dialog.close({ id: 'configurecondition' });
+        Dialog.close({id: 'configurecondition'});
     },
 
     /**
      * groups selected conditions
      */
-    groupConditions: function() {
-        var selected = $('.userfilter input:checked').parent('div');
-        var group_template = $('.grouped_conditions_template').clone();
+    groupConditions() {
+        const selected = $('.userfilter input:checked').parent('div');
+        const group_template = $('.grouped_conditions_template').clone();
         if (selected.length > 0) {
             $('.userfilter input[type=checkbox]:checked')
                 .prop('checked', false)
@@ -106,11 +103,11 @@ const UserFilter = {
     /**
      * removes group for conditions
      */
-    ungroupConditions: function(element) {
-        var selected = $(element)
+    ungroupConditions(element) {
+        const selected = $(element)
             .parents('.grouped_conditions')
             .find('.condition');
-        var empty_group = $(element).parents('.grouped_conditions');
+        const empty_group = $(element).parents('.grouped_conditions');
         if (selected.length > 0) {
             selected.find('input[name^=conditiongroup_]').prop('value', '');
             $('.ungrouped_conditions .condition_list').append(selected);
@@ -121,12 +118,12 @@ const UserFilter = {
         return false;
     },
 
-    getConditionFieldConfiguration: function(element, targetUrl) {
-        var target = $(element).parent();
+    getConditionFieldConfiguration(element, targetUrl) {
+        const target = $(element).parent();
         $.ajax(targetUrl, {
             url: targetUrl,
-            data: { fieldtype: $(element).val() },
-            success: function(data, textStatus, jqXHR) {
+            data: {fieldtype: $(element).val()},
+            success(data) {
                 target.children('.conditionfield_compare_op').remove();
                 target.children('.conditionfield_value').remove();
                 target
@@ -134,33 +131,33 @@ const UserFilter = {
                     .first()
                     .before(data);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error(jqXHR, textStatus, errorThrown) {
                 alert('Status: ' + textStatus + '\nError: ' + errorThrown);
             }
         });
         return false;
     },
 
-    addConditionField: function(targetId, targetUrl) {
+    addConditionField(targetId, targetUrl) {
         $.ajax({
             url: targetUrl,
-            success: function(data, textStatus, jqXHR) {
+            success(data) {
                 $('#' + targetId).append(data);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error(jqXHR, textStatus, errorThrown) {
                 alert('Status: ' + textStatus + '\nError: ' + errorThrown);
             }
         });
         return false;
     },
 
-    removeConditionField: function(element) {
+    removeConditionField(element) {
         element.remove();
         return false;
     },
 
-    closeDialog: function(button) {
-        var dialog = $(button)
+    closeDialog(button) {
+        const dialog = $(button)
             .parents('div[role=dialog]')
             .first();
         dialog.remove();

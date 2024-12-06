@@ -527,7 +527,6 @@ class Resources
             return;
         }
 
-        var columns = jQuery(new_row).find('td');
         var text_field = jQuery(new_row).find('.name');
         jQuery(text_field).text(selected_property_name);
         var set_input = jQuery(new_row).find('.property-input');
@@ -795,7 +794,7 @@ class BookingPlan {
             end_hour += ':00';
         }
 
-        let result = STUDIP.Dialog.fromURL(
+        STUDIP.Dialog.fromURL(
             STUDIP.URLHelper.getURL(
                 'dispatch.php/resources/booking/add/' + resource_id,
                 {

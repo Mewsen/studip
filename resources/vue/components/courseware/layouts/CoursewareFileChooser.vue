@@ -113,7 +113,7 @@ export default {
         },
     },
     async mounted() {
-        if (this.value != '') {
+        if (this.value.trim().length > 0) {
             await this.loadFileRef({ id: this.value });
             const fileRef = this.fileRefById({ id: this.value });
 
@@ -129,7 +129,7 @@ export default {
                 this.getFolderFiles();
             }
         },
-        value(newValue, oldValue) {
+        value(newValue) {
             if (newValue === '') {
                 this.selectedFolderId = '';
                 this.currentValue = '';

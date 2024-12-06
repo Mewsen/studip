@@ -434,38 +434,38 @@ export default {
     },
 
     watch: {
-        userPermsReadUsers(newVal, oldVal) {
+        userPermsReadUsers() {
             this.handleBulkSelectReadPassive('autor');
             this.handleBulkSelectReadPassive('user');
             this.$emit('updateReadApproval', this.readApproval);
         },
-        userPermsReadGroups(newVal, oldVal) {
+        userPermsReadGroups() {
             this.$emit('updateReadApproval', this.readApproval);
         },
-        userPermsReadAll(newVal, oldVal) {
+        userPermsReadAll(newVal) {
             this.$emit('updateReadApproval', this.readApproval);
             if (newVal === true) {
                 this.userPermsWriteAll = false;
             }
         },
-        userPermsWriteUsers(newVal, oldVal) {
+        userPermsWriteUsers() {
             this.handleBulkSelectWritePassive();
             this.$emit('updateWriteApproval', this.writeApproval);
         },
-        userPermsWriteGroups(newVal, oldVal) {
+        userPermsWriteGroups() {
             this.$emit('updateWriteApproval', this.writeApproval);
         },
-        userPermsWriteAll(newVal, oldVal) {
+        userPermsWriteAll(newVal) {
             this.$emit('updateWriteApproval', this.writeApproval);
             if (newVal === true) {
                 this.userPermsReadAll = false;
             }
         },
-        autorOffset(newVal, oldVal) {
+        autorOffset() {
             this.handleBulkSelectReadPassive('autor');
             this.handleBulkSelectWritePassive();
         },
-        userOffset(newVal, oldVal) {
+        userOffset() {
             this.handleBulkSelectReadPassive('user');
         }
     },

@@ -55,7 +55,6 @@ export default {
 
             const minSize = Math.min(this.width, this.height) * 0.2;
             const ctx = canvas.getContext('2d');
-            const backgroundHSL = this.hexToHSL(this.baseColor);
             const numShape = this.randint(this.shapesMin, this.shapesMax);
             const shapeSizes = [];
 
@@ -187,26 +186,34 @@ export default {
             g /= 255;
             b /= 255;
 
-            let cmin = Math.min(r, g, b),
-                cmax = Math.max(r, g, b),
-                delta = cmax - cmin,
-                h = 0,
-                s = 0,
-                l = 0;
-            if (delta == 0) h = 0;
+            let cmin = Math.min(r, g, b);
+            let cmax = Math.max(r, g, b);
+            let delta = cmax - cmin;
+            let h = 0;
+            let s = 0;
+            let l = 0;
+            if (delta === 0) {
+                h = 0;
+            }
             // Red is max
-            else if (cmax == r) h = ((g - b) / delta) % 6;
+            else if (cmax === r) {
+                h = ((g - b) / delta) % 6;
+            }
             // Green is max
-            else if (cmax == g) h = (b - r) / delta + 2;
+            else if (cmax === g) {
+                h = (b - r) / delta + 2;
+            }
             // Blue is max
-            else h = (r - g) / delta + 4;
+            else {
+                h = (r - g) / delta + 4;
+            }
 
             h = Math.round(h * 60);
 
             if (h < 0) h += 360;
             l = (cmax + cmin) / 2;
 
-            s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+            s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
 
             s = +(s * 100).toFixed(1);
             l = +(l * 100).toFixed(1);

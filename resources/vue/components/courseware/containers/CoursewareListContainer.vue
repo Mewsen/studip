@@ -150,7 +150,7 @@ export default {
             unlockObject: 'unlockObject',
             companionInfo: 'companionInfo'
         }),
-        storeContainer(data) {
+        storeContainer() {
         },
         initCurrentData() {
             this.blockList = this.blocks;

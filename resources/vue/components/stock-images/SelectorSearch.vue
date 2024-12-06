@@ -65,7 +65,7 @@
 import ActiveFilter from '../ActiveFilter.vue';
 import SearchWithFilter from '../SearchWithFilter.vue';
 import { colors as selectableColors } from './colors.js';
-import { orientations, similarColors } from './filters.js';
+import { orientations } from './filters.js';
 
 export default {
     emits: ['search', 'update-active-filters'],
@@ -132,7 +132,7 @@ export default {
         activeFilters() {
             this.resetLocalFilters();
         },
-        orientation(newVal, oldVal) {
+        orientation() {
             this.updateActiveFilters();
         },
     },

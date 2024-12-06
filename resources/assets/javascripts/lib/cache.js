@@ -76,7 +76,7 @@ try {
     window.localStorage.setItem(test_key, 'foo');
     window.localStorage.removeItem(test_key);
     cache = window.localStorage;
-} catch (e) {
+} catch {
     cache = new class {
         constructor() { this.length = 0; }
         clear()       {}
@@ -89,7 +89,8 @@ try {
 
 class Cache {
     /**
-     * @param string prefix Optional prefix for the cache
+     * @param prefix Optional prefix for the cache
+     * @param session_id
      */
     constructor(prefix, session_id) {
         this.prefix     = 'studip.' + (prefix || '');
@@ -99,7 +100,7 @@ class Cache {
     /**
      * Locates an item in the caches.
      *
-     * @param String index Key of the item to look up
+     * @param index Key of the item to look up
      * @return mixed false if item is not found, item's value otherwise
      */
     locate(index) {
@@ -123,7 +124,7 @@ class Cache {
     /**
      * Returns whether the cache has an item stored for the given key.
      *
-     * @param String index Key used to store the item
+     * @param index Key used to store the item
      * @return bool
      */
     has(index) {
@@ -136,9 +137,9 @@ class Cache {
      * value was not found to immediately create and set it.
      * The function will be passed the index as it's only argument.
      *
-     * @param String index   Key used to store the item
-     * @param mixed  creator Optional creator function for the value
-     * @param mixed  expires Optional storage duration in seconds
+     * @param index   Key used to store the item
+     * @param setter  Optional creator function for the value
+     * @param expires Optional storage duration in seconds
      * @return mixed Value of the item or undefined if not found.
      */
     get(index, setter, expires) {
@@ -153,9 +154,9 @@ class Cache {
     /**
      * Store an item in the cache.
      *
-     * @param String index   Key used to store the item
-     * @param mixed  value   Value of the item
-     * @param mixed  expires Optional storage duration in seconds
+     * @param index   Key used to store the item
+     * @param value   Value of the item
+     * @param expires Optional storage duration in seconds
      */
     set(index, value, expires) {
         index = this.prefix + index;
@@ -170,7 +171,7 @@ class Cache {
     /**
      * Removes an item from the cache.
      *
-     * @param String index Key used to store the item
+     * @param index Key used to store the item
      */
     remove(index) {
         if (this.has(index)) {

@@ -402,7 +402,7 @@ export default {
             }
 
             // Determine whether the sorted array items have the key to sort by
-            const arrayHasKey = Object.keys(array.find(item => true)).includes(this.sortedBy);
+            const arrayHasKey = Object.keys(array.find(() => true)).includes(this.sortedBy);
 
             // Define sort direction by this factor
             const directionFactor = this.sortDirection === "asc" ? 1 : -1;

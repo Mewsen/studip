@@ -15,9 +15,6 @@ export default {
         },
     },
     mutations: {
-        setCategories(state, categories) {
-            state.categories = categories;
-        },
         setFilterCategory(state, category) {
             state.filterCategory = category;
         },
@@ -54,7 +51,7 @@ export default {
 
             return STUDIP.jsonapi.withPromises().patch(`config-values/${documentId}`, { data: { data } }) ;
         },
-        exchangeModules({ commit, state }, modules) {
+        exchangeModules({ commit, }, modules) {
             const order = modules.filter(module => module.active)
                 .sort((a, b) => a.position - b.position)
                 .map(module => module.id);
@@ -67,7 +64,7 @@ export default {
                 return output;
             });
         },
-        setModuleActive({ commit, state, getters }, { moduleId, active }) {
+        setModuleActive({ commit, getters }, { moduleId, active }) {
             const module = getters.getModuleById(moduleId);
             module.active = active;
 
@@ -85,7 +82,7 @@ export default {
                 return output;
             });
         },
-        setModuleVisible({ commit, state, getters }, { moduleId, visible }) {
+        setModuleVisible({ commit, getters }, { moduleId, visible }) {
             const module = getters.getModuleById(moduleId);
 
             return $.post(
@@ -100,7 +97,7 @@ export default {
                 commit('setModule', module);
             });
         },
-        swapModules({ dispatch, state, getters }, { moduleA, moduleB }) {
+        swapModules({ dispatch, state }, { moduleA, moduleB }) {
             let modules = state.modules.map(module => {
                 if (module.id === moduleA.id) {
                     return {

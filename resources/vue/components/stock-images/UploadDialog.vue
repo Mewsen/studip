@@ -41,7 +41,6 @@
 <script>
 import MetadataBox from './MetadataBox.vue';
 import UploadBox from './UploadBox.vue';
-import { mapActions } from 'vuex';
 
 const STATES = { IDLE: 'idle', UPLOADED: 'uploaded' };
 

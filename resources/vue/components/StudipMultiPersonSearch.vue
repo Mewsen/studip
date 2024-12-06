@@ -89,33 +89,32 @@ export default {
 
         search() {
             this.users = [];
-            let view = this;
             $.getJSON(
                 STUDIP.URLHelper.getURL('dispatch.php/multipersonsearch/ajax_search_vue/' + this.name, { s: this.searchTerm }),
-                function(data) {
-                    view.removeAllNotSelected();
-                    var searchcount = 0;
-                    $.each(data, function(i, item) {
-                        searchcount += view.append(
+                (data) => {
+                    this.removeAllNotSelected();
+                    let searchcount = 0;
+                    $.each(data, (i, item) => {
+                        searchcount += this.append(
                             item.id,
                             item.avatar + ' -- ' + item.text,
                             item.selected
                         );
                         delete item.selected;
-                        view.users.push(item);
+                        this.users.push(item);
                     });
-                    view.refresh();
+                    this.refresh();
 
                     if (searchcount === 0) {
-                        view.append(
+                        this.append(
                             '--',
-                            view.$gettext(
+                            this.$gettext(
                                 'Es wurden keine neuen Ergebnisse für "%{ needle }" gefunden.',
-                                { needle: view.searchTerm }
+                                { needle: this.searchTerm }
                             ),
                             true
                         );
-                        view.refresh();
+                        this.refresh();
                     }
                 }
             );

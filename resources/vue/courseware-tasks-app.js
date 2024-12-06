@@ -32,13 +32,6 @@ const mountApp = async (STUDIP, createApp, store, element) => {
         },
     ];
 
-    const base = new URL(
-        window.STUDIP.URLHelper.getURL(
-            'dispatch.php/course/courseware/tasks',
-            { cid: STUDIP.URLHelper.parameters.cid },
-            true
-        )
-    );
     const router = createRouter({
         history: createWebHashHistory(),
         routes,

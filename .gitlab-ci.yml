@@ -160,17 +160,11 @@ lint-js:
   interruptible: true
   before_script:
     - *mkdir-reports
-    - npm install -g npm@7
-    - npm install
-      --no-save --no-audit --no-fund
-      --loglevel=error
-      eslint eslint-formatter-gitlab
+    - npm ci --prefer--offline
   script:
-    - npx eslint
-      --ext .js,.vue
+    - npm run lint-js --
       --cache --cache-location $CACHE_LOCATION
       --format gitlab
-      resources/assets/javascripts resources/vue
   artifacts:
     reports:
       codequality: $ESLINT_CODE_QUALITY_REPORT

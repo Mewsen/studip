@@ -124,7 +124,7 @@ export default {
             return dispatch('blubber-threads/update', thread, { root: true });
         },
 
-        createComment({ dispatch, rootGetters }, { id, content }) {
+        createComment({ dispatch }, { id, content }) {
             const data = {
                 attributes: { content },
                 relationships: {

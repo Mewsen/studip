@@ -212,18 +212,17 @@ export default {
             },
             deep: true,
         },
-        toolbarActive(newState, oldState) {
-            let view = this;
+        toolbarActive(newState) {
             if (newState) {
                 this.showTools = true;
                 setTimeout(() => {
-                    view.unfold = true;
+                    this.unfold = true;
                 }, 10);
             } else {
                 this.unfold = false;
                 setTimeout(() => {
-                    if (!view.toolbarActive) {
-                        view.showTools = false;
+                    if (!this.toolbarActive) {
+                        this.showTools = false;
                     }
                 }, 600);
             }

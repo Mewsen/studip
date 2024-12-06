@@ -18,7 +18,7 @@ STUDIP.domReady(() => {
         STUDIP.Messages.init();
         jQuery(window.document).on(
             'scroll',
-            _.throttle(function(event) {
+            _.throttle(() => {
                 if (
                     jQuery(window).scrollTop() + jQuery(window).height() > jQuery(window.document).height() - 500 &&
                     jQuery('#reloader').hasClass('more')

@@ -32,21 +32,21 @@ STUDIP.ready(function () {
         }
     });
 
-    $(document).on('change', 'tr.course input', function(i) {
+    $(document).on('change', 'tr.course input', function() {
         STUDIP.Admission.toggleNotSavedAlert();
     });
 
-    $('a.userlist-delete-user').on('click', function(event) {
+    $('a.userlist-delete-user').on('click', function() {
         $(this).closest('tr').remove();
         return false;
     });
 
-    $('#courseset-form .autosave').on('click', (event) => {
+    $('#courseset-form .autosave').on('click', () => {
         STUDIP.Admission.autosaveCourseset();
     });
 
     STUDIP.ready(() => {
-        $('#toggle-date-link').on('click', (event) => {
+        $('#toggle-date-link').on('click', () => {
             $('#admissionrule-valid-date').toggleClass('hidden-js');
         });
     });

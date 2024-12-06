@@ -4,7 +4,6 @@ import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote';
 import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
-import EasyImagePlugin from '@ckeditor/ckeditor5-easy-image/src/easyimage';
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
 import FileRepository from '@ckeditor/ckeditor5-upload/src/filerepository';
 import FontBackgroundColor from '@ckeditor/ckeditor5-font/src/fontbackgroundcolor.js';
@@ -23,7 +22,6 @@ import Indent from '@ckeditor/ckeditor5-indent/src/indent';
 import IndentBlock from '@ckeditor/ckeditor5-indent/src/indentblock';
 import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import LinkPlugin from '@ckeditor/ckeditor5-link/src/link';
-import List from '@ckeditor/ckeditor5-list/src/list';
 import ListProperties from '@ckeditor/ckeditor5-list/src/listproperties';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat.js';
@@ -47,7 +45,7 @@ import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline.js';
 /* ckeditor third party */
 import Mathematics from 'ckeditor5-math/src/math';
 /* ckeditor elan */
-import StudipA11YDialog, { updateVoiceLabel } from '../cke/studip-a11y-dialog/a11y-dialog.js';
+import StudipA11YDialog from '../cke/studip-a11y-dialog/a11y-dialog.js';
 import StudipUpload from '../cke/StudipUpload.js';
 import SpecialCharactersSmiley from '../cke/special_characters/SpecialCharactersSmiley.js';
 import SpecialCharactersGreek from '../cke/special_characters/SpecialCharactersGreek.js';

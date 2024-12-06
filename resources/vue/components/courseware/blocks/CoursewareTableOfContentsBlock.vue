@@ -144,7 +144,7 @@ export default {
                     this.loadTask({
                         taskId: taskId,
                     });
-                } catch (error) {
+                } catch {
                     // nothing to do here
                 }
             }

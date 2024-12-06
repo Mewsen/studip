@@ -7,18 +7,14 @@ import {
     createLabeledInputText,
     submitHandler,
     ViewCollection,
-    injectCssTransitionDisabler,
-    createDropdown,
-    addListToDropdown,
+    injectCssTransitionDisabler
 } from '@ckeditor/ckeditor5-ui';
-import { FocusTracker, KeystrokeHandler, Collection, Rect, isVisible } from '@ckeditor/ckeditor5-utils';
+import { FocusTracker, KeystrokeHandler } from '@ckeditor/ckeditor5-utils';
 import { $gettext } from '../../lib/gettext';
 
 export default class WikiLinkFormView extends View {
     constructor(locale) {
         super(locale);
-
-        const t = locale.t;
 
         this._keywordInputView = this._createInputField($gettext('Wikiseite'), $gettext('zum Beispiel "Wiki-Startseite"'));
         this._labelInputView = this._createInputField($gettext('Linktext'), $gettext('optional'));

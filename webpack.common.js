@@ -107,11 +107,14 @@ module.exports = {
             chunkFilename: "stylesheets/[name].css?h=[chunkhash]"
         }),
         new ESLintPlugin({
+            configType: 'flat',
+            eslintPath: 'eslint/use-at-your-own-risk',
             exclude: [
                 'node_modules',
                 'public/assets/javascripts/ckeditor/ckeditor.js',
-                'resources/assets/javascripts/vendor',
+                'resources/assets/javascripts/jquery/autoresize.jquery.min.js',
                 'resources/assets/javascripts/jquery/jstree/jquery.jstree.js',
+                'resources/assets/javascripts/vendor',
             ]
         }),
         new CKEditorTranslationsPlugin({

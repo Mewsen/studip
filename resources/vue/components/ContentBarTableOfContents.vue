@@ -50,7 +50,7 @@ export default defineComponent({
             }
             // Count how many items are in the TOC tree.
             let count = 0;
-            traverse(this.toc, (item) => count++);
+            traverse(this.toc, () => count++);
             return count;
         },
     },

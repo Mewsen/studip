@@ -19,8 +19,7 @@
 
 <script>
 import SidebarWidget from '../../SidebarWidget.vue';
-
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'courseware-shelf-import-widget',

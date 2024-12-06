@@ -133,7 +133,7 @@ export default {
         dragover(event) {
             this.dragging = event.dataTransfer.types.includes('Files');
         },
-        dragleave(event) {
+        dragleave() {
             this.dragging = false;
         },
 
@@ -149,7 +149,7 @@ export default {
             });
         },
 
-        handleScroll(event) {
+        handleScroll() {
             const el = this.$refs.scrollable;
             const threadPosting = el.querySelector('.all_content');
             const threadPostingHeight = threadPosting?.scrollHeight ?? 0;

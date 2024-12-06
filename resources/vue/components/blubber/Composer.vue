@@ -116,7 +116,7 @@ export default {
         });
     },
     watch: {
-        text(newText, oldText) {
+        text(newText) {
             if (this.localText !== newText) {
                 this.localText = newText;
                 this.focusTextarea();

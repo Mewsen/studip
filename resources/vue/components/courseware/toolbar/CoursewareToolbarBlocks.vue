@@ -252,7 +252,7 @@ export default {
             };
             return original;
         },
-        dragBlockStart(e) {
+        dragBlockStart() {
             this.isDragging = true;
         },
         async dropNewBlock(e) {
@@ -294,7 +294,7 @@ export default {
                 }
             }
         },
-        currentFilterCategory(newValue, oldValue) {
+        currentFilterCategory(newValue) {
             if (newValue) {
                 this.loadSearch();
             } else {

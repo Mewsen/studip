@@ -33,7 +33,7 @@
 
 <script>
 import IsoDate from '../layouts/IsoDate.vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-block-info',

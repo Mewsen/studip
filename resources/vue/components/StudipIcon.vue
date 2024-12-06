@@ -23,13 +23,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-function getCSSVariableValue(property: string): Number {
+function getCSSVariableValue(property: string): number {
     const value = getComputedStyle(document.body).getPropertyValue(property);
     return parseInt(value, 10);
 }
 
-const defaultIconSize: Number = getCSSVariableValue('--icon-size-default');
-const inlineIconSize: Number = getCSSVariableValue('--icon-size-inline');
+const defaultIconSize: number = getCSSVariableValue('--icon-size-default');
+const inlineIconSize: number = getCSSVariableValue('--icon-size-inline');
 
 export default defineComponent({
     name: 'studip-icon',
@@ -62,7 +62,7 @@ export default defineComponent({
         }
     },
     computed: {
-        realSize(): Number | undefined {
+        realSize(): number | undefined {
             if (this.inline) {
                 return inlineIconSize;
             }

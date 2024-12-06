@@ -12,7 +12,7 @@
 <script>
 import StudipIdentImage from '../../StudipIdentImage.vue';
 import colorMixin from '@/vue/mixins/courseware/colors.js';
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'CoursewareToolsUnitsItem',

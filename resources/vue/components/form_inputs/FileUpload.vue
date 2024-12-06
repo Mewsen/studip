@@ -130,7 +130,7 @@ export default {
                 axios.post(
                     this.uploadUrl,
                     formData
-                ).then(response => {
+                ).then(() => {
                     this.uploading = false;
                     this.$refs.files.value = '';
                     this.targetFolder = this.folder;

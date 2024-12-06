@@ -88,7 +88,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { AdmissionRuleMixin } from '../../mixins/AdmissionRuleMixin';
 import ValidityTime from "./ValidityTime.vue";
 import StudipUserFilter from "../StudipUserFilter.vue";

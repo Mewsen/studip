@@ -211,11 +211,10 @@ export default {
             this.oembedData = this.addTimeData(this.oembedData);
         },
         validateCurrentSource() {
-            var validSource = false;
-            let view = this;
+            let validSource = false;
             for (const key of Object.keys(this.endPoints)) {
-                if (view.currentUrl.includes(key)) {
-                    view.currentSource = key;
+                if (this.currentUrl.includes(key)) {
+                    this.currentSource = key;
                     validSource = true;
                     break;
                 }

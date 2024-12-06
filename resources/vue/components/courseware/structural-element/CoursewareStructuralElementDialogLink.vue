@@ -168,29 +168,28 @@ export default {
             return this.structuralElementById({id: unit.relationships['structural-element'].data.id});
         },
         linkElement() {
-            let view = this;
             this.linkStructuralElement({
                 parentId: this.currentElement,
                         elementId: this.selectedElement.id,
                 })
                 .then( () => {
-                    view.companionSuccess({
-                        info: view.$gettext(
+                    this.companionSuccess({
+                        info: this.$gettext(
                             'Die Seite %{ pageTitle } wurde erfolgreich verknüpft.',
-                            { pageTitle: view.selectedElementTitle }
+                            { pageTitle: this.selectedElementTitle }
                         )
                     });
                 })
                 .catch( () => {
-                    view.companionError({
-                        info: view.$gettext(
+                    this.companionError({
+                        info: this.$gettext(
                             'Die Seite %{ pageTitle } konnte nicht verknüpft werden.',
-                            { pageTitle: view.selectedElementTitle }
+                            { pageTitle: this.selectedElementTitle }
                         )
                     });
                 })
                 .finally(() => {
-                    view.showElementLinkDialog(false);
+                    this.showElementLinkDialog(false);
                 });
         },
         selectElement(id) {

@@ -25,7 +25,7 @@ STUDIP.domReady(() => {
                         navigator.mediaDevices.getUserMedia({video: false, audio: true});
                     }
                 })
-                .catch(error => {
+                .catch(() => {
                     navigator.mediaDevices.getUserMedia({video: false, audio: true});
                 });
         }

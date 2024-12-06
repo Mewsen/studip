@@ -135,7 +135,7 @@ Dialog.handlers.header['X-Dialog-Execute'] = function(value, options, xhr) {
     // Try to parse value as JSON (value might be {func: 'foo', payload: {}})
     try {
         value = $.parseJSON(value);
-    } catch (e) {
+    } catch {
         value = { func: value };
     }
 
@@ -361,12 +361,12 @@ Dialog.show = function(content, options = {}) {
         title: options.title,
         modal: true,
         resizable: options.resize ?? true,
-        create: function(event) {
+        create(event) {
             $(event.target)
                 .parent()
                 .css('position', 'fixed');
         },
-        resizeStop: function(event, ui) {
+        resizeStop(event, ui) {
             var position = [
                 Math.floor(ui.position.left) - $(window).scrollLeft(),
                 Math.floor(ui.position.top) - $(window).scrollTop()
@@ -379,18 +379,15 @@ Dialog.show = function(content, options = {}) {
             instance.fixedDimensions = true;
             instance.dimensions = ui.size;
         },
-        open: function() {
+        open() {
             PageLayout.title = dialog_options.title;
 
-            var helpbar_element = $('.helpbar a[href*="hilfe.studip.de"]');
-            var tooltip = helpbar_element.text();
-            var link = options.wiki_link || helpbar_element.attr('href');
-            var element = $('<a class="ui-dialog-titlebar-wiki"' + ' target="_blank" rel="noopener noreferrer">')
-                    .attr('href', link)
-                    .attr('title', tooltip);
-            var buttons = $(this)
-                    .parent()
-                    .find('.ui-dialog-buttonset .ui-button');
+            const helpbar_element = $('.helpbar a[href*="hilfe.studip.de"]');
+            const tooltip = helpbar_element.text();
+            const link = options.wiki_link || helpbar_element.attr('href');
+            const element = $('<a class="ui-dialog-titlebar-wiki"' + ' target="_blank" rel="noopener noreferrer">')
+                .attr('href', link)
+                .attr('title', tooltip);
 
             if (options.wikilink) {
                 $(this)
@@ -411,10 +408,10 @@ Dialog.show = function(content, options = {}) {
             // Execute scripts
             $('head').append(scripts);
 
-            $(options.origin || document).trigger('dialog-open', { dialog: this, options: options });
+            $(options.origin || document).trigger('dialog-open', {dialog: this, options: options});
         },
-        close: function(event) {
-            $(options.origin || document).trigger('dialog-close', { dialog: this, options: options });
+        close() {
+            $(options.origin || document).trigger('dialog-close', {dialog: this, options: options});
 
             PageLayout.title = instance.previous_title;
 
@@ -484,7 +481,7 @@ Dialog.close = function(options) {
             try {
                 instance.element.dialog('close');
                 instance.open = instance.element.dialog('isOpen');
-            } catch (ignore) {
+            } catch {
                 // No action necessary
             }
 
@@ -497,7 +494,7 @@ Dialog.close = function(options) {
             try {
                 instance.element.dialog('destroy');
                 instance.element.remove();
-            } catch (ignore) {
+            } catch {
                 // No action necessary
             }
         }

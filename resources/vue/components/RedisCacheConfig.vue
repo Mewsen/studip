@@ -52,13 +52,13 @@ export default {
     },
     watch: {
         theHostname: {
-            handler (current) {
+            handler () {
                 this.$emit('is-valid', this.isValid());
             },
             immediate: true
         },
         thePort: {
-            handler (current) {
+            handler () {
                 this.$emit('is-valid', this.isValid());
             },
             immediate: true

@@ -255,7 +255,7 @@ export default {
     },
     watch: {
         units: {
-            handler(newState) {
+            handler() {
                 this.initCurrentData();
             },
             deep: true

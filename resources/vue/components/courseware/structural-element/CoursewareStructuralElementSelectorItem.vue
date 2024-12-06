@@ -224,7 +224,7 @@ export default {
                 this.handleInput(id);
             }
         },
-        handleKeyInput(event, id) {
+        handleKeyInput(event) {
             switch(event.keyCode) {
                 case 37: // arrow left
                 case 38: // arrow up

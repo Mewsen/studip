@@ -34,7 +34,7 @@ const getRelationshipType = relationship => {
     return data && data.type;
 };
 
-const storeIncluded = ({ commit, dispatch }, result) => {
+const storeIncluded = ({ dispatch }, result) => {
     if (result.included) {
         // store the included records
         result.included.forEach(relatedRecord => {
@@ -298,7 +298,6 @@ const resourceModule = ({ name: resourceName, httpClient }) => {
                     .related({ parent, relationship, options })
                     .then(results => {
                         commit('SET_STATUS', STATUS_SUCCESS);
-                        const { id, type } = parent;
                         if (Array.isArray(results.data)) {
                             const relatedRecords = results.data;
                             const relatedIds = relatedRecords.map(record => record.id);
@@ -417,7 +416,7 @@ const resourceModule = ({ name: resourceName, httpClient }) => {
                 commit('RESET_STATE');
             },
 
-            addRelated({ commit, getters }, params) {
+            addRelated({ getters }, params) {
                 const { parent, relationship = resourceName, data } = params;
                 const relatedItems = getters.related(params).map(o => o.id);
                 const difference = data.filter(x => !relatedItems.includes(x));
@@ -427,9 +426,9 @@ const resourceModule = ({ name: resourceName, httpClient }) => {
                 return client.createRelationships(parent, relationship, records);
             },
 
-            setRelated({ commit, dispatch }, params) {
+            setRelated({ commit }, params) {
                 const { parent, relationship = resourceName, data } = params;
-                return client.updateRelationships(parent, relationship, data).then(response => {
+                return client.updateRelationships(parent, relationship, data).then(() => {
                     let relatedIds;
                     if (Array.isArray(data)) {
                         relatedIds = data.map(record => record.id);
@@ -445,7 +444,7 @@ const resourceModule = ({ name: resourceName, httpClient }) => {
                 });
             },
 
-            removeRelated({ commit, dispatch }, params) {
+            removeRelated({ commit }, params) {
                 const { parent, relationship = resourceName, data } = params;
                 client.removeRelationships(parent, relationship, data);
                 let relatedIds;
@@ -460,7 +459,7 @@ const resourceModule = ({ name: resourceName, httpClient }) => {
                 });
             },
 
-            removeAllRelated({ commit, dispatch }, params) {
+            removeAllRelated({ commit }, params) {
                 const { parent, relationship = resourceName } = params;
                 client.updateRelationships(parent, relationship, []);
                 commit('REMOVE_RELATED', {

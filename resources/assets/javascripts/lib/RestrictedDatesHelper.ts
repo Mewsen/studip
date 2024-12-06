@@ -1,9 +1,9 @@
 import { jsonapi } from "./jsonapi";
 
 type RestrictedDate = {
-    year: Number,
-    month: Number,
-    day: Number,
+    year: number,
+    month: number,
+    day: number,
 
     reason: string | null,
     lock: boolean
@@ -11,10 +11,10 @@ type RestrictedDate = {
 
 class RestrictedDatesHelper
 {
-    static #loadedYears : Number[] = [];
+    static #loadedYears : number[] = [];
     static #restrictedDates: RestrictedDate[] = [];
 
-    static isDateRestricted(date: Date, returnBoolean: Boolean = false): RestrictedDate | Boolean {
+    static isDateRestricted(date: Date, returnBoolean: boolean = false): RestrictedDate | boolean {
         const restrictedDate : RestrictedDate | undefined = this.#restrictedDates.find(item => {
             return item.year === date.getFullYear()
                 && item.month === date.getMonth() + 1
@@ -28,7 +28,7 @@ class RestrictedDatesHelper
         return restrictedDate ?? this.#convertDate(date, null, false);
     }
 
-    static async loadRestrictedDatesByYear(year: Number): Promise<void> {
+    static async loadRestrictedDatesByYear(year: number): Promise<void> {
         if (this.#loadedYears.includes(year)) {
             return Promise.reject();
         }
@@ -37,7 +37,7 @@ class RestrictedDatesHelper
 
         jsonapi.withPromises().request('holidays', {data: {
             'filter[year]': year
-        }}).then((response: [] | Object) => {
+        }}).then((response: [] | object) => {
             // Since PHP will return an empty object as an array,
             // we need to check
             if (Array.isArray(response)) {

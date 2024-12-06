@@ -85,7 +85,7 @@ export default {
                 } else {
                     this.setSearchResults([]);
                 }
-            }).catch(error => {
+            }).catch(() => {
                 this.companionError({ info: this.$gettext('Bei der Anfrage ist ein Fehler aufgetreten.')});
             });
         }

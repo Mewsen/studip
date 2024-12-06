@@ -288,7 +288,6 @@ export default {
         },
         async copy() {
             if (this.selectedUnit) {
-                const element = this.getUnitElement(this.selectedUnit);
                 const modified = {
                         title: this.modifiedTitle !== '' ? this.modifiedTitle : this.selectedUnitTitle,
                         color: this.modifiedColor,
@@ -307,7 +306,6 @@ export default {
             this.loadingCourses = false;
         },
         loadSemesterMap() {
-            let view = this;
             let semesters = [];
             this.courses.every(course => {
                 let semId = course.relationships['start-semester'].data.id;
@@ -317,9 +315,9 @@ export default {
                 return true;
             });
             semesters.every(semester => {
-                view.loadSemester({id: semester}).then( () => {
-                    view.semesterMap.push(view.semesterById({id: semester}));
-                    view.semesterMap.sort((a, b) => new Date(b.attributes.start) - new Date(a.attributes.start));
+                this.loadSemester({id: semester}).then( () => {
+                    this.semesterMap.push(this.semesterById({id: semester}));
+                    this.semesterMap.sort((a, b) => new Date(b.attributes.start) - new Date(a.attributes.start));
                 });
                 return true;
             });
@@ -393,7 +391,7 @@ export default {
                     break;
             }
         },
-        selectedSemester(newSemester) {
+        selectedSemester() {
             this.selectedRange = '';
         }
     }

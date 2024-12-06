@@ -66,7 +66,6 @@ import ZipUploadDialog from './ZipUploadDialog.vue';
 import StudipMessageBox from '../StudipMessageBox.vue';
 import StudipProgressIndicator from '../StudipProgressIndicator.vue';
 import { searchFilterAndSortImages } from './filters.js';
-import { $gettext } from '../../../assets/javascripts/lib/gettext';
 
 export default {
     components: {
@@ -160,7 +159,7 @@ export default {
                         this.fetchStockImages();
                     });
                 })
-                .catch((error) => {
+                .catch(() => {
                     this.showUploadIndicator = false;
                     this.showZipUploadMessage = true;
                     this.zipUploadMessageType = 'error';

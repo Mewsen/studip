@@ -1,4 +1,4 @@
-import { $gettext } from '../lib/gettext';
+import {$gettext} from '../lib/gettext';
 
 const OER = {
     periodicalPushData: function () {
@@ -79,12 +79,12 @@ const OER = {
                         this.difficulty[1] = 12;
                         jQuery('#difficulty_slider').slider('values', this.difficulty);
                     },
-                    clearCategory: function () {
+                    clearCategory() {
                         if (this.category != null) {
                             this.category = null;
                         }
                     },
-                    getIconShape: function (result) {
+                    getIconShape(result) {
                         if (result.category === "video") {
                             return "video";
                         }
@@ -102,8 +102,7 @@ const OER = {
                         }
                         return "file";
                     },
-                    search: function () {
-                        let v = this;
+                    search() {
                         this.browseMode = false;
                         $.ajax({
                             url: STUDIP.URLHelper.getURL("dispatch.php/oer/market/search"),
@@ -113,19 +112,18 @@ const OER = {
                                 search: this.searchtext
                             },
                             dataType: "json",
-                            success: function (output) {
+                            success: (output) => {
                                 $("#new_ones").hide();
-                                v.results = output.materials;
-                                v.activeFilterPanel = false;
-                                $(".material_navigation").toggle(v.results.length == 0);
-                                $(".mainlist").toggle(v.results.length == 0);
-                                $(".new_ones").toggle(v.results.length == 0);
+                                this.results = output.materials;
+                                this.activeFilterPanel = false;
+                                $(".material_navigation").toggle(this.results.length === 0);
+                                $(".mainlist").toggle(this.results.length === 0);
+                                $(".new_ones").toggle(this.results.length === 0);
                             }
                         });
                         return false;
                     },
-                    browseTag: function (tag_hash, name) {
-                        let v = this;
+                    browseTag(tag_hash, name) {
                         this.clearAllFilters(true);
                         let tags = [];
                         for (let i in this.tagHistory) {
@@ -134,35 +132,34 @@ const OER = {
                         if (tag_hash && (tags.indexOf(tag_hash) === -1)) {
                             tags.push(tag_hash);
                         }
-                        let p = new Promise(function (resolve, reject) {
+                        return new Promise((resolve, reject) => {
                             $.ajax({
                                 url: STUDIP.URLHelper.getURL("dispatch.php/oer/market/get_tags"),
                                 data: {
                                     tags: tags
                                 },
                                 dataType: "json",
-                                success: function (output) {
-                                    v.results = output.results.materials;
-                                    v.tags = output.tags;
+                                success(output) {
+                                    this.results = output.results.materials;
+                                    this.tags = output.tags;
                                     if (tag_hash) {
-                                        v.tagHistory.push({
+                                        this.tagHistory.push({
                                             tag_hash: tag_hash,
                                             name: name
                                         });
                                     }
-                                    if (v.tagHistory.length > 0) {
+                                    if (this.tagHistory.length > 0) {
                                         $("#new_ones").hide();
                                     }
                                     resolve();
                                 },
-                                error: function (jqXHR, textStatus, errorThrown) {
+                                error(jqXHR, textStatus, errorThrown) {
                                     reject(new Error(errorThrown));
                                 }
                             });
                         });
-                        return p;
                     },
-                    backInCloud: function () {
+                    backInCloud() {
                         if (this.tagHistory.length === 0) {
                             this.browseMode = false;
                             return;
@@ -174,25 +171,24 @@ const OER = {
                             tag_hash = this.tagHistory[this.tagHistory.length - 1].tag_hash;
                             tag_name = this.tagHistory[this.tagHistory.length - 1].name;
                         }
-                        let v = this;
                         this.tagHistory.pop();
-                        this.browseTag(tag_hash, tag_name).then(function () {
-                            if (v.tagHistory.length === 0) {
+                        this.browseTag(tag_hash, tag_name).then(() => {
+                            if (this.tagHistory.length === 0) {
                                 $("#new_ones").show();
                             }
                         });
 
                     },
-                    getTagStyle: function (tag_hash) {
+                    getTagStyle() {
                         return "position: relative; top: " + Math.floor(Math.random() * 15 - 15) + "px";
                     },
-                    capitalizeFirstLetter: function (string) {
+                    capitalizeFirstLetter(string) {
                         return string.charAt(0).toUpperCase() + string.slice(1);
                     },
-                    getMaterialURL: function (material_id) {
+                    getMaterialURL(material_id) {
                         return this.material_select_url_template.replace("__material_id__", material_id);
                     },
-                    shortenName: function (name) {
+                    shortenName(name) {
                         if (name.length > 55) {
                             return name.substring(0, 50) + ' ...';
                         } else {
@@ -218,14 +214,13 @@ const OER = {
                 updated() {
                     this.$nextTick(function () {
                         if (!jQuery("#difficulty_slider.ui-slider").length) { //to prevent an endless loop
-                            let v = this;
                             jQuery("#difficulty_slider").slider({
                                 range: true,
                                 min: 1,
                                 max: 12,
-                                values: [v.difficulty[0], v.difficulty[1]],
-                                change: function (event, ui) {
-                                    v.difficulty = ui.values;
+                                values: [this.difficulty[0], this.difficulty[1]],
+                                change(event, ui) {
+                                    this.difficulty = ui.values;
                                 }
                             });
                         }

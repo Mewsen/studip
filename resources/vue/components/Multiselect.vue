@@ -60,7 +60,7 @@ export default {
     },
     watch: {
         selected: {
-            handler(newValue, oldValue) {
+            handler(newValue) {
                 this.$emit('update:model-value', newValue);
             },
             deep: true

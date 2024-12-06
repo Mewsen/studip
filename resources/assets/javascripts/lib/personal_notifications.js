@@ -3,14 +3,14 @@ import Cache from './cache.js';
 import PageLayout from './page_layout.js';
 import { $ngettext } from './gettext';
 
-var stack = {};
-var audio_notification = false;
-var directlydeleted = [];
-var favicon = null;
+let stack = {};
+let audio_notification = false;
+let directlydeleted = [];
+let favicon = null;
 
 function updateFavicon(text) {
     if (favicon === null) {
-        var valid = $('head')
+        const valid = $('head')
             .find('link[rel=icon]')
             .first();
         $('head')
@@ -118,7 +118,7 @@ const PersonalNotifications = {
         }
 
         // Special handling for personal notifications:
-        $('#notification-container').on('mouseover mouseout', function (event) {
+        $('#notification-container').on('mouseover mouseout', function () {
             $(this).attr('aria-expanded', $(this).attr('aria-expanded') === 'true' ? 'false' : 'true');
         });
     },
@@ -128,14 +128,14 @@ const PersonalNotifications = {
                 .toggle(permission === 'default');
         });
     },
-    markAsRead (event) {
-        var notification = $(this).closest('.notification'),
-            id = notification.data().id;
+    markAsRead () {
+        const notification = $(this).closest('.notification');
+        const id = notification.data().id;
         PersonalNotifications.sendReadInfo(id, notification);
         return false;
     },
-    markAllAsRead (event) {
-        var notifications = $(this)
+    markAllAsRead () {
+        const notifications = $(this)
             .parent()
             .find('.notification');
         PersonalNotifications.sendReadInfo('all', notifications);

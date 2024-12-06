@@ -258,12 +258,6 @@ const Questionnaire = {
                 let questions_rendered = 0;
                 let canvasses = [];
 
-                let blobToDataURL = function (blob, callback) {
-                    let a = new FileReader();
-                    a.onload = function(e) {callback(e.target.result);}
-                    a.readAsDataURL(blob);
-                };
-
                 $(".questionnaire_results .question").each(function (index) {
                     canvasCreator(this, {logging: false}).then(canvas => {
                         canvasses[index] = canvas;

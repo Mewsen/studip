@@ -56,7 +56,7 @@ import { defineComponent, PropType } from 'vue';
 import '../../assets/stylesheets/scss/courseware/layouts/ribbon.scss';
 import StudipIcon from './StudipIcon.vue';
 import { store } from '../../assets/javascripts/chunks/vue';
-import { TOCItem, traverse } from './table-of-contents';
+import { TOCItem } from './table-of-contents';
 import ContentBarTableOfContents from './ContentBarTableOfContents.vue';
 
 export default defineComponent({
@@ -151,7 +151,7 @@ export default defineComponent({
         },
     },
     methods: {
-        intersectionCallback(entries: IntersectionObserverEntry[]) {
+        intersectionCallback() {
             this.handleScroll();
         },
         handleScroll() {

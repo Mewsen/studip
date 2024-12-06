@@ -203,7 +203,7 @@ const Forum = {
         STUDIP.Forms.initialize();
     },
 
-    doAddArea: function(event) {
+    doAddArea: function() {
         // store the area only if the validity check has passed
         var values = $(this).serializeObject();
 
@@ -631,7 +631,7 @@ const Forum = {
                 'topics' : STUDIP.Forum.clipboard
             },
             type: 'POST',
-            success: function(response) {
+            success: function() {
                 // jQuery('li[data-id=' + topic_id + '] a.tooltip2').hideAjaxNotification();
 
                 // remove all pasted entries, they are now elsewhere
@@ -801,7 +801,7 @@ const Forum = {
  */
 jQuery.fn.extend({
     insertAtCaret: function (myValue) {
-        return this.each(function (i) {
+        return this.each(function () {
             if (document.selection) {
                 //For browsers like Internet Explorer
                 this.focus();

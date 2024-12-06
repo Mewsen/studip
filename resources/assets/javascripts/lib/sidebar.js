@@ -1,5 +1,3 @@
-import Scroll from './scroll.js';
-
 const Sidebar = {
     open () {
         this.toggle(true);

@@ -210,14 +210,13 @@ export default {
         initCurrentData() {
             this.currentContainer = _.cloneDeep(this.container);
 
-            let view = this;
             let sections = this.currentContainer.attributes.payload.sections;
 
             const unallocated = new Set(this.blocks.map(({ id }) => id));
             if (sections) {
                 for (let section of sections) {
                     section.locked = false;
-                    section.blocks = section.blocks.map((id) =>  view.blockById({id})).filter(Boolean);
+                    section.blocks = section.blocks.map((id) =>  this.blockById({id})).filter(Boolean);
                     for (let sectionBlock of section.blocks) {
                         if (sectionBlock?.id && unallocated.has(sectionBlock.id)) {
                             unallocated.delete(sectionBlock.id);
@@ -227,7 +226,7 @@ export default {
             }
 
             if (unallocated.size > 0) {
-                this.unallocatedBlocks = [...unallocated].map((id) => view.blockById({ id }));
+                this.unallocatedBlocks = [...unallocated].map((id) => this.blockById({ id }));
                 sections.push({
                     blocks: this.unallocatedBlocks,
                     name: this.$gettext('nicht zugewiesene Inhalte'),
@@ -278,7 +277,6 @@ export default {
         async storeContainer() {
             const timeout = setTimeout(() => this.processing = true, 800);
             this.currentContainer.attributes.payload.sections = this.currentContainer.attributes.payload.sections.filter(section => !section.locked);
-            let validSections = true;
             this.currentContainer.attributes.payload.sections.forEach(section => {
                 section.blocks = section.blocks.map((block) => {return block.id;});
                 delete section.locked;
@@ -399,7 +397,7 @@ export default {
                 this.currentSections[newSectionIndex].blocks.splice(0, 0, this.currentSections[sectionIndex].blocks.splice(currentIndex, 1)[0]);
             }
         },
-        abortKeyboardSorting(blockId, sectionIndex) {
+        abortKeyboardSorting(blockId) {
             const block = this.blockById({id: blockId});
             this.keyboardSelected = null;
             this.assistiveLive = this.$gettext(

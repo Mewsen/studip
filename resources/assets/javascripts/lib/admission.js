@@ -82,7 +82,7 @@ const Admission = {
                 url: targetUrl,
                 data: $('#ruleform').serialize(),
                 dataType: 'html',
-                success: function(data, textStatus, jqXHR) {
+                success: function(data) {
                     if (data !== '') {
                         var result = '';
                         if ($('#norules').length > 0) {
@@ -253,12 +253,12 @@ const Admission = {
         $('.hidden-alert').show();
     },
 
-    autosaveCourseset: function(event) {
+    autosaveCourseset: function() {
         $.post({
             url: $('#courseset-form').attr('action'),
             data: $('#courseset-form').serialize() + '&submit=1',
             dataType: 'html',
-            success: function(data, textStatus, jqXHR) {
+            success: function() {
                 $('.hidden-alert').hide();
             },
             error: function(jqXHR, textStatus, errorThrown) {

@@ -69,14 +69,10 @@ import './studip-jquery-tweaks.js';
 import './studip-jquery.multi-select.tweaks.js';
 import './studip-jquery-selection-helper.js';
 
-import select2 from 'select2/dist/js/select2.full.js';
-
 import 'blueimp-file-upload';
 import 'blueimp-file-upload/js/jquery.iframe-transport.js';
 
 import './jquery/autoresize.jquery.min.js';
-
-import { $gettext } from './lib/gettext';
 
 // Create jQuery "plugin" that just reverses the elements' order. This is
 // neccessary since the navigation is built and afterwards, we need to
@@ -84,22 +80,23 @@ import { $gettext } from './lib/gettext';
 jQuery.fn.reverse = [].reverse;
 
 $.fn.extend({
-    showAjaxNotification: function(position) {
+    showAjaxNotification(position) {
         position = position || 'left';
-        return this.each(function() {
+        return this.each(function () {
             if ($(this).data('ajax_notification')) {
                 return;
             }
 
             $(this).wrap('<span class="ajax_notification" />');
-            var that = this,
-                notification = $('<span class="notification" />')
-                    .hide()
-                    .insertBefore(this),
-                changes = {
-                    marginLeft: 0,
-                    marginRight: 0
-                };
+            const thisHeight = $(this).height();
+            const thisPosition = $(this).position();
+            const notification = $('<span class="notification" />')
+                .hide()
+                .insertBefore(this);
+            const changes = {
+                marginLeft: 0,
+                marginRight: 0
+            };
 
             changes[position === 'right' ? 'marginRight' : 'marginLeft'] = notification.outerWidth(true);
 
@@ -108,14 +105,14 @@ $.fn.extend({
                     ajax_notification: notification
                 })
                 .parent()
-                .animate(changes, 'fast', function() {
-                    var offset = $(that).position(),
-                        styles = {
-                            left: offset.left - notification.outerWidth(true),
-                            top:
-                                offset.top +
-                                Math.max(0, Math.floor(($(that).height() - notification.outerHeight(true)) / 2))
-                        };
+                .animate(changes, 'fast', function () {
+                    const offset = thisPosition;
+                    const styles = {
+                        left: offset.left - notification.outerWidth(true),
+                        top:
+                            offset.top +
+                            Math.max(0, Math.floor((thisHeight - notification.outerHeight(true)) / 2))
+                    };
                     if (position === 'right') {
                         styles.left += $(this).outerWidth(true);
                     }
@@ -123,16 +120,16 @@ $.fn.extend({
                 });
         });
     },
-    hideAjaxNotification: function() {
-        return this.each(function() {
+    hideAjaxNotification() {
+        return this.each(function () {
             var $this = $(this).stop(),
                 notification = $this.data('ajax_notification');
             if (!notification) {
                 return;
             }
 
-            notification.stop().fadeOut('fast', function() {
-                $this.animate({ marginLeft: 0, marginRight: 0 }, 'fast', function() {
+            notification.stop().fadeOut('fast', function () {
+                $this.animate({marginLeft: 0, marginRight: 0}, 'fast', function () {
                     $this.unwrap();
                 });
                 $(this).remove();

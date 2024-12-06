@@ -19,7 +19,7 @@ const getters = {
 
 export const mutations = {
     reset(state) {
-        state = getDefaultState();
+        Object.assign(state, getDefaultState());
     },
     setChildren(state, children) {
         state.children = children;
@@ -81,11 +81,7 @@ const actions = {
         }
         const cache = window.STUDIP.Cache.getInstance('courseware');
         const cacheKey = `descendants/${element.id}/${rootGetters['userId']}`;
-        try {
-            cache.remove(cacheKey);
-        } catch (e) {
-            // nothing we can do
-        }
+        cache.remove(cacheKey);
     },
 
     // load the structure of the current courseware
@@ -107,7 +103,7 @@ const actions = {
         return instance;
     },
 
-    loadInstance({ commit, dispatch, rootGetters }, context) {
+    loadInstance({ dispatch, rootGetters }, context) {
         let parent = context;
         parent = {
             type: context.type,
@@ -139,14 +135,10 @@ const actions = {
         return revalidateDescendants();
 
         function unpickleStaleDescendants() {
-            try {
-                const descendants = cache.get(cacheKey);
-                const cacheHit = descendants !== undefined;
-                if (cacheHit) {
-                    commit('courseware-structural-elements/REPLACE_ALL_RECORDS', descendants, { root: true });
-                }
-            } catch (e) {
-                return;
+            const descendants = cache.get(cacheKey);
+            const cacheHit = descendants !== undefined;
+            if (cacheHit) {
+                commit('courseware-structural-elements/REPLACE_ALL_RECORDS', descendants, { root: true });
             }
         }
 
@@ -155,11 +147,7 @@ const actions = {
         }
 
         function pickleDescendants() {
-            try {
-                cache.set(cacheKey, rootGetters['courseware-structural-elements/all']);
-            } catch (e) {
-                // No action necessary
-            }
+            cache.set(cacheKey, rootGetters['courseware-structural-elements/all']);
         }
 
         function removeStaleElements() {

@@ -32,6 +32,7 @@ const wysiwyg = {
 
     getEditor,
     hasEditor,
+    unsetEditor,
 
     replace: replaceTextarea,
 };

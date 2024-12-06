@@ -14,8 +14,6 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-
 export default {
     name: 'courseware-block-edit',
     emits: ['close', 'store'],

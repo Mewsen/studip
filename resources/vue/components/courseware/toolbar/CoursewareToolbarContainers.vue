@@ -114,19 +114,7 @@ export default {
             original.containerStyle = this.selectedContainerStyle;
             return original;
         },
-        cloneClipboardContainer(original) {
-            original.newContainer = true;
-            original.clipContainer = true;
-            original.attributes['container-type'] = original.attributes['object-kind'];
-            original.type = 'courseware-containers';
-            original.attributes.payload = {};
-            original.relationships = {};
-            original.relationships.container = {};
-            original.relationships.blocks = {};
-            original.relationships.blocks.data = {};
-            return original;
-        },
-        dragContainerStart(e) {
+        dragContainerStart() {
             this.isDragging = true;
         },
         dropNewContainer(e) {

@@ -97,7 +97,7 @@ const QuickSearch = {
                             //pass it to the function of UI-widget:
                             add(suggestions);
                         })
-                        .fail(function(jqxhr, textStatus) {
+                        .fail(function(jqxhr) {
                             add([
                                 {
                                     value: '',

@@ -241,7 +241,7 @@ export default {
             try {
                 const url = new URL(urlString);
                 return ['http:', 'https:'].includes(url.protocol);
-            } catch (e) {
+            } catch {
                 return false;
             }
         },
