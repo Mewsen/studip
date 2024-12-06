@@ -26,12 +26,12 @@ class HomeworkFolder extends PermissionEnabledFolder
      *
      * @return string The localised name of this folder type.
      */
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Ordner für Hausarbeiten');
     }
 
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         $course = Course::toObject($range_id_or_object);
         if ($course && !$course->isNew()) {
@@ -51,7 +51,7 @@ class HomeworkFolder extends PermissionEnabledFolder
      *
      * @return Icon An icon object with the icon for this folder type.
      */
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         $shape = $this->is_empty
               ? 'folder-edit-empty'
@@ -65,7 +65,7 @@ class HomeworkFolder extends PermissionEnabledFolder
      *
      * @return bool False
      */
-    public function isSubfolderAllowed($user_id)
+    public function isSubfolderAllowed(string $user_id): bool
     {
         //no subfolders allowed (I'm a homework folder, not a home folder backup!)
         return false;
@@ -74,9 +74,9 @@ class HomeworkFolder extends PermissionEnabledFolder
     /**
      * Returns the description template for a HomeworkFolder instance.
      *
-     * @return string A description for the HomeworkFolder instance.
+     * @return \Flexi\Template|string|null A description for the HomeworkFolder instance.
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
 
         $template = $GLOBALS['template_factory']->open('filesystem/homework_folder/description.php');
@@ -89,18 +89,18 @@ class HomeworkFolder extends PermissionEnabledFolder
     /**
      * Folders of this type don't have an edit template.
      *
-     * @return string
+     * @return \Flexi\Template|string|null
      */
-    public function getEditTemplate()
+    public function getEditTemplate(): \Flexi\Template|string|null
     {
         return '';
     }
 
     /**
-     * @param string $user_id
+     * @param string|null $user_id
      * @return bool
      */
-    public function isReadable($user_id = null)
+    public function isReadable(string $user_id = null): bool
     {
         return StandardFolder::isReadable($user_id);
     }
@@ -119,11 +119,11 @@ class HomeworkFolder extends PermissionEnabledFolder
     }
 
     /**
-     * @param FileRef|string $fileref_or_id
+     * @param string $file_ref_id
      * @param string $user_id
      * @return bool
      */
-    public function isFileEditable($fileref_or_id, $user_id)
+    public function isFileEditable(string $file_ref_id, string $user_id): bool
     {
         return $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id);
     }
@@ -136,11 +136,11 @@ class HomeworkFolder extends PermissionEnabledFolder
      * tutor permissions on the Stud.IP object specified by range_id
      * (such objects may be courses or institutes for example).
      *
-     * @param FileRef|string $fileref_or_id
+     * @param string $file_ref_id
      * @param string $user_id
      * @return bool
      */
-    public function isFileWritable($fileref_or_id, $user_id)
+    public function isFileWritable(string $file_ref_id, string $user_id): bool
     {
         return  $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id);
     }

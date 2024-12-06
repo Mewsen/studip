@@ -18,12 +18,12 @@ class PermissionEnabledFolder extends StandardFolder
     protected $perms = ['x' => 1, 'w' => 2, 'r' => 4, 'f' => 8];
     protected $must_have_perm;
 
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         return false;
     }
 
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Ordner mit Zugangsbeschränkung');
     }
@@ -62,7 +62,7 @@ class PermissionEnabledFolder extends StandardFolder
         return (bool)($this->permission & $this->perms[$perm]);
     }
 
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         $shape = $this->is_empty
                ? 'folder-lock-empty'
@@ -70,30 +70,30 @@ class PermissionEnabledFolder extends StandardFolder
         return Icon::create($shape, $role);
     }
 
-    public function isVisible($user_id = null)
+    public function isVisible(string $user_id = null): bool
     {
         return $this->checkPermission('x', $user_id)
             && parent::isVisible($user_id);
     }
 
-    public function isReadable($user_id = null)
+    public function isReadable(string $user_id = null): bool
     {
         return $this->checkPermission('r', $user_id)
             && parent::isReadable($user_id);
     }
 
-    public function isWritable($user_id = null)
+    public function isWritable(string $user_id = null): bool
     {
         return $this->checkPermission('w', $user_id)
             && parent::isWritable($user_id);
     }
 
-    public function isSubfolderAllowed($user_id)
+    public function isSubfolderAllowed(string $user_id): bool
     {
         return $this->checkPermission('f', $user_id);
     }
 
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
         $template = $GLOBALS['template_factory']->open('filesystem/permission_enabled_folder/description.php');
 
@@ -103,16 +103,16 @@ class PermissionEnabledFolder extends StandardFolder
         return $template;
     }
 
-    public function validateUpload(FileType $uploadedfile, $user_id)
+    public function validateUpload(FileType $file, string $user_id): ?string
     {
         if (!$this->isWritable($user_id)) {
             return _('Der Dateiordner ist nicht beschreibbar.');
         }
 
-        return parent::validateUpload($uploadedfile, $user_id);
+        return parent::validateUpload($file, $user_id);
     }
 
-    public function getEditTemplate()
+    public function getEditTemplate(): \Flexi\Template|string|null
     {
         return '';
     }
@@ -120,7 +120,7 @@ class PermissionEnabledFolder extends StandardFolder
     /**
      * @return FileType[]
      */
-    public function getFiles()
+    public function getFiles(): array
     {
         return array_filter(parent::getFiles(), function($file) {
             return $this->isFileVisible($file->getFileRef(), $GLOBALS['user']->id);
@@ -139,13 +139,13 @@ class PermissionEnabledFolder extends StandardFolder
     }
 
     /**
-     * @param $fileref_or_id
-     * @param $user_id
+     * @param string $file_ref_id
+     * @param string $user_id
      * @return bool
      */
-    public function isFileDownloadable($fileref_or_id, $user_id)
+    public function isFileDownloadable(string $file_ref_id, string $user_id): bool
     {
-        $fileref = FileRef::toObject($fileref_or_id);
+        $fileref = FileRef::toObject($file_ref_id);
 
         if (is_object($fileref)) {
             if ($this->isVisible($user_id) && $this->isFileVisible($fileref, $user_id)) {
@@ -158,7 +158,7 @@ class PermissionEnabledFolder extends StandardFolder
     /**
      * @see FolderType::copySettings()
      */
-    public function copySettings()
+    public function copySettings(): array
     {
         return [
             'description' => $this->description,

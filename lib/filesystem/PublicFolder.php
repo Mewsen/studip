@@ -22,17 +22,17 @@ class PublicFolder extends StandardFolder
      *
      * @return string The localised name of this folder type.
      */
-    static public function getTypeName()
+    static public function getTypeName(): string
     {
         return _('Ein Ordner für öffentlich zugängliche Daten');
     }
 
     /**
-     * @param Object|string $range_id_or_object
-     * @param string $user_id
+     * @param SimpleORMap|string $range_id_or_object
+     * @param string             $user_id
      * @return bool
      */
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         $range_id = is_object($range_id_or_object) ? $range_id_or_object->id : $range_id_or_object;
         return $range_id === $user_id;
@@ -43,7 +43,7 @@ class PublicFolder extends StandardFolder
      * @param string $role
      * @return Icon
      */
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         $shape = $this->is_empty
                ? 'folder-public-empty'
@@ -85,7 +85,7 @@ class PublicFolder extends StandardFolder
      *
      * @return bool True
      */
-    public function isVisible($user_id)
+    public function isVisible(string $user_id): bool
     {
         return $this->viewable || $this->range_id === $user_id;
     }
@@ -97,7 +97,7 @@ class PublicFolder extends StandardFolder
      *
      * @return bool True
      */
-    public function isReadable($user_id)
+    public function isReadable(string $user_id): bool
     {
         return $this->isVisible($user_id);
     }
@@ -105,9 +105,9 @@ class PublicFolder extends StandardFolder
     /**
      * Returns a description template for PublicFolders.
      *
-     * @return string A string describing this folder type.
+     * @return \Flexi\Template|string|null A string describing this folder type.
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
         return $this->viewable
              ? _('Dateien aus diesem Ordner werden auf Ihrer Profilseite zum Download angeboten.')
@@ -118,12 +118,12 @@ class PublicFolder extends StandardFolder
     /**
      * Files in PublicFolders are always downloadable.
      *
-     * @param string $file_id The ID to a FileRef.
-     * @param string $user_id The user who wishes to downlaod the file.
+     * @param string $file_ref_id The ID to a FileRef.
+     * @param string $user_id     The user who wishes to downlaod the file.
      *
      * @return bool True
      */
-    public function isFileDownloadable($file_id, $user_id)
+    public function isFileDownloadable(string $file_ref_id, string $user_id): bool
     {
         //public folder => everyone can download a file
         return true;
@@ -132,12 +132,12 @@ class PublicFolder extends StandardFolder
     /**
      * Files in PublicFolders are editable for the owner only.
      *
-     * @param string $file_id The ID to a FileRef.
-     * @param string $user_id The user who wishes to edit the file.
+     * @param string $file_ref_id The ID to a FileRef.
+     * @param string $user_id     The user who wishes to edit the file.
      *
      * @return bool True, if the user is the owner of the file, false otherwise.
      */
-    public function isFileEditable($file_id, $user_id)
+    public function isFileEditable(string $file_ref_id, string $user_id): bool
     {
         //only the owner may edit files
         return $this->range_id === $user_id;
@@ -146,12 +146,12 @@ class PublicFolder extends StandardFolder
     /**
      * Files in PublicFolders are writable for the owner only.
      *
-     * @param string $file_id The ID to a FileRef.
-     * @param string $user_id The user who wishes to write to the file.
+     * @param string $file_ref_id The ID to a FileRef.
+     * @param string $user_id     The user who wishes to write to the file.
      *
      * @return bool True, if the user is the owner of the file, false otherwise.
      */
-    public function isFileWritable($file_id, $user_id)
+    public function isFileWritable(string $file_ref_id, string $user_id): bool
     {
         //only the owner may delete files
         return $this->range_id === $user_id;
@@ -160,9 +160,9 @@ class PublicFolder extends StandardFolder
     /**
      * Returns the edit template for this folder type.
      *
-     * @return Flexi\Template
+     * @return \Flexi\Template|string|null
      */
-    public function getEditTemplate()
+    public function getEditTemplate(): \Flexi\Template|string|null
     {
         $template = $GLOBALS['template_factory']->open('filesystem/public_folder/edit.php');
         $template->public_folder_viewable = $this->viewable;
@@ -172,13 +172,13 @@ class PublicFolder extends StandardFolder
     /**
      * Sets the data from a submitted edit template.
      *
-     * @param array $request The data from the edit template.
+     * @param array|ArrayAccess|Request $folderdata The data from the edit template.
      *
-     * @return PublicFolder A "reference" to this PublicFolder.
+     * @return FolderType|MessageBox A "reference" to this PublicFolder.
      */
-    public function setDataFromEditTemplate($request)
+    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
     {
-        $this->viewable = (int)$request['public_folder_viewable'];
-        return parent::setDataFromEditTemplate($request);
+        $this->viewable = (int) $folderdata['public_folder_viewable'];
+        return parent::setDataFromEditTemplate($folderdata);
     }
 }

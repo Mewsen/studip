@@ -32,11 +32,11 @@ class TimedFolder extends PermissionEnabledFolder
      * Provides the ranges this folder type is available in for the given user.
      * Doesn't really make sense in other contexts than a course.
      *
-     * @param string $range_id_or_object the object (or object ID) to check for
-     * @param $user_id the user to check for (must have at least 'tutor' perm in given course)
+     * @param SimpleORMap|string $range_id_or_object the object (or object ID) to check for
+     * @param $user_id                               string user to check for (must have at least 'tutor' perm in given course)
      * @return bool available or not?
      */
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         $course = Course::toObject($range_id_or_object);
         if ($course && !$course->isNew()) {
@@ -50,7 +50,7 @@ class TimedFolder extends PermissionEnabledFolder
      *
      * @return string the name of the TimedFolder type
      */
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Zeitgesteuerter Ordner');
     }
@@ -62,7 +62,7 @@ class TimedFolder extends PermissionEnabledFolder
      * @param string|null $user_id the user to check visibility for
      * @return bool visible or not?
      */
-    public function isVisible($user_id = null)
+    public function isVisible(string $user_id = null): bool
     {
         $now = time();
         return (
@@ -73,7 +73,7 @@ class TimedFolder extends PermissionEnabledFolder
             parent::isVisible($user_id);
     }
 
-    public function isReadable($user_id = null)
+    public function isReadable(string $user_id = null): bool
     {
         $now = time();
         return (
@@ -84,7 +84,7 @@ class TimedFolder extends PermissionEnabledFolder
             StandardFolder::isReadable($user_id);
     }
 
-    public function isWritable($user_id = null)
+    public function isWritable(string $user_id = null): bool
     {
         $now = time();
         return (
@@ -113,7 +113,7 @@ class TimedFolder extends PermissionEnabledFolder
      *
      * @return Icon The icon object for this folder type
      */
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         $shape = $this->is_empty
                ? 'folder-date-empty'
@@ -145,9 +145,9 @@ class TimedFolder extends PermissionEnabledFolder
     /**
      * Returns the description template for a instance of a TimedFolder type.
      *
-     * @return Flexi\Template A description template for a instance of the type TimedFolder
+     * @return \Flexi\Template|string|null A description template for a instance of the type TimedFolder
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
 
         $template = $GLOBALS['template_factory']->open('filesystem/timed_folder/description');
@@ -162,9 +162,9 @@ class TimedFolder extends PermissionEnabledFolder
     /**
      * Returns the edit template for this folder type.
      *
-     * @return Flexi\Template
+     * @return \Flexi\Template|string|null
      */
-    public function getEditTemplate()
+    public function getEditTemplate(): \Flexi\Template|string|null
     {
         $template = $GLOBALS['template_factory']->open('filesystem/timed_folder/edit');
 
@@ -175,16 +175,17 @@ class TimedFolder extends PermissionEnabledFolder
 
     /**
      * Stores the data which was edited in the edit template
-     * @return mixed The template with the edited data
+     *
+     * @return FolderType|MessageBox The template with the edited data
      */
-    public function setDataFromEditTemplate($request)
+    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
     {
-        $permvalue = ($request['perm_read'] ? $this->perms['r'] : 0) +
-            ($request['perm_write'] ? $this->perms['w'] : 0) +
+        $permvalue = ($folderdata['perm_read'] ? $this->perms['r'] : 0) +
+            ($folderdata['perm_write'] ? $this->perms['w'] : 0) +
             $this->perms['x'];
         $this->folderdata['data_content']['permission'] = $permvalue;
-        $start = strtotime($request['start_time']);
-        $end = strtotime($request['end_time']);
+        $start = strtotime($folderdata['start_time']);
+        $end = strtotime($folderdata['end_time']);
 
         if (!$start && !$end) {
 
@@ -204,42 +205,42 @@ class TimedFolder extends PermissionEnabledFolder
                 $this->folderdata['data_content']['end_time'] = 0;
             }
 
-            return parent::setDataFromEditTemplate($request);
+            return parent::setDataFromEditTemplate($folderdata);
         }
 
     }
 
     /**
-     * @param FileRef|string $fileref_or_id
+     * @param string $file_ref_id
      * @param string $user_id
      * @return bool
      */
-    public function isFileEditable($fileref_or_id, $user_id)
+    public function isFileEditable(string $file_ref_id, string $user_id): bool
     {
         //HomeworkFolder Style
         if (!Seminar_Perm::get()->have_studip_perm('tutor', $this->range_id) &&
             $this->isWritable($user_id) && !$this->isReadable($user_id)) {
             return false;
         }
-        return parent::isFileEditable($fileref_or_id, $user_id);
+        return parent::isFileEditable($file_ref_id, $user_id);
     }
 
     /**
      * Checks if a user has write permissions to a file.
      *
      *
-     * @param FileRef|string $fileref_or_id
+     * @param string $file_ref_id
      * @param string $user_id
      * @return bool
      */
-    public function isFileWritable($fileref_or_id, $user_id)
+    public function isFileWritable(string $file_ref_id, string $user_id): bool
     {
         //HomeworkFolder Style
         if (!Seminar_Perm::get()->have_studip_perm('tutor', $this->range_id) &&
             $this->isWritable($user_id) && !$this->isReadable($user_id)) {
             return false;
         }
-        return parent::isFileWritable($fileref_or_id, $user_id);
+        return parent::isFileWritable($file_ref_id, $user_id);
     }
 
 }

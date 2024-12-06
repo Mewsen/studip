@@ -28,12 +28,12 @@ class CourseDateFolder extends PermissionEnabledFolder
         );
     }
 
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Sitzungs-Ordner');
     }
 
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         $course = Course::toObject($range_id_or_object);
         if ($course && !$course->isNew()) {
@@ -50,7 +50,7 @@ class CourseDateFolder extends PermissionEnabledFolder
         $this->getDate();
     }
 
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         return Icon::create(
             count($this->getFiles()) ? 'folder-topic-full' : 'folder-topic-empty',
@@ -92,9 +92,9 @@ class CourseDateFolder extends PermissionEnabledFolder
     /**
      * This method returns the special part for the edit template
      *
-     * @return Flexi\Template  edit template
+     * @return \Flexi\Template|string|null  edit template
      */
-    public function getEditTemplate()
+    public function getEditTemplate(): \Flexi\Template|string|null
     {
         $template = $GLOBALS['template_factory']->open('filesystem/date_folder/edit.php');
         $template->date   = $this->getDate();
@@ -104,31 +104,32 @@ class CourseDateFolder extends PermissionEnabledFolder
 
     /**
      * Stores the data which was edited in the edit template
+     *
      * @return FolderType|MessageBox The template with the edited data
      */
-    public function setDataFromEditTemplate($request)
+    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
     {
-        $date = CourseDate::find($request['course_date_folder_termin_id']);
+        $date = CourseDate::find($folderdata['course_date_folder_termin_id']);
         if ($date === null) {
             return MessageBox::error(_('Es wurde kein Termin ausgewählt.'));
         } else {
             $this->setDate($date);
         }
-        if (isset($request['course_date_folder_perm_write'])) {
+        if (isset($folderdata['course_date_folder_perm_write'])) {
             $this->folderdata['data_content']['permission'] = 7;
         } else {
             $this->folderdata['data_content']['permission'] = 5;
         }
-        $this->folderdata['description'] = $request['description'] ?? '';
+        $this->folderdata['description'] = $folderdata['description'] ?? '';
         return $this;
     }
 
     /**
      * Returns the description template
      *
-     * @return Flexi\Template description template
+     * @return \Flexi\Template|string|null description template
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
         $template = $GLOBALS['template_factory']->open('filesystem/date_folder/description.php');
         $template->type       = self::getTypeName();
@@ -142,7 +143,7 @@ class CourseDateFolder extends PermissionEnabledFolder
     /**
      * @see FolderType::copySettings()
      */
-    public function copySettings()
+    public function copySettings(): array
     {
         return ['description' => $this->description];
     }

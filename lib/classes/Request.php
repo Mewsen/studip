@@ -16,6 +16,8 @@
  */
 class Request implements ArrayAccess, IteratorAggregate
 {
+    protected static ?Request $instance = null;
+
     /**
      * cached request parameter array
      */
@@ -32,15 +34,13 @@ class Request implements ArrayAccess, IteratorAggregate
     /**
      * Return the Request singleton instance.
      */
-    public static function getInstance()
+    public static function getInstance(): self
     {
-        static $instance;
-
-        if (isset($instance)) {
-            return $instance;
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
         }
 
-        return $instance = new Request();
+        return self::$instance;
     }
 
     /**

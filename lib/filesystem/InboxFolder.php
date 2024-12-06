@@ -22,7 +22,7 @@ class InboxFolder extends InboxOutboxFolder
      *
      * @return string The localised name of this folder type.
      */
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Alle Anhänge eingegangener Nachrichten');
     }
@@ -32,7 +32,7 @@ class InboxFolder extends InboxOutboxFolder
      *
      * @return Icon An icon object with the icon for this folder type.
      */
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         $icon = count($this->getFiles()) > 0
               ? 'folder-inbox-full'
@@ -46,7 +46,7 @@ class InboxFolder extends InboxOutboxFolder
      *
      * @return FileRef[] Array of FileRef objects representing the message attachments.
      */
-    public function getFiles()
+    public function getFiles(): array
     {
         $condition = "INNER JOIN message_user
                          ON folders.range_id = message_user.message_id

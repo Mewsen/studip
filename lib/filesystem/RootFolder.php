@@ -18,12 +18,12 @@ class RootFolder extends StandardFolder
     /**
      * @return string
      */
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Hauptordner');
     }
 
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         return false;
     }
@@ -45,7 +45,7 @@ class RootFolder extends StandardFolder
      * @param string $user_id
      * @return bool
      */
-    public function isWritable($user_id)
+    public function isWritable(string $user_id): bool
     {
         if (
             ($this->range_type === 'user' && $this->range_id === $user_id)
@@ -92,33 +92,34 @@ class RootFolder extends StandardFolder
      * @param string $user_id
      * @return bool
      */
-    public function isEditable($user_id)
+    public function isEditable(string $user_id): bool
     {
         return Seminar_Perm::get()->have_studip_perm('tutor', $this->range_id, $user_id);
     }
 
     /**
      * Returns the parent-folder as a StandardFolder
-     * @return FolderType
+     *
+     * @return FolderType|null
      */
-    public function getParent()
+    public function getParent(): ?FolderType
     {
         return null;
     }
 
     /**
-     * @return bool|number
+     * @return bool
      */
-    public function store()
+    public function store(): bool
     {
         $this->folderdata['parent_id'] = '';
         return $this->folderdata->store();
     }
 
     /**
-     * @return Flexi\Template
+     * @return \Flexi\Template|string|null
      */
-    public function getEditTemplate()
+    public function getEditTemplate(): \Flexi\Template|string|null
     {
         $template = $GLOBALS['template_factory']->open('filesystem/root_folder/edit');
         $template->folder = $this;
@@ -126,15 +127,15 @@ class RootFolder extends StandardFolder
     }
 
     /**
-     * @param array $request
+     * @param array|ArrayAccess|Request $folderdata
      * @return FolderType|MessageBox
      */
-    public function setDataFromEditTemplate($request)
+    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
     {
         $locked_status = null;
-        if (isset($request['locked'])) {
+        if (isset($folderdata['locked'])) {
             //The locked status is defined in one way or another.
-            $locked_status = $request['locked'] ? 1 : 0;
+            $locked_status = $folderdata['locked'] ? 1 : 0;
         }
         $this->folderdata['data_content'] = [
             'locked' => $locked_status

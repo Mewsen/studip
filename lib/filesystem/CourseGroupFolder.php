@@ -28,13 +28,13 @@ class CourseGroupFolder extends StandardFolder
      *
      * @return string the name of the GroupFolder type
      */
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('Gruppenordner');
     }
 
 
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         $course = Course::toObject($range_id_or_object);
         if ($course && !$course->isNew()) {
@@ -65,7 +65,7 @@ class CourseGroupFolder extends StandardFolder
      * @param string $user_id The User-ID
      * @return bool True, if the user is in this group or is the lecturer, false otherwise
      */
-    public function isVisible($user_id)
+    public function isVisible(string $user_id): bool
     {
         return $this->checkPermission($user_id);
     }
@@ -76,7 +76,7 @@ class CourseGroupFolder extends StandardFolder
      * @param string $user_id The User-ID
      * @return bool True, if the user is in this group or is the lecturer, false otherwise
      */
-    public function isReadable($user_id)
+    public function isReadable(string $user_id): bool
     {
         return $this->checkPermission($user_id);
     }
@@ -87,7 +87,7 @@ class CourseGroupFolder extends StandardFolder
      * @param string $user_id The User-ID
      * @return bool True, if the user is in this group or is the lecturer, false otherwise
      */
-    public function isWritable($user_id)
+    public function isWritable(string $user_id): bool
     {
         return $this->checkPermission($user_id);
     }
@@ -97,7 +97,7 @@ class CourseGroupFolder extends StandardFolder
      *
      * @return bool True, if the user is in this group or is the lecturer, false otherwise
      */
-    public function isSubfolderAllowed($user_id)
+    public function isSubfolderAllowed(string $user_id): bool
     {
         return $this->checkPermission($user_id);
     }
@@ -107,7 +107,7 @@ class CourseGroupFolder extends StandardFolder
      *
      * @return Icon The icon object for this folder type
      */
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         $shape = $this->is_empty
                ? 'folder-group-empty'
@@ -118,9 +118,9 @@ class CourseGroupFolder extends StandardFolder
     /**
      * This method returns the special part for the edit template for the folder type GroupFolder
      *
-     * @return mixed  A edit template for a instance of the type GroupFolder
+     * @return \Flexi\Template|string|null  A edit template for a instance of the type GroupFolder
      */
-    public function getEditTemplate()
+    public function getEditTemplate(): \Flexi\Template|string|null
     {
         $template = $GLOBALS['template_factory']->open('filesystem/group_folder/edit.php');
         $group = Statusgruppen::find($this->folderdata['data_content']['group'] ?? null);
@@ -131,25 +131,26 @@ class CourseGroupFolder extends StandardFolder
 
     /**
      * Stores the data which was edited in the edit template
-     * @return mixed The template with the edited data
+     *
+     * @return FolderType|MessageBox The template with the edited data
      */
-    public function setDataFromEditTemplate($request)
+    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
     {
-        if ($request['group'] == null){
+        if ($folderdata['group'] == null){
             return MessageBox::error(_('Es wurde keine gültige Gruppe ausgewählt.'));
         }
 
-        $this->folderdata['data_content']['group'] = $request['group'];
+        $this->folderdata['data_content']['group'] = $folderdata['group'];
 
-        return parent::setDataFromEditTemplate($request);
+        return parent::setDataFromEditTemplate($folderdata);
     }
 
     /**
      * Returns the description template for a instance of a GroupFolder type
      *
-     * @return mixed A description template for a instance of the type GroupFolder
+     * @return \Flexi\Template|string|null A description template for a instance of the type GroupFolder
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
         $group = new Statusgruppen($this->folderdata['data_content']['group'] ?? null);
 

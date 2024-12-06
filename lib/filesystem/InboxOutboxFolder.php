@@ -44,7 +44,7 @@ class InboxOutboxFolder implements FolderType
      *
      * @return string The localised name of this folder type.
      */
-    public static function getTypeName()
+    public static function getTypeName(): string
     {
         return _('InboxOutboxFolder');
     }
@@ -54,7 +54,7 @@ class InboxOutboxFolder implements FolderType
      *
      * @return Icon An icon object with the icon for this folder type.
      */
-    public function getIcon($role = Icon::DEFAULT_ROLE)
+    public function getIcon(string $role = Icon::DEFAULT_ROLE): Icon
     {
         $icon = count($this->getFiles())
             ? 'folder-full'
@@ -65,12 +65,12 @@ class InboxOutboxFolder implements FolderType
     /**
      * Returns the ID of the folder object of this InboxOutboxFolder.
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->folder->id;
     }
 
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         return false;
     }
@@ -78,7 +78,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders are only visible for the owner.
      */
-    public function isVisible($user_id)
+    public function isVisible(string $user_id): bool
     {
         return $this->user
             && $user_id === $this->user->id;
@@ -87,7 +87,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders are only readable for the owner.
      */
-    public function isReadable($user_id)
+    public function isReadable(string $user_id): bool
     {
         return $this->user
             && $user_id === $this->user->id;
@@ -96,7 +96,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders are not writable.
      */
-    public function isWritable($user_id)
+    public function isWritable(string $user_id): bool
     {
         return false;
     }
@@ -104,7 +104,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders are not editable.
      */
-    public function isEditable($user_id)
+    public function isEditable(string $user_id): bool
     {
         return false;
     }
@@ -112,7 +112,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not allow subfolders.
      */
-    public function isSubfolderAllowed($user_id)
+    public function isSubfolderAllowed(string $user_id): bool
     {
         //this folder type does not allow subfolders!
         return false;
@@ -121,7 +121,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders don't have a description template.
      */
-    public function getDescriptionTemplate()
+    public function getDescriptionTemplate(): \Flexi\Template|string|null
     {
         return '';
     }
@@ -129,7 +129,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * Returns the parent InboxOutboxFolder.
      */
-    public function getParent()
+    public function getParent(): ?FolderType
     {
         if ($this->folder->parentFolder) {
             return $this->folder->parentFolder->getTypedFolder();
@@ -141,7 +141,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not allow subfolders.
      */
-    public function getSubfolders()
+    public function getSubfolders(): array
     {
         //no subfolders allowed!
         return [];
@@ -151,7 +151,7 @@ class InboxOutboxFolder implements FolderType
      * InboxOutboxFolders do not contain any files since the InboxOutboxFolder
      * type is not meant to be used directly.
      */
-    public function getFiles()
+    public function getFiles(): array
     {
         //this folder type is not meant to be used directly, so no files
         //are returned:
@@ -161,7 +161,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not have an edit template.
      */
-    public function getEditTemplate()
+    public function getEditTemplate(): \Flexi\Template|string|null
     {
         return '';
     }
@@ -169,14 +169,14 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not have an edit template.
      */
-    public function setDataFromEditTemplate($folderdata)
+    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
     {
         return MessageBox::error(
             _('InboxOutbox-Ordner können nicht bearbeitet werden!')
         );
     }
 
-    public function store()
+    public function store(): bool
     {
         return false;
     }
@@ -184,20 +184,21 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not allow uploads.
      */
-    public function validateUpload(FileType $file, $user_id)
+    public function validateUpload(FileType $file, string $user_id): ?string
     {
         //no uploads allowed
         return false;
     }
 
-    public function addFile(FileType $file, $user_id = null) {
+    public function addFile(FileType $file, ?string $user_id = null): ?FileType
+    {
         return false;
     }
 
     /**
      * InboxOutboxFolders do not allow deleting files.
      */
-    public function deleteFile($file_ref_id)
+    public function deleteFile(string $file_ref_id): bool
     {
         return false;
     }
@@ -205,7 +206,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not allow the creation of subfolders.
      */
-    public function createSubfolder(FolderType $folderdata)
+    public function createSubfolder(FolderType $foldertype): ?FolderType
     {
         throw new UnexpectedValueException(
             _('In InboxOutbox-Ordnern können keine nutzerdefinierten Unterordner erzeugt werden!')
@@ -215,7 +216,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not allow deleting subfolders.
      */
-    public function deleteSubfolder($subfolder_id)
+    public function deleteSubfolder(string $subfolder_id): bool
     {
         //there are no subfolders, so they can't be deleted:
         return false;
@@ -224,9 +225,9 @@ class InboxOutboxFolder implements FolderType
     /**
      * Deletes the Folder object of an InboxOutboxFolder instance.
      *
-     * @return True on success, false on failure.
+     * @return bool on success, false on failure.
      */
-    public function delete()
+    public function delete(): bool
     {
         return $this->folder->delete();
     }
@@ -234,7 +235,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * Files are only downloadable for the owner.
      */
-    public function isFileDownloadable($file_ref_id, $user_id)
+    public function isFileDownloadable(string $file_ref_id, string $user_id): bool
     {
         return $this->user
             && $user_id === $this->user->id;
@@ -243,7 +244,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not allow editing files.
      */
-    public function isFileEditable($file_ref_id, $user_id)
+    public function isFileEditable(string $file_ref_id, string $user_id): bool
     {
         //files shall be unchanged in here
         return false;
@@ -252,7 +253,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not allow writing files.
      */
-    public function isFileWritable($file_ref_id, $user_id)
+    public function isFileWritable(string $file_ref_id, string $user_id): bool
     {
         //files shall be unchanged in here
         return false;
@@ -261,9 +262,10 @@ class InboxOutboxFolder implements FolderType
     /**
      * Returns an associative array of additional colums with the index the id of the column
      * and their values as the localized names of the columns
+     *
      * @return array('col1' => _("Anfragestatus"))
      */
-    public function getAdditionalColumns()
+    public function getAdditionalColumns(): array
     {
         return [];
     }
@@ -274,9 +276,9 @@ class InboxOutboxFolder implements FolderType
      *
      * @param string $column_index
      *
-     * @return null|string|Flexi\Template
+     * @return \Flexi\Template|string|null
      */
-    public function getContentForAdditionalColumn($column_index)
+    public function getContentForAdditionalColumn(string $column_index): \Flexi\Template|string|null
     {
         return null;
     }
@@ -284,10 +286,11 @@ class InboxOutboxFolder implements FolderType
     /**
      * Returns an integer or text that marks the value the content of the given column should be
      * ordered by.
+     *
      * @param string $column_index
-     * @return mixed : order value
+     * @return int : order value
      */
-    public function getAdditionalColumnOrderWeigh($column_index)
+    public function getAdditionalColumnOrderWeigh(string $column_index): int
     {
         return 0;
     }
@@ -295,9 +298,10 @@ class InboxOutboxFolder implements FolderType
     /**
      * Returns an array of Studip\Button or Studip\LinkButton objects that get displayed
      * underneath the files-table.
+     *
      * @return array of Studip\Button or Studip\LinkButton
      */
-    public function getAdditionalActionButtons()
+    public function getAdditionalActionButtons(): array
     {
         return [];
     }
@@ -305,11 +309,11 @@ class InboxOutboxFolder implements FolderType
     /**
      * @see FolderType::copySettings()
      */
-    public function copySettings()
+    public function copySettings(): array
     {
         return ['description' => $this->description];
     }
-    
+
     public function countDownloads(): bool
     {
         return true;
