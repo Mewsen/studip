@@ -2,13 +2,15 @@
     <div class="mpscontainer studip-msp-vue">
         <form method="post" class="default" @submit.prevent="search">
             <label class="with-action">
-                <input type="text" ref="searchInputField" v-model="searchTerm" :placeholder="$gettext('Suchen')" style="width: 260px;">
-                <a href="#" class="msp-btn" @click.prevent="search" :title="$gettext('Suche starten')">
-                    <studip-icon shape="search" />
-                </a>
-                <a href="#" class="msp-btn" @click.prevent="resetSearch" :title="$gettext('Suche zurücksetzen')">
-                    <studip-icon shape="decline" />
-                </a>
+                <div class="search-wrapper">
+                    <input type="text" ref="searchInputField" v-model="searchTerm" :placeholder="$gettext('Suchen')" >
+                    <button :class="{ visible: showResetButton }" class="icon-button enter-accessible msp-btn reset-search" @click.prevent="resetSearch" :title="$gettext('Suche zurücksetzen')">
+                        <studip-icon shape="decline" class="text-bottom" />
+                    </button>
+                    <button class="icon-button enter-accessible msp-btn search" @click.prevent="search" :title="$gettext('Suche starten')">
+                        <studip-icon shape="search" class="text-bottom"/>
+                    </button>
+                </div>
             </label>
             <select multiple="multiple" :id="select_box_id" name="selectbox[]"></select>
         </form>
@@ -51,6 +53,9 @@ export default {
         select_box_id() {
             return this.id + '_selectbox';
         },
+        showResetButton() {
+            return this.searchTerm !== '';
+        }
     },
     methods: {
         init() {

@@ -108,7 +108,7 @@
             </div>
 
 
-            <button title="<?= _('Suche starten') ?>" @click.prevent="search" @focus="hideFilterPanel">
+            <button class="button-search" title="<?= _('Suche starten') ?>" @click.prevent="search" @focus="hideFilterPanel">
                 <studip-icon shape="search" role="clickable"></studip-icon>
             </button>
         </div>

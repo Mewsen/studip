@@ -16,13 +16,15 @@ input.quicksearchbox {
 
 div.quicksearch_frame {
     text-indent: 0;
+    flex-grow: 1;
 
     input[type="text"] {
         box-sizing: border-box;
-        border-width: 1px 30px 1px 1px;
+        border-width: 1px;
         border-style: solid;
-        border-color: var(--base-color-60);
+        border-color: var(--color--input-field-border);
         border-image: none;
+        border-radius: var(--border-radius-search);
         display: inline-block !important;
     }
 
@@ -37,14 +39,15 @@ div.quicksearch_frame {
         text-shadow: none;
         background-color: transparent;
         border: 0;
-        width: 29px;
-        height: 24px;
-        @include background-icon(search, info_alt);
+        width: 36px;
+        height: 30px;
+        @include background-icon(search);
         background-position: center;
         background-repeat: no-repeat;
         vertical-align: middle;
-        margin-left: -32px;
+        margin-left: -40px;
         margin-top: 1px;
+        border-left: solid thin var(--color--input-field-border);
     }
 }
 

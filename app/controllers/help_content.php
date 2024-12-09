@@ -294,7 +294,7 @@ class HelpContentController extends AuthenticatedController
             );
             $sidebar->addWidget($widget);
             $search = new SearchWidget('?apply_help_content_filter=1');
-            $search->addNeedle(_('Suchbegriff'), 'help_content_searchterm');
+            $search->addNeedle(_('Suchbegriff'), 'help_content_searchterm', true,);
             $sidebar->addWidget($search);
         }
     }

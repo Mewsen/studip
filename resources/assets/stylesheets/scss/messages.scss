@@ -85,6 +85,15 @@ form.default {
     > * {
         margin-right: 1em;
     }
+
+    .multi_person_search_link {
+        line-height: 30px;
+
+        img {
+            vertical-align: middle;
+            margin-top: -2px;
+        }
+    }
 }
 
 ul.message-options {

@@ -83,6 +83,7 @@ const MultiPersonSearch = {
     },
 
     search: function() {
+        $('#' + this.name + '_resetsearch').addClass('visible');
         const searchterm = $('#' + this.name + '_searchinput').val();
         const not_found_template = _.template(
             $gettext('Es wurden keine neuen Ergebnisse für "<%= needle %>" gefunden.')
@@ -132,6 +133,7 @@ const MultiPersonSearch = {
     },
 
     resetSearch: function() {
+        $('#' + this.name + '_resetsearch').removeClass('visible');
         $('#' + this.name + '_searchinput').val('');
         MultiPersonSearch.removeAllNotSelected();
     },

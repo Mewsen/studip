@@ -60,6 +60,7 @@ $transition-duration-superslow: 1s;
 // Border radius:
 $border-radius: 4px;
 $border-radius-avatar-menu: 7px;
+$border-radius-search: 7px;
 
 // Layout
 $page-margin: 15px;
@@ -301,6 +302,7 @@ $grid-gap: 0;
 
     --border-radius-default: #{$border-radius};
     --border-radius-avatar-menu: #{$border-radius-avatar-menu};
+    --border-radius-search: #{$border-radius-search};
 
     @media (prefers-reduced-motion) {
         #{"--"}transition-duration: 0s;

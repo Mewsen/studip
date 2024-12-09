@@ -4,51 +4,54 @@
     align-self: flex-start;
 }
 #globalsearch-searchbar {
-    $width: 423px;
-    $hidden-width: 215px;
+    display: flex;
+    align-items: center;
+    border: thin solid var(--color--font-inverted);
+    border-radius: var(--border-radius-search);
+    background-color: var(--color--brand-primary);
+    padding: 3px 5px 2px 5px;
+    margin-top: 6px;
+    width: 220px;
+    transition: width var(--transition-duration);
 
-    position: relative;
-    top: 4px;
-    white-space: nowrap;
+    &:focus-within {
+        border-color: -webkit-focus-ring-color;
+    }
 
     // Reset alignments among browsers
     > * {
         box-sizing: border-box;
     }
 
-    // Defines the clear icon for the input
-    #globalsearch-clear {
-        @include square(var(--icon-size-default));
-        margin-left: -28px;
-        margin-top: -5px;
-        vertical-align: middle;
-    }
     &:not(.has-value) #globalsearch-clear {
         display: none;
     }
 
-    // The actual search input
     #globalsearch-input {
-        height: 29px;
-        padding-left: 5px;
-        width: $hidden-width;
-        transition: width var(--transition-duration);
-    }
-    &.is-visible #globalsearch-input {
-        width: $width;
+        flex: 1;
+        border: none;
+        outline: none;
+        margin-right: 5px;
+        color: var(--color--font-inverted);
+        background-color: var(--color--brand-primary);
+
+        &::placeholder {
+            color: var(--color--font-inverted);
+        }
     }
 
-    // Search icon
-    #globalsearch-icon {
-        margin-left: 5px;
-        position: relative;
-        top: 3px;
+    input[type=image] {
+        cursor: pointer;
+        border: none;
+        background: none;
+        padding: 0;
+        margin: 0 5px;
     }
 
     // Hint toggle text
     #globalsearch-togglehints {
         font-size: $font-size-small;
-        margin: 0;
+        margin: 0 10px;
 
        @include icon('before', 'arr_1right', 'clickable', $font-size-small, 2px);
 
@@ -69,6 +72,7 @@
             + #globalsearch-hints {
                 display: block;
                 white-space: normal !important;
+                margin: 0 10px;
             }
         }
     }
@@ -80,10 +84,13 @@
         color: var(--text-color);
         display: none;
         max-height: 90vh;
-        overflow: auto;
-        padding: 5px;
+        overflow: hidden;
+        padding: 10px 5px;
         position: absolute;
-        width: $width;
+        width: 410px;
+        top: 36px;
+        margin-left: -5px;
+        border-radius: var(--border-radius-default);
 
         a {
             color: var(--base-color);
@@ -97,7 +104,6 @@
             color: var(--text-color);
 
             header {
-                color: var(--base-color);
                 margin: 5px 5px 0;
             }
 
@@ -108,8 +114,27 @@
             }
         }
     }
-    &.is-visible #globalsearch-list {
-        display: block;
+
+    &.is-visible {
+        width: 400px;
+        background-color: var(--white);
+
+        #globalsearch-input {
+            background-color: var(--white);
+            color: var(--color--font-primary);
+    
+            &::placeholder {
+                color: var(--color--font-primary);
+            }
+        }
+
+        #globalsearch-icon {
+            filter: brightness(0) saturate(100%) invert(25%) sepia(7%) saturate(6410%) hue-rotate(181deg) brightness(95%) contrast(88%);
+        }
+
+        #globalsearch-list {
+            display: block;
+        }
     }
 
     // "Searching..." info
@@ -137,15 +162,17 @@
     }
 
     #globalsearch-results {
+        margin-top: 1em;
+        height: 50vh;
+        overflow: auto;
+
         &:empty {
             display: none;
         }
 
         article {
             border: 1px solid var(--content-color-40);
-            margin: 3px;
-            margin-bottom: 8px;
-            margin-top: 8px;
+            margin: 0 10px 10px 10px;
 
             > header {
                 background-color: var(--content-color-20);
