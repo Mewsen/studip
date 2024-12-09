@@ -18,6 +18,17 @@ $getInstalledLanguages = function () {
     return $languages;
 };
 
+$getJsonApiSchemas = function () {
+    return array_values(
+        array_unique(
+            array_map(
+                fn($class) => $class::TYPE,
+                app('json-api-integration-schemas')
+            )
+        )
+    );
+};
+
 $lang_attr = str_replace('_', '-', $_SESSION['_language']);
 ?>
 <!DOCTYPE html>
@@ -51,7 +62,16 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
                              $GLOBALS['perm']->have_perm('autor') &&
                              PersonalNotifications::isActivated()) ?>,
             wysiwyg_enabled: true,
-            editor_enabled: true
+            editor_enabled: true,
+            config: <?= json_encode([
+                'ACTIONMENU_THRESHOLD' => Config::get()->ACTION_MENU_THRESHOLD,
+                'ENTRIES_PER_PAGE'     => Config::get()->ENTRIES_PER_PAGE,
+                'OPENGRAPH_ENABLE'     => Config::get()->OPENGRAPH_ENABLE,
+                'COURSEWARE_CERTIFICATES_ENABLE' => Config::get()->COURSEWARE_CERTIFICATES_ENABLE,
+                'PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED' =>
+                    (bool) User::findCurrent()?->getConfiguration()->PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED,
+            ]) ?>,
+            jsonapi_schemas: <?= json_encode($getJsonApiSchemas()) ?>,
         }
     </script>
 
