@@ -232,13 +232,9 @@ class Seminar_Session
         //check for illegal cookiename
         if (
             !isset($_COOKIE[$this->name])
-            || mb_strlen($_COOKIE[$this->name]) !== 32
-            || preg_match('/[^0-9a-f]+/', $_COOKIE[$this->name])
+            || strlen($_COOKIE[$this->name]) != ini_get('session.sid_length')
         ) {
-            do {
-                $new_id = md5(bin2hex(random_bytes(128)));
-            } while (!$this->that->ac_newid($new_id));
-
+            $new_id = session_create_id();
             session_id($new_id);
         }
 
