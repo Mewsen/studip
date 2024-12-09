@@ -38,6 +38,27 @@ const wysiwyg = {
 
 export default wysiwyg;
 
+const observeTextarea = (() => {
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            const editor = getEditor(mutation.target);
+            const disabledFromAttributes = mutation.target.matches('[readonly],[disabled]');
+            const disabledFromEditor = editor.isReadOnly;
+
+            if (disabledFromAttributes && !disabledFromEditor) {
+                editor.enableReadOnlyMode('studip');
+            } else if (!disabledFromAttributes && disabledFromEditor) {
+                editor.disableReadOnlyMode('studip');
+            }
+        });
+    });
+
+    return textarea => observer.observe(textarea, {
+        attributes: true,
+        attributeFilter: ['disabled', 'readonly'],
+    });
+})();
+
 function replaceTextarea(textarea) {
     if (hasEditor(textarea)) {
         return getEditor(textarea);
@@ -165,6 +186,12 @@ function replaceTextarea(textarea) {
         if ($textarea.is('[autofocus]')) {
             ckeditor.focus();
         }
+
+        // Set readonly if attribute is set and observe element
+        if ($textarea[0].matches('[readonly],[disabled]')) {
+            ckeditor.enableReadOnlyMode('studip');
+        }
+        observeTextarea($textarea[0]);
 
         ckeditor.ui.focusTracker.on('change:isFocused', (evt, name, isFocused) => {
             if (!isFocused) {
