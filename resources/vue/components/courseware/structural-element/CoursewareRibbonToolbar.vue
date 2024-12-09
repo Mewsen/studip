@@ -85,7 +85,6 @@ export default {
             context: 'context',
             userById: 'users/byId',
             userId: 'userId',
-            selectedToolbarItem: 'selectedToolbarItem',
             currentElementisLink: 'currentElementisLink',
         }),
         isTeacher() {
@@ -107,7 +106,7 @@ export default {
             }
         },
         activate() {
-            const focusElement = this.$refs.tabs.getTabButtonByAlias(this.selectedToolbarItem);
+            const focusElement = this.$refs.tabs.getActiveTabElement();
             if (focusElement) {
                 this.initialFocusElement = focusElement;
                 this.trap = true;

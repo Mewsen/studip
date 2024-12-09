@@ -76,6 +76,9 @@ export default {
                     break;
             }
         },
+        getActiveTabElement() {
+            return this.$refs['tabnav' + this.activeTab][0];
+        },
     },
     provide() {
         return {
