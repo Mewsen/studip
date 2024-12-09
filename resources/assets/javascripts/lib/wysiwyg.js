@@ -38,6 +38,27 @@ const wysiwyg = {
 
 export default wysiwyg;
 
+const observeTextarea = (() => {
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            const editor = getEditor(mutation.target);
+            const disabledFromAttributes = mutation.target.matches('[readonly],[disabled]');
+            const disabledFromEditor = editor.isReadOnly;
+
+            if (disabledFromAttributes && !disabledFromEditor) {
+                editor.enableReadOnlyMode('studip');
+            } else if (!disabledFromAttributes && disabledFromEditor) {
+                editor.disableReadOnlyMode('studip');
+            }
+        });
+    });
+
+    return textarea => observer.observe(textarea, {
+        attributes: true,
+        attributeFilter: ['disabled', 'readonly'],
+    });
+})();
+
 async function replaceTextarea(textarea) {
     if (hasEditor(textarea)) {
         return getEditor(textarea);
@@ -52,6 +73,11 @@ async function replaceTextarea(textarea) {
     const { options, editorType } = parseEditorOptions($textarea.attr('data-editor'));
     const editor = await createEditor(chunk, textarea, editorType, options);
     enhanceEditor($textarea, editor);
+
+    if ($textarea[0].matches('[readonly],[disabled]')) {
+        editor.enableReadOnlyMode('studip');
+    }
+    observeTextarea($textarea[0]);
 
     setEditor(textarea, editor);
     $textarea.trigger('load.wysiwyg');
