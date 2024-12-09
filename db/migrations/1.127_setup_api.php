@@ -214,6 +214,8 @@ class SetupApi extends Migration
 
     public function dropTables(): void
     {
+        DBManager::get()->exec("SET FOREIGN_KEY_CHECKS=0");
+
         DBManager::get()->exec("DROP TABLE IF EXISTS `oauth_consumer_token`,
                                                      `oauth_log`,
                                                      `oauth_server_nonce`,
@@ -224,5 +226,7 @@ class SetupApi extends Migration
                                                      `api_consumers`,
                                                      `api_oauth_user_mapping`,
                                                      `api_user_permissions`");
+
+        DBManager::get()->exec("SET FOREIGN_KEY_CHECKS=1");
     }
 }
