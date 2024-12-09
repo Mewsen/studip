@@ -113,7 +113,7 @@ STUDIP.ready(() => {
                         }
                     },
                     removeTag: function (i) {
-                        this.$delete(this.tags, i);
+                        this.tags.splice(i, 1);
                         if ((this.minimumTags > this.tags.length) && (this.minimumTags > 5)) {
                             this.minimumTags--;
                         }

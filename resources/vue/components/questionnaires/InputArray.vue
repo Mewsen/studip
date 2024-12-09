@@ -122,7 +122,7 @@ export default {
         deleteOption(index) {
             const question = this.options[index] ? this.$gettext('Wirklich löschen?') : true;
             STUDIP.Dialog.confirm(question).done(() => {
-                this.$delete(this.options, index);
+                this.options[index].splice(index, 1);
             });
         },
         onPaste(ev, position) {

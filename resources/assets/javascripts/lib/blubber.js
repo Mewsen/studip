@@ -76,13 +76,9 @@ const Blubber = {
                                     name: name,
                                 });
                             },
-                            removeUser: function (event) {
+                            removeUser(event) {
                                 let user_id = $(event.target).closest('li').find('input').val();
-                                for (let i in this.users) {
-                                    if (this.users[i].user_id === user_id) {
-                                        this.$delete(this.users, i);
-                                    }
-                                }
+                                this.users = this.users.filter(user => user.user_id !== user_id);
                             },
                             clearUsers: function () {
                                 this.users = [];

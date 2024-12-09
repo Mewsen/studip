@@ -287,7 +287,8 @@ export default {
         },
         deleteQuestion(question_id) {
             STUDIP.Dialog.confirm(this.$gettext('Wirklich löschen?')).done(() => {
-                this.$delete(this.data.questions, this.getIndexForQuestion(question_id));
+                const index = this.getIndexForQuestion(question_id);
+                this.data.questions.splice(index, 1);
                 this.switchTab('add_question');
             })
         },

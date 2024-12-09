@@ -135,11 +135,7 @@ export default {
             }
         },
         deleteItem (item) {
-            for (let i in this.allItems) {
-                if (this.allItems[i].value === item.value) {
-                    this.$delete(this.allItems, i);
-                }
-            }
+            this.allItems = this.allItems.filter(i => i.value !== item.value);
             this.changed();
         },
         isSelected (id) {

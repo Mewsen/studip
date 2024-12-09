@@ -81,7 +81,7 @@ export default {
         },
         removeContact(user_id) {
             if (this.users[user_id] !== undefined) {
-                this.$delete(this.users, user_id);
+                delete this.users[user_id];
             }
         }
     }
