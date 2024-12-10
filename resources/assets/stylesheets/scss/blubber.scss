@@ -1,5 +1,3 @@
-@use "sass:color";
-
 .blubber_panel {
     display: flex;
     align-items: stretch;
@@ -166,7 +164,7 @@
 
     .empty_blubber_background {
         @include empty-placeholder-image('blubber');
-        background-color: color.mix($dark-gray-color-5, rgba(255, 255, 255, 0), 70%);
+        background-color: mix($dark-gray-color-5, rgba(255, 255, 255, 0), 70%);
 
         > :first-child {
             position: relative;

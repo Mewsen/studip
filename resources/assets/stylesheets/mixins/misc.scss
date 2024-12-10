@@ -1,5 +1,3 @@
-@use "sass:color";
-
 // Clearfix
 // --------
 // For clearing floats like a boss h5bp.com/q
@@ -29,12 +27,12 @@
 
 // https://codepen.io/kennyglenn/pen/kxqWjP
 @function text-contrast($color, $dark, $light, $threshold: 51) {
-    @return if(color.lightness($color) < $threshold, $light, $dark)
+    @return if(lightness($color) < $threshold, $light, $dark)
 }
 
 
 @mixin vertical-three-colors($startColor: #00b3ee, $midColor: #7a43b6, $colorStop: 50%, $endColor: #c3325f) {
-    background-color: color.mix($midColor, $endColor, 80%);
+    background-color: mix($midColor, $endColor, 80%);
     background-image: linear-gradient($startColor, $midColor $colorStop, $endColor);
     background-repeat: no-repeat;
 }

@@ -1,6 +1,4 @@
-@use "sass:color";
-
-$base-gray-color-5: color.mix($base-gray, #fff, 5%);
+$base-gray-color-5: mix($base-gray, #fff, 5%);
 
 ul.numberedchapters {
     counter-reset: section;

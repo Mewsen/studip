@@ -1,5 +1,3 @@
-@use "sass:color";
-
 $tree-outline: 1px solid var(--light-gray-color-40);
 
 .studip-tree {
@@ -36,7 +34,7 @@ $tree-outline: 1px solid var(--light-gray-color-40);
             .studip-tree-navigation {
                 background-color: var(--white);
                 border: 1px solid var(--content-color-40);
-                box-shadow: 2px 2px color.mix($base-gray, $white, 20%);
+                box-shadow: 2px 2px mix($base-gray, $white, 20%);
                 right: -20px;
                 padding: 10px;
                 position: absolute;

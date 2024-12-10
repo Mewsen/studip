@@ -1,5 +1,4 @@
 @use '../../mixins' as *;
-@use "sass:map";
 @import './variables';
 
 #course-courseware-index,
@@ -81,53 +80,53 @@
     .cw-structural-element-color {
         color: var(--white);
         &.black {
-            background-color: map.get($tile-colors, 'black');
+            background-color: map-get($tile-colors, 'black');
         }
         &.charcoal {
-            background-color: map.get($tile-colors, 'charcoal');
+            background-color: map-get($tile-colors, 'charcoal');
         }
         &.royal-purple {
-            background-color: map.get($tile-colors, 'royal-purple');
+            background-color: map-get($tile-colors, 'royal-purple');
         }
         &.iguana-green {
-            background-color: map.get($tile-colors, 'iguana-green');
+            background-color: map-get($tile-colors, 'iguana-green');
         }
         &.queen-blue {
-            background-color: map.get($tile-colors, 'queen-blue');
+            background-color: map-get($tile-colors, 'queen-blue');
         }
         &.verdigris {
-            background-color: map.get($tile-colors, 'verdigris');
+            background-color: map-get($tile-colors, 'verdigris');
         }
         &.mulberry {
-            background-color: map.get($tile-colors, 'mulberry');
+            background-color: map-get($tile-colors, 'mulberry');
         }
         &.pumpkin {
-            background-color: map.get($tile-colors, 'pumpkin');
+            background-color: map-get($tile-colors, 'pumpkin');
         }
         &.sunglow {
-            background-color: map.get($tile-colors, 'sunglow');
+            background-color: map-get($tile-colors, 'sunglow');
         }
         &.apple-green {
-            background-color: map.get($tile-colors, 'apple-green');
+            background-color: map-get($tile-colors, 'apple-green');
         }
 
         &.studip-blue {
-            background-color: map.get($tile-colors, 'studip-blue');
+            background-color: map-get($tile-colors, 'studip-blue');
         }
         &.studip-lightblue {
-            background-color: map.get($tile-colors, 'studip-lightblue');
+            background-color: map-get($tile-colors, 'studip-lightblue');
         }
         &.studip-red {
-            background-color: map.get($tile-colors, 'studip-red');
+            background-color: map-get($tile-colors, 'studip-red');
         }
         &.studip-green {
-            background-color: map.get($tile-colors, 'studip-green');
+            background-color: map-get($tile-colors, 'studip-green');
         }
         &.studip-yellow {
-            background-color: map.get($tile-colors, 'studip-yellow');
+            background-color: map-get($tile-colors, 'studip-yellow');
         }
         &.studip-gray {
-            background-color: map.get($tile-colors, 'studip-gray');
+            background-color: map-get($tile-colors, 'studip-gray');
         }
     }
 
