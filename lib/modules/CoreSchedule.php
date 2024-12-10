@@ -65,7 +65,7 @@ class CoreSchedule extends CorePlugin implements StudipModuleExtended
         return $nav;
     }
 
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         $query = "SELECT termine.range_id,
                     COUNT(termin_id) AS count,
@@ -87,32 +87,34 @@ class CoreSchedule extends CorePlugin implements StudipModuleExtended
         $navs = array_fill_keys($course_ids, null);
         foreach ($results as $result) {
             $nav = new Navigation(_('Ablaufplan'), 'dispatch.php/course/dates');
-            $badge = 0;
             if ($result['neue']) {
-                $badge = $result['neue'];
-                $params = ['title' => sprintf(
-                    ngettext(
-                        '%1$d Termin, %2$d neuer',
-                        '%1$d Termine, %2$d neue',
-                        $result['count']
-                    ),
-                    $result['count'],
-                    $result['neue']
-                )];
-                $image = Icon::create('schedule', Icon::ROLE_ATTENTION, $params);
+                $nav->setBadgeNumber($result['neue']);
+                $nav->setLinkAttributes([
+                    'title' => sprintf(
+                        ngettext(
+                            '%1$d Termin, %2$d neuer',
+                            '%1$d Termine, %2$d neue',
+                            $result['count']
+                        ),
+                        $result['count'],
+                        $result['neue']
+                    )
+                ]);
+                $nav->setImage(Icon::create('schedule', Icon::ROLE_ATTENTION));
             } else {
-                $params = ['title' => sprintf(
-                    ngettext(
-                        '%d Termin',
-                        '%d Termine',
+                $nav->setLinkAttributes([
+                    'title' => sprintf(
+                        ngettext(
+                            '%d Termin',
+                            '%d Termine',
+                            $result['count']
+                        ),
                         $result['count']
-                    ),
-                    $result['count']
-                )];
-                $image = Icon::create('schedule', Icon::ROLE_CLICKABLE, $params);
+                    )
+                ]);
+                $nav->setImage(Icon::create('schedule'));
             }
-            $nav->setImage($image);
-            $nav->setBadgeNumber($badge);
+
             $navs[$result['range_id']] = $nav;
         }
 

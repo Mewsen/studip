@@ -102,7 +102,7 @@ class CoreWiki extends CorePlugin implements StudipModuleExtended
         return $nav;
     }
 
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         if (!Config::get()->WIKI_ENABLE) {
             return [];
@@ -138,14 +138,12 @@ class CoreWiki extends CorePlugin implements StudipModuleExtended
         ]);
 
         $navs = array_fill_keys($course_ids, null);
-        if (empty($results)) {
-            return $navs;
-        }
         foreach ($results as $result) {
             $nav = new Navigation(_('Wiki'));
             if ($result['neue']) {
                 $nav->setURL('dispatch.php/course/wiki/newpages');
-                $nav->setImage(Icon::create('wiki', Icon::ROLE_ATTENTION, [
+                $nav->setImage(Icon::create('wiki', Icon::ROLE_ATTENTION));
+                $nav->setLinkAttributes([
                     'title' => sprintf(
                             ngettext(
                                 '%d Wiki-Seite',
@@ -163,11 +161,12 @@ class CoreWiki extends CorePlugin implements StudipModuleExtended
                             ),
                             $result['neue']
                         )
-                ]));
+                ]);
                 $nav->setBadgeNumber($result['neue']);
             } else {
                 $nav->setURL('dispatch.php/course/wiki/page');
-                $nav->setImage(Icon::create('wiki', Icon::ROLE_CLICKABLE, [
+                $nav->setImage(Icon::create('wiki'));
+                $nav->setLinkAttributes([
                     'title' => sprintf(
                         ngettext(
                             '%d Wiki-Seite',
@@ -176,7 +175,7 @@ class CoreWiki extends CorePlugin implements StudipModuleExtended
                         ),
                         $result['count']
                     )
-                ]));
+                ]);
             }
             $navs[$result['range_id']] = $nav;
         }

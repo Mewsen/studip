@@ -132,7 +132,7 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModuleE
     /**
      * {@inheritdoc}
      */
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         if ($user_id === 'nobody') {
             return [];
@@ -164,9 +164,8 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModuleE
         $navs = [];
         foreach ($course_ids as $course_id) {
             $nav = new Navigation(_('Courseware'), 'dispatch.php/course/courseware');
-            $nav->setImage(Icon::create('courseware', Icon::ROLE_CLICKABLE, [
-                'title' => _('Courseware'),
-            ]));
+            $nav->setImage(Icon::create('courseware'));
+            $nav->setLinkAttributes(['title' => _('Courseware'),]);
 
             if (!empty($results[$course_id]['neue'])) {
                 if ($results[$course_id]['neue'] === 1) {
@@ -174,9 +173,8 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModuleE
                 } else {
                     $text =  _('neue Seiten');
                 }
-                $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION, [
-                    'title' => $results[$course_id]['neue'] . ' ' . $text,
-                ]));
+                $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION));
+                $nav->setLinkAttributes(['title' => $results[$course_id]['neue'] . ' ' . $text,]);
                 $nav->setBadgeNumber($results[$course_id]['neue']);
             }
 

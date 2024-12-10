@@ -73,7 +73,7 @@ class CoreForum extends CorePlugin implements ForumModule
 
 
     /* interface method */
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         $num_entries_plural = ForumVisit::getCounts($course_ids, $user_id, $this->getPluginId());
 
@@ -84,13 +84,14 @@ class CoreForum extends CorePlugin implements ForumModule
                 $count = $num_entries;
                 $text = ForumHelpers::getVisitText($count, $course_id);
             } else {
-                $text = 'Forum';
+                $text = _('Forum');
             }
 
             $navigation = new Navigation('forum', 'dispatch.php/course/forum/index/enter_seminar');
             $navigation->setBadgeNumber($count);
             $icon_role = $count > 0 ? Icon::ROLE_ATTENTION : Icon::ROLE_CLICKABLE;
-            $navigation->setImage(Icon::create('forum', $icon_role, ['title' => $text]));
+            $navigation->setImage(Icon::create('forum', $icon_role));
+            $navigation->setLinkAttributes(['title' => $text]);
             $navs[$course_id] = $navigation;
         }
 

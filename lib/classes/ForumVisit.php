@@ -57,9 +57,9 @@ class ForumVisit {
         return $stmt->fetchColumn();
     }
 
-    static function getCounts($topic_ids, $user_id, $plugin_id)
+    public static function getCounts(array $topic_ids, string $user_id, int $plugin_id)
     {
-        if (empty($topic_ids)) {
+        if (count($topic_ids) === 0) {
             return false;
         }
 

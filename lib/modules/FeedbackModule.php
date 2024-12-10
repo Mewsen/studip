@@ -32,7 +32,7 @@ class FeedbackModule extends CorePlugin implements StudipModuleExtended, SystemP
     /**
      * {@inheritdoc}
      */
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
       return [];
     }

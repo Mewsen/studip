@@ -107,7 +107,7 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
         return $nav;
     }
 
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         // TODO Test
         if (!Config::get()->ILIAS_INTERFACE_ENABLE) {
@@ -134,16 +134,13 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
             ]
         );
 
-        if (!$results) {
-            return [];
-        }
-
         $navs = [];
         foreach ($results as $result) {
             $title = CourseConfig::get($result['object_id'])->getValue('ILIAS_INTERFACE_MODULETITLE');
             $nav = new Navigation($title, 'dispatch.php/course/ilias_interface/index');
             if ($result['neue']) {
-                $nav->setImage(Icon::create('learnmodule', Icon::ROLE_ATTENTION, [
+                $nav->setImage(Icon::create('learnmodule', Icon::ROLE_ATTENTION));
+                $nav->setLinkAttributes([
                     'title' => sprintf(
                         ngettext(
                             '%1$d Lernobjekt, %2$d neues',
@@ -153,9 +150,10 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
                         $result['count_modules'],
                         $result['neue']
                     )
-                ]));
+                ]);
             } elseif ($result['count_modules']) {
-                $nav->setImage(Icon::create('learnmodule', Icon::ROLE_CLICKABLE, [
+                $nav->setImage(Icon::create('learnmodule'));
+                $nav->setLinkAttributes([
                     'title' => sprintf(
                         ngettext(
                             '%d Lernobjekt',
@@ -164,9 +162,10 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
                         ),
                         $result['count_modules']
                     )
-                ]));
+                ]);
             } elseif ($result['count_courses']) {
-                $nav->setImage(Icon::create('learnmodule', Icon::ROLE_CLICKABLE, [
+                $nav->setImage(Icon::create('learnmodule'));
+                $nav->setLinkAttributes([
                     'title' => sprintf(
                         ngettext(
                             '%d ILIAS-Kurs',
@@ -175,7 +174,7 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
                         ),
                         $result['count_courses']
                     )
-                ]));
+                ]);
             }
             $navs[$result['object_id']] = $nav;
         }

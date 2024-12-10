@@ -70,7 +70,7 @@ class CoreOverview extends CorePlugin implements StudipModuleExtended
         return $nav;
     }
 
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         $sql = "SELECT news_r.range_id,
                        COUNT(news.news_id) AS count,
@@ -91,16 +91,14 @@ class CoreOverview extends CorePlugin implements StudipModuleExtended
             ':threshold' => object_get_visit_threshold(),
             ':plugin_id' => $this->getPluginId(),
         ]);
-        if (!$results) {
-            return [];
-        }
 
         $navs = [];
         foreach ($results as $result) {
             $nav = new Navigation(_('Ankündigungen'), '');
             if ($result['neue']) {
                 $nav->setURL('?new_news=true');
-                $nav->setImage(Icon::create('news', Icon::ROLE_ATTENTION, [
+                $nav->setImage(Icon::create('news', Icon::ROLE_ATTENTION));
+                $nav->setLinkAttributes([
                     'title' => sprintf(
                         ngettext(
                             '%1$d Ankündigung, %2$d neue',
@@ -110,10 +108,11 @@ class CoreOverview extends CorePlugin implements StudipModuleExtended
                         $result['count'],
                         $result['neue']
                     )
-                ]));
+                ]);
                 $nav->setBadgeNumber($result['neue']);
             } elseif ($result['count']) {
-                $nav->setImage(Icon::create('news', Icon::ROLE_CLICKABLE, [
+                $nav->setImage(Icon::create('news'));
+                $nav->setLinkAttributes([
                     'title' => sprintf(
                         ngettext(
                             '%d Ankündigung',
@@ -122,7 +121,7 @@ class CoreOverview extends CorePlugin implements StudipModuleExtended
                         ),
                         $result['count']
                     )
-                ]));
+                ]);
             }
             $navs[$result['range_id']] = $nav;
         }

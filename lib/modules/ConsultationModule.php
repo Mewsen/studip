@@ -3,7 +3,11 @@
  * @author  Jan-Hendrik Willms <tleilax+studip@gmail.com>
  * @license GPL2 or any later version
  */
-class ConsultationModule extends CorePlugin implements StudipModuleExtended, SystemPlugin, PrivacyPlugin, HomepagePlugin
+class ConsultationModule extends CorePlugin implements
+    StudipModuleExtended,
+    SystemPlugin,
+    PrivacyPlugin,
+    HomepagePlugin
 {
     public function __construct()
     {
@@ -101,7 +105,7 @@ class ConsultationModule extends CorePlugin implements StudipModuleExtended, Sys
     /**
      * {@inheritdoc}
      */
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         // TODO
 

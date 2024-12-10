@@ -80,7 +80,7 @@ class CoreScm extends CorePlugin implements StudipModuleExtended
         return $nav;
     }
 
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         if (!Config::get()->SCM_ENABLE) {
             return [];
@@ -103,13 +103,9 @@ class CoreScm extends CorePlugin implements StudipModuleExtended
             ':plugin_id' => $this->getPluginId(),
         ]);
 
-        if (empty($results)) {
-            return $navs;
-        }
-
         foreach ($results as $result) {
             $title = $result['tab_name'];
-            $image = Icon::create('infopage', Icon::ROLE_CLICKABLE);
+            $image = Icon::create('infopage');
             $badge = 0;
 
             if ($result['count']) {
@@ -124,7 +120,7 @@ class CoreScm extends CorePlugin implements StudipModuleExtended
                             $result['neue']
                         );
                     }
-                    $image = Icon::create('infopage', Icon::ROLE_ATTENTION, ['title' => $title]);
+                    $image = Icon::create('infopage', Icon::ROLE_ATTENTION);
                 } else if ($result['count'] > 1) {
                     $title = sprintf(
                         ngettext(
@@ -134,12 +130,13 @@ class CoreScm extends CorePlugin implements StudipModuleExtended
                         ),
                         $result['count']
                     );
-                    $image = Icon::create('infopage', Icon::ROLE_CLICKABLE, ['title' => $title]);
+                    $image = Icon::create('infopage');
                 }
             }
             $nav = new Navigation($title, 'dispatch.php/course/scm');
             $nav->setBadgeNumber($badge);
             $nav->setImage($image);
+            $nav->setLinkAttributes(['title' => $title]);
             $navs[$result['range_id']] = $nav;
         }
 

@@ -122,7 +122,7 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
     }
 
 
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         $navs = array_fill_keys($course_ids, null);
         if ($user_id === 'nobody') {
@@ -144,25 +144,7 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
         $courses = Course::findMany($course_ids);
         $urls = [];
         foreach ($courses as $course) {
-            assert($course instanceof Course);
             $is_student = !$GLOBALS['perm']->have_studip_perm('tutor', $course->seminar_id, $user_id);
-
-            // Is the participants page hidden for students?
-            if ($is_student && $course->config->COURSE_MEMBERS_HIDE) {
-                // Student AND hidden
-                $tab_navigation = $this->getTabNavigation($course->seminar_id);
-                if ($tab_navigation && count($tab_navigation['members']->getSubNavigation()) > 0) {
-                    $sub_nav = $tab_navigation['members']->getSubNavigation();
-                    $first_nav = reset($sub_nav);
-
-                    $navigation = new Navigation($first_nav->getTitle(), $first_nav->getURL());
-                    $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
-                    $navs[$course->seminar_id] = $navigation;
-                } else {
-                    $navs[$course->seminar_id] = 0;
-                }
-                continue;
-            }
 
             // Determine url to redirect to
             if (!$course->getSemClass()->isGroup()) {
@@ -184,9 +166,11 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
         }
 
         // For the remaining courses, show if there are new users
-        $remaining_course_ids = array_filter($course_ids, function ($c_id) use ($navs) {
-            return is_null($navs[$c_id]);
-        });
+        $remaining_course_ids = array_filter(
+            $course_ids,
+            fn($c_id) => $navs[$c_id] === null
+        );
+
         $query = "SELECT seminar_users.seminar_id as seminar_id,
                          COUNT(seminar_users.user_id) as count,
                          COUNT(IF((seminar_users.mkdate > IFNULL(b.visitdate, :threshold) AND seminar_users.user_id != :user_id), seminar_users.user_id, NULL)) AS neue
@@ -215,10 +199,10 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
 
         foreach ($users_per_course as $result) {
             $navigation = new Navigation(_('Teilnehmende'), $urls[$result['seminar_id']]);
-            $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
 
             if ($result['neue']) {
-                $navigation->setImage(Icon::create('persons', Icon::ROLE_ATTENTION, [
+                $navigation->setImage(Icon::create('persons', Icon::ROLE_ATTENTION));
+                $navigation->setLinkAttributes([
                     'title' => sprintf(
                         ngettext(
                             '%1$d Teilnehmende/r, %2$d neue/r',
@@ -228,10 +212,11 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
                         $result['count'],
                         $result['neue']
                     )
-                ]));
+                ]);
                 $navigation->setBadgeNumber($result['neue']);
             } elseif ($result['count']) {
-                $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE, [
+                $navigation->setImage(Icon::create('persons'));
+                $navigation->setLinkAttributes([
                     'title' => sprintf(
                         ngettext(
                             '%d Teilnehmende/r',
@@ -240,13 +225,16 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
                         ),
                         $result['count']
                     )
-                ]));
+                ]);
             }
 
             $navs[$result['seminar_id']] = $navigation;
         }
         // map the zeros to null;
-        return array_map(fn ($nav) => $nav === 0 ? null : $nav, $navs);
+        return array_map(
+            fn ($nav) => $nav ?: null,
+            $navs
+        );
     }
 
 

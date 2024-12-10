@@ -22,10 +22,11 @@ class CoreAdmin extends CorePlugin implements StudipModuleExtended
     /**
      * {@inheritdoc}
      */
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         $navigation = new Navigation(_('Verwaltung'), 'dispatch.php/course/management');
-        $navigation->setImage(Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => _('Verwaltung')]));
+        $navigation->setImage(Icon::create('admin'));
+        $navigation->setLinkAttributes(['title' => _('Verwaltung')]);
         return array_fill_keys($course_ids, $navigation);
     }
 

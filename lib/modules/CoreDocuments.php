@@ -143,13 +143,13 @@ class CoreDocuments extends CorePlugin implements StudipModuleExtended, OERModul
     /**
      * {@inheritdoc}
      */
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         // Assume that either courses or institutes will be fetched, but not a mix of them
         $range_type = get_object_type($course_ids[0], ['sem', 'inst']) === 'sem' ? 'course' : 'institute';
         $condition = "SELECT folders.range_id, file_refs.id
                       FROM file_refs
-                      INNER JOIN folders ON (folders.id = file_refs.folder_id)
+                      JOIN folders ON (folders.id = file_refs.folder_id)
                       LEFT JOIN object_user_visits AS ouv
                         ON ouv.object_id = folders.range_id
                         AND ouv.user_id = :me
@@ -173,9 +173,8 @@ class CoreDocuments extends CorePlugin implements StudipModuleExtended, OERModul
                 $foldertype = $file_ref_obj->folder->getTypedFolder();
                 $nav = new Navigation(_('Dateibereich'), "dispatch.php/{$range_type}/files");
                 if ($foldertype->isFileDownloadable($file_ref_obj->getId(), $user_id)) {
-                    $nav->setImage(Icon::create('files', Icon::ROLE_ATTENTION, [
-                        'title' => _('Es gibt neue Dateien.'),
-                    ]));
+                    $nav->setImage(Icon::create('files', Icon::ROLE_ATTENTION));
+                    $nav->setLinkAttributes(['title' => _('Es gibt neue Dateien.')]);
                     $nav->setURL("dispatch.php/{$range_type}/files/flat", ['select' => 'new']);
                     $navs[$range_id] = $nav;
                     break;
@@ -184,7 +183,8 @@ class CoreDocuments extends CorePlugin implements StudipModuleExtended, OERModul
         }
 
         $default_navigation = new Navigation(_('Dateibereich'), "dispatch.php/{$range_type}/files");
-        $default_navigation->setImage(Icon::create('files', Icon::ROLE_CLICKABLE, ['title' => _('Dateien')]));
+        $default_navigation->setImage(Icon::create('files'));
+        $default_navigation->setLinkAttributes(['title' => _('Dateien')]);
         $remaining_courses = array_diff($course_ids, array_keys($navs));
         return array_merge($navs, array_fill_keys($remaining_courses, $default_navigation));
     }

@@ -17,6 +17,6 @@ interface StudipModuleExtended extends StudipModule
      *
      * @return array associative array per given course, containing a navigation or null
      */
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array;
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array;
 
 }

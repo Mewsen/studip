@@ -24,7 +24,7 @@ class CoreStudygroupParticipants extends CorePlugin implements StudipModuleExten
         return $navigation;
     }
 
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
         $results = DBManager::get()->fetchAll(
             "SELECT seminar_user.Seminar_id, COUNT(seminar_user.user_id) as neue
@@ -46,7 +46,7 @@ class CoreStudygroupParticipants extends CorePlugin implements StudipModuleExten
         $navs = [];
         foreach ($course_ids as $course_id) {
             $navigation = new Navigation(_('Teilnehmende'), "dispatch.php/course/studygroup/members/{$course_id}");
-            $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
+            $navigation->setImage(Icon::create('persons'));
             if (isset($results[$course_id]) && !empty($results[$course_id]['neue'])) {
                 $navigation->setImage(Icon::create('persons', Icon::ROLE_ATTENTION));
             }

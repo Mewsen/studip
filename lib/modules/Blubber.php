@@ -100,14 +100,14 @@ class Blubber extends CorePlugin implements StudipModuleExtended
         return $icon;
     }
 
-    public function getManyIconNavigation(array $course_ids, string $user_id = null): array
+    public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
-        $user_id || $user_id = $GLOBALS['user']->id;
+        $user_id = $user_id ?? User::findCurrent()->id;
         $threshold = object_get_visit_threshold();
         $blubber_plugin_id = $this->getPluginId();
 
         // check if there are comments newer than the last visit of blubber
-        $condition = "INNER JOIN blubber_threads USING (thread_id)
+        $condition = "JOIN blubber_threads USING (thread_id)
                       LEFT JOIN object_user_visits AS ouv
                         ON ouv.object_id = blubber_threads.context_id
                           AND ouv.user_id = :me
@@ -124,12 +124,14 @@ class Blubber extends CorePlugin implements StudipModuleExtended
             ':plugin_id' => $blubber_plugin_id,
         ];
         $threads = [];
-        BlubberComment::findAndMapBySQL(function ($comment) use (&$threads) {
-            $threads[$comment->thread_id][] = $comment;
-        } , $condition, $params);
+        BlubberComment::findEachBySQL(
+            fn($comment) => $threads[$comment->thread_id][] = $comment,
+            $condition,
+            $params
+        );
 
         $navs = [];
-        foreach ($threads as $thread_id => $comments) {
+        foreach ($threads as $comments) {
             $thread = $comments[0]->thread;
             if (isset($navs[$thread->context_id])) {
                 continue;
@@ -137,8 +139,8 @@ class Blubber extends CorePlugin implements StudipModuleExtended
             // check if there are comments that are newer thant the last visit of the blubber thread(!)
             if ($thread->isReadable() && $thread->getLatestActivity() > $thread->getLastVisit()) {
                 $nav = new Navigation(_('Blubber'), 'dispatch.php/course/messenger/course', ['thread' => 'new']);
-                $nav->setImage(Icon::create('blubber', Icon::ROLE_NEW, ['title' => _('Es gibt neue Blubber')]));
-                $nav->setTitle(_('Es gibt neue Blubber'));
+                $nav->setImage(Icon::create('blubber', Icon::ROLE_ATTENTION));
+                $nav->setLinkAttributes(['title' => _('Es gibt neue Blubber')]);
                 $nav->setBadgeNumber(count($comments));
                 $navs[$thread->context_id] = $nav;
             }
@@ -168,14 +170,16 @@ class Blubber extends CorePlugin implements StudipModuleExtended
         foreach ($threads as $thread) {
             if ($thread->isReadable()) {
                 $nav = new Navigation(_('Blubber'), 'dispatch.php/course/messenger/course');
-                $nav->setImage(Icon::create('blubber', Icon::ROLE_ATTENTION, ['title' => _('Es gibt neue Blubber')]));
+                $nav->setImage(Icon::create('blubber', Icon::ROLE_ATTENTION));
+                $nav->setLinkAttributes(['title' => _('Es gibt neue Blubber')]);
                 $nav->setTitle(_('Es gibt neue Blubber'));
                 $navs[$thread->context_id] = $nav;
             }
         }
 
         $default_navigation = new Navigation(_('Blubber'), 'dispatch.php/course/messenger/course');
-        $default_navigation->setImage(Icon::create('blubber', Icon::ROLE_CLICKABLE, ['title' => _('Blubber-Messenger')]));
+        $default_navigation->setImage(Icon::create('blubber'));
+        $default_navigation->setLinkAttributes(['title' => _('Blubber-Messenger')]);
         foreach ($course_ids as $course_id) {
             if (!isset($navs[$course_id])) {
                 $navs[$course_id] = $default_navigation;
