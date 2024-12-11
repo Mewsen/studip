@@ -191,6 +191,15 @@ class WikiPage extends SimpleORMap implements PrivacyObject
             return false;
         }
 
+        // Check create permission if page is new
+        if ($this->isNew()) {
+            $range = RangeFactory::find($this->range_id, ['sem', 'inst']);
+            $permission = $range->getConfiguration()->getValue('WIKI_CREATE_PERMISSION');
+            return $permission === 'all'
+                || $GLOBALS['perm']->have_studip_perm($permission, $this->range_id, $user_id);
+        }
+
+        // Otherwise check write permissions
         if ($this->write_permission === 'all') {
             return true;
         }

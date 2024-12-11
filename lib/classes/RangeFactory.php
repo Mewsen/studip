@@ -8,16 +8,24 @@
  */
 final class RangeFactory
 {
-    const TYPE_MAPPING = [
+    public const TYPE_MAPPING = [
         'sem'  => 'course',
         'user' => 'user',
         'inst' => 'institute',
         'fak'  => 'institute',
     ];
 
-    public static function find($id)
-    {
-        $type = get_object_type($id, ['sem', 'user', 'inst', 'fak']);
+    /**
+     * Finds a Range for a given id or false if there is no Range with the id.
+     * @param string $id   Range id
+     * @param array $search_types array can have values of 'sem', 'user', 'inst' and/or 'fak'
+     * @return Range|false
+     */
+    public static function find(
+        string $id,
+        array $search_types = ['sem', 'user', 'inst', 'fak']
+    ) {
+        $type = get_object_type($id, $search_types);
         if ($type === false) {
             return false;
         }
@@ -30,12 +38,10 @@ final class RangeFactory
      *
      * @param string $type Range type
      * @param mixed  $id   Range id
-     * @return mixed any of the supported range types
+     * @return Range any of the supported range types
      * @throws Exception when an invalid range type was given
-     *
-     * @todo Should this be more dynamic in case any more ranges are added?
      */
-    public static function createRange($type, $id)
+    public static function createRange(string $type, string $id): Range
     {
         if ($type === 'user') {
             return new User($id);
