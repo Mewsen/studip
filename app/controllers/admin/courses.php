@@ -655,7 +655,6 @@ class Admin_CoursesController extends AuthenticatedController
         }
         if (in_array('room_time', $activated_fields)) {
             $strings = $course->getAllDatesInSemester()->toStringArray();
-            $strings = array_map('htmlReady', $strings);
             $d['room_time'] = implode('<br>', $strings) ?: _('nicht angegeben');
         }
         if (in_array('semester', $activated_fields)) {
