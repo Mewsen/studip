@@ -114,7 +114,7 @@ class Resources_AdminController extends AuthenticatedController
             _('Suche nach einer Person'),
             'user_id',
             _('Name oder Nutzername der Person'),
-            new StandardSearch('user_id'),
+            new PermissionSearch('user'),
             'function(){jQuery(this).closest("form").submit();}'
         );
 
