@@ -1338,6 +1338,8 @@ class Course_WikiController extends AuthenticatedController
 
     private function validateWikiPage(WikiPage $page, Range $context, bool $for_edit = false): void
     {
+        $page->range_id = $page->range_id ?: $context->id;
+
         if (
             !$page->isNew()
             && $page->range_id !== $context->id
@@ -1349,7 +1351,11 @@ class Course_WikiController extends AuthenticatedController
         }
 
         if ($for_edit && !$page->isEditable()) {
-            throw new Exception(_('Sie dürfen diese Wikiseite nicht bearbeiten'));
+            if ($page->isNew()) {
+                throw new AccessDeniedException(_('Sie dürfen keine neue Wikiseite anlegen.'));
+            } else {
+                throw new AccessDeniedException(_('Sie dürfen diese Wikiseite nicht bearbeiten'));
+            }
         }
     }
 }
