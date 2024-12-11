@@ -300,7 +300,7 @@ class Resources_RoomGroupController extends AuthenticatedController
 
         $this->user_search = QuickSearch::get(
             'user_id',
-            new StandardSearch('user_id')
+            new PermissionSearch('user')
         );
 
         $this->user_search->fireJSFunctionOnSelect(
