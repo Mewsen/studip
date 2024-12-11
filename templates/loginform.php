@@ -2,6 +2,7 @@
 /**
  * @var array $loginerror
  * @var string $error_msg
+ * @var LoginFaq[] $faq_entries
  */
 
 // Get background images (this should be resolved differently since mobile
@@ -25,7 +26,7 @@ if (!match_route('web_migrate.php')) {
 }
 $show_login = !(current(StudipAuthAbstract::getInstance()) instanceof StudipAuthSSO) && StudipAuthAbstract::isLoginEnabled();
 $show_hidden_login = !$show_login && StudipAuthAbstract::isLoginEnabled();
-$enable_faq = Config::get()->LOGIN_FAQ_VISIBILITY && count($faq_entries) > 0;
+$enable_faq = count($faq_entries) > 0;
 $enable_news = Config::get()->LOGIN_NEWS_VISIBILITY && count($news_entries) > 0;
 ?>
 <main id="content" class="loginpage">
@@ -103,7 +104,7 @@ $enable_news = Config::get()->LOGIN_NEWS_VISIBILITY && count($news_entries) > 0;
                         <button id="show-faq" title="<?= _('Hinweise zum Login anzeigen')?>">
                             <?= Icon::create('faq')->asImg(24, ['style' => 'align-self: end;']) ?>
                         </button>
-                        
+
                     </div>
                 <? endif; ?>
                 <? if ($enable_faq): ?>
@@ -148,7 +149,7 @@ $enable_news = Config::get()->LOGIN_NEWS_VISIBILITY && count($news_entries) > 0;
             faqButton.classList.add('selected');
             newsButton.classList.remove('selected');
         });
-        
+
         newsButton.addEventListener('click', e => {
             const faqBox = document.getElementById('login-faq-box');
             const newsBox = document.getElementById('login-news-box');

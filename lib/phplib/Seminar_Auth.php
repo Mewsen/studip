@@ -344,12 +344,16 @@ class Seminar_Auth
             if (isset($this->auth['uname']) && $this->error_msg) {
                 PageLayout::postError(_('Bei der Anmeldung trat ein Fehler auf!'), $this->error_msg);
             }
-            $login_template->set_attribute('error_msg', $this->error_msg);
-            $login_template->set_attribute('uname', (isset($this->auth["uname"]) ? $this->auth["uname"] : Request::username('loginname')));
-            $login_template->set_attribute('self_registration_activated', Config::get()->ENABLE_SELF_REGISTRATION);
-            $login_template->set_attribute('logout', Request::bool('logout', false));
-            $login_template->set_attribute('faq_entries', LoginFaq::findBySQL("1"));
-            $login_template->set_attribute('news_entries', array_values($news_entries));
+            $login_template->error_msg = $this->error_msg;
+            $login_template->uname = $this->auth['uname'] ?? Request::username('loginname');
+            $login_template->self_registration_activated = Config::get()->ENABLE_SELF_REGISTRATION;
+            $login_template->logout = Request::bool('logout', false);
+            $login_template->faq_entries = [];
+            $login_template->news_entries = array_values($news_entries);
+
+            if (Config::get()->getValue('LOGIN_FAQ_VISIBILITY')) {
+                $login_template->faq_entries = LoginFaq::findBySQL('1');
+            }
         }
         PageLayout::setHelpKeyword('Basis.AnmeldungLogin');
         $header_template = $GLOBALS['template_factory']->open('header');
