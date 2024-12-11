@@ -25,7 +25,6 @@
             "": [
                 "lib/classes/",
                 "lib/classes/admission/",
-                "lib/classes/admission/userfilter/",
                 "lib/classes/auth_plugins/",
                 "lib/classes/calendar/",
                 "lib/classes/coursewizardsteps/",
