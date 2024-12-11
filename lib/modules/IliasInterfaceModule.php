@@ -109,7 +109,7 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
 
     public function getManyIconNavigation(array $course_ids, ?string $user_id = null): array
     {
-        // TODO Test
+        // TODO Test this function
         if (!Config::get()->ILIAS_INTERFACE_ENABLE) {
             return [];
         }

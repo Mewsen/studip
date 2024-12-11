@@ -464,11 +464,13 @@ class MyRealmModel
     {
         // -- 0. Extract all courses: semester is irrelevant and flatten for children
         $all_courses = [];
-        foreach ($sem_courses as $sem => &$courses) {
-            foreach ($courses as $c_id => &$course) {
-                $all_courses[$c_id] = &$course;
-                foreach ($course['children'] as $child) {
-                    $all_courses[$child['seminar_id']] = &$child;
+        foreach ($sem_courses as $courses) {
+            foreach ($courses as $c_id => $course) {
+                $all_courses[$c_id] = $course;
+                if (!empty($course['children'])) {
+                    foreach ($course['children'] as $child_course) {
+                        $all_courses[$child_course['seminar_id']] = $child_course;
+                    }
                 }
             }
         }
@@ -480,7 +482,7 @@ class MyRealmModel
         if (!Config::get()->VOTE_ENABLE && isset($default_modules[-1])) {
             unset($default_modules[-1]);
         }
-        foreach ($all_courses as $course_id => &$course) { // Somehow the `&` is necessary here, otherwise some courses will be missing
+        foreach ($all_courses as $course_id => $course) {
             // add every default module with null, so there will be blank spaces in the nav
             $navigation[$course_id] = array_fill_keys(
                 array_keys($default_modules),
@@ -514,7 +516,7 @@ class MyRealmModel
             if ($c_ids) {
                 if ($plugin_id === -1) {
                     foreach ($c_ids as $c_id) {
-                        // TODO test vote
+                        // TODO testing vote need to be done
                         $navigation[$c_id][$plugin_id] = self::checkVote($all_courses[$c_id], $user_id, $c_id);
                     }
                 } elseif ($plugin_data['studip_module'] instanceof StudipModuleExtended) {
@@ -535,10 +537,12 @@ class MyRealmModel
         }
 
         // -- 3. Assign the data to the original object
-        foreach ($all_course_ids as $c_id) {
-            $all_courses[$c_id]['navigation'] = $navigation[$c_id];
-            $all_courses[$c_id]['visitdate'] = $visits[$c_id][0]['visitdate'];
-            $all_courses[$c_id]['last_visitdate'] = $visits[$c_id][0]['last_visitdate'];
+        foreach ($sem_courses as &$courses) {
+            foreach ($courses as $c_id => &$course) {
+                $course['navigation'] = $navigation[$c_id] ?? null;
+                $course['visitdate'] = $visits[$c_id][0]['visitdate'] ?? null;
+                $course['last_visitdate'] = $visits[$c_id][0]['last_visitdate'] ?? null;
+            }
         }
     }
 

@@ -125,7 +125,9 @@ class Blubber extends CorePlugin implements StudipModuleExtended
         ];
         $threads = [];
         BlubberComment::findEachBySQL(
-            fn($comment) => $threads[$comment->thread_id][] = $comment,
+            function ($comment) use (&$threads) {
+                $threads[$comment->thread_id][] = $comment;
+            },
             $condition,
             $params
         );
