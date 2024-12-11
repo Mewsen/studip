@@ -517,7 +517,7 @@ class StudipAuthAbstract
         if ($this->username_case_insensitiv) {
             $username = mb_strtolower($username);
         }
-        if ($this->bad_char_regex) {
+        if (!empty($this->bad_char_regex)) {
             return preg_replace($this->bad_char_regex, '', $username);
         } else {
             return trim($username);

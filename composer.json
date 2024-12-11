@@ -62,8 +62,7 @@
             "lib/phplib/email_validation.php",
             "lib/messaging.inc.php",
             "lib/plugins/core/StudIPPlugin.php",
-            "app/controllers/module/mvv_controller.php",
-            "vendor/phpass/PasswordHash.php"
+            "app/controllers/module/mvv_controller.php"
         ]
     },
     "require-dev": {

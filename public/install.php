@@ -45,7 +45,6 @@ require 'lib/trails/Exceptions/RoutingError.php';
 require 'lib/trails/Exceptions/SessionRequiredException.php';
 require 'lib/trails/Exceptions/UnknownAction.php';
 require 'lib/trails/Exceptions/UnknownController.php';
-require 'vendor/phpass/PasswordHash.php';
 
 // Mock gettext functions if extension is not available
 if (!function_exists('_')) {

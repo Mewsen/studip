@@ -50,10 +50,7 @@ class RegistrationController extends AuthenticatedController
                         'maxlength' => '31',
                         'minlength' =>  '8',
                         'attributes' => ['autocomplete' => 'new-password'],
-                        'mapper' => function($value) {
-                            $hasher = UserManagement::getPwdHasher();
-                            return $hasher->HashPassword($value);
-                        }
+                        'mapper' => fn($value) => password_hash($value, PASSWORD_DEFAULT),
                     ],
                     'confirm_password' => [
                         'label' => _('Passwortbestätigung'),

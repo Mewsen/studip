@@ -292,7 +292,6 @@ class Admin_InstallController extends Trails\Controller
 
                 // Create root user
                 $user_id = md5(uniqid('root-user', true));
-                $hasher  = new PasswordHash(8, false);
 
                 $query = "REPLACE INTO `auth_user_md5` (
                             `user_id`, `username`, `password`, `perms`,
@@ -308,7 +307,7 @@ class Admin_InstallController extends Trails\Controller
                 $statement = $pdo->prepare($query);
                 $statement->bindValue(':user_id', $user_id);
                 $statement->bindValue(':username', $_SESSION['STUDIP_INSTALLATION']['root']['username']);
-                $statement->bindValue(':password', $hasher->HashPassword($_SESSION['STUDIP_INSTALLATION']['root']['password']));
+                $statement->bindValue(':password', password_hash($_SESSION['STUDIP_INSTALLATION']['root']['password'], PASSWORD_DEFAULT));
                 $statement->bindValue(':first_name', $_SESSION['STUDIP_INSTALLATION']['root']['first_name']);
                 $statement->bindValue(':last_name', $_SESSION['STUDIP_INSTALLATION']['root']['last_name']);
                 $statement->bindValue(':email', $_SESSION['STUDIP_INSTALLATION']['root']['email']);

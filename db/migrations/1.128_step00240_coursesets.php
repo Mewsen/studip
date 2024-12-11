@@ -1,5 +1,4 @@
 <?php
-require_once 'vendor/phpass/PasswordHash.php';
 require_once 'lib/classes/admission/CourseSet.php';
 
 class Step00240CourseSets extends Migration
@@ -241,7 +240,7 @@ class Step00240CourseSets extends Migration
         //mit pw wandeln
         $pw_admission = $db->fetchAll("SELECT seminar_id, name, passwort, institut_id, chdate FROM seminare WHERE admission_type = 0 AND Lesezugriff = 2");
         foreach ($pw_admission as $course) {
-            $new_pwd = $hasher->HashPassword($course['passwort']);
+            $new_pwd = password_hash($course['passwort'], PASSWORD_DEFAULT);
             $rule_id = md5(uniqid('passwordadmissions',1));
             $password_insert->execute([$rule_id, $new_pwd]);
             $set_id = md5(uniqid('coursesets',1));

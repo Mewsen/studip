@@ -15,16 +15,8 @@
  * @category    Stud.IP
  */
 
-require_once 'vendor/phpass/PasswordHash.php';
-
 class PasswordAdmission extends AdmissionRule
 {
-    // --- ATTRIBUTES ---
-    /*
-     * Password hasher (phpass library)
-     */
-    public $hasher = null;
-
     /*
      * Crypted password.
      */
@@ -42,8 +34,7 @@ class PasswordAdmission extends AdmissionRule
     {
         parent::__construct($ruleId, $courseSetId);
         $this->default_message = _('Das eingegebene Passwort ist falsch.');
-        // Create a new bcrypt password hasher (exclude weaker algorithms).
-        $this->hasher = new PasswordHash(8, false);
+
         if ($ruleId) {
             $this->load();
         } else {
@@ -154,12 +145,13 @@ class PasswordAdmission extends AdmissionRule
                 $errors[] = _('Die Eingabe eines Passwortes ist erforderlich.');
             } else {
                 CSRFProtection::verifyUnsafeRequest();
-                $pwcheck = $this->hasher->CheckPassword(Request::get('pwarule_password'),
-                        $this->getPassword());
-                //migrated passwords
-                $pwcheck_m = $this->hasher->CheckPassword(md5(Request::get('pwarule_password')),
-                        $this->getPassword());
-                if (!($pwcheck || $pwcheck_m)) {
+
+                if (
+                    !(
+                        password_verify(Request::get('pwarule_password'), $this->getPassword())
+                        || password_verify(md5(Request::get('pwarule_password')), $this->getPassword())
+                    )
+                ) {
                     $errors[] = $this->getMessage();
                 }
             }
@@ -189,8 +181,9 @@ class PasswordAdmission extends AdmissionRule
      * @param  String $clearText The clear text password to be set.
      * @return PasswordAdmission
      */
-    public function setPassword($clearText) {
-        $this->password = $this->hasher->HashPassword($clearText);
+    public function setPassword($clearText)
+    {
+        $this->password = password_hash($clearText, PASSWORD_DEFAULT);
         return $this;
     }
 
