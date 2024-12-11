@@ -144,6 +144,7 @@ class Semester extends SimpleORMap
 
     /**
      * returns current Semester
+     * @return static
      */
     public static function findCurrent()
     {

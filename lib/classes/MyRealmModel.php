@@ -316,8 +316,8 @@ class MyRealmModel
             $_course['visitdate']      = $visits[$course->id][0]['visitdate'];
             $_course['user_status']    = $user_status;
             $_course['gruppe']         = !$is_deputy ? $member_ships[$course->id]['gruppe'] ?? null : ($deputy ? $deputy->gruppe : null);
-            $_course['sem_number_end'] = $course->isOpenEnded() ? $max_sem_key : Semester::getIndexById($course->end_semester->id, true, true);
-            $_course['sem_number']     = Semester::getIndexById($course->start_semester->id ?? null, true, true);
+            $_course['sem_number_end'] = $course->isOpenEnded() ? $max_sem_key : Semester::getIndexById($course->end_semester->id);
+            $_course['sem_number']     = Semester::getIndexById($course->start_semester->id ?? null);
             $_course['tools']          = $course->tools;
             $_course['name']           = $course->name;
             $_course['temp_name']      = $course->name;

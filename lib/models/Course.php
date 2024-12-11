@@ -71,8 +71,8 @@
  * @property SimpleORMapCollection|Institute[] $institutes has_and_belongs_to_many Institute
  * @property SimpleORMapCollection|UserDomain[] $domains has_and_belongs_to_many UserDomain
  * @property-read mixed $teachers additional field
- * @property mixed $start_semester additional field
- * @property mixed $end_semester additional field
+ * @property Semester $start_semester additional field
+ * @property Semester|null $end_semester additional field
  * @property-read mixed $semester_text additional field
  * @property-read mixed $config additional field
  */
