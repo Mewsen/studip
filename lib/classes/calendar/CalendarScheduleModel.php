@@ -163,6 +163,19 @@ class CalendarScheduleModel
 
         $sem = new Seminar($seminar_id);
         foreach ($sem->getCycles() as $cycle) {
+            if ($semester !== false) {
+                $hasDatesInSemester = false;
+                foreach ($cycle->getSingleDates() as $singleDate) {
+                    if (($singleDate->getStartTime() >= $semester['beginn'] && $singleDate->getStartTime() <= $semester['ende'])
+                            || ($singleDate->getEndTime() >= $semester['beginn'] && $singleDate->getEndTime() <= $semester['ende'])) {
+                        $hasDatesInSemester = true;
+                        break;
+                    }
+                }
+                if (!$hasDatesInSemester) {
+                    continue;
+                }
+            }
             if (!$cycle_id || $cycle->getMetaDateID() == $cycle_id) {
                 $entry = [];
 
@@ -298,12 +311,22 @@ class CalendarScheduleModel
         $seminars = [];
 
         // get all virtually added seminars
-        $stmt = DBManager::get()->prepare("SELECT * FROM schedule_seminare as c
-            LEFT JOIN seminare as s ON (s.Seminar_id = c.Seminar_id)
-            LEFT JOIN semester_courses ON (semester_courses.course_id = s.Seminar_id)
-            WHERE c.user_id = ? AND s.start_time <= ? AND
-                (semester_courses.semester_id IS NULL OR semester_courses.semester_id = ?)");
-        $stmt->execute([$user_id, $semester['beginn'], $semester['id']]);
+        $stmt = DBManager::get()->prepare("SELECT *
+            FROM schedule_seminare as c
+                INNER JOIN seminare as s ON (s.Seminar_id = c.Seminar_id)
+                INNER JOIN termine ON (termine.range_id = s.Seminar_id)
+                LEFT JOIN semester_courses ON (semester_courses.course_id = s.Seminar_id)
+            WHERE c.user_id = :userid
+              AND s.start_time <= :begin
+              AND (termine.`date` BETWEEN :begin AND :end OR termine.`end_time` BETWEEN :begin AND :end)
+              AND
+                (semester_courses.semester_id IS NULL OR semester_courses.semester_id = :semesterId)");
+        $stmt->execute([
+            ':userid' => $user_id,
+            ':begin' => $semester['beginn'],
+            ':end' => $semester['ende'],
+            ':semesterId' => $semester['id']]
+        );
 
         while ($entry = $stmt->fetch()) {
             $seminars[$entry['seminar_id']] = [
@@ -314,12 +337,15 @@ class CalendarScheduleModel
         // fetch seminar-entries
         $stmt = DBManager::get()->prepare("SELECT s.Seminar_id FROM seminar_user as su
             LEFT JOIN seminare as s USING (Seminar_id)
+            INNER JOIN termine ON (termine.range_id = s.Seminar_id)
             LEFT JOIN semester_courses ON (semester_courses.course_id = s.Seminar_id)
             WHERE su.user_id = :userid
                 AND s.start_time <= :begin
+                AND (termine.`date` BETWEEN :begin AND :end OR termine.`end_time` BETWEEN :begin AND :end)
                 AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = :semester_id)
                ");
         $stmt->bindValue(':begin', $semester['beginn']);
+        $stmt->bindValue(':end', $semester['ende']);
         $stmt->bindValue(':semester_id', $semester['semester_id']);
         $stmt->bindValue(':userid', $user_id);
         $stmt->execute();
