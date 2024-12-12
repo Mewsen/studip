@@ -1,5 +1,5 @@
 <template>
-    <focus-trap v-model="trap" :clickOutsideDeactivates="false" :fallbackFocus ="() => fallbackFocusElement">
+    <focus-trap :active="showToolbar" :clickOutsideDeactivates="false" :fallbackFocus ="() => fallbackFocusElement">
         <div
             class="cw-ribbon-tools"
             :class="{ 'cw-ribbon-tools-consume': consumeMode }"
@@ -70,7 +70,6 @@ export default {
         return {
             showContents: true,
             showUnits: false,
-            trap: false,
         };
     },
     computed: {
@@ -86,6 +85,7 @@ export default {
             userById: 'users/byId',
             userId: 'userId',
             currentElementisLink: 'currentElementisLink',
+            showToolbar: 'showToolbar',
         }),
         isTeacher() {
             return this.userIsTeacher;
@@ -105,19 +105,15 @@ export default {
                 contents.scroll({ top: current.offsetTop - 4, behavior: 'smooth' });
             }
         },
-        activate() {
-            const focusElement = this.$refs.tabs.getActiveTabElement();
-            if (focusElement) {
-                this.initialFocusElement = focusElement;
-                this.trap = true;
+    },
+    watch: {
+        showToolbar(newState) {
+            if (newState) {
+                this.$nextTick(() => {
+                    this.scrollToCurrent();
+                });
             }
         }
-    },
-    mounted() {
-        this.$nextTick(() => {
-            this.activate();
-            this.$nextTick(() => this.scrollToCurrent());
-        });
-    },
+    }
 };
 </script>
