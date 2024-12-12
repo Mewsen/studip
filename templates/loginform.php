@@ -137,6 +137,28 @@ $enable_news = Config::get()->LOGIN_NEWS_VISIBILITY && count($news_entries) > 0;
     });
     // -->
 
+    <? if ($enable_faq) : ?>
+        STUDIP.domReady(() => {
+            const loginBox = document.getElementById('loginbox');
+            const faqContent = document.getElementById('login-faq-content-wrapper');
+            const htmlTag = document.documentElement;
+
+            const adjustFaqHeight = () => {
+                if (!htmlTag.classList.contains('responsive-display')) {
+                    const loginBoxHeight = loginBox.offsetHeight;
+
+                    const maxAllowedHeight = loginBoxHeight - 100;
+
+                    faqContent.style.maxHeight = `${Math.max(maxAllowedHeight, 0)}px`;
+                }
+            };
+
+            adjustFaqHeight();
+
+            window.addEventListener('resize', adjustFaqHeight);
+        });
+    <? endif ?>
+
     <? if ($enable_faq && $enable_news): ?>
         const faqButton = document.getElementById('show-faq');
         const newsButton = document.getElementById('hide-faq');

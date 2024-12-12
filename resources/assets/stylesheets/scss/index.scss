@@ -122,6 +122,7 @@ $gap-between-boxes: calc($login-page-margin / 2);
 
     #login-faq-content-wrapper {
         height: calc(100% - 32px);
+        max-height: 430px;
     }
 
     .login-box-header {
