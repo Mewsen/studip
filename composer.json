@@ -16,6 +16,7 @@
             "Studip\\Cache\\": "lib/classes/cache/",
             "Studip\\Calendar\\": "lib/classes/calendar/",
             "Studip\\Forms\\": "lib/classes/forms/",
+            "Studip\\Rectors\\": "lib/Rectors/",
             "Studip\\": [
                 "lib/classes/",
                 "lib/exceptions/",
@@ -77,7 +78,8 @@
         "symfony/var-dumper": "6.4.7",
         "maximebf/debugbar": "1.22.3",
         "codeception/specify": "^2.0",
-        "zorac/phpstan-php-di": "^1.0"
+        "zorac/phpstan-php-di": "^1.0",
+        "rector/rector": "2.0.9"
     },
     "require": {
         "php": "^8.1",
