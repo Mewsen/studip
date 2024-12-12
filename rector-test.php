@@ -51,3 +51,45 @@ try {
     echo 'some exception';
 }
 
+class TestBlockType extends \Courseware\BlockTypes\BlockType
+{
+    public static function getType(): string
+    {
+        return '';
+    }
+
+    public static function getTitle(): string
+    {
+        return '';
+    }
+
+    public static function getDescription(): string
+    {
+        return '';
+    }
+
+    public function initialPayload(): array
+    {
+        return [];
+    }
+
+    public static function getCategories(): array
+    {
+        return [];
+    }
+
+    public static function getContentTypes(): array
+    {
+        return [];
+    }
+
+    public static function getFileTypes(): array
+    {
+        return [];
+    }
+
+    public static function getJsonSchema(): \Opis\JsonSchema\Schema
+    {
+        return \Opis\JsonSchema\Schema::fromJsonString(file_get_contents(__FILE__));
+    }
+}

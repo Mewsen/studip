@@ -8,7 +8,8 @@ use Studip\Rectors\Studip60\RemoveIncludesRector;
 return RectorConfig::configure()
     ->withRules([
         Studip\Rectors\Studip60\RemoveGetConfigRector::class,
-        Studip\Rectors\Studip60\RemoveSidebarMethodsRector::class
+        Studip\Rectors\Studip60\RemoveSidebarMethodsRector::class,
+        Studip\Rectors\Studip60\RewriteCoursewareBlockTypesRector::class,
     ])
     ->withConfiguredRule(RenameFunctionRector::class, [
         'studip_json_decode' => 'json_decode',
