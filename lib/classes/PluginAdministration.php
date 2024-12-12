@@ -399,7 +399,7 @@ class PluginAdministration
      *
      * @return array with manifest meta data
      */
-    public function scanPluginDirectory()
+    public function scanPluginDirectory(bool $sort = false)
     {
         $found = [];
         $basepath = Config::get()->PLUGINS_PATH;
@@ -423,6 +423,14 @@ class PluginAdministration
                 $found[] = $manifest;
             }
         }
+
+        if ($sort) {
+            usort(
+                $found,
+                fn($a, $b) => $a['pluginname'] <=> $b['pluginname']
+            );
+        }
+
         return $found;
     }
 
