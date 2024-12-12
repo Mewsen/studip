@@ -368,7 +368,7 @@ class Course_BasicdataController extends AuthenticatedController
                     _('Veranstaltung kopieren'),
                     $this->url_for(
                          'course/wizard/copy/' . $this->course_id,
-                         ['studip_ticket' => Seminar_Session::get_ticket()]
+                         ['studip_ticket' => get_ticket()]
                     ),
                     Icon::create('seminar')
                 );
@@ -381,7 +381,7 @@ class Course_BasicdataController extends AuthenticatedController
                 _('Sperrebene ändern') . ' (' . ($is_locked ? _('gesperrt') : _('nicht gesperrt')) . ')',
                 $this->url_for(
                     'course/management/lock',
-                    ['studip_ticket' => Seminar_Session::get_ticket()]
+                    ['studip_ticket' => get_ticket()]
                 ),
                 Icon::create('lock-' . ($is_locked ? 'locked' : 'unlocked'))
             )->asDialog('size=auto');
@@ -397,7 +397,7 @@ class Course_BasicdataController extends AuthenticatedController
                     $is_visible ? _('Veranstaltung verstecken') : _('Veranstaltung sichtbar schalten'),
                     $this->url_for(
                         'course/management/change_visibility',
-                        ['studip_ticket' => Seminar_Session::get_ticket()]
+                        ['studip_ticket' => get_ticket()]
                     ),
                     Icon::create('visibility-' . ($is_visible ? 'visible' : 'invisible'))
                 );
@@ -428,7 +428,7 @@ class Course_BasicdataController extends AuthenticatedController
                 _('Veranstaltung löschen'),
                 $this->url_for(
                     'course/archive/confirm',
-                    ['studip_ticket' => Seminar_Session::get_ticket()]
+                    ['studip_ticket' => get_ticket()]
                 ),
                 Icon::create('trash')
             )->asDialog('size=auto');

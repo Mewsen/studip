@@ -60,7 +60,7 @@ $password_tooltip_text = (string) Config::get()->PASSWORD_TOOLTIP_TEXT;
         </a>
 
     <?= CSRFProtection::tokenTag() ?>
-    <input type="hidden" name="login_ticket" value="<?= htmlReady(Seminar_Session::get_ticket()) ?>">
+    <input type="hidden" name="login_ticket" value="<?= htmlReady(get_ticket()) ?>">
     <input type="hidden" name="resolution" value="">
 
     <div class="login-button-wrapper">

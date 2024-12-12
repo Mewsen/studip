@@ -5,8 +5,6 @@ class Settings_AvatarController extends AuthenticatedController
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
-        // Ensure user is logged in
-        $GLOBALS['auth']->login_if($action !== 'logout' && $GLOBALS['auth']->auth['uid'] === 'nobody');
 
         if (!$GLOBALS['perm']->have_profile_perm('user', User::findCurrent()->id)) {
             throw new AccessDeniedException(_('Sie dürfen dieses Profil nicht bearbeiten'));

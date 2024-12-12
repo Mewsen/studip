@@ -2,7 +2,6 @@
 /**
  * @var array $loginerror
  * @var string $error_msg
- * @var LoginFaq[] $faq_entries
  */
 
 // Get background images (this should be resolved differently since mobile
@@ -26,7 +25,7 @@ if (!match_route('web_migrate.php')) {
 }
 $show_login = !(current(StudipAuthAbstract::getInstance()) instanceof StudipAuthSSO) && StudipAuthAbstract::isLoginEnabled();
 $show_hidden_login = !$show_login && StudipAuthAbstract::isLoginEnabled();
-$enable_faq = count($faq_entries) > 0;
+$enable_faq = Config::get()->LOGIN_FAQ_VISIBILITY && count($faq_entries) > 0;
 $enable_news = Config::get()->LOGIN_NEWS_VISIBILITY && count($news_entries) > 0;
 ?>
 <main id="content" class="loginpage">
@@ -34,13 +33,7 @@ $enable_news = Config::get()->LOGIN_NEWS_VISIBILITY && count($news_entries) > 0;
     <div id="background-mobile" style="background: url(<?= $bg_mobile ?>) no-repeat top left/cover;"></div>
 
     <div id="login-wrapper">
-        <?= Studip\VueApp::create('SystemNotificationManager')
-                ->withProps([
-                    'id'                    => 'system-notifications',
-                    'class'                 => 'system-notifications-login',
-                    'notifications'         => PageLayout::getMessages(MessageBox::class),
-                ])
-        ?>
+
         <div id="login-content-wrapper">
             <div id="loginbox">
                 <header>
@@ -54,28 +47,28 @@ $enable_news = Config::get()->LOGIN_NEWS_VISIBILITY && count($news_entries) > 0;
                 <? endif ?>
                 <nav class="<?= $show_hidden_login ? 'login-bottom' : '' ?>">
                     <? foreach (Navigation::getItem('/login') as $key => $nav): ?>
-                        <? if ($nav->isVisible()): ?>
-                            <? if ($key === 'standard_login' && $show_login)
-                                continue; ?>
-                        <? endif ?>
-                        <? $name_and_title = explode(' - ', $nav->getTitle()) ?>
-                        <? if (is_internal_url($url = $nav->getURL())): ?>
-                            <? SkipLinks::addLink($name_and_title[0], URLHelper::getLink($url, ['cancel_login' => 1])) ?>
-                            <a href="<?= URLHelper::getLink($url, ['cancel_login' => 1]) ?>"
-                                <?= arrayToHtmlAttributes($nav->getLinkAttributes()) ?>>
-                            <? else: ?>
-                                <a href="<?= htmlReady($url) ?>" target="_blank" rel="noopener noreferrer">
-                                <? endif ?>
-                                <p class="title"><?= htmlReady($name_and_title[0]) ?></p>
-                                <p class="description">
-                                    <?= htmlReady(!empty($name_and_title[1]) ? $name_and_title[1] : $nav->getDescription()) ?>
-                                </p>
+                    <? if ($nav->isVisible()): ?>
+                        <? if ($key === 'standard_login' && $show_login)
+                            continue; ?>
+                    <? endif ?>
+                    <? $name_and_title = explode(' - ', $nav->getTitle()) ?>
+                    <? if (is_internal_url($url = $nav->getURL())): ?>
+                    <? SkipLinks::addLink($name_and_title[0], URLHelper::getLink($url, ['cancel_login' => 1])) ?>
+                    <a href="<?= URLHelper::getLink($url, ['cancel_login' => 1]) ?>"
+                        <?= arrayToHtmlAttributes($nav->getLinkAttributes()) ?>>
+                        <? else: ?>
+                        <a href="<?= htmlReady($url) ?>" target="_blank" rel="noopener noreferrer">
+                            <? endif ?>
+                            <p class="title"><?= htmlReady($name_and_title[0]) ?></p>
+                            <p class="description">
+                                <?= htmlReady(!empty($name_and_title[1]) ? $name_and_title[1] : $nav->getDescription()) ?>
+                            </p>
                         </a>
                         <? endforeach ?>
 
                         <? if (Config::get()->ENABLE_SELF_REGISTRATION): ?>
                             <a href="<?= URLHelper::getLink('dispatch.php/registration', ['cancel_login' => 1]) ?>"
-                                title="<?= _('Registrieren, um das System erstmalig zu nutzen') ?>" class="link-registration">
+                               title="<?= _('Registrieren, um das System erstmalig zu nutzen') ?>" class="link-registration">
                                 <?= _('Kein Zugang? Jetzt registrieren') ?>
                             </a>
                         <? endif; ?>
@@ -137,49 +130,27 @@ $enable_news = Config::get()->LOGIN_NEWS_VISIBILITY && count($news_entries) > 0;
     });
     // -->
 
-    <? if ($enable_faq) : ?>
-        STUDIP.domReady(() => {
-            const loginBox = document.getElementById('loginbox');
-            const faqContent = document.getElementById('login-faq-content-wrapper');
-            const htmlTag = document.documentElement;
-
-            const adjustFaqHeight = () => {
-                if (!htmlTag.classList.contains('responsive-display')) {
-                    const loginBoxHeight = loginBox.offsetHeight;
-
-                    const maxAllowedHeight = loginBoxHeight - 100;
-
-                    faqContent.style.maxHeight = `${Math.max(maxAllowedHeight, 0)}px`;
-                }
-            };
-
-            adjustFaqHeight();
-
-            window.addEventListener('resize', adjustFaqHeight);
-        });
-    <? endif ?>
-
     <? if ($enable_faq && $enable_news): ?>
-        const faqButton = document.getElementById('show-faq');
-        const newsButton = document.getElementById('hide-faq');
+    const faqButton = document.getElementById('show-faq');
+    const newsButton = document.getElementById('hide-faq');
 
-        faqButton.addEventListener('click', e => {
-            const faqBox = document.getElementById('login-faq-box');
-            const newsBox = document.getElementById('login-news-box');
-            newsBox.classList.add('hidden');
-            faqBox.classList.remove('hidden');
-            faqButton.classList.add('selected');
-            newsButton.classList.remove('selected');
-        });
+    faqButton.addEventListener('click', e => {
+        const faqBox = document.getElementById('login-faq-box');
+        const newsBox = document.getElementById('login-news-box');
+        newsBox.classList.add('hidden');
+        faqBox.classList.remove('hidden');
+        faqButton.classList.add('selected');
+        newsButton.classList.remove('selected');
+    });
 
-        newsButton.addEventListener('click', e => {
-            const faqBox = document.getElementById('login-faq-box');
-            const newsBox = document.getElementById('login-news-box');
-            faqBox.classList.add('hidden');
-            newsBox.classList.remove('hidden');
-            newsButton.classList.add('selected');
-            faqButton.classList.remove('selected');
-        });
+    newsButton.addEventListener('click', e => {
+        const faqBox = document.getElementById('login-faq-box');
+        const newsBox = document.getElementById('login-news-box');
+        faqBox.classList.add('hidden');
+        newsBox.classList.remove('hidden');
+        newsButton.classList.add('selected');
+        faqButton.classList.remove('selected');
+    });
     <? endif ?>
 
 </script>

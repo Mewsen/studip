@@ -39,10 +39,10 @@
 ob_start();
 require '../lib/bootstrap.php';
 
-page_open(["sess" => "Seminar_Session",
-                "auth" => "Seminar_Default_Auth",
-                "perm" => "Seminar_Perm",
-                "user" => "Seminar_User"]);
+$sess = sess();
+$auth = auth();
+$auth->setNobody(true);
+$sess->start();
 
 //Load plugins, unless they are disabled via an URL parameter.
 if (Request::int('disable_plugins') !== null && ($GLOBALS['user']->id === 'nobody' || $GLOBALS['perm']->have_perm('root'))) {
@@ -113,8 +113,14 @@ if ($file_missing) {
 //if download not allowed throw exception to terminate script
 if ($no_access) {
     // redirect to login page if user is not logged in
-    $GLOBALS['auth']->login_if($GLOBALS['auth']->auth['uid'] === 'nobody');
-    throw new AccessDeniedException(_("Sie haben keine Zugriffsberechtigung für diesen Download!"));
+    if ($GLOBALS['user']->id === 'nobody') {
+        $_SESSION['redirect_after_login'] = Request::url();
+        $sess->save();
+        header('Location: ' . URLHelper::getURL('dispatch.php/login'));
+        die();
+    } else {
+        throw new AccessDeniedException(_("Sie haben keine Zugriffsberechtigung für diesen Download!"));
+    }
 }
 
 //replace bad charakters to avoid problems when saving the file
@@ -171,7 +177,7 @@ if (isset($file)) {
 }
 
 // close session, download will mostly be a parallel action
-page_close();
+$sess->save();
 
 // output_buffering may be explicitly or implicitly enabled
 while (ob_get_level()) {
@@ -209,7 +215,7 @@ if ($filesize && !parse_url($path_file, PHP_URL_SCHEME)) {
     if (isset($_SERVER['HTTP_RANGE'])) {
         $c_start = $start;
         $c_end   = $end;
-        list(, $range) = explode('=', $_SERVER['HTTP_RANGE'], 2);
+        [, $range] = explode('=', $_SERVER['HTTP_RANGE'], 2);
         if (mb_strpos($range, ',') !== false) {
             header('HTTP/1.1 416 Requested Range Not Satisfiable');
             header("Content-Range: bytes $start-$end/$filesize");

@@ -80,17 +80,8 @@ class Authentication
             || 'nobody' === $GLOBALS['user']->id
         ) {
             $GLOBALS['user'] = new \Seminar_User($user);
-            $GLOBALS['auth'] = new \Seminar_Auth();
-            $GLOBALS['auth']->auth = [
-                'uid' => $user->id,
-                'uname' => $user->username,
-                'perm' => $user->perms,
-            ];
-            $GLOBALS['perm'] = new \Seminar_Perm();
             $GLOBALS['MAIL_VALIDATE_BOX'] = false;
-            if (isset($GLOBALS['sess'])) {
-                $GLOBALS['sess']->delete();
-            }
+            sess()->destroy();
             setTempLanguage($user->id);
         }
 

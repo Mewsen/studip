@@ -9,13 +9,6 @@ require '../lib/bootstrap.php';
 // Set base url for URLHelper class
 URLHelper::setBaseUrl($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP']);
 
-page_open([
-    'sess' => 'Seminar_Session',
-    'auth' => 'Seminar_Default_Auth',
-    'perm' => 'Seminar_Perm',
-    'user' => 'Seminar_User',
-]);
-
 // Instantiate the app
 $container = app();
 AppFactory::setContainer($container);
@@ -28,6 +21,11 @@ $app->setBasePath($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'] . 'jsonapi.php');
 // Register middleware
 $middleware = require 'lib/classes/JsonApi/middleware.php';
 $middleware($app);
+
+//register stud.ip session/auth middleware
+$app->add(app(Studip\Middleware\AuthenticationMiddleware::class));
+auth()->setNobody(true);
+$app->add(app(Studip\Middleware\SessionMiddleware::class));
 
 // Register routes
 $routes = require 'lib/classes/JsonApi/routes.php';

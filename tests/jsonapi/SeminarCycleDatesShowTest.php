@@ -51,8 +51,6 @@ class SeminarCycleDatesShowTest extends \Codeception\Test\Unit
         $GLOBALS['user'] = new \Seminar_User(
             \User::find($credentials['id'])
         );
-        $GLOBALS['auth'] = new \Seminar_Auth();
-        $GLOBALS['auth']->auth = ['uid' => $credentials['id']];
 
         $cycle = \SeminarCycleDate::create(
             [

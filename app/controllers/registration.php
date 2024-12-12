@@ -124,22 +124,85 @@ class RegistrationController extends AuthenticatedController
         $this->registrationform->addStoreCallback(
             function (Form $form) {
                 $new_user = $form->getLastPart()->getContextObject();
-
-                $GLOBALS['sess']->regenerate_session_id(['auth']);
-                $GLOBALS['auth']->unauth();
-                $GLOBALS['auth']->auth['jscript'] = true;
-                $GLOBALS['auth']->auth['perm']  = $new_user['perms'];
-                $GLOBALS['auth']->auth['uname'] = $new_user['username'];
-                $GLOBALS['auth']->auth['auth_plugin']  = $new_user['auth_plugin'];
-                $GLOBALS['auth']->auth_set_user_settings($new_user->user_id);
-                $GLOBALS['auth']->auth['uid'] = $new_user['user_id'];
-
-                Seminar_Register_Auth::sendValidationMail($new_user);
-
+                sess()->regenerateId();
+                auth()->setAuthenticatedUser($new_user);
+                auth()->sendValidationMail($new_user);
                 return 1;
             }
         );
 
         $this->registrationform->autoStore()->setURL(URLHelper::getURL('dispatch.php/start'));
+    }
+
+    public function email_validation_action()
+    {
+        if (!User::findCurrent()) {
+            $_SESSION['redirect_after_login'] = Request::url();
+            sess()->save();
+            $this->redirect(URLHelper::getURL('dispatch.php/login'));
+            return;
+        }
+        // hier wird noch mal berechnet, welches secret in der Bestaetigungsmail uebergeben wurde
+        $secret = Request::option('secret');
+        PageLayout::setHelpKeyword('Basis.AnmeldungMail');
+        PageLayout::setTitle(_('Bestätigung der E-Mail-Adresse'));
+        //user bereits vorhanden
+        if ($GLOBALS['perm']->have_perm('autor')) {
+            $info = sprintf(_('Sie haben schon den Status <b>%s</b> im System.
+                       Eine Aktivierung des Accounts ist nicht mehr nötig, um Schreibrechte zu bekommen'), $GLOBALS['user']->perms);
+            $details = [];
+            $details[] = sprintf('<a href="%s">%s</a>', URLHelper::getLink('index.php'), _('zurück zur Startseite'));
+            $message = MessageBox::info($info, $details);
+        }
+
+        //  So, wer bis hier hin gekommen ist gehoert zur Zielgruppe...
+        // Volltrottel (oder abuse)
+        elseif (empty($secret)) {
+            $message = MessageBox::error(_('Sie müssen den vollständigen Link aus der Bestätigungsmail in die Adresszeile Ihres Browsers kopieren.'));
+        }
+
+        // abuse (oder Volltrottel)
+        else {
+            if (!Token::isValid($secret, User::findCurrent()->id)) {
+                $error = _('Der übergebene <em>Secret-Code</em> ist nicht korrekt.');
+                $details = [];
+                $details[] = _('Sie müssen unter dem Benutzernamen eingeloggt sein, für den Sie die Bestätigungsmail erhalten haben.');
+                $details[] = _('Und Sie müssen den vollständigen Link aus der Bestätigungsmail in die Adresszeile Ihres Browsers kopieren.');
+                $message = MessageBox::error($error, $details);
+
+                // Mail an abuse
+                $REMOTE_ADDR = $_SERVER['REMOTE_ADDR'];
+                $Zeit = date("H:i:s, d.m.Y", time());
+                $username = User::findCurrent()->username;
+                StudipMail::sendAbuseMessage("Validation", "Secret falsch\n\nUser: $username\n\nIP: $REMOTE_ADDR\nZeit: $Zeit\n");
+            } // alles paletti, Status ändern
+            else {
+                $studip_user = User::findCurrent();
+                $studip_user->perms = 'autor';
+                if (!$studip_user->store()) {
+                    $error = _('Fehler! Bitte wenden Sie sich an den Systemadministrator.');
+                    $message = MessageBox::error($error);
+                } else {
+                    $success = _('Ihr Status wurde erfolgreich auf <em>autor</em> gesetzt.<br>
+                      Damit dürfen Sie in den meisten Veranstaltungen schreiben, für die Sie sich anmelden.');
+                    $details = [];
+                    $details[] = _('Einige Veranstaltungen erfordern allerdings bei der Anmeldung die Eingabe eines Passwortes.
+                        Dieses Passwort erfahren Sie von den Lehrenden der Veranstaltung.');
+                    $message = MessageBox::success($success, $details);
+
+                    // Auto-Inserts
+                    AutoInsert::instance()->saveUser($studip_user->id, "autor");
+
+                    auth()->setAuthenticatedUser(\User::build(['user_id' => 'nobody', 'perms' => null]));
+
+                    $info = sprintf(_('Die Statusänderung wird erst nach einem erneuten %sLogin%s wirksam!<br>
+                          Deshalb wurden Sie jetzt automatisch ausgeloggt.'),
+                        '<a href="' . URLHelper::getLink('index.php') . '"><em>',
+                        '</em></a>');
+                    $message .= MessageBox::info($info);
+                }
+                $this->message = $message;
+            }
+        }
     }
 }

@@ -35,9 +35,6 @@ abstract class Settings_SettingsController extends AuthenticatedController
 
         parent::before_filter($action, $args);
 
-        // Ensure user is logged in
-        $GLOBALS['auth']->login_if($action !== 'logout' && $GLOBALS['auth']->auth['uid'] === 'nobody');
-
         // extract username
         $username   = Request::username('username', $GLOBALS['user']->username);
         $this->user = User::findByUsername($username);
@@ -93,23 +90,6 @@ abstract class Settings_SettingsController extends AuthenticatedController
         if (!$ticket || !check_ticket($ticket)) {
             throw new InvalidSecurityTokenException();
         }
-    }
-
-    /**
-     * Adjust url_for so it imitates the parameters behaviour of URLHelper.
-     * This way you can add parameters by adding an associative array as last
-     * argument.
-     *
-     * @param mixed $to Path segments of the url (String) or url parameters
-     *                  (Array)
-     * @return String Generated url
-     */
-    public function url_for($to = ''/*, ...*/)
-    {
-        $arguments  = func_get_args();
-        $parameters = is_array(end($arguments)) ? array_pop($arguments) : [];
-        $url        = call_user_func_array('parent::url_for', $arguments);
-        return URLHelper::getURL($url, $parameters);
     }
 
     /**
@@ -224,14 +204,9 @@ abstract class Settings_SettingsController extends AuthenticatedController
         $should_logout = $action === 'logout' && $this->flash['logout-token'] === Request::get('token');
 
         if ($should_logout) {
-            $GLOBALS['sess']->delete();
-            $GLOBALS['auth']->logout();
+            $this->redirect('dispatch.php/logout');
         }
 
         parent::after_filter($action, $args);
-
-        if ($should_logout) {
-            $GLOBALS['user']->set_last_action(time() - 15 * 60);
-        }
     }
 }

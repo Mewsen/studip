@@ -31,3 +31,19 @@ function app($entryId = null, $parameters = [])
 
     return $container->make($entryId, $parameters);
 }
+
+/**
+ * @return \Studip\Session\Manager
+ */
+function sess() : Studip\Session\Manager
+{
+    return app()->get(Studip\Session\Manager::class);
+}
+
+/**
+ * @return \Studip\Authentication\Manager
+ */
+function auth() : Studip\Authentication\Manager
+{
+    return app()->get(Studip\Authentication\Manager::class);
+}

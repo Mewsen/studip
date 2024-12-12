@@ -63,7 +63,7 @@ class ObjectdisplayHelper {
             ],
             'Course' => [
                 'link' => function($obj) {
-            return URLHelper::getLink('seminar_main.php', ['auswahl' => $obj->id]);
+            return URLHelper::getLink('dispatch.php/course/go', ['to' => $obj->id]);
         },
                 'name' => function($obj) {
             return htmlReady($obj->name);

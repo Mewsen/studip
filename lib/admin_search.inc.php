@@ -18,6 +18,6 @@ if (!Institute::findCurrent()) {
     $template->institutes = Institute::getMyInstitutes($GLOBALS['user']->id);
     echo $template->render();
 
-    page_close();
+    sess()->save();
     die;
 }

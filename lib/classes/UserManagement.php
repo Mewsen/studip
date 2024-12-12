@@ -1280,7 +1280,7 @@ class UserManagement
                       WHERE a.user_id = ? AND a.inst_perms = 'admin'";
             $statement = DBManager::get()->prepare($query);
             $statement->execute([
-                $GLOBALS['auth']->auth['uid'],
+                $GLOBALS['user']->id,
                 $this->user_data['auth_user_md5.user_id'],
             ]);
             $ok = $statement->fetchColumn();

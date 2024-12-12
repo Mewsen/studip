@@ -7,7 +7,7 @@
 $videofiles = $og->getVideoFiles();
 $audiofiles = $og->getAudioFiles();
 $og['image'] = filter_var($og['image'], FILTER_VALIDATE_URL) ? $og['image'] : '';
-if (Config::get()->LOAD_EXTERNAL_MEDIA === "proxy" && Seminar_Session::is_current_session_authenticated()) {
+if (Config::get()->LOAD_EXTERNAL_MEDIA === "proxy" && sess()->isCurrentSessionAuthenticated()) {
     $media_url_func = function ($url) {
         return $GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/media_proxy?url=' . urlencode($url);
     };

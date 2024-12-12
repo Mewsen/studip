@@ -83,7 +83,7 @@
         <? foreach ($auto_sems as $auto_sem): ?>
             <tr>
                 <td>
-                    <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $auto_sem['seminar_id']]) ?>">
+                    <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['to' => $auto_sem['seminar_id']]) ?>">
                         <?= htmlReady($auto_sem['Name']) ?>
                     </a>
                 </td>

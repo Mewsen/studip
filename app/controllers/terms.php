@@ -33,7 +33,7 @@ class TermsController extends AuthenticatedController
                 $this->redirectUser();
             } else {
                 $_SESSION['logout_ticket'] = get_ticket();
-                $this->redirectUser('logout.php');
+                $this->redirectUser('dispatch.php/logout');
             }
         } elseif (Request::get('action') === 'denied') {
             if (trim(Config::get()->TERMS_CONFIG['denial_message'])) {

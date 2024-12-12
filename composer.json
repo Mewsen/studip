@@ -21,6 +21,9 @@
                 "lib/exceptions/",
                 "lib/exceptions/course/"
             ],
+            "Studip\\Middleware\\": "lib/middleware/",
+            "Studip\\Session\\": "lib/session/",
+            "Studip\\Authentication\\": "lib/authentication/",
             "Trails\\": "lib/trails/",
             "": [
                 "lib/classes/",
@@ -50,7 +53,6 @@
                 "lib/models/resources/",
                 "lib/modules/",
                 "lib/navigation/",
-                "lib/phplib/",
                 "lib/plugins/core/",
                 "lib/plugins/db/",
                 "lib/plugins/engine/",
@@ -58,7 +60,6 @@
             ]
         },
         "classmap": [
-            "lib/phplib/email_validation.php",
             "lib/messaging.inc.php",
             "lib/plugins/core/StudIPPlugin.php",
             "app/controllers/module/mvv_controller.php",

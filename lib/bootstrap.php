@@ -115,7 +115,6 @@ if ($GLOBALS['ASSETS_URL'][0] === '/') {
 require $GLOBALS['STUDIP_BASE_PATH'] . '/config/config.inc.php';
 
 require 'lib/helpers.php';
-require 'lib/phplib/page_open.php';
 require_once 'lib/functions.php';
 require_once 'lib/language.inc.php';
 require_once 'lib/visual.inc.php';
@@ -203,21 +202,6 @@ register_shutdown_function(function ($timer) {
 }, Metrics::startTimer());
 
 //include 'tools/debug/StudipDebugPDO.class.php';
-
-/**
- * @deprecated
- */
-class DB_Seminar extends DB_Sql
-{
-    public function __construct($query = false)
-    {
-        $this->Host = $GLOBALS['DB_STUDIP_HOST'];
-        $this->Database = $GLOBALS['DB_STUDIP_DATABASE'];
-        $this->User = $GLOBALS['DB_STUDIP_USER'];
-        $this->Password = $GLOBALS['DB_STUDIP_PASSWORD'];
-        parent::__construct($query);
-    }
-}
 
 if (Config::get()->CALENDAR_ENABLE) {
     require_once 'lib/calendar_functions.inc.php';

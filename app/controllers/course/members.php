@@ -143,7 +143,7 @@ class Course_MembersController extends AuthenticatedController
         $this->tutoren = $filtered_members['tutor']->toArray();
         $this->autoren = $filtered_members['autor']->toArray();
         $this->users = $filtered_members['user']->toArray();
-        $this->studipticket = Seminar_Session::get_ticket();
+        $this->studipticket = get_ticket();
         $this->subject = $this->getSubject();
         $this->groups = $this->status_groups;
         $this->semAdmissionEnabled = false;

@@ -49,7 +49,7 @@ class Course_EnrolmentController extends AuthenticatedController
                 || ($enrolment_info->getCodeword() === 'free_access' && !User::findCurrent())
             )
         ) {
-            $redirect_url = URLHelper::getUrl('seminar_main.php', ['auswahl' => $this->course_id]);
+            $redirect_url = URLHelper::getUrl('dispatch.php/course/go', ['to' => $this->course_id]);
             if (Request::isXhr()) {
                 $this->response->add_header('X-Location', $redirect_url);
                 $this->render_nothing();
@@ -252,7 +252,7 @@ class Course_EnrolmentController extends AuthenticatedController
             if (!empty($course) && $course->admission_prelim) {
                 $this->relocate(URLHelper::getLink('dispatch.php/course/details', ['sem_id' => $this->course_id]));
             } else {
-                $this->relocate(URLHelper::getLink('seminar_main.php', ['auswahl' => $this->course_id]));
+                $this->relocate(URLHelper::getLink('dispatch.php/course/go', ['to' => $this->course_id]));
             }
         } elseif ($enrol_user) {
 

@@ -1,8 +1,6 @@
 <?php
-# Lifter002: TODO
-# Lifter007: TODO
-# Lifter003: TODO
-# Lifter010: TODO
+use Slim\App;
+use Slim\Factory\AppFactory;
 
 /*
  * index.php - <short-description>
@@ -21,5 +19,17 @@ require '../lib/bootstrap.php';
 // prepare environment
 URLHelper::setBaseUrl($GLOBALS['ABSOLUTE_URI_STUDIP']);
 
-$dispatcher = app(\Trails\Dispatcher::class);
-$dispatcher->dispatch(Request::pathInfo());
+// Build PHP_DI Container
+$container = app();
+
+// Instantiate the app
+AppFactory::setContainer($container);
+$app = AppFactory::create();
+$container->set(App::class, $app);
+$app->setBasePath($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'] . 'dispatch.php');
+
+$studip_dispatcher = app(\Trails\Dispatcher::class);
+$route_callable = $studip_dispatcher->getRouteCallable(Request::pathInfo());
+$app->any(Request::pathInfo(), $route_callable);
+NotificationCenter::postNotification('SLIM_BEFORE_RUN', $app);
+$app->run();

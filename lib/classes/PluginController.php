@@ -15,6 +15,7 @@ class PluginController extends StudipController
 {
     public function __construct(PluginDispatcher $dispatcher)
     {
+        $this->with_session = false; //session for plugin is always initialized in plugins.php
         parent::__construct($dispatcher);
 
         $this->plugin = $dispatcher->current_plugin;

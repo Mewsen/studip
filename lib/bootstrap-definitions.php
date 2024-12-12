@@ -71,6 +71,19 @@ return [
     }),
     PluginManager::class => DI\factory([PluginManager::class, 'getInstance']),
 
+    Studip\Session\Manager::class =>  DI\factory(function () {
+        if (Config::get()->CACHING_ENABLE && $GLOBALS['CACHE_IS_SESSION_STORAGE']) {
+            $session_handler = new Studip\Session\CacheSessionHandler($GLOBALS['SESSION_OPTIONS']['lifetime'] ?? null);
+        } else {
+            $session_handler = new Studip\Session\DbSessionHandler();
+        }
+        $GLOBALS['SESSION_OPTIONS']['path'] = $GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'];
+        $GLOBALS['SESSION_OPTIONS']['secure'] = Request::protocol() == 'https';
+        return new Studip\Session\Manager($session_handler, $GLOBALS['SESSION_OPTIONS']);
+
+    }),
+    Studip\Authentication\Manager::class => DI\create(),
+
     // PSR-17 HTTP Factories
     \Psr\Http\Message\RequestFactoryInterface::class => DI\get(Psr17Factory::class),
     \Psr\Http\Message\ResponseFactoryInterface::class => DI\get(Psr17Factory::class),

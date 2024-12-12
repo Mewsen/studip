@@ -334,7 +334,7 @@ class MyCoursesController extends AuthenticatedController
     public function decline_action($course_id, $waiting = null)
     {
         $course = Course::find($course_id);
-        $ticket_check    = Seminar_Session::check_ticket(Request::option('studipticket'));
+        $ticket_check    = check_ticket(Request::option('studipticket'));
         if (LockRules::Check($course_id, 'participants')) {
             $lockdata = LockRules::getObjectRule($course_id);
             PageLayout::postError(sprintf(
@@ -419,8 +419,8 @@ class MyCoursesController extends AuthenticatedController
 
             PageLayout::postQuestion(
                 $message,
-                $this->declineURL($course_id, ['cmd' => $cmd, 'studipticket' => Seminar_Session::get_ticket()]),
-                $this->declineURL($course_id, ['cmd' => 'back', 'studipticket' => Seminar_Session::get_ticket()])
+                $this->declineURL($course_id, ['cmd' => $cmd, 'studipticket' => get_ticket()]),
+                $this->declineURL($course_id, ['cmd' => 'back', 'studipticket' => get_ticket()])
             );
             $this->redirect('my_courses/index');
             return;

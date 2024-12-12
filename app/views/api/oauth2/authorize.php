@@ -50,7 +50,7 @@
             ) ?><br>
     </p>
 
-    <form action="<?= URLHelper::getLink('logout.php') ?>" method="post">
+    <form action="<?= URLHelper::getLink('dispatch.php/logout') ?>" method="post">
         <button class="as-link">
             <small>
                 <?= sprintf(

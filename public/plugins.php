@@ -1,6 +1,4 @@
 <?php
-# Lifter007: TEST
-
 /*
  * Copyright (C) 2007 - Marcus Lunzenauer <mlunzena@uos.de>
  *
@@ -10,61 +8,74 @@
  * the License, or (at your option) any later version.
  */
 
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\App;
+use Slim\Factory\AppFactory;
+use Psr\Http\Server\RequestHandlerInterface;
+
 require '../lib/bootstrap.php';
 
-// set base url for URLHelper class
-URLHelper::setBaseUrl($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP']);
+// prepare environment
+URLHelper::setBaseUrl($GLOBALS['ABSOLUTE_URI_STUDIP']);
 
-// initialize Stud.IP-Session
-page_open([
-    'sess' => 'Seminar_Session',
-    'auth' => 'Seminar_Default_Auth',
-    'perm' => 'Seminar_Perm',
-    'user' => 'Seminar_User',
-]);
+// Build PHP_DI Container
+$container = app();
 
-try {
-    require_once 'lib/seminar_open.php';
+// Instantiate the app
+AppFactory::setContainer($container);
+$app = AppFactory::create();
+$container->set(App::class, $app);
+$app->setBasePath($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'] . 'plugins.php');
+$plugin_dispatch = function (ServerRequestInterface $request, RequestHandlerInterface $handler) use ($app) {
+    $responseFactory = app(ResponseFactoryInterface::class);
+    try {
+        // get plugin class from request
+        $dispatch_to = Request::pathInfo();
+        list($plugin_class, $unconsumed) = PluginEngine::routeRequest($dispatch_to);
 
-    // get plugin class from request
-    $dispatch_to = Request::pathInfo();
-    list($plugin_class, $unconsumed) = PluginEngine::routeRequest($dispatch_to);
+        // handle legacy forum plugin URLs
+        if ($plugin_class === 'coreforum') {
+            $response = $responseFactory->createResponse(302);
+            return $response->withHeader('Location', URLHelper::getURL('dispatch.php/course/forum/' . $unconsumed));
+        }
 
-    // handle legacy forum plugin URLs
-    if ($plugin_class === 'coreforum') {
-        header('Location: ' . URLHelper::getURL('dispatch.php/course/forum/' . $unconsumed));
-        die();
+        // retrieve corresponding plugin info
+        $plugin_manager = PluginManager::getInstance();
+        $plugin_info = $plugin_manager->getPluginInfo($plugin_class);
+
+        // create an instance of the queried plugin
+        $plugin = PluginEngine::getPlugin($plugin_class);
+
+        // user is not permitted, show login screen
+        if (is_null($plugin)) {
+            // TODO (mlunzena) should not getPlugin throw this exception?
+            throw new AccessDeniedException(_('Sie besitzen keine Rechte zum Aufruf dieses Plugins.'));
+        }
+
+        // set default page title
+        PageLayout::setTitle($plugin->getPluginName());
+
+        // deprecated, the plugin should override perform() instead
+        if (is_callable([$plugin, 'initialize'])) {
+            $plugin->initialize();
+        }
+
+        $route_callable = $plugin->getRouteCallable($unconsumed);
+        $app->any(Request::pathInfo(), $route_callable);
+    } catch (AccessDeniedException $ade) {
+        $_SESSION['redirect_after_login'] = Request::url();
+        $response = $responseFactory->createResponse(302);
+        return $response->withHeader('Location', URLHelper::getURL('dispatch.php/login'));
     }
+    return $handler->handle($request);
+};
 
-    // retrieve corresponding plugin info
-    $plugin_manager = PluginManager::getInstance();
-    $plugin_info = $plugin_manager->getPluginInfo($plugin_class);
+$app->add($plugin_dispatch);
+$app->add(app(Studip\Middleware\SeminarOpenMiddleware::class));
+$app->add(app(Studip\Middleware\AuthenticationMiddleware::class));
+auth()->setNobody(true);
+$app->add(app(Studip\Middleware\SessionMiddleware::class));
 
-    // create an instance of the queried plugin
-    $plugin = PluginEngine::getPlugin($plugin_class);
-
-    // user is not permitted, show login screen
-    if (is_null($plugin)) {
-        // TODO (mlunzena) should not getPlugin throw this exception?
-        throw new AccessDeniedException(_('Sie besitzen keine Rechte zum Aufruf dieses Plugins.'));
-    }
-
-    // set default page title
-    PageLayout::setTitle($plugin->getPluginName());
-
-    // deprecated, the plugin should override perform() instead
-    if (is_callable([$plugin, 'initialize'])) {
-        $plugin->initialize();
-    }
-
-    // let the show begin
-    $plugin->perform($unconsumed);
-} catch (AccessDeniedException $ade) {
-    global $auth;
-
-    $auth->login_if($auth->auth['uid'] == 'nobody');
-    throw $ade;
-}
-
-// close the page
-page_close();
+NotificationCenter::postNotification('SLIM_BEFORE_RUN', $app);
+$app->run();

@@ -27,7 +27,7 @@
                     </ul>
                 </td>
             </tr>
-            
+
             <tr>
                 <td style="background:#ddffdd; border:1px solid #d0d7e3;" valign="top">
                     <p><b>Wenn Sie sichtbar sind, dann</b></p>
@@ -67,7 +67,7 @@
             <tr>
                 <td colspan="3">
                     <p>
-                        Weitere Informationen entnehme Sie bitte den 
+                        Weitere Informationen entnehme Sie bitte den
                         <a href="<?=URLHelper::getURL(Config::get()->PRIVACY_URL, ['cancel_login' => 1], true) ?>" target="_bank">Datenschutzerklärungen</a>.
                     </p>
                 </td>

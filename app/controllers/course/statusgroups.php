@@ -1582,7 +1582,7 @@ class Course_StatusgroupsController extends AuthenticatedController
             _('Die Gruppen wurden in die Veranstaltung %s kopiert.'),
             sprintf(
                 '<a href="%s">%s</a>',
-                URLHelper::getLink('seminar_main.php', ['auswahl' => $target_course_id], true),
+                URLHelper::getLink('dispatch.php/course/go', ['to' => $target_course_id], true),
                 htmlReady($target_course->getFullName())
             ),
         ));

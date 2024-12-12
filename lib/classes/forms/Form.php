@@ -300,7 +300,7 @@ class Form extends Part
                 if ($this->success_message) {
                     \PageLayout::postSuccess($this->success_message);
                 }
-                page_close();
+                sess()->save();
                 //This indicates that the form has been stored successfully.
                 echo "STUDIPFORM_STORE_SUCCESS";
                 die();
@@ -330,7 +330,7 @@ class Form extends Part
             }
             header('Content-Type: application/json');
             echo json_encode($output);
-            page_close();
+            sess()->save();
             die();
         }
         return $this;

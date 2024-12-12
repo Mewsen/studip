@@ -19,6 +19,11 @@ class MigrationTest extends \Codeception\Test\Unit
         require_once 'lib/migrations/Migration.php';
         require_once 'lib/migrations/Migrator.php';
         require_once 'lib/migrations/SchemaVersion.php';
+
+        $testconfig = new Config([
+            'LOG_ENABLE' => false,
+        ]);
+        Config::set($testconfig);
     }
 
     public function tearDown(): void

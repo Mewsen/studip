@@ -60,6 +60,7 @@ $gap-between-boxes: calc($login-page-margin / 2);
     min-height: 540px;
     display: flex;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    margin-top: 100px;
 
     #login-infobox {
         max-width: 540px;

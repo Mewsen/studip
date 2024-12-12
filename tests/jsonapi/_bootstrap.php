@@ -2,13 +2,14 @@
 
 // Here you can initialize variables that will be available to your tests
 
-global $STUDIP_BASE_PATH, $ABSOLUTE_URI_STUDIP, $CACHING_ENABLE, $CACHING_FILECACHE_PATH, $SYMBOL_SHORT, $TMP_PATH, $UPLOAD_PATH, $DYNAMIC_CONTENT_PATH, $DYNAMIC_CONTENT_URL;
+global $STUDIP_BASE_PATH, $ABSOLUTE_URI_STUDIP, $CACHING_ENABLE, $CACHING_FILECACHE_PATH, $SYMBOL_SHORT, $TMP_PATH, $UPLOAD_PATH, $DYNAMIC_CONTENT_PATH, $DYNAMIC_CONTENT_URL, $CANONICAL_RELATIVE_PATH_STUDIP;
 
 // common set-up, usually done by lib/bootstraph.php and
 // config/config_local.inc.php when run on web server
 if (!isset($STUDIP_BASE_PATH)) {
     $STUDIP_BASE_PATH = dirname(dirname(__DIR__));
     $ABSOLUTE_PATH_STUDIP = $STUDIP_BASE_PATH.'/public/';
+    $CANONICAL_RELATIVE_PATH_STUDIP = '/public/';
     $UPLOAD_PATH = $STUDIP_BASE_PATH.'/data/upload_doc';
     $TMP_PATH = $TMP_PATH ?: '/tmp';
     $DYNAMIC_CONTENT_PATH = '';
@@ -50,17 +51,6 @@ $GLOBALS['_fullname_sql']['full_rev_username'] = "TRIM(CONCAT(Nachname,', ',Vorn
 
 SimpleORMap::expireTableScheme();
 
-/**
- * @deprecated
- */
-class DB_Seminar extends DB_Sql
-{
-    public function __construct($query = false)
-    {
-        parent::__construct($query);
-    }
-}
-
-require_once __DIR__ . '/../../composer/autoload.php';
+require_once __DIR__.'/../../composer/autoload.php';
 
 session_id("test-session");

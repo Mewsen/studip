@@ -317,7 +317,7 @@ class StartController extends AuthenticatedController
     public function resend_validation_mail_action()
     {
         if ($GLOBALS['perm']->get_perm() === 'user') {
-            Seminar_Register_Auth::sendValidationMail($GLOBALS['user']);
+            auth()->sendValidationMail();
             PageLayout::postSuccess(
                 _('Die Bestätigungsmail wurde erneut verschickt.')
             );
@@ -360,13 +360,11 @@ class StartController extends AuthenticatedController
                 $this->redirect('start/edit_mail_address');
                 return;
             }
-            $user = new User($GLOBALS['user']->id);
+            $user = \User::findCurrent();
             $user->Email = $email1;
             $user->store();
 
-            $GLOBALS['user']->Email = $user->Email;
-
-            Seminar_Register_Auth::sendValidationMail($user);
+            auth()->sendValidationMail($user);
             PageLayout::postMessage(MessageBox::success(
                 _('Ihre Mailadresse wurde geändert und die Bestätigungsmail erneut verschickt.')
             ));

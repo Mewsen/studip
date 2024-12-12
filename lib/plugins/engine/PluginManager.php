@@ -609,7 +609,7 @@ class PluginManager
      */
     public function getPlugin ($class)
     {
-        $user = $GLOBALS['user']->id;
+        $user = $GLOBALS['user']->id ?? 'nobody' ;
         $plugin_info = $this->getPluginInfo($class);
         $plugin = null;
 

@@ -66,7 +66,7 @@ class CSRFProtection
         if (!isset(self::$storage)) {
             // w/o a session, throw an exception since we cannot use it
             if (session_id() === '') {
-                throw new SessionRequiredException();
+               throw new SessionRequiredException();
             }
 
             self::$storage =& $_SESSION;
@@ -179,5 +179,39 @@ class CSRFProtection
             '<input type="hidden" %s>',
             arrayToHtmlAttributes($attributes)
         );
+    }
+
+    /**
+     * returns a random string token for XSRF prevention
+     * the string is stored in the session
+     *
+     * @static
+     * @return string
+     */
+    public static function sessionticket()
+    {
+        $storage = &self::getStorage();
+
+        if (empty($storage['studipticket'])) {
+            $storage['studipticket'] = md5(uniqid('studipticket', 1));
+        }
+        return $storage['studipticket'];
+    }
+
+    /**
+     * checks the given string token against the one stored
+     * in the session
+     *
+     * @static
+     * @param string $studipticket
+     * @return bool
+     */
+    public static function verifySessionticket($studipticket)
+    {
+        $storage = &self::getStorage();
+
+        $check = (isset($storage['studipticket']) && $storage['studipticket'] === $studipticket);
+        $storage['studipticket'] = null;
+        return $check;
     }
 }

@@ -108,7 +108,7 @@ class Course_StudygroupController extends AuthenticatedController
                     $icon = $icon->copyWithRole('info');
                     $infotext = _('Mitgliedschaft bereits beantragt!');
                 } else {
-                    $infolink = URLHelper::getURL('seminar_main.php', ['auswahl' => $studygroup->id]);
+                    $infolink = URLHelper::getURL('dispatch.php/course/go', ['to' => $studygroup->id]);
                     $infotext = _('Direkt zur Studiengruppe');
                 }
             } else if ($GLOBALS['perm']->have_perm('admin')) {
@@ -205,7 +205,7 @@ class Course_StudygroupController extends AuthenticatedController
             Sidebar::get()->addWidget($actions);
         } // ... otherwise redirect us to the seminar
         else {
-            $this->redirect(URLHelper::getURL('seminar_main.php?auswahl=' . $id));
+            $this->redirect(URLHelper::getURL('dispatch.php/course/go?to=' . $id));
         }
     }
 
@@ -408,7 +408,7 @@ class Course_StudygroupController extends AuthenticatedController
         }
 
         if (!$perm->have_studip_perm('tutor', $id)) {
-            $this->redirect(URLHelper::getURL('seminar_main.php', ['auswahl' => $id]));
+            $this->redirect(URLHelper::getURL('dispatch.php/course/go', ['to' => $id]));
             return;
         }
 
@@ -570,7 +570,7 @@ class Course_StudygroupController extends AuthenticatedController
         $id = Context::getId();
 
         if (!$perm->have_studip_perm('tutor', $id)) {
-            $this->redirect(URLHelper::getURL('seminar_main.php', ['auswahl' => $id]));
+            $this->redirect(URLHelper::getURL('dispatch.php/course/go', ['to' => $id]));
             exit;
         }
 

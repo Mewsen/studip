@@ -25,6 +25,21 @@ abstract class StudipController extends Trails\Controller
     protected $allow_nobody = true; //should 'nobody' allowed for this controller or redirected to login?
     protected $_autobind = false;
 
+    public function __construct(\Trails\Dispatcher $dispatcher)
+    {
+        parent::__construct($dispatcher);
+        if ($this->with_session) {
+            $slimapp = app()->get(Slim\App::class);
+            if ($slimapp) {
+                $slimapp->add(Studip\Middleware\SeminarOpenMiddleware::class);
+                $slimapp->add(Studip\Middleware\AuthenticationMiddleware::class);
+                auth()->setNobody($this->allow_nobody);
+                $slimapp->add(Studip\Middleware\SessionMiddleware::class);
+            }
+        }
+    }
+
+
     /**
      * @return false|void
      */
@@ -37,22 +52,8 @@ abstract class StudipController extends Trails\Controller
         parent::before_filter($action, $args);
 
         if ($this->with_session) {
-            # open session
-            page_open([
-                'sess' => 'Seminar_Session',
-                'auth' => $this->allow_nobody ? 'Seminar_Default_Auth' : 'Seminar_Auth',
-                'perm' => 'Seminar_Perm',
-                'user' => 'Seminar_User'
-            ]);
-
-            // show login-screen, if authentication is "nobody"
-            $GLOBALS['auth']->login_if((Request::get('again') || !$this->allow_nobody) && $GLOBALS['user']->id == 'nobody');
-
             // Setup flash instance
             $this->flash = Trails\Flash::instance();
-
-            // set up user session
-            include 'lib/seminar_open.php';
         }
 
         // Set generic attribute that indicates whether the request was sent
@@ -85,13 +86,11 @@ abstract class StudipController extends Trails\Controller
     }
 
     /**
-     * Extended method to inject extended response object.
+     *  method to inject extended response object.
      */
-    public function erase_response()
+    public function injectResponse(Psr\Http\Message\ResponseInterface $response)
     {
-        parent::erase_response();
-
-        $this->response = new StudipResponse();
+        $this->response = new StudipResponse($response);
     }
 
     /**
@@ -140,9 +139,6 @@ abstract class StudipController extends Trails\Controller
             $this->response->add_header('X-WikiLink', format_help_url(PageLayout::getHelpKeyword()));
         }
 
-        if ($this->with_session) {
-            page_close();
-        }
     }
 
     /**
@@ -644,7 +640,7 @@ abstract class StudipController extends Trails\Controller
         // If the relayed action should perform a redirect, do so
         if (isset($response->headers['Location'])) {
             header("Location: {$response->headers['Location']}");
-            page_close();
+            sess()->save();
             die;
         }
 

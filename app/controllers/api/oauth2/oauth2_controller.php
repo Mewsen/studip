@@ -15,13 +15,6 @@ abstract class OAuth2Controller extends StudipController
     {
         parent::before_filter($action, $args);
 
-        page_open([
-            'sess' => 'Seminar_Session',
-            'auth' => 'Seminar_Default_Auth',
-            'perm' => 'Seminar_Perm',
-            'user' => 'Seminar_User',
-        ]);
-
         $this->set_layout(null);
 
         $this->container = new Studip\OAuth2\Container();

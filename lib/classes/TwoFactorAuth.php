@@ -240,7 +240,7 @@ final class TwoFactorAuth
             ],
             'layouts/base.php'
         );
-        page_close();
+        sess()->save();
         die;
     }
 

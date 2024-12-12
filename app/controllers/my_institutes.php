@@ -33,13 +33,13 @@ class MyInstitutesController extends AuthenticatedController
     public function decline_inst_action($inst_id)
     {
         $institut     = Institute::find($inst_id);
-        $ticket_check = Seminar_Session::check_ticket(Request::option('studipticket'));
+        $ticket_check = check_ticket(Request::option('studipticket'));
 
         if (Request::option('cmd') !== 'kill' && Request::get('cmd') !== 'back') {
             $this->flash['decline_inst'] = true;
             $this->flash['inst_id']      = $inst_id;
             $this->flash['name']         = $institut->name;
-            $this->flash['studipticket'] = Seminar_Session::get_ticket();
+            $this->flash['studipticket'] = get_ticket();
         } elseif (Request::get('cmd') === 'kill' && $ticket_check && Request::get('cmd') !== 'back') {
             $changed = InstituteMember::deleteBySQL(
                 "user_id = ? AND Institut_id = ? AND inst_perms = 'user'",

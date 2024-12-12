@@ -8,7 +8,7 @@ html {
 body {
     display: grid;
     background-color: var(--white);
-    width: 100%;    
+    width: 100%;
     grid-column-gap: 5px;
     grid-row-gap: $grid-gap;
     grid-template-columns: ($sidebar-width + $sidebar-padding) minmax(auto, calc(100vw - $sidebar-width - $sidebar-padding));
@@ -33,6 +33,10 @@ body {
 #sidebar {
     grid-column: 1 / 2;
     grid-row: 2 / 3;
+}
+
+body#login #content-wrapper {
+    background: unset;
 }
 
 #content-wrapper {

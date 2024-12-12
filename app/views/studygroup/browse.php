@@ -60,7 +60,7 @@ $headers = [
                 </td>
                 <td class="studygroup-title">
                     <? if ($is_member): ?>
-                    <a href="<?= URLHelper::getlink("seminar_main.php?auswahl=" . $group['Seminar_id']) ?>">
+                    <a href="<?= URLHelper::getlink("dispatch.php/course/go?to=" . $group['Seminar_id']) ?>">
                         <? else: ?>
                         <a href="<?= URLHelper::getlink("dispatch.php/course/studygroup/details/" . $group['Seminar_id'], ['cid' => null]) ?>">
                             <? endif; ?>

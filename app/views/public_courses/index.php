@@ -49,7 +49,7 @@
         <tr>
             <td class="<?= $values['Schreibzugriff'] ? 'gruppe6' : 'gruppe2' ?>">&nbsp;</td>
             <td>
-                <a href="<?= URLHelper::getLink('seminar_main.php?auswahl=' . $id) ?>">
+                <a href="<?= URLHelper::getLink('dispatch.php/course/go?to=' . $id) ?>">
                     <?= htmlReady($values['name']) ?>
                 </a>
             </td>
@@ -68,7 +68,7 @@
                   $badge = ' class="badge" data-badge-number="' . intval($navigation->getBadgeNumber())  . '"';
                 }
             ?>
-                <a href="<?= URLHelper::getLink('seminar_main.php?auswahl='. $id . '&redirect_to=' . str_replace('?', '&', $navigation->getURL())) ?>"<?= $badge ?>>
+                <a href="<?= URLHelper::getLink('dispatch.php/course/go?to='. $id . '&redirect_to=' . str_replace('?', '&', $navigation->getURL())) ?>"<?= $badge ?>>
                     <?= $navigation->getImage()->asImg($navigation->getLinkAttributes()) ?>
                 </a>
             <? else: ?>

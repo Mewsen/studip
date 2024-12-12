@@ -129,12 +129,6 @@ class Jsonapi extends \Codeception\Module
                 ->add(function ($request, $handler) {
                     $user = $request->getAttribute(Authentication::USER_KEY, null);
 
-                    $GLOBALS['auth'] = new \Seminar_Auth();
-                    $GLOBALS['auth']->auth = [
-                        'uid' => $user->id,
-                        'uname' => $user->username,
-                        'perm' => $user->perms,
-                    ];
                     $GLOBALS['user'] = new \Seminar_User($user->id);
                     $GLOBALS['perm'] = new \Seminar_Perm();
                     $GLOBALS['MAIL_VALIDATE_BOX'] = false;

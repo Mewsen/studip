@@ -38,7 +38,7 @@
                     <label>
                         <input type="checkbox" name="remove_sem[]" value="<?= htmlReady($assignment['range_id']) ?>" style="display: none;">
                         <span>
-                            <a href="<?= URLHelper::getLink("seminar_main.php", ['auswahl' => $course->getId()]) ?>">
+                            <a href="<?= URLHelper::getLink("dispatch.php/course/go", ['to' => $course->getId()]) ?>">
                                 <?= htmlReady((Config::get()->IMPORTANT_SEMNUMBER ? $course->veranstaltungsnummer." " : "").$course->name. ' ('.$course->semester_text.')') ?>
                             </a>
                             <?= Icon::create('trash')->asimg(['class' => 'text-bottom', 'title' => _('Zuweisung zur Veranstaltung aufheben.')]) ?>
@@ -60,7 +60,7 @@
                             <input type="checkbox" name="remove_statusgruppe[]" value="<?= htmlReady($assignment['range_id']) ?>" style="display: none;">
                             <? $statusgruppe = Statusgruppen::find($assignment['range_id']) ?>
                             <span>
-                                <a href="<?= URLHelper::getLink("seminar_main.php", ['auswahl' => $statusgruppe->getId()]) ?>">
+                                <a href="<?= URLHelper::getLink("dispatch.php/course/go", ['to' => $statusgruppe->getId()]) ?>">
                                     <?= htmlReady($statusgruppe->course['name'].": ".$statusgruppe->name) ?>
                                 </a>
                                 <?= Icon::create('trash')->asimg(['class' => 'text-bottom', 'title' => _('Zuweisung zur Veranstaltung aufheben.')]) ?>

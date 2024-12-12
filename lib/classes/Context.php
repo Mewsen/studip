@@ -246,7 +246,7 @@ class Context
                 );
                 if (!$count) {
                     header('Location: ' . URLHelper::getURL('dispatch.php/course/members/additional_input'));
-                    page_close();
+                    sess()->save();
                     die;
                 }
             }

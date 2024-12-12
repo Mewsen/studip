@@ -31,12 +31,12 @@
                         <? $course = Course::find($priority['seminar_id']) ?>
                         <tr>
                             <td>
-                                <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $course->id]) ?>">
+                                <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['to' => $course->id]) ?>">
                                     <?= htmlReady($course->veranstaltungsnummer) ?>
                                 </a>
                             </td>
                             <td>
-                                <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $course->id]) ?>">
+                                <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['to' => $course->id]) ?>">
                                     <?= sprintf('%s (%s)', htmlReady($course->getFullName('type-name')), htmlReady($course->getFullName('sem-duration-name'))) ?>
                                 </a>
                             </td>

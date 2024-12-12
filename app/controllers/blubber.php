@@ -423,7 +423,7 @@ class BlubberController extends AuthenticatedController
             );
 
             PageLayout::postSuccess(sprintf(_('Studiengruppe "%s" wurde angelegt.'), htmlReady($course['name'])));
-            $this->redirect(URLHelper::getURL('seminar_main.php', ['auswahl' => $course->getId()]));
+            $this->redirect(URLHelper::getURL('dispatch.php/course/go', ['to' => $course->getId()]));
         }
     }
 

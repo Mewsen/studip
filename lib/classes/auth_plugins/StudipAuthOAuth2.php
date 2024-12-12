@@ -75,7 +75,7 @@ final class StudipAuthOAuth2 extends StudipAuthSSO
                 'redirect' => Request::url(),
             ];
 
-            page_close();
+            sess()->save();
             header('Location: ' . $authorizationUrl);
             die;
         } elseif (

@@ -43,6 +43,6 @@
 
     <footer>
         <?= Studip\Button::createAccept(_('Übernehmen'), ['title' => _("Änderungen übernehmen")]); ?>
-        <?= Studip\LinkButton::createCancel(_('Abbrechen'), URLHelper::getURL('seminar_main.php')); ?>
+        <?= Studip\LinkButton::createCancel(_('Abbrechen'), URLHelper::getURL('dispatch.php/course/go')); ?>
     </footer>
 </form>
