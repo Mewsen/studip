@@ -208,7 +208,7 @@ $consum_ribbon_width: calc(100% - 58px);
             width: 32px;
             border-radius: var(--border-radius-default);
             border: solid thin var(--color--button-border);
-            background-color: transparent;
+            background-color: var(--color--button-background);
             cursor: pointer;
 
             &:hover,
@@ -234,6 +234,7 @@ $consum_ribbon_width: calc(100% - 58px);
         .action-menu:not(.is-open) {
             border: solid thin var(--color--button-border);
             border-radius: var(--border-radius-default);
+            background-color: var(--color--button-background);
             padding: 5px;
 
             &:hover,
