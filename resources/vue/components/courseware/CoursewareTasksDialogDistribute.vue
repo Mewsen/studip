@@ -541,7 +541,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            setShowTasksDistributeDialog: 'setShowTasksDistributeDialog',
+            setShowTasksDistributeDialog: 'tasks/setShowTasksDistributeDialog',
             loadCourseUnits: 'loadCourseUnits',
             loadUserUnits: 'loadUserUnits',
             loadStructuralElement: 'courseware-structural-elements/loadById',

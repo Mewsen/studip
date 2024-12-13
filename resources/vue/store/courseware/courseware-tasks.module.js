@@ -21,6 +21,13 @@ export const actions = {
     },
 
     // other actions
+    loadTasksOfCourse({ dispatch }, { cid }) {
+        const options = {
+            'filter[cid]': cid,
+            include: 'solver, structural-element, task-feedback, task-group, task-group.lecturer',
+        };
+        return dispatch('courseware-tasks/loadAll', { options }, { root: true });
+    },
 };
 
 export const mutations = {
@@ -30,6 +37,7 @@ export const mutations = {
 };
 
 export default {
+    namespaced: true,
     state,
     actions,
     mutations,
