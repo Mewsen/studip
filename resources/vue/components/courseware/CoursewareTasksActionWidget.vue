@@ -24,7 +24,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            setShowTasksDistributeDialog: 'setShowTasksDistributeDialog',
+            setShowTasksDistributeDialog: 'tasks/setShowTasksDistributeDialog',
         }),
     }
 }

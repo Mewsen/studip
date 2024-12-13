@@ -287,7 +287,7 @@ export default {
             getElementById: 'courseware-structural-elements/byId',
             getFeedbackById: 'courseware-task-feedback/byId',
             relatedTaskGroups: 'courseware-task-groups/related',
-            showTasksDistributeDialog: 'showTasksDistributeDialog'
+            showTasksDistributeDialog: 'tasks/showTasksDistributeDialog'
         }),
         tasks() {
             const tasks = this.allTasks.map((task) => {
