@@ -56,7 +56,7 @@
                         {{ course.number }}
                     </td>
                     <td :class="{'subcourse-indented': isChild(course)}">
-                        <a :href="urlFor('seminar_main.php', {auswahl: course.id})">
+                        <a :href="urlFor('seminar_main.php', {to: course.id})">
                             {{ getCourseName(course, getConfig('sem_number') && responsiveDisplay) }}
                             <span v-if="course.is_deputy">{{ $gettext('[Vertretung]') }}</span>
                         </a>

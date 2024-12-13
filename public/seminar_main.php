@@ -23,5 +23,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-require '../lib/bootstrap.php';
+require __DIR__ . '/../lib/bootstrap.php';
+
+// Handle legacy links
+// TODO: Remove at the latest for Stud.IP 7.0
+if (isset($_GET['auswahl']) && !isset($_GET['to'])) {
+    $_GET['to'] = $_GET['auswahl'];
+    unset($_GET['auswahl']);
+}
+
 header('Location: ' . URLHelper::getURL('dispatch.php/course/go', $_GET));

@@ -142,7 +142,7 @@ export default {
                     }
 
                     result.url = this.urlFor('seminar_main.php', {
-                        auswahl: course.id,
+                        to: course.id,
                         redirect_to: result.url,
                     });
                 }

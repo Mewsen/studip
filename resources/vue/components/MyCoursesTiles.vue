@@ -24,7 +24,7 @@
                                     ></studip-action-menu>
                                 </span>
 
-                                <a :href="urlFor('seminar_main.php', {auswahl: course.id})" class="tiles-grid-element-header-content" :title="getCourseName(course, getConfig('sem_number'))">
+                                <a :href="urlFor('seminar_main.php', {to: course.id})" class="tiles-grid-element-header-content" :title="getCourseName(course, getConfig('sem_number'))">
                                     <span :style="{backgroundImage: `url(${course.avatar})`}" class="tiles-grid-element-header-image"></span>
                                     <span class="tiled-grid-element-header-title">
                                         {{ getCourseName(course, getConfig('sem_number')) }}
