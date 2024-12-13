@@ -30,12 +30,9 @@ div.clear
     .quiet img { opacity: 0.25; }
 
     li {
-        margin: 0 8px;
+        margin: 0 8px 0 0;
         font-size: $font-size-navigation2;
 
-        &:first-child {
-            margin-left: 0;
-        }
         &:last-child {
             border-right: none;
             margin-right: 0;
