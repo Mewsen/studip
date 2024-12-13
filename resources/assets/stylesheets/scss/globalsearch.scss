@@ -161,7 +161,7 @@
 
     #globalsearch-results {
         margin-top: 1em;
-        height: 50vh;
+        max-height: 50vh;
         overflow: auto;
 
         &:empty {
