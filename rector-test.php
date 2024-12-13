@@ -93,3 +93,5 @@ class TestBlockType extends \Courseware\BlockTypes\BlockType
         return \Opis\JsonSchema\Schema::fromJsonString(file_get_contents(__FILE__));
     }
 }
+
+page_close();
