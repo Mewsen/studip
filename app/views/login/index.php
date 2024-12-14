@@ -1,6 +1,6 @@
 <?php
 /**
- * @var array $loginerror
+ * @var bool $has_login_error
  * @var string $error_msg
  */
 
@@ -76,7 +76,7 @@ $enable_news = Config::get()->LOGIN_NEWS_VISIBILITY && count($news_entries) > 0;
 
                 <? if ($show_hidden_login): ?>
                     <?= $this->render_partial('login/_standard_loginform', [
-                        'hidden' => empty($loginerror),
+                        'hidden' => !$has_login_error,
                         'login_form_class' => 'login-bottom'
                     ]) ?>
                 <? endif ?>

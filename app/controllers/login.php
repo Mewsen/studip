@@ -90,9 +90,10 @@ class LoginController extends AuthenticatedController
             }
         }
 
-
+        $this->has_login_error = false;
         if ($this->error_msg) {
             PageLayout::postException(_('Bei der Anmeldung trat ein Fehler auf!'), $this->error_msg);
+            $this->has_login_error = true;
         }
         $this->uname =  (isset($this->auth["uname"]) ? $this->auth["uname"] : Request::username('loginname'));
         $this->self_registration_activated = Config::get()->ENABLE_SELF_REGISTRATION;

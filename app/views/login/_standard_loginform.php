@@ -11,8 +11,7 @@ $password_tooltip_text = (string) Config::get()->PASSWORD_TOOLTIP_TEXT;
 ?>
 
 <form class="default <?= $hidden ? 'hide' : '' ?> <?= $login_form_class ?>" name="login_form" id="login-form" method="post"
-    action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => null]) ?>" <? if ($hidden)
-             echo 'hidden'; ?>>
+    action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => null]) ?>">
     <section>
         <? $withTooltip = $username_tooltip_text !== '' || $password_tooltip_text !== ''; ?>
         <label class="<?= $withTooltip ? 'with-tooltip' :  ''?>">

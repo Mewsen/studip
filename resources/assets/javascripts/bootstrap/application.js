@@ -380,30 +380,14 @@ STUDIP.domReady(function () {
 
     const toggleLogin = document.getElementById('toggle-login');
     if (toggleLogin) {
-        loginForm.addEventListener('transitionend', (event) => {
-            if (event.propertyName !== 'max-height') {
-                return;
-            }
-
+        toggleLogin.addEventListener('click', (event) => {
+            loginForm.classList.toggle('hide');
             if (!loginForm.classList.contains('hide')) {
                 usernameInput.scrollIntoView({
                     behavior: 'smooth'
                 });
                 usernameInput.focus();
-            } else {
-                loginForm.setAttribute('hidden', '');
             }
-        });
-
-        toggleLogin.addEventListener('click', (event) => {
-            if (loginForm.classList.contains('hide')) {
-                loginForm.removeAttribute('hidden');
-            }
-
-            setTimeout(() => {
-                loginForm.classList.toggle('hide');
-            }, 0);
-
             event.preventDefault();
         });
     }
