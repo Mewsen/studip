@@ -290,7 +290,7 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
 
             case 'course':
                 $unit = $this->findUnit();
-                if ($unit->permission_scope === 'unit') {
+                if ($unit->permission_scope === 'unit' && !$this->isTask()) {
                     return $unit->canEditContent($user);
                 } else {
                     $hasEditingPermission = $this->hasEditingPermission($user, $unit);
