@@ -37,7 +37,7 @@ class Settings_NotificationController extends Settings_SettingsController
             throw new AccessDeniedException($message);
         }
 
-        if (!$GLOBALS['auth']->is_authenticated() || $GLOBALS['perm']->have_perm('admin')) {
+        if (!auth()->isAuthenticated() || $GLOBALS['perm']->have_perm('admin')) {
             throw new AccessDeniedException();
         }
 
