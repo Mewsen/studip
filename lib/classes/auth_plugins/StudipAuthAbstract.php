@@ -111,7 +111,7 @@ class StudipAuthAbstract
      * always use this method to instantiate a plugin object, it will ensure that only one object of each
      * plugin will exist
      * @param string $plugin_name name of plugin, if omitted an array with all plugin objects will be returned
-     * @return   mixed   either a reference to the plugin with the passed name, or an array with references to all plugins
+     * @return static|static[] either a reference to the plugin with the passed name, or an array with references to all plugins
      */
     public static function getInstance($plugin_name = false)
     {
@@ -341,7 +341,7 @@ class StudipAuthAbstract
      * initialize the new user
      * @param string $username the username to check
      * @param string $password the password to check
-     * @return   string  if authentication succeeds the Stud.IP user , else false
+     * @return User|false  if authentication succeeds the Stud.IP user , else false
      */
     public function authenticateUser($username, $password)
     {

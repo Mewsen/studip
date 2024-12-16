@@ -11,70 +11,69 @@
  */
 
 namespace Studip\Session;
-use \DBManager, \Config, \CronjobTask;
+use DBManager;
+use Config;
+use CronjobTask;
+use SessionGcJob;
+use SessionHandlerInterface;
+use SessionIdInterface;
+use SessionUpdateTimestampHandlerInterface;
 
-class DbSessionHandler implements \SessionHandlerInterface, \SessionIdInterface, \SessionUpdateTimestampHandlerInterface
+class DbSessionHandler implements
+    SessionHandlerInterface,
+    SessionIdInterface,
+    SessionUpdateTimestampHandlerInterface
 {
+    private ?string $exists = null;
 
-    private $exists;
-
-    /**
-     * @inheritDoc
-     */
     public function close(): bool
     {
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function destroy($id): bool
+    public function destroy(string $id): bool
     {
-        return (bool)DBManager::get()->execute("DELETE FROM session_data WHERE sid = ? LIMIT 1", [$id]);
+        return (bool) DBManager::get()->execute(
+            "DELETE FROM session_data WHERE sid = ? LIMIT 1",
+            [$id]
+        );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function gc($max_lifetime): false|int
+    public function gc(int $max_lifetime): false|int
     {
-        //bail out if cronjob activated and not called in cli context
-        if (Config::getInstance()->getValue('CRONJOBS_ENABLE')
-            && ($task = array_pop(CronjobTask::findByClass('SessionGcJob')))
+        // bail out if cronjob activated and not called in cli context
+        if (
+            Config::getInstance()->getValue('CRONJOBS_ENABLE')
+            && ($task = CronjobTask::findOneByClass(SessionGcJob::class))
             && count($task->schedules->findBy('active', 1))
             && PHP_SAPI !== 'cli'
         ) {
             return false;
         }
-        return DBManager::get()->execute("DELETE FROM session_data WHERE changed < FROM_UNIXTIME(?) ", [time() - $max_lifetime]);
+        return DBManager::get()->execute(
+            "DELETE FROM session_data WHERE changed < FROM_UNIXTIME(?) ",
+            [time() - $max_lifetime]
+        );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function open($path, $name): bool
+    public function open(string $path, string $name): bool
     {
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    #[\ReturnTypeWillChange]
-    public function read($id)
+    public function read(string $id): false|string
     {
-        $str = DBManager::get()->fetchColumn("SELECT val FROM session_data where sid  = ?", [$id]);
+        $str = DBManager::get()->fetchColumn(
+            "SELECT val FROM session_data where sid  = ?",
+            [$id]
+        );
         if ($str) {
             $this->exists = $id;
         }
-        return (string)$str;
+        return $str ?: '';
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function write($id, $data): bool
+    public function write(string $id, string $data): bool
     {
         $db = DBManager::get();
         if ($this->exists === $id) {
@@ -85,9 +84,12 @@ class DbSessionHandler implements \SessionHandlerInterface, \SessionIdInterface,
         return (bool) $stmt->execute([$data, $id]);
     }
 
-    public function exists($id)
+    public function exists(string $id): bool
     {
-        return (bool)DBManager::get()->fetchColumn("SELECT 1 FROM session_data where sid  = ?", [$id]);
+        return (bool) DBManager::get()->fetchColumn(
+            "SELECT 1 FROM session_data where sid  = ?",
+            [$id]
+        );
     }
 
     public function create_sid(): string
@@ -107,7 +109,7 @@ class DbSessionHandler implements \SessionHandlerInterface, \SessionIdInterface,
 
     public function validateId(string $id): bool
     {
-        return (bool)$this->exists($id);
+        return $this->exists($id);
     }
 
 

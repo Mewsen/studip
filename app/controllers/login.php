@@ -2,7 +2,6 @@
 /**
  * login.php - login
  *
- *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of
@@ -22,9 +21,9 @@ class LoginController extends AuthenticatedController
         parent::__construct($dispatcher);
     }
 
-    public function index_action()
+    public function index_action(): void
     {
-        if ($GLOBALS['user']->id !== 'nobody') {
+        if (User::findCurrent()) {
             $this->redirect(URLHelper::getURL('dispatch.php/start'));
             return;
         }
@@ -64,11 +63,17 @@ class LoginController extends AuthenticatedController
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
 
-            $check_auth = StudipAuthAbstract::CheckAuthentication(Request::get('loginname'), Request::get('password'));
+            $check_auth = StudipAuthAbstract::CheckAuthentication(
+                Request::get('loginname'),
+                Request::get('password')
+            );
 
             if ($check_auth['uid']) {
                 $uid = $check_auth['uid'];
-                if (isset($check_auth['need_email_activation']) && $check_auth['need_email_activation'] == $uid) {
+                if (
+                    isset($check_auth['need_email_activation'])
+                    && $check_auth['need_email_activation'] === $uid
+                ) {
                     $this->need_email_activation = $uid;
                     $_SESSION['semi_logged_in'] = $uid;
                     $this->redirect('login/activate_email', ['uid' => $uid]);
@@ -76,7 +81,7 @@ class LoginController extends AuthenticatedController
                 } else {
                     auth()->setAuthenticatedUser($check_auth['user']);
                     Metrics::increment('core.login.succeeded');
-                    sess()->regenerateId(['auth', '_language', 'phpCAS', 'contrast']);
+                    sess()->regenerateId(['auth', '_language', 'phpCAS', 'contrast', 'redirect_after_login']);
                     if (isset($_SESSION['redirect_after_login'] )) {
                         $this->redirect($_SESSION['redirect_after_login']);
                         return;
@@ -95,20 +100,26 @@ class LoginController extends AuthenticatedController
             PageLayout::postException(_('Bei der Anmeldung trat ein Fehler auf!'), $this->error_msg);
             $this->has_login_error = true;
         }
-        $this->uname =  (isset($this->auth["uname"]) ? $this->auth["uname"] : Request::username('loginname'));
-        $this->self_registration_activated = Config::get()->ENABLE_SELF_REGISTRATION;
+        $this->uname = $this->auth['uname'] ?? Request::username('loginname');
+        $this->self_registration_activated = Config::get()->getValue('ENABLE_SELF_REGISTRATION');
 
-        $news_entries = StudipNews::GetNewsByRange('login', true, false);
-        if (class_exists('LoginFaq')) {
-            $this->faq_entries = LoginFaq::findBySQL("1 ORDER BY `faq_id` ASC");
+        $this->news_entries = [];
+        if (Config::get()->getValue('LOGIN_NEWS_VISIBILITY')) {
+            $news_entries = StudipNews::GetNewsByRange('login', true);
+            $this->news_entries = array_values($news_entries);
         }
-        $this->news_entries = array_values($news_entries);
+
+        $this->faq_entries = [];
+        if (Config::get()->getValue('LOGIN_FAQ_VISIBILITY')) {
+            $this->faq_entries = LoginFaq::findBySQL("1 ORDER BY `faq_id`");
+        }
+
         PageLayout::setHelpKeyword('Basis.AnmeldungLogin');
         PageLayout::disableSidebar();
         PageLayout::setBodyElementId('login');
     }
 
-    public function activate_email_action()
+    public function activate_email_action(): void
     {
         PageLayout::setTitle(_('E-Mail Aktivierung'));
         $uid = Request::option('uid');
@@ -126,34 +137,34 @@ class LoginController extends AuthenticatedController
                 unset($_SESSION['semi_logged_in']);
                 PageLayout::postSuccess(_('Ihre E-Mail-Adresse wurde erfolgreich geändert.'));
                 $this->redirect(URLHelper::getURL('dispatch.php/start'));
-                return;
-            } else if ($key == '') {
+            } else if (!$key) {
                 PageLayout::postInfo(_('Ihre E-Mail-Adresse ist bereits geändert.'));
                 $this->redirect(URLHelper::getURL('dispatch.php/start'));
-                return;
             } else {
                 if (Request::get('key')) {
                     PageLayout::postError(_("Falscher Bestätigungscode."));
                 }
                 $this->mail_explain = true;
-                if ($_SESSION['semi_logged_in'] == Request::option('uid')) {
+                if ($_SESSION['semi_logged_in'] === Request::option('uid')) {
                     $this->reenter_mail = true;
                 } else {
                     PageLayout::postInfo(_('Sie können sich einloggen und sich den Bestätigungscode neu oder an eine andere E-Mail-Adresse schicken lassen.'));
                     $this->redirect(URLHelper::getURL('dispatch.php/start'));
-                    return;
                 }
             }
 
         // checking semi_logged_in is important to avoid abuse
-        } else if (Request::get('email1') && Request::get('email2') && $_SESSION['semi_logged_in'] == Request::option('uid')) {
+        } elseif (
+            Request::get('email1')
+            && Request::get('email2')
+            && $_SESSION['semi_logged_in'] === Request::option('uid')
+        ) {
             if (Request::get('email1') == Request::get('email2')) {
                 // change mail
                 $tmp_user = User::find(Request::option('uid'));
                 if ($tmp_user && $tmp_user->changeEmail(Request::get('email1'), true)) {
                     $_SESSION['semi_logged_in'] = false;
                 }
-
             } else {
                 PageLayout::postError(_('Die eingegebenen E-Mail-Adressen stimmen nicht überein. Bitte überprüfen Sie Ihre Eingabe.'));
             }
@@ -164,7 +175,7 @@ class LoginController extends AuthenticatedController
         }
     }
 
-    public function privacy_info_action()
+    public function privacy_info_action(): void
     {
         // this page must be accessible during visibility decision
         Config::get()->USER_VISIBILITY_CHECK = false;

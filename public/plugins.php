@@ -40,10 +40,6 @@ $plugin_dispatch = function (ServerRequestInterface $request, RequestHandlerInte
             return $response->withHeader('Location', URLHelper::getURL('dispatch.php/course/forum/' . $unconsumed));
         }
 
-        // retrieve corresponding plugin info
-        $plugin_manager = PluginManager::getInstance();
-        $plugin_info = $plugin_manager->getPluginInfo($plugin_class);
-
         // create an instance of the queried plugin
         $plugin = PluginEngine::getPlugin($plugin_class);
 
@@ -55,11 +51,6 @@ $plugin_dispatch = function (ServerRequestInterface $request, RequestHandlerInte
 
         // set default page title
         PageLayout::setTitle($plugin->getPluginName());
-
-        // deprecated, the plugin should override perform() instead
-        if (is_callable([$plugin, 'initialize'])) {
-            $plugin->initialize();
-        }
 
         $route_callable = $plugin->getRouteCallable($unconsumed);
         $app->any(Request::pathInfo(), $route_callable);

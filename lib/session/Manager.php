@@ -14,13 +14,10 @@ namespace Studip\Session;
 
 class Manager
 {
-    /**
-     * @var \SessionHandlerInterface
-     */
-    protected \SessionHandlerInterface $handler;
-    /**
-     * @var array
-     */
+    public const STATE_UNKNOWN = false;
+    public const STATE_AUTHENTICATED = 'authenticated';
+    public const STATE_NOBODY = 'authenticated';
+
     protected array $options = [
         'name' => 'Seminar_Session',
         'lifetime' => 7200,
@@ -31,19 +28,13 @@ class Manager
         'samesite' => 'Lax',
         'cache_limiter' => 'nocache'
     ];
-    /**
-     * @var null
-     */
-    protected $current_session_state = null;
 
+    protected string|false|null $current_session_state = null;
 
-    /**
-     * @param \SessionHandlerInterface $session_handler
-     * @param array $session_options
-     */
-    public function __construct(\SessionHandlerInterface $session_handler, array $session_options = [])
-    {
-        $this->handler = $session_handler;
+    public function __construct(
+        protected \SessionHandlerInterface $handler,
+        array $session_options = []
+    ) {
         $keys = array_keys($this->options);
         foreach ($keys as $key) {
             if (array_key_exists($key, $session_options)) {
@@ -61,16 +52,15 @@ class Manager
     public function start(): void
     {
         if (!$this->isStarted()) {
-
             ini_set('session.use_strict_mode', 1);
             $current = session_get_cookie_params();
 
-            $lifetime = (int)($this->options['lifetime'] ?: $current['lifetime']);
+            $lifetime = (int) ($this->options['lifetime'] ?: $current['lifetime']);
             $path = $this->options['path'] ?: $current['path'];
             $domain = $this->options['domain'] ?: $current['domain'];
             $samesite = $this->options['samesite'] ?: $current['samesite'];
-            $secure = (bool)$this->options['secure'];
-            $httponly = (bool)$this->options['httponly'];
+            $secure = (bool) $this->options['secure'];
+            $httponly = (bool) $this->options['httponly'];
 
             session_set_cookie_params(compact('lifetime', 'path', 'domain', 'secure', 'samesite', 'httponly'));
             session_name($this->options['name']);
@@ -81,18 +71,11 @@ class Manager
         }
     }
 
-    /**
-     * @return bool
-     */
     public function isStarted(): bool
     {
         return session_status() === PHP_SESSION_ACTIVE;
     }
 
-    /**
-     * @param array $keep_session_vars
-     * @return void
-     */
     public function regenerateId(array $keep_session_vars = []): void
     {
         if (!$this->isStarted()) {
@@ -115,17 +98,11 @@ class Manager
         }
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->options['name'];
     }
 
-    /**
-     * @return void
-     */
     public function destroy(): void
     {
         if (!$this->isStarted()) {
@@ -149,9 +126,6 @@ class Manager
         session_destroy();
     }
 
-    /**
-     * @return void
-     */
     public function save() : void
     {
         session_write_close();
@@ -160,13 +134,10 @@ class Manager
     /**
      * Returns true, if the current session is valid and belongs to an
      * authenticated user. Does not start a session.
-     *
-     * @static
-     * @return bool
      */
     public function isCurrentSessionAuthenticated(): bool
     {
-        return self::getCurrentSessionState() === 'authenticated';
+        return $this->getCurrentSessionState() === self::STATE_AUTHENTICATED;
     }
 
     /**
@@ -175,28 +146,25 @@ class Manager
      * 'authenticated' - session is valid and user is authenticated
      * 'nobody' - session is valid, but user is not authenticated
      * false - no valid session
-     *
-     * @static
-     * @return string|false
      */
     public function getCurrentSessionState(): false|string|null
     {
 
-        if (!is_null($this->current_session_state)) {
+        if ($this->current_session_state !== null) {
             return $this->current_session_state;
         }
-        $state = false;
+        $state = self::STATE_UNKNOWN;
         if (isset($GLOBALS['user']) && is_object($GLOBALS['user'])) {
-            $state = in_array($GLOBALS['user']->id, ['nobody', 'form']) ? 'nobody' : 'authenticated';
+            $state = in_array($GLOBALS['user']->id, ['nobody', 'form']) ? self::STATE_NOBODY : self::STATE_AUTHENTICATED;
         } else {
             $sid = $_COOKIE[$this->getName()];
             if ($sid) {
                 $session_vars = $this->getSessionVars($sid);
                 $session_auth = $session_vars['auth'];
                 if ($session_auth['uid'] && !in_array($session_auth['uid'], ['nobody', 'form'])) {
-                    $state = 'authenticated';
+                    $state = self::STATE_AUTHENTICATED;
                 } else {
-                    $state = in_array($session_auth['uid'], ['nobody', 'form']) ? 'nobody' : false;
+                    $state = in_array($session_auth['uid'], ['nobody', 'form']) ? self::STATE_NOBODY : self::STATE_UNKNOWN;
                 }
             }
         }

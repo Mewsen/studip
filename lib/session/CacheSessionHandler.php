@@ -11,80 +11,71 @@
  */
 namespace Studip\Session;
 
-class CacheSessionHandler implements \SessionHandlerInterface, \SessionIdInterface, \SessionUpdateTimestampHandlerInterface
+use SessionHandlerInterface;
+use SessionIdInterface;
+use SessionUpdateTimestampHandlerInterface;
+use Studip\Cache\Cache;
+use Studip\Cache\Factory;
+
+class CacheSessionHandler implements
+    SessionHandlerInterface,
+    SessionIdInterface,
+    SessionUpdateTimestampHandlerInterface
 {
 
-    const CACHE_KEY_PREFIX = 'session_data';
+    private const CACHE_KEY_PREFIX = 'session_data';
 
-    private $session_lifetime = 7200;
+    private int $session_lifetime = 7200;
 
-    private $cache;
+    private Cache $cache;
 
-    public function __construct($session_lifetime = null)
+    public function __construct(?int $session_lifetime = null)
     {
         if ($session_lifetime) {
             $this->session_lifetime = $session_lifetime;
         }
     }
 
-    /**
-     * @inheritDoc
-     */
     public function close(): bool
     {
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function destroy($id): bool
+    public function destroy(string $id): bool
     {
         $cache_key = self::CACHE_KEY_PREFIX . '/' . $id;
         $this->cache->expire($cache_key);
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function gc($max_lifetime): int|false
+    public function gc(int $max_lifetime): int|false
     {
         return false;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function open($path, $name): bool
+    public function open(string $path, string $name): bool
     {
-        $this->cache = \Studip\Cache\Factory::getCache();
+        $this->cache = Factory::getCache();
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function read($id): string|false
+    public function read(string $id): string|false
     {
         $cache_key = self::CACHE_KEY_PREFIX . '/' . $id;
         return $this->cache->read($cache_key);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function write($id, $data): bool
+    public function write(string $id, string $data): bool
     {
         $cache_key = self::CACHE_KEY_PREFIX . '/' . $id;
-        return (bool)$this->cache->write($cache_key, $data, $this->session_lifetime);
+        return $this->cache->write($cache_key, $data, $this->session_lifetime);
     }
 
     public function create_sid(): string
     {
         do {
             $new_id = md5(bin2hex(random_bytes(128)));
-        } while (!$this->read($new_id));
+        } while ($this->read($new_id));
         return $new_id;
     }
 
@@ -95,6 +86,6 @@ class CacheSessionHandler implements \SessionHandlerInterface, \SessionIdInterfa
 
     public function validateId(string $id): bool
     {
-        return (bool)$this->read($id);
+        return (bool) $this->read($id);
     }
 }

@@ -11,117 +11,137 @@
  */
 namespace Studip\Authentication;
 
+use AccessDeniedException;
+use Config;
+use Metrics;
+use Request;
+use Seminar_Perm;
+use Seminar_User;
+use StudipAuthAbstract;
+use StudipMail;
+use Token;
+use User;
+
 class Manager
 {
-    private $auth = [];
-    public function __construct(private $nobody = false)
-    {
+    private ?array $auth = [];
+
+    public function __construct(
+        private bool $nobody = false
+    ) {
     }
 
-    /**
-     * @return false|mixed
-     */
-    public function getNobody(): mixed
+    public function getNobody(): bool
     {
         return $this->nobody;
     }
 
-    public function setNobody($allow_nobody = false): void
+    public function setNobody(bool $allow_nobody = false): void
     {
         $this->nobody = $allow_nobody;
     }
 
 
-    public function start()
+    public function start(): bool
     {
         $this->auth =& $_SESSION['auth'];
 
         if (!$this->isAuthenticated()) {
             $user = null;
-            if (($provider = \Request::option('sso'))) {
-                \Metrics::increment('core.sso_login.attempted');
+
+            $provider = Request::option('sso');
+
+            if ($provider) {
+                Metrics::increment('core.sso_login.attempted');
                 // then do login
-                $authplugin = \StudipAuthAbstract::GetInstance($provider);
+                $authplugin = StudipAuthAbstract::GetInstance($provider);
                 if ($authplugin) {
                     $authplugin->authenticateUser('', '');
                     if ($authplugin->getUser()) {
                         $user = $authplugin->getStudipUser($authplugin->getUser());
-                        $exp_d = \UserConfig::get($user->id)->EXPIRATION_DATE;
-                        if ($exp_d > 0 && $exp_d < time()) {
-                            throw new \AccessDeniedException(
+                        if ($user->isExpired()) {
+                            throw new AccessDeniedException(
                                 _('Dieses Benutzerkonto ist abgelaufen. Wenden Sie sich bitte an die Administration.')
                             );
                         }
-                        if ($user->locked == 1) {
-                            throw new \AccessDeniedException(
+                        if ($user->locked) {
+                            throw new AccessDeniedException(
                                 _('Dieser Benutzer ist gesperrt! Wenden Sie sich bitte an die Administration.')
                             );
                         }
-                        \Metrics::increment('core.sso_login.succeeded');
+                        Metrics::increment('core.sso_login.succeeded');
+
                         sess()->regenerateId(['auth', '_language', 'phpCAS', 'contrast']);
                     }
                 }
             }
             if (!$user) {
-                if ($this->nobody && !\Request::get('again')) {
-                    $this->setAuthenticatedUser(\User::build(['user_id' => 'nobody', 'perms' => null]));
-                }
-                if (!match_route('dispatch.php/login')) {
+                if ($this->nobody && !Request::get('again')) {
+                    $this->setAuthenticatedUser(User::build(['user_id' => 'nobody', 'perms' => null]));
+                } elseif (!match_route('dispatch.php/login')) {
                     return false;
                 }
             }
         } else {
-            if ($this->auth['uid'] !== 'nobody' && \Request::get('again') && !match_route('dispatch.php/login')) {
+            if (
+                $this->auth['uid'] !== 'nobody'
+                && Request::get('again')
+                && !match_route('dispatch.php/login')
+            ) {
                 return false;
             }
-            $this->setAuthenticatedUser($this->auth['uid'] !== 'nobody' ? \User::find($this->auth['uid']) : \User::build(['user_id' => 'nobody', 'perms' => null]));
+            $this->setAuthenticatedUser($this->auth['uid'] !== 'nobody' ? User::find($this->auth['uid']) : User::build(['user_id' => 'nobody', 'perms' => null]));
         }
         return true;
     }
 
-    public function isAuthenticated()
+    public function isAuthenticated(): string|false
     {
         if (!is_array($this->auth)) {
             $this->auth = [];
         }
-        if (isset($this->auth['uid']) && $this->auth['uid'] === 'nobody' && (!$this->nobody || \Request::option('again'))) {
+        if (
+            isset($this->auth['uid'])
+            && $this->auth['uid'] === 'nobody'
+            && (!$this->nobody || Request::option('again'))
+        ) {
             $this->auth['uid'] = null;
         }
-        $cfg = \Config::GetInstance();
+
+        $maintenance_mode = Config::get()->getValue('MAINTENANCE_MODE');
+
         //check if the user got kicked meanwhile, or if user is locked out
+        $user = null;
         if (!empty($this->auth['uid']) && !in_array($this->auth['uid'], ['nobody'])) {
-            $user = null;
-            if (isset($GLOBALS['user']) && $GLOBALS['user']->id == $this->auth['uid']) {
-                $user = $GLOBALS['user'];
+            if (isset($GLOBALS['user']) && $GLOBALS['user']->id === $this->auth['uid']) {
+                $user = User::findCurrent();
             } else {
-                $user = \User::find($this->auth['uid']);
+                $user = User::find($this->auth['uid']);
             }
-            $exp_d = $user->username ? \UserConfig::get($user->id)->EXPIRATION_DATE : 0;
-            if (!$user->username || $user->locked || ($exp_d > 0 && $exp_d < time())) {
+            if (!$user->username || $user->isBlocked()) {
                 $this->auth = [];
             }
-        } elseif ($cfg->getValue('MAINTENANCE_MODE_ENABLE') && \Request::username('loginname')) {
-            $user = \User::findByUsername(\Request::username('loginname'));
+        } elseif ($maintenance_mode && Request::username('loginname')) {
+            $user = User::findByUsername(Request::username('loginname'));
         }
-        if ($cfg->getValue('MAINTENANCE_MODE_ENABLE') && $user->perms != 'root') {
+        if ($maintenance_mode && $user?->perms !== 'root') {
             $this->auth = [];
-            throw new \AccessDeniedException(_("Das System befindet sich im Wartungsmodus. Zur Zeit ist kein Zugriff möglich."));
+            throw new AccessDeniedException(_("Das System befindet sich im Wartungsmodus. Zur Zeit ist kein Zugriff möglich."));
         }
-        return @$this->auth['uid'] ? : false;
+        return $this->auth['uid'] ?? false;
     }
 
-    public function setAuthenticatedUser(\User $user): void
+    public function setAuthenticatedUser(User $user): void
     {
         $this->auth['uid'] = $user->id;
-        $GLOBALS['user'] = new \Seminar_User($user);
-        $GLOBALS['perm'] = new \Seminar_Perm();
+
+        $GLOBALS['user'] = new Seminar_User($user);
+        $GLOBALS['perm'] = new Seminar_Perm();
     }
 
-    public function sendValidationMail(\User $user = null): void
+    public function sendValidationMail(?User $user = null): void
     {
-        if (is_null($user)) {
-            $user = \User::findCurrent();
-        }
+        $user ??= User::findCurrent();
 
         // template-variables for the include partial
         $Zeit     = date('H:i:s, d.m.Y', $user->mkdate);
@@ -132,9 +152,9 @@ class Manager
 
         // (re-)send the confirmation mail
         $to     = $user->email;
-        $token  = \Token::create(7 * 24 * 60 * 60, $user->id); // Link is valid for 1 week
+        $token  = Token::create(7 * 24 * 60 * 60, $user->id); // Link is valid for 1 week
         $url    = $GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/registration/email_validation?secret=' . $token;
-        $mail   = new \StudipMail();
+        $mail   = new StudipMail();
         $abuse  = $mail->getReplyToEmail();
 
         $lang_path = getUserLanguagePath($user->id);

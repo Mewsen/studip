@@ -2,6 +2,8 @@
 /**
  * @var bool $has_login_error
  * @var string $error_msg
+ * @var LoginFaq[] $faq_entries
+ * @var StudipNews[] $news_entries
  */
 
 // Get background images (this should be resolved differently since mobile
@@ -25,8 +27,8 @@ if (!match_route('web_migrate.php')) {
 }
 $show_login = !(current(StudipAuthAbstract::getInstance()) instanceof StudipAuthSSO) && StudipAuthAbstract::isLoginEnabled();
 $show_hidden_login = !$show_login && StudipAuthAbstract::isLoginEnabled();
-$enable_faq = Config::get()->LOGIN_FAQ_VISIBILITY && count($faq_entries) > 0;
-$enable_news = Config::get()->LOGIN_NEWS_VISIBILITY && count($news_entries) > 0;
+$enable_faq = count($faq_entries) > 0;
+$enable_news = count($news_entries) > 0;
 ?>
 <main id="content" class="loginpage">
     <div id="background-desktop" style="background: url(<?= $bg_desktop ?>) no-repeat top left/cover;"></div>
