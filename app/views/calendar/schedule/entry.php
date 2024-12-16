@@ -10,7 +10,7 @@
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend><?= _('Farbe') ?></legend>
-        <table class="default colour-selector">
+        <table class="colour-selector">
             <tr>
                 <?= $this->render_partial(
                     'calendar/schedule/_colour_selector',
