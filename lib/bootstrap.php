@@ -132,13 +132,13 @@ try {
         'studip',
         app(StudipPDO::class)
     );
-} catch (PDOException $exception) {
+} catch (\PDOException $exception) {
     if (Studip\ENV === 'development') {
         throw $exception;
     } else {
+        error_log($exception);
         header('HTTP/1.1 500 Internal Server Error');
-        die(sprintf('database connection %s failed', 'mysql:host=' . $GLOBALS['DB_STUDIP_HOST'] .
-            ';dbname=' . $GLOBALS['DB_STUDIP_DATABASE']));
+        die(_('Momentan ist das Stud.IP System nicht erreichbar, bitte versuchen Sie es später noch einmal.'));
     }
 }
 // set slave connection
