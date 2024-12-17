@@ -61,6 +61,7 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
                 $jump_page = 'dispatch.php/contents/overview';
                 break;
         }
+
         $response = $this->response_factory->createResponse(302);
         return $response->withHeader('Location', \URLHelper::getURL($jump_page));
     }
@@ -97,10 +98,7 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
 
         // user init starts here
         if (is_object($user) && $user->id != "nobody") {
-            if ($_SESSION['SessionStart'] > \UserConfig::get(
-                    $user->id
-                )->CURRENT_LOGIN_TIMESTAMP
-            ) {      // just logged in
+            if ($_SESSION['SessionStart'] > \UserConfig::get($user->id)->CURRENT_LOGIN_TIMESTAMP) {      // just logged in
                 // store old CURRENT_LOGIN in LAST_LOGIN and set CURRENT_LOGIN to start of session
                 \UserConfig::get($user->id)->store(
                     'LAST_LOGIN_TIMESTAMP', \UserConfig::get($user->id)->CURRENT_LOGIN_TIMESTAMP
@@ -110,10 +108,10 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
                 $current_sem = \Semester::findDefault();
                 $_SESSION['_default_sem'] = $current_sem->semester_id ?? null;
                 //redirect user to another page if he want to, redirect is deferred to allow plugins to catch the UserDidLogin notification
-                if (\UserConfig::get($user->id)->PERSONAL_STARTPAGE > 0 && !isset($_SESSION['redirect_after_login'])
-                    && !$perm->have_perm(
-                        "root"
-                    )
+                if (
+                    \UserConfig::get($user->id)->PERSONAL_STARTPAGE > 0
+                    && !isset($_SESSION['redirect_after_login'])
+                    && !$perm->have_perm('root')
                 ) {
                     $seminar_open_redirected = true;
                 }
@@ -247,11 +245,12 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
         }
 
         if ($seminar_open_redirected) {
-            $this->startpageRedirect(\UserConfig::get($user->id)->PERSONAL_STARTPAGE);
+            return $this->startpageRedirect(\UserConfig::get($user->id)->PERSONAL_STARTPAGE);
         }
 
         // Show terms on first login
-        if (is_object($GLOBALS['user'])
+        if (
+            is_object($GLOBALS['user'])
             && $GLOBALS['user']->needsToAcceptTerms()
             && !match_route('dispatch.php/terms')
             && !match_route('dispatch.php/siteinfo/*')

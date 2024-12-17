@@ -32,7 +32,9 @@ final class AuthenticationMiddleware implements MiddlewareInterface
         if ($this->auth_manager->start()) {
             return $handler->handle($request);
         } else {
-            $_SESSION['redirect_after_login'] = \Request::url();
+            if (!match_route('dispatch.php/start')) {
+                $_SESSION['redirect_after_login'] = \Request::url();
+            }
             $response = $this->response_factory->createResponse(302);
             return $response->withHeader('Location', \URLHelper::getURL('dispatch.php/login'));
         }
