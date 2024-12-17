@@ -128,7 +128,7 @@ class Helper
         if (!$semester_id) {
             $semester_id = \Semester::findCurrent()?->id ?? '';
         }
-        $schedule_settings = \UserConfig::get()->getValue('SCHEDULE_SETTINGS') ?? [];
+        $schedule_settings = \UserConfig::get(\User::findCurrent()->id)->getValue('SCHEDULE_SETTINGS') ?? [];
         $slot_duration = '00:30:00';
         if (!empty($schedule_settings['size']) && in_array($schedule_settings['size'], ['small', 'large'])) {
             if ($schedule_settings['size'] === 'small') {
@@ -139,11 +139,15 @@ class Helper
         }
 
         //Determine the value of the hiddenDays config.
-        $hidden_days = [1, 2, 3, 4, 5, 6, 7];
-        $hidden_days = array_diff(
-            $hidden_days,
-            $schedule_settings['visible_days'] ?? [1, 2, 3, 4, 5, 6, 7]
-        );
+        //In case no visible days are set, default to hide Saturday and Sunday.
+        $hidden_days = [6, 7];
+        if (!empty($schedule_settings['visible_days'])) {
+            $hidden_days = [1, 2, 3, 4, 5, 6, 7];
+            $hidden_days = array_diff(
+                $hidden_days,
+                $schedule_settings['visible_days']
+            );
+        }
 
         $fullcalendar_hidden_days = [];
         foreach ($hidden_days as $day) {
@@ -181,6 +185,7 @@ class Helper
                     'minute'         => '2-digit',
                     'omitZeroMinute' => false
                 ],
+                'weekends'   => true,
                 'hiddenDays' => $fullcalendar_hidden_days,
                 'timeGridEventMinHeight' => 20,
                 'eventSources' => [
