@@ -89,7 +89,7 @@ class I18NStringDatafield extends I18NString
         if ($base === null) {
             $df = DatafieldEntryModel::findOneBySQL(
                 "`datafield_id` = ? AND `range_id` = ? AND `sec_range_id` = ? AND `lang` = ''",
-                $object_id
+                [$object_id[0], $object_id[1], $object_id[2]]
             );
             $base = $df ? $df->content : '';
         }
@@ -113,13 +113,13 @@ class I18NStringDatafield extends I18NString
     public static function fetchDataForField($object_id, $table, $field)
     {
         $result = [];
-        
+
         DatafieldEntryModel::findEachBySQL(
             function (DatafieldEntryModel $model) use (&$result) {
                 $result[$model->lang] = $model->content;
            },
             "`datafield_id` = ? AND `range_id` = ? AND `sec_range_id` = ? AND `lang` <> ''",
-            $object_id
+            [$object_id[0], $object_id[1], $object_id[2]]
         );
 
         return $result;
