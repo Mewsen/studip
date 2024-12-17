@@ -55,3 +55,4 @@
 ## Known Issues
 
 - Der Vollbildmodus funktioniert nicht auf Apple iPads. Der Modus kann zwar initiiert werden, beendet sich aber selbsständig, wenn nach oben gescrollt wird. Dieses Verhalten ist en Fehler innerhalb von iOS/iPadOS und kann seitens Stud.IP nicht umgangen werden. Der Fehler ist bei Apple gemeldet.
+- Durch die Neuentwicklung des Wikis haben sich die URLs für bestehenden Wiki-Seiten geändert. Interne Wiki-Links eingegeben über den WYSIWYG-Editor oder die Syntax mit doppelten eckigen Klammern wurden automatisch migriert. Für andere Links z.B. aus dem Forum oder Ankündigungen oder aus externen Systemen steht eine temporäre Weiterleitung von der alten URL im Format "studip/wiki.php" auf die neue URL im Format "studip/dispatch.php/course/wiki/page" zur Verfügung. Entsprechende Links im alten Format sollten trotzdem angepasst werden, da die Weiterleitung nicht dauerhaft erhalten bleiben wird.   
