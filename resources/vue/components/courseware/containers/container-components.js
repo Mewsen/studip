@@ -7,6 +7,7 @@ import CoursewareBiographyAchievementsBlock from '../blocks/CoursewareBiographyA
 import CoursewareBiographyCareerBlock from '../blocks/CoursewareBiographyCareerBlock.vue';
 import CoursewareBiographyGoalsBlock from '../blocks/CoursewareBiographyGoalsBlock.vue';
 import CoursewareBiographyPersonalInformationBlock from '../blocks/CoursewareBiographyPersonalInformationBlock.vue';
+import CoursewareBlubberBlock from '../blocks/CoursewareBlubberBlock.vue';
 import CoursewareCanvasBlock from '../blocks/CoursewareCanvasBlock.vue';
 import CoursewareChartBlock from '../blocks/CoursewareChartBlock.vue';
 import CoursewareCodeBlock from '../blocks/CoursewareCodeBlock.vue';
@@ -45,6 +46,7 @@ const ContainerComponents = {
     CoursewareBiographyCareerBlock,
     CoursewareBiographyGoalsBlock,
     CoursewareBiographyPersonalInformationBlock,
+    CoursewareBlubberBlock,
     CoursewareCanvasBlock,
     CoursewareChartBlock,
     CoursewareCodeBlock,

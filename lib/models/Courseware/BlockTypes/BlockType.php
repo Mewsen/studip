@@ -101,6 +101,7 @@ abstract class BlockType
             BiographyCareer::class,
             BiographyGoals::class,
             BiographyPersonalInformation::class,
+            Blubber::class,
             Canvas::class,
             Chart::class,
             Code::class,

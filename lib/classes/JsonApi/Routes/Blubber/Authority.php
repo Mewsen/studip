@@ -4,6 +4,7 @@ namespace JsonApi\Routes\Blubber;
 
 use BlubberComment;
 use BlubberThread;
+use Course;
 use User;
 
 class Authority
@@ -21,6 +22,16 @@ class Authority
     public static function canCreatePrivateBlubberThread(User $user)
     {
         return self::userIsAuthor($user);
+    }
+
+    public static function canCreateCourseBlubberThread(User $user, Course $course)
+    {
+        return self::userIsTeacher($user, $course);
+    }
+
+    public static function canEditCourseBlubberThread(User $user, Course $course)
+    {
+        return self::userIsTeacher($user, $course);
     }
 
     public static function canCreateComment(User $user, BlubberThread $resource)
@@ -56,5 +67,13 @@ class Authority
     private static function userIsAuthor(User $user)
     {
         return $GLOBALS['perm']->have_perm('autor', $user->id);
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    private static function userIsTeacher(User $user, Course $course)
+    {
+        return $GLOBALS['perm']->have_studip_perm('tutor', $course->id, $user->id);
     }
 }
