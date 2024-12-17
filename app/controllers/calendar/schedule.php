@@ -652,13 +652,11 @@ class Calendar_ScheduleController extends AuthenticatedController
         $default_config = [
             'start_time'   => '08:00',
             'end_time'     => '20:00',
-            'weekdays'     => 5,
             'visible_days' => [1, 2, 3, 4, 5]
         ];
         if (
             empty($this->schedule_settings['start_time'])
             && empty($this->schedule_settings['end_time'])
-            && empty($this->schedule_settings['weekdays'])
             && empty($this->schedule_settings['visible_days'])
         ) {
             //Use the defaults:
@@ -675,15 +673,9 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         $start_time       = Request::get('start_time', '08:00');
         $end_time         = Request::get('end_time', '20:00');
-        $weekdays         = Request::int('weekdays', 5);
         $visible_days    = Request::intArray('visible_days');
         if ($start_time >= $end_time) {
             PageLayout::postError(_('Die Startuhrzeit muss vor der Enduhrzeit liegen.'));
-            $this->redirect('calendar/schedule/settings');
-            return;
-        }
-        if (!in_array($weekdays, [5, 7])) {
-            PageLayout::postError(_('Der Stundenplan kann nur 5 oder 7 Tage anzeigen.'));
             $this->redirect('calendar/schedule/settings');
             return;
         }
@@ -697,7 +689,6 @@ class Calendar_ScheduleController extends AuthenticatedController
         $schedule_settings = [
             'start_time'   => $start_time,
             'end_time'     => $end_time,
-            'weekdays'     => $weekdays,
             'visible_days' => $visible_days
         ];
 

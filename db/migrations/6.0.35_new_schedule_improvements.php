@@ -49,11 +49,6 @@ class NewScheduleImprovements extends Migration
                     'end_time'   => sprintf('%02u:00', $old_config['glb_end_time']),
                     'semester_id' => $old_config['semester_id'] ?? $old_config['glb_sem'] ?? null,
                 ];
-                if (!empty($old_config['glb_days']) && count($old_config['glb_days']) === 7) {
-                    $new_config['weekdays'] = 7;
-                } else {
-                    $new_config['weekdays'] = 5;
-                }
                 //Convert the visible days array:
                 $visible_days = [];
                 if (is_array($old_config['glb_days'])) {

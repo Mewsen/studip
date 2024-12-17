@@ -33,16 +33,6 @@
                 <? endfor ?>
             </select>
         </label>
-        <label>
-            <input type="radio" name="weekdays" value="7"
-                <?= $schedule_settings['weekdays'] === 7 ? 'checked' : '' ?>>
-            <?= _('Alle Wochentage im Stundenplan anzeigen.') ?>
-        </label>
-        <label>
-            <input type="radio" name="weekdays" value="5"
-                <?= $schedule_settings['weekdays'] === 5 ? 'checked' : '' ?>>
-            <?= _('Nur Montag bis Freitag im Stundenplan anzeigen.') ?>
-        </label>
     </fieldset>
     <fieldset>
         <legend><?= _('Wochentage') ?></legend>

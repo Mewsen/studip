@@ -170,7 +170,6 @@ class Helper
                 'views' => [
                     'timeGridWeek' => [
                         'columnHeaderFormat' => ['weekday' => 'short'],
-                        'weekends'           => !empty($schedule_settings['weekdays']) && $schedule_settings['weekdays'] === 7,
                         'slotDuration'       => $slot_duration
                     ]
                 ],
