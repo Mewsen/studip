@@ -289,19 +289,22 @@ STUDIP.ready(function () {
                                     let params = this.getFormValues();
                                     params.STUDIPFORM_AUTOSTORE = 1;
 
-                                    $.ajax({
-                                        url: this.STUDIPFORM_AUTOSAVEURL,
-                                        data: params,
-                                        type: 'post',
-                                        success(output) {
-                                            if (output === 'STUDIPFORM_STORE_SUCCESS' && this.STUDIPFORM_REDIRECTURL) {
-                                                //The form has been stored successfully:
-                                                window.location.href = this.STUDIPFORM_REDIRECTURL;
-                                            } else if (output !== 'STUDIPFORM_STORE_SUCCESS') {
-                                                Report.error($gettext('Es ist ein Fehler aufgetreten'), output);
+                                    let submit = function (url, params, redirect) {
+                                        $.ajax({
+                                            url: url,
+                                            data: params,
+                                            type: 'post',
+                                            success(output) {
+                                                if (output === 'STUDIPFORM_STORE_SUCCESS' && redirect) {
+                                                    //The form has been stored successfully:
+                                                    window.location.href = redirect;
+                                                } else if (output !== 'STUDIPFORM_STORE_SUCCESS') {
+                                                    Report.error($gettext('Es ist ein Fehler aufgetreten'), output);
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    };
+                                    submit(this.STUDIPFORM_AUTOSAVEURL, params, this.STUDIPFORM_REDIRECTURL);
                                 } else {
                                     this.STUDIPFORM_VALIDATED = true;
                                     this.$el.submit();
