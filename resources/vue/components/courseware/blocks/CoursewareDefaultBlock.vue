@@ -205,7 +205,7 @@ export default {
         if (!this.public && this.userProgress && this.userProgress.attributes.grade === 0 && this.defaultGrade) {
             this.userProgress = 1;
         }
-        if (this.canEdit) {
+        if (this.block.id && this.canEdit) {
             this.loadFeedback(this.block.id);
         }
     },
