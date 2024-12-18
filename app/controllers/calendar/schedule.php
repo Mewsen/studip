@@ -105,14 +105,14 @@ class Calendar_ScheduleController extends AuthenticatedController
         );
         $sidebar->addWidget($actions);
 
-        $schedule_settings = UserConfig::get()->getValue('SCHEDULE_SETTINGS');
+        $schedule_settings = UserConfig::get(User::findCurrent()->id)->getValue('SCHEDULE_SETTINGS');
         $size = $schedule_settings['size'] ?? 'medium';
         if (Request::submitted('size')) {
             $size = Request::option('size');
             if (in_array($size, ['small', 'medium', 'large'])) {
                 //Set the new size in the schedule settings:
                 $schedule_settings['size'] = $size;
-                UserConfig::get()->store('SCHEDULE_SETTINGS', $schedule_settings);
+                UserConfig::get(User::findCurrent()->id)->store('SCHEDULE_SETTINGS', $schedule_settings);
             } else {
                 $size = 'medium';
             }
@@ -645,7 +645,7 @@ class Calendar_ScheduleController extends AuthenticatedController
      */
     public function settings_action()
     {
-        $user_config = UserConfig::get($GLOBALS['user']->id);
+        $user_config = UserConfig::get(User::findCurrent()->id);
         $this->schedule_settings = $user_config->getValue('SCHEDULE_SETTINGS');
 
         //Provide good defaults:
@@ -685,14 +685,12 @@ class Calendar_ScheduleController extends AuthenticatedController
             return;
         }
 
-
-        $schedule_settings = [
-            'start_time'   => $start_time,
-            'end_time'     => $end_time,
-            'visible_days' => $visible_days
-        ];
-
-        UserConfig::get($GLOBALS['user']->id)->store('SCHEDULE_SETTINGS', $schedule_settings);
+        //Update the settings:
+        $schedule_settings = UserConfig::get(User::findCurrent()->id)->getValue('SCHEDULE_SETTINGS');
+        $schedule_settings['start_time']   = $start_time;
+        $schedule_settings['end_time']     = $end_time;
+        $schedule_settings['visible_days'] = $visible_days;
+        UserConfig::get(User::findCurrent()->id)->store('SCHEDULE_SETTINGS', $schedule_settings);
 
         PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
         if (Request::isDialog()) {
