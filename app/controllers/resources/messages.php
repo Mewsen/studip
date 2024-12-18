@@ -68,7 +68,7 @@ class Resources_MessagesController extends AuthenticatedController
             $this->room_selection = Request::get('room_selection');
             $this->room_ids = Request::getArray('room_ids');
             $this->selected_rooms = Room::findMany($this->room_ids);
-            $this->clipboard_id = Request::int('clipboard_id');
+            $this->clipboard_id = Request::get('clipboard_id');
 
             //First validation:
 

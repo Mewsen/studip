@@ -30,7 +30,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
         if (Navigation::hasItem('/resources/planning/index')) {
             Navigation::activateItem('/resources/planning/index');
         }
-        $selected_clipboard_id = Request::int('clipboard_id', $selected_clipboard_id);
+        $selected_clipboard_id = Request::get('clipboard_id', $selected_clipboard_id);
 
         $this->no_clipboard = false;
         $this->no_rooms = false;
@@ -271,7 +271,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
             Navigation::activateItem('/resources/planning/semestergroup_plan');
         }
 
-        $selected_clipboard_id = Request::int('clipboard_id', $selected_clipboard_id);
+        $selected_clipboard_id = Request::get('clipboard_id', $selected_clipboard_id);
 
         $this->no_clipboard = false;
         $this->no_rooms = false;
@@ -1066,7 +1066,7 @@ class RoomManagement_PlanningController extends AuthenticatedController
             Navigation::activateItem('/resources/planning/booking_comments');
         }
 
-        $selected_clipboard_id = Request::int('clipboard_id', $selected_clipboard_id);
+        $selected_clipboard_id = Request::get('clipboard_id', $selected_clipboard_id);
         $this->standalone = false;
 
         if ($selected_clipboard_id) {
