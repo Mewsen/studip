@@ -1,6 +1,8 @@
-<div>
-<?= $this->render_partial('search/breadcrumb') ?>
-</div>
+<? if (isset($breadcrumb)) : ?>
+    <div>
+    <?= $this->render_partial('search/breadcrumb') ?>
+    </div>
+<? endif ?>
 <? if ($studiengangTeilName) : ?>
     <? $max_fachsemester = count($fachsemesterData) ? max($fachsemesterData) : 0 ?>
     <table class="mvv-modul-details default nohover">
@@ -42,7 +44,6 @@
             <? foreach ($abschnitteData as $abschnitt_id => $abschnitt): ?>
                 <? $displayedAbschnittName = false ?>
                 <? $ueberschrift = (mb_strlen($abschnitt['zwischenUeberschrift'])) ?>
-                <?// if (!$ueberschrift): ?>
                 <? if ($ueberschrift): ?>
                 	<tr class="table_header">
                         <td colspan="<?= $max_fachsemester + 3 ?>"><?= htmlReady($abschnitt['zwischenUeberschrift']) ?></td>

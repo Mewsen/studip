@@ -306,7 +306,7 @@ class StgteilVersion extends ModuleManagementModelTreeItem
         $replacements = [
             $this->fassung_nr,
             $this->fassung_nr . ModuleManagementModel::getLocaleOrdinalNumberSuffix($this->fassung_nr),
-            $this->fassung_typ ? $GLOBALS['MVV_STGTEILVERSION']['FASSUNG_TYP'][$this->fassung_typ]['name'] : '',
+            $GLOBALS['MVV_STGTEILVERSION']['FASSUNG_TYP'][$this->fassung_typ]['name'] ?? '',
             $this->studiengangteil->fach->name,
             $this->getDisplaySemesterValidity(),
             trim($this->studiengangteil->kp),

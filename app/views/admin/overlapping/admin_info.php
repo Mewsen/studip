@@ -32,3 +32,4 @@
         </dl>
     </section>
 </section>
+<?= $this->render_partial('admin/overlapping/buttons') ?>

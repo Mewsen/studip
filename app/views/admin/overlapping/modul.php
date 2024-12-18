@@ -5,10 +5,13 @@
  * @var StgteilAbschnitt $abschnitt
  */
 ?>
-<?= Icon::create('log', Icon::ROLE_INFO); ?> <?= htmlReady($modul->getDisplayName()); ?>
+<div class="mvv-ovl-title">
+    <?= Icon::create('log', Icon::ROLE_INFO); ?>
+    <?= htmlReady($modul->getDisplayName()); ?>
+</div>
 <ul>
     <? foreach ($modul->modul->modulteile->findBy('id', $conflicts->pluck('base_modulteil_id')) as $modulteil) : ?>
-    <li class="mvv-ovl-base-modulteil">
+    <li class="mvv-ovl-modulteil">
         <? $id = md5($modul->abschnitt_id . $modulteil->id) ?>
         <input id="<?= $id ?>" type="checkbox" checked>
         <label for="<?= $id ?>"></label>

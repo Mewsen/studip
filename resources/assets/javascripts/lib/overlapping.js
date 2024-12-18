@@ -7,7 +7,8 @@ const Overlapping = {
      * @returns {undefined}
      */
     init: function () {
-        $('#base-version-select').select2({
+        let base_selection = $('#base-version-select');
+        base_selection.select2({
             placeholder: $gettext('Studiengangteil suchen'),
             minimumInputLength: 3,
             ajax: {
@@ -31,7 +32,7 @@ const Overlapping = {
         $('#semtype-select').select2({
             placeholder: $gettext('Veranstaltungstyp auswählen (optional)')
         });
-        $('#base-version-select').on('select2:select', function () {
+        base_selection.on('select2:select', function () {
             $('#comp-versions-select').val(null).trigger('change');
             $.ajax({
                 url: STUDIP.URLHelper.getURL('dispatch.php/admin/overlapping/comp_versions'),
@@ -41,7 +42,7 @@ const Overlapping = {
                 },
                 success: function(data) {
                     if (data.results.length) {
-                        var inputlength = 3;
+                        let inputlength = 3;
                         if (data.results.length < 4) {
                             inputlength = 0;
                         }
@@ -55,33 +56,30 @@ const Overlapping = {
                             }
                         });
                     } else {
-                        $('#comp-versions-select').select2({
+                        base_selection.select2({
                             placeholder: $gettext('Keine weitere Auswahl möglich')
                         });
-                        $('#comp-versions-select').prop('disabled', true).trigger('change');
+                        base_selection.prop('disabled', true).trigger('change');
                     }
                 }
             });
         });
 
         $('span.mvv-overlapping-exclude').on('click', function () {
-            const course_id = $(this).data('mvv-ovl-course');
-            const selection_id = $(this).data('mvv-ovl-selection');
+            const conflict_id = $(this).data('mvv-ovl-conflict');
             $.ajax({
-                method: 'post',
-                url: STUDIP.URLHelper.getURL('dispatch.php/admin/overlapping/set_exclude'),
+                method: 'get',
+                url: STUDIP.URLHelper.getURL('dispatch.php/admin/overlapping/exclude'),
                 data: {
-                    'excluded': $(this).is('.mvv-overlapping-invisible') ? 1 : 0,
-                    'course_id': course_id,
-                    'selection_id': selection_id
+                    'conflict_id': conflict_id
                 },
                 success() {
                     $('.mvv-overlapping-exclude').each(function () {
-                        if ($(this).data('mvv-ovl-course') == course_id) {
+                        if ($(this).data('mvv-ovl-conflict') === conflict_id) {
                             $(this).toggleClass('mvv-overlapping-invisible');
                         }
+                        $(this).attr('title', $gettext('Veranstaltung berücksichtigen'));
                     });
-                    $('.mvv-overlapping-exclude').attr('title', $gettext('Veranstaltung berücksichtigen'));
                     $('.mvv-overlapping-invisible').attr('title', $gettext('Veranstaltung nicht berücksichtigen'));
 
                 }

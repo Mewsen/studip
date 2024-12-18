@@ -364,7 +364,9 @@ class Search_StudiengaengeController extends MVVController
 
             Sidebar::get()->addWidget($widget, 'mhb_export');
         }
-        $this->breadcrumb->append($this->studiengang, 'studiengang');
+        if ($this->breadcrumb) {
+            $this->breadcrumb->append($this->studiengang, 'studiengang');
+        }
         $this->render_template('search/studiengaenge/verlauf', $this->layout);
     }
 

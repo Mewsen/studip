@@ -4,10 +4,14 @@
  * @var StgteilVersion $base_version
  */
 ?>
-<h1>
-    <?= Icon::create('category', Icon::ROLE_INFO)->asImg() ?>
-    <?= htmlReady($base_version->getDisplayName()); ?>
-</h1>
+<? if (Request::isXhr()) : ?>
+    <? PageLayout::setTitle($base_version->getDisplayName()) ?>
+<? else : ?>
+    <h1>
+        <?= Icon::create('category', Icon::ROLE_INFO) ?>
+        <?= htmlReady($base_version->getDisplayName()); ?>
+    </h1>
+<? endif ?>
 <section>
     <? foreach ($base_version->abschnitte->findBy('id', $conflicts->pluck('base_abschnitt_id')) as $abschnitt) : ?>
     <article>
