@@ -256,8 +256,10 @@ export default {
     mounted() {
         this.updateNestedChildren();
         const parent = { type: 'courses', id: this.context.id };
-        this.loadCourseMemberships({ parent, relationship: 'memberships', options: {'page[limit]': 10000 } });
-        this.loadCourseStatusGroups({ parent, relationship: 'status-groups' });
+        if (this.context.type === 'courses') {
+            this.loadCourseMemberships({ parent, relationship: 'memberships', options: {'page[limit]': 10000 } });
+            this.loadCourseStatusGroups({ parent, relationship: 'status-groups' });
+        }
     },
     watch: {
         structuralElements() {
