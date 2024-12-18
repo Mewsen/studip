@@ -150,6 +150,11 @@ if (isset($GLOBALS['DB_STUDIP_SLAVE_HOST'])) {
     DBManager::getInstance()->aliasConnection('studip', 'studip-slave');
 }
 
+if (Studip\ENV === 'production') {
+    DBManager::get()->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
+    DBManager::get('studip-slave')->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
+}
+
 // set default exception handler
 // command line or http request?
 if (isset($_SERVER['REQUEST_METHOD'])) {
