@@ -39,6 +39,10 @@
         <span><?= _('Beim Löschen von Stud.IP-Accounts ILIAS-Accounts ebenfalls löschen (alle zugehörigen Objekte werden gelöscht!)') ?></span>
     </label>
     <label>
+        <input type="checkbox" name="ilias_reconnect_accounts" value="1" <?= $ilias_config['reconnect_accounts'] ? 'checked' : '' ?>>
+        <span><?= _('Externe User-Accounts automatisch verbinden, wenn sie den passenden Loginnamen haben') ?></span>
+    </label>
+    <label>
         <span><?= _('Prefix für automatisch angelegte Usernamen') ?></span>
         <? if ($ilias_config['is_active']) : ?>
             <div><?=$ilias_config['user_prefix'] ? htmlReady($ilias_config['user_prefix']) : _('Kein Präfix')?></div>

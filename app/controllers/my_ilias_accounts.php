@@ -162,6 +162,70 @@ class MyIliasAccountsController extends AuthenticatedController
     }
 
     /**
+     * Administrate account for ILIAS installation
+     * @param $user_id studip user id
+     * @param $index Index of ILIAS installation
+     * @param $mode action type
+     */
+    public function administrate_account_action($user_id, $index)
+    {
+        if (!$GLOBALS['perm']->have_perm('root')) {
+            throw new AccessDeniedException();
+        }
+
+        $ilias_configs = Config::get()->ILIAS_INTERFACE_SETTINGS;
+        if ($ilias_configs[$index]['is_active']) {
+            $this->ilias = new ConnectedIlias($index);
+            $this->ilias_index = $index;
+            $this->ilias_login = '';
+            $this->matched_user = false;
+            $this->external_account_login = '';
+            $this->external_account_id = false;
+            $this->user_exists = false;
+            $this->user = new IliasUser($index, $ilias_configs[$index]['version'], $user_id);
+
+            if (Request::submitted('lookup_account')) {
+                $this->ilias_login = trim(Request::option('ilias_login'));
+                $this->matched_user = $this->ilias->soap_client->lookupUser($this->ilias_login);
+                if (empty($this->matched_user)) {
+                    PageLayout::postError(sprintf(_('Es wurde kein Account mit dem Loginnamen "%s" gefunden.'), htmlReady($this->ilias_login)));
+                } else {
+                    PageLayout::postInfo(sprintf(_('Account "%s" wurde gefunden.'), htmlReady($this->ilias_login)));
+                }
+            } elseif (Request::submitted('connect_account')) {
+                $new_user = $this->ilias->soap_client->getUser(Request::option('ilias_user_id'));
+                if ($new_user['usr_id'] && $new_user['login']) {
+                    $this->user->id = $new_user['usr_id'];
+                    $this->user->login = $new_user['login'];
+                    $this->user->setConnection(IliasUser::USER_TYPE_ORIGINAL);
+                    PageLayout::postSuccess(_('Account zugeordnet.'));
+                }
+            } elseif (Request::submitted('disconnect_account')) {
+                if ($this->user->unsetConnection(true)) {
+                    PageLayout::postSuccess(_('Account-Zuordnung entfernt.'));
+                }
+            } elseif (Request::submitted('new_account')) {
+                $this->ilias->user = new IliasUser($index, $ilias_configs[$index]['version'], $user_id);
+                $this->ilias->soap_client->setCachingStatus(false);
+                $this->ilias->soap_client->clearCache();
+                $this->ilias->newUser();
+                PageLayout::postSuccess(_('Account angelegt.'));
+            }
+
+            // check if connection is valid / available
+            if ($this->user->isConnected()) {
+                $existing_user = $this->ilias->soap_client->getUser($this->user->id);
+                if ($existing_user && $existing_user['usr_id'] === $this->user->id) {
+                    $this->user_exists = true;
+                }
+            } else {
+                $this->external_account_login = $ilias_configs[$index]['user_prefix'] . $this->user->studip_login;
+                $this->external_account_id = $this->ilias->soap_client->lookupUser($this->external_account_login);
+            }
+        }
+    }
+
+    /**
      * Redirect to ILIAS installation
      * @param $index Index of ILIAS installation
      */

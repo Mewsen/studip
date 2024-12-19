@@ -129,6 +129,7 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                             'url' => _('https://<URL zur ILIAS-Installation>'),
                             'client' => '',
                             'ldap_enable' => '',
+                            'reconnect_accounts' => false,
                             'no_account_updates' => false,
                             'admin' => 'ilias_soap_admin',
                             'admin_pw' => '',
@@ -351,6 +352,7 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                         $this->ilias_configs[$index]['course_veranstaltungsnummer'] = Request::get('ilias_course_veranstaltungsnummer');
                     }
                     $this->ilias_configs[$index]['delete_ilias_users'] = Request::get('ilias_delete_ilias_users');
+                    $this->ilias_configs[$index]['reconnect_accounts'] = Request::bool('ilias_reconnect_accounts', false);
                     $this->ilias_configs[$index]['delete_ilias_courses'] = Request::get('ilias_delete_ilias_courses');
                     $this->ilias_configs[$index]['category_create_on_add_module'] = Request::get('ilias_category_create_on_add_module');
                     $this->ilias_configs[$index]['category_to_desktop'] = Request::get('ilias_category_to_desktop');

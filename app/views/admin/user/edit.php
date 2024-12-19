@@ -232,8 +232,6 @@ use Studip\Button, Studip\LinkButton;
         <? endif ?>
     </fieldset>
 
-
-
     <fieldset>
         <legend>
             <?= _('Registrierungsdaten') ?>
@@ -367,6 +365,41 @@ use Studip\Button, Studip\LinkButton;
             <? endif; ?>
         </section>
     </fieldset>
+
+    <? if ($GLOBALS['perm']->have_perm('root') && Config::get()->ILIAS_INTERFACE_ENABLE) : ?>
+        <? foreach ($ilias_list as $ilias_index => $ilias) : ?>
+            <fieldset>
+                <legend>
+                    <?= htmlReady(sprintf(_('Account in %s'), htmlReady($ilias->getName()))) ?>
+                </legend>
+
+                <? if ($ilias_user[$ilias_index]->isConnected()) : ?>
+                    <label>
+                        <?= _('Loginname des verknüpften Accounts:') ?>
+                        <?= htmlReady($ilias_user[$ilias_index]->getUsername()) ?>
+                    </label>
+                    <label>
+                        <?= LinkButton::create(
+                            _('Verknüpfung bearbeiten'),
+                            $controller->url_for('my_ilias_accounts/administrate_account/' . $ilias_user[$ilias_index]->studip_id . '/' . $ilias_index . '/edit'),
+                            ['data-dialog' => 'reload-on-close']
+                        ) ?>
+                    </label>
+                <? else : ?>
+                    <label>
+                        <?= _('Kein Account verknüpft') ?>
+                    </label>
+                    <label>
+                        <?= LinkButton::create(
+                            _('Verknüpfung erstellen'),
+                            $controller->url_for('my_ilias_accounts/administrate_account/' . $ilias_user[$ilias_index]->studip_id . '/' . $ilias_index . '/edit'),
+                            ['data-dialog' => 'reload-on-close']
+                        ) ?>
+                    </label>
+                <? endif ?>
+            </fieldset>
+        <? endforeach ?>
+    <? endif ?>
 
     <? if (in_array($user->perms, ['autor', 'tutor', 'dozent'])): ?>
     <fieldset>

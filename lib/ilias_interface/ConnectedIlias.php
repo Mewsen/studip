@@ -336,8 +336,17 @@ class ConnectedIlias
                 ($this->user->auth_plugin == $this->ilias_config['ldap_enable'])) {
             $this->user->id = $user_exists;
             $this->user->login = $user_data["login"];
-            $this->user->setConnection($this->user->getUserType(), true);
-            PageLayout::postSuccess(sprintf(_("Verbindung mit Nutzer ID %s wiederhergestellt."), $this->user->id));
+            $this->user->setConnection($this->user->getUserType());
+            PageLayout::postSuccess(sprintf(
+                _('Verbindung mit Account ID %s wiederhergestellt.'),
+                htmlReady($this->user->id)
+            ));
+            return true;
+        } elseif ($user_exists && $this->ilias_config['reconnect_accounts']) {
+            $this->user->id = $user_exists;
+            $this->user->login = $user_data["login"];
+            $this->user->setConnection($this->user->getUserType());
+            PageLayout::postSuccess(sprintf(_('Verbindung mit Account ID %s wiederhergestellt.'), htmlReady($this->user->id)));
             return true;
         } elseif ($user_exists) {
             $this->error[] = sprintf(_('Externer Account konnte nicht angelegt werden. Es existiert bereits ein User mit dem Login %s in %s'), $user_data["login"], $this->ilias_config['name']);
@@ -361,7 +370,7 @@ class ConnectedIlias
         }
 
         // set role according to Stud.IP perm
-        if (User::findCurrent()->perms === 'root') {
+        if (User::find($this->user->studip_id)->perms === 'root') {
             $role_id = 2;
         } else {
             $role_id = 4;
@@ -519,7 +528,7 @@ class ConnectedIlias
 
         // data for user category in ILIAS
         $object_data["title"] = sprintf(_("Eigene Daten von %s (%s)."), $this->user->getName(), $this->user->getId());
-        $object_data["description"] = sprintf(_("Hier befinden sich die persönlichen Lernmodule des Benutzers %s."), $this->user->getName());
+        $object_data['description'] = sprintf(_('Hier befinden sich die persönlichen Lernmodule von %s.'), $this->user->getName());
         $object_data["type"] = "cat";
         $object_data["owner"] = $this->user->getId();
 
