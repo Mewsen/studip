@@ -424,6 +424,18 @@ class ConnectedIlias
             $this->user->id = $user_id;
             $this->user->login = $this->ilias_config['user_prefix'].$this->user->studip_login;
 
+            // add additional roles
+            $temp_user = User::find($this->user->studip_id);
+
+            if (
+                array_key_exists('additional_roles', $this->ilias_config)
+                && array_key_exists($temp_user->perms, $this->ilias_config['additional_roles'])
+            ) {
+                foreach ($this->ilias_config['additional_roles'][$temp_user->perms] as $role_data) {
+                    $this->soap_client->addUserRoleEntry($user_id, $role_data['id']);
+                }
+            }
+
             $this->user->setConnection(IliasUser::USER_TYPE_CREATED);
             return true;
         }
@@ -444,6 +456,17 @@ class ConnectedIlias
             return false;
         }
         $update_user = new IliasUser($this->index, $this->ilias_config['version'], $user->id);
+
+        // add additional roles
+        if (
+            array_key_exists('additional_roles', $this->ilias_config)
+            && array_key_exists($user->perms, $this->ilias_config['additional_roles'])
+        ) {
+            foreach ($this->ilias_config['additional_roles'][$user->perms] as $role_data) {
+                $this->soap_client->addUserRoleEntry($update_user->id, $role_data['id']);
+            }
+        }
+
       // don't update ldap user
         if (! $this->ilias_config['user_prefix'] &&
             $this->ilias_config['ldap_enable'] &&
@@ -453,10 +476,12 @@ class ConnectedIlias
         } elseif ($this->ilias_config['no_account_updates']) {
             return true;
         }
+
         // if user is manually connected don't update user data
         if ($update_user->getUserType() == IliasUser::USER_TYPE_ORIGINAL) {
             return true;
         }
+
         $this->soap_client->setCachingStatus(false);
         $this->soap_client->clearCache();
         if ($update_user->isConnected() && $update_user->id && $this->soap_client->lookupUser($update_user->login)) {
