@@ -16,7 +16,7 @@ class Manager
 {
     public const STATE_UNKNOWN = false;
     public const STATE_AUTHENTICATED = 'authenticated';
-    public const STATE_NOBODY = 'authenticated';
+    public const STATE_NOBODY = 'nobody';
 
     protected array $options = [
         'name' => 'Seminar_Session',
