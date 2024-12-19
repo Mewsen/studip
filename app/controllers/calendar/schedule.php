@@ -244,7 +244,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                     $event_title = studip_interpolate(
                         '%{course_name} (%{lecturer_names})',
                         [
-                            'course_name'    => $cycle_date->course->getFullName('number-name'),
+                            'course_name'    => $cycle_date->course->getFullName(),
                             'lecturer_names' => implode(', ', $lecturer_names)
                         ]
                     );

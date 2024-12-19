@@ -33,6 +33,8 @@
                     <h3><?= _('Veranstaltungsnummer') ?></h3>
                     <p><?= htmlReady($course->veranstaltungsnummer) ?></p>
                 <? endif ?>
+                <h3><?= _('Name') ?></h3>
+                <p><?= htmlReady($course->getFullName('type-name')) ?></p>
                 <h3><?= _('Lehrende') ?></h3>
                 <ul class="default">
                     <?
@@ -67,7 +69,7 @@
             </section>
         </fieldset>
         <div data-dialog-button>
-            <?= \Studip\Button::create(
+            <?= \Studip\Button::createAccept(
                 _('Speichern'),
                 'save',
                 ['formaction' => $controller->url_for('calendar/schedule/save_course_info/' . $course->id)]
@@ -85,6 +87,7 @@
                     ['formaction' => $controller->url_for('calendar/schedule/hide_course/' . $course->id)]
                 ) ?>
             <? endif ?>
+            <?= \Studip\Button::createCancel(_('Abbrechen')) ?>
         </div>
     </form>
 <? endif ?>
