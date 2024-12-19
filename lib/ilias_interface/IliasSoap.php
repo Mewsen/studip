@@ -707,6 +707,41 @@ class IliasSoap extends StudipSoapClient
     }
 
     /**
+    * get roles
+    *
+    * gets roles of given type for given object
+    * 
+    * @param string $role_type type of role (global|local|user|user_login|template or empty)
+    * @param string $id reference id, user id, or -1 for all available roles of given type
+    * @return array|false role-objects
+    */
+    public function getRoles(string $role_type, string $id)
+    {
+        $param = [
+            'sid' => $this->getSID(),
+            'role_type' => $role_type,
+            'id' => $id
+           ];
+        $result = $this->call('getRoles', $param);
+        if ($result) {
+            $s = simplexml_load_string($result);
+            $role_array = [];
+
+            foreach ($s->Role as $role) {
+                $id_parts = explode('_role_', (string) $role->attributes()->id);
+                $role_array[$id_parts[1]] = [
+                    'id'          => $id_parts[1],
+                    'type'        => (string) $role->attributes()->role_type,
+                    'name'        => (string) $role->Title,
+                    'description' => (string) $role->Description,
+                ];
+            }
+            return $role_array;
+        }
+        return false;
+    }
+
+    /**
     * add role
     *
     * adds a new role
