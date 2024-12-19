@@ -19,7 +19,7 @@ class Manager
     public const STATE_NOBODY = 'nobody';
 
     protected array $options = [
-        'name' => 'Seminar_Session',
+        'name' => 'Studip_Session',
         'lifetime' => 7200,
         'path' => null,
         'domain' => null,
