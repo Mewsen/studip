@@ -225,7 +225,7 @@ abstract class StudIPPlugin
             return function ($request, $response, array $otherargs) use ($action, $args, $that) {
                 ob_start();
                 call_user_func_array([$that, $action], $args);
-                $content = ob_get_contents();
+                $content = ob_get_clean();
                 $response->getBody()->write($content);
                 return $response;
             };
