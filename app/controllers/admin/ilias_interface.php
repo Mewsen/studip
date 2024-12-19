@@ -119,7 +119,7 @@ class Admin_IliasInterfaceController extends AuthenticatedController
         $this->valid_url = false;
         $this->ilias_version = '';
         $this->ilias_version_date = '';
-        $this->clients = [];
+        $this->ilias_clients = [];
         if ($index === 'new') {
             // default values
             $this->ilias_config = [
@@ -163,7 +163,7 @@ class Admin_IliasInterfaceController extends AuthenticatedController
             // get ILIAS server info
             if (Request::get('ilias_url')) {
                 $info = ConnectedIlias::getIliasInfo(Request::get('ilias_url'));
-                if (count($info)) {
+                if (is_array($info) && count($info)) {
                     $this->valid_url = true;
                     $this->ilias_config['url'] = Request::get('ilias_url');
                     if ($info['version']) {
@@ -236,14 +236,15 @@ class Admin_IliasInterfaceController extends AuthenticatedController
      */
     public function edit_content_action($index)
     {
-        $this->ilias_config = $this->ilias_configs[$index];
         $this->ilias_index = $index;
         $this->ilias_datafields = [];
 
         $connected_ilias = new ConnectedIlias($index);
+        $this->ilias_config = $connected_ilias->ilias_config;
+
         if ($admin_id = $connected_ilias->soap_client->lookupUser($this->ilias_config['admin'])) {
             $user = $connected_ilias->soap_client->getUser($admin_id);
-            if (array_key_exists('udfs', $user)) {
+            if (!empty($user) && array_key_exists('udfs', $user)) {
                 $this->ilias_datafields = $user['udfs'];
             }
         }
@@ -255,8 +256,10 @@ class Admin_IliasInterfaceController extends AuthenticatedController
      */
     public function edit_permissions_action($index)
     {
-        $this->ilias_config = $this->ilias_configs[$index];
         $this->ilias_index = $index;
+
+        $connected_ilias = new ConnectedIlias($index);
+        $this->ilias_config = $connected_ilias->ilias_config;
     }
 
     /**
@@ -438,28 +441,31 @@ class Admin_IliasInterfaceController extends AuthenticatedController
      */
     public function soap_methods_action($index)
     {
-        if ($this->ilias_configs[$index]['is_active']) {
-            $ilias = new ConnectedIlias($index);
-            $this->soap_methods = $ilias->getSoapMethods();
-            ksort($this->soap_methods);
-            $this->ilias_index = $index;
-            if (Request::get('ilias_soap_method')) {
-                $this->ilias_soap_method = Request::get('ilias_soap_method');
-                foreach ($this->soap_methods[Request::get('ilias_soap_method')] as $param) {
-                    switch ($param) {
-                        case "sid" : $this->params[$param] = $ilias->soap_client->getSID();
-                        break;
-                        case "user_id" : $this->params[$param] = $ilias->user->getId();
-                        break;
-                    }
+        $ilias = new ConnectedIlias($index);
+
+        $this->soap_methods = $ilias->getSoapMethods();
+        ksort($this->soap_methods);
+        $this->ilias_index = $index;
+        if (Request::get('ilias_soap_method')) {
+            $this->ilias_soap_method = Request::get('ilias_soap_method');
+            foreach ($this->soap_methods[Request::get('ilias_soap_method')] as $param) {
+                switch ($param) {
+                    case "sid" : $this->params[$param] = $ilias->soap_client->getSID();
+                    break;
+                    case "user_id" : $this->params[$param] = is_object($ilias->user) ? $ilias->user->getId() : '';
+                    break;
                 }
-            } elseif (Request::get('ilias_call')) {
-                $params = [];
-                foreach ($this->soap_methods[Request::get('ilias_call')] as $param) {
+            }
+        } elseif (Request::get('ilias_call')) {
+            $params = [];
+            foreach ($this->soap_methods[Request::get('ilias_call')] as $param) {
+                if ($param === 'user_ids') {
+                    $params[$param] = [Request::get('ilias_soap_param_'.$param)];
+                } else {
                     $params[$param] = Request::get('ilias_soap_param_'.$param);
                 }
-                $this->result = $ilias->soap_client->call(Request::get('ilias_call'), $params);
             }
+            $this->result = $ilias->soap_client->call(Request::get('ilias_call'), $params);
         }
     }
 }

@@ -115,6 +115,9 @@ class ConnectedIlias
     public static function getIntVersion($version)
     {
         $version_array = explode('.', $version);
+        if (empty($version_array[2])) {
+            return ((int)$version_array[0]*10000) + ((int)$version_array[1]*100);
+        }
         return ((int)$version_array[0]*10000) + ((int)$version_array[1]*100) + ((int)$version_array[2]);
     }
 
@@ -126,6 +129,44 @@ class ConnectedIlias
         $this->ilias_interface_config = Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS;
 
         $ilias_configs = Config::get()->ILIAS_INTERFACE_SETTINGS;
+        $config_options = [
+            'is_active' => false,
+            'name' => '',
+            'version' => '',
+            'url' => '',
+            'client' => '',
+            'ldap_enable' => '',
+            'no_account_updates' => false,
+            'admin' => 'ilias_soap_admin',
+            'admin_pw' => '',
+
+            'root_category_name' => '',
+            'root_category' => '',
+            'user_prefix' => 'studip_',
+            'delete_ilias_users' => '',
+            'delete_ilias_courses' => '',
+            'user_data_category' => '',
+            'matriculation' => '',
+            'discipline_1' => ['id' => ''],
+            'discipline_2' => ['id' => ''],
+            'allow_change_account' => false,
+            'category_create_on_add_module' => false,
+            'category_to_desktop' => false,
+            'cat_semester' => '',
+            'course_semester' => '',
+            'course_veranstaltungsnummer' => false,
+            'modules' => [],
+
+            'author_role_name' => '',
+            'author_role' => '',
+            'author_perm' => ''
+        ];
+        foreach ($config_options as $option_key => $option_value) {
+            if (!array_key_exists($option_key, $ilias_configs[$this->index])) {
+                $ilias_configs[$this->index][$option_key] = $option_value;
+            }
+        }
+
         $this->ilias_config = $ilias_configs[$this->index];
     }
 
@@ -713,17 +754,12 @@ class ConnectedIlias
             foreach ($this->ilias_config['modules'] as $type => $name) {
                 $types[] = $type;
             }
-            $result = $this->soap_client->getTreeChilds($parent_id, $types);
-            $user_result = $this->soap_client->getTreeChilds($parent_id, $types, $this->user->getId());
-
+            $result = $this->soap_client->getTreeChilds($parent_id, $types, $this->user->getId());
             if ($result) {
                 foreach($result as $ref_id => $data) {
                     if ($data['type'] == 'fold') {
                         unset($result[$ref_id]);
                         $result = $result + $this->getChilds($ref_id);
-                    } else {
-                        $result[$ref_id]['accessInfo'] = $user_result[$ref_id]['accessInfo'];
-                        $result[$ref_id]['references'][$ref_id] = $user_result[$ref_id]['references'][$ref_id];
                     }
                 }
             }
@@ -1135,7 +1171,6 @@ class ConnectedIlias
                     $member_data["role"] = self::CRS_MEMBER_ROLE;
                     $type = "Member";
                     break;
-                default:
             }
             $member_data["passed"] = self::CRS_PASSED_VALUE;
             if ($type != "") {
@@ -1182,7 +1217,7 @@ class ConnectedIlias
         }
 
         $view_permission = false;
-        if ((in_array($this->operations[self::OPERATION_READ], $this->tree_allowed_operations)) && (in_array($this->operations[self::OPERATION_VISIBLE], $this->tree_allowed_operations))) {
+        if ((in_array($this->getOperation(self::OPERATION_READ), $this->tree_allowed_operations)) && (in_array($this->getOperation(self::OPERATION_VISIBLE), $this->tree_allowed_operations))) {
             $view_permission = true;
         }
         return $view_permission;

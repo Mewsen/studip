@@ -28,6 +28,8 @@ class Course_IliasInterfaceController extends AuthenticatedController
 
         if (Request::isXhr()) {
             $this->dialog = true;
+        } else {
+            $this->dialog = false;
         }
         if (!Config::Get()->ILIAS_INTERFACE_ENABLE ) {
             throw new AccessDeniedException(_('ILIAS-Interface ist nicht aktiviert.'));
@@ -380,7 +382,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
             }
             // exclude all modules that are already assigned to course
             foreach ($this->ilias_modules as $module_id => $module) {
-                if ($course_modules[$this->ilias_index][$module_id]) {
+                if (!empty($course_modules[$this->ilias_index][$module_id])) {
                     unset($this->ilias_modules[$module_id]);
                 }
             }

@@ -111,7 +111,14 @@ class IliasSoap extends StudipSoapClient
             return false;
         }
 
-        $cache_index = md5($method . ':' . implode('-', $params));
+        $params_ser = $params;
+        foreach ($params_ser as $item_key => $item) {
+            if (is_array($item)) {
+                $params_ser[$item_key] = implode('_', $item);
+            }
+        }
+        $cache_index = md5($method . ':' . implode('-', $params_ser));
+
         if ($this->caching_active && isset($this->soap_cache[$cache_index]) && $method !== 'login') {
             $result = $this->soap_cache[$cache_index];
         } else {
@@ -142,7 +149,11 @@ class IliasSoap extends StudipSoapClient
     */
     function loadCacheData()
     {
-        $this->soap_cache = (array)$_SESSION["cache_data"][$this->index];
+        if (!empty($_SESSION["cache_data"][$this->index])) {
+            $this->soap_cache = (array)$_SESSION["cache_data"][$this->index];
+        } else {
+            $this->soap_cache = [];
+        }
     }
 
     /**
@@ -344,7 +355,7 @@ class IliasSoap extends StudipSoapClient
                         $single_object['references'][(string)$reference[0]['ref_id']]['path_types'][] = (string)$element[0]['type'];
                     }
                 }
-                if ($single_object['ref_id']) {
+                if (!empty($single_object['ref_id'])) {
                     $objects[$single_object['ref_id']] = $single_object;
                 } elseif (!$condition_field) {
                     $objects[] = $single_object;
@@ -373,7 +384,7 @@ class IliasSoap extends StudipSoapClient
             'types' => $types,
             'key' => $key,
             'combination' => $combination,
-            'user_id' => (int)$user_id
+            'user_id' => !empty($user_id) ? (int)$user_id : null
             ];
 
         $result = $this->call('searchObjects', $param);
@@ -394,12 +405,12 @@ class IliasSoap extends StudipSoapClient
     * @param string user_id ilias-user-id
     * @return array object
     */
-    function getObjectByReference($ref, $user_id = "")
+    function getObjectByReference($ref, $user_id = false)
     {
         $param = [
             'sid' => $this->getSID(),
             'reference_id' => $ref,
-            'user_id' => (int)$user_id
+            'user_id' => !empty($user_id) ? (int)$user_id : null
             ];
 
         $result = $this->call('getObjectByReference', $param);
@@ -426,13 +437,12 @@ class IliasSoap extends StudipSoapClient
         $param = [
             'sid'   => $this->getSID(),
             'title' => $key,
-            'user_id' => 0
+            'user_id' => null
         ];
         $result = $this->call('getObjectsByTitle', $param);
         if ($result != false)
         {
             $objects = $this->parseIliasObject($result);
-            //$objects = $this->parseXML($result);
             foreach($objects as $index => $object_data)
             {
                 if (($type != "") AND ($object_data["type"] != $type))
@@ -461,7 +471,7 @@ class IliasSoap extends StudipSoapClient
         $param = [
             'sid'   => $this->getSID(),
             'title' => $key,
-            'user_id' => 0
+            'user_id' => null
         ];
         $result = $this->call('getObjectsByTitle', $param);
 
@@ -480,7 +490,6 @@ class IliasSoap extends StudipSoapClient
                     if (sizeof($object_data["references"]) > 0)
                     {
                         return key($object_data["references"]);
-                        //return $object_data["references"][0]["ref_id"];
                     }
         }
         return false;
@@ -587,14 +596,12 @@ class IliasSoap extends StudipSoapClient
     * @param string user_id user-id for permissions
     * @return array objects
     */
-    function getTreeChilds($ref_id, $types = "", $user_id = "")
+    function getTreeChilds($ref_id, $types, $user_id)
     {
-        if ($types == "")
-            $types = [];
         $param = [
             'sid' => $this->getSID(),
-            'ref_id' => $ref_id,
-            'types' => $types,
+            'ref_id' => (int)$ref_id,
+            'types' => (array)$types,
             'user_id' => (int)$user_id
             ];
 
@@ -672,8 +679,7 @@ class IliasSoap extends StudipSoapClient
         $result = $this->call('getUserRoles', $param);
         if ($result != false)
         {
-            // TODO: change to simple xml
-            $objects = $this->parseXML($result);
+            $objects = $this->parseIliasObject($result);
             $roles = [];
             foreach ($objects as $count => $role)
                 $roles[$count] = $role["obj_id"];
@@ -699,8 +705,7 @@ class IliasSoap extends StudipSoapClient
         $result = $this->call('getLocalRoles', $param);
         if ($result != false)
         {
-            // TODO: change to simple xml
-            $objects = $this->parseXML($result);
+            $objects = $this->parseIliasObject($result);
             return $objects;
         }
         return false;
@@ -724,13 +729,10 @@ class IliasSoap extends StudipSoapClient
 
         $xml = "<!DOCTYPE Objects SYSTEM \"http://www.ilias.uni-koeln.de/download/dtd/ilias_object_0_1.dtd\">
 <Objects>
-  <Object type=\"$type\" obj_id=\"\">
-    <Title>
-    $title
-    </Title>
-    <Description>
-    $description
-    </Description>
+  <Object type=\"$type\" obj_id=\"\" offline=\"\">
+    <Title>$title</Title>
+    <Description>$description</Description>
+    <ImportId></ImportId>
   </Object>
 </Objects>";
 
@@ -765,13 +767,10 @@ class IliasSoap extends StudipSoapClient
 
         $xml = "<!DOCTYPE Objects SYSTEM \"http://www.ilias.uni-koeln.de/download/dtd/ilias_object_0_1.dtd\">
 <Objects>
-  <Object type=\"$type\" obj_id=\"\">
-    <Title>
-    $title
-    </Title>
-    <Description>
-    $description
-    </Description>
+  <Object type=\"$type\" obj_id=\"\" offline=\"\">
+    <Title>$title</Title>
+    <Description>$description</Description>
+    <ImportId></ImportId>
   </Object>
 </Objects>";
 
@@ -976,13 +975,12 @@ class IliasSoap extends StudipSoapClient
             $param = [
                             'sid' => $this->getSID(),
                             'user_ids' => [$user_id],
-                            'attach_roles' => 0
+                            'attach_roles' => null
             ];
             $result = $this->call('getUserXML', $param);
             if ($result != false)
             {
-                // TODO: change to simple xml
-                $objects = $this->parseXML($result);
+                $objects = $this->parseIliasObject($result);
                 $all_objects = [];
                 foreach($objects as $count => $object_data){
                     if (is_array($object_data["references"]))
@@ -1632,12 +1630,14 @@ class IliasSoap extends StudipSoapClient
             $s = simplexml_load_string($result);
             foreach ($s->rows->row as $row) {
                 $ref_id = (string)$row->column[0];
-                $xml = $this->parseXML((string)$row->column[1]);
-                $course = array_pop($xml);
-                $ret[$ref_id] = $course['title'];
+                $s2 = simplexml_load_string((string)$row->column[1]);
+
+                if (is_object($s2->MetaData)) {
+                    $ret[$ref_id] = trim($s2->MetaData->General->Title);
+                }
             }
         }
-        if (is_array($ret)) {
+        if (!empty($ret)) {
             return $ret;
         } else {
             return false;
@@ -1658,19 +1658,18 @@ class IliasSoap extends StudipSoapClient
         $param = [
             'sid'          => $this->getSID(),
             'reference_id' => $id,
-            'user_id'      => 0
+            'user_id'      => null
         ];
 
         $result = $this->call('getObjectByReference', $param);
         if ($result != false)
         {
-            // TODO: change to simple xml
-            $objects = $this->parseXML($result);
+            $objects = $this->parseIliasObject($result);
             if(is_array($objects)){
                 foreach($objects as $index => $object_data){
                     if(is_array($object_data['references'])){
-                        foreach($object_data['references'] as $reference){
-                            if($reference['ref_id'] == $id && $reference['accessInfo'] != 'object_deleted') return $object_data['obj_id'];
+                        foreach($object_data['references'] as $ref_id => $reference){
+                            if($ref_id == $id && $reference['accessInfo'] != 'object_deleted') return $object_data['obj_id'];
                         }
                     }
                 }
