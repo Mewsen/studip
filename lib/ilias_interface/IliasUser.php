@@ -502,7 +502,7 @@ class IliasUser
     function unsetConnection($ignore_usertype = false)
     {
         if (!$ignore_usertype && ($this->getUserType() != self::USER_TYPE_ORIGINAL)) {
-            return;
+            return false;
         }
 
         $query = "DELETE FROM auth_extern WHERE studip_user_id = ? AND external_user_system_type = ? AND external_user_type = ?";
@@ -515,6 +515,7 @@ class IliasUser
 
         $this->is_connected = false;
         $this->readData();
+        return true;
     }
 
     /**

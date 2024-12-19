@@ -415,6 +415,18 @@ class Admin_UserController extends AuthenticatedController
 
         $this->user_roles = $this->user->getRoles();
 
+        // get ilias account data 
+        if ($GLOBALS['perm']->have_perm('root') && Config::get()->ILIAS_INTERFACE_ENABLE) {
+            $this->ilias_list = [];
+            foreach (Config::get()->ILIAS_INTERFACE_SETTINGS as $ilias_index => $ilias_config) {
+                if ($ilias_config['is_active']) {
+                    $this->ilias_list[$ilias_index] = new ConnectedIlias($ilias_index);
+                    $this->ilias_list[$ilias_index]->soap_client->clearCache();
+                    $this->ilias_user[$ilias_index] = new IliasUser($ilias_index, $ilias_config['version'], $user_id);
+                }
+            }
+        }
+
         // Änderungen speichern
         if (Request::submitted('edit')) {
             CSRFProtection::verifyUnsafeRequest();
