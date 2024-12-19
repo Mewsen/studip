@@ -78,7 +78,8 @@ return [
             $session_handler = new Studip\Session\DbSessionHandler();
         }
         $GLOBALS['SESSION_OPTIONS']['path'] = $GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'];
-        $GLOBALS['SESSION_OPTIONS']['secure'] = Request::protocol() == 'https';
+        $GLOBALS['SESSION_OPTIONS']['secure'] = Request::protocol() === 'https';
+
         return new Studip\Session\Manager($session_handler, $GLOBALS['SESSION_OPTIONS']);
 
     }),
