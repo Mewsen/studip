@@ -5,7 +5,7 @@
         <? $modulTeilSumme = $modulTeil->wl_praesenz + $modulTeil->wl_bereitung + $modulTeil->wl_selbst + $modulTeil->wl_pruef ?>
         <tr>
             <td style="width: 30%;"><strong><?= _('Lehrveranstaltungsform') ?></strong></td>
-            <td style="width: 70%;" data-mvv-field="mvv_modulteil.lernlehrform"><?= $GLOBALS['MVV_MODULTEIL']['LERNLEHRFORM']['values'][$modulTeil->lernlehrform]['name'] ?></td>
+            <td style="width: 70%;" data-mvv-field="mvv_modulteil.lernlehrform"><?= $GLOBALS['MVV_MODULTEIL']['LERNLEHRFORM']['values'][$modulTeil->lernlehrform]['name'] ?? '' ?></td>
         </tr>
         <tr>
             <td style="width: 30%;"><strong><?= _('Veranstaltungstitel') ?></strong></td>
@@ -30,7 +30,7 @@
         <tr>
             <td style="width: 30%;"><strong><?= _('Workload Prüfung incl. Vorbereitung') ?></strong></td>
             <td style="width: 70%;" data-mvv-field="mvv_modulteil.wl_pruef mvv_modulteil_deskriptor.kommentar_wl_pruef"><?= $modulTeil->wl_pruef ?> <?= MVVController::trim($modulTeilDeskriptor->kommentar_wl_pruef) ? sprintf(" (%s)", formatReady($modulTeilDeskriptor->kommentar_wl_pruef)) : '' ?></td>
-        </tr>  
+        </tr>
         <tr>
             <td style="width: 30%;"><strong><?= _('Workload insgesamt') ?></strong></td>
             <td style="width: 70%;"><?= $modulTeilSumme ?></td>

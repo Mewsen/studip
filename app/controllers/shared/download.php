@@ -154,7 +154,7 @@ class Shared_DownloadController extends AuthenticatedController
     public function getMVVPluginModulDescription($modul, $display_language = null)
     {
         if ($display_language == null) {
-            $display_language = $GLOBALS['MVV_LANGUAGES']['default'];
+            $display_language = Config::get()->MVV_DEFAULT_LANGUAGE;
         }
 
         $path = $GLOBALS['STUDIP_BASE_PATH'] . '/app/views/shared/modul/';
@@ -168,8 +168,7 @@ class Shared_DownloadController extends AuthenticatedController
 
         $factory = new Flexi\Factory($path);
         $type = 1;
-        if (count($modul->modulteile) == 1) {
-            $modulteil = $modul->modulteile->first();
+        if (count($modul->modulteile) === 1) {
             $type = 2;
         } elseif (count($modul->modulteile) === 0) {
             $type = 3;

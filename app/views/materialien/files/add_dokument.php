@@ -21,33 +21,33 @@
     </label>
 
     <table class="default mvv-files-table">
-    <? foreach($GLOBALS['MVV_LANGUAGES']['values'] as $key => $entry) : ?>
+    <? foreach($GLOBALS['CONTENT_LANGUAGES'] as $language_key => $entry) : ?>
         <tr>
             <td rowspan="2">
-                <?= Assets::img(MVV::getContentLanguageImagePath($key), ['alt' => $entry['name'], 'size' => 24]) ?>
+                <?= Assets::img(MVV::getContentLanguageImagePath($language_key), ['alt' => $entry['name'], 'size' => 24]) ?>
             </td>
             <td>
                 <label>
                     <?= _('Angezeigter Name des Dokuments') ?>
-                    <input name="doc_displayname_<?= $key; ?>" type="text" value="<?= !isset($documents[$key])  ? '' : htmlReady($documents[$key]->name) ?>"<?= $perm->disable('name') ?>>
+                    <input name="doc_displayname_<?= $language_key; ?>" type="text" value="<?= !isset($documents[$language_key])  ? '' : htmlReady($documents[$language_key]->name) ?>"<?= $perm->disable('name') ?>>
                 </label>
             </td>
         </tr>
         <tr>
             <td>
                 <div class="attachments" style="<?= (empty($documents) || !array_key_exists($key, $documents))  ? '' : 'display: none;'?>">
-                    <span style="cursor:pointer;" onClick="$('#fileselector_<?= $key; ?>').toggle();$(this).toggle();">
-                        <?= Icon::create('add', Icon::ROLE_CLICKABLE, ['title' => _("Datei hinzufügen"), 'class' => 'text-bottom']); ?>
-                        <?= _("Datei hinzufügen") ?>
+                    <span style="cursor:pointer;" onClick="$('#fileselector_<?= $language_key; ?>').toggle();$(this).toggle();">
+                        <?= Icon::create('add')->asImg(['title' => _('Datei hinzufügen'), 'class' => 'text-bottom']); ?>
+                        <?= _('Datei hinzufügen') ?>
                     </span>
-                    <div id="fileselector_<?= $key; ?>" style="display:none;">
+                    <div id="fileselector_<?= $language_key; ?>" style="display:none;">
                         <ul class="stgfiles list-unstyled">
                             <li style="display: none;" class="stgfile">
                                 <input type="hidden" name="document_id" id="document_id" value="<?= htmlReady($document_id ?? '') ?>">
                                 <span class="icon"></span>
                                 <span class="name"></span>
                                 <span class="size"></span>
-                                <button class="refresh_attachment as-link" data-language="<?= htmlReady($key) ?>">
+                                <button class="refresh_attachment as-link" data-language="<?= htmlReady($language_key) ?>">
                                     <?= Icon::create('refresh')->asImg([
                                         'class' => 'text-bottom',
                                         'title' => _('Datei aktualisieren'),
@@ -68,29 +68,29 @@
                             </div>
                         </div>
                         <label id="upload_chooser" style="cursor: pointer;">
-                            <input type="file" id="fileupload" multiple onChange="STUDIP.MVV.Document.upload_from_input(this, '<?= $key; ?>');" style="display: none;">
-                            <?= Icon::create('upload', 'clickable', ['title' => _("Datei hochladen"), 'class' => "text-bottom"]) ?>
+                            <input type="file" id="fileupload" multiple onChange="STUDIP.MVV.Document.upload_from_input(this, '<?= $language_key; ?>');" style="display: none;">
+                            <?= Icon::create('upload')->asImg(['title' => _('Datei hochladen'), 'class' => 'text-bottom']) ?>
                             <?= _("Datei hochladen") ?>
                         </label>
                         <br>
                         <b><?= _('oder'); ?></b>
                         <label>
                             <?= _('Link hinzufügen') ?>
-                            <input name="doc_url_<?= $key; ?>" type="text" value="" placeholder="https://...">
+                            <input name="doc_url_<?= $language_key; ?>" type="text" value="" placeholder="https://...">
                         </label>
                         <div id="upload_finished" style="display: none"><?= _("wird verarbeitet") ?></div>
                         <div id="upload_received_data" style="display: none"><?= _("gespeichert") ?></div>
                     </div>
                 </div>
-                <div id="fileviewer_<?= $key; ?>">
+                <div id="fileviewer_<?= $language_key; ?>">
                     <ul class="stgfiles list-unstyled">
-                    <? if (isset($documents[$key])): ?>
+                    <? if (isset($documents[$language_key])): ?>
                         <li class="stgfile">
-                            <input type="hidden" name="document_id" id="document_id" value="<?= htmlReady($documents[$key]->fileref_id) ?>">
+                            <input type="hidden" name="document_id" id="document_id" value="<?= htmlReady($documents[$language_key]->fileref_id) ?>">
                             <span class="icon"><?= Icon::create('file', Icon::ROLE_INFO, ['class' => 'text-bottom']); ?></span>
-                            <span class="name"><?= htmlReady($documents[$key]->filename) ?></span>
-                            <span class="size"><?= relsize($documents[$key]->file_ref->size) ?></span>
-                            <button class="refresh_attachment as-link" data-language="<?= htmlReady($key) ?>">
+                            <span class="name"><?= htmlReady($documents[$language_key]->filename) ?></span>
+                            <span class="size"><?= relsize($documents[$language_key]->file_ref->size) ?></span>
+                            <button class="refresh_attachment as-link" data-language="<?= htmlReady($language_key) ?>">
                                 <?= Icon::create('refresh')->asImg([
                                     'class' => 'text-bottom',
                                     'title' => _('Datei aktualisieren'),

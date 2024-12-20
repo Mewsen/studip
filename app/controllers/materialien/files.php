@@ -147,7 +147,7 @@ class Materialien_FilesController extends MVVController
             CSRFProtection::verifyUnsafeRequest();
             $stored = false;
 
-            foreach($GLOBALS['MVV_LANGUAGES']['values'] as $key => $entry) {
+            foreach($GLOBALS['CONTENT_LANGUAGES'] as $key => $entry) {
                 if (Request::get('doc_url_'.$key)) {
                     $file = $this->upload_fileurl($mvvfile_id, Request::get('doc_url_'.$key));
                     if ($file) {

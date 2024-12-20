@@ -35,7 +35,7 @@ class GlobalSearchModules extends GlobalSearchModule
         // Get language
         $language = ModuleManagementModel::getLanguage();
         if (!$language) {
-            ModuleManagementModel::setLanguage($_SESSION['_language']);
+            ModuleManagementModel::setContentLanguage($_SESSION['_language']);
             $language = ModuleManagementModel::getLanguage();
         }
 

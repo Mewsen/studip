@@ -114,17 +114,6 @@ $GLOBALS['MVV_MODUL']['INSTITUT_GRUPPEN'] = [
     ]
 ];
 
-// Moduldeskriptor Ausgabesprache
-$GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE'] = [
-    'values'            => [
-        'DE'                => ['visible' => 1, 'name' => _('Originalfassung'), 'content_language' => 'de_DE'],
-        'EN'                => ['visible' => 1, 'name' => _('Englisch'), 'content_language' => 'en_GB']
-    //    'de_DE'                => array('visible' => 1, 'name' => _('Originalfassung')),
-    //    'en_GB'                => array('visible' => 1, 'name' => _('Englisch'))
-    ],
-    'default'           => 'DE'
-];
-
 // Modulteile
 $GLOBALS['MVV_MODULTEIL']['NUM_BEZEICHNUNG'] = [
     'values'            => [
@@ -201,9 +190,6 @@ $GLOBALS['MVV_MODULTEIL']['LERNLEHRFORM'] = [
     'default'           => ''
 ];
 
-// Modulteildeskriptor
-$GLOBALS['MVV_MODULTEIL_DESKRIPTOR']['SPRACHE'] = $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE'];
-
 // Maximale Anzahl Fachsemester
 $GLOBALS['MVV_MODULTEIL_FACHSEMESTER'] = 10;
 
@@ -229,16 +215,6 @@ $GLOBALS['MVV_MODULTEIL_STGABSCHNITT']['STATUS'] = [
 $GLOBALS['MVV_STGTEILVERSION']['STATUS'] = $GLOBALS['MVV_MODUL']['STATUS'];
 
 $GLOBALS['MVV_STGTEIL']['STATUS'] = $GLOBALS['MVV_MODUL']['STATUS'];
-
-$GLOBALS['MVV_LANGUAGES'] = [
-    'values'            => [
-        'DE'                => ['visible' => 1, 'name' => _('Deutsch'),
-                                'locale' => 'de_DE'],
-        'EN'                => ['visible' => 1, 'name' => _('Englisch'),
-                                'locale' => 'en_GB']
-    ],
-    'default'           => 'DE'
-];
 
 $GLOBALS['MVV_STUDIENGANG']['FASSUNG_TYP'] = $GLOBALS['MVV_STGTEILVERSION']['FASSUNG_TYP'];
 

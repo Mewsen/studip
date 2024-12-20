@@ -1215,11 +1215,11 @@ class Studiengaenge_StudiengaengeController extends MVVController
                 $file = $document->mvv_file;
                 if ($file->extern_visible) {
                     $mvv_file_ref = null;
-                    foreach ($GLOBALS['MVV_LANGUAGES']['values'] as $key => $mvv_language) {
-                        if ($mvv_language['locale'] === $_SESSION['_language']) {
-                            $mvv_file_ref = $file->file_refs->findOneBy('file_language', $key);
+                    foreach ($GLOBALS['CONTENT_LANGUAGES'] as $code => $content_language) {
+                        if ($code === $_SESSION['_language']) {
+                            $mvv_file_ref = $file->file_refs->findOneBy('file_language', $code);
                         } else {
-                            $mvv_file_ref = $file->file_refs->findOneBy('file_language', $GLOBALS['MVV_LANGUAGES']['default']);
+                            $mvv_file_ref = $file->file_refs->findOneBy('file_language', Config::get()->MVV_DEFAULT_LANGUAGE);
                         }
                     }
                     if ($mvv_file_ref) {
