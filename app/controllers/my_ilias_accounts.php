@@ -44,9 +44,9 @@ class MyIliasAccountsController extends AuthenticatedController
      */
     public function index_action()
     {
-        Navigation::activateItem('/contents/my_ilias_accounts');
+        Navigation::activateItem('/contents/my_ilias_accounts/my_accounts');
 
-        PageLayout::setTitle(_('ILIAS-Schnittstelle'));
+        PageLayout::setTitle(_('Meine Lernobjekte und Accounts'));
 
         $this->ilias_list = [];
         foreach (Config::get()->ILIAS_INTERFACE_SETTINGS as $ilias_index => $ilias_config) {
@@ -72,6 +72,111 @@ class MyIliasAccountsController extends AuthenticatedController
     }
 
     /**
+     * Shows ilias courses for active user
+     */
+    public function my_courses_action()
+    {
+        Navigation::activateItem('/contents/my_ilias_accounts/my_courses');
+
+        PageLayout::setTitle(_('Meine ILIAS-Kurse'));
+
+        if (Semester::exists(Request::option('sem_select'))) {
+            $this->selected_semester = Request::option('sem_select');
+        } else {
+            $this->selected_semester = '';
+        }
+
+        // set up connected ilias classes
+        $this->ilias_list = [];
+        foreach (Config::get()->ILIAS_INTERFACE_SETTINGS as $ilias_index => $ilias_config) {
+            if ($ilias_config['is_active']) {
+                $this->ilias_list[$ilias_index] = new ConnectedIlias($ilias_index);
+                $this->ilias_list[$ilias_index]->checkUser();
+                $this->ilias_list[$ilias_index]->soap_client->clearCache();
+            }
+        }
+
+        if (Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_course_paths']) {
+            // get semesters and set up filter widget
+            $semesters = new SimpleCollection(Semester::getAll());
+            $semesters = $semesters->orderBy('beginn desc');
+            $current_semester = Semester::findCurrent()->id;
+
+            $widget = new SelectWidget(_('Semesterfilter'), $this->url_for('my_ilias_accounts/my_courses'), 'sem_select');
+            $widget->setMaxLength(50);
+
+            $sem_entries = [
+                $current_semester => _('Aktuelles Semester'),
+                ''                => _('Alle Semester')
+            ];
+            foreach ($sem_entries as $key => $label) {
+                $widget->addElement(new SelectElement($key, $label, $this->selected_semester === $key));
+            }
+
+            foreach ($semesters as $key => $semester_entry) {
+                $widget->addElement(new SelectElement($key, $semester_entry->name, $this->selected_semester === $key));
+            }
+            $this->sidebar->addWidget($widget);
+        }
+
+        $widget = new ActionsWidget();
+        foreach ($this->ilias_list as $ilias_list_index => $ilias) {
+            if ($GLOBALS['perm']->have_perm('autor')) {
+                $widget->addLink(
+                    sprintf(_('Zur %s-Startseite'), $ilias->getName()),
+                    $this->url_for('my_ilias_accounts/redirect/' . $ilias_list_index . '/login'),
+                    Icon::create('link-extern'),
+                    ['target' => '_blank', 'rel' => 'noopener noreferrer']
+                );
+
+                // fetch connected course ids for user
+                $this->connected_courses_list[$ilias_list_index] = $ilias->getConnectedCoursesForUser($ilias->user->studip_id);
+
+                // fetch ilias courses for user
+                $member_courses = $ilias->soap_client->getCoursesForUserStatus($ilias->user->id, 1);
+                $tutor_courses = $ilias->soap_client->getCoursesForUserStatus($ilias->user->id, 2);
+                $admin_courses = $ilias->soap_client->getCoursesForUserStatus($ilias->user->id, 4);
+                $this->courses_list[$ilias_list_index] = $member_courses + $tutor_courses + $admin_courses;
+
+                // add paths and studip objects
+                foreach ($this->courses_list[$ilias_list_index] as $crs_id => $course_data) {
+                    $this->courses_list[$ilias_index][$crs_id]['studip_object'] = '';
+                    if (
+                        array_key_exists($ilias_list_index, $this->connected_courses_list)
+                        && array_key_exists($crs_id, $this->connected_courses_list[$ilias_list_index])
+                    ) {
+                        $this->courses_list[$ilias_index][$crs_id]['studip_object'] = $this->connected_courses_list[$ilias_list_index][$crs_id];
+                    }
+                    
+                    // filter offline courses for mere members
+                    if (
+                        !Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_offline']
+                        && !$course_data['online']
+                        && !in_array($course_data['status'], [2, 4])
+                    ) {
+                        unset($this->courses_list[$ilias_list_index][$crs_id]);
+                    }
+                    
+                    // filter by semester
+                    if (Config::get()->ILIAS_INTERFACE_BASIC_SETTINGS['show_course_paths']) {
+                        $this->courses_list[$ilias_list_index][$crs_id]['path'] = $ilias->soap_client->getPath($crs_id);
+                        if (
+                            $this->selected_semester
+                            && !str_contains(
+                                $this->courses_list[$ilias_list_index][$crs_id]['path'],
+                                Semester::find($this->selected_semester)->name
+                            )
+                        ) {
+                            unset($this->courses_list[$ilias_list_index][$crs_id]);
+                        }
+                    }
+                }
+            }
+        }
+        $this->sidebar->addWidget($widget);
+    }
+
+    /**
      * View ILIAS module Details
      * @param $index Index of ILIAS installation
      * @param $module_id module ID
@@ -82,6 +187,24 @@ class MyIliasAccountsController extends AuthenticatedController
         if ($this->ilias->isActive()) {
             $modules = $this->ilias->getUserModules();
             $this->module = $modules[$module_id];
+            PageLayout::setTitle($this->module->getTitle());
+            $this->ilias_index = $index;
+        } else {
+            PageLayout::postError(_('Diese ILIAS-Installation ist nicht aktiv.'));
+        }
+    }
+
+    /**
+     * View ILIAS course details
+     * @param $index Index of ILIAS installation
+     * @param $crs_id course ID
+     */
+    public function view_course_action($index, $crs_id)
+    {
+        $this->ilias = new ConnectedIlias($index);
+        if ($this->ilias->isActive()) {
+            $this->module = $this->ilias->getModule($crs_id);
+            $this->module->module_type_name = _('ILIAS-Kurs');
             PageLayout::setTitle($this->module->getTitle());
             $this->ilias_index = $index;
         } else {

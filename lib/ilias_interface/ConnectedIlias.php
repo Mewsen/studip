@@ -607,6 +607,27 @@ class ConnectedIlias
     }
 
     /**
+     * get connected studip courses list for given user
+     *
+     * @param string $user_id Stud.IP user id
+     * @return array course id array
+     */
+    public function getConnectedCoursesForUser(string $user_id): array
+    {
+        $query = 'SELECT module_id, object_id
+                  FROM object_contentmodules 
+                  JOIN seminar_user ON object_contentmodules.object_id = seminar_user.Seminar_id
+                  WHERE seminar_user.user_id = ? 
+                    AND system_type = ?
+                    AND module_type = ?';
+        return DBManager::get()->fetchPairs($query, [
+            $user_id,
+            $this->index,
+            'crs'
+        ]);
+    }
+
+    /**
      * get ILIAS path
      *
      * returns full path for given ILIAS ref ID
