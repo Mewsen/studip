@@ -16808,6 +16808,7 @@ msgstr "The end time may not be earlier than the start time!"
 #: app/controllers/terms.php:22
 #: app/views/course/studygroup/globalmodules.php:70
 #: app/views/course/wizard/steps/basicdata/index_studygroup.php:60
+#: templates/terms.php:33
 msgid "Nutzungsbedingungen"
 msgstr "Terms of use"
 

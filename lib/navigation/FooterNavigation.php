@@ -38,8 +38,19 @@ class FooterNavigation extends Navigation
         //studip
         $this->addSubNavigation('studip', new Navigation(_('Stud.IP'), 'http://www.studip.de/'));
 
-        // Datenschutzerklärung
+        // Nutzungsbedingungen
+        $terms_of_use_url = Config::get()->TERMS_OF_USE_URL;
+        if ($this->checkSiteinfoURL($terms_of_use_url)) {
+            $this->addSubNavigation(
+                'terms_of_use',
+                new Navigation(
+                    _('Nutzungsbedingungen'),
+                    URLHelper::getURL($terms_of_use_url, ['cancel_login' => 1], true)
+                )
+            );
+        }
 
+        // Datenschutzerklärung
         $privacy_url = Config::get()->PRIVACY_URL;
         if ($this->checkSiteinfoURL($privacy_url)) {
             $this->addSubNavigation(
