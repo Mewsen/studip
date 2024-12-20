@@ -33,7 +33,7 @@ https://gitlab.studip.de/studip/studip/-/issues?milestone_title=Stud.IP+5.5.3&st
 - Terminkalender: Mehrtägige Termine können nicht gelöscht werden [#4726]
 - lib/fullcalendar.js: Dialoge zum Verschieben von Fullcalendar-Einträgen ist zu groß [#4727]
 - Wiki triggert jsupdater auf jeder Seite im Stud.IP [#4738]
-- Zugriff auf WikiPage::content überschreibt SORM-Daten [#` ausgeführt. Dadurch wird die protected `$content`-Property vom Objekt überschrieben und nicht nur der Inhalt der Seite.]
+- Zugriff auf WikiPage::content überschreibt SORM-Daten [#4780]
 - „Invalid day number“ im Kalender-Widget der Startseite, wenn es einen Wiederholungstermin gibt, der sich Sonntags wiederholt [#4801]
 - register.js nach Umbau der Registrierung obsolet [#4802]
 - Eintrag im Stundenplan verschwindet bei Zuweisung der Farbe grau [#4838]
