@@ -27,6 +27,22 @@
     </section>
 </section>
 
-<?php
-    $lang = $GLOBALS['_language_path'] ?: 'de';
-    include("locale/{$lang}/LC_HELP/pages/nutzung.html");
+<? if ($terms_of_use) : ?>
+<section class="contentbox">
+    <header>
+        <h1><?= _('Nutzungsbedingungen') ?></h1>
+    </header>
+    <section>
+        <? if ($terms_of_use['type'] === 'internal_url') : ?>
+            <?= $terms_of_use['content'] ?>
+        <? else : ?>
+            <strong>
+                <a href="<?= URLHelper::getURL($terms_of_use['url']) ?>" title="<?= _('Nutzungsbedingungen') ?>"
+                   target="_blank" tabindex="0">
+                    <?= URLHelper::getURL($terms_of_use['url']) ?>
+                </a>
+            </strong>
+        <? endif ?>
+    </section>
+</section>
+<? endif ?>
