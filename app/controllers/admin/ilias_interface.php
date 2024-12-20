@@ -95,12 +95,13 @@ class Admin_IliasInterfaceController extends AuthenticatedController
     public function save_interface_settings_action()
     {
         if (Request::submitted('submit')) {
-            $this->ilias_interface_config['edit_moduletitle'] = (boolean)Request::get('ilias_interface_edit_moduletitle');
-            $this->ilias_interface_config['show_offline'] = (boolean)Request::get('ilias_interface_show_offline');
-            $this->ilias_interface_config['search_active'] = (boolean)Request::get('ilias_interface_search_active');
-            $this->ilias_interface_config['show_tools_page'] = (boolean)Request::get('ilias_interface_show_tools_page');
-            $this->ilias_interface_config['add_statusgroups'] = (boolean)Request::get('ilias_interface_add_statusgroups');
-            $this->ilias_interface_config['cache'] = (boolean)Request::get('ilias_interface_cache');
+            $this->ilias_interface_config['edit_moduletitle'] = Request::bool('ilias_interface_edit_moduletitle', false);
+            $this->ilias_interface_config['show_offline'] = Request::bool('ilias_interface_show_offline', false);
+            $this->ilias_interface_config['search_active'] = Request::bool('ilias_interface_search_active', false);
+            $this->ilias_interface_config['show_course_paths'] = Request::bool('ilias_interface_show_course_paths', false);
+            $this->ilias_interface_config['show_tools_page'] = Request::bool('ilias_interface_show_tools_page', false);
+            $this->ilias_interface_config['add_statusgroups'] = Request::bool('ilias_interface_add_statusgroups', false);
+            $this->ilias_interface_config['cache'] = Request::bool('ilias_interface_cache', false);
             $this->ilias_interface_config['allow_change_course'] = Request::get('ilias_interface_allow_change_course');
             $this->ilias_interface_config['allow_add_own_course'] = Request::get('ilias_interface_allow_add_own_course');
 

@@ -19,10 +19,20 @@ class IliasInterfaceModule extends CorePlugin implements StudipModule, SystemPlu
                 Navigation::addItem('/admin/config/ilias_interface',
                     new Navigation(_('ILIAS-Schnittstelle'), 'dispatch.php/admin/ilias_interface'));
             }
-            if (Seminar_Perm::get()->have_perm('tutor') || (Seminar_Perm::get()->have_perm('autor') && array_key_exists('show_tools_page', $ilias_interface_config) && $ilias_interface_config['show_tools_page'])) {
-                $ilias = new Navigation(_('ILIAS'), 'dispatch.php/my_ilias_accounts');
+            if (Seminar_Perm::get()->have_perm('tutor') || Seminar_Perm::get()->have_perm('autor')) {
+                $ilias = new Navigation(_('ILIAS'), 'dispatch.php/my_ilias_accounts/my_courses');
                 $ilias->setImage(Icon::create('ilias'));
                 $ilias->setDescription(_('Schnittstelle zu ILIAS'));
+                $ilias->addSubNavigation(
+                    'my_courses',
+                    new Navigation(_('Meine Kurse'), 'dispatch.php/my_ilias_accounts/my_courses')
+                );
+                if (!empty($ilias_interface_config['show_tools_page'])) {
+                    $ilias->addSubNavigation(
+                        'my_accounts',
+                        new Navigation(_('Meine Lernobjekte und Accounts'), 'dispatch.php/my_ilias_accounts')
+                    );
+                }
                 Navigation::addItem('/contents/my_ilias_accounts', $ilias);
             }
         }

@@ -32,8 +32,12 @@
         <span><?= _('Lehrende können einen eigenen ILIAS-Kurs verknüpfen, der noch nicht mit Stud.IP verbunden ist') ?></span>
     </label>
     <label>
+        <input type="checkbox" name="ilias_interface_show_course_paths" value="1" <?= !empty($ilias_interface_config['show_course_paths']) ? 'checked' : '' ?>>
+        <span><?= _('Die Kursübersicht auf dem Arbeitsplatz zeigt die Magazinpfade der Kurse in ILIAS und erlaubt das Filtern nach Semesternamen') ?></span>
+    </label>
+    <label>
         <input type="checkbox" name="ilias_interface_show_tools_page" value="1" <?= !empty($ilias_interface_config['show_tools_page']) ? 'checked' : '' ?>>
-        <span><?= _('Account-Seite im Tools-Bereich ist für alle Nutzenden (auch für Studierende ohne Berechtigung zum Anlegen von Lernobjekten) sichtbar') ?></span>
+        <span><?= _('Die Accountübersicht auf dem Arbeitsplatz ist für alle Nutzenden (auch für Studierende ohne Berechtigung zum Anlegen von Lernobjekten) sichtbar') ?></span>
     </label>
     <label>
         <input type="checkbox" name="ilias_interface_search_active" value="1" <?= !empty($ilias_interface_config['search_active']) ? 'checked' : '' ?>>

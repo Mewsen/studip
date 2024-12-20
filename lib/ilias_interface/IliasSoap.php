@@ -28,7 +28,7 @@ class IliasSoap extends StudipSoapClient
     private $user_sid;
     private $user_type;
     private $soap_cache;
-    private $separator_string;
+    public $separator_string;
     private $caching_active = false;
 
 
@@ -1168,8 +1168,7 @@ class IliasSoap extends StudipSoapClient
      *
      * returns repository-path to ilias-object
      * @access public
-     * @param string source_id reference-id
-     * @param string target_id reference-id
+     * @param string ref_id reference id
      * @return string result
      */
     function getPath($ref_id)
@@ -1200,8 +1199,7 @@ class IliasSoap extends StudipSoapClient
      * returns repository-path to ilias-object
      *
      * @access public
-     * @param string source_id reference-id
-     * @param string target_id reference-id
+     * @param string ref_id reference id
      * @return string result
      */
     function getRawPath($ref_id)
@@ -1677,6 +1675,72 @@ class IliasSoap extends StudipSoapClient
         } else {
             return false;
         }
+    }
+
+    /**
+    * get courses for given user by status
+    *
+    * gets course array for given course data
+    * @access public
+    * @param string $user_id ilias user id
+    * @param string $status MEMBER = 1, TUTOR = 2, ADMIN = 4, OWNER = 8
+    * @return array course array
+    */
+    public function getCoursesForUserStatus(string $user_id, string $status): array
+    {
+        $courses = [];
+        $xmlrs = '<?xml version="1.0" encoding="utf-8"?>
+        <result>
+            <colspecs>
+                <colspec idx="0" name="user_id"/>
+                <colspec idx="1" name="status"/>
+            </colspecs>
+            <rows>
+                <row>
+                    <column>'.$user_id.'</column>
+                    <column>'.$status.'</column>
+                </row>
+            </rows>
+        </result>';
+        $param = [
+            'sid' => $this->getSID(),
+            'parameters' => $xmlrs
+        ];
+        $result = $this->call('getCoursesForUser', $param);
+
+        if ($result) {
+            $s = simplexml_load_string($result);
+            foreach ($s->rows->row as $row) {
+                $ref_id = (string)$row->column[0];
+                $courses[$ref_id] = [];
+                $courses[$ref_id]['title'] = (string)$row->column[2];
+                $s2 = simplexml_load_string((string)$row->column[1]);
+                $courses[$ref_id]['title'] = trim((string)$s2->MetaData->General->Title);
+                $courses[$ref_id]['description'] = trim((string)$s2->MetaData->General->Description);
+                $courses[$ref_id]['status_text'] = '';
+                $courses[$ref_id]['status'] = $status;
+                switch ($status) {
+                    case 1:
+                        $courses[$ref_id]['status_text'] = _('Kursmitglied');
+                        break;
+                    case 2:
+                        $courses[$ref_id]['status_text'] = _('Kurstutor/-in');
+                        break;
+                    case 4:
+                        $courses[$ref_id]['status_text'] = _('Kursadministrator/-in');
+                        break;
+                }
+                if (isset($s2->Settings->Availability->Unlimited)) {
+                    $courses[$ref_id]['online'] = 1;
+                } elseif (isset($s2->Settings->Availability->NotAvailable)) {
+                    $courses[$ref_id]['online'] = 0;
+                } else {
+                    $courses[$ref_id]['online'] = 1;
+                }
+                $courses[$ref_id]['availability'] = $s2->Settings->Availability;
+            }
+        }
+        return $courses;
     }
 
     /**

@@ -107,6 +107,10 @@ if(file_exists("./ilias.ini.php")){
         case 'exc':
             $base_url = "ilias.php?baseClass=ilExerciseHandlerGUI";
             break;
+        case 'cat':
+        case 'crs':
+            $base_url= "ilias.php?baseClass=ilrepositorygui&cmd=edit";
+            break;
         case 'webr':
             $base_url = "ilias.php?baseClass=ilLinkResourceHandlerGUI";
             break;
