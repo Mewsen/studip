@@ -158,6 +158,20 @@ class Helper
             }
         }
 
+        $available_views = [
+            'timeGridWeek' => [
+                'columnHeaderFormat' => ['weekday' => 'short'],
+                'slotDuration'       => $slot_duration
+            ]
+        ];
+        if (!in_array(date('N'), $hidden_days)) {
+            //The current day is visible: Allow a day view:
+            $available_views['timeGridDay'] = [
+                'columnHeaderFormat' => ['weekday' => 'short'],
+                'slotDuration'       => $slot_duration
+            ];
+        }
+
         return new \Studip\Fullcalendar(
             _('Stundenplan'),
             [
@@ -168,15 +182,10 @@ class Helper
                 'maxTime'     => $schedule_settings['end_time'] ?? '20:00',
                 'allDaySlot'  => false,
                 'header'      => [
-                    'left' => '',
+                    'left' => count($available_views) > 1 ? implode(',', array_keys($available_views)) : '',
                     'right' => ''
                 ],
-                'views' => [
-                    'timeGridWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'short'],
-                        'slotDuration'       => $slot_duration
-                    ]
-                ],
+                'views' => $available_views,
                 'columnHeaderFormat' => ['weekday' => 'short'],
                 'defaultView' => 'timeGridWeek',
                 'defaultDate' => date('Y-m-d'),
