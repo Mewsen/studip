@@ -172,7 +172,7 @@ class Search_AngebotController extends MVVController
     public function verlauf_action($stgteil_id, $stgteil_bez_id = null,
             $studiengang_id = null)
     {
-        ModuleManagementModel::setLanguage($_SESSION['_language']);
+        ModuleManagementModel::setContentLanguage($_SESSION['_language']);
 
         $response = $this->relay('search/studiengaenge/verlauf', $stgteil_id,
                 $stgteil_bez_id, $studiengang_id);

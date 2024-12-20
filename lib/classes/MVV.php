@@ -834,7 +834,7 @@ class MVV implements Loggable {
     }
 
     /**
-     * Returns imagepath for given language, used by MVV
+     * Returns image path for given language, used by MVV
      * First tries $GLOBALS['CONTENT_LANGUAGES'], if not defined returns hardcoded path
      *
      * @param string $language e.g. 'DE'
@@ -842,8 +842,9 @@ class MVV implements Loggable {
      */
     public static function getContentLanguageImagePath($language): string
     {
-        $content_language = $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$language]['content_language'];
-        return 'languages/' . ($GLOBALS['CONTENT_LANGUAGES'][$content_language]['picture'] ?? 'lang_' . mb_strtolower($language) . '.gif');
+        $code = strtok($language, '_');
+        return '/images/languages/'
+            . ($GLOBALS['CONTENT_LANGUAGES'][$language]['picture'] ?? 'lang_' . mb_strtolower($code) . '_text.svg');
     }
 
 }

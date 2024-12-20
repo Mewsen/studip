@@ -341,15 +341,17 @@ class Search_StudiengaengeController extends MVVController
             // add links to export Modulhandbücher as PDF
             $widget = new ActionsWidget();
             $widget->setTitle(_('Aktuelle Modulhandbücher'));
-            $avl_lang = array_keys($GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values']);
-
-            foreach ($avl_lang as $language) {
-                if ($language === $GLOBALS['MVV_LANGUAGES']['default']) {
+            $content_languages = array_merge(
+                ['original' => ['name' => _('Originalfassung')]],
+                $GLOBALS['CONTENT_LANGUAGES']
+            );
+            foreach (array_keys($content_languages) as $language) {
+                if ($language === 'original') {
                     $title = _('Originalfassung als PDF');
                 } else {
                     $title = sprintf(
-                        _('Zweitfassung (%s) als PDF'),
-                        $GLOBALS['MVV_LANGUAGES']['values'][$language]['name']
+                        _('Ausgabesprache (%s) als PDF'),
+                        $content_languages[$language]['name']
                     );
                 }
                 // get link without registered parameters
@@ -373,7 +375,7 @@ class Search_StudiengaengeController extends MVVController
     public function info_action($studiengang_id, $language = null)
     {
         $language = $language ?: Request::get('language', $_SESSION['_language']);
-        ModuleManagementModel::setLanguage($language);
+        ModuleManagementModel::setContentLanguage($language);
 
         $this->studiengang = Studiengang::find($studiengang_id);
         if (!$this->studiengang) {
@@ -391,23 +393,23 @@ class Search_StudiengaengeController extends MVVController
             $file = $document->mvv_file;
             if ($file->extern_visible) {
                 $mvv_file_ref = null;
-                foreach ($GLOBALS['MVV_LANGUAGES']['values'] as $key => $mvv_language) {
-                    if ($mvv_language['locale'] === $_SESSION['_language']) {
-                        $mvv_file_ref = $file->file_refs->findOneBy('file_language', $key);
+                foreach ($GLOBALS['CONTENT_LANGUAGES'] as $language_key => $mvv_language) {
+                    if ($language_key === $_SESSION['_language']) {
+                        $mvv_file_ref = $file->file_refs->findOneBy('file_language', $language_key);
                     } else {
-                        $mvv_file_ref = $file->file_refs->findOneBy('file_language', $GLOBALS['MVV_LANGUAGES']['default']);
+                        $mvv_file_ref = $file->file_refs->findOneBy('file_language', Config::get()->MVV_DEFAULT_LANGUAGE);
                     }
                 }
                 if ($mvv_file_ref) {
                     $filetype = $mvv_file_ref->file_ref->getFileType();
                     $this->all_documents[$file->category][$file->id] =
-                            [
-                                'name' => $file->getDisplayName(),
-                                'url'  => $mvv_file_ref->file_ref->getDownloadURL(),
-                                'metadata_url' => $mvv_file_ref->file_ref->file->metadata['url'] ?? null,
-                                'extension' => $mvv_file_ref->file_ref->file->getExtension(),
-                                'is_link' => ($filetype instanceof URLFile)
-                            ];
+                        [
+                            'name' => $file->getDisplayName(),
+                            'url'  => $mvv_file_ref->file_ref->getDownloadURL(),
+                            'metadata_url' => $mvv_file_ref->file_ref->file->metadata['url'] ?? null,
+                            'extension' => $mvv_file_ref->file_ref->file->getExtension(),
+                            'is_link' => ($filetype instanceof URLFile)
+                        ];
                 }
             }
         }

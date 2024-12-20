@@ -699,56 +699,41 @@ abstract class ModuleManagementModel extends SimpleORMap implements ModuleManage
     /**
      * Sets the language for localized fields and the locale environment
      * globally.
-     * Possible values are configured in mvv_config.php.
+     * See configuration of CONTENT_LANGUAGES.
      *
      * @see mvv_config.php
-     * @param string $language The language.
+     * @param string $language The language code.
      */
-    public static final function setLanguage($language)
+    public static final function setContentLanguage($language)
     {
-        $language = mb_strtoupper(mb_strstr($language . '_', '_', true));
-        if (isset($GLOBALS['MVV_LANGUAGES']['values'][$language])) {
-            $locale = $GLOBALS['MVV_LANGUAGES']['values'][$language]['locale'];
-            setLocaleEnv($locale);
-            self::setContentLanguage($language);
-            // load config file again
-            require $GLOBALS['STUDIP_BASE_PATH'] . '/config/mvv_config.php';
-        }
-    }
-
-    /**
-     * Switches the content to the given language.
-     * Compared to ModuleManagementModel::setLanguage() strings translated with
-     * gettext are always in the prefered language selected by the user.
-     *
-     * @param string $language The language code (see mvv_config.php)
-     */
-    public static function setContentLanguage($language)
-    {
-        if (!is_array($GLOBALS['MVV_LANGUAGES']['values'][$language])) {
+        $content_languages = Config::get()->CONTENT_LANGUAGES;
+        if (empty($content_languages[$language])) {
             throw new InvalidArgumentException();
         }
-        $locale = $GLOBALS['MVV_LANGUAGES']['values'][$language]['locale'];
-        I18NString::setContentLanguage($locale);
+        setLocaleEnv($language);
+        I18NString::setContentLanguage($language);
         self::$language = $language;
+        // load config file again
+        require $GLOBALS['STUDIP_BASE_PATH'] . '/config/mvv_config.php';
     }
 
-    public function getAvailableTranslations()
+    public function getAvailableTranslations(string $original_language): array
     {
-        $translations[] = $GLOBALS['MVV_LANGUAGES']['default'];
+        $translations = [];
         $stmt = DBManager::get()->prepare('SELECT DISTINCT `lang` '
                 . 'FROM i18n '
                 . 'WHERE `object_id` = ? AND `table` = ?');
         $stmt->execute([$this->id, $this->db_table()]);
-        foreach ($stmt->fetchAll() as $locale) {
-            $language = mb_strtoupper(mb_strstr($locale['lang'], '_', true));
-            if (is_array($GLOBALS['MVV_LANGUAGES']['values'][$language])) {
-                $translations[] = $language;
+        $languages = array_merge([$original_language],
+            $stmt->fetchAll(PDO::FETCH_COLUMN));
+        $content_languages = $GLOBALS['CONTENT_LANGUAGES'];
+        foreach ($languages as $code) {
+            if (!empty($content_languages[$code])) {
+                $translations[] = $code;
             }
         }
         return $translations;
     }
-
 
     /**
      * Returns the currently selected language.

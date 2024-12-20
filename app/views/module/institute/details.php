@@ -6,7 +6,7 @@
                 <th><?= _('Modul') ?></th>
                 <th style="width: 5%;"><?= _('Fassung') ?></th>
                 <th style="width: 5%;"><?= _('Modulteile') ?></th>
-                <th style="text-align: center; width: 150px;">
+                <th style="width: 150px;">
                     <?= _('Ausgabesprachen') ?>
                 </th>
                 <th style="width: 5%; text-align: right;"><?= _('Aktionen') ?></th>
