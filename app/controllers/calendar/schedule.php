@@ -63,7 +63,7 @@ class Calendar_ScheduleController extends AuthenticatedController
         $semester_widget = new SemesterSelectorWidget(
             $this->indexURL(['show_hidden' => $show_hidden ?: null])
         );
-        $semester_widget->setSelection($semester->id ?? '');
+        $semester_widget->setSelection($this->semester->id ?? '');
         $sidebar->addWidget($semester_widget);
 
         //Then add the actions for the action widget:
@@ -134,7 +134,7 @@ class Calendar_ScheduleController extends AuthenticatedController
         $sidebar->addWidget($views);
 
         $fullcalendar = \Studip\Calendar\Helper::getScheduleFullcalendar(
-            $semester->id ?? '',
+            $this->semester->id ?? '',
             Request::bool('show_hidden', false)
         );
         $fullcalendar->setResponsiveDefaultView('timeGridDay');
