@@ -295,13 +295,6 @@ class Module_ModuleController extends MVVController
                 $this->modul->fassung_typ = Request::option('fassung_typ');
                 $this->modul->version = trim(Request::get('version'));
                 $this->modul->verantwortlich = trim(Request::get('verantwortlich'));
-                // change original language
-                if (
-                    !$this->modul->isNew()
-                    && $this->modul->original_language !== Request::option('original_language')
-                ) {
-                    $this->setOriginalLanguage($this->modul, Request::option('original_language'));
-                }
             }
 
             $deskriptor_fields = ['bezeichnung', 'verantwortlich',
