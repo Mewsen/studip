@@ -11,7 +11,6 @@
  */
 namespace Studip\Session;
 
-
 class Manager
 {
     public const STATE_UNKNOWN = false;
@@ -53,21 +52,23 @@ class Manager
     {
         if (!$this->isStarted()) {
             ini_set('session.use_strict_mode', 1);
-            $current = session_get_cookie_params();
 
-            $lifetime = (int) ($this->options['lifetime'] ?: $current['lifetime']);
-            $path = $this->options['path'] ?: $current['path'];
-            $domain = $this->options['domain'] ?: $current['domain'];
-            $samesite = $this->options['samesite'] ?: $current['samesite'];
-            $secure = (bool) $this->options['secure'];
-            $httponly = (bool) $this->options['httponly'];
+            session_set_cookie_params([
+                'lifetime' => 0,
+                'path'     => $this->getCookieParam('path'),
+                'domain'   => $this->getCookieParam('domain'),
+                'secure'   => (bool) $this->getCookieParam('secure', false),
+                'samesite' => $this->getCookieParam('samesite'),
+                'httponly' => (bool) $this->getCookieParam('httponly', false),
+            ]);
 
-            session_set_cookie_params(compact('lifetime', 'path', 'domain', 'secure', 'samesite', 'httponly'));
             session_name($this->options['name']);
             session_cache_limiter('nocache');
             session_set_save_handler($this->handler, true);
 
-            session_start();
+            session_start([
+                'gc_maxlifetime' => (int) $this->getCookieParam('lifetime'),
+            ]);
         }
     }
 
@@ -101,6 +102,25 @@ class Manager
     public function getName(): string
     {
         return $this->options['name'];
+    }
+
+    /**
+     * Returns the value for the given cookie parameter. The value is taken
+     * from the configured options array (or from the current session
+     * configuration in php).
+     *
+     * If no value is found, null is retuned.
+     */
+    public function getCookieParam(string $key, bool $from_config = true): mixed
+    {
+        $value = $this->options[$key] ?? null;
+
+        if ($from_config) {
+            $current = session_get_cookie_params();
+            $value = $value ?: $current[$key] ?? null;
+        }
+
+        return $value;
     }
 
     public function destroy(): void
@@ -174,12 +194,8 @@ class Manager
     /**
      * returns a SessionDecoder object containing the session variables
      * for the given session id
-     *
-     * @static
-     * @param string $sid a session id
-     * @return \SessionDecoder
      */
-    public function getSessionVars($sid): \SessionDecoder
+    public function getSessionVars(string $sid): \SessionDecoder
     {
         $data = $this->handler->read($sid);
         return new \SessionDecoder($data);

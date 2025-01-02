@@ -22,6 +22,6 @@ class SessionGcJob extends CronJob
 
     public function execute($last_result, $parameters = [])
     {
-        return sess()->doGarbageCollect();
+        sess()->doGarbageCollect();
     }
 }
