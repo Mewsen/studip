@@ -123,10 +123,10 @@ if ($navigation) {
                           && Navigation::getItem('/profile')->isActive();
                 ?>
 
-                
+
 
                 <? if (is_object($GLOBALS['perm']) && PersonalNotifications::isActivated() && $GLOBALS['perm']->have_perm('autor')) : ?>
-                
+
                     <? $notifications = PersonalNotifications::getMyNotifications() ?>
                     <? $lastvisit = (int)UserConfig::get($GLOBALS['user']->id)->getValue('NOTIFICATIONS_SEEN_LAST_DATE') ?>
                     <? foreach ($notifications as $notification) {
@@ -137,7 +137,7 @@ if ($navigation) {
                 <!-- User-Avatar -->
                 <li class="header_avatar_container <?= !empty($alert) ? 'alert' : '' ?> <? if ($active) echo 'active'; ?>" id="avatar-menu-container">
                     <div id="notification-container"  <?= count($notifications) > 0 ? ' class="hoverable"' : '' ?>>
-                        
+
                         <button id="notification_marker" data-toggles="#notification_checkbox" <?= !empty($alert) ? ' class="alert"' : "" ?>
                                 title="<?= sprintf(
                                     ngettext('%u Benachrichtigung', '%u Benachrichtigungen', count($notifications)),
@@ -212,7 +212,7 @@ if ($navigation) {
             <? else: ?>
                 <li>
                     <form method="post" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => null]) ?>">
-                        <?= CSRFProtection::tokenTag() ?>
+                        <? try {echo CSRFProtection::tokenTag();} catch (SessionRequiredException){}?>
                         <input type="hidden" name="user_config_submitted" value="1">
                         <div id="contrast">
                             <? if (!empty($_SESSION['contrast'])): ?>
@@ -222,7 +222,7 @@ if ($navigation) {
                             <? else: ?>
                                 <?= Icon::create('accessibility', Icon::ROLE_INFO_ALT)->asImg(24) ?>
                                 <button class="as-link" name="set_contrast"><?= _('Hohen Kontrast aktivieren') ?></button>
-                                <?= tooltipIcon(_('Aktiviert einen hohen Kontrast gemäß WCAG 2.1. Diese Einstellung wird nach dem Login übernommen. 
+                                <?= tooltipIcon(_('Aktiviert einen hohen Kontrast gemäß WCAG 2.1. Diese Einstellung wird nach dem Login übernommen.
                                 Sie können sie in Ihren persönlichen Einstellungen ändern.'), false, false, true); ?>
                             <? endif ?>
                         </div>
