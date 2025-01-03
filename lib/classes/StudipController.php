@@ -477,22 +477,21 @@ abstract class StudipController extends Trails\Controller
 
     /**
      * Renders a file
-     * @param string  $file                Path of the file to render
-     * @param string  $filename            Name of the file displayed to user
+     *
+     * @param string       $file                Path of the file to render
+     * @param string|null  $filename            Name of the file displayed to user
      *                                     (will equal $file when missing)
-     * @param string  $content_type        Optional content type (will be determined if missing)
-     * @param string  $content_disposition Either attachment (default) or inline
-     * @param Closure $callback            Optional callback when download has finished
-     * @param int     $chunk_size          Optional size of chunks to send (default: 256k)
+     * @param string|null  $content_type        Optional content type (will be determined if missing)
+     * @param string       $content_disposition Either attachment (default) or inline
+     * @param Closure|null $callback            Optional callback when download has finished
      */
     public function render_file(
-        $file,
-        $filename = null,
-        $content_type = null,
-        $content_disposition = 'attachment',
-        Closure $callback = null,
-        $chunk_size = 262144
-    ) {
+        string   $file,
+        ?string  $filename = null,
+        ?string  $content_type = null,
+        string   $content_disposition = 'attachment',
+        ?Closure $callback = null
+    ): void {
         if (!file_exists($file)) {
             throw new Trails\Exception(404);
         }
@@ -524,19 +523,16 @@ abstract class StudipController extends Trails\Controller
         $this->response->add_header('Content-Length', filesize($file));
         $this->response->add_header('Content-Transfer-Encoding',  'binary');
         $this->response->add_header('Pragma', 'public');
-        $this->render_text(function () use ($file, $chunk_size, $callback) {
-            $fp = fopen($file, 'rb');
 
-            while (!feof($fp)) {
-                yield fgets($fp, $chunk_size);
-            }
+        $this->render_text(
+            app(Psr\Http\Message\StreamFactoryInterface::class)->createStreamFromFile($file)
+        );
 
-            fclose($fp);
-
-            if ($callback) {
+        if ($callback) {
+            NotificationCenter::on('SLIM_AFTER_RUN', function () use ($callback, $file) {
                 $callback($file);
-            }
-        });
+            });
+        }
     }
 
     /**
@@ -544,23 +540,20 @@ abstract class StudipController extends Trails\Controller
      * This is just a convenience method so you don't have to write the delete
      * callback.
      *
-     * @param string  $file                Path of the file to render
-     * @param string  $filename            Name of the file displayed to user
+     * @param string       $file                Path of the file to render
+     * @param string|null  $filename            Name of the file displayed to user
      *                                     (will equal $file when missing)
-     * @param string  $content_type        Optional content type (will be determined if missing)
-     * @param string  $content_disposition Either attachment (default) or inline
-     * @param Closure $callback            Optional callback when download has finished
-     * @param int     $chunk_size          Optional size of chunks to send (default: 256k)
+     * @param string|null  $content_type        Optional content type (will be determined if missing)
+     * @param string       $content_disposition Either attachment (default) or inline
+     * @param Closure|null $callback            Optional callback when download has finished
      */
     public function render_temporary_file(
-        $file,
-        $filename = null,
-        $content_type = null,
-        $content_disposition = 'attachment',
-        Closure $callback = null,
-        $chunk_size = 262144
-
-    ) {
+        string   $file,
+        ?string  $filename = null,
+        ?string  $content_type = null,
+        string   $content_disposition = 'attachment',
+        ?Closure $callback = null
+    ): void {
         $delete_callback = function ($file) use ($callback) {
             unlink($file);
 
@@ -574,8 +567,7 @@ abstract class StudipController extends Trails\Controller
             $filename,
             $content_type,
             $content_disposition,
-            $delete_callback,
-            $chunk_size
+            $delete_callback
         );
     }
 

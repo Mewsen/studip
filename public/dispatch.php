@@ -33,3 +33,4 @@ $route_callable = $studip_dispatcher->getRouteCallable(Request::pathInfo());
 $app->any(Request::pathInfo(), $route_callable);
 NotificationCenter::postNotification('SLIM_BEFORE_RUN', $app);
 $app->run();
+NotificationCenter::postNotification('SLIM_AFTER_RUN', $app);
