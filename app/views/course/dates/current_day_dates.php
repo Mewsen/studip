@@ -3,7 +3,7 @@
     <table class="dates default sortable-table" data-sortlist="[[0, 0]]" data-table-id="<?= htmlReady($course->id) ?>">
         <thead>
             <tr>
-                <th data-sort="htmldata"><?= _('Zeit') ?></th>
+                <th><?= _('Zeit') ?></th>
                 <th data-sort="text"><?= _('Raum') ?></th>
                 <th data-sort="htmldata"><?= _('Anzahl der Teilnehmenden') ?></th>
             </tr>
@@ -11,7 +11,7 @@
         <tbody>
         <? foreach ($dates as $date): ?>
             <tr>
-                <td data-sort-value="<?= htmlReady($date->date) ?>" class="date_name">
+                <td class="date_name">
                     <?= Icon::create('date')->asImg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>
                     <?= htmlReady($date->getFullName(CourseDate::FORMAT_VERBOSE)) ?>
                 </td>

@@ -1,7 +1,7 @@
 <table class="default">
     <thead>
         <tr>
-            <th><?= _('Courses') ?></th>
+            <th><?= _('Veranstaltungen in diesem Raum') ?></th>
         </tr>
     </thead>
     <tbody>
