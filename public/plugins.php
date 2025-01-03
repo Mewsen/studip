@@ -70,3 +70,4 @@ $app->add(app(Studip\Middleware\SessionMiddleware::class));
 
 NotificationCenter::postNotification('SLIM_BEFORE_RUN', $app);
 $app->run();
+NotificationCenter::postNotification('SLIM_AFTER_RUN', $app);
