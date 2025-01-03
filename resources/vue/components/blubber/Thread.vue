@@ -213,33 +213,46 @@ export default {
     },
     mounted() {
         this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
-        this.$refs.scrollable.addEventListener('scroll', this.handleDebouncedScroll);
-
-        // when everything is initialized
-        this.$nextTick(() => {
-            if (this.comments.length > 0) {
-                this.scrollDown();
-            }
-
-            const memory = getBlubberMemory(this.thread);
-            if (memory) {
-                this.composerText = memory;
-            }
-        });
     },
     beforeUnmount() {
         this.$refs.scrollable.removeEventListener('scroll', this.handleDebouncedScroll);
     },
     beforeUpdate() {
-        const { scrollHeight, scrollTop } = this.$refs.scrollable;
-        this.scrollPosition = { scrollHeight, scrollTop };
+        if (!this.emptyBlubber) {
+            const { scrollHeight, scrollTop } = this.$refs.scrollable;
+            this.scrollPosition = { scrollHeight, scrollTop };
+        }
     },
     updated() {
-        // maintain scroll position when loading older comments
-        const newScrollTop =
-            this.$refs.scrollable.scrollHeight - this.scrollPosition.scrollHeight + this.scrollPosition.scrollTop;
-        this.$refs.scrollable.scrollTo(0, newScrollTop);
+        if (!this.emptyBlubber) {
+            // maintain scroll position when loading older comments
+            const newScrollTop =
+                this.$refs.scrollable.scrollHeight - this.scrollPosition.scrollHeight + this.scrollPosition.scrollTop;
+            this.$refs.scrollable.scrollTo(0, newScrollTop);
+        }
     },
+    watch: {
+        emptyBlubber: {
+            handler(isEmpty) {
+                if (!isEmpty) {
+                    this.$refs.scrollable.addEventListener('scroll', this.handleDebouncedScroll);
+
+                    // when everything is initialized
+                    this.$nextTick(() => {
+                        if (this.comments.length > 0) {
+                            this.scrollDown();
+                        }
+
+                        const memory = getBlubberMemory(this.thread);
+                        if (memory) {
+                            this.composerText = memory;
+                        }
+                    });
+                }
+            },
+            immediate: true,
+        }
+    }
 };
 
 function clearBlubberMemory(thread) {
@@ -258,3 +271,8 @@ function setBlubberMemory(thread, memory) {
     }
 }
 </script>
+<style lang="scss" scoped>
+.empty_blubber_background {
+    flex: 1;
+}
+</style>
