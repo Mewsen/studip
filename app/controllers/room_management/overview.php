@@ -26,14 +26,12 @@
  */
 class RoomManagement_OverviewController extends AuthenticatedController
 {
+    protected $allow_nobody = true;
+
     public function before_filter(&$action, &$args)
     {
-        if ($action === 'public_booking_plans') {
-            if (Config::get()->RESOURCES_SHOW_PUBLIC_ROOM_PLANS) {
-                $this->allow_nobody = true;
-            } else {
-                throw new AccessDeniedException();
-            }
+        if ($action !== 'public_booking_plans' && $GLOBALS['user']->id === 'nobody') {
+            throw new AccessDeniedException();
         }
         parent::before_filter($action, $args);
 
@@ -434,6 +432,9 @@ class RoomManagement_OverviewController extends AuthenticatedController
      */
     public function public_booking_plans_action()
     {
+        if (!Config::get()->RESOURCES_SHOW_PUBLIC_ROOM_PLANS) {
+            throw new AccessDeniedException();
+        }
         if (Navigation::hasItem('/resources/overview/public_booking_plans')) {
             Navigation::activateItem('/resources/overview/public_booking_plans');
         }

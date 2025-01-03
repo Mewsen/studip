@@ -22,11 +22,13 @@
  */
 class Resources_RoomPlanningController extends AuthenticatedController
 {
+    protected $allow_nobody = true;
+
     public function before_filter(&$action, &$args)
     {
         $anonymous_actions = ['booking_plan', 'anonymous_booking_plan_data'];
-        if (in_array($action, $anonymous_actions)) {
-            $this->allow_nobody = true;
+        if (!in_array($action, $anonymous_actions) && $GLOBALS['user']->id === 'nobody') {
+            throw new AccessDeniedException();
         }
         parent::before_filter($action, $args);
     }
