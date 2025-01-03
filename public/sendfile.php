@@ -43,6 +43,7 @@ $sess = sess();
 $auth = auth();
 $auth->setNobody(true);
 $sess->start();
+$auth->start();
 
 //Load plugins, unless they are disabled via an URL parameter.
 if (Request::int('disable_plugins') !== null && ($GLOBALS['user']->id === 'nobody' || $GLOBALS['perm']->have_perm('root'))) {
