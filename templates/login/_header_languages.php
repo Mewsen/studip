@@ -1,5 +1,5 @@
 <form id="language-selector" method="POST" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => null]) ?>">
-    <?= CSRFProtection::tokenTag() ?>
+    <? try {echo CSRFProtection::tokenTag();} catch (SessionRequiredException){}?>
     <input type="hidden" name="user_config_submitted" value="1">
     <select id="languages" name="set_language" class="select2" onchange="this.form.submit()">
         <? foreach ($GLOBALS['INSTALLED_LANGUAGES'] as $temp_language_key => $temp_language): ?>
