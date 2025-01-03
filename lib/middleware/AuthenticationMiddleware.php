@@ -34,6 +34,8 @@ final class AuthenticationMiddleware implements MiddlewareInterface
         } else {
             if (!match_route('dispatch.php/start')) {
                 $_SESSION['redirect_after_login'] = \Request::url();
+            } else {
+                unset($_SESSION['redirect_after_login']);
             }
             $response = $this->response_factory->createResponse(302);
             return $response->withHeader('Location', \URLHelper::getURL('dispatch.php/login'));
