@@ -1425,8 +1425,8 @@ INSERT INTO `schema_version` (`domain`, `branch`, `version`) VALUES('studip', '5
 INSERT INTO `schema_version` (`domain`, `branch`, `version`) VALUES('studip', '5.5', 28);
 INSERT INTO `schema_version` (`domain`, `branch`, `version`) VALUES('studip', '5.5.23', 1);
 
-INSERT INTO `semester_data` (`semester_id`, `name`, `semester_token`, `beginn`, `ende`, `sem_wechsel`, `vorles_beginn`, `vorles_ende`, `visible`, `external_id`, `mkdate`, `chdate`) VALUES('322f640f3f4643ebe514df65f1163eb1', 'SS 2024', '', 1711922400, 1727733599, NULL, 1712527200, 1720821599, 1, '', NULL, 1698856529);
-INSERT INTO `semester_data` (`semester_id`, `name`, `semester_token`, `beginn`, `ende`, `sem_wechsel`, `vorles_beginn`, `vorles_ende`, `visible`, `external_id`, `mkdate`, `chdate`) VALUES('4967f0a483e36554b77e3dc47aa58941', 'WS 2024/2025', '', 1727733600, 1743458399, NULL, 1729461600, 1738969199, 1, '', NULL, 1716387028);
+INSERT INTO `semester_data` (`semester_id`, `name`, `semester_token`, `beginn`, `ende`, `sem_wechsel`, `vorles_beginn`, `vorles_ende`, `visible`, `external_id`, `mkdate`, `chdate`) VALUES('322f640f3f4643ebe514df65f1163eb1', 'SoSe 2024', '', 1711922400, 1727733599, NULL, 1712527200, 1720821599, 1, '', NULL, 1698856529);
+INSERT INTO `semester_data` (`semester_id`, `name`, `semester_token`, `beginn`, `ende`, `sem_wechsel`, `vorles_beginn`, `vorles_ende`, `visible`, `external_id`, `mkdate`, `chdate`) VALUES('4967f0a483e36554b77e3dc47aa58941', 'WiSe 2024/2025', '', 1727733600, 1743458399, NULL, 1729461600, 1738969199, 1, '', NULL, 1716387028);
 
 INSERT INTO `semester_holiday` (`holiday_id`, `semester_id`, `name`, `description`, `beginn`, `ende`, `mkdate`, `chdate`) VALUES('704038f0cb3ea0a285ba0a453788ebed', '', 'Unterbrechung', '', 1734908400, 1736117999, NULL, 1716387135);
 
