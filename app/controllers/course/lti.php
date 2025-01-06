@@ -18,21 +18,26 @@ class Course_LtiController extends StudipController
 {
     use NegotiatesWithPsr7;
 
+    public function __construct(\Trails\Dispatcher $dispatcher)
+    {
+        // these actions do not require session authentication
+        $action = basename(get_route());
+        if (!in_array($action, ['profile', 'outcome'])) {
+            $this->with_session = true;
+            $this->allow_nobody = false;
+        }
+        parent::__construct($dispatcher);
+    }
     /**
      * Callback function being called before an action is executed.
      */
     public function before_filter(&$action, &$args)
     {
+        parent::before_filter($action, $args);
         // these actions do not require session authentication
         if (in_array($action, ['profile', 'outcome'])) {
-            return parent::before_filter($action, $args);
+            return;
         }
-
-        $this->with_session = true;
-        $this->allow_nobody = false;
-
-        parent::before_filter($action, $args);
-
         $this->course_id = Context::getId();
         $this->edit_perm = $GLOBALS['perm']->have_studip_perm('tutor', $this->course_id);
 
