@@ -38,6 +38,8 @@
                         :containerId="container.id"
                         sectionId="0"
                         item-key="id"
+                        :data-container-id="container.id"
+                        data-section-id="0"
                     >
                         <template #item="{element}">
                             <li

@@ -256,8 +256,7 @@ export default {
             this.isDragging = true;
         },
         async dropNewBlock(e) {
-            // TODO: This seems way to hackish
-            const targetAttributes = e.to.__vnode.ctx.attrs;
+            const targetAttributes = e.to.dataset;
             const blockType = e.item.dataset.blocktype;
 
             // only execute if dropped in destined list

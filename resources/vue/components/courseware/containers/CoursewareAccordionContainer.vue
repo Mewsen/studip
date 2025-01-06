@@ -55,6 +55,8 @@
                             :containerId="container.id"
                             :sectionId="index"
                             item-key="id"
+                            :data-container-id="container.id"
+                            :data-section-id="index"
                         >
                             <template #item="{element, index}">
                                 <li class="cw-block-item cw-block-item-sortable">
