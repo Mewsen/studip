@@ -50,7 +50,9 @@ class Course_GoController extends AuthenticatedController
             if (!is_internal_url($redirect_to)) {
                 throw new Exception('Invalid redirection');
             }
-
+            if (str_starts_with($redirect_to, '#')) {
+                $redirect_to = 'dispatch.php/course/go' . $redirect_to;
+            }
             $this->redirect(URLHelper::getURL($redirect_to, ['cid' => $course_id]));
             return;
         }
