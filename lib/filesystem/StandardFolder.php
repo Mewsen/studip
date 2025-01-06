@@ -194,11 +194,11 @@ class StandardFolder implements FolderType
     }
 
     /**
-     * @return \Flexi\Template|string|null
+     * @return \Flexi\Template|null
      */
-    public function getEditTemplate(): \Flexi\Template|string|null
+    public function getEditTemplate(): ?\Flexi\Template
     {
-        return '';
+        return null;
     }
 
     /**

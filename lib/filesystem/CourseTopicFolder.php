@@ -80,9 +80,9 @@ class CourseTopicFolder extends PermissionEnabledFolder
     /**
      * This method returns the special part for the edit template for the folder type GroupFolder
      *
-     * @return \Flexi\Template|string|null  A edit template for a instance of the type GroupFolder
+     * @return \Flexi\Template|null  A edit template for a instance of the type GroupFolder
      */
-    public function getEditTemplate(): \Flexi\Template|string|null
+    public function getEditTemplate(): ?\Flexi\Template
     {
         $template = $GLOBALS['template_factory']->open('filesystem/topic_folder/edit.php');
         $template->set_attribute('topic', $this->getTopic());

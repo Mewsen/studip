@@ -78,9 +78,9 @@ class HiddenFolder extends PermissionEnabledFolder
     /**
      * Returns the edit template for this folder type.
      *
-     * @return \Flexi\Template|string|null
+     * @return \Flexi\Template|null
      */
-    public function getEditTemplate(): \Flexi\Template|string|null
+    public function getEditTemplate(): ?\Flexi\Template
     {
         $template = $GLOBALS['template_factory']->open('filesystem/hidden_folder/edit.php');
         $template->download_allowed = $this->download_allowed;

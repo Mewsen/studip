@@ -161,9 +161,9 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not have an edit template.
      */
-    public function getEditTemplate(): \Flexi\Template|string|null
+    public function getEditTemplate(): ?\Flexi\Template
     {
-        return '';
+        return null;
     }
 
     /**

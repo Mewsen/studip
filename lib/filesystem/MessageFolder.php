@@ -223,14 +223,6 @@ class MessageFolder extends StandardFolder
     }
 
     /**
-     * MessageFolders don't have an edit template.
-     */
-    public function getEditTemplate(): \Flexi\Template|string|null
-    {
-        return '';
-    }
-
-    /**
      * MessageFolders don't have an edit template and therefore cannot
      * handle requests from such templates.
      */

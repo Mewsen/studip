@@ -112,11 +112,6 @@ class PermissionEnabledFolder extends StandardFolder
         return parent::validateUpload($file, $user_id);
     }
 
-    public function getEditTemplate(): \Flexi\Template|string|null
-    {
-        return '';
-    }
-
     /**
      * @return FileType[]
      */

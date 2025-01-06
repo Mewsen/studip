@@ -54,14 +54,6 @@ class MaterialFolder extends PermissionEnabledFolder
     }
 
     /**
-     * There is nothing special you can edit at this folder
-     */
-    public function getEditTemplate(): \Flexi\Template|string|null
-    {
-        return '';
-    }
-
-    /**
      * Returns the description template for a instance of a MaterialFolder type
      *
      * @return \Flexi\Template|string|null A description template for a instance of the type MaterialFolder

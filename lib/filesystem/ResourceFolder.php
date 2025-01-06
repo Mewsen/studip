@@ -108,11 +108,6 @@ class ResourceFolder extends StandardFolder
         return [];
     }
 
-    public function getEditTemplate(): \Flexi\Template|string|null
-    {
-        return '';
-    }
-
     public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
     {
         return MessageBox::error(

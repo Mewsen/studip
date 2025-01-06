@@ -155,7 +155,7 @@ interface FolderType
     /**
      * returns template form, must not contain opening and closing <form> tags
      */
-    public function getEditTemplate(): Template|string|null;
+    public function getEditTemplate(): ?Template;
 
     /**
      * gets data from edit form

@@ -92,9 +92,9 @@ class CourseDateFolder extends PermissionEnabledFolder
     /**
      * This method returns the special part for the edit template
      *
-     * @return \Flexi\Template|string|null  edit template
+     * @return \Flexi\Template|null  edit template
      */
-    public function getEditTemplate(): \Flexi\Template|string|null
+    public function getEditTemplate(): ?\Flexi\Template
     {
         $template = $GLOBALS['template_factory']->open('filesystem/date_folder/edit.php');
         $template->date   = $this->getDate();

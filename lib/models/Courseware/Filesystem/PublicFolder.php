@@ -158,14 +158,6 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function getEditTemplate(): Template|string|null
-    {
-        return '';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
     {
         return $this;

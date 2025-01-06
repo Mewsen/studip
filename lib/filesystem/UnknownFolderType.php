@@ -143,9 +143,9 @@ class UnknownFolderType implements FolderType
     /**
      *
      */
-    public function getEditTemplate(): \Flexi\Template|string|null
+    public function getEditTemplate(): ?\Flexi\Template
     {
-        return '';
+        return null;
     }
 
     /**

@@ -87,16 +87,6 @@ class HomeworkFolder extends PermissionEnabledFolder
     }
 
     /**
-     * Folders of this type don't have an edit template.
-     *
-     * @return \Flexi\Template|string|null
-     */
-    public function getEditTemplate(): \Flexi\Template|string|null
-    {
-        return '';
-    }
-
-    /**
      * @param string|null $user_id
      * @return bool
      */
