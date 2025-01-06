@@ -46,12 +46,15 @@ class Course_GoController extends AuthenticatedController
 
         // gibt es eine Anweisung zur Umleitung?
         $redirect_to = Request::get('redirect_to');
-        if ($redirect_to) {
+        if (
+            $redirect_to
+            && !(
+                str_starts_with($redirect_to, '#')
+                || str_starts_with($redirect_to, '?')
+            )
+        ) {
             if (!is_internal_url($redirect_to)) {
                 throw new Exception('Invalid redirection');
-            }
-            if (str_starts_with($redirect_to, '#')) {
-                $redirect_to = 'dispatch.php/course/go' . $redirect_to;
             }
             $this->redirect(URLHelper::getURL($redirect_to, ['cid' => $course_id]));
             return;
@@ -62,7 +65,7 @@ class Course_GoController extends AuthenticatedController
         if (Navigation::hasItem("/course")) {
             foreach (Navigation::getItem("/course")->getSubNavigation() as $index => $navigation) {
                 if ($index !== 'admin') {
-                    $this->redirect(URLHelper::getURL($navigation->getURL()));
+                    $this->redirect(URLHelper::getURL($navigation->getURL() . $redirect_to));
                     return;
                 }
             }
