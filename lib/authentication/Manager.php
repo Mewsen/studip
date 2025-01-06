@@ -55,7 +55,7 @@ class Manager
                 Metrics::increment('core.sso_login.attempted');
                 // then do login
                 $authplugin = StudipAuthAbstract::GetInstance($provider);
-                if ($authplugin) {
+                if ($authplugin instanceof \StudipAuthSSO) {
                     $authplugin->authenticateUser('', '');
                     if ($authplugin->getUser()) {
                         $user = $authplugin->getStudipUser($authplugin->getUser());
@@ -71,8 +71,8 @@ class Manager
                         }
                         Metrics::increment('core.sso_login.succeeded');
 
-                        sess()->regenerateId(['auth', '_language', 'phpCAS', 'contrast']);
                         $this->setAuthenticatedUser($user);
+                        sess()->regenerateId(['auth', '_language', 'phpCAS', 'contrast']);
                     }
                 }
             }
