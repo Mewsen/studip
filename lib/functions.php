@@ -1123,7 +1123,10 @@ function studip_default_exception_handler($exception) {
         $status = 403;
         $template = 'check_object_exception';
     } elseif ($exception instanceof LoginException) {
-
+        $_SESSION['redirect_after_login'] = Request::url();
+        sess()->save();
+        header('Location: ' . URLHelper::getScriptURL('dispatch.php/login'));
+        exit;
     } else {
         if ($exception instanceOf Trails\Exception) {
             $status = $exception->getCode();

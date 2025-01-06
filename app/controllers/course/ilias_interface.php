@@ -49,7 +49,7 @@ class Course_IliasInterfaceController extends AuthenticatedController
         $this->seminar_id = Context::getId();
         $this->edit_permission = $GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id);
         $this->author_permission = false;
-        $this->change_course_permission = $GLOBALS['auth']->auth["perm"] == "root" || ($GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id) && !empty($this->ilias_interface_config['allow_change_course']));
+        $this->change_course_permission = $GLOBALS['perm']->have_perm('root') || ($GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id) && !empty($this->ilias_interface_config['allow_change_course']));
         $this->add_own_course_permission = $GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id) && !empty($this->ilias_interface_config['allow_add_own_course']);
         $this->course_permission = $GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id);
 
