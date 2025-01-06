@@ -18,15 +18,25 @@ class LogoutController extends AuthenticatedController
 
     public function index_action()
     {
+        if (
+            !Request::isPost()
+            && !(
+                isset($_SESSION['logout_ticket'])
+                && check_ticket($_SESSION['logout_ticket'])
+            )
+        ) {
+            $this->redirect(URLHelper::getURL('dispatch.php/start'));
+            return;
+        }
+
         if ($GLOBALS['user']->id !== 'nobody') {
             $my_messaging_settings = $GLOBALS['user']->cfg->MESSAGING_SETTINGS;
 
             //Wenn Option dafuer gewaehlt, alle ungelsesenen Nachrichten als gelesen speichern
-            if ($my_messaging_settings["logout_markreaded"]) {
+            if (!empty($my_messaging_settings['logout_markreaded'])) {
                 Message::markAllAs();
             }
 
-            $logout_user = $GLOBALS['user']->id;
             $_language = $_SESSION['_language'];
             $contrast = UserConfig::get($GLOBALS['user']->id)->USER_HIGH_CONTRAST;
 
