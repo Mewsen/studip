@@ -62,7 +62,7 @@ class CacheSessionHandler implements
     public function read(string $id): string|false
     {
         $cache_key = self::CACHE_KEY_PREFIX . '/' . $id;
-        return $this->cache->read($cache_key);
+        return $this->cache->read($cache_key) ?: '';
     }
 
     public function write(string $id, string $data): bool
