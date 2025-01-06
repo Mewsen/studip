@@ -19,7 +19,7 @@ class NewPasswordController extends StudipController
             return;
         }
 
-        if ($GLOBALS['auth'] && $GLOBALS['auth']->auth["uid"] != "nobody") {
+        if (User::findCurrent()) {
             PageLayout::postError(_("Sie können kein neues Passwort anfordern, wenn Sie bereits eingeloggt sind."));
             $this->redirect('start');
             return;

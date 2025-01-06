@@ -200,11 +200,11 @@ class Context
      *
      * @param string $id
      *
-     * @throws AccessDeniedException
+     * @throws AccessDeniedException|LoginException
      */
     public static function set($id)
     {
-        global $perm, $auth;
+        global $perm;
 
         self::close();
         self::loadContext($id);
@@ -226,7 +226,9 @@ class Context
             if (!$perm->get_studip_perm($course['Seminar_id'])) {
                 if ($course['lesezugriff'] > 0 || !Config::get()->ENABLE_FREE_ACCESS) {
                     // redirect to login page if user is not logged in
-                    $auth->login_if($auth->auth['uid'] === 'nobody');
+                    if (!User::findCurrent()) {
+                        throw new LoginException();
+                    }
 
                     if (!$perm->get_studip_perm($course['Seminar_id'])) {
                         throw new AccessDeniedException();
@@ -257,7 +259,9 @@ class Context
                        && !$perm->have_perm('user');
             if ($no_access) {
                 // redirect to login page if user is not logged in
-                $auth->login_if($auth->auth['uid'] === 'nobody');
+                if (!User::findCurrent()) {
+                    throw new LoginException();
+                }
 
                 if (!$perm->have_perm('user')) {
                     throw new AccessDeniedException();

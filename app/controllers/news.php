@@ -436,9 +436,6 @@ class NewsController extends StudipController
     public function admin_news_action($area_type = '')
     {
         // check permission
-        if (!$GLOBALS['auth']->is_authenticated() || $GLOBALS['user']->id === 'nobody') {
-            throw new AccessDeniedException();
-        }
         $GLOBALS['perm']->check('user');
 
         // initialize

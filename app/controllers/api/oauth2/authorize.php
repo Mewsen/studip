@@ -24,7 +24,9 @@ class Api_Oauth2_AuthorizeController extends OAuth2Controller
         $method = $this->getMethod();
 
         if (Request::submitted('auth_token')) {
-            $GLOBALS['auth']->login_if('nobody' === $GLOBALS['user']->id);
+            if ('nobody' === $GLOBALS['user']->id) {
+                throw new LoginException();
+            }
             CSRFProtection::verifyUnsafeRequest();
 
             switch ($method) {
@@ -59,7 +61,9 @@ class Api_Oauth2_AuthorizeController extends OAuth2Controller
 
             return;
         } else {
-            $GLOBALS['auth']->login_if('nobody' === $GLOBALS['user']->id);
+            if ('nobody' === $GLOBALS['user']->id) {
+                throw new LoginException();
+            }
         }
 
         $this->client = $client;

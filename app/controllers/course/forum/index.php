@@ -832,7 +832,7 @@ class Course_Forum_IndexController extends ForumController
     public function rescue($exception)
     {
         if ($exception instanceof AccessDeniedException) {
-            $GLOBALS['auth']->login_if($GLOBALS['user']->id === 'nobody');
+            throw new LoginException();
         }
 
         return parent::rescue($exception);

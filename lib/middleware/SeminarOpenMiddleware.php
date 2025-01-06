@@ -154,7 +154,13 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
         // This also binds Context::getId()
         // to the URL parameter 'cid' for all generated links.
         if (isset($course_id)) {
-            \Context::set($course_id);
+            try {
+                \Context::set($course_id);
+            } catch (\LoginException $e) {
+                $response = $this->response_factory->createResponse(302);
+                $_SESSION['redirect_after_login'] = \Request::url();
+                return $response->withHeader('Location', \URLHelper::getURL('dispatch.php/login'));
+            }
             unset($course_id);
         }
 
