@@ -297,7 +297,7 @@ class UnknownFolderType implements FolderType
         return ['description' => $this->description];
     }
 
-    public function countDownloads(): bool
+    public function countDownload(FileRef $ref): bool
     {
         return true;
     }

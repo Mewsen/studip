@@ -324,7 +324,7 @@ class VirtualFolderType implements FolderType
     }
 
 
-    public function countDownloads(): bool
+    public function countDownload(FileRef $ref): bool
     {
         return true;
     }

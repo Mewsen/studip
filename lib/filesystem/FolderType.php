@@ -229,7 +229,7 @@ interface FolderType
      * @param string $user_id     The user who wishes to download the file.
      * @return boolean True, if the user is permitted to download the file, false otherwise.
      */
-    public function isFileDownloadable(string $file_ref_id, string $user_id):bool;
+    public function isFileDownloadable(string $file_ref_id, string $user_id): bool;
 
     /**
      * Determines if a user may edit the file.
@@ -238,7 +238,7 @@ interface FolderType
      * @param string $user_id     The user who wishes to edit the file.
      * @return boolean True, if the user is permitted to edit the file, false otherwise.
      */
-    public function isFileEditable(string $file_ref_id, string $user_id):bool;
+    public function isFileEditable(string $file_ref_id, string $user_id): bool;
 
     /**
      * Determines if a user may write to the file.
@@ -247,7 +247,7 @@ interface FolderType
      * @param string $user_id The user who wishes to write to the file.
      * @return boolean True, if the user is permitted to write to the file, false otherwise.
      */
-    public function isFileWritable(string $file_ref_id, string $user_id):bool;
+    public function isFileWritable(string $file_ref_id, string $user_id): bool;
 
     /**
      * Returns an associative array of additional colums with the index the id of the column
@@ -255,7 +255,7 @@ interface FolderType
      *
      * @return array('col1' => _("Anfragestatus"))
      */
-    public function getAdditionalColumns():array;
+    public function getAdditionalColumns(): array;
 
     /**
      * Returns the content for that additional column, if it exists. You can
@@ -274,7 +274,7 @@ interface FolderType
      * @param string $column_index
      * @return integer : order value
      */
-    public function getAdditionalColumnOrderWeigh(string $column_index):int;
+    public function getAdditionalColumnOrderWeigh(string $column_index): int;
 
     /**
      * Returns an array of Studip\Button or Studip\LinkButton objects that get displayed
@@ -282,25 +282,22 @@ interface FolderType
      *
      * @return Studip\Button[]|Studip\LinkButton[]
      */
-    public function getAdditionalActionButtons():array;
+    public function getAdditionalActionButtons(): array;
 
     /**
      * Returns (perhaps only a subset of) description and data_content of the folder for copying
      *
      * @return array
      */
-    public function copySettings():array;
+    public function copySettings(): array;
 
     /**
      * Returns whether the downloads in this folder should be counted or not.
-     * @return bool
      */
-    public function countDownloads(): bool;
+    public function countDownload(FileRef $ref): bool;
 
     /**
      * This method decides whether downloads should be displayed.
-     *
-     * @return bool
      */
     public function displayDownloads(): bool;
 }
