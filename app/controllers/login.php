@@ -49,7 +49,7 @@ class LoginController extends AuthenticatedController
 
 
             foreach (array_keys($GLOBALS['INSTALLED_LANGUAGES']) as $language_key) {
-                if (Request::submitted('set_language_' . $language_key)) {
+                if (Request::get('set_language') === $language_key) {
                     $_SESSION['forced_language'] = $language_key;
                     $_SESSION['_language'] = $language_key;
                     init_i18n($_SESSION['_language']);
@@ -60,7 +60,8 @@ class LoginController extends AuthenticatedController
             }
 
         }
-        if (Request::isPost()) {
+
+        if (Request::submitted('Login')) {
             CSRFProtection::verifyUnsafeRequest();
 
             $check_auth = StudipAuthAbstract::CheckAuthentication(
