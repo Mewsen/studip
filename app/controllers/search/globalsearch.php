@@ -31,7 +31,7 @@ class Search_GlobalsearchController extends AuthenticatedController
 
         PageLayout::addHeadElement('meta', [
             'name'    => 'studip-cache-prefix',
-            'content' => md5("{$_COOKIE[$GLOBALS['SESSION_OPTIONS']['name']]}-{$GLOBALS['user']->id}"),
+            'content' => md5($_COOKIE[sess()->getName()] . '-' . $GLOBALS['user']->id),
         ]);
 
         PageLayout::setBodyElementId('globalsearch-page');
