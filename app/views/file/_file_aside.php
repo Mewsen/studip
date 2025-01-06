@@ -21,7 +21,7 @@
                 <td><?= _('Downloads') ?></td>
                 <td><?= htmlReady($file->getDownloads()) ?></td>
             </tr>
-        <? endif; ?>
+        <? endif ?>
             <tr>
                 <td><?= _('Erstellt') ?></td>
                 <td><?= date('d.m.Y H:i', $file->getMakeDate()) ?></td>
