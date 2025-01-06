@@ -16,17 +16,20 @@ class Institute_OverviewController extends AuthenticatedController
 {
     protected $allow_nobody = true;
 
-    function before_filter(&$action, &$args) {
-
+    public function __construct(\Trails\Dispatcher $dispatcher)
+    {
+        if (Request::option('auswahl')) {
+            Request::set('cid', Request::option('auswahl'));
+        }
         //Check if anonymous access is really allowed:
         $config = Config::get();
         if (($config->ENABLE_FREE_ACCESS && ($config->ENABLE_FREE_ACCESS == 'courses_only'))) {
             $this->allow_nobody = false;
         }
+        parent::__construct($dispatcher);
+    }
 
-        if (Request::option('auswahl')) {
-            Request::set('cid', Request::option('auswahl'));
-        }
+    public function before_filter(&$action, &$args) {
 
         parent::before_filter($action, $args);
 
