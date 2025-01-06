@@ -108,7 +108,7 @@ class ResourceFolder extends StandardFolder
         return [];
     }
 
-    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         return MessageBox::error(
             _('Ressourcenordner dürfen nicht geändert werden!')

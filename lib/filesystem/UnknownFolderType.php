@@ -149,9 +149,9 @@ class UnknownFolderType implements FolderType
     }
 
     /**
-     * @param array|ArrayAccess|Request $folderdata
+     * @param array|ArrayAccess $folderdata
      */
-    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         return MessageBox::error('Not applicable for unknown folder type');
     }

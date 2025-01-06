@@ -160,11 +160,11 @@ interface FolderType
     /**
      * gets data from edit form
      *
-     * @param array|ArrayAccess|Request $folderdata
+     * @param array|ArrayAccess $folderdata
      * @return FolderType|MessageBox FolderType instance on success,
      *     a MessageBox object with an error message on failure.
      */
-    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox;
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox;
 
     /**
      * Validates a file upload.

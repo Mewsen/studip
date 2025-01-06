@@ -134,7 +134,7 @@ class CourseGroupFolder extends StandardFolder
      *
      * @return FolderType|MessageBox The template with the edited data
      */
-    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         if ($folderdata['group'] == null){
             return MessageBox::error(_('Es wurde keine gültige Gruppe ausgewählt.'));

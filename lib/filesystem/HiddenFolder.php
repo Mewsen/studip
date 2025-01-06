@@ -90,11 +90,11 @@ class HiddenFolder extends PermissionEnabledFolder
     /**
      * Sets the data from a submitted edit template.
      *
-     * @param array|ArrayAccess|Request $folderdata The data from the edit template.
+     * @param array|ArrayAccess $folderdata The data from the edit template.
      *
      * @return FolderType|MessageBox
      */
-    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         $this->download_allowed = (int) $folderdata['hidden_folder_download_allowed'];
         return parent::setDataFromEditTemplate($folderdata);

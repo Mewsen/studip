@@ -107,7 +107,7 @@ class CourseDateFolder extends PermissionEnabledFolder
      *
      * @return FolderType|MessageBox The template with the edited data
      */
-    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         $date = CourseDate::find($folderdata['course_date_folder_termin_id']);
         if ($date === null) {

@@ -202,10 +202,10 @@ class StandardFolder implements FolderType
     }
 
     /**
-     * @param array|ArrayAccess|Request $folderdata
+     * @param array|ArrayAccess $folderdata
      * @return FolderType|MessageBox
      */
-    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         if (!$folderdata['name']) {
             return MessageBox::error(_('Die Bezeichnung des Ordners fehlt.'));

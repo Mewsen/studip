@@ -95,7 +95,7 @@ class CourseTopicFolder extends PermissionEnabledFolder
      *
      * @return FolderType|MessageBox The template with the edited data
      */
-    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         $topic = CourseTopic::find($folderdata['topic_id']);
         if ($topic === null) {

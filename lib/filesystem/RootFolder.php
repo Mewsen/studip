@@ -127,10 +127,10 @@ class RootFolder extends StandardFolder
     }
 
     /**
-     * @param array|ArrayAccess|Request $folderdata
+     * @param array|ArrayAccess $folderdata
      * @return FolderType|MessageBox
      */
-    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         $locked_status = null;
         if (isset($folderdata['locked'])) {

@@ -169,7 +169,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not have an edit template.
      */
-    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         return MessageBox::error(
             _('InboxOutbox-Ordner können nicht bearbeitet werden!')

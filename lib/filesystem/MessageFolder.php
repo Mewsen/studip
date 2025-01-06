@@ -226,7 +226,7 @@ class MessageFolder extends StandardFolder
      * MessageFolders don't have an edit template and therefore cannot
      * handle requests from such templates.
      */
-    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         return MessageBox::error('Not applicable for message folders');
     }

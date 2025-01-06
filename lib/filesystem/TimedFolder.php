@@ -178,7 +178,7 @@ class TimedFolder extends PermissionEnabledFolder
      *
      * @return FolderType|MessageBox The template with the edited data
      */
-    public function setDataFromEditTemplate(array|ArrayAccess|Request $folderdata): FolderType|MessageBox
+    public function setDataFromEditTemplate(array|ArrayAccess $folderdata): FolderType|MessageBox
     {
         $permvalue = ($folderdata['perm_read'] ? $this->perms['r'] : 0) +
             ($folderdata['perm_write'] ? $this->perms['w'] : 0) +
