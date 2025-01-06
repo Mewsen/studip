@@ -72,6 +72,7 @@ class Manager
                         Metrics::increment('core.sso_login.succeeded');
 
                         sess()->regenerateId(['auth', '_language', 'phpCAS', 'contrast']);
+                        $this->setAuthenticatedUser($user);
                     }
                 }
             }
