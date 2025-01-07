@@ -39,16 +39,16 @@ const containerMixin = {
         dropBlock(e) {
             this.isDragging = false; // implemented by each container type
             let data = {};
-            data.originContainerId = e.from.__vnode.ctx.attrs.containerId;
-            data.targetContainerId = e.to.__vnode.ctx.attrs.containerId;
+            data.originContainerId = e.from.dataset.containerId;
+            data.targetContainerId = e.to.dataset.containerId;
             if (data.originContainerId === data.targetContainerId) {
                 this.storeSort(); // implemented by each container type
             } else {
-                data.originSectionId = e.from.__vnode.ctx.attrs.sectionId;
-                data.originSectionBlockList = e.from.__vnode.children.map(b => { return b.ctx.attrs.blockId; });
-                data.targetSectionId = e.to.__vnode.ctx.attrs.sectionId;
-                data.targetSectionBlockList = e.to.__vnode.children.map(b => { return b.ctx.attrs.blockId; });
-                data.blockId = e.item._underlying_vm_.id;
+                data.originSectionId = e.from.dataset.sectionId;
+                data.originSectionBlockList = [...e.from.children].map(b => b.dataset.blockId);
+                data.targetSectionId = e.to.dataset.sectionId;
+                data.targetSectionBlockList = [...e.to.children].map(b => b.dataset.blockId);
+                data.blockId = e.item.dataset.blockId;
                 data.newPos = e.newIndex;
                 const indexInBlockList = data.targetSectionBlockList.findIndex(b => b === data.blockId);
                 data.targetSectionBlockList.splice(data.newPos, 0, data.targetSectionBlockList.splice(indexInBlockList,1)[0]); // move block id to new position

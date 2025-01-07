@@ -44,6 +44,7 @@
                         <template #item="{element}">
                             <li
                                 class="cw-block-item cw-block-item-sortable"
+                                :data-block-id="element.id"
                             >
                                 <span
                                     :class="{ 'cw-sortable-handle-dragging': isDragging }"

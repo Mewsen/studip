@@ -66,7 +66,7 @@
                                 :data-section-id="sectionIndex"
                             >
                                 <template #item="{element}">
-                                    <li class="cw-block-item cw-block-item-sortable">
+                                    <li class="cw-block-item cw-block-item-sortable" :data-block-id="element.id">
                                         <span
                                             :class="{ 'cw-sortable-handle-dragging': isDragging }"
                                             class="cw-sortable-handle"
