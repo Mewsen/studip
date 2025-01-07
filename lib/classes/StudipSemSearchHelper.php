@@ -175,13 +175,13 @@ class StudipSemSearchHelper {
             $sql_params['lecturer_name'] = $this->params['lecturer'];
         }
 
-        $stmt = $db->prepare(
-            sprintf(
-                'SELECT `seminar_id` FROM `seminare` %s WHERE %s',
-                implode(' ', $join_sql),
-                implode(' AND ', $where_sql)
-            )
+        $query = sprintf(
+            'SELECT DISTINCT `seminar_id` FROM `seminare` %s WHERE %s',
+            implode(' ', $join_sql),
+            implode(' AND ', $where_sql)
         );
+
+        $stmt = $db->prepare($query);
         $stmt->execute($sql_params);
         return $stmt->fetchAll();
     }
