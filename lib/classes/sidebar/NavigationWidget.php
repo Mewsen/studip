@@ -17,7 +17,7 @@ class NavigationWidget extends LinksWidget
      * @param Icon   $icon   (not used)
      * @param array  $attributes Optional attributes fot the generated link
      * @param mixed  $index  Index to use for the element
-     * @return String
+     * @return LinkElement
      */
     public function &addLink($label, $url, $icon = null, $attributes = [], $index = null)
     {
