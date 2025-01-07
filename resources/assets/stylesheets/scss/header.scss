@@ -222,13 +222,9 @@
                 img {
                     height: 26px;
                     width: 26px;
-                    border-top-right-radius: var(--border-radius-avatar-menu);
-                    border-bottom-right-radius: var(--border-radius-avatar-menu);
+                    border-radius: var(--border-radius-avatar-menu);
                 }
 
-                #notification-container + & {
-                    border-left: 0;
-                }
             }
 
             .action-menu-title {
@@ -257,6 +253,13 @@
                     color: var(--black);
                 }
             }
+        }
+    }
+
+    #notification-container + #avatar-menu {
+        .action-menu-icon img {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
         }
     }
 }
