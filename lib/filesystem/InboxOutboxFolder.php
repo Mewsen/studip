@@ -198,7 +198,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not allow deleting files.
      */
-    public function deleteFile(string $file_ref_id): bool
+    public function deleteFile(string $file_ref_id): bool|array
     {
         return false;
     }

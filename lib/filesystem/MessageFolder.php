@@ -256,9 +256,9 @@ class MessageFolder extends StandardFolder
      * @param string $file_ref_id The ID of the FileRef whose file
      *     shall be deleted.
      *
-     * @return bool, if the file has been deleted successfully, false otherwise.
+     * @return bool|array, if the file has been deleted successfully, false otherwise.
      */
-    public function deleteFile(string $file_ref_id): bool
+    public function deleteFile(string $file_ref_id): bool|array
     {
         $file_refs = $this->folderdata->file_refs;
 

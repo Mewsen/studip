@@ -188,9 +188,9 @@ interface FolderType
      * Deletes a file in this folder.
      *
      * @param string $file_ref_id The ID of the FileRef object of the file that shall be deleted.
-     * @return bool True on success, False on failure.
+     * @return bool|array True on success, array with error message(s) on failure.
      */
-    public function deleteFile(string $file_ref_id):bool;
+    public function deleteFile(string $file_ref_id): bool|array;
 
     /**
      * @param  $foldertype FolderType

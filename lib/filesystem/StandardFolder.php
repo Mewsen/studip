@@ -328,7 +328,6 @@ class StandardFolder implements FolderType
             foreach ($files as $folderfile) {
                 if ($folderfile->getFilename() === $filename) {
                     $name_available = false;
-                    $filename;
                     $filename = $name . '[' . ++$c . ']';
                     if ($ext) {
                         $filename .= '.' . $ext;
@@ -342,9 +341,9 @@ class StandardFolder implements FolderType
 
     /**
      * @param string $file_ref_id
-     * @return bool
+     * @return bool|array
      */
-    public function deleteFile(string $file_ref_id): bool
+    public function deleteFile(string $file_ref_id): bool|array
     {
         $file_ref = $this->folderdata->file_refs->find($file_ref_id);
 
@@ -362,7 +361,6 @@ class StandardFolder implements FolderType
 
         return 0;
     }
-
 
     /**
      * @param FolderType $foldertype

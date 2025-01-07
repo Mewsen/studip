@@ -226,9 +226,9 @@ class VirtualFolderType implements FolderType
 
     /**
      * @param string $file_ref_id
-     * @return bool
+     * @return bool|array
      */
-    public function deleteFile(string $file_ref_id): bool
+    public function deleteFile(string $file_ref_id): bool|array
     {
         return true;
     }

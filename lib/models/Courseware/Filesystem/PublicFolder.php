@@ -166,7 +166,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function deleteFile(string $file_ref_id): bool
+    public function deleteFile(string $file_ref_id): bool|array
     {
         $fileRefs = $this->folder->file_refs;
 
