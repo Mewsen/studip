@@ -262,8 +262,11 @@ export default {
         }
     },
     watch: {
-        structuralElements() {
-            this.updateNestedChildren();
+        structuralElements: {
+            handler() {
+                this.updateNestedChildren();
+            },
+            deep: true
         }
     }
 };
