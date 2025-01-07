@@ -48,19 +48,21 @@ STUDIP.ready(() => {
     if ($('.oercampus_editmaterial').length) {
 
         STUDIP.Vue.load().then(({createApp}) => {
+            const data = {
+                name: $('.oercampus_editmaterial input.oername').val(),
+                logo_url: $('.oercampus_editmaterial .logo_file').data("oldurl") ?? null,
+                customlogo: $('.oercampus_editmaterial .logo_file').data("customlogo") == '1',
+                filename: $('.oercampus_editmaterial .file.drag-and-drop').data("filename"),
+                filesize: $('.oercampus_editmaterial .file.drag-and-drop').data("filesize"),
+                tags: $('.oercampus_editmaterial .oer_tags').data("defaulttags") ?? [],
+                minimumTags: 5
+            };
+
             const app = createApp({
                 data() {
-                    return {
-                        name: $('.oercampus_editmaterial input.oername').val(),
-                        logo_url: $('.oercampus_editmaterial .logo_file').data("oldurl") ?? null,
-                        customlogo: $('.oercampus_editmaterial .logo_file').data("customlogo") == '1',
-                        filename: $('.oercampus_editmaterial .file.drag-and-drop').data("filename"),
-                        filesize: $('.oercampus_editmaterial .file.drag-and-drop').data("filesize"),
-                        tags: $('.oercampus_editmaterial .oer_tags').data("defaulttags") ?? [],
-                        minimumTags: 5
-                    };
+                    return data;
                 },
-                mounted: function () {
+                mounted() {
                     jQuery("#difficulty_slider_edit").slider({
                         range: true,
                         min: 1,
@@ -74,10 +76,10 @@ STUDIP.ready(() => {
                     jQuery('.oercampus_editmaterial').find(':focusable').first().focus();
                 },
                 methods: {
-                    editName: function () {
+                    editName() {
                         this.name = $('.oername').val();
                     },
-                    editImage: function (event) {
+                    editImage(event) {
                         let reader = new FileReader();
                         reader.addEventListener("load", () => {
                             this.logo_url = reader.result;
@@ -89,11 +91,11 @@ STUDIP.ready(() => {
                                 : event.dataTransfer.files[0]
                         );
                     },
-                    dropImage: function (event) {
+                    dropImage(event) {
                         window.document.getElementById("oer_logo_uploader").files = event.dataTransfer.files;
                         this.editImage(event);
                     },
-                    editFile: function (event) {
+                    editFile(event) {
                         this.filename = event.target.files[0].name;
                         this.filesize = event.target.files[0].size;
                         if (!this.name) {
@@ -101,20 +103,20 @@ STUDIP.ready(() => {
                             $('.oername').val(this.name);
                         }
                     },
-                    dropFile: function (event) {
+                    dropFile(event) {
                         window.document.getElementById("oer_file").files = event.dataTransfer.files;
                         this.editFile(event);
                     },
-                    addTag: function () {
+                    addTag() {
                         if (this.minimumTags < this.tags.length) {
                             this.minimumTags = this.tags.length + 1;
                         } else {
                             this.minimumTags++;
                         }
                     },
-                    removeTag: function (i) {
-                        this.tags.splice(i, 1);
-                        if ((this.minimumTags > this.tags.length) && (this.minimumTags > 5)) {
+                    removeTag(i) {
+                        this.tags = this.tags.filter((element, index) => index !== i);
+                        if (this.minimumTags > this.tags.length && this.minimumTags > 5) {
                             this.minimumTags--;
                         }
                     }

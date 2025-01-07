@@ -177,7 +177,7 @@ export default {
         }
     },
     watch: {
-        value (val) {
+        modelValue(val) {
             this.reset(true);
             this.initialize(val);
         },
