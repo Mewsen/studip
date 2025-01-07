@@ -65,7 +65,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * Returns the ID of the folder object of this InboxOutboxFolder.
      */
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->folder->id;
     }

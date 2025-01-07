@@ -85,7 +85,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->folder->id;
     }

@@ -80,9 +80,9 @@ interface FolderType
     /**
      * Returns the ID of the folder that is managed from this FolderType instance.
      *
-     * @return string ID of the folder.
+     * @return string|null ID of the folder.
      */
-    public function getId():string;
+    public function getId(): ?string;
 
     /**
      * Determines if a user may see the folder.
