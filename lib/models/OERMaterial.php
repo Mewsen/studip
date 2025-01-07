@@ -237,15 +237,12 @@ class OERMaterial extends SimpleORMap
 
     public function getTopics()
     {
-        $statement = DBManager::get()->prepare("
-            SELECT oer_tags.*
-            FROM oer_tags
-                INNER JOIN oer_tags_material ON (oer_tags_material.tag_hash = oer_tags.tag_hash)
-            WHERE oer_tags_material.material_id = :material_id
-            ORDER BY oer_tags.name ASC
-        ");
-        $statement->execute(['material_id' => $this->getId()]);
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        $query = "SELECT oer_tags.*
+                  FROM oer_tags
+                  JOIN oer_tags_material USING (tag_hash)
+                  WHERE oer_tags_material.material_id = :material_id
+                  ORDER BY oer_tags.name ASC";
+        return DBManager::get()->fetchAll($query, [':material_id' => $this->id]);
     }
 
     public function setTopics($tags)

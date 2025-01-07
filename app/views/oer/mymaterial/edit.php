@@ -1,3 +1,11 @@
+<?php
+/**
+ * @var Oer_MymaterialController $controller
+ * @var OERMaterial $material
+ * @var string $usersearch
+ * @var string $tagsearch
+ */
+?>
 <form action="<?= $controller->edit($material->isNew() ? '' : $material) ?>"
       method="post"
       class="default"
@@ -178,7 +186,6 @@
                 </div>
             <? endif ?>
 
-
             <div class="oer_tags_container">
                 <?= _('Themen (am besten mindestens 5)') ?>
                 <?
@@ -194,19 +201,20 @@
                 ?>
 
                 <ul class="clean oer_tags" data-defaulttags="<?= htmlReady(json_encode($tags)) ?>">
-                    <li v-for="(tag, index) in displayTags" :key="index">
+                    <li v-for="(tag, index) in displayTags" :key="`tag-${index}`">
                         #
                         <quicksearch name="tags[]"
                                      searchtype="<?= htmlReady($tagsearch) ?>"
-                                     v-model="tags[index]"
+                                     v-model="tag"
                                      :autocomplete="true"
                                      :keep-value="true"
                         ></quicksearch>
-                        <a href="#"
+                        <button class="as-link"
                            @click.prevent="removeTag(index)"
-                           title="<?= _('Thema aus der Liste streichen') ?>">
+                           title="<?= _('Thema aus der Liste streichen') ?>"
+                        >
                             <studip-icon shape="trash" class="text-bottom"></studip-icon>
-                        </a>
+                        </button>
 
                     </li>
                 </ul>
