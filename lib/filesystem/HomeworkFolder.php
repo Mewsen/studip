@@ -132,16 +132,6 @@ class HomeworkFolder extends PermissionEnabledFolder
      */
     public function isFileWritable(string $file_ref_id, string $user_id): bool
     {
-        return  $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id);
-    }
-
-    public function countDownload(FileRef $ref): bool
-    {
-        return false;
-    }
-
-    public function displayDownloads(): bool
-    {
-        return false;
+        return $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id);
     }
 }

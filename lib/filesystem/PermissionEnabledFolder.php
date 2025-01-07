@@ -161,4 +161,14 @@ class PermissionEnabledFolder extends StandardFolder
         ];
     }
 
+    public function countDownload(FileRef $ref): bool
+    {
+        return $this->displayDownloads()
+            && parent::countDownload($ref);
+    }
+
+    public function displayDownloads(): bool
+    {
+        return (bool) ($this->permission & $this->perms['r']);
+    }
 }
