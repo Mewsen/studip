@@ -21,7 +21,11 @@ class Instance extends SchemaProvider
         $root = $resource->getRoot();
         $unit = \Courseware\Unit::findOneBySQL('structural_element_id = ?', [$root->id]);
 
-        return join('_', [$root->range_type, $root->range_id, $unit->id]);
+        return implode('_', [
+            $root->range_type,
+            $root->range_id,
+            $unit->id ?? '',
+        ]);
     }
 
     /**
