@@ -13,11 +13,14 @@ namespace Studip\Authentication;
 
 use AccessDeniedException;
 use Config;
+use MessageBox;
 use Metrics;
+use PageLayout;
 use Request;
 use Seminar_Perm;
 use Seminar_User;
 use StudipAuthAbstract;
+use StudipAuthSSO;
 use StudipMail;
 use Token;
 use User;
@@ -55,10 +58,9 @@ class Manager
                 Metrics::increment('core.sso_login.attempted');
                 // then do login
                 $authplugin = StudipAuthAbstract::GetInstance($provider);
-                if ($authplugin instanceof \StudipAuthSSO) {
-                    $authplugin->authenticateUser('', '');
-                    if ($authplugin->getUser()) {
-                        $user = $authplugin->getStudipUser($authplugin->getUser());
+                if ($authplugin instanceof StudipAuthSSO) {
+                    $user = $authplugin->authenticateUser('', '');
+                    if ($user) {
                         if ($user->isExpired()) {
                             throw new AccessDeniedException(
                                 _('Dieses Benutzerkonto ist abgelaufen. Wenden Sie sich bitte an die Administration.')
@@ -73,6 +75,12 @@ class Manager
 
                         $this->setAuthenticatedUser($user);
                         sess()->regenerateId(['auth', '_language', 'phpCAS', 'contrast']);
+                    } else {
+                        PageLayout::postMessage(
+                            MessageBox::error($authplugin->plugin_name . ': ' . _('Login fehlgeschlagen'),
+                                $authplugin->error_msg ? [$authplugin->error_msg] : []),
+                            md5($authplugin->error_msg)
+                        );
                     }
                 }
             }
