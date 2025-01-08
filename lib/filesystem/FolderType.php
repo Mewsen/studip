@@ -286,18 +286,14 @@ interface FolderType
 
     /**
      * Returns (perhaps only a subset of) description and data_content of the folder for copying
-     *
-     * @return array
      */
     public function copySettings(): array;
 
     /**
      * Returns whether the downloads in this folder should be counted or not.
+     *
+     * If a specific file ref is passed, you may decide whether to count the
+     * download for this file ref or not.
      */
-    public function countDownload(FileRef $ref): bool;
-
-    /**
-     * This method decides whether downloads should be displayed.
-     */
-    public function displayDownloads(): bool;
+    public function countDownloads(?FileRef $ref = null): bool;
 }

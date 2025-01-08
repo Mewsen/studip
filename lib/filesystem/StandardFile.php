@@ -14,11 +14,8 @@
  */
 class StandardFile implements FileType, ArrayAccess, StandardFileInterface
 {
+    protected ?FileRef $fileref = null;
 
-    /**
-     * @var FileRef
-     */
-    protected $fileref = null;
     /**
      * @var File
      */
@@ -453,7 +450,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
         return new static($fileref);
     }
 
-    public function getFileRef()
+    public function getFileRef(): ?FileRef
     {
         return $this->fileref;
     }

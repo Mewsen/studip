@@ -15,7 +15,7 @@
     }
 
     $show_downloads = Config::get()->DISPLAY_DOWNLOAD_COUNTER === 'always'
-        && $topFolder->displayDownloads();
+        && $topFolder->countDownloads();
     $vue_breadcrumbs = [];
     $folder = $topFolder;
     do {

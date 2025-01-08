@@ -552,15 +552,13 @@ class StandardFolder implements FolderType
         return ['description' => $this->description];
     }
 
-
-    public function countDownload(FileRef $ref): bool
+    public function countDownloads(?FileRef $ref = null): bool
     {
+        if (!$ref) {
+            return true;
+        }
+
         $user = User::findCurrent();
         return !$user || $ref->user_id !== $user->id;
-    }
-
-    public function displayDownloads(): bool
-    {
-        return true;
     }
 }

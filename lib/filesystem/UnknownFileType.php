@@ -15,12 +15,9 @@
 
 class UnknownFileType implements FileType, ArrayAccess
 {
-    /**
-     * @var FileRef
-     */
-    protected $fileref = null;
+    protected ?FileRef $fileref = null;
 
-    public function __construct($fileref = null)
+    public function __construct(?FileRef $fileref = null)
     {
         $this->fileref = $fileref;
     }
@@ -290,5 +287,10 @@ class UnknownFileType implements FileType, ArrayAccess
     public function getAccessibility() : bool
     {
         return false;
+    }
+
+    public function getFileRef(): ?FileRef
+    {
+        return $this->fileref;
     }
 }
