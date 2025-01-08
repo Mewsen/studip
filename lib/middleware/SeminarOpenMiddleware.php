@@ -290,9 +290,12 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
             && $GLOBALS['user']->visible === 'unknown'
         ) {
             require_once('lib/user_visible.inc.php');
-            $response = $this->response_factory->createResponse(200);
-            $response->getBody()->write((string)first_decision($GLOBALS['user']->id));
-            return $response;
+            $html = first_decision($GLOBALS['user']->id);
+            if ($html) {
+                $response = $this->response_factory->createResponse(200);
+                $response->getBody()->write($html);
+                return $response;
+            }
         }
 
         return $handler->handle($request);
