@@ -55,6 +55,15 @@ class Calendar_ScheduleController extends AuthenticatedController
             }
         }
 
+        if ($this->semester) {
+            PageLayout::setTitle(
+                studip_interpolate(
+                    _('Mein Stundenplan im %{semester}'),
+                    ['semester' => $this->semester->name]
+                )
+            );
+        }
+
         //Build the sidebar:
 
         $sidebar = Sidebar::get();
