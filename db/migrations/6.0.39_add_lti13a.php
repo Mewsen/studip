@@ -70,11 +70,11 @@ class AddLti13a extends Migration
         $create_tool_stmt = $db->prepare(
             "INSERT INTO `lti_tools`
             (`id`, `name`, `launch_url`, `consumer_key`, `consumer_secret`,
-            `custom_parameters`, `send_lis_person`, `lti_version`, `is_global`,
+            `custom_parameters`, `send_lis_person`, `lti_version`,
             `mkdate`, `chdate`)
             VALUES
             (:id, :name, :launch_url, :consumer_key, :consumer_secret,
-            :custom_parameters, :send_lis_person, '1.1', '0',
+            :custom_parameters, :send_lis_person, '1.1',
             UNIX_TIMESTAMP(), UNIX_TIMESTAMP())"
         );
         $new_tool_id_stmt = $db->prepare("SELECT MAX(`id`) + 1 FROM `lti_tools`");
