@@ -78,6 +78,7 @@ import * as Gettext from './lib/gettext';
 import UserFilter from './lib/user_filter.js';
 import wysiwyg from './lib/wysiwyg.js';
 import ScrollToTop from './lib/scroll_to_top.js';
+import * as Vips from './lib/vips.js';
 
 const configURLHelper = _.get(window, 'STUDIP.URLHelper', {});
 const URLHelper = createURLHelper(configURLHelper);
@@ -165,5 +166,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     domReady,
     dialogReady,
     ScrollToTop,
+    Vips,
     Vue,
 });

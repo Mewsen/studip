@@ -299,7 +299,6 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
         return mb_strpos($this->mime_type, 'audio/') === 0;
     }
 
-
     /**
      * Determines if the FileRef references a video file.
      *
@@ -308,6 +307,22 @@ class FileRef extends SimpleORMap implements PrivacyObject, FeedbackRange
     public function isVideo()
     {
         return mb_strpos($this->mime_type, 'video/') === 0;
+    }
+
+    /**
+     * Get the preferred content disposition of this file.
+     */
+    public function getContentDisposition(): string
+    {
+        if ($this->isImage() || $this->isAudio() || $this->isVideo()) {
+            return 'inline';
+        }
+
+        if (in_array($this->mime_type, ['application/pdf', 'text/plain'])) {
+            return 'inline';
+        }
+
+        return 'attachment';
     }
 
     /**

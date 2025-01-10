@@ -136,6 +136,7 @@ form.default {
     }
 
     .formpart {
+        display: block;
         margin-bottom: $gap;
 
         output.calculator_result {
@@ -198,7 +199,7 @@ form.default {
         margin-top: 2ex;
     }
 
-    fieldset {
+    fieldset:not(.undecorated) {
         box-sizing: border-box;
         border: solid 1px var(--color--fieldset-border);
         margin: 0 0 15px;
@@ -226,6 +227,16 @@ form.default {
 
         > :not(legend, table) {
             max-width: calc(100% - 20px);
+        }
+    }
+
+    fieldset.undecorated {
+        border: none;
+        margin: 0;
+        padding: 0;
+
+        > legend {
+            margin-bottom: 0.5ex;
         }
     }
 

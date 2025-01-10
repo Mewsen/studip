@@ -536,7 +536,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     /**
      * build object with given data
      *
-     * @param array $data assoc array of record
+     * @param iterable $data assoc array of record
      * @param ?bool $is_new set object to new state
      * @return static
      */
@@ -551,7 +551,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     /**
      * build object with given data and mark it as existing
      *
-     * @param array $data assoc array of record
+     * @param iterable $data assoc array of record
      * @return static
      */
     public static function buildExisting($data)
