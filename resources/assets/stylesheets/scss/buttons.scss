@@ -25,7 +25,7 @@
     &:hover,
     &:active,
     &.active  {
-        background: var(--color--button-focus);
+        background-color: var(--color--button-focus);
         color: var(--color--font-inverted);
     }
 

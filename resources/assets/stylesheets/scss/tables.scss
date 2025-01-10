@@ -85,6 +85,10 @@ td.blanksmall {
     background-color: var(--color--global-background);
 }
 
+table.fixed {
+    table-layout: fixed;
+}
+
 td.tree-indent {
     img, svg {
         vertical-align: bottom;
@@ -476,6 +480,15 @@ table.default {
             white-space: nowrap;
         }
 
+        img {
+            vertical-align: text-bottom;
+        }
+
+        input[type="text"], textarea {
+            padding-bottom: 2px;
+            padding-top: 2px;
+        }
+
         padding: 10px 5px;
         text-align: left;
 
@@ -715,7 +728,7 @@ table.default {
         }
     }
 
-    tfoot {
+    tfoot, th {
         // Fix button and select alignment
         select {
             vertical-align: middle;
