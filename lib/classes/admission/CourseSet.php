@@ -1150,6 +1150,45 @@ class CourseSet implements UserFilterRange
         return $locked_set_id;
     }
 
+    public static function getConnectedcourseAdmissionSetId()
+    {
+        $db = DBManager::get();
+        $locked_set_id = $db->fetchColumn("
+            SELECT `courseset_rule`.`set_id`
+            FROM `courseset_rule`
+                INNER JOIN `coursesets` USING (`set_id`)
+            WHERE `type` = 'ConnectedcourseAdmission'
+                AND `private` = 1
+                AND `user_id` = ''
+            LIMIT 1
+        ");
+        if (!$locked_set_id) {
+            $cs_insert = $db->prepare("
+                INSERT INTO coursesets (set_id, user_id, name, infotext, algorithm, private, mkdate, chdate)
+                VALUES (?, ?, ?, ?, '', ?, ?, ?)
+            ");
+            $cs_r_insert = $db->prepare("
+                INSERT INTO `courseset_rule` (`set_id`, `rule_id`, `type`, `mkdate`)
+                VALUES (?, ?, ?, UNIX_TIMESTAMP())
+            ");
+            $locked_insert = $db->prepare("
+                INSERT INTO `lockedadmissions` (`rule_id`, `message`, `mkdate`, `chdate`)
+                VALUES (?,'Die Anmeldung ist gesperrt', UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
+            ");
+            $locked_set_id = md5(uniqid('coursesets_connected_course',1));
+            $name = 'Verknüpfte Veranstaltung (global)';
+            $cs_insert->execute([$locked_set_id,'',$name,'',1,time(),time()]);
+            $locked_rule_id = md5(uniqid('connectedcourse',1));
+            $locked_insert->execute([$locked_rule_id]);
+            $cs_r_insert->execute([
+                $locked_set_id,
+                $locked_rule_id,
+                'ConnectedcourseAdmission'
+            ]);
+        }
+        return $locked_set_id;
+    }
+
     public static function addCourseToSet($set_id, $course_id)
     {
         $db = DBManager::get();

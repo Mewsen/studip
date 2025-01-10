@@ -8,6 +8,7 @@
                :name="autocomplete ? name : null"
                v-model="inputValue"
                autocomplete="off"
+               ref="text_input"
                @blur="reset()"
                @keydown.up="selectUp"
                @keydown.down="selectDown"

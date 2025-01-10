@@ -143,4 +143,59 @@
             <? endforeach ?>
         </tbody>
     </table>
+
+    <h2><?= _('Studentische Arbeitsgruppen') ?></h2>
+
+    <section class="studip-tiles">
+        <? foreach ($studiengangTeil->studygroups as $course) : ?>
+            <div>
+                <div class="with-action-menu">
+                    <div>
+                        <a href="<?= URLHelper::getLink('dispatch.php/course/studygroup/details/'.$course->id) ?>">
+                            <?= CourseAvatar::getAvatar($course->id)->getImageTag(Avatar::MEDIUM) ?>
+                        </a>
+                        <a href="<?= URLHelper::getLink('dispatch.php/course/studygroup/details/'.$course->id) ?>">
+                            <strong>
+                                <?= htmlReady($course->name) ?>
+                            </strong>
+                            <div>
+                                <?= sprintf(
+                                    ngettext(
+                                        '1 Mitglied',
+                                        '%s Mitglieder',
+                                        count($course->members)
+                                    ),
+                                    $course->members
+                                ) ?>
+                            </div>
+                        </a>
+                    </div>
+                    <? if ($GLOBALS['perm']->have_perm('admin')) : ?>
+                        <form method="post">
+                            <?= CSRFProtection::tokenTag() ?>
+                            <button class="undecorated"
+                               data-confirm="<?= sprintf(_('Wirklich diese Studiengruppe aus dem Studiengang %s entfernen?'), $studiengangTeilName) ?>"
+                               formaction="<?= $controller->remove_studygroup($course->id, $studiengangTeil->id) ?>">
+                                <?= Icon::create('trash') ?>
+                            </button>
+                        </form>
+                    <? endif ?>
+                </div>
+                <? if (count($course->tags)) : ?>
+                <div>
+                    <? foreach ($course->tags as $tag) : ?>
+                        <?= '#'.htmlReady($tag->name) ?>
+                    <? endforeach ?>
+                </div>
+                <? endif ?>
+            </div>
+        <? endforeach ?>
+
+        <a href="<?= URLHelper::getLink('dispatch.php/course/wizard', ['studygroup' => 1, 'stgteil_id' => $studiengangTeil->id] )?>">
+            <div>
+                <?= Icon::create('add')->asImg(50) ?>
+                <strong><?= _('Neue Studiengruppe erstellen') ?></strong>
+            </div>
+        </a>
+    </section>
 <? endif ?>

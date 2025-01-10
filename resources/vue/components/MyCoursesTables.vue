@@ -141,11 +141,6 @@ export default {
                 if (!this.isChild(course)) {
                     courses.push(course);
                 }
-                if (this.isParent(course)) {
-                    this.getCourses(course.children).forEach(c => {
-                        courses.push(c);
-                    });
-                }
             });
 
             return courses;

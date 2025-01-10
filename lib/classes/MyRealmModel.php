@@ -281,6 +281,14 @@ class MyRealmModel
         $children = [];
         $semester_assign = [];
 
+        $courses2 = $courses;
+        foreach ($courses2 as $course) {
+            foreach ($course->studygroups as $studygroup) {
+                $courses[] = $studygroup;
+            }
+        }
+        $courses = $courses2;
+
         foreach ($courses as $course) {
             // export object to array for simple handling
             $_course = $course->toArray($param_array);
@@ -326,9 +334,7 @@ class MyRealmModel
             if ($show_semester_name && count($course->semesters) !== 1 && !$course->getSemClass()['studygroup_mode']) {
                 $_course['name'] .= ' (' . $course->getTextualSemester() . ')';
             }
-            if ($course->parent_course) {
-                $_course['parent_course'] = $course->parent_course;
-            }
+            $_course['parent_course'] = $course->parent_course ?? null;
             $_course['is_group'] = $course->getSemClass()->isGroup();
             $_course['navigation'] = self::getAdditionalNavigations(
                 $_course['seminar_id'],
@@ -340,7 +346,7 @@ class MyRealmModel
 
             // add the the course to the correct semester
 
-            if (empty($_course['parent_course'])) {
+            if (empty($_course['parent_course']) && !$course->isStudygroup()) {
                 if ($course->isOpenEnded()) {
                     if ($current_semester_nr >= $min_sem_key && $current_semester_nr <= $max_sem_key) {
                         $sem_courses[$current_semester_nr][$course->id] = $_course;
@@ -357,8 +363,15 @@ class MyRealmModel
                         }
                     }
                 }
-            } else {
+            } elseif(!empty($_course['parent_course'])) {
                 $children[$_course['parent_course']][] = $_course;
+            }
+            if ($course->isStudygroup()) {
+                foreach ($course->connectedcourses as $connectedcourse) {
+                    if ($GLOBALS['perm']->have_studip_perm('user', $course->id)) {
+                        $children[$connectedcourse->id][] = $_course;
+                    }
+                }
             }
         }
 
@@ -785,78 +798,6 @@ class MyRealmModel
             ksort($_tmp_courses[$sem_key]);
         }
         $sem_courses = $_tmp_courses;
-    }
-
-    /**
-     * Retrieves all study groups for the current user.
-     *
-     * @returns array A two-dimensional array. The second dimension contains
-     *     data for each study group. Most fields of the Course model are
-     *     present in the second dimension and there are additional fields
-     *     like the colour (gruppe) or the start and end semester.
-     */
-    public static function getStudygroups()
-    {
-        $studygroup_sem_types = array_filter(
-            array_keys($GLOBALS['SEM_TYPE']),
-            function ($sem_type_id) {
-                return (bool) $GLOBALS['SEM_CLASS'][$GLOBALS['SEM_TYPE'][$sem_type_id]['class']]['studygroup_mode'];
-            }
-        );
-        $studygroup_memberships = CourseMember::findBySQL(
-            'INNER JOIN `seminare` USING (`seminar_id`)
-            WHERE `seminar_user`.`user_id` = :me
-            AND `seminare`.`status` IN (:studygroup_semtypes)
-            GROUP BY `seminar_id`
-            ORDER BY `seminar_user`.`gruppe` ASC, `seminare`.`name` ASC',
-            [
-                'me' => User::findCurrent()->id,
-                'studygroup_semtypes' => $studygroup_sem_types
-            ]
-        );
-        $studygroups = [];
-        Course::findEachMany(
-            function ($studygroup) use (&$studygroups) {
-                $studygroups[$studygroup->id] = $studygroup;
-            },
-            array_map(
-                function ($membership) {
-                    return $membership->seminar_id;
-                },
-                $studygroup_memberships
-            )
-        );
-
-        $data_fields = 'name seminar_id visible veranstaltungsnummer status visible '
-                     . 'chdate admission_binding admission_prelim';
-        $studygroup_data = [];
-        foreach ($studygroup_memberships as $membership) {
-            if (!isset($studygroups[$membership->seminar_id])) {
-                continue;
-            }
-            $studygroup = $studygroups[$membership->seminar_id];
-            $visit_data = get_objects_visits([$studygroup->id], 0, null, null, $studygroup->tools->pluck('plugin_id'));
-            $data = $studygroup->toArray($data_fields);
-            $data['tools'] = $studygroup->tools;
-            $data['sem_class'] = $studygroup->getSemClass();
-            $data['start_semester'] = $studygroup->start_semester->name;
-            $data['end_semester'] = $studygroup->end_semester->name ?? '';
-            $data['obj_type'] = 'sem';
-            $data['user_status'] = $membership->status;
-            $data['gruppe'] = $membership->gruppe;
-            $data['visitdate'] = $visit_data[$studygroup->id][0]['visitdate'];
-            $data['last_visitdate'] = $visit_data[$studygroup->id][0]['last_visitdate'];
-            $data['navigation'] = self::getAdditionalNavigations(
-                $studygroup->id,
-                $data,
-                $data['sem_class'],
-                $GLOBALS['user']->id,
-                $visit_data[$studygroup->id]
-            );
-            $studygroup_data[$studygroup->id] = $data;
-        }
-
-        return $studygroup_data;
     }
 
 

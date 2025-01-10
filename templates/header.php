@@ -317,7 +317,11 @@ if ($navigation) {
                         <? endif ?>
                     <? endif ?>
                     <? if (Context::isCourse()) : ?>
-                        <?= CourseAvatar::getAvatar(Context::get()->id)->getImageTag(Avatar::NORMAL, ['class' => 'context-avatar']) ?>
+                        <? if (Context::get()->isStudygroup()) : ?>
+                            <?= StudygroupAvatar::getAvatar(Context::getId())->getImageTag(Avatar::NORMAL, ['class' => 'context-avatar']) ?>
+                        <? else : ?>
+                            <?= CourseAvatar::getAvatar(Context::getId())->getImageTag(Avatar::NORMAL, ['class' => 'context-avatar']) ?>
+                        <? endif ?>
                         <span class="course-type"><?= htmlReady(Context::get()->getFullName('type')) ?>:</span> <span class="course-name"><?= htmlReady(Context::get()->getFullName('name')) ?></span>
                         <? if ($GLOBALS['user']->config->SHOWSEM_ENABLE && !Context::get()->isOpenEnded()): ?>
                             <span class="course-semester">(<?= htmlReady(Context::get()->getTextualSemester()) ?>)</span>

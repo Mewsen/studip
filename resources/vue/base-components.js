@@ -10,6 +10,7 @@ const BaseComponents = {
     EditableList: defineAsyncComponent(() => import('./components/EditableList.vue')),
     FileUpload: defineAsyncComponent(() => import('./components/form_inputs/FileUpload.vue')),
     I18nTextarea: defineAsyncComponent(() => import("./components/I18nTextarea.vue")),
+    Multiquicksearch: defineAsyncComponent(() => import('./components/Multiquicksearch.vue')),
     Multiselect: defineAsyncComponent(() => import('./components/Multiselect.vue')),
     MyCoursesColouredTable: defineAsyncComponent(() => import('./components/form_inputs/MyCoursesColouredTable.vue')),
     Quicksearch: defineAsyncComponent(() => import('./components/Quicksearch.vue')),

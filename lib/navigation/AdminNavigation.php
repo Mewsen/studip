@@ -169,7 +169,13 @@ class AdminNavigation extends Navigation
                     'dispatch.php/admin/login_style'
                 )
             );
-
+            $navigation->addSubNavigation(
+                'tags',
+                new Navigation(
+                    _('Schlagwortverwaltung'),
+                    'dispatch.php/admin/tags/index'
+                )
+            );
         }
 
         $this->addSubNavigation('locations', $navigation);

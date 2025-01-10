@@ -10,10 +10,14 @@
 ?>
 <? if ($content) : ?>
     <form class="default course-wizard-step-<?= $stepnumber ?>" action="<?= $controller->link_for('course/wizard/process', $stepnumber, $temp_id) ?>" method="post" data-secure>
-        <fieldset>
-        <?= $content ?>
-        </fieldset>
 
+        <? if (!$studygroup) : ?>
+            <fieldset>
+        <? endif; ?>
+        <?= $content ?>
+        <? if (!$studygroup) : ?>
+            </fieldset>
+        <? endif; ?>
         <footer data-dialog-button>
             <input type="hidden" name="step" value="<?= $stepnumber ?>">
         <? if (empty($first_step)): ?>
@@ -23,11 +27,15 @@
                 !empty($dialog) ? ['data-dialog' => 'size=50%'] : []
             ) ?>
         <? endif; ?>
+            <? if (!$studygroup) : ?>
             <?= Studip\Button::create(
                 _('Weiter'),
                 'next',
                 !empty($dialog) ? ['data-dialog' => 'size=50%'] : []
             ) ?>
+            <? else : ?>
+                <?= Studip\Button::createAccept(_('Studiengruppe anlegen'), 'create') ?>
+            <? endif; ?>
         </footer>
     </form>
 <? else : ?>

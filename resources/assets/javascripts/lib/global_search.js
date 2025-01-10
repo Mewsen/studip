@@ -131,6 +131,13 @@ const GlobalSearch = {
                             .appendTo(details);
                     }
 
+                    // Details: Descriptional text
+                    if (result.found_tag !== null) {
+                        $('<div class="globalsearch-result-description">')
+                            .html(result.found_tag)
+                            .appendTo(details);
+                    }
+
                     // Details: Additional information
                     if (result.additional !== null) {
                         $('<div class="globalsearch-result-additional">')

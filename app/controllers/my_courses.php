@@ -704,17 +704,19 @@ class MyCoursesController extends AuthenticatedController
                         }
                     }
 
-                    $groups[] = [
-                        'id' => $_outer_index,
-                        'name' => (string) $sem_data[$_outer_index]['name'],
-                        'data' => [
-                            [
-                                'id' => md5($_outer_index),
-                                'label' => false,
-                                'ids' => array_keys($_courses),
+                    if ($_outer_index) {
+                        $groups[] = [
+                            'id' => $_outer_index,
+                            'name' => (string)$sem_data[$_outer_index]['name'],
+                            'data' => [
+                                [
+                                    'id' => md5($_outer_index),
+                                    'label' => false,
+                                    'ids' => array_keys($_courses),
+                                ],
                             ],
-                        ],
-                    ];
+                        ];
+                    }
                     $temp_courses = array_merge($temp_courses, $_courses);
                 } else {
                     $count = 1;
@@ -747,11 +749,13 @@ class MyCoursesController extends AuthenticatedController
                         $temp_courses = array_merge($temp_courses, $_courses);
                     }
 
-                    $groups[] = [
-                        'id' => $_outer_index,
-                        'name' => (string) $sem_data[$_outer_index]['name'],
-                        'data' => $_groups,
-                    ];
+                    if ($_outer_index) {
+                        $groups[] = [
+                            'id' => $_outer_index,
+                            'name' => (string)$sem_data[$_outer_index]['name'],
+                            'data' => $_groups,
+                        ];
+                    }
                 }
             }
         }

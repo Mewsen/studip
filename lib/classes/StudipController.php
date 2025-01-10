@@ -571,6 +571,11 @@ abstract class StudipController extends Trails\Controller
         );
     }
 
+    /**
+     * Renders a stud.ip form object.
+     *
+     * @param \Studip\Forms\Form   $form   the form that should be rendered.
+     */
     public function render_form(\Studip\Forms\Form $form)
     {
         \NotificationCenter::postNotification('FormWillRender', $form);
@@ -590,6 +595,7 @@ abstract class StudipController extends Trails\Controller
     {
         $this->render_template($app->getTemplate(), $this->layout);
     }
+
 
     /**
      * relays current request to another controller and returns the response

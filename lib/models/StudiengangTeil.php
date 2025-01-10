@@ -70,6 +70,15 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
             'on_delete' => 'delete',
             'on_store' => 'store'
         ];
+        $config['has_and_belongs_to_many']['studygroups'] = [
+            'class_name'     => Course::class,
+            'thru_table'     => 'studygroup_stgteil',
+            'thru_key'       => 'stgteil_id',
+            'thru_assoc_key' => 'studygroup_id',
+            'order_by'       => 'ORDER BY `name` ASC',
+            'on_delete'      => 'delete',
+            'on_store'       => 'store',
+        ];
 
 
         $config['additional_fields']['count_versionen']['get'] =
@@ -477,6 +486,23 @@ class StudiengangTeil extends ModuleManagementModelTreeItem
         return array_map(function ($fb) {
             return new Institute($fb['institut_id']);
         }, self::getAssignedFachbereiche('name', 'ASC', ['mvv_stgteil.stgteil_id' => $this->getId()]));
+    }
+
+    public function addStudygroup(Course $course)
+    {
+        if (in_array($course->status, studygroup_sem_types())) {
+            if (!StudygroupStgteil::findOneBySQL('`studygroup_id` = ? AND `stgteil_id` = ?', [$course->id, $this->id])) {
+                $connection = StudygroupStgteil::create([
+                    'studygroup_id' => $course->id,
+                    'stgteil_id' => $this->id
+                ]);
+            }
+        }
+    }
+
+    public function removeStudygroup(Course $course)
+    {
+        StudygroupStgteil::deleteBySQL('`studygroup_id` = ? AND `stgteil_id` = ?', [$course->id, $this->id]);
     }
 
 }

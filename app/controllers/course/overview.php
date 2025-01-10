@@ -108,6 +108,17 @@ class Course_OverviewController extends AuthenticatedController
             $this->avatar   = StudygroupAvatar::getAvatar($this->course_id);
         }
 
+        $connections = StudygroupCourse::countBySql(
+            "`studygroup_id` = :cid OR `course_id` = :cid", 
+            [
+                'cid' => $this->course_id
+            ]
+        );
+        if ($connections > 0) {
+            $response                   = $this->relay('course/studygroup/widget/' . $this->course_id);
+            $this->connectedstudygroups = $response->body;
+        }
+
         $this->plugins = PluginEngine::getPlugins(StandardPlugin::class, $this->course_id);
 
         $sidebar = Sidebar::get();
