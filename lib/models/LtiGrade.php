@@ -16,7 +16,7 @@
  * @property float $score database column
  * @property int $mkdate database column
  * @property int $chdate database column
- * @property LtiData $link belongs_to LtiData
+ * @property LtiDeployment $link belongs_to LtiData
  * @property User $user belongs_to User
  */
 
@@ -30,7 +30,7 @@ class LtiGrade extends SimpleORMap
         $config['db_table'] = 'lti_grade';
 
         $config['belongs_to']['link'] = [
-            'class_name'  => LtiData::class,
+            'class_name'  => LtiDeployment::class,
             'foreign_key' => 'link_id'
         ];
         $config['belongs_to']['user'] = [

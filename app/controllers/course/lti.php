@@ -1,6 +1,17 @@
 <?php
 
-use Studip\OAuth2\NegotiatesWithPsr7;
+use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\Platform\PlatformLaunchValidator;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\ContextClaim;
+use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink;
+use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
+use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
+use OAT\Library\Lti1p3DeepLinking\Factory\ResourceCollectionFactory;
+use OAT\Library\Lti1p3DeepLinking\Message\Launch\Builder\DeepLinkingLaunchRequestBuilder;
+use Studip\LTI13a\PlatformManager;
+use Studip\LTI13a\Registration;
+use Studip\LTI13a\RegistrationManager;
 
 /**
  * course/lti.php - LTI consumer API for Stud.IP
@@ -16,7 +27,7 @@ use Studip\OAuth2\NegotiatesWithPsr7;
 
 class Course_LtiController extends StudipController
 {
-    use NegotiatesWithPsr7;
+    use Studip\OAuth2\NegotiatesWithPsr7;
 
     public function __construct(\Trails\Dispatcher $dispatcher)
     {
@@ -34,23 +45,29 @@ class Course_LtiController extends StudipController
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
-        // these actions do not require session authentication
+        //The profile and outcome actions do not require all the other
+        //stuff that is going on in this method:
         if (in_array($action, ['profile', 'outcome'])) {
             return;
         }
         $this->course_id = Context::getId();
-        $this->edit_perm = $GLOBALS['perm']->have_studip_perm('tutor', $this->course_id);
+        $this->course = Course::find($this->course_id);
 
-        if (!in_array($action, ['index', 'iframe', 'grades']) && !$this->edit_perm) {
-            throw new AccessDeniedException(_('Sie besitzen keine Berechtigung, um LTI-Tools zu konfigurieren.'));
+        if (in_array($action, ['select_tool', 'add_link']) && !$this->course) {
+            throw new AccessDeniedException();
         }
 
-        if ($action !== 'grades') {
+        $this->edit_perm = $GLOBALS['perm']->have_studip_perm('tutor', $this->course_id);
+        if (!in_array($action, ['index', 'iframe', 'grades', 'consent']) && !$this->edit_perm) {
+            throw new AccessDeniedException();
+        }
+
+        if (
+            !in_array($action, ['admin', 'grades'])
+            && Navigation::hasItem('/course/lti/index')
+        ) {
             Navigation::activateItem('/course/lti/index');
         }
-
-        $title = CourseConfig::get($this->course_id)->LTI_TOOL_TITLE;
-        PageLayout::setTitle(Context::getHeaderLine() . ' - ' . $title);
     }
 
     /**
@@ -58,7 +75,17 @@ class Course_LtiController extends StudipController
      */
     public function index_action()
     {
-        $this->lti_data_array = LtiData::findByCourse_id($this->course_id, 'ORDER BY position');
+        $this->lti_data_array = [];
+        if ($this->edit_perm) {
+            $this->lti_data_array = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY position');
+        } else {
+            //Only load those deployments that are fully configured:
+            $this->lti_data_array = LtiDeployment::findBySQL(
+                "`course_id` = :course_id AND (`options` IS NULL OR `options` NOT LIKE '%unfinished_deep_linking%')
+                ORDER BY `position`",
+                ['course_id' => $this->course_id]
+            );
+        }
 
         if ($this->edit_perm) {
             $widget = Sidebar::get()->addWidget(new ActionsWidget());
@@ -67,17 +94,21 @@ class Course_LtiController extends StudipController
                 $this->url_for('course/lti/config'),
                 Icon::create('admin')
             )->asDialog('size=auto');
-            $widget->addLink(
-                _('Abschnitt hinzufügen'),
-                $this->url_for('course/lti/edit'),
-                Icon::create('add')
-            )->asDialog();
-
-            if (LtiTool::findByDeep_linking(1)) {
+            $global_tools_available = LtiTool::countBySQL("`range_id` = 'global'") > 0;
+            if (Config::get()->LTI_ALLOW_TOOL_CONFIG_IN_COURSE || $global_tools_available) {
                 $widget->addLink(
-                    _('Link aus LTI-Tool einfügen'),
-                    $this->url_for('course/lti/add_link'),
+                    _('LTI-Tool hinzufügen'),
+                    $this->url_for('course/lti/select_tool'),
                     Icon::create('add')
+                )->asDialog('size=auto');
+            }
+
+            $global_deep_linking_tools_exist = LtiTool::countBySQL("`deep_linking` = 1 AND `range_id` = 'global'") > 0;
+            if ($global_deep_linking_tools_exist) {
+                $widget->addLink(
+                    _('Tool mittels LTI Deep Linking hinzufügen'),
+                    $this->url_for('course/lti/add_link'),
+                    Icon::create('network2')
                 )->asDialog('size=auto');
             }
         }
@@ -85,19 +116,186 @@ class Course_LtiController extends StudipController
         Helpbar::get()->addPlainText('', _('Auf dieser Seite können Sie externe Anwendungen einbinden, sofern diese den LTI-Standard (Version 1.x) unterstützen.'));
     }
 
+    public function select_tool_action()
+    {
+        //The permission check is done in the before filter.
+
+        $this->global_tools = LtiTool::findBySQL("`lti_version` = '1.3a' AND `range_id` = 'global' ORDER BY `name` ASC");
+
+        if (!$this->global_tools) {
+            if (!Config::get()->LTI_ALLOW_TOOL_CONFIG_IN_COURSE) {
+                PageLayout::postError(_('Es sind keine globalen LTI-Tools konfiguriert, die in dieser Veranstaltung eingebunden werden können.'));
+                return;
+            }
+            //Redirect to the page to configure an LTI tool for the course:
+            $this->redirect('lti/tool/add/' . $this->course->id);
+        }
+
+        $this->selected_tool_id = '';
+        if (count($this->global_tools) >= 1) {
+            //Preselect the first tool:
+            $this->selected_tool_id = $this->global_tools[0]->id;
+        }
+    }
+
+    public function select_tool_redirect_action()
+    {
+        if (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
+            $selected_tool_id = Request::get('selected_tool_id');
+            if ($selected_tool_id === 'new') {
+                //Redirect to the page to configure an LTI tool for the course:
+                $this->redirect('lti/tool/add/' . $this->course->id);
+            } else {
+                //Load the selected tool and check if it can be used in the course.
+                $selected_tool = LtiTool::find($selected_tool_id);
+                if (!$selected_tool || $selected_tool->range_id !== 'global') {
+                    PageLayout::postError(_('Das ausgewählte LTI-Tool kann nicht genutzt werden.'));
+                    $this->redirect('course/lti/select_tool');
+                    return;
+                }
+                $this->redirect('lti/tool/add/' . $this->course->id . '/' . $selected_tool->id);
+            }
+        } else {
+            $this->redirect('course/lti/select_tool');
+        }
+    }
+
+    public function consent_action(string $deployment_id)
+    {
+        $this->deployment = LtiDeployment::find($deployment_id);
+        if (!$this->deployment) {
+            PageLayout::postError(_('Die Einbindung eines LTI-Tools ist ungültig.'));
+            return;
+        }
+
+        $this->privacy_settings = LtiToolPrivacySettings::findOneBySQL(
+            'tool_id = :tool_id AND user_id = :user_id',
+            ['tool_id' => $this->deployment->tool_id, 'user_id' => $GLOBALS['user']->id]
+        );
+        if (!$this->privacy_settings) {
+            $this->privacy_settings = new LtiToolPrivacySettings();
+            $this->privacy_settings->tool_id = $this->deployment->tool_id;
+            $this->privacy_settings->user_id = $GLOBALS['user']->id;
+        }
+
+        if (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
+            if (Request::submitted('save')) {
+                if (!Request::get('confirmed')) {
+                    PageLayout::postError(_('Ohne die aktive Zustimmung zur Weitergabe Ihrer personenbezogenen Daten können Sie das LTI-Tool nicht nutzen!'));
+                    return;
+                }
+                //Save the privacy settings and redirect to the tool:
+                $this->privacy_settings->accepted = '1';
+
+                //Check which optional fields are allowed to be transmitted to the tool:
+                $optional_field_list = Request::getArray('submit_optional_field', []);
+                $optional_fields = [];
+                if (array_key_exists('lang', $optional_field_list)) {
+                    $optional_fields[] = 'lang';
+                }
+                if (array_key_exists('avatar_url', $optional_field_list)) {
+                    $optional_fields[] = 'avatar_url';
+                }
+                $this->privacy_settings->allowed_optional_fields = implode(',', $optional_fields);
+                //Store the privacy settings:
+                $this->privacy_settings->store();
+            }
+            if (Request::isDialog()) {
+                //Close the dialog:
+                $this->response->add_header('X-Dialog-Close', '1');
+            } elseif (Request::submitted('redirect_to_tool') && Request::submitted('save')) {
+                //Redirect to the tool launch action, but only after the privacy settings have been saved:
+                $this->redirect('course/lti/iframe/' . $this->deployment->id);
+            } else {
+                //Redirect to the LTI tool page of the course:
+                $this->redirect('course/lti/index');
+            }
+        }
+    }
+
     /**
      * Display the launch form for a tool as an iframe.
      */
-    public function iframe_action(string $position)
+    public function iframe_action(string $deployment_id)
     {
-        $lti_data = LtiData::findByCourseAndPosition($this->course_id, $position);
-        $lti_link = $this->getLtiLink($lti_data);
+        $this->deployment = LtiDeployment::find($deployment_id);
+        $this->show_data_protection_info = !LtiToolPrivacySettings::countBySQL(
+            "`tool_id` = :tool_id AND `user_id` = :user_id AND `accepted` = 1",
+            ['tool_id' => $this->deployment->tool_id, 'user_id' => $GLOBALS['user']->id]
+        );
+        if ($this->show_data_protection_info) {
+            $this->redirect('course/lti/consent/' . $deployment_id, ['redirect_to_tool' => '1']);
+            return;
+        }
 
-        $this->launch_url = $lti_data->getLaunchURL();
-        $this->launch_data = $lti_link->getBasicLaunchData();
-        $this->signature = $lti_link->getLaunchSignature($this->launch_data);
+        if (!$this->show_data_protection_info) {
+            //Redirect to the tool.
+            $this->lti13a_mode = false;
+            $lti_version = $this->deployment->getToolLtiVersion();
+            if ($lti_version === '1.3a') {
+                //LTI 1.3a
+                $this->lti13a_mode = true;
 
-        $this->set_layout(null);
+                $lti_resource_link = new LtiResourceLink(
+                    $this->deployment->tool_id . '_' . $this->deployment->id . '_' . $this->course_id,
+                    [
+                        'url' => $this->deployment->getLaunchURL(),
+                        'title' => $this->deployment->title
+                    ]
+                );
+
+                $registration = new Registration($this->deployment->tool);
+                $builder = new LtiResourceLinkLaunchRequestBuilder();
+
+                //The AGS URLs need several parameters:
+                $ags_url_parameters = [
+                    'cid'           => $this->course_id,
+                    'tool_id'       => $this->deployment->tool_id,
+                    'deployment_id' => $this->deployment->id,
+                    'cancel_login'  => '1'
+                ];
+
+                //Build the message:
+                $this->message = $builder->buildLtiResourceLinkLaunchRequest(
+                    $lti_resource_link,
+                    $registration,
+                    $GLOBALS['user']->id,
+                    $this->deployment->id,
+                    [
+                        PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->course_id))
+                    ],
+                    array_merge(
+                        [
+                            new ContextClaim(
+                                $this->course_id,
+                                ['http://purl.imsglobal.org/vocab/lis/v2/course#CourseOffering'],
+                                $this->course->veranstaltungsnummer ?? '',
+                                $this->course?->getFullName() ?? ''
+                            ),
+                            new AgsClaim(
+                                [
+                                    'https://purl.imsglobal.org/spec/lti-ags/scope/lineitem',
+                                    'https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly',
+                                    'https://purl.imsglobal.org/spec/lti-ags/scope/score'
+                                ],
+                                $this->url_for('lti/ags/line_items', $ags_url_parameters),
+                                $this->url_for('lti/ags/line_item', $ags_url_parameters)
+                            )
+                        ],
+                        $this->deployment->getCustomLtiParameterArray(),
+                    )
+                );
+            } else {
+                //LTI 1.0/1.1
+                $lti_link = $this->getLtiLink($this->deployment);
+                $this->launch_url = $this->deployment->getLaunchURL();
+                $this->launch_data = $lti_link->getBasicLaunchData();
+                $this->signature = $lti_link->getLaunchSignature($this->launch_data);
+            }
+            $this->set_layout(null);
+        }
     }
 
     /**
@@ -105,7 +303,11 @@ class Course_LtiController extends StudipController
      */
     public function config_action()
     {
-        $this->title = CourseConfig::get($this->course_id)->LTI_TOOL_TITLE;
+        $course_config = CourseConfig::get($this->course_id);
+        $this->personal_data_warning = $course_config->LTI_DATA_PROTECTION_COURSE_WARNING;
+        if (empty($this->personal_data_warning)) {
+            $this->personal_data_warning = Config::get()->LTI_DATA_PROTECTION_DEFAULT_WARNING;
+        }
     }
 
     /**
@@ -115,96 +317,56 @@ class Course_LtiController extends StudipController
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        $title = trim(Request::get('title'));
-        CourseConfig::get($this->course_id)->store('LTI_TOOL_TITLE', $title);
+        $course_config = CourseConfig::get($this->course_id);
+
+        if (Request::bool('reset_warning')) {
+            $course_config->delete('LTI_DATA_PROTECTION_COURSE_WARNING');
+        } else {
+            $course_config->store(
+                'LTI_DATA_PROTECTION_COURSE_WARNING',
+                trim(Request::get('personal_data_warning'))
+            );
+        }
 
         PageLayout::postSuccess(_('Die Einstellungen wurden gespeichert.'));
         $this->redirect('course/lti');
     }
 
     /**
-     * Move an LTI content block (either up or down).
+     * Moves an LTI deployment in a course either up or down.
      *
-     * @param   int $position   block position
-     * @param   string $direction 'up' or 'down'
+     * @param string $deployment_id The ID of the deployment to be moved.
+     *
+     * @param string $direction 'up' for moving the deployment upwards or 'down' for downwards.
      */
-    public function move_action($position, $direction)
+    public function move_action(string $deployment_id, string $direction)
     {
         CSRFProtection::verifyUnsafeRequest();
+
+        $deployment = LtiDeployment::find($deployment_id);
+        if (!$deployment) {
+            //Redirect and do nothing:
+            $this->redirect('course/lti');
+            return;
+        }
+
+        $new_position = 0;
 
         if ($direction === 'up') {
-            $position2 = $position - 1;
+            $new_position = $deployment->position - 1;
         } else {
-            $position2 = $position + 1;
+            $new_position = $deployment->position + 1;
         }
 
-        $lti_data = LtiData::findByCourseAndPosition($this->course_id, $position);
-        $lti_data2 = LtiData::findByCourseAndPosition($this->course_id, $position2);
-
-        if ($lti_data && $lti_data2) {
-            $lti_data->position = $position2;
-            $lti_data->store();
-
-            $lti_data2->position = $position;
-            $lti_data2->store();
+        //Find the deployment with the new position:
+        $other_deployment = LtiDeployment::findByCourseAndPosition($this->course_id, $new_position);
+        if ($other_deployment) {
+            $other_deployment->position = $deployment->position;
+            $other_deployment->store();
         }
+        $deployment->position = $new_position;
+        $deployment->store();
 
-        $this->redirect('course/lti');
-    }
-
-    /**
-     * Edit an LTI content block (using a dialog window).
-     *
-     * @param   int $position   block position (blank: create a new block)
-     */
-    public function edit_action($position = '')
-    {
-        $this->lti_data = new LtiData();
-
-        if ($position !== '') {
-            $this->lti_data = LtiData::findByCourseAndPosition($this->course_id, $position);
-        }
-
-        $this->tools = LtiTool::findAll();
-    }
-
-    /**
-     * Save an LTI content block.
-     *
-     * @param   int $position   block position (blank: create a new block)
-     */
-    public function save_action($position)
-    {
-        CSRFProtection::verifyUnsafeRequest();
-
-        if ($position !== '') {
-            $lti_data = LtiData::findByCourseAndPosition($this->course_id, $position);
-        } else {
-            $lti_data = new LtiData();
-            $lti_data->course_id = $this->course_id;
-            $lti_data->position = LtiData::countBySQL('course_id = ?', [$this->course_id]);
-        }
-
-        $lti_data->title = trim(Request::get('title'));
-        $lti_data->description = Studip\Markup::purifyHtml(Request::get('description'));
-        $lti_data->tool_id = Request::int('tool_id');
-
-        if ($lti_data->tool_id == 0) {
-            $lti_data->launch_url = trim(Request::get('launch_url'));
-            $options['consumer_key'] = trim(Request::get('consumer_key'));
-            $options['consumer_secret'] = trim(Request::get('consumer_secret'));
-            $options['send_lis_person'] = Request::int('send_lis_person', 0);
-            $options['oauth_signature_method'] = Request::get('oauth_signature_method', 'sha1');
-        } else {
-            $lti_data->launch_url = trim(Request::get('custom_url'));
-        }
-
-        $options['custom_parameters'] = trim(Request::get('custom_parameters'));
-        $options['document_target'] = Request::option('document_target', 'window');
-        $lti_data->options = $options;
-        $lti_data->store();
-
-        PageLayout::postSuccess(_('Der Abschnitt wurde gespeichert.'));
         $this->redirect('course/lti');
     }
 
@@ -217,8 +379,8 @@ class Course_LtiController extends StudipController
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        $lti_data = LtiData::findByCourseAndPosition($this->course_id, $position);
-        $lti_data->delete();
+        $deployment = LtiDeployment::findByCourseAndPosition($this->course_id, $position);
+        $deployment->delete();
 
         PageLayout::postSuccess(_('Der Abschnitt wurde gelöscht.'));
         $this->redirect('course/lti');
@@ -229,46 +391,149 @@ class Course_LtiController extends StudipController
      */
     public function add_link_action()
     {
-        $this->tools = LtiTool::findByDeep_linking(1);
+        //The permission check is done in the before filter.
+
+        $this->tools = LtiTool::findBySQL("`deep_linking` = '1' AND `range_id` = 'global' ORDER BY `name` ASC");
+        if (!$this->tools) {
+            PageLayout::postError(_('Es sind keine globalen LTI-Tools konfiguriert.'));
+            return;
+        }
     }
 
     /**
      * Dispatch a ContentItemSelectionRequest to a specified LTI tool.
      */
-    public function select_link_action()
+    public function select_link_action($deployment_id = '')
     {
-        $tool_id = Request::int('tool_id');
-        $tool = LtiTool::find($tool_id);
-
-        $custom_parameters = explode("\n", $tool->custom_parameters);
-        $content_item_return_url = $this->url_for('course/lti/save_link/' . $tool_id);
-
-        // set up ContentItemSelectionRequest
-        $lti_link = new LtiLink($tool->launch_url, $tool->consumer_key, $tool->consumer_secret, $tool->oauth_signature_method);
-        $lti_link->setUser($GLOBALS['user']->id, 'Instructor', $tool->send_lis_person);
-        $lti_link->setCourse($this->course_id);
-        $lti_link->addLaunchParameters([
-            'lti_message_type' => 'ContentItemSelectionRequest',
-            'accept_media_types' => 'application/vnd.ims.lti.v1.ltilink',
-            'accept_presentation_document_targets' => 'iframe,window',
-            'content_item_return_url' => $content_item_return_url,
-            'launch_presentation_locale' => str_replace('_', '-', $_SESSION['_language']),
-            'launch_presentation_document_target' => 'window'
-        ]);
-
-        foreach ($custom_parameters as $param) {
-            if (strpos($param, '=') !== false) {
-                list($key, $value) = explode('=', $param, 2);
-                $lti_link->addCustomParameter(trim($key), trim($value));
+        $this->deployment = null;
+        if ($deployment_id) {
+            $this->deployment = LtiDeployment::find($deployment_id);
+            if (!$this->deployment) {
+                PageLayout::postError(_('Die Einbindung des LTI-Tools wurde nicht gefunden!'));
+                return;
+            }
+            if ($this->deployment->course_id !== $this->course_id) {
+                PageLayout::postError(_('Die Einbindung des LTI-Tools ist nicht für diese Veranstaltung bestimmt.'));
+                return;
+            }
+            if (empty($this->deployment->options['unfinished_deep_linking'])) {
+                PageLayout::postError(_('Die Einbindung des LTI-Tools ist bereits abgeschlossen.'));
+                return;
             }
         }
 
-        $this->launch_url = $lti_link->getLaunchURL();
-        $this->launch_data = $lti_link->getBasicLaunchData();
-        $this->signature = $lti_link->getLaunchSignature($this->launch_data);
+        $this->tool = LtiTool::find(Request::int('tool_id'));
+        if (!$this->tool) {
+            PageLayout::postError(_('Das ausgewählte LTI-Tool wurde nicht gefunden.'));
+            $this->redirect('course/lti/add_link');
+            return;
+        }
+        if (!$this->tool->deep_linking) {
+            PageLayout::postError(_('Das ausgewählte LTI-Tool unterstützt kein Deep Linking.'));
+            $this->redirect('course/lti/add_link');
+            return;
+        }
+    }
 
-        $this->set_layout(null);
-        $this->render_action('iframe');
+    public function process_select_link_action($deployment_id = '')
+    {
+        CSRFProtection::verifyUnsafeRequest();
+
+        $this->deployment = null;
+        if ($deployment_id) {
+            $this->deployment = LtiDeployment::find($deployment_id);
+            if (!$this->deployment) {
+                PageLayout::postError(_('Die Einbindung des LTI-Tools wurde nicht gefunden!'));
+                return;
+            }
+            if ($this->deployment->course_id !== $this->course_id) {
+                PageLayout::postError(_('Die Einbindung des LTI-Tools ist nicht für diese Veranstaltung bestimmt.'));
+                return;
+            }
+            if (empty($this->deployment->options['unfinished_deep_linking'])) {
+                PageLayout::postError(_('Die Einbindung des LTI-Tools ist bereits abgeschlossen.'));
+                return;
+            }
+        }
+
+        $this->tool = null;
+        if ($this->deployment) {
+            $this->tool = $this->deployment->tool;
+        } else {
+            $this->tool = LtiTool::find(Request::int('tool_id'));
+        }
+        if (!$this->tool) {
+            PageLayout::postError(_('Das ausgewählte LTI-Tool wurde nicht gefunden.'));
+            $this->redirect('course/lti/add_link');
+            return;
+        }
+        if (!$this->tool->deep_linking) {
+            PageLayout::postError(_('Das ausgewählte LTI-Tool unterstützt kein Deep Linking.'));
+            $this->redirect('course/lti/add_link');
+            return;
+        }
+
+        if ($this->tool->lti_version === '1.3a') {
+            //LTI 1.3a
+            if ($this->deployment) {
+                $builder = new DeepLinkingLaunchRequestBuilder();
+                $message = $builder->buildDeepLinkingLaunchRequest(
+                    PlatformManager::getDeepLinkingConfiguration($this->tool->id),
+                    new Registration($this->deployment->tool),
+                    $GLOBALS['user']->id,
+                    null,
+                    $this->deployment->id,
+                    [PlatformManager::getLtiRoleClaimForStudipRole($GLOBALS['perm']->get_studip_perm($this->course_id))]
+                );
+                $this->render_text($message->toHtmlRedirectForm());
+            } else {
+                //Build an LTI deployment object and mark it as not configured
+                //so that it can be displayed differently in the UI.
+                $this->deployment = new LtiDeployment();
+                $this->deployment->tool_id = $this->tool->id;
+                $this->deployment->course_id = $this->course_id;
+                $this->deployment->title = $this->tool->name;
+                $this->deployment->options = ['unfinished_deep_linking' => true];
+                if ($this->deployment->store() !== false) {
+                    //Display the tool deployment data so that the user can enter
+                    //them in the LTI tool.
+                    PageLayout::postInfo(
+                        _('Bitte tragen Sie die Daten zur Einbindung im LTI-Tool ein bevor sie fortfahren.')
+                    );
+                }
+            }
+        } else {
+            //LTI 1.0/1.1
+            $custom_parameters = explode("\n", $this->tool->custom_parameters);
+            $content_item_return_url = $this->url_for('course/lti/save_link/' . $this->tool->id);
+
+            // set up ContentItemSelectionRequest
+            $lti_link = new LtiLink($this->tool->launch_url, $this->tool->consumer_key, $this->tool->consumer_secret, $this->tool->oauth_signature_method);
+            $lti_link->setUser($GLOBALS['user']->id, 'Instructor', $this->tool->send_lis_person);
+            $lti_link->setCourse($this->course_id);
+            $lti_link->addLaunchParameters([
+                'lti_message_type' => 'ContentItemSelectionRequest',
+                'accept_media_types' => 'application/vnd.ims.lti.v1.ltilink',
+                'accept_presentation_document_targets' => 'iframe,window',
+                'content_item_return_url' => $content_item_return_url,
+                'launch_presentation_locale' => str_replace('_', '-', $_SESSION['_language']),
+                'launch_presentation_document_target' => 'window'
+            ]);
+
+            foreach ($custom_parameters as $param) {
+                if (strpos($param, '=') !== false) {
+                    list($key, $value) = explode('=', $param, 2);
+                    $lti_link->addCustomParameter(trim($key), trim($value));
+                }
+            }
+
+            $this->launch_url = $lti_link->getLaunchURL();
+            $this->launch_data = $lti_link->getBasicLaunchData();
+            $this->signature = $lti_link->getLaunchSignature($this->launch_data);
+
+            $this->set_layout(null);
+            $this->render_action('iframe');
+        }
     }
 
     /**
@@ -279,43 +544,103 @@ class Course_LtiController extends StudipController
     public function save_link_action($tool_id)
     {
         $tool = LtiTool::find($tool_id);
-        $lti_msg = Request::get('lti_msg');
-        $lti_errormsg = Request::get('lti_errormsg');
-        $content_items = Request::get('content_items');
-        $content_items = json_decode($content_items, true);
+
+        if (!$tool) {
+            PageLayout::postError(_('Das ausgewählte LTI-Tool wurde nicht gefunden.'));
+            $this->redirect('course/lti/add_link');
+            return;
+        }
+        if (!$tool->deep_linking) {
+            PageLayout::postError(_('Das ausgewählte LTI-Tool unterstützt kein Deep Linking.'));
+            $this->redirect('course/lti/add_link');
+            return;
+        }
+
+        if ($tool->lti_version === '1.3a') {
+            //LTI 1.3a
+
+            $validator = new PlatformLaunchValidator(
+                new RegistrationManager(),
+                new NonceRepository(Studip\Cache\Factory::getCache())
+            );
+            $result = $validator->validateToolOriginatingLaunch($this->getPsrRequest());
+            if ($result->hasError()) {
+                PageLayout::postError($result->getError());
+                $this->redirect('course/lti/add_link');
+                return;
+            }
+            $all_lti_resources = (new ResourceCollectionFactory())->createFromClaim(
+                $result->getPayload()->getDeepLinkingContentItems()
+            );
+
+            $lti_resource_links = $all_lti_resources->getByType(LtiResourceLinkInterface::TYPE);
+            if (count($lti_resource_links) > 0) {
+                $use_first_link = true;
+                foreach ($lti_resource_links as $lti_resource_link) {
+                    $deployment = null;
+                    if ($use_first_link) {
+                        //Recycle the deployment that has been created before
+                        //for the course.
+                        $deployment = LtiDeployment::findOneBySQL(
+                            "`tool_id` = :tool_id AND `course_id` = :course_id
+                            AND `options` LIKE '%unfinished_deep_linking%=%true'"
+                        );
+                        $use_first_link = false;
+                    }
+                    if (!$deployment) {
+                        //If this is the first link, the deployment has been removed.
+                        //In that case and if it is not the first link, a new deployment
+                        //has to be created.
+                        $deployment = new LtiDeployment();
+                        $deployment->tool_id   = $tool->id;
+                        $deployment->title     = $tool->name;
+                        $deployment->course_id = $this->course_id;
+                    }
+                    $deployment->launch_url = $lti_resource_link->getUrl();
+                    if (!empty($deployment->options['unfinished_deep_linking'])) {
+                        unset($deployment->options['unfinished_deep_linking']);
+                    }
+                    $deployment->store();
+                }
+            }
+        } else {
+            $lti_msg = Request::get('lti_msg');
+            $lti_errormsg = Request::get('lti_errormsg');
+            $content_items = Request::get('content_items');
+            $content_items = json_decode($content_items, true);
 
         if (!Studip\OAuth1::verifyRequest($this->getPsrRequest(), $tool->consumer_secret, '')) {
             throw new Exception('Could not verify request.');
         }
 
-        if (is_array($content_items) && count($content_items['@graph'])) {
-            // we only support selecting a single content item
-            $item = $content_items['@graph'][0];
+            if (is_array($content_items) && count($content_items['@graph'])) {
+                // we only support selecting a single content item
+                $item = $content_items['@graph'][0];
 
-            $lti_data = new LtiData();
-            $lti_data->course_id = $this->course_id;
-            $lti_data->position = LtiData::countBySQL('course_id = ?', [$this->course_id]);
-            $lti_data->title = (string) $item['title'];
-            $lti_data->description = Studip\Markup::purifyHtml(Studip\Markup::markAsHtml($item['text']));
-            $lti_data->tool_id = $tool_id;
-            $lti_data->launch_url = (string) ($item['url'] ?? '');
-            $options = [];
-            if (is_array($item['custom'])) {
-                $custom_parameters = '';
-                foreach ($item['custom'] as $key => $value) {
-                    $custom_parameters .= $key . '=' . $value . "\n";
+                $lti_data = new LtiDeployment();
+                $lti_data->course_id = $this->course_id;
+                $lti_data->position = LtiDeployment::countBySQL('course_id = ?', [$this->course_id]);
+                $lti_data->title = (string) $item['title'];
+                $lti_data->description = Studip\Markup::purifyHtml(Studip\Markup::markAsHtml($item['text']));
+                $lti_data->tool_id = $tool_id;
+                $lti_data->launch_url = (string) ($item['url'] ?? '');
+                $options = [];
+                if (is_array($item['custom'])) {
+                    $custom_parameters = '';
+                    foreach ($item['custom'] as $key => $value) {
+                        $custom_parameters .= $key . '=' . $value . "\n";
+                    }
+                    $options['custom_parameters'] = $custom_parameters;
                 }
-                $options['custom_parameters'] = $custom_parameters;
+
+                if (isset($item['placementAdvice']['presentationDocumentTarget'])) {
+                    $options['document_target'] = $item['placementAdvice']['presentationDocumentTarget'];
+                }
+
+                $lti_data->options = $options;
+                $lti_data->store();
+                PageLayout::postSuccess($lti_msg ?: _('Der Link wurde als neuer Abschnitt hinzugefügt.'));
             }
-
-            if (isset($item['placementAdvice']['presentationDocumentTarget'])) {
-                $options['document_target'] = $item['placementAdvice']['presentationDocumentTarget'];
-            }
-
-            $lti_data->options = $options;
-            $lti_data->store();
-
-            PageLayout::postSuccess($lti_msg ?: _('Der Link wurde als neuer Abschnitt hinzugefügt.'));
         }
 
         if ($lti_errormsg) {
@@ -328,7 +653,7 @@ class Course_LtiController extends StudipController
     /**
      * Return an LtiLink object for the configured LTI content block.
      *
-     * @param   LtiData $lti_data data of LTI content block
+     * @param   LtiDeployment $lti_data data of LTI content block
      *
      * @return  LtiLink  LTI link representation
      */
@@ -455,7 +780,7 @@ class Course_LtiController extends StudipController
      */
     public function outcome_action($id)
     {
-        $lti_data = LtiData::find($id);
+        $lti_data = LtiDeployment::find($id);
 
         if (!Studip\OAuth1::verifyRequest($this->getPsrRequest(), $lti_data->getConsumerSecret(), '')) {
             throw new Exception('Could not verify request.');
@@ -509,13 +834,22 @@ class Course_LtiController extends StudipController
     }
 
     /**
-     * Display the (simple) LTI gradebook.
+     * Display the (simple) LTI grade book.
      */
     public function grades_action()
     {
         Navigation::activateItem('/course/lti/grades');
 
-        $this->lti_data_array = LtiData::findByCourse_id($this->course_id, 'ORDER BY position');
+        if ($this->edit_perm) {
+            $this->lti_data_array = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY position');
+        } else {
+            //Only load those deployments that are fully configured:
+            $this->lti_data_array = LtiDeployment::findBySQL(
+                "`course_id` = :course_id AND (`options` IS NULL OR `options` NOT LIKE '%unfinished_deep_linking%')
+                ORDER BY `position`",
+                ['course_id' => $this->course_id]
+            );
+        }
 
         if ($this->edit_perm) {
             $this->desc = Request::int('desc');
@@ -543,7 +877,16 @@ class Course_LtiController extends StudipController
      */
     public function export_grades_action()
     {
-        $lti_data_array = LtiData::findByCourse_id($this->course_id, 'ORDER BY position');
+        if ($this->edit_perm) {
+            $lti_data_array = LtiDeployment::findByCourse_id($this->course_id, 'ORDER BY position');
+        } else {
+            //Only load those deployments that are fully configured:
+            $lti_data_array = LtiDeployment::findBySQL(
+                "`course_id` = :course_id AND (`options` IS NULL OR `options` NOT LIKE '%unfinished_deep_linking%')
+                ORDER BY `position`",
+                ['course_id' => $this->course_id]
+            );
+        }
 
         $columns = [_('Nachname'), _('Vorname')];
 
