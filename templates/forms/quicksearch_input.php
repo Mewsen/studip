@@ -10,6 +10,7 @@
     <span>
         <quicksearch value="<?= htmlReady($value) ?>"
                      name="<?= htmlReady($name) ?>"
+                     @update:modelValue="(new_id, new_item_name) => { console.log(new_id); this.<?= htmlReady($name) ?> = new_id; }"
                      id="<?= $id ?>"
                      <?= ($this->required ? 'required aria-required="true"' : '') ?>
                      <?= $attributes ?>>

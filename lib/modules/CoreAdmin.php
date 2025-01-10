@@ -93,6 +93,11 @@ class CoreAdmin extends CorePlugin implements StudipModule
             $item->setDescription(_('Vorlagen zur Erhebung weiterer Angaben von Teilnehmenden auswählen.'));
             $navigation->addSubNavigation('additional_data', $item);
 
+            $item = new Navigation(_('Verknüpfte Studiengruppen'), 'dispatch.php/course/connectedstudygroups');
+            $item->setImage(Icon::create('studygroup'));
+            $item->setDescription(_('Studiengruppen verknüpfen bzw. verwalten'));
+            $navigation->addSubNavigation('connectedstudygroups', $item);
+
         }  // endif modules only seminars
 
         if (Config::get()->VOTE_ENABLE) {

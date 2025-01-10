@@ -34,6 +34,12 @@
               rows="4"><?= htmlReady($values['description'] ?? '') ?></textarea>
 </label>
 
+<label class="col-3">
+    <?= _('Bezieht sich auf Lehrveranstaltung (optional)') ?>
+    <?= QuickSearch::get('lv_course_id', new StandardSearch('Seminar_id'))
+        ->defaultValue($values['lv_course_id'], $values['lv_course_id'] ? Course::find($values['lv_course_id'])->getFullname() : '')
+        ->render() ?>
+</label>
 
 <label class="col-3">
     <span class="required"><?= _('Zugang') ?></span>
@@ -74,6 +80,7 @@
 <input type="hidden" name="institute" value="<?= $values['institute'] ?>"/>
 <input type="hidden" name="start_semester" value="<?= htmlReady($values['start_semester']) ?>">
 <input type="hidden" name="studygroup" value="1"/>
+<input type="hidden" name="stgteil_id" value="<?= htmlReady($values['stgteil_id']) ?>"/>
 <?php foreach ($values['lecturers'] as $id => $assigned) : ?>
     <input type="hidden" name="lecturers[<?= $id ?>]" value="1"/>
 <?php endforeach ?>

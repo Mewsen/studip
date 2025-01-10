@@ -18,16 +18,16 @@
 
 <?php
 $headers = [
-    'name'     => _('Name'),
-    'founded'  => _('gegründet'),
-    'member'   => _('Mitglieder'),
-    'founder'  => _('GründerIn'),
-    'ismember' => _('Mitglied'),
+    'name'              => _('Name'),
+    'tags'              => _('Schlagwörter'),
+    'last_activity'     => _('Letzte Aktivität'),
+    'member'            => _('Mitglieder'),
+    'founder'           => _('Gründer:in')
 ];
 ?>
 
 <? if ($anzahl > 0): ?>
-    <table class="default studygroup-browse">
+    <table class="default studygroup-browse sortable-table" data-sortlist="[[3, 1]]">
         <caption>
             <?= sprintf(ngettext('%u Studiengruppe', '%u Studiengruppen', $anzahl), $anzahl)?>
         </caption>
@@ -36,19 +36,30 @@ $headers = [
             <col>
             <col style="width: 10%">
             <col style="width: 10%">
-            <col style="width: 20%">
             <col style="width: 10%">
+            <col style="width: 20%">
         </colgroup>
         <thead>
             <tr class="sortable" title="<?= _('Klicken, um die Sortierung zu ändern') ?>">
                 <th class="nosort hidden-small-down"></th>
-            <? foreach ($headers as $key => $label): ?>
-                <th <? if ($sort_type === $key) echo 'class="sort' . $sort_order . '"'; ?>>
-                    <a href="<?= $controller->link_for("studygroup/browse/1/{$key}_" . ($sort_order === 'asc' ? 'desc' : 'asc'), compact('q', 'closed')) ?>">
-                        <?= htmlReady($label) ?>
-                    </a>
-                </th>
-            <? endforeach; ?>
+                <? foreach ($headers as $key => $label): ?>
+                    <? if ($key !== 'last_activity' && $key !== 'tags') : ?>
+                        <th <? if ($sort_type === $key) echo 'class="sort' . $sort_order . '"'; ?>>
+                            <a href="<?= $controller->link_for("studygroup/browse/1/{$key}_" . ($sort_order === 'asc' ? 'desc' : 'asc'), compact('q', 'closed')) ?>">
+                                <?= htmlReady($label) ?>
+                            </a>
+                        </th>
+                    <? elseif($key !== 'tags') : ?>
+                        <th data-sort="htmldata">
+                            <?= htmlReady($label) ?>
+                        </th>
+                    <? else : ?>
+                        <th>
+                            <?= htmlReady($label) ?>
+                        </th>
+                    <? endif; ?>
+                <? endforeach; ?>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -71,7 +82,15 @@ $headers = [
                             <? } ?>
                         </a>
                 </td>
-                <td><?= strftime('%x', $group['mkdate']) ?>
+                <td>
+                    <? foreach ($group['course']->tags as $tag) : ?>
+                        <a href="<?= $controller->browse(['q' => $tag['name']]) ?>">
+                            <?= htmlReady('#'.$tag['name']) ?>
+                        </a>
+                    <? endforeach ?>
+                </td>
+                <td data-sort-value="<?= htmlReady($group['last_visit_date']) ?>">
+                    <?= htmlReady(date('d.m.Y', $group['last_visit_date'])) ?>
                 </td>
                 <td align="center">
                     <?= StudygroupModel::countMembers($group['Seminar_id']) ?>
@@ -87,11 +106,6 @@ $headers = [
                         </a>
                         <br>
                     <? endforeach; ?>
-                </td>
-                <td align="center">
-                    <? if ($is_member) : ?>
-                        <?= Icon::create('person', Icon::ROLE_INACTIVE, ['title' => _('Sie sind Mitglied in dieser Gruppe')])->asImg() ?>
-                    <? endif; ?>
                 </td>
             </tr>
         <? endforeach; ?>

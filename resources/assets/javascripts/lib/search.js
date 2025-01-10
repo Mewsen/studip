@@ -245,6 +245,13 @@ const Search = {
                 .appendTo(details);
         }
 
+        // Details: Tags
+        if (result.found_tag !== null) {
+            $('<div class="search-result-description">')
+                .html(result.found_tag)
+                .appendTo(details);
+        }
+
         if (result.dates !== null) {
             $('<div class="search-result-dates">')
                 .html(result.dates)

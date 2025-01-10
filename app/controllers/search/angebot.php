@@ -179,4 +179,16 @@ class Search_AngebotController extends MVVController
         $this->content = $response->body;
         $this->render_template('shared/content', $this->layout);
     }
+
+    public function remove_studygroup_action($course_id, $stgteil_id)
+    {
+        CSRFProtection::verifyUnsafeRequest();
+        if (!$GLOBALS['perm']->have_studip_perm('tutor', $course_id) && !$GLOBALS['perm']->have_perm('admin')) {
+            throw new AccessDeniedException();
+        }
+        StudygroupStgteil::deleteBySQL('`studygroup_id` = ? AND `stgteil_id` = ?', [$course_id, $stgteil_id]);
+        PageLayout::postSuccess(_('Zuordnung wurde aufgehoben.'));
+        $stgteil = StudiengangTeil::find($stgteil_id);
+        $this->redirect('search/angebot/studiengang/'.$stgteil->studiengang[0]->id);
+    }
 }

@@ -1,0 +1,31 @@
+<?php
+
+namespace Studip\Forms;
+
+class MultiquicksearchInput extends Input
+{
+    public function render()
+    {
+        $options = $this->extractOptionsFromAttributes($this->attributes);
+
+        $name = $this->name;
+        if (substr($name, -2) === '[]') {
+            $name .= substr($name, 0, -2);
+        }
+
+        $template = $GLOBALS['template_factory']->open('forms/multiquicksearch_input');
+        $template->title      = $this->title;
+        $template->name       = $name;
+        $template->value      = $this->getValue();
+        $template->id         = md5(uniqid());
+        $template->required   = $this->required;
+        $template->attributes = arrayToHtmlAttributes($this->attributes);
+        $template->options    = $options;
+        return $template->render();
+    }
+
+    public function getRequestValue()
+    {
+        return \Request::getArray($this->name);
+    }
+}

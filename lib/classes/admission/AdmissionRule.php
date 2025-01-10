@@ -57,6 +57,7 @@ abstract class AdmissionRule
                             'active' => (bool) $row['active'],
                         ];
                     } catch (Exception $e) {
+                        throw $e;
                     }
                 }
             );
@@ -521,5 +522,4 @@ abstract class AdmissionRule
         $this->id = md5(uniqid(get_class($this)));
         $this->courseSetId = null;
     }
-
 }

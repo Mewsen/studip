@@ -107,6 +107,17 @@ class Search_GlobalsearchController extends AuthenticatedController
             ),
             'institute_filter'
         );
+
+        $filter_widget->addElement(
+            new SelectListElement(
+                _('Studiengang'),
+                'study_course',
+                $this->getStudyCourses(),
+                '',
+                ['id' => 'study_course_select']
+            ),
+            'study_course_filter'
+        );
     }
 
     /**
@@ -168,6 +179,23 @@ class Search_GlobalsearchController extends AuthenticatedController
             }
         }
         return $sem_classes;
+    }
+
+    /**
+     * @return array
+     */
+    private function getStudyCourses()
+    {
+
+        $this->user = User::findCurrent();
+        $study_courses = [];
+
+        foreach ($this->user->studycourses as $usc)
+        {
+            $study_courses[] = $usc->studycourse->name;
+        }
+
+        return $study_courses;
     }
 
     /**

@@ -200,12 +200,12 @@ class Search_StudiengaengeController extends MVVController
         $this->with_courses = Request::option('with_courses', $_SESSION['MVV_SEARCH_SEQUENCE_WITH_COURSES'] ?? null);
         $_SESSION['MVV_SEARCH_SEQUENCE_WITH_COURSES'] = $this->with_courses;
 
-        $studiengangTeil = StudiengangTeil::find($stgteil_id);
+        $this->studiengangTeil = StudiengangTeil::find($stgteil_id);
         $versionen = StgteilVersion::findByStgteil($stgteil_id, 'start', 'DESC')->filter(function ($version) {
             $public = $GLOBALS['MVV_STGTEILVERSION']['STATUS']['values'][$version->stat]['public'];
             return (bool) $public;
         });
-        if (!$studiengangTeil || count($versionen) === 0) {
+        if (!$this->studiengangTeil || count($versionen) === 0) {
             PageLayout::postInfo(_('Kein Verlaufsplan im gewählten Bereich verfügbar.'));
         } else {
             $version_id = Request::option('version', $this->sessGet('selected_version'));
@@ -307,26 +307,24 @@ class Search_StudiengaengeController extends MVVController
             if ($studiengang_id) {
                 if ($stgteil_bez_id) {
                     $this->stgTeilBez = StgteilBezeichnung::get($stgteil_bez_id);
-                    $this->breadcrumb->append([$this->stgTeilBez, $studiengangTeil], 'verlauf');
+                    $this->breadcrumb->append([$this->stgTeilBez, $this->studiengangTeil], 'verlauf');
                 } else {
-                    $this->breadcrumb->append($studiengangTeil, 'verlauf');
+                    $this->breadcrumb->append($this->studiengangTeil, 'verlauf');
                 }
                 $this->studiengang = Studiengang::get($studiengang_id);
             }
 
             $this->setVersionSelectWidget(
                 $versionen,
-                $this->action_url('verlauf', $studiengangTeil->id, $stgteil_bez_id, $studiengang_id)
+                $this->action_url('verlauf', $this->studiengangTeil->id, $stgteil_bez_id, $studiengang_id)
             );
 
             ksort($fachsemesterData);
             $this->fachsemesterData = $fachsemesterData;
             $this->abschnitteData = $abschnitteData;
             $this->versionen = $versionen;
-            // Augsburg
             // Ausgabe des Namens ohne Fach (dieses ist im Zusatz bereits enthalten)
-            // $this->studiengangTeilName = $studiengangTeil->getDisplayName(0);
-            $this->studiengangTeilName = $studiengangTeil->getDisplayName();
+            $this->studiengangTeilName = $this->studiengangTeil->getDisplayName();
 
             // add option widget to show only modules with courses in the
             // selected semester

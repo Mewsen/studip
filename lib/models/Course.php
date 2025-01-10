@@ -47,6 +47,7 @@
  * @property int $admission_disable_waitlist_move database column
  * @property int $completion database column
  * @property string|null $parent_course database column
+ * @property string|null $expires database column
  * @property SimpleORMapCollection|CourseTopic[] $topics has_many CourseTopic
  * @property SimpleORMapCollection|CourseDate[] $dates has_many CourseDate
  * @property SimpleORMapCollection|CourseExDate[] $ex_dates has_many CourseExDate
@@ -247,6 +248,20 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             'assoc_foreign_key' => 'parent_course',
             'order_by'          => 'GROUP BY seminar_id ORDER BY VeranstaltungsNummer, Name'
         ];
+        $config['has_and_belongs_to_many']['studygroups'] = [
+            'class_name'        => Course::class,
+            'thru_table'        => 'studygroup_courses',
+            'thru_key'          => 'course_id',
+            'thru_assoc_key'    => 'studygroup_id',
+            'order_by'          => 'ORDER BY VeranstaltungsNummer, Name'
+        ];
+        $config['has_and_belongs_to_many']['connectedcourses'] = [
+            'class_name'        => Course::class,
+            'thru_table'        => 'studygroup_courses',
+            'thru_key'          => 'studygroup_id',
+            'thru_assoc_key'    => 'course_id',
+            'order_by'          => 'ORDER BY VeranstaltungsNummer, Name'
+        ];
         $config['has_many']['tools'] = [
             'class_name'        => ToolActivation::class,
             'assoc_foreign_key' => 'range_id',
@@ -269,6 +284,25 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             'class_name' => \Courseware\Unit::class,
             'assoc_foreign_key' => 'range_id',
             'on_delete'  => 'delete',
+        ];
+        $config['has_and_belongs_to_many']['tags'] = [
+            'class_name' => Tag::class,
+            'thru_table' => 'tags_relations',
+            'thru_key' => 'range_id',
+            'thru_assoc_key' => 'tag_id',
+            'order_by'    => 'ORDER BY `name` ASC',
+            'on_delete'  => 'delete',
+            'on_store'   => 'store',
+        ];
+        $config['has_many']['studygroup_proposals'] = [
+            'class_name'        => StudygroupCourseProposal::class,
+            'assoc_foreign_key' => 'studygroup_id',
+            'on_delete'         => 'delete',
+        ];
+        $config['has_many']['course_proposals'] = [
+            'class_name'        => StudygroupCourseProposal::class,
+            'assoc_foreign_key' => 'course_id',
+            'on_delete'         => 'delete',
         ];
 
         $config['default_values']['lesezugriff'] = 1;

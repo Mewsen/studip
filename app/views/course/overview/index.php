@@ -68,6 +68,10 @@ if (!empty($questionnaires)) {
     echo $questionnaires;
 }
 
+if (!empty($connectedstudygroups)) {
+    echo $connectedstudygroups;
+}
+
 // display plugins
 
 if (!empty($plugins)) {

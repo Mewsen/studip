@@ -623,10 +623,14 @@ table.default {
         font-size: $font-size-base;
         border-left: 1px solid var(--color--table-border);
         margin-bottom: -2px;
-        min-height: 26px;
+        min-height: 30px;
         padding-bottom: 3px;
         padding-left: 0.5em;
         padding-top: 4px;
+        input[type=text] {
+            width: auto; // otherwise it can be 100%, so there is no space left for other parts of the actions-area
+            max-height: 30px;
+        }
     }
 
     td.actions, th.actions {
