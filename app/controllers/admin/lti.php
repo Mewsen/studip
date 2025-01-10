@@ -23,16 +23,21 @@ class Admin_LtiController extends AuthenticatedController
         $GLOBALS['perm']->check('root');
 
         Navigation::activateItem('/admin/config/lti');
-        PageLayout::setTitle(_('Konfiguration der LTI-Tools'));
+        PageLayout::setTitle(_('LTI-Tools'));
 
         $widget = Sidebar::get()->addWidget(new ActionsWidget());
         $widget->addLink(
             _('Neues LTI-Tool registrieren'),
-            $this->url_for('admin/lti/edit'),
+            $this->url_for('lti/tool/add/global'),
             Icon::create('add')
         )->asDialog();
+        $widget->addLink(
+            _('Daten zur LTI-Plattform anzeigen'),
+            $this->url_for('lti/auth/platform_data'),
+            Icon::create('info')
+        )->asDialog();
 
-        Helpbar::get()->addPlainText('', _('Hier können Sie Verknüpfungen mit externen Tools konfigurieren, sofern diese den LTI-Standard (Version 1.x) unterstützen.'));
+        Helpbar::get()->addPlainText('', _('Hier können Sie LTI-Tools konfigurieren. Diese müssen den LTI-Standard in Version 1.0/1.1 oder 1.3A unterstützen.'));
     }
 
     /**
@@ -41,67 +46,5 @@ class Admin_LtiController extends AuthenticatedController
     public function index_action()
     {
         $this->tools = LtiTool::findAll();
-    }
-
-    /**
-     * Display dialog for editing an LTI tool.
-     *
-     * @param   int $id tool id
-     */
-    public function edit_action($id = null)
-    {
-        $this->tool = new LtiTool($id);
-    }
-
-    /**
-     * Save changes for an LTI tool.
-     *
-     * @param   int $id tool id
-     */
-    public function save_action($id)
-    {
-        CSRFProtection::verifyUnsafeRequest();
-
-        $tool = new LtiTool($id ?: null);
-        $tool->name = trim(Request::get('name'));
-        $tool->launch_url = trim(Request::get('launch_url'));
-        $tool->consumer_key = trim(Request::get('consumer_key'));
-        $tool->consumer_secret = trim(Request::get('consumer_secret'));
-        $tool->custom_parameters = trim(Request::get('custom_parameters'));
-        $tool->allow_custom_url = Request::int('allow_custom_url', 0);
-        $tool->deep_linking = Request::int('deep_linking', 0);
-        $tool->send_lis_person = Request::int('send_lis_person', 0);
-        $tool->oauth_signature_method = Request::get('oauth_signature_method', 'sha1');
-
-        if ($tool->store()) {
-            PageLayout::postSuccess(sprintf(
-                _('Einstellungen für "%s" wurden gespeichert.'),
-                htmlReady($tool->name)
-            ));
-        }
-
-        $this->redirect('admin/lti');
-    }
-
-    /**
-     * Delete an LTI tool.
-     *
-     * @param   int $id tool id
-     */
-    public function delete_action($id)
-    {
-        CSRFProtection::verifyUnsafeRequest();
-
-        $tool = LtiTool::find($id);
-        $tool_name = $tool->name;
-
-        if ($tool && $tool->delete()) {
-            PageLayout::postSuccess(sprintf(
-                _('Das LTI-Tool "%s" wurde gelöscht.'),
-                htmlReady($tool_name)
-            ));
-        }
-
-        $this->redirect('admin/lti');
     }
 }

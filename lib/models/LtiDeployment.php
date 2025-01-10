@@ -1,6 +1,6 @@
 <?php
 /**
- * LtiData.php - LTI consumer API for Stud.IP
+ * LtiDeployment.php - A class that represents an LTI tool deployment.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -8,6 +8,7 @@
  * the License, or (at your option) any later version.
  *
  * @author      Elmar Ludwig
+ * @author      Moritz Strohm
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  *
  * @property int $id database column
@@ -25,14 +26,14 @@
  * @property LtiTool $tool belongs_to LtiTool
  */
 
-class LtiData extends SimpleORMap
+class LtiDeployment extends SimpleORMap
 {
     /**
      * Configure the database mapping.
      */
     protected static function configure($config = [])
     {
-        $config['db_table'] = 'lti_data';
+        $config['db_table'] = 'lti_deployments';
 
         $config['serialized_fields']['options'] = JSONArrayObject::class;
 
@@ -51,7 +52,21 @@ class LtiData extends SimpleORMap
             'on_delete'         => 'delete'
         ];
 
+        $config['registered_callbacks']['before_create'] = ['cbCalculatePosition'];
+
         parent::configure($config);
+    }
+
+    /**
+     * Calculates the position of the new deployment in the course.
+     */
+    public function cbCalculatePosition() : void
+    {
+        $this->position = self::countBySql(
+            'JOIN `lti_tools` ON `tool_id` = `lti_tools`.`id`
+            WHERE `lti_tools`.`range_id` = :range_id',
+            ['range_id' => $this->tool->range_id]
+            ) + 1;
     }
 
     /**
@@ -74,23 +89,26 @@ class LtiData extends SimpleORMap
         $position = $this->position;
 
         if ($result = parent::delete()) {
-            $db->execute('UPDATE lti_data SET position = position - 1 WHERE course_id = ? AND position > ?', [$course_id, $position]);
+            $db->execute('UPDATE `lti_deployments` SET `position` = position - 1 WHERE `course_id` = ? AND `position` > ?', [$course_id, $position]);
         }
 
         return $result;
     }
+
+    public function getToolLtiVersion() : string
+    {
+        return $this->tool->lti_version ?? '';
+    }
+
 
     /**
      * Get the launch_url of this entry.
      */
     public function getLaunchURL()
     {
-        if ($this->tool_id) {
-            if (!$this->tool->allow_custom_url && !$this->tool->deep_linking || !$this->launch_url) {
-                return $this->tool->launch_url;
-            }
+        if (empty($this->tool->allow_custom_url) && empty($this->tool->deep_linking) || empty($this->launch_url)) {
+            return $this->tool->launch_url ?? '';
         }
-
         return $this->launch_url;
     }
 
@@ -99,11 +117,7 @@ class LtiData extends SimpleORMap
      */
     public function getConsumerKey()
     {
-        if ($this->tool_id) {
-            return $this->tool->consumer_key;
-        }
-
-        return $this->options['consumer_key'];
+        return $this->tool->consumer_key ?? '';
     }
 
     /**
@@ -111,11 +125,7 @@ class LtiData extends SimpleORMap
      */
     public function getConsumerSecret()
     {
-        if ($this->tool_id) {
-            return $this->tool->consumer_secret;
-        }
-
-        return $this->options['consumer_secret'];
+        return $this->tool->consumer_secret ?? '';
     }
 
     /**
@@ -123,11 +133,7 @@ class LtiData extends SimpleORMap
      */
     public function getOauthSignatureMethod()
     {
-        if ($this->tool_id) {
-            return $this->tool->oauth_signature_method;
-        }
-
-        return $this->options['oauth_signature_method'] ?? 'sha1';
+        return $this->tool->oauth_signature_method ?? 'sha1';
     }
 
     /**
@@ -135,11 +141,29 @@ class LtiData extends SimpleORMap
      */
     public function getCustomParameters()
     {
-        if ($this->tool_id) {
-            return $this->tool->custom_parameters . "\n" . $this->options['custom_parameters'];
+        $parameters = '';
+        if (!empty($this->tool->custom_parameters)) {
+            $parameters .= $this->tool->custom_parameters . "\n";
         }
+        $parameters .= $this->options['custom_parameters'] ?? '';
+        return $parameters;
+    }
 
-        return $this->options['custom_parameters'];
+    public function getCustomLtiParameterArray() : array
+    {
+        $parameter_str = $this->getCustomParameters();
+        if (empty($parameter_str)) {
+            return [];
+        }
+        $parameters = explode("\n", $parameter_str);
+        $array = [];
+        foreach ($parameters as $parameter) {
+            $key_value_parts = explode('=', $parameter, 2);
+            if (count($key_value_parts) === 2) {
+                $array[trim($key_value_parts[0])] = trim($key_value_parts[1]);
+            }
+        }
+        return ['https://purl.imsglobal.org/spec/lti/claim/custom' => $array];
     }
 
     /**
@@ -147,10 +171,17 @@ class LtiData extends SimpleORMap
      */
     public function getSendLisPerson()
     {
-        if ($this->tool_id) {
-            return $this->tool->send_lis_person;
-        }
+        return $this->tool->send_lis_person;
+    }
 
-        return $this->options['send_lis_person'];
+    /**
+     * Whether the LtiData instance uses its own (private) tool
+     * or one of the globally defined LTI tools.
+     *
+     * @return bool True, if the LtiData instance uses its own tool, false otherwise.
+     */
+    public function hasOwnTool() : bool
+    {
+        return $this->tool && !$this->tool->is_global;
     }
 }

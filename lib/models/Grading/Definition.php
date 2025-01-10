@@ -2,6 +2,10 @@
 
 namespace Grading;
 
+use OAT\Library\Lti1p3Ags\Model\LineItem\LineItem;
+use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemInterface;
+use OAT\Library\Lti1p3Ags\Model\LineItem\LineItemSubmissionReview;
+
 /**
  * @license GPL2 or any later version
  *
@@ -64,5 +68,32 @@ class Definition extends \SimpleORMap
     public static function findByCourse(\Course $course)
     {
         return Definition::findBySQL('course_id = ? ORDER BY position ASC, name ASC', [$course->id]);
+    }
+
+    public function toLineItem() : LineItemInterface
+    {
+        //Build the resource link identifier first:
+        $studip_ids = explode('-', $this->tool ?? '');
+        $tool_id       = $studip_ids[1] ?? '';
+        $deployment_id = $studip_ids[2] ?? '';
+        $resource_link_identifier = sprintf('%s_%s_%s', $tool_id, $deployment_id, $this->course_id);
+
+        $identifier = \URLHelper::getURL(
+            'dispatch.php/lti/ags/line_item',
+            [
+                'cid'           => $this->course_id,
+                'definition_id' => $this->id,
+                'deployment_id' => $deployment_id,
+                'tool_id'       => $tool_id
+            ]
+        );
+
+        return new LineItem(
+            PHP_FLOAT_MAX,
+            $this->name,
+            $identifier,
+            $deployment_id,
+            $resource_link_identifier
+        );
     }
 }
