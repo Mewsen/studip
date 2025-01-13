@@ -1,1 +1,1 @@
-<?= $fullcalendar ?>
+<section class="contentbox"><?= $fullcalendar ?></section>

@@ -213,6 +213,9 @@ class Helper
                 'studip_urls' => [
                     'add' => \URLHelper::getURL('dispatch.php/calendar/schedule/entry/add')
                 ]
+            ],
+            [
+                'class' => 'schedule'
             ]
         );
     }
