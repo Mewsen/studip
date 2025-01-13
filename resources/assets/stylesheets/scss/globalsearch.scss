@@ -4,7 +4,7 @@
 #globalsearch-searchbar {
     display: flex;
     align-items: center;
-    border: thin solid var(--color--font-inverted);
+    border: thin solid var(--color--header-inverted);
     border-radius: var(--border-radius-search);
     background-color: var(--color--brand-primary);
     padding: 3px 5px 2px 5px;
@@ -77,7 +77,7 @@
 
     // List display
     #globalsearch-list {
-        background-color: var(--white);
+        background-color: var(--color--global-background);
         box-shadow: 1px 1px 1px var(--light-gray-color-80);
         color: var(--text-color);
         display: none;
@@ -118,7 +118,7 @@
         background-color: var(--white);
 
         #globalsearch-input {
-            background-color: var(--white);
+            background-color: var(--color--header-inverted);
             color: var(--color--font-primary);
 
             &::placeholder {
