@@ -14,10 +14,10 @@ class StudipSoapClient
     var $soap_client;
     var $error;
 
-    function __construct($path)
+    function __construct($path, $options = ['trace' => 0])
     {
         try {
-            $this->soap_client = new SoapClient($path, ['trace' => 0]);
+            $this->soap_client = new SoapClient($path, $options);
         } catch (SoapFault $fault) {
             $this->error = "Soap Constructor Error " . $fault->faultcode . ": ".$fault->faultstring;
         }
