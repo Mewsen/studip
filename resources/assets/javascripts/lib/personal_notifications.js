@@ -170,11 +170,11 @@ const PersonalNotifications = {
         if (really_new > 0) {
             $('#notification_marker')
                 .data('seen', false);
-            $('#avatar-menu-container')
+            $('#notification-wrapper')
                 .addClass('alert');
             PageLayout.title_prefix = '(!) ';
         } else {
-            $('#avatar-menu-container').removeClass('alert');
+            $('#notification-wrapper').removeClass('alert');
             PageLayout.title_prefix = '';
         }
         if (count) {
@@ -227,7 +227,7 @@ const PersonalNotifications = {
         $.get(STUDIP.URLHelper.getURL('dispatch.php/jsupdater/notifications_seen')).then(time => {
             $('#notification_marker')
                 .data('lastvisit', time);
-            $('#avatar-menu-container')
+            $('#notification-wrapper')
                 .removeClass('alert');
                 
         });

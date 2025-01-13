@@ -285,7 +285,8 @@ $sidebarOut: -330px;
     }
 
     #quicksearch_item,
-    #avatar-menu-container,
+    #notification-wrapper,
+    #avatar-wrapper,
     #current-page-structure {
         display: none;
     }
@@ -302,8 +303,8 @@ $sidebarOut: -330px;
             }
         }
 
-        #notification-container,
-        .header_avatar_container,
+        #notification-wrapper,
+        #avatar-wrapper,
         #sidebar-menu {
             display: none;
         }
@@ -758,21 +759,6 @@ html:not(.responsive-display):not(.fullscreen-mode) {
             padding-right: 5px;
             height: 20px;
             line-height: 20px;
-        }
-
-        #avatar-menu-container {
-            position: relative;
-            bottom: 0px;
-            right: 0px;
-            line-height: 20px !important;
-
-            #avatar-menu {
-                display: none;
-            }
-
-            &::after {
-                display: none !important;
-            }
         }
 
         #top-bar {

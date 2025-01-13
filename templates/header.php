@@ -122,90 +122,94 @@ if ($navigation) {
             <? $active = Navigation::getItem('/profile')?->isActive() ?? false; ?>
 
             <? if ($GLOBALS['perm']->have_perm('autor')) : ?>
-                <li id="avatar-menu-container"
-                    class="header_avatar_container <?= PersonalNotifications::hasUnseenNotifications() ? 'alert' : '' ?>"
-                >
+
                 <? if (PersonalNotifications::isActivated()): ?>
-                    <? $notifications = PersonalNotifications::getMyNotifications() ?>
-                    <div id="notification-container"  <?= count($notifications) > 0 ? ' class="hoverable"' : '' ?>>
-                        <button id="notification_marker"
-                                data-toggles="#notification_checkbox"
-                                title="<?= sprintf(
-                                    ngettext('%u Benachrichtigung', '%u Benachrichtigungen', count($notifications)),
-                                    count($notifications)
-                                ) ?>"
-                                aria-controls="notification-list"
-                                data-lastvisit="<?= UserConfig::get($GLOBALS['user']->id)->getValue('NOTIFICATIONS_SEEN_LAST_DATE') ?>"
-                                <? if (count($notifications) === 0) echo 'disabled'; ?>
-                                <? if (PersonalNotifications::hasUnseenNotifications()) echo 'class="alert"'; ?>
-                                aria-expanded="false"
-                        >
-                            <span class="count" aria-hidden="true"><?= count($notifications) ?></span>
-                        </button>
-                        <input type="checkbox" id="notification_checkbox">
-                        <div class="list below" id="notification_list">
-                            <a class="mark-all-as-read <? if (count($notifications) < 2) echo 'invisible'; ?>"
-                               href="<?= URLHelper::getLink('dispatch.php/jsupdater/mark_notification_read/all', ['return_to' => $_SERVER['REQUEST_URI']]) ?>"
+                    <li id="notification-wrapper">
+                        <? $notifications = PersonalNotifications::getMyNotifications() ?>
+                        <div id="notification-container"  <?= count($notifications) > 0 ? ' class="hoverable"' : '' ?>>
+                            <button id="notification_marker"
+                                    data-toggles="#notification_checkbox"
+                                    title="<?= sprintf(
+                                        ngettext('%u Benachrichtigung', '%u Benachrichtigungen', count($notifications)),
+                                        count($notifications)
+                                    ) ?>"
+                                    aria-controls="notification-list"
+                                    data-lastvisit="<?= UserConfig::get($GLOBALS['user']->id)->getValue('NOTIFICATIONS_SEEN_LAST_DATE') ?>"
+                                    <? if (count($notifications) === 0) echo 'disabled'; ?>
+                                    class="<?= PersonalNotifications::hasUnseenNotifications() ? 'alert' : '' ?>"
+                                    aria-expanded="false"
                             >
-                                <?= _('Alle Benachrichtigungen als gelesen markieren') ?>
-                            </a>
-                            <a class="enable-desktop-notifications" href="#" style="display: none;">
-                                <?= _('Desktop-Benachrichtigungen aktivieren') ?>
-                            </a>
-                            <ul>
-                            <? foreach ($notifications as $notification) : ?>
-                                <?= $notification->getLiElement() ?>
-                            <? endforeach ?>
-                            </ul>
+                                <span class="count" aria-hidden="true"><?= count($notifications) ?></span>
+                                <? $icon_role =  PersonalNotifications::hasUnseenNotifications() ? ICON::ROLE_INFO_ALT : ICON::ROLE_CLICKABLE ?>
+                                <?= Icon::create('notification2', $icon_role)->asImg() ?>
+                            </button>
+                            <input type="checkbox" id="notification_checkbox">
+                            <div class="list below" id="notification_list">
+                                <a class="mark-all-as-read <? if (count($notifications) < 2) echo 'invisible'; ?>"
+                                href="<?= URLHelper::getLink('dispatch.php/jsupdater/mark_notification_read/all', ['return_to' => $_SERVER['REQUEST_URI']]) ?>"
+                                >
+                                    <?= _('Alle Benachrichtigungen als gelesen markieren') ?>
+                                </a>
+                                <a class="enable-desktop-notifications" href="#" style="display: none;">
+                                    <?= _('Desktop-Benachrichtigungen aktivieren') ?>
+                                </a>
+                                <ul>
+                                <? foreach ($notifications as $notification) : ?>
+                                    <?= $notification->getLiElement() ?>
+                                <? endforeach ?>
+                                </ul>
+                            </div>
+                        <? if (PersonalNotifications::isAudioActivated()): ?>
+                            <audio id="audio_notification" preload="none">
+                                <source src="<?= Assets::url('sounds/blubb.ogg') ?>" type="audio/ogg">
+                                <source src="<?= Assets::url('sounds/blubb.mp3') ?>" type="audio/mpeg">
+                            </audio>
+                        <? endif; ?>
                         </div>
-                    <? if (PersonalNotifications::isAudioActivated()): ?>
-                        <audio id="audio_notification" preload="none">
-                            <source src="<?= Assets::url('sounds/blubb.ogg') ?>" type="audio/ogg">
-                            <source src="<?= Assets::url('sounds/blubb.mp3') ?>" type="audio/mpeg">
-                        </audio>
-                    <? endif; ?>
-                    </div>
+                    </li>
                 <? endif; ?>
 
                 <? if (Navigation::hasItem('/avatar')): ?>
-                    <form id="avatar-menu" method="post">
-                    <?php
-                        $action_menu = ContentGroupMenu::get();
-                        $action_menu->addCSSClass('avatar-menu');
-                        $action_menu->addAttribute('data-action-menu-reposition', 'false');
-                        $action_menu->setLabel(User::findCurrent()->getFullName());
-                        $action_menu->setAriaLabel(_('Profilmenü'));
-                        $action_menu->setIcon(
-                            Avatar::getAvatar(User::findCurrent()->id)->getImageTag(),
-                            ['id' => 'header_avatar_image_link']
-                        );
+                    <li id="avatar-wrapper">
+                        <form id="avatar-menu" method="post">
+                        <?php
+                            $action_menu = ContentGroupMenu::get();
+                            $action_menu->addCSSClass('avatar-menu');
+                            $action_menu->addAttribute('data-action-menu-reposition', 'false');
+                            $action_menu->setLabel(User::findCurrent()->getFullName());
+                            $action_menu->setAriaLabel(_('Profilmenü'));
+                            $action_menu->setIcon(
+                                Avatar::getAvatar(User::findCurrent()->id)->getImageTag(),
+                                ['id' => 'header_avatar_image_link']
+                            );
 
-                        foreach (Navigation::getItem('/avatar') as $subnav) {
-                            if ($subnav->getRenderAsButton()) {
-                                $action_menu->addButton(
-                                    'logout',
-                                    $subnav->getTitle(),
-                                    $subnav->getImage(),
-                                    array_merge(
-                                        $subnav->getLinkAttributes(),
-                                        ['formaction' => URLHelper::getURL($subnav->getURL(), [], true)]
-                                    )
-                                );
-                            } else {
-                                $action_menu->addLink(
-                                    URLHelper::getURL($subnav->getURL(), [], true),
-                                    $subnav->getTitle(),
-                                    $subnav->getImage(),
-                                    $subnav->getLinkAttributes()
-                                );
+                            foreach (Navigation::getItem('/avatar') as $subnav) {
+                                if ($subnav->getRenderAsButton()) {
+                                    $action_menu->addButton(
+                                        'logout',
+                                        $subnav->getTitle(),
+                                        $subnav->getImage(),
+                                        array_merge(
+                                            $subnav->getLinkAttributes(),
+                                            ['formaction' => URLHelper::getURL($subnav->getURL(), [], true)]
+                                        )
+                                    );
+                                } else {
+                                    $action_menu->addLink(
+                                        URLHelper::getURL($subnav->getURL(), [], true),
+                                        $subnav->getTitle(),
+                                        $subnav->getImage(),
+                                        $subnav->getLinkAttributes()
+                                    );
+                                }
                             }
-                        }
-                        SkipLinks::addIndex(_('Profilmenü'), 'header_avatar_image_link', 1, false);
-                    ?>
-                    <?= $action_menu->render(); ?>
-                    </form>
+                            SkipLinks::addIndex(_('Profilmenü'), 'header_avatar_image_link', 1, false);
+                        ?>
+                        <?= $action_menu->render(); ?>
+                        </form>
+                    </li>
                 <? endif; ?>
-                </li>
+                
             <? endif; ?>
         <? else: ?>
                 <li>
