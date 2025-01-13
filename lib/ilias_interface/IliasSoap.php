@@ -44,7 +44,7 @@ class IliasSoap extends StudipSoapClient
      * @param string $admin_login ILIAS admin account login
      * @param string $admin_password ILIAS admin account password
      */
-    public function __construct($index, $soap_path, $ilias_client = '', $ilias_version = '', $admin_login = '', $admin_password = '')
+    public function __construct($index, $soap_path, $ilias_client = '', $ilias_version = '', $admin_login = '', $admin_password = '', $http_connection_timeout = NULL, $http_request_timeout = NULL)
     {
         $this->index = $index;
         $this->ilias_client = $ilias_client;
@@ -53,7 +53,27 @@ class IliasSoap extends StudipSoapClient
         $this->admin_password = $admin_password;
         $this->separator_string = " / ";
 
-        parent::__construct($soap_path);
+        $stream_context = get_default_http_stream_context($soap_path);
+
+        if (is_int($http_request_timeout)) {
+            stream_context_set_option(
+                $stream_context,
+                'http',
+                'timeout',
+                $http_request_timeout
+            );
+        }
+
+        $options = [
+            'trace' => 0,
+            'stream_context' => $stream_context
+        ];
+
+        if (is_int($http_connection_timeout)) {
+            $options['connection_timeout'] = $http_connection_timeout;
+        }
+
+        parent::__construct($soap_path, $options);
 
         $this->user_type = "admin";
 

@@ -82,7 +82,16 @@ class ConnectedIlias
         $this->ilias_int_version = $this->getIntVersion($this->ilias_config['version']);
 
         // init soap client
-        $this->soap_client = new IliasSoap($this->index, $this->ilias_config['url'].'/webservice/soap/server.php?wsdl', $this->ilias_config['client'], $this->ilias_int_version, $this->ilias_config['admin'], $this->ilias_config['admin_pw']);
+        $this->soap_client = new IliasSoap(
+            $this->index,
+            $this->ilias_config['url'] . '/webservice/soap/server.php?wsdl',
+            $this->ilias_config['client'],
+            $this->ilias_int_version,
+            $this->ilias_config['admin'],
+            $this->ilias_config['admin_pw'],
+            $this->ilias_config['http_connection_timeout'],
+            $this->ilias_config['http_request_timeout']
+        );
         $this->soap_client->setCachingStatus($this->ilias_interface_config['cache']);
 
         // init current user (only if ILIAS installation is active)
@@ -195,14 +204,34 @@ class ConnectedIlias
     public static function getIliasInfo($url)
     {
         $info = [];
+
+        $stream_context = get_default_http_stream_context($url);
+        stream_context_set_option(
+            $stream_context,
+            'http',
+            'timeout',
+            3
+        );
+
         // check if url exists
-        $check = @get_headers($url . 'login.php');
+        $check = @get_headers($url . 'login.php', false, $stream_context);
         if (strpos($check[0], '200') === false) {
             return $info;
         } else {
             $info['url'] = $url;
         }
-        $soap_client = new IliasSoap('new', $url.'/webservice/soap/server.php?wsdl');
+
+        $soap_client = new IliasSoap(
+            'new',
+            $url . '/webservice/soap/server.php?wsdl',
+            '',
+            '',
+            '',
+            '',
+            1,
+            3
+        );
+
         $soap_client->setCachingStatus(false);
         if ($client_info = $soap_client->getInstallationInfoXML()) {
             $info = array_merge($info, $client_info);
@@ -264,7 +293,14 @@ class ConnectedIlias
         }
 
         // check if url exists
-        $check = @get_headers($this->ilias_config['url'] . 'webservice/soap/server.php');
+        $stream_context = get_default_http_stream_context($this->ilias_config['url']);
+        stream_context_set_option(
+            $stream_context,
+            'http',
+            'timeout',
+            $this->ilias_config['http_request_timeout']
+        );
+        $check = @get_headers($this->ilias_config['url'] . 'webservice/soap/server.php', false, $stream_context);
         if (strpos($check[0], '200') === false) {
             $this->error[] = sprintf(_('Die URL "%s" ist nicht erreichbar.'), $this->ilias_config['url']);
             return false;

@@ -42,6 +42,14 @@
         <span class="required">  <?= _('URL') ?></span>
         <input type="text" name="ilias_url" size="50" maxlength="255" value="<?= $ilias_config['url'] ?>" required>
     </label>
+    <label>
+        <span class="required">  <?= _('HTTP Connection Timeout (in Sekunden)') ?></span>
+        <input type="number" name="ilias_http_connection_timeout" value="<?= $ilias_config['http_connection_timeout'] ?? 1 ?>" required>
+    </label>
+    <label>
+        <span class="required">  <?= _('HTTP Request Timeout (in Sekunden)') ?></span>
+        <input type="number" name="ilias_http_request_timeout" value="<?= $ilias_config['http_request_timeout'] ?? 3 ?>" required>
+    </label>
     <? if ($valid_url) : ?>
         <label for="ilias_version">
             <span class="required"><?= _('ILIAS Version') ?></span>
@@ -54,10 +62,10 @@
         </label>
         <label>
             <span class="required">  <?= _('Name des ILIAS-Mandanten') ?></span>
-            <? if (count($ilias_clients) == 1) : ?>
+            <? if (isset($ilias_clients) && count($ilias_clients) == 1) : ?>
                 <input type="hidden" name="ilias_client" value="<?=htmlReady($ilias_clients[0])?>">
                 <div><?=htmlReady($ilias_clients[0])?></div>
-            <? elseif (count($ilias_clients) > 1) : ?>
+            <? elseif (isset($ilias_clients) && count($ilias_clients) > 1) : ?>
                 <select name="ilias_client">
                 <? foreach ($ilias_clients as $client_name) : ?>
                     <option value="<?=htmlReady($client_name)?>" <?= $client_name == $ilias_config['client'] ? ' selected' : ''?>><?=htmlReady($client_name)?></option>
