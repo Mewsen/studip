@@ -116,8 +116,6 @@ class LVGroupsWizardStep implements CourseWizardStep
     public function getLVGroupTreeLevel($parentId, $parentClass)
     {
         $level = [];
-        $children = [];
-        $searchtree = [];
 
         $course = Course::findCurrent();
         if ($course) {
@@ -471,8 +469,7 @@ class LVGroupsWizardStep implements CourseWizardStep
         $coursetype = 1;
         foreach ($values as $class)
         {
-            if ($class['coursetype'])
-            {
+            if (!empty($class['coursetype'])) {
                 $coursetype = $class['coursetype'];
                 break;
             }
@@ -484,8 +481,6 @@ class LVGroupsWizardStep implements CourseWizardStep
 
     public function is_locked($values)
     {
-        global $perm;
-
         // Has user access to this function? Access state is configured in global config.
         $access_right = Config::get()->MVV_ACCESS_ASSIGN_LVGRUPPEN;
 
@@ -503,7 +498,7 @@ class LVGroupsWizardStep implements CourseWizardStep
             $st->execute([$GLOBALS['user']->id, $inst_id]);
             return !$st->fetchColumn();
         }
-        return !$perm->have_studip_perm($access_right, $inst_id);
+        return $inst_id && !$GLOBALS['perm']->have_studip_perm($access_right, $inst_id);
 
     }
 
