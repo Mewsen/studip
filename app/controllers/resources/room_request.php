@@ -378,91 +378,62 @@ class Resources_RoomRequestController extends AuthenticatedController
     */
     protected function sort_request_table($requests, int $sort_variable, string $order)
     {
-        usort($requests,
-            function ($a, $b) use ($sort_variable, $order) {
+        usort(
+            $requests,
+            function (ResourceRequest $a, ResourceRequest $b) use ($sort_variable) {
                 $rangeObjA = $a->getRangeObject();
                 $rangeObjB = $b->getRangeObject();
 
-                // lecture number
-                if ($sort_variable === 2) {
-                    if ($order === 'asc') {
+                switch ($sort_variable) {
+                    case 2: // lecture number
                         return strcmp($rangeObjA->veranstaltungsnummer, $rangeObjB->veranstaltungsnummer);
-                    } else {
-                        return strcmp($rangeObjB->veranstaltungsnummer, $rangeObjA->veranstaltungsnummer);
-                    }
-                }
-                // lecture name
-                if ($sort_variable === 3) {
-                    if ($order === 'asc') {
-                        return strcmp($rangeObjA->name, $rangeObjB->name);
-                    } else {
-                        return strcmp($rangeObjB->name, $rangeObjA->name);
-                    }
-                }
-                // dozent name
-                if ($sort_variable === 4) {
-                    $a_dozent_strings = '';
-                    foreach ($rangeObjA->getMembersWithStatus('dozent') as $dozent) {
-                        $a_dozent_strings .= $dozent->nachname . ', ' . $dozent->vorname;
-                    }
+                    case 3: // lecture name
+                        return strcmp($this->getFullNameForSort($rangeObjA), $this->getFullNameForSort($rangeObjB));
+                    case 4: // dozent name
+                        $a_dozent_strings = '';
+                        foreach ($rangeObjA->getMembersWithStatus('dozent') as $dozent) {
+                            $a_dozent_strings .= $this->getFullNameForSort($dozent->user);
+                        }
 
-                    $b_dozent_strings = '';
-                    foreach ($rangeObjB->getMembersWithStatus('dozent') as $dozent) {
-                        $b_dozent_strings .= $dozent->nachname . ', ' . $dozent->vorname;
-                    }
+                        $b_dozent_strings = '';
+                        foreach ($rangeObjB->getMembersWithStatus('dozent') as $dozent) {
+                            $b_dozent_strings .= $this->getFullNameForSort($dozent->user);
+                        }
 
-                    if ($order === 'asc') {
                         return strcmp($a_dozent_strings, $b_dozent_strings);
-
-                    } else {
-                        return strcmp($b_dozent_strings, $a_dozent_strings);
-                    }
-
-                }
-                // room name
-                if ($sort_variable === 5) {
-                    if ($order === 'asc') {
+                    case 5: // room name
                         return strcmp($a->resource->name, $b->resource->name);
-                    } else {
-                        return strcmp($b->resource->name, $a->resource->name);
-                    }
-                }
-                // available seats
-                if ($sort_variable === 6) {
-                    return ($order === 'asc' ? (intval($a->getProperty('seats')) - intval($b->getProperty('seats'))) :
-                                               (intval($b->getProperty('seats')) - intval($a->getProperty('seats'))));
-                }
-                // requesting person
-                if ($sort_variable === 7) {
-                    if ($order === 'asc') {
-                        return strcmp($a->user->nachname . $a->user->vorname, $b->user->nachname . $b->user->vorname);
-                    } else {
-                        return strcmp($b->user->nachname . $b->user->vorname, $a->user->nachname . $a->user->vorname);
-                    }
-                }
-                // type
-                if ($sort_variable === 8) {
-                    if ($order === 'asc') {
-                        return strcmp($a->getTypeString(true) . $a->getStartDate()->format('YnjHis'),
-                                      $b->getTypeString(true) . $b->getStartDate()->format('YnjHis'));
-                    } else {
-                        return strcmp($b->getTypeString(true) . $b->getStartDate()->format('YnjHis'),
-                                      $a->getTypeString(true) . $a->getStartDate()->format('YnjHis'));
-                    }
-                }
-                // priority
-                if ($sort_variable === 9) {
-                    if ($order === 'asc') {
-                        return (($a->getPriority()) - $b->getPriority());
-                    } else {
-                        return (($b->getPriority()) - $a->getPriority());
-                    }
+                    case 6: // available seats
+                        return $a->getProperty('seats') - $b->getProperty('seats');
+                    case 7: // requesting person
+                        return strcmp($this->getFullNameForSort($a->user), $this->getFullNameForSort($b->user));
+                    case 8: // type
+                        return strcmp(
+                            $a->getTypeString(true) . $a->getStartDate()->format('YnjHis'),
+                            $b->getTypeString(true) . $b->getStartDate()->format('YnjHis')
+                        );
+                    case 9: // priority
+                        return $a->getPriority() - $b->getPriority();
                 }
 
                 return 0;
-        });
+            }
+        );
+
+        if ($order === 'desc') {
+            $requests = array_reverse($requests);
+        }
 
         return $requests;
+    }
+
+    private function getFullNameForSort(Range $range): string
+    {
+        if ($range instanceof User) {
+            return $range->getFullName('no_title_rev');
+        }
+
+        return $range->getFullName('name');
     }
 
     protected function getRoomAvailability(Room $room, $time_intervals = [])
