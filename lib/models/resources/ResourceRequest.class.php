@@ -1898,7 +1898,9 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
         return 'user';
     }
 
-
+    /**
+     * @return Course|User
+     */
     public function getRangeObject()
     {
         if ($this->course_id) {
