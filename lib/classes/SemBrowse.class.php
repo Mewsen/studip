@@ -753,7 +753,7 @@ class SemBrowse {
             }
             foreach ($group_by_duration as $sem_number_end => $detail) {
                 if ($sem_number_end != -1
-                        && ($detail['sem_number'][$sem_number_end]
+                        && (!empty($detail['sem_number'][$sem_number_end])
                                 && count($detail['sem_number']) == 1)) {
                     continue;
                 }
