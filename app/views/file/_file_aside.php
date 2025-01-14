@@ -16,7 +16,7 @@
                 <? $size = $file->getSize() ?>
                 <td><?= $size !== null ? relSize($file->getSize(), false) : "-" ?></td>
             </tr>
-        <? if ($file->getFolderType()->countDownloads($file->getFileRef(), true)): ?>
+        <? if ($file->getFolderType()->countDownloads()): ?>
             <tr>
                 <td><?= _('Downloads') ?></td>
                 <td><?= htmlReady($file->getDownloads()) ?></td>

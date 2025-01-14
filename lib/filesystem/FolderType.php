@@ -295,5 +295,5 @@ interface FolderType
      * If a specific file ref is passed, you may decide whether to count the
      * download for this file ref or not.
      */
-    public function countDownloads(?FileRef $ref = null, bool $display = false): bool;
+    public function countDownloads(?FileRef $ref = null): bool;
 }
