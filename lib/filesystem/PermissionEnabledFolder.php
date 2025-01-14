@@ -161,9 +161,9 @@ class PermissionEnabledFolder extends StandardFolder
         ];
     }
 
-    public function countDownloads(?FileRef $ref = null): bool
+    public function countDownloads(?FileRef $ref = null, bool $display = false): bool
     {
         return ($this->permission & $this->perms['r'])
-            && parent::countDownloads($ref);
+            && parent::countDownloads($ref, $display);
     }
 }
