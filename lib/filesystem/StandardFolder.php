@@ -423,12 +423,13 @@ class StandardFolder implements FolderType
      */
     public function isFileDownloadable(string $file_ref_id, string $user_id): bool
     {
-        $fileref = FileRef::toObject($file_ref_id);
         if ($this->range_type === 'user') {
             return $user_id === $this->range_id;
         }
 
         if (in_array($this->range_type, ['course', 'institute'])) {
+            $fileref = FileRef::find($file_ref_id);
+
             if (is_object($fileref->terms_of_use)) {
                 //terms of use are defined for this file!
                 return $this->isReadable($user_id)
@@ -452,7 +453,9 @@ class StandardFolder implements FolderType
         if ($this->range_type === 'user') {
             return $user_id === $this->range_id;
         }
-        $fileref = FileRef::toObject($file_ref_id);
+
+        $fileref = FileRef::find($file_ref_id);
+
         return $fileref->user_id === $user_id
             || $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id);
     }
@@ -471,12 +474,7 @@ class StandardFolder implements FolderType
      */
     public function isFileWritable(string $file_ref_id, string $user_id): bool
     {
-        if ($this->range_type === 'user') {
-            return $user_id === $this->range_id;
-        }
-        $fileref = FileRef::toObject($file_ref_id);
-        return $fileref->user_id == $user_id
-            || $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id);
+        return $this->isFileEditable($file_ref_id, $user_id);
     }
 
     /**

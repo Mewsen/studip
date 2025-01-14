@@ -23,7 +23,11 @@ class DocumentsProvider implements ActivityProvider
         $document = \FileRef::find($activity->object_id);
 
         // check, if current observer has access to document
-        if (!$document || !$activity->getContextObject() || !$document->folder->getTypedFolder()->isFileDownloadable($document, $activity->getContextObject()->getObserver()->id)) {
+        if (
+            !$document
+            || !$activity->getContextObject()
+            || !$document->folder->getTypedFolder()->isFileDownloadable($document->id, $activity->getContextObject()->getObserver()->id)
+        ) {
             return false;
         }
 

@@ -11,21 +11,12 @@
 
 class FeedbackFolder extends StandardFolder
 {
-    /**
-     * @param string|Object $range_id_or_object
-     * @param string        $user_id
-     * @return bool
-     */
-    public static function availableInRange($range_id_or_object, $user_id)
+    public static function availableInRange(SimpleORMap|string $range_id_or_object, string $user_id): bool
     {
         return false;
     }
 
-    /**
-     * @param string $user_id
-     * @return bool
-     */
-    public function isReadable($user_id)
+    public function isReadable(string $user_id): bool
     {
         $solution = VipsSolution::find($this->range_id);
         $assignment = $solution->assignment;
@@ -34,11 +25,7 @@ class FeedbackFolder extends StandardFolder
                $assignment->checkViewPermission() && $assignment->releaseStatus($user_id) >= 2;
     }
 
-    /**
-     * @param string $user_id
-     * @return bool
-     */
-    public function isWritable($user_id)
+    public function isWritable(string $user_id): bool
     {
         $solution = VipsSolution::find($this->range_id);
         $assignment = $solution->assignment;
@@ -46,50 +33,27 @@ class FeedbackFolder extends StandardFolder
         return $assignment->checkEditPermission();
     }
 
-    /**
-     * @param string $user_id
-     * @return bool
-     */
-    public function isEditable($user_id)
+    public function isEditable(string $user_id): bool
     {
         return false;
     }
 
-    /**
-     * @param string $user_id
-     * @return bool
-     */
-    public function isSubfolderAllowed($user_id)
+    public function isSubfolderAllowed(string $user_id): bool
     {
         return false;
     }
 
-    /**
-     * @param FileRef|string $fileref_or_id
-     * @param string $user_id
-     * @return bool
-     */
-    public function isFileDownloadable($fileref_or_id, $user_id)
+    public function isFileDownloadable(string $file_ref_id, string $user_id): bool
     {
         return $this->isReadable($user_id);
     }
 
-    /**
-     * @param FileRef|string $fileref_or_id
-     * @param string $user_id
-     * @return bool
-     */
-    public function isFileEditable($fileref_or_id, $user_id)
+    public function isFileEditable(string $file_ref_id, string $user_id): bool
     {
         return $this->isWritable($user_id);
     }
 
-    /**
-     * @param FileRef|string $fileref_or_id
-     * @param string $user_id
-     * @return bool
-     */
-    public function isFileWritable($fileref_or_id, $user_id)
+    public function isFileWritable(string $file_ref_id, string $user_id): bool
     {
         return $this->isWritable($user_id);
     }

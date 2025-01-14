@@ -1250,7 +1250,7 @@ class FileManager
 
         // loop through all files and copy them to the folder path:
         foreach ($folder->getFiles() as $file_ref) {
-            if ($folder->isFileDownloadable($file_ref, $user_id) || $ignore_perms) {
+            if ($folder->isFileDownloadable($file_ref->id, $user_id) || $ignore_perms) {
                 //The user (given by user_id) has the required permissions
                 //to download the file or the permission checks are
                 //ignored.

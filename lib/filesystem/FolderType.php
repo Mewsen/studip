@@ -253,7 +253,7 @@ interface FolderType
      * Returns an associative array of additional colums with the index the id of the column
      * and their values as the localized names of the columns
      *
-     * @return array('col1' => _("Anfragestatus"))
+     * @example return ['col1' => _('Anfragestatus')]
      */
     public function getAdditionalColumns(): array;
 

@@ -61,7 +61,7 @@ trait Helpers
             );
         }
 
-        if ($folder->isFileDownloadable($fileRef, $user->id)) {
+        if ($folder->isFileDownloadable($fileRef->id, $user->id)) {
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/choose_destination/copy/'.$fileRef->id),
                 _('Datei kopieren'),

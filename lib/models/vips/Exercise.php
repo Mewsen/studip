@@ -15,7 +15,7 @@ abstract class Exercise extends SimpleORMap
      * The unpacked value from the "task" column in the SORM instance.
      * This is an array, but type hinting does not work due to SORM
      * writing the JSON string into this property on restore().
-     */ 
+     */
     public $task = [];
 
     /**
@@ -814,7 +814,7 @@ abstract class Exercise extends SimpleORMap
                     if ($file_ref) {
                         $folder = $file_ref->folder->getTypedFolder();
 
-                        if ($folder->isFileDownloadable($file_ref, $GLOBALS['user']->id)) {
+                        if ($folder->isFileDownloadable($file_ref->id, $GLOBALS['user']->id)) {
                             if (!$this->folder->file_refs->find($file_id)) {
                                 $file = $file_ref->file;
                                 // $this->files->append($file);

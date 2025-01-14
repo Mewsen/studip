@@ -140,13 +140,14 @@ class PermissionEnabledFolder extends StandardFolder
      */
     public function isFileDownloadable(string $file_ref_id, string $user_id): bool
     {
-        $fileref = FileRef::toObject($file_ref_id);
+        $fileref = FileRef::find($file_ref_id);
 
-        if (is_object($fileref)) {
+        if ($fileref) {
             if ($this->isVisible($user_id) && $this->isFileVisible($fileref, $user_id)) {
                 return $fileref->terms_of_use->isDownloadable($this->range_id, $this->range_type, true, $user_id);
             }
         }
+
         return false;
     }
 
