@@ -55,7 +55,7 @@ test.describe('Loggin In - HTML Web Form @auth', () => {
             await benutzername.fill(credentials.autor.username);
             await passwort.fill(credentials.autor.password);
             await submit.click();
-            await expect(page.locator('#avatar-menu-container')).toBeVisible();
+            await expect(page.locator('#notification-wrapper')).toBeVisible();
             await expect(page).toHaveURL(`${baseURL}dispatch.php/start`);
         });
     });
