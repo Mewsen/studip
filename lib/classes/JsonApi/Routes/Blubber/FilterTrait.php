@@ -30,6 +30,8 @@ trait FilterTrait
         $filters['since'] = isset($filtering['since']) ? self::fromISO8601($filtering['since'])->getTimestamp() : null;
         $filters['before'] = isset($filtering['before']) ? self::fromISO8601($filtering['before'])->getTimestamp() : null;
         $filters['search'] = $filtering['search'] ?? null;
+        $filters['context-type'] = $filtering['context-type'] ?? null;
+        $filters['context-id'] = $filtering['context-id'] ?? null;
 
         return $filters;
     }
