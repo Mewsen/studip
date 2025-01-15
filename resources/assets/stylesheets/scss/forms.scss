@@ -41,8 +41,8 @@ form.default {
     input[type=password], input[type=text], input[type=time], input[type=url], input[type=tel],
     textarea, select {
         box-sizing: border-box;
-
         border: 1px solid var(--light-gray-color-40);
+        border-radius: var(--border-radius-default);
         color: var(--dark-gray-color);
         max-width: $max-width-m;
         padding: 5px;
@@ -529,10 +529,10 @@ form.default {
 
     // designing vue-select in studipform:
     .vs__dropdown-toggle {
-        border-radius: 0;
+        border-radius: var(--border-radius-default);
     }
     .vs__selected {
-        border-radius: 0;
+        border-radius: var(--border-radius-default);
         padding: 5px;
     }
 

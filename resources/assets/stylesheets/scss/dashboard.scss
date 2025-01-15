@@ -137,6 +137,8 @@ form div.files-search {
             margin: 0;
             border-top-left-radius: var(--border-radius-search);
             border-bottom-left-radius: var(--border-radius-search);
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
         }
 
         .input-group-append {

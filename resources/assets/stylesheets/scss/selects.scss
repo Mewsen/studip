@@ -1,6 +1,6 @@
 $select-border: 1px solid var(--light-gray-color-40);
 $select-border-focus: 1px solid var(--brand-color-dark);
-$select-border-radius: 0;
+$select-border-radius: var(--border-radius-default);
 $select-height-default: 30px;
 $select-arrow-size: 10px;
 
