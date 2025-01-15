@@ -116,7 +116,7 @@ lint-php:
       codequality: $PHPLINT_CODE_QUALITY_REPORT
 
 lint-php-7.4:
-  image: studip/studip:tests-php8.2
+  image: studip/studip:tests-php7.4
   stage: checks
   needs: [build-composer]
   variables:
