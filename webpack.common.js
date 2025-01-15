@@ -104,7 +104,8 @@ module.exports = {
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({
             filename: "stylesheets/[name].css",
-            chunkFilename: "stylesheets/[name].css?h=[chunkhash]"
+            chunkFilename: "stylesheets/[name].css?h=[chunkhash]",
+            ignoreOrder: true,
         }),
         new ESLintPlugin({
             configType: 'flat',

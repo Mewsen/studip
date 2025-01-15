@@ -50,10 +50,7 @@ export default {
         },
         updateRenewal() {
             const date = new Date(this.date);
-            date.setHours(23);
-            date.setMinutes(59);
-            date.setSeconds(59);
-            date.setMilliseconds(999);
+            date.setHours(23, 59, 59, 999);
 
             this.$emit('update', {
                 state: this.state,

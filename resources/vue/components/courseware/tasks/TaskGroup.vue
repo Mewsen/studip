@@ -3,7 +3,9 @@
         <section v-if="tasks.length > 0">
             <table class="default">
                 <caption>
-                    {{ $gettext('Verteilte Aufgaben') }}
+                    {{
+                        $gettext('Verteilte Aufgaben')
+                    }}
                 </caption>
                 <thead>
                     <tr>
@@ -29,6 +31,12 @@
                     />
                 </tbody>
             </table>
+
+            <PeerReviewProcesses
+                :taskGroup="taskGroup"
+                @add-peer-review-process="$emit('add-peer-review-process', taskGroup)"
+                class="cw-task-group-peer-review-processes"
+            />
         </section>
         <div v-else>
             <CompanionBox mood="pointing" :msgCompanion="$gettext('Diese Aufgabe wurde an niemanden verteilt.')" />
@@ -39,10 +47,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import CompanionBox from '../layouts/CoursewareCompanionBox.vue';
+import PeerReviewProcesses from './TaskGroupPeerReviewProcesses.vue';
 import TaskItem from './TaskGroupTaskItem.vue';
 
 export default {
-    components: { CompanionBox, TaskItem },
+    components: { CompanionBox, PeerReviewProcesses, TaskItem },
     emits: ['add-feedback', 'edit-feedback', 'solve-renewal'],
     props: ['taskGroup', 'tasks'],
     computed: {
@@ -58,3 +67,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.cw-task-group-peer-review-processes {
+    margin-block-start: 3rem;
+}
+</style>

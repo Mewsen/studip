@@ -473,9 +473,7 @@ export default {
         combineDateAndTime(date, time) {
             const [hour, minute] = time.split(':').map(item => parseInt(item, 10));
             const result = new Date(date);
-            result.setHours(hour);
-            result.setMinutes(minute);
-            result.setSeconds(0);
+            result.setHours(hour, minute, 0, 0);
             return result;
         }
     },

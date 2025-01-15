@@ -5,6 +5,7 @@ namespace JsonApi\Routes\Courseware;
 use Courseware\Task;
 use JsonApi\Errors\AuthorizationFailedException;
 use JsonApi\Errors\RecordNotFoundException;
+use JsonApi\Schemas\Courseware\PeerReview as PeerReviewSchema;
 use JsonApi\Schemas\Courseware\Task as TaskSchema;
 use JsonApi\Schemas\Courseware\TaskGroup as TaskGroupSchema;
 use JsonApi\JsonApiController;
@@ -18,10 +19,13 @@ class TasksShow extends JsonApiController
 {
     protected $allowedIncludePaths = [
         TaskSchema::REL_FEEDBACK,
+        TaskSchema::REL_PEER_REVIEWS,
+        TaskSchema::REL_PEER_REVIEWS . '.' . PeerReviewSchema::REL_PROCESS,
         TaskSchema::REL_SOLVER,
         TaskSchema::REL_STRUCTURAL_ELEMENT,
         TaskSchema::REL_TASK_GROUP,
         TaskSchema::REL_TASK_GROUP . '.' . TaskGroupSchema::REL_LECTURER,
+        TaskSchema::REL_TASK_GROUP . '.' . TaskGroupSchema::REL_PEER_REVIEW_PROCESSES,
     ];
 
     /**

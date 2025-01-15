@@ -183,22 +183,20 @@ export default {
 
         getSolverName(taskId) {
             const task = this.taskById({ id: taskId });
-            if (task === undefined) {
-                return false;
-            }
-            const solver = task.relationships.solver.data;
-            if (solver.type === 'users') {
-                const user = this.userById({ id: solver.id });
+            if (task) {
+                const solver = task.relationships.solver.data;
+                if (solver?.type === 'users') {
+                    const user = this.userById({ id: solver.id });
 
-                return user.attributes['formatted-name'];
-            }
-            if (solver.type === 'status-groups') {
-                const group = this.groupById({ id: solver.id });
+                    return user.attributes['formatted-name'];
+                }
+                if (solver?.type === 'status-groups') {
+                    const group = this.groupById({ id: solver.id });
 
-                return group.attributes.name;
+                    return group.attributes.name;
+                }
             }
-
-            return false;
+            return null;
         },
     },
 };

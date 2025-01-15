@@ -1,0 +1,39 @@
+<template>
+    <ul>
+        <li v-if="options.anonymous">{{ $gettext('Anonymes Review') }}</li>
+        <li v-else>{{ $gettext('Offenes Review') }}</li>
+
+        <li>
+            {{
+                $gettextInterpolate($gettext('%{n} Tage Zeit für das Review'), {
+                    n: options.duration,
+                })
+            }}
+        </li>
+
+        <li>
+            {{ reviewTypes[options.type].long }}
+        </li>
+
+        <li v-if="options.automaticPairing">
+            {{ $gettext('Zusammenstellung der Review-Paarungen durch das Programm') }}
+        </li>
+        <li v-else>{{ $gettext('Zusammenstellung der Review-Paarungen durch die Lehrenden') }}</li>
+    </ul>
+</template>
+
+<script>
+import { ProcessConfiguration, ASSESSMENT_TYPES } from './process-configuration';
+
+export default {
+    props: {
+        options: {
+            required: true,
+            type: Object,
+        },
+    },
+    computed: {
+        reviewTypes: () => ASSESSMENT_TYPES,
+    },
+};
+</script>

@@ -285,7 +285,7 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
                 if ($this->range_id === $user->id) {
                     return true;
                 }
-                
+
                 return $this->hasWriteContentApproval($user);
 
             case 'course':
@@ -420,6 +420,8 @@ class StructuralElement extends \SimpleORMap implements \PrivacyObject, \Feedbac
                     }
 
                     return $task->userIsASolver($user);
+                    // TODO (mel): Das ist die ursprüngliche Variante, die aber jetzt kompliziert ist. Mit Nico sprechen!
+                    // return $task->userIsASolver($user) || $task->userIsAPeerReviewer($user);
                 }
 
                 if ($this->canEdit($user)) {
