@@ -18,6 +18,7 @@ class LoginController extends AuthenticatedController
     public function __construct(\Trails\Dispatcher $dispatcher)
     {
         Config::get()->USER_VISIBILITY_CHECK = false;
+        Request::set('cid', null);
         parent::__construct($dispatcher);
     }
 
