@@ -15,7 +15,7 @@ function attachComponents(app, configuredComponents) {
                     ) {
                         this.$el.closest('.studip-dialog')
                             .querySelector('.ui-dialog-buttonpane')
-                            .remove();
+                            ?.remove();
                     }
                     if (mounted) {
                         mounted.call(this, args);

@@ -36,7 +36,7 @@
                         </td>
                         <td>
                             <input type="text"
-                                   ref="inputs"
+                                   :ref="`inputs-${index}`"
                                    :placeholder="label"
                                    @paste="(ev) => onPaste(ev, index)"
                                    v-model="element.value">
@@ -93,30 +93,21 @@ export default {
     data() {
         return {
             assistiveLive: '',
+            options: this.modelValue.map((element, index) => ({
+                value: element,
+                index: index,
+            })),
         };
-    },
-    computed: {
-        options: {
-            get() {
-                return this.modelValue.map((element, index) => ({
-                    value: element,
-                    index: index,
-                }));
-            },
-            set(value) {
-                this.$emit('update:modelValue', value.map(element => element.value));
-            }
-        }
     },
     methods: {
         addOption(val = '', position = this.options.length) {
-            this.$set(this.options, position, {
+            this.options.splice(position, 0, {
                 value: val.trim(),
                 index: position,
             });
 
             this.$nextTick(() => {
-                this.$refs.inputs[position].focus();
+                this.$refs[`inputs-${position}`].focus();
             });
         },
         deleteOption(index) {
@@ -169,6 +160,14 @@ export default {
 
             return Promise.resolve(index + direction);
         },
+    },
+    watch: {
+        options: {
+            handler(current) {
+                this.$emit('update:model-value', current.map(element => element.value));
+            },
+            deep: true,
+        }
     }
 }
 </script>

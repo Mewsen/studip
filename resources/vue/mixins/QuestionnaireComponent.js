@@ -1,5 +1,5 @@
 export const QuestionnaireComponent = {
-    emits: ['update:modelValue'],
+    emits: ['update:model-value'],
     props: {
         modelValue: Object
     },
@@ -16,7 +16,7 @@ export const QuestionnaireComponent = {
     watch: {
         val_clone: {
             handler(current) {
-                this.$emit('update:modelValue', current);
+                this.$emit('update:model-value', current);
             },
             deep: true
         },
