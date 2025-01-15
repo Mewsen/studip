@@ -88,8 +88,8 @@ class AdvancedBasicDataWizardStep extends BasicDataWizardStep
         }
 
         // Add advanced data
-        $course->untertitel = new I18NString($values[__CLASS__]['subtitle'], $values[__CLASS__]['subtitle_i18n']);
-        $course->art = new I18NString($values[__CLASS__]['kind'], $values[__CLASS__]['kind_i18n']);
+        $course->untertitel = new I18NString($values[__CLASS__]['subtitle'], $values[__CLASS__]['subtitle_i18n'] ?? []);
+        $course->art = new I18NString($values[__CLASS__]['kind'], $values[__CLASS__]['kind_i18n'] ?? []);
         $course->ects = $values[__CLASS__]['ects'];
         $course->admission_turnout = $values[__CLASS__]['maxmembers'];
         if ($course->store() === false) {
