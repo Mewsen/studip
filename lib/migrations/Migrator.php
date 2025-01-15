@@ -247,7 +247,11 @@ class Migrator
             $this->schema_version->set($this->isDown($branch) ? $version - 1 : $version, $branch);
 
             $action = $this->isUp($branch) ? 'MIGRATE_UP' : 'MIGRATE_DOWN';
-            StudipLog::log($action, $number, $this->schema_version->getDomain());
+            StudipLog::log(
+                $action,
+                $number,
+                substr($this->schema_version->getDomain(), 0, 32)
+            );
         }
     }
 
