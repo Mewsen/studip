@@ -135,6 +135,9 @@
         max-height: 30px;
         overflow: hidden;
         background-color: var(--color--main-navigation-background);
+        text-overflow: ellipsis;
+        max-width: calc(100vw - 110px);
+        white-space: nowrap;
 
         > .context-avatar {
             margin: 0 5px 0 -6px;
