@@ -76,22 +76,7 @@ button.button {
         }
     }
 }
-
-$button-icons: (
-    accept: accept,
-    cancel: decline,
-    edit: edit,
-    move-up: arr_1up,
-    move-down: arr_1down,
-    add: add,
-    trash: trash,
-    download: download,
-    search: search,
-    arr_left: arr_1left,
-    arr_right: arr_1right,
-    refresh: refresh,
-);
-
+// $button-icons is a map of class names and icon names located in resources/assets/stylesheets/scss/_variables.scss
 @each $class, $icon in $button-icons {
     .button {
         &.#{'' + $class} {
