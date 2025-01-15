@@ -21,6 +21,15 @@ div.i18n_group {
         background-size: 20px auto;
         padding: 0 2px 0 28px !important;
 
+        &.i18n-textarea {
+            border-top-left-radius: var(--border-radius-default);
+        }
+
+        &.i18n-input{
+            border-top-left-radius: var(--border-radius-default);
+            border-bottom-left-radius: var(--border-radius-default);
+        }
+
         > option {
             background-position: left 1px center;
             background-repeat: no-repeat;

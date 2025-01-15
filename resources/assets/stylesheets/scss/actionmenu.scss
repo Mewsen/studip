@@ -32,7 +32,7 @@ $action-menu-shadow: 2px 2px 0 var(--color--action-menu-shadow);
 
         background: var(--white);
         border: thin solid var(--color--action-menu-border);
-        border-radius: $border-radius;
+        border-radius: var(--border-radius-default);
         box-shadow: $action-menu-shadow;
         font-weight: normal;
         text-align: left;

@@ -31,6 +31,7 @@
                :required="required && defaultLanguage === language.id"
                :name="nameOfInput(language.id)">
         <select class="i18n"
+                :class="[type === 'text' ? 'i18n-input' : 'i18n-textarea']"
                 tabindex="0"
                 @change="selectLanguage"
                 :aria-label="$gettext('Sprache des Textfeldes auswählen.')"
