@@ -16,7 +16,7 @@ class ThreadsIndex extends JsonApiController
 {
     use TimestampTrait, FilterTrait;
 
-    protected $allowedFilteringParameters = ['since', 'before', 'search'];
+    protected $allowedFilteringParameters = ['since', 'before', 'search', 'context-type', 'context-id'];
     protected $allowedIncludePaths = ['author', 'comments', 'context', 'mentions'];
     protected $allowedPagingParameters = ['offset', 'limit'];
 
@@ -25,34 +25,31 @@ class ThreadsIndex extends JsonApiController
      */
     public function __invoke(Request $request, Response $response, $args)
     {
+        $this->validateFilters();
+        $filters = $this->getFilters();
         $contextType = $args['type'];
+        $contextId = isset($args['id']) ? $args['id'] : null;
+
+        if ($contextType === 'all') {
+            if (isset($filters['context-type'])) {
+                $contextType = $filters['context-type'];
+            }
+            if (isset($filters['context-id'])) {
+                $contextId = $filters['context-id'];
+            }
+        }
+
         if (!in_array($contextType, ['all', 'public', 'private', 'course', 'institute'])) {
             throw new BadRequestException('Wrong context type.');
         }
 
-        switch ($contextType) {
-            case 'all':
-                $this->validateFilters();
-                $filters = $this->getFilters();
-                list($threads, $total) = $this->getAllThreads($filters, $this->getUser($request));
-                break;
-
-            case 'public':
-                list($threads, $total) = $this->getPublicThreads($this->getUser($request));
-                break;
-
-            case 'private':
-                list($threads, $total) = $this->getPrivateThreads($this->getUser($request), $args['id']);
-                break;
-
-            case 'course':
-                list($threads, $total) = $this->getCourseThreads($this->getUser($request), $args['id']);
-                break;
-
-            case 'institute':
-                list($threads, $total) = $this->getInstituteThreads($this->getUser($request), $args['id']);
-                break;
-        }
+        [$threads, $total] = match ($contextType) {
+            'all' => $this->getAllThreads($filters, $this->getUser($request)),
+            'public' => $this->getPublicThreads($this->getUser($request)),
+            'private' => $this->getPrivateThreads($this->getUser($request), $contextId),
+            'course' => $this->getCourseThreads($this->getUser($request), $contextId),
+            'institute' => $this->getInstituteThreads($this->getUser($request), $contextId),
+        };
 
         return $this->getPaginatedContentResponse($threads, $total);
     }
