@@ -72,6 +72,10 @@ $gap-between-boxes: calc($login-page-margin / 2);
         color: var(--black);
         position: relative;
 
+        &.hide {
+            display: none;
+        }
+
         &.no-toggle {
             padding: 32px;
         }
