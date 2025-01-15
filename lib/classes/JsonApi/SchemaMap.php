@@ -81,6 +81,8 @@ class SchemaMap
             \Courseware\Clipboard::class => Schemas\Courseware\Clipboard::class,
             \Courseware\Container::class => Schemas\Courseware\Container::class,
             \Courseware\Instance::class => Schemas\Courseware\Instance::class,
+            \Courseware\PeerReview::class => Schemas\Courseware\PeerReview::class,
+            \Courseware\PeerReviewProcess::class => Schemas\Courseware\PeerReviewProcess::class,
             \Courseware\PublicLink::class => Schemas\Courseware\PublicLink::class,
             \Courseware\StructuralElement::class => Schemas\Courseware\StructuralElement::class,
             \Courseware\StructuralElementComment::class => Schemas\Courseware\StructuralElementComment::class,

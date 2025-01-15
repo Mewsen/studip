@@ -530,15 +530,9 @@ export default {
             }
             this.distributing = true;
             const startDate = new Date(this.startDate);
-            startDate.setHours(0);
-            startDate.setMinutes(0);
-            startDate.setSeconds(0);
-            startDate.setMilliseconds(0);
+            startDate.setHours(0, 0, 0, 0);
             const endDate = new Date(this.endDate);
-            endDate.setHours(23);
-            endDate.setMinutes(59);
-            endDate.setSeconds(59);
-            endDate.setMilliseconds(999);
+            endDate.setHours(23, 59, 59, 999);
             const taskGroup = {
                 attributes: {
                     title: this.taskTitle,

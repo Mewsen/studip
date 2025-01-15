@@ -44,8 +44,10 @@
                                     :title="structuralElement.attributes.title"
                                 >
                                     <span>{{ structuralElement.attributes.title || '–' }}</span>
-                                    <span v-if="isTask">[ {{ solverName }} ]</span>
-                                    <template v-if="!userIsTeacher && inCourse">
+                                    <span v-if="isTask">
+                                        [ {{ (!userIsSolver && userIsReviewer && isPeerReviewAnonymous) ? $gettext('anonym') : solverName }} ]
+                                    </span>
+                                    <template v-if="inCourse && !(userIsTeacher || userIsReviewer)">
                                         <studip-icon
                                             v-if="complete"
                                             shape="accept"
@@ -134,6 +136,9 @@
                                 </template>
                             </courseware-call-to-action-box>
                             <div v-if="structuralElementLoaded && !isLink" class="cw-companion-box-wrapper">
+                                <StudipMessageBox v-if="userIsReviewer">
+                                    {{ $gettext('Diese Seite gehört zu einer Aufgabe, die von einer anderen Person bearbeitet wird.') }}
+                                </StudipMessageBox>
                                 <courseware-companion-box
                                     v-if="!canVisit"
                                     mood="sad"
@@ -152,6 +157,22 @@
                                     <template #companionActions>
                                         <button v-if="userIsTeacher" class="button" @click="menuAction('removeLock')">
                                             {{ textRemoveLock.title }}
+                                        </button>
+                                    </template>
+                                </courseware-companion-box>
+                                <courseware-companion-box
+                                    v-for="peerReview in peerReviews"
+                                    :key="peerReview.id"
+                                    mood="pointing"
+                                    :msgCompanion="peerReviewCompanionMessage(peerReview)"
+                                    >
+                                    <template #companionActions>
+                                        <button
+                                            class="button"
+                                            @click="openPeerReview(peerReview)"
+                                            :disabled="!canReadPeerReviewAssessment(peerReview)"
+                                            >
+                                            {{ peerReviewCompanionAction(peerReview) }}
                                         </button>
                                     </template>
                                 </courseware-companion-box>
@@ -370,6 +391,16 @@
                     v-if="showPublicLinkDialog && inContent"
                     :structuralElement="structuralElement"
                 />
+                <PeerReviewAssessmentDialog
+                    v-model:show="showPeerReviewAssessment"
+                    v-if="selectedPeerReview"
+                    :review="selectedPeerReview"
+                    />
+                <PeerReviewResultDialog
+                    v-model:show="showPeerReviewResult"
+                    v-if="selectedPeerReview"
+                    :review="selectedPeerReview"
+                    />
                 <feedback-dialog
                     v-if="showFeedbackDialog"
                     :feedbackElementId="parseInt(feedbackElementId)"
@@ -435,6 +466,9 @@ import CoursewareStructuralElementDiscussion from './CoursewareStructuralElement
 
 import CoursewareWelcomeScreen from './CoursewareWelcomeScreen.vue';
 import CoursewareRibbon from "./CoursewareRibbon.vue";
+import PeerReviewAssessmentDialog from '../tasks/peer-review/AssessmentDialog.vue';
+import PeerReviewResultDialog from '../tasks/peer-review/ResultDialog.vue';
+import { getProcessStatus, ProcessStatus } from '../tasks/peer-review/definitions.ts';
 import CoursewareExport from '@/vue/mixins/courseware/export.js';
 
 import colorMixin from '@/vue/mixins/courseware/colors.js';
@@ -446,6 +480,7 @@ import { FocusTrap } from 'focus-trap-vue';
 import FeedbackDialog from '../../feedback/FeedbackDialog.vue';
 import FeedbackCreateDialog from '../../feedback/FeedbackCreateDialog.vue';
 import StudipFiveStars from '../../feedback/StudipFiveStars.vue';
+import StudipMessageBox from '../../StudipMessageBox.vue';
 import StudipProgressIndicator from '../../StudipProgressIndicator.vue';
 import draggable from 'vuedraggable';
 import containerMixin from '@/vue/mixins/courseware/container.js';
@@ -481,7 +516,10 @@ export default {
         FeedbackCreateDialog,
         StudipFiveStars,
         FocusTrap,
+        PeerReviewAssessmentDialog,
+        PeerReviewResultDialog,
         StudipDialog,
+        StudipMessageBox,
         StudipProgressIndicator,
         draggable,
         CoursewareRibbon,
@@ -511,6 +549,9 @@ export default {
             consumModeTrap: false,
             keyboardSelected: null,
             assistiveLive: '',
+            showPeerReviewAssessment: false,
+            showPeerReviewResult: false,
+            selectedPeerReview: null,
             displayFeedback: false,
             showRatingPopup: false,
             ratingPopupFeedbackElement: null,
@@ -535,6 +576,8 @@ export default {
             context: 'context',
             containerById: 'courseware-containers/byId',
             relatedContainers: 'courseware-containers/related',
+            relatedPeerReviewProcesses: 'courseware-peer-review-processes/related',
+            relatedPeerReviews: 'courseware-peer-reviews/related',
             relatedStructuralElements: 'courseware-structural-elements/related',
             getRelatedFeedback: 'courseware-structural-element-feedback/related',
             getRelatedComments: 'courseware-structural-element-comments/related',
@@ -645,7 +688,7 @@ export default {
             if (this.context.type === 'courses' && this.currentElement.relationships) {
                 if (
                     this.currentElement.relationships.course &&
-                    this.context.id === this.currentElement.relationships.course.data.id
+                        this.context.id === this.currentElement.relationships.course.data.id
                 ) {
                     return true;
                 }
@@ -654,7 +697,7 @@ export default {
             if (this.context.type === 'users' && this.currentElement.relationships) {
                 if (
                     this.currentElement.relationships.user &&
-                    this.context.id === this.currentElement.relationships.user.data.id
+                        this.context.id === this.currentElement.relationships.user.data.id
                 ) {
                     return true;
                 }
@@ -969,10 +1012,10 @@ export default {
         solver() {
             if (this.task) {
                 const solver = this.task.relationships.solver.data;
-                if (solver.type === 'users') {
+                if (solver?.type === 'users') {
                     return this.userById({ id: solver.id });
                 }
-                if (solver.type === 'status-groups') {
+                if (solver?.type === 'status-groups') {
                     return this.groupById({ id: solver.id });
                 }
             }
@@ -988,8 +1031,7 @@ export default {
                     return this.solver.attributes.name;
                 }
             }
-
-            return '';
+            return null;
         },
         canAddElements() {
             if (!this.isTask) {
@@ -1042,7 +1084,7 @@ export default {
         },
         elementProgress() {
             if (this.structuralElementLoaded) {
-                return this.progressData?.[this.structuralElement.id].progress.self;
+                return this.progressData?.[this.structuralElement.id].progress?.self ?? 0;
             }
 
             return 0;
@@ -1105,6 +1147,30 @@ export default {
                 this.commentsCounter,
                 { length: this.commentsCounter }
             );
+        },
+        userIsReviewer() {
+            return this.peerReviews.some((peerReview) => peerReview.attributes['is-reviewer']);
+        },
+        userIsSolver() {
+            return this.peerReviews.some((peerReview) => peerReview.attributes['is-submitter']);
+        },
+        peerReviews() {
+            if (this.task) {
+                return this.relatedPeerReviews({
+                    parent: { id: this.task.id, type: this.task.type },
+                    relationship: 'peer-reviews',
+                }) ?? [];
+            }
+            return [];
+        },
+        isPeerReviewAnonymous() {
+            return this.peerReviews.every(({ id, type }) => {
+                const process = this.relatedPeerReviewProcesses({
+                    parent: { id, type },
+                    relationship: 'process',
+                });
+                return process.attributes.configuration.anonymous;
+            });
         },
     },
 
@@ -1366,17 +1432,19 @@ export default {
                 ref.initCurrentData();
             }
         },
-        async loadFeedback() {
+        loadFeedback() {
             const parent = {
                 type: this.currentElement.type,
                 id: this.currentElement.id,
             };
-            await this.loadRelatedFeedback({
+            return this.loadRelatedFeedback({
                 parent,
                 relationship: 'feedback',
                 options: {
                     include: 'user',
                 },
+            }).catch((error) => {
+                console.error("Could not load feedback");
             });
         },
         keyHandler(e, containerId) {
@@ -1604,6 +1672,52 @@ export default {
                     }
                 }
             });
+        },
+
+        getPeerReviewProcess(review) {
+            return this.relatedPeerReviewProcesses({
+                parent: { id: review.id, type: review.type },
+                relationship: 'process',
+            });
+        },
+        canReadPeerReviewAssessment(peerReview) {
+            if (peerReview.attributes['is-reviewer']) {
+                return true;
+            }
+            const process = this.getPeerReviewProcess(peerReview);
+            const isAfter = getProcessStatus(process)?.status === ProcessStatus.After;
+            return (this.userIsTeacher || peerReview.attributes['is-submitter']) && isAfter;
+        },
+        openPeerReview(peerReview) {
+            this.selectedPeerReview = peerReview;
+            if (peerReview.attributes['is-reviewer']) {
+                this.showPeerReviewAssessment = true;
+            } else {
+                this.showPeerReviewResult = true;
+            }
+        },
+        peerReviewCompanionAction(peerReview) {
+            const process = this.getPeerReviewProcess(peerReview);
+            if (peerReview.attributes['is-reviewer'] && getProcessStatus(process)?.status === ProcessStatus.Active) {
+                return this.$gettext('Peer-Review geben');
+            }
+            return this.$gettext('Peer-Review einsehen');
+        },
+        peerReviewCompanionMessage(peerReview) {
+            let message;
+            if (peerReview.attributes['is-reviewer']) {
+                message = this.$gettext('Sie beurteilen diese Aufgabe im Rahmen eines Peer-Reviews.');
+            } else if (peerReview.attributes['is-submitter']) {
+                message = this.$gettext('Sie haben zu Ihrer Aufgabe ein Peer-Review erhalten.');
+            } else {
+                message = this.$gettext('Diese Aufgabe hat ein Peer-Review erhalten.');
+            }
+
+            if (this.canReadPeerReviewAssessment(peerReview)) {
+                return message;
+            }
+
+            return `${message} ${this.$gettext('Sie können es jedoch nicht öffnen, da der Bearbeitungszeitraum noch nicht abgelaufen ist.')}`;
         },
     },
     created() {

@@ -24,6 +24,12 @@
                         {{ $gettext('Aufgabe verteilen') }}
                     </button>
                 </li>
+                <li v-if="taskGroup && !hasPeerReviewProcesses" class="cw-action-widget-add">
+                    <button @click="$emit('add-peer-review-process')">
+                        {{ $gettext('Peer-Review-Verfahren aktivieren') }}
+                    </button>
+                </li>
+
             </ul>
         </template>
     </sidebar-widget>
@@ -39,7 +45,7 @@ export default {
     components: {
         SidebarWidget,
     },
-    props: ['taskGroup'],
+    props: ['hasPeerReviewProcesses', 'taskGroup'],
     computed: {
         isBeforeEndDate() {
             return this.taskGroup && new Date() < new Date(this.taskGroup.attributes['end-date']);

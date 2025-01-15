@@ -25,6 +25,7 @@ class TasksIndex extends JsonApiController
         TaskSchema::REL_STRUCTURAL_ELEMENT,
         TaskSchema::REL_TASK_GROUP,
         TaskSchema::REL_TASK_GROUP . '.' . TaskGroupSchema::REL_LECTURER,
+        TaskSchema::REL_TASK_GROUP . '.' . TaskGroupSchema::REL_PEER_REVIEW_PROCESSES,
     ];
 
     /**

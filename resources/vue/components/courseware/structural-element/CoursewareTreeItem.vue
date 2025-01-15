@@ -32,7 +32,7 @@
                     <studip-icon shape="edit" />
                 </button>
 
-                <span v-if="task">| {{ solverName }}</span>
+                <span v-if="task">| {{ solverName ?? $gettext("anonym") }}</span>
                 <span
                     v-if="hasReleaseOrWithdrawDate"
                     class="cw-tree-item-flag-date"
@@ -44,7 +44,7 @@
                     :title="canWriteFlagTitle"
                 ></span>
                 <span v-if="hasNoReadApproval" class="cw-tree-item-flag-cant-read" :title="cantReadFlagTitle"></span>
-                <template v-if="!userIsTeacher && inCourse">
+                <template v-if="!(userIsTeacher || userIsReviewer)  && inCourse">
                     <span
                         v-if="complete"
                         class="cw-tree-item-sequential cw-tree-item-sequential-complete"
@@ -408,10 +408,10 @@ export default {
         solver() {
             if (this.task) {
                 const solver = this.task.relationships.solver.data;
-                if (solver.type === 'users') {
+                if (solver?.type === 'users') {
                     return this.userById({ id: solver.id });
                 }
-                if (solver.type === 'status-groups') {
+                if (solver?.type === 'status-groups') {
                     return this.groupById({ id: solver.id });
                 }
             }
@@ -428,7 +428,7 @@ export default {
                 }
             }
 
-            return '';
+            return null;
         },
         isTask() {
             return this.element.attributes?.purpose === 'task';
@@ -461,6 +461,9 @@ export default {
         },
         complete() {
             return this.itemProgress === 100;
+        },
+        userIsReviewer() {
+            return this.task ? this.task.attributes['can-peer-review'] : false;
         },
     },
     methods: {
