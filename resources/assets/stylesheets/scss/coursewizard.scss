@@ -33,6 +33,10 @@ div {
       margin-bottom: 1em;
       padding: 0 0 0 5px;
 
+      > input[type="text"] {
+        max-width: calc(100% - 50px);
+      }
+
       &:focus-within {
         border: solid 2px var(--black);
       }
@@ -43,10 +47,11 @@ div {
       }
   
       #sem-tree-search-start {
-        height: 30px;
-        border-left: solid thin #ccc;
         display: inline-block;
+        height: 30px;
         width: 30px;
+        border-left: solid thin var(--color--input-field-border);
+        padding-left: 4px;
 
         input {
           vertical-align: middle;
