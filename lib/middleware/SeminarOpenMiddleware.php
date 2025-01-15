@@ -159,7 +159,7 @@ final class SeminarOpenMiddleware implements MiddlewareInterface
             } catch (\LoginException $e) {
                 $response = $this->response_factory->createResponse(302);
                 $_SESSION['redirect_after_login'] = \Request::url();
-                return $response->withHeader('Location', \URLHelper::getURL('dispatch.php/login'));
+                return $response->withHeader('Location', \URLHelper::getScriptURL('dispatch.php/login'));
             }
             unset($course_id);
         }
