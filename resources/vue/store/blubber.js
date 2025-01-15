@@ -170,7 +170,7 @@ export default {
             commit('setMoreOlder', { id, hasMore });
         },
 
-        async fetchThreads({ commit, dispatch, getters, rootGetters }, { search, more = false }) {
+        async fetchThreads({ commit, dispatch, getters, rootGetters }, { search, course = false, more = false }) {
             if (getters.isLoadingThreads) {
                 return;
             }
@@ -183,6 +183,10 @@ export default {
             const filter = {};
             if (search) {
                 filter['search'] = search;
+            }
+            if (course) {
+                filter['context-type'] = 'course';
+                filter['context-id'] = course;
             }
             if (more) {
                 const earliestDate = rootGetters['blubber-threads/all'].reduce((earliest, thread) => {

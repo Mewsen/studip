@@ -20,11 +20,17 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { useContext } from '../../composables/context.js';
 import BlubberPanel from './Panel.vue';
 import BlubberSearchWidget from './SearchWidget.vue';
 import BlubberThreadsWidget from './ThreadsWidget.vue';
 
 export default {
+    setup() {
+        const { id, isCourse } = useContext();
+
+        return { cid: id, isCourse };
+    },
     props: {
         initialThreadId: {
             type: String,
@@ -66,7 +72,7 @@ export default {
         },
     },
     async beforeMount() {
-        await this.fetchThreads({ search: this.search });
+        await this.fetchThreads({ search: this.search, course: this.isCourse ? this.cid : null });
         this.onSelectThread(this.initialThreadId, false);
 
         this.handleSelectBlubberThread = (threadId) => {
