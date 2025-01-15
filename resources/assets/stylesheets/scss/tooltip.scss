@@ -21,6 +21,15 @@
 
 .studip-tooltip {
     @extend %tooltip;
+    &.studip-tooltip-top {
+        @include arrow-top-border(9px, $dark-gray-color-5, 1px, $dark-gray-color-30, 5px);
+        &::before {
+            top: -18px;
+        }
+        &::after {
+            top: -16px;
+        }
+    }
 }
 
 .tooltip {
