@@ -43,13 +43,17 @@ class ThreadsIndex extends JsonApiController
             throw new BadRequestException('Wrong context type.');
         }
 
-        [$threads, $total] = match ($contextType) {
-            'all' => $this->getAllThreads($filters, $this->getUser($request)),
-            'public' => $this->getPublicThreads($this->getUser($request)),
-            'private' => $this->getPrivateThreads($this->getUser($request), $contextId),
-            'course' => $this->getCourseThreads($this->getUser($request), $contextId),
-            'institute' => $this->getInstituteThreads($this->getUser($request), $contextId),
-        };
+        if ($contextType === 'all') {
+            [$threads, $total] = $this->getAllThreads($filters, $this->getUser($request));
+        } elseif ($contextType === 'public') {
+            [$threads, $total] = $this->getPublicThreads($this->getUser($request));
+        } elseif ($contextType === 'private') {
+            [$threads, $total] = $this->getPrivateThreads($this->getUser($request), $contextId);
+        } elseif ($contextType === 'course') {
+            [$threads, $total] = $this->getCourseThreads($this->getUser($request), $contextId);
+        } elseif ($contextType === 'institute') {
+            [$threads, $total] = $this->getInstituteThreads($this->getUser($request), $contextId);
+        }
 
         return $this->getPaginatedContentResponse($threads, $total);
     }
