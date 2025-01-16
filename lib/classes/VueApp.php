@@ -83,6 +83,15 @@ final class VueApp implements Stringable
     }
 
     /**
+     * Set the content of a slot.
+     */
+    public function setSlot(string $name, string|Template $content): VueApp
+    {
+        $this->slots[$name] = $content instanceof Template ? $content->render() : $content;
+        return $this;
+    }
+
+    /**
      * Add a slot with the given name
      *
      * If you pass a flexi template as the content, it will be rendered.

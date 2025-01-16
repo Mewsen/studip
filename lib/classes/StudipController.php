@@ -593,7 +593,11 @@ abstract class StudipController extends Trails\Controller
      */
     public function render_vue_app(\Studip\VueApp $app): void
     {
+        \NotificationCenter::postNotification('VueAppWillRender', $app);
+
         $this->render_template($app->getTemplate(), $this->layout);
+
+        \NotificationCenter::postNotification('VueAppDidRender', $app);
     }
 
 
