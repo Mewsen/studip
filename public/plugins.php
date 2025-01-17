@@ -51,9 +51,10 @@ $plugin_dispatch = function (ServerRequestInterface $request, RequestHandlerInte
 
         // set default page title
         PageLayout::setTitle($plugin->getPluginName());
-
-        $route_callable = $plugin->getRouteCallable($unconsumed);
-        $app->any(Request::pathInfo(), $route_callable);
+        $still_not_consumed = $plugin->registerSlimRoutes($unconsumed, $app);
+        if ($still_not_consumed !== false) {
+            $app->any(Request::pathInfo(), $plugin->getRouteCallable($still_not_consumed));
+        }
     } catch (AccessDeniedException $ade) {
         $_SESSION['redirect_after_login'] = Request::url();
         $response = $responseFactory->createResponse(302);

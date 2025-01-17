@@ -211,7 +211,7 @@ abstract class StudIPPlugin
 
         if (!method_exists($this, $action)) {
             try {
-                $dispatcher = app(PluginDispatcher::class, ['plugin' => $this]);
+                $dispatcher = $this->getPluginDispatcher();
                 return $dispatcher->getRouteCallable($unconsumed_path);
             } catch (Trails\Exceptions\UnknownAction $exception) {
                 if (count($args) > 0) {
@@ -222,7 +222,7 @@ abstract class StudIPPlugin
             }
         } else {
             $that = $this;
-            return function ($request, $response, array $otherargs) use ($action, $args, $that) {
+            return function ($request, $response) use ($action, $args, $that) {
                 ob_start();
                 call_user_func_array([$that, $action], $args);
                 $content = ob_get_clean();
@@ -231,6 +231,27 @@ abstract class StudIPPlugin
             };
         }
     }
+
+    /**
+     * @return Trails\Dispatcher
+     */
+    public function getPluginDispatcher() : \Trails\Dispatcher
+    {
+        return app(PluginDispatcher::class, ['plugin' => $this]);
+    }
+
+    /**
+     * return false to stop route consumption
+     *
+     * @param $unconsumed_path string
+     * @param $app Slim\App
+     * @return string|false
+     */
+    public function registerSlimRoutes($unconsumed_path, \Slim\App $app)
+    {
+        return $unconsumed_path;
+    }
+
     /**
      * Callback function called after enabling a plugin.
      * The plugin's ID is transmitted for convenience.
