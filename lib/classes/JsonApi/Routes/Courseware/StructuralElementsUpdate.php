@@ -117,7 +117,6 @@ class StructuralElementsUpdate extends JsonApiController
                 'payload',
                 'position',
                 'public',
-                'purpose',
                 'read-approval',
                 'release-date',
                 'title',
@@ -132,6 +131,9 @@ class StructuralElementsUpdate extends JsonApiController
                 }
             }
 
+            if (self::arrayHas($json, 'data.attributes.purpose') && $resource->purpose !== 'task') {
+                $resource->purpose = self::arrayGet($json, 'data.attributes.purpose');
+            }
             if (isset($json['data']['attributes']['release-date'])) {
                 $resource->release_date = $json['data']['attributes']['release-date'];
             }
