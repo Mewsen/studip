@@ -112,6 +112,7 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
             'public' => '',
             'release_date' => null,
             'withdraw_date' => null,
+            'config' => $this->config,
         ]);
 
         $newUnit->store();
