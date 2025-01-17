@@ -8,7 +8,7 @@
         height="560"
         :width="inContent ? '720' : '500'"
         class="studip-dialog-with-tab"
-        @close="$emit('close')"
+        @close="closeSettingsDialog"
         @confirm="storeCurrentElement"
     >
         <template v-slot:dialogContent>
@@ -17,7 +17,7 @@
                     <form class="default" @submit.prevent="">
                         <label>
                             {{ $gettext('Titel') }}
-                            <input type="text" v-model="currentElement.attributes.title" />
+                            <input type="text" v-model="currentElement.attributes.title" :disabled="isTask"/>
                         </label>
                         <label>
                             {{ $gettext('Beschreibung') }}
@@ -55,7 +55,7 @@
                                 </template>
                             </studip-select>
                         </label>
-                        <label>
+                        <label v-if="!isTask">
                             {{ $gettext('Art des Lernmaterials') }}
                             <select v-model="currentElement.attributes.purpose">
                                 <option value="content">{{ $gettext('Inhalt') }}</option>
@@ -278,6 +278,11 @@ export default {
         },
         updateContentApproval(approval) {
             this.currentElement.attributes['content-approval'] = approval;
+        },
+        async closeSettingsDialog() {
+            this.showElementEditDialog(false);
+            await this.unlockObject({ id: this.currentId, type: 'courseware-structural-elements' });
+            this.$emit('close')
         },
         async storeCurrentElement() {
             await this.loadStructuralElement(this.currentElement.id);
