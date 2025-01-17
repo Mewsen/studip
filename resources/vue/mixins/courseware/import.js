@@ -173,6 +173,7 @@ export default {
                             attributes: element[i].attributes,
                             parentId: parent_id,
                             currentId: parent_id,
+                            withDefaultContainer: false
                         });
                         new_element = this.lastCreatedElements;
                     } catch(error) {
