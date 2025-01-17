@@ -213,7 +213,7 @@
                                 <form class="default" @submit.prevent="">
                                     <label>
                                         <translate>Titel</translate>
-                                        <input type="text" v-model="currentElement.attributes.title" />
+                                        <input type="text" v-model="currentElement.attributes.title" :disabled="isTask"/>
                                     </label>
                                     <label>
                                         <translate>Beschreibung</translate>
@@ -253,7 +253,7 @@
                                             </template>
                                         </studip-select>
                                     </label>
-                                    <label>
+                                    <label v-if="!isTask">
                                         <translate>Art des Lernmaterials</translate>
                                         <select v-model="currentElement.attributes.purpose">
                                             <option value="content"><translate>Inhalt</translate></option>
