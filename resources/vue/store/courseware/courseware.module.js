@@ -747,7 +747,7 @@ export const actions = {
         )).then(() => dispatch('courseware-structure/build', null, { root: true }));
     },
 
-    async createStructuralElement({ dispatch }, { attributes, parentId, currentId }) {
+    async createStructuralElement({ dispatch }, { attributes, parentId, currentId, withDefaultContainer = true }) {
         const data = {
             attributes,
             relationships: {
@@ -758,6 +758,7 @@ export const actions = {
                     },
                 },
             },
+            withDefaultContainer: withDefaultContainer,
         };
         await dispatch('courseware-structural-elements/create', data, { root: true });
 
