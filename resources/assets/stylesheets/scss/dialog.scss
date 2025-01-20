@@ -321,6 +321,7 @@ v u e  d i a l o g
     align-items: center;
     z-index: 1001;
 }
+
 .studip-dialog-body {
     position: absolute;
     background: var(--white);
@@ -411,8 +412,27 @@ v u e  d i a l o g
             @include background-icon(question-circle-full, status-yellow, 32px);
         }
     }
-
+    &.studip-dialog-with-tab {
+        .studip-dialog-content {
+           padding: 0 4px;
+           .cw-tab-in-dialog {
+               .cw-tabs-nav {
+                   border: none;
+                   border-bottom: solid thin var(--color--content-box-border);
+                   margin-bottom: 4px;
+               }
+               .cw-tabs-content {
+                   border: none;
+                   overflow-y: auto;
+                   scrollbar-width: thin;
+                   scrollbar-color: var(--color--scrollbar-thumb) var(--dark-gray-color-5);
+               }
+           }
+       }
+   }
 }
+
+
 /* * * * * * * * * * * * *
 v u e  d i a l o g  e n d
 * * * * * * * * * * * * */

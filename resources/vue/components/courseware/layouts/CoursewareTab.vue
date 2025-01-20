@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isActive">
+    <div v-if="isActive" role="tabpanel" class="cw-tab">
         <slot></slot>
     </div>
 </template>
@@ -29,7 +29,7 @@ export default {
     },
     mounted() {
         this.index = this.$parent.tabs.length;
-        this.addTab({ name: this.name, icon: this.icon});
+        this.addTab({ name: this.name, icon: this.icon });
     },
 };
 </script>

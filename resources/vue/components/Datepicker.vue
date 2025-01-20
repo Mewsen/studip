@@ -68,6 +68,9 @@ export default {
             return params;
         },
         returnValue() {
+            if (this.modelValue === null) {
+                return '';
+            }
             if (this.returnAs === 'unix') {
                 return this.convertInputToUnixTimestamp(this.modelValue);
             }

@@ -101,6 +101,8 @@
                     :siblingCount="nestedChildren.length"
                     class="cw-tree-item"
                     :elementid="element.id"
+                    :data-id="element.id"
+                    :data-parent-id="element.relationships.parent.data.id"
                     @sort="sort"
                     @moveItemUp="moveItemUp"
                     @moveItemDown="moveItemDown"
@@ -478,10 +480,10 @@ export default {
             }
 
             let data = {
-                id: e.item._underlying_vm_.id,
+                id: e.item.dataset.id,
                 newPos: e.newIndex,
                 oldPos: e.oldIndex,
-                oldParent: e.item._underlying_vm_.relationships.parent.data.id,
+                oldParent: e.item.dataset.parentId,
                 newParent: e.to.__vnode.ctx.attrs.elementId,
                 sortArray: sortArray,
             };

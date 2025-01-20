@@ -57,7 +57,7 @@ ul.numberedchapters {
     &.cw-ribbon-slide-leave-active {
         transition: transform var(--transition-duration-superslow);
     }
-    &.cw-ribbon-slide-enter,
+    &.cw-ribbon-slide-enter-from,
     &.cw-ribbon-slide-leave-to {
         transform: translateX(calc(100% + 30px));
     }

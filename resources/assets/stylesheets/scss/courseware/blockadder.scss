@@ -9,7 +9,7 @@
         display: flex;
         position: relative;
         border: solid thin var(--color--tile-border);
-        background-color: var(--white);
+        background-color: var(--color--global-background);
         max-width: 268px;
 
         .cw-sortable-handle {
@@ -114,10 +114,13 @@
 
 .cw-container-style-selector {
     display: flex;
+    border-bottom: solid thin var(--color--content-box-border);
+    padding-bottom: 8px;
     margin-bottom: 8px;
 
     label {
         border: solid thin var(--color--tile-border);
+        border-right: none;
         padding: calc(0.5em + 32px) 1em 0.5em 1em;
         color: var(--base-color);
         text-align: center;
@@ -125,6 +128,10 @@
         background-position: center 0.5em;
         background-repeat: no-repeat;
         cursor: pointer;
+
+        &:last-child {
+            border-right: solid thin var(--color--tile-border);
+        }
 
         &.full {
             @include background-icon(column-full, $size: 32px);

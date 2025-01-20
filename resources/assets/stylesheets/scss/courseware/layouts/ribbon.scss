@@ -280,7 +280,7 @@ $consum_ribbon_width: calc(100% - 58px);
     &.cw-ribbon-slide-leave-active {
         transition: transform var(--transition-duration-superslow);
     }
-    &.cw-ribbon-slide-enter,
+    &.cw-ribbon-slide-enter-from,
     &.cw-ribbon-slide-leave-to {
         transform: translateX(calc(100% + 30px));
     }
@@ -359,7 +359,7 @@ $consum_ribbon_width: calc(100% - 58px);
                         overflow-y: auto;
                         overflow-x: hidden;
                         scrollbar-width: thin;
-                        scrollbar-color: var(--base-color) var(--white);
+                        scrollbar-color: var(--color--scrollbar-thumb) var(--white);
 
                         &.cw-ribbon-tool-blockadder-tab {
                             height: 100%;

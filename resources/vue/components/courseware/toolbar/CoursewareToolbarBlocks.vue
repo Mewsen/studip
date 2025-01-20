@@ -1,7 +1,7 @@
 <template>
     <div class="cw-toolbar-blocks">
         <div id="cw-toolbar-blocks-header" class="cw-toolbar-tool-header">
-            <form @submit.prevent="loadSearch">
+            <form class="default" @submit.prevent="loadSearch">
                 <div class="input-group files-search search cw-block-search">
                     <input
                         ref="searchBox"
@@ -32,29 +32,26 @@
                     </span>
                 </div>
             </form>
-
-            <div id="filterpanel" class="filterpanel">
-                <form class="default">
-                  <span class="sr-only">{{ $gettext('Kategorien-Filter') }}</span>
-                  <studip-select
-                      :clearable="true"
-                      label="title"
-                      :options="blockCategories"
-                      :placeholder="$gettext('Blockkategorien')"
-                      :reduce="(category) => category.type"
-                      v-model="currentFilterCategory"
-                      >
-                      <template #open-indicator="{ selectAttributes }">
-                          <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
-                      </template>
-                      <template #no-options>
-                          {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
-                      </template>
-                      <template #selected-option="{ title }"><span>{{ title }}</span></template>
-                      <template #option="{ title }"><span>{{ title }}</span></template>
-                  </studip-select>
-                </form>
-            </div>
+            <form class="default">
+                <span class="sr-only">{{ $gettext('Kategorien-Filter') }}</span>
+                <studip-select
+                    :clearable="true"
+                    label="title"
+                    :options="blockCategories"
+                    :placeholder="$gettext('Blockkategorien')"
+                    :reduce="(category) => category.type"
+                    v-model="currentFilterCategory"
+                    >
+                    <template #open-indicator="{ selectAttributes }">
+                        <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
+                    </template>
+                    <template #no-options>
+                        {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
+                    </template>
+                    <template #selected-option="{ title }"><span>{{ title }}</span></template>
+                    <template #option="{ title }"><span>{{ title }}</span></template>
+                </studip-select>
+            </form>
         </div>
         <div class="cw-toolbar-tool-content" :style="toolContentStyle">
             <div v-if="filteredBlockTypes.length > 0" class="cw-blockadder-item-list">
@@ -149,8 +146,8 @@ export default {
             ];
         },
         toolContentStyle() {
-            const filterPanelHeight = document.getElementById("filterpanel")?.offsetHeight ?? 75;
-            const height = this.toolbarContentHeight - filterPanelHeight - 40;
+            const headerHeight = document.getElementById("cw-toolbar-blocks-header")?.offsetHeight ?? 75;
+            const height = this.toolbarContentHeight - headerHeight;
 
             return {
                 height: height + 'px',

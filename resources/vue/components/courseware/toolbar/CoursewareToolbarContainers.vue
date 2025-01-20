@@ -40,6 +40,7 @@
                 <courseware-container-adder-item
                     :title="element.title"
                     :type="element.type"
+                    :data-type="element.type"
                     :colspan="selectedContainerStyle"
                     :description="element.description"
                     :firstSection="firstSection"
@@ -124,23 +125,17 @@ export default {
                 return;
             }
 
-            const item = e.item._underlying_vm_;
-
-            // if the container is from the clipboard, insert it via clipboard mixin, else add it via container mixin
-            if (item.clipContainer) {
-                this.insertItem(e.item.__node.ctx.data.currentClipboard, e.newIndex);
-            } else {
-                const data = {
-                type: item.attributes['container-type'],
-                colspan: item.containerStyle,
+            const data = {
+                type: e.item.dataset.type,
+                colspan: this.selectedContainerStyle,
                 sections: {
-                        firstSection: item.firstSection,
-                        secondSection: item.secondSection
-                    },
+                        firstSection: this.firstSection,
+                        secondSection: this.secondSection
+                },
                 newPosition: e.newIndex
-                };
-                this.addContainer(data);
-            }
+            };
+            this.addContainer(data);
+            
         },
     }
 };
