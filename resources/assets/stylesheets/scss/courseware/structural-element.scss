@@ -214,24 +214,3 @@
         }
     }
 }
-
-.studip-dialog-with-tab {
-    .studip-dialog-body .studip-dialog-content {
-        padding: 0 4px;
-        .cw-tab-in-dialog {
-            .cw-tabs-nav {
-                border: none;
-                border-bottom: solid thin var(--content-color-40);
-                margin-bottom: 4px;
-            }
-            .cw-tabs-content {
-                border: none;
-                min-width: 500px;
-                min-height: 400px;
-                overflow-y: auto;
-                scrollbar-width: thin;
-                scrollbar-color: var(--base-color) var(--dark-gray-color-5);
-            }
-        }
-    }
-}

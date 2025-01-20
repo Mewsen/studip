@@ -27,8 +27,11 @@
                         >
                             <div
                                 :style="{ width: dialogWidth, height: dialogHeight, top: top, left: left }"
-                                :class="{ 'studip-dialog-warning': question, 'studip-dialog-alert': alert }"
-                                class="studip-dialog-body"
+                                :class="[
+                                    { 'studip-dialog-warning': question, 'studip-dialog-alert': alert },
+                                    'studip-dialog-body',
+                                    $attrs.class
+                                ]"
                                 role="dialog"
                                 aria-modal="true"
                                 :aria-labelledby="dialogTitleId"

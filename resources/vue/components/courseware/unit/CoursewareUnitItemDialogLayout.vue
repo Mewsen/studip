@@ -5,7 +5,7 @@
         confirmClass="accept"
         :closeText="$gettext('Schließen')"
         closeClass="cancel"
-        height="540"
+        height="560"
         width="870"
         @close="$emit('close')"
         @confirm="storeLayout"

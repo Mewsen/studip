@@ -14,7 +14,6 @@
             </div>
         </component>
         <courseware-tree v-if="structuralElements.length" />
-        <courseware-tree-units v-if="context.type === 'courses'" />
     </div>
 </template>
 

@@ -39,64 +39,24 @@
 
         .cw-toolbar-tool-content {
             overflow-y: auto;
-            padding-right: 8px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--color--scrollbar-thumb) var(--white);
+            padding-right: 6px;
         }
 
         .cw-toolbar-blocks {
-            .input-group.files-search {
-                &.search {
-                    border: thin solid var(--dark-gray-color-30);
-                    margin-bottom: 0px;
-                    input {
-                        border: none;
-                    }
-                }
-    
-                .input-group-append {
-                    .button {
-                        border: none;
-                        border-left: thin solid var(--dark-gray-color-30);
-                        &.active {
-                            background-color: var(--base-color);
-                        }
-                    }
-                    .reset-search {
-                        border: none;
-                        background-color: var(--white);
-                    }
-                }
-    
-                .active-filter {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    border: solid thin var(--black);
-                    background-color: var(--content-color-10);
-                    margin: 3px;
-                    padding: 2px 3px;
-    
-                    .removefilter {
-                        border: none;
-                        background-color: transparent;
-                    }
-                }
+            .input-group.files-search.search {
+                margin-bottom: 0;
             }
     
             .cw-block-search {
                 width: inherit;
             }
     
-            .filterpanel {
-                margin-bottom: 5px;
-                padding: 2px;
-                border: thin solid var(--dark-gray-color-30);
-                border-top: none;
-                background-color: #fff;
-    
-                .button {
-                    min-width: inherit;
-                    margin: 4px 2px;
-                }
+            .cw-toolbar-tool-header {
+                border-bottom: solid thin var(--color--content-box-border);
+                margin-bottom: 8px;
+                padding-bottom: 8px;
             }
 
         }
