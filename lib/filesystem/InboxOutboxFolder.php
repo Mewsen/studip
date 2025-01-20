@@ -235,7 +235,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * Files are only downloadable for the owner.
      */
-    public function isFileDownloadable(string $file_ref_id, string $user_id): bool
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
         return $this->user
             && $user_id === $this->user->id;
@@ -244,7 +244,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not allow editing files.
      */
-    public function isFileEditable(string $file_ref_id, string $user_id): bool
+    public function isFileEditable(FileRef $file_ref, string $user_id): bool
     {
         //files shall be unchanged in here
         return false;
@@ -253,7 +253,7 @@ class InboxOutboxFolder implements FolderType
     /**
      * InboxOutboxFolders do not allow writing files.
      */
-    public function isFileWritable(string $file_ref_id, string $user_id): bool
+    public function isFileWritable(FileRef $file_ref, string $user_id): bool
     {
         //files shall be unchanged in here
         return false;

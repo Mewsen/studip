@@ -1250,7 +1250,7 @@ class FileManager
 
         // loop through all files and copy them to the folder path:
         foreach ($folder->getFiles() as $file_ref) {
-            if ($folder->isFileDownloadable($file_ref->id, $user_id) || $ignore_perms) {
+            if ($folder->isFileDownloadable($file_ref, $user_id) || $ignore_perms) {
                 //The user (given by user_id) has the required permissions
                 //to download the file or the permission checks are
                 //ignored.
@@ -1302,7 +1302,7 @@ class FileManager
                 //specified by $user_id:
                 if ($folder->isReadable($user_id)) {
                     foreach ($folder_files as $folder_file) {
-                        if ($folder->isFileDownloadable($folder_file->id, $user_id)) {
+                        if ($folder->isFileDownloadable($folder_file, $user_id)) {
                             $num_files++;
                         }
                     }
@@ -1316,7 +1316,7 @@ class FileManager
                     if ($user_id) {
                         //user-ID is set: only if the file is downloadable
                         //it will be counted!
-                        if ($folder->isFileDownloadable($file->id, $user_id)) {
+                        if ($folder->isFileDownloadable($file, $user_id)) {
                             $num_files++;
                         }
                     } else {

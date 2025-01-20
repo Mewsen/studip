@@ -4,6 +4,8 @@ namespace Courseware\Filesystem;
 
 use ArrayAccess;
 use Courseware\Instance;
+use File;
+use FileRef;
 use FileType;
 use Flexi\Template;
 use Folder;
@@ -216,7 +218,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function isFileDownloadable(string $file_ref_id, string $user_id): bool
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
         return true;
     }
@@ -224,7 +226,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function isFileEditable(string $file_ref_id, string $user_id): bool
+    public function isFileEditable(FileRef $file_ref, string $user_id): bool
     {
         return false;
     }
@@ -232,7 +234,7 @@ class PublicFolder extends StandardFolder
     /**
      * {@inheritdoc}
      */
-    public function isFileWritable(string $file_ref_id, string $user_id): bool
+    public function isFileWritable(FileRef $file_ref, string $user_id): bool
     {
         return false;
     }

@@ -109,11 +109,11 @@ class HomeworkFolder extends PermissionEnabledFolder
     }
 
     /**
-     * @param string $file_ref_id
-     * @param string $user_id
+     * @param FileRef $file_ref
+     * @param string  $user_id
      * @return bool
      */
-    public function isFileEditable(string $file_ref_id, string $user_id): bool
+    public function isFileEditable(FileRef $file_ref, string $user_id): bool
     {
         return $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id);
     }
@@ -126,11 +126,11 @@ class HomeworkFolder extends PermissionEnabledFolder
      * tutor permissions on the Stud.IP object specified by range_id
      * (such objects may be courses or institutes for example).
      *
-     * @param string $file_ref_id
-     * @param string $user_id
+     * @param FileRef $file_ref
+     * @param string  $user_id
      * @return bool
      */
-    public function isFileWritable(string $file_ref_id, string $user_id): bool
+    public function isFileWritable(FileRef $file_ref, string $user_id): bool
     {
         return $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id);
     }

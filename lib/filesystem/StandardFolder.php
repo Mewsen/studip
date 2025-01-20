@@ -347,7 +347,11 @@ class StandardFolder implements FolderType
     {
         $file_ref = $this->folderdata->file_refs->find($file_ref_id);
 
-        if (!$this->isFileWritable($file_ref->id, $GLOBALS['user']->id)) {
+        if (!$file_ref) {
+            return 0;
+        }
+
+        if (!$this->isFileWritable($file_ref, $GLOBALS['user']->id)) {
             return [sprintf(
                 _('Ungenügende Berechtigungen zum Löschen der Datei %s in Ordner %s!'),
                 $file_ref->name,
@@ -355,11 +359,7 @@ class StandardFolder implements FolderType
             )];
         }
 
-        if ($file_ref) {
-            return $file_ref->delete();
-        }
-
-        return 0;
+        return $file_ref->delete();
     }
 
     /**
@@ -417,23 +417,21 @@ class StandardFolder implements FolderType
     }
 
     /**
-     * @param string $file_ref_id
-     * @param string $user_id
+     * @param FileRef $file_ref
+     * @param string  $user_id
      * @return bool
      */
-    public function isFileDownloadable(string $file_ref_id, string $user_id): bool
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
         if ($this->range_type === 'user') {
             return $user_id === $this->range_id;
         }
 
         if (in_array($this->range_type, ['course', 'institute'])) {
-            $fileref = FileRef::find($file_ref_id);
-
-            if (is_object($fileref->terms_of_use)) {
+            if (is_object($file_ref->terms_of_use)) {
                 //terms of use are defined for this file!
                 return $this->isReadable($user_id)
-                    && $fileref->terms_of_use->isDownloadable($this->range_id, $this->range_type,true, $user_id);
+                    && $file_ref->terms_of_use->isDownloadable($this->range_id, $this->range_type,true, $user_id);
             } else {
                 return $this->isReadable($user_id)
                     && $GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user_id);
@@ -444,19 +442,17 @@ class StandardFolder implements FolderType
     }
 
     /**
-     * @param string $file_ref_id
-     * @param string $user_id
+     * @param FileRef $file_ref
+     * @param string  $user_id
      * @return bool
      */
-    public function isFileEditable(string $file_ref_id, string $user_id): bool
+    public function isFileEditable(FileRef $file_ref, string $user_id): bool
     {
         if ($this->range_type === 'user') {
             return $user_id === $this->range_id;
         }
 
-        $fileref = FileRef::find($file_ref_id);
-
-        return $fileref->user_id === $user_id
+        return $file_ref->user_id === $user_id
             || $GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id);
     }
 
@@ -468,13 +464,13 @@ class StandardFolder implements FolderType
      * tutor permissions on the Stud.IP object specified by range_id
      * (such objects may be courses or institutes for example).
      *
-     * @param string $file_ref_id
-     * @param string $user_id
+     * @param FileRef $file_ref
+     * @param string  $user_id
      * @return bool
      */
-    public function isFileWritable(string $file_ref_id, string $user_id): bool
+    public function isFileWritable(FileRef $file_ref, string $user_id): bool
     {
-        return $this->isFileEditable($file_ref_id, $user_id);
+        return $this->isFileEditable($file_ref, $user_id);
     }
 
     /**

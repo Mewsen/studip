@@ -126,18 +126,14 @@ class HiddenFolder extends PermissionEnabledFolder
     }
 
     /**
-     * @param string $file_ref_id
-     * @param string $user_id
+     * @param FileRef $file_ref
+     * @param string  $user_id
      * @return bool
      */
-    public function isFileDownloadable(string $file_ref_id, string $user_id): bool
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
-        $fileref = FileRef::find($file_ref_id);
-
-        if ($fileref) {
-            if ($this->download_allowed || Seminar_Perm::get()->have_studip_perm('tutor', $this->range_id, $user_id)) {
-                return $fileref->terms_of_use->isDownloadable($this->range_id, $this->range_type, true, $user_id);
-            }
+        if ($this->download_allowed || Seminar_Perm::get()->have_studip_perm('tutor', $this->range_id, $user_id)) {
+            return $file_ref->terms_of_use->isDownloadable($this->range_id, $this->range_type, true, $user_id);
         }
 
         return false;

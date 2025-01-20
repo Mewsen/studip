@@ -379,7 +379,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
     {
         $user_id || $user_id = $GLOBALS['user']->id;
         return $this->getFolderType()->isFileDownloadable(
-            $this->fileref->getId(),
+            $this->fileref,
             $user_id
         );
     }
@@ -393,7 +393,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
     {
         $user_id || $user_id = $GLOBALS['user']->id;
         return $this->getFolderType()->isFileEditable(
-            $this->fileref->getId(),
+            $this->fileref,
             $user_id
         );
     }
@@ -407,7 +407,7 @@ class StandardFile implements FileType, ArrayAccess, StandardFileInterface
     {
         $user_id || $user_id = $GLOBALS['user']->id;
         return $this->getFolderType()->isFileWritable(
-            $this->fileref->getId(),
+            $this->fileref,
             $user_id
         );
     }

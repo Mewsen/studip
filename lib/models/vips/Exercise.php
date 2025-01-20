@@ -814,7 +814,7 @@ abstract class Exercise extends SimpleORMap
                     if ($file_ref) {
                         $folder = $file_ref->folder->getTypedFolder();
 
-                        if ($folder->isFileDownloadable($file_ref->id, $GLOBALS['user']->id)) {
+                        if ($folder->isFileDownloadable($file_ref, $GLOBALS['user']->id)) {
                             if (!$this->folder->file_refs->find($file_id)) {
                                 $file = $file_ref->file;
                                 // $this->files->append($file);

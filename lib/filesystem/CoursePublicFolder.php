@@ -138,12 +138,12 @@ class CoursePublicFolder extends StandardFolder
     /**
      * Files in CoursePublicFolders are downloadable for all logged in users.
      *
-     * @param string $file_ref_id The ID to a FileRef.
-     * @param string $user_id     The user who wishes to downlaod the file.
+     * @param FileRef $file_ref The ID to a FileRef.
+     * @param string  $user_id  The user who wishes to downlaod the file.
      *
      * @return bool
      */
-    public function isFileDownloadable(string $file_ref_id, string $user_id): bool
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
         return $this->isVisible($user_id);
     }

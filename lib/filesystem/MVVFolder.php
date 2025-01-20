@@ -32,7 +32,7 @@ class MVVFolder extends StandardFolder
     /**
      * See method MVVFolder::isReadable
      */
-    public function isFileDownloadable(string $file_ref_id, string $user_id): bool
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
         return $this->isReadable($user_id);
     }

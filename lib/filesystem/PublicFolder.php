@@ -118,12 +118,12 @@ class PublicFolder extends StandardFolder
     /**
      * Files in PublicFolders are always downloadable.
      *
-     * @param string $file_ref_id The ID to a FileRef.
-     * @param string $user_id     The user who wishes to downlaod the file.
+     * @param FileRef $file_ref The ID to a FileRef.
+     * @param string  $user_id  The user who wishes to downlaod the file.
      *
      * @return bool True
      */
-    public function isFileDownloadable(string $file_ref_id, string $user_id): bool
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
         //public folder => everyone can download a file
         return true;
@@ -132,12 +132,12 @@ class PublicFolder extends StandardFolder
     /**
      * Files in PublicFolders are editable for the owner only.
      *
-     * @param string $file_ref_id The ID to a FileRef.
-     * @param string $user_id     The user who wishes to edit the file.
+     * @param FileRef $file_ref The ID to a FileRef.
+     * @param string  $user_id  The user who wishes to edit the file.
      *
      * @return bool True, if the user is the owner of the file, false otherwise.
      */
-    public function isFileEditable(string $file_ref_id, string $user_id): bool
+    public function isFileEditable(FileRef $file_ref, string $user_id): bool
     {
         //only the owner may edit files
         return $this->range_id === $user_id;
@@ -146,12 +146,12 @@ class PublicFolder extends StandardFolder
     /**
      * Files in PublicFolders are writable for the owner only.
      *
-     * @param string $file_ref_id The ID to a FileRef.
-     * @param string $user_id     The user who wishes to write to the file.
+     * @param FileRef $file_ref The ID to a FileRef.
+     * @param string  $user_id  The user who wishes to write to the file.
      *
      * @return bool True, if the user is the owner of the file, false otherwise.
      */
-    public function isFileWritable(string $file_ref_id, string $user_id): bool
+    public function isFileWritable(FileRef $file_ref, string $user_id): bool
     {
         //only the owner may delete files
         return $this->range_id === $user_id;

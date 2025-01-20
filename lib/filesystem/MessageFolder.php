@@ -317,7 +317,7 @@ class MessageFolder extends StandardFolder
     /**
      * See method MessageFolder::isReadable
      */
-    public function isFileDownloadable(string $file_ref_id, string $user_id): bool
+    public function isFileDownloadable(FileRef $file_ref, string $user_id): bool
     {
         return $this->isReadable($user_id);
     }
@@ -325,7 +325,7 @@ class MessageFolder extends StandardFolder
     /**
      * Files inside MessageFolders are not editable.
      */
-    public function isFileEditable(string $file_ref_id, string $user_id): bool
+    public function isFileEditable(FileRef $file_ref, string $user_id): bool
     {
         //message attachments are never editable!
         return false;
@@ -334,7 +334,7 @@ class MessageFolder extends StandardFolder
     /**
      * Files inside MessageFolders are not writable.
      */
-    public function isFileWritable(string $file_ref_id, string $user_id): bool
+    public function isFileWritable(FileRef $file_ref, string $user_id): bool
     {
         //message attachments are never writable!
         return false;

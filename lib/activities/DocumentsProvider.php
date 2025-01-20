@@ -26,7 +26,7 @@ class DocumentsProvider implements ActivityProvider
         if (
             !$document
             || !$activity->getContextObject()
-            || !$document->folder->getTypedFolder()->isFileDownloadable($document->id, $activity->getContextObject()->getObserver()->id)
+            || !$document->folder->getTypedFolder()->isFileDownloadable($document, $activity->getContextObject()->getObserver()->id)
         ) {
             return false;
         }
