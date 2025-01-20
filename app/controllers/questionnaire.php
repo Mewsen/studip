@@ -999,7 +999,13 @@ class QuestionnaireController extends AuthenticatedController
 
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
+            $num_questionnaires = 0;
             $new_questionnaire = new Questionnaire();
+            if ($_FILES['upload']['name'][0] == '') {
+                PageLayout::postWarning(_('Es wurde keine Datei zum Importieren ausgewählt.'));
+                $this->redirect("questionnaire/overview");
+                return;
+            }
 
             for ($i = 0; $i < count($_FILES['upload']['name']); ++$i) {
                 $file_content = file_get_contents($_FILES['upload']['tmp_name'][$i]);
@@ -1019,7 +1025,9 @@ class QuestionnaireController extends AuthenticatedController
                     ? $questionnaire_data->questionnaire->stopdate
                     : null;
 
-                $new_questionnaire->store();
+                if ($new_questionnaire->store()) {
+                    $num_questionnaires +=1;
+                }
 
                 foreach ($questionnaire_data->questions_data as $index => $value) {
                     $new_questionnaire_question = new QuestionnaireQuestion();
@@ -1031,10 +1039,13 @@ class QuestionnaireController extends AuthenticatedController
                     $new_questionnaire_question->store();
                 }
 
-
             }
             $this->redirect("questionnaire/overview");
-            PageLayout::postSuccess(_('importiert'));
+            if ($num_questionnaires == 1) {
+                PageLayout::postSuccess(sprintf(_('1 Fragebogen wurde importiert.')));
+            } else {
+                PageLayout::postSuccess(sprintf(_('%d Fragebögen wurden importiert.'), $num_questionnaires));
+            }
 
         }
 
