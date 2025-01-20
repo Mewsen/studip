@@ -97,6 +97,12 @@ class ConnectedIlias
         // init current user (only if ILIAS installation is active)
         if ($this->ilias_config['is_active']) {
             $this->user = new IliasUser($this->index, $this->ilias_config['version']);
+            if ($this->user->isConnected()) {
+                $ilias_user_exists = $this->soap_client->lookupUser($this->user->getUsername());
+                if (!$this->soap_client->getError() && !$ilias_user_exists) {
+                    $this->user->unsetConnection(true);
+                }
+            }
             // create account automatically if it doesn't exist
             if (! $this->user->isConnected()) {
                 $this->soap_client->setCachingStatus(false);
