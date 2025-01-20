@@ -53,4 +53,11 @@ if (!empty($statusgruppen)) {
         ['data-dialog' => 'size=big']
     );
 }
+
+$actions->addLink(
+    _('Vorlage importieren'),
+    $controller->url_for('questionnaire/import_file' ),
+    Icon::create('import'),
+    ['data-dialog' => 'size=auto']
+);
 Sidebar::Get()->addWidget($actions);

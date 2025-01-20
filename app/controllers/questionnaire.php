@@ -993,4 +993,50 @@ class QuestionnaireController extends AuthenticatedController
         $this->response->add_header('Content-Length', strlen($file_data));
         $this->render_json($rawdata);
     }
+
+    public function import_file_action()
+    {
+
+        if (Request::isPost()) {
+            CSRFProtection::verifyUnsafeRequest();
+            $new_questionnaire = new Questionnaire();
+
+            for ($i = 0; $i < count($_FILES['upload']['name']); ++$i) {
+                $file_content = file_get_contents($_FILES['upload']['tmp_name'][$i]);
+                $questionnaire_data = json_decode($file_content);
+
+                $new_questionnaire->title               = $questionnaire_data->questionnaire->title ?? '';
+                $new_questionnaire->user_id             = User::findCurrent()->id;
+                $new_questionnaire->visible             = $questionnaire_data->questionnaier->visible ?? 1;
+                $new_questionnaire->anonymous           = $questionnaire_data->questionnaire->anonymous ?? 0;
+                $new_questionnaire->resultvisibility    = $questionnaire_data->questionnaire->resultvisibility;
+                $new_questionnaire->editanswers         = $questionnaire_data->questionnaire->editanswers;
+                $new_questionnaire->copyable            = $questionnaire_data->questionnaire->copyable ?? 1;
+                $new_questionnaire->startdate           = is_numeric($questionnaire_data->questionnaire->startdate)
+                    ? $questionnaire_data->questionnaire->startdate
+                    : ($questionnaire_data->questionnaire->startdate ? time() : null);
+                $new_questionnaire->stopdate            = is_numeric($questionnaire_data->questionnaire->stopdate)
+                    ? $questionnaire_data->questionnaire->stopdate
+                    : null;
+
+                $new_questionnaire->store();
+
+                foreach ($questionnaire_data->questions_data as $index => $value) {
+                    $new_questionnaire_question = new QuestionnaireQuestion();
+                    $new_questionnaire_question->setId($new_questionnaire_question->getNewId());
+                    $new_questionnaire_question->questionnaire_id = $new_questionnaire->getid();
+                    $new_questionnaire_question->questiontype = $value->questiontype;
+                    $new_questionnaire_question->questiondata = $value->questiondata;
+                    $new_questionnaire_question->position = $index;
+                    $new_questionnaire_question->store();
+                }
+
+
+            }
+            $this->redirect("questionnaire/overview");
+            PageLayout::postSuccess(_('importiert'));
+
+        }
+
+    }
 }

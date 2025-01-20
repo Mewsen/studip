@@ -269,10 +269,14 @@ class Questionnaire extends SimpleORMap implements PrivacyObject
     {
         $data = [
             'questionnaire' => [
-                'title' => $this['title'],
-                'anonymous' => $this['anonymous'],
-                'resultvisibility' => $this['resultvisibility'],
-                'editanswers' => $this['editanswers']
+                'title'             => $this['title'],
+                'anonymous'         => $this['anonymous'],
+                'resultvisibility'  => $this['resultvisibility'],
+                'editanswers'       => $this['editanswers'],
+                'startdate'         => $this['startdate'],
+                'stopdate'          => $this['stopdate'],
+                'visible'           => $this['visible'],
+                'copyable'          => $this['copyable']
             ],
             'questions_data' => []
         ];
