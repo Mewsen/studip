@@ -26,7 +26,7 @@
                 <td data-sort-value="<?= $queue_entry->last_try ?>"><? if ($queue_entry->last_try != 0) echo htmlReady(date('d.m.Y H:i', $queue_entry->last_try)) ?></td>
                 <td>
                     <? $actionmenu = ActionMenu::get(); ?>
-                    <? $actionmenu->addLink(PluginEngine::getURL('mailqueuevisualisation', array(), "mailqueue/delete_entry/" . $queue_entry->mail_queue_id . "/new"),
+                    <? $actionmenu->addLink($controller->url_for('admin/mailqueue/delete_entry/' . $queue_entry->mail_queue_id . '/new'),
                    _('Eintrag löschen'),
                     Icon::create('trash'),
                     ['data-dialog' => 'size=auto']); ?>

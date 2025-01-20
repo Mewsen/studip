@@ -120,7 +120,7 @@ class Admin_MailqueueController extends AuthenticatedController
             foreach ($this->old_mailqueues as $mailqueue) {
                 $mailqueue->delete();
             }
-            $this->relocate('mailqueue/showqueue');
+            $this->relocate('admin/mailqueue/showqueue');
             PageLayout::postSuccess('Alle Mailqueue-Einträge, die mindestens ein Jahr alt sind, wurden gelöscht.');
         }
 
@@ -130,20 +130,10 @@ class Admin_MailqueueController extends AuthenticatedController
     {
         if ($oldornew == 'new') {
             $this->mailqueues = MailQueueEntry::findBySQL("chdate >= UNIX_TIMESTAMP() - 15768000");
-            $filename = FileManager::cleanFileName(
-                sprintf(
-                    'mailqueue-export-aktuell.csv',
-                    \Context::getHeaderLine()
-                )
-            );
+            $filename = FileManager::cleanFileName('mailqueue-export-aktuell.csv');
         } else if ($oldornew == 'old') {
             $this->mailqueues = MailQueueEntry::findBySQL("chdate < UNIX_TIMESTAMP() - 15768000");
-            $filename = FileManager::cleanFileName(
-                sprintf(
-                    'mailqueue-export-alt.csv',
-                    \Context::getHeaderLine()
-                )
-            );
+            $filename = FileManager::cleanFileName('mailqueue-export-alt.csv');
         }
 
         $captions = [
