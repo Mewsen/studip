@@ -11,7 +11,7 @@
                         :class="['cw-block-table-of-contents-' + currentStyle]">
                         <li v-for="child in childElementsWithTasks" :key="child.id">
                             <router-link :to="'/structural_element/' + child.id">
-                                <div class="cw-block-table-of-contents-title-box" :class="[child.attributes.payload.color]">
+                                <div class="cw-block-table-of-contents-title-box" :class="[child.attributes.payload.color ?? 'studip-blue']">
                                     {{ child.attributes.title }}
                                     <span v-if="child.attributes.purpose === 'task'"> | {{ child.solverName }}</span>
                                     <p v-if="currentStyle === 'list-details'">
@@ -27,7 +27,7 @@
                                     ? child.attributes.title + ' | ' + child.solverName
                                     : child.attributes.title
                                 ">
-                                <courseware-tile tag="div" :color="child.attributes.payload.color"
+                                <courseware-tile tag="div" :color="child.attributes.payload.color ?? 'studip-blue'"
                                     :title="child.attributes.title" :imageUrl="getChildImageUrl(child)"
                                 >
                                     <template v-if="child.attributes.purpose === 'task'" #image-overlay>
