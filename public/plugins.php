@@ -53,7 +53,7 @@ $plugin_dispatch = function (ServerRequestInterface $request, RequestHandlerInte
         PageLayout::setTitle($plugin->getPluginName());
         $still_not_consumed = $plugin->registerSlimRoutes($unconsumed, $app);
         if ($still_not_consumed !== false) {
-            $app->any(Request::pathInfo(), $plugin->getRouteCallable($still_not_consumed));
+            $app->any('{path_info:.*}', $plugin->getRouteCallable($still_not_consumed));
         }
     } catch (AccessDeniedException $ade) {
         $_SESSION['redirect_after_login'] = Request::url();
