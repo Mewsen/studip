@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var StudIPPlugin $plugin
+ * @var array $metadata
+ */
+?>
 <? if ($plugin->getDescriptionMode() === 'replace_all') : ?>
     <?= formatReady($plugin->getPluginDescription()) ?>
 <? else : ?>
@@ -19,7 +25,7 @@
                 </div>
             </div>
             <?= Studip\VueApp::create('ContentModulesControl')->withProps([
-                 'module_id' => (string) $plugin->getPluginId(),
+                 'module_id' => (int) $plugin->getPluginId(),
             ]) ?>
             <? $keywords = preg_split( "/;/", $metadata['keywords'] ?? '', -1, PREG_SPLIT_NO_EMPTY) ?>
             <? if (count($keywords) > 0) : ?>

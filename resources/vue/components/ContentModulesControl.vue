@@ -1,7 +1,7 @@
 <template>
-    <div class="controls">
+    <div class="controls" v-if="isVisible">
         <div>
-            <label v-if="!module.mandatory">
+            <label>
                 <input type="checkbox" :checked="module.active" @click="toggleModuleActivation(module)" :ref="'checkbox_' + module.id">
                 {{ module.active ? $gettext('Werkzeug ist aktiv') : $gettext('Werkzeug ist inaktiv') }}
             </label>
@@ -10,7 +10,7 @@
             <a href="#"
                class="toggle_visibility"
                role="checkbox"
-               v-if="module.active && !module.mandatory"
+               v-if="module.active"
                :aria-checked="module.visibility !== 'tutor' ? 'true' : 'false'"
                @click.prevent="toggleModuleVisibility(module)">
                 <studip-icon :shape="module.visibility !== 'tutor' ? 'visibility-visible' : 'visibility-invisible'"
@@ -33,8 +33,11 @@ export default {
     },
     mixins: [ContentModulesMixin],
     computed: {
+        isVisible() {
+            return !this.module.mandatory;
+        },
         module () {
-            return this.modules.find(m => m.id == this.module_id) ?? null;
+            return this.modules.find(m => m.id === this.module_id) ?? null;
         }
     }
 };
@@ -42,42 +45,42 @@ export default {
 <style lang="scss">
 .contentmodule_info {
     display: flex;
-    > .main_part {
-        > .header {
+    .main_part {
+        .header {
             display: flex;
             align-items: center;
-            > .image {
+            .image {
                 width: 200px;
                 height: 150px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
             }
-            > .text {
+            .text {
                 display: flex;
                 flex-direction: column;
             }
 
         }
-        > .controls {
+        .controls {
             background-color: var(--content-color-20);
             padding: 5px;
             display: flex;
             justify-content: space-between;
         }
-        > .keywords {
+        .keywords {
             margin-top: 10px;
             margin-bottom: 10px;
             padding-left: 25px;
         }
-        > .description {
+        .description {
             margin-top: 10px;
         }
     }
-    > .screenshots {
+    .screenshots {
         margin-left: 10px;
         max-width: 270px;
-        > li {
+        li {
             margin-top: 20px;
             margin-bottom: 20px;
             img {

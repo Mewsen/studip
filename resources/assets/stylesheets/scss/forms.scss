@@ -639,7 +639,7 @@ form.inline {
 }
 
 .studip-dialog {
-    [data-vue-app],
+    > .ui-dialog-content > [data-vue-app],
     &.no-default-buttons .ui-dialog-content {
         min-height: 100%;
         display: flex;
