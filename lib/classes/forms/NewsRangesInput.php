@@ -28,12 +28,21 @@ class NewsRangesInput extends Input
 
         $selectable = [];
 
-        // Stud.IP
+        // System
         $studip_options = $this->getStudipOptions();
         if (count($studip_options) > 0) {
             $selectable[] = [
-                'label' => _('Stud.IP'),
+                'label' => _('System'),
                 'options' => $studip_options
+            ];
+        }
+
+        // User
+        $user_options = $this->getUserOptions();
+        if (count($user_options) > 0) {
+            $selectable[] = [
+                'label' => _('Personen'),
+                'options' => $user_options
             ];
         }
 
@@ -122,6 +131,14 @@ class NewsRangesInput extends Input
             ];
         }
 
+
+        return $options;
+    }
+
+    public function getUserOptions(): array
+    {
+        $options = [];
+        
         $options[] = [
             'value' => \User::findCurrent()->id . '__person',
             'name' => _('Meine Profilseite')
