@@ -338,7 +338,8 @@ article.wiki {
 /* Sections,Articles and Forms header */
 section.contentbox header,
 article.studip header,
-form.default fieldset > legend {
+form.default fieldset > legend,
+form.default fieldset:not(.undecorated) > legend {
     background-color: $black;
 }
 
@@ -658,6 +659,14 @@ a:hover.tree {
     color: $darkergray;
 }
 
+#globalsearch-searchbar {
+    background-color: $black;
+
+    #globalsearch-input {
+        background-color: $black;
+    }
+}
+
 #globalsearch-searchbar #globalsearch-list section header {
     color: $contrast-blue;
 }
@@ -797,9 +806,20 @@ table.course-search {
     }
 }
 
-.contentbar {
-    border: 2px solid $black;
-    background-color: $white;
+#contentbar {
+    .cw-ribbon {
+        background-color: $white;
+        .cw-ribbon-wrapper-right button:not(.action-menu-icon) {
+            border-color: $black;
+        }
+        .action-menu {
+            border-color: $black;
+
+            .action-menu-icon {
+                filter: unset;
+            }
+        }
+    }
 }
 
 .oer_material_overview article.contentbox header,
@@ -1129,5 +1149,25 @@ div.avatar-widget {
         .avatar-overlay {
             background-color: fade-out($base-color, 0.1);
         }
+    }
+}
+
+
+.drag-and-drop-wrapper {
+    background-color: $white;
+    border-color: $black;
+
+    &:hover {
+        background-color: $white;
+        border-color: $black;
+    }
+}
+
+div#studyareas #sem-tree-search-wrapper {
+    background-color: $white;
+    border: 2px solid $black;
+
+    #sem-tree-search-start {
+        border-color: $black;
     }
 }
