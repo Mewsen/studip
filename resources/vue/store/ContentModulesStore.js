@@ -15,6 +15,9 @@ export default {
         },
     },
     mutations: {
+        setCategories(state, categories) {
+            state.categories = categories;
+        },
         setFilterCategory(state, category) {
             state.filterCategory = category;
         },
