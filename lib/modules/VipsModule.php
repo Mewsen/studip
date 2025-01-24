@@ -358,6 +358,16 @@ class VipsModule extends CorePlugin implements StudipModule, SystemPlugin, Priva
                   'Sortierte Übersicht der eingereichten Ergebnisse; Single-, Multiple-Choice- und Textaufgaben, ' .
                   'Lückentexte und Zuordnungen; Notwendige Korrekturen und erzielte Punktzahlen auf einen Blick');
         $metadata['icon'] = Icon::create('vips');
+        $metadata['screenshots'] = [
+            'path' => 'assets/images/plus/screenshots/Vips',
+            'pictures' => [
+                0 => ['source' => 'Vips.jpg', 'title' => _('Aufgaben und Prüfungen')],
+                1 => ['source' => 'Vips_Aufgaben.jpg', 'title' => _('Aufgabenübersicht')],
+                2 => ['source' => 'Vips_Aufgaben_Typen.jpg', 'title' => _('Aufgaben-Typen')],
+                3 => ['source' => 'Vips_Aufgabe_erstellen.jpg', 'title' => _('Aufgabe erstellen')],
+                4 => ['source' => 'Vips_Aufgaben_Ergebnisse.jpg', 'title' => _('Ergebnisübersicht')]
+            ]
+        ];
 
         return $metadata;
     }

@@ -112,7 +112,7 @@ class CoreSchedule extends CorePlugin implements StudipModule
                 'path' => 'assets/images/plus/screenshots/Ablaufplan',
                 'pictures' => [
                     0 => ['source' => 'Termine_mit_Themen.jpg', 'title' => _('Termine mit Themen')],
-                    1 => [ 'source' => 'Thema_bearbeiten_und_einem_Termin_zuordnen.jpg', 'title' => _('Thema bearbeiten und einem Termin zuordnen')]
+                    1 => ['source' => 'Thema_bearbeiten_und_einem_Termin_zuordnen.jpg', 'title' => _('Thema bearbeiten und einem Termin zuordnen')]
                 ]
             ]
         ];

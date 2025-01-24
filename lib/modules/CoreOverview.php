@@ -124,8 +124,8 @@ class CoreOverview extends CorePlugin implements StudipModule
         return [
             'displayname' => _('Übersicht'),
             'summary' => _('Ankündigungen, Termine, Fragebögen & Details'),
-            'icon' => Icon::create('home', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('home')
+            'icon' => Icon::create('home2', Icon::ROLE_INFO),
+            'icon_clickable' => Icon::create('home2')
         ];
     }
 

@@ -1,7 +1,6 @@
 <article class="studip">
     <header>
         <h1>
-            <?= Icon::create('infopage', Icon::ROLE_INACTIVE)->asImg(['class' => 'text-top']) ?>
             <?= htmlReady(isset($scm) ? $scm->tab_name : '') ?>
         </h1>
         <nav>
@@ -14,7 +13,7 @@
             </span>
         <? if ($priviledged): ?>
             <a href="<?= $controller->edit($scm) ?>" title="<?= _('Bearbeiten') ?>" data-dialog>
-                <?= Icon::create('admin') ?>
+                <?= Icon::create('edit') ?>
             </a>
             <? if (count($scms) > 1): ?>
                 <? if ($scm->position != 0): ?>

@@ -129,7 +129,7 @@ class Blubber extends CorePlugin implements StudipModule
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Blubber',
                 'pictures' => [
-                    ['source' => 'blubberscreenshot.png', 'title' => 'Blubbern']
+                    ['source' => 'Blubber.jpg', 'title' => 'Blubber']
                 ]
             ]
         ];

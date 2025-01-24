@@ -46,6 +46,8 @@ export default {
 .contentmodule_info {
     display: flex;
     .main_part {
+        flex-grow: 1;
+
         .header {
             display: flex;
             align-items: center;
@@ -62,8 +64,11 @@ export default {
             }
 
         }
+        [data-vue-app] {
+            min-height: unset;
+        }
         .controls {
-            background-color: var(--content-color-20);
+            background-color: var(--color--fieldset-header);
             padding: 5px;
             display: flex;
             justify-content: space-between;
@@ -75,6 +80,7 @@ export default {
         }
         .description {
             margin-top: 10px;
+            padding: 0 1em;
         }
     }
     .screenshots {
@@ -86,6 +92,7 @@ export default {
             img {
                 display: block;
                 width: 100%;
+                border: solid thin var(--color--tile-border);
             }
         }
 

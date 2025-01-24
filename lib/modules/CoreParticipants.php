@@ -44,7 +44,7 @@ class CoreParticipants extends CorePlugin implements StudipModule
         }
 
         $navigation = new Navigation(_('Teilnehmende'), $url);
-        $navigation->setImage(Icon::create('persons'));
+        $navigation->setImage(Icon::create('persons2'));
 
         // Check permission, show no indicator if not at least tutor
         if (!$GLOBALS['perm']->have_studip_perm('tutor', $course_id, $user_id)) {
@@ -166,13 +166,13 @@ class CoreParticipants extends CorePlugin implements StudipModule
                                    'es die Möglichkeiten für Lehrende, allen eine Rundmail zukommen zu lassen '.
                                    'bzw. einzelne Teilnehmende separat anzuschreiben.'),
             'category' => _('Lehr- und Lernorganisation'),
-            'icon' => Icon::create('persons', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('persons'),
+            'icon' => Icon::create('persons2', Icon::ROLE_INFO),
+            'icon_clickable' => Icon::create('persons2'),
             'screenshots' => [
-                'path' => 'assets/images/plus/screenshots/TeilnehmerInnen',
+                'path' => 'assets/images/plus/screenshots/Teilnehmende',
                 'pictures' => [
-                    ['source' => 'Liste_aller_Teilnehmenden_einer_Veranstaltung.jpg', 'title' => _('Liste aller Teilnehmenden einer Veranstaltung')],
-                    ['source' => 'Rundmail_an_alle_TeilnehmerInnen_einer_Veranstaltung.jpg', 'title' => _('Rundmail an alle Teilnehmdenden einer Veranstaltung')],
+                    0 => ['source' => 'Liste_aller_Teilnehmenden_einer_Veranstaltung.jpg', 'title' => _('Liste aller Teilnehmenden einer Veranstaltung')],
+                    1 => ['source' => 'Rundmail_an_alle_Teilnehmenden_einer_Veranstaltung.jpg', 'title' => _('Rundmail an alle Teilnehmenden einer Veranstaltung')],
                 ]
             ],
         ];

@@ -42,7 +42,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
 
         $changed = LtiDeployment::countBySQL('course_id = ? AND chdate > ?', [$course_id, $last_visit]);
 
-        $icon = Icon::create('link-extern', $changed ? Icon::ROLE_NEW : Icon::ROLE_CLICKABLE);
+        $icon = Icon::create('plugin', $changed ? Icon::ROLE_NEW : Icon::ROLE_CLICKABLE);
 
         $navigation = new Navigation(_('LTI-Tools'), 'dispatch.php/course/lti');
         $navigation->setImage($icon);
@@ -104,12 +104,12 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
                                'sofern diese LTI in Version 1.0, 1.1 oder 1.3A unterstützen.'),
             'category' => _('Kommunikation und Zusammenarbeit'),
             'keywords' => implode(';', ['LTI', _('LTI-Tools'), _('E-Learning')]),
-            'icon' => Icon::create('link-extern', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('link-extern'),
+            'icon' => Icon::create('plugin', Icon::ROLE_INFO),
+            'icon_clickable' => Icon::create('plugin'),
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Lti',
                 'pictures' => [
-                    ['source' => 'Lti_tool_demo.jpg', 'title' => 'Beispiel für Wordpress-Einbindung']
+                    0 => ['source' => 'LTI_Tool_hinzufuegen.jpg', 'title' => _('LTI-Tool hinzufügen')],
                 ]
             ],
             'displayname' => _('LTI-Tools')

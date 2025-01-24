@@ -166,7 +166,8 @@ class CoreWiki extends CorePlugin implements StudipModule
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Wiki-Web',
                 'pictures' => [
-                    0 => [ 'source' => 'Gemeinsam_erstellte_Texte.jpg', 'title' => 'Gemeinsam erstellte Texte']
+                    0 => [ 'source' => 'Wiki_Seite.jpg', 'title' => _('Wiki Seite')],
+                    1 => [ 'source' => 'Wiki_Seite_bearbeiten.jpg', 'title' => _('Wiki Seite bearbeiten')]
                 ]
             ]
         ];

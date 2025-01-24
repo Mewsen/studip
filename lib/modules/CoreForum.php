@@ -201,9 +201,9 @@ class CoreForum extends CorePlugin implements ForumModule
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Forum',
                 'pictures' => [
-                    ['source' => 'Lehrendensicht_-_Kategorien_mit_Bereichen_und_Beitraegen.jpg'],
-                    ['source' => 'Studentische_Sicht_-_Kategorien_mit_Bereichen_und_Beitraegen.jpg'],
-                    ['source' => 'Einen_Forumsbeitrag_erstellen.jpg'],
+                    0 => ['source' => 'Uebersicht.jpg', 'title' => _('Übersicht')],
+                    1 => ['source' => 'Beitrag.jpg', 'title' => _('Beitrag')],
+                    2 => ['source' => 'Beitrag_verfassen.jpg', 'title' => _('Beitrag verfassen')],
                 ]
             ]
         ];

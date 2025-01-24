@@ -57,8 +57,9 @@ class FeedbackModule extends CorePlugin implements StudipModule, SystemPlugin
             'screenshots'   => [
                 'path'      => 'assets/images/plus/screenshots/Feedback',
                 'pictures'      => [
-                    ['source' => 'FeedbackIndex.png', 'title' => 'Übersichtsseite des Feedbacktools'],
-                    ['source' => 'FeedbackAnDatei.png', 'title' => 'Inhaltselement an einer Datei']
+                    0 => ['source' => 'Uebersicht.jpg', 'title' => _('Übersichtsseite des Feedbacktools')],
+                    1 => ['source' => 'Courseware.jpg', 'title' => _('Lernmaterial Feedback')],
+                    2 => ['source' => 'Datei.jpg', 'title' => _('Feedback an einer Datei')]
                 ]
             ]
         ];

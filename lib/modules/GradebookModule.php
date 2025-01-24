@@ -162,15 +162,9 @@ class GradebookModule extends CorePlugin implements SystemPlugin, StudipModule
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Gradebook',
                 'pictures' => [
-                    [
-                        'source' => 'Lehrendensicht.png',
-                        'title' => 'Beispiel für das Gradebook aus der Sicht der Lehrenden',
-                    ],
-                    [
-                        'source' => 'Studierendensicht.png',
-                        'title' => 'Beispiel für das Gradebook aus der Sicht der Studierenden',
-                    ],
-                ],
+                    0 => ['source' => 'Lehrendenansicht.jpg', 'title' => _('Ansicht für Lehrende')],
+                    1 => ['source' => 'Studierendenansicht.jpg', 'title' => _('Ansicht für Studierenden')]
+                ]
             ],
         ];
     }
