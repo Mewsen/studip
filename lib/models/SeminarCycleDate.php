@@ -359,17 +359,11 @@ class SeminarCycleDate extends SimpleORMap
              AND `resource_id` <> ''
              GROUP BY `resource_id`
              ORDER BY resource_c DESC";
-        $db = DBManager::get();
-        $stmt = $db->prepare($sql);
-        $stmt->execute($sql_params);
-        $rooms = [];
-        while ($room_id = $stmt->fetchColumn() !== false) {
-            $room = Resource::find($room_id)?->getDerivedClassInstance();
-            if ($room instanceof Room) {
-                $rooms[] = $room;
-            }
-        }
-        return $rooms;
+        return DBManager::get()->fetchFirst(
+            $sql,
+            $sql_params,
+            fn($room_id) => Room::find($room_id)
+        );
     }
 
     /**
@@ -407,14 +401,7 @@ class SeminarCycleDate extends SimpleORMap
              AND `termine`.`termin_id` NOT IN (SELECT `range_id` FROM `resource_bookings`)
              GROUP BY `raum`
              ORDER BY room_name_c DESC";
-        $db = DBManager::get();
-        $stmt = $db->prepare($sql);
-        $stmt->execute($sql_params);
-        $rooms = [];
-        while ($room_name = $stmt->fetchColumn() !== false) {
-            $rooms[] = $room_name;
-        }
-        return $rooms;
+        return DBManager::get()->fetchFirst($sql, $sql_params);
     }
 
     /**
