@@ -426,7 +426,9 @@ class MyRealmModel
         if ($group_field === 'mvv') {
             self::groupByMVVModule($sem_courses);
         }
-
+        echo '<pre>';
+        var_dump(Timer::getInstance()->get_time_deltas());
+        echo '</pre>';
         return $sem_courses;
     }
 
@@ -440,6 +442,7 @@ class MyRealmModel
      */
     public static function getAdditionalNavigations($object_id, &$my_obj_values, $sem_class, $user_id, $visit_data = [])
     {
+        $timer = Timer::getInstance();
         $navigation = [];
         foreach (self::getDefaultModules() as $plugin_id => $plugin) {
 
@@ -457,7 +460,10 @@ class MyRealmModel
                 $navigation[$plugin_id] = self::checkVote($my_obj_values, $user_id, $object_id);
             } else if ($tool = $my_obj_values['tools']->findOneBy('plugin_id', $plugin_id)) {
                 if (Seminar_Perm::get()->have_studip_perm($tool->getVisibilityPermission(), $object_id, $user_id)) {
+                    $plugin_class = get_class($plugin);
+                    $timer->start_timer($plugin_class, $object_id);
                     $navigation[$plugin_id] = $plugin->getIconNavigation($object_id, $visit_data[$plugin_id]['visitdate'], $user_id);
+                    $timer->stop_timer($plugin_class, $object_id);
                 } else {
                     $navigation[$plugin_id] = null;
                 }
