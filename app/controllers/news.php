@@ -405,7 +405,9 @@ class NewsController extends StudipController
                     'newsroles' => [
                         'permission' => $GLOBALS['perm']->have_perm('admin'),
                         'label' => _('Sichtbarkeit'),
-                        'value' => $news->news_roles->pluck('roleid'),
+                        'value' => $news->news_roles->map(function (NewsRoles $n) {
+                                       return (string) $n->roleid;
+                                   }), //vue-select needs these as strings
                         'type' => 'multiselect',
                         'options' => array_map(function ($r) { return $r->getRolename(); }, RolePersistence::getAllRoles()),
                         'store' => function ($value, $input) {
