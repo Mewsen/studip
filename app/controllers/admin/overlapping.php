@@ -60,12 +60,13 @@ class Admin_OverlappingController extends AuthenticatedController
                 $GLOBALS['user']->id
             ])
         );
+
         $_SESSION['MVV_OVL_SELECTION_ID'] = $selection_id;
         $this->selection_id = '';
         if (count($selections)) {
             $this->base_version = StgteilVersion::find($selections->first()->base_version_id);
-            $this->fachsems = explode(',', $selections->first()->fachsems);
-            $this->semtypes = explode(',', $selections->first()->semtypes);
+            $this->fachsems = $selections->first()->fachsems === '' ? [] : explode(',', $selections->first()->fachsems);
+            $this->semtypes = $selections->first()->semtypes === '' ? [] : explode(',', $selections->first()->semtypes);
             $this->comp_versions = StgteilVersion::findMany($selections->pluck('comp_version_id'));
             $this->selection_id = $selections->first()->selection_id;
             if (Request::int('show_hidden') !== null) {
@@ -84,6 +85,78 @@ class Admin_OverlappingController extends AuthenticatedController
             $this->selection_id,
             empty($_SESSION['MVV_OVL_HIDDEN'])
         );
+
+        $version_options = [];
+        foreach ($this->getStgteilVersions() as $base_version) {
+            $version_options[$base_version->id] = $base_version->getDisplayName();
+        }
+        $this->form = \Studip\Forms\Form::create();
+        $this->fieldset = new \Studip\Forms\Fieldset(_('Auswahl'));
+        $this->fieldset->addInput(
+            new \Studip\Forms\SelectInput(
+                'base_version',
+                _('Studiengangteil'),
+                $this->base_version_id,
+                [
+                    'options' => $version_options
+                ]
+            )
+        )->setRequired();
+        $this->fieldset->addInput(
+            new \Studip\Forms\MultiselectInput(
+                'comp_versions',
+                _('Vergleichs-Studiengangteile'),
+                $this->comp_versions_ids,
+                [
+                    'options' => $version_options
+                ]
+            )
+        );
+        $fsem_options = [];
+        for ($fsem = 1; $fsem < 7; $fsem++) {
+            $fsem_options[$fsem] = sprintf(_('%s Fachsemester'),
+                $fsem . ModuleManagementModel::getLocaleOrdinalNumberSuffix($fsem));
+        }
+        $this->fieldset->addInput(
+            new \Studip\Forms\MultiselectInput(
+                'fachsems',
+                _('Fachsemester'),
+                $this->fachsems,
+                [
+                    'options' => $fsem_options
+                ]
+            )
+        );
+        $sem_class_options = [];
+        foreach ($GLOBALS['SEM_CLASS'] as $class_id => $class) {
+            if ($class['studygroup_mode']) continue;
+            foreach ($class->getSemTypes() as $id => $type) {
+                $sem_class_options[$id] = sprintf('%s (%s)', $type['name'], $class['name']);
+            }
+        }
+        $this->fieldset->addInput(
+            new \Studip\Forms\MultiselectInput(
+                'semtypes',
+                _('Veranstaltungstypen'),
+                $this->semtypes,
+                [
+                    'options' => $sem_class_options
+                ]
+            )
+        );
+        $this->fieldset->addInput(
+            new \Studip\Forms\CheckboxInput(
+                'show_hidden',
+                _('Ausgeblendete Veranstaltungen anzeigen'),
+                $_SESSION['MVV_OVL_HIDDEN'] ?? '0'
+            )
+        );
+        $this->form->addPart($this->fieldset);
+        $this->form->setURL($this->check())
+            ->setCollapsable(true)
+            ->setDataSecure(false)
+            ->setSaveButtonText(_('Vergleichen'))
+            ->setCancelButtonText(_('Zurücksetzen'));
     }
 
     /**
@@ -120,61 +193,59 @@ class Admin_OverlappingController extends AuthenticatedController
             $this->fachsems = Request::intArray('fachsems');
             $this->semtypes = Request::intArray('semtypes');
 
-            if (Request::submitted('compare')) {
-                $selection_id = MvvOverlappingSelection::createSelectionId(
-                    $this->base_version,
-                    $this->comp_versions,
-                    $this->fachsems,
-                    $this->semtypes,
-                    $this->selected_semester->id
-                );
+            $selection_id = MvvOverlappingSelection::createSelectionId(
+                $this->base_version,
+                $this->comp_versions,
+                $this->fachsems,
+                $this->semtypes,
+                $this->selected_semester->id
+            );
 
-                // refresh conflicts
-                MvvOverlappingConflict::deleteBySelection($selection_id);
+            // refresh conflicts
+            MvvOverlappingConflict::deleteBySelection($selection_id);
 
-                foreach ($this->comp_versions as $comp_version) {
-                    $selection[$comp_version->id] = MvvOverlappingSelection::findOneBySQL(
-                    '`selection_id` = ? AND `comp_version_id` = ?', [
-                        $selection_id,
-                        $comp_version->id
-                    ]);
-                    if (!$selection[$comp_version->id]) {
-                        $selection[$comp_version->id] = new MvvOverlappingSelection();
-                        $selection[$comp_version->id]->semester_id = $this->selected_semester->id;
-                        $selection[$comp_version->id]->selection_id = $selection_id;
-                        $selection[$comp_version->id]->base_version_id = $this->base_version->id;
-                        $selection[$comp_version->id]->comp_version_id = $comp_version->id;
-                        $selection[$comp_version->id]->setFachsemester($this->fachsems);
-                        $selection[$comp_version->id]->setCourseTypes($this->semtypes);
-                        $selection[$comp_version->id]->user_id = $GLOBALS['user']->id;
-                        $selection[$comp_version->id]->store();
-                    }
-                    $selection[$comp_version->id]->storeConflicts();
+            foreach ($this->comp_versions as $comp_version) {
+                $selection[$comp_version->id] = MvvOverlappingSelection::findOneBySQL(
+                '`selection_id` = ? AND `comp_version_id` = ?', [
+                    $selection_id,
+                    $comp_version->id
+                ]);
+                if (!$selection[$comp_version->id]) {
+                    $selection[$comp_version->id] = new MvvOverlappingSelection();
+                    $selection[$comp_version->id]->semester_id = $this->selected_semester->id;
+                    $selection[$comp_version->id]->selection_id = $selection_id;
+                    $selection[$comp_version->id]->base_version_id = $this->base_version->id;
+                    $selection[$comp_version->id]->comp_version_id = $comp_version->id;
+                    $selection[$comp_version->id]->setFachsemester($this->fachsems);
+                    $selection[$comp_version->id]->setCourseTypes($this->semtypes);
+                    $selection[$comp_version->id]->user_id = $GLOBALS['user']->id;
+                    $selection[$comp_version->id]->store();
                 }
-                $conflicts = MvvOverlappingSelection::getConflictsBySelection($selection_id);
-                $visible_conflicts = MvvOverlappingSelection::getConflictsBySelection($selection_id, true);
-                if (count($conflicts)) {
-                    if (count($conflicts) != count($visible_conflicts)) {
-                        PageLayout::postSuccess(
-                            sprintf(
-                                ngettext('1 Konflikt gefunden (1 ausgeblendet)',
-                                    '%s Konflikte gefunden (%s ausgeblendet).', count($conflicts)),
-                                count($conflicts),
-                                count($conflicts) - count($visible_conflicts)
-                            )
-                        );
-                    } else {
-                        PageLayout::postSuccess(
-                            sprintf(
-                                ngettext('1 Konflikt gefunden.',
-                                    '%s Konflikte gefunden.', count($conflicts)),
-                                count($conflicts)
-                            )
-                        );
-                    }
+                $selection[$comp_version->id]->storeConflicts();
+            }
+            $conflicts = MvvOverlappingSelection::getConflictsBySelection($selection_id);
+            $visible_conflicts = MvvOverlappingSelection::getConflictsBySelection($selection_id, true);
+            if (count($conflicts)) {
+                if (count($conflicts) !== count($visible_conflicts)) {
+                    PageLayout::postSuccess(
+                        sprintf(
+                            ngettext('1 Konflikt gefunden (1 ausgeblendet)',
+                                '%s Konflikte gefunden (%s ausgeblendet).', count($conflicts)),
+                            count($conflicts),
+                            count($conflicts) - count($visible_conflicts)
+                        )
+                    );
                 } else {
-                    PageLayout::postSuccess(_('Keine Konflikte gefunden.'));
+                    PageLayout::postSuccess(
+                        sprintf(
+                            ngettext('1 Konflikt gefunden.',
+                                '%s Konflikte gefunden.', count($conflicts)),
+                            count($conflicts)
+                        )
+                    );
                 }
+            } else {
+                PageLayout::postSuccess(_('Keine Konflikte gefunden.'));
             }
         } else {
             PageLayout::postError('Die Basis-Version muss angegeben werden!');

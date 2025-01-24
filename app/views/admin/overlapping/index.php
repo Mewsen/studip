@@ -1,13 +1,18 @@
 <?php
 /**
+ * @var Studip\Forms\Form $form
  * @var SimpleORMapCollection $conflicts
- * @var array $semtypes
- * @var array $fachsems
  * @var array $stgteil_versions
  * @var string $fullcalendar
  */
 ?>
-<?= $this->render_partial('admin/overlapping/selection', ['fachsems' => $fachsems, 'semtypes' => $semtypes]) ?>
+<?= $form->render() ?>
+<br>
 <? if (count($conflicts)) : ?>
-    <?= $this->render_partial('admin/overlapping/overlapping') ?>
+    <article class="studip">
+        <header>
+            <h1><? printf(_('%s Konflikte'), count($conflicts)) ?></h1>
+        </header>
+        <?= $this->render_partial('admin/overlapping/overlapping') ?>
+    </article>
 <? endif; ?>
