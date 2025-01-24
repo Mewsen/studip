@@ -83,12 +83,13 @@
         <input type="text" aria-label="<?= _('Ablaufdatum / Löschdatum') ?>" title="<?= _('Ablaufdatum / Löschdatum') ?>"
                data-date-picker
                name="exp_date"
+               id="wizard-datepicker"
                value="<?= date('d.m.Y H:i', time() + 86400 * 365 * 2) ?>"
                class="hasDatePicker">
     </label>
 
     <label>
-        <?= _('Schlagwörter') ?>
+        <span id="studygroup-wizard-tags"><?= _('Schlagwörter') ?></span>
         <?= Studip\VueApp::create('Multiquicksearch')
             ->withProps([
                 'name'         => 'tags[]',
