@@ -44,9 +44,31 @@ final class Timer
         }
         $res = [];
         foreach ($deltas as $timer_name => $data) {
-            $res[$timer_name] = array_sum($data)/count($data);
+            $res[$timer_name]['avg'] = array_sum($data)/count($data);
+            $res[$timer_name]['std_dev'] = $this->standard_deviation($data);
+            $res[$timer_name]['data'] = $data;
         }
         return $res;
+    }
+
+    //src: https://www.geeksforgeeks.org/php-program-find-standard-deviation-array/
+    private function standard_deviation($array): float
+    {
+        $num_of_elements = count($array);
+
+        $variance = 0.0;
+
+                // calculating mean using array_sum() method
+        $average = array_sum($array)/$num_of_elements;
+
+        foreach($array as $i)
+        {
+            // sum of squares of differences between
+                        // all numbers and means.
+            $variance += pow(($i - $average), 2);
+        }
+
+        return (float)sqrt($variance/$num_of_elements);
     }
 
     private function compute_delta($data)
