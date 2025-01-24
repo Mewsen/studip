@@ -478,7 +478,10 @@ class MyRealmModel
                 continue;
             }
             if (Seminar_Perm::get()->have_studip_perm($tool->getVisibilityPermission(), $object_id, $user_id)) {
+                $plugin_class = get_class($module);
+                $timer->start_timer($plugin_class, $object_id);
                 $navigation[$tool->plugin_id] = $module->getIconNavigation($object_id, $visit_data[$tool->plugin_id]['visitdate'], $user_id);
+                $timer->stop_timer($plugin_class, $object_id);
             } else {
                 $navigation[$tool->plugin_id] = null;
             }
