@@ -1,16 +1,26 @@
-<? if (isset($breadcrumb)) : ?>
-    <div>
-    <?= $this->render_partial('search/breadcrumb') ?>
-    </div>
-<? endif ?>
-<? if ($studiengangTeilName) : ?>
-    <? $max_fachsemester = count($fachsemesterData) ? max($fachsemesterData) : 0 ?>
-    <table class="mvv-modul-details default nohover">
+<?
+/**
+ * @var array $fach_sem_data
+ * @var Studiengang $studiengang
+ * @var StgteilBezeichnung $stg_teil_bez
+ * @var StgteilVersion $current_version
+ * @var SimpleCollection $versionen
+ * @var array $abschnitte_data
+ * @var Search_StudiengaengeController $controller
+ * @var int $close_sections
+ */
+?>
+<div>
+<?= $this->render_partial('search/breadcrumb') ?>
+</div>
+<? if (!empty($stg_teil)) : ?>
+    <? $max_fachsemester = count($fach_sem_data) ? max($fach_sem_data) : 0 ?>
+    <table class="mvv-modul-details default collapsable">
         <caption>
-            <?= htmlReady($studiengangTeilName) ?>
-    <? if ($studiengang && !empty($stgTeilBez)) : ?>
+            <?= htmlReady($stg_teil->getDisplayName()) ?>
+    <? if (!empty($studiengang) && !empty($stg_teil_bez)) : ?>
         <h3>
-            <?= sprintf(_('%s im Studiengang %s'), htmlReady($stgTeilBez->getDisplayName()), htmlReady($studiengang->getDisplayName())) ?>
+            <?= sprintf(_('%s im Studiengang %s'), htmlReady($stg_teil_bez->getDisplayName()), htmlReady($studiengang->getDisplayName())) ?>
             <? if (Config::get()->ENABLE_STUDYCOURSE_INFO_PAGE) : ?>
                 <a href="<?= $controller->link_for('search/studiengaenge/info', $studiengang->id)?>" data-dialog>
                     <?= Icon::create('infopage2', Icon::ROLE_CLICKABLE, ['title' => _('Informationen zum Studiengang')]) ?>
@@ -18,64 +28,67 @@
             <? endif ?>
         </h3>
     <? endif ?>
-    <? $current_version = $versionen->findOneBy('id', $cur_version_id) ?>
-    <? if ($current_version) : ?>
+    <? if (!empty($current_version)) : ?>
         <h4><?= $current_version->getDisplayName() ?></h4>
     <? else : ?>
         <h4><?= htmlReady($versionen->first()->getDisplayName()) ?></h4>
     <? endif ?>
         </caption>
+        <colgroup>
+            <col style="width: 50%">
+            <col>
+            <col style="width: 25px;">
+            <? for ($i = 1; $i <= $max_fachsemester; $i++) : ?>
+                <col style="width: 25px;">
+            <? endfor ?>
+        </colgroup>
         <thead>
             <tr >
-                <th rowspan="2"><?= _('Name / CP') ?></th>
-                <th rowspan="2"><?= _('Modul') ?></th>
-                <th rowspan="2"><?= _('Modulteil') ?></th>
+                <th><?= _('Modul') ?></th>
+                <th><?= _('Modulteil') ?></th>
+                <th><?= _('Info') ?></th>
                 <? if ($max_fachsemester) : ?>
                 <th colspan="<?= $max_fachsemester ?>" style="text-align: center"><?= _('Semester') ?></th>
                 <? endif ?>
             </tr>
-            <tr>
-            <? for ($i = 1; $i <= $max_fachsemester; $i++) : ?>
-                <th><?= $i ?></th>
-            <? endfor ?>
-    		</tr>
         </thead>
-        <tbody>
-            <? foreach ($abschnitteData as $abschnitt_id => $abschnitt): ?>
-                <? $displayedAbschnittName = false ?>
-                <? $ueberschrift = (mb_strlen($abschnitt['zwischenUeberschrift'])) ?>
-                <? if ($ueberschrift): ?>
-                	<tr class="table_header">
-                        <td colspan="<?= $max_fachsemester + 3 ?>"><?= htmlReady($abschnitt['zwischenUeberschrift']) ?></td>
+        <? foreach ($abschnitte_data as $abschnitt_id => $abschnitt) : ?>
+            <tbody class="<?= $close_sections ? 'collapsed' : '' ?>">
+                <? $displayed_abschnitt_name = false; ?>
+                <? $ueberschrift = (mb_strlen($abschnitt['subheading'])) ?>
+                <? if ($ueberschrift) : ?>
+                    <tr class="header-row">
+                        <td colspan="<?= $max_fachsemester + 4 ?>"><?= htmlReady($abschnitt['subheading']) ?></td>
                     </tr>
                 <? endif ?>
-
-                <? foreach ($abschnitt['module'] as $modul_id => $modul): ?>
-                    <? $displayedModulName = false ?>
-
+                <? foreach ($abschnitt['modules'] as $modul_id => $modul): ?>
+                    <? $displayed_module_name = false ?>
                     <? foreach ($modul['modulTeile'] as $modulTeil_id => $modulTeil): ?>
-                        <? $displayedModulTeilName = false ?>
-                        <tr>
-                            <? if (!$displayedAbschnittName) : ?>
-                                <? $displayedAbschnittName = true ?>
-                                <td rowspan="<?= $abschnitt['rowspan'] ?: 1 ?>">
-                                    <?= htmlReady($abschnitt['name']) ?><br/><?= $abschnitt['creditPoints'] ? $abschnitt['creditPoints'] . ' ' . _('CP') : '' ?>
-                                    <? if (trim($abschnitt['kommentar'])) : ?>
-                                        <a data-dialog title="<?= sprintf(_('%s (Kommentar)'), htmlReady($abschnitt['name'])) ?>" href="<?= $controller->link_for('search/studiengaenge/kommentar', $abschnitt_id) ?>">
-                                            <?= Icon::create('item', Icon::ROLE_CLICKABLE, ['title' => _('Zusatzinformationen zum Studiengangabschnitt')]) ?>
-                                        </a>
-                                    <? endif ?>
-                                </td>
-                            <? endif ?>
-                            <? if (!$displayedModulName) : ?>
-                                <? $displayedModulName = true ?>
-                                <td rowspan="<?= count($modul['modulTeile']) ?>">
-                                   <? // Anzeige der alternativen Bezeichnung aus mvv_stgteilabschnitt_modul ?>
+                        <? if (!$displayed_abschnitt_name) : ?>
+                            <tr class="header-row">
+                                <? $displayed_abschnitt_name = true ?>
+                                <th class="toggle-indicator" colspan="2">
+                                    <a class="toggler" href="#"><?= htmlReady($abschnitt['name']) ?><?= $abschnitt['credit_points'] ? $abschnitt['credit_points'] . ' ' . _('CP') : '' ?></a>
+                                </th>
+                                <th>
+                                    <a data-dialog title="<?= sprintf(_('%s (Kommentar)'), htmlReady($abschnitt['name'])) ?>" href="<?= $controller->link_for('search/studiengaenge/kommentar', $abschnitt_id) ?>">
+                                        <?= Icon::create('info-circle')->asImg(['title' => _('Zusatzinformationen zum Studiengangabschnitt')]) ?>
+                                    </a>
+                                </th>
+                                <? for ($i = 1; $i <= $max_fachsemester; $i++) : ?>
+                                    <th><span><?= $i ?><span></th>
+                                <? endfor ?>
+                            </tr>
+                        <? endif ?>
+                        <? if (!$displayed_module_name) : ?>
+                            <? $displayed_module_name = true ?>
+                            <tr>
+                                <td<?= count($modul['modulTeile']) > 1 ? ' style="border: none;"' : '' ?>>
                                     <? $abschnitt_modul = StgteilabschnittModul::findOneBySQL('`abschnitt_id` = ? AND `modul_id` = ?', [$abschnitt_id, $modul_id]) ?>
                                     <a data-dialog="size=auto" title="<?= htmlReady($modul['name']) . ' (' . _('Vollständige Modulbeschreibung') . ')' ?>" href="<?= $controller->link_for('shared/modul/description/' . $modul_id, ['display_language' => ModuleManagementModel::getLanguage()]) ?>">
                                         <?= Icon::create('log', Icon::ROLE_CLICKABLE, ['title' => _('Vollständige Modulbeschreibung')]) ?>
                                     </a>
-                                    <? if($modul['veranstaltungen']):?>
+                                    <? if ($modul['courses']) : ?>
                                     <a data-dialog href="<?= $controller->link_for('shared/modul/overview', $modul_id, $active_sem->getId(), ['display_language' => ModuleManagementModel::getLanguage()])  ?>">
                                         <?= htmlReady($abschnitt_modul->getDisplayName()) ?>
                                     </a>
@@ -83,71 +96,42 @@
                                         <?= htmlReady($abschnitt_modul->getDisplayName()) ?>
                                     <? endif ?>
                                 </td>
+                                <td colspan="2"><?= htmlReady($modulTeil['name']) ?></td>
+                        <? else : ?>
+                            <tr>
+                                <td></td>
+                                <td colspan="2"><?= htmlReady($modulTeil['name']) ?></td>
+                        <? endif ?>
+                        <? for ($i = 1; $i <= $max_fachsemester; $i++) : ?>
+                            <? $fachsemester_typ = null ?>
+                            <? if (isset(
+                                $fach_sem_data[$i],
+                                $modulTeil['fachsemester'][$fach_sem_data[$i]],
+                                $GLOBALS['MVV_MODULTEIL_STGABSCHNITT']['STATUS']['values'][$modulTeil['fachsemester'][$fach_sem_data[$i]]]
+                            )) : ?>
+                                <? $fachsemester_typ = $GLOBALS['MVV_MODULTEIL_STGABSCHNITT']['STATUS']['values'][$modulTeil['fachsemester'][$fach_sem_data[$i]]] ?>
                             <? endif ?>
-                            <td><?= htmlReady($modulTeil['name']) ?> </td>
-                        <? for ($i = 1; $i <= $max_fachsemester; $i++) :
-                            $fachsemester_typ = null;
-                            if (isset(
-                                $fachsemesterData[$i],
-                                $modulTeil['fachsemester'][$fachsemesterData[$i]],
-                                $GLOBALS['MVV_MODULTEIL_STGABSCHNITT']['STATUS']['values'][$modulTeil['fachsemester'][$fachsemesterData[$i]]]
-                            )) {
-                                $fachsemester_typ = $GLOBALS['MVV_MODULTEIL_STGABSCHNITT']['STATUS']['values'][$modulTeil['fachsemester'][$fachsemesterData[$i]]];
-                            }
-                        ?>
                             <? if (!empty($fachsemester_typ['visible'])) : ?>
-                                <td class="mvv-type-<?= $modulTeil['fachsemester'][$fachsemesterData[$i]] ?? '' ?>">
+                                <td class="mvv-type-<?= $modulTeil['fachsemester'][$fach_sem_data[$i]] ?? '' ?>">
                                     <span title="<? printf(_('%s Semester (%s)'), $i . ModuleManagementModel::getLocaleOrdinalNumberSuffix($i), $fachsemester_typ['name']) ?>">
                                         <?= $fachsemester_typ['icon'] ?>
                                     </span>
                                 </td>
                             <? else : ?>
-                                <td class="mvv-type">&nbsp;</td>
+                                <td></td>
                             <? endif ?>
                         <? endfor ?>
                         </tr>
                     <? endforeach ?>
-
-                    <? if (!$displayedModulName): ?>
-                        <tr>
-                        <? if (!$displayedAbschnittName) : ?>
-                            <? $displayedAbschnittName = true ?>
-                            <td rowspan="<?= $abschnitt['rowspan'] ?: 1 ?>">
-                                <?= htmlReady($abschnitt['name']) ?><br/><?= $abschnitt['creditPoints'] ? $abschnitt['creditPoints'] . ' ' . _('CP') : '' ?>
-                                <? if (trim($abschnitt['kommentar'])) : ?>
-                                    <a data-dialog title="<?= sprintf(_('%s (Kommentar)'), htmlReady($abschnitt['name'])) ?>" href="<?= $controller->link_for('search/studiengaenge/kommentar', $abschnitt_id) ?>">
-                                        <?= Icon::create('item', Icon::ROLE_CLICKABLE, ['title' => _('Zusatzinformationen zum Studiengangabschnitt')]) ?>
-                                    </a>
-                                <? endif ?>
-                            </td>
-                        <? endif ?>
-                            <td>
-                                <a data-dialog="size=auto" title="<?= htmlReady($modul['name']) . ' (' . _('Vollständige Modulbeschreibung') . ')' ?>" href="<?= $controller->link_for('shared/modul/description/' . $modul_id, ['display_language' => ModuleManagementModel::getLanguage()]) ?>">
-                                    <?= Icon::create('log', Icon::ROLE_CLICKABLE, ['title' => _('Vollständige Modulbeschreibung')]) ?>
-                                </a>
-                            <? if ($modul['veranstaltungen']): ?>
-                                <a data-dialog href="<?= $controller->link_for('shared/modul/overview', $modul_id, $active_sem->getId(), ['display_language' => ModuleManagementModel::getLanguage()])  ?>">
-                                    <?= htmlReady($modul['name']) ?>
-                                </a>
-                            <? else: ?>
-                                    <?= htmlReady($modul['name']) ?>
-                                <? endif ?>
-                            </td>
-                            <td>&ndash;</td>
-                        <? for ($i = 1; $i <= $max_fachsemester; $i++) : ?>
-                            <td class="mvv-type">&nbsp;</td>
-                        <? endfor ?>
-                        </tr>
-                    <? endif ?>
                 <? endforeach ?>
-            <? endforeach ?>
-        </tbody>
+            </tbody>
+        <? endforeach ?>
     </table>
 
     <h2><?= _('Studentische Arbeitsgruppen') ?></h2>
 
     <section class="studip-tiles">
-        <? foreach ($studiengangTeil->studygroups as $course) : ?>
+        <? foreach ($stg_teil->studygroups as $course) : ?>
             <div>
                 <div class="with-action-menu">
                     <div>
@@ -174,8 +158,8 @@
                         <form method="post">
                             <?= CSRFProtection::tokenTag() ?>
                             <button class="undecorated"
-                               data-confirm="<?= sprintf(_('Wirklich diese Studiengruppe aus dem Studiengang %s entfernen?'), $studiengangTeilName) ?>"
-                               formaction="<?= $controller->remove_studygroup($course->id, $studiengangTeil->id) ?>">
+                               data-confirm="<?= sprintf(_('Wirklich diese Studiengruppe aus dem Studiengang %s entfernen?'), $stg_teil->getDisplayName()) ?>"
+                               formaction="<?= $controller->remove_studygroup($course->id, $stg_teil->id) ?>">
                                 <?= Icon::create('trash') ?>
                             </button>
                         </form>
@@ -191,7 +175,7 @@
             </div>
         <? endforeach ?>
 
-        <a href="<?= URLHelper::getLink('dispatch.php/course/wizard', ['studygroup' => 1, 'stgteil_id' => $studiengangTeil->id] )?>">
+        <a href="<?= URLHelper::getLink('dispatch.php/course/wizard', ['studygroup' => 1, 'stgteil_id' => $stg_teil->id] )?>">
             <div>
                 <?= Icon::create('add')->asImg(50) ?>
                 <strong><?= _('Neue Studiengruppe erstellen') ?></strong>
