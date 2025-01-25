@@ -591,6 +591,9 @@ class Fullcalendar
                     );
                 } else {
                     $(eventElement).attr('title', event.title);
+                    if (event.extendedProps.header_text) {
+                        $(eventElement).find('.fc-time span').append(', ' + event.extendedProps.header_text);
+                    }
                 }
 
                 if (event.extendedProps.icon) {

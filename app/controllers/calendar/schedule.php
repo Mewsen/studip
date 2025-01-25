@@ -273,6 +273,11 @@ class Calendar_ScheduleController extends AuthenticatedController
                     $event_classes[] = 'hidden-course';
                 }
 
+                $room = $cycle_date->getMostBookedRoom() ?: $cycle_date->getMostUsedFreetextRoomName();
+                if ($room) {
+                    $room = is_object($room) ? $room->name : '(' . $cycle_date->getMostUsedFreetextRoomName() . ')';
+                }
+
                 $event = new \Studip\Calendar\EventData(
                     $fake_begin,
                     $fake_end,
@@ -291,7 +296,11 @@ class Calendar_ScheduleController extends AuthenticatedController
                         'show' => $this->url_for('calendar/schedule/course_info/' . $cycle_date->seminar_id)
                     ],
                     [],
-                    $event_icon ?: ''
+                    $event_icon ?: '',
+                    '',
+                    false,
+                    '',
+                    $room
                 );
 
                 $result[] = $event->toFullcalendarEvent();

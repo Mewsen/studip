@@ -24,6 +24,7 @@ class EventData
     public $icon;
     public $border_colour;
     public $all_day;
+    public $header_text;
 
     /**
      * @var string The ID in this field is used to group events when displayed
@@ -50,7 +51,8 @@ class EventData
         string $icon = '',
         string $border_colour = '',
         bool $all_day = false,
-        string $group_id = ''
+        string $group_id = '',
+        string $header_text = null
     )
     {
         $this->begin = $begin;
@@ -72,6 +74,7 @@ class EventData
         $this->border_colour = $border_colour ?: $background_colour;
         $this->all_day = $all_day;
         $this->group_id = $group_id;
+        $this->header_text = $header_text;
     }
 
 
@@ -106,6 +109,7 @@ class EventData
             'color' => $this->background_colour,
             'borderColor' => $this->border_colour,
             'editable' => $this->editable,
+            'header_text' => $this->header_text,
             'studip_weekday_begin' => $this->begin->format('N'),
             'studip_weekday_end' => $this->end->format('N'),
             'studip_object_class' => $this->object_class,
