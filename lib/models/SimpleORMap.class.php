@@ -90,6 +90,13 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     protected string $i18n_class = I18NString::class;
 
     /**
+     * Defines whether we need to fix the default values for a column
+     *
+     * @var bool $mariadb_column_default_fix
+     */
+    protected static $mariadb_column_default_fix = false;
+
+    /**
      * name of db table
      * @return string
      */
@@ -1526,6 +1533,21 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                          $default_value = '0';
                      }
                  }
+
+                 /* @see https://gitlab.studip.de/studip/studip/-/issues/4462 */
+                 if (self::$mariadb_column_default_fix) {
+                    if ($default_value === 'NULL') {
+                        $default_value = null;
+                    } elseif (
+                        is_string($default_value)
+                        && strlen($default_value) >= 2
+                        && $default_value[0] === "'"
+                    ) {
+                        $default_value = str_replace("''", "'", $default_value);
+                        $default_value = stripslashes($default_value);
+                        $default_value = substr($default_value, 1, -1);
+                    }
+                 }
              }
          } else {
              $default_value = $this->default_values()[$field];
@@ -2564,5 +2586,13 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
              }
              $this->resetRelation($relation);
          }
+     }
+
+    /**
+     * Enable/disable the fix for mariadb >= 10.2.7 default column values.
+     */
+     public static function setMariadbDefaultColumnFix(bool $state = true): void
+     {
+         self::$mariadb_column_default_fix = $state;
      }
 }
