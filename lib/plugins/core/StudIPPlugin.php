@@ -184,25 +184,35 @@ abstract class StudIPPlugin
     }
 
     /**
-     * This method dispatches all actions.
-     *
-     * @param string   part of the dispatch path that was not consumed
+     * This method formerly dispatches all actions. Left in place for
+     * compatibility
+     * @param string $unconsumed_path part of the dispatch path that was not consumed
      *
      * @return void
      */
     public function perform($unconsumed_path)
     {
+
+    }
+
+    /**
+     * This method returns callable for slim app
+     *
+     * @param string $unconsumed_path part of the dispatch path that was not consumed
+     *
+     * @return Closure
+     * @throws \Trails\Exceptions\UnknownAction
+     */
+    public function getRouteCallable(string $unconsumed_path): Closure
+    {
+        $this->perform($unconsumed_path);
         $args = explode('/', $unconsumed_path);
         $action = $args[0] !== '' ? array_shift($args).'_action' : 'show_action';
 
         if (!method_exists($this, $action)) {
-            $dispatcher = app(\Trails\Dispatcher::class);
-            $dispatcher->trails_root = $this->getPluginPath();
-            $dispatcher->trails_uri = rtrim(PluginEngine::getLink($this, [], null, true), '/');
-            $dispatcher->default_controller = 'index';
-            $dispatcher->current_plugin = $this;
             try {
-                $dispatcher->dispatch($unconsumed_path);
+                $dispatcher = app(PluginDispatcher::class, ['plugin' => $this]);
+                return $dispatcher->getRouteCallable($unconsumed_path);
             } catch (Trails\Exceptions\UnknownAction $exception) {
                 if (count($args) > 0) {
                     throw $exception;
@@ -211,10 +221,16 @@ abstract class StudIPPlugin
                 }
             }
         } else {
-            call_user_func_array([$this, $action], $args);
+            $that = $this;
+            return function ($request, $response, array $otherargs) use ($action, $args, $that) {
+                ob_start();
+                call_user_func_array([$that, $action], $args);
+                $content = ob_get_clean();
+                $response->getBody()->write($content);
+                return $response;
+            };
         }
     }
-
     /**
      * Callback function called after enabling a plugin.
      * The plugin's ID is transmitted for convenience.

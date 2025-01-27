@@ -13,19 +13,23 @@
  *
  * @property int $id alias for pk
  * @property int $page_id database column
- * @property string $course_id database column
- * @property string|null $user_id database column
+ * @property string $range_id database column
  * @property string $name database column
  * @property string $content database column
- * @property string|null $ancestor database column
- * @property int|null $chdate database column
- * @property int $version database column
+ * @property string|null $parent_id database column
+ * @property string $read_permission database column
+ * @property string $write_permission database column
+ * @property string $user_id database column
+ * @property int|null $locked_since database column
+ * @property string|null $locked_by_user_id database column
  * @property int|null $mkdate database column
+ * @property int|null $chdate database column
+ *
  * @property User|null $user belongs_to User
  * @property Course $course belongs_to Course
  * @property WikiVersion[]|SimpleORMapCollection $versions
  * @property WikiOnlineEditingUser[]|SimpleORMapCollection $onlineeditingusers
- * @property-read WikiPage $parent additional field
+ * @property-read WikiPage|null $parent additional field
  * @property-read WikiPage[] $children additional field
  * @property-read WikiVersion|null $predecessor additional field
  * @property-read int $versionnumber additional field
@@ -179,16 +183,27 @@ class WikiPage extends SimpleORMap implements PrivacyObject
         if ($user_id === null && User::findCurrent()) {
             $user_id = User::findCurrent()->id;
         }
-        if ($GLOBALS['perm']->have_studip_perm(
-            'dozent',
-            $this->range_id,
-            $user_id
-        )) {
-            return true;
+
+        if (
+            !$user_id
+            || !$GLOBALS['perm']->have_studip_perm('user', $this->range_id, $user_id)
+        ) {
+            return false;
         }
+
+        // Check create permission if page is new
+        if ($this->isNew()) {
+            $range = RangeFactory::find($this->range_id, ['sem', 'inst']);
+            $permission = $range->getConfiguration()->getValue('WIKI_CREATE_PERMISSION');
+            return $permission === 'all'
+                || $GLOBALS['perm']->have_studip_perm($permission, $this->range_id, $user_id);
+        }
+
+        // Otherwise check write permissions
         if ($this->write_permission === 'all') {
             return true;
         }
+
         if (in_array($this->write_permission, ['tutor', 'dozent'])) {
             return $GLOBALS['perm']->have_studip_perm(
                 $this->write_permission,
@@ -200,31 +215,36 @@ class WikiPage extends SimpleORMap implements PrivacyObject
         }
     }
 
-
-    /**
-     * Returns the start page of a wiki for a given course. The start page has
-     * the keyword 'WikiWikiWeb'.
-     *
-     * @param  string $range_id Course id
-     * @return WikiPage
-     */
-    public static function getStartPage($range_id): WikiPage
+    public function isDeletable(?string $user_id = null): bool
     {
-        $page_id = CourseConfig::get($range_id)->WIKI_STARTPAGE_ID;
-
-        if ($page_id) {
-            return self::find($page_id);
+        if ($user_id === null && User::findCurrent()) {
+            $user_id = User::findCurrent()->id;
         }
 
-        $page = new WikiPage();
-        $page->setValue('content', _('Dieses Wiki ist noch leer.'));
-        if ($page->isEditable()) {
-            $page->setValue(
-                'content',
-                $page->getValue('content') .  ' ' . _("Bearbeiten Sie es!\nNeue Seiten oder Links werden einfach durch Eingeben von [nop][[Wikinamen]][/nop] in doppelten eckigen Klammern angelegt.")
-            );
+        if (!$user_id) {
+            return false;
         }
-        return $page;
+
+        $permission  = $this->write_permission;
+        if ($permission === 'all') {
+            $permission = 'tutor';
+        }
+
+        if (
+            in_array($permission, ['tutor', 'dozent'])
+            && $GLOBALS['perm']->have_studip_perm(
+                $this->write_permission,
+                $this->range_id,
+                $user_id
+            )
+        ) {
+            return true;
+        }
+
+        return $this->user_id === $user_id
+            && $this->versions->every(function (WikiVersion $version) use ($user_id): bool {
+                return $version->user_id === $user_id;
+            });
     }
 
     /**

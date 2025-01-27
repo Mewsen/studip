@@ -1,4 +1,5 @@
 <form action="<?= URLHelper::getLink($url) ?>"
+    class="default"
       <?= $onsubmit ? 'onsubmit="'.htmlReady($onsubmit).'"' : '' ?>
       method="<?= $method ?>">
     <?= \SelectWidget::arrayToHiddenInput($params) ?>

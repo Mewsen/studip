@@ -812,39 +812,61 @@ class UserManagement
             }
         }
 
-        // active dozent?
-        $query = "SELECT COUNT(*)
-                  FROM (
-                      SELECT 1
-                      FROM `seminar_user` AS `su1`
-                      -- JOIN seminar_user to check for other teachers
-                      INNER JOIN `seminar_user` AS `su2`
-                        ON (`su1`.`seminar_id` = `su2`.`seminar_id` AND `su2`.`status` = 'dozent')
-                      -- JOIN seminare to check the status for studygroup mode
-                      INNER JOIN `seminare`
-                        ON (`su1`.`seminar_id` = `seminare`.`seminar_id`)
-                      WHERE `su1`.`user_id` = :user_id
-                        AND `su1`.`status` = 'dozent'
-                        AND `seminare`.`status` NOT IN (
-                            -- Select all status ids for studygroups
-                            SELECT `id`
-                            FROM `sem_classes`
-                            WHERE `studygroup_mode` = 1
-                        )
-                      GROUP BY `su1`.`seminar_id`
-                      HAVING COUNT(*) = 1
-                      ORDER BY NULL
-                  ) AS `sub`";
-        $statement = DBManager::get()->prepare($query);
-        $statement->bindValue(':user_id', $this->user_data['auth_user_md5.user_id']);
-        $statement->execute();
-        $active_count = $statement->fetchColumn() ?: 0;
-
-        if ($active_count && $delete_memberships) {
-            $this->msg .= 'error§' . sprintf(_('<em>%s</em> ist Lehrkraft in %s aktiven Veranstaltungen und kann daher nicht gelöscht werden.'), $this->user_data['auth_user_md5.username'], $active_count) . '§';
+        // Check if dummy teacher exists
+        if (!Config::get()->DUMMY_TEACHER_ID || !User::find(Config::get()->DUMMY_TEACHER_ID)) {
+            $this->msg .= 'error§' . sprintf(
+                _('Dummy-Dozent (id: %s) nicht gefunden. Bitte DUMMY_TEACHER_ID in Konfiguration setzen.'),
+                Config::get()->DUMMY_TEACHER_ID) . '§';
             return false;
-        //founder of studygroup?
-        } elseif (Config::get()->STUDYGROUPS_ENABLE) {
+        }
+
+        // Delete courses where user is the only one left (besides the dummy teacher)
+        $members = CourseMember::findBySQL(
+            "LEFT JOIN seminare USING(Seminar_id)
+            WHERE seminare.status NOT IN (?) AND user_id != ?
+            GROUP BY Seminar_id
+            HAVING COUNT(DISTINCT user_id) = 1 AND user_id = ?",
+            [
+                studygroup_sem_types(),
+                Config::get()->DUMMY_TEACHER_ID,
+                $this->user->id
+            ]
+        );
+        foreach ($members as $member) {
+            $this->msg .= 'info§' . sprintf(
+                _('User ist einziges Mitglied in Veranstaltung (%s), lösche Veranstaltung.'),
+                $member->course->id
+            ) . '§';
+            $member->course->delete();
+        }
+
+        // Add dummy teacher to courses when only the user is left as teacher
+        $members = CourseMember::findBySQL(
+            "LEFT JOIN seminare USING(Seminar_id)
+            WHERE seminare.status NOT IN (?) AND user_id != ? AND seminar_user.status = 'dozent'
+            GROUP BY Seminar_id
+            HAVING COUNT(DISTINCT user_id) = 1 AND user_id = ?",
+            [
+                studygroup_sem_types(),
+                Config::get()->DUMMY_TEACHER_ID,
+                $this->user->id
+            ]
+        );
+        foreach ($members as $member) {
+            $this->msg .= 'info§' . sprintf(
+                _('User ist einziger Dozent in Veranstaltung (id: %s), füge Dummy-Dozent hinzu.'),
+                $member->course->id
+            ) . '§';
+            CourseMember::insertCourseMember(
+                $member->course->id,
+                Config::get()->DUMMY_TEACHER_ID,
+                'dozent'
+            );
+
+        }
+
+        // Founder of studygroup?
+        if (Config::get()->STUDYGROUPS_ENABLE) {
             $status = studygroup_sem_types();
 
             if (empty($status)) {
@@ -896,6 +918,11 @@ class UserManagement
         // delete user from instituts
         $this->logInstUserDel($this->user_data['auth_user_md5.user_id']);
 
+        // Delete from all courses and studygroups
+        if ($count = CourseMember::deleteByUser_id($this->user->id)) {
+            $this->msg .= 'info§' . sprintf(_('Aus %s Veranstaltungen/Studiengruppen ausgetragen.'), $count) . '§';
+        }
+
         if ($delete_memberships) {
             $query = "DELETE FROM user_inst WHERE user_id = ?";
             $statement = DBManager::get()->prepare($query);
@@ -926,14 +953,6 @@ class UserManagement
             }
 
             $this->re_sort_position_in_seminar_user();
-
-            // delete user from seminars (postings will be preserved)
-            $query = "DELETE FROM seminar_user WHERE user_id = ?";
-            $statement = DBManager::get()->prepare($query);
-            $statement->execute([$this->user_data['auth_user_md5.user_id']]);
-            if ($count = $statement->rowCount()) {
-                $this->msg .= 'info§' . sprintf(_('%s Einträge aus Veranstaltungen gelöscht.'), $count) . '§';
-            }
 
             $query = "DELETE FROM `termin_related_persons` WHERE `user_id` = ?";
             $statement = DBManager::get()->prepare($query);
@@ -1196,7 +1215,7 @@ class UserManagement
             "DELETE FROM user_online WHERE user_id = ?",
             "DELETE FROM auto_insert_user WHERE user_id = ?",
             "DELETE FROM roles_user WHERE userid = ?",
-            "DELETE FROM schedule WHERE user_id = ?",
+            "DELETE FROM schedule_entries WHERE user_id = ?",
             "DELETE FROM schedule_courses WHERE user_id = ?",
             "DELETE FROM termin_related_persons WHERE user_id = ?",
             "DELETE FROM priorities WHERE user_id = ?",
@@ -1261,7 +1280,7 @@ class UserManagement
                       WHERE a.user_id = ? AND a.inst_perms = 'admin'";
             $statement = DBManager::get()->prepare($query);
             $statement->execute([
-                $GLOBALS['auth']->auth['uid'],
+                $GLOBALS['user']->id,
                 $this->user_data['auth_user_md5.user_id'],
             ]);
             $ok = $statement->fetchColumn();

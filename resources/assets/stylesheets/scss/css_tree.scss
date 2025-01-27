@@ -52,7 +52,7 @@ $css-tree-border: 1px solid var(--light-gray-color-80);
     input[type=checkbox] {
         display: none;
         + label {
-            @include icon(before, arr_1right, clickable);
+            @include icon(before, arr_1right);
             cursor: pointer;
 
             &:before {
@@ -84,7 +84,7 @@ $css-tree-border: 1px solid var(--light-gray-color-80);
 .css-tree.selectable {
     input[type=checkbox] {
         + label {
-            @include hide-text();
+            @include hide-text;
         }
         ~ input[type=radio] + label {
             margin-left: 0;

@@ -137,7 +137,12 @@ class TermsAdmission extends AdmissionRule
     public function load()
     {
         $rule = DBManager::get()->fetchOne('SELECT * FROM termsadmissions WHERE rule_id = ?', [$this->getId()]);
-        $this->terms = $rule['terms'];
+
+        if ($rule) {
+            $this->terms = $rule['terms'];
+        } else {
+            $this->id = $this->generateId('termsadmissions');
+        }
         return $this;
     }
 
@@ -166,4 +171,18 @@ class TermsAdmission extends AdmissionRule
 
         return $template->render();
     }
+
+    /**
+     * Get fields and settings defining this admission rule as array.
+     */
+    public function getPayload(): array
+    {
+        return array_merge(
+            parent::getPayload(),
+            [
+                'terms' => $this->terms
+            ]
+        );
+    }
+
 }

@@ -19,7 +19,7 @@
     }
 
     .vs__dropdown-menu, &.vs__dropdown-menu {
-        border-radius: 0;
+        border-radius: var(--border-radius-default);
     }
 
     .vs__actions {

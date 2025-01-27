@@ -25,7 +25,7 @@ $(document).on('keyup', '.tfa-code-input input', function (event) {
         this.value = '';
         event.preventDefault();
     }
-}).on('paste', '.tfa-code-input input', function (event) {
+}).on('paste', '.tfa-code-input input', function () {
     this.value = '';
     $(this).one('input', function () {
         const pastedValue = this.value.trim();

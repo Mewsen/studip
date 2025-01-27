@@ -40,7 +40,7 @@
                         <tr>
                         <? foreach ($row as $key => $value): ?>
                             <td>
-                                <?= htmlReady($value) ?>
+                                <?= \Studip\Markup::isHtml($value) ? formatReady($value) : htmlReady($value) ?>
                             </td>
                         <? endforeach; ?>
                         </tr>

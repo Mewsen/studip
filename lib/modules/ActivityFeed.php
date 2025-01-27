@@ -27,11 +27,16 @@ class ActivityFeed extends CorePlugin implements PortalPlugin
         $template->config = UserConfig::get($GLOBALS['user']->id)->getValue('ACTIVITY_FEED');
 
         $navigation = new Navigation('', 'dispatch.php/activityfeed/configuration');
-        $navigation->setImage(Icon::create('edit', 'clickable', ["title" => _('Konfigurieren'), 'size' => 20]), ['data-dialog'=>'size=auto']);
+        $navigation->setImage(Icon::create('edit'));
+        $navigation->setLinkAttributes([
+            'data-dialog' =>'size=auto',
+            'title' => _('Konfigurieren'),
+        ]);
+
         $icons[] = $navigation;
 
         $navigation = new Navigation('', '#', ['cid' => null]);
-        $navigation->setImage(Icon::create('person-online', 'clickable'));
+        $navigation->setImage(Icon::create('person-online'));
         $navigation->setLinkAttributes([
             'id'    => 'toggle-user-activities',
             'title' => _('Eigene Aktivitäten ein-/ausblenden'),
@@ -39,7 +44,7 @@ class ActivityFeed extends CorePlugin implements PortalPlugin
         $icons[] = $navigation;
 
         $navigation = new Navigation('', '#', ['cid' => null]);
-        $navigation->setImage(Icon::create('no-activity', 'clickable'));
+        $navigation->setImage(Icon::create('no-activity'));
         $navigation->setLinkAttributes([
             'id'    => 'toggle-all-activities',
             'title' => _('Aktivitätsdetails ein-/ausblenden'),

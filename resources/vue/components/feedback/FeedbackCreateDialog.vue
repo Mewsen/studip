@@ -37,10 +37,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'feedback-create-dialog',
+    emits: ['close', 'created'],
     props: {
         defaultQuestion: {
             type: String,

@@ -42,7 +42,7 @@
                     <td class="perm">
                         <input
                             class="right"
-                            :title="$gettextInterpolate($gettext('Leserechte für %{ userName }'), { userName: user_perm.username }, true)"
+                            :title="$gettext('Leserechte für %{ userName }', { userName: user_perm.username }, true)"
                             type="radio"
                             :name="`${user_perm.id}_right`"
                             value="read"
@@ -53,7 +53,7 @@
                     <td class="perm">
                         <input
                             class="right"
-                            :title="$gettextInterpolate($gettext('Lese- und Schreibrechte für %{ userName }'), { userName: user_perm.username }, true)"
+                            :title="$gettext('Lese- und Schreibrechte für %{ userName }', { userName: user_perm.username }, true)"
                             type="radio"
                             :name="`${user_perm.id}_right`"
                             value="write"
@@ -75,7 +75,7 @@
                     <td class="actions">
                         <button
                             class="cw-permission-delete"
-                            :title="$gettextInterpolate($gettext('Entfernen der Rechte von %{ userName }'), { userName: user_perm.username }, true)"
+                            :title="$gettext('Entfernen der Rechte von %{ userName }', { userName: user_perm.username }, true)"
                             @click.prevent="confirmDeleteUserPerm(index)"
                         >
                         </button>
@@ -137,10 +137,11 @@
     </div>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     name: 'courseware-content-permissions',
+    emits: ['updateContentApproval'],
     props: {
         element: Object,
     },
@@ -188,13 +189,13 @@ export default {
 
         getExpiryTitle(userName, date) {
             if (date) {
-                return this.$gettextInterpolate(
-                    this.$gettext('Die Berechtigungen für %{ userName } laufen am folgendem Datum ab: %{ dateStr }'),
+                return this.$gettext(
+                    'Die Berechtigungen für %{ userName } laufen am folgendem Datum ab: %{ dateStr }',
                     { userName: userName, dateStr: new Date(date).toLocaleDateString() }
                 );
             } else {
-                return this.$gettextInterpolate(
-                    this.$gettext('Das Ablaufdatum der Berechtigungen für %{ userName }'),
+                return this.$gettext(
+                    'Das Ablaufdatum der Berechtigungen für %{ userName }',
                     { userName: userName }
                 );
             }
@@ -202,8 +203,7 @@ export default {
 
         async getUser(userId) {
             await this.loadUser({id: userId});
-            const user = this.userById({id: userId});
-            return user;
+            return this.userById({id: userId});
         },
 
         async initUserPermsList() {
@@ -212,7 +212,6 @@ export default {
                 this.contentApprovalUsers = this.element.attributes['content-approval'].users;
             }
 
-            /* eslint-disable no-await-in-loop */
             for (const user_perm_obj of this.contentApprovalUsers) {
                 let userObj = await this.getUser(user_perm_obj.id);
                 this.userPermsList.push({

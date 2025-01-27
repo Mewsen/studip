@@ -82,13 +82,10 @@
                                  ['only_bookable_rooms' => '1']
                                  ) ?>" <?= Request::isDialog() ? 'data-dialog="size=normal"' : '' ?>
                            title="<?= _('Nur buchbare Räume anzeigen') ?>">
-                            <?= Icon::create('room-request')->asImg(
-                                20,
-                                [
-                                    'class' => 'text-bottom',
-                                    'style' => 'margin-left: 0.2em; margin-top: 0.6em;',
-                                ]
-                            ) ?>
+                            <?= Icon::create('room-request')->asImg([
+                                'class' => 'text-bottom',
+                                'style' => 'margin-left: 0.2em; margin-top: 0.6em;',
+                            ]) ?>
                         </a>
                     <? endif ?>
                 </span>

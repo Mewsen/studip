@@ -18,7 +18,7 @@
  * This exception is thrown when a general error occurs when dealing with
  * ResourceBooking objects.
  */
-class ResourceBookingException extends InvalidArgumentException
+class ResourceBookingException extends \Studip\Exception
 {
 
 }

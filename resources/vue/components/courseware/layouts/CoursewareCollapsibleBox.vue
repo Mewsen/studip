@@ -45,7 +45,7 @@ export default {
     methods: {
         updateCollapsible() {
             if (this.isOpen) {
-                STUDIP.eventBus.emit('courseware:update-collapsible', { 'uid': this._uid });
+                STUDIP.eventBus.emit('courseware:update-collapsible', { 'uid': this._.uid });
             }
         }
     },

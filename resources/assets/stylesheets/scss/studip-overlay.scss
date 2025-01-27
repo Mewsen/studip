@@ -1,4 +1,4 @@
-@mixin center()
+@mixin center
 {
     position: absolute;
     left: 50%;
@@ -37,7 +37,7 @@
         cursor: wait;
 
         h1 {
-            @include center();
+            @include center;
 
             margin-bottom: 0;
             padding-bottom: 100px;
@@ -47,7 +47,7 @@
         }
 
         progress {
-            @include center();
+            @include center;
 
             margin-top: 45px;
             width: 80%;

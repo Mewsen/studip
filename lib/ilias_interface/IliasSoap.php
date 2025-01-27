@@ -28,7 +28,7 @@ class IliasSoap extends StudipSoapClient
     private $user_sid;
     private $user_type;
     private $soap_cache;
-    private $separator_string;
+    public $separator_string;
     private $caching_active = false;
 
 
@@ -44,7 +44,7 @@ class IliasSoap extends StudipSoapClient
      * @param string $admin_login ILIAS admin account login
      * @param string $admin_password ILIAS admin account password
      */
-    public function __construct($index, $soap_path, $ilias_client = '', $ilias_version = '', $admin_login = '', $admin_password = '')
+    public function __construct($index, $soap_path, $ilias_client = '', $ilias_version = '', $admin_login = '', $admin_password = '', $http_connection_timeout = NULL, $http_request_timeout = NULL)
     {
         $this->index = $index;
         $this->ilias_client = $ilias_client;
@@ -53,7 +53,27 @@ class IliasSoap extends StudipSoapClient
         $this->admin_password = $admin_password;
         $this->separator_string = " / ";
 
-        parent::__construct($soap_path);
+        $stream_context = get_default_http_stream_context($soap_path);
+
+        if (is_int($http_request_timeout)) {
+            stream_context_set_option(
+                $stream_context,
+                'http',
+                'timeout',
+                $http_request_timeout
+            );
+        }
+
+        $options = [
+            'trace' => 0,
+            'stream_context' => $stream_context
+        ];
+
+        if (is_int($http_connection_timeout)) {
+            $options['connection_timeout'] = $http_connection_timeout;
+        }
+
+        parent::__construct($soap_path, $options);
 
         $this->user_type = "admin";
 
@@ -707,6 +727,41 @@ class IliasSoap extends StudipSoapClient
     }
 
     /**
+    * get roles
+    *
+    * gets roles of given type for given object
+    * 
+    * @param string $role_type type of role (global|local|user|user_login|template or empty)
+    * @param string $id reference id, user id, or -1 for all available roles of given type
+    * @return array|false role-objects
+    */
+    public function getRoles(string $role_type, string $id)
+    {
+        $param = [
+            'sid' => $this->getSID(),
+            'role_type' => $role_type,
+            'id' => $id
+           ];
+        $result = $this->call('getRoles', $param);
+        if ($result) {
+            $s = simplexml_load_string($result);
+            $role_array = [];
+
+            foreach ($s->Role as $role) {
+                $id_parts = explode('_role_', (string) $role->attributes()->id);
+                $role_array[$id_parts[1]] = [
+                    'id'          => $id_parts[1],
+                    'type'        => (string) $role->attributes()->role_type,
+                    'name'        => (string) $role->Title,
+                    'description' => (string) $role->Description,
+                ];
+            }
+            return $role_array;
+        }
+        return false;
+    }
+
+    /**
     * add role
     *
     * adds a new role
@@ -1135,8 +1190,7 @@ class IliasSoap extends StudipSoapClient
      *
      * returns repository-path to ilias-object
      * @access public
-     * @param string source_id reference-id
-     * @param string target_id reference-id
+     * @param string ref_id reference id
      * @return string result
      */
     function getPath($ref_id)
@@ -1167,8 +1221,7 @@ class IliasSoap extends StudipSoapClient
      * returns repository-path to ilias-object
      *
      * @access public
-     * @param string source_id reference-id
-     * @param string target_id reference-id
+     * @param string ref_id reference id
      * @return string result
      */
     function getRawPath($ref_id)
@@ -1642,6 +1695,72 @@ class IliasSoap extends StudipSoapClient
         } else {
             return false;
         }
+    }
+
+    /**
+    * get courses for given user by status
+    *
+    * gets course array for given course data
+    * @access public
+    * @param string $user_id ilias user id
+    * @param string $status MEMBER = 1, TUTOR = 2, ADMIN = 4, OWNER = 8
+    * @return array course array
+    */
+    public function getCoursesForUserStatus(string $user_id, string $status): array
+    {
+        $courses = [];
+        $xmlrs = '<?xml version="1.0" encoding="utf-8"?>
+        <result>
+            <colspecs>
+                <colspec idx="0" name="user_id"/>
+                <colspec idx="1" name="status"/>
+            </colspecs>
+            <rows>
+                <row>
+                    <column>'.$user_id.'</column>
+                    <column>'.$status.'</column>
+                </row>
+            </rows>
+        </result>';
+        $param = [
+            'sid' => $this->getSID(),
+            'parameters' => $xmlrs
+        ];
+        $result = $this->call('getCoursesForUser', $param);
+
+        if ($result) {
+            $s = simplexml_load_string($result);
+            foreach ($s->rows->row as $row) {
+                $ref_id = (string)$row->column[0];
+                $courses[$ref_id] = [];
+                $courses[$ref_id]['title'] = (string)$row->column[2];
+                $s2 = simplexml_load_string((string)$row->column[1]);
+                $courses[$ref_id]['title'] = trim((string)$s2->MetaData->General->Title);
+                $courses[$ref_id]['description'] = trim((string)$s2->MetaData->General->Description);
+                $courses[$ref_id]['status_text'] = '';
+                $courses[$ref_id]['status'] = $status;
+                switch ($status) {
+                    case 1:
+                        $courses[$ref_id]['status_text'] = _('Kursmitglied');
+                        break;
+                    case 2:
+                        $courses[$ref_id]['status_text'] = _('Kurstutor/-in');
+                        break;
+                    case 4:
+                        $courses[$ref_id]['status_text'] = _('Kursadministrator/-in');
+                        break;
+                }
+                if (isset($s2->Settings->Availability->Unlimited)) {
+                    $courses[$ref_id]['online'] = 1;
+                } elseif (isset($s2->Settings->Availability->NotAvailable)) {
+                    $courses[$ref_id]['online'] = 0;
+                } else {
+                    $courses[$ref_id]['online'] = 1;
+                }
+                $courses[$ref_id]['availability'] = $s2->Settings->Availability;
+            }
+        }
+        return $courses;
     }
 
     /**

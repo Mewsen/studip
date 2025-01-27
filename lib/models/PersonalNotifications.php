@@ -13,7 +13,7 @@
  *      $url_of_wiki_page, //when user A clicks this URL he/she should jump directly to the changed wiki-page
  *      "User B changed wiki-page xyz", //a small text that describes the notification
  *      "wiki_page_1234", //an (optional) html-id of the content of the wiki page. If the user is looking at the content already, the notification will disappear automatically
- *      Icon::create('wiki', 'clickable'), //an (optional) icon that is displayed next to the notification-text
+ *      Icon::create('wiki'), //an (optional) icon that is displayed next to the notification-text
  * );
  *
  * Appearing to the user, deleting by the user and so on of the notification is
@@ -132,13 +132,15 @@ class PersonalNotifications extends SimpleORMap
      * Returns all notifications fitting to the parameters.
      * @param boolean $only_unread : true for getting only unread notifications, false for all.
      * @param null|string $user_id : ID of special user the notification should belong to or (default:) null for current user
-     * @return array of \PersonalNotifications in ascending order of mkdate
+     * @return static[] array of \PersonalNotifications in ascending order of mkdate
      */
     public static function getMyNotifications($only_unread = true, $user_id = null, $limit = 15)
     {
-        if (!$user_id) {
-            $user_id = $GLOBALS['user']->id;
+        if (!self::isActivated($user_id)) {
+            return [];
         }
+
+        $user_id ??= $GLOBALS['user']->id;
 
         $cached = self::getCache($user_id);
         if ($cached === false) {
@@ -373,7 +375,7 @@ class PersonalNotifications extends SimpleORMap
         if (!$user_id) {
             $user_id = $GLOBALS['user']->id;
         }
-        return (new UserConfig($user_id))->getValue('PERSONAL_NOTIFICATIONS_DEACTIVATED') ? false : true;
+        return !UserConfig::get($user_id)->getValue('PERSONAL_NOTIFICATIONS_DEACTIVATED');
     }
 
     /**
@@ -385,13 +387,32 @@ class PersonalNotifications extends SimpleORMap
      */
     public static function isAudioActivated($user_id = null)
     {
-        if (!PersonalNotifications::isGloballyActivated()) {
+        if (!PersonalNotifications::isGloballyActivated() || !self::isActivated($user_id)) {
             return false;
         }
         if (!$user_id) {
             $user_id = $GLOBALS['user']->id;
         }
-        return UserConfig::get($user_id)->getValue("PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED") ? false : true;
+        return ! UserConfig::get($user_id)->getValue("PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED");
+    }
+
+    /**
+     * Returns whether there are any new/unseen notifications for the given
+     * user id.
+     */
+    public static function hasUnseenNotifications(?string $user_id = null): bool
+    {
+        if (!self::isActivated($user_id)) {
+            return false;
+        }
+
+        $user_id ??= User::findCurrent()->id;
+
+        $lastvisit = (int) UserConfig::get($user_id)->getValue('NOTIFICATIONS_SEEN_LAST_DATE');
+        return array_any(
+            self::getMyNotifications(user_id: $user_id),
+            fn($notification) => $notification['mkdate'] > $lastvisit
+        );
     }
 
     /**

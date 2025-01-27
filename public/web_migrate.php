@@ -16,12 +16,13 @@
 
 require __DIR__ . '/../lib/bootstrap.php';
 
-page_open([
-    'sess' => 'Seminar_Session',
-    'auth' => 'Seminar_Auth',
-    'perm' => 'Seminar_Perm',
-    'user' => 'Seminar_User',
-]);
+sess()->start();
+if (!auth()->start()) {
+    $_SESSION['redirect_after_login'] = Request::url();
+    sess()->save();
+    header('Location: ' . URLHelper::getURL('dispatch.php/login'));
+    die();
+}
 
 URLHelper::setBaseUrl($GLOBALS['ABSOLUTE_URI_STUDIP']);
 

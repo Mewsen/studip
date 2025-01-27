@@ -158,12 +158,6 @@ export const actions = {
     setShowCompanionOverlay(context, companionOverlay) {
         context.commit('setShowCompanionOverlay', companionOverlay);
     },
-    setMsgCompanionOverlay(context, companionOverlayMsg) {
-        context.commit('setMsgCompanionOverlay', companionOverlayMsg);
-    },
-    setStyleCompanionOverlay(context, companionOverlayStyle) {
-        context.commit('setStyleCompanionOverlay', companionOverlayStyle);
-    },
     setUserId(context, id) {
         context.commit('setUserId', id);
     },
@@ -210,7 +204,7 @@ export const actions = {
         });
     },
 
-    async loadUnitProgresses({ getters }, { unitId }) {
+    async loadUnitProgresses(context, { unitId }) {
          const response = await state.httpClient.get(`courseware-units/${unitId}/courseware-user-progresses`);
          if (response.status === 200) {
             return response.data;
@@ -250,23 +244,23 @@ export const actions = {
             )
         }
     },
-    async companionInfo({ dispatch }, { info }) {
+    async companionInfo(context, { info }) {
         STUDIP.eventBus.emit('push-system-notification', { type: 'info', message: info});
     },
 
-    async companionSuccess({ dispatch }, { info }) {
+    async companionSuccess(context, { info }) {
         STUDIP.eventBus.emit('push-system-notification', { type: 'success', message: info});
     },
 
-    async companionError({ dispatch }, { info }) {
+    async companionError(context, { info }) {
         STUDIP.eventBus.emit('push-system-notification', { type: 'error', message: info});
     },
 
-    async companionWarning({ dispatch }, { info }) {
+    async companionWarning(context, { info }) {
         STUDIP.eventBus.emit('push-system-notification', { type: 'warning', message: info});
     },
 
-    async companionSpecial({ dispatch }, { info }) {
+    async companionSpecial(context, { info }) {
         STUDIP.eventBus.emit('push-system-notification', { type: 'info', message: info});
     },
     coursewareShowCompanionOverlay({dispatch}, { data }) {
@@ -317,7 +311,7 @@ export const actions = {
         return dispatch(loadUnits, state.context.id);
     },
 
-    async loadUsersCourses({ dispatch, rootGetters, state }, { userId, withCourseware }) {
+    async loadUsersCourses({ dispatch, rootGetters }, { userId, withCourseware }) {
         const parent = {
             type: 'users',
             id: userId,
@@ -338,7 +332,7 @@ export const actions = {
             relationship,
         });
 
-        const otherMemberships = memberships.filter(({ attributes, relationships }) => {
+        const otherMemberships = memberships.filter(({ attributes }) => {
             return ['dozent', 'tutor'].includes(attributes.permission);
         });
 
@@ -356,7 +350,7 @@ export const actions = {
         });
 
          return items
-            .filter(({ membership, course }) => {
+            .filter(({ course }) => {
                 return course.relationships.courseware.data;
             })
             .map(({ course }) => course);
@@ -375,20 +369,14 @@ export const actions = {
         const relationship = 'courseware';
 
         return dispatch(`courseware-instances/loadRelated`, { parent, relationship }, { root: true }).then(
-            (response) => {
-                const instance = rootGetters['courseware-instances/related']({
-                    parent: parent,
-                    relationship: relationship,
-                });
-
-                return instance;
-            },
-            (error) => {
-                return null;
-            }
+            () => rootGetters['courseware-instances/related']({
+                parent: parent,
+                relationship: relationship,
+            }),
+            () => null
         );
     },
-    loadInstance({ commit, dispatch, rootGetters }, context) {
+    loadInstance({ dispatch, rootGetters }, context) {
         const parent = {
                 type: context.type,
                 id: context.id + '_' + context.unit
@@ -548,7 +536,7 @@ export const actions = {
         return dispatch('courseware-instances/update', instance, { root: true });
     },
 
-    uploadImageForStructuralElement({ dispatch, state }, { structuralElement, file }) {
+    uploadImageForStructuralElement({ state }, { structuralElement, file }) {
         const formData = new FormData();
         formData.append('image', file);
 
@@ -567,7 +555,7 @@ export const actions = {
         return dispatch('loadStructuralElement', structuralElement.id);
     },
 
-    setStockImageForStructuralElement({ dispatch, state }, { structuralElement, stockImage }) {
+    setStockImageForStructuralElement({ dispatch }, { structuralElement, stockImage }) {
         const { id, type } = structuralElement;
         structuralElement.relationships.image = { data: { type: 'stock-images', id: stockImage.id } };
 
@@ -705,12 +693,6 @@ export const mutations = {
     },
     setShowCompanionOverlay(state, data) {
         state.showCompanionOverlay = data;
-    },
-    setStyleCompanionOverlay(state, data) {
-        state.styleCompanionOverlay = data;
-    },
-    setMsgCompanionOverlay(state, data) {
-        state.msgCompanionOverlay = data;
     },
     setShowUnitAddDialog(state, data) {
         state.showUnitAddDialog = data;

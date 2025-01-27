@@ -1,6 +1,6 @@
 <template>
     <select v-model="currentValue" @change="changeSelection">
-        <option v-if="unchoose" value=""><translate>kein Ordner ausgewählt</translate></option>
+        <option v-if="unchoose" value="">{{ $gettext('kein Ordner ausgewählt') }}</option>
         <optgroup v-if="this.context.type === 'courses'" :label="textOptGroupCourse">
             <option v-for="folder in loadedCourseFolders" :key="folder.id" :value="folder.id">
                 {{ folder.attributes.name }}
@@ -69,8 +69,9 @@ function filterCourseFolders(folders, { allowHomeworkFolders }) {
 }
 export default {
     name: 'courseware-folder-chooser',
+    emits: ['update:model-value'],
     props: {
-        value: String,
+        modelValue: String,
         allowUserFolders: { type: Boolean, default: false },
         allowHomeworkFolders: { type: Boolean, default: false },
         unchoose: { type: Boolean, default: false },
@@ -120,7 +121,7 @@ export default {
         }),
 
         changeSelection() {
-            this.$emit('input', this.currentValue);
+            this.$emit('update:model-value', this.currentValue);
         },
 
         getCourseFolders() {
@@ -151,7 +152,7 @@ export default {
         }
     },
     async mounted() {
-        this.currentValue = this.value;
+        this.currentValue = this.modelValue;
         if (this.context.type !== 'users') {
             await this.getCourseFolders();
         }
@@ -159,8 +160,8 @@ export default {
         this.confirmSelectedFolder();
     },
     watch: {
-        value() {
-            this.currentValue = this.value;
+        modelValue() {
+            this.currentValue = this.modelValue;
         }
     },
 };

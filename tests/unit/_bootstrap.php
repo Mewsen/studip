@@ -51,7 +51,6 @@ require __DIR__ . '/../../composer/autoload.php';
 global $STUDIP_BASE_PATH;
 $STUDIP_BASE_PATH = realpath(dirname(__DIR__) . '/..');
 
-require 'lib/helpers.php';
 require 'lib/functions.php';
 require 'lib/visual.inc.php';
 
@@ -124,4 +123,49 @@ if (!class_exists('StudipTestHelper')) {
             SimpleORMap::expireTableScheme();
         }
     }
+}
+
+//fake DI
+class StudipFakeDIContainer
+{
+    private $storage;
+    private static $instance;
+
+    public static function getInstance()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    public function get($name)
+    {
+        return $this->storage[$name] ?? null;
+    }
+
+    public function set($name, $object)
+    {
+        $this->storage[$name] = $object;
+    }
+
+    public function make($name, $parameters)
+    {
+        return $this->get($name);
+    }
+}
+
+function app($entryId = null, $parameters = [])
+{
+    $container = StudipFakeDIContainer::getInstance();
+    if (is_null($entryId)) {
+        return $container;
+    }
+
+    return $container->make($entryId, $parameters);
+}
+
+function sess()
+{
+    return app()->get('Studip\Session\Manager');
 }

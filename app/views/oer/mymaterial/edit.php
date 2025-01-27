@@ -1,3 +1,11 @@
+<?php
+/**
+ * @var Oer_MymaterialController $controller
+ * @var OERMaterial $material
+ * @var string $usersearch
+ * @var string $tagsearch
+ */
+?>
 <form action="<?= $controller->edit($material->isNew() ? '' : $material) ?>"
       method="post"
       class="default"
@@ -31,14 +39,14 @@
                         <header>
                             <h1>
                                 <studip-icon shape="file"
-                                             role="clickable"
-                                             :size="20"
                                              class="text-bottom"></studip-icon>
                                 <div class="title">{{ name }}</div>
                             </h1>
                         </header>
                         <div class="image"
-                             :style="'background-image: url(' + logo_url + ');' + (!customlogo ? ' background-size: 60% auto;': '')"></div>
+                             :style="{
+                             backgroundImage: logo_url ? `url(${logo_url})` : null,
+                             backgroundSize: customlogo ? null : '60% auto'}"></div>
                     </article>
                 </label>
 
@@ -178,7 +186,6 @@
                 </div>
             <? endif ?>
 
-
             <div class="oer_tags_container">
                 <?= _('Themen (am besten mindestens 5)') ?>
                 <?
@@ -194,23 +201,25 @@
                 ?>
 
                 <ul class="clean oer_tags" data-defaulttags="<?= htmlReady(json_encode($tags)) ?>">
-                    <li v-for="(tag, index) in displayTags" :key="index">
+                    <li v-for="(tag, index) in displayTags" :key="`tag-${index}`">
                         #
                         <quicksearch name="tags[]"
                                      searchtype="<?= htmlReady($tagsearch) ?>"
-                                     v-model="tags[index]"
+                                     v-model="tag"
                                      :autocomplete="true"
+                                     :keep-value="true"
                         ></quicksearch>
-                        <a href="#"
+                        <button class="as-link"
                            @click.prevent="removeTag(index)"
-                           title="<?= _('Thema aus der Liste streichen') ?>">
-                            <studip-icon shape="trash" role="clickable" :size="20" class="text-bottom"></studip-icon>
-                        </a>
+                           title="<?= _('Thema aus der Liste streichen') ?>"
+                        >
+                            <studip-icon shape="trash" class="text-bottom"></studip-icon>
+                        </button>
 
                     </li>
                 </ul>
                 <a href="#" @click.prevent="addTag">
-                    <studip-icon shape="add" role="clickable" :size="20" class="text-bottom"></studip-icon>
+                    <studip-icon shape="add" class="text-bottom"></studip-icon>
                     <?= _('Thema hinzufügen') ?>
                 </a>
             </div>

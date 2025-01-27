@@ -112,10 +112,9 @@ if ($GLOBALS['ASSETS_URL'][0] === '/') {
     $GLOBALS['ASSETS_URL'] = $GLOBALS['ABSOLUTE_URI_STUDIP'] . $GLOBALS['ASSETS_URL'];
 }
 
-require 'config.inc.php';
+require $GLOBALS['STUDIP_BASE_PATH'] . '/config/config.inc.php';
 
 require 'lib/helpers.php';
-require 'lib/phplib/page_open.php';
 require_once 'lib/functions.php';
 require_once 'lib/language.inc.php';
 require_once 'lib/visual.inc.php';
@@ -133,13 +132,13 @@ try {
         'studip',
         app(StudipPDO::class)
     );
-} catch (PDOException $exception) {
+} catch (\PDOException $exception) {
     if (Studip\ENV === 'development') {
         throw $exception;
     } else {
+        error_log($exception);
         header('HTTP/1.1 500 Internal Server Error');
-        die(sprintf('database connection %s failed', 'mysql:host=' . $GLOBALS['DB_STUDIP_HOST'] .
-            ';dbname=' . $GLOBALS['DB_STUDIP_DATABASE']));
+        die(_('Momentan ist das Stud.IP System nicht erreichbar, bitte versuchen Sie es später noch einmal.'));
     }
 }
 // set slave connection
@@ -158,6 +157,11 @@ if (isset($GLOBALS['DB_STUDIP_SLAVE_HOST'])) {
     }
 } else {
     DBManager::getInstance()->aliasConnection('studip', 'studip-slave');
+}
+
+if (Studip\ENV === 'production') {
+    DBManager::get()->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
+    DBManager::get('studip-slave')->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
 }
 
 // set default exception handler
@@ -203,21 +207,6 @@ register_shutdown_function(function ($timer) {
 }, Metrics::startTimer());
 
 //include 'tools/debug/StudipDebugPDO.class.php';
-
-/**
- * @deprecated
- */
-class DB_Seminar extends DB_Sql
-{
-    public function __construct($query = false)
-    {
-        $this->Host = $GLOBALS['DB_STUDIP_HOST'];
-        $this->Database = $GLOBALS['DB_STUDIP_DATABASE'];
-        $this->User = $GLOBALS['DB_STUDIP_USER'];
-        $this->Password = $GLOBALS['DB_STUDIP_PASSWORD'];
-        parent::__construct($query);
-    }
-}
 
 if (Config::get()->CALENDAR_ENABLE) {
     require_once 'lib/calendar_functions.inc.php';

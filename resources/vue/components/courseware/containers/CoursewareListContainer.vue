@@ -25,11 +25,11 @@
                     </courseware-companion-box>
                     <draggable
                         v-if="canEdit"
+                        v-bind="dragOptions"
                         class="cw-container-list-block-list cw-container-list-sort-mode"
                         tag="ol"
                         role="listbox"
                         v-model="blockList"
-                        v-bind="dragOptions"
                         handle=".cw-sortable-handle"
                         group="blocks"
                         @start="isDragging = true"
@@ -37,30 +37,34 @@
                         ref="sortables"
                         :containerId="container.id"
                         sectionId="0"
+                        item-key="id"
+                        :data-container-id="container.id"
+                        data-section-id="0"
                     >
-                        <li
-                            v-for="block in blockList"
-                            :key="block.id"
-                            class="cw-block-item cw-block-item-sortable"
-                        >
-                            <span
-                                :class="{ 'cw-sortable-handle-dragging': isDragging }"
-                                class="cw-sortable-handle"
-                                tabindex="0"
-                                role="button"
-                                aria-describedby="operation"
-                                :ref="'sortableHandle' + block.id"
-                                @keydown="keyHandler($event, block.id)"
-                            ></span>
-                            <component
-                                :is="component(block)"
-                                :block="block"
-                                :canEdit="canEdit"
-                                :isTeacher="isTeacher"
-                                :class="{ 'cw-block-item-selected': keyboardSelected === block.id}"
-                                :blockId="block.id"
-                            />
-                        </li>
+                        <template #item="{element}">
+                            <li
+                                class="cw-block-item cw-block-item-sortable"
+                                :data-block-id="element.id"
+                            >
+                                <span
+                                    :class="{ 'cw-sortable-handle-dragging': isDragging }"
+                                    class="cw-sortable-handle"
+                                    tabindex="0"
+                                    role="button"
+                                    aria-describedby="operation"
+                                    :ref="'sortableHandle' + element.id"
+                                    @keydown="keyHandler($event, element.id)"
+                                ></span>
+                                <component
+                                    :is="component(element)"
+                                    :block="element"
+                                    :canEdit="canEdit"
+                                    :isTeacher="isTeacher"
+                                    :class="{ 'cw-block-item-selected': keyboardSelected === element.id}"
+                                    :blockId="element.id"
+                                />
+                            </li>
+                        </template>
                     </draggable>
                 </template>
                 <div v-else class="progress-wrapper" :style="{ height: contentHeight + 'px' }">
@@ -149,7 +153,7 @@ export default {
             unlockObject: 'unlockObject',
             companionInfo: 'companionInfo'
         }),
-        storeContainer(data) {
+        storeContainer() {
         },
         initCurrentData() {
             this.blockList = this.blocks;
@@ -197,11 +201,14 @@ export default {
                         this.keyboardSelected = blockId;
                         const block = this.blockById({id: blockId});
                         const index = this.blockList.findIndex(b => b.id === block.id);
-                        this.assistiveLive = 
-                            this.$gettextInterpolate(
-                                this.$gettext('%{blockTitle} Block ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen.')
-                                , {blockTitle: block.attributes.title, pos: index + 1, listLength: this.blockList.length}
-                            );
+                        this.assistiveLive = this.$gettext(
+                            '%{blockTitle} Block ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen.',
+                            {
+                                blockTitle: block.attributes.title,
+                                pos: index + 1,
+                                listLength: this.blockList.length
+                            }
+                        );
                     }
                     break;
             }
@@ -227,11 +234,14 @@ export default {
                 const block = this.blockById({id: blockId});
                 const newPos = currentIndex - 1;
                 this.blockList.splice(newPos, 0, this.blockList.splice(currentIndex, 1)[0]);
-                this.assistiveLive = 
-                    this.$gettextInterpolate(
-                        this.$gettext('%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.')
-                        , {blockTitle: block.attributes.title, pos: newPos + 1, listLength: this.blockList.length}
-                    );
+                this.assistiveLive = this.$gettext(
+                    '%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.',
+                    {
+                        blockTitle: block.attributes.title,
+                        pos: newPos + 1,
+                        listLength: this.blockList.length
+                    }
+                );
             }
         },
         moveItemDown(blockId) {
@@ -240,32 +250,37 @@ export default {
                 const block = this.blockById({id: blockId});
                 const newPos = currentIndex + 1;
                 this.blockList.splice(newPos, 0, this.blockList.splice(currentIndex, 1)[0]);
-                this.assistiveLive = 
-                    this.$gettextInterpolate(
-                        this.$gettext('%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.')
-                        , {blockTitle: block.attributes.title, pos: newPos + 1, listLength: this.blockList.length}
-                    );
+                this.assistiveLive = this.$gettext(
+                    '%{blockTitle} Block. Aktuelle Position in der Liste: %{pos} von %{listLength}.',
+                    {
+                        blockTitle: block.attributes.title,
+                        pos: newPos + 1,
+                        listLength: this.blockList.length
+                    }
+                );
             }
         },
         abortKeyboardSorting(blockId) {
             const block = this.blockById({id: blockId});
             this.keyboardSelected = null;
-            this.assistiveLive = 
-                this.$gettextInterpolate(
-                    this.$gettext('%{blockTitle} Block, Neuordnung abgebrochen.')
-                    , {blockTitle: block.attributes.title}
-                );
+            this.assistiveLive = this.$gettext(
+                '%{blockTitle} Block, Neuordnung abgebrochen.',
+                { blockTitle: block.attributes.title }
+            );
             this.initCurrentData();
         },
         storeKeyboardSorting(blockId) {
             const block = this.blockById({id: blockId});
             const currentIndex = this.blockList.findIndex(block => block.id === blockId);
             this.keyboardSelected = null;
-            this.assistiveLive = 
-                this.$gettextInterpolate(
-                    this.$gettext('%{blockTitle} Block, abgelegt. Endgültige Position in der Liste: %{pos} von %{listLength}.')
-                    , {blockTitle: block.attributes.title, pos: currentIndex + 1, listLength: this.blockList.length}
-                );
+            this.assistiveLive = this.$gettext(
+                '%{blockTitle} Block, abgelegt. Endgültige Position in der Liste: %{pos} von %{listLength}.',
+                {
+                    blockTitle: block.attributes.title,
+                    pos: currentIndex + 1,
+                    listLength: this.blockList.length
+                }
+            );
             this.storeSort();
         }
     },
@@ -273,17 +288,23 @@ export default {
         this.initCurrentData();
     },
     watch: {
-        blocks() {
-            this.initCurrentData();
+        blocks: {
+            handler() {
+                this.initCurrentData();
+            },
+            deep: true
         },
-        blockList() {
-            if (this.keyboardSelected) {
-                this.$nextTick(() => {
-                    const selected = this.$refs['sortableHandle' + this.keyboardSelected][0];
-                    selected.focus();
-                    selected.scrollIntoView({behavior: "smooth", block: "center"});
-                });
-            }
+        blockList: {
+            handler() {
+                if (this.keyboardSelected) {
+                    this.$nextTick(() => {
+                        const selected = this.$refs['sortableHandle' + this.keyboardSelected][0];
+                        selected.focus();
+                        selected.scrollIntoView({behavior: "smooth", block: "center"});
+                    });
+                }
+            },
+            deep: true
         }
     }
 };

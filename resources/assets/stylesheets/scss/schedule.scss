@@ -1,0 +1,65 @@
+form.default.schedule-entry {
+
+    section.nowrap {
+        flex-wrap: nowrap;
+    }
+
+    table.colour-selector td.colour {
+        label {
+            width: 1.5em;
+            height: 1.5em;
+
+            .studip-icon {
+                height: 1.5em;
+                filter: drop-shadow(0 0 2px var(--white))
+            }
+        }
+    }
+}
+
+.fc.schedule {
+    a.fc-event,
+    td.fc-event {
+        border-left-width: 8px;
+        font-size: 12px;
+
+        &:not(.course) {
+            background: none;
+        }
+
+        .fc-time {
+            border-bottom: none;
+            padding-left: 6px;
+            background: none;
+        }
+
+        .fc-title {
+            border-top: none;
+            padding-left: 6px;
+            padding-top: 0.25em;
+            font-weight: bold;
+        }
+    }
+
+    .fc-axis.fc-time {
+        background-color: var(--white);
+    }
+
+    .fc-day-header,
+    .fc-widget-header {
+        background-color: var(--color--table-header);
+    }
+
+    .fc-day-header {
+        height: 40px;
+        vertical-align: middle;
+
+        .fc-today {
+            background-color: var(--color--gray-5);
+        }
+    }
+
+    .fc-body .fc-today {
+        background-color: var(--color--calendar-today);
+    }
+}

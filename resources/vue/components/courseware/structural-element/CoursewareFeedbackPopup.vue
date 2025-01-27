@@ -11,7 +11,7 @@
         @confirm="submitEntry"
     >
         <template v-slot:dialogContent>
-            <h2>{{ $gettextInterpolate($gettext('Bewertung für %{title}'),  { title: structuralElement.attributes.title }) }}</h2>
+            <h2>{{ $gettext('Bewertung für %{title}', { title: structuralElement.attributes.title }) }}</h2>
 
             <div class="feedback-entry-create">
                 <studip-five-stars-input v-model="rating" />
@@ -34,6 +34,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-feedback-popup',
+    emits: ['close', 'submit'],
     components: {
         StudipFiveStarsInput,
     },

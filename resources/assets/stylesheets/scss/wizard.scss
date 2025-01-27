@@ -7,6 +7,7 @@
         width: 270px;
         min-height: 440px;
         margin-top: 38px;
+        flex-shrink: 0;
 
         img {
             margin: auto;
@@ -174,13 +175,13 @@ form.default fieldset.radiobutton-set {
 
     >label {
         cursor: pointer;
-        border: 1px solid var(--content-color-40);
+        border: 1px solid var(--color--radiobuttonset-border);
+        background-color: var(--color--radiobuttonset-background);
         transition: background-color 200ms;
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 6px;
-        padding-bottom: 2px;
         margin-bottom: 0;
         border-top: none;
 
@@ -203,7 +204,7 @@ form.default fieldset.radiobutton-set {
     }
 
     >label:first-of-type {
-        border-top: 1px solid var(--content-color-40);
+        border-top: 1px solid var(--color--radiobuttonset-border);
     }
 
     >label:last-child::after {
@@ -211,7 +212,7 @@ form.default fieldset.radiobutton-set {
     }
 
     >div {
-        border: 1px solid var(--content-color-40);
+        border: 1px solid var(--color--radiobuttonset-border);
         border-top: none;
         display: none;
         padding: 10px;
@@ -219,7 +220,7 @@ form.default fieldset.radiobutton-set {
     }
 
     >input[type=radio]:checked+label {
-        background-color: var(--content-color-20);
+        background-color: var(--color--radiobuttonset-background-selected);
         transition: background-color 200ms;
 
         >.unchecked {
@@ -241,7 +242,7 @@ form.default fieldset.radiobutton-set {
     }
 }
 
-@include media-breakpoint-small-down() {
+@include media-breakpoint-small-down {
     .wizard-wrapper {
 
         .wizard-meta {
@@ -260,7 +261,7 @@ form.default fieldset.radiobutton-set {
     }
 }
 
-@include media-breakpoint-tiny-down() {
+@include media-breakpoint-tiny-down {
     .wizard-wrapper {
         .wizard-meta {
             display: none;
@@ -277,4 +278,3 @@ form.default fieldset.radiobutton-set {
         }
     }
 }
-

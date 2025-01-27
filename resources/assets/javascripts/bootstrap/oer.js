@@ -1,48 +1,41 @@
-import Quicksearch from '../../../vue/components/Quicksearch.vue';
-
 STUDIP.domReady(() => {
     if (jQuery(".oer_search").length) {
         STUDIP.OER.initSearch();
     }
     jQuery(".serversettings .index_server a").on("click", function () {
-        var host_id = jQuery(this).closest("tr").data("host_id");
-        var active = jQuery(this).is(".checked") ? 0 : 1;
-        var a = this;
+        const host_id = jQuery(this).closest("tr").data("host_id");
+        const active = jQuery(this).is(".checked") ? 0 : 1;
         jQuery.ajax({
-            "url": STUDIP.ABSOLUTE_URI_STUDIP + "dispatch.php/oer/admin/toggle_index_server",
-            "data": {
-                'host_id': host_id,
-                'active': active
-            },
-            "type": "post",
-            "success": function (html) {
-                jQuery(a).html(html);
+            url: STUDIP.ABSOLUTE_URI_STUDIP + "dispatch.php/oer/admin/toggle_index_server",
+            data: {host_id, active},
+            type: 'post',
+            success(html) {
+                jQuery(this).html(html);
                 if (active) {
-                    jQuery(a).addClass("checked").removeClass("unchecked");
+                    jQuery(this).addClass("checked").removeClass("unchecked");
                 } else {
-                    jQuery(a).addClass("unchecked").removeClass("checked");
+                    jQuery(this).addClass("unchecked").removeClass("checked");
                 }
             }
         });
         return false;
     });
     jQuery(".serversettings .active a").on("click", function () {
-        var host_id = jQuery(this).closest("tr").data("host_id");
-        var active = jQuery(this).is(".checked") ? 0 : 1;
-        var a = this;
+        const host_id = jQuery(this).closest("tr").data("host_id");
+        const active = jQuery(this).is(".checked") ? 0 : 1;
         jQuery.ajax({
-            "url": STUDIP.ABSOLUTE_URI_STUDIP + "dispatch.php/oer/admin/toggle_server_active",
-            "data": {
+            url: STUDIP.ABSOLUTE_URI_STUDIP + "dispatch.php/oer/admin/toggle_server_active",
+            data: {
                 'host_id': host_id,
                 'active': active
             },
-            "type": "post",
-            "success": function (html) {
-                jQuery(a).html(html);
+            type: "post",
+            success(html) {
+                jQuery(this).html(html);
                 if (active) {
-                    jQuery(a).addClass("checked").removeClass("unchecked");
+                    jQuery(this).addClass("checked").removeClass("unchecked");
                 } else {
-                    jQuery(a).addClass("unchecked").removeClass("checked");
+                    jQuery(this).addClass("unchecked").removeClass("checked");
                 }
             }
         });
@@ -55,20 +48,21 @@ STUDIP.ready(() => {
     if ($('.oercampus_editmaterial').length) {
 
         STUDIP.Vue.load().then(({createApp}) => {
-            STUDIP.OER.EditApp = createApp({
-                el: '.oercampus_editmaterial',
+            const data = {
+                name: $('.oercampus_editmaterial input.oername').val(),
+                logo_url: $('.oercampus_editmaterial .logo_file').data("oldurl") ?? null,
+                customlogo: $('.oercampus_editmaterial .logo_file').data("customlogo") == '1',
+                filename: $('.oercampus_editmaterial .file.drag-and-drop').data("filename"),
+                filesize: $('.oercampus_editmaterial .file.drag-and-drop').data("filesize"),
+                tags: $('.oercampus_editmaterial .oer_tags').data("defaulttags") ?? [],
+                minimumTags: 5
+            };
+
+            const app = createApp({
                 data() {
-                    return {
-                        name: $('.oercampus_editmaterial input.oername').val(),
-                        logo_url: $('.oercampus_editmaterial .logo_file').data("oldurl"),
-                        customlogo: $('.oercampus_editmaterial .logo_file').data("customlogo"),
-                        filename: $('.oercampus_editmaterial .file.drag-and-drop').data("filename"),
-                        filesize: $('.oercampus_editmaterial .file.drag-and-drop').data("filesize"),
-                        tags: $('.oercampus_editmaterial .oer_tags').data("defaulttags"),
-                        minimumTags: 5
-                    };
+                    return data;
                 },
-                mounted: function () {
+                mounted() {
                     jQuery("#difficulty_slider_edit").slider({
                         range: true,
                         min: 1,
@@ -82,15 +76,14 @@ STUDIP.ready(() => {
                     jQuery('.oercampus_editmaterial').find(':focusable').first().focus();
                 },
                 methods: {
-                    editName: function () {
+                    editName() {
                         this.name = $('.oername').val();
                     },
-                    editImage: function (event) {
+                    editImage(event) {
                         let reader = new FileReader();
-                        let vue = this;
-                        reader.addEventListener("load", function () {
-                            vue.logo_url = reader.result;
-                            vue.customlogo = true;
+                        reader.addEventListener("load", () => {
+                            this.logo_url = reader.result;
+                            this.customlogo = true;
                         }, false);
                         reader.readAsDataURL(
                             event.target.files.length > 0
@@ -98,11 +91,11 @@ STUDIP.ready(() => {
                                 : event.dataTransfer.files[0]
                         );
                     },
-                    dropImage: function (event) {
+                    dropImage(event) {
                         window.document.getElementById("oer_logo_uploader").files = event.dataTransfer.files;
                         this.editImage(event);
                     },
-                    editFile: function (event) {
+                    editFile(event) {
                         this.filename = event.target.files[0].name;
                         this.filesize = event.target.files[0].size;
                         if (!this.name) {
@@ -110,20 +103,20 @@ STUDIP.ready(() => {
                             $('.oername').val(this.name);
                         }
                     },
-                    dropFile: function (event) {
+                    dropFile(event) {
                         window.document.getElementById("oer_file").files = event.dataTransfer.files;
                         this.editFile(event);
                     },
-                    addTag: function () {
+                    addTag() {
                         if (this.minimumTags < this.tags.length) {
                             this.minimumTags = this.tags.length + 1;
                         } else {
                             this.minimumTags++;
                         }
                     },
-                    removeTag: function (i) {
-                        this.$delete(this.tags, i);
-                        if ((this.minimumTags > this.tags.length) && (this.minimumTags > 5)) {
+                    removeTag(i) {
+                        this.tags = this.tags.filter((element, index) => index !== i);
+                        if (this.minimumTags > this.tags.length && this.minimumTags > 5) {
                             this.minimumTags--;
                         }
                     }
@@ -137,8 +130,9 @@ STUDIP.ready(() => {
                         return result;
                     }
                 },
-                components: { Quicksearch }
             });
+            app.mount('.oercampus_editmaterial');
+            STUDIP.OER.EditApp = app;
         });
     }
 });

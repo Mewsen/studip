@@ -32,7 +32,7 @@
             <td><?= date("j.n.Y H:i", $sem_class['chdate']) ?> <?= _("Uhr") ?></td>
             <td class="actions">
                 <a href="<?= URLHelper::getLink("dispatch.php/admin/sem_classes/details", ['id' => $id]) ?>" title="<?= _("Editieren dieser Veranstaltungskategorie") ?>">
-                <?= Icon::create('edit', 'clickable')->asImg(['class' => "text-bottom"]) ?>
+                <?= Icon::create('edit')->asImg(['class' => 'text-bottom']) ?>
                 </a>
             </td>
         </tr>
@@ -46,7 +46,7 @@ $links = new ActionsWidget();
 $links->addLink(
     _('Neue Kategorie anlegen'),
     $controller->url_for('admin/sem_classes/add_sem_type'),
-    Icon::create('add', 'clickable'),
+    Icon::create('add'),
     [
         'onClick'     => 'STUDIP.sem_classes.add(); return false;',
         'data-dialog' => 'size=auto'

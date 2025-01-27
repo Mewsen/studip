@@ -89,6 +89,7 @@ import ImagesListItem from './ImagesListItem.vue';
 import { mapActions } from 'vuex';
 
 export default {
+    emits: ['checked', 'open-page', 'search', 'select'],
     props: {
         checkedImages: {
             type: Array,
@@ -120,11 +121,16 @@ export default {
     }),
     computed: {
         allChecked() {
-            return this.paged.length && this.paged.every(({ id }) => this.checkedImages.includes(id));
+            return this.paged.length && this.paged.every(({ id }) => this.checkedImages.includes(id)) ? true : null;
         },
         caption() {
             const n = this.stockImages.length;
-            return this.$gettextInterpolate(this.$ngettext('%{ n } Bild gefunden', '%{ n } Bilder gefunden', n), { n });
+            return this.$ngettext(
+                '%{ n } Bild gefunden',
+                '%{ n } Bilder gefunden',
+                n,
+                { n }
+            );
         },
         paged() {
             return this.stockImages.slice((this.page - 1) * this.perPage, this.page * this.perPage);
@@ -146,7 +152,11 @@ export default {
                 .forEach((image) => this.$emit('checked', image));
         },
         onCheckedAllChange() {
-            this.allChecked ? this.checkNone() : this.checkAll();
+            if (this.allChecked) {
+                this.checkNone();
+            } else {
+                this.checkAll();
+            }
         },
         onDelete() {
             const checkedImages = [...this.checkedImages];
@@ -163,9 +173,12 @@ export default {
         },
     },
     watch: {
-        checkedImages({ length }) {
-            this.$refs.checkAll.indeterminate = 0 < length && length < this.paged.length;
-        },
+        checkedImages: {
+            handler({length}) {
+                this.$refs.checkAll.indeterminate = 0 < length && length < this.paged.length;
+            },
+            deep: true
+        }
     },
 };
 </script>

@@ -18,6 +18,7 @@ class TaskGroupsShow extends JsonApiController
     protected $allowedIncludePaths = [
         TaskGroupSchema::REL_COURSE,
         TaskGroupSchema::REL_LECTURER,
+        TaskGroupSchema::REL_PEER_REVIEW_PROCESSES,
         TaskGroupSchema::REL_SOLVERS,
         TaskGroupSchema::REL_TARGET,
         TaskGroupSchema::REL_TASK_TEMPLATE,

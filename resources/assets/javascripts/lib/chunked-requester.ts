@@ -3,8 +3,8 @@ import axios from "axios";
 interface ChunkedRequest {
     url: string,
     parameters: object,
-    resolve(value: any): any,
-    reject(): any,
+    resolve(value: unknown): unknown,
+    reject(): unknown,
 }
 
 export default class ChunkedRequester
@@ -13,7 +13,7 @@ export default class ChunkedRequester
 
     readonly #delay: number;
     readonly #limit: number;
-    #timeout: any = null;
+    #timeout: ReturnType<typeof setTimeout>|undefined = undefined;
 
     constructor(limit: number = 16, delay: number = 500) {
         if (limit < 1) {
@@ -24,7 +24,7 @@ export default class ChunkedRequester
         this.#delay = delay;
     }
 
-    addRequest(url: string, parameters: object = {}): Promise<any>
+    addRequest(url: string, parameters: object = {}): Promise<unknown>
     {
         return new Promise((resolve, reject) => {
             this.#requests.push({
@@ -71,6 +71,6 @@ export default class ChunkedRequester
     clearTimeout(): void
     {
         clearTimeout(this.#timeout);
-        this.#timeout = null;
+        this.#timeout = undefined;
     }
 }

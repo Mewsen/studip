@@ -10,12 +10,10 @@
                    v-model="currentText"
                    :required="required && defaultLanguage === selectedLanguage.id"
                    v-bind="$attrs"
-                   v-on="$listeners"
                    v-if="type === 'text'">
             <textarea :name="nameOfInput(selectedLanguage.id)"
                       ref="inputfield"
                       v-bind="$attrs"
-                      v-on="$listeners"
                       v-model="currentText"
                       :required="required && defaultLanguage === selectedLanguage.id"
                       v-else-if="type === 'textarea'"></textarea>
@@ -23,7 +21,6 @@
                             ref="inputfield"
                             v-model="currentText"
                             v-bind="$attrs"
-                            v-on="$listeners"
                             :required="required && defaultLanguage === selectedLanguage.id"
                             v-else></studip-wysiwyg>
         </div>
@@ -34,6 +31,7 @@
                :required="required && defaultLanguage === language.id"
                :name="nameOfInput(language.id)">
         <select class="i18n"
+                :class="[type === 'text' ? 'i18n-input' : 'i18n-textarea']"
                 tabindex="0"
                 @change="selectLanguage"
                 :aria-label="$gettext('Sprache des Textfeldes auswählen.')"
@@ -49,21 +47,18 @@
                :name="name"
                v-model="currentText"
                v-bind="$attrs"
-               v-on="$listeners"
                :required="required"
                v-if="type === 'text'">
         <textarea :name="name"
                   ref="inputfield"
                   v-model="currentText"
                   v-bind="$attrs"
-                  v-on="$listeners"
                   :required="required"
                   v-else-if="type === 'textarea'"></textarea>
         <studip-wysiwyg :name="name"
                         ref="inputfield"
                         v-model="currentText"
                         v-bind="$attrs"
-                        v-on="$listeners"
                         :required="required"
                         v-else></studip-wysiwyg>
     </div>
@@ -76,6 +71,7 @@ export default {
     components: {
         StudipWysiwyg
     },
+    emits: ['allinputs', 'input', 'selectlanguage'],
     props: {
         name: {
             type: String,
@@ -115,7 +111,7 @@ export default {
         let jsonvalue = false;
         try {
             jsonvalue = JSON.parse(this.value);
-        } catch (except) {
+        } catch {
             // No fallback
         }
         if (jsonvalue !== false) {
@@ -182,7 +178,7 @@ export default {
     inheritAttrs: false,
     watch: {
         values: {
-            handler(newValue, oldValue) {
+            handler(newValue) {
                 this.$emit('input', newValue[this.defaultLanguage]);
                 let input_all = {};
                 for (let i in this.languages) {

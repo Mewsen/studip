@@ -46,7 +46,7 @@ $goals-types: (
 .cw-block-biography-achievements {
     @each $type, $icon in $achievement-types {
         .cw-block-biography-achievements-type-#{$type} {
-            @include background-icon($icon, clickable, 96);
+            @include background-icon($icon, $size: 96px);
         }
     }
 }
@@ -54,7 +54,7 @@ $goals-types: (
 .cw-block-biography-goals {
     @each $type, $icon in $goals-types {
         .cw-block-biography-goals-type-#{$type} {
-            @include background-icon($icon, clickable, 96);
+            @include background-icon($icon, $size: 96px);
         }
     }
 }
@@ -64,7 +64,7 @@ $goals-types: (
         min-height: 140px;
 
         .cw-block-biography-personal-information-type {
-            @include background-icon(person2, clickable, 96);
+            @include background-icon(person2, $size: 96px);
         }
 
         .cw-block-biography-personal-information-details {

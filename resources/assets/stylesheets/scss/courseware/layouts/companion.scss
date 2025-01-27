@@ -55,8 +55,8 @@ $companion-types: (
         position: absolute;
         top: 7px;
         right: 7px;
-        height: 16px;
-        width: 16px;
+        height: var(--icon-size-default);
+        width: var(--icon-size-default);
         border: none;
         cursor: pointer;
     }

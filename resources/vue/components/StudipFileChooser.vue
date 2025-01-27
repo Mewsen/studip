@@ -14,7 +14,7 @@ export default {
     components: {
         FileChooserDialog,
     },
-
+    emits: ['update:modelValue'],
     props: {
         selectable: {
             type: String,
@@ -23,7 +23,7 @@ export default {
                 return ['file', 'folder'].includes(value);
             },
         },
-        selectedId: {
+        modelValue: {
             type: String,
             required: false,
         },
@@ -48,10 +48,6 @@ export default {
         excludedCourseFolderTypes: { type: Array, default: () => [] },
         excludedUserFolderTypes: { type: Array, default: () => [] },
     },
-    model: {
-        prop: 'selectedId',
-        event: 'select',
-    },
     data() {
         return {
             showDialog: false,
@@ -73,20 +69,23 @@ export default {
         },
         selectedName() {
             if (this.selectable === 'folder') {
-                if (this.selectedId === '') {
+                if (this.modelValue === '') {
                     return this.$gettext('Kein Ordner ausgewählt');
                 }
-                return this.$gettextInterpolate(this.$gettext('Ordner "%{folderName}" ausgewählt'), {
-                    folderName: this.folderById({ id: this.selectedId })?.attributes?.name ?? '-',
-                });
+                return this.$gettext(
+                    'Ordner "%{folderName}" ausgewählt'
+                    ,
+                    { folderName: this.folderById({ id: this.modelValue })?.attributes?.name ?? '-' }
+                );
             }
 
-            if (this.selectedId === '') {
+            if (this.modelValue === '') {
                 return this.$gettext('Keine Datei ausgewählt');
             }
-            return this.$gettextInterpolate(this.$gettext('Datei "%{fileName}" ausgewählt'), {
-                fileName: this.fileById({ id: this.selectedId })?.attributes?.name ?? '-',
-            });
+            return this.$gettext(
+                'Datei "%{fileName}" ausgewählt',
+                { fileName: this.fileById({ id: this.modelValue })?.attributes?.name ?? '-' }
+            );
         },
     },
     methods: {
@@ -102,16 +101,16 @@ export default {
         },
         select(id) {
             this.closeDialog();
-            this.$emit('select', id);
+            this.$emit('update:modelValue', id);
         },
         loadSelection() {
             if (this.selectable === 'folder') {
-                if (this.selectedId !== '') {
-                    this.loadFolder({ id: this.selectedId });
+                if (this.modelValue !== '') {
+                    this.loadFolder({ id: this.modelValue });
                 }
             } else {
-                if (this.selectedId !== '') {
-                    this.loadFile({ id: this.selectedId });
+                if (this.modelValue !== '') {
+                    this.loadFile({ id: this.modelValue });
                 }
             }
         }

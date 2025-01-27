@@ -4,8 +4,9 @@
         <td>
             <?= StudygroupAvatar::getAvatar($group['seminar_id'])->getImageTag(Avatar::SMALL, ['title' => $group['name']]) ?>
         </td>
+
         <td style="text-align: left">
-            <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $group['seminar_id']]) ?>"
+            <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['to' => $group['seminar_id']]) ?>"
                 <?= $group['last_visitdate'] < $group['chdate'] ? 'style="color: red;"' : '' ?>>
                 <?= htmlReady($group['name']) ?>
             </a>
@@ -21,6 +22,9 @@
                 <?= tooltipicon($infotext) ?>
             <? endif ?>
         </td>
+        <td data-sort-value="<?= $group['mkdate'] ?>">
+            <?= htmlReady(date('d.m.Y', $group['mkdate'])) ?>
+        </td>
         <td style="text-align: left; white-space: nowrap;">
             <? if (!empty($group['navigation'])) : ?>
                 <ul class="my-courses-navigation" style="flex-wrap: nowrap">
@@ -28,10 +32,10 @@
                     <? if (isset($nav) && $nav->isVisible(true)) : ?>
                         <li class="my-courses-navigation-item <? if ($nav->getImage()->signalsAttention()) echo 'my-courses-navigation-important'; ?>">
                             <a href="<?=
-                            URLHelper::getLink('seminar_main.php',
-                                ['auswahl'     => $group['seminar_id'],
+                            URLHelper::getLink('dispatch.php/course/go',
+                                ['to'     => $group['seminar_id'],
                                       'redirect_to' => $nav->getURL()]) ?>" <?= $nav->hasBadgeNumber() ? 'class="badge" data-badge-number="' . intval($nav->getBadgeNumber()) . '"' : '' ?>>
-                                <?= $nav->getImage()->asImg(20, $nav->getLinkAttributes()) ?>
+                                <?= $nav->getImage()->asImg($nav->getLinkAttributes()) ?>
                             </a>
                         </li>
                     <? elseif (is_string($key)) : ?>
@@ -43,28 +47,30 @@
                 </ul>
             <? endif ?>
         </td>
-        <td style="text-align: right">
-            <? if (in_array($group["user_status"], ["dozent", "tutor"])) : ?>
-                <? $adminmodule = $group["sem_class"]->getAdminModuleObject(); ?>
-                <? if ($adminmodule) : ?>
-                    <? $adminnavigation = $adminmodule->getIconNavigation($group['seminar_id'], 0, $GLOBALS['user']->id); ?>
-                <? endif ?>
-                <? if ($adminnavigation) : ?>
-                    <a href="<?= URLHelper::getLink($adminnavigation->getURL(), ['cid' => $group['seminar_id']]) ?>">
-                        <?= $adminnavigation->getImage()->asImg(20, $adminnavigation->getLinkAttributes())?>
+        <? if (!$is_widget) : ?>
+            <td style="text-align: right">
+                <? if (in_array($group["user_status"], ["dozent", "tutor"])) : ?>
+                    <? $adminmodule = $group["sem_class"]->getAdminModuleObject(); ?>
+                    <? if ($adminmodule) : ?>
+                        <? $adminnavigation = $adminmodule->getIconNavigation($group['seminar_id'], 0, $GLOBALS['user']->id); ?>
+                    <? endif ?>
+                    <? if ($adminnavigation) : ?>
+                        <a href="<?= URLHelper::getLink($adminnavigation->getURL(), ['cid' => $group['seminar_id']]) ?>">
+                            <?= $adminnavigation->getImage()->asImg($adminnavigation->getLinkAttributes())?>
+                        </a>
+                    <? endif ?>
+
+                <? elseif (!empty($group['binding'])) : ?>
+                    <a href="<?= URLHelper::getLink('', ['to' => $group['seminar_id'], 'cmd' => 'no_kill']) ?>">
+                        <?= Icon::create('door-leave', Icon::ROLE_INACTIVE)->asImg(['title' => _('Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden.')]) ?>
+                    </a>
+                <?
+                else : ?>
+                    <a href="<?= URLHelper::getLink("dispatch.php/my_courses/decline/{$group['seminar_id']}", ['cmd' => 'suppose_to_kill']) ?>">
+                        <?= Icon::create('door-leave', Icon::ROLE_INACTIVE)->asImg(['title' => _('aus der Studiengruppe abmelden')]) ?>
                     </a>
                 <? endif ?>
-
-            <? elseif (!empty($group['binding'])) : ?>
-                <a href="<?= URLHelper::getLink('', ['auswahl' => $group['seminar_id'], 'cmd' => 'no_kill']) ?>">
-                    <?= Icon::create('door-leave', 'inactive', ['title' => _("Die Teilnahme ist bindend. Bitte wenden Sie sich an die Lehrenden.")])->asImg(20) ?>
-                </a>
-            <?
-            else : ?>
-                <a href="<?= URLHelper::getLink("dispatch.php/my_courses/decline/{$group['seminar_id']}", ['cmd' => 'suppose_to_kill']) ?>">
-                    <?= Icon::create('door-leave', 'inactive', ['title' => _("aus der Studiengruppe abmelden")])->asImg(20) ?>
-                </a>
+            </td>
             <? endif ?>
-        </td>
     </tr>
 <? endforeach ?>

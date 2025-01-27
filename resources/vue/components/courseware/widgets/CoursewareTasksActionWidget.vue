@@ -24,6 +24,12 @@
                         {{ $gettext('Aufgabe verteilen') }}
                     </button>
                 </li>
+                <li v-if="taskGroup && !hasPeerReviewProcesses" class="cw-action-widget-add">
+                    <button @click="$emit('add-peer-review-process')">
+                        {{ $gettext('Peer-Review-Verfahren aktivieren') }}
+                    </button>
+                </li>
+
             </ul>
         </template>
     </sidebar-widget>
@@ -39,7 +45,7 @@ export default {
     components: {
         SidebarWidget,
     },
-    props: ['taskGroup'],
+    props: ['hasPeerReviewProcesses', 'taskGroup'],
     computed: {
         isBeforeEndDate() {
             return this.taskGroup && new Date() < new Date(this.taskGroup.attributes['end-date']);
@@ -59,14 +65,14 @@ export default {
 <style scoped>
 .cw-action-widget-task-groups-add-solvers {
     background-image: url('../images/icons/blue/add.svg');
-    background-size: 16px;
+    background-size: 20px;
 }
 .cw-action-widget-task-groups-deadline {
     background-image: url('../images/icons/blue/date.svg');
-    background-size: 16px;
+    background-size: 20px;
 }
 .cw-action-widget-task-groups-delete {
     background-image: url('../images/icons/blue/trash.svg');
-    background-size: 16px;
+    background-size: 20px;
 }
 </style>

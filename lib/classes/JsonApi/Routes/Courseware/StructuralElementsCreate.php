@@ -100,6 +100,8 @@ class StructuralElementsCreate extends JsonApiController
         $struct->store();
         $template = \Courseware\Template::find(self::arrayGet($json, 'data.templateId'));
 
+        $with_default_container = self::arrayGet($json, 'data.withDefaultContainer', true);
+
         if ($template) {
             $structure = json_decode($template->structure, true);
 
@@ -134,7 +136,7 @@ class StructuralElementsCreate extends JsonApiController
                 $new_container['payload'] = $new_container->type->copyPayload($blockMap);
                 $new_container->store();
             }
-        } else {
+        } else if ($with_default_container) {
             $new_container = \Courseware\Container::build([
                 'structural_element_id' => $struct->id,
                 'owner_id' => $user->id,

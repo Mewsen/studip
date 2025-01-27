@@ -7,7 +7,6 @@
  */
 ?>
 <? if ($course) : ?>
-    <h2><?= htmlReady($course->getFullName()) ?></h2>
     <form class="default" method="post" data-dialog="reload-on-close"
           action="<?= $controller->link_for('calendar/schedule/course_info/' . $course->id) ?>">
         <?= CSRFProtection::tokenTag() ?>
@@ -30,8 +29,12 @@
         <fieldset>
             <legend><?= _('Informationen') ?></legend>
             <section>
-                <h3><?= _('Veranstaltungsnummer') ?></h3>
-                <p><?= htmlReady($course->veranstaltungsnummer) ?></p>
+                <? if ($course->veranstaltungsnummer) : ?>
+                    <h3><?= _('Veranstaltungsnummer') ?></h3>
+                    <p><?= htmlReady($course->veranstaltungsnummer) ?></p>
+                <? endif ?>
+                <h3><?= _('Name') ?></h3>
+                <p><?= htmlReady($course->getFullName('type-name')) ?></p>
                 <h3><?= _('Lehrende') ?></h3>
                 <ul class="default">
                     <?
@@ -48,9 +51,25 @@
                 <h3><?= _('Veranstaltungszeiten') ?></h3>
                 <?= $course->getAllDatesInSemester()->toHtml() ?>
             </section>
+            <section>
+                <?
+                $enrolment_info = $course->getEnrolmentInformation($GLOBALS['user']->id);
+                ?>
+                <? if ($enrolment_info->isEnrolmentAllowed()) : ?>
+                    <a href="<?= URLHelper::getLink('dispatch.php/course/overview', ['cid' => $course->id]) ?>">
+                        <?= _('Direkt zur Veranstaltung') ?>
+                        <?= Icon::create('link-intern')->asImg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>
+                    </a>
+                <? else : ?>
+                    <a href="<?= URLHelper::getLink('dispatch.php/course/details', ['sem_id' => $course->id]) ?>">
+                        <?= _('Direkt zur Veranstaltung') ?>
+                        <?= Icon::create('link-intern')->asImg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>
+                    </a>
+                <? endif ?>
+            </section>
         </fieldset>
         <div data-dialog-button>
-            <?= \Studip\Button::create(
+            <?= \Studip\Button::createAccept(
                 _('Speichern'),
                 'save',
                 ['formaction' => $controller->url_for('calendar/schedule/save_course_info/' . $course->id)]
@@ -68,20 +87,7 @@
                     ['formaction' => $controller->url_for('calendar/schedule/hide_course/' . $course->id)]
                 ) ?>
             <? endif ?>
-            <?php
-            $enrolment_info = $course->getEnrolmentInformation($GLOBALS['user']->id);
-            ?>
-            <? if ($enrolment_info->isEnrolmentAllowed()) : ?>
-                <?= \Studip\LinkButton::create(
-                    _('Direkt zur Veranstaltung'),
-                    URLHelper::getURL('dispatch.php/course/overview', ['cid' => $course->id])
-                ) ?>
-            <? else : ?>
-                <?= \Studip\LinkButton::create(
-                    _('Direkt zur Veranstaltung'),
-                    URLHelper::getURL('dispatch.php/course/details', ['sem_id' => $course->id])
-                ) ?>
-            <? endif ?>
+            <?= \Studip\Button::createCancel(_('Abbrechen')) ?>
         </div>
     </form>
 <? endif ?>

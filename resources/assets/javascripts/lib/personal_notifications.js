@@ -1,16 +1,16 @@
 import Favico from 'favico.js';
 import Cache from './cache.js';
 import PageLayout from './page_layout.js';
-import { $gettextInterpolate, $ngettext } from './gettext';
+import { $ngettext } from './gettext';
 
-var stack = {};
-var audio_notification = false;
-var directlydeleted = [];
-var favicon = null;
+let stack = {};
+let audio_notification = false;
+let directlydeleted = [];
+let favicon = null;
 
 function updateFavicon(text) {
     if (favicon === null) {
-        var valid = $('head')
+        const valid = $('head')
             .find('link[rel=icon]')
             .first();
         $('head')
@@ -118,7 +118,7 @@ const PersonalNotifications = {
         }
 
         // Special handling for personal notifications:
-        $('#notification-container').on('mouseover mouseout', function (event) {
+        $('#notification-container').on('mouseover mouseout', function () {
             $(this).attr('aria-expanded', $(this).attr('aria-expanded') === 'true' ? 'false' : 'true');
         });
     },
@@ -128,14 +128,14 @@ const PersonalNotifications = {
                 .toggle(permission === 'default');
         });
     },
-    markAsRead (event) {
-        var notification = $(this).closest('.notification'),
-            id = notification.data().id;
+    markAsRead () {
+        const notification = $(this).closest('.notification');
+        const id = notification.data().id;
         PersonalNotifications.sendReadInfo(id, notification);
         return false;
     },
-    markAllAsRead (event) {
-        var notifications = $(this)
+    markAllAsRead () {
+        const notifications = $(this)
             .parent()
             .find('.notification');
         PersonalNotifications.sendReadInfo('all', notifications);
@@ -169,11 +169,12 @@ const PersonalNotifications = {
         });
         if (really_new > 0) {
             $('#notification_marker')
-                .data('seen', false)
+                .data('seen', false);
+            $('#notification-wrapper')
                 .addClass('alert');
             PageLayout.title_prefix = '(!) ';
         } else {
-            $('#notification_marker').removeClass('alert');
+            $('#notification-wrapper').removeClass('alert');
             PageLayout.title_prefix = '';
         }
         if (count) {
@@ -188,8 +189,13 @@ const PersonalNotifications = {
         }
         if (old_count !== count) {
             $('#notification_marker .count').text(count);
-            let notification_text = $ngettext('%{ count } Benachrichtigung', '%{ count } Benachrichtigungen', count);
-            $('#notification_marker').attr('title', $gettextInterpolate(notification_text, {count: count}));
+            let notification_text = $ngettext(
+                '%{ count } Benachrichtigung',
+                '%{ count } Benachrichtigungen',
+                count,
+                { count }
+            );
+            $('#notification_marker').attr('title', notification_text);
             updateFavicon(count);
             $('#notification-container .mark-all-as-read').toggleClass('invisible', count < 2);
         }
@@ -220,8 +226,10 @@ const PersonalNotifications = {
 
         $.get(STUDIP.URLHelper.getURL('dispatch.php/jsupdater/notifications_seen')).then(time => {
             $('#notification_marker')
-                .removeClass('alert')
                 .data('lastvisit', time);
+            $('#notification-wrapper')
+                .removeClass('alert');
+                
         });
     }
 };

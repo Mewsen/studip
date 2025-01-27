@@ -6,7 +6,7 @@
 
 <div class="description_container">
     <div class="icon_container">
-        <?= Icon::create('info-circle', Icon::ROLE_INFO)->asImg(20) ?>
+        <?= Icon::create('info-circle', Icon::ROLE_INFO) ?>
     </div>
     <div class="description">
         <? if ($vote->hasValidURL()) : ?>

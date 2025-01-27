@@ -106,24 +106,25 @@
         </section>
         <section>
             <label>
-                <input type="checkbox" name="selfassign" value="1">
+                <input type="checkbox" name="selfassign" value="1"
+                       data-shows=".self-assign-option">
                 <?= _('Selbsteintrag') ?>
             </label>
         </section>
-        <section>
+        <section class="self-assign-option">
             <label>
                 <input type="checkbox" name="exclusive" value="1">
                 <?= _('Selbsteintrag in nur eine Gruppe') ?>
             </label>
         </section>
-        <section class="col-3">
+        <section class="col-3 self-assign-option">
             <label class="col-3">
                 <?= _('Selbsteintrag erlaubt ab') ?>
                 <input type="text" data-datetime-picker id="selfassign_start"  size="20"
                        name="selfassign_start" value="<?= date('d.m.Y H:i') ?>">
             </label>
         </section>
-        <section class="col-3">
+        <section class="col-3 self-assign-option">
             <label class="col-3">
                 <?= _('Selbsteintrag erlaubt bis') ?>
                 <input type="text" data-datetime-picker='{">":"#selfassign_start"}' size="20"

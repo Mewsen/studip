@@ -30,7 +30,7 @@ STUDIP.domReady(() => {
         }
     });
 
-    jQuery(document).on('keyright', function(event) {
+    jQuery(document).on('keyright', function() {
         STUDIP.Tour.prev();
     });
     jQuery(document).on('click', '.tour_link', function(event) {

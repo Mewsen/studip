@@ -19,7 +19,9 @@
             </section>
         </section>
     <? else: ?>
-        <?= $GLOBALS['template_factory']->render('terms.php') ?>
+        <?= $GLOBALS['template_factory']->render('terms.php', [
+            'terms_of_use' => $terms_of_use,
+        ]) ?>
     <? endif; ?>
     <footer style="text-align: center">
     <? if ($denial_message): ?>

@@ -85,6 +85,11 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     protected static $performs_batch_operation = false;
 
     /**
+     * Defines which variant of the I18NString class should be used
+     */
+    protected string $i18n_class = I18NString::class;
+
+    /**
      * name of db table
      * @return string
      */
@@ -531,7 +536,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     /**
      * build object with given data
      *
-     * @param array $data assoc array of record
+     * @param iterable $data assoc array of record
      * @param ?bool $is_new set object to new state
      * @return static
      */
@@ -546,7 +551,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     /**
      * build object with given data and mark it as existing
      *
-     * @param array $data assoc array of record
+     * @param iterable $data assoc array of record
      * @return static
      */
     public static function buildExisting($data)
@@ -2232,7 +2237,18 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         $field = strtolower($field);
         if ($this->content[$field] === null || $this->content_db[$field] === null) {
             return $this->content[$field] !== $this->content_db[$field];
-        } else if ($this->content[$field] instanceof I18NString || $this->content_db[$field] instanceof I18NString) {
+        } else if (
+            $this->content[$field] instanceof I18NString
+            || $this->content_db[$field] instanceof I18NString
+        ) {
+            // Trigger loading of translations
+            if ($this->content[$field] instanceof I18NString) {
+                $this->content[$field]->toArray();
+            }
+            if ($this->content_db[$field] instanceof I18NString) {
+                $this->content_db[$field]->toArray();
+            }
+
             return $this->content[$field] != $this->content_db[$field];
         } else {
             return (string)$this->content[$field] !== (string)$this->content_db[$field];
@@ -2504,7 +2520,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             $value->setMetadata($meta);
             $this->content[$field] = $value;
         } else {
-            $this->content[$field] = new I18NString($value, null, $meta);
+            $this->content[$field] = new $this->i18n_class($value, null, $meta);
         }
         return $this->content[$field];
     }

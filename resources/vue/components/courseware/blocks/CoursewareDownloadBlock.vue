@@ -43,7 +43,7 @@
             </template>
             <template v-if="canEdit" #edit>
                 <courseware-tabs>
-                    <courseware-tab :index="0" :name="$gettext('Datei')" :selected="true">
+                    <courseware-tab :name="$gettext('Datei')">
                         <form class="default" @submit.prevent="">
                             <label>
                                 {{ $gettext('Überschrift') }}
@@ -55,7 +55,7 @@
                             </label>
                         </form>
                     </courseware-tab>
-                    <courseware-tab :index="1" :name="$gettext('Infobox')">
+                    <courseware-tab :name="$gettext('Infobox')">
                         <form class="default" @submit.prevent="">
                             <label>
                                 {{ $gettext('Infobox vor Download') }}
@@ -67,7 +67,7 @@
                             </label>
                         </form>
                     </courseware-tab>
-                    <courseware-tab :index="2" :name="$gettext('Fortschritt')">
+                    <courseware-tab :name="$gettext('Fortschritt')">
                         <form class="default" @submit.prevent="">
                             <label>
                                 {{ $gettext('Fortschritt erst beim Herunterladen') }}
@@ -282,5 +282,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/files.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/files';
 </style>

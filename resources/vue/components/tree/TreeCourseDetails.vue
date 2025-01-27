@@ -11,16 +11,19 @@
         <div class="course-lecturers">
             <span v-for="(lecturer, index) in details.lecturers" :key="index">
                 <a :href="profileUrl(lecturer.username)"
-                   :title="$gettextInterpolate($gettext('Zum Profil von %{ user }'),
-                        { user: lecturer.name }, true)"
+                   :title="$gettext(
+                       'Zum Profil von %{ user }',
+                       { user: lecturer.name },
+                       true
+                   )"
                    tabindex="0">
                     {{ lecturer.name }}
                 </a><template v-if="details.lecturers.length > 1 && index < details.lecturers.length - 1">, </template>
             </span>
         </div>
-        <MountingPortal :mountTo="'#course-dates-' + course" :append="true">
+        <Teleport :to="'#course-dates-' + course" :append="true">
             <span v-html="details.dates"></span>
-        </MountingPortal>
+        </Teleport>
     </div>
 </template>
 

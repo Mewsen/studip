@@ -35,11 +35,10 @@
                     v-if="hasFeedbackEntries"
                     :amount="feedbackAverage"
                     :size="16"
-                    :title="
-                        $gettextInterpolate($gettext('Lernmaterial wurde mit %{avg} Sternen bewertet'), {
-                            avg: feedbackAverage,
-                        })
-                    "
+                    :title="$gettext(
+                        'Lernmaterial wurde mit %{avg} Sternen bewertet',
+                        { avg: feedbackAverage }
+                    )"
                 />
                 <studip-five-stars
                     v-else
@@ -74,11 +73,11 @@
         <studip-dialog
             v-if="showDeleteDialog"
             :title="$gettext('Lernmaterial löschen')"
-            :question="
-                $gettextInterpolate($gettext('Möchten Sie das Lernmaterial %{ unitTitle } wirklich löschen?'), {
-                    unitTitle: title,
-                }, true)
-            "
+            :question="$gettext(
+                'Möchten Sie das Lernmaterial %{ unitTitle } wirklich löschen?',
+                 { unitTitle: title },
+                 true
+            )"
             height="200"
             @confirm="executeDelete"
             @close="closeDeleteDialog"
@@ -157,6 +156,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-unit-item',
+    emits: ['unit-keydown'],
     components: {
         CoursewareTile,
         CoursewareUnitItemDialogExport,
@@ -322,9 +322,10 @@ export default {
             if (!this.userIsTeacher) {
                 if (this.unit.attributes.visible === 'period') {
                     info.icon = 'date';
-                    info.text = this.$gettextInterpolate(this.$gettext('Sichtbar bis zum %{end}'), {
-                        end: this.permissionVisibleEndDate,
-                    });
+                    info.text = this.$gettext(
+                        'Sichtbar bis zum %{end}',
+                        { end: this.permissionVisibleEndDate }
+                    );
 
                     return info;
                 }
@@ -343,12 +344,10 @@ export default {
                                 info.text = this.$gettext('Sichtbar für alle');
                             } else {
                                 const users = this.unit.attributes['visible-approval'].length;
-                                info.text = this.$gettextInterpolate(
-                                    this.$ngettext(
-                                        'Sichtbar für einen Studierenden',
-                                        'Sichtbar für %{count} Studierende',
-                                        users
-                                    ),
+                                info.text = this.$ngettext(
+                                    'Sichtbar für einen Studierenden',
+                                    'Sichtbar für %{count} Studierende',
+                                    users,
                                     { count: users }
                                 );
                                 if (users === 0) {
@@ -363,8 +362,10 @@ export default {
                                 info.text = this.$gettext('Sichtbar für alle');
                             } else {
                                 const groups = this.unit.attributes['visible-approval'].length;
-                                info.text = this.$gettextInterpolate(
-                                    this.$ngettext('Sichtbar für eine Gruppe', 'Sichtbar für %{count} Gruppen', groups),
+                                info.text = this.$ngettext(
+                                    'Sichtbar für eine Gruppe',
+                                    'Sichtbar für %{count} Gruppen',
+                                    groups,
                                     { count: groups }
                                 );
                                 if (groups === 0) {
@@ -382,8 +383,8 @@ export default {
                     break;
                 case 'period': {
                     info.icon = 'date';
-                    info.title = this.$gettextInterpolate(
-                        this.$gettext('Für %{persons} sichtbar vom %{start} bis zum %{end}'),
+                    info.title = this.$gettext(
+                        'Für %{persons} sichtbar vom %{start} bis zum %{end}',
                         {
                             start: this.permissionVisibleStartDate,
                             end: this.permissionVisibleEndDate,
@@ -428,9 +429,10 @@ export default {
                 if (this.unit.attributes['can-edit-content']) {
                     info.icon = 'edit';
                     if (this.unit.attributes.writable === 'period') {
-                        info.text = this.$gettextInterpolate(this.$gettext('Bearbeitbar bis zum %{end}'), {
-                            end: this.permissionWritableEndDate,
-                        });
+                        info.text = this.$gettext(
+                            'Bearbeitbar bis zum %{end}',
+                            { end: this.permissionWritableEndDate }
+                        );
                     } else {
                         info.text = this.$gettext('Bearbeitbar');
                     }
@@ -451,13 +453,14 @@ export default {
                 }
                 info.icon = 'edit';
                 if (this.unit.attributes.writable === 'always') {
-                    info.text = this.$gettextInterpolate(this.$gettext('Bearbeitbar für %{persons} '), {
-                        persons: this.getPermissionPersons('writable-approval'),
-                    });
+                    info.text = this.$gettext(
+                        'Bearbeitbar für %{persons}',
+                        { persons: this.getPermissionPersons('writable-approval') }
+                    );
                 }
                 if (this.unit.attributes.writable === 'period') {
-                    info.title = this.$gettextInterpolate(
-                        this.$gettext('Für %{persons} bearbeitbar vom %{start} bis zum %{end}'),
+                    info.title = this.$gettext(
+                        'Für %{persons} bearbeitbar vom %{start} bis zum %{end}',
                         {
                             start: this.permissionWritableStartDate,
                             end: this.permissionWritableEndDate,
@@ -500,7 +503,7 @@ export default {
                     .then((response) => {
                         this.certificate = response.data;
                     })
-                    .catch((error) => {});
+                    .catch(() => {});
             }
         },
         executeDelete() {
@@ -575,8 +578,10 @@ export default {
                         return this.$gettext('alle');
                     } else {
                         const users = this.unit.attributes[type].length;
-                        return this.$gettextInterpolate(
-                            this.$ngettext('einen Studierenden', '%{count} Studierende', users),
+                        return this.$ngettext(
+                            'einen Studierenden',
+                            '%{count} Studierende',
+                            users,
                             { count: users }
                         );
                     }
@@ -586,9 +591,12 @@ export default {
                         return this.$gettext('alle');
                     } else {
                         const groups = this.unit.attributes[type].length;
-                        return this.$gettextInterpolate(this.$ngettext('eine Gruppe', '%{count} Gruppen', groups), {
-                            count: groups,
-                        });
+                        return this.$ngettext(
+                            'eine Gruppe',
+                            '%{count} Gruppen',
+                            groups,
+                            { count: groups }
+                        );
                     }
                 }
             }

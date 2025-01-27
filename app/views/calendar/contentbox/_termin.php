@@ -42,7 +42,7 @@
             $description = $termin->content;
         } elseif ($termin instanceof CourseDate && isset($termin->cycle)) {
             $description = $termin->cycle->description;
-        } else {
+        } elseif (empty($themen)) {
             $description = $termin->getDescription();
         }
         ?>
@@ -51,7 +51,7 @@
             <? if (count($themen)) : ?>
                 <? foreach ($themen as $thema) : ?>
                     <h3>
-                        <?= Icon::create('topic', Icon::ROLE_INFO)->asImg(20, ['class' => "text-bottom"]) ?>
+                        <?= Icon::create('topic', Icon::ROLE_INFO)->asImg(['class' => "text-bottom"]) ?>
                         <?= htmlReady($thema['title']) ?>
                     </h3>
                     <div>

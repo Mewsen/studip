@@ -24,8 +24,8 @@ class TFASecret extends SimpleORMap
     // period of time with a larger window to accept them).
     const TYPES = [
         'email' => [
-            'window' => 60,
-            'period' => 5,
+            'window' => 10,
+            'period' => 30,
         ],
         'app' => [
             'window' => 1,
@@ -172,7 +172,7 @@ class TFASecret extends SimpleORMap
 
         $window = self::TYPES[$this->type]['window'];
         if ($allow_reuse) {
-            $window = 0;
+            $window = null;
         }
 
         if ($this->getTOTP()->verify($token, $timestamp, $window)) {

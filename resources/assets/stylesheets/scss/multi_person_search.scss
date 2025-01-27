@@ -6,3 +6,46 @@
         }
     }
 }
+
+.mpscontainer {
+    label.with-action {
+        .search-wrapper {
+            border: solid thin var(--color--input-field-border);
+            border-radius: var(--border-radius-search);
+            width: 290px;
+            padding: 0 5px;
+
+            &:focus-within {
+                border-color: var(--black);
+            }
+
+            input[type=text] {
+                border: none;
+                outline: none;
+                width: 220px;
+                vertical-align: text-bottom;
+                padding: 0 5px;
+                margin: 0;
+                line-height: $font-size-base;
+            }
+
+            .icon-button {
+                width: 30px;
+                height: 30px;
+                padding: 0 0 0 5px;
+
+                &.search {
+                    border-left: solid thin var(--color--input-field-border);
+                }
+            }
+
+            .reset-search {
+                visibility: hidden;
+                &.visible {
+                    visibility: visible;
+                }
+            }
+        }
+    }
+    
+}

@@ -399,15 +399,18 @@ class PluginAdministration
      *
      * @return array with manifest meta data
      */
-    public function scanPluginDirectory()
+    public function scanPluginDirectory(bool $sort = false)
     {
         $found = [];
         $basepath = Config::get()->PLUGINS_PATH;
         $plugin_manager = PluginManager::getInstance();
         $iterator = new RegexIterator(
-                        new RecursiveIteratorIterator(
-                            new RecursiveDirectoryIterator($basepath, FilesystemIterator::FOLLOW_SYMLINKS | FilesystemIterator::UNIX_PATHS)),
-                        '/plugin\.manifest$/', RecursiveRegexIterator::MATCH);
+            new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($basepath, FilesystemIterator::FOLLOW_SYMLINKS | FilesystemIterator::UNIX_PATHS)
+            ),
+            '/plugin\.manifest$/',
+            RegexIterator::MATCH
+        );
         foreach ($iterator as $manifest_file) {
             $manifest = $plugin_manager->getPluginManifest($manifest_file->getPath());
             if (!isset($manifest['pluginclassname'])) {
@@ -420,6 +423,14 @@ class PluginAdministration
                 $found[] = $manifest;
             }
         }
+
+        if ($sort) {
+            usort(
+                $found,
+                fn($a, $b) => $a['pluginname'] <=> $b['pluginname']
+            );
+        }
+
         return $found;
     }
 
@@ -465,7 +476,7 @@ class PluginAdministration
         $pluginid = $plugin_manager->registerPlugin($manifest['pluginname'], $pluginclass, $pluginpath);
 
         // register additional plugin classes in this package
-        $additionalclasses = $manifest['additionalclasses'];
+        $additionalclasses = $manifest['additionalclasses'] ?? null;
 
         if (is_array($additionalclasses)) {
             foreach ($additionalclasses as $class) {

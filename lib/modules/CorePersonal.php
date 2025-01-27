@@ -54,7 +54,7 @@ class CorePersonal extends CorePlugin implements StudipModuleExtended
             'displayname'      => _('MitarbeiterInnen'),
             'category'         => _('Sonstiges'),
             'icon'             => Icon::create('persons', Icon::ROLE_INFO),
-            'icon_clickable'   => Icon::create('persons', Icon::ROLE_CLICKABLE)
+            'icon_clickable'   => Icon::create('persons')
         ];
     }
 

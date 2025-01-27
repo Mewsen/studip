@@ -14,16 +14,16 @@ $grid-element-width: 270px;
 }
 
 .studip-grid-element {
-    border: 1px solid var(--light-gray-color);
+    border: 1px solid var(--color--tile-border);
 }
 
 // Responsive displays
-@include media-breakpoint-small-down() {
+@include media-breakpoint-small-down {
     .studip-grid {
         grid-template-columns: 1fr 1fr;
     }
 }
-@include media-breakpoint-tiny-down() {
+@include media-breakpoint-tiny-down {
     .studip-grid {
         grid-template-columns: 100%;
     }

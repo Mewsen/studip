@@ -60,7 +60,7 @@ export default {
         },
     },
     watch: {
-        activeFolderId(newId) {
+        activeFolderId() {
             this.updateBreadcrumb();
             this.setSelectedFolderId('');
         },

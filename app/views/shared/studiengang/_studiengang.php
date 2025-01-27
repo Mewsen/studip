@@ -175,7 +175,7 @@
                 <? endif ?>
             <? endif; ?>
         <? endforeach; ?>
-        <? if (is_array($all_contacts) && count($all_contacts)) : ?>
+        <? if (!empty($all_contacts)) : ?>
             <tr>
                 <td>
                     <strong><?= _('Ihre AnsprechpartnerInnen') ?></strong>
@@ -196,7 +196,7 @@
                 </td>
             </tr>
         <? endif ?>
-        <? if (is_array($all_documents) && count($all_documents)) : ?>
+        <? if (!empty($all_documents)) : ?>
             <tr>
                 <td>
                     <strong><?= _('Dokumente: Ordnungen, Formulare, Informationen') ?></strong>
@@ -222,7 +222,7 @@
                 </td>
             </tr>
         <? endif ?>
-        <? if (count($all_aufbaustgs)) : ?>
+        <? if (!empty($all_aufbaustgs)) : ?>
             <tr>
                 <td>
                     <strong><?= _('Aufbau-/Kombinationsstudiengänge') ?></strong>

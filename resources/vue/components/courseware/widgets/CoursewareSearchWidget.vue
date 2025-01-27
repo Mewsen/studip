@@ -12,7 +12,7 @@
                             />
                             <a v-if="showSearchResults" @click.prevent="setShowSearchResults(false)"
                                 class="reset-search">
-                                <studip-icon shape="decline" :size="20"></studip-icon>
+                                <studip-icon shape="decline"></studip-icon>
                             </a>
                             <button
                                 type="submit"
@@ -21,7 +21,7 @@
                                 class="submit-search"
                                 @click="loadResults"
                             >
-                                <studip-icon shape="search" :size="20"></studip-icon>
+                                <studip-icon shape="search"></studip-icon>
                             </button>
                         </div>
                     </li>
@@ -85,7 +85,7 @@ export default {
                 } else {
                     this.setSearchResults([]);
                 }
-            }).catch(error => {
+            }).catch(() => {
                 this.companionError({ info: this.$gettext('Bei der Anfrage ist ein Fehler aufgetreten.')});
             });
         }

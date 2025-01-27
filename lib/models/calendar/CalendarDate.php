@@ -177,13 +177,15 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                 }
             } elseif ($assignment->user instanceof User) {
                 if ($assignment->user->isCalendarReadable($range_id)) {
-                    return true;
+                    //The date is only readable if it isn't confidential:
+                    return $this->access !== 'CONFIDENTIAL';
                 }
             }
         }
 
-        //In case the date is not in a calendar of the user or a course
-        //where the user has access to, it is only visible when it is public.
+        //In case the date is not in a calendar of a user or a course
+        //where the user has read access to, the date is only visible
+        //when it is public.
         return $this->access === 'PUBLIC';
     }
 
@@ -477,9 +479,10 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                 if ($this->interval == '1') {
                     //Each day
                     if ($this->number_of_dates > 1) {
+                        $number_of_exceptions = CalendarDateException::countByCalendar_date_id($this->id);
                         $repetition_string = sprintf(
                             _('Täglich (%u Termine)'),
-                            $this->number_of_dates
+                            $this->number_of_dates - $number_of_exceptions
                         );
                     } elseif ($this->repetition_end < CalendarDate::NEVER_ENDING) {
                         $repetition_string = sprintf(
@@ -492,10 +495,11 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                 } else {
                     //Every %u day
                     if ($this->number_of_dates > 1) {
+                        $number_of_exceptions = CalendarDateException::countByCalendar_date_id($this->id);
                         $repetition_string = sprintf(
                             _('Jeden %1$u. Tag (%2$u Termine)'),
                             $this->interval,
-                            $this->number_of_dates
+                            $this->number_of_dates - $number_of_exceptions
                         );
                     } elseif ($this->repetition_end < self::NEVER_ENDING) {
                         $repetition_string = sprintf(
@@ -535,10 +539,11 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
             if ($this->interval == '1') {
                 //Each week
                 if ($this->number_of_dates > 1) {
+                    $number_of_exceptions = CalendarDateException::countByCalendar_date_id($this->id);
                     $repetition_string = sprintf(
                         ngettext('Einmal am folgenden %s', 'Jeden %1$s (%2$u Termine)', $this->number_of_dates - 1),
                         $weekday_string,
-                        $this->number_of_dates
+                        $this->number_of_dates - $number_of_exceptions
                     );
                 } elseif ($this->repetition_end < self::NEVER_ENDING) {
                     $repetition_string = sprintf(
@@ -555,11 +560,12 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
             } else {
                 //Every %u week
                 if ($this->number_of_dates > 1) {
+                    $number_of_exceptions = CalendarDateException::countByCalendar_date_id($this->id);
                     $repetition_string = sprintf(
                         _('Jeden %1$u. %2$s (%3$u Termine)'),
                         $this->interval,
                         $weekday_string,
-                        $this->number_of_dates
+                        $this->number_of_dates - $number_of_exceptions
                     );
                 } elseif ($this->repetition_end < self::NEVER_ENDING) {
                     $repetition_string = sprintf(
@@ -637,11 +643,12 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                     //in a specific month.
                     if ($this->offset < 0) {
                         if ($this->number_of_dates > 1) {
+                            $number_of_exceptions = CalendarDateException::countByCalendar_date_id($this->id);
                             $repetition_string = sprintf(
                                 _('Jedes Jahr im %1$s am letzten %2$s (%3$u Termine)'),
                                 getMonthName($this->month, false),
                                 getWeekday($this->days, false),
-                                $this->number_of_dates
+                                $this->number_of_dates - $number_of_exceptions
                             );
                         } elseif ($this->repetition_end < self::NEVER_ENDING) {
                             $repetition_string = sprintf(
@@ -659,12 +666,13 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                         }
                     } else {
                         if ($this->number_of_dates > 1) {
+                            $number_of_exceptions = CalendarDateException::countByCalendar_date_id($this->id);
                             $repetition_string = sprintf(
                                 _('Jedes Jahr im %1$s am %2$u. %3$s (%4$u Termine'),
                                 getMonthName($this->month, false),
                                 $this->offset,
                                 getWeekday($this->days, false),
-                                $this->number_of_dates
+                                $this->number_of_dates - $number_of_exceptions
                             );
                         } elseif ($this->repetition_end < self::NEVER_ENDING) {
                             $repetition_string = sprintf(
@@ -686,11 +694,12 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                 } else {
                     //Repetition on one specific day of month.
                     if ($this->number_of_dates > 1) {
+                        $number_of_exceptions = CalendarDateException::countByCalendar_date_id($this->id);
                         $repetition_string = sprintf(
                             _('Jedes Jahr am %1$u. %2$s (%3$u Termine)'),
                             $this->offset,
                             getMonthName($this->month, false),
-                            $this->number_of_dates
+                            $this->number_of_dates - $number_of_exceptions
                         );
                     } elseif ($this->repetition_end < self::NEVER_ENDING) {
                         $repetition_string = sprintf(
@@ -714,12 +723,13 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                     //in a specific month.
                     if ($this->offset < 0) {
                         if ($this->number_of_dates > 1) {
+                            $number_of_exceptions = CalendarDateException::countByCalendar_date_id($this->id);
                             $repetition_string = sprintf(
                                 _('Jedes %1$u. Jahr im %2$s am letzten %3$s (%4$u Termine)'),
                                 $this->interval,
                                 getMonthName($this->month, false),
                                 getWeekday($this->days, false),
-                                $this->number_of_dates
+                                $this->number_of_dates - $number_of_exceptions
                             );
                         } elseif ($this->repetition_end < self::NEVER_ENDING) {
                             $repetition_string = sprintf(
@@ -739,13 +749,14 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                         }
                     } else {
                         if ($this->number_of_dates > 1) {
+                            $number_of_exceptions = CalendarDateException::countByCalendar_date_id($this->id);
                             $repetition_string = sprintf(
                                 _('Jedes %1$u. Jahr im %2$s am %3$u. %4$s (%5$u Termine)'),
                                 $this->interval,
                                 getMonthName($this->month, false),
                                 $this->offset,
                                 getWeekday($this->days, false),
-                                $this->number_of_dates
+                                $this->number_of_dates - $number_of_exceptions
                             );
                         } elseif ($this->repetition_end < self::NEVER_ENDING) {
                             $repetition_string = sprintf(
@@ -769,12 +780,13 @@ class CalendarDate extends SimpleORMap implements PrivacyObject
                 } else {
                     //Repetition on one specific day of month.
                     if ($this->number_of_dates > 1) {
+                        $number_of_exceptions = CalendarDateException::countByCalendar_date_id($this->id);
                         $repetition_string = sprintf(
                             _('Jedes %1$u. Jahr am %2$u. %3$s (%4$u Termine)'),
                             $this->interval,
                             $this->offset,
                             getMonthName($this->month, false),
-                            $this->number_of_dates
+                            $this->number_of_dates - $number_of_exceptions
                         );
                     } elseif ($this->repetition_end < self::NEVER_ENDING) {
                         $repetition_string = sprintf(

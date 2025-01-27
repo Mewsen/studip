@@ -77,11 +77,12 @@
                                 <? endif ?>
                             <? endforeach; ?>
                         </select>
-                        <?= Icon::create(
-                            'add',
-                            Icon::ROLE_CLICKABLE,
-                            ['title' => _('Filter hinzufügen')]
-                        )->asInput(["type" => "image", "class" => "middle", "name" => "add_filter"]) ?>
+                        <?= Icon::create('add')->asInput([
+                            'title' => _('Filter hinzufügen'),
+                            'type'  => 'image',
+                            'class' => 'middle',
+                            'name'  => 'add_filter',
+                        ]) ?>
                     </td>
                 </tr>
             <? endif ?>
@@ -103,11 +104,12 @@
                     <? endif ?>
                     <td colspan="<?= $index % 2 ? 1 : 2 ?>">
                         <label for="<?= $type ?>"><b><?= $available_filtertypes[$type] ?></b></label>
-                        <?= Icon::create(
-                            'remove',
-                            Icon::ROLE_CLICKABLE,
-                            ['title' => _('Filter entfernen')]
-                        )->asInput(["type" => "image", "class" => "middle", "name" => "remove_filter[" . $type . "]"]) ?>
+                        <?= Icon::create('remove')->asInput([
+                            'title' => _('Filter entfernen'),
+                            'type'  => 'image',
+                            'class' => 'middle',
+                            'name'  => "remove_filter[{$type}]",
+                        ]) ?>
                         <br>
 
                         <select name="filter[<?= $type ?>][]" multiple size="5" class="nested-select">
@@ -157,11 +159,12 @@
             <tr>
                 <td colspan="3">
                     <?= Studip\Button::create(_('Eintragen'), 'submit') ?>
-                    <?= Icon::create(
-                        'question-circle',
-                        Icon::ROLE_CLICKABLE,
-                        ['title' => _('Vorschau')]
-                    )->asInput(["type" => "image", "style" => "vertical-align: middle;", "name" => "preview"]) ?>
+                    <?= Icon::create('question-circle')->asInput([
+                        'title' => _('Vorschau'),
+                        'type' => 'image',
+                        'style' => 'vertical-align: middle;',
+                        'name' => 'preview'
+                    ]) ?>
                 </td>
             </tr>
             </tfoot>

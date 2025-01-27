@@ -169,7 +169,13 @@ class AdminNavigation extends Navigation
                     'dispatch.php/admin/login_style'
                 )
             );
-
+            $navigation->addSubNavigation(
+                'tags',
+                new Navigation(
+                    _('Schlagwortverwaltung'),
+                    'dispatch.php/admin/tags/index'
+                )
+            );
         }
 
         $this->addSubNavigation('locations', $navigation);
@@ -223,7 +229,7 @@ class AdminNavigation extends Navigation
             $navigation = new Navigation($back_jump, 'dispatch.php/institute/overview?auswahl=' . Context::getId());
             $this->addSubNavigation('back_jump', $navigation);
         } else if (Context::isCourse() && !$archive_kill && !(isset($_SESSION['links_admin_data']['assi']) && $_SESSION['links_admin_data']['assi'])) {
-            $navigation = new Navigation($back_jump, 'seminar_main.php?auswahl=' . Context::getId());
+            $navigation = new Navigation($back_jump, 'dispatch.php/course/go?to=' . Context::getId());
             $this->addSubNavigation('back_jump', $navigation);
         }
 

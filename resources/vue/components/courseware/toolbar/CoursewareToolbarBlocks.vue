@@ -1,7 +1,7 @@
 <template>
     <div class="cw-toolbar-blocks">
         <div id="cw-toolbar-blocks-header" class="cw-toolbar-tool-header">
-            <form @submit.prevent="loadSearch">
+            <form class="default" @submit.prevent="loadSearch">
                 <div class="input-group files-search search cw-block-search">
                     <input
                         ref="searchBox"
@@ -23,8 +23,7 @@
                         </button>
                         <button
                             type="submit"
-                            class="button"
-                            id="search-btn"
+                            class="button seach-button"
                             :title="$gettext('Suche starten')"
                             @click="loadSearch"
                         >
@@ -33,29 +32,26 @@
                     </span>
                 </div>
             </form>
-
-            <div id="filterpanel" class="filterpanel">
-                <form class="default">
-                  <span class="sr-only">{{ $gettext('Kategorien-Filter') }}</span>
-                  <studip-select
-                      :clearable="true"
-                      label="title"
-                      :options="blockCategories"
-                      :placeholder="$gettext('Blockkategorien')"
-                      :reduce="(category) => category.type"
-                      v-model="currentFilterCategory"
-                      >
-                      <template #open-indicator="selectAttributes">
-                          <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
-                      </template>
-                      <template #no-options>
-                          {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
-                      </template>
-                      <template #selected-option="{ title }"><span>{{ title }}</span></template>
-                      <template #option="{ title }"><span>{{ title }}</span></template>
-                  </studip-select>
-                </form>
-            </div>
+            <form class="default">
+                <span class="sr-only">{{ $gettext('Kategorien-Filter') }}</span>
+                <studip-select
+                    :clearable="true"
+                    label="title"
+                    :options="blockCategories"
+                    :placeholder="$gettext('Blockkategorien')"
+                    :reduce="(category) => category.type"
+                    v-model="currentFilterCategory"
+                    >
+                    <template #open-indicator="{ selectAttributes }">
+                        <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
+                    </template>
+                    <template #no-options>
+                        {{ $gettext('Es steht keine Auswahl zur Verfügung.') }}
+                    </template>
+                    <template #selected-option="{ title }"><span>{{ title }}</span></template>
+                    <template #option="{ title }"><span>{{ title }}</span></template>
+                </studip-select>
+            </form>
         </div>
         <div class="cw-toolbar-tool-content" :style="toolContentStyle">
             <div v-if="filteredBlockTypes.length > 0" class="cw-blockadder-item-list">
@@ -74,16 +70,17 @@
                     @end="dropNewBlock($event)"
                     ref="sortables"
                     sectionId="0"
+                    item-key="id"
                 >
-                    <courseware-blockadder-item
-                        v-for="(block, index) in filteredBlockTypes"
-                        :key="index"
-                        :title="block.title"
-                        :type="block.type"
-                        :data-blocktype="block.type"
-                        :description="block.description"
-                        @blockAdded="$emit('blockAdded')"
-                    />
+                    <template #item="{element}">
+                        <courseware-blockadder-item
+                            :title="element.title"
+                            :type="element.type"
+                            :data-blocktype="element.type"
+                            :description="element.description"
+                            @blockAdded="$emit('blockAdded')"
+                        />
+                    </template>
                 </draggable>
             </div>
             <courseware-companion-box
@@ -118,6 +115,7 @@ export default {
             required: true,
         },
     },
+    emits: ['blockAdded'],
     setup() {
         const { categories } = useBlockCategoryManager();
 
@@ -148,8 +146,8 @@ export default {
             ];
         },
         toolContentStyle() {
-            const filterPanelHeight = document.getElementById("filterpanel")?.offsetHeight ?? 75;
-            const height = this.toolbarContentHeight - filterPanelHeight - 40;
+            const headerHeight = document.getElementById("cw-toolbar-blocks-header")?.offsetHeight ?? 75;
+            const height = this.toolbarContentHeight - headerHeight;
 
             return {
                 height: height + 'px',
@@ -251,21 +249,21 @@ export default {
             };
             return original;
         },
-        dragBlockStart(e) {
+        dragBlockStart() {
             this.isDragging = true;
         },
         async dropNewBlock(e) {
-            const target = e.to.__vue__.$attrs;
-            const blockType = e.item.__vue__.$attrs['data-blocktype'];
+            const targetAttributes = e.to.dataset;
+            const blockType = e.item.dataset.blocktype;
 
             // only execute if dropped in destined list
-            if (!target.containerId) {
+            if (!targetAttributes.containerId) {
                 return;
             }
             // set chosen container and section and pass block data
             this.setAdderStorage({
-                container: this.containerById({ id: target.containerId }),
-                section: target.sectionId,
+                container: this.containerById({ id: targetAttributes.containerId }),
+                section: targetAttributes.sectionId,
                 type: blockType,
                 position: e.newIndex,
             });
@@ -292,7 +290,7 @@ export default {
                 }
             }
         },
-        currentFilterCategory(newValue, oldValue) {
+        currentFilterCategory(newValue) {
             if (newValue) {
                 this.loadSearch();
             } else {

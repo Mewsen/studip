@@ -14,7 +14,7 @@
                     {{ $gettext('Aktuelle Bearbeitungszeit:') }} <StudipDate :date="startDate" /> - <StudipDate
                         :date="endDate"
                     />
-                    ({{ $gettextInterpolate($gettext('%{ count } Tage'), { count: oldDuration }) }})
+                    ({{ $gettext('%{ count } Tage', { count: oldDuration }) }})
                 </p>
                 <div class="formpart">
                     <label class="studiprequired">
@@ -35,7 +35,7 @@
                     {{ $gettext('Verlängerte Bearbeitungszeit:') }} <StudipDate :date="startDate" /> - <StudipDate
                         :date="newEndDate"
                     />
-                    ({{ $gettextInterpolate($gettext('%{ count } Tage'), { count: newDuration }) }})
+                    ({{ $gettext('%{ count } Tage', { count: newDuration }) }})
                 </p>
             </form>
         </template>
@@ -43,15 +43,12 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import StudipDate from '../../StudipDate.vue';
 
 const midnight = (_date) => {
     const date = new Date(_date);
-    date.setHours(0);
-    date.setMinutes(0);
-    date.setSeconds(0);
-    date.setMilliseconds(0);
+    date.setHours(0, 0, 0, 0);
     return date;
 };
 

@@ -27,6 +27,7 @@ export default {
     components: {
         StudipFiveStars,
     },
+    emits: ['delete', 'edit'],
     props: {
         entry: {
             type: Object,

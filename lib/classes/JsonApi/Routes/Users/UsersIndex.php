@@ -35,8 +35,8 @@ class UsersIndex extends JsonApiController
         $this->validateFilters();
         $filters = $this->getFilters();
 
-        list($offset, $limit) = $this->getOffsetAndLimit();
-        $partSQL = \GlobalSearchUsers::getSQL($filters['search'], [], $limit + $offset);
+        [$offset, $limit] = $this->getOffsetAndLimit();
+        $partSQL = \GlobalSearchUsers::getSQL($filters['search'], [], "{$offset}, {$limit}");
         $search_result = \DBManager::get()->fetchAll($partSQL);
         $total = (int) \DBManager::get()->fetchColumn('SELECT FOUND_ROWS() as found_rows');
 

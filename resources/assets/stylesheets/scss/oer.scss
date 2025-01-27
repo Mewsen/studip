@@ -255,7 +255,6 @@ ul.reviews, ol.reviews {
         display: flex;
 
         .frame {
-            border: thin solid var(--content-color-40);
             display: flex;
             justify-content: space-between;
             align-items: stretch;
@@ -281,8 +280,6 @@ ul.reviews, ol.reviews {
 
             button {
                 border-right: none;
-                border-bottom: none;
-                border-top: none;
                 height: 35px;
                 &.active {
                     background-color: var(--base-color);
@@ -294,19 +291,28 @@ ul.reviews, ol.reviews {
             }
 
             input {
+                border: thin solid var(--color--input-field-border);
+                border-top-left-radius: var(--border-radius-search);
+                border-bottom-left-radius: var(--border-radius-search);
+                border-right: none;
                 padding-left: 10px;
-                border: none;
                 width: 100%;
             }
         }
 
         button {
-            border: thin solid var(--content-color-40);
-            background-color: var(--content-color-20);
+            border: thin solid var(--color--input-field-border);
+            background-color: var(--color--button-background);
             display: flex;
             align-items: center;
             justify-content: center;
             width: 35px;
+
+            &.button-search {
+                border-right: thin solid var(--color--input-field-border);
+                border-top-right-radius: var(--border-radius-search);
+                border-bottom-right-radius: var(--border-radius-search);
+            }
         }
 
         > button {
@@ -459,7 +465,7 @@ ul.reviews, ol.reviews {
 }
 
 @keyframes oer-filter-panel-appears {
-    from {
+    0% {
         max-height: 0;
         border-bottom-width: 0;
         overflow: hidden;
@@ -469,7 +475,7 @@ ul.reviews, ol.reviews {
         overflow: hidden;
         border-bottom-width: 10px;
     }
-    to {
+    100% {
         max-height: 183px;
         overflow: hidden;
         border-bottom-width: 10px;
@@ -478,12 +484,12 @@ ul.reviews, ol.reviews {
 
 
 @keyframes oer-tag-appears {
-    from {
+    0% {
         opacity: 0;
         transform: scale(0.5);
         filter: blur(4px);
     }
-    to {
+    100% {
         transform: scale(1);
         opacity: 1;
         filter: blur(0px);

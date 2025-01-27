@@ -17,6 +17,83 @@
 
 abstract class AdmissionRule
 {
+    private static ?array $rules = null;
+
+    /**
+     * Reads all available AdmissionRule subclasses and loads their definitions.
+     *
+     * @param  bool $activeOnly Show only active rules.
+     */
+    public static function getAvailableAdmissionRules(bool $activeOnly = true): array
+    {
+        if (self::$rules === null) {
+            self::$rules = [];
+
+            $query = "SELECT *
+                      FROM `admissionrules`
+                      ORDER BY `id`";
+            DBManager::get()->fetchAll(
+                $query,
+                [],
+                function ($row) {
+                    /** @var class-string<static> $className */
+                    $className = $row['ruletype'];
+
+                    $autoloadPath = $GLOBALS['STUDIP_BASE_PATH'] . DIRECTORY_SEPARATOR . $row['path'];
+                    if (
+                        !class_exists($className)
+                        && is_dir($autoloadPath)
+                        && !StudipAutoloader::hasAutoloadPath($autoloadPath)
+                    ) {
+                        StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'] . DIRECTORY_SEPARATOR . $row['path']);
+                    }
+
+                    try {
+                        $rule = new $className();
+                        self::$rules[$className] = [
+                            'id' => $row['id'],
+                            'name' => $className::getName(),
+                            'description' => $className::getDescription(),
+                            'active' => (bool) $row['active'],
+                        ];
+                    } catch (Exception $e) {
+                        throw $e;
+                    }
+                }
+            );
+        }
+
+        if ($activeOnly) {
+            return array_filter(
+                self::$rules,
+                fn($rule) => $rule['active']
+            );
+        }
+
+        return self::$rules;
+    }
+
+    /**
+     * @param class-string<static> $name
+     */
+    public static function getRule(string $name, string $id = null): ?AdmissionRule
+    {
+        $rules = self::getAvailableAdmissionRules();
+        if (!array_key_exists($name, $rules)) {
+            throw new InvalidArgumentException("Rule '$name' does not exist.");
+        }
+
+        if (func_num_args() === 1 || $id === null) {
+            return new $name();
+        }
+
+        $rule = new $name($id);
+        if ($rule->getId() !== $id) {
+            return null;
+        }
+        return $rule;
+    }
+
     // --- ATTRIBUTES ---
 
     /**
@@ -61,6 +138,17 @@ abstract class AdmissionRule
      * Are siblings set manually?
      */
     public $siblings_override = false;
+
+    /**
+     * Is the admission rule template written in PHP or is it a VueJS component?
+     * Valid values are 'php' and 'vue'.
+     */
+    public string $type = 'php';
+
+    /**
+     * If the template is a VueJS component, give the path here.
+     */
+    public ?string $component = null;
 
     // --- OPERATIONS ---
 
@@ -136,37 +224,6 @@ abstract class AdmissionRule
     public function getAffectedUsers()
     {
         return [];
-    }
-
-    /**
-     * Reads all available AdmissionRule subclasses and loads their definitions.
-     *
-     * @param  bool $activeOnly Show only active rules.
-     * @return Array
-     */
-    public static function getAvailableAdmissionRules($activeOnly = true)
-    {
-        $rules = [];
-        $where = ($activeOnly ? " WHERE `active`=1" : "");
-        $data = DBManager::get()->query("SELECT * FROM `admissionrules`".$where.
-            " ORDER BY `id` ASC");
-        while ($current = $data->fetch(PDO::FETCH_ASSOC)) {
-            $className = $current['ruletype'];
-            if (is_dir($GLOBALS['STUDIP_BASE_PATH'] . DIRECTORY_SEPARATOR . $current['path'])) {
-                StudipAutoloader::addAutoloadPath($GLOBALS['STUDIP_BASE_PATH'] . DIRECTORY_SEPARATOR . $current['path']);
-                try {
-                    $rule = new $className();
-                    $rules[$className] = [
-                            'id' => $current['id'],
-                            'name' => $className::getName(),
-                            'description' => $className::getDescription(),
-                            'active' => $current['active']
-                        ];
-                } catch (Exception $e) {
-                }
-            }
-        }
-        return $rules;
     }
 
     /**
@@ -446,6 +503,18 @@ abstract class AdmissionRule
             $admission_rule = get_class($admission_rule);
         }
         return AdmissionRuleCompatibility::exists([get_class($this), $admission_rule]);
+    }
+
+    /**
+     * Get fields and settings defining this admission rule as array.
+     */
+    public function getPayload(): array
+    {
+        return [
+            'start-time' => $this->startTime,
+            'end-time' => $this->endTime,
+            'message' => $this->message ?? $this->default_message
+        ];
     }
 
     public function __clone()

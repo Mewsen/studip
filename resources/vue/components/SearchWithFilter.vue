@@ -18,7 +18,7 @@
                 :title="$gettext('Suchformular zurücksetzen')"
                 @click="onReset"
             >
-                <StudipIcon shape="decline" :size="20" />
+                <StudipIcon shape="decline" />
             </button>
 
             <button
@@ -30,7 +30,7 @@
                 :aria-controls="`search-bar-filter-panel-${searchId}`"
                 :aria-expanded="showFilterPanel ? 'true' : 'false'"
             >
-                <StudipIcon shape="filter" :role="showFilterPanel ? 'info_alt' : 'clickable'" :size="20" alt="" />
+                <StudipIcon shape="filter" :role="showFilterPanel ? 'info_alt' : 'clickable'" alt="" />
             </button>
 
             <button
@@ -40,7 +40,7 @@
                 class="submit-search"
                 :title="$gettext('Suche starten')"
             >
-                <StudipIcon shape="search" :size="20" role="presentation" alt="" />
+                <StudipIcon shape="search" role="presentation" alt="" />
             </button>
         </form>
         <div :id="`search-bar-filter-panel-${searchId}`" class="filterpanel" ref="filterPanel" v-if="showFilterPanel">
@@ -61,6 +61,7 @@ export default {
             required: true,
         },
     },
+    emits: ['search'],
     components: {
         StudipIcon,
     },

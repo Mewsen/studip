@@ -141,8 +141,8 @@ export default {
                         result.icon.role = 'clickable';
                     }
 
-                    result.url = this.urlFor('seminar_main.php', {
-                        auswahl: course.id,
+                    result.url = this.urlFor('dispatch.php/course/go', {
+                        to: course.id,
                         redirect_to: result.url,
                     });
                 }

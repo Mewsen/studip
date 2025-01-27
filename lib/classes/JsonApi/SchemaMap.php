@@ -2,8 +2,6 @@
 
 namespace JsonApi;
 
-use JsonApi\Schemas\Clipboard;
-
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
@@ -18,6 +16,8 @@ class SchemaMap
 
             \Avatar::class => Schemas\Avatar::class,
 
+            \AdmissionRule::class => Schemas\AdmissionRule::class,
+
             \BlubberComment::class => Schemas\BlubberComment::class,
             \BlubberStatusgruppeThread::class => Schemas\BlubberStatusgruppeThread::class,
             \BlubberThread::class => Schemas\BlubberThread::class,
@@ -29,11 +29,14 @@ class SchemaMap
             \ConsultationBooking::class => Schemas\ConsultationBooking::class,
             \ConsultationSlot::class => Schemas\ConsultationSlot::class,
             \ConfigValue::class => Schemas\ConfigValue::class,
+            \CourseSet::class => Schemas\CourseSet::class,
             \ContentTermsOfUse::class => Schemas\ContentTermsOfUse::class,
             \Course::class => Schemas\Course::class,
             \CourseMember::class => Schemas\CourseMember::class,
             \CourseDate::class => Schemas\CourseEvent::class,
             \CourseExDate::class => Schemas\CourseEvent::class,
+            \DataField::class => Schemas\Datafield::class,
+            \Degree::class => Schemas\Degree::class,
             \FeedbackElement::class => Schemas\FeedbackElement::class,
             \FeedbackEntry::class => Schemas\FeedbackEntry::class,
             \JsonApi\Models\ForumCat::class => Schemas\ForumCategory::class,
@@ -41,6 +44,8 @@ class SchemaMap
             \Institute::class => Schemas\Institute::class,
             \InstituteMember::class => Schemas\InstituteMember::class,
             \LtiTool::class => Schemas\LtiTool::class,
+            \MassMail\MassMailMessage::class => Schemas\MassMailMessage::class,
+            \MassMail\MassMailPermission::class => Schemas\MassMailPermission::class,
             \Message::class => Schemas\Message::class,
             \SemClass::class => Schemas\SemClass::class,
             \Semester::class => Schemas\Semester::class,
@@ -59,6 +64,16 @@ class SchemaMap
             \File::class => Schemas\File::class,
             \FileRef::class => Schemas\FileRef::class,
             \FolderType::class => Schemas\Folder::class,
+            \UserFilter::class => Schemas\UserFilter::class,
+            \UserFilterField::class => Schemas\UserFilterField::class,
+            \Studiengang::class => Schemas\CourseOfStudy::class,
+            \StudiengangTeil::class => Schemas\CourseOfStudyComponent::class,
+            \StgteilVersion::class => Schemas\ComponentVersion::class,
+            \Fach::class => Schemas\Subject::class,
+            \Abschluss::class => Schemas\Degree::class,
+            \Modul::class => Schemas\Module::class,
+            \Modulteil::class => Schemas\ModuleComponent::class,
+            \StgteilAbschnitt::class => Schemas\ComponentSection::class,
 
             \Courseware\Block::class => Schemas\Courseware\Block::class,
             \Courseware\BlockComment::class => Schemas\Courseware\BlockComment::class,
@@ -66,6 +81,8 @@ class SchemaMap
             \Courseware\Clipboard::class => Schemas\Courseware\Clipboard::class,
             \Courseware\Container::class => Schemas\Courseware\Container::class,
             \Courseware\Instance::class => Schemas\Courseware\Instance::class,
+            \Courseware\PeerReview::class => Schemas\Courseware\PeerReview::class,
+            \Courseware\PeerReviewProcess::class => Schemas\Courseware\PeerReviewProcess::class,
             \Courseware\PublicLink::class => Schemas\Courseware\PublicLink::class,
             \Courseware\StructuralElement::class => Schemas\Courseware\StructuralElement::class,
             \Courseware\StructuralElementComment::class => Schemas\Courseware\StructuralElementComment::class,

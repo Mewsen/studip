@@ -11,8 +11,6 @@
 final class TwoFactorAuth
 {
     const SESSION_KEY           = 'tfa/confirmed';
-    const SESSION_REDIRECT      = 'tfa/redirect';
-    const SESSION_ENFORCE       = 'tfa/enforce';
     const SESSION_DATA          = 'tfa/data';
     const SESSION_CONFIRMATIONS = 'tfa/confirmations';
     const SESSION_FAILED        = 'tfa/failed';
@@ -26,7 +24,7 @@ final class TwoFactorAuth
      * Returns an instance of the authentication
      * @return TwoFactorAuth object
      */
-    public static function get()
+    public static function get(): TwoFactorAuth
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -39,16 +37,16 @@ final class TwoFactorAuth
      * user (defaults to current user). The user's permissions decide whether
      * the two factor authentication is enabled or not.
      *
-     * @param  User  $user User to check (optional, defaults to current user)
+     * @param  User|null $user User to check (optional, defaults to current user)
      * @return boolean
      */
-    public static function isEnabledForUser(User $user = null)
+    public static function isEnabledForUser(User $user = null): bool
     {
         if ($user === null) {
             $user = User::findCurrent();
         }
 
-        $valid_perms = array_filter(array_map('trim', explode(',', Config::get()->TFA_PERMS)));
+        $valid_perms = array_filter(array_map('trim', explode(',', Config::get()->getValue('TFA_PERMS'))));
         return in_array($user->perms, $valid_perms);
     }
 
@@ -67,11 +65,13 @@ final class TwoFactorAuth
 
     /**
      * Private constructor to enforce singleton
+     *
+     * @throws SessionRequiredException
      */
     private function __construct()
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
-            throw new Exception('2FA requires a valid session');
+            throw new SessionRequiredException('2FA requires a valid session');
         }
 
         if (!isset($_SESSION[self::SESSION_FAILED])) {
@@ -81,7 +81,7 @@ final class TwoFactorAuth
             $_SESSION[self::SESSION_FAILED] = array_filter(
                 $_SESSION[self::SESSION_FAILED],
                 function ($timestamp) {
-                    return $timestamp > time() - Config::get()->TFA_MAX_TRIES_TIMESPAN;
+                    return $timestamp > time() - Config::get()->getValue('TFA_MAX_TRIES_TIMESPAN');
                 }
             );
         }
@@ -145,7 +145,7 @@ final class TwoFactorAuth
 
         // User has already confirmed this session?
         if (isset($_SESSION[self::SESSION_KEY])) {
-            list($code, $timeslice) = array_values($_SESSION[self::SESSION_KEY]);
+            [$code, $timeslice] = array_values($_SESSION[self::SESSION_KEY]);
             if ($this->secret->validateToken($code, (int) $timeslice, true)) {
                 return;
             }
@@ -155,7 +155,7 @@ final class TwoFactorAuth
         // Trusted computer?
         $user_cookie_key = self::COOKIE_KEY . '/' . $GLOBALS['user']->id;
         if (isset($_COOKIE[$user_cookie_key])) {
-            list($code, $timeslice) = explode(':', $_COOKIE[$user_cookie_key]);
+            [$code, $timeslice] = explode(':', $_COOKIE[$user_cookie_key]);
             if ($this->secret->validateToken($code, (int) $timeslice, true)) {
                 $this->registerSecretInSession();
                 return;
@@ -177,7 +177,7 @@ final class TwoFactorAuth
      * @param  array  $data   Optional additional data to pass to the
      *                        confirmation screen (for internal use)
      */
-    public function confirm($action, $text, array $data = []): void
+    public function confirm(string $action, string $text, array $data = []): void
     {
         if (
             isset($_SESSION[self::SESSION_CONFIRMATIONS])
@@ -202,7 +202,7 @@ final class TwoFactorAuth
      * @param  string $text Text to display to the user
      * @param  array  $data Optional additional data (for internal use)
      */
-    private function showConfirmationScreen($text = '', array $data = [])
+    private function showConfirmationScreen(string $text = '', array $data = [])
     {
         $data = array_merge(['global' => false], $data);
 
@@ -235,12 +235,12 @@ final class TwoFactorAuth
             $_SESSION[self::SESSION_DATA] + [
                 'secret'   => $this->secret,
                 'text'     => $text,
-                'blocked'  => $this->isBlocked(),
-                'duration' => Config::get()->TFA_TRUST_DURATION,
+                'waittime' => $this->getWaitingTime(),
+                'duration' => Config::get()->getValue('TFA_TRUST_DURATION'),
             ],
             'layouts/base.php'
         );
-        page_close();
+        sess()->save();
         die;
     }
 
@@ -263,7 +263,7 @@ final class TwoFactorAuth
      */
     private function registerSecretInCookie()
     {
-        $lifetime_in_days = Config::get()->TFA_TRUST_DURATION;
+        $lifetime_in_days = Config::get()->getValue('TFA_TRUST_DURATION');
         $lifetime = $lifetime_in_days > 0 ? strtotime("+{$lifetime_in_days} days") : 2147483647;
 
         $timeslice = mt_rand(0, PHP_INT_MAX);
@@ -288,7 +288,7 @@ final class TwoFactorAuth
     private function validateFromRequest()
     {
         if (
-            $this->isBlocked()
+            $this->getWaitingTime()
             || !Request::isPost()
             || !Request::submitted('tfacode-input')
             || !Request::submitted('tfa-nonce')
@@ -341,16 +341,20 @@ final class TwoFactorAuth
     }
 
     /**
-     * Returns whether the current session is blocked from any more token
-     * inputs. This happens if too many false inputs happen in a short amount
-     * of time and should prevent brute force attacks.
+     * Returns the time the user has to wait before entering a token.
      *
-     * @return boolean
+     * This happens if too many invalid tokens have been input.
      */
-    private function isBlocked()
+    private function getWaitingTime(): int
     {
-        return count($_SESSION[self::SESSION_FAILED]) >= Config::get()->TFA_MAX_TRIES
-             ? min($_SESSION[self::SESSION_FAILED])
-             : false;
+        if (count($_SESSION[self::SESSION_FAILED]) < Config::get()->getValue('TFA_MAX_TRIES')) {
+            return 0;
+        }
+
+        $min_timestamp = min(array_slice($_SESSION[self::SESSION_FAILED], -Config::get()->getValue('TFA_MAX_TRIES')));
+
+        $wait_time = $min_timestamp + Config::get()->getValue('TFA_MAX_TRIES_TIMESPAN') - time();
+
+        return ceil($wait_time / 60);
     }
 }

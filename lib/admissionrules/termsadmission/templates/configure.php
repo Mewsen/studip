@@ -1,4 +1,3 @@
-<label>
-    <span class="required"><?= _('Teilnahmebedingungen') ?></span>
-    <textarea style="min-height: 24em; min-width: 44em;" name="terms" placeholder="<?=_('Formulieren Sie hier die Teilnahmebedingungen.')?>" required><?= htmlReady($rule->terms) ?></textarea>
-</label>
+<div data-admission-rule="TermsAdmission">
+    <terms-admission terms="<?= htmlReady($rule->terms) ?>" id="<?= htmlReady($rule->getId()) ?>"></terms-admission>
+</div>

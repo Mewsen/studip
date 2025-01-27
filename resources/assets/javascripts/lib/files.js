@@ -8,8 +8,7 @@ const Files = {
             && jQuery("#files_table_form").length) {
 
             STUDIP.Vue.load().then(({createApp}) => {
-                this.filesapp = createApp({
-                    el: "#content",
+                const app = createApp({
                     data() {
                         return {
                             files: jQuery("#files_table_form").data("files") || [],
@@ -27,6 +26,9 @@ const Files = {
                             }
                             return false;
                         },
+                        pushFile(file) {
+                            this.files.push(file);
+                        },
                         removeFile(id) {
                             this.files = this.files.filter(file => file.id != id)
                         },
@@ -36,14 +38,15 @@ const Files = {
                             });
                         }
                     },
-                    components: { FilesTable, },
                     updated () {
                         this.onUpdated();
                     },
                     created () {
                         this.onUpdated();
-                    }
+                    },
                 });
+                app.component('files-table', FilesTable);
+                this.filesapp = app.mount('#files_table_form');
             });
         }
 
@@ -196,7 +199,7 @@ const Files = {
 
                     return xhr;
                 }
-            }).done(json => {
+            }).done(() => {
                 $('.file_upload_window .uploadbar-inner').css('right', '0');
                 $('.file_upload_window .upload-progress').text(`100%`);
 
@@ -240,7 +243,7 @@ const Files = {
         }
     },
 
-    addFileDisplay: (html, delay = 0) => {
+    addFileDisplay: (html) => {
         // Prevent undefined filesapp errors
         if (STUDIP.Files.filesapp === undefined) {
             return;
@@ -249,16 +252,16 @@ const Files = {
         if (!Array.isArray(html)) {
             html = html === null ? [] : [html];
         }
-        html.forEach((value, i) => {
+        html.forEach((value) => {
             let insert = true;
             for (let i in STUDIP.Files.filesapp.files) {
-                if (value.id == STUDIP.Files.filesapp.files[i].id) {
+                if (value.id === STUDIP.Files.filesapp.files[i].id) {
                     STUDIP.Files.filesapp.files[i] = value;
                     insert = false;
                 }
             }
             if (insert) {
-                STUDIP.Files.filesapp.files.push(value);
+                STUDIP.Files.filesapp.pushFile(value);
             }
         });
         $(document).trigger('refresh-handlers');
@@ -269,18 +272,17 @@ const Files = {
             ids = [ids];
         }
 
-        var count = ids.length;
         ids.forEach((id) => {
             STUDIP.Files.filesapp.removeFile(id);
         });
         $(document).trigger('refresh-handlers');
     },
 
-    addFolderDisplay: function (html, delay = 0) {
+    addFolderDisplay: function (html) {
         if (!Array.isArray(html)) {
             html = html === null ? [] : [html];
         }
-        html.forEach((value, i) => {
+        html.forEach((value) => {
             STUDIP.Files.filesapp.folders.push(value);
         });
         $(document).trigger('refresh-handlers');
@@ -340,7 +342,7 @@ const Files = {
         }
     },
 
-    updateTermsOfUseDescription: function(e) {
+    updateTermsOfUseDescription: function() {
         //make all descriptions invisible:
         $('div.terms_of_use_description_container > section').addClass('invisible');
 

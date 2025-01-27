@@ -11,7 +11,7 @@
                 <a href="<?= ResourceManager::getMapUrlForResourcePosition(
                                 $location->geo_coordinates
                             ) ?>">
-                    <?= Icon::create('place')->asImg(16) ?>
+                    <?= Icon::create('place') ?>
                 </a>
             </dd>
         </dl>

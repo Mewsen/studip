@@ -12,7 +12,6 @@ class WebMigrateController extends StudipController
 
     public function before_filter(&$action, &$args)
     {
-        $GLOBALS['auth']->login_if(!$GLOBALS['perm']->have_perm('root'));
         $GLOBALS['perm']->check('root');
 
         parent::before_filter($action, $args);

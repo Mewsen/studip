@@ -274,6 +274,17 @@ class Folder extends SimpleORMap implements FeedbackRange
     }
 
     /**
+     * Retrieves folders by range id and folder type.
+     *
+     * @param string $range_id    range id of the folder
+     * @param string $folder_type folder type name
+     */
+    public static function findByRangeIdAndFolderType(?string $range_id, string $folder_type)
+    {
+        return self::findBySQL('range_id = ? AND folder_type = ?', [$range_id, $folder_type]);
+    }
+
+    /**
      * This callback is called before storing a Folder object.
      * In case the name field is changed this callback assures that the
      * name of the Folder object is unique inside the parent folder.
@@ -381,11 +392,15 @@ class Folder extends SimpleORMap implements FeedbackRange
      *
      * @param string range_id The ID of the Stud.IP object whose top folder shall be found.
      * @param string folder_type The expected folder type related to the Stud.IP object (defaults to RootFolder, use MessageFolder for the top folder of a message)
+     * @param string range_type The expected range type of the Stud.IP object (defaults to auto detect)
      *
      * @returns Folder|null Folder object on success or null, if no folder can be created.
      **/
-    public static function findTopFolder($range_id, $folder_type = 'RootFolder')
-    {
+    public static function findTopFolder(
+        string $range_id,
+        string $folder_type = 'RootFolder',
+        ?string $range_type = null
+    ) {
         $top_folder = self::findOneBySQL(
             "range_id = ? AND folder_type = ? AND parent_id=''",
             [$range_id, $folder_type]
@@ -395,10 +410,12 @@ class Folder extends SimpleORMap implements FeedbackRange
         if (!$top_folder) {
             //top_folder doest not exist: create it
             //determine range type:
-            $range_type = self::findRangeTypeById($range_id);
             if (!$range_type) {
-                //no range type means we can't create a folder!
-                return null;
+                $range_type = self::findRangeTypeById($range_id);
+                if (!$range_type) {
+                    //no range type means we can't create a folder!
+                    return null;
+                }
             }
 
             $top_folder = self::createTopFolder($range_id, $range_type, $folder_type);

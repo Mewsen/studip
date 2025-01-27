@@ -15,6 +15,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import Responsive from "./responsive";
 
 Date.prototype.getWeekNumber = function () {
     var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
@@ -395,14 +396,20 @@ class Fullcalendar
             return;
         }
 
-        var config = $(node).data('config');
+        let config = $(node).data('config');
+
+        let defaultView = 'timeGridWeek';
+        if (Responsive.isResponsive() && config.responsiveDefaultView !== undefined) {
+            defaultView = config.responsiveDefaultView;
+        } else if (config.defaultView !== undefined) {
+            defaultView = config.defaultView;
+        }
 
         //Make sure the default values are set, if they are not found
         //in the additional_config object:
         config = $.extend({
             plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, resourceCommonPlugin, resourceTimeGridPlugin, resourceTimelinePlugin ],
             schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-            defaultView: 'timeGridWeek',
             header: {
                 left: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
@@ -418,6 +425,12 @@ class Fullcalendar
             locales: [enLocale, deLocale ],
             locale:  String.locale === 'de-DE' ? 'de' : 'en-gb',
             timeFormat: 'H:mm',
+            slotLabelFormat: {
+                hour: 'numeric',
+                minute: '2-digit',
+                omitZeroMinute: false
+            },
+            columnHeaderHtml: STUDIP.Fullcalendar.renderDateForColumn,
             nowIndicator: true,
             timeZone: 'local',
             studip_functions: [],
@@ -581,8 +594,17 @@ class Fullcalendar
                 }
 
                 if (event.extendedProps.icon) {
+                    //Check if the icon is already an URL or just the name of an icon.
+                    let icon_url = '';
+                    if (event.extendedProps.icon.includes('://')) {
+                        //The icon already is an URL.
+                        icon_url = event.extendedProps.icon;
+                    } else {
+                        //The icon is just referenced by its name.
+                        icon_url = `${STUDIP.ASSETS_URL}images/icons/${iconColor}/${event.extendedProps.icon}.svg`
+                    }
                     $(eventElement).find('.fc-title').prepend(
-                        $('<img>').attr('src', `${STUDIP.ASSETS_URL}images/icons/${iconColor}/${event.extendedProps.icon}.svg`)
+                        $('<img>').attr('src', icon_url)
                             .css({
                                 verticalAlign: 'text-bottom',
                                 marginRight: '3px',
@@ -592,7 +614,7 @@ class Fullcalendar
                     );
                 }
             },
-            eventSourceSuccess: function(content, xhr) {
+            eventSourceSuccess: function(content) {
                 if ($(node).hasClass('semester-plan')) {
                     $(content).each(function(i, event_data){
                         STUDIP.Fullcalendar.convertSemesterEvents(event_data, config.defaultDate);
@@ -658,7 +680,7 @@ class Fullcalendar
                         $('<a>').attr('href', url).text(renderInfo.resource.title)
                     );
                 } else if ($("*[data-fullcalendar='1']").hasClass('institute-plan') && renderInfo.resource.id > 0) {
-                    let icon = '<img class="text-bottom icon-role-clickable icon-shape-edit" width="16" height="16" src="' + STUDIP.URLHelper.getURL('assets/images/icons/blue/edit.svg') + '" alt="edit">';
+                    let icon = '<img class="text-bottom icon-role-clickable icon-shape-edit" width="20" height="20" src="' + STUDIP.URLHelper.getURL('assets/images/icons/blue/edit.svg') + '" alt="edit">';
                     $(renderInfo.el).append(
                         '<a href="'
                         + STUDIP.URLHelper.getURL('dispatch.php/admin/courseplanning/rename_column/'
@@ -695,6 +717,8 @@ class Fullcalendar
         }
 
         config = $.extend({}, config, additional_config);
+
+        config.defaultView = defaultView;
 
         return this.init(node, config);
     }
@@ -786,6 +810,12 @@ class Fullcalendar
                 sessionStorage.setItem('booking_plan_date', changed_date);
             }
         }
+    }
+
+    static renderDateForColumn(date) {
+        let format = new Intl.DateTimeFormat(String.locale, {weekday: 'short'});
+        let date_html = STUDIP.DateTime.getStudipDate(date, false, true, true);
+        return '<span class="dow">' + format.format(date) + '.</span> ' + date_html;
     }
 }
 

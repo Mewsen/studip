@@ -1,4 +1,6 @@
-import { $gettext } from '@/assets/javascripts/lib/gettext';
+import gettext from '@/assets/javascripts/lib/gettext';
+
+const { $gettext } = gettext;
 
 const colors = [
     { name: $gettext('Schwarz'), hex: '#000000' },

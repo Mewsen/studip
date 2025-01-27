@@ -9,9 +9,9 @@
         <courseware-shelf-dialog-copy v-if="showUnitCopyDialog" />
         <courseware-shelf-dialog-import v-if="showUnitImportDialog" />
         <courseware-shelf-dialog-topics v-if="showUnitTopicsDialog" />
-        <MountingPortal v-if="userIsTeacher || !inCourseContext" mountTo="#courseware-action-widget" name="sidebar-actions">
+        <Teleport v-if="userIsTeacher || !inCourseContext" to="#courseware-action-widget" name="sidebar-actions">
             <courseware-shelf-action-widget></courseware-shelf-action-widget>
-        </MountingPortal>
+        </Teleport>
         <courseware-companion-overlay />
     </div>
 </template>
@@ -27,7 +27,7 @@ import CoursewareUnitItems from './unit/CoursewareUnitItems.vue';
 import CoursewareSharedItems from './unit/CoursewareSharedItems.vue';
 import CoursewareCompanionOverlay from './layouts/CoursewareCompanionOverlay.vue';
 
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
     components: {

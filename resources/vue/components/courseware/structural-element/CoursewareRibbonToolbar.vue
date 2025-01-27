@@ -1,8 +1,8 @@
 <template>
-    <focus-trap v-model="trap" :initial-focus="() => initialFocusElement" :clickOutsideDeactivates="true" :fallbackFocus ="() => fallbackFocusElement">
+    <focus-trap :active="showToolbar" :clickOutsideDeactivates="false" :fallbackFocus ="() => fallbackFocusElement">
         <div
             class="cw-ribbon-tools"
-            :class="{ unfold: toolsActive, 'cw-ribbon-tools-consume': consumeMode }"
+            :class="{ 'cw-ribbon-tools-consume': consumeMode }"
         >
             <div class="cw-ribbon-tool-content">
                 <div class="cw-ribbon-tool-content-nav">
@@ -12,7 +12,6 @@
                     >
                         <courseware-tab
                             :name="$gettext('Inhaltsverzeichnis')"
-                            :selected="showContents"
                             alias="contents"
                             ref="contents"
                             :index="0"
@@ -49,9 +48,11 @@ import CoursewareToolsContents from './CoursewareToolsContents.vue';
 import CoursewareToolsUnits from './CoursewareToolsUnits.vue';
 import { FocusTrap } from 'focus-trap-vue';
 import { mapActions, mapGetters } from 'vuex';
+import { store } from "../../../../assets/javascripts/chunks/vue";
 
 export default {
     name: 'courseware-ribbon-toolbar',
+    emits: ['deactivate'],
     components: {
         CoursewareTabs,
         CoursewareTab,
@@ -60,16 +61,6 @@ export default {
         FocusTrap,
     },
     props: {
-        toolsActive: Boolean,
-        canEdit: Boolean,
-        disableSettings: {
-            type: Boolean,
-            default: false,
-        },
-        disableAdder: {
-            type: Boolean,
-            default: false,
-        },
         stickyRibbon: {
             type: Boolean,
             default: false,
@@ -79,22 +70,22 @@ export default {
         return {
             showContents: true,
             showUnits: false,
-            trap: false,
-            initialFocusElement: null
         };
     },
     computed: {
+        consumeMode() {
+          return store.state.studip.consumeMode;
+        },
         ...mapGetters({
             userIsTeacher: 'userIsTeacher',
-            consumeMode: 'consumeMode',
             containerAdder: 'containerAdder',
             adderStorage: 'blockAdder',
             viewMode: 'viewMode',
             context: 'context',
             userById: 'users/byId',
             userId: 'userId',
-            selectedToolbarItem: 'selectedToolbarItem',
             currentElementisLink: 'currentElementisLink',
+            showToolbar: 'showToolbar',
         }),
         isTeacher() {
             return this.userIsTeacher;
@@ -108,28 +99,21 @@ export default {
             coursewareContainerAdder: 'coursewareContainerAdder',
         }),
         scrollToCurrent() {
-            setTimeout(() => {
-                let contents = this.$refs.contents.$el; 
-                let current = contents.querySelector('.cw-tree-item-link-current');
-                if (current) {
-                    contents.scroll({ top: current.offsetTop - 4, behavior: 'smooth' });
-                }
-            }, 360);
-        },
-    },
-    mounted () {
-        this.scrollToCurrent();
-    },
-    watch: {
-        toolsActive(newValue) {
-            const focusElement = this.$refs.tabs.getTabButtonByAlias(this.selectedToolbarItem);
-            if (newValue && focusElement) {
-                setTimeout(() => {
-                    this.initialFocusElement = focusElement;
-                    this.trap = true;
-                }, 300);
+            let contents = this.$refs.contents.$el;
+            let current = contents.querySelector('.cw-tree-item-link-current');
+            if (current) {
+                contents.scroll({ top: current.offsetTop - 4, behavior: 'smooth' });
             }
         },
     },
+    watch: {
+        showToolbar(newState) {
+            if (newState) {
+                this.$nextTick(() => {
+                    this.scrollToCurrent();
+                });
+            }
+        }
+    }
 };
 </script>

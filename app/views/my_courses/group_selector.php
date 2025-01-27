@@ -13,7 +13,7 @@
         <label for="course-group-<?= htmlReady($course_id) ?>-<?= $i ?>">
             <span class="group-number"><?= $i + 1 ?></span>
             <span class="checked-icon">
-                <?= Icon::create('accept', Icon::ROLE_INFO)->asImg(20) ?>
+                <?= Icon::create('accept', Icon::ROLE_INFO) ?>
             </span>
         </label>
     </td>

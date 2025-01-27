@@ -41,7 +41,7 @@
                 <span class="required">{{ $gettext('Am Wochentag') }}</span>
 
                 <select required name="day-of-week" @change="evt => dayOfWeek = parseInt(evt.target.value, 10)">
-                    <option v-for="dow in daysOfTheWeek" :value="dow.key" :key="dow.key" :selected="dayOfWeek === dow.key">
+                    <option v-for="dow in daysOfTheWeek" :value="dow.key" :key="dow.key" :selected="dayOfWeek === dow.key ? true : null">
                         {{ dow.label }}
                     </option>
                 </select>
@@ -267,8 +267,8 @@
 
             <label>
                 <input type="checkbox" v-model="confirmed">
-                {{ $gettextInterpolate(
-                    $gettext('Ja, ich möchte wirklich %{ n } Termine erstellen.'),
+                {{ $gettext(
+                    'Ja, ich möchte wirklich %{ n } Termine erstellen.',
                     { n: slotCount }
                 ) }}
             </label>
@@ -352,7 +352,7 @@ export default {
             slotCount: null,
             startDate: moment().add(1, 'weeks').toDate(),
             startTime: '08:00',
-        }
+        };
     },
     computed: {
         csrf() {
@@ -473,9 +473,7 @@ export default {
         combineDateAndTime(date, time) {
             const [hour, minute] = time.split(':').map(item => parseInt(item, 10));
             const result = new Date(date);
-            result.setHours(hour);
-            result.setMinutes(minute);
-            result.setSeconds(0);
+            result.setHours(hour, minute, 0, 0);
             return result;
         }
     },

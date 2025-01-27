@@ -1,4 +1,4 @@
-@use "../mixins/colors.scss";
+@use "../mixins/colors";
 @import "breakpoints";
 @import "buttons";
 @import "sidebar";
@@ -216,7 +216,8 @@ $sidebarOut: -330px;
         color: var(--white);
         flex: 1;
 
-        > a {
+        > a,
+        form button {
             display: inline-block;
             padding: 10px 10px 10px 5px;
             text-align: left;
@@ -284,7 +285,8 @@ $sidebarOut: -330px;
     }
 
     #quicksearch_item,
-    #avatar-menu-container,
+    #notification-wrapper,
+    #avatar-wrapper,
     #current-page-structure {
         display: none;
     }
@@ -301,8 +303,8 @@ $sidebarOut: -330px;
             }
         }
 
-        #notification-container,
-        .header_avatar_container,
+        #notification-wrapper,
+        #avatar-wrapper,
         #sidebar-menu {
             display: none;
         }
@@ -315,6 +317,7 @@ $sidebarOut: -330px;
     #sidebar {
         background-color: var(--white);
         max-height: calc(100vh - 100px);
+        margin-top: 60px;
         left: 15px;
         position: absolute;
         top: 116px;
@@ -329,7 +332,7 @@ $sidebarOut: -330px;
         &.responsive-show {
             animation: slide-in var(--transition-duration) forwards;
             position: sticky;
-            top: 100px;
+            top: 110px;
             visibility: visible;
         }
 
@@ -383,10 +386,6 @@ $sidebarOut: -330px;
     }
 
     #responsive-contentbar {
-        justify-content: stretch;
-        margin-bottom: 15px;
-        padding-bottom: 0.5em;
-
         .contentbar-nav,
         .cw-ribbon-nav {
             .contentbar-button {
@@ -407,71 +406,20 @@ $sidebarOut: -330px;
                 }
             }
 
-        }
-
-        .contentbar-wrapper-left {
-            flex: 1;
-            max-width: calc(100% - 70px);
-            min-width: 0;
-            width:100%;
-
-            & > .contentbar-icon {
-                margin-right: 15px;
-            }
-
-            .contentbar-breadcrumb {
-                font-size: $font-size-large;
-
-                > img {
-                    margin-left: 15px;
-                    width: 24px;
-                }
-
-                > span {
-                    display: inline;
-                    flex-shrink: 10000;
-                    min-width: 0;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                }
+            img {
+                vertical-align: middle;
             }
         }
 
-        > .contentbar-wrapper-right {
-            flex: 0;
-            left: 5px;
-            position: relative;
-
-            .contentbar-button,
-            nav {
-                position: relative;
-            }
+        .cw-ribbon-tools {
+            right: 4px;
         }
 
-        &.cw-ribbon {
-            .cw-ribbon-tools {
-                max-width: calc(100% - 2px);
-                top: 0;
-                margin-right: 0;
-            }
-        }
-
-        &.cw-ribbon-sticky {
-            position: unset;
-            width: calc(100vw - 30px);
-        }
     }
 
     #toc {
-        max-width: 100vw;
-        position: absolute;
-        right: -8px;
-        top: -21px;
-    }
-
-    #toc_header {
-        height: 47px;
+        margin-right: -14px;
+        margin-top: -3px;
     }
 
     #main-footer {
@@ -509,7 +457,30 @@ $sidebarOut: -330px;
     #responsive-contentbar {
         &.cw-ribbon-sticky {
             position: unset;
-            width: calc(100vw - 30px);
+            width: unset;
+        }
+
+        .cw-ribbon-breadcrumb {
+            max-width: 100%;
+            min-width: unset;
+        }
+
+        .cw-ribbon-info-text,
+        .contentbar-icon {
+            display: none;
+        }
+
+        &:not(.cw-ribbon) {
+            .contentbar-wrapper-left {
+                flex: 1;
+                max-width: 100%;
+                text-overflow: ellipsis;
+            }
+        }
+
+        .cw-ribbon-tools {
+            max-width: 100vw;
+            right: 0;
         }
     }
 
@@ -518,22 +489,29 @@ $sidebarOut: -330px;
     }
 
     #sidebar {
+        border-right: none;
         height: calc(100% - 100px);
+        margin-top: 0;
         overflow-y: auto;
         position: fixed;
-        top: 75px;
         transform: translateX($sidebarOut);
         -webkit-transform: translateX($sidebarOut);
-        top: 80px;
+        top: 110px;
         z-index: 100;
 
         &.responsive-show {
-            width: 100%;
+            width: calc(100% - 15px);
 
             .sidebar-widget {
                 width: calc(100% - 30px);
             }
         }
+    }
+
+    #toc {
+        margin-right: -16px;
+        max-width: 100vw;
+        width: 100vw;
     }
 
     #system-notifications {
@@ -569,7 +547,7 @@ $sidebarOut: -330px;
             grid-template-columns: ($sidebar-width + $sidebar-padding) calc(100vw - $sidebar-width - $sidebar-padding - 35px);
 
             #content-wrapper {
-                max-width: 100%;
+                max-width: calc(100% - $sidebar-padding);
             }
         }
 
@@ -577,7 +555,6 @@ $sidebarOut: -330px;
             max-height: unset;
             opacity: 1;
             overflow: unset;
-            width: calc(100% - 20px);
         }
 
         #main-header {
@@ -619,13 +596,13 @@ $sidebarOut: -330px;
 
             .contentbar-nav,
             .cw-ribbon-nav {
-                margin-left: -8px;
+                margin-left: -6px;
             }
         }
 
         #content-wrapper {
             flex: 1;
-            margin-top: 75px;
+            margin-top: 55px;
             min-height: calc(100vh - 150px);
         }
     }
@@ -686,11 +663,8 @@ $sidebarOut: -330px;
     }
 
     #toc {
-        position: absolute;
-        right: -29px;
-        top: -25px;
+        margin-right: 12px;
     }
-
 }
 
 html:not(.responsive-display):not(.fullscreen-mode) {
@@ -707,13 +681,18 @@ html:not(.responsive-display):not(.fullscreen-mode) {
             margin-top: -5px;
             width: 100%;
         }
+
+        // See https://github.com/ckeditor/ckeditor5/issues/5465 why this is necessary
+        .ck .ck-sticky-panel .ck-sticky-panel__content_sticky {
+            top: 120px !important;
+        }
     }
 
 }
 
 /* content from old responsive.less */
 .responsive-display {
-    @include media-breakpoint-small-down() {
+    @include media-breakpoint-small-down {
         #navigation-level-1,
         #navigation-level1-items,
         .current_page,
@@ -780,21 +759,6 @@ html:not(.responsive-display):not(.fullscreen-mode) {
             padding-right: 5px;
             height: 20px;
             line-height: 20px;
-        }
-
-        #avatar-menu-container {
-            position: relative;
-            bottom: 0px;
-            right: 0px;
-            line-height: 20px !important;
-
-            #avatar-menu {
-                display: none;
-            }
-
-            &::after {
-                display: none !important;
-            }
         }
 
         #top-bar {
@@ -877,7 +841,7 @@ html:not(.responsive-display):not(.fullscreen-mode) {
         }
     }
 
-    @include media-breakpoint-tiny-down() {
+    @include media-breakpoint-tiny-down {
         #index,
         #login,
         #request_new_password,

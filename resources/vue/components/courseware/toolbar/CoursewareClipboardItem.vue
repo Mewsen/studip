@@ -118,9 +118,9 @@ export default {
             return menuItems;
         },
         srTitle() {
-            return this.isBlock ? 
-                this.$gettextInterpolate(this.$gettext(`Block %{name} einfügen`), { name: this.name }) :
-                this.$gettextInterpolate(this.$gettext(`Abschnitt %{name} einfügen`), { name: this.name });
+            return this.isBlock ?
+                this.$gettext(`Block %{name} einfügen`, { name: this.name }) :
+                this.$gettext(`Abschnitt %{name} einfügen`, { name: this.name });
         }
     },
     methods: {

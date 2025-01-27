@@ -12,9 +12,10 @@
         <template v-slot:dialogContent>
             <div v-show="!exportRunning">
                 {{
-                    $gettextInterpolate($gettext('Hiermit exportieren Sie die Seite "%{ pageTitle }" als ZIP-Datei.'), {
-                        pageTitle: structuralElement.attributes.title,
-                    })
+                    $gettext(
+                        'Hiermit exportieren Sie die Seite "%{ pageTitle }" als ZIP-Datei.',
+                        { pageTitle: structuralElement.attributes.title }
+                    )
                 }}
                 <div class="cw-element-export">
                     <label>
@@ -75,7 +76,7 @@ export default {
         ...mapActions({
             showElementExportDialog: 'showElementExportDialog',
         }),
-        async exportStructuralElementAction(data) {
+        async exportStructuralElementAction() {
             if (this.exportRunning) {
                 return;
             }

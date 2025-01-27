@@ -55,6 +55,7 @@
         <template v-for="item in navigationItems">
             <label v-if="item.disabled" :key="item.id" aria-disabled="true" v-bind="item.attributes">
                 <studip-icon :shape="item.icon"
+                             :alt="item.label"
                              :title="item.label"
                              role="inactive"
                              class="action-menu-item-icon"
@@ -63,6 +64,7 @@
             <span v-else-if="item.type === 'separator'" :key="item.id" class="quiet">|</span>
             <a v-else :key="item.id" v-bind="item.attributes" v-on="linkEvents(item)">
                 <studip-icon :shape="item.icon"
+                             :alt="item.label"
                              :title="item.label"
                              class="action-menu-item-icon"
                 ></studip-icon>
@@ -72,6 +74,8 @@
 </template>
 
 <script>
+import { $gettext } from '../../assets/javascripts/lib/gettext';
+
 export default {
     name: 'studip-action-menu',
     props: {
@@ -86,7 +90,7 @@ export default {
         title: {
             type: String,
             default() {
-                return this.$gettext('Aktionen');
+                return $gettext('Aktionen');
             }
         }
     },
@@ -144,7 +148,7 @@ export default {
             return Number.parseInt(collapseAt) <= this.items.filter((item) => item.type !== 'separator').length;
         },
         tooltip () {
-            return this.context ? this.$gettextInterpolate(this.$gettext('%{title} für %{context}'), {title: this.title, context: this.context}) : this.title;
+            return this.context ? this.$gettext('%{title} für %{context}', {title: this.title, context: this.context}) : this.title;
         }
     }
 }

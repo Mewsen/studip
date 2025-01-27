@@ -6,30 +6,32 @@
     >
         <template v-slot:dialogContent>
             <table class="cw-structural-element-info">
-                <tr>
-                    <td>{{ $gettext('Titel') }}:</td>
-                    <td>{{ structuralElement.attributes.title }}</td>
-                </tr>
-                <tr>
-                    <td>{{ $gettext('Beschreibung') }}:</td>
-                    <td>{{ structuralElement.attributes.payload.description }}</td>
-                </tr>
-                <tr>
-                    <td>{{ $gettext('Seite wurde erstellt von') }}:</td>
-                    <td>{{ ownerName }}</td>
-                </tr>
-                <tr>
-                    <td>{{ $gettext('Seite wurde erstellt am') }}:</td>
-                    <td><iso-date :date="structuralElement.attributes.mkdate" /></td>
-                </tr>
-                <tr>
-                    <td>{{ $gettext('Zuletzt bearbeitet von') }}:</td>
-                    <td>{{ editorName }}</td>
-                </tr>
-                <tr>
-                    <td>{{ $gettext('Zuletzt bearbeitet am') }}:</td>
-                    <td><iso-date :date="structuralElement.attributes.chdate" /></td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>{{ $gettext('Titel') }}:</td>
+                        <td>{{ structuralElement.attributes.title }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ $gettext('Beschreibung') }}:</td>
+                        <td>{{ structuralElement.attributes.payload.description }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ $gettext('Seite wurde erstellt von') }}:</td>
+                        <td>{{ ownerName }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ $gettext('Seite wurde erstellt am') }}:</td>
+                        <td><iso-date :date="structuralElement.attributes.mkdate" /></td>
+                    </tr>
+                    <tr>
+                        <td>{{ $gettext('Zuletzt bearbeitet von') }}:</td>
+                        <td>{{ editorName }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ $gettext('Zuletzt bearbeitet am') }}:</td>
+                        <td><iso-date :date="structuralElement.attributes.chdate" /></td>
+                    </tr>
+                </tbody>
             </table>
         </template>
     </studip-dialog>

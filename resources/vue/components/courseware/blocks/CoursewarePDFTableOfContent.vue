@@ -15,6 +15,7 @@
 <script>
 export default {
     name: 'courseware-pdf-toc-item',
+    emits: ['tocPageNav'],
     props: {
         item: {
             type: Object,

@@ -47,7 +47,7 @@
             <? foreach ($group_members as $member): ?>
                 <tr>
                     <td>
-                        <a href="<?= URLHelper::getLink('seminar_main.php?auswahl=' . $member['seminar_id']) ?>">
+                        <a href="<?= URLHelper::getLink('dispatch.php/course/go?to=' . $member['seminar_id']) ?>">
                             <?= htmlReady(Config::get()->IMPORTANT_SEMNUMBER ? $my_sem[$member['seminar_id']]['veranstaltungsnummer'] : '') ?>
                             <?= htmlReady($my_sem[$member['seminar_id']]['name']) ?>
                         </a>

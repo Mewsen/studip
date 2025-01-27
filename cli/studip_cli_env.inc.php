@@ -63,12 +63,6 @@ $CACHING_ENABLE        = false;
 // set base url for URLHelper class
 URLHelper::setBaseUrl($ABSOLUTE_URI_STUDIP);
 
-//cli scripts run always as faked (Stud.IP) root
-$auth = new Seminar_Auth();
-$auth->auth = ['uid' => 'cli',
-                    'uname' => 'cli',
-                    'perm' => 'root'];
-
 $faked_root = new User();
 $faked_root->user_id = 'cli';
 $faked_root->username = 'cli';

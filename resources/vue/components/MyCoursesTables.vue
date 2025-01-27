@@ -43,8 +43,8 @@
                 <tr v-for="course in getOrderedCourses(subgroup.ids)" :data-course-id="course.id" :class="getCourseClasses(course)" :key="course.id">
                     <td :class="`gruppe${course.group}`">
                         <span class="sr-only">
-                            {{ $gettextInterpolate(
-                                $gettext('Diese Veranstaltung gehört zur Farbgruppe %{group}'),
+                            {{ $gettext(
+                                'Diese Veranstaltung gehört zur Farbgruppe %{group}',
                                 course
                             ) }}
                         </span>
@@ -56,7 +56,7 @@
                         {{ course.number }}
                     </td>
                     <td :class="{'subcourse-indented': isChild(course)}">
-                        <a :href="urlFor('seminar_main.php', {auswahl: course.id})">
+                        <a :href="urlFor('dispatch.php/course/go', {to: course.id})">
                             {{ getCourseName(course, getConfig('sem_number') && responsiveDisplay) }}
                             <span v-if="course.is_deputy">{{ $gettext('[Vertretung]') }}</span>
                         </a>
@@ -90,6 +90,11 @@
 <script>
 import MyCoursesMixin from '../mixins/MyCoursesMixin.js';
 
+const defaultIconSize = parseInt(
+    getComputedStyle(document.body).getPropertyValue('--icon-size-default'),
+    10
+);
+
 export default {
     name: 'MyCoursesTables',
     mixins: [MyCoursesMixin],
@@ -97,7 +102,7 @@ export default {
         iconSize: {
             type: Number,
             required: false,
-            default: 16
+            default: defaultIconSize
         }
     },
     data () {
@@ -135,11 +140,6 @@ export default {
             sorted.forEach(course => {
                 if (!this.isChild(course)) {
                     courses.push(course);
-                }
-                if (this.isParent(course)) {
-                    this.getCourses(course.children).forEach(c => {
-                        courses.push(c);
-                    });
                 }
             });
 

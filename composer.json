@@ -21,11 +21,13 @@
                 "lib/exceptions/",
                 "lib/exceptions/course/"
             ],
+            "Studip\\Middleware\\": "lib/middleware/",
+            "Studip\\Session\\": "lib/session/",
+            "Studip\\Authentication\\": "lib/authentication/",
             "Trails\\": "lib/trails/",
             "": [
                 "lib/classes/",
                 "lib/classes/admission/",
-                "lib/classes/admission/userfilter/",
                 "lib/classes/auth_plugins/",
                 "lib/classes/calendar/",
                 "lib/classes/coursewizardsteps/",
@@ -49,9 +51,9 @@
                 "lib/models/",
                 "lib/models/calendar/",
                 "lib/models/resources/",
+                "lib/models/vips/",
                 "lib/modules/",
                 "lib/navigation/",
-                "lib/phplib/",
                 "lib/plugins/core/",
                 "lib/plugins/db/",
                 "lib/plugins/engine/",
@@ -59,7 +61,6 @@
             ]
         },
         "classmap": [
-            "lib/phplib/email_validation.php",
             "lib/messaging.inc.php",
             "lib/plugins/core/StudIPPlugin.php",
             "app/controllers/module/mvv_controller.php",
@@ -71,7 +72,7 @@
         "codeception/codeception": "5.1.2",
         "codeception/module-asserts": "3.0.0",
         "overtrue/phplint": "9.3.0",
-        "phpstan/phpstan": "1.11.0",
+        "phpstan/phpstan": "^2.0",
         "symfony/var-dumper": "6.4.7",
         "maximebf/debugbar": "1.22.3",
         "codeception/specify": "^2.0"
@@ -100,6 +101,7 @@
         "ext-mbstring": "*",
         "ext-dom": "*",
         "ext-iconv": "*",
+        "ext-simplexml": "*",
         "opis/json-schema": "2.3.0",
         "slim/slim": "4.13.0",
         "php-di/php-di": "7.0.0",
@@ -125,7 +127,12 @@
         "nyholm/psr7-server": "1.1.0",
         "erusev/parsedown": "1.7.4",
         "league/oauth2-client": "2.7.0",
-        "nette/php-generator": "4.1.5"
+        "nette/php-generator": "4.1.5",
+        "oat-sa/lib-lti1p3-core": "^7.1",
+        "oat-sa/lib-lti1p3-ags": "^2.0",
+        "phpseclib/phpseclib2_compat": "^1.0",
+        "oat-sa/lib-lti1p3-deep-linking": "^4.1",
+        "lcobucci/jwt": "^4.3"
     },
     "replace": {
         "symfony/polyfill-php73": "*",

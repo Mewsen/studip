@@ -136,7 +136,7 @@ class Course_GroupingController extends AuthenticatedController
             $actions->addLink(
                 _('Unterveranstaltungen anlegen'),
                 $this->url_for('course/grouping/create_children'),
-                Icon::create('add', 'clickable')
+                Icon::create('add')
             )->asDialog('size=auto');
             $sidebar->addWidget($actions);
         }
@@ -188,7 +188,7 @@ class Course_GroupingController extends AuthenticatedController
                 'course_id'       => $this->course->id,
                 'default_subject' => '[' . $this->course->getFullName() . ']',
             ]),
-            Icon::create('mail', 'clickable')
+            Icon::create('mail')
         )->asDialog('size=auto');
         $sidebar->addWidget($actions);
 

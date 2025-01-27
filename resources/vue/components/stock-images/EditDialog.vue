@@ -42,6 +42,7 @@ import AttributesFieldset from './AttributesFieldset.vue';
 export default {
     props: ['stockImage', 'suggestedTags'],
     components: { AttributesFieldset, ThumbnailCard },
+    emits: ['cancel', 'confirm'],
     data: () => ({
         metadata: {},
     }),

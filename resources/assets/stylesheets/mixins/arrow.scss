@@ -108,7 +108,6 @@
     margin-top: -$width;
 }
 
-//
 @mixin arrow-left($width, $color, $margin: $width) {
     @extend %base;
     margin-left: $margin;

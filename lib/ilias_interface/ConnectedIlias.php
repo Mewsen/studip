@@ -82,12 +82,27 @@ class ConnectedIlias
         $this->ilias_int_version = $this->getIntVersion($this->ilias_config['version']);
 
         // init soap client
-        $this->soap_client = new IliasSoap($this->index, $this->ilias_config['url'].'/webservice/soap/server.php?wsdl', $this->ilias_config['client'], $this->ilias_int_version, $this->ilias_config['admin'], $this->ilias_config['admin_pw']);
+        $this->soap_client = new IliasSoap(
+            $this->index,
+            $this->ilias_config['url'] . '/webservice/soap/server.php?wsdl',
+            $this->ilias_config['client'],
+            $this->ilias_int_version,
+            $this->ilias_config['admin'],
+            $this->ilias_config['admin_pw'],
+            $this->ilias_config['http_connection_timeout'],
+            $this->ilias_config['http_request_timeout']
+        );
         $this->soap_client->setCachingStatus($this->ilias_interface_config['cache']);
 
         // init current user (only if ILIAS installation is active)
         if ($this->ilias_config['is_active']) {
             $this->user = new IliasUser($this->index, $this->ilias_config['version']);
+            if ($this->user->isConnected()) {
+                $ilias_user_exists = $this->soap_client->lookupUser($this->user->getUsername());
+                if (!$this->soap_client->getError() && !$ilias_user_exists) {
+                    $this->user->unsetConnection(true);
+                }
+            }
             // create account automatically if it doesn't exist
             if (! $this->user->isConnected()) {
                 $this->soap_client->setCachingStatus(false);
@@ -154,14 +169,34 @@ class ConnectedIlias
     public static function getIliasInfo($url)
     {
         $info = [];
+
+        $stream_context = get_default_http_stream_context($url);
+        stream_context_set_option(
+            $stream_context,
+            'http',
+            'timeout',
+            3
+        );
+
         // check if url exists
-        $check = @get_headers($url . 'login.php');
+        $check = @get_headers($url . 'login.php', false, $stream_context);
         if (strpos($check[0], '200') === false) {
             return $info;
         } else {
             $info['url'] = $url;
         }
-        $soap_client = new IliasSoap('new', $url.'/webservice/soap/server.php?wsdl');
+
+        $soap_client = new IliasSoap(
+            'new',
+            $url . '/webservice/soap/server.php?wsdl',
+            '',
+            '',
+            '',
+            '',
+            1,
+            3
+        );
+
         $soap_client->setCachingStatus(false);
         if ($client_info = $soap_client->getInstallationInfoXML()) {
             $info = array_merge($info, $client_info);
@@ -223,7 +258,14 @@ class ConnectedIlias
         }
 
         // check if url exists
-        $check = @get_headers($this->ilias_config['url'] . 'webservice/soap/server.php');
+        $stream_context = get_default_http_stream_context($this->ilias_config['url']);
+        stream_context_set_option(
+            $stream_context,
+            'http',
+            'timeout',
+            $this->ilias_config['http_request_timeout']
+        );
+        $check = @get_headers($this->ilias_config['url'] . 'webservice/soap/server.php', false, $stream_context);
         if (strpos($check[0], '200') === false) {
             $this->error[] = sprintf(_('Die URL "%s" ist nicht erreichbar.'), $this->ilias_config['url']);
             return false;
@@ -336,8 +378,17 @@ class ConnectedIlias
                 ($this->user->auth_plugin == $this->ilias_config['ldap_enable'])) {
             $this->user->id = $user_exists;
             $this->user->login = $user_data["login"];
-            $this->user->setConnection($this->user->getUserType(), true);
-            PageLayout::postSuccess(sprintf(_("Verbindung mit Nutzer ID %s wiederhergestellt."), $this->user->id));
+            $this->user->setConnection($this->user->getUserType());
+            PageLayout::postSuccess(sprintf(
+                _('Verbindung mit Account ID %s wiederhergestellt.'),
+                htmlReady($this->user->id)
+            ));
+            return true;
+        } elseif ($user_exists && $this->ilias_config['reconnect_accounts']) {
+            $this->user->id = $user_exists;
+            $this->user->login = $user_data["login"];
+            $this->user->setConnection($this->user->getUserType());
+            PageLayout::postSuccess(sprintf(_('Verbindung mit Account ID %s wiederhergestellt.'), htmlReady($this->user->id)));
             return true;
         } elseif ($user_exists) {
             $this->error[] = sprintf(_('Externer Account konnte nicht angelegt werden. Es existiert bereits ein User mit dem Login %s in %s'), $user_data["login"], $this->ilias_config['name']);
@@ -361,7 +412,7 @@ class ConnectedIlias
         }
 
         // set role according to Stud.IP perm
-        if (User::findCurrent()->perms === 'root') {
+        if (User::find($this->user->studip_id)->perms === 'root') {
             $role_id = 2;
         } else {
             $role_id = 4;
@@ -373,6 +424,18 @@ class ConnectedIlias
         {
             $this->user->id = $user_id;
             $this->user->login = $this->ilias_config['user_prefix'].$this->user->studip_login;
+
+            // add additional roles
+            $temp_user = User::find($this->user->studip_id);
+
+            if (
+                array_key_exists('additional_roles', $this->ilias_config)
+                && array_key_exists($temp_user->perms, $this->ilias_config['additional_roles'])
+            ) {
+                foreach ($this->ilias_config['additional_roles'][$temp_user->perms] as $role_data) {
+                    $this->soap_client->addUserRoleEntry($user_id, $role_data['id']);
+                }
+            }
 
             $this->user->setConnection(IliasUser::USER_TYPE_CREATED);
             return true;
@@ -394,6 +457,17 @@ class ConnectedIlias
             return false;
         }
         $update_user = new IliasUser($this->index, $this->ilias_config['version'], $user->id);
+
+        // add additional roles
+        if (
+            array_key_exists('additional_roles', $this->ilias_config)
+            && array_key_exists($user->perms, $this->ilias_config['additional_roles'])
+        ) {
+            foreach ($this->ilias_config['additional_roles'][$user->perms] as $role_data) {
+                $this->soap_client->addUserRoleEntry($update_user->id, $role_data['id']);
+            }
+        }
+
       // don't update ldap user
         if (! $this->ilias_config['user_prefix'] &&
             $this->ilias_config['ldap_enable'] &&
@@ -403,10 +477,12 @@ class ConnectedIlias
         } elseif ($this->ilias_config['no_account_updates']) {
             return true;
         }
+
         // if user is manually connected don't update user data
         if ($update_user->getUserType() == IliasUser::USER_TYPE_ORIGINAL) {
             return true;
         }
+
         $this->soap_client->setCachingStatus(false);
         $this->soap_client->clearCache();
         if ($update_user->isConnected() && $update_user->id && $this->soap_client->lookupUser($update_user->login)) {
@@ -519,7 +595,7 @@ class ConnectedIlias
 
         // data for user category in ILIAS
         $object_data["title"] = sprintf(_("Eigene Daten von %s (%s)."), $this->user->getName(), $this->user->getId());
-        $object_data["description"] = sprintf(_("Hier befinden sich die persönlichen Lernmodule des Benutzers %s."), $this->user->getName());
+        $object_data['description'] = sprintf(_('Hier befinden sich die persönlichen Lernmodule von %s.'), $this->user->getName());
         $object_data["type"] = "cat";
         $object_data["owner"] = $this->user->getId();
 
@@ -570,6 +646,27 @@ class ConnectedIlias
     public function getUserFullname($user_id)
     {
         return $this->soap_client->getUserFullname($user_id);
+    }
+
+    /**
+     * get connected studip courses list for given user
+     *
+     * @param string $user_id Stud.IP user id
+     * @return array course id array
+     */
+    public function getConnectedCoursesForUser(string $user_id): array
+    {
+        $query = 'SELECT module_id, object_id
+                  FROM object_contentmodules
+                  JOIN seminar_user ON object_contentmodules.object_id = seminar_user.Seminar_id
+                  WHERE seminar_user.user_id = ?
+                    AND system_type = ?
+                    AND module_type = ?';
+        return DBManager::get()->fetchPairs($query, [
+            $user_id,
+            $this->index,
+            'crs'
+        ]);
     }
 
     /**

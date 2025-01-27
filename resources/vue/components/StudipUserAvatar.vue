@@ -1,0 +1,38 @@
+<template>
+    <div class="studip-user-avatar" :class="{ 'studip-user-avatar-small': small }">
+        <span>
+            <img :src="avatarUrl" role="presentation" />
+        </span>
+        <span>{{ formattedName }}</span>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        avatarUrl: {
+            type: String,
+            required: true,
+        },
+        formattedName: {
+            type: String,
+            required: true,
+        },
+        small: {
+            type: Boolean,
+            default: false,
+        },
+    },
+};
+</script>
+
+<style scoped>
+.studip-user-avatar {
+    align-items: center;
+    display: flex;
+    gap: 0.25rem;
+}
+.studip-user-avatar-small img {
+    width: 1em;
+}
+</style>

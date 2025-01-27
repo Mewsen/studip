@@ -14,7 +14,6 @@
             </div>
         </component>
         <courseware-tree v-if="structuralElements.length" />
-        <courseware-tree-units v-if="context.type === 'courses'" />
     </div>
 </template>
 
@@ -82,36 +81,40 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.cw-tools-contents-header {
-    display: flex;
-    flex-direction: row;
-    height: 100px;
-    margin-top: 8px;
-    .cw-tools-contents-header-image {
-        height: 100px;
-        width: 150px;
-        min-width: 150px;
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-color: var(--content-color-20);
-    }
+.cw-tools-contents {
+    padding: 0 5px;
 
-    .cw-tools-contents-header-details {
-        margin: 0 8px;
-        display: -webkit-box;
-        overflow: hidden;
+    .cw-tools-contents-header {
+        display: flex;
+        flex-direction: row;
         height: 100px;
-        -webkit-line-clamp: 5;
-        -webkit-box-orient: vertical;
-        header {
-            margin: 0 0 6px 0;
-            font-size: 16px;
-            line-height: 16px;
+        margin-top: 8px;
+        .cw-tools-contents-header-image {
+            height: 100px;
+            width: 150px;
+            min-width: 150px;
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: var(--content-color-20);
         }
-        p {
-            margin: 0;
-            color: var(--black);
+
+        .cw-tools-contents-header-details {
+            margin: 0 8px;
+            display: -webkit-box;
+            overflow: hidden;
+            height: 100px;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            header {
+                margin: 0 0 6px 0;
+                font-size: 16px;
+                line-height: 16px;
+            }
+            p {
+                margin: 0;
+                color: var(--black);
+            }
         }
     }
 }

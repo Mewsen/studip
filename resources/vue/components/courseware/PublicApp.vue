@@ -25,11 +25,11 @@
         />
         <form v-if="!isAuthenticated" class="default" @submit.prevent="">
             <label>
-                <translate>Passwort</translate>
+                {{ $gettext('Passwort') }}
                 <input type="password" v-model="password">
             </label>
             <button class="button" @click="submitPassword">
-                <translate>Absenden</translate>
+                {{ $gettext('Absenden') }}
             </button>
         </form>
      </div>

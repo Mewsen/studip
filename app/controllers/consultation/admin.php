@@ -790,7 +790,7 @@ class Consultation_AdminController extends ConsultationController
 
         // Redirect to message write
         $_SESSION['sms_data'] = compact('p_rec');
-        page_close();
+        sess()->save();
         $this->redirect(URLHelper::getURL(
             'dispatch.php/messages/write',
             compact('default_subject')

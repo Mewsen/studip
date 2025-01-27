@@ -27,12 +27,7 @@
                         </div>
                         <footer>
                             {{ countChildren(element) + 1 }}
-                            <translate
-                                :translate-n="countChildren(element) + 1"
-                                translate-plural="Seiten"
-                            >
-                                Seite
-                            </translate>
+                            {{ $ngettext('Seite', 'Seiten', countChildren(element) + 1) }}
                         </footer>
                     </div>
                 </a>
@@ -42,6 +37,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import {$ngettext} from "../../../../assets/javascripts/lib/gettext";
 
 export default {
     name: 'courseware-shared-items',
@@ -52,6 +48,7 @@ export default {
         }),
     },
     methods: {
+        $ngettext,
         getChildStyle(child) {
             let url = child.relationships?.image?.meta?.['download-url'];
 
@@ -74,7 +71,7 @@ export default {
             const ownerId = element.relationships.owner.data.id;
             const owner = this.userById({ id: ownerId });
 
-            return owner.attributes['formatted-name']; 
+            return owner.attributes['formatted-name'];
         },
         countChildren(element) {
             let data = element.relationships.children.data;

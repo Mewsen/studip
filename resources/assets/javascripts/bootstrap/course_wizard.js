@@ -5,7 +5,7 @@ STUDIP.domReady(function() {
 });
 
 STUDIP.ready(function() {
-    $('.course-wizard-step-0 *:input:not(input[type=submit])').each(function (index) {
+    $('.course-wizard-step-0 *:input:not(input[type=submit])').each(function () {
         $(this).attr(
             'tabindex',
             $(this).closest('section,footer').css('order')

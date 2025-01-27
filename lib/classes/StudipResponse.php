@@ -1,55 +1,103 @@
 <?php
 class StudipResponse extends Trails\Response
 {
+
     /**
-     * Outputs this response to the client using "echo" and "header".
+     * Constructor.
+     * @return void
+     */
+    public function __construct(protected Psr\Http\Message\ResponseInterface $psr_response)
+    {
+        parent::__construct();
+    }
+
+    /**
+     * @param $name
+     * @param $value
+     * @return mixed
+     */
+    public function __call($name, $value)
+    {
+        return $this->psr_response->$name($value);
+    }
+
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getPsrResponse(): \Psr\Http\Message\ResponseInterface
+    {
+        return $this->psr_response;
+    }
+
+    /**
      *
-     * This extension allows the body to be a callable and handles generators
-     * by outputting the chunks yielded by the generator.
+     * @return void
      */
     public function output()
     {
-        if (isset($this->status)) {
-            $this->send_header(
-                "{$_SERVER['SERVER_PROTOCOL']} {$this->status} {$this->reason}",
-                true,
-                $this->status
+        $status = sprintf('HTTP/%s %s %s'
+            , $this->psr_response->getProtocolVersion()
+            , $this->psr_response->getStatusCode()
+            , $this->psr_response->getReasonPhrase()
+        );
+        header($status);
+
+        foreach ($this->psr_response->getHeaders() as $name => $values) {
+            $responseHeader = sprintf('%s: %s'
+                , $name
+                , $this->psr_response->getHeaderLine($name)
             );
+            header($responseHeader, false);
         }
+        echo $this->psr_response->getBody();
+    }
 
-        // Send headers
-        foreach ($this->headers as $k => $v) {
-            $this->send_header("{$k}: {$v}");
-        }
-
-        // Determine output
-        if (is_callable($this->body)) {
-            $output = call_user_func($this->body);
+    /**
+     * Sets the body of the response.
+     *
+     * @param string|Psr\Http\Message\StreamInterface $body the body
+     *
+     * @return static   this response object. Useful for cascading method calls.
+     */
+    public function set_body($body)
+    {
+        if ($body instanceof Psr\Http\Message\StreamInterface) {
+            $this->psr_response = $this->psr_response->withBody($body);
         } else {
-            $output = $this->body;
+            $this->psr_response->getBody()->write($body);
         }
+        return $this;
+    }
 
-        if ($output instanceof Generator) {
-            // Clear output buffer
-            while (ob_get_level()) {
-                ob_end_clean();
-            }
 
-            // Ensure generator will run to the end
-            $abort = ignore_user_abort(true);
+    /**
+     * Sets the status code and an optional custom reason. If none is given, the
+     * standard reason phrase as of RFC 2616 is used.
+     *
+     * @param integer  the status code
+     * @param string   the custom reason, defaulting to the one given in RFC 2616
+     *
+     * @return static    this response object. Useful for cascading method calls.
+     */
+    public function set_status($status, $reason = null)
+    {
+        $this->psr_response = $this->psr_response->withStatus($status, $reason ?? self::get_reason($status));
+        return $this;
+    }
 
-            // Output chunks yielded by generator
-            foreach ($output as $chunk) {
-                if (!connection_aborted()) {
-                    echo $chunk;
-                    flush();
-                }
-            }
 
-            // Reset user abort to previous state
-            ignore_user_abort($abort);
-        } else {
-            echo $output;
-        }
+
+    /**
+     * Adds an additional header to the response.
+     *
+     * @param string  the left hand key part
+     * @param string  the right hand value part
+     *
+     * @return static   this response object. Useful for cascading method calls.
+     */
+    function add_header($key, $value)
+    {
+        $this->psr_response = $this->psr_response->withHeader($key, $value);
+        return $this;
     }
 }

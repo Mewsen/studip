@@ -70,6 +70,10 @@ $CACHING_ENABLE = $_ENV['STUDIP_CACHING_ENABLE'] ?? true;
 $CACHING_FILECACHE_PATH = $TMP_PATH . '/studip_cache';
 $CACHE_IS_SESSION_STORAGE = $_ENV['STUDIP_CACHE_IS_SESSION_STORAGE'] ?? false; //store session data in cache
 
+$SESSION_OPTIONS = [];
+$SESSION_OPTIONS['lifetime'] = 7200; // session lifetime in seconds
+
+
 /*Stud.IP modules
 ----------------------------------------------------------------
 enable or disable the Stud.IP internal modules, set and basic settings*/

@@ -29,6 +29,11 @@ class GlobalSearchUsers extends GlobalSearchModule implements GlobalSearchFullte
      * @param string $search the input query string
      * @param array $filter an array with search limiting filter information (e.g. 'category', 'semester', etc.)
      * @return string SQL Query to discover elements for the search
+     *
+     * @todo If the signature of this method changes, the UsersIndex jsonapi
+     *       route must also be taken into account. The route adds another
+     *       parameter so that offset and limit can be used.
+     * @see \JsonApi\Routes\Users\UsersIndex::__invoke
      */
     public static function getSQL($search, $filter, $limit)
     {

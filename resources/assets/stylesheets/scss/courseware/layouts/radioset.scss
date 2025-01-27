@@ -10,7 +10,7 @@ $radio-icons: (
     groups: group2
 );
 
-.cw-radioset {
+form.default .cw-radioset {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -21,13 +21,13 @@ $radio-icons: (
         height: 128px;
         text-align: center;
         margin-right: 8px;
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--tile-border);
         label {
             height: 100%;
             width: 100%;
             margin: 0;
             cursor: pointer;
-            @include background-icon(radiobutton-unchecked, clickable);
+            @include background-icon(radiobutton-unchecked);
             background-position: center 104px;
             background-repeat: no-repeat;
 
@@ -48,7 +48,7 @@ $radio-icons: (
 
                 @each $type, $icon in $radio-icons {
                     &.#{$type} {
-                        @include background-icon(#{$icon}, clickable, 48);
+                        @include background-icon(#{$icon}, $size: 48px);
                     }
                 }
             }
@@ -69,13 +69,13 @@ $radio-icons: (
 
         &.selected {
             border-color: var(--base-color);
-            background-color: var(--content-color-20);
+            background-color: var(--color--tile-background-active);
             label {
-                @include background-icon(check-circle, clickable);
+                @include background-icon(check-circle);
                 .label-icon {
                     @each $type, $icon in $radio-icons {
                         &.#{$type} {
-                            @include background-icon(#{$icon}, info, 48);
+                            @include background-icon(#{$icon}, $size: 48px);
                         }
                     }
                 }

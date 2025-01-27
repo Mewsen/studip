@@ -1,8 +1,8 @@
 <template>
     <section class="cw-block-export-options">
-        <header><translate>Export Optionen</translate></header>
+        <header>{{ $gettext('Export Optionen') }}</header>
         <div class="cw-block-features-content">
-            <button class="button" @click="$emit('close')"><translate>Schließen</translate></button>
+            <button class="button" @click="$emit('close')">{{ $gettext('Schließen') }}</button>
         </div>
     </section>
 </template>
@@ -10,7 +10,7 @@
 <script>
 export default {
     name: 'courseware-block-export-options',
-    components: {},
+    emits: ['close'],
     props: {
         block: Object,
     },

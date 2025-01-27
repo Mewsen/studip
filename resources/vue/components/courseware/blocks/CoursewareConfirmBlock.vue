@@ -114,5 +114,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/confirm.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/confirm';
 </style>

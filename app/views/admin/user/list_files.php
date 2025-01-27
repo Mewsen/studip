@@ -24,7 +24,7 @@
                     <?= ActionMenu::get()->setContext($file->name)->addLink(
                         $file->getDownloadURL(),
                         _('Datei herunterladen'),
-                        Icon::create('download', 'clickable')
+                        Icon::create('download')
                     )->render() ?>
                 <? endif ?>
                 </header>

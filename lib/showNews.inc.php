@@ -56,7 +56,7 @@ function delete_news($delete_news_array)
                         _('Ankündigung "%s" wurde gelöscht.'),
                         htmlReady((string) $delete_news->topic)
                     ));
-                    if ($delete_news->getValue('user_id') != $GLOBALS['auth']->auth['uid']) {
+                    if ($delete_news->getValue('user_id') !== $GLOBALS['user']->id) {
                         setTempLanguage($delete_news->getValue('user_id'));
                         $msg = sprintf(
                                 _('Ihre Ankündigung "%s" wurde von der Administration gelöscht!.'),

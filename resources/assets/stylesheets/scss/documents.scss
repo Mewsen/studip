@@ -10,7 +10,7 @@
         min-height: 1.5em;
         width: 40px;
         z-index: 1;
-    
+
         > a, ul {
             background-color: var(--white);
             padding: 5px;
@@ -28,7 +28,7 @@
                 flex-direction: column-reverse;
             }
         }
-    
+
         ul {
             display: none;
             list-style: none;
@@ -40,13 +40,13 @@
             line-height: 1.5em;
 
             a {
-                @include background-icon(folder-parent, clickable, 24);
+                @include background-icon(folder-parent, $size: 24px);
                 background-position: left center;
                 background-repeat: no-repeat;
                 padding-left: 30px;
             }
             &:first-child a {
-                @include background-icon(folder-empty, clickable, 24);
+                @include background-icon(folder-empty, $size: 24px);
             }
         }
     }
@@ -54,7 +54,7 @@
 
 .document-dialog {
     $info-width: 150px;
-    @include clearfix();
+    @include clearfix;
     > aside {
         float: left;
         width: $info-width;

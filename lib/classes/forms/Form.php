@@ -143,15 +143,17 @@ class Form extends Part
         foreach ((array) $params['types'] as $fieldname => $type) {
             $params['fields'][$fieldname]['type'] = $type;
         }
-        //respect the without param:
+        // respect the without param:
         foreach ((array) $params['without'] as $fieldname) {
             unset($params['fields'][$fieldname]);
         }
         $fields = $params['fields'];
 
-        //Now initializing the fieldset:
-        $fieldset = new Fieldset($params['legend'] ?: _("Daten"));
-        $fieldset->setContextObject($object);
+        // Now initializing the fieldset:
+        $fieldset = new Fieldset($params['legend'] ?? _('Daten'));
+        $fieldset->setContextObject($object)
+            ->setCollapsable($params['collapsable'] ?? false)
+            ->setCollapsed($params['collapsed'] ?? false);
         $this->addPart($fieldset);
 
         foreach ($fields as $fieldname => $fielddata) {
@@ -298,7 +300,7 @@ class Form extends Part
                 if ($this->success_message) {
                     \PageLayout::postSuccess($this->success_message);
                 }
-                page_close();
+                sess()->save();
                 //This indicates that the form has been stored successfully.
                 echo "STUDIPFORM_STORE_SUCCESS";
                 die();
@@ -328,7 +330,7 @@ class Form extends Part
             }
             header('Content-Type: application/json');
             echo json_encode($output);
-            page_close();
+            sess()->save();
             die();
         }
         return $this;
@@ -500,6 +502,9 @@ class Form extends Part
     public function render(string|Template $layout = null)
     {
         \NotificationCenter::postNotification('FormWillRender', $this);
+        if (\Request::isDialog()) {
+            header('X-No-Buttons: 1');
+        }
         return $this->getTemplate()->render([], $layout);
     }
 
@@ -578,4 +583,20 @@ class Form extends Part
         }
         return $value;
     }
+
+    /**
+     * Checks whether this form has a file input and thus needs its enctype set.
+     * @return bool
+     */
+    public function hasFileInput()
+    {
+        foreach ($this->getAllInputs() as $input) {
+            if (get_class($input) === FileInput::class) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

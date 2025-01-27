@@ -40,7 +40,7 @@ export default {
                 this.coursewareUnits
                     .filter(
                         (unit) =>
-                            unit.relationships.range.data.id === this.context.id && unit.id !== this.currentUnit.id
+                            unit.relationships.range.data.id === this.context.id
                     )
                     .sort((a, b) => a.attributes.position - b.attributes.position) ?? []
             );

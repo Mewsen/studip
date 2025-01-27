@@ -31,6 +31,7 @@
 <script>
 export default {
     name: "day-of-week-select",
+    emits: ['selected_value'],
     props: {
         name: {
             type: String,

@@ -16,13 +16,16 @@
                         @end="dropClipboardBlock($event)"
                         ref="clipboardSortables"
                         sectionId="0"
+                        item-key="id"
                     >
-                        <courseware-clipboard-item
-                            v-for="(clipboard, index) in clipboardBlocks"
-                            :key="index"
-                            :clipboard="clipboard"
-                            @inserted="$emit('blockAdded')"
-                        />
+                        <template #item="{element}">
+                            <courseware-clipboard-item
+                                :clipboard="element"
+                                :data-element-id="element.id"
+                                :data-element-type="element.attributes['object-type']"
+                                @inserted="$emit('blockAdded')"
+                            />
+                        </template>
                     </draggable>
                 </div>
                 <button class="button trash" @click="clearClipboard('courseware-blocks')">
@@ -50,12 +53,15 @@
                         :clone="cloneClipboardContainer"
                         @end="dropNewContainer($event)"
                         ref="clipboardContainerSortables"
+                        item-key="id"
                     >
-                        <courseware-clipboard-item
-                            v-for="(clipboard, index) in clipboardContainers"
-                            :key="index"
-                            :clipboard="clipboard"
-                        />
+                        <template #item="{element}">
+                            <courseware-clipboard-item
+                                :clipboard="element"
+                                :data-element-id="element.id"
+                                :data-element-type="element.attributes['object-type']"
+                            />
+                        </template>
                     </draggable>
                 </div>
                 <button class="button trash" @click="clearClipboard('courseware-containers')">
@@ -101,6 +107,7 @@ export default {
         StudipDialog,
         draggable,
     },
+    emits: ['blockAdded'],
     props: {
         toolbarContentHeight: {
             type: Number,
@@ -185,7 +192,7 @@ export default {
             return original;
         },
         async dropClipboardBlock(e) {
-            const target = e.to.__vue__.$attrs;
+            const target = e.to.dataset;
             // only execute if dropped in destined list
             if (!target.containerId) {
                 return;
@@ -196,7 +203,8 @@ export default {
                 section: target.sectionId,
                 position: e.newIndex,
             });
-            await this.insertItem(e.item.__vue__._data.currentClipboard);
+            const clipboard = { id: e.item.dataset.elementId, attributes: { 'object-type': e.item.dataset.elementType } };
+            await this.insertItem(clipboard);
             this.resetAdderStorage();
         },
         cloneClipboardContainer(original) {
@@ -218,23 +226,8 @@ export default {
                 return;
             }
 
-            const item = e.item._underlying_vm_;
-
-            // if the container is from the clipboard, insert it via clipboard mixin, else add it via container mixin
-            if (item.clipContainer) {
-                this.insertItem(e.item.__vue__._data.currentClipboard, e.newIndex);
-            } else {
-                const data = {
-                    type: item.attributes['container-type'],
-                    colspan: item.containerStyle,
-                    sections: {
-                        firstSection: item.firstSection,
-                        secondSection: item.secondSection,
-                    },
-                    newPosition: e.newIndex,
-                };
-                this.addContainer(data);
-            }
+            const clipboard = { id: e.item.dataset.elementId, attributes: { 'object-type': e.item.dataset.elementType } };
+            this.insertItem(clipboard, e.newIndex);           
         },
     },
 };

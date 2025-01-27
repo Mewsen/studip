@@ -40,6 +40,10 @@ class NewsController extends StudipController
                 'title' => _('Stud.IP (systemweit)'),
                 'icon'  => 'home',
             ],
+            'login' => [
+                'title' => _('Stud.IP (login)'),
+                'icon' => 'door-enter',
+            ],
             'inst' => [
                 'title' => _('Einrichtungen'),
                 'icon'  => 'institute',
@@ -405,7 +409,9 @@ class NewsController extends StudipController
                     'newsroles' => [
                         'permission' => $GLOBALS['perm']->have_perm('admin'),
                         'label' => _('Sichtbarkeit'),
-                        'value' => $news->news_roles->pluck('roleid'),
+                        'value' => $news->news_roles->map(function (NewsRoles $n) {
+                                       return (string) $n->roleid;
+                                   }), //vue-select needs these as strings
                         'type' => 'multiselect',
                         'options' => array_map(function ($r) { return $r->getRolename(); }, RolePersistence::getAllRoles()),
                         'store' => function ($value, $input) {
@@ -432,9 +438,6 @@ class NewsController extends StudipController
     public function admin_news_action($area_type = '')
     {
         // check permission
-        if (!$GLOBALS['auth']->is_authenticated() || $GLOBALS['user']->id === 'nobody') {
-            throw new AccessDeniedException();
-        }
         $GLOBALS['perm']->check('user');
 
         // initialize

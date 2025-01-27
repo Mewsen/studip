@@ -23,13 +23,9 @@
 <script>
 import { colors as selectableColors } from './colors.js';
 import SidebarWidget from '../SidebarWidget.vue';
-import { orientations } from './filters.js';
 
 export default {
-    model: {
-        prop: 'filters',
-        event: 'change',
-    },
+    emits: ['update:filters'],
     props: {
         filters: {
             type: Object,
@@ -48,7 +44,7 @@ export default {
     methods: {
         onVueSelectInput(selectedColors) {
             const colors = selectedColors.map(({ hex }) => hex);
-            this.$emit('change', { ...this.filters, colors });
+            this.$emit('update:filters', { ...this.filters, colors });
         },
     },
     mounted() {
@@ -56,7 +52,7 @@ export default {
     },
     watch: {
         filters: {
-            handler(newValue) {
+            handler() {
                 this.selectedColors = this.selectableColors.filter(({ hex }) => this.filters.colors.includes(hex));
             },
             deep: true,

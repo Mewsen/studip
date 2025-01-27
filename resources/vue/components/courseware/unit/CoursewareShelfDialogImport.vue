@@ -43,7 +43,7 @@
                             :clearable="false"
                             label="class"
                         >
-                            <template #open-indicator="selectAttributes">
+                            <template #open-indicator="{ selectAttributes }">
                                 <span v-bind="selectAttributes"
                                     ><studip-icon shape="arr_1down" :size="10"
                                 /></span>
@@ -239,7 +239,7 @@ export default {
             if (!filesError) {
                 try {
                     this.zip = await JSZip.loadAsync(this.importZipFile);
-                } catch(error) {
+                } catch {
                     this.zip = null;
                     this.archiveErrors.push(this.$gettext('Beim laden des Archivs ist ein Fehler aufgetreten. Vermutlich ist das Archiv beschädigt.'));
                     filesError = true;

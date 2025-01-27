@@ -1,25 +1,25 @@
 <template>
     <span>
-        <input type="hidden" :name="name" :value="value">
-        <input type="text"
+        <input type="hidden" :name="name" :value="modelValue">
+        <input v-bind="$attrs"
+               type="text"
                ref="visibleInput"
                class="visible_input"
-               @change="setUnixTimestamp"
-               v-bind="$attrs"
-               v-on="$listeners">
+               @change="setUnixTimestamp">
     </span>
 </template>
 
 <script>
 export default {
     name: 'datetimepicker',
+    emits: ['update:modelValue'],
     inheritAttrs: false,
     props: {
         name: {
             type: String,
             required: false
         },
-        value: {
+        modelValue: {
             required: false
         },
         mindate: {
@@ -35,14 +35,14 @@ export default {
             let date = formatted_date.match(/(\d+)/g);
             if (date) {
                 date = new Date(`${date[2]}-${date[1]}-${date[0]} ${date[3]}:${date[4]}`);
-                this.$emit('input', Math.floor(date / 1000));
+                this.$emit('update:modelValue', Math.floor(date / 1000));
             } else {
-                this.$emit('input', null);
+                this.$emit('update:modelValue', null);
             }
         }
     },
     mounted () {
-        let value = !isNaN(parseInt(this.value, 10)) ? parseInt(this.value, 10) : this.value;
+        let value = !isNaN(parseInt(this.modelValue, 10)) ? parseInt(this.modelValue, 10) : this.modelValue;
         if (Number.isInteger(value)) {
             let date = new Date(value * 1000);
             let formatted_date =
@@ -59,10 +59,9 @@ export default {
         } else {
             this.$refs.visibleInput.value = value;
         }
-        let v = this;
         let params = {
-            onSelect () {
-                v.setUnixTimestamp();
+            onSelect: () => {
+                this.setUnixTimestamp();
             }
         };
         if (this.mindate) {
@@ -74,10 +73,10 @@ export default {
         $(this.$refs.visibleInput).datetimepicker(params);
     },
     watch: {
-        mindat (new_data, old_data) {
+        mindat (new_data) {
             $(this.$refs.visibleInput).datetimepicker('option', 'minDate', new Date(new_data * 1000));
         },
-        maxdate (new_data, old_data) {
+        maxdate (new_data) {
             $(this.$refs.visibleInput).datetimepicker('option', 'maxDate', new Date(new_data * 1000));
         }
     }

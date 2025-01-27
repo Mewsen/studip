@@ -16,7 +16,7 @@
             <button v-if="hasEntry" class="button cancel" @click="$emit('cancel')">
                 {{ $gettext('Abbrechen') }}
             </button>
-            
+
         </div>
     </div>
 </template>
@@ -30,6 +30,7 @@ export default {
     components: {
         StudipFiveStarsInput,
     },
+    emits: ['cancel', 'submit'],
     props: {
         feedbackElement: {
             type: Object || null,
@@ -82,7 +83,7 @@ export default {
                     author: {
                         data: {
                             id: this.currentUser.id,
-                            type: 'users' 
+                            type: 'users'
                         }
                     }
                 },

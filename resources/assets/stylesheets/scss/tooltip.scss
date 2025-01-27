@@ -21,18 +21,34 @@
 
 .studip-tooltip {
     @extend %tooltip;
+    &.studip-tooltip-top {
+        @include arrow-top-border(9px, $dark-gray-color-5, 1px, $dark-gray-color-30, 5px);
+        &::before {
+            top: -18px;
+        }
+        &::after {
+            top: -16px;
+        }
+    }
 }
 
 .tooltip {
     cursor: help;
     display: inline-block;
     position: relative;
+    vertical-align: text-bottom;
 
     &.tooltip-icon {
-        @include icon(before, info-circle, inactive);
+        @include icon(before, info-circle, inactive, $icon-size-inline);
     }
     &.tooltip-important {
-        @include icon(before, info-circle, attention);
+        @include icon(before, info-circle, attention, $icon-size-inline);
+    }
+    &.tooltip-info-alt {
+        @include icon(before, info-circle, info-alt);
+        &::before {
+            vertical-align: middle;
+        }
     }
 
     .tooltip-content {

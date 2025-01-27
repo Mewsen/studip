@@ -1,6 +1,8 @@
 <?php
 
 use Psr\Container\ContainerInterface;
+use Slim\Routing\RouteContext;
+use Trails\Exception;
 
 /**
  * StudipDispatcher.php - create the default Trails dispatcher
@@ -86,5 +88,21 @@ class StudipDispatcher extends Trails\Dispatcher
         }
 
         return $this->container->make($class, ['dispatcher' => $this]);
+    }
+
+    public function getRouteCallable($uri)
+    {
+        $uri = $this->clean_request_uri((string) $uri);
+        [$controller_path, $unconsumed] = '' === $uri ? $this->default_route() : $this->parse($uri);
+        $controller = $this->load_controller($controller_path);
+        return function (
+            \Psr\Http\Message\ServerRequestInterface $request,
+            \Psr\Http\Message\ResponseInterface $response,
+            array $args
+        ) use ($controller, $unconsumed): \Psr\Http\Message\ResponseInterface {
+            $controller->injectResponse($response);
+            $response = $controller->perform($unconsumed);
+            return $response->getPsrResponse();
+        } ;
     }
 }

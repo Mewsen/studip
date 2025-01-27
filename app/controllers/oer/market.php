@@ -328,10 +328,11 @@ class Oer_MarketController extends StudipController
             }
         }
 
-        $this->contentbar = ContentBar::get()
-            ->setTOC(new TOCItem($this->material['name']))
-            ->setInfoHTML(htmlReady($infotext))
-            ->setIcon(Icon::create('oer-campus'));
+        $this->contentBarVueApp = \Studip\VueApp::create('ContentBar')->withProps([
+            'title' => $this->material['name'],
+            'icon' => 'oer-campus',
+            'isContentBar' => true,
+        ])->withSlot('info-text', htmlReady($infotext));
     }
 
     public function embed_action($material_id)
@@ -413,7 +414,7 @@ class Oer_MarketController extends StudipController
             });
 
             if (Request::get('class') || count($this->classes) === 1) {
-                $class = Request::get('class') ?: $this->classes[0];
+                $class = Request::get('class') ?? $this->classes[0] ?? '';
                 if (class_exists($class) && in_array($class, $this->classes)) {
                     $response = $class::oerModuleIntegrateMaterialToCourse(
                         $this->material,

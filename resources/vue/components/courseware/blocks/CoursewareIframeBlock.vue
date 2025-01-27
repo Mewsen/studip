@@ -31,7 +31,7 @@
             </template>
             <template v-if="canEdit" #edit>
                 <courseware-tabs>
-                    <courseware-tab :index="0" :name="$gettext('Grunddaten')" :selected="true">
+                    <courseware-tab :name="$gettext('Grunddaten')">
                         <form class="default" @submit.prevent="">
                             <label>
                                 {{ $gettext('Titel') }}
@@ -47,7 +47,7 @@
                             </label>
                         </form>
                     </courseware-tab>
-                    <courseware-tab :index="1" :name="$gettext('Nutzerspezifische ID')">
+                    <courseware-tab :name="$gettext('Nutzerspezifische ID')">
                         <form class="default" @submit.prevent="">
                             <label>
                                 {{ $gettext('Nutzerspezifische ID übergeben') }}
@@ -67,7 +67,7 @@
                             </label>
                         </form>
                     </courseware-tab>
-                    <courseware-tab :index="2" :name="$gettext('Creative Commons')">
+                    <courseware-tab :name="$gettext('Creative Commons')">
                         <form class="default" @submit.prevent="">
                             <label>
                                 {{ $gettext('Creative Commons Lizenz') }}
@@ -241,7 +241,7 @@ export default {
             try {
                 const url = new URL(urlString);
                 return ['http:', 'https:'].includes(url.protocol);
-            } catch (e) {
+            } catch {
                 return false;
             }
         },
@@ -281,5 +281,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/iframe.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/iframe';
 </style>

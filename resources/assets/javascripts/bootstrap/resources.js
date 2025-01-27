@@ -709,7 +709,7 @@ STUDIP.ready(function () {
     $(document).on(
         'click',
         "button[name='bulk-book-requests']",
-        function (event) {
+        function () {
             STUDIP.Dialog.confirm(
                 $gettext('Wollen Sie die im Plan gezeigten Anfragen wirklich buchen?')
             ).done(function () {

@@ -43,6 +43,7 @@
 import SidebarWidget from '../SidebarWidget.vue';
 
 export default {
+    emits: ['load-more-threads', 'select-thread'],
     props: {
         hasMoreThreads: {
             type: Boolean,

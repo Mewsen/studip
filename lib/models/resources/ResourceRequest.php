@@ -1452,17 +1452,31 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
         $now = time();
         $strings = [];
         $resource_name = '';
-        if (count($this->appointments)) {
-            $parts  = [];
-            foreach ($this->appointments as $rra) {
-                if (!$with_past_intervals && $rra->appointment->end_time < $now) {
-                    continue;
+        if (count($this->appointments) > 0) {
+            // Filter invalid/not matching items
+            $appointments = $this->appointments->filter(
+                function (ResourceRequestAppointment $appointment) use ($with_past_intervals, $now): bool {
+                    if (!$appointment->appointment) {
+                        return false;
+                    }
+                    return $with_past_intervals
+                        || $appointment->appointment->end_time > $now;
                 }
-                if ($rra->appointment) {
-                    $parts[] = $rra->appointment->getFullName('include-room');
+            );
+
+            // Sort by appointment date
+            $appointments->uasort(
+                function (ResourceRequestAppointment $a, ResourceRequestAppointment $b): int {
+                    return $a->appointment->date - $b->appointment->date;
                 }
-            }
-            $strings[] = implode('; ', $parts);
+            );
+
+            // Get readable string for each appointment
+            $strings = $appointments->map(
+                function (ResourceRequestAppointment $appointment): string {
+                    return $appointment->appointment->getFullName('include-room');
+                },
+            );
         } elseif ($this->termin_id) {
             if ($this->date) {
                 if ($with_past_intervals || $this->date->end_time >= $now) {
@@ -1471,10 +1485,10 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
             }
         } elseif ($this->metadate_id) {
             if ($this->cycle) {
-                $this->cycle->dates->filter(function($date) use($with_past_intervals, $now) {
+                $strings = $this->cycle->dates->filter(function ($date) use($with_past_intervals, $now) {
                     return $with_past_intervals || $date->end_time >= $now;
-                })->map(function($date) use(&$strings) {
-                    $strings[] = $date->getFullName('include-room');
+                })->map(function($date) {
+                    return $date->getFullName('include-room');
                 });
             }
         } elseif ($this->course_id) {
@@ -1895,7 +1909,9 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
         return 'user';
     }
 
-
+    /**
+     * @return Course|User
+     */
     public function getRangeObject()
     {
         if ($this->course_id) {
@@ -2197,41 +2213,53 @@ class ResourceRequest extends SimpleORMap implements PrivacyObject, Studip\Calen
      */
     public function sendRequestDeniedMail()
     {
+        $users = [];
         //Get the user who made the request:
-        $user = $this->user;
-        if (!($user instanceof User)) {
+        if ($this->user) {
+            $users[$this->user->id] = $this->user->username;
+        }
+        $range_object = $this->getRangeObject();
+        if ($range_object instanceof Course && $this->reply_recipients === ResourceRequest::REPLY_LECTURER) {
+            foreach ($range_object->getMembersWithStatus('dozent') as $lecturer) {
+                $users[$lecturer->user_id] = $lecturer->username;
+            }
+        }
+        if (count($users) === 0) {
             //No mail to send.
             return;
         }
 
-        //Load the mail template:
-        $factory = new Flexi\Factory(
-            $GLOBALS['STUDIP_BASE_PATH'] . '/locale/'
-        );
-        $user_lang_path = getUserLanguagePath($user->id);
-        $template       = $factory->open(
-            $user_lang_path . '/LC_MAILS/request_denied_mail.inc.php'
-        );
-
-        $range_object = $this->getRangeObject();
         $mail_title = _('Raumanfrage wurde abgelehnt');
-        if($range_object instanceof Course) {
+        if ($range_object instanceof Course) {
             $mail_title .= ': ' . $range_object->getFullName();
         }
-        $mail_text  = $template->render(
-            [
-                'request' => $this,
-                'range_object' => $range_object
-            ]
-        );
 
-        //Send the mail:
-        Message::send(
-            User::findCurrent()->id,
-            $user->username,
-            $mail_title,
-            $mail_text
-        );
+        foreach ($users as $user_id => $username) {
+            //Load the mail template:
+            $factory = new Flexi\Factory(
+                $GLOBALS['STUDIP_BASE_PATH'] . '/locale/'
+            );
+            $user_lang_path = getUserLanguagePath($user_id);
+            $template       = $factory->open(
+                $user_lang_path . '/LC_MAILS/request_denied_mail.inc.php'
+            );
+
+            $mail_text  = $template->render(
+                [
+                    'request' => $this,
+                    'range_object' => $range_object
+                ]
+            );
+
+            //Send the mail:
+            Message::send(
+                User::findCurrent()->id,
+                $username,
+                $mail_title,
+                $mail_text
+            );
+        }
+
     }
 
 

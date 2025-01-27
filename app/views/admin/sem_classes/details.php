@@ -25,7 +25,9 @@
             <span><?= _("Name der Veranstaltungskategorie") ?></span>
             <div>
                 <span class="name"><?= htmlReady($sem_class['name']) ?></span>
-                <a href="#" class="sem_class_edit" onClick="jQuery(this).closest('label').children().toggle().find('input:visible').focus(); return false;"><?= Icon::create('edit', 'clickable')->asImg(['class' => "text-bottom"]) ?></a>
+                <a href="#" class="sem_class_edit" onClick="jQuery(this).closest('label').children().toggle().find('input:visible').focus(); return false;">
+                    <?= Icon::create('edit')->asImg(['class' => 'text-bottom']) ?>
+                </a>
             </div>
 
             <div class="name_input" style="display: none;">
@@ -40,7 +42,7 @@
             <div>
                 <span class="description"><?= htmlReady($sem_class['description']) ?></span>
                 <a href="#" class="sem_class_edit" onClick="jQuery(this).closest('label').children().toggle().find('input:visible').focus(); return false;">
-                    <?= Icon::create('edit', 'clickable')->asImg(['class' => 'text-bottom']) ?></a>
+                    <?= Icon::create('edit')->asImg(['class' => 'text-bottom']) ?></a>
             </div>
             <div class="description_input" style="display: none;">
                 <input id="sem_class_description" type="text" value="<?= htmlReady($sem_class['description']) ?>" onBlur="jQuery(this).closest('label.sem_class_name').children().toggle().find('.description').text(this.value);" style="width: 80%;">
@@ -62,7 +64,10 @@
                 </div>
                 <div style="margin-left: 21px;">
                     <a href="#" onClick="jQuery(this).closest('.add').children().toggle(); jQuery('#new_sem_type').focus(); return false;">
-                        <?= Icon::create('add', 'clickable')->asImg(['class' => "text-bottom", "title" => _("Veranstaltungstyp hinzufügen")]) ?>
+                        <?= Icon::create('add')->asImg([
+                            'class' => 'text-bottom',
+                            'title' => _('Veranstaltungstyp hinzufügen'),
+                        ]) ?>
                     </a>
                 </div>
             </div>

@@ -119,8 +119,6 @@ class LVGroupsWizardStep implements CourseWizardStep
     public function getLVGroupTreeLevel($parentId, $parentClass)
     {
         $level = [];
-        $children = [];
-        $searchtree = [];
 
         $course = Course::findCurrent();
         if ($course) {
@@ -474,8 +472,7 @@ class LVGroupsWizardStep implements CourseWizardStep
         $coursetype = 1;
         foreach ($values as $class)
         {
-            if ($class['coursetype'])
-            {
+            if (!empty($class['coursetype'])) {
                 $coursetype = $class['coursetype'];
                 break;
             }
@@ -487,15 +484,13 @@ class LVGroupsWizardStep implements CourseWizardStep
 
     public function is_locked($values)
     {
-        global $perm;
-
         // Has user access to this function? Access state is configured in global config.
         $access_right = Config::get()->MVV_ACCESS_ASSIGN_LVGRUPPEN;
 
         // the id of the home institute
         // get the institute from the first step (normally "BasicDataWizardStep")
-        $inst_id = reset($values)['institute'];
-        if ($access_right == 'fakadmin') {
+        $inst_id = reset($values)['institute'] ?? null;
+        if ($access_right === 'fakadmin') {
             // is fakadmin at faculty of given home institute
             $db = DBManager::get();
             $st = $db->prepare("SELECT a.Institut_id FROM user_inst a
@@ -504,9 +499,9 @@ class LVGroupsWizardStep implements CourseWizardStep
                 WHERE a.user_id = ? AND a.inst_perms='admin' AND NOT ISNULL(b.Institut_id)
                 AND c.Institut_id = ? LIMIT 1");
             $st->execute([$GLOBALS['user']->id, $inst_id]);
-            return !((bool) $st->fetchColumn());
+            return !$st->fetchColumn();
         }
-        return !$perm->have_studip_perm($access_right, $inst_id);
+        return $inst_id && !$GLOBALS['perm']->have_studip_perm($access_right, $inst_id);
 
     }
 

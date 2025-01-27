@@ -11,9 +11,6 @@ class Calendar_DateController extends AuthenticatedController
         foreach ($GLOBALS['PERS_TERMIN_KAT'] as $key => $data) {
             $options[$key] = $data['name'];
         }
-        if (!array_key_exists(255, $options)) {
-            $options[255] = _('Sonstige');
-        }
         return $options;
     }
 
@@ -655,7 +652,30 @@ class Calendar_DateController extends AuthenticatedController
             throw new InvalidArgumentException();
         }
 
-        if ($this->date->repetition_type) {
+        //In case the moved event is a repetition event, we must know the original date from where
+        //it was moved from to correctly move the whole date series:
+        $original_date = Request::getDateTime('original_date');
+        $real_begin = new DateTime();
+        $real_begin->setTimestamp($this->date->begin);
+        if (
+            $original_date
+            && $original_date->format('Ymd') !== $real_begin->format('Ymd')
+        ) {
+            //The original date is set. If it differs from the beginning, a repetition date
+            //of a date series has been moved. In this case, the difference of the beginning
+            //and the original date has to be calculated and the begin and end fields have
+            //to be updated.
+            $original_date->setTime(
+                $real_begin->format('H'),
+                $real_begin->format('i'),
+                $real_begin->format('s')
+            );
+            $diff = $real_begin->diff($original_date);
+            $this->begin = $this->begin->sub($diff);
+            $this->end = $this->end->sub($diff);
+        }
+
+        if ($this->date->repetition_type !== CalendarDate::REPETITION_SINGLE) {
             PageLayout::setTitle(_('Verschieben eines Termins aus einer Terminserie'));
             //Show the dialog to decide what shall be done with the repetition.
             if (Request::submitted('move')) {
@@ -696,29 +716,6 @@ class Calendar_DateController extends AuthenticatedController
                     }
                     $this->response->add_header('X-Dialog-Close', '1');
                     return;
-                } elseif ($repetition_handling === 'change_times') {
-                    //Set the new time for begin and end:
-                    $date_begin = new DateTime();
-                    $date_begin->setTimestamp($this->date->begin);
-                    $date_begin->setTime(
-                        intval($this->begin->format('H')),
-                        intval($this->begin->format('i')),
-                        intval($this->begin->format('s'))
-                    );
-                    $this->date->begin = $date_begin->getTimestamp();
-                    $date_end = new DateTime();
-                    $date_end->setTimestamp($this->date->end);
-                    $date_end->setTime(
-                        intval($this->end->format('H')),
-                        intval($this->end->format('i')),
-                        intval($this->end->format('s'))
-                    );
-                    $this->date->end = $date_end->getTimestamp();
-
-                    //Set the editor-ID:
-                    $this->date->editor_id = $GLOBALS['user']->id;
-
-                    $store_old_date = true;
                 } elseif ($repetition_handling === 'change_all') {
                     $this->date->begin = $this->begin->getTimestamp();
                     if ($this->date->repetition_end && intval($this->date->repetition_end) != pow(2,31) - 1) {
@@ -792,7 +789,11 @@ class Calendar_DateController extends AuthenticatedController
             );
             $this->render_nothing();
         }
-        $this->date_has_repetitions = !empty($this->date->repetition_type);
+        if (!$this->date->isWritable($GLOBALS['user']->id)) {
+            throw new AccessDeniedException(_('Sie sind nicht berechtigt, diesen Termin zu löschen.'));
+        }
+
+        $this->date_has_repetitions = $this->date->repetition_type !== CalendarDate::REPETITION_SINGLE;
         $this->selected_date = null;
         if ($this->date_has_repetitions) {
             $this->selected_date = Request::getDateTime('selected_date');
@@ -835,7 +836,8 @@ class Calendar_DateController extends AuthenticatedController
                     $delete_whole_date = true;
                 }
             } else {
-                $delete_whole_date = $this->multiple_calendar_handling === 'delete_all';
+                $delete_whole_date = !$this->date_is_in_multiple_calendars
+                    || $this->multiple_calendar_handling === 'delete_all';
             }
             if ($delete_whole_date) {
                 if ($this->date->delete()) {

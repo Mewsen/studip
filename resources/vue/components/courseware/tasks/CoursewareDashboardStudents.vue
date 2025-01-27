@@ -1,17 +1,20 @@
 <template>
     <div class="cw-dashboard-students-wrapper">
-        <CoursewareRibbon :isContentBar="true" :showToolbarButton="false">
-            <template #buttons>
+        <ContentBar isContentBar>
+            <template #buttons-left>
                 <router-link :to="{ name: 'task-groups-index' }">
-                    <StudipIcon shape="category-task" :size="24" />
+                    <StudipIcon shape="category-task" :size="24" aria-role="presentation" />
+                    <span class="sr-only">{{ $gettext('Aufgaben') }}</span>
                 </router-link>
             </template>
-            <template #breadcrumbList>
-                <li>
-                    {{ $gettext('Aufgaben') }}
-                </li>
+            <template #breadcrumb-list>
+                <ul>
+                    <li>
+                        {{ $gettext('Aufgaben') }}
+                    </li>
+                </ul>
             </template>
-        </CoursewareRibbon>
+        </ContentBar>
         <table class="default" v-if="taskGroups.length">
             <thead>
                 <tr class="sortable">
@@ -24,6 +27,7 @@
                     <th :class="getSortClass('end-date')" @click="sort('end-date')">
                         {{ $gettext('Bearbeitungszeit') }}
                     </th>
+                    <th></th>
                     <th class="actions">{{ $gettext('Aktionen') }}</th>
                 </tr>
             </thead>
@@ -44,9 +48,13 @@
                         }}</router-link>
                     </td>
                     <td>
-                        <StudipDate :date="new Date(taskGroup.attributes['start-date'])" /> - <StudipDate
-                            :date="new Date(taskGroup.attributes['end-date'])"
-                        />
+                        <StudipDate :date="new Date(taskGroup.attributes['start-date'])" /> -
+                        <StudipDate :date="new Date(taskGroup.attributes['end-date'])" />
+                    </td>
+                    <td>
+                        <div v-for="process in peerReviewProcesses(taskGroup)" :key="process.id">
+                            <PeerReviewProcessStatus :process="process" description :filter="processActive" />
+                        </div>
                     </td>
                     <td class="actions">
                         <StudipActionMenu
@@ -68,7 +76,11 @@
             </template>
         </CompanionBox>
 
-        <TaskGroupsAddSolversDialog v-if="showTaskGroupsAddSolversDialog" :taskGroup="selectedTaskGroup" @newtask="reloadTasks" />
+        <TaskGroupsAddSolversDialog
+            v-if="showTaskGroupsAddSolversDialog"
+            :taskGroup="selectedTaskGroup"
+            @newtask="reloadTasks"
+        />
         <TaskGroupsDeleteDialog v-if="showTaskGroupsDeleteDialog" :taskGroup="selectedTaskGroup" />
         <TaskGroupsModifyDeadlineDialog v-if="showTaskGroupsModifyDeadlineDialog" :taskGroup="selectedTaskGroup" />
         <CoursewareTasksDialogDistribute v-if="showTasksDistributeDialog" @newtask="reloadTasks" />
@@ -79,8 +91,8 @@
 import _ from 'lodash';
 import { mapActions, mapGetters } from 'vuex';
 import CompanionBox from '../layouts/CoursewareCompanionBox.vue';
-import CoursewareRibbon from '../structural-element/CoursewareRibbon.vue';
 import CoursewareTasksDialogDistribute from './CoursewareTasksDialogDistribute.vue';
+import PeerReviewProcessStatus from './peer-review/ProcessStatus.vue';
 import StudipActionMenu from '../../StudipActionMenu.vue';
 import StudipDate from '../../StudipDate.vue';
 import StudipIcon from '../../StudipIcon.vue';
@@ -88,13 +100,16 @@ import TaskGroupsAddSolversDialog from './TaskGroupsAddSolversDialog.vue';
 import TaskGroupsDeleteDialog from './TaskGroupsDeleteDialog.vue';
 import TaskGroupsModifyDeadlineDialog from './TaskGroupsModifyDeadlineDialog.vue';
 import { getStatus } from './task-groups-helper.js';
+import ContentBar from "../../ContentBar.vue";
+import { ProcessStatus } from './peer-review/definitions.ts';
 
 export default {
     name: 'courseware-dashboard-students',
     components: {
+        ContentBar,
         CompanionBox,
-        CoursewareRibbon,
         CoursewareTasksDialogDistribute,
+        PeerReviewProcessStatus,
         StudipActionMenu,
         StudipDate,
         StudipIcon,
@@ -103,6 +118,7 @@ export default {
         TaskGroupsModifyDeadlineDialog,
     },
     data: () => ({
+        processActive: ProcessStatus.Active,
         selectedTaskGroup: null,
         sortBy: 'end-date',
         sortAsc: false,
@@ -110,6 +126,7 @@ export default {
     computed: {
         ...mapGetters({
             context: 'context',
+            relatedPeerReviewProcesses: 'courseware-peer-review-processes/related',
             showTaskGroupsAddSolversDialog: 'tasks/showTaskGroupsAddSolversDialog',
             showTaskGroupsDeleteDialog: 'tasks/showTaskGroupsDeleteDialog',
             showTaskGroupsModifyDeadlineDialog: 'tasks/showTaskGroupsModifyDeadlineDialog',
@@ -155,13 +172,13 @@ export default {
                     id: 'add-solvers',
                     label: this.$gettext('Teilnehmende hinzufügen'),
                     icon: 'add',
-                    emit: 'addsolvers'
+                    emit: 'addsolvers',
                 });
                 menuItems.push({
                     id: 'modify-deadline',
                     label: this.$gettext('Bearbeitungszeit verlängern'),
                     icon: 'date',
-                    emit: 'deadline'
+                    emit: 'deadline',
                 });
             }
 
@@ -186,11 +203,15 @@ export default {
             this.selectedTaskGroup = taskGroup;
             this.setShowTaskGroupsModifyDeadlineDialog(true);
         },
+        peerReviewProcesses(parent) {
+            return this.relatedPeerReviewProcesses({ parent, relationship: 'peer-review-processes' });
+        },
         reloadTasks() {
             this.loadAllTasks({
                 options: {
                     'filter[cid]': this.context.id,
-                    include: 'solver, structural-element, task-feedback, task-group, task-group.lecturer',
+                    include:
+                        'solver, structural-element, task-feedback, task-group, task-group.lecturer, task-group.peer-review-processes',
                 },
             });
         },
@@ -207,16 +228,10 @@ export default {
 </script>
 
 <style scoped>
-.cw-dashboard-students-wrapper >>> .cw-ribbon-nav {
-    min-width: 24px;
-    padding: 0 1em;
-    height: 24px;
-    margin-top: 2px;
-}
 th {
     cursor: pointer;
 }
-th:is(:first-child,:last-child) {
+th:is(:first-child, :last-child) {
     cursor: not-allowed;
 }
 </style>

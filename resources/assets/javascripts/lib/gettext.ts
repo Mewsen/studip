@@ -1,4 +1,4 @@
-import { translate } from 'vue-gettext';
+import {createGettext, LanguageData} from 'vue3-gettext';
 import * as defaultTranslations from '../../../../locale/de/LC_MESSAGES/js-resources.json';
 import eventBus from './event-bus';
 
@@ -15,73 +15,90 @@ interface InstalledLanguages {
     [key: string]: InstalledLanguage;
 }
 
-type TranslationDict = StringDict;
+type Translation = LanguageData;
 
-interface TranslationDicts {
-    [key: string]: TranslationDict | null;
-}
+type Translations = {
+    [language: string]: LanguageData;
+};
 
 const DEFAULT_LANG = 'de_DE';
 const DEFAULT_LANG_NAME = 'Deutsch';
 
 const state = getInitialState();
 
-const $gettext = translate.gettext.bind(translate);
-const $ngettext = translate.ngettext.bind(translate);
-const $gettextInterpolate = translate.gettextInterpolate.bind(translate);
+const gettext = createGettext({
+    availableLanguages: getAvailableLanguages(),
+    defaultLanguage: state.locale,
+    silent: false,
+    translations: {
+        [DEFAULT_LANG]: {}
+    },
+    mutedLanguages: [DEFAULT_LANG],
+    setGlobalProperties: true,
+    globalProperties: {
+        language: ['$language'],
+        gettext: ['$gettext'],
+        pgettext: ['$pgettext'],
+        ngettext: ['$ngettext'],
+        npgettext: ['$npgettext'],
+        interpolate: ['$gettextInterpolate'],
+    },
+    provideDirective: true,
+    provideComponent: true,
+});
 
-export { $gettext, $ngettext, $gettextInterpolate, translate, getLocale, setLocale, getVueConfig };
+setLocale(state.locale);
 
-function getLocale() {
+export default gettext;
+
+async function updateTranslations() {
+    const translations: Translations = {};
+
+    for (const key of Object.keys(getAvailableLanguages())) {
+        if (state.locale === key) {
+            translations[key] = await getTranslations(key);
+        }
+    }
+    gettext.translations = translations;
+}
+
+export function getLocale() {
     return state.locale;
 }
 
-async function setLocale(locale = getInitialLocale()) {
+export async function setLocale(locale = getInitialLocale()) {
     if (!(locale in getInstalledLanguages())) {
         throw new Error('Invalid locale: ' + locale);
     }
 
     state.locale = locale;
     if (state.translations[state.locale] === null) {
-        const translations: TranslationDict = await getTranslations(state.locale);
-        state.translations[state.locale] = translations;
+        state.translations[state.locale] = await getTranslations(state.locale);
     }
 
-    translate.initTranslations(state.translations, {
-        getTextPluginMuteLanguages: [DEFAULT_LANG],
-        getTextPluginSilent: false,
-        language: state.locale,
-        silent: false,
-    });
+    updateTranslations();
 
     eventBus.emit('studip:set-locale', state.locale);
 }
 
-function getVueConfig() {
-    const availableLanguages = Object.entries(getInstalledLanguages()).reduce((memo, [lang, { name }]) => {
+function getAvailableLanguages() {
+    return Object.entries(getInstalledLanguages()).reduce((memo, [lang, { name }]) => {
         memo[lang] = name;
 
         return memo;
     }, {} as StringDict);
-
-    return {
-        availableLanguages,
-        defaultLanguage: DEFAULT_LANG,
-        muteLanguages: [DEFAULT_LANG],
-        silent: false,
-        translations: state.translations,
-    };
 }
 
+
 function getInitialState() {
-    const translations: TranslationDicts = Object.entries(getInstalledLanguages()).reduce((memo, [lang]) => {
-        memo[lang] = lang === DEFAULT_LANG ? defaultTranslations : null;
+    const translations: Translations = Object.entries(getInstalledLanguages()).reduce((memo, [lang]) => {
+        memo[lang] = lang === DEFAULT_LANG ? defaultTranslations : '';
 
         return memo;
-    }, {} as TranslationDicts);
+    }, {} as Translations);
 
     return {
-        locale: DEFAULT_LANG,
+        locale: getInitialLocale(),
         translations,
     };
 }
@@ -100,15 +117,17 @@ function getInstalledLanguages(): InstalledLanguages {
     return window?.STUDIP?.INSTALLED_LANGUAGES ?? { [DEFAULT_LANG]: { name: DEFAULT_LANG_NAME, selected: true } };
 }
 
-async function getTranslations(locale: string): Promise<TranslationDict> {
+async function getTranslations(locale: string): Promise<Translation> {
     try {
         const language = locale.split(/[_-]/)[0];
-        const translation = await import(`../../../../locale/${language}/LC_MESSAGES/js-resources.json`);
-
-        return translation;
+        return await import(`../../../../locale/${language}/LC_MESSAGES/js-resources.json`);
     } catch (exception) {
         console.error('Could not load locale: "' + locale + '"', exception);
 
         return {};
     }
 }
+
+export const $gettext = gettext.$gettext;
+export const $ngettext = gettext.$ngettext;
+export const $gettextInterpolate = gettext.interpolate;

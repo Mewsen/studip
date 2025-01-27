@@ -26,14 +26,14 @@
          data-forward-url="<?= $no_js_url ?>"
          data-no-search-result="<?= _('Es wurde kein Suchergebnis gefunden.') ?>">
         <h2><?= _('Alle Studienbereiche') ?></h2>
-        <div>
+        <div id="sem-tree-search-wrapper">
             <input style="width:auto" type="text" size="40" name="search" id="sem-tree-search">
-            <span id="sem-tree-search-start">
+            <div id="sem-tree-search-start">
                 <?= Icon::create('search')->asInput([
                     'name'    => 'start_search',
                     'onclick' => 'return STUDIP.CourseWizard.searchTree()',
                 ]) ?>
-            </span>
+            </div>
         </div>
         <div id="sem-tree-assign-all" class="hidden-js hidden-no-js">
             <a href="" onclick="return STUDIP.CourseWizard.assignAllNodes()">

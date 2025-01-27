@@ -11,7 +11,7 @@
                         :class="['cw-block-table-of-contents-' + currentStyle]">
                         <li v-for="child in childElementsWithTasks" :key="child.id">
                             <router-link :to="'/structural_element/' + child.id">
-                                <div class="cw-block-table-of-contents-title-box" :class="[child.attributes.payload.color]">
+                                <div class="cw-block-table-of-contents-title-box" :class="[child.attributes.payload.color ?? 'studip-blue']">
                                     {{ child.attributes.title }}
                                     <span v-if="child.attributes.purpose === 'task'"> | {{ child.solverName }}</span>
                                     <p v-if="currentStyle === 'list-details'">
@@ -27,7 +27,7 @@
                                     ? child.attributes.title + ' | ' + child.solverName
                                     : child.attributes.title
                                 ">
-                                <courseware-tile tag="div" :color="child.attributes.payload.color"
+                                <courseware-tile tag="div" :color="child.attributes.payload.color ?? 'studip-blue'"
                                     :title="child.attributes.title" :imageUrl="getChildImageUrl(child)"
                                 >
                                     <template v-if="child.attributes.purpose === 'task'" #image-overlay>
@@ -37,15 +37,12 @@
                                         {{ child.attributes.payload.description }}
                                     </template>
                                     <template #footer>
-                                        {{
-                                            $gettextInterpolate(
-                                                $ngettext(
-                                                    '%{length} Seite',
-                                                    '%{length} Seiten',
-                                                    countChildChildren(child)
-                                                ),
-                                                { length: countChildChildren(child) })
-                                        }}
+                                        {{ $ngettext(
+                                            '%{length} Seite',
+                                            '%{length} Seiten',
+                                            countChildChildren(child),
+                                            { length: countChildChildren(child) }
+                                        ) }}
                                     </template>
                                 </courseware-tile>
                             </router-link>
@@ -147,7 +144,7 @@ export default {
                     this.loadTask({
                         taskId: taskId,
                     });
-                } catch (error) {
+                } catch {
                     // nothing to do here
                 }
             }
@@ -186,26 +183,24 @@ export default {
 
         getSolverName(taskId) {
             const task = this.taskById({ id: taskId });
-            if (task === undefined) {
-                return false;
-            }
-            const solver = task.relationships.solver.data;
-            if (solver.type === 'users') {
-                const user = this.userById({ id: solver.id });
+            if (task) {
+                const solver = task.relationships.solver.data;
+                if (solver?.type === 'users') {
+                    const user = this.userById({ id: solver.id });
 
-                return user.attributes['formatted-name'];
-            }
-            if (solver.type === 'status-groups') {
-                const group = this.groupById({ id: solver.id });
+                    return user.attributes['formatted-name'];
+                }
+                if (solver?.type === 'status-groups') {
+                    const group = this.groupById({ id: solver.id });
 
-                return group.attributes.name;
+                    return group.attributes.name;
+                }
             }
-
-            return false;
+            return null;
         },
     },
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/table-of-contents.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/table-of-contents';
 </style>

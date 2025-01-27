@@ -28,11 +28,7 @@
                         :title="area.title"
                         :href="area.external_target"
                         :target="area.link_target"
-                        @click="
-                            if (area.target_type === 'internal') {
-                                areaLink(area.internal_target);
-                            }
-                        "
+                        v-on="area.target_type === 'internal' ? {click: () => areaLink(area.internal_target)} : {}"
                     />
                 </map>
                 <div
@@ -111,7 +107,7 @@
                                     v-model="shape.data.color"
                                     @input="drawScreen"
                                 >
-                                    <template #open-indicator="selectAttributes">
+                                    <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"
                                             ><studip-icon shape="arr_1down" :size="10"
                                         /></span>
@@ -139,7 +135,7 @@
                                     v-model="shape.data.textcolor"
                                     @input="drawScreen"
                                 >
-                                    <template #open-indicator="selectAttributes">
+                                    <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"
                                             ><studip-icon shape="arr_1down" :size="10"
                                         /></span>
@@ -263,8 +259,8 @@
 <script>
 import BlockComponents from './block-components.js';
 import blockMixin from '@/vue/mixins/courseware/block.js';
-import VueResizeable from 'vrp-vue-resizable';
-import { mapActions, mapGetters } from 'vuex';
+import VueResizeable from 'vue-resizable';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     name: 'courseware-image-map-block',
@@ -396,7 +392,6 @@ export default {
         },
         drawScreen() {
             let context = this.context;
-            let view = this;
             let outlineImage = new Image();
             outlineImage.src = this.currentUrl;
             outlineImage.onload = function () {
@@ -406,17 +401,16 @@ export default {
                 if (outlineImage.src !== '') {
                     context.drawImage(outlineImage, 0, 0, context.canvas.width, context.canvas.height);
                 }
-                view.drawShapes();
+                this.drawShapes();
 
-                if (!(view.$refs.canvas.length > 0)) {
-                    view.image_from_canvas = view.context.canvas.toDataURL('image/jpeg', 1.0);
-                    view.mapImage();
+                if (this.$refs.canvas.length === 0) {
+                    this.image_from_canvas = this.context.canvas.toDataURL('image/jpeg', 1.0);
+                    this.mapImage();
                 }
             };
         },
         drawShapes() {
             let context = this.context;
-            let view = this;
             this.currentShapes.forEach((value, index) => {
                 // skip the selected shape when redrawing so it disappears while dragging the shape
                 if (this.selectedShapeIndex !== index) {
@@ -435,7 +429,7 @@ export default {
                             text_X = shape.data.centerX;
                             text_Y = shape.data.centerY - shape.data.radius * 0.75;
                             context.arc(shape.data.centerX, shape.data.centerY, shape.data.radius, 0, 2 * Math.PI); // x, y, r, startAngle, endAngle ... Angle in radians!
-                            context.fillStyle = view.colors.filter((color) => {
+                            context.fillStyle = this.colors.filter((color) => {
                                 return color.class === shape.data.color;
                             })[0].rgba;
                             context.fill();
@@ -454,7 +448,7 @@ export default {
                                 0,
                                 2 * Math.PI
                             );
-                            context.fillStyle = view.colors.filter((color) => {
+                            context.fillStyle = this.colors.filter((color) => {
                                 return color.class === shape.data.color;
                             })[0].rgba;
                             context.fill();
@@ -465,7 +459,7 @@ export default {
                             text_X = shape.data.X + shape.data.width / 2;
                             text_Y = shape.data.Y;
                             context.rect(shape.data.X, shape.data.Y, shape.data.width, shape.data.height);
-                            context.fillStyle = view.colors.filter((color) => {
+                            context.fillStyle = this.colors.filter((color) => {
                                 return color.class === shape.data.color;
                             })[0].rgba;
                             context.fill();
@@ -475,13 +469,13 @@ export default {
                     }
 
                     if (text && shape.data.color !== 'transparent') {
-                        text = view.fitTextToShape(context, text, shape_width);
+                        text = this.fitTextToShape(context, text, shape_width);
                         context.textAlign = 'center';
                         context.font = '14px Arial';
                         if (shape.data.textcolor) {
                             context.fillStyle = this.getColorRGBA(shape.data.textcolor);
                         } else {
-                            if (view.darkColors.indexOf(shape.data.color) > -1) {
+                            if (this.darkColors.indexOf(shape.data.color) > -1) {
                                 context.fillStyle = '#ffffff';
                             } else {
                                 context.fillStyle = '#000000';
@@ -528,10 +522,8 @@ export default {
             return newText;
         },
         mapImage() {
-            let view = this;
             // generate map name
-            let map_name = 'cw-image-map-' + Math.round(Math.random() * 100);
-            this.map_name = map_name;
+            this.map_name = 'cw-image-map-' + Math.round(Math.random() * 100);
 
             // insert areas
             this.areas = [];
@@ -566,18 +558,24 @@ export default {
                         break;
                 }
                 area.title = shape.title;
-                shape.link_type === 'external'
-                    ? (area.external_target = shape.target_external)
-                    : (area.external_target = '#');
+                if (shape.link_type === 'external') {
+                    area.external_target = shape.target_external;
+                } else {
+                    area.external_target = '#';
+                }
                 if (shape.link_type === 'internal') {
                     area.internal_target = shape.target_internal;
                 } else {
                     area.internal_target = '';
                 }
-                shape.link_type === 'external' ? (area.link_target = '_blank') : (area.link_target = '_self');
+                if (shape.link_type === 'external') {
+                    area.link_target = '_blank';
+                } else {
+                    area.link_target = '_self';
+                }
                 area.link_type = shape.link_type;
                 area.target_type = shape.link_type;
-                view.areas.push(area);
+                this.areas.push(area);
             });
         },
         areaLink(target) {
@@ -642,7 +640,7 @@ export default {
             }
             this.currentShapes[index].target_external = url;
         },
-        dragStartHandler(data) {
+        dragStartHandler() {
             // redraw screen now that a shape was selected so that it disappears while dragging or resizing
             this.drawScreen();
         },
@@ -664,15 +662,13 @@ export default {
                 } else {
                     mouseX = data.target.parentElement.offsetLeft;
                     mouseY = data.target.parentElement.offsetTop;
-                    if (shape.type == 'arc') {
+                    if (shape.type === 'arc') {
                         mouseX += shape.data.radius;
                         mouseY += shape.data.radius;
-                    }
-                    if (shape.type == 'rect') {
+                    } else if (shape.type === 'rect') {
                         mouseX += shape.data.width / 2;
                         mouseY += shape.data.height / 2;
-                    }
-                    if (shape.type == 'ellipse') {
+                    } else if (shape.type === 'ellipse') {
                         mouseX += shape.data.radiusX;
                         mouseY += shape.data.radiusY;
                     }
@@ -686,30 +682,31 @@ export default {
             this.draggingActive = true;
             // transfer div shape data to canvas according to shape
             let shape = this.currentShapes[this.selectedShapeIndex];
-            if (shape.type == 'arc') {
-                let circle_width = data.width != shape.data.radius * 2 ? data.width : data.height;
+            if (shape.type === 'arc') {
+                let circle_width = data.width !== shape.data.radius * 2 ? data.width : data.height;
                 // if the shape was clicked and not dragged, set the dragging status to false to follow the link
                 if (
-                    shape.data.centerX == data.left + shape.data.radius ||
-                    shape.data.centerY == data.top + shape.data.radius
+                    shape.data.centerX === data.left + shape.data.radius
+                    || shape.data.centerY === data.top + shape.data.radius
                 ) {
                     this.draggingActive = false;
                 }
                 shape.data.radius = circle_width / 2;
                 shape.data.centerX = data.left + shape.data.radius;
                 shape.data.centerY = data.top + shape.data.radius;
-            }
-            if (shape.type == 'rect') {
-                if (shape.data.X == data.left || shape.data.Y == data.top) {
+            } else if (shape.type === 'rect') {
+                if (shape.data.X === data.left || shape.data.Y === data.top) {
                     this.draggingActive = false;
                 }
                 shape.data.X = data.left;
                 shape.data.Y = data.top;
                 shape.data.width = data.width;
                 shape.data.height = data.height;
-            }
-            if (shape.type == 'ellipse') {
-                if (shape.data.X == data.left + shape.data.radiusX || shape.data.Y == data.top + shape.data.radiusY) {
+            } else if (shape.type === 'ellipse') {
+                if (
+                    shape.data.X === data.left + shape.data.radiusX
+                    || shape.data.Y === data.top + shape.data.radiusY
+                ) {
                     this.draggingActive = false;
                 }
                 shape.data.radiusX = data.width / 2;
@@ -723,17 +720,15 @@ export default {
         },
         mouseHit(mouseX, mouseY, shape) {
             // check if the mouseclick was on a shape and return true if it was
-            if (shape.type == 'arc') {
+            if (shape.type === 'arc') {
                 let dx = shape.data.centerX - mouseX;
                 let dy = shape.data.centerY - mouseY;
                 return dx * dx + dy * dy < shape.data.radius * shape.data.radius;
-            }
-            if (shape.type == 'rect' || shape.type == 'text') {
+            } else if (shape.type === 'rect' || shape.type === 'text') {
                 let dx = mouseX - shape.data.X;
                 let dy = mouseY - shape.data.Y;
                 return dx <= shape.data.width && dy <= shape.data.height && dx >= 0 && dy >= 0;
-            }
-            if (shape.type == 'ellipse') {
+            } else if (shape.type === 'ellipse') {
                 let dx = shape.data.X - mouseX;
                 let dy = shape.data.Y - mouseY;
                 return Math.abs(dx) < shape.data.radiusX && Math.abs(dy) < shape.data.radiusY;
@@ -748,53 +743,53 @@ export default {
             return shape.data.color === 'transparent' ? 'dashed thin #000' : 'none';
         },
         getShapeBorderRadius(shape) {
-            if (shape.type == 'rect') {
+            if (shape.type === 'rect') {
                 return 0;
             } else {
                 return '50%';
             }
         },
         getShapeOffsetLeft(shape) {
-            if (shape.type == 'arc') {
+            if (shape.type === 'arc') {
                 return parseInt(shape.data.centerX - shape.data.radius);
             }
-            if (shape.type == 'rect') {
+            if (shape.type === 'rect') {
                 return parseInt(shape.data.X);
             }
-            if (shape.type == 'ellipse') {
+            if (shape.type === 'ellipse') {
                 return parseInt(shape.data.X) - shape.data.radiusX;
             }
         },
         getShapeOffsetTop(shape) {
-            if (shape.type == 'arc') {
+            if (shape.type === 'arc') {
                 return parseInt(shape.data.centerY - shape.data.radius);
             }
-            if (shape.type == 'rect') {
+            if (shape.type === 'rect') {
                 return parseInt(shape.data.Y);
             }
-            if (shape.type == 'ellipse') {
+            if (shape.type === 'ellipse') {
                 return parseInt(shape.data.Y) - shape.data.radiusY;
             }
         },
         getShapeWidth(shape) {
-            if (shape.type == 'arc') {
+            if (shape.type === 'arc') {
                 return parseInt(shape.data.radius * 2);
             }
-            if (shape.type == 'rect') {
+            if (shape.type === 'rect') {
                 return parseInt(shape.data.width);
             }
-            if (shape.type == 'ellipse') {
+            if (shape.type === 'ellipse') {
                 return parseInt(shape.data.radiusX * 2);
             }
         },
         getShapeHeight(shape) {
-            if (shape.type == 'arc') {
+            if (shape.type === 'arc') {
                 return parseInt(shape.data.radius * 2);
             }
-            if (shape.type == 'rect') {
+            if (shape.type === 'rect') {
                 return parseInt(shape.data.height);
             }
-            if (shape.type == 'ellipse') {
+            if (shape.type === 'ellipse') {
                 return parseInt(shape.data.radiusY * 2);
             }
         },
@@ -814,5 +809,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/image-map.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/image-map';
 </style>

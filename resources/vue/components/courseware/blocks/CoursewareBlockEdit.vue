@@ -14,10 +14,9 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-
 export default {
     name: 'courseware-block-edit',
+    emits: ['close', 'store'],
     props: {
         block: Object,
         preview: Boolean
@@ -31,7 +30,7 @@ export default {
     beforeMount() {
         this.originalBlock = this.block;
     },
-    beforeDestroy() {
+    beforeUnmount() {
         if (this.exitHandler) {
             this.$emit('store');
         }

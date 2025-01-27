@@ -21,7 +21,7 @@ class CoreCalendar extends CorePlugin implements StudipModuleExtended
         }
 
         $navigation = new Navigation(_('Kalender'), URLHelper::getURL('dispatch.php/calendar/calendar/course/' . $course_id));
-        $navigation->setImage(Icon::create('schedule', Icon::ROLE_CLICKABLE));
+        $navigation->setImage(Icon::create('schedule'));
         return $navigation;
     }
 

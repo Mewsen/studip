@@ -18,7 +18,7 @@ $border-width: 4px;
 
     h2, h3 {
         border-bottom: 0;
-        color: var(--white);
+        color: var(--color--font-inverted);
         font-size: 1em;
         font-weight: normal;
         margin: 0;
@@ -30,10 +30,8 @@ $border-width: 4px;
     }
 
     h3 {
-        border-bottom: 1px dotted var(--base-color-80);
         font-size: 1.1em;
-        margin-bottom: 2px;
-        padding-bottom: 2px;
+        margin-bottom: 5px;
     }
 
     > .helpbar-toggler {
@@ -44,12 +42,14 @@ $border-width: 4px;
 }
 
 .helpbar {
-    background-color: var(--base-color);
+    background-color: var(--color--info);
     padding: 8px;
     box-sizing: border-box;
     position: absolute;
-    right: -2px;
-    top: 0;
+    right: -8px;
+    top: -10px;
+
+    border-radius: var(--border-radius-default);
 
     width: $helpbar-width;
     z-index: 1000;
@@ -72,15 +72,16 @@ $border-width: 4px;
     .helpbar-title {
         display: flex;
         justify-content: space-between;
+        margin: 10px 0 15px 10px;
     }
 
     .helpbar-toggler {
         margin-top: -5px;
-        margin-right: -1px;
+        margin-right: 5px;
     }
 
     .helpbar-widgets {
-        color: var(--white);
+        color: var(--color--font-inverted);
         list-style: none;
         padding: 0;
 
@@ -89,18 +90,22 @@ $border-width: 4px;
         }
 
         a:link, a:visited {
-            color: var(--white);
+            color: var(--color--font-inverted);
         }
 
         a:hover, a:active {
-            color: var(--white);
+            color: var(--color--font-inverted);
             text-decoration: underline;
         }
 
         > li {
-            border-top: 1px solid var(--content-color);
-            padding: 3px 0;
-            margin: .4em .25em;
+            border-top: 1px solid var(--color--font-inverted);
+            padding: 10px 5px 5px 5px;
+            margin: 15px 5px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
     }
 
@@ -111,10 +116,10 @@ $border-width: 4px;
 
         a {
             @include background-icon(play, info_alt);
-            background-position: left 2px;
+            background-position: left;
             background-repeat: no-repeat;
             display: block;
-            padding-left: 20px;
+            padding-left: 24px;
 
             &.tour-paused {
                 @include background-icon(pause, info_alt);

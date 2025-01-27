@@ -48,7 +48,7 @@ class CoursesetModel
                       WHERE s.status NOT IN(?)
                         AND (semester_courses.semester_id IS NULL OR semester_courses.semester_id = ?)
                         AND su.`user_id` = ?
-                      GROUP BY su.`Seminar_id`  ";
+                      GROUP BY su.`Seminar_id`";
             $parameters = [
                 $excludeTypes,
                 $currentSemester->id,
@@ -148,7 +148,7 @@ class CoursesetModel
             );
 
         };
-        Course::findEachMany($callable, array_unique($courses),"ORDER BY `semester_data`.`beginn` DESC, `VeranstaltungsNummer` ASC, `Name` ASC");
+        Course::findEachMany($callable, array_unique($courses),"ORDER BY `VeranstaltungsNummer` ASC, `Name` ASC");
 
         return $data;
     }

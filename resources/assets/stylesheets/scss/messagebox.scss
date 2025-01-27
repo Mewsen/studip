@@ -1,7 +1,7 @@
 /* --- MessageBoxes --------------------------------------------------------- */
 div.messagebox {
     background: no-repeat 10px 10px;
-    border: 2px solid;
+    border-left: 5px solid;
     font-size: 12pt;
     font-weight: bold;
     margin: 0 0 5px 0;
@@ -20,12 +20,12 @@ div.messagebox {
 
         a {
             background: transparent no-repeat center center;
-            background-size: 16px 16px;
+            background-size: var(--icon-size-default) var(--icon-size-default);
 
             display: inline-block;
             margin: 1px;
-            width: 16px;
-            height: 16px;
+            width: var(--icon-size-default);
+            height: var(--icon-size-default);
 
             &.close,
             &.details {
@@ -54,7 +54,7 @@ div.messagebox_details {
 }
 
 // Messagebox definitions
-@mixin messagebox ($name, $color, $background-color, $border-color: $color, $image: $name) {
+@mixin messagebox($name, $color, $background-color, $border-color: $color, $image: $name) {
     div.messagebox_#{$name} {
         color: $color;
         background-color: $background-color;
@@ -64,11 +64,11 @@ div.messagebox_details {
     }
 }
 
-@include messagebox(info, var(--black), var(--white), var(--base-color));
-@include messagebox(success, var(--black), var(--white), var(--dark-green));
-@include messagebox(error, var(--black), var(--white), var(--red));
-@include messagebox(exception, var(--red), var(--red-20), var(--red));
-@include messagebox(warning, var(--black), var(--white), var(--yellow-60), advice);
+@include messagebox(info, var(--color--black), var(--color--info-alternative), var(--color--info));
+@include messagebox(success, var(--color--black), var(--color--good-alternative), var(--color--good));
+@include messagebox(error, var(--color--black), var(--color--warning-alternative), var(--color--warning));
+@include messagebox(exception, var(--color--black), var(--color--warning-alternative), var(--color--warning));
+@include messagebox(warning, var(--color--black), var(--color--attention-alternative), var(--color--attention), advice);
 
 // Define modal messagebox
 .modaloverlay {

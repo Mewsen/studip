@@ -575,8 +575,8 @@ export default {
         }),
 
         toDataURL(url) {
-            return new Promise(function (resolve, reject) {
-                var xhr = new XMLHttpRequest();
+            return new Promise(function (resolve) {
+                const xhr = new XMLHttpRequest();
                 xhr.onload = function () {
                     var reader = new FileReader();
                     reader.onloadend = function () {
@@ -612,7 +612,7 @@ export default {
                     relationship: 'file-refs',
                     options: { include: 'terms-of-use' },
                 });
-            } catch (error) {
+            } catch {
                 this.folderLoadError = true;
             }
         },
@@ -784,16 +784,15 @@ export default {
         },
         async loadTags() {
             this.mp3tag = null;
-            let view = this;
             let response = await fetch(this.currentURL);
             let data = await response.blob();
             let file = new File([data], this.activeTrackName);
 
             let reader = new FileReader();
-            reader.onload = function () {
-                const buffer = this.result;
-                view.mp3tag = new MP3Tag(buffer);
-                view.mp3tag.read();
+            reader.onload = () => {
+                const buffer = reader.result;
+                this.mp3tag = new MP3Tag(buffer);
+                this.mp3tag.read();
             };
 
             reader.readAsArrayBuffer(file);
@@ -810,38 +809,36 @@ export default {
             if (!this.folderSelected || this.folderLoadError) {
                 return false;
             }
-            let view = this;
             navigator.mediaDevices
                 .getUserMedia({ audio: true })
-                .then(function (stream) {
-                    view.recorder = new MediaRecorder(stream, { type: 'audio/webm; codecs:vp9' });
-                    view.userRecorderEnabled = true;
-                    view.recorder.ondataavailable = (e) => {
-                        view.chunks.push(e.data);
+                .then((stream) => {
+                    this.recorder = new MediaRecorder(stream, { type: 'audio/webm; codecs:vp9' });
+                    this.userRecorderEnabled = true;
+                    this.recorder.ondataavailable = (e) => {
+                        this.chunks.push(e.data);
                     };
 
-                    view.recorderAudioCtx = new AudioContext();
-                    view.recorderAnalyser = view.recorderAudioCtx.createAnalyser();
-                    view.recorderSource = view.recorderAudioCtx.createMediaStreamSource(stream);
-                    view.recorderSource.connect(view.recorderAnalyser);
-                    view.recorderAnalyser.fftSize = 2 ** 6;
-                    view.recorderBufferLength = view.recorderAnalyser.frequencyBinCount;
-                    view.recorderFrequencyData = new Uint8Array(view.recorderBufferLength);
+                    this.recorderAudioCtx = new AudioContext();
+                    this.recorderAnalyser = this.recorderAudioCtx.createAnalyser();
+                    this.recorderSource = this.recorderAudioCtx.createMediaStreamSource(stream);
+                    this.recorderSource.connect(this.recorderAnalyser);
+                    this.recorderAnalyser.fftSize = 2 ** 6;
+                    this.recorderBufferLength = this.recorderAnalyser.frequencyBinCount;
+                    this.recorderFrequencyData = new Uint8Array(this.recorderBufferLength);
                 })
                 .catch(() => {
-                    view.companionWarning({
-                        info: view.$gettext('Sie müssen ein Mikrofon freigeben, um eine Aufnahme starten zu können.'),
+                    this.companionWarning({
+                        info: this.$gettext('Sie müssen ein Mikrofon freigeben, um eine Aufnahme starten zu können.'),
                     });
                 });
         },
         startRecording() {
-            let view = this;
             this.chunks = [];
             this.timer = 0;
             this.recorder.start();
             this.isRecording = true;
-            setTimeout(function () {
-                view.setTimer();
+            setTimeout(() => {
+                this.setTimer();
             }, 1000);
         },
         stopRecording() {
@@ -850,11 +847,10 @@ export default {
             this.recorder.stop();
         },
         setTimer() {
-            let view = this;
             if (this.recorder.state === 'recording') {
                 this.timer++;
-                setTimeout(function () {
-                    view.setTimer();
+                setTimeout(() => {
+                    this.setTimer();
                 }, 1000);
             }
         },
@@ -867,14 +863,12 @@ export default {
             }
 
             if (this.isRecording) {
-                let view = this;
-                requestAnimationFrame(() => view.recorderDrawTimeData());
+                requestAnimationFrame(() => this.recorderDrawTimeData());
             }
         },
         async storeRecording() {
-            let view = this;
             let user = this.usersById({ id: this.userId });
-            let blob = new Blob(view.chunks, { type: 'audio/webm; codecs:vp9' });
+            let blob = new Blob(this.chunks, { type: 'audio/webm; codecs:vp9' });
 
             let file = {
                 attributes: {
@@ -975,7 +969,7 @@ export default {
 
             const fileRef = await this.fileRefById({ id: this.activeFile.id });
 
-            let fileObj = await this.updateFileContent({
+            await this.updateFileContent({
                 file: fileRef,
                 filedata: modifiedFile,
             });
@@ -1014,5 +1008,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/audio.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/audio';
 </style>

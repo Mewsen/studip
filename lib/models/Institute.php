@@ -129,6 +129,11 @@ class Institute extends SimpleORMap implements Range
             'order_by'          => 'ORDER BY position',
             'on_delete'         => 'delete',
         ];
+        $config['has_many']['courses_of_study'] = [
+            'class_name'        => Studiengang::class,
+            'assoc_foreign_key' => 'institut_id',
+            'order_by'          => 'ORDER BY name ASC',
+        ];
         $config['additional_fields']['all_status_groups']['get'] = function ($institute) {
             return Statusgruppen::findAllByRangeId($institute->id, true);
         };

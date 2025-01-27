@@ -2,7 +2,7 @@
 
 /**
  *  Copyright (c) 2012  Rasmus Fuhse <fuhse@data-quest.de>
- * 
+ *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License as
  *  published by the Free Software Foundation; either version 2 of
@@ -27,8 +27,12 @@ $id = $sem_type['id'];
         </span>
     </span>
     (<?= sprintf(_("%s Veranstaltungen"), $number_of_seminars ?: _("keine")) ?>)
-    <a href="#" class="sem_type_edit" onClick="jQuery(this).closest('li').find('.name_container').children().toggle().find('input').focus(); return false;" title="<?= _("Veranstaltungstyp umbenennen") ?>"><?= Icon::create('edit', 'clickable')->asImg(['class' => "text-bottom"]) ?></a>
+    <a href="#" class="sem_type_edit" onClick="jQuery(this).closest('li').find('.name_container').children().toggle().find('input').focus(); return false;" title="<?= _("Veranstaltungstyp umbenennen") ?>">
+        <?= Icon::create('edit')->asImg(['class' => "text-bottom"]) ?>
+    </a>
     <? if ($number_of_seminars == 0) : ?>
-        <a href="#" class="sem_type_delete" onClick="return false;" title="<?= _("Veranstaltungstyp löschen") ?>"><?= Icon::create('trash', 'clickable')->asImg(['class' => "text-bottom"]) ?></a>
+        <a href="#" class="sem_type_delete" onClick="return false;" title="<?= _("Veranstaltungstyp löschen") ?>">
+            <?= Icon::create('trash')->asImg(['class' => "text-bottom"]) ?>
+        </a>
     <? endif ?>
 </li>

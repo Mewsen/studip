@@ -1,51 +1,35 @@
 <template>
-    <div
-        v-if="isActive"
-        role="tabpanel"
-        class="cw-tab"
-        :id="id"
-        :aria-labelledby="selectorId"
-    >
+    <div v-if="isActive" role="tabpanel" class="cw-tab">
         <slot></slot>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'courseware-tab',
+    inject: ['addTab', 'activeTab'],
     props: {
-        name: {type: String, required: true },
-        alias: {type: String, default: ''},
-        selected: { type: Boolean, default: false },
-        index: {type: Number, required: true },
-        icon: {type: String, default: ''},
+        name: {
+            type: String,
+            required: true,
+        },
+        icon: {
+            type: String,
+            default: '',
+        },
     },
     data() {
         return {
-            isActive: false,
+            index: null,
         };
     },
     computed: {
-        selectorId() {
-            return '#' + this._uid + '-' + this.name.toLowerCase().replace(/ /g, '-');
+        isActive() {
+            return this.activeTab() === this.index;
         },
-        id() {
-            return this._uid + '-' + this.name.toLowerCase().replace(/ /g, '-') + '-tabpanel';
-        }
     },
     mounted() {
-        this.isActive = this.selected;
+        this.index = this.$parent.tabs.length;
+        this.addTab({ name: this.name, icon: this.icon });
     },
-    updated () {
-        if (this.isActive) {
-            STUDIP.eventBus.emit('courseware:update-tab',{ 'uid': this._uid });
-        }
-
-    },
-    watch: {
-        selected(newValue) {
-            this.isActive = newValue;
-        }
-    }
 };
 </script>

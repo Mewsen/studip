@@ -36,7 +36,7 @@ class BlubberThreadsCreateTest extends \Codeception\Test\Unit
         // given
         $credentials = $this->tester->getCredentialsForTestAutor();
 
-        $response = $this->createThread($credentials, 'private');
+        $response = $this->createThread($credentials, ['context-type' => 'private']);
         $this->tester->assertTrue($response->isSuccessfulDocument([201]));
 
         $document = $response->document();
@@ -70,30 +70,48 @@ class BlubberThreadsCreateTest extends \Codeception\Test\Unit
         $this->tester->assertSame($credentials['id'], $links[0]['id']);
     }
 
+    public function testCreateCourseThreadSucessfully()
+    {
+        // given
+        $credentials = $this->tester->getCredentialsForTestDozent();
+        $course_id = 'a07535cf2f8a72df33c12ddfa4b53dde';
+        $thread_title = 'Test-Thread';
+        $attributes = [
+            'context-type' => 'course',
+            'context-id' => $course_id,
+            'content' => $thread_title
+        ];
+
+        $response = $this->createThread($credentials, $attributes);
+        $this->tester->assertTrue($response->isSuccessfulDocument([201]));
+
+        $document = $response->document();
+        $this->tester->assertTrue($document->isSingleResourceDocument());
+
+        $resourceObject = $document->primaryResource();
+
+        $this->tester->assertSame('course', $resourceObject->attribute('context-type'));
+        $this->tester->assertSame($thread_title, $resourceObject->attribute('content'));
+    }
+
     public function testFailToCreateAnotherTypeOfThread()
     {
         // given
         $credentials = $this->tester->getCredentialsForTestAutor();
 
-        $response = $this->createThread($credentials, 'course');
+        $response = $this->createThread($credentials, ['context-type' => 'institute']);
         $this->tester->assertSame(400, $response->getStatusCode());
 
-        $response = $this->createThread($credentials, 'institute');
-        $this->tester->assertSame(400, $response->getStatusCode());
-
-        $response = $this->createThread($credentials, 'public');
+        $response = $this->createThread($credentials, ['context-type' => 'public']);
         $this->tester->assertSame(400, $response->getStatusCode());
     }
 
-
-    private function createThread($credentials, $contextType = 'private')
+    private function createThread($credentials, $attributes)
     {
         $body = [
             'data' => [
                 'type' => Schema::TYPE,
-                'attributes' => [
-                    'context-type' => $contextType
-                ]
+                'attributes' => $attributes
             ]
         ];
 

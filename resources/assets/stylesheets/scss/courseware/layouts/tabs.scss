@@ -1,5 +1,5 @@
-@use '../../../mixins.scss' as *;
-@import '../variables.scss';
+@use '../../../mixins' as *;
+@import '../variables';
 
 .cw-tabs-nav {
     display: flex;
@@ -7,7 +7,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    border: solid thin var(--content-color-40);
+    border: solid thin var(--color--content-box-border);
     border-bottom: none;
 
     button {
@@ -23,8 +23,8 @@
 
         &::after {
             display: block;
-            margin-top: 4px;
-            margin-bottom: -5px;
+            margin-top: 8px;
+            margin-bottom: -4px;
             margin-left: -14px;
             width: calc(100% + 28px);
             content: '';
@@ -49,8 +49,8 @@
                     background-position: left bottom;
 
                     display: inline-block;
-                    height: 16px;
-                    width: 16px;
+                    height: var(--icon-size-inline);
+                    width: var(--icon-size-inline);
                     margin-bottom: -2px;
                     padding-left: 4px;
                     content: '';
@@ -71,7 +71,7 @@
                     width: 24px;
                     content: '';
 
-                    @include background-icon($icon, clickable, 24);
+                    @include background-icon($icon, $size: 24px);
                     background-repeat: no-repeat;
                     background-position: center;
                 }
@@ -79,7 +79,7 @@
             &.is-active.cw-tabs-nav-icon-solo-#{$icon},
             &.cw-tabs-nav-icon-solo-#{$icon}:hover {
                 &::before {
-                    @include background-icon($icon, info);
+                    @include background-icon($icon, info, 24px);
                 }
             }
         }
@@ -96,7 +96,7 @@
 }
 
 .cw-tabs-content {
-    border: solid thin var(--content-color-40);
+    border: solid thin var(--color--content-box-border);
     padding: 4px;
 }
 

@@ -66,16 +66,32 @@
     @return "#{$icon-path}/#{$color}/#{$icon}.svg";
 }
 
-@mixin background-icon($icon, $role: clickable, $size: 16) {
+@function icon-size($size) {
+    @if unitless($size) {
+        @warn "Assuming icon size to be in pixels";
+        $size: $size * 1px;
+    }
+
+    @if $size == $icon-size-default {
+        @return var(--icon-size-default);
+    }
+    @if $size == $icon-size-inline {
+        @return var(--icon-size-inline);
+    }
+    @if $size == $icon-size-button {
+        @return var(--icon-size-button);
+    }
+
+    @return $size;
+}
+
+@mixin background-icon($icon, $role: clickable, $size: $icon-size-default) {
     $svg: icon-path($icon, $role);
 
     background-image: url("#{$svg}");
 
     @if $size {
-        @if unitless($size) {
-            $size: $size * 1px;
-        }
-        background-size: $size;
+        background-size: icon-size($size);
     }
 }
 
@@ -88,12 +104,11 @@
     }
 }
 
-@mixin icon($position, $icon, $role, $size: 16px, $padding: 0) {
-    $position: unquote($position);
+@mixin icon($position, $icon, $role: clickable, $size: $icon-size-default, $padding: 0, $inline: false) {
+    $position: $position;
 
-    @if unitless($size) {
-        @warn "Assuming icon size to be in pixels";
-        $size: $size * 1px;
+    @if $inline {
+        $size: $icon-size-inline;
     }
 
     @if $position == before or $position == after {
@@ -102,11 +117,11 @@
             background-repeat: no-repeat;
             content: ' ';
             display: inline-block;
-            height: $size;
+            height: icon-size($size);
             vertical-align: text-top;
-            width: $size;
+            width: icon-size($size);
 
-            @if position == before {
+            @if $position == before {
                 margin-right: $padding;
             } @else {
                 margin-left: $padding;
@@ -122,12 +137,12 @@
     display: inline-block;
     vertical-align: bottom;
 
-    @include background-icon($default-icon-name, clickable, 20);
-    @include hide-text();
-    @include square(20px);
+    @include background-icon($default-icon-name, $size: $icon-size-default);
+    @include hide-text;
+    @include square($icon-size-default);
 
     &.toggled {
-        @include background-icon($toggled-icon-name, clickable, 20);
+        @include background-icon($toggled-icon-name, $size: $icon-size-default);
     }
 }
 
@@ -155,7 +170,7 @@
         height: 180px;
         width: 180px;
         opacity: 0.6;
-        transform: translate(20px, -50px);
+        transform: translate($icon-size-default, -50px);
 
     }
 
@@ -164,7 +179,7 @@
     background-size: 140px;
     background-position: calc(50% - 100px) calc(50% + 40px);
 
-    @if ($background-color) {
+    @if $background-color {
         background-color: mix($background-color, rgba(255, 255, 255, 0), 70%);
     }
 
@@ -218,12 +233,12 @@
 // Define action icons for widgets
 @mixin widget-action($action, $icon: $action, $role: clickable) {
     .widget-action[data-action="#{$action}"] {
-        @include hide-text();
+        @include hide-text;
 
-        width: 16px;
-        height: 16px;
+        width: var(--icon-size-default);
+        height: var(--icon-size-default);
 
-        @include background-icon($icon, $role, 16px);
+        @include background-icon($icon, $role);
 
         background-repeat: no-repeat;
         cursor: pointer;
@@ -232,30 +247,4 @@
 
         @content;
     }
-}
-
-@mixin scrollbox-horizontal() {
-    overflow: auto;
-
-    background:
-        /* Shadow covers */
-        linear-gradient(90deg, white 30%, rgba(255,255,255,0)),
-        linear-gradient(90deg, rgba(255,255,255,0), white 70%) 100% 0,
-
-            /* Shadows */
-        radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.2), rgba(0,0,0,0)),
-        radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.2), rgba(0,0,0,0)) 100% 0;
-    background:
-        /* Shadow covers */
-        linear-gradient(90deg, white 30%, rgba(255,255,255,0)),
-        linear-gradient(90deg, rgba(255,255,255,0), white 70%) 100% 0,
-
-            /* Shadows */
-        radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.2), rgba(0,0,0,0)),
-        radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.2), rgba(0,0,0,0)) 100% 0;
-    background-repeat: no-repeat;
-    background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
-
-    /* Opera doesn't support this in the shorthand */
-    background-attachment: local, local, scroll, scroll;
 }

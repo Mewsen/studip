@@ -54,7 +54,7 @@
     <footer data-dialog-button>
         <?= Studip\Button::createAccept(_('Speichern'), 'submit') ?>
     <? if (!empty($first_entry)): ?>
-        <?= Studip\LinkButton::createCancel(_('Abbrechen'), URLHelper::getLink('seminar_main.php')) ?>
+        <?= Studip\LinkButton::createCancel(_('Abbrechen'), URLHelper::getLink('dispatch.php/course/go')) ?>
     <? else: ?>
         <?= Studip\LinkButton::createCancel(_('Abbrechen'), $controller->url_for('course/scm/' . $scm->id)) ?>
     <? endif; ?>

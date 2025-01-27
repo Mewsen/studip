@@ -258,6 +258,65 @@ class Admission_CoursesetController extends AuthenticatedController
             $tpl->set_attribute('rights', false);
         }
         $this->instTpl = $tpl->render();
+
+        $this->semesters = array_reverse(array_map(
+            fn ($s) => $s->toArray(),
+            Semester::getAll()
+        ));
+
+        if ($GLOBALS['perm']->have_perm('root')) {
+            $this->isearch = new StandardSearch('Institut_id');
+            $this->myinst = [];
+        } else {
+            $this->isearch = null;
+            $this->myinst = array_map(
+                fn ($i) => [
+                    'id' => $i['Institut_id'],
+                    'name' => $i['Name'],
+                    'faculty' => $i['is_fak'] ? null : $i['fakultaets_id']
+                ],
+                Institute::getMyInstitutes()
+            );
+        }
+
+        $props = [
+            'all-semesters' => $this->semesters,
+            'my-institutes'=> $this->myinst,
+            'my-user-lists' => array_values(
+                array_map(
+                    fn ($list) => [
+                        'id' => $list->getId(),
+                        'name' => $list->getName(),
+                        'factor' => $list->getFactor(),
+                        'count' => $list->getUserCount()
+                    ],
+                    $this->myUserlists
+                )
+            ),
+            'institute-search' => (string) $this->isearch
+        ];
+
+        if ($this->courseset) {
+            $props['course-set-id'] = $this->courseset->getId();
+        }
+
+        $this->render_vue_app(
+            Studip\VueApp::create('admission/ConfigureCourseSet')
+                ->withProps($props)
+        );
+
+        Helpbar::get()->addPlainText(
+            _('Regeln'),
+            _('Hier können Sie die Regeln, Eigenschaften und Zuordnungen des Anmeldesets bearbeiten.')
+        );
+        Helpbar::get()->addPlainText(
+            _('Info'),
+            _('Sie können das Anmeldeset allen Einrichtungen zuordnen, an denen Sie mindestens Lehrendenrechte haben.')
+        );
+        Helpbar::get()->addPlainText(
+            _('Sichtbarkeit'),
+            _('Alle Veranstaltungen der Einrichtungen, an denen Sie mindestens Lehrendenrechte haben, können zum Anmeldeset hinzugefügt werden.')
+        );
     }
 
     /**

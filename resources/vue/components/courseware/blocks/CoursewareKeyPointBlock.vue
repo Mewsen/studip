@@ -39,7 +39,7 @@
                             :reduce="(option) => option.icon"
                             v-model="currentColor"
                         >
-                            <template #open-indicator="selectAttributes">
+                            <template #open-indicator="{ selectAttributes }">
                                 <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
                             </template>
                             <template #no-options>
@@ -58,7 +58,7 @@
                     <label class="col-2">
                         {{ $gettext('Icon') }}
                         <studip-select :options="icons" :clearable="false" v-model="currentIcon">
-                            <template #open-indicator="selectAttributes">
+                            <template #open-indicator="{ selectAttributes }">
                                 <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
                             </template>
                             <template #no-options>
@@ -115,7 +115,7 @@ export default {
         },
         colors() {
              let colors = this.mixinColors.filter(
-                (color) => (color.icon && color.class !== 'white' && color.class !== 'studip-lightblue') 
+                (color) => (color.icon && color.class !== 'white' && color.class !== 'studip-lightblue')
                 || color.class === 'royal-purple' || color.class === 'apple-green' || color.class === 'pumpkin' || color.class === 'verdigris' || color.class === 'mulberry'
             );
 
@@ -190,5 +190,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/keypoint.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/keypoint';
 </style>

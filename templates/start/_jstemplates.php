@@ -35,23 +35,23 @@
             <% var treffer = activity.provider.match(/.*\\(.*)Provider/) %>
             <% var provider = treffer[1].toLowerCase(); %>
             <% if (provider === 'blubber') { %>
-                <?= Icon::create('blubber', 'info_alt')->asImg(32) ?>
+                <?= Icon::create('blubber', Icon::ROLE_INFO_ALT) ?>
             <% } else if(provider === 'documents') { %>
-                <?= Icon::create('files', 'info_alt')->asImg(32) ?>
+                <?= Icon::create('files', Icon::ROLE_INFO_ALT) ?>
             <% } else if(provider === 'forum') { %>
-                <?= Icon::create('forum', 'info_alt')->asImg(32) ?>
+                <?= Icon::create('forum', Icon::ROLE_INFO_ALT) ?>
             <% } else if(provider === 'message') { %>
-                <?= Icon::create('mail', 'info_alt')->asImg(32) ?>
+                <?= Icon::create('mail', Icon::ROLE_INFO_ALT) ?>
             <% } else if(provider === 'news') { %>
-                <?= Icon::create('news', 'info_alt')->asImg(32) ?>
+                <?= Icon::create('news', Icon::ROLE_INFO_ALT) ?>
             <% } else if(provider === 'participants') { %>
-                <?= Icon::create('persons', 'info_alt')->asImg(32) ?>
+                <?= Icon::create('persons', Icon::ROLE_INFO_ALT) ?>
             <% } else if(provider === 'schedule') { %>
-                <?= Icon::create('schedule', 'info_alt')->asImg(32) ?>
+                <?= Icon::create('schedule', Icon::ROLE_INFO_ALT) ?>
             <% } else if(provider === 'wiki') { %>
-                <?= Icon::create('wiki', 'info_alt')->asImg(32) ?>
+                <?= Icon::create('wiki', Icon::ROLE_INFO_ALT) ?>
             <% } else { %>
-                <?= Icon::create('activity', 'info_alt')->asImg(32) ?>
+                <?= Icon::create('activity', Icon::ROLE_INFO_ALT) ?>
             <% } %>
             </span>
             <div class="activity-heading">

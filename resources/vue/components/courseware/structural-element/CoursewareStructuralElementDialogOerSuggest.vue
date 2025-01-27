@@ -13,23 +13,23 @@
         <template v-slot:dialogContent>
             <p>
                 {{
-                    $gettextInterpolate(
-                        $gettext(
-                            'Der folgende Lerninhalt wird %{ ownerName } zur Veröffentlichung im OER Campus vorgeschlagen:'
-                        ),
+                    $gettext(
+                        'Der folgende Lerninhalt wird %{ ownerName } zur Veröffentlichung im OER Campus vorgeschlagen:',
                         { ownerName: ownerName }
                     )
                 }}
             </p>
             <table class="cw-structural-element-info">
-                <tr>
-                    <td>{{ $gettext('Titel') }}:</td>
-                    <td>{{ structuralElement.attributes.title }}</td>
-                </tr>
-                <tr>
-                    <td>{{ $gettext('Beschreibung') }}:</td>
-                    <td>{{ structuralElement.attributes.payload.description }}</td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>{{ $gettext('Titel') }}:</td>
+                        <td>{{ structuralElement.attributes.title }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ $gettext('Beschreibung') }}:</td>
+                        <td>{{ structuralElement.attributes.payload.description }}</td>
+                    </tr>
+                </tbody>
             </table>
             <form class="default" @submit.prevent="">
                 <label>

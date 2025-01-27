@@ -64,27 +64,29 @@ $cal_step_weeks = [
             <?= _('Einzelterminkalender') ?>
         </legend>
 
-        <label>
-            <?= _('Startuhrzeit') ?>
-            <select name="cal_start" aria-label="<?= _('Startzeit der Tages- und Wochenansicht') ?>" class="size-s">
-                <? for ($i = 0; $i < 24; $i += 1): ?>
-                    <option value="<?= $i ?>" <? if ($start == $i) echo 'selected'; ?>>
-                        <?= sprintf(_('%02u:00 Uhr'), $i) ?>
-                    </option>
-                <? endfor; ?>
-            </select>
-        </label>
+        <div class="hgroup">
+            <label>
+                <?= _('Beginn') ?>
+                <select name="cal_start" aria-label="<?= _('Startzeit der Tages- und Wochenansicht') ?>" class="size-s">
+                    <? for ($i = 0; $i < 24; $i += 1): ?>
+                        <option value="<?= $i ?>" <? if ($start == $i) echo 'selected'; ?>>
+                            <?= sprintf('%02u:00', $i) ?>
+                        </option>
+                    <? endfor; ?>
+                </select>
+            </label>
 
-        <label>
-            <?= _('Enduhrzeit') ?>
-            <select name="cal_end" aria-label="<?= _('Endzeit der Tages- und Wochenansicht') ?>" class="size-s">
-                <? for ($i = 1; $i < 25; $i += 1): ?>
-                    <option value="<?= $i ?>" <? if ($end == $i) echo 'selected'; ?>>
-                        <?= sprintf(_('%02u:00 Uhr'), $i) ?>
-                    </option>
-                <? endfor; ?>
-            </select>
-        </label>
+            <label>
+                <?= _('Ende') ?>
+                <select name="cal_end" aria-label="<?= _('Endzeit der Tages- und Wochenansicht') ?>" class="size-s">
+                    <? for ($i = 1; $i < 25; $i += 1): ?>
+                        <option value="<?= $i ?>" <? if ($end == $i) echo 'selected'; ?>>
+                            <?= sprintf('%02u:00', $i) ?>
+                        </option>
+                    <? endfor; ?>
+                </select>
+            </label>
+        </div>
 
         <label>
             <?= _('Zeitintervall der Tagesansicht') ?>
@@ -151,5 +153,6 @@ $cal_step_weeks = [
         <? endif ?>
         <input type="hidden" name="view" value="calendar">
         <?= Button::createAccept(_('Übernehmen'), ['title' => _('Änderungen übernehmen')]) ?>
+        <?= Button::createCancel(_('Abbrechen')) ?>
     </footer>
 </form>

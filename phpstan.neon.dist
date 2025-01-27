@@ -13,7 +13,6 @@ parameters:
         - lib
         - vendor
     excludePaths:
-        - lib/classes/ZipArchiveLegacyTrait.php
         - lib/ilias_interface/studip_referrer_7x.php
         - lib/ilias_interface/studip_referrer_8x.php
     tmpDir: .caches

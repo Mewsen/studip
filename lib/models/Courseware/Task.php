@@ -2,6 +2,7 @@
 
 namespace Courseware;
 
+use Seminar_User;
 use User;
 
 /**
@@ -79,6 +80,14 @@ class Task extends \SimpleORMap
             'foreign_key' => 'feedback_id',
         ];
 
+        $config['has_many']['peer_reviews'] = [
+            'class_name' => PeerReview::class,
+            'assoc_foreign_key' => 'task_id',
+            'on_delete' => 'delete',
+            'on_store' => 'store',
+            'order_by' => 'ORDER BY mkdate',
+        ];
+
         $config['additional_fields']['solver'] = [
             'get' => 'getSolver',
         ];
@@ -123,12 +132,11 @@ class Task extends \SimpleORMap
         return 1 === (int) $this->submitted;
     }
 
-    /**
-     * @param \User|\Seminar_User $user
-     */
-    public function canUpdate($user): bool
+    public function canUpdate(User|Seminar_User $user): bool
     {
-        $perm = false;
+        // TODO (mel): Das ist hier eine Code-Verdopplung gegenüber:
+        // $this->userIsASolver($user)
+        // Mit Nico besprechen
         switch ($this->solver_type) {
             case 'autor':
                 if ($this->solver_id === $user->id) {
@@ -157,10 +165,7 @@ class Task extends \SimpleORMap
         return $this->getStructuralElement()->hasEditingPermission($user);
     }
 
-    /**
-     * @param \User|\Seminar_User $user
-     */
-    public function userIsASolver($user): bool
+    public function userIsASolver(User|Seminar_User $user): bool
     {
         switch ($this->solver_type) {
             case 'autor':
@@ -173,6 +178,11 @@ class Task extends \SimpleORMap
         }
 
         return false;
+    }
+
+    public function userIsAPeerReviewer(User|Seminar_User $user): bool
+    {
+        return $this->isPeerReviewed() && $this->isPeerReviewedBy($user);
     }
 
     /**
@@ -253,6 +263,53 @@ class Task extends \SimpleORMap
     {
         $this->visible = (int) $visibility;
         $this->store();
+    }
+
+    public function isPeerReviewed(): bool
+    {
+        return PeerReview::countBySql('task_id = ?', [$this->id]) !== 0;
+    }
+
+    public function isPeerReviewedBy(User|Seminar_User $user): bool
+    {
+        $sql = 'task_id = ? AND reviewer_id = ? AND reviewer_type = "autor"';
+        if (PeerReview::countBySql($sql, [$this->id, $user->id]) !== 0) {
+            return true;
+        }
+
+        $sql = 'SELECT reviewer_id FROM cw_peer_reviews WHERE task_id = ? AND reviewer_type = "group"';
+        foreach (\DBManager::get()->fetchFirst($sql, [$this->id]) as $reviewerId) {
+            if (\Statusgruppen::isMemberOf($reviewerId, $user->id)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function getPeerReviewProcessessWithReviewsBy(User|Seminar_User $user): array
+    {
+        return PeerReviewProcess::findBySql(
+            'id IN (?)',
+            array_unique(
+                array_merge(
+                    \DBManager::get()->fetchFirst(
+                        'SELECT DISTINCT process_id FROM cw_peer_reviews WHERE task_id = ? AND reviewer_id = ? AND reviewer_type = "autor"',
+                        [$this->id, $user->id]
+                    ),
+                    array_column(
+                        array_filter(
+                            \DBManager::get()->fetchAll(
+                                'SELECT process_id, reviewer_id FROM cw_peer_reviews WHERE task_id = ? AND reviewer_type = "group"',
+                                [$this->id]
+                            ),
+                            fn($row) => \Statusgruppen::isMemberOf($row['reviewer_id'], $user->id)
+                        ),
+                        'process_id'
+                    )
+                )
+            )
+        );
     }
 
     private function getStructuralElementProgress(StructuralElement $structural_element): float

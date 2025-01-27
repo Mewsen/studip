@@ -66,10 +66,11 @@ class GradebookModule extends CorePlugin implements SystemPlugin, StudipModuleEx
 
         $icon = $changed
               ? Icon::create('assessment', Icon::ROLE_NEW)
-              : Icon::create('assessment', Icon::ROLE_CLICKABLE);
+              : Icon::create('assessment');
 
         $navigation = new Navigation($title, 'dispatch.php/course/gradebook/overview');
-        $navigation->setImage($icon->copyWithAttributes(['title' => $title]));
+        $navigation->setImage($icon);
+        $navigation->setLinkAttributes(['title' => $title]);
 
         return $navigation;
     }
@@ -209,19 +210,13 @@ class GradebookModule extends CorePlugin implements SystemPlugin, StudipModuleEx
             'category' => _('Lehr- und Lernorganisation'),
             'keywords' => _('automatische und manuelle Erfassung von gewichteten Leistungen;Export von Leistungen;persönliche Fortschrittskontrolle'),
             'icon' => Icon::create('assessment', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('assessment', Icon::ROLE_CLICKABLE),
+            'icon_clickable' => Icon::create('assessment'),
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Gradebook',
                 'pictures' => [
-                    [
-                        'source' => 'Lehrendensicht.png',
-                        'title' => 'Beispiel für das Gradebook aus der Sicht der Lehrenden',
-                    ],
-                    [
-                        'source' => 'Studierendensicht.png',
-                        'title' => 'Beispiel für das Gradebook aus der Sicht der Studierenden',
-                    ],
-                ],
+                    0 => ['source' => 'Lehrendenansicht.jpg', 'title' => _('Ansicht für Lehrende')],
+                    1 => ['source' => 'Studierendenansicht.jpg', 'title' => _('Ansicht für Studierenden')]
+                ]
             ],
         ];
     }

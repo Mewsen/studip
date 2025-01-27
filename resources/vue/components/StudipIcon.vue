@@ -1,31 +1,37 @@
 <template>
     <input
         v-if="name"
+        v-bind="$attrs"
         type="image"
         :name="name"
         :src="url"
-        :width="size"
-        :height="size"
+        :style="{ width: realSize + 'px', height: realSize + 'px' }"
         :role="ariaRole"
-        v-bind="$attrs"
-        v-on="$listeners"
+        :class="cssClass"
         :alt="$attrs.alt ?? ''"
     />
     <img v-else
-         :src="url"
-         :width="size"
-         :height="size"
-         :role="ariaRole"
          v-bind="$attrs"
-         v-on="$listeners"
+         :src="url"
+         :style="{ width: realSize + 'px', height: realSize + 'px' }"
+         :role="ariaRole"
+         :class="cssClass"
          :alt="$attrs.alt ?? ''"
     />
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
-export default Vue.extend({
+function getCSSVariableValue(property: string): number {
+    const value = getComputedStyle(document.body).getPropertyValue(property);
+    return parseInt(value, 10);
+}
+
+const defaultIconSize: number = getCSSVariableValue('--icon-size-default');
+const inlineIconSize: number = getCSSVariableValue('--icon-size-inline');
+
+export default defineComponent({
     name: 'studip-icon',
     props: {
         ariaRole: {
@@ -41,14 +47,27 @@ export default Vue.extend({
             required: false,
             default: 'clickable',
         },
-        shape: String,
+        shape: {
+            type: String,
+            required: true,
+        },
         size: {
             type: Number,
             required: false,
-            default: 16,
+            default: defaultIconSize,
         },
+        inline: {
+            type: Boolean,
+            default: false
+        }
     },
     computed: {
+        realSize(): number | undefined {
+            if (this.inline) {
+                return inlineIconSize;
+            }
+            return Number(this.size) !== defaultIconSize ? this.size : undefined;
+        },
         url(): string {
             if (this.shape.indexOf('http') === 0) {
                 return this.shape;
@@ -86,6 +105,14 @@ export default Vue.extend({
                     return 'blue';
             }
         },
+        cssClass(): Array<string> {
+            return [
+                'studip-icon',
+                this.inline ? 'studip-icon-inline' : '',
+                `icon-role-${this.role}`,
+                `icon-shape-${this.shape}`,
+            ];
+        }
     },
 });
 </script>

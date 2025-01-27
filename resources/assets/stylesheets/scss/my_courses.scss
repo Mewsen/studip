@@ -18,11 +18,20 @@ form.default table.mycourses-group-selector {
     }
 }
 
-form.default td.mycourses-group-selector {
+form.default td.mycourses-group-selector,
+table.colour-selector td.colour {
     position: relative;
 
     background-clip: padding-box;
-    border: 1px solid fade-out($brand-color-lighter, 0.8);
+
+    &.mycourses-group-selector {
+        border: 1px solid fade-out($brand-color-lighter, 0.8);
+    }
+
+    &.colour {
+        padding-left: 0.1em;
+        padding-right: 0.1em;
+    }
 
     input[type="radio"] {
         @extend .sr-only;

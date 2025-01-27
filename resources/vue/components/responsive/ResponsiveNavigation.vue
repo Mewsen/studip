@@ -585,7 +585,7 @@ export default {
         // Check initial state after load
         this.headerMagic = document.querySelector('body').classList.contains('fixed');
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.classObserver.disconnect();
         this.dialogObserver.disconnect();
         document.getElementById('header-links').style.display = null;
@@ -603,13 +603,11 @@ export default {
     transition: all var(--transition-duration) ease;
 }
 
-.slide-enter-to,
-.slide-leave-from,
-.slide-leave {
+.slide-enter-from,
+.slide-leave-from {
     margin-left: -3px;
 }
 
-.slide-enter,
 .slide-enter-from,
 .slide-leave-to {
     margin-left: -50px;
@@ -620,13 +618,11 @@ export default {
     transition: opacity var(--transition-duration) ease;
 }
 
-.appear-leave,
 .appear-leave-from,
 .appear-enter-to {
     opacity: 1;
 }
 
-.appear-enter,
 .appear-enter-from,
 .appear-leave-to {
     opacity: 0;

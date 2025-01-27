@@ -1,0 +1,12 @@
+{
+    "title": "Payload schema of Courseware\\BlockType\\Blubber",
+    "type": "object",
+    "properties": {
+        "thread_id": {
+            "type": "string"
+        }
+    },
+    "required": [
+    ],
+    "additionalProperties": false
+}

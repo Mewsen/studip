@@ -73,7 +73,7 @@
                             :getOptionLabel="option => option.attributes.title"
                             v-model="selectedRange"
                         >
-                            <template #open-indicator="selectAttributes">
+                            <template #open-indicator="{ selectAttributes }">
                                 <span v-bind="selectAttributes"
                                     ><studip-icon shape="arr_1down" :size="10"
                                 /></span>
@@ -93,17 +93,16 @@
         <template v-slot:unit>
             <form class="default" @submit.prevent="">
                 <fieldset v-if="units.length !== 0" class="radiobutton-set">
-                    <template v-for="unit in units">
+                    <template v-for="unit in units" :key="unit.id">
                         <input
                             :id="'cw-element-copy-unit-' + unit.id"
                             type="radio"
                             v-model="selectedUnit"
                             :checked="unit.id === selectedUnitId"
                             :value="unit"
-                            :key="'radio-' + unit.id"
                             :aria-description="unit.element.attributes.title"
                         />
-                        <label :key="'label-' + unit.id" :for="'cw-element-copy-unit-' + unit.id">
+                        <label :for="'cw-element-copy-unit-' + unit.id">
                             <div class="icon"><studip-icon shape="courseware" :size="32"/></div>
                             <div class="text">{{ unit.element.attributes.title }}</div>
                             <studip-icon shape="radiobutton-unchecked" :size="24" class="unchecked" />
@@ -148,7 +147,7 @@
                         :clearable="false"
                         label="class"
                     >
-                        <template #open-indicator="selectAttributes">
+                        <template #open-indicator="{ selectAttributes }">
                             <span v-bind="selectAttributes"
                                 ><studip-icon shape="arr_1down" :size="10"
                             /></span>
@@ -259,10 +258,10 @@ export default {
         },
         selectedUnitId() {
             return this.selectedUnit?.id;
-        }, 
+        },
         selectedUnitRootId() {
             return this.selectedUnit?.relationships?.['structural-element']?.data?.id;
-        }, 
+        },
         selectedElementTitle() {
             return this.selectedElement?.attributes?.title;
         },
@@ -331,7 +330,6 @@ export default {
             this.loadingCourses = false;
         },
         loadSemesterMap() {
-            let view = this;
             let semesters = [];
             this.courses.every(course => {
                 let semId = course.relationships['start-semester'].data.id;
@@ -341,9 +339,9 @@ export default {
                 return true;
             });
             semesters.every(semester => {
-                view.loadSemester({id: semester}).then( () => {
-                    view.semesterMap.push(view.semesterById({id: semester}));
-                    view.semesterMap.sort((a, b) => new Date(b.attributes.start) - new Date(a.attributes.start));
+                this.loadSemester({id: semester}).then( () => {
+                    this.semesterMap.push(this.semesterById({id: semester}));
+                    this.semesterMap.sort((a, b) => new Date(b.attributes.start) - new Date(a.attributes.start));
                 });
                 return true;
             });
@@ -373,35 +371,34 @@ export default {
             this.modifiedDescription = '';
         },
         copyElement() {
-            let view = this;
             this.copyStructuralElement({
                     parentId: this.currentElement,
                     elementId: this.selectedElement.id,
                     migrate: false,
                     modifications: {
-                        title: view.modifiedTitle,
-                        color: view.modifiedColor,
-                        description: view.modifiedDescription
+                        title: this.modifiedTitle,
+                        color: this.modifiedColor,
+                        description: this.modifiedDescription
                     }
             })
             .then( () => {
-                view.companionSuccess({
-                    info: view.$gettextInterpolate(
-                        view.$gettext('Die Seite %{ pageTitle } wurde erfolgreich kopiert.'),
-                        {pageTitle: view.selectedElementTitle}
+                this.companionSuccess({
+                    info: this.$gettext(
+                        'Die Seite %{ pageTitle } wurde erfolgreich kopiert.',
+                        { pageTitle: this.selectedElementTitle }
                     )
                 });
             })
-            .catch(error => {
-                view.companionError({
-                    info: view.$gettextInterpolate(
-                        view.$gettext('Die Seite %{ pageTitle } konnte nicht kopiert werden.'),
-                        {pageTitle: view.selectedElementTitle}
+            .catch(() => {
+                this.companionError({
+                    info: this.$gettext(
+                        'Die Seite %{ pageTitle } konnte nicht kopiert werden.',
+                        { pageTitle: this.selectedElementTitle }
                     )
                 });
             })
             .finally(() => {
-                view.showElementCopyDialog(false);
+                this.showElementCopyDialog(false);
             });
         },
         validateSelection() {
@@ -427,7 +424,7 @@ export default {
                 this.resetElementData();
                 this.wizardSlots[2].valid = false;
             }
-            
+
         },
         async selectedUnit(newUnit) {
             this.validateSelection();
@@ -438,7 +435,7 @@ export default {
             } else {
                 this.wizardSlots[1].valid = false;
             }
-            
+
         },
         selectedRange(newRid) {
             this.validateSelection();
@@ -469,7 +466,7 @@ export default {
                     break;
             }
         },
-        selectedSemester(newSemester) {
+        selectedSemester() {
             this.selectedRange = '';
         }
     }

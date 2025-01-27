@@ -19,7 +19,7 @@
     text-align: left;
     background-color: transparent;
     border: solid thin transparent;
-    @include background-icon(upload, clickable, 48);
+    @include background-icon(upload, $size: 48px);
     background-repeat: no-repeat;
     background-position: 15px center;
     color: var(--base-color);
@@ -134,14 +134,14 @@ fieldset.attribute_table {
 
 .course-admin {
     .course-completion {
-        @include hide-text();
-        @include square(16px);
+        @include hide-text;
+        @include square($icon-size-default);
         background-repeat: no-repeat;
         display: block;
     }
 
     th .course-completion {
-        @include background-icon(radiobutton-checked, clickable);
+        @include background-icon(radiobutton-checked);
     }
 
     td .course-completion {

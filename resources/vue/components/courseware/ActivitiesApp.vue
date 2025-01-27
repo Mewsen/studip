@@ -1,12 +1,12 @@
 <template>
     <div class="cw-activities-wrapper">
         <courseware-activities />
-        <MountingPortal mountTo="#courseware-activities-widget-filter-type" name="sidebar-filter-type">
+        <Teleport to="#courseware-activities-widget-filter-type" name="sidebar-filter-type">
             <courseware-activities-widget-filter-type />
-        </MountingPortal>
-        <MountingPortal mountTo="#courseware-activities-widget-filter-unit" name="sidebar-filter-unit">
+        </Teleport>
+        <Teleport to="#courseware-activities-widget-filter-unit" name="sidebar-filter-unit">
             <courseware-activities-widget-filter-unit />
-        </MountingPortal>
+        </Teleport>
     </div>
 </template>
 
@@ -14,7 +14,6 @@
 import CoursewareActivities from './CoursewareActivities.vue';
 import CoursewareActivitiesWidgetFilterType from './widgets/CoursewareActivitiesWidgetFilterType.vue';
 import CoursewareActivitiesWidgetFilterUnit from './widgets/CoursewareActivitiesWidgetFilterUnit.vue';
-import { mapGetters } from 'vuex';
 
 export default {
     components: {

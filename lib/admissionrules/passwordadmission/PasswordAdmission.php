@@ -126,11 +126,14 @@ class PasswordAdmission extends AdmissionRule
         $stmt = DBManager::get()->prepare("SELECT * FROM `passwordadmissions`
             WHERE `rule_id`=? LIMIT 1");
         $stmt->execute([$this->id]);
-        if ($current = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $current = $stmt->fetchOne();
+        if ($current) {
             $this->message = $current['message'];
             $this->startTime = $current['start_time'];
             $this->endTime = $current['end_time'];
             $this->password = $current['password'];
+        } else {
+            $this->id = $this->generateId('passwordadmissions');
         }
     }
 
@@ -238,4 +241,18 @@ class PasswordAdmission extends AdmissionRule
         }
         return $errors;
     }
+
+    /**
+     * Get fields and settings defining this admission rule as array.
+     */
+    public function getPayload(): array
+    {
+        return array_merge(
+            parent::getPayload(),
+            [
+                'password' => $this->getPassword()
+            ]
+        );
+    }
+
 }

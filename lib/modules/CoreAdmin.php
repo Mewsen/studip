@@ -15,7 +15,8 @@ class CoreAdmin extends CorePlugin implements StudipModuleExtended
     public function getIconNavigation($course_id, $last_visit, $user_id)
     {
         $navigation = new Navigation(_('Verwaltung'), 'dispatch.php/course/management');
-        $navigation->setImage(Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => _('Verwaltung')]));
+        $navigation->setImage(Icon::create('admin'));
+        $navigation->setLinkAttributes(['title' => _('Verwaltung')]);
         return $navigation;
     }
 
@@ -102,6 +103,11 @@ class CoreAdmin extends CorePlugin implements StudipModuleExtended
             $item->setImage(Icon::create('add'));
             $item->setDescription(_('Vorlagen zur Erhebung weiterer Angaben von Teilnehmenden auswählen.'));
             $navigation->addSubNavigation('additional_data', $item);
+
+            $item = new Navigation(_('Verknüpfte Studiengruppen'), 'dispatch.php/course/connectedstudygroups');
+            $item->setImage(Icon::create('studygroup'));
+            $item->setDescription(_('Studiengruppen verknüpfen bzw. verwalten'));
+            $navigation->addSubNavigation('connectedstudygroups', $item);
 
         }  // endif modules only seminars
 

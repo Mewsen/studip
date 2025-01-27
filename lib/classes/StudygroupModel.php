@@ -168,8 +168,9 @@ class StudygroupModel
      */
     public static function countGroups($search = null, $closed_groups = null)
     {
-        $conditions = ['status IN (?)'];
-        $parameters = [studygroup_sem_types()];
+        $conditions = ['status IN (:studygroup_sem_types)'];
+        $parameters['studygroup_sem_types'] = studygroup_sem_types();
+        $joins = '';
 
         // Only root may see hidden studygroups
         if (!$GLOBALS['perm']->have_perm('root')) {
@@ -178,8 +179,10 @@ class StudygroupModel
 
         // Search by name?
         if (isset($search)) {
-            $conditions[] = "Name LIKE CONCAT('%', ?, '%')";
-            $parameters[] = $search;
+            $joins = "LEFT JOIN `tags_relations` ON (`tags_relations`.`range_id` = seminare.Seminar_id AND `tags_relations`.`range_type` = 'course')
+                    LEFT JOIN `tags` ON (`tags`.`id` = `tags_relations`.`tag_id` AND `tags`.`active` = 1) ";
+            $conditions[] = "(seminare.`Name` LIKE :search OR `tags`.`name` LIKE :search) ";
+            $parameters['search'] = '%' . $search . '%';
         }
 
         // Show closed groups
@@ -188,7 +191,9 @@ class StudygroupModel
         }
 
         return Course::countBySQL(
-            implode(' AND ', $conditions),
+            ($joins ? $joins.' WHERE ' : '') .
+            implode(' AND ', $conditions) .
+            ' GROUP BY Seminar_id ',
             $parameters
         );
     }
@@ -209,25 +214,27 @@ class StudygroupModel
             $elements_per_page = Config::get()->ENTRIES_PER_PAGE;
         }
 
-        $sql = "SELECT *
-                FROM seminare AS s";
+        $sql = "SELECT s.*
+                FROM seminare AS s
+                    LEFT JOIN `tags_relations` ON (`tags_relations`.`range_id` = s.Seminar_id AND `tags_relations`.`range_type` = 'course')
+                    LEFT JOIN `tags` ON (`tags`.`id` = `tags_relations`.`tag_id` AND `tags`.`active` = 1) ";
         $sql_additional = '';
         $conditions = [];
         $parameters = [];
 
-        $conditions[] = 's.status IN (?)';
-        $parameters[] = studygroup_sem_types();
+        $conditions[] = 's.status IN (:studygroup_sem_types)';
+        $parameters['studygroup_sem_types'] = studygroup_sem_types();
 
         if (!$GLOBALS['perm']->have_perm('root')) {
             $conditions[] = 's.visible = 1';
         }
 
         if (isset($search)) {
-            $conditions[] = "Name LIKE CONCAT('%', ?, '%')";
-            $parameters[] = $search;
+            $conditions[] = "(s.`Name` LIKE :search OR `tags`.`name` LIKE :search) ";
+            $parameters['search'] = '%' . $search . '%';
         }
         if (isset($closed_groups) && !$closed_groups) {
-            $conditions[] = 'admission_prelim = 0';
+            $conditions[] = 's.admission_prelim = 0';
         }
 
         list($sort_by, $sort_order) = explode('_', $sort);
@@ -235,35 +242,37 @@ class StudygroupModel
 
         // add here the sortings
         if ($sort_by === 'name') {
-            $sort_by = 'Name';
+            $sort_by = 's.Name';
         } elseif ($sort_by === 'founded') {
-            $sort_by = 'mkdate';
+            $sort_by = 's.mkdate';
         } elseif ($sort_by === 'member') {
             $sort_by = 'members';
 
             $sql = "SELECT s.*, COUNT(su.user_id) AS members
                     FROM seminare AS s
-                    LEFT JOIN seminar_user AS su USING (Seminar_id)";
+                        LEFT JOIN `tags_relations` ON (`tags_relations`.`range_id` = s.Seminar_id AND `tags_relations`.`range_type` = 'course')
+                        LEFT JOIN `tags` ON (`tags`.`id` = `tags_relations`.`tag_id` AND `tags`.`active` = 1)
+                        LEFT JOIN seminar_user AS su USING (Seminar_id)";
 
-            $sql_additional = 'GROUP BY s.Seminar_id';
         } elseif ($sort_by === 'founder') {
             $sort_by = "GROUP_CONCAT(aum.Nachname ORDER BY su.status, su.position, aum.Nachname, aum.Vorname SEPARATOR ',')";
 
             $sql = "SELECT s.*
                     FROM seminare AS s
-                    LEFT JOIN seminar_user AS su ON (s.Seminar_id = su.Seminar_id AND su.status = 'dozent')
-                    LEFT JOIN auth_user_md5 AS aum ON (su.user_id = aum.user_id)";
+                        LEFT JOIN `tags_relations` ON (`tags_relations`.`range_id` = s.Seminar_id AND `tags_relations`.`range_type` = 'course')
+                        LEFT JOIN `tags` ON (`tags`.`id` = `tags_relations`.`tag_id` AND `tags`.`active` = 1) LEFT JOIN seminar_user AS su ON (s.Seminar_id = su.Seminar_id AND su.status = 'dozent')
+                        LEFT JOIN auth_user_md5 AS aum ON (su.user_id = aum.user_id)";
 
-            $sql_additional = 'GROUP BY s.Seminar_id';
         } elseif ($sort_by === 'ismember') {
             $sort_by = 'is_member';
 
             $sql = "SELECT s.*, COUNT(su.user_id) AS is_member
                     FROM seminare AS s
-                    LEFT JOIN seminar_user AS su ON s.Seminar_id = su.Seminar_id AND su.user_id = ?";
-            array_unshift($parameters, $GLOBALS['user']->id);
+                        LEFT JOIN `tags_relations` ON (`tags_relations`.`range_id` = s.Seminar_id AND `tags_relations`.`range_type` = 'course')
+                        LEFT JOIN `tags` ON (`tags`.`id` = `tags_relations`.`tag_id` AND `tags`.`active` = 1)
+                        LEFT JOIN seminar_user AS su ON s.Seminar_id = su.Seminar_id AND su.user_id = :user_id";
+            $parameters['user_id'] = $GLOBALS['user']->id;
 
-            $sql_additional = 'GROUP BY s.Seminar_id';
         } elseif ($sort_by == 'access') {
             $sort_by = 'admission_prelim';
         } else {
@@ -274,12 +283,21 @@ class StudygroupModel
             $sql .= ' WHERE ' . implode(' AND ', $conditions);
         }
         $sql .= ' ' . $sql_additional;
+        $sql .= ' GROUP BY s.Seminar_id ';
         $sql .= " ORDER BY {$sort_by} {$sort_order}";
-        $sql .= ", name {$sort_order} LIMIT " . (int) $lower_bound . ',' . (int) $elements_per_page;
+        $sql .= ", s.`name` {$sort_order} LIMIT " . (int) $lower_bound . ',' . (int) $elements_per_page;
 
         $statement = DBManager::get()->prepare($sql);
         $statement->execute($parameters);
         $groups = $statement->fetchAll();
+
+        foreach ($groups as $key => $studygroup)
+        {
+            $visit_data = get_objects_visits([$studygroup['Seminar_id']], 0);
+            $studygroup['last_visit_date'] = $visit_data[$studygroup['Seminar_id']];
+            $groups[$key]['last_visit_date'] = $studygroup['last_visit_date'];
+            $groups[$key]['course'] = Course::buildExisting($studygroup);
+        }
 
         return $groups;
     }
@@ -561,5 +579,187 @@ class StudygroupModel
         }
 
         return $msging->insert_message($message, $recipients, '', '', '', '1', '', $subject);
+    }
+
+    /**
+     * @param Course $studygroup
+     * @param $course_id
+     * @return false|string
+     */
+    public static function proposeAsStudygroupTo(Course $studygroup, $course_id)
+    {
+        if (!$GLOBALS['perm']->have_studip_perm('tutor', $studygroup->id) && !$GLOBALS['perm']->have_studip_perm('tutor')) {
+            return false;
+        }
+        $proposal = StudygroupCourseProposal::findOneBySQL('course_id = ? AND studygroup_id = ?', [
+            $course_id,
+            $studygroup->id
+        ]);
+        if ($GLOBALS['perm']->have_studip_perm('tutor', $course_id) || $proposal['proposed_from'] === 'course') {
+            $connection = StudygroupCourse::findOneBySQL('course_id = ? AND studygroup_id = ?', [
+                $course_id,
+                $studygroup->id
+            ]);
+            if (!$connection) {
+                $connection = StudygroupCourse::create([
+                    'course_id' => $course_id,
+                    'studygroup_id' => $studygroup->id
+                ]);
+            }
+            if ($proposal) {
+                if ($proposal['proposed_from'] === 'course') {
+                    $statement = DBManager::get()->prepare("
+                            SELECT `username`, `user_id`
+                            FROM `auth_user_md5`
+                                INNER JOIN `seminar_user` USING (`user_id`)
+                            WHERE `seminar_user`.`Seminar_id` = ? AND `seminar_user`.`status` IN ('tutor', 'dozent')
+                        ");
+                    $statement->execute([$course_id]);
+                    $messaging = new messaging();
+
+                    foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $user_data) {
+                        setTempLanguage($user_data['user_id']);
+                        $messaging->insert_message(
+                            sprintf(
+                                _('Ihr Vorschlag, die Studiengruppe "%s" mit der Veranstaltung "%s" zu verknüpfen, wurde angenommen.'),
+                                $studygroup->getFullname(),
+                                Course::find($course_id)->getFullname()
+                            ),
+                            $user_data['username'],
+                            '____%system%____',
+                            '',
+                            '',
+                            '',
+                            '',
+                            _('Verknüpfungsvorschlag angenommen'),
+                            '',
+                            'normal',
+                            ['Studiengruppe']
+                        );
+                        restoreLanguage();
+                    }
+                }
+                $proposal->delete();
+            }
+            PageLayout::postSuccess(_('Veranstaltung wurde verknüpft.'));
+            return 'connected';
+        } else {
+            if (!$proposal) {
+                $proposal = StudygroupCourseProposal::create([
+                    'course_id' => $course_id,
+                    'studygroup_id' => $studygroup->id,
+                    'proposed_from' => 'studygroup',
+                    'user_id' => User::findCurrent()->id
+                ]);
+                //send message:
+                $statement = DBManager::get()->prepare("
+                        SELECT `username`, `user_id`
+                        FROM `auth_user_md5`
+                            INNER JOIN `seminar_user` USING (`user_id`)
+                        WHERE `seminar_user`.`Seminar_id` = ? AND `seminar_user`.`status` IN ('tutor', 'dozent')
+                    ");
+                $statement->execute([$course_id]);
+                $messaging = new messaging();
+                $oldbase = URLHelper::setBaseURL($GLOBALS['ABSOLUTE_URI_STUDIP']);
+
+                foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $user_data) {
+                    setTempLanguage($user_data['user_id']);
+                    $messaging->insert_message(
+                        sprintf(
+                            _('Es wurde vorgeschlagen, die Studiengruppe „%1$s“ mit Ihrer Veranstaltung „%2$s“ zu verknüpfen. Sie können den Vorschlag unter folgendem Link annehmen oder ablehnen:'),
+                            $studygroup->getFullname(),
+                            Course::find($course_id)->getFullname()
+                        )."\n\n".URLHelper::getURL('dispatch.php/course/connectedstudygroups/index', ['cid' => $course_id]),
+                        $user_data['username'],
+                        '____%system%____',
+                        '',
+                        '',
+                        '',
+                        '',
+                        _('Verknüpfung Ihrer Veranstaltung zu einer Studiengruppe'),
+                        '',
+                        'normal',
+                        ['Studiengruppe']
+                    );
+                    restoreLanguage();
+                }
+                URLHelper::setBaseURL($oldbase);
+                return 'proposed';
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Retrieves all study groups for the current user.
+     *
+     * @returns array A two-dimensional array. The second dimension contains
+     *     data for each study group. Most fields of the Course model are
+     *     present in the second dimension and there are additional fields
+     *     like the colour (gruppe) or the start and end semester.
+     */
+    public static function getStudygroups()
+    {
+        $studygroup_sem_types = array_filter(
+            array_keys($GLOBALS['SEM_TYPE']),
+            function ($sem_type_id) {
+                return (bool) $GLOBALS['SEM_CLASS'][$GLOBALS['SEM_TYPE'][$sem_type_id]['class']]['studygroup_mode'];
+            }
+        );
+        $studygroup_memberships = CourseMember::findBySQL(
+            'INNER JOIN `seminare` USING (`seminar_id`)
+            WHERE `seminar_user`.`user_id` = :me
+            AND `seminare`.`status` IN (:studygroup_semtypes)
+            GROUP BY `seminar_id`
+            ORDER BY `seminar_user`.`gruppe` ASC, `seminare`.`name` ASC',
+            [
+                'me' => User::findCurrent()->id,
+                'studygroup_semtypes' => $studygroup_sem_types
+            ]
+        );
+        $studygroups = [];
+        Course::findEachMany(
+            function ($studygroup) use (&$studygroups) {
+                $studygroups[$studygroup->id] = $studygroup;
+            },
+            array_map(
+                function ($membership) {
+                    return $membership->seminar_id;
+                },
+                $studygroup_memberships
+            )
+        );
+
+        $data_fields = 'name seminar_id visible veranstaltungsnummer duration_time status visible '
+            . 'chdate admission_binding admission_prelim';
+        $studygroup_data = [];
+        foreach ($studygroup_memberships as $membership) {
+            if (!isset($studygroups[$membership->seminar_id])) {
+                continue;
+            }
+            $studygroup = $studygroups[$membership->seminar_id];
+            $visit_data = get_objects_visits([$studygroup->id], 0, null, null, $studygroup->tools->pluck('plugin_id'));
+            $data = $studygroup->toArray($data_fields);
+            $data['tools'] = $studygroup->tools;
+            $data['sem_class'] = $studygroup->getSemClass();
+            $data['start_semester'] = $studygroup->start_semester->name;
+            $data['end_semester'] = $studygroup->end_semester->name ?? '';
+            $data['obj_type'] = 'sem';
+            $data['user_status'] = $membership->status;
+            $data['gruppe'] = $membership->gruppe;
+            $data['mkdate'] = $membership->mkdate;
+            $data['visitdate'] = $visit_data[$studygroup->id][0]['visitdate'];
+            $data['last_visitdate'] = $visit_data[$studygroup->id][0]['last_visitdate'];
+            $data['navigation'] = MyRealmModel::getAdditionalNavigations(
+                $studygroup->id,
+                $data,
+                $data['sem_class'],
+                $GLOBALS['user']->id,
+                $visit_data[$studygroup->id]
+            );
+            $studygroup_data[$studygroup->id] = $data;
+        }
+
+        return $studygroup_data;
     }
 }

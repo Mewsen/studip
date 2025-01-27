@@ -29,7 +29,7 @@
             </section>
         </article>
         <label class="add-server" @click="addServer()">
-            <studip-icon shape="add" :size="20"></studip-icon>
+            <studip-icon shape="add"></studip-icon>
             {{ $gettext('Server hinzufügen') }}
         </label>
     </div>
@@ -37,6 +37,7 @@
 <script>
 export default {
     name: 'MemcachedCacheConfig',
+    emits: ['is-valid'],
     props: {
         servers: {
             type: Array,

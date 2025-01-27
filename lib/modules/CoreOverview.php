@@ -56,7 +56,8 @@ class CoreOverview extends CorePlugin implements StudipModuleExtended
             ]));
             $nav->setBadgeNumber($result['neue']);
         } elseif ($result['count']) {
-            $nav->setImage(Icon::create('news', Icon::ROLE_CLICKABLE, [
+            $nav->setImage(Icon::create('news'));
+            $nav->setLinkAttributes([
                 'title' => sprintf(
                     ngettext(
                         '%d Ankündigung',
@@ -65,7 +66,7 @@ class CoreOverview extends CorePlugin implements StudipModuleExtended
                     ),
                     $result['count']
                 )
-            ]));
+            ]);
         }
         return $nav;
     }
@@ -181,8 +182,8 @@ class CoreOverview extends CorePlugin implements StudipModuleExtended
         return [
             'displayname' => _('Übersicht'),
             'summary' => _('Ankündigungen, Termine, Fragebögen & Details'),
-            'icon' => Icon::create('home', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('home', Icon::ROLE_CLICKABLE)
+            'icon' => Icon::create('home2', Icon::ROLE_INFO),
+            'icon_clickable' => Icon::create('home2')
         ];
     }
 

@@ -27,11 +27,13 @@ export default {
         CoursewareStructuralElementSelectorItem
     },
     model: {
-        prop: 'element'
+         prop: 'modelValue',
+         event: 'update:modelValue'
     },
     props: {
-        element: {
-            type: Object
+        modelValue: {
+            type: Object,
+            required: true
         },
         rootId: {
             type: String,
@@ -75,7 +77,7 @@ export default {
                 .filter(Boolean);
         },
         selectedId() {
-            return this.element?.id ?? '';
+            return this.modelValue?.id ?? '';
         },
         targetElement() {
             return this.structuralElementById({ id: this.targetId });
@@ -116,7 +118,7 @@ export default {
             companionSuccess: 'companionSuccess',
         }),
         handleInput(id) {
-            this.$emit('input', this.structuralElementById({ id }));
+            this.$emit('update:modelValue', this.structuralElementById({ id }));
             this.focusedElementId = id;
         },
         handleFocus(id) {

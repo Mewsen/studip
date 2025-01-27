@@ -7,7 +7,7 @@
                     <span>{{ blockTitle }}</span>
                     <studip-icon v-if="blockedByAnotherUser" shape="lock-locked" />
                     <span v-if="blockedByAnotherUser" class="cw-default-block-blocker-warning">
-                        {{ $gettextInterpolate($gettext('Wird im Moment von %{ userName } bearbeitet'), { userName: this.blockingUserName }) }}
+                        {{ $gettext('Wird im Moment von %{ userName } bearbeitet', { userName: this.blockingUserName }) }}
                     </span>
                     <studip-icon v-if="!block.attributes.visible" shape="visibility-invisible" />
                     <span v-if="!block.attributes.visible" class="cw-default-block-invisible-info">
@@ -101,6 +101,7 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'courseware-default-block',
     mixins: [blockMixin],
+    emits: ['closeEdit', 'showEdit', 'storeEdit'],
     components: {
         CoursewareBlockActions,
         CoursewareBlockDiscussion,
@@ -109,7 +110,7 @@ export default {
         CoursewareBlockInfo,
         StudipDialog,
         StudipIcon,
-        
+
     },
     props: {
         block: Object,
@@ -204,7 +205,7 @@ export default {
         if (!this.public && this.userProgress && this.userProgress.attributes.grade === 0 && this.defaultGrade) {
             this.userProgress = 1;
         }
-        if (this.canEdit) {
+        if (this.block.id && this.canEdit) {
             this.loadFeedback(this.block.id);
         }
     },
@@ -275,9 +276,9 @@ export default {
 
             if (this.blockedByAnotherUser) {
                 this.companionWarning({
-                    info: this.$gettextInterpolate(
-                        this.$gettext('Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.'),
-                        {blockingUserName: this.blockingUserName}
+                    info: this.$gettext(
+                        'Ihre Änderungen konnten nicht gespeichert werden, da %{blockingUserName} die Bearbeitung übernommen hat.',
+                        { blockingUserName: this.blockingUserName }
                     )
                 });
                 this.displayFeature(false);
@@ -307,9 +308,9 @@ export default {
                     this.showDeleteDialog = true;
                 } else {
                     this.companionInfo({
-                        info: this.$gettextInterpolate(
-                            this.$gettext('Löschen nicht möglich, da %{blockingUserName} den Block bearbeitet.'),
-                            {blockingUserName: this.blockingUserName}
+                        info: this.$gettext(
+                            'Löschen nicht möglich, da %{blockingUserName} den Block bearbeitet.',
+                            { blockingUserName: this.blockingUserName }
                         )
                     });
                 }
@@ -329,9 +330,9 @@ export default {
             await this.loadBlock({ id: this.block.id, options: { include: 'edit-blocker' } });
             if (this.blockedByAnotherUser) {
                 this.companionInfo({
-                    info: this.$gettextInterpolate(
-                        this.$gettext('Löschen nicht möglich, da %{blockingUserName} die Bearbeitung übernommen hat.'),
-                        {blockingUserName: this.blockingUserName}
+                    info: this.$gettext(
+                        'Löschen nicht möglich, da %{blockingUserName} die Bearbeitung übernommen hat.',
+                        { blockingUserName: this.blockingUserName }
                     )
                 });
                 return false;

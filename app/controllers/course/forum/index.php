@@ -316,8 +316,8 @@ class Course_Forum_IndexController extends ForumController
             $list = ForumEntry::getSearchResults($this->getId(), $this->searchfor, $this->options);
 
             $this->postings          = $list['list'];
-            $this->number_of_entries = $list['count'];
-            $this->highlight         = $list['highlight'];
+            $this->number_of_entries = $list['count'] ?? 0;
+            $this->highlight         = $list['highlight'] ?? false;
 
             if (empty($this->postings)) {
                 $this->flash['messages'] = ['info' => _('Es wurden keine Beiträge gefunden, die zu Ihren Suchkriterien passen!')];
@@ -832,7 +832,7 @@ class Course_Forum_IndexController extends ForumController
     public function rescue($exception)
     {
         if ($exception instanceof AccessDeniedException) {
-            $GLOBALS['auth']->login_if($GLOBALS['user']->id === 'nobody');
+            throw new LoginException();
         }
 
         return parent::rescue($exception);

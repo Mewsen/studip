@@ -1,9 +1,9 @@
 <template>
-    <MountingPortal mountTo="body" append>
+    <Teleport to="body">
         <focus-trap v-model="trap">
             <div class="studip-dialog" @keydown.esc="closeDialog">
                 <transition name="dialog-fade">
-                    <div class="studip-dialog-backdrop">
+                    <div class="studip-dialog-backdrop" v-if="true">
                         <vue-resizeable
                             class="resizable"
                             style="position: absolute"
@@ -15,8 +15,8 @@
                             :top="top"
                             :width="currentWidth"
                             :height="currentHeight"
-                            :min-width="minW | checkEmpty"
-                            :min-height="minH | checkEmpty"
+                            :min-width="minW"
+                            :min-height="minH"
                             @mount="initSize"
                             @resize:move="resizeHandler"
                             @resize:start="resizeHandler"
@@ -27,8 +27,11 @@
                         >
                             <div
                                 :style="{ width: dialogWidth, height: dialogHeight, top: top, left: left }"
-                                :class="{ 'studip-dialog-warning': question, 'studip-dialog-alert': alert }"
-                                class="studip-dialog-body"
+                                :class="[
+                                    { 'studip-dialog-warning': question, 'studip-dialog-alert': alert },
+                                    'studip-dialog-body',
+                                    $attrs.class
+                                ]"
                                 role="dialog"
                                 aria-modal="true"
                                 :aria-labelledby="dialogTitleId"
@@ -103,12 +106,12 @@
                 </transition>
             </div>
         </focus-trap>
-    </MountingPortal>
+    </Teleport>
 </template>
 
 <script>
 import { FocusTrap } from 'focus-trap-vue';
-import VueResizeable from 'vrp-vue-resizable';
+import VueResizeable from 'vue-resizable';
 let uuid = 0;
 const dialogPadding = 3;
 
@@ -118,6 +121,7 @@ export default {
         FocusTrap,
         VueResizeable,
     },
+    emits: ['close', 'confirm'],
     props: {
         height: {
             type: [String, Number],
@@ -266,11 +270,6 @@ export default {
             if (el) {
                 el.blur();
             }
-        }
-    },
-    filters: {
-        checkEmpty(value) {
-            return typeof value !== "number" ? 0 : value;
         }
     },
     mounted() {

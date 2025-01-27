@@ -44,7 +44,8 @@ class Blubber extends CorePlugin implements StudipModuleExtended
             _('Blubber'),
             'dispatch.php/course/messenger/course'
         );
-        $icon->setImage(Icon::create('blubber', Icon::ROLE_CLICKABLE, ['title' => _('Blubber-Messenger')]));
+        $icon->setImage(Icon::create('blubber'));
+        $icon->setLinkAttributes(['title' => _('Blubber-Messenger')]);
 
         $condition = "INNER JOIN blubber_threads USING (thread_id)
                       WHERE blubber_threads.context_type = 'course'
@@ -214,11 +215,11 @@ class Blubber extends CorePlugin implements StudipModuleExtended
             'category' => _('Kommunikation und Zusammenarbeit'),
             'keywords' => _('Einfach Text schreiben und mit <Enter> abschicken; Direktes Kontaktieren anderer Stud.IP-NutzerInnen (@Vorname Nachname); Setzen von und Suche nach Stichworten über Hashtags (#Stichwort); Einbinden von Dateien per drag and drop'),
             'icon' => Icon::create('blubber', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('blubber', Icon::ROLE_CLICKABLE),
+            'icon_clickable' => Icon::create('blubber'),
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Blubber',
                 'pictures' => [
-                    ['source' => 'blubberscreenshot.png', 'title' => 'Blubbern']
+                    ['source' => 'Blubber.jpg', 'title' => 'Blubber']
                 ]
             ]
         ];

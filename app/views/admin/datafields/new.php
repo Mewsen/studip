@@ -72,13 +72,13 @@ use Studip\Button, Studip\LinkButton;
         <? elseif ($object_typ === 'moduldeskriptor') : ?>
             <select multiple name="object_class[]" required>
                 <option value="NULL" selected><?= _('alle (mehrsprachige Eingabe bei Feldtyp textline, textarea, textmarkup)') ?></option>
-            <? foreach ((array) $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'] as $key => $value) : ?>
+            <? foreach ($GLOBALS['CONTENT_LANGUAGES'] as $key => $value) : ?>
                 <option value="<?= htmlReady($key) ?>"><?= htmlReady($value['name']) ?></option>
             <? endforeach; ?>
         <? elseif ($object_typ === 'modulteildeskriptor') : ?>
             <select multiple name="object_class[]" required>
                 <option value="NULL" selected><?= _('alle (mehrsprachige Eingabe bei Feldtyp textline, textarea, textmarkup)') ?></option>
-            <? foreach ((array) $GLOBALS['MVV_MODULTEIL_DESKRIPTOR']['SPRACHE']['values'] as $key => $value) : ?>
+            <? foreach ($GLOBALS['CONTENT_LANGUAGES'] as $key => $value) : ?>
                 <option value="<?= htmlReady($key) ?>"><?= htmlReady($value['name']) ?></option>
             <? endforeach; ?>
         <? elseif ($object_typ === 'studycourse') : ?>

@@ -1,4 +1,4 @@
-@import '../drag-handle.scss';
+@import '../drag-handle';
 
 .cw-sortable-handle {
     @extend .drag-handle;
@@ -106,7 +106,7 @@
     border: dashed 2px var(--content-color-40);
     margin-top: -5px;
     margin-bottom: 15px;
-    
+
     a {
         opacity: 0;
     }

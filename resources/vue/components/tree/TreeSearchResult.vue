@@ -7,10 +7,16 @@
     <article v-else class="studip-tree-table">
         <table v-if="courses.length > 0" class="default studip-tree-table">
             <caption>
-                <studip-icon shape="search" :size="20"></studip-icon>
-                {{ $gettextInterpolate($ngettext('Ein Eintrag für den Begriff "%{searchterm}" gefunden',
-                    '%{count} Einträge für den Begriff "%{searchterm}" gefunden', courses.length),
-                    { count: courses.length, searchterm: searchConfig.searchterm}) }}
+                <studip-icon shape="search"></studip-icon>
+                {{ $ngettext(
+                    'Ein Eintrag für den Begriff "%{searchterm}" gefunden',
+                    '%{count} Einträge für den Begriff "%{searchterm}" gefunden',
+                    courses.length,
+                    {
+                        count: courses.length,
+                        searchterm: searchConfig.searchterm
+                    }
+                ) }}
             </caption>
             <colgroup>
                 <col style="width: 30px">
@@ -18,11 +24,11 @@
                 <col>
             </colgroup>
             <thead>
-            <tr>
-                <th></th>
-                <th>{{ $gettext('Name') }}</th>
-                <th>{{ $gettext('Information') }}</th>
-            </tr>
+                <tr>
+                    <th></th>
+                    <th>{{ $gettext('Name') }}</th>
+                    <th>{{ $gettext('Information') }}</th>
+                </tr>
             </thead>
             <tbody>
                 <tr v-for="(course) in courses" :key="course.id" class="studip-tree-child studip-tree-course">
@@ -31,7 +37,7 @@
                     </td>
                     <td>
                         <a :href="courseUrl(course.id)"
-                           :title="$gettextInterpolate($gettext('Zur Veranstaltung %{title}'), {title: course.attributes.title}, true)"
+                           :title="$gettext('Zur Veranstaltung %{title}', {title: course.attributes.title}, true)"
                            tabindex="0">
                             <template v-if="course.attributes['course-number']">
                                 {{ course.attributes['course-number'] }}
@@ -49,8 +55,10 @@
             </tbody>
         </table>
         <studip-message-box v-else type="info">
-            {{ $gettextInterpolate($gettext('Es wurden keine Ergebnisse zu Ihrem Suchbegriff "%{term}" gefunden.'),
-                { term: searchConfig.searchterm }) }}
+            {{ $gettext(
+                'Es wurden keine Ergebnisse zu Ihrem Suchbegriff "%{term}" gefunden.',
+                { term: searchConfig.searchterm }
+            ) }}
         </studip-message-box>
     </article>
 </template>
@@ -84,9 +92,9 @@ export default {
     },
     computed: {
         searchDescription() {
-            return this.$gettextInterpolate(
-                this.$gettext('Suche nach dem Begriff "%{ term }"'),
-                {term: this.searchConfig.searchterm}
+            return this.$gettext(
+                'Suche nach dem Begriff "%{ term }"',
+                { term: this.searchConfig.searchterm }
             );
         }
     },

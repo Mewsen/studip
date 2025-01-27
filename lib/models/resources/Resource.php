@@ -872,7 +872,9 @@ class Resource extends SimpleORMap implements StudipItem
                         $begin->format('d.m.Y H:i'),
                         $end->format('H:i'),
                         $e->getMessage()
-                    )
+                    ),
+                    $e->getCode(),
+                    $e->getRange()
                 );
             } else {
                 throw new ResourceBookingOverlapException(
@@ -882,7 +884,9 @@ class Resource extends SimpleORMap implements StudipItem
                         $begin->format('d.m.Y H:i'),
                         $end->format('d.m.Y H:i'),
                         $e->getMessage()
-                    )
+                    ),
+                    $e->getCode(),
+                    $e->getRange()
                 );
             }
         } catch (Exception $e) {

@@ -19,7 +19,7 @@
                     <p class="wizard-description">
                         {{ activeSlot.description }}
                     </p>
-                    <p v-if="requirements.length > 0" class="wizard-requirements">
+                    <div v-if="requirements.length > 0" class="wizard-requirements">
                         <span>{{ $gettext('Bitte geben Sie die folgenden Informationen an:') }}</span>
                         <ul>
                             <li v-for="(requirement, index) in requirements" :key="requirement.slot.name + '_' + index">
@@ -32,7 +32,7 @@
                                 </button>
                             </li>
                         </ul>
-                    </p>
+                    </div>
                 </div>
                 <div class="wizard-content-wrapper">
                     <h2>
@@ -102,6 +102,7 @@ import StudipDialog from './StudipDialog.vue'
 import StudipIcon from './StudipIcon.vue';
 export default {
     name: 'studip-wizard-dialog',
+    emits: ['close', 'confirm'],
     components: {
         StudipDialog,
         StudipIcon

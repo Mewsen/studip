@@ -58,16 +58,17 @@
                     ) ?>
 
                     <? $actionMenu->addButton(
-                            'delete_step',
-                            _('Schritt löschen'),
-                            Icon::create('trash', Icon::ROLE_CLICKABLE, [
-                                'title'        => _('Schritt löschen'),
-                                'formaction'   => $controller->url_for("admin/coursewizardsteps/delete/{$step->id}"),
-                                'data-confirm' => sprintf(
-                                    _('Soll der Eintrag "%s" wirklich gelöscht werden?'),
-                                    $step->name
-                                ),
-                            ])
+                        'delete_step',
+                        _('Schritt löschen'),
+                        Icon::create('trash'),
+                        [
+                            'title'        => _('Schritt löschen'),
+                            'formaction'   => $controller->url_for("admin/coursewizardsteps/delete/{$step->id}"),
+                            'data-confirm' => sprintf(
+                                _('Soll der Eintrag "%s" wirklich gelöscht werden?'),
+                                $step->name
+                            ),
+                        ]
                     ) ?>
                     <?= $actionMenu->render() ?>
                 </td>

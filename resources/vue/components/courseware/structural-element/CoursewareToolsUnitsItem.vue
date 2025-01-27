@@ -1,18 +1,18 @@
 <template>
-    <a v-if="element" class="cw-tools-units-item-header" :href="url">
+    <component :is="isCurrentUnit ? 'p' : 'a'" v-if="element" class="cw-tools-units-item-header" :href="isCurrentUnit ? '' : url">
         <studip-ident-image v-model="identimage" :baseColor="headerColor.hex" :pattern="element.attributes.title" />
         <div class="cw-tools-units-item-header-image" :style="headerImageStyle"></div>
         <div class="cw-tools-units-item-header-details">
-            <header>{{ element.attributes.title }}</header>
+            <header :class="{'current' : isCurrentUnit }">{{ element.attributes.title }}</header>
             <p>{{ element.attributes.payload.description }}</p>
         </div>
-    </a>
+    </component>
 </template>
 
 <script>
 import StudipIdentImage from '../../StudipIdentImage.vue';
 import colorMixin from '@/vue/mixins/courseware/colors.js';
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'CoursewareToolsUnitsItem',
@@ -32,7 +32,11 @@ export default {
     computed: {
         ...mapGetters({
             context: 'context',
+            currentUnit: 'currentUnit',
         }),
+        isCurrentUnit() {
+            return this.currentUnit.id === this.unit.id;
+        },
         headerImageUrl() {
             return this.element.relationships?.image?.meta?.['download-url'];
         },
@@ -88,6 +92,10 @@ export default {
             margin: 0 0 6px 0;
             font-size: 16px;
             line-height: 16px;
+            &.current {
+                font-weight: 700;
+                color: var(--color--font-primary);
+            }
         }
         p {
             margin: 0;

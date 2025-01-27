@@ -24,7 +24,7 @@ class SessionStrategy implements Strategy
         }
 
         $isAuthenticated =
-            isset($GLOBALS['auth']) && $GLOBALS['auth']->is_authenticated() && 'nobody' !== $GLOBALS['user']->id;
+            isset($GLOBALS['user']) && 'nobody' !== $GLOBALS['user']->id;
 
         if ($isAuthenticated) {
             $this->user = $GLOBALS['user']->getAuthenticatedUser();

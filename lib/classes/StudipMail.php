@@ -97,6 +97,15 @@ class StudipMail
     public static function sendMessage($recipient, $subject, $text, $html = null)
     {
         $mail = new StudipMail();
+
+        // Add Stud.IP logo as "pseudo" attachment - this will be embedded in the mail via Content-ID.
+        $mail->addRelatedAttachment(
+            $GLOBALS['STUDIP_BASE_PATH'] . '/public/assets/images/logos/studip4-logo@2x.png',
+            'studip-logo.png',
+            'image/png',
+            'studiplogo'
+        );
+
         return $mail->setSubject($subject)
                     ->addRecipient($recipient)
                     ->setBodyText($text)

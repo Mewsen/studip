@@ -1,36 +1,24 @@
 import ContentReleasesApp from './components/courseware/ContentReleasesApp.vue';
 import CoursewareModule from './store/courseware/courseware.module';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
-import Vuex from 'vuex';
-import axios from 'axios';
+import { h } from "vue";
+import {mapResourceModules} from "../assets/javascripts/lib/reststate-vuex";
+import axios from "axios";
 
-const mountApp = (STUDIP, createApp, element) => {
+const mountApp = (STUDIP, createApp, store, element) => {
     const getHttpClient = () =>
-    axios.create({
-        baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
-        headers: {
-            'Content-Type': 'application/vnd.api+json',
-        },
-    });
+        axios.create({
+            baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+        });
 
-    const httpClient = getHttpClient();
+    store.registerModule('courseware', CoursewareModule);
+    Object.entries(mapResourceModules({
+        names: ['courseware-structural-elements-released'],
+        httpClient: getHttpClient()
+    })).forEach(([name, module]) => store.registerModule(name, module));
 
-    const store = new Vuex.Store({
-        modules: {
-            courseware: CoursewareModule,
-            ...mapResourceModules({
-                names: [
-                    'courseware-containers',
-                    'courseware-public-links',
-                    'courseware-structural-elements',
-                    'courseware-structural-elements-released',
-                    'file-refs',
-                    'users',
-                ],
-                httpClient,
-            }),
-        },
-    });
     let entry_id = null;
     let entry_type = null;
     let elem = document.getElementById(element.substring(1));
@@ -61,11 +49,9 @@ const mountApp = (STUDIP, createApp, element) => {
     store.dispatch('courseware-structural-elements-released/loadAll', {});
 
     const app = createApp({
-        render: (h) => h(ContentReleasesApp),
-        store
+        render: () => h(ContentReleasesApp),
     });
-
-    app.$mount(element);
+    app.mount(element);
 
     return app;
 }

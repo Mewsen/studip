@@ -125,19 +125,18 @@ STUDIP.domReady(function () {
         }
         $(this).showAjaxNotification().data('busy', true);
 
-        var that = this;
-        $.get($(this).attr('href'), function (response) {
-            var row = $('<tr />').addClass('loaded-details');
+        $.get($(this).attr('href'), response => {
+            const row = $('<tr />').addClass('loaded-details');
             $('<td />')
-                .attr('colspan', $(that).closest('td').siblings().length + 1)
+                .attr('colspan', $(this).closest('td').siblings().length + 1)
                 .html(response)
                 .appendTo(row);
 
-            $(that)
+            $(this)
                 .hideAjaxNotification()
                 .closest('tr').after(row);
 
-            $(that).data('busy', false);
+            $(this).data('busy', false);
             $('body').trigger('ajaxLoaded');
             $('a.load-in-new-row').attr('aria-expanded', 'true');
 
@@ -241,7 +240,7 @@ eventBus.on('studip:set-locale', () => {
 
 
 STUDIP.domReady(function () {
-    $(document).on('click', 'a.print_action', function (event) {
+    $(document).on('click', 'a.print_action', function () {
         var url_to_print = this.href;
         $('<iframe/>', {
             name: url_to_print,
@@ -381,30 +380,14 @@ STUDIP.domReady(function () {
 
     const toggleLogin = document.getElementById('toggle-login');
     if (toggleLogin) {
-        loginForm.addEventListener('transitionend', (event) => {
-            if (event.propertyName !== 'max-height') {
-                return;
-            }
-
+        toggleLogin.addEventListener('click', (event) => {
+            loginForm.classList.toggle('hide');
             if (!loginForm.classList.contains('hide')) {
                 usernameInput.scrollIntoView({
                     behavior: 'smooth'
                 });
                 usernameInput.focus();
-            } else {
-                loginForm.setAttribute('hidden', '');
             }
-        });
-
-        toggleLogin.addEventListener('click', (event) => {
-            if (loginForm.classList.contains('hide')) {
-                loginForm.removeAttribute('hidden');
-            }
-
-            setTimeout(() => {
-                loginForm.classList.toggle('hide');
-            }, 0);
-
             event.preventDefault();
         });
     }

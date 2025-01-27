@@ -168,7 +168,7 @@ class ModulesNotification
         $base_url = URLHelper::setBaseURL('');
         URLHelper::setBaseURl($base_url);
         if ($nav instanceof Navigation && $nav->isVisible(true)) {
-            $url = 'seminar_main.php?again=yes&auswahl=' . $seminar_id . '&redirect_to=' . strtr($nav->getURL(), '?', '&');
+            $url = 'dispatch.php/course/go?again=yes&to=' . $seminar_id . '&redirect_to=' . strtr($nav->getURL(), '?', '&');
             $icon = $nav->getImage();
             $text = $nav->getTitle();
             if (!$text) {

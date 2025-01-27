@@ -1,26 +1,6 @@
 #index_filter {
-    label.mvv-name-search {
-        display: block;
-        input[type="text"] {
-            box-sizing: border-box;
-            border: 1px solid var(--base-color-60);
-            border-right-width: 30px;
-            float: left;
-            height: 22px;
-            width: 100%;
-        }
-
-        input[type="submit"] {
-            @include hide-text();
-            width: 29px;
-            height: 20px;
-            @include background-icon(search, info_alt);
-            float: left;
-            background-position: center 3px;
-            background-repeat: no-repeat;
-            vertical-align: top;
-            margin-left: -30px;
-        }
+    ul.needles {
+        margin-bottom: 0.5em;
     }
 }
 
@@ -256,7 +236,7 @@ ul {
     }
 
     &.mvv-modul li {
-        @include icon(before, learnmodule, info, 16px, 2px);
+        @include icon(before, learnmodule, info, $padding: 2px);
         padding-left: 20px;
     }
 
@@ -264,29 +244,29 @@ ul {
         width: 100%;
 
         & li {
-            @include icon(before, person, info, 16px, 2px);
+            @include icon(before, person, info, $padding: 2px);
             padding-left: 20px;
         }
     }
 
     &.mvv-faecher li {
-        @include icon(before, file, info, 16px, 2px);
+        @include icon(before, file, info, $padding: 2px);
         padding-left: 20px;
     }
 
     &.mvv-dokumente li {
         > div:first-child {
-            @include icon(before, file, info, 16px, 2px);
+            @include icon(before, file, info, $padding: 2px);
         }
     }
 
     &.mvv-institute li {
-        @include icon(before, institute, info, 16px, 2px);
+        @include icon(before, institute, info, $padding: 2px);
         padding-left: 20px;
     }
 
     &.mvv-languages li {
-        @include icon(before, consultation, info, 16px, 2px);
+        @include icon(before, consultation, info, $padding: 2px);
         padding-left: 20px;
     }
 
@@ -418,7 +398,7 @@ select.mvv-search-select-list {
 }
 
 #mvv-chooser-toggle {
-    @include icon(before,'arr_2up', 'clickable', 16px, 2px);
+    @include icon(before, arr_2up, $padding: 2px);
     width: 20px;
     height: 20px;
     float: right;
@@ -443,7 +423,7 @@ select.mvv-search-select-list {
 }
 
 .mvv-chooser-hidden {
-    @include icon(before,'arr_2down', 'clickable', 16px, 2px);
+    @include icon(before, arr_2down, $padding: 2px);
 }
 
 .mvv-search-reset {

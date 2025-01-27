@@ -11,7 +11,7 @@
             />
         </div>
         <div>
-            <AttributesFieldset :metadata="metadata" :suggested-tags="suggestedTags" @change="onChange" />
+            <AttributesFieldset :metadata="metadata" :suggested-tags="suggestedTags" @change="metadata => onChange(metadata)" />
         </div>
     </div>
 </template>
@@ -19,12 +19,13 @@
 <script>
 import ThumbnailCard from './ThumbnailCard.vue';
 import AttributesFieldset from './AttributesFieldset.vue';
-import { getFormat } from './format.js';
 
 export default {
     props: ['file', 'metadata', 'suggestedTags'],
 
     components: { AttributesFieldset, ThumbnailCard },
+
+    emits: ['change'],
 
     data: () => ({
         fileURL: null,
@@ -39,7 +40,7 @@ export default {
                 return this.metadata.tags;
             },
             set(tags) {
-                this.$set(this.metadata, 'tags', tags);
+                this.$emit('change', { ...this.metadata, tags });
             },
         },
     },
@@ -58,10 +59,10 @@ export default {
             this.width = target.width;
         };
         this.image.src = this.fileURL;
-        this.$set(this.metadata, 'title', this.file.name);
+        this.$emit('change', { ...this.metadata, title: this.file.name });
     },
 
-    beforeDestroy() {
+    beforeUnmount() {
         if (this.fileURL) {
             URL.revokeObjectURL(this.fileURL);
         }

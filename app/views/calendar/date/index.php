@@ -128,7 +128,7 @@
         <?= Studip\LinkButton::create(
             _('Bearbeiten'),
             $controller->url_for('calendar/date/edit/' . $date->id, array_merge($button_params, ['return_path' => '/calendar/calendar'])),
-            ['data-dialog' => 'size=auto;reload-on-close']
+            ['data-dialog' => 'size=auto']
         ) ?>
         <?= \Studip\LinkButton::create(
             _('Löschen'),

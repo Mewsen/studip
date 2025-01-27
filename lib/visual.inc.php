@@ -412,11 +412,13 @@ function tooltip2($text, $with_alt = TRUE, $with_popup = FALSE) {
 /**
  * returns a html-snippet with an icon and a tooltip on it
  *
- * @param string $text tooltip text, html gets encoded
- * @param bool $important render icon in "important" style
- * @param bool $html tooltip text is HTML content
+ * @param string|null $text      tooltip text, html gets encoded
+ * @param bool        $important render icon in "important" style
+ * @param bool        $html      tooltip text is HTML content
+ * @param bool        $alt_info
+ * @return string
  */
-function tooltipIcon($text, $important = false, $html = false): string
+function tooltipIcon(?string $text, bool $important = false, bool $html = false, bool $alt_info= false): string
 {
     if (!trim($text)) {
         return '';
@@ -424,21 +426,19 @@ function tooltipIcon($text, $important = false, $html = false): string
 
     // render tooltip
     $template = $GLOBALS['template_factory']->open('shared/tooltip');
-    return $template->render(compact('text', 'important', 'html'));
+    return $template->render(compact('text', 'important', 'html', 'alt_info'));
 }
 
 /**
  * returns a html-snippet with an icon and a tooltip on it
  *
- * @param string $text tooltip text, html is rendered as is
- * @param bool $important render icon in "important" style
+ * @param string|null $text      tooltip text, html is rendered as is
+ * @param bool        $important render icon in "important" style
+ * @return string
  */
-function tooltipHtmlIcon($text, $important = false)
+function tooltipHtmlIcon(?string $text, bool $important = false)
 {
-    // render tooltip
-    $html = true;
-    $template = $GLOBALS['template_factory']->open('shared/tooltip');
-    return $template->render(compact('text', 'important', 'html'));
+    return tooltipIcon($text, $important, true);
 }
 
 /**
@@ -521,19 +521,5 @@ function display_exception($exception, $as_html = false, $deep = false) {
  * @todo Nested attribute definitions?
  */
 function arrayToHtmlAttributes(array $attributes) {
-    // Filter empty attributes
-    $attributes = array_filter($attributes, function ($value) {
-        return isset($value) && $value !== false;
-    });
-
-    // Actual conversion
-    $result = [];
-    foreach ($attributes as $key => $value) {
-        if ($value === true) {
-            $result[] = htmlReady($key);
-        } else {
-            $result[] = sprintf('%s="%s"', htmlReady($key), htmlReady($value));
-        }
-    }
-    return implode(' ', $result);
+    return (string) HTMLAttributes::from($attributes);
 }

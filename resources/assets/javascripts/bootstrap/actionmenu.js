@@ -4,7 +4,7 @@
     var last = null;
 
     // Open action menu on click on the icon
-    $(document).on('click', '.action-menu-icon', function (event) {
+    $(document).on('click', '.action-menu-icon', function () {
         // Choose correct root element if menu was positioned absolutely
         let root_element = $(this).closest('.action-menu');
         if ($(this).closest('.action-menu-wrapper').length > 0) {

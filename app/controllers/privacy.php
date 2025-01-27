@@ -39,28 +39,28 @@ class PrivacyController extends AuthenticatedController
         $actions->addLink(
             _('Anzeige Personendaten'),
             $this->url_for("privacy/landing/{$user_id}"),
-            Icon::create('log', Icon::ROLE_CLICKABLE, tooltip2(_('Anzeige Personendaten')))
+            Icon::create('log', attributes: tooltip2(_('Anzeige Personendaten')))
         )->asDialog('size=medium');
         $actions->addLink(
             _('Personendaten drucken'),
             $this->url_for('privacy/print/' . $user_id),
-            Icon::create('print', Icon::ROLE_CLICKABLE, tooltip2(_('Personendaten drucken'))),
+            Icon::create('print', attributes: tooltip2(_('Personendaten drucken'))),
             ['class' => 'print_action', 'target' => '_blank']
         );
         $actions->addLink(
             _('Export Personendaten als CSV'),
             $this->url_for("privacy/export/{$user_id}"),
-            Icon::create('file-text', Icon::ROLE_CLICKABLE, tooltip2(_('Export Personendaten als CSV')))
+            Icon::create('file-text', attributes: tooltip2(_('Export Personendaten als CSV')))
         );
         $actions->addLink(
             _('Export persönlicher Dateien als XML'),
             $this->url_for("privacy/xml/{$user_id}"),
-            Icon::create('file-text', Icon::ROLE_CLICKABLE, tooltip2(_('Export Personendaten als XML')))
+            Icon::create('file-text', attributes: tooltip2(_('Export Personendaten als XML')))
         );
         $actions->addLink(
             _('Export persönlicher Dateien als ZIP'),
             $this->url_for("privacy/filesexport/{$user_id}"),
-            Icon::create('file-archive', Icon::ROLE_CLICKABLE, tooltip2(_('Export persönlicher Dateien als ZIP')))
+            Icon::create('file-archive', attributes: tooltip2(_('Export persönlicher Dateien als ZIP')))
         );
 
 
@@ -68,14 +68,14 @@ class PrivacyController extends AuthenticatedController
         $exports->addLink(
             _('Export angezeigter Dateien als XML'),
             $this->url_for("privacy/xml/{$user_id}" . ($section ? "/{$section}" : '')),
-            Icon::create('file-text', Icon::ROLE_CLICKABLE, tooltip2(_('Export angezeigter Daten als XML')))
+            Icon::create('file-text', attributes: tooltip2(_('Export angezeigter Daten als XML')))
         );
 
         foreach ($this->plugin_data as $label => $tabledata) {
             $exports->addLink(
                 htmlReady($label) . ' ' . _('CSV'),
                 $this->url_for("privacy/export2csv/{$tabledata['table_name']}/{$user_id}"),
-                Icon::create('file-text', Icon::ROLE_CLICKABLE, tooltip2(htmlReady($label) . ' CSV'))
+                Icon::create('file-text', attributes: tooltip2(htmlReady($label) . ' CSV'))
             );
         }
     }
@@ -102,23 +102,23 @@ class PrivacyController extends AuthenticatedController
         $actions->addLink(
             _('Personendaten drucken'),
             $this->url_for("privacy/print/{$user_id}"),
-            Icon::create('print', Icon::ROLE_CLICKABLE, tooltip2(_('Personendaten drucken'))),
+            Icon::create('print', attributes: tooltip2(_('Personendaten drucken'))),
             ['class' => 'print_action', 'target' => '_blank']
         );
         $actions->addLink(
             _('Export Personendaten als CSV'),
             $this->url_for("privacy/export/{$user_id}"),
-            Icon::create('file-text', Icon::ROLE_CLICKABLE, tooltip2(_('Export Personendaten als CSV')))
+            Icon::create('file-text', attributes: tooltip2(_('Export Personendaten als CSV')))
         );
         $actions->addLink(
             _('Export persönlicher Dateien als XML'),
             $this->url_for("privacy/xml/{$user_id}"),
-            Icon::create('file-text', Icon::ROLE_CLICKABLE, tooltip2(_('Export Personendaten als XML')))
+            Icon::create('file-text', attributes: tooltip2(_('Export Personendaten als XML')))
         );
         $actions->addLink(
             _('Export persönlicher Dateien als ZIP'),
             $this->url_for("privacy/filesexport/{$user_id}"),
-            Icon::create('file-archive', Icon::ROLE_CLICKABLE, tooltip2(_('Export persönlicher Dateien als ZIP')))
+            Icon::create('file-archive', attributes: tooltip2(_('Export persönlicher Dateien als ZIP')))
         );
     }
 

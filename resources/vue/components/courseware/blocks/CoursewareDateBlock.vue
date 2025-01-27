@@ -154,19 +154,18 @@ export default {
             this.currentStyle = this.style;
         },
         countdown() {
-            let view = this;
-            setInterval(function () {
+            setInterval(() => {
                 let now = new Date().getTime();
-                let distance = view.currentTimestamp - now;
+                let distance = this.currentTimestamp - now;
                 if (distance < 0) {
                     return;
                 }
-                view.countdownDays = Math.floor(distance / (1000 * 60 * 60 * 24));
-                view.countdownHours = ('0' + Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).slice(
+                this.countdownDays = Math.floor(distance / (1000 * 60 * 60 * 24));
+                this.countdownHours = ('0' + Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).slice(
                     -2
                 );
-                view.countdownMinutes = ('0' + Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).slice(-2);
-                view.countdownSeconds = ('0' + Math.floor((distance % (1000 * 60)) / 1000)).slice(-2);
+                this.countdownMinutes = ('0' + Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).slice(-2);
+                this.countdownSeconds = ('0' + Math.floor((distance % (1000 * 60)) / 1000)).slice(-2);
             }, 1000);
         },
         computeTimestamp() {
@@ -201,5 +200,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/date.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/date';
 </style>

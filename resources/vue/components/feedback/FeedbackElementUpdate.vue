@@ -24,6 +24,7 @@
 import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'feedback-element-update',
+    emits: ['cancel', 'submit'],
     props: {
         feedbackElementId: {
             type: Number,

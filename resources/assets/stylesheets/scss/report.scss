@@ -62,7 +62,7 @@
         .ui-button-icon {
             .ui-icon {
                 .ui-icon-closethick {
-                    @include background-icon(decline, clickable);
+                    @include background-icon(decline);
                 }
             }
         }

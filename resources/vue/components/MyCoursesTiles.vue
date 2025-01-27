@@ -1,7 +1,7 @@
 <template>
     <div class="my-courses my-courses--tiles">
-        <template v-for="(group, index) in groups">
-            <div class="group-label" :key="index">{{ group.name }}</div>
+        <template v-for="(group, index) in groups" :key="index">
+            <div class="group-label">{{ group.name }}</div>
             <article class="studip" v-for="subgroup in group.data" :key="subgroup.id" :class="getGroupCssClasses(subgroup)">
                 <header v-if="subgroup.label">
                     <h1>
@@ -9,12 +9,12 @@
                     </h1>
                 </header>
                 <section class="studip-grid">
-                    <template v-for="course in getOrderedCourses(subgroup.ids)">
-                        <div class="course-group-label" v-if="isParent(course)" :key="course.id">
+                    <template v-for="course in getOrderedCourses(subgroup.ids)" :key="course.id">
+                        <div class="course-group-label" v-if="isParent(course)">
                             {{ getCourseName(course, getConfig('sem_number')) }}
                         </div>
 
-                        <article class="studip-grid-element" :data-course-id="course.id" :class="getCourseCssClasses(course)" :key="course.id">
+                        <article class="studip-grid-element" :data-course-id="course.id" :class="getCourseCssClasses(course)">
                             <header class="tiles-grid-element-header">
                                 <span class="tiles-grid-element-options">
                                     <studip-action-menu :items="getActionMenuForCourse(course, true)"
@@ -24,7 +24,7 @@
                                     ></studip-action-menu>
                                 </span>
 
-                                <a :href="urlFor('seminar_main.php', {auswahl: course.id})" class="tiles-grid-element-header-content" :title="getCourseName(course, getConfig('sem_number'))">
+                                <a :href="urlFor('dispatch.php/course/go', {to: course.id})" class="tiles-grid-element-header-content" :title="getCourseName(course, getConfig('sem_number'))">
                                     <span :style="{backgroundImage: `url(${course.avatar})`}" class="tiles-grid-element-header-image"></span>
                                     <span class="tiled-grid-element-header-title">
                                         {{ getCourseName(course, getConfig('sem_number')) }}
@@ -158,10 +158,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '../../assets/stylesheets/mixins.scss';
-@use '../../assets/stylesheets/scss/breakpoints.scss' as *;
-@use '../../assets/stylesheets/scss/variables.scss';
-@import '../../assets/stylesheets/scss/visibility.scss'; // Needs to be imported (breakpoint variables are missing)
+@use '../../assets/stylesheets/mixins';
+@use '../../assets/stylesheets/scss/breakpoints' as *;
+@use '../../assets/stylesheets/scss/variables';
+@import '../../assets/stylesheets/scss/visibility'; // Needs to be imported (breakpoint variables are missing)
 
 $tile-border-width: 1px;
 $tile-color-width: 15px;

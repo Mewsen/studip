@@ -119,6 +119,7 @@ export default {
         FeedbackFiveStarsHistogram,
         StudipProgressIndicator,
     },
+    emits: ['close', 'deleted'],
     props: {
         feedbackElementId: {
             type: Number,

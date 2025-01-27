@@ -19,6 +19,7 @@ trait TranslatablePluginTrait
     {
         bindtextdomain($domain, $this->getPluginPath() . '/locale');
         bind_textdomain_codeset($domain, 'UTF-8');
+        $this->translation_domain = $domain;
     }
 
     /**

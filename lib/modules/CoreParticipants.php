@@ -34,21 +34,6 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
 
         $course = Course::find($course_id);
 
-        // Is the participants page hidden for students?
-        if (!$GLOBALS['perm']->have_studip_perm('tutor', $course_id, $user_id) && $course->config->COURSE_MEMBERS_HIDE) {
-            $tab_navigation = $this->getTabNavigation($course_id);
-            if ($tab_navigation && count($tab_navigation['members']->getSubNavigation()) > 0) {
-                $sub_nav = $tab_navigation['members']->getSubNavigation();
-                $first_nav = reset($sub_nav);
-
-                $navigation = new Navigation($first_nav->getTitle(), $first_nav->getURL());
-                $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
-                return $navigation;
-
-            }
-            return null;
-        }
-
         // Determine url to redirect to
         if (!$course->getSemClass()->isGroup()) {
             $url = 'dispatch.php/course/members/index';
@@ -59,7 +44,7 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
         }
 
         $navigation = new Navigation(_('Teilnehmende'), $url);
-        $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
+        $navigation->setImage(Icon::create('persons2'));
 
         // Check permission, show no indicator if not at least tutor
         if (!$GLOBALS['perm']->have_studip_perm('tutor', $course_id, $user_id)) {
@@ -255,14 +240,10 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
 
         // Only courses without children have a regular member list and statusgroups.
         if (!$course->getSemClass()->isGroup()) {
-            if ($GLOBALS['perm']->have_studip_perm('tutor', $course_id) || !$course->config->COURSE_MEMBERS_HIDE) {
-                $navigation->addSubNavigation('view', new Navigation(_('Teilnehmende'), 'dispatch.php/course/members'));
-                $navigation->addSubNavigation('statusgroups', new Navigation(_('Gruppen'), 'dispatch.php/course/statusgroups'));
-            }
-        } else {
-            if ($GLOBALS['perm']->have_studip_perm('tutor', $course_id)) {
-                $navigation->addSubNavigation('children', new Navigation(_('Teilnehmende in Unterveranstaltungen'), 'dispatch.php/course/grouping/members'));
-            }
+            $navigation->addSubNavigation('view', new Navigation(_('Teilnehmende'), 'dispatch.php/course/members'));
+            $navigation->addSubNavigation('statusgroups', new Navigation(_('Gruppen'), 'dispatch.php/course/statusgroups'));
+        } elseif ($GLOBALS['perm']->have_studip_perm('tutor', $course_id)) {
+            $navigation->addSubNavigation('children', new Navigation(_('Teilnehmende in Unterveranstaltungen'), 'dispatch.php/course/grouping/members'));
         }
 
         if ($course->aux_lock_rule) {
@@ -302,13 +283,13 @@ class CoreParticipants extends CorePlugin implements StudipModuleExtended
                                    'es die Möglichkeiten für Lehrende, allen eine Rundmail zukommen zu lassen '.
                                    'bzw. einzelne Teilnehmende separat anzuschreiben.'),
             'category' => _('Lehr- und Lernorganisation'),
-            'icon' => Icon::create('persons', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('persons', Icon::ROLE_CLICKABLE),
+            'icon' => Icon::create('persons2', Icon::ROLE_INFO),
+            'icon_clickable' => Icon::create('persons2'),
             'screenshots' => [
-                'path' => 'assets/images/plus/screenshots/TeilnehmerInnen',
+                'path' => 'assets/images/plus/screenshots/Teilnehmende',
                 'pictures' => [
-                    ['source' => 'Liste_aller_Teilnehmenden_einer_Veranstaltung.jpg', 'title' => _('Liste aller Teilnehmenden einer Veranstaltung')],
-                    ['source' => 'Rundmail_an_alle_TeilnehmerInnen_einer_Veranstaltung.jpg', 'title' => _('Rundmail an alle Teilnehmdenden einer Veranstaltung')],
+                    0 => ['source' => 'Liste_aller_Teilnehmenden_einer_Veranstaltung.jpg', 'title' => _('Liste aller Teilnehmenden einer Veranstaltung')],
+                    1 => ['source' => 'Rundmail_an_alle_Teilnehmenden_einer_Veranstaltung.jpg', 'title' => _('Rundmail an alle Teilnehmenden einer Veranstaltung')],
                 ]
             ],
         ];

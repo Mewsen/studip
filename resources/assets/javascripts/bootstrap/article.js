@@ -4,7 +4,7 @@
     $(document).on('click', 'article.studip.toggle header h1 a', function (e) {
         e.preventDefault();
 
-        var article = $(this).closest('article');
+        const article = $(this).closest('article');
 
         // If the contentbox article is new send an ajax request
         if (article.hasClass('new') && article.data('visiturl')) {
@@ -17,7 +17,7 @@
     });
 
     // Open closed article contents when location hash matches
-    $(window).on('hashchange', (event) => {
+    $(window).on('hashchange', () => {
         const hash = location.hash.split('#').pop();
         $(`article.studip.toggle:not(.open) header h1 a[name="${hash}"]`).click();
     });

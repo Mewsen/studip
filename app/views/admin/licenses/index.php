@@ -34,13 +34,13 @@
             </td>
             <td class="actions">
                 <a href="<?= $controller->link_for("admin/licenses/edit", ['identifier' => $license['identifier']]) ?>" data-dialog>
-                    <?= Icon::create("edit")->asImg(20, ['class' => "text-bottom"]) ?>
+                    <?= Icon::create('edit')->asImg(['class' => "text-bottom"]) ?>
                 </a>
                 <form action="<?= $controller->link_for("admin/licenses/delete", ['identifier' => $license->getId()]) ?>"
                       method="post"
                       data-confirm="<?= _("Wirklich löschen?") ?>"
                       class="inline">
-                    <?= Icon::create("trash")->asInput(20) ?>
+                    <?= Icon::create('trash')->asInput() ?>
                 </form>
             </td>
         </tr>
@@ -54,7 +54,6 @@ $actions = new ActionsWidget();
 $actions->addLink(
     _("Lizenz erzeugen"),
     $controller->url_for("admin/licenses/edit"),
-    Icon::create("add", "clickable"),
-    ['data-dialog' => 1]
-);
+    Icon::create('add')
+)->asDialog();
 Sidebar::Get()->addWidget($actions);

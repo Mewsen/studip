@@ -43,6 +43,7 @@ final class VueApp implements Stringable
     private array $slots = [];
     private array $stores = [];
     private array $storeData = [];
+    private array $components = [];
 
     /**
      * Private constructor since we want to enforce the use of VueApp::create().
@@ -50,6 +51,7 @@ final class VueApp implements Stringable
     private function __construct(
         private readonly string $base_component
     ) {
+        $this->components[] = $base_component;
     }
 
     /**
@@ -78,6 +80,15 @@ final class VueApp implements Stringable
     public function getProps(): array
     {
         return $this->props;
+    }
+
+    /**
+     * Set the content of a slot.
+     */
+    public function setSlot(string $name, string|Template $content): VueApp
+    {
+        $this->slots[$name] = $content instanceof Template ? $content->render() : $content;
+        return $this;
     }
 
     /**
@@ -153,12 +164,30 @@ final class VueApp implements Stringable
     }
 
     /**
+     * Registers a component for use e.g. in slots.
+     */
+    public function withComponent(string $component): VueApp
+    {
+        $clone = clone $this;
+        $clone->components[] = $component;
+        return $clone;
+    }
+
+    /**
+     * Returns all components
+     */
+    public function getComponents(): array
+    {
+        return $this->components;
+    }
+
+    /**
      * Returns the template to render the vue app
      */
     public function getTemplate(): Template
     {
         $data = [
-            'components' => [$this->base_component],
+            'components' => $this->components,
         ];
 
         if (count($this->stores) > 0) {
@@ -174,6 +203,7 @@ final class VueApp implements Stringable
         $template->attributes = ['data-vue-app' => json_encode($data)];
         $template->props = $this->getPreparedProps();
         $template->storeData = $this->storeData;
+        $template->slots = $this->getSlots();
         return $template;
     }
 

@@ -31,7 +31,9 @@ class Admin_AdditionalController extends AuthenticatedController
                     "Veranstaltung zu verändern."));
         }
 
-        Sidebar::get()->addWidget(new CourseManagementSelectWidget());
+        if ($GLOBALS['perm']->have_studip_perm('admin', $this->course->id)) {
+            Sidebar::get()->addWidget(new CourseManagementSelectWidget());
+        }
     }
 
     /**

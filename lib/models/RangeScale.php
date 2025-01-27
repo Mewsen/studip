@@ -77,7 +77,10 @@ class RangeScale extends QuestionnaireQuestion implements QuestionType
         [$statement_key, $options_key] = explode('_', $answer_option);
         foreach ($this->answers as $answer) {
             $answerData = $answer['answerdata']->getArrayCopy();
-            if ($answerData['answers'][$statement_key] == $options_key) {
+            if (
+                isset($answerData['answers'][$statement_key])
+                && $answerData['answers'][$statement_key] == $options_key
+            ) {
                 $user_ids[] = $answer['user_id'];
             }
         }

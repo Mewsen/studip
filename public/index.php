@@ -19,12 +19,5 @@
 
 require '../lib/bootstrap.php';
 
-page_open(['sess' => 'Seminar_Session', 'auth' => 'Seminar_Default_Auth', 'perm' => 'Seminar_Perm', 'user' => 'Seminar_User']);
+header('Location: ' . URLHelper::getURL('dispatch.php/start'));
 
-$auth->login_if($user->id === 'nobody');
-include 'lib/seminar_open.php'; // initialise Stud.IP-Session
-
-// if new start page is in use, redirect there (if logged in)
-if ($auth->is_authenticated() && $user->id != 'nobody') {
-    header('Location: ' . URLHelper::getURL('dispatch.php/start'));
-}

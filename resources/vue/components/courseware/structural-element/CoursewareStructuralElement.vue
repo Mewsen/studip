@@ -1,5 +1,5 @@
 <template>
-    <focus-trap v-model="consumModeTrap">
+    <focus-trap v-model:active="consumModeTrap">
         <div>
             <div
                 v-if="validContext"
@@ -8,11 +8,8 @@
             >
                 <div v-if="structuralElement" class="cw-structural-element-content">
                     <courseware-ribbon
-                        :canEdit="canEdit && canAddElements"
-                        :isContentBar="true"
-                        @blockAdded="updateContainerList"
-                    >
-                        <template #buttons>
+                        @blockAdded="updateContainerList">
+                        <template #buttons-left>
                             <router-link v-if="prevElement" :to="'/structural_element/' + prevElement.id">
                                 <div class="cw-ribbon-button cw-ribbon-button-prev" :title="$gettext('zurück')" />
                             </router-link>
@@ -30,66 +27,70 @@
                                 :title="$gettext('Keine nächste Seite')"
                             />
                         </template>
-                        <template #breadcrumbList>
-                            <li
-                                v-for="ancestor in ancestors"
-                                :key="ancestor.id"
-                                :title="ancestor.attributes.title"
-                                class="cw-ribbon-breadcrumb-item"
-                            >
-                                <span>
-                                    <router-link :to="'/structural_element/' + ancestor.id">{{
-                                        ancestor.attributes.title || '–'
-                                    }}</router-link>
-                                </span>
-                            </li>
-                            <li
-                                class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
-                                :title="structuralElement.attributes.title"
-                            >
-                                <span>{{ structuralElement.attributes.title || '–' }}</span>
-                                <span v-if="isTask">[ {{ solverName }} ]</span>
-                                <template v-if="!userIsTeacher && inCourse">
-                                    <studip-icon
-                                        v-if="complete"
-                                        shape="accept"
-                                        role="info"
-                                        :title="$gettext('Diese Seite wurde von Ihnen vollständig bearbeitet')"
-                                    />
-                                    <span
-                                        v-else
-                                        :title="
-                                            $gettextInterpolate($gettext('Fortschritt: %{progress} %'), {
-                                                progress: elementProgress,
-                                            })
-                                        "
-                                    >
-                                        ({{ elementProgress }} %)
+                        <template #breadcrumb-list>
+                            <ul>
+                                <li
+                                    v-for="ancestor in ancestors"
+                                    :key="ancestor.id"
+                                    :title="ancestor.attributes.title"
+                                    class="cw-ribbon-breadcrumb-item"
+                                >
+                                    <span>
+                                        <router-link :to="'/structural_element/' + ancestor.id">{{ ancestor.attributes.title || '–' }}</router-link>
                                     </span>
-                                </template>
-                                <studip-five-stars
-                                    v-if="showFeedbackInContentbar && hasFeedbackElement"
-                                    :amount="hasFeedbackAverage ? feedbackAverage : 5"
-                                    :size="16"
-                                    :role="hasFeedbackAverage ? 'status-yellow' : 'inactive'"
-                                    :title="
-                                        hasFeedbackAverage
-                                            ? $gettextInterpolate($gettext('Seite wurde mit %{avg} Sternen bewertet'), {
-                                                  avg: feedbackAverage,
-                                              })
-                                            : $gettext('Seite wurde noch nicht bewertet')
-                                    "
-                                    @click="menuAction('showFeedback')"
-                                />
-                            </li>
+                                </li>
+                                <li
+                                    class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
+                                    :title="structuralElement.attributes.title"
+                                >
+                                    <span>{{ structuralElement.attributes.title || '–' }}</span>
+                                    <span v-if="isTask">
+                                        [ {{ (!userIsSolver && userIsReviewer && isPeerReviewAnonymous) ? $gettext('anonym') : solverName }} ]
+                                    </span>
+                                    <template v-if="inCourse && !(userIsTeacher || userIsReviewer)">
+                                        <studip-icon
+                                            v-if="complete"
+                                            shape="accept"
+                                            role="info"
+                                            :title="$gettext('Diese Seite wurde von Ihnen vollständig bearbeitet')"
+                                        />
+                                        <span
+                                            v-else
+                                            :title="$gettext(
+                                                'Fortschritt: %{progress} %',
+                                                {progress: elementProgress}
+                                            )"
+                                        >
+                                            ({{ elementProgress }} %)
+                                        </span>
+                                    </template>
+                                    <studip-five-stars
+                                        v-if="showFeedbackInContentbar && hasFeedbackElement"
+                                        :amount="hasFeedbackAverage ? feedbackAverage : 5"
+                                        :size="16"
+                                        :role="hasFeedbackAverage ? 'status-yellow' : 'inactive'"
+                                        :title="
+                                            hasFeedbackAverage
+                                                ? $gettext(
+                                                    'Seite wurde mit %{avg} Sternen bewertet',
+                                                    { avg: feedbackAverage }
+                                                  )
+                                                : $gettext('Seite wurde noch nicht bewertet')
+                                        "
+                                        @click="menuAction('showFeedback')"
+                                    />
+                                </li>
+                            </ul>
                         </template>
-                        <template #breadcrumbFallback>
-                            <li
-                                class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
-                                :title="structuralElement.attributes.title"
-                            >
-                                <span>{{ structuralElement.attributes.title }}</span>
-                            </li>
+                        <template #breadcrumb-fallback>
+                            <ul>
+                                <li
+                                    class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
+                                    :title="structuralElement.attributes.title"
+                                >
+                                    <span>{{ structuralElement.attributes.title }}</span>
+                                </li>
+                            </ul>
                         </template>
                         <template #menu>
                             <studip-action-menu
@@ -135,6 +136,9 @@
                                 </template>
                             </courseware-call-to-action-box>
                             <div v-if="structuralElementLoaded && !isLink" class="cw-companion-box-wrapper">
+                                <StudipMessageBox v-if="userIsReviewer">
+                                    {{ $gettext('Diese Seite gehört zu einer Aufgabe, die von einer anderen Person bearbeitet wird.') }}
+                                </StudipMessageBox>
                                 <courseware-companion-box
                                     v-if="!canVisit"
                                     mood="sad"
@@ -143,10 +147,8 @@
                                 <courseware-companion-box
                                     v-if="blockedByAnotherUser"
                                     :msgCompanion="
-                                        $gettextInterpolate(
-                                            $gettext(
-                                                'Die Einstellungen dieser Seite werden im Moment von %{blockingUserName} bearbeitet.'
-                                            ),
+                                        $gettext(
+                                            'Die Einstellungen dieser Seite werden im Moment von %{blockingUserName} bearbeitet.',
                                             { blockingUserName: blockingUserName }
                                         )
                                     "
@@ -155,6 +157,22 @@
                                     <template #companionActions>
                                         <button v-if="userIsTeacher" class="button" @click="menuAction('removeLock')">
                                             {{ textRemoveLock.title }}
+                                        </button>
+                                    </template>
+                                </courseware-companion-box>
+                                <courseware-companion-box
+                                    v-for="peerReview in peerReviews"
+                                    :key="peerReview.id"
+                                    mood="pointing"
+                                    :msgCompanion="peerReviewCompanionMessage(peerReview)"
+                                    >
+                                    <template #companionActions>
+                                        <button
+                                            class="button"
+                                            @click="openPeerReview(peerReview)"
+                                            :disabled="!canReadPeerReviewAssessment(peerReview)"
+                                            >
+                                            {{ peerReviewCompanionAction(peerReview) }}
                                         </button>
                                     </template>
                                 </courseware-companion-box>
@@ -200,10 +218,8 @@
                                 <div v-if="canEdit" class="cw-companion-box-wrapper">
                                     <courseware-companion-box
                                         :msgCompanion="
-                                            $gettextInterpolate(
-                                                $gettext(
-                                                    'Dieser Inhalt ist aus den persönlichen Lernmaterialien von %{ ownerName } verlinkt und kann nur dort bearbeitet werden.'
-                                                ),
+                                            $gettext(
+                                                'Dieser Inhalt ist aus den persönlichen Lernmaterialien von %{ ownerName } verlinkt und kann nur dort bearbeitet werden.',
                                                 { ownerName: ownerName }
                                             )
                                         "
@@ -228,42 +244,41 @@
                                         {{ $gettext('Drücken Sie die Leertaste, um neu anzuordnen.') }}
                                     </span>
                                     <draggable
+                                        v-bind="dragOptions"
                                         class="cw-structural-element-list"
                                         tag="ol"
                                         role="listbox"
                                         v-model="containerList"
-                                        v-bind="dragOptions"
                                         handle=".cw-sortable-handle"
                                         @start="isDragging = true"
                                         @end="dropContainer"
+                                        item-key="id"
                                     >
-                                        <li
-                                            v-for="container in containerList"
-                                            :key="container.id"
-                                            class="cw-container-item-sortable"
-                                        >
-                                            <span
-                                                :class="{ 'cw-sortable-handle-dragging': isDragging }"
-                                                class="cw-sortable-handle"
-                                                tabindex="0"
-                                                role="option"
-                                                aria-describedby="operation"
-                                                :ref="'sortableHandle' + container.id"
-                                                @keydown="keyHandler($event, container.id)"
-                                            ></span>
-                                            <component
-                                                :is="containerComponent(container)"
-                                                :container="container"
-                                                :canEdit="canEdit"
-                                                :canAddElements="canAddElements"
-                                                :isTeacher="userIsTeacher"
-                                                class="cw-container-item"
-                                                ref="containers"
-                                                :class="{
-                                                    'cw-container-item-selected': keyboardSelected === container.id,
-                                                }"
-                                            />
-                                        </li>
+                                        <template #item="{element}">
+                                            <li class="cw-container-item-sortable">
+                                                <span
+                                                    :class="{ 'cw-sortable-handle-dragging': isDragging }"
+                                                    class="cw-sortable-handle"
+                                                    tabindex="0"
+                                                    role="option"
+                                                    aria-describedby="operation"
+                                                    :ref="'sortableHandle' + element.id"
+                                                    @keydown="keyHandler($event, element.id)"
+                                                ></span>
+                                                <component
+                                                    :is="containerComponent(element)"
+                                                    :container="element"
+                                                    :canEdit="canEdit"
+                                                    :canAddElements="canAddElements"
+                                                    :isTeacher="userIsTeacher"
+                                                    class="cw-container-item"
+                                                    ref="containers"
+                                                    :class="{
+                                                        'cw-container-item-selected': keyboardSelected === element.id,
+                                                    }"
+                                                />
+                                            </li>
+                                        </template>
                                     </draggable>
                                 </template>
                                 <studip-progress-indicator
@@ -376,6 +391,16 @@
                     v-if="showPublicLinkDialog && inContent"
                     :structuralElement="structuralElement"
                 />
+                <PeerReviewAssessmentDialog
+                    v-model:show="showPeerReviewAssessment"
+                    v-if="selectedPeerReview"
+                    :review="selectedPeerReview"
+                    />
+                <PeerReviewResultDialog
+                    v-model:show="showPeerReviewResult"
+                    v-if="selectedPeerReview"
+                    :review="selectedPeerReview"
+                    />
                 <feedback-dialog
                     v-if="showFeedbackDialog"
                     :feedbackElementId="parseInt(feedbackElementId)"
@@ -440,6 +465,10 @@ import CoursewareStructuralElementDialogPublicLink from './CoursewareStructuralE
 import CoursewareStructuralElementDiscussion from './CoursewareStructuralElementDiscussion.vue';
 
 import CoursewareWelcomeScreen from './CoursewareWelcomeScreen.vue';
+import CoursewareRibbon from "./CoursewareRibbon.vue";
+import PeerReviewAssessmentDialog from '../tasks/peer-review/AssessmentDialog.vue';
+import PeerReviewResultDialog from '../tasks/peer-review/ResultDialog.vue';
+import { getProcessStatus, ProcessStatus } from '../tasks/peer-review/definitions.ts';
 import CoursewareExport from '@/vue/mixins/courseware/export.js';
 
 import colorMixin from '@/vue/mixins/courseware/colors.js';
@@ -451,10 +480,12 @@ import { FocusTrap } from 'focus-trap-vue';
 import FeedbackDialog from '../../feedback/FeedbackDialog.vue';
 import FeedbackCreateDialog from '../../feedback/FeedbackCreateDialog.vue';
 import StudipFiveStars from '../../feedback/StudipFiveStars.vue';
+import StudipMessageBox from '../../StudipMessageBox.vue';
 import StudipProgressIndicator from '../../StudipProgressIndicator.vue';
 import draggable from 'vuedraggable';
 import containerMixin from '@/vue/mixins/courseware/container.js';
 import { mapActions, mapGetters } from 'vuex';
+import { store } from "../../../../assets/javascripts/chunks/vue";
 
 export default {
     name: 'courseware-structural-element',
@@ -485,13 +516,19 @@ export default {
         FeedbackCreateDialog,
         StudipFiveStars,
         FocusTrap,
+        PeerReviewAssessmentDialog,
+        PeerReviewResultDialog,
         StudipDialog,
+        StudipMessageBox,
         StudipProgressIndicator,
         draggable,
+        CoursewareRibbon,
     }),
     props: ['canVisit', 'orderedStructuralElements', 'structuralElement'],
 
     mixins: [CoursewareExport, colorMixin, wizardMixin, containerMixin],
+
+    emits: ['select'],
 
     data() {
         return {
@@ -512,6 +549,9 @@ export default {
             consumModeTrap: false,
             keyboardSelected: null,
             assistiveLive: '',
+            showPeerReviewAssessment: false,
+            showPeerReviewResult: false,
+            selectedPeerReview: null,
             displayFeedback: false,
             showRatingPopup: false,
             ratingPopupFeedbackElement: null,
@@ -526,14 +566,18 @@ export default {
     },
 
     computed: {
+        consumeMode() {
+            return store.state.studip.consumeMode;
+        },
         ...mapGetters({
             courseware: 'courseware',
             rootId: 'rootId',
             currentUnit: 'currentUnit',
             context: 'context',
-            consumeMode: 'consumeMode',
             containerById: 'courseware-containers/byId',
             relatedContainers: 'courseware-containers/related',
+            relatedPeerReviewProcesses: 'courseware-peer-review-processes/related',
+            relatedPeerReviews: 'courseware-peer-reviews/related',
             relatedStructuralElements: 'courseware-structural-elements/related',
             getRelatedFeedback: 'courseware-structural-element-feedback/related',
             getRelatedComments: 'courseware-structural-element-comments/related',
@@ -617,8 +661,8 @@ export default {
             textDelete.title = this.$gettext('Seite unwiderruflich löschen');
             textDelete.alert = this.$gettext('Möchten Sie die Seite wirklich löschen?');
             if (this.structuralElementLoaded) {
-                textDelete.alert = this.$gettextInterpolate(
-                    this.$gettext('Möchten Sie die Seite %{ pageTitle } und alle ihre Unterseiten wirklich löschen?'),
+                textDelete.alert = this.$gettext(
+                    'Möchten Sie die Seite %{ pageTitle } und alle ihre Unterseiten wirklich löschen?',
                     { pageTitle: this.structuralElement.attributes.title }
                 );
             }
@@ -644,7 +688,7 @@ export default {
             if (this.context.type === 'courses' && this.currentElement.relationships) {
                 if (
                     this.currentElement.relationships.course &&
-                    this.context.id === this.currentElement.relationships.course.data.id
+                        this.context.id === this.currentElement.relationships.course.data.id
                 ) {
                     return true;
                 }
@@ -653,7 +697,7 @@ export default {
             if (this.context.type === 'users' && this.currentElement.relationships) {
                 if (
                     this.currentElement.relationships.user &&
-                    this.context.id === this.currentElement.relationships.user.data.id
+                        this.context.id === this.currentElement.relationships.user.data.id
                 ) {
                     return true;
                 }
@@ -677,11 +721,12 @@ export default {
                     return null;
                 }
                 const element = this.structuralElementById({ id: parentId });
-                if (element.relationships.parent.data === null && !this.showRootElement) {
-                    return null;
-                }
                 if (!element) {
                     console.error(`CoursewareStructuralElement#ancestors: Could not find parent by ID: "${parentId}".`);
+                    return null;
+                }
+                if (element.relationships.parent.data === null && !this.showRootElement) {
+                    return null;
                 }
 
                 return element;
@@ -967,10 +1012,10 @@ export default {
         solver() {
             if (this.task) {
                 const solver = this.task.relationships.solver.data;
-                if (solver.type === 'users') {
+                if (solver?.type === 'users') {
                     return this.userById({ id: solver.id });
                 }
-                if (solver.type === 'status-groups') {
+                if (solver?.type === 'status-groups') {
                     return this.groupById({ id: solver.id });
                 }
             }
@@ -986,8 +1031,7 @@ export default {
                     return this.solver.attributes.name;
                 }
             }
-
-            return '';
+            return null;
         },
         canAddElements() {
             if (!this.isTask) {
@@ -1040,7 +1084,7 @@ export default {
         },
         elementProgress() {
             if (this.structuralElementLoaded) {
-                return this.progressData?.[this.structuralElement.id].progress.self;
+                return this.progressData?.[this.structuralElement.id].progress?.self ?? 0;
             }
 
             return 0;
@@ -1078,12 +1122,10 @@ export default {
             return true;
         },
         callToActionTitleFeedback() {
-            return this.$gettextInterpolate(
-                this.$ngettext(
-                    '%{length} Anmerkung zur Seite (Nur für Nutzende mit Schreibrechten sichtbar)',
-                    '%{length} Anmerkungen zur Seite (Nur für Nutzende mit Schreibrechten sichtbar)',
-                    this.feedbackCounter
-                ),
+            return this.$ngettext(
+                '%{length} Anmerkung zur Seite (Nur für Nutzende mit Schreibrechten sichtbar)',
+                '%{length} Anmerkungen zur Seite (Nur für Nutzende mit Schreibrechten sichtbar)',
+                this.feedbackCounter,
                 { length: this.feedbackCounter }
             );
         },
@@ -1099,10 +1141,36 @@ export default {
             return this.comments?.length ?? 0;
         },
         callToActionTitleComments() {
-            return this.$gettextInterpolate(
-                this.$ngettext('%{length} Kommentar zur Seite', '%{length} Kommentare zur Seite', this.commentsCounter),
+            return this.$ngettext(
+                '%{length} Kommentar zur Seite',
+                '%{length} Kommentare zur Seite',
+                this.commentsCounter,
                 { length: this.commentsCounter }
             );
+        },
+        userIsReviewer() {
+            return this.peerReviews.some((peerReview) => peerReview.attributes['is-reviewer']);
+        },
+        userIsSolver() {
+            return this.peerReviews.some((peerReview) => peerReview.attributes['is-submitter']);
+        },
+        peerReviews() {
+            if (this.task) {
+                return this.relatedPeerReviews({
+                    parent: { id: this.task.id, type: this.task.type },
+                    relationship: 'peer-reviews',
+                }) ?? [];
+            }
+            return [];
+        },
+        isPeerReviewAnonymous() {
+            return this.peerReviews.every(({ id, type }) => {
+                const process = this.relatedPeerReviewProcesses({
+                    parent: { id, type },
+                    relationship: 'process',
+                });
+                return process.attributes.configuration.anonymous;
+            });
         },
     },
 
@@ -1192,8 +1260,8 @@ export default {
                     await this.loadStructuralElement(this.currentId);
                     if (this.blockedByAnotherUser) {
                         this.companionInfo({
-                            info: this.$gettextInterpolate(
-                                this.$gettext('Löschen nicht möglich, da %{blockingUserName} die Seite bearbeitet.'),
+                            info: this.$gettext(
+                                'Löschen nicht möglich, da %{blockingUserName} die Seite bearbeitet.',
                                 { blockingUserName: this.blockingUserName }
                             ),
                         });
@@ -1319,8 +1387,8 @@ export default {
             }
             if (this.blockedByAnotherUser) {
                 this.companionWarning({
-                    info: this.$gettextInterpolate(
-                        this.$gettext('Löschen nicht möglich, da %{blockingUserName} die Bearbeitung übernommen hat.'),
+                    info: this.$gettext(
+                        'Löschen nicht möglich, da %{blockingUserName} die Bearbeitung übernommen hat.',
                         { blockingUserName: this.blockingUserName }
                     ),
                 });
@@ -1334,11 +1402,11 @@ export default {
                 id: this.currentId,
                 parentId: this.structuralElement.relationships.parent.data.id,
             })
-                .then((response) => {
+                .then(() => {
                     this.$router.push(redirect_id);
                     this.companionInfo({ info: this.$gettext('Die Seite wurde gelöscht.') });
                 })
-                .catch((error) => {
+                .catch(() => {
                     this.companionError({ info: this.$gettext('Die Seite konnte nicht gelöscht werden.') });
                 });
         },
@@ -1364,17 +1432,19 @@ export default {
                 ref.initCurrentData();
             }
         },
-        async loadFeedback() {
+        loadFeedback() {
             const parent = {
                 type: this.currentElement.type,
                 id: this.currentElement.id,
             };
-            await this.loadRelatedFeedback({
+            return this.loadRelatedFeedback({
                 parent,
                 relationship: 'feedback',
                 options: {
                     include: 'user',
                 },
+            }).catch((error) => {
+                console.error("Could not load feedback");
             });
         },
         keyHandler(e, containerId) {
@@ -1390,10 +1460,8 @@ export default {
                         this.keyboardSelected = containerId;
                         const container = this.containerById({ id: containerId });
                         const index = this.containerList.findIndex((c) => c.id === container.id);
-                        this.assistiveLive = this.$gettextInterpolate(
-                            this.$gettext(
-                                '%{containerTitle} Abschnitt ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen.'
-                            ),
+                        this.assistiveLive = this.$gettext(
+                            '%{containerTitle} Abschnitt ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen.',
                             {
                                 containerTitle: container.attributes.title,
                                 pos: index + 1,
@@ -1425,10 +1493,8 @@ export default {
                 const container = this.containerById({ id: containerId });
                 const newPos = currentIndex - 1;
                 this.containerList.splice(newPos, 0, this.containerList.splice(currentIndex, 1)[0]);
-                this.assistiveLive = this.$gettextInterpolate(
-                    this.$gettext(
-                        '%{containerTitle} Abschnitt. Aktuelle Position in der Liste: %{pos} von %{listLength}.'
-                    ),
+                this.assistiveLive = this.$gettext(
+                    '%{containerTitle} Abschnitt. Aktuelle Position in der Liste: %{pos} von %{listLength}.',
                     {
                         containerTitle: container.attributes.title,
                         pos: newPos + 1,
@@ -1443,10 +1509,8 @@ export default {
                 const container = this.containerById({ id: containerId });
                 const newPos = currentIndex + 1;
                 this.containerList.splice(newPos, 0, this.containerList.splice(currentIndex, 1)[0]);
-                this.assistiveLive = this.$gettextInterpolate(
-                    this.$gettext(
-                        '%{containerTitle} Abschnitt. Aktuelle Position in der Liste: %{pos} von %{listLength}.'
-                    ),
+                this.assistiveLive = this.$gettext(
+                    '%{containerTitle} Abschnitt. Aktuelle Position in der Liste: %{pos} von %{listLength}.',
                     {
                         containerTitle: container.attributes.title,
                         pos: newPos + 1,
@@ -1458,8 +1522,8 @@ export default {
         abortKeyboardSorting(containerId) {
             const container = this.containerById({ id: containerId });
             this.keyboardSelected = null;
-            this.assistiveLive = this.$gettextInterpolate(
-                this.$gettext('%{containerTitle} Abschnitt, Neuordnung abgebrochen.'),
+            this.assistiveLive = this.$gettext(
+                '%{containerTitle} Abschnitt, Neuordnung abgebrochen.',
                 { containerTitle: container.attributes.title }
             );
             this.selectCurrent();
@@ -1468,10 +1532,8 @@ export default {
             const container = this.containerById({ id: containerId });
             const currentIndex = this.containerList.findIndex((container) => container.id === containerId);
             this.keyboardSelected = null;
-            this.assistiveLive = this.$gettextInterpolate(
-                this.$gettext(
-                    '%{containerTitle} Abschnitt, abgelegt. Entgültige Position in der Liste: %{pos} von %{listLength}.'
-                ),
+            this.assistiveLive = this.$gettext(
+                '%{containerTitle} Abschnitt, abgelegt. Entgültige Position in der Liste: %{pos} von %{listLength}.',
                 {
                     containerTitle: container.attributes.title,
                     pos: currentIndex + 1,
@@ -1504,7 +1566,7 @@ export default {
                 this.loadStructuralElement(this.currentElement.id);
             });
         },
-        async showFeedbackPopup(to, from) {
+        async showFeedbackPopup(to) {
             let showRatingPopup = false;
             let ratingPopupFeedbackElement = null;
             const toId = to.params.id;
@@ -1611,6 +1673,52 @@ export default {
                 }
             });
         },
+
+        getPeerReviewProcess(review) {
+            return this.relatedPeerReviewProcesses({
+                parent: { id: review.id, type: review.type },
+                relationship: 'process',
+            });
+        },
+        canReadPeerReviewAssessment(peerReview) {
+            if (peerReview.attributes['is-reviewer']) {
+                return true;
+            }
+            const process = this.getPeerReviewProcess(peerReview);
+            const isAfter = getProcessStatus(process)?.status === ProcessStatus.After;
+            return (this.userIsTeacher || peerReview.attributes['is-submitter']) && isAfter;
+        },
+        openPeerReview(peerReview) {
+            this.selectedPeerReview = peerReview;
+            if (peerReview.attributes['is-reviewer']) {
+                this.showPeerReviewAssessment = true;
+            } else {
+                this.showPeerReviewResult = true;
+            }
+        },
+        peerReviewCompanionAction(peerReview) {
+            const process = this.getPeerReviewProcess(peerReview);
+            if (peerReview.attributes['is-reviewer'] && getProcessStatus(process)?.status === ProcessStatus.Active) {
+                return this.$gettext('Peer-Review geben');
+            }
+            return this.$gettext('Peer-Review einsehen');
+        },
+        peerReviewCompanionMessage(peerReview) {
+            let message;
+            if (peerReview.attributes['is-reviewer']) {
+                message = this.$gettext('Sie beurteilen diese Aufgabe im Rahmen eines Peer-Reviews.');
+            } else if (peerReview.attributes['is-submitter']) {
+                message = this.$gettext('Sie haben zu Ihrer Aufgabe ein Peer-Review erhalten.');
+            } else {
+                message = this.$gettext('Diese Aufgabe hat ein Peer-Review erhalten.');
+            }
+
+            if (this.canReadPeerReviewAssessment(peerReview)) {
+                return message;
+            }
+
+            return `${message} ${this.$gettext('Sie können es jedoch nicht öffnen, da der Bearbeitungszeitraum noch nicht abgelaufen ist.')}`;
+        },
     },
     created() {
         this.pluginManager.registerComponentsLocally(this);
@@ -1649,18 +1757,24 @@ export default {
             },
             deep: true,
         },
-        containers() {
-            this.containerList = this.containers;
-            this.scrollToContainerHash();
+        containers: {
+            handler() {
+                this.containerList = this.containers;
+                this.scrollToContainerHash();
+            },
+            deep: true
         },
-        containerList() {
-            if (this.keyboardSelected) {
-                this.$nextTick(() => {
-                    const selected = this.$refs['sortableHandle' + this.keyboardSelected][0];
-                    selected.focus();
-                    selected.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                });
-            }
+        containerList: {
+            handler() {
+                if (this.keyboardSelected) {
+                    this.$nextTick(() => {
+                        const selected = this.$refs['sortableHandle' + this.keyboardSelected][0];
+                        selected.focus();
+                        selected.scrollIntoView({behavior: 'smooth', block: 'center'});
+                    });
+                }
+            },
+            deep: true
         },
         consumeMode(newState) {
             this.consumModeTrap = newState;
@@ -1689,7 +1803,7 @@ export default {
         window.addEventListener('scroll', this.handleDebouncedScroll);
     },
 
-    beforeDestroy() {
+    beforeUnmount() {
         if (this.handleDebouncedScroll) {
             window.removeEventListener('scroll', this.handleDebouncedScroll);
         }

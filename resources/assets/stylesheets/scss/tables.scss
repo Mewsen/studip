@@ -1,5 +1,8 @@
 /* --- Tabellen ------------------------------------------------------------- */
-table.header, .table_header { //normale Tabellenheader
+
+// normale Tabellenheader
+table.header,
+.table_header {
     background-color: var(--table-header-color);
     border-bottom: 1px solid var(--color--table-border);
     color: var(--black);
@@ -7,7 +10,8 @@ table.header, .table_header { //normale Tabellenheader
 
 }
 
-.table_header_bold { //formerly known as topic(-header)
+// formerly known as topic(-header)
+.table_header_bold {
     background-color: var(--color--table-header);
     border-color: var(--color--table-border);
     border-style: solid;
@@ -52,7 +56,7 @@ table.toolbar {
 
 td.toolbar,
 td.printhead {
-    @include gradient-bar();
+    @include gradient-bar;
 }
 
 td {
@@ -79,6 +83,10 @@ td.blank,
 td.onlineinfo,
 td.blanksmall {
     background-color: var(--color--global-background);
+}
+
+table.fixed {
+    table-layout: fixed;
 }
 
 td.tree-indent {
@@ -271,11 +279,11 @@ tr.sortable {
     }
 
     th.sortasc {
-        @include icon('after', 'arr_1up', 'clickable');
+        @include icon('after', 'arr_1up', 'clickable', $icon-size-inline);
     }
 
     th.sortdesc {
-        @include icon('after', 'arr_1down', 'clickable');
+        @include icon('after', 'arr_1down', 'clickable', $icon-size-inline);
     }
 }
 
@@ -397,7 +405,7 @@ tr.sortable {
 
 table.tree {
     .header > td {
-        @include gradient-bar();
+        @include gradient-bar;
 
         a.link {
             padding-left: 5px;
@@ -470,6 +478,15 @@ table.default {
     th, td {
         &.nowrap {
             white-space: nowrap;
+        }
+
+        img {
+            vertical-align: text-bottom;
+        }
+
+        input[type="text"], textarea {
+            padding-bottom: 2px;
+            padding-top: 2px;
         }
 
         padding: 10px 5px;
@@ -619,10 +636,14 @@ table.default {
         font-size: $font-size-base;
         border-left: 1px solid var(--color--table-border);
         margin-bottom: -2px;
-        min-height: 26px;
+        min-height: 30px;
         padding-bottom: 3px;
         padding-left: 0.5em;
         padding-top: 4px;
+        input[type=text] {
+            width: auto; // otherwise it can be 100%, so there is no space left for other parts of the actions-area
+            max-height: 30px;
+        }
     }
 
     td.actions, th.actions {
@@ -666,13 +687,13 @@ table.default {
         }
 
         .toggle-switch {
-            @include hide-text();
+            @include hide-text;
             @include background-icon(arr_1down);
             display: inline-block;
-            height: 16px;
+            height: $icon-size-inline;
             text-align: center;
             vertical-align: top;
-            width: 16px;
+            width: $icon-size-inline;
         }
     }
 
@@ -707,7 +728,7 @@ table.default {
         }
     }
 
-    tfoot {
+    tfoot, th {
         // Fix button and select alignment
         select {
             vertical-align: middle;
@@ -796,11 +817,11 @@ table.withdetails {
         background-repeat: no-repeat;
         content: ' ';
         display: inline-block;
-        height: 16px;
+        height: $icon-size-inline;
         margin-left: 0;
-        @include background-icon('arr_1#{$direction}');
+        @include background-icon('arr_1#{$direction}', clickable, $icon-size-inline);
         vertical-align: text-bottom;
-        width: 16px;
+        width: $icon-size-inline;
     }
 }
 
@@ -817,11 +838,11 @@ table.withdetails {
         }
 
         &.tablesorter-headerDesc:hover .tablesorter-header-inner::after {
-            @include background-icon(arr_1down, status-red);
+            @include background-icon(arr_1down, status-red, $icon-size-inline);
         }
 
         &.tablesorter-headerAsc:hover .tablesorter-header-inner::after {
-            @include background-icon(arr_1up, status-red);
+            @include background-icon(arr_1up, status-red, $icon-size-inline);
         }
     }
 
@@ -842,10 +863,10 @@ table.withdetails {
 
 // Responsive helper
 .table-scrollbox-horizontal {
-    @include scrollbox-horizontal();
+    @include scrollbox-horizontal;
 }
 
-//New table form for Course Search
+// New table form for Course Search
 table.course-search {
     $max-width-s: 8em;
     $max-width-m: 48em;
@@ -869,7 +890,7 @@ table.course-search {
     }
 }
 
-//Show Tree Table
+// Show Tree Table
 table.show-tree {
     width: 100%;
     padding: 0 10px 10px 10px;

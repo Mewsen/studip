@@ -10,7 +10,7 @@
                 >
                     <span class="navigation-icon">
                         <studip-icon v-if="isCourse" shape="seminar" role="info_alt" :size="24" alt=""></studip-icon>
-                        <img v-if="item.icon" :src="iconUrl" width="24" alt="" :class="{avatar: item.avatar}"/>
+                        <img v-else-if="item.icon" :src="iconUrl" width="24" alt="" :class="{avatar: item.avatar}"/>
                     </span>
                     <span class="navigation-text">
                         {{ item.title }}
@@ -25,18 +25,32 @@
                 @keydown.prevent.enter="moveTo(item.path)"
                 @keydown.prevent.space="moveTo(item.path)"
             >
-                <studip-icon shape="arr_1right" role="info_alt" :size="20" alt=""></studip-icon>
+                <studip-icon shape="arr_1right" role="info_alt" alt=""></studip-icon>
             </button>
         </template>
         <div v-else class="navigation-title">
-            <a
+            <form v-if="item.button"
+                  :action="item.url"
+                  method="post"
+            >
+                <button class="as-link"
+                        tabindex="0"
+                        :title="navigateToText(item.title)"
+                        :aria-label="navigateToText(item.title)"
+                >
+                    <studip-icon v-if="isCourse" shape="seminar" role="info_alt" :size="24" alt=""></studip-icon>
+                    <img v-else-if="item.icon" :src="iconUrl" width="24" alt="" :class="{avatar: item.avatar}"/>
+                    {{ item.title }}
+                </button>
+            </form>
+            <a v-else
                 :href="item.url"
                 tabindex="0"
                 :title="navigateToText(item.title)"
                 :aria-label="navigateToText(item.title)"
             >
                 <studip-icon v-if="isCourse" shape="seminar" role="info_alt" :size="24" alt=""></studip-icon>
-                <img v-if="item.icon" :src="iconUrl" width="24" alt="" :class="{avatar: item.avatar}"/>
+                <img v-else-if="item.icon" :src="iconUrl" width="24" alt="" :class="{avatar: item.avatar}"/>
                 {{ item.title }}
             </a>
         </div>
@@ -44,10 +58,10 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import { defineComponent } from 'vue';
 import StudipIcon from '../StudipIcon.vue';
 
-export default Vue.extend({
+export default defineComponent({
     name: 'NavigationItem',
     components: { StudipIcon },
     props: {
@@ -82,13 +96,17 @@ export default Vue.extend({
         hasChildren() {
             return this.item.children && Object.keys(this.item.children).length > 0;
         },
-        navigateToText(itemTitle: string) {
-            return this.$gettextInterpolate(this.$gettext('Navigiere zu %{ title }'), { title: itemTitle });
+        navigateToText(title: string) {
+            return this.$gettext(
+                'Navigiere zu %{title}',
+                { title }
+            );
         },
-        openNavigationText(itemTitle: string): string {
-            return this.$gettextInterpolate(this.$gettext('Unternavigation zu %{ title } öffnen'), {
-                title: itemTitle,
-            });
+        openNavigationText(title: string): string {
+            return this.$gettext(
+                'Unternavigation zu %{title} öffnen',
+                { title }
+            );
         },
     },
 });

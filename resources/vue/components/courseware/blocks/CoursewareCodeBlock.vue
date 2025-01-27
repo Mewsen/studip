@@ -95,5 +95,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/code.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/code';
 </style>

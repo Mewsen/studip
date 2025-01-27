@@ -10,7 +10,7 @@
  */
 ?>
 <? if (!$collection->isEmpty()) : ?>
-    <ul>
+    <ul class="list-unstyled">
         <? foreach ($collection->getRegularDates() as $regular_date) : ?>
             <li><?= $regular_date->toString('long-start') ?></li>
         <? endforeach ?>

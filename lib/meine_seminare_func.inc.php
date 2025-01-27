@@ -139,38 +139,59 @@ function sort_groups($group_field, &$groups)
  */
 function correct_group_sem_number(&$groups, &$my_obj): bool
 {
-    if (is_array($groups) && is_array($my_obj)) {
-        $sem_data = Semester::findAllVisible();
-        foreach ($sem_data as $sem_key => $one_sem){
-            $current_sem = $sem_key;
-            if (!$one_sem['past']) {
-                break;
-            }
-        }
-        foreach ($my_obj as $seminar_id => $values){
-            if ($values['obj_type'] == 'sem' && $values['sem_number'] != $values['sem_number_end']){
-                if ($values['sem_number_end'] == -1 && $values['sem_number'] < $current_sem) {
-                    unset($groups[$values['sem_number']][$seminar_id]);
-                    fill_groups($groups, $current_sem, ['seminar_id' => $seminar_id, 'name' => $values['name'], 'gruppe' => $values['gruppe']]);
-                    if (!count($groups[$values['sem_number']])) {
-                        unset($groups[$values['sem_number']]);
-                    }
-                } else {
-                    $to_sem = $values['sem_number_end'];
-                    for ($i = $values['sem_number']; $i <= $to_sem; ++$i){
-                        fill_groups($groups, $i, ['seminar_id' => $seminar_id, 'name' => $values['name'], 'gruppe' => $values['gruppe']]);
-                    }
-                }
-                if ($GLOBALS['user']->cfg->getValue('SHOWSEM_ENABLE')){
-                    $sem_name = " (" . $sem_data[$values['sem_number']]['name'] . " - ";
-                    $sem_name .= (($values['sem_number_end'] == -1) ? _("unbegrenzt") : $sem_data[$values['sem_number_end']]['name']) . ")";
-                    $my_obj[$seminar_id]['name'] .= $sem_name;
-                }
-            }
-        }
-        return true;
+    if (!is_array($groups) || !is_array($my_obj)) {
+        return false;
     }
-    return false;
+
+    $current_semester = Semester::findCurrent();
+
+    $my_sem = array_filter(
+        $my_obj,
+        fn($values) => $values['obj_type'] === 'sem'
+    );
+
+    Course::findEachMany(
+        function (Course $course) use (&$groups, &$my_obj, $current_semester) {
+            if (count($course->semesters) === 1) {
+                return;
+            }
+
+            $obj_data = $my_obj[$course->id];
+
+            if (
+                $course->isOpenEnded()
+                && $course->start_semester->beginn < $current_semester->beginn
+            ) {
+                unset($groups[$obj_data['sem_number']][$course->id]);
+
+                fill_groups($groups, Semester::getIndexById($current_semester->id), [
+                    'seminar_id' => $course->id,
+                    'name' => $obj_data['name'],
+                    'gruppe' => $obj_data['gruppe'],
+                ]);
+
+                if (count($groups[$obj_data['sem_number']]) === 0) {
+                    unset($groups[$obj_data['sem_number']]);
+                }
+            } else {
+                $to_sem = $obj_data['sem_number_end'];
+                for ($i = $obj_data['sem_number']; $i <= $to_sem; ++$i){
+                    fill_groups($groups, $i, [
+                        'seminar_id' => $course->id,
+                        'name' => $obj_data['name'],
+                        'gruppe' => $obj_data['gruppe']
+                    ]);
+                }
+            }
+
+            if (User::findCurrent()->getConfiguration()->getValue('SHOWSEM_ENABLE')) {
+                $my_obj[$course->id]['name'] .= ' (' . $course->getTextualSemester() . ')';
+            }
+        },
+        array_keys($my_sem)
+    );
+
+    return true;
 }
 
 /**

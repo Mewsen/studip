@@ -23,7 +23,7 @@ trait Helpers
         $actionMenu->addLink(
             URLHelper::getURL('dispatch.php/file/details/'.$fileRef->id),
             _('Info'),
-            Icon::create('info-circle', Icon::ROLE_CLICKABLE, ['size' => 20]),
+            Icon::create('info-circle'),
             ['data-dialog' => 1]
         );
 
@@ -33,7 +33,7 @@ trait Helpers
             $actionMenu->addLink(
                 $rangeLink,
                 _('Ordner öffnen'),
-                Icon::create('folder-empty', Icon::ROLE_CLICKABLE, ['size' => 20])
+                Icon::create('folder-empty')
             );
         }
 
@@ -41,13 +41,13 @@ trait Helpers
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/edit/'.$fileRef->id),
                 _('Datei bearbeiten'),
-                Icon::create('edit', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                Icon::create('edit'),
                 ['data-dialog' => '']
             );
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/update/'.$fileRef->id),
                 _('Datei aktualisieren'),
-                Icon::create('refresh', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                Icon::create('refresh'),
                 ['data-dialog' => '']
             );
         }
@@ -56,7 +56,7 @@ trait Helpers
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/choose_destination/move/'.$fileRef->id),
                 _('Datei verschieben'),
-                Icon::create('arr_1right', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                Icon::create('arr_1right'),
                 ['data-dialog' => 'size=auto']
             );
         }
@@ -65,7 +65,7 @@ trait Helpers
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/choose_destination/copy/'.$fileRef->id),
                 _('Datei kopieren'),
-                Icon::create('clipboard', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                Icon::create('clipboard'),
                 ['data-dialog' => 'size=auto']
             );
         }
@@ -74,7 +74,7 @@ trait Helpers
             $actionMenu->addLink(
                 URLHelper::getURL('dispatch.php/file/delete/'.$fileRef->id),
                 _('Datei löschen'),
-                Icon::create('trash', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                Icon::create('trash'),
                 ['onclick' => "return STUDIP.Dialog.confirmAsPost('".sprintf(_('Soll die Datei "%s" wirklich gelöscht werden?'), jsReady($fileRef->name))."', this.href);"]
             );
         }

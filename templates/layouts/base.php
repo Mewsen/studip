@@ -12,6 +12,17 @@ $getInstalledLanguages = function () {
     return $languages;
 };
 
+$getJsonApiSchemas = function () {
+    return array_values(
+        array_unique(
+            array_map(
+                fn($class) => $class::TYPE,
+                app('json-api-integration-schemas')
+            )
+        )
+    );
+};
+
 $lang_attr = str_replace('_', '-', $_SESSION['_language']);
 ?>
 <!DOCTYPE html>
@@ -57,6 +68,7 @@ $lang_attr = str_replace('_', '-', $_SESSION['_language']);
                 'PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED' =>
                     (bool) User::findCurrent()?->getConfiguration()->PERSONAL_NOTIFICATIONS_AUDIO_DEACTIVATED,
             ]) ?>,
+            jsonapi_schemas: <?= json_encode($getJsonApiSchemas()) ?>,
         }
     </script>
 

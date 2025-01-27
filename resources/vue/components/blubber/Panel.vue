@@ -5,7 +5,7 @@
         v-if="!doneFetching"
     />
 
-    <div class="blubber_panel" v-else-if="thread">
+    <template v-else-if="thread">
         <div id="blubber_stream_container">
             <BlubberThread
                 ref="thread"
@@ -24,7 +24,7 @@
             ></BlubberThread>
         </div>
         <BlubberSideInfo :thread="thread" />
-    </div>
+    </template>
 </template>
 
 <script>

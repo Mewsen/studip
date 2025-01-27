@@ -55,7 +55,7 @@
     <div data-dialog-button>
         <?=Studip\LinkButton::createAccept(
             _('Zur Veranstaltung'),
-            URLHelper::getLink('seminar_main.php', ['auswahl' => $course_id])
+            URLHelper::getLink('dispatch.php/course/go', ['to' => $course_id])
         ) ?>
     </div>
 <? endif ?>

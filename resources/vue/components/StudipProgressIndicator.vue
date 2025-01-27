@@ -5,7 +5,7 @@
             {{ description }}
         </p>
         <p v-else class="progress-indicator-description-default">
-            <translate>Lade...</translate>
+            {{ $gettext('Lade...') }}
         </p>
     </div>
 </template>

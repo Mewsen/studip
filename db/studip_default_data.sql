@@ -249,7 +249,6 @@ INSERT INTO `config` (`field`, `value`, `type`, `range`, `section`, `mkdate`, `c
 INSERT INTO `config` (`field`, `value`, `type`, `range`, `section`, `mkdate`, `chdate`, `description`) VALUES('LOGIN_FAQ_TITLE', 'Hinweise zum Login', 'i18n', 'global', 'Loginseite', 1716385357, 1716385357, 'Überschrift für den FAQ-Bereich auf der Loginseite');
 INSERT INTO `config` (`field`, `value`, `type`, `range`, `section`, `mkdate`, `chdate`, `description`) VALUES('LOGIN_FAQ_VISIBILITY', '1', 'boolean', 'global', 'Loginseite', 1716385357, 1716385357, 'Soll der FAQ-Bereich auf der Loginseite sichtbar sein?');
 INSERT INTO `config` (`field`, `value`, `type`, `range`, `section`, `mkdate`, `chdate`, `description`) VALUES('LOG_ENABLE', '1', 'boolean', 'global', 'modules', 1293118059, 1293118059, 'Schaltet ein oder aus, ob das Log global verfügbar ist.');
-INSERT INTO `config` (`field`, `value`, `type`, `range`, `section`, `mkdate`, `chdate`, `description`) VALUES('LTI_TOOL_TITLE', 'LTI-Tool', 'string', 'course', '', 1557244743, 1557244743, 'Voreinstellung für den Titel des Reiters \"LTI-Tool\" im Kurs.');
 INSERT INTO `config` (`field`, `value`, `type`, `range`, `section`, `mkdate`, `chdate`, `description`) VALUES('MAILQUEUE_ENABLE', '0', 'boolean', 'global', 'global', 1403258017, 1403258017, 'Aktiviert bzw. deaktiviert die Mailqueue');
 INSERT INTO `config` (`field`, `value`, `type`, `range`, `section`, `mkdate`, `chdate`, `description`) VALUES('MAILQUEUE_SEND_LIMIT', '0', 'integer', 'global', 'global', 1462287310, 1462287310, 'Wieviele Mails soll die Mailqueue maximal auf einmal an den Mailserver schicken. 0 für unendlich viele.');
 INSERT INTO `config` (`field`, `value`, `type`, `range`, `section`, `mkdate`, `chdate`, `description`) VALUES('MAIL_AS_HTML', '0', 'boolean', 'user', '', 1293118060, 1293118060, 'Benachrichtigungen werden im HTML-Format versandt');
@@ -1425,8 +1424,8 @@ INSERT INTO `schema_version` (`domain`, `branch`, `version`) VALUES('studip', '5
 INSERT INTO `schema_version` (`domain`, `branch`, `version`) VALUES('studip', '5.5', 28);
 INSERT INTO `schema_version` (`domain`, `branch`, `version`) VALUES('studip', '5.5.23', 1);
 
-INSERT INTO `semester_data` (`semester_id`, `name`, `semester_token`, `beginn`, `ende`, `sem_wechsel`, `vorles_beginn`, `vorles_ende`, `visible`, `external_id`, `mkdate`, `chdate`) VALUES('322f640f3f4643ebe514df65f1163eb1', 'SS 2024', '', 1711922400, 1727733599, NULL, 1712527200, 1720821599, 1, '', NULL, 1698856529);
-INSERT INTO `semester_data` (`semester_id`, `name`, `semester_token`, `beginn`, `ende`, `sem_wechsel`, `vorles_beginn`, `vorles_ende`, `visible`, `external_id`, `mkdate`, `chdate`) VALUES('4967f0a483e36554b77e3dc47aa58941', 'WS 2024/2025', '', 1727733600, 1743458399, NULL, 1729461600, 1738969199, 1, '', NULL, 1716387028);
+INSERT INTO `semester_data` (`semester_id`, `name`, `semester_token`, `beginn`, `ende`, `sem_wechsel`, `vorles_beginn`, `vorles_ende`, `visible`, `external_id`, `mkdate`, `chdate`) VALUES('322f640f3f4643ebe514df65f1163eb1', 'SoSe 2024', '', 1711922400, 1727733599, NULL, 1712527200, 1720821599, 1, '', NULL, 1698856529);
+INSERT INTO `semester_data` (`semester_id`, `name`, `semester_token`, `beginn`, `ende`, `sem_wechsel`, `vorles_beginn`, `vorles_ende`, `visible`, `external_id`, `mkdate`, `chdate`) VALUES('4967f0a483e36554b77e3dc47aa58941', 'WiSe 2024/2025', '', 1727733600, 1743458399, NULL, 1729461600, 1738969199, 1, '', NULL, 1716387028);
 
 INSERT INTO `semester_holiday` (`holiday_id`, `semester_id`, `name`, `description`, `beginn`, `ende`, `mkdate`, `chdate`) VALUES('704038f0cb3ea0a285ba0a453788ebed', '', 'Unterbrechung', '', 1734908400, 1736117999, NULL, 1716387135);
 

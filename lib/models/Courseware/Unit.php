@@ -225,6 +225,7 @@ class Unit extends \SimpleORMap implements \PrivacyObject, \FeedbackRange
             'writable_start_date' => $duplicate ? $this->writable_start_date : null,
             'writable_end_date' => $duplicate ? $this->writable_end_date : null,
             'writable_approval' => $duplicate ? $this->writable_approval : '',
+            'config' => $this->config,
         ]);
 
         $newUnit->store();

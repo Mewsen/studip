@@ -1,17 +1,32 @@
+<?php
+/**
+ * @var string $id
+ * @var string $name
+ * @var string $value
+ * @var string|null $orientation
+ * @var bool $required
+ * @var array $options
+ * @var string $attributes
+ */
+?>
 <div class="formpart">
-    <section <?= $this->orientation == 'horizontal' ? 'class="hgroup"' : '' ?> id="<?= htmlReady($id) ?>">
-    <span class="textlabel">
+    <section <?= $orientation == 'horizontal' ? 'class="hgroup"' : '' ?> id="<?= htmlReady($id) ?>">
+    <span class="textlabel<?= $required ? ' studiprequired' : '' ?> ">
         <?= htmlReady($this->title) ?>
+        <? if ($required) : ?>
+            <span class="asterisk" title="<?= _('Dies ist ein Pflichtfeld') ?>" aria-hidden="true">*</span>
+        <? endif ?>
     </span>
 
-    <? foreach ($options as $key => $option) : ?>
+    <? $count = 0; foreach ($options as $key => $option) : ?>
         <label class="" <?= $attributes ?>>
                 <input type="radio"
-                       name="<?= htmlReady($this->name) ?>"
-                       v-model="<?= htmlReady($this->name) ?>"
-                       value="<?= htmlReady($key) ?>" <?= $key == $value ? 'checked' : '' ?>>
+                       name="<?= htmlReady($name) ?>"
+                       v-model="<?= htmlReady($name) ?>"
+                       value="<?= htmlReady($key) ?>" <?= $key == $value ? 'checked' : '' ?>
+                       <?= $required && $count === 0 ? ' required' : ''?>>
                     <?= htmlReady($option) ?>
         </label>
-    <? endforeach ?>
+    <? $count++; endforeach ?>
 </section>
 </div>

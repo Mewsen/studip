@@ -1,12 +1,11 @@
 import ActivitiesApp from './components/courseware/ActivitiesApp.vue';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
-import Vuex from 'vuex';
 import CoursewareModule from './store/courseware/courseware.module';
 import CoursewareActivitiesModule from './store/courseware/courseware-activities.module';
 import CoursewareStructureModule from './store/courseware/structure.module';
 import axios from 'axios';
+import { h } from "vue";
 
-const mountApp = async (STUDIP, createApp, element) => {
+const mountApp = async (STUDIP, createApp, store, element) => {
     const getHttpClient = () =>
         axios.create({
             baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
@@ -17,43 +16,10 @@ const mountApp = async (STUDIP, createApp, element) => {
 
     const httpClient = getHttpClient();
 
-    const store = new Vuex.Store({
-        modules: {
-            courseware: CoursewareModule,
-            'courseware-structure': CoursewareStructureModule,
-            'courseware-activities': CoursewareActivitiesModule,
-            ...mapResourceModules({
-                names: [
-                    'activities',
-                    'users',
-                    'courses',
-                    'course-memberships',
-                    'courseware-blocks',
-                    'courseware-block-comments',
-                    'courseware-block-feedback',
-                    'courseware-containers',
-                    'courseware-instances',
-                    'courseware-structural-elements',
-                    'courseware-task-feedback',
-                    'courseware-task-groups',
-                    'courseware-tasks',
-                    'courseware-units',
-                    'courseware-user-data-fields',
-                    'courseware-user-progresses',
-                    'files',
-                    'file-refs',
-                    'folders',
-                    'users',
-                    'institutes',
-                    'semesters',
-                    'sem-classes',
-                    'sem-types',
-                    'status-groups',
-                ],
-                httpClient,
-            }),
-        },
-    });
+    store.registerModule('courseware', CoursewareModule);
+    store.registerModule('courseware-structure', CoursewareStructureModule);
+    store.registerModule('courseware-activities', CoursewareActivitiesModule);
+
     let entry_id = null;
     let entry_type = null;
     let elem;
@@ -80,11 +46,9 @@ const mountApp = async (STUDIP, createApp, element) => {
     await store.dispatch('loadCourseUnits', entry_id);
 
     const app = createApp({
-        render: (h) => h(ActivitiesApp),
-        store,
+        render: () => h(ActivitiesApp),
     });
-
-    app.$mount(element);
+    app.mount(element);
 
     return app;
 };

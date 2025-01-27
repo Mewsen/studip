@@ -146,7 +146,7 @@ import StudipDialog from '../StudipDialog.vue';
 import StudipMessageBox from '../StudipMessageBox.vue';
 import StudipSquareButton from '../StudipSquareButton.vue';
 import StockImageSelector from '../stock-images/SelectorDialog.vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 import Cropper from 'cropperjs';
 
@@ -288,7 +288,11 @@ export default {
             this.cropper.zoom(val);
         },
         flip() {
-            this.fliped ? this.cropper.scale(1, 1) : this.cropper.scale(-1, 1);
+            if (this.fliped) {
+                this.cropper.scale(1, 1);
+            } else {
+                this.cropper.scale(-1, 1);
+            }
             this.fliped = !this.fliped;
         },
         abortEditing() {
@@ -333,7 +337,7 @@ export default {
                 },
             };
 
-            axios.post(STUDIP.URLHelper.getURL(`jsonapi.php/v1/${this.context.type}/${this.context.id}/avatar`, {}, true), data).then((response) => {
+            axios.post(STUDIP.URLHelper.getURL(`jsonapi.php/v1/${this.context.type}/${this.context.id}/avatar`, {}, true), data).then(() => {
                 location.reload();
             });
         },
@@ -343,7 +347,7 @@ export default {
                 .delete(
                     STUDIP.URLHelper.getURL(`jsonapi.php/v1/${this.context.type}/${this.context.id}/avatar`, {}, true)
                 )
-                .then((response) => {
+                .then(() => {
                     location.reload();
                 });
         },

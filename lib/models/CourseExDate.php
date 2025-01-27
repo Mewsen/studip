@@ -135,17 +135,36 @@ class CourseExDate extends SimpleORMap implements PrivacyObject, Event
             return '';
         }
 
-        $latter_template = $format === 'verbose'
-                         ? _('%R Uhr')
-                         : '%R';
-
         if (($this->end_time - $this->date) / 60 / 60 > 23) {
-            return strftime('%a., %x' . ' (' . _('ganztägig') . ')' , $this->date) . " (" . _("fällt aus") . ")";
+            $date_string = studip_interpolate(
+                $format === 'verbose'
+                    ? _('%{weekday}, %{date}, %{start} - %{end} Uhr (ganztägig, fällt aus)')
+                    : _('%{weekday}, %{date}, %{start} - %{end} (ganztägig, fällt aus)')
+                ,
+                [
+                    'weekday' => getWeekday(date('N', $this->date)),
+                    'date'    => date('d.m.y', $this->date),
+                    'start'   => date('H:i', $this->date),
+                    'end'     => date('H:i', $this->end_time),
+                ]
+            );
+            return $date_string;
         }
 
-        return strftime('%a., %x, %R', $this->date) . ' - '
-             . strftime($latter_template, $this->end_time)
-             . ' (' . _('fällt aus') . ')';
+        $date_string = studip_interpolate(
+            $format === 'verbose'
+                ? _('%{weekday}, %{date}, %{start} - %{end} Uhr (fällt aus)')
+                : _('%{weekday}, %{date}, %{start} - %{end} (fällt aus)')
+            ,
+            [
+                'weekday' => getWeekday(date('N', $this->date)),
+                'date'    => date('d.m.y', $this->date),
+                'start'   => date('H:i', $this->date),
+                'end'     => date('H:i', $this->end_time),
+            ]
+        );
+
+        return $date_string;
     }
 
     /**

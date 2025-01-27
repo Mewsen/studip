@@ -1,9 +1,9 @@
 <template>
   <div class="cw-content-bookmark">
         <courseware-content-bookmarks />
-        <MountingPortal mountTo="#courseware-content-bookmark-filter-widget" name="sidebar-views">
+        <Teleport to="#courseware-content-bookmark-filter-widget" name="sidebar-views">
             <courseware-content-bookmark-filter-widget />
-        </MountingPortal>
+        </Teleport>
   </div>
 </template>
 

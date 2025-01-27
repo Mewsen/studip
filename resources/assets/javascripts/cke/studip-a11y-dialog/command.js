@@ -10,7 +10,7 @@ export default class A11YDialogCommand extends Command {
         const activeElement = document.activeElement;
         const id = 'cke-a11y-help';
         Dialog.fromURL(STUDIP.URLHelper.getURL('dispatch.php/wysiwyg/a11yhelp'), { id });
-        $(document).one('dialog-close', function (event, { dialog, options }) {
+        $(document).one('dialog-close', function (event, { options }) {
             if (options.id === id) {
                 activeElement?.focus();
             }

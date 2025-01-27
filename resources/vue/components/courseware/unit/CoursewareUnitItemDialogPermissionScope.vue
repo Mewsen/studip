@@ -17,6 +17,7 @@ import { mapActions } from 'vuex';
 
 export default {
     name: 'courseware-unit-item-dialog-permission-scope',
+    emits: ['close', 'switch'],
     props: {
         unit: {
             type: Object,

@@ -139,7 +139,7 @@ const CourseWizard = {
             var params = 'step=' + $('input[name="step"]').val() + '&method=getDefaultDeputies' + '&parameter[]=' + id;
             $.ajax(lecturerDiv.data('ajax-url'), {
                 data: params,
-                success: function(data, status, xhr) {
+                success: function(data) {
                     if (data.length > 0) {
                         for (var i = 0; i < data.length; i++) {
                             CourseWizard.addDeputy(data[i].id, data[i].name);
@@ -159,7 +159,7 @@ const CourseWizard = {
         var parent = $('input#' + id).parent();
         var grandparent = parent.parent();
         parent.remove();
-        if (grandparent.children('div[class!="description"]').length == 0) {
+        if (grandparent.children('div[class!="description"]').length === 0) {
             grandparent.children('div.description').addClass('hidden-js');
         }
         return false;
@@ -184,7 +184,7 @@ const CourseWizard = {
                 $('#' + node).attr('id');
             $.ajax($('#studyareas').data('ajax-url'), {
                 data: params,
-                beforeSend: function(xhr, settings) {
+                beforeSend: function() {
                     target.children('ul').append(
                         $('<li class="tree-loading">').html(
                             $('<img>')
@@ -194,7 +194,7 @@ const CourseWizard = {
                         )
                     );
                 },
-                success: function(data, status, xhr) {
+                success: function(data) {
                     target.find('li.sem-tree-result').remove();
                     var items = $.parseJSON(data);
                     target.find('.tree-loading').remove();
@@ -232,7 +232,7 @@ const CourseWizard = {
                 'step=' + $('input[name="step"]').val() + '&method=searchSemTree' + '&parameter[]=' + searchterm;
             $.ajax($('#studyareas').data('ajax-url'), {
                 data: params,
-                beforeSend: function(xhr, settings) {
+                beforeSend: function() {
                     $('#sem-tree-search-start')
                         .parent()
                         .append(
@@ -244,7 +244,7 @@ const CourseWizard = {
                         );
                     CourseWizard.loadingOverlay($('div#studyareas ul.css-tree'));
                 },
-                success: function(data, status, xhr) {
+                success: function(data) {
                     $('#loading-overlay').remove();
                     $('#sem-tree-search-loading').remove();
                     var items = $.parseJSON(data);
@@ -302,13 +302,13 @@ const CourseWizard = {
         for (var i = 0; i < items.length; i++) {
             var parent = $('.' + classPrefix + items[i].parent);
             var node = $('.' + classPrefix + items[i].id);
-            if (node.length == 0) {
-                var selected = !assignable && source_node == items[i].id;
+            if (node.length === 0) {
+                var selected = !assignable && source_node === items[i].id;
                 node = CourseWizard.createTreeNode(items[i], assignable, selected);
                 parent.children('ul').append(node);
             } else {
                 node.removeClass('css-tree-hidden');
-                if (!assignable && items[i].id == source_node) {
+                if (!assignable && items[i].id === source_node) {
                     var input = $('<input>')
                         .attr('type', 'hidden')
                         .attr('name', 'studyareas[]')
@@ -441,14 +441,13 @@ const CourseWizard = {
      * @returns {boolean}
      */
     assignNode: function(id) {
-        var root = $('#sem-tree-assigned-nodes');
         var params = 'step=' + $('input[name="step"]').val() + '&method=getAncestorTree' + '&parameter[]=' + id;
         $.ajax($('#studyareas').data('ajax-url'), {
             data: params,
-            beforeSend: function(xhr, settings) {
+            beforeSend: function() {
                 CourseWizard.loadingOverlay($('div#assigned ul.css-tree'));
             },
-            success: function(data, status, xhr) {
+            success: function(data) {
                 $('#loading-overlay').remove();
                 var items = $.parseJSON(data);
                 CourseWizard.buildPartialTree(items, false, id);

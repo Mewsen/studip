@@ -17,7 +17,7 @@ use Studip\Button;
             <col>
             <col style="width: 100px">
             <col style="width: 40px">
-            <col style="width: 70px">
+            <col style="width: 84px">
         </colgroup>
         <thead>
             <tr>

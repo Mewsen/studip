@@ -102,7 +102,7 @@
 
         <label class="col-3">
             <?= _('Homepage') ?>
-            <?= I18N::input('url', $institute->url, LockRules::Check($institute->id, 'url') ? ['readonly' => true, 'disabled' => true] : ['required' => true]); ?>
+            <?= I18N::input('url', $institute->url, LockRules::Check($institute->id, 'url') ? ['readonly' => true, 'disabled' => true] : ['required' => false]); ?>
         </label>
 
     <? if ($GLOBALS['perm']->have_perm('root')): // Select lockrule to apply ?>

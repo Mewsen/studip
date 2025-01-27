@@ -33,7 +33,7 @@ $tile-colors: (
     studip-gray: #636a71,
 );
 
-$icon-colors:(
+$icon-colors: (
     icon-white: #ffffff,
     icon-black: #000000,
     icon-red: #cb1800,
@@ -42,7 +42,7 @@ $icon-colors:(
     icon-gray: #6e6e6e,
     icon-yellow: #ffad00
 );
-$border-colors:(
+$border-colors: (
     white: #ffffff,
     black: #000000,
     studip-red: #cb1800,
@@ -54,6 +54,7 @@ $border-colors:(
 
 $blockadder-items: (
     before-after: block-comparison,
+    blubber: blubber,
     canvas: block-canvas,
     gallery: block-gallery,
     image-map: block-imagemap,
@@ -73,6 +74,7 @@ $blockadder-items: (
     key-point: exclaim-circle,
     link: link-extern,
     table-of-contents: table-of-contents,
+    test: check-circle,
     text: edit,
     timeline: date-cycle,
     typewriter: block-typewriter,

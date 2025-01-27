@@ -144,6 +144,7 @@ class Semester extends SimpleORMap
 
     /**
      * returns current Semester
+     * @return static
      */
     public static function findCurrent()
     {
@@ -259,15 +260,13 @@ class Semester extends SimpleORMap
      * @param integer $default
      * @param string $option_value
      * @param boolean $include_all
-     * @param boolean $use_semester_id
      * @return string
      */
     public static function getSemesterSelector(
         $select_attributes = null,
         $default = 0,
         $option_value = 'semester_id',
-        $include_all = true,
-        $use_semester_id = true
+        $include_all = true
     )
     {
         $select_attributes = array_merge([
@@ -291,7 +290,6 @@ class Semester extends SimpleORMap
         $template->select_attributes = $select_attributes;
         $template->default = $default;
         $template->option_value = $option_value;
-        $template->use_semester_id = $use_semester_id;
         return $template->render();
     }
 

@@ -138,6 +138,10 @@ $width: 270px;
             text-align: center;
         }
     }
+
+    .automated-data-checkbox-list {
+        margin-top: 20px;
+    }
 }
 
 .questionnaire_results {
@@ -156,13 +160,17 @@ $width: 270px;
         fill: var(--black);
     }
 
-    .ct-series-a .ct-bar, .ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-slice-donut {
-        //Balkenfarbe
+    // Balkenfarbe
+    .ct-series-a .ct-bar,
+    .ct-series-a .ct-line,
+    .ct-series-a .ct-point,
+    .ct-series-a .ct-slice-donut {
         stroke: var(--red);
     }
 
-    //Tortenstücke:
-    .ct-series-a .ct-area, .ct-series-a .ct-slice-pie {
+    // Tortenstücke:
+    .ct-series-a .ct-area,
+    .ct-series-a .ct-slice-pie {
         fill: var(--red);
     }
 

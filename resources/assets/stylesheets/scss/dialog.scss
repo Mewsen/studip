@@ -38,7 +38,7 @@
             padding: 0;
         }
         .ui-icon {
-            @include square(16px);
+            @include square($icon-size-default);
             @include background-icon(decline, info_alt);
             background-position: 0;
             display:inline-block;
@@ -68,7 +68,7 @@
             white-space: nowrap;
         }
         .ui-button {
-            @include button(); // Include button mixin
+            @include button; // Include button mixin
             font-weight: normal;
 
             &.accept,
@@ -79,24 +79,23 @@
                 margin-right: 0;
             }
 
-            &.accept {
-              @include button-with-icon(accept, clickable, info_alt);
-            }
-
-            &.cancel {
-              @include button-with-icon(decline, clickable, info_alt);
-            }
-
-            &.download {
-              @include button-with-icon(download2, clickable, info_alt);
+            // $button-icons is a map of class names and icon names located in resources/assets/stylesheets/scss/_variables.scss
+            @each $class, $icon in $button-icons {
+                &.#{'' + $class} {
+                    @include button-with-icon($icon, clickable, info_alt);
+                    &.disabled,
+                    &[disabled] {
+                        @include button-with-icon($icon, inactive, inactive);
+                    }
+                }
             }
 
             &.disabled,
             &[disabled] {
                 box-shadow: none;
-                color: var(--white);
-                background: var(--dark-gray-color-60);
-                border: 1px solid var(--dark-gray-color-60);
+                color: var(--color--font-inactive);
+                background: var(--color--button-inactive-background);
+                border: 1px solid var(--color--button-inactive-border);
                 cursor: not-allowed;
             }
 
@@ -113,7 +112,7 @@
     }
 }
 .ui-dialog-titlebar-wiki {
-    @include background-icon(question-circle, info_alt, 24);
+    @include background-icon(question-circle, info_alt, 24px);
     background-position: center;
     background-repeat: no-repeat;
     display: inline-block;
@@ -151,7 +150,7 @@
         border: 0;
 
         .ui-icon, .ui-icon:hover {
-            @include background-icon(decline, clickable);
+            @include background-icon(decline);
             background-position: 0;
         }
     }
@@ -215,7 +214,7 @@
             left: 0;
             right: 50%;
 
-            @include icon(before, arr_1left, clickable, $arrow-size);
+            @include icon(before, arr_1left, $size: $arrow-size);
             &::before {
                 position: absolute;
                 left: $arrow-distance;
@@ -243,7 +242,7 @@
             right: 0;
             left: 50%;
 
-            @include icon(before, arr_1right, clickable, $arrow-size);
+            @include icon(before, arr_1right, $size: $arrow-size);
             &::before {
                 position: absolute;
                 right: $arrow-distance;
@@ -306,7 +305,7 @@ h2.dialog-subtitle {
     margin-bottom: 0.25em;
 }
 
-/* * * * * * * * * 
+/* * * * * * * * *
 v u e  d i a l o g
 * * * * * * * * */
 
@@ -322,6 +321,7 @@ v u e  d i a l o g
     align-items: center;
     z-index: 1001;
 }
+
 .studip-dialog-body {
     position: absolute;
     background: var(--white);
@@ -395,7 +395,7 @@ v u e  d i a l o g
             background: var(--active-color) none repeat scroll 0 0;
         }
         .studip-dialog-content {
-            @include background-icon(question-circle-full, attention, 32);
+            @include background-icon(question-circle-full, attention, 32px);
         }
     }
     &.studip-dialog-warning {
@@ -404,16 +404,35 @@ v u e  d i a l o g
             background: var(--activity-color) none repeat scroll 0 0;
         }
         .studip-dialog-close-button {
-            @include background-icon(decline, clickable);
+            @include background-icon(decline);
             border: none;
             background-color: transparent;
         }
         .studip-dialog-content {
-            @include background-icon(question-circle-full, status-yellow, 32);
+            @include background-icon(question-circle-full, status-yellow, 32px);
         }
     }
-
+    &.studip-dialog-with-tab {
+        .studip-dialog-content {
+           padding: 0 4px;
+           .cw-tab-in-dialog {
+               .cw-tabs-nav {
+                   border: none;
+                   border-bottom: solid thin var(--color--content-box-border);
+                   margin-bottom: 4px;
+               }
+               .cw-tabs-content {
+                   border: none;
+                   overflow-y: auto;
+                   scrollbar-width: thin;
+                   scrollbar-color: var(--color--scrollbar-thumb) var(--dark-gray-color-5);
+               }
+           }
+       }
+   }
 }
+
+
 /* * * * * * * * * * * * *
 v u e  d i a l o g  e n d
 * * * * * * * * * * * * */

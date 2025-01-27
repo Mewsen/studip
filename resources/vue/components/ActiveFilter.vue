@@ -4,7 +4,7 @@
         <button
             @click="onRemoveActiveFilter"
             type="button"
-            :title="$gettextInterpolate($gettext('Filter \'%{name}\' entfernen'), { name }, true)"
+            :title="$gettext('Filter \'%{name}\' entfernen', { name }, true)"
         >
             <StudipIcon class="text-bottom" shape="decline" role="presentation" alt="" />
         </button>
@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import StudipIcon from './StudipIcon.vue';
 export default {
+    emits: ['remove'],
     props: {
         name: {
             type: String,

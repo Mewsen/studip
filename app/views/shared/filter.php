@@ -18,13 +18,21 @@
     </a>
 </div>
 <? endif; ?>
-<form id="index_filter" action="<?= $action ?>" method="post">
+<form class="default sidebar-search" id="index_filter" action="<?= $action ?>" method="post">
     <? if (!empty($name_search)) : ?>
-        <label class="mvv-name-search">
-            <?= $name_caption ?: _('Name') ?>
-            <input type="text" name="name_filter" value="<?= htmlReady($selected_name) ?>">
-            <input type="submit" value="<?= _('Suchen') ?>">
-        </label>
+        <ul class="needles">
+            <li>
+                <div class="input-group files-search">
+                    <label for="mvv-name-search" class="sr-only">
+                        <?= $name_caption ?: _('Name') ?>
+                    </label>
+                    <input id="mvv-name-search" type="text" name="name_filter" value="<?= htmlReady($selected_name) ?>">
+                    <button type="submit" class="submit-search" title="<?= _('Suchen') ?>">
+                        <?= Icon::create('search') ?>
+                    </button>
+                </div>
+            </li>
+        </ul>
     <? endif ?>
     <? if (!empty($semester)) : ?>
     <label>

@@ -157,19 +157,13 @@ class ConsultationModule extends CorePlugin implements
             'keywords'    => _('Terminvergabe, Sprechstunden'),
             'displayname' => _('Terminvergabe'),
             'icon'        => Icon::create('consultation', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('consultation', Icon::ROLE_CLICKABLE),
-             'screenshots' => [
-                 'path'     => 'assets/images/plus/screenshots/Terminvergabe',
-                 'pictures' => [
-                     [
-                         'source' => 'uebersicht.png',
-                         'title'  => _('Übersicht der erstellten Termine'),
-                     ],
-                     [
-                         'source' => 'anlegen.png',
-                         'title'  => _('Erstellen neuer Termine'),
-                     ],
-                 ]
+            'icon_clickable' => Icon::create('consultation'),
+            'screenshots' => [
+                'path'     => 'assets/images/plus/screenshots/Terminvergabe',
+                'pictures' => [
+                    0 => ['source' => 'Uebersicht.jpg', 'title'  => _('Übersicht der erstellten Termine')],
+                    1 => ['source' => 'Anlegen.jpg','title'  => _('Erstellen neuer Termine')]
+                ]
              ]
         ];
     }

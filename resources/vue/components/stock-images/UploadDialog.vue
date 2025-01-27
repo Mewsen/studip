@@ -21,7 +21,7 @@
                     :file="file"
                     :metadata="metadata"
                     :suggested-tags="suggestedTags"
-                    @change="onChangeMetadata"
+                    @change="metadata => onChangeMetadata(metadata)"
                 />
             </form>
         </template>
@@ -41,13 +41,13 @@
 <script>
 import MetadataBox from './MetadataBox.vue';
 import UploadBox from './UploadBox.vue';
-import { mapActions } from 'vuex';
 
 const STATES = { IDLE: 'idle', UPLOADED: 'uploaded' };
 
 export default {
     props: ['show', 'suggestedTags'],
     components: { MetadataBox, UploadBox },
+    emits: ['cancel', 'confirm'],
     data: () => ({
         file: null,
         metadata: {

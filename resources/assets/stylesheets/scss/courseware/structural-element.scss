@@ -1,5 +1,5 @@
-@use '../../mixins.scss' as *;
-@import './variables.scss';
+@use '../../mixins' as *;
+@import './variables';
 
 #course-courseware-index,
 #contents-courseware-index,
@@ -164,11 +164,11 @@
     width: 300px;
     height: 200px;
     margin: 0 auto;
-    background-color: var(--content-color-20);
+    background-color: var(--color-image-placeholder-background);
     background-size: 100% auto;
     background-repeat: no-repeat;
     background-position: center;
-    @include background-icon(courseware, clickable, 128);
+    @include background-icon(courseware, $size: 128px);
     margin-bottom: 1em;
 }
 
@@ -197,7 +197,7 @@
         height: 24px;
         border: none;
         background-color: transparent;
-        @include background-icon(trash, clickable);
+        @include background-icon(trash);
         background-repeat: no-repeat;
         cursor: pointer;
     }
@@ -211,27 +211,6 @@
 
         span {
             vertical-align: middle;
-        }
-    }
-}
-
-.studip-dialog-with-tab {
-    .studip-dialog-body .studip-dialog-content {
-        padding: 0 4px;
-        .cw-tab-in-dialog {
-            .cw-tabs-nav {
-                border: none;
-                border-bottom: solid thin var(--content-color-40);
-                margin-bottom: 4px;
-            }
-            .cw-tabs-content {
-                border: none;
-                min-width: 500px;
-                min-height: 400px;
-                overflow-y: auto;
-                scrollbar-width: thin;
-                scrollbar-color: var(--base-color) var(--dark-gray-color-5);
-            }
         }
     }
 }

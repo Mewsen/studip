@@ -9,7 +9,7 @@
                 <?= Icon::create('decline')->asImg(['title' => _('Suche zurücksetzen')]) ?>
             </button>
 
-            <button type="submit" class="button" id="search-btn">
+            <button type="submit" class="button seach-button" id="search-btn">
                 <?= Icon::create('search')->asImg(['title' => _('Suche starten')]) ?>
             </button>
 

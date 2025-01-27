@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Studip;
-
 
 class Fullcalendar
 {
@@ -20,7 +17,6 @@ class Fullcalendar
      */
     protected $attributes;
 
-
     /**
      * The name of the fullcalendar for the data attribute. This is set
      * to "fullcalendar" by default, but custom fullcalendars may require
@@ -28,7 +24,6 @@ class Fullcalendar
      * initialiser to be executed.
      */
     protected $data_name;
-
 
     public static function create(
         $title = '',
@@ -47,7 +42,6 @@ class Fullcalendar
         return $instance->render();
     }
 
-
     public function __construct(
         $title = '',
         $config = [],
@@ -61,6 +55,23 @@ class Fullcalendar
         $this->data_name = $data_name;
     }
 
+    public function setDefaultView(?string $view): void
+    {
+        if ($view === null) {
+            unset($this->config['defaultView']);
+        } else {
+            $this->config['defaultView'] = $view;
+        }
+    }
+
+    public function setResponsiveDefaultView(?string $view): void
+    {
+        if ($view === null) {
+            unset($this->config['responsiveDefaultView']);
+        } else {
+            $this->config['responsiveDefaultView'] = $view;
+        }
+    }
 
     public function render()
     {
@@ -78,7 +89,6 @@ class Fullcalendar
             ]
         );
     }
-
 
     /**
      * Creates an array with data for a Fullcalendar instance

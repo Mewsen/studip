@@ -21,6 +21,13 @@ export default {
         canEdit: Boolean,
         container: Object,
     },
+    emits: [
+        'changeContainer',
+        'copyToClipboard',
+        'deleteContainer',
+        'editContainer',
+        'removeLock',
+    ],
     computed: {
         ...mapGetters({
             userId: 'userId',

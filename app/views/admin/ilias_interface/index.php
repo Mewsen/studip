@@ -44,7 +44,7 @@
                     }
                     ?>
                     <a href="<?= $controller->url_for('admin/ilias_interface/'.$cmd.'/'.$ilias_index) ?>">
-                        <?= Icon::create($img, 'clickable', ['title' => $text])->asImg() ?>
+                        <?= Icon::create($img)->asImg(['title' => $text]) ?>
                     </a>
                 </td>
                 <td><?= htmlReady($ilias_config['name']) ?></td>
@@ -74,14 +74,15 @@
                     <? $actionMenu->addButton(
                             'delete_config',
                             _('Konfiguration löschen'),
-                            Icon::create('trash', Icon::ROLE_CLICKABLE, [
+                            Icon::create('trash'),
+                            [
                                 'title'        => _('Konfiguration löschen'),
                                 'formaction'   => $controller->url_for("admin/ilias_interface/delete/$ilias_index"),
                                 'data-confirm' => sprintf(
                                     _('Soll die ILIAS-Installation "%s" wirklich entfernt werden?'),
                                     $ilias_config['name']
                                 ),
-                            ])
+                            ]
                     ) ?>
                     <?= $actionMenu->render() ?>
                 </td>

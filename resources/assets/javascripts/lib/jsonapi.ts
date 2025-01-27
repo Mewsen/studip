@@ -1,5 +1,7 @@
 import AbstractAPI from './abstract-api.js';
 
+type APIOptions = Record<string, unknown>;
+
 // Actual JSONAPI object
 class JSONAPI extends AbstractAPI
 {
@@ -7,7 +9,7 @@ class JSONAPI extends AbstractAPI
         super(`jsonapi.php/v${version}`);
     }
 
-    encodeData (data: any, method: string): any {
+    encodeData (data: object, method: string): string|null|object {
         data = super.encodeData(data);
 
         if (['DELETE', 'GET', 'HEAD'].includes(method)) {
@@ -21,7 +23,7 @@ class JSONAPI extends AbstractAPI
         return JSON.stringify(data);
     }
 
-    request (url: string, options: any = {}) {
+    request (url: string, options: APIOptions = {}) {
         options.contentType = 'application/vnd.api+json';
         return super.request(url, options);
     }

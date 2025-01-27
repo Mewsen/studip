@@ -101,14 +101,14 @@ class Course_StudygroupController extends AuthenticatedController
                 $send_from_search_page = Request::get('send_from_search_page');
             }
 
-            $icon = Icon::create('door-enter', 'clickable');
+            $icon = Icon::create('door-enter');
             if ($GLOBALS['perm']->have_studip_perm('autor', $studygroup->id) || $membership_requested) {
                 $action = _('Persönlicher Status:');
                 if ($membership_requested) {
                     $icon = $icon->copyWithRole('info');
                     $infotext = _('Mitgliedschaft bereits beantragt!');
                 } else {
-                    $infolink = URLHelper::getURL('seminar_main.php', ['auswahl' => $studygroup->id]);
+                    $infolink = URLHelper::getURL('dispatch.php/course/go', ['to' => $studygroup->id]);
                     $infotext = _('Direkt zur Studiengruppe');
                 }
             } else if ($GLOBALS['perm']->have_perm('admin')) {
@@ -170,43 +170,168 @@ class Course_StudygroupController extends AuthenticatedController
      */
     public function edit_action()
     {
-        global $perm;
-
-        $id = Context::getId();
-
+        PageLayout::setTitle(Context::getHeaderLine() . ' - ' . _('Studiengruppe bearbeiten'));
+        Navigation::activateItem('/course/admin/main');
         PageLayout::setHelpKeyword('Basis.StudiengruppenBearbeiten');
 
-        // if we are permitted to edit the studygroup get some data...
-        if ($id && $perm->have_studip_perm('dozent', $id)) {
-            $this->course = Course::find($id);
+        $course = Context::get();
 
-            PageLayout::setTitle(Context::getHeaderLine() . ' - ' . _('Studiengruppe bearbeiten'));
-            Navigation::activateItem('/course/admin/main');
-
-            $this->course_id         = $id;
-            $this->sem_class         = $GLOBALS['SEM_CLASS'][$GLOBALS['SEM_TYPE'][$this->course->status]['class']];
-            $this->tutors            = CourseMember::findByCourseAndStatus($this->course->id, 'tutor');
-            $this->founders          = StudygroupModel::getFounders($id);
-
-            $actions = new ActionsWidget();
-
-            $actions->addLink(
-                _('Neue Studiengruppe anlegen'),
-                $this->url_for('course/wizard?studygroup=1'),
-                Icon::create('add')
-            );
-
-            $actions->addLink(
-                _('Diese Studiengruppe löschen'),
-                $this->deleteURL(),
-                Icon::create('trash')
-            );
-
-            Sidebar::get()->addWidget($actions);
-        } // ... otherwise redirect us to the seminar
-        else {
-            $this->redirect(URLHelper::getURL('seminar_main.php?auswahl=' . $id));
+        $expiration_date = CourseConfig::get($course->id)->STUDYGROUP_EXPIRATION_DATE;
+        if (!$expiration_date) {
+            $expiration_date = _('Unbegrenzt');
         }
+
+        $zugang_options = [
+            'all' => _('Offen für alle'),
+            'invite' => _('Auf Anfrage'),
+            'connectedcourse' => _('Für Mitglieder der zugehörigen Lehrveranstaltung')
+        ];
+        if (Config::get()->STUDYGROUPS_INVISIBLE_ALLOWED) {
+            $zugang_options['invisible'] = _('Unsichtbar');
+        }
+
+        $form = \Studip\Forms\Form::fromSORM(Context::get(), [
+            'legend' => _('Grunddaten'),
+            'fields' => [
+                'name' => [
+                    'label' => _('Name'),
+                    'required' => true
+                ],
+                'beschreibung' => _('Beschreibung'),
+                'zugang' => [
+                    'label' => _('Zugang'),
+                    'type' => 'select',
+                    'options' => $zugang_options,
+                    'value' => function () use ($course) {
+                        $courseset = CourseSet::getSetForCourse($course->id);
+                        if ($courseset && $courseset->getId() === CourseSet::getConnectedcourseAdmissionSetId()) {
+                            return 'connectedcourse';
+                        } elseif (!$course->visible) {
+                            return 'invisible';
+                        } else {
+                            return $course->admission_prelim > 0 ? 'invite' : 'all';
+                        }
+                    },
+                    'store' => function ($value, $input) {
+                        $course = $input->getContextObject();
+                        switch ($value) {
+                            case 'connectedcourse':
+                                CourseSet::addCourseToSet(CourseSet::getConnectedcourseAdmissionSetId(), $course->id);
+                                $course->visible = 1;
+                                break;
+                            case 'invisible':
+                                CourseSet::removeCourseFromSet(CourseSet::getConnectedcourseAdmissionSetId(), $course->id);
+                                if (Config::get()->STUDYGROUPS_INVISIBLE_ALLOWED) {
+                                    $course->visible = 0;
+                                    break;
+                                }
+                            case 'invite':
+                                CourseSet::removeCourseFromSet(CourseSet::getConnectedcourseAdmissionSetId(), $course->id);
+                                $course->visible = 1;
+                                $course->admission_prelim = 1;
+                                $course->admission_prelim_txt = _('Die Moderator:innen der Studiengruppe können Ihren Aufnahmewunsch bestätigen oder ablehnen. Erst nach Bestätigung erhalten Sie vollen Zugriff auf die Gruppe.');
+                                break;
+                            case 'all':
+                                CourseSet::removeCourseFromSet(CourseSet::getConnectedcourseAdmissionSetId(), $course->id);
+                                $course->visible = 1;
+                                $course->admission_prelim = 0;
+                                break;
+                        }
+                        $course->store();
+                    }
+                ]
+            ]
+        ])->addSORM(
+            Context::get(), [
+                'legend' => _('Erweiterte Einstellungen'),
+                'fields' => [
+                    'ablaufdatum' => [
+                        'label' => _('Ablaufdatum / Löschdatum'),
+                        'type' => 'datetimepicker',
+                        'value' => $expiration_date,
+                        'store' => function ($value) {
+                            CourseConfig::get(Context::getId())->store('STUDYGROUP_EXPIRATION_DATE', $value);
+                        }
+                    ],
+                    'tags' => [
+                        'label' => _('Schlagwörter'),
+                        'type' => 'multiquicksearch',
+                        'addlabel' => _('Schlagwort hinzufügen'),
+                        'value' => function () {
+                            $course = Context::get();
+                            $tags = Tag::getByRange($course->id, 'course');
+                            return array_map(function ($t) { return $t->name; }, $tags);
+                        },
+                        'searchtype' => (string) SQLSearch::get('SELECT `name`, `name` FROM `tags` WHERE `active` = 1 AND `name` LIKE :input', _('Schlagwort suchen')),
+                        'autocomplete' => true,
+                        'mapper' => function ($value, $obj) {
+                            $tags = [];
+                            foreach ($value as $name) {
+                                if ($name) {
+                                    if ($tag = Tag::findOneByName($name)) {
+                                        if ($tag->active) {
+                                            $tags[] = $tag;
+                                        }
+                                    } else {
+                                        $tag = new Tag();
+                                        $tag->name = $name;
+                                        $tag->store();
+                                        $tags[] = $tag;
+                                    }
+                                }
+                            }
+                            return $tags;
+                        },
+                        'store' => function ($tags, $input) {
+                            $course = $input->getContextObject();
+                            $tag_ids = [];
+                            foreach ($tags as $tag) {
+                                $tag_ids[] = $tag->id;
+                                $relation = TagRelation::findOneBySQL(
+                                    "`range_id` = :course_id AND `range_type` = 'course' AND `tag_id` = :tag_id", 
+                                    [
+                                        'tag_id'    => $tag->id,
+                                        'course_id' => $course->id
+                                    ]
+                                );
+                                if (!$relation) {
+                                    $relation = TagRelation::create([
+                                        'range_id'   => $course->id,
+                                        'range_type' => 'course',
+                                        'tag_id'     => $tag->id,
+                                    ]);
+                                }
+                            }
+                            TagRelation::deleteBySQL(
+                                "`range_id` = :course_id AND `range_type` = 'course' AND `tag_id` NOT IN (:ids)", 
+                                [
+                                    'ids'       => $tag_ids,
+                                    'course_id' => $course->id
+                                ]
+                            );
+                        }
+                    ]
+                ]
+            ]
+        )->setURL($this->editURL())
+            ->autoStore();
+
+        $actions = new ActionsWidget();
+
+        $actions->addLink(
+            _('Neue Studiengruppe anlegen'),
+            $this->url_for('course/wizard?studygroup=1'),
+            Icon::create('add')
+        );
+        $actions->addLink(
+            _('Diese Studiengruppe löschen'),
+            $this->deleteURL(),
+            Icon::create('trash')
+        );
+
+        Sidebar::get()->addWidget($actions);
+
+        $this->render_form($form);
     }
 
     /**
@@ -255,14 +380,20 @@ class Course_StudygroupController extends AuthenticatedController
                     $course->schreibzugriff = 1;
                     $course->visible        = 1;
 
-                    if (Request::get('groupaccess') == 'all') {
+                    $cs_id = CourseSet::getConnectedcourseAdmissionSetId();
+                    if (Request::get('groupaccess') === 'all') {
                         $course->admission_prelim = 0;
+                        CourseSet::removeCourseFromSet($cs_id, $id);
+                    } elseif(Request::get('groupaccess') === 'top-course') {
+                        CourseSet::addCourseToSet($cs_id, $id);
                     } else {
                         $course->admission_prelim = 1;
-                        if (Config::get()->STUDYGROUPS_INVISIBLE_ALLOWED && Request::get('groupaccess') == 'invisible') {
+                        if (Config::get()->STUDYGROUPS_INVISIBLE_ALLOWED && Request::get('groupaccess') === 'invisible') {
                             $course->visible = 0;
                         }
                         $course->admission_prelim_txt = _('Die für die Moderation zuständigen Personen der Studiengruppe können Ihren Aufnahmewunsch bestätigen oder ablehnen. Erst nach Bestätigung erhalten Sie vollen Zugriff auf die Gruppe.');
+
+                        CourseSet::removeCourseFromSet($cs_id, $id);
                     }
                     $course->store();
                 }
@@ -358,7 +489,7 @@ class Course_StudygroupController extends AuthenticatedController
                                     ->setNavigationItem('/course/members')
                                     ->render();
 
-            $element = LinkElement::fromHTML($mp, Icon::create('add', 'clickable'));
+            $element = LinkElement::fromHTML($mp, Icon::create('add'));
             $actions->addElement($element);
         }
 
@@ -408,7 +539,7 @@ class Course_StudygroupController extends AuthenticatedController
         }
 
         if (!$perm->have_studip_perm('tutor', $id)) {
-            $this->redirect(URLHelper::getURL('seminar_main.php', ['auswahl' => $id]));
+            $this->redirect(URLHelper::getURL('dispatch.php/course/go', ['to' => $id]));
             return;
         }
 
@@ -570,7 +701,7 @@ class Course_StudygroupController extends AuthenticatedController
         $id = Context::getId();
 
         if (!$perm->have_studip_perm('tutor', $id)) {
-            $this->redirect(URLHelper::getURL('seminar_main.php', ['auswahl' => $id]));
+            $this->redirect(URLHelper::getURL('dispatch.php/course/go', ['to' => $id]));
             exit;
         }
 
@@ -782,5 +913,21 @@ class Course_StudygroupController extends AuthenticatedController
         $avatar = StudygroupAvatar::getAvatar($this->studygroup_id);
         $this->avatar_url = $avatar->getURL(Avatar::NORMAL);
     }
+
+    public function widget_action($range_id)
+    {
+        if (get_class($this->parent_controller) === __CLASS__) {
+            throw new RuntimeException('widget_action must be relayed');
+        }
+        $this->course = Course::find($range_id);
+
+        if ($this->course->isStudygroup()) {
+            $sql = "INNER JOIN `seminare` ON (`seminare`.`Seminar_id` = `studygroup_courses`.`course_id`) WHERE `studygroup_id` = ? ORDER BY `seminare`.`name` ASC";
+        } else {
+            $sql = "INNER JOIN `seminare` ON (`seminare`.`Seminar_id` = `studygroup_courses`.`studygroup_id`) WHERE `course_id` = ? ORDER BY `seminare`.`name` ASC ";
+        }
+        $this->connections = StudygroupCourse::findBySQL($sql, [$range_id]);
+    }
+
 
 }

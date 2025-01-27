@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 const getDefaultState = () => {
     return {
         blockAdder: {},
@@ -115,7 +113,7 @@ const getters = {
         }
         return null;
     },
-    currentElementBlocked(state, getters, rootState, rootGetters) {
+    currentElementBlocked(state, getters) {
         const elemData = getters.currentStructuralElement?.relationships?.['edit-blocker']?.data;
         return elemData !== null && elemData !== '' && getters.currentStructuralElement;
     },
@@ -128,7 +126,7 @@ const getters = {
     currentElementBlockedByAnotherUser(state, getters) {
         return getters.currentElementBlocked && getters.userId !== getters.currentElementBlockerId;
     },
-    currentElementisLink(state, getters, rootState, rootGetters) {
+    currentElementisLink(state, getters) {
         return getters.currentStructuralElement?.attributes?.['is-link'] === 1;
     },
     currentStructuralElementImageURL(state, getters) {
@@ -522,7 +520,7 @@ export const actions = {
         return dispatch('folders/loadById', { id: folderId, options }, { root: true });
     },
 
-    copyBlock({ getters }, { parentId, block, section }) {
+    copyBlock(context, { parentId, block, section }) {
         const copy = {
             data: {
                 block: block,
@@ -531,11 +529,9 @@ export const actions = {
             },
         };
 
-        return state.httpClient.post(`courseware-blocks/${block.id}/copy`, copy).then((resp) => {
-            // console.log(resp);
-        });
+        return state.httpClient.post(`courseware-blocks/${block.id}/copy`, copy);
     },
-    clipboardInsertBlock({ getters }, { parentId, clipboard, section }) {
+    clipboardInsertBlock(context, { parentId, clipboard, section }) {
         const insert = {
             data: {
                 parent_id: parentId,
@@ -545,7 +541,7 @@ export const actions = {
 
         return state.httpClient.post(`courseware-clipboards/${clipboard.id}/insert`, insert);
     },
-    copyContainer({ getters }, { parentId, container }) {
+    copyContainer(context, { parentId, container }) {
         const copy = {
             data: {
                 container: container,
@@ -553,11 +549,9 @@ export const actions = {
             },
         };
 
-        return state.httpClient.post(`courseware-containers/${container.id}/copy`, copy).then((resp) => {
-            // console.log(resp);
-        });
+        return state.httpClient.post(`courseware-containers/${container.id}/copy`, copy);
     },
-    clipboardInsertContainer({ getters },{ parentId, clipboard }) {
+    clipboardInsertContainer(context, { parentId, clipboard }) {
         const insert = {
             data: {
                 parent_id: parentId,
@@ -566,7 +560,7 @@ export const actions = {
 
         return state.httpClient.post(`courseware-clipboards/${clipboard.id}/insert`, insert);
     },
-    async copyStructuralElement({ dispatch, getters, rootGetters }, { parentId, elementId, removePurpose, migrate, modifications }) {
+    async copyStructuralElement({ dispatch, rootGetters }, { parentId, elementId, removePurpose, migrate, modifications }) {
         const copy = { data: { parent_id: parentId, remove_purpose: removePurpose, migrate: migrate, modifications: modifications } };
 
         const result = await state.httpClient.post(`courseware-structural-elements/${elementId}/copy`, copy);
@@ -578,7 +572,7 @@ export const actions = {
         return dispatch('courseware-structure/loadDescendants', { root: newElement });
     },
 
-    async linkStructuralElement({ dispatch, getters, rootGetters }, { parentId, elementId }) {
+    async linkStructuralElement({ dispatch, rootGetters }, { parentId, elementId }) {
         const link = { data: { parent_id: parentId } };
 
         const result = await state.httpClient.post(`courseware-structural-elements/${elementId}/link`, link);
@@ -595,18 +589,14 @@ export const actions = {
 
         element.attributes.commentable = true;
 
-        const updatedElement =  await dispatch('setStructuralElementComments', { element: element });
-
-        return updatedElement;
+        return await dispatch('setStructuralElementComments', {element: element});
 
     },
     async deactivateStructuralElementComments({ dispatch }, { element }) {
 
         element.attributes.commentable = false;
 
-        const updatedElement =  await dispatch('setStructuralElementComments', { element: element });
-
-        return updatedElement;
+        return await dispatch('setStructuralElementComments', {element: element});
     },
 
     async setStructuralElementComments({ dispatch }, { element }) {
@@ -698,18 +688,14 @@ export const actions = {
 
         block.attributes.commentable = true;
 
-        const updatedBlock =  await dispatch('setBlockComments', { block: block });
-
-        return updatedBlock;
+        return await dispatch('setBlockComments', {block: block});
 
     },
     async deactivateBlockComments({ dispatch }, { block }) {
 
         block.attributes.commentable = false;
 
-        const updatedBlock =  await dispatch('setBlockComments', { block: block });
-
-        return updatedBlock;
+        return await dispatch('setBlockComments', {block: block});
     },
 
     async setBlockComments({ dispatch }, { block }) {
@@ -719,7 +705,7 @@ export const actions = {
 
         return updatedBlock;
     },
-    
+
     async storeCoursewareSettings({ dispatch, getters },
                                   { permission, progression, certificateSettings, reminderSettings,
                                       resetProgressSettings }) {
@@ -761,7 +747,7 @@ export const actions = {
         )).then(() => dispatch('courseware-structure/build', null, { root: true }));
     },
 
-    async createStructuralElement({ dispatch }, { attributes, parentId, currentId }) {
+    async createStructuralElement({ dispatch }, { attributes, parentId, currentId, withDefaultContainer = true }) {
         const data = {
             attributes,
             relationships: {
@@ -772,6 +758,7 @@ export const actions = {
                     },
                 },
             },
+            withDefaultContainer: withDefaultContainer,
         };
         await dispatch('courseware-structural-elements/create', data, { root: true });
 
@@ -860,24 +847,6 @@ export const actions = {
         return dispatch('loadStructuralElement', structuralElementId);
     },
 
-    sortBlocksInContainer({ dispatch }, { container, sections }) {
-        let blockResourceIdentifiers = [];
-
-        sections.forEach((section) => {
-            blockResourceIdentifiers.push(...section.blocks.map(({ type, id }) => ({ type, id })));
-        });
-
-        return dispatch(
-            `courseware-containers/setRelated`,
-            {
-                parent: { type: container.type, id: container.id },
-                relationship: 'blocks',
-                data: blockResourceIdentifiers,
-            },
-            { root: true }
-        );
-    },
-
     lockObject({ dispatch, getters }, { id, type }) {
         return dispatch(`${type}/setRelated`, {
             parent: { id, type },
@@ -897,23 +866,23 @@ export const actions = {
         });
     },
 
-    async companionInfo({ dispatch }, { info }) {
+    async companionInfo(context, { info }) {
         STUDIP.eventBus.emit('push-system-notification', { type: 'info', message: info});
     },
 
-    async companionSuccess({ dispatch }, { info }) {
+    async companionSuccess(context, { info }) {
         STUDIP.eventBus.emit('push-system-notification', { type: 'success', message: info});
     },
 
-    async companionError({ dispatch }, { info }) {
+    async companionError(context, { info }) {
         STUDIP.eventBus.emit('push-system-notification', { type: 'error', message: info});
     },
 
-    async companionWarning({ dispatch }, { info }) {
+    async companionWarning(context, { info }) {
         STUDIP.eventBus.emit('push-system-notification', { type: 'exception', message: info});
     },
 
-    async companionSpecial({ dispatch }, { info }) {
+    async companionSpecial(context, { info }) {
         STUDIP.eventBus.emit('push-system-notification', { type: 'warning', message: info});
     },
 
@@ -957,16 +926,8 @@ export const actions = {
         context.commit('coursewareViewModeSet', view);
     },
 
-    setDashboardViewMode(context, view) {
-        context.commit('setDashboardViewMode', view);
-    },
-
     coursewareShowToolbar(context, toolbar) {
         context.commit('coursewareShowToolbarSet', toolbar);
-    },
-
-    coursewareSelectedToolbarItem(context, item) {
-        context.commit('coursewareSelectedToolbarItemSet', item);
     },
 
     coursewareBlockAdder(context, adder) {
@@ -979,18 +940,6 @@ export const actions = {
 
     coursewareShowCompanionOverlay(context, companion_overlay) {
         context.commit('coursewareShowCompanionOverlaySet', companion_overlay);
-    },
-
-    coursewareMsgCompanionOverlay(context, companion_overlay_msg) {
-        context.commit('coursewareMsgCompanionOverlaySet', companion_overlay_msg);
-    },
-
-    coursewareStyleCompanionOverlay(context, companion_overlay_style) {
-        context.commit('coursewareStyleCompanionOverlaySet', companion_overlay_style);
-    },
-
-    coursewareConsumeMode(context, mode) {
-        context.commit('coursewareConsumeModeSet', mode);
     },
 
     setHttpClient({ commit }, httpClient) {
@@ -1075,10 +1024,6 @@ export const actions = {
         context.commit('setShowStructuralElementPermissionsDialog', bool);
     },
 
-    setShowOverviewElementAddDialog(context, bool) {
-        context.commit('setShowOverviewElementAddDialog', bool);
-    },
-
     setImportFilesState({ commit }, state) {
         commit('setImportFilesState', state);
     },
@@ -1142,36 +1087,11 @@ export const actions = {
         );
     },
 
-    removeBookmark({ dispatch, rootGetters }, structuralElement) {
-        const cw = rootGetters['courseware'];
-
-        // get existing bookmarks
-        const bookmarks =
-            rootGetters['courseware-structural-elements/related']({
-                parent: cw,
-                relationship: 'bookmarks',
-            })?.map(({ type, id }) => ({ type, id })) ?? [];
-
-        // filter bookmark that must be removed
-        const data = bookmarks.filter(({ id }) => id !== structuralElement.id);
-
-        // send them home
-        return dispatch(
-            `courseware-structural-elements/setRelated`,
-            {
-                parent: { type: cw.type, id: cw.id },
-                relationship: 'bookmarks',
-                data,
-            },
-            { root: true }
-        );
-    },
-
     setPluginManager({ commit }, pluginManager) {
         commit('setPluginManager', pluginManager);
     },
 
-    uploadImageForStructuralElement({ dispatch, state }, { structuralElement, file }) {
+    uploadImageForStructuralElement({ state }, { structuralElement, file }) {
         const formData = new FormData();
         formData.append('image', file);
 
@@ -1183,7 +1103,7 @@ export const actions = {
         });
     },
 
-    setStockImageForStructuralElement({ dispatch, state }, { structuralElement, stockImage }) {
+    setStockImageForStructuralElement({ dispatch }, { structuralElement, stockImage }) {
         const { id, type } = structuralElement;
         structuralElement.relationships.image = { data: { type: 'stock-images', id: stockImage.id } };
 
@@ -1231,7 +1151,7 @@ export const actions = {
         }
     },
 
-    loadUsersBookmarks({ dispatch, rootGetters, state }, userId) {
+    loadUsersBookmarks({ dispatch }, userId) {
         const parent = {
             type: 'users',
             id: userId,
@@ -1249,7 +1169,7 @@ export const actions = {
         });
     },
 
-    async loadUsersCourses({ dispatch, rootGetters, state }, { userId, withCourseware }) {
+    async loadUsersCourses({ dispatch, rootGetters }, { userId, withCourseware }) {
         const parent = {
             type: 'users',
             id: userId,
@@ -1270,7 +1190,7 @@ export const actions = {
             relationship,
         });
 
-        const otherMemberships = memberships.filter(({ attributes, relationships }) => {
+        const otherMemberships = memberships.filter(({ attributes }) => {
             return ['dozent', 'tutor'].includes(attributes.permission);
         });
 
@@ -1288,7 +1208,7 @@ export const actions = {
         });
 
          return items
-            .filter(({ membership, course }) => {
+            .filter(({ course }) => {
                 return course.relationships.courseware.data;
             })
             .map(({ course }) => course);
@@ -1307,17 +1227,11 @@ export const actions = {
         const relationship = 'courseware';
 
         return dispatch(`courseware-instances/loadRelated`, { parent, relationship }, { root: true }).then(
-            (response) => {
-                const instance = rootGetters['courseware-instances/related']({
-                    parent: parent,
-                    relationship: relationship,
-                });
-
-                return instance;
-            },
-            (error) => {
-                return null;
-            }
+            () => rootGetters['courseware-instances/related']({
+                parent: parent,
+                relationship: relationship,
+            }),
+            () => null
         );
     },
 
@@ -1365,7 +1279,7 @@ export const actions = {
             {
                 id: taskId,
                 options: {
-                    include: 'solver,task-group,task-group.lecturer',
+                    include: 'solver,task-group,task-group.lecturer,peer-reviews.process',
                 },
             },
             { root: true }
@@ -1381,13 +1295,6 @@ export const actions = {
         await dispatch('courseware-tasks/update', task, { root: true });
 
         return dispatch('loadTask', { taskId: task.id });
-    },
-
-    async deleteTask({ dispatch }, { task }) {
-        const data = {
-            id: task.id,
-        };
-        await dispatch('courseware-tasks/delete', data, { root: true });
     },
 
     async createTaskFeedback({ dispatch }, { taskFeedback }) {
@@ -1414,15 +1321,6 @@ export const actions = {
         await dispatch('courseware-task-feedback/delete', data, { root: true });
     },
 
-    setPermissionFilter({ commit }, permission) {
-        commit('setPermissionFilter', permission);
-    },
-    setPurposeFilter({ commit }, purpose) {
-        commit('setPurposeFilter', purpose);
-    },
-    setSourceFilter({ commit }, source) {
-        commit('setSourceFilter', source);
-    },
     setBookmarkFilter({ commit }, course) {
         commit('setBookmarkFilter', course);
     },
@@ -1431,7 +1329,7 @@ export const actions = {
         commit('setProcessing', processing);
     },
 
-    createLink({ dispatch, rootGetters }, { publicLink }) {
+    createLink({ dispatch }, { publicLink }) {
         dispatch('courseware-public-links/create', publicLink, { root: true });
     },
 
@@ -1477,7 +1375,101 @@ export const actions = {
             options,
         });
     },
-    async loadUnitProgresses({ getters }, { unitId }) {
+
+    async loadCourseBlubberThreads({ dispatch, rootGetters }, { cid }) {
+        const parent = {
+            type: 'courses',
+            id: cid
+        };
+        const relationship = 'blubber-threads';
+        const options = {};
+        await dispatch('courses/loadRelated', { parent, relationship, options }, { root: true });
+        const threads = rootGetters['courses/related']({parent, relationship});
+
+        return threads;
+    },
+
+    loadBlubberThread({ dispatch, rootGetters }, { threadId }) {
+        return dispatch(
+            'blubber-threads/loadById',
+            {
+                id: threadId,
+                options: {
+                    include: 'comments',
+                },
+            },
+            { root: true }
+        ).then( async () => {
+            const thread = rootGetters['blubber-threads/byId']({ id: threadId });
+
+            for (let threadComment of thread.relationships.comments.data) {
+                let comment = rootGetters['blubber-comments/byId']({ id: threadComment.id });
+                let commentUserId = comment.relationships.author.data.id;
+                let user = rootGetters['users/byId']({ id: commentUserId });
+
+                if (user === undefined) {
+                    dispatch('users/loadById', { id: commentUserId });
+                }
+            }
+        });
+    },
+
+    createBlubberThread({ dispatch }, { attributes }) {
+        const blubberThread = {
+            type: 'blubber-threads',
+            attributes: attributes
+        };
+
+        return dispatch('blubber-threads/create', blubberThread, { root: true });
+    },
+
+    async updateBlubberThread({ dispatch }, { content, threadId }) {
+        const blubberThread = {
+            type: 'blubber-threads',
+            attributes: {
+                content: content
+            },
+            id: threadId,
+        };
+        await dispatch('blubber-threads/update', blubberThread, { root: true });
+
+        return dispatch('blubber-threads/loadById', { id: blubberThread.id }, { root: true });
+    },
+
+    async createBlubberComment({ dispatch }, { content, threadId }) {
+        const data = {
+            data: {
+                attributes: {
+                    content: content,
+                }
+            }
+        };
+        const url = `blubber-threads/${threadId}/comments`;
+        await state.httpClient.post(url, data, {});
+
+        return dispatch('loadBlubberThread', { threadId: threadId });
+    },
+
+    async updateBlubberComment({ dispatch }, { content, id }) {
+        const blubberComment = {
+            type: 'blubber-comments',
+            attributes: {
+                content: content
+            },
+            id: id,
+        };
+        await dispatch('blubber-comments/update', blubberComment, { root: true });
+
+        return dispatch('blubber-comments/loadById', { id: blubberComment.id }, { root: true });
+    },
+
+    deleteBlubberComment({ dispatch }, { id }) {
+        const data = {
+            id: id,
+        };
+        dispatch('blubber-comments/delete', data, { root: true });
+    },
+    async loadUnitProgresses(context, { unitId }) {
         const response = await state.httpClient.get(`courseware-units/${unitId}/courseware-user-progresses`);
         if (response.status === 200) {
            return response.data;
@@ -1504,7 +1496,7 @@ export const actions = {
         });
     },
 
-    async deleteUserClipboards({ dispatch, rootGetters }, { uid, type }) {
+    async deleteUserClipboards({ dispatch }, { uid, type }) {
         await state.httpClient.delete(`users/${uid}/courseware-clipboards/${type}`);
         dispatch('loadUserClipboards', uid);
     },
@@ -1549,16 +1541,8 @@ export const mutations = {
         state.viewMode = data;
     },
 
-    setDashboardViewMode(state, data) {
-        state.dashboardViewMode = data;
-    },
-
     coursewareShowToolbarSet(state, data) {
         state.showToolbar = data;
-    },
-
-    coursewareSelectedToolbarItemSet(state, data) {
-        state.selectedToolbarItem = data;
     },
 
     coursewareBlockAdderSet(state, data) {
@@ -1571,18 +1555,6 @@ export const mutations = {
 
     coursewareShowCompanionOverlaySet(state, data) {
         state.showCompanionOverlay = data;
-    },
-
-    coursewareMsgCompanionOverlaySet(state, data) {
-        state.msgCompanionOverlay = data;
-    },
-
-    coursewareStyleCompanionOverlaySet(state, data) {
-        state.styleCompanionOverlay = data;
-    },
-
-    coursewareConsumeModeSet(state, data) {
-        state.consumeMode = data;
     },
 
     setHttpClient(state, httpClient) {
@@ -1653,10 +1625,6 @@ export const mutations = {
         state.showStructuralElementDeleteDialog = showDelete;
     },
 
-    setShowOverviewElementAddDialog(state, showAdd) {
-        state.showOverviewElementAddDialog = showAdd;
-    },
-
     setShowStructuralElementPublicLinkDialog(state, showPublicLink) {
         state.showStructuralElementPublicLinkDialog = showPublicLink;
     },
@@ -1699,15 +1667,6 @@ export const mutations = {
     },
     setExportProgress(state, exportProgress) {
         state.exportProgress = exportProgress;
-    },
-    setPermissionFilter(state, permission) {
-        state.permissionFilter = permission;
-    },
-    setPurposeFilter(state, purpose) {
-        state.purposeFilter = purpose;
-    },
-    setSourceFilter(state, source) {
-        state.sourceFilter = source;
     },
     setBookmarkFilter(state, course) {
         state.bookmarkFilter = course;

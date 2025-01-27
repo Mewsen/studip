@@ -566,7 +566,8 @@ class StudipCoreFormat extends TextFormat
 
         $intern = false;
         if (
-            in_array($pu['scheme'], ['http', 'https'])
+            isset($pu['scheme'])
+            && in_array($pu['scheme'], ['http', 'https'])
             && isset($_SERVER['HTTP_HOST'])
             && (
                 !isset($pu['host'])
@@ -594,7 +595,7 @@ class StudipCoreFormat extends TextFormat
         }
 
         //Mediaproxy?
-        if (!$intern && $LOAD_EXTERNAL_MEDIA === "proxy" && Seminar_Session::is_current_session_authenticated()) {
+        if (!$intern && $LOAD_EXTERNAL_MEDIA === 'proxy' && sess()->isCurrentSessionAuthenticated()) {
             $media_url = $GLOBALS['ABSOLUTE_URI_STUDIP'] . 'dispatch.php/media_proxy?url=' . urlencode(decodeHTML(idna_link($url)));
         } else {
             $media_url = idna_link($url);

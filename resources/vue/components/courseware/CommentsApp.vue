@@ -2,15 +2,15 @@
     <div class="cw-comments-overview-wrapper">
         <courseware-block-comments-overview v-if="showBlocks"/>
         <courseware-structural-element-comments-overview v-if="showElements"/>
-        <MountingPortal mountTo="#courseware-comments-overview-widget-filter-type" name="sidebar-views">
+        <Teleport to="#courseware-comments-overview-widget-filter-type" name="sidebar-views">
             <courseware-comments-overview-widget-filter-type />
-        </MountingPortal>
-        <MountingPortal mountTo="#courseware-comments-overview-widget-filter-created" name="sidebar-views">
+        </Teleport>
+        <Teleport to="#courseware-comments-overview-widget-filter-created" name="sidebar-views">
             <courseware-comments-overview-widget-filter-created />
-        </MountingPortal>
-        <MountingPortal mountTo="#courseware-comments-overview-widget-filter-unit" name="sidebar-views">
+        </Teleport>
+        <Teleport to="#courseware-comments-overview-widget-filter-unit" name="sidebar-views">
             <courseware-comments-overview-widget-filter-unit />
-        </MountingPortal>
+        </Teleport>
     </div>
 </template>
 

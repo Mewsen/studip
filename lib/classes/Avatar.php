@@ -509,7 +509,7 @@ class Avatar
 
         $output_file = $this->getCustomAvatarPath($size);
         $directory = dirname($output_file);
-        if (!is_dir($directory) && !mkdir($directory)) {
+        if (!is_dir($directory) && !@mkdir($directory)) {
             throw new Exception(_('Das Verzeichnis zum Speichern der Datei konnte nicht angelegt werden.'));
         }
 

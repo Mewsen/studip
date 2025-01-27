@@ -1,11 +1,10 @@
 <script>
+import { h } from 'vue';
+
 let uuid = 0;
 export default {
     name: 'studip-proxied-checkbox',
-    model: {
-        prop: 'selected',
-        event: 'change',
-    },
+    emits: ['update:selected'],
     props: {
         name: String,
         id: String,
@@ -27,7 +26,7 @@ export default {
                 selected.add(this.value);
             }
 
-            this.$emit('change', [...selected.values()]);
+            this.$emit('update:selected', [...selected.values()]);
         }
     },
     computed: {
@@ -38,23 +37,15 @@ export default {
             return this.selected.includes(this.value);
         },
     },
-    render (createElement) {
-        const checkbox = createElement('input', {
-            attrs: {
-                type: 'checkbox',
-                name: this.name,
-                id: this.proxiedId,
-                value: this.value,
-            },
-            domProps: {
-                checked: this.checked,
-            },
-            on: {
-                change: this.changeCollection,
-            }
+    render () {
+        return h('input', {
+            type: 'checkbox',
+            name: this.name,
+            id: this.proxiedId,
+            value: this.value,
+            checked: this.checked ? true : null,
+            onChange: this.changeCollection,
         });
-
-        return checkbox;
     }
 };
 </script>

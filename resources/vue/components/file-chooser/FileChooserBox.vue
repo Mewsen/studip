@@ -72,6 +72,7 @@ export default {
         FileChooserToolbar,
         StudipProgressIndicator,
     },
+    emits: ['selectId'],
     props: {
         excludedFolderTypes: { type: Array, default: () => [] },
     },
@@ -133,6 +134,7 @@ export default {
     methods: {
         ...mapActions({
             loadFolderFiles: 'file-chooser/loadFolderFiles',
+            loadFolder: 'folders/loadById',
         }),
         async loadFiles(folderId) {
             this.contentForbidden = false;
@@ -161,6 +163,7 @@ export default {
         fileAdded() {
             this.showMessageBox = true;
             this.successMessage = this.$gettext('Es wurde eine Datei hochgeladen.');
+            this.loadFolder({ id: this.activeFolderId });
         },
         folderAdded() {
             this.showMessageBox = true;

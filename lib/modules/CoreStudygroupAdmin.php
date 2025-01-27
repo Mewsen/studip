@@ -18,7 +18,8 @@ class CoreStudygroupAdmin extends CorePlugin implements StudipModuleExtended
     public function getIconNavigation($course_id, $last_visit, $user_id)
     {
         $navigation = new Navigation(_('Verwaltung'), "dispatch.php/course/studygroup/edit/?cid={$course_id}");
-        $navigation->setImage(Icon::create('admin', Icon::ROLE_CLICKABLE, ['title' => _('Verwaltung')]));
+        $navigation->setImage(Icon::create('admin'));
+        $navigation->setLinkAttributes(['title' => _('Verwaltung')]);
         return $navigation;
     }
 
@@ -49,6 +50,7 @@ class CoreStudygroupAdmin extends CorePlugin implements StudipModuleExtended
         $navigation->addSubNavigation('contentmodules', new Navigation(_('Werkzeuge'), "dispatch.php/course/contentmodules?cid={$course_id}"));
         $navigation->addSubNavigation('main', new Navigation(_('Verwaltung'), "dispatch.php/course/studygroup/edit/?cid={$course_id}"));
         $navigation->addSubNavigation('avatar', new Navigation(_(' Studiengruppenbild'), "dispatch.php/course/studygroup/avatar?cid={$course_id}"));
+        $navigation->addSubNavigation('connectedcourses', new Navigation(_('Verknüpfte Veranstaltungen'), "dispatch.php/course/connectedcourses?cid={$course_id}"));
 
         if (!$GLOBALS['perm']->have_perm('admin') && Config::get()->VOTE_ENABLE) {
             $item = new Navigation(_('Fragebögen'), 'dispatch.php/questionnaire/courseoverview');

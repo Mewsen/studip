@@ -4,7 +4,7 @@
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend>
-            <?= _('Studiengruppe bearbeiten') ?>
+            <?= _('Grunddaten') ?>
         </legend>
 
         <input type='submit' class="invisible" name="<?=_('Änderungen übernehmen') ?>" aria-hidden="true">
@@ -35,14 +35,39 @@
                 <option value="invisible" <? if (!$course->visible) echo 'selected'; ?> <? if (!Config::get()->STUDYGROUPS_INVISIBLE_ALLOWED) echo 'disabled'; ?>>
                     <?= _('Unsichtbar') ?>
                 </option>
+            <? endif; ?>
+            <? if (true) : ?>
+                <? $courseset = CourseSet::getSetForCourse($sem_id) ?>
+                <option value="top-course"<?= $courseset && $courseset->getId() === CourseSet::getConnectedcourseAdmissionSetId() ? ' selected' : '' ?>>
+                    <?= _('Für Mitglieder der zugehörigen Lehrveranstaltung') ?>
+                </option>
+            <? endif ?>
+            <? if (true) : ?>
+                <? $courseset = CourseSet::getSetForCourse($sem_id) ?>
+                <option value="top-course"<?= $courseset && $courseset->getId() === CourseSet::getConnectedcourseAdmissionSetId() ? ' selected' : '' ?>>
+                    <?= _('Für Mitglieder der zugehörigen Lehrveranstaltung') ?>
+                </option>
             <? endif ?>
             </select>
         </label>
 
     </fieldset>
 
+    <fieldset>
+        <legend><?= _('Erweiterte Einstellungen') ?></legend>
+
+        <label>
+            <?= _('Ablaufdatum') ?>
+            <input type="text" name="expiration_date">
+        </label>
+
+        <label>
+            <?= _('Schlagwörter') ?>
+        </label>
+    </fieldset>
+
     <footer>
         <?= Studip\Button::createAccept(_('Übernehmen'), ['title' => _("Änderungen übernehmen")]); ?>
-        <?= Studip\LinkButton::createCancel(_('Abbrechen'), URLHelper::getURL('seminar_main.php')); ?>
+        <?= Studip\LinkButton::createCancel(_('Abbrechen'), URLHelper::getURL('dispatch.php/course/go')); ?>
     </footer>
 </form>

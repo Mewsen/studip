@@ -51,6 +51,8 @@ class Admin_IliasInterfaceController extends AuthenticatedController
         PageLayout::setHelpKeyword('Basis.Ilias');
 
         $this->modules_available = ConnectedIlias::getSupportedModuleTypes();
+        $this->studip_roles = ['autor', 'tutor', 'dozent', 'admin', 'root'];
+
         $this->sidebar = Sidebar::get();
     }
 
@@ -93,12 +95,13 @@ class Admin_IliasInterfaceController extends AuthenticatedController
     public function save_interface_settings_action()
     {
         if (Request::submitted('submit')) {
-            $this->ilias_interface_config['edit_moduletitle'] = (boolean)Request::get('ilias_interface_edit_moduletitle');
-            $this->ilias_interface_config['show_offline'] = (boolean)Request::get('ilias_interface_show_offline');
-            $this->ilias_interface_config['search_active'] = (boolean)Request::get('ilias_interface_search_active');
-            $this->ilias_interface_config['show_tools_page'] = (boolean)Request::get('ilias_interface_show_tools_page');
-            $this->ilias_interface_config['add_statusgroups'] = (boolean)Request::get('ilias_interface_add_statusgroups');
-            $this->ilias_interface_config['cache'] = (boolean)Request::get('ilias_interface_cache');
+            $this->ilias_interface_config['edit_moduletitle'] = Request::bool('ilias_interface_edit_moduletitle', false);
+            $this->ilias_interface_config['show_offline'] = Request::bool('ilias_interface_show_offline', false);
+            $this->ilias_interface_config['search_active'] = Request::bool('ilias_interface_search_active', false);
+            $this->ilias_interface_config['show_course_paths'] = Request::bool('ilias_interface_show_course_paths', false);
+            $this->ilias_interface_config['show_tools_page'] = Request::bool('ilias_interface_show_tools_page', false);
+            $this->ilias_interface_config['add_statusgroups'] = Request::bool('ilias_interface_add_statusgroups', false);
+            $this->ilias_interface_config['cache'] = Request::bool('ilias_interface_cache', false);
             $this->ilias_interface_config['allow_change_course'] = Request::get('ilias_interface_allow_change_course');
             $this->ilias_interface_config['allow_add_own_course'] = Request::get('ilias_interface_allow_add_own_course');
 
@@ -127,8 +130,11 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                             'name' => '',
                             'version' => '',
                             'url' => _('https://<URL zur ILIAS-Installation>'),
+                            'http_connection_timeout' => 1,
+                            'http_request_timeout' => 3,
                             'client' => '',
                             'ldap_enable' => '',
+                            'reconnect_accounts' => false,
                             'no_account_updates' => false,
                             'admin' => 'ilias_soap_admin',
                             'admin_pw' => '',
@@ -150,7 +156,8 @@ class Admin_IliasInterfaceController extends AuthenticatedController
 
                             'author_role_name' => 'Author',
                             'author_role' => '',
-                            'author_perm' => 'tutor'
+                            'author_perm' => 'tutor',
+                            'additional_roles' => []
             ];
 
             // fetch existing indicies from previously connected ILIAS installations
@@ -166,6 +173,8 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                 if (count($info)) {
                     $this->valid_url = true;
                     $this->ilias_config['url'] = Request::get('ilias_url');
+                    $this->ilias_config['http_connection_timeout'] = (int) Request::get('ilias_http_connection_timeout');
+                    $this->ilias_config['http_request_timeout'] = (int) Request::get('ilias_http_request_timeout');
                     if ($info['version']) {
                         $this->ilias_version = $info['version'];
                         $this->ilias_version_date = $info['version_date'];
@@ -215,6 +224,8 @@ class Admin_IliasInterfaceController extends AuthenticatedController
             if (Request::get('ilias_name')) {
                 $this->ilias_config['name'] = Request::get('ilias_name');
                 $this->ilias_config['url'] = Request::get('ilias_url');
+                $this->ilias_config['http_connection_timeout'] = (int) Request::get('ilias_http_connection_timeout');
+                $this->ilias_config['http_request_timeout'] = (int) Request::get('ilias_http_request_timeout');
             }
             $info = ConnectedIlias::getIliasInfo($this->ilias_config['url']);
             if (count($info)) {
@@ -257,6 +268,9 @@ class Admin_IliasInterfaceController extends AuthenticatedController
     {
         $this->ilias_config = $this->ilias_configs[$index];
         $this->ilias_index = $index;
+
+        $connected_ilias = new ConnectedIlias($index);
+        $this->global_roles = $connected_ilias->soap_client->getRoles('global', -1);
     }
 
     /**
@@ -282,7 +296,7 @@ class Admin_IliasInterfaceController extends AuthenticatedController
     {
         CSRFProtection::verifyUnsafeRequest();
 
-        if (Request::submitted('submit')) {
+        if (Request::submittedSome('submit', 'add_additional_role', 'remove_additional_role')) {
             // set basic server settings
             if (Request::getInstance()->offsetExists('ilias_name')) {
                 $this->ilias_configs[$index]['name'] = Request::get('ilias_name');
@@ -290,6 +304,8 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                     $this->ilias_configs[$index]['version'] = Request::get('ilias_version');
                 }
                 $this->ilias_configs[$index]['url'] = Request::get('ilias_url');
+                $this->ilias_configs[$index]['http_connection_timeout'] = (int) Request::get('ilias_http_connection_timeout');
+                $this->ilias_configs[$index]['http_request_timeout'] = (int) Request::get('ilias_http_request_timeout');
                 if (Request::getInstance()->offsetExists('ilias_client')) {
                     $this->ilias_configs[$index]['client'] = Request::get('ilias_client');
                 }
@@ -351,6 +367,7 @@ class Admin_IliasInterfaceController extends AuthenticatedController
                         $this->ilias_configs[$index]['course_veranstaltungsnummer'] = Request::get('ilias_course_veranstaltungsnummer');
                     }
                     $this->ilias_configs[$index]['delete_ilias_users'] = Request::get('ilias_delete_ilias_users');
+                    $this->ilias_configs[$index]['reconnect_accounts'] = Request::bool('ilias_reconnect_accounts', false);
                     $this->ilias_configs[$index]['delete_ilias_courses'] = Request::get('ilias_delete_ilias_courses');
                     $this->ilias_configs[$index]['category_create_on_add_module'] = Request::get('ilias_category_create_on_add_module');
                     $this->ilias_configs[$index]['category_to_desktop'] = Request::get('ilias_category_to_desktop');
@@ -371,9 +388,58 @@ class Admin_IliasInterfaceController extends AuthenticatedController
 
                 // set permissions settings
                 if (Request::getInstance()->offsetExists('ilias_author_role_name')) {
+                    $this->global_roles = $connected_ilias->soap_client->getRoles('global', -1);
                     $this->ilias_configs[$index]['author_role_name'] = Request::get('ilias_author_role_name');
                     $this->ilias_configs[$index]['author_perm'] = Request::get('ilias_author_perm');
                     $this->ilias_configs[$index]['allow_change_account'] = Request::get('ilias_allow_change_account');
+
+                    // remove ilias role assignment
+                    if (
+                        Request::submitted('remove_additional_role')
+                        && Request::option('studip_role')
+                        && array_key_exists('additional_roles', $this->ilias_configs[$index])
+                    ) {
+                        $studip_role = Request::option('studip_role');
+                        $ilias_role = Request::option('remove_additional_role');
+                        if (
+                            in_array($studip_role, $this->studip_roles)
+                            && array_key_exists($studip_role, $this->ilias_configs[$index]['additional_roles'])
+                            && array_key_exists($ilias_role, $this->ilias_configs[$index]['additional_roles'][$studip_role])
+                        ) {
+                            unset($this->ilias_configs[$index]['additional_roles'][$studip_role][$ilias_role]);
+                            PageLayout::postSuccess(sprintf(_('ILIAS-Rollenzuweisung der Stud.IP-Rechtestufe %s wurde entfernt.'), $studip_role));
+                        }
+                    }
+
+                    // add ilias role assignment
+                    if (
+                        Request::submitted('add_additional_role')
+                        && Request::option('add_studip_role')
+                        && Request::option('add_ilias_role')
+                    ) {
+                        $studip_role = Request::option('add_studip_role');
+                        $ilias_role = Request::option('add_ilias_role');
+                        $role_already_assigned = false;
+                        if (!array_key_exists('additional_roles', $this->ilias_configs[$index])) {
+                            $this->ilias_configs[$index]['additional_roles'] = [];
+                        }
+                        if (
+                            in_array($studip_role, $this->studip_roles)
+                            && (array_key_exists($ilias_role, $this->global_roles))
+                        ) {
+                            if (!array_key_exists($studip_role, $this->ilias_configs[$index]['additional_roles'])) {
+                                $this->ilias_configs[$index]['additional_roles'][$studip_role] = [];
+                            }
+                            if (array_key_exists($ilias_role, $this->global_roles)) {
+                                $this->ilias_configs[$index]['additional_roles'][$studip_role][$ilias_role] = [
+                                    'id' => $this->global_roles[$ilias_role]['id'], 
+                                    'name' => $this->global_roles[$ilias_role]['name']];
+                                PageLayout::postSuccess(sprintf(_('ILIAS-Rolle %s wird Stud.IP-Rechtestufe %s zugewiesen.'), $this->global_roles[$ilias_role]['name'], $studip_role));
+                            } else {
+                                PageLayout::postError(_('ILIAS-Rolle nicht gefunden.'));
+                            }
+                        }
+                    } 
 
                     //store config entry
                     Config::get()->store('ILIAS_INTERFACE_SETTINGS', $this->ilias_configs);

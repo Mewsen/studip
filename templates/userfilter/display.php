@@ -14,9 +14,10 @@ foreach ($filter->getFields() as $field) {
 }
 if ($filter->show_user_count) {
     $user_count = count($filter->getUsers());
-    $fieldText .= ' ('.sprintf(_('%s Personen'), $user_count);
-    if (!$user_count) {
-        $fieldText .= Icon::create('exclaim-circle', 'attention', ['title' => _("Niemand erfüllt diese Bedingung.")])->asImg();
+    $fieldText .= ' (' . sprintf(ngettext('Eine Person', '%s Personen', $user_count), $user_count);
+    if ($user_count === 0) {
+        $fieldText .= '&nbsp;' . Icon::create('exclaim-circle', Icon::ROLE_ATTENTION)
+                ->asImg(['title' => _('Niemand erfüllt diese Bedingung.')]);
     }
     $fieldText .= ')';
 }

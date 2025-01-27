@@ -64,7 +64,7 @@ class Course_WizardController extends AuthenticatedController
      */
     public function index_action()
     {
-        $this->redirect('course/wizard/step/0' . ($this->studygroup ? '?studygroup=1' : ''));
+        $this->redirect('course/wizard/step/0' . ($this->studygroup ? '?studygroup=1&stgteil_id='.Request::option('stgteil_id') : ''));
     }
 
     /**
@@ -93,7 +93,10 @@ class Course_WizardController extends AuthenticatedController
             // Add special studygroup flag to set values.
             $this->setStepValues(
                 get_class($step),
-                array_merge($this->getValues(get_class($step)), ['studygroup' => 1])
+                array_merge($this->getValues(get_class($step)), [
+                    'studygroup' => 1,
+                    'stgteil_id' => Request::option('stgteil_id')
+                ])
             );
         }
         $this->values = $this->getValues();
@@ -193,11 +196,13 @@ class Course_WizardController extends AuthenticatedController
                         }
                         // A studygroup has been created.
                         if (in_array($this->course->status, studygroup_sem_types())) {
+
                             $message = MessageBox::success(sprintf(
-                                _('Die Studien-/Arbeitsgruppe "%s" wurde angelegt. '
+                                _('Die Studien-/Arbeitsgruppe „%s“ wurde angelegt. '
                                 . 'Sie können sie direkt hier weiter verwalten.'),
                                 htmlReady($this->course->name)
                             ));
+
                             $target = $this->url_for('course/studygroup/edit', ['cid' => $this->course->id]);
 
                             // "Normal" course.

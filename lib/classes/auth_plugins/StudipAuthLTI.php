@@ -1,7 +1,8 @@
 <?php
 /*
- * StudipAuthLTI.php - Stud.IP authentication against LTI 1.1 consumer
+ * StudipAuthLTI.class.php - Stud.IP authentication against an LTI 1.3A consumer
  * Copyright (c) 2018  Elmar Ludwig
+ * Copyright (c) 2023-2024  Moritz Strohm
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -11,7 +12,13 @@
 
 use Studip\OAuth2\NegotiatesWithPsr7;
 
-class StudipAuthLTI extends StudipAuthSSO
+use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
+use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResultInterface;
+use OAT\Library\Lti1p3Core\Security\User\UserAuthenticatorInterface;
+use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult;
+use OAT\Library\Lti1p3Core\User\UserIdentity;
+
+class StudipAuthLTI extends StudipAuthSSO implements UserAuthenticatorInterface
 {
     use NegotiatesWithPsr7;
 
@@ -131,5 +138,36 @@ class StudipAuthLTI extends StudipAuthSSO
     public function getUserData($key)
     {
         return Request::get($key);
+    }
+
+    //\OAT\Library\Lti1p3Core\Security\User\UserAuthenticatorInterface implementation:
+
+    public function authenticate(RegistrationInterface $registration, string $loginHint) : UserAuthenticationResultInterface
+    {
+        //Check if the user-ID is known:
+        $user = User::find($loginHint);
+        if (!$user) {
+            return new UserAuthenticationResult(false, null);
+        }
+
+        //Authenticate the user:
+        if ($this->authenticateUser($user->username, '')) {
+            return new UserAuthenticationResult(
+                true,
+                new UserIdentity(
+                    $user->id,
+                    $user->getFullName(),
+                    $user->email,
+                    $user->vorname,
+                    $user->nachname,
+                    '',
+                    $user->preferred_language,
+                    Avatar::getAvatar($user->id)->getURL(Avatar::SMALL)
+                )
+            );
+        }
+
+        //The user could not be authenticated:
+        return new UserAuthenticationResult(false, null);
     }
 }

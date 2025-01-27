@@ -52,7 +52,7 @@ const clipboardMixin = {
                         section: this.blockAdder.section,
                         clipboard: clipboard,
                     });
-                } catch (error) {
+                } catch {
                     insertError = true;
                     this.companionWarning({ info: this.text.errorMessage });
                 }
@@ -70,7 +70,7 @@ const clipboardMixin = {
                         clipboard: clipboard,
                     });
 
-                } catch (error) {
+                } catch {
                     insertError = true;
                     this.companionWarning({ info: this.text.errorMessage });
                 }
@@ -98,7 +98,7 @@ const clipboardMixin = {
                         section: this.blockAdder.section,
                         block: { id: this.blockId },
                     });
-                } catch (error) {
+                } catch {
                     insertError = true;
                     this.companionWarning({ info: this.text.errorMessage });
                 }
@@ -109,7 +109,7 @@ const clipboardMixin = {
             } else {
                 try {
                     await this.copyContainer({ parentId: this.currentElement, container: { id: this.containerId } });
-                } catch (error) {
+                } catch {
                     insertError = true;
                     this.companionWarning({ info: this.text.errorMessage });
                 }

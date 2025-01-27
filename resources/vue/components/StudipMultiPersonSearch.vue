@@ -2,13 +2,15 @@
     <div class="mpscontainer studip-msp-vue">
         <form method="post" class="default" @submit.prevent="search">
             <label class="with-action">
-                <input type="text" ref="searchInputField" v-model="searchTerm" :placeholder="$gettext('Suchen')" style="width: 260px;">
-                <a href="#" class="msp-btn" @click.prevent="search" :title="$gettext('Suche starten')">
-                    <studip-icon shape="search" />
-                </a>
-                <a href="#" class="msp-btn" @click.prevent="resetSearch" :title="$gettext('Suche zurücksetzen')">
-                    <studip-icon shape="decline" />
-                </a>
+                <div class="search-wrapper">
+                    <input type="text" ref="searchInputField" v-model="searchTerm" :placeholder="$gettext('Suchen')" >
+                    <button :class="{ visible: showResetButton }" class="icon-button enter-accessible msp-btn reset-search" @click.prevent="resetSearch" :title="$gettext('Suche zurücksetzen')">
+                        <studip-icon shape="decline" class="text-bottom" />
+                    </button>
+                    <button class="icon-button enter-accessible msp-btn search" @click.prevent="search" :title="$gettext('Suche starten')">
+                        <studip-icon shape="search" class="text-bottom"/>
+                    </button>
+                </div>
             </label>
             <select multiple="multiple" :id="select_box_id" name="selectbox[]"></select>
         </form>
@@ -18,6 +20,7 @@
 <script>
 export default {
     name: 'studip-multi-person-search',
+    emits: ['update:model-value'],
     props: {
         name: String,
         withDetail: {
@@ -42,7 +45,7 @@ export default {
     },
     computed: {
         id() {
-            return this._uid;
+            return this._.uid;
         },
         count_text_id() {
             return this.id + '_count';
@@ -50,6 +53,9 @@ export default {
         select_box_id() {
             return this.id + '_selectbox';
         },
+        showResetButton() {
+            return this.searchTerm !== '';
+        }
     },
     methods: {
         init() {
@@ -71,9 +77,9 @@ export default {
             });
             let selection_header = document.createElement('div');
             selection_header.setAttribute('id', this.count_text_id);
-            selection_header.innerText = this.$gettextInterpolate(
-                this.$gettext('Sie haben %{ count } Personen ausgewählt'),
-                {count: this.count}
+            selection_header.innerText = this.$gettext(
+                'Sie haben %{ count } Personen ausgewählt',
+                { count: this.count }
             );
 
             $('#' + this.select_box_id).multiSelect({
@@ -88,33 +94,32 @@ export default {
 
         search() {
             this.users = [];
-            let view = this;
             $.getJSON(
                 STUDIP.URLHelper.getURL('dispatch.php/multipersonsearch/ajax_search_vue/' + this.name, { s: this.searchTerm }),
-                function(data) {
-                    view.removeAllNotSelected();
-                    var searchcount = 0;
-                    $.each(data, function(i, item) {
-                        searchcount += view.append(
+                (data) => {
+                    this.removeAllNotSelected();
+                    let searchcount = 0;
+                    $.each(data, (i, item) => {
+                        searchcount += this.append(
                             item.id,
                             item.avatar + ' -- ' + item.text,
                             item.selected
                         );
                         delete item.selected;
-                        view.users.push(item);
+                        this.users.push(item);
                     });
-                    view.refresh();
+                    this.refresh();
 
                     if (searchcount === 0) {
-                        view.append(
+                        this.append(
                             '--',
-                            view.$gettextInterpolate(
-                                view.$gettext('Es wurden keine neuen Ergebnisse für "%{ needle }" gefunden.'),
-                                {needle: view.searchTerm}
+                            this.$gettext(
+                                'Es wurden keine neuen Ergebnisse für "%{ needle }" gefunden.',
+                                { needle: this.searchTerm }
                             ),
                             true
                         );
-                        view.refresh();
+                        this.refresh();
                     }
                 }
             );
@@ -164,9 +169,9 @@ export default {
 
         updateCount(){
             this.count = $('#' + this.select_box_id + ' option:enabled:selected').length;
-            $('#' + this.count_text_id).text(this.$gettextInterpolate(
-                this.$gettext('Sie haben %{ count } Personen ausgewählt'),
-                {count: this.count}
+            $('#' + this.count_text_id).text(this.$gettext(
+                'Sie haben %{ count } Personen ausgewählt',
+                { count: this.count }
             ));
         },
 
@@ -192,7 +197,7 @@ export default {
             } else {
                 return_value = user_ids;
             }
-            this.$emit('input', return_value);
+            this.$emit('update:model-value', return_value);
         }
     },
 }

@@ -18,6 +18,11 @@ module.exports = merge(common, {
                 /\.d\.[cm]ts$/
             ]
         }),
+        new webpack.DefinePlugin({
+            __VUE_OPTIONS_API__: 'true',
+            __VUE_PROD_DEVTOOLS__: 'true',
+            __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'true'
+        }),
         new WebpackNotifierPlugin({
             appID: 'Stud.IP Webpack',
             title: function (params) {

@@ -4,16 +4,12 @@
             <studip-icon
                 :shape="getShape(i)"
                 :size="size"
-                :alt="
-                    $gettextInterpolate(
-                        $ngettext(
-                            'auswählen, um mit einem Stern zu bewerten.',
-                            'auswählen, um mit %{i} Sternen zu bewerten.',
-                            i
-                        ),
-                        { i: i }
-                    )
-                "
+                :alt="$ngettext(
+                    'auswählen, um mit einem Stern zu bewerten.',
+                    'auswählen, um mit %{i} Sternen zu bewerten.',
+                    i,
+                    { i }
+                )"
             />
         </button>
     </div>
@@ -25,8 +21,9 @@ export default {
     components: {
         StudipIcon,
     },
+    emits: ['update:model-value'],
     props: {
-        value: {
+        modelValue: {
             type: Number,
         },
         size: {
@@ -41,10 +38,10 @@ export default {
     },
     methods: {
         setValue(val) {
-            this.$emit('input', val);
+            this.$emit('update:model-value', val);
         },
         getShape(pos) {
-            return pos <= this.value ? 'star' : 'star-empty';
+            return pos <= this.modelValue ? 'star' : 'star-empty';
         },
     },
 };

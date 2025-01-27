@@ -2,9 +2,9 @@
     <tr @click="onSelect">
         <td>
             <label>
-                <input type="checkbox" :checked="isChecked" @change="onCheckboxChange" />
+                <input type="checkbox" :checked="isChecked ? true : null" @change="onCheckboxChange" />
                 <span class="sr-only">{{
-                    $gettextInterpolate($gettext('%{context} auswählen'), { context: stockImage.attributes.title })
+                    $gettext('%{context} auswählen', { context: stockImage.attributes.title })
                 }}</span>
             </label>
         </td>
@@ -58,6 +58,7 @@ import Thumbnail from './Thumbnail.vue';
 import { getFormat } from './format.js';
 
 export default {
+    emits: ['checked', 'search', 'select'],
     props: {
         stockImage: {
             type: Object,

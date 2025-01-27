@@ -8,6 +8,7 @@
                :name="autocomplete ? name : null"
                v-model="inputValue"
                autocomplete="off"
+               ref="text_input"
                @blur="reset()"
                @keydown.up="selectUp"
                @keydown.down="selectDown"
@@ -31,6 +32,7 @@
 <script>
 export default {
     name: 'quicksearch',
+    emits: ['update:modelValue'],
     props: {
         searchtype: {
             type: String,
@@ -40,7 +42,7 @@ export default {
             type: String,
             required: false
         },
-        value: {
+        modelValue: {
             type: String,
             required: false,
             default: ''
@@ -59,6 +61,10 @@ export default {
             type: String,
             required: false,
             default: ''
+        },
+        keepValue: {
+            type: Boolean,
+            default: false
         }
     },
     inheritAttrs: false,
@@ -118,8 +124,11 @@ export default {
             }
             this.results = [];
 
-            this.$emit('input', this.returnValue, this.inputValue);
-            this.inputValue = '';
+            this.$emit('update:modelValue', this.returnValue, this.inputValue);
+
+            if (!this.keepValue) {
+                this.inputValue = '';
+            }
         },
         selectUp () {
             if (this.selected > 0) {
@@ -159,8 +168,8 @@ export default {
     },
     created () {
         this.initialize(
-            this.value,
-            this.autocomplete ? this.value : this.needle
+            this.modelValue,
+            this.autocomplete ? this.modelValue : this.needle
         );
     },
     computed: {
@@ -169,13 +178,16 @@ export default {
         }
     },
     watch: {
-        value (val) {
+        modelValue(val) {
             this.reset(true);
             this.initialize(val);
         },
         inputValue (needle, oldneedle) {
             if (oldneedle !== null && (oldneedle !== needle) && needle.length > 2) {
                 this.search(needle);
+            }
+            if (this.autocomplete) {
+                this.$emit('update:modelValue', this.inputValue, this.inputValue);
             }
         }
     }

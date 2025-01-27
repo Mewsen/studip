@@ -39,7 +39,7 @@ class Course_DetailsController extends AuthenticatedController
         }
         $this->send_from_search_page = Request::get('send_from_search_page');
 
-        if ($GLOBALS['SessionSeminar'] != $this->course->id
+        if (isset($GLOBALS['SessionSeminar']) && $GLOBALS['SessionSeminar'] != $this->course->id
             && !(int)$this->course->visible
             && !($GLOBALS['perm']->have_perm(Config::get()->SEM_VISIBILITY_PERM)
                 || $GLOBALS['perm']->have_studip_perm('user', $this->course->id))) {
@@ -52,7 +52,7 @@ class Course_DetailsController extends AuthenticatedController
 
         if ($this->course->getSemClass()->offsetGet('studygroup_mode')) {
             if ($GLOBALS['perm']->have_studip_perm('autor', $this->course->id)) { // participants may see seminar_main
-                $link = URLHelper::getUrl('seminar_main.php', ['auswahl' => $this->course->id]);
+                $link = URLHelper::getUrl('dispatch.php/course/go', ['to' => $this->course->id]);
             } else {
                 $link = URLHelper::getUrl('dispatch.php/course/studygroup/details/' . $this->course->id, [
                     'send_from_search_page' => $this->send_from_search_page,
@@ -202,7 +202,7 @@ class Course_DetailsController extends AuthenticatedController
 
             $enrolment_info = null;
 
-            if ($GLOBALS['SessionSeminar'] === $this->course->id) {
+            if (isset($GLOBALS['SessionSeminar']) && $GLOBALS['SessionSeminar'] === $this->course->id) {
                 Navigation::activateItem('/course/main/details');
             } else {
                 $enrolment_info = $this->course->getEnrolmentInformation($GLOBALS['user']->id);

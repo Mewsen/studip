@@ -16,7 +16,7 @@
 
 class Admin_PluginController extends AuthenticatedController
 {
-    private $plugin_admin;
+    private PluginAdministration $plugin_admin;
 
     /**
      * Common tasks for all actions.
@@ -509,7 +509,8 @@ class Admin_PluginController extends AuthenticatedController
 
     public function unregistered_action()
     {
-        $this->unknown_plugins = $this->plugin_admin->scanPluginDirectory();
+        $plugins = $this->plugin_admin->scanPluginDirectory(true);
+        $this->unknown_plugins = $plugins;
     }
 
     /**
@@ -521,7 +522,7 @@ class Admin_PluginController extends AuthenticatedController
     public function register_action($number)
     {
         CSRFProtection::verifyUnsafeRequest();
-        $unknown_plugins = $this->plugin_admin->scanPluginDirectory();
+        $unknown_plugins = $this->plugin_admin->scanPluginDirectory(true);
         $plugin = $unknown_plugins[$number];
 
         try {

@@ -13,11 +13,19 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
  *
- * @property string page_id       database column
- * @property string id            alias column for user_id
- * @property string last_lifesign computed column read/write
+ * @property int $id alias column for user_id
+ * @property int $version_id database column
+ * @property int $page_id database column
+ * @property string $name database column
+ * @property string $content database column
+ * @property string $user_id database column
+ * @property int $mkdate database column
  *
  * @property WikiPage $page
+ * @property User $user
+ * @property WikiPage|null $predecessor
+ * @property WikiPage|null $successor
+ * @property int|null $versionnumber
  */
 class WikiVersion extends SimpleORMap
 {
@@ -62,5 +70,34 @@ class WikiVersion extends SimpleORMap
             }
         ];
         parent::configure($config);
+    }
+
+    public function isDeletable(?string $user_id = null): bool
+    {
+        if ($user_id === null && User::findCurrent()) {
+            $user_id = User::findCurrent()->id;
+        }
+
+        if (!$user_id) {
+            return false;
+        }
+
+        if ($this->user_id === $user_id) {
+            return true;
+        }
+
+        $permission = $this->page->write_permission;
+        if ($permission === 'all') {
+            $permission = 'tutor';
+        }
+
+        return in_array($permission, ['tutor', 'dozent'])
+            && $GLOBALS['perm']->have_studip_perm(
+                $this->page->write_permission,
+                $this->page->range_id,
+                $user_id
+            );
+
+
     }
 }

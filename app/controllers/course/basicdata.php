@@ -130,12 +130,11 @@ class Course_BasicdataController extends AuthenticatedController
             'locked'  => LockRules::Check($course->id, 'Institut_id')
         ];
 
-        $institute_ids = $course->institutes->pluck('id');
         $this->institutional[] = [
             'title'    => _('beteiligte Einrichtungen'),
             'name'     => 'related_institutes[]',
             'type'     => 'nested-select',
-            'value'    => $institute_ids,
+            'value'    => array_diff($course->institutes->pluck('id'), [$course->institut_id]),
             'choices'  => $this->instituteChoices($institutes),
             'locked'   => LockRules::Check($course->id, 'seminar_inst'),
             'multiple' => true,
@@ -369,7 +368,7 @@ class Course_BasicdataController extends AuthenticatedController
                     _('Veranstaltung kopieren'),
                     $this->url_for(
                          'course/wizard/copy/' . $this->course_id,
-                         ['studip_ticket' => Seminar_Session::get_ticket()]
+                         ['studip_ticket' => get_ticket()]
                     ),
                     Icon::create('seminar')
                 );
@@ -382,7 +381,7 @@ class Course_BasicdataController extends AuthenticatedController
                 _('Sperrebene ändern') . ' (' . ($is_locked ? _('gesperrt') : _('nicht gesperrt')) . ')',
                 $this->url_for(
                     'course/management/lock',
-                    ['studip_ticket' => Seminar_Session::get_ticket()]
+                    ['studip_ticket' => get_ticket()]
                 ),
                 Icon::create('lock-' . ($is_locked ? 'locked' : 'unlocked'))
             )->asDialog('size=auto');
@@ -398,7 +397,7 @@ class Course_BasicdataController extends AuthenticatedController
                     $is_visible ? _('Veranstaltung verstecken') : _('Veranstaltung sichtbar schalten'),
                     $this->url_for(
                         'course/management/change_visibility',
-                        ['studip_ticket' => Seminar_Session::get_ticket()]
+                        ['studip_ticket' => get_ticket()]
                     ),
                     Icon::create('visibility-' . ($is_visible ? 'visible' : 'invisible'))
                 );
@@ -429,7 +428,7 @@ class Course_BasicdataController extends AuthenticatedController
                 _('Veranstaltung löschen'),
                 $this->url_for(
                     'course/archive/confirm',
-                    ['studip_ticket' => Seminar_Session::get_ticket()]
+                    ['studip_ticket' => get_ticket()]
                 ),
                 Icon::create('trash')
             )->asDialog('size=auto');
@@ -488,19 +487,18 @@ class Course_BasicdataController extends AuthenticatedController
                         } else {
                             $invalid_datafields[] = $datafield->getName();
                         }
-                    } else if ($field['name'] == 'related_institutes[]') {
+                    } else if ($field['name'] === 'related_institutes[]') {
                         // only related_institutes supported for now
                         $related_institute_ids = Request::optionArray('related_institutes');
-                        if (is_array($related_institute_ids)) {
-                            $institutes = Institute::findMany($related_institute_ids);
-                            if ($institutes) {
-                                $course->institutes = $institutes;
-                                $changemade = $course->store();
-                            } else {
-                                $this->msg['error'][] = _('Es muss mindestens ein Institut angegeben werden.');
-                            }
-                        } else {
-                            $this->msg['error'][] = _('Es muss mindestens ein Institut angegeben werden.');
+                        $current_institute_ids = $course->institutes->pluck('id');
+                        $current_institute_ids = array_diff($current_institute_ids, [$course->institut_id]);
+
+                        $institutes_changed = count($related_institute_ids) !== count($current_institute_ids)
+                                           || count(array_diff($current_institute_ids, $related_institute_ids)) > 0;
+
+                        if ($institutes_changed) {
+                            $course->institutes = Institute::findMany($related_institute_ids);
+                            $changemade = true;
                         }
                     } else {
                         // format of input element name is "course_xxx"
@@ -612,36 +610,46 @@ class Course_BasicdataController extends AuthenticatedController
 
     public function add_member_action($course_id, $status = 'dozent')
     {
+        if (!$GLOBALS['perm']->have_studip_perm('dozent', $course_id)) {
+            throw new AccessDeniedException();
+        }
+
         // We don't need to check the csrf protection at this point since it
         // is already checked by the multiperson search endpoint
 
         // load MultiPersonSearch object
         $mp = MultiPersonSearch::load("add_member_{$status}{$course_id}");
 
-        switch($status) {
-            case 'tutor' :
-                $func = 'addTutor';
-                break;
-            case 'deputy':
-                $func = 'addDeputy';
-                break;
-            default:
-                $func = 'addTeacher';
-                break;
-        }
+        $course = Course::find($course_id);
+
         $succeeded = [];
-        $failed = [];
+        $failed    = [];
         foreach ($mp->getAddedUsers() as $a) {
-            $result = $this->$func($a, $course_id);
-            if ($result !== false) {
-                $succeeded[] = User::find($a)->getFullName('no_title_rev');
+            $user   = User::find($a);
+            $result = false;
+            if ($status === 'deputy') {
+                $result = Deputy::addDeputy($user->id, $course->id) > 0;
             } else {
-                $failed[] = User::find($a)->getFullName('no_title_rev');
+                try {
+                    $course->addMember(
+                        $user,
+                        $status === 'tutor' ? 'tutor' : 'dozent'
+                    );
+                    $result = true;
+                } catch (\Studip\EnrolmentException $e) {
+                    $result = $e->getMessage();
+                }
+            }
+            if ($result === true) {
+                $succeeded[] = $user->getFullName('no_title_rev');
+            } elseif (is_string($result)) {
+                $failed[] = [$user->getFullName('no_title_rev'), $result];
+            } else {
+                $failed[] = [$user->getFullName('no_title_rev')];
             }
         }
         // Only show the success messagebox once
         if ($succeeded) {
-            $course = Course::find($course_id);
             $status_title = get_title_for_status($status, count($succeeded), $course->status);
             if (count($succeeded) > 1) {
                 $messagetext = sprintf(
@@ -664,9 +672,17 @@ class Course_BasicdataController extends AuthenticatedController
 
         // only show an error messagebox once with list of errors!
         if ($failed) {
+            $messages = [];
+            foreach ($failed as $fail) {
+                if (is_array($fail)) {
+                    $messages[] = sprintf('%s: %s', $fail[0], $fail[1]);
+                } else {
+                    $messages[] = $fail;
+                }
+            }
             PageLayout::postError(
                 _('Bei den folgenden Nutzer/-innen ist ein Fehler aufgetreten') ,
-                array_map('htmlReady', $failed)
+                array_map('htmlReady', $messages)
             );
         }
         $this->flash['open'] = 'bd_personal';

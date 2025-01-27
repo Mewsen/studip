@@ -20,7 +20,6 @@ $.fn.extend({
     },
     // Returns the currently selected text
     getSelection: function() {
-        var that = this[0];
         if (document.selection) {
             return document.selection.createRange().text;
         }

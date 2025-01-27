@@ -46,7 +46,7 @@
                         data-sort="false"
                         :aria-label="$gettext('Ordner und Dateien auswählen')">
                         <studip-proxy-checkbox
-                            v-model="selectedIds"
+                            v-model:selected="selectedIds"
                             :total="allIds"
                             :title="$gettext('Alle Ordner und Dateien auswählen')"
                         ></studip-proxy-checkbox>
@@ -132,7 +132,7 @@
                     >
                         <a href="#"
                            @click.prevent
-                           :title="$gettextInterpolate($gettext('Nach %{ colName } sortieren'), {colName: name}, true)">
+                           :title="$gettext('Nach %{ colName } sortieren', {colName: name}, true)">
                             {{name}}
                         </a>
                     </th>
@@ -149,7 +149,7 @@
             <tbody v-else-if="displayedFolders.length + displayedFiles.length === 0">
                 <tr class="empty">
                     <td :colspan="numberOfColumns">
-                        <translate>Keine Ordner oder Dateien entsprechen Ihrem Filter.</translate>
+                        {{ $gettext('Keine Ordner oder Dateien entsprechen Ihrem Filter.') }}
                     </td>
                 </tr>
             </tbody>
@@ -162,22 +162,22 @@
                         <studip-proxied-checkbox
                             name="ids[]"
                             :value="folder.id"
-                            v-model="selectedIds"
+                            v-model:selected="selectedIds"
                             :aria-label="getAriaLabelForFolder(folder)"
                         ></studip-proxied-checkbox>
                     </td>
                     <td class="document-icon">
                         <a :href="folder.url"
                            :id="`folder-${folder.id}`"
-                           :title="$gettextInterpolate($gettext('Ordner %{foldername} öffnen'),
-                           { foldername: folder.name}, true)">
+                           :title="$gettext('Ordner %{foldername} öffnen', { foldername: folder.name}, true)"
+                        >
                             <studip-icon :shape="folder.icon" :size="26" class="text-bottom" alt=""></studip-icon>
                         </a>
                     </td>
                     <td :class="{'filter-match': valueMatchesFilter(folder.name)}">
                         <a :href="folder.url"
-                           :title="$gettextInterpolate($gettext('Ordner %{foldername} öffnen'),
-                           { foldername: folder.name}, true)">
+                           :title="$gettext('Ordner %{foldername} öffnen', { foldername: folder.name}, true)"
+                        >
                             <span v-html="highlightString(folder.name)"></span>
                         </a>
                     </td>
@@ -202,7 +202,7 @@
                             class="responsive-hidden"
                             v-html="folder.additionalColumns[index].html"
                             :key="index"></td>
-                        <td v-else class="responsive-hidden" :key="index"></td>
+                        <td v-else class="responsive-hidden" :key="`empty-${index}`"></td>
                     </template>
                     <td class="actions" v-html="folder.actions">
                     </td>
@@ -219,7 +219,7 @@
                         <studip-proxied-checkbox
                             name="ids[]"
                             :value="file.id"
-                            v-model="selectedIds"
+                            v-model:selected="selectedIds"
                             :aria-label="getAriaLabelForFile(file)"
                         ></studip-proxied-checkbox>
                     </td>
@@ -227,8 +227,8 @@
                         <a v-if="file.download_url"
                            :href="file.download_url"
                            target="_blank" rel="noopener noreferrer"
-                           :title="$gettextInterpolate($gettext('Datei %{filename} herunterladen'),
-                            { filename: file.name }, true)">
+                           :title="$gettext('Datei %{filename} herunterladen', { filename: file.name }, true)"
+                        >
                             <studip-icon :shape="file.icon" :size="24" class="text-bottom"></studip-icon>
                         </a>
                         <studip-icon v-else :shape="file.icon" :size="24"></studip-icon>
@@ -237,15 +237,15 @@
                            v-if="file.download_url && file.mime_type.indexOf('image/') === 0"
                            class="lightbox-image"
                            data-lightbox="gallery"
-                           :title="$gettextInterpolate($gettext('Datei %{filename} anzeigen'),
-                            { filename: file.name }, true)"></a>
+                           :title="$gettext('Datei %{filename} anzeigen', { filename: file.name }, true)"
+                        ></a>
                     </td>
                     <td :class="{'filter-match': valueMatchesFilter(file.name)}">
                         <a :href="file.details_url"
                            data-dialog
                            :id="`file-${file.id}`"
-                           :title="$gettextInterpolate($gettext('Details zur Datei %{filename} anzeigen'),
-                            { filename: file.name }, true)">
+                           :title="$gettext('Details zur Datei %{filename} anzeigen', { filename: file.name }, true)"
+                        >
                             <span v-html="highlightString(file.name)"></span>
                             <studip-icon v-if="file.isAccessible"
                                          shape="accessibility"
@@ -283,7 +283,7 @@
                             class="responsive-hidden"
                             v-html="file.additionalColumns[index].html"
                             :key="index"></td>
-                        <td v-else class="responsive-hidden" :key="index"></td>
+                        <td v-else class="responsive-hidden" :key="`empty-${index}`"></td>
                     </template>
                     <td class="actions" v-html="file.actions">
                     </td>
@@ -307,9 +307,9 @@
             </tfoot>
         </table>
 
-        <MountingPortal v-if="allow_filter" mount-to="#table-view-filter .sidebar-widget-content div" name="sidebar-content-toggle">
+        <Teleport v-if="allow_filter" to="#table-view-filter .sidebar-widget-content div" name="sidebar-content-toggle">
             <input :placeholder="$gettext('Name oder Autor/in')" type="search" v-model="filter" :disabled="!hasData" />
-        </MountingPortal>
+        </Teleport>
     </div>
 </template>
 <script>
@@ -402,7 +402,7 @@ export default {
             }
 
             // Determine whether the sorted array items have the key to sort by
-            const arrayHasKey = Object.keys(array.find(item => true)).includes(this.sortedBy);
+            const arrayHasKey = Object.keys(array.find(() => true)).includes(this.sortedBy);
 
             // Define sort direction by this factor
             const directionFactor = this.sortDirection === "asc" ? 1 : -1;
@@ -459,15 +459,15 @@ export default {
             return highlighted;
         },
         getAriaLabelForFolder(folder) {
-            return this.$gettextInterpolate(
-                this.$gettext('Ordner %{name} auswählen'),
-                {name: folder.name}
+            return this.$gettext(
+                'Ordner %{name} auswählen',
+                { name: folder.name }
             );
         },
         getAriaLabelForFile(file) {
-            return this.$gettextInterpolate(
-                this.$gettext('Datei %{name} auswählen'),
-                {name: file.name}
+            return this.$gettext(
+                'Datei %{name} auswählen',
+                { name: file.name }
             );
         },
         getAriaSortString(column) {
@@ -479,10 +479,9 @@ export default {
             if (column !== this.sortedBy) {
                 return null;
             }
-            const template = this.sortDirection === 'asc'
-                ? this.$gettext('Es wird aufsteigend nach der Spalte %{ label } sortiert.')
-                : this.$gettext('Es wird absteigend nach der Spalte %{ label } sortiert.');
-            return this.$gettextInterpolate(template, { label });
+            return this.sortDirection === 'asc'
+                ? this.$gettext('Es wird aufsteigend nach der Spalte %{ label } sortiert.', { label })
+                : this.$gettext('Es wird absteigend nach der Spalte %{ label } sortiert.', { label });
         }
     },
     computed: {
@@ -535,23 +534,26 @@ export default {
         this.selectedIds = [];
     },
     watch: {
-        selectedIds (current) {
-            const activated = current.length > 0;
-            if (this.$refs.buttons) {
-                this.$nextTick(() => { // needs to be wrapped since we check the dom
-                    this.$refs.buttons.querySelectorAll('.multibuttons .button').forEach(element => {
-                        let condition = element.dataset.activatesCondition;
-                        if (!condition || !activated) {
-                            element.disabled = !activated;
-                        } else {
-                            condition = condition.replace(/:has\((.*?)\)/g, ' $1');
-                            condition = condition.replace(':checkbox', 'input[type="checkbox"]');
+        selectedIds: {
+            handler(current) {
+                const activated = current.length > 0;
+                if (this.$refs.buttons) {
+                    this.$nextTick(() => { // needs to be wrapped since we check the dom
+                        this.$refs.buttons.querySelectorAll('.multibuttons .button').forEach(element => {
+                            let condition = element.dataset.activatesCondition;
+                            if (!condition || !activated) {
+                                element.disabled = !activated;
+                            } else {
+                                condition = condition.replace(/:has\((.*?)\)/g, ' $1');
+                                condition = condition.replace(':checkbox', 'input[type="checkbox"]');
 
-                            element.disabled = this.$el.querySelector(condition) === null;
-                        }
+                                element.disabled = this.$el.querySelector(condition) === null;
+                            }
+                        });
                     });
-                });
-            }
+                }
+            },
+            deep: true,
         },
     }
 }

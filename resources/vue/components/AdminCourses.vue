@@ -34,7 +34,7 @@
                     <th v-for="activeField in sortedActivatedFields" :key="`field-${activeField}`" :class="sort.by === activeField ? 'sort' + sort.direction.toLowerCase() : ''">
                         <a href="#"
                            @click.prevent="changeSort(activeField)"
-                           :title="sort.by === activeField && sort.direction === 'ASC' ? $gettextInterpolate('Sortiert aufsteigend nach %{field}', {field: fields[activeField]}, true) : (sort.by === activeField && sort.direction === 'DESC' ? $gettextInterpolate('Sortiert absteigend nach %{ field } ', { field: fields[activeField]}, true) : $gettextInterpolate('Sortieren nach %{ field }', { field: fields[activeField]}, true))"
+                           :title="sort.by === activeField && sort.direction === 'ASC' ? $gettext('Sortiert aufsteigend nach %{field}', {field: fields[activeField]}, true) : (sort.by === activeField && sort.direction === 'DESC' ? $gettext('Sortiert absteigend nach %{ field } ', { field: fields[activeField]}, true) : $gettext('Sortieren nach %{ field }', { field: fields[activeField]}, true))"
                            v-if="!unsortableFields.includes(activeField)"
                         >
                             {{ fields[activeField] }}
@@ -72,8 +72,8 @@
                            @click.prevent="toggleOpenChildren(course.id)"
                            href="">
                             <studip-icon :shape="open_children.indexOf(course.id) === -1 ? 'add' : 'remove'" class="text-bottom"></studip-icon>
-                            {{ $gettextInterpolate(
-                                $gettext('%{ n } Unterveranstaltungen'),
+                            {{ $gettext(
+                                '%{ n } Unterveranstaltungen',
                                 { n: getChildren(course).length }
                             ) }}
                         </a>
@@ -89,8 +89,8 @@
                 <tr v-if="coursesCount > 0 && sortedCourses.length === 0">
                     <td :colspan="colspan">
                         {{
-                            $gettextInterpolate(
-                                $gettext(`%{ n } Veranstaltungen entsprechen Ihrem Filter. Schränken Sie nach Möglichkeit die Filter weiter ein.`),
+                            $gettext(
+                                '%{ n } Veranstaltungen entsprechen Ihrem Filter. Schränken Sie nach Möglichkeit die Filter weiter ein.',
                                 { n: coursesCount }
                             )
                         }}
@@ -161,7 +161,7 @@ export default {
 
         this.contentWidth = Math.max(...iconCounts) * 26;
     },
-    destroyed() {
+    unmounted() {
         this.globalOff('AdminCourses/changeActionArea', this.changeActionArea.bind(this));
         this.globalOff('AdminCourses/changeFilter', this.changeFilter.bind(this));
         this.globalOff('AdminCourses/loadCourse', this.loadCourse.bind(this));
@@ -325,38 +325,3 @@ export default {
     },
 };
 </script>
-<style lang="scss">
-@import '../../assets/stylesheets/mixins.scss';
-
-.course-admin {
-    .course-completion {
-        @include hide-text();
-        @include square(16px);
-        background-repeat: no-repeat;
-        display: block;
-    }
-
-    th .course-completion {
-        @include background-icon(radiobutton-checked, clickable);
-    }
-
-    td .course-completion {
-        @include background-icon(span-empty, status-red);
-
-        &[data-course-completion="1"] {
-            @include background-icon(span-2quarter, status-yellow);
-        }
-        &[data-course-completion="2"] {
-            @include background-icon(span-full, status-green);
-        }
-
-        &.ajaxing {
-            background-image: url("#{$image-path}/loading-indicator.svg");
-        }
-    }
-    > tbody.loading > tr > td {
-        opacity: 0.5;
-    }
-}
-
-</style>

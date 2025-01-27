@@ -10,7 +10,8 @@ STUDIP.domReady(function () {
     });
 
     jQuery('.clipboard-area').droppable({
-        drop: STUDIP.Clipboard.handleItemDrop
+        drop: STUDIP.Clipboard.handleItemDrop,
+        tolerance: 'pointer'
     });
 
     jQuery(document).on('click', '.clipboard-edit-button, .clipboard-edit-cancel', function (event) {
@@ -36,7 +37,7 @@ STUDIP.domReady(function () {
         STUDIP.Clipboard.switchClipboard(event);
     });
 
-    jQuery(document).on('dragend', '.clipboard-draggable-item', function (event) {
+    jQuery(document).on('dragend', '.clipboard-draggable-item', function () {
         jQuery(this).css({
             'top': '0px', 'left': '0px'
         });

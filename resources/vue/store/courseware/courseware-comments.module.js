@@ -63,7 +63,7 @@ export const actions = {
         commit('setUnitFilter', id);
     },
     // other actions
-    async loadTeacherStatus({ dispatch, rootGetters, state, commit, getters }, userId) {
+    async loadTeacherStatus({ dispatch, rootGetters, state, commit }, userId) {
         const user = rootGetters['users/byId']({ id: userId });
 
         if (user.attributes.permission === 'root') {
@@ -91,7 +91,7 @@ export const actions = {
         const membershipId = `${state.context.id}_${userId}`;
         try {
             await dispatch('course-memberships/loadById', { id: membershipId });
-        } catch (error) {
+        } catch {
             console.error(`Could not find course membership for ${membershipId}.`);
             commit('setUserIsTeacher', false);
 

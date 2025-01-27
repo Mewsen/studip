@@ -34,7 +34,7 @@ class MediaProxyController extends StudipController
         $config = Config::GetInstance();
         $modified_since = NULL;
 
-        if (!Seminar_Session::is_current_session_authenticated() ||
+        if (!sess()->isCurrentSessionAuthenticated() ||
             $config->getValue('LOAD_EXTERNAL_MEDIA') != 'proxy') {
             throw new AccessDeniedException();
         }

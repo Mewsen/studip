@@ -12,7 +12,7 @@
             <ActiveFilter
                 v-for="color in selectedColors"
                 :key="color.hex"
-                :name="$gettextInterpolate($gettext('Farbe %{color}'), { color: color.name })"
+                :name="$gettext('Farbe %{color}', { color: color.name })"
                 @remove="onRemoveColorFilter(color)"
             >
                 <label>
@@ -65,9 +65,10 @@
 import ActiveFilter from '../ActiveFilter.vue';
 import SearchWithFilter from '../SearchWithFilter.vue';
 import { colors as selectableColors } from './colors.js';
-import { orientations, similarColors } from './filters.js';
+import { orientations } from './filters.js';
 
 export default {
+    emits: ['search', 'update-active-filters'],
     props: {
         activeFilters: {
             type: Object,
@@ -131,7 +132,7 @@ export default {
         activeFilters() {
             this.resetLocalFilters();
         },
-        orientation(newVal, oldVal) {
+        orientation() {
             this.updateActiveFilters();
         },
     },

@@ -23,7 +23,7 @@ $buttonLabels = [
 
 <div style="text-align: center; margin-bottom: 20px;">
     <?= $headings[$options['copymode']] ?>
-    <?= Icon::create('folder-full', Icon::ROLE_INFO)->asImg(20, ['class' => 'text-bottom']) ?>
+    <?= Icon::create('folder-full', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom']) ?>
     <?= htmlReady($top_folder_name) ?>
 </div>
 

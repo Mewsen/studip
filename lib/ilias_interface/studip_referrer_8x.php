@@ -107,6 +107,10 @@ if(file_exists("./ilias.ini.php")){
         case 'exc':
             $base_url = "ilias.php?baseClass=ilExerciseHandlerGUI";
             break;
+        case 'cat':
+        case 'crs':
+            $base_url= "ilias.php?baseClass=ilrepositorygui&cmd=edit";
+            break;
         case 'webr':
             $base_url = "ilias.php?baseClass=ilLinkResourceHandlerGUI";
             break;
@@ -115,7 +119,8 @@ if(file_exists("./ilias.ini.php")){
     }
     if ($base_url)
     {
-        $base_url .= "&ref_id=".(int)$_GET['ref_id'];
+        $ref_id = array_key_exists('ref_id', $_GET) ? $_GET['ref_id'] : '';
+        $base_url .= "&ref_id=".(int)$ref_id;
         $token_repository = new ilCtrlTokenRepository();
         $token = $token_repository->getToken();
         $base_url .= '&' . ilCtrlInterface::PARAM_CSRF_TOKEN . '=' . $token->getToken();

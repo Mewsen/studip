@@ -111,6 +111,19 @@ class StudipAutoloader
     }
 
     /**
+     * Returns whether the autoloader has the given path and prefix already stored.
+     */
+    public static function hasAutoloadPath(string $path, string $prefix = ''): bool
+    {
+        $path = self::sanitizePath($path);
+        if ($prefix) {
+            $prefix = rtrim($prefix, '\\') . '\\';
+        }
+
+        return collect(self::$autoload_paths)->contains(compact('path', 'prefix'));
+    }
+
+    /**
      * Removes a path from the list of paths.
      *
      * @param string $path   the path to remove

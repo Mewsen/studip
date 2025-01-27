@@ -11,11 +11,13 @@ STUDIP.Tooltip.threshold = 6;
 $(document).on('mouseenter mouseleave focusin focusout', '[data-tooltip],.tooltip:has(.tooltip-content)', function(event) {
     let data = $(this).data();
 
+    const inTopBar = $(this).parents('#top-bar').length > 0;
     const visible = ['mouseenter', 'focusin'].includes(event.type);
     const offset = $(this).offset();
     const x = offset.left + $(this).outerWidth(true) / 2;
-    const y = offset.top;
+    const y = inTopBar ? offset.top + 160 : offset.top;
     const delay = data.tooltipDelay ?? 300;
+    const tooltipClasses = inTopBar ? 'studip-tooltip studip-tooltip-top' : '';
 
     let content;
     let tooltip;
@@ -38,7 +40,7 @@ $(document).on('mouseenter mouseleave focusin focusout', '[data-tooltip],.toolti
         $(this).attr('title', null);
         $(this).attr('data-tooltip', content);
 
-        tooltip = new STUDIP.Tooltip(x, y, content);
+        tooltip = new STUDIP.Tooltip(x, y, content, tooltipClasses);
 
         data.tooltipObject = tooltip;
 

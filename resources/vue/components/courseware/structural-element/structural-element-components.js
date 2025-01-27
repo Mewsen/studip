@@ -1,6 +1,6 @@
 import CoursewareToolbar from './../toolbar/CoursewareToolbar.vue';
 // contentbar
-import CoursewareRibbon from './CoursewareRibbon.vue';
+import ContentBar from "../../ContentBar.vue";
 import CoursewareTabs from '../layouts/CoursewareTabs.vue';
 import CoursewareTab from '../layouts/CoursewareTab.vue';
 import { FocusTrap } from 'focus-trap-vue';
@@ -16,7 +16,7 @@ import CoursewareTabsContainer from '../containers/CoursewareTabsContainer.vue';
 const StructuralElementComponents = {
     CoursewareToolbar,
     //contentbar
-    CoursewareRibbon,
+    ContentBar,
     CoursewareTabs,
     CoursewareTab,
     FocusTrap,

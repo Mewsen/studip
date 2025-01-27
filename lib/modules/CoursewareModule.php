@@ -52,7 +52,7 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModuleE
 
         $navigation = new Navigation(
             _('Courseware'),
-            URLHelper::getURL('dispatch.php/course/courseware/?cid='.$courseId)
+            URLHelper::getURL('dispatch.php/course/courseware/?cid=' . $courseId)
         );
         $navigation->setImage(Icon::create('courseware', Icon::ROLE_INFO_ALT));
         $navigation->addSubNavigation(
@@ -109,21 +109,19 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModuleE
         $new = $statement->fetchColumn();
 
         $nav = new Navigation(_('Courseware'), 'dispatch.php/course/courseware');
-        $nav->setImage(Icon::create('courseware', Icon::ROLE_CLICKABLE, [
-            'title' => _('Courseware'),
-        ]));
+        $nav->setImage(Icon::create('courseware'));
+        $nav->setLinkAttributes(['title' => _('Courseware')]);
 
         if ($new > 0) {
             if ($new === 1) {
-                $text =  _('neue Seite');
+                $text = _('neue Seite');
 
             } else {
-                $text =  _('neue Seiten');
+                $text = _('neue Seiten');
             }
-            $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION, [
-                'title' => $new . ' ' . $text,
-            ]));
-            $nav->setBadgeNumber("$new");
+            $nav->setImage(Icon::create('courseware', Icon::ROLE_ATTENTION));
+            $nav->setLinkAttributes(['title' => $new . ' ' . $text]);
+            $nav->setBadgeNumber($new);
         }
 
         return $nav;
@@ -189,25 +187,21 @@ class CoursewareModule extends CorePlugin implements SystemPlugin, StudipModuleE
     public function getMetadata()
     {
         return [
-            'summary' => _('Lerninhalte erstellen, verteilen und erleben'),
-            'description' => _('Mit Courseware können Sie interaktive, multimediale Lerninhalte erstellen und nutzen. '
-                             . 'Die Lerninhalte lassen sich hierarchisch unterteilen und können aus Texten, '
-                             . 'Videosequenzen, Aufgaben, Kommunikationselementen und einer Vielzahl weiterer '
-                             . 'Elemente bestehen. Fertige Lerninhalte können exportiert und in andere Kurse oder '
-                             . 'andere Installationen importiert werden. Courseware ist nicht nur für digitale '
-                             . 'Formate geeignet, sondern kann auch genutzt werden, um klassische '
-                             . 'Präsenzveranstaltungen mit Online-Anteilen zu ergänzen. Formate wie integriertes '
-                             . 'Lernen (Blended Learning) lassen sich mit Courseware ideal umsetzen. Kollaboratives '
-                             . 'Lernen kann dank Schreibrechtevergabe und dem Einsatz von Courseware in '
-                             . 'Studiengruppen realisiert werden.'),
+            'summary' => _('Lernmaterialien erstellen, verteilen und erleben'),
+            'description' => _('Mit Courseware können Sie interaktive, multimediale Lernmaterialien erstellen und nutzen. Diese Materialien lassen sich hierarchisch strukturieren und können aus Texten, Videos, Aufgaben, Kommunikationselementen sowie einer Vielzahl weiterer Bausteine bestehen. Fertige Lernmaterialien können exportiert und in andere Kurse oder Installationen importiert werden. Courseware eignet sich nicht nur für digitale Formate, sondern auch, um klassische Präsenzveranstaltungen durch Online-Anteile zu ergänzen. Formate wie integriertes Lernen (Blended Learning) lassen sich mit Courseware optimal umsetzen. Darüber hinaus ermöglicht Courseware E-Portfolio-Arbeiten, bei denen Lernende ihre Ergebnisse dokumentieren können, sowie Peer-Reviews zur kollaborativen Bewertung. Kollaboratives Lernen wird durch die Vergabe von Schreibrechten und den Einsatz von Courseware in Studiengruppen unterstützt.'),
             'displayname' => _('Courseware'),
             'category' => _('Lehr- und Lernorganisation'),
             'icon' => Icon::create('courseware', 'info'),
-            'icon_clickable' => Icon::create('courseware', Icon::ROLE_CLICKABLE),
+            'icon_clickable' => Icon::create('courseware'),
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Courseware',
                 'pictures' => [
-                    0 => ['source' => 'preview.png', 'title' => _('Überssichtsseite der Courseware')],
+                    0 => ['source' => 'Uebersicht_Lernmaterialien.jpg', 'title' => _('Übersicht Lernmaterialien')],
+                    1 => ['source' => 'Lernmaterial_Inhalt.jpg', 'title' => _('Lernmaterial Inhalt')],
+                    2 => ['source' => 'Lernmaterial_Inhaltsverzeichnis.jpg', 'title' => _('Inhaltsverzeichnis')],
+                    3 => ['source' => 'Inhalt_bearbeiten.jpg', 'title' => _('Inhalt bearbeiten')],
+                    4 => ['source' => 'Einstellung_Rechte_und_Sichtbarkeit.jpg', 'title' => _('Rechte und Sichtbarkeit')],
+                    5 => ['source' => 'Courseware_Aufgabe_mit_Peer_Review.jpg', 'title' => _('Courseware Aufgabe mit Peer-Review')]
                 ],
             ],
         ];

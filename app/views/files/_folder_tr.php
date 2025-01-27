@@ -31,7 +31,7 @@ if ($folder->isReadable($GLOBALS['user']->id)) {
     </td>
     <td class="document-icon" data-sort-value="<?=crc32(get_class($folder))?>">
         <a href="<?= $controller->link_for($controllerpath . '/' . $folder->getId())  ?>">
-            <?= $folder->getIcon('clickable')->asImg(26) ?>
+            <?= $folder->getIcon('clickable')->asImg(Icon::SIZE_FILES_TABLE) ?>
         </a>
     </td>
     <td>
@@ -71,14 +71,14 @@ if ($folder->isReadable($GLOBALS['user']->id)) {
         $actionMenu->addLink(
             $controller->url_for('file/details/' . $folder->getId()),
             _('Info'),
-            Icon::create('info-circle', 'clickable', ['size' => 20]),
+            Icon::create('info-circle'),
             ['data-dialog' => '1']
         );
         if ($folder->isEditable($GLOBALS['user']->id)) {
             $actionMenu->addLink(
                 $controller->url_for('file/edit_folder/' . $folder->getId()),
                 _('Ordner bearbeiten'),
-                Icon::create('edit', 'clickable', ['size' => 20]),
+                Icon::create('edit'),
                 ['data-dialog' => '1']
             );
         }
@@ -86,34 +86,34 @@ if ($folder->isReadable($GLOBALS['user']->id)) {
             $actionMenu->addLink(
                 $controller->url_for('file/download_folder/' . $folder->getId()),
                 _('Ordner herunterladen'),
-                Icon::create('download', 'clickable', ['size' => 20])
+                Icon::create('download')
             );
         }
         if ($folder->isEditable($GLOBALS['user']->id)) {
            $actionMenu->addLink(
                $controller->url_for('file/choose_destination/move/' . $folder->getId(), ['isfolder' => 1]),
                 _('Ordner verschieben'),
-                Icon::create('arr_1right', 'clickable', ['size' => 20]),
+                Icon::create('arr_1right'),
                 ['data-dialog' => 'size=auto']
             );
             $actionMenu->addLink(
                 $controller->url_for('file/choose_destination/copy/' . $folder->getId(), ['isfolder' => 1]),
                 _('Ordner kopieren'),
-                Icon::create('clipboard', 'clickable', ['size' => 20]),
+                Icon::create('clipboard'),
                 ['data-dialog' => 'size=auto']
             );
             if (Feedback::isActivated() && Feedback::hasCreatePerm($course->id)) {
                 $actionMenu->addLink(
                     $controller->url_for('course/feedback/create_form/' . $folder->getId() . '/Folder'),
                     _('Neues Feedback-Element'),
-                    Icon::create('star', Icon::ROLE_CLICKABLE, ['size' => 20]),
+                    Icon::create('star'),
                     ['data-dialog' => '1']
                 );
             }
             $actionMenu->addLink(
                 $controller->url_for('file/delete_folder/' . $folder->getId()),
                 _('Ordner löschen'),
-                Icon::create('trash', 'clickable', ['size' => 20]),
+                Icon::create('trash'),
                 ['onclick' => "return STUDIP.Dialog.confirmAsPost('" . sprintf(_('Soll der Ordner "%s" wirklich gelöscht werden?'), jsReady($folder->name)) . "', this.href);"]
             );
         }

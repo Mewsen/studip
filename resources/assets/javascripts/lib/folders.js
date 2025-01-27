@@ -44,7 +44,7 @@ const Folders = {
         }
     },
 
-    updateFolderListEntry: function(folder_id, html, delay) {
+    updateFolderListEntry: function(folder_id, html) {
         //updates the folder entry in the folder list
         var documents_table = jQuery('.documents[data-folder_id]');
 

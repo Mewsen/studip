@@ -3,11 +3,8 @@
  * @var WikiPage $page
  * @var Course_WikiController $controller
  * @var WikiOnlineEditingUser $me_online
- * @var ContentBar $contentbar
  */
 ?>
-
-<?= $contentbar ?>
 
 <?= Studip\VueApp::create('WikiEditor')
     ->withProps([
@@ -18,5 +15,6 @@
         'page-id'      => (int) $page->id,
         'save-url'     => $controller->saveURL($page),
         'users'        => $page->getOnlineUsers(),
+        'toc'          => CoreWiki::getTOC($page),
     ])
 ?>

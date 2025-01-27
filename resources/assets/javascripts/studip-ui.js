@@ -7,6 +7,7 @@ import RestrictedDatesHelper from './lib/RestrictedDatesHelper';
  */
 
 (function ($, STUDIP) {
+    'use strict';
 
     $.widget( "ui.dialog", $.ui.dialog, {
         _allowInteraction: function( event ) {
@@ -49,8 +50,6 @@ import RestrictedDatesHelper from './lib/RestrictedDatesHelper';
      * @license GPL2 or any later version
      * @since   Stud.IP 3.4
      */
-
-    'use strict';
 
     // Exit if datepicker is undefined (which it should never be)
     if ($.datepicker === undefined) {
@@ -348,12 +347,11 @@ import RestrictedDatesHelper from './lib/RestrictedDatesHelper';
         // picker is shown as well as after a date has been selected.
         refresh() {
             $(this.selector).each(function () {
-                var element = this,
-                    options = $(element).data().timePicker;
+                const options = $(this).data().timePicker;
                 if (options) {
-                    $.each(options, function (key, value) {
+                    $.each(options, (key, value) => {
                         if (STUDIP.UI.Timepicker.dataHandlers[key] !== undefined) {
-                            STUDIP.UI.Timepicker.dataHandlers[key].call(element, value);
+                            STUDIP.UI.Timepicker.dataHandlers[key].call(this, value);
                         }
                     });
                 }
@@ -401,7 +399,7 @@ import RestrictedDatesHelper from './lib/RestrictedDatesHelper';
 
             // Get max time by either actual times
             $(selector).each(function () {
-                var time = this.value;
+                const time = this.value;
                 if (time && (!max_time || time < max_time)) {
                     max_time = time;
                 }
@@ -451,7 +449,7 @@ import RestrictedDatesHelper from './lib/RestrictedDatesHelper';
 
             // Get min time by either actual times
             $(selector).each(function () {
-                var time = this.value;
+                const time = this.value;
                 if (time && (!min_time || time > min_time)) {
                     min_time = time;
                 }
@@ -533,7 +531,7 @@ import RestrictedDatesHelper from './lib/RestrictedDatesHelper';
                 button.style.zIndex = input.style.zIndex;
             }
         },
-        onClose (date, inst) {
+        onClose () {
             $(this).one('click.picker', function () {
                 $(this).datepicker('show');
             }).on('blur', function () {

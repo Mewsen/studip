@@ -17,14 +17,14 @@ STUDIP.ready(() => {
     }
 
     // Listen for fullscreen exit, ending focus mode with it.
-    document.addEventListener('fullscreenchange', event => {
+    document.addEventListener('fullscreenchange', () => {
         if (!document.fullscreenElement) {
             STUDIP.Fullscreen.deactivate();
         }
     });
 
     // Fullscreen exit on Safari
-    document.addEventListener('webkitfullscreenchange', event => {
+    document.addEventListener('webkitfullscreenchange', () => {
         if (!document.webkitFullscreenElement) {
             STUDIP.Fullscreen.deactivate();
         }

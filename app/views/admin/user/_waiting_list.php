@@ -32,12 +32,12 @@
                     <? foreach ($memberships as $membership): ?>
                         <tr>
                             <td>
-                                <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $membership->course->id]) ?>">
+                                <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['to' => $membership->course->id]) ?>">
                                     <?= htmlReady($membership->course->veranstaltungsnummer) ?>
                                 </a>
                             </td>
                             <td>
-                                <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $membership->course->id]) ?>">
+                                <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['to' => $membership->course->id]) ?>">
                                     <?= sprintf('%s (%s)', htmlReady($membership->course->getFullName('type-name')), htmlReady($membership->course->getFullName('sem-duration-name'))) ?>
                                 </a>
                             </td>

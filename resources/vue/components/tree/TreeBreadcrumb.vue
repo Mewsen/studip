@@ -10,7 +10,7 @@
                     <a :href="nodeUrl(ancestor.classname + '_' + ancestor.id)" :ref="ancestor.id"
                        @click.prevent="openNode(ancestor.id, ancestor.classname)" tabindex="0"
                        :id="'tree-breadcrumb-' + ancestor.id"
-                       :title="$gettextInterpolate($gettext('%{ node } öffnen'), { node: ancestor.name}, true)">
+                       :title="$gettext('%{ node } öffnen', { node: ancestor.name}, true)">
                         {{ ancestor.name }}
                     </a>
                     <template v-if="index !== node.attributes.ancestors.length - 1">
@@ -40,7 +40,7 @@
             </div>
             <button v-if="assignable" type="submit" class="assign-button"
                     :title="$gettext('Diesen Eintrag zuweisen')">
-                <studip-icon shape="arr_2right" :size="20"></studip-icon>
+                <studip-icon shape="arr_2right"></studip-icon>
             </button>
             <studip-action-menu v-if="editable" :items="actionMenuItems()"
                                 @add-tree-node="addNode" @edit-tree-node="editNode" @delete-tree-node="deleteNode"/>
@@ -157,7 +157,9 @@ export default {
             STUDIP.Dialog.fromURL(this.editUrl + '/' + node.id, { data: { from: this.nodeUrl(node.id) }});
         },
         deleteNode(node) {
-            let text = this.$gettext('Sind sie sicher, dass der Eintrag "%{ node }" gelöscht werden soll?');
+            let text = this.$gettext(
+                'Sind sie sicher, dass der Eintrag "%{ node }" gelöscht werden soll?',
+            );
             let context = {
                 node: node.attributes.name
             };

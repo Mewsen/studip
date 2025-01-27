@@ -83,7 +83,7 @@
                 <label>
                     {{ $gettext('Farbe') }}
                     <studip-select v-model="color" :options="colors" :reduce="(color) => color.class" label="class" name="color">
-                        <template #open-indicator="selectAttributes">
+                        <template #open-indicator="{ selectAttributes }">
                             <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10" /></span>
                         </template>
                         <template #no-options>
@@ -345,9 +345,10 @@ export default {
             await this.loadStructuralElementById({ id: newCreated.id });
             const newElement = this.structuralElementById({ id: newCreated.id });
             this.companionSuccess({
-                info: this.$gettextInterpolate(this.$gettext('Die Seite %{ pageTitle } wurde erfolgreich angelegt.'), {
-                    pageTitle: newElement.attributes.title,
-                }),
+                info: this.$gettext(
+                    'Die Seite %{ pageTitle } wurde erfolgreich angelegt.',
+                    { pageTitle: newElement.attributes.title }
+                ),
             });
 
             if (file && this.uploadFileError === '') {
@@ -384,7 +385,7 @@ export default {
                 slot.valid = true;
             }
         },
-        templatePurpose(newPurpose) {
+        templatePurpose() {
             this.selectedTemplate = null;
         },
     },

@@ -128,7 +128,49 @@ class Helper
         if (!$semester_id) {
             $semester_id = \Semester::findCurrent()?->id ?? '';
         }
-        $calendar_settings = \User::findCurrent()->getConfiguration()->CALENDAR_SETTINGS ?? [];
+        $schedule_settings = \UserConfig::get(\User::findCurrent()->id)->getValue('SCHEDULE_SETTINGS') ?? [];
+        $slot_duration = '00:30:00';
+        if (!empty($schedule_settings['size']) && in_array($schedule_settings['size'], ['small', 'large'])) {
+            if ($schedule_settings['size'] === 'small') {
+                $slot_duration = '01:00:00';
+            } elseif ($schedule_settings['size'] === 'large') {
+                $slot_duration = '00:15:00';
+            }
+        }
+
+        //Determine the value of the hiddenDays config.
+        //In case no visible days are set, default to hide Saturday and Sunday.
+        $hidden_days = [6, 7];
+        if (!empty($schedule_settings['visible_days'])) {
+            $hidden_days = [1, 2, 3, 4, 5, 6, 7];
+            $hidden_days = array_diff(
+                $hidden_days,
+                $schedule_settings['visible_days']
+            );
+        }
+
+        $fullcalendar_hidden_days = [];
+        foreach ($hidden_days as $day) {
+            if ($day === 7) {
+                $fullcalendar_hidden_days[] = 0;
+            } else {
+                $fullcalendar_hidden_days[] = $day;
+            }
+        }
+
+        $available_views = [
+            'timeGridWeek' => [
+                'columnHeaderFormat' => ['weekday' => 'short'],
+                'slotDuration'       => $slot_duration
+            ]
+        ];
+        if (!in_array(date('N'), $hidden_days)) {
+            //The current day is visible: Allow a day view:
+            $available_views['timeGridDay'] = [
+                'columnHeaderFormat' => ['weekday' => 'short'],
+                'slotDuration'       => $slot_duration
+            ];
+        }
 
         return new \Studip\Fullcalendar(
             _('Stundenplan'),
@@ -136,22 +178,24 @@ class Helper
                 'editable'    => true,
                 'selectable'  => true,
                 'dialog_size' => 'auto',
-                'minTime'     => sprintf('%02u:00', $calendar_settings['start'] ?? 8),
-                'maxTime'     => sprintf('%02u:00', $calendar_settings['end'] ?? 20),
+                'minTime'     => $schedule_settings['start_time'] ?? '08:00',
+                'maxTime'     => $schedule_settings['end_time'] ?? '20:00',
                 'allDaySlot'  => false,
                 'header'      => [
-                    'left' => '',
+                    'left' => count($available_views) > 1 ? implode(',', array_keys($available_views)) : '',
                     'right' => ''
                 ],
-                'views' => [
-                    'timeGridWeek' => [
-                        'columnHeaderFormat' => ['weekday' => 'long'],
-                        'weekends'           => $calendar_settings['type_week'] === 'LONG',
-                        'slotDuration'       => self::getCalendarSlotDuration('week'),
-                    ]
-                ],
+                'views' => $available_views,
+                'columnHeaderFormat' => ['weekday' => 'short'],
                 'defaultView' => 'timeGridWeek',
                 'defaultDate' => date('Y-m-d'),
+                'slotLabelFormat' => [
+                    'hour'           => 'numeric',
+                    'minute'         => '2-digit',
+                    'omitZeroMinute' => false
+                ],
+                'weekends'   => true,
+                'hiddenDays' => $fullcalendar_hidden_days,
                 'timeGridEventMinHeight' => 20,
                 'eventSources' => [
                     [
@@ -169,6 +213,9 @@ class Helper
                 'studip_urls' => [
                     'add' => \URLHelper::getURL('dispatch.php/calendar/schedule/entry/add')
                 ]
+            ],
+            [
+                'class' => 'schedule'
             ]
         );
     }

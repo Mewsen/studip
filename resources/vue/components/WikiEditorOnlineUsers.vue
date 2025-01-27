@@ -1,5 +1,5 @@
 <template>
-    <MountingPortal mountTo="#sidebar" append name="wiki_online_editing_users">
+    <Teleport to="#sidebar" append name="wiki_online_editing_users">
         <SidebarWidget :title="$gettext('Anwesende Personen')">
              <template #content>
                 <ol class="clean">
@@ -17,7 +17,7 @@
                 </ol>
              </template>
         </SidebarWidget>
-    </MountingPortal>
+    </Teleport>
 </template>
 <script>
 import SidebarWidget from "./SidebarWidget.vue";

@@ -40,7 +40,6 @@ class MessageBox implements LayoutMessage, JsonSerializable
     public $message;
     public $details;
     public $close_details;
-    protected $hide_close = false;
     public static $counter = 0;
 
     /**
@@ -137,7 +136,6 @@ class MessageBox implements LayoutMessage, JsonSerializable
      */
     public function hideClose($state = true)
     {
-        $this->hide_close = (bool) $state;
         return $this;
     }
 
@@ -147,7 +145,7 @@ class MessageBox implements LayoutMessage, JsonSerializable
      */
     public function isCloseable(): bool
     {
-        return $this->hide_close;
+        return false;
     }
 
     /**
@@ -169,7 +167,6 @@ class MessageBox implements LayoutMessage, JsonSerializable
             'message'       => $this->message,
             'details'       => is_array($this->details) ? $this->details : [],
             'close_details' => $this->close_details,
-            'hide_close'    => $this->hide_close,
             'label'         => $label[$this->class],
             'counter'       => self::$counter++,
         ]);

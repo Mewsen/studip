@@ -11,9 +11,10 @@
     >
         <template v-slot:dialogContent>
             {{
-                $gettextInterpolate($gettext('Hiermit exportieren Sie die Seite "%{ pageTitle }" als PDF-Datei.'), {
-                    pageTitle: structuralElement.attributes.title,
-                })
+                $gettext(
+                    'Hiermit exportieren Sie die Seite "%{ pageTitle }" als PDF-Datei.',
+                    { pageTitle: structuralElement.attributes.title }
+                )
             }}
             <div class="cw-element-export">
                 <label>

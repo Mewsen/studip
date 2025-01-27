@@ -1,7 +1,6 @@
-const webpack = require("webpack");
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
 
@@ -98,9 +97,6 @@ module.exports = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
-                options: {
-                    compiler: require('vue-template-babel-compiler')
-                }
             }
         ]
     },
@@ -108,14 +104,18 @@ module.exports = {
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({
             filename: "stylesheets/[name].css",
-            chunkFilename: "stylesheets/[name].css?h=[chunkhash]"
+            chunkFilename: "stylesheets/[name].css?h=[chunkhash]",
+            ignoreOrder: true,
         }),
         new ESLintPlugin({
+            configType: 'flat',
+            eslintPath: 'eslint/use-at-your-own-risk',
             exclude: [
                 'node_modules',
                 'public/assets/javascripts/ckeditor/ckeditor.js',
-                'resources/assets/javascripts/vendor',
+                'resources/assets/javascripts/jquery/autoresize.jquery.min.js',
                 'resources/assets/javascripts/jquery/jstree/jquery.jstree.js',
+                'resources/assets/javascripts/vendor',
             ]
         }),
         new CKEditorTranslationsPlugin({
@@ -125,7 +125,6 @@ module.exports = {
     ],
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.esm.js',
             'jquery-ui/data': 'jquery-ui/ui/data',
             'jquery-ui/disable-selection': 'jquery-ui/ui/disable-selection',
             'jquery-ui/focusable': 'jquery-ui/ui/focusable',
@@ -146,7 +145,7 @@ module.exports = {
             'jquery-ui/widgets/draggable': 'jquery-ui/ui/widgets/draggable',
             'jquery-ui/widgets/droppable': 'jquery-ui/ui/widgets/droppable',
             'jquery-ui/widgets/resizable': 'jquery-ui/ui/widgets/resizable',
-            '@': path.resolve(__dirname, 'resources')
+            '@': path.resolve(__dirname, 'resources'),
         },
         extensions: ['.ts', '.vue', '.js'],
         fallback: {

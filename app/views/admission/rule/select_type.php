@@ -18,7 +18,7 @@
             <label>
                 <input <?=$disabled ?> type="radio" name="ruletype" value="<?= $className ?>"/>
                 <span <?=($disabled ? 'style="text-decoration:line-through"' : '')?>><?=$classDetail['name'] ?></span>
-                <?= Icon::create('question-circle', 'clickable', ['title' => $classDetail['description']])->asImg() ?>
+                <?= Icon::create('question-circle')->asImg(['title' => $classDetail['description']]) ?>
             </label>
         </section>
 

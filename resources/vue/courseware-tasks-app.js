@@ -1,14 +1,13 @@
 import TaskGroupsIndex from './components/courseware/tasks/PagesTaskGroupsIndex.vue';
 import TaskGroupsShow from './components/courseware/tasks/PagesTaskGroupsShow.vue';
-import { mapResourceModules } from '@elan-ev/reststate-vuex';
-import VueRouter, { RouterView } from 'vue-router';
-import Vuex from 'vuex';
+import { createRouter, RouterView, createWebHashHistory } from 'vue-router';
 import CoursewareModule from './store/courseware/courseware.module';
 import CoursewareTasksModule from './store/courseware/courseware-tasks.module';
 import CoursewareStructureModule from './store/courseware/structure.module';
 import axios from 'axios';
+import {h} from "vue";
 
-const mountApp = async (STUDIP, createApp, element) => {
+const mountApp = async (STUDIP, createApp, store, element) => {
     const getHttpClient = () =>
         axios.create({
             baseURL: STUDIP.URLHelper.getURL(`jsonapi.php/v1`, {}, true),
@@ -33,63 +32,22 @@ const mountApp = async (STUDIP, createApp, element) => {
         },
     ];
 
-    const base = new URL(
-        window.STUDIP.URLHelper.getURL(
-            'dispatch.php/course/courseware/tasks',
-            { cid: STUDIP.URLHelper.parameters.cid },
-            true
-        )
-    );
-    const router = new VueRouter({
-        base: base.pathname,
-        mode: 'history',
+    const router = createRouter({
+        history: createWebHashHistory(),
         routes,
     });
     router.beforeEach((to, from, next) => {
-        if ('cid' in to?.query) {
+        if (to?.query?.cid !== undefined) {
             next();
         } else {
             next({ ...to, query: { ...to.query, cid: window.STUDIP.URLHelper.parameters.cid } });
         }
     });
 
-    const store = new Vuex.Store({
-        modules: {
-            courseware: CoursewareModule,
-            tasks: CoursewareTasksModule,
-            'courseware-structure': CoursewareStructureModule,
-            ...mapResourceModules({
-                names: [
-                    'activities',
-                    'users',
-                    'courses',
-                    'course-memberships',
-                    'courseware-blocks',
-                    'courseware-block-comments',
-                    'courseware-block-feedback',
-                    'courseware-containers',
-                    'courseware-instances',
-                    'courseware-structural-elements',
-                    'courseware-task-feedback',
-                    'courseware-task-groups',
-                    'courseware-tasks',
-                    'courseware-units',
-                    'courseware-user-data-fields',
-                    'courseware-user-progresses',
-                    'files',
-                    'file-refs',
-                    'folders',
-                    'users',
-                    'institutes',
-                    'semesters',
-                    'sem-classes',
-                    'sem-types',
-                    'status-groups',
-                ],
-                httpClient,
-            }),
-        },
-    });
+    store.registerModule('courseware', CoursewareModule);
+    store.registerModule('tasks', CoursewareTasksModule);
+    store.registerModule('courseware-structure', CoursewareStructureModule);
+
     let entry_id = null;
     let entry_type = null;
     let isTeacher = false;
@@ -122,12 +80,10 @@ const mountApp = async (STUDIP, createApp, element) => {
     await store.dispatch('tasks/loadTasksOfCourse', { cid: entry_id });
 
     const app = createApp({
-        render: (h) => h(RouterView),
-        router,
-        store,
+        render: () => h(RouterView),
     });
-
-    app.$mount(element);
+    app.use(router);
+    app.mount(element);
 
     return app;
 };

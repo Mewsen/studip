@@ -22,12 +22,12 @@
 class CourseDateList implements Stringable
 {
     /**
-     * @var array $regular_dates contains regular course dates.
+     * @var SeminarCycleDate[] $regular_dates contains regular course dates.
      */
     protected array $regular_dates = [];
 
     /**
-     * @var array $single_dates contains single course dates.
+     * @var CourseDate[] $single_dates contains single course dates.
      * These can be part of a regular course date, or they can
      * be irregular dates, depending on the use case of the
      * CourseDateCollection instance.
@@ -35,7 +35,7 @@ class CourseDateList implements Stringable
     protected array $single_dates = [];
 
     /**
-     * @var array $cancelled_dates contains cancelled course dates.
+     * @var CourseExDate[] $cancelled_dates contains cancelled course dates.
      */
     protected array $cancelled_dates = [];
 
@@ -249,7 +249,7 @@ class CourseDateList implements Stringable
                         $output[] = $date_line;
                     } else {
                         //Group by rooms.
-                        if (!is_array($output[$room->name])) {
+                        if (!isset($output[$room->name])) {
                             $output[$room->name] = [];
                         }
                         $output[$room->name][] = $date_line;
@@ -257,7 +257,7 @@ class CourseDateList implements Stringable
                 } elseif ($group_by_rooms) {
                     //Use the "null" room name:
                     $null_room_name = _('Kein Raum');
-                    if (!is_array($output[$null_room_name])) {
+                    if (!isset($output[$null_room_name])) {
                         $output[$null_room_name] = [];
                     }
                     $output[$null_room_name][] = $date_line;
@@ -270,10 +270,12 @@ class CourseDateList implements Stringable
             $date_line = $single_date->getFullName($with_room_names ? 'long-include-room' : 'long');
             if ($group_by_rooms) {
                 $room_name = _('Kein Raum');
-                if ($single_date->room instanceof Room) {
-                    $room_name = $single_date->room->name;
+                if ($single_date->room_booking) {
+                    $room_name = $single_date->room_booking->room_name;
+                } elseif ($single_date->raum) {
+                    $room_name = $single_date->raum;
                 }
-                if (!is_array($output[$room_name])) {
+                if (!isset($output[$room_name])) {
                     $output[$room_name] = [];
                 }
                 $output[$room_name][] = $date_line;
@@ -285,7 +287,7 @@ class CourseDateList implements Stringable
             foreach ($this->cancelled_dates as $cancelled_date) {
                 if ($group_by_rooms) {
                     $room_name = _('Kein Raum');
-                    if (!is_array($output[$room_name])) {
+                    if (!isset($output[$room_name])) {
                         $output[$room_name] = [];
                     }
                     $output[$room_name][] = $cancelled_date->toString();

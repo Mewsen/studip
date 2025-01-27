@@ -2,7 +2,7 @@
     <div class="formpart">
         <div class="sr-only" aria-live="polite" ref="list_message_field"></div>
         <ul>
-            <li v-for="date in selected_date_list" v-bind="selected_date_list" :key="getISODate(date)">
+            <li v-for="date in selected_date_list" :key="getISODate(date)">
                 <input type="hidden" :name="input_name + '[]'" :value="getISODate(date)">
                 <studip-date-time :timestamp="Math.floor(date.getTime() / 1000)" :date_only="true"></studip-date-time>
                 <studip-icon shape="trash" :title="$gettext('Löschen')" @click="removeDate(date)"
@@ -22,11 +22,11 @@
 
 <script>
 import StudipDateTime from "../StudipDateTime.vue";
-import {$gettext, $gettextInterpolate} from "@/assets/javascripts/lib/gettext";
 
 export default {
     name: "date-list-input",
     components: {StudipDateTime},
+    emits: ['selected_date_list', 'selected_date_value'],
     props: {
         name: {
             type: String,
@@ -46,9 +46,7 @@ export default {
         };
     },
     mounted() {
-
         //Set up the datepicker for the date selector input:
-        let v = this;
         jQuery(this.$refs.date_select_input).datepicker({
             onSelect: () => {
                 this.selected_date_value = this.$refs.date_select_input.value;
@@ -80,14 +78,14 @@ export default {
             }
             let reformatted_date = date_parts[2] + '-' + date_parts[1] + '-' + date_parts[0];
             this.selected_date_list.push(new Date(reformatted_date));
-            this.$refs.list_message_field.innerText = $gettextInterpolate($gettext('Datum %{date} hinzugefügt'), {date: this.selected_date_value});
+            this.$refs.list_message_field.innerText = this.$gettext('Datum %{date} hinzugefügt', {date: this.selected_date_value});
         },
         removeDate(date) {
             this.selected_date_list = this.selected_date_list.filter(d => d !== date);
 
-            this.$refs.list_message_field.innerText = $gettextInterpolate(
-                $gettext('Datum %{date} entfernt'),
-                {date: STUDIP.DateTime.getStudipDate(date, false, true)}
+            this.$refs.list_message_field.innerText = this.$gettext(
+                'Datum %{date} entfernt',
+                { date: STUDIP.DateTime.getStudipDate(date, false, true) }
             );
         },
         getISODate(date) {

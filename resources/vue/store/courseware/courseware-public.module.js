@@ -1,7 +1,6 @@
 const getDefaultState = () => {
     return {
         blockAdder: {},
-        consumeMode: true,
         containerAdder: false,
         context: null,
         courseware: {},
@@ -20,10 +19,6 @@ const initialState = getDefaultState();
 const getters = {
     blockAdder(state) {
         return state.blockAdder;
-    },
-
-    consumeMode(state) {
-        return state.consumeMode;
     },
 
     containerAdder(state) {
@@ -71,10 +66,6 @@ export const state = { ...initialState };
 
 export const actions = {
     // setters
-    coursewareConsumeMode({ commit }, consumeMode) {
-        commit('setConsumeMode', consumeMode);
-    },
-
     coursewareContainerAdder(context, adder) {
         context.commit('setContainerAdder', adder);
     },
@@ -132,10 +123,6 @@ export const mutations = {
 
     coursewareSet(state, data) {
         state.courseware = data;
-    },
-
-    setConsumeMode(state, consumeMode) {
-        state.consumeMode = consumeMode;
     },
 
     setContainerAdder(state, containerAdder) {

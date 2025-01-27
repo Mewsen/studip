@@ -49,7 +49,7 @@ class CoreScm extends CorePlugin implements StudipModuleExtended
 
         if ($result['count']) {
             if ($result['neue']) {
-                $image = Icon::create('infopage', Icon::ROLE_NEW);
+                $nav->setImage(Icon::create('info', Icon::ROLE_NEW));
                 $nav->setBadgeNumber($result['neue']);
                 if ($result['count'] == 1) {
                     $title = $scm->tab_name . _(' (geändert)');
@@ -61,7 +61,7 @@ class CoreScm extends CorePlugin implements StudipModuleExtended
                     );
                 }
             } else {
-                $image = Icon::create('infopage', Icon::ROLE_CLICKABLE);
+                $nav->setImage(Icon::create('infopage'));
                 if ($result['count'] == 1) {
                     $title = $scm->tab_name;
                 } else {
@@ -75,7 +75,7 @@ class CoreScm extends CorePlugin implements StudipModuleExtended
                     );
                 }
             }
-            $nav->setImage($image, ['title' => $title]);
+            $nav->setLinkAttributes(['title' => $title]);
         }
         return $nav;
     }
@@ -201,13 +201,14 @@ class CoreScm extends CorePlugin implements StudipModuleExtended
                                     'Oft wird die Seite für die Angabe von Literatur genutzt als Alternative zur Funktion '.
                                     'Literatur. Sie kann aber auch für andere beliebige Zusatzinformationen (Links, Protokolle '.
                                     'etc.) verwendet werden.'),
-            'icon' => Icon::create('infopage', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('infopage', Icon::ROLE_CLICKABLE),
+            'icon' => Icon::create('info', Icon::ROLE_INFO),
+            'icon_clickable' => Icon::create('info'),
             'screenshots' => [
-                'path' => 'assets/images/plus/screenshots/Freie_Informationsseite',
+                'path' => 'assets/images/plus/screenshots/Informationen',
                 'pictures' => [
                     0 => ['source' => 'Zwei_Eintraege_mit_Inhalten_zur_Verfuegung_stellen.jpg', 'title' => _('Zwei Einträge mit Inhalten zur Verfügung stellen')],
-                    1 => [ 'source' => 'Neue_Informationsseite_anlegen.jpg', 'title' => _('Neue Informationsseite anlegen')]
+                    1 => ['source' => 'Neue_Informationsseite_anlegen.jpg', 'title' => _('Neue Informationsseite anlegen')],
+                    2 => ['source' => 'Informationsseite_bearbeiten.jpg', 'title' => _('Informationsseite bearbeiten')]
                 ]
             ]
         ];

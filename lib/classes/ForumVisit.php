@@ -40,11 +40,16 @@ class ForumVisit {
             return 0;
         }
 
-        $stmt = DBManager::get()->prepare("SELECT COUNT(*) FROM forum_entries
-            WHERE lft >= :lft AND rgt <= :rgt AND user_id != :user_id
-                AND seminar_id = :seminar_id
-                AND topic_id != seminar_id
-                AND chdate > :lastvisit");
+        $query = "SELECT COUNT(*)
+                  FROM forum_entries
+                  WHERE lft >= :lft
+                    AND rgt <= :rgt
+                    AND user_id != :user_id
+                    AND (user_id != '' OR author != '')
+                    AND seminar_id = :seminar_id
+                    AND topic_id != seminar_id
+                    AND chdate > :lastvisit";
+        $stmt = DBManager::get()->prepare($query);
 
         $stmt->bindValue(':user_id', $GLOBALS['user']->id);
         $stmt->bindValue(':lft', $constraints['lft']);

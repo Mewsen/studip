@@ -3,26 +3,28 @@
         <header>{{ $gettext('Informationen') }}</header>
         <div class="cw-block-features-content cw-block-info-content">
             <table class="cw-block-info-table">
-                <tr>
-                    <td>{{ $gettext('Blockbeschreibung') }}</td>
-                    <td><slot name="info" /></td>
-                </tr>
-                <tr>
-                    <td>{{ $gettext('Block wurde erstellt von') }}</td>
-                    <td>{{ owner }}</td>
-                </tr>
-                <tr>
-                    <td>{{ $gettext('Block wurde erstellt am') }}:</td>
-                    <td><iso-date :date="block.attributes.mkdate" /></td>
-                </tr>
-                <tr>
-                    <td>{{ $gettext('Zuletzt bearbeitet von') }}:</td>
-                    <td>{{ editor }}</td>
-                </tr>
-                <tr>
-                    <td>{{ $gettext('Zuletzt bearbeitet am') }}:</td>
-                    <td><iso-date :date="block.attributes.chdate" /></td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>{{ $gettext('Blockbeschreibung') }}</td>
+                        <td><slot name="info" /></td>
+                    </tr>
+                    <tr>
+                        <td>{{ $gettext('Block wurde erstellt von') }}</td>
+                        <td>{{ owner }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ $gettext('Block wurde erstellt am') }}:</td>
+                        <td><iso-date :date="block.attributes.mkdate" /></td>
+                    </tr>
+                    <tr>
+                        <td>{{ $gettext('Zuletzt bearbeitet von') }}:</td>
+                        <td>{{ editor }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ $gettext('Zuletzt bearbeitet am') }}:</td>
+                        <td><iso-date :date="block.attributes.chdate" /></td>
+                    </tr>
+                </tbody>
             </table>
             <button class="button" @click="$emit('close')">{{ $gettext('Schließen') }}</button>
         </div>
@@ -31,11 +33,12 @@
 
 <script>
 import IsoDate from '../layouts/IsoDate.vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-block-info',
     components: { IsoDate },
+    emits: ['close'],
     props: {
         block: Object,
     },

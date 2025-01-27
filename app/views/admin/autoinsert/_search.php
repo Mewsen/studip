@@ -11,11 +11,8 @@
     <label>
         <?= _('Semester') ?>
         <?= Semester::getSemesterSelector(
-            ['name' => 'sem_select', 'id' => 'sem_select', 'class' => 'user_form'],
-            $sem_select, 'semester_id',
-            true,
-            false
-        )?>
+            ['name' => 'sem_select', 'id' => 'sem_select', 'class' => 'user_form']
+        ) ?>
     </label>
     <label>
         <?= _('Veranstaltung') ?>

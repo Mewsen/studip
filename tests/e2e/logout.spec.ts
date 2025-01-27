@@ -7,7 +7,7 @@ test.describe('Logging Out', () => {
 
     test('should take us back to the homepage', async ({ page, baseURL }) => {
         await page.goto(baseURL);
-        await expect(page.locator('#avatar-menu-container')).toBeVisible();
+        await expect(page.locator('#notification-wrapper')).toBeVisible();
         await page.getByTitle('Testaccount Dozent').click();
         await page.getByRole('link', { name: 'Logout' }).click();
         await expect(page).toHaveURL(/index\.php.*logout=true/);

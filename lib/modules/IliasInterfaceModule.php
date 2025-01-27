@@ -19,10 +19,20 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
                 Navigation::addItem('/admin/config/ilias_interface',
                     new Navigation(_('ILIAS-Schnittstelle'), 'dispatch.php/admin/ilias_interface'));
             }
-            if (Seminar_Perm::get()->have_perm('tutor') || (Seminar_Perm::get()->have_perm('autor') && array_key_exists('show_tools_page', $ilias_interface_config) && $ilias_interface_config['show_tools_page'])) {
-                $ilias = new Navigation(_('ILIAS'), 'dispatch.php/my_ilias_accounts');
+            if (Seminar_Perm::get()->have_perm('tutor') || Seminar_Perm::get()->have_perm('autor')) {
+                $ilias = new Navigation(_('ILIAS'), 'dispatch.php/my_ilias_accounts/my_courses');
                 $ilias->setImage(Icon::create('ilias'));
                 $ilias->setDescription(_('Schnittstelle zu ILIAS'));
+                $ilias->addSubNavigation(
+                    'my_courses',
+                    new Navigation(_('Meine Kurse'), 'dispatch.php/my_ilias_accounts/my_courses')
+                );
+                if (!empty($ilias_interface_config['show_tools_page'])) {
+                    $ilias->addSubNavigation(
+                        'my_accounts',
+                        new Navigation(_('Meine Lernobjekte und Accounts'), 'dispatch.php/my_ilias_accounts')
+                    );
+                }
                 Navigation::addItem('/contents/my_ilias_accounts', $ilias);
             }
         }
@@ -70,7 +80,8 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
         $title = CourseConfig::get($course_id)->getValue('ILIAS_INTERFACE_MODULETITLE');
         $nav = new Navigation($title, 'dispatch.php/course/ilias_interface/index');
         if ($result['neue']) {
-            $nav->setImage(Icon::create('learnmodule', Icon::ROLE_ATTENTION, [
+            $nav->setImage(Icon::create('learnmodule', Icon::ROLE_ATTENTION));
+            $nav->setLinkAttributes([
                 'title' => sprintf(
                     ngettext(
                         '%1$d Lernobjekt, %2$d neues',
@@ -80,9 +91,10 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
                     $result['count_modules'],
                     $result['neue']
                 )
-            ]));
+            ]);
         } elseif ($result['count_modules']) {
-            $nav->setImage(Icon::create('learnmodule', Icon::ROLE_CLICKABLE, [
+            $nav->setImage(Icon::create('learnmodule'));
+            $nav->setLinkAttributes([
                 'title' => sprintf(
                     ngettext(
                         '%d Lernobjekt',
@@ -91,9 +103,10 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
                     ),
                     $result['count_modules']
                 )
-            ]));
+            ]);
         } elseif ($result['count_courses']) {
-            $nav->setImage(Icon::create('learnmodule', Icon::ROLE_CLICKABLE, [
+            $nav->setImage(Icon::create('learnmodule'));
+            $nav->setLinkAttributes([
                 'title' => sprintf(
                     ngettext(
                         '%d ILIAS-Kurs',
@@ -102,7 +115,7 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
                     ),
                     $result['count_courses']
                 )
-            ]));
+            ]);
         }
         return $nav;
     }
@@ -227,7 +240,7 @@ class IliasInterfaceModule extends CorePlugin implements StudipModuleExtended, S
                             Zugang zu ILIAS;
                             Aufgaben- und Test-Erstellung'),
             'icon'             => Icon::create('learnmodule', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('learnmodule', Icon::ROLE_CLICKABLE),
+            'icon_clickable' => Icon::create('learnmodule'),
             'descriptionshort' => _('Zugang zu extern erstellten ILIAS-Lernobjekten'),
             'descriptionlong'  => _('Über diese Schnittstelle ist es möglich, Lernobjekte aus ' .
                 'einer ILIAS-Installation (> 5.3.8) in Stud.IP zur Verfügung ' .

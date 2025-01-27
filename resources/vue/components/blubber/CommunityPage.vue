@@ -1,30 +1,34 @@
 <template>
-    <div>
-        <BlubberPanel :threadId="threadId" :search="search" v-if="threadId" />
+    <BlubberPanel :threadId="threadId" :search="search" v-if="threadId" />
 
-        <MountingPortal mountTo="#blubber-search-widget" name="sidebar-blubber-search">
-            <BlubberSearchWidget :search="search" />
-        </MountingPortal>
-        <MountingPortal mountTo="#blubber-threads-widget" name="sidebar-blubber-threads">
-            <BlubberThreadsWidget
-                :hasMoreThreads="hasMoreThreads"
-                :threadId="threadId"
-                :threads="threads"
-                @load-more-threads="onLoadMoreThreads"
-                @select-thread="onSelectThread"
-                class="blubber_threads_widget"
-            />
-        </MountingPortal>
-    </div>
+    <Teleport to="#blubber-search-widget" name="sidebar-blubber-search">
+        <BlubberSearchWidget :search="search" />
+    </Teleport>
+    <Teleport to="#blubber-threads-widget" name="sidebar-blubber-threads">
+        <BlubberThreadsWidget
+            :hasMoreThreads="hasMoreThreads"
+            :threadId="threadId"
+            :threads="threads"
+            @load-more-threads="onLoadMoreThreads"
+            @select-thread="onSelectThread"
+            class="blubber_threads_widget"
+        />
+    </Teleport>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { useContext } from '../../composables/context.js';
 import BlubberPanel from './Panel.vue';
 import BlubberSearchWidget from './SearchWidget.vue';
 import BlubberThreadsWidget from './ThreadsWidget.vue';
 
 export default {
+    setup() {
+        const { id, isCourse } = useContext();
+
+        return { cid: id, isCourse };
+    },
     props: {
         initialThreadId: {
             type: String,
@@ -66,7 +70,7 @@ export default {
         },
     },
     async beforeMount() {
-        await this.fetchThreads({ search: this.search });
+        await this.fetchThreads({ search: this.search, course: this.isCourse ? this.cid : null });
         this.onSelectThread(this.initialThreadId, false);
 
         this.handleSelectBlubberThread = (threadId) => {
@@ -82,7 +86,7 @@ export default {
             }
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.globalOff('studip:select-blubber-thread', this.handleSelectBlubberThread);
     },
 };

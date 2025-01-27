@@ -27,10 +27,7 @@
 <script>
 export default {
     name: 'blubber-composer',
-    model: {
-        prop: 'text',
-        event: 'change',
-    },
+    emits: ['update:modelValue', 'add-posting', 'pick-files', 'edit-previous'],
     props: {
         placeholder: {
             type: String,
@@ -40,7 +37,7 @@ export default {
             type: Number,
             default: 0,
         },
-        text: {
+        modelValue: {
             type: String,
             default: '',
         },
@@ -109,17 +106,17 @@ export default {
         },
         saveCommentToSession() {
             this.resizeTextarea();
-            this.$emit('change', this.localText);
+            this.$emit('update:modelValue', this.localText);
         },
     },
     mounted() {
-        this.localText = this.text;
+        this.localText = this.modelValue;
         this.$nextTick(() => {
             this.resizeTextarea();
         });
     },
     watch: {
-        text(newText, oldText) {
+        text(newText) {
             if (this.localText !== newText) {
                 this.localText = newText;
                 this.focusTextarea();

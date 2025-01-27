@@ -652,35 +652,41 @@ class CalendarDateAssignment extends SimpleORMap implements Event
             }
         }
 
-        $show_url_params = [];
-        if ($this->calendar_date->repetition_type) {
-            $show_url_params['selected_date'] = $begin->format('Y-m-d');
+        $studip_urls = [];
+        $action_urls = [];
+        if (!$hide_confidential_data) {
+            $show_url_params = [];
+            if ($this->calendar_date->repetition_type !== CalendarDate::REPETITION_SINGLE) {
+                $show_url_params['selected_date'] = $begin->format('Y-m-d');
+            }
+            $studip_urls['show'] = URLHelper::getURL('dispatch.php/calendar/date/index/' . $this->calendar_date_id, $show_url_params);
+
+            if ($this->isWritable($user_id)) {
+                $action_urls['resize_dialog'] = URLHelper::getURL('dispatch.php/calendar/date/move/' . $this->calendar_date_id);
+                $action_urls['move_dialog']   = URLHelper::getURL('dispatch.php/calendar/date/move/' . $this->calendar_date_id, ['original_date' => $begin->format('Y-m-d')]);
+            }
         }
 
         return new \Studip\Calendar\EventData(
             $begin,
             $end,
-            !$hide_confidential_data ? $this->getTitle() : '',
+            !$hide_confidential_data ? $this->getTitle() : _('Vertraulich'),
             $event_classes,
             $text_colour,
             $background_colour,
-            $this->isWritable($user_id),
+            $this->isWritable($user_id) && $this->calendar_date->isVisible($user_id),
             CalendarDateAssignment::class,
             $this->id,
             CalendarDate::class,
             $this->calendar_date_id,
             'user',
             $this->range_id ?? '',
-            [
-                'show'   => URLHelper::getURL('dispatch.php/calendar/date/index/' . $this->calendar_date_id, $show_url_params)
-            ],
-            [
-                'resize_dialog' => URLHelper::getURL('dispatch.php/calendar/date/move/' . $this->calendar_date_id),
-                'move_dialog'   => URLHelper::getURL('dispatch.php/calendar/date/move/' . $this->calendar_date_id)
-            ],
+            $studip_urls,
+            $action_urls,
             $this->participation === 'DECLINED' ? 'decline-circle-full' : '',
             $border_colour,
-            $all_day
+            $all_day,
+            $this->calendar_date_id
         );
     }
 

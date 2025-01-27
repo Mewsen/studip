@@ -158,6 +158,8 @@ textarea.ui-resizable-handle.ui-resizable-s {
 
 .ui-datepicker-header .ui-icon {
     background-image: url(../images/vendor/jquery-ui/ui-icons_ffffff_256x240.png);
+    height: $icon-size-inline;
+    width: $icon-size-inline;
 }
 
 .ui-datepicker-calendar .ui-state-active {
@@ -176,7 +178,7 @@ textarea.ui-resizable-handle.ui-resizable-s {
 .has-date-picker,
 [data-datetime-picker],
 .has-datetime-picker {
-    @include background-icon(schedule, clickable, 20px);
+    @include background-icon(schedule);
     background-position: right 3px center;
     background-repeat: no-repeat;
     min-width: 12ex;
@@ -188,7 +190,7 @@ textarea.ui-resizable-handle.ui-resizable-s {
 .hasTimepicker,
 [data-time-picker],
 .has-time-picker {
-    @include background-icon(date, clickable, 20px);
+    @include background-icon(date);
     background-position: right 3px center;
     background-repeat: no-repeat;
     min-width: 10ex;
@@ -205,5 +207,47 @@ textarea.ui-resizable-handle.ui-resizable-s {
 .ui-slider {
     .ui-slider-range {
         background-color: var(--base-color);
+    }
+}
+
+.ui-tabs {
+    &.ui-widget-content {
+        border: 1px solid var(--light-gray-color-40);
+        margin-top: 1.5ex;
+        padding: 0;
+    }
+
+    .ui-tabs-nav {
+        background: none;
+        border: none;
+        border-bottom: 1px solid var(--light-gray-color-40);
+    }
+
+    .ui-tabs-tab {
+        background: none;
+        border: none;
+    }
+
+    .ui-tabs-tab:hover {
+        border-bottom: 3px solid var(--dark-gray-color-40);
+    }
+
+    .ui-tabs-nav li.ui-tabs-active {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: 3px solid var(--light-gray-color-80);
+    }
+
+    .ui-tabs-tab .ui-tabs-anchor {
+        color: var(--base-color);
+        padding: 5px 15px;
+    }
+
+    .ui-tabs-active .ui-tabs-anchor {
+        color: black;
+    }
+
+    .ui-tabs-panel {
+        padding: 5px;
     }
 }

@@ -32,7 +32,7 @@
                     <studip-icon shape="edit" />
                 </button>
 
-                <span v-if="task">| {{ solverName }}</span>
+                <span v-if="task">| {{ solverName ?? $gettext("anonym") }}</span>
                 <span
                     v-if="hasReleaseOrWithdrawDate"
                     class="cw-tree-item-flag-date"
@@ -44,7 +44,7 @@
                     :title="canWriteFlagTitle"
                 ></span>
                 <span v-if="hasNoReadApproval" class="cw-tree-item-flag-cant-read" :title="cantReadFlagTitle"></span>
-                <template v-if="!userIsTeacher && inCourse">
+                <template v-if="!(userIsTeacher || userIsReviewer)  && inCourse">
                     <span
                         v-if="complete"
                         class="cw-tree-item-sequential cw-tree-item-sequential-complete"
@@ -54,7 +54,7 @@
                     <span
                         v-else
                         class="cw-tree-item-sequential cw-tree-item-sequential-percentage"
-                        :title="$gettextInterpolate($gettext('Fortschritt: %{progress}%'), { progress: itemProgress })"
+                        :title="$gettext('Fortschritt: %{progress}%', { progress: itemProgress })"
                     >
                         {{ itemProgress }} %
                     </span>
@@ -79,35 +79,38 @@
         </ol>
         <draggable
             v-if="canEdit"
+            v-bind="dragOptions"
             :class="{ 'cw-tree-chapter-list-empty': nestedChildren.length === 0 }"
             tag="ol"
             :component-data="draggableData"
             class="cw-tree-draggable-list"
             handle=".cw-sortable-handle"
-            v-bind="dragOptions"
             :elementId="element.id"
             :list="nestedChildren"
             :group="{ name: 'g1' }"
             @end="endDrag"
+            item-key="id"
         >
-            <courseware-tree-item
-                v-for="el in nestedChildren"
-                :key="el.id"
-                :element="el"
-                :currentElement="currentElement"
-                :depth="depth + 1"
-                :newPos="el.newPos"
-                :newParentId="el.newParentId"
-                :siblingCount="nestedChildren.length"
-                class="cw-tree-item"
-                :elementid="el.id"
-                @sort="sort"
-                @moveItemUp="moveItemUp"
-                @moveItemDown="moveItemDown"
-                @moveItemPrevLevel="moveItemPrevLevel"
-                @moveItemNextLevel="moveItemNextLevel"
-                @childrenUpdated="$emit('childrenUpdated')"
-            />
+            <template #item="{element}">
+                <courseware-tree-item
+                    :element="element"
+                    :currentElement="currentElement"
+                    :depth="depth + 1"
+                    :newPos="element.newPos"
+                    :newParentId="element.newParentId"
+                    :siblingCount="nestedChildren.length"
+                    class="cw-tree-item"
+                    :elementid="element.id"
+                    :data-id="element.id"
+                    :data-parent-id="element.relationships.parent.data.id"
+                    @sort="sort"
+                    @moveItemUp="moveItemUp"
+                    @moveItemDown="moveItemDown"
+                    @moveItemPrevLevel="moveItemPrevLevel"
+                    @moveItemNextLevel="moveItemNextLevel"
+                    @childrenUpdated="$emit('childrenUpdated')"
+                />
+            </template>
         </draggable>
         <ol v-if="canEdit && isFirstLevel" class="cw-tree-adder-list">
             <courseware-tree-item-adder :parentId="element.id" />
@@ -124,6 +127,14 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
     name: 'courseware-tree-item',
+    emits: [
+        'childrenUpdated',
+        'moveItemDown',
+        'moveItemNextLevel',
+        'moveItemPrevLevel',
+        'moveItemUp',
+        'sort',
+    ],
     components: {
         CoursewareTreeItemAdder,
         CoursewareTreeItemUpdater,
@@ -194,9 +205,10 @@ export default {
             return {
                 attrs: {
                     role: 'listbox',
-                    ['aria-label']: this.$gettextInterpolate(this.$gettext('Unterseiten von %{elementName}'), {
-                        elementName: this.element.attributes?.title,
-                    }),
+                    ['aria-label']: this.$gettext(
+                        'Unterseiten von %{elementName}',
+                        { elementName: this.element.attributes?.title }
+                    ),
                 },
             };
         },
@@ -247,23 +259,28 @@ export default {
                         break;
                     case 'users': {
                         const users = this.element.attributes['visible-approval'].length;
-                        persons = this.$gettextInterpolate(
-                            this.$ngettext('einen Studierenden', '%{count} Studierende', users),
+                        persons = this.$ngettext(
+                            'einen Studierenden',
+                            '%{count} Studierende',
+                            users,
                             { count: users }
                         );
                         break;
                     }
                     case 'groups': {
                         const groups = this.element.attributes['visible-approval'].length;
-                        persons = this.$gettextInterpolate(this.$ngettext('eine Gruppe', '%{count} Gruppen', groups), {
-                            count: groups,
-                        });
+                        persons = this.$ngettext(
+                            'eine Gruppe',
+                            '%{count} Gruppen',
+                            groups,
+                            { count: groups }
+                        );
                         break;
                     }
                 }
 
-                return this.$gettextInterpolate(
-                    this.$gettext('Diese Seite ist vom %{start} bis zum %{end} für %{persons} sichtbar'),
+                return this.$gettext(
+                    'Diese Seite ist vom %{start} bis zum %{end} für %{persons} sichtbar',
                     { start: startDate, end: endDate, persons: persons }
                 );
             }
@@ -291,21 +308,28 @@ export default {
             const count = writableApproval.length;
             switch (this.element.attributes?.['permission-type']) {
                 case 'users':
-                    persons = this.$gettextInterpolate(this.$ngettext('einem Studierendem', '%{count} Studierenden', count), {
-                        count: count,
-                    });
+                    persons = this.$ngettext(
+                        'einem Studierendem',
+                        '%{count} Studierenden',
+                        count,
+                        { count: count }
+                    );
                     break;
                 case 'groups':
-                    persons = this.$gettextInterpolate(this.$ngettext('einer Gruppe', '%{count} Gruppen', count), {
-                        count: count,
-                    });
+                    persons =
+                        this.$ngettext(
+                            'einer Gruppe',
+                            '%{count} Gruppen',
+                            count,
+                            { count: count }
+                        );
                     break;
             }
 
-            return this.$gettextInterpolate(
-                    this.$gettext('Diese Seite kann von %{persons} bearbeitet werden'),
-                    { persons: persons }
-                );
+            return this.$gettext(
+                'Diese Seite kann von %{persons} bearbeitet werden',
+                { persons: persons }
+            );
         },
         hasNoReadApproval() {
             if (this.context.type === 'users' || this.element.attributes?.['visible-all']) {
@@ -318,10 +342,10 @@ export default {
                 case 'users':
                     return this.autorMembersCount !== visibleApproval.length;
                 case 'groups':
-                    return  this.statusGroupsCount !== visibleApproval.length; 
+                    return  this.statusGroupsCount !== visibleApproval.length;
             }
 
-            return true;            
+            return true;
         },
         cantReadFlagTitle() {
             if (!this.hasNoReadApproval) {
@@ -335,22 +359,29 @@ export default {
                     return this.$gettext('Diese Seite kann von Studierenden nicht gesehen werden');
                 case 'users':
                     count = this.autorMembersCount - visibleApproval.length;
-                    persons = this.$gettextInterpolate(this.$ngettext('einem Studierendem', '%{count} Studierenden', count), {
-                        count: count,
-                    });
+                    persons = this.$ngettext(
+                        'einem Studierendem',
+                        '%{count} Studierenden',
+                        count,
+                        { count: count }
+                    );
                     break;
                 case 'groups':
                     count = this.statusGroupsCount - visibleApproval.length
-                    persons = this.$gettextInterpolate(this.$ngettext('einer Gruppe', '%{count} Gruppen', count), {
-                        count: count,
-                    });
+                    persons =
+                        this.$ngettext(
+                            'einer Gruppe',
+                            '%{count} Gruppen',
+                            count,
+                            { count: count }
+                        );
                     break;
             }
 
-            return this.$gettextInterpolate(
-                    this.$gettext('Diese Seite kann von %{persons} nicht gesehen werden'),
-                    { persons: persons }
-                );
+            return this.$gettext(
+                'Diese Seite kann von %{persons} nicht gesehen werden',
+                { persons: persons }
+            );
         },
         hasPurposeClass() {
             return this.purposeClass !== '';
@@ -379,10 +410,10 @@ export default {
         solver() {
             if (this.task) {
                 const solver = this.task.relationships.solver.data;
-                if (solver.type === 'users') {
+                if (solver?.type === 'users') {
                     return this.userById({ id: solver.id });
                 }
-                if (solver.type === 'status-groups') {
+                if (solver?.type === 'status-groups') {
                     return this.groupById({ id: solver.id });
                 }
             }
@@ -399,7 +430,7 @@ export default {
                 }
             }
 
-            return '';
+            return null;
         },
         isTask() {
             return this.element.attributes?.purpose === 'task';
@@ -433,6 +464,9 @@ export default {
         complete() {
             return this.itemProgress === 100;
         },
+        userIsReviewer() {
+            return this.task ? this.task.attributes['can-peer-review'] : false;
+        },
     },
     methods: {
         ...mapActions({
@@ -446,11 +480,11 @@ export default {
             }
 
             let data = {
-                id: e.item._underlying_vm_.id,
+                id: e.item.dataset.id,
                 newPos: e.newIndex,
                 oldPos: e.oldIndex,
-                oldParent: e.item._underlying_vm_.relationships.parent.data.id,
-                newParent: e.to.__vue__.$attrs.elementId,
+                oldParent: e.item.dataset.parentId,
+                newParent: e.to.__vnode.ctx.attrs.elementId,
                 sortArray: sortArray,
             };
 
@@ -475,10 +509,8 @@ export default {
                         this.storeKeyboardSorting();
                     } else {
                         this.keyboardSelected = true;
-                        const assistiveLive = this.$gettextInterpolate(
-                            this.$gettext(
-                                '%{elementTitle} ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen. Mit Pfeiltasten links und rechts kann die Position in der Hierarchie verändert werden.'
-                            ),
+                        const assistiveLive = this.$gettext(
+                            '%{elementTitle} ausgewählt. Aktuelle Position in der Liste: %{pos} von %{listLength}. Drücken Sie die Aufwärts- und Abwärtspfeiltasten, um die Position zu ändern, die Leertaste zum Ablegen, die Escape-Taste zum Abbrechen. Mit Pfeiltasten links und rechts kann die Position in der Hierarchie verändert werden.',
                             {
                                 elementTitle: this.element.attributes.title,
                                 pos: this.element.attributes.position + 1,
@@ -537,9 +569,10 @@ export default {
         },
         abortKeyboardSorting() {
             this.$emit('childrenUpdated');
-            const assistiveLive = this.$gettextInterpolate(this.$gettext('%{elementTitle}. Neuordnung abgebrochen.'), {
-                elementTitle: this.element.attributes.title,
-            });
+            const assistiveLive = this.$gettext(
+                '%{elementTitle}. Neuordnung abgebrochen.',
+                { elementTitle: this.element.attributes.title }
+            );
             this.setAssistiveLiveContents(assistiveLive);
             this.$nextTick(() => {
                 this.keyboardSelected = false;
@@ -557,8 +590,8 @@ export default {
             this.keyboardSelected = false;
 
             if (data.newParent === undefined || data.newPos === undefined) {
-                const assistiveLive = this.$gettextInterpolate(
-                    this.$gettext('%{elementTitle}. Neuordnung nicht möglich.'),
+                const assistiveLive = this.$gettext(
+                    '%{elementTitle}. Neuordnung nicht möglich.',
                     { elementTitle: this.element.attributes.title }
                 );
                 this.setAssistiveLiveContents(assistiveLive);
@@ -566,17 +599,21 @@ export default {
             }
 
             if (data.oldParent === data.newParent && data.oldPos === data.newPos) {
-                const assistiveLive = this.$gettextInterpolate(
-                    this.$gettext('%{elementTitle}. Neuordnung abgebrochen.'),
+                const assistiveLive = this.$gettext(
+                    '%{elementTitle}. Neuordnung abgebrochen.',
                     { elementTitle: this.element.attributes.title }
                 );
                 this.setAssistiveLiveContents(assistiveLive);
                 return;
             }
             this.$emit('sort', data);
-            const assistiveLive = this.$gettextInterpolate(
-                this.$gettext('%{elementTitle}, abgelegt. Entgültige Position in der Liste: %{pos} von %{listLength}.'),
-                { elementTitle: this.element.attributes.title, pos: data.newPos + 1, listLength: this.siblingCount }
+            const assistiveLive = this.$gettext(
+                '%{elementTitle}, abgelegt. Entgültige Position in der Liste: %{pos} von %{listLength}.',
+                {
+                    elementTitle: this.element.attributes.title,
+                    pos: data.newPos + 1,
+                    listLength: this.siblingCount
+                }
             );
             this.setAssistiveLiveContents(assistiveLive);
         },

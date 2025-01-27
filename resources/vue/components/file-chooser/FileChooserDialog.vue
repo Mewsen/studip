@@ -56,6 +56,7 @@ export default {
         FileChooserBox,
         FileChooserTree,
     },
+    emits: ['close', 'selected'],
     props: {
         selectable: {
             type: String,

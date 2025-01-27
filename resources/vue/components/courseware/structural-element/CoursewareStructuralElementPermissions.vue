@@ -2,16 +2,16 @@
     <div class="cw-element-permissions">
         <label>
             <input type="checkbox" class="default" v-model="userPermsReadAll" />
-            <translate>Alle Teilnehmenden haben Leserechte</translate>
+            {{ $gettext('Alle Teilnehmenden haben Leserechte') }}
         </label>
         <label>
             <input type="checkbox" class="default" v-model="userPermsWriteAll" />
-            <translate>Alle Teilnehmenden haben Schreibrechte</translate>
+            {{ $gettext('Alle Teilnehmenden haben Schreibrechte') }}
         </label>
 
         <table class="default" v-if="autor_members.length">
             <caption>
-                <translate>Studierende</translate>
+                {{ $gettext('Studierende') }}
             </caption>
             <colgroup>
                 <col style="width:1%" />
@@ -23,10 +23,10 @@
             <thead>
                 <tr>
                     <th><input type="checkbox" v-model="bulkSelectAutorRead" @click="handleBulkSelectRead($event, 'autor')"/></th>
-                    <th><translate>Lesen</translate></th>
+                    <th>{{ $gettext('Lesen') }}</th>
                     <th><input type="checkbox" v-model="bulkSelectAutorWrite" @click="handleBulkSelectWrite($event)"/></th>
-                    <th><translate>Lesen und Schreiben</translate></th>
-                    <th><translate>Name</translate></th>
+                    <th>{{ $gettext('Lesen und Schreiben') }}</th>
+                    <th>{{ $gettext('Name') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -71,7 +71,7 @@
 
         <table class="default" v-if="user_members.length">
             <caption>
-                <translate>Leser/-innen</translate>
+                {{ $gettext('Leser/-innen') }}
             </caption>
             <colgroup>
                 <col style="width:1%" />
@@ -81,8 +81,8 @@
             <thead>
                 <tr>
                     <th><input type="checkbox" v-model="bulkSelectUserRead" @click="handleBulkSelectRead($event, 'user')"/></th>
-                    <th><translate>Lesen</translate></th>
-                    <th><translate>Name</translate></th>
+                    <th>{{ $gettext('Lesen') }}</th>
+                    <th>{{ $gettext('Name') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -119,7 +119,7 @@
 
         <table class="default" v-if="groups.length">
             <caption>
-                <translate>Gruppen</translate>
+                {{ $gettext('Gruppen') }}
             </caption>
             <colgroup>
                 <col style="width:20%" />
@@ -128,9 +128,9 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th><translate>Lesen</translate></th>
-                    <th><translate>Lesen und Schreiben</translate></th>
-                    <th><translate>Name</translate></th>
+                    <th>{{ $gettext('Lesen') }}</th>
+                    <th>{{ $gettext('Lesen und Schreiben') }}</th>
+                    <th>{{ $gettext('Name') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -169,6 +169,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-structural-element-permissions',
+    emits: ['updateReadApproval', 'updateWriteApproval'],
     props: {
         element: Object,
     },
@@ -433,38 +434,38 @@ export default {
     },
 
     watch: {
-        userPermsReadUsers(newVal, oldVal) {
+        userPermsReadUsers() {
             this.handleBulkSelectReadPassive('autor');
             this.handleBulkSelectReadPassive('user');
             this.$emit('updateReadApproval', this.readApproval);
         },
-        userPermsReadGroups(newVal, oldVal) {
+        userPermsReadGroups() {
             this.$emit('updateReadApproval', this.readApproval);
         },
-        userPermsReadAll(newVal, oldVal) {
+        userPermsReadAll(newVal) {
             this.$emit('updateReadApproval', this.readApproval);
             if (newVal === true) {
                 this.userPermsWriteAll = false;
             }
         },
-        userPermsWriteUsers(newVal, oldVal) {
+        userPermsWriteUsers() {
             this.handleBulkSelectWritePassive();
             this.$emit('updateWriteApproval', this.writeApproval);
         },
-        userPermsWriteGroups(newVal, oldVal) {
+        userPermsWriteGroups() {
             this.$emit('updateWriteApproval', this.writeApproval);
         },
-        userPermsWriteAll(newVal, oldVal) {
+        userPermsWriteAll(newVal) {
             this.$emit('updateWriteApproval', this.writeApproval);
             if (newVal === true) {
                 this.userPermsReadAll = false;
             }
         },
-        autorOffset(newVal, oldVal) {
+        autorOffset() {
             this.handleBulkSelectReadPassive('autor');
             this.handleBulkSelectWritePassive();
         },
-        userOffset(newVal, oldVal) {
+        userOffset() {
             this.handleBulkSelectReadPassive('user');
         }
     },

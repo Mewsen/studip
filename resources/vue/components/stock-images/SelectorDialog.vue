@@ -17,6 +17,7 @@ import { mapActions, mapGetters } from 'vuex';
 import Selector from './Selector.vue';
 
 export default {
+    emits: ['close', 'select'],
     data: () => ({
         query: '',
         selectedImage: null,

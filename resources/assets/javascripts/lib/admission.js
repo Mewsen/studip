@@ -5,9 +5,25 @@ import { $gettext } from './gettext';
 import Dialog from './dialog.js';
 
 const Admission = {
+
+    /**
+     * All registered rule types with their corresponding Vue components
+     */
+    availableRules: {
+        ConditionalAdmission: 'ConditionalAdmission.vue',
+        CourseMemberAdmission: 'CourseMemberAdmission.vue',
+        LimitedAdmission: 'LimitedAdmission.vue',
+        LockedAdmission: 'LockedAdmission.vue',
+        ParticipantRestrictedAdmission: 'ParticipantRestrictedAdmission.vue',
+        PasswordAdmission: 'PasswordAdmission.vue',
+        PreferentialAdmission: 'PreferentialAdmission.vue',
+        TermsAdmission: 'TermsAdmission.vue',
+        TimedAdmission: 'TimedAdmission.vue'
+    },
+
     getCourses: function(targetUrl) {
         var courseFilter = $('input[name="course_filter"]').val();
-        if (courseFilter == '') {
+        if (courseFilter === '') {
             courseFilter = '%%%';
         }
         var data = {
@@ -66,7 +82,7 @@ const Admission = {
                 url: targetUrl,
                 data: $('#ruleform').serialize(),
                 dataType: 'html',
-                success: function(data, textStatus, jqXHR) {
+                success: function(data) {
                     if (data !== '') {
                         var result = '';
                         if ($('#norules').length > 0) {
@@ -237,12 +253,12 @@ const Admission = {
         $('.hidden-alert').show();
     },
 
-    autosaveCourseset: function(event) {
+    autosaveCourseset: function() {
         $.post({
             url: $('#courseset-form').attr('action'),
             data: $('#courseset-form').serialize() + '&submit=1',
             dataType: 'html',
-            success: function(data, textStatus, jqXHR) {
+            success: function() {
                 $('.hidden-alert').hide();
             },
             error: function(jqXHR, textStatus, errorThrown) {

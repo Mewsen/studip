@@ -255,6 +255,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-unit-item-dialog-permissions',
+    emits: ['close'],
     components: {
         CoursewareCompanionBox,
         Datepicker,
@@ -412,7 +413,7 @@ export default {
                 .then((response) => {
                     this.currentSemester = response.data.data[0];
                 })
-                .catch((error) => {
+                .catch(() => {
                     this.currentSemester = null;
                 });
         },

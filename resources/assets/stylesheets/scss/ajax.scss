@@ -24,19 +24,23 @@
         border: 1px solid var(--dark-gray-color-30);
         border-radius: 8px;
         display: inline-block;
-        height: 16px;
+        height: var(--icon-size-inline);
         margin: 0 3px;
         opacity: 1;
         position: absolute;
-        width: 16px;
+        width: var(--icon-size-inline);
     }
 }
 
 .ajaxing {
     background: url("#{$image-path}/loading-indicator.svg") center no-repeat;
     display: inline-block;
-    @include size(16px, 16px);
-    @include hide-text();
+    @include size(var(--icon-size-inline), var(--icon-size-inline));
+    @include hide-text;
 
-    img, image, svg { display: none; }
+    img,
+    image,
+    svg {
+        display: none;
+    }
 }

@@ -22,6 +22,7 @@
 <script>
 export default {
     name: 'RedisCacheConfig',
+    emits: ['is-valid'],
     props: {
         hostname: {
             type: String,
@@ -51,13 +52,13 @@ export default {
     },
     watch: {
         theHostname: {
-            handler (current) {
+            handler () {
                 this.$emit('is-valid', this.isValid());
             },
             immediate: true
         },
         thePort: {
-            handler (current) {
+            handler () {
                 this.$emit('is-valid', this.isValid());
             },
             immediate: true

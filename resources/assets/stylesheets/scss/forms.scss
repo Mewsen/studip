@@ -41,8 +41,8 @@ form.default {
     input[type=password], input[type=text], input[type=time], input[type=url], input[type=tel],
     textarea, select {
         box-sizing: border-box;
-
         border: 1px solid var(--light-gray-color-40);
+        border-radius: var(--border-radius-default);
         color: var(--dark-gray-color);
         max-width: $max-width-m;
         padding: 5px;
@@ -79,7 +79,7 @@ form.default {
     }
 
     input[list] {
-        @include background-icon(arr_1down, clickable);
+        @include background-icon(arr_1down);
 
         background-repeat: no-repeat;
         background-position: center right 4px;
@@ -136,6 +136,7 @@ form.default {
     }
 
     .formpart {
+        display: block;
         margin-bottom: $gap;
 
         output.calculator_result {
@@ -198,12 +199,12 @@ form.default {
         margin-top: 2ex;
     }
 
-    fieldset {
+    fieldset:not(.undecorated) {
         box-sizing: border-box;
         border: solid 1px var(--color--fieldset-border);
         margin: 0 0 15px;
         min-width: auto;
-        padding: 0 0 10px 0;
+        padding: 0 10px 10px 10px;
 
         > legend {
             box-sizing: border-box;
@@ -212,8 +213,8 @@ form.default {
             border-bottom: 0;
             font-size: $font-size-h3;
             padding: 10px;
-            margin: 0 0 10px -1px;
-            width: calc(100% + 2px);
+            margin: 0 0 10px -11px;
+            width: calc(100% + 22px);
         }
 
         // Insert invisible element that corrects double padding/margin at the
@@ -224,10 +225,18 @@ form.default {
             margin-top: -$gap;
         }
 
-        > :not(legend) {
-            margin-left: 10px;
-            margin-right: 10px;
+        > :not(legend, table) {
             max-width: calc(100% - 20px);
+        }
+    }
+
+    fieldset.undecorated {
+        border: none;
+        margin: 0;
+        padding: 0;
+
+        > legend {
+            margin-bottom: 0.5ex;
         }
     }
 
@@ -273,10 +282,10 @@ form.default {
         }
     }
 
-    //Special inputs
+    // Special inputs
 
     label.file-upload {
-        @include background-icon(upload, clickable);
+        @include background-icon(upload);
 
         background-repeat: no-repeat;
         background-position: top left;
@@ -396,7 +405,7 @@ form.default {
     fieldset.collapsable {
         > legend {
             box-sizing: border-box;
-            @include background-icon(arr_1down, clickable, 20);
+            @include background-icon(arr_1down);
             background-position: 6px center;
             background-repeat: no-repeat;
             cursor: pointer;
@@ -405,7 +414,7 @@ form.default {
 
         &.collapsed {
             > legend {
-                @include background-icon(arr_1right, clickable, 20);
+                @include background-icon(arr_1right);
                 margin-bottom: 0;
             }
             padding-bottom: 0;
@@ -470,7 +479,7 @@ form.default {
         margin-top: 0.5ex;
     }
 
-    //hidden radio buttons with icon:
+    // hidden radio buttons with icon:
 
     input[type="radio"].hidden-checkbox, input[type="checkbox"].hidden-checkbox {
         display:none;
@@ -510,7 +519,7 @@ form.default {
 
     &.show_validation_hints {
         :invalid, .invalid {
-           @include icon(before, exclaim-circle, attention, 16px, 5px);
+           @include icon(before, exclaim-circle, attention, $padding: 5px);
             display: inline-block;
         }
         textarea:invalid, input[type=text]:invalid {
@@ -518,12 +527,12 @@ form.default {
         }
     }
 
-    //designing vue-select in studipform:
+    // designing vue-select in studipform:
     .vs__dropdown-toggle {
-        border-radius: 0;
+        border-radius: var(--border-radius-default);
     }
     .vs__selected {
-        border-radius: 0;
+        border-radius: var(--border-radius-default);
         padding: 5px;
     }
 
@@ -564,6 +573,13 @@ form.default {
             margin-top: 0.5ex;
         }
     }
+    .multiquicksearch > li {
+        display: flex;
+        align-items: center;
+        a.delete_item {
+            margin-left: 5px;
+        }
+    }
 }
 
 form.narrow {
@@ -576,7 +592,7 @@ form.narrow {
 }
 
 // give forms some optimized styling for very narrow screen sizes
-@include media-breakpoint-tiny-down(){
+@include media-breakpoint-tiny-down{
     form.default {
         label.col-1, div.col-1, section.col-1,
         label.col-2, div.col-2, section.col-2,
@@ -623,7 +639,7 @@ form.inline {
 }
 
 .studip-dialog {
-    [data-vue-app],
+    > .ui-dialog-content > [data-vue-app],
     &.no-default-buttons .ui-dialog-content {
         min-height: 100%;
         display: flex;
@@ -649,11 +665,12 @@ form.inline {
             footer[data-dialog-button] {
                 background: var(--white);
                 border-top-color: var(--base-color-20);
-                bottom: -0.5em;
+                bottom: 0;
                 margin-top: auto;
                 padding: 0.5em 0;
                 position: sticky;
                 text-align: center;
+                z-index: 2;
             }
         }
     }

@@ -120,7 +120,6 @@ class StructuralElementsUpdate extends JsonApiController
                 'payload',
                 'position',
                 'public',
-                'purpose',
                 'title',
                 'permission-type',
                 'visible',
@@ -135,6 +134,9 @@ class StructuralElementsUpdate extends JsonApiController
                 if ($val = self::arrayGet($json, 'data.attributes.' . $jsonKey, '')) {
                     $resource->$sormKey = $val;
                 }
+            }
+            if (self::arrayHas($json, 'data.attributes.purpose') && $resource->purpose !== 'task') {
+                $resource->purpose = self::arrayGet($json, 'data.attributes.purpose');
             }
             if (self::arrayHas($json, 'data.attributes.visible-all')) {
                 $resource->visible_all = self::arrayGet($json, 'data.attributes.visible-all');

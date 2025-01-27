@@ -29,6 +29,7 @@
 import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'file-chooser-file-item',
+    emits: ['selectId'],
     props: {
         file: {
             type: Object,

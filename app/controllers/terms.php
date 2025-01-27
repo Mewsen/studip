@@ -26,6 +26,9 @@ class TermsController extends AuthenticatedController
 
         $this->compulsory = Config::get()->TERMS_CONFIG['compulsory'];
         $this->denial_message = '';
+
+        $this->terms_of_use = $this->getTermsOfUse();
+
         if (Request::isPost()) {
             CSRFProtection::verifyUnsafeRequest();
             if (Request::submitted('accept')) {
@@ -33,7 +36,7 @@ class TermsController extends AuthenticatedController
                 $this->redirectUser();
             } else {
                 $_SESSION['logout_ticket'] = get_ticket();
-                $this->redirectUser('logout.php');
+                $this->redirectUser('dispatch.php/logout');
             }
         } elseif (Request::get('action') === 'denied') {
             if (trim(Config::get()->TERMS_CONFIG['denial_message'])) {
@@ -58,5 +61,35 @@ class TermsController extends AuthenticatedController
             $target = $target ?: 'dispatch.php/start';
         }
         $this->redirect(URLHelper::getURL($target));
+    }
+
+
+    /**
+     * @return array|null
+     */
+    private function getTermsOfUse()
+    {
+        $url = Config::get()->TERMS_OF_USE_URL;
+
+        if (is_internal_url($url)) {
+            $url_parts = explode('/', $url);
+            $detail_id = $url_parts[4];
+            $si = new Siteinfo();
+            $detail = $si->get_detail($detail_id);
+            if (empty($detail) || !empty($detail['draft_status']) || !empty($detail['page_disabled_nobody'])) {
+                return null;
+            }
+
+            return [
+                'type' => 'internal_url',
+                'content' => $si->get_detail_content_processed($detail_id)
+            ];
+
+        }
+
+        return [
+            'type' => 'external_url',
+            'url' => $url
+        ];
     }
 }

@@ -1,13 +1,13 @@
 <template>
     <v-select ref="select"
-        @change="updateValue"
-        v-bind="{...$props, ...$attrs}"
-        v-on="$listeners"
-        :calculate-position="withPopper"
-        class="studip-v-select"
-        append-to-body
+              v-bind="{...$props, ...$attrs}"
+              :model-value="modelValue"
+              @update:modelValue="value => $emit('update:modelValue', value)"
+              :calculate-position="withPopper"
+              class="studip-v-select"
+              append-to-body
     >
-        <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+        <template v-for="(index, name) in $slots" v-slot:[name]="data">
             <slot :name="name" v-bind="data"></slot>
         </template>
     </v-select>
@@ -17,13 +17,16 @@
 import vSelect from 'vue-select';
 import { createPopper } from '@popperjs/core'
 import 'vue-select/dist/vue-select.css'
+
 export default {
     name: 'studip-select',
+    emits: ['update:modelValue'],
     inheritAttrs: false,
     components: {
         vSelect,
     },
     props: {
+        modelValue: [String, Number, Object, Array],
         maxHeight: {
             type: String,
             default: '12em'
@@ -31,7 +34,8 @@ export default {
     },
     methods: {
         updateValue(val) {
-            this.$emit('input', val)
+            console.log('Updating value', val);
+            this.$emit('update:modelValue', val)
         },
         withPopper(dropdownList, component, { width }) {
             if (component.$el?.offsetParent.classList.contains('studip-dialog-content')) {

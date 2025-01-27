@@ -45,6 +45,23 @@ final class VueCollector extends DataCollector implements Renderable
             }
         }
 
+        $slots = $this->app->getSlots();
+        if (count($slots) > 0) {
+            ksort($slots);
+
+            $data['== SLOTS =='] = count($slots) . ' items';
+            foreach ($slots as $key => $value) {
+                $data[$key] = $this->dumpVar($value);
+            }
+        }
+
+        $components = $this->app->getComponents();
+        ksort($components);
+        $data['== COMPONENTS =='] = count($components) . ' items';
+        foreach ($components as $value) {
+            $data[$value] = '';
+        }
+
         return $data;
     }
 

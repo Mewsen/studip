@@ -12,7 +12,7 @@
             </h2>
             <courseware-block-comments
                 v-if="isBlock && isComment"
-                :block="item" 
+                :block="item"
             />
             <courseware-structural-element-comments
                 v-if="isStructuralElement && isComment"
@@ -20,7 +20,7 @@
             />
             <courseware-block-feedback
                 v-if="isBlock && isFeedback"
-                :block="item" 
+                :block="item"
             />
             <courseware-structural-element-feedback
                 v-if="isStructuralElement && isFeedback"
@@ -44,6 +44,7 @@ export default {
         CoursewareStructuralElementComments,
         CoursewareStructuralElementFeedback
     },
+    emits: ['close'],
     props: {
         itemType: String,
         item: Object,

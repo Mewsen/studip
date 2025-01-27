@@ -115,6 +115,7 @@ class RouteMap
 
         $group->get('/status-groups/{id}', Routes\StatusgroupShow::class);
 
+        $this->addAuthenticatedAdmissionRoutes($group);
         $this->addAuthenticatedBlubberRoutes($group);
         $this->addAuthenticatedClipboardRoutes($group);
         $this->addAuthenticatedConsultationRoutes($group);
@@ -126,16 +127,19 @@ class RouteMap
         }
 
         $this->addAuthenticatedAvatarRoutes($group);
+        $this->addAuthenticatedMvvRoutes($group);
         $this->addAuthenticatedEventsRoutes($group);
         $this->addAuthenticatedFeedbackRoutes($group);
         $this->addAuthenticatedFilesRoutes($group);
         $this->addAuthenticatedForumRoutes($group);
         $this->addAuthenticatedInstitutesRoutes($group);
         $this->addAuthenticatedLtiRoutes($group);
+        $this->addAuthenticatedMassMailRoutes($group);
         $this->addAuthenticatedMessagesRoutes($group);
         $this->addAuthenticatedNewsRoutes($group);
         $this->addAuthenticatedStockImagesRoutes($group);
         $this->addAuthenticatedStudyAreasRoutes($group);
+        $this->addAuthenticatedUserFilterRoutes($group);
         $this->addAuthenticatedWikiRoutes($group);
     }
 
@@ -155,6 +159,8 @@ class RouteMap
 
         $group->get('/studip/properties', Routes\Studip\PropertiesIndex::class);
 
+        $group->get('/datafields', Routes\DatafieldsIndex::class);
+
         if (\PluginManager::getInstance()->getPlugin(\CoursewareModule::class)) {
             $group->get('/public/courseware/{link_id}/courseware-structural-elements/{id}', Routes\Courseware\PublicStructuralElementsShow::class);
             $group->get('/public/courseware/{link_id}/courseware-structural-elements', Routes\Courseware\PublicStructuralElementsIndex::class);
@@ -168,6 +174,20 @@ class RouteMap
         return $this->app->getContainer()->get('studip-authenticator');
     }
 
+    private function addAuthenticatedAdmissionRoutes(RouteCollectorProxy $group): void {
+        $group->post('/course-sets', Routes\Admission\CourseSetsCreate::class);
+        $group->get('/course-sets/{id}', Routes\Admission\CourseSetsShow::class);
+        $group->patch('/course-sets/{id}', Routes\Admission\CourseSetsUpdate::class);
+        $group->delete('/course-sets/{id}', Routes\Admission\CourseSetsDelete::class);
+        $group->post('/admission/available-courses', Routes\Admission\AvailableCoursesIndex::class);
+        $group->get('/admission/rule-compatibility', Routes\Admission\RuleCompatibilityIndex::class);
+        $group->get('/admission-rules', Routes\Admission\AdmissionRulesIndex::class);
+        $group->post('/admission-rules/{type}', Routes\Admission\AdmissionRulesCreate::class);
+        $group->get('/admission-rules/{id}', Routes\Admission\AdmissionRulesShow::class);
+        $group->patch('/admission-rules/{id}', Routes\Admission\AdmissionRulesUpdate::class);
+        $group->delete('/admission-rules/{id}', Routes\Admission\AdmissionRulesDelete::class);
+    }
+
     private function addAuthenticatedBlubberRoutes(RouteCollectorProxy $group): void
     {
         // find BlubberThreads
@@ -179,6 +199,7 @@ class RouteMap
         $group->get('/users/{id}/blubber-threads', Routes\Blubber\ThreadsIndex::class)->setArgument('type', 'private');
         $group->get('/blubber-threads', Routes\Blubber\ThreadsIndex::class)->setArgument('type', 'all');
         $group->get('/blubber-threads/{id}', Routes\Blubber\ThreadsShow::class);
+        $group->post('/blubber-threads', Routes\Blubber\ThreadsCreate::class);
         $group->patch('/blubber-threads/{id}', Routes\Blubber\ThreadsUpdate::class);
 
         // create, read, update and delete BlubberComments
@@ -289,6 +310,14 @@ class RouteMap
         $group->get('/lti-tools', Routes\Lti\LtiToolsIndex::class);
     }
 
+
+    private function addAuthenticatedMassMailRoutes(RouteCollectorProxy $group): void
+    {
+        $group->get('/mass-mails/messages', Routes\MassMail\MassMailMessagesIndex::class);
+        $group->get('/mass-mails/permissions', Routes\MassMail\MassMailPermissionsIndex::class);
+        $group->get('/mass-mails/permissions/{id}', Routes\MassMail\MassMailPermissionsShow::class);
+    }
+
     private function addAuthenticatedNewsRoutes(RouteCollectorProxy $group): void
     {
         $group->post('/courses/{id}/news', Routes\News\CourseNewsCreate::class);
@@ -366,6 +395,8 @@ class RouteMap
         $group->get('/sem-classes/{id}/sem-types', Routes\Courses\SemTypesBySemClassIndex::class);
         $group->get('/sem-types', Routes\Courses\SemTypesIndex::class);
         $group->get('/sem-types/{id}', Routes\Courses\SemTypesShow::class);
+
+        $group->get('/module-components/{id}/courses', Routes\Courses\CoursesByModuleComponentsIndex::class);
     }
 
     private function addAuthenticatedCoursewareRoutes(RouteCollectorProxy $group): void
@@ -563,6 +594,23 @@ class RouteMap
         $group->delete('/courseware-clipboards/{id}', Routes\Courseware\ClipboardsDelete::class);
 
         $group->post('/courseware-clipboards/{id}/insert', Routes\Courseware\ClipboardsInsert::class);
+
+        $group->get('/courseware-peer-review-processes', Routes\Courseware\PeerReview\ProcessesIndex::class);
+        $group->get('/courseware-peer-review-processes/{id}', Routes\Courseware\PeerReview\ProcessesShow::class);
+        $group->get('/courseware-peer-review-processes/{id}/peer-reviews', Routes\Courseware\PeerReview\ReviewsOfProcessesIndex::class);
+
+        $group->patch('/courseware-peer-review-processes/{id}', Routes\Courseware\PeerReview\ProcessesUpdate::class);
+        $group->delete('/courseware-peer-review-processes/{id}', Routes\Courseware\PeerReview\ProcessesDelete::class);
+
+        $group->post('/courseware-peer-review-processes', Routes\Courseware\PeerReview\ProcessesCreate::class);
+
+        $group->get('/courses/{id}/courseware-peer-reviews', Routes\Courseware\PeerReview\ReviewsIndex::class);
+        $group->get('/courseware-tasks/{id}/peer-reviews', Routes\Courseware\PeerReview\ReviewsByTaskIndex::class);
+
+        $group->get('/courseware-peer-reviews/{id}', Routes\Courseware\PeerReview\ReviewsShow::class);
+        $group->post('/courseware-peer-reviews', Routes\Courseware\PeerReview\ReviewsCreate::class);
+        $group->patch('/courseware-peer-reviews/{id}', Routes\Courseware\PeerReview\ReviewsUpdate::class);
+        $group->delete('/courseware-peer-reviews/{id}', Routes\Courseware\PeerReview\ReviewsDelete::class);
     }
 
     private function addAuthenticatedFilesRoutes(RouteCollectorProxy $group): void
@@ -658,6 +706,38 @@ class RouteMap
         $group->delete('/{type:courses|institutes|users}/{id}/avatar', Routes\Avatar\AvatarofRangeDelete::class);
 
         $group->post('/{type:courses|institutes|users}/{id}/avatar', Routes\Avatar\AvatarUpload::class);
+    }
+
+    private function addAuthenticatedUserFilterRoutes(RouteCollectorProxy $group): void
+    {
+        $group->get('/user-filters/{id}', Routes\UserFilters\UserFiltersShow::class);
+        $group->post('/user-filters', Routes\UserFilters\UserFiltersCreate::class);
+        $group->patch('/user-filters/{id}', Routes\UserFilters\UserFiltersUpdate::class);
+        $group->delete('/user-filters/{id}', Routes\UserFilters\UserFiltersDelete::class);
+        $group->get('/user-filter-fields', Routes\UserFilters\UserFilterFieldsIndex::class);
+        $group->get('/user-filter-fields/{id}', Routes\UserFilters\UserFilterFieldsShow::class);
+    }
+
+    private function addAuthenticatedMvvRoutes(RouteCollectorProxy $group): void
+    {
+        $group->get('/courses-of-study', Routes\Mvv\CoursesOfStudyIndex::class);
+        $group->get('/courses-of-study/{id}', Routes\Mvv\CoursesOfStudyShow::class);
+        $group->get('/courses-of-study/{id}/components', Routes\Mvv\ComponentsByCoursesOfStudyIndex::class);
+        $group->get('/course-of-study-components/{id}/versions', Routes\Mvv\VersionsByCourseOfStudyComponentsIndex::class);
+        $group->get('/course-of-study-components/{id}/subject', Routes\Mvv\SubjectsByCourseOfStudyComponentsShow::class);
+        $group->get('/courses-of-study/{id}/degree', Routes\Mvv\DegreesByCoursesOfStudyShow::class);
+        $group->get('/degrees', Routes\Mvv\DegreesIndex::class);
+        $group->get('/degrees/{id}', Routes\Mvv\DegreesShow::class);
+        $group->get('/subjects',Routes\Mvv\SubjectsIndex::class);
+        $group->get('/subjects/{id}',Routes\Mvv\SubjectsShow::class);
+        $group->get('/component-versions/{id}', Routes\Mvv\ComponentVersionsShow::class);
+        $group->get('/modules', Routes\Mvv\ModulesIndex::class);
+        $group->get('/modules/{id}', Routes\Mvv\ModulesShow::class);
+        $group->get('/modules/{id}/module-components', Routes\Mvv\ModuleComponentsByModuleIndex::class);
+        $group->get('/module-components/{id}', Routes\Mvv\ModuleComponentsShow::class);
+        // not a JSON:API route
+        $group->get('/component-version-deep/{id}', Routes\Mvv\ComponentVersionsDeep::class);
+
     }
 
     private function addRelationship(RouteCollectorProxy $group, string $url, string $handler): void

@@ -25,6 +25,21 @@ abstract class StudipController extends Trails\Controller
     protected $allow_nobody = true; //should 'nobody' allowed for this controller or redirected to login?
     protected $_autobind = false;
 
+    public function __construct(\Trails\Dispatcher $dispatcher)
+    {
+        parent::__construct($dispatcher);
+        if ($this->with_session) {
+            $slimapp = app()->get(Slim\App::class);
+            if ($slimapp) {
+                $slimapp->add(Studip\Middleware\SeminarOpenMiddleware::class);
+                $slimapp->add(Studip\Middleware\AuthenticationMiddleware::class);
+                auth()->setNobody($this->allow_nobody);
+                $slimapp->add(Studip\Middleware\SessionMiddleware::class);
+            }
+        }
+    }
+
+
     /**
      * @return false|void
      */
@@ -37,22 +52,8 @@ abstract class StudipController extends Trails\Controller
         parent::before_filter($action, $args);
 
         if ($this->with_session) {
-            # open session
-            page_open([
-                'sess' => 'Seminar_Session',
-                'auth' => $this->allow_nobody ? 'Seminar_Default_Auth' : 'Seminar_Auth',
-                'perm' => 'Seminar_Perm',
-                'user' => 'Seminar_User'
-            ]);
-
-            // show login-screen, if authentication is "nobody"
-            $GLOBALS['auth']->login_if((Request::get('again') || !$this->allow_nobody) && $GLOBALS['user']->id == 'nobody');
-
             // Setup flash instance
             $this->flash = Trails\Flash::instance();
-
-            // set up user session
-            include 'lib/seminar_open.php';
         }
 
         // Set generic attribute that indicates whether the request was sent
@@ -85,13 +86,11 @@ abstract class StudipController extends Trails\Controller
     }
 
     /**
-     * Extended method to inject extended response object.
+     *  method to inject extended response object.
      */
-    public function erase_response()
+    public function injectResponse(Psr\Http\Message\ResponseInterface $response)
     {
-        parent::erase_response();
-
-        $this->response = new StudipResponse();
+        $this->response = new StudipResponse($response);
     }
 
     /**
@@ -140,9 +139,6 @@ abstract class StudipController extends Trails\Controller
             $this->response->add_header('X-WikiLink', format_help_url(PageLayout::getHelpKeyword()));
         }
 
-        if ($this->with_session) {
-            page_close();
-        }
     }
 
     /**
@@ -481,22 +477,21 @@ abstract class StudipController extends Trails\Controller
 
     /**
      * Renders a file
-     * @param string  $file                Path of the file to render
-     * @param string  $filename            Name of the file displayed to user
+     *
+     * @param string       $file                Path of the file to render
+     * @param string|null  $filename            Name of the file displayed to user
      *                                     (will equal $file when missing)
-     * @param string  $content_type        Optional content type (will be determined if missing)
-     * @param string  $content_disposition Either attachment (default) or inline
-     * @param Closure $callback            Optional callback when download has finished
-     * @param int     $chunk_size          Optional size of chunks to send (default: 256k)
+     * @param string|null  $content_type        Optional content type (will be determined if missing)
+     * @param string       $content_disposition Either attachment (default) or inline
+     * @param Closure|null $callback            Optional callback when download has finished
      */
     public function render_file(
-        $file,
-        $filename = null,
-        $content_type = null,
-        $content_disposition = 'attachment',
-        Closure $callback = null,
-        $chunk_size = 262144
-    ) {
+        string   $file,
+        ?string  $filename = null,
+        ?string  $content_type = null,
+        string   $content_disposition = 'attachment',
+        ?Closure $callback = null
+    ): void {
         if (!file_exists($file)) {
             throw new Trails\Exception(404);
         }
@@ -528,19 +523,16 @@ abstract class StudipController extends Trails\Controller
         $this->response->add_header('Content-Length', filesize($file));
         $this->response->add_header('Content-Transfer-Encoding',  'binary');
         $this->response->add_header('Pragma', 'public');
-        $this->render_text(function () use ($file, $chunk_size, $callback) {
-            $fp = fopen($file, 'rb');
 
-            while (!feof($fp)) {
-                yield fgets($fp, $chunk_size);
-            }
+        $this->render_text(
+            app(Psr\Http\Message\StreamFactoryInterface::class)->createStreamFromFile($file)
+        );
 
-            fclose($fp);
-
-            if ($callback) {
+        if ($callback) {
+            NotificationCenter::on('SLIM_AFTER_RUN', function () use ($callback, $file) {
                 $callback($file);
-            }
-        });
+            });
+        }
     }
 
     /**
@@ -548,23 +540,20 @@ abstract class StudipController extends Trails\Controller
      * This is just a convenience method so you don't have to write the delete
      * callback.
      *
-     * @param string  $file                Path of the file to render
-     * @param string  $filename            Name of the file displayed to user
+     * @param string       $file                Path of the file to render
+     * @param string|null  $filename            Name of the file displayed to user
      *                                     (will equal $file when missing)
-     * @param string  $content_type        Optional content type (will be determined if missing)
-     * @param string  $content_disposition Either attachment (default) or inline
-     * @param Closure $callback            Optional callback when download has finished
-     * @param int     $chunk_size          Optional size of chunks to send (default: 256k)
+     * @param string|null  $content_type        Optional content type (will be determined if missing)
+     * @param string       $content_disposition Either attachment (default) or inline
+     * @param Closure|null $callback            Optional callback when download has finished
      */
     public function render_temporary_file(
-        $file,
-        $filename = null,
-        $content_type = null,
-        $content_disposition = 'attachment',
-        Closure $callback = null,
-        $chunk_size = 262144
-
-    ) {
+        string   $file,
+        ?string  $filename = null,
+        ?string  $content_type = null,
+        string   $content_disposition = 'attachment',
+        ?Closure $callback = null
+    ): void {
         $delete_callback = function ($file) use ($callback) {
             unlink($file);
 
@@ -578,14 +567,21 @@ abstract class StudipController extends Trails\Controller
             $filename,
             $content_type,
             $content_disposition,
-            $delete_callback,
-            $chunk_size
+            $delete_callback
         );
     }
 
+    /**
+     * Renders a stud.ip form object.
+     *
+     * @param \Studip\Forms\Form   $form   the form that should be rendered.
+     */
     public function render_form(\Studip\Forms\Form $form)
     {
         \NotificationCenter::postNotification('FormWillRender', $form);
+        if (\Request::isDialog()) {
+            $this->response->add_header('X-No-Buttons', 1);
+        }
         $this->render_template($form->getTemplate(), $this->layout);
     }
 
@@ -597,8 +593,13 @@ abstract class StudipController extends Trails\Controller
      */
     public function render_vue_app(\Studip\VueApp $app): void
     {
+        \NotificationCenter::postNotification('VueAppWillRender', $app);
+
         $this->render_template($app->getTemplate(), $this->layout);
+
+        \NotificationCenter::postNotification('VueAppDidRender', $app);
     }
+
 
     /**
      * relays current request to another controller and returns the response
@@ -641,7 +642,7 @@ abstract class StudipController extends Trails\Controller
         // If the relayed action should perform a redirect, do so
         if (isset($response->headers['Location'])) {
             header("Location: {$response->headers['Location']}");
-            page_close();
+            sess()->save();
             die;
         }
 

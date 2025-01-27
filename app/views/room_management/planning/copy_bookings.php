@@ -207,17 +207,9 @@
                             </td>
                             <td>
                                 <?= Icon::create(
-                                    (
-                                        $data['available']
-                                        ? 'accept'
-                                        : 'decline'
-                                    ),
-                                    (
-                                        $data['available']
-                                        ? 'status-green'
-                                        : 'status-red'
-                                    )
-                                )->asImg('20px', ['class' => 'text-bottom']) ?>
+                                    $data['available'] ? 'accept' : 'decline',
+                                    $data['available'] ? Icon::ROLE_STATUS_GREEN : Icon::ROLE_STATUS_RED
+                                )->asImg(['class' => 'text-bottom']) ?>
                             </td>
                         </tr>
                     <? endforeach ?>

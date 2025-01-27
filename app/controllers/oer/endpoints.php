@@ -322,7 +322,7 @@ class Oer_EndpointsController extends StudipController
         while (ob_get_level()) {
             ob_end_clean();
         }
-        page_close();
+        sess()->save();
 
         if (!file_exists($this->material->getFilePath())) {
             throw new Exception(_('Die gewünschte Datei konnte nicht gefunden werden.'));

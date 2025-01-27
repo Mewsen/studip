@@ -43,7 +43,7 @@
                     </td>
                     <td class="actions">
                         <a href="<?= $controller->url_for('admin/lockrules/edit/' . $rule->lock_id) ?>">
-                            <?= Icon::create('edit', Icon::ROLE_CLICKABLE, ['title' => _('Diese Regel bearbeiten')])->asImg() ?>
+                            <?= Icon::create('edit')->asImg(['title' => _('Diese Regel bearbeiten')]) ?>
                         </a>
 
                         <?
@@ -53,10 +53,12 @@
                         <? else : ?>
                             <? $msg = sprintf(_('Möchten Sie die Ebene %s löschen?'), $rule->name) ?>
                         <? endif ?>
-                        <?= Icon::create('trash', Icon::ROLE_CLICKABLE, [
-                                'title' => _('Diese Regel löschen'),
-                                'style' => 'vertical-align: middle'
-                            ])->asInput(['data-confirm'=>$msg,'formaction'=>$controller->url_for('admin/lockrules/delete/'.$rule->lock_id)]) ?>
+                        <?= Icon::create('trash')->asInput([
+                            'title' => _('Diese Regel löschen'),
+                            'style' => 'vertical-align: middle',
+                            'data-confirm' => $msg,
+                            'formaction' => $controller->url_for('admin/lockrules/delete/'.$rule->lock_id)
+                        ]) ?>
                     </td>
                 </tr>
             <? endforeach; ?>

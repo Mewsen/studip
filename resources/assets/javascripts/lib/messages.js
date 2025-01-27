@@ -1,5 +1,4 @@
 import { $gettext } from './gettext';
-import Markup from './markup.js';
 
 const Messages = {
     init() {
@@ -185,7 +184,7 @@ const Messages = {
                     jQuery(this).remove();
                 });
             })
-            .fail(function(jqxhr, status, errorThrown) {
+            .fail(function(jqxhr) {
                 var error = jqxhr.responseJSON.error;
 
                 statusbar

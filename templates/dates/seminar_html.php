@@ -112,7 +112,7 @@ if (!$dates['regular']['turnus_data'] && empty($dates['irregular'])) {
         echo '<br>';
         printf(
             _('Details zu allen Terminen im %sAblaufplan%s'),
-            '<a href="' . URLHelper::getLink('seminar_main.php', array('auswahl' => $seminar_id, 'redirect_to' => 'dispatch.php/course/dates')) . '">',
+            '<a href="' . URLHelper::getLink('dispatch.php/course/go', array('to' => $seminar_id, 'redirect_to' => 'dispatch.php/course/dates')) . '">',
             '</a>'
         );
     }

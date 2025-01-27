@@ -109,12 +109,12 @@ $ownColor: var(--petrol-40);
             }
         }
 
-        &:after {
+        &::after {
             content: ' ';
             position: absolute;
             width: 0;
             height: 0;
-            top: 0px;
+            top: 0;
             bottom: auto;
             border: 16px solid;
             border-color: $color transparent transparent transparent;

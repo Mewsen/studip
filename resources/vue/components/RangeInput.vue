@@ -9,21 +9,23 @@
                :aria-valuemax="max"
                :aria-valuenow="myValue"
                v-bind="$attrs"
-               v-on="$listeners"
                v-model="myValue">
-        <output for="fader"><translate :translate-params="{myValue: myValue || '1', max: max}">%{myValue} von %{max}</translate></output>
+        <output for="fader">
+            {{ $gettext('%{myValue} von %{max}', {myValue: myValue || '1', max: max}) }}
+        </output>
     </div>
 </template>
 
 <script>
 export default {
     name: 'range-input',
+    emits: ['update:modelValue'],
     props: {
         name: {
             type: String,
             required: true
         },
-        value: {
+        modelValue: {
             required: false,
             default: 1
         },
@@ -49,7 +51,7 @@ export default {
         };
     },
     mounted () {
-        this.myValue = this.value > this.min ? this.value : this.min;
+        this.myValue = this.modelValue > this.min ? this.modelValue : this.min;
         if (this.myValue > this.max) {
             this.myValue = this.max;
         }
@@ -57,8 +59,8 @@ export default {
     inheritAttrs: false,
     watch: {
         myValue: {
-            handler(newValue, oldValue) {
-                this.$emit('input', newValue);
+            handler(newValue) {
+                this.$emit('update:modelValue', newValue);
             },
             deep: true
         }

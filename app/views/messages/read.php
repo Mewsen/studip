@@ -67,7 +67,7 @@
     <?= formatReady($message["message"]) ?>
 </div>
 <? if($attachment_folder): ?>
-<h3><?= Icon::create('staple', 'inactive')->asImg(20, ["class" => "text-bottom"]) ?><?= _('Anhänge') ?></h3>
+<h3><?= Icon::create('staple', Icon::ROLE_INACTIVE)->asImg(['class' => 'text-bottom']) ?><?= _('Anhänge') ?></h3>
     <table class="default sortable-table" data-sortlist="[[2, 0]]">
         <?= $this->render_partial('files/_files_thead') ?>
         <? foreach($attachment_folder->getFiles() as $file): ?>

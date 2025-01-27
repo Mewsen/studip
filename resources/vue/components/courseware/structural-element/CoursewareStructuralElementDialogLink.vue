@@ -12,16 +12,15 @@
         <template v-slot:unit>
             <form v-if="!loadingUnits" class="default" @submit.prevent="">
                 <fieldset v-if="hasUnits" class="radiobutton-set">
-                    <template v-for="unit in units">
+                    <template v-for="unit in units" :key="unit.id">
                         <input
                             :id="'cw-element-link-unit-' + unit.id"
                             type="radio"
                             :checked="unit.id === selectedUnitId"
                             :value="unit.id"
-                            :key="'radio-' + unit.id"
                             :aria-description="unit.element.attributes.title"
                         />
-                        <label @click="selectedUnit = unit" :key="'label-' + unit.id" :for="'cw-element-link-unit-' + unit.id">
+                        <label @click="selectedUnit = unit" :for="'cw-element-link-unit-' + unit.id">
                             <div class="icon"><studip-icon shape="courseware" :size="32"/></div>
                             <div class="text">{{ unit.element.attributes.title }}</div>
                             <studip-icon shape="radiobutton-unchecked" :size="24" class="unchecked" />
@@ -35,7 +34,7 @@
                     :msgCompanion="$gettext('Es konnte leider kein Lernmaterial gefunden werden. Bitte erstellen Sie unter Arbeitsplatz/Courseware ein Lernmaterial.')"
                 />
             </form>
-            <studip-progress-indicator 
+            <studip-progress-indicator
                 v-else
                 :description="$gettext('Lade Lernmaterialien…')"
             />
@@ -75,9 +74,9 @@ export default {
     data() {
         return {
             wizardSlots: [
-                {id: 1, valid: false, name: 'unit', title: this.$gettext('Lernmaterial'), icon: 'courseware', 
+                {id: 1, valid: false, name: 'unit', title: this.$gettext('Lernmaterial'), icon: 'courseware',
                 description: this.$gettext('Wählen Sie das Lernmaterial aus, in dem sich der zu verknüpfende Lerninhalt befindet. Die Lerninhalte, die verknüpft werden können, müssen unter Arbeitsplatz/Courseware vorher erstellt werden.')},
-                {id: 2, valid: false, name: 'element', title: this.$gettext('Seite'), icon: 'content2', 
+                {id: 2, valid: false, name: 'element', title: this.$gettext('Seite'), icon: 'content2',
                 description: this.$gettext('Wählen Sie die zu verknüpfende Seite aus. Um Unterseiten anzuzeigen, klicken Sie auf den Seitennamen. Mit einem weiteren Klick werden die Unterseiten wieder zugeklappt.')},            ],
             loadingUnits: false,
             selectedUnit: null,
@@ -110,10 +109,10 @@ export default {
         },
         selectedUnitId() {
             return this.selectedUnit?.id;
-        }, 
+        },
         selectedUnitRootId() {
             return this.selectedUnit?.relationships?.['structural-element']?.data?.id;
-        }, 
+        },
         selectedElementTitle() {
             return this.selectedElement?.attributes?.title;
         },
@@ -169,29 +168,28 @@ export default {
             return this.structuralElementById({id: unit.relationships['structural-element'].data.id});
         },
         linkElement() {
-            let view = this;
             this.linkStructuralElement({
                 parentId: this.currentElement,
                         elementId: this.selectedElement.id,
                 })
                 .then( () => {
-                    view.companionSuccess({
-                        info: view.$gettextInterpolate(
-                            view.$gettext('Die Seite %{ pageTitle } wurde erfolgreich verknüpft.'),
-                            { pageTitle: view.selectedElementTitle }
+                    this.companionSuccess({
+                        info: this.$gettext(
+                            'Die Seite %{ pageTitle } wurde erfolgreich verknüpft.',
+                            { pageTitle: this.selectedElementTitle }
                         )
                     });
                 })
                 .catch( () => {
-                    view.companionError({
-                        info: view.$gettextInterpolate(
-                            view.$gettext('Die Seite %{ pageTitle } konnte nicht verknüpft werden.'),
-                            { pageTitle: view.selectedElementTitle }
+                    this.companionError({
+                        info: this.$gettext(
+                            'Die Seite %{ pageTitle } konnte nicht verknüpft werden.',
+                            { pageTitle: this.selectedElementTitle }
                         )
                     });
                 })
                 .finally(() => {
-                    view.showElementLinkDialog(false);
+                    this.showElementLinkDialog(false);
                 });
         },
         selectElement(id) {

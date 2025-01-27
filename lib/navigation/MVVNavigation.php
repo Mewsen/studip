@@ -59,6 +59,9 @@ class MVVNavigation extends Navigation
         $modul_navigation->addSubNavigation('module',
                 new Navigation(_('Module'),
                 'dispatch.php/module/module'));
+        $modul_navigation->addSubNavigation('institutes',
+            new Navigation(_('Verantwortliche Einrichtungen'),
+                'dispatch.php/module/institute/index'));
         $this->addSubNavigation('module', $modul_navigation);
 
         $lvg_navigation = new Navigation(_('LV-Gruppen'));

@@ -237,6 +237,7 @@ class StudipNews extends SimpleORMap implements PrivacyObject
             $where_querypart[]  = "topic LIKE CONCAT('%', ?, '%')";
             $query_vars[]       = $term;
         }
+
         switch ($area) {
             case 'global':
                 $select_querypart   = 'CONCAT(news_id, "_studip") AS idx, range_id, news.* ';
@@ -248,6 +249,17 @@ class StudipNews extends SimpleORMap implements PrivacyObject
                     $order_querypart = 'news.date DESC, news.chdate DESC';
                 }
                 $query_vars[]       = 'studip';
+                break;
+            case 'login':
+                $select_querypart   = 'CONCAT(news_id, "_studip") AS idx, range_id, news.* ';
+                $from_querypart     = 'news_range INNER JOIN news USING(news_id)';
+                $where_querypart[]  = 'range_id = ?';
+                if (Config::get()->SORT_NEWS_BY_CHDATE) {
+                    $order_querypart = 'news.chdate DESC, news.date DESC';
+                } else {
+                    $order_querypart = 'news.date DESC, news.chdate DESC';
+                }
+                $query_vars[]       = 'login';
                 break;
             case 'sem':
                 $select_querypart   = 'CONCAT(news_id, "_", range_id) AS idx, range_id, seminare.Name AS title, '
@@ -280,7 +292,7 @@ class StudipNews extends SimpleORMap implements PrivacyObject
                 }
                 break;
             default:
-                foreach (['global', 'inst', 'sem', 'user'] as $type) {
+                foreach (['global', 'login', 'inst', 'sem', 'user'] as $type) {
                     $add_news = static::GetNewsRangesByFilter($user_id, $type, $term, $startdate, $enddate, $as_objects, $limit);
                     if (is_array($add_news) && isset($add_news[$type])) {
                         $limit          = $limit - count($add_news[$type]);
@@ -320,6 +332,9 @@ class StudipNews extends SimpleORMap implements PrivacyObject
                 }
             } elseif ($area === 'global') {
                 $objects[$area][$id]['title'] = _('Ankündigungen auf der Stud.IP Startseite');
+            }
+            elseif ($area === 'login') {
+                $objects[$area][$id]['title'] = _('Ankündigungen auf der Stud.IP Loginseite');
             }
             if ($as_objects) {
                 $objects[$area][$id]['object'] = self::build($result, false);

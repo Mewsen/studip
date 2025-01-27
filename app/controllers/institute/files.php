@@ -56,9 +56,8 @@ class Institute_FilesController extends AuthenticatedController
             $actions->addLink(
                 _("Ordner bearbeiten"),
                 $this->url_for("file/edit_folder/".$this->topFolder->getId()),
-                Icon::create("edit", "clickable"),
-                ['data-dialog' => 1]
-            );
+                Icon::create('edit')
+            )->asDialog();
         }
 
         if ($this->topFolder && $this->topFolder->isSubfolderAllowed($GLOBALS['user']->id)) {
@@ -67,14 +66,14 @@ class Institute_FilesController extends AuthenticatedController
                 URLHelper::getUrl(
                     'dispatch.php/file/new_folder/' . $this->topFolder ->getId()
                 ),
-                Icon::create('folder-empty', 'clickable')
+                Icon::create('folder-empty')
             )->asDialog();
         }
         if ($this->topFolder && $this->topFolder->isWritable($GLOBALS['user']->id)) {
             $actions->addLink(
                 _('Dokument hinzufügen'),
                 '#',
-                Icon::create('add', 'clickable'),
+                Icon::create('add'),
                 ['onclick' => "STUDIP.Files.openAddFilesWindow(); return false;"]
             );
         }

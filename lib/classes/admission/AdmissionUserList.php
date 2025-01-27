@@ -201,13 +201,24 @@ class AdmissionUserList
     }
 
     /**
+     * Just counts the number of users and returns the value.
+     */
+    public function getUserCount(): int
+    {
+        return (int) DBManager::get()->fetchColumn(
+            "SELECT COUNT(DISTINCT `user_id`) FROM `user_factorlist` WHERE `list_id` = :id",
+            ['id' => $this->getId()]
+        );
+    }
+
+    /**
      * Helper function for loading data from DB.
      */
     public function load()
     {
         // Load basic data.
         $stmt = DBManager::get()->prepare("SELECT `list_id`, `name`,
-                CAST(`factor` AS UNSIGNED) AS factor, `owner_id`, `mkdate`, `chdate` 
+                CAST(`factor` AS UNSIGNED) AS factor, `owner_id`, `mkdate`, `chdate`
             FROM `admissionfactor` WHERE `list_id`=? LIMIT 1");
         $stmt->execute([$this->id]);
         if ($current = $stmt->fetch(PDO::FETCH_ASSOC)) {

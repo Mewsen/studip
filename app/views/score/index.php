@@ -55,12 +55,12 @@
                     <?= htmlReady($person['fullname']) ?>
                 </a>
             <? foreach ($person['is_king'] as $type => $text): ?>
-                <?= Icon::create('crown', Icon::ROLE_SORT, ['title' => $text])->asImg(16, ["alt" => $text, "class" => 'text-top']) ?>
+                <?= Icon::create('crown', Icon::ROLE_SORT)->asImg(['title' => $text, 'alt' => $text, 'class' => 'text-top']) ?>
             <? endforeach ?>
             </td>
             <td class="hidden-small-down">
             <?
-            $content = Assets::img('blank.gif', ['width' => 16]) . ' ';
+            $content = Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
 
             // News
             if (!empty($person['newscount'])) {
@@ -71,7 +71,7 @@
                     Icon::create('news', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asImg()
                 );
             } else {
-                $content .= Assets::img('blank.gif', ['width' => 16]) . ' ';
+                $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
             }
 
             // Votes
@@ -83,7 +83,7 @@
                     Icon::create('vote', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asImg()
                 );
             } else {
-                $content .= Assets::img('blank.gif', ['width' => 16]) . ' ';
+                $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
             }
 
             // Termine
@@ -95,10 +95,10 @@
                     Icon::create('schedule', Icon::ROLE_CLICKABLE, ['title' => $tmp])->asImg()
                 );
             } else {
-                $content .= Assets::img('blank.gif', ['width' => 16]) . ' ';
+                $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
             }
 
-            $content .= Assets::img('blank.gif', ['width' => 16]) . ' ';
+            $content .= Assets::img('blank.gif', ['width' => Icon::SIZE_DEFAULT]) . ' ';
 
             echo $content;
             ?>
@@ -109,7 +109,7 @@
             <? if($person['user_id'] == $GLOBALS['user']->id): ?>
                 <a href="<?= $controller->url_for('score/unpublish') ?>">
                     <?= Icon::create('trash', Icon::ROLE_CLICKABLE, ['title' => _('Ihren Wert von der Liste löschen')])
-                        ->asImg(16, ["class" => 'text-top'])
+                        ->asImg(["class" => 'text-top'])
                     ?>
                 </a>
             <? endif; ?>

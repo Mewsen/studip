@@ -1,7 +1,7 @@
 <template>
-    <div class="controls">
+    <div class="controls" v-if="isVisible">
         <div>
-            <label v-if="!module.mandatory">
+            <label>
                 <input type="checkbox" :checked="module.active" @click="toggleModuleActivation(module)" :ref="'checkbox_' + module.id">
                 {{ module.active ? $gettext('Werkzeug ist aktiv') : $gettext('Werkzeug ist inaktiv') }}
             </label>
@@ -10,12 +10,12 @@
             <a href="#"
                class="toggle_visibility"
                role="checkbox"
-               v-if="module.active && !module.mandatory"
+               v-if="module.active"
                :aria-checked="module.visibility !== 'tutor' ? 'true' : 'false'"
                @click.prevent="toggleModuleVisibility(module)">
                 <studip-icon :shape="module.visibility !== 'tutor' ? 'visibility-visible' : 'visibility-invisible'"
                              class="text-bottom"
-                             :title="$gettextInterpolate($gettext('Inhaltsmodul %{ name } für Teilnehmende unsichtbar bzw. sichtbar schalten'), { name: module.displayname}, true)"></studip-icon>
+                             :title="$gettext('Inhaltsmodul %{ name } für Teilnehmende unsichtbar bzw. sichtbar schalten', { name: module.displayname}, true)"></studip-icon>
             </a>
         </div>
     </div>
@@ -33,8 +33,11 @@ export default {
     },
     mixins: [ContentModulesMixin],
     computed: {
+        isVisible() {
+            return !this.module.mandatory;
+        },
         module () {
-            return this.modules.find(m => m.id == this.module_id) ?? null;
+            return this.modules.find(m => m.id === this.module_id) ?? null;
         }
     }
 };
@@ -42,47 +45,54 @@ export default {
 <style lang="scss">
 .contentmodule_info {
     display: flex;
-    > .main_part {
-        > .header {
+    .main_part {
+        flex-grow: 1;
+
+        .header {
             display: flex;
             align-items: center;
-            > .image {
+            .image {
                 width: 200px;
                 height: 150px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
             }
-            > .text {
+            .text {
                 display: flex;
                 flex-direction: column;
             }
 
         }
-        > .controls {
-            background-color: var(--content-color-20);
+        [data-vue-app] {
+            min-height: unset;
+        }
+        .controls {
+            background-color: var(--color--fieldset-header);
             padding: 5px;
             display: flex;
             justify-content: space-between;
         }
-        > .keywords {
+        .keywords {
             margin-top: 10px;
             margin-bottom: 10px;
             padding-left: 25px;
         }
-        > .description {
+        .description {
             margin-top: 10px;
+            padding: 0 1em;
         }
     }
-    > .screenshots {
+    .screenshots {
         margin-left: 10px;
         max-width: 270px;
-        > li {
+        li {
             margin-top: 20px;
             margin-bottom: 20px;
             img {
                 display: block;
                 width: 100%;
+                border: solid thin var(--color--tile-border);
             }
         }
 

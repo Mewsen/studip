@@ -12,19 +12,17 @@
         <template v-slot:sourceunit>
             <form class="default" @submit.prevent="">
                 <fieldset v-if="sourceUnits.length !== 0" class="radiobutton-set">
-                    <template v-for="unit in sourceUnits">
+                    <template v-for="unit in sourceUnits" :key="'radio-' + unit.id">
                         <input
                             :id="'cw-task-dist-source-unit' + unit.id"
                             type="radio"
                             v-model="selectedSourceUnit"
                             :checked="unit.id === selectedSourceUnitId"
                             :value="unit"
-                            :key="'radio-' + unit.id"
                             :aria-description="unit.element.attributes.title"
                         />
                         <label
                             @click="selectedSourceUnit = unit"
-                            :key="'label-' + unit.id"
                             :for="'cw-task-dist-source-unit' + unit.id"
                         >
                             <div class="icon"><studip-icon shape="courseware" :size="32" /></div>
@@ -89,19 +87,17 @@
         <template v-slot:targetunit>
             <form v-if="selectedTaskIsTask" class="default" @submit.prevent="">
                 <fieldset v-if="targetUnits.length !== 0" class="radiobutton-set">
-                    <template v-for="unit in targetUnits">
+                    <template v-for="unit in targetUnits" :key="'radio-' + unit.id">
                         <input
                             :id="'cw-task-dist-target-unit' + unit.id"
                             type="radio"
                             v-model="selectedTargetUnit"
                             :checked="unit.id === selectedTargetUnitId"
                             :value="unit"
-                            :key="'radio-' + unit.id"
                             :aria-description="unit.element.attributes.title"
                         />
                         <label
                             @click="selectedTargetUnit = unit"
-                            :key="'label-' + unit.id"
                             :for="'cw-task-dist-target-unit' + unit.id"
                         >
                             <div class="icon"><studip-icon shape="courseware" :size="32" /></div>
@@ -176,11 +172,11 @@
                                         type="checkbox"
                                         v-model="selectedAutors"
                                         :value="user.user_id"
-                                        :aria-label="
-                                            $gettextInterpolate($gettext('%{userName} auswählen'), {
-                                                userName: user.formattedname,
-                                            }, true)
-                                        "
+                                        :aria-label="$gettext(
+                                            '%{userName} auswählen',
+                                            { userName: user.formattedname },
+                                            true
+                                        )"
                                     />
                                 </td>
                                 <td>{{ user.formattedname }}</td>
@@ -214,11 +210,11 @@
                                         type="checkbox"
                                         v-model="selectedGroups"
                                         :value="group.id"
-                                        :aria-label="
-                                            $gettextInterpolate($gettext('%{groupName} auswählen'), {
-                                                groupName: group.name,
-                                            }, true)
-                                        "
+                                        :aria-label="$gettext(
+                                            '%{groupName} auswählen',
+                                            { groupName: group.name },
+                                            true
+                                        )"
                                     />
                                 </td>
                                 <td>{{ group.name }}</td>
@@ -253,6 +249,7 @@ const dateString = (date) =>
 
 export default {
     name: 'courseware-tasks-dialog-distribute',
+    emits: ['newtask'],
     components: {
         CoursewareCompanionBox,
         CoursewareStructuralElementSelector,
@@ -533,15 +530,9 @@ export default {
             }
             this.distributing = true;
             const startDate = new Date(this.startDate);
-            startDate.setHours(0);
-            startDate.setMinutes(0);
-            startDate.setSeconds(0);
-            startDate.setMilliseconds(0);
+            startDate.setHours(0, 0, 0, 0);
             const endDate = new Date(this.endDate);
-            endDate.setHours(23);
-            endDate.setMinutes(59);
-            endDate.setSeconds(59);
-            endDate.setMilliseconds(999);
+            endDate.setHours(23, 59, 59, 999);
             const taskGroup = {
                 attributes: {
                     title: this.taskTitle,

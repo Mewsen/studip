@@ -39,22 +39,18 @@ if ($rule->getStartTime() && $rule->getEndTime()) {
         'erfüllt sein:') ?>
     <br>
     <ul id="conditions">
-    <? foreach ($rule->getConditiongroups() as $conditiongroup_id => $conditions): ?>
-        <? if ($rule->conditiongroupsAllowed()): ?>
-            <li>
-                <i><?= sprintf(_('Kontingent: %s Prozent'), $rule->getQuota($conditiongroup_id)) ?></i>
-            </li>
-        <? endif; ?>
+    <? foreach ($rule->getConditionGroups() as $conditiongroup_id => $conditions): ?>
         <li>
+            <i><?= sprintf(_('Kontingent: %s Prozent'), $rule->getQuota($conditiongroup_id)) ?></i>
             <ul id="conditiongroup_<?=$conditiongroup_id?>">
-            <? foreach ($conditions as $condition): ?>
-                <li id="condition_<?= $condition->getId() ?>">
-                    <i><?= $condition->toString() ?></i>
-                </li>
-            <? endforeach; ?>
+                <? foreach ($conditions as $condition): ?>
+                    <li id="condition_<?= $condition->getId() ?>">
+                        <i><?= $condition->toString() ?></i>
+                    </li>
+                <? endforeach; ?>
             </ul>
         </li>
-        
+
     <? endforeach; ?>
     </ul>
 <? endif; ?>

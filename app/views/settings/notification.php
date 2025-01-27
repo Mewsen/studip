@@ -69,7 +69,7 @@
                         <tr>
                             <td class="gruppe<?= $seminars[$member['seminar_id']]['gruppe'] ?>">&nbsp;</td>
                             <td>
-                                <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $member['seminar_id']]) ?>">
+                                <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['to' => $member['seminar_id']]) ?>">
                                     <?= Config::get()->IMPORTANT_SEMNUMBER ? htmlReady($seminars[$member['seminar_id']]['sem_nr']) : '' ?>
                                     <?= htmlReady(my_substr($seminars[$member['seminar_id']]['name'], 0, 70)) ?>
                                 </a>

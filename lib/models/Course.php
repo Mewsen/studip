@@ -47,6 +47,7 @@
  * @property int $admission_disable_waitlist_move database column
  * @property int $completion database column
  * @property string|null $parent_course database column
+ * @property string|null $expires database column
  * @property SimpleORMapCollection|CourseTopic[] $topics has_many CourseTopic
  * @property SimpleORMapCollection|CourseDate[] $dates has_many CourseDate
  * @property SimpleORMapCollection|CourseExDate[] $ex_dates has_many CourseExDate
@@ -71,8 +72,8 @@
  * @property SimpleORMapCollection|Institute[] $institutes has_and_belongs_to_many Institute
  * @property SimpleORMapCollection|UserDomain[] $domains has_and_belongs_to_many UserDomain
  * @property-read mixed $teachers additional field
- * @property mixed $start_semester additional field
- * @property mixed $end_semester additional field
+ * @property Semester $start_semester additional field
+ * @property Semester|null $end_semester additional field
  * @property-read mixed $semester_text additional field
  * @property-read mixed $config additional field
  */
@@ -88,6 +89,11 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
      * @var Semester initial end semester.
      */
     protected $initial_end_semester;
+
+    /**
+     * @var array|null Currently assigned institutes, used for tracking changes
+     */
+    protected $currently_assigned_institutes = null;
 
     protected static function configure($config = [])
     {
@@ -242,6 +248,20 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             'assoc_foreign_key' => 'parent_course',
             'order_by'          => 'GROUP BY seminar_id ORDER BY VeranstaltungsNummer, Name'
         ];
+        $config['has_and_belongs_to_many']['studygroups'] = [
+            'class_name'        => Course::class,
+            'thru_table'        => 'studygroup_courses',
+            'thru_key'          => 'course_id',
+            'thru_assoc_key'    => 'studygroup_id',
+            'order_by'          => 'ORDER BY VeranstaltungsNummer, Name'
+        ];
+        $config['has_and_belongs_to_many']['connectedcourses'] = [
+            'class_name'        => Course::class,
+            'thru_table'        => 'studygroup_courses',
+            'thru_key'          => 'studygroup_id',
+            'thru_assoc_key'    => 'course_id',
+            'order_by'          => 'ORDER BY VeranstaltungsNummer, Name'
+        ];
         $config['has_many']['tools'] = [
             'class_name'        => ToolActivation::class,
             'assoc_foreign_key' => 'range_id',
@@ -264,6 +284,25 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             'class_name' => \Courseware\Unit::class,
             'assoc_foreign_key' => 'range_id',
             'on_delete'  => 'delete',
+        ];
+        $config['has_and_belongs_to_many']['tags'] = [
+            'class_name' => Tag::class,
+            'thru_table' => 'tags_relations',
+            'thru_key' => 'range_id',
+            'thru_assoc_key' => 'tag_id',
+            'order_by'    => 'ORDER BY `name` ASC',
+            'on_delete'  => 'delete',
+            'on_store'   => 'store',
+        ];
+        $config['has_many']['studygroup_proposals'] = [
+            'class_name'        => StudygroupCourseProposal::class,
+            'assoc_foreign_key' => 'studygroup_id',
+            'on_delete'         => 'delete',
+        ];
+        $config['has_many']['course_proposals'] = [
+            'class_name'        => StudygroupCourseProposal::class,
+            'assoc_foreign_key' => 'course_id',
+            'on_delete'         => 'delete',
         ];
 
         $config['default_values']['lesezugriff'] = 1;
@@ -305,6 +344,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         $config['i18n_fields']['ort'] = true;
 
         $config['registered_callbacks']['before_store'][] = 'logStore';
+        $config['registered_callbacks']['before_store'][] = 'handleInstitutes';
         $config['registered_callbacks']['after_create'][] = 'setDefaultTools';
         $config['registered_callbacks']['after_delete'][] = function (Course $course) {
             CourseAvatar::getAvatar($course->id)->reset();
@@ -377,6 +417,12 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             parent::initRelation($relation);
             $this->initial_start_semester = $this->getStartSemester();
             $this->initial_end_semester = $this->getEndSemester();
+        } elseif ($relation === 'institutes' && $this->currently_assigned_institutes === null) {
+            parent::initRelation($relation);
+            $this->currently_assigned_institutes = array_filter(
+                $this->relations['institutes']->pluck('id'),
+                fn($inst_id) => $inst_id !== $this->getPristineValue('institut_id')
+            );
         }
         parent::initRelation($relation);
     }
@@ -392,6 +438,7 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
         //Reset the flags for the start and end semester:
         $this->initial_start_semester = null;
         $this->initial_end_semester = null;
+        $this->currently_assigned_institutes = null;
     }
 
     /**
@@ -1768,26 +1815,28 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
     public function getFullName($format = 'default')
     {
         $template = [
-            'name'                 => '%1$s',
-            'name-semester'        => '%1$s (%4$s)',
-            'number-name'          => '%3$s %1$s',
-            'number-name-semester' => '%3$s %1$s (%4$s)',
-            'number-type-name'     => '%3$s %2$s: %1$s',
-            'sem-duration-name'    => '%4$s',
-            'type'                 => '%2$s',
-            'type-name'            => '%2$s: %1$s',
-            'type-number-name'     => '%2$s: %3$s %1$s',
+            'name'                 => '%{name}',
+            'name-semester'        => '%{name} (%{semester})',
+            'number-name'          => '%{number} %{name}',
+            'number-name-semester' => '%{number} %{name} (%{semester})',
+            'number-type-name'     => '%{number} %{type}: %{name}',
+            'sem-duration-name'    => '%{semester}',
+            'type'                 => '%{type}',
+            'type-name'            => '%{type}: %{name}',
+            'type-number-name'     => '%{type}: %{number} %{name}',
         ];
 
         if ($format === 'default' || !isset($template[$format])) {
            $format = Config::get()->IMPORTANT_SEMNUMBER ? 'type-number-name' : 'type-name';
         }
         $sem_type = $this->getSemType();
-        $data[0] = $this->name;
-        $data[1] = $sem_type['name'];
-        $data[2] = $this->veranstaltungsnummer;
-        $data[3] = $this->getTextualSemester();
-        return trim(vsprintf($template[$format], array_map('trim', $data)));
+        $data = array_map('trim', [
+            'name'     => $this->name,
+            'type'     => $sem_type['name'],
+            'number'   => $this->veranstaltungsnummer,
+            'semester' => $this->getTextualSemester(),
+        ]);
+        return trim(studip_interpolate($template[$format], $data));
     }
 
     /**
@@ -2139,6 +2188,79 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             1 => _('in Bearbeitung'),
             2 => _('fertig'),
         ][$this->completion] ?? _('undefiniert');
+    }
+
+    public function setValue($field, $value)
+    {
+        if (strtolower($field) === 'institut_id') {
+            $this->institutes = $this->institutes->filter(function (Institute $institute) {
+                return $institute->id !== $this->institut_id;
+            });
+        } elseif (strtolower($field) === 'institutes') {
+            $this->initRelation($field);
+        }
+
+        return parent::setValue($field, $value);
+    }
+
+    /**
+     * Handle all things related to storing the institutes
+     */
+    protected function handleInstitutes(): void
+    {
+        if ($this->isFieldDirty('institut_id')) {
+            StudipLog::log(
+                'CHANGE_INSTITUTE_DATA',
+                $this->id,
+                $this->institut_id,
+                "Die Heimateinrichtung wurde zu \"{$this->home_institut->name}\" geändert."
+            );
+        }
+
+        if ($this->currently_assigned_institutes !== null) {
+            $assigned_ids = $this->institutes->pluck('id');
+
+            // Deleted
+            $deleted_ids = array_diff($this->currently_assigned_institutes, $assigned_ids);
+            Institute::findEachMany(
+                function (Institute $institute) {
+                    StudipLog::log(
+                        'CHANGE_INSTITUTE_DATA',
+                        $this->id,
+                        $institute->id,
+                        "Die beteiligte Einrichtung \"{$institute->name}\" wurde gelöscht."
+                    );
+                    NotificationCenter::postNotification('SeminarInstitutionDidDelete', $institute->id, $this->id);
+                },
+                $deleted_ids
+            );
+
+            // Added
+            $added_ids = array_diff($assigned_ids, $this->currently_assigned_institutes);
+            Institute::findEachMany(
+                function (Institute $institute) {
+                    StudipLog::log(
+                        'CHANGE_INSTITUTE_DATA',
+                        $this->id,
+                        $institute->id,
+                        "Die beteiligte Einrichtung \"{$institute->name}\" wurde hinzugefügt."
+                    );
+                    NotificationCenter::postNotification('SeminarInstitutionDidCreate', $institute->id, $this->id);
+                },
+                $added_ids
+            );
+
+            if (count($deleted_ids) > 0 || count($added_ids) > 0) {
+                NotificationCenter::postNotification('CourseDidChangeInstitutes', $this);
+            }
+        }
+
+        if (
+            $this->institut_id
+            && !$this->institutes->find($this->institut_id)
+        ) {
+            $this->institutes[] = $this->home_institut;
+        }
     }
 
     /**

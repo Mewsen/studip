@@ -140,7 +140,7 @@ export default {
             this.importRunning = true;
             try {
                 this.zip = await JSZip.loadAsync(this.importZipFile);
-            } catch(error) {
+            } catch {
                 this.setImportErrors([this.$gettext('Die gewählte Datei ist kein Archiv oder das Archiv ist beschädigt.')]);
                 this.importRunning = false;
                 this.importAborted = true;

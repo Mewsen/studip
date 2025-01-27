@@ -1,5 +1,4 @@
-$action-menu-icon-size: 20px;
-$action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
+$action-menu-shadow: 2px 2px 0 var(--color--action-menu-shadow);
 
 .action-menu {
     display: inline-block;
@@ -26,13 +25,14 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
 
     .action-menu-content {
         position: absolute;
-        top: -4px;
-        right: -4px;
+        top: -10px;
+        right: -10px;
 
-        padding: 4px 8px;
+        padding: 10px 10px 10px 5px;
 
         background: var(--white);
-        border: thin solid var(--dark-gray-color-45);
+        border: thin solid var(--color--action-menu-border);
+        border-radius: var(--border-radius-default);
         box-shadow: $action-menu-shadow;
         font-weight: normal;
         text-align: left;
@@ -48,14 +48,14 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
         cursor: pointer;
         display: block;
         padding: 0;
-        width: $action-menu-icon-size;
-        height: $action-menu-icon-size;
+        width: var(--icon-size-action-menu);
+        height: var(--icon-size-action-menu);
 
         // Create animated icon that changes to close icon on activation/hover
         span {
-            width: calc($action-menu-icon-size / 4);
-            height: calc($action-menu-icon-size / 4);
-            transform: translate(calc(-1 * ($action-menu-icon-size / 8)), 0);
+            width: calc(var(--icon-size-action-menu) / 4);
+            height: calc(var(--icon-size-action-menu) / 4);
+            transform: translate(calc(-1 * (var(--icon-size-action-menu) / 8)), 0);
             transition: all .25s ease-in-out;
 
             display: block;
@@ -70,8 +70,8 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
             }
 
             &:nth-child(2) {
-                top: calc($action-menu-icon-size / 2);
-                transform: translate(calc(-1 * ($action-menu-icon-size / 8)), calc(-1 * ($action-menu-icon-size / 8)));
+                top: calc(var(--icon-size-action-menu) / 2);
+                transform: translate(calc(-1 * (var(--icon-size-action-menu) / 8)), calc(-1 * (var(--icon-size-action-menu) / 8)));
             }
 
             &:nth-child(3) {
@@ -82,33 +82,34 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
 
     .action-menu-title {
         font-weight: bold;
-        margin: 0.2em 0 0.3em;
+        margin: 0 0 0 10px;
     }
 
     .action-menu-list {
         list-style: none;
         margin: 0;
-        padding: 0;
+        padding: 20px 0 0 0;
     }
 
     .action-menu-item {
-        line-height: 1;
-        padding: 0;
+        line-height: 24px;
+        padding: 0 0 0 5px;
+        border-left: solid 4px transparent;
 
         > a,
         > label {
             margin: 0;
-            padding: 3px 0;
+            padding: 2px 30px 2px 0;
             display: block;
         }
 
         .action-menu-item-icon {
             display: inline-block;
-            margin: 0 0.25em;
+            margin: 0 0.5em 0.25em 0;
             vertical-align: middle;
 
-            width: $action-menu-icon-size;
-            height: $action-menu-icon-size;
+            width: var(--icon-size-action-menu);
+            height: var(--icon-size-action-menu);
         }
 
         > button {
@@ -130,8 +131,8 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
 
         > hr {
             border-style: none;
-            border-top: thin solid var(--dark-gray-color-45);
-            margin: 4px 0;
+            border-top: thin solid var(--color--action-menu-divider);
+            margin: 7px 0 7px -5px;
         }
 
         &.action-menu-item-disabled {
@@ -145,6 +146,14 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
                 }
             }
         }
+
+        &:hover {
+            background-color: var(--color--action-menu-hover);
+            border-color: var(--color--action-menu-marker-hover);
+            a, a:hover {
+                color: var(--color--font-primary);
+            }
+        }
     }
 
     &.is-open {
@@ -155,7 +164,7 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
 
                 &:nth-child(1) {
                     left: 0;
-                    transform: rotate(45deg) translate(calc(($action-menu-icon-size / 4) + 0.5px), calc(($action-menu-icon-size / 4) + 0.5px));
+                    transform: rotate(45deg) translate(calc((var(--icon-size-action-menu) / 4) + 0.5px), calc((var(--icon-size-action-menu) / 4) + 0.5px));
                     width: 100%;
                 }
 
@@ -165,7 +174,7 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
 
                 &:nth-child(3) {
                     left: 0;
-                    transform: rotate(-45deg) translate(calc($action-menu-icon-size / 4), calc(-1 * ($action-menu-icon-size / 4)));
+                    transform: rotate(-45deg) translate(calc(var(--icon-size-action-menu) / 4), calc(-1 * (var(--icon-size-action-menu) / 4)));
                     width: 100%;
                 }
             }
@@ -202,7 +211,7 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
 
         text-align: center;
 
-        @include icon(before, check-circle, status-green, 16px, 5px);
+        @include icon(before, check-circle, status-green, $padding: 5px);
     }
 
     // Flip the link and confirmation message along the x axis
@@ -226,7 +235,7 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
                 opacity: 0;
                 transform: rotateX(180deg);
             }
-            to {
+            100% {
                 opacity: 1;
                 transform: rotateX(0);
             }
@@ -248,7 +257,7 @@ $action-menu-shadow: 1px 1px 1px var(--dark-gray-color-60);
                 opacity: 1;
                 transform: rotateX(0);
             }
-            to {
+            100% {
                 opacity: 0;
                 transform: rotateX(180deg);
             }

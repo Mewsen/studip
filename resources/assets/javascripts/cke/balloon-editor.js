@@ -42,7 +42,7 @@ BalloonEditor.defaultConfig = {
     ],
 };
 
-function createBalloonEditorFromTextarea(textarea, options) {
+function createBalloonEditorFromTextarea(textarea) {
     const replacement = document.createElement('div');
     replacement.classList.add('wysiwyg-balloon');
     replacement.innerHTML = textarea.value;

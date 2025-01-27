@@ -93,10 +93,6 @@ class Course_MembersController extends AuthenticatedController
 
     public function index_action()
     {
-        if (!$this->is_tutor && $this->config->COURSE_MEMBERS_HIDE) {
-            throw new AccessDeniedException();
-        }
-
         $course             = Course::find($this->course_id);
         $this->sort_by      = Request::option('sortby', 'nachname');
         $this->order        = Request::option('order', 'desc');
@@ -147,7 +143,7 @@ class Course_MembersController extends AuthenticatedController
         $this->tutoren = $filtered_members['tutor']->toArray();
         $this->autoren = $filtered_members['autor']->toArray();
         $this->users = $filtered_members['user']->toArray();
-        $this->studipticket = Seminar_Session::get_ticket();
+        $this->studipticket = get_ticket();
         $this->subject = $this->getSubject();
         $this->groups = $this->status_groups;
         $this->semAdmissionEnabled = false;
@@ -213,7 +209,7 @@ class Course_MembersController extends AuthenticatedController
         $results = SimpleCollection::createFromArray($members)->pluck('email');
 
         if (!empty($results)) {
-            return sprintf('<a href="mailto:%s">%s</a>', htmlReady(join(',', $results)), Icon::create('mail', 'clickable', ['title' => sprintf('E-Mail an alle %s versenden',$textStatus)])->asImg(16));
+            return sprintf('<a href="mailto:%s">%s</a>', htmlReady(join(',', $results)), Icon::create('mail', attributes: ['title' => sprintf('E-Mail an alle %s versenden',$textStatus)])->asImg());
         } else {
             return null;
         }
@@ -1496,6 +1492,9 @@ class Course_MembersController extends AuthenticatedController
     private function getUserVisibility()
     {
         $member = CourseMember::find([$this->course_id, $this->user_id]);
+        if (!$member) {
+            return ['iam_visible' => false, 'visible_mode' => false];
+        }
 
         $visibility = $member->visible;
         $status = $member->status;
@@ -1817,7 +1816,7 @@ class Course_MembersController extends AuthenticatedController
             $options = new OptionsWidget();
             $options->addCheckbox(
                 _('Diese Seite für Studierende verbergen'),
-                $this->config->COURSE_MEMBERS_HIDE,
+                $this->getToolActivation()->getVisibilityPermission() === 'tutor',
                 $this->url_for('course/members/course_members_hide/1'),
                 $this->url_for('course/members/course_members_hide/0'),
                 ['title' => _('Über diese Option können Sie die Teilnehmendenliste für Studierende der Veranstaltung unsichtbar machen')]
@@ -1913,7 +1912,13 @@ class Course_MembersController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        $this->config->store('COURSE_MEMBERS_HIDE', $state);
+        $tool_activation = $this->getToolActivation();
+        if ($state) {
+            $tool_activation->setVisibilityPermission(ToolActivation::VISIBILITY_PERMISSION_TEACHERS);
+        } else {
+            $tool_activation->setVisibilityPermission(ToolActivation::VISIBILITY_PERMISSION_STUDENTS);
+        }
+        $tool_activation->store();
 
         $this->redirect($this->indexURL());
     }
@@ -2184,7 +2189,6 @@ class Course_MembersController extends AuthenticatedController
         return sprintf('%s %s', $directionString, $log_level);
     }
 
-
     /**
      * Checks whether a tutor is attempting to add or remove tutors or
      * instructors.
@@ -2203,4 +2207,15 @@ class Course_MembersController extends AuthenticatedController
         }
     }
 
+    private function getToolActivation(): ToolActivation
+    {
+        return ToolActivation::findOneBySQL(
+            "range_id = ? AND range_type = 'course' AND plugin_id IN (
+                SELECT pluginid
+                FROM plugins
+                WHERE pluginclassname = 'CoreParticipants'
+            )",
+            [$this->course_id]
+        );
+    }
 }

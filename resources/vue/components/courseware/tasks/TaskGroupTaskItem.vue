@@ -56,11 +56,10 @@
         <td class="responsive-hidden">
             <span
                 v-if="feedback"
-                :title="
-                    $gettextInterpolate($gettext('Feedback geschrieben am: %{ date }'), {
-                        date: getReadableDate(feedback.attributes['chdate']),
-                    })
-                "
+                :title="$gettext(
+                    'Feedback geschrieben am: %{ date }',
+                    { date: getReadableDate(feedback.attributes['chdate']) }
+                )"
             >
                 <studip-icon shape="accept" role="status-green" />
                 {{ $gettext('Feedback gegeben') }}
@@ -84,6 +83,7 @@ import { mapGetters } from 'vuex';
 
 export default {
     mixins: [taskHelper],
+    emits: ['add-feedback', 'edit-feedback', 'solve-renewal'],
     props: ['task', 'taskGroup'],
     computed: {
         ...mapGetters({

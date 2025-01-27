@@ -38,11 +38,6 @@ class Course_StatusgroupsController extends AuthenticatedController
         $this->is_tutor  = $GLOBALS['perm']->have_studip_perm('tutor', $this->course_id);
         $this->is_autor  = $GLOBALS['perm']->have_studip_perm('autor', $this->course_id);
 
-        // Hide groups page?
-        if (!$this->is_tutor && $this->config->COURSE_MEMBERS_HIDE) {
-            throw new AccessDeniedException();
-        }
-
         // Check lock rules
         $this->is_locked = LockRules::Check($this->course_id, 'groups');
         $this->is_participants_locked = LockRules::Check($this->course_id, 'participants');
@@ -580,9 +575,11 @@ class Course_StatusgroupsController extends AuthenticatedController
         if ($selfassign !== 0) {
             $selfassign += Request::int('exclusive', 0);
         // Selfassign is not set but exclusive selfassign or some timeframe -> show warning message
-        } else if (Request::int('exclusive', 0) !== 0
-                || Request::get('selfassign_start', null) !== null
-                || Request::get('selfassign_end', null) !== null) {
+        } else if (
+            Request::bool('exclusive')
+            || Request::get('selfassign_start')
+            || Request::get('selfassign_end')
+        ) {
             PageLayout::postWarning(_('Einstellungen zum Eintrag in eine Gruppe oder zum Eintragszeitraum können ' .
                 'nur gespeichert werden, wenn der Selbsteintrag aktiviert ist.'));
         }
@@ -1207,7 +1204,9 @@ class Course_StatusgroupsController extends AuthenticatedController
                 $g->selfassign,
                 $g->selfassign_start,
                 $g->selfassign_end,
-                false
+                $g->hasFolder(),
+                null,
+                $g->hasBlubber()
             );
         }
         PageLayout::postSuccess(_('Die Einstellungen der ausgewählten Gruppen wurden gespeichert.'));
@@ -1247,7 +1246,9 @@ class Course_StatusgroupsController extends AuthenticatedController
                 $selfassign,
                 $selfassign_start,
                 $selfassign_end,
-                false
+                $g->hasFolder(),
+                null,
+                $g->hasBlubber()
             );
         }
         PageLayout::postSuccess(_('Die Einstellungen der ausgewählten Gruppen wurden gespeichert.'));
@@ -1581,7 +1582,7 @@ class Course_StatusgroupsController extends AuthenticatedController
             _('Die Gruppen wurden in die Veranstaltung %s kopiert.'),
             sprintf(
                 '<a href="%s">%s</a>',
-                URLHelper::getLink('seminar_main.php', ['auswahl' => $target_course_id], true),
+                URLHelper::getLink('dispatch.php/course/go', ['to' => $target_course_id], true),
                 htmlReady($target_course->getFullName())
             ),
         ));

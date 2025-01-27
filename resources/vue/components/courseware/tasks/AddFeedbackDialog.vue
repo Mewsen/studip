@@ -23,6 +23,7 @@
 <script>
 export default {
     props: ['content'],
+    emits: ['close', 'create'],
     data: () => ({
         localContent: '',
     }),

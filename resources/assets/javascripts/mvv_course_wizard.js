@@ -5,12 +5,13 @@ STUDIP.MVV.CourseWizard = {
      * Fetches the children of a given lvgroup.
      * @param node the ID of the parent.
      * @param assignable is the given lvgroup assignable?
+     * @param classtype
      * @returns {boolean}
      */
-    getTreeChildren: function(node, assignable, classtype) {
-        var target = $('.' + (assignable ? 'lvgroup-tree-' : 'lvgroup-tree-assign-') + node);
+    getTreeChildren(node, assignable, classtype) {
+        const target = $('.' + (assignable ? 'lvgroup-tree-' : 'lvgroup-tree-assign-') + node);
         if (!target.hasClass('tree-loaded')) {
-            var params =
+            const params =
                 'step=' +
                 $('input[name="step"]').val() +
                 '&method=getLVGroupTreeLevel' +
@@ -20,7 +21,7 @@ STUDIP.MVV.CourseWizard = {
                 classtype;
             $.ajax($('#studyareas').data('ajax-url'), {
                 data: params,
-                beforeSend: function(xhr, settings) {
+                beforeSend() {
                     target.children('ul').append(
                         $('<li class="tree-loading">').html(
                             $('<img>')
@@ -30,11 +31,11 @@ STUDIP.MVV.CourseWizard = {
                         )
                     );
                 },
-                success: function(data, status, xhr) {
-                    var items = $.parseJSON(data);
+                success(data) {
+                    const items = $.parseJSON(data);
                     target.find('.tree-loading').remove();
                     if (items.length > 0) {
-                        var list = target.children('ul');
+                        const list = target.children('ul');
                         for (let i = 0; i < items.length; i++) {
                             if (items[i].assignable || items[i].has_children) {
                                 list.append(STUDIP.MVV.CourseWizard.createTreeNode(items[i], assignable));
@@ -43,13 +44,13 @@ STUDIP.MVV.CourseWizard = {
                     }
                     target.addClass('tree-loaded');
 
-                    var onode = $('<input>')
+                    const onode = $('<input>')
                         .attr('type', 'hidden')
                         .attr('name', 'open_lvg_nodes[]')
                         .attr('value', node);
                     $('#lvgroup-tree-open-nodes').append(onode);
                 },
-                error: function(xhr, status, error) {
+                error(xhr, status, error) {
                     alert(error);
                 }
             });
@@ -68,9 +69,9 @@ STUDIP.MVV.CourseWizard = {
      * Search the lvgruppen tree for a given term and show all matching groups.
      * @returns {boolean}
      */
-    searchTree: function() {
-        var searchterm = $('#lvgroup-tree-search').val();
-        if (searchterm != '') {
+    searchTree() {
+        const searchterm = $('#lvgroup-tree-search').val();
+        if (searchterm !== '') {
             $.ajax($('#studyareas').data('ajax-url'), {
                 data: {
                     step: $('input[name="step"]').val(),
@@ -78,7 +79,7 @@ STUDIP.MVV.CourseWizard = {
                     'parameter[]': searchterm
                 },
                 method: 'POST',
-                beforeSend: function(xhr, settings) {
+                beforeSend() {
                     $('#lvgroup-tree-search-start')
                         .parent()
                         .append(
@@ -89,9 +90,9 @@ STUDIP.MVV.CourseWizard = {
                                 .css('height', '16')
                         );
                 },
-                success: function(data, status, xhr) {
+                success(data) {
                     $('#lvgroup-tree-search-loading').remove();
-                    var items = $.parseJSON(data);
+                    const items = $.parseJSON(data);
                     if (items.length > 0) {
                         $('#lvgroup-tree-search-reset')
                             .removeClass('hidden-js');
@@ -111,7 +112,7 @@ STUDIP.MVV.CourseWizard = {
                         alert($('#studyareas').data('no-search-result'));
                     }
                 },
-                error: function(xhr, status, error) {
+                error(xhr, status, error) {
                     $('#lvgroup-tree-search-loading').remove();
                     alert(error);
                 }
@@ -124,7 +125,7 @@ STUDIP.MVV.CourseWizard = {
      * Reset a search and empty the search result.
      * @returns {boolean}
      */
-    resetSearch: function() {
+    resetSearch() {
         $('#lvgroup-tree-search-reset').addClass('hidden-js');
         $('#lvgroup-tree-search').val('');
         $('#lvgsearchresults ul').empty();
@@ -138,15 +139,15 @@ STUDIP.MVV.CourseWizard = {
      * @param assignable is the given lvgroup assignable?
      * @returns {*|jQuery}
      */
-    createTreeNode: function(values, assignable, selected) {
-        var item = $('<li>');
+    createTreeNode(values, assignable) {
+        const item = $('<li>');
 
         // Node in lvgroups tree.
         if (assignable) {
-            var mvv_ids = values.id.split('-');
+            const mvv_ids = values.id.split('-');
 
             item.addClass('lvgroup-tree-' + values.id);
-            var assign = $('<input>')
+            const assign = $('<input>')
                 .attr('type', 'image')
                 .attr('name', 'assign[' + values.id + ']')
                 .attr('src', STUDIP.ASSETS_URL + 'images/icons/yellow/arr_2left.svg')
@@ -158,10 +159,10 @@ STUDIP.MVV.CourseWizard = {
                 item.append(document.createTextNode(' '));
             }
             if (values.has_children) {
-                var input = $('<input>')
+                const input = $('<input>')
                     .attr('type', 'checkbox')
                     .attr('id', values.id);
-                var label = $('<label>')
+                const label = $('<label>')
                     .addClass('undecorated')
                     .attr('for', values.id)
                     .attr(
@@ -169,13 +170,13 @@ STUDIP.MVV.CourseWizard = {
                         "return STUDIP.MVV.CourseWizard.getTreeChildren('" + values.id + "', true, '" + values.mvvclass + "')"
                     );
                 // Build link for opening the current node.
-                var link = $('div#studyareas').data('forward-url');
+                let link = $('div#studyareas').data('forward-url');
                 if (link.indexOf('?') > -1) {
                     link += '&open_node=' + values.id;
                 } else {
                     link += '?open_node=' + values.id;
                 }
-                var openLink = $('<a>').attr('href', link);
+                const openLink = $('<a>').attr('href', link);
                 openLink.html(values.name);
                 label.append(openLink);
                 item.append(input);
@@ -183,10 +184,8 @@ STUDIP.MVV.CourseWizard = {
                 if (values.has_children) {
                     item.append('<ul>');
                 }
-                if (values.assignable) {
-                    if ($('#lvgroup-tree-assigned-' + mvv_ids[0]).length > 0) {
-                        assign.css('display', 'none');
-                    }
+                if (values.assignable && $('#lvgroup-tree-assigned-' + mvv_ids[0]).length > 0) {
+                    assign.css('display', 'none');
                 }
             } else {
                 if ($('#lvgroup-tree-assigned-' + mvv_ids[0]).length > 0) {
@@ -206,21 +205,21 @@ STUDIP.MVV.CourseWizard = {
      * @param id lvgoup ID to assign
      * @returns {boolean}
      */
-    assignNode: function(id) {
-        var root = $('#lvgroup-tree-assigned-selected');
-        var params = 'step=' + $('input[name="step"]').val() + '&method=getAncestorTree' + '&parameter[]=' + id;
+    assignNode(id) {
+        const root = $('#lvgroup-tree-assigned-selected');
+        const params = 'step=' + $('input[name="step"]').val() + '&method=getAncestorTree' + '&parameter[]=' + id;
         $.ajax($('#studyareas').data('ajax-url'), {
             data: params,
-            beforeSend: function(xhr, settings) {
+            beforeSend() {
                 STUDIP.MVV.CourseWizard.loadingOverlay($('div#assigned ul.css-tree'));
             },
-            success: function(data, status, xhr) {
+            success(data,) {
                 $('#loading-overlay').remove();
-                var items = $.parseJSON(data);
+                const items = $.parseJSON(data);
 
-                var lvgid = id.split('-');
+                const lvgid = id.split('-');
                 if ($('#lvgroup-tree-assigned-' + lvgid).length === 0) {
-                    var input = $('<input>')
+                    const input = $('<input>')
                         .attr('type', 'hidden')
                         .attr('name', 'lvgroups[]')
                         .attr('value', items.id);
@@ -228,14 +227,14 @@ STUDIP.MVV.CourseWizard = {
                     root.append(items.html_string);
                 }
 
-                $("input[name*='assign[" + lvgid[0] + "']").each(function() {
+                $("input[name*='assign[" + lvgid[0] + "']").each(function () {
                     $(this).hide();
                 });
-                $("svg[name*='assign[" + lvgid[0] + "']").each(function() {
+                $("svg[name*='assign[" + lvgid[0] + "']").each(function () {
                     $(this).hide();
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 alert(error);
             }
         });
@@ -247,9 +246,9 @@ STUDIP.MVV.CourseWizard = {
      * AJAX work in progress.
      * @param parent
      */
-    loadingOverlay: function(parent) {
-        var pos = parent.offset();
-        var div = $('<div>')
+    loadingOverlay(parent) {
+        const pos = parent.offset();
+        const div = $('<div>')
             .attr('id', 'loading-overlay')
             .addClass('ui-widget-overlay')
             .width($(parent).width())
@@ -259,7 +258,7 @@ STUDIP.MVV.CourseWizard = {
                 top: pos.top,
                 left: pos.left
             });
-        var loading = $('<img>')
+        const loading = $('<img>')
             .attr('src', STUDIP.ASSETS_URL + 'images/loading-indicator.svg')
             .css({
                 width: 32,
@@ -276,24 +275,24 @@ STUDIP.MVV.CourseWizard = {
      * @param id lvgroup ID to unassign
      * @returns {boolean}
      */
-    showDetails: function(id) {
+    showDetails(id) {
         if ($('#lvgruppe_selection_detail_' + id).is(':visible')) {
             $('#lvgruppe_selection_detail_' + id).empty();
             $('#lvgruppe_selection_detail_' + id).hide();
         } else {
             $('#lvgruppe_selection_detail_' + id).empty();
-            var params = 'step=' + $('input[name="step"]').val() + '&method=getLVGroupDetails' + '&parameter[]=' + id;
+            const params = 'step=' + $('input[name="step"]').val() + '&method=getLVGroupDetails' + '&parameter[]=' + id;
             $.ajax($('#assigned').data('ajax-url'), {
                 data: params,
-                beforeSend: function(xhr, settings) {
+                beforeSend() {
                     STUDIP.MVV.CourseWizard.loadingOverlay($('div#assigned ul.css-tree'));
                 },
-                success: function(data, status, xhr) {
+                success(data) {
                     $('#loading-overlay').remove();
-                    var items = $.parseJSON(data);
+                    const items = $.parseJSON(data);
                     $('#lvgroup-tree-assigned-' + id + ' ul').append(items.html_string);
                 },
-                error: function(xhr, status, error) {
+                error(xhr, status, error) {
                     alert(error);
                 }
             });
@@ -307,22 +306,22 @@ STUDIP.MVV.CourseWizard = {
      * @param id lvgroup ID to unassign
      * @returns {boolean}
      */
-    showSearchDetails: function(id) {
+    showSearchDetails(id) {
         if ($('#lvgruppe_search_' + id + ' ul').is(':visible')) {
             $('#lvgruppe_search_' + id + ' ul').remove();
         } else {
             var params = 'step=' + $('input[name="step"]').val() + '&method=getLVGroupDetails' + '&parameter[]=' + id;
             $.ajax($('#studyareas').data('ajax-url'), {
                 data: params,
-                beforeSend: function(xhr, settings) {
+                beforeSend() {
                     STUDIP.MVV.CourseWizard.loadingOverlay($('div#lvgsearchresults ul.css-tree'));
                 },
-                success: function(data, status, xhr) {
+                success(data) {
                     $('#loading-overlay').remove();
                     var items = $.parseJSON(data);
                     $('#lvgruppe_search_' + id).append('<ul>' + items.html_string + '</ul>');
                 },
-                error: function(xhr, status, error) {
+                error(xhr, status, error) {
                     alert(error);
                 }
             });
@@ -336,11 +335,9 @@ STUDIP.MVV.CourseWizard = {
      * @param id lvgroup ID to unassign
      * @returns {boolean}
      */
-    removeLVGroup: function(id) {
+    removeLVGroup(id) {
         $('#lvgroup-tree-assigned-' + id).remove();
-        $("input[name*='assign[" + id + "']").each(function() {
-            $(this).show();
-        });
+        $("input[name*='assign[" + id + "']").show();
         return false;
     }
 };

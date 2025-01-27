@@ -255,9 +255,7 @@ function first_decision($userid) {
     $template = $GLOBALS['template_factory']->open("../locale/$user_language/LC_HELP/visibility_decision.php");
     $template->set_layout('layouts/base.php');
 
-    echo $template->render();
-    page_close();
-    die;
+    return  $template->render();
 }
 
 

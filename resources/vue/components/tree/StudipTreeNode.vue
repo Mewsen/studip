@@ -3,7 +3,7 @@
         <span :class="{ 'studip-tree-node-content': true, 'studip-tree-node-active': node?.id === activeNode?.id }">
             <a @click.prevent="toggleNode(true)">
                 <div v-if="node.attributes['has-children']" class="studip-tree-node-toggle">
-                    <studip-icon :shape="openState ? 'arr_1down': 'arr_1right'" :size="20"/>
+                    <studip-icon :shape="openState ? 'arr_1down': 'arr_1right'"/>
                 </div>
             </a>
             <button v-if="isAssignable && node.attributes.id !== 'root'" class="studip-tree-node-assignment-state"
@@ -272,7 +272,7 @@ export default {
             }
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         STUDIP.eventBus.off('sort-tree-children');
     }
 }

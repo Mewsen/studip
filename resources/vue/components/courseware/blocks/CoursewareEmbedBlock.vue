@@ -165,7 +165,7 @@ export default {
             this.recalculateContentHeight(data);
         });
     },
-    destroyed() {
+    unmounted() {
         window.removeEventListener('resize', this.calcContentHeight);
     },
     methods: {
@@ -185,7 +185,7 @@ export default {
             }
         },
         recalculateContentHeight(data) {
-            if (this.$parent._uid === data.uid) {
+            if (this.$parent._.uid === data.uid) {
                 if (this.oembedData) {
                     this.calcContentHeight();
                 }
@@ -211,11 +211,10 @@ export default {
             this.oembedData = this.addTimeData(this.oembedData);
         },
         validateCurrentSource() {
-            var validSource = false;
-            let view = this;
+            let validSource = false;
             for (const key of Object.keys(this.endPoints)) {
-                if (view.currentUrl.includes(key)) {
-                    view.currentSource = key;
+                if (this.currentUrl.includes(key)) {
+                    this.currentSource = key;
                     validSource = true;
                     break;
                 }
@@ -248,5 +247,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/embed.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/embed';
 </style>

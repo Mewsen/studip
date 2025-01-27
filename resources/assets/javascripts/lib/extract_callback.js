@@ -7,14 +7,14 @@ export default function extractCallback(cmd, payload, root = window) {
     // Try to decode URI component in case it is encoded
     try {
         command = window.decodeURIComponent(command);
-    } catch (ignore) {
+    } catch {
         // No action necessary
     }
 
     // Try to parse value as JSON (value might be {func: 'foo', payload: {}})
     try {
         command = JSON.parse(command);
-    } catch (e) {
+    } catch {
         command = { func: command };
     }
 
@@ -51,7 +51,7 @@ export default function extractCallback(cmd, payload, root = window) {
             chunk = chunk.replace(match[0], '');
             try {
                 parameters = JSON.parse('[' + match[1].replace(/'/g, '"') + ']');
-            } catch (e) {
+            } catch {
                 console.log('error parsing json', match);
             }
         }

@@ -33,9 +33,9 @@ require_once 'lib/classes/Markup.php';
 # completely unneeded for testing the Markup class.
 # Instead, create a fake class.
 # => But note, this will fail if another test case does the same thing!
-class Seminar_Session
+class StudipSessionManager
 {
-    public static function is_current_session_authenticated()
+    public static function isCurrentSessionAuthenticated()
     {
         return true;
     }
@@ -77,7 +77,7 @@ class MarkupClassTest extends \Codeception\Test\Unit
         }));
 
         Config::set($configStub);
-
+        app()->set('Studip\Session\Manager', new StudipSessionManager());
         # exceptions
         $namespace = 'Studip\MarkupPrivate\MediaProxy\\';
         $invalidInternalLink = $namespace . 'InvalidInternalLinkException';

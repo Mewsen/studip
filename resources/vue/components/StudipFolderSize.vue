@@ -14,9 +14,11 @@ export default {
                 return '';
             }
 
-            return this.$gettextInterpolate(
-                this.$ngettext('%{count} Objekt', '%{count} Objekte', this.object_count),
-                {count: this.object_count}
+            return this.$ngettext(
+                '%{count} Objekt',
+                '%{count} Objekte',
+                this.object_count,
+                { count: this.object_count }
             );
         }
     }

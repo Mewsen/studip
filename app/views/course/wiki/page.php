@@ -4,10 +4,11 @@
  * @var string $edit_perms
  * @var Context $range
  * @var Course_WikiController $controller
+ * @var \Studip\VueApp $contentBarVueApp
  */
 
-echo $contentbar;
 ?>
+<?= $contentBarVueApp->render() ?>
 
 <? if ($page->isEditable()) : ?>
 <form action="<?= $controller->delete($page->id) ?>" method="post" id="delete_page">

@@ -5,8 +5,8 @@
             class="cw-structural-element"
         >
             <div v-if="structuralElement" class="cw-structural-element-content">
-                <courseware-ribbon :canEdit="false" :disableSettings="true" :disableAdder="true">
-                    <template #buttons>
+                <ContentBar isContentBar>
+                    <template #buttons-left>
                         <router-link v-if="prevElement" :to="'/structural_element/' + prevElement.id">
                             <div class="cw-ribbon-button cw-ribbon-button-prev" :title="textRibbon.perv" />
                         </router-link>
@@ -16,7 +16,7 @@
                         </router-link>
                         <div v-else class="cw-ribbon-button cw-ribbon-button-next-disabled" :title="$gettext('keine nächste Seite')"/>
                     </template>
-                    <template #breadcrumbList>
+                    <template #breadcrumb-list>
                         <li
                             v-for="ancestor in ancestors"
                             :key="ancestor.id"
@@ -34,7 +34,7 @@
                             <span>{{ structuralElement.attributes.title || "–" }}</span>
                         </li>
                     </template>
-                    <template #breadcrumbFallback>
+                    <template #breadcrumb-fallback>
                         <li
                             class="cw-ribbon-breadcrumb-item cw-ribbon-breadcrumb-item-current"
                             :title="structuralElement.attributes.title"
@@ -42,7 +42,7 @@
                             <span>{{ structuralElement.attributes.title }}</span>
                         </li>
                     </template>
-                </courseware-ribbon>
+                </ContentBar>
 
                 <div
                     class="cw-container-wrapper"
@@ -79,12 +79,15 @@ import CoursewarePluginComponents from '../plugin-components.js';
 import CoursewareCompanionOverlay from '../layouts/CoursewareCompanionOverlay.vue';
 
 import { mapActions, mapGetters } from 'vuex';
+import ContentBar from "../../ContentBar.vue";
+import { store } from "../../../../assets/javascripts/chunks/vue";
 
 export default {
     name: 'public-courseware-structural-element',
 
     components: Object.assign(StructuralElementComponents, {
         CoursewareCompanionOverlay,
+        ContentBar,
     }),
 
     props: ['orderedStructuralElements', 'structuralElement'],
@@ -100,10 +103,12 @@ export default {
     },
 
     computed: {
+        consumeMode() {
+          return store.state.studip.consumeMode;
+        },
         ...mapGetters({
             courseware: 'courseware',
             context: 'context',
-            consumeMode: 'consumeMode',
             containerById: 'courseware-containers/byId',
             pluginManager: 'pluginManager',
             relatedContainers: 'courseware-containers/related',
@@ -120,7 +125,11 @@ export default {
         },
 
         structuralElementLoaded() {
-            return this.structuralElement !== null && this.structuralElement !== {};
+            return this.structuralElement !== null
+                && !(
+                    this.structuralElement.constructor === Object
+                    && Object.keys(this.structuralElement).length === 0
+                );
         },
 
         ancestors() {

@@ -82,7 +82,6 @@ if ($navigation) {
         <!-- Dynamische Links ohne Icons -->
         <div id="header-links">
             <ul>
-
             <? if (Navigation::hasItem('/links')): ?>
                 <? foreach (Navigation::getItem('/links') as $nav): ?>
                     <? if ($nav->isVisible()) : ?>
@@ -119,113 +118,137 @@ if ($navigation) {
                 <? endif; ?>
             <? endif; ?>
 
-            <? if (is_object($GLOBALS['perm']) && $GLOBALS['perm']->have_perm('user')): ?>
-                <? $active = Navigation::hasItem('/profile')
-                          && Navigation::getItem('/profile')->isActive();
-                ?>
+        <? if (is_object($GLOBALS['perm']) && $GLOBALS['perm']->have_perm('user')): ?>
+            <? $active = Navigation::getItem('/profile')?->isActive() ?? false; ?>
 
-                <!-- User-Avatar -->
-                <li class="header_avatar_container <? if ($active) echo 'active'; ?>" id="avatar-menu-container">
+            <? if ($GLOBALS['perm']->have_perm('autor')) : ?>
 
-                <? if (is_object($GLOBALS['perm']) && PersonalNotifications::isActivated() && $GLOBALS['perm']->have_perm('autor')) : ?>
-                    <? $notifications = PersonalNotifications::getMyNotifications() ?>
-                    <? $lastvisit = (int)UserConfig::get($GLOBALS['user']->id)->getValue('NOTIFICATIONS_SEEN_LAST_DATE') ?>
-                    <div id="notification-container"<?= count($notifications) > 0 ? ' class="hoverable"' : '' ?>>
-                        <? foreach ($notifications as $notification) {
-                            if ($notification['mkdate'] > $lastvisit) {
-                                $alert = true;
-                            }
-                        } ?>
-                        <button id="notification_marker" data-toggles="#notification_checkbox" <?= !empty($alert) ? ' class="alert"' : "" ?>
-                                title="<?= sprintf(
-                                    ngettext('%u Benachrichtigung', '%u Benachrichtigungen', count($notifications)),
-                                    count($notifications)
-                                ) ?>" data-lastvisit="<?= $lastvisit ?>"
-                                <?= count($notifications) == 0 ? 'disabled' : '' ?> aria-controls="notification-list"
-                                aria-expanded="false">
-                            <span class="count" aria-hidden="true"><?= count($notifications) ?></span>
-                        </button>
-                        <input type="checkbox" id="notification_checkbox">
-                        <div class="list below" id="notification_list">
-                            <a class="mark-all-as-read <? if (count($notifications) < 2) echo 'invisible'; ?>" href="<?= URLHelper::getLink('dispatch.php/jsupdater/mark_notification_read/all', ['return_to' => $_SERVER['REQUEST_URI']]) ?>">
-                                <?= _('Alle Benachrichtigungen als gelesen markieren') ?>
-                            </a>
-                            <a class="enable-desktop-notifications" href="#" style="display: none;">
-                                <?= _('Desktop-Benachrichtigungen aktivieren') ?>
-                            </a>
-                            <ul>
-                            <? foreach ($notifications as $notification) : ?>
-                                <?= $notification->getLiElement() ?>
-                            <? endforeach ?>
-                            </ul>
+                <? if (PersonalNotifications::isActivated()): ?>
+                    <li id="notification-wrapper">
+                        <? $notifications = PersonalNotifications::getMyNotifications() ?>
+                        <div id="notification-container"  <?= count($notifications) > 0 ? ' class="hoverable"' : '' ?>>
+                            <button id="notification_marker"
+                                    data-toggles="#notification_checkbox"
+                                    title="<?= sprintf(
+                                        ngettext('%u Benachrichtigung', '%u Benachrichtigungen', count($notifications)),
+                                        count($notifications)
+                                    ) ?>"
+                                    aria-controls="notification-list"
+                                    data-lastvisit="<?= UserConfig::get($GLOBALS['user']->id)->getValue('NOTIFICATIONS_SEEN_LAST_DATE') ?>"
+                                    <? if (count($notifications) === 0) echo 'disabled'; ?>
+                                    class="<?= PersonalNotifications::hasUnseenNotifications() ? 'alert' : '' ?>"
+                                    aria-expanded="false"
+                            >
+                                <span class="count" aria-hidden="true"><?= count($notifications) ?></span>
+                                <? $icon_role =  PersonalNotifications::hasUnseenNotifications() ? Icon::ROLE_INFO_ALT : Icon::ROLE_CLICKABLE ?>
+                                <?= Icon::create('notification2', $icon_role) ?>
+                            </button>
+                            <input type="checkbox" id="notification_checkbox">
+                            <div class="list below" id="notification_list">
+                                <a class="mark-all-as-read <? if (count($notifications) < 2) echo 'invisible'; ?>"
+                                href="<?= URLHelper::getLink('dispatch.php/jsupdater/mark_notification_read/all', ['return_to' => $_SERVER['REQUEST_URI']]) ?>"
+                                >
+                                    <?= _('Alle Benachrichtigungen als gelesen markieren') ?>
+                                </a>
+                                <a class="enable-desktop-notifications" href="#" style="display: none;">
+                                    <?= _('Desktop-Benachrichtigungen aktivieren') ?>
+                                </a>
+                                <ul>
+                                <? foreach ($notifications as $notification) : ?>
+                                    <?= $notification->getLiElement() ?>
+                                <? endforeach ?>
+                                </ul>
+                            </div>
+                        <? if (PersonalNotifications::isAudioActivated()): ?>
+                            <audio id="audio_notification" preload="none">
+                                <source src="<?= Assets::url('sounds/blubb.ogg') ?>" type="audio/ogg">
+                                <source src="<?= Assets::url('sounds/blubb.mp3') ?>" type="audio/mpeg">
+                            </audio>
+                        <? endif; ?>
                         </div>
-                    <? if (PersonalNotifications::isAudioActivated()): ?>
-                        <audio id="audio_notification" preload="none">
-                            <source src="<?= Assets::url('sounds/blubb.ogg') ?>" type="audio/ogg">
-                            <source src="<?= Assets::url('sounds/blubb.mp3') ?>" type="audio/mpeg">
-                        </audio>
-                    <? endif; ?>
-                    </div>
+                    </li>
                 <? endif; ?>
 
                 <? if (Navigation::hasItem('/avatar')): ?>
-                    <form id="avatar-menu" method="post">
-                    <?php
-                    $action_menu = ContentGroupMenu::get();
-                    $action_menu->addCSSClass('avatar-menu');
-                    $action_menu->addAttribute('data-action-menu-reposition', 'false');
-                    $action_menu->setLabel(User::findCurrent()->getFullName());
-                    $action_menu->setAriaLabel(_('Profilmenü'));
-                    $action_menu->setIcon(
-                        Avatar::getAvatar(User::findCurrent()->id)->getImageTag(Avatar::MEDIUM),
-                        ['id' => 'header_avatar_image_link']
-                    );
+                    <li id="avatar-wrapper">
+                        <form id="avatar-menu" method="post">
+                        <?php
+                            $action_menu = ContentGroupMenu::get();
+                            $action_menu->addCSSClass('avatar-menu');
+                            $action_menu->addAttribute('data-action-menu-reposition', 'false');
+                            $action_menu->setLabel(User::findCurrent()->getFullName());
+                            $action_menu->setAriaLabel(_('Profilmenü'));
+                            $action_menu->setIcon(
+                                Avatar::getAvatar(User::findCurrent()->id)->getImageTag(),
+                                ['id' => 'header_avatar_image_link']
+                            );
 
-                    foreach (Navigation::getItem('/avatar') as $subnav) {
-                        if ($subnav->getRenderAsButton()) {
-                            $action_menu->addButton(
-                                'logout',
-                                $subnav->getTitle(),
-                                $subnav->getImage(),
-                                array_merge(
-                                    $subnav->getLinkAttributes(),
-                                    ['formaction' => URLHelper::getURL($subnav->getURL(), [], true)]
-                                )
-                            );
-                        } else {
-                            $action_menu->addLink(
-                                URLHelper::getURL($subnav->getURL(), [], true),
-                                $subnav->getTitle(),
-                                $subnav->getImage(),
-                                $subnav->getLinkAttributes()
-                            );
-                        }
-                    }
-                    SkipLinks::addIndex(_('Profilmenü'), 'header_avatar_image_link', 1, false);
-                    ?>
-                    <?= $action_menu->render(); ?>
-                    </form>
+                            foreach (Navigation::getItem('/avatar') as $subnav) {
+                                if ($subnav->getRenderAsButton()) {
+                                    $action_menu->addButton(
+                                        'logout',
+                                        $subnav->getTitle(),
+                                        $subnav->getImage(),
+                                        array_merge(
+                                            $subnav->getLinkAttributes(),
+                                            ['formaction' => URLHelper::getURL($subnav->getURL(), [], true)]
+                                        )
+                                    );
+                                } else {
+                                    $action_menu->addLink(
+                                        URLHelper::getURL($subnav->getURL(), [], true),
+                                        $subnav->getTitle(),
+                                        $subnav->getImage(),
+                                        $subnav->getLinkAttributes()
+                                    );
+                                }
+                            }
+                            SkipLinks::addIndex(_('Profilmenü'), 'header_avatar_image_link', 1, false);
+                        ?>
+                        <?= $action_menu->render(); ?>
+                        </form>
+                    </li>
                 <? endif; ?>
-                </li>
+                
             <? endif; ?>
+        <? else: ?>
+                <li>
+                    <form method="post" action="<?= URLHelper::getLink(Request::url(), ['cancel_login' => null]) ?>">
+                        <? try {echo CSRFProtection::tokenTag();} catch (SessionRequiredException){}?>
+                        <input type="hidden" name="user_config_submitted" value="1">
+                        <div id="contrast">
+                            <? if (!empty($_SESSION['contrast'])): ?>
+                                <?= Icon::create('accessibility', Icon::ROLE_INFO_ALT)->asImg(24) ?>
+                                <button class="as-link" name="unset_contrast"><?= _('Normalen Kontrast aktivieren') ?></button>
+                                <?= tooltipIcon(_('Aktiviert standardmäßige, nicht barrierefreie Kontraste.'), false, false, true); ?>
+                            <? else: ?>
+                                <?= Icon::create('accessibility', Icon::ROLE_INFO_ALT)->asImg(24) ?>
+                                <button class="as-link" name="set_contrast"><?= _('Hohen Kontrast aktivieren') ?></button>
+                                <?= tooltipIcon(_('Aktiviert einen hohen Kontrast gemäß WCAG 2.1. Diese Einstellung wird nach dem Login übernommen.
+                                Sie können sie in Ihren persönlichen Einstellungen ändern.'), false, false, true); ?>
+                            <? endif ?>
+                        </div>
+                    </form>
+                </li>
+                <li><?= $this->render_partial('login/_header_languages') ?></li>
+        <? endif; ?>
 
                 <li id="responsive-toggle-fullscreen">
                     <button class="styleless" id="fullscreen-off"
                             title="<?= _('Kompakte Navigation ausschalten') ?>">
-                        <?= Icon::create('screen-standard', ICON::ROLE_INFO_ALT)->asImg(24) ?>
+                        <?= Icon::create('screen-standard', Icon::ROLE_INFO_ALT)->asImg(24) ?>
                     </button>
                 </li>
                 <li id="responsive-toggle-focusmode">
                     <button class="styleless consuming_mode_trigger" id="focusmode-on"
                             title="<?= _('Vollbild aktivieren') ?>">
-                        <?= Icon::create('screen-full', ICON::ROLE_INFO_ALT)->asImg(24) ?>
+                        <?= Icon::create('screen-full', Icon::ROLE_INFO_ALT)->asImg(24) ?>
                     </button>
                 </li>
             </ul>
         </div>
     </div>
     <!-- End top bar -->
-
     <!-- Main navigation and right-hand logo -->
     <nav id="navigation-level-1" aria-label="<?= _('Hauptnavigation') ?>">
         <? if (!empty($header_nav['visible'])) : ?>
@@ -298,7 +321,11 @@ if ($navigation) {
                         <? endif ?>
                     <? endif ?>
                     <? if (Context::isCourse()) : ?>
-                        <?= CourseAvatar::getAvatar(Context::get()->id)->getImageTag(Avatar::NORMAL, ['class' => 'context-avatar']) ?>
+                        <? if (Context::get()->isStudygroup()) : ?>
+                            <?= StudygroupAvatar::getAvatar(Context::getId())->getImageTag(Avatar::NORMAL, ['class' => 'context-avatar']) ?>
+                        <? else : ?>
+                            <?= CourseAvatar::getAvatar(Context::getId())->getImageTag(Avatar::NORMAL, ['class' => 'context-avatar']) ?>
+                        <? endif ?>
                         <span class="course-type"><?= htmlReady(Context::get()->getFullName('type')) ?>:</span> <span class="course-name"><?= htmlReady(Context::get()->getFullName('name')) ?></span>
                         <? if ($GLOBALS['user']->config->SHOWSEM_ENABLE && !Context::get()->isOpenEnded()): ?>
                             <span class="course-semester">(<?= htmlReady(Context::get()->getTextualSemester()) ?>)</span>

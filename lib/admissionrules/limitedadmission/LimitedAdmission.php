@@ -141,11 +141,14 @@ class LimitedAdmission extends AdmissionRule
         $stmt = DBManager::get()->prepare("SELECT *
             FROM `limitedadmissions` WHERE `rule_id`=? LIMIT 1");
         $stmt->execute([$this->id]);
-        if ($current = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $current = $stmt->fetchOne();
+        if ($current) {
             $this->message = $current['message'];
             $this->startTime = $current['start_time'];
             $this->endTime = $current['end_time'];
             $this->maxNumber = $current['maxnumber'];
+        } else {
+            $this->id = $this->generateId('limitedadmissions');
         }
     }
 
@@ -279,6 +282,20 @@ class LimitedAdmission extends AdmissionRule
             return $message;
         }
     }
+
+    /**
+     * Get fields and settings defining this admission rule as array.
+     */
+    public function getPayload(): array
+    {
+        return array_merge(
+            parent::getPayload(),
+            [
+                'maxnumber' => $this->getMaxNumber()
+            ]
+        );
+    }
+
 } /* end of class LimitedAdmission */
 
 ?>

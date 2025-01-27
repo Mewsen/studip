@@ -1,3 +1,5 @@
+import { resolveComponent, h } from "vue";
+
 const Blubber = {
     init() {
         const blubberPage = document.querySelector('#blubber-index, #messenger-course, .blubber_panel.vueinstance');
@@ -17,13 +19,14 @@ const Blubber = {
 
         function connectBlubber(blubberPanel, componentName) {
             return Promise.all([window.STUDIP.Vue.load(), Blubber.plugin()]).then(
-                ([{ Vue, createApp, store }, BlubberPlugin]) => {
-                    Vue.use(BlubberPlugin, { store });
+                ([{ createApp, store }, BlubberPlugin]) => {
                     const { initialThreadId, search } = blubberPanel.dataset;
-                    return createApp({
-                        el: blubberPanel,
-                        render: (h) => h(Vue.component(componentName), { props: { initialThreadId, search } }),
+                    const app = createApp({
+                        render: () => h(resolveComponent(componentName), { initialThreadId, search }),
                     });
+                    app.use(BlubberPlugin, { store });
+                    app.mount(blubberPanel);
+                    return app;
                 }
             );
         }
@@ -73,13 +76,9 @@ const Blubber = {
                                     name: name,
                                 });
                             },
-                            removeUser: function (event) {
+                            removeUser(event) {
                                 let user_id = $(event.target).closest('li').find('input').val();
-                                for (let i in this.users) {
-                                    if (this.users[i].user_id === user_id) {
-                                        this.$delete(this.users, i);
-                                    }
-                                }
+                                this.users = this.users.filter(user => user.user_id !== user_id);
                             },
                             clearUsers: function () {
                                 this.users = [];

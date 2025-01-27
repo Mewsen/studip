@@ -5,20 +5,17 @@
  * {option1: true, option2: "value", option3: 42, option4: false}
  */
 function parseOptions(string) {
-    var temp = [string],
-        options = {};
-
-    var index = '',
-        value = '',
-        inval = false,
-        escaped = 0,
-        inquotes = false,
-        l = string.length,
-        token,
-        write,
-        skip,
-        i;
-    for (i = 0; i < l; i += 1) {
+    const options = {};
+    let index = '';
+    let value = '';
+    let inval = false;
+    let escaped = 0;
+    let inquotes = false;
+    const l = string.length;
+    let token;
+    let write;
+    let skip;
+    for (let i = 0; i < l; i += 1) {
         token = string[i];
         write = false;
         skip = false;

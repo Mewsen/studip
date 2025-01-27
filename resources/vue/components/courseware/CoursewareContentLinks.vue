@@ -2,15 +2,15 @@
     <div>
         <table class="default">
             <caption>
-                <translate>Öffentlich verlinkte Seiten</translate>
+                {{ $gettext('Öffentlich verlinkte Seiten') }}
             </caption>
             <thead>
                 <tr>
-                    <th><translate>Seite</translate></th>
-                    <th><translate>Link</translate></th>
-                    <th><translate>Passwort</translate></th>
-                    <th><translate>Ablaufdatum</translate></th>
-                    <th class="actions"><translate>Aktionen</translate></th>
+                    <th>{{ $gettext('Seite') }}</th>
+                    <th>{{ $gettext('Link') }}</th>
+                    <th>{{ $gettext('Passwort') }}</th>
+                    <th>{{ $gettext('Ablaufdatum') }}</th>
+                    <th class="actions">{{ $gettext('Aktionen') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,11 +56,11 @@
             <template v-slot:dialogContent>
                 <form class="default" @submit.prevent="">
                     <label>
-                        <translate>Passwort</translate>
+                        {{ $gettext('Passwort') }}
                         <input type="text" v-model="currentLink.attributes.password" />
                     </label>
                     <label>
-                        <translate>Ablaufdatum</translate>
+                        {{ $gettext('Ablaufdatum') }}
                         <input v-model="currentLink.attributes['expire-date']" type="date" class="size-l" />
                     </label>
                 </form>
@@ -83,7 +83,7 @@ export default {
     data() {
         return {
             menuItems: [
-                { id: 1, label: this.$gettext('Link in Zwischenablage kopieren'), icon: 'clipboard', emit: 'copyLinkToClipboard'}, 
+                { id: 1, label: this.$gettext('Link in Zwischenablage kopieren'), icon: 'clipboard', emit: 'copyLinkToClipboard'},
                 { id: 2, label: this.$gettext('Link bearbeiten'), icon: 'edit', emit: 'editLink' },
                 { id: 3, label: this.$gettext('Link löschen'), icon: 'trash', emit: 'deleteLink' }
             ],
@@ -162,7 +162,7 @@ export default {
             if (!date) {
                 return '-';
             }
-            return new Date(date).toLocaleDateString(navigator.language, { 
+            return new Date(date).toLocaleDateString(navigator.language, {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit'

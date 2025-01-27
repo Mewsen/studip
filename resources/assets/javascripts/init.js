@@ -17,7 +17,7 @@ import Calendar from './lib/calendar.js';
 import Clipboard from './lib/clipboard.js';
 import Cookie from './lib/cookie.js';
 import CourseWizard from './lib/course_wizard.js';
-import { createURLHelper } from './lib/url_helper.ts';
+import { createURLHelper } from './lib/url_helper';
 import CSS from './lib/css.js';
 import Dates from './lib/dates.js';
 import DateTime from './lib/datetime.js';
@@ -78,6 +78,7 @@ import * as Gettext from './lib/gettext';
 import UserFilter from './lib/user_filter.js';
 import wysiwyg from './lib/wysiwyg.js';
 import ScrollToTop from './lib/scroll_to_top.js';
+import * as Vips from './lib/vips.js';
 
 const configURLHelper = _.get(window, 'STUDIP.URLHelper', {});
 const URLHelper = createURLHelper(configURLHelper);
@@ -165,5 +166,6 @@ window.STUDIP = _.assign(window.STUDIP || {}, {
     domReady,
     dialogReady,
     ScrollToTop,
+    Vips,
     Vue,
 });

@@ -8,7 +8,7 @@ html {
 body {
     display: grid;
     background-color: var(--white);
-    width: 100%;    
+    width: 100%;
     grid-column-gap: 5px;
     grid-row-gap: $grid-gap;
     grid-template-columns: ($sidebar-width + $sidebar-padding) minmax(auto, calc(100vw - $sidebar-width - $sidebar-padding));
@@ -31,9 +31,12 @@ body {
 }
 
 #sidebar {
-    border-left: 1px dashed var(--brand-color-darker);
     grid-column: 1 / 2;
     grid-row: 2 / 3;
+}
+
+body#login #content-wrapper {
+    background: unset;
 }
 
 #content-wrapper {
@@ -52,6 +55,7 @@ body {
     overflow-x: auto;
     padding: $page-margin;
     padding-bottom: calc($page-margin + 35px);
+    padding-left: $page-margin * 2;
     vertical-align: top;
 
     .oversized & {
@@ -111,6 +115,7 @@ body {
 }
 
 #main-footer-navigation {
+    flex-grow: 1;
     ul {
         display: flex;
         flex: 1;

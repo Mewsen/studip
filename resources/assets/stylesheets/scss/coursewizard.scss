@@ -25,6 +25,41 @@ div {
     float: left;
     padding-left: 10px;
     width: calc(50% - 20px);
+
+    #sem-tree-search-wrapper {
+      max-width: 25em;
+      border: solid thin var(--color--input-field-border);
+      border-radius: var(--border-radius-search);
+      margin-bottom: 1em;
+      padding: 0 0 0 5px;
+
+      > input[type="text"] {
+        max-width: calc(100% - 50px);
+      }
+
+      &:focus-within {
+        border: solid 2px var(--black);
+      }
+  
+      #sem-tree-search {
+        border: none;
+        outline: none;
+      }
+  
+      #sem-tree-search-start {
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        border-left: solid thin var(--color--input-field-border);
+        padding-left: 4px;
+
+        input {
+          vertical-align: middle;
+          padding: 5px 7px;
+        }
+      }
+    }
+
   }
 }
 

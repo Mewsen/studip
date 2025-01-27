@@ -74,7 +74,7 @@
                                 <input type="text" v-model="item.title" />
                             </label>
                             <label class="col-4">
-                            
+
                                 {{ $gettext('Beschreibung') }}
                                 <textarea v-model="item.description" />
                             </label>
@@ -88,7 +88,7 @@
                                     :reduce="option => option.class"
                                     v-model="item.color"
                                 >
-                                    <template #open-indicator="selectAttributes">
+                                    <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"><studip-icon shape="arr_1down" size="10"/></span>
                                     </template>
                                     <template #no-options>
@@ -105,7 +105,7 @@
                             <label class="col-2">
                                 {{ $gettext('Icon') }}
                                 <studip-select :options="icons" :clearable="false" v-model="item.icon">
-                                    <template #open-indicator="selectAttributes">
+                                    <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"><studip-icon shape="arr_1down" size="10"/></span>
                                     </template>
                                     <template #no-options>
@@ -187,7 +187,6 @@ export default {
             if (this.currentSort === 'none') {
                 return this.currentItems;
             }
-            let view = this;
             let items = _.cloneDeep(this.currentItems);
             return items.sort((a, b) => {
                 let dateA = null;
@@ -203,10 +202,10 @@ export default {
                 } else {
                     dateB = new Date(b.date);
                 }
-                if (view.currentSort === 'asc') {
+                if (this.currentSort === 'asc') {
                     return dateA > dateB ? 1 : dateA < dateB ? -1 : 0;
                 }
-                if (view.currentSort === 'desc') {
+                if (this.currentSort === 'desc') {
                     return dateA < dateB ? 1 : dateA > dateB ? -1 : 0;
                 }
             });
@@ -303,5 +302,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import '../../../../assets/stylesheets/scss/courseware/blocks/timeline.scss';
+@import '../../../../assets/stylesheets/scss/courseware/blocks/timeline';
 </style>

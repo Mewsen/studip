@@ -27,7 +27,7 @@
                             :clearable="false"
                             @option:selected="buildChart"
                         >
-                            <template #open-indicator="selectAttributes">
+                            <template #open-indicator="{ selectAttributes }">
                                 <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
                             </template>
                             <template #selected-option="{name}">
@@ -68,7 +68,7 @@
                                     v-model="item.color"
                                     @option:selected="buildChart"
                                 >
-                                    <template #open-indicator="selectAttributes">
+                                    <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
                                     </template>
                                     <template #no-options>
@@ -95,7 +95,7 @@
                             </button>
                         </form>
                     </courseware-tab>
-                </courseware-tabs>                
+                </courseware-tabs>
             </template>
             <template #info>
                 <p>{{ $gettext('Informationen zum Diagramm-Block') }}</p>

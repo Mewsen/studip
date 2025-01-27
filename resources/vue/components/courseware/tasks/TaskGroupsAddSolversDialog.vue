@@ -41,11 +41,11 @@
                                         v-model="selectedAutors"
                                         :disabled="isSolver(user.user_id)"
                                         :value="user.user_id"
-                                        :aria-label="
-                                            $gettextInterpolate($gettext('%{userName} auswählen'), {
-                                                userName: user.formattedname,
-                                            }, true)
-                                        "
+                                        :aria-label="$gettext(
+                                            '%{userName} auswählen',
+                                            { userName: user.formattedname },
+                                            true
+                                        )"
                                     />
                                 </td>
                                 <td>{{ user.formattedname }}</td>
@@ -74,11 +74,11 @@
                                         v-model="selectedGroups"
                                         :disabled="isSolver(group.id)"
                                         :value="group.id"
-                                        :aria-label="
-                                            $gettextInterpolate($gettext('%{groupName} auswählen'), {
-                                                groupName: group.name,
-                                            }, true)
-                                        "
+                                        :aria-label="$gettext(
+                                            '%{groupName} auswählen',
+                                            { groupName: group.name },
+                                            true
+                                        )"
                                     />
                                 </td>
                                 <td>{{ group.name }}</td>
@@ -100,6 +100,7 @@ export default {
     components: {
         CoursewareCompanion,
     },
+    emits: ['newtask'],
     data: () => ({
         selectedAutors: [],
         selectedGroups: [],

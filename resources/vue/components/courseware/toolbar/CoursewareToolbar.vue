@@ -172,7 +172,7 @@ export default {
                 return;
             }
 
-            const ribbon = document.getElementById('cw-ribbon') ?? document.getElementById('contentbar');
+            const ribbon = document.getElementById('cw-ribbon');
             if (ribbon) {
                 const contentbarRect = ribbon.getBoundingClientRect();
                 if (ribbon.classList.contains('cw-ribbon-sticky')) {
@@ -195,7 +195,7 @@ export default {
         });
         this.resetAdderStorage();
     },
-    beforeDestroy() {
+    beforeUnmount() {
         window.removeEventListener('scroll', this.updateToolbarTop);
         window.removeEventListener('resize', this.onResize);
     },
@@ -204,23 +204,25 @@ export default {
         consumeMode(newState) {
             this.setHideEditLayout(newState);
         },
-        containers(newValue, oldValue) {
-            if (newValue) {
-                this.resetAdderStorage();
-            }
+        containers: {
+            handler(newValue) {
+                if (newValue) {
+                    this.resetAdderStorage();
+                }
+            },
+            deep: true,
         },
-        toolbarActive(newState, oldState) {
-            let view = this;
+        toolbarActive(newState) {
             if (newState) {
                 this.showTools = true;
                 setTimeout(() => {
-                    view.unfold = true;
+                    this.unfold = true;
                 }, 10);
             } else {
                 this.unfold = false;
                 setTimeout(() => {
-                    if (!view.toolbarActive) {
-                        view.showTools = false;
+                    if (!this.toolbarActive) {
+                        this.showTools = false;
                     }
                 }, 600);
             }

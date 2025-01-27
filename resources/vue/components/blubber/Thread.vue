@@ -67,6 +67,15 @@ export default {
         BlubberComposer,
         ThreadSubscriber,
     },
+    emits: [
+        'add-posting',
+        'change-comment',
+        'load-newer',
+        'load-older',
+        'pick-files',
+        'remove-comment',
+        'subscribe-thread',
+    ],
     props: {
         comments: {
             type: Array,
@@ -124,7 +133,7 @@ export default {
         dragover(event) {
             this.dragging = event.dataTransfer.types.includes('Files');
         },
-        dragleave(event) {
+        dragleave() {
             this.dragging = false;
         },
 
@@ -140,7 +149,7 @@ export default {
             });
         },
 
-        handleScroll(event) {
+        handleScroll() {
             const el = this.$refs.scrollable;
             const threadPosting = el.querySelector('.all_content');
             const threadPostingHeight = threadPosting?.scrollHeight ?? 0;
@@ -204,33 +213,46 @@ export default {
     },
     mounted() {
         this.handleDebouncedScroll = _.debounce(this.handleScroll, 100);
-        this.$refs.scrollable.addEventListener('scroll', this.handleDebouncedScroll);
-
-        // when everything is initialized
-        this.$nextTick(() => {
-            if (this.comments.length > 0) {
-                this.scrollDown();
-            }
-
-            const memory = getBlubberMemory(this.thread);
-            if (memory) {
-                this.composerText = memory;
-            }
-        });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.$refs.scrollable.removeEventListener('scroll', this.handleDebouncedScroll);
     },
     beforeUpdate() {
-        const { scrollHeight, scrollTop } = this.$refs.scrollable;
-        this.scrollPosition = { scrollHeight, scrollTop };
+        if (!this.emptyBlubber) {
+            const { scrollHeight, scrollTop } = this.$refs.scrollable;
+            this.scrollPosition = { scrollHeight, scrollTop };
+        }
     },
     updated() {
-        // maintain scroll position when loading older comments
-        const newScrollTop =
-            this.$refs.scrollable.scrollHeight - this.scrollPosition.scrollHeight + this.scrollPosition.scrollTop;
-        this.$refs.scrollable.scrollTo(0, newScrollTop);
+        if (!this.emptyBlubber) {
+            // maintain scroll position when loading older comments
+            const newScrollTop =
+                this.$refs.scrollable.scrollHeight - this.scrollPosition.scrollHeight + this.scrollPosition.scrollTop;
+            this.$refs.scrollable.scrollTo(0, newScrollTop);
+        }
     },
+    watch: {
+        emptyBlubber: {
+            handler(isEmpty) {
+                if (!isEmpty) {
+                    this.$refs.scrollable.addEventListener('scroll', this.handleDebouncedScroll);
+
+                    // when everything is initialized
+                    this.$nextTick(() => {
+                        if (this.comments.length > 0) {
+                            this.scrollDown();
+                        }
+
+                        const memory = getBlubberMemory(this.thread);
+                        if (memory) {
+                            this.composerText = memory;
+                        }
+                    });
+                }
+            },
+            immediate: true,
+        }
+    }
 };
 
 function clearBlubberMemory(thread) {
@@ -249,3 +271,8 @@ function setBlubberMemory(thread, memory) {
     }
 }
 </script>
+<style lang="scss" scoped>
+.empty_blubber_background {
+    flex: 1;
+}
+</style>

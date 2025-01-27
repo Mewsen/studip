@@ -180,13 +180,13 @@ td.quote {
 
 a.link-intern {
     padding-left: 18px;
-    @include background-icon(intern, clickable);
+    @include background-icon(intern);
     background-repeat: no-repeat;
 }
 
 a.link-extern {
     padding-left: 18px;
-    @include background-icon(link-extern, clickable);
+    @include background-icon(link-extern);
     background-repeat: no-repeat;
 }
 

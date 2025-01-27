@@ -12,11 +12,13 @@
  * "http://uni-adresse.de/studip/adresse.php?hello=world&mandatory=parameter#anchor"
  */
 
+type URLHelperParameters = Record<string, string>;
+
 class URLHelper {
     base_url: string;
-    parameters: Record<string, string>;
+    parameters: URLHelperParameters;
 
-    constructor(base_url: string = "", parameters: any = {}) {
+    constructor(base_url: string = "", parameters: URLHelperParameters = {}) {
         //the base url for all links
         this.base_url = base_url;
 
@@ -33,7 +35,7 @@ class URLHelper {
      * @param ignore_params boolean: ignore previously bound parameters
      * @return: url with all necessary and additional parameters, encoded
      */
-    getURL(url: string, param_object: any = {}, ignore_params: boolean = false): string {
+    getURL(url: string, param_object: URLHelperParameters = {}, ignore_params: boolean = false): string {
         let result;
 
         if (url === '' || url.match(/^[?#]/)) {

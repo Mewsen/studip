@@ -30,7 +30,7 @@
                 return date.toISOString();
             },
             title () {
-                return this.display_relative() ? this.formatted_date(true) : false;
+                return this.display_relative() ? this.formatted_date(true) : null;
             }
         },
         methods: {

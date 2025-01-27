@@ -432,25 +432,19 @@ class Lvgruppe extends ModuleManagementModelTreeItem
                 . 'LEFT JOIN mvv_lvgruppe_seminar mls USING(seminar_id) '
                 . 'LEFT JOIN semester_courses ON (semester_courses.course_id = sem.Seminar_id) '
                 . 'WHERE mls.lvgruppe_id = :id '
-                . 'AND ((sem.start_time <= :semester_beginn '
-                . 'AND semester_courses.semester_id = :semester_id) '
-                . 'OR (sem.start_time BETWEEN :semester_beginn AND :semester_ende) '
-                . 'OR (sem.start_time <= :semester_beginn AND semester_courses.semester_id IS NULL)) ';
+                . 'AND (semester_courses.semester_id = :semester_id '
+                . 'OR semester_courses.semester_id IS NULL) ';
             if ($only_visible === false) {
                 $stmt = DBManager::get()->prepare($sql);
                 $stmt->execute([
                     ':id' => $this->getId(),
-                    ':semester_id' => $semester->semester_id,
-                    ':semester_beginn' => $semester->beginn,
-                    ':semester_ende' => $semester->ende
+                    ':semester_id' => $semester->semester_id
                 ]);
             } else if ($only_visible === true) {
                 $stmt = DBManager::get()->prepare($sql . ' AND sem.visible = 1 ');
                 $stmt->execute([
                     ':id' => $this->getId(),
-                    ':semester_id' => $semester->semester_id,
-                    ':semester_beginn' => $semester->beginn,
-                    ':semester_ende' => $semester->ende
+                    ':semester_id' => $semester->semester_id
                 ]);
             } else {
                 $user_perm = $GLOBALS['perm']->get_perm($only_visible);
@@ -458,9 +452,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
                     $stmt = DBManager::get()->prepare($sql);
                     $stmt->execute([
                         ':id' => $this->getId(),
-                        ':semester_id' => $semester->semester_id,
-                        ':semester_beginn' => $semester->beginn,
-                        ':semester_ende' => $semester->ende
+                        ':semester_id' => $semester->semester_id
                     ]);
                 } else if ($user_perm == 'admin') {
                     $perm_institute_ids = [];
@@ -473,8 +465,6 @@ class Lvgruppe extends ModuleManagementModelTreeItem
                     $stmt->execute([
                         ':id' => $this->getId(),
                         ':semester_id' => $semester->semester_id,
-                        ':semester_beginn' => $semester->beginn,
-                        ':semester_ende' => $semester->ende,
                         ':perm_institutes' => $perm_institute_ids
                     ]);
                 } else {
@@ -485,16 +475,12 @@ class Lvgruppe extends ModuleManagementModelTreeItem
                         . 'LEFT JOIN semester_courses ON (semester_courses.course_id = sem.Seminar_id) '
                         . 'INNER JOIN seminar_user USING(seminar_id) '
                         . 'WHERE mls.lvgruppe_id = :id '
-                        . 'AND ((sem.start_time <= :semester_beginn '
-                        . 'AND semester_courses.semester_id = :semester_id) '
-                        . 'OR (sem.start_time BETWEEN :semester_beginn AND :semester_ende) '
-                        . 'OR (sem.start_time <= :semester_beginn AND semester_courses.semester_id IS NULL)) '
+                        . 'AND (semester_courses.semester_id = :semester_id '
+                        . 'OR semester_courses.semester_id IS NULL) '
                         . 'AND (sem.visible = 1 OR (sem.visible = 0 AND seminar_user.user_id = :user_id))');
                     $stmt->execute([
                         ':id' => $this->getId(),
                         ':semester_id' => $semester->semester_id,
-                        ':semester_beginn' => $semester->beginn,
-                        ':semester_ende' => $semester->ende,
                         ':user_id' => $only_visible
                     ]);
                 }
@@ -597,9 +583,7 @@ class Lvgruppe extends ModuleManagementModelTreeItem
         $modul = Modul::find($modul_id);
         if ($modul) {
             $name = $modul->responsible_institute->institute->getShortName();
-            $short_name_modul = $modul->getDeskriptor(
-                    $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['default'])
-                    ->bezeichnung_kurz;
+            $short_name_modul = $modul->getDeskriptor()->bezeichnung_kurz;
             $name .= $short_name_modul ? ' ' . $short_name_modul : '';
         }
          *
@@ -608,7 +592,6 @@ class Lvgruppe extends ModuleManagementModelTreeItem
         $modulteil = Modulteil::findCached($modulteil_id);
         if ($modulteil) {
             $name = $modulteil->getDeskriptor()->bezeichnung;
-            //$name = $name_modulteil ? ' ' . $name_modulteil : '';
         }
         return $name;
     }

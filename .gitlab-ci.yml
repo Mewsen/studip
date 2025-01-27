@@ -29,6 +29,7 @@ stages:
   - checks
   - analyse
   - test
+  - cache
   - packaging
   - release
 
@@ -159,17 +160,11 @@ lint-js:
   interruptible: true
   before_script:
     - *mkdir-reports
-    - npm install -g npm@7
-    - npm install
-      --no-save --no-audit --no-fund
-      --loglevel=error
-      eslint eslint-formatter-gitlab
+    - npm ci --prefer--offline
   script:
-    - npx eslint
-      --ext .js,.vue
+    - npm run lint-js --
       --cache --cache-location $CACHE_LOCATION
       --format gitlab
-      resources/assets/javascripts resources/vue
   artifacts:
     reports:
       codequality: $ESLINT_CODE_QUALITY_REPORT
@@ -183,24 +178,20 @@ lint-css:
     STYLELINT_CODE_QUALITY_REPORT: $REPORT_DIR/stylelint-codequality.json
   interruptible: true
   cache:
-    - key: "$CI_JOB_NAME_SLUG:CI_COMMIT_REF_SLUG"
+    - key: "CI_COMMIT_REF_SLUG-lint-css"
       paths:
         - $CACHE_LOCATION
+      policy: pull-push
+      when: always
   before_script:
+    - *mkdir-caches
     - *mkdir-reports
     - npm install
-      --no-save --no-audit --no-fund
-      --loglevel=error
-      stylelint@^14.9.1
-      stylelint-config-standard@^26.0.0
-      stylelint-formatter-gitlab
   script:
-    - npx
-      stylelint
+    - npm run lint-css --
       --cache --cache-location $CACHE_LOCATION
       --custom-formatter=node_modules/stylelint-formatter-gitlab
       --output-file $STYLELINT_CODE_QUALITY_REPORT
-      resources/assets/stylesheets
   artifacts:
     reports:
       codequality: $STYLELINT_CODE_QUALITY_REPORT

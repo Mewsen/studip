@@ -25,7 +25,7 @@
     &:hover,
     &:active,
     &.active  {
-        background: var(--color--button-focus);
+        background-color: var(--color--button-focus);
         color: var(--color--font-inverted);
     }
 
@@ -43,7 +43,7 @@
 
 a.button,
 button.button {
-    @include button();
+    @include button;
 }
 
 .button-with-empty-icon {
@@ -53,49 +53,34 @@ button.button {
         background-repeat: no-repeat;
         content: " ";
         float: left;
-        height: 16px;
+        height: var(--icon-size-button);
         margin: 1px 10px 0 0;
-        width: 16px;
+        width: var(--icon-size-button);
     }
 }
 
 @mixin button-with-icon($icon, $role, $roleOnHover) {
     @extend .button-with-empty-icon;
     &::before {
-        @include background-icon($icon, $role);
+        @include background-icon($icon, $role, $icon-size-button);
     }
 
     &:hover::before {
-        @include background-icon($icon, $roleOnHover);
+        @include background-icon($icon, $roleOnHover, $icon-size-button);
     }
 
     &.disabled,
     &[disabled] {
         &:hover::before {
-            @include background-icon($icon, $role);
+            @include background-icon($icon, $role, $icon-size-button);
         }
     }
 }
-
-$button-icons: (
-    accept: accept,
-    cancel: decline,
-    edit: edit,
-    move-up: arr_1up,
-    move-down: arr_1down,
-    add: add,
-    trash: trash,
-    download: download,
-    search: search,
-    arr_left: arr_1left,
-    arr_right: arr_1right,
-    refresh: refresh,
-);
-
+// $button-icons is a map of class names and icon names located in resources/assets/stylesheets/scss/_variables.scss
 @each $class, $icon in $button-icons {
     .button {
         &.#{'' + $class} {
-            padding-right: 20px;
+            padding-right: ($icon-size-button + 4px);
             @include button-with-icon($icon, clickable, info_alt);
             &.disabled, &[disabled] {
                 @include button-with-icon($icon, inactive, inactive);
@@ -115,14 +100,13 @@ $button-icons: (
     display: inline-flex;
     gap: 5px;
     list-style: none;
-    margin: 0 0.8em 0 0;
-    padding: 0;
+    margin: 0 0.8em;
+    padding: 5px 0;
     vertical-align: middle;
 
     button,
     .button {
-        margin-left: 0;
-        margin-right: 0;
+        margin: 0;
     }
 }
 

@@ -17,7 +17,7 @@ class CoreStudygroupParticipants extends CorePlugin implements StudipModuleExten
     public function getIconNavigation($course_id, $last_visit, $user_id)
     {
         $navigation = new Navigation(_('Teilnehmende'), "dispatch.php/course/studygroup/members/{$course_id}");
-        $navigation->setImage(Icon::create('persons', Icon::ROLE_CLICKABLE));
+        $navigation->setImage(Icon::create('persons'));
         if ($last_visit && CourseMember::countBySQL("seminar_id = :course_id AND mkdate >= :last_visit", ['last_visit' => $last_visit, 'course_id' => $course_id]) > 0) {
             $navigation->setImage(Icon::create('persons', Icon::ROLE_ATTENTION));
         }

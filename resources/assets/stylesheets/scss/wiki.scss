@@ -156,13 +156,13 @@ a.wiki-restricted {
         .wiki_added {
             background-color: var(--content-color-20);
             border: 1px solid var(--content-color-40);
-            @include background-icon('add', 'inactive', 20);
+            @include background-icon(add, inactive);
 
         }
         .wiki_erased {
             background-color: var(--white);
             border: 1px solid var(--light-gray-color-40);
-            @include background-icon('remove', 'inactive', 20);
+            @include background-icon(remove, inactive);
         }
         .wiki_added + div,
         .wiki_erased + div {
@@ -199,4 +199,8 @@ article.studip.wiki {
          min-height: var(--avatar-small);
          padding-left: calc(var(--avatar-small) + 1ex);
      }
+ }
+
+ p.last-save-date {
+    text-indent: 1ex;
  }

@@ -49,9 +49,7 @@
             <template v-if="canEdit" #edit>
                 <courseware-tabs>
                     <courseware-tab
-                        :index="0"
                         :name="$gettext('Layout')"
-                        :selected="true"
                     >
                         <form class="default" @submit.prevent="">
                             <label>
@@ -77,7 +75,6 @@
                         </form>
                     </courseware-tab>
                     <courseware-tab
-                        :index="1"
                         :name="$gettext('Inhalt')"
                     >
                         <form class="default" @submit.prevent="">
@@ -102,7 +99,7 @@
                                     :clearable="false"
                                     v-model="currentTextColor"
                                 >
-                                    <template #open-indicator="selectAttributes">
+                                    <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
                                     </template>
                                     <template #no-options>
@@ -125,7 +122,7 @@
                                     :clearable="false"
                                     v-model="currentTextBackgroundColor"
                                 >
-                                    <template #open-indicator="selectAttributes">
+                                    <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
                                     </template>
                                     <template #no-options>
@@ -143,7 +140,7 @@
                                 <label>
                                     {{ $gettext('Icon') }}
                                     <studip-select :clearable="false" :options="icons" v-model="currentIcon">
-                                        <template #open-indicator="selectAttributes">
+                                        <template #open-indicator="{ selectAttributes }">
                                             <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
                                         </template>
                                         <template #no-options>
@@ -166,7 +163,7 @@
                                         :clearable="false"
                                         v-model="currentIconColor"
                                     >
-                                        <template #open-indicator="selectAttributes">
+                                        <template #open-indicator="{ selectAttributes }">
                                             <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
                                         </template>
                                         <template #no-options>
@@ -184,7 +181,6 @@
                         </form>
                     </courseware-tab>
                     <courseware-tab
-                        :index="2"
                         :name="$gettext('Hintergrund')"
                     >
                         <form class="default" @submit.prevent="">
@@ -206,7 +202,7 @@
                                     v-model="currentBackgroundColor"
                                     :clearable="false"
                                 >
-                                    <template #open-indicator="selectAttributes">
+                                    <template #open-indicator="{ selectAttributes }">
                                         <span v-bind="selectAttributes"><studip-icon shape="arr_1down" :size="10"/></span>
                                     </template>
                                     <template #no-options>
@@ -633,5 +629,5 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-    @import "../../../../assets/stylesheets/scss/courseware/blocks/headline.scss";
+@import "../../../../assets/stylesheets/scss/courseware/blocks/headline";
 </style>

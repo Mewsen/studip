@@ -7,6 +7,7 @@
 - Der Stud.IP-Cache ist nun kompatibel zu PSR-6. ([TIC #3701](https://gitlab.studip.de/studip/studip/-/issues/3701))
 - Das `User`-Model hat die Methode `hasPermissionLevel()` erhalten, um einfach abfragen zu können, ob eine Person einen bestimmten Berechtigungsstatus hat. ([Issue #3453](https://gitlab.studip.de/studip/studip/-/issues/3453))
 - In der Standort-Verwaltung können nun nicht nur Ferien sondern auch Feiertage konfiguriert werden. Dies erlaubt das Markieren von Feiertagen als gesetzliche Feiertage, da diese je nach Bundesland variieren können. ([Issue #2795](https://gitlab.studip.de/studip/studip/-/issues/2795))
+- Die Nutzungsbedingungen sind nun nicht mehr als statische HTML-Dateien hinterlegt, sondern können analog zu Impressum, Datenschutz- und Barrierefreiheitserklärung direkt über die Oberfläche bearbeitet werden. Initial ist diese Seite aber im Entwurfsmodus und daher für Nicht-Roots unsichtbar. Damit andere Personen beim ersten Login diese Nutzungsbedingungen sehen und ihnen zustimmen können, muss der Entwurfsmodus für diese Seite abgeschaltet werden. ([TIC #4433](https://gitlab.studip.de/studip/studip/-/issues/4433))
 
 ## Breaking changes
 

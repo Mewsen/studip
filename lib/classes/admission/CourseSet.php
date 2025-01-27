@@ -15,7 +15,7 @@
  * @category    Stud.IP
  */
 
-class CourseSet
+class CourseSet implements UserFilterRange
 {
     // --- ATTRIBUTES ---
 
@@ -969,6 +969,7 @@ class CourseSet
         }
         // Store all rules.
         foreach ($this->admissionRules as $rule) {
+            $rule->courseSetId = $this->id;
             // Store each rule...
             $rule->store();
             // ... and its connection to the current course set.
@@ -1149,6 +1150,45 @@ class CourseSet
         return $locked_set_id;
     }
 
+    public static function getConnectedcourseAdmissionSetId()
+    {
+        $db = DBManager::get();
+        $locked_set_id = $db->fetchColumn("
+            SELECT `courseset_rule`.`set_id`
+            FROM `courseset_rule`
+                INNER JOIN `coursesets` USING (`set_id`)
+            WHERE `type` = 'ConnectedcourseAdmission'
+                AND `private` = 1
+                AND `user_id` = ''
+            LIMIT 1
+        ");
+        if (!$locked_set_id) {
+            $cs_insert = $db->prepare("
+                INSERT INTO coursesets (set_id, user_id, name, infotext, algorithm, private, mkdate, chdate)
+                VALUES (?, ?, ?, ?, '', ?, ?, ?)
+            ");
+            $cs_r_insert = $db->prepare("
+                INSERT INTO `courseset_rule` (`set_id`, `rule_id`, `type`, `mkdate`)
+                VALUES (?, ?, ?, UNIX_TIMESTAMP())
+            ");
+            $locked_insert = $db->prepare("
+                INSERT INTO `lockedadmissions` (`rule_id`, `message`, `mkdate`, `chdate`)
+                VALUES (?,'Die Anmeldung ist gesperrt', UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
+            ");
+            $locked_set_id = md5(uniqid('coursesets_connected_course',1));
+            $name = 'Verknüpfte Veranstaltung (global)';
+            $cs_insert->execute([$locked_set_id,'',$name,'',1,time(),time()]);
+            $locked_rule_id = md5(uniqid('connectedcourse',1));
+            $locked_insert->execute([$locked_rule_id]);
+            $cs_r_insert->execute([
+                $locked_set_id,
+                $locked_rule_id,
+                'ConnectedcourseAdmission'
+            ]);
+        }
+        return $locked_set_id;
+    }
+
     public static function addCourseToSet($set_id, $course_id)
     {
         $db = DBManager::get();
@@ -1192,6 +1232,49 @@ class CourseSet
             $cloned_rules[$dolly->id] = $dolly;
         }
         $this->admissionRules = $cloned_rules;
+    }
+
+    /**
+     * @see UserFilterRange::canEdit()
+     */
+    public function canEditFilter(User $user, UserFilter $filter): bool
+    {
+        if ($GLOBALS['perm']->have_perm('root', $user->id)) {
+            return true;
+        }
+
+        // Check general permissions on course set creation/editing.
+        $permission = $GLOBALS['perm']->have_perm('admin', $user->id)
+            || (
+                Config::get()->ALLOW_DOZENT_COURSESET_ADMIN
+                && $GLOBALS['perm']->have_perm('dozent', $user->id)
+            );
+
+        // Get all rules where filter can be present.
+        $ruleTypes = array_filter(
+            $this->getAdmissionRules(),
+            fn($rule) => in_array(get_class($rule), [ConditionalAdmission::class, PreferentialAdmission::class])
+        );
+
+        // Get my institute's IDs.
+        $institutes = array_map(
+            fn ($i) => $i['Institut_id'],
+            Institute::getMyInstitutes($user->id)
+        );
+        $matchingInstitutes = array_intersect(array_keys($this->institutes), $institutes);
+
+        /*
+         * Check whether:
+         * - this course set has rules than can have UserFilter objects
+         * - the given user is allowed to create/edit course sets at all
+         * - this course set belongs to the given user or is not private and belongs to one of this user's institutes
+         */
+        return $permission
+            && count($ruleTypes) > 0
+            && (
+                $this->user_id === $user->id
+                || !$this->private && count($matchingInstitutes) > 0
+            );
     }
 
 } /* end of class CourseSet */

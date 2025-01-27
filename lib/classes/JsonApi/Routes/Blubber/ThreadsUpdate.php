@@ -5,6 +5,7 @@ namespace JsonApi\Routes\Blubber;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use JsonApi\Errors\AuthorizationFailedException;
+use JsonApi\Errors\BadRequestException;
 use JsonApi\Errors\RecordNotFoundException;
 use JsonApi\JsonApiController;
 use JsonApi\Routes\TimestampTrait;
@@ -48,6 +49,20 @@ class ThreadsUpdate extends JsonApiController
             } else {
                 $thread->removeFollowingByUser($user->id);
             }
+        }
+
+        if (self::arrayGet($json, 'data.attributes.content')) {
+            if ($thread['context_type'] !== 'course') {
+                throw new BadRequestException('Only blubber threads of context-type course can be edited.');
+            }
+
+            $course = \Course::find($thread['context_id']);
+            if (!Authority::canEditCourseBlubberThread($this->getUser($request), $course)) {
+                throw new AuthorizationFailedException();
+            }
+
+            $thread['content'] = self::arrayGet($json, 'data.attributes.content');
+            $thread->store();
         }
 
         return $this->getContentResponse($thread);

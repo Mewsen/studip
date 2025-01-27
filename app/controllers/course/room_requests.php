@@ -85,7 +85,7 @@ class Course_RoomRequestsController extends AuthenticatedController
         $actions->addLink(
             _('Neue Raumanfrage erstellen'),
             $this->url_for('course/room_requests/new'),
-            Icon::create('add', 'clickable')
+            Icon::create('add')
         );
         Sidebar::get()->addWidget($actions);
 
@@ -411,7 +411,7 @@ class Course_RoomRequestsController extends AuthenticatedController
             ]);
 
             $this->redirect(
-                'course/room_requests/request_find_matching_rooms/' . $this->request_id . '/' . $this->step
+                'course/room_requests/request_find_matching_rooms/' . $this->request_id . '/2'
             );
         } else if (Request::get('room_name') && Request::submitted('search_by_name')) {
             $this->category_id = Request::get('category_id');

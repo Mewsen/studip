@@ -197,29 +197,29 @@ class Search_StudiengaengeController extends MVVController
             $this->sessSet('selected_semester', $sem);
         }
 
-        $this->with_courses = Request::option('with_courses', $_SESSION['MVV_SEARCH_SEQUENCE_WITH_COURSES'] ?? null);
-        $_SESSION['MVV_SEARCH_SEQUENCE_WITH_COURSES'] = $this->with_courses;
+        $with_courses = Request::bool('with_courses', $GLOBALS['user']->config->MVV_SEARCH_SEQUENCE_WITH_COURSES ?? false);
+        $GLOBALS['user']->config->store('MVV_SEARCH_SEQUENCE_WITH_COURSES', $with_courses);
 
-        $studiengangTeil = StudiengangTeil::find($stgteil_id);
-        $versionen = StgteilVersion::findByStgteil($stgteil_id, 'start', 'DESC')->filter(function ($version) {
+        $this->close_sections = Request::bool('close_sections', $GLOBALS['user']->config->MVV_CLOSE_ALL_SECTIONS ?? false);
+        $GLOBALS['user']->config->store('MVV_CLOSE_ALL_SECTIONS', $this->close_sections);
+
+        $this->stg_teil = StudiengangTeil::find($stgteil_id);
+        $this->versionen = StgteilVersion::findByStgteil($stgteil_id, 'start', 'DESC')->filter(function ($version) {
             $public = $GLOBALS['MVV_STGTEILVERSION']['STATUS']['values'][$version->stat]['public'];
             return (bool) $public;
         });
-        if (!$studiengangTeil || count($versionen) === 0) {
+        if (!$this->stg_teil || count($this->versionen) === 0) {
             PageLayout::postInfo(_('Kein Verlaufsplan im gewählten Bereich verfügbar.'));
         } else {
             $version_id = Request::option('version', $this->sessGet('selected_version'));
-            if ($versionen->findOneBy('id', $version_id)) {
-                $this->cur_version_id = $version_id;
-            } else {
-                $this->cur_version_id = $this->findCurrentVersion($versionen);
+            $this->current_version = $this->versionen->findOneBy('id', $version_id);
+            if (!$this->current_version) {
+                $this->current_version = $this->findCurrentVersion($this->versionen);
             }
-            $this->sessSet('selected_version', $this->cur_version_id);
+            $this->sessSet('selected_version', $this->current_version->id);
 
-            $this->semesters = $this->getSemester($versionen->findOneBy('id', $this->cur_version_id));
-
+            $this->semesters = $this->getSemester($this->versionen->findOneBy('id', $this->current_version->id));
             $cur_semester = Semester::findDefault();
-
             $active_semester = $this->sessGet('selected_semester');
             if ($active_semester) {
                 $this->active_sem = $this->semesters[$active_semester];
@@ -234,21 +234,19 @@ class Search_StudiengaengeController extends MVVController
                 $this->active_sem = Semester::find($active_sem['semester_id']);
             }
 
-            $abschnitte = StgteilAbschnitt::findByStgteilVersion($this->cur_version_id);
-            $abschnitteData = [];
-            $fachsemesterData = [];
-            foreach ($abschnitte as $abschnitt) {
-                $abschnitteData[$abschnitt->id] = [
+            $this->abschnitte_data = [];
+            $fach_sem_data = [];
+            $count_all_courses = 0;
+            foreach ($this->current_version->abschnitte as $abschnitt) {
+                $this->abschnitte_data[$abschnitt->id] = [
                     'name' => $abschnitt->getDisplayName(),
-                    'creditPoints' => $abschnitt->kp,
-                    'zwischenUeberschrift' => $abschnitt->ueberschrift,
-                    'module' => [],
-                    'rowspan' => 0,
+                    'credit_points' => $abschnitt->kp,
+                    'subheading' => $abschnitt->ueberschrift,
+                    'modules' => [],
                     'kommentar' => $abschnitt->kommentar
                 ];
 
                 foreach ($abschnitt->modul_zuordnungen as $abschnitt_modul) {
-
                     // module is not public visible or section has no module
                     // if no modules show only subheading
                     if (!$abschnitt_modul->modul || !$abschnitt_modul->modul->hasPublicStatus()) {
@@ -257,103 +255,118 @@ class Search_StudiengaengeController extends MVVController
 
                     $start_sem = Semester::find($abschnitt_modul->modul->start);
                     $end_sem = Semester::find($abschnitt_modul->modul->end);
-                    if (($start_sem && $start_sem->beginn > $this->active_sem->beginn) || ($end_sem && $this->active_sem->ende > $end_sem->ende)) {
+                    if (
+                        ($start_sem && $start_sem->beginn > $this->active_sem->beginn)
+                        || ($end_sem && $this->active_sem->ende > $end_sem->ende)) {
                        continue;
                     }
 
-                    $abschnitteData[$abschnitt->id]['module'][$abschnitt_modul->modul->id] = [
+                    $this->abschnitte_data[$abschnitt->id]['modules'][$abschnitt_modul->modul->id] = [
                         'name' => $abschnitt_modul->getDisplayName(),
                         'modulTeile' => []
                     ];
-                    $countcourses = 0;
+                    $count_courses = 0;
                     foreach ($abschnitt_modul->modul->modulteile as $teil) {
                         $lvg = Lvgruppe::findByModulteil($teil->id);
                         if ($lvg) {
                             foreach ($lvg as $lv) {
                                 $courses = $lv->getAssignedCoursesBySemester($this->active_sem->id, $GLOBALS['user']->id);
-                                $countcourses += count($courses);
+                                $count_courses += count($courses);
                             }
                         }
 
                         // filter modules whether they have courses or not
- 	                    if ($this->with_courses && $countcourses == 0) {
+                        if ($with_courses && $count_courses === 0) {
                             continue;
                         }
+                        $count_all_courses += $count_courses;
 
-                        $fachSemester = $abschnitt_modul->getAllFachSemester($teil->id);
+                        $fach_semester = $abschnitt_modul->getAllFachSemester($teil->id);
 
-                        $abschnitteData[$abschnitt->id]['module'][$abschnitt_modul->modul->id]['modulTeile'][$teil->id] = [
+                        $this->abschnitte_data[$abschnitt->id]['modules'][$abschnitt_modul->modul->id]['modulTeile'][$teil->id] = [
                             'name' => $teil->getDisplayName(),
                             'position' => $teil->position,
                             'fachsemester' => []
                         ];
-                        $abschnitteData[$abschnitt->id]['rowspan']++;
-                        foreach ($fachSemester as $fachsem) {
-                            $fachsemesterData[$fachsem->fachsemester] = $fachsem->fachsemester;
-                            $abschnitteData[$abschnitt->getId()]['module'][$abschnitt_modul->modul->getId()]['modulTeile'][$teil->getId()]['fachsemester'][$fachsem->fachsemester] = $fachsem->differenzierung;
+                        foreach ($fach_semester as $fachsem) {
+                            $fach_sem_data[$fachsem->fachsemester] = $fachsem->fachsemester;
+                            $this->abschnitte_data[$abschnitt->getId()]['modules'][$abschnitt_modul->modul->getId()]['modulTeile'][$teil->getId()]['fachsemester'][$fachsem->fachsemester] = $fachsem->differenzierung;
                         }
                     }
 
-                    $abschnitteData[$abschnitt->id]['module'][$abschnitt_modul->modul->id]['veranstaltungen'] = $countcourses;
+                    $this->abschnitte_data[$abschnitt->id]['modules'][$abschnitt_modul->modul->id]['courses'] = $count_courses;
 
-                    if ($this->with_courses && $countcourses === 0) {
-                        unset($abschnitteData[$abschnitt->id]['module'][$abschnitt_modul->modul->id]);
-                    } elseif (count($abschnitt_modul->modul->modulteile) === 0) {
-                        $abschnitteData[$abschnitt->id]['rowspan']++;
+                    if ($with_courses && $count_courses === 0) {
+                        unset($this->abschnitte_data[$abschnitt->id]['modules'][$abschnitt_modul->modul->id]);
                     }
                 }
             }
 
+            if ($with_courses && $count_all_courses === 0) {
+                PageLayout::postInfo(_('Keine Module mit Veranstaltungen im gewählten Semester verfügbar.'));
+            }
+
             if ($studiengang_id) {
                 if ($stgteil_bez_id) {
-                    $this->stgTeilBez = StgteilBezeichnung::get($stgteil_bez_id);
-                    $this->breadcrumb->append([$this->stgTeilBez, $studiengangTeil], 'verlauf');
+                    $this->stg_teil_bez = StgteilBezeichnung::get($stgteil_bez_id);
+                    $this->breadcrumb->append([$this->stg_teil_bez, $this->stg_teil], 'verlauf');
                 } else {
-                    $this->breadcrumb->append($studiengangTeil, 'verlauf');
+                    $this->breadcrumb->append($this->stg_teil, 'verlauf');
                 }
                 $this->studiengang = Studiengang::get($studiengang_id);
             }
 
             $this->setVersionSelectWidget(
-                $versionen,
-                $this->action_url('verlauf', $studiengangTeil->id, $stgteil_bez_id, $studiengang_id)
+                $this->versionen,
+                $this->action_url('verlauf', $this->stg_teil->id, $stgteil_bez_id, $studiengang_id)
             );
 
-            ksort($fachsemesterData);
-            $this->fachsemesterData = $fachsemesterData;
-            $this->abschnitteData = $abschnitteData;
-            $this->versionen = $versionen;
-            // Augsburg
+            ksort($fach_sem_data);
+            $this->fach_sem_data = $fach_sem_data;
             // Ausgabe des Namens ohne Fach (dieses ist im Zusatz bereits enthalten)
-            // $this->studiengangTeilName = $studiengangTeil->getDisplayName(0);
-            $this->studiengangTeilName = $studiengangTeil->getDisplayName();
+            $this->studiengangTeilName = $this->stg_teil->getDisplayName();
 
             // add option widget to show only modules with courses in the
             // selected semester
             $widget = new OptionsWidget();
             $widget->addCheckbox(
                 _('Nur Module mit Veranstaltungen anzeigen'),
-                $this->with_courses,
-                $this->action_url('verlauf/' . $stgteil_id, ['with_courses' => intval(!$this->with_courses)])
+                $with_courses,
+                $this->action_url('verlauf/' . $stgteil_id, ['with_courses' => !$with_courses])
             );
-            Sidebar::get()->addWidget($widget, 'with_courses');
+            $widget->addCheckbox(
+                _('Alle Abschnitte zuklappen'),
+                $this->close_sections,
+                $this->action_url('verlauf/' . $stgteil_id, ['close_sections' => !$this->close_sections])
+            );
+            Sidebar::get()->addWidget($widget);
 
             // add links to export Modulhandbücher as PDF
             $widget = new ActionsWidget();
             $widget->setTitle(_('Aktuelle Modulhandbücher'));
-            $avl_lang = array_keys($GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values']);
-
-            foreach ($avl_lang as $language) {
-                if ($language === $GLOBALS['MVV_LANGUAGES']['default']) {
+            $content_languages = array_merge(
+                ['original' => ['name' => _('Originalfassung')]],
+                $GLOBALS['CONTENT_LANGUAGES']
+            );
+            foreach (array_keys($content_languages) as $language) {
+                if ($language === 'original') {
                     $title = _('Originalfassung als PDF');
                 } else {
                     $title = sprintf(
-                        _('Zweitfassung (%s) als PDF'),
-                        $GLOBALS['MVV_LANGUAGES']['values'][$language]['name']
+                        _('Ausgabesprache (%s) als PDF'),
+                        $content_languages[$language]['name']
                     );
                 }
                 // get link without registered parameters
-                $dl_link = URLHelper::getURL("dispatch.php/shared/download/modulhandbuch/pdf/{$this->active_sem->id}/{$this->cur_version_id}/{$language}/big", null, true);
+                $dl_link = $this->url_for(
+                    'shared/download/modulhandbuch/pdf',
+                    $this->active_sem->id,
+                    $this->current_version->id,
+                    $language,
+                    'big',
+                    null, 
+                    true
+                );
                 $widget->addLink(
                     $title,
                     $dl_link,
@@ -364,14 +377,16 @@ class Search_StudiengaengeController extends MVVController
 
             Sidebar::get()->addWidget($widget, 'mhb_export');
         }
-        $this->breadcrumb->append($this->studiengang, 'studiengang');
+        if ($this->breadcrumb) {
+            $this->breadcrumb->append($this->studiengang, 'studiengang');
+        }
         $this->render_template('search/studiengaenge/verlauf', $this->layout);
     }
 
     public function info_action($studiengang_id, $language = null)
     {
         $language = $language ?: Request::get('language', $_SESSION['_language']);
-        ModuleManagementModel::setLanguage($language);
+        ModuleManagementModel::setContentLanguage($language);
 
         $this->studiengang = Studiengang::find($studiengang_id);
         if (!$this->studiengang) {
@@ -389,23 +404,23 @@ class Search_StudiengaengeController extends MVVController
             $file = $document->mvv_file;
             if ($file->extern_visible) {
                 $mvv_file_ref = null;
-                foreach ($GLOBALS['MVV_LANGUAGES']['values'] as $key => $mvv_language) {
-                    if ($mvv_language['locale'] === $_SESSION['_language']) {
-                        $mvv_file_ref = $file->file_refs->findOneBy('file_language', $key);
+                foreach ($GLOBALS['CONTENT_LANGUAGES'] as $language_key => $mvv_language) {
+                    if ($language_key === $_SESSION['_language']) {
+                        $mvv_file_ref = $file->file_refs->findOneBy('file_language', $language_key);
                     } else {
-                        $mvv_file_ref = $file->file_refs->findOneBy('file_language', $GLOBALS['MVV_LANGUAGES']['default']);
+                        $mvv_file_ref = $file->file_refs->findOneBy('file_language', Config::get()->MVV_DEFAULT_LANGUAGE);
                     }
                 }
                 if ($mvv_file_ref) {
                     $filetype = $mvv_file_ref->file_ref->getFileType();
                     $this->all_documents[$file->category][$file->id] =
-                            [
-                                'name' => $file->getDisplayName(),
-                                'url'  => $mvv_file_ref->file_ref->getDownloadURL(),
-                                'metadata_url' => $mvv_file_ref->file_ref->file->metadata['url'] ?? null,
-                                'extension' => $mvv_file_ref->file_ref->file->getExtension(),
-                                'is_link' => ($filetype instanceof URLFile)
-                            ];
+                        [
+                            'name' => $file->getDisplayName(),
+                            'url'  => $mvv_file_ref->file_ref->getDownloadURL(),
+                            'metadata_url' => $mvv_file_ref->file_ref->file->metadata['url'] ?? null,
+                            'extension' => $mvv_file_ref->file_ref->file->getExtension(),
+                            'is_link' => ($filetype instanceof URLFile)
+                        ];
                 }
             }
         }
@@ -425,6 +440,7 @@ class Search_StudiengaengeController extends MVVController
         if (!$this->abschnitt) {
             throw new Trails\Exception(404);
         }
+        PageLayout::setTitle($this->abschnitt->getDisplayName());
         $this->render_template('search/studiengaenge/kommentar', $this->layout);
     }
 
@@ -468,7 +484,6 @@ class Search_StudiengaengeController extends MVVController
     {
         $semester_data = Semester::getAll();
         $current_semester = Semester::findCurrent();
-        $cur_version_id = null;
         if (count($versions)) {
             foreach ($versions as $version) {
                 if ((!$version->start_sem && !$version->end_sem)
@@ -476,15 +491,13 @@ class Search_StudiengaengeController extends MVVController
                             && !$version->end_sem)
                     || ($semester_data[$version->start_sem]->beginn <= $current_semester->beginn
                             && $semester_data[$version->end_sem]->beginn >= $current_semester->beginn)) {
-                    return $version->getId();
+                    return $version;
                 }
             }
             // no start or end semester for versions, take the last one
-            if (!$cur_version_id) {
-                $cur_version_id = $versions->last()->id;
-            }
+            return $versions->last();
         }
-        return $cur_version_id;
+        return null;
     }
 
     /**

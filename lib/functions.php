@@ -200,6 +200,10 @@ function get_object_type($id, $check_only = [])
         return 'global';
     }
 
+    if ($id === 'login') {
+        return 'login';
+    }
+
     // Initialize cache array
     if ($cache === null) {
         $cache = new StudipCachedArray('Studip/ObjectTypes');
@@ -341,10 +345,10 @@ function get_fullname($user_id = "", $format = "full" , $htmlready = false)
 function get_fullname_from_uname($uname = "", $format = "full", $htmlready = false)
 {
     static $cache;
-    global $auth, $_fullname_sql;
+    global $user, $_fullname_sql;
 
     if (!$uname) {
-        $uname = $auth->auth['uname'];
+        $uname = $user->username;
     }
 
     $hash = md5($uname . $format);
@@ -375,10 +379,10 @@ function get_fullname_from_uname($uname = "", $format = "full", $htmlready = fal
 function get_username($user_id = "")
 {
     static $cache = [];
-    global $auth;
+    global $user;
 
-    if (!$user_id || $user_id === $auth->auth['uid']) {
-        return $auth->auth['uname'] ?? '';
+    if (!$user_id || $user_id === $user->id) {
+        return $user->username ?? '';
     }
 
     if (!isset($cache[$user_id])) {
@@ -396,7 +400,7 @@ function get_username($user_id = "")
  *
  * uses global $online array if user is online
  *
- * @global object $auth
+ * @global object user
  * @staticvar array $cache
  *
  * @param string $username if omitted, current user_id will be returned
@@ -406,10 +410,10 @@ function get_username($user_id = "")
 function get_userid($username = "")
 {
     static $cache = [];
-    global $auth;
+    global $user;
 
-    if (!$username || $username == $auth->auth['uname']) {
-        return $auth->auth['uid'];
+    if (!$username || $username == $user->username) {
+        return $user->id;
     }
 
     // Read id from database if no cached version is available
@@ -509,7 +513,6 @@ function StringToFloat($str)
  * passed archived seminar
  *
  * @global array $perm
- * @global object $auth
  * @staticvar array $archiv_perms
  *
  * @param string $seminar_id the seminar in the archive
@@ -637,7 +640,7 @@ function get_users_online_count($active_time = 10)
  */
 function get_ticket()
 {
-    return Seminar_Session::get_ticket();
+    return CSRFProtection::sessionticket();
 }
 
 /**
@@ -649,7 +652,7 @@ function get_ticket()
  */
 function check_ticket($studipticket)
 {
-    return Seminar_Session::check_ticket($studipticket);
+    return CSRFProtection::verifySessionticket($studipticket);
 }
 
 /**
@@ -1120,7 +1123,10 @@ function studip_default_exception_handler($exception) {
         $status = 403;
         $template = 'check_object_exception';
     } elseif ($exception instanceof LoginException) {
-        $GLOBALS['auth']->login_if(true);
+        $_SESSION['redirect_after_login'] = Request::url();
+        sess()->save();
+        header('Location: ' . URLHelper::getScriptURL('dispatch.php/login'));
+        exit;
     } else {
         if ($exception instanceOf Trails\Exception) {
             $status = $exception->getCode();

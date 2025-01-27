@@ -23,7 +23,7 @@ const QRCode = {
         }).text(text).appendTo(url);
 
         if (options.description) {
-            const description = $('<div class="description"/>').text(options.description).appendTo(content);
+            $('<div class="description"/>').text(options.description).appendTo(content);
         }
 
         // Actually generate code

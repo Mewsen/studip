@@ -134,10 +134,10 @@ vue feedback components
         }
     }
     .five-stars-histogram-chart {
-        min-width: 260px;
+        min-width: 270px;
         span {
             display: inline-block;
-            width: 2em;
+            width: 30px;
         }
         img {
             vertical-align: text-bottom;
@@ -147,7 +147,7 @@ vue feedback components
             display: inline-block;
             background-color: var(--content-color-10);
             width: calc(100% - 6em);
-            margin: 2px 10px;
+            margin: 4px 10px;
             .percentage-bar {
                 background-color: var(--yellow);
                 color: transparent;

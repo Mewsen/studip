@@ -1,7 +1,15 @@
+<?php
+/**
+ * @var Modul $modul
+ * @var int $type
+ * @var Shared_ModulController $controller
+ */
+?>
+
 <? if (count($modul->deskriptoren) > 1): ?>
 <div style="width: 100%; text-align: right;">
-    <? foreach ($modul->deskriptoren->getAvailableTranslations() as $language) : ?>
-        <? $lang = $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$language]; ?>
+    <? foreach ($modul->deskriptoren->getAvailableTranslations($modul->original_language) as $language) : ?>
+        <? $lang = $GLOBALS['CONTENT_LANGUAGES'][$language]; ?>
         <a data-dialog="size=auto;title='<?= htmlReady($modul->getDisplayName()) ?>'" href="<?= $controller->action_link('description/' . $modul->id . '/', ['display_language' => $language]) ?>">
             <?= Assets::img(MVV::getContentLanguageImagePath($language), ['alt' => $lang['name'], 'size' => 24]) ?>
         </a>

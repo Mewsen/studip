@@ -5,11 +5,11 @@
  */
 ?>
 <? if ($semester) : ?>
-    <h2>
+    <h1>
         <?= studip_interpolate(
             _('Mein Stundenplan im %{semester}'),
             ['semester' => $semester->name]
         ) ?>
-    </h2>
+    </h1>
 <? endif ?>
 <?= $fullcalendar ?>

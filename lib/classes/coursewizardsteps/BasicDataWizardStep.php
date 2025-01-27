@@ -30,7 +30,7 @@ class BasicDataWizardStep implements CourseWizardStep
         // Load template from step template directory.
         $factory = new Flexi\Factory($GLOBALS['STUDIP_BASE_PATH'] . '/app/views/course/wizard/steps');
         if (!empty($values[__CLASS__]['studygroup'])) {
-            $tpl = $factory->open('basicdata/index_studygroup');
+            $tpl = $factory->open('studygroups/index');
             $values[__CLASS__]['lecturers'][$GLOBALS['user']->id] = 1;
         } else {
             $tpl = $factory->open('basicdata/index');
@@ -428,7 +428,7 @@ class BasicDataWizardStep implements CourseWizardStep
         $course->name = new I18NString($values['name'], $values['name_i18n'] ?? []);
         $course->veranstaltungsnummer = $values['number'] ?? null;
         $course->beschreibung = new I18NString($values['description'], $values['description_i18n'] ?? []);
-        $course->start_semester = Semester::find($values['start_semester']);
+        $course->start_semester = isset($values['start_semester']) ? Semester::find($values['start_semester']) : Semester::findCurrent();
         $course->institut_id = $values['institute'];
 
         $semclass = $course->getSemClass();
@@ -436,7 +436,7 @@ class BasicDataWizardStep implements CourseWizardStep
         $course->admission_prelim = $semclass['admission_prelim_default'];
         $course->lesezugriff = $semclass['default_read_level'] ?: 1;
         $course->schreibzugriff = $semclass['default_write_level'] ?: 1;
-        $course->admission_turnout = $values['maxmembers'];
+        $course->admission_turnout = $values['maxmembers'] ?: null;
 
         // Studygroups: access and description.
         if (in_array($values['coursetype'], studygroup_sem_types())) {
@@ -455,6 +455,7 @@ class BasicDataWizardStep implements CourseWizardStep
                     break;
             }
         }
+
         if (!$course->store()) {
             return false;
         }
@@ -504,6 +505,51 @@ class BasicDataWizardStep implements CourseWizardStep
 
         if ($source_id  && ($copy_participants || $copy_groups || $copy_members)) {
             self::copyParticipantsAndGroups($course, $source_id, $copy_participants, $copy_groups, $copy_members);
+        }
+
+        if (in_array($values['coursetype'], studygroup_sem_types())) {
+            if (!empty($values['lv_course_id'])) {
+                StudygroupModel::proposeAsStudygroupTo($course, $values['lv_course_id']);
+            }
+        }
+
+        if (!empty($values['exp_date'])) {
+            $exp_date = strtotime($values['exp_date']);
+            if ($exp_date) {
+                CourseConfig::get($course->id)->store('STUDYGROUP_EXPIRATION_DATE', $exp_date);
+            }
+        }
+        if (!empty($values['tags'])) {
+            foreach ($values['tags'] as $name) {
+                if ($tag = Tag::findOneByName($name)) {
+                    if (!$tag->active) {
+                        continue;
+                    }
+                } else {
+                    $tag = Tag::create(['name' => $name]);
+                }
+
+                $relation = TagRelation::findOneBySQL(
+                    "`range_id` = :course_id AND `range_type` = 'course' AND `tag_id` = :tag_id", 
+                    [
+                        'tag_id'    => $tag->id,
+                        'course_id' => $course->id
+                    ]
+                );
+                if (!$relation) {
+                    $relation = TagRelation::create([
+                        'range_id'   => $course->id,
+                        'range_type' => 'course',
+                        'tag_id'     => $tag->id
+                    ]);
+                }
+            }
+        }
+
+
+        if (!empty($values['stgteil_id'])) {
+            $studiengangteil = StudiengangTeil::find($values['stgteil_id']);
+            $studiengangteil->addStudygroup($course);
         }
 
         return $course;

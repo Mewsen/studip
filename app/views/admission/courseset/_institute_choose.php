@@ -27,17 +27,20 @@
             <?=_("Enthaltene Regeln:")?>
             <div class="hidden-no-js check_actions">
                 (<?= _('markieren') ?>:
-                <a onclick="STUDIP.Admission.checkUncheckAll('choose_rule_type', 'check')">
+                <button class="as-link" onclick="return STUDIP.Admission.checkUncheckAll('choose_rule_type', 'check')"
+                        title="<?= _('Alle Regeltypen auswählen') ?>">
                     <?= _('alle') ?>
-                </a>
+                </button>
                 |
-                <a onclick="STUDIP.Admission.checkUncheckAll('choose_rule_type', 'uncheck')">
+                <button class="as-link" onclick="return STUDIP.Admission.checkUncheckAll('choose_rule_type', 'uncheck')"
+                        title="<?= _('Keinen Regeltyp auswählen') ?>">
                     <?= _('keine') ?>
-                </a>
+                </button>
                 |
-                <a onclick="STUDIP.Admission.checkUncheckAll('choose_rule_type', 'invert')">
+                <button class="as-link" onclick="return STUDIP.Admission.checkUncheckAll('choose_rule_type', 'invert')"
+                        title="<?= _('Aktuelle Auswahl der Regeltypen umkehren') ?>">
                     <?= _('Auswahl umkehren') ?>
-                </a>)
+                </button>)
             </div>
         </section>
 

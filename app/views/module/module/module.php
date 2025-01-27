@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var Modul[] $module
+ */
+?>
+
 <? foreach ($module as $modul) : ?>
     <? $perm = MvvPerm::get($modul) ?>
     <tbody class="<?= $modul->count_modulteile ? '' : 'empty ' ?><?= $modul_id === $modul->getId() ? 'not-collapsed' : 'collapsed' ?>">
@@ -9,7 +15,7 @@
                     <? $details_action = $details_action ?? 'details'; ?>
                     <a class="mvv-load-in-new-row" href="<?= $controller->action_link($details_action, $modul->getId()) ?>">
                         <? if ($ampel_icon) : ?>
-                            <?= $ampel_icon->asImg(['title' => $ampelstatus, 'style' => 'vertical-align: text-top;']) ?>
+                            <?= $ampel_icon->asImg(['title' => $ampelstatus, 'style' => 'vertical-align: bottom;']) ?>
                         <? endif; ?>
                         <?= htmlReady($modul->code) ?>
                     </a>
@@ -29,25 +35,26 @@
                     <? endif;?>
                 </td>
             <? else : ?>
-                <td style="white-space:nowrap;">
+                <td style="white-space:nowrap; font-weight: 700; padding-left: 20px;">
                     <? if ($ampel_icon) : ?>
-                        <?= $ampel_icon->asImg(['title' => $ampelstatus, 'style' => 'vertical-align: text-top;']) ?>
+                        <?= $ampel_icon->asImg(['title' => $ampelstatus, 'style' => 'vertical-align: bottom;']) ?>
                     <? endif; ?>
                     <?= htmlReady($modul->code) ?>
                 </td>
-                <td class="dont-hide" style="font-weight: bold;">
+                <td class="dont-hide" style="font-weight: 700;">
                     <?= htmlReady($modul->getDisplayName()) ?>
                 </td>
             <? endif; ?>
             <td style="text-align:center;" class="dont-hide"><?= htmlReady($modul->fassung_nr) ?></td>
             <td style="text-align: center;" class="dont-hide"><?= $modul->count_modulteile ?></td>
-            <td class="dont-hide actions" style="text-align: center;">
+            <td class="dont-hide actions" style="text-align: left;">
                 <? if ($perm->havePermRead()) : ?>
-                    <? $languages = $modul->deskriptoren->getAvailableTranslations(); ?>
+                    <? $languages = $modul->deskriptoren->getAvailableTranslations($modul->original_language); ?>
+                    <? $content_languages = $GLOBALS['CONTENT_LANGUAGES'] ?>
                     <? foreach ($languages as $language) : ?>
-                        <? $lang = $GLOBALS['MVV_MODUL_DESKRIPTOR']['SPRACHE']['values'][$language]; ?>
                         <a href="<?= $controller->action_link('modul/' . $modul->id . '/', ['display_language' => $language]) ?>">
-                            <?= Assets::img(MVV::getContentLanguageImagePath($language), ['alt' => $lang['name'], 'size' => 24]) ?>
+                            <?= Assets::img(MVV::getContentLanguageImagePath($language),
+                                ['alt' => $content_languages[$language]['name'], 'size' => 24]) ?>
                         </a>
                     <? endforeach; ?>
                 <? endif; ?>
@@ -95,6 +102,14 @@
                             _('Modul kopieren'),
                             Icon::create('files', Icon::ROLE_CLICKABLE,['title' => _('Modul kopieren')]),
                             ['data-dialog' => '']
+                        ) ?>
+                    <? endif; ?>
+                    <? if ($perm->haveFieldPerm('change_language', MvvPerm::PERM_CREATE)) : ?>
+                        <? $actionMenu->addLink(
+                            $controller->change_languageURL($modul->id),
+                            _('Originalsprache ändern'),
+                            Icon::create('support', Icon::ROLE_CLICKABLE,['title' => _('Originalsprache ändern')]),
+                            ['data-dialog' => 'size=370x270']
                         ) ?>
                     <? endif; ?>
                     <? if ($perm->havePermCreate()) : ?>

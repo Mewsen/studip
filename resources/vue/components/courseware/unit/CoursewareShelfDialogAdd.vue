@@ -60,7 +60,7 @@
                         name="color"
                     >
                         <template #open-indicator="selectAttributes">
-                            <span v-bind="selectAttributes"
+                            <span v-bind="{ selectAttributes }"
                                 ><studip-icon shape="arr_1down" :size="10"
                             /></span>
                         </template>

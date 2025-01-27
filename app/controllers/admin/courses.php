@@ -487,6 +487,16 @@ class Admin_CoursesController extends AuthenticatedController
                         'data-dialog' => 'size=big'
                     ]);
                 break;
+            case 23: // Mass mail to selected courses
+                $data['buttons_top'] = '<label>' . _('Alle auswählen') .
+                    '<input type="checkbox" data-proxyfor=".course-admin td:last-child :checkbox"></label>';
+                $data['buttons_bottom'] = (string) \Studip\Button::createAccept(
+                    _('Nachricht an ausgewählte Veranstaltungen'), 'massmail',
+                    [
+                        'formaction' => URLHelper::getURL('dispatch.php/massmail/quick/courses'),
+                        'data-dialog' => 'size=big'
+                    ]);
+                break;
             default:
                 foreach (PluginManager::getInstance()->getPlugins(AdminCourseAction::class) as $plugin) {
                     if ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA === get_class($plugin)) {
@@ -631,7 +641,7 @@ class Admin_CoursesController extends AuthenticatedController
         }
         if (in_array('number', $activated_fields)) {
             $d['number'] = '<a href="'.URLHelper::getLink('dispatch.php/course/basicdata/view', ['cid' => $course->id]).'">'
-                .$course->veranstaltungsnummer
+                . htmlReady($course->veranstaltungsnummer)
                 .'</a>';
         }
         if (in_array('avatar', $activated_fields)) {
@@ -641,18 +651,18 @@ class Admin_CoursesController extends AuthenticatedController
         }
         if (in_array('type', $activated_fields)) {
             $semtype = $course->getSemType();
-            $d['type'] = $semtype['name'];
+            $d['type'] = htmlReady($semtype['name']);
         }
         if (in_array('room_time', $activated_fields)) {
             $strings = $course->getAllDatesInSemester()->toStringArray();
             $d['room_time'] = implode('<br>', $strings) ?: _('nicht angegeben');
         }
         if (in_array('semester', $activated_fields)) {
-            $d['semester'] = $course->semester_text;
+            $d['semester'] = htmlReady($course->semester_text);
             $d['semester_sort'] = $course->start_semester ? $course->start_semester->beginn : 0;
         }
         if (in_array('institute', $activated_fields)) {
-            $d['institute'] = $course->home_institut ? $course->home_institut->name : $course->institute;
+            $d['institute'] = htmlReady($course->home_institut ? $course->home_institut->name : $course->institute);
         }
         if (in_array('requests', $activated_fields)) {
             $d['requests'] = '<a href="'.URLHelper::getLink('dispatch.php/course/room_requests', ['cid' => $course->id]).'">'.count($course->room_requests)."</a>";
@@ -696,8 +706,8 @@ class Admin_CoursesController extends AuthenticatedController
 
             foreach ($icons as $icon) {
                 $d['contents'] .= '<li class="my-courses-navigation-item '. ($icon->getImage()->signalsAttention() ? 'my-courses-navigation-important' : '').'">
-                        <a href="'. URLHelper::getLink('seminar_main.php', ['auswahl' => $course->id, 'redirect_to' => $icon->getURL()]).'"'. ($icon->getTitle() ? ' title="'.htmlReady($icon->getTitle()).'"' : '') .'>
-                            '. $icon->getImage()->asImg(20) .'
+                        <a href="'. URLHelper::getLink('dispatch.php/course/go', ['to' => $course->id, 'redirect_to' => $icon->getURL()]).'"'. ($icon->getTitle() ? ' title="'.htmlReady($icon->getTitle()).'"' : '') .'>
+                            '. $icon->getImage()->asImg() .'
                         </a>
                     </li>';
             }
@@ -837,6 +847,11 @@ class Admin_CoursesController extends AuthenticatedController
                 $template->course = $course;
                 $d['action'] = $template->render();
                 break;
+            case 23: //Masssenexport Teilnehmendendaten
+                $template = $tf->open('admin/courses/massmail');
+                $template->course = $course;
+                $d['action'] = $template->render();
+                break;
             default:
                 foreach (PluginManager::getInstance()->getPlugins(AdminCourseAction::class) as $plugin) {
                     if ($GLOBALS['user']->cfg->MY_COURSES_ACTION_AREA === get_class($plugin)) {
@@ -959,9 +974,7 @@ class Admin_CoursesController extends AuthenticatedController
         if (count($filter_config) > 0) {
             $filter = AdminCourseFilter::get();
             PluginEngine::sendMessage(AdminCourseWidgetPlugin::class, 'applyFilters', $filter);
-            $filter->query->join('semester_courses', 'semester_courses', 'semester_courses.course_id = seminare.Seminar_id')
-                ->join('semester_data', 'semester_data', 'semester_data.semester_id = semester_courses.semester_id')
-                ->orderBy('semester_data.beginn, seminare.name');
+            $filter->query->orderBy('seminare.name');
             $courses = $filter->getCourses();
 
             $view_filters = $this->getViewFilters();
@@ -1435,6 +1448,14 @@ class Admin_CoursesController extends AuthenticatedController
                 'partial'    => 'batch_export_members.php'
 
             ],
+            23 => [
+                'name'       => _('Nachricht schreiben'),
+                'title'      => _('Nachricht schreiben'),
+                'url'        => 'dispatch.php/massmail/quick/courses',
+                'dialogform' => true,
+                'multimode'  => true,
+                'partial'    => 'massmail.php'
+            ]
         ];
 
         if (!$GLOBALS['perm']->have_perm('admin')) {

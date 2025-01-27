@@ -18,6 +18,7 @@
 import SidebarWidget from '../SidebarWidget.vue';
 
 export default {
+    emits: ['initiateUpload', 'initiateZipUpload'],
     components: {
         SidebarWidget,
     },

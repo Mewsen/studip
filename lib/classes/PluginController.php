@@ -6,20 +6,21 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
+ *
+ * @property StudIPPlugin $plugin
+ * @property callable $_
+ * @property callable $_n
  */
-
 class PluginController extends StudipController
 {
-    public function __construct($dispatcher)
+    public function __construct(PluginDispatcher $dispatcher)
     {
+        $this->with_session = false; //session for plugin is always initialized in plugins.php
         parent::__construct($dispatcher);
 
-        if (!isset($dispatcher->current_plugin)) {
-            throw new Exception('Plugin missing for plugin controller!');
-        }
         $this->plugin = $dispatcher->current_plugin;
 
-        if ($this->plugin && $this->plugin->hasTranslation()) {
+        if ($this->plugin->hasTranslation()) {
             // Localization
             $this->_ = function ($string) {
                 return call_user_func_array(
@@ -64,7 +65,10 @@ class PluginController extends StudipController
      */
     public function __call($method, $arguments)
     {
-        if (isset($this->_template_variables[$method]) && is_callable($this->_template_variables[$method])) {
+        if (
+            isset($this->_template_variables[$method])
+            && is_callable($this->_template_variables[$method])
+        ) {
             return call_user_func_array($this->_template_variables[$method], $arguments);
         }
         return parent::__call($method, $arguments);

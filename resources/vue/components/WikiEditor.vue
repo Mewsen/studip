@@ -1,5 +1,14 @@
 <template>
     <div>
+        <ContentBar isContentBar icon="wiki" :toc="toc">
+            <template #info-text>
+                {{ $gettext('Zuletzt gespeichert') }}:
+                <studip-date-time :timestamp="Math.floor(lastSaveDate / 1000)"
+                                  :relative="true"
+                />
+            </template>
+            <template #breadcrumb-list><content-bar-breadcrumbs :toc="toc"/></template>
+        </ContentBar>
         <form :action="saveUrl" method="post" class="default" v-show="isEditing">
             <input type="hidden" :name="csrf.name" :value="csrf.value">
 
@@ -15,14 +24,14 @@
                 <input type="checkbox" v-model="autosave">
                 {{ $gettext('Automatisches Speichern aktivieren.') }}
             </label>
-            <div>
+            <p class="last-save-date">
                 {{ $gettext('Zuletzt gespeichert') }}:
                 <studip-date-time :timestamp="Math.floor(lastSaveDate / 1000)"
                                   :relative="true"
                 ></studip-date-time>
-            </div>
+            </p>
 
-            <div data-dialog-button="">
+            <footer data-dialog-button="">
                 <button class="button"
                         :title="isChanged ? $gettext('Den aktuellen Stand speichern.') : $gettext('Der aktuelle Stand wurde bereits gespeichert.')"
                         @click="toggleSecurityHandler(false)"
@@ -37,9 +46,9 @@
                         @click.prevent="delegateEditMode(user.user_id)"
                         class="button"
                 >
-                    {{ $gettextInterpolate($gettext('Schreibmodus an %{name} übergeben'), { name: user.fullname }, true) }}
+                    {{ $gettext('Schreibmodus an %{name} übergeben', { name: user.fullname }, true) }}
                 </button>
-            </div>
+            </footer>
         </form>
 
         <div v-if="!isEditing">
@@ -66,22 +75,19 @@
         </div>
 
         <wiki-editor-online-users :users="onlineUsers"></wiki-editor-online-users>
-
-        <mounting-portal :mount-to="`.wiki-last-edited-${pageId}`">
-            <studip-date-time :timestamp="Math.floor(lastSaveDate / 1000)"
-                              :relative="true"
-            ></studip-date-time>
-        </mounting-portal>
     </div>
 </template>
 <script>
 import WikiEditorOnlineUsers from "./WikiEditorOnlineUsers.vue";
 import StudipDateTime from "./StudipDateTime.vue";
 import JSUpdater from "@/assets/javascripts/lib/jsupdater";
+import ContentBar from "./ContentBar.vue";
+import ContentBarBreadcrumbs from "./ContentBarBreadcrumbs.vue";
+import {markRaw} from "vue";
 
 export default {
     name: 'wiki-editor',
-    components: {StudipDateTime, WikiEditorOnlineUsers },
+    components: { ContentBarBreadcrumbs, ContentBar, StudipDateTime, WikiEditorOnlineUsers },
     props: {
         cancelUrl: {
             type: String,
@@ -114,6 +120,10 @@ export default {
         users: {
             type: Array,
             default: () => []
+        },
+        toc: {
+            type: Object,
+            required: true
         }
     },
     data() {
@@ -217,7 +227,7 @@ export default {
                 this.focusEditor();
             }
 
-            this.editor = editor;
+            this.editor = markRaw(editor);
         });
 
         JSUpdater.register(

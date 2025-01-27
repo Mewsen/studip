@@ -2,7 +2,7 @@
     <sidebar-widget v-if="exportData.length > 0" id="export-widget" class="sidebar-export" :title="$gettext('Export')">
         <template #content>
             <form class="sidebar-export">
-                <studip-icon shape="export" :size="16"></studip-icon>
+                <studip-icon shape="export"></studip-icon>
                 <a :href="url" :title="title" @click.prevent="createExport()">{{ title }}</a>
             </form>
         </template>

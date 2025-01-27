@@ -28,16 +28,16 @@ a:hover.toolbar {
 }
 
 a.link-intern {
-    @include icon(before, link-intern, clickable, 16px, 2px);
+    @include icon(before, link-intern, $padding: 2px, $inline: true);
 }
 a.link-extern {
-    @include icon(before, link-extern, clickable, 16px, 2px);
+    @include icon(before, link-extern, $padding: 2px, $inline: true);
 }
 a.link-add {
-    @include icon(before, add, clickable, 16px, 2px);
+    @include icon(before, add, $padding: 2px, $inline: true);
 }
 a.link-edit {
-    @include icon(before, edit, clickable, 16px, 2px);
+    @include icon(before, edit, $padding: 2px, $inline: true);
 }
 
 a img {

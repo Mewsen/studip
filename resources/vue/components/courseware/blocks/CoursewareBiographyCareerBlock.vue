@@ -11,7 +11,7 @@
         >
             <template #content>
                 <ol class="cw-timeline">
-                    <li 
+                    <li
                         v-for="(item, index) in sortedItems"
                         :key="index"
                         class="cw-timeline-item"
@@ -158,7 +158,6 @@ export default {
             if (this.currentSort === 'none') {
                 return this.currentItems;
             }
-            let view = this;
             let items = _.cloneDeep(this.currentItems);
             return items.sort((a, b) => {
                 let dateA = null;
@@ -174,10 +173,10 @@ export default {
                 } else {
                     dateB = new Date(b.date);
                 }
-                if (view.currentSort === 'asc') {
+                if (this.currentSort === 'asc') {
                     return dateA > dateB ? 1 : dateA < dateB ? -1 : 0;
                 }
-                if (view.currentSort === 'desc') {
+                if (this.currentSort === 'desc') {
                     return dateA < dateB ? 1 : dateA > dateB ? -1 : 0;
                 }
             });
@@ -254,6 +253,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-    @import "../../../../assets/stylesheets/scss/courseware/blocks/timeline.scss";
-    @import "../../../../assets/stylesheets/scss/courseware/blocks/biography.scss";
+    @import "../../../../assets/stylesheets/scss/courseware/blocks/timeline";
+    @import "../../../../assets/stylesheets/scss/courseware/blocks/biography";
 </style>

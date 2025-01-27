@@ -14,7 +14,7 @@
         <tr>
             <td>
                 <? if ($material->draft) : ?>
-                    <?= Icon::create('lock-locked', Icon::ROLE_INFO)->asImg(20, ['class' => 'text-bottom']) ?>
+                    <?= Icon::create('lock-locked', Icon::ROLE_INFO)->asImg(['class' => 'text-bottom']) ?>
                 <? endif ?>
             </td>
             <td>
@@ -52,13 +52,13 @@
                 <? if ($material->isMine()) : ?>
                     <a href="<?= $controller->link_for('oer/mymaterial/edit/' . $material->id)  ?>" data-dialog
                        title="<?= _('Lernmaterial bearbeiten') ?>">
-                        <?= Icon::create('edit', Icon::ROLE_CLICKABLE)->asImg(20) ?>
+                        <?= Icon::create('edit') ?>
                     </a>
                     <form action="<?= $controller->link_for('oer/mymaterial/delete/' . $material->id) ?>"
                           class="inlineform"
                           method="post"
                           data-confirm="<?= _('Dieses Material wirklich löschen?') ?>">
-                        <?= Icon::create("trash", Icon::ROLE_CLICKABLE)->asInput(20) ?>
+                        <?= Icon::create('trash')->asInput() ?>
                     </form>
                 <? endif ?>
             </td>

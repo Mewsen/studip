@@ -1,15 +1,15 @@
 <div class="blubber_course_info indented">
     <div class="headline">
         <div class="side">
-            <a href="<?= URLHelper::getLink("seminar_main.php", ['auswahl' => $course->getId()]) ?>">
+            <a href="<?= URLHelper::getLink("dispatch.php/course/go", ['to' => $course->getId()]) ?>">
                 <?= htmlReady($course->name) ?>
             </a>
             <div class="icons">
                 <ul class="my-courses-navigation">
                 <? foreach ($icons as $icon) : ?>
                     <li class="my-courses-navigation-item <? if ($icon->getImage()->signalsAttention()) echo 'my-courses-navigation-important'; ?>">
-                        <a href="<?= URLHelper::getLink("seminar_main.php", ['auswahl' => $course->getId(), 'redirect_to' => $icon->getURL()]) ?>"<?= $icon->getTitle() ? ' title="'.htmlReady($icon->getTitle()).'"' : "" ?>>
-                            <?= $icon->getImage()->asImg(20) ?>
+                        <a href="<?= URLHelper::getLink("dispatch.php/course/go", ['to' => $course->getId(), 'redirect_to' => $icon->getURL()]) ?>"<?= $icon->getTitle() ? ' title="'.htmlReady($icon->getTitle()).'"' : "" ?>>
+                            <?= $icon->getImage() ?>
                         </a>
                     </li>
                 <? endforeach ?>
@@ -21,7 +21,7 @@
         <div>
             <h4><?= _('Nächster Termin') ?></h4>
             <a href="<?= URLHelper::getLink("dispatch.php/course/dates/details/".$nextdate->getId(), ['cid' => $course->id]) ?>" data-dialog="size=auto">
-                <?= Icon::create('date')->asImg(['class' => "text-bottom"]) ?>
+                <?= Icon::create('date')->asImg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>
                 <?= htmlReady($nextdate->getFullName()) ?>
             </a>
         </div>

@@ -3,7 +3,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'courseware-companion-overlay',
-    render(createElement) {
+    render() {
         return null;
     },
     computed: {
@@ -42,10 +42,9 @@ export default {
     },
     watch: {
         showCompanion(newValue, oldValue) {
-            let view = this;
             if (newValue === true && oldValue === false) {
                 setTimeout(() => {
-                    view.hideCompanion();
+                    this.hideCompanion();
                 }, 4000);
             }
         },

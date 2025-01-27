@@ -2,9 +2,9 @@
 .button.has-no-notice {
     &::before {
         display: inline-block;
-        height: 16px;
+        height: var(--icon-size-inline);
         vertical-align: sub;
-        width: 16px;
+        width: var(--icon-size-inline);
     }
     &::before {
         margin-right: 0.5ex;
@@ -34,7 +34,7 @@
 }
 
 .action-menu.filter:not(.is-open) .action-menu-icon {
-    @include background-icon(settings, clickable, 20);
+    @include background-icon(settings);
     span {
         display: none;
     }

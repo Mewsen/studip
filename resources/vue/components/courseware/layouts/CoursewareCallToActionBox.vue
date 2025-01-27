@@ -19,6 +19,7 @@ export default {
     components: {
         StudipIcon
     },
+    emits: ['click'],
     props: {
         iconShape: {
             type: String,

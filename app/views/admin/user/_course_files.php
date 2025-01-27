@@ -43,12 +43,12 @@
                         <? foreach ($file_data as $data): ?>
                             <tr>
                                 <td>
-                                    <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $data['course']->id]) ?>">
+                                    <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['to' => $data['course']->id]) ?>">
                                         <?= htmlReady($data['course']->veranstaltungsnummer) ?>
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="<?= URLHelper::getLink('seminar_main.php', ['auswahl' => $data['course']->id]) ?>">
+                                    <a href="<?= URLHelper::getLink('dispatch.php/course/go', ['to' => $data['course']->id]) ?>">
                                         <?= htmlReady($data['course']->name) ?>
                                     </a>
                                 </td>

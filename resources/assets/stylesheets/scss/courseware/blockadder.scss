@@ -8,8 +8,8 @@
     .cw-blockadder-item-wrapper {
         display: flex;
         position: relative;
-        border: solid thin var(--content-color-40);
-        background-color: var(--white);
+        border: solid thin var(--color--tile-border);
+        background-color: var(--color--global-background);
         max-width: 268px;
 
         .cw-sortable-handle {
@@ -32,14 +32,14 @@
             border: none;
             background-color: var(--white);
             padding: 64px 10px 4px 10px;
-            @include background-icon(unit-test, clickable, 48);
+            @include background-icon(unit-test, $size: 48px);
             background-position: 16px 10px;
             background-repeat: no-repeat;
             cursor: pointer;
 
             @each $item, $icon in $blockadder-items {
                 &.cw-blockadder-item-#{$item} {
-                    @include background-icon($icon, clickable, 48);
+                    @include background-icon($icon, $size: 48px);
                 }
             }
             .cw-blockadder-item-title {
@@ -68,7 +68,7 @@
 
 .cw-containeradder-item-wrapper {
     position: relative;
-    border: solid thin var(--content-color-40);
+    border: solid thin var(--color--tile-border);
     margin-bottom: 4px;
     .cw-sortable-handle {
         opacity: 0;
@@ -87,7 +87,7 @@
         background-color: var(--white);
         min-height: 5em;
         padding: 1em 1em 1em 6em;
-        @include background-icon(unit-test, clickable, 48);
+        @include background-icon(unit-test, $size: 48px);
         background-position: 16px center;
         background-repeat: no-repeat;
         text-align: left;
@@ -96,7 +96,7 @@
 
         @each $item, $icon in $containeradder-items {
             &.cw-containeradder-item-#{$item} {
-                @include background-icon($icon, clickable, 48);
+                @include background-icon($icon, $size: 48px);
             }
         }
 
@@ -114,10 +114,13 @@
 
 .cw-container-style-selector {
     display: flex;
+    border-bottom: solid thin var(--color--content-box-border);
+    padding-bottom: 8px;
     margin-bottom: 8px;
 
     label {
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--tile-border);
+        border-right: none;
         padding: calc(0.5em + 32px) 1em 0.5em 1em;
         color: var(--base-color);
         text-align: center;
@@ -126,14 +129,18 @@
         background-repeat: no-repeat;
         cursor: pointer;
 
+        &:last-child {
+            border-right: solid thin var(--color--tile-border);
+        }
+
         &.full {
-            @include background-icon(column-full, clickable, 32);
+            @include background-icon(column-full, $size: 32px);
         }
         &.half {
-            @include background-icon(column-half, clickable, 32);
+            @include background-icon(column-half, $size: 32px);
         }
         &.half-center {
-            @include background-icon(column-half-centered, clickable, 32);
+            @include background-icon(column-half-centered, $size: 32px);
         }
         &:hover {
             color: var(--active-color);
@@ -170,7 +177,7 @@
     .cw-clipboard-item-wrapper {
         background-color: var(--white);
         display: flex;
-        border: solid thin var(--content-color-40);
+        border: solid thin var(--color--tile-border);
         max-width: 248px;
         position: relative;
 
@@ -189,7 +196,7 @@
         .cw-clipboard-item {
             width: calc(100% - 36px);
             padding: 64px 10px 4px 10px;
-            @include background-icon(unit-test, clickable, 48);
+            @include background-icon(unit-test, $size: 48px);
             background-position: 16px 10px;
             background-repeat: no-repeat;
             cursor: pointer;
@@ -200,12 +207,12 @@
 
             @each $item, $icon in $blockadder-items {
                 &.cw-clipboard-item-#{$item} {
-                    @include background-icon($icon, clickable, 48);
+                    @include background-icon($icon, $size: 48px);
                 }
             }
             @each $item, $icon in $containeradder-items {
                 &.cw-clipboard-item-#{$item} {
-                    @include background-icon($icon, clickable, 48);
+                    @include background-icon($icon, $size: 48px);
                 }
             }
 

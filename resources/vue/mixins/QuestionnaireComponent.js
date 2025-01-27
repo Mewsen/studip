@@ -1,23 +1,26 @@
 export const QuestionnaireComponent = {
+    emits: ['update:model-value'],
     props: {
-        value: Object
+        modelValue: Object
     },
     data () {
-        return {val_clone: this.value};
+        return {
+            val_clone: {...this.modelValue}
+        };
     },
     methods: {
         setDefaultValues(value) {
-            this.val_clone = Object.assign(value, this.value);
+            this.val_clone = Object.assign(value, this.modelValue);
         }
     },
     watch: {
         val_clone: {
             handler(current) {
-                this.$emit('input', current);
+                this.$emit('update:model-value', current);
             },
             deep: true
         },
-        value (new_val) {
+        modelValue(new_val) {
             this.val_clone = new_val;
         }
     }

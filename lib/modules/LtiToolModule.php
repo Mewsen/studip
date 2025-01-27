@@ -10,7 +10,6 @@
  * @author      Elmar Ludwig
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  */
-
 class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, PrivacyPlugin
 {
     /**
@@ -28,7 +27,7 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
             LtiGrade::deleteBySQL('user_id = ?', [$user->id]);
         });
         NotificationCenter::on('CourseDidDelete', function ($event, $course) {
-            LtiData::deleteBySQL('course_id = ?', [$course->id]);
+            LtiDeployment::deleteBySQL('course_id = ?', [$course->id]);
         });
     }
 
@@ -41,15 +40,13 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
             return null;
         }
 
-        $title = CourseConfig::get($course_id)->LTI_TOOL_TITLE;
-        $changed = LtiData::countBySQL('course_id = ? AND chdate > ?', [$course_id, $last_visit]);
+        $changed = LtiDeployment::countBySQL('course_id = ? AND chdate > ?', [$course_id, $last_visit]);
 
-        $icon = $changed
-              ? Icon::create('link-extern', Icon::ROLE_NEW)
-              : Icon::create('link-extern', Icon::ROLE_CLICKABLE);
+        $icon = Icon::create('plugin', $changed ? Icon::ROLE_NEW : Icon::ROLE_CLICKABLE);
 
-        $navigation = new Navigation($title, 'dispatch.php/course/lti');
-        $navigation->setImage($icon->copyWithAttributes(['title' => $title]));
+        $navigation = new Navigation(_('LTI-Tools'), 'dispatch.php/course/lti');
+        $navigation->setImage($icon);
+        $navigation->setLinkAttributes(['title' => _('LTI-Tools')]);
 
         return $navigation;
     }
@@ -63,13 +60,12 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
             return [];
         }
 
-        $title = CourseConfig::get($course_id)->LTI_TOOL_TITLE;
-        $grades = LtiData::countBySQL('course_id = ?', [$course_id]);
+        $grades = LtiDeployment::countBySQL('course_id = ?', [$course_id]);
 
-        $navigation = new Navigation($title);
+        $navigation = new Navigation(_('LTI-Tools'));
         $navigation->setImage(Icon::create('link-extern', Icon::ROLE_INFO_ALT));
         $navigation->setActiveImage(Icon::create('link-extern', Icon::ROLE_INFO));
-        $navigation->addSubNavigation('index', new Navigation($title, 'dispatch.php/course/lti'));
+        $navigation->addSubNavigation('index', new Navigation(_('LTI-Tools'), 'dispatch.php/course/lti'));
 
         if ($grades) {
             $navigation->addSubNavigation('grades', new Navigation(_('Ergebnisse'), 'dispatch.php/course/lti/grades'));
@@ -103,22 +99,20 @@ class LtiToolModule extends CorePlugin implements StudipModule, SystemPlugin, Pr
     public function getMetadata()
     {
         return [
-            'summary' => _('Verlinkung auf Inhalte in externen Anwendungen (LTI-Tool)'),
-            'description' => _('Dieses Modul bietet eine Möglichkeit zur Einbindung von externen Tools, '.
-                               'sofern diese den LTI-Standard unterstützen. Ähnlich wie bei der Seite '.
-                               '"Informationen" kann ein Titel sowie ein freier Text angegeben werden, der '.
-                               'den Nutzern zur Erläuterung angezeigt wird. Zur Einbindung von Inhalten aus '.
-                               'Fremdsystemen wird die LTI-Schnittstelle in der Version 1.x unterstützt.'),
+            'summary' => _('Anbindung von LTI-Tools'),
+            'description' => _('Mit diesem Werkzeug können LTI-Tools eingebunden werden, '.
+                               'sofern diese LTI in Version 1.0, 1.1 oder 1.3A unterstützen.'),
             'category' => _('Kommunikation und Zusammenarbeit'),
-            'keywords' => _('Einbindung von LTI-Tools (Version 1.x)'),
-            'icon' => Icon::create('link-extern', Icon::ROLE_INFO),
-            'icon_clickable' => Icon::create('link-extern', Icon::ROLE_CLICKABLE),
+            'keywords' => implode(';', ['LTI', _('LTI-Tools'), _('E-Learning')]),
+            'icon' => Icon::create('plugin', Icon::ROLE_INFO),
+            'icon_clickable' => Icon::create('plugin'),
             'screenshots' => [
                 'path' => 'assets/images/plus/screenshots/Lti',
                 'pictures' => [
-                    ['source' => 'Lti_tool_demo.jpg', 'title' => 'Beispiel für Wordpress-Einbindung']
+                    0 => ['source' => 'LTI_Tool_hinzufuegen.jpg', 'title' => _('LTI-Tool hinzufügen')],
                 ]
-            ]
+            ],
+            'displayname' => _('LTI-Tools')
         ];
     }
 }

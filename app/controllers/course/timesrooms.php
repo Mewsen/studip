@@ -584,7 +584,7 @@ class Course_TimesroomsController extends AuthenticatedController
                                 } else {
                                     PageLayout::postError(
                                         studip_interpolate(
-                                            _('Der Raum %{room_name} wird an dem Termin %{date} bereits durch eine andere Veranstaltung belegt.'),
+                                            _('Der Raum %{room_name} wird an dem Termin %{date} bereits anderweitig belegt.'),
                                             [
                                                 'room_name'   => $room->name,
                                                 'date'        => $termin->getFullName()
@@ -1123,7 +1123,9 @@ class Course_TimesroomsController extends AuthenticatedController
         }
 
         if (in_array(Request::get('action'), ['room', 'freetext', 'noroom']) || Request::get('course_type')) {
-            $errors = [];
+            $success_cases = 0;
+            $success_messages = [];
+            $error_messages = [];
             foreach ($singledates as $singledate) {
                 if ($singledate instanceof CourseExDate) {
                     continue;
@@ -1132,7 +1134,7 @@ class Course_TimesroomsController extends AuthenticatedController
                     $preparation_time = Request::get('preparation_time');
                     $max_preparation_time = Config::get()->RESOURCES_MAX_PREPARATION_TIME;
                     if ($preparation_time > $max_preparation_time) {
-                        $errors[] = sprintf(
+                        $error_messages[] = sprintf(
                             studip_interpolate(
                                 _('%{date}: Die eingegebene Rüstzeit überschreitet das erlaubte Maximum von %d Minuten!'),
                                 ['date' => $singledate->getFullName()]
@@ -1147,23 +1149,40 @@ class Course_TimesroomsController extends AuthenticatedController
                             $failure = false;
                             try {
                                 $failure = !$singledate->bookRoom($room, intval($preparation_time));
-                            } catch (ResourceBookingException|ResourceBookingOverlapException $e) {
-                                $errors[] = sprintf(
+                            } catch (ResourceBookingException $e) {
+                                $error_messages[] = sprintf(
                                     _('Der angegebene Raum konnte für den Termin %1$s nicht gebucht werden: %2$s'),
                                     '<strong>' . htmlReady($singledate->getFullName()) . '</strong>',
                                     $e->getMessage()
                                 );
+                            } catch (ResourceBookingOverlapException $e) {
+                                $course = $e->getRange();
+                                if ($course instanceof Course) {
+                                    $error_messages[] = studip_interpolate(
+                                        _('Der Raum %{room_name} wird an dem Termin %{date} bereits durch die Veranstaltung %{course_name} belegt.'),
+                                        [
+                                            'room_name'   => $room->name,
+                                            'date'        => $singledate->getFullName(),
+                                            'course_name' => $course->name
+                                        ]
+                                    );
+                                } else {
+                                    $error_messages[] = studip_interpolate(
+                                        _('Der Raum %{room_name} wird an dem Termin %{date} bereits anderweitig belegt.'),
+                                        [
+                                            'room_name'   => $room->name,
+                                            'date'        => $singledate->getFullName()
+                                        ]
+                                    );
+                                }
                             }
                             if ($failure) {
-                                $errors[] = sprintf(
+                                $error_messages[] = sprintf(
                                     _('Der angegebene Raum konnte für den Termin %s nicht gebucht werden!'),
                                     '<strong>' . htmlReady($singledate->getFullName()) . '</strong>'
                                 );
                             } else {
-                                PageLayout::postSuccess(sprintf(
-                                    _('Die Änderungen am Termin %s wurden gespeichert.'),
-                                    $singledate->getFullName()
-                                ));
+                                $success_cases++;
                             }
                         }
                     } else if (Request::get('room_id_parameter')) {
@@ -1177,35 +1196,44 @@ class Course_TimesroomsController extends AuthenticatedController
                     if ($singledate->room_booking instanceof ResourceBooking) {
                         $singledate->room_booking->delete();
                     }
-                    PageLayout::postSuccess(sprintf(
+                    $success_messages[] = sprintf(
                         _('Der Termin %s wurde geändert, etwaige Raumbuchungen wurden entfernt und stattdessen der angegebene Freitext eingetragen!'),
                         '<strong>' . htmlReady($singledate->getFullName()) . '</strong>'
-                    ));
+                    );
                 } elseif (Request::option('action') == 'noroom') {
                     $singledate->raum = '';
                     $singledate->store();
                     if ($singledate->room_booking instanceof ResourceBooking) {
                         $singledate->room_booking->delete();
                     }
-                    PageLayout::postSuccess(sprintf(
+                    $success_messages[] = sprintf(
                         _('Der Termin %s wurde geändert, etwaige freie Ortsangaben und Raumbuchungen wurden entfernt.'),
                         '<strong>' . htmlReady($singledate) . '</strong>'
-                    ));
+                    );
                 }
 
                 if (Request::get('course_type') != '') {
                     $singledate->date_typ = Request::get('course_type');
                     $singledate->store();
-                    PageLayout::postSuccess(sprintf(
+                    $success_messages[] = sprintf(
                         _('Die Art des Termins %s wurde geändert.'),
                         '<strong>' . htmlReady($singledate) . '</strong>'
-                    ));
+                    );
                 }
             }
-            if ($errors) {
+            if ($success_cases > 0 || count($success_messages) > 0) {
+                if (!$error_messages) {
+                    // Everything went well.
+                    PageLayout::postSuccess(_('Die Änderungen wurden gespeichert.'), $success_messages);
+                } else {
+                    // Not everything went well.
+                    PageLayout::postWarning(_('Es konnten nicht alle Termine geändert werden.'), $success_messages);
+                }
+            }
+            if ($error_messages) {
                 PageLayout::postError(
                     _('Die folgenden Fehler traten auf:'),
-                    $errors
+                    $error_messages
                 );
             }
         }
@@ -1783,7 +1811,7 @@ class Course_TimesroomsController extends AuthenticatedController
         if (Request::int('fromDialog')) {
             $this->redirect(...func_get_args());
         } else {
-            call_user_func_array('parent::relocate', func_get_args());
+            parent::relocate(...func_get_args());
         }
     }
 
@@ -1908,6 +1936,7 @@ class Course_TimesroomsController extends AuthenticatedController
             [$this->course->id, $date_ids]
         );
 
-        return $valid;
+        // Using array_intersect() preserves order of date ids
+        return array_intersect($date_ids, $valid);
     }
 }

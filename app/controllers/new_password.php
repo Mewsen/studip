@@ -19,7 +19,7 @@ class NewPasswordController extends StudipController
             return;
         }
 
-        if ($GLOBALS['auth'] && $GLOBALS['auth']->auth["uid"] != "nobody") {
+        if (User::findCurrent()) {
             PageLayout::postError(_("Sie können kein neues Passwort anfordern, wenn Sie bereits eingeloggt sind."));
             $this->redirect('start');
             return;
@@ -69,7 +69,7 @@ class NewPasswordController extends StudipController
             restoreLanguage();
         }
 
-        if ($user) {
+        if (isset($user)) {
             // spam/abuse-protection
             // if there are more than 5 tokens present, do NOT send another mail
 

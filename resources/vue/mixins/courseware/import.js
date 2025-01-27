@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -173,9 +172,10 @@ export default {
                             attributes: element[i].attributes,
                             parentId: parent_id,
                             currentId: parent_id,
+                            withDefaultContainer: false
                         });
                         new_element = this.lastCreatedElements;
-                    } catch(error) {
+                    } catch {
                         this.currentImportErrors.push(this.$gettext('Seite konnte nicht erstellt werden') + ': '
                         + element.attributes.title);
                     }
@@ -184,7 +184,7 @@ export default {
                     if (new_element === null) {
                         continue;
                     }
-                    
+
 
                     if (element[i].imageId) {
                         await this.setStructuralElementImage(new_element, element[i], files);
@@ -237,7 +237,7 @@ export default {
                     structuralElementId: structuralElement.id,
                 });
                 new_container = this.lastCreatedContainers;
-            } catch(error) {
+            } catch {
                 this.currentImportErrors.push(this.$gettext('Abschnitt konnte nicht erstellt werden') + ': '
                 + structuralElement.attributes.title + '→'
                 + container.attributes.title);
@@ -247,7 +247,7 @@ export default {
             if (new_container === null) {
                 return null;
             }
-            
+
             await this.unlockObject({ id: new_container.id, type: 'courseware-containers' });
 
             if (container.blocks?.length) {
@@ -258,7 +258,7 @@ export default {
                     if (new_block !== null) {
                         try {
                             await this.updateContainerPayload(new_container, structuralElement.id, container.blocks[k].id, new_block.id);
-                        } catch(error) {
+                        } catch {
                             this.currentImportErrors.push(this.$gettext('Abschnittdaten sind beschädigt. Möglicherweise werden nicht alle Blöcke dargestellt') + ': '
                             + structuralElement.attributes.title + '→'
                             + container.attributes.title);
@@ -275,7 +275,7 @@ export default {
                     container: {type: block_container.type, id: block_container.id},
                     blockType: block.attributes['block-type'],
                 });
-            } catch(error) {
+            } catch {
                 this.currentImportErrors.push(this.$gettext('Block konnte nicht erstellt werden') + ': '
                     + element.attributes.title + '→'
                     + block_container.attributes.title + '→'
@@ -300,7 +300,7 @@ export default {
                         payload = payload.replaceAll(old_file.id, '');
                         payload = payload.replaceAll(old_file.folder.id, '');
                     }
-                    
+
 
                     block.attributes.payload = JSON.parse(payload);
                 }
@@ -312,7 +312,7 @@ export default {
                     blockId: new_block.id,
                     containerId: block_container.id,
                 });
-            } catch(error) {
+            } catch {
 
                 this.currentImportErrors.push(this.$gettext('Blockdaten sind beschädigt. Es werden die Standardwerte eingesetzt') + ': '
                     + element.attributes.title + '→'
@@ -371,7 +371,7 @@ export default {
                             + ' ' + now.getMilliseconds(),
                     }
                 });
-            } catch(error) {
+            } catch {
                 this.currentImportErrors.push(this.$gettext('Anlegen des Import-Ordners fehlgeschlagen.'));
             }
 
@@ -415,7 +415,7 @@ export default {
                                 filedata: filedata,
                                 folder: folders[files[i].folder.id]
                             });
-                        } catch (error) {
+                        } catch {
                             this.currentImportErrors.push(this.$gettext('Import einer Datei fehlgeschlagen.'));
                             this.setImportFilesState(this.$gettext('Fehler beim Anlegen der Datei'));
                         }

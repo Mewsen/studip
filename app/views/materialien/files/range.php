@@ -90,7 +90,7 @@
                     $actions->addLink(
                         $fileref->file_ref->getDownloadURL('force_download'),
                         _('Datei herunterladen') . ' (' . $fileref->file_language . ')',
-                        Icon::create('download', 'clickable', ['size' => 20]),
+                        Icon::create('download'),
                         ['target' => '_blank']
                     );
                 }

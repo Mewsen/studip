@@ -9,7 +9,7 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
 
 <div class="description_container">
     <div class="icon_container">
-        <?= Icon::create('question-rangescale', Icon::ROLE_INFO)->asImg(20) ?>
+        <?= Icon::create('question-rangescale', Icon::ROLE_INFO) ?>
     </div>
     <div class="description">
         <?= formatReady($vote->questiondata['description']) ?>
@@ -42,10 +42,16 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
             <?
             $average = 0;
             if (count($answers) > 0) {
+                $countableAnswers = 0;
                 foreach ($answers as $answer) {
                     $average += $answer['answerdata']['answers'][$key];
+                    if ($answer['answerdata']['answers'][$key] !== null) {
+                        $countableAnswers++;
+                    }
                 }
-                $average /= count($answers);
+                if ($countableAnswers > 0) {
+                    $average /= $countableAnswers;
+                }
                 $average = round($average, 2);
             }
             ?>
@@ -64,7 +70,7 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
                 }
                 ?>
                 <td style="white-space: nowrap;"<?= count($names) > 0 ? 'title="'.htmlReady(implode(', ', $names)).'"' : ''?>>
-                    <? if ($option_index === 0 && count($answers) > 0) : ?>
+                    <? if ($option_index === 0 && count($answers) > 0 && $average > 0) : ?>
                         <div class="average" style="margin-left: <?= (count($options) * 80) * $average / $vote->questiondata['maximum'] - $vote->questiondata['minimum'] * 80 + 34 ?>px;">
                             Ø<?= htmlReady(str_replace('.', ',', (string) round($average, 2))) ?>
                         </div>
@@ -99,7 +105,7 @@ $options = range($vote->questiondata['minimum'], $vote->questiondata['maximum'])
                                         <?= htmlReady($hits) ?>
                                     </div>
                                 </div>
-                                <?= Icon::create('filter2', Icon::ROLE_CLICKABLE)->asImg(16, ['class' => 'text-bottom']) ?>
+                                <?= Icon::create('filter2')->asImg(Icon::SIZE_INLINE, ['class' => 'text-bottom']) ?>
                                 <?= round(100 * $hits / $countAnswers) ?>%
                             </a>
                         <? else : ?>

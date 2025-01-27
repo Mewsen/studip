@@ -39,22 +39,27 @@
         </label>
 
         <label>
-            <input type="checkbox" name="selfassign" value="1"<?= $group->selfassign ? ' checked' : '' ?>>
+            <input type="checkbox"
+                   name="selfassign"
+                   value="1"
+                   data-shows=".self-assign-option"
+                <?= $group->selfassign ? ' checked' : '' ?>
+            >
             <?= _('Selbsteintrag erlaubt') ?>
         </label>
 
-        <label>
+        <label class="self-assign-option">
             <input type="checkbox" name="exclusive" value="1"<?= $group->selfassign == 2 ? ' checked' : '' ?>>
             <?= _('Exklusiver Selbsteintrag (in nur eine Gruppe)') ?>
         </label>
 
-        <label class="col-3">
+        <label class="col-3 self-assign-option">
             <?= _('Selbsteintrag erlaubt ab') ?>
             <input class="size-s" type="text" size="20" name="selfassign_start" id="selfassign_start" value="<?= $group->selfassign_start ?
                 date('d.m.Y H:i', $group->selfassign_start) : '' ?>" data-datetime-picker>
         </label>
 
-        <label class="col-3">
+        <label class="col-3 self-assign-option">
             <?= _('Selbsteintrag erlaubt bis') ?>
             <input class="size-s" type="text" size="20" name="selfassign_end" value="<?= $group->selfassign_end ?
                 date('d.m.Y H:i', $group->selfassign_end) : '' ?>" data-datetime-picker='{">":"#selfassign_start"}'>

@@ -6,11 +6,11 @@
 ?>
 <div class="description_container">
     <div class="icon_container">
-        <?= Icon::create($iconshape, Icon::ROLE_INFO)->asImg(20) ?>
+        <?= Icon::create($iconshape, Icon::ROLE_INFO) ?>
     </div>
     <article class="description">
         <? if (isset($vote->questiondata['mandatory']) && $vote->questiondata['mandatory']) : ?>
-            <?= Icon::create('star', Icon::ROLE_ATTENTION)->asImg(20, ['class' => 'text-bottom', 'alt' => '']) ?>
+            <?= Icon::create('star', Icon::ROLE_ATTENTION)->asImg(['class' => 'text-bottom', 'alt' => '']) ?>
             <?= _('Pflichtantwort') ?>
         <? endif ?>
         <?= formatReady($vote->questiondata['description']) ?>

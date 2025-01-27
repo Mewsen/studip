@@ -41,13 +41,10 @@
             </span>
         </section>
 
-        <table v-if="currentNode.attributes['has-children'] || courses.length > 0" class="default">
+        <table v-if="currentNode.attributes['has-children']" class="default">
             <caption class="studip-tree-node-info">
                 <span v-if="withChildren && children.length > 0">
-                    {{ $gettextInterpolate($gettext('%{ count } Unterebenen'), { count: children.length }) }}
-                </span>
-                <span v-if="withChildren && children.length > 0 && withCourses && courses.length > 0">
-                    ,
+                    {{ $gettext('%{ count } Unterebenen', { count: children.length }) }}
                 </span>
             </caption>
             <colgroup>
@@ -57,15 +54,6 @@
                 <col style="width: 40%">
             </colgroup>
             <thead>
-                <tr v-if="totalCourseCount > limit">
-                    <td colspan="4">
-                        <studip-pagination :items-per-page="limit"
-                                           :total-items="totalCourseCount"
-                                           :current-offset="offset"
-                                           @updateOffset="updateOffset"
-                        />
-                    </td>
-                </tr>
                 <tr>
                     <th></th>
                     <th>{{ $gettext('Typ') }}</th>
@@ -73,43 +61,53 @@
                     <th>{{ $gettext('Information') }}</th>
                 </tr>
             </thead>
-            <draggable v-model="children" handle=".drag-handle" :animation="300"
-                       @end="dropChild" tag="tbody" role="listbox">
-                <tr v-for="(child, index) in children" :key="index" class="studip-tree-child">
-                    <td>
-                        <a v-if="editable && children.length > 1" class="drag-link" role="option"
-                           tabindex="0"
-                           :title="$gettextInterpolate($gettext('Sortierelement für Element %{node}. Drücken Sie die Tasten Pfeil-nach-oben oder Pfeil-nach-unten, um dieses Element in der Liste zu verschieben.'), {node: child.attributes.name}, true)"
-                           @keydown="keyHandler($event, index)"
-                           :ref="'draghandle-' + index">
-                            <span class="drag-handle"></span>
-                        </a>
-                    </td>
-                    <td>
-                        <a :href="nodeUrl(child.id, semester !== 'all' ? semester : null)" tabindex="0"
-                           @click.prevent="openNode(child)"
-                           :title="$gettextInterpolate($gettext('Unterebene %{ node } öffnen'),
-                                { node: node.attributes.name }, true)">
-                            <studip-icon :shape="child.attributes['has-children'] ? 'folder-full' : 'folder-empty'"
-                                         :size="26"></studip-icon>
-                        </a>
-                    </td>
-                    <td>
-                        <a :href="nodeUrl(child.id, semester !== 'all' ? semester : null)" tabindex="0"
-                           @click.prevent="openNode(child)"
-                           :title="$gettextInterpolate($gettext('Unterebene %{ node } öffnen'),
-                                { node: node.attributes.name }, true)">
-                            {{ child.attributes.name }}
-                        </a>
-                    </td>
-                    <td>
-                        <tree-node-course-info v-if="node.attributes.ancestors.length > 2"
-                                               :node="child"
-                                               :semester="semester"
-                                               :sem-class="semClass"
-                        ></tree-node-course-info>
-                    </td>
-                </tr>
+            <draggable v-model="children"
+                       handle=".drag-handle"
+                       :animation="300"
+                       @end="dropChild"
+                       tag="tbody"
+                       item-key="id"
+                       role="listbox"
+            >
+                <template #item="{element, index}">
+                    <StudipTreeTableRows :element="element"
+                                         :editable="editable"
+                                         :children="children"
+                                         :index="index"
+                                         :semester="semester"
+                                         :sem-class="semClass"
+                                         :node="node"
+                                         @open:node="element => openNode(element)"
+                    ></StudipTreeTableRows>
+                </template>
+            </draggable>
+        </table>
+
+        <table v-if="courses.length > 0" class="default">
+            <colgroup>
+                <col style="width: 20px">
+                <col style="width: 30px">
+                <col>
+                <col style="width: 40%">
+            </colgroup>
+            <thead>
+            <tr v-if="totalCourseCount > limit">
+                <td colspan="4">
+                    <studip-pagination :items-per-page="limit"
+                                       :total-items="totalCourseCount"
+                                       :current-offset="offset"
+                                       @updateOffset="updateOffset"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <th>{{ $gettext('Typ') }}</th>
+                <th>{{ $gettext('Name') }}</th>
+                <th>{{ $gettext('Information') }}</th>
+            </tr>
+            </thead>
+            <tbody role="listbox">
                 <tr v-for="(course) in courses" :key="course.id" class="studip-tree-child studip-tree-course">
                     <td></td>
                     <td>
@@ -117,11 +115,12 @@
                     </td>
                     <td>
                         <a :href="courseUrl(course.id)" tabindex="0"
-                           :title="$gettextInterpolate(
-                               $gettext('Zur Veranstaltung %{ title }'),
+                           :title="$gettext(
+                               'Zur Veranstaltung %{ title }',
                                { title: course.attributes.title },
                                true
-                           )">
+                           )"
+                        >
                             <template v-if="course.attributes['course-number']">
                                 {{ course.attributes['course-number'] }}
                             </template>
@@ -133,7 +132,7 @@
                         <tree-course-details :course="course.id"></tree-course-details>
                     </td>
                 </tr>
-            </draggable>
+            </tbody>
             <tfoot v-if="totalCourseCount > limit">
                 <tr>
                     <td colspan="4">
@@ -146,13 +145,14 @@
                 </tr>
             </tfoot>
         </table>
-        <MountingPortal v-if="showExport" mountTo="#export-widget" name="sidebar-export">
+
+        <Teleport v-if="showExport" to="#export-widget" name="sidebar-export">
             <tree-export-widget v-if="courses.length > 0" :title="$gettext('Download des Ergebnisses')" :url="exportUrl()"
                                 :export-data="courses"></tree-export-widget>
-        </MountingPortal>
-        <MountingPortal v-if="withCourseAssign" mountTo="#assign-widget" name="sidebar-assign-courses">
+        </Teleport>
+        <Teleport v-if="withCourseAssign" to="#assign-widget" name="sidebar-assign-courses">
             <assign-link-widget v-if="courses.length > 0" :node="currentNode" :courses="courses"></assign-link-widget>
-        </MountingPortal>
+        </Teleport>
     </article>
 </template>
 
@@ -162,18 +162,23 @@ import { TreeMixin } from '../../mixins/TreeMixin';
 import TreeExportWidget from './TreeExportWidget.vue';
 import TreeBreadcrumb from './TreeBreadcrumb.vue';
 import StudipProgressIndicator from '../StudipProgressIndicator.vue';
-import StudipIcon from '../StudipIcon.vue';
-import TreeNodeCourseInfo from './TreeNodeCourseInfo.vue';
-import TreeCourseDetails from "./TreeCourseDetails.vue";
 import AssignLinkWidget from "./AssignLinkWidget.vue";
+import StudipPagination from "../StudipPagination.vue";
+import StudipTreeTableRows from "./StudipTreeTableRows.vue";
+import TreeCourseDetails from "./TreeCourseDetails.vue";
+import StudipIcon from "../StudipIcon.vue";
 
 export default {
     name: 'StudipTreeTable',
     components: {
-        draggable, TreeExportWidget, TreeCourseDetails, StudipIcon, StudipProgressIndicator, TreeBreadcrumb,
-        TreeNodeCourseInfo, AssignLinkWidget
+        StudipIcon, TreeCourseDetails,
+        StudipTreeTableRows,
+        StudipPagination,
+        draggable, TreeExportWidget, StudipProgressIndicator, TreeBreadcrumb,
+        AssignLinkWidget
     },
     mixins: [ TreeMixin ],
+    emits: ['change-current-node'],
     props: {
         node: {
             type: Object,
@@ -283,9 +288,9 @@ export default {
 
             // Update browser history.
             if (pushState) {
-                const nodeId = node.id;
-                const url = STUDIP.URLHelper.getURL('', {node_id: nodeId});
-                window.history.pushState({nodeId}, '', url);
+                const url = new URL(location.href);
+                url.searchParams.set('node_id', node.id);
+                window.history.pushState({nodeId: node.id}, '', url);
             }
 
             // Update node_id for semester selector.
@@ -302,8 +307,8 @@ export default {
                     this.decreasePosition(index);
                     this.$nextTick(() => {
                         this.$refs['draghandle-' + (index - 1)][0].focus();
-                        this.assistiveLive = this.$gettextInterpolate(
-                            this.$gettext('Aktuelle Position in der Liste: %{pos} von %{listLength}.'),
+                        this.assistiveLive = this.$gettext(
+                            'Aktuelle Position in der Liste: %{pos} von %{listLength}.',
                             { pos: index, listLength: this.children.length }
                         );
                     });
@@ -313,8 +318,8 @@ export default {
                     this.increasePosition(index);
                     this.$nextTick(function () {
                         this.$refs['draghandle-' + (index + 1)][0].focus();
-                        this.assistiveLive = this.$gettextInterpolate(
-                            this.$gettext('Aktuelle Position in der Liste: %{pos} von %{listLength}.'),
+                        this.assistiveLive = this.$gettext(
+                            'Aktuelle Position in der Liste: %{pos} von %{listLength}.',
                             { pos: index + 2, listLength: this.children.length }
                         );
                     });
@@ -410,7 +415,7 @@ export default {
             semesterForm.appendChild(nodeField);
         });
     },
-    beforeDestroy() {
+    beforeUnmount() {
         STUDIP.eventBus.off('open-tree-node');
         STUDIP.eventBus.off('load-tree-node');
         STUDIP.eventBus.off('sort-tree-children');
