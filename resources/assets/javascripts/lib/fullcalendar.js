@@ -594,8 +594,17 @@ class Fullcalendar
                 }
 
                 if (event.extendedProps.icon) {
+                    //Check if the icon is already an URL or just the name of an icon.
+                    let icon_url = '';
+                    if (event.extendedProps.icon.includes('://')) {
+                        //The icon already is an URL.
+                        icon_url = event.extendedProps.icon;
+                    } else {
+                        //The icon is just referenced by its name.
+                        icon_url = `${STUDIP.ASSETS_URL}images/icons/${iconColor}/${event.extendedProps.icon}.svg`
+                    }
                     $(eventElement).find('.fc-title').prepend(
-                        $('<img>').attr('src', `${STUDIP.ASSETS_URL}images/icons/${iconColor}/${event.extendedProps.icon}.svg`)
+                        $('<img>').attr('src', icon_url)
                             .css({
                                 verticalAlign: 'text-bottom',
                                 marginRight: '3px',

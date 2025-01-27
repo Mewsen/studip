@@ -239,7 +239,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                     ]
                 );
 
-                $event_classes = ['schedule'];
+                $event_classes = ['schedule', 'course'];
                 $event_title   = $cycle_date->course->getFullName('number-name');
 
                 if ($course_membership) {
@@ -264,8 +264,14 @@ class Calendar_ScheduleController extends AuthenticatedController
                         ['course_name' => $cycle_date->course->getFullName()]
                     );
                 }
+                // Add the room, if available:
+                $room_name = $cycle_date->getMostBookedRoom()?->getFullName()
+                          ?? $cycle_date->getMostUsedFreetextRoomName();
+                if ($room_name) {
+                    $event_title .= "\n" . $room_name;
+                }
 
-                $event_icon = '';
+                $event_icon = 'seminar';
                 if ($schedule_course && !$course_membership) {
                     $event_icon = 'tag';
                 } elseif ($show_hidden && $is_hidden) {
@@ -291,7 +297,7 @@ class Calendar_ScheduleController extends AuthenticatedController
                         'show' => $this->url_for('calendar/schedule/course_info/' . $cycle_date->seminar_id)
                     ],
                     [],
-                    $event_icon ?: ''
+                    Icon::create($event_icon ?: '', Icon::ROLE_INFO)->asImagePath()
                 );
 
                 $result[] = $event->toFullcalendarEvent();

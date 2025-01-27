@@ -327,3 +327,6 @@ $color--info-alternative: mix($color--info, $color--white, 20%);
 $color-image-placeholder-background: $color--gray-6;
 
 $color-header-inverted: $color--white;
+
+// The colour to highlight the current day:
+$color--calendar-today: mix($color--attention, $color--white, 10%);

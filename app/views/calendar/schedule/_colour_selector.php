@@ -10,7 +10,7 @@
                <?= $selected_colour_id === $colour_id ? 'checked' : '' ?>
                id="colour-<?= htmlReady($colour_id) ?>">
         <label for="colour-<?= htmlReady($colour_id) ?>"
-               style="background-color: <?= htmlReady($data['bgcolor']) ?>;">
+               style="background-color: <?= htmlReady($data['border_color']) ?>;">
             <span class="colour-id"></span>
             <span class="checked-icon"><?= Icon::create('accept', Icon::ROLE_INFO) ?></span>
         </label>
