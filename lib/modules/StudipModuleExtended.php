@@ -2,6 +2,9 @@
 
 interface StudipModuleExtended extends StudipModule
 {
+
+    public const ICON_NAV_CACHE_PATH = 'modules_icon/';
+
     /**
      * Returns navigation objects representing this plugin
      * in the course overview table for every given course or institute.

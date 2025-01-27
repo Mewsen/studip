@@ -521,6 +521,7 @@ class MyRealmModel
         // -- 2. Fetch the Navigation per StudipModule
         $all_course_ids = array_keys($all_courses);
         $visits = get_objects_visits($all_course_ids, 0, null, null, array_keys($activated_tools));
+        $cache = \Studip\Cache\Factory::getCache();
         foreach ($activated_tools as $plugin_id => $plugin_data) {
             if (!Config::get()->VOTE_ENABLE && $plugin_id === -1) {
                 continue;
@@ -534,9 +535,23 @@ class MyRealmModel
                         $navigation[$c_id][$plugin_id] = self::checkVote($all_courses[$c_id], $user_id, $c_id);
                     }
                 } elseif ($plugin_data['studip_module'] instanceof StudipModuleExtended) {
-                    $fetched_navs = $plugin_data['studip_module']->getManyIconNavigation($c_ids, $user_id);
-                    foreach ($fetched_navs as $fetched_c_id => $fetched_nav) {
-                        $navigation[$fetched_c_id][$plugin_id] = $fetched_nav;
+                    $cache_locs = array_map(fn ($c_id) => StudipModuleExtended::ICON_NAV_CACHE_PATH . "$user_id/$plugin_id/$c_id", $c_ids);
+                    $cached_navs = $cache->getItems($cache_locs);
+                    $to_fetch = [];
+                    foreach ($cached_navs as $key => $cached_item) {
+                        $c_id = explode('/', $key)[3];
+                        if ($cached_item->isHit()) {
+                            $navigation[$c_id][$plugin_id] = unserialize($cached_item->get());
+                        } else {
+                            $to_fetch[] = $c_id;
+                        }
+                    }
+                    if ($to_fetch) {
+                        $fetched_navs = $plugin_data['studip_module']->getManyIconNavigation($to_fetch, $user_id);
+                        foreach ($fetched_navs as $fetched_c_id => $fetched_nav) {
+                            $cache->write(StudipModuleExtended::ICON_NAV_CACHE_PATH . "$user_id/$plugin_id/$fetched_c_id", serialize($fetched_nav));
+                            $navigation[$fetched_c_id][$plugin_id] = $fetched_nav;
+                        }
                     }
                 } else {
                     foreach ($c_ids as $c_id) {
