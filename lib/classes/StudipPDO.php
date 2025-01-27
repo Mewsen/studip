@@ -376,10 +376,22 @@ class StudipPDO extends PDO
     /**
      * Determine if the connected database is a MariaDB database.
      *
+     * @param string|null $min_version Optional check for a specific minimal
+     *                                 version
      * @return bool
      */
-    public function isMariaDB(): bool
+    public function isMariaDB(?string $min_version = null): bool
     {
-        return stripos($this->getAttribute(\PDO::ATTR_SERVER_VERSION), 'MariaDB') !== false;
+        $db_version = $this->getAttribute(\PDO::ATTR_SERVER_VERSION);
+
+        if (stripos($db_version, 'MariaDB') === false) {
+            return false;
+        }
+
+        if ($min_version === null) {
+            return true;
+        }
+
+        return version_compare($db_version, $min_version) >= 0;
     }
 }
