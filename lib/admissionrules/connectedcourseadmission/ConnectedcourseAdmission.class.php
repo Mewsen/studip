@@ -47,20 +47,6 @@ class ConnectedcourseAdmission extends AdmissionRule
     }
 
     /**
-     * Gets the template that provides a configuration GUI for this rule.
-     *
-     * @return String
-     */
-    public function getTemplate()
-    {
-        $factory = new Flexi\Factory(dirname(__FILE__).'/templates/');
-        // Now open specific template for this rule and insert base template.
-        $tpl = $factory->open('configure');
-        $tpl->set_attribute('rule', $this);
-        return $tpl->render();
-    }
-
-    /**
      * Internal helper function for loading rule definition from database.
      */
     public function load()

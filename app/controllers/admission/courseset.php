@@ -34,8 +34,6 @@ class Admission_CoursesetController extends AuthenticatedController
             throw new AccessDeniedException();
         }
 
-        PageLayout::addScript('studip-admission.js');
-
         $views = new ActionsWidget();
         $views->addLink(
             _('Anmeldeset anlegen'),
@@ -293,7 +291,8 @@ class Admission_CoursesetController extends AuthenticatedController
                     $this->myUserlists
                 )
             ),
-            'institute-search' => (string) $this->isearch
+            'institute-search' => (string) $this->isearch,
+            'instant-course-set-view' => $this->instant_course_set_view
         ];
 
         if ($this->courseset) {
@@ -374,9 +373,9 @@ class Admission_CoursesetController extends AuthenticatedController
             }
             PageLayout::postSuccess(sprintf(_('Das Anmeldeset: %s wurde gespeichert'), htmlReady($courseset->getName())));
             if ($this->instant_course_set_view) {
-                $this->redirect($this->url_for('course/admission'));
+                $this->relocate('course/admission');
             } else {
-                $this->redirect($this->url_for('admission/courseset/configure', $courseset->getId()));
+                $this->relocate('admission/courseset/configure', $courseset->getId());
             }
         }
     }
@@ -398,7 +397,7 @@ class Admission_CoursesetController extends AuthenticatedController
             $this->courseset->delete();
         }
 
-        $this->redirect($this->url_for('admission/courseset'));
+        $this->relocate('admission/courseset');
     }
 
     /**
@@ -607,7 +606,7 @@ class Admission_CoursesetController extends AuthenticatedController
             if ($ok) {
                 PageLayout::postSuccess(_('Die zugeordneten Veranstaltungen wurden konfiguriert.'));
             }
-            $this->redirect($this->url_for('admission/courseset/configure/' . $courseset->getId()));
+            $this->relocate('admission/courseset/configure/' . $courseset->getId());
             return;
         }
     }

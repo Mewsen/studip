@@ -32,7 +32,7 @@
 <script>
 export default {
     name: 'quicksearch',
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'input'],
     props: {
         searchtype: {
             type: String,
@@ -125,6 +125,7 @@ export default {
             this.results = [];
 
             this.$emit('update:modelValue', this.returnValue, this.inputValue);
+            this.$emit('input', this.returnValue, this.inputValue);
 
             if (!this.keepValue) {
                 this.inputValue = '';

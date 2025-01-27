@@ -198,24 +198,6 @@ class ConditionalAdmission extends AdmissionRule
     }
 
     /**
-     * Gets the template that provides a configuration GUI for this rule.
-     *
-     * @return String
-     */
-    public function getTemplate()
-    {
-        // Open generic admission rule template.
-        $tpl = $GLOBALS['template_factory']->open('admission/rules/configure');
-        $tpl->set_attribute('rule', $this);
-        $factory = new Flexi\Factory(__DIR__ . '/templates/');
-        // Now open specific template for this rule and insert base template.
-        $tpl2 = $factory->open('configure');
-        $tpl2->set_attribute('rule', $this);
-        $tpl2->set_attribute('tpl', $tpl->render());
-        return $tpl2->render();
-    }
-
-    /**
      * Helper function for loading data from DB. Generic AdmissionRule data is
      * loaded with the parent load() method.
      */
@@ -371,7 +353,7 @@ class ConditionalAdmission extends AdmissionRule
                 $obj->setValue($field['attributes']['value']);
                 $condition->addField($obj);
             }
-            $this->addCondition($condition, $data['conditiongroup_'.$condition->getId()], $data['quota_'.$data['conditiongroup_'.$condition->getId()]] ?? 0);
+            $this->addCondition($condition);
         }
 
         foreach ($data['grouped-conditions'] as $group) {

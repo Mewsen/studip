@@ -11,7 +11,6 @@ const assetsPath = path.resolve(__dirname, "resources/assets/javascripts");
 module.exports = {
     entry: {
         "studip-base": assetsPath + "/entry-base.js",
-        "studip-admission": assetsPath + "/entry-admission.js",
         "studip-statusgroups": assetsPath + "/entry-statusgroups.js",
         "studip-wysiwyg": assetsPath + "/entry-wysiwyg.js",
         "studip-installer": assetsPath + "/entry-installer.js",

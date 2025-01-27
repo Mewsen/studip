@@ -27,7 +27,6 @@ class Admission_RuleadministrationController extends AuthenticatedController
         $GLOBALS['perm']->check('root');
 
         Navigation::activateItem('/admin/config/admissionrules');
-        PageLayout::addScript('studip-admission.js');
 
         $sidebar = Sidebar::Get();
 

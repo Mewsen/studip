@@ -16,24 +16,24 @@
         <section v-if="configureTime" class="col-3">
             <label>
                 {{ $gettext('Diese Regel gilt von') }}
-                <datetimepicker :value="startTime"></datetimepicker>
+                <datetimepicker v-model="startTime"></datetimepicker>
             </label>
         </section>
         <section v-if="configureTime" class="col-3">
             <label>
                 {{ $gettext('bis') }}
-                <datetimepicker :value="endTime"></datetimepicker>
+                <datetimepicker v-model="endTime"></datetimepicker>
             </label>
         </section>
     </div>
 </template>
 
 <script>
-import Datetimepicker from '../Datetimepicker.vue';
+import datetimepicker from '../Datetimepicker.vue';
 
 export default {
     name: 'ValidityTime',
-    components: { Datetimepicker },
+    components: { datetimepicker },
     props: {
         start: {
             type: Number,

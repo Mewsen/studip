@@ -26,7 +26,6 @@ class Admission_UserlistController extends AuthenticatedController
 
         PageLayout::setTitle(_('Personenlisten'));
         Navigation::activateItem('/browse/coursesets/userlists');
-        PageLayout::addScript('studip-admission.js');
 
         Sidebar::get()->addWidget(new ActionsWidget())->addLink(
             _('Personenliste anlegen'),

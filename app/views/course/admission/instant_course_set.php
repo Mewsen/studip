@@ -8,8 +8,9 @@
     <input type="hidden" name="rule_id" value="<?=htmlReady($rule_id)?>">
     <fieldset>
         <legend><?= _('Neue Anmelderegel erstellen') ?></legend>
-        <?= $rule_template ?>
-        <br>
+        <? foreach ($types as $type) : ?>
+            <admission-rule-config type="<?= htmlReady($type) ?>"></admission-rule-config>
+        <? endforeach ?>
         <label class="caption"><?= _("Name für diese Anmelderegel")?></label>
         <input type="text" name="instant_course_set_name" size="70" value="<?= htmlReady($course_set_name) ?>">
     </fieldset>

@@ -1,5 +1,5 @@
 <template>
-    <studip-dialog v-if="component !== null"
+    <studip-dialog v-if="useDialog && component !== null"
                    :title="$gettext('Anmelderegel bearbeiten')"
                    :close-text="$gettext('Abbrechen')"
                    @close="cancel"
@@ -25,6 +25,18 @@
             </button>
         </template>
     </studip-dialog>
+    <div v-if="!useDialog && component !== null">
+        <studip-message-box v-if="invalidData?.length"
+                            type="error"
+                            :details="invalidData"
+                            :hide-close="true"
+                            :hide-details="false"
+                            :aria-description="errorText"
+                            role="alert">
+            {{ $gettext('Es sind ungültige Daten angegeben worden:') }}
+        </studip-message-box>
+        <component :is="component" v-bind="props" @submit="submit" @error="error"></component>
+    </div>
 </template>
 
 <script>
@@ -32,7 +44,7 @@ import {shallowRef} from "vue";
 
 export default {
     name: 'AdmissionRuleConfig',
-    emits: ['cancel', 'submit'],
+    emits: ['cancel', 'submit', 'error'],
     props: {
         type: {
             type: String,
@@ -45,6 +57,10 @@ export default {
         assignedRuleTypes: {
             type: Array,
             default: () => []
+        },
+        useDialog: {
+            type: Boolean,
+            default: true
         }
     },
     data() {

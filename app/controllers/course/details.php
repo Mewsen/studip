@@ -196,7 +196,6 @@ class Course_DetailsController extends AuthenticatedController
         } else {
             PageLayout::setHelpKeyword('Basis.InVeranstaltungDetails');
             PageLayout::setTitle($this->title . ' - ' . _('Details'));
-            PageLayout::addScript('studip-admission.js');
 
             $sidebar = Sidebar::Get();
 

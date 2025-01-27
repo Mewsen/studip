@@ -79,21 +79,6 @@ class TermsAdmission extends AdmissionRule
     }
 
     /**
-     * Gets the template that provides a configuration GUI for this rule.
-     *
-     * @return String
-     * @throws Flexi\TemplateNotFoundException
-     */
-    public function getTemplate()
-    {
-        $factory = new Flexi\Factory(__DIR__ . '/templates');
-        $template = $factory->open('configure');
-        $template->rule = $this;
-
-        return $template->render();
-    }
-
-    /**
      * Does the current rule allow the given user to register as participant
      * in the given course?
      *

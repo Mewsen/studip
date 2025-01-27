@@ -329,20 +329,6 @@ class PreferentialAdmission extends AdmissionRule
     }
 
     /**
-     * Gets the template that provides a configuration GUI for this rule.
-     *
-     * @return String
-     */
-    public function getTemplate()
-    {
-        $factory = new Flexi\Factory(__DIR__.'/templates/');
-        // Now open specific template for this rule and insert base template.
-        $tpl = $factory->open('configure');
-        $tpl->set_attribute('rule', $this);
-        return $tpl->render();
-    }
-
-    /**
      * Helper function for loading data from DB. Generic AdmissionRule data is
      * loaded with the parent load() method.
      */

@@ -327,7 +327,7 @@
                 </button>
                 <button class="button cancel"
                         type="button"
-                        data-dialog="close"
+                        data-dialog-close
                         @click.prevent="cancel"
                 >
                     {{ $gettext('Abbrechen') }}
@@ -382,6 +382,10 @@ export default {
         myUserLists: {
             type: Array,
             default: () => []
+        },
+        instantCourseSetView: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -413,7 +417,7 @@ export default {
     computed: {
         isStorable() {
             return this.name !== ''
-                && this.institutes.length > 0
+                && (this.courseSetId !== '' || this.courseSetId === '' && this.institutes.length > 0)
                 && this.rules.length > 0;
         },
         hasConfigurableCourses() {
@@ -498,7 +502,7 @@ export default {
             this.showRuleConfig = true;
         },
         addRuleConfiguration(data) {
-            if (!this.ruleId) {
+            if (!this.ruleId || this.ruleId === data.type + '_') {
                 STUDIP.jsonapi.withPromises().post(
                     'admission-rules/' + data.type,
                     {
@@ -566,7 +570,7 @@ export default {
             }
         },
         addInstitute(returnValue, inputValue) {
-            if (!this.institutes.some(i => i.id === returnValue)) {
+            if (inputValue && !this.institutes.some(i => i.id === returnValue)) {
                 this.institutes.push({ id: returnValue, name: inputValue });
             }
         },
@@ -594,7 +598,11 @@ export default {
                     { data: data }
                 ).then(() => {
                     this.$refs.courseSetForm.dataset.secure = 'false';
-                    window.location = STUDIP.URLHelper.getURL('dispatch.php/admission/courseset');
+                    if (!this.instantCourseSetView) {
+                        window.location = STUDIP.URLHelper.getURL('dispatch.php/admission/courseset');
+                    } else {
+                        window.location.reload();
+                    }
                 });
 
             } else {
@@ -604,28 +612,31 @@ export default {
                     { data: data}
                 ).then(() => {
                     this.$refs.courseSetForm.dataset.secure = 'false';
-                    window.location = STUDIP.URLHelper.getURL('dispatch.php/admission/courseset');
+                    if (!this.instantCourseSetView) {
+                        window.location = STUDIP.URLHelper.getURL('dispatch.php/admission/courseset');
+                    } else {
+                        window.location.reload();
+                    }
                 });
 
             }
         },
         cancel() {
-            window.location = STUDIP.URLHelper.getURL('dispatch.php/admission/courseset');
+            if (!this.instantCourseSetView) {
+                window.location = STUDIP.URLHelper.getURL('dispatch.php/admission/courseset');
+            }
         },
-        configureCourses()
-        {
+        configureCourses() {
             STUDIP.Dialog.fromURL(
                 STUDIP.URLHelper.getURL('dispatch.php/admission/courseset/configure_courses/' + this.courseSetId)
             );
         },
-        getApplicants()
-        {
+        getApplicants() {
             STUDIP.Dialog.fromURL(
                 STUDIP.URLHelper.getURL('dispatch.php/admission/courseset/applications_list/' + this.courseSetId)
             );
         },
-        messageApplicants()
-        {
+        messageApplicants() {
             STUDIP.Dialog.fromURL(
                 STUDIP.URLHelper.getURL('dispatch.php/admission/courseset/applicants_message/' + this.courseSetId)
             );

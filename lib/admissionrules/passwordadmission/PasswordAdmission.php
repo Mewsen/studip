@@ -175,10 +175,11 @@ class PasswordAdmission extends AdmissionRule
      * @param Array $data
      * @return AdmissionRule This object.
      */
-    public function setAllData($data) {
+    public function setAllData($data)
+    {
         parent::setAllData($data);
-        if ($this->new || $data['password1'] !== '') {
-            $this->setPassword($data['password1']);
+        if ($this->new || $data['password'] !== '') {
+            $this->setPassword($data['password']);
         }
         return $this;
     }
@@ -189,7 +190,8 @@ class PasswordAdmission extends AdmissionRule
      * @param  String $clearText The clear text password to be set.
      * @return PasswordAdmission
      */
-    public function setPassword($clearText) {
+    public function setPassword($clearText)
+    {
         $this->password = $this->hasher->HashPassword($clearText);
         return $this;
     }

@@ -1,7 +1,7 @@
 <template>
     <Teleport to="body">
         <focus-trap v-model="trap">
-            <div class="studip-dialog" @keydown.esc="closeDialog">
+            <div class="studip-dialog" @keydown.esc="closeDialog" :style="{zIndex: zIndex}">
                 <transition name="dialog-fade">
                     <div class="studip-dialog-backdrop" v-if="true">
                         <vue-resizeable
@@ -170,6 +170,8 @@ export default {
             handlers: ["r", "rb", "b", "lb", "l", "lt", "t", "rt"],
             fit: false,
             footerHeight: 68,
+
+            zIndex: null,
         };
     },
     computed: {
@@ -279,6 +281,16 @@ export default {
                     this.$refs.buttonB.focus();
                 });
         }
+    },
+    created() {
+        const maxZIndex = Array.from(document.querySelectorAll('.studip-dialog')).reduce(
+            (acc, el) => {
+                const style = getComputedStyle(el);
+                return Math.max(acc, Number.parseInt(style.zIndex, 10));
+            },
+            1
+        );
+        this.zIndex = maxZIndex + 1;
     }
 };
 </script>

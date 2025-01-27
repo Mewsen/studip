@@ -24,8 +24,7 @@
             <quicksearch v-if="courseSearch !== null"
                          :searchtype="courseSearch"
                          name="course"
-                         :key="NaN"
-                         @input="addCourse"
+                         @update:model-value="addCourse"
                          id="csearch"
                          ref="courseSearch"></quicksearch>
             <ul v-if="courseList.length > 0">
@@ -89,7 +88,7 @@ export default {
             return this.invalidData.length === 0;
         },
     },
-    mounted() {
+    created() {
         // Get a new rule instance so we can use quicksearch.
         if (!this.id || this.id === '') {
             STUDIP.jsonapi.withPromises().post('admission-rules/CourseMemberAdmission', {
@@ -97,7 +96,7 @@ export default {
                     data: {
                         attributes: {
                             payload: {
-                                mode: 0,
+                                modus: 0,
                                 courses: [],
                                 message: ''
                             }

@@ -1,17 +1,3 @@
-#rulelist div.admissionrule {
-    display: list-item;
-    list-style-type: disc;
-    margin-left: 25px;
-}
-
-#toggle-date-container {
-    margin-top: 10px;
-
-    img, svg {
-        vertical-align: text-bottom;
-    }
-}
-
 .hover_box {
     div {
         display: inline;
@@ -84,23 +70,6 @@ form.default {
 
         img {
             vertical-align: text-bottom;
-        }
-    }
-}
-
-#userlists {
-    div {
-        margin-bottom: 10px;
-
-        a {
-            &.userlist-action {
-                margin-left: 2px;
-                margin-right: 2px;
-            }
-
-            img {
-                vertical-align: bottom;
-            }
         }
     }
 }

@@ -23,9 +23,10 @@
 
 <script>
 import { AdmissionRuleMixin } from '../../mixins/AdmissionRuleMixin';
-
+import datetimepicker from "../Datetimepicker.vue";
 export default {
     name: 'TimedAdmission',
+    components: { datetimepicker },
     mixins: [ AdmissionRuleMixin ],
     props: {
         start: {

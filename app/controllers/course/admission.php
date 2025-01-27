@@ -48,7 +48,6 @@ class Course_AdmissionController extends AuthenticatedController
             $this->is_locked['write_level'] = 'disabled readonly';
         }
         AdmissionApplication::addMembers($this->course->id);
-        PageLayout::addScript('studip-admission.js');
         URLHelper::addLinkParam('return_to_dialog', Request::get('return_to_dialog'));
     }
 
@@ -208,7 +207,7 @@ class Course_AdmissionController extends AuthenticatedController
             }
         }
         if (empty($question)) {
-            $this->redirect($this->action_url('index'));
+            $this->relocate($this->action_url('index'));
         } else {
             $this->button_yes = 'change_admission_prelim_yes';
             $this->button_no = 'change_admission_prelim_no';
@@ -249,7 +248,7 @@ class Course_AdmissionController extends AuthenticatedController
                 PageLayout::postSuccess(_("Zugriff für externe Nutzer wurde geändert."));
             }
         }
-        $this->redirect($this->action_url('index'));
+        $this->relocate($this->action_url('index'));
     }
 
     function change_admission_turnout_action()
@@ -313,7 +312,7 @@ class Course_AdmissionController extends AuthenticatedController
             }
         }
         if (empty($question)) {
-            $this->redirect($this->action_url('index'));
+            $this->relocate($this->action_url('index'));
         } else {
             $this->request = $request;
             $this->button_yes = 'change_admission_turnout_yes';
@@ -338,7 +337,7 @@ class Course_AdmissionController extends AuthenticatedController
                 PageLayout::postSuccess(_('Die zugelassenen Nutzerdomänen wurden geändert.'));
             }
         }
-        $this->redirect($this->action_url('index'));
+        $this->relocate($this->action_url('index'));
     }
 
     function change_course_set_action()
@@ -402,7 +401,7 @@ class Course_AdmissionController extends AuthenticatedController
             }
         }
         if (empty($question)) {
-            $this->redirect($this->action_url('index'));
+            $this->relocate($this->action_url('index'));
         } else {
             $this->request = ['change_course_set_unassign' => 1];
             $this->button_yes = 'change_course_set_unassign_yes';
@@ -437,66 +436,40 @@ class Course_AdmissionController extends AuthenticatedController
         $rule_types = AdmissionRule::getAvailableAdmissionRules(true);
         if (isset($rule_types[$type])) {
             $rule = new $type($rule_id);
-            $another_rule = null;
-            if (isset($rule_types[$another_type])) {
-                $another_rule = new $another_type($another_rule_id);
-            }
-            $course_set = CourseSet::getSetForRule($rule_id) ?: new CourseSet();
-            if ((Request::isPost() && Request::submitted('save')) || $rule instanceof LockedAdmission) {
-                if ($rule instanceof LockedAdmission) {
-                    $course_set_id = CourseSet::getGlobalLockedAdmissionSetId();
-                    CourseSet::addCourseToSet($course_set_id, $this->course_id);
-                    PageLayout::postSuccess(_('Die Veranstaltung wurde gesperrt.'));
-                    $this->redirect($this->action_url('index'));
-                    return;
-                } else {
-                    CSRFProtection::verifyUnsafeRequest();
-                    $errors = $rule->validate(Request::getInstance());
-                    if (empty($errors)) {
-                        $rule->setAllData(Request::getInstance());
-                    }
-                    if ($another_rule) {
-                        $another_errors = $another_rule->validate(Request::getInstance());
-                        if (empty($another_errors)) {
-                            $another_rule->setAllData(Request::getInstance());
-                        }
-                        $errors = array_merge($errors, $another_errors);
-                    }
-                    if (!mb_strlen(trim(Request::get('instant_course_set_name')))) {
-                        $errors[] = _("Bitte geben Sie einen Namen für die Anmelderegel ein!");
-                    } else {
-                        $course_set->setName(trim(Request::get('instant_course_set_name')));
-                    }
-                    if (count($errors)) {
-                        PageLayout::postError(_('Speichern fehlgeschlagen'), array_map('htmlready', $errors));
-                    } else {
-                        $rule->store();
-                        $course_set->setPrivate(true);
-                        $course_set->addAdmissionRule($rule);
-                        $course_set->setAlgorithm(new RandomAlgorithm());//TODO
-                        $course_set->setCourses([$this->course_id]);
-                        if ($another_rule) {
-                            $course_set->addAdmissionRule($another_rule);
-                        }
-                        $course_set->store();
-                        PageLayout::postSuccess(_("Die Anmelderegel wurde erzeugt und der Veranstaltung zugewiesen."));
-                        $this->redirect($this->action_url('index'));
-                        return;
-                    }
+
+            if ($type === 'LockedAdmission') {
+
+                $courseset = CourseSet::getGlobalLockedAdmissionSetId();
+                CourseSet::addCourseToSet($courseset, $this->course_id);
+
+                PageLayout::postSuccess(_('Die Veranstaltung wurde gesperrt.'));
+                $this->relocate('course/admission');
+
+            } else {
+
+                $another_rule = null;
+                if (isset($rule_types[$another_type])) {
+                    $another_rule = new $another_type($another_rule_id);
                 }
+                $course_set = CourseSet::getSetForRule($rule_id) ?: new CourseSet();
+                $types = [$type];
+                if ($another_rule) {
+                    $types[] = $another_type;
+                }
+                $course_set_name = $rule->getName() . ': ' . $this->course->name;
+
+                $props = [
+                    'rule-types' => $types,
+                    'course-set-name' => $course_set_name,
+                    'course-id' => $this->course_id
+                ];
+
+                $this->render_vue_app(
+                    Studip\VueApp::create('admission/InstantCourseSet')
+                        ->withProps($props)
+                );
+
             }
-            if (!$course_set->getId()) {
-                $course_set->setName($rule->getName() . ': ' . $this->course->name);
-            }
-            $this->rule_template = $rule->getTemplate();
-            $this->type = $type;
-            $this->rule_id = $rule_id;
-            if ($another_rule) {
-                $this->type = $this->type . '_' . $another_type;
-                $this->rule_id = $this->rule_id . '_' . $another_rule->getId();
-                $this->rule_template = $this->rule_template  . $another_rule->getTemplate();
-            }
-            $this->course_set_name = $course_set->getName();
         } else {
             throw new Trails\Exception(400);
         }
@@ -510,7 +483,7 @@ class Course_AdmissionController extends AuthenticatedController
             $response = $this->relay('admission/courseset/configure/' . $cs->getId());
             $this->body = $response->body;
             if (!empty($response->headers['Location'])) {
-                $this->redirect($response->headers['Location']);
+                $this->relocate($response->headers['Location']);
             }
         } else {
             throw new Trails\Exception(403);
@@ -525,7 +498,7 @@ class Course_AdmissionController extends AuthenticatedController
             $response = $this->relay('admission/courseset/save/' . $cs->getId());
             $this->body = $response->body;
             if ($response->headers['Location']) {
-                $this->redirect($response->headers['Location']);
+                $this->relocate($response->headers['Location']);
             }
         } else {
             throw new Trails\Exception(403);

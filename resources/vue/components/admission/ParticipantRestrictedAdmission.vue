@@ -1,4 +1,4 @@
-<template>
+ <template>
     <form class="default">
         <section>
             <label>
@@ -16,7 +16,7 @@
         <section v-if="!fcfsAllowed || !fcfsEnabled">
             <label>
                 {{ $gettext('Zeitpunkt der automatischen Platzverteilung') }}
-                <datetimepicker v-if="loaded" :value="distributionTime" v-model="distributionTime"></datetimepicker>
+                <datetimepicker v-model="distributionTime"></datetimepicker>
             </label>
         </section>
     </form>
@@ -24,17 +24,17 @@
 
 <script>
 import { AdmissionRuleMixin } from '../../mixins/AdmissionRuleMixin';
-import Datetimepicker from '../Datetimepicker.vue';
+import datetimepicker from '../Datetimepicker.vue';
 import StudipTooltipIcon from '../StudipTooltipIcon.vue';
 
 export default {
     name: 'ParticipantRestrictedAdmission',
-    components: { StudipTooltipIcon, Datetimepicker },
+    components: { StudipTooltipIcon, datetimepicker },
     mixins: [AdmissionRuleMixin],
     props: {
         distribution: {
             type: Number,
-            default: Math.floor(new Date().getTime() / 1000 + 86400)
+            default: 0
         },
         fcfs: {
             type: Boolean,
@@ -54,8 +54,7 @@ export default {
             messageText: this.message,
             fcfsAllowed: true,
             fcfsEnabled: this.distributionTime === 0,
-            distributionTime: this.distribution,
-            loaded: false
+            distributionTime: this.distribution !== 0 ? this.distribution : Math.floor(Date.now() / 1000 + 7 * 86400)
         }
     },
     computed: {
@@ -78,13 +77,23 @@ export default {
                 ? data.attributes.payload['distribution-time']
                 : Math.floor(Date.now() / 1000 + 7 * 86400);
             this.fcfsEnabled = data.attributes.payload['distribution-time'] === 0;
-            this.loaded = true;
-        }
-    },
-    created() {
-        if (!this.id) {
-            this.distributionTime = Math.floor(new Date().getTime() / 1000 + 86400);
-            this.loaded = true;
+        },
+        validate() {
+            // Earliest possible date for seat distribution is 2 hours from now.
+            const earliest = new Date();
+            earliest.setHours( earliest.getHours() + 2);
+
+            if (!this.fcfsEnabled && this.distributionTime <= Math.floor(earliest.getTime() / 1000)) {
+                this.invalidData.push(
+                    this.$gettext(
+                        'Geben Sie für die Platzverteilung ein Datum an, das weiter in der Zukunft liegt. ' +
+                        'Das frühestmögliche Datum ist %{earliest}.',
+                        {earliest: earliest.toLocaleString('de-de')}
+                    )
+                );
+            }
+
+            return this.invalidData.length === 0;
         }
     }
 }

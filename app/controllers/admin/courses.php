@@ -298,7 +298,6 @@ class Admin_CoursesController extends AuthenticatedController
         PageLayout::setHelpKeyword('Basis.Veranstaltungen');
         PageLayout::setTitle(_('Verwaltung von Veranstaltungen und Einrichtungen'));
         // Add admission functions.
-        PageLayout::addScript('studip-admission.js');
         $this->max_show_courses = Config::get()->MAX_SHOW_ADMIN_COURSES;
     }
 

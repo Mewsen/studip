@@ -42,7 +42,7 @@ export const AdmissionRuleMixin = {
             }
         }
     },
-    mounted() {
+    created() {
         if (this.id && this.id !== '' && !this.ruleData) {
             this.loadRuleData();
         }

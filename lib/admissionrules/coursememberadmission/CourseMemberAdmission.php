@@ -78,27 +78,6 @@ class CourseMemberAdmission extends AdmissionRule
     }
 
     /**
-     * Gets the template that provides a configuration GUI for this rule.
-     *
-     * @return String
-     */
-    public function getTemplate()
-    {
-        // Open generic admission rule template.
-        $tpl = $GLOBALS['template_factory']->open('admission/rules/configure');
-        $tpl->set_attribute('rule', $this);
-
-        $search = new StandardSearch('Seminar_id');
-
-        return $this->getTemplateFactory()->render('configure', [
-            'rule'    => $this,
-            'tpl'     => $tpl->render(),
-            'courses' => $this->getDecodedCourses(),
-            'search'  => $search
-        ]);
-    }
-
-    /**
      * Helper function for loading rule definition from database.
      */
     public function load()
