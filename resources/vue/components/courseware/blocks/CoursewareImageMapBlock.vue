@@ -394,7 +394,7 @@ export default {
             let context = this.context;
             let outlineImage = new Image();
             outlineImage.src = this.currentUrl;
-            outlineImage.onload = function () {
+            outlineImage.onload = () => {
                 context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
                 context.fillStyle = '#ffffff';
                 context.fillRect(0, 0, context.canvas.width, context.canvas.height); // set background

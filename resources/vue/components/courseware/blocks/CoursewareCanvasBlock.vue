@@ -472,7 +472,7 @@ export default {
         mouseDown(e) {
             if (this.write) {
                 this.$refs.textInputField.focus();
-                window.setTimeout(function () {
+                window.setTimeout(() => {
                     this.$refs.textInputField.focus();
                 }, 0);
                 return;
@@ -580,7 +580,7 @@ export default {
             input.style.lineHeight = fontsize + 'px';
             input.style.fontSize = fontsize + 'px';
             input.style.width = '300px';
-            window.setTimeout(function () {
+            window.setTimeout(() => {
                 this.$refs.textInputField.focus();
             }, 0);
         },
