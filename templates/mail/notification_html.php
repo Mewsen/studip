@@ -49,9 +49,12 @@
             }
 
             .studip-mail header .studip-mail-header-logo {
+                height: 45px;
+                margin-bottom: 25px;
                 margin-left: auto;
                 margin-right: auto;
-                width: 100%;
+                margin-top: 25px;
+                width: 130px;
             }
 
             .studip-mail header .studip-mail-sndrec {
@@ -80,8 +83,9 @@
     <article class="studip-mail">
         <header>
             <div class="studip-mail-header-logo" >
-                <img alt="" width="130" height="92" src="cid:studiplogo">
+                <img alt="" src="cid:studiplogo" width="130" height="45">
             </div>
+            <br>
             <p class="studip-mail-sndrec">
                 <?= sprintf(
                     _('Stud.IP hat eine automatische Systemnachricht für Sie.'),

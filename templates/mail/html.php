@@ -50,9 +50,12 @@
             }
 
             .studip-mail header .studip-mail-header-logo {
+                height: 45px;
+                margin-bottom: 25px;
                 margin-left: auto;
                 margin-right: auto;
-                width: 100%;
+                margin-top: 25px;
+                width: 130px;
             }
 
             .studip-mail header .studip-mail-sndrec {
@@ -81,8 +84,9 @@
         <article class="studip-mail">
             <header>
                 <div class="studip-mail-header-logo" >
-                    <img alt="" width="130" height="92" src="cid:studiplogo">
+                    <img alt="" src="cid:studiplogo" width="130" height="45">
                 </div>
+                <br>
                 <p class="studip-mail-sndrec">
                     <?php if ($snd_fullname) : ?>
                         <?= sprintf(_('%1$s hat Ihnen eine Nachricht in Stud.IP geschickt.'),
@@ -115,8 +119,9 @@
                 <?php endif ?>
             </section>
             <footer>
+                <br>
                 <?= sprintf(
-                        _('Diese E-Mail ist eine Kopie einer systeminternen Nachricht, die in Stud.IP an %1$s (%2$s) versendet wurde.'),
+                        _('Diese E-Mail ist eine Kopie einer systeminternen Nachricht,<br>die in Stud.IP an %1$s (%2$s) versendet wurde.'),
                         htmlReady($rec_fullname),
                         htmlReady($rec_username)
                     )
