@@ -44,12 +44,13 @@ import StudipUserFilter from '../StudipUserFilter.vue';
 export default {
     name: 'UserFilterInput',
     components: {StudipUserFilter},
+    emits: ['update:modelValue'],
     props: {
         name: {
             type: String,
             required: true
         },
-        value: String,
+        modelValue: String,
         context: {
             type: String,
             default: ''
@@ -123,7 +124,7 @@ export default {
         },
         changed() {
             this.stringified = JSON.stringify(this.filters);
-            this.$emit('input', this.stringified);
+            this.$emit('update:modelValue', this.stringified);
         }
     },
     watch: {
@@ -132,8 +133,8 @@ export default {
         }
     },
     mounted() {
-        if (this.value) {
-            this.filters = JSON.parse(this.value);
+        if (this.modelValue) {
+            this.filters = JSON.parse(this.modelValue);
         }
     }
 }
