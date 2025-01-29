@@ -901,7 +901,7 @@ class Course_StatusgroupsController extends AuthenticatedController
                         if ($room = $c->getMostBookedRoom()) {
                             $name .= ' (' . $room->name . ')';
                         } else {
-                            $room = $c->getMostBookedFreetextRoom();
+                            $room = $c->getMostUsedFreetextRoomName();
                             if ($room) {
                                 $name .= ' (' . $room . ')';
                             }
