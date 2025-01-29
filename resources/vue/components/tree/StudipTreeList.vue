@@ -157,7 +157,7 @@ export default {
         AssignLinkWidget, StudipPagination
     },
     mixins: [ TreeMixin ],
-    emits: ['change-current-node'],
+    emits: ['change-current-node', 'sort-tree-children'],
     props: {
         node: {
             type: Object,

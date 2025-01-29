@@ -471,11 +471,11 @@ class StudipStudyArea extends SimpleORMap implements StudipTreeNode
             });
 
             return static::findBySQL(
-                "`parent_id` = :parent AND `type` IN (:types)",
+                "`parent_id` = :parent AND `type` IN (:types) ORDER BY `priority`",
                 ['parent' => $this->id, 'types' => $visibleTypes]
             );
         } else {
-            return static::findByParent_id($this->id);
+            return static::findByParent_id($this->id, "ORDER BY `priority`");
         }
     }
 

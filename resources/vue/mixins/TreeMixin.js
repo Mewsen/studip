@@ -110,10 +110,8 @@ export const TreeMixin = {
         updateSorting(parentId, children) {
             let data = {};
 
-            let position = 0;
-            for (const child of children) {
-                data[child.attributes.id] = position;
-                position++;
+            for (let i = 0 ; i < children.length ; i++) {
+                data[children[i].attributes.id] = i;
             }
 
             const fd = new FormData();
@@ -122,7 +120,13 @@ export const TreeMixin = {
                 STUDIP.URLHelper.getURL('dispatch.php/admin/tree/sort/' + parentId),
                 fd,
                 { headers: { 'Content-Type': 'multipart/form-data' }}
-            );
+            )
+            .then(() => {
+                STUDIP.Report.success(this.$gettext('Die Sortierung wurde geändert.'));
+            })
+            .catch(error => {
+                STUDIP.Report.error(this.$gettext('Die Sortierung konnte nicht geändert werden.'), error);
+            });
             STUDIP.Vue.emit('sort-tree-children', { parent: parentId, children: children });
         },
         updateOffset(newOffset) {

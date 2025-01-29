@@ -178,7 +178,7 @@ export default {
         AssignLinkWidget
     },
     mixins: [ TreeMixin ],
-    emits: ['change-current-node'],
+    emits: ['change-current-node', 'sort-tree-children'],
     props: {
         node: {
             type: Object,
