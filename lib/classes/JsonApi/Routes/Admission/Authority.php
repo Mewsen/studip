@@ -18,7 +18,7 @@ class Authority
      */
     public static function canCreateCourseSet(User $user): bool
     {
-        return $GLOBALS['perm']->have_perm('dozent');
+        return $GLOBALS['perm']->have_perm('dozent', $user->id);
     }
 
     public static function canCreateCourseSets(User $user): bool
@@ -28,6 +28,11 @@ class Authority
                 Config::get()->ALLOW_DOZENT_COURSESET_ADMIN
                 && $GLOBALS['perm']->have_perm('dozent', $user->id)
             );
+    }
+
+    public static function canCreateAdmissionRules(User $user): bool
+    {
+        return $GLOBALS['perm']->have_perm('dozent', $user->id);
     }
 
     public static function canEditAdmissionRules(User $user): bool

@@ -20,7 +20,7 @@
                                v-model="name">
                     </label>
                 </section>
-                <section>
+                <section v-if="!instantCourseSetView">
                     <label for="private"
                            :aria-label="$gettext('Dieses Anmeldeset soll nur für mich selbst und alle Administratoren sichtbar und benutzbar sein.')">
                         {{ $gettext('Sichtbarkeit') }}
@@ -32,7 +32,7 @@
                     {{ $gettext('Dieses Anmeldeset soll nur für mich selbst und alle Administratoren sichtbar und benutzbar sein.') }}
                 </section>
             </fieldset>
-            <fieldset>
+            <fieldset v-if="!instantCourseSetView">
                 <legend>{{ $gettext('Einrichtungszuordnung') }}</legend>
                 <section v-if="instituteSearch || myInstitutes?.length > 1">
                     <label for="isearch" class="studiprequired">
@@ -100,7 +100,7 @@
                     </p>
                 </section>
             </fieldset>
-            <fieldset v-if="institutes?.length > 0 || courses?.length > 0">
+            <fieldset v-if="!instantCourseSetView && (institutes?.length > 0 || courses?.length > 0)">
                 <legend>
                     {{ $gettext('Veranstaltungszuordnung') }}
                 </legend>

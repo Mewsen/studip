@@ -23,7 +23,7 @@ class AdmissionRulesCreate extends JsonApiController
         $json = $this->validate($request);
         $user = $this->getUser($request);
 
-        if (!Authority::canEditAdmissionRules($user)) {
+        if (!Authority::canCreateAdmissionRules($user)) {
             throw new AuthorizationFailedException();
         }
 
