@@ -99,7 +99,6 @@ class ForumAbo
             return;
         }
 
-        $template = $GLOBALS['template_factory']->open('mail/forum_notification');// notify users
         while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $user_id = $data['user_id'];
 
@@ -135,11 +134,20 @@ class ForumAbo
 
                 $subject = _('[Forum]') . ' ' . ($title ?: _('Neuer Beitrag'));
 
-                $htmlMessage = $template->render(
+                $template = $GLOBALS['template_factory']->open('mail/html');
+                $htmlTemplate = $GLOBALS['template_factory']->open('mail/forum_notification');
+                $content = $htmlTemplate->render(
                     compact('user_id', 'topic', 'path')
                 );
 
-                $textMessage = trim(kill_format($htmlMessage));
+                $htmlMessage = $template->render([
+                    'snd_fullname' => '',
+                    'rec_fullname' => $user->getFullName(),
+                    'message' => $content,
+                    'attachments' => [],
+                ]);
+
+                $textMessage = trim(kill_format($content));
 
                 $userWantsHtml = UserConfig::get($user_id)->MAIL_AS_HTML;
 
