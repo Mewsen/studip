@@ -212,6 +212,12 @@ class User extends AuthUserMd5 implements Range, PrivacyObject
             'on_delete'  => 'delete',
         ];
 
+        $config['has_many']['studygroup_invitations'] = [
+            'class_name' => StudygroupInvitation::class,
+            'assoc_foreign_key' => 'user_id',
+            'on_delete'  => 'delete',
+        ];
+
         $config['additional_fields']['config']['get'] = function ($user) {
             return UserConfig::get($user->id);
         };

@@ -1,3 +1,19 @@
+<?php
+/**
+ * @var Course_StudygroupController $controller
+ * @var int $anzahl
+ * @var int $page
+ * @var string $sem_id
+ * @var array $moderators
+ * @var array $tutors
+ * @var array $autors
+ * @var array $accepted
+ * @var bool $rechte
+ * @var string $view
+ * @var array $sem_class
+ * @var StudygroupInvitation[] $invitedMembers
+ */
+?>
 <?= $this->render_partial('course/studygroup/_feedback', compact('anzahl', 'page', 'sem_id')) ?>
 
 <? if (count($moderators) > 0): ?>
@@ -126,20 +142,20 @@
                 <? foreach ($invitedMembers as $p): ?>
                     <tr>
                         <td>
-                            <input type="checkbox" name="members[]" value="<?= htmlReady($p['username']) ?>">
+                            <input type="checkbox" name="members[]" value="<?= htmlReady($p->user->username) ?>">
                         </td>
                         <td>
-                            <a href="<?= URLHelper::getLink('dispatch.php/profile' , ['username' => $p['username']]) ?>">
-                                <?= Avatar::getAvatar($p['user_id'])->getImageTag(Avatar::SMALL) ?>
+                            <a href="<?= URLHelper::getLink('dispatch.php/profile' , ['username' => $p->user->username]) ?>">
+                                <?= Avatar::getAvatar($p->user_id)->getImageTag(Avatar::SMALL) ?>
                             </a>
                         </td>
                         <td>
-                            <a href="<?= URLHelper::getLink('dispatch.php/profile' , ['username' => $p['username']]) ?>">
-                                <?= htmlReady($p['fullname']) ?>
+                            <a href="<?= URLHelper::getLink('dispatch.php/profile' , ['username' => $p->user->username]) ?>">
+                                <?= htmlReady($p->user->getFullName()) ?>
                             </a>
                         </td>
                         <td class="actions">
-                            <a href="<?= $controller->edit_members('cancelInvitation', ['user' => $p['username']]) ?>" data-confirm="<?= _('Wollen Sie die Einladung wirklich löschen?') ?>">
+                            <a href="<?= $controller->edit_members('cancelInvitation', ['user' => $p->user->username]) ?>" data-confirm="<?= _('Wollen Sie die Einladung wirklich löschen?') ?>">
                                 <?= Icon::create('trash')->asImg(['title' => _('Einladung löschen')]) ?>
                             </a>
                         </td>

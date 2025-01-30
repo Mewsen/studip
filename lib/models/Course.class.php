@@ -220,6 +220,12 @@ class Course extends SimpleORMap implements Range, PrivacyObject, StudipItem, Fe
             'on_delete'  => 'delete',
         ];
 
+        $config['has_many']['studygroup_invitations'] = [
+            'class_name' => StudygroupInvitation::class,
+            'assoc_foreign_key' => 'sem_id',
+            'on_delete'  => 'delete',
+        ];
+
         $config['default_values']['lesezugriff'] = 1;
         $config['default_values']['schreibzugriff'] = 1;
         $config['default_values']['duration_time'] = 0;
