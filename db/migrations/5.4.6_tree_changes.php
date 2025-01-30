@@ -4,8 +4,8 @@ final class TreeChanges extends Migration
 {
 
     const FIELDS = [
-        'RANGE_TREE_PERM',
-        'SEM_TREE_PERM'
+        'RANGE_TREE_ADMIN_PERM',
+        'SEM_TREE_ADMIN_PERM'
     ];
 
     public function description()
