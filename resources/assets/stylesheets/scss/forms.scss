@@ -48,7 +48,8 @@ form.default {
         padding: 5px;
         vertical-align: middle;
         width: 100%;
-        transition: all $transition-duration ease-out;
+        transition: background-color $transition-duration ease-out,
+                    border-color $transition-duration ease-out;
 
         &:focus {
             border-color: $brand-color-dark;
