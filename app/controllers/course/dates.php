@@ -608,7 +608,7 @@ class Course_DatesController extends AuthenticatedController
                 $this->previously_selected_dates = $this->course_date_folders;
                 if (count($dates_with_folders) === 1) {
                     PageLayout::postWarning(sprintf(
-                        _('Für den Termin am %s existiert bereits ein Sitzungs-Ordner. Möchten Sie trotzdem einen weiteren Sitzungs-Ordner erstellen?'),
+                        _('Für den Termin am %s existiert bereits ein Sitzungsordner. Möchten Sie trotzdem einen weiteren Sitzungsordner erstellen?'),
                         htmlReady($dates_with_folders[0]->getFullname())
                     ));
                 } else {
@@ -617,7 +617,7 @@ class Course_DatesController extends AuthenticatedController
                         $dates_string[] = $date->getFullname();
                     }
                     PageLayout::postWarning(
-                        _('Für die folgenden Termine gibt es bereits Sitzungs-Ordner. Möchten Sie trotzdem weitere Sitzungs-Ordner erstellen?'),
+                        _('Für die folgenden Termine gibt es bereits Sitzungsordner. Möchten Sie trotzdem weitere Sitzungsordner erstellen?'),
                         array_map('htmlReady', $dates_string)
                     );
                 }
